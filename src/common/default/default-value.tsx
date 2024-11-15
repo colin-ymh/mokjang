@@ -1,0 +1,3 @@
+export const DEFAULT_VALUE = {
+  STRING: "DEFAULT_STRING_VALUE",
+};
