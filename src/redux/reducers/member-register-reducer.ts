@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { DEFAULT_VALUE } from "@/common/default/default-value";
+import { BLANK, DEFAULT_VALUE } from "@/common/default/default-value";
 import { MemberRegisterType } from "@/models/register/member-register";
 
 type MemberRegisterState = {
@@ -7,8 +7,12 @@ type MemberRegisterState = {
 };
 
 const DEFAULT_MEMBER: MemberRegisterType = {
-  name: DEFAULT_VALUE.STRING,
-  personalPhone: DEFAULT_VALUE.STRING,
+  name: BLANK,
+  personalPhone: BLANK,
+  homePhone: BLANK,
+  marriage: BLANK,
+  school: BLANK,
+  job: BLANK,
 };
 
 const initialState: MemberRegisterState = {

@@ -1,4 +1,7 @@
+"use client";
+
 import React from "react";
+
 import Wrap from "@/common/layout/wrap";
 import Container from "@/common/layout/container";
 import Main from "@/common/layout/main";

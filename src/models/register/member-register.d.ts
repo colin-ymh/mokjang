@@ -7,11 +7,11 @@ export type MemberRegisterType = {
   birth?: string;
   gender?: string;
   address?: string;
-  homePhone?: string;
+  homePhone: string;
   family?: any;
-  job?: string;
-  school?: string;
-  marriage?: string;
+  job: string;
+  school: string;
+  marriage: string;
   // 성도정보
   ministry?: string; // 사역
   group?: string; // 소그룹

@@ -6,6 +6,7 @@ import { Provider, useDispatch } from "react-redux";
 import StyledComponentsRegistry from "@/common/styles/registry";
 import store from "@/redux/store";
 import { initializeIsWebview } from "@/redux/reducers/webview-reducer";
+import TranslateProvider from "@/app/[locale]/provider";
 
 type RootLayoutProps = {
   children?: React.ReactNode;
@@ -43,8 +44,10 @@ const RootLayout = (props: RootLayoutProps | RootLayoutPropsExtended) => {
       <body>
         <StyledComponentsRegistry>
           <Provider store={store}>
-            <WebviewInitializer /> {/* 웹뷰 초기화 컴포넌트 */}
-            {children}
+            <TranslateProvider>
+              <WebviewInitializer /> {/* 웹뷰 초기화 컴포넌트 */}
+              {children}
+            </TranslateProvider>
           </Provider>
         </StyledComponentsRegistry>
       </body>

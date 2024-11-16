@@ -3,7 +3,7 @@
 import React from "react";
 import styled from "styled-components";
 
-import { GRAY, MAIN } from "@/common/styles/color";
+import { BLACK, GRAY, MAIN } from "@/common/styles/color";
 
 export type BorderInputProps = {
   value: string;
@@ -12,13 +12,18 @@ export type BorderInputProps = {
 };
 
 const BorderInputContainer = styled.input`
-  font-size: 15px;
   width: 100%;
+  box-sizing: border-box;
+  font-size: 16px;
+  padding: 12px 16px;
   border: 1px solid ${GRAY.DEFAULT};
+  border-radius: 8px;
+  color: ${BLACK};
+  transition: all 0.3s ease;
 
   &:focus {
     outline: none;
-    border-bottom-color: ${MAIN.DEFAULT};
+    border: 1px solid ${MAIN.DEFAULT};
   }
 `;
 
@@ -32,8 +37,8 @@ const BorderInput = ({
     <>
       <BorderInputContainer
         type="text"
-        placeholder={placeholder}
         value={value}
+        placeholder={placeholder}
         onChange={onChange}
       />
     </>

@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { BLACK } from "@/common/styles/color";
 
 export type MainTextProps = {
   size?: "small" | "medium" | "large";
@@ -56,8 +57,8 @@ const getFontWeight = (
 };
 
 export const MainText = styled.p<MainTextProps>`
-  margin: 0px 0px;
+  margin: 0;
   font-size: ${({ size, type }) => getFontSize(size, type)};
-  color: ${({ color }) => color || "black"};
+  color: ${({ color }) => color || BLACK};
   font-weight: ${({ size, fontWeight }) => getFontWeight(size, fontWeight)};
 `;
