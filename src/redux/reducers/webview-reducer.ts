@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-interface WebviewState {
+type WebviewState = {
   isWebview: boolean;
-}
+};
 
 const initialState: WebviewState = {
   isWebview: false,

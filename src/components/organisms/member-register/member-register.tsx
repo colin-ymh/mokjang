@@ -1,0 +1,196 @@
+"use client";
+
+import { ChangeEvent } from "react";
+
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/redux/store";
+import { setMember } from "@/redux/reducers/member-register-reducer";
+
+import { TemporalMember } from "@/models/register/member-register";
+import MemberRegisterView from "@/components/organisms/member-register/member-register.view";
+import { BAPTISM, MEMBER_REGISTER_TYPE } from "@/constant/constant";
+
+const MemberRegister = () => {
+  const dispatch = useDispatch<AppDispatch>();
+  const member: TemporalMember = useSelector(
+    (state: RootState): TemporalMember => state.memberRegister.member,
+  );
+
+  // 새신자 타입 변경 시 이벤트
+  const onChangeType = (type: MEMBER_REGISTER_TYPE) => {
+    dispatch(setMember({ ...member, type }));
+  };
+
+  // 이름 변경 시 이벤트
+  const onChangeName = (event: ChangeEvent<HTMLInputElement>) => {
+    const newMember: TemporalMember = member;
+    const newName = event.target.value;
+    dispatch(setMember({ ...newMember, name: newName }));
+  };
+
+  // 휴대폰 번호 변경 시 이벤트
+  const onChangeMobilePhone = (event: ChangeEvent<HTMLInputElement>) => {
+    const newMember: TemporalMember = member;
+    const newMobilePhone = event.target.value;
+    dispatch(setMember({ ...newMember, mobilePhone: newMobilePhone }));
+  };
+
+  // 인도자 변경 시 이벤트
+  const onChangeGuide = (event: ChangeEvent<HTMLInputElement>) => {
+    const newMember: TemporalMember = member;
+    const newGuide = event.target.value;
+    dispatch(setMember({ ...newMember, guide: newGuide }));
+  };
+
+  // 가족 변경 시 이벤트
+  const onChangeFamily = (event: ChangeEvent<HTMLInputElement>) => {
+    const newMember: TemporalMember = member;
+    const newFamily = event.target.value;
+    dispatch(setMember({ ...newMember, family: newFamily }));
+  };
+
+  // 생년월일 변경 시 이벤트
+  const onChangeBirth = (event: ChangeEvent<HTMLInputElement>) => {
+    const newMember: TemporalMember = member;
+    const newBirth = event.target.value;
+    dispatch(setMember({ ...newMember, birth: newBirth }));
+  };
+
+  // 전화번호 변경 시 이벤트
+  const onChangeHomePhone = (event: ChangeEvent<HTMLInputElement>) => {
+    const newMember: TemporalMember = member;
+    const newHomePhone = event.target.value;
+    dispatch(setMember({ ...newMember, homePhone: newHomePhone }));
+  };
+
+  // 직업 변경 시 이벤트
+  const onChangeOccupation = (event: ChangeEvent<HTMLInputElement>) => {
+    const newMember: TemporalMember = member;
+    const newOccupation = event.target.value;
+    dispatch(setMember({ ...newMember, occupation: newOccupation }));
+  };
+
+  // 도로명주소 변경 시 이벤트
+  const onChangeAddress = (event: ChangeEvent<HTMLInputElement>) => {
+    const newMember: TemporalMember = member;
+    const newAddress = event.target.value;
+    dispatch(setMember({ ...newMember, address: newAddress }));
+  };
+
+  // 학교 변경 시 이벤트
+  const onChangeSchool = (event: ChangeEvent<HTMLInputElement>) => {
+    const newMember: TemporalMember = member;
+    const newSchool = event.target.value;
+    dispatch(setMember({ ...newMember, school: newSchool }));
+  };
+
+  // 차량 번호 변경 시 이벤트
+  const onChangeVehiclePlateNumber = (event: ChangeEvent<HTMLInputElement>) => {
+    const newMember: TemporalMember = member;
+    const newVehiclePlateNumber = event.target.value;
+    dispatch(
+      setMember({ ...newMember, vehiclePlateNumber: newVehiclePlateNumber }),
+    );
+  };
+
+  // 결혼 정보 변경 시 이벤트
+  const onChangeMarriage = (event: ChangeEvent<HTMLInputElement>) => {
+    const newMember: TemporalMember = member;
+    const newMarriage = event.target.value;
+    dispatch(setMember({ ...newMember, vehiclePlateNumber: newMarriage }));
+  };
+
+  // 성별 변경 시 이벤트
+  const onChangeGender = (gender: string) => {
+    dispatch(setMember({ ...member, gender }));
+  };
+
+  // 직분 변경 시 이벤트
+  const onChangeConfirmation = (event: ChangeEvent<HTMLInputElement>) => {
+    const newMember: TemporalMember = member;
+    const newConfirmation = event.target.value;
+    dispatch(
+      setMember({
+        ...newMember,
+        confirmation: newConfirmation,
+      }),
+    );
+  };
+
+  // 임직일 날짜 변경 시 이벤트
+  const onChangeConfirmationStartDate = (
+    event: ChangeEvent<HTMLInputElement>,
+  ) => {
+    const newMember: TemporalMember = member;
+    const newConfirmationStartDate = event.target.value;
+    dispatch(
+      setMember({
+        ...newMember,
+        confirmationStartDate: newConfirmationStartDate,
+      }),
+    );
+  };
+
+  // 임직 교회 변경 시 이벤트
+  const onChangeConfirmationStartChurch = (
+    event: ChangeEvent<HTMLInputElement>,
+  ) => {
+    const newMember: TemporalMember = member;
+    const newConfirmationStartChurch = event.target.value;
+    dispatch(
+      setMember({
+        ...newMember,
+        confirmationStartChurch: newConfirmationStartChurch,
+      }),
+    );
+  };
+
+  // 신급
+  const onChangeBaptism = (value: BAPTISM) => {
+    dispatch(setMember({ ...member, baptism: value }));
+  };
+
+  // 이전 교회 변경 시 이벤트
+  const onChangePreviousChurchName = (event: ChangeEvent<HTMLInputElement>) => {
+    const newMember: TemporalMember = member;
+    const newPreviousChurchName = event.target.value;
+    dispatch(
+      setMember({ ...newMember, previousChurchName: newPreviousChurchName }),
+    );
+  };
+
+  const props = {
+    required: {
+      onChangeType,
+      onChangeName,
+      onChangeMobilePhone,
+      onChangeGuide,
+      onChangeFamily,
+    },
+    personal: {
+      onChangeBirth,
+      onChangeHomePhone,
+      onChangeOccupation,
+      onChangeAddress,
+      onChangeSchool,
+      onChangeVehiclePlateNumber,
+      onChangeMarriage,
+      onChangeGender,
+    },
+    religious: {
+      onChangeConfirmation,
+      onChangeConfirmationStartDate,
+      onChangeConfirmationStartChurch,
+      onChangeBaptism,
+      onChangePreviousChurchName,
+    },
+  };
+
+  return (
+    <>
+      <MemberRegisterView {...props} />
+    </>
+  );
+};
+
+export default MemberRegister;

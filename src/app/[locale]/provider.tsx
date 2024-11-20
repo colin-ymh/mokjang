@@ -9,7 +9,6 @@ type ProviderProps = {
 
 const TranslateProvider = ({ children }: ProviderProps) => {
   const locale = useCurrentLocale();
-  console.log(locale);
 
   return (
     <I18nProviderClient locale={locale} fallback={<p>Loading...</p>}>

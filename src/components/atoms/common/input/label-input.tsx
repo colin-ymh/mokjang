@@ -3,15 +3,12 @@
 import React from "react";
 import styled from "styled-components";
 
-import { MainText } from "@/common/components/text/main-text";
+import { MainText } from "@/components/atoms/common/text/main-text";
 import BorderInput, {
   BorderInputProps,
-} from "@/common/components/input/border-input";
+} from "@/components/atoms/common/input/border-input";
 
 import { DEFAULT_VALUE } from "@/common/default/default-value";
-import { SCOPED } from "@/constant/locales/scoped/placeholder";
-
-import { useScopedI18n } from "../../../locales/client";
 
 const LabelInputContainer = styled.div`
   display: flex;
@@ -30,8 +27,6 @@ const LabelInput = ({
   onChange,
   placeholder,
 }: LabelInputProps) => {
-  const PLACEHOLDER = useScopedI18n(SCOPED.PLACEHOLDER);
-
   return (
     <LabelInputContainer>
       <MainText>{label}</MainText>

@@ -5,13 +5,19 @@ export type MainTextProps = {
   size?: "small" | "medium" | "large";
   color?: string;
   type?: "title" | "content";
+  fontSize?: number;
   fontWeight?: number;
 };
 
 const getFontSize = (
   size: "small" | "medium" | "large" | undefined,
   type: "title" | "content" | undefined,
+  fontSize?: number,
 ) => {
+  if (fontSize) {
+    return `${fontSize}px`; // fontWeight 가 설정된 경우 그대로 사용
+  }
+
   let baseSize: number;
 
   switch (size) {
@@ -58,7 +64,7 @@ const getFontWeight = (
 
 export const MainText = styled.p<MainTextProps>`
   margin: 0;
-  font-size: ${({ size, type }) => getFontSize(size, type)};
+  font-size: ${({ size, type, fontSize }) => getFontSize(size, type, fontSize)};
   color: ${({ color }) => color || BLACK};
   font-weight: ${({ size, fontWeight }) => getFontWeight(size, fontWeight)};
 `;

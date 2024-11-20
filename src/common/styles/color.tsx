@@ -1,5 +1,5 @@
 export const BLACK = "#121212";
-export const WHITE = "#EEFFEE";
+export const WHITE = "#FFFFFF";
 
 export enum GRAY {
   LIGHT = "#E0E0E0",

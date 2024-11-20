@@ -1,25 +1,30 @@
-export type MemberRegisterType = {
+import { BAPTISM, MEMBER_REGISTER_TYPE } from "@/constant/constant";
+
+export type TemporalMember = {
+  // 등록 타입 (새신자, 기존신자)
+  type: MEMBER_REGISTER_TYPE;
   // 필수입력값
   name: string;
-  personalPhone: string;
+  mobilePhone: string;
   // 개인정보
   profileImage?: any;
-  birth?: string;
+  birth: string;
   gender?: string;
-  address?: string;
+  address: string;
   homePhone: string;
   family?: any;
-  job: string;
+  occupation: string;
   school: string;
   marriage: string;
   // 성도정보
   ministry?: string; // 사역
   group?: string; // 소그룹
-  officer?: string; // 직분
-  officerStartDate?: string;
-  officerStartChurch?: string;
+  confirmation: string; // 직분
+  confirmationStartDate: string;
+  confirmationStartChurch: string;
   createdAt?: string;
-  reborn?: string; // 신급
-  guide?: any; // 인도자
-  carNumber?: string;
+  baptism: BAPTISM; // 신급
+  guide: any; // 인도자
+  previousChurchName: string; // 이전 교회
+  vehiclePlateNumber: string;
 };
