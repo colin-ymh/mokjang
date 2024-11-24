@@ -1,7 +1,7 @@
 // 휴대폰 번호 string을 010-xxxx-xxxx 형식으로 포맷
-export const getFormattedMobilePhone = (personalPhone: string) => {
+export const getFormattedMobilePhone = (mobilePhone: string) => {
   // 숫자만 남기기
-  const cleaned = personalPhone.replace(/\D/g, "");
+  const cleaned = mobilePhone.replace(/\D/g, "");
 
   // 전화번호가 너무 긴 경우, 잘라내기
   const lengthLimit = 11;

@@ -1,6 +1,6 @@
 "use client";
 
-import { ChangeEvent } from "react";
+import React, { ChangeEvent, RefObject } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
@@ -159,7 +159,23 @@ const MemberRegister = () => {
     );
   };
 
+  // 엔터키 입력 후 포커스 이동 함수
+  const onClickEnter = (
+    event: React.KeyboardEvent<HTMLInputElement>,
+    nextInputRef: RefObject<HTMLInputElement>,
+  ) => {
+    // IME keyCode 무시하기
+    if (event.keyCode === 229) return;
+    // 엔터키 누르면 다음 입력 필드로 포커스 이동
+    if (event.key === "Enter" && nextInputRef.current) {
+      nextInputRef.current.focus();
+    }
+  };
+
   const props = {
+    common: {
+      onClickEnter,
+    },
     required: {
       onChangeType,
       onChangeName,

@@ -47,7 +47,7 @@ const RootLayout = (props: RootLayoutProps | RootLayoutPropsExtended) => {
   };
 
   return (
-    <html lang="en">
+    <html lang="ko">
       <head>
         <meta
           name="viewport"

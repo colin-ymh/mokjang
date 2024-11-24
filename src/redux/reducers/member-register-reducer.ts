@@ -10,6 +10,7 @@ import {
 type MemberRegisterState = {
   member: TemporalMember;
   stage: MEMBER_REGISTER_STAGE;
+  isStageClear: boolean;
 };
 
 const DEFAULT_MEMBER: TemporalMember = {
@@ -30,11 +31,23 @@ const DEFAULT_MEMBER: TemporalMember = {
   previousChurchName: BLANK,
   vehiclePlateNumber: BLANK,
   gender: "male",
+  family: BLANK,
 };
 
 const initialState: MemberRegisterState = {
   member: DEFAULT_MEMBER,
   stage: MEMBER_REGISTER_STAGE.REQUIRED,
+  isStageClear: false,
+};
+
+const getIsStageClear = (
+  member: TemporalMember,
+  stage: MEMBER_REGISTER_STAGE,
+): boolean => {
+  if (stage === MEMBER_REGISTER_STAGE.REQUIRED) {
+    return member.name && member.mobilePhone && member.guide && member.family;
+  }
+  return false;
 };
 
 const MemberRegisterSlice = createSlice({
@@ -43,9 +56,11 @@ const MemberRegisterSlice = createSlice({
   reducers: {
     setMember(state, action: PayloadAction<TemporalMember>) {
       state.member = action.payload;
+      state.isStageClear = getIsStageClear(state.member, state.stage);
     },
     setStage(state, action: PayloadAction<MEMBER_REGISTER_STAGE>) {
       state.stage = action.payload;
+      state.isStageClear = getIsStageClear(state.member, state.stage);
     },
   },
 });

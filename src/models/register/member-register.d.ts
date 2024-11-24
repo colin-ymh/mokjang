@@ -9,10 +9,10 @@ export type TemporalMember = {
   // 개인정보
   profileImage?: any;
   birth: string;
-  gender?: string;
+  gender: string;
   address: string;
   homePhone: string;
-  family?: any;
+  family: string;
   occupation: string;
   school: string;
   marriage: string;

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { RefObject } from "react";
 import styled from "styled-components";
 
 import { useSelector } from "react-redux";
@@ -9,6 +9,7 @@ import RegisterButtonList from "@/components/molecules/member-register/register-
 import { MainText } from "@/components/atoms/common/text/main-text";
 
 import RequiredRegisterView, {
+  CommonRegisterProps,
   RequiredRegisterViewProps,
 } from "@/components/molecules/member-register/required-register.view";
 import ReligiousRegisterView, {
@@ -24,7 +25,7 @@ const RegisterContainer = styled.div`
   height: 100%;
   padding: 0 30px;
   align-items: center;
-  overflow: hidden;
+  overflow: auto;
 `;
 
 const TextContainer = styled.div`
@@ -36,15 +37,22 @@ const TextContainer = styled.div`
 `;
 
 type MemberRegisterViewProps = {
+  common: CommonRegisterProps;
   required: RequiredRegisterViewProps;
   personal: PersonalRegisterViewProps;
   religious: ReligiousRegisterViewProps;
 };
 
-const MemberRegisterView = ({ ...props }: MemberRegisterViewProps) => {
+const MemberRegisterView = ({
+  common,
+  required,
+  personal,
+  religious,
+}: MemberRegisterViewProps) => {
   const { member, stage } = useSelector(
     (state: RootState) => state.memberRegister,
   );
+
   return (
     <RegisterContainer>
       <TextContainer>
@@ -53,13 +61,13 @@ const MemberRegisterView = ({ ...props }: MemberRegisterViewProps) => {
         </MainText>
       </TextContainer>
       {stage === MEMBER_REGISTER_STAGE.REQUIRED && (
-        <RequiredRegisterView {...props.required} />
+        <RequiredRegisterView {...common} {...required} />
       )}
       {stage === MEMBER_REGISTER_STAGE.PERSONAL && (
-        <PersonalRegisterView {...props.personal} />
+        <PersonalRegisterView {...common} {...personal} />
       )}
       {stage === MEMBER_REGISTER_STAGE.RELIGIOUS && (
-        <ReligiousRegisterView {...props.religious} />
+        <ReligiousRegisterView {...common} {...religious} />
       )}
       <RegisterButtonList />
     </RegisterContainer>

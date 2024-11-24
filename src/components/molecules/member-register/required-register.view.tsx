@@ -1,6 +1,6 @@
 "use client";
 
-import React, { ChangeEvent } from "react";
+import React, { ChangeEvent, RefObject, useRef } from "react";
 import styled from "styled-components";
 
 import { useSelector } from "react-redux";
@@ -28,6 +28,13 @@ const InputContainer = styled.div`
   width: 100%;
 `;
 
+export type CommonRegisterProps = {
+  onClickEnter: (
+    event: React.KeyboardEvent<HTMLInputElement>,
+    nextInputRef: RefObject<HTMLInputElement>,
+  ) => void;
+};
+
 export type RequiredRegisterViewProps = {
   onChangeType: (type: MEMBER_REGISTER_TYPE) => void;
   onChangeName: (event: ChangeEvent<HTMLInputElement>) => void;
@@ -42,13 +49,20 @@ const RequiredRegisterView = ({
   onChangeMobilePhone,
   onChangeGuide,
   onChangeFamily,
-}: RequiredRegisterViewProps) => {
+  onClickEnter,
+}: RequiredRegisterViewProps & CommonRegisterProps) => {
   const t = useI18n();
   const t_placeholder = useScopedI18n("placeholder");
 
   const member: TemporalMember = useSelector(
     (state: RootState): TemporalMember => state.memberRegister.member,
   );
+
+  // 각 input에 대한 ref
+  const nameInputRef = useRef<HTMLInputElement>(null);
+  const mobilePhoneInputRef = useRef<HTMLInputElement>(null);
+  const guideInputRef = useRef<HTMLInputElement>(null);
+  const familyInputRef = useRef<HTMLInputElement>(null);
 
   return (
     <InputContainer>
@@ -62,27 +76,39 @@ const RequiredRegisterView = ({
       />
       {/* 이름 */}
       <LabelInput
+        enterKeyHint={"done"}
+        ref={nameInputRef}
         label={t("name")}
         value={member.name}
         onChange={onChangeName}
         placeholder={t_placeholder("name")}
+        onKeyDown={(event) => onClickEnter(event, mobilePhoneInputRef)}
       />
       {/* 휴대폰 번호 */}
       <LabelInput
+        enterKeyHint={"done"}
+        inputMode={"numeric"}
+        ref={mobilePhoneInputRef}
         label={t("mobilePhone")}
         value={getFormattedMobilePhone(member.mobilePhone)}
         onChange={onChangeMobilePhone}
         placeholder={t_placeholder("mobilePhone")}
+        onKeyDown={(event) => onClickEnter(event, guideInputRef)}
       />
       {/* 인도자 */}
       <LabelInput
+        enterKeyHint={"done"}
+        ref={guideInputRef}
         label={t("guide")}
         value={member.guide}
         onChange={onChangeGuide}
         placeholder={t_placeholder("guide")}
+        onKeyDown={(event) => onClickEnter(event, familyInputRef)}
       />
       {/* 가족 */}
       <LabelInput
+        enterKeyHint={"done"}
+        ref={familyInputRef}
         label={t("family")}
         value={member.family}
         onChange={onChangeFamily}

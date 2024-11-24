@@ -1,22 +1,22 @@
 "use client";
 
-import React from "react";
+import React, {
+  InputHTMLAttributes,
+  MutableRefObject,
+  useEffect,
+  useState,
+} from "react";
 import styled from "styled-components";
 
 import { BLACK, GRAY, MAIN } from "@/common/styles/color";
 
-export type BorderInputProps = {
-  value: string;
-  placeholder?: string;
-  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
-};
-
-const BorderInputContainer = styled.input`
+const BorderInputContainer = styled.input<{ value: any }>`
   width: 100%;
   box-sizing: border-box;
   font-size: 16px;
   padding: 12px 16px;
-  border: 1px solid ${GRAY.DEFAULT};
+  border: ${({ value }: { value: string }) =>
+    value ? `1px solid ${BLACK}` : `1px solid ${GRAY.DEFAULT}`};
   border-radius: 8px;
   color: ${BLACK};
   transition: all 0.3s ease;
@@ -27,22 +27,23 @@ const BorderInputContainer = styled.input`
   }
 `;
 
-// Parent 의 크기에 맞게 조정되는 입력창
-const BorderInput = ({
-  value,
-  placeholder = "",
-  onChange,
-}: BorderInputProps) => {
-  return (
-    <>
-      <BorderInputContainer
-        type="text"
-        value={value}
-        placeholder={placeholder}
-        onChange={onChange}
-      />
-    </>
-  );
+type InputProps = InputHTMLAttributes<HTMLInputElement> & {
+  ref?: MutableRefObject<any>;
+};
+
+const BorderInput = ({ ref, ...props }: InputProps) => {
+  // hydration failed because the server rendered html didn't match the client 에러로 인한 csr
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true); // 클라이언트 렌더링 확인
+  }, []);
+
+  if (!isMounted) return null; // 서버에서는 렌더링하지 않음
+
+  // -------------------------------------------------------------------------
+
+  return <BorderInputContainer ref={ref} value={props.value} {...props} />;
 };
 
 export default BorderInput;

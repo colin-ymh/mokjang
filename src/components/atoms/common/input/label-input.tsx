@@ -1,12 +1,10 @@
 "use client";
 
-import React from "react";
+import React, { InputHTMLAttributes, MutableRefObject } from "react";
 import styled from "styled-components";
 
 import { MainText } from "@/components/atoms/common/text/main-text";
-import BorderInput, {
-  BorderInputProps,
-} from "@/components/atoms/common/input/border-input";
+import BorderInput from "@/components/atoms/common/input/border-input";
 
 import { DEFAULT_VALUE } from "@/common/default/default-value";
 
@@ -15,25 +13,22 @@ const LabelInputContainer = styled.div`
   flex-direction: column;
   width: 100%;
   gap: 10px;
+  transition: all 0.3s ease;
 `;
 
-type LabelInputProps = BorderInputProps & {
+type LabelInputProps = InputHTMLAttributes<HTMLInputElement> & {
+  ref?: MutableRefObject<any>;
   label: string;
 };
 
-const LabelInput = ({
-  label,
-  value,
-  onChange,
-  placeholder,
-}: LabelInputProps) => {
+const LabelInput = ({ ref, label, ...props }: LabelInputProps) => {
   return (
     <LabelInputContainer>
       <MainText>{label}</MainText>
       <BorderInput
-        value={value}
-        onChange={onChange || DEFAULT_VALUE.FUNCTION}
-        placeholder={placeholder}
+        ref={ref}
+        onChange={props.onChange || DEFAULT_VALUE.FUNCTION}
+        {...props}
       />
     </LabelInputContainer>
   );

@@ -3,10 +3,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
 import { setStage } from "@/redux/reducers/member-register-reducer";
 import { MEMBER_REGISTER_STAGE } from "@/constant/constant";
+import { useEffect, useState } from "react";
 
 const RegisterHeader = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const stage = useSelector((state: RootState) => state.memberRegister.stage);
+  const { stage, member } = useSelector(
+    (state: RootState) => state.memberRegister,
+  );
 
   const onClickGoBack = () => {
     if (stage === MEMBER_REGISTER_STAGE.REQUIRED) {
@@ -32,6 +35,7 @@ const RegisterHeader = () => {
     onClickGoBack,
     onClickGoNext,
   };
+
   return (
     <>
       <RegisterHeaderView {...props} />

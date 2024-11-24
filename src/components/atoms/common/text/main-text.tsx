@@ -4,14 +4,12 @@ import { BLACK } from "@/common/styles/color";
 export type MainTextProps = {
   size?: "small" | "medium" | "large";
   color?: string;
-  type?: "title" | "content";
   fontSize?: number;
   fontWeight?: number;
 };
 
 const getFontSize = (
   size: "small" | "medium" | "large" | undefined,
-  type: "title" | "content" | undefined,
   fontSize?: number,
 ) => {
   if (fontSize) {
@@ -31,11 +29,6 @@ const getFontSize = (
     default:
       baseSize = 15;
       break;
-  }
-
-  // title인 경우 +3px
-  if (type === "title") {
-    return `${baseSize + 3}px`;
   }
 
   return `${baseSize}px`;
@@ -64,7 +57,8 @@ const getFontWeight = (
 
 export const MainText = styled.p<MainTextProps>`
   margin: 0;
-  font-size: ${({ size, type, fontSize }) => getFontSize(size, type, fontSize)};
+  font-size: ${({ size, fontSize }) => getFontSize(size, fontSize)};
   color: ${({ color }) => color || BLACK};
   font-weight: ${({ size, fontWeight }) => getFontWeight(size, fontWeight)};
+  transition: all 0.3s ease;
 `;

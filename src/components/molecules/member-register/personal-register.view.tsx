@@ -1,8 +1,7 @@
 "use client";
 
-import React, { ChangeEvent } from "react";
+import React, { ChangeEvent, useEffect, useRef } from "react";
 import styled from "styled-components";
-
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 
@@ -11,15 +10,13 @@ import LabelInput from "@/components/atoms/common/input/label-input";
 import { getFormattedDate, getFormattedHomePhone } from "@/utils/format";
 import { TemporalMember } from "@/models/register/member-register";
 
-import RadioButton from "@/components/atoms/common/input/radio-button/radio-button";
-
 import { useI18n, useScopedI18n } from "../../../../locales/client";
-import {
-  useGenderRadioButtonItems,
-  useMemberRegisterTypeRadioButtonItems,
-} from "@/constant/radio-button/radio-button-items";
-import RegisterRadioButton from "@/components/atoms/member-register/register-radio-button";
+import { useGenderRadioButtonItems } from "@/constant/radio-button/radio-button-items";
 import LabelRadioButton from "@/components/atoms/common/input/radio-button/label-radio-button";
+import { getDateFromString, getIsAdult } from "@/utils/date";
+
+import { gsap } from "gsap";
+import RegisterRadioButton from "@/components/atoms/member-register/register-radio-button";
 
 const InputContainer = styled.div`
   display: flex;
@@ -27,6 +24,10 @@ const InputContainer = styled.div`
   justify-content: center;
   flex-direction: column;
   gap: 20px;
+  width: 100%;
+`;
+
+const SchoolInputWrapper = styled.div`
   width: 100%;
 `;
 
@@ -58,6 +59,33 @@ const PersonalRegisterView = ({
     (state: RootState): TemporalMember => state.memberRegister.member,
   );
 
+  const schoolInputRef = useRef<HTMLDivElement | null>(null);
+
+  // 학교 input창 애니메이션 효과
+  useEffect(() => {
+    if (schoolInputRef.current) {
+      if (getIsAdult(getDateFromString(member.birth)) === false) {
+        gsap.to(schoolInputRef.current, {
+          opacity: 1,
+          height: "auto",
+          marginBottom: 0,
+          duration: 0.3,
+          ease: "power1.inOut",
+          display: "block",
+        });
+      } else {
+        gsap.to(schoolInputRef.current, {
+          opacity: 0,
+          marginBottom: -20,
+          height: 0,
+          duration: 0,
+          ease: "power1.inOut",
+          display: "block",
+        });
+      }
+    }
+  }, [member.birth]);
+
   return (
     <InputContainer>
       {/* 생년월일 */}
@@ -67,6 +95,15 @@ const PersonalRegisterView = ({
         onChange={onChangeBirth}
         placeholder={t_placeholder("birth")}
       />
+      {/* 학교 (미성년자인 경우에만 나타남) */}
+      <SchoolInputWrapper ref={schoolInputRef}>
+        <LabelInput
+          label={t("school")}
+          value={member.school}
+          onChange={onChangeSchool}
+          placeholder={t_placeholder("school")}
+        />
+      </SchoolInputWrapper>
       {/* 성별 */}
       <LabelRadioButton
         label={t("gender")}
@@ -103,13 +140,6 @@ const PersonalRegisterView = ({
         onChange={onChangeHomePhone}
         placeholder={t_placeholder("homePhone")}
       />
-      {/*/!* 학교 *!/*/}
-      {/*<LabelInput*/}
-      {/*  label={t("school")}*/}
-      {/*  value={member.school}*/}
-      {/*  onChange={onChangeSchool}*/}
-      {/*  placeholder={t_placeholder("school")}*/}
-      {/*/>*/}
       {/* 차량 번호 */}
       <LabelInput
         label={t("vehiclePlateNumber")}
