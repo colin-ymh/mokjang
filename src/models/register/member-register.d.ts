@@ -11,6 +11,7 @@ export type TemporalMember = {
   birth: string;
   gender: string;
   address: string;
+  detailAddress: string;
   homePhone: string;
   family: string;
   occupation: string;

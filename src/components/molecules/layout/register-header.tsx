@@ -1,9 +1,9 @@
-import RegisterHeaderView from "@/components/molecules/layout/register-header.view";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
 import { setStage } from "@/redux/reducers/member-register-reducer";
+
+import RegisterHeaderView from "@/components/molecules/layout/register-header.view";
 import { MEMBER_REGISTER_STAGE } from "@/constant/constant";
-import { useEffect, useState } from "react";
 
 const RegisterHeader = () => {
   const dispatch = useDispatch<AppDispatch>();

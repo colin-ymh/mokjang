@@ -12,6 +12,7 @@ export default {
   school: "School",
   marriage: "Marriage",
   address: "Address",
+  detailAddress: "Detail Address",
   homePhone: "Home Phone",
   vehiclePlateNumber: "Vehicle Plate Number",
   // 교회 관련 정보
@@ -24,17 +25,29 @@ export default {
   male: "Male",
   female: "Female",
 
-  // placeholder
+  /*-------------------member register-------------------*/
+  "register.defaultHeaderPhrase": "Please enter the member information",
+  "register.extraHeaderPhrase": "Please enter the member information",
+  /*-------------------member register-------------------*/
+
+  /*-------------------button-------------------*/
+  "button.register": "register",
+  "button.invite": "invite",
+
+  /*-------------------button-------------------*/
+
+  /*-------------------placeholder-------------------*/
   "placeholder.name": "Enter the name.",
   "placeholder.mobilePhone": "Enter the mobile phone number.",
   "placeholder.birth": "Enter the date of birth (e.g., YYYY.MM.DD).",
   "placeholder.homePhone": "Enter the home phone number.",
   "placeholder.occupation": "Enter the occupation.",
   "placeholder.address": "Enter the address.",
+  "placeholder.detailAddress": "Enter the detail address.",
   "placeholder.school": "Enter the school name.",
   "placeholder.confirmation": "Enter the confirmation.",
   "placeholder.confirmationStartDate":
-    "Enter a confirmation start date. (e.g., YYYY.MM.DD)",
+    "Enter a confirmation start date. (e.g., yyyy-mm-dd)",
   "placeholder.confirmationStartChurch":
     "Enter a confirmation start church name.",
   "placeholder.guide": "Enter the guide's name.",
@@ -42,13 +55,27 @@ export default {
   "placeholder.vehiclePlateNumber": "Enter the vehicle plate number.",
   "placeholder.marriage": "Enter the marriage state.",
   "placeholder.family": "Enter the family name.",
+  /*-------------------placeholder-------------------*/
 
   /*-------------------dropdown-------------------*/
+  "dropdown.none": "None",
+
   // baptism
   "dropdown.baptism": "Baptism",
   "dropdown.immersionBaptism": "Immersion Baptism",
   "dropdown.infantBaptism": "Infant Baptism",
   "dropdown.catechumenate": "Catechumenate",
-  "dropdown.none": "None",
+
+  // confirmation
+  "dropdown.elder": "Elder",
+  "dropdown.exhorter": "Exhorter",
+  "dropdown.ordainedDeacon": "Ordained Deacon",
+  "dropdown.deacon": "Deacon",
+
   /*-------------------dropdown-------------------*/
+
+  /*-------------------radiobutton-------------------*/
+  "radiobutton.new": "New Member",
+  "radiobutton.transferred": "Transferred Member",
+  /*-------------------radiobutton-------------------*/
 } as const;

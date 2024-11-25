@@ -3,13 +3,13 @@
  * @param dateString
  */
 export const getDateFromString = (dateString: string) => {
-  if (dateString.length > 3) return new Date(dateString);
+  if (dateString.length > 9) return new Date(dateString);
   else return null;
 };
 
 export const getIsAdult = (date: Date | null) => {
-  if (date == null) {
-    return null;
+  if (date === null) {
+    return true;
   }
 
   const CURRENT_YEAR = new Date().getFullYear();

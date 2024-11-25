@@ -9,14 +9,18 @@ import StyledComponentsRegistry from "@/common/styles/registry";
 
 import store from "@/redux/store";
 import { initializeIsWebview } from "@/redux/reducers/webview-reducer";
+import { WHITE } from "@/common/styles/color";
 
 const GlobalStyle = createGlobalStyle`
     html,
-    body,
+    body {
+        margin: 0; /* 기본 margin 제거 */
+        height: 100%; /* 전체 높이 설정 */
+        background-color: white; /* body 배경색을 흰색으로 설정 */
+    }
     body > div:first-child,
     div#__next,
     div#__next > div {
-        margin: 0; /* 기본 margin 제거 */
         height: 100%; /* 전체 높이 설정 */
     }
 `;

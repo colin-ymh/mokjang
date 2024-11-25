@@ -7,6 +7,7 @@ import { MainText } from "@/components/atoms/common/text/main-text";
 import Dropdown, {
   DropdownProps,
 } from "@/components/atoms/common/dropdown/dropdown";
+import { InputProps } from "@/components/atoms/common/input/border-input";
 
 const LabelDropdownContainer = styled.div`
   display: flex;
@@ -22,13 +23,19 @@ type LabelDropdownProps = DropdownProps & {
 const LabelDropdown = ({
   label,
   value,
-  onChange,
+  onChangeItem,
   items,
-}: LabelDropdownProps) => {
+  ...inputProps
+}: LabelDropdownProps & InputProps) => {
   return (
     <LabelDropdownContainer>
       <MainText>{label}</MainText>
-      <Dropdown value={value} items={items} onChange={onChange} />
+      <Dropdown
+        value={value}
+        items={items}
+        onChangeItem={onChangeItem}
+        {...inputProps}
+      />
     </LabelDropdownContainer>
   );
 };

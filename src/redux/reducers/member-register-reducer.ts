@@ -3,6 +3,8 @@ import { BLANK } from "@/common/default/default-value";
 import { TemporalMember } from "@/models/register/member-register";
 import {
   BAPTISM,
+  CONFIRMATION,
+  GENDER,
   MEMBER_REGISTER_STAGE,
   MEMBER_REGISTER_TYPE,
 } from "@/constant/constant";
@@ -20,17 +22,18 @@ const DEFAULT_MEMBER: TemporalMember = {
   homePhone: BLANK,
   marriage: BLANK,
   address: BLANK,
+  detailAddress: BLANK,
   school: BLANK,
   occupation: BLANK,
   birth: BLANK,
-  confirmation: BLANK,
+  confirmation: CONFIRMATION.NONE,
   confirmationStartDate: BLANK,
   confirmationStartChurch: BLANK,
   baptism: BAPTISM.NONE,
   guide: BLANK,
   previousChurchName: BLANK,
   vehiclePlateNumber: BLANK,
-  gender: "male",
+  gender: GENDER.MALE,
   family: BLANK,
 };
 
@@ -45,9 +48,10 @@ const getIsStageClear = (
   stage: MEMBER_REGISTER_STAGE,
 ): boolean => {
   if (stage === MEMBER_REGISTER_STAGE.REQUIRED) {
-    return member.name && member.mobilePhone && member.guide && member.family;
+    return member.name !== BLANK && member.mobilePhone.length > 12;
+  } else {
+    return true;
   }
-  return false;
 };
 
 const MemberRegisterSlice = createSlice({

@@ -1,4 +1,4 @@
-import React, { RefObject } from "react";
+import React from "react";
 import styled from "styled-components";
 
 import { useSelector } from "react-redux";
@@ -18,6 +18,7 @@ import ReligiousRegisterView, {
 import PersonalRegisterView, {
   PersonalRegisterViewProps,
 } from "@/components/molecules/member-register/personal-register.view";
+import { useScopedI18n } from "../../../../locales/client";
 
 const RegisterContainer = styled.div`
   display: flex;
@@ -53,11 +54,13 @@ const MemberRegisterView = ({
     (state: RootState) => state.memberRegister,
   );
 
+  const t_register = useScopedI18n("register");
+
   return (
     <RegisterContainer>
       <TextContainer>
         <MainText fontSize={23} fontWeight={600}>
-          새신자 정보를 입력해주세요
+          {t_register("defaultHeaderPhrase")}
         </MainText>
       </TextContainer>
       {stage === MEMBER_REGISTER_STAGE.REQUIRED && (

@@ -51,21 +51,21 @@ export const getFormattedHomePhone = (homePhone: string) => {
   }
 };
 
-// 휴대폰 번호 string을 010-xxxx-xxxx 형식으로 포맷
-export const getFormattedDate = (birth: string) => {
+// 생년월일 string을 YYYY-MM-DD 형식으로 포맷
+export const getFormattedDate = (date: string) => {
   // 숫자만 남기기
-  const cleaned = birth.replace(/\D/g, "");
+  const cleaned = date.replace(/\D/g, ""); // 숫자 외 제거
 
-  // 전화번호가 너무 긴 경우, 잘라내기
+  // 최대 8자리까지 자르기 (YYYYMMDD)
   const lengthLimit = 8;
   const limited = cleaned.slice(0, lengthLimit);
 
-  // 각 구간에 dot(.) 추가
+  // 포맷 적용
   if (limited.length < 5) {
-    return limited;
+    return limited; // 4자리 이하 (YYYY)
   } else if (limited.length < 7) {
-    return `${limited.slice(0, 4)}.${limited.slice(4)}`;
+    return `${limited.slice(0, 4)}-${limited.slice(4)}`; // 5~6자리 (YYYY-MM)
   } else {
-    return `${limited.slice(0, 4)}.${limited.slice(4, 6)}.${limited.slice(6)}`;
+    return `${limited.slice(0, 4)}-${limited.slice(4, 6)}-${limited.slice(6)}`; // 7~8자리 (YYYY-MM-DD)
   }
 };

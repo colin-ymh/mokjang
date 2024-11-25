@@ -33,6 +33,10 @@ const MemberRegister = () => {
     const newMember: TemporalMember = member;
     const newMobilePhone = event.target.value;
     dispatch(setMember({ ...newMember, mobilePhone: newMobilePhone }));
+    // 전화번호를 다 입력한 경우
+    if (newMobilePhone.length > 12) {
+      (event.target as HTMLInputElement).blur();
+    }
   };
 
   // 인도자 변경 시 이벤트
@@ -57,10 +61,25 @@ const MemberRegister = () => {
   };
 
   // 전화번호 변경 시 이벤트
-  const onChangeHomePhone = (event: ChangeEvent<HTMLInputElement>) => {
+  const onChangeHomePhone = (
+    event: ChangeEvent<HTMLInputElement>,
+    nextInputRef?: RefObject<HTMLInputElement>,
+  ) => {
     const newMember: TemporalMember = member;
     const newHomePhone = event.target.value;
     dispatch(setMember({ ...newMember, homePhone: newHomePhone }));
+
+    // 전화번호를 다 입력한 경우
+    if (newHomePhone.length > 10) {
+      // 다음 입력이 있다면 다음 입력으로
+      if (nextInputRef?.current) {
+        nextInputRef.current.focus();
+      }
+      // 없으면 키보드 내리기
+      else {
+        (event.target as HTMLInputElement).blur();
+      }
+    }
   };
 
   // 직업 변경 시 이벤트
@@ -70,11 +89,18 @@ const MemberRegister = () => {
     dispatch(setMember({ ...newMember, occupation: newOccupation }));
   };
 
-  // 도로명주소 변경 시 이벤트
+  // 도로명 주소 변경 시 이벤트
   const onChangeAddress = (event: ChangeEvent<HTMLInputElement>) => {
     const newMember: TemporalMember = member;
     const newAddress = event.target.value;
     dispatch(setMember({ ...newMember, address: newAddress }));
+  };
+
+  // 상세 주소 변경 시 이벤트
+  const onChangeDetailAddress = (event: ChangeEvent<HTMLInputElement>) => {
+    const newMember: TemporalMember = member;
+    const newDetailAddress = event.target.value;
+    dispatch(setMember({ ...newMember, detailAddress: newDetailAddress }));
   };
 
   // 학교 변경 시 이벤트
@@ -94,10 +120,9 @@ const MemberRegister = () => {
   };
 
   // 결혼 정보 변경 시 이벤트
-  const onChangeMarriage = (event: ChangeEvent<HTMLInputElement>) => {
+  const onChangeMarriage = (value: string) => {
     const newMember: TemporalMember = member;
-    const newMarriage = event.target.value;
-    dispatch(setMember({ ...newMember, vehiclePlateNumber: newMarriage }));
+    dispatch(setMember({ ...newMember, marriage: value }));
   };
 
   // 성별 변경 시 이벤트
@@ -106,13 +131,12 @@ const MemberRegister = () => {
   };
 
   // 직분 변경 시 이벤트
-  const onChangeConfirmation = (event: ChangeEvent<HTMLInputElement>) => {
+  const onChangeConfirmation = (value: string) => {
     const newMember: TemporalMember = member;
-    const newConfirmation = event.target.value;
     dispatch(
       setMember({
         ...newMember,
-        confirmation: newConfirmation,
+        confirmation: value,
       }),
     );
   };
@@ -162,13 +186,20 @@ const MemberRegister = () => {
   // 엔터키 입력 후 포커스 이동 함수
   const onClickEnter = (
     event: React.KeyboardEvent<HTMLInputElement>,
-    nextInputRef: RefObject<HTMLInputElement>,
+    nextInputRef?: RefObject<HTMLInputElement>,
   ) => {
     // IME keyCode 무시하기
     if (event.keyCode === 229) return;
-    // 엔터키 누르면 다음 입력 필드로 포커스 이동
-    if (event.key === "Enter" && nextInputRef.current) {
-      nextInputRef.current.focus();
+    // 엔터키 입력 시
+    if (event.key === "Enter") {
+      // 다음 입력이 있다면 다음 입력으로
+      if (nextInputRef?.current) {
+        nextInputRef.current.focus();
+      }
+      // 없으면 키보드 내리기
+      else {
+        (event.target as HTMLInputElement).blur();
+      }
     }
   };
 
@@ -188,6 +219,7 @@ const MemberRegister = () => {
       onChangeHomePhone,
       onChangeOccupation,
       onChangeAddress,
+      onChangeDetailAddress,
       onChangeSchool,
       onChangeVehiclePlateNumber,
       onChangeMarriage,

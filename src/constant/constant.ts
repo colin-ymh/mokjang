@@ -7,6 +7,15 @@ export enum BAPTISM {
   NONE = "none",
 }
 
+// 신급
+export enum CONFIRMATION {
+  ELDER = "elder",
+  EXHORTER = "exhorter",
+  ORDAINED_DEACON = "ordainedDeacon",
+  DEACON = "deacon",
+  NONE = "none",
+}
+
 // 성도 등록 타입
 export enum MEMBER_REGISTER_TYPE {
   NEW = "new",

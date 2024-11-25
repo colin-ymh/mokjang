@@ -10,6 +10,7 @@ export enum GRAY {
 export enum MAIN {
   LIGHT = "#A0CA88",
   DEFAULT = "#299951",
+  DARK = "#184727",
 }
 
 export enum DESTRUCTIVE {

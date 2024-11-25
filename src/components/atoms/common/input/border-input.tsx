@@ -27,7 +27,7 @@ const BorderInputContainer = styled.input<{ value: any }>`
   }
 `;
 
-type InputProps = InputHTMLAttributes<HTMLInputElement> & {
+export type InputProps = InputHTMLAttributes<HTMLInputElement> & {
   ref?: MutableRefObject<any>;
 };
 

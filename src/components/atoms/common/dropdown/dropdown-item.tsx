@@ -12,6 +12,8 @@ const DropdownContainer = styled.div<{
   transition: background-color 0.3s ease;
   border-radius: 10px;
   padding: 10px;
+  width: 90%;
+
   &:hover {
     background-color: ${GRAY.LIGHT};
   }
@@ -25,18 +27,15 @@ export type DropdownValueType = {
 type DropdownItemProps = {
   isSelected: boolean;
   item: DropdownValueType;
-  index: number;
   onClick: (index: number) => void;
 };
 
-const DropdownItem = ({
-  isSelected,
-  onClick,
-  item,
-  index,
-}: DropdownItemProps) => {
+const DropdownItem = ({ isSelected, onClick, item }: DropdownItemProps) => {
   return (
-    <DropdownContainer $isSelected={isSelected} onClick={() => onClick(index)}>
+    <DropdownContainer
+      $isSelected={isSelected}
+      onClick={() => onClick(item.value)}
+    >
       {item.title}
     </DropdownContainer>
   );

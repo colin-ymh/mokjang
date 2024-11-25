@@ -16,8 +16,10 @@ import RadioButton from "@/components/atoms/common/input/radio-button/radio-butt
 import RegisterRadioButton from "@/components/atoms/member-register/register-radio-button";
 import { useMemberRegisterTypeRadioButtonItems } from "@/constant/radio-button/radio-button-items";
 import { MEMBER_REGISTER_TYPE } from "@/constant/constant";
-import { MainText } from "@/components/atoms/common/text/main-text";
-import LabelRadioButton from "@/components/atoms/common/input/radio-button/label-radio-button";
+
+const Invisible = styled.div`
+  height: 100px;
+`;
 
 const InputContainer = styled.div`
   display: flex;
@@ -31,7 +33,7 @@ const InputContainer = styled.div`
 export type CommonRegisterProps = {
   onClickEnter: (
     event: React.KeyboardEvent<HTMLInputElement>,
-    nextInputRef: RefObject<HTMLInputElement>,
+    nextInputRef?: RefObject<HTMLInputElement>,
   ) => void;
 };
 
@@ -67,8 +69,7 @@ const RequiredRegisterView = ({
   return (
     <InputContainer>
       {/* 종류 */}
-      <LabelRadioButton
-        label={t("type")}
+      <RadioButton
         items={useMemberRegisterTypeRadioButtonItems()}
         selectedValue={member.type}
         onChange={onChangeType}
@@ -113,7 +114,9 @@ const RequiredRegisterView = ({
         value={member.family}
         onChange={onChangeFamily}
         placeholder={t_placeholder("family")}
+        onKeyDown={onClickEnter}
       />
+      <Invisible />
     </InputContainer>
   );
 };

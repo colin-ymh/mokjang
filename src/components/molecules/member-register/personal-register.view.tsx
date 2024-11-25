@@ -1,22 +1,25 @@
 "use client";
 
-import React, { ChangeEvent, useEffect, useRef } from "react";
+import React, { ChangeEvent, RefObject, useEffect, useRef } from "react";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
+import { gsap } from "gsap";
 
 import LabelInput from "@/components/atoms/common/input/label-input";
+import RegisterRadioButton from "@/components/atoms/member-register/register-radio-button";
+import LabelRadioButton from "@/components/atoms/common/input/radio-button/label-radio-button";
 
-import { getFormattedDate, getFormattedHomePhone } from "@/utils/format";
+import { useGenderRadioButtonItems } from "@/constant/radio-button/radio-button-items";
+
 import { TemporalMember } from "@/models/register/member-register";
 
-import { useI18n, useScopedI18n } from "../../../../locales/client";
-import { useGenderRadioButtonItems } from "@/constant/radio-button/radio-button-items";
-import LabelRadioButton from "@/components/atoms/common/input/radio-button/label-radio-button";
 import { getDateFromString, getIsAdult } from "@/utils/date";
+import { getFormattedDate, getFormattedHomePhone } from "@/utils/format";
 
-import { gsap } from "gsap";
-import RegisterRadioButton from "@/components/atoms/member-register/register-radio-button";
+import { useI18n, useScopedI18n } from "../../../../locales/client";
+import { CommonRegisterProps } from "@/components/molecules/member-register/required-register.view";
+import LabelDropdown from "@/components/atoms/common/dropdown/label-dropdown";
 
 const InputContainer = styled.div`
   display: flex;
@@ -29,16 +32,28 @@ const InputContainer = styled.div`
 
 const SchoolInputWrapper = styled.div`
   width: 100%;
+  opacity: 0;
+  height: 0;
+  margin-bottom: -20px;
+  display: none;
+`;
+
+const Invisible = styled.div`
+  height: 100px;
 `;
 
 export type PersonalRegisterViewProps = {
   onChangeBirth: (event: ChangeEvent<HTMLInputElement>) => void;
-  onChangeHomePhone: (event: ChangeEvent<HTMLInputElement>) => void;
+  onChangeHomePhone: (
+    event: ChangeEvent<HTMLInputElement>,
+    nextInputRef?: RefObject<HTMLInputElement>,
+  ) => void;
   onChangeOccupation: (event: ChangeEvent<HTMLInputElement>) => void;
   onChangeAddress: (event: ChangeEvent<HTMLInputElement>) => void;
+  onChangeDetailAddress: (event: ChangeEvent<HTMLInputElement>) => void;
   onChangeSchool: (event: ChangeEvent<HTMLInputElement>) => void;
   onChangeVehiclePlateNumber: (event: ChangeEvent<HTMLInputElement>) => void;
-  onChangeMarriage: (event: ChangeEvent<HTMLInputElement>) => void;
+  onChangeMarriage: (value: string) => void;
   onChangeGender: (gender: string) => void;
 };
 
@@ -48,10 +63,12 @@ const PersonalRegisterView = ({
   onChangeOccupation,
   onChangeMarriage,
   onChangeAddress,
+  onChangeDetailAddress,
   onChangeSchool,
   onChangeGender,
   onChangeVehiclePlateNumber,
-}: PersonalRegisterViewProps) => {
+  onClickEnter,
+}: PersonalRegisterViewProps & CommonRegisterProps) => {
   const t = useI18n();
   const t_placeholder = useScopedI18n("placeholder");
 
@@ -59,13 +76,24 @@ const PersonalRegisterView = ({
     (state: RootState): TemporalMember => state.memberRegister.member,
   );
 
-  const schoolInputRef = useRef<HTMLDivElement | null>(null);
+  // 각 input 에 대한 ref
+  const birthInputRef = useRef<HTMLInputElement>(null);
+  const schoolInputRef = useRef<HTMLInputElement>(null);
+  const occupationInputRef = useRef<HTMLInputElement>(null);
+  const marriageInputRef = useRef<HTMLInputElement>(null);
+  const addressInputRef = useRef<HTMLInputElement>(null);
+  const detailAddressInputRef = useRef<HTMLInputElement>(null);
+  const homePhoneInputRef = useRef<HTMLInputElement>(null);
+  const vehicleInputRef = useRef<HTMLInputElement>(null);
 
-  // 학교 input창 애니메이션 효과
+  // 학교 input 창 애니메이션 효과
+  const schoolAnimationRef = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
-    if (schoolInputRef.current) {
-      if (getIsAdult(getDateFromString(member.birth)) === false) {
-        gsap.to(schoolInputRef.current, {
+    if (schoolAnimationRef.current) {
+      const isAdult = getIsAdult(getDateFromString(member.birth));
+      if (!isAdult) {
+        // 미성년자일 경우 애니메이션으로 나타남
+        gsap.to(schoolAnimationRef.current, {
           opacity: 1,
           height: "auto",
           marginBottom: 0,
@@ -74,13 +102,14 @@ const PersonalRegisterView = ({
           display: "block",
         });
       } else {
-        gsap.to(schoolInputRef.current, {
+        // 성인일 경우 애니메이션으로 사라짐
+        gsap.to(schoolAnimationRef.current, {
           opacity: 0,
-          marginBottom: -20,
           height: 0,
-          duration: 0,
+          marginBottom: -20,
+          duration: 0.3,
           ease: "power1.inOut",
-          display: "block",
+          display: "none",
         });
       }
     }
@@ -90,14 +119,17 @@ const PersonalRegisterView = ({
     <InputContainer>
       {/* 생년월일 */}
       <LabelInput
+        ref={birthInputRef}
+        inputMode={"numeric"}
         label={t("birth")}
         value={getFormattedDate(member.birth)}
         onChange={onChangeBirth}
         placeholder={t_placeholder("birth")}
       />
       {/* 학교 (미성년자인 경우에만 나타남) */}
-      <SchoolInputWrapper ref={schoolInputRef}>
+      <SchoolInputWrapper ref={schoolAnimationRef}>
         <LabelInput
+          ref={schoolInputRef}
           label={t("school")}
           value={member.school}
           onChange={onChangeSchool}
@@ -114,39 +146,67 @@ const PersonalRegisterView = ({
       />
       {/* 직업 */}
       <LabelInput
+        ref={occupationInputRef}
         label={t("occupation")}
         value={member.occupation}
         onChange={onChangeOccupation}
         placeholder={t_placeholder("occupation")}
+        onKeyDown={(event) => onClickEnter(event, marriageInputRef)}
       />
       {/* 결혼 */}
-      <LabelInput
+      <LabelDropdown
+        ref={marriageInputRef}
         label={t("marriage")}
         value={member.marriage}
-        onChange={onChangeMarriage}
+        items={[
+          { value: "marriage", title: "기혼" },
+          { value: "single", title: "미혼" },
+        ]}
+        onChangeItem={onChangeMarriage}
+        isEditable={true}
         placeholder={t_placeholder("marriage")}
+        onKeyDown={(event) => onClickEnter(event, addressInputRef)}
       />
       {/* 도로명주소 */}
       <LabelInput
+        ref={addressInputRef}
         label={t("address")}
         value={member.address}
         onChange={onChangeAddress}
         placeholder={t_placeholder("address")}
+        onKeyDown={(event) => onClickEnter(event, detailAddressInputRef)}
+      />
+      {/* 상세주소 */}
+      <LabelInput
+        ref={detailAddressInputRef}
+        label={t("detailAddress")}
+        value={member.detailAddress}
+        onChange={onChangeDetailAddress}
+        placeholder={t_placeholder("detailAddress")}
+        onKeyDown={(event) => onClickEnter(event, homePhoneInputRef)}
       />
       {/* 전화 번호 */}
       <LabelInput
+        ref={homePhoneInputRef}
+        inputMode={"numeric"}
         label={t("homePhone")}
         value={getFormattedHomePhone(member.homePhone)}
-        onChange={onChangeHomePhone}
+        onChange={(event: ChangeEvent<HTMLInputElement>) =>
+          onChangeHomePhone(event, vehicleInputRef)
+        }
         placeholder={t_placeholder("homePhone")}
+        onKeyDown={(event) => onClickEnter(event, vehicleInputRef)}
       />
       {/* 차량 번호 */}
       <LabelInput
+        ref={vehicleInputRef}
         label={t("vehiclePlateNumber")}
         value={member.vehiclePlateNumber}
         onChange={onChangeVehiclePlateNumber}
         placeholder={t_placeholder("vehiclePlateNumber")}
+        onKeyDown={onClickEnter}
       />
+      <Invisible />
     </InputContainer>
   );
 };
