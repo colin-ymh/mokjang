@@ -27,12 +27,15 @@ export default {
 
   /*-------------------member register-------------------*/
   "register.defaultHeaderPhrase": "Please enter the member information",
-  "register.extraHeaderPhrase": "Please enter the member information",
+  "register.extraHeaderPhrase": "Please enter the extra information",
   /*-------------------member register-------------------*/
 
   /*-------------------button-------------------*/
-  "button.register": "register",
-  "button.invite": "invite",
+  "button.register": "Register",
+  "button.save": "Save",
+  "button.goBack": "Go Back",
+  "button.extra": "Enter Extra",
+  "button.invite": "Invite",
 
   /*-------------------button-------------------*/
 

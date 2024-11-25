@@ -14,7 +14,6 @@ import { useGenderRadioButtonItems } from "@/constant/radio-button/radio-button-
 
 import { TemporalMember } from "@/models/register/member-register";
 
-import { getDateFromString, getIsAdult } from "@/utils/date";
 import { getFormattedDate, getFormattedHomePhone } from "@/utils/format";
 
 import { useI18n, useScopedI18n } from "../../../../locales/client";
@@ -35,15 +34,19 @@ const SchoolInputWrapper = styled.div`
   opacity: 0;
   height: 0;
   margin-bottom: -20px;
-  display: none;
+  //display: none;
 `;
 
 const Invisible = styled.div`
   height: 100px;
+  width: 5px;
 `;
 
-export type PersonalRegisterViewProps = {
-  onChangeBirth: (event: ChangeEvent<HTMLInputElement>) => void;
+export type PersonalRegisterProps = {
+  onChangeBirth: (
+    event: ChangeEvent<HTMLInputElement>,
+    nextInputRef?: RefObject<HTMLInputElement>,
+  ) => void;
   onChangeHomePhone: (
     event: ChangeEvent<HTMLInputElement>,
     nextInputRef?: RefObject<HTMLInputElement>,
@@ -57,7 +60,14 @@ export type PersonalRegisterViewProps = {
   onChangeGender: (gender: string) => void;
 };
 
+type PersonalRegisterViewProps = {
+  schoolAnimationRef: RefObject<HTMLDivElement>;
+  isChild: boolean;
+};
+
 const PersonalRegisterView = ({
+  schoolAnimationRef,
+  isChild,
   onChangeBirth,
   onChangeHomePhone,
   onChangeOccupation,
@@ -68,7 +78,7 @@ const PersonalRegisterView = ({
   onChangeGender,
   onChangeVehiclePlateNumber,
   onClickEnter,
-}: PersonalRegisterViewProps & CommonRegisterProps) => {
+}: PersonalRegisterViewProps & PersonalRegisterProps & CommonRegisterProps) => {
   const t = useI18n();
   const t_placeholder = useScopedI18n("placeholder");
 
@@ -86,44 +96,26 @@ const PersonalRegisterView = ({
   const homePhoneInputRef = useRef<HTMLInputElement>(null);
   const vehicleInputRef = useRef<HTMLInputElement>(null);
 
-  // 학교 input 창 애니메이션 효과
-  const schoolAnimationRef = useRef<HTMLDivElement | null>(null);
-  useEffect(() => {
-    if (schoolAnimationRef.current) {
-      const isAdult = getIsAdult(getDateFromString(member.birth));
-      if (!isAdult) {
-        // 미성년자일 경우 애니메이션으로 나타남
-        gsap.to(schoolAnimationRef.current, {
-          opacity: 1,
-          height: "auto",
-          marginBottom: 0,
-          duration: 0.3,
-          ease: "power1.inOut",
-          display: "block",
-        });
-      } else {
-        // 성인일 경우 애니메이션으로 사라짐
-        gsap.to(schoolAnimationRef.current, {
-          opacity: 0,
-          height: 0,
-          marginBottom: -20,
-          duration: 0.3,
-          ease: "power1.inOut",
-          display: "none",
-        });
-      }
-    }
-  }, [member.birth]);
-
   return (
     <InputContainer>
+      {/* 성별 */}
+      <LabelRadioButton
+        label={t("gender")}
+        items={useGenderRadioButtonItems()}
+        selectedValue={member.gender}
+        onChange={onChangeGender}
+        customButton={RegisterRadioButton}
+      />
       {/* 생년월일 */}
       <LabelInput
         ref={birthInputRef}
         inputMode={"numeric"}
         label={t("birth")}
         value={getFormattedDate(member.birth)}
-        onChange={onChangeBirth}
+        onChange={(event: ChangeEvent<HTMLInputElement>) => {
+          console.log(isChild);
+          onChangeBirth(event, isChild ? schoolInputRef : occupationInputRef);
+        }}
         placeholder={t_placeholder("birth")}
       />
       {/* 학교 (미성년자인 경우에만 나타남) */}
@@ -134,16 +126,9 @@ const PersonalRegisterView = ({
           value={member.school}
           onChange={onChangeSchool}
           placeholder={t_placeholder("school")}
+          onKeyDown={(event) => onClickEnter(event, occupationInputRef)}
         />
       </SchoolInputWrapper>
-      {/* 성별 */}
-      <LabelRadioButton
-        label={t("gender")}
-        items={useGenderRadioButtonItems()}
-        selectedValue={member.gender}
-        onChange={onChangeGender}
-        customButton={RegisterRadioButton}
-      />
       {/* 직업 */}
       <LabelInput
         ref={occupationInputRef}

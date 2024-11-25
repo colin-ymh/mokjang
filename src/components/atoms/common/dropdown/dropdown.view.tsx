@@ -84,11 +84,12 @@ const DropdownView = ({
             items.find((item) => item.value === innerValue)?.title || innerValue
           }
           onChange={onChangeInput}
+          {...inputProps}
           onKeyDown={(event) => {
             inputProps.onKeyDown?.(event);
             onPressEnter(event);
           }}
-          {...inputProps}
+          readOnly={!isEditable}
         />
       </DropdownButton>
 

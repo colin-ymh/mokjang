@@ -54,10 +54,25 @@ const MemberRegister = () => {
   };
 
   // 생년월일 변경 시 이벤트
-  const onChangeBirth = (event: ChangeEvent<HTMLInputElement>) => {
+  const onChangeBirth = (
+    event: ChangeEvent<HTMLInputElement>,
+    nextInputRef?: RefObject<HTMLInputElement>,
+  ) => {
     const newMember: TemporalMember = member;
     const newBirth = event.target.value;
     dispatch(setMember({ ...newMember, birth: newBirth }));
+
+    // 생년월일을 다 입력한 경우
+    if (newBirth.length === 10) {
+      // 다음 입력이 있다면 다음 입력으로
+      if (nextInputRef?.current) {
+        nextInputRef.current.focus();
+      }
+      // 없으면 키보드 내리기
+      else {
+        (event.target as HTMLInputElement).blur();
+      }
+    }
   };
 
   // 전화번호 변경 시 이벤트
@@ -70,7 +85,7 @@ const MemberRegister = () => {
     dispatch(setMember({ ...newMember, homePhone: newHomePhone }));
 
     // 전화번호를 다 입력한 경우
-    if (newHomePhone.length > 10) {
+    if (newHomePhone.length === 10) {
       // 다음 입력이 있다면 다음 입력으로
       if (nextInputRef?.current) {
         nextInputRef.current.focus();

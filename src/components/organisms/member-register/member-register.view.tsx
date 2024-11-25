@@ -15,9 +15,9 @@ import RequiredRegisterView, {
 import ReligiousRegisterView, {
   ReligiousRegisterViewProps,
 } from "@/components/molecules/member-register/religious-register.view";
-import PersonalRegisterView, {
-  PersonalRegisterViewProps,
-} from "@/components/molecules/member-register/personal-register.view";
+import { PersonalRegisterProps } from "@/components/molecules/member-register/personal-register.view";
+import PersonalRegister from "@/components/molecules/member-register/personal-register";
+
 import { useScopedI18n } from "../../../../locales/client";
 
 const RegisterContainer = styled.div`
@@ -26,7 +26,7 @@ const RegisterContainer = styled.div`
   height: 100%;
   padding: 0 30px;
   align-items: center;
-  overflow: auto;
+  overflow: scroll;
 `;
 
 const TextContainer = styled.div`
@@ -40,7 +40,7 @@ const TextContainer = styled.div`
 type MemberRegisterViewProps = {
   common: CommonRegisterProps;
   required: RequiredRegisterViewProps;
-  personal: PersonalRegisterViewProps;
+  personal: PersonalRegisterProps;
   religious: ReligiousRegisterViewProps;
 };
 
@@ -50,9 +50,7 @@ const MemberRegisterView = ({
   personal,
   religious,
 }: MemberRegisterViewProps) => {
-  const { member, stage } = useSelector(
-    (state: RootState) => state.memberRegister,
-  );
+  const { stage } = useSelector((state: RootState) => state.memberRegister);
 
   const t_register = useScopedI18n("register");
 
@@ -60,14 +58,16 @@ const MemberRegisterView = ({
     <RegisterContainer>
       <TextContainer>
         <MainText fontSize={23} fontWeight={600}>
-          {t_register("defaultHeaderPhrase")}
+          {stage === MEMBER_REGISTER_STAGE.REQUIRED
+            ? t_register("defaultHeaderPhrase")
+            : t_register("extraHeaderPhrase")}
         </MainText>
       </TextContainer>
       {stage === MEMBER_REGISTER_STAGE.REQUIRED && (
         <RequiredRegisterView {...common} {...required} />
       )}
       {stage === MEMBER_REGISTER_STAGE.PERSONAL && (
-        <PersonalRegisterView {...common} {...personal} />
+        <PersonalRegister {...common} {...personal} />
       )}
       {stage === MEMBER_REGISTER_STAGE.RELIGIOUS && (
         <ReligiousRegisterView {...common} {...religious} />

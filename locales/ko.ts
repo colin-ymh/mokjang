@@ -27,11 +27,14 @@ export default {
 
   /*-------------------member register-------------------*/
   "register.defaultHeaderPhrase": "교인 정보를 입력해주세요",
-  "register.extraHeaderPhrase": "~~님의 정보를 입력해주세요",
+  "register.extraHeaderPhrase": "상세 정보를 입력해주세요",
   /*-------------------member register-------------------*/
 
   /*-------------------button-------------------*/
   "button.register": "등록하기",
+  "button.save": "저장",
+  "button.goBack": "이전으로",
+  "button.extra": "더 입력하기",
   "button.invite": "초대하기",
 
   /*-------------------button-------------------*/

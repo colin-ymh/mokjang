@@ -15,6 +15,7 @@ type ButtonProps = MainTextProps & {
   height?: number;
   backgroundColor?: string;
   color?: string;
+  isShadow?: boolean;
   children?: ReactNode;
 };
 
@@ -23,25 +24,20 @@ const ButtonContainer = styled.button<{
   width?: number;
   height?: number;
   $backgroundColor?: string;
+  $isShadow?: boolean; // `$` 접두사를 사용해야만 컴포넌트 속성으로 전달 가능
 }>`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: ${({ $backgroundColor }) => {
-    return $backgroundColor;
-  }};
-  width: ${({ width }) => {
-    if (width) return `${width}px`;
-    else return `100%`;
-  }};
-  height: ${({ height }) => {
-    if (height) return `${height}px`;
-    else return `100%`;
-  }};
+  background-color: ${({ $backgroundColor }) => $backgroundColor};
+  width: ${({ width }) => (width ? `${width}px` : `100%`)};
+  height: ${({ height }) => (height ? `${height}px` : `100%`)};
   border-radius: 10px;
   border: none;
   cursor: ${({ disabled }) => (disabled ? "not-allowed" : "pointer")};
-  transition: all 1s ease;
+  transition: all 0.3s ease;
+  box-shadow: ${({ $isShadow, disabled }) =>
+    $isShadow && !disabled ? `2px 2px 10px rgba(0, 0, 0, 0.3)` : `none`};
 `;
 
 const Button = ({
@@ -51,6 +47,7 @@ const Button = ({
   width,
   height,
   backgroundColor = MAIN.DEFAULT,
+  isShadow = false,
   // text props
   color = WHITE,
   fontWeight,
@@ -64,6 +61,7 @@ const Button = ({
       width={width}
       height={height}
       $backgroundColor={backgroundColor}
+      $isShadow={isShadow}
     >
       {children ? (
         children

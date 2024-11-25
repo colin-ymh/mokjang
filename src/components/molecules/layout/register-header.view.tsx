@@ -1,13 +1,13 @@
 import React from "react";
 import styled from "styled-components";
-
-import { BLACK, GRAY, MAIN, WHITE } from "@/common/styles/color";
-import { MainText } from "@/components/atoms/common/text/main-text";
-
-import GoBackButton from "../../../../public/svg/chevron-left.svg";
-import Button from "@/components/atoms/common/button/button";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
+
+import { GRAY, MAIN, WHITE } from "@/common/styles/color";
+import Button from "@/components/atoms/common/button/button";
+
+import ExitButton from "../../../../public/svg/cancel.svg";
+import { useScopedI18n } from "../../../../locales/client";
 import { MEMBER_REGISTER_STAGE } from "@/constant/constant";
 
 const HeaderContainer = styled.header`
@@ -16,31 +16,33 @@ const HeaderContainer = styled.header`
   top: 0;
   left: 0;
   width: 100%;
-  height: 50px;
+  height: 40px;
   background-color: ${WHITE};
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-end;
+  padding-bottom: 10px;
 `;
 
 const HeaderLeft = styled.div`
   display: flex;
-  padding-left: 20px;
+  padding-left: 10px;
 `;
 
 const HeaderRight = styled.div`
   display: flex;
-  padding-right: 20px;
+  padding-right: 10px;
 `;
 
 type RegisterHeaderViewProps = {
   onClickGoBack: () => void;
-  onClickGoNext: () => void;
+  onClickDone: () => void;
 };
 
 const RegisterHeaderView = ({
   onClickGoBack,
-  onClickGoNext,
+  onClickDone,
 }: RegisterHeaderViewProps) => {
+  const t_button = useScopedI18n("button");
   const { stage, isStageClear } = useSelector(
     (state: RootState) => state.memberRegister,
   );
@@ -48,27 +50,19 @@ const RegisterHeaderView = ({
   return (
     <HeaderContainer>
       <HeaderLeft>
-        {stage !== MEMBER_REGISTER_STAGE.REQUIRED && (
-          <Button
-            text={"이전"}
-            onClick={onClickGoBack}
-            backgroundColor={WHITE}
-            color={BLACK}
-            fontSize={15}
-            fontWeight={500}
-          />
-        )}
+        <ExitButton onClick={onClickGoBack} />
       </HeaderLeft>
       <HeaderRight>
-        <Button
-          text={"다음"}
-          onClick={onClickGoNext}
-          backgroundColor={WHITE}
-          color={isStageClear ? MAIN.DEFAULT : GRAY.DARK}
-          fontSize={15}
-          fontWeight={500}
-          disabled={!isStageClear}
-        />
+        {stage !== MEMBER_REGISTER_STAGE.REQUIRED && (
+          <Button
+            text={t_button("save")}
+            onClick={onClickDone}
+            backgroundColor={WHITE}
+            color={isStageClear ? MAIN.DEFAULT : GRAY.DARK}
+            fontSize={17}
+            disabled={!isStageClear}
+          />
+        )}
       </HeaderRight>
     </HeaderContainer>
   );

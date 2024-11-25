@@ -6,16 +6,18 @@ import styled from "styled-components";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 
+import { GRAY } from "@/common/styles/color";
 import LabelInput from "@/components/atoms/common/input/label-input";
+import RadioButton from "@/components/atoms/common/input/radio-button/radio-button";
+import RegisterRadioButton from "@/components/atoms/member-register/register-radio-button";
+import { MEMBER_REGISTER_TYPE } from "@/constant/constant";
+import { useMemberRegisterTypeRadioButtonItems } from "@/constant/radio-button/radio-button-items";
+
 import { TemporalMember } from "@/models/register/member-register";
 
 import { getFormattedMobilePhone } from "@/utils/format";
 
 import { useI18n, useScopedI18n } from "../../../../locales/client";
-import RadioButton from "@/components/atoms/common/input/radio-button/radio-button";
-import RegisterRadioButton from "@/components/atoms/member-register/register-radio-button";
-import { useMemberRegisterTypeRadioButtonItems } from "@/constant/radio-button/radio-button-items";
-import { MEMBER_REGISTER_TYPE } from "@/constant/constant";
 
 const Invisible = styled.div`
   height: 100px;
@@ -73,7 +75,9 @@ const RequiredRegisterView = ({
         items={useMemberRegisterTypeRadioButtonItems()}
         selectedValue={member.type}
         onChange={onChangeType}
-        customButton={RegisterRadioButton}
+        customButton={(props) => (
+          <RegisterRadioButton {...props} color={GRAY.DARK} />
+        )}
       />
       {/* 이름 */}
       <LabelInput

@@ -1,39 +1,32 @@
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "@/redux/store";
-import { setStage } from "@/redux/reducers/member-register-reducer";
+import { usePathname, useRouter } from "next/navigation";
 
 import RegisterHeaderView from "@/components/molecules/layout/register-header.view";
-import { MEMBER_REGISTER_STAGE } from "@/constant/constant";
 
 const RegisterHeader = () => {
-  const dispatch = useDispatch<AppDispatch>();
-  const { stage, member } = useSelector(
-    (state: RootState) => state.memberRegister,
-  );
+  const router = useRouter();
+  const pathname = usePathname(); // 현재 경로 가져오기
 
   const onClickGoBack = () => {
-    if (stage === MEMBER_REGISTER_STAGE.REQUIRED) {
-      console.log("no where to go");
-    } else if (stage === MEMBER_REGISTER_STAGE.PERSONAL) {
-      dispatch(setStage(MEMBER_REGISTER_STAGE.REQUIRED));
-    } else if (stage === MEMBER_REGISTER_STAGE.RELIGIOUS) {
-      dispatch(setStage(MEMBER_REGISTER_STAGE.PERSONAL));
-    }
+    const basePath = pathname.split("/")[1]; // 언어 코드 추출 (ko 또는 en)
+    router.push(`/${basePath}`);
+    // if (stage === MEMBER_REGISTER_STAGE.REQUIRED) {
+    //   const basePath = pathname.split("/")[1]; // 언어 코드 추출 (ko 또는 en)
+    //   router.push(`/${basePath}`);
+    // } else if (stage === MEMBER_REGISTER_STAGE.PERSONAL) {
+    //   dispatch(setStage(MEMBER_REGISTER_STAGE.REQUIRED));
+    // } else if (stage === MEMBER_REGISTER_STAGE.RELIGIOUS) {
+    //   dispatch(setStage(MEMBER_REGISTER_STAGE.PERSONAL));
+    // }
   };
 
-  const onClickGoNext = () => {
-    if (stage === MEMBER_REGISTER_STAGE.REQUIRED) {
-      dispatch(setStage(MEMBER_REGISTER_STAGE.PERSONAL));
-    } else if (stage === MEMBER_REGISTER_STAGE.PERSONAL) {
-      dispatch(setStage(MEMBER_REGISTER_STAGE.RELIGIOUS));
-    } else if (stage === MEMBER_REGISTER_STAGE.RELIGIOUS) {
-      console.log("no where to go");
-    }
+  const onClickDone = () => {
+    // const basePath = pathname.split("/")[1];
+    // router.push(`/${basePath}`);
   };
 
   const props = {
     onClickGoBack,
-    onClickGoNext,
+    onClickDone,
   };
 
   return (

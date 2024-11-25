@@ -3,29 +3,36 @@ import { RadioButtonItemProps } from "@/components/atoms/common/input/radio-butt
 import { MainText } from "@/components/atoms/common/text/main-text";
 import { GRAY, MAIN, WHITE } from "@/common/styles/color";
 
-const ButtonContainer = styled.div<{ $isSelected: boolean }>`
+const ButtonContainer = styled.div<{ $isSelected: boolean; color?: string }>`
   display: flex;
   flex: 1;
   height: 10px;
-  border: ${({ $isSelected }) =>
-    $isSelected ? `1px solid ${MAIN.DEFAULT}` : `1px solid ${GRAY.DEFAULT}`};
+  border: ${({ $isSelected, color }) =>
+    $isSelected
+      ? `1px solid ${color || MAIN.DEFAULT}`
+      : `1px solid ${GRAY.DEFAULT}`};
   border-radius: 8px;
   padding: 12px;
-  transition: all 0.3s ease;
-  background-color: ${({ $isSelected }) =>
-    $isSelected ? MAIN.DEFAULT : WHITE};
+  transition: all 0.5s ease;
+  background-color: ${({ $isSelected, color }) =>
+    $isSelected ? color || MAIN.DEFAULT : WHITE};
   justify-content: center;
   align-items: center;
 `;
+
+type RegisterRadioButtonProps = RadioButtonItemProps & {
+  color?: string;
+};
 
 const RegisterRadioButton = ({
   title,
   isSelected,
   onClick,
-}: RadioButtonItemProps) => {
+  color,
+}: RegisterRadioButtonProps) => {
   return (
-    <ButtonContainer onClick={onClick} $isSelected={isSelected}>
-      <MainText color={isSelected ? WHITE : GRAY.DARK}>{title}</MainText>
+    <ButtonContainer onClick={onClick} $isSelected={isSelected} color={color}>
+      <MainText color={isSelected ? WHITE : GRAY.DEFAULT}>{title}</MainText>
     </ButtonContainer>
   );
 };

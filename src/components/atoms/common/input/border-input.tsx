@@ -32,14 +32,14 @@ export type InputProps = InputHTMLAttributes<HTMLInputElement> & {
 };
 
 const BorderInput = ({ ref, ...props }: InputProps) => {
-  // hydration failed because the server rendered html didn't match the client 에러로 인한 csr
-  const [isMounted, setIsMounted] = useState(false);
-
-  useEffect(() => {
-    setIsMounted(true); // 클라이언트 렌더링 확인
-  }, []);
-
-  if (!isMounted) return null; // 서버에서는 렌더링하지 않음
+  // // hydration failed because the server rendered html didn't match the client 에러로 인한 csr
+  // const [isMounted, setIsMounted] = useState(false);
+  //
+  // useEffect(() => {
+  //   setIsMounted(true); // 클라이언트 렌더링 확인
+  // }, []);
+  //
+  // if (!isMounted) return null; // 서버에서는 렌더링하지 않음
 
   // -------------------------------------------------------------------------
 
