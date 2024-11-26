@@ -19,6 +19,7 @@ import { getFormattedDate, getFormattedHomePhone } from "@/utils/format";
 import { useI18n, useScopedI18n } from "../../../../locales/client";
 import { CommonRegisterProps } from "@/components/molecules/member-register/required-register.view";
 import LabelDropdown from "@/components/atoms/common/dropdown/label-dropdown";
+import { getDateFromString, getIsChild } from "@/utils/date";
 
 const InputContainer = styled.div`
   display: flex;
@@ -62,12 +63,10 @@ export type PersonalRegisterProps = {
 
 type PersonalRegisterViewProps = {
   schoolAnimationRef: RefObject<HTMLDivElement>;
-  isChild: boolean;
 };
 
 const PersonalRegisterView = ({
   schoolAnimationRef,
-  isChild,
   onChangeBirth,
   onChangeHomePhone,
   onChangeOccupation,
@@ -113,7 +112,7 @@ const PersonalRegisterView = ({
         label={t("birth")}
         value={getFormattedDate(member.birth)}
         onChange={(event: ChangeEvent<HTMLInputElement>) => {
-          console.log(isChild);
+          const isChild = getIsChild(getDateFromString(event.target.value));
           onChangeBirth(event, isChild ? schoolInputRef : occupationInputRef);
         }}
         placeholder={t_placeholder("birth")}
@@ -148,7 +147,6 @@ const PersonalRegisterView = ({
           { value: "single", title: "미혼" },
         ]}
         onChangeItem={onChangeMarriage}
-        isEditable={true}
         placeholder={t_placeholder("marriage")}
         onKeyDown={(event) => onClickEnter(event, addressInputRef)}
       />

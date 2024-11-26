@@ -19,19 +19,11 @@ const PersonalRegister = ({
     (state: RootState): TemporalMember => state.memberRegister.member,
   );
 
-  const [isChild, setIsChild] = useState<boolean>(
-    getIsChild(getDateFromString(member.birth)),
-  );
-
-  // 교인의 생년월일이 변경되면, 미셩년자인지 확인
-  useEffect(() => {
-    setIsChild(getIsChild(getDateFromString(member.birth)));
-  }, [member.birth]);
-
   // 학교 input 창 애니메이션 효과
   const schoolAnimationRef = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
     if (schoolAnimationRef.current) {
+      const isChild = getIsChild(getDateFromString(member.birth));
       if (isChild) {
         // 미성년자일 경우 애니메이션으로 나타남
         gsap.to(schoolAnimationRef.current, {
@@ -56,11 +48,10 @@ const PersonalRegister = ({
         });
       }
     }
-  }, [isChild]);
+  }, [schoolAnimationRef, member.birth]);
 
   const props = {
     schoolAnimationRef,
-    isChild,
     ...registerProps,
   };
 
