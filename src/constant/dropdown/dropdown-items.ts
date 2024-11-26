@@ -1,29 +1,29 @@
-import { BAPTISM, CONFIRMATION } from "@/constant/constant";
-import { useScopedI18n } from "../../../locales/client";
+import { BAPTISM, CONFIRMATION, MARRIAGE, NONE } from "@/constant/constant";
+import { useI18n } from "../../../locales/client";
 
 export const useBaptismDropdownItems = () => {
-  const t_dropdown = useScopedI18n("dropdown");
+  const t = useI18n();
 
   const items = [
     {
-      value: BAPTISM.BAPTISM,
-      title: t_dropdown(BAPTISM.BAPTISM),
+      value: BAPTISM.BAPTIZED,
+      title: t(BAPTISM.BAPTIZED),
     },
     {
       value: BAPTISM.IMMERSION_BAPTISM,
-      title: t_dropdown(BAPTISM.IMMERSION_BAPTISM),
+      title: t(BAPTISM.IMMERSION_BAPTISM),
     },
     {
       value: BAPTISM.INFANT_BAPTISM,
-      title: t_dropdown(BAPTISM.INFANT_BAPTISM),
+      title: t(BAPTISM.INFANT_BAPTISM),
     },
     {
       value: BAPTISM.CATECHUMENATE,
-      title: t_dropdown(BAPTISM.CATECHUMENATE),
+      title: t(BAPTISM.CATECHUMENATE),
     },
     {
-      value: BAPTISM.NONE,
-      title: t_dropdown(BAPTISM.NONE),
+      value: NONE,
+      title: t(NONE),
     },
   ];
 
@@ -31,28 +31,49 @@ export const useBaptismDropdownItems = () => {
 };
 
 export const useConfirmationDropdownItems = () => {
-  const t_dropdown = useScopedI18n("dropdown");
+  const t = useI18n();
 
   const items = [
     {
       value: CONFIRMATION.DEACON,
-      title: t_dropdown(CONFIRMATION.DEACON),
+      title: t(CONFIRMATION.DEACON),
     },
     {
       value: CONFIRMATION.EXHORTER,
-      title: t_dropdown(CONFIRMATION.EXHORTER),
+      title: t(CONFIRMATION.EXHORTER),
     },
     {
       value: CONFIRMATION.ORDAINED_DEACON,
-      title: t_dropdown(CONFIRMATION.ORDAINED_DEACON),
+      title: t(CONFIRMATION.ORDAINED_DEACON),
     },
     {
       value: CONFIRMATION.ELDER,
-      title: t_dropdown(CONFIRMATION.ELDER),
+      title: t(CONFIRMATION.ELDER),
     },
     {
-      value: BAPTISM.NONE,
-      title: t_dropdown(BAPTISM.NONE),
+      value: NONE,
+      title: t(NONE),
+    },
+  ];
+
+  return items;
+};
+
+export const useMarriageDropdownItems = () => {
+  const t = useI18n();
+
+  const items = [
+    {
+      value: MARRIAGE.MARRIED,
+      title: t(MARRIAGE.MARRIED),
+    },
+    {
+      value: MARRIAGE.SINGLE,
+      title: t(MARRIAGE.SINGLE),
+    },
+    {
+      value: NONE,
+      title: t(NONE),
     },
   ];
 

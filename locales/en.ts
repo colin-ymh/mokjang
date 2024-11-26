@@ -1,4 +1,5 @@
 export default {
+  none: "None",
   type: "Type",
   // 필수
   name: "Name",
@@ -14,7 +15,7 @@ export default {
   address: "Address",
   detailAddress: "Detail Address",
   homePhone: "Home Phone",
-  vehiclePlateNumber: "Vehicle Plate Number",
+  vehicleNumber: "Vehicle Plate Number",
   // 교회 관련 정보
   baptism: "Baptism",
   confirmation: "Confirmation",
@@ -24,6 +25,21 @@ export default {
   // 성별
   male: "Male",
   female: "Female",
+  // baptism
+  baptized: "Baptized",
+  immersionBaptism: "Immersion Baptism",
+  infantBaptism: "Infant Baptism",
+  catechumenate: "Catechumenate",
+
+  // confirmation
+  elder: "Elder",
+  exhorter: "Exhorter",
+  ordainedDeacon: "Ordained Deacon",
+  deacon: "Deacon",
+
+  // marriage 결혼
+  married: "Married",
+  single: "Single",
 
   /*-------------------member register-------------------*/
   "register.defaultHeaderPhrase": "Please enter the member information",
@@ -55,27 +71,10 @@ export default {
     "Enter a confirmation start church name.",
   "placeholder.guide": "Enter the guide's name.",
   "placeholder.previousChurchName": "Enter the name of the previous church.",
-  "placeholder.vehiclePlateNumber": "Enter the vehicle plate number.",
+  "placeholder.vehicleNumber": "Enter the vehicle plate number.",
   "placeholder.marriage": "Enter the marriage state.",
   "placeholder.family": "Enter the family name.",
   /*-------------------placeholder-------------------*/
-
-  /*-------------------dropdown-------------------*/
-  "dropdown.none": "None",
-
-  // baptism
-  "dropdown.baptism": "Baptism",
-  "dropdown.immersionBaptism": "Immersion Baptism",
-  "dropdown.infantBaptism": "Infant Baptism",
-  "dropdown.catechumenate": "Catechumenate",
-
-  // confirmation
-  "dropdown.elder": "Elder",
-  "dropdown.exhorter": "Exhorter",
-  "dropdown.ordainedDeacon": "Ordained Deacon",
-  "dropdown.deacon": "Deacon",
-
-  /*-------------------dropdown-------------------*/
 
   /*-------------------radiobutton-------------------*/
   "radiobutton.new": "New Member",

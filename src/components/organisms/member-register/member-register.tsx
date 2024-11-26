@@ -85,7 +85,7 @@ const MemberRegister = () => {
     dispatch(setMember({ ...newMember, homePhone: newHomePhone }));
 
     // 전화번호를 다 입력한 경우
-    if (newHomePhone.length === 10) {
+    if (newHomePhone.length === 12) {
       // 다음 입력이 있다면 다음 입력으로
       if (nextInputRef?.current) {
         nextInputRef.current.focus();
@@ -126,12 +126,21 @@ const MemberRegister = () => {
   };
 
   // 차량 번호 변경 시 이벤트
-  const onChangeVehiclePlateNumber = (event: ChangeEvent<HTMLInputElement>) => {
-    const newMember: TemporalMember = member;
-    const newVehiclePlateNumber = event.target.value;
-    dispatch(
-      setMember({ ...newMember, vehiclePlateNumber: newVehiclePlateNumber }),
-    );
+  const onChangeVehicleNumber = (
+    event: ChangeEvent<HTMLInputElement>,
+    index: number,
+  ) => {
+    // member 객체를 복사하여 새로운 객체 생성
+    const newMember: TemporalMember = { ...member };
+
+    // vehicleNumber 배열을 복사하여 새로운 배열 생성
+    const newVehicleNumber = [...member.vehicleNumber];
+
+    // 수정할 인덱스의 값을 변경
+    newVehicleNumber[index] = event.target.value;
+
+    // 새로운 member 객체와 vehicleNumber 배열을 디스패치
+    dispatch(setMember({ ...newMember, vehicleNumber: newVehicleNumber }));
   };
 
   // 결혼 정보 변경 시 이벤트
@@ -236,7 +245,7 @@ const MemberRegister = () => {
       onChangeAddress,
       onChangeDetailAddress,
       onChangeSchool,
-      onChangeVehiclePlateNumber,
+      onChangeVehicleNumber,
       onChangeMarriage,
       onChangeGender,
     },

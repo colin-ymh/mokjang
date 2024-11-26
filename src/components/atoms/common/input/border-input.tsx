@@ -1,15 +1,9 @@
-"use client";
-
-import React, {
-  InputHTMLAttributes,
-  MutableRefObject,
-  useEffect,
-  useState,
-} from "react";
+import React, { InputHTMLAttributes, forwardRef } from "react";
 import styled from "styled-components";
 
 import { BLACK, GRAY, MAIN } from "@/common/styles/color";
 
+// 스타일 정의
 const BorderInputContainer = styled.input<{ value: any }>`
   width: 100%;
   box-sizing: border-box;
@@ -28,22 +22,24 @@ const BorderInputContainer = styled.input<{ value: any }>`
 `;
 
 export type InputProps = InputHTMLAttributes<HTMLInputElement> & {
-  ref?: MutableRefObject<any>;
+  label?: string;
+  onKeyDown?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
+  readOnly?: boolean;
 };
 
-const BorderInput = ({ ref, ...props }: InputProps) => {
-  // // hydration failed because the server rendered html didn't match the client 에러로 인한 csr
-  // const [isMounted, setIsMounted] = useState(false);
-  //
-  // useEffect(() => {
-  //   setIsMounted(true); // 클라이언트 렌더링 확인
-  // }, []);
-  //
-  // if (!isMounted) return null; // 서버에서는 렌더링하지 않음
-
-  // -------------------------------------------------------------------------
-
-  return <BorderInputContainer ref={ref} value={props.value} {...props} />;
-};
+// forwardRef를 사용하여 ref를 전달받을 수 있도록
+const BorderInput = forwardRef<HTMLInputElement, InputProps>(
+  ({ onKeyDown, readOnly = false, value, ...props }, ref) => {
+    return (
+      <BorderInputContainer
+        ref={ref}
+        value={value}
+        onKeyDown={onKeyDown}
+        readOnly={readOnly}
+        {...props}
+      />
+    );
+  },
+);
 
 export default BorderInput;

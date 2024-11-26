@@ -21,6 +21,7 @@ const ButtonListContainer = styled.div`
   width: 90%;
   gap: 10px;
   margin-bottom: 20px;
+  z-index: 5;
 `;
 
 const LeftButtonContainer = styled.div`
@@ -48,8 +49,7 @@ const RegisterButtonListView = ({
   onClickRight,
   getRightButtonTitle,
 }: RegisterButtonListViewProps) => {
-  const dispatch = useDispatch<AppDispatch>();
-  const { stage, member, isStageClear } = useSelector(
+  const { stage, isStageClear } = useSelector(
     (state: RootState) => state.memberRegister,
   );
   const t_button = useScopedI18n("button");

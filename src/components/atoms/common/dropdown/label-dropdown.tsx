@@ -1,13 +1,12 @@
 "use client";
 
-import React from "react";
+import React, { forwardRef, RefObject } from "react";
 import styled from "styled-components";
 
 import { MainText } from "@/components/atoms/common/text/main-text";
 import Dropdown, {
   DropdownProps,
 } from "@/components/atoms/common/dropdown/dropdown";
-import { InputProps } from "@/components/atoms/common/input/border-input";
 
 const LabelDropdownContainer = styled.div`
   display: flex;
@@ -17,27 +16,29 @@ const LabelDropdownContainer = styled.div`
 `;
 
 type LabelDropdownProps = DropdownProps & {
+  ref?: RefObject<HTMLDivElement>;
   label: string;
+  placeholder?: string;
+  onKeyDown?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
 };
 
-const LabelDropdown = ({
-  label,
-  value,
-  onChangeItem,
-  items,
-  ...inputProps
-}: LabelDropdownProps & InputProps) => {
-  return (
-    <LabelDropdownContainer>
-      <MainText>{label}</MainText>
-      <Dropdown
-        value={value}
-        items={items}
-        onChangeItem={onChangeItem}
-        {...inputProps}
-      />
-    </LabelDropdownContainer>
-  );
-};
+const LabelDropdown = forwardRef<HTMLInputElement, LabelDropdownProps>(
+  ({ label, value, onChangeItem, items, ...dropdownProps }, ref) => {
+    return (
+      <LabelDropdownContainer>
+        <MainText>{label}</MainText>
+        <Dropdown
+          ref={ref}
+          value={value}
+          items={items}
+          onChangeItem={onChangeItem}
+          {...dropdownProps}
+        />
+      </LabelDropdownContainer>
+    );
+  },
+);
+
+LabelDropdown.displayName = "LabelDropdown"; // for debugging purposes
 
 export default LabelDropdown;

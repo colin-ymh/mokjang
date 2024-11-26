@@ -20,6 +20,9 @@ import { useI18n, useScopedI18n } from "../../../../locales/client";
 import { CommonRegisterProps } from "@/components/molecules/member-register/required-register.view";
 import LabelDropdown from "@/components/atoms/common/dropdown/label-dropdown";
 import { getDateFromString, getIsChild } from "@/utils/date";
+import { useMarriageDropdownItems } from "@/constant/dropdown/dropdown-items";
+import VehicleNumberInput from "@/components/atoms/member-register/vehicle-number-input";
+import { VehicleNumberInputRef } from "@/components/atoms/member-register/vehicle-number-input.view";
 
 const InputContainer = styled.div`
   display: flex;
@@ -56,7 +59,10 @@ export type PersonalRegisterProps = {
   onChangeAddress: (event: ChangeEvent<HTMLInputElement>) => void;
   onChangeDetailAddress: (event: ChangeEvent<HTMLInputElement>) => void;
   onChangeSchool: (event: ChangeEvent<HTMLInputElement>) => void;
-  onChangeVehiclePlateNumber: (event: ChangeEvent<HTMLInputElement>) => void;
+  onChangeVehicleNumber: (
+    event: ChangeEvent<HTMLInputElement>,
+    index: number,
+  ) => void;
   onChangeMarriage: (value: string) => void;
   onChangeGender: (gender: string) => void;
 };
@@ -75,7 +81,7 @@ const PersonalRegisterView = ({
   onChangeDetailAddress,
   onChangeSchool,
   onChangeGender,
-  onChangeVehiclePlateNumber,
+  onChangeVehicleNumber,
   onClickEnter,
 }: PersonalRegisterViewProps & PersonalRegisterProps & CommonRegisterProps) => {
   const t = useI18n();
@@ -93,7 +99,7 @@ const PersonalRegisterView = ({
   const addressInputRef = useRef<HTMLInputElement>(null);
   const detailAddressInputRef = useRef<HTMLInputElement>(null);
   const homePhoneInputRef = useRef<HTMLInputElement>(null);
-  const vehicleInputRef = useRef<HTMLInputElement>(null);
+  const vehicleInputRef = useRef<VehicleNumberInputRef>(null);
 
   return (
     <InputContainer>
@@ -142,13 +148,12 @@ const PersonalRegisterView = ({
         ref={marriageInputRef}
         label={t("marriage")}
         value={member.marriage}
-        items={[
-          { value: "marriage", title: "기혼" },
-          { value: "single", title: "미혼" },
-        ]}
+        items={useMarriageDropdownItems()}
         onChangeItem={onChangeMarriage}
         placeholder={t_placeholder("marriage")}
-        onKeyDown={(event) => onClickEnter(event, addressInputRef)}
+        onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) =>
+          onClickEnter(event, addressInputRef)
+        }
       />
       {/* 도로명주소 */}
       <LabelInput
@@ -175,18 +180,17 @@ const PersonalRegisterView = ({
         label={t("homePhone")}
         value={getFormattedHomePhone(member.homePhone)}
         onChange={(event: ChangeEvent<HTMLInputElement>) =>
-          onChangeHomePhone(event, vehicleInputRef)
+          onChangeHomePhone(event, vehicleInputRef?.current?.firstInputRef)
         }
         placeholder={t_placeholder("homePhone")}
-        onKeyDown={(event) => onClickEnter(event, vehicleInputRef)}
       />
       {/* 차량 번호 */}
-      <LabelInput
+      <VehicleNumberInput
         ref={vehicleInputRef}
-        label={t("vehiclePlateNumber")}
-        value={member.vehiclePlateNumber}
-        onChange={onChangeVehiclePlateNumber}
-        placeholder={t_placeholder("vehiclePlateNumber")}
+        label={t("vehicleNumber")}
+        value={member.vehicleNumber}
+        onChangeInput={onChangeVehicleNumber}
+        placeholder={t_placeholder("vehicleNumber")}
         onKeyDown={onClickEnter}
       />
       <Invisible />

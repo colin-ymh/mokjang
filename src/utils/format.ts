@@ -69,3 +69,15 @@ export const getFormattedDate = (date: string) => {
     return `${limited.slice(0, 4)}-${limited.slice(4, 6)}-${limited.slice(6)}`; // 7~8자리 (YYYY-MM-DD)
   }
 };
+
+// 차량번호 입력창 포맷
+export const getFormattedVehicleNumber = (vehicleNumber: string) => {
+  // 숫자만 남기기
+  const cleaned = vehicleNumber.replace(/\D/g, ""); // 숫자 외 제거
+
+  // 최대 8자리까지 자르기 (YYYYMMDD)
+  const lengthLimit = 4;
+  const limited = cleaned.slice(0, lengthLimit);
+
+  return limited;
+};

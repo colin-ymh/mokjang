@@ -2,11 +2,10 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { BLANK } from "@/common/default/default-value";
 import { TemporalMember } from "@/models/register/member-register";
 import {
-  BAPTISM,
-  CONFIRMATION,
   GENDER,
   MEMBER_REGISTER_STAGE,
   MEMBER_REGISTER_TYPE,
+  NONE,
 } from "@/constant/constant";
 
 type MemberRegisterState = {
@@ -20,19 +19,19 @@ const DEFAULT_MEMBER: TemporalMember = {
   name: BLANK,
   mobilePhone: BLANK,
   homePhone: BLANK,
-  marriage: BLANK,
+  marriage: NONE,
   address: BLANK,
   detailAddress: BLANK,
   school: BLANK,
   occupation: BLANK,
   birth: BLANK,
-  confirmation: CONFIRMATION.NONE,
+  confirmation: NONE,
   confirmationStartDate: BLANK,
   confirmationStartChurch: BLANK,
-  baptism: BAPTISM.NONE,
+  baptism: NONE,
   guide: BLANK,
   previousChurchName: BLANK,
-  vehiclePlateNumber: BLANK,
+  vehicleNumber: [BLANK, BLANK, BLANK],
   gender: GENDER.MALE,
   family: BLANK,
 };

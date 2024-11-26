@@ -17,7 +17,7 @@ import {
   useConfirmationDropdownItems,
 } from "@/constant/dropdown/dropdown-items";
 import LabelDropdown from "@/components/atoms/common/dropdown/label-dropdown";
-import { BAPTISM, CONFIRMATION } from "@/constant/constant";
+import { BAPTISM, CONFIRMATION, NONE } from "@/constant/constant";
 
 import { useI18n, useScopedI18n } from "../../../../locales/client";
 
@@ -74,7 +74,7 @@ const ReligiousRegisterView = ({
   const confirmationAnimationRef = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
     if (confirmationAnimationRef.current) {
-      if (member.confirmation !== CONFIRMATION.NONE) {
+      if (member.confirmation !== NONE) {
         // 직분이 있는 경우
         gsap.to(confirmationAnimationRef.current, {
           opacity: 1,
