@@ -84,8 +84,16 @@ const MemberRegister = () => {
     const newHomePhone = event.target.value;
     dispatch(setMember({ ...newMember, homePhone: newHomePhone }));
 
+    let MAX_LENGTH = 12;
+
     // 전화번호를 다 입력한 경우
-    if (newHomePhone.length === 12) {
+    if (newHomePhone.slice(0, 2) === "02") {
+      MAX_LENGTH = 11;
+    } else {
+      MAX_LENGTH = 12;
+    }
+
+    if (newHomePhone.length === MAX_LENGTH) {
       // 다음 입력이 있다면 다음 입력으로
       if (nextInputRef?.current) {
         nextInputRef.current.focus();
