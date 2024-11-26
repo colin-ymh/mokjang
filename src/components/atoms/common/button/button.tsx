@@ -38,6 +38,7 @@ const ButtonContainer = styled.button<{
   transition: all 0.3s ease;
   box-shadow: ${({ $isShadow, disabled }) =>
     $isShadow && !disabled ? `2px 2px 10px rgba(0, 0, 0, 0.3)` : `none`};
+  overflow: hidden;
 `;
 
 const Button = ({

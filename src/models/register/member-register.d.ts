@@ -12,7 +12,7 @@ export type TemporalMember = {
   name: string;
   mobilePhone: string;
   // 개인정보
-  profileImage?: any;
+  profileImage: string;
   birth: string;
   gender: string;
   address: string;

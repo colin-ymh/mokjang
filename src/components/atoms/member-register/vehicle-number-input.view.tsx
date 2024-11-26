@@ -51,6 +51,7 @@ const PlusButton = styled(Plus)`
   stroke-width: 2px;
   background-color: ${MAIN.DEFAULT};
   border-radius: 30px;
+  padding: 2px;
 `;
 
 export type VehicleNumberInputRef = {

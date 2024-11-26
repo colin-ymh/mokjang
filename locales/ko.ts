@@ -7,6 +7,7 @@ export default {
   guide: "인도자",
   family: "가족",
   // 개인 정보
+  image: "이미지",
   birth: "생년월일",
   gender: "성별",
   occupation: "하시는 일",

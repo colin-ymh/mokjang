@@ -1,28 +1,27 @@
 "use client";
 
-import React, { ChangeEvent, RefObject, useEffect, useRef } from "react";
+import React, { ChangeEvent, RefObject, useRef } from "react";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
-import { gsap } from "gsap";
 
 import LabelInput from "@/components/atoms/common/input/label-input";
 import RegisterRadioButton from "@/components/atoms/member-register/register-radio-button";
 import LabelRadioButton from "@/components/atoms/common/input/radio-button/label-radio-button";
-
-import { useGenderRadioButtonItems } from "@/constant/radio-button/radio-button-items";
-
-import { TemporalMember } from "@/models/register/member-register";
-
-import { getFormattedDate, getFormattedHomePhone } from "@/utils/format";
-
-import { useI18n, useScopedI18n } from "../../../../locales/client";
 import { CommonRegisterProps } from "@/components/molecules/member-register/required-register.view";
 import LabelDropdown from "@/components/atoms/common/dropdown/label-dropdown";
-import { getDateFromString, getIsChild } from "@/utils/date";
 import { useMarriageDropdownItems } from "@/constant/dropdown/dropdown-items";
 import VehicleNumberInput from "@/components/atoms/member-register/vehicle-number-input";
 import { VehicleNumberInputRef } from "@/components/atoms/member-register/vehicle-number-input.view";
+import MemberImageInput from "@/components/atoms/member-register/member-image-input";
+
+import { useGenderRadioButtonItems } from "@/constant/radio-button/radio-button-items";
+import { TemporalMember } from "@/models/register/member-register";
+
+import { getFormattedDate, getFormattedHomePhone } from "@/utils/format";
+import { getDateFromString, getIsChild } from "@/utils/date";
+
+import { useI18n, useScopedI18n } from "../../../../locales/client";
 
 const InputContainer = styled.div`
   display: flex;
@@ -38,7 +37,6 @@ const SchoolInputWrapper = styled.div`
   opacity: 0;
   height: 0;
   margin-bottom: -20px;
-  //display: none;
 `;
 
 const Invisible = styled.div`
@@ -47,6 +45,7 @@ const Invisible = styled.div`
 `;
 
 export type PersonalRegisterProps = {
+  onChangeProfileImage: (image: string) => void;
   onChangeBirth: (
     event: ChangeEvent<HTMLInputElement>,
     nextInputRef?: RefObject<HTMLInputElement>,
@@ -73,6 +72,7 @@ type PersonalRegisterViewProps = {
 
 const PersonalRegisterView = ({
   schoolAnimationRef,
+  onChangeProfileImage,
   onChangeBirth,
   onChangeHomePhone,
   onChangeOccupation,
@@ -103,6 +103,11 @@ const PersonalRegisterView = ({
 
   return (
     <InputContainer>
+      {/* 프로필 이미지*/}
+      <MemberImageInput
+        value={member.profileImage}
+        onChange={onChangeProfileImage}
+      />
       {/* 성별 */}
       <LabelRadioButton
         label={t("gender")}

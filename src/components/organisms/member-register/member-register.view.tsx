@@ -40,14 +40,12 @@ const TextContainer = styled.div`
 type MemberRegisterViewProps = {
   common: CommonRegisterProps;
   required: RequiredRegisterViewProps;
-  personal: PersonalRegisterProps;
   religious: ReligiousRegisterViewProps;
 };
 
 const MemberRegisterView = ({
   common,
   required,
-  personal,
   religious,
 }: MemberRegisterViewProps) => {
   const { stage } = useSelector((state: RootState) => state.memberRegister);
@@ -67,7 +65,7 @@ const MemberRegisterView = ({
         <RequiredRegisterView {...common} {...required} />
       )}
       {stage === MEMBER_REGISTER_STAGE.PERSONAL && (
-        <PersonalRegister {...common} {...personal} />
+        <PersonalRegister {...common} />
       )}
       {stage === MEMBER_REGISTER_STAGE.RELIGIOUS && (
         <ReligiousRegisterView {...common} {...religious} />
