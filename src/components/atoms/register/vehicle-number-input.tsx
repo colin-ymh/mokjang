@@ -40,7 +40,6 @@ const VehicleNumberInput = forwardRef<
   }, [value]);
 
   useEffect(() => {
-    console.log(value);
     // 첫 번째 입력창 입력 종료 시
     if (value[0].length === 4) {
       // 최초인 경우, 다음 입력창 열기

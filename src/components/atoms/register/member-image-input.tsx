@@ -7,8 +7,16 @@ import { BLACK, WHITE } from "@/common/styles/color";
 
 import Delete from "../../../../public/svg/cancel.svg";
 import DefaultImage from "../../../../public/png/default-member-image.png";
-import { useI18n } from "../../../../locales/client";
+import { useI18n, useScopedI18n } from "../../../../locales/client";
 import { BLANK } from "@/common/default/default-value";
+import Cropper, { Area, Point } from "react-easy-crop";
+import {
+  getBase64FromFile,
+  getCroppedImage,
+  getFileFromBase64,
+  getResizedImage,
+} from "@/utils/image";
+import Button from "@/components/atoms/common/button/button";
 
 const MemberImageInputContainer = styled.div`
   display: flex;
@@ -43,7 +51,28 @@ const DeleteButton = styled(Delete)<{ opacity: number }>`
 `;
 
 const ImageInput = styled.input`
-  display: none; /* Hide the file input element */
+  display: none;
+`;
+
+const CropperContainer = styled.div`
+  display: flex;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  z-index: 20;
+  position: absolute;
+  bottom: 20%;
+  width: 60%;
+  height: 50px;
 `;
 
 type MemberImageInputProps = {
@@ -53,56 +82,114 @@ type MemberImageInputProps = {
 
 /* 이미지 기본값 110*110px */
 const MemberImageInput = ({ value, onChange }: MemberImageInputProps) => {
-  const [image, setImage] = useState<string>(value);
   const t = useI18n();
+  const t_button = useScopedI18n("button");
 
-  // 이미지 변경 시 이벤트
+  // 크롭하기 전 이미지
+  const [image, setImage] = useState<string>(value);
+
+  // 크롭된 최종 이미지
+  const [croppedImage, setCroppedImage] = useState<string>(BLANK);
+
+  // 크롭 모달 on/off
+  const [isCropOpen, setIsCropOpen] = useState<boolean>(false);
+
+  // 크롭에 사용되는 state
+  const [crop, setCrop] = useState<Point>({ x: 0, y: 0 });
+  const [zoom, setZoom] = useState<number>(1);
+
+  // 최종 크롭값
+  const [croppedArea, setCroppedArea] = useState<Area>({
+    x: 0,
+    y: 0,
+    width: 0,
+    height: 0,
+  });
+
+  // 새신자 이미지 선택 시, file input 불러오기
+  const onClickMemberImage = () => {
+    // 드라이브, 갤러리에서 이미지를 불러오기
+    const fileInput = document.getElementById("fileInput") as HTMLInputElement;
+    fileInput?.click();
+  };
+
+  // 이미지 파일을 불러오는 함수
   const onChangeImage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    // 드라이브, 갤러리에서 불러온 이미지
     const file = event.target.files ? event.target.files[0] : null;
 
     // 파일을 성공적으로 불러온 경우
     if (file) {
       const reader = new FileReader();
-      reader.onloadend = () => {
-        // 이미지를 url 형식으로 변환
-        const newImage = reader.result as string;
+      reader.onloadend = async () => {
+        // 해당 이미지의 url (base64 string)
+        const dataURL = reader.result;
 
-        // 이미지 크기 조정, 이미지 사이즈 압축, 서버 전송 코드 추가 필요
+        if (typeof dataURL === "string") {
+          // url 을 파일 형식으로 변경
+          const imageFile = getFileFromBase64(dataURL, "test");
+          // 이미지 품질 낮추기
+          const resizedImageFile = await getResizedImage(imageFile, 300, 300);
 
-        setImage(newImage);
+          // 품질을 낮춘 이미지를 저장 => crop 모달로 전달
+          setImage(resizedImageFile);
+          // 크롭 모달 열기
+          setIsCropOpen(true);
+        }
       };
       reader.readAsDataURL(file);
     }
   };
 
-  // 새신자 이미지 선택 시, file input 불러오기
-  const onClickMemberImage = () => {
-    const fileInput = document.getElementById("fileInput") as HTMLInputElement;
-    fileInput?.click();
+  // 크롭 상태가 변할 때마다 실행되는 함수
+  // 마지막으로 설정한 크롭값을 저장
+  const onCropComplete = (
+    croppedAreaPercentages: Area,
+    croppedAreaPixels: Area,
+  ) => {
+    setCroppedArea(croppedAreaPixels);
+  };
+
+  // 크롭값 저장하기 버튼 (크롭을 그만하겠다, 최종 저장하겠다)
+  // 크롭 모달을 닫고, 해당 크롭값을 저장
+  const onClickCropButton = async () => {
+    const newImage = await getCroppedImage(image, croppedArea);
+    setCroppedImage(newImage);
+
+    setIsCropOpen(false);
   };
 
   // 이미지 삭제
-  const handleDelete = () => {
+  const onClickDeleteButton = () => {
     setImage(BLANK);
+    setCroppedImage(BLANK);
   };
 
-  // 이미지 변경 시, 외부 onChange 에 전달
+  // 이미지를 성공적으로 크롭한 경우, 외부 onChange 에 전달
   useEffect(() => {
-    onChange(image);
-  }, [image]);
+    onChange(croppedImage);
+  }, [croppedImage]);
 
   return (
     <MemberImageInputContainer>
+      {/* 제목 */}
       <MainText>{t("image")}</MainText>
       <ImageContainer>
+        {/* 실제 이미지가 들어가고, 사용자에게 보여지는 부분*/}
         <MemberImage
-          src={image || DefaultImage}
+          src={croppedImage || DefaultImage}
           alt="member profile image"
-          width={100}
-          height={100}
+          width={110}
+          height={110}
           onClick={onClickMemberImage}
         />
-        <DeleteButton opacity={image ? 1 : 0} onClick={handleDelete} />
+        {/* 이미지 삭제 버튼 */}
+        <DeleteButton
+          opacity={croppedImage ? 1 : 0}
+          onClick={onClickDeleteButton}
+        />
+
+        {/* 이미지 파일을 불러오는 모달 */}
         <ImageInput
           id="fileInput"
           type="file"
@@ -110,6 +197,26 @@ const MemberImageInput = ({ value, onChange }: MemberImageInputProps) => {
           onChange={onChangeImage}
         />
       </ImageContainer>
+
+      {/* 이미지 크롭 모달 */}
+      {isCropOpen && (
+        <CropperContainer>
+          {/* 크롭하는 부분*/}
+          <Cropper
+            image={image}
+            crop={crop}
+            zoom={zoom}
+            aspect={1}
+            onCropChange={setCrop}
+            onCropComplete={onCropComplete}
+            onZoomChange={setZoom}
+          />
+          {/* 크롭 상태를 저장하는 버튼 */}
+          <ButtonContainer>
+            <Button text={t_button("save")} onClick={onClickCropButton} />
+          </ButtonContainer>
+        </CropperContainer>
+      )}
     </MemberImageInputContainer>
   );
 };

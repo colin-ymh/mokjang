@@ -1,6 +1,6 @@
-// 엔터키 입력 후 포커스 이동 함수
 import { RefObject } from "react";
 
+// 엔터키 입력 후, 다음 입력으로 포커스 이동 함수
 export const onClickEnter = (
   event: React.KeyboardEvent<HTMLInputElement>,
   nextInputRef?: RefObject<HTMLInputElement>,
