@@ -5,18 +5,11 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 
 import { MEMBER_REGISTER_STAGE } from "@/constant/constant";
-import RegisterButtonList from "@/components/molecules/member-register/register-button-list";
 import { MainText } from "@/components/atoms/common/text/main-text";
-
-import RequiredRegisterView, {
-  CommonRegisterProps,
-  RequiredRegisterViewProps,
-} from "@/components/molecules/member-register/required-register.view";
-import ReligiousRegisterView, {
-  ReligiousRegisterViewProps,
-} from "@/components/molecules/member-register/religious-register.view";
-import { PersonalRegisterProps } from "@/components/molecules/member-register/personal-register.view";
-import PersonalRegister from "@/components/molecules/member-register/personal-register";
+import RegisterButtonList from "@/components/molecules/register/register-button-list";
+import PersonalRegister from "@/components/molecules/register/personal-register";
+import ReligiousRegister from "@/components/molecules/register/religious-register";
+import RequiredRegister from "@/components/molecules/register/required-register";
 
 import { useScopedI18n } from "../../../../locales/client";
 
@@ -37,17 +30,7 @@ const TextContainer = styled.div`
   width: 100%;
 `;
 
-type MemberRegisterViewProps = {
-  common: CommonRegisterProps;
-  required: RequiredRegisterViewProps;
-  religious: ReligiousRegisterViewProps;
-};
-
-const MemberRegisterView = ({
-  common,
-  required,
-  religious,
-}: MemberRegisterViewProps) => {
+const MemberRegisterView = () => {
   const { stage } = useSelector((state: RootState) => state.memberRegister);
 
   const t_register = useScopedI18n("register");
@@ -61,15 +44,9 @@ const MemberRegisterView = ({
             : t_register("extraHeaderPhrase")}
         </MainText>
       </TextContainer>
-      {stage === MEMBER_REGISTER_STAGE.REQUIRED && (
-        <RequiredRegisterView {...common} {...required} />
-      )}
-      {stage === MEMBER_REGISTER_STAGE.PERSONAL && (
-        <PersonalRegister {...common} />
-      )}
-      {stage === MEMBER_REGISTER_STAGE.RELIGIOUS && (
-        <ReligiousRegisterView {...common} {...religious} />
-      )}
+      {stage === MEMBER_REGISTER_STAGE.REQUIRED && <RequiredRegister />}
+      {stage === MEMBER_REGISTER_STAGE.PERSONAL && <PersonalRegister />}
+      {stage === MEMBER_REGISTER_STAGE.RELIGIOUS && <ReligiousRegister />}
       <RegisterButtonList />
     </RegisterContainer>
   );

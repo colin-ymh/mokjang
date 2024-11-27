@@ -6,22 +6,23 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 
 import LabelInput from "@/components/atoms/common/input/label-input";
-import RegisterRadioButton from "@/components/atoms/member-register/register-radio-button";
+import RegisterRadioButton from "@/components/atoms/register/register-radio-button";
 import LabelRadioButton from "@/components/atoms/common/input/radio-button/label-radio-button";
-import { CommonRegisterProps } from "@/components/molecules/member-register/required-register.view";
 import LabelDropdown from "@/components/atoms/common/dropdown/label-dropdown";
 import { useMarriageDropdownItems } from "@/constant/dropdown/dropdown-items";
-import VehicleNumberInput from "@/components/atoms/member-register/vehicle-number-input";
-import { VehicleNumberInputRef } from "@/components/atoms/member-register/vehicle-number-input.view";
-import MemberImageInput from "@/components/atoms/member-register/member-image-input";
+import VehicleNumberInput from "@/components/atoms/register/vehicle-number-input";
+import { VehicleNumberInputRef } from "@/components/atoms/register/vehicle-number-input.view";
+import MemberImageInput from "@/components/atoms/register/member-image-input";
 
 import { useGenderRadioButtonItems } from "@/constant/radio-button/radio-button-items";
 import { TemporalMember } from "@/models/register/member-register";
 
 import { getFormattedDate, getFormattedHomePhone } from "@/utils/format";
 import { getDateFromString, getIsChild } from "@/utils/date";
+import { onClickEnter } from "@/utils/input";
 
 import { useI18n, useScopedI18n } from "../../../../locales/client";
+import { MEMBER_REGISTER_STAGE } from "@/constant/constant";
 
 const InputContainer = styled.div`
   display: flex;
@@ -37,6 +38,7 @@ const SchoolInputWrapper = styled.div`
   opacity: 0;
   height: 0;
   margin-bottom: -20px;
+  z-index: 0;
 `;
 
 const Invisible = styled.div`
@@ -82,13 +84,12 @@ const PersonalRegisterView = ({
   onChangeSchool,
   onChangeGender,
   onChangeVehicleNumber,
-  onClickEnter,
-}: PersonalRegisterViewProps & PersonalRegisterProps & CommonRegisterProps) => {
+}: PersonalRegisterViewProps & PersonalRegisterProps) => {
   const t = useI18n();
   const t_placeholder = useScopedI18n("placeholder");
 
-  const member: TemporalMember = useSelector(
-    (state: RootState): TemporalMember => state.memberRegister.member,
+  const { member, stage } = useSelector(
+    (state: RootState) => state.memberRegister,
   );
 
   // 각 input 에 대한 ref
@@ -131,6 +132,7 @@ const PersonalRegisterView = ({
       {/* 학교 (미성년자인 경우에만 나타남) */}
       <SchoolInputWrapper ref={schoolAnimationRef}>
         <LabelInput
+          enterKeyHint={"done"}
           ref={schoolInputRef}
           label={t("school")}
           value={member.school}
@@ -141,12 +143,14 @@ const PersonalRegisterView = ({
       </SchoolInputWrapper>
       {/* 직업 */}
       <LabelInput
+        enterKeyHint={"done"}
         ref={occupationInputRef}
         label={t("occupation")}
         value={member.occupation}
         onChange={onChangeOccupation}
         placeholder={t_placeholder("occupation")}
         onKeyDown={(event) => onClickEnter(event, marriageInputRef)}
+        zIndex={1}
       />
       {/* 결혼 */}
       <LabelDropdown
@@ -162,6 +166,7 @@ const PersonalRegisterView = ({
       />
       {/* 도로명주소 */}
       <LabelInput
+        enterKeyHint={"done"}
         ref={addressInputRef}
         label={t("address")}
         value={member.address}
@@ -171,6 +176,7 @@ const PersonalRegisterView = ({
       />
       {/* 상세주소 */}
       <LabelInput
+        enterKeyHint={"done"}
         ref={detailAddressInputRef}
         label={t("detailAddress")}
         value={member.detailAddress}
@@ -191,6 +197,7 @@ const PersonalRegisterView = ({
       />
       {/* 차량 번호 */}
       <VehicleNumberInput
+        enterKeyHint={"done"}
         ref={vehicleInputRef}
         label={t("vehicleNumber")}
         value={member.vehicleNumber}

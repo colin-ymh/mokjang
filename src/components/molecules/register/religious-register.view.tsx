@@ -20,6 +20,8 @@ import LabelDropdown from "@/components/atoms/common/dropdown/label-dropdown";
 import { BAPTISM, CONFIRMATION, NONE } from "@/constant/constant";
 
 import { useI18n, useScopedI18n } from "../../../../locales/client";
+import { VehicleNumberInputRef } from "@/components/atoms/register/vehicle-number-input.view";
+import { onClickEnter } from "@/utils/input";
 
 const InputContainer = styled.div`
   display: flex;
@@ -66,9 +68,14 @@ const ReligiousRegisterView = ({
   const t = useI18n();
   const t_placeholder = useScopedI18n("placeholder");
 
-  const member: TemporalMember = useSelector(
-    (state: RootState): TemporalMember => state.memberRegister.member,
+  const { member, stage } = useSelector(
+    (state: RootState) => state.memberRegister,
   );
+
+  // input refs
+  const confirmationDateInputRef = useRef<HTMLInputElement>(null);
+  const confirmationChurchInputRef = useRef<HTMLInputElement>(null);
+  const previousChurchInputRef = useRef<HTMLInputElement>(null);
 
   // 학교 input 창 애니메이션 효과
   const confirmationAnimationRef = useRef<HTMLDivElement | null>(null);
@@ -117,25 +124,34 @@ const ReligiousRegisterView = ({
       <ConfirmationWrapper ref={confirmationAnimationRef}>
         {/* 임직일 */}
         <LabelInput
+          ref={confirmationDateInputRef}
+          enterKeyHint={"done"}
           label={t("confirmationStartDate")}
           value={getFormattedDate(member.confirmationStartDate)}
           onChange={onChangeConfirmationStartDate}
           placeholder={t_placeholder("confirmationStartDate")}
+          onKeyDown={(event) => onClickEnter(event, confirmationChurchInputRef)}
         />
         {/* 임직 교회 */}
         <LabelInput
+          ref={confirmationChurchInputRef}
+          enterKeyHint={"done"}
           label={t("confirmationStartChurch")}
           value={member.confirmationStartChurch}
           onChange={onChangeConfirmationStartChurch}
           placeholder={t_placeholder("confirmationStartChurch")}
+          onKeyDown={(event) => onClickEnter(event, previousChurchInputRef)}
         />
       </ConfirmationWrapper>
       {/* 이전 교회 */}
       <LabelInput
+        ref={previousChurchInputRef}
+        enterKeyHint={"done"}
         label={t("previousChurchName")}
         value={member.previousChurchName}
         onChange={onChangePreviousChurchName}
         placeholder={t_placeholder("previousChurchName")}
+        onKeyDown={onClickEnter}
       />
       <Invisible />
     </InputContainer>

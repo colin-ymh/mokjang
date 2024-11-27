@@ -6,23 +6,25 @@ import BorderInput from "@/components/atoms/common/input/border-input";
 
 import { DEFAULT_VALUE } from "@/common/default/default-value";
 
-const LabelInputContainer = styled.div`
+const LabelInputContainer = styled.div<{ $zIndex?: number }>`
   display: flex;
   flex-direction: column;
   width: 100%;
   gap: 10px;
   transition: all 0.3s ease;
+  z-index: ${({ $zIndex }) => $zIndex};
 `;
 
 type LabelInputProps = InputHTMLAttributes<HTMLInputElement> & {
   label: string;
+  zIndex?: number;
 };
 
-// forwardRef를 사용하여 ref를 props로 전달받을 수 있게
+// forwardRef 를 사용하여 ref 를 props 로 전달받을 수 있게
 const LabelInput = forwardRef<HTMLInputElement, LabelInputProps>(
-  ({ label, ...props }, ref) => {
+  ({ label, zIndex, ...props }, ref) => {
     return (
-      <LabelInputContainer>
+      <LabelInputContainer $zIndex={zIndex}>
         <MainText>{label}</MainText>
         <BorderInput
           ref={ref}

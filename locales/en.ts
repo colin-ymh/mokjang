@@ -45,6 +45,9 @@ export default {
   /*-------------------member register-------------------*/
   "register.defaultHeaderPhrase": "Please enter the member information",
   "register.extraHeaderPhrase": "Please enter the extra information",
+
+  "register.checkRegisterPhrase": "Please enter your information",
+  "register.checkButton": "Confirm And Enter More",
   /*-------------------member register-------------------*/
 
   /*-------------------button-------------------*/

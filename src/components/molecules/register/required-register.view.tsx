@@ -1,6 +1,6 @@
 "use client";
 
-import React, { ChangeEvent, RefObject, useRef } from "react";
+import React, { ChangeEvent, useRef } from "react";
 import styled from "styled-components";
 
 import { useSelector } from "react-redux";
@@ -9,13 +9,14 @@ import { RootState } from "@/redux/store";
 import { GRAY } from "@/common/styles/color";
 import LabelInput from "@/components/atoms/common/input/label-input";
 import RadioButton from "@/components/atoms/common/input/radio-button/radio-button";
-import RegisterRadioButton from "@/components/atoms/member-register/register-radio-button";
+import RegisterRadioButton from "@/components/atoms/register/register-radio-button";
 import { MEMBER_REGISTER_TYPE } from "@/constant/constant";
 import { useMemberRegisterTypeRadioButtonItems } from "@/constant/radio-button/radio-button-items";
 
 import { TemporalMember } from "@/models/register/member-register";
 
-import { getFormattedMobilePhone } from "@/utils/format";
+import { getFormattedMobilePhone, getFormattedName } from "@/utils/format";
+import { onClickEnter } from "@/utils/input";
 
 import { useI18n, useScopedI18n } from "../../../../locales/client";
 
@@ -32,13 +33,6 @@ const InputContainer = styled.div`
   width: 100%;
 `;
 
-export type CommonRegisterProps = {
-  onClickEnter: (
-    event: React.KeyboardEvent<HTMLInputElement>,
-    nextInputRef?: RefObject<HTMLInputElement>,
-  ) => void;
-};
-
 export type RequiredRegisterViewProps = {
   onChangeType: (type: MEMBER_REGISTER_TYPE) => void;
   onChangeName: (event: ChangeEvent<HTMLInputElement>) => void;
@@ -53,16 +47,13 @@ const RequiredRegisterView = ({
   onChangeMobilePhone,
   onChangeGuide,
   onChangeFamily,
-  onClickEnter,
-}: RequiredRegisterViewProps & CommonRegisterProps) => {
+}: RequiredRegisterViewProps) => {
   const t = useI18n();
   const t_placeholder = useScopedI18n("placeholder");
 
-  const member: TemporalMember = useSelector(
-    (state: RootState): TemporalMember => state.memberRegister.member,
-  );
+  const { member } = useSelector((state: RootState) => state.memberRegister);
 
-  // 각 input에 대한 ref
+  // 각 input 에 대한 ref
   const nameInputRef = useRef<HTMLInputElement>(null);
   const mobilePhoneInputRef = useRef<HTMLInputElement>(null);
   const guideInputRef = useRef<HTMLInputElement>(null);
@@ -84,7 +75,7 @@ const RequiredRegisterView = ({
         enterKeyHint={"done"}
         ref={nameInputRef}
         label={t("name")}
-        value={member.name}
+        value={getFormattedName(member.name)}
         onChange={onChangeName}
         placeholder={t_placeholder("name")}
         onKeyDown={(event) => onClickEnter(event, mobilePhoneInputRef)}

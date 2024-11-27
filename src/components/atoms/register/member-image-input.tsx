@@ -67,6 +67,8 @@ const MemberImageInput = ({ value, onChange }: MemberImageInputProps) => {
         // 이미지를 url 형식으로 변환
         const newImage = reader.result as string;
 
+        // 이미지 크기 조정, 이미지 사이즈 압축, 서버 전송 코드 추가 필요
+
         setImage(newImage);
       };
       reader.readAsDataURL(file);

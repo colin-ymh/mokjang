@@ -1,3 +1,18 @@
+export const getTrimmedString = (value: string) => {
+  return value.trim();
+};
+
+// 2회 이상 연속 공백 불가
+export const getFormattedName = (value: string) => {
+  // 처음 공백 제거
+  let trimmedValue = value.trimStart();
+
+  // 2회 이상의 연속 공백을 단일 공백으로 치환
+  trimmedValue = trimmedValue.replace(/\s{2,}/g, " ");
+
+  return trimmedValue;
+};
+
 // 휴대폰 번호 string을 010-xxxx-xxxx 형식으로 포맷
 export const getFormattedMobilePhone = (mobilePhone: string) => {
   // 숫자만 남기기

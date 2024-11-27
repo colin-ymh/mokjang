@@ -1,7 +1,7 @@
 import RegisterLayout from "@/components/organisms/layout/register-layout";
-import MemberRegister from "@/components/organisms/member-register/member-register";
+import MemberRegister from "@/components/organisms/register/member-register";
 
-const RegisterPage = () => {
+const NewMemberRegisterPage = () => {
   return (
     <RegisterLayout>
       <MemberRegister />
@@ -9,4 +9,4 @@ const RegisterPage = () => {
   );
 };
 
-export default RegisterPage;
+export default NewMemberRegisterPage;

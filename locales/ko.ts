@@ -47,6 +47,10 @@ export default {
   /*-------------------member register-------------------*/
   "register.defaultHeaderPhrase": "교인 정보를 입력해주세요",
   "register.extraHeaderPhrase": "상세 정보를 입력해주세요",
+
+  "register.checkRegisterPhrase": "성도님의 정보를 입력해주세요",
+  "register.checkButton": "확인하고 상세정보 입력하기",
+
   /*-------------------member register-------------------*/
 
   /*-------------------button-------------------*/

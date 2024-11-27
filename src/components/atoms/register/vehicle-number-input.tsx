@@ -7,7 +7,7 @@ import React, {
 } from "react";
 import VehicleNumberInputView, {
   VehicleNumberInputRef,
-} from "@/components/atoms/member-register/vehicle-number-input.view";
+} from "@/components/atoms/register/vehicle-number-input.view";
 
 type VehicleNumberInputProps = InputHTMLAttributes<HTMLInputElement> & {
   label: string;
@@ -40,6 +40,7 @@ const VehicleNumberInput = forwardRef<
   }, [value]);
 
   useEffect(() => {
+    console.log(value);
     // 첫 번째 입력창 입력 종료 시
     if (value[0].length === 4) {
       // 최초인 경우, 다음 입력창 열기
@@ -79,6 +80,7 @@ const VehicleNumberInput = forwardRef<
 
     return () => clearTimeout(timer);
   }, [count, ref]);
+
   const props = {
     label,
     value,

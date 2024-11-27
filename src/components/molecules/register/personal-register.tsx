@@ -1,30 +1,19 @@
 "use client";
 
-import React, {
-  ChangeEvent,
-  RefObject,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { ChangeEvent, RefObject, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
 import { gsap } from "gsap";
 
 import { TemporalMember } from "@/models/register/member-register";
 import { getDateFromString, getIsChild } from "@/utils/date";
-import { CommonRegisterProps } from "@/components/molecules/member-register/required-register.view";
-import PersonalRegisterView, {
-  PersonalRegisterProps,
-} from "@/components/molecules/member-register/personal-register.view";
+import PersonalRegisterView from "@/components/molecules/register/personal-register.view";
 import { setMember } from "@/redux/reducers/member-register-reducer";
+import { MEMBER_REGISTER_STAGE } from "@/constant/constant";
 
-const PersonalRegister = ({ ...registerProps }: CommonRegisterProps) => {
+const PersonalRegister = () => {
   const dispatch = useDispatch<AppDispatch>();
-
-  const member: TemporalMember = useSelector(
-    (state: RootState): TemporalMember => state.memberRegister.member,
-  );
+  const { member } = useSelector((state: RootState) => state.memberRegister);
 
   // 학교 input 창 애니메이션 효과
   const schoolAnimationRef = useRef<HTMLDivElement | null>(null);
@@ -184,7 +173,6 @@ const PersonalRegister = ({ ...registerProps }: CommonRegisterProps) => {
     onChangeVehicleNumber,
     onChangeMarriage,
     onChangeGender,
-    ...registerProps,
   };
 
   return (
