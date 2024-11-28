@@ -56,6 +56,8 @@ export default {
   "button.goBack": "Go Back",
   "button.extra": "Enter Extra",
   "button.invite": "Invite",
+  "button.cancel": "Cancel",
+  "button.confirm": "Confirm",
 
   /*-------------------button-------------------*/
 
@@ -84,4 +86,11 @@ export default {
   "radiobutton.new": "New Member",
   "radiobutton.transferred": "Transferred Member",
   /*-------------------radiobutton-------------------*/
+
+  /*-------------------popup-------------------*/
+  "popup.cancelRegisterTitle":
+    "Do you want to cancel church member registration?",
+  "popup.cancelRegisterContent": "The entered information will not be saved.",
+  "popup.registerSuccess": "The church member has been registered.",
+  /*-------------------popup-------------------*/
 } as const;

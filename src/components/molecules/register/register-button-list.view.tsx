@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "@/redux/store";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
 
 import Button from "@/components/atoms/common/button/button";
 import { BLACK, GRAY, MAIN, WHITE } from "@/common/styles/color";

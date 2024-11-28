@@ -59,6 +59,8 @@ export default {
   "button.goBack": "이전으로",
   "button.extra": "더 입력하기",
   "button.invite": "초대하기",
+  "button.cancel": "취소",
+  "button.confirm": "확인",
 
   /*-------------------button-------------------*/
 
@@ -85,4 +87,10 @@ export default {
   "radiobutton.new": "새신자",
   "radiobutton.transferred": "기존 신자",
   /*-------------------radiobutton-------------------*/
+
+  /*-------------------popup-------------------*/
+  "popup.cancelRegisterTitle": "교인 등록을 종료하시겠습니까?",
+  "popup.cancelRegisterContent": "입력된 정보는 저장되지 않습니다.",
+  "popup.registerSuccess": "교인이 등록되었습니다.",
+  /*-------------------popup-------------------*/
 } as const;

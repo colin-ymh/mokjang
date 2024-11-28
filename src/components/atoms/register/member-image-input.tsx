@@ -188,7 +188,6 @@ const MemberImageInput = ({ value, onChange }: MemberImageInputProps) => {
           opacity={croppedImage ? 1 : 0}
           onClick={onClickDeleteButton}
         />
-
         {/* 이미지 파일을 불러오는 모달 */}
         <ImageInput
           id="fileInput"

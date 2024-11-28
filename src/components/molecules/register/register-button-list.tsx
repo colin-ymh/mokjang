@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
 import { setStage } from "@/redux/reducers/member-register-reducer";
@@ -10,13 +10,18 @@ import {
 import RegisterButtonListView from "@/components/molecules/register/register-button-list.view";
 
 import { useScopedI18n } from "../../../../locales/client";
+import ToastPopup from "@/components/atoms/common/popup/toast-popup";
 
 const RegisterButtonList = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { stage, member } = useSelector(
     (state: RootState) => state.memberRegister,
   );
+
+  const t_popup = useScopedI18n("popup");
   const t_button = useScopedI18n("button");
+
+  const [isToastOpen, setToastOpen] = useState<boolean>(false);
 
   const onClickLeft = () => {
     if (stage === MEMBER_REGISTER_STAGE.REQUIRED) {
@@ -31,6 +36,7 @@ const RegisterButtonList = () => {
   const onClickRight = () => {
     if (stage === MEMBER_REGISTER_STAGE.REQUIRED) {
       dispatch(setStage(MEMBER_REGISTER_STAGE.PERSONAL));
+      setToastOpen(true);
     } else if (stage === MEMBER_REGISTER_STAGE.PERSONAL) {
       if (member.type === MEMBER_REGISTER_TYPE.NEW) {
         console.log("no where to go");
@@ -75,6 +81,13 @@ const RegisterButtonList = () => {
   return (
     <>
       <RegisterButtonListView {...props} />
+      {isToastOpen && (
+        <ToastPopup
+          setIsOpen={setToastOpen}
+          isDeletable={true}
+          text={t_popup("registerSuccess")}
+        />
+      )}
     </>
   );
 };
