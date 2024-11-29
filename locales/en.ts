@@ -13,6 +13,7 @@ export default {
   occupation: "Occupation",
   school: "School",
   marriage: "Marriage",
+  detailMarriage: "Detail Marriage State",
   address: "Address",
   detailAddress: "Detail Address",
   homePhone: "Home Phone",
@@ -41,6 +42,10 @@ export default {
   // marriage 결혼
   married: "Married",
   single: "Single",
+
+  // 양력 음력
+  solar: "Solar",
+  lunar: "Lunar",
 
   /*-------------------member register-------------------*/
   "register.defaultHeaderPhrase": "Please enter the member information",
@@ -79,6 +84,7 @@ export default {
   "placeholder.previousChurchName": "Enter the name of the previous church.",
   "placeholder.vehicleNumber": "Enter the vehicle plate number.",
   "placeholder.marriage": "Enter the marriage state.",
+  "placeholder.detailMarriage": "Enter the detail marriage state.",
   "placeholder.family": "Enter the family name.",
   /*-------------------placeholder-------------------*/
 

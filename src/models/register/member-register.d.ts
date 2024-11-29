@@ -14,6 +14,7 @@ export type TemporalMember = {
   // 개인정보
   profileImage: string;
   birth: string;
+  isLunar: boolean;
   gender: string;
   address: string;
   detailAddress: string;
@@ -22,6 +23,7 @@ export type TemporalMember = {
   occupation: string;
   school: string;
   marriage: MARRIAGE | NONE;
+  detailMarriage: string;
   // 성도정보
   ministry?: string; // 사역
   group?: string; // 소그룹

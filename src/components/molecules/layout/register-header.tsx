@@ -14,10 +14,10 @@ const RegisterHeader = () => {
   const router = useRouter();
   const pathname = usePathname(); // 현재 경로 가져오기
 
-  const [isConfirmOpen, setIsConfirmOpen] = useState<boolean>(false);
+  const [isConfirmShow, setIsConfirmShow] = useState<boolean>(false);
 
   const onClickGoBack = () => {
-    setIsConfirmOpen(true);
+    setIsConfirmShow(true);
   };
 
   const onClickDone = () => {
@@ -25,11 +25,11 @@ const RegisterHeader = () => {
   };
 
   const onClickPopupCancel = () => {
-    setIsConfirmOpen(false);
+    setIsConfirmShow(false);
   };
 
   const onClickPopupConfirm = () => {
-    setIsConfirmOpen(false);
+    setIsConfirmShow(false);
 
     const basePath = pathname.split("/")[1]; // 언어 코드 추출 (ko 또는 en)
     router.push(`/${basePath}`);
@@ -46,7 +46,7 @@ const RegisterHeader = () => {
       <ConfirmPopup
         title={t_popup("cancelRegisterTitle")}
         body={t_popup("cancelRegisterContent")}
-        isModalVisible={isConfirmOpen}
+        isShow={isConfirmShow}
         buttonNum={2}
         leftButtonText={t_button("cancel")}
         rightButtonText={t_button("confirm")}

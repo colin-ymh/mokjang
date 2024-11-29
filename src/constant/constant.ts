@@ -40,3 +40,9 @@ export enum MARRIAGE {
   MARRIED = "married",
   SINGLE = "single",
 }
+
+// 양력 음력
+export enum CALENDAR_MODE {
+  SOLAR = "solar",
+  LUNAR = "lunar",
+}

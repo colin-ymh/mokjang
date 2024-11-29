@@ -14,15 +14,19 @@ import VehicleNumberInput from "@/components/atoms/register/vehicle-number-input
 import { VehicleNumberInputRef } from "@/components/atoms/register/vehicle-number-input.view";
 import MemberImageInput from "@/components/atoms/register/member-image-input";
 
-import { useGenderRadioButtonItems } from "@/constant/radio-button/radio-button-items";
-import { TemporalMember } from "@/models/register/member-register";
+import {
+  useBirthRadioButtonItems,
+  useGenderRadioButtonItems,
+} from "@/constant/radio-button/radio-button-items";
 
 import { getFormattedDate, getFormattedHomePhone } from "@/utils/format";
 import { getDateFromString, getIsChild } from "@/utils/date";
 import { onClickEnter } from "@/utils/input";
 
 import { useI18n, useScopedI18n } from "../../../../locales/client";
-import { MEMBER_REGISTER_STAGE } from "@/constant/constant";
+import { DropdownValueType } from "@/components/atoms/common/dropdown/dropdown-item";
+import RadioButton from "@/components/atoms/common/input/radio-button/radio-button";
+import { CALENDAR_MODE } from "@/constant/constant";
 
 const InputContainer = styled.div`
   display: flex;
@@ -30,6 +34,15 @@ const InputContainer = styled.div`
   justify-content: center;
   flex-direction: column;
   gap: 20px;
+  width: 100%;
+`;
+
+const BirthContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 10px;
   width: 100%;
 `;
 
@@ -46,45 +59,58 @@ const Invisible = styled.div`
   width: 5px;
 `;
 
-export type PersonalRegisterProps = {
+export type PersonalRegisterViewProps = {
+  schoolAnimationRef: RefObject<HTMLDivElement>;
+  schoolItems: DropdownValueType[];
   onChangeProfileImage: (image: string) => void;
   onChangeBirth: (
     event: ChangeEvent<HTMLInputElement>,
     nextInputRef?: RefObject<HTMLInputElement>,
   ) => void;
+  onChangeCalendarMode: (value: CALENDAR_MODE) => void;
   onChangeHomePhone: (
     event: ChangeEvent<HTMLInputElement>,
     nextInputRef?: RefObject<HTMLInputElement>,
   ) => void;
   onChangeOccupation: (event: ChangeEvent<HTMLInputElement>) => void;
-  onChangeAddress: (event: ChangeEvent<HTMLInputElement>) => void;
   onChangeDetailAddress: (event: ChangeEvent<HTMLInputElement>) => void;
-  onChangeSchool: (event: ChangeEvent<HTMLInputElement>) => void;
+  onChangeSchool: (
+    value: string,
+    nextInputRef?: RefObject<HTMLInputElement>,
+  ) => void;
   onChangeVehicleNumber: (
     event: ChangeEvent<HTMLInputElement>,
     index: number,
   ) => void;
-  onChangeMarriage: (value: string) => void;
+  onChangeMarriage: (
+    value: string,
+    nextInputRef?: RefObject<HTMLInputElement>,
+  ) => void;
+  onClickMarriageDropdownItem: (
+    nextInputRef: RefObject<HTMLInputElement>,
+  ) => void;
+  onChangeDetailMarriage: (event: ChangeEvent<HTMLInputElement>) => void;
   onChangeGender: (gender: string) => void;
-};
-
-type PersonalRegisterViewProps = {
-  schoolAnimationRef: RefObject<HTMLDivElement>;
+  onClickAddress: () => void;
 };
 
 const PersonalRegisterView = ({
   schoolAnimationRef,
+  schoolItems,
   onChangeProfileImage,
   onChangeBirth,
+  onChangeCalendarMode,
   onChangeHomePhone,
   onChangeOccupation,
   onChangeMarriage,
-  onChangeAddress,
+  onClickMarriageDropdownItem,
+  onChangeDetailMarriage,
   onChangeDetailAddress,
   onChangeSchool,
   onChangeGender,
   onChangeVehicleNumber,
-}: PersonalRegisterViewProps & PersonalRegisterProps) => {
+  onClickAddress,
+}: PersonalRegisterViewProps) => {
   const t = useI18n();
   const t_placeholder = useScopedI18n("placeholder");
 
@@ -97,6 +123,7 @@ const PersonalRegisterView = ({
   const schoolInputRef = useRef<HTMLInputElement>(null);
   const occupationInputRef = useRef<HTMLInputElement>(null);
   const marriageInputRef = useRef<HTMLInputElement>(null);
+  const detailMarriageInputRef = useRef<HTMLInputElement>(null);
   const addressInputRef = useRef<HTMLInputElement>(null);
   const detailAddressInputRef = useRef<HTMLInputElement>(null);
   const homePhoneInputRef = useRef<HTMLInputElement>(null);
@@ -117,27 +144,42 @@ const PersonalRegisterView = ({
         onChange={onChangeGender}
         customButton={RegisterRadioButton}
       />
+
       {/* 생년월일 */}
-      <LabelInput
-        ref={birthInputRef}
-        inputMode={"numeric"}
-        label={t("birth")}
-        value={getFormattedDate(member.birth)}
-        onChange={(event: ChangeEvent<HTMLInputElement>) => {
-          const isChild = getIsChild(getDateFromString(event.target.value));
-          onChangeBirth(event, isChild ? schoolInputRef : occupationInputRef);
-        }}
-        placeholder={t_placeholder("birth")}
-      />
+      <BirthContainer>
+        {/* 생년월일 입력창 */}
+        <LabelInput
+          ref={birthInputRef}
+          inputMode={"numeric"}
+          label={t("birth")}
+          value={getFormattedDate(member.birth)}
+          onChange={(event: ChangeEvent<HTMLInputElement>) => {
+            const isChild = getIsChild(getDateFromString(event.target.value));
+            onChangeBirth(event, isChild ? schoolInputRef : occupationInputRef);
+          }}
+          placeholder={t_placeholder("birth")}
+        />
+        {/* 양력 음력 */}
+        <RadioButton
+          items={useBirthRadioButtonItems()}
+          selectedValue={
+            member.isLunar ? CALENDAR_MODE.LUNAR : CALENDAR_MODE.SOLAR
+          }
+          onChange={onChangeCalendarMode}
+          customButton={RegisterRadioButton}
+        />
+      </BirthContainer>
       {/* 학교 (미성년자인 경우에만 나타남) */}
       <SchoolInputWrapper ref={schoolAnimationRef}>
-        <LabelInput
+        <LabelDropdown
           enterKeyHint={"done"}
           ref={schoolInputRef}
           label={t("school")}
+          items={schoolItems}
           value={member.school}
-          onChange={onChangeSchool}
+          onChangeItem={(value) => onChangeSchool(value, occupationInputRef)}
           placeholder={t_placeholder("school")}
+          isEditable={true}
           onKeyDown={(event) => onClickEnter(event, occupationInputRef)}
         />
       </SchoolInputWrapper>
@@ -159,10 +201,22 @@ const PersonalRegisterView = ({
         value={member.marriage}
         items={useMarriageDropdownItems()}
         onChangeItem={onChangeMarriage}
+        onClickItemExtra={() => {
+          onClickMarriageDropdownItem(detailMarriageInputRef);
+        }}
         placeholder={t_placeholder("marriage")}
         onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) =>
-          onClickEnter(event, addressInputRef)
+          onClickEnter(event, detailMarriageInputRef)
         }
+      />
+      {/* 결혼 상세 정보 */}
+      <LabelInput
+        enterKeyHint={"done"}
+        ref={detailMarriageInputRef}
+        label={t("detailMarriage")}
+        value={member.detailMarriage}
+        onChange={onChangeDetailMarriage}
+        placeholder={t_placeholder("detailMarriage")}
       />
       {/* 도로명주소 */}
       <LabelInput
@@ -170,9 +224,8 @@ const PersonalRegisterView = ({
         ref={addressInputRef}
         label={t("address")}
         value={member.address}
-        onChange={onChangeAddress}
         placeholder={t_placeholder("address")}
-        onKeyDown={(event) => onClickEnter(event, detailAddressInputRef)}
+        onClick={onClickAddress}
       />
       {/* 상세주소 */}
       <LabelInput

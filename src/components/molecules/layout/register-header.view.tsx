@@ -5,10 +5,10 @@ import { RootState } from "@/redux/store";
 
 import { GRAY, MAIN, WHITE } from "@/common/styles/color";
 import Button from "@/components/atoms/common/button/button";
+import { MEMBER_REGISTER_STAGE } from "@/constant/constant";
 
 import ExitButton from "../../../../public/svg/cancel.svg";
 import { useScopedI18n } from "../../../../locales/client";
-import { MEMBER_REGISTER_STAGE } from "@/constant/constant";
 
 const HeaderContainer = styled.header`
   display: flex;

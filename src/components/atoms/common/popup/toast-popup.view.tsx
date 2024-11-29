@@ -66,7 +66,6 @@ const ToastPopupView = forwardRef<HTMLDivElement, ToastPopupViewProps>(
     },
     ref,
   ) => {
-    console.log(text);
     return (
       <PopupContainer
         ref={ref}

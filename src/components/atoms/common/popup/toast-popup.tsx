@@ -8,7 +8,7 @@ import { MainTextProps } from "@/components/atoms/common/text/main-text";
 import { BLACK, WHITE } from "@/common/styles/color";
 
 type ToastPopupProps = MainTextProps & {
-  setIsOpen: (isOpen: boolean) => void;
+  setIsShow: (isOpen: boolean) => void;
   text?: string;
   backgroundColor?: string;
   timeout?: number;
@@ -17,7 +17,7 @@ type ToastPopupProps = MainTextProps & {
 };
 
 const ToastPopup = ({
-  setIsOpen,
+  setIsShow,
   text,
   backgroundColor = BLACK,
   timeout = 3000,
@@ -46,7 +46,7 @@ const ToastPopup = ({
           gsap
             .to(ref.current, { top: "-50px", opacity: 0, duration: 0.5 }) // 화면 아래로 이동하며 사라짐
             .then(() => {
-              setIsOpen(false);
+              setIsShow(false);
             });
         }, timeout);
 
@@ -68,7 +68,7 @@ const ToastPopup = ({
           gsap
             .to(ref.current, { bottom: "-50px", opacity: 0, duration: 0.5 })
             .then(() => {
-              setIsOpen(false);
+              setIsShow(false);
             });
         }, timeout);
 
@@ -76,17 +76,17 @@ const ToastPopup = ({
         return () => clearTimeout(timer);
       }
     }
-  }, [setIsOpen, direction, timeout]);
+  }, [setIsShow, direction, timeout]);
 
   // 닫기 버튼 이벤트
   const onClickDeleteButton = () => {
-    setIsOpen(false);
+    setIsShow(false);
     // 상단 팝업인 경우
     if (direction === TOAST_DIRECTION.TOP) {
       gsap
         .to(ref.current, { top: "-50px", opacity: 0, duration: 0.5 }) // 화면 아래로 이동하며 사라짐
         .then(() => {
-          setIsOpen(false);
+          setIsShow(false);
         });
     }
     // 하단 팝업인 경우
@@ -94,7 +94,7 @@ const ToastPopup = ({
       gsap
         .to(ref.current, { bottom: "-50px", opacity: 0, duration: 0.5 })
         .then(() => {
-          setIsOpen(false);
+          setIsShow(false);
         });
     }
   };

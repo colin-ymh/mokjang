@@ -13,6 +13,7 @@ export default {
   occupation: "하시는 일",
   school: "학교",
   marriage: "결혼",
+  detailMarriage: "결혼 상세 정보",
   address: "도로명 주소",
   detailAddress: "상세 주소",
   homePhone: "전화번호",
@@ -43,6 +44,10 @@ export default {
   // marriage 결혼
   married: "기혼",
   single: "미혼",
+
+  // 양력 음력
+  solar: "양력",
+  lunar: "음력",
 
   /*-------------------member register-------------------*/
   "register.defaultHeaderPhrase": "교인 정보를 입력해주세요",
@@ -80,6 +85,7 @@ export default {
   "placeholder.previousChurchName": "이전 교회를 입력해주세요.",
   "placeholder.vehicleNumber": "4자리 입력",
   "placeholder.marriage": "결혼 상태를 입력해주세요",
+  "placeholder.detailMarriage": "결혼 상세 상태를 입력해주세요",
   "placeholder.family": "가족을 입력해주세요.",
   /*-------------------placeholder-------------------*/
 

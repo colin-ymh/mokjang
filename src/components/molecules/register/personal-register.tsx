@@ -1,6 +1,12 @@
 "use client";
 
-import React, { ChangeEvent, RefObject, useEffect, useRef } from "react";
+import React, {
+  ChangeEvent,
+  RefObject,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
 import { gsap } from "gsap";
@@ -9,11 +15,18 @@ import { TemporalMember } from "@/models/register/member-register";
 import { getDateFromString, getIsChild } from "@/utils/date";
 import PersonalRegisterView from "@/components/molecules/register/personal-register.view";
 import { setMember } from "@/redux/reducers/member-register-reducer";
-import { MEMBER_REGISTER_STAGE } from "@/constant/constant";
+import { getSchool } from "@/api/school-api";
+import { DropdownValueType } from "@/components/atoms/common/dropdown/dropdown-item";
+import PagePopup from "@/components/atoms/common/popup/page-popup";
+import DaumPostcodeEmbed, { Address } from "react-daum-postcode";
+import { CALENDAR_MODE } from "@/constant/constant";
 
 const PersonalRegister = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { member } = useSelector((state: RootState) => state.memberRegister);
+
+  const [schoolItems, setSchoolItems] = useState<DropdownValueType[]>([]);
+  const [isAddressOpen, setIsAddressOpen] = useState<boolean>(false);
 
   // 학교 input 창 애니메이션 효과
   const schoolAnimationRef = useRef<HTMLDivElement | null>(null);
@@ -68,6 +81,11 @@ const PersonalRegister = () => {
     }
   };
 
+  // 양력 음력 변경 이벤트
+  const onChangeCalendarMode = (mode: CALENDAR_MODE) => {
+    dispatch(setMember({ ...member, isLunar: mode === CALENDAR_MODE.LUNAR }));
+  };
+
   // 전화번호 변경 시 이벤트
   const onChangeHomePhone = (
     event: ChangeEvent<HTMLInputElement>,
@@ -77,7 +95,7 @@ const PersonalRegister = () => {
     const newHomePhone = event.target.value;
     dispatch(setMember({ ...newMember, homePhone: newHomePhone }));
 
-    let MAX_LENGTH = 12;
+    let MAX_LENGTH;
 
     // 전화번호를 다 입력한 경우
     if (newHomePhone.slice(0, 2) === "02") {
@@ -111,13 +129,6 @@ const PersonalRegister = () => {
     dispatch(setMember({ ...newMember, occupation: newOccupation }));
   };
 
-  // 도로명 주소 변경 시 이벤트
-  const onChangeAddress = (event: ChangeEvent<HTMLInputElement>) => {
-    const newMember: TemporalMember = member;
-    const newAddress = event.target.value;
-    dispatch(setMember({ ...newMember, address: newAddress }));
-  };
-
   // 상세 주소 변경 시 이벤트
   const onChangeDetailAddress = (event: ChangeEvent<HTMLInputElement>) => {
     const newMember: TemporalMember = member;
@@ -126,10 +137,26 @@ const PersonalRegister = () => {
   };
 
   // 학교 변경 시 이벤트
-  const onChangeSchool = (event: ChangeEvent<HTMLInputElement>) => {
+  const onChangeSchool = (
+    value: string,
+    nextInputRef?: RefObject<HTMLInputElement>,
+  ) => {
     const newMember: TemporalMember = member;
-    const newSchool = event.target.value;
-    dispatch(setMember({ ...newMember, school: newSchool }));
+    dispatch(setMember({ ...newMember, school: value }));
+
+    // value 에 따라 학교 검색 API 요청
+    getSchool(value, 1, 5).then((response) => {
+      const items = response.map((value, index) => {
+        return { value: value.SCHUL_NM, title: value.SCHUL_NM };
+      });
+
+      setSchoolItems(items);
+
+      // 다음 입력이 있다면 다음 입력으로
+      if (nextInputRef?.current) {
+        nextInputRef.current.focus();
+      }
+    });
   };
 
   // 차량 번호 변경 시 이벤트
@@ -156,28 +183,82 @@ const PersonalRegister = () => {
     dispatch(setMember({ ...newMember, marriage: value }));
   };
 
+  // 결혼 정보 드롭다운 아이템 선택 시 이벤트
+  const onClickMarriageDropdownItem = (
+    nextInputRef: RefObject<HTMLInputElement>,
+  ) => {
+    if (nextInputRef?.current) {
+      nextInputRef.current.focus();
+    }
+  };
+
+  // 상세 주소 변경 시 이벤트
+  const onChangeDetailMarriage = (event: ChangeEvent<HTMLInputElement>) => {
+    const newMember: TemporalMember = member;
+    const newDetailMarriage = event.target.value;
+    dispatch(setMember({ ...newMember, detailMarriage: newDetailMarriage }));
+  };
+
   // 성별 변경 시 이벤트
   const onChangeGender = (gender: string) => {
     dispatch(setMember({ ...member, gender }));
   };
 
+  // 도로명주소 입력창 이벤트
+  const onClickAddress = () => {
+    setIsAddressOpen(true);
+  };
+
+  // 도로명주소 검색 api 내 주소 선택 이벤트
+  const onCompleteAddress = (data: Address) => {
+    let fullAddress = data.address;
+    let extraAddress = "";
+
+    if (data.addressType === "R") {
+      if (data.bname !== "") {
+        extraAddress += data.bname;
+      }
+      if (data.buildingName !== "") {
+        extraAddress +=
+          extraAddress !== "" ? `, ${data.buildingName}` : data.buildingName;
+      }
+      fullAddress += extraAddress !== "" ? ` (${extraAddress})` : "";
+    }
+
+    const newMember: TemporalMember = member;
+    dispatch(setMember({ ...newMember, address: fullAddress }));
+    setIsAddressOpen(false);
+  };
+
   const props = {
     schoolAnimationRef,
+    schoolItems,
+    isAddressOpen,
     onChangeProfileImage,
     onChangeBirth,
+    onChangeCalendarMode,
     onChangeHomePhone,
     onChangeOccupation,
-    onChangeAddress,
     onChangeDetailAddress,
     onChangeSchool,
     onChangeVehicleNumber,
     onChangeMarriage,
+    onClickMarriageDropdownItem,
+    onChangeDetailMarriage,
     onChangeGender,
+    onClickAddress,
+    onCompleteAddress,
   };
 
   return (
     <>
       <PersonalRegisterView {...props} />
+      <PagePopup isShow={isAddressOpen} setIsShow={setIsAddressOpen}>
+        <DaumPostcodeEmbed
+          onComplete={onCompleteAddress}
+          style={{ width: "100%", height: "100%" }}
+        />
+      </PagePopup>
     </>
   );
 };

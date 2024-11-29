@@ -3,10 +3,10 @@
 import React, { ChangeEvent } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
+import { setMember } from "@/redux/reducers/member-register-reducer";
 
 import { TemporalMember } from "@/models/register/member-register";
 import RequiredRegisterView from "@/components/molecules/register/required-register.view";
-import { setMember } from "@/redux/reducers/member-register-reducer";
 import { MEMBER_REGISTER_TYPE } from "@/constant/constant";
 
 const RequiredRegister = () => {

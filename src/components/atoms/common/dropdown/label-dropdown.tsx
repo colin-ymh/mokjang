@@ -16,14 +16,14 @@ const LabelDropdownContainer = styled.div`
 `;
 
 type LabelDropdownProps = DropdownProps & {
-  ref?: RefObject<HTMLDivElement>;
   label: string;
-  placeholder?: string;
-  onKeyDown?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
 };
 
 const LabelDropdown = forwardRef<HTMLInputElement, LabelDropdownProps>(
-  ({ label, value, onChangeItem, items, ...dropdownProps }, ref) => {
+  (
+    { label, value, onChangeItem, items, enterKeyHint, ...dropdownProps },
+    ref,
+  ) => {
     return (
       <LabelDropdownContainer>
         <MainText>{label}</MainText>

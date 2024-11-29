@@ -1,15 +1,15 @@
 "use client";
 
+import React, { ChangeEvent, forwardRef } from "react";
 import styled from "styled-components";
 
-import { GRAY, WHITE } from "@/common/styles/color";
+import { WHITE } from "@/common/styles/color";
 import DropdownItem, {
   DropdownValueType,
 } from "@/components/atoms/common/dropdown/dropdown-item";
 import BorderInput, {
   InputProps,
 } from "@/components/atoms/common/input/border-input";
-import React, { ChangeEvent, forwardRef, SetStateAction } from "react";
 
 const DropdownContainer = styled.div`
   width: 100%;
@@ -49,8 +49,10 @@ type DropdownViewProps = {
   onClickItem: (value: any) => void;
   onChangeInput: (event: ChangeEvent<HTMLInputElement>) => void;
   onPressEnter: (event: React.KeyboardEvent<HTMLInputElement>) => void;
+  onFocusInput: () => void;
   reverseDirection?: boolean;
   isEditable?: boolean;
+  enterKeyHint: string;
 };
 
 const DropdownView = forwardRef<
@@ -68,6 +70,8 @@ const DropdownView = forwardRef<
       onClickItem, // 드롭다운 아이템 선택
       onChangeInput, // input 창에 직접 수정
       onPressEnter,
+      onFocusInput,
+      enterKeyHint,
       //
       reverseDirection,
       isEditable,
@@ -99,6 +103,8 @@ const DropdownView = forwardRef<
               onPressEnter(event);
             }}
             readOnly={!isEditable}
+            onFocus={onFocusInput}
+            enterKeyHint={enterKeyHint}
           />
         </DropdownButton>
 

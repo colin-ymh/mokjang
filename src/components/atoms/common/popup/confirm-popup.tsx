@@ -10,7 +10,7 @@ interface ConfirmPopupProps {
   rightButtonText?: string;
   onClickLeftButton?: () => void;
   onClickRightButton?: () => void;
-  isModalVisible: boolean;
+  isShow: boolean;
   buttonNum?: 1 | 2 | 3;
   singleButtonText?: string;
   onClickSingleButton?: () => void;
@@ -116,14 +116,14 @@ const ConfirmPopup = ({
   rightButtonText,
   onClickLeftButton,
   onClickRightButton,
-  isModalVisible,
+  isShow,
   buttonNum,
   singleButtonText,
   onClickSingleButton,
   middleButtonText,
   onClickMiddleButton,
 }: ConfirmPopupProps) => {
-  if (!isModalVisible) return null;
+  if (!isShow) return null;
 
   const getButtons = () => {
     switch (buttonNum) {

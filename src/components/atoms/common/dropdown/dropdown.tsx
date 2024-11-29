@@ -1,6 +1,12 @@
 "use client";
 
-import React, { ChangeEvent, forwardRef, useState } from "react";
+import React, {
+  ChangeEvent,
+  FocusEventHandler,
+  forwardRef,
+  RefObject,
+  useState,
+} from "react";
 import TransparentBackground from "@/components/atoms/common/etc/transparent-background";
 import DropdownView from "@/components/atoms/common/dropdown/dropdown.view";
 import { DropdownValueType } from "@/components/atoms/common/dropdown/dropdown-item";
@@ -14,6 +20,11 @@ export type DropdownProps = {
   isShowTitle?: boolean;
   isEditable?: boolean;
   backgroundBlur?: boolean; // 드롭다운 클릭 배경 흐려짐
+  enterKeyHint?: string;
+  ref?: RefObject<HTMLDivElement>;
+  placeholder?: string;
+  onKeyDown?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
+  onClickItemExtra?: () => void;
 };
 
 const Dropdown = forwardRef<HTMLInputElement, DropdownProps & InputProps>(
@@ -25,6 +36,8 @@ const Dropdown = forwardRef<HTMLInputElement, DropdownProps & InputProps>(
       backgroundBlur = true,
       reverseDirection = false,
       isEditable = false,
+      enterKeyHint = "enter",
+      onClickItemExtra,
       ...inputProps
     },
     ref,
@@ -53,7 +66,6 @@ const Dropdown = forwardRef<HTMLInputElement, DropdownProps & InputProps>(
 
       // 외부에서 onChangeItem 을 넘겨줬었다면
       if (onChangeItem) {
-        console.log();
         // 선택된 아이템이 유효한지 확인 후에
         const newItem = items.find((item) => value === item.value);
         // 유효하다면, 해당 아이템의 value 만 외부로 전달
@@ -61,6 +73,9 @@ const Dropdown = forwardRef<HTMLInputElement, DropdownProps & InputProps>(
           onChangeItem(newItem.value);
         }
       }
+
+      // 추가적인 동작이 필요한 경우
+      if (onClickItemExtra) onClickItemExtra();
     };
 
     // input 창에 직접 입력하는 경우 (직접입력)
@@ -76,6 +91,10 @@ const Dropdown = forwardRef<HTMLInputElement, DropdownProps & InputProps>(
           onChangeItem(newValue);
         }
       }
+    };
+
+    const onFocusInput = () => {
+      setIsOpened(true);
     };
 
     const onPressEnter = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -98,6 +117,8 @@ const Dropdown = forwardRef<HTMLInputElement, DropdownProps & InputProps>(
       onClickItem,
       onChangeInput,
       onPressEnter,
+      onFocusInput,
+      enterKeyHint,
 
       // style
       reverseDirection,
