@@ -13,7 +13,9 @@ import { useMarriageDropdownItems } from "@/constant/dropdown/dropdown-items";
 import VehicleNumberInput from "@/components/atoms/register/vehicle-number-input";
 import { VehicleNumberInputRef } from "@/components/atoms/register/vehicle-number-input.view";
 import MemberImageInput from "@/components/atoms/register/member-image-input";
-
+import { DropdownValueType } from "@/components/atoms/common/dropdown/dropdown-item";
+import RadioButton from "@/components/atoms/common/input/radio-button/radio-button";
+import { CALENDAR_MODE } from "@/constant/constant";
 import {
   useBirthRadioButtonItems,
   useGenderRadioButtonItems,
@@ -24,9 +26,7 @@ import { getDateFromString, getIsChild } from "@/utils/date";
 import { onClickEnter } from "@/utils/input";
 
 import { useI18n, useScopedI18n } from "../../../../locales/client";
-import { DropdownValueType } from "@/components/atoms/common/dropdown/dropdown-item";
-import RadioButton from "@/components/atoms/common/input/radio-button/radio-button";
-import { CALENDAR_MODE } from "@/constant/constant";
+import { usePathname, useRouter } from "next/navigation";
 
 const InputContainer = styled.div`
   display: flex;
@@ -114,9 +114,7 @@ const PersonalRegisterView = ({
   const t = useI18n();
   const t_placeholder = useScopedI18n("placeholder");
 
-  const { member, stage } = useSelector(
-    (state: RootState) => state.memberRegister,
-  );
+  const { member } = useSelector((state: RootState) => state.memberRegister);
 
   // 각 input 에 대한 ref
   const birthInputRef = useRef<HTMLInputElement>(null);
@@ -210,14 +208,17 @@ const PersonalRegisterView = ({
         }
       />
       {/* 결혼 상세 정보 */}
-      <LabelInput
-        enterKeyHint={"done"}
-        ref={detailMarriageInputRef}
-        label={t("detailMarriage")}
-        value={member.detailMarriage}
-        onChange={onChangeDetailMarriage}
-        placeholder={t_placeholder("detailMarriage")}
-      />
+      {/* 새신자 측에서는 보이지 않는 부분 */}
+      {!usePathname().includes("/extra") && (
+        <LabelInput
+          enterKeyHint={"done"}
+          ref={detailMarriageInputRef}
+          label={t("detailMarriage")}
+          value={member.detailMarriage}
+          onChange={onChangeDetailMarriage}
+          placeholder={t_placeholder("detailMarriage")}
+        />
+      )}
       {/* 도로명주소 */}
       <LabelInput
         enterKeyHint={"done"}
