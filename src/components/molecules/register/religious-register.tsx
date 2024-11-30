@@ -16,40 +16,36 @@ const ReligiousRegister = () => {
   const { member } = useSelector((state: RootState) => state.memberRegister);
 
   // 직분 변경 시 이벤트
-  const onChangeConfirmation = (value: string) => {
+  const onChangeOfficer = (value: string) => {
     const newMember: TemporalMember = member;
     dispatch(
       setMember({
         ...newMember,
-        confirmation: value,
+        officer: value,
       }),
     );
   };
 
   // 임직일 날짜 변경 시 이벤트
-  const onChangeConfirmationStartDate = (
-    event: ChangeEvent<HTMLInputElement>,
-  ) => {
+  const onChangeOfficerStartDate = (event: ChangeEvent<HTMLInputElement>) => {
     const newMember: TemporalMember = member;
-    const newConfirmationStartDate = event.target.value;
+    const newOfficerStartDate = event.target.value;
     dispatch(
       setMember({
         ...newMember,
-        confirmationStartDate: newConfirmationStartDate,
+        officerStartDate: newOfficerStartDate,
       }),
     );
   };
 
   // 임직 교회 변경 시 이벤트
-  const onChangeConfirmationStartChurch = (
-    event: ChangeEvent<HTMLInputElement>,
-  ) => {
+  const onChangeOfficerStartChurch = (event: ChangeEvent<HTMLInputElement>) => {
     const newMember: TemporalMember = member;
-    const newConfirmationStartChurch = event.target.value;
+    const newOfficerStartChurch = event.target.value;
     dispatch(
       setMember({
         ...newMember,
-        confirmationStartChurch: newConfirmationStartChurch,
+        officerStartChurch: newOfficerStartChurch,
       }),
     );
   };
@@ -69,9 +65,9 @@ const ReligiousRegister = () => {
   };
 
   const props = {
-    onChangeConfirmation,
-    onChangeConfirmationStartDate,
-    onChangeConfirmationStartChurch,
+    onChangeOfficer,
+    onChangeOfficerStartDate,
+    onChangeOfficerStartChurch,
     onChangeBaptism,
     onChangePreviousChurchName,
   };

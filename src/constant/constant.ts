@@ -6,10 +6,11 @@ export enum BAPTISM {
   IMMERSION_BAPTISM = "immersionBaptism",
   INFANT_BAPTISM = "infantBaptism",
   CATECHUMENATE = "catechumenate",
+  CONFIRMATION = "confirmation",
 }
 
 // 신급
-export enum CONFIRMATION {
+export enum OFFICER {
   ELDER = "elder",
   EXHORTER = "exhorter",
   ORDAINED_DEACON = "ordainedDeacon",

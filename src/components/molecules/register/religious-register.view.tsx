@@ -14,10 +14,10 @@ import { TemporalMember } from "@/models/register/member-register";
 
 import {
   useBaptismDropdownItems,
-  useConfirmationDropdownItems,
+  useOfficerDropdownItems,
 } from "@/constant/dropdown/dropdown-items";
 import LabelDropdown from "@/components/atoms/common/dropdown/label-dropdown";
-import { BAPTISM, CONFIRMATION, NONE } from "@/constant/constant";
+import { BAPTISM, OFFICER, NONE } from "@/constant/constant";
 
 import { useI18n, useScopedI18n } from "../../../../locales/client";
 import { VehicleNumberInputRef } from "@/components/atoms/register/vehicle-number-input.view";
@@ -33,16 +33,14 @@ const InputContainer = styled.div`
 `;
 
 export type ReligiousRegisterViewProps = {
-  onChangeConfirmation: (value: string) => void;
-  onChangeConfirmationStartDate: (event: ChangeEvent<HTMLInputElement>) => void;
-  onChangeConfirmationStartChurch: (
-    event: ChangeEvent<HTMLInputElement>,
-  ) => void;
+  onChangeOfficer: (value: string) => void;
+  onChangeOfficerStartDate: (event: ChangeEvent<HTMLInputElement>) => void;
+  onChangeOfficerStartChurch: (event: ChangeEvent<HTMLInputElement>) => void;
   onChangeBaptism: (value: BAPTISM) => void;
   onChangePreviousChurchName: (event: ChangeEvent<HTMLInputElement>) => void;
 };
 
-const ConfirmationWrapper = styled.div`
+const OfficerWrapper = styled.div`
   align-items: center;
   justify-content: center;
   flex-direction: column;
@@ -59,9 +57,9 @@ const Invisible = styled.div`
 `;
 
 const ReligiousRegisterView = ({
-  onChangeConfirmation,
-  onChangeConfirmationStartDate,
-  onChangeConfirmationStartChurch,
+  onChangeOfficer,
+  onChangeOfficerStartDate,
+  onChangeOfficerStartChurch,
   onChangeBaptism,
   onChangePreviousChurchName,
 }: ReligiousRegisterViewProps) => {
@@ -73,17 +71,17 @@ const ReligiousRegisterView = ({
   );
 
   // input refs
-  const confirmationDateInputRef = useRef<HTMLInputElement>(null);
-  const confirmationChurchInputRef = useRef<HTMLInputElement>(null);
+  const officerDateInputRef = useRef<HTMLInputElement>(null);
+  const officerChurchInputRef = useRef<HTMLInputElement>(null);
   const previousChurchInputRef = useRef<HTMLInputElement>(null);
 
   // 학교 input 창 애니메이션 효과
-  const confirmationAnimationRef = useRef<HTMLDivElement | null>(null);
+  const officerAnimationRef = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
-    if (confirmationAnimationRef.current) {
-      if (member.confirmation !== NONE) {
+    if (officerAnimationRef.current) {
+      if (member.officer !== NONE) {
         // 직분이 있는 경우
-        gsap.to(confirmationAnimationRef.current, {
+        gsap.to(officerAnimationRef.current, {
           opacity: 1,
           height: "auto",
           marginBottom: 0,
@@ -93,7 +91,7 @@ const ReligiousRegisterView = ({
         });
       } else {
         // 직분이 없는 경우
-        gsap.to(confirmationAnimationRef.current, {
+        gsap.to(officerAnimationRef.current, {
           opacity: 0,
           height: 0,
           marginBottom: -20,
@@ -103,7 +101,7 @@ const ReligiousRegisterView = ({
         });
       }
     }
-  }, [member.confirmation]);
+  }, [member.officer]);
 
   return (
     <InputContainer>
@@ -116,33 +114,33 @@ const ReligiousRegisterView = ({
       />
       {/* 직분 */}
       <LabelDropdown
-        label={t("confirmation")}
-        value={member.confirmation}
-        items={useConfirmationDropdownItems()}
-        onChangeItem={onChangeConfirmation}
+        label={t("officer")}
+        value={member.officer}
+        items={useOfficerDropdownItems()}
+        onChangeItem={onChangeOfficer}
       />
-      <ConfirmationWrapper ref={confirmationAnimationRef}>
+      <OfficerWrapper ref={officerAnimationRef}>
         {/* 임직일 */}
         <LabelInput
-          ref={confirmationDateInputRef}
+          ref={officerDateInputRef}
           enterKeyHint={"done"}
-          label={t("confirmationStartDate")}
-          value={getFormattedDate(member.confirmationStartDate)}
-          onChange={onChangeConfirmationStartDate}
-          placeholder={t_placeholder("confirmationStartDate")}
-          onKeyDown={(event) => onClickEnter(event, confirmationChurchInputRef)}
+          label={t("officerStartDate")}
+          value={getFormattedDate(member.officerStartDate)}
+          onChange={onChangeOfficerStartDate}
+          placeholder={t_placeholder("officerStartDate")}
+          onKeyDown={(event) => onClickEnter(event, officerChurchInputRef)}
         />
         {/* 임직 교회 */}
         <LabelInput
-          ref={confirmationChurchInputRef}
+          ref={officerChurchInputRef}
           enterKeyHint={"done"}
-          label={t("confirmationStartChurch")}
-          value={member.confirmationStartChurch}
-          onChange={onChangeConfirmationStartChurch}
-          placeholder={t_placeholder("confirmationStartChurch")}
+          label={t("officerStartChurch")}
+          value={member.officerStartChurch}
+          onChange={onChangeOfficerStartChurch}
+          placeholder={t_placeholder("officerStartChurch")}
           onKeyDown={(event) => onClickEnter(event, previousChurchInputRef)}
         />
-      </ConfirmationWrapper>
+      </OfficerWrapper>
       {/* 이전 교회 */}
       <LabelInput
         ref={previousChurchInputRef}

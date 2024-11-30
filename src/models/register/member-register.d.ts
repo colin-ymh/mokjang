@@ -1,8 +1,8 @@
 import {
   BAPTISM,
-  CONFIRMATION,
   MARRIAGE,
   MEMBER_REGISTER_TYPE,
+  OFFICER,
 } from "@/constant/constant";
 
 export type TemporalMember = {
@@ -27,9 +27,9 @@ export type TemporalMember = {
   // 성도정보
   ministry?: string; // 사역
   group?: string; // 소그룹
-  confirmation: CONFIRMATION | NONE; // 직분
-  confirmationStartDate: string;
-  confirmationStartChurch: string;
+  officer: OFFICER | NONE; // 직분
+  officerStartDate: string;
+  officerStartChurch: string;
   createdAt?: string;
   baptism: BAPTISM | NONE; // 신급
   guide: any; // 인도자

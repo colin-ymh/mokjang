@@ -20,9 +20,9 @@ export default {
   vehicleNumber: "Vehicle Plate Number",
   // 교회 관련 정보
   baptism: "Baptism",
-  confirmation: "Confirmation",
-  confirmationStartDate: "Confirmation Start Date",
-  confirmationStartChurch: "Confirmation Start Church",
+  officer: "Officer",
+  officerStartDate: "Officer Start Date",
+  officerStartChurch: "Officer Start Church",
   previousChurchName: "Previous Church",
   // 성별
   male: "Male",
@@ -32,8 +32,9 @@ export default {
   immersionBaptism: "Immersion Baptism",
   infantBaptism: "Infant Baptism",
   catechumenate: "Catechumenate",
+  confirmation: "Officer",
 
-  // confirmation
+  // officer
   elder: "Elder",
   exhorter: "Exhorter",
   ordainedDeacon: "Ordained Deacon",
@@ -75,11 +76,10 @@ export default {
   "placeholder.address": "Enter the address.",
   "placeholder.detailAddress": "Enter the detail address.",
   "placeholder.school": "Enter the school name.",
-  "placeholder.confirmation": "Enter the confirmation.",
-  "placeholder.confirmationStartDate":
-    "Enter a confirmation start date. (e.g., yyyy-mm-dd)",
-  "placeholder.confirmationStartChurch":
-    "Enter a confirmation start church name.",
+  "placeholder.officer": "Enter the officer name.",
+  "placeholder.officerStartDate":
+    "Enter a officer start date. (e.g., yyyy-mm-dd)",
+  "placeholder.officerStartChurch": "Enter a officer start church name.",
   "placeholder.guide": "Enter the guide's name.",
   "placeholder.previousChurchName": "Enter the name of the previous church.",
   "placeholder.vehicleNumber": "Enter the vehicle plate number.",

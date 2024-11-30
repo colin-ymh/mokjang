@@ -1,4 +1,4 @@
-import { BAPTISM, CONFIRMATION, MARRIAGE, NONE } from "@/constant/constant";
+import { BAPTISM, OFFICER, MARRIAGE, NONE } from "@/constant/constant";
 import { useI18n } from "../../../locales/client";
 
 export const useBaptismDropdownItems = () => {
@@ -22,6 +22,10 @@ export const useBaptismDropdownItems = () => {
       title: t(BAPTISM.CATECHUMENATE),
     },
     {
+      value: BAPTISM.CONFIRMATION,
+      title: t(BAPTISM.CONFIRMATION),
+    },
+    {
       value: NONE,
       title: t(NONE),
     },
@@ -30,25 +34,25 @@ export const useBaptismDropdownItems = () => {
   return items;
 };
 
-export const useConfirmationDropdownItems = () => {
+export const useOfficerDropdownItems = () => {
   const t = useI18n();
 
   const items = [
     {
-      value: CONFIRMATION.DEACON,
-      title: t(CONFIRMATION.DEACON),
+      value: OFFICER.DEACON,
+      title: t(OFFICER.DEACON),
     },
     {
-      value: CONFIRMATION.EXHORTER,
-      title: t(CONFIRMATION.EXHORTER),
+      value: OFFICER.EXHORTER,
+      title: t(OFFICER.EXHORTER),
     },
     {
-      value: CONFIRMATION.ORDAINED_DEACON,
-      title: t(CONFIRMATION.ORDAINED_DEACON),
+      value: OFFICER.ORDAINED_DEACON,
+      title: t(OFFICER.ORDAINED_DEACON),
     },
     {
-      value: CONFIRMATION.ELDER,
-      title: t(CONFIRMATION.ELDER),
+      value: OFFICER.ELDER,
+      title: t(OFFICER.ELDER),
     },
     {
       value: NONE,

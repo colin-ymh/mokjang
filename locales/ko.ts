@@ -20,9 +20,9 @@ export default {
   vehicleNumber: "차량 번호",
   // 교회 관련 정보
   baptism: "신급",
-  confirmation: "직분",
-  confirmationStartDate: "임직일",
-  confirmationStartChurch: "임직 교회",
+  officer: "직분",
+  officerStartDate: "임직일",
+  officerStartChurch: "임직 교회",
   previousChurchName: "이전 교회 이름",
   // 성별
   male: "남성",
@@ -33,8 +33,9 @@ export default {
   immersionBaptism: "침례",
   infantBaptism: "유아세례",
   catechumenate: "학습",
+  confirmation: "입교",
 
-  // confirmation 직분
+  // officer 직분
   member: "교인",
   elder: "장로",
   exhorter: "권사",
@@ -78,9 +79,9 @@ export default {
   "placeholder.address": "도로명 주소를 입력해주세요.",
   "placeholder.detailAddress": "상세 주소를 입력해주세요.",
   "placeholder.school": "학교를 입력해주세요.",
-  "placeholder.confirmation": "직분을 입력해주세요",
-  "placeholder.confirmationStartDate": "임직일을 입력해주세요. (yyyy-mm-dd) ",
-  "placeholder.confirmationStartChurch": "임직 교회를 입력해주세요.",
+  "placeholder.officer": "직분을 입력해주세요",
+  "placeholder.officerStartDate": "임직일을 입력해주세요. (yyyy-mm-dd) ",
+  "placeholder.officerStartChurch": "임직 교회를 입력해주세요.",
   "placeholder.guide": "인도자를 입력해주세요.",
   "placeholder.previousChurchName": "이전 교회를 입력해주세요.",
   "placeholder.vehicleNumber": "4자리 입력",
