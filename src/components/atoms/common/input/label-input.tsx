@@ -7,6 +7,7 @@ import BorderInput from "@/components/atoms/common/input/border-input";
 import { DEFAULT_VALUE } from "@/common/default/default-value";
 
 const LabelInputContainer = styled.div<{ $zIndex?: number }>`
+  flex: 1;
   display: flex;
   flex-direction: column;
   width: 100%;

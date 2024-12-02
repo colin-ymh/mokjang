@@ -1,18 +1,13 @@
 "use client";
 
-import React, { ChangeEvent, RefObject, useEffect } from "react";
+import React, { useEffect } from "react";
 
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "@/redux/store";
-import { setMember, setStage } from "@/redux/reducers/member-register-reducer";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/redux/store";
+import { setStage } from "@/redux/reducers/member-register-reducer";
 
-import { TemporalMember } from "@/models/register/member-register";
 import MemberRegisterView from "@/components/organisms/register/member-register.view";
-import {
-  BAPTISM,
-  MEMBER_REGISTER_STAGE,
-  MEMBER_REGISTER_TYPE,
-} from "@/constant/constant";
+import { MEMBER_REGISTER_STAGE } from "@/constant/constant";
 
 const MemberRegister = () => {
   const dispatch = useDispatch<AppDispatch>();

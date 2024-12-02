@@ -1,6 +1,7 @@
 export default {
   none: "없음",
   type: "종류",
+
   // 필수
   name: "이름",
   mobilePhone: "휴대전화",
@@ -49,6 +50,17 @@ export default {
   // 양력 음력
   solar: "양력",
   lunar: "음력",
+
+  /*-------------------header (side bar button)-------------------*/
+  "header.home": "홈",
+  "header.member": "교인 관리",
+  /*-------------------header (side bar button)-------------------*/
+
+  /*-------------------member content (member header bar button)-------------------*/
+  "member-content.memberList": "전체",
+  "member-content.administratorList": "관리자",
+  "member-content.newMemberList": "새신자",
+  /*-------------------member content (member header bar button)-------------------*/
 
   /*-------------------member register-------------------*/
   "register.defaultHeaderPhrase": "교인 정보를 입력해주세요",

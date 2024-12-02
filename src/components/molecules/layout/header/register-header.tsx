@@ -1,11 +1,11 @@
 import { usePathname, useRouter } from "next/navigation";
 
-import RegisterHeaderView from "@/components/molecules/layout/register-header.view";
+import RegisterHeaderView from "@/components/molecules/layout/header/register-header.view";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { useState } from "react";
 import ConfirmPopup from "@/components/atoms/common/popup/confirm-popup";
-import { useI18n, useScopedI18n } from "../../../../locales/client";
+import { useI18n, useScopedI18n } from "../../../../../locales/client";
 
 const RegisterHeader = () => {
   const t_popup = useScopedI18n("popup");

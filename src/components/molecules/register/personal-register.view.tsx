@@ -15,7 +15,7 @@ import { VehicleNumberInputRef } from "@/components/atoms/register/vehicle-numbe
 import MemberImageInput from "@/components/atoms/register/member-image-input";
 import { DropdownValueType } from "@/components/atoms/common/dropdown/dropdown-item";
 import RadioButton from "@/components/atoms/common/input/radio-button/radio-button";
-import { CALENDAR_MODE } from "@/constant/constant";
+import { CALENDAR_MODE, MEDIA_MIN_WIDTH } from "@/constant/constant";
 import {
   useBirthRadioButtonItems,
   useGenderRadioButtonItems,
@@ -26,9 +26,9 @@ import { getDateFromString, getIsChild } from "@/utils/date";
 import { onClickEnter } from "@/utils/input";
 
 import { useI18n, useScopedI18n } from "../../../../locales/client";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 
-const InputContainer = styled.div`
+const PersonalRegisterContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -37,6 +37,18 @@ const InputContainer = styled.div`
   width: 100%;
 `;
 
+const ImageGenderBirthContainer = styled.div`
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: 20px;
+  @media (min-width: ${MEDIA_MIN_WIDTH.DESKTOP}) {
+    flex-direction: row;
+  }
+`;
+
+const GenderBirthContainer = styled(PersonalRegisterContainer)``;
+
 const BirthContainer = styled.div`
   display: flex;
   align-items: center;
@@ -44,6 +56,41 @@ const BirthContainer = styled.div`
   flex-direction: column;
   gap: 10px;
   width: 100%;
+`;
+
+const InputContainer = styled(PersonalRegisterContainer)`
+  @media (min-width: ${MEDIA_MIN_WIDTH.DESKTOP}) {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 20px;
+
+    /* 각 input을 두 개씩 한 줄에 배치 */
+    > div {
+      flex: 1;
+      min-width: calc(
+        50% - 10px
+      ); /* 두 개씩 배치되도록 50% 크기로 설정, 간격을 고려하여 10px만큼 빼줌 */
+    }
+  }
+`;
+
+const SchoolOccupationContainer = styled(PersonalRegisterContainer)<{
+  $isSchoolShow: boolean;
+}>`
+  @media (min-width: ${MEDIA_MIN_WIDTH.DESKTOP}) {
+    ${({ $isSchoolShow }) =>
+      $isSchoolShow &&
+      `
+        flex-direction: row-reverse;
+        flex-wrap: wrap;
+        gap: 20px;
+
+        > div {
+          flex: 1;
+          min-width: calc(50% - 10px); 
+        }
+      `}
+  }
 `;
 
 const SchoolInputWrapper = styled.div`
@@ -128,127 +175,141 @@ const PersonalRegisterView = ({
   const vehicleInputRef = useRef<VehicleNumberInputRef>(null);
 
   return (
-    <InputContainer>
-      {/* 프로필 이미지*/}
-      <MemberImageInput
-        value={member.profileImage}
-        onChange={onChangeProfileImage}
-      />
-      {/* 성별 */}
-      <LabelRadioButton
-        label={t("gender")}
-        items={useGenderRadioButtonItems()}
-        selectedValue={member.gender}
-        onChange={onChangeGender}
-        customButton={RegisterRadioButton}
-      />
-
-      {/* 생년월일 */}
-      <BirthContainer>
-        {/* 생년월일 입력창 */}
+    <PersonalRegisterContainer>
+      <ImageGenderBirthContainer>
+        {/* 프로필 이미지*/}
+        <MemberImageInput
+          value={member.profileImage}
+          onChange={onChangeProfileImage}
+        />
+        <GenderBirthContainer>
+          {/* 성별 */}
+          <LabelRadioButton
+            label={t("gender")}
+            items={useGenderRadioButtonItems()}
+            selectedValue={member.gender}
+            onChange={onChangeGender}
+            customButton={RegisterRadioButton}
+          />
+          {/* 생년월일 */}
+          <BirthContainer>
+            {/* 생년월일 입력창 */}
+            <LabelInput
+              ref={birthInputRef}
+              inputMode={"numeric"}
+              label={t("birth")}
+              value={getFormattedDate(member.birth)}
+              onChange={(event: ChangeEvent<HTMLInputElement>) => {
+                const isChild = getIsChild(
+                  getDateFromString(event.target.value),
+                );
+                onChangeBirth(
+                  event,
+                  isChild ? schoolInputRef : occupationInputRef,
+                );
+              }}
+              placeholder={t_placeholder("birth")}
+            />
+            {/* 양력 음력 */}
+            <RadioButton
+              items={useBirthRadioButtonItems()}
+              selectedValue={
+                member.isLunar ? CALENDAR_MODE.LUNAR : CALENDAR_MODE.SOLAR
+              }
+              onChange={onChangeCalendarMode}
+              customButton={RegisterRadioButton}
+            />
+          </BirthContainer>
+        </GenderBirthContainer>
+      </ImageGenderBirthContainer>
+      <SchoolOccupationContainer
+        $isSchoolShow={getIsChild(getDateFromString(member.birth))}
+      >
+        {/* 학교 (미성년자인 경우에만 나타남) */}
+        <SchoolInputWrapper ref={schoolAnimationRef}>
+          <LabelDropdown
+            enterKeyHint={"done"}
+            ref={schoolInputRef}
+            label={t("school")}
+            items={schoolItems}
+            value={member.school}
+            onChangeItem={(value) => onChangeSchool(value, occupationInputRef)}
+            placeholder={t_placeholder("school")}
+            isEditable={true}
+            onKeyDown={(event) => onClickEnter(event, occupationInputRef)}
+          />
+        </SchoolInputWrapper>
+        {/* 직업 */}
         <LabelInput
-          ref={birthInputRef}
-          inputMode={"numeric"}
-          label={t("birth")}
-          value={getFormattedDate(member.birth)}
-          onChange={(event: ChangeEvent<HTMLInputElement>) => {
-            const isChild = getIsChild(getDateFromString(event.target.value));
-            onChangeBirth(event, isChild ? schoolInputRef : occupationInputRef);
-          }}
-          placeholder={t_placeholder("birth")}
+          enterKeyHint={"done"}
+          ref={occupationInputRef}
+          label={t("occupation")}
+          value={member.occupation}
+          onChange={onChangeOccupation}
+          placeholder={t_placeholder("occupation")}
+          onKeyDown={(event) => onClickEnter(event, marriageInputRef)}
+          zIndex={1}
         />
-        {/* 양력 음력 */}
-        <RadioButton
-          items={useBirthRadioButtonItems()}
-          selectedValue={
-            member.isLunar ? CALENDAR_MODE.LUNAR : CALENDAR_MODE.SOLAR
-          }
-          onChange={onChangeCalendarMode}
-          customButton={RegisterRadioButton}
-        />
-      </BirthContainer>
-      {/* 학교 (미성년자인 경우에만 나타남) */}
-      <SchoolInputWrapper ref={schoolAnimationRef}>
+      </SchoolOccupationContainer>
+      <InputContainer>
+        {/* 결혼 */}
         <LabelDropdown
-          enterKeyHint={"done"}
-          ref={schoolInputRef}
-          label={t("school")}
-          items={schoolItems}
-          value={member.school}
-          onChangeItem={(value) => onChangeSchool(value, occupationInputRef)}
-          placeholder={t_placeholder("school")}
-          isEditable={true}
-          onKeyDown={(event) => onClickEnter(event, occupationInputRef)}
+          ref={marriageInputRef}
+          label={t("marriage")}
+          value={member.marriage}
+          items={useMarriageDropdownItems()}
+          onChangeItem={onChangeMarriage}
+          onClickItemExtra={() => {
+            onClickMarriageDropdownItem(detailMarriageInputRef);
+          }}
+          placeholder={t_placeholder("marriage")}
+          onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) =>
+            onClickEnter(event, detailMarriageInputRef)
+          }
         />
-      </SchoolInputWrapper>
-      {/* 직업 */}
-      <LabelInput
-        enterKeyHint={"done"}
-        ref={occupationInputRef}
-        label={t("occupation")}
-        value={member.occupation}
-        onChange={onChangeOccupation}
-        placeholder={t_placeholder("occupation")}
-        onKeyDown={(event) => onClickEnter(event, marriageInputRef)}
-        zIndex={1}
-      />
-      {/* 결혼 */}
-      <LabelDropdown
-        ref={marriageInputRef}
-        label={t("marriage")}
-        value={member.marriage}
-        items={useMarriageDropdownItems()}
-        onChangeItem={onChangeMarriage}
-        onClickItemExtra={() => {
-          onClickMarriageDropdownItem(detailMarriageInputRef);
-        }}
-        placeholder={t_placeholder("marriage")}
-        onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) =>
-          onClickEnter(event, detailMarriageInputRef)
-        }
-      />
-      {/* 결혼 상세 정보 */}
-      {/* 새신자 측에서는 보이지 않는 부분 */}
-      {!usePathname().includes("/extra") && (
+        {/* 결혼 상세 정보 */}
+        {/* 새신자 측에서는 보이지 않는 부분 */}
+        {!usePathname().includes("/extra") && (
+          <LabelInput
+            enterKeyHint={"done"}
+            ref={detailMarriageInputRef}
+            label={t("detailMarriage")}
+            value={member.detailMarriage}
+            onChange={onChangeDetailMarriage}
+            placeholder={t_placeholder("detailMarriage")}
+          />
+        )}
+        {/* 도로명주소 */}
         <LabelInput
           enterKeyHint={"done"}
-          ref={detailMarriageInputRef}
-          label={t("detailMarriage")}
-          value={member.detailMarriage}
-          onChange={onChangeDetailMarriage}
-          placeholder={t_placeholder("detailMarriage")}
+          ref={addressInputRef}
+          label={t("address")}
+          value={member.address}
+          placeholder={t_placeholder("address")}
+          onClick={onClickAddress}
         />
-      )}
-      {/* 도로명주소 */}
-      <LabelInput
-        enterKeyHint={"done"}
-        ref={addressInputRef}
-        label={t("address")}
-        value={member.address}
-        placeholder={t_placeholder("address")}
-        onClick={onClickAddress}
-      />
-      {/* 상세주소 */}
-      <LabelInput
-        enterKeyHint={"done"}
-        ref={detailAddressInputRef}
-        label={t("detailAddress")}
-        value={member.detailAddress}
-        onChange={onChangeDetailAddress}
-        placeholder={t_placeholder("detailAddress")}
-        onKeyDown={(event) => onClickEnter(event, homePhoneInputRef)}
-      />
-      {/* 전화 번호 */}
-      <LabelInput
-        ref={homePhoneInputRef}
-        inputMode={"numeric"}
-        label={t("homePhone")}
-        value={getFormattedHomePhone(member.homePhone)}
-        onChange={(event: ChangeEvent<HTMLInputElement>) =>
-          onChangeHomePhone(event, vehicleInputRef?.current?.firstInputRef)
-        }
-        placeholder={t_placeholder("homePhone")}
-      />
+        {/* 상세주소 */}
+        <LabelInput
+          enterKeyHint={"done"}
+          ref={detailAddressInputRef}
+          label={t("detailAddress")}
+          value={member.detailAddress}
+          onChange={onChangeDetailAddress}
+          placeholder={t_placeholder("detailAddress")}
+          onKeyDown={(event) => onClickEnter(event, homePhoneInputRef)}
+        />
+        {/* 전화 번호 */}
+        <LabelInput
+          ref={homePhoneInputRef}
+          inputMode={"numeric"}
+          label={t("homePhone")}
+          value={getFormattedHomePhone(member.homePhone)}
+          onChange={(event: ChangeEvent<HTMLInputElement>) =>
+            onChangeHomePhone(event, vehicleInputRef?.current?.firstInputRef)
+          }
+          placeholder={t_placeholder("homePhone")}
+        />
+      </InputContainer>
       {/* 차량 번호 */}
       <VehicleNumberInput
         enterKeyHint={"done"}
@@ -260,7 +321,7 @@ const PersonalRegisterView = ({
         onKeyDown={onClickEnter}
       />
       <Invisible />
-    </InputContainer>
+    </PersonalRegisterContainer>
   );
 };
 

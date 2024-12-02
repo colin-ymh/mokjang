@@ -151,11 +151,6 @@ const PersonalRegister = () => {
       });
 
       setSchoolItems(items);
-
-      // 다음 입력이 있다면 다음 입력으로
-      if (nextInputRef?.current) {
-        nextInputRef.current.focus();
-      }
     });
   };
 
