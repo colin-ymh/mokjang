@@ -14,10 +14,12 @@ import {
 } from "@/constant/dropdown/dropdown-items";
 import LabelDropdown from "@/components/atoms/common/dropdown/label-dropdown";
 import { BAPTISM, NONE } from "@/constant/constant";
-import { getFormattedDate } from "@/utils/format";
+import { getFormattedDate, getTrimmedString } from "@/utils/format";
 import { onClickEnter } from "@/utils/input";
 
 import { useI18n, useScopedI18n } from "../../../../locales/client";
+import { BLACK, DESTRUCTIVE } from "@/common/styles/color";
+import { getIsWellFormedBirth } from "@/utils/check";
 
 const InputContainer = styled.div`
   display: flex;
@@ -107,6 +109,7 @@ const ReligiousRegisterView = ({
         value={member.baptism}
         items={useBaptismDropdownItems()}
         onChangeItem={onChangeBaptism}
+        borderColor={member.baptism !== NONE ? BLACK : undefined}
       />
       {/* 직분 */}
       <LabelDropdown
@@ -114,6 +117,7 @@ const ReligiousRegisterView = ({
         value={member.officer}
         items={useOfficerDropdownItems()}
         onChangeItem={onChangeOfficer}
+        borderColor={member.officer !== NONE ? BLACK : undefined}
       />
       <OfficerWrapper ref={officerAnimationRef}>
         {/* 임직일 */}
@@ -121,10 +125,17 @@ const ReligiousRegisterView = ({
           ref={officerDateInputRef}
           enterKeyHint={"done"}
           label={t("officerStartDate")}
-          value={getFormattedDate(member.officerStartDate)}
+          value={member.officerStartDate}
           onChange={onChangeOfficerStartDate}
           placeholder={t_placeholder("officerStartDate")}
           onKeyDown={(event) => onClickEnter(event, officerChurchInputRef)}
+          borderColor={
+            member.officerStartDate
+              ? getIsWellFormedBirth(member.officerStartDate)
+                ? BLACK
+                : DESTRUCTIVE.DEFAULT
+              : undefined
+          }
         />
         {/* 임직 교회 */}
         <LabelInput
@@ -135,6 +146,9 @@ const ReligiousRegisterView = ({
           onChange={onChangeOfficerStartChurch}
           placeholder={t_placeholder("officerStartChurch")}
           onKeyDown={(event) => onClickEnter(event, previousChurchInputRef)}
+          borderColor={
+            getTrimmedString(member.officerStartChurch) ? BLACK : undefined
+          }
         />
       </OfficerWrapper>
       {/* 이전 교회 */}
@@ -146,6 +160,9 @@ const ReligiousRegisterView = ({
         onChange={onChangePreviousChurchName}
         placeholder={t_placeholder("previousChurchName")}
         onKeyDown={onClickEnter}
+        borderColor={
+          getTrimmedString(member.previousChurchName) ? BLACK : undefined
+        }
       />
       <Invisible />
     </InputContainer>

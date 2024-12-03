@@ -8,12 +8,13 @@ import React, {
   RefObject,
 } from "react";
 import BorderInput from "@/components/atoms/common/input/border-input";
-import { getFormattedVehicleNumber } from "@/utils/format";
+import { getFormattedVehicleNumber, getTrimmedString } from "@/utils/format";
 import gsap from "gsap";
 import { MainText } from "@/components/atoms/common/text/main-text";
 import Plus from "../../../../public/svg/plus.svg";
-import { MAIN, WHITE } from "@/common/styles/color";
+import { BLACK, DESTRUCTIVE, MAIN, WHITE } from "@/common/styles/color";
 import styled from "styled-components";
+import { getIsWellFormedVehicleNumber } from "@/utils/check";
 
 const VehicleNumberInputViewContainer = styled.div`
   display: flex;
@@ -126,9 +127,16 @@ const VehicleNumberInputView = forwardRef<
           <FixedInputItem $zIndex={3}>
             <BorderInput
               ref={firstInputRef}
-              value={getFormattedVehicleNumber(value[0])}
+              value={value[0]}
               onChange={(event: ChangeEvent<HTMLInputElement>) =>
                 onChangeInput(event, 0)
+              }
+              borderColor={
+                value[0]
+                  ? getIsWellFormedVehicleNumber(value[0])
+                    ? BLACK
+                    : DESTRUCTIVE.DEFAULT
+                  : undefined
               }
               {...props}
             />
@@ -140,6 +148,13 @@ const VehicleNumberInputView = forwardRef<
               onChange={(event: ChangeEvent<HTMLInputElement>) =>
                 onChangeInput(event, 1)
               }
+              borderColor={
+                value[1]
+                  ? getIsWellFormedVehicleNumber(value[1])
+                    ? BLACK
+                    : DESTRUCTIVE.DEFAULT
+                  : undefined
+              }
               {...props}
             />
           </InputItem>
@@ -149,6 +164,13 @@ const VehicleNumberInputView = forwardRef<
               value={getFormattedVehicleNumber(value[2])}
               onChange={(event: ChangeEvent<HTMLInputElement>) =>
                 onChangeInput(event, 2)
+              }
+              borderColor={
+                value[2]
+                  ? getIsWellFormedVehicleNumber(value[2])
+                    ? BLACK
+                    : DESTRUCTIVE.DEFAULT
+                  : undefined
               }
               {...props}
             />

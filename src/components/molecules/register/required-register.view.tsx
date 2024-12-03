@@ -6,7 +6,7 @@ import styled from "styled-components";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 
-import { GRAY } from "@/common/styles/color";
+import { BLACK, DESTRUCTIVE, GRAY, MAIN } from "@/common/styles/color";
 import LabelInput from "@/components/atoms/common/input/label-input";
 import RadioButton from "@/components/atoms/common/input/radio-button/radio-button";
 import RegisterRadioButton from "@/components/atoms/register/register-radio-button";
@@ -19,6 +19,7 @@ import { onClickEnter } from "@/utils/input";
 import { useI18n, useScopedI18n } from "../../../../locales/client";
 import { DropdownValueType } from "@/components/atoms/common/dropdown/dropdown-item";
 import LabelDropdown from "@/components/atoms/common/dropdown/label-dropdown";
+import { getIsWellFormedMobilePhone, getIsWellFormedName } from "@/utils/check";
 
 const Invisible = styled.div`
   height: 100px;
@@ -105,10 +106,17 @@ const RequiredRegisterView = ({
           enterKeyHint={"done"}
           ref={nameInputRef}
           label={t("name")}
-          value={getFormattedName(member.name)}
+          value={member.name}
           onChange={onChangeName}
           placeholder={t_placeholder("name")}
           onKeyDown={(event) => onClickEnter(event, mobilePhoneInputRef)}
+          borderColor={
+            member.name
+              ? getIsWellFormedName(member.name)
+                ? BLACK
+                : DESTRUCTIVE.DEFAULT
+              : undefined
+          }
         />
         {/* 휴대폰 번호 */}
         <LabelInput
@@ -116,10 +124,17 @@ const RequiredRegisterView = ({
           inputMode={"numeric"}
           ref={mobilePhoneInputRef}
           label={t("mobilePhone")}
-          value={getFormattedMobilePhone(member.mobilePhone)}
+          value={member.mobilePhone}
           onChange={onChangeMobilePhone}
           placeholder={t_placeholder("mobilePhone")}
           onKeyDown={(event) => onClickEnter(event, guideInputRef)}
+          borderColor={
+            member.mobilePhone
+              ? getIsWellFormedMobilePhone(member.mobilePhone)
+                ? BLACK
+                : DESTRUCTIVE.DEFAULT
+              : undefined
+          }
         />
         {/* 인도자 */}
         <LabelDropdown

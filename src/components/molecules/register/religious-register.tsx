@@ -8,11 +8,17 @@ import { setMember } from "@/redux/reducers/member-register-reducer";
 
 import ReligiousRegisterView from "@/components/molecules/register/religious-register.view";
 import { BAPTISM } from "@/constant/constant";
+import { getFormattedDate } from "@/utils/format";
 
 const ReligiousRegister = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   const { member } = useSelector((state: RootState) => state.memberRegister);
+
+  // 신급
+  const onChangeBaptism = (value: BAPTISM) => {
+    dispatch(setMember({ ...member, baptism: value }));
+  };
 
   // 직분 변경 시 이벤트
   const onChangeOfficer = (value: string) => {
@@ -26,10 +32,11 @@ const ReligiousRegister = () => {
 
   // 임직일 날짜 변경 시 이벤트
   const onChangeOfficerStartDate = (event: ChangeEvent<HTMLInputElement>) => {
+    const newOfficerStartDate = getFormattedDate(event.target.value);
     dispatch(
       setMember({
         ...member,
-        officerStartDate: event.target.value,
+        officerStartDate: newOfficerStartDate,
       }),
     );
   };
@@ -43,11 +50,6 @@ const ReligiousRegister = () => {
         officerStartChurch: newOfficerStartChurch,
       }),
     );
-  };
-
-  // 신급
-  const onChangeBaptism = (value: BAPTISM) => {
-    dispatch(setMember({ ...member, baptism: value }));
   };
 
   // 이전 교회 변경 시 이벤트

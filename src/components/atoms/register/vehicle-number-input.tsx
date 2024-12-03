@@ -64,7 +64,7 @@ const VehicleNumberInput = forwardRef<
   }, [value]);
 
   useEffect(() => {
-    // 다음 ref가 활성화되기 전까지 잠시 대기
+    // 다음 ref 가 활성화되기 전까지 잠시 대기
     const timer = setTimeout(() => {
       if (typeof ref !== "function") {
         if (count === 2 && ref?.current?.secondInputRef?.current) {

@@ -12,7 +12,11 @@ import { MEMBER_REGISTER_TYPE } from "@/constant/constant";
 import { DropdownValueType } from "@/components/atoms/common/dropdown/dropdown-item";
 import { BLANK } from "@/common/default/default-value";
 import { TemporalMember } from "@/models/register/member-register";
-import { getTrimmedString } from "@/utils/format";
+import {
+  getFormattedMobilePhone,
+  getFormattedName,
+  getTrimmedString,
+} from "@/utils/format";
 import { getIsWellFormedMobilePhone } from "@/utils/check";
 
 const RequiredRegister = () => {
@@ -42,13 +46,13 @@ const RequiredRegister = () => {
 
   // 이름 변경 시 이벤트
   const onChangeName = (event: ChangeEvent<HTMLInputElement>) => {
-    const newName = event.target.value.replace(/[^a-zA-Z가-힣ㄱ-ㅎ\s]/g, "");
+    const newName = getFormattedName(event.target.value);
     dispatch(setMember({ ...member, name: newName }));
   };
 
   // 휴대폰 번호 변경 시 이벤트
   const onChangeMobilePhone = (event: ChangeEvent<HTMLInputElement>) => {
-    const newMobilePhone = event.target.value;
+    const newMobilePhone = getFormattedMobilePhone(event.target.value);
     dispatch(setMember({ ...member, mobilePhone: newMobilePhone }));
 
     // 전화번호를 다 입력한 경우

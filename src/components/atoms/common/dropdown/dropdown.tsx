@@ -29,6 +29,7 @@ export type DropdownProps = {
   onKeyDown?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
   onClickItemExtra?: () => void;
   onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
+  borderColor?: string;
 };
 
 const Dropdown = forwardRef<HTMLInputElement, DropdownProps & InputProps>(
@@ -43,6 +44,7 @@ const Dropdown = forwardRef<HTMLInputElement, DropdownProps & InputProps>(
       enterKeyHint = "enter",
       onClickItemExtra,
       onChange,
+      borderColor,
       ...inputProps
     },
     ref,
@@ -133,6 +135,7 @@ const Dropdown = forwardRef<HTMLInputElement, DropdownProps & InputProps>(
       // style
       reverseDirection,
       isEditable,
+      borderColor,
 
       //inputProps
       ...inputProps,

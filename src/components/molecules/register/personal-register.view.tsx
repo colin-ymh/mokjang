@@ -15,18 +15,24 @@ import { VehicleNumberInputRef } from "@/components/atoms/register/vehicle-numbe
 import MemberImageInput from "@/components/atoms/register/member-image-input";
 import { DropdownValueType } from "@/components/atoms/common/dropdown/dropdown-item";
 import RadioButton from "@/components/atoms/common/input/radio-button/radio-button";
-import { CALENDAR_MODE, MEDIA_MIN_WIDTH } from "@/constant/constant";
+import { CALENDAR_MODE, MEDIA_MIN_WIDTH, NONE } from "@/constant/constant";
 import {
   useBirthRadioButtonItems,
   useGenderRadioButtonItems,
 } from "@/constant/radio-button/radio-button-items";
 
-import { getFormattedDate, getFormattedHomePhone } from "@/utils/format";
+import {
+  getFormattedDate,
+  getFormattedHomePhone,
+  getTrimmedString,
+} from "@/utils/format";
 import { getDateFromString, getIsChild } from "@/utils/date";
 import { onClickEnter } from "@/utils/input";
 
 import { useI18n, useScopedI18n } from "../../../../locales/client";
 import { usePathname } from "next/navigation";
+import { getIsWellFormedBirth, getIsWellFormedHomePhone } from "@/utils/check";
+import { BLACK, DESTRUCTIVE, MAIN } from "@/common/styles/color";
 
 const PersonalRegisterContainer = styled.div`
   display: flex;
@@ -198,7 +204,7 @@ const PersonalRegisterView = ({
               ref={birthInputRef}
               inputMode={"numeric"}
               label={t("birth")}
-              value={getFormattedDate(member.birth)}
+              value={member.birth}
               onChange={(event: ChangeEvent<HTMLInputElement>) => {
                 const isChild = getIsChild(
                   getDateFromString(event.target.value),
@@ -209,6 +215,13 @@ const PersonalRegisterView = ({
                 );
               }}
               placeholder={t_placeholder("birth")}
+              borderColor={
+                member.birth
+                  ? getIsWellFormedBirth(member.birth)
+                    ? BLACK
+                    : DESTRUCTIVE.DEFAULT
+                  : undefined
+              }
             />
             {/* 양력 음력 */}
             <RadioButton
@@ -237,6 +250,7 @@ const PersonalRegisterView = ({
             placeholder={t_placeholder("school")}
             isEditable={true}
             onKeyDown={(event) => onClickEnter(event, occupationInputRef)}
+            borderColor={getTrimmedString(member.school) ? BLACK : undefined}
           />
         </SchoolInputWrapper>
         {/* 직업 */}
@@ -249,6 +263,7 @@ const PersonalRegisterView = ({
           placeholder={t_placeholder("occupation")}
           onKeyDown={(event) => onClickEnter(event, marriageInputRef)}
           zIndex={1}
+          borderColor={getTrimmedString(member.occupation) ? BLACK : undefined}
         />
       </SchoolOccupationContainer>
       <InputContainer>
@@ -266,6 +281,7 @@ const PersonalRegisterView = ({
           onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) =>
             onClickEnter(event, detailMarriageInputRef)
           }
+          borderColor={member.marriage !== NONE ? BLACK : undefined}
         />
         {/* 결혼 상세 정보 */}
         {/* 새신자 측에서는 보이지 않는 부분 */}
@@ -277,6 +293,9 @@ const PersonalRegisterView = ({
             value={member.detailMarriage}
             onChange={onChangeDetailMarriage}
             placeholder={t_placeholder("detailMarriage")}
+            borderColor={
+              getTrimmedString(member.detailMarriage) ? BLACK : undefined
+            }
           />
         )}
         {/* 도로명주소 */}
@@ -287,6 +306,7 @@ const PersonalRegisterView = ({
           value={member.address}
           placeholder={t_placeholder("address")}
           onClick={onClickAddress}
+          borderColor={getTrimmedString(member.address) ? BLACK : undefined}
         />
         {/* 상세주소 */}
         <LabelInput
@@ -297,17 +317,27 @@ const PersonalRegisterView = ({
           onChange={onChangeDetailAddress}
           placeholder={t_placeholder("detailAddress")}
           onKeyDown={(event) => onClickEnter(event, homePhoneInputRef)}
+          borderColor={
+            getTrimmedString(member.detailAddress) ? BLACK : undefined
+          }
         />
         {/* 전화 번호 */}
         <LabelInput
           ref={homePhoneInputRef}
           inputMode={"numeric"}
           label={t("homePhone")}
-          value={getFormattedHomePhone(member.homePhone)}
+          value={member.homePhone}
           onChange={(event: ChangeEvent<HTMLInputElement>) =>
             onChangeHomePhone(event, vehicleInputRef?.current?.firstInputRef)
           }
           placeholder={t_placeholder("homePhone")}
+          borderColor={
+            member.homePhone
+              ? getIsWellFormedHomePhone(member.homePhone)
+                ? BLACK
+                : DESTRUCTIVE.DEFAULT
+              : undefined
+          }
         />
       </InputContainer>
       {/* 차량 번호 */}

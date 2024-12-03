@@ -19,17 +19,19 @@ const LabelInputContainer = styled.div<{ $zIndex?: number }>`
 type LabelInputProps = InputHTMLAttributes<HTMLInputElement> & {
   label: string;
   zIndex?: number;
+  borderColor?: string;
 };
 
 // forwardRef 를 사용하여 ref 를 props 로 전달받을 수 있게
 const LabelInput = forwardRef<HTMLInputElement, LabelInputProps>(
-  ({ label, zIndex, ...props }, ref) => {
+  ({ label, zIndex, borderColor, ...props }, ref) => {
     return (
       <LabelInputContainer $zIndex={zIndex}>
         <MainText>{label}</MainText>
         <BorderInput
           ref={ref}
           onChange={props.onChange || DEFAULT_VALUE.FUNCTION}
+          borderColor={borderColor}
           {...props}
         />
       </LabelInputContainer>
