@@ -16,6 +16,7 @@ type MemberRegisterState = {
 };
 
 const DEFAULT_MEMBER: TemporalMember = {
+  id: undefined,
   type: MEMBER_REGISTER_TYPE.NEW,
   profileImage: BLANK,
   name: BLANK,

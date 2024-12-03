@@ -6,16 +6,23 @@ import { NONE } from "@/constant/constant";
 import {
   getIsWellFormedBirth,
   getIsWellFormedHomePhone,
+  getIsWellFormedMobilePhone,
+  getIsWellFormedName,
   getIsWellFormedVehicleNumber,
 } from "@/utils/check";
 import { getTrimmedString } from "@/utils/format";
 import { CreateMemberBody } from "@/api/members.api";
 
 export const getPostMember = (member: TemporalMember) => {
-  const newMember: CreateMemberBody = {
-    name: member.name,
-    mobilePhone: member.mobilePhone.replace(/\D/g, ""),
-  };
+  const newMember: CreateMemberBody = {};
+
+  if (member.name && getIsWellFormedName(member.name)) {
+    newMember.name = member.name;
+  }
+
+  if (member.mobilePhone && getIsWellFormedMobilePhone(member.mobilePhone)) {
+    newMember.mobilePhone = member.mobilePhone.replace(/\D/g, "");
+  }
 
   if (member.guidedById) {
     newMember.guidedById = member.guidedById;
@@ -81,6 +88,5 @@ export const getPostMember = (member: TemporalMember) => {
     }
   }
 
-  console.log(newMember);
   return newMember;
 };

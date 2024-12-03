@@ -6,6 +6,7 @@ import {
 } from "@/constant/constant";
 
 export type TemporalMember = {
+  id: number | undefined;
   // 등록 타입 (새신자, 기존신자)
   type: MEMBER_REGISTER_TYPE;
   // 필수입력값

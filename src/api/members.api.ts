@@ -26,11 +26,10 @@ type GetMemberParams = {
 type CreateMemberParams = {
   churchId: number;
 };
-
 export type CreateMemberBody = {
   // 필수입력값
-  name: string;
-  mobilePhone: string;
+  name?: string;
+  mobilePhone?: string;
   // 그 외 정보
   profileImage?: string;
   birth?: string;

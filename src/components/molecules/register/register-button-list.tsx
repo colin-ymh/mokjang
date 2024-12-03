@@ -1,18 +1,19 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
-import { setStage } from "@/redux/reducers/member-register-reducer";
+import { setMember, setStage } from "@/redux/reducers/member-register-reducer";
 
 import {
   MEMBER_REGISTER_STAGE,
   MEMBER_REGISTER_TYPE,
 } from "@/constant/constant";
 import RegisterButtonListView from "@/components/molecules/register/register-button-list.view";
-
-import { useScopedI18n } from "../../../../locales/client";
 import ToastPopup from "@/components/atoms/common/popup/toast-popup";
 import { MembersApi } from "@/api/members.api";
 import { getPostMember } from "@/utils/member";
+
+import { useScopedI18n } from "../../../../locales/client";
+import { BLANK } from "@/common/default/default-value";
 
 const RegisterButtonList = () => {
   const membersApi = new MembersApi(false);
@@ -37,18 +38,45 @@ const RegisterButtonList = () => {
   };
 
   const onClickRight = () => {
+    // 최초 화면
     if (stage === MEMBER_REGISTER_STAGE.REQUIRED) {
-      dispatch(setStage(MEMBER_REGISTER_STAGE.PERSONAL));
-      membersApi.createMember({ churchId: 1 }, getPostMember(member));
-      setIsToastShow(true);
+      // 최초 교인 등록
+      membersApi
+        .createMember(
+          { churchId: 1 },
+          getPostMember({ ...member, gender: BLANK }),
+        )
+        .then((response) => {
+          // 등록 성공 시
+          if (response.status === 201) {
+            // 교인 Id 할당
+            const memberId = response.data.id;
+            dispatch(setMember({ ...member, id: memberId }));
+
+            // 성공 팝업
+            setIsToastShow(true);
+            // 다음 단계로 이동
+            dispatch(setStage(MEMBER_REGISTER_STAGE.PERSONAL));
+          }
+        });
     } else if (stage === MEMBER_REGISTER_STAGE.PERSONAL) {
       if (member.type === MEMBER_REGISTER_TYPE.NEW) {
-        membersApi.createMember({ churchId: 1 }, getPostMember(member));
+        if (member?.id) {
+          membersApi.editMember(
+            { churchId: 1, memberId: member.id },
+            getPostMember({ ...member, name: BLANK, mobilePhone: BLANK }),
+          );
+        }
       } else {
         dispatch(setStage(MEMBER_REGISTER_STAGE.RELIGIOUS));
       }
     } else if (stage === MEMBER_REGISTER_STAGE.RELIGIOUS) {
-      membersApi.createMember({ churchId: 1 }, getPostMember(member));
+      if (member?.id) {
+        membersApi.editMember(
+          { churchId: 1, memberId: member.id },
+          getPostMember({ ...member, name: BLANK, mobilePhone: BLANK }),
+        );
+      }
     }
   };
 
