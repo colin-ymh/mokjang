@@ -5,7 +5,7 @@ import React from "react";
 import Wrap from "@/components/atoms/layout/wrap";
 import Container from "@/components/atoms/layout/container";
 import Main from "@/components/atoms/layout/main";
-import PopupHeader from "@/components/molecules/layout/popup-header";
+import PopupHeader from "@/components/molecules/layout/header/popup-header";
 
 export type PopupLayoutProps = {
   onClickLeft: () => void;

@@ -47,3 +47,16 @@ export enum CALENDAR_MODE {
   SOLAR = "solar",
   LUNAR = "lunar",
 }
+
+// 모바일, 태블릿, 데스크톱
+export enum MEDIA {
+  MOBILE = "mobile",
+  TABLET = "tablet",
+  DESKTOP = "desktop",
+}
+
+export enum MEDIA_MIN_WIDTH {
+  MOBILE = "320px",
+  TABLET = "768px",
+  DESKTOP = "1024px",
+}

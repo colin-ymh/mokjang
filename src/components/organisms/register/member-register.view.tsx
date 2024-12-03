@@ -10,16 +10,17 @@ import RegisterButtonList from "@/components/molecules/register/register-button-
 import PersonalRegister from "@/components/molecules/register/personal-register";
 import ReligiousRegister from "@/components/molecules/register/religious-register";
 import RequiredRegister from "@/components/molecules/register/required-register";
+import { GRAY } from "@/common/styles/color";
 
 import { useScopedI18n } from "../../../../locales/client";
 
 const RegisterContainer = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100%;
   padding: 0 30px;
+  justify-content: center;
   align-items: center;
-  overflow: scroll;
+  background-color: ${GRAY.BACKGROUND};
 `;
 
 const TextContainer = styled.div`

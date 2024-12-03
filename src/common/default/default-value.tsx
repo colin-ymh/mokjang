@@ -1,6 +1,5 @@
 export const DEFAULT_VALUE = {
-  STRING: "DEFAULT_STRING_VALUE",
-  FUNCTION: (event: any): void => {
+  FUNCTION: (): void => {
     return;
   },
 };

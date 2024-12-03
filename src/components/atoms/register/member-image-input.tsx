@@ -17,14 +17,16 @@ import {
   getResizedImage,
 } from "@/utils/image";
 import Button from "@/components/atoms/common/button/button";
+import { MEDIA_MIN_WIDTH } from "@/constant/constant";
 
 const MemberImageInputContainer = styled.div`
   display: flex;
   flex-direction: column;
-  width: 100%;
+  //width: 100%;
   align-items: flex-start;
   gap: 10px;
   transition: all 0.3s ease;
+  padding-right: 20px;
 `;
 
 const ImageContainer = styled.div`
@@ -32,15 +34,21 @@ const ImageContainer = styled.div`
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  gap: 10px;
 `;
 
 const MemberImage = styled(Image)`
   border-radius: 10px;
-  cursor: pointer; /* Makes the image clickable */
+  width: 110px;
+  height: 110px;
+
+  @media (min-width: ${MEDIA_MIN_WIDTH.DESKTOP}) {
+    width: 170px;
+    height: 170px;
+  }
 `;
 
 const DeleteButton = styled(Delete)<{ opacity: number }>`
+  margin-left: 10px;
   stroke: ${WHITE};
   stroke-width: 2px;
   background-color: ${BLACK};

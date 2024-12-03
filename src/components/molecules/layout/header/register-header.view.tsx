@@ -5,10 +5,10 @@ import { RootState } from "@/redux/store";
 
 import { GRAY, MAIN, WHITE } from "@/common/styles/color";
 import Button from "@/components/atoms/common/button/button";
-import { MEMBER_REGISTER_STAGE } from "@/constant/constant";
+import { MEDIA_MIN_WIDTH, MEMBER_REGISTER_STAGE } from "@/constant/constant";
 
-import ExitButton from "../../../../public/svg/cancel.svg";
-import { useScopedI18n } from "../../../../locales/client";
+import ExitButton from "../../../../../public/svg/cancel.svg";
+import { useScopedI18n } from "../../../../../locales/client";
 
 const HeaderContainer = styled.header`
   display: flex;
@@ -21,6 +21,11 @@ const HeaderContainer = styled.header`
   justify-content: space-between;
   align-items: flex-end;
   padding-bottom: 10px;
+
+  // 데크스탑
+  @media (min-width: ${MEDIA_MIN_WIDTH.DESKTOP}) {
+    display: none;
+  }
 `;
 
 const HeaderLeft = styled.div`

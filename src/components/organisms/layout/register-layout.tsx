@@ -1,21 +1,20 @@
 "use client";
 
 import React from "react";
-
 import Wrap from "@/components/atoms/layout/wrap";
-import Container from "@/components/atoms/layout/container";
 import Main from "@/components/atoms/layout/main";
-import RegisterHeader from "@/components/molecules/layout/register-header";
+import RegisterHeader from "@/components/molecules/layout/header/register-header";
+import Container from "@/components/atoms/layout/container";
 
 export type RegisterLayoutProps = {
   children: React.ReactNode;
 };
 
-const RegisterLayout = ({ children }: RegisterLayoutProps): JSX.Element => {
+const RegisterLayout = ({ children }: RegisterLayoutProps) => {
   return (
     <Wrap>
-      <RegisterHeader />
       <Container>
+        <RegisterHeader />
         <Main>{children}</Main>
       </Container>
     </Wrap>

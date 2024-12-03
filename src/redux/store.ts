@@ -2,9 +2,11 @@ import { configureStore } from "@reduxjs/toolkit";
 
 import WebviewReducer from "./reducers/webview-reducer";
 import MemberRegisterReducer from "@/redux/reducers/member-register-reducer";
+import LayoutReducer from "@/redux/reducers/layout-reducer";
 
 const store = configureStore({
   reducer: {
+    layout: LayoutReducer,
     webview: WebviewReducer,
     memberRegister: MemberRegisterReducer,
   },

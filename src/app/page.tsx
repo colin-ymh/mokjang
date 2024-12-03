@@ -1,9 +1,11 @@
-'use client';
+"use client";
 
 const App = () => {
-    return (
-       <div></div>
-    );
+  return (
+    <>
+      <div />
+    </>
+  );
 };
 
 export default App;

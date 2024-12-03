@@ -20,7 +20,7 @@ export type RadioButtonProps = {
 const RadioButtonContainer = styled.div`
   display: flex;
   flex-direction: row;
-  gap: 5px;
+  gap: 10px;
   width: 100%;
 `;
 

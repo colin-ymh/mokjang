@@ -1,4 +1,4 @@
-import PopupHeaderView from "@/components/molecules/layout/popup-header.view";
+import PopupHeaderView from "@/components/molecules/layout/header/popup-header.view";
 
 type PopupHeaderProps = {
   onClickLeft: () => void;

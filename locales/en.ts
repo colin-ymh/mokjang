@@ -48,6 +48,17 @@ export default {
   solar: "Solar",
   lunar: "Lunar",
 
+  /*-------------------header (side bar button)-------------------*/
+  "header.home": "Home",
+  "header.member": "Membership",
+  /*-------------------header (side bar button)-------------------*/
+
+  /*-------------------member content (member header bar button)-------------------*/
+  "member-content.memberList": "All",
+  "member-content.administratorList": "Administrators",
+  "member-content.newMemberList": "New Members",
+  /*-------------------member content (member header bar button)-------------------*/
+
   /*-------------------member register-------------------*/
   "register.defaultHeaderPhrase": "Please enter the member information",
   "register.extraHeaderPhrase": "Please enter the extra information",

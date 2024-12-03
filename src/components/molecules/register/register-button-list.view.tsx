@@ -6,7 +6,7 @@ import { RootState } from "@/redux/store";
 import Button from "@/components/atoms/common/button/button";
 import { BLACK, GRAY, MAIN, WHITE } from "@/common/styles/color";
 import { BLANK } from "@/common/default/default-value";
-import { MEMBER_REGISTER_STAGE } from "@/constant/constant";
+import { MEDIA_MIN_WIDTH, MEMBER_REGISTER_STAGE } from "@/constant/constant";
 
 import GoBackButton from "../../../../public/svg/chevron-left.svg";
 import { useScopedI18n } from "../../../../locales/client";
@@ -22,6 +22,11 @@ const ButtonListContainer = styled.div`
   gap: 10px;
   margin-bottom: 20px;
   z-index: 5;
+
+  // 데크스탑
+  @media (min-width: ${MEDIA_MIN_WIDTH.DESKTOP}) {
+    width: 80%;
+  }
 `;
 
 const LeftButtonContainer = styled.div`
@@ -64,7 +69,7 @@ const RegisterButtonListView = ({
               : BLANK
           }
           disabled={!isStageClear}
-          backgroundColor={isStageClear ? BLACK : GRAY.LIGHT}
+          backgroundColor={isStageClear ? BLACK : GRAY.DEFAULT}
           onClick={onClickLeft}
           isShadow={true}
         >
@@ -79,7 +84,7 @@ const RegisterButtonListView = ({
         <Button
           text={getRightButtonTitle()}
           disabled={!isStageClear}
-          backgroundColor={isStageClear ? MAIN.DEFAULT : GRAY.LIGHT}
+          backgroundColor={isStageClear ? MAIN.DEFAULT : GRAY.DEFAULT}
           onClick={onClickRight}
           isShadow={true}
         />

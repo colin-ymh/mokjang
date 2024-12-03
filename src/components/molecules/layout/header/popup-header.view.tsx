@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 import { GRAY, MAIN, WHITE } from "@/common/styles/color";
 
-import ExitButton from "../../../../public/svg/cancel.svg";
+import ExitButton from "../../../../../public/svg/cancel.svg";
 
 const HeaderContainer = styled.header`
   display: flex;

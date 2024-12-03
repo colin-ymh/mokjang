@@ -17,12 +17,15 @@ const GlobalStyle = createGlobalStyle`
         margin: 0; /* 기본 margin 제거 */
         height: 100%; /* 전체 높이 설정 */
         background-color: white; /* body 배경색을 흰색으로 설정 */
+        min-width: 320px; /* 화면 너비가 320px 이하로 줄어들지 않도록 설정 */
     }
+
     body > div:first-child,
     div#__next,
     div#__next > div {
-        height: 100%; /* 전체 높이 설정 */
+        height: 100%; 
     }
+
 `;
 
 type RootLayoutProps = {

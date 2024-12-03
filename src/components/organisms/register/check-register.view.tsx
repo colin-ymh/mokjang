@@ -9,14 +9,19 @@ import { GRAY, MAIN } from "@/common/styles/color";
 
 import { getFormattedMobilePhone, getFormattedName } from "@/utils/format";
 import { onClickEnter } from "@/utils/input";
+import { MEDIA_MIN_WIDTH } from "@/constant/constant";
 
 const CheckRegisterContainer = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100%;
   padding: 0 30px;
+  justify-content: center;
   align-items: center;
-  overflow: hidden;
+  background-color: ${GRAY.BACKGROUND};
+
+  @media (min-width: ${MEDIA_MIN_WIDTH.DESKTOP}) {
+    padding: 10% 30%;
+  }
 `;
 
 const HeaderTextContainer = styled.div`
@@ -97,7 +102,7 @@ const CheckRegisterView = ({
         <Button
           text={t_register("checkButton")}
           disabled={!isButtonEnable}
-          backgroundColor={isButtonEnable ? MAIN.DEFAULT : GRAY.LIGHT}
+          backgroundColor={isButtonEnable ? MAIN.DEFAULT : GRAY.DEFAULT}
           onClick={onClickButton}
         />
       </ButtonContainer>
