@@ -7,6 +7,7 @@ import {
   MEMBER_REGISTER_TYPE,
   NONE,
 } from "@/constant/constant";
+import { getIsWellFormedMobilePhone, getIsWellFormedName } from "@/utils/check";
 
 type MemberRegisterState = {
   member: TemporalMember;
@@ -32,7 +33,7 @@ const DEFAULT_MEMBER: TemporalMember = {
   officerStartDate: BLANK,
   officerStartChurch: BLANK,
   baptism: NONE,
-  guide: BLANK,
+  guidedById: BLANK,
   previousChurchName: BLANK,
   vehicleNumber: [BLANK, BLANK, BLANK],
   gender: GENDER.MALE,
@@ -50,7 +51,10 @@ const getIsStageClear = (
   stage: MEMBER_REGISTER_STAGE,
 ): boolean => {
   if (stage === MEMBER_REGISTER_STAGE.REQUIRED) {
-    return member.name !== BLANK && member.mobilePhone.length > 12;
+    return (
+      getIsWellFormedName(member.name) &&
+      getIsWellFormedMobilePhone(member.mobilePhone)
+    );
   } else {
     return true;
   }

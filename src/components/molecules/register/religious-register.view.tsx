@@ -8,20 +8,16 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 
 import LabelInput from "@/components/atoms/common/input/label-input";
-
-import { getFormattedDate } from "@/utils/format";
-import { TemporalMember } from "@/models/register/member-register";
-
 import {
   useBaptismDropdownItems,
   useOfficerDropdownItems,
 } from "@/constant/dropdown/dropdown-items";
 import LabelDropdown from "@/components/atoms/common/dropdown/label-dropdown";
-import { BAPTISM, OFFICER, NONE } from "@/constant/constant";
+import { BAPTISM, NONE } from "@/constant/constant";
+import { getFormattedDate } from "@/utils/format";
+import { onClickEnter } from "@/utils/input";
 
 import { useI18n, useScopedI18n } from "../../../../locales/client";
-import { VehicleNumberInputRef } from "@/components/atoms/register/vehicle-number-input.view";
-import { onClickEnter } from "@/utils/input";
 
 const InputContainer = styled.div`
   display: flex;

@@ -19,7 +19,7 @@ const PopupContainer = styled.div<{
   $direction: TOAST_DIRECTION;
 }>`
   display: flex;
-  position: absolute;
+  position: fixed;
   z-index: 100;
   justify-content: flex-start;
   padding-left: 20px;

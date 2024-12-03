@@ -9,17 +9,19 @@ import React, {
 } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
+import DaumPostcodeEmbed, { Address } from "react-daum-postcode";
 import { gsap } from "gsap";
 
+import { getSchool } from "@/api/school-api";
 import { TemporalMember } from "@/models/register/member-register";
 import { getDateFromString, getIsChild } from "@/utils/date";
-import PersonalRegisterView from "@/components/molecules/register/personal-register.view";
 import { setMember } from "@/redux/reducers/member-register-reducer";
-import { getSchool } from "@/api/school-api";
+import PersonalRegisterView from "@/components/molecules/register/personal-register.view";
 import { DropdownValueType } from "@/components/atoms/common/dropdown/dropdown-item";
 import PagePopup from "@/components/atoms/common/popup/page-popup";
-import DaumPostcodeEmbed, { Address } from "react-daum-postcode";
 import { CALENDAR_MODE } from "@/constant/constant";
+import { getIsWellFormedBirth, getIsWellFormedHomePhone } from "@/utils/check";
+import { getTrimmedString } from "@/utils/format";
 
 const PersonalRegister = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -33,7 +35,7 @@ const PersonalRegister = () => {
   useEffect(() => {
     if (schoolAnimationRef.current) {
       const isChild = getIsChild(getDateFromString(member.birth));
-      if (isChild) {
+      if (isChild && getIsWellFormedBirth(member.birth)) {
         // 미성년자일 경우 애니메이션으로 나타남
         gsap.to(schoolAnimationRef.current, {
           opacity: 1,
@@ -64,12 +66,11 @@ const PersonalRegister = () => {
     event: ChangeEvent<HTMLInputElement>,
     nextInputRef?: RefObject<HTMLInputElement>,
   ) => {
-    const newMember: TemporalMember = member;
     const newBirth = event.target.value;
-    dispatch(setMember({ ...newMember, birth: newBirth }));
+    dispatch(setMember({ ...member, birth: newBirth }));
 
     // 생년월일을 다 입력한 경우
-    if (newBirth.length === 10) {
+    if (getIsWellFormedBirth(newBirth)) {
       // 다음 입력이 있다면 다음 입력으로
       if (nextInputRef?.current) {
         nextInputRef.current.focus();
@@ -91,20 +92,10 @@ const PersonalRegister = () => {
     event: ChangeEvent<HTMLInputElement>,
     nextInputRef?: RefObject<HTMLInputElement>,
   ) => {
-    const newMember: TemporalMember = member;
     const newHomePhone = event.target.value;
-    dispatch(setMember({ ...newMember, homePhone: newHomePhone }));
+    dispatch(setMember({ ...member, homePhone: newHomePhone }));
 
-    let MAX_LENGTH;
-
-    // 전화번호를 다 입력한 경우
-    if (newHomePhone.slice(0, 2) === "02") {
-      MAX_LENGTH = 11;
-    } else {
-      MAX_LENGTH = 12;
-    }
-
-    if (newHomePhone.length === MAX_LENGTH) {
+    if (getIsWellFormedHomePhone(newHomePhone)) {
       // 다음 입력이 있다면 다음 입력으로
       if (nextInputRef?.current) {
         nextInputRef.current.focus();
@@ -118,22 +109,19 @@ const PersonalRegister = () => {
 
   // 이미지 변경 이벤트
   const onChangeProfileImage = (profileImage: string) => {
-    const newMember: TemporalMember = member;
-    dispatch(setMember({ ...newMember, profileImage }));
+    dispatch(setMember({ ...member, profileImage }));
   };
 
   // 직업 변경 시 이벤트
   const onChangeOccupation = (event: ChangeEvent<HTMLInputElement>) => {
-    const newMember: TemporalMember = member;
     const newOccupation = event.target.value;
-    dispatch(setMember({ ...newMember, occupation: newOccupation }));
+    dispatch(setMember({ ...member, occupation: newOccupation }));
   };
 
   // 상세 주소 변경 시 이벤트
   const onChangeDetailAddress = (event: ChangeEvent<HTMLInputElement>) => {
-    const newMember: TemporalMember = member;
     const newDetailAddress = event.target.value;
-    dispatch(setMember({ ...newMember, detailAddress: newDetailAddress }));
+    dispatch(setMember({ ...member, detailAddress: newDetailAddress }));
   };
 
   // 학교 변경 시 이벤트
@@ -141,12 +129,11 @@ const PersonalRegister = () => {
     value: string,
     nextInputRef?: RefObject<HTMLInputElement>,
   ) => {
-    const newMember: TemporalMember = member;
-    dispatch(setMember({ ...newMember, school: value }));
+    dispatch(setMember({ ...member, school: value }));
 
     // value 에 따라 학교 검색 API 요청
     getSchool(value, 1, 5).then((response) => {
-      const items = response.map((value, index) => {
+      const items = response.map((value) => {
         return { value: value.SCHUL_NM, title: value.SCHUL_NM };
       });
 
@@ -159,23 +146,19 @@ const PersonalRegister = () => {
     event: ChangeEvent<HTMLInputElement>,
     index: number,
   ) => {
-    // member 객체를 복사하여 새로운 객체 생성
-    const newMember: TemporalMember = { ...member };
-
     // vehicleNumber 배열을 복사하여 새로운 배열 생성
     const newVehicleNumber = [...member.vehicleNumber];
 
     // 수정할 인덱스의 값을 변경
-    newVehicleNumber[index] = event.target.value;
+    newVehicleNumber[index] = getTrimmedString(event.target.value);
 
     // 새로운 member 객체와 vehicleNumber 배열을 디스패치
-    dispatch(setMember({ ...newMember, vehicleNumber: newVehicleNumber }));
+    dispatch(setMember({ ...member, vehicleNumber: newVehicleNumber }));
   };
 
   // 결혼 정보 변경 시 이벤트
   const onChangeMarriage = (value: string) => {
-    const newMember: TemporalMember = member;
-    dispatch(setMember({ ...newMember, marriage: value }));
+    dispatch(setMember({ ...member, marriage: value }));
   };
 
   // 결혼 정보 드롭다운 아이템 선택 시 이벤트
@@ -187,11 +170,10 @@ const PersonalRegister = () => {
     }
   };
 
-  // 상세 주소 변경 시 이벤트
+  // 결혼 상세 변경 시 이벤트
   const onChangeDetailMarriage = (event: ChangeEvent<HTMLInputElement>) => {
-    const newMember: TemporalMember = member;
-    const newDetailMarriage = event.target.value;
-    dispatch(setMember({ ...newMember, detailMarriage: newDetailMarriage }));
+    const newDetailMarriage = getTrimmedString(event.target.value);
+    dispatch(setMember({ ...member, detailMarriage: newDetailMarriage }));
   };
 
   // 성별 변경 시 이벤트

@@ -17,6 +17,8 @@ import { getFormattedMobilePhone, getFormattedName } from "@/utils/format";
 import { onClickEnter } from "@/utils/input";
 
 import { useI18n, useScopedI18n } from "../../../../locales/client";
+import { DropdownValueType } from "@/components/atoms/common/dropdown/dropdown-item";
+import LabelDropdown from "@/components/atoms/common/dropdown/label-dropdown";
 
 const Invisible = styled.div`
   height: 100px;
@@ -49,19 +51,31 @@ const InputContainer = styled(RequiredRegisterContainer)`
 `;
 
 export type RequiredRegisterViewProps = {
+  guideName: string;
+  guideItems: DropdownValueType[];
+  familyMemberName: string;
+  familyMemberItems: DropdownValueType[];
   onChangeType: (type: MEMBER_REGISTER_TYPE) => void;
   onChangeName: (event: ChangeEvent<HTMLInputElement>) => void;
   onChangeMobilePhone: (event: ChangeEvent<HTMLInputElement>) => void;
-  onChangeGuide: (event: ChangeEvent<HTMLInputElement>) => void;
-  onChangeFamily: (event: ChangeEvent<HTMLInputElement>) => void;
+  onChangeGuideName: (event: ChangeEvent<HTMLInputElement>) => void;
+  onChangeGuidedById: (value: string) => void;
+  onChangeFamilyMemberName: (event: ChangeEvent<HTMLInputElement>) => void;
+  onChangeFamilyMemberId: (value: string) => void;
 };
 
 const RequiredRegisterView = ({
+  guideName,
+  guideItems,
+  familyMemberName,
+  familyMemberItems,
   onChangeType,
   onChangeName,
   onChangeMobilePhone,
-  onChangeGuide,
-  onChangeFamily,
+  onChangeGuideName,
+  onChangeGuidedById,
+  onChangeFamilyMemberName,
+  onChangeFamilyMemberId,
 }: RequiredRegisterViewProps) => {
   const t = useI18n();
   const t_placeholder = useScopedI18n("placeholder");
@@ -108,23 +122,29 @@ const RequiredRegisterView = ({
           onKeyDown={(event) => onClickEnter(event, guideInputRef)}
         />
         {/* 인도자 */}
-        <LabelInput
+        <LabelDropdown
           enterKeyHint={"done"}
           ref={guideInputRef}
           label={t("guide")}
-          value={member.guide}
-          onChange={onChangeGuide}
+          value={guideName}
+          items={guideItems}
+          onChange={onChangeGuideName}
+          onChangeItem={onChangeGuidedById}
           placeholder={t_placeholder("guide")}
+          isEditable={true}
           onKeyDown={(event) => onClickEnter(event, familyInputRef)}
         />
         {/* 가족 */}
-        <LabelInput
+        <LabelDropdown
           enterKeyHint={"done"}
           ref={familyInputRef}
           label={t("family")}
-          value={member.family}
-          onChange={onChangeFamily}
+          value={familyMemberName}
+          items={familyMemberItems}
+          onChange={onChangeFamilyMemberName}
+          onChangeItem={onChangeFamilyMemberId}
           placeholder={t_placeholder("family")}
+          isEditable={true}
           onKeyDown={onClickEnter}
         />
       </InputContainer>

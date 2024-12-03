@@ -13,18 +13,22 @@ import { DropdownValueType } from "@/components/atoms/common/dropdown/dropdown-i
 import { InputProps } from "@/components/atoms/common/input/border-input";
 
 export type DropdownProps = {
+  ref?: RefObject<HTMLDivElement>;
   items: DropdownValueType[]; // dropdown 선택 가능 요소들
   value: string; // dropdown 에서 선택된 값
   onChangeItem?: (value: any) => void;
-  reverseDirection?: boolean;
+  //
   isShowTitle?: boolean;
   isEditable?: boolean;
+  //
+  reverseDirection?: boolean;
   backgroundBlur?: boolean; // 드롭다운 클릭 배경 흐려짐
+  //
   enterKeyHint?: string;
-  ref?: RefObject<HTMLDivElement>;
   placeholder?: string;
   onKeyDown?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
   onClickItemExtra?: () => void;
+  onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
 };
 
 const Dropdown = forwardRef<HTMLInputElement, DropdownProps & InputProps>(
@@ -38,6 +42,7 @@ const Dropdown = forwardRef<HTMLInputElement, DropdownProps & InputProps>(
       isEditable = false,
       enterKeyHint = "enter",
       onClickItemExtra,
+      onChange,
       ...inputProps
     },
     ref,
@@ -85,8 +90,13 @@ const Dropdown = forwardRef<HTMLInputElement, DropdownProps & InputProps>(
         const newValue = event.target.value;
         // 내부 데이터 우선 수정
         setInnerValue(newValue);
+        // input 창에 직접 입력한 값을 실제 value 로 사용하지 않으려는 경우
+        if (onChange) {
+          onChange(event);
+        }
+        // input 창에 직접 입력한 값을 실제 value 로 사용하려는 경우
         // 외부에서 onChangeItem 을 넘겨줬었다면
-        if (onChangeItem) {
+        else if (onChangeItem) {
           // 외부에 해당 value 전달
           onChangeItem(newValue);
         }

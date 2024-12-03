@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
 import { setMember } from "@/redux/reducers/member-register-reducer";
 
-import { TemporalMember } from "@/models/register/member-register";
 import ReligiousRegisterView from "@/components/molecules/register/religious-register.view";
 import { BAPTISM } from "@/constant/constant";
 
@@ -17,10 +16,9 @@ const ReligiousRegister = () => {
 
   // 직분 변경 시 이벤트
   const onChangeOfficer = (value: string) => {
-    const newMember: TemporalMember = member;
     dispatch(
       setMember({
-        ...newMember,
+        ...member,
         officer: value,
       }),
     );
@@ -28,23 +26,20 @@ const ReligiousRegister = () => {
 
   // 임직일 날짜 변경 시 이벤트
   const onChangeOfficerStartDate = (event: ChangeEvent<HTMLInputElement>) => {
-    const newMember: TemporalMember = member;
-    const newOfficerStartDate = event.target.value;
     dispatch(
       setMember({
-        ...newMember,
-        officerStartDate: newOfficerStartDate,
+        ...member,
+        officerStartDate: event.target.value,
       }),
     );
   };
 
   // 임직 교회 변경 시 이벤트
   const onChangeOfficerStartChurch = (event: ChangeEvent<HTMLInputElement>) => {
-    const newMember: TemporalMember = member;
     const newOfficerStartChurch = event.target.value;
     dispatch(
       setMember({
-        ...newMember,
+        ...member,
         officerStartChurch: newOfficerStartChurch,
       }),
     );
@@ -57,10 +52,9 @@ const ReligiousRegister = () => {
 
   // 이전 교회 변경 시 이벤트
   const onChangePreviousChurchName = (event: ChangeEvent<HTMLInputElement>) => {
-    const newMember: TemporalMember = member;
     const newPreviousChurchName = event.target.value;
     dispatch(
-      setMember({ ...newMember, previousChurchName: newPreviousChurchName }),
+      setMember({ ...member, previousChurchName: newPreviousChurchName }),
     );
   };
 

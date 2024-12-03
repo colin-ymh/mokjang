@@ -32,7 +32,7 @@ export default {
   immersionBaptism: "Immersion Baptism",
   infantBaptism: "Infant Baptism",
   catechumenate: "Catechumenate",
-  confirmation: "Officer",
+  confirmation: "Confirmation",
 
   // officer
   elder: "Elder",

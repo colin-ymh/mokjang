@@ -10,6 +10,9 @@ export const getFormattedName = (value: string) => {
   // 2회 이상의 연속 공백을 단일 공백으로 치환
   trimmedValue = trimmedValue.replace(/\s{2,}/g, " ");
 
+  // 특수문자 및 숫자 제거 (한글과 영문만 허용)
+  trimmedValue = trimmedValue.replace(/[^a-zA-Z가-힣ㄱ-ㅎ\s]/g, "");
+
   return trimmedValue;
 };
 

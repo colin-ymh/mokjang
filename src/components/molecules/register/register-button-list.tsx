@@ -11,8 +11,11 @@ import RegisterButtonListView from "@/components/molecules/register/register-but
 
 import { useScopedI18n } from "../../../../locales/client";
 import ToastPopup from "@/components/atoms/common/popup/toast-popup";
+import { MembersApi } from "@/api/members.api";
+import { getPostMember } from "@/utils/member";
 
 const RegisterButtonList = () => {
+  const membersApi = new MembersApi(false);
   const dispatch = useDispatch<AppDispatch>();
   const { stage, member } = useSelector(
     (state: RootState) => state.memberRegister,
@@ -36,15 +39,16 @@ const RegisterButtonList = () => {
   const onClickRight = () => {
     if (stage === MEMBER_REGISTER_STAGE.REQUIRED) {
       dispatch(setStage(MEMBER_REGISTER_STAGE.PERSONAL));
+      membersApi.createMember({ churchId: 1 }, getPostMember(member));
       setIsToastShow(true);
     } else if (stage === MEMBER_REGISTER_STAGE.PERSONAL) {
       if (member.type === MEMBER_REGISTER_TYPE.NEW) {
-        console.log("no where to go");
+        membersApi.createMember({ churchId: 1 }, getPostMember(member));
       } else {
         dispatch(setStage(MEMBER_REGISTER_STAGE.RELIGIOUS));
       }
     } else if (stage === MEMBER_REGISTER_STAGE.RELIGIOUS) {
-      console.log("no where to go");
+      membersApi.createMember({ churchId: 1 }, getPostMember(member));
     }
   };
 

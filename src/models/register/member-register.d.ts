@@ -30,9 +30,8 @@ export type TemporalMember = {
   officer: OFFICER | NONE; // 직분
   officerStartDate: string;
   officerStartChurch: string;
-  createdAt?: string;
   baptism: BAPTISM | NONE; // 신급
-  guide: any; // 인도자
+  guidedById: string; // 인도자 id
   previousChurchName: string; // 이전 교회
   vehicleNumber: string[];
 };

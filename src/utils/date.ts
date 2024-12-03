@@ -1,6 +1,6 @@
 /**
- * YYYY.MM.dd => Date Object
- * @param dateString 'yyyymmdd' or 'yyyymdd'
+ * YYYY-MM-dd => Date Object
+ * @param dateString
  */
 export const getDateFromString = (dateString: string) => {
   const lengthLimit = 10;
