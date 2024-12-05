@@ -1,8 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { BLANK } from "@/constants/constant";
-import { TemporalMember } from "@/models/register/member-register";
 import {
   BAPTISM,
+  BLANK,
   GENDER,
   MARRIAGE,
   MEMBER_REGISTER_STAGE,
@@ -10,16 +9,17 @@ import {
   OFFICER,
 } from "@/constants/constant";
 import { getIsWellFormedMobilePhone, getIsWellFormedName } from "@/utils/check";
+import { Member } from "@/models/member/member";
 
 type MemberRegisterState = {
-  member: TemporalMember;
+  member: Member;
   stage: MEMBER_REGISTER_STAGE;
+  type: MEMBER_REGISTER_TYPE;
   isStageClear: boolean;
 };
 
-const DEFAULT_MEMBER: TemporalMember = {
-  id: undefined,
-  type: MEMBER_REGISTER_TYPE.NEW,
+const DEFAULT_MEMBER: Member = {
+  id: "",
   profileImage: BLANK,
   name: BLANK,
   mobilePhone: BLANK,
@@ -40,17 +40,20 @@ const DEFAULT_MEMBER: TemporalMember = {
   previousChurchName: BLANK,
   vehicleNumber: [BLANK, BLANK, BLANK],
   gender: GENDER.MALE,
-  family: BLANK,
+  familyMemberId: BLANK,
+  ministry: BLANK,
+  group: BLANK,
 };
 
 const initialState: MemberRegisterState = {
   member: DEFAULT_MEMBER,
   stage: MEMBER_REGISTER_STAGE.REQUIRED,
   isStageClear: false,
+  type: MEMBER_REGISTER_TYPE.NEW,
 };
 
 const getIsStageClear = (
-  member: TemporalMember,
+  member: Member,
   stage: MEMBER_REGISTER_STAGE,
 ): boolean => {
   if (stage === MEMBER_REGISTER_STAGE.REQUIRED) {
@@ -68,7 +71,7 @@ const MemberRegisterSlice = createSlice({
   name: "register",
   initialState,
   reducers: {
-    setMember(state, action: PayloadAction<TemporalMember>) {
+    setMember(state, action: PayloadAction<Member>) {
       state.member = action.payload;
       state.isStageClear = getIsStageClear(state.member, state.stage);
     },
@@ -76,8 +79,11 @@ const MemberRegisterSlice = createSlice({
       state.stage = action.payload;
       state.isStageClear = getIsStageClear(state.member, state.stage);
     },
+    setType(state, action: PayloadAction<MEMBER_REGISTER_TYPE>) {
+      state.type = action.payload;
+    },
   },
 });
 
-export const { setMember, setStage } = MemberRegisterSlice.actions;
+export const { setMember, setStage, setType } = MemberRegisterSlice.actions;
 export default MemberRegisterSlice.reducer;

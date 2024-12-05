@@ -1,37 +1,37 @@
 import axios, { AxiosResponse } from "axios";
-import { TemporalMember } from "@/models/register/member-register";
 import { BAPTISM, MARRIAGE } from "@/constants/constant";
+import { Member } from "@/models/member/member";
 
 class HTTPError extends Error {}
 
 type GetMembersParams = {
-  churchId: number; // 교회 id
+  churchId: string; // 교회 id
   name?: string; // 검색 이름
   page?: number; // 페이지 번호
   take?: number; // 요청 개수
 };
 
-export type GetMembersResponse = TemporalMember & { id: string };
+export type GetMembersResponse = Member;
 
 type GetMemberParams = {
-  churchId: number; // 교회 id
-  memberId: number;
+  churchId: string; // 교회 id
+  memberId: string;
 };
 
 type CreateMemberParams = {
-  churchId: number;
+  churchId: string;
 };
 
 export type CreateMemberBody = {
   name: string;
   mobilePhone: string;
-  family?: string;
+  familyMemberId?: string;
   guidedById?: string;
 };
 
 type EditMemberParams = {
-  churchId: number;
-  memberId: number;
+  churchId: string;
+  memberId: string;
 };
 
 export type EditMemberBody = {
@@ -42,7 +42,7 @@ export type EditMemberBody = {
   address?: string;
   detailAddress?: string;
   homePhone?: string;
-  family?: string;
+  familyMemberId?: string;
   occupation?: string;
   school?: string;
   marriage?: MARRIAGE;

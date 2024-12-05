@@ -15,7 +15,12 @@ import { VehicleNumberInputRef } from "@/components/atoms/register/vehicle-numbe
 import MemberImageInput from "@/components/atoms/register/member-image-input";
 import { DropdownValueType } from "@/components/atoms/common/dropdown/dropdown-item";
 import RadioButton from "@/components/atoms/common/input/radio-button/radio-button";
-import { CALENDAR_MODE, MEDIA_MIN_WIDTH, NONE } from "@/constants/constant";
+import {
+  CALENDAR_MODE,
+  MARRIAGE,
+  MEDIA_MIN_WIDTH,
+  NONE,
+} from "@/constants/constant";
 import {
   useBirthRadioButtonItems,
   useGenderRadioButtonItems,
@@ -135,10 +140,7 @@ export type PersonalRegisterViewProps = {
     event: ChangeEvent<HTMLInputElement>,
     index: number,
   ) => void;
-  onChangeMarriage: (
-    value: string,
-    nextInputRef?: RefObject<HTMLInputElement>,
-  ) => void;
+  onChangeMarriage: (value: MARRIAGE) => void;
   onClickMarriageDropdownItem: (
     nextInputRef: RefObject<HTMLInputElement>,
   ) => void;

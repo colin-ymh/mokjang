@@ -13,13 +13,12 @@ import DaumPostcodeEmbed, { Address } from "react-daum-postcode";
 import { gsap } from "gsap";
 
 import { getSchool } from "@/api/school-api";
-import { TemporalMember } from "@/models/register/member-register";
 import { getDateFromString, getIsChild } from "@/utils/date";
 import { setMember } from "@/redux/reducers/member-register-reducer";
 import PersonalRegisterView from "@/components/molecules/register/personal-register.view";
 import { DropdownValueType } from "@/components/atoms/common/dropdown/dropdown-item";
 import PagePopup from "@/components/atoms/common/popup/page-popup";
-import { CALENDAR_MODE } from "@/constants/constant";
+import { CALENDAR_MODE, MARRIAGE } from "@/constants/constant";
 import { getIsWellFormedBirth, getIsWellFormedHomePhone } from "@/utils/check";
 import {
   getFormattedDate,
@@ -27,6 +26,7 @@ import {
   getFormattedVehicleNumber,
   getTrimmedString,
 } from "@/utils/format";
+import { Member } from "@/models/member/member";
 
 const PersonalRegister = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -127,7 +127,7 @@ const PersonalRegister = () => {
   };
 
   // 결혼 정보 변경 시 이벤트
-  const onChangeMarriage = (value: string) => {
+  const onChangeMarriage = (value: MARRIAGE) => {
     dispatch(setMember({ ...member, marriage: value }));
   };
 
@@ -166,7 +166,7 @@ const PersonalRegister = () => {
       fullAddress += extraAddress !== "" ? ` (${extraAddress})` : "";
     }
 
-    const newMember: TemporalMember = member;
+    const newMember: Member = member;
     dispatch(setMember({ ...newMember, address: fullAddress }));
     setIsAddressOpen(false);
   };

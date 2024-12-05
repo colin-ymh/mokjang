@@ -10,23 +10,18 @@ import {
 import RegisterButtonListView from "@/components/molecules/register/register-button-list.view";
 import ToastPopup from "@/components/atoms/common/popup/toast-popup";
 import { MembersApi } from "@/api/members.api";
-
-import { useScopedI18n } from "../../../../locales/client";
 import { RequestInfoApi } from "@/api/request-info.api";
 import { getCreateMemberBody, getEditMemberBody } from "@/utils/member";
-import { useParams } from "next/navigation";
+
+import { useScopedI18n } from "../../../../locales/client";
 
 const RegisterButtonList = () => {
   const membersApi = new MembersApi(false);
   const dispatch = useDispatch<AppDispatch>();
 
   const requestInfoApi = new RequestInfoApi(false);
-  const { churchId, requestInfoId } = useParams() as {
-    churchId?: string;
-    requestInfoId?: string;
-  };
 
-  const { stage, member } = useSelector(
+  const { type, stage, member } = useSelector(
     (state: RootState) => state.memberRegister,
   );
 
@@ -38,7 +33,7 @@ const RegisterButtonList = () => {
   const onClickLeft = () => {
     if (stage === MEMBER_REGISTER_STAGE.REQUIRED) {
       requestInfoApi.inviteMember(
-        { churchId: 1, isTest: true },
+        { churchId: "1", isTest: true },
         getCreateMemberBody(member),
       );
     } else if (stage === MEMBER_REGISTER_STAGE.PERSONAL) {
@@ -53,7 +48,7 @@ const RegisterButtonList = () => {
     if (stage === MEMBER_REGISTER_STAGE.REQUIRED) {
       // 최초 교인 등록
       membersApi
-        .createMember({ churchId: 1 }, getCreateMemberBody(member))
+        .createMember({ churchId: "1" }, getCreateMemberBody(member))
         .then((response) => {
           // 등록 성공 시
           if (response.status === 201) {
@@ -68,10 +63,10 @@ const RegisterButtonList = () => {
           }
         });
     } else if (stage === MEMBER_REGISTER_STAGE.PERSONAL) {
-      if (member.type === MEMBER_REGISTER_TYPE.NEW) {
+      if (type === MEMBER_REGISTER_TYPE.NEW) {
         if (member?.id) {
           membersApi.editMember(
-            { churchId: 1, memberId: member.id },
+            { churchId: "1", memberId: member.id },
             getEditMemberBody(member),
           );
         }
@@ -81,7 +76,7 @@ const RegisterButtonList = () => {
     } else if (stage === MEMBER_REGISTER_STAGE.RELIGIOUS) {
       if (member?.id) {
         membersApi.editMember(
-          { churchId: 1, memberId: member.id },
+          { churchId: "1", memberId: member.id },
           getEditMemberBody(member),
         );
       }
@@ -89,7 +84,7 @@ const RegisterButtonList = () => {
   };
 
   const getRightButtonTitle = () => {
-    if (member.type === MEMBER_REGISTER_TYPE.NEW) {
+    if (type === MEMBER_REGISTER_TYPE.NEW) {
       switch (stage) {
         case MEMBER_REGISTER_STAGE.REQUIRED:
           return t_button("register");

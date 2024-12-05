@@ -28,7 +28,8 @@ const ButtonListContainer = styled.div`
 
   // 데크스탑
   @media (min-width: ${MEDIA_MIN_WIDTH.DESKTOP}) {
-    width: 80%;
+    position: relative;
+    width: 100%;
   }
 `;
 

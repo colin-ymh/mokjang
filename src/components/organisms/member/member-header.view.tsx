@@ -24,9 +24,13 @@ const RegisterButtonContainer = styled.div`
   top: 60px;
 `;
 
-type MemberHeadBarViewProps = {};
+type MemberHeadBarViewProps = {
+  onClickRegisterMemberButton: () => void;
+};
 
-const MemberHeaderView = ({}: MemberHeadBarViewProps) => {
+const MemberHeaderView = ({
+  onClickRegisterMemberButton,
+}: MemberHeadBarViewProps) => {
   const t_header = useScopedI18n("header");
   return (
     <HeaderContainer>
@@ -35,7 +39,12 @@ const MemberHeaderView = ({}: MemberHeadBarViewProps) => {
       </MainText>
       <HeaderBar items={useMemberHeaderBarItems()} />
       <RegisterButtonContainer>
-        <Button text={"교인 등록하기"} width={100} height={40} />
+        <Button
+          text={"교인 등록하기"}
+          width={100}
+          height={40}
+          onClick={onClickRegisterMemberButton}
+        />
       </RegisterButtonContainer>
     </HeaderContainer>
   );

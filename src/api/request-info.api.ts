@@ -4,15 +4,15 @@ import { EditMemberBody } from "@/api/members.api";
 class HTTPError extends Error {}
 
 type InviteMemberParams = {
-  churchId: number; // 교회 id
+  churchId: string; // 교회 id
   isTest?: boolean;
 };
 
 type InviteMemberBody = {
   name: string;
   mobilePhone: string;
-  guideId?: number;
-  familyId?: number;
+  guidedById?: string;
+  familyMemberId?: string;
 };
 
 type RequestValidationParams = {

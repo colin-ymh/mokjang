@@ -23,7 +23,7 @@ const ExtraButtonList = () => {
 
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
-  const { stage, member } = useSelector(
+  const { type, stage, member } = useSelector(
     (state: RootState) => state.memberRegister,
   );
   const t_button = useScopedI18n("button");
@@ -38,7 +38,7 @@ const ExtraButtonList = () => {
 
   const onClickRight = () => {
     if (stage === MEMBER_REGISTER_STAGE.PERSONAL) {
-      if (member.type === MEMBER_REGISTER_TYPE.NEW) {
+      if (type === MEMBER_REGISTER_TYPE.NEW) {
         console.log({
           ...getEditMemberBody(member),
           name: member.name,
@@ -76,7 +76,7 @@ const ExtraButtonList = () => {
   };
 
   const getRightButtonTitle = () => {
-    if (member.type === MEMBER_REGISTER_TYPE.NEW) {
+    if (type === MEMBER_REGISTER_TYPE.NEW) {
       switch (stage) {
         case MEMBER_REGISTER_STAGE.PERSONAL:
           return t_button("save");

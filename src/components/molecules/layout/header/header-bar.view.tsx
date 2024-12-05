@@ -38,7 +38,11 @@ const HeaderBarView = ({ items, onClick }: HeaderBarViewProps) => {
     <HeaderBarContainer>
       {items.map(({ id, title }) => {
         return (
-          <BarItem onClick={() => onClick(id)} $isSelected={id === contentId}>
+          <BarItem
+            key={id}
+            onClick={() => onClick(id)}
+            $isSelected={id === contentId}
+          >
             <MainText
               fontSize={18}
               color={id === contentId ? MAIN.DEFAULT : BLACK}

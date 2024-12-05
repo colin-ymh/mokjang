@@ -7,9 +7,9 @@ import {
 } from "@/utils/check";
 import { getTrimmedString } from "@/utils/format";
 import { CreateMemberBody, EditMemberBody } from "@/api/members.api";
-import { TemporalMember } from "@/models/register/member-register";
+import { Member } from "@/models/member/member";
 
-export const getCreateMemberBody = (member: TemporalMember) => {
+export const getCreateMemberBody = (member: Member) => {
   const newMember: CreateMemberBody = {
     name: member.name,
     mobilePhone: member.mobilePhone.replace(/\D/g, ""),
@@ -21,7 +21,7 @@ export const getCreateMemberBody = (member: TemporalMember) => {
   return newMember;
 };
 
-export const getEditMemberBody = (member: TemporalMember) => {
+export const getEditMemberBody = (member: Member) => {
   const newMember: EditMemberBody = {};
 
   if (member.guidedById) {

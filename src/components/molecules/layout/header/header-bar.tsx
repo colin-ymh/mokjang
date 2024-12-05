@@ -6,20 +6,6 @@ import HeaderBarView from "@/components/molecules/layout/header/header-bar.view"
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
 import { setContentId } from "@/redux/reducers/layout-reducer";
-
-const HeaderBarContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-`;
-
-const BarItem = styled.div`
-  display: flex;
-  height: 30px;
-  justify-content: center;
-  align-items: center;
-  padding: 5px 15px;
-`;
-
 export type HeaderBarItem = {
   id: string;
   title: string;

@@ -9,13 +9,13 @@ import { getFormattedMobilePhone, getFormattedName } from "@/utils/format";
 import { usePageRouter } from "@/utils/router";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
-import { TemporalMember } from "@/models/register/member-register";
 import { setMember } from "@/redux/reducers/member-register-reducer";
+import { Member } from "@/models/member/member";
 
 const CheckRegister = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const member: TemporalMember = useSelector(
-    (state: RootState): TemporalMember => state.memberRegister.member,
+  const member: Member = useSelector(
+    (state: RootState): Member => state.memberRegister.member,
   );
   const router = usePageRouter();
   const { churchId, requestInfoId } = useParams() as {

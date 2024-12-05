@@ -37,7 +37,7 @@ const SideBarView = ({ onClickButton }: SideBarViewProps) => {
     <SideBarContainer>
       <SideBarHeader />
       {useSideBarItems().map(({ id, title }) => {
-        return <SideBarButton id={id} title={title} />;
+        return <SideBarButton key={id} id={id} title={title} />;
       })}
     </SideBarContainer>
   );

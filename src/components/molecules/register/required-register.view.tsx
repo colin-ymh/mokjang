@@ -79,7 +79,9 @@ const RequiredRegisterView = ({
   const t = useI18n();
   const t_placeholder = useScopedI18n("placeholder");
 
-  const { member } = useSelector((state: RootState) => state.memberRegister);
+  const { type, member } = useSelector(
+    (state: RootState) => state.memberRegister,
+  );
 
   // 각 input 에 대한 ref
   const nameInputRef = useRef<HTMLInputElement>(null);
@@ -92,7 +94,7 @@ const RequiredRegisterView = ({
       {/* 종류 */}
       <RadioButton
         items={useMemberRegisterTypeRadioButtonItems()}
-        selectedValue={member.type}
+        selectedValue={type}
         onChange={onChangeType}
         customButton={(props) => (
           <RegisterRadioButton {...props} color={GRAY.DARK} />

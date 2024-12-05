@@ -4,26 +4,27 @@ import React, { ChangeEvent, useState } from "react";
 import { AxiosResponse } from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
-import { setMember } from "@/redux/reducers/member-register-reducer";
+import { setMember, setType } from "@/redux/reducers/member-register-reducer";
 
 import { GetMembersResponse, MembersApi } from "@/api/members.api";
 import RequiredRegisterView from "@/components/molecules/register/required-register.view";
 import { MEMBER_REGISTER_TYPE, BLANK } from "@/constants/constant";
 import { DropdownValueType } from "@/components/atoms/common/dropdown/dropdown-item";
-import { TemporalMember } from "@/models/register/member-register";
+
 import {
   getFormattedMobilePhone,
   getFormattedName,
   getTrimmedString,
 } from "@/utils/format";
 import { getIsWellFormedMobilePhone } from "@/utils/check";
+import { Member } from "@/models/member/member";
 
 const RequiredRegister = () => {
   const membersApi = new MembersApi(false);
   const dispatch = useDispatch<AppDispatch>();
 
-  const member: TemporalMember = useSelector(
-    (state: RootState): TemporalMember => state.memberRegister.member,
+  const member: Member = useSelector(
+    (state: RootState): Member => state.memberRegister.member,
   );
 
   // 인도자 이름
@@ -40,7 +41,7 @@ const RequiredRegister = () => {
 
   // 새신자 타입 변경 시 이벤트
   const onChangeType = (type: MEMBER_REGISTER_TYPE) => {
-    dispatch(setMember({ ...member, type }));
+    dispatch(setType(type));
   };
 
   // 이름 변경 시 이벤트
@@ -67,7 +68,7 @@ const RequiredRegister = () => {
 
     membersApi
       .getMembers({
-        churchId: 1,
+        churchId: "1",
         name: newGuideName,
         page: 1,
         take: 5,
@@ -94,7 +95,7 @@ const RequiredRegister = () => {
 
     membersApi
       .getMembers({
-        churchId: 1,
+        churchId: "1",
         name: newFamilyMemberName,
         page: 1,
         take: 5,
@@ -113,7 +114,7 @@ const RequiredRegister = () => {
 
   // 가족 선택 시 이벤트
   const onChangeFamilyMemberId = (value: string) => {
-    dispatch(setMember({ ...member, family: value }));
+    dispatch(setMember({ ...member, familyMemberId: value }));
   };
 
   const props = {
