@@ -3,9 +3,9 @@ import styled from "styled-components";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 
-import { GRAY, MAIN, WHITE } from "@/common/styles/color";
+import { GRAY, MAIN, WHITE } from "@/constants/styles/color";
 import Button from "@/components/atoms/common/button/button";
-import { MEDIA_MIN_WIDTH, MEMBER_REGISTER_STAGE } from "@/constant/constant";
+import { MEDIA_MIN_WIDTH, MEMBER_REGISTER_STAGE } from "@/constants/constant";
 
 import ExitButton from "../../../../../public/svg/cancel.svg";
 import { useScopedI18n } from "../../../../../locales/client";

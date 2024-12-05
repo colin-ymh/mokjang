@@ -1,4 +1,5 @@
 export const NONE = "none";
+export const BLANK = "";
 
 // 신급
 export enum BAPTISM {
@@ -7,14 +8,16 @@ export enum BAPTISM {
   INFANT_BAPTISM = "infantBaptism",
   CATECHUMENATE = "catechumenate",
   CONFIRMATION = "confirmation",
+  NONE = "none",
 }
 
-// 신급
+// 직분
 export enum OFFICER {
   ELDER = "elder",
   EXHORTER = "exhorter",
   ORDAINED_DEACON = "ordainedDeacon",
   DEACON = "deacon",
+  NONE = "none",
 }
 
 // 성도 등록 타입
@@ -40,6 +43,7 @@ export enum GENDER {
 export enum MARRIAGE {
   MARRIED = "married",
   SINGLE = "single",
+  NONE = "none",
 }
 
 // 양력 음력

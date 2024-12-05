@@ -5,7 +5,7 @@ import {
   MainText,
   MainTextProps,
 } from "@/components/atoms/common/text/main-text";
-import { MAIN, WHITE } from "@/common/styles/color";
+import { MAIN, WHITE } from "@/constants/styles/color";
 
 type ButtonProps = MainTextProps & {
   text?: string;

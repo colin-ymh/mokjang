@@ -3,7 +3,7 @@ import {
   MARRIAGE,
   MEMBER_REGISTER_TYPE,
   OFFICER,
-} from "@/constant/constant";
+} from "@/constants/constant";
 
 export type TemporalMember = {
   id: number | undefined;
@@ -23,15 +23,15 @@ export type TemporalMember = {
   family: string;
   occupation: string;
   school: string;
-  marriage: MARRIAGE | NONE;
+  marriage: MARRIAGE;
   detailMarriage: string;
   // 성도정보
   ministry?: string; // 사역
   group?: string; // 소그룹
-  officer: OFFICER | NONE; // 직분
+  officer: OFFICER; // 직분
   officerStartDate: string;
   officerStartChurch: string;
-  baptism: BAPTISM | NONE; // 신급
+  baptism: BAPTISM; // 신급
   guidedById: string; // 인도자 id
   previousChurchName: string; // 이전 교회
   vehicleNumber: string[];

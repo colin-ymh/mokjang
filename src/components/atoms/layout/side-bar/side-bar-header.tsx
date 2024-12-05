@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { MainText } from "@/components/atoms/common/text/main-text";
-import { GRAY } from "@/common/styles/color";
+import { GRAY } from "@/constants/styles/color";
 
 const HeaderContainer = styled.div`
   display: flex;

@@ -1,4 +1,4 @@
-import { MEMBER_CONTENT_ID } from "@/constant/layout/content";
+import { MEMBER_CONTENT_ID } from "@/constants/layout/content";
 
 import { useScopedI18n } from "../../../locales/client";
 

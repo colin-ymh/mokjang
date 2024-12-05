@@ -4,8 +4,6 @@ import styled from "styled-components";
 import { MainText } from "@/components/atoms/common/text/main-text";
 import BorderInput from "@/components/atoms/common/input/border-input";
 
-import { DEFAULT_VALUE } from "@/common/default/default-value";
-
 const LabelInputContainer = styled.div<{ $zIndex?: number }>`
   flex: 1;
   display: flex;
@@ -30,7 +28,7 @@ const LabelInput = forwardRef<HTMLInputElement, LabelInputProps>(
         <MainText>{label}</MainText>
         <BorderInput
           ref={ref}
-          onChange={props.onChange || DEFAULT_VALUE.FUNCTION}
+          onChange={props.onChange || undefined}
           borderColor={borderColor}
           {...props}
         />

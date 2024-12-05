@@ -19,7 +19,7 @@ import { setMember } from "@/redux/reducers/member-register-reducer";
 import PersonalRegisterView from "@/components/molecules/register/personal-register.view";
 import { DropdownValueType } from "@/components/atoms/common/dropdown/dropdown-item";
 import PagePopup from "@/components/atoms/common/popup/page-popup";
-import { CALENDAR_MODE } from "@/constant/constant";
+import { CALENDAR_MODE } from "@/constants/constant";
 import { getIsWellFormedBirth, getIsWellFormedHomePhone } from "@/utils/check";
 import {
   getFormattedDate,

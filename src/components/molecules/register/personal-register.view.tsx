@@ -9,17 +9,17 @@ import LabelInput from "@/components/atoms/common/input/label-input";
 import RegisterRadioButton from "@/components/atoms/register/register-radio-button";
 import LabelRadioButton from "@/components/atoms/common/input/radio-button/label-radio-button";
 import LabelDropdown from "@/components/atoms/common/dropdown/label-dropdown";
-import { useMarriageDropdownItems } from "@/constant/dropdown/dropdown-items";
+import { useMarriageDropdownItems } from "@/hooks/dropdown/dropdown-items";
 import VehicleNumberInput from "@/components/atoms/register/vehicle-number-input";
 import { VehicleNumberInputRef } from "@/components/atoms/register/vehicle-number-input.view";
 import MemberImageInput from "@/components/atoms/register/member-image-input";
 import { DropdownValueType } from "@/components/atoms/common/dropdown/dropdown-item";
 import RadioButton from "@/components/atoms/common/input/radio-button/radio-button";
-import { CALENDAR_MODE, MEDIA_MIN_WIDTH, NONE } from "@/constant/constant";
+import { CALENDAR_MODE, MEDIA_MIN_WIDTH, NONE } from "@/constants/constant";
 import {
   useBirthRadioButtonItems,
   useGenderRadioButtonItems,
-} from "@/constant/radio-button/radio-button-items";
+} from "@/hooks/radio-button/radio-button-items";
 
 import {
   getFormattedDate,
@@ -32,7 +32,7 @@ import { onClickEnter } from "@/utils/input";
 import { useI18n, useScopedI18n } from "../../../../locales/client";
 import { usePathname } from "next/navigation";
 import { getIsWellFormedBirth, getIsWellFormedHomePhone } from "@/utils/check";
-import { BLACK, DESTRUCTIVE, MAIN } from "@/common/styles/color";
+import { BLACK, DESTRUCTIVE, MAIN } from "@/constants/styles/color";
 
 const PersonalRegisterContainer = styled.div`
   display: flex;

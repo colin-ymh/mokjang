@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { MainText } from "@/components/atoms/common/text/main-text";
-import { BLACK, DESTRUCTIVE, MAIN, WHITE } from "@/common/styles/color";
+import { BLACK, DESTRUCTIVE, MAIN, WHITE } from "@/constants/styles/color";
 
 interface ConfirmPopupProps {
   title: string;

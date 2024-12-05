@@ -1,7 +1,7 @@
 import React, { InputHTMLAttributes, forwardRef } from "react";
 import styled from "styled-components";
 
-import { BLACK, GRAY, MAIN } from "@/common/styles/color";
+import { BLACK, GRAY, MAIN } from "@/constants/styles/color";
 
 // 스타일 정의
 const BorderInputContainer = styled.input<{ $borderColor: string }>`

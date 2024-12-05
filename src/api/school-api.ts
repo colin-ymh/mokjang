@@ -1,5 +1,5 @@
 import ky from "ky";
-import { NEIS_KEY } from "@/config/config";
+import { NEIS_KEY } from "@/configs/config";
 import axios from "axios";
 
 // 네이스 API에서 반환되는 학교 정보 타입 정의

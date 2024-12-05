@@ -1,11 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 import { TemporalMember } from "@/models/register/member-register";
-import {
-  BAPTISM,
-  MARRIAGE,
-  MEMBER_REGISTER_TYPE,
-  OFFICER,
-} from "@/constant/constant";
+import { BAPTISM, MARRIAGE } from "@/constants/constant";
 
 class HTTPError extends Error {}
 
@@ -26,27 +21,12 @@ type GetMemberParams = {
 type CreateMemberParams = {
   churchId: number;
 };
+
 export type CreateMemberBody = {
-  // 필수입력값
-  name?: string;
-  mobilePhone?: string;
-  // 그 외 정보
-  profileImage?: string;
-  birth?: string;
-  isLunar?: boolean;
-  gender?: string;
-  address?: string;
-  detailAddress?: string;
-  homePhone?: string;
+  name: string;
+  mobilePhone: string;
   family?: string;
-  occupation?: string;
-  school?: string;
-  marriage?: MARRIAGE;
-  detailMarriage?: string;
-  baptism?: BAPTISM;
   guidedById?: string;
-  previousChurchName?: string;
-  vehicleNumber?: string[];
 };
 
 type EditMemberParams = {
@@ -54,9 +34,7 @@ type EditMemberParams = {
   memberId: number;
 };
 
-type EditMemberBody = {
-  name?: string;
-  mobilePhone?: string;
+export type EditMemberBody = {
   profileImage?: string;
   birth?: string;
   isLunar?: boolean;
@@ -92,7 +70,7 @@ export class MembersApi {
   /**
    * 교인들 불러오기
    * @param {GetMembersParams} params
-   * @returns {Promise<AxiosResponse>} {data, count}
+   * @returns {Promise<AxiosResponse>}
    */
   public getMembers = async (
     params: GetMembersParams,

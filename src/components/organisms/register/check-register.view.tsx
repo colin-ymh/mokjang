@@ -5,11 +5,13 @@ import LabelInput from "@/components/atoms/common/input/label-input";
 import { useI18n, useScopedI18n } from "../../../../locales/client";
 import Button from "@/components/atoms/common/button/button";
 import { MainText } from "@/components/atoms/common/text/main-text";
-import { GRAY, MAIN } from "@/common/styles/color";
+import { GRAY, MAIN } from "@/constants/styles/color";
 
 import { getFormattedMobilePhone, getFormattedName } from "@/utils/format";
 import { onClickEnter } from "@/utils/input";
-import { MEDIA_MIN_WIDTH } from "@/constant/constant";
+import { MEDIA_MIN_WIDTH } from "@/constants/constant";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
 
 const CheckRegisterContainer = styled.div`
   display: flex;
@@ -45,8 +47,6 @@ const ButtonContainer = styled.div`
 `;
 
 type CheckRegisterViewProps = {
-  name: string;
-  mobilePhone: string;
   isButtonEnable: boolean;
   onChangeName: (event: ChangeEvent<HTMLInputElement>) => void;
   onChangeMobilePhone: (event: ChangeEvent<HTMLInputElement>) => void;
@@ -54,13 +54,13 @@ type CheckRegisterViewProps = {
 };
 
 const CheckRegisterView = ({
-  name,
-  mobilePhone,
   isButtonEnable,
   onChangeName,
   onChangeMobilePhone,
   onClickButton,
 }: CheckRegisterViewProps) => {
+  const { member } = useSelector((state: RootState) => state.memberRegister);
+
   const t = useI18n();
   const t_register = useScopedI18n("register");
   const t_placeholder = useScopedI18n("placeholder");
@@ -81,7 +81,7 @@ const CheckRegisterView = ({
           enterKeyHint={"done"}
           ref={nameInputRef}
           label={t("name")}
-          value={getFormattedName(name)}
+          value={member.name}
           onChange={onChangeName}
           placeholder={t_placeholder("name")}
           onKeyDown={(event) => onClickEnter(event, mobilePhoneInputRef)}
@@ -92,7 +92,7 @@ const CheckRegisterView = ({
           inputMode={"numeric"}
           ref={mobilePhoneInputRef}
           label={t("mobilePhone")}
-          value={getFormattedMobilePhone(mobilePhone)}
+          value={member.mobilePhone}
           onChange={onChangeMobilePhone}
           placeholder={t_placeholder("mobilePhone")}
         />

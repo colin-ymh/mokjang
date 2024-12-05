@@ -1,12 +1,14 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { BLANK } from "@/common/default/default-value";
+import { BLANK } from "@/constants/constant";
 import { TemporalMember } from "@/models/register/member-register";
 import {
+  BAPTISM,
   GENDER,
+  MARRIAGE,
   MEMBER_REGISTER_STAGE,
   MEMBER_REGISTER_TYPE,
-  NONE,
-} from "@/constant/constant";
+  OFFICER,
+} from "@/constants/constant";
 import { getIsWellFormedMobilePhone, getIsWellFormedName } from "@/utils/check";
 
 type MemberRegisterState = {
@@ -22,7 +24,7 @@ const DEFAULT_MEMBER: TemporalMember = {
   name: BLANK,
   mobilePhone: BLANK,
   homePhone: BLANK,
-  marriage: NONE,
+  marriage: MARRIAGE.NONE,
   detailMarriage: BLANK,
   address: BLANK,
   detailAddress: BLANK,
@@ -30,10 +32,10 @@ const DEFAULT_MEMBER: TemporalMember = {
   occupation: BLANK,
   birth: BLANK,
   isLunar: false,
-  officer: NONE,
+  officer: OFFICER.NONE,
   officerStartDate: BLANK,
   officerStartChurch: BLANK,
-  baptism: NONE,
+  baptism: BAPTISM.NONE,
   guidedById: BLANK,
   previousChurchName: BLANK,
   vehicleNumber: [BLANK, BLANK, BLANK],
@@ -52,6 +54,7 @@ const getIsStageClear = (
   stage: MEMBER_REGISTER_STAGE,
 ): boolean => {
   if (stage === MEMBER_REGISTER_STAGE.REQUIRED) {
+    // 이름과 휴대폰 번호가 정상적인 상태인 경우, 등록 가능
     return (
       getIsWellFormedName(member.name) &&
       getIsWellFormedMobilePhone(member.mobilePhone)

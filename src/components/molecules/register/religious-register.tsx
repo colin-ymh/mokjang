@@ -7,7 +7,7 @@ import { AppDispatch, RootState } from "@/redux/store";
 import { setMember } from "@/redux/reducers/member-register-reducer";
 
 import ReligiousRegisterView from "@/components/molecules/register/religious-register.view";
-import { BAPTISM } from "@/constant/constant";
+import { BAPTISM, OFFICER } from "@/constants/constant";
 import { getFormattedDate } from "@/utils/format";
 
 const ReligiousRegister = () => {
@@ -21,7 +21,7 @@ const ReligiousRegister = () => {
   };
 
   // 직분 변경 시 이벤트
-  const onChangeOfficer = (value: string) => {
+  const onChangeOfficer = (value: OFFICER) => {
     dispatch(
       setMember({
         ...member,

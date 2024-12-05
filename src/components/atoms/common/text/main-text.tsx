@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { BLACK } from "@/common/styles/color";
+import { BLACK } from "@/constants/styles/color";
 
 export type MainTextProps = {
   size?: "small" | "medium" | "large";

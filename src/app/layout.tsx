@@ -5,11 +5,12 @@ import { Provider, useDispatch } from "react-redux";
 import { createGlobalStyle } from "styled-components";
 
 import TranslateProvider from "@/app/[locale]/provider";
-import StyledComponentsRegistry from "@/common/styles/registry";
+import StyledComponentsRegistry from "@/hooks/registry";
 
 import store from "@/redux/store";
 import { initializeIsWebview } from "@/redux/reducers/webview-reducer";
-import { WHITE } from "@/common/styles/color";
+import { useChangeLocale } from "../../locales/client";
+import { LOCALE } from "@/constants/state/locale";
 
 const GlobalStyle = createGlobalStyle`
     html,
@@ -37,8 +38,8 @@ type RootLayoutPropsExtended = {
   modal?: React.ReactNode;
 };
 
-// Provider 내부에서 웹뷰 초기화를 위한 컴포넌트
-const WebviewInitializer = () => {
+// Provider 내부에 전역변수 initialize
+const InitializeStore = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -49,6 +50,26 @@ const WebviewInitializer = () => {
 };
 
 const RootLayout = (props: RootLayoutProps | RootLayoutPropsExtended) => {
+  const changeLocale = useChangeLocale();
+
+  // useEffect(() => {
+  //   const temporalLocale = (
+  //     navigator.language || Intl.DateTimeFormat().resolvedOptions().locale
+  //   ).slice(0, 2);
+  //
+  //   let locale;
+  //
+  //   if (!(temporalLocale in LOCALE)) {
+  //     locale = LOCALE.KO;
+  //   } else {
+  //     locale = temporalLocale as LOCALE;
+  //   }
+  //
+  //   console.log(locale);
+  //
+  //   changeLocale(locale);
+  // }, []);
+
   const { children } = {
     ...props,
   };
@@ -65,7 +86,7 @@ const RootLayout = (props: RootLayoutProps | RootLayoutPropsExtended) => {
         <StyledComponentsRegistry>
           <Provider store={store}>
             <TranslateProvider>
-              <WebviewInitializer /> {/* 웹뷰 초기화 컴포넌트 */}
+              <InitializeStore />
               <GlobalStyle />
               {children}
             </TranslateProvider>

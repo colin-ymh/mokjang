@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { MainText } from "@/components/atoms/common/text/main-text";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
-import { BLACK, MAIN, WHITE } from "@/common/styles/color";
+import { BLACK, MAIN, WHITE } from "@/constants/styles/color";
 
 const HeaderBarContainer = styled.div`
   display: flex;

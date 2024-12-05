@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-import { GRAY, MAIN, WHITE } from "@/common/styles/color";
+import { GRAY, MAIN, WHITE } from "@/constants/styles/color";
 
 import ExitButton from "../../../../../public/svg/cancel.svg";
 

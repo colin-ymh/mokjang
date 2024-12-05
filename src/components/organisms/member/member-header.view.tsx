@@ -1,11 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 
-import { GRAY } from "@/common/styles/color";
+import { GRAY } from "@/constants/styles/color";
 import { MainText } from "@/components/atoms/common/text/main-text";
 import { useScopedI18n } from "../../../../locales/client";
 import HeaderBar from "@/components/molecules/layout/header/header-bar";
-import { useMemberHeaderBarItems } from "@/constant/layout/header-bar-items";
+import { useMemberHeaderBarItems } from "@/hooks/layout/header-bar-items";
 import Button from "@/components/atoms/common/button/button";
 
 const HeaderContainer = styled.div`

@@ -1,28 +1,28 @@
-import { TemporalMember } from "@/models/register/member-register";
-
 import { getDateFromString, getIsChild } from "@/utils/date";
-import { BLANK } from "@/common/default/default-value";
-import { NONE } from "@/constant/constant";
+import { NONE, BLANK } from "@/constants/constant";
 import {
   getIsWellFormedBirth,
   getIsWellFormedHomePhone,
-  getIsWellFormedMobilePhone,
-  getIsWellFormedName,
   getIsWellFormedVehicleNumber,
 } from "@/utils/check";
 import { getTrimmedString } from "@/utils/format";
-import { CreateMemberBody } from "@/api/members.api";
+import { CreateMemberBody, EditMemberBody } from "@/api/members.api";
+import { TemporalMember } from "@/models/register/member-register";
 
-export const getPostMember = (member: TemporalMember) => {
-  const newMember: CreateMemberBody = {};
+export const getCreateMemberBody = (member: TemporalMember) => {
+  const newMember: CreateMemberBody = {
+    name: member.name,
+    mobilePhone: member.mobilePhone.replace(/\D/g, ""),
+  };
 
-  if (member.name && getIsWellFormedName(member.name)) {
-    newMember.name = member.name;
+  if (member.guidedById) {
+    newMember.guidedById = member.guidedById;
   }
+  return newMember;
+};
 
-  if (member.mobilePhone && getIsWellFormedMobilePhone(member.mobilePhone)) {
-    newMember.mobilePhone = member.mobilePhone.replace(/\D/g, "");
-  }
+export const getEditMemberBody = (member: TemporalMember) => {
+  const newMember: EditMemberBody = {};
 
   if (member.guidedById) {
     newMember.guidedById = member.guidedById;
@@ -34,18 +34,18 @@ export const getPostMember = (member: TemporalMember) => {
 
     // 미성년자인 경우에만, 학교 입력
     if (getIsChild(getDateFromString(member.birth))) {
-      if (getTrimmedString(member.school)) {
+      if (member.school && getTrimmedString(member.school)) {
         newMember.school = member.school;
       }
     }
   }
 
-  if (getTrimmedString(member.address)) {
+  if (member.address && getTrimmedString(member.address)) {
     newMember.address = member.address;
 
     // 도로명 주소를 입력하지 않은 상황에서,
     // 상세주소는 서버에 저장 X
-    if (getTrimmedString(member.detailAddress)) {
+    if (member.detailAddress && getTrimmedString(member.detailAddress)) {
       newMember.detailAddress = member.detailAddress;
     }
   }
@@ -54,7 +54,7 @@ export const getPostMember = (member: TemporalMember) => {
     newMember.homePhone = member.homePhone.replace(/\D/g, "");
   }
 
-  if (getTrimmedString(member.occupation)) {
+  if (member.occupation && getTrimmedString(member.occupation)) {
     newMember.occupation = member.occupation;
   }
 
@@ -65,7 +65,7 @@ export const getPostMember = (member: TemporalMember) => {
   if (member.marriage !== NONE) {
     newMember.marriage = member.marriage;
 
-    if (getTrimmedString(member.detailMarriage)) {
+    if (member.detailMarriage && getTrimmedString(member.detailMarriage)) {
       newMember.detailMarriage = member.detailMarriage;
     }
   }
@@ -74,13 +74,17 @@ export const getPostMember = (member: TemporalMember) => {
     newMember.baptism = member.baptism;
   }
 
-  if (getTrimmedString(member.previousChurchName)) {
+  if (
+    member.previousChurchName &&
+    getTrimmedString(member.previousChurchName)
+  ) {
     newMember.previousChurchName = member.previousChurchName;
   }
 
   if (member.vehicleNumber) {
     const newVehicleNumber = member.vehicleNumber.filter(
-      (number) => number !== BLANK && getIsWellFormedVehicleNumber(number),
+      (number: string) =>
+        number !== BLANK && getIsWellFormedVehicleNumber(number),
     );
 
     if (newVehicleNumber.length > 0) {

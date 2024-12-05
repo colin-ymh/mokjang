@@ -1,7 +1,7 @@
 import { Dispatch, ReactNode, SetStateAction } from "react";
 import styled from "styled-components";
 
-import { WHITE } from "@/common/styles/color";
+import { WHITE } from "@/constants/styles/color";
 import Hide from "@/components/atoms/common/etc/hide";
 import PopupLayout from "@/components/organisms/layout/popup-layout";
 

@@ -1,0 +1,110 @@
+import axios, { AxiosResponse } from "axios";
+import { EditMemberBody } from "@/api/members.api";
+
+class HTTPError extends Error {}
+
+type InviteMemberParams = {
+  churchId: number; // 교회 id
+  isTest?: boolean;
+};
+
+type InviteMemberBody = {
+  name: string;
+  mobilePhone: string;
+  guideId?: number;
+  familyId?: number;
+};
+
+type RequestValidationParams = {
+  churchId: string; // 교회 id
+  requestInfoId: string;
+};
+
+type RequestValidationBody = {
+  name: string;
+  mobilePhone: string;
+};
+
+type EditRequestInfoParams = {
+  churchId: string; // 교회 id
+  requestInfoId: string;
+};
+
+type EditRequestInfoBody = EditMemberBody & {
+  name: string;
+  mobilePhone: string;
+};
+
+export class RequestInfoApi {
+  private _url: string;
+
+  constructor(useBaseURL: boolean) {
+    this._url = useBaseURL
+      ? "http://localhost:3001" // 실제 사용할 url
+      : "http://localhost:3001"; // 개발용 url
+  }
+
+  /**
+   * 교인 초대하기
+   * @param {InviteMemberParams} params
+   * @param {InviteMemberBody} body
+   * @returns {Promise<AxiosResponse>}
+   */
+  public inviteMember = async (
+    params: InviteMemberParams,
+    body: InviteMemberBody,
+  ): Promise<AxiosResponse> => {
+    const { churchId, isTest = true } = params;
+
+    const url = `${this._url}/churches/${churchId}/request?isTest=${isTest}`;
+
+    try {
+      return await axios.post(url, body);
+    } catch (error) {
+      throw new HTTPError(`Fetch error: ${error}`);
+    }
+  };
+
+  /**
+   * 새신자 측에서 이름과 전화번호를 통해 본인을 인증
+   * @param {RequestValidationParams} params
+   * @param {RequestValidationBody} body
+   * @returns {Promise<AxiosResponse>}
+   */
+  public getRequestValidation = async (
+    params: RequestValidationParams,
+    body: RequestValidationBody,
+  ): Promise<AxiosResponse> => {
+    const { churchId, requestInfoId } = params;
+
+    const url = `${this._url}/churches/${churchId}/request/${requestInfoId}/validation`;
+
+    try {
+      return await axios.post(url, body);
+    } catch (error) {
+      throw new HTTPError(`Fetch error: ${error}`);
+    }
+  };
+
+  /**
+   * 새신자 측에서 본인의 정보를 업데이트
+   * @param {EditRequestInfoParams} params
+   * @param {EditMemberBody} body
+   * @returns {Promise<AxiosResponse>}
+   */
+  public editRequestInfo = async (
+    params: EditRequestInfoParams,
+    body: EditRequestInfoBody,
+  ): Promise<AxiosResponse> => {
+    const { churchId, requestInfoId } = params;
+
+    console.log(body);
+    const url = `${this._url}/churches/${churchId}/request/${requestInfoId}/submit`;
+
+    try {
+      return await axios.post(url, body);
+    } catch (error) {
+      throw new HTTPError(`Fetch error: ${error}`);
+    }
+  };
+}

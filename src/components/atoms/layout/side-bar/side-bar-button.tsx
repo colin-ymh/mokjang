@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import { BLACK, GRAY, MAIN } from "@/common/styles/color";
+import { BLACK, GRAY, MAIN } from "@/constants/styles/color";
 import { MainText } from "@/components/atoms/common/text/main-text";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";

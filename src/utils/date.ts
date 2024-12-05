@@ -10,7 +10,12 @@ export const getDateFromString = (dateString: string) => {
   else return null;
 };
 
-export const getIsChild = (date: Date | null) => {
+/**
+ * 사용자의 생년월일 date object를 통해 미성년자인지 확인
+ * @param date
+ * @return {boolean}
+ */
+export const getIsChild = (date: Date | null): boolean => {
   if (date === null) {
     return false;
   }

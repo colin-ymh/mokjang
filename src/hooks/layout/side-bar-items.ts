@@ -1,4 +1,4 @@
-import { HEADER_ID } from "@/constant/layout/header";
+import { HEADER_ID } from "@/constants/layout/header";
 
 import { useScopedI18n } from "../../../locales/client";
 

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { MEDIA_MIN_WIDTH } from "@/constant/constant";
+import { MEDIA_MIN_WIDTH } from "@/constants/constant";
 
 export const Main = styled.div`
   width: 100%;

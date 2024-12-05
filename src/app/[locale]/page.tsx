@@ -2,9 +2,9 @@
 
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
+
 import MainLayout from "@/components/organisms/layout/main-layout";
-import { getHeader } from "@/constant/layout/header";
-import { getContent } from "@/constant/layout/content";
+import { getContent, getHeader } from "@/hooks/layout/render-layout";
 
 const App = () => {
   const { headerId, contentId } = useSelector(

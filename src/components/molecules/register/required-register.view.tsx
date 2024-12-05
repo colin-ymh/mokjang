@@ -6,20 +6,18 @@ import styled from "styled-components";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 
-import { BLACK, DESTRUCTIVE, GRAY, MAIN } from "@/common/styles/color";
+import { BLACK, DESTRUCTIVE, GRAY } from "@/constants/styles/color";
 import LabelInput from "@/components/atoms/common/input/label-input";
 import RadioButton from "@/components/atoms/common/input/radio-button/radio-button";
 import RegisterRadioButton from "@/components/atoms/register/register-radio-button";
-import { MEDIA_MIN_WIDTH, MEMBER_REGISTER_TYPE } from "@/constant/constant";
-import { useMemberRegisterTypeRadioButtonItems } from "@/constant/radio-button/radio-button-items";
-
-import { getFormattedMobilePhone, getFormattedName } from "@/utils/format";
-import { onClickEnter } from "@/utils/input";
-
-import { useI18n, useScopedI18n } from "../../../../locales/client";
+import { MEDIA_MIN_WIDTH, MEMBER_REGISTER_TYPE } from "@/constants/constant";
+import { useMemberRegisterTypeRadioButtonItems } from "@/hooks/radio-button/radio-button-items";
 import { DropdownValueType } from "@/components/atoms/common/dropdown/dropdown-item";
 import LabelDropdown from "@/components/atoms/common/dropdown/label-dropdown";
 import { getIsWellFormedMobilePhone, getIsWellFormedName } from "@/utils/check";
+import { onClickEnter } from "@/utils/input";
+
+import { useI18n, useScopedI18n } from "../../../../locales/client";
 
 const Invisible = styled.div`
   height: 100px;

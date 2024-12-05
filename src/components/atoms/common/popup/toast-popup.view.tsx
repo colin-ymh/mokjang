@@ -7,7 +7,7 @@ import {
   MainText,
   MainTextProps,
 } from "@/components/atoms/common/text/main-text";
-import { WHITE } from "@/common/styles/color";
+import { WHITE } from "@/constants/styles/color";
 
 export enum TOAST_DIRECTION {
   TOP = "top",

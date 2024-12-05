@@ -8,9 +8,8 @@ import { setMember } from "@/redux/reducers/member-register-reducer";
 
 import { GetMembersResponse, MembersApi } from "@/api/members.api";
 import RequiredRegisterView from "@/components/molecules/register/required-register.view";
-import { MEMBER_REGISTER_TYPE } from "@/constant/constant";
+import { MEMBER_REGISTER_TYPE, BLANK } from "@/constants/constant";
 import { DropdownValueType } from "@/components/atoms/common/dropdown/dropdown-item";
-import { BLANK } from "@/common/default/default-value";
 import { TemporalMember } from "@/models/register/member-register";
 import {
   getFormattedMobilePhone,

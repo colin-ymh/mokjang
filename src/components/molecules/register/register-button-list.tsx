@@ -6,18 +6,26 @@ import { setMember, setStage } from "@/redux/reducers/member-register-reducer";
 import {
   MEMBER_REGISTER_STAGE,
   MEMBER_REGISTER_TYPE,
-} from "@/constant/constant";
+} from "@/constants/constant";
 import RegisterButtonListView from "@/components/molecules/register/register-button-list.view";
 import ToastPopup from "@/components/atoms/common/popup/toast-popup";
 import { MembersApi } from "@/api/members.api";
-import { getPostMember } from "@/utils/member";
 
 import { useScopedI18n } from "../../../../locales/client";
-import { BLANK } from "@/common/default/default-value";
+import { RequestInfoApi } from "@/api/request-info.api";
+import { getCreateMemberBody, getEditMemberBody } from "@/utils/member";
+import { useParams } from "next/navigation";
 
 const RegisterButtonList = () => {
   const membersApi = new MembersApi(false);
   const dispatch = useDispatch<AppDispatch>();
+
+  const requestInfoApi = new RequestInfoApi(false);
+  const { churchId, requestInfoId } = useParams() as {
+    churchId?: string;
+    requestInfoId?: string;
+  };
+
   const { stage, member } = useSelector(
     (state: RootState) => state.memberRegister,
   );
@@ -29,7 +37,10 @@ const RegisterButtonList = () => {
 
   const onClickLeft = () => {
     if (stage === MEMBER_REGISTER_STAGE.REQUIRED) {
-      console.log("초대하기");
+      requestInfoApi.inviteMember(
+        { churchId: 1, isTest: true },
+        getCreateMemberBody(member),
+      );
     } else if (stage === MEMBER_REGISTER_STAGE.PERSONAL) {
       dispatch(setStage(MEMBER_REGISTER_STAGE.REQUIRED));
     } else if (stage === MEMBER_REGISTER_STAGE.RELIGIOUS) {
@@ -42,10 +53,7 @@ const RegisterButtonList = () => {
     if (stage === MEMBER_REGISTER_STAGE.REQUIRED) {
       // 최초 교인 등록
       membersApi
-        .createMember(
-          { churchId: 1 },
-          getPostMember({ ...member, gender: BLANK }),
-        )
+        .createMember({ churchId: 1 }, getCreateMemberBody(member))
         .then((response) => {
           // 등록 성공 시
           if (response.status === 201) {
@@ -64,7 +72,7 @@ const RegisterButtonList = () => {
         if (member?.id) {
           membersApi.editMember(
             { churchId: 1, memberId: member.id },
-            getPostMember({ ...member, name: BLANK, mobilePhone: BLANK }),
+            getEditMemberBody(member),
           );
         }
       } else {
@@ -74,7 +82,7 @@ const RegisterButtonList = () => {
       if (member?.id) {
         membersApi.editMember(
           { churchId: 1, memberId: member.id },
-          getPostMember({ ...member, name: BLANK, mobilePhone: BLANK }),
+          getEditMemberBody(member),
         );
       }
     }

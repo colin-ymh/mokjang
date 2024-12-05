@@ -1,10 +1,10 @@
 import styled from "styled-components";
 
-import { GRAY } from "@/common/styles/color";
+import { GRAY } from "@/constants/styles/color";
 import SideBarButton from "@/components/atoms/layout/side-bar/side-bar-button";
 import SideBarHeader from "@/components/atoms/layout/side-bar/side-bar-header";
-import { MEDIA_MIN_WIDTH } from "@/constant/constant";
-import { useSideBarItems } from "@/constant/layout/side-bar-items";
+import { MEDIA_MIN_WIDTH } from "@/constants/constant";
+import { useSideBarItems } from "@/hooks/layout/side-bar-items";
 
 const SideBarContainer = styled.div`
   // 모바일

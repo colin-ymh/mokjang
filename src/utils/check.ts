@@ -1,4 +1,4 @@
-import { BLANK } from "@/common/default/default-value";
+import { BLANK } from "@/constants/constant";
 
 export const getIsWellFormedMobilePhone = (mobilePhone: string) => {
   if (mobilePhone.slice(0, 3) !== "010") return false;

@@ -11,14 +11,14 @@ import LabelInput from "@/components/atoms/common/input/label-input";
 import {
   useBaptismDropdownItems,
   useOfficerDropdownItems,
-} from "@/constant/dropdown/dropdown-items";
+} from "@/hooks/dropdown/dropdown-items";
 import LabelDropdown from "@/components/atoms/common/dropdown/label-dropdown";
-import { BAPTISM, NONE } from "@/constant/constant";
+import { BAPTISM, NONE, OFFICER } from "@/constants/constant";
 import { getFormattedDate, getTrimmedString } from "@/utils/format";
 import { onClickEnter } from "@/utils/input";
 
 import { useI18n, useScopedI18n } from "../../../../locales/client";
-import { BLACK, DESTRUCTIVE } from "@/common/styles/color";
+import { BLACK, DESTRUCTIVE } from "@/constants/styles/color";
 import { getIsWellFormedBirth } from "@/utils/check";
 
 const InputContainer = styled.div`
@@ -31,7 +31,7 @@ const InputContainer = styled.div`
 `;
 
 export type ReligiousRegisterViewProps = {
-  onChangeOfficer: (value: string) => void;
+  onChangeOfficer: (value: OFFICER) => void;
   onChangeOfficerStartDate: (event: ChangeEvent<HTMLInputElement>) => void;
   onChangeOfficerStartChurch: (event: ChangeEvent<HTMLInputElement>) => void;
   onChangeBaptism: (value: BAPTISM) => void;

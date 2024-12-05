@@ -3,7 +3,7 @@
 import React, { ChangeEvent, forwardRef } from "react";
 import styled from "styled-components";
 
-import { WHITE } from "@/common/styles/color";
+import { WHITE } from "@/constants/styles/color";
 import DropdownItem, {
   DropdownValueType,
 } from "@/components/atoms/common/dropdown/dropdown-item";

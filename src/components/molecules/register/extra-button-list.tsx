@@ -1,18 +1,26 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { AppDispatch, RootState } from "@/redux/store";
 import { setStage } from "@/redux/reducers/member-register-reducer";
 
 import {
   MEMBER_REGISTER_STAGE,
   MEMBER_REGISTER_TYPE,
-} from "@/constant/constant";
+} from "@/constants/constant";
 import RegisterButtonListView from "@/components/molecules/register/register-button-list.view";
 
 import { useScopedI18n } from "../../../../locales/client";
+import { RequestInfoApi } from "@/api/request-info.api";
+import { getEditMemberBody } from "@/utils/member";
 
 const ExtraButtonList = () => {
+  const requestInfoApi = new RequestInfoApi(false);
+  const { churchId, requestInfoId } = useParams() as {
+    churchId: string;
+    requestInfoId: string;
+  };
+
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
   const { stage, member } = useSelector(
@@ -31,12 +39,39 @@ const ExtraButtonList = () => {
   const onClickRight = () => {
     if (stage === MEMBER_REGISTER_STAGE.PERSONAL) {
       if (member.type === MEMBER_REGISTER_TYPE.NEW) {
-        console.log("no where to go");
+        console.log({
+          ...getEditMemberBody(member),
+          name: member.name,
+          mobilePhone: member.mobilePhone.replace(/\D/g, ""),
+        });
+        requestInfoApi
+          .editRequestInfo(
+            { churchId, requestInfoId },
+            {
+              ...getEditMemberBody(member),
+              name: member.name,
+              mobilePhone: member.mobilePhone.replace(/\D/g, ""),
+            },
+          )
+          .then((response) => {
+            console.log(response);
+          });
       } else {
         dispatch(setStage(MEMBER_REGISTER_STAGE.RELIGIOUS));
       }
     } else if (stage === MEMBER_REGISTER_STAGE.RELIGIOUS) {
-      console.log("no where to go");
+      requestInfoApi
+        .editRequestInfo(
+          { churchId, requestInfoId },
+          {
+            ...getEditMemberBody(member),
+            name: member.name,
+            mobilePhone: member.mobilePhone.replace(/\D/g, ""),
+          },
+        )
+        .then((response) => {
+          console.log(response);
+        });
     }
   };
 

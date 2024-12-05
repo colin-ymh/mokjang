@@ -12,7 +12,7 @@ import { getFormattedVehicleNumber, getTrimmedString } from "@/utils/format";
 import gsap from "gsap";
 import { MainText } from "@/components/atoms/common/text/main-text";
 import Plus from "../../../../public/svg/plus.svg";
-import { BLACK, DESTRUCTIVE, MAIN, WHITE } from "@/common/styles/color";
+import { BLACK, DESTRUCTIVE, MAIN, WHITE } from "@/constants/styles/color";
 import styled from "styled-components";
 import { getIsWellFormedVehicleNumber } from "@/utils/check";
 

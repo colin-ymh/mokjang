@@ -6,7 +6,7 @@ import { AppDispatch } from "@/redux/store";
 import { setMember, setStage } from "@/redux/reducers/member-register-reducer";
 
 import ExtraMemberRegisterView from "@/components/organisms/register/extra-register-view";
-import { MEMBER_REGISTER_STAGE } from "@/constant/constant";
+import { MEMBER_REGISTER_STAGE } from "@/constants/constant";
 import { TemporalMember } from "@/models/register/member-register";
 
 const ExtraMemberRegister = () => {

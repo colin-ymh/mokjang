@@ -5,7 +5,7 @@ import ToastPopupView, {
   TOAST_DIRECTION,
 } from "@/components/atoms/common/popup/toast-popup.view";
 import { MainTextProps } from "@/components/atoms/common/text/main-text";
-import { BLACK, WHITE } from "@/common/styles/color";
+import { BLACK, WHITE } from "@/constants/styles/color";
 
 type ToastPopupProps = MainTextProps & {
   setIsShow: (isOpen: boolean) => void;

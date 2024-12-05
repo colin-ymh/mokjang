@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { BLACK, GRAY, MAIN } from "@/common/styles/color";
+import { BLACK, GRAY, MAIN } from "@/constants/styles/color";
 
 const DropdownContainer = styled.div<{
   $isSelected: boolean;

@@ -1,28 +1,25 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Image from "next/image";
+import Cropper, { Area, Point } from "react-easy-crop";
 
 import { MainText } from "@/components/atoms/common/text/main-text";
-import { BLACK, WHITE } from "@/common/styles/color";
-
-import Delete from "../../../../public/svg/cancel.svg";
-import DefaultImage from "../../../../public/png/default-member-image.png";
-import { useI18n, useScopedI18n } from "../../../../locales/client";
-import { BLANK } from "@/common/default/default-value";
-import Cropper, { Area, Point } from "react-easy-crop";
+import { BLACK, WHITE } from "@/constants/styles/color";
+import Button from "@/components/atoms/common/button/button";
+import { MEDIA_MIN_WIDTH, BLANK } from "@/constants/constant";
 import {
-  getBase64FromFile,
   getCroppedImage,
   getFileFromBase64,
   getResizedImage,
 } from "@/utils/image";
-import Button from "@/components/atoms/common/button/button";
-import { MEDIA_MIN_WIDTH } from "@/constant/constant";
+
+import Delete from "../../../../public/svg/cancel.svg";
+import DefaultImage from "../../../../public/png/default-member-image.png";
+import { useI18n, useScopedI18n } from "../../../../locales/client";
 
 const MemberImageInputContainer = styled.div`
   display: flex;
   flex-direction: column;
-  //width: 100%;
   align-items: flex-start;
   gap: 10px;
   transition: all 0.3s ease;

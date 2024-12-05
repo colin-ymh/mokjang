@@ -3,7 +3,7 @@ import {
   CALENDAR_MODE,
   GENDER,
   MEMBER_REGISTER_TYPE,
-} from "@/constant/constant";
+} from "@/constants/constant";
 
 export const useMemberRegisterTypeRadioButtonItems = () => {
   const t_radiobutton = useScopedI18n("radiobutton");

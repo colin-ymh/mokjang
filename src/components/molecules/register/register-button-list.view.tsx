@@ -4,9 +4,12 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 
 import Button from "@/components/atoms/common/button/button";
-import { BLACK, GRAY, MAIN, WHITE } from "@/common/styles/color";
-import { BLANK } from "@/common/default/default-value";
-import { MEDIA_MIN_WIDTH, MEMBER_REGISTER_STAGE } from "@/constant/constant";
+import { BLACK, GRAY, MAIN, WHITE } from "@/constants/styles/color";
+import {
+  BLANK,
+  MEDIA_MIN_WIDTH,
+  MEMBER_REGISTER_STAGE,
+} from "@/constants/constant";
 
 import GoBackButton from "../../../../public/svg/chevron-left.svg";
 import { useScopedI18n } from "../../../../locales/client";

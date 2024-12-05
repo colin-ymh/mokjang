@@ -6,8 +6,8 @@ import LayoutReducer from "@/redux/reducers/layout-reducer";
 
 const store = configureStore({
   reducer: {
-    layout: LayoutReducer,
     webview: WebviewReducer,
+    layout: LayoutReducer,
     memberRegister: MemberRegisterReducer,
   },
 });

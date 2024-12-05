@@ -2,7 +2,7 @@
 
 import styled from "styled-components";
 import { MainText } from "@/components/atoms/common/text/main-text";
-import { GRAY, MAIN } from "@/common/styles/color";
+import { GRAY, MAIN } from "@/constants/styles/color";
 
 export type RadioButtonItemProps = {
   title: string;

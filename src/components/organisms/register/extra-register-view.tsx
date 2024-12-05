@@ -4,12 +4,12 @@ import styled from "styled-components";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 
-import { MEMBER_REGISTER_STAGE } from "@/constant/constant";
+import { MEMBER_REGISTER_STAGE } from "@/constants/constant";
 import { MainText } from "@/components/atoms/common/text/main-text";
 import PersonalRegister from "@/components/molecules/register/personal-register";
 import ReligiousRegister from "@/components/molecules/register/religious-register";
 import ExtraButtonList from "@/components/molecules/register/extra-button-list";
-import { GRAY } from "@/common/styles/color";
+import { GRAY } from "@/constants/styles/color";
 
 import { useScopedI18n } from "../../../../locales/client";
 
