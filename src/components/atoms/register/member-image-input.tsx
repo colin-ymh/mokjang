@@ -37,11 +37,6 @@ const MemberImage = styled(Image)`
   border-radius: 10px;
   width: 110px;
   height: 110px;
-
-  @media (min-width: ${MEDIA_MIN_WIDTH.DESKTOP}) {
-    width: 170px;
-    height: 170px;
-  }
 `;
 
 const DeleteButton = styled(Delete)<{ opacity: number }>`
@@ -83,10 +78,17 @@ const ButtonContainer = styled.div`
 type MemberImageInputProps = {
   value: string;
   onChange: (image: string) => void;
+  width?: number;
+  height?: number;
 };
 
 /* 이미지 기본값 110*110px */
-const MemberImageInput = ({ value, onChange }: MemberImageInputProps) => {
+const MemberImageInput = ({
+  value,
+  onChange,
+  width = 110,
+  height = 110,
+}: MemberImageInputProps) => {
   const t = useI18n();
   const t_button = useScopedI18n("button");
 
@@ -177,15 +179,13 @@ const MemberImageInput = ({ value, onChange }: MemberImageInputProps) => {
 
   return (
     <MemberImageInputContainer>
-      {/* 제목 */}
-      <MainText>{t("image")}</MainText>
       <ImageContainer>
         {/* 실제 이미지가 들어가고, 사용자에게 보여지는 부분*/}
         <MemberImage
           src={croppedImage || DefaultImage}
           alt="member profile image"
-          width={110}
-          height={110}
+          width={width}
+          height={height}
           onClick={onClickMemberImage}
         />
         {/* 이미지 삭제 버튼 */}

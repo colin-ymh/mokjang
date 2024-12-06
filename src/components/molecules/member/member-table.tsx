@@ -36,7 +36,11 @@ const StyledTable = styled.table`
   }
 `;
 
-const MemberTable = () => {
+type MemberTableProps = {
+  onClickMemberItem: (member: Member) => void;
+};
+
+const MemberTable = ({ onClickMemberItem }: MemberTableProps) => {
   const [members, setMembers] = useState<Member[]>([]);
 
   useEffect(() => {
@@ -75,7 +79,7 @@ const MemberTable = () => {
         </thead>
         <tbody>
           {table.getSortedRowModel().rows.map((row) => (
-            <tr key={row.id}>
+            <tr key={row.id} onClick={() => onClickMemberItem(row.original)}>
               {row.getVisibleCells().map((cell) => (
                 <td key={cell.id}>
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}

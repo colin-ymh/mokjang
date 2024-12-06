@@ -1,6 +1,7 @@
 export default {
   none: "None",
   type: "Type",
+  information: "Information",
   // 필수
   name: "Name",
   mobilePhone: "Mobile Phone",

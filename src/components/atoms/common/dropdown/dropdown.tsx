@@ -10,7 +10,7 @@ import React, {
 import TransparentBackground from "@/components/atoms/common/etc/transparent-background";
 import DropdownView from "@/components/atoms/common/dropdown/dropdown.view";
 import { DropdownValueType } from "@/components/atoms/common/dropdown/dropdown-item";
-import { InputProps } from "@/components/atoms/common/input/border-input";
+import { InputProps } from "@/components/atoms/common/input/main-input";
 
 export type DropdownProps = {
   ref?: RefObject<HTMLDivElement>;

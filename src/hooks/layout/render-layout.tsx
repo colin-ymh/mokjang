@@ -1,9 +1,13 @@
 import { ReactNode } from "react";
 
 import { HOME_CONTENT_ID, MEMBER_CONTENT_ID } from "@/constants/layout/content";
-import { HEADER_ID } from "@/constants/layout/header";
+import {
+  HEADER_ID,
+  MEMBER_INFORMATION_HEADER_ID,
+} from "@/constants/layout/header";
 import MemberHeader from "@/components/organisms/member/member-header";
 import MemberList from "@/components/organisms/member/member-list";
+import MemberInformationList from "@/components/molecules/member/member-information-list";
 
 export const getContent = (id: string): ReactNode => {
   switch (id) {
@@ -28,5 +32,12 @@ export const getHeader = (id: string) => {
       return <MemberHeader />;
     default:
       return null;
+  }
+};
+
+export const getMemberInformationContent = (id: string) => {
+  switch (id) {
+    case MEMBER_INFORMATION_HEADER_ID.INFORMATION:
+      return <MemberInformationList />;
   }
 };

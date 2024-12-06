@@ -18,8 +18,8 @@ type MemberRegisterState = {
   isStageClear: boolean;
 };
 
-const DEFAULT_MEMBER: Member = {
-  id: "",
+export const DEFAULT_MEMBER: Member = {
+  id: BLANK,
   profileImage: BLANK,
   name: BLANK,
   mobilePhone: BLANK,

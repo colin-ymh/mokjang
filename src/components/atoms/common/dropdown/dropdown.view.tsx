@@ -7,9 +7,8 @@ import { WHITE } from "@/constants/styles/color";
 import DropdownItem, {
   DropdownValueType,
 } from "@/components/atoms/common/dropdown/dropdown-item";
-import BorderInput, {
-  InputProps,
-} from "@/components/atoms/common/input/border-input";
+import BorderInput from "@/components/atoms/common/input/border-input";
+import { InputProps } from "@/components/atoms/common/input/main-input";
 
 const DropdownContainer = styled.div`
   width: 100%;

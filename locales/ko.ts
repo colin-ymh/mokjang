@@ -1,6 +1,7 @@
 export default {
   none: "없음",
   type: "종류",
+  information: "정보",
 
   // 필수
   name: "이름",
