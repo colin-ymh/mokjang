@@ -1,19 +1,15 @@
 import styled from "styled-components";
-import { GRAY } from "@/constants/styles/color";
+
 import { MainText } from "@/components/atoms/common/text/main-text";
 import MainInput from "@/components/atoms/common/input/main-input";
+import { Member } from "@/models/member/member";
+
+import { useI18n } from "../../../../locales/client";
 
 const InformationListContainer = styled.div`
   display: flex;
   flex-direction: column;
-`;
-
-const ListHeader = styled.div`
-  display: flex;
-  background-color: ${GRAY.BACKGROUND};
-  padding: 15px 50px;
-  border-top: 1px solid ${GRAY.LIGHT};
-  border-bottom: 1px solid ${GRAY.LIGHT};
+  width: 100%;
 `;
 
 const InformationContent = styled.div`
@@ -26,7 +22,7 @@ const ContentTitleContainer = styled.div`
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
-  width: 100px;
+  width: 15%;
   padding: 10px 30px;
   gap: 10px;
 `;
@@ -43,82 +39,49 @@ const InputContainer = styled.div`
   width: 100%;
 `;
 
-const MemberInformationList = () => {
+type MemberInformationListProps = {
+  member: Member;
+};
+
+const MemberInformationList = ({ member }: MemberInformationListProps) => {
+  const t = useI18n();
   return (
     <InformationListContainer>
-      <ListHeader>
-        <MainText>교인 정보</MainText>
-      </ListHeader>
+      {/* 직분 */}
       <InformationContent>
         <ContentTitleContainer>
           <ContentIcon />
-          <MainText>직분</MainText>
+          <MainText>{t("officer")}</MainText>
         </ContentTitleContainer>
         <InputContainer>
-          <MainInput />
+          <MainInput value={member.officer} />
         </InputContainer>
       </InformationContent>
+      {/* 소그룹 */}
       <InformationContent>
         <ContentTitleContainer>
           <ContentIcon />
           <MainText>소그룹</MainText>
         </ContentTitleContainer>
         <InputContainer>
-          <MainInput />
+          <MainInput value={member.group} />
         </InputContainer>
       </InformationContent>
+      {/* 사역 */}
       <InformationContent>
         <ContentTitleContainer>
           <ContentIcon />
           <MainText>사역</MainText>
         </ContentTitleContainer>
         <InputContainer>
-          <MainInput />
+          <MainInput value={member.ministry} />
         </InputContainer>
       </InformationContent>
+      {/* 교육 이수 */}
       <InformationContent>
         <ContentTitleContainer>
           <ContentIcon />
           <MainText>교육 이수</MainText>
-        </ContentTitleContainer>
-        <InputContainer>
-          <MainInput />
-        </InputContainer>
-      </InformationContent>
-      <ListHeader>
-        <MainText>개인 정보</MainText>
-      </ListHeader>
-      <InformationContent>
-        <ContentTitleContainer>
-          <ContentIcon />
-          <MainText>성별</MainText>
-        </ContentTitleContainer>
-        <InputContainer>
-          <MainInput />
-        </InputContainer>
-      </InformationContent>
-      <InformationContent>
-        <ContentTitleContainer>
-          <ContentIcon />
-          <MainText>전화번호</MainText>
-        </ContentTitleContainer>
-        <InputContainer>
-          <MainInput />
-        </InputContainer>
-      </InformationContent>
-      <InformationContent>
-        <ContentTitleContainer>
-          <ContentIcon />
-          <MainText>집 번호</MainText>
-        </ContentTitleContainer>
-        <InputContainer>
-          <MainInput />
-        </InputContainer>
-      </InformationContent>
-      <InformationContent>
-        <ContentTitleContainer>
-          <ContentIcon />
-          <MainText>주소</MainText>
         </ContentTitleContainer>
         <InputContainer>
           <MainInput />

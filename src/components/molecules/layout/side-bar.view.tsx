@@ -28,11 +28,9 @@ const SideBarContainer = styled.div`
   }
 `;
 
-type SideBarViewProps = {
-  onClickButton: (id: string) => void;
-};
+type SideBarViewProps = {};
 
-const SideBarView = ({ onClickButton }: SideBarViewProps) => {
+const SideBarView = () => {
   return (
     <SideBarContainer>
       <SideBarHeader />

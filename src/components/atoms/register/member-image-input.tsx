@@ -3,10 +3,9 @@ import styled from "styled-components";
 import Image from "next/image";
 import Cropper, { Area, Point } from "react-easy-crop";
 
-import { MainText } from "@/components/atoms/common/text/main-text";
 import { BLACK, WHITE } from "@/constants/styles/color";
 import Button from "@/components/atoms/common/button/button";
-import { MEDIA_MIN_WIDTH, BLANK } from "@/constants/constant";
+import { BLANK } from "@/constants/constant";
 import {
   getCroppedImage,
   getFileFromBase64,
@@ -21,9 +20,7 @@ const MemberImageInputContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 10px;
   transition: all 0.3s ease;
-  padding-right: 20px;
 `;
 
 const ImageContainer = styled.div`
@@ -33,10 +30,10 @@ const ImageContainer = styled.div`
   align-items: center;
 `;
 
-const MemberImage = styled(Image)`
+const MemberImage = styled(Image)<{ width: number; height: number }>`
   border-radius: 10px;
-  width: 110px;
-  height: 110px;
+  width: ${({ width }) => `${width | 110}px`};
+  height: ${({ height }) => `${height | 110}px`};
 `;
 
 const DeleteButton = styled(Delete)<{ opacity: number }>`

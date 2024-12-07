@@ -7,6 +7,8 @@ import { useScopedI18n } from "../../../../locales/client";
 import HeaderBar from "@/components/molecules/layout/header/header-bar";
 import { useMemberHeaderBarItems } from "@/hooks/layout/header-bar-items";
 import Button from "@/components/atoms/common/button/button";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
 
 const HeaderContainer = styled.div`
   display: flex;
@@ -32,12 +34,14 @@ const MemberHeaderView = ({
   onClickRegisterMemberButton,
 }: MemberHeadBarViewProps) => {
   const t_header = useScopedI18n("header");
+  const contentId = useSelector((state: RootState) => state.layout.contentId);
+
   return (
     <HeaderContainer>
       <MainText fontSize={25} fontWeight={500}>
         {t_header("member")}
       </MainText>
-      <HeaderBar items={useMemberHeaderBarItems()} />
+      <HeaderBar value={contentId} items={useMemberHeaderBarItems()} />
       <RegisterButtonContainer>
         <Button
           text={"교인 등록하기"}

@@ -1,7 +1,7 @@
 export default {
   none: "None",
   type: "Type",
-  information: "Information",
+
   // 필수
   name: "Name",
   mobilePhone: "Mobile Phone",
@@ -52,6 +52,9 @@ export default {
   /*-------------------header (side bar button)-------------------*/
   "header.home": "Home",
   "header.member": "Membership",
+
+  "header.memberInformation": "Member Information",
+  "header.personalInformation": "Personal Information",
   /*-------------------header (side bar button)-------------------*/
 
   /*-------------------member content (member header bar button)-------------------*/

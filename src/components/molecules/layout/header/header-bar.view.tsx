@@ -28,12 +28,12 @@ export type HeaderBarViewItem = {
 };
 
 type HeaderBarViewProps = {
+  value: string;
   items: HeaderBarViewItem[];
   onClick: (id: string) => void;
 };
 
-const HeaderBarView = ({ items, onClick }: HeaderBarViewProps) => {
-  const { contentId } = useSelector((state: RootState) => state.layout);
+const HeaderBarView = ({ value, items, onClick }: HeaderBarViewProps) => {
   return (
     <HeaderBarContainer>
       {items.map(({ id, title }) => {
@@ -41,12 +41,9 @@ const HeaderBarView = ({ items, onClick }: HeaderBarViewProps) => {
           <BarItem
             key={id}
             onClick={() => onClick(id)}
-            $isSelected={id === contentId}
+            $isSelected={id === value}
           >
-            <MainText
-              fontSize={18}
-              color={id === contentId ? MAIN.DEFAULT : BLACK}
-            >
+            <MainText fontSize={18} color={id === value ? MAIN.DEFAULT : BLACK}>
               {title}
             </MainText>
           </BarItem>

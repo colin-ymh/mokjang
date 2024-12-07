@@ -1,26 +1,27 @@
 import React from "react";
-import styled from "styled-components";
 
-import { MainText } from "@/components/atoms/common/text/main-text";
 import HeaderBarView from "@/components/molecules/layout/header/header-bar.view";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
 import { setContentId } from "@/redux/reducers/layout-reducer";
+
 export type HeaderBarItem = {
   id: string;
   title: string;
 };
 
 type HeaderBarProps = {
+  value: string;
   items: HeaderBarItem[];
 };
 
-const HeaderBar = ({ items }: HeaderBarProps) => {
+const HeaderBar = ({ value, items }: HeaderBarProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const onClick = (id: string) => {
     dispatch(setContentId(id));
   };
   const props = {
+    value,
     items,
     onClick,
   };

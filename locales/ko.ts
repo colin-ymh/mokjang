@@ -1,7 +1,6 @@
 export default {
   none: "없음",
   type: "종류",
-  information: "정보",
 
   // 필수
   name: "이름",
@@ -55,6 +54,9 @@ export default {
   /*-------------------header (side bar button)-------------------*/
   "header.home": "홈",
   "header.member": "교인 관리",
+
+  "header.memberInformation": "교인 정보",
+  "header.personalInformation": "개인 정보",
   /*-------------------header (side bar button)-------------------*/
 
   /*-------------------member content (member header bar button)-------------------*/

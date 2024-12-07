@@ -4,7 +4,9 @@ import { BLACK, GRAY, MAIN } from "@/constants/styles/color";
 import { MainText } from "@/components/atoms/common/text/main-text";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
-import { setHeaderId } from "@/redux/reducers/layout-reducer";
+import { setContentId, setHeaderId } from "@/redux/reducers/layout-reducer";
+import { HEADER_ID } from "@/constants/layout/header";
+import { HOME_CONTENT_ID, MEMBER_CONTENT_ID } from "@/constants/layout/content";
 
 const ButtonContainer = styled.div`
   display: flex;
@@ -38,6 +40,15 @@ const SideBarButton = ({ id, title }: SideBarButtonProps) => {
 
   const onClick = (id: string) => {
     dispatch(setHeaderId(id));
+
+    switch (id) {
+      case HEADER_ID.HOME:
+        dispatch(setContentId(HOME_CONTENT_ID.HOME));
+        return;
+      case HEADER_ID.MEMBER:
+        dispatch(setContentId(MEMBER_CONTENT_ID.MEMBER));
+        return;
+    }
   };
 
   return (

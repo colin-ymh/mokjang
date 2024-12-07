@@ -21,6 +21,7 @@ const ModalOverlay = styled.div`
 const ModalContainer = styled.div`
   display: flex;
   flex-direction: column;
+  background-color: ${WHITE};
   border-radius: 5px;
   overflow: hidden;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);

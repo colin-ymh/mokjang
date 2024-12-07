@@ -1,11 +1,11 @@
-import styled from "styled-components";
-import MemberTable from "@/components/molecules/member/member-table";
-import PagePopup from "@/components/atoms/common/popup/page-popup";
-import MemberInformation from "@/components/organisms/member/member-information";
 import { useState } from "react";
-import { BLANK } from "@/constants/constant";
-import { Member } from "@/models/member/member";
+import styled from "styled-components";
 import { DEFAULT_MEMBER } from "@/redux/reducers/member-register-reducer";
+
+import MemberTable from "@/components/molecules/member/member-table";
+import MemberInformation from "@/components/organisms/member/member-information";
+import CustomPopup from "@/components/atoms/common/popup/custom-popup";
+import { Member } from "@/models/member/member";
 
 const MemberListContainer = styled.div`
   display: flex;
@@ -22,15 +22,19 @@ const MemberList = () => {
     setIsMemberInformationShown(true);
   };
 
+  const onClickClose = () => {
+    setIsMemberInformationShown(false);
+  };
+
   return (
     <MemberListContainer>
       <MemberTable onClickMemberItem={onClickMemberItem} />
-      <PagePopup
+      <CustomPopup
         isShow={isMemberInformationShown}
-        setIsShow={setIsMemberInformationShown}
+        onClickClose={onClickClose}
       >
         <MemberInformation member={currentMember} />
-      </PagePopup>
+      </CustomPopup>
     </MemberListContainer>
   );
 };
