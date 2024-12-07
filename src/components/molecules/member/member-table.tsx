@@ -46,7 +46,7 @@ const MemberTable = ({ onClickMemberItem }: MemberTableProps) => {
   useEffect(() => {
     const membersApi = new MembersApi(false);
     membersApi
-      .getMembers({ churchId: "1" })
+      .getMembers({ churchId: "1", take: 100, page: 1 })
       .then((response) => setMembers(response.data.data));
   }, []);
 

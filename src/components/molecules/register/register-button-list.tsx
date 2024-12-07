@@ -52,6 +52,7 @@ const RegisterButtonList = () => {
         .then((response) => {
           // 등록 성공 시
           if (response.status === 201) {
+            console.log(response.data);
             // 교인 Id 할당
             const memberId = response.data.id;
             dispatch(setMember({ ...member, id: memberId }));

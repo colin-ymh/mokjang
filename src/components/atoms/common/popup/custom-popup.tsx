@@ -1,8 +1,7 @@
 import React, { ReactNode } from "react";
 import styled from "styled-components";
-import { MainText } from "@/components/atoms/common/text/main-text";
-import { BLACK, DESTRUCTIVE, MAIN, WHITE } from "@/constants/styles/color";
-import PopupHeader from "@/components/molecules/layout/header/popup-header";
+
+import { WHITE } from "@/constants/styles/color";
 import ExitButton from "../../../../../public/svg/cancel.svg";
 
 const ModalOverlay = styled.div`
@@ -31,7 +30,7 @@ const HeaderContainer = styled.header`
   display: flex;
   height: 40px;
   background-color: ${WHITE};
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: flex-end;
   padding-bottom: 10px;
 `;
@@ -41,13 +40,24 @@ const HeaderLeft = styled.div`
   padding-left: 10px;
 `;
 
+const HeaderRight = styled.div`
+  display: flex;
+  padding-right: 10px;
+`;
+
 type CustomPopupProps = {
   isShow: boolean;
   onClickClose: () => void;
+  headerRight?: ReactNode;
   children: ReactNode;
 };
 
-const CustomPopup = ({ isShow, onClickClose, children }: CustomPopupProps) => {
+const CustomPopup = ({
+  isShow,
+  onClickClose,
+  headerRight,
+  children,
+}: CustomPopupProps) => {
   if (!isShow) return null;
   return (
     <ModalOverlay>
@@ -56,6 +66,7 @@ const CustomPopup = ({ isShow, onClickClose, children }: CustomPopupProps) => {
           <HeaderLeft>
             <ExitButton onClick={onClickClose} />
           </HeaderLeft>
+          <HeaderRight>{headerRight}</HeaderRight>
         </HeaderContainer>
         {children}
       </ModalContainer>
