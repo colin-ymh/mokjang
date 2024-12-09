@@ -1,153 +1,198 @@
-import styled from "styled-components";
-
-import { MainText } from "@/components/atoms/common/text/main-text";
-import MainInput from "@/components/atoms/common/input/main-input";
 import { Member } from "@/models/member/member";
+import MemberPersonalInformationListView from "@/components/molecules/member/member-personal-information-list.view";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/redux/store";
+import { setMember } from "@/redux/reducers/member-register-reducer";
+import React, { ChangeEvent, RefObject, useState } from "react";
+import {
+  getFormattedDate,
+  getFormattedHomePhone,
+  getFormattedVehicleNumber,
+  getTrimmedString,
+} from "@/utils/format";
+import { getIsWellFormedBirth, getIsWellFormedHomePhone } from "@/utils/check";
+import { CALENDAR_MODE, MARRIAGE } from "@/constants/constant";
+import { DropdownValueType } from "@/components/atoms/common/dropdown/dropdown-item";
+import { getSchool } from "@/api/school-api";
+import DaumPostcodeEmbed, { Address } from "react-daum-postcode";
+import PagePopup from "@/components/atoms/common/popup/page-popup";
 
-import { useI18n } from "../../../../locales/client";
+type PersonalInformationListProps = {};
 
-const InformationListContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-`;
+const PersonalInformationList = ({}: PersonalInformationListProps) => {
+  const { member } = useSelector((state: RootState) => state.memberRegister);
+  const dispatch = useDispatch<AppDispatch>();
 
-const InformationContent = styled.div`
-  display: flex;
-  flex-direction: row;
-`;
+  const [schoolItems, setSchoolItems] = useState<DropdownValueType[]>([]);
+  const [isAddressOpen, setIsAddressOpen] = useState<boolean>(false);
 
-const ContentTitleContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: center;
-  width: 15%;
-  padding: 10px 30px;
-  gap: 10px;
-`;
+  // 성별 변경 시 이벤트
+  const onChangeGender = (gender: string) => {
+    dispatch(setMember({ ...member, gender }));
+  };
 
-const ContentIcon = styled.div`
-  width: 15px;
-  height: 15px;
-  background-color: black;
-`;
+  // 생년월일 변경 시 이벤트
+  const onChangeBirth = (
+    event: ChangeEvent<HTMLInputElement>,
+    nextInputRef?: RefObject<HTMLInputElement>,
+  ) => {
+    const newBirth = getFormattedDate(event.target.value);
+    dispatch(setMember({ ...member, birth: newBirth }));
 
-const InputContainer = styled.div`
-  display: flex;
-  margin: 5px;
-  width: 100%;
-`;
+    // 생년월일을 다 입력한 경우
+    if (getIsWellFormedBirth(newBirth)) {
+      // 다음 입력이 있다면 다음 입력으로
+      if (nextInputRef?.current) {
+        nextInputRef.current.focus();
+      }
+      // 없으면 키보드 내리기
+      else {
+        (event.target as HTMLInputElement).blur();
+      }
+    }
+  };
 
-type PersonalInformationListProps = {
-  member: Member;
-};
+  // 양력 음력 변경 이벤트
+  const onChangeCalendarMode = (mode: CALENDAR_MODE) => {
+    dispatch(setMember({ ...member, isLunar: mode === CALENDAR_MODE.LUNAR }));
+  };
 
-const PersonalInformationList = ({ member }: PersonalInformationListProps) => {
-  const t = useI18n();
+  // 학교 변경 시 이벤트
+  const onChangeSchool = (
+    value: string,
+    nextInputRef?: RefObject<HTMLInputElement>,
+  ) => {
+    const newSchool = getTrimmedString(value);
+    dispatch(setMember({ ...member, school: newSchool }));
+
+    // value 에 따라 학교 검색 API 요청
+    getSchool(value, 1, 5).then((response) => {
+      const items: DropdownValueType[] = response.map((value) => {
+        return { value: value.SCHUL_NM, title: value.SCHUL_NM };
+      });
+
+      setSchoolItems(items);
+    });
+  };
+
+  // 직업 변경 시 이벤트
+  const onChangeOccupation = (event: ChangeEvent<HTMLInputElement>) => {
+    const newOccupation = event.target.value;
+    dispatch(setMember({ ...member, occupation: newOccupation }));
+  };
+
+  // 결혼 정보 변경 시 이벤트
+  const onChangeMarriage = (value: MARRIAGE) => {
+    dispatch(setMember({ ...member, marriage: value }));
+  };
+
+  // 결혼 정보 드롭다운 아이템 선택 시 이벤트
+  const onClickMarriageDropdownItem = (
+    nextInputRef: RefObject<HTMLInputElement>,
+  ) => {
+    if (nextInputRef?.current) {
+      nextInputRef.current.focus();
+    }
+  };
+
+  // 결혼 상세 변경 시 이벤트
+  const onChangeDetailMarriage = (event: ChangeEvent<HTMLInputElement>) => {
+    dispatch(setMember({ ...member, detailMarriage: event.target.value }));
+  };
+
+  // 도로명주소 입력창 이벤트
+  const onClickAddress = () => {
+    setIsAddressOpen(true);
+  };
+
+  // 도로명주소 검색 api 내 주소 선택 이벤트
+  const onCompleteAddress = (data: Address) => {
+    let fullAddress = data.address;
+    let extraAddress = "";
+
+    if (data.addressType === "R") {
+      if (data.bname !== "") {
+        extraAddress += data.bname;
+      }
+      if (data.buildingName !== "") {
+        extraAddress +=
+          extraAddress !== "" ? `, ${data.buildingName}` : data.buildingName;
+      }
+      fullAddress += extraAddress !== "" ? ` (${extraAddress})` : "";
+    }
+
+    const newMember: Member = member;
+    dispatch(setMember({ ...newMember, address: fullAddress }));
+    setIsAddressOpen(false);
+  };
+
+  // 상세 주소 변경 시 이벤트
+  const onChangeDetailAddress = (event: ChangeEvent<HTMLInputElement>) => {
+    const newDetailAddress = event.target.value;
+    dispatch(setMember({ ...member, detailAddress: newDetailAddress }));
+  };
+
+  // 전화번호 변경 시 이벤트
+  const onChangeHomePhone = (
+    event: ChangeEvent<HTMLInputElement>,
+    nextInputRef?: RefObject<HTMLInputElement>,
+  ) => {
+    const newHomePhone = getFormattedHomePhone(event.target.value);
+    dispatch(setMember({ ...member, homePhone: newHomePhone }));
+
+    if (getIsWellFormedHomePhone(newHomePhone)) {
+      // 다음 입력이 있다면 다음 입력으로
+      if (nextInputRef?.current) {
+        nextInputRef.current.focus();
+      }
+      // 없으면 키보드 내리기
+      else {
+        (event.target as HTMLInputElement).blur();
+      }
+    }
+  };
+
+  // 차량 번호 변경 시 이벤트
+  const onChangeVehicleNumber = (
+    event: ChangeEvent<HTMLInputElement>,
+    index: number,
+  ) => {
+    // vehicleNumber 배열을 복사하여 새로운 배열 생성
+    const newVehicleNumber = [...member.vehicleNumber];
+
+    // 수정할 인덱스의 값을 변경
+    newVehicleNumber[index] = getFormattedVehicleNumber(event.target.value);
+
+    // 새로운 member 객체와 vehicleNumber 배열을 디스패치
+    dispatch(setMember({ ...member, vehicleNumber: newVehicleNumber }));
+  };
+
+  const props = {
+    schoolItems,
+    onClickMarriageDropdownItem,
+    onChangeGender,
+    onChangeBirth,
+    onChangeCalendarMode,
+    onChangeSchool,
+    onChangeOccupation,
+    onChangeMarriage,
+    onChangeDetailMarriage,
+    onClickAddress,
+    onChangeDetailAddress,
+    onChangeHomePhone,
+    onChangeVehicleNumber,
+  };
+
   return (
-    <InformationListContainer>
-      {/* 성별 */}
-      <InformationContent>
-        <ContentTitleContainer>
-          <ContentIcon />
-          <MainText>{t("gender")}</MainText>
-        </ContentTitleContainer>
-        <InputContainer>
-          <MainInput value={member.gender} />
-        </InputContainer>
-      </InformationContent>
-      {/* 생년월일 */}
-      <InformationContent>
-        <ContentTitleContainer>
-          <ContentIcon />
-          <MainText>{t("birth")}</MainText>
-        </ContentTitleContainer>
-        <InputContainer>
-          <MainInput value={member.birth} />
-        </InputContainer>
-      </InformationContent>
-      {/* 휴대전화번호 */}
-      <InformationContent>
-        <ContentTitleContainer>
-          <ContentIcon />
-          <MainText>{t("mobilePhone")}</MainText>
-        </ContentTitleContainer>
-        <InputContainer>
-          <MainInput value={member.mobilePhone} />
-        </InputContainer>
-      </InformationContent>
-      {/* 집전화번호 */}
-      <InformationContent>
-        <ContentTitleContainer>
-          <ContentIcon />
-          <MainText>{t("homePhone")}</MainText>
-        </ContentTitleContainer>
-        <InputContainer>
-          <MainInput value={member.homePhone} />
-        </InputContainer>
-      </InformationContent>
-      {/* 도로명 주소 */}
-      <InformationContent>
-        <ContentTitleContainer>
-          <ContentIcon />
-          <MainText>{t("address")}</MainText>
-        </ContentTitleContainer>
-        <InputContainer>
-          <MainInput value={member.address} />
-        </InputContainer>
-      </InformationContent>
-      {/* 상세 주소 */}
-      <InformationContent>
-        <ContentTitleContainer>
-          <ContentIcon />
-          <MainText>{t("detailAddress")}</MainText>
-        </ContentTitleContainer>
-        <InputContainer>
-          <MainInput value={member.detailAddress} />
-        </InputContainer>
-      </InformationContent>
-      {/* 직업 */}
-      <InformationContent>
-        <ContentTitleContainer>
-          <ContentIcon />
-          <MainText>{t("occupation")}</MainText>
-        </ContentTitleContainer>
-        <InputContainer>
-          <MainInput value={member.occupation} />
-        </InputContainer>
-      </InformationContent>
-      {/* 학교 */}
-      <InformationContent>
-        <ContentTitleContainer>
-          <ContentIcon />
-          <MainText>{t("school")}</MainText>
-        </ContentTitleContainer>
-        <InputContainer>
-          <MainInput value={member.school} />
-        </InputContainer>
-      </InformationContent>
-      {/* 결혼 */}
-      <InformationContent>
-        <ContentTitleContainer>
-          <ContentIcon />
-          <MainText>{t("marriage")}</MainText>
-        </ContentTitleContainer>
-        <InputContainer>
-          <MainInput value={member.marriage} />
-        </InputContainer>
-      </InformationContent>
-      {/* 결혼 상세정보 */}
-      <InformationContent>
-        <ContentTitleContainer>
-          <ContentIcon />
-          <MainText>{t("detailMarriage")}</MainText>
-        </ContentTitleContainer>
-        <InputContainer>
-          <MainInput value={member.detailMarriage} />
-        </InputContainer>
-      </InformationContent>
-    </InformationListContainer>
+    <>
+      <MemberPersonalInformationListView {...props} />
+      <PagePopup isShow={isAddressOpen} setIsShow={setIsAddressOpen}>
+        <DaumPostcodeEmbed
+          onComplete={onCompleteAddress}
+          style={{ width: "100%", height: "100%" }}
+        />
+      </PagePopup>
+    </>
   );
 };
 

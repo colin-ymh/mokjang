@@ -43,7 +43,7 @@ const HeaderBarView = ({ value, items, onClick }: HeaderBarViewProps) => {
             onClick={() => onClick(id)}
             $isSelected={id === value}
           >
-            <MainText fontSize={18} color={id === value ? MAIN.DEFAULT : BLACK}>
+            <MainText fontSize={16} color={id === value ? MAIN.DEFAULT : BLACK}>
               {title}
             </MainText>
           </BarItem>

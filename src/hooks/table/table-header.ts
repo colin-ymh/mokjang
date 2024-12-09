@@ -1,69 +1,49 @@
-import { useI18n } from "../../../locales/client";
-import { ColumnDef } from "@tanstack/react-table";
-import { Member } from "@/models/member/member";
 import { MEMBER } from "@/constants/member/member-column";
+import { useI18n } from "../../../locales/client";
 
-export const useMemberTableHeader = () => {
+export const useMemberTableItems = () => {
   const t = useI18n();
 
-  const columns: ColumnDef<Member>[] = [
+  const columns = [
     {
-      accessorKey: MEMBER.PROFILE_IMAGE,
-      header: t(MEMBER.PROFILE_IMAGE),
+      id: MEMBER.NAME,
+      title: t(MEMBER.NAME),
+      isSortable: true,
     },
     {
-      accessorKey: MEMBER.NAME,
-      header: t(MEMBER.NAME),
-      enableSorting: true,
-      sortingFn: "auto",
+      id: MEMBER.MOBILE_PHONE,
+      title: t(MEMBER.MOBILE_PHONE),
+      isSortable: false,
     },
     {
-      accessorKey: MEMBER.GENDER,
-      header: t(MEMBER.GENDER),
-      enableSorting: true,
-      sortingFn: "auto",
+      id: MEMBER.GROUP,
+      title: t(MEMBER.GROUP),
+      isSortable: true,
     },
     {
-      accessorKey: MEMBER.BIRTH,
-      header: t(MEMBER.BIRTH),
-      enableSorting: true,
-      sortingFn: "auto",
+      id: MEMBER.GENDER,
+      title: t(MEMBER.GENDER),
+      isSortable: true,
     },
     {
-      accessorKey: MEMBER.BAPTISM,
-      header: t(MEMBER.BAPTISM),
-      enableSorting: true,
-      sortingFn: "auto",
+      id: MEMBER.BIRTH,
+      title: t(MEMBER.BIRTH),
+      isSortable: true,
     },
     {
-      accessorKey: MEMBER.OFFICER,
-      header: t(MEMBER.OFFICER),
-      enableSorting: true,
-      sortingFn: "auto",
+      id: MEMBER.OFFICER,
+      title: t(MEMBER.OFFICER),
+      isSortable: true,
     },
     {
-      accessorKey: MEMBER.GROUP,
-      header: t(MEMBER.GROUP),
-      enableSorting: true,
-      sortingFn: "auto",
+      id: MEMBER.MINISTRY,
+      title: t(MEMBER.MINISTRY),
+      isSortable: false,
     },
     {
-      accessorKey: MEMBER.MINISTRY,
-      header: t(MEMBER.MINISTRY),
-      enableSorting: true,
-      sortingFn: "auto",
-    },
-    {
-      accessorKey: MEMBER.EDUCATION,
-      header: t(MEMBER.EDUCATION),
-      enableSorting: true,
-      sortingFn: "auto",
-    },
-    {
-      accessorKey: MEMBER.VEHICLE_NUMBER,
-      header: t(MEMBER.VEHICLE_NUMBER),
-      enableSorting: true,
-      sortingFn: "auto",
+      id: MEMBER.EDUCATION,
+      title: t(MEMBER.EDUCATION),
+      isSortable: false,
     },
   ];
 

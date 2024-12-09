@@ -37,11 +37,11 @@ export const getHeader = (id: string) => {
   }
 };
 
-export const getMemberInformationContent = (id: string, member: Member) => {
+export const getMemberInformationContent = (id: string) => {
   switch (id) {
     case MEMBER_INFORMATION_HEADER_ID.MEMBER_INFORMATION:
-      return <MemberInformationList member={member} />;
+      return <MemberInformationList />;
     case MEMBER_INFORMATION_HEADER_ID.PERSONAL_INFORMATION:
-      return <PersonalInformationList member={member} />;
+      return <PersonalInformationList />;
   }
 };

@@ -1,11 +1,13 @@
+import React from "react";
 import styled from "styled-components";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
 
 import HeaderBarView from "@/components/molecules/layout/header/header-bar.view";
 import { useMemberInformationHeaderBarItems } from "@/hooks/layout/header-bar-items";
 import MemberImageInput from "@/components/atoms/register/member-image-input";
-import React from "react";
 import { MainText } from "@/components/atoms/common/text/main-text";
-import { Member } from "@/models/member/member";
+import { getFormattedMobilePhone } from "@/utils/format";
 
 const InformationHeader = styled.div`
   display: flex;
@@ -26,26 +28,34 @@ const TextContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
+  gap: 5px;
 `;
 
 type MemberInformationHeaderProps = {
   contentId: string;
   onClickItem: (id: string) => void;
-  member: Member;
 };
 
 const MemberInformationHeader = ({
   contentId,
   onClickItem,
-  member,
 }: MemberInformationHeaderProps) => {
+  const { member } = useSelector((state: RootState) => state.memberRegister);
+
   return (
     <InformationHeader>
       <Information>
-        <MemberImageInput value={""} onChange={() => {}} />
+        <MemberImageInput
+          value={""}
+          onChange={() => {}}
+          width={80}
+          height={80}
+        />
         <TextContainer>
-          <MainText fontSize={20}>{member.name}</MainText>
-          <MainText fontSize={18}>{member.mobilePhone}</MainText>
+          <MainText fontSize={18}>{member.name}</MainText>
+          <MainText fontSize={16}>
+            {getFormattedMobilePhone(member.mobilePhone)}
+          </MainText>
         </TextContainer>
       </Information>
 

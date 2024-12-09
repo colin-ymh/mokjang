@@ -14,7 +14,7 @@ import {
 
 import Delete from "../../../../public/svg/cancel.svg";
 import DefaultImage from "../../../../public/png/default-member-image.png";
-import { useI18n, useScopedI18n } from "../../../../locales/client";
+import { useScopedI18n } from "../../../../locales/client";
 
 const MemberImageInputContainer = styled.div`
   display: flex;
@@ -30,10 +30,10 @@ const ImageContainer = styled.div`
   align-items: center;
 `;
 
-const MemberImage = styled(Image)<{ width: number; height: number }>`
+const MemberImage = styled(Image)<{ $width: number; $height: number }>`
   border-radius: 10px;
-  width: ${({ width }) => `${width | 110}px`};
-  height: ${({ height }) => `${height | 110}px`};
+  width: ${({ $width }) => `${$width}px`};
+  height: ${({ $height }) => `${$height}px`};
 `;
 
 const DeleteButton = styled(Delete)<{ opacity: number }>`
@@ -86,7 +86,6 @@ const MemberImageInput = ({
   width = 110,
   height = 110,
 }: MemberImageInputProps) => {
-  const t = useI18n();
   const t_button = useScopedI18n("button");
 
   // 크롭하기 전 이미지
@@ -181,8 +180,8 @@ const MemberImageInput = ({
         <MemberImage
           src={croppedImage || DefaultImage}
           alt="member profile image"
-          width={width}
-          height={height}
+          $width={width}
+          $height={height}
           onClick={onClickMemberImage}
         />
         {/* 이미지 삭제 버튼 */}

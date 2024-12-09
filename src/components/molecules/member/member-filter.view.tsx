@@ -52,55 +52,55 @@ const MemberFilterView = ({ onClickGenderToggle }: MemberFilterViewProps) => {
 
   return (
     <MemberFilterContainer>
-      <FilterList>
-        <GenderToggleContainer>
-          <ToggleButton
-            value={genderFilter}
-            items={useGenderToggleButtonItems()}
-            onClick={onClickGenderToggle}
-          />
-        </GenderToggleContainer>
-        <LabelDropdown
-          label={t("baptism")}
-          value={baptismFilter}
-          items={useBaptismDropdownItems()}
-          flexDirection={FLEX_DIRECTION.ROW}
-          height={40}
-          width={100}
-        />
-        <LabelDropdown
-          label={t("officer")}
-          value={officerFilter}
-          items={useOfficerDropdownItems()}
-          flexDirection={FLEX_DIRECTION.ROW}
-          height={40}
-          width={100}
-        />
-        <LabelDropdown
-          label={t("ministry")}
-          value={officerFilter}
-          items={useOfficerDropdownItems()}
-          flexDirection={FLEX_DIRECTION.ROW}
-          height={40}
-          width={100}
-        />
-        <LabelDropdown
-          label={t("education")}
-          value={officerFilter}
-          items={useOfficerDropdownItems()}
-          flexDirection={FLEX_DIRECTION.ROW}
-          height={40}
-          width={100}
-        />
-        <LabelDropdown
-          label={t("group")}
-          value={officerFilter}
-          items={useOfficerDropdownItems()}
-          flexDirection={FLEX_DIRECTION.ROW}
-          height={40}
-          width={100}
-        />
-      </FilterList>
+      {/*<FilterList>*/}
+      {/*  <GenderToggleContainer>*/}
+      {/*    <ToggleButton*/}
+      {/*      value={genderFilter}*/}
+      {/*      items={useGenderToggleButtonItems()}*/}
+      {/*      onClick={onClickGenderToggle}*/}
+      {/*    />*/}
+      {/*  </GenderToggleContainer>*/}
+      {/*  <LabelDropdown*/}
+      {/*    label={t("baptism")}*/}
+      {/*    value={baptismFilter}*/}
+      {/*    items={useBaptismDropdownItems()}*/}
+      {/*    flexDirection={FLEX_DIRECTION.ROW}*/}
+      {/*    height={40}*/}
+      {/*    width={100}*/}
+      {/*  />*/}
+      {/*  <LabelDropdown*/}
+      {/*    label={t("officer")}*/}
+      {/*    value={officerFilter}*/}
+      {/*    items={useOfficerDropdownItems()}*/}
+      {/*    flexDirection={FLEX_DIRECTION.ROW}*/}
+      {/*    height={40}*/}
+      {/*    width={100}*/}
+      {/*  />*/}
+      {/*  <LabelDropdown*/}
+      {/*    label={t("ministry")}*/}
+      {/*    value={officerFilter}*/}
+      {/*    items={useOfficerDropdownItems()}*/}
+      {/*    flexDirection={FLEX_DIRECTION.ROW}*/}
+      {/*    height={40}*/}
+      {/*    width={100}*/}
+      {/*  />*/}
+      {/*  <LabelDropdown*/}
+      {/*    label={t("education")}*/}
+      {/*    value={officerFilter}*/}
+      {/*    items={useOfficerDropdownItems()}*/}
+      {/*    flexDirection={FLEX_DIRECTION.ROW}*/}
+      {/*    height={40}*/}
+      {/*    width={100}*/}
+      {/*  />*/}
+      {/*  <LabelDropdown*/}
+      {/*    label={t("group")}*/}
+      {/*    value={officerFilter}*/}
+      {/*    items={useOfficerDropdownItems()}*/}
+      {/*    flexDirection={FLEX_DIRECTION.ROW}*/}
+      {/*    height={40}*/}
+      {/*    width={100}*/}
+      {/*  />*/}
+      {/*</FilterList>*/}
       <Button width={100} height={40} backgroundColor={GRAY.DARK}>
         <MainText color={WHITE}>필터 추가하기</MainText>
       </Button>

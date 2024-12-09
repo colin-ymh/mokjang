@@ -1,9 +1,10 @@
 import React, { InputHTMLAttributes, forwardRef } from "react";
 import styled from "styled-components";
+
 import { MAIN } from "@/constants/styles/color";
 
 // 스타일 정의
-const MainInputContainer = styled.input<{ width?: number; height?: number }>`
+const MainInputContainer = styled.input<{ $width?: number; $height?: number }>`
   width: ${({ width }) => (width ? `${width}px` : "100%")};
   font-size: 16px;
   padding: 12px 16px;

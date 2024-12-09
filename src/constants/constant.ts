@@ -70,16 +70,3 @@ export enum ORDER_DIRECTION {
   ASC = "asc",
   DESC = "desc",
 }
-
-export enum MEMBER_ORDER_BY {
-  CREATE_AT = "createAt",
-  BIRTH = "birth",
-  NAME = "name",
-  GENDER = "gender",
-  SCHOOL = "school",
-  PREVIOUS_CHURCH = "previousChurch",
-  GROUP_ID = "groupId",
-  OFFICER_ID = "officerId",
-  OFFICER_START_DATE = "officerStartDate",
-  BAPTISM = "baptism",
-}

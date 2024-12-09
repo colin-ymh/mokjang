@@ -3,10 +3,10 @@ import {
   BAPTISM,
   GENDER,
   MARRIAGE,
-  MEMBER_ORDER_BY,
   ORDER_DIRECTION,
 } from "@/constants/constant";
 import { Member } from "@/models/member/member";
+import { MEMBER } from "@/constants/member/member-column";
 
 class HTTPError extends Error {}
 
@@ -14,7 +14,7 @@ type GetMembersParams = {
   churchId: string; // 교회 id
   page?: number; // 페이지 번호
   take?: number; // 요청 개수
-  order?: MEMBER_ORDER_BY; // 정렬 기준
+  order?: MEMBER; // 정렬 기준
   orderDirection?: ORDER_DIRECTION; // 오름차순 내림차순
   // 필터링 내용
   name?: string; // 검색 이름

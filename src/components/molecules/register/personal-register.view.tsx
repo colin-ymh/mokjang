@@ -26,18 +26,14 @@ import {
   useGenderRadioButtonItems,
 } from "@/hooks/radio-button/radio-button-items";
 
-import {
-  getFormattedDate,
-  getFormattedHomePhone,
-  getTrimmedString,
-} from "@/utils/format";
+import { getTrimmedString } from "@/utils/format";
 import { getDateFromString, getIsChild } from "@/utils/date";
 import { onClickEnter } from "@/utils/input";
 
 import { useI18n, useScopedI18n } from "../../../../locales/client";
 import { usePathname } from "next/navigation";
 import { getIsWellFormedBirth, getIsWellFormedHomePhone } from "@/utils/check";
-import { BLACK, DESTRUCTIVE, MAIN } from "@/constants/styles/color";
+import { BLACK, DESTRUCTIVE } from "@/constants/styles/color";
 
 const PersonalRegisterContainer = styled.div`
   display: flex;

@@ -2,14 +2,14 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
   BAPTISM,
   GENDER,
-  MEMBER_ORDER_BY,
   NONE,
   OFFICER,
   ORDER_DIRECTION,
 } from "@/constants/constant";
+import { MEMBER } from "@/constants/member/member-column";
 
 type MemberFilterState = {
-  memberOrderBy: MEMBER_ORDER_BY | typeof NONE;
+  memberOrderBy: MEMBER | typeof NONE;
   memberOrderDirection: ORDER_DIRECTION;
   genderFilter: GENDER | typeof NONE;
   baptismFilter: BAPTISM;
@@ -28,10 +28,7 @@ const MemberFilterSlice = createSlice({
   name: "register",
   initialState,
   reducers: {
-    setMemberOrderBy(
-      state,
-      action: PayloadAction<MEMBER_ORDER_BY | typeof NONE>,
-    ) {
+    setMemberOrderBy(state, action: PayloadAction<MEMBER | typeof NONE>) {
       state.memberOrderBy = action.payload;
     },
     setMemberOrderDirection(state, action: PayloadAction<ORDER_DIRECTION>) {

@@ -27,7 +27,7 @@ const getFontSize = (
       break;
     case "medium":
     default:
-      baseSize = 15;
+      baseSize = 16;
       break;
   }
 

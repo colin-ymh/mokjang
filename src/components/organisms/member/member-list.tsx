@@ -1,16 +1,22 @@
 import { useEffect, useState } from "react";
-import { DEFAULT_MEMBER } from "@/redux/reducers/member-register-reducer";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/redux/store";
 
 import { MembersApi } from "@/api/members.api";
 import MemberInformation from "@/components/organisms/member/member-information";
 import CustomPopup from "@/components/atoms/common/popup/custom-popup";
 import MemberListView from "@/components/organisms/member/member-list.view";
 import { Member } from "@/models/member/member";
-import { useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
 import { NONE } from "@/constants/constant";
+import { setMember } from "@/redux/reducers/member-register-reducer";
+import {
+  getFormattedDate,
+  getFormattedHomePhone,
+  getFormattedMobilePhone,
+} from "@/utils/format";
 
 const MemberList = () => {
+  const dispatch = useDispatch<AppDispatch>();
   const {
     memberOrderBy,
     memberOrderDirection,
@@ -22,9 +28,6 @@ const MemberList = () => {
   // 교인 상세정보 팝업 On/Off
   const [isMemberInformationShown, setIsMemberInformationShown] =
     useState<boolean>(false);
-
-  // 현재 상세정보로 확인하는 교인
-  const [currentMember, setCurrentMember] = useState<Member>(DEFAULT_MEMBER);
 
   // 교인 목록에 보여지는 교인들
   const [members, setMembers] = useState<Member[]>([]);
@@ -50,7 +53,14 @@ const MemberList = () => {
   ]);
 
   const onClickMemberItem = (member: Member) => {
-    setCurrentMember(member);
+    const newMember: Member = {
+      ...member,
+      birth: getFormattedDate(member.birth),
+      mobilePhone: getFormattedMobilePhone(member.mobilePhone),
+      homePhone: getFormattedHomePhone(member.homePhone),
+    };
+
+    dispatch(setMember(newMember));
     setIsMemberInformationShown(true);
   };
 
@@ -71,7 +81,7 @@ const MemberList = () => {
         isShow={isMemberInformationShown}
         onClickClose={onClickClose}
       >
-        <MemberInformation member={currentMember} />
+        <MemberInformation />
       </CustomPopup>
     </>
   );

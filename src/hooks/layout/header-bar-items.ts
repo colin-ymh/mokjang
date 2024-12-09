@@ -1,8 +1,7 @@
 import { MEMBER_CONTENT_ID } from "@/constants/layout/content";
-
-import { useI18n, useScopedI18n } from "../../../locales/client";
-import { MEMBER } from "@/constants/member/member-column";
 import { MEMBER_INFORMATION_HEADER_ID } from "@/constants/layout/header";
+
+import { useScopedI18n } from "../../../locales/client";
 
 export const useMemberHeaderBarItems = () => {
   const t_memberContent = useScopedI18n("member-content");

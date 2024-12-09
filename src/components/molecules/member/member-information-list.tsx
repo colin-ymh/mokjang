@@ -5,6 +5,8 @@ import MainInput from "@/components/atoms/common/input/main-input";
 import { Member } from "@/models/member/member";
 
 import { useI18n } from "../../../../locales/client";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
 
 const InformationListContainer = styled.div`
   display: flex;
@@ -39,12 +41,11 @@ const InputContainer = styled.div`
   width: 100%;
 `;
 
-type MemberInformationListProps = {
-  member: Member;
-};
+type MemberInformationListProps = {};
 
-const MemberInformationList = ({ member }: MemberInformationListProps) => {
+const MemberInformationList = ({}: MemberInformationListProps) => {
   const t = useI18n();
+  const { member } = useSelector((state: RootState) => state.memberRegister);
   return (
     <InformationListContainer>
       {/* 직분 */}
