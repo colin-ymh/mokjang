@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 import { MainText } from "@/components/atoms/common/text/main-text";
 import BorderInput from "@/components/atoms/common/input/border-input";
+import { InputProps } from "@/components/atoms/common/input/main-input";
 
 const LabelInputContainer = styled.div<{ $zIndex?: number }>`
   flex: 1;
@@ -14,7 +15,7 @@ const LabelInputContainer = styled.div<{ $zIndex?: number }>`
   z-index: ${({ $zIndex }) => $zIndex};
 `;
 
-type LabelInputProps = InputHTMLAttributes<HTMLInputElement> & {
+type LabelInputProps = InputProps & {
   label: string;
   zIndex?: number;
   borderColor?: string;

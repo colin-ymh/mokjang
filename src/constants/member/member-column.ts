@@ -17,6 +17,7 @@ export enum MEMBER {
   MINISTRY = "ministry",
   GROUP = "group",
   OFFICER = "officer",
+  EDUCATION = "education",
   OFFICER_START_DATE = "officerStartDate",
   OFFICER_START_CHURCH = "officerStartChurch",
   BAPTISM = "baptism",

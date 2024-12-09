@@ -8,8 +8,9 @@ export default {
   guide: "인도자",
   family: "가족",
   // 개인 정보
-  image: "이미지",
+  profileImage: "이미지",
   birth: "생년월일",
+  age: "나이",
   gender: "성별",
   occupation: "하시는 일",
   school: "학교",
@@ -25,6 +26,11 @@ export default {
   officerStartDate: "임직일",
   officerStartChurch: "임직 교회",
   previousChurchName: "이전 교회 이름",
+
+  group: "소그룹",
+  ministry: "사역",
+  education: "교육 이수",
+
   // 성별
   male: "남성",
   female: "여성",

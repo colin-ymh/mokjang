@@ -76,6 +76,8 @@ const DropdownView = forwardRef<
       reverseDirection,
       isEditable,
       borderColor,
+      height,
+      width,
       ...inputProps
     },
     ref,
@@ -99,6 +101,8 @@ const DropdownView = forwardRef<
             }
             onChange={onChangeInput}
             borderColor={borderColor}
+            height={height}
+            width={width}
             {...inputProps}
             onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) => {
               inputProps.onKeyDown?.(event);

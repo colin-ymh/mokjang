@@ -43,6 +43,7 @@ export const DEFAULT_MEMBER: Member = {
   familyMemberId: BLANK,
   ministry: BLANK,
   group: BLANK,
+  education: BLANK,
 };
 
 const initialState: MemberRegisterState = {

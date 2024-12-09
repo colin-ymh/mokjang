@@ -25,3 +25,23 @@ export const getIsChild = (date: Date | null): boolean => {
 
   return CURRENT_YEAR - TARGET_YEAR <= 18;
 };
+
+export const getAge = (date: Date | null): number => {
+  if (date === null) return 0;
+
+  const today = new Date();
+  const birthDate = new Date(date); // 입력된 날짜를 Date 객체로 변환
+
+  let age = today.getFullYear() - birthDate.getFullYear();
+  const monthDifference = today.getMonth() - birthDate.getMonth();
+
+  // 생일이 지나지 않았으면 나이를 1살 줄임
+  if (
+    monthDifference < 0 ||
+    (monthDifference === 0 && today.getDate() < birthDate.getDate())
+  ) {
+    age--;
+  }
+
+  return age;
+};

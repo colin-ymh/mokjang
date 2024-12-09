@@ -7,7 +7,7 @@ import {
 } from "@/components/atoms/common/text/main-text";
 import { MAIN, WHITE } from "@/constants/styles/color";
 
-type ButtonProps = MainTextProps & {
+export type ButtonProps = MainTextProps & {
   text?: string;
   disabled?: boolean;
   onClick?: (event: any) => void;

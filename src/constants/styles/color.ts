@@ -23,3 +23,11 @@ export enum DESTRUCTIVE {
 export enum GREEN {
   DEFAULT = "#50C878",
 }
+
+export enum BLUE {
+  DEFAULT = "#2b5bf3",
+}
+
+export enum RED {
+  DEFAULT = "#fb3c3c",
+}

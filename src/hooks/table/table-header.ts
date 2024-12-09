@@ -8,14 +8,12 @@ export const useMemberTableHeader = () => {
 
   const columns: ColumnDef<Member>[] = [
     {
-      accessorKey: MEMBER.NAME,
-      header: t(MEMBER.NAME),
-      enableSorting: true,
-      sortingFn: "auto",
+      accessorKey: MEMBER.PROFILE_IMAGE,
+      header: t(MEMBER.PROFILE_IMAGE),
     },
     {
-      accessorKey: MEMBER.MOBILE_PHONE,
-      header: t(MEMBER.MOBILE_PHONE),
+      accessorKey: MEMBER.NAME,
+      header: t(MEMBER.NAME),
       enableSorting: true,
       sortingFn: "auto",
     },
@@ -31,16 +29,39 @@ export const useMemberTableHeader = () => {
       enableSorting: true,
       sortingFn: "auto",
     },
-
     {
-      accessorKey: MEMBER.OCCUPATION,
-      header: t(MEMBER.OCCUPATION),
+      accessorKey: MEMBER.BAPTISM,
+      header: t(MEMBER.BAPTISM),
       enableSorting: true,
       sortingFn: "auto",
     },
     {
-      accessorKey: MEMBER.ADDRESS,
-      header: t(MEMBER.ADDRESS),
+      accessorKey: MEMBER.OFFICER,
+      header: t(MEMBER.OFFICER),
+      enableSorting: true,
+      sortingFn: "auto",
+    },
+    {
+      accessorKey: MEMBER.GROUP,
+      header: t(MEMBER.GROUP),
+      enableSorting: true,
+      sortingFn: "auto",
+    },
+    {
+      accessorKey: MEMBER.MINISTRY,
+      header: t(MEMBER.MINISTRY),
+      enableSorting: true,
+      sortingFn: "auto",
+    },
+    {
+      accessorKey: MEMBER.EDUCATION,
+      header: t(MEMBER.EDUCATION),
+      enableSorting: true,
+      sortingFn: "auto",
+    },
+    {
+      accessorKey: MEMBER.VEHICLE_NUMBER,
+      header: t(MEMBER.VEHICLE_NUMBER),
       enableSorting: true,
       sortingFn: "auto",
     },

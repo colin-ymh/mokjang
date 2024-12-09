@@ -1,18 +1,12 @@
 "use client";
 
-import React, {
-  ChangeEvent,
-  FocusEventHandler,
-  forwardRef,
-  RefObject,
-  useState,
-} from "react";
+import React, { ChangeEvent, forwardRef, RefObject, useState } from "react";
 import TransparentBackground from "@/components/atoms/common/etc/transparent-background";
 import DropdownView from "@/components/atoms/common/dropdown/dropdown.view";
 import { DropdownValueType } from "@/components/atoms/common/dropdown/dropdown-item";
 import { InputProps } from "@/components/atoms/common/input/main-input";
 
-export type DropdownProps = {
+export type DropdownProps = InputProps & {
   ref?: RefObject<HTMLDivElement>;
   items: DropdownValueType[]; // dropdown 선택 가능 요소들
   value: string; // dropdown 에서 선택된 값
@@ -32,7 +26,7 @@ export type DropdownProps = {
   borderColor?: string;
 };
 
-const Dropdown = forwardRef<HTMLInputElement, DropdownProps & InputProps>(
+const Dropdown = forwardRef<HTMLInputElement, DropdownProps>(
   (
     {
       items,

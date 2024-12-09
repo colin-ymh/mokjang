@@ -26,4 +26,5 @@ export type Member = {
   guidedById: string; // 인도자 id
   previousChurchName: string; // 이전 교회
   vehicleNumber: string[];
+  education: string;
 };

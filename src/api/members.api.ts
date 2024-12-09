@@ -1,14 +1,31 @@
 import axios, { AxiosResponse } from "axios";
-import { BAPTISM, MARRIAGE } from "@/constants/constant";
+import {
+  BAPTISM,
+  GENDER,
+  MARRIAGE,
+  MEMBER_ORDER_BY,
+  ORDER_DIRECTION,
+} from "@/constants/constant";
 import { Member } from "@/models/member/member";
 
 class HTTPError extends Error {}
 
 type GetMembersParams = {
   churchId: string; // 교회 id
-  name?: string; // 검색 이름
   page?: number; // 페이지 번호
   take?: number; // 요청 개수
+  order?: MEMBER_ORDER_BY; // 정렬 기준
+  orderDirection?: ORDER_DIRECTION; // 오름차순 내림차순
+  // 필터링 내용
+  name?: string; // 검색 이름
+  birthAfter?: string;
+  birthBefore?: string;
+  gender?: GENDER;
+  school?: string;
+  vehicleNumber?: string;
+  groupId?: string;
+  officeId?: string;
+  baptism?: BAPTISM;
 };
 
 export type GetMembersResponse = Member;
@@ -75,15 +92,35 @@ export class MembersApi {
   public getMembers = async (
     params: GetMembersParams,
   ): Promise<AxiosResponse> => {
-    const { churchId, take = 5, page = 1, name } = params;
+    const {
+      churchId,
+      take = 5,
+      page = 1,
+      order,
+      orderDirection,
+      name,
+      gender,
+    } = params;
 
     const queryParams: Record<string, any> = {
       take,
       page,
     };
 
+    if (order) {
+      queryParams.order = order.toString();
+    }
+
+    if (orderDirection) {
+      queryParams.orderDirection = orderDirection.toString();
+    }
+
     if (name) {
       queryParams.name = name.toString();
+    }
+
+    if (gender) {
+      queryParams.gender = gender.toString();
     }
 
     const url = `${this._url}/churches/${churchId}/members`;

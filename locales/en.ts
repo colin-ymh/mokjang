@@ -8,8 +8,9 @@ export default {
   guide: "Guide",
   family: "Family",
   // 개인 정보
-  image: "Image",
+  profileImage: "Profile Image",
   birth: "Date of Birth",
+  age: "Age",
   gender: "Gender",
   occupation: "Occupation",
   school: "School",
@@ -25,6 +26,11 @@ export default {
   officerStartDate: "Officer Start Date",
   officerStartChurch: "Officer Start Church",
   previousChurchName: "Previous Church",
+
+  group: "Group",
+  ministry: "Ministry",
+  education: "Education",
+
   // 성별
   male: "Male",
   female: "Female",
