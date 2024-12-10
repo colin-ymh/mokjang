@@ -41,6 +41,44 @@ export const useBaptismDropdownItems = () => {
 
 export const useOfficerDropdownItems = () => {
   const t = useI18n();
+  const officers = useSelector((state: RootState) => state.church.officers);
+
+  const items = officers.map((officer) => {
+    return { value: officer.id, title: officer.name };
+  });
+
+  return items;
+};
+
+export const useMinistryDropdownItems = () => {
+  const t = useI18n();
+  const ministries = useSelector((state: RootState) => state.church.ministries);
+
+  const items = ministries.map((ministry) => {
+    return { value: ministry.id, title: ministry.name };
+  });
+
+  return items;
+};
+
+export const useEducationDropdownItems = () => {
+  const t = useI18n();
+  const educations = useSelector((state: RootState) => state.church.educations);
+
+  const items = educations.map((educations) => {
+    return { value: educations.id, title: educations.name };
+  });
+
+  items.push({
+    value: NONE,
+    title: t(NONE),
+  });
+
+  return items;
+};
+
+export const useMarriageDropdownItems = () => {
+  const t = useI18n();
 
   const items = [
     {
