@@ -24,6 +24,8 @@ const ModalContainer = styled.div`
   border-radius: 5px;
   overflow: hidden;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  height: 90%;
+  width: 60%;
 `;
 
 const HeaderContainer = styled.header`

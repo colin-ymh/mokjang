@@ -21,7 +21,7 @@ const SideBarContainer = styled.div`
   @media (min-width: ${MEDIA_MIN_WIDTH.DESKTOP}) {
     display: flex;
     flex-direction: column;
-    width: 230px;
+    width: 200px;
     background-color: ${GRAY.LIGHT};
     padding: 10px;
     box-shadow: inset -2px 0 5px rgba(0, 0, 0, 0.2);

@@ -81,7 +81,7 @@ export class MembersApi {
   constructor(useBaseURL: boolean) {
     this._url = useBaseURL
       ? "http://localhost:3001" // 실제 사용할 url
-      : "http://localhost:3001"; // 개발용 url
+      : "http://192.168.1.15:3001"; // 개발용 url
   }
 
   /**

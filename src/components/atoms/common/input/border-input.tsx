@@ -7,10 +7,10 @@ import { InputProps } from "@/components/atoms/common/input/main-input";
 // 스타일 정의
 const BorderInputContainer = styled.input<{
   $borderColor: string;
-  $height?: number;
-  $width?: number;
+  height?: number;
+  width?: number;
 }>`
-  width: ${({ $width }) => ($width ? `${$width}px` : "100%")};
+  width: ${({ width }) => (width ? `${width}px` : "100%")};
 
   box-sizing: border-box;
   font-size: 16px;
@@ -19,7 +19,7 @@ const BorderInputContainer = styled.input<{
   border-radius: 8px;
   color: ${BLACK};
   transition: all 0.3s ease;
-  height: ${({ $height }) => ($height ? `${$height}px` : "auto")};
+  height: ${({ height }) => (height ? `${height}px` : "auto")};
 
   &:focus {
     outline: none;
@@ -39,8 +39,8 @@ const BorderInput = forwardRef<HTMLInputElement, BorderInputProps>(
       readOnly = false,
       borderColor = GRAY.DEFAULT,
       value,
-      $height,
-      $width,
+      height,
+      width,
       ...props
     },
     ref,
@@ -52,8 +52,8 @@ const BorderInput = forwardRef<HTMLInputElement, BorderInputProps>(
         onKeyDown={onKeyDown}
         readOnly={readOnly}
         $borderColor={borderColor}
-        $height={$height}
-        $width={$width}
+        height={height}
+        width={width}
         {...props}
       />
     );

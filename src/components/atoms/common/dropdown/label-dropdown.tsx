@@ -17,7 +17,7 @@ const LabelDropdownContainer = styled.div<{
   flex-direction: ${({ $flexDirection }) => $flexDirection};
   align-items: ${({ $flexDirection }) =>
     $flexDirection === FLEX_DIRECTION.ROW ? "center" : null};
-  width: auto;
+  width: 100%;
   gap: 8px;
 `;
 
@@ -34,8 +34,8 @@ const LabelDropdown = forwardRef<HTMLInputElement, LabelDropdownProps>(
       onChangeItem,
       items,
       enterKeyHint,
-      $height,
-      $width,
+      height,
+      width,
       flexDirection = FLEX_DIRECTION.COLUMN,
       ...dropdownProps
     },
@@ -49,8 +49,8 @@ const LabelDropdown = forwardRef<HTMLInputElement, LabelDropdownProps>(
           value={value}
           items={items}
           onChangeItem={onChangeItem}
-          $height={$height}
-          $width={$width}
+          height={height}
+          width={width}
           {...dropdownProps}
         />
       </LabelDropdownContainer>

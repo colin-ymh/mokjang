@@ -55,9 +55,10 @@ const MemberList = () => {
   const onClickMemberItem = (member: Member) => {
     const newMember: Member = {
       ...member,
-      birth: getFormattedDate(member.birth),
-      mobilePhone: getFormattedMobilePhone(member.mobilePhone),
-      homePhone: getFormattedHomePhone(member.homePhone),
+      birth: member.birth && getFormattedDate(member.birth),
+      mobilePhone:
+        member.mobilePhone && getFormattedMobilePhone(member.mobilePhone),
+      homePhone: member.homePhone && getFormattedHomePhone(member.homePhone),
     };
 
     dispatch(setMember(newMember));

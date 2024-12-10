@@ -24,6 +24,8 @@ export type DropdownProps = InputProps & {
   onClickItemExtra?: () => void;
   onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
   borderColor?: string;
+  width?: number;
+  height?: number;
 };
 
 const Dropdown = forwardRef<HTMLInputElement, DropdownProps>(
