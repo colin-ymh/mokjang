@@ -1,5 +1,6 @@
-export const NONE = "none";
+export const NONE = "none"; // 없음 이라는 값
 export const BLANK = "";
+export const NULL = "null"; // 진짜로 없는 값
 
 // 신급
 export enum BAPTISM {
@@ -8,15 +9,6 @@ export enum BAPTISM {
   INFANT_BAPTISM = "infantBaptism",
   CATECHUMENATE = "catechumenate",
   CONFIRMATION = "confirmation",
-  NONE = "none",
-}
-
-// 직분
-export enum OFFICER {
-  ELDER = "elder",
-  EXHORTER = "exhorter",
-  ORDAINED_DEACON = "ordainedDeacon",
-  DEACON = "deacon",
   NONE = "none",
 }
 
@@ -43,7 +35,6 @@ export enum GENDER {
 export enum MARRIAGE {
   MARRIED = "married",
   SINGLE = "single",
-  NONE = "none",
 }
 
 // 양력 음력

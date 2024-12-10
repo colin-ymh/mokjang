@@ -6,7 +6,8 @@ import {
   MARRIAGE,
   MEMBER_REGISTER_STAGE,
   MEMBER_REGISTER_TYPE,
-  OFFICER,
+  NONE,
+  NULL,
 } from "@/constants/constant";
 import { getIsWellFormedMobilePhone, getIsWellFormedName } from "@/utils/check";
 import { Member } from "@/models/member/member";
@@ -24,7 +25,7 @@ export const DEFAULT_MEMBER: Member = {
   name: BLANK,
   mobilePhone: BLANK,
   homePhone: BLANK,
-  marriage: MARRIAGE.NONE,
+  marriage: NULL,
   detailMarriage: BLANK,
   address: BLANK,
   detailAddress: BLANK,
@@ -32,7 +33,7 @@ export const DEFAULT_MEMBER: Member = {
   occupation: BLANK,
   birth: BLANK,
   isLunar: false,
-  officer: OFFICER.NONE,
+  officer: NULL,
   officerStartDate: BLANK,
   officerStartChurch: BLANK,
   baptism: BAPTISM.NONE,

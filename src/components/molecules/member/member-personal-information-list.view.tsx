@@ -22,13 +22,13 @@ import VehicleNumberInput from "@/components/atoms/register/vehicle-number-input
 const InformationListContainer = styled.div`
   display: flex;
   flex-direction: column;
+  background-color: lime;
   padding: 10px;
 `;
 
 const InformationContent = styled.div`
   display: flex;
   flex-direction: row;
-  border-bottom: 1px solid ${GRAY.LIGHT};
 `;
 
 const ContentTitleContainer = styled.div`
@@ -44,13 +44,13 @@ const ContentTitleContainer = styled.div`
 const ContentIcon = styled.div`
   width: 15px;
   height: 15px;
-  background-color: black;
+  background-color: lightgray;
 `;
 
 const InputContainer = styled.div`
   display: flex;
   margin: 5px;
-  width: 100%;
+  width: 85%;
 `;
 
 type PersonalInformationListViewProps = {
@@ -108,12 +108,14 @@ const PersonalInformationListView = ({
           <ContentIcon />
           <MainText>{t(MEMBER.GENDER)}</MainText>
         </ContentTitleContainer>
-        <Dropdown
-          value={member.gender}
-          items={useGenderRadioButtonItems()}
-          borderColor={"#00000000"}
-          onChangeItem={onChangeGender}
-        />
+        <InputContainer>
+          <Dropdown
+            value={member.gender}
+            items={useGenderRadioButtonItems()}
+            borderColor={"#00000000"}
+            onChangeItem={onChangeGender}
+          />
+        </InputContainer>
       </InformationContent>
       {/* 생년월일 */}
       <InformationContent>

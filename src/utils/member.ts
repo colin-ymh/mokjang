@@ -1,12 +1,12 @@
 import { getDateFromString, getIsChild } from "@/utils/date";
-import { NONE, BLANK } from "@/constants/constant";
+import { NONE, BLANK, NULL } from "@/constants/constant";
 import {
   getIsWellFormedBirth,
   getIsWellFormedHomePhone,
   getIsWellFormedVehicleNumber,
 } from "@/utils/check";
 import { getTrimmedString } from "@/utils/format";
-import { CreateMemberBody, EditMemberBody } from "@/api/members.api";
+import { CreateMemberBody, EditMemberBody } from "@/api/churches/members.api";
 import { Member } from "@/models/member/member";
 
 export const getCreateMemberBody = (member: Member) => {
@@ -62,7 +62,7 @@ export const getEditMemberBody = (member: Member) => {
     newMember.gender = member.gender;
   }
 
-  if (member.marriage !== NONE) {
+  if (member.marriage !== NULL) {
     newMember.marriage = member.marriage;
 
     if (member.detailMarriage && getTrimmedString(member.detailMarriage)) {

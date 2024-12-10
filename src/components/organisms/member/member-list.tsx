@@ -2,12 +2,12 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
 
-import { MembersApi } from "@/api/members.api";
+import { MembersApi } from "@/api/churches/members.api";
 import MemberInformation from "@/components/organisms/member/member-information";
 import CustomPopup from "@/components/atoms/common/popup/custom-popup";
 import MemberListView from "@/components/organisms/member/member-list.view";
 import { Member } from "@/models/member/member";
-import { NONE } from "@/constants/constant";
+import { NONE, NULL } from "@/constants/constant";
 import { setMember } from "@/redux/reducers/member-register-reducer";
 import {
   getFormattedDate,
@@ -17,13 +17,12 @@ import {
 
 const MemberList = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const {
-    memberOrderBy,
-    memberOrderDirection,
-    genderFilter,
-    officerFilter,
-    baptismFilter,
-  } = useSelector((state: RootState) => state.memberFilter);
+  const churchId: string = useSelector(
+    (state: RootState) => state.church.churchId,
+  );
+  const { memberFilter, memberOrderBy, memberOrderDirection } = useSelector(
+    (state: RootState) => state.memberFilter,
+  );
 
   // 교인 상세정보 팝업 On/Off
   const [isMemberInformationShown, setIsMemberInformationShown] =
@@ -36,21 +35,26 @@ const MemberList = () => {
     const membersApi = new MembersApi(false);
     membersApi
       .getMembers({
-        churchId: "1",
+        churchId,
         take: 100,
         page: 1,
-        order: memberOrderBy !== NONE ? memberOrderBy : undefined,
+        order: memberOrderBy !== NULL ? memberOrderBy : undefined,
         orderDirection: memberOrderDirection,
-        gender: genderFilter !== NONE ? genderFilter : undefined,
+        name: memberFilter.name,
+        school: memberFilter.school,
+        vehicleNumber: memberFilter.vehicleNumber,
+        gender: memberFilter.gender !== NULL ? memberFilter.gender : undefined,
+        birthAfter: memberFilter.birthAfter
+          ? memberFilter.birthAfter
+          : undefined,
+        birthBefore: memberFilter.birthBefore
+          ? memberFilter.birthBefore
+          : undefined,
+        baptism:
+          memberFilter.baptism !== NULL ? memberFilter.baptism : undefined,
       })
       .then((response) => setMembers(response.data.data));
-  }, [
-    memberOrderBy,
-    memberOrderDirection,
-    genderFilter,
-    officerFilter,
-    baptismFilter,
-  ]);
+  }, [memberFilter, memberOrderBy, memberOrderDirection]);
 
   const onClickMemberItem = (member: Member) => {
     const newMember: Member = {
@@ -81,6 +85,9 @@ const MemberList = () => {
       <CustomPopup
         isShow={isMemberInformationShown}
         onClickClose={onClickClose}
+        width={60}
+        height={90}
+        isPercentage={true}
       >
         <MemberInformation />
       </CustomPopup>

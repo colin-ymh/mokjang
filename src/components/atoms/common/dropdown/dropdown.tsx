@@ -1,6 +1,12 @@
 "use client";
 
-import React, { ChangeEvent, forwardRef, RefObject, useState } from "react";
+import React, {
+  ChangeEvent,
+  forwardRef,
+  RefObject,
+  useEffect,
+  useState,
+} from "react";
 import TransparentBackground from "@/components/atoms/common/etc/transparent-background";
 import DropdownView from "@/components/atoms/common/dropdown/dropdown.view";
 import { DropdownValueType } from "@/components/atoms/common/dropdown/dropdown-item";
@@ -50,6 +56,10 @@ const Dropdown = forwardRef<HTMLInputElement, DropdownProps>(
 
     // 드롭다운 내에서 관리하는 value (외부 데이터를 직접 수정하지 않도록 관리)
     const [innerValue, setInnerValue] = useState<any>(value);
+
+    useEffect(() => {
+      setInnerValue(value);
+    }, [value]);
 
     // 드롭다운 외부 영역 클릭 시 일어나는 이벤트
     const onClickBackground = () => {

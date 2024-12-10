@@ -5,13 +5,13 @@ import { MAIN } from "@/constants/styles/color";
 
 // 스타일 정의
 const MainInputContainer = styled.input<{ $width?: number; $height?: number }>`
-  width: ${({ width }) => (width ? `${width}px` : "100%")};
+  width: ${({ $width }) => ($width ? `${$width}px` : "100%")};
   font-size: 16px;
   padding: 12px 16px;
   transition: all 0.3s ease;
   border: 1px solid rgba(0, 0, 0, 0);
   outline: none;
-  height: ${({ height }) => (height ? `${height}px` : "auto")};
+  height: ${({ $height }) => ($height ? `${$height}px` : "auto")};
 
   &:focus {
     border-bottom: 1px solid ${MAIN.DEFAULT};

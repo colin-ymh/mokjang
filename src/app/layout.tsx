@@ -9,8 +9,7 @@ import StyledComponentsRegistry from "@/hooks/registry";
 
 import store from "@/redux/store";
 import { initializeIsWebview } from "@/redux/reducers/webview-reducer";
-import { useChangeLocale } from "../../locales/client";
-import { LOCALE } from "@/constants/state/locale";
+import { useInitializeChurch } from "@/utils/initialize";
 
 const GlobalStyle = createGlobalStyle`
     html,
@@ -40,36 +39,18 @@ type RootLayoutPropsExtended = {
 
 // Provider 내부에 전역변수 initialize
 const InitializeStore = () => {
+  const initializeChurch = useInitializeChurch("1");
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(initializeIsWebview()); // 웹뷰 상태 초기화
+    initializeChurch();
   }, [dispatch]);
 
   return null;
 };
 
 const RootLayout = (props: RootLayoutProps | RootLayoutPropsExtended) => {
-  const changeLocale = useChangeLocale();
-
-  // useEffect(() => {
-  //   const temporalLocale = (
-  //     navigator.language || Intl.DateTimeFormat().resolvedOptions().locale
-  //   ).slice(0, 2);
-  //
-  //   let locale;
-  //
-  //   if (!(temporalLocale in LOCALE)) {
-  //     locale = LOCALE.KO;
-  //   } else {
-  //     locale = temporalLocale as LOCALE;
-  //   }
-  //
-  //   console.log(locale);
-  //
-  //   changeLocale(locale);
-  // }, []);
-
   const { children } = {
     ...props,
   };

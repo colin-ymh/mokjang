@@ -13,12 +13,14 @@ type VehicleNumberInputProps = InputHTMLAttributes<HTMLInputElement> & {
   label: string;
   value: string[];
   onChangeInput: (event: ChangeEvent<HTMLInputElement>, index: number) => void;
+  height?: number;
+  width?: number;
 };
 
 const VehicleNumberInput = forwardRef<
   VehicleNumberInputRef,
   VehicleNumberInputProps
->(({ label, value, onChangeInput, ...inputProps }, ref) => {
+>(({ label, value, onChangeInput, height, width, ...inputProps }, ref) => {
   // 열려있는 번호 입력 창 개수
   const [count, setCount] = useState<number>(1);
 
@@ -87,6 +89,8 @@ const VehicleNumberInput = forwardRef<
     onChangeInput,
     onClickPlusButton,
     ...inputProps,
+    height,
+    width,
   };
 
   return <VehicleNumberInputView ref={ref} {...props} />;

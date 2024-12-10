@@ -1,17 +1,26 @@
 import styled from "styled-components";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
 
 import { MainText } from "@/components/atoms/common/text/main-text";
 import MainInput from "@/components/atoms/common/input/main-input";
-import { Member } from "@/models/member/member";
+import Dropdown from "@/components/atoms/common/dropdown/dropdown";
+import {
+  useEducationDropdownItems,
+  useMinistryDropdownItems,
+  useOfficerDropdownItems,
+} from "@/hooks/dropdown/dropdown-items";
+import { MEMBER } from "@/constants/member/member-column";
+import { NONE, NULL } from "@/constants/constant";
 
 import { useI18n } from "../../../../locales/client";
-import { useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
+import { GRAY } from "@/constants/styles/color";
 
 const InformationListContainer = styled.div`
   display: flex;
   flex-direction: column;
-  width: 100%;
+  background-color: lime;
+  padding: 10px;
 `;
 
 const InformationContent = styled.div`
@@ -25,20 +34,20 @@ const ContentTitleContainer = styled.div`
   justify-content: flex-start;
   align-items: center;
   width: 15%;
-  padding: 10px 30px;
+  padding: 10px;
   gap: 10px;
 `;
 
 const ContentIcon = styled.div`
   width: 15px;
   height: 15px;
-  background-color: black;
+  background-color: lightgray;
 `;
 
 const InputContainer = styled.div`
   display: flex;
   margin: 5px;
-  width: 100%;
+  width: 85%;
 `;
 
 type MemberInformationListProps = {};
@@ -48,44 +57,65 @@ const MemberInformationList = ({}: MemberInformationListProps) => {
   const { member } = useSelector((state: RootState) => state.memberRegister);
   return (
     <InformationListContainer>
-      {/* 직분 */}
-      <InformationContent>
-        <ContentTitleContainer>
-          <ContentIcon />
-          <MainText>{t("officer")}</MainText>
-        </ContentTitleContainer>
-        <InputContainer>
-          <MainInput value={member.officer} />
-        </InputContainer>
-      </InformationContent>
       {/* 소그룹 */}
       <InformationContent>
         <ContentTitleContainer>
           <ContentIcon />
-          <MainText>소그룹</MainText>
+          <MainText>{t(MEMBER.GROUP)}</MainText>
         </ContentTitleContainer>
         <InputContainer>
           <MainInput value={member.group} />
+        </InputContainer>
+      </InformationContent>
+      {/* 직분 */}
+      <InformationContent>
+        <ContentTitleContainer>
+          <ContentIcon />
+          <MainText>{t(MEMBER.OFFICER)}</MainText>
+        </ContentTitleContainer>
+        <InputContainer>
+          <Dropdown
+            value={member.officer || NULL}
+            items={[
+              ...useOfficerDropdownItems(),
+              { value: NULL, title: t(NULL) },
+            ]}
+            borderColor={GRAY.LIGHT}
+          />
         </InputContainer>
       </InformationContent>
       {/* 사역 */}
       <InformationContent>
         <ContentTitleContainer>
           <ContentIcon />
-          <MainText>사역</MainText>
+          <MainText>{t(MEMBER.MINISTRY)}</MainText>
         </ContentTitleContainer>
         <InputContainer>
-          <MainInput value={member.ministry} />
+          <Dropdown
+            value={member.ministry || NULL}
+            items={[
+              ...useMinistryDropdownItems(),
+              { value: NULL, title: t(NULL) },
+            ]}
+            borderColor={GRAY.LIGHT}
+          />
         </InputContainer>
       </InformationContent>
       {/* 교육 이수 */}
       <InformationContent>
         <ContentTitleContainer>
           <ContentIcon />
-          <MainText>교육 이수</MainText>
+          <MainText>{t(MEMBER.EDUCATION)}</MainText>
         </ContentTitleContainer>
         <InputContainer>
-          <MainInput />
+          <Dropdown
+            value={member.education || NULL}
+            items={[
+              ...useEducationDropdownItems(),
+              { value: NULL, title: t(NULL) },
+            ]}
+            borderColor={GRAY.LIGHT}
+          />
         </InputContainer>
       </InformationContent>
     </InformationListContainer>

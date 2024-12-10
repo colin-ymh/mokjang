@@ -8,7 +8,7 @@ import { MainText } from "@/components/atoms/common/text/main-text";
 import { useMemberTableItems } from "@/hooks/table/table-header";
 import DefaultImage from "../../../../public/png/default-member-image.png";
 import { getFormattedDate, getFormattedMobilePhone } from "@/utils/format";
-import { BAPTISM, GENDER, OFFICER } from "@/constants/constant";
+import { BAPTISM, GENDER } from "@/constants/constant";
 import { getAge, getDateFromString } from "@/utils/date";
 import Image from "next/image";
 import { useI18n } from "../../../../locales/client";
@@ -105,9 +105,7 @@ const MemberTableView = ({
           <MainText fontSize={16}>{t(member.baptism as BAPTISM)}</MainText>
         );
       case MEMBER.OFFICER:
-        return (
-          <MainText fontSize={16}>{t(member.officer as OFFICER)}</MainText>
-        );
+        return <MainText fontSize={16}>{member.officer}</MainText>;
       case MEMBER.MINISTRY:
         return <MainText fontSize={16}>{member.ministry}</MainText>;
       case MEMBER.EDUCATION:

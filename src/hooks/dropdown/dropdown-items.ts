@@ -1,4 +1,9 @@
-import { BAPTISM, OFFICER, MARRIAGE } from "@/constants/constant";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
+
+import { BAPTISM, MARRIAGE, NONE, GENDER, NULL } from "@/constants/constant";
+import { MEMBER } from "@/constants/member/member-column";
+
 import { useI18n } from "../../../locales/client";
 
 export const useBaptismDropdownItems = () => {
@@ -39,35 +44,6 @@ export const useOfficerDropdownItems = () => {
 
   const items = [
     {
-      value: OFFICER.DEACON,
-      title: t(OFFICER.DEACON),
-    },
-    {
-      value: OFFICER.EXHORTER,
-      title: t(OFFICER.EXHORTER),
-    },
-    {
-      value: OFFICER.ORDAINED_DEACON,
-      title: t(OFFICER.ORDAINED_DEACON),
-    },
-    {
-      value: OFFICER.ELDER,
-      title: t(OFFICER.ELDER),
-    },
-    {
-      value: OFFICER.NONE,
-      title: t(OFFICER.NONE),
-    },
-  ];
-
-  return items;
-};
-
-export const useMarriageDropdownItems = () => {
-  const t = useI18n();
-
-  const items = [
-    {
       value: MARRIAGE.MARRIED,
       title: t(MARRIAGE.MARRIED),
     },
@@ -76,8 +52,46 @@ export const useMarriageDropdownItems = () => {
       title: t(MARRIAGE.SINGLE),
     },
     {
-      value: MARRIAGE.NONE,
-      title: t(MARRIAGE.NONE),
+      value: NULL,
+      title: t(NULL),
+    },
+  ];
+
+  return items;
+};
+
+export const useSearchFilterDropdownItems = () => {
+  const t = useI18n();
+
+  const items = [
+    {
+      value: MEMBER.NAME,
+      title: t(MEMBER.NAME),
+    },
+    {
+      value: MEMBER.SCHOOL,
+      title: t(MEMBER.SCHOOL),
+    },
+    {
+      value: MEMBER.VEHICLE_NUMBER,
+      title: t(MEMBER.VEHICLE_NUMBER),
+    },
+  ];
+
+  return items;
+};
+
+export const useGenderDropdownItems = () => {
+  const t = useI18n();
+
+  const items = [
+    {
+      value: GENDER.MALE,
+      title: t(GENDER.MALE),
+    },
+    {
+      value: GENDER.FEMALE,
+      title: t(GENDER.FEMALE),
     },
   ];
 

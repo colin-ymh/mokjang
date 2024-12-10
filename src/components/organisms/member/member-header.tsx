@@ -6,13 +6,16 @@ import MemberRegister from "@/components/organisms/register/member-register";
 import { MainText } from "@/components/atoms/common/text/main-text";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
-import { MembersApi } from "@/api/members.api";
+import { MembersApi } from "@/api/churches/members.api";
 import { MEMBER_REGISTER_STAGE } from "@/constants/constant";
 import { getEditMemberBody } from "@/utils/member";
 
 type MemberManagementHeadBarProps = {};
 
 const MemberHeader = ({}: MemberManagementHeadBarProps) => {
+  const churchId: string = useSelector(
+    (state: RootState) => state.church.churchId,
+  );
   const { member, stage } = useSelector(
     (state: RootState) => state.memberRegister,
   );
@@ -37,7 +40,7 @@ const MemberHeader = ({}: MemberManagementHeadBarProps) => {
       console.log(member.id, member);
       // 교인 저장
       membersApi.editMember(
-        { memberId: member.id, churchId: "1" },
+        { memberId: member.id, churchId },
         getEditMemberBody(member),
       );
 

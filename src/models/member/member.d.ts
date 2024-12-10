@@ -1,4 +1,4 @@
-import { BAPTISM, MARRIAGE, OFFICER } from "@/constants/constant";
+import { BAPTISM, MARRIAGE, NONE, NULL } from "@/constants/constant";
 
 export type Member = {
   id: string;
@@ -14,12 +14,12 @@ export type Member = {
   familyMemberId: string;
   occupation: string;
   school: string;
-  marriage: MARRIAGE;
+  marriage: MARRIAGE | typeof NULL;
   detailMarriage: string;
   // 성도정보
   ministry: string; // 사역
   group: string; // 소그룹
-  officer: OFFICER; // 직분
+  officer: string; // 직분
   officerStartDate: string;
   officerStartChurch: string;
   baptism: BAPTISM; // 신급

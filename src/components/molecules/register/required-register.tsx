@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
 import { setMember, setType } from "@/redux/reducers/member-register-reducer";
 
-import { GetMembersResponse, MembersApi } from "@/api/members.api";
+import { GetMembersResponse, MembersApi } from "@/api/churches/members.api";
 import RequiredRegisterView from "@/components/molecules/register/required-register.view";
 import { MEMBER_REGISTER_TYPE, BLANK } from "@/constants/constant";
 import { DropdownValueType } from "@/components/atoms/common/dropdown/dropdown-item";
@@ -22,6 +22,9 @@ import { Member } from "@/models/member/member";
 const RequiredRegister = () => {
   const membersApi = new MembersApi(false);
   const dispatch = useDispatch<AppDispatch>();
+  const churchId: string = useSelector(
+    (state: RootState) => state.church.churchId,
+  );
 
   const member: Member = useSelector(
     (state: RootState): Member => state.memberRegister.member,
@@ -68,7 +71,7 @@ const RequiredRegister = () => {
 
     membersApi
       .getMembers({
-        churchId: "1",
+        churchId,
         name: newGuideName,
         page: 1,
         take: 5,
@@ -95,7 +98,7 @@ const RequiredRegister = () => {
 
     membersApi
       .getMembers({
-        churchId: "1",
+        churchId,
         name: newFamilyMemberName,
         page: 1,
         take: 5,

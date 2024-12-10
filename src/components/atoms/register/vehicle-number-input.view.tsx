@@ -67,6 +67,8 @@ type VehicleNumberInputViewProps = InputHTMLAttributes<HTMLInputElement> & {
   count: number;
   onChangeInput: (event: ChangeEvent<HTMLInputElement>, index: number) => void;
   onClickPlusButton: () => void;
+  height?: number;
+  width?: number;
 };
 
 const VehicleNumberInputView = forwardRef<
@@ -74,7 +76,16 @@ const VehicleNumberInputView = forwardRef<
   VehicleNumberInputViewProps
 >(
   (
-    { label, value, count, onChangeInput, onClickPlusButton, ...props },
+    {
+      label,
+      value,
+      count,
+      onChangeInput,
+      onClickPlusButton,
+      height,
+      width,
+      ...props
+    },
     ref,
   ) => {
     const firstInputRef = useRef<HTMLInputElement>(null);

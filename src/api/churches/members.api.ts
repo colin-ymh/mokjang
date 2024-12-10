@@ -81,7 +81,7 @@ export class MembersApi {
   constructor(useBaseURL: boolean) {
     this._url = useBaseURL
       ? "http://localhost:3001" // 실제 사용할 url
-      : "http://192.168.1.15:3001"; // 개발용 url
+      : "http://localhost:3001"; // 개발용 url
   }
 
   /**
@@ -99,9 +99,13 @@ export class MembersApi {
       order,
       orderDirection,
       name,
+      school,
+      vehicleNumber,
+      birthAfter,
+      birthBefore,
       gender,
+      baptism,
     } = params;
-
     const queryParams: Record<string, any> = {
       take,
       page,
@@ -119,8 +123,28 @@ export class MembersApi {
       queryParams.name = name.toString();
     }
 
+    if (school) {
+      queryParams.school = school.toString();
+    }
+
+    if (vehicleNumber) {
+      queryParams.vehicleNumber = vehicleNumber.toString();
+    }
+
     if (gender) {
       queryParams.gender = gender.toString();
+    }
+
+    if (birthAfter) {
+      queryParams.birthAfter = birthAfter.toString();
+    }
+
+    if (birthBefore) {
+      queryParams.birthBefore = birthBefore.toString();
+    }
+
+    if (baptism) {
+      queryParams.baptism = baptism.toString();
     }
 
     const url = `${this._url}/churches/${churchId}/members`;

@@ -9,8 +9,8 @@ import {
 } from "@/constants/constant";
 import RegisterButtonListView from "@/components/molecules/register/register-button-list.view";
 import ToastPopup from "@/components/atoms/common/popup/toast-popup";
-import { MembersApi } from "@/api/members.api";
-import { RequestInfoApi } from "@/api/request-info.api";
+import { MembersApi } from "@/api/churches/members.api";
+import { RequestInfoApi } from "@/api/churches/request-info.api";
 import { getCreateMemberBody, getEditMemberBody } from "@/utils/member";
 
 import { useScopedI18n } from "../../../../locales/client";
@@ -18,6 +18,9 @@ import { useScopedI18n } from "../../../../locales/client";
 const RegisterButtonList = () => {
   const membersApi = new MembersApi(false);
   const dispatch = useDispatch<AppDispatch>();
+  const churchId: string = useSelector(
+    (state: RootState) => state.church.churchId,
+  );
 
   const requestInfoApi = new RequestInfoApi(false);
 
@@ -33,7 +36,7 @@ const RegisterButtonList = () => {
   const onClickLeft = () => {
     if (stage === MEMBER_REGISTER_STAGE.REQUIRED) {
       requestInfoApi.inviteMember(
-        { churchId: "1", isTest: true },
+        { churchId, isTest: true },
         getCreateMemberBody(member),
       );
     } else if (stage === MEMBER_REGISTER_STAGE.PERSONAL) {
@@ -48,7 +51,7 @@ const RegisterButtonList = () => {
     if (stage === MEMBER_REGISTER_STAGE.REQUIRED) {
       // 최초 교인 등록
       membersApi
-        .createMember({ churchId: "1" }, getCreateMemberBody(member))
+        .createMember({ churchId }, getCreateMemberBody(member))
         .then((response) => {
           // 등록 성공 시
           if (response.status === 201) {
@@ -67,7 +70,7 @@ const RegisterButtonList = () => {
       if (type === MEMBER_REGISTER_TYPE.NEW) {
         if (member?.id) {
           membersApi.editMember(
-            { churchId: "1", memberId: member.id },
+            { churchId, memberId: member.id },
             getEditMemberBody(member),
           );
         }
@@ -77,7 +80,7 @@ const RegisterButtonList = () => {
     } else if (stage === MEMBER_REGISTER_STAGE.RELIGIOUS) {
       if (member?.id) {
         membersApi.editMember(
-          { churchId: "1", memberId: member.id },
+          { churchId, memberId: member.id },
           getEditMemberBody(member),
         );
       }

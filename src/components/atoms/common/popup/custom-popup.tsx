@@ -17,15 +17,21 @@ const ModalOverlay = styled.div`
   z-index: 100;
 `;
 
-const ModalContainer = styled.div`
+const ModalContainer = styled.div<{
+  width?: number;
+  height?: number;
+  $isPercentage?: boolean;
+}>`
   display: flex;
   flex-direction: column;
   background-color: ${WHITE};
   border-radius: 5px;
   overflow: hidden;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-  height: 90%;
-  width: 60%;
+  height: ${({ height, $isPercentage }) =>
+    height ? ($isPercentage ? `${height}%` : `${height}px`) : "auto"};
+  width: ${({ width, $isPercentage }) =>
+    width ? ($isPercentage ? `${width}%` : `${width}px`) : "auto"};
 `;
 
 const HeaderContainer = styled.header`
@@ -51,6 +57,9 @@ type CustomPopupProps = {
   isShow: boolean;
   onClickClose: () => void;
   headerRight?: ReactNode;
+  width?: number;
+  height?: number;
+  isPercentage?: boolean;
   children: ReactNode;
 };
 
@@ -58,12 +67,19 @@ const CustomPopup = ({
   isShow,
   onClickClose,
   headerRight,
+  width,
+  height,
+  isPercentage = false,
   children,
 }: CustomPopupProps) => {
   if (!isShow) return null;
   return (
     <ModalOverlay>
-      <ModalContainer>
+      <ModalContainer
+        width={width}
+        height={height}
+        $isPercentage={isPercentage}
+      >
         <HeaderContainer>
           <HeaderLeft>
             <ExitButton onClick={onClickClose} />

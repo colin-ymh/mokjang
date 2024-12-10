@@ -11,7 +11,7 @@ import {
 import RegisterButtonListView from "@/components/molecules/register/register-button-list.view";
 
 import { useScopedI18n } from "../../../../locales/client";
-import { RequestInfoApi } from "@/api/request-info.api";
+import { RequestInfoApi } from "@/api/churches/request-info.api";
 import { getEditMemberBody } from "@/utils/member";
 
 const ExtraButtonList = () => {

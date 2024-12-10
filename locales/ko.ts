@@ -1,5 +1,6 @@
 export default {
   none: "없음",
+  null: "--",
   type: "종류",
 
   // 필수
@@ -41,13 +42,6 @@ export default {
   infantBaptism: "유아세례",
   catechumenate: "학습",
   confirmation: "입교",
-
-  // officer 직분
-  member: "교인",
-  elder: "장로",
-  exhorter: "권사",
-  ordainedDeacon: "안수집사",
-  deacon: "집사",
 
   // marriage 결혼
   married: "기혼",

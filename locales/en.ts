@@ -1,5 +1,6 @@
 export default {
   none: "None",
+  null: "--",
   type: "Type",
 
   // 필수
@@ -40,12 +41,6 @@ export default {
   infantBaptism: "Infant Baptism",
   catechumenate: "Catechumenate",
   confirmation: "Confirmation",
-
-  // officer
-  elder: "Elder",
-  exhorter: "Exhorter",
-  ordainedDeacon: "Ordained Deacon",
-  deacon: "Deacon",
 
   // marriage 결혼
   married: "Married",

@@ -1,21 +1,22 @@
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "@/redux/store";
-import { setGenderFilter } from "@/redux/reducers/member-filter-reducer";
+import { useState } from "react";
 
-import { GENDER, NONE } from "@/constants/constant";
 import MemberFilterView from "@/components/molecules/member/member-filter.view";
 
 const MemberFilter = () => {
-  const dispatch = useDispatch<AppDispatch>();
+  // 필터 추가 모달 on off
+  const [isAddFilterShown, setIsAddFilterShown] = useState<boolean>(false);
 
-  // 성별 필터 토글
-  const onClickGenderToggle = (value: GENDER | typeof NONE) => {
-    dispatch(setGenderFilter(value));
+  // 필터 추가 모달 열기
+  const onClickOpenFilter = () => {
+    setIsAddFilterShown(true);
   };
 
   const props = {
-    onClickGenderToggle,
+    isAddFilterShown,
+    setIsAddFilterShown,
+    onClickOpenFilter,
   };
+
   return (
     <>
       <MemberFilterView {...props} />

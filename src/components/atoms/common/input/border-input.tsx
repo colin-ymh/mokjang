@@ -29,6 +29,8 @@ const BorderInputContainer = styled.input<{
 
 type BorderInputProps = InputProps & {
   borderColor?: string;
+  height?: number;
+  width?: number;
 };
 
 // forwardRef 를 사용하여 ref 를 전달받을 수 있도록

@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from "axios";
-import { EditMemberBody } from "@/api/members.api";
+import { EditMemberBody } from "@/api/churches/members.api";
 
 class HTTPError extends Error {}
 

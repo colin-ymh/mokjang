@@ -13,7 +13,7 @@ import {
   useOfficerDropdownItems,
 } from "@/hooks/dropdown/dropdown-items";
 import LabelDropdown from "@/components/atoms/common/dropdown/label-dropdown";
-import { BAPTISM, NONE, OFFICER } from "@/constants/constant";
+import { BAPTISM, NONE } from "@/constants/constant";
 import { getFormattedDate, getTrimmedString } from "@/utils/format";
 import { onClickEnter } from "@/utils/input";
 
@@ -31,7 +31,7 @@ const InputContainer = styled.div`
 `;
 
 export type ReligiousRegisterViewProps = {
-  onChangeOfficer: (value: OFFICER) => void;
+  onChangeOfficer: (value: string) => void;
   onChangeOfficerStartDate: (event: ChangeEvent<HTMLInputElement>) => void;
   onChangeOfficerStartChurch: (event: ChangeEvent<HTMLInputElement>) => void;
   onChangeBaptism: (value: BAPTISM) => void;
