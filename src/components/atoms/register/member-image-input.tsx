@@ -31,7 +31,7 @@ const ImageContainer = styled.div`
 `;
 
 const MemberImage = styled(Image)<{ $width: number; $height: number }>`
-  border-radius: 10px;
+  border-radius: 5px;
   width: ${({ $width }) => `${$width}px`};
   height: ${({ $height }) => `${$height}px`};
 `;

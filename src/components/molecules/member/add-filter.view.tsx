@@ -193,10 +193,7 @@ const AddFilterView = ({
         <FilterContentContainer $isOpened={openedFilter === MEMBER.BAPTISM}>
           <Dropdown
             value={baptism}
-            items={[
-              ...useBaptismDropdownItems(),
-              { value: NULL, title: t(NULL) },
-            ]}
+            items={useBaptismDropdownItems()}
             onChangeItem={onChangeBaptism}
           />
         </FilterContentContainer>
@@ -212,10 +209,7 @@ const AddFilterView = ({
         <FilterContentContainer $isOpened={openedFilter === MEMBER.OFFICER}>
           <Dropdown
             value={officer}
-            items={[
-              ...useOfficerDropdownItems(),
-              { value: NULL, title: t(NULL) },
-            ]}
+            items={useOfficerDropdownItems()}
             onChangeItem={onChangeOfficer}
           />
         </FilterContentContainer>

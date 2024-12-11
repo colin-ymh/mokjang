@@ -71,8 +71,8 @@ export type EditMemberBody = {
 };
 
 type DeleteMemberParams = {
-  churchId: number;
-  memberId: number;
+  churchId: string;
+  memberId: string;
 };
 
 export class MembersApi {

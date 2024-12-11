@@ -3,20 +3,23 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
 import { setMember, setStage } from "@/redux/reducers/member-register-reducer";
 
+import { MembersApi } from "@/api/churches/members.api";
+import { MemberSettingsApi } from "@/api/churches/member-settings.api";
+import { RequestInfoApi } from "@/api/churches/request-info.api";
 import {
   MEMBER_REGISTER_STAGE,
   MEMBER_REGISTER_TYPE,
+  NULL,
 } from "@/constants/constant";
 import RegisterButtonListView from "@/components/molecules/register/register-button-list.view";
 import ToastPopup from "@/components/atoms/common/popup/toast-popup";
-import { MembersApi } from "@/api/churches/members.api";
-import { RequestInfoApi } from "@/api/churches/request-info.api";
 import { getCreateMemberBody, getEditMemberBody } from "@/utils/member";
 
 import { useScopedI18n } from "../../../../locales/client";
 
 const RegisterButtonList = () => {
   const membersApi = new MembersApi(false);
+  const memberSettingsApi = new MemberSettingsApi(false);
   const dispatch = useDispatch<AppDispatch>();
   const churchId: string = useSelector(
     (state: RootState) => state.church.churchId,
@@ -55,7 +58,6 @@ const RegisterButtonList = () => {
         .then((response) => {
           // 등록 성공 시
           if (response.status === 201) {
-            console.log(response.data);
             // 교인 Id 할당
             const memberId = response.data.id;
             dispatch(setMember({ ...member, id: memberId }));
@@ -79,10 +81,19 @@ const RegisterButtonList = () => {
       }
     } else if (stage === MEMBER_REGISTER_STAGE.RELIGIOUS) {
       if (member?.id) {
+        // 교인 업데이트
         membersApi.editMember(
           { churchId, memberId: member.id },
           getEditMemberBody(member),
         );
+
+        // 직분 업데이트
+        if (member.officer !== NULL) {
+          memberSettingsApi.editMemberOfficer(
+            { churchId, memberId: member.id },
+            { officerId: member.officer },
+          );
+        }
       }
     }
   };

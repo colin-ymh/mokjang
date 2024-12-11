@@ -8,7 +8,16 @@ import { MEMBER_INFORMATION_HEADER_ID } from "@/constants/layout/header";
 const InformationContainer = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 20px;
+  width: 100%;
+  height: 100%;
+`;
+
+const ContentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 10px 20px;
+  overflow-y: scroll;
+  flex-grow: 1;
 `;
 
 type MemberInformationProps = {};
@@ -28,7 +37,9 @@ const MemberInformation = ({}: MemberInformationProps) => {
         contentId={contentId}
         onClickItem={onClickHeaderBarItem}
       />
-      {getMemberInformationContent(contentId)}
+      <ContentContainer>
+        {getMemberInformationContent(contentId)}
+      </ContentContainer>
     </InformationContainer>
   );
 };

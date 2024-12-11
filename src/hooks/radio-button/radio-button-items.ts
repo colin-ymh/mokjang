@@ -39,7 +39,7 @@ export const useGenderRadioButtonItems = () => {
   return items;
 };
 
-export const useBirthRadioButtonItems = () => {
+export const useCalendarModeRadioButtonItems = () => {
   const t = useI18n();
 
   const items = [

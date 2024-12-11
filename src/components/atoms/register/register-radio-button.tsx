@@ -11,7 +11,7 @@ const ButtonContainer = styled.div<{ $isSelected: boolean; color?: string }>`
     $isSelected
       ? `1px solid ${color || MAIN.DEFAULT}`
       : `1px solid ${GRAY.DEFAULT}`};
-  border-radius: 8px;
+  border-radius: 5px;
   padding: 12px;
   transition: all 0.5s ease;
   background-color: ${({ $isSelected, color }) =>

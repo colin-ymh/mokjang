@@ -17,7 +17,7 @@ const Background = styled.div<BackgroundProps>`
   position: fixed;
   inset: 0;
   background-color: ${({ $blur }) =>
-    $blur ? "rgba(0, 0, 0, 0.3)" : "transparent"};
+    $blur ? "rgba(0, 0, 0, 0.1)" : "transparent"};
   z-index: 40;
   display: ${({ $isOpened }) => ($isOpened ? "block" : "none")};
 `;

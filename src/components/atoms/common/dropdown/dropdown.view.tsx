@@ -10,9 +10,10 @@ import DropdownItem, {
 import BorderInput from "@/components/atoms/common/input/border-input";
 import { InputProps } from "@/components/atoms/common/input/main-input";
 
-const DropdownContainer = styled.div`
-  width: 100%;
+const DropdownContainer = styled.div<{ $isOpened: boolean; width?: number }>`
   position: relative;
+  z-index: ${({ $isOpened }) => ($isOpened ? 50 : null)};
+  width: ${({ width }) => (width ? `${width}px` : `100%`)};
 `;
 
 const DropdownButton = styled.div<{
@@ -26,18 +27,20 @@ const DropdownButton = styled.div<{
 
 const DropdownList = styled.div`
   position: absolute;
-  width: 100%;
   z-index: 50;
   margin-top: 10px;
-  border-radius: 10px;
+  border-radius: 5px;
   background-color: ${WHITE};
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
   display: flex;
   flex-direction: column;
   gap: 5px;
-  padding: 5px 0;
-  justify-content: center;
+  padding: 5px;
+  justify-content: flex-start;
   align-items: center;
+  overflow: scroll;
+  max-height: 200px;
+  max-width: 300px;
 `;
 
 type DropdownViewProps = {
@@ -53,6 +56,8 @@ type DropdownViewProps = {
   isEditable?: boolean;
   enterKeyHint: string;
   borderColor?: string;
+  width?: number;
+  height?: number;
 };
 
 const DropdownView = forwardRef<
@@ -83,7 +88,7 @@ const DropdownView = forwardRef<
     ref,
   ) => {
     return (
-      <DropdownContainer>
+      <DropdownContainer $isOpened={isOpened} width={width}>
         {/* 실제 드롭다운의 값이 보이는 공간*/}
         <DropdownButton
           $reverseDirection={reverseDirection}

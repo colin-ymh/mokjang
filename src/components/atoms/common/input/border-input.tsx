@@ -6,6 +6,7 @@ import { InputProps } from "@/components/atoms/common/input/main-input";
 
 // 스타일 정의
 const BorderInputContainer = styled.input<{
+  $isEditable: boolean;
   $borderColor: string;
   height?: number;
   width?: number;
@@ -16,11 +17,11 @@ const BorderInputContainer = styled.input<{
   font-size: 16px;
   padding: 12px 16px;
   border: ${({ $borderColor }) => `1px solid ${$borderColor}`};
-  border-radius: 8px;
+  border-radius: 5px;
   color: ${BLACK};
   transition: all 0.3s ease;
   height: ${({ height }) => (height ? `${height}px` : "auto")};
-
+  pointer-events: ${({ $isEditable }) => ($isEditable ? "auto" : "none")};
   &:focus {
     outline: none;
     border: 1px solid ${MAIN.DEFAULT};
@@ -53,6 +54,7 @@ const BorderInput = forwardRef<HTMLInputElement, BorderInputProps>(
         value={value}
         onKeyDown={onKeyDown}
         readOnly={readOnly}
+        $isEditable={!readOnly}
         $borderColor={borderColor}
         height={height}
         width={width}

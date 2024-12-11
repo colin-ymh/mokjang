@@ -13,18 +13,18 @@ import {
   useOfficerDropdownItems,
 } from "@/hooks/dropdown/dropdown-items";
 import LabelDropdown from "@/components/atoms/common/dropdown/label-dropdown";
-import { BAPTISM, NONE } from "@/constants/constant";
-import { getFormattedDate, getTrimmedString } from "@/utils/format";
+import { BAPTISM, NONE, NULL } from "@/constants/constant";
+import { BLACK, DESTRUCTIVE } from "@/constants/styles/color";
+import { getTrimmedString } from "@/utils/format";
 import { onClickEnter } from "@/utils/input";
+import { getIsWellFormedBirth } from "@/utils/check";
 
 import { useI18n, useScopedI18n } from "../../../../locales/client";
-import { BLACK, DESTRUCTIVE } from "@/constants/styles/color";
-import { getIsWellFormedBirth } from "@/utils/check";
 
 const InputContainer = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   flex-direction: column;
   gap: 20px;
   width: 100%;
@@ -77,7 +77,7 @@ const ReligiousRegisterView = ({
   const officerAnimationRef = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
     if (officerAnimationRef.current) {
-      if (member.officer !== NONE) {
+      if (member.officer !== NULL) {
         // 직분이 있는 경우
         gsap.to(officerAnimationRef.current, {
           opacity: 1,
@@ -109,7 +109,7 @@ const ReligiousRegisterView = ({
         value={member.baptism}
         items={useBaptismDropdownItems()}
         onChangeItem={onChangeBaptism}
-        borderColor={member.baptism !== NONE ? BLACK : undefined}
+        borderColor={member.baptism !== BAPTISM.NONE ? BLACK : undefined}
       />
       {/* 직분 */}
       <LabelDropdown
@@ -117,7 +117,7 @@ const ReligiousRegisterView = ({
         value={member.officer}
         items={useOfficerDropdownItems()}
         onChangeItem={onChangeOfficer}
-        borderColor={member.officer !== NONE ? BLACK : undefined}
+        borderColor={member.officer !== NULL ? BLACK : undefined}
       />
       <OfficerWrapper ref={officerAnimationRef}>
         {/* 임직일 */}

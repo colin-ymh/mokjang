@@ -34,7 +34,7 @@ const ModalOverlay = styled.div`
 const ModalContainer = styled.div`
   background-color: #fff;
   width: 254px;
-  border-radius: 15px;
+  border-radius: 5px;
   box-shadow: 0 5px 5px rgba(0, 0, 0, 0.3);
   display: flex;
   flex-direction: column;
@@ -80,7 +80,7 @@ const Button = styled.button`
 const LeftButton = styled(Button)`
   width: 96px;
   height: 33px;
-  border-radius: 10px;
+  border-radius: 5px;
   color: ${DESTRUCTIVE.DEFAULT};
   background-color: ${WHITE};
 `;
@@ -88,7 +88,7 @@ const LeftButton = styled(Button)`
 const RightButton = styled(Button)`
   width: 96px;
   height: 33px;
-  border-radius: 10px;
+  border-radius: 5px;
   color: ${WHITE};
   background-color: ${MAIN.DEFAULT};
 `;

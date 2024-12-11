@@ -62,7 +62,7 @@ export type VehicleNumberInputRef = {
 };
 
 type VehicleNumberInputViewProps = InputHTMLAttributes<HTMLInputElement> & {
-  label: string;
+  label?: string;
   value: string[];
   count: number;
   onChangeInput: (event: ChangeEvent<HTMLInputElement>, index: number) => void;
@@ -133,7 +133,7 @@ const VehicleNumberInputView = forwardRef<
 
     return (
       <VehicleNumberInputViewContainer>
-        <MainText>{label}</MainText>
+        {label && <MainText>{label}</MainText>}
         <InputList>
           <FixedInputItem $zIndex={3}>
             <BorderInput

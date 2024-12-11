@@ -19,10 +19,10 @@ import {
   CALENDAR_MODE,
   MARRIAGE,
   MEDIA_MIN_WIDTH,
-  NONE,
+  NULL,
 } from "@/constants/constant";
 import {
-  useBirthRadioButtonItems,
+  useCalendarModeRadioButtonItems,
   useGenderRadioButtonItems,
 } from "@/hooks/radio-button/radio-button-items";
 
@@ -38,7 +38,7 @@ import { BLACK, DESTRUCTIVE } from "@/constants/styles/color";
 const PersonalRegisterContainer = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   flex-direction: column;
   gap: 20px;
   width: 100%;
@@ -110,7 +110,6 @@ const SchoolInputWrapper = styled.div`
 
 const Invisible = styled.div`
   height: 100px;
-  width: 5px;
 `;
 
 export type PersonalRegisterViewProps = {
@@ -223,7 +222,7 @@ const PersonalRegisterView = ({
             />
             {/* 양력 음력 */}
             <RadioButton
-              items={useBirthRadioButtonItems()}
+              items={useCalendarModeRadioButtonItems()}
               selectedValue={
                 member.isLunar ? CALENDAR_MODE.LUNAR : CALENDAR_MODE.SOLAR
               }
@@ -279,7 +278,7 @@ const PersonalRegisterView = ({
           onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) =>
             onClickEnter(event, detailMarriageInputRef)
           }
-          borderColor={member.marriage !== NONE ? BLACK : undefined}
+          borderColor={member.marriage !== NULL ? BLACK : undefined}
         />
         {/* 결혼 상세 정보 */}
         {/* 새신자 측에서는 보이지 않는 부분 */}

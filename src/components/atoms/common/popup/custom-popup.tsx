@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 import { WHITE } from "@/constants/styles/color";
 import ExitButton from "../../../../../public/svg/cancel.svg";
+import { MainText } from "@/components/atoms/common/text/main-text";
 
 const ModalOverlay = styled.div`
   position: fixed;
@@ -29,18 +30,21 @@ const ModalContainer = styled.div<{
   overflow: hidden;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
   height: ${({ height, $isPercentage }) =>
-    height ? ($isPercentage ? `${height}%` : `${height}px`) : "auto"};
+    height ? ($isPercentage ? `${height}%` : `${height}px`) : "100%"};
   width: ${({ width, $isPercentage }) =>
-    width ? ($isPercentage ? `${width}%` : `${width}px`) : "auto"};
+    width ? ($isPercentage ? `${width}%` : `${width}px`) : "100%"};
 `;
 
-const HeaderContainer = styled.header`
+const HeaderContainer = styled.div`
+  position: sticky;
+  top: 0;
   display: flex;
-  height: 40px;
   background-color: ${WHITE};
   justify-content: space-between;
   align-items: flex-end;
-  padding-bottom: 10px;
+  z-index: 10;
+  height: 40px;
+  flex-shrink: 0;
 `;
 
 const HeaderLeft = styled.div`
@@ -51,6 +55,12 @@ const HeaderLeft = styled.div`
 const HeaderRight = styled.div`
   display: flex;
   padding-right: 10px;
+`;
+
+const ContentContainer = styled.div`
+  display: flex;
+  width: 100%;
+  height: 100%;
 `;
 
 type CustomPopupProps = {
@@ -84,9 +94,11 @@ const CustomPopup = ({
           <HeaderLeft>
             <ExitButton onClick={onClickClose} />
           </HeaderLeft>
-          <HeaderRight>{headerRight}</HeaderRight>
+          <HeaderRight>
+            <MainText>{headerRight}</MainText>
+          </HeaderRight>
         </HeaderContainer>
-        {children}
+        <ContentContainer>{children}</ContentContainer>
       </ModalContainer>
     </ModalOverlay>
   );

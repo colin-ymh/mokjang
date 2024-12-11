@@ -10,9 +10,10 @@ const DropdownContainer = styled.div<{
   font-size: 16px;
   color: ${({ $isSelected }) => ($isSelected ? MAIN.DEFAULT : BLACK)};
   transition: background-color 0.3s ease;
-  border-radius: 10px;
-  padding: 10px 2%;
-  width: 95%;
+  border-radius: 5px;
+  padding: 10px;
+  min-width: 100px;
+  max-width: 280px;
 
   &:hover {
     background-color: ${GRAY.DEFAULT};

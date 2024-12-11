@@ -47,6 +47,8 @@ export const useOfficerDropdownItems = () => {
     return { value: officer.id, title: officer.name };
   });
 
+  items.push({ value: NULL, title: t(NULL) });
+
   return items;
 };
 
@@ -57,6 +59,8 @@ export const useMinistryDropdownItems = () => {
   const items = ministries.map((ministry) => {
     return { value: ministry.id, title: ministry.name };
   });
+
+  items.push({ value: NULL, title: t(NULL) });
 
   return items;
 };
@@ -69,10 +73,7 @@ export const useEducationDropdownItems = () => {
     return { value: educations.id, title: educations.name };
   });
 
-  items.push({
-    value: NONE,
-    title: t(NONE),
-  });
+  items.push({ value: NULL, title: t(NULL) });
 
   return items;
 };
@@ -132,6 +133,19 @@ export const useGenderDropdownItems = () => {
       title: t(GENDER.FEMALE),
     },
   ];
+
+  return items;
+};
+
+export const useGroupDropdownItems = () => {
+  const t = useI18n();
+  const groups = useSelector((state: RootState) => state.church.groups);
+
+  const items = groups.map((group) => {
+    return { value: group.id, title: group.name };
+  });
+
+  items.push({ value: NULL, title: t(NULL) });
 
   return items;
 };

@@ -19,14 +19,10 @@ import { onClickEnter } from "@/utils/input";
 
 import { useI18n, useScopedI18n } from "../../../../locales/client";
 
-const Invisible = styled.div`
-  height: 100px;
-`;
-
 const RequiredRegisterContainer = styled.div`
   display: flex;
+  justify-content: flex-start;
   align-items: center;
-  justify-content: center;
   flex-direction: column;
   gap: 20px;
   width: 100%;
@@ -163,7 +159,6 @@ const RequiredRegisterView = ({
           onKeyDown={onClickEnter}
         />
       </InputContainer>
-      <Invisible />
     </RequiredRegisterContainer>
   );
 };

@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 
-import { MEMBER_REGISTER_STAGE } from "@/constants/constant";
+import { MEDIA_MIN_WIDTH, MEMBER_REGISTER_STAGE } from "@/constants/constant";
 import { MainText } from "@/components/atoms/common/text/main-text";
 import RegisterButtonList from "@/components/molecules/register/register-button-list";
 import PersonalRegister from "@/components/molecules/register/personal-register";
@@ -18,9 +18,14 @@ const RegisterContainer = styled.div`
   display: flex;
   flex-direction: column;
   padding: 0 30px;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   background-color: ${GRAY.BACKGROUND};
+
+  @media (min-width: ${MEDIA_MIN_WIDTH.DESKTOP}) {
+    width: 100%;
+    height: 100%;
+  }
 `;
 
 const TextContainer = styled.div`
@@ -29,6 +34,14 @@ const TextContainer = styled.div`
   flex-direction: column;
   padding: 20px 0;
   width: 100%;
+`;
+
+const ContentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  overflow: scroll;
 `;
 
 const MemberRegisterView = () => {
@@ -45,9 +58,11 @@ const MemberRegisterView = () => {
             : t_register("extraHeaderPhrase")}
         </MainText>
       </TextContainer>
-      {stage === MEMBER_REGISTER_STAGE.REQUIRED && <RequiredRegister />}
-      {stage === MEMBER_REGISTER_STAGE.PERSONAL && <PersonalRegister />}
-      {stage === MEMBER_REGISTER_STAGE.RELIGIOUS && <ReligiousRegister />}
+      <ContentContainer>
+        {stage === MEMBER_REGISTER_STAGE.REQUIRED && <RequiredRegister />}
+        {stage === MEMBER_REGISTER_STAGE.PERSONAL && <PersonalRegister />}
+        {stage === MEMBER_REGISTER_STAGE.RELIGIOUS && <ReligiousRegister />}
+      </ContentContainer>
       <RegisterButtonList />
     </RegisterContainer>
   );

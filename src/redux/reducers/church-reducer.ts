@@ -12,6 +12,7 @@ type ChurchState = {
   officers: churchSettingItem[];
   ministries: churchSettingItem[];
   educations: churchSettingItem[];
+  groups: churchSettingItem[];
 };
 
 const initialState: ChurchState = {
@@ -19,6 +20,7 @@ const initialState: ChurchState = {
   officers: [],
   ministries: [],
   educations: [],
+  groups: [],
 };
 
 const ChurchSlice = createSlice({
@@ -37,9 +39,17 @@ const ChurchSlice = createSlice({
     setEducations(state, action: PayloadAction<churchSettingItem[]>) {
       state.educations = action.payload;
     },
+    setGroups(state, action: PayloadAction<churchSettingItem[]>) {
+      state.groups = action.payload;
+    },
   },
 });
 
-export const { setChurchId, setOfficers, setMinistries, setEducations } =
-  ChurchSlice.actions;
+export const {
+  setChurchId,
+  setOfficers,
+  setMinistries,
+  setEducations,
+  setGroups,
+} = ChurchSlice.actions;
 export default ChurchSlice.reducer;

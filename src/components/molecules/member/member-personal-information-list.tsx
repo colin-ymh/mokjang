@@ -52,8 +52,13 @@ const PersonalInformationList = ({}: PersonalInformationListProps) => {
     }
   };
 
+  const [calendarMode, setCalendarMode] = useState<CALENDAR_MODE>(
+    member.isLunar ? CALENDAR_MODE.LUNAR : CALENDAR_MODE.SOLAR,
+  );
+
   // 양력 음력 변경 이벤트
   const onChangeCalendarMode = (mode: CALENDAR_MODE) => {
+    setCalendarMode(mode ? CALENDAR_MODE.LUNAR : CALENDAR_MODE.SOLAR);
     dispatch(setMember({ ...member, isLunar: mode === CALENDAR_MODE.LUNAR }));
   };
 
@@ -169,6 +174,7 @@ const PersonalInformationList = ({}: PersonalInformationListProps) => {
 
   const props = {
     schoolItems,
+    calendarMode,
     onClickMarriageDropdownItem,
     onChangeGender,
     onChangeBirth,

@@ -22,7 +22,7 @@ const SideBarContainer = styled.div`
     display: flex;
     flex-direction: column;
     width: 200px;
-    background-color: ${GRAY.LIGHT};
+    background-color: ${GRAY.SIDE_BAR};
     padding: 10px;
     box-shadow: inset -2px 0 5px rgba(0, 0, 0, 0.2);
   }

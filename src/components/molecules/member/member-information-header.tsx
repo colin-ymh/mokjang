@@ -8,13 +8,14 @@ import { useMemberInformationHeaderBarItems } from "@/hooks/layout/header-bar-it
 import MemberImageInput from "@/components/atoms/register/member-image-input";
 import { MainText } from "@/components/atoms/common/text/main-text";
 import { getFormattedMobilePhone } from "@/utils/format";
+import { GRAY } from "@/constants/styles/color";
 
 const InformationHeader = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 20px;
+  justify-content: space-between;
+  padding: 20px 20px 0 20px;
   gap: 30px;
-  background-color: darkorange;
 `;
 
 const Information = styled.div`
@@ -47,7 +48,7 @@ const MemberInformationHeader = ({
     <InformationHeader>
       <Information>
         <MemberImageInput
-          value={""}
+          value={member?.profileImage}
           onChange={() => {}}
           width={80}
           height={80}

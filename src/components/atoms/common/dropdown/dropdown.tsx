@@ -15,7 +15,7 @@ import { InputProps } from "@/components/atoms/common/input/main-input";
 export type DropdownProps = InputProps & {
   ref?: RefObject<HTMLDivElement>;
   items: DropdownValueType[]; // dropdown 선택 가능 요소들
-  value: string; // dropdown 에서 선택된 값
+  value: any; // dropdown 에서 선택된 값
   onChangeItem?: (value: any) => void;
   //
   isShowTitle?: boolean;
@@ -47,6 +47,8 @@ const Dropdown = forwardRef<HTMLInputElement, DropdownProps>(
       onClickItemExtra,
       onChange,
       borderColor,
+      width,
+      height,
       ...inputProps
     },
     ref,
@@ -142,8 +144,11 @@ const Dropdown = forwardRef<HTMLInputElement, DropdownProps>(
       reverseDirection,
       isEditable,
       borderColor,
+      width,
+      height,
 
       //inputProps
+
       ...inputProps,
     };
 

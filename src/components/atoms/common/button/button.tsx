@@ -32,7 +32,7 @@ const ButtonContainer = styled.button<{
   background-color: ${({ $backgroundColor }) => $backgroundColor};
   width: ${({ width }) => (width ? `${width}px` : `100%`)};
   height: ${({ height }) => (height ? `${height}px` : `100%`)};
-  border-radius: 10px;
+  border-radius: 5px;
   border: none;
   cursor: ${({ disabled }) => (disabled ? "not-allowed" : "pointer")};
   transition: all 0.3s ease;

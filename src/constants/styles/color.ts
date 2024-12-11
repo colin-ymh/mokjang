@@ -2,8 +2,9 @@ export const BLACK = "#121212";
 export const WHITE = "#FFFFFF";
 
 export enum GRAY {
-  BACKGROUND = "#FDFDFD",
-  LIGHT = "#F9FAFA",
+  BACKGROUND = "#fafafa",
+  SIDE_BAR = "#F9FAFA",
+  LIGHT = "#e1e1e1",
   DEFAULT = "#B9B9B9",
   DARK = "#979797",
 }
