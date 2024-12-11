@@ -13,7 +13,7 @@ import {
   useOfficerDropdownItems,
 } from "@/hooks/dropdown/dropdown-items";
 import LabelDropdown from "@/components/atoms/common/dropdown/label-dropdown";
-import { BAPTISM, NONE, NULL } from "@/constants/constant";
+import { BAPTISM, NULL } from "@/constants/constant";
 import { BLACK, DESTRUCTIVE } from "@/constants/styles/color";
 import { getTrimmedString } from "@/utils/format";
 import { onClickEnter } from "@/utils/input";
@@ -77,7 +77,7 @@ const ReligiousRegisterView = ({
   const officerAnimationRef = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
     if (officerAnimationRef.current) {
-      if (member.officer !== NULL) {
+      if (member.officerId !== NULL) {
         // 직분이 있는 경우
         gsap.to(officerAnimationRef.current, {
           opacity: 1,
@@ -99,7 +99,7 @@ const ReligiousRegisterView = ({
         });
       }
     }
-  }, [member.officer]);
+  }, [member.officerId]);
 
   return (
     <InputContainer>
@@ -114,10 +114,10 @@ const ReligiousRegisterView = ({
       {/* 직분 */}
       <LabelDropdown
         label={t("officer")}
-        value={member.officer}
+        value={member.officerId}
         items={useOfficerDropdownItems()}
         onChangeItem={onChangeOfficer}
-        borderColor={member.officer !== NULL ? BLACK : undefined}
+        borderColor={member.officerId !== NULL ? BLACK : undefined}
       />
       <OfficerWrapper ref={officerAnimationRef}>
         {/* 임직일 */}

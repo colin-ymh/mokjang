@@ -12,6 +12,8 @@ import { BAPTISM, GENDER } from "@/constants/constant";
 import { getAge, getDateFromString } from "@/utils/date";
 import Image from "next/image";
 import { useI18n } from "../../../../locales/client";
+import { RootState } from "@/redux/store";
+import { useSelector } from "react-redux";
 
 const TableContainer = styled.div`
   display: flex;
@@ -73,6 +75,7 @@ const MemberTableView = ({
 }: MemberTableProps) => {
   const t = useI18n();
   const tableHeaderItems = useMemberTableItems();
+  const { officers } = useSelector((state: RootState) => state.church);
 
   const getMemberTableContent = (id: MEMBER, member: Member) => {
     switch (id) {
@@ -105,11 +108,11 @@ const MemberTableView = ({
           <MainText fontSize={16}>{t(member.baptism as BAPTISM)}</MainText>
         );
       case MEMBER.OFFICER:
-        return <MainText fontSize={16}>{member.officer}</MainText>;
+        return <MainText fontSize={16}>{member.officerId}</MainText>;
       case MEMBER.MINISTRY:
-        return <MainText fontSize={16}>{member.ministry}</MainText>;
+        return <MainText fontSize={16}>{member.ministryId}</MainText>;
       case MEMBER.EDUCATION:
-        return <MainText fontSize={16}>{member.education}</MainText>;
+        return <MainText fontSize={16}>{member.educationId}</MainText>;
       default:
         return null;
     }

@@ -88,10 +88,14 @@ const RegisterButtonList = () => {
         );
 
         // 직분 업데이트
-        if (member.officer !== NULL) {
+        if (member.officerId !== NULL) {
           memberSettingsApi.editMemberOfficer(
             { churchId, memberId: member.id },
-            { officerId: member.officer },
+            {
+              officerId: member.officerId,
+              officerStartChurch: member.officerStartChurch,
+              officerStartDate: member.officerStartDate,
+            },
           );
         }
       }

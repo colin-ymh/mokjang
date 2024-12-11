@@ -1,4 +1,4 @@
-import { BAPTISM, MARRIAGE, NONE, NULL } from "@/constants/constant";
+import { BAPTISM, MARRIAGE, NULL } from "@/constants/constant";
 
 export type Member = {
   id: string;
@@ -16,15 +16,15 @@ export type Member = {
   school: string;
   marriage: MARRIAGE | typeof NULL;
   detailMarriage: string;
+  vehicleNumber: string[];
+  guidedById: string; // 인도자 id
   // 성도정보
-  ministry: NULL; // 사역
-  group: NULL; // 소그룹
-  officer: NULL; // 직분
+  baptism: BAPTISM; // 신급
+  ministryId: string; // 사역
+  groupId: string; // 소그룹
+  officerId: string; // 직분
   officerStartDate: string;
   officerStartChurch: string;
-  baptism: BAPTISM; // 신급
-  guidedById: string; // 인도자 id
+  educationId: NULL;
   previousChurchName: string; // 이전 교회
-  vehicleNumber: string[];
-  education: NULL;
 };

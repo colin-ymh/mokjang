@@ -92,7 +92,7 @@ const MemberInformationListView = ({
         </ContentTitleContainer>
         <InputContainer>
           <Dropdown
-            value={member.officer || NULL}
+            value={member.officerId || NULL}
             items={useOfficerDropdownItems()}
             borderColor={GRAY.LIGHT}
             onChangeItem={onChangeOfficer}
@@ -107,7 +107,7 @@ const MemberInformationListView = ({
         </ContentTitleContainer>
         <InputContainer>
           <Dropdown
-            value={member.ministry || NULL}
+            value={member.ministryId || NULL}
             items={useMinistryDropdownItems()}
             borderColor={GRAY.LIGHT}
             onChangeItem={onChangeMinistry}
@@ -122,7 +122,7 @@ const MemberInformationListView = ({
         </ContentTitleContainer>
         <InputContainer>
           <Dropdown
-            value={member.education || NULL}
+            value={member.educationId || NULL}
             items={useEducationDropdownItems()}
             borderColor={GRAY.LIGHT}
             onChangeItem={onChangeEducation}

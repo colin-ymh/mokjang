@@ -3,10 +3,8 @@ import {
   BAPTISM,
   BLANK,
   GENDER,
-  MARRIAGE,
   MEMBER_REGISTER_STAGE,
   MEMBER_REGISTER_TYPE,
-  NONE,
   NULL,
 } from "@/constants/constant";
 import { getIsWellFormedMobilePhone, getIsWellFormedName } from "@/utils/check";
@@ -33,18 +31,18 @@ export const DEFAULT_MEMBER: Member = {
   occupation: BLANK,
   birth: BLANK,
   isLunar: false,
-  officer: NULL,
+  baptism: BAPTISM.NONE,
+  previousChurchName: BLANK,
+  gender: GENDER.MALE,
+  vehicleNumber: [BLANK, BLANK, BLANK],
+  officerId: NULL,
   officerStartDate: BLANK,
   officerStartChurch: BLANK,
-  baptism: BAPTISM.NONE,
   guidedById: BLANK,
-  previousChurchName: BLANK,
-  vehicleNumber: [BLANK, BLANK, BLANK],
-  gender: GENDER.MALE,
   familyMemberId: BLANK,
-  ministry: BLANK,
-  group: BLANK,
-  education: BLANK,
+  ministryId: NULL,
+  groupId: NULL,
+  educationId: NULL,
 };
 
 const initialState: MemberRegisterState = {

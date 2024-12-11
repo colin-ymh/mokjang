@@ -25,7 +25,7 @@ const ReligiousRegister = () => {
     dispatch(
       setMember({
         ...member,
-        officer: value,
+        officerId: value,
       }),
     );
   };

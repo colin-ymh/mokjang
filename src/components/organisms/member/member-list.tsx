@@ -87,7 +87,6 @@ const MemberList = () => {
       homePhone: member.homePhone && getFormattedHomePhone(member.homePhone),
     };
 
-    console.log(newMember);
     // 기존 정보를 담아서 저장해두기
     setTargetMember(newMember);
 
@@ -120,9 +119,9 @@ const MemberList = () => {
     );
 
     // 직분 업데이트
-    if (targetMember.officer !== member.officer) {
+    if (targetMember.officerId !== member.officerId) {
       // 직분 삭제
-      if (member.officer === NULL) {
+      if (member.officerId === NULL) {
         memberSettingsApi.editMemberOfficer(
           { churchId, memberId: member.id },
           { isDeleteOfficer: true },
@@ -134,7 +133,7 @@ const MemberList = () => {
           { churchId, memberId: member.id },
           {
             isDeleteOfficer: false,
-            officerId: member.officer,
+            officerId: member.officerId,
             officerStartChurch: member.officerStartChurch,
             officerStartDate: member.officerStartDate,
           },
@@ -143,9 +142,9 @@ const MemberList = () => {
     }
 
     // 사역 업데이트
-    if (targetMember.ministry !== member.ministry) {
+    if (targetMember.ministryId !== member.ministryId) {
       // 사역 삭제
-      if (member.ministry === NULL) {
+      if (member.ministryId === NULL) {
         memberSettingsApi.editMemberMinistry(
           { churchId, memberId: member.id },
           { isDeleteMinistry: true },
@@ -157,16 +156,16 @@ const MemberList = () => {
           { churchId, memberId: member.id },
           {
             isDeleteMinistry: false,
-            ministryId: member.ministry,
+            ministryId: member.ministryId,
           },
         );
       }
     }
 
     // 교육이수 업데이트
-    if (targetMember.education !== member.education) {
+    if (targetMember.educationId !== member.educationId) {
       // 교육이수 삭제
-      if (member.education === NULL) {
+      if (member.educationId === NULL) {
         memberSettingsApi.editMemberEducation(
           { churchId, memberId: member.id },
           { isDeleteEducation: true },
@@ -178,16 +177,16 @@ const MemberList = () => {
           { churchId, memberId: member.id },
           {
             isDeleteEducation: false,
-            educationId: member.education,
+            educationId: member.educationId,
           },
         );
       }
     }
 
     // 소그룹 업데이트
-    if (targetMember.group !== member.group) {
+    if (targetMember.groupId !== member.groupId) {
       // 소그룹 삭제
-      if (member.group === NULL) {
+      if (member.groupId === NULL) {
         memberSettingsApi.editMemberGroup(
           { churchId, memberId: member.id },
           { isDeleteGroup: true },
@@ -199,7 +198,7 @@ const MemberList = () => {
           { churchId, memberId: member.id },
           {
             isDeleteGroup: false,
-            groupId: member.group,
+            groupId: member.groupId,
           },
         );
       }
