@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
   BAPTISM,
   BLANK,
+  FAMILY,
   GENDER,
   MEMBER_REGISTER_STAGE,
   MEMBER_REGISTER_TYPE,
@@ -39,7 +40,8 @@ export const DEFAULT_MEMBER: Member = {
   officerStartDate: BLANK,
   officerStartChurch: BLANK,
   guidedById: BLANK,
-  familyMemberId: BLANK,
+  familyId: BLANK,
+  relation: FAMILY.FAMILY,
   ministryId: NULL,
   groupId: NULL,
   educationId: NULL,

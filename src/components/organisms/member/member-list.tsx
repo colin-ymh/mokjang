@@ -52,30 +52,44 @@ const MemberList = () => {
   // 교인 목록에 보여지는 교인들
   const [members, setMembers] = useState<Member[]>([]);
 
-  // 필터 정보가 변경될 때, 교인 목록을 서버에서 새로 불러옴
-  useEffect(() => {
-    membersApi
-      .getMembers({
+  const TAKE = 12;
+
+  // 서버에서 불러오는 교인 목록 페이지
+  const [page, setPage] = useState<number>(1);
+
+  const getMembersFromServer = async (page: number): Promise<Member[]> => {
+    if (!churchId) {
+      return [];
+    }
+
+    try {
+      const response = await membersApi.getMembers({
         churchId,
-        take: 100,
-        page: 1,
+        page,
+        take: TAKE,
         order: memberOrderBy !== NULL ? memberOrderBy : undefined,
         orderDirection: memberOrderDirection,
         name: memberFilter.name,
         school: memberFilter.school,
         vehicleNumber: memberFilter.vehicleNumber,
         gender: memberFilter.gender !== NULL ? memberFilter.gender : undefined,
-        birthAfter: memberFilter.birthAfter
-          ? memberFilter.birthAfter
-          : undefined,
-        birthBefore: memberFilter.birthBefore
-          ? memberFilter.birthBefore
-          : undefined,
+        birthAfter: memberFilter.birthAfter || undefined,
+        birthBefore: memberFilter.birthBefore || undefined,
         baptism:
           memberFilter.baptism !== NULL ? memberFilter.baptism : undefined,
-      })
-      .then((response) => setMembers(response.data.data));
-  }, [memberFilter, memberOrderBy, memberOrderDirection]);
+      });
+
+      return response.data.data;
+    } catch (error) {
+      console.error("교인 목록 불러오기 실패", error);
+      throw new Error("교인 목록 불러오기 실패");
+    }
+  };
+
+  // 필터 정보가 변경될 때, 교인 목록을 서버에서 새로 불러옴
+  useEffect(() => {
+    getMembersFromServer(page).then((members) => setMembers(members));
+  }, [churchId, memberFilter, memberOrderBy, memberOrderDirection]);
 
   // 목록에서 교인을 선택하여 상세 페이지로 이동
   const onClickMemberItem = (member: Member) => {
@@ -105,109 +119,135 @@ const MemberList = () => {
 
   // 교인 삭제하기
   const onClickDelete = () => {
-    membersApi.deleteMember({ churchId, memberId: member.id });
+    membersApi
+      .deleteMember({ churchId, memberId: member.id })
+      .then((response) => {
+        // 삭제 성공 시
+        if (response.status === 200) {
+          // 교인 목록 초기화
+          getMembersFromServer(page).then((members) => setMembers(members));
+        }
+      });
     dispatch(setMember(DEFAULT_MEMBER));
     setIsMemberInformationShown(false);
   };
 
   // 교인 정보 업데이트
-  const onClickEdit = () => {
-    // 기본 정보 업데이트
-    membersApi.editMember(
-      { churchId, memberId: member.id },
-      getEditMemberBody(member),
-    );
+  const onClickEdit = async () => {
+    try {
+      // 기본 정보 업데이트
+      await membersApi.editMember(
+        { churchId, memberId: member.id },
+        getEditMemberBody(member),
+      );
 
-    // 직분 업데이트
-    if (targetMember.officerId !== member.officerId) {
-      // 직분 삭제
-      if (member.officerId === NULL) {
-        memberSettingsApi.editMemberOfficer(
-          { churchId, memberId: member.id },
-          { isDeleteOfficer: true },
-        );
+      // 직분 업데이트
+      if (targetMember.officerId !== member.officerId) {
+        if (member.officerId === NULL) {
+          await memberSettingsApi.editMemberOfficer(
+            { churchId, memberId: member.id },
+            { isDeleteOfficer: true },
+          );
+        } else {
+          await memberSettingsApi.editMemberOfficer(
+            { churchId, memberId: member.id },
+            {
+              isDeleteOfficer: false,
+              officerId: member.officerId,
+              officerStartChurch: member.officerStartChurch,
+              officerStartDate: member.officerStartDate,
+            },
+          );
+        }
       }
-      // 직분 수정
-      else {
-        memberSettingsApi.editMemberOfficer(
-          { churchId, memberId: member.id },
-          {
-            isDeleteOfficer: false,
-            officerId: member.officerId,
-            officerStartChurch: member.officerStartChurch,
-            officerStartDate: member.officerStartDate,
-          },
-        );
-      }
-    }
 
-    // 사역 업데이트
-    if (targetMember.ministryId !== member.ministryId) {
-      // 사역 삭제
-      if (member.ministryId === NULL) {
-        memberSettingsApi.editMemberMinistry(
-          { churchId, memberId: member.id },
-          { isDeleteMinistry: true },
-        );
+      // 사역 업데이트
+      if (targetMember.ministryId !== member.ministryId) {
+        if (member.ministryId === NULL) {
+          await memberSettingsApi.editMemberMinistry(
+            { churchId, memberId: member.id },
+            { isDeleteMinistry: true },
+          );
+        } else {
+          await memberSettingsApi.editMemberMinistry(
+            { churchId, memberId: member.id },
+            {
+              isDeleteMinistry: false,
+              ministryId: member.ministryId,
+            },
+          );
+        }
       }
-      // 사역 수정
-      else {
-        memberSettingsApi.editMemberMinistry(
-          { churchId, memberId: member.id },
-          {
-            isDeleteMinistry: false,
-            ministryId: member.ministryId,
-          },
-        );
-      }
-    }
 
-    // 교육이수 업데이트
-    if (targetMember.educationId !== member.educationId) {
-      // 교육이수 삭제
-      if (member.educationId === NULL) {
-        memberSettingsApi.editMemberEducation(
-          { churchId, memberId: member.id },
-          { isDeleteEducation: true },
-        );
+      // 교육이수 업데이트
+      if (targetMember.educationId !== member.educationId) {
+        if (member.educationId === NULL) {
+          await memberSettingsApi.editMemberEducation(
+            { churchId, memberId: member.id },
+            { isDeleteEducation: true },
+          );
+        } else {
+          await memberSettingsApi.editMemberEducation(
+            { churchId, memberId: member.id },
+            {
+              isDeleteEducation: false,
+              educationId: member.educationId,
+            },
+          );
+        }
       }
-      // 교육이수 수정
-      else {
-        memberSettingsApi.editMemberEducation(
-          { churchId, memberId: member.id },
-          {
-            isDeleteEducation: false,
-            educationId: member.educationId,
-          },
-        );
-      }
-    }
 
-    // 소그룹 업데이트
-    if (targetMember.groupId !== member.groupId) {
-      // 소그룹 삭제
-      if (member.groupId === NULL) {
-        memberSettingsApi.editMemberGroup(
-          { churchId, memberId: member.id },
-          { isDeleteGroup: true },
-        );
+      // 소그룹 업데이트
+      if (targetMember.groupId !== member.groupId) {
+        if (member.groupId === NULL) {
+          await memberSettingsApi.editMemberGroup(
+            { churchId, memberId: member.id },
+            { isDeleteGroup: true },
+          );
+        } else {
+          await memberSettingsApi.editMemberGroup(
+            { churchId, memberId: member.id },
+            {
+              isDeleteGroup: false,
+              groupId: member.groupId,
+            },
+          );
+        }
       }
-      // 소그룹 수정
-      else {
-        memberSettingsApi.editMemberGroup(
-          { churchId, memberId: member.id },
-          {
-            isDeleteGroup: false,
-            groupId: member.groupId,
-          },
-        );
-      }
+
+      // 모든 작업이 성공했을 경우에만 목록 갱신
+      getMembersFromServer(page).then((members) => setMembers(members));
+    } catch (error) {
+      throw new Error("교인 정보 업데이트 실.");
     }
+  };
+
+  // 테이블 다음 페이지 이동
+  const onClickNextPage = () => {
+    getMembersFromServer(page + 1).then((members) => {
+      if (members.length !== 0) {
+        setPage(page + 1);
+        setMembers(members);
+      }
+    });
+  };
+
+  // 테이블 이전 페이지 이동
+  const onClickPrevPage = () => {
+    if (page <= 1) return;
+
+    getMembersFromServer(page - 1).then((members) => {
+      setPage(page - 1);
+      setMembers(members);
+    });
   };
 
   const props = {
     members,
+    page,
     onClickMemberItem,
+    onClickNextPage,
+    onClickPrevPage,
   };
 
   return (
@@ -217,7 +257,7 @@ const MemberList = () => {
       <CustomPopup
         isShow={isMemberInformationShown}
         onClickClose={onClickClose}
-        width={60}
+        width={50}
         height={90}
         isPercentage={true}
         headerRight={

@@ -18,6 +18,16 @@ export const getCreateMemberBody = (member: Member) => {
   if (member.guidedById) {
     newMember.guidedById = member.guidedById;
   }
+
+  if (member.familyId) {
+    newMember.familyMemberId = member.familyId;
+  }
+
+  if (member.relation) {
+    newMember.relation = member.relation;
+  }
+
+  console.log(newMember);
   return newMember;
 };
 

@@ -1,23 +1,23 @@
+import { ChangeEvent, RefObject } from "react";
 import styled from "styled-components";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
 
 import { MainText } from "@/components/atoms/common/text/main-text";
 import BorderInput from "@/components/atoms/common/input/border-input";
-
-import { useI18n } from "../../../../locales/client";
 import {
   useCalendarModeRadioButtonItems,
   useGenderRadioButtonItems,
 } from "@/hooks/radio-button/radio-button-items";
 import Dropdown from "@/components/atoms/common/dropdown/dropdown";
 import { DropdownValueType } from "@/components/atoms/common/dropdown/dropdown-item";
-import { ChangeEvent, RefObject } from "react";
 import { BLANK, CALENDAR_MODE, MARRIAGE, NULL } from "@/constants/constant";
-import { useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
 import { MEMBER } from "@/constants/member/member-column";
 import { useMarriageDropdownItems } from "@/hooks/dropdown/dropdown-items";
 import VehicleNumberInput from "@/components/atoms/register/vehicle-number-input";
 import { GRAY } from "@/constants/styles/color";
+
+import { useI18n } from "../../../../locales/client";
 
 const InformationListContainer = styled.div`
   display: flex;

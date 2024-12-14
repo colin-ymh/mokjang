@@ -15,12 +15,7 @@ import { VehicleNumberInputRef } from "@/components/atoms/register/vehicle-numbe
 import MemberImageInput from "@/components/atoms/register/member-image-input";
 import { DropdownValueType } from "@/components/atoms/common/dropdown/dropdown-item";
 import RadioButton from "@/components/atoms/common/input/radio-button/radio-button";
-import {
-  CALENDAR_MODE,
-  MARRIAGE,
-  MEDIA_MIN_WIDTH,
-  NULL,
-} from "@/constants/constant";
+import { CALENDAR_MODE, MARRIAGE, NULL } from "@/constants/constant";
 import {
   useCalendarModeRadioButtonItems,
   useGenderRadioButtonItems,
@@ -41,20 +36,13 @@ const PersonalRegisterContainer = styled.div`
   justify-content: flex-start;
   flex-direction: column;
   gap: 20px;
-  width: 100%;
+  padding: 0 30px;
 `;
 
-const ImageGenderBirthContainer = styled.div`
+const ImageContainer = styled.div`
   display: flex;
   width: 100%;
-  flex-direction: column;
-  gap: 20px;
-  @media (min-width: ${MEDIA_MIN_WIDTH.DESKTOP}) {
-    flex-direction: row;
-  }
 `;
-
-const GenderBirthContainer = styled(PersonalRegisterContainer)``;
 
 const BirthContainer = styled.div`
   display: flex;
@@ -63,41 +51,6 @@ const BirthContainer = styled.div`
   flex-direction: column;
   gap: 10px;
   width: 100%;
-`;
-
-const InputContainer = styled(PersonalRegisterContainer)`
-  @media (min-width: ${MEDIA_MIN_WIDTH.DESKTOP}) {
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 20px;
-
-    /* 각 input을 두 개씩 한 줄에 배치 */
-    > div {
-      flex: 1;
-      min-width: calc(
-        50% - 10px
-      ); /* 두 개씩 배치되도록 50% 크기로 설정, 간격을 고려하여 10px만큼 빼줌 */
-    }
-  }
-`;
-
-const SchoolOccupationContainer = styled(PersonalRegisterContainer)<{
-  $isSchoolShow: boolean;
-}>`
-  @media (min-width: ${MEDIA_MIN_WIDTH.DESKTOP}) {
-    ${({ $isSchoolShow }) =>
-      $isSchoolShow &&
-      `
-        flex-direction: row-reverse;
-        flex-wrap: wrap;
-        gap: 20px;
-
-        > div {
-          flex: 1;
-          min-width: calc(50% - 10px); 
-        }
-      `}
-  }
 `;
 
 const SchoolInputWrapper = styled.div`
@@ -179,164 +132,149 @@ const PersonalRegisterView = ({
 
   return (
     <PersonalRegisterContainer>
-      <ImageGenderBirthContainer>
+      <ImageContainer>
         {/* 프로필 이미지*/}
         <MemberImageInput
           value={member.profileImage}
           onChange={onChangeProfileImage}
         />
-        <GenderBirthContainer>
-          {/* 성별 */}
-          <LabelRadioButton
-            label={t("gender")}
-            items={useGenderRadioButtonItems()}
-            selectedValue={member.gender}
-            onChange={onChangeGender}
-            customButton={RegisterRadioButton}
-          />
-          {/* 생년월일 */}
-          <BirthContainer>
-            {/* 생년월일 입력창 */}
-            <LabelInput
-              ref={birthInputRef}
-              inputMode={"numeric"}
-              label={t("birth")}
-              value={member.birth}
-              onChange={(event: ChangeEvent<HTMLInputElement>) => {
-                const isChild = getIsChild(
-                  getDateFromString(event.target.value),
-                );
-                onChangeBirth(
-                  event,
-                  isChild ? schoolInputRef : occupationInputRef,
-                );
-              }}
-              placeholder={t_placeholder("birth")}
-              borderColor={
-                member.birth
-                  ? getIsWellFormedBirth(member.birth)
-                    ? BLACK
-                    : DESTRUCTIVE.DEFAULT
-                  : undefined
-              }
-            />
-            {/* 양력 음력 */}
-            <RadioButton
-              items={useCalendarModeRadioButtonItems()}
-              selectedValue={
-                member.isLunar ? CALENDAR_MODE.LUNAR : CALENDAR_MODE.SOLAR
-              }
-              onChange={onChangeCalendarMode}
-              customButton={RegisterRadioButton}
-            />
-          </BirthContainer>
-        </GenderBirthContainer>
-      </ImageGenderBirthContainer>
-      <SchoolOccupationContainer
-        $isSchoolShow={getIsChild(getDateFromString(member.birth))}
-      >
-        {/* 학교 (미성년자인 경우에만 나타남) */}
-        <SchoolInputWrapper ref={schoolAnimationRef}>
-          <LabelDropdown
-            enterKeyHint={"done"}
-            ref={schoolInputRef}
-            label={t("school")}
-            items={schoolItems}
-            value={member.school}
-            onChangeItem={(value) => onChangeSchool(value, occupationInputRef)}
-            placeholder={t_placeholder("school")}
-            isEditable={true}
-            onKeyDown={(event) => onClickEnter(event, occupationInputRef)}
-            borderColor={getTrimmedString(member.school) ? BLACK : undefined}
-          />
-        </SchoolInputWrapper>
-        {/* 직업 */}
+      </ImageContainer>
+      {/* 성별 */}
+      <LabelRadioButton
+        label={t("gender")}
+        items={useGenderRadioButtonItems()}
+        selectedValue={member.gender}
+        onChange={onChangeGender}
+        customButton={RegisterRadioButton}
+      />
+      {/* 생년월일 */}
+      <BirthContainer>
+        {/* 생년월일 입력창 */}
         <LabelInput
-          enterKeyHint={"done"}
-          ref={occupationInputRef}
-          label={t("occupation")}
-          value={member.occupation}
-          onChange={onChangeOccupation}
-          placeholder={t_placeholder("occupation")}
-          onKeyDown={(event) => onClickEnter(event, marriageInputRef)}
-          zIndex={1}
-          borderColor={getTrimmedString(member.occupation) ? BLACK : undefined}
-        />
-      </SchoolOccupationContainer>
-      <InputContainer>
-        {/* 결혼 */}
-        <LabelDropdown
-          ref={marriageInputRef}
-          label={t("marriage")}
-          value={member.marriage}
-          items={useMarriageDropdownItems()}
-          onChangeItem={onChangeMarriage}
-          onClickItemExtra={() => {
-            onClickMarriageDropdownItem(detailMarriageInputRef);
-          }}
-          placeholder={t_placeholder("marriage")}
-          onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) =>
-            onClickEnter(event, detailMarriageInputRef)
-          }
-          borderColor={member.marriage !== NULL ? BLACK : undefined}
-        />
-        {/* 결혼 상세 정보 */}
-        {/* 새신자 측에서는 보이지 않는 부분 */}
-        {!usePathname().includes("/extra") && (
-          <LabelInput
-            enterKeyHint={"done"}
-            ref={detailMarriageInputRef}
-            label={t("detailMarriage")}
-            value={member.detailMarriage}
-            onChange={onChangeDetailMarriage}
-            placeholder={t_placeholder("detailMarriage")}
-            borderColor={
-              getTrimmedString(member.detailMarriage) ? BLACK : undefined
-            }
-          />
-        )}
-        {/* 도로명주소 */}
-        <LabelInput
-          enterKeyHint={"done"}
-          ref={addressInputRef}
-          label={t("address")}
-          value={member.address}
-          placeholder={t_placeholder("address")}
-          onClick={onClickAddress}
-          borderColor={getTrimmedString(member.address) ? BLACK : undefined}
-        />
-        {/* 상세주소 */}
-        <LabelInput
-          enterKeyHint={"done"}
-          ref={detailAddressInputRef}
-          label={t("detailAddress")}
-          value={member.detailAddress}
-          onChange={onChangeDetailAddress}
-          placeholder={t_placeholder("detailAddress")}
-          onKeyDown={(event) => onClickEnter(event, homePhoneInputRef)}
-          borderColor={
-            getTrimmedString(member.detailAddress) ? BLACK : undefined
-          }
-        />
-        {/* 전화 번호 */}
-        <LabelInput
-          ref={homePhoneInputRef}
+          ref={birthInputRef}
           inputMode={"numeric"}
-          label={t("homePhone")}
-          value={member.homePhone}
-          onChange={(event: ChangeEvent<HTMLInputElement>) =>
-            onChangeHomePhone(event, vehicleInputRef?.current?.firstInputRef)
-          }
-          placeholder={t_placeholder("homePhone")}
+          label={t("birth")}
+          value={member.birth}
+          onChange={(event: ChangeEvent<HTMLInputElement>) => {
+            const isChild = getIsChild(getDateFromString(event.target.value));
+            onChangeBirth(event, isChild ? schoolInputRef : occupationInputRef);
+          }}
+          placeholder={t_placeholder("birth")}
           borderColor={
-            member.homePhone
-              ? getIsWellFormedHomePhone(member.homePhone)
+            member.birth
+              ? getIsWellFormedBirth(member.birth)
                 ? BLACK
                 : DESTRUCTIVE.DEFAULT
               : undefined
           }
         />
-      </InputContainer>
+        {/* 양력 음력 */}
+        <RadioButton
+          items={useCalendarModeRadioButtonItems()}
+          selectedValue={
+            member.isLunar ? CALENDAR_MODE.LUNAR : CALENDAR_MODE.SOLAR
+          }
+          onChange={onChangeCalendarMode}
+          customButton={RegisterRadioButton}
+        />
+      </BirthContainer>
+      {/* 학교 (미성년자인 경우에만 나타남) */}
+      <SchoolInputWrapper ref={schoolAnimationRef}>
+        <LabelDropdown
+          enterKeyHint={"done"}
+          ref={schoolInputRef}
+          label={t("school")}
+          items={schoolItems}
+          value={member.school}
+          onChangeItem={(value) => onChangeSchool(value, occupationInputRef)}
+          placeholder={t_placeholder("school")}
+          isEditable={true}
+          onKeyDown={(event) => onClickEnter(event, occupationInputRef)}
+          borderColor={getTrimmedString(member.school) ? BLACK : undefined}
+        />
+      </SchoolInputWrapper>
+      {/* 직업 */}
+      <LabelInput
+        enterKeyHint={"done"}
+        ref={occupationInputRef}
+        label={t("occupation")}
+        value={member.occupation}
+        onChange={onChangeOccupation}
+        placeholder={t_placeholder("occupation")}
+        onKeyDown={(event) => onClickEnter(event, marriageInputRef)}
+        zIndex={1}
+        borderColor={getTrimmedString(member.occupation) ? BLACK : undefined}
+      />
+      {/* 결혼 */}
+      <LabelDropdown
+        ref={marriageInputRef}
+        label={t("marriage")}
+        value={member.marriage}
+        items={useMarriageDropdownItems()}
+        onChangeItem={onChangeMarriage}
+        onClickItemExtra={() => {
+          onClickMarriageDropdownItem(detailMarriageInputRef);
+        }}
+        placeholder={t_placeholder("marriage")}
+        onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) =>
+          onClickEnter(event, detailMarriageInputRef)
+        }
+        borderColor={member.marriage !== NULL ? BLACK : undefined}
+      />
+      {/* 결혼 상세 정보 */}
+      {/* 새신자 측에서는 보이지 않는 부분 */}
+      {!usePathname().includes("/extra") && (
+        <LabelInput
+          enterKeyHint={"done"}
+          ref={detailMarriageInputRef}
+          label={t("detailMarriage")}
+          value={member.detailMarriage}
+          onChange={onChangeDetailMarriage}
+          placeholder={t_placeholder("detailMarriage")}
+          borderColor={
+            getTrimmedString(member.detailMarriage) ? BLACK : undefined
+          }
+        />
+      )}
+      {/* 도로명주소 */}
+      <LabelInput
+        enterKeyHint={"done"}
+        ref={addressInputRef}
+        label={t("address")}
+        value={member.address}
+        placeholder={t_placeholder("address")}
+        onClick={onClickAddress}
+        borderColor={getTrimmedString(member.address) ? BLACK : undefined}
+      />
+      {/* 상세주소 */}
+      <LabelInput
+        enterKeyHint={"done"}
+        ref={detailAddressInputRef}
+        label={t("detailAddress")}
+        value={member.detailAddress}
+        onChange={onChangeDetailAddress}
+        placeholder={t_placeholder("detailAddress")}
+        onKeyDown={(event) => onClickEnter(event, homePhoneInputRef)}
+        borderColor={getTrimmedString(member.detailAddress) ? BLACK : undefined}
+      />
+      {/* 전화 번호 */}
+      <LabelInput
+        ref={homePhoneInputRef}
+        inputMode={"numeric"}
+        label={t("homePhone")}
+        value={member.homePhone}
+        onChange={(event: ChangeEvent<HTMLInputElement>) =>
+          onChangeHomePhone(event, vehicleInputRef?.current?.firstInputRef)
+        }
+        placeholder={t_placeholder("homePhone")}
+        borderColor={
+          member.homePhone
+            ? getIsWellFormedHomePhone(member.homePhone)
+              ? BLACK
+              : DESTRUCTIVE.DEFAULT
+            : undefined
+        }
+      />
       {/* 차량 번호 */}
       <VehicleNumberInput
         enterKeyHint={"done"}

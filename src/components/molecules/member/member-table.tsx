@@ -11,12 +11,21 @@ import { MEMBER } from "@/constants/member/member-column";
 import { ORDER_DIRECTION } from "@/constants/constant";
 import MemberTableView from "@/components/molecules/member/member-table.view";
 
-type MemberTableProps = {
+export type MemberTableProps = {
   members: Member[];
+  page: number;
   onClickMemberItem: (member: Member) => void;
+  onClickNextPage: () => void;
+  onClickPrevPage: () => void;
 };
 
-const MemberTable = ({ members, onClickMemberItem }: MemberTableProps) => {
+const MemberTable = ({
+  members,
+  page,
+  onClickMemberItem,
+  onClickPrevPage,
+  onClickNextPage,
+}: MemberTableProps) => {
   const { memberOrderBy, memberOrderDirection } = useSelector(
     (state: RootState) => state.memberFilter,
   );
@@ -39,8 +48,11 @@ const MemberTable = ({ members, onClickMemberItem }: MemberTableProps) => {
 
   const props = {
     members,
+    page,
     onClickMemberItem,
     onClickHeader,
+    onClickPrevPage,
+    onClickNextPage,
   };
 
   return (

@@ -8,7 +8,7 @@ import { setMember, setType } from "@/redux/reducers/member-register-reducer";
 
 import { GetMembersResponse, MembersApi } from "@/api/churches/members.api";
 import RequiredRegisterView from "@/components/molecules/register/required-register.view";
-import { MEMBER_REGISTER_TYPE, BLANK } from "@/constants/constant";
+import { MEMBER_REGISTER_TYPE, BLANK, FAMILY } from "@/constants/constant";
 import { DropdownValueType } from "@/components/atoms/common/dropdown/dropdown-item";
 
 import {
@@ -69,21 +69,23 @@ const RequiredRegister = () => {
     const newGuideName = getTrimmedString(event.target.value);
     setGuideName(newGuideName);
 
-    membersApi
-      .getMembers({
-        churchId,
-        name: newGuideName,
-        page: 1,
-        take: 5,
-      })
-      .then((response: AxiosResponse) => {
-        const members: GetMembersResponse[] = response.data.data;
-        const newGuideItems: DropdownValueType[] = members.map((member) => {
-          return { value: member.id, title: member.name };
-        });
+    if (newGuideName) {
+      membersApi
+        .getMembers({
+          churchId,
+          name: newGuideName,
+          page: 1,
+          take: 5,
+        })
+        .then((response: AxiosResponse) => {
+          const members: GetMembersResponse[] = response.data.data;
+          const newGuideItems: DropdownValueType[] = members.map((member) => {
+            return { value: member.id, title: member.name };
+          });
 
-        setGuideItems(newGuideItems);
-      });
+          setGuideItems(newGuideItems);
+        });
+    }
   };
 
   // 인도자 dropdown 선택 시 이벤트
@@ -96,28 +98,34 @@ const RequiredRegister = () => {
     const newFamilyMemberName = getTrimmedString(event.target.value);
     setFamilyMemberName(newFamilyMemberName);
 
-    membersApi
-      .getMembers({
-        churchId,
-        name: newFamilyMemberName,
-        page: 1,
-        take: 5,
-      })
-      .then((response: AxiosResponse) => {
-        const members: GetMembersResponse[] = response.data.data;
-        const newFamilyMemberItems: DropdownValueType[] = members.map(
-          (member) => {
-            return { value: member.id, title: member.name };
-          },
-        );
+    if (newFamilyMemberName) {
+      membersApi
+        .getMembers({
+          churchId,
+          name: newFamilyMemberName,
+          page: 1,
+          take: 5,
+        })
+        .then((response: AxiosResponse) => {
+          const members: GetMembersResponse[] = response.data.data;
+          const newFamilyMemberItems: DropdownValueType[] = members.map(
+            (member) => {
+              return { value: member.id, title: member.name };
+            },
+          );
 
-        setFamilyMemberItems(newFamilyMemberItems);
-      });
+          setFamilyMemberItems(newFamilyMemberItems);
+        });
+    }
   };
 
   // 가족 선택 시 이벤트
-  const onChangeFamilyMemberId = (value: string) => {
-    dispatch(setMember({ ...member, familyMemberId: value }));
+  const onChangeFamilyId = (value: string) => {
+    dispatch(setMember({ ...member, familyId: value }));
+  };
+
+  const onChangeFamilyRelation = (value: FAMILY) => {
+    dispatch(setMember({ ...member, relation: value }));
   };
 
   const props = {
@@ -131,7 +139,8 @@ const RequiredRegister = () => {
     onChangeGuideName,
     onChangeGuidedById,
     onChangeFamilyMemberName,
-    onChangeFamilyMemberId,
+    onChangeFamilyId,
+    onChangeFamilyRelation,
   };
 
   return (

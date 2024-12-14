@@ -16,18 +16,16 @@ const DropdownContainer = styled.div<{ $isOpened: boolean; width?: number }>`
   width: ${({ width }) => (width ? `${width}px` : `100%`)};
 `;
 
-const DropdownButton = styled.div<{
-  $reverseDirection?: boolean;
-}>`
+const DropdownButton = styled.div`
   display: flex;
   width: 100%;
-  flex-direction: ${({ $reverseDirection }) =>
-    $reverseDirection ? "row-reverse" : "row"};
+  flex-direction: "row";
 `;
 
-const DropdownList = styled.div`
+const DropdownList = styled.div<{
+  $reverseDirection?: boolean;
+}>`
   position: absolute;
-  z-index: 50;
   margin-top: 10px;
   border-radius: 5px;
   background-color: ${WHITE};
@@ -41,6 +39,7 @@ const DropdownList = styled.div`
   overflow: scroll;
   max-height: 200px;
   max-width: 300px;
+  bottom: ${({ $reverseDirection }) => ($reverseDirection ? "55px" : null)};
 `;
 
 type DropdownViewProps = {
@@ -90,10 +89,7 @@ const DropdownView = forwardRef<
     return (
       <DropdownContainer $isOpened={isOpened} width={width}>
         {/* 실제 드롭다운의 값이 보이는 공간*/}
-        <DropdownButton
-          $reverseDirection={reverseDirection}
-          onClick={onClickDropdown}
-        >
+        <DropdownButton onClick={onClickDropdown}>
           {/* 실제 값을 input 창으로 관리*/}
           {/* 수정을 원하는 경우, 바로 입력이 가능하도록 */}
           <BorderInput
@@ -121,7 +117,7 @@ const DropdownView = forwardRef<
 
         {/* 드롭다운 item 을 선택할 수 있는 영역*/}
         {isOpened && (
-          <DropdownList>
+          <DropdownList $reverseDirection={reverseDirection}>
             {items.map((item, index) => (
               <DropdownItem
                 key={index}

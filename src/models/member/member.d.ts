@@ -1,4 +1,4 @@
-import { BAPTISM, MARRIAGE, NULL } from "@/constants/constant";
+import { BAPTISM, FAMILY, MARRIAGE, NULL } from "@/constants/constant";
 
 export type Member = {
   id: string;
@@ -11,7 +11,8 @@ export type Member = {
   address: string;
   detailAddress: string;
   homePhone: string;
-  familyMemberId: string;
+  familyId: string;
+  relation: FAMILY;
   occupation: string;
   school: string;
   marriage: MARRIAGE | typeof NULL;

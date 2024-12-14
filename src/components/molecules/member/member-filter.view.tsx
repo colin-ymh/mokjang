@@ -1,12 +1,12 @@
+import { Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
 
 import Button from "@/components/atoms/common/button/button";
 import { MainText } from "@/components/atoms/common/text/main-text";
 import { MAIN, WHITE } from "@/constants/styles/color";
-import { GENDER } from "@/constants/constant";
-import { useI18n } from "../../../../locales/client";
 import AddFilter from "@/components/molecules/member/add-filter";
-import { Dispatch, SetStateAction } from "react";
+import { useI18n } from "../../../../locales/client";
+import { MEDIA_MIN_WIDTH } from "@/constants/constant";
 
 const MemberFilterContainer = styled.div`
   display: flex;
@@ -27,12 +27,21 @@ const FilterList = styled.div`
 const AddFilterContainer = styled.div<{ $isShown: boolean }>`
   display: ${({ $isShown }) => ($isShown ? "flex" : "none")};
   position: absolute;
-  right: 30px;
-  top: 220px;
+
   z-index: 10;
   background-color: white;
   box-shadow: 0 1px 6px rgba(0, 0, 0, 0.3);
   border-radius: 5px;
+
+  @media (min-width: ${MEDIA_MIN_WIDTH.MOBILE}) {
+    top: 120px;
+    right: 20px;
+  }
+
+  @media (min-width: ${MEDIA_MIN_WIDTH.DESKTOP}) {
+    top: 220px;
+    right: 30px;
+  }
 `;
 
 type MemberFilterViewProps = {

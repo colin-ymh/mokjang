@@ -8,7 +8,6 @@ import { useMemberInformationHeaderBarItems } from "@/hooks/layout/header-bar-it
 import MemberImageInput from "@/components/atoms/register/member-image-input";
 import { MainText } from "@/components/atoms/common/text/main-text";
 import { getFormattedMobilePhone } from "@/utils/format";
-import { GRAY } from "@/constants/styles/color";
 
 const InformationHeader = styled.div`
   display: flex;

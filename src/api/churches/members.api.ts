@@ -44,6 +44,7 @@ export type CreateMemberBody = {
   mobilePhone: string;
   familyMemberId?: string;
   guidedById?: string;
+  relation?: string;
 };
 
 type EditMemberParams = {
@@ -59,7 +60,7 @@ export type EditMemberBody = {
   address?: string;
   detailAddress?: string;
   homePhone?: string;
-  familyMemberId?: string;
+  familyId?: string;
   occupation?: string;
   school?: string;
   marriage?: MARRIAGE;

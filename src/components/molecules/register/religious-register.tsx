@@ -2,7 +2,6 @@
 
 import React, { ChangeEvent } from "react";
 import { useDispatch, useSelector } from "react-redux";
-
 import { AppDispatch, RootState } from "@/redux/store";
 import { setMember } from "@/redux/reducers/member-register-reducer";
 

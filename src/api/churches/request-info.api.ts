@@ -12,7 +12,7 @@ type InviteMemberBody = {
   name: string;
   mobilePhone: string;
   guidedById?: string;
-  familyMemberId?: string;
+  familyId?: string;
 };
 
 type RequestValidationParams = {

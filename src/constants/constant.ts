@@ -37,6 +37,24 @@ export enum MARRIAGE {
   SINGLE = "single",
 }
 
+// 가족 관계
+export enum FAMILY {
+  FAMILY = "가족",
+  SPOUSE = "배우자",
+  FATHER = "아버지",
+  MOTHER = "어머니",
+  CHILD = "자녀",
+  SIBLING = "형제자매",
+  GRAND_PARENT = "조부모",
+  SON_IN_LAW = "사위",
+  DAUGHTER_IN_LAW = "며느리",
+  HUSBAND_FATHER_IN_LAW = "시부",
+  HUSBAND_MOTHER_IN_LAW = "시모",
+  WIFE_FATHER_IN_LAW = "장인",
+  WIFE_MOTHER_IN_LAW = "장모",
+  RELATIVE = "친인척",
+}
+
 // 양력 음력
 export enum CALENDAR_MODE {
   SOLAR = "solar",

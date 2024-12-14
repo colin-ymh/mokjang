@@ -14,7 +14,6 @@ import { MEMBER } from "@/constants/member/member-column";
 import { BAPTISM, BLANK, GENDER, NULL } from "@/constants/constant";
 import { getFormattedDate, getTrimmedString } from "@/utils/format";
 import { getIsWellFormedBirth } from "@/utils/check";
-import { setOfficers } from "@/redux/reducers/church-reducer";
 
 type AddFilterProps = {
   setIsShown: Dispatch<SetStateAction<boolean>>;

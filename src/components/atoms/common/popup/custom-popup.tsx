@@ -1,9 +1,10 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode, useEffect } from "react";
 import styled from "styled-components";
 
 import { WHITE } from "@/constants/styles/color";
 import ExitButton from "../../../../../public/svg/cancel.svg";
 import { MainText } from "@/components/atoms/common/text/main-text";
+import { MEDIA_MIN_WIDTH } from "@/constants/constant";
 
 const ModalOverlay = styled.div`
   position: fixed;
@@ -29,10 +30,18 @@ const ModalContainer = styled.div<{
   border-radius: 5px;
   overflow: hidden;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-  height: ${({ height, $isPercentage }) =>
-    height ? ($isPercentage ? `${height}%` : `${height}px`) : "100%"};
-  width: ${({ width, $isPercentage }) =>
-    width ? ($isPercentage ? `${width}%` : `${width}px`) : "100%"};
+
+  @media (min-width: ${MEDIA_MIN_WIDTH.MOBILE}) {
+    height: 100%;
+    width: 100%;
+  }
+
+  @media (min-width: ${MEDIA_MIN_WIDTH.DESKTOP}) {
+    height: ${({ height, $isPercentage }) =>
+      height ? ($isPercentage ? `${height}%` : `${height}px`) : "100%"};
+    width: ${({ width, $isPercentage }) =>
+      width ? ($isPercentage ? `${width}%` : `${width}px`) : "100%"};
+  }
 `;
 
 const HeaderContainer = styled.div`
@@ -41,9 +50,9 @@ const HeaderContainer = styled.div`
   display: flex;
   background-color: ${WHITE};
   justify-content: space-between;
-  align-items: flex-end;
+  align-items: center;
   z-index: 10;
-  height: 40px;
+  height: 50px;
   flex-shrink: 0;
 `;
 
@@ -61,6 +70,7 @@ const ContentContainer = styled.div`
   display: flex;
   width: 100%;
   height: 100%;
+  overflow: hidden;
 `;
 
 type CustomPopupProps = {
@@ -82,7 +92,25 @@ const CustomPopup = ({
   isPercentage = false,
   children,
 }: CustomPopupProps) => {
+  useEffect(() => {
+    // ESC 누르면 닫기
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        onClickClose();
+      }
+    };
+
+    if (isShow) {
+      window.addEventListener("keydown", handleKeyDown);
+    }
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isShow, onClickClose]);
+
   if (!isShow) return null;
+
   return (
     <ModalOverlay>
       <ModalContainer

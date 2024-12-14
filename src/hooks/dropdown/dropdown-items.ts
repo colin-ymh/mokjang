@@ -1,7 +1,14 @@
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 
-import { BAPTISM, MARRIAGE, NONE, GENDER, NULL } from "@/constants/constant";
+import {
+  BAPTISM,
+  MARRIAGE,
+  NONE,
+  GENDER,
+  NULL,
+  FAMILY,
+} from "@/constants/constant";
 import { MEMBER } from "@/constants/member/member-column";
 
 import { useI18n } from "../../../locales/client";
@@ -146,6 +153,71 @@ export const useGroupDropdownItems = () => {
   });
 
   items.push({ value: NULL, title: t(NULL) });
+
+  return items;
+};
+
+export const useFamilyRelationDropdownItems = () => {
+  const t = useI18n();
+
+  const items = [
+    {
+      value: FAMILY.FAMILY,
+      title: t(FAMILY.FAMILY),
+    },
+    {
+      value: FAMILY.SPOUSE,
+      title: t(FAMILY.SPOUSE),
+    },
+    {
+      value: FAMILY.MOTHER,
+      title: t(FAMILY.MOTHER),
+    },
+    {
+      value: FAMILY.FATHER,
+      title: t(FAMILY.FATHER),
+    },
+    {
+      value: FAMILY.CHILD,
+      title: t(FAMILY.CHILD),
+    },
+    {
+      value: FAMILY.SIBLING,
+      title: t(FAMILY.SIBLING),
+    },
+    {
+      value: FAMILY.GRAND_PARENT,
+      title: t(FAMILY.GRAND_PARENT),
+    },
+    {
+      value: FAMILY.SON_IN_LAW,
+      title: t(FAMILY.SON_IN_LAW),
+    },
+    {
+      value: FAMILY.DAUGHTER_IN_LAW,
+      title: t(FAMILY.DAUGHTER_IN_LAW),
+    },
+    {
+      value: FAMILY.HUSBAND_FATHER_IN_LAW,
+      title: t(FAMILY.HUSBAND_FATHER_IN_LAW),
+    },
+    {
+      value: FAMILY.HUSBAND_MOTHER_IN_LAW,
+      title: t(FAMILY.HUSBAND_MOTHER_IN_LAW),
+    },
+    {
+      value: FAMILY.WIFE_FATHER_IN_LAW,
+      title: t(FAMILY.WIFE_FATHER_IN_LAW),
+    },
+    {
+      value: FAMILY.WIFE_MOTHER_IN_LAW,
+      title: t(FAMILY.WIFE_MOTHER_IN_LAW),
+    },
+    {
+      value: FAMILY.RELATIVE,
+      title: t(FAMILY.RELATIVE),
+    },
+  ];
 
   return items;
 };

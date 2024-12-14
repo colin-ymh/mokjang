@@ -16,6 +16,7 @@ export type ButtonProps = MainTextProps & {
   backgroundColor?: string;
   color?: string;
   isShadow?: boolean;
+  borderRadius?: number;
   children?: ReactNode;
 };
 
@@ -24,7 +25,8 @@ const ButtonContainer = styled.button<{
   width?: number;
   height?: number;
   $backgroundColor?: string;
-  $isShadow?: boolean; // `$` 접두사를 사용해야만 컴포넌트 속성으로 전달 가능
+  $isShadow?: boolean;
+  $borderRadius?: number;
 }>`
   display: flex;
   justify-content: center;
@@ -32,7 +34,8 @@ const ButtonContainer = styled.button<{
   background-color: ${({ $backgroundColor }) => $backgroundColor};
   width: ${({ width }) => (width ? `${width}px` : `100%`)};
   height: ${({ height }) => (height ? `${height}px` : `100%`)};
-  border-radius: 5px;
+  border-radius: ${({ $borderRadius }) =>
+    ` ${$borderRadius !== null ? $borderRadius : 5}px`};
   border: none;
   cursor: ${({ disabled }) => (disabled ? "not-allowed" : "pointer")};
   transition: all 0.3s ease;
@@ -49,6 +52,7 @@ const Button = ({
   height,
   backgroundColor = MAIN.DEFAULT,
   isShadow = false,
+  borderRadius = 5,
   // text props
   color = WHITE,
   fontWeight,
@@ -61,6 +65,7 @@ const Button = ({
       onClick={disabled ? undefined : onClick}
       width={width}
       height={height}
+      $borderRadius={borderRadius}
       $backgroundColor={backgroundColor}
       $isShadow={isShadow}
     >

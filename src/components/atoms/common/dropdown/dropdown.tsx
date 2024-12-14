@@ -70,6 +70,7 @@ const Dropdown = forwardRef<HTMLInputElement, DropdownProps>(
 
     // 드롭다운 영역 클릭 시 일어나는 이벤트
     const onClickDropdown = () => {
+      if (!isOpened && items.length === 0) return;
       setIsOpened((prev) => !prev);
     };
 
@@ -113,8 +114,17 @@ const Dropdown = forwardRef<HTMLInputElement, DropdownProps>(
       }
     };
 
+    // 외부에서 드롭다운 아이템들이 변경
+    useEffect(() => {
+      if (onChange) {
+        // 아이템이 있으면 드롭다운 열기
+        if (items.length > 0) setIsOpened(true);
+        else setIsOpened(false);
+      }
+    }, [value, items]);
+
     const onFocusInput = () => {
-      setIsOpened(true);
+      // setIsOpened(true);
     };
 
     const onPressEnter = (event: React.KeyboardEvent<HTMLInputElement>) => {

@@ -8,6 +8,7 @@ export default {
   mobilePhone: "Mobile Phone",
   guide: "Guide",
   family: "Family",
+  relation: "Relation",
   // 개인 정보
   profileImage: "Profile Image",
   birth: "Date of Birth",
@@ -49,6 +50,23 @@ export default {
   // 양력 음력
   solar: "Solar",
   lunar: "Lunar",
+
+  churchMember: "Member",
+
+  가족: "Family",
+  배우자: "Spouse",
+  아버지: "Father",
+  어머니: "Mother",
+  자녀: "Child",
+  형제자매: "Sibling",
+  조부모: "Grand Parent",
+  사위: "Son-in-Law",
+  며느리: "Daughter-in-Law",
+  시부: "Husband's Father-in-Law",
+  시모: "Husband's Motehr-in-Law",
+  장인: "Wife's Father-in-Law",
+  장모: "Wife's Mother-in-Law",
+  친인척: "Relative",
 
   /*-------------------header (side bar button)-------------------*/
   "header.home": "Home",

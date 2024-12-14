@@ -19,19 +19,7 @@ const ButtonListContainer = styled.div`
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  position: fixed;
-  bottom: 0;
-  width: 90%;
-  gap: 10px;
-  margin-bottom: 20px;
-  z-index: 5;
-
-  // 데크스탑
-  @media (min-width: ${MEDIA_MIN_WIDTH.DESKTOP}) {
-    position: sticky;
-    bottom: 20px;
-    width: 100%;
-  }
+  //flex-shrink: 1;
 `;
 
 const LeftButtonContainer = styled.div`
@@ -77,6 +65,7 @@ const RegisterButtonListView = ({
           backgroundColor={isStageClear ? BLACK : GRAY.DEFAULT}
           onClick={onClickLeft}
           isShadow={true}
+          borderRadius={0}
         >
           {stage !== MEMBER_REGISTER_STAGE.REQUIRED && (
             <GoBackButton stroke={WHITE} />
@@ -92,6 +81,7 @@ const RegisterButtonListView = ({
           backgroundColor={isStageClear ? MAIN.DEFAULT : GRAY.DEFAULT}
           onClick={onClickRight}
           isShadow={true}
+          borderRadius={0}
         />
       </RightButtonContainer>
     </ButtonListContainer>

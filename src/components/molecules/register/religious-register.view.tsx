@@ -27,7 +27,7 @@ const InputContainer = styled.div`
   justify-content: flex-start;
   flex-direction: column;
   gap: 20px;
-  width: 100%;
+  padding: 0 30px;
 `;
 
 export type ReligiousRegisterViewProps = {
