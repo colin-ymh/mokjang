@@ -74,6 +74,7 @@ export default {
 
   "header.memberInformation": "Member Information",
   "header.personalInformation": "Personal Information",
+  "header.familyInformation": "Family Information",
   /*-------------------header (side bar button)-------------------*/
 
   /*-------------------member content (member header bar button)-------------------*/

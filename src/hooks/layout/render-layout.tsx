@@ -10,6 +10,7 @@ import MemberList from "@/components/organisms/member/member-list";
 import MemberInformationList from "@/components/molecules/member/member-information-list";
 import { Member } from "@/models/member/member";
 import PersonalInformationList from "@/components/molecules/member/member-personal-information-list";
+import FamilyInformationList from "@/components/molecules/member/family-information-list";
 
 export const getContent = (id: string): ReactNode => {
   switch (id) {
@@ -43,5 +44,7 @@ export const getMemberInformationContent = (id: string) => {
       return <MemberInformationList />;
     case MEMBER_INFORMATION_HEADER_ID.PERSONAL_INFORMATION:
       return <PersonalInformationList />;
+    case MEMBER_INFORMATION_HEADER_ID.FAMILY_INFORMATION:
+      return <FamilyInformationList />;
   }
 };

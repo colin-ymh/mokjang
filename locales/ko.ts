@@ -75,6 +75,7 @@ export default {
 
   "header.memberInformation": "교인 정보",
   "header.personalInformation": "개인 정보",
+  "header.familyInformation": "가족 정보",
   /*-------------------header (side bar button)-------------------*/
 
   /*-------------------member content (member header bar button)-------------------*/

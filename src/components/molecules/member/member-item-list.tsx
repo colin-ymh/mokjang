@@ -47,7 +47,10 @@ const MemberItemList = ({
   return (
     <MemberListContainer>
       {members.map((member) => (
-        <MemberItem key={member.id} onClick={() => onClickMemberItem(member)}>
+        <MemberItem
+          key={member.id}
+          onClick={() => onClickMemberItem(member.id)}
+        >
           <ProfileImage
             src={member.profileImage || DefaultImage}
             alt={`profileImage`}

@@ -14,7 +14,7 @@ import MemberTableView from "@/components/molecules/member/member-table.view";
 export type MemberTableProps = {
   members: Member[];
   page: number;
-  onClickMemberItem: (member: Member) => void;
+  onClickMemberItem: (memberId: string) => void;
   onClickNextPage: () => void;
   onClickPrevPage: () => void;
 };

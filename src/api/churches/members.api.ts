@@ -170,7 +170,7 @@ export class MembersApi {
     const url = `${this._url}/churches/${churchId}/members/${memberId}`;
 
     try {
-      return await axios.post(url);
+      return await axios.get(url);
     } catch (error) {
       throw new HTTPError(`Fetch error: ${error}`);
     }

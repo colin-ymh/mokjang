@@ -19,7 +19,7 @@ import {
 } from "@/utils/format";
 import styled from "styled-components";
 import Button from "@/components/atoms/common/button/button";
-import { getEditMemberBody } from "@/utils/member";
+import { getEditMemberBody, getMemberFromServer } from "@/utils/member";
 import { MemberSettingsApi } from "@/api/churches/member-settings.api";
 
 const ButtonContainer = styled.div`
@@ -92,23 +92,19 @@ const MemberList = () => {
   }, [churchId, memberFilter, memberOrderBy, memberOrderDirection]);
 
   // 목록에서 교인을 선택하여 상세 페이지로 이동
-  const onClickMemberItem = (member: Member) => {
-    const newMember: Member = {
-      ...member,
-      birth: member.birth && getFormattedDate(member.birth),
-      mobilePhone:
-        member.mobilePhone && getFormattedMobilePhone(member.mobilePhone),
-      homePhone: member.homePhone && getFormattedHomePhone(member.homePhone),
-    };
+  const onClickMemberItem = (memberId: string) => {
+    membersApi.getMember({ churchId, memberId }).then((response) => {
+      const member = getMemberFromServer(response.data.data);
 
-    // 기존 정보를 담아서 저장해두기
-    setTargetMember(newMember);
+      // 기존 정보를 담아서 저장해두기
+      setTargetMember(member);
 
-    // 교인 수정용
-    dispatch(setMember(newMember));
+      // 교인 수정용
+      dispatch(setMember(member));
 
-    // 상세페이지 열기
-    setIsMemberInformationShown(true);
+      // 상세페이지 열기
+      setIsMemberInformationShown(true);
+    });
   };
 
   // 상세 페이지 종료

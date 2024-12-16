@@ -5,7 +5,12 @@ import {
   getIsWellFormedHomePhone,
   getIsWellFormedVehicleNumber,
 } from "@/utils/check";
-import { getTrimmedString } from "@/utils/format";
+import {
+  getFormattedDate,
+  getFormattedHomePhone,
+  getFormattedMobilePhone,
+  getTrimmedString,
+} from "@/utils/format";
 import { CreateMemberBody, EditMemberBody } from "@/api/churches/members.api";
 import { Member } from "@/models/member/member";
 
@@ -101,6 +106,22 @@ export const getEditMemberBody = (member: Member) => {
       newMember.vehicleNumber = newVehicleNumber;
     }
   }
+
+  return newMember;
+};
+
+/**
+ * 서버에서 받은 멤버 정보를 클라이언트에서 사용 가능하도록 변경해주는 함수
+ * @param member
+ */
+export const getMemberFromServer = (member: Member) => {
+  const newMember: Member = {
+    ...member,
+    birth: member.birth && getFormattedDate(member.birth),
+    mobilePhone:
+      member.mobilePhone && getFormattedMobilePhone(member.mobilePhone),
+    homePhone: member.homePhone && getFormattedHomePhone(member.homePhone),
+  };
 
   return newMember;
 };

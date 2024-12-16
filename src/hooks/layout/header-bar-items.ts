@@ -36,6 +36,10 @@ export const useMemberInformationHeaderBarItems = () => {
       id: MEMBER_INFORMATION_HEADER_ID.PERSONAL_INFORMATION,
       title: t_header(MEMBER_INFORMATION_HEADER_ID.PERSONAL_INFORMATION),
     },
+    {
+      id: MEMBER_INFORMATION_HEADER_ID.FAMILY_INFORMATION,
+      title: t_header(MEMBER_INFORMATION_HEADER_ID.FAMILY_INFORMATION),
+    },
   ];
 
   return items;

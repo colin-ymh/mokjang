@@ -1,5 +1,12 @@
 import { BAPTISM, FAMILY, MARRIAGE, NULL } from "@/constants/constant";
 
+export type FamilyMember = {
+  meId: string;
+  familyMemberId: string;
+  relation: FAMILY;
+  familyMember: Member;
+};
+
 export type Member = {
   id: string;
   name: string;
@@ -12,6 +19,7 @@ export type Member = {
   detailAddress: string;
   homePhone: string;
   familyId: string;
+  family: FamilyMember[];
   relation: FAMILY;
   occupation: string;
   school: string;

@@ -79,7 +79,7 @@ const BottomContainer = styled.div`
 type MemberTableProps = {
   members: Member[];
   page: number;
-  onClickMemberItem: (member: Member) => void;
+  onClickMemberItem: (memberId: string) => void;
   onClickHeader: (id: MEMBER) => void;
   onClickNextPage: () => void;
   onClickPrevPage: () => void;
@@ -154,7 +154,7 @@ const MemberTableView = ({
         </thead>
         <tbody>
           {members.map((member) => (
-            <tr key={member.id} onClick={() => onClickMemberItem(member)}>
+            <tr key={member.id} onClick={() => onClickMemberItem(member.id)}>
               {tableHeaderItems.map((item) => (
                 <td key={item.id}>{getMemberTableContent(item.id, member)}</td>
               ))}
