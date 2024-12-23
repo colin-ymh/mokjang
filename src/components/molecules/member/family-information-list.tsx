@@ -6,7 +6,7 @@ import { setMember } from "@/redux/reducers/member-register-reducer";
 import { FamilyApi } from "@/api/churches/family.api";
 import { FAMILY } from "@/constants/constant";
 import { MainText } from "@/components/atoms/common/text/main-text";
-import { FamilyMember } from "@/models/member/member";
+import { FamilyMember, Member } from "@/models/member/member";
 import Dropdown from "@/components/atoms/common/dropdown/dropdown";
 import { useFamilyRelationDropdownItems } from "@/hooks/dropdown/dropdown-items";
 import Button from "@/components/atoms/common/button/button";
@@ -40,7 +40,13 @@ const FamilyMemberItem = styled.div`
   padding-bottom: 10px;
 `;
 
-const FamilyInformationList = () => {
+type FamilyInformationListProps = {
+  targetMember: Member;
+};
+
+const FamilyInformationList = ({
+  targetMember,
+}: FamilyInformationListProps) => {
   const { churchId } = useSelector((state: RootState) => state.church);
   const { member } = useSelector((state: RootState) => state.memberRegister);
   const dispatch = useDispatch<AppDispatch>();

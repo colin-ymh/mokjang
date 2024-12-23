@@ -1,70 +1,110 @@
-"use client";
-
-import React, {
-  ChangeEvent,
-  RefObject,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import EditListView from "@/components/molecules/edit/edit-list.view";
+import { GetMembersResponse, MembersApi } from "@/api/churches/members.api";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
-import DaumPostcodeEmbed, { Address } from "react-daum-postcode";
-import { gsap } from "gsap";
-
-import { getSchool } from "@/api/school-api";
-import { getDateFromString, getIsChild } from "@/utils/date";
-import { setMember } from "@/redux/reducers/member-register-reducer";
-import PersonalRegisterView from "@/components/molecules/register/personal-register.view";
+import { Member } from "@/models/member/member";
+import React, { ChangeEvent, useState } from "react";
+import {
+  BLANK,
+  CALENDAR_MODE,
+  GENDER,
+  MARRIAGE,
+  MEMBER_REGISTER_TYPE,
+} from "@/constants/constant";
 import { DropdownValueType } from "@/components/atoms/common/dropdown/dropdown-item";
-import PagePopup from "@/components/atoms/common/popup/page-popup";
-import { CALENDAR_MODE, MARRIAGE } from "@/constants/constant";
-import { getIsWellFormedBirth, getIsWellFormedHomePhone } from "@/utils/check";
+import { setMember, setType } from "@/redux/reducers/member-register-reducer";
 import {
   getFormattedDate,
   getFormattedHomePhone,
+  getFormattedMobilePhone,
+  getFormattedName,
   getFormattedVehicleNumber,
   getTrimmedString,
 } from "@/utils/format";
-import { Member } from "@/models/member/member";
+import {
+  getIsWellFormedBirth,
+  getIsWellFormedHomePhone,
+  getIsWellFormedMobilePhone,
+} from "@/utils/check";
+import { AxiosResponse } from "axios";
+import { getSchool } from "@/api/school-api";
+import DaumPostcodeEmbed, { Address } from "react-daum-postcode";
+import PagePopup from "@/components/atoms/common/popup/page-popup";
+import { MEMBER } from "@/constants/member/member-column";
 
-const PersonalRegister = () => {
+type EditListProps = {
+  focusItem: MEMBER;
+};
+
+const EditList = ({ focusItem }: EditListProps) => {
+  const membersApi = new MembersApi(false);
   const dispatch = useDispatch<AppDispatch>();
-  const { member } = useSelector((state: RootState) => state.memberRegister);
+  const churchId: string = useSelector(
+    (state: RootState) => state.church.churchId,
+  );
+
+  const member: Member = useSelector(
+    (state: RootState): Member => state.memberRegister.member,
+  );
+
+  // 인도자 이름
+  const [guideName, setGuideName] = useState<string>(BLANK);
+  // 검색된 인도자 목록
+  const [guideItems, setGuideItems] = useState<DropdownValueType[]>([]);
+
+  // 새신자 타입 변경 시 이벤트
+  const onChangeType = (type: MEMBER_REGISTER_TYPE) => {
+    dispatch(setType(type));
+  };
+
+  // 이름 변경 시 이벤트
+  const onChangeName = (event: ChangeEvent<HTMLInputElement>) => {
+    const newName = getFormattedName(event.target.value);
+    dispatch(setMember({ ...member, name: newName }));
+  };
+
+  // 휴대폰 번호 변경 시 이벤트
+  const onChangeMobilePhone = (event: ChangeEvent<HTMLInputElement>) => {
+    const newMobilePhone = getFormattedMobilePhone(event.target.value);
+    dispatch(setMember({ ...member, mobilePhone: newMobilePhone }));
+
+    // 전화번호를 다 입력한 경우
+    if (getIsWellFormedMobilePhone(newMobilePhone)) {
+      (event.target as HTMLInputElement).blur();
+    }
+  };
+
+  // 인도자 input 변경 시 이벤트
+  const onChangeGuideName = (event: ChangeEvent<HTMLInputElement>) => {
+    const newGuideName = getTrimmedString(event.target.value);
+    setGuideName(newGuideName);
+
+    if (newGuideName) {
+      membersApi
+        .getMembers({
+          churchId,
+          name: newGuideName,
+          page: 1,
+          take: 5,
+        })
+        .then((response: AxiosResponse) => {
+          const members: GetMembersResponse[] = response.data.data;
+          const newGuideItems: DropdownValueType[] = members.map((member) => {
+            return { value: member.id, title: member.name };
+          });
+
+          setGuideItems(newGuideItems);
+        });
+    }
+  };
+
+  // 인도자 dropdown 선택 시 이벤트
+  const onChangeGuidedById = (value: string) => {
+    dispatch(setMember({ ...member, guidedById: value }));
+  };
 
   const [schoolItems, setSchoolItems] = useState<DropdownValueType[]>([]);
   const [isAddressOpen, setIsAddressOpen] = useState<boolean>(false);
-
-  // 학교 input 창 애니메이션 효과
-  const schoolAnimationRef = useRef<HTMLDivElement | null>(null);
-  useEffect(() => {
-    if (schoolAnimationRef.current) {
-      const isChild = getIsChild(getDateFromString(member.birth));
-      if (isChild && getIsWellFormedBirth(member.birth)) {
-        // 미성년자일 경우 애니메이션으로 나타남
-        gsap.to(schoolAnimationRef.current, {
-          opacity: 1,
-          height: 70,
-          marginBottom: 0,
-          duration: 0.3,
-          ease: "power1.inOut",
-          display: "block",
-          zIndex: 5,
-        });
-      } else {
-        // 성인일 경우 애니메이션으로 사라짐
-        gsap.to(schoolAnimationRef.current, {
-          opacity: 0,
-          height: 0,
-          marginBottom: -20,
-          duration: 0.3,
-          ease: "power1.inOut",
-          zIndex: 0,
-          // display: "none",
-        });
-      }
-    }
-  }, [schoolAnimationRef, member.birth]);
 
   // 이미지 변경 이벤트
   const onChangeProfileImage = (profileImage: string) => {
@@ -72,28 +112,18 @@ const PersonalRegister = () => {
   };
 
   // 성별 변경 시 이벤트
-  const onChangeGender = (gender: string) => {
+  const onChangeGender = (gender: GENDER) => {
     dispatch(setMember({ ...member, gender }));
   };
 
   // 생년월일 변경 시 이벤트
-  const onChangeBirth = (
-    event: ChangeEvent<HTMLInputElement>,
-    nextInputRef?: RefObject<HTMLInputElement>,
-  ) => {
+  const onChangeBirth = (event: ChangeEvent<HTMLInputElement>) => {
     const newBirth = getFormattedDate(event.target.value);
     dispatch(setMember({ ...member, birth: newBirth }));
 
     // 생년월일을 다 입력한 경우
     if (getIsWellFormedBirth(newBirth)) {
-      // 다음 입력이 있다면 다음 입력으로
-      if (nextInputRef?.current) {
-        nextInputRef.current.focus();
-      }
-      // 없으면 키보드 내리기
-      else {
-        (event.target as HTMLInputElement).blur();
-      }
+      (event.target as HTMLInputElement).blur();
     }
   };
 
@@ -103,10 +133,7 @@ const PersonalRegister = () => {
   };
 
   // 학교 변경 시 이벤트
-  const onChangeSchool = (
-    value: string,
-    nextInputRef?: RefObject<HTMLInputElement>,
-  ) => {
+  const onChangeSchool = (value: string) => {
     const newSchool = getTrimmedString(value);
     dispatch(setMember({ ...member, school: newSchool }));
 
@@ -129,15 +156,6 @@ const PersonalRegister = () => {
   // 결혼 정보 변경 시 이벤트
   const onChangeMarriage = (value: MARRIAGE) => {
     dispatch(setMember({ ...member, marriage: value }));
-  };
-
-  // 결혼 정보 드롭다운 아이템 선택 시 이벤트
-  const onClickMarriageDropdownItem = (
-    nextInputRef: RefObject<HTMLInputElement>,
-  ) => {
-    if (nextInputRef?.current) {
-      nextInputRef.current.focus();
-    }
   };
 
   // 결혼 상세 변경 시 이벤트
@@ -178,22 +196,12 @@ const PersonalRegister = () => {
   };
 
   // 전화번호 변경 시 이벤트
-  const onChangeHomePhone = (
-    event: ChangeEvent<HTMLInputElement>,
-    nextInputRef?: RefObject<HTMLInputElement>,
-  ) => {
+  const onChangeHomePhone = (event: ChangeEvent<HTMLInputElement>) => {
     const newHomePhone = getFormattedHomePhone(event.target.value);
     dispatch(setMember({ ...member, homePhone: newHomePhone }));
 
     if (getIsWellFormedHomePhone(newHomePhone)) {
-      // 다음 입력이 있다면 다음 입력으로
-      if (nextInputRef?.current) {
-        nextInputRef.current.focus();
-      }
-      // 없으면 키보드 내리기
-      else {
-        (event.target as HTMLInputElement).blur();
-      }
+      (event.target as HTMLInputElement).blur();
     }
   };
 
@@ -207,7 +215,7 @@ const PersonalRegister = () => {
 
     const number = getFormattedVehicleNumber(event.target.value);
 
-    if (number) {
+    if (number !== undefined) {
       // 수정할 인덱스의 값을 변경
       newVehicleNumber[index] = number;
     }
@@ -217,9 +225,16 @@ const PersonalRegister = () => {
   };
 
   const props = {
-    schoolAnimationRef,
+    focusItem,
+    guideName,
+    guideItems,
     schoolItems,
     isAddressOpen,
+    onChangeType,
+    onChangeName,
+    onChangeMobilePhone,
+    onChangeGuideName,
+    onChangeGuidedById,
     onChangeProfileImage,
     onChangeBirth,
     onChangeCalendarMode,
@@ -229,16 +244,14 @@ const PersonalRegister = () => {
     onChangeSchool,
     onChangeVehicleNumber,
     onChangeMarriage,
-    onClickMarriageDropdownItem,
     onChangeDetailMarriage,
     onChangeGender,
     onClickAddress,
-    onCompleteAddress,
   };
 
   return (
     <>
-      <PersonalRegisterView {...props} />
+      <EditListView {...props} />
       <PagePopup isShow={isAddressOpen} setIsShow={setIsAddressOpen}>
         <DaumPostcodeEmbed
           onComplete={onCompleteAddress}
@@ -249,4 +262,4 @@ const PersonalRegister = () => {
   );
 };
 
-export default PersonalRegister;
+export default EditList;

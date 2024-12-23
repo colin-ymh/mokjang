@@ -9,6 +9,7 @@ import React, {
 import VehicleNumberInputView, {
   VehicleNumberInputRef,
 } from "@/components/atoms/register/vehicle-number-input.view";
+import { BLANK } from "@/constants/constant";
 
 type VehicleNumberInputProps = InputHTMLAttributes<HTMLInputElement> & {
   label?: string;
@@ -37,7 +38,7 @@ const VehicleNumberInput = forwardRef<
 
     useEffect(() => {
       // 첫 번째 입력값이 완료되었을 때
-      if (value[0].length === 4 && count === 1) {
+      if (value[0]?.length === 4 && count === 1) {
         setCount(2); // 다음 입력창 활성화
       }
 
@@ -49,7 +50,7 @@ const VehicleNumberInput = forwardRef<
 
     useEffect(() => {
       // 첫 번째 입력창 입력 종료 시
-      if (value[0].length === 4) {
+      if (value[0]?.length === 4) {
         // 최초인 경우, 다음 입력창 열기
         if (count === 1) setCount(2);
 
@@ -63,7 +64,7 @@ const VehicleNumberInput = forwardRef<
       }
 
       // 두 번째 입력창 입력 종료 시
-      if (value[1].length === 4) {
+      if (value[1]?.length === 4) {
         // 최초인 경우, 다음 입력창 열기
         if (count === 2) setCount(3);
 
@@ -78,11 +79,19 @@ const VehicleNumberInput = forwardRef<
       // 다음 ref 가 활성화되기 전까지 잠시 대기
       const timer = setTimeout(() => {
         if (typeof ref !== "function") {
-          if (count === 2 && ref?.current?.secondInputRef?.current) {
+          if (
+            count === 2 &&
+            value[2] === BLANK &&
+            ref?.current?.secondInputRef?.current
+          ) {
             ref.current.secondInputRef.current.focus();
           }
 
-          if (count === 3 && ref?.current?.thirdInputRef?.current) {
+          if (
+            count === 3 &&
+            value[3] === BLANK &&
+            ref?.current?.thirdInputRef?.current
+          ) {
             ref.current.thirdInputRef.current.focus();
           }
         }

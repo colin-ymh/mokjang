@@ -33,7 +33,6 @@ const ContentContainer = styled.div`
 
 const MemberRegisterView = () => {
   const { stage } = useSelector((state: RootState) => state.memberRegister);
-
   const t_register = useScopedI18n("register");
 
   return (

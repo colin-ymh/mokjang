@@ -23,6 +23,7 @@ export enum MEMBER_REGISTER_STAGE {
   REQUIRED = "required",
   PERSONAL = "personal",
   RELIGIOUS = "religious",
+  EDIT = "edit",
 }
 
 // 성별

@@ -28,10 +28,10 @@ export const useMemberInformationHeaderBarItems = () => {
   const t_header = useScopedI18n("header");
 
   const items = [
-    {
-      id: MEMBER_INFORMATION_HEADER_ID.MEMBER_INFORMATION,
-      title: t_header(MEMBER_INFORMATION_HEADER_ID.MEMBER_INFORMATION),
-    },
+    // {
+    //   id: MEMBER_INFORMATION_HEADER_ID.MEMBER_INFORMATION,
+    //   title: t_header(MEMBER_INFORMATION_HEADER_ID.MEMBER_INFORMATION),
+    // },
     {
       id: MEMBER_INFORMATION_HEADER_ID.PERSONAL_INFORMATION,
       title: t_header(MEMBER_INFORMATION_HEADER_ID.PERSONAL_INFORMATION),

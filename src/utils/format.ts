@@ -1,4 +1,7 @@
+import { BLANK } from "@/constants/constant";
+
 export const getTrimmedString = (value: string) => {
+  if (!value) return BLANK;
   return value.trim();
 };
 
@@ -90,12 +93,12 @@ export const getFormattedDate = (date: string) => {
 
 // 차량번호 입력창 포맷
 export const getFormattedVehicleNumber = (vehicleNumber: string) => {
+  if (!vehicleNumber) return ""; // 입력값이 비어 있을 경우 공백 반환
+
   // 숫자만 남기기
   const cleaned = vehicleNumber.replace(/\D/g, ""); // 숫자 외 제거
 
-  // 최대 4자리
+  // 최대 4자리로 제한
   const lengthLimit = 4;
-  const limited = cleaned.slice(0, lengthLimit);
-
-  return limited;
+  return cleaned.slice(0, lengthLimit);
 };

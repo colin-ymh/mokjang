@@ -123,98 +123,6 @@ const MemberList = () => {
     setIsMemberInformationShown(false);
   };
 
-  // 교인 정보 업데이트
-  const onClickEdit = async () => {
-    try {
-      // 기본 정보 업데이트
-      await membersApi.editMember(
-        { churchId, memberId: member.id },
-        getEditMemberBody(member),
-      );
-
-      // 직분 업데이트
-      if (targetMember.officerId !== member.officerId) {
-        if (member.officerId === NULL) {
-          await memberSettingsApi.editMemberOfficer(
-            { churchId, memberId: member.id },
-            { isDeleteOfficer: true },
-          );
-        } else {
-          await memberSettingsApi.editMemberOfficer(
-            { churchId, memberId: member.id },
-            {
-              isDeleteOfficer: false,
-              officerId: member.officerId,
-              officerStartChurch: member.officerStartChurch,
-              officerStartDate: member.officerStartDate,
-            },
-          );
-        }
-      }
-      //
-      // // 사역 업데이트
-      // if (targetMember.ministries !== member.ministries) {
-      //   if (member.ministries) {
-      //     await memberSettingsApi.editMemberMinistry(
-      //       { churchId, memberId: member.id },
-      //       { isDeleteMinistry: true },
-      //     );
-      //   } else {
-      //     await memberSettingsApi
-      //       .editMemberMinistry(
-      //         { churchId, memberId: member.id },
-      //         {
-      //           isDeleteMinistry: false,
-      //           ministryId: member.ministries,
-      //         },
-      //       )
-      //       .then((response) => console.log(response));
-      //   }
-      // }
-      //
-      // // 교육이수 업데이트
-      // if (targetMember.educationId !== member.educationId) {
-      //   if (member.educationId === NULL) {
-      //     await memberSettingsApi.editMemberEducation(
-      //       { churchId, memberId: member.id },
-      //       { isDeleteEducation: true },
-      //     );
-      //   } else {
-      //     await memberSettingsApi.editMemberEducation(
-      //       { churchId, memberId: member.id },
-      //       {
-      //         isDeleteEducation: false,
-      //         educationId: member.educationId,
-      //       },
-      //     );
-      //   }
-      // }
-
-      // 소그룹 업데이트
-      if (targetMember.groupId !== member.groupId) {
-        if (member.groupId === NULL) {
-          await memberSettingsApi.editMemberGroup(
-            { churchId, memberId: member.id },
-            { isDeleteGroup: true },
-          );
-        } else {
-          await memberSettingsApi.editMemberGroup(
-            { churchId, memberId: member.id },
-            {
-              isDeleteGroup: false,
-              groupId: member.groupId,
-            },
-          );
-        }
-      }
-
-      // 모든 작업이 성공했을 경우에만 목록 갱신
-      getMembersFromServer(page).then((members) => setMembers(members));
-    } catch (error) {
-      throw new Error("교인 정보 업데이트 실.");
-    }
-  };
-
   // 테이블 다음 페이지 이동
   const onClickNextPage = () => {
     getMembersFromServer(page + 1).then((members) => {
@@ -250,17 +158,16 @@ const MemberList = () => {
       <CustomPopup
         isShow={isMemberInformationShown}
         onClickClose={onClickClose}
-        width={50}
+        width={70}
         height={90}
         isPercentage={true}
         headerRight={
           <ButtonContainer>
             <Button text={"삭제"} onClick={onClickDelete} />
-            <Button text={"저장"} onClick={onClickEdit} />
           </ButtonContainer>
         }
       >
-        <MemberInformation />
+        <MemberInformation targetMember={targetMember} />
       </CustomPopup>
     </>
   );

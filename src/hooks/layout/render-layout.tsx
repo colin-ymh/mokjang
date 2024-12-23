@@ -38,13 +38,16 @@ export const getHeader = (id: string) => {
   }
 };
 
-export const getMemberInformationContent = (id: string) => {
+export const getMemberInformationContent = (
+  id: string,
+  targetMember: Member,
+) => {
   switch (id) {
-    case MEMBER_INFORMATION_HEADER_ID.MEMBER_INFORMATION:
-      return <MemberInformationList />;
+    // case MEMBER_INFORMATION_HEADER_ID.MEMBER_INFORMATION:
+    //   return <MemberInformationList />;
     case MEMBER_INFORMATION_HEADER_ID.PERSONAL_INFORMATION:
-      return <PersonalInformationList />;
+      return <PersonalInformationList targetMember={targetMember} />;
     case MEMBER_INFORMATION_HEADER_ID.FAMILY_INFORMATION:
-      return <FamilyInformationList />;
+      return <FamilyInformationList targetMember={targetMember} />;
   }
 };

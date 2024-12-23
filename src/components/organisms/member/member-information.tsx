@@ -4,6 +4,7 @@ import styled from "styled-components";
 import MemberInformationHeader from "@/components/molecules/member/member-information-header";
 import { getMemberInformationContent } from "@/hooks/layout/render-layout";
 import { MEMBER_INFORMATION_HEADER_ID } from "@/constants/layout/header";
+import { Member } from "@/models/member/member";
 
 const InformationContainer = styled.div`
   display: flex;
@@ -20,11 +21,13 @@ const ContentContainer = styled.div`
   flex-grow: 1;
 `;
 
-type MemberInformationProps = {};
+type MemberInformationProps = {
+  targetMember: Member;
+};
 
-const MemberInformation = ({}: MemberInformationProps) => {
+const MemberInformation = ({ targetMember }: MemberInformationProps) => {
   const [contentId, setContentId] = useState<string>(
-    MEMBER_INFORMATION_HEADER_ID.MEMBER_INFORMATION,
+    MEMBER_INFORMATION_HEADER_ID.PERSONAL_INFORMATION,
   );
 
   const onClickHeaderBarItem = (id: string) => {
@@ -38,7 +41,7 @@ const MemberInformation = ({}: MemberInformationProps) => {
         onClickItem={onClickHeaderBarItem}
       />
       <ContentContainer>
-        {getMemberInformationContent(contentId)}
+        {getMemberInformationContent(contentId, targetMember)}
       </ContentContainer>
     </InformationContainer>
   );
