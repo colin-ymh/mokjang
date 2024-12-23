@@ -18,11 +18,11 @@ const MemberInformationList = ({}: MemberInformationListProps) => {
   };
 
   const onChangeMinistry = (value: string) => {
-    dispatch(setMember({ ...member, ministryId: value }));
+    // dispatch(setMember({ ...member, ministryId: value }));
   };
 
   const onChangeEducation = (value: string) => {
-    dispatch(setMember({ ...member, educationId: value }));
+    // dispatch(setMember({ ...member, educationId: value }));
   };
 
   const props = {

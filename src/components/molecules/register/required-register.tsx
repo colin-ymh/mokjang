@@ -120,8 +120,8 @@ const RequiredRegister = () => {
   };
 
   // 가족 선택 시 이벤트
-  const onChangeFamilyId = (value: string) => {
-    dispatch(setMember({ ...member, familyId: value }));
+  const onChangeFamilyMemberId = (value: string) => {
+    dispatch(setMember({ ...member, familyMemberId: value }));
   };
 
   const onChangeFamilyRelation = (value: FAMILY) => {
@@ -139,7 +139,7 @@ const RequiredRegister = () => {
     onChangeGuideName,
     onChangeGuidedById,
     onChangeFamilyMemberName,
-    onChangeFamilyId,
+    onChangeFamilyMemberId,
     onChangeFamilyRelation,
   };
 

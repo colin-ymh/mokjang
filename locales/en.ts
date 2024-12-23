@@ -6,6 +6,7 @@ export default {
   // 필수
   name: "Name",
   mobilePhone: "Mobile Phone",
+  verifyNumber: "verifyNumber",
   guide: "Guide",
   family: "Family",
   relation: "Relation",
@@ -63,7 +64,7 @@ export default {
   사위: "Son-in-Law",
   며느리: "Daughter-in-Law",
   시부: "Husband's Father-in-Law",
-  시모: "Husband's Motehr-in-Law",
+  시모: "Husband's Mother-in-Law",
   장인: "Wife's Father-in-Law",
   장모: "Wife's Mother-in-Law",
   친인척: "Relative",
@@ -99,6 +100,8 @@ export default {
   "button.invite": "Invite",
   "button.cancel": "Cancel",
   "button.confirm": "Confirm",
+
+  "button.signIn": "Sign In",
 
   /*-------------------button-------------------*/
 

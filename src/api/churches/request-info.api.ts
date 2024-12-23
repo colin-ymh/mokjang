@@ -1,5 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 import { EditMemberBody } from "@/api/churches/members.api";
+import { SERVER_URL, TEST_SERVER_URL } from "@/constants/state/url";
 
 class HTTPError extends Error {}
 
@@ -12,7 +13,7 @@ type InviteMemberBody = {
   name: string;
   mobilePhone: string;
   guidedById?: string;
-  familyId?: string;
+  familyMemberId?: string;
 };
 
 type RequestValidationParams = {
@@ -40,8 +41,8 @@ export class RequestInfoApi {
 
   constructor(useBaseURL: boolean) {
     this._url = useBaseURL
-      ? "http://localhost:3001" // 실제 사용할 url
-      : "http://localhost:3001"; // 개발용 url
+      ? SERVER_URL // 실제 사용할 url
+      : TEST_SERVER_URL; // 개발용 url
   }
 
   /**

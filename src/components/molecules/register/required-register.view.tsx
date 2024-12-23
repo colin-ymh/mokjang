@@ -41,7 +41,7 @@ export type RequiredRegisterViewProps = {
   onChangeGuideName: (event: ChangeEvent<HTMLInputElement>) => void;
   onChangeGuidedById: (value: string) => void;
   onChangeFamilyMemberName: (event: ChangeEvent<HTMLInputElement>) => void;
-  onChangeFamilyId: (value: string) => void;
+  onChangeFamilyMemberId: (value: string) => void;
   onChangeFamilyRelation: (value: FAMILY) => void;
 };
 
@@ -56,7 +56,7 @@ const RequiredRegisterView = ({
   onChangeGuideName,
   onChangeGuidedById,
   onChangeFamilyMemberName,
-  onChangeFamilyId,
+  onChangeFamilyMemberId,
   onChangeFamilyRelation,
 }: RequiredRegisterViewProps) => {
   const t = useI18n();
@@ -139,7 +139,7 @@ const RequiredRegisterView = ({
         value={familyMemberName}
         items={familyMemberItems}
         onChange={onChangeFamilyMemberName}
-        onChangeItem={onChangeFamilyId}
+        onChangeItem={onChangeFamilyMemberId}
         placeholder={t_placeholder("family")}
         isEditable={true}
         onKeyDown={onClickEnter}

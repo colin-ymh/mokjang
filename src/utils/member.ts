@@ -24,8 +24,8 @@ export const getCreateMemberBody = (member: Member) => {
     newMember.guidedById = member.guidedById;
   }
 
-  if (member.familyId) {
-    newMember.familyMemberId = member.familyId;
+  if (member.familyMemberId) {
+    newMember.familyMemberId = member.familyMemberId;
   }
 
   if (member.relation) {

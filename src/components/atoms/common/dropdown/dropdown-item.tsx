@@ -1,14 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 import { BLACK, GRAY, MAIN } from "@/constants/styles/color";
+import { MainText } from "@/components/atoms/common/text/main-text";
 
-const DropdownContainer = styled.div<{
-  $isSelected: boolean;
-}>`
+const DropdownContainer = styled.div`
   display: flex;
   flex-direction: column;
-  font-size: 16px;
-  color: ${({ $isSelected }) => ($isSelected ? MAIN.DEFAULT : BLACK)};
   transition: background-color 0.3s ease;
   border-radius: 5px;
   padding: 10px;
@@ -33,11 +30,10 @@ type DropdownItemProps = {
 
 const DropdownItem = ({ isSelected, onClick, item }: DropdownItemProps) => {
   return (
-    <DropdownContainer
-      $isSelected={isSelected}
-      onClick={() => onClick(item.value)}
-    >
-      {item.title}
+    <DropdownContainer onClick={() => onClick(item.value)}>
+      <MainText color={isSelected ? MAIN.DEFAULT : BLACK}>
+        {item.title}
+      </MainText>
     </DropdownContainer>
   );
 };

@@ -7,6 +7,11 @@ export type FamilyMember = {
   familyMember: Member;
 };
 
+export type ChurchInformation = {
+  id: string;
+  name: string;
+};
+
 export type Member = {
   id: string;
   name: string;
@@ -18,7 +23,7 @@ export type Member = {
   address: string;
   detailAddress: string;
   homePhone: string;
-  familyId: string;
+  familyMemberId: string;
   family: FamilyMember[];
   relation: FAMILY;
   occupation: string;
@@ -29,11 +34,13 @@ export type Member = {
   guidedById: string; // 인도자 id
   // 성도정보
   baptism: BAPTISM; // 신급
-  ministryId: string; // 사역
+  ministries: ChurchInformation[];
   groupId: string; // 소그룹
+  group: ChurchInformation;
   officerId: string; // 직분
+  officer: ChurchInformation;
   officerStartDate: string;
   officerStartChurch: string;
-  educationId: NULL;
+  educations: ChurchInformation[];
   previousChurchName: string; // 이전 교회
 };

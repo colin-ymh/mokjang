@@ -1,9 +1,11 @@
-import { Member } from "@/models/member/member";
-import MemberPersonalInformationListView from "@/components/molecules/member/member-personal-information-list.view";
+import React, { ChangeEvent, RefObject, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
 import { setMember } from "@/redux/reducers/member-register-reducer";
-import React, { ChangeEvent, RefObject, useState } from "react";
+import DaumPostcodeEmbed, { Address } from "react-daum-postcode";
+
+import { Member } from "@/models/member/member";
+import MemberPersonalInformationListView from "@/components/molecules/member/member-personal-information-list.view";
 import {
   getFormattedDate,
   getFormattedHomePhone,
@@ -14,7 +16,6 @@ import { getIsWellFormedBirth, getIsWellFormedHomePhone } from "@/utils/check";
 import { CALENDAR_MODE, MARRIAGE } from "@/constants/constant";
 import { DropdownValueType } from "@/components/atoms/common/dropdown/dropdown-item";
 import { getSchool } from "@/api/school-api";
-import DaumPostcodeEmbed, { Address } from "react-daum-postcode";
 import PagePopup from "@/components/atoms/common/popup/page-popup";
 
 type PersonalInformationListProps = {};
@@ -37,17 +38,20 @@ const PersonalInformationList = ({}: PersonalInformationListProps) => {
     nextInputRef?: RefObject<HTMLInputElement>,
   ) => {
     const newBirth = getFormattedDate(event.target.value);
-    dispatch(setMember({ ...member, birth: newBirth }));
 
-    // 생년월일을 다 입력한 경우
-    if (getIsWellFormedBirth(newBirth)) {
-      // 다음 입력이 있다면 다음 입력으로
-      if (nextInputRef?.current) {
-        nextInputRef.current.focus();
-      }
-      // 없으면 키보드 내리기
-      else {
-        (event.target as HTMLInputElement).blur();
+    if (newBirth) {
+      dispatch(setMember({ ...member, birth: newBirth }));
+
+      // 생년월일을 다 입력한 경우
+      if (getIsWellFormedBirth(newBirth)) {
+        // 다음 입력이 있다면 다음 입력으로
+        if (nextInputRef?.current) {
+          nextInputRef.current.focus();
+        }
+        // 없으면 키보드 내리기
+        else {
+          (event.target as HTMLInputElement).blur();
+        }
       }
     }
   };

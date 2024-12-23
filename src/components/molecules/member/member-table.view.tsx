@@ -15,6 +15,7 @@ import { Member } from "@/models/member/member";
 import { useMemberTableItems } from "@/hooks/table/table-header";
 import DefaultImage from "../../../../public/png/default-member-image.png";
 import { useI18n } from "../../../../locales/client";
+import MemberTableHeader from "@/components/atoms/member/member-table-header";
 
 const TableContainer = styled.div`
   display: flex;
@@ -80,7 +81,6 @@ type MemberTableProps = {
   members: Member[];
   page: number;
   onClickMemberItem: (memberId: string) => void;
-  onClickHeader: (id: MEMBER) => void;
   onClickNextPage: () => void;
   onClickPrevPage: () => void;
 };
@@ -89,13 +89,11 @@ const MemberTableView = ({
   members,
   page,
   onClickMemberItem,
-  onClickHeader,
   onClickNextPage,
   onClickPrevPage,
 }: MemberTableProps) => {
   const t = useI18n();
   const tableHeaderItems = useMemberTableItems();
-  const { officers } = useSelector((state: RootState) => state.church);
 
   const getMemberTableContent = (id: MEMBER, member: Member) => {
     switch (id) {
@@ -120,7 +118,9 @@ const MemberTableView = ({
       case MEMBER.BIRTH:
         return (
           <MainText fontSize={16}>
-            {`${getFormattedDate(member.birth)} (${getAge(getDateFromString(member.birth))}세)`}
+            {member.birth
+              ? `${getFormattedDate(member.birth)} (${getAge(getDateFromString(member.birth))}세)`
+              : "--"}
           </MainText>
         );
       case MEMBER.BAPTISM:
@@ -129,10 +129,10 @@ const MemberTableView = ({
         );
       case MEMBER.OFFICER:
         return <MainText fontSize={16}>{member.officerId}</MainText>;
-      case MEMBER.MINISTRY:
-        return <MainText fontSize={16}>{member.ministryId}</MainText>;
-      case MEMBER.EDUCATION:
-        return <MainText fontSize={16}>{member.educationId}</MainText>;
+      // case MEMBER.MINISTRY:
+      //   return <MainText fontSize={16}>{member.ministryId}</MainText>;
+      // case MEMBER.EDUCATION:
+      //   return <MainText fontSize={16}>{member.educationId}</MainText>;
       default:
         return null;
     }
@@ -143,11 +143,8 @@ const MemberTableView = ({
         <thead>
           <tr>
             {tableHeaderItems.map((item) => (
-              <th
-                key={item.id}
-                onClick={() => item.isSortable && onClickHeader(item.id)}
-              >
-                <MainText>{item.title}</MainText>
+              <th key={item.id}>
+                <MemberTableHeader item={item} />
               </th>
             ))}
           </tr>

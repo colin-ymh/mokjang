@@ -21,11 +21,6 @@ type AddFilterProps = {
 
 const AddFilter = ({ setIsShown }: AddFilterProps) => {
   const dispatch = useDispatch<AppDispatch>();
-  // 검색 필터 주제
-  const [searchFilter, setSearchFilter] = useState<SEARCH_FILTER>(MEMBER.NAME);
-
-  // 검색 필터 내용
-  const [searchValue, setSearchValue] = useState<string>(BLANK);
 
   // 현재 열려있는 필터
   const [openedFilter, setOpenedFilter] = useState<NONE_SEARCH_FILTER>(NULL);
@@ -45,17 +40,6 @@ const AddFilter = ({ setIsShown }: AddFilterProps) => {
   // 직분 필터
   const [officer, setOfficer] = useState<string | typeof NULL>(NULL);
 
-  // 검색 주제 선택
-  const onClickSearchFilterItem = (value: SEARCH_FILTER) => {
-    setSearchFilter(value);
-  };
-
-  // 검색 내용 변경
-  const onChangeSearchValue = (event: ChangeEvent<HTMLInputElement>) => {
-    const newValue = getTrimmedString(event.target.value);
-    setSearchValue(newValue);
-  };
-
   // 특정 필터 열고 닫기
   const onClickFilterTitle = (value: NONE_SEARCH_FILTER) => {
     if (openedFilter === value) {
@@ -68,13 +52,17 @@ const AddFilter = ({ setIsShown }: AddFilterProps) => {
   // birthAfter 변경
   const onChangeBirthAfter = (event: ChangeEvent<HTMLInputElement>) => {
     const newValue = getFormattedDate(event.target.value);
-    setBirthAfter(newValue);
+    if (newValue) {
+      setBirthAfter(newValue);
+    }
   };
 
   // birthBefore 변경
   const onChangeBirthBefore = (event: ChangeEvent<HTMLInputElement>) => {
     const newValue = getFormattedDate(event.target.value);
-    setBirthBefore(newValue);
+    if (newValue) {
+      setBirthAfter(newValue);
+    }
   };
 
   // 성별 변경
@@ -95,21 +83,27 @@ const AddFilter = ({ setIsShown }: AddFilterProps) => {
   const onClickSearch = () => {
     let newMemberFilter = { ...INITIAL_MEMBER_FILTER };
 
-    // 선택된 필터에만 값을 설정
-    if (searchFilter === MEMBER.NAME) {
-      newMemberFilter.name = searchValue;
-    } else if (searchFilter === MEMBER.SCHOOL) {
-      newMemberFilter.school = searchValue;
-    } else if (searchFilter === MEMBER.VEHICLE_NUMBER) {
-      newMemberFilter.vehicleNumber = searchValue;
-    }
+    // // 선택된 필터에만 값을 설정
+    // if (searchFilter === MEMBER.NAME) {
+    //   newMemberFilter.name = searchValue;
+    // } else if (searchFilter === MEMBER.SCHOOL) {
+    //   newMemberFilter.school = searchValue;
+    // } else if (searchFilter === MEMBER.VEHICLE_NUMBER) {
+    //   newMemberFilter.vehicleNumber = searchValue;
+    // }
 
     if (getIsWellFormedBirth(birthAfter)) {
-      newMemberFilter.birthAfter = getFormattedDate(birthAfter);
+      const newBirthAfter = getFormattedDate(birthAfter);
+      if (newBirthAfter) {
+        newMemberFilter.birthAfter = newBirthAfter;
+      }
     }
 
     if (getIsWellFormedBirth(birthBefore)) {
-      newMemberFilter.birthBefore = getFormattedDate(birthBefore);
+      const newBirthBefore = getFormattedDate(birthBefore);
+      if (newBirthBefore) {
+        newMemberFilter.birthBefore = newBirthBefore;
+      }
     }
 
     if (gender !== NULL) {
@@ -130,8 +124,8 @@ const AddFilter = ({ setIsShown }: AddFilterProps) => {
   };
 
   const onClickReset = () => {
-    setSearchFilter(MEMBER.NAME);
-    setSearchValue(BLANK);
+    // setSearchFilter(MEMBER.NAME);
+    // setSearchValue(BLANK);
     setBaptism(NULL);
     setGender(NULL);
     setBirthAfter(BLANK);
@@ -140,8 +134,8 @@ const AddFilter = ({ setIsShown }: AddFilterProps) => {
   };
 
   const props = {
-    searchFilter,
-    searchValue,
+    // searchFilter,
+    // searchValue,
     openedFilter,
     birthAfter,
     birthBefore,
@@ -149,8 +143,8 @@ const AddFilter = ({ setIsShown }: AddFilterProps) => {
     baptism,
     officer,
     onClickFilterTitle,
-    onClickSearchFilterItem,
-    onChangeSearchValue,
+    // onClickSearchFilterItem,
+    // onChangeSearchValue,
     onChangeBirthAfter,
     onChangeBirthBefore,
     onChangeGender,

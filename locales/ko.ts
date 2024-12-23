@@ -6,6 +6,7 @@ export default {
   // 필수
   name: "이름",
   mobilePhone: "휴대전화",
+  verifyNumber: "인증번호",
   guide: "인도자",
   family: "가족",
   relation: "가족관계",
@@ -101,6 +102,8 @@ export default {
   "button.invite": "초대하기",
   "button.cancel": "취소",
   "button.confirm": "확인",
+
+  "button.signIn": "회원가입 완료하기",
 
   /*-------------------button-------------------*/
 

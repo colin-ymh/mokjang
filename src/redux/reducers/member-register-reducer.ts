@@ -18,6 +18,11 @@ type MemberRegisterState = {
   isStageClear: boolean;
 };
 
+export const NULL_INFORMATION = {
+  id: NULL,
+  name: NULL,
+};
+
 export const DEFAULT_MEMBER: Member = {
   id: BLANK,
   profileImage: BLANK,
@@ -37,14 +42,17 @@ export const DEFAULT_MEMBER: Member = {
   gender: GENDER.MALE,
   vehicleNumber: [BLANK, BLANK, BLANK],
   officerId: NULL,
+  officer: NULL_INFORMATION,
   officerStartDate: BLANK,
   officerStartChurch: BLANK,
   guidedById: BLANK,
-  familyId: BLANK,
+  familyMemberId: BLANK,
+  family: [],
   relation: FAMILY.FAMILY,
-  ministryId: NULL,
+  ministries: [],
   groupId: NULL,
-  educationId: NULL,
+  group: NULL_INFORMATION,
+  educations: [],
 };
 
 const initialState: MemberRegisterState = {

@@ -10,9 +10,7 @@ import {
   useBaptismDropdownItems,
   useGenderDropdownItems,
   useOfficerDropdownItems,
-  useSearchFilterDropdownItems,
 } from "@/hooks/dropdown/dropdown-items";
-import MainInput from "@/components/atoms/common/input/main-input";
 import Button from "@/components/atoms/common/button/button";
 import { BAPTISM, GENDER, NONE, NULL } from "@/constants/constant";
 
@@ -29,16 +27,6 @@ const Header = styled.div`
   display: flex;
   flex-direction: row;
   width: 100%;
-`;
-
-const SearchContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  padding: 10px;
-  border-bottom: 1px solid ${GRAY.DEFAULT};
 `;
 
 const Icon = styled.div`
@@ -88,8 +76,6 @@ export type NONE_SEARCH_FILTER =
   | typeof NULL;
 
 type AddFilterViewProps = {
-  searchFilter: SEARCH_FILTER;
-  searchValue: string;
   openedFilter: NONE_SEARCH_FILTER;
   birthAfter: string;
   birthBefore: string;
@@ -97,8 +83,6 @@ type AddFilterViewProps = {
   baptism: BAPTISM | typeof NULL;
   officer: string | typeof NULL;
   onClickFilterTitle: (value: NONE_SEARCH_FILTER) => void;
-  onClickSearchFilterItem: (value: SEARCH_FILTER) => void;
-  onChangeSearchValue: (event: ChangeEvent<HTMLInputElement>) => void;
   onChangeBirthAfter: (event: ChangeEvent<HTMLInputElement>) => void;
   onChangeBirthBefore: (event: ChangeEvent<HTMLInputElement>) => void;
   onChangeGender: (value: GENDER | typeof NULL) => void;
@@ -110,8 +94,6 @@ type AddFilterViewProps = {
 };
 
 const AddFilterView = ({
-  searchFilter,
-  searchValue,
   openedFilter,
   birthAfter,
   birthBefore,
@@ -119,8 +101,6 @@ const AddFilterView = ({
   baptism,
   officer,
   onClickFilterTitle,
-  onClickSearchFilterItem,
-  onChangeSearchValue,
   onChangeBirthAfter,
   onChangeBirthBefore,
   onChangeGender,
@@ -138,21 +118,7 @@ const AddFilterView = ({
         <Button text={"리셋"} onClick={onClickReset} />
         <Button text={"닫기"} onClick={onClickClose} />
       </Header>
-      {/* 검색 부분 */}
-      <SearchContainer>
-        <Dropdown
-          value={searchFilter}
-          items={useSearchFilterDropdownItems()}
-          onChangeItem={onClickSearchFilterItem}
-          height={40}
-          borderColor={GRAY.DEFAULT}
-        />
-        <MainInput
-          value={searchValue}
-          onChange={onChangeSearchValue}
-          height={40}
-        />
-      </SearchContainer>
+
       {/* 필터 항목들 */}
       {/* 생년월일 */}
       <FilterItem>

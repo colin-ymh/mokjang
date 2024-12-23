@@ -12,11 +12,6 @@ import {
   DEFAULT_MEMBER,
   setMember,
 } from "@/redux/reducers/member-register-reducer";
-import {
-  getFormattedDate,
-  getFormattedHomePhone,
-  getFormattedMobilePhone,
-} from "@/utils/format";
 import styled from "styled-components";
 import Button from "@/components/atoms/common/button/button";
 import { getEditMemberBody, getMemberFromServer } from "@/utils/member";
@@ -156,42 +151,44 @@ const MemberList = () => {
           );
         }
       }
-
-      // 사역 업데이트
-      if (targetMember.ministryId !== member.ministryId) {
-        if (member.ministryId === NULL) {
-          await memberSettingsApi.editMemberMinistry(
-            { churchId, memberId: member.id },
-            { isDeleteMinistry: true },
-          );
-        } else {
-          await memberSettingsApi.editMemberMinistry(
-            { churchId, memberId: member.id },
-            {
-              isDeleteMinistry: false,
-              ministryId: member.ministryId,
-            },
-          );
-        }
-      }
-
-      // 교육이수 업데이트
-      if (targetMember.educationId !== member.educationId) {
-        if (member.educationId === NULL) {
-          await memberSettingsApi.editMemberEducation(
-            { churchId, memberId: member.id },
-            { isDeleteEducation: true },
-          );
-        } else {
-          await memberSettingsApi.editMemberEducation(
-            { churchId, memberId: member.id },
-            {
-              isDeleteEducation: false,
-              educationId: member.educationId,
-            },
-          );
-        }
-      }
+      //
+      // // 사역 업데이트
+      // if (targetMember.ministries !== member.ministries) {
+      //   if (member.ministries) {
+      //     await memberSettingsApi.editMemberMinistry(
+      //       { churchId, memberId: member.id },
+      //       { isDeleteMinistry: true },
+      //     );
+      //   } else {
+      //     await memberSettingsApi
+      //       .editMemberMinistry(
+      //         { churchId, memberId: member.id },
+      //         {
+      //           isDeleteMinistry: false,
+      //           ministryId: member.ministries,
+      //         },
+      //       )
+      //       .then((response) => console.log(response));
+      //   }
+      // }
+      //
+      // // 교육이수 업데이트
+      // if (targetMember.educationId !== member.educationId) {
+      //   if (member.educationId === NULL) {
+      //     await memberSettingsApi.editMemberEducation(
+      //       { churchId, memberId: member.id },
+      //       { isDeleteEducation: true },
+      //     );
+      //   } else {
+      //     await memberSettingsApi.editMemberEducation(
+      //       { churchId, memberId: member.id },
+      //       {
+      //         isDeleteEducation: false,
+      //         educationId: member.educationId,
+      //       },
+      //     );
+      //   }
+      // }
 
       // 소그룹 업데이트
       if (targetMember.groupId !== member.groupId) {

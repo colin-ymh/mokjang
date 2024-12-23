@@ -67,6 +67,10 @@ const MemberInformationListView = ({
   const { groups, officers, ministries, educations } = useSelector(
     (state: RootState) => state.church,
   );
+
+  const ministryItems = useMinistryDropdownItems();
+  const educationItems = useEducationDropdownItems();
+
   return (
     <InformationListContainer>
       {/* 소그룹 */}
@@ -100,35 +104,39 @@ const MemberInformationListView = ({
         </InputContainer>
       </InformationContent>
       {/* 사역 */}
-      <InformationContent>
-        <ContentTitleContainer>
-          <ContentIcon />
-          <MainText>{t(MEMBER.MINISTRY)}</MainText>
-        </ContentTitleContainer>
-        <InputContainer>
-          <Dropdown
-            value={member.ministryId || NULL}
-            items={useMinistryDropdownItems()}
-            borderColor={GRAY.LIGHT}
-            onChangeItem={onChangeMinistry}
-          />
-        </InputContainer>
-      </InformationContent>
+      {member.ministries.map((ministry) => (
+        <InformationContent key={ministry.id}>
+          <ContentTitleContainer>
+            <ContentIcon />
+            <MainText>{t(MEMBER.MINISTRY)}</MainText>
+          </ContentTitleContainer>
+          <InputContainer>
+            <Dropdown
+              value={ministry.id}
+              items={ministryItems}
+              borderColor={GRAY.LIGHT}
+              onChangeItem={onChangeMinistry}
+            />
+          </InputContainer>
+        </InformationContent>
+      ))}
       {/* 교육 이수 */}
-      <InformationContent>
-        <ContentTitleContainer>
-          <ContentIcon />
-          <MainText>{t(MEMBER.EDUCATION)}</MainText>
-        </ContentTitleContainer>
-        <InputContainer>
-          <Dropdown
-            value={member.educationId || NULL}
-            items={useEducationDropdownItems()}
-            borderColor={GRAY.LIGHT}
-            onChangeItem={onChangeEducation}
-          />
-        </InputContainer>
-      </InformationContent>
+      {member.educations.map((education) => (
+        <InformationContent key={education.id}>
+          <ContentTitleContainer>
+            <ContentIcon />
+            <MainText>{t(MEMBER.EDUCATION)}</MainText>
+          </ContentTitleContainer>
+          <InputContainer>
+            <Dropdown
+              value={education.id}
+              items={educationItems}
+              borderColor={GRAY.LIGHT}
+              onChangeItem={onChangeEducation}
+            />
+          </InputContainer>
+        </InformationContent>
+      ))}
     </InformationListContainer>
   );
 };

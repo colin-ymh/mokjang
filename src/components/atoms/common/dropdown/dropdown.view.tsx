@@ -57,6 +57,7 @@ type DropdownViewProps = {
   borderColor?: string;
   width?: number;
   height?: number;
+  isContainerHidden?: boolean;
 };
 
 const DropdownView = forwardRef<
@@ -82,6 +83,7 @@ const DropdownView = forwardRef<
       borderColor,
       height,
       width,
+      isContainerHidden,
       ...inputProps
     },
     ref,

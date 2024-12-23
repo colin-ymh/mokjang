@@ -2,7 +2,9 @@
  * YYYY-MM-dd => Date Object
  * @param dateString
  */
-export const getDateFromString = (dateString: string) => {
+export const getDateFromString = (dateString: string | null) => {
+  if (!dateString) return null;
+
   const lengthLimit = 10;
   const limited = dateString.slice(0, lengthLimit);
 
@@ -16,7 +18,7 @@ export const getDateFromString = (dateString: string) => {
  * @return {boolean}
  */
 export const getIsChild = (date: Date | null): boolean => {
-  if (date === null) {
+  if (!date) {
     return false;
   }
 

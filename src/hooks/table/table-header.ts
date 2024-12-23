@@ -8,42 +8,34 @@ export const useMemberTableItems = () => {
     {
       id: MEMBER.NAME,
       title: t(MEMBER.NAME),
-      isSortable: true,
     },
     {
       id: MEMBER.MOBILE_PHONE,
       title: t(MEMBER.MOBILE_PHONE),
-      isSortable: false,
     },
     {
       id: MEMBER.GROUP,
       title: t(MEMBER.GROUP),
-      isSortable: true,
     },
     {
       id: MEMBER.GENDER,
       title: t(MEMBER.GENDER),
-      isSortable: true,
     },
     {
       id: MEMBER.BIRTH,
       title: t(MEMBER.BIRTH),
-      isSortable: true,
     },
     {
       id: MEMBER.OFFICER,
       title: t(MEMBER.OFFICER),
-      isSortable: true,
     },
     {
       id: MEMBER.MINISTRY,
       title: t(MEMBER.MINISTRY),
-      isSortable: false,
     },
     {
       id: MEMBER.EDUCATION,
       title: t(MEMBER.EDUCATION),
-      isSortable: false,
     },
   ];
 

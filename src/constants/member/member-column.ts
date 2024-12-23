@@ -9,7 +9,7 @@ export enum MEMBER {
   ADDRESS = "address",
   DETAIL_ADDRESS = "detailAddress",
   HOME_PHONE = "homePhone",
-  FAMILY_ID = "familyId",
+  FAMILY_MEMBER_ID = "familyMemberId",
   OCCUPATION = "occupation",
   SCHOOL = "school",
   MARRIAGE = "marriage",
