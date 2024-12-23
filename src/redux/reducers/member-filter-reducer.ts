@@ -17,6 +17,7 @@ type MEMBER_FILTER = {
   officer: string;
   birthAfter: string;
   birthBefore: string;
+  groupId: string;
 };
 
 type MemberFilterState = {
@@ -34,6 +35,7 @@ export const INITIAL_MEMBER_FILTER: MEMBER_FILTER = {
   officer: BLANK,
   birthAfter: BLANK,
   birthBefore: BLANK,
+  groupId: BLANK,
 };
 
 const initialState: MemberFilterState = {

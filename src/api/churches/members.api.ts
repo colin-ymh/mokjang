@@ -107,6 +107,7 @@ export class MembersApi {
       birthBefore,
       gender,
       baptism,
+      groupId,
     } = params;
     const queryParams: Record<string, any> = {
       take,
@@ -147,6 +148,10 @@ export class MembersApi {
 
     if (baptism) {
       queryParams.baptism = baptism.toString();
+    }
+
+    if (groupId) {
+      queryParams.groupId = groupId.toString();
     }
 
     const url = `${this._url}/churches/${churchId}/members`;

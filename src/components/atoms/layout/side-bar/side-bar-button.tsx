@@ -7,6 +7,8 @@ import { AppDispatch, RootState } from "@/redux/store";
 import { setContentId, setHeaderId } from "@/redux/reducers/layout-reducer";
 import { HEADER_ID } from "@/constants/layout/header";
 import { HOME_CONTENT_ID, MEMBER_CONTENT_ID } from "@/constants/layout/content";
+import { setMemberFilter } from "@/redux/reducers/member-filter-reducer";
+import { BLANK } from "@/constants/constant";
 
 const ButtonContainer = styled.div`
   display: flex;
@@ -16,9 +18,10 @@ const ButtonContainer = styled.div`
   border-radius: 5px;
   gap: 10px;
   align-items: center;
+  cursor: pointer;
 
   &:hover {
-    background-color: ${GRAY.DEFAULT};
+    background-color: ${GRAY.LIGHT};
   }
 `;
 
@@ -37,6 +40,9 @@ type SideBarButtonProps = {
 const SideBarButton = ({ id, title }: SideBarButtonProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const headerId = useSelector((state: RootState) => state.layout.headerId);
+  const memberFilter = useSelector(
+    (state: RootState) => state.memberFilter.memberFilter,
+  );
 
   const onClick = (id: string) => {
     dispatch(setHeaderId(id));
@@ -47,6 +53,7 @@ const SideBarButton = ({ id, title }: SideBarButtonProps) => {
         return;
       case HEADER_ID.MEMBER:
         dispatch(setContentId(MEMBER_CONTENT_ID.MEMBER));
+        dispatch(setMemberFilter({ ...memberFilter, groupId: BLANK }));
         return;
     }
   };

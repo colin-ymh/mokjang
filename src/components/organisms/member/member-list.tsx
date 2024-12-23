@@ -72,6 +72,7 @@ const MemberList = () => {
         birthBefore: memberFilter.birthBefore || undefined,
         baptism:
           memberFilter.baptism !== NULL ? memberFilter.baptism : undefined,
+        groupId: memberFilter.groupId || undefined,
       });
 
       return response.data.data;

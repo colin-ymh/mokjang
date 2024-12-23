@@ -6,9 +6,10 @@ const HeaderContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 200px;
+  height: 150px;
   padding: 30px 20px 0 20px;
   gap: 30px;
+  flex-shrink: 0; /* 크기가 줄어들지 않도록 설정 */
 `;
 
 const ProfileContainer = styled.div`
