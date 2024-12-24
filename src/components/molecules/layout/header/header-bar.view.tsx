@@ -2,9 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 import { MainText } from "@/components/atoms/common/text/main-text";
-import { useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
-import { BLACK, MAIN, WHITE } from "@/constants/styles/color";
+import { GRAY, MAIN, WHITE } from "@/constants/styles/color";
 
 const HeaderBarContainer = styled.div`
   display: flex;
@@ -43,7 +41,10 @@ const HeaderBarView = ({ value, items, onClick }: HeaderBarViewProps) => {
             onClick={() => onClick(id)}
             $isSelected={id === value}
           >
-            <MainText fontSize={16} color={id === value ? MAIN.DEFAULT : BLACK}>
+            <MainText
+              color={id === value ? MAIN.DEFAULT : GRAY.DARK}
+              fontWeight={600}
+            >
               {title}
             </MainText>
           </BarItem>

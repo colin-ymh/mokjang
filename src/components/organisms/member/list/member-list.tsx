@@ -3,9 +3,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
 
 import { MembersApi } from "@/api/churches/members.api";
-import MemberInformation from "@/components/organisms/member/member-information";
+import MemberInformation from "@/components/organisms/member/information/member-information";
 import CustomPopup from "@/components/atoms/common/popup/custom-popup";
-import MemberListView from "@/components/organisms/member/member-list.view";
+import MemberListView from "@/components/organisms/member/list/member-list.view";
 import { Member } from "@/models/member/member";
 import { NULL } from "@/constants/constant";
 import {
@@ -14,8 +14,10 @@ import {
 } from "@/redux/reducers/member-register-reducer";
 import styled from "styled-components";
 import Button from "@/components/atoms/common/button/button";
-import { getEditMemberBody, getMemberFromServer } from "@/utils/member";
+import { getMemberFromServer } from "@/utils/member";
 import { MemberSettingsApi } from "@/api/churches/member-settings.api";
+import useWindowSize from "@/hooks/window/window";
+import { MEMBER } from "@/constants/member/member-column";
 
 const ButtonContainer = styled.div`
   display: flex;
@@ -26,6 +28,7 @@ const ButtonContainer = styled.div`
 `;
 
 const MemberList = () => {
+  const { height } = useWindowSize();
   const membersApi = new MembersApi(false);
   const memberSettingsApi = new MemberSettingsApi(false);
   const dispatch = useDispatch<AppDispatch>();
@@ -47,7 +50,28 @@ const MemberList = () => {
   // 교인 목록에 보여지는 교인들
   const [members, setMembers] = useState<Member[]>([]);
 
-  const TAKE = 12;
+  // 화면에서 보여줄 수 있는 교인 수
+  const getTakeByHeight = (height: number) => {
+    const HEADER = 100;
+    const FILTER = 40;
+    const TABLE_TITLE = 20;
+    const BOTTOM_BUTTON = 60;
+
+    const MEMBER_ITEM_HEIGHT = 45;
+
+    const result =
+      (height - HEADER * 2 - FILTER - TABLE_TITLE - BOTTOM_BUTTON) /
+      MEMBER_ITEM_HEIGHT;
+
+    return Math.floor(result);
+  };
+
+  // 한 번에 보여질 교인 수
+  const [take, setTake] = useState<number>(getTakeByHeight(height));
+
+  useEffect(() => {
+    setTake(getTakeByHeight(height));
+  }, [height]);
 
   // 서버에서 불러오는 교인 목록 페이지
   const [page, setPage] = useState<number>(1);
@@ -57,12 +81,16 @@ const MemberList = () => {
       return [];
     }
 
+    // 나이 = 생년월일로
+    let order = memberOrderBy;
+    if (order === MEMBER.AGE) order = MEMBER.BIRTH;
+
     try {
       const response = await membersApi.getMembers({
         churchId,
         page,
-        take: TAKE,
-        order: memberOrderBy !== NULL ? memberOrderBy : undefined,
+        take,
+        order: order !== NULL ? order : undefined,
         orderDirection: memberOrderDirection,
         name: memberFilter.name,
         school: memberFilter.school,
@@ -85,7 +113,7 @@ const MemberList = () => {
   // 필터 정보가 변경될 때, 교인 목록을 서버에서 새로 불러옴
   useEffect(() => {
     getMembersFromServer(page).then((members) => setMembers(members));
-  }, [churchId, memberFilter, memberOrderBy, memberOrderDirection]);
+  }, [take, churchId, memberFilter, memberOrderBy, memberOrderDirection]);
 
   // 목록에서 교인을 선택하여 상세 페이지로 이동
   const onClickMemberItem = (memberId: string) => {

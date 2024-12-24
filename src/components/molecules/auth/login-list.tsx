@@ -29,24 +29,16 @@ const LoginList = () => {
   return (
     <ListContainer>
       <OAuthItem $backgroundColor={NAVER_COLOR}>
-        <MainText fontSize={16} color={WHITE}>
-          {"네이버"}
-        </MainText>
+        <MainText color={WHITE}>{"네이버"}</MainText>
       </OAuthItem>
       <OAuthItem $backgroundColor={WHITE}>
-        <MainText fontSize={16} color={BLACK}>
-          {"구글"}
-        </MainText>
+        <MainText color={BLACK}>{"구글"}</MainText>
       </OAuthItem>
       <OAuthItem $backgroundColor={KAKAO_COLOR}>
-        <MainText fontSize={16} color={BLACK}>
-          {"카카오"}
-        </MainText>
+        <MainText color={BLACK}>{"카카오"}</MainText>
       </OAuthItem>
       <OAuthItem $backgroundColor={BLACK}>
-        <MainText fontSize={16} color={WHITE}>
-          {"애플"}
-        </MainText>
+        <MainText color={WHITE}>{"애플"}</MainText>
       </OAuthItem>
     </ListContainer>
   );

@@ -1,12 +1,10 @@
 import styled from "styled-components";
-import { useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
 
 import { MainText } from "@/components/atoms/common/text/main-text";
 import { MEMBER } from "@/constants/member/member-column";
 import { GRAY } from "@/constants/styles/color";
 
-import { useI18n } from "../../../../locales/client";
+import { useI18n } from "../../../../../locales/client";
 import { Member } from "@/models/member/member";
 
 const InformationListContainer = styled.div`

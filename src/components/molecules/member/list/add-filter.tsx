@@ -9,7 +9,7 @@ import {
 import AddFilterView, {
   NONE_SEARCH_FILTER,
   SEARCH_FILTER,
-} from "@/components/molecules/member/add-filter.view";
+} from "@/components/molecules/member/list/add-filter.view";
 import { MEMBER } from "@/constants/member/member-column";
 import { BAPTISM, BLANK, GENDER, NULL } from "@/constants/constant";
 import { getFormattedDate, getTrimmedString } from "@/utils/format";

@@ -12,6 +12,7 @@ import { onClickEnter } from "@/utils/input";
 import { MEDIA_MIN_WIDTH } from "@/constants/constant";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
+import { SIZE } from "@/constants/styles/style";
 
 const CheckRegisterContainer = styled.div`
   display: flex;
@@ -71,7 +72,7 @@ const CheckRegisterView = ({
   return (
     <CheckRegisterContainer>
       <HeaderTextContainer>
-        <MainText fontSize={23} fontWeight={500}>
+        <MainText size={SIZE.EXTRA_LARGE}>
           {t_register("checkRegisterPhrase")}
         </MainText>
       </HeaderTextContainer>

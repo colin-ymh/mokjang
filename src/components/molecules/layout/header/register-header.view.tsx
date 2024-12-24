@@ -64,7 +64,7 @@ const RegisterHeaderView = ({
             onClick={onClickDone}
             backgroundColor={WHITE}
             color={isStageClear ? MAIN.DEFAULT : GRAY.DARK}
-            fontSize={17}
+            fontSize={18}
             disabled={!isStageClear}
           />
         )}

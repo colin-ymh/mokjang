@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
 import { setMember } from "@/redux/reducers/member-register-reducer";
-import MemberInformationListView from "@/components/molecules/member/member-information-list.view";
+import MemberInformationListView from "@/components/molecules/member/information/member-information-list.view";
 
 type MemberInformationListProps = {};
 

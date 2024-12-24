@@ -4,6 +4,7 @@ export enum MEMBER {
   MOBILE_PHONE = "mobilePhone",
   PROFILE_IMAGE = "profileImage",
   BIRTH = "birth",
+  AGE = "age",
   IS_LUNAR = "isLunar",
   GENDER = "gender",
   ADDRESS = "address",

@@ -2,6 +2,7 @@ export default {
   none: "없음",
   null: "--",
   type: "종류",
+  search: "검색",
 
   // 필수
   name: "이름",

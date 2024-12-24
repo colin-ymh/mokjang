@@ -12,6 +12,7 @@ import ExtraButtonList from "@/components/molecules/register/extra-button-list";
 import { GRAY } from "@/constants/styles/color";
 
 import { useScopedI18n } from "../../../../locales/client";
+import { SIZE } from "@/constants/styles/style";
 
 const RegisterContainer = styled.div`
   display: flex;
@@ -41,7 +42,7 @@ const ExtraMemberRegisterView = ({}: ExtraMemberRegisterViewProps) => {
   return (
     <RegisterContainer>
       <TextContainer>
-        <MainText fontSize={23} fontWeight={600}>
+        <MainText size={SIZE.EXTRA_LARGE}>
           {t_register("extraHeaderPhrase")}
         </MainText>
       </TextContainer>

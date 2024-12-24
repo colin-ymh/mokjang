@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { MainText } from "@/components/atoms/common/text/main-text";
 import { BLACK, DESTRUCTIVE, MAIN, WHITE } from "@/constants/styles/color";
+import { SIZE } from "@/constants/styles/style";
 
 interface ConfirmPopupProps {
   title: string;
@@ -172,12 +173,8 @@ const ConfirmPopup = ({
     <ModalOverlay>
       <ModalContainer>
         <TextContainer>
-          <MainText fontSize={16} fontWeight={500}>
-            {title}
-          </MainText>
-          <MainText fontSize={14} fontWeight={400}>
-            {body}
-          </MainText>
+          <MainText fontWeight={500}>{title}</MainText>
+          <MainText size={SIZE.SMALL}>{body}</MainText>
         </TextContainer>
         {getButtons()}
       </ModalContainer>

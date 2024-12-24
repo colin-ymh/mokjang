@@ -9,27 +9,20 @@ import { HEADER_ID } from "@/constants/layout/header";
 import { HOME_CONTENT_ID, MEMBER_CONTENT_ID } from "@/constants/layout/content";
 import { setMemberFilter } from "@/redux/reducers/member-filter-reducer";
 import { BLANK } from "@/constants/constant";
+import { SIZE } from "@/constants/styles/style";
 
 const ButtonContainer = styled.div`
   display: flex;
   flex-direction: row;
   padding: 5px 10px;
-  height: 40px;
+  height: 30px;
   border-radius: 5px;
-  gap: 10px;
   align-items: center;
   cursor: pointer;
 
   &:hover {
     background-color: ${GRAY.LIGHT};
   }
-`;
-
-const Icon = styled.div`
-  display: flex;
-  width: 15px;
-  height: 15px;
-  background-color: ${BLACK};
 `;
 
 type SideBarButtonProps = {
@@ -60,8 +53,11 @@ const SideBarButton = ({ id, title }: SideBarButtonProps) => {
 
   return (
     <ButtonContainer onClick={() => onClick(id)}>
-      <Icon />
-      <MainText fontSize={15} color={id === headerId ? MAIN.DEFAULT : BLACK}>
+      <MainText
+        size={SIZE.LARGE}
+        fontWeight={600}
+        color={id === headerId ? MAIN.DEFAULT : GRAY.DARK}
+      >
         {title}
       </MainText>
     </ButtonContainer>

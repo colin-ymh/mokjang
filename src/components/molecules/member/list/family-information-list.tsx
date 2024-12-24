@@ -87,7 +87,6 @@ const FamilyInformationList = ({
               <MainText>{member.familyMember.name}</MainText>
               <Button
                 text={"상세보기"}
-                fontSize={14}
                 width={70}
                 onClick={() => onClickFamilyMember(member.familyMemberId)}
               />

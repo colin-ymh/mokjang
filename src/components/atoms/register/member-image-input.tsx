@@ -83,8 +83,8 @@ type MemberImageInputProps = {
 const MemberImageInput = ({
   value,
   onChange,
-  width = 110,
-  height = 110,
+  width = 90,
+  height = 90,
 }: MemberImageInputProps) => {
   const t_button = useScopedI18n("button");
 

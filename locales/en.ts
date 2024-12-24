@@ -2,6 +2,7 @@ export default {
   none: "None",
   null: "--",
   type: "Type",
+  search: "Search",
 
   // 필수
   name: "Name",

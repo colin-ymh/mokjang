@@ -4,14 +4,14 @@ import styled from "styled-components";
 import Button from "@/components/atoms/common/button/button";
 import { MainText } from "@/components/atoms/common/text/main-text";
 import { GRAY, MAIN, WHITE } from "@/constants/styles/color";
-import AddFilter from "@/components/molecules/member/add-filter";
+import AddFilter from "@/components/molecules/member/list/add-filter";
 import { MEDIA_MIN_WIDTH } from "@/constants/constant";
 import Dropdown from "@/components/atoms/common/dropdown/dropdown";
 import MainInput from "@/components/atoms/common/input/main-input";
-import { SEARCH_FILTER } from "@/components/molecules/member/add-filter.view";
+import { SEARCH_FILTER } from "@/components/molecules/member/list/add-filter.view";
 import { useSearchFilterDropdownItems } from "@/hooks/dropdown/dropdown-items";
 
-import { useI18n } from "../../../../locales/client";
+import { useI18n } from "../../../../../locales/client";
 import BorderInput from "@/components/atoms/common/input/border-input";
 
 const MemberFilterContainer = styled.div`
@@ -19,7 +19,7 @@ const MemberFilterContainer = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 0;
+  padding: 10px 20px;
   gap: 10px;
 `;
 
@@ -88,16 +88,17 @@ const MemberFilterView = ({
           value={searchFilter}
           items={useSearchFilterDropdownItems()}
           onChangeItem={onClickSearchFilterItem}
-          height={40}
-          width={100}
-          borderColor={GRAY.DEFAULT}
+          height={30}
+          width={80}
+          borderColor={GRAY.LIGHT}
         />
         <BorderInput
           value={searchValue}
           onChange={onChangeSearchValue}
-          height={40}
+          borderColor={GRAY.LIGHT}
+          height={30}
         />
-        <Button text={"검색"} width={100} height={40} />
+        <Button text={t("search")} width={80} height={30} />
       </SearchContainer>
       {/* 필터 추가 모달 */}
       <AddFilterContainer $isShown={isAddFilterShown}>

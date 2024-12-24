@@ -6,36 +6,42 @@ export const useMemberTableItems = () => {
 
   const columns = [
     {
-      id: MEMBER.NAME,
-      title: t(MEMBER.NAME),
-    },
-    {
-      id: MEMBER.MOBILE_PHONE,
-      title: t(MEMBER.MOBILE_PHONE),
-    },
-    {
       id: MEMBER.GROUP,
       title: t(MEMBER.GROUP),
+      isSortable: true,
+    },
+    {
+      id: MEMBER.PROFILE_IMAGE,
+      title: t(MEMBER.PROFILE_IMAGE),
+    },
+    {
+      id: MEMBER.NAME,
+      title: t(MEMBER.NAME),
+      isSortable: true,
     },
     {
       id: MEMBER.GENDER,
       title: t(MEMBER.GENDER),
-    },
-    {
-      id: MEMBER.BIRTH,
-      title: t(MEMBER.BIRTH),
+      isSortable: true,
     },
     {
       id: MEMBER.OFFICER,
       title: t(MEMBER.OFFICER),
+      isSortable: true,
     },
     {
-      id: MEMBER.MINISTRY,
-      title: t(MEMBER.MINISTRY),
+      id: MEMBER.AGE,
+      title: t(MEMBER.AGE),
+      isSortable: true,
     },
     {
-      id: MEMBER.EDUCATION,
-      title: t(MEMBER.EDUCATION),
+      id: MEMBER.BIRTH,
+      title: t(MEMBER.BIRTH),
+      isSortable: true,
+    },
+    {
+      id: MEMBER.MOBILE_PHONE,
+      title: t(MEMBER.MOBILE_PHONE),
     },
   ];
 

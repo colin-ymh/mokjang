@@ -1,16 +1,15 @@
 import styled from "styled-components";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
 
 import { GRAY } from "@/constants/styles/color";
 import SideBarButton from "@/components/atoms/layout/side-bar/side-bar-button";
 import SideBarHeader from "@/components/atoms/layout/side-bar/side-bar-header";
 import { MEDIA_MIN_WIDTH } from "@/constants/constant";
-import { useSideBarItems } from "@/hooks/layout/side-bar-items";
 import { HEADER_ID } from "@/constants/layout/header";
 import GroupFilter from "@/components/molecules/layout/group-filter";
 
 import { useScopedI18n } from "../../../../locales/client";
-import { useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
 
 const SideBarContainer = styled.div`
   // 모바일
@@ -27,12 +26,13 @@ const SideBarContainer = styled.div`
   @media (min-width: ${MEDIA_MIN_WIDTH.DESKTOP}) {
     display: flex;
     flex-direction: column;
-    width: 200px;
+    width: 180px;
     background-color: ${GRAY.SIDE_BAR};
-    padding: 10px;
+    padding: 0 10px;
     box-shadow: inset -2px 0 5px rgba(0, 0, 0, 0.2);
-    height: 100vh; /* 전체 높이 */
-    overflow: hidden; /* 내용이 넘치지 않도록 설정 */
+    height: 100%;
+    overflow: hidden;
+    flex-shrink: 0;
   }
 `;
 
@@ -40,7 +40,6 @@ const ButtonContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  gap: 10px;
   flex-shrink: 0; /* 크기가 줄어들지 않도록 설정 */
 `;
 
@@ -51,7 +50,6 @@ const GroupFilterContainer = styled.div<{ $isOpened: boolean }>`
 `;
 
 const SideBarView = () => {
-  const sideBarItems = useSideBarItems();
   const t_header = useScopedI18n("header");
   const headerId = useSelector((state: RootState) => state.layout.headerId);
 

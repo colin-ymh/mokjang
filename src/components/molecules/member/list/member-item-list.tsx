@@ -2,10 +2,10 @@ import styled from "styled-components";
 import Image from "next/image";
 import { Member } from "@/models/member/member";
 import { GRAY } from "@/constants/styles/color";
-import DefaultImage from "../../../../public/png/default-member-image.png";
+import DefaultImage from "../../../../../public/png/default-member-image.png";
 import { MainText } from "@/components/atoms/common/text/main-text";
-import { useI18n } from "../../../../locales/client";
-import { MemberTableProps } from "@/components/molecules/member/member-table";
+import { useI18n } from "../../../../../locales/client";
+import { MemberTableProps } from "@/components/molecules/member/list/member-table";
 
 const MemberListContainer = styled.div`
   display: flex;

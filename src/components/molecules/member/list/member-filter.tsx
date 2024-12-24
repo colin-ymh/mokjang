@@ -1,7 +1,7 @@
 import { ChangeEvent, useState } from "react";
 
-import MemberFilterView from "@/components/molecules/member/member-filter.view";
-import { SEARCH_FILTER } from "@/components/molecules/member/add-filter.view";
+import MemberFilterView from "@/components/molecules/member/list/member-filter.view";
+import { SEARCH_FILTER } from "@/components/molecules/member/list/add-filter.view";
 import { MEMBER } from "@/constants/member/member-column";
 import { BLANK } from "@/constants/constant";
 import { getTrimmedString } from "@/utils/format";

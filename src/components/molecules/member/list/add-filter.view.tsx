@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { MainText } from "@/components/atoms/common/text/main-text";
 import { GRAY } from "@/constants/styles/color";
-import { useI18n } from "../../../../locales/client";
+import { useI18n } from "../../../../../locales/client";
 import { MEMBER } from "@/constants/member/member-column";
 import BorderInput from "@/components/atoms/common/input/border-input";
 import { ChangeEvent } from "react";

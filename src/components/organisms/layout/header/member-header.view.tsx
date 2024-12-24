@@ -3,12 +3,13 @@ import styled from "styled-components";
 
 import { GRAY } from "@/constants/styles/color";
 import { MainText } from "@/components/atoms/common/text/main-text";
-import { useScopedI18n } from "../../../../locales/client";
+import { useScopedI18n } from "../../../../../locales/client";
 import HeaderBar from "@/components/molecules/layout/header/header-bar";
 import { useMemberHeaderBarItems } from "@/hooks/layout/header-bar-items";
 import Button from "@/components/atoms/common/button/button";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
+import { SIZE } from "@/constants/styles/style";
 
 const HeaderContainer = styled.div`
   display: flex;
@@ -19,11 +20,11 @@ const HeaderContainer = styled.div`
   border-bottom: 1px solid ${GRAY.LIGHT};
 `;
 
-const RegisterButtonContainer = styled.div`
+const HeaderBottomContainer = styled.div`
   display: flex;
-  position: absolute;
-  right: 40px;
-  top: 60px;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 type MemberHeadBarViewProps = {
@@ -38,18 +39,16 @@ const MemberHeaderView = ({
 
   return (
     <HeaderContainer>
-      <MainText fontSize={25} fontWeight={500}>
-        {t_header("member")}
-      </MainText>
-      <HeaderBar value={contentId} items={useMemberHeaderBarItems()} />
-      <RegisterButtonContainer>
+      <MainText size={SIZE.EXTRA_LARGE}>{t_header("member")}</MainText>
+      <HeaderBottomContainer>
+        <HeaderBar value={contentId} items={useMemberHeaderBarItems()} />
         <Button
-          text={"교인 등록하기"}
-          width={100}
-          height={40}
+          text={"교인 등록"}
+          width={80}
+          height={30}
           onClick={onClickRegisterMemberButton}
         />
-      </RegisterButtonContainer>
+      </HeaderBottomContainer>
     </HeaderContainer>
   );
 };

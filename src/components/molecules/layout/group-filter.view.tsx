@@ -70,7 +70,9 @@ const renderGroups = (
               onClickToggle(parseInt(group.id));
             }}
           >
-            <MainText>{isHaveChildren ? (isOpen ? "▼" : "▶") : "-"}</MainText>
+            <MainText color={GRAY.DARK}>
+              {isHaveChildren ? (isOpen ? "▼" : "▶") : ""}
+            </MainText>
           </ToggleButton>
           <MainText
             color={group.id === selectedGroupId ? MAIN.DEFAULT : GRAY.DARK}

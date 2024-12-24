@@ -1,55 +1,51 @@
 import styled from "styled-components";
 import { BLACK } from "@/constants/styles/color";
+import { SIZE } from "@/constants/styles/style";
 
 export type MainTextProps = {
-  size?: "small" | "medium" | "large";
+  size?: SIZE;
   color?: string;
   fontSize?: number;
   fontWeight?: number;
 };
 
-const getFontSize = (
-  size: "small" | "medium" | "large" | undefined,
-  fontSize?: number,
-) => {
+const getFontSize = (size?: SIZE, fontSize?: number) => {
   if (fontSize) {
-    return `${fontSize}px`; // fontWeight 가 설정된 경우 그대로 사용
+    return `${fontSize}px`; // fontSize 가 설정된 경우 그대로 사용
   }
-
-  let baseSize: number;
 
   switch (size) {
-    case "small":
-      baseSize = 12;
-      break;
-    case "large":
-      baseSize = 16;
-      break;
-    case "medium":
+    case SIZE.EXTRA_SMALL:
+      return `${10}px`;
+    case SIZE.SMALL:
+      return `${12}px`;
+    case SIZE.LARGE:
+      return `${16}px`;
+    case SIZE.EXTRA_LARGE:
+      return `${20}px`;
+    case SIZE.MEDIUM:
     default:
-      baseSize = 14;
-      break;
+      return `${14}px`;
   }
-
-  return `${baseSize}px`;
 };
 
 // size에 따라 font-weight를 조정
-const getFontWeight = (
-  size: "small" | "medium" | "large" | undefined,
-  fontWeight?: number,
-) => {
+const getFontWeight = (size?: SIZE, fontWeight?: number) => {
   if (fontWeight) {
     return fontWeight; // fontWeight가 설정된 경우 그대로 사용
   }
 
   // size에 따른 기본 font-weight 값 설정
   switch (size) {
-    case "small":
-      return 400;
-    case "large":
+    case SIZE.EXTRA_SMALL:
+      return 200;
+    case SIZE.SMALL:
+      return 300;
+    case SIZE.LARGE:
+      return 500;
+    case SIZE.EXTRA_LARGE:
       return 600;
-    case "medium":
+    case SIZE.MEDIUM:
     default:
       return 400;
   }
@@ -64,4 +60,5 @@ export const MainText = styled.p<MainTextProps>`
 
   white-space: nowrap; /* 텍스트를 한 줄로 유지 */
   max-width: 100%; /* 버튼 크기를 벗어나지 않도록 제한 */
+  font-family: "Pretendard Std", monospace; /* Pretendard Std 적용 */
 `;

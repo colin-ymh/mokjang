@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { HEADER_ID } from "@/constants/layout/header";
 import { HOME_CONTENT_ID, MEMBER_CONTENT_ID } from "@/constants/layout/content";
 import { ReactNode } from "react";
-import MemberHeader from "@/components/organisms/member/member-header";
+import MemberHeader from "@/components/organisms/layout/header/member-header";
 
 type LayoutState = {
   headerId: string;

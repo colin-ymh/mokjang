@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import MemberManagementHeaderView from "@/components/organisms/member/member-header.view";
+import MemberHeaderView from "@/components/organisms/layout/header/member-header.view";
 import CustomPopup from "@/components/atoms/common/popup/custom-popup";
 import MemberRegister from "@/components/organisms/register/member-register";
 import { MainText } from "@/components/atoms/common/text/main-text";
@@ -55,7 +55,7 @@ const MemberHeader = ({}: MemberManagementHeadBarProps) => {
 
   return (
     <>
-      <MemberManagementHeaderView {...props} />
+      <MemberHeaderView {...props} />
       <CustomPopup
         isShow={isRegisterShown}
         onClickClose={onClickClose}
@@ -64,9 +64,7 @@ const MemberHeader = ({}: MemberManagementHeadBarProps) => {
         isPercentage={true}
         headerRight={
           stage !== MEMBER_REGISTER_STAGE.REQUIRED && (
-            <MainText fontSize={16} onClick={onClickSave}>
-              저장
-            </MainText>
+            <MainText onClick={onClickSave}>저장</MainText>
           )
         }
       >

@@ -2,18 +2,15 @@ import styled from "styled-components";
 
 import MemberTable, {
   MemberTableProps,
-} from "@/components/molecules/member/member-table";
-import MemberFilter from "@/components/molecules/member/member-filter";
+} from "@/components/molecules/member/list/member-table";
+import MemberFilter from "@/components/molecules/member/list/member-filter";
 import { MEDIA_MIN_WIDTH } from "@/constants/constant";
-import MemberItemList from "@/components/molecules/member/member-item-list";
+import MemberItemList from "@/components/molecules/member/list/member-item-list";
 
 const MemberListContainer = styled.div`
   display: flex;
   flex-direction: column;
-
-  @media (min-width: ${MEDIA_MIN_WIDTH.DESKTOP}) {
-    padding: 30px;
-  }
+  height: 100%;
 `;
 
 const MobileView = styled.div`
@@ -26,7 +23,7 @@ const DesktopView = styled.div`
   display: none;
 
   @media (min-width: ${MEDIA_MIN_WIDTH.DESKTOP}) {
-    display: block;
+    display: flex;
   }
 `;
 

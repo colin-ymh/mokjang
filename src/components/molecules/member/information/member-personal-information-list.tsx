@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
 
-import MemberPersonalInformationListView from "@/components/molecules/member/member-personal-information-list.view";
+import MemberPersonalInformationListView from "@/components/molecules/member/information/member-personal-information-list.view";
 import CustomPopup from "@/components/atoms/common/popup/custom-popup";
 import { useState } from "react";
 import { MEMBER } from "@/constants/member/member-column";

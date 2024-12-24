@@ -1,9 +1,9 @@
 import React from "react";
-
-import HeaderBarView from "@/components/molecules/layout/header/header-bar.view";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
 import { setContentId } from "@/redux/reducers/layout-reducer";
+
+import HeaderBarView from "@/components/molecules/layout/header/header-bar.view";
 
 export type HeaderBarItem = {
   id: string;

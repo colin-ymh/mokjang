@@ -6,7 +6,7 @@ export enum GRAY {
   SIDE_BAR = "#F9FAFA",
   LIGHT = "#e1e1e1",
   DEFAULT = "#B9B9B9",
-  DARK = "#979797",
+  DARK = "#8D8D8D",
 }
 
 export enum MAIN {

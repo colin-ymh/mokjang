@@ -13,6 +13,7 @@ import RequiredRegister from "@/components/molecules/register/required-register"
 import { WHITE } from "@/constants/styles/color";
 
 import { useScopedI18n } from "../../../../locales/client";
+import { SIZE } from "@/constants/styles/style";
 
 const RegisterContainer = styled.div`
   display: flex;
@@ -39,7 +40,7 @@ const MemberRegisterView = () => {
     <RegisterContainer>
       <ContentContainer>
         <TextContainer>
-          <MainText fontSize={23} fontWeight={600}>
+          <MainText size={SIZE.EXTRA_LARGE}>
             {stage === MEMBER_REGISTER_STAGE.REQUIRED
               ? t_register("defaultHeaderPhrase")
               : t_register("extraHeaderPhrase")}

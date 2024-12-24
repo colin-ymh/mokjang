@@ -14,7 +14,7 @@ import { MEMBER } from "@/constants/member/member-column";
 import { NULL } from "@/constants/constant";
 import { GRAY } from "@/constants/styles/color";
 
-import { useI18n } from "../../../../locales/client";
+import { useI18n } from "../../../../../locales/client";
 
 const InformationListContainer = styled.div`
   display: flex;
