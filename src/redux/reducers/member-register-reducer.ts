@@ -53,6 +53,8 @@ export const DEFAULT_MEMBER: Member = {
   groupId: NULL,
   group: NULL_INFORMATION,
   educations: [],
+  createdAt: new Date(),
+  updatedAt: new Date(),
 };
 
 const initialState: MemberRegisterState = {

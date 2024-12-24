@@ -10,10 +10,11 @@ import Button from "@/components/atoms/common/button/button";
 import { getAge, getDateFromString } from "@/utils/date";
 import { getFormattedDate, getFormattedMobilePhone } from "@/utils/format";
 import { Member } from "@/models/member/member";
-import { useMemberTableItems } from "@/hooks/table/table-header";
 import DefaultImage from "../../../../../public/png/default-member-image.png";
 import { useI18n } from "../../../../../locales/client";
-import MemberTableHeader from "@/components/atoms/member/member-table-header";
+import MemberTableHeader from "@/components/atoms/member/list/member-table-header";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
 
 const Container = styled.div`
   display: flex;
@@ -115,8 +116,10 @@ const MemberTableView = ({
   onClickNextPage,
   onClickPrevPage,
 }: MemberTableProps) => {
+  const memberTableHeaderItemList = useSelector(
+    (state: RootState) => state.memberFilter.memberTableHeaderItemList,
+  );
   const t = useI18n();
-  const tableHeaderItems = useMemberTableItems();
 
   const getMemberTableContent = (id: MEMBER, member: Member) => {
     switch (id) {
@@ -164,23 +167,27 @@ const MemberTableView = ({
         <MemberTable>
           <thead>
             <tr>
-              {tableHeaderItems.map((item) => (
-                <TableHeader key={item.id}>
-                  <MemberTableHeader item={item} onClick={onClickHeader} />
-                </TableHeader>
-              ))}
+              {memberTableHeaderItemList
+                .filter((item) => item.isShown)
+                .map((item) => (
+                  <TableHeader key={item.id}>
+                    <MemberTableHeader item={item} onClick={onClickHeader} />
+                  </TableHeader>
+                ))}
             </tr>
           </thead>
           <tbody>
             {members.map((member) => (
               <tr key={member.id} onClick={() => onClickMemberItem(member.id)}>
-                {tableHeaderItems.map((item) => (
-                  <TableData key={item.id} id={item.id}>
-                    <ContentContainer>
-                      {getMemberTableContent(item.id, member)}
-                    </ContentContainer>
-                  </TableData>
-                ))}
+                {memberTableHeaderItemList
+                  .filter((item) => item.isShown)
+                  .map((item) => (
+                    <TableData key={item.id} id={item.id}>
+                      <ContentContainer>
+                        {getMemberTableContent(item.id, member)}
+                      </ContentContainer>
+                    </TableData>
+                  ))}
               </tr>
             ))}
           </tbody>

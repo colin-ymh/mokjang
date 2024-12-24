@@ -3,6 +3,7 @@
 import styled from "styled-components";
 import { MainText } from "@/components/atoms/common/text/main-text";
 import { GRAY, MAIN } from "@/constants/styles/color";
+import { SIZE } from "@/constants/styles/style";
 
 export type RadioButtonItemProps = {
   title: string;
@@ -38,7 +39,7 @@ const DefaultRadioButton = ({
   return (
     <LabelButtonContainer>
       <Button $isSelected={isSelected} type="button" onClick={onClick} />
-      <MainText size="small">{title}</MainText>
+      <MainText size={SIZE.SMALL}>{title}</MainText>
     </LabelButtonContainer>
   );
 };

@@ -10,6 +10,8 @@ import StyledComponentsRegistry from "@/hooks/registry";
 import store from "@/redux/store";
 import { initializeIsWebview } from "@/redux/reducers/webview-reducer";
 import { useInitializeChurch } from "@/utils/initialize";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import { DndProvider } from "react-dnd";
 
 const GlobalStyle = createGlobalStyle`
     @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard-std.css");
@@ -69,9 +71,11 @@ const RootLayout = (props: RootLayoutProps | RootLayoutPropsExtended) => {
         <StyledComponentsRegistry>
           <Provider store={store}>
             <TranslateProvider>
-              <InitializeStore />
-              <GlobalStyle />
-              {children}
+              <DndProvider backend={HTML5Backend}>
+                <InitializeStore />
+                <GlobalStyle />
+                {children}
+              </DndProvider>
             </TranslateProvider>
           </Provider>
         </StyledComponentsRegistry>

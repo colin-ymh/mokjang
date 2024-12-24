@@ -1,11 +1,14 @@
 import styled from "styled-components";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
+
 import { MainText } from "@/components/atoms/common/text/main-text";
 import { MEMBER } from "@/constants/member/member-column";
 import { GRAY, MAIN } from "@/constants/styles/color";
-import { useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
 import { ORDER_DIRECTION } from "@/constants/constant";
 import { SIZE } from "@/constants/styles/style";
+import { getTranslatedMemberColumn } from "@/utils/translate";
+import { useI18n } from "../../../../../locales/client";
 
 const HeaderContainer = styled.div`
   display: flex;
@@ -32,25 +35,26 @@ const IconContainer = styled.div`
 type MemberTableHeaderProps = {
   item: {
     id: MEMBER;
-    title: string;
-    isSortable?: boolean;
+    isSortable: boolean;
   };
   onClick: (id: MEMBER) => void;
 };
 
+// Component
 const MemberTableHeader = ({ item, onClick }: MemberTableHeaderProps) => {
   const { memberOrderBy, memberOrderDirection } = useSelector(
     (state: RootState) => state.memberFilter,
   );
+  const t = useI18n();
 
-  const isActive = memberOrderBy === item.id; // 현재 정렬 기준인지 확인
-  const isAscending = memberOrderDirection === ORDER_DIRECTION.ASC; // 정렬 방향 확인
+  const isActive = memberOrderBy === item.id;
+  const isAscending = memberOrderDirection === ORDER_DIRECTION.ASC;
 
   return (
-    <HeaderContainer onClick={() => item?.isSortable && onClick(item.id)}>
+    <HeaderContainer onClick={() => item.isSortable && onClick(item.id)}>
       <TextContainer>
         <MainText color={isActive ? MAIN.DEFAULT : GRAY.DARK}>
-          {item.title}
+          {getTranslatedMemberColumn(t, item.id)}
         </MainText>
       </TextContainer>
       {item.isSortable && (

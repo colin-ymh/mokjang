@@ -4,6 +4,9 @@ export default {
   type: "종류",
   search: "검색",
 
+  createdAt: "등록일자",
+  updatedAt: "수정일자",
+
   // 필수
   name: "이름",
   mobilePhone: "휴대전화",
@@ -103,6 +106,7 @@ export default {
   "button.invite": "초대하기",
   "button.cancel": "취소",
   "button.confirm": "확인",
+  "button.filterSetting": "목록 설정",
 
   "button.signIn": "회원가입 완료하기",
 

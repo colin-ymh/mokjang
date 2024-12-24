@@ -43,4 +43,7 @@ export type Member = {
   officerStartChurch: string;
   educations: ChurchInformation[];
   previousChurchName: string; // 이전 교회
+  //
+  createdAt: Date;
+  updatedAt: Date;
 };

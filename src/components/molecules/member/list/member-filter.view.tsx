@@ -2,17 +2,15 @@ import { ChangeEvent, Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
 
 import Button from "@/components/atoms/common/button/button";
-import { MainText } from "@/components/atoms/common/text/main-text";
-import { GRAY, MAIN, WHITE } from "@/constants/styles/color";
-import AddFilter from "@/components/molecules/member/list/add-filter";
+import { GRAY } from "@/constants/styles/color";
+import TableSetting from "@/components/molecules/member/list/table-setting";
 import { MEDIA_MIN_WIDTH } from "@/constants/constant";
 import Dropdown from "@/components/atoms/common/dropdown/dropdown";
-import MainInput from "@/components/atoms/common/input/main-input";
-import { SEARCH_FILTER } from "@/components/molecules/member/list/add-filter.view";
-import { useSearchFilterDropdownItems } from "@/hooks/dropdown/dropdown-items";
-
-import { useI18n } from "../../../../../locales/client";
 import BorderInput from "@/components/atoms/common/input/border-input";
+import { useSearchFilterDropdownItems } from "@/hooks/dropdown/dropdown-items";
+import { MEMBER } from "@/constants/member/member-column";
+
+import { useI18n, useScopedI18n } from "../../../../../locales/client";
 
 const MemberFilterContainer = styled.div`
   display: flex;
@@ -28,6 +26,7 @@ const FilterList = styled.div`
   gap: 20px;
   justify-content: flex-start;
   align-items: center;
+  position: relative;
 `;
 
 const SearchContainer = styled.div`
@@ -47,16 +46,20 @@ const AddFilterContainer = styled.div<{ $isShown: boolean }>`
   box-shadow: 0 1px 6px rgba(0, 0, 0, 0.3);
   border-radius: 5px;
 
-  @media (min-width: ${MEDIA_MIN_WIDTH.MOBILE}) {
-    top: 120px;
-    right: 20px;
-  }
+  top: 40px;
 
-  @media (min-width: ${MEDIA_MIN_WIDTH.DESKTOP}) {
-    top: 220px;
-    right: 30px;
-  }
+  // @media (min-width: ${MEDIA_MIN_WIDTH.MOBILE}) {
+  //   top: 120px;
+  //   right: 20px;
+  // }
+
+  //@media (min-width: ${MEDIA_MIN_WIDTH.DESKTOP}) {
+  //  top: 220px;
+  //  right: 30px;
+  //}
 `;
+
+export type SEARCH_FILTER = MEMBER.NAME | MEMBER.SCHOOL | MEMBER.VEHICLE_NUMBER;
 
 type MemberFilterViewProps = {
   isAddFilterShown: boolean;
@@ -65,7 +68,7 @@ type MemberFilterViewProps = {
   setIsAddFilterShown: Dispatch<SetStateAction<boolean>>;
   onClickSearchFilterItem: (value: SEARCH_FILTER) => void;
   onChangeSearchValue: (event: ChangeEvent<HTMLInputElement>) => void;
-  onClickOpenFilter: () => void;
+  onClickTableSetting: () => void;
 };
 
 const MemberFilterView = ({
@@ -73,20 +76,35 @@ const MemberFilterView = ({
   searchFilter,
   searchValue,
   setIsAddFilterShown,
-  onClickOpenFilter,
+  onClickTableSetting,
   onClickSearchFilterItem,
   onChangeSearchValue,
 }: MemberFilterViewProps) => {
   const t = useI18n();
+  const t_button = useScopedI18n("button");
+
+  const searchFilterDropdownItems = useSearchFilterDropdownItems();
 
   return (
     <MemberFilterContainer>
-      <FilterList></FilterList>
+      <FilterList>
+        {/* 설정 활성화 버튼 */}
+        <Button
+          text={t_button("filterSetting")}
+          height={30}
+          onClick={onClickTableSetting}
+        />
+
+        {/* 필터 추가 모달 */}
+        <AddFilterContainer $isShown={isAddFilterShown}>
+          <TableSetting setIsShown={setIsAddFilterShown} />
+        </AddFilterContainer>
+      </FilterList>
       {/* 검색 부분 */}
       <SearchContainer>
         <Dropdown
           value={searchFilter}
-          items={useSearchFilterDropdownItems()}
+          items={searchFilterDropdownItems}
           onChangeItem={onClickSearchFilterItem}
           height={30}
           width={80}
@@ -100,10 +118,6 @@ const MemberFilterView = ({
         />
         <Button text={t("search")} width={80} height={30} />
       </SearchContainer>
-      {/* 필터 추가 모달 */}
-      <AddFilterContainer $isShown={isAddFilterShown}>
-        <AddFilter setIsShown={setIsAddFilterShown} />
-      </AddFilterContainer>
     </MemberFilterContainer>
   );
 };

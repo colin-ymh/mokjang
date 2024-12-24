@@ -1,18 +1,19 @@
 import { ChangeEvent, useState } from "react";
 
-import MemberFilterView from "@/components/molecules/member/list/member-filter.view";
-import { SEARCH_FILTER } from "@/components/molecules/member/list/add-filter.view";
+import MemberFilterView, {
+  SEARCH_FILTER,
+} from "@/components/molecules/member/list/member-filter.view";
 import { MEMBER } from "@/constants/member/member-column";
 import { BLANK } from "@/constants/constant";
 import { getTrimmedString } from "@/utils/format";
 
 const MemberFilter = () => {
-  // 필터 추가 모달 on off
+  // 목록 설정  모달 on off
   const [isAddFilterShown, setIsAddFilterShown] = useState<boolean>(false);
 
-  // 필터 추가 모달 열기
-  const onClickOpenFilter = () => {
-    setIsAddFilterShown(true);
+  // 목록 설정 모달 열기
+  const onClickTableSetting = () => {
+    setIsAddFilterShown(!isAddFilterShown);
   };
 
   // 검색 필터 주제
@@ -37,7 +38,7 @@ const MemberFilter = () => {
     searchFilter,
     searchValue,
     setIsAddFilterShown,
-    onClickOpenFilter,
+    onClickTableSetting,
     onClickSearchFilterItem,
     onChangeSearchValue,
   };

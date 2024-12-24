@@ -4,6 +4,9 @@ export default {
   type: "Type",
   search: "Search",
 
+  createdAt: "Created Date",
+  updatedAt: "Updated Date",
+
   // 필수
   name: "Name",
   mobilePhone: "Mobile Phone",
@@ -101,6 +104,7 @@ export default {
   "button.invite": "Invite",
   "button.cancel": "Cancel",
   "button.confirm": "Confirm",
+  "button.filterSetting": "Setting",
 
   "button.signIn": "Sign In",
 
