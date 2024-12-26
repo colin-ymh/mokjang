@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { Member } from "@/models/member/member";
 import MemberTableView from "@/components/molecules/member/list/member-table.view";
 import { MEMBER } from "@/constants/member/member-column";
@@ -12,21 +12,17 @@ import { ORDER_DIRECTION } from "@/constants/constant";
 
 export type MemberTableProps = {
   members: Member[];
-  page: number;
   onClickMemberItem: (memberId: string) => void;
-  onClickNextPage: () => void;
-  onClickPrevPage: () => void;
+  loadMembers: () => Promise<void>;
 };
 
 const MemberTable = ({
   members,
-  page,
   onClickMemberItem,
-  onClickPrevPage,
-  onClickNextPage,
+  loadMembers,
 }: MemberTableProps) => {
   const dispatch = useDispatch<AppDispatch>();
-  const { memberOrderBy, memberOrderDirection } = useSelector(
+  const { memberFilter, memberOrderBy, memberOrderDirection } = useSelector(
     (state: RootState) => state.memberFilter,
   );
 
@@ -48,13 +44,32 @@ const MemberTable = ({
     }
   };
 
+  const scrollRef = useRef<HTMLDivElement | null>(null);
+
+  const onScroll = () => {
+    if (scrollRef.current) {
+      const { scrollTop, scrollHeight, clientHeight } = scrollRef.current;
+
+      // 스크롤이 최하단에 도달했는지 확인
+      if (scrollTop + clientHeight >= scrollHeight) {
+        loadMembers(); // 데이터를 추가로 로드
+      }
+    }
+  };
+
+  // 정렬 변경 시 스크롤을 최상단으로 이동
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = 0;
+    }
+  }, [memberOrderBy, memberOrderDirection, memberFilter]);
+
   const props = {
     members,
-    page,
     onClickHeader,
     onClickMemberItem,
-    onClickPrevPage,
-    onClickNextPage,
+    scrollRef,
+    onScroll,
   };
 
   return (

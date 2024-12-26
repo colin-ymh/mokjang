@@ -25,6 +25,7 @@ const InformationItem = styled.div`
   flex-direction: row;
   padding: 10px;
   border-radius: 5px;
+  cursor: pointer;
 
   &:hover {
     background-color: ${GRAY.LIGHT};

@@ -1,14 +1,7 @@
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 
-import {
-  BAPTISM,
-  MARRIAGE,
-  NONE,
-  GENDER,
-  NULL,
-  FAMILY,
-} from "@/constants/constant";
+import { BAPTISM, MARRIAGE, GENDER, NULL, FAMILY } from "@/constants/constant";
 import { MEMBER } from "@/constants/member/member-column";
 
 import { useI18n } from "../../../locales/client";

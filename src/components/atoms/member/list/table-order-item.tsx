@@ -38,6 +38,7 @@ const HighlightLine = styled.div<{ $isShown: boolean }>`
   height: 2px;
   background-color: ${MAIN.LIGHT};
   display: ${({ $isShown }) => ($isShown ? "block" : "none")};
+  //padding-bottom: ${({ $isShown }) => ($isShown ? "block" : "none")};
 `;
 
 const EyeIconContainer = styled.div<{ $isFixed?: boolean }>`

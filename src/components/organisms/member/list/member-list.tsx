@@ -15,7 +15,6 @@ import {
 import styled from "styled-components";
 import Button from "@/components/atoms/common/button/button";
 import { getMemberFromServer } from "@/utils/member";
-import { MemberSettingsApi } from "@/api/churches/member-settings.api";
 import useWindowSize from "@/hooks/window/window";
 import { MEMBER } from "@/constants/member/member-column";
 
@@ -28,9 +27,7 @@ const ButtonContainer = styled.div`
 `;
 
 const MemberList = () => {
-  const { height } = useWindowSize();
   const membersApi = new MembersApi(false);
-  const memberSettingsApi = new MemberSettingsApi(false);
   const dispatch = useDispatch<AppDispatch>();
   const churchId: string = useSelector(
     (state: RootState) => state.church.churchId,
@@ -50,83 +47,81 @@ const MemberList = () => {
   // 교인 목록에 보여지는 교인들
   const [members, setMembers] = useState<Member[]>([]);
 
-  // 화면에서 보여줄 수 있는 교인 수
-  const getTakeByHeight = (height: number) => {
-    const HEADER = 100;
-    const FILTER = 40;
-    const TABLE_TITLE = 20;
-    const BOTTOM_BUTTON = 60;
-
-    const MEMBER_ITEM_HEIGHT = 45;
-
-    const result =
-      (height - HEADER * 2 - FILTER - TABLE_TITLE - BOTTOM_BUTTON) /
-      MEMBER_ITEM_HEIGHT;
-
-    return Math.floor(result);
-  };
-
-  // 한 번에 보여질 교인 수
-  const [take, setTake] = useState<number>(getTakeByHeight(height));
-
-  useEffect(() => {
-    setTake(getTakeByHeight(height));
-  }, [height]);
-
   // 서버에서 불러오는 교인 목록 페이지
   const [page, setPage] = useState<number>(1);
 
-  const getMembersFromServer = async (page: number): Promise<Member[]> => {
+  // 데이터 로딩 상태
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  // 서버로부터 교인 목록을 받아와서, 클라이언트에 적합하게 변환
+  const getMembersFromServer = async (
+    currentPage: number,
+  ): Promise<Member[]> => {
     if (!churchId) {
       return [];
     }
 
-    // 나이 = 생년월일로
     let order = memberOrderBy;
     if (order === MEMBER.AGE) order = MEMBER.BIRTH;
 
     try {
       const response = await membersApi.getMembers({
         churchId,
-        page,
-        take,
+        page: currentPage,
+        take: 30, // 무한 스크롤에 적합한 소량의 데이터 요청
         order: order !== NULL ? order : undefined,
         orderDirection: memberOrderDirection,
         name: memberFilter.name,
         school: memberFilter.school,
-        vehicleNumber: memberFilter.vehicleNumber,
-        gender: memberFilter.gender !== NULL ? memberFilter.gender : undefined,
-        birthAfter: memberFilter.birthAfter || undefined,
-        birthBefore: memberFilter.birthBefore || undefined,
-        baptism:
-          memberFilter.baptism !== NULL ? memberFilter.baptism : undefined,
-        groupId: memberFilter.groupId || undefined,
+        birthAfter: memberFilter.birthAfter,
+        birthBefore: memberFilter.birthBefore,
+        groupId: memberFilter.groupId,
       });
 
       return response.data.data;
     } catch (error) {
       console.error("교인 목록 불러오기 실패", error);
-      throw new Error("교인 목록 불러오기 실패");
+      return [];
     }
   };
 
-  // 필터 정보가 변경될 때, 교인 목록을 서버에서 새로 불러옴
+  // 무한 스크롤로 데이터 추가 로드
+  const loadMembers = async () => {
+    if (isLoading) return; // 로딩 중에는 추가 요청 방지
+    setIsLoading(true);
+
+    await getMembersFromServer(page + 1).then((newMembers) => {
+      if (newMembers.length > 0) {
+        setMembers((prev) => {
+          // 기존 데이터와 합치면서 중복 제거
+          const existingIds = new Set(prev.map((member) => member.id));
+          const filteredNewMembers = newMembers.filter(
+            (member) => !existingIds.has(member.id),
+          );
+          return [...prev, ...filteredNewMembers];
+        });
+        setPage((prev) => prev + 1); // 다음 페이지로 이동
+      }
+    });
+
+    setIsLoading(false);
+  };
+
+  // 필터 정보가 변경될 때, 교인들을 다시 불러오는 부분
   useEffect(() => {
-    getMembersFromServer(page).then((members) => setMembers(members));
-  }, [take, churchId, memberFilter, memberOrderBy, memberOrderDirection]);
+    getMembersFromServer(1).then((members) => {
+      setMembers(members);
+      setPage(1);
+    });
+  }, [churchId, memberFilter, memberOrderBy, memberOrderDirection]);
 
   // 목록에서 교인을 선택하여 상세 페이지로 이동
   const onClickMemberItem = (memberId: string) => {
     membersApi.getMember({ churchId, memberId }).then((response) => {
       const member = getMemberFromServer(response.data.data);
 
-      // 기존 정보를 담아서 저장해두기
       setTargetMember(member);
-
-      // 교인 수정용
       dispatch(setMember(member));
-
-      // 상세페이지 열기
       setIsMemberInformationShown(true);
     });
   };
@@ -142,42 +137,21 @@ const MemberList = () => {
     membersApi
       .deleteMember({ churchId, memberId: member.id })
       .then((response) => {
-        // 삭제 성공 시
         if (response.status === 200) {
-          // 교인 목록 초기화
-          getMembersFromServer(page).then((members) => setMembers(members));
+          // 초기화 후 다시 로드
+          setPage(1);
+          setMembers([]);
+          loadMembers();
         }
       });
     dispatch(setMember(DEFAULT_MEMBER));
     setIsMemberInformationShown(false);
   };
 
-  // 테이블 다음 페이지 이동
-  const onClickNextPage = () => {
-    getMembersFromServer(page + 1).then((members) => {
-      if (members.length !== 0) {
-        setPage(page + 1);
-        setMembers(members);
-      }
-    });
-  };
-
-  // 테이블 이전 페이지 이동
-  const onClickPrevPage = () => {
-    if (page <= 1) return;
-
-    getMembersFromServer(page - 1).then((members) => {
-      setPage(page - 1);
-      setMembers(members);
-    });
-  };
-
   const props = {
     members,
-    page,
     onClickMemberItem,
-    onClickNextPage,
-    onClickPrevPage,
+    loadMembers,
   };
 
   return (

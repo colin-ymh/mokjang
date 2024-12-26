@@ -1,4 +1,6 @@
 import axios, { AxiosResponse } from "axios";
+import qs from "qs";
+
 import {
   BAPTISM,
   GENDER,
@@ -17,16 +19,38 @@ type GetMembersParams = {
   take?: number; // 요청 개수
   order?: MEMBER; // 정렬 기준
   orderDirection?: ORDER_DIRECTION; // 오름차순 내림차순
+  // 컬럼 on/off
+  isMobilePhone?: boolean;
+  isBirth?: boolean;
+  isGender?: boolean;
+  isOfficer?: boolean;
+  isMinistries?: boolean;
+  isEducations?: boolean;
+  isMarriage?: boolean;
+  isAddress?: boolean;
+  isHomePhone?: boolean;
+  isOccupation?: boolean;
+  isSchool?: boolean;
+  isVehicleNumber?: boolean;
   // 필터링 내용
   name?: string; // 검색 이름
+  mobilePhone?: string;
   birthAfter?: string;
   birthBefore?: string;
-  gender?: GENDER;
+  createAfter?: string;
+  createBefore?: string;
   school?: string;
-  vehicleNumber?: string;
-  groupId?: string;
-  officeId?: string;
-  baptism?: BAPTISM;
+  address?: string;
+  homePhone?: string;
+  occupation?: string;
+  vehicleNumber?: string[];
+  groupId?: string[];
+  officeId?: string[];
+  ministryId?: string[];
+  educationId?: string[];
+  baptism?: BAPTISM[];
+  gender?: GENDER[];
+  marriage?: MARRIAGE[];
 };
 
 export type GetMembersResponse = Member;
@@ -101,63 +125,93 @@ export class MembersApi {
       order,
       orderDirection,
       name,
+      mobilePhone,
       school,
+      address,
+      homePhone,
+      occupation,
       vehicleNumber,
       birthAfter,
       birthBefore,
+      createAfter,
+      createBefore,
       gender,
       baptism,
+      marriage,
       groupId,
+      officeId,
+      ministryId,
+      educationId,
+      isMobilePhone,
+      isBirth,
+      isGender,
+      isOfficer,
+      isMinistries,
+      isEducations,
+      isMarriage,
+      isAddress,
+      isHomePhone,
+      isOccupation,
+      isSchool,
+      isVehicleNumber,
     } = params;
-    const queryParams: Record<string, any> = {
-      take,
-      page,
-    };
 
-    if (order) {
-      queryParams.order = order.toString();
-    }
-
-    if (orderDirection) {
-      queryParams.orderDirection = orderDirection.toString();
-    }
-
-    if (name) {
-      queryParams.name = name.toString();
-    }
-
-    if (school) {
-      queryParams.school = school.toString();
-    }
-
-    if (vehicleNumber) {
-      queryParams.vehicleNumber = vehicleNumber.toString();
-    }
-
-    if (gender) {
-      queryParams.gender = gender.toString();
-    }
-
-    if (birthAfter) {
-      queryParams.birthAfter = birthAfter.toString();
-    }
-
-    if (birthBefore) {
-      queryParams.birthBefore = birthBefore.toString();
-    }
-
-    if (baptism) {
-      queryParams.baptism = baptism.toString();
-    }
-
-    if (groupId) {
-      queryParams.groupId = groupId.toString();
-    }
+    const queryParams: Record<string, any> = Object.fromEntries(
+      Object.entries({
+        take,
+        page,
+        order,
+        orderDirection,
+        name,
+        mobilePhone,
+        school,
+        address,
+        homePhone,
+        occupation,
+        birthAfter,
+        birthBefore,
+        createAfter,
+        createBefore,
+        gender,
+        baptism,
+        marriage,
+        groupId,
+        officeId,
+        ministryId,
+        educationId,
+        select__mobilePhone: isMobilePhone,
+        select__birth: isBirth,
+        select__gender: isGender,
+        select__officer: isOfficer,
+        select__ministries: isMinistries,
+        select__educations: isEducations,
+        select__marriage: isMarriage,
+        select__address: isAddress,
+        select__homePhone: isHomePhone,
+        select__occupation: isOccupation,
+        select__school: isSchool,
+        select__vehicleNumber: isVehicleNumber,
+      }).filter(
+        ([_, value]) =>
+          value !== undefined &&
+          value !== "" &&
+          !(Array.isArray(value) && value.length === 0),
+      ),
+    );
 
     const url = `${this._url}/churches/${churchId}/members`;
 
     try {
-      return await axios.get(url, { params: queryParams });
+      return await axios.get(url, {
+        params: queryParams,
+        paramsSerializer: (params) => {
+          return qs.stringify(params, {
+            arrayFormat: "repeat",
+            skipNulls: true,
+            encodeValuesOnly: true,
+          });
+        },
+      });
     } catch (error) {
       throw new HTTPError(`Fetch error: ${error}`);
     }

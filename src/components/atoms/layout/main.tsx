@@ -5,6 +5,7 @@ export const Main = styled.div`
   flex: 1;
   width: 100%;
   max-width: 100%;
+  overflow: hidden;
 
   @media (min-width: ${MEDIA_MIN_WIDTH.MOBILE}) {
     margin-top: 50px;

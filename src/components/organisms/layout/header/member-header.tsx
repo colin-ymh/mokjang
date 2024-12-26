@@ -59,8 +59,8 @@ const MemberHeader = ({}: MemberManagementHeadBarProps) => {
       <CustomPopup
         isShow={isRegisterShown}
         onClickClose={onClickClose}
-        width={50}
-        height={90}
+        width={30}
+        height={80}
         isPercentage={true}
         headerRight={
           stage !== MEMBER_REGISTER_STAGE.REQUIRED && (

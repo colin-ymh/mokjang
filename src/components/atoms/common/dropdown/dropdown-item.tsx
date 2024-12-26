@@ -11,7 +11,7 @@ const DropdownContainer = styled.div`
   padding: 10px;
   min-width: 100px;
   max-width: 280px;
-
+  cursor: pointer;
   &:hover {
     background-color: ${GRAY.DEFAULT};
   }

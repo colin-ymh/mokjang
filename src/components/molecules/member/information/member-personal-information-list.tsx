@@ -66,8 +66,8 @@ const PersonalInformationList = ({
       <CustomPopup
         isShow={isEditShown}
         onClickClose={onClickClose}
-        width={70}
-        height={90}
+        width={30}
+        height={80}
         isPercentage={true}
         headerRight={<Button text="저장" onClick={onClickSave} />}
       >

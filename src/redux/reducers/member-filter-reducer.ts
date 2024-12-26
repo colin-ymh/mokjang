@@ -17,7 +17,7 @@ type MEMBER_FILTER = {
   officer: string;
   birthAfter: string;
   birthBefore: string;
-  groupId: string;
+  groupId: string[];
 };
 
 type MemberFilterState = {
@@ -36,7 +36,7 @@ export const INITIAL_MEMBER_FILTER: MEMBER_FILTER = {
   officer: BLANK,
   birthAfter: BLANK,
   birthBefore: BLANK,
-  groupId: BLANK,
+  groupId: [],
 };
 
 export type TABLE_HEADER_ITEM = {
@@ -87,7 +87,7 @@ export const INITIAL_TABLE_HEADER_LIST: TABLE_HEADER_ITEM[] = [
     id: MEMBER.AGE,
     isShown: true,
     isSortable: true,
-    isFilterable: true,
+    isFilterable: false,
     isFixed: false,
   },
   {

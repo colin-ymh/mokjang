@@ -41,6 +41,11 @@ const TableSetting = ({ setIsShown }: AddFilterProps) => {
     dispatch(setMemberTableHeaderItemList(updatedHeaders));
   };
 
+  // 드롭다운 아이템을 선택 시 이벤트
+  const onChangeFilter = (id: MEMBER | typeof NULL) => {
+    setFilterValue(id);
+  };
+
   // 현재 보여지는 헤더 중 필터 가능한 항목들을 추려 드롭다운 아이템으로 변환
   useEffect(() => {
     const newFilterDropdownItems = memberTableHeaderItemList
@@ -56,6 +61,7 @@ const TableSetting = ({ setIsShown }: AddFilterProps) => {
     filterValue,
     filterDropdownItems,
     onDragItem,
+    onChangeFilter,
   };
 
   return (
