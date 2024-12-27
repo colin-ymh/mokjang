@@ -53,7 +53,7 @@ export const DEFAULT_MEMBER: Member = {
   groupId: NULL,
   group: NULL_INFORMATION,
   educations: [],
-  createdAt: BLANK,
+  registeredAt: BLANK,
   updatedAt: BLANK,
 };
 

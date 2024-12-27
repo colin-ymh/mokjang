@@ -15,7 +15,6 @@ import {
 import styled from "styled-components";
 import Button from "@/components/atoms/common/button/button";
 import { getMemberFromServer } from "@/utils/member";
-import useWindowSize from "@/hooks/window/window";
 import { MEMBER } from "@/constants/member/member-column";
 
 const ButtonContainer = styled.div`
@@ -71,11 +70,13 @@ const MemberList = () => {
         take: 30, // 무한 스크롤에 적합한 소량의 데이터 요청
         order: order !== NULL ? order : undefined,
         orderDirection: memberOrderDirection,
+        selectedColumns: memberFilter.selectedColumns,
         name: memberFilter.name,
         school: memberFilter.school,
         birthAfter: memberFilter.birthAfter,
         birthBefore: memberFilter.birthBefore,
-        groupId: memberFilter.groupId,
+        group: memberFilter.group,
+        officer: memberFilter.officer,
       });
 
       return response.data.data;

@@ -25,6 +25,6 @@ export enum MEMBER {
   GUIDED_BY_ID = "guidedById",
   PREVIOUS_CHURCH_NAME = "previousChurchName",
   VEHICLE_NUMBER = "vehicleNumber",
-  CREATED_AT = "createdAt",
+  REGISTERED_AT = "registeredAt",
   UPDATED_AT = "updatedAt",
 }

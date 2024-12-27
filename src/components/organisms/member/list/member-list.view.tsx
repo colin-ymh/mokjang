@@ -3,7 +3,7 @@ import styled from "styled-components";
 import MemberTable, {
   MemberTableProps,
 } from "@/components/molecules/member/list/member-table";
-import MemberFilter from "@/components/molecules/member/list/member-filter";
+import MemberFilterRow from "@/components/molecules/member/list/member-filter-row";
 import { MEDIA_MIN_WIDTH } from "@/constants/constant";
 import MemberItemList from "@/components/molecules/member/list/member-item-list";
 
@@ -30,7 +30,7 @@ const DesktopView = styled.div`
 const MemberListView = (props: MemberTableProps) => {
   return (
     <MemberListContainer>
-      <MemberFilter />
+      <MemberFilterRow />
       {/* 모바일에서 보일 목록형 UI */}
       <MobileView>
         <MemberItemList {...props} />

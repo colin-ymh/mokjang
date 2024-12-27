@@ -1,13 +1,20 @@
 import { ChangeEvent, useState } from "react";
 
-import MemberFilterView, {
+import MemberFilterRowView, {
   SEARCH_FILTER,
-} from "@/components/molecules/member/list/member-filter.view";
+} from "@/components/molecules/member/list/member-filter-row.view";
 import { MEMBER } from "@/constants/member/member-column";
 import { BLANK } from "@/constants/constant";
 import { getTrimmedString } from "@/utils/format";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/redux/store";
+import { setMemberFilter } from "@/redux/reducers/member-filter-reducer";
 
-const MemberFilter = () => {
+const MemberFilterRow = () => {
+  const dispatch = useDispatch<AppDispatch>();
+  const { memberFilter } = useSelector(
+    (state: RootState) => state.memberFilter,
+  );
   // 목록 설정  모달 on off
   const [isAddFilterShown, setIsAddFilterShown] = useState<boolean>(false);
 
@@ -33,6 +40,11 @@ const MemberFilter = () => {
     setSearchValue(newValue);
   };
 
+  // 검색 버튼
+  const onClickSearch = () => {
+    dispatch(setMemberFilter({ ...memberFilter, [searchFilter]: searchValue }));
+  };
+
   const props = {
     isAddFilterShown,
     searchFilter,
@@ -41,13 +53,14 @@ const MemberFilter = () => {
     onClickTableSetting,
     onClickSearchFilterItem,
     onChangeSearchValue,
+    onClickSearch,
   };
 
   return (
     <>
-      <MemberFilterView {...props} />
+      <MemberFilterRowView {...props} />
     </>
   );
 };
 
-export default MemberFilter;
+export default MemberFilterRow;

@@ -1,6 +1,6 @@
 export default {
   none: "None",
-  null: "--",
+  null: "",
   type: "Type",
   search: "Search",
 

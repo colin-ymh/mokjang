@@ -46,7 +46,7 @@ const SideBarButton = ({ id, title }: SideBarButtonProps) => {
         return;
       case HEADER_ID.MEMBER:
         dispatch(setContentId(MEMBER_CONTENT_ID.MEMBER));
-        dispatch(setMemberFilter({ ...memberFilter, groupId: [] }));
+        dispatch(setMemberFilter({ ...memberFilter, group: [] }));
         return;
     }
   };

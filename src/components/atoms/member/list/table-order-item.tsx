@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
 import {
+  setMemberFilter,
   setMemberTableHeaderItemList,
   TABLE_HEADER_ITEM,
 } from "@/redux/reducers/member-filter-reducer";
@@ -13,6 +14,7 @@ import { MEMBER } from "@/constants/member/member-column";
 import { MainText } from "@/components/atoms/common/text/main-text";
 import { BLACK, GRAY, MAIN } from "@/constants/styles/color";
 
+import FilledEye from "../../../../../public/svg/filled-eye.svg";
 import Eye from "../../../../../public/svg/eye.svg";
 import EyeSlash from "../../../../../public/svg/eye-slash.svg";
 import { getTranslatedMemberColumn } from "@/utils/translate";
@@ -43,7 +45,7 @@ const HighlightLine = styled.div<{ $isShown: boolean }>`
 
 const EyeIconContainer = styled.div<{ $isFixed?: boolean }>`
   display: flex;
-  cursor: ${({ $isFixed }) => ($isFixed ? "not-allowed" : "pointer")};
+  cursor: ${({ $isFixed }) => ($isFixed ? "not-allowed" : "grab")};
 `;
 
 const ITEM_TYPE = "ORDER_ITEM";
@@ -56,8 +58,8 @@ type TableOrderItemProps = {
 
 const TableOrderItem = ({ item, index, onDrag }: TableOrderItemProps) => {
   const dispatch = useDispatch<AppDispatch>();
-  const memberTableHeaderItemList = useSelector(
-    (state: RootState) => state.memberFilter.memberTableHeaderItemList,
+  const { memberTableHeaderItemList, memberFilter } = useSelector(
+    (state: RootState) => state.memberFilter,
   );
   const t = useI18n();
 
@@ -91,13 +93,25 @@ const TableOrderItem = ({ item, index, onDrag }: TableOrderItemProps) => {
 
   dragRef(dropRef(ref)); // dragRef와 dropRef 병합
 
+  // 컬럼 활성화/비활성화 버튼 이벤트
   const onClickEye = (id: MEMBER) => {
+    const newHeaderItemList = memberTableHeaderItemList.map((header: any) =>
+      header.id === id ? { ...header, isShown: !header.isShown } : header,
+    );
+
+    // 헤더에서 제거
+    dispatch(setMemberTableHeaderItemList(newHeaderItemList));
+
+    // DB 요청 변경
     dispatch(
-      setMemberTableHeaderItemList(
-        memberTableHeaderItemList.map((header: any) =>
-          header.id === id ? { ...header, isShown: !header.isShown } : header,
-        ),
-      ),
+      setMemberFilter({
+        ...memberFilter,
+        selectedColumns: newHeaderItemList
+          .filter((item) => item.isShown)
+          .map((item) => {
+            return item.id;
+          }),
+      }),
     );
   };
 
@@ -110,7 +124,7 @@ const TableOrderItem = ({ item, index, onDrag }: TableOrderItemProps) => {
         $isFixed={item.isFixed}
         onClick={() => !item.isFixed && onClickEye(item.id)}
       >
-        {item.isShown ? <Eye /> : <EyeSlash />}
+        {item.isFixed ? <FilledEye /> : item.isShown ? <Eye /> : <EyeSlash />}
       </EyeIconContainer>
       <HighlightLine $isShown={isOver} />
     </OrderItemContainer>

@@ -118,6 +118,8 @@ const MemberTableView = ({
 
   const getMemberTableContent = (id: MEMBER, member: Member) => {
     switch (id) {
+      case MEMBER.GROUP:
+        return <MainText>{member.group?.name}</MainText>;
       case MEMBER.PROFILE_IMAGE:
         return (
           <ProfileImage
@@ -144,9 +146,25 @@ const MemberTableView = ({
           </MainText>
         );
       case MEMBER.BAPTISM:
-        return <MainText>{t(member.baptism as BAPTISM)}</MainText>;
+        return <MainText>{t(member?.baptism as BAPTISM)}</MainText>;
       case MEMBER.OFFICER:
-        return <MainText>{member.officerId}</MainText>;
+        return <MainText>{member.officer?.name}</MainText>;
+      case MEMBER.MINISTRY:
+        return (
+          <MainText>
+            {member.ministries?.map((item) => {
+              return item.name;
+            })}
+          </MainText>
+        );
+      case MEMBER.EDUCATION:
+        return (
+          <MainText>
+            {member.educations?.map((item) => {
+              return item.name;
+            })}
+          </MainText>
+        );
       default:
         return null;
     }

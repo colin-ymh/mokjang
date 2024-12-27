@@ -1,23 +1,20 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import {
-  BAPTISM,
-  BLANK,
-  GENDER,
-  NULL,
-  ORDER_DIRECTION,
-} from "@/constants/constant";
+import { BLANK, NULL, ORDER_DIRECTION } from "@/constants/constant";
 import { MEMBER } from "@/constants/member/member-column";
 
 type MEMBER_FILTER = {
-  name: string;
-  school: string;
-  vehicleNumber: string;
-  gender: GENDER | typeof NULL;
-  baptism: BAPTISM | typeof NULL;
-  officer: string;
+  [MEMBER.NAME]: string;
+  [MEMBER.SCHOOL]: string;
+  [MEMBER.VEHICLE_NUMBER]: string[];
+  [MEMBER.GENDER]: string[];
   birthAfter: string;
   birthBefore: string;
-  groupId: string[];
+  [MEMBER.GROUP]: string[];
+  [MEMBER.OFFICER]: string[];
+  [MEMBER.MINISTRY]: string[];
+  [MEMBER.EDUCATION]: string[];
+  [MEMBER.BAPTISM]: string[];
+  selectedColumns: MEMBER[];
 };
 
 type MemberFilterState = {
@@ -30,13 +27,21 @@ type MemberFilterState = {
 export const INITIAL_MEMBER_FILTER: MEMBER_FILTER = {
   name: BLANK,
   school: BLANK,
-  vehicleNumber: BLANK,
-  gender: NULL,
-  baptism: NULL,
-  officer: BLANK,
+  vehicleNumber: [],
+  gender: [],
+  baptism: [],
+  officer: [],
+  ministry: [],
+  education: [],
   birthAfter: BLANK,
   birthBefore: BLANK,
-  groupId: [],
+  group: [],
+  selectedColumns: [
+    MEMBER.GENDER,
+    MEMBER.OFFICER,
+    MEMBER.AGE,
+    MEMBER.MOBILE_PHONE,
+  ],
 };
 
 export type TABLE_HEADER_ITEM = {
@@ -147,7 +152,7 @@ export const INITIAL_TABLE_HEADER_LIST: TABLE_HEADER_ITEM[] = [
     isFixed: false,
   },
   {
-    id: MEMBER.CREATED_AT,
+    id: MEMBER.REGISTERED_AT,
     isShown: false,
     isSortable: false,
     isFilterable: true,

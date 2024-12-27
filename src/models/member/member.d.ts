@@ -44,6 +44,6 @@ export type Member = {
   educations: ChurchInformation[];
   previousChurchName: string; // 이전 교회
   //
-  createdAt: string;
+  registeredAt: string;
   updatedAt: string;
 };

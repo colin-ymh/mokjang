@@ -64,18 +64,16 @@ const GroupFilter = () => {
   // 그룹이 변경되면 교인 목록에 적용
   useEffect(() => {
     if (selectedGroupId) {
-      dispatch(
-        setMemberFilter({ ...memberFilter, groupId: [selectedGroupId] }),
-      );
+      dispatch(setMemberFilter({ ...memberFilter, group: [selectedGroupId] }));
     }
   }, [selectedGroupId]);
 
   // 그룹이 변경되면 교인 목록에 적용
   useEffect(() => {
-    if (memberFilter.groupId.length === 0) {
+    if (memberFilter.group.length === 0) {
       setSelectedGroupId(BLANK);
     }
-  }, [memberFilter.groupId]);
+  }, [memberFilter.group]);
 
   const props = {
     groups,

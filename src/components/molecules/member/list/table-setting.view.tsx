@@ -15,6 +15,7 @@ import { NULL } from "@/constants/constant";
 import { useMemberFilterContent } from "@/hooks/filter/filter";
 
 import Cancel from "../../../../../public/svg/cancel.svg";
+import Reset from "../../../../../public/svg/arrow-uturn.svg";
 import Check from "../../../../../public/svg/check.svg";
 import { useI18n, useScopedI18n } from "../../../../../locales/client";
 
@@ -59,10 +60,26 @@ const DivideLine = styled.div`
   background-color: ${GRAY.LIGHT};
 `;
 
+const ButtonContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+`;
+
 const CancelButton = styled(Cancel)`
   display: flex;
   width: 25px;
   height: 25px;
+  cursor: pointer;
+`;
+
+const ResetButton = styled(Reset)`
+  display: flex;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  stroke-width: 1px;
+  margin-top: 2px;
 `;
 
 const FilterContainer = styled.div`
@@ -79,9 +96,17 @@ const FilterItemContainer = styled.div`
 
 const FilterItem = styled.div`
   display: flex;
-  padding: 10px;
+  padding: 5px 10px;
+  margin: 5px 0;
   justify-content: space-between;
   align-items: center;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.2s ease-in-out;
+
+  &:hover {
+    background-color: ${GRAY.LIGHT};
+  }
 `;
 
 const ItemDivideLine = styled.div`
@@ -93,20 +118,29 @@ const ItemDivideLine = styled.div`
 const CheckButton = styled(Check)<{ $isSelected: boolean }>`
   display: flex;
   stroke: ${({ $isSelected }) => ($isSelected ? MAIN.DEFAULT : GRAY.DEFAULT)};
+  transition: stroke 0.2s ease-in-out;
 `;
 
 type TableSettingViewProps = {
   filterValue: MEMBER | typeof NULL;
+  filterItems: string[];
   filterDropdownItems: DropdownValueType[];
   onDragItem: (fromIndex: number, toIndex: number) => void;
   onChangeFilter: (id: MEMBER | typeof NULL) => void;
+  onClickFilterItem: (itemId: string) => void;
+  onClickCancel: () => void;
+  onClickReset: () => void;
 };
 
 const TableSettingView = ({
   filterValue,
+  filterItems,
   filterDropdownItems,
   onDragItem,
   onChangeFilter,
+  onClickFilterItem,
+  onClickCancel,
+  onClickReset,
 }: TableSettingViewProps) => {
   const memberTableHeaderItemList = useSelector(
     (state: RootState) => state.memberFilter.memberTableHeaderItemList,
@@ -122,21 +156,26 @@ const TableSettingView = ({
         <TitleContainer>
           <MainText size={SIZE.LARGE}>{t_button("filterSetting")}</MainText>
         </TitleContainer>
-        <CancelButton />
+        <ButtonContainer>
+          <ResetButton onClick={onClickReset} />
+          <CancelButton onClick={onClickCancel} />
+        </ButtonContainer>
       </SettingHeader>
       {/* Content */}
       <SettingContent>
         {/* 헤더 순서 설정*/}
         <ContentContainer>
           <OrderItemList>
-            {memberTableHeaderItemList.map((item, index) => (
-              <TableOrderItem
-                key={item.id}
-                item={item}
-                index={index}
-                onDrag={onDragItem}
-              />
-            ))}
+            {memberTableHeaderItemList
+              // .filter((item) => !item.isFixed)
+              .map((item, index) => (
+                <TableOrderItem
+                  key={item.id}
+                  item={item}
+                  index={index}
+                  onDrag={onDragItem}
+                />
+              ))}
           </OrderItemList>
         </ContentContainer>
         <DivideLine />
@@ -153,9 +192,11 @@ const TableSettingView = ({
               useMemberFilterContent(t, officers, filterValue)?.map((item) => {
                 return (
                   <FilterItemContainer key={item.value}>
-                    <FilterItem>
+                    <FilterItem onClick={() => onClickFilterItem(item.value)}>
                       <MainText>{item.title}</MainText>
-                      {/*<CheckButton />*/}
+                      <CheckButton
+                        $isSelected={filterItems.includes(item.value)}
+                      />
                     </FilterItem>
                     <ItemDivideLine />
                   </FilterItemContainer>

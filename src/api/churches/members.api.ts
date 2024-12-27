@@ -19,19 +19,7 @@ type GetMembersParams = {
   take?: number; // 요청 개수
   order?: MEMBER; // 정렬 기준
   orderDirection?: ORDER_DIRECTION; // 오름차순 내림차순
-  // 컬럼 on/off
-  isMobilePhone?: boolean;
-  isBirth?: boolean;
-  isGender?: boolean;
-  isOfficer?: boolean;
-  isMinistries?: boolean;
-  isEducations?: boolean;
-  isMarriage?: boolean;
-  isAddress?: boolean;
-  isHomePhone?: boolean;
-  isOccupation?: boolean;
-  isSchool?: boolean;
-  isVehicleNumber?: boolean;
+
   // 필터링 내용
   name?: string; // 검색 이름
   mobilePhone?: string;
@@ -44,13 +32,16 @@ type GetMembersParams = {
   homePhone?: string;
   occupation?: string;
   vehicleNumber?: string[];
-  groupId?: string[];
-  officeId?: string[];
-  ministryId?: string[];
-  educationId?: string[];
+  group?: string[];
+  officer?: string[];
+  ministry?: string[];
+  education?: string[];
   baptism?: BAPTISM[];
   gender?: GENDER[];
   marriage?: MARRIAGE[];
+
+  //   활성화된 컬럼들
+  selectedColumns?: MEMBER[];
 };
 
 export type GetMembersResponse = Member;
@@ -138,22 +129,11 @@ export class MembersApi {
       gender,
       baptism,
       marriage,
-      groupId,
-      officeId,
-      ministryId,
-      educationId,
-      isMobilePhone,
-      isBirth,
-      isGender,
-      isOfficer,
-      isMinistries,
-      isEducations,
-      isMarriage,
-      isAddress,
-      isHomePhone,
-      isOccupation,
-      isSchool,
-      isVehicleNumber,
+      group,
+      officer,
+      ministry,
+      education,
+      selectedColumns,
     } = params;
 
     const queryParams: Record<string, any> = Object.fromEntries(
@@ -175,22 +155,25 @@ export class MembersApi {
         gender,
         baptism,
         marriage,
-        groupId,
-        officeId,
-        ministryId,
-        educationId,
-        select__mobilePhone: isMobilePhone,
-        select__birth: isBirth,
-        select__gender: isGender,
-        select__officer: isOfficer,
-        select__ministries: isMinistries,
-        select__educations: isEducations,
-        select__marriage: isMarriage,
-        select__address: isAddress,
-        select__homePhone: isHomePhone,
-        select__occupation: isOccupation,
-        select__school: isSchool,
-        select__vehicleNumber: isVehicleNumber,
+        groupId: group,
+        officerId: officer,
+        ministryId: ministry,
+        educationId: education,
+        select__group: true,
+        select__mobilePhone: selectedColumns?.includes(MEMBER.MOBILE_PHONE),
+        select__birth:
+          selectedColumns?.includes(MEMBER.BIRTH) ||
+          selectedColumns?.includes(MEMBER.AGE),
+        select__gender: selectedColumns?.includes(MEMBER.GENDER),
+        select__officer: selectedColumns?.includes(MEMBER.OFFICER),
+        select__ministries: selectedColumns?.includes(MEMBER.MINISTRY),
+        select__educations: selectedColumns?.includes(MEMBER.EDUCATION),
+        select__marriage: selectedColumns?.includes(MEMBER.MARRIAGE),
+        select__address: selectedColumns?.includes(MEMBER.ADDRESS),
+        select__homePhone: selectedColumns?.includes(MEMBER.HOME_PHONE),
+        select__occupation: selectedColumns?.includes(MEMBER.OCCUPATION),
+        select__school: selectedColumns?.includes(MEMBER.SCHOOL),
+        select__vehicleNumber: selectedColumns?.includes(MEMBER.VEHICLE_NUMBER),
       }).filter(
         ([_, value]) =>
           value !== undefined &&

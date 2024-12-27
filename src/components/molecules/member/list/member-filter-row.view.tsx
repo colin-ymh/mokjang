@@ -69,9 +69,10 @@ type MemberFilterViewProps = {
   onClickSearchFilterItem: (value: SEARCH_FILTER) => void;
   onChangeSearchValue: (event: ChangeEvent<HTMLInputElement>) => void;
   onClickTableSetting: () => void;
+  onClickSearch: () => void;
 };
 
-const MemberFilterView = ({
+const MemberFilterRowView = ({
   isAddFilterShown,
   searchFilter,
   searchValue,
@@ -79,6 +80,7 @@ const MemberFilterView = ({
   onClickTableSetting,
   onClickSearchFilterItem,
   onChangeSearchValue,
+  onClickSearch,
 }: MemberFilterViewProps) => {
   const t = useI18n();
   const t_button = useScopedI18n("button");
@@ -116,10 +118,15 @@ const MemberFilterView = ({
           borderColor={GRAY.LIGHT}
           height={30}
         />
-        <Button text={t("search")} width={80} height={30} />
+        <Button
+          text={t("search")}
+          width={80}
+          height={30}
+          onClick={onClickSearch}
+        />
       </SearchContainer>
     </MemberFilterContainer>
   );
 };
 
-export default MemberFilterView;
+export default MemberFilterRowView;

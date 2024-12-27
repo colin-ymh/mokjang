@@ -1,6 +1,6 @@
 export default {
   none: "없음",
-  null: "--",
+  null: "",
   type: "종류",
   search: "검색",
 

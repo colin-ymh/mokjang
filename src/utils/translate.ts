@@ -19,7 +19,7 @@ export const getTranslatedMemberColumn = (
       | MEMBER.MARRIAGE
       | MEMBER.BAPTISM
       | MEMBER.BIRTH
-      | MEMBER.CREATED_AT
+      | MEMBER.REGISTERED_AT
       | MEMBER.UPDATED_AT,
   );
 };
