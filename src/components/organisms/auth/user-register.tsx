@@ -7,26 +7,12 @@ import UserRegisterList from "@/components/molecules/auth/user-register-list";
 
 import Sheep from "../../../../public/svg/sheep.svg";
 
-const BackgroundContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  width: 100%;
-  background-color: ${MAIN.DARK};
-`;
-
 const UserRegisterContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: ${WHITE};
-  width: 400px;
-  height: 600px;
-  border-radius: 5px;
-  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.5);
+  height: 100%;
   gap: 30px;
 `;
 
@@ -57,17 +43,15 @@ const Logo = styled(Sheep)`
 
 const UserRegister = () => {
   return (
-    <BackgroundContainer>
-      <UserRegisterContainer>
-        <LogoContainer>
-          <Logo />
-          <MainText color={WHITE} size={SIZE.LARGE}>
-            {"MOKJANG"}
-          </MainText>
-        </LogoContainer>
-        <UserRegisterList />
-      </UserRegisterContainer>
-    </BackgroundContainer>
+    <UserRegisterContainer>
+      <LogoContainer>
+        <Logo />
+        <MainText color={WHITE} size={SIZE.LARGE}>
+          {"MOKJANG"}
+        </MainText>
+      </LogoContainer>
+      <UserRegisterList />
+    </UserRegisterContainer>
   );
 };
 

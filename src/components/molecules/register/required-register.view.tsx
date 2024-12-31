@@ -10,7 +10,7 @@ import { BLACK, DESTRUCTIVE, GRAY } from "@/constants/styles/color";
 import LabelInput from "@/components/atoms/common/input/label-input";
 import RadioButton from "@/components/atoms/common/input/radio-button/radio-button";
 import RegisterRadioButton from "@/components/atoms/register/register-radio-button";
-import { FAMILY, MEMBER_REGISTER_TYPE } from "@/constants/constant";
+import { FAMILY, GENDER, MEMBER_REGISTER_TYPE } from "@/constants/constant";
 import { useMemberRegisterTypeRadioButtonItems } from "@/hooks/radio-button/radio-button-items";
 import { DropdownValueType } from "@/components/atoms/common/dropdown/dropdown-item";
 import LabelDropdown from "@/components/atoms/common/dropdown/label-dropdown";
@@ -19,6 +19,7 @@ import { onClickEnter } from "@/utils/input";
 
 import { useI18n, useScopedI18n } from "../../../../locales/client";
 import { useFamilyRelationDropdownItems } from "@/hooks/dropdown/dropdown-items";
+import { Member } from "@/models/member/member";
 
 const RequiredRegisterContainer = styled.div`
   display: flex;
@@ -35,6 +36,7 @@ export type RequiredRegisterViewProps = {
   guideItems: DropdownValueType[];
   familyMemberName: string;
   familyMemberItems: DropdownValueType[];
+  familyGender: GENDER | undefined;
   onChangeType: (type: MEMBER_REGISTER_TYPE) => void;
   onChangeName: (event: ChangeEvent<HTMLInputElement>) => void;
   onChangeMobilePhone: (event: ChangeEvent<HTMLInputElement>) => void;
@@ -50,6 +52,7 @@ const RequiredRegisterView = ({
   guideItems,
   familyMemberName,
   familyMemberItems,
+  familyGender,
   onChangeType,
   onChangeName,
   onChangeMobilePhone,
@@ -65,6 +68,8 @@ const RequiredRegisterView = ({
   const { type, member } = useSelector(
     (state: RootState) => state.memberRegister,
   );
+
+  const familyRelationItems = useFamilyRelationDropdownItems(familyGender);
 
   // 각 input 에 대한 ref
   const nameInputRef = useRef<HTMLInputElement>(null);
@@ -149,7 +154,7 @@ const RequiredRegisterView = ({
       <LabelDropdown
         label={t("relation")}
         value={member.relation}
-        items={useFamilyRelationDropdownItems()}
+        items={familyRelationItems}
         onChangeItem={onChangeFamilyRelation}
         reverseDirection={true}
       />

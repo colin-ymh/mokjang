@@ -10,26 +10,26 @@ import RegisterButtonList from "@/components/molecules/register/register-button-
 import PersonalRegister from "@/components/molecules/register/personal-register";
 import ReligiousRegister from "@/components/molecules/register/religious-register";
 import RequiredRegister from "@/components/molecules/register/required-register";
-import { WHITE } from "@/constants/styles/color";
+import { SIZE } from "@/constants/styles/style";
 
 import { useScopedI18n } from "../../../../locales/client";
-import { SIZE } from "@/constants/styles/style";
 
 const RegisterContainer = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  background-color: ${WHITE};
+  justify-content: center;
+  height: 100%;
   width: 100%;
 `;
 
 const TextContainer = styled.div`
-  padding: 20px 30px;
+  padding: 30px;
 `;
 
 const ContentContainer = styled.div`
   flex: 1;
   overflow-y: scroll;
+  width: 100%;
 `;
 
 const MemberRegisterView = () => {

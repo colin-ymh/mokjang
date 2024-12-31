@@ -25,6 +25,7 @@ const HeaderContainer = styled.header`
   // 데크스탑
   @media (min-width: ${MEDIA_MIN_WIDTH.DESKTOP}) {
     position: relative;
+    display: none;
   }
 `;
 

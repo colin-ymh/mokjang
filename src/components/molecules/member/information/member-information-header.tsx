@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-import HeaderBarView from "@/components/molecules/layout/header/header-bar.view";
+import HeaderBarView from "@/components/atoms/layout/header/header-bar.view";
 import { useMemberInformationHeaderBarItems } from "@/hooks/layout/header-bar-items";
 import MemberImageInput from "@/components/atoms/register/member-image-input";
 import { MainText } from "@/components/atoms/common/text/main-text";

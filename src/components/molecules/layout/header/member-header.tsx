@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import MemberHeaderView from "@/components/organisms/layout/header/member-header.view";
+import MemberHeaderView from "@/components/molecules/layout/header/member-header.view";
 import CustomPopup from "@/components/atoms/common/popup/custom-popup";
 import MemberRegister from "@/components/organisms/register/member-register";
 import { MainText } from "@/components/atoms/common/text/main-text";

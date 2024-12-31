@@ -1,10 +1,11 @@
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 
-import { BAPTISM, MARRIAGE, GENDER, NULL, FAMILY } from "@/constants/constant";
+import { BAPTISM, FAMILY, GENDER, MARRIAGE, NULL } from "@/constants/constant";
 import { MEMBER } from "@/constants/member/member-column";
 
 import { useI18n } from "../../../locales/client";
+import { DropdownValueType } from "@/components/atoms/common/dropdown/dropdown-item";
 
 export const useBaptismDropdownItems = () => {
   const t = useI18n();
@@ -150,10 +151,80 @@ export const useGroupDropdownItems = () => {
   return items;
 };
 
-export const useFamilyRelationDropdownItems = () => {
+export const useFamilyRelationDropdownItems = (gender: GENDER | undefined) => {
   const t = useI18n();
 
-  const items = [
+  const maleItems = [
+    {
+      value: FAMILY.FATHER,
+      title: t(FAMILY.FATHER),
+    },
+    {
+      value: FAMILY.SON,
+      title: t(FAMILY.SON),
+    },
+    {
+      value: FAMILY.BROTHER,
+      title: t(FAMILY.BROTHER),
+    },
+    {
+      value: FAMILY.GRANDFATHER,
+      title: t(FAMILY.GRANDFATHER),
+    },
+    {
+      value: FAMILY.SON_IN_LAW,
+      title: t(FAMILY.SON_IN_LAW),
+    },
+    {
+      value: FAMILY.HUSBAND_FATHER_IN_LAW,
+      title: t(FAMILY.HUSBAND_FATHER_IN_LAW),
+    },
+    {
+      value: FAMILY.WIFE_FATHER_IN_LAW,
+      title: t(FAMILY.WIFE_FATHER_IN_LAW),
+    },
+    {
+      value: FAMILY.GRANDSON,
+      title: t(FAMILY.GRANDSON),
+    },
+  ];
+
+  const femaleItems = [
+    {
+      value: FAMILY.MOTHER,
+      title: t(FAMILY.MOTHER),
+    },
+    {
+      value: FAMILY.DAUGHTER,
+      title: t(FAMILY.DAUGHTER),
+    },
+    {
+      value: FAMILY.SISTER,
+      title: t(FAMILY.SISTER),
+    },
+    {
+      value: FAMILY.GRANDMOTHER,
+      title: t(FAMILY.GRANDMOTHER),
+    },
+    {
+      value: FAMILY.DAUGHTER_IN_LAW,
+      title: t(FAMILY.DAUGHTER_IN_LAW),
+    },
+    {
+      value: FAMILY.HUSBAND_MOTHER_IN_LAW,
+      title: t(FAMILY.HUSBAND_MOTHER_IN_LAW),
+    },
+    {
+      value: FAMILY.WIFE_MOTHER_IN_LAW,
+      title: t(FAMILY.WIFE_MOTHER_IN_LAW),
+    },
+    {
+      value: FAMILY.GRANDDAUGHTER,
+      title: t(FAMILY.GRANDDAUGHTER),
+    },
+  ];
+
+  const neutralItems = [
     {
       value: FAMILY.FAMILY,
       title: t(FAMILY.FAMILY),
@@ -163,54 +234,24 @@ export const useFamilyRelationDropdownItems = () => {
       title: t(FAMILY.SPOUSE),
     },
     {
-      value: FAMILY.MOTHER,
-      title: t(FAMILY.MOTHER),
-    },
-    {
-      value: FAMILY.FATHER,
-      title: t(FAMILY.FATHER),
-    },
-    {
-      value: FAMILY.CHILD,
-      title: t(FAMILY.CHILD),
-    },
-    {
       value: FAMILY.SIBLING,
       title: t(FAMILY.SIBLING),
-    },
-    {
-      value: FAMILY.GRAND_PARENT,
-      title: t(FAMILY.GRAND_PARENT),
-    },
-    {
-      value: FAMILY.SON_IN_LAW,
-      title: t(FAMILY.SON_IN_LAW),
-    },
-    {
-      value: FAMILY.DAUGHTER_IN_LAW,
-      title: t(FAMILY.DAUGHTER_IN_LAW),
-    },
-    {
-      value: FAMILY.HUSBAND_FATHER_IN_LAW,
-      title: t(FAMILY.HUSBAND_FATHER_IN_LAW),
-    },
-    {
-      value: FAMILY.HUSBAND_MOTHER_IN_LAW,
-      title: t(FAMILY.HUSBAND_MOTHER_IN_LAW),
-    },
-    {
-      value: FAMILY.WIFE_FATHER_IN_LAW,
-      title: t(FAMILY.WIFE_FATHER_IN_LAW),
-    },
-    {
-      value: FAMILY.WIFE_MOTHER_IN_LAW,
-      title: t(FAMILY.WIFE_MOTHER_IN_LAW),
     },
     {
       value: FAMILY.RELATIVE,
       title: t(FAMILY.RELATIVE),
     },
   ];
+
+  let items: DropdownValueType[];
+
+  if (!gender) {
+    items = [...neutralItems, ...maleItems, ...femaleItems];
+  } else if (gender === GENDER.MALE) {
+    items = [...neutralItems, ...maleItems];
+  } else {
+    items = [...neutralItems, ...femaleItems];
+  }
 
   return items;
 };

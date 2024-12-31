@@ -1,13 +1,13 @@
 "use client";
 
 import UserRegister from "@/components/organisms/auth/user-register";
-import AuthLayout from "@/components/organisms/layout/auth-layout";
+import ModalLayout from "@/components/organisms/layout/modal-layout";
 
 const UserRegisterPage = () => {
   return (
-    <AuthLayout>
+    <ModalLayout>
       <UserRegister />
-    </AuthLayout>
+    </ModalLayout>
   );
 };
 

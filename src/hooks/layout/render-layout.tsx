@@ -5,7 +5,7 @@ import {
   HEADER_ID,
   MEMBER_INFORMATION_HEADER_ID,
 } from "@/constants/layout/header";
-import MemberHeader from "@/components/organisms/layout/header/member-header";
+import MemberHeader from "@/components/molecules/layout/header/member-header";
 import MemberList from "@/components/organisms/member/list/member-list";
 import { Member } from "@/models/member/member";
 import InformationList from "@/components/molecules/member/information/member-information-list";

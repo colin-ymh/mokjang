@@ -8,7 +8,12 @@ import { setMember, setType } from "@/redux/reducers/member-register-reducer";
 
 import { GetMembersResponse, MembersApi } from "@/api/churches/members.api";
 import RequiredRegisterView from "@/components/molecules/register/required-register.view";
-import { MEMBER_REGISTER_TYPE, BLANK, FAMILY } from "@/constants/constant";
+import {
+  MEMBER_REGISTER_TYPE,
+  BLANK,
+  FAMILY,
+  GENDER,
+} from "@/constants/constant";
 import { DropdownValueType } from "@/components/atoms/common/dropdown/dropdown-item";
 
 import {
@@ -41,6 +46,8 @@ const RequiredRegister = () => {
   const [familyMemberItems, setFamilyMemberItems] = useState<
     DropdownValueType[]
   >([]);
+  // 선택된 가족의 성별
+  const [familyGender, setFamilyGender] = useState<GENDER | undefined>();
 
   // 새신자 타입 변경 시 이벤트
   const onChangeType = (type: MEMBER_REGISTER_TYPE) => {
@@ -80,7 +87,11 @@ const RequiredRegister = () => {
         .then((response: AxiosResponse) => {
           const members: GetMembersResponse[] = response.data.data;
           const newGuideItems: DropdownValueType[] = members.map((member) => {
-            return { value: member.id, title: member.name };
+            return {
+              value: member.id,
+              title: member.name,
+              gender: member.gender,
+            };
           });
 
           setGuideItems(newGuideItems);
@@ -122,6 +133,12 @@ const RequiredRegister = () => {
   // 가족 선택 시 이벤트
   const onChangeFamilyMemberId = (value: string) => {
     dispatch(setMember({ ...member, familyMemberId: value }));
+
+    membersApi.getMember({ churchId, memberId: value }).then((response) => {
+      if (response.status === 200) {
+        setFamilyGender(response.data.data.gender);
+      }
+    });
   };
 
   const onChangeFamilyRelation = (value: FAMILY) => {
@@ -133,6 +150,7 @@ const RequiredRegister = () => {
     guideItems,
     familyMemberName,
     familyMemberItems,
+    familyGender,
     onChangeType,
     onChangeName,
     onChangeMobilePhone,

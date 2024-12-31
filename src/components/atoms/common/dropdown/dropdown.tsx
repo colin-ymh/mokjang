@@ -27,7 +27,7 @@ export type DropdownProps = InputProps & {
   enterKeyHint?: string;
   placeholder?: string;
   onKeyDown?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
-  onClickItemExtra?: () => void;
+  onClickItemExtra?: (event?: any) => void;
   onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
   borderColor?: string;
   width?: number;
@@ -134,6 +134,19 @@ const Dropdown = forwardRef<HTMLInputElement, DropdownProps>(
         setIsOpened(false);
       }
     };
+
+    useEffect(() => {
+      const onKeyDown = (e: KeyboardEvent) => {
+        if (e.key === "Escape") {
+          setIsOpened(false);
+        }
+      };
+
+      window.addEventListener("keydown", onKeyDown);
+      return () => {
+        window.removeEventListener("keydown", onKeyDown);
+      };
+    }, [setIsOpened]);
 
     const props = {
       ref,

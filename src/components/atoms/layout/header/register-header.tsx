@@ -1,6 +1,6 @@
 import { usePathname, useRouter } from "next/navigation";
 
-import RegisterHeaderView from "@/components/molecules/layout/header/register-header.view";
+import RegisterHeaderView from "@/components/atoms/layout/header/register-header.view";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { useState } from "react";
