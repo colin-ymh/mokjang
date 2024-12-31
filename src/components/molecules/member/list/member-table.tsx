@@ -11,20 +11,14 @@ import {
 import { ORDER_DIRECTION } from "@/constants/constant";
 
 export type MemberTableProps = {
-  members: Member[];
   onClickMemberItem: (memberId: string) => void;
   loadMembers: () => Promise<void>;
 };
 
-const MemberTable = ({
-  members,
-  onClickMemberItem,
-  loadMembers,
-}: MemberTableProps) => {
+const MemberTable = ({ onClickMemberItem, loadMembers }: MemberTableProps) => {
   const dispatch = useDispatch<AppDispatch>();
-  const { memberFilter, memberOrderBy, memberOrderDirection } = useSelector(
-    (state: RootState) => state.memberFilter,
-  );
+  const { members, memberFilter, memberOrderBy, memberOrderDirection } =
+    useSelector((state: RootState) => state.memberFilter);
 
   // 열 헤더를 눌러 정렬
   const onClickHeader = (id: MEMBER) => {

@@ -36,12 +36,13 @@ const MemberHeaderView = ({
 }: MemberHeadBarViewProps) => {
   const t_header = useScopedI18n("header");
   const contentId = useSelector((state: RootState) => state.layout.contentId);
+  const headerBarItems = useMemberHeaderBarItems();
 
   return (
     <HeaderContainer>
       <MainText size={SIZE.EXTRA_LARGE}>{t_header("member")}</MainText>
       <HeaderBottomContainer>
-        <HeaderBar value={contentId} items={useMemberHeaderBarItems()} />
+        <HeaderBar value={contentId} items={headerBarItems} />
         <Button
           text={"교인 등록"}
           width={80}

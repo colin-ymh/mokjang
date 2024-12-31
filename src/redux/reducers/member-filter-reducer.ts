@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { BLANK, NULL, ORDER_DIRECTION } from "@/constants/constant";
 import { MEMBER } from "@/constants/member/member-column";
+import { Member } from "@/models/member/member";
 
 type MEMBER_FILTER = {
   [MEMBER.NAME]: string;
@@ -14,10 +15,12 @@ type MEMBER_FILTER = {
   [MEMBER.MINISTRY]: string[];
   [MEMBER.EDUCATION]: string[];
   [MEMBER.BAPTISM]: string[];
+  [MEMBER.GENDER]: string[];
   selectedColumns: MEMBER[];
 };
 
 type MemberFilterState = {
+  members: Member[];
   memberFilter: MEMBER_FILTER;
   memberOrderBy: MEMBER | typeof NULL;
   memberOrderDirection: ORDER_DIRECTION;
@@ -168,6 +171,7 @@ export const INITIAL_TABLE_HEADER_LIST: TABLE_HEADER_ITEM[] = [
 ];
 
 const initialState: MemberFilterState = {
+  members: [],
   memberFilter: INITIAL_MEMBER_FILTER,
   memberOrderBy: NULL,
   memberOrderDirection: ORDER_DIRECTION.ASC,
@@ -178,6 +182,9 @@ const MemberFilterSlice = createSlice({
   name: "register",
   initialState,
   reducers: {
+    setMembers: (state, action: PayloadAction<Member[]>) => {
+      state.members = action.payload;
+    },
     setMemberFilter: (state, action: PayloadAction<MEMBER_FILTER>) => {
       state.memberFilter = action.payload;
     },
@@ -197,6 +204,7 @@ const MemberFilterSlice = createSlice({
 });
 
 export const {
+  setMembers,
   setMemberFilter,
   setMemberOrderBy,
   setMemberOrderDirection,

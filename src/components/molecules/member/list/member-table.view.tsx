@@ -9,7 +9,12 @@ import { MEMBER } from "@/constants/member/member-column";
 import { MainText } from "@/components/atoms/common/text/main-text";
 import { BAPTISM, GENDER } from "@/constants/constant";
 import { getAge, getDateFromString } from "@/utils/date";
-import { getFormattedDate, getFormattedMobilePhone } from "@/utils/format";
+import {
+  getFormattedDate,
+  getFormattedHomePhone,
+  getFormattedMobilePhone,
+  getKRDateFromDashDate,
+} from "@/utils/format";
 import { Member } from "@/models/member/member";
 import MemberTableHeader from "@/components/atoms/member/list/member-table-header";
 
@@ -48,15 +53,21 @@ const Scroll = styled.div<{ height: number }>`
   flex-shrink: 0; /* 자식 콘텐츠 크기와 관계없이 고정 */
 `;
 
-const MemberTableRow = styled.tr``;
+const MemberTableRow = styled.tr`
+  &:hover td {
+    background-color: ${GRAY.LIGHT};
+  }
+`;
 
-const TableData = styled.td<{ id: string; index: number }>`
+const TableData = styled.td<{ id: string; $index: number }>`
   border-bottom: 1px solid ${GRAY.SIDE_BAR};
   padding: 5px;
-  background-color: ${({ index }) => (index % 2 === 0 ? WHITE : GRAY.SIDE_BAR)};
+  background-color: ${({ $index }) =>
+    $index % 2 === 0 ? WHITE : GRAY.SIDE_BAR};
   justify-content: center;
   align-items: center;
   min-width: 30px;
+  cursor: pointer;
 `;
 
 // ${({ id }) => {
@@ -137,7 +148,9 @@ const MemberTableView = ({
         return <MainText>{t(member.gender as GENDER)}</MainText>;
       case MEMBER.BIRTH:
         return (
-          <MainText>{member.birth && getFormattedDate(member.birth)}</MainText>
+          <MainText>
+            {member.birth && getKRDateFromDashDate(member.birth)}
+          </MainText>
         );
       case MEMBER.AGE:
         return (
@@ -165,6 +178,20 @@ const MemberTableView = ({
             })}
           </MainText>
         );
+      case MEMBER.HOME_PHONE:
+        return (
+          <MainText>
+            {member.homePhone && getFormattedHomePhone(member.homePhone)}
+          </MainText>
+        );
+      case MEMBER.ADDRESS:
+        return <MainText>{member.address}</MainText>;
+      case MEMBER.OCCUPATION:
+        return <MainText>{member.occupation}</MainText>;
+      case MEMBER.SCHOOL:
+        return <MainText>{member.school}</MainText>;
+      case MEMBER.MARRIAGE:
+        return <MainText>{t(member.marriage)}</MainText>;
       default:
         return null;
     }
@@ -197,7 +224,7 @@ const MemberTableView = ({
                 {memberTableHeaderItemList
                   .filter((item) => item.isShown)
                   .map((item) => (
-                    <TableData key={item.id} id={item.id} index={index}>
+                    <TableData key={item.id} id={item.id} $index={index}>
                       <ContentContainer>
                         {getMemberTableContent(item.id, member)}
                       </ContentContainer>

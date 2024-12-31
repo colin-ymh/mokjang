@@ -1,3 +1,5 @@
+import { getSolar } from "@/utils/lunar/lunar-solar";
+
 /**
  * YYYY-MM-dd => Date Object
  * @param dateString
@@ -46,4 +48,32 @@ export const getAge = (date: Date | null): number => {
   }
 
   return age;
+};
+
+export const getThisYearBirth = (date: string, isLunar?: boolean) => {
+  const YEAR = new Date().getFullYear();
+  const newBirth = `${YEAR}-${date.slice(5, 10)}`;
+
+  if (isLunar) {
+    return getSolar(newBirth);
+  } else {
+    return newBirth;
+  }
+};
+
+/**
+ * 한 달 전의 날짜를 "YYYY-MM-DD" 문자열로 반환
+ */
+export const getNewMemberDate = (): string => {
+  const today = new Date();
+  // 현재 달에서 -1
+  today.setMonth(today.getMonth() - 1);
+
+  const year = today.getFullYear();
+  // JS Date의 month는 0부터 시작하므로 +1
+  const month = String(today.getMonth() + 1).padStart(2, "0");
+  const day = String(today.getDate()).padStart(2, "0");
+
+  // yyyy-mm-dd 형태로 반환
+  return `${year}-${month}-${day}`;
 };

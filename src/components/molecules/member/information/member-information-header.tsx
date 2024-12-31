@@ -1,7 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import { useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
 
 import HeaderBarView from "@/components/molecules/layout/header/header-bar.view";
 import { useMemberInformationHeaderBarItems } from "@/hooks/layout/header-bar-items";
@@ -9,6 +7,8 @@ import MemberImageInput from "@/components/atoms/register/member-image-input";
 import { MainText } from "@/components/atoms/common/text/main-text";
 import { getFormattedMobilePhone } from "@/utils/format";
 import { SIZE } from "@/constants/styles/style";
+import { Member } from "@/models/member/member";
+import { GRAY } from "@/constants/styles/color";
 
 const InformationHeader = styled.div`
   display: flex;
@@ -33,37 +33,51 @@ const TextContainer = styled.div`
   gap: 5px;
 `;
 
+const ChurchMemberInfoContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+
 type MemberInformationHeaderProps = {
   contentId: string;
   onClickItem: (id: string) => void;
+  targetMember: Member;
 };
 
 const MemberInformationHeader = ({
   contentId,
   onClickItem,
+  targetMember,
 }: MemberInformationHeaderProps) => {
-  const { member } = useSelector((state: RootState) => state.memberRegister);
-
+  const headerBarItems = useMemberInformationHeaderBarItems();
   return (
     <InformationHeader>
       <Information>
         <MemberImageInput
-          value={member?.profileImage}
+          value={targetMember?.profileImage}
           onChange={() => {}}
           width={80}
           height={80}
         />
         <TextContainer>
-          <MainText size={SIZE.LARGE}>{member.name}</MainText>
-          <MainText size={SIZE.MEDIUM}>
-            {getFormattedMobilePhone(member.mobilePhone)}
-          </MainText>
+          <MainText size={SIZE.LARGE}>{targetMember.name}</MainText>
+          <ChurchMemberInfoContainer>
+            <MainText size={SIZE.MEDIUM} color={GRAY.DARK}>
+              {targetMember?.officer?.name}
+            </MainText>
+            <MainText size={SIZE.MEDIUM} color={GRAY.DARK}>
+              {targetMember?.group?.name && targetMember?.officer?.name && "ㆍ"}
+            </MainText>
+            <MainText size={SIZE.MEDIUM} color={GRAY.DARK}>
+              {targetMember?.group?.name}
+            </MainText>
+          </ChurchMemberInfoContainer>
         </TextContainer>
       </Information>
 
       <HeaderBarView
         value={contentId}
-        items={useMemberInformationHeaderBarItems()}
+        items={headerBarItems}
         onClick={onClickItem}
       />
     </InformationHeader>

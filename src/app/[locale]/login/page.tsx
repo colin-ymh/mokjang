@@ -1,13 +1,13 @@
 "use client";
 
-import PageLayout from "@/components/organisms/layout/page-layout";
 import Login from "@/components/organisms/auth/login";
+import AuthLayout from "@/components/organisms/layout/auth-layout";
 
 const LoginPage = () => {
   return (
-    <PageLayout>
+    <AuthLayout>
       <Login />
-    </PageLayout>
+    </AuthLayout>
   );
 };
 

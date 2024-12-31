@@ -1,4 +1,6 @@
 import { createI18nClient } from "next-international/client";
+import ko from "./ko";
+import { LOCALE } from "@/constants/state/locale";
 
 export const {
   useI18n,
@@ -9,15 +11,11 @@ export const {
   useCurrentLocale,
 } = createI18nClient(
   {
-    ko: () => import("./ko"),
-    en: () => import("./en"),
+    [LOCALE.KO]: () => import("./ko"),
+    [LOCALE.EN]: () => import("./en"),
   },
   {
-    // Uncomment to set base path
-    // basePath: '/base',
-    // Uncomment to use custom segment name
-    // segmentName: 'locale',
-    // Uncomment to set fallback locale
-    // fallbackLocale: en,
+    segmentName: "locale",
+    fallbackLocale: ko,
   },
 );

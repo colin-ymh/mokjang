@@ -1,8 +1,9 @@
 import styled from "styled-components";
-import LoginList from "@/components/molecules/auth/login-list";
+
 import { MainText } from "@/components/atoms/common/text/main-text";
 import { SIZE } from "@/constants/styles/style";
 import { MAIN, WHITE } from "@/constants/styles/color";
+import UserRegisterList from "@/components/molecules/auth/user-register-list";
 
 import Sheep from "../../../../public/svg/sheep.svg";
 
@@ -16,7 +17,7 @@ const BackgroundContainer = styled.div`
   background-color: ${MAIN.DARK};
 `;
 
-const LoginContainer = styled.div`
+const UserRegisterContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -54,20 +55,20 @@ const Logo = styled(Sheep)`
   }
 `;
 
-const Login = () => {
+const UserRegister = () => {
   return (
     <BackgroundContainer>
-      <LoginContainer>
+      <UserRegisterContainer>
         <LogoContainer>
           <Logo />
           <MainText color={WHITE} size={SIZE.LARGE}>
             {"MOKJANG"}
           </MainText>
         </LogoContainer>
-        <LoginList />
-      </LoginContainer>
+        <UserRegisterList />
+      </UserRegisterContainer>
     </BackgroundContainer>
   );
 };
 
-export default Login;
+export default UserRegister;

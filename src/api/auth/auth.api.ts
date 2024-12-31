@@ -1,0 +1,159 @@
+import axios, { AxiosResponse } from "axios";
+import { EditMemberBody } from "@/api/churches/members.api";
+import { FAMILY } from "@/constants/constant";
+import { SERVER_URL, TEST_SERVER_URL } from "@/constants/state/url";
+import authorizeAxios from "@/api/authorize-axios";
+
+class HTTPError extends Error {}
+
+export enum AUTH {
+  GOOGLE = "google",
+  NAVER = "naver",
+  KAKAO = "kakao",
+}
+
+type getOAuthParams = {
+  provider: AUTH;
+};
+
+type getTestAuthParams = {
+  provider: AUTH;
+  providerId: string;
+};
+
+type getVerificationRequestParams = {
+  isTest: boolean;
+};
+
+type getVerificationRequestBody = {
+  name: string;
+  mobilePhone: string;
+};
+
+type getVerificationVerifyBody = {
+  code: string;
+};
+
+type getSignInBody = {
+  privacyPolicyAgreed: boolean;
+};
+
+export class AuthApi {
+  private _url: string;
+
+  constructor(useBaseURL: boolean) {
+    this._url = useBaseURL
+      ? SERVER_URL // 실제 사용할 url
+      : TEST_SERVER_URL; // 개발용 url
+  }
+
+  /**
+   * OAuth 요청
+   * @param {getOAuthParams} params
+   * @returns {Promise<AxiosResponse>}
+   */
+  public getOAuth = (params: getOAuthParams): string => {
+    const { provider } = params;
+
+    const url = `${this._url}/auth/login/${provider}`;
+
+    try {
+      return url;
+    } catch (error) {
+      throw new HTTPError(`Fetch error: ${error}`);
+    }
+  };
+
+  /**
+   * 테스트용 로그인
+   * @param {getTestAuthParams} params
+   * @returns {Promise<AxiosResponse>}
+   */
+  public getTestAuth = async (
+    params: getTestAuthParams,
+  ): Promise<AxiosResponse> => {
+    const { provider, providerId } = params;
+
+    const url = new URL(`/auth/test/sign-in`, this._url);
+
+    url.searchParams.set("provider", provider);
+    url.searchParams.set("providerId", providerId);
+
+    try {
+      return await axios.get(url.toString());
+    } catch (error) {
+      throw new HTTPError(`Fetch error: ${error}`);
+    }
+  };
+
+  /**
+   * 인증번호 요청
+   * @param {getVerificationRequestParams} params
+   * @param {getVerificationRequestBody} body
+   * @returns {Promise<AxiosResponse>}
+   */
+  public getVerificationRequest = async (
+    params: getVerificationRequestParams,
+    body: getVerificationRequestBody,
+  ): Promise<AxiosResponse> => {
+    const { isTest } = params;
+
+    const url = new URL("/auth/verification/request", this._url);
+
+    if (isTest !== undefined) {
+      url.searchParams.append("isTest", String(isTest));
+    }
+
+    try {
+      return await authorizeAxios.post(url.toString(), body);
+    } catch (error) {
+      throw new HTTPError(`Fetch error: ${error}`);
+    }
+  };
+
+  /**
+   * 인증번호 확인
+   * @param {getVerificationVerifyBody} body
+   * @returns {Promise<AxiosResponse>}
+   */
+  public getVerificationVerify = async (
+    body: getVerificationVerifyBody,
+  ): Promise<AxiosResponse> => {
+    const url = new URL("/auth/verification/verify", this._url);
+
+    try {
+      return await authorizeAxios.post(url.toString(), body);
+    } catch (error) {
+      throw new HTTPError(`Fetch error: ${error}`);
+    }
+  };
+
+  /**
+   * 로그인
+   * @param {getSignInBody} body
+   * @returns {Promise<AxiosResponse>}
+   */
+  public getSignIn = async (body: getSignInBody): Promise<AxiosResponse> => {
+    const url = new URL("/auth/sign-in", this._url);
+
+    try {
+      return await authorizeAxios.post(url.toString(), body);
+    } catch (error) {
+      throw new HTTPError(`Fetch error: ${error}`);
+    }
+  };
+
+  /**
+   * 리프레시 토큰 재발급
+   * @returns {Promise<AxiosResponse>}
+   */
+  public getRefreshToken = async (): Promise<AxiosResponse> => {
+    const url = new URL("/auth/token/rotate", this._url);
+
+    try {
+      return await authorizeAxios.post(url.toString());
+    } catch (error) {
+      throw new HTTPError(`Fetch error: ${error}`);
+    }
+  };
+}

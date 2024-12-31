@@ -14,15 +14,13 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import { DndProvider } from "react-dnd";
 
 const GlobalStyle = createGlobalStyle`
-    @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard-std.css");
-
     html,
     body {
-        margin: 0; /* 기본 margin 제거 */
-        height: 100%; /* 전체 높이 설정 */
-        background-color: white; /* body 배경색을 흰색으로 설정 */
-        min-width: 320px; /* 화면 너비가 320px 이하로 줄어들지 않도록 설정 */
-        font-family: 'Pretendard Std', monospace; /* Pretendard Std 적용 */
+        margin: 0;
+        height: 100%;
+        background-color: white;
+        min-width: 320px;
+        font-family: 'Pretendard Std', monospace;
     }
 
     body > div:first-child,

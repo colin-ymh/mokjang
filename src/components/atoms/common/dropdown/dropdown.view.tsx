@@ -19,7 +19,7 @@ const DropdownContainer = styled.div<{ $isOpened: boolean; width?: number }>`
 const DropdownButton = styled.div`
   display: flex;
   width: 100%;
-  flex-direction: "row";
+  flex-direction: row;
   cursor: pointer;
 `;
 

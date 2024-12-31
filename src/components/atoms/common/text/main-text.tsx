@@ -51,7 +51,7 @@ const getFontWeight = (size?: SIZE, fontWeight?: number) => {
   }
 };
 
-export const MainText = styled.p<MainTextProps>`
+export const MainText = styled.span<MainTextProps>`
   margin: 0;
   font-size: ${({ size, fontSize }) => getFontSize(size, fontSize)};
   color: ${({ color }) => color || BLACK};

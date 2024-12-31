@@ -2,6 +2,7 @@ import { BLANK } from "@/constants/constant";
 
 export const getIsWellFormedMobilePhone = (mobilePhone: string) => {
   if (mobilePhone.slice(0, 3) !== "010") return false;
+
   return mobilePhone.length === 13;
 };
 

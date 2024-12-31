@@ -7,7 +7,7 @@ import MemberInformation from "@/components/organisms/member/information/member-
 import CustomPopup from "@/components/atoms/common/popup/custom-popup";
 import MemberListView from "@/components/organisms/member/list/member-list.view";
 import { Member } from "@/models/member/member";
-import { NULL } from "@/constants/constant";
+import { GENDER, NULL } from "@/constants/constant";
 import {
   DEFAULT_MEMBER,
   setMember,
@@ -16,6 +16,8 @@ import styled from "styled-components";
 import Button from "@/components/atoms/common/button/button";
 import { getMemberFromServer } from "@/utils/member";
 import { MEMBER } from "@/constants/member/member-column";
+import { getNewMemberDate } from "@/utils/date";
+import { setMembers } from "@/redux/reducers/member-filter-reducer";
 
 const ButtonContainer = styled.div`
   display: flex;
@@ -25,15 +27,18 @@ const ButtonContainer = styled.div`
   gap: 10px;
 `;
 
-const MemberList = () => {
+type MemberListProps = {
+  isNewMember?: boolean;
+};
+
+const MemberList = ({ isNewMember }: MemberListProps) => {
   const membersApi = new MembersApi(false);
   const dispatch = useDispatch<AppDispatch>();
   const churchId: string = useSelector(
     (state: RootState) => state.church.churchId,
   );
-  const { memberFilter, memberOrderBy, memberOrderDirection } = useSelector(
-    (state: RootState) => state.memberFilter,
-  );
+  const { members, memberFilter, memberOrderBy, memberOrderDirection } =
+    useSelector((state: RootState) => state.memberFilter);
   const member = useSelector((state: RootState) => state.memberRegister.member);
 
   // 실제 교인 정보
@@ -42,9 +47,6 @@ const MemberList = () => {
   // 교인 상세정보 팝업 On/Off
   const [isMemberInformationShown, setIsMemberInformationShown] =
     useState<boolean>(false);
-
-  // 교인 목록에 보여지는 교인들
-  const [members, setMembers] = useState<Member[]>([]);
 
   // 서버에서 불러오는 교인 목록 페이지
   const [page, setPage] = useState<number>(1);
@@ -77,6 +79,9 @@ const MemberList = () => {
         birthBefore: memberFilter.birthBefore,
         group: memberFilter.group,
         officer: memberFilter.officer,
+        gender: memberFilter.gender as GENDER[],
+
+        createAfter: isNewMember ? getNewMemberDate() : undefined,
       });
 
       return response.data.data;
@@ -93,14 +98,12 @@ const MemberList = () => {
 
     await getMembersFromServer(page + 1).then((newMembers) => {
       if (newMembers.length > 0) {
-        setMembers((prev) => {
-          // 기존 데이터와 합치면서 중복 제거
-          const existingIds = new Set(prev.map((member) => member.id));
-          const filteredNewMembers = newMembers.filter(
-            (member) => !existingIds.has(member.id),
-          );
-          return [...prev, ...filteredNewMembers];
-        });
+        // 기존 데이터와 합치면서 중복 제거
+        const existingIds = new Set(members.map((member) => member.id));
+        const filteredNewMembers = newMembers.filter(
+          (member) => !existingIds.has(member.id),
+        );
+        dispatch(setMembers([...members, ...filteredNewMembers]));
         setPage((prev) => prev + 1); // 다음 페이지로 이동
       }
     });
@@ -111,10 +114,16 @@ const MemberList = () => {
   // 필터 정보가 변경될 때, 교인들을 다시 불러오는 부분
   useEffect(() => {
     getMembersFromServer(1).then((members) => {
-      setMembers(members);
+      dispatch(setMembers(members));
       setPage(1);
     });
-  }, [churchId, memberFilter, memberOrderBy, memberOrderDirection]);
+  }, [
+    churchId,
+    memberFilter,
+    memberOrderBy,
+    memberOrderDirection,
+    isNewMember,
+  ]);
 
   // 목록에서 교인을 선택하여 상세 페이지로 이동
   const onClickMemberItem = (memberId: string) => {

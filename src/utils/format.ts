@@ -91,6 +91,26 @@ export const getFormattedDate = (date: string) => {
   }
 };
 
+// YYYY-MM-DD 을 YYYY년 MM월 DD일 형식으로 포맷
+export const getKRDateFromDashDate = (date: string): string => {
+  if (!date) return ""; // 빈 입력 처리
+
+  // YYYY-MM-DD에서 숫자만 남기기
+  const cleaned = date.replace(/[^0-9]/g, ""); // 숫자 외 제거
+
+  // 입력된 문자열 길이 확인 후 포맷 적용
+  switch (cleaned.length) {
+    case 4: // YYYY
+      return `${cleaned}년`;
+    case 6: // YYYY MM
+      return `${cleaned.slice(0, 4)}년 ${parseInt(cleaned.slice(4, 6), 10)}월`;
+    case 8: // YYYY MM DD
+      return `${cleaned.slice(0, 4)}년 ${parseInt(cleaned.slice(4, 6), 10)}월 ${parseInt(cleaned.slice(6), 10)}일`;
+    default: // 유효하지 않은 경우
+      return "";
+  }
+};
+
 // 차량번호 입력창 포맷
 export const getFormattedVehicleNumber = (vehicleNumber: string) => {
   if (!vehicleNumber) return ""; // 입력값이 비어 있을 경우 공백 반환

@@ -24,6 +24,7 @@ const TableSettingContainer = styled.div`
   flex-direction: column;
   width: 400px;
   padding: 10px;
+  z-index: 50;
 `;
 
 const SettingHeader = styled.div`
@@ -195,7 +196,7 @@ const TableSettingView = ({
                     <FilterItem onClick={() => onClickFilterItem(item.value)}>
                       <MainText>{item.title}</MainText>
                       <CheckButton
-                        $isSelected={filterItems.includes(item.value)}
+                        $isSelected={filterItems?.includes(item.value)}
                       />
                     </FilterItem>
                     <ItemDivideLine />

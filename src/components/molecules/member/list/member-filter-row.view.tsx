@@ -11,6 +11,7 @@ import { useSearchFilterDropdownItems } from "@/hooks/dropdown/dropdown-items";
 import { MEMBER } from "@/constants/member/member-column";
 
 import { useI18n, useScopedI18n } from "../../../../../locales/client";
+import TransparentBackground from "@/components/atoms/common/etc/transparent-background";
 
 const MemberFilterContainer = styled.div`
   display: flex;
@@ -99,6 +100,11 @@ const MemberFilterRowView = ({
 
         {/* 필터 추가 모달 */}
         <AddFilterContainer $isShown={isAddFilterShown}>
+          <TransparentBackground
+            isOpened={isAddFilterShown}
+            onClick={() => setIsAddFilterShown(false)}
+            blur={false}
+          />
           <TableSetting setIsShown={setIsAddFilterShown} />
         </AddFilterContainer>
       </FilterList>

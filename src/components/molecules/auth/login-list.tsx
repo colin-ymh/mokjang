@@ -1,46 +1,36 @@
-import styled from "styled-components";
-import { MainText } from "@/components/atoms/common/text/main-text";
-import { BLACK, WHITE } from "@/constants/styles/color";
-
-const ListContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  flex: 3;
-  padding: 10px;
-  width: 80%;
-`;
-
-const OAuthItem = styled.div<{ $backgroundColor: string }>`
-  display: flex;
-  border-radius: 5px;
-  background-color: ${({ $backgroundColor }) => $backgroundColor};
-  height: 50px;
-  width: 100%;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
-`;
-
-const NAVER_COLOR = "#2DB400";
-const KAKAO_COLOR = "#FEE500";
+import { AUTH, AuthApi } from "@/api/auth/auth.api";
+import { setAuthorizationToken } from "@/api/authorize-axios";
+import { usePageRouter } from "@/utils/router";
+import LoginListView from "@/components/molecules/auth/login-list.view";
 
 const LoginList = () => {
+  // const router = useRouter();
+  const router = usePageRouter();
+  const authApi = new AuthApi(false);
+
+  const onClickItem = (provider: AUTH) => {
+    // router.push(authApi.getOAuth({ provider }));
+    authApi
+      .getTestAuth({ provider, providerId: new Date().toString() })
+      .then((response) => {
+        if (response.status === 200) {
+          // 최초 로그인인 경우
+          if (response.data?.temporal) {
+            setAuthorizationToken(response.data?.temporal);
+            router.push("/login/register");
+          }
+        }
+      });
+  };
+
+  const props = {
+    onClickItem,
+  };
+
   return (
-    <ListContainer>
-      <OAuthItem $backgroundColor={NAVER_COLOR}>
-        <MainText color={WHITE}>{"네이버"}</MainText>
-      </OAuthItem>
-      <OAuthItem $backgroundColor={WHITE}>
-        <MainText color={BLACK}>{"구글"}</MainText>
-      </OAuthItem>
-      <OAuthItem $backgroundColor={KAKAO_COLOR}>
-        <MainText color={BLACK}>{"카카오"}</MainText>
-      </OAuthItem>
-      <OAuthItem $backgroundColor={BLACK}>
-        <MainText color={WHITE}>{"애플"}</MainText>
-      </OAuthItem>
-    </ListContainer>
+    <>
+      <LoginListView {...props} />
+    </>
   );
 };
 

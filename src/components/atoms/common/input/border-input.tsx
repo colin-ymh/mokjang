@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 import { BLACK, GRAY, MAIN } from "@/constants/styles/color";
 import { InputProps } from "@/components/atoms/common/input/main-input";
+import { BLANK } from "@/constants/constant";
 
 // 스타일 정의
 const BorderInputContainer = styled.input<{
@@ -40,7 +41,7 @@ const BorderInput = forwardRef<HTMLInputElement, BorderInputProps>(
       onKeyDown,
       readOnly = false,
       borderColor = GRAY.DEFAULT,
-      value,
+      value = BLANK,
       height,
       width,
       ...props

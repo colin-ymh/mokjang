@@ -13,6 +13,7 @@ const BarItem = styled.div<{ $isSelected: boolean }>`
   display: flex;
   height: 30px;
   justify-content: center;
+  cursor: pointer;
   align-items: center;
   padding: 5px 15px;
   border-bottom: ${({ $isSelected }) =>

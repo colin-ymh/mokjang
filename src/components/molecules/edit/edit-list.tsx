@@ -118,6 +118,7 @@ const EditList = ({ focusItem }: EditListProps) => {
 
   // 생년월일 변경 시 이벤트
   const onChangeBirth = (event: ChangeEvent<HTMLInputElement>) => {
+    console.log(event.target.value);
     const newBirth = getFormattedDate(event.target.value);
     dispatch(setMember({ ...member, birth: newBirth }));
 

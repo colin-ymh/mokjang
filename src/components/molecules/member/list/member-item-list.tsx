@@ -6,6 +6,8 @@ import DefaultImage from "../../../../../public/png/default-member-image.png";
 import { MainText } from "@/components/atoms/common/text/main-text";
 import { useI18n } from "../../../../../locales/client";
 import { MemberTableProps } from "@/components/molecules/member/list/member-table";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
 
 const MemberListContainer = styled.div`
   display: flex;
@@ -36,13 +38,10 @@ const MemberDetails = styled.div`
   gap: 5px;
 `;
 
-const MemberItemList = ({
-  members,
-  onClickMemberItem,
-  onClickNextPage,
-  onClickPrevPage,
-}: MemberTableProps) => {
+const MemberItemList = ({ onClickMemberItem }: MemberTableProps) => {
   const t = useI18n();
+  const { members, memberFilter, memberOrderBy, memberOrderDirection } =
+    useSelector((state: RootState) => state.memberFilter);
 
   return (
     <MemberListContainer>

@@ -13,6 +13,7 @@ import { DropdownValueType } from "@/components/atoms/common/dropdown/dropdown-i
 import { getTranslatedMemberColumn } from "@/utils/translate";
 import { MEMBER } from "@/constants/member/member-column";
 import { NULL } from "@/constants/constant";
+
 import { useI18n } from "../../../../../locales/client";
 
 type AddFilterProps = {
@@ -109,7 +110,22 @@ const TableSetting = ({ setIsShown }: AddFilterProps) => {
   const onClickReset = () => {
     dispatch(setMemberFilter(INITIAL_MEMBER_FILTER));
     dispatch(setMemberTableHeaderItemList(INITIAL_TABLE_HEADER_LIST));
+    setFilterValue(NULL);
+    setFilterItems([]);
   };
+
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setIsShown(false);
+      }
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => {
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [setIsShown]);
 
   const props = {
     filterValue,

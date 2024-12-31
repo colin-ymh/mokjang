@@ -32,7 +32,6 @@ export const getCreateMemberBody = (member: Member) => {
     newMember.relation = member.relation;
   }
 
-  console.log(newMember);
   return newMember;
 };
 

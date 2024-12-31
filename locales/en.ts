@@ -4,7 +4,7 @@ export default {
   type: "Type",
   search: "Search",
 
-  createdAt: "Created Date",
+  registeredAt: "Registered Date",
   updatedAt: "Updated Date",
 
   // 필수
@@ -17,6 +17,7 @@ export default {
   // 개인 정보
   profileImage: "Profile Image",
   birth: "Date of Birth",
+  birthDay: "Birth Day",
   age: "Age",
   gender: "Gender",
   occupation: "Occupation",
@@ -105,7 +106,8 @@ export default {
   "button.cancel": "Cancel",
   "button.confirm": "Confirm",
   "button.filterSetting": "Setting",
-
+  "button.verify": "Verify",
+  "button.request": "Request",
   "button.signIn": "Sign In",
 
   /*-------------------button-------------------*/

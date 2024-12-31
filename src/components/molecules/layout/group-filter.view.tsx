@@ -11,10 +11,10 @@ const FilterContainer = styled.div`
   width: 100%;
 `;
 
-const GroupItemContainer = styled.div<{ level: number }>`
+const GroupItemContainer = styled.div<{ $level: number }>`
   display: flex;
   align-items: center;
-  padding: 5px 5px 5px ${({ level }) => level * 20 + 10}px;
+  padding: 5px 5px 5px ${({ $level }) => $level * 20 + 10}px;
   transition: background-color 0.3s;
   border-radius: 5px;
   gap: 10px;
@@ -61,7 +61,7 @@ const renderGroups = (
     return (
       <ChildGroupsContainer key={parseInt(group.id)}>
         <GroupItemContainer
-          level={level}
+          $level={level}
           onClick={() => onClickGroup(group.id)}
         >
           <ToggleButton

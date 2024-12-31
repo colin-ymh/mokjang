@@ -16,7 +16,7 @@ const InformationContainer = styled.div`
 const ContentContainer = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 10px 20px;
+  //padding: 10px 20px;
   overflow-y: scroll;
   flex-grow: 1;
 `;
@@ -39,6 +39,7 @@ const MemberInformation = ({ targetMember }: MemberInformationProps) => {
       <MemberInformationHeader
         contentId={contentId}
         onClickItem={onClickHeaderBarItem}
+        targetMember={targetMember}
       />
       <ContentContainer>
         {getMemberInformationContent(contentId, targetMember)}
