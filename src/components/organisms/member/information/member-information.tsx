@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import styled from "styled-components";
 
 import MemberInformationHeader from "@/components/molecules/member/information/member-information-header";
@@ -21,11 +21,9 @@ const ContentContainer = styled.div`
   flex-grow: 1;
 `;
 
-type MemberInformationProps = {
-  targetMember: Member;
-};
+type MemberInformationProps = {};
 
-const MemberInformation = ({ targetMember }: MemberInformationProps) => {
+const MemberInformation = ({}: MemberInformationProps) => {
   const [contentId, setContentId] = useState<string>(
     MEMBER_INFORMATION_HEADER_ID.PERSONAL_INFORMATION,
   );
@@ -39,10 +37,9 @@ const MemberInformation = ({ targetMember }: MemberInformationProps) => {
       <MemberInformationHeader
         contentId={contentId}
         onClickItem={onClickHeaderBarItem}
-        targetMember={targetMember}
       />
       <ContentContainer>
-        {getMemberInformationContent(contentId, targetMember)}
+        {getMemberInformationContent(contentId)}
       </ContentContainer>
     </InformationContainer>
   );

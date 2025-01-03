@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import MemberHeaderView from "@/components/molecules/layout/header/member-header.view";
+import MemberTabHeaderView from "@/components/molecules/layout/header/member-tab-header.view";
 import CustomPopup from "@/components/atoms/common/popup/custom-popup";
 import MemberRegister from "@/components/organisms/register/member-register";
 import { MainText } from "@/components/atoms/common/text/main-text";
@@ -12,7 +12,7 @@ import { getEditMemberBody } from "@/utils/member";
 
 type MemberManagementHeadBarProps = {};
 
-const MemberHeader = ({}: MemberManagementHeadBarProps) => {
+const MemberTabHeader = ({}: MemberManagementHeadBarProps) => {
   const churchId: string = useSelector(
     (state: RootState) => state.church.churchId,
   );
@@ -55,7 +55,7 @@ const MemberHeader = ({}: MemberManagementHeadBarProps) => {
 
   return (
     <>
-      <MemberHeaderView {...props} />
+      <MemberTabHeaderView {...props} />
       <CustomPopup
         isShow={isRegisterShown}
         onClickClose={onClickClose}
@@ -73,4 +73,4 @@ const MemberHeader = ({}: MemberManagementHeadBarProps) => {
     </>
   );
 };
-export default MemberHeader;
+export default MemberTabHeader;

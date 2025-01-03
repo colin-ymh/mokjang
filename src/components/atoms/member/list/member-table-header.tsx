@@ -5,16 +5,16 @@ import { RootState } from "@/redux/store";
 import { MainText } from "@/components/atoms/common/text/main-text";
 import { MEMBER } from "@/constants/member/member-column";
 import { GRAY, MAIN } from "@/constants/styles/color";
-import { ORDER_DIRECTION } from "@/constants/constant";
 import { SIZE } from "@/constants/styles/style";
 import { getTranslatedMemberColumn } from "@/utils/translate";
+
 import { useI18n } from "../../../../../locales/client";
 
 const HeaderContainer = styled.div`
   display: flex;
   cursor: pointer;
-  justify-content: center;
-  align-items: center;
+  justify-content: flex-start;
+  padding-left: 5px;
   position: relative;
 `;
 
@@ -48,7 +48,7 @@ const MemberTableHeader = ({ item, onClick }: MemberTableHeaderProps) => {
   const t = useI18n();
 
   const isActive = memberOrderBy === item.id;
-  const isAscending = memberOrderDirection === ORDER_DIRECTION.ASC;
+  // const isAscending = memberOrderDirection === ORDER_DIRECTION.ASC;
 
   return (
     <HeaderContainer onClick={() => item.isSortable && onClick(item.id)}>
@@ -63,7 +63,7 @@ const MemberTableHeader = ({ item, onClick }: MemberTableHeaderProps) => {
             size={SIZE.LARGE}
             color={isActive ? MAIN.DEFAULT : GRAY.DEFAULT}
           >
-            {isActive ? (isAscending ? "▼" : "▲") : "⇅"}
+            {"⇅"}
           </MainText>
         </IconContainer>
       )}

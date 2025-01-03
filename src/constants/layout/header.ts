@@ -1,6 +1,7 @@
 export enum HEADER_ID {
   HOME = "home",
   MEMBER = "member",
+  SETTING = "setting",
 }
 
 export enum MEMBER_INFORMATION_HEADER_ID {

@@ -7,3 +7,10 @@ export enum MEMBER_CONTENT_ID {
   ADMINISTRATOR = "administratorList",
   NEW_MEMBER = "newMemberList",
 }
+
+export enum SETTING_CONTENT_ID {
+  GROUP = "group",
+  OFFICER = "officer",
+  EDUCATION = "education",
+  MINISTRY = "ministry",
+}

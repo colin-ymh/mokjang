@@ -13,11 +13,12 @@ import {
 import { MEMBER } from "@/constants/member/member-column";
 import { MainText } from "@/components/atoms/common/text/main-text";
 import { BLACK, GRAY, MAIN } from "@/constants/styles/color";
+import { NULL } from "@/constants/constant";
+import { getTranslatedMemberColumn } from "@/utils/translate";
 
 import FilledEye from "../../../../../public/svg/filled-eye.svg";
 import Eye from "../../../../../public/svg/eye.svg";
 import EyeSlash from "../../../../../public/svg/eye-slash.svg";
-import { getTranslatedMemberColumn } from "@/utils/translate";
 import { useI18n } from "../../../../../locales/client";
 
 const OrderItemContainer = styled.div<{ $isFixed?: boolean }>`
@@ -54,9 +55,15 @@ type TableOrderItemProps = {
   item: TABLE_HEADER_ITEM;
   index: number;
   onDrag: (fromIndex: number, toIndex: number) => void;
+  onChangeFilter: (id: MEMBER | typeof NULL) => void;
 };
 
-const TableOrderItem = ({ item, index, onDrag }: TableOrderItemProps) => {
+const TableOrderItem = ({
+  item,
+  index,
+  onDrag,
+  onChangeFilter,
+}: TableOrderItemProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const { memberTableHeaderItemList, memberFilter } = useSelector(
     (state: RootState) => state.memberFilter,
@@ -95,9 +102,14 @@ const TableOrderItem = ({ item, index, onDrag }: TableOrderItemProps) => {
 
   // 컬럼 활성화/비활성화 버튼 이벤트
   const onClickEye = (id: MEMBER) => {
-    const newHeaderItemList = memberTableHeaderItemList.map((header: any) =>
-      header.id === id ? { ...header, isShown: !header.isShown } : header,
-    );
+    const newHeaderItemList = memberTableHeaderItemList
+      .map((header: any) =>
+        header.id === id ? { ...header, isShown: !header.isShown } : header,
+      )
+      .sort((a: any, b: any) => {
+        if (a.isShown === b.isShown) return 0; // isShown 값이 같으면 순서 유지
+        return a.isShown ? -1 : 1; // true를 앞쪽으로 배치
+      });
 
     // 헤더에서 제거
     dispatch(setMemberTableHeaderItemList(newHeaderItemList));
@@ -113,6 +125,9 @@ const TableOrderItem = ({ item, index, onDrag }: TableOrderItemProps) => {
           }),
       }),
     );
+
+    // 필터 설정 부분도 함께 변경
+    if (item.isFilterable && !item.isShown) onChangeFilter(item.id);
   };
 
   return (

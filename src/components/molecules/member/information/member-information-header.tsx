@@ -9,6 +9,8 @@ import { getFormattedMobilePhone } from "@/utils/format";
 import { SIZE } from "@/constants/styles/style";
 import { Member } from "@/models/member/member";
 import { GRAY } from "@/constants/styles/color";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
 
 const InformationHeader = styled.div`
   display: flex;
@@ -41,15 +43,16 @@ const ChurchMemberInfoContainer = styled.div`
 type MemberInformationHeaderProps = {
   contentId: string;
   onClickItem: (id: string) => void;
-  targetMember: Member;
 };
 
 const MemberInformationHeader = ({
   contentId,
   onClickItem,
-  targetMember,
 }: MemberInformationHeaderProps) => {
   const headerBarItems = useMemberInformationHeaderBarItems();
+  const targetMember = useSelector(
+    (state: RootState) => state.targetMember.targetMember,
+  );
   return (
     <InformationHeader>
       <Information>

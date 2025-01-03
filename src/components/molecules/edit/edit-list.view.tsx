@@ -289,19 +289,17 @@ const EditListView = ({
         borderColor={member.marriage !== NULL ? BLACK : undefined}
       />
       {/* 결혼 상세 정보 */}
-      {!usePathname().includes("/extra") && (
-        <LabelInput
-          enterKeyHint={"done"}
-          ref={detailMarriageInputRef}
-          label={t("detailMarriage")}
-          value={member.detailMarriage}
-          onChange={onChangeDetailMarriage}
-          placeholder={t_placeholder("detailMarriage")}
-          borderColor={
-            getTrimmedString(member.detailMarriage) ? BLACK : undefined
-          }
-        />
-      )}
+      <LabelInput
+        enterKeyHint={"done"}
+        ref={detailMarriageInputRef}
+        label={t("detailMarriage")}
+        value={member.detailMarriage}
+        onChange={onChangeDetailMarriage}
+        placeholder={t_placeholder("detailMarriage")}
+        borderColor={
+          getTrimmedString(member.detailMarriage) ? BLACK : undefined
+        }
+      />
       {/* 도로명주소 */}
       <LabelInput
         enterKeyHint={"done"}

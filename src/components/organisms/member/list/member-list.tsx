@@ -18,6 +18,7 @@ import { getMemberFromServer } from "@/utils/member";
 import { MEMBER } from "@/constants/member/member-column";
 import { getNewMemberDate } from "@/utils/date";
 import { setMembers } from "@/redux/reducers/member-filter-reducer";
+import { setTargetMember } from "@/redux/reducers/target-member";
 
 const ButtonContainer = styled.div`
   display: flex;
@@ -40,9 +41,6 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
   const { members, memberFilter, memberOrderBy, memberOrderDirection } =
     useSelector((state: RootState) => state.memberFilter);
   const member = useSelector((state: RootState) => state.memberRegister.member);
-
-  // 실제 교인 정보
-  const [targetMember, setTargetMember] = useState<Member>(DEFAULT_MEMBER);
 
   // 교인 상세정보 팝업 On/Off
   const [isMemberInformationShown, setIsMemberInformationShown] =
@@ -75,13 +73,20 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
         selectedColumns: memberFilter.selectedColumns,
         name: memberFilter.name,
         school: memberFilter.school,
-        birthAfter: memberFilter.birthAfter,
-        birthBefore: memberFilter.birthBefore,
         group: memberFilter.group,
         officer: memberFilter.officer,
+        vehicleNumber: memberFilter.vehicleNumber,
         gender: memberFilter.gender as GENDER[],
-
-        createAfter: isNewMember ? getNewMemberDate() : undefined,
+        educations: memberFilter.educations,
+        ministries: memberFilter.ministries,
+        baptism: memberFilter.baptism,
+        marriage: memberFilter.marriage,
+        birthAfter: memberFilter.birthAfter,
+        birthBefore: memberFilter.birthBefore,
+        registerAfter: isNewMember ? getNewMemberDate() : undefined,
+        registerBefore: memberFilter.registerBefore,
+        updateAfter: memberFilter.updateAfter,
+        updateBefore: memberFilter.updateBefore,
       });
 
       return response.data.data;
@@ -130,7 +135,7 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
     membersApi.getMember({ churchId, memberId }).then((response) => {
       const member = getMemberFromServer(response.data.data);
 
-      setTargetMember(member);
+      dispatch(setTargetMember(member));
       dispatch(setMember(member));
       setIsMemberInformationShown(true);
     });
@@ -159,14 +164,17 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
   };
 
   const props = {
-    members,
-    onClickMemberItem,
-    loadMembers,
+    list: {
+      members,
+      onClickMemberItem,
+      loadMembers,
+    },
+    information: {},
   };
 
   return (
     <>
-      <MemberListView {...props} />
+      <MemberListView {...props.list} />
       {/* 교인 상세정보 팝업*/}
       <CustomPopup
         isShow={isMemberInformationShown}
@@ -180,7 +188,7 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
           </ButtonContainer>
         }
       >
-        <MemberInformation targetMember={targetMember} />
+        <MemberInformation {...props.information} />
       </CustomPopup>
     </>
   );

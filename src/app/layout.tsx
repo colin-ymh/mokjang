@@ -28,6 +28,17 @@ const GlobalStyle = createGlobalStyle`
     div#__next > div {
         height: 100%;
     }
+
+
+    /* 스크롤바 숨기기 */
+    ::-webkit-scrollbar {
+        display: none; /* Webkit 브라우저에서 스크롤바 숨기기 */
+    }
+
+    /* Firefox에서 스크롤바 숨기기 */
+    body {
+        scrollbar-width: none; /* Firefox에서 스크롤바 너비 제거 */
+    }
 `;
 
 type RootLayoutProps = {

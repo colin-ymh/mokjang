@@ -5,6 +5,7 @@ import MemberRegisterReducer from "@/redux/reducers/member-register-reducer";
 import LayoutReducer from "@/redux/reducers/layout-reducer";
 import MemberFilterReducer from "@/redux/reducers/member-filter-reducer";
 import ChurchReducer from "@/redux/reducers/church-reducer";
+import TargetMember from "@/redux/reducers/target-member";
 
 const store = configureStore({
   reducer: {
@@ -13,6 +14,7 @@ const store = configureStore({
     memberRegister: MemberRegisterReducer,
     memberFilter: MemberFilterReducer,
     church: ChurchReducer,
+    targetMember: TargetMember,
   },
 });
 

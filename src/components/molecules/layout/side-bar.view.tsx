@@ -9,7 +9,7 @@ import { MEDIA_MIN_WIDTH } from "@/constants/constant";
 import { HEADER_ID } from "@/constants/layout/header";
 import GroupFilter from "@/components/molecules/layout/group-filter";
 
-import { useScopedI18n } from "../../../../locales/client";
+import { useI18n, useScopedI18n } from "../../../../locales/client";
 
 const SideBarContainer = styled.div`
   // 모바일
@@ -29,10 +29,12 @@ const SideBarContainer = styled.div`
     width: 180px;
     background-color: ${GRAY.SIDE_BAR};
     padding: 0 10px;
-    box-shadow: inset -2px 0 5px rgba(0, 0, 0, 0.2);
+    //box-shadow: inset -2px 0 5px rgba(0, 0, 0, 0.2);
+    border-right: 1px solid ${GRAY.LIGHT};
     height: 100%;
     overflow: hidden;
     flex-shrink: 0;
+    position: relative;
   }
 `;
 
@@ -45,11 +47,12 @@ const ButtonContainer = styled.div`
 
 const GroupFilterContainer = styled.div<{ $isOpened: boolean }>`
   overflow-y: auto; /* 내용이 많아질 경우 스크롤 활성화 */
-  margin-top: 10px;
+  margin: 10px 0;
   display: ${({ $isOpened }) => ($isOpened ? "flex" : "none")};
 `;
 
 const SideBarView = () => {
+  const t = useI18n();
   const t_header = useScopedI18n("header");
   const headerId = useSelector((state: RootState) => state.layout.headerId);
 
@@ -62,10 +65,11 @@ const SideBarView = () => {
           id={HEADER_ID.MEMBER}
           title={t_header(HEADER_ID.MEMBER)}
         />
+        <GroupFilterContainer $isOpened={headerId === HEADER_ID.MEMBER}>
+          <GroupFilter />
+        </GroupFilterContainer>
+        <SideBarButton id={HEADER_ID.SETTING} title={t(HEADER_ID.SETTING)} />
       </ButtonContainer>
-      <GroupFilterContainer $isOpened={headerId === HEADER_ID.MEMBER}>
-        <GroupFilter />
-      </GroupFilterContainer>
     </SideBarContainer>
   );
 };

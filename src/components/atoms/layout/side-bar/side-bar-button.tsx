@@ -6,7 +6,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
 import { setContentId, setHeaderId } from "@/redux/reducers/layout-reducer";
 import { HEADER_ID } from "@/constants/layout/header";
-import { HOME_CONTENT_ID, MEMBER_CONTENT_ID } from "@/constants/layout/content";
+import {
+  HOME_CONTENT_ID,
+  MEMBER_CONTENT_ID,
+  SETTING_CONTENT_ID,
+} from "@/constants/layout/content";
 import { setMemberFilter } from "@/redux/reducers/member-filter-reducer";
 import { BLANK } from "@/constants/constant";
 import { SIZE } from "@/constants/styles/style";
@@ -48,6 +52,8 @@ const SideBarButton = ({ id, title }: SideBarButtonProps) => {
         dispatch(setContentId(MEMBER_CONTENT_ID.MEMBER));
         dispatch(setMemberFilter({ ...memberFilter, group: [] }));
         return;
+      case HEADER_ID.SETTING:
+        dispatch(setContentId(SETTING_CONTENT_ID.GROUP));
     }
   };
 

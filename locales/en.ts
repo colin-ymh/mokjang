@@ -3,6 +3,16 @@ export default {
   null: "",
   type: "Type",
   search: "Search",
+  after: "From",
+  before: "To",
+  setting: "Setting",
+
+  birthAfter: "Born After",
+  birthBefore: "Born Before",
+  registerAfter: "Registered After",
+  registerBefore: "Registered Before",
+  updateAfter: "Updated After",
+  updateBefore: "Updated Before",
 
   registeredAt: "Registered Date",
   updatedAt: "Updated Date",
@@ -38,6 +48,9 @@ export default {
   group: "Group",
   ministry: "Ministry",
   education: "Education",
+  groups: "Group",
+  ministries: "Ministry",
+  educations: "Education",
 
   // 성별
   male: "Male",

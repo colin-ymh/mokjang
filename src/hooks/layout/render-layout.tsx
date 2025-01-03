@@ -5,11 +5,12 @@ import {
   HEADER_ID,
   MEMBER_INFORMATION_HEADER_ID,
 } from "@/constants/layout/header";
-import MemberHeader from "@/components/molecules/layout/header/member-header";
+import MemberTabHeader from "@/components/molecules/layout/header/member-tab-header";
 import MemberList from "@/components/organisms/member/list/member-list";
 import { Member } from "@/models/member/member";
 import InformationList from "@/components/molecules/member/information/member-information-list";
-import FamilyInformationList from "@/components/molecules/member/list/family-information-list";
+import FamilyInformationList from "@/components/molecules/member/information/family-information-list";
+import SettingTabHeader from "@/components/molecules/layout/header/setting-tab-header";
 
 export const getContent = (id: string): ReactNode => {
   switch (id) {
@@ -31,22 +32,21 @@ export const getHeader = (id: string) => {
     case HEADER_ID.HOME:
       return null;
     case HEADER_ID.MEMBER:
-      return <MemberHeader />;
+      return <MemberTabHeader />;
+    case HEADER_ID.SETTING:
+      return <SettingTabHeader />;
     default:
       return null;
   }
 };
 
-export const getMemberInformationContent = (
-  id: string,
-  targetMember: Member,
-) => {
+export const getMemberInformationContent = (id: string) => {
   switch (id) {
     // case MEMBER_INFORMATION_HEADER_ID.MEMBER_INFORMATION:
     //   return <MemberInformationList />;
     case MEMBER_INFORMATION_HEADER_ID.PERSONAL_INFORMATION:
-      return <InformationList targetMember={targetMember} />;
+      return <InformationList />;
     case MEMBER_INFORMATION_HEADER_ID.FAMILY_INFORMATION:
-      return <FamilyInformationList targetMember={targetMember} />;
+      return <FamilyInformationList />;
   }
 };

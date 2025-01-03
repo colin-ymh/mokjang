@@ -31,7 +31,7 @@ type MemberHeadBarViewProps = {
   onClickRegisterMemberButton: () => void;
 };
 
-const MemberHeaderView = ({
+const MemberTabHeaderView = ({
   onClickRegisterMemberButton,
 }: MemberHeadBarViewProps) => {
   const t_header = useScopedI18n("header");
@@ -54,4 +54,4 @@ const MemberHeaderView = ({
   );
 };
 
-export default MemberHeaderView;
+export default MemberTabHeaderView;

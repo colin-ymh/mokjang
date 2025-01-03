@@ -6,16 +6,23 @@ import { Member } from "@/models/member/member";
 type MEMBER_FILTER = {
   [MEMBER.NAME]: string;
   [MEMBER.SCHOOL]: string;
-  [MEMBER.VEHICLE_NUMBER]: string[];
+  [MEMBER.OCCUPATION]: string;
+  [MEMBER.VEHICLE_NUMBER]: string;
   [MEMBER.GENDER]: string[];
-  birthAfter: string;
-  birthBefore: string;
   [MEMBER.GROUP]: string[];
   [MEMBER.OFFICER]: string[];
-  [MEMBER.MINISTRY]: string[];
-  [MEMBER.EDUCATION]: string[];
+  [MEMBER.MINISTRIES]: string[];
+  [MEMBER.EDUCATIONS]: string[];
   [MEMBER.BAPTISM]: string[];
   [MEMBER.GENDER]: string[];
+  [MEMBER.BAPTISM]: string[];
+  [MEMBER.MARRIAGE]: string[];
+  birthAfter: string;
+  birthBefore: string;
+  registerAfter: string;
+  registerBefore: string;
+  updateAfter: string;
+  updateBefore: string;
   selectedColumns: MEMBER[];
 };
 
@@ -25,20 +32,30 @@ type MemberFilterState = {
   memberOrderBy: MEMBER | typeof NULL;
   memberOrderDirection: ORDER_DIRECTION;
   memberTableHeaderItemList: TABLE_HEADER_ITEM[];
+  filterValue: MEMBER | typeof NULL;
+  filterItems: string[];
+  filterAfter: string;
+  filterBefore: string;
 };
 
 export const INITIAL_MEMBER_FILTER: MEMBER_FILTER = {
   name: BLANK,
   school: BLANK,
-  vehicleNumber: [],
+  occupation: BLANK,
+  vehicleNumber: BLANK,
   gender: [],
   baptism: [],
   officer: [],
-  ministry: [],
-  education: [],
+  ministries: [],
+  educations: [],
+  marriage: [],
+  group: [],
   birthAfter: BLANK,
   birthBefore: BLANK,
-  group: [],
+  registerAfter: BLANK,
+  registerBefore: BLANK,
+  updateAfter: BLANK,
+  updateBefore: BLANK,
   selectedColumns: [
     MEMBER.GENDER,
     MEMBER.OFFICER,
@@ -53,6 +70,7 @@ export type TABLE_HEADER_ITEM = {
   isSortable: boolean;
   isFilterable: boolean;
   isFixed?: boolean;
+  isDate?: boolean;
 };
 
 export const INITIAL_TABLE_HEADER_LIST: TABLE_HEADER_ITEM[] = [
@@ -62,6 +80,7 @@ export const INITIAL_TABLE_HEADER_LIST: TABLE_HEADER_ITEM[] = [
     isSortable: true,
     isFilterable: false,
     isFixed: true,
+    isDate: false,
   },
   {
     id: MEMBER.PROFILE_IMAGE,
@@ -69,6 +88,7 @@ export const INITIAL_TABLE_HEADER_LIST: TABLE_HEADER_ITEM[] = [
     isSortable: false,
     isFilterable: false,
     isFixed: true,
+    isDate: false,
   },
   {
     id: MEMBER.NAME,
@@ -76,6 +96,7 @@ export const INITIAL_TABLE_HEADER_LIST: TABLE_HEADER_ITEM[] = [
     isSortable: true,
     isFilterable: false,
     isFixed: true,
+    isDate: false,
   },
   {
     id: MEMBER.GENDER,
@@ -83,6 +104,7 @@ export const INITIAL_TABLE_HEADER_LIST: TABLE_HEADER_ITEM[] = [
     isSortable: true,
     isFilterable: true,
     isFixed: false,
+    isDate: false,
   },
   {
     id: MEMBER.OFFICER,
@@ -90,6 +112,7 @@ export const INITIAL_TABLE_HEADER_LIST: TABLE_HEADER_ITEM[] = [
     isSortable: true,
     isFilterable: true,
     isFixed: false,
+    isDate: false,
   },
   {
     id: MEMBER.AGE,
@@ -97,6 +120,7 @@ export const INITIAL_TABLE_HEADER_LIST: TABLE_HEADER_ITEM[] = [
     isSortable: true,
     isFilterable: false,
     isFixed: false,
+    isDate: false,
   },
   {
     id: MEMBER.MOBILE_PHONE,
@@ -104,6 +128,7 @@ export const INITIAL_TABLE_HEADER_LIST: TABLE_HEADER_ITEM[] = [
     isSortable: false,
     isFilterable: false,
     isFixed: false,
+    isDate: false,
   },
   {
     id: MEMBER.HOME_PHONE,
@@ -111,6 +136,7 @@ export const INITIAL_TABLE_HEADER_LIST: TABLE_HEADER_ITEM[] = [
     isSortable: false,
     isFilterable: false,
     isFixed: false,
+    isDate: false,
   },
   {
     id: MEMBER.ADDRESS,
@@ -118,6 +144,7 @@ export const INITIAL_TABLE_HEADER_LIST: TABLE_HEADER_ITEM[] = [
     isSortable: false,
     isFilterable: false,
     isFixed: false,
+    isDate: false,
   },
   {
     id: MEMBER.OCCUPATION,
@@ -125,6 +152,7 @@ export const INITIAL_TABLE_HEADER_LIST: TABLE_HEADER_ITEM[] = [
     isSortable: false,
     isFilterable: false,
     isFixed: false,
+    isDate: false,
   },
   {
     id: MEMBER.SCHOOL,
@@ -132,6 +160,7 @@ export const INITIAL_TABLE_HEADER_LIST: TABLE_HEADER_ITEM[] = [
     isSortable: false,
     isFilterable: false,
     isFixed: false,
+    isDate: false,
   },
   {
     id: MEMBER.MARRIAGE,
@@ -139,6 +168,7 @@ export const INITIAL_TABLE_HEADER_LIST: TABLE_HEADER_ITEM[] = [
     isSortable: false,
     isFilterable: true,
     isFixed: false,
+    isDate: false,
   },
   {
     id: MEMBER.BAPTISM,
@@ -146,6 +176,7 @@ export const INITIAL_TABLE_HEADER_LIST: TABLE_HEADER_ITEM[] = [
     isSortable: false,
     isFilterable: true,
     isFixed: false,
+    isDate: false,
   },
   {
     id: MEMBER.BIRTH,
@@ -153,20 +184,23 @@ export const INITIAL_TABLE_HEADER_LIST: TABLE_HEADER_ITEM[] = [
     isSortable: true,
     isFilterable: true,
     isFixed: false,
+    isDate: true,
   },
   {
     id: MEMBER.REGISTERED_AT,
     isShown: false,
-    isSortable: false,
+    isSortable: true,
     isFilterable: true,
     isFixed: false,
+    isDate: true,
   },
   {
     id: MEMBER.UPDATED_AT,
     isShown: false,
-    isSortable: false,
+    isSortable: true,
     isFilterable: true,
     isFixed: false,
+    isDate: true,
   },
 ];
 
@@ -176,6 +210,10 @@ const initialState: MemberFilterState = {
   memberOrderBy: NULL,
   memberOrderDirection: ORDER_DIRECTION.ASC,
   memberTableHeaderItemList: INITIAL_TABLE_HEADER_LIST,
+  filterValue: NULL,
+  filterItems: [],
+  filterAfter: BLANK,
+  filterBefore: BLANK,
 };
 
 const MemberFilterSlice = createSlice({
@@ -200,6 +238,18 @@ const MemberFilterSlice = createSlice({
     ) {
       state.memberTableHeaderItemList = action.payload;
     },
+    setFilterValue(state, action: PayloadAction<MEMBER | typeof NULL>) {
+      state.filterValue = action.payload;
+    },
+    setFilterItems(state, action: PayloadAction<string[]>) {
+      state.filterItems = action.payload;
+    },
+    setFilterAfter(state, action: PayloadAction<string>) {
+      state.filterAfter = action.payload;
+    },
+    setFilterBefore(state, action: PayloadAction<string>) {
+      state.filterBefore = action.payload;
+    },
   },
 });
 
@@ -209,5 +259,9 @@ export const {
   setMemberOrderBy,
   setMemberOrderDirection,
   setMemberTableHeaderItemList,
+  setFilterValue,
+  setFilterItems,
+  setFilterAfter,
+  setFilterBefore,
 } = MemberFilterSlice.actions;
 export default MemberFilterSlice.reducer;

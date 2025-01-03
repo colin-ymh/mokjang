@@ -1,33 +1,51 @@
-import { ChangeEvent, Dispatch, SetStateAction } from "react";
+import { ChangeEvent, Dispatch, Ref, SetStateAction } from "react";
 import styled from "styled-components";
 
 import Button from "@/components/atoms/common/button/button";
 import { GRAY } from "@/constants/styles/color";
 import TableSetting from "@/components/molecules/member/list/table-setting";
-import { MEDIA_MIN_WIDTH } from "@/constants/constant";
 import Dropdown from "@/components/atoms/common/dropdown/dropdown";
 import BorderInput from "@/components/atoms/common/input/border-input";
 import { useSearchFilterDropdownItems } from "@/hooks/dropdown/dropdown-items";
 import { MEMBER } from "@/constants/member/member-column";
+import TransparentBackground from "@/components/atoms/common/etc/transparent-background";
+import FilteredItem, {
+  FilteredItemType,
+} from "@/components/atoms/member/list/filtered-item";
 
 import { useI18n, useScopedI18n } from "../../../../../locales/client";
-import TransparentBackground from "@/components/atoms/common/etc/transparent-background";
+import useWindowSize from "@/hooks/window/window";
 
 const MemberFilterContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 20px;
-  gap: 10px;
+  width: 100%;
 `;
 
 const FilterList = styled.div`
   display: flex;
-  gap: 20px;
+  width: 100%;
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 10px 10px 20px;
+  position: relative;
+`;
+
+const FilteredItemList = styled.div<{ $width: number }>`
+  display: flex;
+  flex-direction: row;
   justify-content: flex-start;
   align-items: center;
-  position: relative;
+  gap: 5px;
+  padding: 10px 0;
+  width: ${({ $width }) => $width}px;
+  overflow-x: scroll;
 `;
 
 const SearchContainer = styled.div`
@@ -36,6 +54,7 @@ const SearchContainer = styled.div`
   justify-content: center;
   align-items: center;
   gap: 10px;
+  padding: 10px 20px;
 `;
 
 const AddFilterContainer = styled.div<{ $isShown: boolean }>`
@@ -47,17 +66,8 @@ const AddFilterContainer = styled.div<{ $isShown: boolean }>`
   box-shadow: 0 1px 6px rgba(0, 0, 0, 0.3);
   border-radius: 5px;
 
-  top: 40px;
-
-  // @media (min-width: ${MEDIA_MIN_WIDTH.MOBILE}) {
-  //   top: 120px;
-  //   right: 20px;
-  // }
-
-  //@media (min-width: ${MEDIA_MIN_WIDTH.DESKTOP}) {
-  //  top: 220px;
-  //  right: 30px;
-  //}
+  top: 50px;
+  left: 10px;
 `;
 
 export type SEARCH_FILTER = MEMBER.NAME | MEMBER.SCHOOL | MEMBER.VEHICLE_NUMBER;
@@ -66,47 +76,61 @@ type MemberFilterViewProps = {
   isAddFilterShown: boolean;
   searchFilter: SEARCH_FILTER;
   searchValue: string;
+  searchRef: Ref<HTMLInputElement>;
+  filteredItems: FilteredItemType[];
   setIsAddFilterShown: Dispatch<SetStateAction<boolean>>;
   onClickSearchFilterItem: (value: SEARCH_FILTER) => void;
   onChangeSearchValue: (event: ChangeEvent<HTMLInputElement>) => void;
   onClickTableSetting: () => void;
   onClickSearch: () => void;
+  onKeyDown: (event: React.KeyboardEvent<HTMLInputElement>) => void;
 };
 
 const MemberFilterRowView = ({
   isAddFilterShown,
   searchFilter,
   searchValue,
+  searchRef,
+  filteredItems,
   setIsAddFilterShown,
   onClickTableSetting,
   onClickSearchFilterItem,
   onChangeSearchValue,
   onClickSearch,
+  onKeyDown,
 }: MemberFilterViewProps) => {
   const t = useI18n();
   const t_button = useScopedI18n("button");
-
   const searchFilterDropdownItems = useSearchFilterDropdownItems();
 
+  const { width } = useWindowSize();
   return (
     <MemberFilterContainer>
       <FilterList>
-        {/* 설정 활성화 버튼 */}
-        <Button
-          text={t_button("filterSetting")}
-          height={30}
-          onClick={onClickTableSetting}
-        />
-
-        {/* 필터 추가 모달 */}
-        <AddFilterContainer $isShown={isAddFilterShown}>
-          <TransparentBackground
-            isOpened={isAddFilterShown}
-            onClick={() => setIsAddFilterShown(false)}
-            blur={false}
+        <ButtonContainer>
+          {/* 설정 활성화 버튼 */}
+          <Button
+            text={t_button("filterSetting")}
+            height={30}
+            width={80}
+            onClick={onClickTableSetting}
           />
-          <TableSetting setIsShown={setIsAddFilterShown} />
-        </AddFilterContainer>
+          {/* 설정 모달 */}
+          <AddFilterContainer $isShown={isAddFilterShown}>
+            <TransparentBackground
+              isOpened={isAddFilterShown}
+              onClick={() => setIsAddFilterShown(false)}
+              blur={false}
+            />
+            <TableSetting setIsShown={setIsAddFilterShown} />
+          </AddFilterContainer>
+        </ButtonContainer>
+        {/* 필터 설정된 값들 */}
+        <FilteredItemList $width={width - 650}>
+          {filteredItems.map((item) => (
+            <FilteredItem key={item.value} item={item} />
+          ))}
+        </FilteredItemList>
       </FilterList>
       {/* 검색 부분 */}
       <SearchContainer>
@@ -119,14 +143,16 @@ const MemberFilterRowView = ({
           borderColor={GRAY.LIGHT}
         />
         <BorderInput
+          ref={searchRef}
           value={searchValue}
           onChange={onChangeSearchValue}
           borderColor={GRAY.LIGHT}
           height={30}
+          onKeyDown={onKeyDown}
         />
         <Button
           text={t("search")}
-          width={80}
+          width={150}
           height={30}
           onClick={onClickSearch}
         />

@@ -25,20 +25,22 @@ type GetMembersParams = {
   mobilePhone?: string;
   birthAfter?: string;
   birthBefore?: string;
-  createAfter?: string;
-  createBefore?: string;
+  registerAfter?: string;
+  registerBefore?: string;
+  updateAfter?: string;
+  updateBefore?: string;
   school?: string;
   address?: string;
   homePhone?: string;
   occupation?: string;
-  vehicleNumber?: string[];
+  vehicleNumber?: string;
   group?: string[];
   officer?: string[];
-  ministry?: string[];
-  education?: string[];
-  baptism?: BAPTISM[];
-  gender?: GENDER[];
-  marriage?: MARRIAGE[];
+  ministries?: string[];
+  educations?: string[];
+  baptism?: string[];
+  gender?: string[];
+  marriage?: string[];
 
   //   활성화된 컬럼들
   selectedColumns?: MEMBER[];
@@ -124,15 +126,17 @@ export class MembersApi {
       vehicleNumber,
       birthAfter,
       birthBefore,
-      createAfter,
-      createBefore,
+      registerAfter,
+      registerBefore,
+      updateAfter,
+      updateBefore,
       gender,
       baptism,
       marriage,
       group,
       officer,
-      ministry,
-      education,
+      ministries,
+      educations,
       selectedColumns,
     } = params;
 
@@ -150,15 +154,18 @@ export class MembersApi {
         occupation,
         birthAfter,
         birthBefore,
-        createAfter,
-        createBefore,
+        registerAfter,
+        registerBefore,
+        updateAfter,
+        updateBefore,
         gender,
         baptism,
         marriage,
-        groupId: group,
-        officerId: officer,
-        ministryId: ministry,
-        educationId: education,
+        group,
+        officer,
+        ministries,
+        educations,
+        vehicleNumber,
         select__group: true,
         select__mobilePhone: selectedColumns?.includes(MEMBER.MOBILE_PHONE),
         select__birth:
@@ -166,8 +173,8 @@ export class MembersApi {
           selectedColumns?.includes(MEMBER.AGE),
         select__gender: selectedColumns?.includes(MEMBER.GENDER),
         select__officer: selectedColumns?.includes(MEMBER.OFFICER),
-        select__ministries: selectedColumns?.includes(MEMBER.MINISTRY),
-        select__educations: selectedColumns?.includes(MEMBER.EDUCATION),
+        select__ministries: selectedColumns?.includes(MEMBER.MINISTRIES),
+        select__educations: selectedColumns?.includes(MEMBER.EDUCATIONS),
         select__marriage: selectedColumns?.includes(MEMBER.MARRIAGE),
         select__address: selectedColumns?.includes(MEMBER.ADDRESS),
         select__homePhone: selectedColumns?.includes(MEMBER.HOME_PHONE),

@@ -1,11 +1,11 @@
-import RegisterLayout from "@/components/organisms/layout/register-layout";
 import ExtraRegister from "@/components/organisms/register/extra-register";
+import ModalLayout from "@/components/organisms/layout/modal-layout";
 
 const ExtraRegisterPage = () => {
   return (
-    <RegisterLayout>
+    <ModalLayout>
       <ExtraRegister />
-    </RegisterLayout>
+    </ModalLayout>
   );
 };
 

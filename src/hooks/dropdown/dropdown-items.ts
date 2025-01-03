@@ -1,7 +1,14 @@
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 
-import { BAPTISM, FAMILY, GENDER, MARRIAGE, NULL } from "@/constants/constant";
+import {
+  BAPTISM,
+  FAMILY,
+  GENDER,
+  MARRIAGE,
+  NONE,
+  NULL,
+} from "@/constants/constant";
 import { MEMBER } from "@/constants/member/member-column";
 
 import { useI18n } from "../../../locales/client";
@@ -93,7 +100,7 @@ export const useMarriageDropdownItems = () => {
     },
     {
       value: NULL,
-      title: t(NULL),
+      title: t(NONE),
     },
   ];
 
@@ -151,7 +158,7 @@ export const useGroupDropdownItems = () => {
   return items;
 };
 
-export const useFamilyRelationDropdownItems = (gender: GENDER | undefined) => {
+export const useFamilyRelationDropdownItems = (gender?: GENDER | undefined) => {
   const t = useI18n();
 
   const maleItems = [

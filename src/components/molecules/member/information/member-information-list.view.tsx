@@ -2,13 +2,14 @@ import styled from "styled-components";
 
 import { MainText } from "@/components/atoms/common/text/main-text";
 import { MEMBER } from "@/constants/member/member-column";
-import { GRAY } from "@/constants/styles/color";
+import { BLACK, GRAY, WHITE } from "@/constants/styles/color";
 import { CALENDAR_MODE, GENDER, MARRIAGE } from "@/constants/constant";
 import { Member } from "@/models/member/member";
 import { getKRDateFromDashDate } from "@/utils/format";
 import { getThisYearBirth } from "@/utils/date";
 
 import { useI18n, useScopedI18n } from "../../../../../locales/client";
+import Pencil from "../../../../../public/svg/pencil.svg";
 
 const InformationContainer = styled.div`
   display: flex;
@@ -39,6 +40,17 @@ const RowContainer = styled.div`
   gap: 10px;
 `;
 
+const PencilButton = styled(Pencil)`
+  stroke: ${BLACK};
+  fill: ${WHITE};
+  stroke-width: 1px;
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  right: 10px;
+  display: none; /* 기본적으로 숨김 */
+`;
+
 const InformationItem = styled.div`
   flex: 1;
   flex-shrink: 0;
@@ -47,9 +59,14 @@ const InformationItem = styled.div`
   padding: 10px;
   border-radius: 5px;
   cursor: pointer;
+  position: relative;
 
   &:hover {
     background-color: ${GRAY.LIGHT};
+  }
+
+  &:hover ${PencilButton} {
+    display: block; /* hover 상태에서 PencilButton 표시 */
   }
 `;
 
@@ -62,7 +79,6 @@ const ContentContainer = styled.div`
   display: flex;
   gap: 10px;
 `;
-
 const Divider = styled.div`
   width: 100%;
   height: 1px;
@@ -70,15 +86,15 @@ const Divider = styled.div`
   margin: 10px 0;
 `;
 
-type PersonalInformationListViewProps = {
+type InformationListViewProps = {
   prevMember: Member;
   onClickItem: (id: MEMBER) => void;
 };
 
-const PersonalInformationListView = ({
+const InformationListView = ({
   prevMember,
   onClickItem,
-}: PersonalInformationListViewProps) => {
+}: InformationListViewProps) => {
   const t = useI18n();
   const t_header = useScopedI18n("header");
 
@@ -92,7 +108,7 @@ const PersonalInformationListView = ({
           {/* 사역 */}
           <InformationItem>
             <TitleContainer>
-              <MainText color={GRAY.DEFAULT}>{t(MEMBER.MINISTRY)}</MainText>
+              <MainText color={GRAY.DEFAULT}>{t("ministry")}</MainText>
             </TitleContainer>
             <ContentContainer>
               {prevMember?.ministries?.map((item) => {
@@ -103,7 +119,7 @@ const PersonalInformationListView = ({
           {/* 신급 */}
           <InformationItem>
             <TitleContainer>
-              <MainText color={GRAY.DEFAULT}>{t(MEMBER.BAPTISM)}</MainText>
+              <MainText color={GRAY.DEFAULT}>{t("baptism")}</MainText>
             </TitleContainer>
             <ContentContainer>
               <MainText>{t(prevMember.baptism)}</MainText>
@@ -149,6 +165,8 @@ const PersonalInformationListView = ({
           <ContentContainer>
             <MainText>{prevMember.name}</MainText>
           </ContentContainer>
+
+          <PencilButton />
         </InformationItem>
         <Divider />
         {/* 성별 */}
@@ -159,6 +177,8 @@ const PersonalInformationListView = ({
           <ContentContainer>
             <MainText>{t(prevMember.gender as GENDER)}</MainText>
           </ContentContainer>
+
+          <PencilButton />
         </InformationItem>
         <Divider />
         {/* 생년월일 라인 */}
@@ -179,9 +199,11 @@ const PersonalInformationListView = ({
               </MainText>
               <MainText>{getKRDateFromDashDate(prevMember.birth)}</MainText>
             </ContentContainer>
+
+            <PencilButton />
           </InformationItem>
           {/* 생일 */}
-          <InformationItem onClick={() => onClickItem(MEMBER.IS_LUNAR)}>
+          <InformationItem onClick={() => onClickItem(MEMBER.BIRTH)}>
             <TitleContainer>
               <MainText color={GRAY.DEFAULT}>{t("birthDay")}</MainText>
             </TitleContainer>
@@ -193,6 +215,8 @@ const PersonalInformationListView = ({
                   )}
               </MainText>
             </ContentContainer>
+
+            <PencilButton />
           </InformationItem>
         </RowContainer>
         <Divider />
@@ -206,6 +230,7 @@ const PersonalInformationListView = ({
             <ContentContainer>
               <MainText>{prevMember.mobilePhone}</MainText>
             </ContentContainer>
+            <PencilButton />
           </InformationItem>
           {/* 집전화번호 */}
           <InformationItem onClick={() => onClickItem(MEMBER.HOME_PHONE)}>
@@ -215,6 +240,7 @@ const PersonalInformationListView = ({
             <ContentContainer>
               <MainText>{prevMember.homePhone}</MainText>
             </ContentContainer>
+            <PencilButton />
           </InformationItem>
         </RowContainer>
         <Divider />
@@ -228,6 +254,7 @@ const PersonalInformationListView = ({
             <ContentContainer>
               <MainText>{prevMember.address}</MainText>
             </ContentContainer>
+            <PencilButton />
           </InformationItem>
           {/* 상세 주소 */}
           <InformationItem onClick={() => onClickItem(MEMBER.DETAIL_ADDRESS)}>
@@ -239,6 +266,7 @@ const PersonalInformationListView = ({
             <ContentContainer>
               <MainText>{prevMember.detailAddress}</MainText>
             </ContentContainer>
+            <PencilButton />
           </InformationItem>
         </RowContainer>
         <Divider />
@@ -252,6 +280,7 @@ const PersonalInformationListView = ({
             <ContentContainer>
               <MainText>{prevMember.occupation}</MainText>
             </ContentContainer>
+            <PencilButton />
           </InformationItem>
           {/* 학교 */}
           <InformationItem onClick={() => onClickItem(MEMBER.SCHOOL)}>
@@ -261,19 +290,21 @@ const PersonalInformationListView = ({
             <ContentContainer>
               <MainText>{prevMember.school}</MainText>
             </ContentContainer>
+            <PencilButton />
           </InformationItem>
         </RowContainer>
         <Divider />
         {/* 결혼 라인 */}
-        <RowContainer onClick={() => onClickItem(MEMBER.MARRIAGE)}>
+        <RowContainer>
           {/* 결혼 */}
-          <InformationItem>
+          <InformationItem onClick={() => onClickItem(MEMBER.MARRIAGE)}>
             <TitleContainer>
               <MainText color={GRAY.DEFAULT}>{t(MEMBER.MARRIAGE)}</MainText>
             </TitleContainer>
             <ContentContainer>
               <MainText>{t(prevMember.marriage as MARRIAGE)}</MainText>
             </ContentContainer>
+            <PencilButton />
           </InformationItem>
           {/* 결혼 상세 */}
           <InformationItem onClick={() => onClickItem(MEMBER.DETAIL_MARRIAGE)}>
@@ -285,6 +316,7 @@ const PersonalInformationListView = ({
             <ContentContainer>
               <MainText>{prevMember.detailMarriage}</MainText>
             </ContentContainer>
+            <PencilButton />
           </InformationItem>
         </RowContainer>
         <Divider />
@@ -298,6 +330,7 @@ const PersonalInformationListView = ({
               <MainText key={number}>{number}</MainText>
             ))}
           </ContentContainer>
+          <PencilButton />
         </InformationItem>
         <Divider />
       </InformationListContainer>
@@ -305,4 +338,4 @@ const PersonalInformationListView = ({
   );
 };
 
-export default PersonalInformationListView;
+export default InformationListView;

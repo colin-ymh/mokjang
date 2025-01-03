@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
 
-import MemberPersonalInformationListView from "@/components/molecules/member/information/member-information-list.view";
+import MemberInformationListView from "@/components/molecules/member/information/member-information-list.view";
 import CustomPopup from "@/components/atoms/common/popup/custom-popup";
 import { useState } from "react";
 import { MEMBER } from "@/constants/member/member-column";
@@ -16,11 +16,12 @@ import { getEditMemberBody, getMemberFromServer } from "@/utils/member";
 import { Member } from "@/models/member/member";
 import { setMembers } from "@/redux/reducers/member-filter-reducer";
 
-type PersonalInformationListProps = { targetMember: Member };
+type InformationListProps = {};
 
-const PersonalInformationList = ({
-  targetMember,
-}: PersonalInformationListProps) => {
+const InformationList = ({}: InformationListProps) => {
+  const targetMember = useSelector(
+    (state: RootState) => state.targetMember.targetMember,
+  );
   const [prevMember, setPrevMember] = useState<Member>(targetMember);
   const { churchId } = useSelector((state: RootState) => state.church);
   const { member } = useSelector((state: RootState) => state.memberRegister);
@@ -74,7 +75,7 @@ const PersonalInformationList = ({
 
   return (
     <>
-      <MemberPersonalInformationListView {...props} />
+      <MemberInformationListView {...props} />
       <CustomPopup
         isShow={isEditShown}
         onClickClose={onClickClose}
@@ -89,4 +90,4 @@ const PersonalInformationList = ({
   );
 };
 
-export default PersonalInformationList;
+export default InformationList;

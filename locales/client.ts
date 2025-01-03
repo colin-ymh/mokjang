@@ -1,5 +1,4 @@
 import { createI18nClient } from "next-international/client";
-import ko from "./ko";
 import { LOCALE } from "@/constants/state/locale";
 
 export const {
@@ -14,8 +13,5 @@ export const {
     [LOCALE.KO]: () => import("./ko"),
     [LOCALE.EN]: () => import("./en"),
   },
-  {
-    segmentName: "locale",
-    fallbackLocale: ko,
-  },
+  {},
 );

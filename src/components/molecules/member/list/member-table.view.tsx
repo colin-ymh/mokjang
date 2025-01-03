@@ -1,4 +1,4 @@
-import React, { MutableRefObject, useRef } from "react";
+import React, { MutableRefObject } from "react";
 import Image from "next/image";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
@@ -17,18 +17,19 @@ import {
 } from "@/utils/format";
 import { Member } from "@/models/member/member";
 import MemberTableHeader from "@/components/atoms/member/list/member-table-header";
+import useWindowSize from "@/hooks/window/window";
 
 import DefaultImage from "../../../../../public/png/default-member-image.png";
 import { useI18n } from "../../../../../locales/client";
-import useWindowSize from "@/hooks/window/window";
 
 const TableContainer = styled.div`
   display: flex;
   flex-direction: column;
-  width: 100%;
-  height: 100%; /* 부모 높이에 맞게 고정 */
   align-items: center;
   overflow: hidden; /* 부모 영역 초과 스크롤 방지 */
+  //width: 90%;
+  //height: 90%; /* 부모 높이에 맞게 고정 */
+  //border-radius: 5px;
 `;
 
 const MemberTable = styled.table`
@@ -39,8 +40,9 @@ const MemberTable = styled.table`
 
 const TableHeader = styled.th`
   padding: 5px;
-  border: 0 solid ${GRAY.LIGHT};
-  background-color: ${GRAY.LIGHT};
+  border: 1px solid ${GRAY.LIGHT};
+  border-left: 0;
+  background-color: ${GRAY.BACKGROUND}
   cursor: pointer;
   height: 20px;
 `;
@@ -60,44 +62,22 @@ const MemberTableRow = styled.tr`
 `;
 
 const TableData = styled.td<{ id: string; $index: number }>`
-  border-bottom: 1px solid ${GRAY.SIDE_BAR};
+  border-bottom: 1px solid ${GRAY.LIGHT};
+  border-right: 1px solid ${GRAY.LIGHT};
   padding: 5px;
   background-color: ${({ $index }) =>
     $index % 2 === 0 ? WHITE : GRAY.SIDE_BAR};
   justify-content: center;
   align-items: center;
-  min-width: 30px;
   cursor: pointer;
 `;
-
-// ${({ id }) => {
-//   switch (id) {
-//     case MEMBER.GROUP:
-//       return `width: 70px;`;
-//     case MEMBER.PROFILE_IMAGE:
-//       return `width: 30px;`;
-//     case MEMBER.NAME:
-//       return `width: 70px;`;
-//     case MEMBER.GENDER:
-//       return `width: 50px;`;
-//     case MEMBER.OFFICER:
-//       return `width: 50px;`;
-//     case MEMBER.AGE:
-//       return `width: 50px;`;
-//     case MEMBER.BIRTH:
-//       return `width: 100px;`;
-//     case MEMBER.MOBILE_PHONE:
-//       return `width: 100px;`;
-//
-//     default:
-//       return `width: auto;`;
-//   }
-// }}
 
 const ContentContainer = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
+  padding-left: 10px;
+  overflow: hidden;
 `;
 
 const ProfileImage = styled(Image)`
@@ -149,7 +129,8 @@ const MemberTableView = ({
       case MEMBER.BIRTH:
         return (
           <MainText>
-            {member.birth && getKRDateFromDashDate(member.birth)}
+            {member.birth &&
+              getKRDateFromDashDate(getFormattedDate(member.birth))}
           </MainText>
         );
       case MEMBER.AGE:
@@ -162,7 +143,7 @@ const MemberTableView = ({
         return <MainText>{t(member?.baptism as BAPTISM)}</MainText>;
       case MEMBER.OFFICER:
         return <MainText>{member.officer?.name}</MainText>;
-      case MEMBER.MINISTRY:
+      case MEMBER.MINISTRIES:
         return (
           <MainText>
             {member.ministries?.map((item) => {
@@ -170,7 +151,7 @@ const MemberTableView = ({
             })}
           </MainText>
         );
-      case MEMBER.EDUCATION:
+      case MEMBER.EDUCATIONS:
         return (
           <MainText>
             {member.educations?.map((item) => {
@@ -192,6 +173,20 @@ const MemberTableView = ({
         return <MainText>{member.school}</MainText>;
       case MEMBER.MARRIAGE:
         return <MainText>{t(member.marriage)}</MainText>;
+      case MEMBER.REGISTERED_AT:
+        return (
+          <MainText>
+            {member.registeredAt &&
+              getKRDateFromDashDate(getFormattedDate(member.registeredAt))}
+          </MainText>
+        );
+      case MEMBER.UPDATED_AT:
+        return (
+          <MainText>
+            {member.updatedAt &&
+              getKRDateFromDashDate(getFormattedDate(member.updatedAt))}
+          </MainText>
+        );
       default:
         return null;
     }

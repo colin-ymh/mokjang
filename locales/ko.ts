@@ -3,9 +3,19 @@ export default {
   null: "",
   type: "종류",
   search: "검색",
+  after: "부터",
+  before: "까지",
+  setting: "설정",
 
   registeredAt: "등록일자",
   updatedAt: "수정일자",
+
+  birthAfter: "생년월일 ~부터",
+  birthBefore: "생년월일 ~까지",
+  registerAfter: "등록일 ~부터 ",
+  registerBefore: "등록일 ~까지",
+  updateAfter: "수정일 ~부터",
+  updateBefore: "수정일 ~까지",
 
   // 필수
   name: "이름",
@@ -38,6 +48,9 @@ export default {
   group: "소그룹",
   ministry: "사역",
   education: "교육 이수",
+  groups: "소그룹",
+  ministries: "사역",
+  educations: "교육 이수",
 
   // 성별
   male: "남성",

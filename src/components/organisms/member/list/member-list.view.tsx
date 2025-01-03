@@ -11,6 +11,7 @@ const MemberListContainer = styled.div`
   display: flex;
   flex-direction: column;
   height: 100%;
+  width: 100%;
 `;
 
 const MobileView = styled.div`
@@ -21,6 +22,7 @@ const MobileView = styled.div`
 
 const DesktopView = styled.div`
   display: none;
+  justify-content: center;
 
   @media (min-width: ${MEDIA_MIN_WIDTH.DESKTOP}) {
     display: flex;

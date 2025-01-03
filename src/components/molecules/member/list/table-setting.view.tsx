@@ -1,11 +1,11 @@
-import React from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import styled from "styled-components";
 
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 
 import { MainText } from "@/components/atoms/common/text/main-text";
-import { GRAY, MAIN } from "@/constants/styles/color";
+import { GRAY } from "@/constants/styles/color";
 import { SIZE } from "@/constants/styles/style";
 import TableOrderItem from "@/components/atoms/member/list/table-order-item";
 import { MEMBER } from "@/constants/member/member-column";
@@ -13,10 +13,11 @@ import { DropdownValueType } from "@/components/atoms/common/dropdown/dropdown-i
 import Dropdown from "@/components/atoms/common/dropdown/dropdown";
 import { NULL } from "@/constants/constant";
 import { useMemberFilterContent } from "@/hooks/filter/filter";
+import FilterItemList from "@/components/atoms/member/list/filter-item-list";
+import DateFilter from "@/components/atoms/member/list/date-filter";
 
 import Cancel from "../../../../../public/svg/cancel.svg";
 import Reset from "../../../../../public/svg/arrow-uturn.svg";
-import Check from "../../../../../public/svg/check.svg";
 import { useI18n, useScopedI18n } from "../../../../../locales/client";
 
 const TableSettingContainer = styled.div`
@@ -87,68 +88,45 @@ const FilterContainer = styled.div`
   display: flex;
   overflow-y: auto;
   flex-direction: column;
-  padding: 10px 0;
-`;
-
-const FilterItemContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-const FilterItem = styled.div`
-  display: flex;
-  padding: 5px 10px;
-  margin: 5px 0;
-  justify-content: space-between;
-  align-items: center;
-  cursor: pointer;
-  border-radius: 5px;
-  transition: background-color 0.2s ease-in-out;
-
-  &:hover {
-    background-color: ${GRAY.LIGHT};
-  }
-`;
-
-const ItemDivideLine = styled.div`
-  height: 1px;
-  width: 100%;
-  background-color: ${GRAY.LIGHT};
-`;
-
-const CheckButton = styled(Check)<{ $isSelected: boolean }>`
-  display: flex;
-  stroke: ${({ $isSelected }) => ($isSelected ? MAIN.DEFAULT : GRAY.DEFAULT)};
-  transition: stroke 0.2s ease-in-out;
 `;
 
 type TableSettingViewProps = {
   filterValue: MEMBER | typeof NULL;
-  filterItems: string[];
   filterDropdownItems: DropdownValueType[];
   onDragItem: (fromIndex: number, toIndex: number) => void;
   onChangeFilter: (id: MEMBER | typeof NULL) => void;
   onClickFilterItem: (itemId: string) => void;
   onClickCancel: () => void;
   onClickReset: () => void;
+  onChangeAfter: (value: ChangeEvent<HTMLInputElement>) => void;
+  onChangeBefore: (value: ChangeEvent<HTMLInputElement>) => void;
 };
 
 const TableSettingView = ({
   filterValue,
-  filterItems,
   filterDropdownItems,
   onDragItem,
   onChangeFilter,
   onClickFilterItem,
   onClickCancel,
   onClickReset,
+  onChangeAfter,
+  onChangeBefore,
 }: TableSettingViewProps) => {
-  const memberTableHeaderItemList = useSelector(
-    (state: RootState) => state.memberFilter.memberTableHeaderItemList,
-  );
+  const { memberTableHeaderItemList, filterItems, filterAfter, filterBefore } =
+    useSelector((state: RootState) => state.memberFilter);
   const { officers } = useSelector((state: RootState) => state.church);
+
   const t = useI18n();
   const t_button = useScopedI18n("button");
+
+  const [filterContent, setFilterContent] = useState<any>();
+
+  useEffect(() => {
+    if (filterValue !== NULL) {
+      setFilterContent(useMemberFilterContent(t, officers, filterValue));
+    }
+  }, [filterValue]);
 
   return (
     <TableSettingContainer>
@@ -175,6 +153,7 @@ const TableSettingView = ({
                   item={item}
                   index={index}
                   onDrag={onDragItem}
+                  onChangeFilter={onChangeFilter}
                 />
               ))}
           </OrderItemList>
@@ -190,19 +169,22 @@ const TableSettingView = ({
           />
           <FilterContainer>
             {filterValue !== NULL &&
-              useMemberFilterContent(t, officers, filterValue)?.map((item) => {
-                return (
-                  <FilterItemContainer key={item.value}>
-                    <FilterItem onClick={() => onClickFilterItem(item.value)}>
-                      <MainText>{item.title}</MainText>
-                      <CheckButton
-                        $isSelected={filterItems?.includes(item.value)}
-                      />
-                    </FilterItem>
-                    <ItemDivideLine />
-                  </FilterItemContainer>
-                );
-              })}
+            [MEMBER.BIRTH, MEMBER.REGISTERED_AT, MEMBER.UPDATED_AT].includes(
+              filterValue,
+            ) ? (
+              <DateFilter
+                dateAfter={filterAfter}
+                dateBefore={filterBefore}
+                onChangeAfter={onChangeAfter}
+                onChangeBefore={onChangeBefore}
+              />
+            ) : (
+              <FilterItemList
+                items={filterContent}
+                filterItems={filterItems}
+                onClickFilterItem={onClickFilterItem}
+              />
+            )}
           </FilterContainer>
         </ContentContainer>
       </SettingContent>
