@@ -1,3 +1,4 @@
+import { Dispatch, SetStateAction, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
 import { setTargetMember } from "@/redux/reducers/target-member";
@@ -7,13 +8,16 @@ import { FAMILY } from "@/constants/constant";
 import { MembersApi } from "@/api/churches/members.api";
 import { getMemberFromServer } from "@/utils/member";
 import FamilyInformationListView from "@/components/molecules/member/information/family-information-list.view";
-import { useState } from "react";
-import { FamilyMember, Member } from "@/models/member/member";
-import { DEFAULT_MEMBER } from "@/redux/reducers/member-register-reducer";
+import { DEFAULT_FAMILY_MEMBER, FamilyMember } from "@/models/member/member";
+import { MEMBER_INFORMATION_HEADER_ID } from "@/constants/layout/header";
 
-type FamilyInformationListProps = {};
+type FamilyInformationListProps = {
+  setContentId: Dispatch<SetStateAction<string>>;
+};
 
-const FamilyInformationList = ({}: FamilyInformationListProps) => {
+const FamilyInformationList = ({
+  setContentId,
+}: FamilyInformationListProps) => {
   const { churchId } = useSelector((state: RootState) => state.church);
   const targetMember = useSelector(
     (state: RootState) => state.targetMember.targetMember,
@@ -26,8 +30,9 @@ const FamilyInformationList = ({}: FamilyInformationListProps) => {
   const [isModalShown, setIsModalShown] = useState<boolean>(false);
 
   // 관계 수정을 위해 선택된 가족
-  const [targetFamilyMember, setTargetFamilyMember] =
-    useState<Member>(DEFAULT_MEMBER);
+  const [targetFamilyMember, setTargetFamilyMember] = useState<FamilyMember>(
+    DEFAULT_FAMILY_MEMBER,
+  );
 
   // 가족 추가 버튼
   const onClickOpenModal = () => {
@@ -35,45 +40,117 @@ const FamilyInformationList = ({}: FamilyInformationListProps) => {
   };
 
   // 가족 추가 완료 버튼
-  const onClickSaveFamily = (
-    isEdit: boolean,
+  const onClickCreateFamily = (
     familyMemberId: string,
     relation: FAMILY,
+    isFetch: boolean,
   ) => {
-    console.log(familyMemberId);
-    console.log(relation);
     if (familyMemberId && relation) {
-      if (isEdit) {
-        familyApi.editFamily(
-          { churchId, memberId: targetMember.id, familyMemberId },
-          { relation },
-        );
+      if (isFetch) {
+        console.log("fetch");
+        familyApi
+          .fetchFamily(
+            { churchId, memberId: targetMember.id },
+            { familyMemberId, relation },
+          )
+          .then((response) => {
+            membersApi
+              .getMember({ churchId, memberId: targetMember.id })
+              .then((response) => {
+                console.log(response);
+                const member = getMemberFromServer(response.data.data);
+                dispatch(setTargetMember(member));
+              });
+          });
       } else {
-        familyApi.createFamily(
-          { churchId, memberId: targetMember.id },
-          { familyMemberId, relation },
-        );
+        familyApi
+          .createFamily(
+            { churchId, memberId: targetMember.id },
+            { familyMemberId, relation },
+          )
+          .then((response) => {
+            membersApi
+              .getMember({ churchId, memberId: targetMember.id })
+              .then((response) => {
+                const member = getMemberFromServer(response.data.data);
+                dispatch(setTargetMember(member));
+              });
+          });
       }
     }
 
+    setTargetFamilyMember(DEFAULT_FAMILY_MEMBER);
+    setIsModalShown(false);
+  };
+
+  // 가족 수정 완료 버튼
+  const onClickEditFamily = (familyMemberId: string, relation: FAMILY) => {
+    if (familyMemberId && relation) {
+      familyApi
+        .editFamily(
+          {
+            churchId,
+            memberId: targetMember.id,
+            familyMemberId: familyMemberId,
+          },
+          { relation },
+        )
+        .then((response) => {
+          membersApi
+            .getMember({ churchId, memberId: targetMember.id })
+            .then((response) => {
+              const member = getMemberFromServer(response.data.data);
+              dispatch(setTargetMember(member));
+            });
+        });
+    }
+
+    setTargetFamilyMember(DEFAULT_FAMILY_MEMBER);
     setIsModalShown(false);
   };
 
   // 가족 추가 닫기 버튼
   const onClickCloseModal = () => {
     setIsModalShown(false);
+    setTargetFamilyMember(DEFAULT_FAMILY_MEMBER);
   };
 
+  // 가족 상세보기로 변경
   const onClickFamilyMember = (familyMemberId: string) => {
     if (familyMemberId) {
       membersApi
         .getMember({ churchId, memberId: familyMemberId })
         .then((response) => {
-          if (response.status === 200) {
-            const newMember = getMemberFromServer(response.data.data);
-            dispatch(setTargetMember(newMember));
-          }
+          const newMember = getMemberFromServer(response.data.data);
+          dispatch(setTargetMember(newMember));
+          setContentId(MEMBER_INFORMATION_HEADER_ID.PERSONAL_INFORMATION);
         });
+    }
+  };
+
+  // 가족 삭제하기
+  const onClickDelete = (event: React.MouseEvent, familyMemberId: string) => {
+    event.stopPropagation();
+    if (familyMemberId) {
+      familyApi
+        .deleteFamily({ churchId, familyMemberId, memberId: targetMember.id })
+        .then((response) => {
+          membersApi
+            .getMember({ churchId, memberId: targetMember.id })
+            .then((response) => {
+              const member = getMemberFromServer(response.data.data);
+              dispatch(setTargetMember(member));
+            });
+        });
+    }
+  };
+
+  // 가족 수정하기
+  const onClickEdit = (event: React.MouseEvent, member: FamilyMember) => {
+    event.stopPropagation();
+    if (member) {
+      setTargetFamilyMember(member);
+      setIsModalShown(true);
     }
   };
 
@@ -81,8 +158,12 @@ const FamilyInformationList = ({}: FamilyInformationListProps) => {
     isModalShown,
     targetFamilyMember,
     onClickOpenModal,
-    onClickSaveFamily,
     onClickCloseModal,
+    onClickCreateFamily,
+    onClickEditFamily,
+    onClickFamilyMember,
+    onClickEdit,
+    onClickDelete,
   };
 
   return (

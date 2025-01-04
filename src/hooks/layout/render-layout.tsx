@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { Dispatch, ReactNode, SetStateAction } from "react";
 
 import { HOME_CONTENT_ID, MEMBER_CONTENT_ID } from "@/constants/layout/content";
 import {
@@ -40,13 +40,16 @@ export const getHeader = (id: string) => {
   }
 };
 
-export const getMemberInformationContent = (id: string) => {
-  switch (id) {
+export const getMemberInformationContent = (
+  contentId: string,
+  setContentId: Dispatch<SetStateAction<string>>,
+) => {
+  switch (contentId) {
     // case MEMBER_INFORMATION_HEADER_ID.MEMBER_INFORMATION:
     //   return <MemberInformationList />;
     case MEMBER_INFORMATION_HEADER_ID.PERSONAL_INFORMATION:
       return <InformationList />;
     case MEMBER_INFORMATION_HEADER_ID.FAMILY_INFORMATION:
-      return <FamilyInformationList />;
+      return <FamilyInformationList setContentId={setContentId} />;
   }
 };

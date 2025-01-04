@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
@@ -13,12 +13,14 @@ import {
 
 import GoBackButton from "../../../../public/svg/chevron-left.svg";
 import { useScopedI18n } from "../../../../locales/client";
+import ToastPopup from "@/components/atoms/common/popup/toast-popup";
 
 const ButtonListContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  position: relative;
   //flex-shrink: 1;
 `;
 
@@ -40,17 +42,22 @@ type RegisterButtonListViewProps = {
   onClickLeft: () => void;
   onClickRight: () => void;
   getRightButtonTitle: () => string;
+  isToastShow: boolean;
+  setIsToastShow: Dispatch<SetStateAction<boolean>>;
 };
 
 const RegisterButtonListView = ({
   onClickLeft,
   onClickRight,
   getRightButtonTitle,
+  isToastShow,
+  setIsToastShow,
 }: RegisterButtonListViewProps) => {
   const { stage, isStageClear } = useSelector(
     (state: RootState) => state.memberRegister,
   );
   const t_button = useScopedI18n("button");
+  const t_popup = useScopedI18n("popup");
 
   return (
     <ButtonListContainer>
@@ -84,6 +91,13 @@ const RegisterButtonListView = ({
           borderRadius={0}
         />
       </RightButtonContainer>
+      {isToastShow && (
+        <ToastPopup
+          setIsShow={setIsToastShow}
+          isDeletable={true}
+          text={t_popup("registerSuccess")}
+        />
+      )}
     </ButtonListContainer>
   );
 };

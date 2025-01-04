@@ -1,10 +1,9 @@
-import { Dispatch, SetStateAction, useState } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 
 import MemberInformationHeader from "@/components/molecules/member/information/member-information-header";
 import { getMemberInformationContent } from "@/hooks/layout/render-layout";
 import { MEMBER_INFORMATION_HEADER_ID } from "@/constants/layout/header";
-import { Member } from "@/models/member/member";
 
 const InformationContainer = styled.div`
   display: flex;
@@ -39,7 +38,7 @@ const MemberInformation = ({}: MemberInformationProps) => {
         onClickItem={onClickHeaderBarItem}
       />
       <ContentContainer>
-        {getMemberInformationContent(contentId)}
+        {getMemberInformationContent(contentId, setContentId)}
       </ContentContainer>
     </InformationContainer>
   );

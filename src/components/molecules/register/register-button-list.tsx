@@ -12,7 +12,7 @@ import {
   NULL,
 } from "@/constants/constant";
 import RegisterButtonListView from "@/components/molecules/register/register-button-list.view";
-import ToastPopup from "@/components/atoms/common/popup/toast-popup";
+
 import { getCreateMemberBody, getEditMemberBody } from "@/utils/member";
 
 import { useScopedI18n } from "../../../../locales/client";
@@ -24,24 +24,29 @@ const RegisterButtonList = () => {
   const churchId: string = useSelector(
     (state: RootState) => state.church.churchId,
   );
-
   const requestInfoApi = new RequestInfoApi(false);
-
   const { type, stage, member } = useSelector(
     (state: RootState) => state.memberRegister,
   );
-
-  const t_popup = useScopedI18n("popup");
   const t_button = useScopedI18n("button");
 
   const [isToastShow, setIsToastShow] = useState<boolean>(false);
 
   const onClickLeft = () => {
     if (stage === MEMBER_REGISTER_STAGE.REQUIRED) {
-      requestInfoApi.inviteMember(
-        { churchId, isTest: true },
-        getCreateMemberBody(member),
-      );
+      requestInfoApi
+        .inviteMember({ churchId, isTest: true }, getCreateMemberBody(member))
+        .then((response) => {
+          // 등록 성공 시
+          if (response.status === 201) {
+            // 교인 Id 할당
+            const memberId = response.data.id;
+            dispatch(setMember({ ...member, id: memberId }));
+
+            // 성공 팝업
+            setIsToastShow(true);
+          }
+        });
     } else if (stage === MEMBER_REGISTER_STAGE.PERSONAL) {
       dispatch(setStage(MEMBER_REGISTER_STAGE.REQUIRED));
     } else if (stage === MEMBER_REGISTER_STAGE.RELIGIOUS) {
@@ -130,18 +135,13 @@ const RegisterButtonList = () => {
     onClickLeft,
     onClickRight,
     getRightButtonTitle,
+    isToastShow,
+    setIsToastShow,
   };
 
   return (
     <>
       <RegisterButtonListView {...props} />
-      {isToastShow && (
-        <ToastPopup
-          setIsShow={setIsToastShow}
-          isDeletable={true}
-          text={t_popup("registerSuccess")}
-        />
-      )}
     </>
   );
 };

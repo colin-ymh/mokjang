@@ -1,10 +1,18 @@
-import { BAPTISM, FAMILY, MARRIAGE, NULL } from "@/constants/constant";
+import { BAPTISM, BLANK, FAMILY, MARRIAGE, NULL } from "@/constants/constant";
+import { DEFAULT_MEMBER } from "@/redux/reducers/member-register-reducer";
 
 export type FamilyMember = {
   meId: string;
   familyMemberId: string;
   relation: FAMILY;
   familyMember: Member;
+};
+
+export const DEFAULT_FAMILY_MEMBER = {
+  meId: BLANK,
+  familyMemberId: BLANK,
+  relation: FAMILY.FAMILY,
+  familyMember: DEFAULT_MEMBER,
 };
 
 export type ChurchInformation = {

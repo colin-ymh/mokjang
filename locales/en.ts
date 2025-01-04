@@ -118,6 +118,10 @@ export default {
   /*-------------------button-------------------*/
   "button.register": "Register",
   "button.save": "Save",
+  "button.edit": "Edit",
+  "button.delete": "Delete",
+  "button.fetchFamily": "Save Every Family",
+  "button.saveFamily": "Save",
   "button.goBack": "Go Back",
   "button.extra": "Enter Extra",
   "button.invite": "Invite",

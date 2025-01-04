@@ -1,10 +1,11 @@
-import GroupFilterView from "@/components/molecules/layout/group-filter.view";
-import { GroupsApi } from "@/api/settings/groups.api";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
-import { useEffect, useState } from "react";
-import { Group } from "@/models/setting/group";
 import { setMemberFilter } from "@/redux/reducers/member-filter-reducer";
+
+import GroupFilterView from "@/components/molecules/layout/group-filter.view";
+import { GroupsApi } from "@/api/settings/groups.api";
+import { Group } from "@/models/setting/group";
 import { BLANK } from "@/constants/constant";
 
 const GroupFilter = () => {
@@ -15,8 +16,12 @@ const GroupFilter = () => {
     (state: RootState) => state.memberFilter.memberFilter,
   );
 
+  // 전체 그룹 배열
   const [groups, setGroups] = useState<Group[]>([]);
+  // 선택된 그룹 id
   const [selectedGroupId, setSelectedGroupId] = useState<string>(BLANK);
+  // 선택된 그룹 + 모든 자식 그룹들의 id
+  const [groupIds, setGroupIds] = useState<string[]>([]);
 
   // 그룹 정렬
   const getOrderedGroups = (groups: Group[]) => {
@@ -57,23 +62,24 @@ const GroupFilter = () => {
   }, [churchId]);
 
   // 새로운 그룹을 설정
-  const onClickGroup = (id: string) => {
-    setSelectedGroupId(id);
+  const onClickGroup = (groupIds: string[]) => {
+    setSelectedGroupId(groupIds[0]);
+    setGroupIds(groupIds);
   };
 
   // 그룹이 변경되면 교인 목록에 적용
   useEffect(() => {
-    if (selectedGroupId) {
-      dispatch(setMemberFilter({ ...memberFilter, group: [selectedGroupId] }));
+    if (groupIds) {
+      dispatch(setMemberFilter({ ...memberFilter, group: groupIds }));
     }
-  }, [selectedGroupId]);
+  }, [groupIds]);
 
   // 그룹이 변경되면 교인 목록에 적용
-  useEffect(() => {
-    if (memberFilter.group.length === 0) {
-      setSelectedGroupId(BLANK);
-    }
-  }, [memberFilter.group]);
+  // useEffect(() => {
+  //   if (memberFilter.group.length === 0) {
+  //     setSelectedGroupId(BLANK);
+  //   }
+  // }, [memberFilter.group]);
 
   const props = {
     groups,

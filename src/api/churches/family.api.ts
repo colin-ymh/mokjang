@@ -65,12 +65,33 @@ export class FamilyApi {
   };
 
   /**
-   *가족 만들기
+   * 가족 만들기
    * @param {CreateFamilyParams} params
    * @param {CreateFamilyBody} body
    * @returns {Promise<AxiosResponse>}
    */
   public createFamily = async (
+    params: CreateFamilyParams,
+    body: CreateFamilyBody,
+  ): Promise<AxiosResponse> => {
+    const { churchId, memberId } = params;
+
+    const url = `${this._url}/churches/${churchId}/members/${memberId}/family`;
+
+    try {
+      return await axios.post(url, body);
+    } catch (error) {
+      throw new HTTPError(`Fetch error: ${error}`);
+    }
+  };
+
+  /**
+   * 가족 만들기 + 가족 전체 불러오기
+   * @param {CreateFamilyParams} params
+   * @param {CreateFamilyBody} body
+   * @returns {Promise<AxiosResponse>}
+   */
+  public fetchFamily = async (
     params: CreateFamilyParams,
     body: CreateFamilyBody,
   ): Promise<AxiosResponse> => {

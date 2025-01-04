@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+
 import { Group } from "@/models/setting/group";
 import { GRAY, MAIN } from "@/constants/styles/color";
 import { MainText } from "@/components/atoms/common/text/main-text";
@@ -43,7 +44,7 @@ const ChildGroupsContainer = styled.div`
 type GroupFilterViewProps = {
   groups: Group[];
   selectedGroupId: string;
-  onClickGroup: (id: string) => void;
+  onClickGroup: (groupIds: string[]) => void;
 };
 
 // 재귀적으로 그룹을 렌더링하는 함수
@@ -53,16 +54,28 @@ const renderGroups = (
   openGroups: Record<number, boolean>,
   selectedGroupId: string,
   onClickToggle: (id: number) => void,
-  onClickGroup: (id: string) => void,
+  onClickGroup: (groupIds: string[]) => void,
 ) => {
   return groups.map((group) => {
     const isHaveChildren = group.childGroups && group.childGroups.length > 0;
     const isOpen = openGroups[parseInt(group.id)] ?? false; // 기본적으로 닫힘 상태
+
+    const getGroupIds = (group: Group): string[] => {
+      // 재귀적으로 현재 그룹과 모든 하위 그룹의 ID를 수집
+      let collectedIds: string[] = [group.id]; // 본인 그룹의 ID 추가
+      if (group.childGroups && group.childGroups.length > 0) {
+        group.childGroups.forEach((child) => {
+          collectedIds = collectedIds.concat(getGroupIds(child)); // 하위 그룹의 자식들도 재귀적으로 추가
+        });
+      }
+      return collectedIds;
+    };
+
     return (
       <ChildGroupsContainer key={parseInt(group.id)}>
         <GroupItemContainer
           $level={level}
-          onClick={() => onClickGroup(group.id)}
+          onClick={() => onClickGroup(getGroupIds(group))}
         >
           <ToggleButton
             onClick={(e) => {

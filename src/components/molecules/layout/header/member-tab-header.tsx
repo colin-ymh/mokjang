@@ -62,11 +62,6 @@ const MemberTabHeader = ({}: MemberManagementHeadBarProps) => {
         width={30}
         height={80}
         isPercentage={true}
-        headerRight={
-          stage !== MEMBER_REGISTER_STAGE.REQUIRED && (
-            <MainText onClick={onClickSave}>저장</MainText>
-          )
-        }
       >
         <MemberRegister />
       </CustomPopup>

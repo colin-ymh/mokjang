@@ -1,17 +1,16 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
 import styled from "styled-components";
 import { AxiosResponse } from "axios";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "@/redux/store";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
 
 import LabelDropdown from "@/components/atoms/common/dropdown/label-dropdown";
 import { onClickEnter } from "@/utils/input";
 import { getTrimmedString } from "@/utils/format";
 import { GetMembersResponse, MembersApi } from "@/api/churches/members.api";
 import { DropdownValueType } from "@/components/atoms/common/dropdown/dropdown-item";
-import { setMember } from "@/redux/reducers/member-register-reducer";
 import { BLANK, FAMILY, GENDER } from "@/constants/constant";
-import { Member } from "@/models/member/member";
+import { FamilyMember } from "@/models/member/member";
 import { useFamilyRelationDropdownItems } from "@/hooks/dropdown/dropdown-items";
 import Button from "@/components/atoms/common/button/button";
 
@@ -54,32 +53,31 @@ const CancelButton = styled(Cancel)`
 `;
 
 type FamilyModalProps = {
-  member: Member;
-  familyMember: Member;
+  familyMember: FamilyMember;
   onClickClose: () => void;
-  onClickSave: (
-    isEdit: boolean,
+  onClickCreateFamily: (
     familyMemberId: string,
     relation: FAMILY,
+    isFetch: boolean,
   ) => void;
+  onClickEditFamily: (familyMemberId: string, relation: FAMILY) => void;
 };
 
 const FamilyModal = ({
-  member,
   familyMember,
-  onClickSave,
   onClickClose,
+  onClickCreateFamily,
+  onClickEditFamily,
 }: FamilyModalProps) => {
   const t = useI18n();
   const t_placeholder = useScopedI18n("placeholder");
   const membersApi = new MembersApi(false);
-  const dispatch = useDispatch<AppDispatch>();
   const churchId: string = useSelector(
     (state: RootState) => state.church.churchId,
   );
 
   // 수정인지 추가인지 여부
-  const isEdit = familyMember.name !== BLANK;
+  const isEdit = familyMember.familyMember.name !== BLANK;
 
   // 검색된 가족 목록
   const [familyMemberItems, setFamilyMemberItems] = useState<
@@ -90,6 +88,10 @@ const FamilyModal = ({
   const [familyMemberName, setFamilyMemberName] = useState<string>(BLANK);
   // 선택된 가족의 성별
   const [familyGender, setFamilyGender] = useState<GENDER | undefined>();
+  // 선택된 가족의 id
+  const [familyMemberId, setFamilyMemberId] = useState<string>(
+    familyMember.familyMemberId,
+  );
 
   // 가족 관계
   const [familyRelation, setFamilyRelation] = useState<FAMILY>(FAMILY.FAMILY);
@@ -99,12 +101,12 @@ const FamilyModal = ({
 
   // 수정인 경우, 대상을 미리 받아옴
   useEffect(() => {
-    if (familyMember) {
-      setFamilyMemberName(familyMember.name);
-      setFamilyGender(familyMember.gender as GENDER);
+    if (isEdit && familyMember) {
+      setFamilyMemberName(familyMember.familyMember.name);
+      setFamilyGender(familyMember.familyMember.gender as GENDER);
       setFamilyRelation(familyMember.relation);
     }
-  }, [familyMember]);
+  }, [isEdit, familyMember]);
 
   // 가족 이름 변경 시 이벤트
   const onChangeFamilyMemberName = (event: ChangeEvent<HTMLInputElement>) => {
@@ -134,11 +136,10 @@ const FamilyModal = ({
 
   // 가족 선택 시 이벤트
   const onChangeFamilyMemberId = (value: string) => {
-    // setFamilyMemberName()
-
     membersApi.getMember({ churchId, memberId: value }).then((response) => {
       if (response.status === 200) {
         setFamilyGender(response.data.data.gender);
+        setFamilyMemberId(response.data.data.id);
       }
     });
   };
@@ -179,7 +180,7 @@ const FamilyModal = ({
           onChange={onChangeFamilyMemberName}
           onChangeItem={onChangeFamilyMemberId}
           placeholder={t_placeholder("family")}
-          isEditable={familyMember.name === BLANK}
+          isEditable={familyMember.familyMember.name === BLANK}
           onKeyDown={onClickEnter}
         />
         {/* 가족관계 */}
@@ -190,13 +191,37 @@ const FamilyModal = ({
           onChangeItem={onChangeFamilyRelation}
         />
       </ContentContainer>
-      <ButtonContainer>
-        <Button
-          text={t("button.save")}
-          height={30}
-          onClick={() => onClickSave(isEdit, familyMember.id, familyRelation)}
-        />
-      </ButtonContainer>
+      {isEdit ? (
+        // 수정 버튼
+        <ButtonContainer>
+          <Button
+            text={t("button.edit")}
+            height={30}
+            onClick={() => {
+              onClickEditFamily(familyMemberId, familyRelation);
+            }}
+          />
+        </ButtonContainer>
+      ) : (
+        <ButtonContainer>
+          {/* 단일 추가 */}
+          <Button
+            text={t("button.saveFamily")}
+            height={30}
+            onClick={() => {
+              onClickCreateFamily(familyMemberId, familyRelation, false);
+            }}
+          />
+          {/* 가족 전체 추가 */}
+          <Button
+            text={t("button.fetchFamily")}
+            height={30}
+            onClick={() => {
+              onClickCreateFamily(familyMemberId, familyRelation, true);
+            }}
+          />
+        </ButtonContainer>
+      )}
     </FamilyModalContainer>
   );
 };
