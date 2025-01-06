@@ -1,7 +1,7 @@
-import styled from "styled-components";
-import { MainText } from "@/components/atoms/common/text/main-text";
-import { GRAY } from "@/constants/styles/color";
-import { SIZE } from "@/constants/styles/style";
+import styled from 'styled-components';
+import { MainText } from '@/components/atoms/common/text/main-text';
+import { GRAY } from '@/constants/styles/color';
+import { SIZE } from '@/constants/styles/style';
 
 const HeaderContainer = styled.div`
   display: flex;

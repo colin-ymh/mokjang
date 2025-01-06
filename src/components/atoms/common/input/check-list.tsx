@@ -1,7 +1,7 @@
-import styled from "styled-components";
-import { useEffect, useState } from "react";
-import { MainText } from "@/components/atoms/common/text/main-text";
-import CheckButton from "@/components/atoms/common/button/check-button";
+import styled from 'styled-components';
+import { useEffect, useState } from 'react';
+import { MainText } from '@/components/atoms/common/text/main-text';
+import CheckButton from '@/components/atoms/common/button/check-button';
 
 const CheckListContainer = styled.div`
   display: flex;

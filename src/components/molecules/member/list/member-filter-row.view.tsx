@@ -1,20 +1,20 @@
-import { ChangeEvent, Dispatch, Ref, SetStateAction } from "react";
-import styled from "styled-components";
+import { ChangeEvent, Dispatch, Ref, SetStateAction } from 'react';
+import styled from 'styled-components';
 
-import Button from "@/components/atoms/common/button/button";
-import { GRAY } from "@/constants/styles/color";
-import TableSetting from "@/components/molecules/member/list/table-setting";
-import Dropdown from "@/components/atoms/common/dropdown/dropdown";
-import BorderInput from "@/components/atoms/common/input/border-input";
-import { useSearchFilterDropdownItems } from "@/hooks/dropdown/dropdown-items";
-import { MEMBER } from "@/constants/member/member-column";
-import TransparentBackground from "@/components/atoms/common/etc/transparent-background";
+import Button from '@/components/atoms/common/button/button';
+import { GRAY } from '@/constants/styles/color';
+import TableSetting from '@/components/molecules/member/list/table-setting';
+import Dropdown from '@/components/atoms/common/dropdown/dropdown';
+import BorderInput from '@/components/atoms/common/input/border-input';
+import { useSearchFilterDropdownItems } from '@/hooks/dropdown/dropdown-items';
+import { MEMBER } from '@/constants/member/member-column';
+import TransparentBackground from '@/components/atoms/common/etc/transparent-background';
 import FilteredItem, {
   FilteredItemType,
-} from "@/components/atoms/member/list/filtered-item";
+} from '@/components/atoms/member/list/filtered-item';
 
-import { useI18n, useScopedI18n } from "../../../../../locales/client";
-import useWindowSize from "@/hooks/window/window";
+import { useI18n, useScopedI18n } from '../../../../../locales/client';
+import useWindowSize from '@/hooks/window/window';
 
 const MemberFilterContainer = styled.div`
   display: flex;
@@ -58,7 +58,7 @@ const SearchContainer = styled.div`
 `;
 
 const AddFilterContainer = styled.div<{ $isShown: boolean }>`
-  display: ${({ $isShown }) => ($isShown ? "flex" : "none")};
+  display: ${({ $isShown }) => ($isShown ? 'flex' : 'none')};
   position: absolute;
 
   z-index: 10;
@@ -100,7 +100,7 @@ const MemberFilterRowView = ({
   onKeyDown,
 }: MemberFilterViewProps) => {
   const t = useI18n();
-  const t_button = useScopedI18n("button");
+  const t_button = useScopedI18n('button');
   const searchFilterDropdownItems = useSearchFilterDropdownItems();
 
   const { width } = useWindowSize();
@@ -110,7 +110,7 @@ const MemberFilterRowView = ({
         <ButtonContainer>
           {/* 설정 활성화 버튼 */}
           <Button
-            text={t_button("filterSetting")}
+            text={t_button('filterSetting')}
             height={30}
             width={80}
             onClick={onClickTableSetting}
@@ -151,7 +151,7 @@ const MemberFilterRowView = ({
           onKeyDown={onKeyDown}
         />
         <Button
-          text={t("search")}
+          text={t('search')}
           width={150}
           height={30}
           onClick={onClickSearch}

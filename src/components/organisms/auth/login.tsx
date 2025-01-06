@@ -1,10 +1,10 @@
-import styled from "styled-components";
-import LoginList from "@/components/molecules/auth/login-list";
-import { MainText } from "@/components/atoms/common/text/main-text";
-import { SIZE } from "@/constants/styles/style";
-import { MAIN, WHITE } from "@/constants/styles/color";
+import styled from 'styled-components';
+import LoginList from '@/components/molecules/auth/login-list';
+import { MainText } from '@/components/atoms/common/text/main-text';
+import { SIZE } from '@/constants/styles/style';
+import { MAIN, WHITE } from '@/constants/styles/color';
 
-import Sheep from "../../../../public/svg/sheep.svg";
+import Sheep from '../../../../public/svg/sheep.svg';
 
 const LoginContainer = styled.div`
   display: flex;
@@ -46,7 +46,7 @@ const Login = () => {
       <LogoContainer>
         <Logo />
         <MainText color={WHITE} size={SIZE.LARGE}>
-          {"MOKJANG"}
+          {'MOKJANG'}
         </MainText>
       </LogoContainer>
       <LoginList />

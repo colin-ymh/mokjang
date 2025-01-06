@@ -1,24 +1,24 @@
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "@/redux/store";
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '@/redux/store';
 
-import { MembersApi } from "@/api/churches/members.api";
-import MemberInformation from "@/components/organisms/member/information/member-information";
-import CustomPopup from "@/components/atoms/common/popup/custom-popup";
-import MemberListView from "@/components/organisms/member/list/member-list.view";
-import { Member } from "@/models/member/member";
-import { GENDER, NULL } from "@/constants/constant";
+import { MembersApi } from '@/api/churches/members.api';
+import MemberInformation from '@/components/organisms/member/information/member-information';
+import CustomPopup from '@/components/atoms/common/popup/custom-popup';
+import MemberListView from '@/components/organisms/member/list/member-list.view';
+import { Member } from '@/models/member/member';
+import { GENDER, NULL } from '@/constants/constant';
 import {
   DEFAULT_MEMBER,
   setMember,
-} from "@/redux/reducers/member-register-reducer";
-import styled from "styled-components";
-import Button from "@/components/atoms/common/button/button";
-import { getMemberFromServer } from "@/utils/member";
-import { MEMBER } from "@/constants/member/member-column";
-import { getNewMemberDate } from "@/utils/date";
-import { setMembers } from "@/redux/reducers/member-filter-reducer";
-import { setTargetMember } from "@/redux/reducers/target-member";
+} from '@/redux/reducers/member-register-reducer';
+import styled from 'styled-components';
+import Button from '@/components/atoms/common/button/button';
+import { getMemberFromServer } from '@/utils/member';
+import { MEMBER } from '@/constants/member/member-column';
+import { getNewMemberDate } from '@/utils/date';
+import { setMembers } from '@/redux/reducers/member-filter-reducer';
+import { setTargetMember } from '@/redux/reducers/target-member';
 
 const ButtonContainer = styled.div`
   display: flex;
@@ -36,7 +36,7 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
   const membersApi = new MembersApi(false);
   const dispatch = useDispatch<AppDispatch>();
   const churchId: string = useSelector(
-    (state: RootState) => state.church.churchId,
+    (state: RootState) => state.church.churchId
   );
   const { members, memberFilter, memberOrderBy, memberOrderDirection } =
     useSelector((state: RootState) => state.memberFilter);
@@ -54,7 +54,7 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
 
   // 서버로부터 교인 목록을 받아와서, 클라이언트에 적합하게 변환
   const getMembersFromServer = async (
-    currentPage: number,
+    currentPage: number
   ): Promise<Member[]> => {
     if (!churchId) {
       return [];
@@ -91,7 +91,7 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
 
       return response.data.data;
     } catch (error) {
-      console.error("교인 목록 불러오기 실패", error);
+      console.error('교인 목록 불러오기 실패', error);
       return [];
     }
   };
@@ -106,7 +106,7 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
         // 기존 데이터와 합치면서 중복 제거
         const existingIds = new Set(members.map((member) => member.id));
         const filteredNewMembers = newMembers.filter(
-          (member) => !existingIds.has(member.id),
+          (member) => !existingIds.has(member.id)
         );
         dispatch(setMembers([...members, ...filteredNewMembers]));
         setPage((prev) => prev + 1); // 다음 페이지로 이동
@@ -184,7 +184,7 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
         isPercentage={true}
         headerRight={
           <ButtonContainer>
-            <Button text={"삭제"} onClick={onClickDelete} />
+            <Button text={'삭제'} onClick={onClickDelete} />
           </ButtonContainer>
         }
       >

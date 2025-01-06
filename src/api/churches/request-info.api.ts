@@ -1,6 +1,6 @@
-import axios, { AxiosResponse } from "axios";
-import { EditMemberBody } from "@/api/churches/members.api";
-import { SERVER_URL, TEST_SERVER_URL } from "@/constants/state/url";
+import axios, { AxiosResponse } from 'axios';
+import { EditMemberBody } from '@/api/churches/members.api';
+import { SERVER_URL, TEST_SERVER_URL } from '@/constants/state/url';
 
 class HTTPError extends Error {}
 
@@ -53,7 +53,7 @@ export class RequestInfoApi {
    */
   public inviteMember = async (
     params: InviteMemberParams,
-    body: InviteMemberBody,
+    body: InviteMemberBody
   ): Promise<AxiosResponse> => {
     const { churchId, isTest = true } = params;
 
@@ -74,7 +74,7 @@ export class RequestInfoApi {
    */
   public getRequestValidation = async (
     params: RequestValidationParams,
-    body: RequestValidationBody,
+    body: RequestValidationBody
   ): Promise<AxiosResponse> => {
     const { churchId, requestInfoId } = params;
 
@@ -95,7 +95,7 @@ export class RequestInfoApi {
    */
   public editRequestInfo = async (
     params: EditRequestInfoParams,
-    body: EditRequestInfoBody,
+    body: EditRequestInfoBody
   ): Promise<AxiosResponse> => {
     const { churchId, requestInfoId } = params;
 

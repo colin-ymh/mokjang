@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import Login from "@/components/organisms/auth/login";
-import ModalLayout from "@/components/organisms/layout/modal-layout";
+import Login from '@/components/organisms/auth/login';
+import ModalLayout from '@/components/organisms/layout/modal-layout';
 
 const LoginPage = () => {
   return (

@@ -1,6 +1,6 @@
-import { useI18n } from "../../../locales/client";
-import { GENDER, NONE } from "@/constants/constant";
-import { BLUE, GRAY, RED } from "@/constants/styles/color";
+import { useI18n } from '../../../locales/client';
+import { GENDER, NONE } from '@/constants/constant';
+import { BLUE, GRAY, RED } from '@/constants/styles/color';
 
 export const useGenderToggleButtonItems = () => {
   const t = useI18n();
@@ -8,7 +8,7 @@ export const useGenderToggleButtonItems = () => {
   const items = [
     {
       value: NONE,
-      title: t("gender"),
+      title: t('gender'),
       backgroundColor: GRAY.DEFAULT,
     },
     {

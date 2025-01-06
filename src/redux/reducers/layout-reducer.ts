@@ -1,8 +1,8 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { HEADER_ID } from "@/constants/layout/header";
-import { HOME_CONTENT_ID, MEMBER_CONTENT_ID } from "@/constants/layout/content";
-import { ReactNode } from "react";
-import MemberTabHeader from "@/components/molecules/layout/header/member-tab-header";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { HEADER_ID } from '@/constants/layout/header';
+import { HOME_CONTENT_ID, MEMBER_CONTENT_ID } from '@/constants/layout/content';
+import { ReactNode } from 'react';
+import MemberTabHeader from '@/components/molecules/layout/header/member-tab-header';
 
 type LayoutState = {
   headerId: string;
@@ -15,7 +15,7 @@ const initialState: LayoutState = {
 };
 
 const LayoutSlice = createSlice({
-  name: "webview",
+  name: 'webview',
   initialState,
   reducers: {
     setHeaderId(state, action: PayloadAction<string>) {

@@ -1,9 +1,9 @@
-import { ComponentType } from "react";
-import styled from "styled-components";
+import { ComponentType } from 'react';
+import styled from 'styled-components';
 
 import DefaultRadioButton, {
   RadioButtonItemProps,
-} from "@/components/atoms/common/input/radio-button/default-radio-button";
+} from '@/components/atoms/common/input/radio-button/default-radio-button';
 
 export type RadioButtonValue = {
   value: any; // 실제 사용될 값

@@ -1,7 +1,7 @@
-import styled from "styled-components";
-import { MainText } from "@/components/atoms/common/text/main-text";
-import { BLACK, GRAY } from "@/constants/styles/color";
-import { AUTH } from "@/api/auth/auth.api";
+import styled from 'styled-components';
+import { MainText } from '@/components/atoms/common/text/main-text';
+import { BLACK, GRAY } from '@/constants/styles/color';
+import { AUTH } from '@/api/auth/auth.api';
 
 const ListContainer = styled.div`
   display: flex;
@@ -33,16 +33,16 @@ const LoginListView = ({ onClickItem }: LoginListViewProps) => {
   return (
     <ListContainer>
       <OAuthItem onClick={() => onClickItem(AUTH.NAVER)}>
-        <MainText color={BLACK}>{"네이버"}</MainText>
+        <MainText color={BLACK}>{'네이버'}</MainText>
       </OAuthItem>
       <OAuthItem onClick={() => onClickItem(AUTH.GOOGLE)}>
-        <MainText color={BLACK}>{"구글"}</MainText>
+        <MainText color={BLACK}>{'구글'}</MainText>
       </OAuthItem>
       <OAuthItem onClick={() => onClickItem(AUTH.KAKAO)}>
-        <MainText color={BLACK}>{"카카오"}</MainText>
+        <MainText color={BLACK}>{'카카오'}</MainText>
       </OAuthItem>
       <OAuthItem>
-        <MainText color={BLACK}>{"애플"}</MainText>
+        <MainText color={BLACK}>{'애플'}</MainText>
       </OAuthItem>
     </ListContainer>
   );

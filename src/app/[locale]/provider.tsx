@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import type { ReactNode } from "react";
-import { usePathname } from "next/navigation";
+import type { ReactNode } from 'react';
+import { usePathname } from 'next/navigation';
 // ↑ next/navigation (Next.js 13 이상)
 //   구버전은 useRouter().pathname 등을 사용
-import { I18nProviderClient, useCurrentLocale } from "../../../locales/client";
-import { LOCALE } from "@/constants/state/locale";
+import { I18nProviderClient, useCurrentLocale } from '../../../locales/client';
+import { LOCALE } from '@/constants/state/locale';
 
 type ProviderProps = {
   children: ReactNode;
@@ -38,7 +38,7 @@ export default TranslateProvider;
  */
 function getLocalePrefixFromPath(pathname: string): string | undefined {
   // 로케일 목록이 많아질 경우 이 로직을 확장할 수 있음
-  if (pathname.startsWith("/ko/")) return "ko";
-  if (pathname.startsWith("/en/")) return "en";
+  if (pathname.startsWith('/ko/')) return 'ko';
+  if (pathname.startsWith('/en/')) return 'en';
   return undefined;
 }

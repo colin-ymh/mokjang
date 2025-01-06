@@ -1,8 +1,8 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
-import { MainText } from "@/components/atoms/common/text/main-text";
-import { GRAY, MAIN, WHITE } from "@/constants/styles/color";
+import { MainText } from '@/components/atoms/common/text/main-text';
+import { GRAY, MAIN, WHITE } from '@/constants/styles/color';
 
 const HeaderBarContainer = styled.div`
   display: flex;

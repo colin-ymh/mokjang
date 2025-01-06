@@ -1,11 +1,11 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 import MemberTable, {
   MemberTableProps,
-} from "@/components/molecules/member/list/member-table";
-import MemberFilterRow from "@/components/molecules/member/list/member-filter-row";
-import { MEDIA_MIN_WIDTH } from "@/constants/constant";
-import MemberItemList from "@/components/molecules/member/list/member-item-list";
+} from '@/components/molecules/member/list/member-table';
+import MemberFilterRow from '@/components/molecules/member/list/member-filter-row';
+import { MEDIA_MIN_WIDTH } from '@/constants/constant';
+import MemberItemList from '@/components/molecules/member/list/member-item-list';
 
 const MemberListContainer = styled.div`
   display: flex;
@@ -22,7 +22,7 @@ const MobileView = styled.div`
 
 const DesktopView = styled.div`
   display: none;
-  justify-content: center;
+  justify-content: flex-start;
 
   @media (min-width: ${MEDIA_MIN_WIDTH.DESKTOP}) {
     display: flex;

@@ -1,15 +1,15 @@
-import { Dispatch, SetStateAction, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "@/redux/store";
-import { setTargetMember } from "@/redux/reducers/target-member";
+import { Dispatch, SetStateAction, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '@/redux/store';
+import { setTargetMember } from '@/redux/reducers/target-member';
 
-import { FamilyApi } from "@/api/churches/family.api";
-import { FAMILY } from "@/constants/constant";
-import { MembersApi } from "@/api/churches/members.api";
-import { getMemberFromServer } from "@/utils/member";
-import FamilyInformationListView from "@/components/molecules/member/information/family-information-list.view";
-import { DEFAULT_FAMILY_MEMBER, FamilyMember } from "@/models/member/member";
-import { MEMBER_INFORMATION_HEADER_ID } from "@/constants/layout/header";
+import { FamilyApi } from '@/api/churches/family.api';
+import { FAMILY } from '@/constants/constant';
+import { MembersApi } from '@/api/churches/members.api';
+import { getMemberFromServer } from '@/utils/member';
+import FamilyInformationListView from '@/components/molecules/member/information/family-information-list.view';
+import { DEFAULT_FAMILY_MEMBER, FamilyMember } from '@/models/member/member';
+import { MEMBER_INFORMATION_HEADER_ID } from '@/constants/layout/header';
 
 type FamilyInformationListProps = {
   setContentId: Dispatch<SetStateAction<string>>;
@@ -20,7 +20,7 @@ const FamilyInformationList = ({
 }: FamilyInformationListProps) => {
   const { churchId } = useSelector((state: RootState) => state.church);
   const targetMember = useSelector(
-    (state: RootState) => state.targetMember.targetMember,
+    (state: RootState) => state.targetMember.targetMember
   );
   const dispatch = useDispatch<AppDispatch>();
   const familyApi = new FamilyApi(false);
@@ -31,7 +31,7 @@ const FamilyInformationList = ({
 
   // 관계 수정을 위해 선택된 가족
   const [targetFamilyMember, setTargetFamilyMember] = useState<FamilyMember>(
-    DEFAULT_FAMILY_MEMBER,
+    DEFAULT_FAMILY_MEMBER
   );
 
   // 가족 추가 버튼
@@ -43,15 +43,15 @@ const FamilyInformationList = ({
   const onClickCreateFamily = (
     familyMemberId: string,
     relation: FAMILY,
-    isFetch: boolean,
+    isFetch: boolean
   ) => {
     if (familyMemberId && relation) {
       if (isFetch) {
-        console.log("fetch");
+        console.log('fetch');
         familyApi
           .fetchFamily(
             { churchId, memberId: targetMember.id },
-            { familyMemberId, relation },
+            { familyMemberId, relation }
           )
           .then((response) => {
             membersApi
@@ -66,7 +66,7 @@ const FamilyInformationList = ({
         familyApi
           .createFamily(
             { churchId, memberId: targetMember.id },
-            { familyMemberId, relation },
+            { familyMemberId, relation }
           )
           .then((response) => {
             membersApi
@@ -93,7 +93,7 @@ const FamilyInformationList = ({
             memberId: targetMember.id,
             familyMemberId: familyMemberId,
           },
-          { relation },
+          { relation }
         )
         .then((response) => {
           membersApi

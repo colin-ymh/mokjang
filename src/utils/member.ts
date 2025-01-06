@@ -1,23 +1,23 @@
-import { getDateFromString, getIsChild } from "@/utils/date";
-import { NONE, BLANK, NULL } from "@/constants/constant";
+import { getDateFromString, getIsChild } from '@/utils/date';
+import { NONE, BLANK, NULL } from '@/constants/constant';
 import {
   getIsWellFormedBirth,
   getIsWellFormedHomePhone,
   getIsWellFormedVehicleNumber,
-} from "@/utils/check";
+} from '@/utils/check';
 import {
   getFormattedDate,
   getFormattedHomePhone,
   getFormattedMobilePhone,
   getTrimmedString,
-} from "@/utils/format";
-import { CreateMemberBody, EditMemberBody } from "@/api/churches/members.api";
-import { Member } from "@/models/member/member";
+} from '@/utils/format';
+import { CreateMemberBody, EditMemberBody } from '@/api/churches/members.api';
+import { Member } from '@/models/member/member';
 
 export const getCreateMemberBody = (member: Member) => {
   const newMember: CreateMemberBody = {
     name: member.name,
-    mobilePhone: member.mobilePhone.replace(/\D/g, ""),
+    mobilePhone: member.mobilePhone.replace(/\D/g, ''),
   };
 
   if (member.guidedById) {
@@ -65,7 +65,7 @@ export const getEditMemberBody = (member: Member) => {
   }
 
   if (member.homePhone && getIsWellFormedHomePhone(member.homePhone)) {
-    newMember.homePhone = member.homePhone.replace(/\D/g, "");
+    newMember.homePhone = member.homePhone.replace(/\D/g, '');
   }
 
   if (member.occupation && getTrimmedString(member.occupation)) {
@@ -98,7 +98,7 @@ export const getEditMemberBody = (member: Member) => {
   if (member.vehicleNumber) {
     const newVehicleNumber = member.vehicleNumber.filter(
       (number: string) =>
-        number !== BLANK && getIsWellFormedVehicleNumber(number),
+        number !== BLANK && getIsWellFormedVehicleNumber(number)
     );
 
     if (newVehicleNumber.length > 0) {

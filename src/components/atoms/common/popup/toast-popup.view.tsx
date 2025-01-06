@@ -1,17 +1,17 @@
-import { forwardRef } from "react";
-import styled from "styled-components";
+import { forwardRef } from 'react';
+import styled from 'styled-components';
 
-import Cancel from "../../../../../public/svg/cancel.svg";
+import Cancel from '../../../../../public/svg/cancel.svg';
 
 import {
   MainText,
   MainTextProps,
-} from "@/components/atoms/common/text/main-text";
-import { WHITE } from "@/constants/styles/color";
+} from '@/components/atoms/common/text/main-text';
+import { WHITE } from '@/constants/styles/color';
 
 export enum TOAST_DIRECTION {
-  TOP = "top",
-  BOTTOM = "bottom",
+  TOP = 'top',
+  BOTTOM = 'bottom',
 }
 
 const PopupContainer = styled.div<{
@@ -32,7 +32,7 @@ const PopupContainer = styled.div<{
   opacity: 0;
   //  방향에 따라 초기값 변경
   ${({ $direction }) =>
-    $direction === TOAST_DIRECTION.TOP ? "top: -50px;" : "bottom: -50px"}
+    $direction === TOAST_DIRECTION.TOP ? 'top: -50px;' : 'bottom: -50px'}
 `;
 
 const CancelButton = styled(Cancel)`
@@ -64,7 +64,7 @@ const ToastPopupView = forwardRef<HTMLDivElement, ToastPopupViewProps>(
       fontWeight,
       color,
     },
-    ref,
+    ref
   ) => {
     return (
       <PopupContainer
@@ -80,12 +80,12 @@ const ToastPopupView = forwardRef<HTMLDivElement, ToastPopupViewProps>(
         {isDeletable && (
           <CancelButton
             onClick={onClickDeleteButton}
-            text={"등록이 완료되었습니다."}
+            text={'등록이 완료되었습니다.'}
           />
         )}
       </PopupContainer>
     );
-  },
+  }
 );
 
 export default ToastPopupView;

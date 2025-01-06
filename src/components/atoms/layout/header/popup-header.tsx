@@ -1,4 +1,4 @@
-import PopupHeaderView from "@/components/atoms/layout/header/popup-header.view";
+import PopupHeaderView from '@/components/atoms/layout/header/popup-header.view';
 
 type PopupHeaderProps = {
   onClickLeft: () => void;

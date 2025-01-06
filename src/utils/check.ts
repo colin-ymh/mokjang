@@ -1,12 +1,12 @@
-import { BLANK } from "@/constants/constant";
+import { BLANK } from '@/constants/constant';
 
 export const getIsWellFormedMobilePhone = (mobilePhone: string) => {
-  if (mobilePhone.slice(0, 3) !== "010") return false;
+  if (mobilePhone.slice(0, 3) !== '010') return false;
 
   return mobilePhone.length === 13;
 };
 
-const LOCAL_NUMBER = ["02", "03", "04", "05", "06"];
+const LOCAL_NUMBER = ['02', '03', '04', '05', '06'];
 export const getIsWellFormedHomePhone = (mobilePhone: string) => {
   const FIRST_TWO = mobilePhone.slice(0, 2);
   const LENGTH = mobilePhone.length;
@@ -15,20 +15,20 @@ export const getIsWellFormedHomePhone = (mobilePhone: string) => {
   if (!LOCAL_NUMBER.includes(FIRST_TWO)) return false;
 
   // 서울 + 11자리 => true
-  if (FIRST_TWO === "02" && LENGTH === 11) return true;
+  if (FIRST_TWO === '02' && LENGTH === 11) return true;
 
   // 그 외 + 12자리 => true
   // 나머지는 false
-  return FIRST_TWO !== "02" && LENGTH === 12;
+  return FIRST_TWO !== '02' && LENGTH === 12;
 };
 
-const THIRTY_ONE_MONTHS = new Set(["1", "3", "5", "7", "8", "10", "12"]);
-const THIRTY_MONTHS = new Set(["4", "6", "9", "11"]);
+const THIRTY_ONE_MONTHS = new Set(['1', '3', '5', '7', '8', '10', '12']);
+const THIRTY_MONTHS = new Set(['4', '6', '9', '11']);
 
 export const getIsWellFormedBirth = (birth: string): boolean => {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(birth)) return false; // YYYY-MM-DD 형식 검사
 
-  const [YEAR, MONTH, DATE] = birth.split("-").map((v) => parseInt(v, 10));
+  const [YEAR, MONTH, DATE] = birth.split('-').map((v) => parseInt(v, 10));
   const TODAY = new Date();
 
   // 연도 검사

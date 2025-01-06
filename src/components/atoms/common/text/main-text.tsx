@@ -1,6 +1,6 @@
-import styled from "styled-components";
-import { BLACK } from "@/constants/styles/color";
-import { SIZE } from "@/constants/styles/style";
+import styled from 'styled-components';
+import { BLACK } from '@/constants/styles/color';
+import { SIZE } from '@/constants/styles/style';
 
 export type MainTextProps = {
   size?: SIZE;
@@ -60,5 +60,5 @@ export const MainText = styled.span<MainTextProps>`
 
   white-space: nowrap; /* 텍스트를 한 줄로 유지 */
   max-width: 100%; /* 버튼 크기를 벗어나지 않도록 제한 */
-  font-family: "Pretendard Std", monospace; /* Pretendard Std 적용 */
+  font-family: 'Pretendard Std', monospace; /* Pretendard Std 적용 */
 `;

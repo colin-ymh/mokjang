@@ -1,6 +1,6 @@
-import axios, { AxiosResponse } from "axios";
-import { EditMemberBody } from "@/api/churches/members.api";
-import { SERVER_URL, TEST_SERVER_URL } from "@/constants/state/url";
+import axios, { AxiosResponse } from 'axios';
+import { EditMemberBody } from '@/api/churches/members.api';
+import { SERVER_URL, TEST_SERVER_URL } from '@/constants/state/url';
 
 class HTTPError extends Error {}
 
@@ -52,7 +52,7 @@ export class GroupsApi {
    * @returns {Promise<AxiosResponse>}
    */
   public getGroups = async (
-    params: GetGroupsParams,
+    params: GetGroupsParams
   ): Promise<AxiosResponse> => {
     const { churchId } = params;
 
@@ -71,7 +71,7 @@ export class GroupsApi {
    * @returns {Promise<AxiosResponse>}
    */
   public getChildGroups = async (
-    params: GetChildGroupsParams,
+    params: GetChildGroupsParams
   ): Promise<AxiosResponse> => {
     const { churchId, groupId } = params;
 
@@ -92,7 +92,7 @@ export class GroupsApi {
    */
   public createGroups = async (
     params: CreateGroupParams,
-    body: CreateGroupBody,
+    body: CreateGroupBody
   ): Promise<AxiosResponse> => {
     const { churchId } = params;
 
@@ -113,7 +113,7 @@ export class GroupsApi {
    */
   public editGroup = async (
     params: EditGroupParams,
-    body: EditGroupBody,
+    body: EditGroupBody
   ): Promise<AxiosResponse> => {
     const { churchId, groupId } = params;
 
@@ -132,7 +132,7 @@ export class GroupsApi {
    * @returns {Promise<AxiosResponse>}
    */
   public deleteGroup = async (
-    params: DeleteGroupParams,
+    params: DeleteGroupParams
   ): Promise<AxiosResponse> => {
     const { churchId, groupId } = params;
 

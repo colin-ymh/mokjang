@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import { useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
 
-import MainLayout from "@/components/organisms/layout/main-layout";
-import { getContent, getHeader } from "@/hooks/layout/render-layout";
+import MainLayout from '@/components/organisms/layout/main-layout';
+import { getContent, getHeader } from '@/hooks/layout/render-layout';
 
 const App = () => {
   const { headerId, contentId } = useSelector(
-    (state: RootState) => state.layout,
+    (state: RootState) => state.layout
   );
   return (
     <>

@@ -4,9 +4,9 @@ import {
   SetStateAction,
   useEffect,
   useState,
-} from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "@/redux/store";
+} from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '@/redux/store';
 import {
   INITIAL_MEMBER_FILTER,
   INITIAL_TABLE_HEADER_LIST,
@@ -16,16 +16,16 @@ import {
   setFilterValue,
   setMemberFilter,
   setMemberTableHeaderItemList,
-} from "@/redux/reducers/member-filter-reducer";
+} from '@/redux/reducers/member-filter-reducer';
 
-import TableSettingView from "@/components/molecules/member/list/table-setting.view";
-import { DropdownValueType } from "@/components/atoms/common/dropdown/dropdown-item";
-import { getTranslatedMemberColumn } from "@/utils/translate";
-import { MEMBER } from "@/constants/member/member-column";
-import { BLANK, NULL } from "@/constants/constant";
-import { getFormattedDate } from "@/utils/format";
+import TableSettingView from '@/components/molecules/member/list/table-setting.view';
+import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-item';
+import { getTranslatedMemberColumn } from '@/utils/translate';
+import { MEMBER } from '@/constants/member/member-column';
+import { BLANK, NULL } from '@/constants/constant';
+import { getFormattedDate } from '@/utils/format';
 
-import { useI18n } from "../../../../../locales/client";
+import { useI18n } from '../../../../../locales/client';
 
 type AddFilterProps = {
   setIsShown: Dispatch<SetStateAction<boolean>>;
@@ -48,7 +48,7 @@ const TableSetting = ({ setIsShown }: AddFilterProps) => {
     DropdownValueType[]
   >([]);
 
-  const DEFAULT_FILTER_ITEM = { value: NULL, title: "필터 추가하기" };
+  const DEFAULT_FILTER_ITEM = { value: NULL, title: '필터 추가하기' };
 
   // 칼럼들을 드래그하여 순서 변경
   const onDragItem = (fromIndex: number, toIndex: number) => {
@@ -101,8 +101,8 @@ const TableSetting = ({ setIsShown }: AddFilterProps) => {
                 | MEMBER.OFFICER
                 | MEMBER.EDUCATIONS
                 | MEMBER.MARRIAGE
-            ],
-          ),
+            ]
+          )
         );
       }
     }
@@ -180,7 +180,7 @@ const TableSetting = ({ setIsShown }: AddFilterProps) => {
           ...memberFilter,
           birthBefore: filterBefore,
           birthAfter: filterAfter,
-        }),
+        })
       );
     } else if (filterValue === MEMBER.REGISTERED_AT) {
       dispatch(
@@ -188,7 +188,7 @@ const TableSetting = ({ setIsShown }: AddFilterProps) => {
           ...memberFilter,
           registerBefore: filterBefore,
           registerAfter: filterAfter,
-        }),
+        })
       );
     } else if (filterValue === MEMBER.UPDATED_AT) {
       dispatch(
@@ -196,7 +196,7 @@ const TableSetting = ({ setIsShown }: AddFilterProps) => {
           ...memberFilter,
           updateBefore: filterBefore,
           updateAfter: filterAfter,
-        }),
+        })
       );
     }
   }, [filterAfter, filterBefore]);
@@ -215,14 +215,14 @@ const TableSetting = ({ setIsShown }: AddFilterProps) => {
   // esc 시에 설정창 닫기
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
+      if (e.key === 'Escape') {
         setIsShown(false);
       }
     };
 
-    window.addEventListener("keydown", onKeyDown);
+    window.addEventListener('keydown', onKeyDown);
     return () => {
-      window.removeEventListener("keydown", onKeyDown);
+      window.removeEventListener('keydown', onKeyDown);
     };
   }, [setIsShown]);
 

@@ -1,7 +1,7 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { BLANK, NULL, ORDER_DIRECTION } from "@/constants/constant";
-import { MEMBER } from "@/constants/member/member-column";
-import { Member } from "@/models/member/member";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { BLANK, NULL, ORDER_DIRECTION } from '@/constants/constant';
+import { MEMBER } from '@/constants/member/member-column';
+import { Member } from '@/models/member/member';
 
 type MEMBER_FILTER = {
   [MEMBER.NAME]: string;
@@ -217,7 +217,7 @@ const initialState: MemberFilterState = {
 };
 
 const MemberFilterSlice = createSlice({
-  name: "register",
+  name: 'register',
   initialState,
   reducers: {
     setMembers: (state, action: PayloadAction<Member[]>) => {
@@ -234,7 +234,7 @@ const MemberFilterSlice = createSlice({
     },
     setMemberTableHeaderItemList(
       state,
-      action: PayloadAction<TABLE_HEADER_ITEM[]>,
+      action: PayloadAction<TABLE_HEADER_ITEM[]>
     ) {
       state.memberTableHeaderItemList = action.payload;
     },

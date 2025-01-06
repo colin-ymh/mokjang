@@ -1,23 +1,23 @@
-import { useState } from "react";
+import { useState } from 'react';
 
-import MemberTabHeaderView from "@/components/molecules/layout/header/member-tab-header.view";
-import CustomPopup from "@/components/atoms/common/popup/custom-popup";
-import MemberRegister from "@/components/organisms/register/member-register";
-import { MainText } from "@/components/atoms/common/text/main-text";
-import { useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
-import { MembersApi } from "@/api/churches/members.api";
-import { MEMBER_REGISTER_STAGE } from "@/constants/constant";
-import { getEditMemberBody } from "@/utils/member";
+import MemberTabHeaderView from '@/components/molecules/layout/header/member-tab-header.view';
+import CustomPopup from '@/components/atoms/common/popup/custom-popup';
+import MemberRegister from '@/components/organisms/register/member-register';
+import { MainText } from '@/components/atoms/common/text/main-text';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
+import { MembersApi } from '@/api/churches/members.api';
+import { MEMBER_REGISTER_STAGE } from '@/constants/constant';
+import { getEditMemberBody } from '@/utils/member';
 
 type MemberManagementHeadBarProps = {};
 
 const MemberTabHeader = ({}: MemberManagementHeadBarProps) => {
   const churchId: string = useSelector(
-    (state: RootState) => state.church.churchId,
+    (state: RootState) => state.church.churchId
   );
   const { member, stage } = useSelector(
-    (state: RootState) => state.memberRegister,
+    (state: RootState) => state.memberRegister
   );
   const membersApi = new MembersApi(false);
 
@@ -41,7 +41,7 @@ const MemberTabHeader = ({}: MemberManagementHeadBarProps) => {
       // 교인 저장
       membersApi.editMember(
         { memberId: member.id, churchId },
-        getEditMemberBody(member),
+        getEditMemberBody(member)
       );
 
       // 팝업 닫기

@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import { ReactNode } from "react";
+import { ReactNode } from 'react';
 
-import Wrap from "@/components/atoms/layout/wrap";
-import Container from "@/components/atoms/layout/container/container";
-import Main from "@/components/atoms/layout/main/main";
+import Wrap from '@/components/atoms/layout/wrap';
+import Container from '@/components/atoms/layout/container/container';
+import Main from '@/components/atoms/layout/main/main';
 
-import SideBar from "@/components/molecules/layout/side-bar";
-import Header from "@/components/atoms/layout/header";
+import SideBar from '@/components/molecules/layout/side-bar';
+import Header from '@/components/atoms/layout/header';
 
 export type MainLayoutProps = {
   header: ReactNode;

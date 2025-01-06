@@ -1,12 +1,12 @@
-import { useI18n, useScopedI18n } from "../../../locales/client";
+import { useI18n, useScopedI18n } from '../../../locales/client';
 import {
   CALENDAR_MODE,
   GENDER,
   MEMBER_REGISTER_TYPE,
-} from "@/constants/constant";
+} from '@/constants/constant';
 
 export const useMemberRegisterTypeRadioButtonItems = () => {
-  const t_radiobutton = useScopedI18n("radiobutton");
+  const t_radiobutton = useScopedI18n('radiobutton');
 
   const items = [
     {

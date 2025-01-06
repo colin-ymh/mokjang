@@ -1,6 +1,6 @@
-import styled from "styled-components";
-import { useEffect, useState } from "react";
-import { GRAY, MAIN, WHITE } from "@/constants/styles/color";
+import styled from 'styled-components';
+import { useEffect, useState } from 'react';
+import { GRAY, MAIN, WHITE } from '@/constants/styles/color';
 
 const CheckButtonContainer = styled.div<{ $isChecked: boolean }>`
   display: flex;

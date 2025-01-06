@@ -1,15 +1,15 @@
-import axios, { AxiosResponse } from "axios";
-import qs from "qs";
+import axios, { AxiosResponse } from 'axios';
+import qs from 'qs';
 
 import {
   BAPTISM,
   GENDER,
   MARRIAGE,
   ORDER_DIRECTION,
-} from "@/constants/constant";
-import { Member } from "@/models/member/member";
-import { MEMBER } from "@/constants/member/member-column";
-import { SERVER_URL, TEST_SERVER_URL } from "@/constants/state/url";
+} from '@/constants/constant';
+import { Member } from '@/models/member/member';
+import { MEMBER } from '@/constants/member/member-column';
+import { SERVER_URL, TEST_SERVER_URL } from '@/constants/state/url';
 
 class HTTPError extends Error {}
 
@@ -109,7 +109,7 @@ export class MembersApi {
    * @returns {Promise<AxiosResponse>}
    */
   public getMembers = async (
-    params: GetMembersParams,
+    params: GetMembersParams
   ): Promise<AxiosResponse> => {
     const {
       churchId,
@@ -184,9 +184,9 @@ export class MembersApi {
       }).filter(
         ([_, value]) =>
           value !== undefined &&
-          value !== "" &&
-          !(Array.isArray(value) && value.length === 0),
-      ),
+          value !== '' &&
+          !(Array.isArray(value) && value.length === 0)
+      )
     );
 
     const url = `${this._url}/churches/${churchId}/members`;
@@ -196,7 +196,7 @@ export class MembersApi {
         params: queryParams,
         paramsSerializer: (params) => {
           return qs.stringify(params, {
-            arrayFormat: "repeat",
+            arrayFormat: 'repeat',
             skipNulls: true,
             encodeValuesOnly: true,
           });
@@ -213,7 +213,7 @@ export class MembersApi {
    * @returns
    */
   public getMember = async (
-    params: GetMemberParams,
+    params: GetMemberParams
   ): Promise<AxiosResponse> => {
     const { churchId, memberId } = params;
 
@@ -234,7 +234,7 @@ export class MembersApi {
    */
   public createMember = async (
     params: CreateMemberParams,
-    body: CreateMemberBody,
+    body: CreateMemberBody
   ): Promise<AxiosResponse> => {
     const { churchId } = params;
 
@@ -255,7 +255,7 @@ export class MembersApi {
    */
   public editMember = async (
     params: EditMemberParams,
-    body: EditMemberBody,
+    body: EditMemberBody
   ): Promise<AxiosResponse> => {
     const { churchId, memberId } = params;
 
@@ -274,7 +274,7 @@ export class MembersApi {
    * @returns
    */
   public deleteMember = async (
-    params: DeleteMemberParams,
+    params: DeleteMemberParams
   ): Promise<AxiosResponse> => {
     const { churchId, memberId } = params;
 

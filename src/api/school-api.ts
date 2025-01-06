@@ -1,6 +1,6 @@
-import ky from "ky";
-import { NEIS_KEY } from "@/configs/config";
-import axios from "axios";
+import ky from 'ky';
+import { NEIS_KEY } from '@/configs/config';
+import axios from 'axios';
 
 // 네이스 API에서 반환되는 학교 정보 타입 정의
 type NeisSchoolInfoType = {
@@ -41,7 +41,7 @@ type NeisSchoolInfoType = {
 export const getSchool = async (
   name: string,
   pIndex: number = 1,
-  pSize: number = 5,
+  pSize: number = 5
 ): Promise<NeisSchoolInfoType[]> => {
   const url = `https://open.neis.go.kr/hub/schoolInfo?KEY=${NEIS_KEY}&Type=json&pIndex=${pIndex}&pSize=${pSize}&SCHUL_NM=${name}`;
 
@@ -50,7 +50,7 @@ export const getSchool = async (
 
     return response.data.schoolInfo[1].row;
   } catch (error) {
-    console.log("학교 검색 오류:", error);
+    console.log('학교 검색 오류:', error);
     return [];
   }
 };

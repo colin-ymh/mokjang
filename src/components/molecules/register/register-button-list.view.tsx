@@ -1,19 +1,19 @@
-import React, { Dispatch, SetStateAction } from "react";
-import styled from "styled-components";
-import { useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
+import React, { Dispatch, SetStateAction } from 'react';
+import styled from 'styled-components';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
 
-import Button from "@/components/atoms/common/button/button";
-import { BLACK, GRAY, MAIN, WHITE } from "@/constants/styles/color";
+import Button from '@/components/atoms/common/button/button';
+import { BLACK, GRAY, MAIN, WHITE } from '@/constants/styles/color';
 import {
   BLANK,
   MEDIA_MIN_WIDTH,
   MEMBER_REGISTER_STAGE,
-} from "@/constants/constant";
+} from '@/constants/constant';
 
-import GoBackButton from "../../../../public/svg/chevron-left.svg";
-import { useScopedI18n } from "../../../../locales/client";
-import ToastPopup from "@/components/atoms/common/popup/toast-popup";
+import GoBackButton from '../../../../public/svg/chevron-left.svg';
+import { useScopedI18n } from '../../../../locales/client';
+import ToastPopup from '@/components/atoms/common/popup/toast-popup';
 
 const ButtonListContainer = styled.div`
   display: flex;
@@ -54,10 +54,10 @@ const RegisterButtonListView = ({
   setIsToastShow,
 }: RegisterButtonListViewProps) => {
   const { stage, isStageClear } = useSelector(
-    (state: RootState) => state.memberRegister,
+    (state: RootState) => state.memberRegister
   );
-  const t_button = useScopedI18n("button");
-  const t_popup = useScopedI18n("popup");
+  const t_button = useScopedI18n('button');
+  const t_popup = useScopedI18n('popup');
 
   return (
     <ButtonListContainer>
@@ -65,7 +65,7 @@ const RegisterButtonListView = ({
         <Button
           text={
             stage === MEMBER_REGISTER_STAGE.REQUIRED
-              ? t_button("invite")
+              ? t_button('invite')
               : BLANK
           }
           disabled={!isStageClear}
@@ -95,7 +95,7 @@ const RegisterButtonListView = ({
         <ToastPopup
           setIsShow={setIsToastShow}
           isDeletable={true}
-          text={t_popup("registerSuccess")}
+          text={t_popup('registerSuccess')}
         />
       )}
     </ButtonListContainer>

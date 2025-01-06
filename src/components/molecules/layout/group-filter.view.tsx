@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import styled from "styled-components";
+import React, { useState } from 'react';
+import styled from 'styled-components';
 
-import { Group } from "@/models/setting/group";
-import { GRAY, MAIN } from "@/constants/styles/color";
-import { MainText } from "@/components/atoms/common/text/main-text";
+import { Group } from '@/models/setting/group';
+import { GRAY, MAIN } from '@/constants/styles/color';
+import { MainText } from '@/components/atoms/common/text/main-text';
 
 const FilterContainer = styled.div`
   display: flex;
@@ -54,7 +54,7 @@ const renderGroups = (
   openGroups: Record<number, boolean>,
   selectedGroupId: string,
   onClickToggle: (id: number) => void,
-  onClickGroup: (groupIds: string[]) => void,
+  onClickGroup: (groupIds: string[]) => void
 ) => {
   return groups.map((group) => {
     const isHaveChildren = group.childGroups && group.childGroups.length > 0;
@@ -84,7 +84,7 @@ const renderGroups = (
             }}
           >
             <MainText color={GRAY.DARK}>
-              {isHaveChildren ? (isOpen ? "▼" : "▶") : ""}
+              {isHaveChildren ? (isOpen ? '▼' : '▶') : ''}
             </MainText>
           </ToggleButton>
           <MainText
@@ -102,7 +102,7 @@ const renderGroups = (
             openGroups,
             selectedGroupId,
             onClickToggle,
-            onClickGroup,
+            onClickGroup
           )}
       </ChildGroupsContainer>
     );
@@ -130,7 +130,7 @@ const GroupFilterView = ({
         openGroups,
         selectedGroupId,
         onClickToggle,
-        onClickGroup,
+        onClickGroup
       )}
     </FilterContainer>
   );

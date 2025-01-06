@@ -1,5 +1,5 @@
-import Resizer from "react-image-file-resizer";
-import { Area } from "react-easy-crop";
+import Resizer from 'react-image-file-resizer';
+import { Area } from 'react-easy-crop';
 
 /**
  * 이미지 크기를 조정하고 Base64 문자열로 반환
@@ -10,24 +10,24 @@ import { Area } from "react-easy-crop";
 export const getResizedImage = async (
   imageFile: File,
   width: number,
-  height: number,
+  height: number
 ): Promise<string> => {
   return new Promise((resolve, reject) => {
     Resizer.imageFileResizer(
       imageFile,
       width,
       height,
-      "WEBP",
+      'WEBP',
       100,
       0,
       (uri) => {
-        if (typeof uri === "string") {
+        if (typeof uri === 'string') {
           resolve(uri);
         } else {
-          reject(new Error("Failed to resize image."));
+          reject(new Error('Failed to resize image.'));
         }
       },
-      "base64",
+      'base64'
     );
   });
 };
@@ -38,8 +38,8 @@ export const getResizedImage = async (
  * @param fileName 반환될 이미지 파일명
  */
 export const getFileFromBase64 = (base64: string, fileName: string): File => {
-  const arr = base64.split(",");
-  const mime = arr[0].match(/:(.*?);/)?.[1] || "image/png"; // 기본값: "image/png"
+  const arr = base64.split(',');
+  const mime = arr[0].match(/:(.*?);/)?.[1] || 'image/png'; // 기본값: "image/png"
   const bstr = atob(arr[1]);
   let n = bstr.length;
   const u8arr = new Uint8Array(n);
@@ -65,7 +65,7 @@ export const getBase64FromFile = (file: File): Promise<string> => {
       if (reader.result) {
         resolve(reader.result.toString());
       } else {
-        reject(new Error("Failed to convert File to Base64"));
+        reject(new Error('Failed to convert File to Base64'));
       }
     };
 
@@ -81,18 +81,18 @@ export const getBase64FromFile = (file: File): Promise<string> => {
  */
 export const getCroppedImage = async (
   targetImage: string,
-  croppedAreaPixels: Area,
+  croppedAreaPixels: Area
 ): Promise<string> => {
   const image = new Image();
   image.src = targetImage;
 
   return new Promise((resolve, reject) => {
     image.onload = () => {
-      const canvas = document.createElement("canvas");
-      const ctx = canvas.getContext("2d");
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
 
       if (!ctx) {
-        reject(new Error("Failed to get canvas context"));
+        reject(new Error('Failed to get canvas context'));
         return;
       }
 
@@ -110,11 +110,11 @@ export const getCroppedImage = async (
         0, // 크롭 목적 x
         0, // 크롭 목적 y
         croppedAreaPixels.width, // 크롭 목적 width
-        croppedAreaPixels.height, // 크롭 목적 height
+        croppedAreaPixels.height // 크롭 목적 height
       );
 
       // base64 string으로 변경
-      resolve(canvas.toDataURL("image/jpeg"));
+      resolve(canvas.toDataURL('image/jpeg'));
     };
   });
 };

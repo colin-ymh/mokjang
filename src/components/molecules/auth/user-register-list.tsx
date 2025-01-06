@@ -1,10 +1,10 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useState } from 'react';
 
-import { BLANK } from "@/constants/constant";
-import { getFormattedMobilePhone, getFormattedName } from "@/utils/format";
-import { AuthApi } from "@/api/auth/auth.api";
-import { usePageRouter } from "@/utils/router";
-import UserRegisterListView from "@/components/molecules/auth/user-register-list.view";
+import { BLANK } from '@/constants/constant';
+import { getFormattedMobilePhone, getFormattedName } from '@/utils/format';
+import { AuthApi } from '@/api/auth/auth.api';
+import { usePageRouter } from '@/utils/router';
+import UserRegisterListView from '@/components/molecules/auth/user-register-list.view';
 
 const UserRegisterList = () => {
   const router = usePageRouter();
@@ -39,7 +39,7 @@ const UserRegisterList = () => {
   // 인증번호 변경 이벤트
   const onChangeVerifyNumber = (event: ChangeEvent<HTMLInputElement>) => {
     const newVerifyNumber = event.target.value
-      .replace(/\D/g, "")
+      .replace(/\D/g, '')
       .trim()
       .slice(0, 6);
     // 숫자만 남기기
@@ -51,7 +51,7 @@ const UserRegisterList = () => {
     authApi
       .getVerificationRequest(
         { isTest: true },
-        { name, mobilePhone: mobilePhone.replace(/-/g, "") },
+        { name, mobilePhone: mobilePhone.replace(/-/g, '') }
       )
       .then((response) => {
         if (response.status === 201) {
@@ -83,7 +83,7 @@ const UserRegisterList = () => {
 
   // 회원가입 완료버튼
   const onClickDone = () => {
-    router.push("");
+    router.push('');
   };
   const props = {
     name,

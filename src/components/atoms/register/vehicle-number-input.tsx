@@ -4,12 +4,12 @@ import React, {
   useState,
   ChangeEvent,
   useEffect,
-} from "react";
+} from 'react';
 
 import VehicleNumberInputView, {
   VehicleNumberInputRef,
-} from "@/components/atoms/register/vehicle-number-input.view";
-import { BLANK } from "@/constants/constant";
+} from '@/components/atoms/register/vehicle-number-input.view';
+import { BLANK } from '@/constants/constant';
 
 type VehicleNumberInputProps = InputHTMLAttributes<HTMLInputElement> & {
   label?: string;
@@ -26,7 +26,7 @@ const VehicleNumberInput = forwardRef<
 >(
   (
     { label, value, onChangeInput, height, width, borderColor, ...inputProps },
-    ref,
+    ref
   ) => {
     // 열려있는 번호 입력 창 개수
     const [count, setCount] = useState<number>(1);
@@ -56,7 +56,7 @@ const VehicleNumberInput = forwardRef<
 
         // 다음 입력창으로 input focus 변경
         if (
-          typeof ref !== "function" &&
+          typeof ref !== 'function' &&
           ref?.current?.secondInputRef?.current
         ) {
           ref.current.secondInputRef.current.focus();
@@ -69,7 +69,7 @@ const VehicleNumberInput = forwardRef<
         if (count === 2) setCount(3);
 
         // 다음 입력창으로 input focus 변경
-        if (typeof ref !== "function" && ref?.current?.thirdInputRef?.current) {
+        if (typeof ref !== 'function' && ref?.current?.thirdInputRef?.current) {
           ref.current.thirdInputRef.current.focus();
         }
       }
@@ -78,7 +78,7 @@ const VehicleNumberInput = forwardRef<
     useEffect(() => {
       // 다음 ref 가 활성화되기 전까지 잠시 대기
       const timer = setTimeout(() => {
-        if (typeof ref !== "function") {
+        if (typeof ref !== 'function') {
           if (
             count === 2 &&
             value[2] === BLANK &&
@@ -113,7 +113,7 @@ const VehicleNumberInput = forwardRef<
     };
 
     return <VehicleNumberInputView ref={ref} {...props} />;
-  },
+  }
 );
 
 export default VehicleNumberInput;

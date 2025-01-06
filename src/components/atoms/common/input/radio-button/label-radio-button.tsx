@@ -1,10 +1,10 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
-import { MainText } from "@/components/atoms/common/text/main-text";
+import { MainText } from '@/components/atoms/common/text/main-text';
 import RadioButton, {
   RadioButtonProps,
-} from "@/components/atoms/common/input/radio-button/radio-button";
+} from '@/components/atoms/common/input/radio-button/radio-button';
 
 const RadioButtonContainer = styled.div`
   display: flex;

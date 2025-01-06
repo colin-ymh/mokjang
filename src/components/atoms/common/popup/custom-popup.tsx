@@ -1,10 +1,10 @@
-import React, { ReactNode, useEffect } from "react";
-import styled from "styled-components";
+import React, { ReactNode, useEffect } from 'react';
+import styled from 'styled-components';
 
-import { WHITE } from "@/constants/styles/color";
-import ExitButton from "../../../../../public/svg/cancel.svg";
-import { MainText } from "@/components/atoms/common/text/main-text";
-import { MEDIA_MIN_WIDTH } from "@/constants/constant";
+import { WHITE } from '@/constants/styles/color';
+import ExitButton from '../../../../../public/svg/cancel.svg';
+import { MainText } from '@/components/atoms/common/text/main-text';
+import { MEDIA_MIN_WIDTH } from '@/constants/constant';
 
 const ModalOverlay = styled.div`
   position: fixed;
@@ -38,9 +38,9 @@ const ModalContainer = styled.div<{
 
   @media (min-width: ${MEDIA_MIN_WIDTH.DESKTOP}) {
     height: ${({ height, $isPercentage }) =>
-      height ? ($isPercentage ? `${height}%` : `${height}px`) : "100%"};
+      height ? ($isPercentage ? `${height}%` : `${height}px`) : '100%'};
     width: ${({ width, $isPercentage }) =>
-      width ? ($isPercentage ? `${width}%` : `${width}px`) : "100%"};
+      width ? ($isPercentage ? `${width}%` : `${width}px`) : '100%'};
   }
 `;
 
@@ -95,17 +95,17 @@ const CustomPopup = ({
   useEffect(() => {
     // ESC 누르면 닫기
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
+      if (event.key === 'Escape') {
         onClickClose();
       }
     };
 
     if (isShow) {
-      window.addEventListener("keydown", handleKeyDown);
+      window.addEventListener('keydown', handleKeyDown);
     }
 
     return () => {
-      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener('keydown', handleKeyDown);
     };
   }, [isShow, onClickClose]);
 

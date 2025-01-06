@@ -1,5 +1,5 @@
-import axios from "axios";
-import { TEST_SERVER_URL } from "@/constants/state/url";
+import axios from 'axios';
+import { TEST_SERVER_URL } from '@/constants/state/url';
 
 let token: string | null = null;
 

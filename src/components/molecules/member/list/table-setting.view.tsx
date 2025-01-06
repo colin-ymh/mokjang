@@ -1,24 +1,24 @@
-import React, { ChangeEvent, useEffect, useState } from "react";
-import styled from "styled-components";
+import React, { ChangeEvent, useEffect, useState } from 'react';
+import styled from 'styled-components';
 
-import { useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
 
-import { MainText } from "@/components/atoms/common/text/main-text";
-import { GRAY } from "@/constants/styles/color";
-import { SIZE } from "@/constants/styles/style";
-import TableOrderItem from "@/components/atoms/member/list/table-order-item";
-import { MEMBER } from "@/constants/member/member-column";
-import { DropdownValueType } from "@/components/atoms/common/dropdown/dropdown-item";
-import Dropdown from "@/components/atoms/common/dropdown/dropdown";
-import { NULL } from "@/constants/constant";
-import { useMemberFilterContent } from "@/hooks/filter/filter";
-import FilterItemList from "@/components/atoms/member/list/filter-item-list";
-import DateFilter from "@/components/atoms/member/list/date-filter";
+import { MainText } from '@/components/atoms/common/text/main-text';
+import { GRAY } from '@/constants/styles/color';
+import { SIZE } from '@/constants/styles/style';
+import TableOrderItem from '@/components/atoms/member/list/table-order-item';
+import { MEMBER } from '@/constants/member/member-column';
+import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-item';
+import Dropdown from '@/components/atoms/common/dropdown/dropdown';
+import { NULL } from '@/constants/constant';
+import { useMemberFilterContent } from '@/hooks/filter/filter';
+import FilterItemList from '@/components/atoms/member/list/filter-item-list';
+import DateFilter from '@/components/atoms/member/list/date-filter';
 
-import Cancel from "../../../../../public/svg/cancel.svg";
-import Reset from "../../../../../public/svg/arrow-uturn.svg";
-import { useI18n, useScopedI18n } from "../../../../../locales/client";
+import Cancel from '../../../../../public/svg/cancel.svg';
+import Reset from '../../../../../public/svg/arrow-uturn.svg';
+import { useI18n, useScopedI18n } from '../../../../../locales/client';
 
 const TableSettingContainer = styled.div`
   display: flex;
@@ -118,7 +118,7 @@ const TableSettingView = ({
   const { officers } = useSelector((state: RootState) => state.church);
 
   const t = useI18n();
-  const t_button = useScopedI18n("button");
+  const t_button = useScopedI18n('button');
 
   const [filterContent, setFilterContent] = useState<any>();
 
@@ -133,7 +133,7 @@ const TableSettingView = ({
       {/* Header */}
       <SettingHeader>
         <TitleContainer>
-          <MainText size={SIZE.LARGE}>{t_button("filterSetting")}</MainText>
+          <MainText size={SIZE.LARGE}>{t_button('filterSetting')}</MainText>
         </TitleContainer>
         <ButtonContainer>
           <ResetButton onClick={onClickReset} />
@@ -170,7 +170,7 @@ const TableSettingView = ({
           <FilterContainer>
             {filterValue !== NULL &&
             [MEMBER.BIRTH, MEMBER.REGISTERED_AT, MEMBER.UPDATED_AT].includes(
-              filterValue,
+              filterValue
             ) ? (
               <DateFilter
                 dateAfter={filterAfter}

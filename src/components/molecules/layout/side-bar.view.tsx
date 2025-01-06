@@ -1,15 +1,15 @@
-import styled from "styled-components";
-import { useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
+import styled from 'styled-components';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
 
-import { GRAY } from "@/constants/styles/color";
-import SideBarButton from "@/components/atoms/layout/side-bar/side-bar-button";
-import SideBarHeader from "@/components/atoms/layout/side-bar/side-bar-header";
-import { MEDIA_MIN_WIDTH } from "@/constants/constant";
-import { HEADER_ID } from "@/constants/layout/header";
-import GroupFilter from "@/components/molecules/layout/group-filter";
+import { GRAY } from '@/constants/styles/color';
+import SideBarButton from '@/components/atoms/layout/side-bar/side-bar-button';
+import SideBarHeader from '@/components/atoms/layout/side-bar/side-bar-header';
+import { MEDIA_MIN_WIDTH } from '@/constants/constant';
+import { HEADER_ID } from '@/constants/layout/header';
+import GroupFilter from '@/components/molecules/layout/group-filter';
 
-import { useI18n, useScopedI18n } from "../../../../locales/client";
+import { useI18n, useScopedI18n } from '../../../../locales/client';
 
 const SideBarContainer = styled.div`
   // 모바일
@@ -48,12 +48,12 @@ const ButtonContainer = styled.div`
 const GroupFilterContainer = styled.div<{ $isOpened: boolean }>`
   overflow-y: auto; /* 내용이 많아질 경우 스크롤 활성화 */
   margin: 10px 0;
-  display: ${({ $isOpened }) => ($isOpened ? "flex" : "none")};
+  display: ${({ $isOpened }) => ($isOpened ? 'flex' : 'none')};
 `;
 
 const SideBarView = () => {
   const t = useI18n();
-  const t_header = useScopedI18n("header");
+  const t_header = useScopedI18n('header');
   const headerId = useSelector((state: RootState) => state.layout.headerId);
 
   return (

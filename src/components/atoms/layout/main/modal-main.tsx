@@ -1,6 +1,6 @@
-import styled from "styled-components";
-import { WHITE } from "@/constants/styles/color";
-import { MEDIA_MIN_WIDTH } from "@/constants/constant";
+import styled from 'styled-components';
+import { WHITE } from '@/constants/styles/color';
+import { MEDIA_MIN_WIDTH } from '@/constants/constant';
 
 export const ModalMain = styled.div`
   background-color: ${WHITE};

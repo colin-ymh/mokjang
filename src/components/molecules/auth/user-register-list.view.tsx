@@ -1,20 +1,20 @@
-import { ChangeEvent, useState } from "react";
-import styled from "styled-components";
+import { ChangeEvent, useState } from 'react';
+import styled from 'styled-components';
 
-import LabelInput from "@/components/atoms/common/input/label-input";
-import Button from "@/components/atoms/common/button/button";
-import { MainText } from "@/components/atoms/common/text/main-text";
-import { BLUE, GRAY, MAIN } from "@/constants/styles/color";
+import LabelInput from '@/components/atoms/common/input/label-input';
+import Button from '@/components/atoms/common/button/button';
+import { MainText } from '@/components/atoms/common/text/main-text';
+import { BLUE, GRAY, MAIN } from '@/constants/styles/color';
 
-import { useI18n, useScopedI18n } from "../../../../locales/client";
-import Check from "../../../../public/svg/check.svg";
-import { BLANK } from "@/constants/constant";
-import { MEMBER } from "@/constants/member/member-column";
-import { getFormattedMobilePhone, getFormattedName } from "@/utils/format";
-import { getIsWellFormedMobilePhone, getIsWellFormedName } from "@/utils/check";
-import { AuthApi } from "@/api/auth/auth.api";
-import { usePageRouter } from "@/utils/router";
-import UserRegisterList from "@/components/molecules/auth/user-register-list";
+import { useI18n, useScopedI18n } from '../../../../locales/client';
+import Check from '../../../../public/svg/check.svg';
+import { BLANK } from '@/constants/constant';
+import { MEMBER } from '@/constants/member/member-column';
+import { getFormattedMobilePhone, getFormattedName } from '@/utils/format';
+import { getIsWellFormedMobilePhone, getIsWellFormedName } from '@/utils/check';
+import { AuthApi } from '@/api/auth/auth.api';
+import { usePageRouter } from '@/utils/router';
+import UserRegisterList from '@/components/molecules/auth/user-register-list';
 
 const ListContainer = styled.div`
   display: flex;
@@ -91,7 +91,7 @@ const UserRegisterListView = ({
   onClickDone,
 }: UserRegisterListViewProps) => {
   const t = useI18n();
-  const t_button = useScopedI18n("button");
+  const t_button = useScopedI18n('button');
 
   return (
     <ListContainer>
@@ -112,7 +112,7 @@ const UserRegisterListView = ({
             disabled={isVerified}
           />
           <Button
-            text={t_button("request")}
+            text={t_button('request')}
             height={40}
             width={70}
             onClick={onClickRequest}
@@ -135,13 +135,13 @@ const UserRegisterListView = ({
         <RowContainer>
           <LabelInput
             value={verifyNumber}
-            label={t("verifyNumber")}
+            label={t('verifyNumber')}
             height={40}
             onChange={onChangeVerifyNumber}
             disabled={isVerified}
           />
           <Button
-            text={t_button("verify")}
+            text={t_button('verify')}
             height={40}
             width={70}
             backgroundColor={
@@ -164,7 +164,7 @@ const UserRegisterListView = ({
       </InputContainer>
       <ButtonContainer>
         <Button
-          text={t_button("signIn")}
+          text={t_button('signIn')}
           height={40}
           backgroundColor={isVerified && isConsent ? MAIN.DEFAULT : GRAY.LIGHT}
           disabled={!(isVerified && isConsent)}

@@ -1,57 +1,102 @@
-import React, { MutableRefObject } from "react";
-import Image from "next/image";
-import styled from "styled-components";
-import { useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
+import React, { MutableRefObject } from 'react';
+import Image from 'next/image';
+import styled from 'styled-components';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
 
-import { GRAY, WHITE } from "@/constants/styles/color";
-import { MEMBER } from "@/constants/member/member-column";
-import { MainText } from "@/components/atoms/common/text/main-text";
-import { BAPTISM, GENDER } from "@/constants/constant";
-import { getAge, getDateFromString } from "@/utils/date";
+import { GRAY, WHITE } from '@/constants/styles/color';
+import { MEMBER } from '@/constants/member/member-column';
+import { MainText } from '@/components/atoms/common/text/main-text';
+import { BAPTISM, GENDER } from '@/constants/constant';
+import { getAge, getDateFromString } from '@/utils/date';
 import {
   getFormattedDate,
   getFormattedHomePhone,
   getFormattedMobilePhone,
   getKRDateFromDashDate,
-} from "@/utils/format";
-import { Member } from "@/models/member/member";
-import MemberTableHeader from "@/components/atoms/member/list/member-table-header";
-import useWindowSize from "@/hooks/window/window";
+} from '@/utils/format';
+import { Member } from '@/models/member/member';
+import MemberTableHeader from '@/components/atoms/member/list/member-table-header';
+import useWindowSize from '@/hooks/window/window';
 
-import DefaultImage from "../../../../../public/png/default-member-image.png";
-import { useI18n } from "../../../../../locales/client";
+import DefaultImage from '../../../../../public/png/default-member-image.png';
+import { useI18n } from '../../../../../locales/client';
+
+const getColumnWidth = (id: string) => {
+  switch (id) {
+    case MEMBER.GROUP:
+      return 70;
+    case MEMBER.PROFILE_IMAGE:
+      return 40;
+    case MEMBER.NAME:
+      return 100;
+    case MEMBER.GENDER:
+      return 40;
+    case MEMBER.OFFICER:
+      return 40;
+    case MEMBER.AGE:
+      return 40;
+    case MEMBER.MOBILE_PHONE:
+      return 150;
+    case MEMBER.HOME_PHONE:
+      return 140;
+    case MEMBER.ADDRESS:
+      return 150;
+    case MEMBER.OCCUPATION:
+      return 80;
+    case MEMBER.SCHOOL:
+      return 100;
+    case MEMBER.BAPTISM:
+      return 50;
+    case MEMBER.BIRTH:
+      return 150;
+    case MEMBER.REGISTERED_AT:
+      return 150;
+    case MEMBER.UPDATED_AT:
+      return 150;
+    default:
+      return 50;
+  }
+};
 
 const TableContainer = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
-  overflow: hidden; /* 부모 영역 초과 스크롤 방지 */
-  //width: 90%;
-  //height: 90%; /* 부모 높이에 맞게 고정 */
-  //border-radius: 5px;
+  align-items: flex-start;
+  overflow-y: hidden;
 `;
 
 const MemberTable = styled.table`
-  width: 100%;
-  border-collapse: collapse;
-  table-layout: fixed; /* 열 크기 고정 */
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed; /* 테이블 레이아웃 고정 */
 `;
 
-const TableHeader = styled.th`
+const TableHeader = styled.th<{ id: string }>`
+  border-bottom: 1px solid ${GRAY.LIGHT};
+  border-top: 1px solid ${GRAY.LIGHT};
+  border-right: 1px solid ${GRAY.LIGHT};
   padding: 5px;
-  border: 1px solid ${GRAY.LIGHT};
-  border-left: 0;
-  background-color: ${GRAY.BACKGROUND}
+  justify-content: center;
+  align-items: center;
   cursor: pointer;
-  height: 20px;
+  flex-shrink: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  width: ${({ id }) => {
+    return `${getColumnWidth(id)}px`;
+  }};
 `;
 
 const Scroll = styled.div<{ height: number }>`
-  width: 100%;
+  width: auto;
   height: ${({ height }) => `${height - 200}px`};
   overflow-y: auto;
   position: relative;
+  text-overflow: ellipsis; /* 넘치는 텍스트 ... 처리 */
+  white-space: nowrap; /* 줄바꿈 방지 */
   flex-shrink: 0; /* 자식 콘텐츠 크기와 관계없이 고정 */
 `;
 
@@ -62,22 +107,21 @@ const MemberTableRow = styled.tr`
 `;
 
 const TableData = styled.td<{ id: string; $index: number }>`
-  border-bottom: 1px solid ${GRAY.LIGHT};
-  border-right: 1px solid ${GRAY.LIGHT};
-  padding: 5px;
-  background-color: ${({ $index }) =>
-    $index % 2 === 0 ? WHITE : GRAY.SIDE_BAR};
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
+    border-bottom: 1px solid ${GRAY.LIGHT};
+    border-right: 1px solid ${GRAY.LIGHT};
+    padding: 5px;;
+    background-color: ${({ $index }) =>
+            $index % 2 === 0 ? WHITE : GRAY.SIDE_BAR};
+    cursor: pointer;
+
+    width: ${({ id }) => `${getColumnWidth(id)}px`};
 `;
 
-const ContentContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  padding-left: 10px;
-  overflow: hidden;
+const ContentWrapper = styled.div`
+  max-width: 100%;          /* 부모인 td의 너비에 맞춤 */
+  overflow: hidden;         /* 넘치는 내용 숨김 */
+  text-overflow: ellipsis;  /* 넘치는 텍스트 ... 처리 */
+  white-space: nowrap;      /* 줄바꿈 방지 */
 `;
 
 const ProfileImage = styled(Image)`
@@ -103,7 +147,7 @@ const MemberTableView = ({
 }: MemberTableProps) => {
   const { height } = useWindowSize();
   const memberTableHeaderItemList = useSelector(
-    (state: RootState) => state.memberFilter.memberTableHeaderItemList,
+    (state: RootState) => state.memberFilter.memberTableHeaderItemList
   );
   const t = useI18n();
 
@@ -200,7 +244,7 @@ const MemberTableView = ({
             {memberTableHeaderItemList
               .filter((item) => item.isShown)
               .map((item) => (
-                <TableHeader key={item.id}>
+                <TableHeader key={item.id} id={item.id}>
                   <MemberTableHeader item={item} onClick={onClickHeader} />
                 </TableHeader>
               ))}
@@ -220,9 +264,7 @@ const MemberTableView = ({
                   .filter((item) => item.isShown)
                   .map((item) => (
                     <TableData key={item.id} id={item.id} $index={index}>
-                      <ContentContainer>
-                        {getMemberTableContent(item.id, member)}
-                      </ContentContainer>
+                      <ContentWrapper>{getMemberTableContent(item.id, member)}</ContentWrapper>
                     </TableData>
                   ))}
               </MemberTableRow>

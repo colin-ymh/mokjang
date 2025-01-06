@@ -1,19 +1,19 @@
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "@/redux/store";
-import { setMemberFilter } from "@/redux/reducers/member-filter-reducer";
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '@/redux/store';
+import { setMemberFilter } from '@/redux/reducers/member-filter-reducer';
 
-import GroupFilterView from "@/components/molecules/layout/group-filter.view";
-import { GroupsApi } from "@/api/settings/groups.api";
-import { Group } from "@/models/setting/group";
-import { BLANK } from "@/constants/constant";
+import GroupFilterView from '@/components/molecules/layout/group-filter.view';
+import { GroupsApi } from '@/api/settings/groups.api';
+import { Group } from '@/models/setting/group';
+import { BLANK } from '@/constants/constant';
 
 const GroupFilter = () => {
   const dispatch = useDispatch<AppDispatch>();
   const groupsApi = new GroupsApi(false);
   const churchId = useSelector((state: RootState) => state.church.churchId);
   const memberFilter = useSelector(
-    (state: RootState) => state.memberFilter.memberFilter,
+    (state: RootState) => state.memberFilter.memberFilter
   );
 
   // 전체 그룹 배열

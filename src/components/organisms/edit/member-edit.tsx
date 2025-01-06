@@ -1,9 +1,9 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
-import { WHITE } from "@/constants/styles/color";
-import EditList from "@/components/molecules/edit/edit-list";
-import { MEMBER } from "@/constants/member/member-column";
+import { WHITE } from '@/constants/styles/color';
+import EditList from '@/components/molecules/edit/edit-list';
+import { MEMBER } from '@/constants/member/member-column';
 
 const RegisterContainer = styled.div`
   display: flex;

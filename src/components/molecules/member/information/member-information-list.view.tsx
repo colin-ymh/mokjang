@@ -1,15 +1,15 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
-import { MainText } from "@/components/atoms/common/text/main-text";
-import { MEMBER } from "@/constants/member/member-column";
-import { BLACK, GRAY, WHITE } from "@/constants/styles/color";
-import { CALENDAR_MODE, GENDER, MARRIAGE } from "@/constants/constant";
-import { Member } from "@/models/member/member";
-import { getKRDateFromDashDate } from "@/utils/format";
-import { getThisYearBirth } from "@/utils/date";
+import { MainText } from '@/components/atoms/common/text/main-text';
+import { MEMBER } from '@/constants/member/member-column';
+import { BLACK, GRAY, WHITE } from '@/constants/styles/color';
+import { CALENDAR_MODE, GENDER, MARRIAGE } from '@/constants/constant';
+import { Member } from '@/models/member/member';
+import { getKRDateFromDashDate } from '@/utils/format';
+import { getThisYearBirth } from '@/utils/date';
 
-import { useI18n, useScopedI18n } from "../../../../../locales/client";
-import Pencil from "../../../../../public/svg/pencil.svg";
+import { useI18n, useScopedI18n } from '../../../../../locales/client';
+import Pencil from '../../../../../public/svg/pencil.svg';
 
 const InformationContainer = styled.div`
   display: flex;
@@ -96,19 +96,19 @@ const InformationListView = ({
   onClickItem,
 }: InformationListViewProps) => {
   const t = useI18n();
-  const t_header = useScopedI18n("header");
+  const t_header = useScopedI18n('header');
 
   return (
     <InformationContainer>
       <ListTypeHeader>
-        <MainText color={GRAY.DARK}>{t_header("memberInformation")}</MainText>
+        <MainText color={GRAY.DARK}>{t_header('memberInformation')}</MainText>
       </ListTypeHeader>
       <InformationListContainer>
         <RowContainer>
           {/* 사역 */}
           <InformationItem>
             <TitleContainer>
-              <MainText color={GRAY.DEFAULT}>{t("ministry")}</MainText>
+              <MainText color={GRAY.DEFAULT}>{t('ministry')}</MainText>
             </TitleContainer>
             <ContentContainer>
               {prevMember?.ministries?.map((item) => {
@@ -119,7 +119,7 @@ const InformationListView = ({
           {/* 신급 */}
           <InformationItem>
             <TitleContainer>
-              <MainText color={GRAY.DEFAULT}>{t("baptism")}</MainText>
+              <MainText color={GRAY.DEFAULT}>{t('baptism')}</MainText>
             </TitleContainer>
             <ContentContainer>
               <MainText>{t(prevMember.baptism)}</MainText>
@@ -154,7 +154,7 @@ const InformationListView = ({
         </RowContainer>
       </InformationListContainer>
       <ListTypeHeader>
-        <MainText color={GRAY.DARK}>{t_header("personalInformation")}</MainText>
+        <MainText color={GRAY.DARK}>{t_header('personalInformation')}</MainText>
       </ListTypeHeader>
       <InformationListContainer>
         {/* 이름 */}
@@ -194,7 +194,7 @@ const InformationListView = ({
                   t(
                     prevMember.isLunar
                       ? CALENDAR_MODE.LUNAR
-                      : CALENDAR_MODE.SOLAR,
+                      : CALENDAR_MODE.SOLAR
                   )}
               </MainText>
               <MainText>{getKRDateFromDashDate(prevMember.birth)}</MainText>
@@ -205,13 +205,13 @@ const InformationListView = ({
           {/* 생일 */}
           <InformationItem onClick={() => onClickItem(MEMBER.BIRTH)}>
             <TitleContainer>
-              <MainText color={GRAY.DEFAULT}>{t("birthDay")}</MainText>
+              <MainText color={GRAY.DEFAULT}>{t('birthDay')}</MainText>
             </TitleContainer>
             <ContentContainer>
               <MainText>
                 {prevMember.birth &&
                   getKRDateFromDashDate(
-                    getThisYearBirth(prevMember.birth, prevMember.isLunar),
+                    getThisYearBirth(prevMember.birth, prevMember.isLunar)
                   )}
               </MainText>
             </ContentContainer>

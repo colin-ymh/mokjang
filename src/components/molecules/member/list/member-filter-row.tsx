@@ -1,20 +1,20 @@
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 
 import MemberFilterRowView, {
   SEARCH_FILTER,
-} from "@/components/molecules/member/list/member-filter-row.view";
-import { MEMBER } from "@/constants/member/member-column";
-import { BLANK } from "@/constants/constant";
-import { getTrimmedString } from "@/utils/format";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "@/redux/store";
-import { setMemberFilter } from "@/redux/reducers/member-filter-reducer";
-import { FilteredItemType } from "@/components/atoms/member/list/filtered-item";
+} from '@/components/molecules/member/list/member-filter-row.view';
+import { MEMBER } from '@/constants/member/member-column';
+import { BLANK } from '@/constants/constant';
+import { getTrimmedString } from '@/utils/format';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '@/redux/store';
+import { setMemberFilter } from '@/redux/reducers/member-filter-reducer';
+import { FilteredItemType } from '@/components/atoms/member/list/filtered-item';
 
 const MemberFilterRow = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { memberFilter } = useSelector(
-    (state: RootState) => state.memberFilter,
+    (state: RootState) => state.memberFilter
   );
   // 목록 설정  모달 on off
   const [isAddFilterShown, setIsAddFilterShown] = useState<boolean>(false);
@@ -52,7 +52,7 @@ const MemberFilterRow = () => {
 
   // 검색 중 엔터
   const onKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === "Enter" && searchRef.current === document.activeElement) {
+    if (event.key === 'Enter' && searchRef.current === document.activeElement) {
       onClickSearch();
     }
   };

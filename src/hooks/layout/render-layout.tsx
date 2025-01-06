@@ -1,16 +1,16 @@
-import { Dispatch, ReactNode, SetStateAction } from "react";
+import { Dispatch, ReactNode, SetStateAction } from 'react';
 
-import { HOME_CONTENT_ID, MEMBER_CONTENT_ID } from "@/constants/layout/content";
+import { HOME_CONTENT_ID, MEMBER_CONTENT_ID } from '@/constants/layout/content';
 import {
   HEADER_ID,
   MEMBER_INFORMATION_HEADER_ID,
-} from "@/constants/layout/header";
-import MemberTabHeader from "@/components/molecules/layout/header/member-tab-header";
-import MemberList from "@/components/organisms/member/list/member-list";
-import { Member } from "@/models/member/member";
-import InformationList from "@/components/molecules/member/information/member-information-list";
-import FamilyInformationList from "@/components/molecules/member/information/family-information-list";
-import SettingTabHeader from "@/components/molecules/layout/header/setting-tab-header";
+} from '@/constants/layout/header';
+import MemberTabHeader from '@/components/molecules/layout/header/member-tab-header';
+import MemberList from '@/components/organisms/member/list/member-list';
+import InformationList from '@/components/molecules/member/information/member-information-list';
+import FamilyInformationList from '@/components/molecules/member/information/family-information-list';
+import SettingTabHeader from '@/components/molecules/layout/header/setting-tab-header';
+import MemberEducation from '@/components/molecules/member/information/member-education';
 
 export const getContent = (id: string): ReactNode => {
   switch (id) {
@@ -42,14 +42,14 @@ export const getHeader = (id: string) => {
 
 export const getMemberInformationContent = (
   contentId: string,
-  setContentId: Dispatch<SetStateAction<string>>,
+  setContentId: Dispatch<SetStateAction<string>>
 ) => {
   switch (contentId) {
-    // case MEMBER_INFORMATION_HEADER_ID.MEMBER_INFORMATION:
-    //   return <MemberInformationList />;
     case MEMBER_INFORMATION_HEADER_ID.PERSONAL_INFORMATION:
       return <InformationList />;
     case MEMBER_INFORMATION_HEADER_ID.FAMILY_INFORMATION:
       return <FamilyInformationList setContentId={setContentId} />;
+    case MEMBER_INFORMATION_HEADER_ID.EDUCATION:
+      return <MemberEducation />;
   }
 };

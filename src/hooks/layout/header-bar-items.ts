@@ -1,13 +1,13 @@
 import {
   MEMBER_CONTENT_ID,
   SETTING_CONTENT_ID,
-} from "@/constants/layout/content";
-import { MEMBER_INFORMATION_HEADER_ID } from "@/constants/layout/header";
+} from '@/constants/layout/content';
+import { MEMBER_INFORMATION_HEADER_ID } from '@/constants/layout/header';
 
-import { useI18n, useScopedI18n } from "../../../locales/client";
+import { useI18n, useScopedI18n } from '../../../locales/client';
 
 export const useMemberHeaderBarItems = () => {
-  const t_memberContent = useScopedI18n("member-content");
+  const t_memberContent = useScopedI18n('member-content');
 
   const items = [
     {
@@ -28,13 +28,10 @@ export const useMemberHeaderBarItems = () => {
 };
 
 export const useMemberInformationHeaderBarItems = () => {
-  const t_header = useScopedI18n("header");
+  const t = useI18n();
+  const t_header = useScopedI18n('header');
 
   const items = [
-    // {
-    //   id: MEMBER_INFORMATION_HEADER_ID.MEMBER_INFORMATION,
-    //   title: t_header(MEMBER_INFORMATION_HEADER_ID.MEMBER_INFORMATION),
-    // },
     {
       id: MEMBER_INFORMATION_HEADER_ID.PERSONAL_INFORMATION,
       title: t_header(MEMBER_INFORMATION_HEADER_ID.PERSONAL_INFORMATION),
@@ -42,6 +39,22 @@ export const useMemberInformationHeaderBarItems = () => {
     {
       id: MEMBER_INFORMATION_HEADER_ID.FAMILY_INFORMATION,
       title: t_header(MEMBER_INFORMATION_HEADER_ID.FAMILY_INFORMATION),
+    },
+    {
+      id: MEMBER_INFORMATION_HEADER_ID.OFFICER,
+      title: t(MEMBER_INFORMATION_HEADER_ID.OFFICER),
+    },
+    {
+      id: MEMBER_INFORMATION_HEADER_ID.GROUP,
+      title: t(MEMBER_INFORMATION_HEADER_ID.GROUP),
+    },
+    {
+      id: MEMBER_INFORMATION_HEADER_ID.MINISTRY,
+      title: t(MEMBER_INFORMATION_HEADER_ID.MINISTRY),
+    },
+    {
+      id: MEMBER_INFORMATION_HEADER_ID.EDUCATION,
+      title: t(MEMBER_INFORMATION_HEADER_ID.EDUCATION),
     },
   ];
 

@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
-import Button, { ButtonProps } from "@/components/atoms/common/button/button";
+import Button, { ButtonProps } from '@/components/atoms/common/button/button';
 
 type ToggleButtonItem = {
   value: any;

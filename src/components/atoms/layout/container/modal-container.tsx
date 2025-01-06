@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { MAIN } from "@/constants/styles/color";
+import styled from 'styled-components';
+import { MAIN } from '@/constants/styles/color';
 
 const BackgroundContainer = styled.div`
   flex: 1;

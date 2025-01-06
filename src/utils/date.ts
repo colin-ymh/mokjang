@@ -1,4 +1,4 @@
-import { getSolar } from "@/utils/lunar/lunar-solar";
+import { getSolar } from '@/utils/lunar/lunar-solar';
 
 /**
  * YYYY-MM-dd => Date Object
@@ -71,8 +71,8 @@ export const getNewMemberDate = (): string => {
 
   const year = today.getFullYear();
   // JS Date의 month는 0부터 시작하므로 +1
-  const month = String(today.getMonth() + 1).padStart(2, "0");
-  const day = String(today.getDate()).padStart(2, "0");
+  const month = String(today.getMonth() + 1).padStart(2, '0');
+  const day = String(today.getDate()).padStart(2, '0');
 
   // yyyy-mm-dd 형태로 반환
   return `${year}-${month}-${day}`;

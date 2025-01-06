@@ -1,34 +1,34 @@
-import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "@/redux/store";
-import { setMember, setStage } from "@/redux/reducers/member-register-reducer";
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '@/redux/store';
+import { setMember, setStage } from '@/redux/reducers/member-register-reducer';
 
-import { MembersApi } from "@/api/churches/members.api";
-import { MemberSettingsApi } from "@/api/churches/member-settings.api";
-import { RequestInfoApi } from "@/api/churches/request-info.api";
+import { MembersApi } from '@/api/churches/members.api';
+import { MemberSettingsApi } from '@/api/churches/member-settings.api';
+import { RequestInfoApi } from '@/api/churches/request-info.api';
 import {
   MEMBER_REGISTER_STAGE,
   MEMBER_REGISTER_TYPE,
   NULL,
-} from "@/constants/constant";
-import RegisterButtonListView from "@/components/molecules/register/register-button-list.view";
+} from '@/constants/constant';
+import RegisterButtonListView from '@/components/molecules/register/register-button-list.view';
 
-import { getCreateMemberBody, getEditMemberBody } from "@/utils/member";
+import { getCreateMemberBody, getEditMemberBody } from '@/utils/member';
 
-import { useScopedI18n } from "../../../../locales/client";
+import { useScopedI18n } from '../../../../locales/client';
 
 const RegisterButtonList = () => {
   const membersApi = new MembersApi(false);
   const memberSettingsApi = new MemberSettingsApi(false);
   const dispatch = useDispatch<AppDispatch>();
   const churchId: string = useSelector(
-    (state: RootState) => state.church.churchId,
+    (state: RootState) => state.church.churchId
   );
   const requestInfoApi = new RequestInfoApi(false);
   const { type, stage, member } = useSelector(
-    (state: RootState) => state.memberRegister,
+    (state: RootState) => state.memberRegister
   );
-  const t_button = useScopedI18n("button");
+  const t_button = useScopedI18n('button');
 
   const [isToastShow, setIsToastShow] = useState<boolean>(false);
 
@@ -78,7 +78,7 @@ const RegisterButtonList = () => {
         if (member?.id) {
           membersApi.editMember(
             { churchId, memberId: member.id },
-            getEditMemberBody(member),
+            getEditMemberBody(member)
           );
         }
       } else {
@@ -89,7 +89,7 @@ const RegisterButtonList = () => {
         // 교인 업데이트
         membersApi.editMember(
           { churchId, memberId: member.id },
-          getEditMemberBody(member),
+          getEditMemberBody(member)
         );
 
         // 직분 업데이트
@@ -100,7 +100,7 @@ const RegisterButtonList = () => {
               officerId: member.officerId,
               officerStartChurch: member.officerStartChurch,
               officerStartDate: member.officerStartDate,
-            },
+            }
           );
         }
       }
@@ -111,22 +111,22 @@ const RegisterButtonList = () => {
     if (type === MEMBER_REGISTER_TYPE.NEW) {
       switch (stage) {
         case MEMBER_REGISTER_STAGE.REQUIRED:
-          return t_button("register");
+          return t_button('register');
         case MEMBER_REGISTER_STAGE.PERSONAL:
-          return t_button("save");
+          return t_button('save');
         default:
-          return t_button("register");
+          return t_button('register');
       }
     } else {
       switch (stage) {
         case MEMBER_REGISTER_STAGE.REQUIRED:
-          return t_button("register");
+          return t_button('register');
         case MEMBER_REGISTER_STAGE.PERSONAL:
-          return t_button("extra");
+          return t_button('extra');
         case MEMBER_REGISTER_STAGE.RELIGIOUS:
-          return t_button("save");
+          return t_button('save');
         default:
-          return t_button("register");
+          return t_button('register');
       }
     }
   };

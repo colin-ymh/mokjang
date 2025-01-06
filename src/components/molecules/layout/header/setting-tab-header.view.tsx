@@ -1,15 +1,15 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
-import { GRAY } from "@/constants/styles/color";
-import { MainText } from "@/components/atoms/common/text/main-text";
-import HeaderBar from "@/components/atoms/layout/header/header-bar";
-import { useSettingHeaderBarItems } from "@/hooks/layout/header-bar-items";
-import { useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
-import { SIZE } from "@/constants/styles/style";
+import { GRAY } from '@/constants/styles/color';
+import { MainText } from '@/components/atoms/common/text/main-text';
+import HeaderBar from '@/components/atoms/layout/header/header-bar';
+import { useSettingHeaderBarItems } from '@/hooks/layout/header-bar-items';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
+import { SIZE } from '@/constants/styles/style';
 
-import { useI18n, useScopedI18n } from "../../../../../locales/client";
+import { useI18n, useScopedI18n } from '../../../../../locales/client';
 
 const HeaderContainer = styled.div`
   display: flex;
@@ -36,7 +36,7 @@ const SettingTabHeaderView = ({}: SettingTabHeaderViewProps) => {
 
   return (
     <HeaderContainer>
-      <MainText size={SIZE.EXTRA_LARGE}>{t("setting")}</MainText>
+      <MainText size={SIZE.EXTRA_LARGE}>{t('setting')}</MainText>
       <HeaderBottomContainer>
         <HeaderBar value={contentId} items={headerBarItems} />
       </HeaderBottomContainer>

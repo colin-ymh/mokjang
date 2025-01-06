@@ -1,6 +1,6 @@
-import axios, { AxiosResponse } from "axios";
-import { EditMemberBody } from "@/api/churches/members.api";
-import { SERVER_URL, TEST_SERVER_URL } from "@/constants/state/url";
+import axios, { AxiosResponse } from 'axios';
+import { EditMemberBody } from '@/api/churches/members.api';
+import { SERVER_URL, TEST_SERVER_URL } from '@/constants/state/url';
 
 class HTTPError extends Error {}
 
@@ -63,7 +63,7 @@ export class MemberSettingsApi {
    */
   public editMemberOfficer = async (
     params: EditMemberOfficerParams,
-    body: EditMemberOfficerBody,
+    body: EditMemberOfficerBody
   ): Promise<AxiosResponse> => {
     const { churchId, memberId } = params;
 
@@ -84,7 +84,7 @@ export class MemberSettingsApi {
    */
   public editMemberMinistry = async (
     params: EditMemberMinistryParams,
-    body: EditMemberMinistryBody,
+    body: EditMemberMinistryBody
   ): Promise<AxiosResponse> => {
     const { churchId, memberId } = params;
 
@@ -105,7 +105,7 @@ export class MemberSettingsApi {
    */
   public editMemberEducation = async (
     params: EditMemberEducationParams,
-    body: EditMemberEducationBody,
+    body: EditMemberEducationBody
   ): Promise<AxiosResponse> => {
     const { churchId, memberId } = params;
 
@@ -126,7 +126,7 @@ export class MemberSettingsApi {
    */
   public editMemberGroup = async (
     params: EditMemberGroupParams,
-    body: EditMemberGroupBody,
+    body: EditMemberGroupBody
   ): Promise<AxiosResponse> => {
     const { churchId, memberId } = params;
 

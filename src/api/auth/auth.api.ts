@@ -1,15 +1,15 @@
-import axios, { AxiosResponse } from "axios";
-import { EditMemberBody } from "@/api/churches/members.api";
-import { FAMILY } from "@/constants/constant";
-import { SERVER_URL, TEST_SERVER_URL } from "@/constants/state/url";
-import authorizeAxios from "@/api/authorize-axios";
+import axios, { AxiosResponse } from 'axios';
+import { EditMemberBody } from '@/api/churches/members.api';
+import { FAMILY } from '@/constants/constant';
+import { SERVER_URL, TEST_SERVER_URL } from '@/constants/state/url';
+import authorizeAxios from '@/api/authorize-axios';
 
 class HTTPError extends Error {}
 
 export enum AUTH {
-  GOOGLE = "google",
-  NAVER = "naver",
-  KAKAO = "kakao",
+  GOOGLE = 'google',
+  NAVER = 'naver',
+  KAKAO = 'kakao',
 }
 
 type getOAuthParams = {
@@ -70,14 +70,14 @@ export class AuthApi {
    * @returns {Promise<AxiosResponse>}
    */
   public getTestAuth = async (
-    params: getTestAuthParams,
+    params: getTestAuthParams
   ): Promise<AxiosResponse> => {
     const { provider, providerId } = params;
 
     const url = new URL(`/auth/test/sign-in`, this._url);
 
-    url.searchParams.set("provider", provider);
-    url.searchParams.set("providerId", providerId);
+    url.searchParams.set('provider', provider);
+    url.searchParams.set('providerId', providerId);
 
     try {
       return await axios.get(url.toString());
@@ -94,14 +94,14 @@ export class AuthApi {
    */
   public getVerificationRequest = async (
     params: getVerificationRequestParams,
-    body: getVerificationRequestBody,
+    body: getVerificationRequestBody
   ): Promise<AxiosResponse> => {
     const { isTest } = params;
 
-    const url = new URL("/auth/verification/request", this._url);
+    const url = new URL('/auth/verification/request', this._url);
 
     if (isTest !== undefined) {
-      url.searchParams.append("isTest", String(isTest));
+      url.searchParams.append('isTest', String(isTest));
     }
 
     try {
@@ -117,9 +117,9 @@ export class AuthApi {
    * @returns {Promise<AxiosResponse>}
    */
   public getVerificationVerify = async (
-    body: getVerificationVerifyBody,
+    body: getVerificationVerifyBody
   ): Promise<AxiosResponse> => {
-    const url = new URL("/auth/verification/verify", this._url);
+    const url = new URL('/auth/verification/verify', this._url);
 
     try {
       return await authorizeAxios.post(url.toString(), body);
@@ -134,7 +134,7 @@ export class AuthApi {
    * @returns {Promise<AxiosResponse>}
    */
   public getSignIn = async (body: getSignInBody): Promise<AxiosResponse> => {
-    const url = new URL("/auth/sign-in", this._url);
+    const url = new URL('/auth/sign-in', this._url);
 
     try {
       return await authorizeAxios.post(url.toString(), body);
@@ -148,7 +148,7 @@ export class AuthApi {
    * @returns {Promise<AxiosResponse>}
    */
   public getRefreshToken = async (): Promise<AxiosResponse> => {
-    const url = new URL("/auth/token/rotate", this._url);
+    const url = new URL('/auth/token/rotate', this._url);
 
     try {
       return await authorizeAxios.post(url.toString());

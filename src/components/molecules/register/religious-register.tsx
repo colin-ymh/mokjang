@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import React, { ChangeEvent } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "@/redux/store";
-import { setMember } from "@/redux/reducers/member-register-reducer";
+import React, { ChangeEvent } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '@/redux/store';
+import { setMember } from '@/redux/reducers/member-register-reducer';
 
-import ReligiousRegisterView from "@/components/molecules/register/religious-register.view";
-import { BAPTISM } from "@/constants/constant";
-import { getFormattedDate } from "@/utils/format";
+import ReligiousRegisterView from '@/components/molecules/register/religious-register.view';
+import { BAPTISM } from '@/constants/constant';
+import { getFormattedDate } from '@/utils/format';
 
 const ReligiousRegister = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -25,7 +25,7 @@ const ReligiousRegister = () => {
       setMember({
         ...member,
         officerId: value,
-      }),
+      })
     );
   };
 
@@ -36,7 +36,7 @@ const ReligiousRegister = () => {
       setMember({
         ...member,
         officerStartDate: newOfficerStartDate,
-      }),
+      })
     );
   };
 
@@ -47,7 +47,7 @@ const ReligiousRegister = () => {
       setMember({
         ...member,
         officerStartChurch: newOfficerStartChurch,
-      }),
+      })
     );
   };
 
@@ -55,7 +55,7 @@ const ReligiousRegister = () => {
   const onChangePreviousChurchName = (event: ChangeEvent<HTMLInputElement>) => {
     const newPreviousChurchName = event.target.value;
     dispatch(
-      setMember({ ...member, previousChurchName: newPreviousChurchName }),
+      setMember({ ...member, previousChurchName: newPreviousChurchName })
     );
   };
 

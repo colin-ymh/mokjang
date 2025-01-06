@@ -1,9 +1,9 @@
-import React from "react";
-import styled from "styled-components";
-import { MainText } from "@/components/atoms/common/text/main-text";
-import { GRAY, MAIN } from "@/constants/styles/color";
-import { DropdownValueType } from "@/components/atoms/common/dropdown/dropdown-item";
-import Check from "../../../../../public/svg/check.svg";
+import React from 'react';
+import styled from 'styled-components';
+import { MainText } from '@/components/atoms/common/text/main-text';
+import { GRAY, MAIN } from '@/constants/styles/color';
+import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-item';
+import Check from '../../../../../public/svg/check.svg';
 
 const FilterContainer = styled.div`
   display: flex;

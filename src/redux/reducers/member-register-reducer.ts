@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import {
   BAPTISM,
   BLANK,
@@ -7,9 +7,9 @@ import {
   MEMBER_REGISTER_STAGE,
   MEMBER_REGISTER_TYPE,
   NULL,
-} from "@/constants/constant";
-import { getIsWellFormedMobilePhone, getIsWellFormedName } from "@/utils/check";
-import { Member } from "@/models/member/member";
+} from '@/constants/constant';
+import { getIsWellFormedMobilePhone, getIsWellFormedName } from '@/utils/check';
+import { Member } from '@/models/member/member';
 
 type MemberRegisterState = {
   member: Member;
@@ -66,7 +66,7 @@ const initialState: MemberRegisterState = {
 
 const getIsStageClear = (
   member: Member,
-  stage: MEMBER_REGISTER_STAGE,
+  stage: MEMBER_REGISTER_STAGE
 ): boolean => {
   if (stage === MEMBER_REGISTER_STAGE.REQUIRED) {
     // 이름과 휴대폰 번호가 정상적인 상태인 경우, 등록 가능
@@ -80,7 +80,7 @@ const getIsStageClear = (
 };
 
 const MemberRegisterSlice = createSlice({
-  name: "register",
+  name: 'register',
   initialState,
   reducers: {
     setMember(state, action: PayloadAction<Member>) {

@@ -1,5 +1,5 @@
-import { createI18nClient } from "next-international/client";
-import { LOCALE } from "@/constants/state/locale";
+import { createI18nClient } from 'next-international/client';
+import { LOCALE } from '@/constants/state/locale';
 
 export const {
   useI18n,
@@ -10,8 +10,8 @@ export const {
   useCurrentLocale,
 } = createI18nClient(
   {
-    [LOCALE.KO]: () => import("./ko"),
-    [LOCALE.EN]: () => import("./en"),
+    [LOCALE.KO]: () => import('./ko'),
+    [LOCALE.EN]: () => import('./en'),
   },
-  {},
+  {}
 );

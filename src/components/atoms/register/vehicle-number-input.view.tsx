@@ -6,15 +6,15 @@ import React, {
   useEffect,
   useImperativeHandle,
   RefObject,
-} from "react";
-import BorderInput from "@/components/atoms/common/input/border-input";
-import { getFormattedVehicleNumber, getTrimmedString } from "@/utils/format";
-import gsap from "gsap";
-import { MainText } from "@/components/atoms/common/text/main-text";
-import Plus from "../../../../public/svg/plus.svg";
-import { BLACK, DESTRUCTIVE, MAIN, WHITE } from "@/constants/styles/color";
-import styled from "styled-components";
-import { getIsWellFormedVehicleNumber } from "@/utils/check";
+} from 'react';
+import BorderInput from '@/components/atoms/common/input/border-input';
+import { getFormattedVehicleNumber, getTrimmedString } from '@/utils/format';
+import gsap from 'gsap';
+import { MainText } from '@/components/atoms/common/text/main-text';
+import Plus from '../../../../public/svg/plus.svg';
+import { BLACK, DESTRUCTIVE, MAIN, WHITE } from '@/constants/styles/color';
+import styled from 'styled-components';
+import { getIsWellFormedVehicleNumber } from '@/utils/check';
 
 const VehicleNumberInputViewContainer = styled.div`
   display: flex;
@@ -86,7 +86,7 @@ const VehicleNumberInputView = forwardRef<
       width,
       ...props
     },
-    ref,
+    ref
   ) => {
     const firstInputRef = useRef<HTMLInputElement>(null);
     const secondInputRef = useRef<HTMLInputElement>(null);
@@ -106,27 +106,27 @@ const VehicleNumberInputView = forwardRef<
       if (count === 2 && secondAnimationRef.current) {
         gsap.fromTo(
           secondAnimationRef.current,
-          { x: "-50%", width: "0%", display: "none" },
+          { x: '-50%', width: '0%', display: 'none' },
           {
-            x: "0%",
-            width: "32%",
-            display: "flex",
+            x: '0%',
+            width: '32%',
+            display: 'flex',
             duration: 0.3,
-            ease: "power1.out",
-          },
+            ease: 'power1.out',
+          }
         );
       }
       if (count === 3 && thirdAnimationRef.current) {
         gsap.fromTo(
           thirdAnimationRef.current,
-          { x: "-50%", width: "0%", display: "none" },
+          { x: '-50%', width: '0%', display: 'none' },
           {
-            x: "0%",
-            width: "32%",
-            display: "flex",
+            x: '0%',
+            width: '32%',
+            display: 'flex',
             duration: 0.3,
-            ease: "power1.out",
-          },
+            ease: 'power1.out',
+          }
         );
       }
     }, [count]);
@@ -190,7 +190,7 @@ const VehicleNumberInputView = forwardRef<
         </InputList>
       </VehicleNumberInputViewContainer>
     );
-  },
+  }
 );
 
 export default VehicleNumberInputView;

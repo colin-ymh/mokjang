@@ -1,9 +1,9 @@
-import React, { InputHTMLAttributes, forwardRef } from "react";
-import styled from "styled-components";
+import React, { InputHTMLAttributes, forwardRef } from 'react';
+import styled from 'styled-components';
 
-import { MainText } from "@/components/atoms/common/text/main-text";
-import BorderInput from "@/components/atoms/common/input/border-input";
-import { InputProps } from "@/components/atoms/common/input/main-input";
+import { MainText } from '@/components/atoms/common/text/main-text';
+import BorderInput from '@/components/atoms/common/input/border-input';
+import { InputProps } from '@/components/atoms/common/input/main-input';
 
 const LabelInputContainer = styled.div<{ $zIndex?: number }>`
   flex: 1;
@@ -35,7 +35,7 @@ const LabelInput = forwardRef<HTMLInputElement, LabelInputProps>(
         />
       </LabelInputContainer>
     );
-  },
+  }
 );
 
 export default LabelInput;

@@ -1,25 +1,25 @@
-import React, { useRef, useState } from "react";
-import { useDrag, useDrop } from "react-dnd";
-import styled from "styled-components";
+import React, { useRef, useState } from 'react';
+import { useDrag, useDrop } from 'react-dnd';
+import styled from 'styled-components';
 
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "@/redux/store";
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '@/redux/store';
 import {
   setMemberFilter,
   setMemberTableHeaderItemList,
   TABLE_HEADER_ITEM,
-} from "@/redux/reducers/member-filter-reducer";
+} from '@/redux/reducers/member-filter-reducer';
 
-import { MEMBER } from "@/constants/member/member-column";
-import { MainText } from "@/components/atoms/common/text/main-text";
-import { BLACK, GRAY, MAIN } from "@/constants/styles/color";
-import { NULL } from "@/constants/constant";
-import { getTranslatedMemberColumn } from "@/utils/translate";
+import { MEMBER } from '@/constants/member/member-column';
+import { MainText } from '@/components/atoms/common/text/main-text';
+import { BLACK, GRAY, MAIN } from '@/constants/styles/color';
+import { NULL } from '@/constants/constant';
+import { getTranslatedMemberColumn } from '@/utils/translate';
 
-import FilledEye from "../../../../../public/svg/filled-eye.svg";
-import Eye from "../../../../../public/svg/eye.svg";
-import EyeSlash from "../../../../../public/svg/eye-slash.svg";
-import { useI18n } from "../../../../../locales/client";
+import FilledEye from '../../../../../public/svg/filled-eye.svg';
+import Eye from '../../../../../public/svg/eye.svg';
+import EyeSlash from '../../../../../public/svg/eye-slash.svg';
+import { useI18n } from '../../../../../locales/client';
 
 const OrderItemContainer = styled.div<{ $isFixed?: boolean }>`
   display: flex;
@@ -28,7 +28,7 @@ const OrderItemContainer = styled.div<{ $isFixed?: boolean }>`
   justify-content: space-between;
   align-items: center;
   margin-bottom: 5px;
-  cursor: ${({ $isFixed }) => ($isFixed ? "not-allowed" : "grab")};
+  cursor: ${({ $isFixed }) => ($isFixed ? 'not-allowed' : 'grab')};
   position: relative;
 `;
 
@@ -40,16 +40,16 @@ const HighlightLine = styled.div<{ $isShown: boolean }>`
   border-radius: 5px;
   height: 2px;
   background-color: ${MAIN.LIGHT};
-  display: ${({ $isShown }) => ($isShown ? "block" : "none")};
-  //padding-bottom: ${({ $isShown }) => ($isShown ? "block" : "none")};
+  display: ${({ $isShown }) => ($isShown ? 'block' : 'none')};
+  //padding-bottom: ${({ $isShown }) => ($isShown ? 'block' : 'none')};
 `;
 
 const EyeIconContainer = styled.div<{ $isFixed?: boolean }>`
   display: flex;
-  cursor: ${({ $isFixed }) => ($isFixed ? "not-allowed" : "grab")};
+  cursor: ${({ $isFixed }) => ($isFixed ? 'not-allowed' : 'grab')};
 `;
 
-const ITEM_TYPE = "ORDER_ITEM";
+const ITEM_TYPE = 'ORDER_ITEM';
 
 type TableOrderItemProps = {
   item: TABLE_HEADER_ITEM;
@@ -66,7 +66,7 @@ const TableOrderItem = ({
 }: TableOrderItemProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const { memberTableHeaderItemList, memberFilter } = useSelector(
-    (state: RootState) => state.memberFilter,
+    (state: RootState) => state.memberFilter
   );
   const t = useI18n();
 
@@ -104,7 +104,7 @@ const TableOrderItem = ({
   const onClickEye = (id: MEMBER) => {
     const newHeaderItemList = memberTableHeaderItemList
       .map((header: any) =>
-        header.id === id ? { ...header, isShown: !header.isShown } : header,
+        header.id === id ? { ...header, isShown: !header.isShown } : header
       )
       .sort((a: any, b: any) => {
         if (a.isShown === b.isShown) return 0; // isShown 값이 같으면 순서 유지
@@ -123,7 +123,7 @@ const TableOrderItem = ({
           .map((item) => {
             return item.id;
           }),
-      }),
+      })
     );
 
     // 필터 설정 부분도 함께 변경

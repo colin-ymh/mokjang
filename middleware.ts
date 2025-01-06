@@ -1,9 +1,9 @@
-import { createI18nMiddleware } from "next-international/middleware";
-import type { NextRequest } from "next/server";
+import { createI18nMiddleware } from 'next-international/middleware';
+import type { NextRequest } from 'next/server';
 
 const I18nMiddleware = createI18nMiddleware({
-  locales: ["ko", "en"],
-  defaultLocale: "ko", // 기본 언어 설정
+  locales: ['ko', 'en'],
+  defaultLocale: 'ko', // 기본 언어 설정
 });
 
 export function middleware(request: NextRequest) {
@@ -11,5 +11,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!api|static|.*\\..*|_next|favicon.ico|robots.txt).*)"],
+  matcher: ['/((?!api|static|.*\\..*|_next|favicon.ico|robots.txt).*)'],
 };

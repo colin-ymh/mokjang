@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import React, { ChangeEvent, forwardRef } from "react";
-import styled from "styled-components";
+import React, { ChangeEvent, forwardRef } from 'react';
+import styled from 'styled-components';
 
-import { WHITE } from "@/constants/styles/color";
+import { WHITE } from '@/constants/styles/color';
 import DropdownItem, {
   DropdownValueType,
-} from "@/components/atoms/common/dropdown/dropdown-item";
-import BorderInput from "@/components/atoms/common/input/border-input";
-import { InputProps } from "@/components/atoms/common/input/main-input";
+} from '@/components/atoms/common/dropdown/dropdown-item';
+import BorderInput from '@/components/atoms/common/input/border-input';
+import { InputProps } from '@/components/atoms/common/input/main-input';
 
 const DropdownContainer = styled.div<{ $isOpened: boolean; width?: number }>`
   position: relative;
@@ -40,7 +40,7 @@ const DropdownList = styled.div<{
   overflow: scroll;
   max-height: 200px;
   max-width: 300px;
-  bottom: ${({ $reverseDirection }) => ($reverseDirection ? "55px" : null)};
+  bottom: ${({ $reverseDirection }) => ($reverseDirection ? '55px' : null)};
 `;
 
 type DropdownViewProps = {
@@ -87,7 +87,7 @@ const DropdownView = forwardRef<
       isContainerHidden,
       ...inputProps
     },
-    ref,
+    ref
   ) => {
     return (
       <DropdownContainer $isOpened={isOpened} width={width}>
@@ -133,7 +133,7 @@ const DropdownView = forwardRef<
         )}
       </DropdownContainer>
     );
-  },
+  }
 );
 
 export default DropdownView;

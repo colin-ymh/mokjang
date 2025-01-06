@@ -1,14 +1,14 @@
-import React, { useEffect, useRef } from "react";
-import { Member } from "@/models/member/member";
-import MemberTableView from "@/components/molecules/member/list/member-table.view";
-import { MEMBER } from "@/constants/member/member-column";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "@/redux/store";
+import React, { useEffect, useRef } from 'react';
+import { Member } from '@/models/member/member';
+import MemberTableView from '@/components/molecules/member/list/member-table.view';
+import { MEMBER } from '@/constants/member/member-column';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '@/redux/store';
 import {
   setMemberOrderBy,
   setMemberOrderDirection,
-} from "@/redux/reducers/member-filter-reducer";
-import { ORDER_DIRECTION } from "@/constants/constant";
+} from '@/redux/reducers/member-filter-reducer';
+import { ORDER_DIRECTION } from '@/constants/constant';
 
 export type MemberTableProps = {
   onClickMemberItem: (memberId: string) => void;
@@ -32,8 +32,8 @@ const MemberTable = ({ onClickMemberItem, loadMembers }: MemberTableProps) => {
         setMemberOrderDirection(
           memberOrderDirection === ORDER_DIRECTION.ASC
             ? ORDER_DIRECTION.DESC
-            : ORDER_DIRECTION.ASC,
-        ),
+            : ORDER_DIRECTION.ASC
+        )
       );
     }
   };

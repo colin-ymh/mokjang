@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 type WebviewState = {
   isWebview: boolean;
@@ -12,7 +12,7 @@ const getIsWebview = () => {
   const userAgent = navigator.userAgent;
 
   const isIOSWebview = /(iPhone|iPod|iPad).*AppleWebKit(?!.*Safari)/i.test(
-    userAgent,
+    userAgent
   );
   const isAndroidWebview =
     /wv/.test(userAgent) ||
@@ -22,7 +22,7 @@ const getIsWebview = () => {
 };
 
 const WebviewSlice = createSlice({
-  name: "webview",
+  name: 'webview',
   initialState,
   reducers: {
     setIsWebview(state, action: PayloadAction<boolean>) {

@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import styled from "styled-components";
-import { MainText } from "@/components/atoms/common/text/main-text";
-import { GRAY, MAIN } from "@/constants/styles/color";
-import { SIZE } from "@/constants/styles/style";
+import styled from 'styled-components';
+import { MainText } from '@/components/atoms/common/text/main-text';
+import { GRAY, MAIN } from '@/constants/styles/color';
+import { SIZE } from '@/constants/styles/style';
 
 export type RadioButtonItemProps = {
   title: string;
@@ -27,7 +27,7 @@ const Button = styled.button<{ $isSelected: boolean }>`
   border-radius: 50px;
   border: 2px solid ${GRAY.DEFAULT};
   background-color: ${({ $isSelected }) =>
-    $isSelected ? MAIN.DEFAULT : "transparent"};
+    $isSelected ? MAIN.DEFAULT : 'transparent'};
   cursor: pointer;
 `;
 

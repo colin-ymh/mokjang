@@ -1,11 +1,11 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
-import { MainText } from "@/components/atoms/common/text/main-text";
-import { SIZE } from "@/constants/styles/style";
-import { MAIN, WHITE } from "@/constants/styles/color";
-import UserRegisterList from "@/components/molecules/auth/user-register-list";
+import { MainText } from '@/components/atoms/common/text/main-text';
+import { SIZE } from '@/constants/styles/style';
+import { MAIN, WHITE } from '@/constants/styles/color';
+import UserRegisterList from '@/components/molecules/auth/user-register-list';
 
-import Sheep from "../../../../public/svg/sheep.svg";
+import Sheep from '../../../../public/svg/sheep.svg';
 
 const UserRegisterContainer = styled.div`
   display: flex;
@@ -47,7 +47,7 @@ const UserRegister = () => {
       <LogoContainer>
         <Logo />
         <MainText color={WHITE} size={SIZE.LARGE}>
-          {"MOKJANG"}
+          {'MOKJANG'}
         </MainText>
       </LogoContainer>
       <UserRegisterList />

@@ -1,17 +1,17 @@
-"use client";
+'use client';
 
-import React, { useEffect } from "react";
-import { Provider, useDispatch } from "react-redux";
-import { createGlobalStyle } from "styled-components";
+import React, { useEffect } from 'react';
+import { Provider, useDispatch } from 'react-redux';
+import { createGlobalStyle } from 'styled-components';
 
-import TranslateProvider from "@/app/[locale]/provider";
-import StyledComponentsRegistry from "@/hooks/registry";
+import TranslateProvider from '@/app/[locale]/provider';
+import StyledComponentsRegistry from '@/hooks/registry';
 
-import store from "@/redux/store";
-import { initializeIsWebview } from "@/redux/reducers/webview-reducer";
-import { useInitializeChurch } from "@/utils/initialize";
-import { HTML5Backend } from "react-dnd-html5-backend";
-import { DndProvider } from "react-dnd";
+import store from '@/redux/store';
+import { initializeIsWebview } from '@/redux/reducers/webview-reducer';
+import { useInitializeChurch } from '@/utils/initialize';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import { DndProvider } from 'react-dnd';
 
 const GlobalStyle = createGlobalStyle`
     html,
@@ -52,7 +52,7 @@ type RootLayoutPropsExtended = {
 
 // Provider 내부에 전역변수 initialize
 const InitializeStore = () => {
-  const initializeChurch = useInitializeChurch("1");
+  const initializeChurch = useInitializeChurch('1');
   const dispatch = useDispatch();
 
   useEffect(() => {

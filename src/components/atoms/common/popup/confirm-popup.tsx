@@ -1,8 +1,8 @@
-import React from "react";
-import styled from "styled-components";
-import { MainText } from "@/components/atoms/common/text/main-text";
-import { BLACK, DESTRUCTIVE, MAIN, WHITE } from "@/constants/styles/color";
-import { SIZE } from "@/constants/styles/style";
+import React from 'react';
+import styled from 'styled-components';
+import { MainText } from '@/components/atoms/common/text/main-text';
+import { BLACK, DESTRUCTIVE, MAIN, WHITE } from '@/constants/styles/color';
+import { SIZE } from '@/constants/styles/style';
 
 interface ConfirmPopupProps {
   title: string;

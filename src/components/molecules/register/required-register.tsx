@@ -1,38 +1,38 @@
-"use client";
+'use client';
 
-import React, { ChangeEvent, useState } from "react";
-import { AxiosResponse } from "axios";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "@/redux/store";
-import { setMember, setType } from "@/redux/reducers/member-register-reducer";
+import React, { ChangeEvent, useState } from 'react';
+import { AxiosResponse } from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '@/redux/store';
+import { setMember, setType } from '@/redux/reducers/member-register-reducer';
 
-import { GetMembersResponse, MembersApi } from "@/api/churches/members.api";
-import RequiredRegisterView from "@/components/molecules/register/required-register.view";
+import { GetMembersResponse, MembersApi } from '@/api/churches/members.api';
+import RequiredRegisterView from '@/components/molecules/register/required-register.view';
 import {
   MEMBER_REGISTER_TYPE,
   BLANK,
   FAMILY,
   GENDER,
-} from "@/constants/constant";
-import { DropdownValueType } from "@/components/atoms/common/dropdown/dropdown-item";
+} from '@/constants/constant';
+import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-item';
 
 import {
   getFormattedMobilePhone,
   getFormattedName,
   getTrimmedString,
-} from "@/utils/format";
-import { getIsWellFormedMobilePhone } from "@/utils/check";
-import { Member } from "@/models/member/member";
+} from '@/utils/format';
+import { getIsWellFormedMobilePhone } from '@/utils/check';
+import { Member } from '@/models/member/member';
 
 const RequiredRegister = () => {
   const membersApi = new MembersApi(false);
   const dispatch = useDispatch<AppDispatch>();
   const churchId: string = useSelector(
-    (state: RootState) => state.church.churchId,
+    (state: RootState) => state.church.churchId
   );
 
   const member: Member = useSelector(
-    (state: RootState): Member => state.memberRegister.member,
+    (state: RootState): Member => state.memberRegister.member
   );
 
   // 인도자 이름
@@ -122,7 +122,7 @@ const RequiredRegister = () => {
           const newFamilyMemberItems: DropdownValueType[] = members.map(
             (member) => {
               return { value: member.id, title: member.name };
-            },
+            }
           );
 
           setFamilyMemberItems(newFamilyMemberItems);

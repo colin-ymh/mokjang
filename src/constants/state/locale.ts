@@ -1,4 +1,4 @@
 export enum LOCALE {
-  KO = "ko",
-  EN = "en",
+  KO = 'ko',
+  EN = 'en',
 }

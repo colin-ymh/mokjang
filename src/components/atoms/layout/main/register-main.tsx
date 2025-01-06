@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { MEDIA_MIN_WIDTH } from "@/constants/constant";
+import styled from 'styled-components';
+import { MEDIA_MIN_WIDTH } from '@/constants/constant';
 
 export const RegisterMain = styled.div`
   flex: 1;

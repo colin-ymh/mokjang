@@ -1,11 +1,11 @@
-import { useEffect, useRef } from "react";
-import gsap from "gsap";
+import { useEffect, useRef } from 'react';
+import gsap from 'gsap';
 
 import ToastPopupView, {
   TOAST_DIRECTION,
-} from "@/components/atoms/common/popup/toast-popup.view";
-import { MainTextProps } from "@/components/atoms/common/text/main-text";
-import { BLACK, WHITE } from "@/constants/styles/color";
+} from '@/components/atoms/common/popup/toast-popup.view';
+import { MainTextProps } from '@/components/atoms/common/text/main-text';
+import { BLACK, WHITE } from '@/constants/styles/color';
 
 type ToastPopupProps = MainTextProps & {
   setIsShow: (isOpen: boolean) => void;
@@ -37,14 +37,14 @@ const ToastPopup = ({
         // 등장 애니메이션
         gsap.fromTo(
           ref.current,
-          { top: "-50px", opacity: 0 },
-          { top: "50px", opacity: 1, duration: 0.5 },
+          { top: '-50px', opacity: 0 },
+          { top: '50px', opacity: 1, duration: 0.5 }
         );
 
         // 퇴장 애니메이션
         const timer = setTimeout(() => {
           gsap
-            .to(ref.current, { top: "-50px", opacity: 0, duration: 0.5 }) // 화면 아래로 이동하며 사라짐
+            .to(ref.current, { top: '-50px', opacity: 0, duration: 0.5 }) // 화면 아래로 이동하며 사라짐
             .then(() => {
               setIsShow(false);
             });
@@ -58,15 +58,15 @@ const ToastPopup = ({
         // 등장 애니메이션
         gsap.fromTo(
           ref.current,
-          { bottom: "-50px", opacity: 0 }, // 시작 상태
-          { bottom: "30px", opacity: 1, duration: 0.5 }, // 끝 상태
+          { bottom: '-50px', opacity: 0 }, // 시작 상태
+          { bottom: '30px', opacity: 1, duration: 0.5 } // 끝 상태
         );
 
         // 타임아웃
         const timer = setTimeout(() => {
           // 퇴장 애니메이션
           gsap
-            .to(ref.current, { bottom: "-50px", opacity: 0, duration: 0.5 })
+            .to(ref.current, { bottom: '-50px', opacity: 0, duration: 0.5 })
             .then(() => {
               setIsShow(false);
             });
@@ -84,7 +84,7 @@ const ToastPopup = ({
     // 상단 팝업인 경우
     if (direction === TOAST_DIRECTION.TOP) {
       gsap
-        .to(ref.current, { top: "-50px", opacity: 0, duration: 0.5 }) // 화면 아래로 이동하며 사라짐
+        .to(ref.current, { top: '-50px', opacity: 0, duration: 0.5 }) // 화면 아래로 이동하며 사라짐
         .then(() => {
           setIsShow(false);
         });
@@ -92,7 +92,7 @@ const ToastPopup = ({
     // 하단 팝업인 경우
     else {
       gsap
-        .to(ref.current, { bottom: "-50px", opacity: 0, duration: 0.5 })
+        .to(ref.current, { bottom: '-50px', opacity: 0, duration: 0.5 })
         .then(() => {
           setIsShow(false);
         });

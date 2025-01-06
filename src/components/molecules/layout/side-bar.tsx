@@ -1,4 +1,4 @@
-import SideBarView from "@/components/molecules/layout/side-bar.view";
+import SideBarView from '@/components/molecules/layout/side-bar.view';
 
 const SideBar = () => {
   const props = {};

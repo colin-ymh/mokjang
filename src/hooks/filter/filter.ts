@@ -1,11 +1,11 @@
-import { BAPTISM, GENDER, MARRIAGE } from "@/constants/constant";
-import { MEMBER } from "@/constants/member/member-column";
-import { ChurchInformation } from "@/models/member/member";
+import { BAPTISM, GENDER, MARRIAGE } from '@/constants/constant';
+import { MEMBER } from '@/constants/member/member-column';
+import { ChurchInformation } from '@/models/member/member';
 
 export const useMemberFilterContent = (
   t: (key: string, ...args: any[]) => string,
   officers: ChurchInformation[],
-  id: MEMBER,
+  id: MEMBER
 ) => {
   // 성별인 경우
   const genderFilterItems = [

@@ -1,4 +1,4 @@
-import SettingTabHeaderView from "@/components/molecules/layout/header/setting-tab-header.view";
+import SettingTabHeaderView from '@/components/molecules/layout/header/setting-tab-header.view';
 
 type SettingTabHeaderProps = {};
 

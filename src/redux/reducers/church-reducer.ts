@@ -1,5 +1,5 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { BLANK } from "@/constants/constant";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { BLANK } from '@/constants/constant';
 
 type churchSettingItem = {
   id: string;
@@ -24,7 +24,7 @@ const initialState: ChurchState = {
 };
 
 const ChurchSlice = createSlice({
-  name: "church",
+  name: 'church',
   initialState,
   reducers: {
     setChurchId(state, action: PayloadAction<string>) {

@@ -1,6 +1,6 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
-import { MEDIA_MIN_WIDTH } from "@/constants/constant";
+import { MEDIA_MIN_WIDTH } from '@/constants/constant';
 
 const ChurchSettingContainer = styled.div`
   display: flex;

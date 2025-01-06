@@ -1,18 +1,18 @@
-import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useParams, useRouter } from "next/navigation";
-import { AppDispatch, RootState } from "@/redux/store";
-import { setStage } from "@/redux/reducers/member-register-reducer";
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams, useRouter } from 'next/navigation';
+import { AppDispatch, RootState } from '@/redux/store';
+import { setStage } from '@/redux/reducers/member-register-reducer';
 
 import {
   MEMBER_REGISTER_STAGE,
   MEMBER_REGISTER_TYPE,
-} from "@/constants/constant";
-import RegisterButtonListView from "@/components/molecules/register/register-button-list.view";
+} from '@/constants/constant';
+import RegisterButtonListView from '@/components/molecules/register/register-button-list.view';
 
-import { useScopedI18n } from "../../../../locales/client";
-import { RequestInfoApi } from "@/api/churches/request-info.api";
-import { getEditMemberBody } from "@/utils/member";
+import { useScopedI18n } from '../../../../locales/client';
+import { RequestInfoApi } from '@/api/churches/request-info.api';
+import { getEditMemberBody } from '@/utils/member';
 
 const ExtraButtonList = () => {
   const requestInfoApi = new RequestInfoApi(false);
@@ -24,9 +24,9 @@ const ExtraButtonList = () => {
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
   const { type, stage, member } = useSelector(
-    (state: RootState) => state.memberRegister,
+    (state: RootState) => state.memberRegister
   );
-  const t_button = useScopedI18n("button");
+  const t_button = useScopedI18n('button');
 
   const onClickLeft = () => {
     if (stage === MEMBER_REGISTER_STAGE.PERSONAL) {
@@ -42,7 +42,7 @@ const ExtraButtonList = () => {
         console.log({
           ...getEditMemberBody(member),
           name: member.name,
-          mobilePhone: member.mobilePhone.replace(/\D/g, ""),
+          mobilePhone: member.mobilePhone.replace(/\D/g, ''),
         });
         requestInfoApi
           .editRequestInfo(
@@ -50,8 +50,8 @@ const ExtraButtonList = () => {
             {
               ...getEditMemberBody(member),
               name: member.name,
-              mobilePhone: member.mobilePhone.replace(/\D/g, ""),
-            },
+              mobilePhone: member.mobilePhone.replace(/\D/g, ''),
+            }
           )
           .then((response) => {
             console.log(response);
@@ -66,8 +66,8 @@ const ExtraButtonList = () => {
           {
             ...getEditMemberBody(member),
             name: member.name,
-            mobilePhone: member.mobilePhone.replace(/\D/g, ""),
-          },
+            mobilePhone: member.mobilePhone.replace(/\D/g, ''),
+          }
         )
         .then((response) => {
           console.log(response);
@@ -79,18 +79,18 @@ const ExtraButtonList = () => {
     if (type === MEMBER_REGISTER_TYPE.NEW) {
       switch (stage) {
         case MEMBER_REGISTER_STAGE.PERSONAL:
-          return t_button("save");
+          return t_button('save');
         default:
-          return t_button("save");
+          return t_button('save');
       }
     } else {
       switch (stage) {
         case MEMBER_REGISTER_STAGE.PERSONAL:
-          return t_button("extra");
+          return t_button('extra');
         case MEMBER_REGISTER_STAGE.RELIGIOUS:
-          return t_button("save");
+          return t_button('save');
         default:
-          return t_button("extra");
+          return t_button('extra');
       }
     }
   };

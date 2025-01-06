@@ -1,19 +1,19 @@
-import { useState } from "react";
-import styled from "styled-components";
-import Image from "next/image";
+import { useState } from 'react';
+import styled from 'styled-components';
+import Image from 'next/image';
 
-import { MainText } from "@/components/atoms/common/text/main-text";
-import { BLACK, DESTRUCTIVE, GRAY } from "@/constants/styles/color";
-import { MEMBER } from "@/constants/member/member-column";
-import { getAge } from "@/utils/date";
-import { GENDER } from "@/constants/constant";
-import { getFormattedMobilePhone } from "@/utils/format";
-import { FamilyMember } from "@/models/member/member";
-import TransparentBackground from "@/components/atoms/common/etc/transparent-background";
+import { MainText } from '@/components/atoms/common/text/main-text';
+import { BLACK, DESTRUCTIVE, GRAY } from '@/constants/styles/color';
+import { MEMBER } from '@/constants/member/member-column';
+import { getAge } from '@/utils/date';
+import { GENDER } from '@/constants/constant';
+import { getFormattedMobilePhone } from '@/utils/format';
+import { FamilyMember } from '@/models/member/member';
+import TransparentBackground from '@/components/atoms/common/etc/transparent-background';
 
-import DefaultImage from "../../../../../public/png/default-member-image.png";
-import Kebab from "../../../../../public/svg/kebab.svg";
-import { useI18n } from "../../../../../locales/client";
+import DefaultImage from '../../../../../public/png/default-member-image.png';
+import Kebab from '../../../../../public/svg/kebab.svg';
+import { useI18n } from '../../../../../locales/client';
 
 const ItemContainer = styled.div`
   display: flex;
@@ -120,7 +120,7 @@ const FamilyMemberItem = ({
         <MainText fontWeight={600}>{t(member.relation)}</MainText>
       </MemberInformationContainer>
       {/* 이미지 */}
-      <ProfileImage src={DefaultImage} alt={"profileImage"} />
+      <ProfileImage src={DefaultImage} alt={'profileImage'} />
       {/* 이름 */}
       <MemberInformationContainer>
         <MainText color={GRAY.DEFAULT}>{t(MEMBER.NAME)}</MainText>
@@ -172,7 +172,7 @@ const FamilyMemberItem = ({
                 onClickClose(event);
               }}
             >
-              <MainText>{t("button.edit")}</MainText>
+              <MainText>{t('button.edit')}</MainText>
             </Button>
             <Button
               onClick={(event) => {
@@ -181,7 +181,7 @@ const FamilyMemberItem = ({
               }}
             >
               <MainText color={DESTRUCTIVE.DEFAULT}>
-                {t("button.delete")}
+                {t('button.delete')}
               </MainText>
             </Button>
           </ButtonContainer>

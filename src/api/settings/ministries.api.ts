@@ -1,6 +1,6 @@
-import axios, { AxiosResponse } from "axios";
-import { EditMemberBody } from "@/api/churches/members.api";
-import { SERVER_URL, TEST_SERVER_URL } from "@/constants/state/url";
+import axios, { AxiosResponse } from 'axios';
+import { EditMemberBody } from '@/api/churches/members.api';
+import { SERVER_URL, TEST_SERVER_URL } from '@/constants/state/url';
 
 class HTTPError extends Error {}
 
@@ -45,7 +45,7 @@ export class MinistriesApi {
    * @returns {Promise<AxiosResponse>}
    */
   public getMinistries = async (
-    params: GetMinistriesParams,
+    params: GetMinistriesParams
   ): Promise<AxiosResponse> => {
     const { churchId } = params;
 
@@ -66,7 +66,7 @@ export class MinistriesApi {
    */
   public createMinistry = async (
     params: CreateMinistryParams,
-    body: CreateMinistryBody,
+    body: CreateMinistryBody
   ): Promise<AxiosResponse> => {
     const { churchId } = params;
 
@@ -87,7 +87,7 @@ export class MinistriesApi {
    */
   public editMinistry = async (
     params: EditMinistryParams,
-    body: EditMinistryBody,
+    body: EditMinistryBody
   ): Promise<AxiosResponse> => {
     const { churchId, ministryId } = params;
 
@@ -106,7 +106,7 @@ export class MinistriesApi {
    * @returns {Promise<AxiosResponse>}
    */
   public deleteMinistry = async (
-    params: DeleteMinistryParams,
+    params: DeleteMinistryParams
   ): Promise<AxiosResponse> => {
     const { churchId, ministryId } = params;
 

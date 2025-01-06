@@ -1,33 +1,33 @@
-import RadioButton from "@/components/atoms/common/input/radio-button/radio-button";
+import RadioButton from '@/components/atoms/common/input/radio-button/radio-button';
 import {
   useCalendarModeRadioButtonItems,
   useGenderRadioButtonItems,
-} from "@/hooks/radio-button/radio-button-items";
-import RegisterRadioButton from "@/components/atoms/register/register-radio-button";
-import { BLACK, DESTRUCTIVE } from "@/constants/styles/color";
-import LabelInput from "@/components/atoms/common/input/label-input";
+} from '@/hooks/radio-button/radio-button-items';
+import RegisterRadioButton from '@/components/atoms/register/register-radio-button';
+import { BLACK, DESTRUCTIVE } from '@/constants/styles/color';
+import LabelInput from '@/components/atoms/common/input/label-input';
 import {
   getIsWellFormedBirth,
   getIsWellFormedHomePhone,
   getIsWellFormedMobilePhone,
   getIsWellFormedName,
-} from "@/utils/check";
-import LabelDropdown from "@/components/atoms/common/dropdown/label-dropdown";
-import { useMarriageDropdownItems } from "@/hooks/dropdown/dropdown-items";
-import React, { ChangeEvent, useEffect, useRef } from "react";
-import { useI18n, useScopedI18n } from "../../../../locales/client";
-import { useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
-import styled from "styled-components";
-import MemberImageInput from "@/components/atoms/register/member-image-input";
-import LabelRadioButton from "@/components/atoms/common/input/radio-button/label-radio-button";
-import { CALENDAR_MODE, GENDER, MARRIAGE, NULL } from "@/constants/constant";
-import { getTrimmedString } from "@/utils/format";
-import { usePathname } from "next/navigation";
-import VehicleNumberInput from "@/components/atoms/register/vehicle-number-input";
-import { VehicleNumberInputRef } from "@/components/atoms/register/vehicle-number-input.view";
-import { DropdownValueType } from "@/components/atoms/common/dropdown/dropdown-item";
-import { MEMBER } from "@/constants/member/member-column";
+} from '@/utils/check';
+import LabelDropdown from '@/components/atoms/common/dropdown/label-dropdown';
+import { useMarriageDropdownItems } from '@/hooks/dropdown/dropdown-items';
+import React, { ChangeEvent, useEffect, useRef } from 'react';
+import { useI18n, useScopedI18n } from '../../../../locales/client';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
+import styled from 'styled-components';
+import MemberImageInput from '@/components/atoms/register/member-image-input';
+import LabelRadioButton from '@/components/atoms/common/input/radio-button/label-radio-button';
+import { CALENDAR_MODE, GENDER, MARRIAGE, NULL } from '@/constants/constant';
+import { getTrimmedString } from '@/utils/format';
+import { usePathname } from 'next/navigation';
+import VehicleNumberInput from '@/components/atoms/register/vehicle-number-input';
+import { VehicleNumberInputRef } from '@/components/atoms/register/vehicle-number-input.view';
+import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-item';
+import { MEMBER } from '@/constants/member/member-column';
 
 const RequiredRegisterContainer = styled.div`
   display: flex;
@@ -75,7 +75,7 @@ type EditListViewProps = {
   onChangeSchool: (value: string) => void;
   onChangeVehicleNumber: (
     event: ChangeEvent<HTMLInputElement>,
-    index: number,
+    index: number
   ) => void;
   onChangeMarriage: (value: MARRIAGE) => void;
   onChangeDetailMarriage: (event: ChangeEvent<HTMLInputElement>) => void;
@@ -106,7 +106,7 @@ const EditListView = ({
   onClickAddress,
 }: EditListViewProps) => {
   const t = useI18n();
-  const t_placeholder = useScopedI18n("placeholder");
+  const t_placeholder = useScopedI18n('placeholder');
 
   const { member } = useSelector((state: RootState) => state.memberRegister);
 
@@ -176,12 +176,12 @@ const EditListView = ({
       </ImageContainer>
       {/* 이름 */}
       <LabelInput
-        enterKeyHint={"done"}
+        enterKeyHint={'done'}
         ref={nameInputRef}
-        label={t("name")}
+        label={t('name')}
         value={member.name}
         onChange={onChangeName}
-        placeholder={t_placeholder("name")}
+        placeholder={t_placeholder('name')}
         borderColor={
           member.name
             ? getIsWellFormedName(member.name)
@@ -192,13 +192,13 @@ const EditListView = ({
       />
       {/* 휴대폰 번호 */}
       <LabelInput
-        enterKeyHint={"done"}
-        inputMode={"numeric"}
+        enterKeyHint={'done'}
+        inputMode={'numeric'}
         ref={mobilePhoneInputRef}
-        label={t("mobilePhone")}
+        label={t('mobilePhone')}
         value={member.mobilePhone}
         onChange={onChangeMobilePhone}
-        placeholder={t_placeholder("mobilePhone")}
+        placeholder={t_placeholder('mobilePhone')}
         borderColor={
           member.mobilePhone
             ? getIsWellFormedMobilePhone(member.mobilePhone)
@@ -209,19 +209,19 @@ const EditListView = ({
       />
       {/* 인도자 */}
       <LabelDropdown
-        enterKeyHint={"done"}
+        enterKeyHint={'done'}
         ref={guideInputRef}
-        label={t("guide")}
+        label={t('guide')}
         value={guideName}
         items={guideItems}
         onChange={onChangeGuideName}
         onChangeItem={onChangeGuidedById}
-        placeholder={t_placeholder("guide")}
+        placeholder={t_placeholder('guide')}
         isEditable={true}
       />
       {/* 성별 */}
       <LabelRadioButton
-        label={t("gender")}
+        label={t('gender')}
         items={useGenderRadioButtonItems()}
         selectedValue={member.gender}
         onChange={onChangeGender}
@@ -232,11 +232,11 @@ const EditListView = ({
         {/* 생년월일 입력창 */}
         <LabelInput
           ref={birthInputRef}
-          inputMode={"numeric"}
-          label={t("birth")}
+          inputMode={'numeric'}
+          label={t('birth')}
           value={member.birth}
           onChange={onChangeBirth}
-          placeholder={t_placeholder("birth")}
+          placeholder={t_placeholder('birth')}
           borderColor={
             member.birth
               ? getIsWellFormedBirth(member.birth)
@@ -257,79 +257,79 @@ const EditListView = ({
       </BirthContainer>
       {/* 학교  */}
       <LabelDropdown
-        enterKeyHint={"done"}
+        enterKeyHint={'done'}
         ref={schoolInputRef}
-        label={t("school")}
+        label={t('school')}
         items={schoolItems}
         value={member.school}
         onChangeItem={(value) => onChangeSchool(value)}
-        placeholder={t_placeholder("school")}
+        placeholder={t_placeholder('school')}
         isEditable={true}
         borderColor={getTrimmedString(member.school) ? BLACK : undefined}
       />
       {/* 직업 */}
       <LabelInput
-        enterKeyHint={"done"}
+        enterKeyHint={'done'}
         ref={occupationInputRef}
-        label={t("occupation")}
+        label={t('occupation')}
         value={member.occupation}
         onChange={onChangeOccupation}
-        placeholder={t_placeholder("occupation")}
+        placeholder={t_placeholder('occupation')}
         zIndex={1}
         borderColor={getTrimmedString(member.occupation) ? BLACK : undefined}
       />
       {/* 결혼 */}
       <LabelDropdown
         ref={marriageInputRef}
-        label={t("marriage")}
+        label={t('marriage')}
         value={member.marriage}
         items={useMarriageDropdownItems()}
         onChangeItem={onChangeMarriage}
-        placeholder={t_placeholder("marriage")}
+        placeholder={t_placeholder('marriage')}
         borderColor={member.marriage !== NULL ? BLACK : undefined}
       />
       {/* 결혼 상세 정보 */}
       <LabelInput
-        enterKeyHint={"done"}
+        enterKeyHint={'done'}
         ref={detailMarriageInputRef}
-        label={t("detailMarriage")}
+        label={t('detailMarriage')}
         value={member.detailMarriage}
         onChange={onChangeDetailMarriage}
-        placeholder={t_placeholder("detailMarriage")}
+        placeholder={t_placeholder('detailMarriage')}
         borderColor={
           getTrimmedString(member.detailMarriage) ? BLACK : undefined
         }
       />
       {/* 도로명주소 */}
       <LabelInput
-        enterKeyHint={"done"}
+        enterKeyHint={'done'}
         ref={addressInputRef}
-        label={t("address")}
+        label={t('address')}
         value={member.address}
-        placeholder={t_placeholder("address")}
+        placeholder={t_placeholder('address')}
         onClick={onClickAddress}
         borderColor={getTrimmedString(member.address) ? BLACK : undefined}
       />
       {/* 상세주소 */}
       <LabelInput
-        enterKeyHint={"done"}
+        enterKeyHint={'done'}
         ref={detailAddressInputRef}
-        label={t("detailAddress")}
+        label={t('detailAddress')}
         value={member.detailAddress}
         onChange={onChangeDetailAddress}
-        placeholder={t_placeholder("detailAddress")}
+        placeholder={t_placeholder('detailAddress')}
         borderColor={getTrimmedString(member.detailAddress) ? BLACK : undefined}
       />
       {/* 전화 번호 */}
       <LabelInput
         ref={homePhoneInputRef}
-        inputMode={"numeric"}
-        label={t("homePhone")}
+        inputMode={'numeric'}
+        label={t('homePhone')}
         value={member.homePhone}
         onChange={(event: ChangeEvent<HTMLInputElement>) =>
           onChangeHomePhone(event)
         }
-        placeholder={t_placeholder("homePhone")}
+        placeholder={t_placeholder('homePhone')}
         borderColor={
           member.homePhone
             ? getIsWellFormedHomePhone(member.homePhone)
@@ -340,12 +340,12 @@ const EditListView = ({
       />
       {/* 차량 번호 */}
       <VehicleNumberInput
-        enterKeyHint={"done"}
+        enterKeyHint={'done'}
         ref={vehicleInputRef}
-        label={t("vehicleNumber")}
+        label={t('vehicleNumber')}
         value={member.vehicleNumber}
         onChangeInput={onChangeVehicleNumber}
-        placeholder={t_placeholder("vehicleNumber")}
+        placeholder={t_placeholder('vehicleNumber')}
       />
       <Invisible />
     </RequiredRegisterContainer>

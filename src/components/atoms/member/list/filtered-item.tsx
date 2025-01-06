@@ -1,23 +1,23 @@
-import { useEffect, useState } from "react";
-import styled from "styled-components";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "@/redux/store";
+import { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '@/redux/store';
 
-import { MainText } from "@/components/atoms/common/text/main-text";
-import { MEMBER } from "@/constants/member/member-column";
-import { BLANK, GENDER, MARRIAGE } from "@/constants/constant";
-import { MAIN, WHITE } from "@/constants/styles/color";
-import { SIZE } from "@/constants/styles/style";
+import { MainText } from '@/components/atoms/common/text/main-text';
+import { MEMBER } from '@/constants/member/member-column';
+import { BLANK, GENDER, MARRIAGE } from '@/constants/constant';
+import { MAIN, WHITE } from '@/constants/styles/color';
+import { SIZE } from '@/constants/styles/style';
 
-import { useI18n } from "../../../../../locales/client";
-import Cancel from "../../../../../public/svg/cancel.svg";
-import { getKRDateFromDashDate } from "@/utils/format";
+import { useI18n } from '../../../../../locales/client';
+import Cancel from '../../../../../public/svg/cancel.svg';
+import { getKRDateFromDashDate } from '@/utils/format';
 import {
   setFilterAfter,
   setFilterBefore,
   setFilterItems,
   setMemberFilter,
-} from "@/redux/reducers/member-filter-reducer";
+} from '@/redux/reducers/member-filter-reducer';
 
 const ItemContainer = styled.div`
   display: flex;
@@ -81,11 +81,11 @@ type FilteredItemProps = {
 const FilteredItem = ({ item }: FilteredItemProps) => {
   const t = useI18n();
   const { groups, officers, ministries, educations } = useSelector(
-    (state: RootState) => state.church,
+    (state: RootState) => state.church
   );
   const dispatch = useDispatch<AppDispatch>();
   const { memberFilter, filterValue } = useSelector(
-    (state: RootState) => state.memberFilter,
+    (state: RootState) => state.memberFilter
   );
 
   // 해당 필터 내용 삭제
@@ -101,9 +101,9 @@ const FilteredItem = ({ item }: FilteredItemProps) => {
       ].includes(item.title)
     ) {
       dispatch(setMemberFilter({ ...memberFilter, [item.title]: BLANK }));
-      if (item.title.includes("After")) {
+      if (item.title.includes('After')) {
         dispatch(setFilterAfter(BLANK));
-      } else if (item.title.includes("Before")) {
+      } else if (item.title.includes('Before')) {
         dispatch(setFilterBefore(BLANK));
       }
     } else if (
@@ -117,7 +117,7 @@ const FilteredItem = ({ item }: FilteredItemProps) => {
       dispatch(setMemberFilter({ ...memberFilter, [item.title]: BLANK }));
     } else {
       const newItems = (memberFilter[item.title] as string[]).filter(
-        (i) => i !== item.value,
+        (i) => i !== item.value
       );
       dispatch(setMemberFilter({ ...memberFilter, [item.title]: newItems }));
 
@@ -146,17 +146,17 @@ const FilteredItem = ({ item }: FilteredItemProps) => {
         break;
       case MEMBER.OFFICER:
         currentItem = officers.find(
-          (officer) => officer.id === item.value,
+          (officer) => officer.id === item.value
         )?.name;
         break;
       case MEMBER.MINISTRIES:
         currentItem = ministries.find(
-          (ministry) => ministry.id === item.value,
+          (ministry) => ministry.id === item.value
         )?.name;
         break;
       case MEMBER.EDUCATIONS:
         currentItem = educations.find(
-          (education) => education.id === item.value,
+          (education) => education.id === item.value
         )?.name;
         break;
       case MEMBER.BIRTH_AFTER:
@@ -204,7 +204,7 @@ const FilteredItem = ({ item }: FilteredItemProps) => {
       <TextContainer>
         <MainText color={WHITE}>{t(item.title)}</MainText>
         <MainText color={WHITE} size={SIZE.EXTRA_SMALL}>
-          {">"}
+          {'>'}
         </MainText>
         <MainText color={WHITE}>{valueText}</MainText>
       </TextContainer>

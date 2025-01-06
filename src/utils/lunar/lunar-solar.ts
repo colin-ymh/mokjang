@@ -5,7 +5,7 @@
  */
 export const getSolar = (lunaDate: string): string => {
   // 1) "YYYY-MM-DD" 문자열을 split으로 나누어 연/월/일을 구함
-  const [yearStr, monthStr, dayStr] = lunaDate.split("-");
+  const [yearStr, monthStr, dayStr] = lunaDate.split('-');
   if (!yearStr || !monthStr || !dayStr) {
     throw new Error(`날짜 형식이 잘못되었습니다. (입력: "${lunaDate}")`);
   }
@@ -17,10 +17,10 @@ export const getSolar = (lunaDate: string): string => {
 
   // 유효 범위 체크 (원본에서는 1841 ~ 2043)
   if (year < 1841 || year > 2043) {
-    throw new Error("연도 범위는 1841 ~ 2043까지만 지원합니다.");
+    throw new Error('연도 범위는 1841 ~ 2043까지만 지원합니다.');
   }
   if (month < 1 || month > 12) {
-    throw new Error("월 범위는 1 ~ 12까지만 유효합니다.");
+    throw new Error('월 범위는 1 ~ 12까지만 유효합니다.');
   }
 
   const kk: number[][] = [
@@ -377,8 +377,8 @@ export const getSolar = (lunaDate: string): string => {
 
   // (6) "YYYY-MM-DD"로 포매팅 후 반환
   const sy = String(syear);
-  const sm = String(smonth).padStart(2, "0");
-  const sd = String(sday).padStart(2, "0");
+  const sm = String(smonth).padStart(2, '0');
+  const sd = String(sday).padStart(2, '0');
 
   return `${sy}-${sm}-${sd}`;
 };

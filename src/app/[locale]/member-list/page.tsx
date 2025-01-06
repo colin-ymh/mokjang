@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import PageLayout from "@/components/organisms/layout/page-layout";
-import MemberList from "@/components/organisms/member/list/member-list";
+import PageLayout from '@/components/organisms/layout/page-layout';
+import MemberList from '@/components/organisms/member/list/member-list';
 
 const MemberListPage = () => {
   return (

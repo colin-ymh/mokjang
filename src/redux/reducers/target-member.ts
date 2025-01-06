@@ -1,6 +1,6 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Member } from "@/models/member/member";
-import { DEFAULT_MEMBER } from "@/redux/reducers/member-register-reducer";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { Member } from '@/models/member/member';
+import { DEFAULT_MEMBER } from '@/redux/reducers/member-register-reducer';
 
 type TargetMemberState = {
   targetMember: Member;
@@ -11,7 +11,7 @@ const initialState: TargetMemberState = {
 };
 
 const TargetMemberSlice = createSlice({
-  name: "register",
+  name: 'register',
   initialState,
   reducers: {
     setTargetMember(state, action: PayloadAction<Member>) {

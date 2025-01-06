@@ -1,9 +1,9 @@
-import React, { forwardRef } from "react";
-import styled from "styled-components";
+import React, { forwardRef } from 'react';
+import styled from 'styled-components';
 
-import { BLACK, GRAY, MAIN } from "@/constants/styles/color";
-import { InputProps } from "@/components/atoms/common/input/main-input";
-import { BLANK } from "@/constants/constant";
+import { BLACK, GRAY, MAIN } from '@/constants/styles/color';
+import { InputProps } from '@/components/atoms/common/input/main-input';
+import { BLANK } from '@/constants/constant';
 
 // 스타일 정의
 const BorderInputContainer = styled.input<{
@@ -12,7 +12,7 @@ const BorderInputContainer = styled.input<{
   height?: number;
   width?: number;
 }>`
-  width: ${({ width }) => (width ? `${width}px` : "100%")};
+  width: ${({ width }) => (width ? `${width}px` : '100%')};
   box-sizing: border-box;
   font-size: 14px;
   padding: 10px 15px;
@@ -20,8 +20,8 @@ const BorderInputContainer = styled.input<{
   border-radius: 5px;
   color: ${BLACK};
   transition: all 0.3s ease;
-  height: ${({ height }) => (height ? `${height}px` : "auto")};
-  pointer-events: ${({ $isEditable }) => ($isEditable ? "auto" : "none")};
+  height: ${({ height }) => (height ? `${height}px` : 'auto')};
+  pointer-events: ${({ $isEditable }) => ($isEditable ? 'auto' : 'none')};
   &:focus {
     outline: none;
     border: 1px solid ${MAIN.DEFAULT};
@@ -46,7 +46,7 @@ const BorderInput = forwardRef<HTMLInputElement, BorderInputProps>(
       width,
       ...props
     },
-    ref,
+    ref
   ) => {
     return (
       <BorderInputContainer
@@ -61,7 +61,7 @@ const BorderInput = forwardRef<HTMLInputElement, BorderInputProps>(
         {...props}
       />
     );
-  },
+  }
 );
 
 export default BorderInput;

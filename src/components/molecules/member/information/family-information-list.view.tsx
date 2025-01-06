@@ -1,16 +1,16 @@
-import styled from "styled-components";
-import { useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
+import styled from 'styled-components';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
 
-import { FAMILY } from "@/constants/constant";
-import { MainText } from "@/components/atoms/common/text/main-text";
-import { FamilyMember } from "@/models/member/member";
-import { GRAY, WHITE } from "@/constants/styles/color";
-import FamilyModal from "@/components/molecules/member/information/family-modal";
-import FamilyMemberItem from "@/components/atoms/member/information/family-member-item";
+import { FAMILY } from '@/constants/constant';
+import { MainText } from '@/components/atoms/common/text/main-text';
+import { FamilyMember } from '@/models/member/member';
+import { GRAY, WHITE } from '@/constants/styles/color';
+import FamilyModal from '@/components/molecules/member/information/modal/family-modal';
+import FamilyMemberItem from '@/components/atoms/member/information/family-member-item';
 
-import { useScopedI18n } from "../../../../../locales/client";
-import Plus from "../../../../../public/svg/plus.svg";
+import { useScopedI18n } from '../../../../../locales/client';
+import Plus from '../../../../../public/svg/plus.svg';
 
 const ListContainer = styled.div`
   display: flex;
@@ -55,7 +55,7 @@ const FamilyItemListContainer = styled.div`
   margin: 0 20px;
 `;
 const FamilyModalContainer = styled.div<{ $isShown: boolean }>`
-  //display: ${({ $isShown }) => ($isShown ? "flex" : "none")};
+  //display: ${({ $isShown }) => ($isShown ? 'flex' : 'none')};
   display: flex;
   position: absolute;
 
@@ -76,7 +76,7 @@ type FamilyInformationListViewProps = {
   onClickCreateFamily: (
     familyMemberId: string,
     relation: FAMILY,
-    isFetch: boolean,
+    isFetch: boolean
   ) => void;
   onClickEditFamily: (familyMemberId: string, relation: FAMILY) => void;
   onClickFamilyMember: (familyMemberId: string) => void;
@@ -95,16 +95,16 @@ const FamilyInformationListView = ({
   onClickDelete,
   onClickEdit,
 }: FamilyInformationListViewProps) => {
-  const t_header = useScopedI18n("header");
+  const t_header = useScopedI18n('header');
   const targetMember = useSelector(
-    (state: RootState) => state.targetMember.targetMember,
+    (state: RootState) => state.targetMember.targetMember
   );
 
   return (
     <ListContainer>
       {/* 가족정보 헤더 */}
       <ListTypeHeader>
-        <MainText color={GRAY.DARK}>{t_header("familyInformation")}</MainText>
+        <MainText color={GRAY.DARK}>{t_header('familyInformation')}</MainText>
         {/* 가족 추가 버튼*/}
         <ButtonContainer onClick={onClickOpenModal}>
           <PlusButton />

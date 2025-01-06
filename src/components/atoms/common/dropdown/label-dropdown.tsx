@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import React, { forwardRef } from "react";
-import styled from "styled-components";
+import React, { forwardRef } from 'react';
+import styled from 'styled-components';
 
-import { MainText } from "@/components/atoms/common/text/main-text";
+import { MainText } from '@/components/atoms/common/text/main-text';
 import Dropdown, {
   DropdownProps,
-} from "@/components/atoms/common/dropdown/dropdown";
-import { FLEX_DIRECTION } from "@/constants/styles/style";
+} from '@/components/atoms/common/dropdown/dropdown';
+import { FLEX_DIRECTION } from '@/constants/styles/style';
 
 const LabelDropdownContainer = styled.div<{
   width?: number;
@@ -16,7 +16,7 @@ const LabelDropdownContainer = styled.div<{
   display: flex;
   flex-direction: ${({ $flexDirection }) => $flexDirection};
   align-items: ${({ $flexDirection }) =>
-    $flexDirection === FLEX_DIRECTION.ROW ? "center" : null};
+    $flexDirection === FLEX_DIRECTION.ROW ? 'center' : null};
   width: 100%;
   gap: 8px;
 `;
@@ -39,7 +39,7 @@ const LabelDropdown = forwardRef<HTMLInputElement, LabelDropdownProps>(
       flexDirection = FLEX_DIRECTION.COLUMN,
       ...dropdownProps
     },
-    ref,
+    ref
   ) => {
     return (
       <LabelDropdownContainer $flexDirection={flexDirection}>
@@ -55,7 +55,7 @@ const LabelDropdown = forwardRef<HTMLInputElement, LabelDropdownProps>(
         />
       </LabelDropdownContainer>
     );
-  },
+  }
 );
 
 export default LabelDropdown;

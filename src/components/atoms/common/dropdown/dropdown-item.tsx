@@ -1,7 +1,7 @@
-import React from "react";
-import styled from "styled-components";
-import { BLACK, GRAY, MAIN } from "@/constants/styles/color";
-import { MainText } from "@/components/atoms/common/text/main-text";
+import React from 'react';
+import styled from 'styled-components';
+import { BLACK, GRAY, MAIN } from '@/constants/styles/color';
+import { MainText } from '@/components/atoms/common/text/main-text';
 
 const DropdownContainer = styled.div`
   display: flex;

@@ -1,20 +1,20 @@
-import React, { useEffect, useState } from "react";
-import styled from "styled-components";
-import Image from "next/image";
-import Cropper, { Area, Point } from "react-easy-crop";
+import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import Image from 'next/image';
+import Cropper, { Area, Point } from 'react-easy-crop';
 
-import { BLACK, WHITE } from "@/constants/styles/color";
-import Button from "@/components/atoms/common/button/button";
-import { BLANK } from "@/constants/constant";
+import { BLACK, WHITE } from '@/constants/styles/color';
+import Button from '@/components/atoms/common/button/button';
+import { BLANK } from '@/constants/constant';
 import {
   getCroppedImage,
   getFileFromBase64,
   getResizedImage,
-} from "@/utils/image";
+} from '@/utils/image';
 
-import Delete from "../../../../public/svg/cancel.svg";
-import DefaultImage from "../../../../public/png/default-member-image.png";
-import { useScopedI18n } from "../../../../locales/client";
+import Delete from '../../../../public/svg/cancel.svg';
+import DefaultImage from '../../../../public/png/default-member-image.png';
+import { useScopedI18n } from '../../../../locales/client';
 
 const MemberImageInputContainer = styled.div`
   display: flex;
@@ -86,7 +86,7 @@ const MemberImageInput = ({
   width = 90,
   height = 90,
 }: MemberImageInputProps) => {
-  const t_button = useScopedI18n("button");
+  const t_button = useScopedI18n('button');
 
   // 크롭하기 전 이미지
   const [image, setImage] = useState<string>(value);
@@ -112,7 +112,7 @@ const MemberImageInput = ({
   // 새신자 이미지 선택 시, file input 불러오기
   const onClickMemberImage = () => {
     // 드라이브, 갤러리에서 이미지를 불러오기
-    const fileInput = document.getElementById("fileInput") as HTMLInputElement;
+    const fileInput = document.getElementById('fileInput') as HTMLInputElement;
     fileInput?.click();
   };
 
@@ -128,9 +128,9 @@ const MemberImageInput = ({
         // 해당 이미지의 url (base64 string)
         const dataURL = reader.result;
 
-        if (typeof dataURL === "string") {
+        if (typeof dataURL === 'string') {
           // url 을 파일 형식으로 변경
-          const imageFile = getFileFromBase64(dataURL, "test");
+          const imageFile = getFileFromBase64(dataURL, 'test');
           // 이미지 품질 낮추기
           const resizedImageFile = await getResizedImage(imageFile, 300, 300);
 
@@ -148,7 +148,7 @@ const MemberImageInput = ({
   // 마지막으로 설정한 크롭값을 저장
   const onCropComplete = (
     croppedAreaPercentages: Area,
-    croppedAreaPixels: Area,
+    croppedAreaPixels: Area
   ) => {
     setCroppedArea(croppedAreaPixels);
   };
@@ -213,7 +213,7 @@ const MemberImageInput = ({
           />
           {/* 크롭 상태를 저장하는 버튼 */}
           <ButtonContainer>
-            <Button text={t_button("save")} onClick={onClickCropButton} />
+            <Button text={t_button('save')} onClick={onClickCropButton} />
           </ButtonContainer>
         </CropperContainer>
       )}

@@ -1,7 +1,7 @@
-import { AUTH, AuthApi } from "@/api/auth/auth.api";
-import { setAuthorizationToken } from "@/api/authorize-axios";
-import { usePageRouter } from "@/utils/router";
-import LoginListView from "@/components/molecules/auth/login-list.view";
+import { AUTH, AuthApi } from '@/api/auth/auth.api';
+import { setAuthorizationToken } from '@/api/authorize-axios';
+import { usePageRouter } from '@/utils/router';
+import LoginListView from '@/components/molecules/auth/login-list.view';
 
 const LoginList = () => {
   // const router = useRouter();
@@ -17,7 +17,7 @@ const LoginList = () => {
           // 최초 로그인인 경우
           if (response.data?.temporal) {
             setAuthorizationToken(response.data?.temporal);
-            router.push("/login/register");
+            router.push('/login/register');
           }
         }
       });

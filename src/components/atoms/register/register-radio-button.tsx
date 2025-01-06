@@ -1,7 +1,7 @@
-import styled from "styled-components";
-import { RadioButtonItemProps } from "@/components/atoms/common/input/radio-button/default-radio-button";
-import { MainText } from "@/components/atoms/common/text/main-text";
-import { GRAY, MAIN, WHITE } from "@/constants/styles/color";
+import styled from 'styled-components';
+import { RadioButtonItemProps } from '@/components/atoms/common/input/radio-button/default-radio-button';
+import { MainText } from '@/components/atoms/common/text/main-text';
+import { GRAY, MAIN, WHITE } from '@/constants/styles/color';
 
 const ButtonContainer = styled.div<{ $isSelected: boolean; color?: string }>`
   display: flex;

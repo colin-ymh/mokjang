@@ -1,25 +1,25 @@
-"use client";
+'use client';
 
-import React, { ChangeEvent, useEffect, useRef } from "react";
-import styled from "styled-components";
-import { gsap } from "gsap";
+import React, { ChangeEvent, useEffect, useRef } from 'react';
+import styled from 'styled-components';
+import { gsap } from 'gsap';
 
-import { useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
 
-import LabelInput from "@/components/atoms/common/input/label-input";
+import LabelInput from '@/components/atoms/common/input/label-input';
 import {
   useBaptismDropdownItems,
   useOfficerDropdownItems,
-} from "@/hooks/dropdown/dropdown-items";
-import LabelDropdown from "@/components/atoms/common/dropdown/label-dropdown";
-import { BAPTISM, NULL } from "@/constants/constant";
-import { BLACK, DESTRUCTIVE } from "@/constants/styles/color";
-import { getTrimmedString } from "@/utils/format";
-import { onClickEnter } from "@/utils/input";
-import { getIsWellFormedBirth } from "@/utils/check";
+} from '@/hooks/dropdown/dropdown-items';
+import LabelDropdown from '@/components/atoms/common/dropdown/label-dropdown';
+import { BAPTISM, NULL } from '@/constants/constant';
+import { BLACK, DESTRUCTIVE } from '@/constants/styles/color';
+import { getTrimmedString } from '@/utils/format';
+import { onClickEnter } from '@/utils/input';
+import { getIsWellFormedBirth } from '@/utils/check';
 
-import { useI18n, useScopedI18n } from "../../../../locales/client";
+import { useI18n, useScopedI18n } from '../../../../locales/client';
 
 const InputContainer = styled.div`
   display: flex;
@@ -62,10 +62,10 @@ const ReligiousRegisterView = ({
   onChangePreviousChurchName,
 }: ReligiousRegisterViewProps) => {
   const t = useI18n();
-  const t_placeholder = useScopedI18n("placeholder");
+  const t_placeholder = useScopedI18n('placeholder');
 
   const { member, stage } = useSelector(
-    (state: RootState) => state.memberRegister,
+    (state: RootState) => state.memberRegister
   );
 
   // input refs
@@ -81,11 +81,11 @@ const ReligiousRegisterView = ({
         // 직분이 있는 경우
         gsap.to(officerAnimationRef.current, {
           opacity: 1,
-          height: "auto",
+          height: 'auto',
           marginBottom: 0,
           duration: 0.3,
-          ease: "power1.inOut",
-          display: "flex",
+          ease: 'power1.inOut',
+          display: 'flex',
         });
       } else {
         // 직분이 없는 경우
@@ -94,8 +94,8 @@ const ReligiousRegisterView = ({
           height: 0,
           marginBottom: -20,
           duration: 0.3,
-          ease: "power1.inOut",
-          display: "none",
+          ease: 'power1.inOut',
+          display: 'none',
         });
       }
     }
@@ -105,7 +105,7 @@ const ReligiousRegisterView = ({
     <InputContainer>
       {/* 신급 */}
       <LabelDropdown
-        label={t("baptism")}
+        label={t('baptism')}
         value={member.baptism}
         items={useBaptismDropdownItems()}
         onChangeItem={onChangeBaptism}
@@ -113,7 +113,7 @@ const ReligiousRegisterView = ({
       />
       {/* 직분 */}
       <LabelDropdown
-        label={t("officer")}
+        label={t('officer')}
         value={member.officerId}
         items={useOfficerDropdownItems()}
         onChangeItem={onChangeOfficer}
@@ -123,11 +123,11 @@ const ReligiousRegisterView = ({
         {/* 임직일 */}
         <LabelInput
           ref={officerDateInputRef}
-          enterKeyHint={"done"}
-          label={t("officerStartDate")}
+          enterKeyHint={'done'}
+          label={t('officerStartDate')}
           value={member.officerStartDate}
           onChange={onChangeOfficerStartDate}
-          placeholder={t_placeholder("officerStartDate")}
+          placeholder={t_placeholder('officerStartDate')}
           onKeyDown={(event) => onClickEnter(event, officerChurchInputRef)}
           borderColor={
             member.officerStartDate
@@ -140,11 +140,11 @@ const ReligiousRegisterView = ({
         {/* 임직 교회 */}
         <LabelInput
           ref={officerChurchInputRef}
-          enterKeyHint={"done"}
-          label={t("officerStartChurch")}
+          enterKeyHint={'done'}
+          label={t('officerStartChurch')}
           value={member.officerStartChurch}
           onChange={onChangeOfficerStartChurch}
-          placeholder={t_placeholder("officerStartChurch")}
+          placeholder={t_placeholder('officerStartChurch')}
           onKeyDown={(event) => onClickEnter(event, previousChurchInputRef)}
           borderColor={
             getTrimmedString(member.officerStartChurch) ? BLACK : undefined
@@ -154,11 +154,11 @@ const ReligiousRegisterView = ({
       {/* 이전 교회 */}
       <LabelInput
         ref={previousChurchInputRef}
-        enterKeyHint={"done"}
-        label={t("previousChurchName")}
+        enterKeyHint={'done'}
+        label={t('previousChurchName')}
         value={member.previousChurchName}
         onChange={onChangePreviousChurchName}
-        placeholder={t_placeholder("previousChurchName")}
+        placeholder={t_placeholder('previousChurchName')}
         onKeyDown={onClickEnter}
         borderColor={
           getTrimmedString(member.previousChurchName) ? BLACK : undefined

@@ -1,8 +1,8 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
-import { MainText } from "@/components/atoms/common/text/main-text";
-import { MEDIA_MIN_WIDTH } from "@/constants/constant";
-import ChurchRegisterList from "@/components/molecules/church/church-register-list";
+import { MainText } from '@/components/atoms/common/text/main-text';
+import { MEDIA_MIN_WIDTH } from '@/constants/constant';
+import ChurchRegisterList from '@/components/molecules/church/church-register-list';
 
 const ChurchRegisterContainer = styled.div`
   display: flex;

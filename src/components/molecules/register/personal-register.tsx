@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React, {
   ChangeEvent,
@@ -6,27 +6,27 @@ import React, {
   useEffect,
   useRef,
   useState,
-} from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "@/redux/store";
-import DaumPostcodeEmbed, { Address } from "react-daum-postcode";
-import { gsap } from "gsap";
+} from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '@/redux/store';
+import DaumPostcodeEmbed, { Address } from 'react-daum-postcode';
+import { gsap } from 'gsap';
 
-import { getSchool } from "@/api/school-api";
-import { getDateFromString, getIsChild } from "@/utils/date";
-import { setMember } from "@/redux/reducers/member-register-reducer";
-import PersonalRegisterView from "@/components/molecules/register/personal-register.view";
-import { DropdownValueType } from "@/components/atoms/common/dropdown/dropdown-item";
-import PagePopup from "@/components/atoms/common/popup/page-popup";
-import { CALENDAR_MODE, MARRIAGE } from "@/constants/constant";
-import { getIsWellFormedBirth, getIsWellFormedHomePhone } from "@/utils/check";
+import { getSchool } from '@/api/school-api';
+import { getDateFromString, getIsChild } from '@/utils/date';
+import { setMember } from '@/redux/reducers/member-register-reducer';
+import PersonalRegisterView from '@/components/molecules/register/personal-register.view';
+import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-item';
+import PagePopup from '@/components/atoms/common/popup/page-popup';
+import { CALENDAR_MODE, MARRIAGE } from '@/constants/constant';
+import { getIsWellFormedBirth, getIsWellFormedHomePhone } from '@/utils/check';
 import {
   getFormattedDate,
   getFormattedHomePhone,
   getFormattedVehicleNumber,
   getTrimmedString,
-} from "@/utils/format";
-import { Member } from "@/models/member/member";
+} from '@/utils/format';
+import { Member } from '@/models/member/member';
 
 const PersonalRegister = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -47,8 +47,8 @@ const PersonalRegister = () => {
           height: 70,
           marginBottom: 0,
           duration: 0.3,
-          ease: "power1.inOut",
-          display: "block",
+          ease: 'power1.inOut',
+          display: 'block',
           zIndex: 5,
         });
       } else {
@@ -58,7 +58,7 @@ const PersonalRegister = () => {
           height: 0,
           marginBottom: -20,
           duration: 0.3,
-          ease: "power1.inOut",
+          ease: 'power1.inOut',
           zIndex: 0,
           // display: "none",
         });
@@ -79,7 +79,7 @@ const PersonalRegister = () => {
   // 생년월일 변경 시 이벤트
   const onChangeBirth = (
     event: ChangeEvent<HTMLInputElement>,
-    nextInputRef?: RefObject<HTMLInputElement>,
+    nextInputRef?: RefObject<HTMLInputElement>
   ) => {
     const newBirth = getFormattedDate(event.target.value);
     dispatch(setMember({ ...member, birth: newBirth }));
@@ -105,7 +105,7 @@ const PersonalRegister = () => {
   // 학교 변경 시 이벤트
   const onChangeSchool = (
     value: string,
-    nextInputRef?: RefObject<HTMLInputElement>,
+    nextInputRef?: RefObject<HTMLInputElement>
   ) => {
     const newSchool = getTrimmedString(value);
     dispatch(setMember({ ...member, school: newSchool }));
@@ -133,7 +133,7 @@ const PersonalRegister = () => {
 
   // 결혼 정보 드롭다운 아이템 선택 시 이벤트
   const onClickMarriageDropdownItem = (
-    nextInputRef: RefObject<HTMLInputElement>,
+    nextInputRef: RefObject<HTMLInputElement>
   ) => {
     if (nextInputRef?.current) {
       nextInputRef.current.focus();
@@ -153,17 +153,17 @@ const PersonalRegister = () => {
   // 도로명주소 검색 api 내 주소 선택 이벤트
   const onCompleteAddress = (data: Address) => {
     let fullAddress = data.address;
-    let extraAddress = "";
+    let extraAddress = '';
 
-    if (data.addressType === "R") {
-      if (data.bname !== "") {
+    if (data.addressType === 'R') {
+      if (data.bname !== '') {
         extraAddress += data.bname;
       }
-      if (data.buildingName !== "") {
+      if (data.buildingName !== '') {
         extraAddress +=
-          extraAddress !== "" ? `, ${data.buildingName}` : data.buildingName;
+          extraAddress !== '' ? `, ${data.buildingName}` : data.buildingName;
       }
-      fullAddress += extraAddress !== "" ? ` (${extraAddress})` : "";
+      fullAddress += extraAddress !== '' ? ` (${extraAddress})` : '';
     }
 
     const newMember: Member = member;
@@ -180,7 +180,7 @@ const PersonalRegister = () => {
   // 전화번호 변경 시 이벤트
   const onChangeHomePhone = (
     event: ChangeEvent<HTMLInputElement>,
-    nextInputRef?: RefObject<HTMLInputElement>,
+    nextInputRef?: RefObject<HTMLInputElement>
   ) => {
     const newHomePhone = getFormattedHomePhone(event.target.value);
     dispatch(setMember({ ...member, homePhone: newHomePhone }));
@@ -200,7 +200,7 @@ const PersonalRegister = () => {
   // 차량 번호 변경 시 이벤트
   const onChangeVehicleNumber = (
     event: ChangeEvent<HTMLInputElement>,
-    index: number,
+    index: number
   ) => {
     // vehicleNumber 배열을 복사하여 새로운 배열 생성
     const newVehicleNumber = [...member.vehicleNumber];
@@ -242,7 +242,7 @@ const PersonalRegister = () => {
       <PagePopup isShow={isAddressOpen} setIsShow={setIsAddressOpen}>
         <DaumPostcodeEmbed
           onComplete={onCompleteAddress}
-          style={{ width: "100%", height: "100%" }}
+          style={{ width: '100%', height: '100%' }}
         />
       </PagePopup>
     </>

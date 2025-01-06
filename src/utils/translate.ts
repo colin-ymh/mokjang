@@ -1,8 +1,8 @@
-import { MEMBER } from "@/constants/member/member-column";
+import { MEMBER } from '@/constants/member/member-column';
 
 export const getTranslatedMemberColumn = (
   t: (key: string, ...args: any[]) => string,
-  id: MEMBER,
+  id: MEMBER
 ): string => {
   return t(
     id as
@@ -20,6 +20,6 @@ export const getTranslatedMemberColumn = (
       | MEMBER.BAPTISM
       | MEMBER.BIRTH
       | MEMBER.REGISTERED_AT
-      | MEMBER.UPDATED_AT,
+      | MEMBER.UPDATED_AT
   );
 };

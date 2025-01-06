@@ -1,14 +1,14 @@
-import React from "react";
-import styled from "styled-components";
-import { useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
+import React from 'react';
+import styled from 'styled-components';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
 
-import { GRAY, MAIN, WHITE } from "@/constants/styles/color";
-import Button from "@/components/atoms/common/button/button";
-import { MEDIA_MIN_WIDTH, MEMBER_REGISTER_STAGE } from "@/constants/constant";
+import { GRAY, MAIN, WHITE } from '@/constants/styles/color';
+import Button from '@/components/atoms/common/button/button';
+import { MEDIA_MIN_WIDTH, MEMBER_REGISTER_STAGE } from '@/constants/constant';
 
-import ExitButton from "../../../../../public/svg/cancel.svg";
-import { useScopedI18n } from "../../../../../locales/client";
+import ExitButton from '../../../../../public/svg/cancel.svg';
+import { useScopedI18n } from '../../../../../locales/client';
 
 const HeaderContainer = styled.header`
   display: flex;
@@ -48,9 +48,9 @@ const RegisterHeaderView = ({
   onClickGoBack,
   onClickDone,
 }: RegisterHeaderViewProps) => {
-  const t_button = useScopedI18n("button");
+  const t_button = useScopedI18n('button');
   const { stage, isStageClear } = useSelector(
-    (state: RootState) => state.memberRegister,
+    (state: RootState) => state.memberRegister
   );
 
   return (
@@ -61,7 +61,7 @@ const RegisterHeaderView = ({
       <HeaderRight>
         {stage !== MEMBER_REGISTER_STAGE.REQUIRED && (
           <Button
-            text={t_button("save")}
+            text={t_button('save')}
             onClick={onClickDone}
             backgroundColor={WHITE}
             color={isStageClear ? MAIN.DEFAULT : GRAY.DARK}

@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import PageLayout from "@/components/organisms/layout/page-layout";
-import ChurchRegister from "@/components/organisms/church/church-register";
+import PageLayout from '@/components/organisms/layout/page-layout';
+import ChurchRegister from '@/components/organisms/church/church-register';
 
 const ChurchRegisterPage = () => {
   return (

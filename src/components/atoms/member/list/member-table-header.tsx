@@ -1,21 +1,21 @@
-import styled from "styled-components";
-import { useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
+import styled from 'styled-components';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
 
-import { MainText } from "@/components/atoms/common/text/main-text";
-import { MEMBER } from "@/constants/member/member-column";
-import { GRAY, MAIN } from "@/constants/styles/color";
-import { SIZE } from "@/constants/styles/style";
-import { getTranslatedMemberColumn } from "@/utils/translate";
+import { MainText } from '@/components/atoms/common/text/main-text';
+import { MEMBER } from '@/constants/member/member-column';
+import { GRAY, MAIN } from '@/constants/styles/color';
+import { SIZE } from '@/constants/styles/style';
+import { getTranslatedMemberColumn } from '@/utils/translate';
 
-import { useI18n } from "../../../../../locales/client";
+import { useI18n } from '../../../../../locales/client';
 
 const HeaderContainer = styled.div`
   display: flex;
-  cursor: pointer;
+  align-items: center;
   justify-content: flex-start;
-  padding-left: 5px;
-  position: relative;
+  overflow: hidden;
+    position: relative;
 `;
 
 const TextContainer = styled.div`
@@ -43,7 +43,7 @@ type MemberTableHeaderProps = {
 // Component
 const MemberTableHeader = ({ item, onClick }: MemberTableHeaderProps) => {
   const { memberOrderBy, memberOrderDirection } = useSelector(
-    (state: RootState) => state.memberFilter,
+    (state: RootState) => state.memberFilter
   );
   const t = useI18n();
 
@@ -63,7 +63,7 @@ const MemberTableHeader = ({ item, onClick }: MemberTableHeaderProps) => {
             size={SIZE.LARGE}
             color={isActive ? MAIN.DEFAULT : GRAY.DEFAULT}
           >
-            {"⇅"}
+            {'⇅'}
           </MainText>
         </IconContainer>
       )}

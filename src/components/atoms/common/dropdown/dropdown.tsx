@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React, {
   ChangeEvent,
@@ -6,11 +6,11 @@ import React, {
   RefObject,
   useEffect,
   useState,
-} from "react";
-import TransparentBackground from "@/components/atoms/common/etc/transparent-background";
-import DropdownView from "@/components/atoms/common/dropdown/dropdown.view";
-import { DropdownValueType } from "@/components/atoms/common/dropdown/dropdown-item";
-import { InputProps } from "@/components/atoms/common/input/main-input";
+} from 'react';
+import TransparentBackground from '@/components/atoms/common/etc/transparent-background';
+import DropdownView from '@/components/atoms/common/dropdown/dropdown.view';
+import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-item';
+import { InputProps } from '@/components/atoms/common/input/main-input';
 
 export type DropdownProps = InputProps & {
   ref?: RefObject<HTMLDivElement>;
@@ -43,7 +43,7 @@ const Dropdown = forwardRef<HTMLInputElement, DropdownProps>(
       backgroundBlur = true,
       reverseDirection = false,
       isEditable = false,
-      enterKeyHint = "enter",
+      enterKeyHint = 'enter',
       onClickItemExtra,
       onChange,
       borderColor,
@@ -51,7 +51,7 @@ const Dropdown = forwardRef<HTMLInputElement, DropdownProps>(
       height,
       ...inputProps
     },
-    ref,
+    ref
   ) => {
     // 드롭다운 활성화 여부
     const [isOpened, setIsOpened] = useState(false);
@@ -130,21 +130,21 @@ const Dropdown = forwardRef<HTMLInputElement, DropdownProps>(
     const onPressEnter = (event: React.KeyboardEvent<HTMLInputElement>) => {
       if (event.keyCode === 229) return;
       // 엔터키 입력 시
-      if (event.key === "Enter") {
+      if (event.key === 'Enter') {
         setIsOpened(false);
       }
     };
 
     useEffect(() => {
       const onKeyDown = (e: KeyboardEvent) => {
-        if (e.key === "Escape") {
+        if (e.key === 'Escape') {
           setIsOpened(false);
         }
       };
 
-      window.addEventListener("keydown", onKeyDown);
+      window.addEventListener('keydown', onKeyDown);
       return () => {
-        window.removeEventListener("keydown", onKeyDown);
+        window.removeEventListener('keydown', onKeyDown);
       };
     }, [setIsOpened]);
 
@@ -188,7 +188,7 @@ const Dropdown = forwardRef<HTMLInputElement, DropdownProps>(
         <DropdownView {...props} />
       </>
     );
-  },
+  }
 );
 
 export default Dropdown;

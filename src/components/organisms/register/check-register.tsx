@@ -1,21 +1,21 @@
-"use client";
-import { ChangeEvent, useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+'use client';
+import { ChangeEvent, useEffect, useState } from 'react';
+import { useParams } from 'next/navigation';
 
-import CheckRegisterView from "@/components/organisms/register/check-register.view";
-import { BLANK } from "@/constants/constant";
-import { RequestInfoApi } from "@/api/churches/request-info.api";
-import { getFormattedMobilePhone, getFormattedName } from "@/utils/format";
-import { usePageRouter } from "@/utils/router";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "@/redux/store";
-import { setMember } from "@/redux/reducers/member-register-reducer";
-import { Member } from "@/models/member/member";
+import CheckRegisterView from '@/components/organisms/register/check-register.view';
+import { BLANK } from '@/constants/constant';
+import { RequestInfoApi } from '@/api/churches/request-info.api';
+import { getFormattedMobilePhone, getFormattedName } from '@/utils/format';
+import { usePageRouter } from '@/utils/router';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '@/redux/store';
+import { setMember } from '@/redux/reducers/member-register-reducer';
+import { Member } from '@/models/member/member';
 
 const CheckRegister = () => {
   const dispatch = useDispatch<AppDispatch>();
   const member: Member = useSelector(
-    (state: RootState): Member => state.memberRegister.member,
+    (state: RootState): Member => state.memberRegister.member
   );
   const router = usePageRouter();
   const { churchId, requestInfoId } = useParams() as {
@@ -30,7 +30,7 @@ const CheckRegister = () => {
   // 이름과 전화번호가 모두 존재해야 활성화
   useEffect(() => {
     setIsButtonEnable(
-      member.name !== BLANK && member.mobilePhone.length === 13,
+      member.name !== BLANK && member.mobilePhone.length === 13
     );
   }, [member]);
 
@@ -59,8 +59,8 @@ const CheckRegister = () => {
         { churchId, requestInfoId },
         {
           name: member.name,
-          mobilePhone: member.mobilePhone.replace(/\D/g, ""),
-        },
+          mobilePhone: member.mobilePhone.replace(/\D/g, ''),
+        }
       )
       .then((response) => {
         if (response.data.success) {

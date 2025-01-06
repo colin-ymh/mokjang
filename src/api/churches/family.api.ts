@@ -1,7 +1,7 @@
-import axios, { AxiosResponse } from "axios";
-import { EditMemberBody } from "@/api/churches/members.api";
-import { FAMILY } from "@/constants/constant";
-import { SERVER_URL, TEST_SERVER_URL } from "@/constants/state/url";
+import axios, { AxiosResponse } from 'axios';
+import { EditMemberBody } from '@/api/churches/members.api';
+import { FAMILY } from '@/constants/constant';
+import { SERVER_URL, TEST_SERVER_URL } from '@/constants/state/url';
 
 class HTTPError extends Error {}
 
@@ -51,7 +51,7 @@ export class FamilyApi {
    * @returns {Promise<AxiosResponse>}
    */
   public getFamily = async (
-    params: GetFamilyParams,
+    params: GetFamilyParams
   ): Promise<AxiosResponse> => {
     const { churchId, memberId } = params;
 
@@ -72,7 +72,7 @@ export class FamilyApi {
    */
   public createFamily = async (
     params: CreateFamilyParams,
-    body: CreateFamilyBody,
+    body: CreateFamilyBody
   ): Promise<AxiosResponse> => {
     const { churchId, memberId } = params;
 
@@ -93,7 +93,7 @@ export class FamilyApi {
    */
   public fetchFamily = async (
     params: CreateFamilyParams,
-    body: CreateFamilyBody,
+    body: CreateFamilyBody
   ): Promise<AxiosResponse> => {
     const { churchId, memberId } = params;
 
@@ -114,7 +114,7 @@ export class FamilyApi {
    */
   public editFamily = async (
     params: EditFamilyParams,
-    body: EditFamilyBody,
+    body: EditFamilyBody
   ): Promise<AxiosResponse> => {
     const { churchId, memberId, familyMemberId } = params;
 
@@ -133,7 +133,7 @@ export class FamilyApi {
    * @returns {Promise<AxiosResponse>}
    */
   public deleteFamily = async (
-    params: DeleteFamilyParams,
+    params: DeleteFamilyParams
   ): Promise<AxiosResponse> => {
     const { churchId, memberId, familyMemberId } = params;
 

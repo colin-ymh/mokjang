@@ -1,11 +1,11 @@
-import React, { ReactNode } from "react";
-import styled from "styled-components";
+import React, { ReactNode } from 'react';
+import styled from 'styled-components';
 
 import {
   MainText,
   MainTextProps,
-} from "@/components/atoms/common/text/main-text";
-import { MAIN, WHITE } from "@/constants/styles/color";
+} from '@/components/atoms/common/text/main-text';
+import { MAIN, WHITE } from '@/constants/styles/color';
 
 export type ButtonProps = MainTextProps & {
   text?: string;
@@ -37,7 +37,7 @@ const ButtonContainer = styled.button<{
   border-radius: ${({ $borderRadius }) =>
     ` ${$borderRadius !== null ? $borderRadius : 5}px`};
   border: none;
-  cursor: ${({ disabled }) => (disabled ? "not-allowed" : "pointer")};
+  cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
   transition: all 0.3s ease;
   box-shadow: ${({ $isShadow, disabled }) =>
     $isShadow && !disabled ? `2px 2px 10px rgba(0, 0, 0, 0.3)` : `none`};
