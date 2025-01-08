@@ -5,6 +5,8 @@ import { ChurchInformation } from '@/models/member/member';
 export const useMemberFilterContent = (
   t: (key: string, ...args: any[]) => string,
   officers: ChurchInformation[],
+  educations: ChurchInformation[],
+  ministries: ChurchInformation[],
   id: MEMBER
 ) => {
   // 성별인 경우
@@ -23,6 +25,18 @@ export const useMemberFilterContent = (
   const officerFilterItems = officers?.map((item) => {
     return { value: item.id, title: item.name };
   });
+
+  // 교육인 경우
+  const educationsFilterItems = educations?.map((item) => {
+    return { value: item.id, title: item.name };
+  });
+
+  // 교육인 경우
+  const ministriesFilterItems = ministries?.map((item) => {
+    return { value: item.id, title: item.name };
+  });
+
+
 
   // 결혼인 경우
   const marriageFilterItems = [
@@ -65,6 +79,10 @@ export const useMemberFilterContent = (
       return genderFilterItems;
     case MEMBER.OFFICER:
       return officerFilterItems;
+    case MEMBER.EDUCATIONS:
+      return educationsFilterItems;
+    case MEMBER.MINISTRIES:
+      return ministriesFilterItems;
     case MEMBER.MARRIAGE:
       return marriageFilterItems;
     case MEMBER.BAPTISM:

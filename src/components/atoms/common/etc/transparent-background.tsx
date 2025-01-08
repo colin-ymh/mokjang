@@ -6,11 +6,13 @@ export type TransparentBackgroundProps = {
   isOpened: boolean;
   onClick: (event: React.MouseEvent<HTMLDivElement>) => void;
   blur?: boolean;
+  zIndex?: number;
 };
 
 type BackgroundProps = {
   $isOpened: boolean;
   $blur: boolean;
+  $zIndex?: number;
 };
 
 const Background = styled.div<BackgroundProps>`
@@ -18,7 +20,7 @@ const Background = styled.div<BackgroundProps>`
   inset: 0;
   background-color: ${({ $blur }) =>
     $blur ? 'rgba(0, 0, 0, 0.1)' : 'transparent'};
-  z-index: 40;
+  z-index: ${({ $zIndex }) => $zIndex}
   display: ${({ $isOpened }) => ($isOpened ? 'block' : 'none')};
 `;
 
@@ -26,11 +28,19 @@ const Background = styled.div<BackgroundProps>`
 const TransparentBackground = ({
   isOpened,
   onClick,
+  zIndex = 40,
   blur = true,
 }: TransparentBackgroundProps) => {
   if (!isOpened) return null;
 
-  return <Background $isOpened={isOpened} onClick={onClick} $blur={blur} />;
+  return (
+    <Background
+      $isOpened={isOpened}
+      onClick={onClick}
+      $blur={blur}
+      $zIndex={zIndex}
+    />
+  );
 };
 
 export default TransparentBackground;

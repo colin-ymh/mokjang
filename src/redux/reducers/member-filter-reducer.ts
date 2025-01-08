@@ -179,6 +179,22 @@ export const INITIAL_TABLE_HEADER_LIST: TABLE_HEADER_ITEM[] = [
     isDate: false,
   },
   {
+    id: MEMBER.EDUCATIONS,
+    isShown: false,
+    isSortable: false,
+    isFilterable: true,
+    isFixed: false,
+    isDate: false,
+  },
+  {
+    id: MEMBER.MINISTRIES,
+    isShown: false,
+    isSortable: false,
+    isFilterable: true,
+    isFixed: false,
+    isDate: false,
+  },
+  {
     id: MEMBER.BIRTH,
     isShown: false,
     isSortable: true,

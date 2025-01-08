@@ -1,17 +1,13 @@
 import React, { MutableRefObject } from 'react';
 import Image from 'next/image';
 import styled from 'styled-components';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/redux/store';
 
 import { GRAY, WHITE } from '@/constants/styles/color';
 import { MEMBER } from '@/constants/member/member-column';
 import { MainText } from '@/components/atoms/common/text/main-text';
-import { BAPTISM, GENDER } from '@/constants/constant';
 import { getAge, getDateFromString } from '@/utils/date';
 import {
   getFormattedDate,
-  getFormattedHomePhone,
   getFormattedMobilePhone,
   getKRDateFromDashDate,
 } from '@/utils/format';
@@ -19,45 +15,8 @@ import { Member } from '@/models/member/member';
 import MemberTableHeader from '@/components/atoms/member/list/member-table-header';
 import useWindowSize from '@/hooks/window/window';
 
-import DefaultImage from '../../../../../public/png/default-member-image.png';
-import { useI18n } from '../../../../../locales/client';
-
-const getColumnWidth = (id: string) => {
-  switch (id) {
-    case MEMBER.GROUP:
-      return 70;
-    case MEMBER.PROFILE_IMAGE:
-      return 40;
-    case MEMBER.NAME:
-      return 100;
-    case MEMBER.GENDER:
-      return 40;
-    case MEMBER.OFFICER:
-      return 40;
-    case MEMBER.AGE:
-      return 40;
-    case MEMBER.MOBILE_PHONE:
-      return 150;
-    case MEMBER.HOME_PHONE:
-      return 140;
-    case MEMBER.ADDRESS:
-      return 150;
-    case MEMBER.OCCUPATION:
-      return 80;
-    case MEMBER.SCHOOL:
-      return 100;
-    case MEMBER.BAPTISM:
-      return 50;
-    case MEMBER.BIRTH:
-      return 150;
-    case MEMBER.REGISTERED_AT:
-      return 150;
-    case MEMBER.UPDATED_AT:
-      return 150;
-    default:
-      return 50;
-  }
-};
+import DefaultImage from '../../../../public/png/default-member-image.png';
+import { TABLE_HEADER_ITEM } from '@/redux/reducers/member-filter-reducer';
 
 const TableContainer = styled.div`
   display: flex;
@@ -74,7 +33,7 @@ const MemberTable = styled.table`
 
 const TableHeader = styled.th<{ id: string }>`
   border-bottom: 1px solid ${GRAY.LIGHT};
-  border-top: 1px solid ${GRAY.LIGHT};
+  //border-top: 1px solid ${GRAY.LIGHT};
   border-right: 1px solid ${GRAY.LIGHT};
   padding: 5px;
   justify-content: center;
@@ -84,10 +43,7 @@ const TableHeader = styled.th<{ id: string }>`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-
-  width: ${({ id }) => {
-    return `${getColumnWidth(id)}px`;
-  }};
+  width: auto;
 `;
 
 const Scroll = styled.div<{ height: number }>`
@@ -113,8 +69,7 @@ const TableData = styled.td<{ id: string; $index: number }>`
   background-color: ${({ $index }) =>
     $index % 2 === 0 ? WHITE : GRAY.SIDE_BAR};
   cursor: pointer;
-
-  width: ${({ id }) => `${getColumnWidth(id)}px`};
+  width: auto;
 `;
 
 const ContentWrapper = styled.div`
@@ -130,26 +85,73 @@ const ProfileImage = styled(Image)`
   border-radius: 5px;
 `;
 
+export const GROUP_MEMBER_TABLE_HEADER: TABLE_HEADER_ITEM[] = [
+  {
+    id: MEMBER.GROUP,
+    isShown: true,
+    isSortable: true,
+    isFilterable: false,
+    isFixed: true,
+    isDate: false,
+  },
+  {
+    id: MEMBER.OFFICER,
+    isShown: true,
+    isSortable: true,
+    isFilterable: true,
+    isFixed: false,
+    isDate: false,
+  },
+  {
+    id: MEMBER.NAME,
+    isShown: true,
+    isSortable: true,
+    isFilterable: false,
+    isFixed: true,
+    isDate: false,
+  },
+  {
+    id: MEMBER.PROFILE_IMAGE,
+    isShown: true,
+    isSortable: false,
+    isFilterable: false,
+    isFixed: true,
+    isDate: false,
+  },
+  {
+    id: MEMBER.AGE,
+    isShown: true,
+    isSortable: true,
+    isFilterable: false,
+    isFixed: false,
+    isDate: false,
+  },
+  {
+    id: MEMBER.MOBILE_PHONE,
+    isShown: true,
+    isSortable: false,
+    isFilterable: false,
+    isFixed: false,
+    isDate: false,
+  },
+];
+
 type MemberTableProps = {
-  members: Member[];
+  groupMembers: Member[];
   onClickHeader: (id: MEMBER) => void;
-  onClickMemberItem: (memberId: string) => void;
+  // onClickMemberItem: (memberId: string) => void;
   scrollRef: MutableRefObject<HTMLDivElement | null>;
   onScroll: () => void;
 };
 
-const MemberTableView = ({
-  members,
+const GroupMemberTableView = ({
+  groupMembers,
   onClickHeader,
-  onClickMemberItem,
+  // onClickMemberItem,
   scrollRef,
   onScroll,
 }: MemberTableProps) => {
   const { height } = useWindowSize();
-  const memberTableHeaderItemList = useSelector(
-    (state: RootState) => state.memberFilter.memberTableHeaderItemList
-  );
-  const t = useI18n();
 
   const getMemberTableContent = (id: MEMBER, member: Member) => {
     switch (id) {
@@ -166,10 +168,10 @@ const MemberTableView = ({
         return <MainText>{member.name}</MainText>;
       case MEMBER.MOBILE_PHONE:
         return (
-          <MainText>{getFormattedMobilePhone(member?.mobilePhone)}</MainText>
+          <MainText>
+            {member?.mobilePhone && getFormattedMobilePhone(member.mobilePhone)}
+          </MainText>
         );
-      case MEMBER.GENDER:
-        return <MainText>{t(member.gender as GENDER)}</MainText>;
       case MEMBER.BIRTH:
         return (
           <MainText>
@@ -183,54 +185,8 @@ const MemberTableView = ({
             {member.birth && getAge(getDateFromString(member.birth))}
           </MainText>
         );
-      case MEMBER.BAPTISM:
-        return <MainText>{t(member?.baptism as BAPTISM)}</MainText>;
       case MEMBER.OFFICER:
         return <MainText>{member.officer?.name}</MainText>;
-      case MEMBER.MINISTRIES:
-        return (
-          <MainText>
-            {member.ministries?.map((item) => {
-              return item.name;
-            })}
-          </MainText>
-        );
-      case MEMBER.EDUCATIONS:
-        return (
-          <MainText>
-            {member.educations?.map((item) => {
-              return item.name;
-            })}
-          </MainText>
-        );
-      case MEMBER.HOME_PHONE:
-        return (
-          <MainText>
-            {member.homePhone && getFormattedHomePhone(member.homePhone)}
-          </MainText>
-        );
-      case MEMBER.ADDRESS:
-        return <MainText>{member.address}</MainText>;
-      case MEMBER.OCCUPATION:
-        return <MainText>{member.occupation}</MainText>;
-      case MEMBER.SCHOOL:
-        return <MainText>{member.school}</MainText>;
-      case MEMBER.MARRIAGE:
-        return <MainText>{t(member.marriage)}</MainText>;
-      case MEMBER.REGISTERED_AT:
-        return (
-          <MainText>
-            {member.registeredAt &&
-              getKRDateFromDashDate(getFormattedDate(member.registeredAt))}
-          </MainText>
-        );
-      case MEMBER.UPDATED_AT:
-        return (
-          <MainText>
-            {member.updatedAt &&
-              getKRDateFromDashDate(getFormattedDate(member.updatedAt))}
-          </MainText>
-        );
       default:
         return null;
     }
@@ -241,13 +197,13 @@ const MemberTableView = ({
       <MemberTable>
         <thead>
           <tr>
-            {memberTableHeaderItemList
-              .filter((item) => item.isShown)
-              .map((item) => (
+            {GROUP_MEMBER_TABLE_HEADER.filter((item) => item.isShown).map(
+              (item) => (
                 <TableHeader key={item.id} id={item.id}>
                   <MemberTableHeader item={item} onClick={onClickHeader} />
                 </TableHeader>
-              ))}
+              )
+            )}
           </tr>
         </thead>
       </MemberTable>
@@ -255,20 +211,20 @@ const MemberTableView = ({
       <Scroll ref={scrollRef} onScroll={onScroll} height={height}>
         <MemberTable>
           <tbody>
-            {members.map((member, index) => (
+            {groupMembers.map((member, index) => (
               <MemberTableRow
                 key={member.id}
-                onClick={() => onClickMemberItem(member.id)}
+                // onClick={() => onClickMemberItem(member.id)}
               >
-                {memberTableHeaderItemList
-                  .filter((item) => item.isShown)
-                  .map((item) => (
+                {GROUP_MEMBER_TABLE_HEADER.filter((item) => item.isShown).map(
+                  (item) => (
                     <TableData key={item.id} id={item.id} $index={index}>
                       <ContentWrapper>
                         {getMemberTableContent(item.id, member)}
                       </ContentWrapper>
                     </TableData>
-                  ))}
+                  )
+                )}
               </MemberTableRow>
             ))}
           </tbody>
@@ -278,4 +234,4 @@ const MemberTableView = ({
   );
 };
 
-export default MemberTableView;
+export default GroupMemberTableView;

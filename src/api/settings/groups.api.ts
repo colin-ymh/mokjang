@@ -1,11 +1,15 @@
 import axios, { AxiosResponse } from 'axios';
-import { EditMemberBody } from '@/api/churches/members.api';
 import { SERVER_URL, TEST_SERVER_URL } from '@/constants/state/url';
 
 class HTTPError extends Error {}
 
 type GetGroupsParams = {
   churchId: string; // 교회 id
+};
+
+type GetGroupParams = {
+  churchId: string; // 교회 id
+  groupId: string;
 };
 
 type GetChildGroupsParams = {
@@ -19,7 +23,7 @@ type CreateGroupParams = {
 
 type CreateGroupBody = {
   name: string;
-  parentGroupId?: string;
+  parentGroupId?: string | null;
 };
 
 type EditGroupParams = {
@@ -28,8 +32,8 @@ type EditGroupParams = {
 };
 
 type EditGroupBody = {
-  name: string;
-  parentGroupId?: string;
+  name?: string;
+  parentGroupId?: string | null;
 };
 
 type DeleteGroupParams = {
@@ -47,7 +51,7 @@ export class GroupsApi {
   }
 
   /**
-   * 소그룹 불러오기
+   * 교회의 소그룹들 불러오기
    * @param {GetGroupsParams} params
    * @returns {Promise<AxiosResponse>}
    */
@@ -57,6 +61,23 @@ export class GroupsApi {
     const { churchId } = params;
 
     const url = `${this._url}/churches/${churchId}/settings/groups`;
+
+    try {
+      return await axios.get(url);
+    } catch (error) {
+      throw new HTTPError(`Fetch error: ${error}`);
+    }
+  };
+
+  /**
+   * 특정 소그룹 불러오기
+   * @param {GetGroupParams} params
+   * @returns {Promise<AxiosResponse>}
+   */
+  public getGroup = async (params: GetGroupParams): Promise<AxiosResponse> => {
+    const { churchId, groupId } = params;
+
+    const url = `${this._url}/churches/${churchId}/settings/groups/${groupId}`;
 
     try {
       return await axios.get(url);
@@ -90,7 +111,7 @@ export class GroupsApi {
    * @param {CreateGroupBody} body
    * @returns {Promise<AxiosResponse>}
    */
-  public createGroups = async (
+  public createGroup = async (
     params: CreateGroupParams,
     body: CreateGroupBody
   ): Promise<AxiosResponse> => {

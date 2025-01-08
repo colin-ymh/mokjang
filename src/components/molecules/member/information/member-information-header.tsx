@@ -78,6 +78,7 @@ const MemberInformationHeader = ({
         </TextContainer>
       </Information>
 
+      {/* 개인정보, 가족 등의 탭 바*/}
       <HeaderBarView
         value={contentId}
         items={headerBarItems}

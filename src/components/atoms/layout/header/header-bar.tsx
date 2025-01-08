@@ -1,7 +1,4 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
-import { AppDispatch } from '@/redux/store';
-import { setContentId } from '@/redux/reducers/layout-reducer';
 
 import HeaderBarView from '@/components/atoms/layout/header/header-bar.view';
 
@@ -13,13 +10,10 @@ export type HeaderBarItem = {
 type HeaderBarProps = {
   value: string;
   items: HeaderBarItem[];
+  onClick: (id: any) => void;
 };
 
-const HeaderBar = ({ value, items }: HeaderBarProps) => {
-  const dispatch = useDispatch<AppDispatch>();
-  const onClick = (id: string) => {
-    dispatch(setContentId(id));
-  };
+const HeaderBar = ({ value, items, onClick }: HeaderBarProps) => {
   const props = {
     value,
     items,

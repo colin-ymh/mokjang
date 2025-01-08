@@ -2,7 +2,10 @@ import {
   MEMBER_CONTENT_ID,
   SETTING_CONTENT_ID,
 } from '@/constants/layout/content';
-import { MEMBER_INFORMATION_HEADER_ID } from '@/constants/layout/header';
+import {
+  GROUP_SETTING_HEADER_ID,
+  MEMBER_INFORMATION_HEADER_ID,
+} from '@/constants/layout/header';
 
 import { useI18n, useScopedI18n } from '../../../locales/client';
 
@@ -80,6 +83,23 @@ export const useSettingHeaderBarItems = () => {
     {
       id: SETTING_CONTENT_ID.EDUCATION,
       title: t(SETTING_CONTENT_ID.EDUCATION),
+    },
+  ];
+
+  return items;
+};
+
+export const useGroupSettingHeaderBarItems = () => {
+  const t_header = useScopedI18n('header');
+
+  const items = [
+    {
+      id: GROUP_SETTING_HEADER_ID.GROUP_INFORMATION,
+      title: t_header(GROUP_SETTING_HEADER_ID.GROUP_INFORMATION),
+    },
+    {
+      id: GROUP_SETTING_HEADER_ID.MEMBER_LIST,
+      title: t_header(GROUP_SETTING_HEADER_ID.MEMBER_LIST),
     },
   ];
 

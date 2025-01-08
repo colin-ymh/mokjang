@@ -9,7 +9,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { SIZE } from '@/constants/styles/style';
 
-import { useI18n, useScopedI18n } from '../../../../../locales/client';
+import { useI18n } from '../../../../../locales/client';
 
 const HeaderContainer = styled.div`
   display: flex;
@@ -27,9 +27,13 @@ const HeaderBottomContainer = styled.div`
   align-items: center;
 `;
 
-type SettingTabHeaderViewProps = {};
+type SettingTabHeaderViewProps = {
+  onClickHeaderBar: (id: string) => void;
+};
 
-const SettingTabHeaderView = ({}: SettingTabHeaderViewProps) => {
+const SettingTabHeaderView = ({
+  onClickHeaderBar,
+}: SettingTabHeaderViewProps) => {
   const t = useI18n();
   const contentId = useSelector((state: RootState) => state.layout.contentId);
   const headerBarItems = useSettingHeaderBarItems();
@@ -38,7 +42,11 @@ const SettingTabHeaderView = ({}: SettingTabHeaderViewProps) => {
     <HeaderContainer>
       <MainText size={SIZE.EXTRA_LARGE}>{t('setting')}</MainText>
       <HeaderBottomContainer>
-        <HeaderBar value={contentId} items={headerBarItems} />
+        <HeaderBar
+          value={contentId}
+          items={headerBarItems}
+          onClick={onClickHeaderBar}
+        />
       </HeaderBottomContainer>
     </HeaderContainer>
   );

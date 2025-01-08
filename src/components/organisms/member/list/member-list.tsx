@@ -19,6 +19,7 @@ import { MEMBER } from '@/constants/member/member-column';
 import { getNewMemberDate } from '@/utils/date';
 import { setMembers } from '@/redux/reducers/member-filter-reducer';
 import { setTargetMember } from '@/redux/reducers/target-member';
+import { useScopedI18n } from '../../../../../locales/client';
 
 const ButtonContainer = styled.div`
   display: flex;
@@ -33,6 +34,7 @@ type MemberListProps = {
 };
 
 const MemberList = ({ isNewMember }: MemberListProps) => {
+  const t_button = useScopedI18n("button")
   const membersApi = new MembersApi(false);
   const dispatch = useDispatch<AppDispatch>();
   const churchId: string = useSelector(
@@ -155,7 +157,7 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
         if (response.status === 200) {
           // 초기화 후 다시 로드
           setPage(1);
-          setMembers([]);
+          dispatch(setMembers([]));
           loadMembers();
         }
       });
@@ -184,7 +186,7 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
         isPercentage={true}
         headerRight={
           <ButtonContainer>
-            <Button text={'삭제'} onClick={onClickDelete} />
+            <Button text={t_button("delete")} onClick={onClickDelete} />
           </ButtonContainer>
         }
       >

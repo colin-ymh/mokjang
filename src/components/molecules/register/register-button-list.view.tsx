@@ -7,13 +7,12 @@ import Button from '@/components/atoms/common/button/button';
 import { BLACK, GRAY, MAIN, WHITE } from '@/constants/styles/color';
 import {
   BLANK,
-  MEDIA_MIN_WIDTH,
   MEMBER_REGISTER_STAGE,
 } from '@/constants/constant';
+import ToastPopup from '@/components/atoms/common/popup/toast-popup';
 
 import GoBackButton from '../../../../public/svg/chevron-left.svg';
 import { useScopedI18n } from '../../../../locales/client';
-import ToastPopup from '@/components/atoms/common/popup/toast-popup';
 
 const ButtonListContainer = styled.div`
   display: flex;
@@ -21,7 +20,6 @@ const ButtonListContainer = styled.div`
   justify-content: center;
   align-items: center;
   position: relative;
-  //flex-shrink: 1;
 `;
 
 const LeftButtonContainer = styled.div`

@@ -6,6 +6,11 @@ export default {
   after: 'From',
   before: 'To',
   setting: 'Setting',
+  all: 'All',
+
+  groupList: 'Group List',
+  groupName: 'Group Name',
+  groupRole: 'Group Roles',
 
   birthAfter: 'Born After',
   birthBefore: 'Born Before',
@@ -99,6 +104,9 @@ export default {
   'header.memberInformation': 'Member Information',
   'header.personalInformation': 'Personal Information',
   'header.familyInformation': 'Family Information',
+
+  'header.groupInformation': 'Group Information',
+  'header.groupMembers': 'Group Members',
   /*-------------------header (side bar button)-------------------*/
 
   /*-------------------member content (member header bar button)-------------------*/

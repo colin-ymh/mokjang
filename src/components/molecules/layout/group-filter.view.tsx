@@ -58,11 +58,11 @@ const renderGroups = (
 ) => {
   return groups.map((group) => {
     const isHaveChildren = group.childGroups && group.childGroups.length > 0;
-    const isOpen = openGroups[parseInt(group.id)] ?? false; // 기본적으로 닫힘 상태
+    const isOpen = openGroups[parseInt(group.id as string)] ?? false; // 기본적으로 닫힘 상태
 
     const getGroupIds = (group: Group): string[] => {
       // 재귀적으로 현재 그룹과 모든 하위 그룹의 ID를 수집
-      let collectedIds: string[] = [group.id]; // 본인 그룹의 ID 추가
+      let collectedIds: string[] = [group.id as string]; // 본인 그룹의 ID 추가
       if (group.childGroups && group.childGroups.length > 0) {
         group.childGroups.forEach((child) => {
           collectedIds = collectedIds.concat(getGroupIds(child)); // 하위 그룹의 자식들도 재귀적으로 추가
@@ -72,7 +72,7 @@ const renderGroups = (
     };
 
     return (
-      <ChildGroupsContainer key={parseInt(group.id)}>
+      <ChildGroupsContainer key={parseInt(group.id as string)}>
         <GroupItemContainer
           $level={level}
           onClick={() => onClickGroup(getGroupIds(group))}
@@ -80,7 +80,7 @@ const renderGroups = (
           <ToggleButton
             onClick={(e) => {
               e.stopPropagation(); // 이벤트 전파 중지
-              onClickToggle(parseInt(group.id));
+              onClickToggle(parseInt(group.id as string));
             }}
           >
             <MainText color={GRAY.DARK}>
@@ -88,7 +88,11 @@ const renderGroups = (
             </MainText>
           </ToggleButton>
           <MainText
-            color={group.id === selectedGroupId ? MAIN.DEFAULT : GRAY.DARK}
+            color={
+              (group.id as string) === selectedGroupId
+                ? MAIN.DEFAULT
+                : GRAY.DARK
+            }
           >
             {group.name}
           </MainText>

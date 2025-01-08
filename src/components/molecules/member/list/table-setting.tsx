@@ -89,6 +89,7 @@ const TableSetting = ({ setIsShown }: AddFilterProps) => {
           MEMBER.OFFICER,
           MEMBER.EDUCATIONS,
           MEMBER.MARRIAGE,
+          MEMBER.BAPTISM,
         ].includes(id)
       ) {
         dispatch(
@@ -101,6 +102,7 @@ const TableSetting = ({ setIsShown }: AddFilterProps) => {
                 | MEMBER.OFFICER
                 | MEMBER.EDUCATIONS
                 | MEMBER.MARRIAGE
+                | MEMBER.BAPTISM
             ]
           )
         );

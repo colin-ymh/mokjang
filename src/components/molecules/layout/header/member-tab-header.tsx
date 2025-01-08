@@ -1,25 +1,16 @@
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '@/redux/store';
+import { setContentId } from '@/redux/reducers/layout-reducer';
 
 import MemberTabHeaderView from '@/components/molecules/layout/header/member-tab-header.view';
 import CustomPopup from '@/components/atoms/common/popup/custom-popup';
 import MemberRegister from '@/components/organisms/register/member-register';
-import { MainText } from '@/components/atoms/common/text/main-text';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/redux/store';
-import { MembersApi } from '@/api/churches/members.api';
-import { MEMBER_REGISTER_STAGE } from '@/constants/constant';
-import { getEditMemberBody } from '@/utils/member';
 
 type MemberManagementHeadBarProps = {};
 
 const MemberTabHeader = ({}: MemberManagementHeadBarProps) => {
-  const churchId: string = useSelector(
-    (state: RootState) => state.church.churchId
-  );
-  const { member, stage } = useSelector(
-    (state: RootState) => state.memberRegister
-  );
-  const membersApi = new MembersApi(false);
+  const dispatch = useDispatch<AppDispatch>();
 
   // 교인 등록하기 on/off
   const [isRegisterShown, setIsRegisterShown] = useState<boolean>(false);
@@ -34,23 +25,14 @@ const MemberTabHeader = ({}: MemberManagementHeadBarProps) => {
     setIsRegisterShown(true);
   };
 
-  // 교인 저장하기 버튼
-  const onClickSave = () => {
-    if (stage !== MEMBER_REGISTER_STAGE.REQUIRED && member.id) {
-      console.log(member.id, member);
-      // 교인 저장
-      membersApi.editMember(
-        { memberId: member.id, churchId },
-        getEditMemberBody(member)
-      );
-
-      // 팝업 닫기
-      setIsRegisterShown(false);
-    }
+  // 헤더 탭바 이벤트
+  const onClickHeaderBar = (id: string) => {
+    dispatch(setContentId(id));
   };
 
   const props = {
     onClickRegisterMemberButton,
+    onClickHeaderBar,
   };
 
   return (

@@ -1,18 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useRouter } from 'next/navigation';
 import { AppDispatch, RootState } from '@/redux/store';
-import { setStage } from '@/redux/reducers/member-register-reducer';
+import { setMember, setStage } from '@/redux/reducers/member-register-reducer';
 
 import {
   MEMBER_REGISTER_STAGE,
   MEMBER_REGISTER_TYPE,
 } from '@/constants/constant';
 import RegisterButtonListView from '@/components/molecules/register/register-button-list.view';
+import { getEditMemberBody } from '@/utils/member';
+import { RequestInfoApi } from '@/api/churches/request-info.api';
 
 import { useScopedI18n } from '../../../../locales/client';
-import { RequestInfoApi } from '@/api/churches/request-info.api';
-import { getEditMemberBody } from '@/utils/member';
 
 const ExtraButtonList = () => {
   const requestInfoApi = new RequestInfoApi(false);
@@ -28,6 +28,8 @@ const ExtraButtonList = () => {
   );
   const t_button = useScopedI18n('button');
 
+  const [isToastShow, setIsToastShow] = useState<boolean>(false);
+
   const onClickLeft = () => {
     if (stage === MEMBER_REGISTER_STAGE.PERSONAL) {
       router.back();
@@ -39,11 +41,6 @@ const ExtraButtonList = () => {
   const onClickRight = () => {
     if (stage === MEMBER_REGISTER_STAGE.PERSONAL) {
       if (type === MEMBER_REGISTER_TYPE.NEW) {
-        console.log({
-          ...getEditMemberBody(member),
-          name: member.name,
-          mobilePhone: member.mobilePhone.replace(/\D/g, ''),
-        });
         requestInfoApi
           .editRequestInfo(
             { churchId, requestInfoId },
@@ -54,7 +51,8 @@ const ExtraButtonList = () => {
             }
           )
           .then((response) => {
-            console.log(response);
+            // 성공 팝업
+            setIsToastShow(true);
           });
       } else {
         dispatch(setStage(MEMBER_REGISTER_STAGE.RELIGIOUS));
@@ -70,7 +68,8 @@ const ExtraButtonList = () => {
           }
         )
         .then((response) => {
-          console.log(response);
+          // 성공 팝업
+          setIsToastShow(true);
         });
     }
   };
@@ -99,6 +98,8 @@ const ExtraButtonList = () => {
     onClickLeft,
     onClickRight,
     getRightButtonTitle,
+    isToastShow,
+    setIsToastShow
   };
 
   return (

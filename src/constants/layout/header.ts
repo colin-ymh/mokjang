@@ -13,3 +13,8 @@ export enum MEMBER_INFORMATION_HEADER_ID {
   MINISTRY = 'ministry',
   EDUCATION = 'education',
 }
+
+export enum GROUP_SETTING_HEADER_ID {
+  GROUP_INFORMATION = 'groupInformation',
+  MEMBER_LIST = 'groupMembers',
+}

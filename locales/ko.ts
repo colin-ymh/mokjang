@@ -6,6 +6,11 @@ export default {
   after: '부터',
   before: '까지',
   setting: '설정',
+  all: '전체',
+
+  groupList: '그룹 목록',
+  groupName: '그룹명',
+  groupRole: '그룹역할',
 
   registeredAt: '등록일자',
   updatedAt: '수정일자',
@@ -100,6 +105,9 @@ export default {
   'header.memberInformation': '교인 정보',
   'header.personalInformation': '개인 정보',
   'header.familyInformation': '가족 정보',
+
+  'header.groupInformation': '그룹 정보',
+  'header.groupMembers': '그룹원',
   /*-------------------header (side bar button)-------------------*/
 
   /*-------------------member content (member header bar button)-------------------*/
