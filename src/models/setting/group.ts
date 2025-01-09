@@ -1,5 +1,4 @@
 import { BLANK } from '@/constants/constant';
-import { Member } from '@/models/member/member';
 
 export type Group = {
   id: string | null;
@@ -9,7 +8,7 @@ export type Group = {
   parentGroupId: string | null;
   childGroupIds: string[];
   childGroups?: Group[];
-  members: Member[];
+  // members: Member[];
 };
 
 export const DEFAULT_GROUP = {

@@ -149,12 +149,12 @@ const SettingGroupItem = ({
 
   // 드래그 이후 드롭
   const onDropGroup = (groupId: string, parentGroupId: string | null) => {
-    if (group.parentGroupId === parentGroupId) {
-      return;
-    }
     groupsApi
       .editGroup({ churchId, groupId }, { parentGroupId })
-      .then(() => fetchGroups());
+      .then(() => fetchGroups())
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   // 수정 중 focus 가 풀리면 수정 취소

@@ -2,7 +2,7 @@ import { ChangeEvent, useEffect, useState } from 'react';
 
 import { BLANK, EDUCATION_STATUS, NULL } from '@/constants/constant';
 import { useEducationDropdownItems } from '@/hooks/dropdown/dropdown-items';
-import EducationModalView from '@/components/molecules/member/information/modal/education-modal.view';
+import EducationModalView from '@/components/atoms/modal/education-modal.view';
 import { EducationHistory } from '@/models/member/history';
 import { getFormattedDate } from '@/utils/format';
 import { getIsWellFormedDate } from '@/utils/check';

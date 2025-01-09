@@ -6,7 +6,7 @@ import { FAMILY } from '@/constants/constant';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { FamilyMember } from '@/models/member/member';
 import { GRAY, WHITE } from '@/constants/styles/color';
-import FamilyModal from '@/components/molecules/member/information/modal/family-modal';
+import FamilyModal from '@/components/atoms/modal/family-modal';
 import FamilyMemberItem from '@/components/atoms/member/information/family-member-item';
 
 import { useScopedI18n } from '../../../../../locales/client';

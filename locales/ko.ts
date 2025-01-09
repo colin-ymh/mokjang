@@ -151,7 +151,7 @@ export default {
   'button.filterSetting': '목록 설정',
   'button.verify': '인증하기',
   'button.request': '요청하기',
-
+  'button.add': '추가하기',
   'button.signIn': '회원가입 완료하기',
 
   /*-------------------button-------------------*/

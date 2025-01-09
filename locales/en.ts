@@ -146,6 +146,7 @@ export default {
   'button.filterSetting': 'Setting',
   'button.verify': 'Verify',
   'button.request': 'Request',
+  'button.add': 'Add',
   'button.signIn': 'Sign In',
 
   /*-------------------button-------------------*/

@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 import { GRAY, WHITE } from '@/constants/styles/color';
 import { MainText } from '@/components/atoms/common/text/main-text';
-import EducationModal from '@/components/molecules/member/information/modal/education-modal';
+import EducationModal from '@/components/atoms/modal/education-modal';
 import { EducationHistory } from '@/models/member/history';
 
 import { useI18n } from '../../../../../locales/client';

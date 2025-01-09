@@ -2,7 +2,7 @@ import { ChangeEvent, useEffect, useState } from 'react';
 
 import { BLANK, NULL } from '@/constants/constant';
 import { useGroupDropdownItems } from '@/hooks/dropdown/dropdown-items';
-import GroupModalView from '@/components/molecules/member/information/modal/group-modal.view';
+import GroupModalView from '@/components/atoms/modal/group-modal.view';
 import { GroupHistory } from '@/models/member/history';
 import { getFormattedDate } from '@/utils/format';
 import { getIsWellFormedDate } from '@/utils/check';

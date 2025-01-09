@@ -1,21 +1,15 @@
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import React, { ChangeEvent } from 'react';
 import styled from 'styled-components';
-import { AxiosResponse } from 'axios';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/redux/store';
 
 import LabelDropdown from '@/components/atoms/common/dropdown/label-dropdown';
 import { onClickEnter } from '@/utils/input';
-import { getTrimmedString } from '@/utils/format';
-import { GetMembersResponse, MembersApi } from '@/api/churches/members.api';
 import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-item';
-import { BLANK, FAMILY, GENDER } from '@/constants/constant';
+import { BLANK, FAMILY } from '@/constants/constant';
 import { FamilyMember } from '@/models/member/member';
-import { useFamilyRelationDropdownItems } from '@/hooks/dropdown/dropdown-items';
 import Button from '@/components/atoms/common/button/button';
 
-import { useI18n, useScopedI18n } from '../../../../../../locales/client';
-import Cancel from '../../../../../../public/svg/cancel.svg';
+import { useI18n, useScopedI18n } from '../../../../locales/client';
+import Cancel from '../../../../public/svg/cancel.svg';
 
 const FamilyModalViewContainer = styled.div`
   display: flex;

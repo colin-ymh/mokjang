@@ -1,10 +1,14 @@
 import styled from 'styled-components';
+
 import GroupMemberTable from '@/components/molecules/setting/group-member-table';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { GRAY } from '@/constants/styles/color';
+import { Group } from '@/models/setting/group';
 
 import { useScopedI18n } from '../../../../locales/client';
-import { Group } from '@/models/setting/group';
+import Plus from '../../../../public/svg/plus.svg';
+import { Member } from '@/models/member/member';
+import AddGroupMemberModal from '@/components/atoms/modal/add-group-member-modal';
 
 const GroupMemberContainer = styled.div`
   display: flex;
@@ -13,30 +17,70 @@ const GroupMemberContainer = styled.div`
 
 const ListTypeHeader = styled.div`
   display: flex;
-  width: 100%;
+  position: relative;
   flex-direction: row;
   height: 40px;
   background-color: ${GRAY.SIDE_BAR};
-  //border-top: 1px solid ${GRAY.LIGHT};
   justify-content: flex-start;
   align-items: center;
   padding: 0 20px;
 `;
 
+const PlusButton = styled(Plus)`
+  stroke: ${GRAY.DARK};
+  stroke-width: 2px;
+  width: 25px;
+  height: 25px;
+  position: absolute;
+  right: 10px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: ${GRAY.LIGHT};
+  }
+`;
+
+const ModalContainer = styled.div`
+  display: flex;
+  position: absolute;
+  right: 20px;
+  top: 50px;
+  z-index: 100;
+`;
+
 type GroupMemberViewProps = {
   group: Group;
+  members: Member[];
+  isModalShown: boolean;
+  onClickModalOpen: () => void;
+  onClickModalClose: () => void;
 };
 
-const GroupMemberView = ({ group }: GroupMemberViewProps) => {
+const GroupMemberView = ({
+  group,
+  members,
+  isModalShown,
+  onClickModalOpen,
+  onClickModalClose,
+}: GroupMemberViewProps) => {
   const t_header = useScopedI18n('header');
-  console.log(group);
+
   return (
     <GroupMemberContainer>
       <ListTypeHeader>
         <MainText color={GRAY.DARK}>{t_header('groupMembers')}</MainText>
         <MainText color={GRAY.DARK}>{`(${group.membersCount})`}</MainText>
+        <PlusButton onClick={onClickModalOpen} />
+        <ModalContainer>
+          <AddGroupMemberModal
+            isShown={isModalShown}
+            onClickClose={onClickModalClose}
+          />
+        </ModalContainer>
       </ListTypeHeader>
-      <GroupMemberTable groupMembers={group.members} />
+      <GroupMemberTable groupMembers={members} />
     </GroupMemberContainer>
   );
 };

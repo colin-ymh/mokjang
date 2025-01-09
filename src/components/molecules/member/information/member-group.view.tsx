@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 import { GRAY, WHITE } from '@/constants/styles/color';
 import { MainText } from '@/components/atoms/common/text/main-text';
-import GroupModal from '@/components/molecules/member/information/modal/group-modal';
+import GroupModal from '@/components/atoms/modal/group-modal';
 import { GroupHistory } from '@/models/member/history';
 
 import { useI18n } from '../../../../../locales/client';
