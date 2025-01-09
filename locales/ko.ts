@@ -7,10 +7,21 @@ export default {
   before: '까지',
   setting: '설정',
   all: '전체',
+  period: '기간',
+
+  inProgress: '진행중',
+  completed: '수료',
+  incomplete: '미수료',
+
+  startDate: '시작 날짜',
+  endDate: '종료 날짜',
 
   groupList: '그룹 목록',
   groupName: '그룹명',
   groupRole: '그룹역할',
+
+  educationName: '교육명',
+  educationStatus: '상태',
 
   registeredAt: '등록일자',
   updatedAt: '수정일자',
@@ -163,6 +174,8 @@ export default {
   'placeholder.marriage': '결혼 상태를 입력해주세요',
   'placeholder.detailMarriage': '결혼 상세 상태를 입력해주세요',
   'placeholder.family': '가족을 입력해주세요.',
+  'placeholder.startDate': '시작날짜를 입력해주세요.',
+  'placeholder.endDate': '종료날짜를 입력해주세요.',
   /*-------------------placeholder-------------------*/
 
   /*-------------------radiobutton-------------------*/

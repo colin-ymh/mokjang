@@ -61,6 +61,41 @@ export const getIsWellFormedBirth = (birth: string): boolean => {
   return true;
 };
 
+export const getIsWellFormedDate = (birth: string): boolean => {
+  // YYYY-MM-DD 형식 검사
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(birth)) return false;
+
+  const [YEAR, MONTH, DATE] = birth.split('-').map((v) => parseInt(v, 10));
+
+  // 월 검사 (1 ~ 12 범위)
+  if (MONTH < 1 || MONTH > 12) return false;
+
+  // 윤년 여부 검사 함수
+  const isLeapYear = (year: number): boolean =>
+    (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
+
+  // 각 월별 최대 일자
+  const daysInMonth = [
+    31,
+    isLeapYear(YEAR) ? 29 : 28,
+    31,
+    30,
+    31,
+    30,
+    31,
+    31,
+    30,
+    31,
+    30,
+    31,
+  ];
+
+  // 일 검사 (월별 최대 일자 범위 내에 있어야 함)
+  if (DATE < 1 || DATE > daysInMonth[MONTH - 1]) return false;
+
+  return true;
+};
+
 export const getIsWellFormedName = (name: string) => {
   if (name === BLANK) return false;
   // 한글, 영문, 공백만 허용

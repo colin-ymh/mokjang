@@ -57,7 +57,6 @@ const FamilyInformationList = ({
             membersApi
               .getMember({ churchId, memberId: targetMember.id })
               .then((response) => {
-                console.log(response);
                 const member = getMemberFromServer(response.data.data);
                 dispatch(setTargetMember(member));
               });
@@ -129,8 +128,7 @@ const FamilyInformationList = ({
   };
 
   // 가족 삭제하기
-  const onClickDelete = (event: React.MouseEvent, familyMemberId: string) => {
-    event.stopPropagation();
+  const onClickDelete = (familyMemberId: string) => {
     if (familyMemberId) {
       familyApi
         .deleteFamily({ churchId, familyMemberId, memberId: targetMember.id })
@@ -146,8 +144,7 @@ const FamilyInformationList = ({
   };
 
   // 가족 수정하기
-  const onClickEdit = (event: React.MouseEvent, member: FamilyMember) => {
-    event.stopPropagation();
+  const onClickEdit = (member: FamilyMember) => {
     if (member) {
       setTargetFamilyMember(member);
       setIsModalShown(true);

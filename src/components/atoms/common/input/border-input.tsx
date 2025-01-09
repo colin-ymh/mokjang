@@ -1,7 +1,7 @@
 import React, { forwardRef } from 'react';
 import styled from 'styled-components';
 
-import { BLACK, GRAY, MAIN } from '@/constants/styles/color';
+import { BLACK, GRAY, MAIN, WHITE } from '@/constants/styles/color';
 import { InputProps } from '@/components/atoms/common/input/main-input';
 import { BLANK } from '@/constants/constant';
 
@@ -11,6 +11,7 @@ const BorderInputContainer = styled.input<{
   $borderColor: string;
   height?: number;
   width?: number;
+  $disabled?: boolean;
 }>`
   width: ${({ width }) => (width ? `${width}px` : '100%')};
   box-sizing: border-box;
@@ -22,6 +23,8 @@ const BorderInputContainer = styled.input<{
   transition: all 0.3s ease;
   height: ${({ height }) => (height ? `${height}px` : 'auto')};
   pointer-events: ${({ $isEditable }) => ($isEditable ? 'auto' : 'none')};
+  background-color: ${({ $disabled }) => ($disabled ? 'orange' : WHITE)};
+
   &:focus {
     outline: none;
     border: 1px solid ${MAIN.DEFAULT};
@@ -44,6 +47,7 @@ const BorderInput = forwardRef<HTMLInputElement, BorderInputProps>(
       value = BLANK,
       height,
       width,
+      disabled,
       ...props
     },
     ref
@@ -58,6 +62,7 @@ const BorderInput = forwardRef<HTMLInputElement, BorderInputProps>(
         $borderColor={borderColor}
         height={height}
         width={width}
+        $disabled={disabled}
         {...props}
       />
     );

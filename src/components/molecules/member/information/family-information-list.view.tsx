@@ -80,8 +80,8 @@ type FamilyInformationListViewProps = {
   ) => void;
   onClickEditFamily: (familyMemberId: string, relation: FAMILY) => void;
   onClickFamilyMember: (familyMemberId: string) => void;
-  onClickEdit: (event: React.MouseEvent, member: FamilyMember) => void;
-  onClickDelete: (event: React.MouseEvent, familyMemberId: string) => void;
+  onClickEdit: (member: FamilyMember) => void;
+  onClickDelete: (familyMemberId: string) => void;
 };
 
 const FamilyInformationListView = ({

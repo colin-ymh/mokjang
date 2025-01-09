@@ -21,6 +21,7 @@ import GroupSetting from '@/components/organisms/setting/group-setting';
 import GroupInformation from '@/components/molecules/setting/group-information';
 import GroupMember from '@/components/molecules/setting/group-member';
 import { Group } from '@/models/setting/group';
+import MemberGroup from '@/components/molecules/member/information/member-group';
 
 export const getContent = (id: string): ReactNode => {
   switch (id) {
@@ -71,6 +72,8 @@ export const getMemberInformationContent = (
       return <InformationList />;
     case MEMBER_INFORMATION_HEADER_ID.FAMILY_INFORMATION:
       return <FamilyInformationList setContentId={setContentId} />;
+    case MEMBER_INFORMATION_HEADER_ID.GROUP:
+      return <MemberGroup />;
     case MEMBER_INFORMATION_HEADER_ID.EDUCATION:
       return <MemberEducation />;
   }

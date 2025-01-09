@@ -34,7 +34,7 @@ type MemberListProps = {
 };
 
 const MemberList = ({ isNewMember }: MemberListProps) => {
-  const t_button = useScopedI18n("button")
+  const t_button = useScopedI18n('button');
   const membersApi = new MembersApi(false);
   const dispatch = useDispatch<AppDispatch>();
   const churchId: string = useSelector(
@@ -186,7 +186,7 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
         isPercentage={true}
         headerRight={
           <ButtonContainer>
-            <Button text={t_button("delete")} onClick={onClickDelete} />
+            <Button text={t_button('delete')} onClick={onClickDelete} />
           </ButtonContainer>
         }
       >

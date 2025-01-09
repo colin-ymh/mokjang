@@ -3,16 +3,14 @@ import styled from 'styled-components';
 
 import LabelDropdown from '@/components/atoms/common/dropdown/label-dropdown';
 import Button from '@/components/atoms/common/button/button';
-import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-item';
-import LabelInput from '@/components/atoms/common/input/label-input';
-import { EDUCATION_STATUS } from '@/constants/constant';
-import { useEducationStatusDropdownItems } from '@/hooks/dropdown/dropdown-items';
 
 import { useI18n } from '../../../../../../locales/client';
 import Cancel from '../../../../../../public/svg/cancel.svg';
+import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-item';
+import LabelInput from '@/components/atoms/common/input/label-input';
 import { GRAY, MAIN } from '@/constants/styles/color';
 
-const EducationModalViewContainer = styled.div`
+const GroupModalViewContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 300px;
@@ -47,72 +45,52 @@ const CancelButton = styled(Cancel)`
   cursor: pointer;
 `;
 
-type EducationModalViewProps = {
+type GroupModalViewProps = {
   isEdit: boolean;
-  educationId: string;
-  educationStatus: EDUCATION_STATUS;
-  educationItems: DropdownValueType[];
+  groupId: string;
+  groupItems: DropdownValueType[];
   startDate: string;
   endDate: string;
   isButtonEnabled: boolean;
   onClickClose: () => void;
-  onChangeEducation: (id: string) => void;
-  onChangeStatus: (value: EDUCATION_STATUS) => void;
+  onChangeGroup: (id: string) => void;
   onChangeStartDate: (event: ChangeEvent<HTMLInputElement>) => void;
   onChangeEndDate: (event: ChangeEvent<HTMLInputElement>) => void;
-  onClickSaveNewEducation: (
-    educationId: string,
-    startDate: string,
-    status: EDUCATION_STATUS
-  ) => void;
-  onClickSaveEditEducation: (
-    educationId?: string,
-    startDate?: string,
-    endDate?: string,
-    status?: EDUCATION_STATUS
-  ) => void;
+  onClickSaveNewGroup: (groupId: string, startDate: string) => void;
+  onClickSaveEditGroup: (startDate: string, endDate: string) => void;
 };
 
-const EducationModalView = ({
+const GroupModalView = ({
   isEdit,
-  educationId,
-  educationStatus,
-  educationItems,
+  groupId,
+  groupItems,
   startDate,
   endDate,
   isButtonEnabled,
   onClickClose,
-  onChangeEducation,
-  onChangeStatus,
+  onChangeGroup,
   onChangeStartDate,
   onChangeEndDate,
-  onClickSaveNewEducation,
-  onClickSaveEditEducation,
-}: EducationModalViewProps) => {
+  onClickSaveNewGroup,
+  onClickSaveEditGroup,
+}: GroupModalViewProps) => {
   const t = useI18n();
-  const statusItems = useEducationStatusDropdownItems();
 
   return (
-    <EducationModalViewContainer>
+    <GroupModalViewContainer>
       {/* 헤더 */}
       <HeaderContainer>
         <CancelButton onClick={onClickClose} />
       </HeaderContainer>
       {/* 내용 */}
       <ContentContainer>
-        {/* 교육 선택 */}
+        {/* 그룹 선택 */}
         <LabelDropdown
-          label={t('education')}
-          value={educationId}
-          items={educationItems}
-          onChangeItem={onChangeEducation}
-        />
-        {/* 상태 선택 */}
-        <LabelDropdown
-          label={t('educationStatus')}
-          value={educationStatus}
-          items={statusItems}
-          onChangeItem={onChangeStatus}
+          label={t('group')}
+          value={groupId}
+          items={groupItems}
+          onChangeItem={onChangeGroup}
+          disabled={isEdit}
         />
         {/* 시작 날짜 */}
         <LabelInput
@@ -122,12 +100,14 @@ const EducationModalView = ({
           placeholder={t('placeholder.startDate')}
         />
         {/* 종료 날짜 */}
-        <LabelInput
-          label={t('endDate')}
-          value={endDate}
-          onChange={onChangeEndDate}
-          placeholder={t('placeholder.endDate')}
-        />
+        {isEdit && (
+          <LabelInput
+            label={t('endDate')}
+            value={endDate}
+            onChange={onChangeEndDate}
+            placeholder={t('placeholder.endDate')}
+          />
+        )}
       </ContentContainer>
       {/* 버튼 */}
       <ButtonContainer>
@@ -138,20 +118,15 @@ const EducationModalView = ({
           height={30}
           onClick={() => {
             if (isEdit) {
-              onClickSaveEditEducation(
-                educationId,
-                startDate,
-                endDate,
-                educationStatus
-              );
+              onClickSaveEditGroup(startDate, endDate);
             } else {
-              onClickSaveNewEducation(educationId, startDate, educationStatus);
+              onClickSaveNewGroup(groupId, startDate);
             }
           }}
         />
       </ButtonContainer>
-    </EducationModalViewContainer>
+    </GroupModalViewContainer>
   );
 };
 
-export default EducationModalView;
+export default GroupModalView;

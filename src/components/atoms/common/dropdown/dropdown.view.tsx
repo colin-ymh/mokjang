@@ -85,6 +85,7 @@ const DropdownView = forwardRef<
       height,
       width,
       isContainerHidden,
+      disabled,
       ...inputProps
     },
     ref
@@ -115,11 +116,12 @@ const DropdownView = forwardRef<
             readOnly={!isEditable}
             onFocus={onFocusInput}
             enterKeyHint={enterKeyHint}
+            disabled={disabled}
           />
         </DropdownButton>
 
         {/* 드롭다운 item 을 선택할 수 있는 영역*/}
-        {isOpened && (
+        {isOpened && !disabled && (
           <DropdownList $reverseDirection={reverseDirection}>
             {items.map((item, index) => (
               <DropdownItem

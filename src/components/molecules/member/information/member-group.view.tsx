@@ -2,13 +2,12 @@ import styled from 'styled-components';
 
 import { GRAY, WHITE } from '@/constants/styles/color';
 import { MainText } from '@/components/atoms/common/text/main-text';
-import EducationModal from '@/components/molecules/member/information/modal/education-modal';
-import { EducationHistory } from '@/models/member/history';
+import GroupModal from '@/components/molecules/member/information/modal/group-modal';
+import { GroupHistory } from '@/models/member/history';
 
 import { useI18n } from '../../../../../locales/client';
 import Plus from '../../../../../public/svg/plus.svg';
-import EducationHistoryItem from '@/components/atoms/member/information/education-history-item';
-import { EDUCATION_STATUS } from '@/constants/constant';
+import GroupHistoryItem from '@/components/atoms/member/information/group-history-item';
 
 const ListContainer = styled.div`
   display: flex;
@@ -27,7 +26,7 @@ const ListTypeHeader = styled.div`
   padding: 0 20px;
 `;
 
-const EducationListContainer = styled.div`
+const GroupListContainer = styled.div`
   display: flex;
   flex-direction: column;
   padding: 0 20px;
@@ -61,69 +60,60 @@ const ModalContainer = styled.div<{ $isShown: boolean }>`
   top: 40px;
 `;
 
-type MemberEducationViewProps = {
-  educationHistory: EducationHistory[];
-  targetEducation: EducationHistory;
+type MemberGroupViewProps = {
+  groupHistory: GroupHistory[];
+  targetGroup: GroupHistory;
   isModalShown: boolean;
   onClickOpenModal: () => void;
   onClickCloseModal: () => void;
-  onClickEditEducation: (education: EducationHistory) => void;
-  onClickSaveNewEducation: (
-    educationId: string,
-    startDate: string,
-    status: EDUCATION_STATUS
-  ) => void;
-  onClickSaveEditEducation: (
-    educationId?: string,
-    startDate?: string,
-    endDate?: string,
-    status?: EDUCATION_STATUS
-  ) => void;
-  onClickDeleteEducation: (educationId: string) => void;
+  onClickEditGroup: (group: GroupHistory) => void;
+  onClickSaveNewGroup: (groupId: string, startDate: string) => void;
+  onClickSaveEditGroup: (startDate?: string, endDate?: string) => void;
+  onClickDeleteGroup: (groupId: string) => void;
 };
 
-const MemberEducationView = ({
-  educationHistory,
-  targetEducation,
+const MemberGroupView = ({
+  groupHistory,
+  targetGroup,
   isModalShown,
   onClickOpenModal,
   onClickCloseModal,
-  onClickEditEducation,
-  onClickSaveNewEducation,
-  onClickSaveEditEducation,
-  onClickDeleteEducation,
-}: MemberEducationViewProps) => {
+  onClickEditGroup,
+  onClickSaveNewGroup,
+  onClickSaveEditGroup,
+  onClickDeleteGroup,
+}: MemberGroupViewProps) => {
   const t = useI18n();
   return (
     <ListContainer>
-      {/* 교육 헤더 */}
+      {/* 그룹 헤더 */}
       <ListTypeHeader>
         <MainText color={GRAY.DARK}>{t('education')}</MainText>
-        {/* 교육 추가 버튼*/}
+        {/* 그룹 추가 버튼*/}
         <ButtonContainer onClick={onClickOpenModal}>
           <PlusButton />
         </ButtonContainer>
       </ListTypeHeader>
       {/* 이력 */}
-      <EducationListContainer>
-        {educationHistory.map((education) => {
+      <GroupListContainer>
+        {groupHistory.map((group) => {
           return (
-            <EducationHistoryItem
-              education={education}
-              onClickEditEducation={onClickEditEducation}
-              onClickDeleteEducation={onClickDeleteEducation}
+            <GroupHistoryItem
+              group={group}
+              onClickEditGroup={onClickEditGroup}
+              onClickDeleteGroup={onClickDeleteGroup}
             />
           );
         })}
-      </EducationListContainer>
-      {/* 교육 추가 및 수정 모달*/}
+      </GroupListContainer>
+      {/* 그룹 추가 및 수정 모달*/}
       {isModalShown && (
         <ModalContainer $isShown={isModalShown}>
-          <EducationModal
-            prevEducation={targetEducation}
+          <GroupModal
+            prevGroup={targetGroup}
             onClickClose={onClickCloseModal}
-            onClickSaveNewEducation={onClickSaveNewEducation}
-            onClickSaveEditEducation={onClickSaveEditEducation}
+            onClickSaveNewGroup={onClickSaveNewGroup}
+            onClickSaveEditGroup={onClickSaveEditGroup}
           />
         </ModalContainer>
       )}
@@ -131,4 +121,4 @@ const MemberEducationView = ({
   );
 };
 
-export default MemberEducationView;
+export default MemberGroupView;

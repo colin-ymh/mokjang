@@ -49,6 +49,7 @@ const Dropdown = forwardRef<HTMLInputElement, DropdownProps>(
       borderColor,
       width,
       height,
+      disabled,
       ...inputProps
     },
     ref
@@ -70,7 +71,7 @@ const Dropdown = forwardRef<HTMLInputElement, DropdownProps>(
 
     // 드롭다운 영역 클릭 시 일어나는 이벤트
     const onClickDropdown = () => {
-      if (!isOpened && items.length === 0) return;
+      if ((!isOpened && items.length === 0) || disabled) return;
       setIsOpened((prev) => !prev);
     };
 

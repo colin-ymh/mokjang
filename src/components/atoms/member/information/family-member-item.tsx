@@ -24,9 +24,10 @@ const ItemContainer = styled.div`
   position: relative;
   cursor: pointer;
 
-  &:hover {
-    background-color: ${GRAY.LIGHT};
-  }
+  transition: background-color 0.3s;
+  // &:hover {
+  //   background-color: ${GRAY.LIGHT};
+  // }
 `;
 
 const ProfileImage = styled(Image)`
@@ -86,8 +87,8 @@ const Button = styled.div`
 type FamilyMemberItemProps = {
   member: FamilyMember;
   onClickFamilyMember: (familyMemberId: string) => void;
-  onClickEdit: (event: React.MouseEvent, member: FamilyMember) => void;
-  onClickDelete: (event: React.MouseEvent, familyMemberId: string) => void;
+  onClickEdit: (member: FamilyMember) => void;
+  onClickDelete: (familyMemberId: string) => void;
 };
 
 const FamilyMemberItem = ({
@@ -102,14 +103,12 @@ const FamilyMemberItem = ({
   const [isModalShown, setIsModalShown] = useState<boolean>(false);
 
   // 모달 열기
-  const onClickKebab = (event: React.MouseEvent) => {
-    event.stopPropagation();
+  const onClickKebab = () => {
     setIsModalShown(true);
   };
 
   // 모달 닫기
-  const onClickClose = (event: React.MouseEvent) => {
-    event.stopPropagation();
+  const onClickClose = () => {
     setIsModalShown(false);
   };
 
@@ -156,28 +155,38 @@ const FamilyMemberItem = ({
         </MainText>
       </MemberInformationContainer>
       {/* 우측 설정버튼 */}
-      <KebabButton onClick={onClickKebab} />
+      <KebabButton
+        onClick={(event: MouseEvent) => {
+          event.stopPropagation();
+          onClickKebab();
+        }}
+      />
       {/* 수정/삭제 모달 */}
       {isModalShown && (
         <ModalContainer>
           <TransparentBackground
             isOpened={isModalShown}
-            onClick={onClickClose}
+            onClick={(event) => {
+              event.stopPropagation();
+              onClickClose();
+            }}
             blur={false}
           />
           <ButtonContainer>
             <Button
               onClick={(event) => {
-                onClickEdit(event, member);
-                onClickClose(event);
+                event.stopPropagation();
+                onClickEdit(member);
+                onClickClose();
               }}
             >
               <MainText>{t('button.edit')}</MainText>
             </Button>
             <Button
               onClick={(event) => {
-                onClickDelete(event, member.familyMemberId);
-                onClickClose(event);
+                event.stopPropagation();
+                onClickDelete(member.familyMemberId);
+                onClickClose();
               }}
             >
               <MainText color={DESTRUCTIVE.DEFAULT}>

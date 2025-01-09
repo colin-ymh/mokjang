@@ -1,12 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 import qs from 'qs';
 
-import {
-  BAPTISM,
-  GENDER,
-  MARRIAGE,
-  ORDER_DIRECTION,
-} from '@/constants/constant';
+import { BAPTISM, MARRIAGE, ORDER_DIRECTION } from '@/constants/constant';
 import { Member } from '@/models/member/member';
 import { MEMBER } from '@/constants/member/member-column';
 import { SERVER_URL, TEST_SERVER_URL } from '@/constants/state/url';
@@ -166,21 +161,21 @@ export class MembersApi {
         ministries,
         educations,
         vehicleNumber,
-        select__group: true,
-        select__mobilePhone: selectedColumns?.includes(MEMBER.MOBILE_PHONE),
-        select__birth:
-          selectedColumns?.includes(MEMBER.BIRTH) ||
-          selectedColumns?.includes(MEMBER.AGE),
-        select__gender: selectedColumns?.includes(MEMBER.GENDER),
-        select__officer: selectedColumns?.includes(MEMBER.OFFICER),
-        select__ministries: selectedColumns?.includes(MEMBER.MINISTRIES),
-        select__educations: selectedColumns?.includes(MEMBER.EDUCATIONS),
-        select__marriage: selectedColumns?.includes(MEMBER.MARRIAGE),
-        select__address: selectedColumns?.includes(MEMBER.ADDRESS),
-        select__homePhone: selectedColumns?.includes(MEMBER.HOME_PHONE),
-        select__occupation: selectedColumns?.includes(MEMBER.OCCUPATION),
-        select__school: selectedColumns?.includes(MEMBER.SCHOOL),
-        select__vehicleNumber: selectedColumns?.includes(MEMBER.VEHICLE_NUMBER),
+        // select__group: true,
+        // select__mobilePhone: selectedColumns?.includes(MEMBER.MOBILE_PHONE),
+        // select__birth:
+        //   selectedColumns?.includes(MEMBER.BIRTH) ||
+        //   selectedColumns?.includes(MEMBER.AGE),
+        // select__gender: selectedColumns?.includes(MEMBER.GENDER),
+        // select__officer: selectedColumns?.includes(MEMBER.OFFICER),
+        // select__ministries: selectedColumns?.includes(MEMBER.MINISTRIES),
+        // select__educations: selectedColumns?.includes(MEMBER.EDUCATIONS),
+        // select__marriage: selectedColumns?.includes(MEMBER.MARRIAGE),
+        // select__address: selectedColumns?.includes(MEMBER.ADDRESS),
+        // select__homePhone: selectedColumns?.includes(MEMBER.HOME_PHONE),
+        // select__occupation: selectedColumns?.includes(MEMBER.OCCUPATION),
+        // select__school: selectedColumns?.includes(MEMBER.SCHOOL),
+        // select__vehicleNumber: selectedColumns?.includes(MEMBER.VEHICLE_NUMBER),
       }).filter(
         ([_, value]) =>
           value !== undefined &&

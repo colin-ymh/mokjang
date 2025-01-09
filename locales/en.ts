@@ -7,6 +7,14 @@ export default {
   before: 'To',
   setting: 'Setting',
   all: 'All',
+  period: 'Period',
+
+  inProgress: 'In Progress',
+  completed: 'Completed',
+  incomplete: 'Incomplete',
+
+  startDate: 'Start Date',
+  endDate: 'End Date',
 
   groupList: 'Group List',
   groupName: 'Group Name',
@@ -161,6 +169,8 @@ export default {
   'placeholder.marriage': 'Enter the marriage state.',
   'placeholder.detailMarriage': 'Enter the detail marriage state.',
   'placeholder.family': 'Enter the family name.',
+  'placeholder.startDate': 'Enter the start date.',
+  'placeholder.endDate': 'Enter the end date.',
   /*-------------------placeholder-------------------*/
 
   /*-------------------radiobutton-------------------*/

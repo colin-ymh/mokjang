@@ -3,6 +3,7 @@ import { RootState } from '@/redux/store';
 
 import {
   BAPTISM,
+  EDUCATION_STATUS,
   FAMILY,
   GENDER,
   MARRIAGE,
@@ -259,6 +260,27 @@ export const useFamilyRelationDropdownItems = (gender?: GENDER | undefined) => {
   } else {
     items = [...neutralItems, ...femaleItems];
   }
+
+  return items;
+};
+
+export const useEducationStatusDropdownItems = () => {
+  const t = useI18n();
+
+  const items = [
+    {
+      value: EDUCATION_STATUS.IN_PROGRESS,
+      title: t(EDUCATION_STATUS.IN_PROGRESS),
+    },
+    {
+      value: EDUCATION_STATUS.COMPLETED,
+      title: t(EDUCATION_STATUS.COMPLETED),
+    },
+    {
+      value: EDUCATION_STATUS.INCOMPLETE,
+      title: t(EDUCATION_STATUS.INCOMPLETE),
+    },
+  ];
 
   return items;
 };

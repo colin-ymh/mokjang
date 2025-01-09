@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { Group } from '@/models/setting/group';
 import { GRAY, MAIN, WHITE } from '@/constants/styles/color';
 import { MainText } from '@/components/atoms/common/text/main-text';
-import GroupEditButtonList from '@/components/atoms/setting/group-edit-button-list';
+import SlideButtonList from '@/components/atoms/common/button/slide-button-list';
 import MainInput from '@/components/atoms/common/input/main-input';
 import { getIsWellFormedName } from '@/utils/check';
 
@@ -199,7 +199,7 @@ const SettingGroupItemView = ({
           ) : group.id === null ? (
             <PlusButton onClick={onClickGroupAdd} />
           ) : (
-            <GroupEditButtonList
+            <SlideButtonList
               onClickEdit={onClickGroupEdit}
               onClickDelete={() => onClickGroupDelete(group.id as string)}
               onClickAdd={onClickGroupAdd}
