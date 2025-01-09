@@ -3,6 +3,7 @@ import {
   SETTING_CONTENT_ID,
 } from '@/constants/layout/content';
 import {
+  EDUCATION_SETTING_HEADER_ID,
   GROUP_SETTING_HEADER_ID,
   MEMBER_INFORMATION_HEADER_ID,
 } from '@/constants/layout/header';
@@ -100,6 +101,19 @@ export const useGroupSettingHeaderBarItems = () => {
     {
       id: GROUP_SETTING_HEADER_ID.MEMBER_LIST,
       title: t_header(GROUP_SETTING_HEADER_ID.MEMBER_LIST),
+    },
+  ];
+
+  return items;
+};
+
+export const useEducationSettingHeaderBarItems = () => {
+  const t = useI18n();
+
+  const items = [
+    {
+      id: EDUCATION_SETTING_HEADER_ID.GENERATION,
+      title: t(EDUCATION_SETTING_HEADER_ID.GENERATION),
     },
   ];
 

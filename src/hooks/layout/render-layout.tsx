@@ -6,6 +6,7 @@ import {
   SETTING_CONTENT_ID,
 } from '@/constants/layout/content';
 import {
+  EDUCATION_SETTING_HEADER_ID,
   GROUP_SETTING_HEADER_ID,
   HEADER_ID,
   MEMBER_INFORMATION_HEADER_ID,
@@ -17,11 +18,13 @@ import InformationList from '@/components/molecules/member/information/member-in
 import FamilyInformationList from '@/components/molecules/member/information/family-information-list';
 import SettingTabHeader from '@/components/molecules/layout/header/setting-tab-header';
 import MemberEducation from '@/components/molecules/member/information/member-education';
-import GroupSetting from '@/components/organisms/setting/group-setting';
-import GroupInformation from '@/components/molecules/setting/group-information';
-import GroupMember from '@/components/molecules/setting/group-member';
-import { Group } from '@/models/setting/group';
+import GroupSetting from '@/components/organisms/setting/group/group-setting';
+import GroupInformation from '@/components/molecules/setting/group/group-information';
+import GroupMember from '@/components/molecules/setting/group/group-member';
+import { Education, Group } from '@/models/setting/setting';
 import MemberGroup from '@/components/molecules/member/information/member-group';
+import EducationSetting from '@/components/organisms/setting/education/education-setting';
+import OfficerSetting from '@/components/organisms/setting/officer/officer-setting';
 
 export const getContent = (id: string): ReactNode => {
   switch (id) {
@@ -41,9 +44,9 @@ export const getContent = (id: string): ReactNode => {
     case SETTING_CONTENT_ID.MINISTRY:
       return null;
     case SETTING_CONTENT_ID.EDUCATION:
-      return null;
+      return <EducationSetting />;
     case SETTING_CONTENT_ID.OFFICER:
-      return null;
+      return <OfficerSetting />;
     // 그 외
     default:
       return null;
@@ -85,5 +88,15 @@ export const getGroupSettingContent = (contentId: string, group: Group) => {
       return <GroupInformation group={group} />;
     case GROUP_SETTING_HEADER_ID.MEMBER_LIST:
       return <GroupMember group={group} />;
+  }
+};
+
+export const getEducationSettingContent = (
+  contentId: string,
+  education: Education
+) => {
+  switch (contentId) {
+    case EDUCATION_SETTING_HEADER_ID.GENERATION:
+      return <div></div>;
   }
 };

@@ -1,5 +1,5 @@
-import GroupMemberView from '@/components/molecules/setting/group-member.view';
-import { Group } from '@/models/setting/group';
+import GroupMemberView from '@/components/molecules/setting/group/group-member.view';
+import { Group } from '@/models/setting/setting';
 import { Member } from '@/models/member/member';
 import { useEffect, useState } from 'react';
 import { MembersApi } from '@/api/churches/members.api';

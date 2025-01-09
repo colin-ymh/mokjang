@@ -6,94 +6,75 @@ import React, {
   useRef,
   useState,
 } from 'react';
-
-import { DEFAULT_GROUP, Group } from '@/models/setting/group';
-import SettingGroupItemView from '@/components/atoms/setting/setting-group-item.view';
-import { GroupsApi } from '@/api/settings/groups.api';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
+
+import { DEFAULT_OFFICER, Officer } from '@/models/setting/setting';
+import { OfficersApi } from '@/api/settings/officers.api';
 import { getFormattedName } from '@/utils/format';
 import { getIsWellFormedName } from '@/utils/check';
-import AddGroup from '@/components/atoms/setting/add-group';
 import { BLANK } from '@/constants/constant';
+import SettingOfficerItemView from '@/components/atoms/setting/officer/setting-officer-item.view';
 
-type SettingGroupItemProps = {
-  group: Group;
-  level: number;
-  selectedGroupId: string | null;
-  setSelectedGroup: Dispatch<SetStateAction<Group>>;
-  closedGroups: Set<number>;
-  fetchGroups: () => void;
-  onClickToggle: (id: string) => void;
+type SettingOfficerItemProps = {
+  officer: Officer;
+  selectedOfficerId: string | null;
+  setSelectedOfficer: Dispatch<SetStateAction<Officer>>;
+  fetchOfficers: () => void;
 };
 
-const SettingGroupItem = ({
-  group,
-  level,
-  selectedGroupId,
-  setSelectedGroup,
-  closedGroups,
-  fetchGroups,
-  onClickToggle,
-}: SettingGroupItemProps) => {
-  const groupsApi = new GroupsApi(false);
+const SettingOfficerItem = ({
+  officer,
+  selectedOfficerId,
+  setSelectedOfficer,
+  fetchOfficers,
+}: SettingOfficerItemProps) => {
+  const officersApi = new OfficersApi(false);
   const churchId = useSelector((state: RootState) => state.church.churchId);
-  const isHaveChildren = group.childGroups && group.childGroups.length > 0;
-  const isOpen = !closedGroups.has(parseInt(group.id as string));
 
   // 이름 수정창 ref
   const nameInputRef = useRef<HTMLInputElement>(null);
 
   // 새로 추가하는 그룹 입력창 ref
-  const newGroupRef = useRef<HTMLInputElement>(null);
+  const newOfficerRef = useRef<HTMLInputElement>(null);
 
   // 새로 추가중인지 여부
   const [isAddShown, setIsAddShown] = useState<boolean>(false);
 
   // 새 그룹의 이름
-  const [newGroupName, setNewGroupName] = useState<string>(BLANK);
+  const [newOfficerName, setNewOfficerName] = useState<string>(BLANK);
 
   // 수정중인지 여부
   const [isEdit, setIsEdit] = useState<boolean>(false);
 
   // 수정되는 이름
-  const [editName, setEditName] = useState<string>(group.name);
+  const [editName, setEditName] = useState<string>(officer.name);
 
   // 새그룹 이름 변경
-  const onChangeNewGroupName = (event: ChangeEvent<HTMLInputElement>) => {
+  const onChangeNewOfficerName = (event: ChangeEvent<HTMLInputElement>) => {
     const newName = getFormattedName(event.target.value);
-    setNewGroupName(newName);
+    setNewOfficerName(newName);
   };
 
   // 새로운 그룹 추가하기
-  const onClickSaveNewGroup = () => {
-    if (getIsWellFormedName(newGroupName)) {
-      groupsApi
-        .createGroup(
-          { churchId },
-          { name: newGroupName, parentGroupId: group.id }
-        )
+  const onClickSaveNewOfficer = () => {
+    if (getIsWellFormedName(newOfficerName)) {
+      officersApi
+        .createOfficer({ churchId }, { name: newOfficerName })
         .then(() => {
-          fetchGroups();
+          fetchOfficers();
           setIsAddShown(false);
-          setNewGroupName(BLANK);
+          setNewOfficerName(BLANK);
         });
     }
   };
 
   // 확인 중인 그룹 변경
-  const onClickGroup = (groupId: string | null) => {
-    if (groupId) {
-      groupsApi.getGroup({ churchId, groupId }).then((response) => {
-        const newGroup: Group = response.data;
-        setSelectedGroup(newGroup);
-      });
-    }
-  };
+  const onClickOfficer = (officerId: string | null) => {};
 
   // 그룹 수정 활성화
-  const onClickGroupEdit = () => {
-    setEditName(group.name);
+  const onClickOfficerEdit = () => {
+    setEditName(officer.name);
     setIsEdit(true);
 
     // isEdit이 true로 전환된 이후
@@ -106,19 +87,19 @@ const SettingGroupItem = ({
   };
 
   // 그룹 삭제
-  const onClickGroupDelete = (groupId: string) => {
-    groupsApi.deleteGroup({ churchId, groupId }).then(() => {
-      fetchGroups();
-      setSelectedGroup(DEFAULT_GROUP);
+  const onClickOfficerDelete = (officerId: string) => {
+    officersApi.deleteOfficer({ churchId, officerId }).then(() => {
+      fetchOfficers();
+      setSelectedOfficer(DEFAULT_OFFICER);
     });
   };
 
   // 그룹 추가 활성화
-  const onClickGroupAdd = () => {
+  const onClickOfficerAdd = () => {
     setIsAddShown(true);
     setTimeout(() => {
-      if (newGroupRef.current) {
-        newGroupRef.current.focus();
+      if (newOfficerRef.current) {
+        newOfficerRef.current.focus();
       }
     });
   };
@@ -131,31 +112,27 @@ const SettingGroupItem = ({
 
   // 수정된 이름 저장
   const onClickSaveName = () => {
-    if (editName === group.name) {
+    if (editName === officer.name) {
       setIsEdit(false);
     } else if (getIsWellFormedName(editName)) {
-      groupsApi
-        .editGroup(
-          { churchId, groupId: group.id as string },
+      officersApi
+        .editOfficer(
+          { churchId, officerId: officer.id as string },
           { name: editName }
         )
         .then((response) => {
-          setSelectedGroup(response.data);
-          fetchGroups();
+          setSelectedOfficer(response.data);
+          fetchOfficers();
           setIsEdit(false);
         });
     }
   };
 
   // 드래그 이후 드롭
-  const onDropGroup = (groupId: string, parentGroupId: string | null) => {
-    groupsApi
-      .editGroup({ churchId, groupId }, { parentGroupId })
-      .then(() => fetchGroups())
-      .catch((error) => {
-        console.log(error);
-      });
-  };
+  const onDropOfficer = (
+    officerId: string,
+    parentOfficerId: string | null
+  ) => {};
 
   // 수정 중 focus 가 풀리면 수정 취소
   useEffect(() => {
@@ -178,7 +155,7 @@ const SettingGroupItem = ({
 
   // 추가 중 focus 가 풀리면 추가 취소
   useEffect(() => {
-    const inputElement = newGroupRef.current;
+    const inputElement = newOfficerRef.current;
 
     const handleBlur = () => {
       setIsAddShown(false);
@@ -193,7 +170,7 @@ const SettingGroupItem = ({
         inputElement.removeEventListener('blur', handleBlur);
       }
     };
-  }, [newGroupRef, isAddShown]);
+  }, [newOfficerRef, isAddShown]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -214,9 +191,9 @@ const SettingGroupItem = ({
           } else {
             setIsEdit(false);
           }
-        } else if (newGroupRef.current === document.activeElement) {
-          if (getIsWellFormedName(newGroupName)) {
-            onClickSaveNewGroup();
+        } else if (newOfficerRef.current === document.activeElement) {
+          if (getIsWellFormedName(newOfficerName)) {
+            onClickSaveNewOfficer();
           } else {
             setIsAddShown(false);
           }
@@ -224,7 +201,7 @@ const SettingGroupItem = ({
       } else if (e.key === 'Escape') {
         if (nameInputRef.current === document.activeElement) {
           setIsEdit(false);
-        } else if (newGroupRef.current === document.activeElement) {
+        } else if (newOfficerRef.current === document.activeElement) {
           setIsAddShown(false);
         }
       }
@@ -235,55 +212,28 @@ const SettingGroupItem = ({
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [editName, newGroupName, onClickSaveName, onClickSaveNewGroup]);
+  }, [editName, newOfficerName, onClickSaveName, onClickSaveNewOfficer]);
 
   const props = {
-    isHaveChildren,
-    isOpen,
     isEdit,
     nameInputRef,
-    selectedGroupId,
-    group,
-    level,
+    selectedOfficerId,
+    officer,
     editName,
-    onDropGroup,
-    onClickToggle,
-    onClickGroup,
-    onClickGroupEdit,
-    onClickGroupDelete,
-    onClickGroupAdd,
+    onDropOfficer,
+    onClickOfficer,
+    onClickOfficerEdit,
+    onClickOfficerDelete,
+    onClickOfficerAdd,
     onChangeName,
     onClickSaveName,
   };
 
   return (
     <>
-      <SettingGroupItemView {...props} />
-      <AddGroup
-        ref={newGroupRef}
-        isShown={isAddShown}
-        level={level}
-        name={newGroupName}
-        onChangeName={onChangeNewGroupName}
-        onClickSaveGroup={onClickSaveNewGroup}
-      />
-      {isOpen &&
-        group.childGroups &&
-        group.childGroups.length > 0 &&
-        group.childGroups.map((childGroup) => (
-          <SettingGroupItem
-            key={childGroup.id}
-            group={childGroup}
-            level={level + 1}
-            selectedGroupId={selectedGroupId}
-            setSelectedGroup={setSelectedGroup}
-            closedGroups={closedGroups}
-            fetchGroups={fetchGroups}
-            onClickToggle={onClickToggle}
-          />
-        ))}
+      <SettingOfficerItemView {...props} />
     </>
   );
 };
 
-export default SettingGroupItem;
+export default SettingOfficerItem;

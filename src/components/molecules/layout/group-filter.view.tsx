@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
-import { Group } from '@/models/setting/group';
+import { Group } from '@/models/setting/setting';
 import { GRAY, MAIN } from '@/constants/styles/color';
 import { MainText } from '@/components/atoms/common/text/main-text';
 

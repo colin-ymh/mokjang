@@ -2,8 +2,8 @@ import { useState } from 'react';
 
 import { GROUP_SETTING_HEADER_ID } from '@/constants/layout/header';
 import { useGroupSettingHeaderBarItems } from '@/hooks/layout/header-bar-items';
-import GroupSettingView from '@/components/organisms/setting/group-setting.view';
-import { DEFAULT_GROUP, Group } from '@/models/setting/group';
+import GroupSettingView from '@/components/organisms/setting/group/group-setting.view';
+import { DEFAULT_GROUP, Group } from '@/models/setting/setting';
 
 type GroupSettingProps = {};
 

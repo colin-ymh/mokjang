@@ -4,8 +4,8 @@ import MainInput from '@/components/atoms/common/input/main-input';
 import { BLACK, GRAY, MAIN, WHITE } from '@/constants/styles/color';
 import { getIsWellFormedName } from '@/utils/check';
 
-import Check from '../../../../public/svg/check.svg';
-import Plus from '../../../../public/svg/plus.svg';
+import Check from '../../../../../public/svg/check.svg';
+import Plus from '../../../../../public/svg/plus.svg';
 
 const BackgroundContainer = styled.div<{ $isShown: boolean }>`
   display: ${({ $isShown }) => ($isShown ? 'flex' : 'none')};

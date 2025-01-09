@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { BLANK } from '@/constants/constant';
+import { Education, Group, Officer } from '@/models/setting/setting';
 
 type churchSettingItem = {
   id: string;
@@ -9,10 +10,10 @@ type churchSettingItem = {
 
 type ChurchState = {
   churchId: string;
-  officers: churchSettingItem[];
+  officers: Officer[];
   ministries: churchSettingItem[];
-  educations: churchSettingItem[];
-  groups: churchSettingItem[];
+  educations: Education[];
+  groups: Group[];
 };
 
 const initialState: ChurchState = {
@@ -30,16 +31,16 @@ const ChurchSlice = createSlice({
     setChurchId(state, action: PayloadAction<string>) {
       state.churchId = action.payload;
     },
-    setOfficers(state, action: PayloadAction<churchSettingItem[]>) {
+    setOfficers(state, action: PayloadAction<Officer[]>) {
       state.officers = action.payload;
     },
     setMinistries(state, action: PayloadAction<churchSettingItem[]>) {
       state.ministries = action.payload;
     },
-    setEducations(state, action: PayloadAction<churchSettingItem[]>) {
+    setEducations(state, action: PayloadAction<Education[]>) {
       state.educations = action.payload;
     },
-    setGroups(state, action: PayloadAction<churchSettingItem[]>) {
+    setGroups(state, action: PayloadAction<Group[]>) {
       state.groups = action.payload;
     },
   },

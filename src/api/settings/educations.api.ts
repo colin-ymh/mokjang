@@ -1,5 +1,4 @@
 import axios, { AxiosResponse } from 'axios';
-import { EditMemberBody } from '@/api/churches/members.api';
 import { SERVER_URL, TEST_SERVER_URL } from '@/constants/state/url';
 
 class HTTPError extends Error {}
@@ -63,7 +62,7 @@ export class EducationsApi {
    * @param {CreateEducationBody} body
    * @returns {Promise<AxiosResponse>}
    */
-  public createEducations = async (
+  public createEducation = async (
     params: CreateEducationParams,
     body: CreateEducationBody
   ): Promise<AxiosResponse> => {

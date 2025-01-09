@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 
 import { MEMBER } from '@/constants/member/member-column';
 import { Member } from '@/models/member/member';
-import GroupMemberTableView from '@/components/molecules/setting/group-member-table.view';
+import GroupMemberTableView from '@/components/molecules/setting/group/group-member-table.view';
 
 export type GroupMemberTableProps = {
   groupMembers: Member[];

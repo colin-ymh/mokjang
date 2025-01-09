@@ -1,6 +1,7 @@
+import { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
 
-import GroupList from '@/components/molecules/setting/group-list';
+import GroupList from '@/components/molecules/setting/group/group-list';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { SIZE } from '@/constants/styles/style';
 import { GRAY } from '@/constants/styles/color';
@@ -9,10 +10,9 @@ import HeaderBar, {
   HeaderBarItem,
 } from '@/components/atoms/layout/header/header-bar';
 import { getGroupSettingContent } from '@/hooks/layout/render-layout';
-import { Group } from '@/models/setting/group';
+import { Group } from '@/models/setting/setting';
 
-import { useI18n } from '../../../../locales/client';
-import { Dispatch, SetStateAction } from 'react';
+import { useI18n } from '../../../../../locales/client';
 
 const GroupSettingContainer = styled.div`
   display: flex;

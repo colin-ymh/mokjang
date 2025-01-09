@@ -7,7 +7,7 @@ import Cancel from '../../../../public/svg/cancel.svg';
 import { Member } from '@/models/member/member';
 import BorderInput from '@/components/atoms/common/input/border-input';
 import { useI18n } from '../../../../locales/client';
-import AddMemberItem from '@/components/atoms/setting/add-member-item';
+import AddMemberItem from '@/components/atoms/setting/group/add-member-item';
 import Button from '@/components/atoms/common/button/button';
 
 const ModalContainer = styled.div<{ $isShown: boolean }>`

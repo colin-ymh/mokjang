@@ -8,7 +8,7 @@ import { GRAY, MAIN, WHITE } from '@/constants/styles/color';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { getAge, getDateFromString } from '@/utils/date';
 
-import DefaultImage from '../../../../public/png/default-member-image.png';
+import DefaultImage from '../../../../../public/png/default-member-image.png';
 
 const BackgroundContainer = styled.div`
   display: flex;

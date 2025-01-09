@@ -18,3 +18,7 @@ export enum GROUP_SETTING_HEADER_ID {
   GROUP_INFORMATION = 'groupInformation',
   MEMBER_LIST = 'groupMembers',
 }
+
+export enum EDUCATION_SETTING_HEADER_ID {
+  GENERATION = 'generation',
+}

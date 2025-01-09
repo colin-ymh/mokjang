@@ -5,7 +5,7 @@ import { setMemberFilter } from '@/redux/reducers/member-filter-reducer';
 
 import GroupFilterView from '@/components/molecules/layout/group-filter.view';
 import { GroupsApi } from '@/api/settings/groups.api';
-import { Group } from '@/models/setting/group';
+import { Group } from '@/models/setting/setting';
 import { BLANK } from '@/constants/constant';
 import { getOrderedGroups } from '@/utils/group';
 

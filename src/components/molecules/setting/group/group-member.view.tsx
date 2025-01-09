@@ -1,12 +1,12 @@
 import styled from 'styled-components';
 
-import GroupMemberTable from '@/components/molecules/setting/group-member-table';
+import GroupMemberTable from '@/components/molecules/setting/group/group-member-table';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { GRAY } from '@/constants/styles/color';
-import { Group } from '@/models/setting/group';
+import { Group } from '@/models/setting/setting';
 
-import { useScopedI18n } from '../../../../locales/client';
-import Plus from '../../../../public/svg/plus.svg';
+import { useScopedI18n } from '../../../../../locales/client';
+import Plus from '../../../../../public/svg/plus.svg';
 import { Member } from '@/models/member/member';
 import AddGroupMemberModal from '@/components/atoms/modal/add-group-member-modal';
 

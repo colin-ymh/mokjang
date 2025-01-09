@@ -9,6 +9,7 @@ export default {
   all: 'All',
   period: 'Period',
 
+  generation: 'Generation',
   inProgress: 'In Progress',
   completed: 'Completed',
   incomplete: 'Incomplete',
@@ -16,9 +17,16 @@ export default {
   startDate: 'Start Date',
   endDate: 'End Date',
 
-  groupList: 'Group List',
-  groupName: 'Group Name',
-  groupRole: 'Group Roles',
+  groupList: 'Setting List',
+  groupName: 'Setting Name',
+  groupRole: 'Setting Roles',
+
+  educationList: 'Education List',
+  educationName: 'Education Name',
+  educationStatus: 'Status',
+
+  officerList: 'Officer List',
+  officerName: 'Officer Name',
 
   birthAfter: 'Born After',
   birthBefore: 'Born Before',
@@ -113,8 +121,8 @@ export default {
   'header.personalInformation': 'Personal Information',
   'header.familyInformation': 'Family Information',
 
-  'header.groupInformation': 'Group Information',
-  'header.groupMembers': 'Group Members',
+  'header.groupInformation': 'Setting Information',
+  'header.groupMembers': 'Setting Members',
   /*-------------------header (side bar button)-------------------*/
 
   /*-------------------member content (member header bar button)-------------------*/

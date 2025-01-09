@@ -9,6 +9,7 @@ export default {
   all: '전체',
   period: '기간',
 
+  generation: '기수',
   inProgress: '진행중',
   completed: '수료',
   incomplete: '미수료',
@@ -20,8 +21,12 @@ export default {
   groupName: '그룹명',
   groupRole: '그룹역할',
 
+  educationList: '교육 목록',
   educationName: '교육명',
   educationStatus: '상태',
+
+  officerList: '직분 목록',
+  officerName: '직분명',
 
   registeredAt: '등록일자',
   updatedAt: '수정일자',

@@ -15,7 +15,7 @@ import { Member } from '@/models/member/member';
 import MemberTableHeader from '@/components/atoms/member/list/member-table-header';
 import useWindowSize from '@/hooks/window/window';
 
-import DefaultImage from '../../../../public/png/default-member-image.png';
+import DefaultImage from '../../../../../public/png/default-member-image.png';
 import { TABLE_HEADER_ITEM } from '@/redux/reducers/member-filter-reducer';
 
 const TableContainer = styled.div`

@@ -3,11 +3,11 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 
 import { GroupsApi } from '@/api/settings/groups.api';
-import { Group } from '@/models/setting/group';
-import GroupListView from '@/components/molecules/setting/group-list.view';
+import { Group } from '@/models/setting/setting';
+import GroupListView from '@/components/molecules/setting/group/group-list.view';
 import { getOrderedGroups } from '@/utils/group';
 
-import { useI18n } from '../../../../locales/client';
+import { useI18n } from '../../../../../locales/client';
 
 type GroupListProps = {
   selectedGroupId: string | null;
@@ -40,7 +40,6 @@ const GroupList = ({ selectedGroupId, setSelectedGroup }: GroupListProps) => {
           membersCount: 0,
           churchId,
           childGroupIds: [],
-          members: [],
         };
 
         setGroups([allGroup]);

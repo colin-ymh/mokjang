@@ -1,8 +1,8 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
 
-import { Group } from '@/models/setting/group';
-import SettingGroupItem from '@/components/atoms/setting/setting-group-item';
+import { Group } from '@/models/setting/setting';
+import SettingGroupItem from '@/components/atoms/setting/group/setting-group-item';
 
 const FilterContainer = styled.div`
   display: flex;

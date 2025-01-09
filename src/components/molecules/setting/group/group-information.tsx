@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { GRAY } from '@/constants/styles/color';
-import { useI18n, useScopedI18n } from '../../../../locales/client';
-import { Group } from '@/models/setting/group';
+import { useI18n, useScopedI18n } from '../../../../../locales/client';
+import { Group } from '@/models/setting/setting';
 
 const InformationContainer = styled.div`
   display: flex;
