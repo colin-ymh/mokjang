@@ -44,7 +44,7 @@ const GroupInformation = ({ group }: GroupInformationProps) => {
 
   return (
     <InformationContainer>
-      {/* 가족정보 헤더 */}
+      {/* 그룹 상세 헤더 */}
       <ListTypeHeader>
         <MainText color={GRAY.DARK}>{t_header('groupInformation')}</MainText>
       </ListTypeHeader>

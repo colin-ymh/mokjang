@@ -5,12 +5,11 @@ import HeaderBarView from '@/components/atoms/layout/header/header-bar.view';
 import { useMemberInformationHeaderBarItems } from '@/hooks/layout/header-bar-items';
 import MemberImageInput from '@/components/atoms/register/member-image-input';
 import { MainText } from '@/components/atoms/common/text/main-text';
-import { getFormattedMobilePhone } from '@/utils/format';
 import { SIZE } from '@/constants/styles/style';
-import { Member } from '@/models/member/member';
 import { GRAY } from '@/constants/styles/color';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
+import { getCurrentGroup } from '@/utils/history';
 
 const InformationHeader = styled.div`
   display: flex;
@@ -69,10 +68,13 @@ const MemberInformationHeader = ({
               {targetMember?.officer?.name}
             </MainText>
             <MainText size={SIZE.MEDIUM} color={GRAY.DARK}>
-              {targetMember?.group?.name && targetMember?.officer?.name && 'ㆍ'}
+              {targetMember.group &&
+                getCurrentGroup(targetMember.group)?.groupName &&
+                targetMember?.officer?.name &&
+                'ㆍ'}
             </MainText>
             <MainText size={SIZE.MEDIUM} color={GRAY.DARK}>
-              {targetMember?.group?.name}
+              {getCurrentGroup(targetMember.group)?.groupName}
             </MainText>
           </ChurchMemberInfoContainer>
         </TextContainer>

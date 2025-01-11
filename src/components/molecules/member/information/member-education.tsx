@@ -70,12 +70,13 @@ const MemberEducation = () => {
   const onClickSaveNewEducation = (
     educationId: string,
     startDate: string,
-    status: EDUCATION_STATUS
+    status: EDUCATION_STATUS,
+    endDate?: string
   ) => {
     educationHistoryApi
       .createEducationHistory(
         { churchId, memberId: targetMember.id },
-        { educationId, startDate, status }
+        { educationId, startDate, status, endDate }
       )
       .then((response) => {
         setIsModalShown(false);

@@ -59,6 +59,7 @@ const HeaderContainer = styled.div`
 const HeaderLeft = styled.div`
   display: flex;
   padding-left: 10px;
+  cursor: pointer;
 `;
 
 const HeaderRight = styled.div`

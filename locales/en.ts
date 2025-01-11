@@ -9,7 +9,10 @@ export default {
   all: 'All',
   period: 'Period',
 
-  generation: 'Generation',
+  instructor: 'Instructor',
+  session: 'Session',
+
+  term: 'Term',
   inProgress: 'In Progress',
   completed: 'Completed',
   incomplete: 'Incomplete',
@@ -130,6 +133,15 @@ export default {
   'member-content.administratorList': 'Administrators',
   'member-content.newMemberList': 'New Members',
   /*-------------------member content (member header bar button)-------------------*/
+
+  /*-------------------table header -------------------*/
+  'tableHeader.term': 'Term',
+  'tableHeader.education': 'Education',
+  'tableHeader.period': 'Period',
+  'tableHeader.educationEnrollments': 'Number of Enrollments',
+  'tableHeader.instructor': 'Instructor',
+  'tableHeader.numberOfSession': 'Progress',
+  /*-------------------table header-------------------*/
 
   /*-------------------member register-------------------*/
   'register.defaultHeaderPhrase': 'Please enter the member information',

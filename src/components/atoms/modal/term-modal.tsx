@@ -13,8 +13,7 @@ type EducationModalProps = {
   onClickSaveNewEducation: (
     educationId: string,
     startDate: string,
-    status: EDUCATION_STATUS,
-    endDate?: string
+    status: EDUCATION_STATUS
   ) => void;
   onClickSaveEditEducation: (
     educationId?: string,

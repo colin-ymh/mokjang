@@ -11,10 +11,10 @@ import HeaderBar, {
 } from '@/components/atoms/layout/header/header-bar';
 import { getEducationSettingContent } from '@/hooks/layout/render-layout';
 import { Education } from '@/models/setting/setting';
+import AddEducation from '@/components/atoms/setting/education/add-education';
 
 import { useI18n } from '../../../../../locales/client';
 import Plus from '../../../../../public/svg/plus.svg';
-import AddEducation from '@/components/atoms/setting/education/add-education';
 
 const EducationSettingContainer = styled.div`
   display: flex;

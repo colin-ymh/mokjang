@@ -1,4 +1,5 @@
 import { MEMBER } from '@/constants/member/member-column';
+import { EDUCATION_TERM } from '@/constants/setting/education-term-column';
 
 export const getTranslatedMemberColumn = (
   t: (key: string, ...args: any[]) => string,
@@ -21,5 +22,20 @@ export const getTranslatedMemberColumn = (
       | MEMBER.BIRTH
       | MEMBER.REGISTERED_AT
       | MEMBER.UPDATED_AT
+  );
+};
+
+export const getTranslatedTermColumn = (
+  t: (key: string, ...args: any[]) => string,
+  id: EDUCATION_TERM
+): string => {
+  return t(
+    id as
+      | EDUCATION_TERM.TERM
+      | EDUCATION_TERM.EDUCATION
+      | EDUCATION_TERM.PERIOD
+      | EDUCATION_TERM.EDUCATION_ENROLLMENTS
+      | EDUCATION_TERM.INSTRUCTOR
+      | EDUCATION_TERM.NUMBER_OF_SESSION
   );
 };

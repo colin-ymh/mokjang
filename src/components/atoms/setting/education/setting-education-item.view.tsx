@@ -95,10 +95,9 @@ type SettingEducationItemViewProps = {
     educationId: string,
     parentEducationId: string | null
   ) => void;
-  onClickEducation: (educationId: string) => void;
+  onClickEducation: (education: Education) => void;
   onClickEducationEdit: () => void;
   onClickEducationDelete: (educationId: string) => void;
-  onClickEducationAdd: () => void;
   onChangeName: (event: ChangeEvent<HTMLInputElement>) => void;
   onClickSaveName: () => void;
 };
@@ -113,7 +112,6 @@ const SettingEducationItemView = ({
   onClickEducation,
   onClickEducationEdit,
   onClickEducationDelete,
-  onClickEducationAdd,
   onChangeName,
   onClickSaveName,
 }: SettingEducationItemViewProps) => {
@@ -143,7 +141,7 @@ const SettingEducationItemView = ({
 
   return (
     <EducationItemContainer ref={ref} $isDragging={isDragging}>
-      <EducationItem onClick={() => onClickEducation(education.id as string)}>
+      <EducationItem onClick={() => onClickEducation(education)}>
         <LeftContainer>
           <MainInput
             ref={nameInputRef}
@@ -166,8 +164,6 @@ const SettingEducationItemView = ({
               $isEnabled={getIsWellFormedName(editName)}
               onMouseDown={onClickSaveName}
             />
-          ) : education.id === null ? (
-            <PlusButton onClick={onClickEducationAdd} />
           ) : (
             <SlideButtonList
               onClickEdit={onClickEducationEdit}

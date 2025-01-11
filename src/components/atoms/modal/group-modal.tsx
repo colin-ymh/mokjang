@@ -28,7 +28,7 @@ const GroupModal = ({
 
   // 선택된 그룹 id
   const [groupId, setGroupId] = useState<string>(
-    prevGroup.groupId || groupItems[0].value
+    prevGroup.groupId || (groupItems[0].value as string)
   );
 
   // 시작 날짜

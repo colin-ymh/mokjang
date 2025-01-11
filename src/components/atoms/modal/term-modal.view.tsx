@@ -63,8 +63,7 @@ type EducationModalViewProps = {
   onClickSaveNewEducation: (
     educationId: string,
     startDate: string,
-    status: EDUCATION_STATUS,
-    endDate?: string
+    status: EDUCATION_STATUS
   ) => void;
   onClickSaveEditEducation: (
     educationId?: string,
@@ -146,12 +145,7 @@ const EducationModalView = ({
                 educationStatus
               );
             } else {
-              onClickSaveNewEducation(
-                educationId,
-                startDate,
-                educationStatus,
-                endDate
-              );
+              onClickSaveNewEducation(educationId, startDate, educationStatus);
             }
           }}
         />

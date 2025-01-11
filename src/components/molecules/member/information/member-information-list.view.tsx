@@ -10,6 +10,7 @@ import { getThisYearBirth } from '@/utils/date';
 
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
 import Pencil from '../../../../../public/svg/pencil.svg';
+import { getCurrentGroup } from '@/utils/history';
 
 const InformationContainer = styled.div`
   display: flex;
@@ -97,6 +98,7 @@ const InformationListView = ({
 }: InformationListViewProps) => {
   const t = useI18n();
   const t_header = useScopedI18n('header');
+  console.log(getCurrentGroup(prevMember.group));
 
   return (
     <InformationContainer>
@@ -104,6 +106,31 @@ const InformationListView = ({
         <MainText color={GRAY.DARK}>{t_header('memberInformation')}</MainText>
       </ListTypeHeader>
       <InformationListContainer>
+        <RowContainer>
+          {/* 그룹 */}
+          <InformationItem>
+            <TitleContainer>
+              <MainText color={GRAY.DEFAULT}>{t(MEMBER.GROUP)}</MainText>
+            </TitleContainer>
+            <ContentContainer>
+              <MainText>
+                {prevMember?.group[prevMember?.group.length - 1]?.groupName}
+              </MainText>
+            </ContentContainer>
+          </InformationItem>
+          {/* 역할 */}
+          <InformationItem>
+            <TitleContainer>
+              <MainText color={GRAY.DEFAULT}>{t('groupRole')}</MainText>
+            </TitleContainer>
+            <ContentContainer>
+              <MainText>
+                {prevMember?.group[prevMember?.group.length - 1]?.groupRoleName}
+              </MainText>
+            </ContentContainer>
+          </InformationItem>
+        </RowContainer>
+        <Divider />
         <RowContainer>
           {/* 사역 */}
           <InformationItem>
@@ -199,7 +226,6 @@ const InformationListView = ({
               </MainText>
               <MainText>{getKRDateFromDashDate(prevMember.birth)}</MainText>
             </ContentContainer>
-
             <PencilButton />
           </InformationItem>
           {/* 생일 */}

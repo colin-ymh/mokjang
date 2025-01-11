@@ -9,7 +9,10 @@ export default {
   all: '전체',
   period: '기간',
 
-  generation: '기수',
+  instructor: '진행자',
+  session: '회차',
+
+  term: '기수',
   inProgress: '진행중',
   completed: '수료',
   incomplete: '미수료',
@@ -131,6 +134,15 @@ export default {
   'member-content.administratorList': '관리자',
   'member-content.newMemberList': '새신자',
   /*-------------------member content (member header bar button)-------------------*/
+
+  /*-------------------table header -------------------*/
+  'tableHeader.term': '기수',
+  'tableHeader.education': '교육명',
+  'tableHeader.period': '기간',
+  'tableHeader.educationEnrollments': '교육인원',
+  'tableHeader.instructor': '진행자',
+  'tableHeader.numberOfSession': '진행 상태',
+  /*-------------------table header-------------------*/
 
   /*-------------------member register-------------------*/
   'register.defaultHeaderPhrase': '교인 정보를 입력해주세요',

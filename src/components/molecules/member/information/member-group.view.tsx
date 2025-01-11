@@ -88,7 +88,7 @@ const MemberGroupView = ({
     <ListContainer>
       {/* 그룹 헤더 */}
       <ListTypeHeader>
-        <MainText color={GRAY.DARK}>{t('education')}</MainText>
+        <MainText color={GRAY.DARK}>{t('group')}</MainText>
         {/* 그룹 추가 버튼*/}
         <ButtonContainer onClick={onClickOpenModal}>
           <PlusButton />

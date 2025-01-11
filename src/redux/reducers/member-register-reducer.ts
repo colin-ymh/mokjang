@@ -51,8 +51,8 @@ export const DEFAULT_MEMBER: Member = {
   relation: FAMILY.FAMILY,
   ministries: [],
   groupId: NULL,
-  group: NULL_INFORMATION,
-  educations: [],
+  group: [],
+  educationHistory: [],
   registeredAt: BLANK,
   updatedAt: BLANK,
 };

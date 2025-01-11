@@ -9,6 +9,7 @@ import {
 } from '@/constants/layout/header';
 
 import { useI18n, useScopedI18n } from '../../../locales/client';
+import { EducationSession } from '@/models/setting/setting';
 
 export const useMemberHeaderBarItems = () => {
   const t_memberContent = useScopedI18n('member-content');
@@ -112,10 +113,25 @@ export const useEducationSettingHeaderBarItems = () => {
 
   const items = [
     {
-      id: EDUCATION_SETTING_HEADER_ID.GENERATION,
-      title: t(EDUCATION_SETTING_HEADER_ID.GENERATION),
+      id: EDUCATION_SETTING_HEADER_ID.TERM,
+      title: t(EDUCATION_SETTING_HEADER_ID.TERM),
     },
   ];
+
+  return items;
+};
+
+export const useTermInformationHeaderBarItems = (
+  sessions: EducationSession[]
+) => {
+  const t = useI18n();
+
+  const items = sessions.map((session) => {
+    return {
+      id: session.session.toString(),
+      title: `${session.session}${t('session')}`,
+    };
+  });
 
   return items;
 };

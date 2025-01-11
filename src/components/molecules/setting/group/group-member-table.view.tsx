@@ -17,6 +17,7 @@ import useWindowSize from '@/hooks/window/window';
 
 import DefaultImage from '../../../../../public/png/default-member-image.png';
 import { TABLE_HEADER_ITEM } from '@/redux/reducers/member-filter-reducer';
+import { getCurrentGroup } from '@/utils/history';
 
 const TableContainer = styled.div`
   display: flex;
@@ -156,7 +157,7 @@ const GroupMemberTableView = ({
   const getMemberTableContent = (id: MEMBER, member: Member) => {
     switch (id) {
       case MEMBER.GROUP:
-        return <MainText>{member.group?.name}</MainText>;
+        return <MainText>{getCurrentGroup(member.group)?.groupName}</MainText>;
       case MEMBER.PROFILE_IMAGE:
         return (
           <ProfileImage

@@ -1,16 +1,14 @@
 import styled from 'styled-components';
 
-import GroupMemberTable from '@/components/molecules/setting/group/group-member-table';
 import { MainText } from '@/components/atoms/common/text/main-text';
-import AddGroupMemberModal from '@/components/atoms/modal/add-group-member-modal';
 import { GRAY } from '@/constants/styles/color';
-import { Group } from '@/models/setting/setting';
-import { Member } from '@/models/member/member';
+import { Education } from '@/models/setting/setting';
+import TermTable from '@/components/molecules/setting/education/term-table';
 
-import { useScopedI18n } from '../../../../../locales/client';
+import { useI18n } from '../../../../../locales/client';
 import Plus from '../../../../../public/svg/plus.svg';
 
-const GroupMemberContainer = styled.div`
+const EducationTermContainer = styled.div`
   display: flex;
   flex-direction: column;
 `;
@@ -50,40 +48,38 @@ const ModalContainer = styled.div`
   z-index: 100;
 `;
 
-type GroupMemberViewProps = {
-  group: Group;
-  members: Member[];
+type EducationTermViewProps = {
+  education: Education;
+  terms: any[];
   isModalShown: boolean;
   onClickModalOpen: () => void;
   onClickModalClose: () => void;
 };
 
-const GroupMemberView = ({
-  group,
-  members,
+const EducationTermListView = ({
+  education,
+  terms,
   isModalShown,
   onClickModalOpen,
   onClickModalClose,
-}: GroupMemberViewProps) => {
-  const t_header = useScopedI18n('header');
+}: EducationTermViewProps) => {
+  const t = useI18n();
 
   return (
-    <GroupMemberContainer>
+    <EducationTermContainer>
       <ListTypeHeader>
-        <MainText color={GRAY.DARK}>{t_header('groupMembers')}</MainText>
-        <MainText color={GRAY.DARK}>{`(${group.membersCount})`}</MainText>
+        <MainText color={GRAY.DARK}>{t('term')}</MainText>
         <PlusButton onClick={onClickModalOpen} />
         <ModalContainer>
-          <AddGroupMemberModal
-            group={group}
-            isShown={isModalShown}
-            onClickClose={onClickModalClose}
-          />
+          {/*<AddEducationTermModal*/}
+          {/*  isShown={isModalShown}*/}
+          {/*  onClickClose={onClickModalClose}*/}
+          {/*/>*/}
         </ModalContainer>
       </ListTypeHeader>
-      <GroupMemberTable groupMembers={members} />
-    </GroupMemberContainer>
+      <TermTable education={education} terms={terms} />
+    </EducationTermContainer>
   );
 };
 
-export default GroupMemberView;
+export default EducationTermListView;

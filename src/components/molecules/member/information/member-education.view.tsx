@@ -71,7 +71,8 @@ type MemberEducationViewProps = {
   onClickSaveNewEducation: (
     educationId: string,
     startDate: string,
-    status: EDUCATION_STATUS
+    status: EDUCATION_STATUS,
+    endDate?: string
   ) => void;
   onClickSaveEditEducation: (
     educationId?: string,
@@ -109,6 +110,7 @@ const MemberEducationView = ({
         {educationHistory.map((education) => {
           return (
             <EducationHistoryItem
+              key={education.id}
               education={education}
               onClickEditEducation={onClickEditEducation}
               onClickDeleteEducation={onClickDeleteEducation}

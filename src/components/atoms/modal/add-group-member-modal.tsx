@@ -1,22 +1,28 @@
-import AddGroupMemberModalView from '@/components/atoms/modal/add-group-member-modal.view';
-import { MembersApi } from '@/api/churches/members.api';
 import { ChangeEvent, useEffect, useState } from 'react';
-import { BLANK } from '@/constants/constant';
-import { Member } from '@/models/member/member';
-import { getFormattedName } from '@/utils/format';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 
+import { GroupHistoryApi } from '@/api/history/group-history';
+import { MembersApi } from '@/api/churches/members.api';
+import AddGroupMemberModalView from '@/components/atoms/modal/add-group-member-modal.view';
+import { BLANK } from '@/constants/constant';
+import { Member } from '@/models/member/member';
+import { Group } from '@/models/setting/setting';
+import { getFormattedName } from '@/utils/format';
+
 type AddGroupMemberModalProps = {
+  group: Group;
   isShown: boolean;
   onClickClose: () => void;
 };
 
 const AddGroupMemberModal = ({
+  group,
   isShown,
   onClickClose,
 }: AddGroupMemberModalProps) => {
   const membersApi = new MembersApi(false);
+  const groupHistoryApi = new GroupHistoryApi(false);
   const churchId = useSelector((state: RootState) => state.church.churchId);
 
   // 검색하고자 하는 교인 이름
@@ -26,7 +32,7 @@ const AddGroupMemberModal = ({
   const [searchedMembers, setSearchedMembers] = useState<Member[]>([]);
 
   // 선택된 교인 목록
-  const [selectedMembers, setSelectedMembers] = useState<string[]>([]);
+  const [selectedMembers, setSelectedMembers] = useState<Member[]>([]);
 
   // 데이터 리셋
   const resetData = () => {
@@ -44,19 +50,35 @@ const AddGroupMemberModal = ({
   const onClickMember = (targetMember: Member) => {
     // 이미 존재하는지 확인
     const isMemberSelected = selectedMembers.some(
-      (id) => id === targetMember.id
+      (member) => member.id === targetMember.id
     );
 
     // 이미 존재한다면 제거, 없으면 추가
     const newSelectedMembers = isMemberSelected
-      ? selectedMembers.filter((id) => id !== targetMember.id)
-      : [...selectedMembers, targetMember.id];
+      ? selectedMembers.filter((member) => member.id !== targetMember.id)
+      : [...selectedMembers, targetMember];
 
     setSelectedMembers(newSelectedMembers);
   };
 
   // 추가 버튼 이벤트
-  const onClickSave = () => {};
+  const onClickSave = () => {
+    if (selectedMembers.length !== 0) {
+      selectedMembers.map((member) => {
+        groupHistoryApi.createGroupHistory(
+          { churchId, memberId: member.id },
+          {
+            groupId: group.id as string,
+            startDate: new Date().toDateString(),
+            autoEndDate: true,
+          }
+        );
+      });
+      // 모달 닫기
+      onClickClose();
+      resetData();
+    }
+  };
 
   // 검색 내용이 변경되면, 검색된 교인 목록 변경
   useEffect(() => {
@@ -66,7 +88,7 @@ const AddGroupMemberModal = ({
         const newMembers = response.data.data;
         setSearchedMembers(newMembers);
       });
-  }, [searchName]);
+  }, [searchName, isShown]);
 
   // esc
   useEffect(() => {
@@ -84,6 +106,7 @@ const AddGroupMemberModal = ({
   }, [onClickClose]);
 
   const props = {
+    group,
     isShown,
     searchName,
     searchedMembers,

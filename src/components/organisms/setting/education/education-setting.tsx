@@ -16,7 +16,6 @@ type EducationSettingProps = {};
 const EducationSetting = ({}: EducationSettingProps) => {
   const educationsApi = new EducationsApi(false);
   const churchId = useSelector((state: RootState) => state.church.churchId);
-
   const nameInputRef = useRef<HTMLInputElement>(null);
 
   // 교육 설정 탭 헤더
@@ -28,7 +27,7 @@ const EducationSetting = ({}: EducationSettingProps) => {
 
   // 선택된 교육 정보 탭
   const [headerBarId, setHeaderBarId] = useState<EDUCATION_SETTING_HEADER_ID>(
-    EDUCATION_SETTING_HEADER_ID.GENERATION
+    EDUCATION_SETTING_HEADER_ID.TERM
   );
 
   // 전체 교육 배열

@@ -13,7 +13,6 @@ import { DEFAULT_EDUCATION, Education } from '@/models/setting/setting';
 import { EducationsApi } from '@/api/settings/educations.api';
 import { getFormattedName } from '@/utils/format';
 import { getIsWellFormedName } from '@/utils/check';
-import { BLANK } from '@/constants/constant';
 import SettingEducationItemView from '@/components/atoms/setting/education/setting-education-item.view';
 
 type SettingEducationItemProps = {
@@ -35,44 +34,18 @@ const SettingEducationItem = ({
   // 이름 수정창 ref
   const nameInputRef = useRef<HTMLInputElement>(null);
 
-  // 새로 추가하는 그룹 입력창 ref
-  const newEducationRef = useRef<HTMLInputElement>(null);
-
-  // 새로 추가중인지 여부
-  const [isAddShown, setIsAddShown] = useState<boolean>(false);
-
-  // 새 그룹의 이름
-  const [newEducationName, setNewEducationName] = useState<string>(BLANK);
-
   // 수정중인지 여부
   const [isEdit, setIsEdit] = useState<boolean>(false);
 
   // 수정되는 이름
   const [editName, setEditName] = useState<string>(education.name);
 
-  // 새그룹 이름 변경
-  const onChangeNewEducationName = (event: ChangeEvent<HTMLInputElement>) => {
-    const newName = getFormattedName(event.target.value);
-    setNewEducationName(newName);
+  // 확인 중인 교육 변경
+  const onClickEducation = (education: Education) => {
+    setSelectedEducation(education);
   };
 
-  // 새로운 그룹 추가하기
-  const onClickSaveNewEducation = () => {
-    if (getIsWellFormedName(newEducationName)) {
-      educationsApi
-        .createEducation({ churchId }, { name: newEducationName })
-        .then(() => {
-          fetchEducations();
-          setIsAddShown(false);
-          setNewEducationName(BLANK);
-        });
-    }
-  };
-
-  // 확인 중인 그룹 변경
-  const onClickEducation = (educationId: string | null) => {};
-
-  // 그룹 수정 활성화
+  // 교육 수정 활성화
   const onClickEducationEdit = () => {
     setEditName(education.name);
     setIsEdit(true);
@@ -86,21 +59,11 @@ const SettingEducationItem = ({
     });
   };
 
-  // 그룹 삭제
+  // 교육 삭제
   const onClickEducationDelete = (educationId: string) => {
     educationsApi.deleteEducation({ churchId, educationId }).then(() => {
       fetchEducations();
       setSelectedEducation(DEFAULT_EDUCATION);
-    });
-  };
-
-  // 그룹 추가 활성화
-  const onClickEducationAdd = () => {
-    setIsAddShown(true);
-    setTimeout(() => {
-      if (newEducationRef.current) {
-        newEducationRef.current.focus();
-      }
     });
   };
 
@@ -153,25 +116,6 @@ const SettingEducationItem = ({
     };
   }, [nameInputRef, isEdit]);
 
-  // 추가 중 focus 가 풀리면 추가 취소
-  useEffect(() => {
-    const inputElement = newEducationRef.current;
-
-    const handleBlur = () => {
-      setIsAddShown(false);
-    };
-
-    if (inputElement) {
-      inputElement.addEventListener('blur', handleBlur);
-    }
-
-    return () => {
-      if (inputElement) {
-        inputElement.removeEventListener('blur', handleBlur);
-      }
-    };
-  }, [newEducationRef, isAddShown]);
-
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       // !!!!!!!!!!!! 시발 !!!!!!!!!!!!
@@ -191,18 +135,10 @@ const SettingEducationItem = ({
           } else {
             setIsEdit(false);
           }
-        } else if (newEducationRef.current === document.activeElement) {
-          if (getIsWellFormedName(newEducationName)) {
-            onClickSaveNewEducation();
-          } else {
-            setIsAddShown(false);
-          }
         }
       } else if (e.key === 'Escape') {
         if (nameInputRef.current === document.activeElement) {
           setIsEdit(false);
-        } else if (newEducationRef.current === document.activeElement) {
-          setIsAddShown(false);
         }
       }
     };
@@ -212,7 +148,7 @@ const SettingEducationItem = ({
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [editName, newEducationName, onClickSaveName, onClickSaveNewEducation]);
+  }, [editName, onClickSaveName]);
 
   const props = {
     isEdit,
@@ -224,7 +160,6 @@ const SettingEducationItem = ({
     onClickEducation,
     onClickEducationEdit,
     onClickEducationDelete,
-    onClickEducationAdd,
     onChangeName,
     onClickSaveName,
   };

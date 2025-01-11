@@ -25,6 +25,7 @@ import { Education, Group } from '@/models/setting/setting';
 import MemberGroup from '@/components/molecules/member/information/member-group';
 import EducationSetting from '@/components/organisms/setting/education/education-setting';
 import OfficerSetting from '@/components/organisms/setting/officer/officer-setting';
+import EducationTermList from '@/components/molecules/setting/education/education-term-list';
 
 export const getContent = (id: string): ReactNode => {
   switch (id) {
@@ -96,7 +97,7 @@ export const getEducationSettingContent = (
   education: Education
 ) => {
   switch (contentId) {
-    case EDUCATION_SETTING_HEADER_ID.GENERATION:
-      return <div></div>;
+    case EDUCATION_SETTING_HEADER_ID.TERM:
+      return <EducationTermList education={education} />;
   }
 };

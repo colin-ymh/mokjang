@@ -14,6 +14,7 @@ import TransparentBackground from '@/components/atoms/common/etc/transparent-bac
 import DefaultImage from '../../../../../public/png/default-member-image.png';
 import Kebab from '../../../../../public/svg/kebab.svg';
 import { useI18n } from '../../../../../locales/client';
+import { getCurrentGroup } from '@/utils/history';
 
 const ItemContainer = styled.div`
   display: flex;
@@ -145,7 +146,10 @@ const FamilyMemberItem = ({
       {/* 소그룹 */}
       <MemberInformationContainer>
         <MainText color={GRAY.DEFAULT}>{t(MEMBER.GROUP)}</MainText>
-        <MainText>{member.familyMember?.group?.name}</MainText>
+        <MainText>
+          {member.familyMember?.group &&
+            getCurrentGroup(member.familyMember?.group)?.groupName}
+        </MainText>
       </MemberInformationContainer>
       {/* 전화번호 */}
       <MemberInformationContainer>

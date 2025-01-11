@@ -1,14 +1,12 @@
 import styled from 'styled-components';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/redux/store';
 
 import { MainText } from '@/components/atoms/common/text/main-text';
-import { MEMBER } from '@/constants/member/member-column';
 import { GRAY, MAIN } from '@/constants/styles/color';
 import { SIZE } from '@/constants/styles/style';
-import { getTranslatedMemberColumn } from '@/utils/translate';
 
-import { useI18n } from '../../../../../locales/client';
+import { useScopedI18n } from '../../../../../locales/client';
+import { EDUCATION_TERM } from '@/constants/setting/education-term-column';
+import { getTranslatedTermColumn } from '@/utils/translate';
 
 const HeaderContainer = styled.div`
   display: flex;
@@ -16,13 +14,11 @@ const HeaderContainer = styled.div`
   justify-content: flex-start;
   overflow: hidden;
   position: relative;
-  cursor: pointer;
 `;
 
 const TextContainer = styled.div`
   display: flex;
   align-items: center;
-  cursor: pointer;
 `;
 
 const IconContainer = styled.div`
@@ -32,32 +28,25 @@ const IconContainer = styled.div`
   position: absolute;
   right: 5px;
   margin-bottom: 3px;
-  cursor: pointer;
 `;
 
-type MemberTableHeaderProps = {
+type TermTableHeaderProps = {
   item: {
-    id: MEMBER;
+    id: EDUCATION_TERM;
     isSortable: boolean;
   };
-  onClick: (id: MEMBER) => void;
+  onClick: (id: EDUCATION_TERM) => void;
 };
 
-// Component
-const MemberTableHeader = ({ item, onClick }: MemberTableHeaderProps) => {
-  const { memberOrderBy, memberOrderDirection } = useSelector(
-    (state: RootState) => state.memberFilter
-  );
-  const t = useI18n();
-
-  const isActive = memberOrderBy === item.id;
-  // const isAscending = memberOrderDirection === ORDER_DIRECTION.ASC;
+const TermTableHeader = ({ item, onClick }: TermTableHeaderProps) => {
+  const t_header = useScopedI18n('tableHeader');
+  const isActive = false;
 
   return (
     <HeaderContainer onClick={() => item.isSortable && onClick(item.id)}>
       <TextContainer>
         <MainText color={isActive ? MAIN.DEFAULT : GRAY.DARK}>
-          {getTranslatedMemberColumn(t, item.id)}
+          {getTranslatedTermColumn(t_header, item.id)}
         </MainText>
       </TextContainer>
       {item.isSortable && (
@@ -74,4 +63,4 @@ const MemberTableHeader = ({ item, onClick }: MemberTableHeaderProps) => {
   );
 };
 
-export default MemberTableHeader;
+export default TermTableHeader;

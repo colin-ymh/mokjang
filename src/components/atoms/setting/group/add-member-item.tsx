@@ -17,7 +17,7 @@ const BackgroundContainer = styled.div`
   border-bottom: 1px solid ${GRAY.LIGHT};
 `;
 
-const ItemContainer = styled.div`
+const ItemContainer = styled.div<{ $isEnable: boolean }>`
   display: flex;
   width: 100%;
   padding: 5px;
@@ -25,7 +25,7 @@ const ItemContainer = styled.div`
   justify-content: flex-start;
   align-items: center;
   gap: 10px;
-  cursor: pointer;
+  cursor: ${({ $isEnable }) => ($isEnable ? 'pointer' : 'auto')};
   transition: background-color 0.2s;
 
   &:hover {
@@ -39,7 +39,7 @@ const ProfileImage = styled(Image)`
   border-radius: 5px;
 `;
 
-const SelectButton = styled.div<{ $isSelected: boolean }>`
+const SelectButton = styled.div<{ $isEnable: boolean; $isSelected: boolean }>`
   display: flex;
   width: 20px;
   height: 20px;
@@ -48,27 +48,29 @@ const SelectButton = styled.div<{ $isSelected: boolean }>`
   border-radius: 50%;
   cursor: pointer;
   border: 1px solid ${GRAY.LIGHT};
-  background-color: ${({ $isSelected }) => ($isSelected ? MAIN.LIGHT : WHITE)};
+  background-color: ${({ $isEnable, $isSelected }) =>
+    $isEnable ? ($isSelected ? MAIN.LIGHT : WHITE) : GRAY.LIGHT};
 
   transition: background-color 0.2s;
 `;
 
 type AddMemberItemProps = {
   member: Member;
-  selectedMembers: string[];
+  isEnable: boolean;
+  selectedMembers: Member[];
   onClick: (member: Member) => void;
 };
 
 const AddMemberItem = ({
   selectedMembers,
+  isEnable,
   onClick,
   member,
 }: AddMemberItemProps) => {
-  const isSelected = selectedMembers.some((id) => id === member.id);
-
+  const isSelected = selectedMembers.some((m) => m.id === member.id);
   return (
-    <BackgroundContainer onClick={() => onClick(member)}>
-      <ItemContainer>
+    <BackgroundContainer>
+      <ItemContainer $isEnable={isEnable}>
         <ProfileImage
           src={member.profileImage || DefaultImage}
           alt={MEMBER.PROFILE_IMAGE}
@@ -78,8 +80,9 @@ const AddMemberItem = ({
           {member.birth && `(${getAge(getDateFromString(member.birth))})`}
         </MainText>
         <SelectButton
+          $isEnable={isEnable}
           $isSelected={isSelected}
-          onClick={() => onClick(member)}
+          onClick={() => isEnable && onClick(member)}
         />
       </ItemContainer>
     </BackgroundContainer>

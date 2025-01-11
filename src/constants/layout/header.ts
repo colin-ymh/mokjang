@@ -20,5 +20,5 @@ export enum GROUP_SETTING_HEADER_ID {
 }
 
 export enum EDUCATION_SETTING_HEADER_ID {
-  GENERATION = 'generation',
+  TERM = 'term',
 }

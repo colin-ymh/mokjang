@@ -21,6 +21,7 @@ import useWindowSize from '@/hooks/window/window';
 
 import DefaultImage from '../../../../../public/png/default-member-image.png';
 import { useI18n } from '../../../../../locales/client';
+import { getCurrentGroup } from '@/utils/history';
 
 const getColumnWidth = (id: string) => {
   switch (id) {
@@ -154,7 +155,7 @@ const MemberTableView = ({
   const getMemberTableContent = (id: MEMBER, member: Member) => {
     switch (id) {
       case MEMBER.GROUP:
-        return <MainText>{member.group?.name}</MainText>;
+        return <MainText>{getCurrentGroup(member.group)?.groupName}</MainText>;
       case MEMBER.PROFILE_IMAGE:
         return (
           <ProfileImage
@@ -198,8 +199,8 @@ const MemberTableView = ({
       case MEMBER.EDUCATIONS:
         return (
           <MainText>
-            {member.educations?.map((item) => {
-              return item.name;
+            {member.educationHistory?.map((item) => {
+              return item.educationName;
             })}
           </MainText>
         );
