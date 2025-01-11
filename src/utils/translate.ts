@@ -1,5 +1,5 @@
 import { MEMBER } from '@/constants/member/member-column';
-import { EDUCATION_TERM } from '@/constants/setting/education-term-column';
+import { EDUCATION_TERM } from '@/constants/management/education-term-column';
 
 export const getTranslatedMemberColumn = (
   t: (key: string, ...args: any[]) => string,

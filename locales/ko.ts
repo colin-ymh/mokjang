@@ -5,7 +5,7 @@ export default {
   search: '검색',
   after: '부터',
   before: '까지',
-  setting: '설정',
+  management: '설정',
   all: '전체',
   period: '기간',
 

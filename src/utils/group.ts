@@ -1,7 +1,7 @@
 /**
  * 계층 구조에 따라 그룹을 정렬하는 함수
  */
-import { Group } from '@/models/setting/setting';
+import { Group } from '@/models/management/management';
 
 export const getOrderedGroups = (groups: Group[]) => {
   // 그룹을 id로 매핑하여 빠르게 찾을 수 있도록 맵 생성

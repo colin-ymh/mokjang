@@ -18,10 +18,10 @@ import {
 import { Member } from '@/models/member/member';
 import MemberTableHeader from '@/components/atoms/member/list/member-table-header';
 import useWindowSize from '@/hooks/window/window';
+import { getCurrentGroup } from '@/utils/history';
 
 import DefaultImage from '../../../../../public/png/default-member-image.png';
 import { useI18n } from '../../../../../locales/client';
-import { getCurrentGroup } from '@/utils/history';
 
 const getColumnWidth = (id: string) => {
   switch (id) {

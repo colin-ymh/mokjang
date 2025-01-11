@@ -107,16 +107,17 @@ const MemberEducationView = ({
       </ListTypeHeader>
       {/* 이력 */}
       <EducationListContainer>
-        {educationHistory.map((education) => {
-          return (
-            <EducationHistoryItem
-              key={education.id}
-              education={education}
-              onClickEditEducation={onClickEditEducation}
-              onClickDeleteEducation={onClickDeleteEducation}
-            />
-          );
-        })}
+        {educationHistory &&
+          educationHistory?.map((education) => {
+            return (
+              <EducationHistoryItem
+                key={education.id}
+                education={education}
+                onClickEditEducation={onClickEditEducation}
+                onClickDeleteEducation={onClickDeleteEducation}
+              />
+            );
+          })}
       </EducationListContainer>
       {/* 교육 추가 및 수정 모달*/}
       {isModalShown && (

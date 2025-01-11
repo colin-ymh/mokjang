@@ -7,7 +7,7 @@ import { MembersApi } from '@/api/churches/members.api';
 import AddGroupMemberModalView from '@/components/atoms/modal/add-group-member-modal.view';
 import { BLANK } from '@/constants/constant';
 import { Member } from '@/models/member/member';
-import { Group } from '@/models/setting/setting';
+import { Group } from '@/models/management/management';
 import { getFormattedName } from '@/utils/format';
 
 type AddGroupMemberModalProps = {

@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 import { MEDIA_MIN_WIDTH } from '@/constants/constant';
 
-const ChurchSettingContainer = styled.div`
+const ChurchManagementContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -22,8 +22,8 @@ const ChurchSettingContainer = styled.div`
   }
 `;
 
-const ChurchSetting = () => {
-  return <ChurchSettingContainer></ChurchSettingContainer>;
+const ChurchManagement = () => {
+  return <ChurchManagementContainer></ChurchManagementContainer>;
 };
 
-export default ChurchSetting;
+export default ChurchManagement;

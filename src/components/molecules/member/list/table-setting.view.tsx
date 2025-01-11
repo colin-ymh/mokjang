@@ -115,7 +115,9 @@ const TableSettingView = ({
 }: TableSettingViewProps) => {
   const { memberTableHeaderItemList, filterItems, filterAfter, filterBefore } =
     useSelector((state: RootState) => state.memberFilter);
-  const { officers, educations, ministries} = useSelector((state: RootState) => state.church);
+  const { officers, educations, ministries } = useSelector(
+    (state: RootState) => state.church
+  );
 
   const t = useI18n();
   const t_button = useScopedI18n('button');
@@ -124,7 +126,9 @@ const TableSettingView = ({
 
   useEffect(() => {
     if (filterValue !== NULL) {
-      setFilterContent(useMemberFilterContent(t, officers, educations,ministries, filterValue));
+      setFilterContent(
+        useMemberFilterContent(t, officers, educations, ministries, filterValue)
+      );
     }
   }, [filterValue]);
 

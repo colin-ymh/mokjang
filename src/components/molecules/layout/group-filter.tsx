@@ -4,8 +4,8 @@ import { AppDispatch, RootState } from '@/redux/store';
 import { setMemberFilter } from '@/redux/reducers/member-filter-reducer';
 
 import GroupFilterView from '@/components/molecules/layout/group-filter.view';
-import { GroupsApi } from '@/api/settings/groups.api';
-import { Group } from '@/models/setting/setting';
+import { GroupsApi } from '@/api/management/groups.api';
+import { Group } from '@/models/management/management';
 import { BLANK } from '@/constants/constant';
 import { getOrderedGroups } from '@/utils/group';
 

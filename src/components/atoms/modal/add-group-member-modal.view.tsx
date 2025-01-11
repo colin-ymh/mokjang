@@ -3,9 +3,9 @@ import styled from 'styled-components';
 
 import { GRAY, MAIN, WHITE } from '@/constants/styles/color';
 import { Member } from '@/models/member/member';
-import { Group } from '@/models/setting/setting';
+import { Group } from '@/models/management/management';
 import BorderInput from '@/components/atoms/common/input/border-input';
-import AddMemberItem from '@/components/atoms/setting/group/add-member-item';
+import AddMemberItem from '@/components/atoms/management/group/add-member-item';
 import Button from '@/components/atoms/common/button/button';
 
 import Cancel from '../../../../public/svg/cancel.svg';

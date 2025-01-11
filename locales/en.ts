@@ -5,7 +5,7 @@ export default {
   search: 'Search',
   after: 'From',
   before: 'To',
-  setting: 'Setting',
+  management: 'Management',
   all: 'All',
   period: 'Period',
 
@@ -20,9 +20,9 @@ export default {
   startDate: 'Start Date',
   endDate: 'End Date',
 
-  groupList: 'Setting List',
-  groupName: 'Setting Name',
-  groupRole: 'Setting Roles',
+  groupList: 'Management List',
+  groupName: 'Management Name',
+  groupRole: 'Management Roles',
 
   educationList: 'Education List',
   educationName: 'Education Name',
@@ -124,8 +124,8 @@ export default {
   'header.personalInformation': 'Personal Information',
   'header.familyInformation': 'Family Information',
 
-  'header.groupInformation': 'Setting Information',
-  'header.groupMembers': 'Setting Members',
+  'header.groupInformation': 'Management Information',
+  'header.groupMembers': 'Management Members',
   /*-------------------header (side bar button)-------------------*/
 
   /*-------------------member content (member header bar button)-------------------*/
@@ -163,7 +163,7 @@ export default {
   'button.invite': 'Invite',
   'button.cancel': 'Cancel',
   'button.confirm': 'Confirm',
-  'button.filterSetting': 'Setting',
+  'button.filterSetting': 'Management',
   'button.verify': 'Verify',
   'button.request': 'Request',
   'button.add': 'Add',

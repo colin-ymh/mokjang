@@ -99,6 +99,7 @@ const MemberGroupView = ({
         {groupHistory.map((group) => {
           return (
             <GroupHistoryItem
+              key={group.id}
               group={group}
               onClickEditGroup={onClickEditGroup}
               onClickDeleteGroup={onClickDeleteGroup}

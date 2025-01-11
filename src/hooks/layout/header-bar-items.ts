@@ -9,7 +9,7 @@ import {
 } from '@/constants/layout/header';
 
 import { useI18n, useScopedI18n } from '../../../locales/client';
-import { EducationSession } from '@/models/setting/setting';
+import { EducationSession } from '@/models/management/management';
 
 export const useMemberHeaderBarItems = () => {
   const t_memberContent = useScopedI18n('member-content');
@@ -66,7 +66,7 @@ export const useMemberInformationHeaderBarItems = () => {
   return items;
 };
 
-export const useSettingHeaderBarItems = () => {
+export const useManagementHeaderBarItems = () => {
   const t = useI18n();
 
   const items = [
@@ -91,7 +91,7 @@ export const useSettingHeaderBarItems = () => {
   return items;
 };
 
-export const useGroupSettingHeaderBarItems = () => {
+export const useGroupManagementHeaderBarItems = () => {
   const t_header = useScopedI18n('header');
 
   const items = [
@@ -108,7 +108,7 @@ export const useGroupSettingHeaderBarItems = () => {
   return items;
 };
 
-export const useEducationSettingHeaderBarItems = () => {
+export const useEducationManagementHeaderBarItems = () => {
   const t = useI18n();
 
   const items = [

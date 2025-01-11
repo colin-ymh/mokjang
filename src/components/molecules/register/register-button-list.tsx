@@ -4,7 +4,7 @@ import { AppDispatch, RootState } from '@/redux/store';
 import { setMember, setStage } from '@/redux/reducers/member-register-reducer';
 
 import { MembersApi } from '@/api/churches/members.api';
-import { MemberSettingsApi } from '@/api/churches/member-settings.api';
+import { MemberManagementsApi } from '@/api/churches/member-managements.api';
 import { RequestInfoApi } from '@/api/churches/request-info.api';
 import {
   MEMBER_REGISTER_STAGE,
@@ -19,7 +19,7 @@ import { useScopedI18n } from '../../../../locales/client';
 
 const RegisterButtonList = () => {
   const membersApi = new MembersApi(false);
-  const memberSettingsApi = new MemberSettingsApi(false);
+  const memberManagementsApi = new MemberManagementsApi(false);
   const dispatch = useDispatch<AppDispatch>();
   const churchId: string = useSelector(
     (state: RootState) => state.church.churchId
@@ -94,7 +94,7 @@ const RegisterButtonList = () => {
 
         // 직분 업데이트
         if (member.officerId !== NULL) {
-          memberSettingsApi.editMemberOfficer(
+          memberManagementsApi.editMemberOfficer(
             { churchId, memberId: member.id },
             {
               officerId: member.officerId,

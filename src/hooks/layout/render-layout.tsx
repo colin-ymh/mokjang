@@ -16,16 +16,16 @@ import MemberTabHeader from '@/components/molecules/layout/header/member-tab-hea
 import MemberList from '@/components/organisms/member/list/member-list';
 import InformationList from '@/components/molecules/member/information/member-information-list';
 import FamilyInformationList from '@/components/molecules/member/information/family-information-list';
-import SettingTabHeader from '@/components/molecules/layout/header/setting-tab-header';
+import ManagementTabHeader from '@/components/molecules/layout/header/management-tab-header';
 import MemberEducation from '@/components/molecules/member/information/member-education';
-import GroupSetting from '@/components/organisms/setting/group/group-setting';
-import GroupInformation from '@/components/molecules/setting/group/group-information';
-import GroupMember from '@/components/molecules/setting/group/group-member';
-import { Education, Group } from '@/models/setting/setting';
+import GroupManagement from '@/components/organisms/management/group/group-management';
+import GroupInformation from '@/components/molecules/management/group/group-information';
+import GroupMember from '@/components/molecules/management/group/group-member';
+import { Education, Group } from '@/models/management/management';
 import MemberGroup from '@/components/molecules/member/information/member-group';
-import EducationSetting from '@/components/organisms/setting/education/education-setting';
-import OfficerSetting from '@/components/organisms/setting/officer/officer-setting';
-import EducationTermList from '@/components/molecules/setting/education/education-term-list';
+import EducationManagement from '@/components/organisms/management/education/education-management';
+import OfficerManagement from '@/components/organisms/management/officer/officer-management';
+import EducationTermList from '@/components/molecules/management/education/education-term-list';
 
 export const getContent = (id: string): ReactNode => {
   switch (id) {
@@ -41,13 +41,13 @@ export const getContent = (id: string): ReactNode => {
       return <MemberList isNewMember={true} />;
     // 교회 설정
     case SETTING_CONTENT_ID.GROUP:
-      return <GroupSetting />;
+      return <GroupManagement />;
     case SETTING_CONTENT_ID.MINISTRY:
       return null;
     case SETTING_CONTENT_ID.EDUCATION:
-      return <EducationSetting />;
+      return <EducationManagement />;
     case SETTING_CONTENT_ID.OFFICER:
-      return <OfficerSetting />;
+      return <OfficerManagement />;
     // 그 외
     default:
       return null;
@@ -61,7 +61,7 @@ export const getHeader = (id: string) => {
     case HEADER_ID.MEMBER:
       return <MemberTabHeader />;
     case HEADER_ID.SETTING:
-      return <SettingTabHeader />;
+      return <ManagementTabHeader />;
     default:
       return null;
   }
@@ -83,7 +83,7 @@ export const getMemberInformationContent = (
   }
 };
 
-export const getGroupSettingContent = (contentId: string, group: Group) => {
+export const getGroupManagementContent = (contentId: string, group: Group) => {
   switch (contentId) {
     case GROUP_SETTING_HEADER_ID.GROUP_INFORMATION:
       return <GroupInformation group={group} />;
@@ -92,7 +92,7 @@ export const getGroupSettingContent = (contentId: string, group: Group) => {
   }
 };
 
-export const getEducationSettingContent = (
+export const getEducationManagementContent = (
   contentId: string,
   education: Education
 ) => {

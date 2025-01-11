@@ -10,7 +10,6 @@ import { getThisYearBirth } from '@/utils/date';
 
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
 import Pencil from '../../../../../public/svg/pencil.svg';
-import { getCurrentGroup } from '@/utils/history';
 
 const InformationContainer = styled.div`
   display: flex;
@@ -98,7 +97,6 @@ const InformationListView = ({
 }: InformationListViewProps) => {
   const t = useI18n();
   const t_header = useScopedI18n('header');
-  console.log(getCurrentGroup(prevMember.group));
 
   return (
     <InformationContainer>
