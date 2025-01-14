@@ -20,7 +20,7 @@ const MemberFilterRow = () => {
   const [isAddFilterShown, setIsAddFilterShown] = useState<boolean>(false);
 
   // 목록 설정 모달 열기
-  const onClickTableManagement = () => {
+  const onClickTableSetting = () => {
     setIsAddFilterShown(!isAddFilterShown);
   };
 
@@ -173,7 +173,7 @@ const MemberFilterRow = () => {
     searchRef,
     filteredItems,
     setIsAddFilterShown,
-    onClickTableManagement,
+    onClickTableSetting,
     onClickSearchFilterItem,
     onChangeSearchValue,
     onClickSearch,

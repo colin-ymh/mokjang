@@ -3,10 +3,9 @@ import styled from 'styled-components';
 import { EducationHistory } from '@/models/member/history';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { GRAY } from '@/constants/styles/color';
-import SlideButtonList from '@/components/atoms/common/button/slide-button-list';
-import { getFormattedDate, getKRDateFromDashDate } from '@/utils/format';
 
 import { useI18n } from '../../../../../locales/client';
+import { getFormattedDate, getKRDateFromDashDate } from '@/utils/format';
 
 const BackgroundContainer = styled.div`
   display: flex;
@@ -55,14 +54,14 @@ const DateContainer = styled.div`
 
 type EducationHistoryItemProps = {
   education: EducationHistory;
-  onClickEditEducation: (education: EducationHistory) => void;
-  onClickDeleteEducation: (educationId: string) => void;
+  // onClickEditEducation: (education: EducationHistory) => void;
+  // onClickDeleteEducation: (educationId: string) => void;
 };
 
 const EducationHistoryItem = ({
   education,
-  onClickEditEducation,
-  onClickDeleteEducation,
+  // onClickEditEducation,
+  // onClickDeleteEducation,
 }: EducationHistoryItemProps) => {
   const t = useI18n();
 
@@ -72,7 +71,7 @@ const EducationHistoryItem = ({
         {/* 그룹명 */}
         <NameContainer>
           <MainText color={GRAY.DARK}>{t('educationName')}</MainText>
-          <MainText>{education.educationName}</MainText>
+          <MainText>{education.educationTerm.educationName}</MainText>
         </NameContainer>
         {/* 역할 */}
         <RoleContainer>
@@ -84,22 +83,26 @@ const EducationHistoryItem = ({
           <MainText color={GRAY.DARK}>{t('period')}</MainText>
           <DateContainer>
             <MainText>
-              {getKRDateFromDashDate(getFormattedDate(education.startDate))}
+              {getKRDateFromDashDate(
+                getFormattedDate(education.educationTerm.startDate)
+              )}
             </MainText>
             <MainText>{'-'}</MainText>
             <MainText>
-              {education?.endDate &&
-                getKRDateFromDashDate(getFormattedDate(education?.endDate))}
+              {education.educationTerm?.endDate &&
+                getKRDateFromDashDate(
+                  getFormattedDate(education.educationTerm?.endDate)
+                )}
             </MainText>
           </DateContainer>
         </PeriodContainer>
         {/* 버튼들 */}
-        <SlideButtonList
-          isAddShown={false}
-          buttonSize={25}
-          onClickEdit={() => onClickEditEducation(education)}
-          onClickDelete={() => onClickDeleteEducation(education.id)}
-        />
+        {/*<SlideButtonList*/}
+        {/*  isAddShown={false}*/}
+        {/*  buttonSize={25}*/}
+        {/*  onClickEdit={() => onClickEditEducation(education)}*/}
+        {/*  onClickDelete={() => onClickDeleteEducation(education.id)}*/}
+        {/*/>*/}
       </ItemContainer>
     </BackgroundContainer>
   );

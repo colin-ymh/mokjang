@@ -24,7 +24,7 @@ const SideBarContainer = styled.div`
 
   // 데스크탑
   @media (min-width: ${MEDIA_MIN_WIDTH.DESKTOP}) {
-    display: flex;
+    display: block;
     flex-direction: column;
     width: 180px;
     background-color: ${GRAY.SIDE_BAR};
@@ -42,11 +42,12 @@ const ButtonContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  flex-shrink: 0; /* 크기가 줄어들지 않도록 설정 */
+  flex-shrink: 0;
+  height: 100%;
 `;
 
 const GroupFilterContainer = styled.div<{ $isOpened: boolean }>`
-  overflow-y: auto; /* 내용이 많아질 경우 스크롤 활성화 */
+  overflow-y: auto;
   margin: 10px 0;
   display: ${({ $isOpened }) => ($isOpened ? 'flex' : 'none')};
 `;
@@ -68,7 +69,10 @@ const SideBarView = () => {
         <GroupFilterContainer $isOpened={headerId === HEADER_ID.MEMBER}>
           <GroupFilter />
         </GroupFilterContainer>
-        <SideBarButton id={HEADER_ID.SETTING} title={t(HEADER_ID.SETTING)} />
+        <SideBarButton
+          id={HEADER_ID.MANAGEMENT}
+          title={t(HEADER_ID.MANAGEMENT)}
+        />
       </ButtonContainer>
     </SideBarContainer>
   );

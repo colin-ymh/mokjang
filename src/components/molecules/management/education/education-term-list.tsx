@@ -30,8 +30,7 @@ const EducationTermList = ({ education }: EducationTermProps) => {
     setIsModalShown(false);
   };
 
-  // 기수들 불러오기
-  useEffect(() => {
+  const fetchTerms = () => {
     if (education?.id) {
       educationTermsApi
         .getEducationTerms({ churchId, educationId: education.id })
@@ -40,12 +39,18 @@ const EducationTermList = ({ education }: EducationTermProps) => {
           setTerms(newTerms);
         });
     }
+  };
+
+  // 기수들 불러오기
+  useEffect(() => {
+    fetchTerms();
   }, [education]);
 
   const props = {
     education,
     terms,
     isModalShown,
+    fetchTerms,
     onClickModalOpen,
     onClickModalClose,
   };

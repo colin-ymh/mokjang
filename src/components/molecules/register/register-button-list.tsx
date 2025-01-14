@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 import { setMember, setStage } from '@/redux/reducers/member-register-reducer';
@@ -17,7 +17,11 @@ import { getCreateMemberBody, getEditMemberBody } from '@/utils/member';
 
 import { useScopedI18n } from '../../../../locales/client';
 
-const RegisterButtonList = () => {
+type RegisterButtonListProps = {
+  setIsShown?: Dispatch<SetStateAction<boolean>>;
+};
+
+const RegisterButtonList = ({ setIsShown }: RegisterButtonListProps) => {
   const membersApi = new MembersApi(false);
   const memberManagementsApi = new MemberManagementsApi(false);
   const dispatch = useDispatch<AppDispatch>();
@@ -76,10 +80,14 @@ const RegisterButtonList = () => {
     } else if (stage === MEMBER_REGISTER_STAGE.PERSONAL) {
       if (type === MEMBER_REGISTER_TYPE.NEW) {
         if (member?.id) {
-          membersApi.editMember(
-            { churchId, memberId: member.id },
-            getEditMemberBody(member)
-          );
+          membersApi
+            .editMember(
+              { churchId, memberId: member.id },
+              getEditMemberBody(member)
+            )
+            .then(() => {
+              if (setIsShown) setIsShown(false);
+            });
         }
       } else {
         dispatch(setStage(MEMBER_REGISTER_STAGE.RELIGIOUS));
@@ -87,10 +95,14 @@ const RegisterButtonList = () => {
     } else if (stage === MEMBER_REGISTER_STAGE.RELIGIOUS) {
       if (member?.id) {
         // 교인 업데이트
-        membersApi.editMember(
-          { churchId, memberId: member.id },
-          getEditMemberBody(member)
-        );
+        membersApi
+          .editMember(
+            { churchId, memberId: member.id },
+            getEditMemberBody(member)
+          )
+          .then(() => {
+            if (setIsShown) setIsShown(false);
+          });
 
         // 직분 업데이트
         if (member.officerId !== NULL) {

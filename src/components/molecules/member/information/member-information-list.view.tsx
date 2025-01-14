@@ -70,6 +70,10 @@ const InformationItem = styled.div`
   }
 `;
 
+const BlankSpace = styled.div`
+  flex: 1;
+`;
+
 const TitleContainer = styled.div`
   display: flex;
   width: 150px;
@@ -182,29 +186,35 @@ const InformationListView = ({
         <MainText color={GRAY.DARK}>{t_header('personalInformation')}</MainText>
       </ListTypeHeader>
       <InformationListContainer>
-        {/* 이름 */}
-        <InformationItem onClick={() => onClickItem(MEMBER.NAME)}>
-          <TitleContainer>
-            <MainText color={GRAY.DEFAULT}>{t(MEMBER.NAME)}</MainText>
-          </TitleContainer>
-          <ContentContainer>
-            <MainText>{prevMember.name}</MainText>
-          </ContentContainer>
+        <RowContainer>
+          {/* 이름 */}
+          <InformationItem onClick={() => onClickItem(MEMBER.NAME)}>
+            <TitleContainer>
+              <MainText color={GRAY.DEFAULT}>{t(MEMBER.NAME)}</MainText>
+            </TitleContainer>
+            <ContentContainer>
+              <MainText>{prevMember.name}</MainText>
+            </ContentContainer>
 
-          <PencilButton />
-        </InformationItem>
+            <PencilButton />
+          </InformationItem>
+          <BlankSpace />
+        </RowContainer>
         <Divider />
-        {/* 성별 */}
-        <InformationItem onClick={() => onClickItem(MEMBER.GENDER)}>
-          <TitleContainer>
-            <MainText color={GRAY.DEFAULT}>{t(MEMBER.GENDER)}</MainText>
-          </TitleContainer>
-          <ContentContainer>
-            <MainText>{t(prevMember.gender as GENDER)}</MainText>
-          </ContentContainer>
+        <RowContainer>
+          {/* 성별 */}
+          <InformationItem onClick={() => onClickItem(MEMBER.GENDER)}>
+            <TitleContainer>
+              <MainText color={GRAY.DEFAULT}>{t(MEMBER.GENDER)}</MainText>
+            </TitleContainer>
+            <ContentContainer>
+              <MainText>{t(prevMember.gender as GENDER)}</MainText>
+            </ContentContainer>
 
-          <PencilButton />
-        </InformationItem>
+            <PencilButton />
+          </InformationItem>
+          <BlankSpace />
+        </RowContainer>
         <Divider />
         {/* 생년월일 라인 */}
         <RowContainer>

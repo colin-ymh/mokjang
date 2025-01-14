@@ -5,7 +5,6 @@ import { ReactNode } from 'react';
 import Wrap from '@/components/atoms/layout/wrap';
 import Container from '@/components/atoms/layout/container/container';
 import Main from '@/components/atoms/layout/main/main';
-
 import SideBar from '@/components/molecules/layout/side-bar';
 import Header from '@/components/atoms/layout/header';
 

@@ -1,6 +1,8 @@
+import { useState } from 'react';
+
 import TermInformationView from '@/components/molecules/management/education/term-information.view';
 import { Education, EducationTerm } from '@/models/management/management';
-import { useState } from 'react';
+import { EDUCATION_TERM_HEADER_ID } from '@/constants/layout/header';
 
 type TermInformationProps = {
   education: Education;
@@ -10,7 +12,7 @@ type TermInformationProps = {
 const TermInformation = ({ education, term }: TermInformationProps) => {
   // 선택된 회차
   const [selectedSessionId, setSelectedSessionId] = useState<string>(
-    term?.educationSessions[0]?.session?.toString()
+    EDUCATION_TERM_HEADER_ID.INFORMATION
   );
 
   // 회차 선택
@@ -24,6 +26,10 @@ const TermInformation = ({ education, term }: TermInformationProps) => {
       term,
       selectedSessionId,
       onClickHeaderItem,
+    },
+    content: {
+      term,
+      selectedSessionId,
     },
   };
 

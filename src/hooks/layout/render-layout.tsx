@@ -3,11 +3,11 @@ import { Dispatch, ReactNode, SetStateAction } from 'react';
 import {
   HOME_CONTENT_ID,
   MEMBER_CONTENT_ID,
-  SETTING_CONTENT_ID,
+  MANAGEMENT_CONTENT_ID,
 } from '@/constants/layout/content';
 import {
-  EDUCATION_SETTING_HEADER_ID,
-  GROUP_SETTING_HEADER_ID,
+  EDUCATION_MANAGEMENT_HEADER_ID,
+  GROUP_MANAGEMENT_HEADER_ID,
   HEADER_ID,
   MEMBER_INFORMATION_HEADER_ID,
 } from '@/constants/layout/header';
@@ -40,13 +40,13 @@ export const getContent = (id: string): ReactNode => {
     case MEMBER_CONTENT_ID.NEW_MEMBER:
       return <MemberList isNewMember={true} />;
     // 교회 설정
-    case SETTING_CONTENT_ID.GROUP:
+    case MANAGEMENT_CONTENT_ID.GROUP:
       return <GroupManagement />;
-    case SETTING_CONTENT_ID.MINISTRY:
+    case MANAGEMENT_CONTENT_ID.MINISTRY:
       return null;
-    case SETTING_CONTENT_ID.EDUCATION:
+    case MANAGEMENT_CONTENT_ID.EDUCATION:
       return <EducationManagement />;
-    case SETTING_CONTENT_ID.OFFICER:
+    case MANAGEMENT_CONTENT_ID.OFFICER:
       return <OfficerManagement />;
     // 그 외
     default:
@@ -60,7 +60,7 @@ export const getHeader = (id: string) => {
       return null;
     case HEADER_ID.MEMBER:
       return <MemberTabHeader />;
-    case HEADER_ID.SETTING:
+    case HEADER_ID.MANAGEMENT:
       return <ManagementTabHeader />;
     default:
       return null;
@@ -85,9 +85,9 @@ export const getMemberInformationContent = (
 
 export const getGroupManagementContent = (contentId: string, group: Group) => {
   switch (contentId) {
-    case GROUP_SETTING_HEADER_ID.GROUP_INFORMATION:
+    case GROUP_MANAGEMENT_HEADER_ID.GROUP_INFORMATION:
       return <GroupInformation group={group} />;
-    case GROUP_SETTING_HEADER_ID.MEMBER_LIST:
+    case GROUP_MANAGEMENT_HEADER_ID.MEMBER_LIST:
       return <GroupMember group={group} />;
   }
 };
@@ -97,7 +97,7 @@ export const getEducationManagementContent = (
   education: Education
 ) => {
   switch (contentId) {
-    case EDUCATION_SETTING_HEADER_ID.TERM:
+    case EDUCATION_MANAGEMENT_HEADER_ID.TERM:
       return <EducationTermList education={education} />;
   }
 };

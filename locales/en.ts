@@ -8,6 +8,9 @@ export default {
   management: 'Management',
   all: 'All',
   period: 'Period',
+  total: 'Total',
+
+  people: 'People',
 
   instructor: 'Instructor',
   session: 'Session',
@@ -27,6 +30,8 @@ export default {
   educationList: 'Education List',
   educationName: 'Education Name',
   educationStatus: 'Status',
+  educationInformation: 'Education Information',
+  educationProcess: 'Current Process',
 
   officerList: 'Officer List',
   officerName: 'Officer Name',
@@ -149,6 +154,8 @@ export default {
 
   'register.checkRegisterPhrase': 'Please enter your information',
   'register.checkButton': 'Confirm And Enter More',
+
+  'register.termHeaderPhrase': 'Please enter the term information',
   /*-------------------member register-------------------*/
 
   /*-------------------button-------------------*/
@@ -168,6 +175,7 @@ export default {
   'button.request': 'Request',
   'button.add': 'Add',
   'button.signIn': 'Sign In',
+  'button.saveTerm': 'Save New Term',
 
   /*-------------------button-------------------*/
 

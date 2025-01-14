@@ -23,7 +23,7 @@ const BorderInputContainer = styled.input<{
   transition: all 0.3s ease;
   height: ${({ height }) => (height ? `${height}px` : 'auto')};
   pointer-events: ${({ $isEditable }) => ($isEditable ? 'auto' : 'none')};
-  background-color: ${({ $disabled }) => ($disabled ? 'orange' : WHITE)};
+  background-color: ${({ $disabled }) => ($disabled ? GRAY.LIGHT : WHITE)};
 
   &:focus {
     outline: none;

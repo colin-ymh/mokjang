@@ -8,11 +8,15 @@ export default {
   management: '설정',
   all: '전체',
   period: '기간',
+  total: '총',
+
+  people: '인원',
 
   instructor: '진행자',
   session: '회차',
 
   term: '기수',
+
   inProgress: '진행중',
   completed: '수료',
   incomplete: '미수료',
@@ -27,6 +31,8 @@ export default {
   educationList: '교육 목록',
   educationName: '교육명',
   educationStatus: '상태',
+  educationInformation: '교육 정보',
+  educationProcess: '진행사항',
 
   officerList: '직분 목록',
   officerName: '직분명',
@@ -71,10 +77,10 @@ export default {
 
   group: '소그룹',
   ministry: '사역',
-  education: '교육 이수',
+  education: '교육',
   groups: '소그룹',
   ministries: '사역',
-  educations: '교육 이수',
+  educations: '교육',
 
   // 성별
   male: '남성',
@@ -151,6 +157,7 @@ export default {
   'register.checkRegisterPhrase': '성도님의 정보를 입력해주세요',
   'register.checkButton': '확인하고 상세정보 입력하기',
 
+  'register.termHeaderPhrase': '기수 정보를 입력해주세요',
   /*-------------------member register-------------------*/
 
   /*-------------------button-------------------*/
@@ -170,6 +177,8 @@ export default {
   'button.request': '요청하기',
   'button.add': '추가하기',
   'button.signIn': '회원가입 완료하기',
+
+  'button.saveTerm': '기수 추가하기',
 
   /*-------------------button-------------------*/
 

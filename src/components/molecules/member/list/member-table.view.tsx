@@ -114,7 +114,7 @@ const TableData = styled.td<{ id: string; $index: number }>`
   background-color: ${({ $index }) =>
     $index % 2 === 0 ? WHITE : GRAY.SIDE_BAR};
   cursor: pointer;
-
+  z-index: 10;
   width: ${({ id }) => `${getColumnWidth(id)}px`};
 `;
 
@@ -200,7 +200,7 @@ const MemberTableView = ({
         return (
           <MainText>
             {member.educationHistory?.map((item) => {
-              return item.educationName;
+              return item.educationTerm.educationName;
             })}
           </MainText>
         );

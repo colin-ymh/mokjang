@@ -1,3 +1,5 @@
+import { MEMBER } from '@/constants/member/member-column';
+
 export enum EDUCATION_TERM {
   ID = 'id',
   EDUCATION_ID = 'educationId',
@@ -21,6 +23,24 @@ export enum EDUCATION_TERM {
 
 export type TERM_TABLE_HEADER_ITEM = {
   id: EDUCATION_TERM;
+  isShown: boolean;
+  isSortable: boolean;
+  isFilterable: boolean;
+  isFixed?: boolean;
+  isDate?: boolean;
+};
+
+export enum EDUCATION_ENROLLMENT {
+  MEMBER_NAME = 'memberName',
+  AGE = MEMBER.AGE,
+  GROUP = MEMBER.GROUP,
+  STATUS = 'status',
+  NOTE = 'note',
+  MOBILE_PHONE = MEMBER.MOBILE_PHONE,
+}
+
+export type ENROLLMENT_TABLE_HEADER_ITEM = {
+  id: EDUCATION_ENROLLMENT;
   isShown: boolean;
   isSortable: boolean;
   isFilterable: boolean;

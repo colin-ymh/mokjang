@@ -5,7 +5,7 @@ import GroupList from '@/components/molecules/management/group/group-list';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { SIZE } from '@/constants/styles/style';
 import { GRAY } from '@/constants/styles/color';
-import { GROUP_SETTING_HEADER_ID } from '@/constants/layout/header';
+import { GROUP_MANAGEMENT_HEADER_ID } from '@/constants/layout/header';
 import HeaderBar, {
   HeaderBarItem,
 } from '@/components/atoms/layout/header/header-bar';
@@ -26,7 +26,7 @@ const GroupListContainer = styled.div`
   padding: 20px;
   gap: 20px;
   border-right: 1px solid ${GRAY.LIGHT};
-  width: 250px;
+  width: 200px;
   flex-shrink: 0;
 `;
 
@@ -50,7 +50,7 @@ type GroupManagementViewProps = {
   setSelectedGroup: Dispatch<SetStateAction<Group>>;
   headerBarId: string;
   headerBarItems: HeaderBarItem[];
-  onClickHeaderBar: (id: GROUP_SETTING_HEADER_ID) => void;
+  onClickHeaderBar: (id: GROUP_MANAGEMENT_HEADER_ID) => void;
 };
 
 const GroupManagementView = ({

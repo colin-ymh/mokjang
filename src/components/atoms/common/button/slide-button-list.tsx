@@ -28,6 +28,7 @@ const ButtonContainer = styled.div<{
   $isHovered: boolean;
   $buttonCount: number;
   $buttonSize: number;
+  $hoverBackgroundColor?: string;
 }>`
   display: flex;
   flex-direction: row;
@@ -39,7 +40,12 @@ const ButtonContainer = styled.div<{
     $isHovered
       ? `${$buttonCount * $buttonSize + Math.max($buttonCount - 1, 0) * 10}px`
       : '0'};
-  transition: width 0.1s ease-in-out;
+  transition: all 0.1s ease-in-out;
+
+  &:hover {
+    background-color: ${({ $hoverBackgroundColor }) =>
+      $hoverBackgroundColor || 'auto'};
+  }
 `;
 
 // 개별 버튼들
@@ -105,6 +111,7 @@ const SlideButtonList = ({
   isDeleteShown = true,
   isAddShown = true,
   buttonSize = 18,
+  hoverBackgroundColor,
 }: EditDeleteModalProps) => {
   const [isHovered, setIsHovered] = useState<boolean>(false);
 
@@ -125,6 +132,7 @@ const SlideButtonList = ({
         $isHovered={isHovered}
         $buttonCount={buttonCount}
         $buttonSize={buttonSize}
+        $hoverBackgroundColor={hoverBackgroundColor}
       >
         {isDeleteShown && (
           <DeleteButton onClick={onClickDelete} $buttonSize={buttonSize} />

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { GROUP_SETTING_HEADER_ID } from '@/constants/layout/header';
+import { GROUP_MANAGEMENT_HEADER_ID } from '@/constants/layout/header';
 import { useGroupManagementHeaderBarItems } from '@/hooks/layout/header-bar-items';
 import GroupManagementView from '@/components/organisms/management/group/group-management.view';
 import { DEFAULT_GROUP, Group } from '@/models/management/management';
@@ -15,12 +15,12 @@ const GroupManagement = ({}: GroupManagementProps) => {
   const [selectedGroup, setSelectedGroup] = useState<Group>(DEFAULT_GROUP);
 
   // 선택된 그룹 정보 탭
-  const [headerBarId, setHeaderBarId] = useState<GROUP_SETTING_HEADER_ID>(
-    GROUP_SETTING_HEADER_ID.GROUP_INFORMATION
+  const [headerBarId, setHeaderBarId] = useState<GROUP_MANAGEMENT_HEADER_ID>(
+    GROUP_MANAGEMENT_HEADER_ID.GROUP_INFORMATION
   );
 
   // 새로운 탭 이벤트
-  const onClickHeaderBar = (id: GROUP_SETTING_HEADER_ID) => {
+  const onClickHeaderBar = (id: GROUP_MANAGEMENT_HEADER_ID) => {
     setHeaderBarId(id);
   };
 

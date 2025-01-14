@@ -14,6 +14,7 @@ const InformationHeader = styled.div`
   justify-content: space-between;
   padding: 20px 20px 0 20px;
   gap: 30px;
+  border-bottom: 1px solid ${GRAY.LIGHT};
 `;
 
 const Information = styled.div`
@@ -21,6 +22,7 @@ const Information = styled.div`
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
+  gap: 10px;
 `;
 
 export type TermInformationHeaderProps = {
@@ -37,14 +39,14 @@ const TermInformationHeader = ({
   onClickHeaderItem,
 }: TermInformationHeaderProps) => {
   const headerBarItems = useTermInformationHeaderBarItems(
-    term.educationSessions
+    parseInt(term.numberOfSessions)
   );
 
   return (
     <InformationHeader>
       <Information>
         <MainText
-          size={SIZE.LARGE}
+          size={SIZE.EXTRA_LARGE}
         >{`${education.name} ${term?.term}기`}</MainText>
         <MainText size={SIZE.MEDIUM} color={GRAY.DARK}>
           {term?.instructor.name}

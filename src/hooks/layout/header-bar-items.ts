@@ -1,15 +1,15 @@
 import {
+  MANAGEMENT_CONTENT_ID,
   MEMBER_CONTENT_ID,
-  SETTING_CONTENT_ID,
 } from '@/constants/layout/content';
 import {
-  EDUCATION_SETTING_HEADER_ID,
-  GROUP_SETTING_HEADER_ID,
+  EDUCATION_MANAGEMENT_HEADER_ID,
+  EDUCATION_TERM_HEADER_ID,
+  GROUP_MANAGEMENT_HEADER_ID,
   MEMBER_INFORMATION_HEADER_ID,
 } from '@/constants/layout/header';
 
 import { useI18n, useScopedI18n } from '../../../locales/client';
-import { EducationSession } from '@/models/management/management';
 
 export const useMemberHeaderBarItems = () => {
   const t_memberContent = useScopedI18n('member-content');
@@ -71,20 +71,20 @@ export const useManagementHeaderBarItems = () => {
 
   const items = [
     {
-      id: SETTING_CONTENT_ID.GROUP,
-      title: t(SETTING_CONTENT_ID.GROUP),
+      id: MANAGEMENT_CONTENT_ID.GROUP,
+      title: t(MANAGEMENT_CONTENT_ID.GROUP),
     },
     {
-      id: SETTING_CONTENT_ID.OFFICER,
-      title: t(SETTING_CONTENT_ID.OFFICER),
+      id: MANAGEMENT_CONTENT_ID.OFFICER,
+      title: t(MANAGEMENT_CONTENT_ID.OFFICER),
     },
     {
-      id: SETTING_CONTENT_ID.MINISTRY,
-      title: t(SETTING_CONTENT_ID.MINISTRY),
+      id: MANAGEMENT_CONTENT_ID.MINISTRY,
+      title: t(MANAGEMENT_CONTENT_ID.MINISTRY),
     },
     {
-      id: SETTING_CONTENT_ID.EDUCATION,
-      title: t(SETTING_CONTENT_ID.EDUCATION),
+      id: MANAGEMENT_CONTENT_ID.EDUCATION,
+      title: t(MANAGEMENT_CONTENT_ID.EDUCATION),
     },
   ];
 
@@ -96,12 +96,12 @@ export const useGroupManagementHeaderBarItems = () => {
 
   const items = [
     {
-      id: GROUP_SETTING_HEADER_ID.GROUP_INFORMATION,
-      title: t_header(GROUP_SETTING_HEADER_ID.GROUP_INFORMATION),
+      id: GROUP_MANAGEMENT_HEADER_ID.GROUP_INFORMATION,
+      title: t_header(GROUP_MANAGEMENT_HEADER_ID.GROUP_INFORMATION),
     },
     {
-      id: GROUP_SETTING_HEADER_ID.MEMBER_LIST,
-      title: t_header(GROUP_SETTING_HEADER_ID.MEMBER_LIST),
+      id: GROUP_MANAGEMENT_HEADER_ID.MEMBER_LIST,
+      title: t_header(GROUP_MANAGEMENT_HEADER_ID.MEMBER_LIST),
     },
   ];
 
@@ -113,25 +113,30 @@ export const useEducationManagementHeaderBarItems = () => {
 
   const items = [
     {
-      id: EDUCATION_SETTING_HEADER_ID.TERM,
-      title: t(EDUCATION_SETTING_HEADER_ID.TERM),
+      id: EDUCATION_MANAGEMENT_HEADER_ID.TERM,
+      title: t(EDUCATION_MANAGEMENT_HEADER_ID.TERM),
     },
   ];
 
   return items;
 };
 
-export const useTermInformationHeaderBarItems = (
-  sessions: EducationSession[]
-) => {
+export const useTermInformationHeaderBarItems = (numberOfSessions: number) => {
   const t = useI18n();
 
-  const items = sessions.map((session) => {
-    return {
-      id: session.session.toString(),
-      title: `${session.session}${t('session')}`,
-    };
-  });
+  const items = [
+    {
+      id: EDUCATION_TERM_HEADER_ID.INFORMATION,
+      title: t(EDUCATION_TERM_HEADER_ID.INFORMATION),
+    },
+    ...Array.from({ length: numberOfSessions }, (_, index) => {
+      const sessionNumber = index + 1; // 세션 번호는 1부터 시작
+      return {
+        id: sessionNumber.toString(),
+        title: `${sessionNumber}${t('session')}`,
+      };
+    }),
+  ];
 
   return items;
 };

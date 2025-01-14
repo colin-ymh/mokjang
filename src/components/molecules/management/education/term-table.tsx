@@ -19,7 +19,7 @@ const TermTable = ({ education, terms }: TermTableProps) => {
   const scrollRef = useRef<HTMLDivElement | null>(null);
 
   // 상세 모달 활성화 여부
-  const [isDetailModalShown, setIsDetailModalShown] = useState<boolean>(true);
+  const [isDetailModalShown, setIsDetailModalShown] = useState<boolean>(false);
 
   // 선택된 기수
   const [selectedTerm, setSelectedTerm] = useState<EducationTerm>(
@@ -52,6 +52,7 @@ const TermTable = ({ education, terms }: TermTableProps) => {
 
   const props = {
     terms,
+    onClickTerm,
     onClickHeader,
     scrollRef,
     onScroll,

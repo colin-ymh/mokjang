@@ -23,7 +23,7 @@ const OfficerListContainer = styled.div`
   padding: 20px;
   gap: 20px;
   border-right: 1px solid ${GRAY.LIGHT};
-  width: 250px;
+  width: 200px;
   flex-shrink: 0;
 `;
 

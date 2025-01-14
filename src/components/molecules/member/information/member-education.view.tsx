@@ -2,13 +2,11 @@ import styled from 'styled-components';
 
 import { GRAY, WHITE } from '@/constants/styles/color';
 import { MainText } from '@/components/atoms/common/text/main-text';
-import EducationModal from '@/components/atoms/modal/education-modal';
 import { EducationHistory } from '@/models/member/history';
+import EducationHistoryItem from '@/components/atoms/member/information/education-history-item';
 
 import { useI18n } from '../../../../../locales/client';
 import Plus from '../../../../../public/svg/plus.svg';
-import EducationHistoryItem from '@/components/atoms/member/information/education-history-item';
-import { EDUCATION_STATUS } from '@/constants/constant';
 
 const ListContainer = styled.div`
   display: flex;
@@ -63,36 +61,36 @@ const ModalContainer = styled.div<{ $isShown: boolean }>`
 
 type MemberEducationViewProps = {
   educationHistory: EducationHistory[];
-  targetEducation: EducationHistory;
-  isModalShown: boolean;
-  onClickOpenModal: () => void;
-  onClickCloseModal: () => void;
-  onClickEditEducation: (education: EducationHistory) => void;
-  onClickSaveNewEducation: (
-    educationId: string,
-    startDate: string,
-    status: EDUCATION_STATUS,
-    endDate?: string
-  ) => void;
-  onClickSaveEditEducation: (
-    educationId?: string,
-    startDate?: string,
-    endDate?: string,
-    status?: EDUCATION_STATUS
-  ) => void;
-  onClickDeleteEducation: (educationId: string) => void;
+  // targetEducation: EducationHistory;
+  // isModalShown: boolean;
+  // onClickOpenModal: () => void;
+  // onClickCloseModal: () => void;
+  // onClickEditEducation: (education: EducationHistory) => void;
+  // onClickSaveNewEducation: (
+  //   educationId: string,
+  //   startDate: string,
+  //   status: EDUCATION_STATUS,
+  //   endDate?: string
+  // ) => void;
+  // onClickSaveEditEducation: (
+  //   educationId?: string,
+  //   startDate?: string,
+  //   endDate?: string,
+  //   status?: EDUCATION_STATUS
+  // ) => void;
+  // onClickDeleteEducation: (educationId: string) => void;
 };
 
 const MemberEducationView = ({
   educationHistory,
-  targetEducation,
-  isModalShown,
-  onClickOpenModal,
-  onClickCloseModal,
-  onClickEditEducation,
-  onClickSaveNewEducation,
-  onClickSaveEditEducation,
-  onClickDeleteEducation,
+  // targetEducation,
+  // isModalShown,
+  // onClickOpenModal,
+  // onClickCloseModal,
+  // onClickEditEducation,
+  // onClickSaveNewEducation,
+  // onClickSaveEditEducation,
+  // onClickDeleteEducation,
 }: MemberEducationViewProps) => {
   const t = useI18n();
   return (
@@ -101,9 +99,9 @@ const MemberEducationView = ({
       <ListTypeHeader>
         <MainText color={GRAY.DARK}>{t('education')}</MainText>
         {/* 교육 추가 버튼*/}
-        <ButtonContainer onClick={onClickOpenModal}>
-          <PlusButton />
-        </ButtonContainer>
+        {/*<ButtonContainer onClick={onClickOpenModal}>*/}
+        {/*  <PlusButton />*/}
+        {/*</ButtonContainer>*/}
       </ListTypeHeader>
       {/* 이력 */}
       <EducationListContainer>
@@ -113,23 +111,23 @@ const MemberEducationView = ({
               <EducationHistoryItem
                 key={education.id}
                 education={education}
-                onClickEditEducation={onClickEditEducation}
-                onClickDeleteEducation={onClickDeleteEducation}
+                // onClickEditEducation={onClickEditEducation}
+                // onClickDeleteEducation={onClickDeleteEducation}
               />
             );
           })}
       </EducationListContainer>
       {/* 교육 추가 및 수정 모달*/}
-      {isModalShown && (
-        <ModalContainer $isShown={isModalShown}>
-          <EducationModal
-            prevEducation={targetEducation}
-            onClickClose={onClickCloseModal}
-            onClickSaveNewEducation={onClickSaveNewEducation}
-            onClickSaveEditEducation={onClickSaveEditEducation}
-          />
-        </ModalContainer>
-      )}
+      {/*{isModalShown && (*/}
+      {/*  <ModalContainer $isShown={isModalShown}>*/}
+      {/*    <EducationModal*/}
+      {/*      prevEducation={targetEducation}*/}
+      {/*      onClickClose={onClickCloseModal}*/}
+      {/*      onClickSaveNewEducation={onClickSaveNewEducation}*/}
+      {/*      onClickSaveEditEducation={onClickSaveEditEducation}*/}
+      {/*    />*/}
+      {/*  </ModalContainer>*/}
+      {/*)}*/}
     </ListContainer>
   );
 };

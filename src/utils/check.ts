@@ -1,4 +1,5 @@
 import { BLANK } from '@/constants/constant';
+import { EducationTerm } from '@/models/management/management';
 
 export const getIsWellFormedMobilePhone = (mobilePhone: string) => {
   if (mobilePhone.slice(0, 3) !== '010') return false;
@@ -105,4 +106,12 @@ export const getIsWellFormedName = (name: string) => {
 export const getIsWellFormedVehicleNumber = (vehicleNumber: string) => {
   if (vehicleNumber.length !== 4) return false;
   return true;
+};
+
+export const getIsWellFormedTerm = (
+  terms: EducationTerm[],
+  newTerm: string
+) => {
+  console.log(terms);
+  return terms.every((term) => term.term.toString() !== newTerm);
 };

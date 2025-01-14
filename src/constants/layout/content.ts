@@ -8,7 +8,7 @@ export enum MEMBER_CONTENT_ID {
   NEW_MEMBER = 'newMemberList',
 }
 
-export enum SETTING_CONTENT_ID {
+export enum MANAGEMENT_CONTENT_ID {
   GROUP = 'group',
   OFFICER = 'officer',
   EDUCATION = 'education',

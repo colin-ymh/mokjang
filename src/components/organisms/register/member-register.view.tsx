@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
 
 import { useSelector } from 'react-redux';
@@ -32,7 +32,11 @@ const ContentContainer = styled.div`
   width: 100%;
 `;
 
-const MemberRegisterView = () => {
+type MemberRegisterViewProps = {
+  setIsShown?: Dispatch<SetStateAction<boolean>>;
+};
+
+const MemberRegisterView = ({ setIsShown }: MemberRegisterViewProps) => {
   const { stage } = useSelector((state: RootState) => state.memberRegister);
   const t_register = useScopedI18n('register');
 
@@ -50,7 +54,7 @@ const MemberRegisterView = () => {
         {stage === MEMBER_REGISTER_STAGE.PERSONAL && <PersonalRegister />}
         {stage === MEMBER_REGISTER_STAGE.RELIGIOUS && <ReligiousRegister />}
       </ContentContainer>
-      <RegisterButtonList />
+      <RegisterButtonList setIsShown={setIsShown} />
     </RegisterContainer>
   );
 };

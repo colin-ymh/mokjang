@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 
 import { EducationsApi } from '@/api/management/educations.api';
-import { EDUCATION_SETTING_HEADER_ID } from '@/constants/layout/header';
+import { EDUCATION_MANAGEMENT_HEADER_ID } from '@/constants/layout/header';
 import EducationManagementView from '@/components/organisms/management/education/education-management.view';
 import { DEFAULT_EDUCATION, Education } from '@/models/management/management';
 import { BLANK } from '@/constants/constant';
@@ -26,9 +26,10 @@ const EducationManagement = ({}: EducationManagementProps) => {
     useState<Education>(DEFAULT_EDUCATION);
 
   // 선택된 교육 정보 탭
-  const [headerBarId, setHeaderBarId] = useState<EDUCATION_SETTING_HEADER_ID>(
-    EDUCATION_SETTING_HEADER_ID.TERM
-  );
+  const [headerBarId, setHeaderBarId] =
+    useState<EDUCATION_MANAGEMENT_HEADER_ID>(
+      EDUCATION_MANAGEMENT_HEADER_ID.TERM
+    );
 
   // 전체 교육 배열
   const [educations, setEducations] = useState<Education[]>([]);
@@ -80,7 +81,7 @@ const EducationManagement = ({}: EducationManagementProps) => {
   };
 
   // 새로운 탭 이벤트
-  const onClickHeaderBar = (id: EDUCATION_SETTING_HEADER_ID) => {
+  const onClickHeaderBar = (id: EDUCATION_MANAGEMENT_HEADER_ID) => {
     setHeaderBarId(id);
   };
 

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { BLACK, GRAY, MAIN } from '@/constants/styles/color';
+import { GRAY, MAIN } from '@/constants/styles/color';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
@@ -9,10 +9,9 @@ import { HEADER_ID } from '@/constants/layout/header';
 import {
   HOME_CONTENT_ID,
   MEMBER_CONTENT_ID,
-  SETTING_CONTENT_ID,
+  MANAGEMENT_CONTENT_ID,
 } from '@/constants/layout/content';
 import { setMemberFilter } from '@/redux/reducers/member-filter-reducer';
-import { BLANK } from '@/constants/constant';
 import { SIZE } from '@/constants/styles/style';
 
 const ButtonContainer = styled.div`
@@ -52,8 +51,8 @@ const SideBarButton = ({ id, title }: SideBarButtonProps) => {
         dispatch(setContentId(MEMBER_CONTENT_ID.MEMBER));
         dispatch(setMemberFilter({ ...memberFilter, group: [] }));
         return;
-      case HEADER_ID.SETTING:
-        dispatch(setContentId(SETTING_CONTENT_ID.GROUP));
+      case HEADER_ID.MANAGEMENT:
+        dispatch(setContentId(MANAGEMENT_CONTENT_ID.GROUP));
     }
   };
 

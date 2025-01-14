@@ -45,7 +45,7 @@ const MemberTabHeader = ({}: MemberManagementHeadBarProps) => {
         height={80}
         isPercentage={true}
       >
-        <MemberRegister />
+        <MemberRegister setIsShown={setIsRegisterShown} />
       </CustomPopup>
     </>
   );

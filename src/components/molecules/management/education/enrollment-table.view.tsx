@@ -4,13 +4,15 @@ import styled from 'styled-components';
 import { GRAY, WHITE } from '@/constants/styles/color';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import useWindowSize from '@/hooks/window/window';
-import { EducationTerm } from '@/models/management/management';
+import { EducationEnrollment } from '@/models/management/management';
+
+import EnrollmentTableHeader from '@/components/atoms/management/education/enrollment-table-header';
 import {
-  EDUCATION_TERM,
-  TERM_TABLE_HEADER_ITEM,
+  EDUCATION_ENROLLMENT,
+  ENROLLMENT_TABLE_HEADER_ITEM,
 } from '@/constants/management/education-term-column';
-import TermTableHeader from '@/components/atoms/management/education/term-table-header';
-import { getFormattedDate, getKRDateFromDashDate } from '@/utils/format';
+import { getAge, getDateFromString } from '@/utils/date';
+import { getCurrentGroup } from '@/utils/history';
 
 const TableContainer = styled.div`
   display: flex;
@@ -19,13 +21,13 @@ const TableContainer = styled.div`
   overflow-y: hidden;
 `;
 
-const TermTable = styled.table`
+const EnrollmentTable = styled.table`
   width: 100%;
   border-collapse: collapse;
   table-layout: fixed; /* 테이블 레이아웃 고정 */
 `;
 
-const TableHeader = styled.th<{ id: EDUCATION_TERM }>`
+const TableHeader = styled.th<{ id: EDUCATION_ENROLLMENT }>`
   border-bottom: 1px solid ${GRAY.LIGHT};
   border-right: 1px solid ${GRAY.LIGHT};
   padding: 5px 10px;
@@ -49,13 +51,13 @@ const Scroll = styled.div<{ height: number }>`
   //flex-shrink: 0; /* 자식 콘텐츠 크기와 관계없이 고정 */
 `;
 
-const TermTableRow = styled.tr`
+const EnrollmentTableRow = styled.tr`
   &:hover td {
     background-color: ${GRAY.LIGHT};
   }
 `;
 
-const TableData = styled.td<{ id: EDUCATION_TERM; $index: number }>`
+const TableData = styled.td<{ id: EDUCATION_ENROLLMENT; $index: number }>`
   border-bottom: 1px solid ${GRAY.LIGHT};
   border-right: 1px solid ${GRAY.LIGHT};
   padding: 10px;
@@ -72,28 +74,28 @@ const ContentWrapper = styled.div`
   white-space: nowrap; /* 줄바꿈 방지 */
 `;
 
-const getColumnWidth = (id: EDUCATION_TERM) => {
+const getColumnWidth = (id: EDUCATION_ENROLLMENT) => {
   switch (id) {
-    case EDUCATION_TERM.TERM:
+    case EDUCATION_ENROLLMENT.MEMBER_NAME:
       return 5;
-    case EDUCATION_TERM.EDUCATION:
+    case EDUCATION_ENROLLMENT.AGE:
       return 20;
-    case EDUCATION_TERM.PERIOD:
+    case EDUCATION_ENROLLMENT.GROUP:
       return 40;
-    case EDUCATION_TERM.EDUCATION_ENROLLMENTS:
+    case EDUCATION_ENROLLMENT.STATUS:
       return 5;
-    case EDUCATION_TERM.INSTRUCTOR:
+    case EDUCATION_ENROLLMENT.NOTE:
       return 20;
-    case EDUCATION_TERM.NUMBER_OF_SESSION:
+    case EDUCATION_ENROLLMENT.MOBILE_PHONE:
       return 10;
     default:
       return 0;
   }
 };
 
-export const TERM_TABLE_HEADER: TERM_TABLE_HEADER_ITEM[] = [
+export const TERM_TABLE_HEADER: ENROLLMENT_TABLE_HEADER_ITEM[] = [
   {
-    id: EDUCATION_TERM.TERM,
+    id: EDUCATION_ENROLLMENT.MEMBER_NAME,
     isShown: true,
     isSortable: false,
     isFilterable: false,
@@ -101,7 +103,7 @@ export const TERM_TABLE_HEADER: TERM_TABLE_HEADER_ITEM[] = [
     isDate: false,
   },
   {
-    id: EDUCATION_TERM.EDUCATION,
+    id: EDUCATION_ENROLLMENT.AGE,
     isShown: true,
     isSortable: false,
     isFilterable: false,
@@ -109,7 +111,7 @@ export const TERM_TABLE_HEADER: TERM_TABLE_HEADER_ITEM[] = [
     isDate: false,
   },
   {
-    id: EDUCATION_TERM.PERIOD,
+    id: EDUCATION_ENROLLMENT.GROUP,
     isShown: true,
     isSortable: false,
     isFilterable: false,
@@ -117,7 +119,7 @@ export const TERM_TABLE_HEADER: TERM_TABLE_HEADER_ITEM[] = [
     isDate: false,
   },
   {
-    id: EDUCATION_TERM.EDUCATION_ENROLLMENTS,
+    id: EDUCATION_ENROLLMENT.STATUS,
     isShown: true,
     isSortable: false,
     isFilterable: false,
@@ -125,7 +127,7 @@ export const TERM_TABLE_HEADER: TERM_TABLE_HEADER_ITEM[] = [
     isDate: false,
   },
   {
-    id: EDUCATION_TERM.INSTRUCTOR,
+    id: EDUCATION_ENROLLMENT.NOTE,
     isShown: true,
     isSortable: false,
     isFilterable: false,
@@ -133,7 +135,7 @@ export const TERM_TABLE_HEADER: TERM_TABLE_HEADER_ITEM[] = [
     isDate: false,
   },
   {
-    id: EDUCATION_TERM.NUMBER_OF_SESSION,
+    id: EDUCATION_ENROLLMENT.MOBILE_PHONE,
     isShown: true,
     isSortable: false,
     isFilterable: false,
@@ -142,41 +144,48 @@ export const TERM_TABLE_HEADER: TERM_TABLE_HEADER_ITEM[] = [
   },
 ];
 
-type TermTableProps = {
-  terms: EducationTerm[];
-  onClickTerm: (term: EducationTerm) => void;
-  onClickHeader: (id: EDUCATION_TERM) => void;
+type EnrollmentTableProps = {
+  enrollments: EducationEnrollment[];
+  onClickEnrollment: (enrollment: EducationEnrollment) => void;
+  onClickHeader: (id: EDUCATION_ENROLLMENT) => void;
   scrollRef: MutableRefObject<HTMLDivElement | null>;
   onScroll: () => void;
 };
 
-const TermTableView = ({
-  terms,
-  onClickTerm,
+const EnrollmentTableView = ({
+  enrollments,
+  onClickEnrollment,
   onClickHeader,
   scrollRef,
   onScroll,
-}: TermTableProps) => {
+}: EnrollmentTableProps) => {
   const { height } = useWindowSize();
 
-  const getTermTableContent = (id: EDUCATION_TERM, term: EducationTerm) => {
+  const getEnrollmentTableContent = (
+    id: EDUCATION_ENROLLMENT,
+    enrollment: EducationEnrollment
+  ) => {
     switch (id) {
-      case EDUCATION_TERM.TERM:
-        return <MainText>{term.term}</MainText>;
-      case EDUCATION_TERM.EDUCATION:
-        return <MainText>{term.educationName}</MainText>;
-      case EDUCATION_TERM.PERIOD:
+      case EDUCATION_ENROLLMENT.MEMBER_NAME:
+        return <MainText>{enrollment.memberName}</MainText>;
+      case EDUCATION_ENROLLMENT.AGE:
         return (
           <MainText>
-            {`${getKRDateFromDashDate(getFormattedDate(term?.startDate))} - ${getKRDateFromDashDate(getFormattedDate(term?.startDate))}`}
+            {getAge(getDateFromString(enrollment.member.birth))}
           </MainText>
         );
-      case EDUCATION_TERM.EDUCATION_ENROLLMENTS:
-        return <MainText>{term?.enrollmentCount}</MainText>;
-      case EDUCATION_TERM.INSTRUCTOR:
-        return <MainText>{term?.instructor?.name}</MainText>;
-      case EDUCATION_TERM.NUMBER_OF_SESSION:
-        return <MainText></MainText>;
+      case EDUCATION_ENROLLMENT.GROUP:
+        return (
+          <MainText>
+            {getCurrentGroup(enrollment.member.group)?.groupName}
+          </MainText>
+        );
+      case EDUCATION_ENROLLMENT.STATUS:
+        return <MainText>{enrollment?.status}</MainText>;
+      case EDUCATION_ENROLLMENT.NOTE:
+        return <MainText>{enrollment?.note}</MainText>;
+      case EDUCATION_ENROLLMENT.MOBILE_PHONE:
+        return <MainText>{enrollment?.member.mobilePhone}</MainText>;
       default:
         return null;
     }
@@ -184,39 +193,45 @@ const TermTableView = ({
 
   return (
     <TableContainer>
-      <TermTable>
+      <EnrollmentTable>
         <thead>
           <tr>
             {TERM_TABLE_HEADER.filter((item) => item.isShown).map((item) => (
               <TableHeader key={item.id} id={item.id}>
-                <TermTableHeader item={item} onClick={onClickHeader} />
+                <EnrollmentTableHeader item={item} onClick={onClickHeader} />
               </TableHeader>
             ))}
           </tr>
         </thead>
-      </TermTable>
+      </EnrollmentTable>
 
       <Scroll ref={scrollRef} onScroll={onScroll} height={height}>
-        <TermTable>
+        <EnrollmentTable>
           <tbody>
-            {terms.map((term, index) => (
-              <TermTableRow key={term.id} onClick={() => onClickTerm(term)}>
+            {enrollments.map((enrollment, index) => (
+              <EnrollmentTableRow
+                key={enrollment.id}
+                onClick={() => onClickEnrollment(enrollment)}
+              >
                 {TERM_TABLE_HEADER.filter((item) => item.isShown).map(
                   (item) => (
                     <TableData key={item.id} id={item.id} $index={index}>
                       <ContentWrapper>
-                        {getTermTableContent(item.id as EDUCATION_TERM, term)}
+                        {getEnrollmentTableContent(
+                          item.id as EDUCATION_ENROLLMENT,
+                          enrollment
+                        )}
                       </ContentWrapper>
                     </TableData>
                   )
                 )}
-              </TermTableRow>
+              </EnrollmentTableRow>
             ))}
           </tbody>
-        </TermTable>
+        </EnrollmentTable>
       </Scroll>
     </TableContainer>
   );
 };
 
-export default TermTableView;
+export default EnrollmentTableView;

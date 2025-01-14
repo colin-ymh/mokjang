@@ -60,5 +60,5 @@ export const MainText = styled.span<MainTextProps>`
 
   white-space: nowrap; /* 텍스트를 한 줄로 유지 */
   max-width: 100%; /* 버튼 크기를 벗어나지 않도록 제한 */
-  font-family: 'Pretendard Std', monospace; /* Pretendard Std 적용 */
+  font-family: 'Noto Sans KR', sans-serif; /* Noto Sans KR 적용 */
 `;

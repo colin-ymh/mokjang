@@ -1,6 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
+import {
+  DEFAULT_MEMBER,
+  setMember,
+} from '@/redux/reducers/member-register-reducer';
+import { setMembers } from '@/redux/reducers/member-filter-reducer';
+import { setTargetMember } from '@/redux/reducers/target-member';
+import styled from 'styled-components';
 
 import { MembersApi } from '@/api/churches/members.api';
 import MemberInformation from '@/components/organisms/member/information/member-information';
@@ -8,17 +15,11 @@ import CustomPopup from '@/components/atoms/common/popup/custom-popup';
 import MemberListView from '@/components/organisms/member/list/member-list.view';
 import { Member } from '@/models/member/member';
 import { GENDER, NULL } from '@/constants/constant';
-import {
-  DEFAULT_MEMBER,
-  setMember,
-} from '@/redux/reducers/member-register-reducer';
-import styled from 'styled-components';
 import Button from '@/components/atoms/common/button/button';
 import { getMemberFromServer } from '@/utils/member';
 import { MEMBER } from '@/constants/member/member-column';
 import { getNewMemberDate } from '@/utils/date';
-import { setMembers } from '@/redux/reducers/member-filter-reducer';
-import { setTargetMember } from '@/redux/reducers/target-member';
+
 import { useScopedI18n } from '../../../../../locales/client';
 
 const ButtonContainer = styled.div`

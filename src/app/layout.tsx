@@ -20,7 +20,7 @@ const GlobalStyle = createGlobalStyle`
         height: 100%;
         background-color: white;
         min-width: 320px;
-        font-family: 'Pretendard Std', monospace;
+        font-family: 'Noto Sans KR', monospace;
     }
 
     body > div:first-child,
@@ -28,7 +28,6 @@ const GlobalStyle = createGlobalStyle`
     div#__next > div {
         height: 100%;
     }
-
 
     /* 스크롤바 숨기기 */
     ::-webkit-scrollbar {
@@ -40,7 +39,6 @@ const GlobalStyle = createGlobalStyle`
         scrollbar-width: none; /* Firefox에서 스크롤바 너비 제거 */
     }
 `;
-
 type RootLayoutProps = {
   children?: React.ReactNode;
 };
@@ -71,6 +69,10 @@ const RootLayout = (props: RootLayoutProps | RootLayoutPropsExtended) => {
   return (
     <html lang="ko">
       <head>
+        <link
+          href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap"
+          rel="stylesheet"
+        />
         <meta
           name="viewport"
           content="initial-scale=1.0,user-scalable=no,maximum-scale=1,width=device-width"

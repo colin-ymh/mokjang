@@ -44,24 +44,31 @@ export const DEFAULT_EDUCATION: Education = {
 };
 
 export type EducationEnrollment = {
+  id: string;
   memberId: string;
+  memberName: string;
   educationTermId: string;
-  educationStatus: EDUCATION_STATUS;
-  // sessionAttendance:
+  status: EDUCATION_STATUS;
+  note: string;
+  member: Member;
 };
 
-export const DEFAULT_EDUCATION_ENROLLMENT = {
+export const DEFAULT_EDUCATION_ENROLLMENT: EducationEnrollment = {
+  id: BLANK,
   memberId: BLANK,
+  memberName: BLANK,
   educationTermId: BLANK,
-  educationStatus: EDUCATION_STATUS.IN_PROGRESS,
+  status: EDUCATION_STATUS.IN_PROGRESS,
+  note: BLANK,
+  member: DEFAULT_MEMBER,
 };
 
 export type EducationTerm = {
   id: string;
   educationId: string;
   educationName: string;
-  term: number;
-  numberOfSessions: number;
+  term: string;
+  numberOfSessions: string;
   completionCriteria?: number;
   startDate: string;
   endDate: string;
@@ -71,7 +78,6 @@ export type EducationTerm = {
   completedCount: number;
   incompleteCount: number;
   instructor: Member;
-  // 수정 필요
   educationSessions: EducationSession[];
   educationEnrollments: EducationEnrollment[];
 };
@@ -79,8 +85,8 @@ export type EducationTerm = {
 export const DEFAULT_EDUCATION_TERM: EducationTerm = {
   id: BLANK,
   educationId: BLANK,
-  term: 0,
-  numberOfSessions: 0,
+  term: BLANK,
+  numberOfSessions: BLANK,
   startDate: BLANK,
   endDate: BLANK,
   inProgressCount: 0,

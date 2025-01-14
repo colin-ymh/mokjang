@@ -5,7 +5,7 @@ import EducationList from '@/components/molecules/management/education/education
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { SIZE } from '@/constants/styles/style';
 import { GRAY } from '@/constants/styles/color';
-import { EDUCATION_SETTING_HEADER_ID } from '@/constants/layout/header';
+import { EDUCATION_MANAGEMENT_HEADER_ID } from '@/constants/layout/header';
 import HeaderBar, {
   HeaderBarItem,
 } from '@/components/atoms/layout/header/header-bar';
@@ -28,7 +28,7 @@ const EducationListContainer = styled.div`
   padding: 20px;
   gap: 20px;
   border-right: 1px solid ${GRAY.LIGHT};
-  width: 250px;
+  width: 200px;
   flex-shrink: 0;
 `;
 
@@ -81,7 +81,7 @@ type EducationManagementViewProps = {
   onClickModalOpen: () => void;
   onChangeName: (event: ChangeEvent<HTMLInputElement>) => void;
   onClickSaveEducation: () => void;
-  onClickHeaderBar: (id: EDUCATION_SETTING_HEADER_ID) => void;
+  onClickHeaderBar: (id: EDUCATION_MANAGEMENT_HEADER_ID) => void;
 };
 
 const EducationManagementView = ({

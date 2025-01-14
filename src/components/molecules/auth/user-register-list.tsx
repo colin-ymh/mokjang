@@ -56,6 +56,7 @@ const UserRegisterList = () => {
       .then((response) => {
         if (response.status === 201) {
           setIsRequested(true);
+          console.log(response.data);
         }
       });
   };

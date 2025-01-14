@@ -1,11 +1,21 @@
 import axios, { AxiosResponse } from 'axios';
 import { SERVER_URL, TEST_SERVER_URL } from '@/constants/state/url';
+import { EDUCATION_TERM } from '@/constants/management/education-term-column';
+import { ORDER_DIRECTION } from '@/constants/constant';
 
 class HTTPError extends Error {}
+
+export enum EDUCATION_TERM_ORDER {
+  TERM = EDUCATION_TERM.TERM,
+  CREATED_AT = 'createdAt',
+  UPDATED_AT = 'updatedAt',
+}
 
 type GetEducationTermsParams = {
   churchId: string;
   educationId: string;
+  order?: EDUCATION_TERM_ORDER;
+  orderDirection?: ORDER_DIRECTION;
 };
 
 type GetEducationTermParams = {
@@ -20,7 +30,12 @@ type CreateEducationTermsParams = {
 };
 
 type CreateEducationTermsBody = {
-  name: string;
+  term: number;
+  numberOfSessions: number;
+  startDate: string;
+  endDate: string;
+  completionCriteria?: number;
+  instructorId?: number;
 };
 
 type EditEducationTermsParams = {
@@ -55,12 +70,22 @@ export class EducationTermsApi {
   public getEducationTerms = async (
     params: GetEducationTermsParams
   ): Promise<AxiosResponse> => {
-    const { churchId, educationId } = params;
+    const {
+      churchId,
+      educationId,
+      order,
+      orderDirection = ORDER_DIRECTION.DESC,
+    } = params;
 
     const url = `${this._url}/churches/${churchId}/management/educations/${educationId}/terms`;
 
     try {
-      return await axios.get(url);
+      return await axios.get(url, {
+        params: {
+          order,
+          orderDirection,
+        },
+      });
     } catch (error) {
       throw new HTTPError(`Fetch error: ${error}`);
     }

@@ -9,6 +9,7 @@ import MemberItemList from '@/components/molecules/member/list/member-item-list'
 
 const MemberListContainer = styled.div`
   display: flex;
+
   flex-direction: column;
   height: 100%;
   width: 100%;

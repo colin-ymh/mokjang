@@ -2,8 +2,10 @@ import styled from 'styled-components';
 
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { GRAY } from '@/constants/styles/color';
-import { Education } from '@/models/management/management';
+import { Education, EducationTerm } from '@/models/management/management';
 import TermTable from '@/components/molecules/management/education/term-table';
+import CustomPopup from '@/components/atoms/common/popup/custom-popup';
+import TermRegister from '@/components/atoms/management/education/term-register';
 
 import { useI18n } from '../../../../../locales/client';
 import Plus from '../../../../../public/svg/plus.svg';
@@ -40,18 +42,11 @@ const PlusButton = styled(Plus)`
   }
 `;
 
-const ModalContainer = styled.div`
-  display: flex;
-  position: absolute;
-  right: 20px;
-  top: 50px;
-  z-index: 100;
-`;
-
 type EducationTermViewProps = {
   education: Education;
-  terms: any[];
+  terms: EducationTerm[];
   isModalShown: boolean;
+  fetchTerms: () => void;
   onClickModalOpen: () => void;
   onClickModalClose: () => void;
 };
@@ -60,6 +55,7 @@ const EducationTermListView = ({
   education,
   terms,
   isModalShown,
+  fetchTerms,
   onClickModalOpen,
   onClickModalClose,
 }: EducationTermViewProps) => {
@@ -70,12 +66,20 @@ const EducationTermListView = ({
       <ListTypeHeader>
         <MainText color={GRAY.DARK}>{t('term')}</MainText>
         <PlusButton onClick={onClickModalOpen} />
-        <ModalContainer>
-          {/*<AddEducationTermModal*/}
-          {/*  isShown={isModalShown}*/}
-          {/*  onClickClose={onClickModalClose}*/}
-          {/*/>*/}
-        </ModalContainer>
+        <CustomPopup
+          isShow={isModalShown}
+          onClickClose={onClickModalClose}
+          width={30}
+          height={80}
+          isPercentage={true}
+        >
+          <TermRegister
+            education={education}
+            terms={terms}
+            onClickClose={onClickModalClose}
+            fetchTerms={fetchTerms}
+          />
+        </CustomPopup>
       </ListTypeHeader>
       <TermTable education={education} terms={terms} />
     </EducationTermContainer>

@@ -1,13 +1,13 @@
 import React, { useEffect, useRef } from 'react';
-import { Member } from '@/models/member/member';
-import MemberTableView from '@/components/molecules/member/list/member-table.view';
-import { MEMBER } from '@/constants/member/member-column';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 import {
   setMemberOrderBy,
   setMemberOrderDirection,
 } from '@/redux/reducers/member-filter-reducer';
+
+import MemberTableView from '@/components/molecules/member/list/member-table.view';
+import { MEMBER } from '@/constants/member/member-column';
 import { ORDER_DIRECTION } from '@/constants/constant';
 
 export type MemberTableProps = {

@@ -55,13 +55,14 @@ const SearchContainer = styled.div`
   align-items: center;
   gap: 10px;
   padding: 10px 20px;
+  position: relative;
 `;
 
 const AddFilterContainer = styled.div<{ $isShown: boolean }>`
   display: ${({ $isShown }) => ($isShown ? 'flex' : 'none')};
   position: absolute;
 
-  z-index: 10;
+  z-index: 60;
   background-color: white;
   box-shadow: 0 1px 6px rgba(0, 0, 0, 0.3);
   border-radius: 5px;
@@ -141,6 +142,7 @@ const MemberFilterRowView = ({
           height={30}
           width={80}
           borderColor={GRAY.LIGHT}
+          backgroundBlur={true}
         />
         <BorderInput
           ref={searchRef}
