@@ -9,7 +9,7 @@ import { getAge, getDateFromString } from '@/utils/date';
 import {
   getFormattedDate,
   getFormattedMobilePhone,
-  getKRDateFromDashDate,
+  getLocaleDateFromDashDate,
 } from '@/utils/format';
 import { Member } from '@/models/member/member';
 import MemberTableHeader from '@/components/atoms/member/list/member-table-header';
@@ -177,7 +177,7 @@ const GroupMemberTableView = ({
         return (
           <MainText>
             {member.birth &&
-              getKRDateFromDashDate(getFormattedDate(member.birth))}
+              getLocaleDateFromDashDate(getFormattedDate(member.birth))}
           </MainText>
         );
       case MEMBER.AGE:

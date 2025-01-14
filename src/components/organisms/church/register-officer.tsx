@@ -1,0 +1,114 @@
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
+
+import { DEFAULT_OFFICER, Officer } from '@/models/management/management';
+import { OfficersApi } from '@/api/management/officers.api';
+import { usePageRouter } from '@/utils/router';
+import RegisterOfficerView from '@/components/organisms/church/register-officer.view';
+import { getIsWellFormedName } from '@/utils/check';
+import { BLANK } from '@/constants/constant';
+import { getFormattedName } from '@/utils/format';
+
+type OfficerListProps = {};
+
+const RegisterOfficer = ({}: OfficerListProps) => {
+  const officersApi = new OfficersApi(false);
+  const churchId = useSelector((state: RootState) => state.church.churchId);
+  const router = usePageRouter();
+  const nameInputRef = useRef<HTMLInputElement>(null);
+
+  // 선택된 직분
+  const [selectedOfficer, setSelectedOfficer] =
+    useState<Officer>(DEFAULT_OFFICER);
+
+  // 전체 직분 배열
+  const [officers, setOfficers] = useState<Officer[]>([]);
+
+  // 새로운 직분 이름
+  const [newOfficerName, setNewOfficerName] = useState<string>(BLANK);
+
+  // 이름 변경
+  const onChangeName = (event: ChangeEvent<HTMLInputElement>) => {
+    const newName = getFormattedName(event.target.value);
+    setNewOfficerName(newName);
+  };
+
+  // 새로운 직분 저장
+  const onClickSaveOfficer = () => {
+    if (getIsWellFormedName(newOfficerName)) {
+      officersApi
+        .createOfficer({ churchId }, { name: newOfficerName })
+        .then(() => {
+          fetchOfficers();
+          setNewOfficerName(BLANK);
+        });
+    }
+  };
+
+  // 직분 불러오기
+  const fetchOfficers = () => {
+    officersApi.getOfficers({ churchId }).then((response) => {
+      if (response.status === 200) {
+        const newOfficers = response.data;
+        setOfficers(newOfficers);
+      }
+    });
+  };
+
+  // 다음 설정으로 이동
+  const onClickSave = () => {
+    router.push('church/register/education');
+  };
+
+  useEffect(() => {
+    if (churchId) {
+      fetchOfficers();
+    }
+  }, [churchId]);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // !!!!!!!!!!!! 시발 !!!!!!!!!!!!
+      // 한글 키보드로 입력 시, compose 를 하네;;;;;이 개같은거
+      // isComposing 이 true => false 이 지랄을 하면서
+      // 엔터가 두 번 입력되는 것 처럼 보였던 것이다
+      // 이 개같은 것 때문에 시간을 존나 날려먹었다
+      // !!!!!!!!!!!! 시발 !!!!!!!!!!!!
+      if (e.isComposing) {
+        return;
+      }
+
+      if (e.key === 'Enter') {
+        if (getIsWellFormedName(newOfficerName)) {
+          onClickSaveOfficer();
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [newOfficerName]);
+
+  const props = {
+    officers,
+    selectedOfficerId: selectedOfficer.id,
+    setSelectedOfficer,
+    fetchOfficers,
+    nameInputRef,
+    newOfficerName,
+    onChangeName,
+    onClickSaveOfficer,
+    onClickSave,
+  };
+  return (
+    <>
+      <RegisterOfficerView {...props} />
+    </>
+  );
+};
+
+export default RegisterOfficer;

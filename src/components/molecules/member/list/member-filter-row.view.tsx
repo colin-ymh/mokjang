@@ -22,6 +22,7 @@ const MemberFilterContainer = styled.div`
   align-items: center;
   justify-content: space-between;
   width: 100%;
+  position: relative;
 `;
 
 const FilterList = styled.div`
@@ -54,8 +55,9 @@ const SearchContainer = styled.div`
   justify-content: center;
   align-items: center;
   gap: 10px;
-  padding: 10px 20px;
-  position: relative;
+  right: 20px;
+
+  position: absolute;
 `;
 
 const AddFilterContainer = styled.div<{ $isShown: boolean }>`
@@ -113,7 +115,6 @@ const MemberFilterRowView = ({
           <Button
             text={t_button('filterSetting')}
             height={30}
-            width={80}
             onClick={onClickTableSetting}
           />
           {/* 설정 모달 */}
@@ -142,7 +143,7 @@ const MemberFilterRowView = ({
           height={30}
           width={80}
           borderColor={GRAY.LIGHT}
-          backgroundBlur={true}
+          backgroundBlur={false}
         />
         <BorderInput
           ref={searchRef}
@@ -150,11 +151,12 @@ const MemberFilterRowView = ({
           onChange={onChangeSearchValue}
           borderColor={GRAY.LIGHT}
           height={30}
+          width={150}
           onKeyDown={onKeyDown}
         />
         <Button
           text={t('search')}
-          width={150}
+          // width={150}
           height={30}
           onClick={onClickSearch}
         />

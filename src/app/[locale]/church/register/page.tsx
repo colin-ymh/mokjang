@@ -1,13 +1,13 @@
 'use client';
 
-import PageLayout from '@/components/organisms/layout/page-layout';
 import ChurchRegister from '@/components/organisms/church/church-register';
+import ModalLayout from '@/components/organisms/layout/modal-layout';
 
 const ChurchRegisterPage = () => {
   return (
-    <PageLayout>
+    <ModalLayout>
       <ChurchRegister />
-    </PageLayout>
+    </ModalLayout>
   );
 };
 export default ChurchRegisterPage;

@@ -5,7 +5,7 @@ import { MainText } from '@/components/atoms/common/text/main-text';
 import { GRAY } from '@/constants/styles/color';
 
 import { useI18n } from '../../../../../locales/client';
-import { getFormattedDate, getKRDateFromDashDate } from '@/utils/format';
+import { getFormattedDate, getLocaleDateFromDashDate } from '@/utils/format';
 
 const BackgroundContainer = styled.div`
   display: flex;
@@ -83,14 +83,14 @@ const EducationHistoryItem = ({
           <MainText color={GRAY.DARK}>{t('period')}</MainText>
           <DateContainer>
             <MainText>
-              {getKRDateFromDashDate(
+              {getLocaleDateFromDashDate(
                 getFormattedDate(education.educationTerm.startDate)
               )}
             </MainText>
             <MainText>{'-'}</MainText>
             <MainText>
               {education.educationTerm?.endDate &&
-                getKRDateFromDashDate(
+                getLocaleDateFromDashDate(
                   getFormattedDate(education.educationTerm?.endDate)
                 )}
             </MainText>

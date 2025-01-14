@@ -12,6 +12,7 @@ import GroupFilter from '@/components/molecules/layout/group-filter';
 import { useI18n, useScopedI18n } from '../../../../locales/client';
 
 const SideBarContainer = styled.div`
+  height: 100%;
   // 모바일
   @media (min-width: ${MEDIA_MIN_WIDTH.MOBILE}) {
     display: none;
@@ -43,6 +44,7 @@ const ButtonContainer = styled.div`
   flex-direction: column;
   justify-content: flex-start;
   flex-shrink: 0;
+  flex-grow: 1;
   height: 100%;
 `;
 

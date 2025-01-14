@@ -23,9 +23,9 @@ export default {
   startDate: 'Start Date',
   endDate: 'End Date',
 
-  groupList: 'Management List',
-  groupName: 'Management Name',
-  groupRole: 'Management Roles',
+  groupList: 'Group List',
+  groupName: 'Group Name',
+  groupRole: 'Group Roles',
 
   educationList: 'Education List',
   educationName: 'Education Name',
@@ -129,8 +129,8 @@ export default {
   'header.personalInformation': 'Personal Information',
   'header.familyInformation': 'Family Information',
 
-  'header.groupInformation': 'Management Information',
-  'header.groupMembers': 'Management Members',
+  'header.groupInformation': 'Information',
+  'header.groupMembers': 'Members',
   /*-------------------header (side bar button)-------------------*/
 
   /*-------------------member content (member header bar button)-------------------*/
@@ -148,7 +148,7 @@ export default {
   'tableHeader.numberOfSession': 'Progress',
   /*-------------------table header-------------------*/
 
-  /*-------------------member register-------------------*/
+  /*------------------- register-------------------*/
   'register.defaultHeaderPhrase': 'Please enter the member information',
   'register.extraHeaderPhrase': 'Please enter the extra information',
 
@@ -156,7 +156,13 @@ export default {
   'register.checkButton': 'Confirm And Enter More',
 
   'register.termHeaderPhrase': 'Please enter the term information',
-  /*-------------------member register-------------------*/
+  'register.churchHeaderPhrase': 'Please enter the church information',
+
+  'register.groupHeaderPhrase': 'Please set up church groups',
+  'register.officerHeaderPhrase': 'Please set up church positions',
+  'register.ministryHeaderPhrase': 'Please set up church ministries',
+  'register.educationHeaderPhrase': 'Please set up church education',
+  /*------------------- register-------------------*/
 
   /*-------------------button-------------------*/
   'button.register': 'Register',
@@ -170,12 +176,13 @@ export default {
   'button.invite': 'Invite',
   'button.cancel': 'Cancel',
   'button.confirm': 'Confirm',
-  'button.filterSetting': 'Management',
+  'button.filterSetting': 'Filter',
   'button.verify': 'Verify',
   'button.request': 'Request',
   'button.add': 'Add',
   'button.signIn': 'Sign In',
   'button.saveTerm': 'Save New Term',
+  'button.addMember': 'Add Member',
 
   /*-------------------button-------------------*/
 

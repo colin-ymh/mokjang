@@ -13,7 +13,7 @@ import { SIZE } from '@/constants/styles/style';
 import { useScopedI18n } from '../../../../../locales/client';
 
 const HeaderContainer = styled.div`
-  display: flex;
+  display: block;
   flex-direction: column;
   justify-content: flex-start;
   padding: 30px 20px 0 20px;
@@ -26,6 +26,13 @@ const HeaderBottomContainer = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  position: relative;
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  position: absolute;
+  right: 0;
 `;
 
 type MemberHeadBarViewProps = {
@@ -37,6 +44,7 @@ const MemberTabHeaderView = ({
   onClickRegisterMemberButton,
   onClickHeaderBar,
 }: MemberHeadBarViewProps) => {
+  const t_button = useScopedI18n('button');
   const t_header = useScopedI18n('header');
   const contentId = useSelector((state: RootState) => state.layout.contentId);
   const headerBarItems = useMemberHeaderBarItems();
@@ -50,12 +58,13 @@ const MemberTabHeaderView = ({
           items={headerBarItems}
           onClick={onClickHeaderBar}
         />
-        <Button
-          text={'교인 등록'}
-          width={80}
-          height={30}
-          onClick={onClickRegisterMemberButton}
-        />
+        <ButtonContainer>
+          <Button
+            text={t_button('addMember')}
+            height={30}
+            onClick={onClickRegisterMemberButton}
+          />
+        </ButtonContainer>
       </HeaderBottomContainer>
     </HeaderContainer>
   );

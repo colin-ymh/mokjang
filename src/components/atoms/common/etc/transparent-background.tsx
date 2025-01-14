@@ -29,7 +29,7 @@ const TransparentBackground = ({
   isOpened,
   onClick,
   zIndex = 40,
-  blur = true,
+  blur = false,
 }: TransparentBackgroundProps) => {
   if (!isOpened) return null;
 

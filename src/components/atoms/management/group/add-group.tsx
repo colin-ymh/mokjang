@@ -6,6 +6,7 @@ import { getIsWellFormedName } from '@/utils/check';
 
 import Check from '../../../../../public/svg/check.svg';
 import Plus from '../../../../../public/svg/plus.svg';
+import { useScopedI18n } from '../../../../../locales/client';
 
 const BackgroundContainer = styled.div<{ $isShown: boolean }>`
   display: ${({ $isShown }) => ($isShown ? 'flex' : 'none')};
@@ -34,8 +35,9 @@ const PlusButton = styled(Plus)`
 `;
 
 const CheckButton = styled(Check)<{ $isEnabled: boolean }>`
-  display: flex;
-  width: 30px;
+  display: block;
+  width: 20px;
+  height: 20px;
   padding: 2px;
   stroke: ${WHITE};
   stroke-width: 2px;
@@ -43,6 +45,7 @@ const CheckButton = styled(Check)<{ $isEnabled: boolean }>`
   background-color: ${({ $isEnabled }) =>
     $isEnabled ? MAIN.DEFAULT : GRAY.LIGHT};
   cursor: ${({ $isEnabled }) => ($isEnabled ? 'pointer' : 'default')};
+  flex-shrink: 0;
 `;
 
 type AddGroupProps = {
@@ -55,6 +58,7 @@ type AddGroupProps = {
 
 const AddGroup = forwardRef<HTMLInputElement, AddGroupProps>(
   ({ isShown, level, name, onChangeName, onClickSaveGroup }, ref) => {
+    const t_placeholder = useScopedI18n('placeholder');
     return (
       <BackgroundContainer $isShown={isShown}>
         <AddGroupContainer $level={level + 1}>
@@ -65,6 +69,7 @@ const AddGroup = forwardRef<HTMLInputElement, AddGroupProps>(
             onChange={onChangeName}
             height={10}
             color={BLACK}
+            placeholder={t_placeholder('name')}
           />
           <CheckButton
             $isEnabled={getIsWellFormedName(name)}

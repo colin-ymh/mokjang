@@ -6,7 +6,7 @@ import { GRAY } from '@/constants/styles/color';
 import { EducationTerm } from '@/models/management/management';
 
 import { useI18n } from '../../../../../locales/client';
-import { getKRDateFromDashDate } from '@/utils/format';
+import { getLocaleDateFromDashDate } from '@/utils/format';
 import EnrollmentTable from '@/components/molecules/management/education/enrollment-table';
 
 const InformationContent = styled.div`
@@ -109,7 +109,7 @@ const TermInformationContent = ({
               <MainText color={GRAY.DEFAULT}>{`${t('period')}`}</MainText>
             </TitleContainer>
             <ContentContainer>
-              <MainText>{`${getKRDateFromDashDate(term.startDate)} - ${getKRDateFromDashDate(term.endDate)}`}</MainText>
+              <MainText>{`${getLocaleDateFromDashDate(term.startDate)} - ${getLocaleDateFromDashDate(term.endDate)}`}</MainText>
             </ContentContainer>
           </InformationItem>
         </RowContainer>

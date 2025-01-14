@@ -61,6 +61,8 @@ const RightContainer = styled.div`
 const CheckButton = styled(Check)<{ $isEnabled: boolean }>`
   display: flex;
   width: 20px;
+  height: 20px;
+  flex-shrink: 0;
   padding: 2px;
   stroke: ${WHITE};
   stroke-width: 2px;

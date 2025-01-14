@@ -13,7 +13,7 @@ import {
   getFormattedDate,
   getFormattedHomePhone,
   getFormattedMobilePhone,
-  getKRDateFromDashDate,
+  getLocaleDateFromDashDate,
 } from '@/utils/format';
 import { Member } from '@/models/member/member';
 import MemberTableHeader from '@/components/atoms/member/list/member-table-header';
@@ -175,7 +175,7 @@ const MemberTableView = ({
         return (
           <MainText>
             {member.birth &&
-              getKRDateFromDashDate(getFormattedDate(member.birth))}
+              getLocaleDateFromDashDate(getFormattedDate(member.birth))}
           </MainText>
         );
       case MEMBER.AGE:
@@ -222,14 +222,14 @@ const MemberTableView = ({
         return (
           <MainText>
             {member.registeredAt &&
-              getKRDateFromDashDate(getFormattedDate(member.registeredAt))}
+              getLocaleDateFromDashDate(getFormattedDate(member.registeredAt))}
           </MainText>
         );
       case MEMBER.UPDATED_AT:
         return (
           <MainText>
             {member.updatedAt &&
-              getKRDateFromDashDate(getFormattedDate(member.updatedAt))}
+              getLocaleDateFromDashDate(getFormattedDate(member.updatedAt))}
           </MainText>
         );
       default:

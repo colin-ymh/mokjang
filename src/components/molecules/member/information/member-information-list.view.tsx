@@ -5,7 +5,7 @@ import { MEMBER } from '@/constants/member/member-column';
 import { BLACK, GRAY, WHITE } from '@/constants/styles/color';
 import { CALENDAR_MODE, GENDER, MARRIAGE } from '@/constants/constant';
 import { Member } from '@/models/member/member';
-import { getKRDateFromDashDate } from '@/utils/format';
+import { getLocaleDateFromDashDate } from '@/utils/format';
 import { getThisYearBirth } from '@/utils/date';
 
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
@@ -99,6 +99,7 @@ const InformationListView = ({
   prevMember,
   onClickItem,
 }: InformationListViewProps) => {
+  console.log(prevMember);
   const t = useI18n();
   const t_header = useScopedI18n('header');
 
@@ -176,7 +177,7 @@ const InformationListView = ({
             <ContentContainer>
               <MainText>
                 {prevMember.officerStartDate &&
-                  getKRDateFromDashDate(prevMember.officerStartDate)}
+                  getLocaleDateFromDashDate(prevMember.officerStartDate)}
               </MainText>
             </ContentContainer>
           </InformationItem>
@@ -232,7 +233,7 @@ const InformationListView = ({
                       : CALENDAR_MODE.SOLAR
                   )}
               </MainText>
-              <MainText>{getKRDateFromDashDate(prevMember.birth)}</MainText>
+              <MainText>{getLocaleDateFromDashDate(prevMember.birth)}</MainText>
             </ContentContainer>
             <PencilButton />
           </InformationItem>
@@ -244,7 +245,7 @@ const InformationListView = ({
             <ContentContainer>
               <MainText>
                 {prevMember.birth &&
-                  getKRDateFromDashDate(
+                  getLocaleDateFromDashDate(
                     getThisYearBirth(prevMember.birth, prevMember.isLunar)
                   )}
               </MainText>

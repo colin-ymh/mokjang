@@ -36,10 +36,9 @@ const DropdownList = styled.div<{
   gap: 5px;
   padding: 5px;
   justify-content: flex-start;
-  align-items: center;
+  align-items: flex-start;
   overflow: scroll;
   max-height: 200px;
-  max-width: 300px;
   bottom: ${({ $reverseDirection }) => ($reverseDirection ? '55px' : null)};
 `;
 

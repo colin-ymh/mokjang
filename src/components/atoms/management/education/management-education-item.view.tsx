@@ -9,7 +9,6 @@ import MainInput from '@/components/atoms/common/input/main-input';
 import { getIsWellFormedName } from '@/utils/check';
 
 import Check from '../../../../../public/svg/check.svg';
-import Plus from '../../../../../public/svg/plus.svg';
 
 const EducationItemContainer = styled.div<{
   $isDragging: boolean;
@@ -61,6 +60,8 @@ const RightContainer = styled.div`
 const CheckButton = styled(Check)<{ $isEnabled: boolean }>`
   display: flex;
   width: 20px;
+  height: 20px;
+  flex-shrink: 0;
   padding: 2px;
   stroke: ${WHITE};
   stroke-width: 2px;
@@ -68,21 +69,6 @@ const CheckButton = styled(Check)<{ $isEnabled: boolean }>`
   background-color: ${({ $isEnabled }) =>
     $isEnabled ? MAIN.DEFAULT : GRAY.LIGHT};
   cursor: ${({ $isEnabled }) => ($isEnabled ? 'pointer' : 'default')};
-`;
-
-const PlusButton = styled(Plus)`
-  display: flex;
-  width: 18px;
-  height: 18px;
-  stroke: ${GRAY.DARK};
-  stroke-width: 2px;
-  border-radius: 5px;
-  cursor: pointer;
-  padding: 1px;
-
-  &:hover {
-    background-color: ${GRAY.LIGHT};
-  }
 `;
 
 type ManagementEducationItemViewProps = {

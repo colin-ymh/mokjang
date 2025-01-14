@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { GroupHistory } from '@/models/member/history';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { useI18n } from '../../../../../locales/client';
-import { getFormattedDate, getKRDateFromDashDate } from '@/utils/format';
+import { getFormattedDate, getLocaleDateFromDashDate } from '@/utils/format';
 import { GRAY } from '@/constants/styles/color';
 import SlideButtonList from '@/components/atoms/common/button/slide-button-list';
 
@@ -83,12 +83,12 @@ const GroupHistoryItem = ({
           <MainText color={GRAY.DARK}>{t('period')}</MainText>
           <DateContainer>
             <MainText>
-              {getKRDateFromDashDate(getFormattedDate(group.startDate))}
+              {getLocaleDateFromDashDate(getFormattedDate(group.startDate))}
             </MainText>
             <MainText>{'-'}</MainText>
             <MainText>
               {group?.endDate &&
-                getKRDateFromDashDate(getFormattedDate(group?.endDate))}
+                getLocaleDateFromDashDate(getFormattedDate(group?.endDate))}
             </MainText>
           </DateContainer>
         </PeriodContainer>

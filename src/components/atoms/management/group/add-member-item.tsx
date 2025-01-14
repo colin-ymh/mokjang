@@ -43,6 +43,7 @@ const SelectButton = styled.div<{ $isEnable: boolean; $isSelected: boolean }>`
   display: flex;
   width: 20px;
   height: 20px;
+  flex-shrink: 0;
   position: absolute;
   right: 10px;
   border-radius: 50%;
@@ -50,7 +51,6 @@ const SelectButton = styled.div<{ $isEnable: boolean; $isSelected: boolean }>`
   border: 1px solid ${GRAY.LIGHT};
   background-color: ${({ $isEnable, $isSelected }) =>
     $isEnable ? ($isSelected ? MAIN.LIGHT : WHITE) : GRAY.LIGHT};
-
   transition: background-color 0.2s;
 `;
 

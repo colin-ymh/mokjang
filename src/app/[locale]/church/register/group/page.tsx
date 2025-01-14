@@ -1,13 +1,13 @@
 'use client';
 
-import PageLayout from '@/components/organisms/layout/page-layout';
-import ChurchRegister from '@/components/organisms/church/church-register';
+import ModalLayout from '@/components/organisms/layout/modal-layout';
+import RegisterGroup from '@/components/organisms/church/register-group';
 
-const GroupManagementPage = () => {
+const RegisterGroupPage = () => {
   return (
-    <PageLayout>
-      <></>
-    </PageLayout>
+    <ModalLayout>
+      <RegisterGroup />
+    </ModalLayout>
   );
 };
-export default GroupManagementPage;
+export default RegisterGroupPage;

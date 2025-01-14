@@ -11,7 +11,6 @@ import { SIZE } from '@/constants/styles/style';
 
 import { useI18n } from '../../../../../locales/client';
 import Cancel from '../../../../../public/svg/cancel.svg';
-import { getKRDateFromDashDate } from '@/utils/format';
 import {
   setFilterAfter,
   setFilterBefore,

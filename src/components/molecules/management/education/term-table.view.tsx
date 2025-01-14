@@ -10,7 +10,7 @@ import {
   TERM_TABLE_HEADER_ITEM,
 } from '@/constants/management/education-term-column';
 import TermTableHeader from '@/components/atoms/management/education/term-table-header';
-import { getFormattedDate, getKRDateFromDashDate } from '@/utils/format';
+import { getFormattedDate, getLocaleDateFromDashDate } from '@/utils/format';
 
 const TableContainer = styled.div`
   display: flex;
@@ -168,7 +168,7 @@ const TermTableView = ({
       case EDUCATION_TERM.PERIOD:
         return (
           <MainText>
-            {`${getKRDateFromDashDate(getFormattedDate(term?.startDate))} - ${getKRDateFromDashDate(getFormattedDate(term?.startDate))}`}
+            {`${getLocaleDateFromDashDate(getFormattedDate(term?.startDate))} - ${getLocaleDateFromDashDate(getFormattedDate(term?.startDate))}`}
           </MainText>
         );
       case EDUCATION_TERM.EDUCATION_ENROLLMENTS:

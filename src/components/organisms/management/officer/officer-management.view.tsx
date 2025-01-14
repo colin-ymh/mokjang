@@ -39,6 +39,7 @@ const PlusButton = styled(Plus)`
   height: 20px;
   position: absolute;
   right: 0;
+  bottom: 0;
   cursor: pointer;
   border-radius: 5px;
   transition: background-color 0.2s;

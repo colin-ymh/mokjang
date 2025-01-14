@@ -2,15 +2,17 @@ import styled from 'styled-components';
 
 import LabelInput from '@/components/atoms/common/input/label-input';
 import Button from '@/components/atoms/common/button/button';
-import { useI18n, useScopedI18n } from '../../../../locales/client';
+
+import { useScopedI18n } from '../../../../locales/client';
+import { usePageRouter } from '@/utils/router';
 
 const ListContainer = styled.div`
   display: flex;
   flex-direction: column;
-  width: 80%;
   justify-content: space-between;
+  width: 100%;
   height: 100%;
-  padding-bottom: 30px;
+  position: relative;
 `;
 
 const InputContainer = styled.div`
@@ -19,9 +21,21 @@ const InputContainer = styled.div`
   gap: 20px;
 `;
 
+const ButtonContainer = styled.div`
+  display: flex;
+  position: absolute;
+  width: 100%;
+  bottom: 40px;
+`;
+
 const ChurchRegisterList = () => {
-  const t = useI18n();
   const t_button = useScopedI18n('button');
+  const router = usePageRouter();
+
+  const onClickButton = () => {
+    router.push('/church/register/group');
+  };
+
   return (
     <ListContainer>
       <InputContainer>
@@ -32,7 +46,13 @@ const ChurchRegisterList = () => {
         <LabelInput label={'대표번호'} />
         <LabelInput label={'교인 수'} />
       </InputContainer>
-      <Button text={t_button('signIn')} height={50} />
+      <ButtonContainer>
+        <Button
+          text={t_button('register')}
+          height={40}
+          onClick={onClickButton}
+        />
+      </ButtonContainer>
     </ListContainer>
   );
 };

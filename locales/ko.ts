@@ -150,7 +150,9 @@ export default {
   'tableHeader.numberOfSession': '진행 상태',
   /*-------------------table header-------------------*/
 
-  /*-------------------member register-------------------*/
+  /*------------------- register-------------------*/
+  'register.churchHeaderPhrase': '교회 정보를 입력해주세요',
+
   'register.defaultHeaderPhrase': '교인 정보를 입력해주세요',
   'register.extraHeaderPhrase': '상세 정보를 입력해주세요',
 
@@ -158,7 +160,12 @@ export default {
   'register.checkButton': '확인하고 상세정보 입력하기',
 
   'register.termHeaderPhrase': '기수 정보를 입력해주세요',
-  /*-------------------member register-------------------*/
+
+  'register.groupHeaderPhrase': '교회 그룹을 설정해주세요',
+  'register.officerHeaderPhrase': '교회 직분을 설정해주세요',
+  'register.ministryHeaderPhrase': '교회 사역을 설정해주세요',
+  'register.educationHeaderPhrase': '교회 교육을 설정해주세요',
+  /*------------------- register-------------------*/
 
   /*-------------------button-------------------*/
   'button.register': '등록하기',
@@ -177,7 +184,7 @@ export default {
   'button.request': '요청하기',
   'button.add': '추가하기',
   'button.signIn': '회원가입 완료하기',
-
+  'button.addMember': '교인 추가',
   'button.saveTerm': '기수 추가하기',
 
   /*-------------------button-------------------*/

@@ -7,6 +7,7 @@ import { GRAY, MAIN, WHITE } from '@/constants/styles/color';
 const HeaderBarContainer = styled.div`
   display: flex;
   flex-direction: row;
+  width: 100%;
 `;
 
 const BarItem = styled.div<{ $isSelected: boolean }>`

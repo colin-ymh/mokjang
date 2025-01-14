@@ -11,6 +11,7 @@ import { getIsWellFormedName } from '@/utils/check';
 
 import Check from '../../../../../public/svg/check.svg';
 import Plus from '../../../../../public/svg/plus.svg';
+import { SIZE } from '@/constants/styles/style';
 
 const GroupItemContainer = styled.div<{
   $isDragging: boolean;
@@ -73,6 +74,8 @@ const RightContainer = styled.div`
 const CheckButton = styled(Check)<{ $isEnabled: boolean }>`
   display: flex;
   width: 20px;
+  height: 20px;
+  flex-shrink: 0;
   padding: 2px;
   stroke: ${WHITE};
   stroke-width: 2px;
@@ -171,7 +174,7 @@ const ManagementGroupItemView = ({
               onClickToggle(group.id as string);
             }}
           >
-            <MainText color={GRAY.DARK}>
+            <MainText color={GRAY.DARK} size={SIZE.EXTRA_SMALL}>
               {isHaveChildren ? (isOpen ? '▼' : '▶') : ''}
             </MainText>
           </ToggleButton>

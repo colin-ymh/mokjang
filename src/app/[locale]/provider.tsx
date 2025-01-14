@@ -5,7 +5,6 @@ import { usePathname } from 'next/navigation';
 // ↑ next/navigation (Next.js 13 이상)
 //   구버전은 useRouter().pathname 등을 사용
 import { I18nProviderClient, useCurrentLocale } from '../../../locales/client';
-import { LOCALE } from '@/constants/state/locale';
 
 type ProviderProps = {
   children: ReactNode;
@@ -20,7 +19,7 @@ const TranslateProvider = ({ children }: ProviderProps) => {
 
   // (1) prefix가 있다면 useCurrentLocale() 결과를,
   // (2) prefix가 없다면 기본 로캘(LOCALE.KO)을 사용
-  const locale = localePrefix ? useCurrentLocale() : LOCALE.KO;
+  const locale = localePrefix ? useCurrentLocale() : useCurrentLocale();
 
   return (
     <I18nProviderClient locale={locale} fallback={<p>Loading...</p>}>
