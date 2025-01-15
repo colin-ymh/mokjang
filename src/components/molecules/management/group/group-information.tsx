@@ -2,7 +2,18 @@ import styled from 'styled-components';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { GRAY } from '@/constants/styles/color';
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
-import { Group } from '@/models/management/management';
+import {
+  DEFAULT_GROUP,
+  Group,
+  GroupRole,
+} from '@/models/management/management';
+import { useEffect, useState } from 'react';
+import CustomPopup from '@/components/atoms/common/popup/custom-popup';
+import EditGroup from '@/components/molecules/management/group/edit-group';
+import { GroupRolesApi } from '@/api/management/group/group-roles.api';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
+import { GroupsApi } from '@/api/management/group/groups.api';
 
 const GroupInformationContainer = styled.div`
   display: flex;
@@ -66,12 +77,55 @@ const DivideLine = styled.div`
 `;
 
 type GroupInformationProps = {
-  group: Group;
+  groupId: string;
 };
 
-const GroupInformation = ({ group }: GroupInformationProps) => {
+const GroupInformation = ({ groupId }: GroupInformationProps) => {
   const t = useI18n();
   const t_header = useScopedI18n('header');
+  const groupsApi = new GroupsApi(false);
+  const groupRolesApi = new GroupRolesApi(false);
+  const churchId = useSelector((state: RootState) => state.church.churchId);
+
+  // 그룹
+  const [group, setGroup] = useState<Group>(DEFAULT_GROUP);
+
+  // 그룹 역할
+  const [roles, setRoles] = useState<GroupRole[]>([]);
+
+  // 그룹 정보 수정 모달 활성화 여부
+  const [isModalShown, setIsModalShown] = useState<boolean>(false);
+
+  // 그룹 정보 수정 모달 열기
+  const onClickOpen = () => {
+    setIsModalShown(true);
+  };
+
+  // 그룹 정보 수정 모달 닫기
+  const onClickClose = () => {
+    setIsModalShown(false);
+  };
+
+  // 서버에서 그룹 불러오기
+  const fetchGroup = () => {
+    groupsApi.getGroup({ churchId, groupId }).then((response) => {
+      setGroup(response.data);
+    });
+  };
+
+  // 서버에서 역할 불러오기
+  const fetchRoles = () => {
+    groupRolesApi.getGroupRoles({ churchId, groupId }).then((response) => {
+      setRoles(response.data);
+    });
+  };
+
+  useEffect(() => {
+    if (churchId && groupId) {
+      fetchGroup();
+      fetchRoles();
+    }
+  }, [churchId, groupId]);
 
   return (
     <GroupInformationContainer>
@@ -80,8 +134,9 @@ const GroupInformation = ({ group }: GroupInformationProps) => {
         <MainText color={GRAY.DARK}>{t_header('groupInformation')}</MainText>
       </ListTypeHeader>
       <GroupContentContainer>
+        {/* 그룹명*/}
         <RowContainer>
-          <InformationContainer>
+          <InformationContainer onClick={onClickOpen}>
             <TitleContainer>
               <MainText color={GRAY.DARK}>{t('groupName')}</MainText>
             </TitleContainer>
@@ -91,19 +146,36 @@ const GroupInformation = ({ group }: GroupInformationProps) => {
           </InformationContainer>
         </RowContainer>
         {/*<DivideLine />*/}
+        {/* 그룹 역할 */}
         <RowContainer>
-          <InformationContainer>
+          <InformationContainer onClick={onClickOpen}>
             <TitleContainer>
               <MainText color={GRAY.DARK}>{t('groupRole')}</MainText>
             </TitleContainer>
             <ContentContainer>
               {group.roles.map((role) => {
-                return <MainText>{role.role}</MainText>;
+                return <MainText key={role.id}>{role.role}</MainText>;
               })}
             </ContentContainer>
           </InformationContainer>
         </RowContainer>
       </GroupContentContainer>
+      {/* 그룹 수정 모달 */}
+      <CustomPopup
+        isShow={isModalShown}
+        onClickClose={onClickClose}
+        width={70}
+        height={90}
+        isPercentage={true}
+      >
+        <EditGroup
+          group={group}
+          roles={roles}
+          onClickClose={onClickClose}
+          fetchGroup={fetchGroup}
+          fetchRoles={fetchRoles}
+        />
+      </CustomPopup>
     </GroupInformationContainer>
   );
 };

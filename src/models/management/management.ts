@@ -32,6 +32,13 @@ export type GroupRole = {
   role: string;
 };
 
+export const DEFAULT_GROUP_ROLE = {
+  id: BLANK,
+  churchId: BLANK,
+  groupId: BLANK,
+  role: BLANK,
+};
+
 export type Education = {
   id: string;
   churchId: string;

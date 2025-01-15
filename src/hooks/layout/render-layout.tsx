@@ -2,8 +2,8 @@ import { Dispatch, ReactNode, SetStateAction } from 'react';
 
 import {
   HOME_CONTENT_ID,
-  MEMBER_CONTENT_ID,
   MANAGEMENT_CONTENT_ID,
+  MEMBER_CONTENT_ID,
 } from '@/constants/layout/content';
 import {
   EDUCATION_MANAGEMENT_HEADER_ID,
@@ -86,7 +86,7 @@ export const getMemberInformationContent = (
 export const getGroupManagementContent = (contentId: string, group: Group) => {
   switch (contentId) {
     case GROUP_MANAGEMENT_HEADER_ID.GROUP_INFORMATION:
-      return <GroupInformation group={group} />;
+      return <GroupInformation groupId={group.id as string} />;
     case GROUP_MANAGEMENT_HEADER_ID.MEMBER_LIST:
       return <GroupMember group={group} />;
   }

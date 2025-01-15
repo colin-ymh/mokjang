@@ -41,6 +41,7 @@ const RegisterGroup = ({}: GroupListProps) => {
           membersCount: 0,
           churchId,
           childGroupIds: [],
+          roles: [],
         };
 
         setGroups([allGroup]);
