@@ -112,6 +112,5 @@ export const getIsWellFormedTerm = (
   terms: EducationTerm[],
   newTerm: string
 ) => {
-  console.log(terms);
   return terms.every((term) => term.term.toString() !== newTerm);
 };

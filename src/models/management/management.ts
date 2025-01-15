@@ -10,6 +10,7 @@ export type Group = {
   parentGroupId: string | null;
   childGroupIds: string[];
   childGroups?: Group[];
+  roles: GroupRole[];
   // members: Member[];
 };
 
@@ -21,6 +22,14 @@ export const DEFAULT_GROUP = {
   parentGroupId: BLANK,
   childGroupIds: [],
   members: [],
+  roles: [],
+};
+
+export type GroupRole = {
+  id: string;
+  churchId: string;
+  groupId: string;
+  role: string;
 };
 
 export type Education = {
@@ -100,18 +109,21 @@ export const DEFAULT_EDUCATION_TERM: EducationTerm = {
 };
 
 export type EducationSession = {
+  id: string;
+  educationTermId: string;
   session: number;
   content: string;
-  sessionAttendances: SessionAttendance[];
 };
 
-export const DEFAULT_EDUCATION_SESSION = {
-  session: BLANK,
+export const DEFAULT_EDUCATION_SESSION: EducationSession = {
+  id: BLANK,
+  educationTermId: BLANK,
+  session: 0,
   content: BLANK,
-  sessionAttendances: [],
 };
 
 export type SessionAttendance = {
+  id: string;
   educationSessionId: string;
   educationEnrollmentId: string;
   isPresent: boolean;
@@ -119,6 +131,7 @@ export type SessionAttendance = {
 };
 
 export const DEFAULT_SESSION_ATTENDANCE = {
+  id: BLANK,
   educationSessionId: BLANK,
   educationEnrollmentId: BLANK,
   isPresent: false,

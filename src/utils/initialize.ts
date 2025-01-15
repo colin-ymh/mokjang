@@ -1,7 +1,7 @@
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/redux/store';
 import { MinistriesApi } from '@/api/management/ministries.api';
-import { EducationsApi } from '@/api/management/educations.api';
+import { EducationsApi } from '@/api/management/education/educations.api';
 import { OfficersApi } from '@/api/management/officers.api';
 import {
   setChurchId,
@@ -10,7 +10,7 @@ import {
   setMinistries,
   setOfficers,
 } from '@/redux/reducers/church-reducer';
-import { GroupsApi } from '@/api/management/groups.api';
+import { GroupsApi } from '@/api/management/group/groups.api';
 
 export const useInitializeChurch = (id: string) => {
   const dispatch = useDispatch<AppDispatch>();

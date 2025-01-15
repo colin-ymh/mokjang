@@ -9,9 +9,13 @@ import { EDUCATION_ENROLLMENT } from '@/constants/management/education-term-colu
 
 export type EnrollmentTableProps = {
   enrollments: EducationEnrollment[];
+  isInformation: boolean;
 };
 
-const EnrollmentTable = ({ enrollments }: EnrollmentTableProps) => {
+const EnrollmentTable = ({
+  enrollments,
+  isInformation,
+}: EnrollmentTableProps) => {
   const scrollRef = useRef<HTMLDivElement | null>(null);
 
   // 상세 모달 활성화 여부
@@ -47,6 +51,7 @@ const EnrollmentTable = ({ enrollments }: EnrollmentTableProps) => {
 
   const props = {
     enrollments,
+    isInformation,
     onClickEnrollment,
     onClickHeader,
     scrollRef,

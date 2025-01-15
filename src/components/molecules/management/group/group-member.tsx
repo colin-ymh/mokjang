@@ -27,22 +27,27 @@ const GroupMember = ({ group }: GroupMemberProps) => {
     setIsModalShown(false);
   };
 
-  // 교인 불러오기
-  useEffect(() => {
+  const fetchMembers = () => {
     membersApi
       .getMembers({
         churchId: group.churchId,
         group: [group.id as string],
       })
       .then((response) => {
-        console.log(response);
+        setMembers(response.data.data);
       });
+  };
+
+  // 교인 불러오기
+  useEffect(() => {
+    fetchMembers();
   }, [group]);
 
   const props = {
     group,
     members,
     isModalShown,
+    fetchMembers,
     onClickModalOpen,
     onClickModalClose,
   };

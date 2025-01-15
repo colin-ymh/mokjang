@@ -54,6 +54,7 @@ type GroupMemberViewProps = {
   group: Group;
   members: Member[];
   isModalShown: boolean;
+  fetchMembers: () => void;
   onClickModalOpen: () => void;
   onClickModalClose: () => void;
 };
@@ -62,6 +63,7 @@ const GroupMemberView = ({
   group,
   members,
   isModalShown,
+  fetchMembers,
   onClickModalOpen,
   onClickModalClose,
 }: GroupMemberViewProps) => {
@@ -77,6 +79,7 @@ const GroupMemberView = ({
           <AddGroupMemberModal
             group={group}
             isShown={isModalShown}
+            fetchMembers={fetchMembers}
             onClickClose={onClickModalClose}
           />
         </ModalContainer>

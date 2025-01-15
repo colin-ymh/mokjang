@@ -1,13 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { GRAY } from '@/constants/styles/color';
-import { EducationTerm } from '@/models/management/management';
-
-import { useI18n } from '../../../../../locales/client';
-import { getLocaleDateFromDashDate } from '@/utils/format';
+import {
+  DEFAULT_EDUCATION_SESSION,
+  EducationEnrollment,
+  EducationSession,
+  EducationTerm,
+} from '@/models/management/management';
 import EnrollmentTable from '@/components/molecules/management/education/enrollment-table';
+import TermProcess from '@/components/atoms/management/education/term-process';
+import { EDUCATION_TERM_HEADER_ID } from '@/constants/layout/header';
+import AddEnrollmentModal from '@/components/atoms/modal/add-enrollment-modal';
+
+import Plus from '../../../../../public/svg/plus.svg';
+import { useI18n } from '../../../../../locales/client';
 
 const InformationContent = styled.div`
   display: flex;
@@ -27,117 +35,97 @@ const ListTypeHeader = styled.div`
   padding: 0 20px;
 `;
 
-const ProcessContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  gap: 10px;
-  padding: 10px 20px;
-`;
-
-const RowContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 10px;
-`;
-
-const InformationItem = styled.div`
-  flex: 1;
-  flex-shrink: 0;
-  display: flex;
-  flex-direction: row;
-  padding: 10px;
-  border-radius: 5px;
+const PlusButton = styled(Plus)`
+  stroke: ${GRAY.DARK};
+  stroke-width: 2px;
+  width: 25px;
+  height: 25px;
+  position: absolute;
+  right: 10px;
   cursor: pointer;
-  position: relative;
+  border-radius: 5px;
+  transition: background-color 0.2s;
 
   &:hover {
     background-color: ${GRAY.LIGHT};
   }
 `;
 
-const ContentContainer = styled.div`
+const ModalContainer = styled.div`
   display: flex;
-  gap: 10px;
-`;
-
-const TitleContainer = styled.div`
-  display: flex;
-  width: 150px;
+  position: absolute;
+  right: 20px;
+  top: 50px;
+  z-index: 100;
 `;
 
 export type TermInformationContentProps = {
   term: EducationTerm;
   selectedSessionId: string;
+  enrollments: EducationEnrollment[];
+  sessions: EducationSession[];
+  fetchEnrollments: () => void;
 };
 
 const TermInformationContent = ({
   term,
   selectedSessionId,
+  enrollments,
+  sessions,
+  fetchEnrollments,
 }: TermInformationContentProps) => {
   const t = useI18n();
+
+  // 교육에 교인 다중 추가를 위한 모달 활성화 여부
+  const [isModalShown, setIsModalShown] = useState<boolean>(false);
+
+  // 교인 추가 모달 열기
+  const onClickModalOpen = () => {
+    setIsModalShown(true);
+  };
+
+  // 교인 추가 모달 닫기
+  const onClickModalClose = () => {
+    setIsModalShown(false);
+  };
+
   return (
     <InformationContent>
+      {/* 진행 사항 */}
       <ListTypeHeader>
         <MainText color={GRAY.DARK}>{t('educationProcess')}</MainText>
       </ListTypeHeader>
-      <ProcessContainer>
-        <RowContainer>
-          {/* 기수 */}
-          <InformationItem>
-            <TitleContainer>
-              <MainText color={GRAY.DEFAULT}>{`${t('term')}`}</MainText>
-            </TitleContainer>
-            <ContentContainer>
-              <MainText>{term.term}</MainText>
-            </ContentContainer>
-          </InformationItem>
-          {/* 총 회차 */}
-          <InformationItem>
-            <TitleContainer>
-              <MainText
-                color={GRAY.DEFAULT}
-              >{`${t('total')} ${t('session')}`}</MainText>
-            </TitleContainer>
-            <ContentContainer>
-              <MainText>{term.numberOfSessions}</MainText>
-            </ContentContainer>
-          </InformationItem>
-          {/* 교육 기간 */}
-          <InformationItem>
-            <TitleContainer>
-              <MainText color={GRAY.DEFAULT}>{`${t('period')}`}</MainText>
-            </TitleContainer>
-            <ContentContainer>
-              <MainText>{`${getLocaleDateFromDashDate(term.startDate)} - ${getLocaleDateFromDashDate(term.endDate)}`}</MainText>
-            </ContentContainer>
-          </InformationItem>
-        </RowContainer>
-        <RowContainer>
-          {/* 진행자 */}
-          <InformationItem>
-            <TitleContainer>
-              <MainText color={GRAY.DEFAULT}>{`${t('instructor')}`}</MainText>
-            </TitleContainer>
-            <ContentContainer>
-              <MainText>{term?.instructor?.name}</MainText>
-            </ContentContainer>
-          </InformationItem>
-          {/* 인원 수 */}
-          <InformationItem>
-            <TitleContainer>
-              <MainText color={GRAY.DEFAULT}>{`${t('people')}`}</MainText>
-            </TitleContainer>
-            <ContentContainer>
-              <MainText>{term.enrollmentCount}</MainText>
-            </ContentContainer>
-          </InformationItem>
-        </RowContainer>
-      </ProcessContainer>
+      <TermProcess
+        term={term}
+        isInformation={
+          selectedSessionId === EDUCATION_TERM_HEADER_ID.INFORMATION
+        }
+        session={
+          sessions.find((session) => session.id === selectedSessionId) ||
+          DEFAULT_EDUCATION_SESSION
+        }
+      />
+      {/* 등록 정보 */}
       <ListTypeHeader>
         <MainText color={GRAY.DARK}>{t('people')}</MainText>
+
+        <PlusButton onClick={onClickModalOpen} />
+        <ModalContainer>
+          <AddEnrollmentModal
+            term={term}
+            enrollments={enrollments}
+            isShown={isModalShown}
+            onClickClose={onClickModalClose}
+            fetchEnrollments={fetchEnrollments}
+          />
+        </ModalContainer>
       </ListTypeHeader>
-      <EnrollmentTable enrollments={term.educationEnrollments} />
+      <EnrollmentTable
+        enrollments={enrollments}
+        isInformation={
+          selectedSessionId === EDUCATION_TERM_HEADER_ID.INFORMATION
+        }
+      />
     </InformationContent>
   );
 };

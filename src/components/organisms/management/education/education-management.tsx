@@ -2,7 +2,7 @@ import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 
-import { EducationsApi } from '@/api/management/educations.api';
+import { EducationsApi } from '@/api/management/education/educations.api';
 import { EDUCATION_MANAGEMENT_HEADER_ID } from '@/constants/layout/header';
 import EducationManagementView from '@/components/organisms/management/education/education-management.view';
 import { DEFAULT_EDUCATION, Education } from '@/models/management/management';

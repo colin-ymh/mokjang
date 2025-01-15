@@ -4,7 +4,7 @@ import { GRAY } from '@/constants/styles/color';
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
 import { Group } from '@/models/management/management';
 
-const InformationContainer = styled.div`
+const GroupInformationContainer = styled.div`
   display: flex;
   width: 100%;
   flex-direction: column;
@@ -20,18 +20,49 @@ const ListTypeHeader = styled.div`
   padding: 0 20px;
 `;
 
-const ContentContainer = styled.div`
+const GroupContentContainer = styled.div`
   display: flex;
-  flex-direction: column;
-  width: 100%;
-  padding: 20px;
+
+  flex-direction: row;
+  padding: 10px;
+  gap: 5px;
 `;
 
 const RowContainer = styled.div`
   display: flex;
+  flex: 1;
+  flex-direction: row;
+  padding: 0 10px;
+`;
+
+const InformationContainer = styled.div`
+  display: flex;
   flex-direction: row;
   gap: 20px;
+  cursor: pointer;
   padding: 10px;
+  border-radius: 5px;
+  width: 100%;
+
+  &:hover {
+    background-color: ${GRAY.LIGHT};
+  }
+`;
+
+const TitleContainer = styled.div`
+  display: flex;
+  width: 100px;
+`;
+
+const ContentContainer = styled.div`
+  display: flex;
+  gap: 10px;
+`;
+
+const DivideLine = styled.div`
+  width: 100%;
+  height: 1px;
+  background-color: ${GRAY.LIGHT};
 `;
 
 type GroupInformationProps = {
@@ -43,22 +74,37 @@ const GroupInformation = ({ group }: GroupInformationProps) => {
   const t_header = useScopedI18n('header');
 
   return (
-    <InformationContainer>
+    <GroupInformationContainer>
       {/* 그룹 상세 헤더 */}
       <ListTypeHeader>
         <MainText color={GRAY.DARK}>{t_header('groupInformation')}</MainText>
       </ListTypeHeader>
-      <ContentContainer>
+      <GroupContentContainer>
         <RowContainer>
-          <MainText color={GRAY.DARK}>{t('groupName')}</MainText>
-          <MainText>{group.name}</MainText>
+          <InformationContainer>
+            <TitleContainer>
+              <MainText color={GRAY.DARK}>{t('groupName')}</MainText>
+            </TitleContainer>
+            <ContentContainer>
+              <MainText>{group.name}</MainText>
+            </ContentContainer>
+          </InformationContainer>
         </RowContainer>
+        {/*<DivideLine />*/}
         <RowContainer>
-          <MainText color={GRAY.DARK}>{t('groupRole')}</MainText>
-          <MainText>{}</MainText>
+          <InformationContainer>
+            <TitleContainer>
+              <MainText color={GRAY.DARK}>{t('groupRole')}</MainText>
+            </TitleContainer>
+            <ContentContainer>
+              {group.roles.map((role) => {
+                return <MainText>{role.role}</MainText>;
+              })}
+            </ContentContainer>
+          </InformationContainer>
         </RowContainer>
-      </ContentContainer>
-    </InformationContainer>
+      </GroupContentContainer>
+    </GroupInformationContainer>
   );
 };
 

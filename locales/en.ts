@@ -33,6 +33,9 @@ export default {
   educationInformation: 'Education Information',
   educationProcess: 'Current Process',
 
+  educationDate: 'Date',
+  sessionContent: 'Report',
+
   officerList: 'Officer List',
   officerName: 'Officer Name',
 
@@ -146,6 +149,13 @@ export default {
   'tableHeader.educationEnrollments': 'Number of Enrollments',
   'tableHeader.instructor': 'Instructor',
   'tableHeader.numberOfSession': 'Progress',
+
+  'tableHeader.memberName': 'Name',
+  'tableHeader.group': 'Group',
+  'tableHeader.age': 'Age',
+  'tableHeader.status': 'Status',
+  'tableHeader.note': 'Memo',
+  'tableHeader.mobilePhone': 'Mobile Phone',
   /*-------------------table header-------------------*/
 
   /*------------------- register-------------------*/

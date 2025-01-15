@@ -4,11 +4,17 @@ import TermTableView from '@/components/molecules/management/education/term-tabl
 import {
   DEFAULT_EDUCATION_TERM,
   Education,
+  EducationEnrollment,
+  EducationSession,
   EducationTerm,
 } from '@/models/management/management';
 import { EDUCATION_TERM } from '@/constants/management/education-term-column';
 import CustomPopup from '@/components/atoms/common/popup/custom-popup';
 import TermInformation from '@/components/molecules/management/education/term-information';
+import { EducationEnrollmentsApi } from '@/api/management/education/education-enrollments.api';
+import { EducationSessionsApi } from '@/api/management/education/education-sessions.api';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
 
 export type TermTableProps = {
   education: Education;
@@ -17,6 +23,9 @@ export type TermTableProps = {
 
 const TermTable = ({ education, terms }: TermTableProps) => {
   const scrollRef = useRef<HTMLDivElement | null>(null);
+  const churchId = useSelector((state: RootState) => state.church.churchId);
+  const educationEnrollmentsApi = new EducationEnrollmentsApi(false);
+  const educationSessionsApi = new EducationSessionsApi(false);
 
   // 상세 모달 활성화 여부
   const [isDetailModalShown, setIsDetailModalShown] = useState<boolean>(false);
@@ -26,6 +35,12 @@ const TermTable = ({ education, terms }: TermTableProps) => {
     DEFAULT_EDUCATION_TERM
   );
 
+  // 등록
+  const [enrollments, setEnrollments] = useState<EducationEnrollment[]>([]);
+
+  // 회차
+  const [sessions, setSessions] = useState<EducationSession[]>([]);
+
   // 기수 클릭 시 이벤트
   const onClickTerm = (term: EducationTerm) => {
     setIsDetailModalShown(true);
@@ -34,6 +49,9 @@ const TermTable = ({ education, terms }: TermTableProps) => {
 
   // 모달 닫기
   const onClickClose = () => {
+    setSelectedTerm(DEFAULT_EDUCATION_TERM);
+    setEnrollments([]);
+    setSessions([]);
     setIsDetailModalShown(false);
   };
 
@@ -49,6 +67,37 @@ const TermTable = ({ education, terms }: TermTableProps) => {
       scrollRef.current.scrollTop = 0;
     }
   }, []);
+
+  const fetchEnrollments = () => {
+    educationEnrollmentsApi
+      .getEducationEnrollments({
+        churchId,
+        educationId: education.id,
+        educationTermId: selectedTerm.id,
+      })
+      .then((response) => {
+        setEnrollments(response.data);
+      });
+  };
+
+  const fetchSessions = () => {
+    educationSessionsApi
+      .getEducationSessions({
+        churchId,
+        educationId: education.id,
+        educationTermId: selectedTerm.id,
+      })
+      .then((response) => {
+        setSessions(response.data);
+      });
+  };
+
+  useEffect(() => {
+    if (selectedTerm.id) {
+      fetchEnrollments();
+      fetchSessions();
+    }
+  }, [selectedTerm]);
 
   const props = {
     terms,
@@ -68,7 +117,13 @@ const TermTable = ({ education, terms }: TermTableProps) => {
         height={90}
         isPercentage={true}
       >
-        <TermInformation education={education} term={selectedTerm} />
+        <TermInformation
+          education={education}
+          term={selectedTerm}
+          enrollments={enrollments}
+          sessions={sessions}
+          fetchEnrollments={fetchEnrollments}
+        />
       </CustomPopup>
     </>
   );

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 
-import { GroupsApi } from '@/api/management/groups.api';
+import { GroupsApi } from '@/api/management/group/groups.api';
 import { DEFAULT_GROUP, Group } from '@/models/management/management';
 import { getOrderedGroups } from '@/utils/group';
 import RegisterGroupView from '@/components/organisms/church/register-group.view';

@@ -9,7 +9,7 @@ import React, {
 
 import { DEFAULT_GROUP, Group } from '@/models/management/management';
 import ManagementGroupItemView from '@/components/atoms/management/group/management-group-item.view';
-import { GroupsApi } from '@/api/management/groups.api';
+import { GroupsApi } from '@/api/management/group/groups.api';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { getFormattedName } from '@/utils/format';

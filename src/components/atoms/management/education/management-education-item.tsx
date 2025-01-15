@@ -10,7 +10,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 
 import { DEFAULT_EDUCATION, Education } from '@/models/management/management';
-import { EducationsApi } from '@/api/management/educations.api';
+import { EducationsApi } from '@/api/management/education/educations.api';
 import { getFormattedName } from '@/utils/format';
 import { getIsWellFormedName } from '@/utils/check';
 import ManagementEducationItemView from '@/components/atoms/management/education/management-education-item.view';

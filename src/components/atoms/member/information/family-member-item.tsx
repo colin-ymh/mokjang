@@ -67,6 +67,7 @@ const FamilyMemberItem = ({
 }: FamilyMemberItemProps) => {
   const t = useI18n();
 
+  console.log(member);
   return (
     <ItemContainer onClick={() => onClickFamilyMember(member.familyMemberId)}>
       <InformationList>
@@ -88,7 +89,7 @@ const FamilyMemberItem = ({
             <MainText>{getAge(new Date(member.familyMember.birth))}</MainText>
           )}
         </MemberInformationContainer>
-        {/* 성볋 */}
+        {/* 성별 */}
         <MemberInformationContainer>
           <MainText color={GRAY.DEFAULT}>{t(MEMBER.GENDER)}</MainText>
           <MainText>{t(member.familyMember.gender as GENDER)}</MainText>
@@ -116,8 +117,14 @@ const FamilyMemberItem = ({
       </InformationList>
       {/* 수정/삭제 모달 */}
       <SlideButtonList
-        onClickEdit={onClickEdit}
-        onClickDelete={onClickDelete}
+        onClickEdit={(event) => {
+          event.stopPropagation();
+          onClickEdit(member);
+        }}
+        onClickDelete={(event) => {
+          event.stopPropagation();
+          onClickDelete(member.familyMemberId);
+        }}
         isAddShown={false}
         buttonSize={25}
         hoverBackgroundColor={WHITE}

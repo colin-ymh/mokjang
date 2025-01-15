@@ -1,42 +1,55 @@
 import axios, { AxiosResponse } from 'axios';
 import { SERVER_URL, TEST_SERVER_URL } from '@/constants/state/url';
+import { EDUCATION_STATUS, ORDER_DIRECTION } from '@/constants/constant';
 
 class HTTPError extends Error {}
+
+enum EDUCATION_ENROLLMENT_ORDER {
+  MEMBER_ID = 'memberId',
+  MEMBER_NAME = 'memberName',
+  STATUS = 'status',
+  CREATED_AT = 'createdAt',
+  UPDATED_AT = 'updatedAt',
+}
 
 type GetEducationEnrollmentsParams = {
   churchId: string;
   educationId: string;
-};
-
-type GetEducationTermParams = {
-  churchId: string;
-  educationId: string;
   educationTermId: string;
+  order?: EDUCATION_ENROLLMENT_ORDER;
+  orderDirection?: ORDER_DIRECTION;
 };
 
 type CreateEducationEnrollmentsParams = {
   churchId: string;
   educationId: string;
+  educationTermId: string;
 };
 
 type CreateEducationEnrollmentsBody = {
-  name: string;
+  memberId: string;
+  status?: EDUCATION_STATUS;
+  note?: string;
 };
 
 type EditEducationEnrollmentsParams = {
   churchId: string;
   educationId: string;
   educationTermId: string;
+  educationEnrollmentId: string;
 };
 
 type EditEducationEnrollmentsBody = {
-  name: string;
+  status?: EDUCATION_STATUS;
+  note?: string;
+  isDeleteNote?: boolean;
 };
 
 type DeleteEducationEnrollmentsParams = {
   churchId: string;
   educationId: string;
   educationTermId: string;
+  educationEnrollmentId: string;
 };
 
 export class EducationEnrollmentsApi {
@@ -55,28 +68,9 @@ export class EducationEnrollmentsApi {
   public getEducationEnrollments = async (
     params: GetEducationEnrollmentsParams
   ): Promise<AxiosResponse> => {
-    const { churchId, educationId } = params;
-
-    const url = `${this._url}/churches/${churchId}/management/educations/${educationId}/terms`;
-
-    try {
-      return await axios.get(url);
-    } catch (error) {
-      throw new HTTPError(`Fetch error: ${error}`);
-    }
-  };
-
-  /**
-   * 특정 교육 대상자 상태 불러오기
-   * @param {GetEducationEnrollmentsParams} params
-   * @returns {Promise<AxiosResponse>}
-   */
-  public getEducationTerm = async (
-    params: GetEducationTermParams
-  ): Promise<AxiosResponse> => {
     const { churchId, educationId, educationTermId } = params;
 
-    const url = `${this._url}/churches/${churchId}/management/educations/${educationId}/terms/${educationTermId}`;
+    const url = `${this._url}/churches/${churchId}/management/educations/${educationId}/terms/${educationTermId}/enrollments`;
 
     try {
       return await axios.get(url);
@@ -95,9 +89,9 @@ export class EducationEnrollmentsApi {
     params: CreateEducationEnrollmentsParams,
     body: CreateEducationEnrollmentsBody
   ): Promise<AxiosResponse> => {
-    const { churchId, educationId } = params;
+    const { churchId, educationId, educationTermId } = params;
 
-    const url = `${this._url}/churches/${churchId}/management/educations/${educationId}/terms`;
+    const url = `${this._url}/churches/${churchId}/management/educations/${educationId}/terms/${educationTermId}/enrollments`;
 
     try {
       return await axios.post(url, body);
@@ -116,9 +110,10 @@ export class EducationEnrollmentsApi {
     params: EditEducationEnrollmentsParams,
     body: EditEducationEnrollmentsBody
   ): Promise<AxiosResponse> => {
-    const { churchId, educationId, educationTermId } = params;
+    const { churchId, educationId, educationTermId, educationEnrollmentId } =
+      params;
 
-    const url = `${this._url}/churches/${churchId}/management/educations/${educationId}/terms/${educationTermId}`;
+    const url = `${this._url}/churches/${churchId}/management/educations/${educationId}/terms/${educationTermId}/enrollments/${educationEnrollmentId}`;
 
     try {
       return await axios.patch(url, body);
@@ -135,9 +130,10 @@ export class EducationEnrollmentsApi {
   public deleteEducationEnrollments = async (
     params: DeleteEducationEnrollmentsParams
   ): Promise<AxiosResponse> => {
-    const { churchId, educationId, educationTermId } = params;
+    const { churchId, educationId, educationTermId, educationEnrollmentId } =
+      params;
 
-    const url = `${this._url}/churches/${churchId}/management/educations/${educationId}/terms/${educationTermId}`;
+    const url = `${this._url}/churches/${churchId}/management/educations/${educationId}/terms/${educationTermId}/enrollments/${educationEnrollmentId}`;
 
     try {
       return await axios.delete(url);

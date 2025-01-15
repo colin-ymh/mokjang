@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 
-import { GroupsApi } from '@/api/management/groups.api';
+import { GroupsApi } from '@/api/management/group/groups.api';
 import { Group } from '@/models/management/management';
 import GroupListView from '@/components/molecules/management/group/group-list.view';
 import { getOrderedGroups } from '@/utils/group';

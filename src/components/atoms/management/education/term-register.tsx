@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 
 import { MembersApi } from '@/api/churches/members.api';
-import { EducationTermsApi } from '@/api/management/education-terms.api';
+import { EducationTermsApi } from '@/api/management/education/education-terms.api';
 import TermRegisterView from '@/components/atoms/management/education/term-register.view';
 import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-item';
 import { BLANK } from '@/constants/constant';

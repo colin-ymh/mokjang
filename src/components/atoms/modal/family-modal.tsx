@@ -8,8 +8,9 @@ import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-i
 import { BLANK, FAMILY, GENDER } from '@/constants/constant';
 import FamilyModalView from '@/components/atoms/modal/family-modal.view';
 import { useFamilyRelationDropdownItems } from '@/hooks/dropdown/dropdown-items';
-import { FamilyMember } from '@/models/member/member';
+
 import { getTrimmedString } from '@/utils/format';
+import { FamilyMember } from '@/models/member/member';
 
 type FamilyModalProps = {
   familyMember: FamilyMember;
@@ -47,7 +48,7 @@ const FamilyModal = ({
   const [familyGender, setFamilyGender] = useState<GENDER | undefined>();
   // 선택된 가족의 id
   const [familyMemberId, setFamilyMemberId] = useState<string>(
-    familyMember.familyMemberId
+    familyMember.familyMember.id
   );
 
   // 가족 관계

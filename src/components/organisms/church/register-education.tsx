@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 
 import { DEFAULT_EDUCATION, Education } from '@/models/management/management';
-import { EducationsApi } from '@/api/management/educations.api';
+import { EducationsApi } from '@/api/management/education/educations.api';
 import { usePageRouter } from '@/utils/router';
 import RegisterEducationView from '@/components/organisms/church/register-education.view';
 import { getIsWellFormedName } from '@/utils/check';

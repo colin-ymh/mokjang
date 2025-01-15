@@ -2,29 +2,34 @@ import { ChangeEvent, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 
-import { GroupHistoryApi } from '@/api/history/group-history';
 import { MembersApi } from '@/api/churches/members.api';
-import AddGroupMemberModalView from '@/components/atoms/modal/add-group-member-modal.view';
 import { BLANK } from '@/constants/constant';
 import { Member } from '@/models/member/member';
-import { Group } from '@/models/management/management';
+import {
+  EducationEnrollment,
+  EducationTerm,
+} from '@/models/management/management';
 import { getFormattedName } from '@/utils/format';
+import { EducationEnrollmentsApi } from '@/api/management/education/education-enrollments.api';
+import AddEnrollmentModalView from '@/components/atoms/modal/add-enrollment-modal.view';
 
-type AddGroupMemberModalProps = {
-  group: Group;
+type AddEnrollmentModalProps = {
+  term: EducationTerm;
+  enrollments: EducationEnrollment[];
   isShown: boolean;
-  fetchMembers: () => void;
   onClickClose: () => void;
+  fetchEnrollments: () => void;
 };
 
-const AddGroupMemberModal = ({
-  group,
+const AddEnrollmentModal = ({
+  term,
+  enrollments,
   isShown,
-  fetchMembers,
   onClickClose,
-}: AddGroupMemberModalProps) => {
+  fetchEnrollments,
+}: AddEnrollmentModalProps) => {
   const membersApi = new MembersApi(false);
-  const groupHistoryApi = new GroupHistoryApi(false);
+  const educationEnrollmentsApi = new EducationEnrollmentsApi(false);
   const churchId = useSelector((state: RootState) => state.church.churchId);
 
   // 검색하고자 하는 교인 이름
@@ -64,22 +69,30 @@ const AddGroupMemberModal = ({
   };
 
   // 추가 버튼 이벤트
-  const onClickSave = () => {
+  const onClickSave = async () => {
     if (selectedMembers.length !== 0) {
-      selectedMembers.map((member) => {
-        groupHistoryApi.createGroupHistory(
-          { churchId, memberId: member.id },
-          {
-            groupId: group.id as string,
-            startDate: new Date().toDateString(),
-            autoEndDate: true,
-          }
+      try {
+        // 모든 비동기 API 호출을 Promise.all로 처리
+        await Promise.all(
+          selectedMembers.map((member) =>
+            educationEnrollmentsApi.createEducationEnrollments(
+              {
+                churchId,
+                educationId: term.educationId,
+                educationTermId: term.id,
+              },
+              { memberId: member.id }
+            )
+          )
         );
-      });
-      // 모달 닫기
-      fetchMembers();
-      onClickClose();
-      resetData();
+
+        // 모든 API 호출이 완료된 후 실행
+        fetchEnrollments();
+        onClickClose();
+        resetData();
+      } catch (error) {
+        console.error('Error creating enrollments:', error);
+      }
     }
   };
 
@@ -109,7 +122,7 @@ const AddGroupMemberModal = ({
   }, [onClickClose]);
 
   const props = {
-    group,
+    enrollments,
     isShown,
     searchName,
     searchedMembers,
@@ -122,9 +135,9 @@ const AddGroupMemberModal = ({
   };
   return (
     <>
-      <AddGroupMemberModalView {...props} />
+      <AddEnrollmentModalView {...props} />
     </>
   );
 };
 
-export default AddGroupMemberModal;
+export default AddEnrollmentModal;

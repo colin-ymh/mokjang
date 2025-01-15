@@ -41,6 +41,7 @@ const RegisterButtonList = ({ setIsShown }: RegisterButtonListProps) => {
       requestInfoApi
         .inviteMember({ churchId, isTest: true }, getCreateMemberBody(member))
         .then((response) => {
+          console.log(response);
           // 등록 성공 시
           if (response.status === 201) {
             // 교인 Id 할당

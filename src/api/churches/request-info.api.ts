@@ -99,7 +99,6 @@ export class RequestInfoApi {
   ): Promise<AxiosResponse> => {
     const { churchId, requestInfoId } = params;
 
-    console.log(body);
     const url = `${this._url}/churches/${churchId}/request/${requestInfoId}/submit`;
 
     try {

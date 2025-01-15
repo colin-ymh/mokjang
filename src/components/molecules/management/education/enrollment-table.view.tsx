@@ -12,7 +12,9 @@ import {
   ENROLLMENT_TABLE_HEADER_ITEM,
 } from '@/constants/management/education-term-column';
 import { getAge, getDateFromString } from '@/utils/date';
-import { getCurrentGroup } from '@/utils/history';
+import { getFormattedMobilePhone } from '@/utils/format';
+
+import { useI18n } from '../../../../../locales/client';
 
 const TableContainer = styled.div`
   display: flex;
@@ -79,11 +81,11 @@ const getColumnWidth = (id: EDUCATION_ENROLLMENT) => {
     case EDUCATION_ENROLLMENT.MEMBER_NAME:
       return 5;
     case EDUCATION_ENROLLMENT.AGE:
-      return 20;
-    case EDUCATION_ENROLLMENT.GROUP:
-      return 40;
-    case EDUCATION_ENROLLMENT.STATUS:
       return 5;
+    case EDUCATION_ENROLLMENT.GROUP:
+      return 10;
+    case EDUCATION_ENROLLMENT.STATUS:
+      return 10;
     case EDUCATION_ENROLLMENT.NOTE:
       return 20;
     case EDUCATION_ENROLLMENT.MOBILE_PHONE:
@@ -127,7 +129,7 @@ export const TERM_TABLE_HEADER: ENROLLMENT_TABLE_HEADER_ITEM[] = [
     isDate: false,
   },
   {
-    id: EDUCATION_ENROLLMENT.NOTE,
+    id: EDUCATION_ENROLLMENT.MOBILE_PHONE,
     isShown: true,
     isSortable: false,
     isFilterable: false,
@@ -135,7 +137,7 @@ export const TERM_TABLE_HEADER: ENROLLMENT_TABLE_HEADER_ITEM[] = [
     isDate: false,
   },
   {
-    id: EDUCATION_ENROLLMENT.MOBILE_PHONE,
+    id: EDUCATION_ENROLLMENT.NOTE,
     isShown: true,
     isSortable: false,
     isFilterable: false,
@@ -146,6 +148,7 @@ export const TERM_TABLE_HEADER: ENROLLMENT_TABLE_HEADER_ITEM[] = [
 
 type EnrollmentTableProps = {
   enrollments: EducationEnrollment[];
+  isInformation: boolean;
   onClickEnrollment: (enrollment: EducationEnrollment) => void;
   onClickHeader: (id: EDUCATION_ENROLLMENT) => void;
   scrollRef: MutableRefObject<HTMLDivElement | null>;
@@ -154,12 +157,21 @@ type EnrollmentTableProps = {
 
 const EnrollmentTableView = ({
   enrollments,
+  isInformation,
   onClickEnrollment,
   onClickHeader,
   scrollRef,
   onScroll,
 }: EnrollmentTableProps) => {
+  const t = useI18n();
   const { height } = useWindowSize();
+
+  // isInformation에 따라 STATUS 열 숨기기
+  const filteredTermTableHeader = isInformation
+    ? TERM_TABLE_HEADER.filter(
+        (item) => item.id !== EDUCATION_ENROLLMENT.STATUS
+      )
+    : TERM_TABLE_HEADER;
 
   const getEnrollmentTableContent = (
     id: EDUCATION_ENROLLMENT,
@@ -177,15 +189,19 @@ const EnrollmentTableView = ({
       case EDUCATION_ENROLLMENT.GROUP:
         return (
           <MainText>
-            {getCurrentGroup(enrollment.member.group)?.groupName}
+            {/* {getCurrentGroup(enrollment.member.group)?.groupName} */}
           </MainText>
         );
       case EDUCATION_ENROLLMENT.STATUS:
-        return <MainText>{enrollment?.status}</MainText>;
+        return <MainText>{t(enrollment?.status)}</MainText>;
       case EDUCATION_ENROLLMENT.NOTE:
         return <MainText>{enrollment?.note}</MainText>;
       case EDUCATION_ENROLLMENT.MOBILE_PHONE:
-        return <MainText>{enrollment?.member.mobilePhone}</MainText>;
+        return (
+          <MainText>
+            {getFormattedMobilePhone(enrollment?.member.mobilePhone)}
+          </MainText>
+        );
       default:
         return null;
     }
@@ -196,7 +212,7 @@ const EnrollmentTableView = ({
       <EnrollmentTable>
         <thead>
           <tr>
-            {TERM_TABLE_HEADER.filter((item) => item.isShown).map((item) => (
+            {filteredTermTableHeader.map((item) => (
               <TableHeader key={item.id} id={item.id}>
                 <EnrollmentTableHeader item={item} onClick={onClickHeader} />
               </TableHeader>
@@ -213,18 +229,16 @@ const EnrollmentTableView = ({
                 key={enrollment.id}
                 onClick={() => onClickEnrollment(enrollment)}
               >
-                {TERM_TABLE_HEADER.filter((item) => item.isShown).map(
-                  (item) => (
-                    <TableData key={item.id} id={item.id} $index={index}>
-                      <ContentWrapper>
-                        {getEnrollmentTableContent(
-                          item.id as EDUCATION_ENROLLMENT,
-                          enrollment
-                        )}
-                      </ContentWrapper>
-                    </TableData>
-                  )
-                )}
+                {filteredTermTableHeader.map((item) => (
+                  <TableData key={item.id} id={item.id} $index={index}>
+                    <ContentWrapper>
+                      {getEnrollmentTableContent(
+                        item.id as EDUCATION_ENROLLMENT,
+                        enrollment
+                      )}
+                    </ContentWrapper>
+                  </TableData>
+                ))}
               </EnrollmentTableRow>
             ))}
           </tbody>

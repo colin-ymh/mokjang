@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { useState } from 'react';
 import ConfirmPopup from '@/components/atoms/common/popup/confirm-popup';
-import { useI18n, useScopedI18n } from '../../../../../locales/client';
+import { useScopedI18n } from '../../../../../locales/client';
 
 const RegisterHeader = () => {
   const t_popup = useScopedI18n('popup');
@@ -20,9 +20,9 @@ const RegisterHeader = () => {
     setIsConfirmShow(true);
   };
 
-  const onClickDone = () => {
-    console.log(member);
-  };
+  // const onClickDone = () => {
+  //   console.log(member);
+  // };
 
   const onClickPopupCancel = () => {
     setIsConfirmShow(false);
@@ -37,7 +37,7 @@ const RegisterHeader = () => {
 
   const props = {
     onClickGoBack,
-    onClickDone,
+    // onClickDone,
   };
 
   return (

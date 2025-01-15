@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 import { Education } from '@/models/management/management';
 import EducationTermListView from '@/components/molecules/management/education/education-term-list.view';
-import { EducationTermsApi } from '@/api/management/education-terms.api';
+import { EducationTermsApi } from '@/api/management/education/education-terms.api';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 

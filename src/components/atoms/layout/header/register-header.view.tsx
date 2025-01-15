@@ -1,14 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/redux/store';
 
-import { GRAY, MAIN, WHITE } from '@/constants/styles/color';
-import Button from '@/components/atoms/common/button/button';
-import { MEDIA_MIN_WIDTH, MEMBER_REGISTER_STAGE } from '@/constants/constant';
+import { WHITE } from '@/constants/styles/color';
+import { MEDIA_MIN_WIDTH } from '@/constants/constant';
 
 import ExitButton from '../../../../../public/svg/cancel.svg';
-import { useScopedI18n } from '../../../../../locales/client';
 
 const HeaderContainer = styled.header`
   display: flex;
@@ -41,34 +37,26 @@ const HeaderRight = styled.div`
 
 type RegisterHeaderViewProps = {
   onClickGoBack: () => void;
-  onClickDone: () => void;
+  // onClickDone: () => void;
 };
 
-const RegisterHeaderView = ({
-  onClickGoBack,
-  onClickDone,
-}: RegisterHeaderViewProps) => {
-  const t_button = useScopedI18n('button');
-  const { stage, isStageClear } = useSelector(
-    (state: RootState) => state.memberRegister
-  );
-
+const RegisterHeaderView = ({ onClickGoBack }: RegisterHeaderViewProps) => {
   return (
     <HeaderContainer>
       <HeaderLeft>
         <ExitButton onClick={onClickGoBack} />
       </HeaderLeft>
       <HeaderRight>
-        {stage !== MEMBER_REGISTER_STAGE.REQUIRED && (
-          <Button
-            text={t_button('save')}
-            onClick={onClickDone}
-            backgroundColor={WHITE}
-            color={isStageClear ? MAIN.DEFAULT : GRAY.DARK}
-            fontSize={18}
-            disabled={!isStageClear}
-          />
-        )}
+        {/*{stage !== MEMBER_REGISTER_STAGE.REQUIRED && (*/}
+        {/*  <Button*/}
+        {/*    text={t_button('save')}*/}
+        {/*    onClick={onClickDone}*/}
+        {/*    backgroundColor={WHITE}*/}
+        {/*    color={isStageClear ? MAIN.DEFAULT : GRAY.DARK}*/}
+        {/*    fontSize={18}*/}
+        {/*    disabled={!isStageClear}*/}
+        {/*  />*/}
+        {/*)}*/}
       </HeaderRight>
     </HeaderContainer>
   );

@@ -33,6 +33,8 @@ export default {
   educationStatus: '상태',
   educationInformation: '교육 정보',
   educationProcess: '진행사항',
+  educationDate: '교육 일시',
+  sessionContent: '회차 보고',
 
   officerList: '직분 목록',
   officerName: '직분명',
@@ -148,6 +150,13 @@ export default {
   'tableHeader.educationEnrollments': '교육인원',
   'tableHeader.instructor': '진행자',
   'tableHeader.numberOfSession': '진행 상태',
+
+  'tableHeader.memberName': '교인명',
+  'tableHeader.group': '소그룹',
+  'tableHeader.age': '나이',
+  'tableHeader.status': '상태',
+  'tableHeader.note': '비고',
+  'tableHeader.mobilePhone': '휴대전화',
   /*-------------------table header-------------------*/
 
   /*------------------- register-------------------*/
