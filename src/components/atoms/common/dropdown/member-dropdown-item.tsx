@@ -1,0 +1,73 @@
+import React from 'react';
+import styled from 'styled-components';
+import Image from 'next/image';
+
+import { BLACK, GRAY, MAIN } from '@/constants/styles/color';
+import { MainText } from '@/components/atoms/common/text/main-text';
+import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-item';
+import { GENDER } from '@/constants/constant';
+import { MEMBER } from '@/constants/member/member-column';
+
+import DefaultImage from '../../../../../public/png/default-member-image.png';
+
+const DropdownContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+`;
+
+const ItemContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  transition: background-color 0.3s ease;
+  border-radius: 5px;
+  cursor: pointer;
+  &:hover {
+    background-color: ${GRAY.LIGHT};
+  }
+`;
+
+const ProfileImage = styled(Image)`
+  width: 30px;
+  height: 30px;
+  border-radius: 20%;
+`;
+
+export type MemberDropdownType = DropdownValueType & {
+  profileImage?: string;
+  age?: number;
+  gender?: GENDER;
+};
+
+type MemberDropdownItemProps = {
+  isSelected: boolean;
+  item: MemberDropdownType;
+  onClick: (index: number) => void;
+};
+
+const MemberDropdownItem = ({
+  isSelected,
+  onClick,
+  item,
+}: MemberDropdownItemProps) => {
+  return (
+    <DropdownContainer>
+      <ItemContainer onClick={() => onClick(item.value)}>
+        <ProfileImage
+          src={item.profileImage || DefaultImage}
+          alt={MEMBER.PROFILE_IMAGE}
+        />
+        <MainText color={isSelected ? MAIN.DEFAULT : BLACK}>
+          {item.title}
+        </MainText>
+        <MainText color={isSelected ? MAIN.DEFAULT : BLACK}>
+          {item.age !== undefined && `(${item.age})`}
+        </MainText>
+      </ItemContainer>
+    </DropdownContainer>
+  );
+};
+
+export default MemberDropdownItem;

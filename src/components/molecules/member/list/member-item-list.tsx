@@ -28,7 +28,7 @@ const MemberItem = styled.div`
 const ProfileImage = styled(Image)`
   width: 50px;
   height: 50px;
-  border-radius: 5px;
+  border-radius: 9px;
 `;
 
 const MemberDetails = styled.div`

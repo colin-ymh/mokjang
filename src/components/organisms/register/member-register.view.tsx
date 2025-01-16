@@ -29,6 +29,7 @@ const TextContainer = styled.div`
 const ContentContainer = styled.div`
   flex: 1;
   overflow-y: scroll;
+  padding-bottom: 10px;
   width: 100%;
 `;
 

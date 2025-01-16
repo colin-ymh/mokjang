@@ -116,7 +116,7 @@ const TermRegister = ({
             endDate,
             term: parseInt(term),
             numberOfSessions: parseInt(session),
-            instructorId: parseInt(instructorId),
+            instructorId: instructorId ? parseInt(instructorId) : undefined,
           }
         )
         .then(() => {

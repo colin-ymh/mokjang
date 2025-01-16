@@ -4,9 +4,10 @@ import styled from 'styled-components';
 
 import { Member } from '@/models/member/member';
 import { MEMBER } from '@/constants/member/member-column';
-import { GRAY, MAIN, WHITE } from '@/constants/styles/color';
+import { GRAY } from '@/constants/styles/color';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { getAge, getDateFromString } from '@/utils/date';
+import CheckButton from '@/components/atoms/common/button/check-button';
 
 import DefaultImage from '../../../../../public/png/default-member-image.png';
 
@@ -36,27 +37,18 @@ const ItemContainer = styled.div<{ $isEnable: boolean }>`
 const ProfileImage = styled(Image)`
   width: 30px;
   height: 30px;
-  border-radius: 5px;
+  border-radius: 20%;
 `;
 
-const SelectButton = styled.div<{ $isEnable: boolean; $isSelected: boolean }>`
-  display: flex;
-  width: 20px;
-  height: 20px;
-  flex-shrink: 0;
+const ButtonContainer = styled.div`
   position: absolute;
   right: 10px;
-  border-radius: 50%;
-  cursor: pointer;
-  border: 1px solid ${GRAY.LIGHT};
-  background-color: ${({ $isEnable, $isSelected }) =>
-    $isEnable ? ($isSelected ? MAIN.LIGHT : WHITE) : GRAY.LIGHT};
-  transition: background-color 0.2s;
 `;
 
 type AddMemberItemProps = {
   member: Member;
   isEnable: boolean;
+  isSelected: boolean;
   selectedMembers: Member[];
   onClick: (member: Member) => void;
 };
@@ -64,13 +56,13 @@ type AddMemberItemProps = {
 const AddMemberItem = ({
   selectedMembers,
   isEnable,
+  isSelected,
   onClick,
   member,
 }: AddMemberItemProps) => {
-  const isSelected = selectedMembers.some((m) => m.id === member.id);
   return (
     <BackgroundContainer>
-      <ItemContainer $isEnable={isEnable}>
+      <ItemContainer $isEnable={isEnable} onClick={() => onClick(member)}>
         <ProfileImage
           src={member.profileImage || DefaultImage}
           alt={MEMBER.PROFILE_IMAGE}
@@ -79,11 +71,12 @@ const AddMemberItem = ({
         <MainText color={GRAY.DARK}>
           {member.birth && `(${getAge(getDateFromString(member.birth))})`}
         </MainText>
-        <SelectButton
-          $isEnable={isEnable}
-          $isSelected={isSelected}
-          onClick={() => isEnable && onClick(member)}
-        />
+
+        {isEnable && (
+          <ButtonContainer>
+            <CheckButton value={isSelected} />
+          </ButtonContainer>
+        )}
       </ItemContainer>
     </BackgroundContainer>
   );

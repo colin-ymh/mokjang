@@ -8,8 +8,8 @@ import LabelInput from '@/components/atoms/common/input/label-input';
 import { EDUCATION_STATUS } from '@/constants/constant';
 import { useEducationStatusDropdownItems } from '@/hooks/dropdown/dropdown-items';
 
-import { useI18n } from '../../../../locales/client';
-import Cancel from '../../../../public/svg/cancel.svg';
+import { useI18n } from '../../../../../locales/client';
+import Cancel from '../../../../../public/svg/cancel.svg';
 import { GRAY, MAIN } from '@/constants/styles/color';
 
 const EducationModalViewContainer = styled.div`
@@ -63,8 +63,7 @@ type EducationModalViewProps = {
   onClickSaveNewEducation: (
     educationId: string,
     startDate: string,
-    status: EDUCATION_STATUS,
-    endDate?: string
+    status: EDUCATION_STATUS
   ) => void;
   onClickSaveEditEducation: (
     educationId?: string,
@@ -146,12 +145,7 @@ const EducationModalView = ({
                 educationStatus
               );
             } else {
-              onClickSaveNewEducation(
-                educationId,
-                startDate,
-                educationStatus,
-                endDate
-              );
+              onClickSaveNewEducation(educationId, startDate, educationStatus);
             }
           }}
         />

@@ -12,14 +12,15 @@ import RadioButton from '@/components/atoms/common/input/radio-button/radio-butt
 import RegisterRadioButton from '@/components/atoms/register/register-radio-button';
 import { FAMILY, GENDER, MEMBER_REGISTER_TYPE } from '@/constants/constant';
 import { useMemberRegisterTypeRadioButtonItems } from '@/hooks/radio-button/radio-button-items';
-import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-item';
 import LabelDropdown from '@/components/atoms/common/dropdown/label-dropdown';
 import { getIsWellFormedMobilePhone, getIsWellFormedName } from '@/utils/check';
 import { onClickEnter } from '@/utils/input';
+import { useFamilyRelationDropdownItems } from '@/hooks/dropdown/dropdown-items';
+import { MemberDropdownType } from '@/components/atoms/common/dropdown/member-dropdown-item';
 
 import { useI18n, useScopedI18n } from '../../../../locales/client';
-import { useFamilyRelationDropdownItems } from '@/hooks/dropdown/dropdown-items';
-import { Member } from '@/models/member/member';
+import MemberDropdown from '@/components/atoms/common/dropdown/member-dropdown';
+import { MainText } from '@/components/atoms/common/text/main-text';
 
 const RequiredRegisterContainer = styled.div`
   display: flex;
@@ -31,11 +32,21 @@ const RequiredRegisterContainer = styled.div`
   cursor: pointer;
 `;
 
+const LabelInputContainer = styled.div<{ $zIndex?: number }>`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 10px;
+  transition: all 0.3s ease;
+  z-index: ${({ $zIndex }) => $zIndex};
+`;
+
 export type RequiredRegisterViewProps = {
   guideName: string;
-  guideItems: DropdownValueType[];
+  guideItems: MemberDropdownType[];
   familyMemberName: string;
-  familyMemberItems: DropdownValueType[];
+  familyMemberItems: MemberDropdownType[];
   familyGender: GENDER | undefined;
   onChangeType: (type: MEMBER_REGISTER_TYPE) => void;
   onChangeName: (event: ChangeEvent<HTMLInputElement>) => void;
@@ -123,33 +134,38 @@ const RequiredRegisterView = ({
             : undefined
         }
       />
-      {/* 인도자 */}
-      <LabelDropdown
-        enterKeyHint={'done'}
-        ref={guideInputRef}
-        label={t('guide')}
-        value={guideName}
-        items={guideItems}
-        onChange={onChangeGuideName}
-        onChangeItem={onChangeGuidedById}
-        placeholder={t_placeholder('guide')}
-        isEditable={true}
-        onKeyDown={(event) => onClickEnter(event, familyInputRef)}
-      />
-      {/* 가족 */}
-      <LabelDropdown
-        enterKeyHint={'done'}
-        ref={familyInputRef}
-        label={t('family')}
-        value={familyMemberName}
-        items={familyMemberItems}
-        onChange={onChangeFamilyMemberName}
-        onChangeItem={onChangeFamilyMemberId}
-        placeholder={t_placeholder('family')}
-        isEditable={true}
-        onKeyDown={onClickEnter}
-        reverseDirection={true}
-      />
+      <LabelInputContainer>
+        {/* 인도자 */}
+        <MainText>{t('guide')}</MainText>
+        <MemberDropdown
+          enterKeyHint={'done'}
+          ref={guideInputRef}
+          value={guideName}
+          items={guideItems}
+          onChange={onChangeGuideName}
+          onChangeItem={onChangeGuidedById}
+          placeholder={t_placeholder('guide')}
+          isEditable={true}
+          onKeyDown={(event) => onClickEnter(event, familyInputRef)}
+        />
+      </LabelInputContainer>
+      <LabelInputContainer>
+        {/* 가족 */}
+        <MainText>{t('family')}</MainText>
+        <MemberDropdown
+          enterKeyHint={'done'}
+          ref={familyInputRef}
+          value={familyMemberName}
+          items={familyMemberItems}
+          onChange={onChangeFamilyMemberName}
+          onChangeItem={onChangeFamilyMemberId}
+          placeholder={t_placeholder('family')}
+          isEditable={true}
+          onKeyDown={onClickEnter}
+          reverseDirection={true}
+        />
+      </LabelInputContainer>
+
       {/* 가족관계 */}
       <LabelDropdown
         label={t('relation')}

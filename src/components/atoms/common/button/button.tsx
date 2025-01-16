@@ -18,6 +18,7 @@ export type ButtonProps = MainTextProps & {
   isShadow?: boolean;
   borderRadius?: number;
   children?: ReactNode;
+  borderColor?: string;
 };
 
 const ButtonContainer = styled.button<{
@@ -27,16 +28,18 @@ const ButtonContainer = styled.button<{
   $backgroundColor?: string;
   $isShadow?: boolean;
   $borderRadius?: number;
+  $borderColor?: string;
 }>`
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   background-color: ${({ $backgroundColor }) => $backgroundColor};
   width: ${({ width }) => (width ? `${width}px` : `100%`)};
   height: ${({ height }) => (height ? `${height}px` : `100%`)};
   border-radius: ${({ $borderRadius }) =>
     ` ${$borderRadius !== null ? $borderRadius : 5}px`};
-  border: none;
+  border: ${({ $borderColor }) =>
+    $borderColor ? `1px solid ${$borderColor}` : 'none'};
   cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
   transition: all 0.3s ease;
   box-shadow: ${({ $isShadow, disabled }) =>
@@ -58,6 +61,7 @@ const Button = ({
   fontWeight,
   fontSize,
   children,
+  borderColor,
 }: ButtonProps) => {
   return (
     <ButtonContainer
@@ -68,6 +72,7 @@ const Button = ({
       $borderRadius={borderRadius}
       $backgroundColor={backgroundColor}
       $isShadow={isShadow}
+      $borderColor={borderColor}
     >
       {children ? (
         children

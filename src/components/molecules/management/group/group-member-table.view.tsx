@@ -1,23 +1,40 @@
 import React, { MutableRefObject } from 'react';
 import Image from 'next/image';
 import styled from 'styled-components';
+import { TABLE_HEADER_ITEM } from '@/redux/reducers/member-filter-reducer';
 
 import { GRAY, WHITE } from '@/constants/styles/color';
 import { MEMBER } from '@/constants/member/member-column';
 import { MainText } from '@/components/atoms/common/text/main-text';
+import MemberTableHeader from '@/components/atoms/member/list/member-table-header';
+import { Member } from '@/models/member/member';
+import useWindowSize from '@/hooks/window/window';
 import { getAge, getDateFromString } from '@/utils/date';
 import {
   getFormattedDate,
   getFormattedMobilePhone,
   getLocaleDateFromDashDate,
 } from '@/utils/format';
-import { Member } from '@/models/member/member';
-import MemberTableHeader from '@/components/atoms/member/list/member-table-header';
-import useWindowSize from '@/hooks/window/window';
+import { getCurrentGroup } from '@/utils/history';
 
 import DefaultImage from '../../../../../public/png/default-member-image.png';
-import { TABLE_HEADER_ITEM } from '@/redux/reducers/member-filter-reducer';
-import { getCurrentGroup } from '@/utils/history';
+
+const getColumnWidth = (id: string) => {
+  switch (id) {
+    case MEMBER.GROUP:
+      return 20;
+    case MEMBER.NAME:
+      return 20;
+    case MEMBER.OFFICER:
+      return 10;
+    case MEMBER.AGE:
+      return 10;
+    case MEMBER.MOBILE_PHONE:
+      return 40;
+    default:
+      return 50;
+  }
+};
 
 const TableContainer = styled.div`
   display: flex;
@@ -34,7 +51,6 @@ const MemberTable = styled.table`
 
 const TableHeader = styled.th<{ id: string }>`
   border-bottom: 1px solid ${GRAY.LIGHT};
-  //border-top: 1px solid ${GRAY.LIGHT};
   border-right: 1px solid ${GRAY.LIGHT};
   padding: 5px;
   justify-content: center;
@@ -44,7 +60,9 @@ const TableHeader = styled.th<{ id: string }>`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  width: auto;
+  width: ${({ id }) => {
+    return `${getColumnWidth(id)}px`;
+  }};
 `;
 
 const Scroll = styled.div<{ height: number }>`
@@ -70,7 +88,9 @@ const TableData = styled.td<{ id: string; $index: number }>`
   background-color: ${({ $index }) =>
     $index % 2 === 0 ? WHITE : GRAY.SIDE_BAR};
   cursor: pointer;
-  width: auto;
+  width: ${({ id }) => {
+    return `${getColumnWidth(id)}px`;
+  }};
 `;
 
 const ContentWrapper = styled.div`
@@ -80,10 +100,17 @@ const ContentWrapper = styled.div`
   white-space: nowrap; /* 줄바꿈 방지 */
 `;
 
+const ProfileContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+`;
+
 const ProfileImage = styled(Image)`
-  width: 40px;
-  height: 40px;
-  border-radius: 5px;
+  width: 35px;
+  height: 35px;
+  border-radius: 20%;
 `;
 
 export const GROUP_MEMBER_TABLE_HEADER: TABLE_HEADER_ITEM[] = [
@@ -107,14 +134,6 @@ export const GROUP_MEMBER_TABLE_HEADER: TABLE_HEADER_ITEM[] = [
     id: MEMBER.NAME,
     isShown: true,
     isSortable: true,
-    isFilterable: false,
-    isFixed: true,
-    isDate: false,
-  },
-  {
-    id: MEMBER.PROFILE_IMAGE,
-    isShown: true,
-    isSortable: false,
     isFilterable: false,
     isFixed: true,
     isDate: false,
@@ -158,15 +177,17 @@ const GroupMemberTableView = ({
     switch (id) {
       case MEMBER.GROUP:
         return <MainText>{getCurrentGroup(member.group)?.groupName}</MainText>;
-      case MEMBER.PROFILE_IMAGE:
-        return (
-          <ProfileImage
-            src={member.profileImage || DefaultImage}
-            alt={MEMBER.PROFILE_IMAGE}
-          />
-        );
+
       case MEMBER.NAME:
-        return <MainText>{member.name}</MainText>;
+        return (
+          <ProfileContainer>
+            <ProfileImage
+              src={member.profileImage || DefaultImage}
+              alt={MEMBER.PROFILE_IMAGE}
+            />
+            <MainText>{member.name}</MainText>
+          </ProfileContainer>
+        );
       case MEMBER.MOBILE_PHONE:
         return (
           <MainText>

@@ -4,11 +4,11 @@ import React, { ChangeEvent, forwardRef } from 'react';
 import styled from 'styled-components';
 
 import { WHITE } from '@/constants/styles/color';
-import DropdownItem, {
-  DropdownValueType,
-} from '@/components/atoms/common/dropdown/dropdown-item';
 import BorderInput from '@/components/atoms/common/input/border-input';
 import { InputProps } from '@/components/atoms/common/input/main-input';
+import MemberDropdownItem, {
+  MemberDropdownType,
+} from '@/components/atoms/common/dropdown/member-dropdown-item';
 
 const DropdownContainer = styled.div<{ $isOpened: boolean; width?: number }>`
   position: relative;
@@ -42,8 +42,8 @@ const DropdownList = styled.div<{
   bottom: ${({ $reverseDirection }) => ($reverseDirection ? '55px' : null)};
 `;
 
-type DropdownViewProps = {
-  items: DropdownValueType[];
+type MemberDropdownViewProps = {
+  items: MemberDropdownType[];
   innerValue: any;
   isOpened: boolean;
   onClickDropdown: () => void;
@@ -61,9 +61,9 @@ type DropdownViewProps = {
   backgroundColor?: string;
 };
 
-const DropdownView = forwardRef<
+const MemberDropdownView = forwardRef<
   HTMLInputElement,
-  DropdownViewProps & InputProps
+  MemberDropdownViewProps & InputProps
 >(
   (
     {
@@ -126,7 +126,7 @@ const DropdownView = forwardRef<
         {isOpened && !disabled && (
           <DropdownList $reverseDirection={reverseDirection}>
             {items.map((item, index) => (
-              <DropdownItem
+              <MemberDropdownItem
                 key={index}
                 isSelected={item.value === innerValue}
                 item={item}
@@ -140,4 +140,4 @@ const DropdownView = forwardRef<
   }
 );
 
-export default DropdownView;
+export default MemberDropdownView;

@@ -4,7 +4,7 @@ import { RootState } from '@/redux/store';
 
 import { GroupHistoryApi } from '@/api/history/group-history';
 import { MembersApi } from '@/api/churches/members.api';
-import AddGroupMemberModalView from '@/components/atoms/modal/add-group-member-modal.view';
+import AddGroupMemberModalView from '@/components/atoms/common/modal/add-group-member-modal.view';
 import { BLANK } from '@/constants/constant';
 import { Member } from '@/models/member/member';
 import { Group } from '@/models/management/management';

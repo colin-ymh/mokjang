@@ -9,12 +9,11 @@ import { setMember, setType } from '@/redux/reducers/member-register-reducer';
 import { GetMembersResponse, MembersApi } from '@/api/churches/members.api';
 import RequiredRegisterView from '@/components/molecules/register/required-register.view';
 import {
-  MEMBER_REGISTER_TYPE,
   BLANK,
   FAMILY,
   GENDER,
+  MEMBER_REGISTER_TYPE,
 } from '@/constants/constant';
-import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-item';
 
 import {
   getFormattedMobilePhone,
@@ -23,6 +22,8 @@ import {
 } from '@/utils/format';
 import { getIsWellFormedMobilePhone } from '@/utils/check';
 import { Member } from '@/models/member/member';
+import { getAge, getDateFromString } from '@/utils/date';
+import { MemberDropdownType } from '@/components/atoms/common/dropdown/member-dropdown-item';
 
 const RequiredRegister = () => {
   const membersApi = new MembersApi(false);
@@ -38,13 +39,13 @@ const RequiredRegister = () => {
   // 인도자 이름
   const [guideName, setGuideName] = useState<string>(BLANK);
   // 검색된 인도자 목록
-  const [guideItems, setGuideItems] = useState<DropdownValueType[]>([]);
+  const [guideItems, setGuideItems] = useState<MemberDropdownType[]>([]);
 
   // 가족 이름
   const [familyMemberName, setFamilyMemberName] = useState<string>(BLANK);
   // 검색된 가족 목록
   const [familyMemberItems, setFamilyMemberItems] = useState<
-    DropdownValueType[]
+    MemberDropdownType[]
   >([]);
   // 선택된 가족의 성별
   const [familyGender, setFamilyGender] = useState<GENDER | undefined>();
@@ -86,11 +87,15 @@ const RequiredRegister = () => {
         })
         .then((response: AxiosResponse) => {
           const members: GetMembersResponse[] = response.data.data;
-          const newGuideItems: DropdownValueType[] = members.map((member) => {
+          const newGuideItems: MemberDropdownType[] = members.map((member) => {
             return {
               value: member.id,
               title: member.name,
-              gender: member.gender,
+              gender: (member?.gender as GENDER) || undefined,
+              profileImage: member.profileImage || undefined,
+              age: member.birth
+                ? getAge(getDateFromString(member.birth))
+                : undefined,
             };
           });
 
@@ -119,9 +124,17 @@ const RequiredRegister = () => {
         })
         .then((response: AxiosResponse) => {
           const members: GetMembersResponse[] = response.data.data;
-          const newFamilyMemberItems: DropdownValueType[] = members.map(
+          const newFamilyMemberItems: MemberDropdownType[] = members.map(
             (member) => {
-              return { value: member.id, title: member.name };
+              return {
+                value: member.id,
+                title: member.name,
+                gender: (member?.gender as GENDER) || undefined,
+                profileImage: member.profileImage || undefined,
+                age: member.birth
+                  ? getAge(getDateFromString(member.birth))
+                  : undefined,
+              };
             }
           );
 

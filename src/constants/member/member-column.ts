@@ -24,7 +24,7 @@ export enum MEMBER {
   OFFICER_START_CHURCH = 'officerStartChurch',
   BAPTISM = 'baptism',
   GUIDED_BY_ID = 'guidedById',
-  PREVIOUS_CHURCH_NAME = 'previousChurchName',
+  PREVIOUS_CHURCH = 'previousChurch',
   VEHICLE_NUMBER = 'vehicleNumber',
   REGISTERED_AT = 'registeredAt',
   UPDATED_AT = 'updatedAt',

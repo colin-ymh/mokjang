@@ -164,8 +164,8 @@ const GroupInformation = ({ groupId }: GroupInformationProps) => {
       <CustomPopup
         isShow={isModalShown}
         onClickClose={onClickClose}
-        width={70}
-        height={90}
+        width={30}
+        height={70}
         isPercentage={true}
       >
         <EditGroup

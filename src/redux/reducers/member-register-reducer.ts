@@ -6,6 +6,7 @@ import {
   GENDER,
   MEMBER_REGISTER_STAGE,
   MEMBER_REGISTER_TYPE,
+  NONE,
   NULL,
 } from '@/constants/constant';
 import { getIsWellFormedMobilePhone, getIsWellFormedName } from '@/utils/check';
@@ -18,9 +19,9 @@ type MemberRegisterState = {
   isStageClear: boolean;
 };
 
-export const NULL_INFORMATION = {
-  id: NULL,
-  name: NULL,
+export const NONE_INFORMATION = {
+  id: NONE,
+  name: NONE,
 };
 
 export const DEFAULT_MEMBER: Member = {
@@ -38,11 +39,11 @@ export const DEFAULT_MEMBER: Member = {
   birth: BLANK,
   isLunar: false,
   baptism: BAPTISM.NONE,
-  previousChurchName: BLANK,
+  previousChurch: BLANK,
   gender: GENDER.MALE,
   vehicleNumber: [BLANK, BLANK, BLANK],
-  officerId: NULL,
-  officer: NULL_INFORMATION,
+  officerId: NONE,
+  officer: NONE_INFORMATION,
   officerStartDate: BLANK,
   officerStartChurch: BLANK,
   guidedById: BLANK,
@@ -50,7 +51,7 @@ export const DEFAULT_MEMBER: Member = {
   family: [],
   relation: FAMILY.FAMILY,
   ministries: [],
-  groupId: NULL,
+  groupId: NONE,
   group: [],
   educationHistory: [],
   registeredAt: BLANK,

@@ -2,12 +2,13 @@ import styled from 'styled-components';
 
 import { GRAY, WHITE } from '@/constants/styles/color';
 import { MainText } from '@/components/atoms/common/text/main-text';
-import GroupModal from '@/components/atoms/modal/group-modal';
+import GroupModal from '@/components/atoms/common/modal/group-modal';
 import { GroupHistory } from '@/models/member/history';
 
 import { useI18n } from '../../../../../locales/client';
 import Plus from '../../../../../public/svg/plus.svg';
 import GroupHistoryItem from '@/components/atoms/member/information/group-history-item';
+import TransparentBackground from '@/components/atoms/common/etc/transparent-background';
 
 const ListContainer = styled.div`
   display: flex;
@@ -109,14 +110,21 @@ const MemberGroupView = ({
       </GroupListContainer>
       {/* 그룹 추가 및 수정 모달*/}
       {isModalShown && (
-        <ModalContainer $isShown={isModalShown}>
-          <GroupModal
-            prevGroup={targetGroup}
-            onClickClose={onClickCloseModal}
-            onClickSaveNewGroup={onClickSaveNewGroup}
-            onClickSaveEditGroup={onClickSaveEditGroup}
+        <>
+          <TransparentBackground
+            isOpened={isModalShown}
+            onClick={onClickCloseModal}
+            zIndex={100}
           />
-        </ModalContainer>
+          <ModalContainer $isShown={isModalShown}>
+            <GroupModal
+              prevGroup={targetGroup}
+              onClickClose={onClickCloseModal}
+              onClickSaveNewGroup={onClickSaveNewGroup}
+              onClickSaveEditGroup={onClickSaveEditGroup}
+            />
+          </ModalContainer>
+        </>
       )}
     </ListContainer>
   );

@@ -16,7 +16,7 @@ const ItemContainer = styled.div`
   border-radius: 5px;
   cursor: pointer;
   &:hover {
-    background-color: ${GRAY.DEFAULT};
+    background-color: ${GRAY.LIGHT};
   }
 `;
 

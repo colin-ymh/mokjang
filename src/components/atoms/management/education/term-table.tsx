@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-import TermTableView from '@/components/molecules/management/education/term-table.view';
+import TermTableView from '@/components/atoms/management/education/term-table.view';
 import {
   DEFAULT_EDUCATION_TERM,
   Education,
@@ -10,7 +10,7 @@ import {
 } from '@/models/management/management';
 import { EDUCATION_TERM } from '@/constants/management/education-term-column';
 import CustomPopup from '@/components/atoms/common/popup/custom-popup';
-import TermInformation from '@/components/molecules/management/education/term-information';
+import TermInformation from '@/components/organisms/management/education/term/term-information';
 import { EducationEnrollmentsApi } from '@/api/management/education/education-enrollments.api';
 import { EducationSessionsApi } from '@/api/management/education/education-sessions.api';
 import { useSelector } from 'react-redux';

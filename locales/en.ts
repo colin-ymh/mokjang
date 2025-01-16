@@ -15,6 +15,9 @@ export default {
   instructor: 'Instructor',
   session: 'Session',
 
+  present: 'Present',
+  absent: 'Absent',
+  attendance: 'Attendance',
   term: 'Term',
   inProgress: 'In Progress',
   completed: 'Completed',
@@ -75,7 +78,7 @@ export default {
   officer: 'Officer',
   officerStartDate: 'Officer Start Date',
   officerStartChurch: 'Officer Start Church',
-  previousChurchName: 'Previous Church',
+  previousChurch: 'Previous Church',
 
   group: 'Group',
   ministry: 'Ministry',
@@ -153,7 +156,7 @@ export default {
   'tableHeader.memberName': 'Name',
   'tableHeader.group': 'Group',
   'tableHeader.age': 'Age',
-  'tableHeader.status': 'Status',
+  'tableHeader.attendance': 'Attendance',
   'tableHeader.note': 'Memo',
   'tableHeader.mobilePhone': 'Mobile Phone',
   /*-------------------table header-------------------*/
@@ -210,7 +213,7 @@ export default {
     'Enter a officer start date. (e.g., yyyy-mm-dd)',
   'placeholder.officerStartChurch': 'Enter a officer start church name.',
   'placeholder.guide': "Enter the guide's name.",
-  'placeholder.previousChurchName': 'Enter the name of the previous church.',
+  'placeholder.previousChurch': 'Enter the name of the previous church.',
   'placeholder.vehicleNumber': 'Enter the vehicle plate number.',
   'placeholder.marriage': 'Enter the marriage state.',
   'placeholder.detailMarriage': 'Enter the detail marriage state.',

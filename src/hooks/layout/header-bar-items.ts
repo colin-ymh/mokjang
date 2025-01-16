@@ -10,6 +10,7 @@ import {
 } from '@/constants/layout/header';
 
 import { useI18n, useScopedI18n } from '../../../locales/client';
+import { EducationSession } from '@/models/management/management';
 
 export const useMemberHeaderBarItems = () => {
   const t_memberContent = useScopedI18n('member-content');
@@ -121,7 +122,9 @@ export const useEducationManagementHeaderBarItems = () => {
   return items;
 };
 
-export const useTermInformationHeaderBarItems = (numberOfSessions: number) => {
+export const useTermInformationHeaderBarItems = (
+  sessions: EducationSession[]
+) => {
   const t = useI18n();
 
   const items = [
@@ -129,13 +132,10 @@ export const useTermInformationHeaderBarItems = (numberOfSessions: number) => {
       id: EDUCATION_TERM_HEADER_ID.INFORMATION,
       title: t(EDUCATION_TERM_HEADER_ID.INFORMATION),
     },
-    ...Array.from({ length: numberOfSessions }, (_, index) => {
-      const sessionNumber = index + 1; // 세션 번호는 1부터 시작
-      return {
-        id: sessionNumber.toString(),
-        title: `${sessionNumber}${t('session')}`,
-      };
-    }),
+    ...sessions.map((session) => ({
+      id: session.id,
+      title: `${session.session}${t('session')}`,
+    })),
   ];
 
   return items;

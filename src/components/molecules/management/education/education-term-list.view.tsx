@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { GRAY } from '@/constants/styles/color';
 import { Education, EducationTerm } from '@/models/management/management';
-import TermTable from '@/components/molecules/management/education/term-table';
+import TermTable from '@/components/atoms/management/education/term-table';
 import CustomPopup from '@/components/atoms/common/popup/custom-popup';
 import TermRegister from '@/components/atoms/management/education/term-register';
 

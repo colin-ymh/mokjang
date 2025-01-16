@@ -9,13 +9,13 @@ import {
   EducationSession,
   EducationTerm,
 } from '@/models/management/management';
-import EnrollmentTable from '@/components/molecules/management/education/enrollment-table';
-import TermProcess from '@/components/atoms/management/education/term-process';
+import EnrollmentTable from '@/components/atoms/management/education/term/enrollment-table';
+import TermProcess from '@/components/molecules/management/education/term/term-process';
 import { EDUCATION_TERM_HEADER_ID } from '@/constants/layout/header';
-import AddEnrollmentModal from '@/components/atoms/modal/add-enrollment-modal';
+import AddEnrollmentModal from '@/components/atoms/common/modal/add-enrollment-modal';
 
-import Plus from '../../../../../public/svg/plus.svg';
-import { useI18n } from '../../../../../locales/client';
+import Plus from '../../../../../../public/svg/plus.svg';
+import { useI18n } from '../../../../../../locales/client';
 
 const InformationContent = styled.div`
   display: flex;
@@ -61,6 +61,7 @@ const ModalContainer = styled.div`
 
 export type TermInformationContentProps = {
   term: EducationTerm;
+  educationId: string;
   selectedSessionId: string;
   enrollments: EducationEnrollment[];
   sessions: EducationSession[];
@@ -69,12 +70,16 @@ export type TermInformationContentProps = {
 
 const TermInformationContent = ({
   term,
+  educationId,
   selectedSessionId,
   enrollments,
   sessions,
   fetchEnrollments,
 }: TermInformationContentProps) => {
   const t = useI18n();
+  // 기수 정보인지 회차 정보인지
+  const isInformation =
+    selectedSessionId === EDUCATION_TERM_HEADER_ID.INFORMATION;
 
   // 교육에 교인 다중 추가를 위한 모달 활성화 여부
   const [isModalShown, setIsModalShown] = useState<boolean>(false);
@@ -97,9 +102,7 @@ const TermInformationContent = ({
       </ListTypeHeader>
       <TermProcess
         term={term}
-        isInformation={
-          selectedSessionId === EDUCATION_TERM_HEADER_ID.INFORMATION
-        }
+        isInformation={isInformation}
         session={
           sessions.find((session) => session.id === selectedSessionId) ||
           DEFAULT_EDUCATION_SESSION
@@ -107,9 +110,10 @@ const TermInformationContent = ({
       />
       {/* 등록 정보 */}
       <ListTypeHeader>
-        <MainText color={GRAY.DARK}>{t('people')}</MainText>
-
-        <PlusButton onClick={onClickModalOpen} />
+        <MainText color={GRAY.DARK}>
+          {`${isInformation ? t('people') : t('attendance')} (${enrollments.length})`}
+        </MainText>
+        {isInformation && <PlusButton onClick={onClickModalOpen} />}
         <ModalContainer>
           <AddEnrollmentModal
             term={term}
@@ -120,8 +124,11 @@ const TermInformationContent = ({
           />
         </ModalContainer>
       </ListTypeHeader>
+      {/* 등록된 교인 목록 */}
       <EnrollmentTable
         enrollments={enrollments}
+        educationId={educationId}
+        sessionId={selectedSessionId}
         isInformation={
           selectedSessionId === EDUCATION_TERM_HEADER_ID.INFORMATION
         }

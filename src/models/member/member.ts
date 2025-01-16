@@ -51,7 +51,7 @@ export type Member = {
   officerStartDate: string;
   officerStartChurch: string;
   educationHistory: EducationHistory[];
-  previousChurchName: string; // 이전 교회
+  previousChurch: string; // 이전 교회
   //
   registeredAt: string;
   updatedAt: string;

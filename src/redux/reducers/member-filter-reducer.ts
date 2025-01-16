@@ -83,14 +83,6 @@ export const INITIAL_TABLE_HEADER_LIST: TABLE_HEADER_ITEM[] = [
     isDate: false,
   },
   {
-    id: MEMBER.PROFILE_IMAGE,
-    isShown: true,
-    isSortable: false,
-    isFilterable: false,
-    isFixed: true,
-    isDate: false,
-  },
-  {
     id: MEMBER.NAME,
     isShown: true,
     isSortable: true,

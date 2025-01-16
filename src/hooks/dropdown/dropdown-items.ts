@@ -56,7 +56,7 @@ export const useOfficerDropdownItems = () => {
     return { value: officer.id, title: officer.name };
   });
 
-  items.push({ value: NULL, title: t(NULL) });
+  items.push({ value: NONE, title: t(NONE) });
 
   return items;
 };

@@ -21,7 +21,7 @@ const RegisterContainer = styled.div`
 `;
 
 const TextContainer = styled.div`
-  padding: 30px 0;
+  padding: 30px 20px;
 `;
 
 const ContentContainer = styled.div`
@@ -29,6 +29,8 @@ const ContentContainer = styled.div`
   flex-direction: column;
   padding: 0 20px;
   gap: 20px;
+  overflow-y: auto;
+  margin-bottom: 60px;
 `;
 
 const SaveButton = styled.div<{ $isEnabled: boolean }>`
@@ -82,12 +84,12 @@ const TermRegisterView = ({
   const t = useI18n();
   return (
     <RegisterContainer>
+      <TextContainer>
+        <MainText size={SIZE.EXTRA_LARGE}>
+          {t('register.termHeaderPhrase')}
+        </MainText>
+      </TextContainer>
       <ContentContainer>
-        <TextContainer>
-          <MainText size={SIZE.EXTRA_LARGE}>
-            {t('register.termHeaderPhrase')}
-          </MainText>
-        </TextContainer>
         <LabelInput
           label={`${t('education')} ${t('term')}`}
           value={term}

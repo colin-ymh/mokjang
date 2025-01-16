@@ -6,7 +6,7 @@ import { RootState } from '@/redux/store';
 import { GetMembersResponse, MembersApi } from '@/api/churches/members.api';
 import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-item';
 import { BLANK, FAMILY, GENDER } from '@/constants/constant';
-import FamilyModalView from '@/components/atoms/modal/family-modal.view';
+import FamilyModalView from '@/components/atoms/common/modal/family-modal.view';
 import { useFamilyRelationDropdownItems } from '@/hooks/dropdown/dropdown-items';
 
 import { getTrimmedString } from '@/utils/format';

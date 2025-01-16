@@ -6,7 +6,11 @@ import { useTermInformationHeaderBarItems } from '@/hooks/layout/header-bar-item
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { SIZE } from '@/constants/styles/style';
 import { GRAY } from '@/constants/styles/color';
-import { Education, EducationTerm } from '@/models/management/management';
+import {
+  Education,
+  EducationSession,
+  EducationTerm,
+} from '@/models/management/management';
 
 const InformationHeader = styled.div`
   display: flex;
@@ -29,6 +33,7 @@ export type TermInformationHeaderProps = {
   education: Education;
   term: EducationTerm;
   selectedSessionId: string;
+  sessions: EducationSession[];
   onClickHeaderItem: (id: string) => void;
 };
 
@@ -36,11 +41,10 @@ const TermInformationHeader = ({
   education,
   term,
   selectedSessionId,
+  sessions,
   onClickHeaderItem,
 }: TermInformationHeaderProps) => {
-  const headerBarItems = useTermInformationHeaderBarItems(
-    parseInt(term.numberOfSessions)
-  );
+  const headerBarItems = useTermInformationHeaderBarItems(sessions);
 
   return (
     <InformationHeader>
@@ -53,7 +57,6 @@ const TermInformationHeader = ({
         </MainText>
       </Information>
 
-      {/* 개인정보, 가족 등의 탭 바*/}
       <HeaderBarView
         value={selectedSessionId}
         items={headerBarItems}

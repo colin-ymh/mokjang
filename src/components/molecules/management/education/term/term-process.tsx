@@ -9,7 +9,7 @@ import {
   EducationTerm,
 } from '@/models/management/management';
 
-import { useI18n } from '../../../../../locales/client';
+import { useI18n } from '../../../../../../locales/client';
 
 const ProcessContainer = styled.div`
   display: flex;
@@ -84,20 +84,7 @@ const TermProcess = ({ isInformation, term, session }: TermProcessProps) => {
             <MainText>{term.numberOfSessions}</MainText>
           </ContentContainer>
         </InformationItem>
-
-        {/* 교육 기간 */}
-        <InformationItem>
-          <TitleContainer>
-            <MainText color={GRAY.DEFAULT}>{t('period')}</MainText>
-          </TitleContainer>
-          <ContentContainer>
-            <MainText>{`${getLocaleDateFromDashDate(
-              term.startDate
-            )} - ${getLocaleDateFromDashDate(term.endDate)}`}</MainText>
-          </ContentContainer>
-        </InformationItem>
       </RowContainer>
-
       <RowContainer>
         {/* 진행자 */}
         <InformationItem>
@@ -108,14 +95,15 @@ const TermProcess = ({ isInformation, term, session }: TermProcessProps) => {
             <MainText>{term?.instructor?.name}</MainText>
           </ContentContainer>
         </InformationItem>
-
-        {/* 인원 수 */}
+        {/* 교육 기간 */}
         <InformationItem>
           <TitleContainer>
-            <MainText color={GRAY.DEFAULT}>{t('people')}</MainText>
+            <MainText color={GRAY.DEFAULT}>{t('period')}</MainText>
           </TitleContainer>
           <ContentContainer>
-            <MainText>{term.enrollmentCount}</MainText>
+            <MainText>{`${getLocaleDateFromDashDate(
+              term.startDate
+            )} - ${getLocaleDateFromDashDate(term.endDate)}`}</MainText>
           </ContentContainer>
         </InformationItem>
       </RowContainer>

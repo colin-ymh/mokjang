@@ -8,8 +8,8 @@ import BorderInput from '@/components/atoms/common/input/border-input';
 import AddMemberItem from '@/components/atoms/management/group/add-member-item';
 import Button from '@/components/atoms/common/button/button';
 
-import Cancel from '../../../../public/svg/cancel.svg';
-import { useI18n } from '../../../../locales/client';
+import Cancel from '../../../../../public/svg/cancel.svg';
+import { useI18n } from '../../../../../locales/client';
 
 const ModalContainer = styled.div<{ $isShown: boolean }>`
   display: ${({ $isShown }) => ($isShown ? 'flex' : 'none')};
@@ -57,7 +57,7 @@ const MemberListContainer = styled.div`
   display: flex;
   flex-direction: column;
   padding: 0 20px;
-  height: 330px;
+  height: 280px;
   overflow-y: scroll;
 `;
 
@@ -78,7 +78,7 @@ const SelectedMemberList = styled.div`
   flex-direction: column;
   padding: 0 20px;
   overflow-y: scroll;
-  height: 320px;
+  height: 350px;
 `;
 
 type AddEnrollmentModalViewProps = {
@@ -121,6 +121,24 @@ const AddEnrollmentModalView = ({
       </HeaderContainer>
       {/* 내용 */}
       <ContentContainer>
+        <SelectedMemberContainer $isShown={selectedMembers.length > 0}>
+          <SelectedMemberList>
+            {selectedMembers.map((member) => {
+              return (
+                <AddMemberItem
+                  key={member.id}
+                  member={member}
+                  isEnable={enrollments.every(
+                    (enrollment) => enrollment.memberId !== member.id
+                  )}
+                  isSelected={true}
+                  selectedMembers={selectedMembers}
+                  onClick={onClickMember}
+                />
+              );
+            })}
+          </SelectedMemberList>
+        </SelectedMemberContainer>
         <AddContainer>
           {/* 검색창 */}
           <SearchContainer>
@@ -134,36 +152,29 @@ const AddEnrollmentModalView = ({
           {/* 교인 목록 */}
           <MemberListContainer>
             {searchedMembers.map((member) => {
+              const isSelected = selectedMembers.some(
+                (m) => m.id === member.id
+              );
+
               return (
-                <AddMemberItem
-                  key={member.id}
-                  member={member}
-                  isEnable={enrollments.every(
-                    (enrollment) => enrollment.memberId !== member.id
+                <>
+                  {!isSelected && (
+                    <AddMemberItem
+                      key={member.id}
+                      member={member}
+                      isEnable={enrollments.every(
+                        (enrollment) => enrollment.memberId !== member.id
+                      )}
+                      isSelected={isSelected}
+                      selectedMembers={selectedMembers}
+                      onClick={onClickMember}
+                    />
                   )}
-                  selectedMembers={selectedMembers}
-                  onClick={onClickMember}
-                />
+                </>
               );
             })}
           </MemberListContainer>
-        </AddContainer>
-        <SelectedMemberContainer $isShown={selectedMembers.length > 0}>
-          <SelectedMemberList>
-            {selectedMembers.map((member) => {
-              return (
-                <AddMemberItem
-                  key={member.id}
-                  member={member}
-                  isEnable={enrollments.every(
-                    (enrollment) => enrollment.memberId !== member.id
-                  )}
-                  selectedMembers={selectedMembers}
-                  onClick={onClickMember}
-                />
-              );
-            })}
-          </SelectedMemberList>
+
           {/* 저장 버튼 */}
           <ButtonContainer>
             <Button
@@ -175,7 +186,7 @@ const AddEnrollmentModalView = ({
               }
             />
           </ButtonContainer>
-        </SelectedMemberContainer>
+        </AddContainer>
       </ContentContainer>
     </ModalContainer>
   );

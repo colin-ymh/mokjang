@@ -8,15 +8,13 @@ import React, {
   useState,
 } from 'react';
 import TransparentBackground from '@/components/atoms/common/etc/transparent-background';
-import DropdownView from '@/components/atoms/common/dropdown/dropdown.view';
-import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-item';
 import { InputProps } from '@/components/atoms/common/input/main-input';
+import { MemberDropdownType } from '@/components/atoms/common/dropdown/member-dropdown-item';
+import MemberDropdownView from '@/components/atoms/common/dropdown/member-dropdown.view';
 
-export type DropdownProps<
-  ItemType extends DropdownValueType = DropdownValueType,
-> = InputProps & {
+export type DropdownProps = InputProps & {
   ref?: RefObject<HTMLDivElement>;
-  items: ItemType[]; // dropdown 선택 가능 요소들
+  items: MemberDropdownType[]; // dropdown 선택 가능 요소들
   value: any; // dropdown 에서 선택된 값
   onChangeItem?: (value: any) => void;
   //
@@ -37,7 +35,7 @@ export type DropdownProps<
   backgroundColor?: string;
 };
 
-const Dropdown = forwardRef<HTMLInputElement, DropdownProps>(
+const MemberDropdown = forwardRef<HTMLInputElement, DropdownProps>(
   (
     {
       items,
@@ -191,10 +189,10 @@ const Dropdown = forwardRef<HTMLInputElement, DropdownProps>(
           blur={backgroundBlur && !isEditable}
         />
         {/* 드롭다운 렌더링 */}
-        <DropdownView {...props} />
+        <MemberDropdownView {...props} />
       </>
     );
   }
 );
 
-export default Dropdown;
+export default MemberDropdown;

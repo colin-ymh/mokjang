@@ -149,12 +149,14 @@ const ManagementGroupItem = ({
 
   // 드래그 이후 드롭
   const onDropGroup = (groupId: string, parentGroupId: string | null) => {
-    groupsApi
-      .editGroup({ churchId, groupId }, { parentGroupId })
-      .then(() => fetchGroups())
-      .catch((error) => {
-        console.log(error);
-      });
+    if (groupId !== parentGroupId) {
+      groupsApi
+        .editGroup({ churchId, groupId }, { parentGroupId })
+        .then(() => fetchGroups())
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   };
 
   // 수정 중 focus 가 풀리면 수정 취소

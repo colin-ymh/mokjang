@@ -80,7 +80,7 @@ export type EditMemberBody = {
   detailMarriage?: string;
   baptism?: BAPTISM;
   guidedById?: string;
-  previousChurchName?: string;
+  previousChurch?: string;
   vehicleNumber?: string[];
 };
 

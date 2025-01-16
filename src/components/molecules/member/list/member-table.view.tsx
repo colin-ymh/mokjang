@@ -26,11 +26,9 @@ import { useI18n } from '../../../../../locales/client';
 const getColumnWidth = (id: string) => {
   switch (id) {
     case MEMBER.GROUP:
-      return 70;
-    case MEMBER.PROFILE_IMAGE:
       return 40;
     case MEMBER.NAME:
-      return 100;
+      return 40;
     case MEMBER.GENDER:
       return 40;
     case MEMBER.OFFICER:
@@ -119,16 +117,26 @@ const TableData = styled.td<{ id: string; $index: number }>`
 `;
 
 const ContentWrapper = styled.div`
+  display: flex;
+  align-items: center;
   max-width: 100%; /* 부모인 td의 너비에 맞춤 */
   overflow: hidden; /* 넘치는 내용 숨김 */
   text-overflow: ellipsis; /* 넘치는 텍스트 ... 처리 */
   white-space: nowrap; /* 줄바꿈 방지 */
 `;
 
+const ProfileContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+`;
+
 const ProfileImage = styled(Image)`
-  width: 40px;
-  height: 40px;
-  border-radius: 5px;
+  width: 35px;
+  height: 35px;
+  border-radius: 20%;
+  overflow: hidden;
 `;
 
 type MemberTableProps = {
@@ -156,15 +164,17 @@ const MemberTableView = ({
     switch (id) {
       case MEMBER.GROUP:
         return <MainText>{getCurrentGroup(member.group)?.groupName}</MainText>;
-      case MEMBER.PROFILE_IMAGE:
-        return (
-          <ProfileImage
-            src={member.profileImage || DefaultImage}
-            alt={MEMBER.PROFILE_IMAGE}
-          />
-        );
+
       case MEMBER.NAME:
-        return <MainText>{member.name}</MainText>;
+        return (
+          <ProfileContainer>
+            <ProfileImage
+              src={member.profileImage || DefaultImage}
+              alt={MEMBER.PROFILE_IMAGE}
+            />
+            <MainText>{member.name}</MainText>
+          </ProfileContainer>
+        );
       case MEMBER.MOBILE_PHONE:
         return (
           <MainText>{getFormattedMobilePhone(member?.mobilePhone)}</MainText>

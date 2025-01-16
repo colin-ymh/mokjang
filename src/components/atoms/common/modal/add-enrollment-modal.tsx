@@ -11,7 +11,7 @@ import {
 } from '@/models/management/management';
 import { getFormattedName } from '@/utils/format';
 import { EducationEnrollmentsApi } from '@/api/management/education/education-enrollments.api';
-import AddEnrollmentModalView from '@/components/atoms/modal/add-enrollment-modal.view';
+import AddEnrollmentModalView from '@/components/atoms/common/modal/add-enrollment-modal.view';
 
 type AddEnrollmentModalProps = {
   term: EducationTerm;

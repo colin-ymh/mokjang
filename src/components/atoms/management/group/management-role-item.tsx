@@ -115,14 +115,15 @@ const ManagementRoleItem = ({
       setIsEdit(false);
     } else if (getIsWellFormedName(editName)) {
       const newRoles = roles.map((role) => {
-        return role.id !== editName
+        return role.id !== selectedRoleId
           ? role
           : {
               ...role,
-              role: newRoleName,
+              role: editName,
             };
       });
       setRoles(newRoles);
+      setIsEdit(false);
     }
   };
 

@@ -12,6 +12,7 @@ const BorderInputContainer = styled.input<{
   height?: number;
   width?: number;
   $disabled?: boolean;
+  $backgroundColor?: string;
 }>`
   width: ${({ width }) => (width ? `${width}px` : '100%')};
   box-sizing: border-box;
@@ -23,7 +24,8 @@ const BorderInputContainer = styled.input<{
   transition: all 0.3s ease;
   height: ${({ height }) => (height ? `${height}px` : 'auto')};
   pointer-events: ${({ $isEditable }) => ($isEditable ? 'auto' : 'none')};
-  background-color: ${({ $disabled }) => ($disabled ? GRAY.LIGHT : WHITE)};
+  background-color: ${({ $disabled, $backgroundColor }) =>
+    $backgroundColor ? $backgroundColor : $disabled ? GRAY.LIGHT : WHITE};
 
   &:focus {
     outline: none;
@@ -35,6 +37,7 @@ type BorderInputProps = InputProps & {
   borderColor?: string;
   height?: number;
   width?: number;
+  backgroundColor?: string;
 };
 
 // forwardRef 를 사용하여 ref 를 전달받을 수 있도록
@@ -48,6 +51,7 @@ const BorderInput = forwardRef<HTMLInputElement, BorderInputProps>(
       height,
       width,
       disabled,
+      backgroundColor = WHITE,
       ...props
     },
     ref
@@ -60,6 +64,7 @@ const BorderInput = forwardRef<HTMLInputElement, BorderInputProps>(
         readOnly={readOnly}
         $isEditable={!readOnly}
         $borderColor={borderColor}
+        $backgroundColor={backgroundColor}
         height={height}
         width={width}
         $disabled={disabled}

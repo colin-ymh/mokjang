@@ -34,7 +34,7 @@ export enum EDUCATION_ENROLLMENT {
   MEMBER_NAME = 'memberName',
   AGE = MEMBER.AGE,
   GROUP = MEMBER.GROUP,
-  STATUS = 'status',
+  ATTENDANCE = 'attendance',
   NOTE = 'note',
   MOBILE_PHONE = MEMBER.MOBILE_PHONE,
 }

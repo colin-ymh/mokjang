@@ -2,10 +2,10 @@ import styled from 'styled-components';
 
 import TermInformationHeader, {
   TermInformationHeaderProps,
-} from '@/components/atoms/management/education/term-information-header';
+} from '@/components/molecules/management/education/term/term-information-header';
 import TermInformationContent, {
   TermInformationContentProps,
-} from '@/components/atoms/management/education/term-information-content';
+} from '@/components/molecules/management/education/term/term-information-content';
 
 const InformationContainer = styled.div`
   display: flex;

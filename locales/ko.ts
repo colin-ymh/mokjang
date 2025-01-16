@@ -16,6 +16,9 @@ export default {
   session: '회차',
 
   term: '기수',
+  present: '출석',
+  absent: '결석',
+  attendance: '출석부',
 
   inProgress: '진행중',
   completed: '수료',
@@ -75,7 +78,7 @@ export default {
   officer: '직분',
   officerStartDate: '임직일',
   officerStartChurch: '임직 교회',
-  previousChurchName: '이전 교회 이름',
+  previousChurch: '이전 교회 이름',
 
   group: '소그룹',
   ministry: '사역',
@@ -154,7 +157,7 @@ export default {
   'tableHeader.memberName': '교인명',
   'tableHeader.group': '소그룹',
   'tableHeader.age': '나이',
-  'tableHeader.status': '상태',
+  'tableHeader.attendance': '출석',
   'tableHeader.note': '비고',
   'tableHeader.mobilePhone': '휴대전화',
   /*-------------------table header-------------------*/
@@ -211,7 +214,7 @@ export default {
   'placeholder.officerStartDate': '임직일을 입력해주세요. (yyyy-mm-dd) ',
   'placeholder.officerStartChurch': '임직 교회를 입력해주세요.',
   'placeholder.guide': '인도자를 입력해주세요.',
-  'placeholder.previousChurchName': '이전 교회를 입력해주세요.',
+  'placeholder.previousChurch': '이전 교회를 입력해주세요.',
   'placeholder.vehicleNumber': '4자리 입력',
   'placeholder.marriage': '결혼 상태를 입력해주세요',
   'placeholder.detailMarriage': '결혼 상세 상태를 입력해주세요',

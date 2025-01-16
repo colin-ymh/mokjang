@@ -1,9 +1,9 @@
 import { ChangeEvent, useEffect, useState } from 'react';
 
-import { BLANK, NULL } from '@/constants/constant';
-import { useGroupDropdownItems } from '@/hooks/dropdown/dropdown-items';
-import GroupModalView from '@/components/atoms/modal/group-modal.view';
+import { BLANK } from '@/constants/constant';
+import GroupModalView from '@/components/atoms/common/modal/group-modal.view';
 import { GroupHistory } from '@/models/member/history';
+import { DEFAULT_GROUP, Group } from '@/models/management/management';
 import { getFormattedDate } from '@/utils/format';
 import { getIsWellFormedDate } from '@/utils/check';
 
@@ -22,14 +22,8 @@ const GroupModal = ({
 }: GroupModalProps) => {
   const isEdit = prevGroup.id !== BLANK;
 
-  const groupItems = useGroupDropdownItems().filter(
-    (item) => item.value !== NULL
-  );
-
-  // 선택된 그룹 id
-  const [groupId, setGroupId] = useState<string>(
-    prevGroup.groupId || (groupItems[0].value as string)
-  );
+  // 선택된 그룹
+  const [selectedGroup, setSelectedGroup] = useState<Group>(DEFAULT_GROUP);
 
   // 시작 날짜
   const [startDate, setStartDate] = useState<string>(
@@ -44,6 +38,13 @@ const GroupModal = ({
   // 저장 가능 여부
   const [isButtonEnabled, setIsButtonEnabled] = useState<boolean>(false);
 
+  // 최하위 뎁스의 소그룹을 선택 -> 적용
+  const onClickChild = (group: Group) => {
+    if (group) {
+      setSelectedGroup(group);
+    }
+  };
+
   // 시작 날짜 변경
   const onChangeStartDate = (event: ChangeEvent<HTMLInputElement>) => {
     const newStartDate = getFormattedDate(event.target.value);
@@ -54,11 +55,6 @@ const GroupModal = ({
   const onChangeEndDate = (event: ChangeEvent<HTMLInputElement>) => {
     const newEndDate = getFormattedDate(event.target.value);
     setEndDate(newEndDate);
-  };
-
-  // 그룹 드롭다운 변경
-  const onChangeGroup = (id: string) => {
-    setGroupId(id);
   };
 
   // 저장 가능 여부 확인
@@ -73,7 +69,7 @@ const GroupModal = ({
         setIsButtonEnabled(false);
       }
     } else {
-      if (getIsWellFormedDate(startDate)) {
+      if (selectedGroup.id && getIsWellFormedDate(startDate)) {
         setIsButtonEnabled(true);
       } else {
         setIsButtonEnabled(false);
@@ -83,17 +79,17 @@ const GroupModal = ({
 
   const props = {
     isEdit,
-    groupId,
-    groupItems,
-    onClickClose,
+    prevGroup,
+    selectedGroup,
+    isButtonEnabled,
     startDate,
     endDate,
-    isButtonEnabled,
-    onChangeGroup,
     onChangeStartDate,
     onChangeEndDate,
+    onClickClose,
     onClickSaveNewGroup,
     onClickSaveEditGroup,
+    onClickChild,
   };
 
   return (

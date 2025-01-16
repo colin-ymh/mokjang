@@ -1,7 +1,11 @@
 import React, { Dispatch, SetStateAction, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
-import { setMember, setStage } from '@/redux/reducers/member-register-reducer';
+import {
+  DEFAULT_MEMBER,
+  setMember,
+  setStage,
+} from '@/redux/reducers/member-register-reducer';
 
 import { MembersApi } from '@/api/churches/members.api';
 import { MemberManagementsApi } from '@/api/churches/member-managements.api';
@@ -47,7 +51,7 @@ const RegisterButtonList = ({ setIsShown }: RegisterButtonListProps) => {
             // 교인 Id 할당
             const memberId = response.data.id;
             dispatch(setMember({ ...member, id: memberId }));
-
+            dispatch(setMember(DEFAULT_MEMBER));
             // 성공 팝업
             setIsToastShow(true);
           }
@@ -74,6 +78,7 @@ const RegisterButtonList = ({ setIsShown }: RegisterButtonListProps) => {
 
             // 성공 팝업
             setIsToastShow(true);
+            dispatch(setMember(DEFAULT_MEMBER));
             // 다음 단계로 이동
             dispatch(setStage(MEMBER_REGISTER_STAGE.PERSONAL));
           }
@@ -87,6 +92,7 @@ const RegisterButtonList = ({ setIsShown }: RegisterButtonListProps) => {
               getEditMemberBody(member)
             )
             .then(() => {
+              dispatch(setMember(DEFAULT_MEMBER));
               if (setIsShown) setIsShown(false);
             });
         }
@@ -102,6 +108,7 @@ const RegisterButtonList = ({ setIsShown }: RegisterButtonListProps) => {
             getEditMemberBody(member)
           )
           .then(() => {
+            dispatch(setMember(DEFAULT_MEMBER));
             if (setIsShown) setIsShown(false);
           });
 

@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 import GroupMemberTable from '@/components/molecules/management/group/group-member-table';
 import { MainText } from '@/components/atoms/common/text/main-text';
-import AddGroupMemberModal from '@/components/atoms/modal/add-group-member-modal';
+import AddGroupMemberModal from '@/components/atoms/common/modal/add-group-member-modal';
 import { GRAY } from '@/constants/styles/color';
 import { Group } from '@/models/management/management';
 import { Member } from '@/models/member/member';

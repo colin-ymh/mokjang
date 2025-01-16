@@ -38,7 +38,7 @@ const InformationList = styled.div`
 const ProfileImage = styled(Image)`
   width: 30px;
   height: 30px;
-  border-radius: 5px;
+  border-radius: 20%;
   margin-left: 5px;
 `;
 
@@ -67,7 +67,6 @@ const FamilyMemberItem = ({
 }: FamilyMemberItemProps) => {
   const t = useI18n();
 
-  console.log(member);
   return (
     <ItemContainer onClick={() => onClickFamilyMember(member.familyMemberId)}>
       <InformationList>
@@ -80,7 +79,7 @@ const FamilyMemberItem = ({
         {/* 이름 */}
         <MemberInformationContainer>
           <MainText color={GRAY.DEFAULT}>{t(MEMBER.NAME)}</MainText>
-          <MainText>{member.familyMember.name}</MainText>
+          <MainText>{member.familyMember?.name}</MainText>
         </MemberInformationContainer>
         {/* 나이 */}
         <MemberInformationContainer>

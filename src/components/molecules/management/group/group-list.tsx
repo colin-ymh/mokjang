@@ -40,6 +40,7 @@ const GroupList = ({ selectedGroupId, setSelectedGroup }: GroupListProps) => {
           membersCount: 0,
           churchId,
           childGroupIds: [],
+          roles: [],
         };
 
         setGroups([allGroup]);

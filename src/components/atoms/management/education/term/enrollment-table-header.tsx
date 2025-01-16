@@ -6,7 +6,7 @@ import { SIZE } from '@/constants/styles/style';
 import { getTranslatedEnrollmentColumn } from '@/utils/translate';
 import { EDUCATION_ENROLLMENT } from '@/constants/management/education-term-column';
 
-import { useScopedI18n } from '../../../../../locales/client';
+import { useScopedI18n } from '../../../../../../locales/client';
 
 const HeaderContainer = styled.div`
   display: flex;

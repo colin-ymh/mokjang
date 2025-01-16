@@ -52,11 +52,9 @@ const ReligiousRegister = () => {
   };
 
   // 이전 교회 변경 시 이벤트
-  const onChangePreviousChurchName = (event: ChangeEvent<HTMLInputElement>) => {
-    const newPreviousChurchName = event.target.value;
-    dispatch(
-      setMember({ ...member, previousChurchName: newPreviousChurchName })
-    );
+  const onChangePreviousChurch = (event: ChangeEvent<HTMLInputElement>) => {
+    const newPreviousChurch = event.target.value;
+    dispatch(setMember({ ...member, previousChurch: newPreviousChurch }));
   };
 
   const props = {
@@ -64,7 +62,7 @@ const ReligiousRegister = () => {
     onChangeOfficerStartDate,
     onChangeOfficerStartChurch,
     onChangeBaptism,
-    onChangePreviousChurchName,
+    onChangePreviousChurch,
   };
 
   return (

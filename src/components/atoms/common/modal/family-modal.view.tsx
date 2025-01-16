@@ -8,8 +8,8 @@ import { BLANK, FAMILY } from '@/constants/constant';
 import { FamilyMember } from '@/models/member/member';
 import Button from '@/components/atoms/common/button/button';
 
-import { useI18n, useScopedI18n } from '../../../../locales/client';
-import Cancel from '../../../../public/svg/cancel.svg';
+import { useI18n, useScopedI18n } from '../../../../../locales/client';
+import Cancel from '../../../../../public/svg/cancel.svg';
 
 const FamilyModalViewContainer = styled.div`
   display: flex;

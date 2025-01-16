@@ -13,7 +13,7 @@ import {
   useOfficerDropdownItems,
 } from '@/hooks/dropdown/dropdown-items';
 import LabelDropdown from '@/components/atoms/common/dropdown/label-dropdown';
-import { BAPTISM, NULL } from '@/constants/constant';
+import { BAPTISM, NONE, NULL } from '@/constants/constant';
 import { BLACK, DESTRUCTIVE } from '@/constants/styles/color';
 import { getTrimmedString } from '@/utils/format';
 import { onClickEnter } from '@/utils/input';
@@ -35,7 +35,7 @@ export type ReligiousRegisterViewProps = {
   onChangeOfficerStartDate: (event: ChangeEvent<HTMLInputElement>) => void;
   onChangeOfficerStartChurch: (event: ChangeEvent<HTMLInputElement>) => void;
   onChangeBaptism: (value: BAPTISM) => void;
-  onChangePreviousChurchName: (event: ChangeEvent<HTMLInputElement>) => void;
+  onChangePreviousChurch: (event: ChangeEvent<HTMLInputElement>) => void;
 };
 
 const OfficerWrapper = styled.div`
@@ -59,7 +59,7 @@ const ReligiousRegisterView = ({
   onChangeOfficerStartDate,
   onChangeOfficerStartChurch,
   onChangeBaptism,
-  onChangePreviousChurchName,
+  onChangePreviousChurch,
 }: ReligiousRegisterViewProps) => {
   const t = useI18n();
   const t_placeholder = useScopedI18n('placeholder');
@@ -77,7 +77,7 @@ const ReligiousRegisterView = ({
   const officerAnimationRef = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
     if (officerAnimationRef.current) {
-      if (member.officerId !== NULL) {
+      if (member.officerId !== NONE) {
         // 직분이 있는 경우
         gsap.to(officerAnimationRef.current, {
           opacity: 1,
@@ -110,6 +110,7 @@ const ReligiousRegisterView = ({
         items={useBaptismDropdownItems()}
         onChangeItem={onChangeBaptism}
         borderColor={member.baptism !== BAPTISM.NONE ? BLACK : undefined}
+        backgroundBlur={false}
       />
       {/* 직분 */}
       <LabelDropdown
@@ -118,6 +119,7 @@ const ReligiousRegisterView = ({
         items={useOfficerDropdownItems()}
         onChangeItem={onChangeOfficer}
         borderColor={member.officerId !== NULL ? BLACK : undefined}
+        backgroundBlur={false}
       />
       <OfficerWrapper ref={officerAnimationRef}>
         {/* 임직일 */}
@@ -155,13 +157,13 @@ const ReligiousRegisterView = ({
       <LabelInput
         ref={previousChurchInputRef}
         enterKeyHint={'done'}
-        label={t('previousChurchName')}
-        value={member.previousChurchName}
-        onChange={onChangePreviousChurchName}
-        placeholder={t_placeholder('previousChurchName')}
+        label={t('previousChurch')}
+        value={member.previousChurch}
+        onChange={onChangePreviousChurch}
+        placeholder={t_placeholder('previousChurch')}
         onKeyDown={onClickEnter}
         borderColor={
-          getTrimmedString(member.previousChurchName) ? BLACK : undefined
+          getTrimmedString(member.previousChurch) ? BLACK : undefined
         }
       />
       <Invisible />

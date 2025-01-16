@@ -1,43 +1,65 @@
-import styled from 'styled-components';
 import { useEffect, useState } from 'react';
-import { GRAY, MAIN, WHITE } from '@/constants/styles/color';
+import styled from 'styled-components';
 
-const CheckButtonContainer = styled.div<{ $isChecked: boolean }>`
+import { GRAY, MAIN } from '@/constants/styles/color';
+
+import Check from '../../../../../public/svg/check.svg';
+
+const CheckButtonContainer = styled.div<{ width: number; height: number }>`
   display: flex;
   border: 1px solid ${GRAY.DEFAULT};
   border-radius: 5px;
-  background-color: ${({ $isChecked }) => ($isChecked ? MAIN.DEFAULT : WHITE)};
+  width: ${({ width }) => width}px;
+  height: ${({ height }) => height}px;
+`;
+
+const CheckIcon = styled(Check)<{ $isChecked: boolean }>`
+  display: block;
+  opacity: ${({ $isChecked }) => ($isChecked ? 1 : 0)};
+  //transition: opacity 0.2s;
   width: 20px;
   height: 20px;
-  transition: background-color 0.2s;
+  stroke: ${MAIN.DEFAULT};
 `;
 
 type CheckButtonProps = {
-  value: boolean;
-  onChange?: (value: boolean) => void;
+  value: boolean; // 초기 값
+  onChange?: (value: boolean) => void; // 변경 시 호출될 콜백
+  disabled?: boolean;
+  width?: number;
+  height?: number;
 };
 
-const CheckButton = ({ value, onChange }: CheckButtonProps) => {
+const CheckButton = ({
+  value,
+  onChange,
+  disabled = false,
+  width = 20,
+  height = 20,
+}: CheckButtonProps) => {
+  // 로컬 상태 관리
   const [isChecked, setIsChecked] = useState<boolean>(value);
 
+  // 부모로부터 받은 `value`가 변경되면 로컬 상태를 업데이트
   useEffect(() => {
     setIsChecked(value);
   }, [value]);
 
+  // 버튼 클릭 핸들러
   const onClick = () => {
-    setIsChecked(!isChecked);
+    if (!disabled) {
+      const newValue = !isChecked;
+      setIsChecked(newValue); // 로컬 상태 업데이트
+      if (onChange) {
+        onChange(newValue); // 변경 사항을 부모로 전달
+      }
+    }
   };
 
-  useEffect(() => {
-    if (onChange) {
-      onChange(isChecked);
-    }
-  }, [isChecked]);
-
   return (
-    <>
-      <CheckButtonContainer $isChecked={isChecked} onClick={onClick} />
-    </>
+    <CheckButtonContainer onClick={onClick} width={width} height={height}>
+      <CheckIcon $isChecked={isChecked} />
+    </CheckButtonContainer>
   );
 };
 

@@ -88,11 +88,8 @@ export const getEditMemberBody = (member: Member) => {
     newMember.baptism = member.baptism;
   }
 
-  if (
-    member.previousChurchName &&
-    getTrimmedString(member.previousChurchName)
-  ) {
-    newMember.previousChurchName = member.previousChurchName;
+  if (member.previousChurch && getTrimmedString(member.previousChurch)) {
+    newMember.previousChurch = member.previousChurch;
   }
 
   if (member.vehicleNumber) {

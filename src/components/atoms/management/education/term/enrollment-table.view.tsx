@@ -1,20 +1,27 @@
 import React, { MutableRefObject } from 'react';
 import styled from 'styled-components';
+import Image from 'next/image';
 
 import { GRAY, WHITE } from '@/constants/styles/color';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import useWindowSize from '@/hooks/window/window';
-import { EducationEnrollment } from '@/models/management/management';
-
-import EnrollmentTableHeader from '@/components/atoms/management/education/enrollment-table-header';
+import {
+  DEFAULT_SESSION_ATTENDANCE,
+  EducationEnrollment,
+  SessionAttendance,
+} from '@/models/management/management';
+import EnrollmentTableHeader from '@/components/atoms/management/education/term/enrollment-table-header';
 import {
   EDUCATION_ENROLLMENT,
   ENROLLMENT_TABLE_HEADER_ITEM,
 } from '@/constants/management/education-term-column';
 import { getAge, getDateFromString } from '@/utils/date';
 import { getFormattedMobilePhone } from '@/utils/format';
+import { EducationAttendanceApi } from '@/api/management/education/education-attendance.api';
+import CheckButton from '@/components/atoms/common/button/check-button';
+import { MEMBER } from '@/constants/member/member-column';
 
-import { useI18n } from '../../../../../locales/client';
+import DefaultImage from '../../../../../../public/png/default-member-image.png';
 
 const TableContainer = styled.div`
   display: flex;
@@ -45,7 +52,7 @@ const TableHeader = styled.th<{ id: EDUCATION_ENROLLMENT }>`
 
 const Scroll = styled.div<{ height: number }>`
   width: auto;
-  height: ${({ height }) => `${height - 200}px`};
+  height: ${({ height }) => `${height - 500}px`};
   overflow-y: auto;
   position: relative;
   //text-overflow: ellipsis; /* 넘치는 텍스트 ... 처리 */
@@ -55,7 +62,7 @@ const Scroll = styled.div<{ height: number }>`
 
 const EnrollmentTableRow = styled.tr`
   &:hover td {
-    background-color: ${GRAY.LIGHT};
+    //background-color: ${GRAY.LIGHT};
   }
 `;
 
@@ -76,15 +83,29 @@ const ContentWrapper = styled.div`
   white-space: nowrap; /* 줄바꿈 방지 */
 `;
 
+const ProfileContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+`;
+
+const ProfileImage = styled(Image)`
+  width: 35px;
+  height: 35px;
+  border-radius: 20%;
+  overflow: hidden;
+`;
+
 const getColumnWidth = (id: EDUCATION_ENROLLMENT) => {
   switch (id) {
-    case EDUCATION_ENROLLMENT.MEMBER_NAME:
+    case EDUCATION_ENROLLMENT.ATTENDANCE:
       return 5;
+    case EDUCATION_ENROLLMENT.MEMBER_NAME:
+      return 10;
     case EDUCATION_ENROLLMENT.AGE:
       return 5;
     case EDUCATION_ENROLLMENT.GROUP:
-      return 10;
-    case EDUCATION_ENROLLMENT.STATUS:
       return 10;
     case EDUCATION_ENROLLMENT.NOTE:
       return 20;
@@ -121,7 +142,7 @@ export const TERM_TABLE_HEADER: ENROLLMENT_TABLE_HEADER_ITEM[] = [
     isDate: false,
   },
   {
-    id: EDUCATION_ENROLLMENT.STATUS,
+    id: EDUCATION_ENROLLMENT.MOBILE_PHONE,
     isShown: true,
     isSortable: false,
     isFilterable: false,
@@ -129,7 +150,7 @@ export const TERM_TABLE_HEADER: ENROLLMENT_TABLE_HEADER_ITEM[] = [
     isDate: false,
   },
   {
-    id: EDUCATION_ENROLLMENT.MOBILE_PHONE,
+    id: EDUCATION_ENROLLMENT.ATTENDANCE,
     isShown: true,
     isSortable: false,
     isFilterable: false,
@@ -148,38 +169,68 @@ export const TERM_TABLE_HEADER: ENROLLMENT_TABLE_HEADER_ITEM[] = [
 
 type EnrollmentTableProps = {
   enrollments: EducationEnrollment[];
+  attendance: SessionAttendance[];
   isInformation: boolean;
   onClickEnrollment: (enrollment: EducationEnrollment) => void;
   onClickHeader: (id: EDUCATION_ENROLLMENT) => void;
   scrollRef: MutableRefObject<HTMLDivElement | null>;
   onScroll: () => void;
+  onChangeAttendance: (
+    termId: string,
+    attendanceId: string,
+    isPresent: boolean
+  ) => void;
 };
 
 const EnrollmentTableView = ({
   enrollments,
+  attendance,
   isInformation,
   onClickEnrollment,
   onClickHeader,
   scrollRef,
   onScroll,
+  onChangeAttendance,
 }: EnrollmentTableProps) => {
-  const t = useI18n();
   const { height } = useWindowSize();
+  const educationAttendanceApi = new EducationAttendanceApi(false);
 
-  // isInformation에 따라 STATUS 열 숨기기
+  // isInformation에 따라 ATTENDANCE 열 숨기기
   const filteredTermTableHeader = isInformation
     ? TERM_TABLE_HEADER.filter(
-        (item) => item.id !== EDUCATION_ENROLLMENT.STATUS
+        (item) => item.id !== EDUCATION_ENROLLMENT.ATTENDANCE
       )
     : TERM_TABLE_HEADER;
 
   const getEnrollmentTableContent = (
     id: EDUCATION_ENROLLMENT,
-    enrollment: EducationEnrollment
+    enrollment: EducationEnrollment,
+    attendanceValue: SessionAttendance = DEFAULT_SESSION_ATTENDANCE
   ) => {
     switch (id) {
+      case EDUCATION_ENROLLMENT.ATTENDANCE:
+        return (
+          <CheckButton
+            value={attendanceValue.isPresent}
+            onChange={(value) => {
+              onChangeAttendance(
+                enrollment.educationTermId,
+                attendanceValue.id,
+                value
+              );
+            }}
+          />
+        );
       case EDUCATION_ENROLLMENT.MEMBER_NAME:
-        return <MainText>{enrollment.memberName}</MainText>;
+        return (
+          <ProfileContainer>
+            <ProfileImage
+              src={enrollment.member.profileImage || DefaultImage}
+              alt={MEMBER.PROFILE_IMAGE}
+            />
+            <MainText>{enrollment.memberName}</MainText>
+          </ProfileContainer>
+        );
       case EDUCATION_ENROLLMENT.AGE:
         return (
           <MainText>
@@ -192,8 +243,6 @@ const EnrollmentTableView = ({
             {/* {getCurrentGroup(enrollment.member.group)?.groupName} */}
           </MainText>
         );
-      case EDUCATION_ENROLLMENT.STATUS:
-        return <MainText>{t(enrollment?.status)}</MainText>;
       case EDUCATION_ENROLLMENT.NOTE:
         return <MainText>{enrollment?.note}</MainText>;
       case EDUCATION_ENROLLMENT.MOBILE_PHONE:
@@ -234,7 +283,11 @@ const EnrollmentTableView = ({
                     <ContentWrapper>
                       {getEnrollmentTableContent(
                         item.id as EDUCATION_ENROLLMENT,
-                        enrollment
+                        enrollment,
+                        // 해당 등록에 맞는 출석부 불러오기
+                        attendance.find(
+                          (attd) => attd.educationEnrollmentId === enrollment.id
+                        )
                       )}
                     </ContentWrapper>
                   </TableData>
