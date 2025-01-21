@@ -1,23 +1,26 @@
 import { useState } from 'react';
-
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
+import { EducationAttendanceApi } from '@/api/management/education/education-attendance.api';
 import TermInformationView from '@/components/organisms/management/education/term/term-information.view';
 import {
+  DEFAULT_EDUCATION_SESSION,
   Education,
   EducationEnrollment,
   EducationSession,
   EducationTerm,
 } from '@/models/management/management';
 import { EDUCATION_TERM_HEADER_ID } from '@/constants/layout/header';
-import { EducationAttendanceApi } from '@/api/management/education/education-attendance.api';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/redux/store';
+import CustomPopup from '@/components/atoms/common/popup/custom-popup';
+import TermRegister from '@/components/atoms/management/education/term-register';
+import EditSession from '@/components/atoms/management/education/term/edit-session';
 
 type TermInformationProps = {
   education: Education;
   term: EducationTerm;
   enrollments: EducationEnrollment[];
   sessions: EducationSession[];
-  fetchEnrollments: () => void;
+  fetchTerms: () => void;
 };
 
 const TermInformation = ({
@@ -25,7 +28,7 @@ const TermInformation = ({
   term,
   enrollments,
   sessions,
-  fetchEnrollments,
+  fetchTerms,
 }: TermInformationProps) => {
   const educationAttendanceApi = new EducationAttendanceApi(false);
   const churchId = useSelector((state: RootState) => state.church.churchId);
@@ -34,6 +37,35 @@ const TermInformation = ({
   const [selectedSessionId, setSelectedSessionId] = useState<string>(
     EDUCATION_TERM_HEADER_ID.INFORMATION
   );
+
+  // 기수 수정모달 활성화 여부
+  const [isTermModalShown, setIsTermModalShown] = useState<boolean>(false);
+
+  // 회차 수정모달 활성화 여부
+  const [isSessionModalShown, setIsSessionModalShown] =
+    useState<boolean>(false);
+
+  // 기수들 정보
+  const [terms, setTerms] = useState<EducationTerm[]>([]);
+
+  // 기수/세션 추가 모달 열기
+  const onClickItem = (isSession: boolean) => {
+    if (isSession) {
+      setIsSessionModalShown(true);
+    } else {
+      setIsTermModalShown(true);
+    }
+  };
+
+  // 기수 추가 모달 닫기
+  const onClickModalClose = () => {
+    setIsTermModalShown(false);
+  };
+
+  // 세션 모달 닫기
+  const onClickSessionModalClose = () => {
+    setIsSessionModalShown(false);
+  };
 
   // 회차 선택
   const onClickHeaderItem = async (id: string) => {
@@ -90,14 +122,47 @@ const TermInformation = ({
       selectedSessionId,
       enrollments,
       sessions,
-      fetchEnrollments,
+      fetchTerms,
       educationId: education.id,
+      onClickItem,
     },
   };
 
   return (
     <>
       <TermInformationView {...props} />
+      <CustomPopup
+        isShow={isTermModalShown}
+        onClickClose={onClickModalClose}
+        width={30}
+        height={60}
+        isPercentage={true}
+      >
+        <TermRegister
+          education={education}
+          terms={terms}
+          onClickClose={onClickModalClose}
+          fetchTerms={fetchTerms}
+          targetTerm={term}
+        />
+      </CustomPopup>
+      <CustomPopup
+        isShow={isSessionModalShown}
+        onClickClose={onClickSessionModalClose}
+        width={30}
+        height={60}
+        isPercentage={true}
+      >
+        <EditSession
+          targetSession={
+            sessions.find((session) => session.id === selectedSessionId) ||
+            DEFAULT_EDUCATION_SESSION
+          }
+          educationId={education.id}
+          onClickClose={onClickSessionModalClose}
+          fetchTerms={fetchTerms}
+        />
+      </CustomPopup>
     </>
   );
 };

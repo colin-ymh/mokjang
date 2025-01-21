@@ -93,11 +93,13 @@ const Divider = styled.div`
 type InformationListViewProps = {
   prevMember: Member;
   onClickItem: (id: MEMBER) => void;
+  onClickOpenGroupModal: () => void;
 };
 
 const InformationListView = ({
   prevMember,
   onClickItem,
+  onClickOpenGroupModal,
 }: InformationListViewProps) => {
   const t = useI18n();
   const t_header = useScopedI18n('header');
@@ -110,7 +112,7 @@ const InformationListView = ({
       <InformationListContainer>
         <RowContainer>
           {/* 그룹 */}
-          <InformationItem>
+          <InformationItem onClick={onClickOpenGroupModal}>
             <TitleContainer>
               <MainText color={GRAY.DEFAULT}>{t(MEMBER.GROUP)}</MainText>
             </TitleContainer>
@@ -121,7 +123,7 @@ const InformationListView = ({
             </ContentContainer>
           </InformationItem>
           {/* 역할 */}
-          <InformationItem>
+          <InformationItem onClick={onClickOpenGroupModal}>
             <TitleContainer>
               <MainText color={GRAY.DEFAULT}>{t('groupRole')}</MainText>
             </TitleContainer>

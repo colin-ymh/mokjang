@@ -4,11 +4,11 @@ import { SERVER_URL, TEST_SERVER_URL } from '@/constants/state/url';
 class HTTPError extends Error {}
 
 type GetOfficersParams = {
-  churchId: string; // 교회 id
+  churchId: string;
 };
 
 type CreateOfficerParams = {
-  churchId: string; // 교회 id
+  churchId: string;
 };
 
 type CreateOfficerBody = {
@@ -16,7 +16,7 @@ type CreateOfficerBody = {
 };
 
 type EditOfficerParams = {
-  churchId: string; // 교회 id
+  churchId: string;
   officerId: string;
 };
 
@@ -25,7 +25,7 @@ type EditOfficerBody = {
 };
 
 type DeleteOfficerParams = {
-  churchId: string; // 교회 id
+  churchId: string;
   officerId: string;
 };
 

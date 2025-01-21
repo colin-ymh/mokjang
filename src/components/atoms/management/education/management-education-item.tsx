@@ -12,7 +12,7 @@ import { RootState } from '@/redux/store';
 import { DEFAULT_EDUCATION, Education } from '@/models/management/management';
 import { EducationsApi } from '@/api/management/education/educations.api';
 import { getFormattedTitle } from '@/utils/format';
-import { getIsWellFormedName } from '@/utils/check';
+import { getIsWellFormedTitle } from '@/utils/check';
 import ManagementEducationItemView from '@/components/atoms/management/education/management-education-item.view';
 
 type ManagementEducationItemProps = {
@@ -77,7 +77,7 @@ const ManagementEducationItem = ({
   const onClickSaveName = () => {
     if (editName === education.name) {
       setIsEdit(false);
-    } else if (getIsWellFormedName(editName)) {
+    } else if (getIsWellFormedTitle(editName)) {
       educationsApi
         .editEducation(
           { churchId, educationId: education.id as string },
@@ -130,7 +130,7 @@ const ManagementEducationItem = ({
 
       if (e.key === 'Enter') {
         if (nameInputRef.current === document.activeElement) {
-          if (getIsWellFormedName(editName)) {
+          if (getIsWellFormedTitle(editName)) {
             onClickSaveName();
           } else {
             setIsEdit(false);

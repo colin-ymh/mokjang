@@ -1,4 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
 
 import TermTableView from '@/components/atoms/management/education/term-table.view';
 import {
@@ -13,15 +15,14 @@ import CustomPopup from '@/components/atoms/common/popup/custom-popup';
 import TermInformation from '@/components/organisms/management/education/term/term-information';
 import { EducationEnrollmentsApi } from '@/api/management/education/education-enrollments.api';
 import { EducationSessionsApi } from '@/api/management/education/education-sessions.api';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/redux/store';
 
 export type TermTableProps = {
   education: Education;
   terms: EducationTerm[];
+  fetchTerms: () => void;
 };
 
-const TermTable = ({ education, terms }: TermTableProps) => {
+const TermTable = ({ education, terms, fetchTerms }: TermTableProps) => {
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const churchId = useSelector((state: RootState) => state.church.churchId);
   const educationEnrollmentsApi = new EducationEnrollmentsApi(false);
@@ -92,6 +93,17 @@ const TermTable = ({ education, terms }: TermTableProps) => {
       });
   };
 
+  // 교육 기수 전체를 불러오며, 선택한 기수도 리렌더링
+  useEffect(() => {
+    if (terms) {
+      const newSelectedTerm = terms.find((term) => term.id === selectedTerm.id);
+
+      if (newSelectedTerm) {
+        setSelectedTerm(newSelectedTerm);
+      }
+    }
+  }, [terms]);
+
   useEffect(() => {
     if (selectedTerm.id) {
       fetchEnrollments();
@@ -122,7 +134,7 @@ const TermTable = ({ education, terms }: TermTableProps) => {
           term={selectedTerm}
           enrollments={enrollments}
           sessions={sessions}
-          fetchEnrollments={fetchEnrollments}
+          fetchTerms={fetchTerms}
         />
       </CustomPopup>
     </>

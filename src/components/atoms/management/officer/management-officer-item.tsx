@@ -10,9 +10,9 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 
 import { DEFAULT_OFFICER, Officer } from '@/models/management/management';
-import { OfficersApi } from '@/api/management/officers.api';
+import { OfficersApi } from '@/api/management/officer/officers.api';
 import { getFormattedTitle } from '@/utils/format';
-import { getIsWellFormedName } from '@/utils/check';
+import { getIsWellFormedTitle } from '@/utils/check';
 import { BLANK } from '@/constants/constant';
 import ManagementOfficerItemView from '@/components/atoms/management/officer/management-officer-item.view';
 
@@ -52,7 +52,7 @@ const ManagementOfficerItem = ({
 
   // 새로운 그룹 추가하기
   const onClickSaveNewOfficer = () => {
-    if (getIsWellFormedName(newOfficerName)) {
+    if (getIsWellFormedTitle(newOfficerName)) {
       officersApi
         .createOfficer({ churchId }, { name: newOfficerName })
         .then(() => {
@@ -108,7 +108,7 @@ const ManagementOfficerItem = ({
   const onClickSaveName = () => {
     if (editName === officer.name) {
       setIsEdit(false);
-    } else if (getIsWellFormedName(editName)) {
+    } else if (getIsWellFormedTitle(editName)) {
       officersApi
         .editOfficer(
           { churchId, officerId: officer.id as string },
@@ -180,13 +180,13 @@ const ManagementOfficerItem = ({
 
       if (e.key === 'Enter') {
         if (nameInputRef.current === document.activeElement) {
-          if (getIsWellFormedName(editName)) {
+          if (getIsWellFormedTitle(editName)) {
             onClickSaveName();
           } else {
             setIsEdit(false);
           }
         } else if (newOfficerRef.current === document.activeElement) {
-          if (getIsWellFormedName(newOfficerName)) {
+          if (getIsWellFormedTitle(newOfficerName)) {
             onClickSaveNewOfficer();
           } else {
             setIsAddShown(false);

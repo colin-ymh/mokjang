@@ -8,7 +8,7 @@ import React, {
 } from 'react';
 
 import { getFormattedTitle } from '@/utils/format';
-import { getIsWellFormedName } from '@/utils/check';
+import { getIsWellFormedTitle } from '@/utils/check';
 import { BLANK } from '@/constants/constant';
 import { Ministry } from '@/models/management/management';
 import ManagementMinistryItemView from '@/components/atoms/management/ministry/management-ministry-item.view';
@@ -48,7 +48,7 @@ const ManagementMinistryItem = ({
 
   // 새로운 그룹 추가하기
   const onClickSaveNewMinistry = () => {
-    if (getIsWellFormedName(newMinistryName)) {
+    if (getIsWellFormedTitle(newMinistryName)) {
       setMinistries([
         ...ministries,
         {
@@ -84,10 +84,10 @@ const ManagementMinistryItem = ({
 
   // 그룹 삭제
   const onClickMinistryDelete = (ministryId: string) => {
-    const newMinistrys = ministries.filter(
+    const newMinistries = ministries.filter(
       (ministry) => ministry.id !== ministryId
     );
-    setMinistries(newMinistrys);
+    setMinistries(newMinistries);
   };
 
   // 그룹 추가 활성화
@@ -110,8 +110,8 @@ const ManagementMinistryItem = ({
   const onClickSaveName = () => {
     if (editName === ministry.name) {
       setIsEdit(false);
-    } else if (getIsWellFormedName(editName)) {
-      const newMinistrys = ministries.map((ministry) => {
+    } else if (getIsWellFormedTitle(editName)) {
+      const newMinistries = ministries.map((ministry) => {
         return ministry.id !== selectedMinistryId
           ? ministry
           : {
@@ -119,7 +119,7 @@ const ManagementMinistryItem = ({
               ministry: editName,
             };
       });
-      setMinistries(newMinistrys);
+      setMinistries(newMinistries);
       setIsEdit(false);
     }
   };
@@ -182,13 +182,13 @@ const ManagementMinistryItem = ({
 
       if (e.key === 'Enter') {
         if (nameInputRef.current === document.activeElement) {
-          if (getIsWellFormedName(editName)) {
+          if (getIsWellFormedTitle(editName)) {
             onClickSaveName();
           } else {
             setIsEdit(false);
           }
         } else if (newMinistryRef.current === document.activeElement) {
-          if (getIsWellFormedName(newMinistryName)) {
+          if (getIsWellFormedTitle(newMinistryName)) {
             onClickSaveNewMinistry();
           } else {
             setIsAddShown(false);

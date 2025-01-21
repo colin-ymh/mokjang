@@ -9,7 +9,7 @@ import {
 } from '@/models/management/management';
 import { getFormattedTitle } from '@/utils/format';
 import { BLANK } from '@/constants/constant';
-import { getIsWellFormedName } from '@/utils/check';
+import { getIsWellFormedTitle } from '@/utils/check';
 import { MinistriesApi } from '@/api/management/ministry/ministries.api';
 import { MinistryGroupsApi } from '@/api/management/ministry/ministry-groups.api';
 import EditMinistryGroupView from '@/components/molecules/management/ministry/edit-ministry-group.view';
@@ -154,7 +154,7 @@ const EditMinistryMinistryGroup = ({
 
       if (e.key === 'Enter') {
         if (newMinistryRef.current) {
-          if (getIsWellFormedName(newMinistryName)) {
+          if (getIsWellFormedTitle(newMinistryName)) {
             onClickSaveNewMinistry();
           } else {
             newMinistryRef.current.blur();

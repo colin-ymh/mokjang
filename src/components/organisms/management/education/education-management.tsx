@@ -8,7 +8,7 @@ import EducationManagementView from '@/components/organisms/management/education
 import { DEFAULT_EDUCATION, Education } from '@/models/management/management';
 import { BLANK } from '@/constants/constant';
 import { getFormattedTitle } from '@/utils/format';
-import { getIsWellFormedName } from '@/utils/check';
+import { getIsWellFormedTitle } from '@/utils/check';
 import { useEducationManagementHeaderBarItems } from '@/hooks/layout/header-bar-items';
 
 type EducationManagementProps = {};
@@ -59,7 +59,7 @@ const EducationManagement = ({}: EducationManagementProps) => {
 
   // 새로운 교육 저장
   const onClickSaveEducation = () => {
-    if (getIsWellFormedName(newEducationName)) {
+    if (getIsWellFormedTitle(newEducationName)) {
       educationsApi
         .createEducation({ churchId }, { name: newEducationName })
         .then(() => {
@@ -124,7 +124,7 @@ const EducationManagement = ({}: EducationManagementProps) => {
       }
 
       if (e.key === 'Enter') {
-        if (getIsWellFormedName(newEducationName)) {
+        if (getIsWellFormedTitle(newEducationName)) {
           onClickSaveEducation();
         } else {
           setIsAddModalShown(false);

@@ -11,13 +11,13 @@ import { useI18n } from '../../../../../locales/client';
 
 type GroupModalProps = {
   value: string;
-  isEdit: boolean;
+  isHistory: boolean;
   onClickSaveGroup: (group: Group) => void;
 };
 
 const GroupDropdown = ({
   value,
-  isEdit,
+  isHistory,
   onClickSaveGroup,
 }: GroupModalProps) => {
   const t = useI18n();
@@ -141,7 +141,7 @@ const GroupDropdown = ({
     selectedGroup,
     groups,
     parentGroups,
-    isEdit,
+    isHistory,
     isDropdownShown,
     onClickOpenDropdown,
     onClickCloseDropdown,

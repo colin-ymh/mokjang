@@ -7,7 +7,7 @@ import { GRAY, MAIN, WHITE } from '@/constants/styles/color';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import SlideButtonList from '@/components/atoms/common/button/slide-button-list';
 import MainInput from '@/components/atoms/common/input/main-input';
-import { getIsWellFormedName } from '@/utils/check';
+import { getIsWellFormedTitle } from '@/utils/check';
 
 import Check from '../../../../../public/svg/check.svg';
 import Plus from '../../../../../public/svg/plus.svg';
@@ -196,7 +196,7 @@ const ManagementGroupItemView = ({
         <RightContainer>
           {isEdit ? (
             <CheckButton
-              $isEnabled={getIsWellFormedName(editName)}
+              $isEnabled={getIsWellFormedTitle(editName)}
               onMouseDown={onClickSaveName}
             />
           ) : group.id === null ? (

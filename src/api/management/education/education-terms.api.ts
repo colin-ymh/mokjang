@@ -45,7 +45,12 @@ type EditEducationTermsParams = {
 };
 
 type EditEducationTermsBody = {
-  name: string;
+  term?: number;
+  numberOfSessions: number;
+  completionCriteria?: number;
+  startDate: string;
+  endDate: string;
+  instructorId?: number;
 };
 
 type DeleteEducationTermsParams = {

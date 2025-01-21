@@ -7,9 +7,8 @@ import MemberImageInput from '@/components/atoms/register/member-image-input';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { SIZE } from '@/constants/styles/style';
 import { GRAY } from '@/constants/styles/color';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/redux/store';
 import { getCurrentGroup } from '@/utils/history';
+import { Member } from '@/models/member/member';
 
 const InformationHeader = styled.div`
   display: flex;
@@ -40,18 +39,18 @@ const ChurchMemberInfoContainer = styled.div`
 `;
 
 type MemberInformationHeaderProps = {
+  targetMember: Member;
   contentId: string;
   onClickItem: (id: string) => void;
 };
 
 const MemberInformationHeader = ({
+  targetMember,
   contentId,
   onClickItem,
 }: MemberInformationHeaderProps) => {
   const headerBarItems = useMemberInformationHeaderBarItems();
-  const targetMember = useSelector(
-    (state: RootState) => state.targetMember.targetMember
-  );
+
   return (
     <InformationHeader>
       <Information>

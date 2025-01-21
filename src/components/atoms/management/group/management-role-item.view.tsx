@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { GRAY, MAIN, WHITE } from '@/constants/styles/color';
 import SlideButtonList from '@/components/atoms/common/button/slide-button-list';
 import MainInput from '@/components/atoms/common/input/main-input';
-import { getIsWellFormedName } from '@/utils/check';
+import { getIsWellFormedTitle } from '@/utils/check';
 import { GroupRole } from '@/models/management/management';
 
 import Check from '../../../../../public/svg/check.svg';
@@ -160,7 +160,7 @@ const ManagementRoleItemView = ({
         <RightContainer>
           {isEdit ? (
             <CheckButton
-              $isEnabled={getIsWellFormedName(editName)}
+              $isEnabled={getIsWellFormedTitle(editName)}
               onMouseDown={onClickSaveName}
             />
           ) : role.id === null ? (

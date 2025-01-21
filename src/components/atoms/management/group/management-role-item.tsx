@@ -8,7 +8,7 @@ import React, {
 } from 'react';
 
 import { getFormattedTitle } from '@/utils/format';
-import { getIsWellFormedName } from '@/utils/check';
+import { getIsWellFormedTitle } from '@/utils/check';
 import { BLANK } from '@/constants/constant';
 import { GroupRole } from '@/models/management/management';
 import ManagementRoleItemView from '@/components/atoms/management/group/management-role-item.view';
@@ -48,7 +48,7 @@ const ManagementRoleItem = ({
 
   // 새로운 그룹 추가하기
   const onClickSaveNewRole = () => {
-    if (getIsWellFormedName(newRoleName)) {
+    if (getIsWellFormedTitle(newRoleName)) {
       setRoles([
         ...roles,
         {
@@ -107,7 +107,7 @@ const ManagementRoleItem = ({
   const onClickSaveName = () => {
     if (editName === role.role) {
       setIsEdit(false);
-    } else if (getIsWellFormedName(editName)) {
+    } else if (getIsWellFormedTitle(editName)) {
       const newRoles = roles.map((role) => {
         return role.id !== selectedRoleId
           ? role
@@ -176,13 +176,13 @@ const ManagementRoleItem = ({
 
       if (e.key === 'Enter') {
         if (nameInputRef.current === document.activeElement) {
-          if (getIsWellFormedName(editName)) {
+          if (getIsWellFormedTitle(editName)) {
             onClickSaveName();
           } else {
             setIsEdit(false);
           }
         } else if (newRoleRef.current === document.activeElement) {
-          if (getIsWellFormedName(newRoleName)) {
+          if (getIsWellFormedTitle(newRoleName)) {
             onClickSaveNewRole();
           } else {
             setIsAddShown(false);

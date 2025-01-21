@@ -2,7 +2,7 @@ import { ChangeEvent, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 
-import { GroupHistoryApi } from '@/api/history/group-history';
+import { GroupHistoryApi } from '@/api/history/group-history.api';
 import { MembersApi } from '@/api/churches/members.api';
 import AddGroupMemberModalView from '@/components/atoms/common/modal/add-group-member-modal.view';
 import { BLANK } from '@/constants/constant';

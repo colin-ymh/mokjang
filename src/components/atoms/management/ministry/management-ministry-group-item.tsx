@@ -15,7 +15,7 @@ import {
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { getFormattedTitle } from '@/utils/format';
-import { getIsWellFormedName } from '@/utils/check';
+import { getIsWellFormedTitle } from '@/utils/check';
 import { BLANK } from '@/constants/constant';
 import { MinistryGroupsApi } from '@/api/management/ministry/ministry-groups.api';
 import ManagementMinistryGroupItemView from '@/components/atoms/management/ministry/management-ministry-group-item.view';
@@ -78,7 +78,7 @@ const ManagementMinistryMinistryGroupItem = ({
 
   // 새로운 그룹 추가하기
   const onClickSaveNewMinistryGroup = () => {
-    if (getIsWellFormedName(newMinistryGroupName)) {
+    if (getIsWellFormedTitle(newMinistryGroupName)) {
       ministryGroupsApi
         .createMinistryGroup(
           { churchId },
@@ -151,7 +151,7 @@ const ManagementMinistryMinistryGroupItem = ({
   const onClickSaveName = () => {
     if (editName === ministryGroup.name) {
       setIsEdit(false);
-    } else if (getIsWellFormedName(editName)) {
+    } else if (getIsWellFormedTitle(editName)) {
       ministryGroupsApi
         .editMinistryGroup(
           { churchId, ministryGroupId: ministryGroup.id as string },
@@ -235,13 +235,13 @@ const ManagementMinistryMinistryGroupItem = ({
 
       if (e.key === 'Enter') {
         if (nameInputRef.current === document.activeElement) {
-          if (getIsWellFormedName(editName)) {
+          if (getIsWellFormedTitle(editName)) {
             onClickSaveName();
           } else {
             setIsEdit(false);
           }
         } else if (newMinistryGroupRef.current === document.activeElement) {
-          if (getIsWellFormedName(newMinistryGroupName)) {
+          if (getIsWellFormedTitle(newMinistryGroupName)) {
             onClickSaveNewMinistryGroup();
           } else {
             setIsAddShown(false);

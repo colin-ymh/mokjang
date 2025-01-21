@@ -2,54 +2,57 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 
-import MemberGroupView from '@/components/molecules/member/information/member-group.view';
-import { DEFAULT_GROUP_HISTORY, GroupHistory } from '@/models/member/history';
-import { GroupHistoryApi } from '@/api/history/group-history.api';
+import MemberMinistryView from '@/components/molecules/member/information/member-ministry.view';
+import {
+  DEFAULT_MINISTRY_HISTORY,
+  MinistryHistory,
+} from '@/models/member/history';
+import { MinistryHistoryApi } from '@/api/history/ministry-history.api';
 import { ORDER_DIRECTION } from '@/constants/constant';
 import { Member } from '@/models/member/member';
 
-type MemberGroupProps = {
+type MemberMinistryProps = {
   targetMember: Member;
 };
 
-const MemberGroup = ({ targetMember }: MemberGroupProps) => {
+const MemberMinistry = ({ targetMember }: MemberMinistryProps) => {
   const churchId = useSelector((state: RootState) => state.church.churchId);
-  const groupHistoryApi = new GroupHistoryApi(false);
+  const ministryHistoryApi = new MinistryHistoryApi(false);
 
   // 사용자의 그룹 이력
-  const [groupHistory, setGroupHistory] = useState<GroupHistory[]>([]);
+  const [ministryHistory, setMinistryHistory] = useState<MinistryHistory[]>([]);
 
   // 그룹 추가 모달 활성화 여부
   const [isModalShown, setIsModalShown] = useState<boolean>(false);
 
   // 수정하려는 그룹
-  const [targetGroup, setTargetGroup] = useState<GroupHistory>(
-    DEFAULT_GROUP_HISTORY
+  const [targetMinistry, setTargetMinistry] = useState<MinistryHistory>(
+    DEFAULT_MINISTRY_HISTORY
   );
 
   // 모달 닫기
   const onClickCloseModal = () => {
     setIsModalShown(false);
-    setTargetGroup(DEFAULT_GROUP_HISTORY);
+    setTargetMinistry(DEFAULT_MINISTRY_HISTORY);
   };
 
   // 그룹 선택 시
-  const onClickEditGroup = (group: GroupHistory) => {
-    setTargetGroup(group);
+  const onClickEditMinistry = (ministry: MinistryHistory) => {
+    setTargetMinistry(ministry);
     setIsModalShown(true);
   };
 
   // 서버에서 데이터 로드
   const fetchData = () => {
-    groupHistoryApi
-      .getGroupHistory({
+    ministryHistoryApi
+      .getMinistryHistory({
         churchId,
         memberId: targetMember.id,
         orderDirection: ORDER_DIRECTION.DESC,
       })
       .then((response) => {
-        const newGroupHistory = response.data;
-        setGroupHistory(newGroupHistory);
+        const newMinistryHistory = response.data;
+        setMinistryHistory(newMinistryHistory);
       });
   };
 
@@ -59,30 +62,30 @@ const MemberGroup = ({ targetMember }: MemberGroupProps) => {
   }, [targetMember.id]);
 
   // 기존 그룹 수정하기
-  const onClickSaveGroupHistory = (startDate?: string, endDate?: string) => {
-    groupHistoryApi
-      .editGroupHistory(
+  const onClickSaveMinistryHistory = (startDate?: string, endDate?: string) => {
+    ministryHistoryApi
+      .editMinistryHistory(
         {
           churchId,
           memberId: targetMember.id,
-          groupHistoryId: targetGroup.id,
+          ministryHistoryId: targetMinistry.id,
         },
         { startDate, endDate }
       )
       .then(() => {
         setIsModalShown(false);
         fetchData();
-        setTargetGroup(DEFAULT_GROUP_HISTORY);
+        setTargetMinistry(DEFAULT_MINISTRY_HISTORY);
       });
   };
 
   // 기존 그룹 삭제하기
-  const onClickDeleteGroup = (groupId: string) => {
-    groupHistoryApi
-      .deleteGroupHistory({
+  const onClickDeleteMinistry = (ministryId: string) => {
+    ministryHistoryApi
+      .deleteMinistryHistory({
         churchId,
         memberId: targetMember.id,
-        groupHistoryId: groupId,
+        ministryHistoryId: ministryId,
       })
       .then(() => {
         fetchData();
@@ -90,20 +93,20 @@ const MemberGroup = ({ targetMember }: MemberGroupProps) => {
   };
 
   const props = {
-    groupHistory,
-    targetGroup,
+    ministryHistory,
+    targetMinistry,
     isModalShown,
     onClickCloseModal,
-    onClickEditGroup,
-    onClickSaveGroupHistory,
-    onClickDeleteGroup,
+    onClickEditMinistry,
+    onClickSaveMinistryHistory,
+    onClickDeleteMinistry,
   };
 
   return (
     <>
-      <MemberGroupView {...props} />
+      <MemberMinistryView {...props} />
     </>
   );
 };
 
-export default MemberGroup;
+export default MemberMinistry;

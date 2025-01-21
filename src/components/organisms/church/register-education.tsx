@@ -6,7 +6,7 @@ import { DEFAULT_EDUCATION, Education } from '@/models/management/management';
 import { EducationsApi } from '@/api/management/education/educations.api';
 import { usePageRouter } from '@/utils/router';
 import RegisterEducationView from '@/components/organisms/church/register-education.view';
-import { getIsWellFormedName } from '@/utils/check';
+import { getIsWellFormedTitle } from '@/utils/check';
 import { BLANK } from '@/constants/constant';
 import { getFormattedName } from '@/utils/format';
 
@@ -36,7 +36,7 @@ const RegisterEducation = ({}: EducationListProps) => {
 
   // 새로운 교육 저장
   const onClickSaveEducation = () => {
-    if (getIsWellFormedName(newEducationName)) {
+    if (getIsWellFormedTitle(newEducationName)) {
       educationsApi
         .createEducation({ churchId }, { name: newEducationName })
         .then(() => {
@@ -80,7 +80,7 @@ const RegisterEducation = ({}: EducationListProps) => {
       }
 
       if (e.key === 'Enter') {
-        if (getIsWellFormedName(newEducationName)) {
+        if (getIsWellFormedTitle(newEducationName)) {
           onClickSaveEducation();
         }
       }

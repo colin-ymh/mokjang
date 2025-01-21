@@ -43,3 +43,22 @@ export const DEFAULT_EDUCATION_HISTORY: EducationHistory = {
   note: BLANK,
   status: EDUCATION_STATUS.IN_PROGRESS,
 };
+
+export type MinistryHistory = {
+  id: string;
+  memberId: string;
+  ministrySnapShot: string;
+  ministryGroupSnapShot: string;
+  startDate: string;
+  endDate: string;
+  // ministry:
+};
+
+export const DEFAULT_MINISTRY_HISTORY: MinistryHistory = {
+  id: BLANK,
+  memberId: BLANK,
+  ministrySnapShot: BLANK,
+  ministryGroupSnapShot: BLANK,
+  startDate: BLANK,
+  endDate: BLANK,
+};

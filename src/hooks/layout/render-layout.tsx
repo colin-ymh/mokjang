@@ -20,7 +20,6 @@ import FamilyInformationList from '@/components/molecules/member/information/fam
 import ManagementTabHeader from '@/components/molecules/layout/header/management-tab-header';
 import MemberEducation from '@/components/molecules/member/information/member-education';
 import GroupManagement from '@/components/organisms/management/group/group-management';
-import GroupInformation from '@/components/molecules/management/group/group-information';
 import GroupMember from '@/components/molecules/management/group/group-member';
 import {
   Education,
@@ -34,6 +33,9 @@ import EducationTermList from '@/components/molecules/management/education/educa
 import MinistryGroupInformation from '@/components/molecules/management/ministry/ministry-group-information';
 import MinistryGroupMember from '@/components/molecules/management/ministry/ministry-group-member';
 import MinistryGroupManagement from '@/components/organisms/management/ministry/ministry-group-management';
+import MemberMinistry from '@/components/molecules/member/information/member-ministry';
+import { Member } from '@/models/member/member';
+import GroupInformation from '@/components/molecules/management/group/group-information';
 
 export const getContent = (id: string): ReactNode => {
   switch (id) {
@@ -76,25 +78,33 @@ export const getHeader = (id: string) => {
 };
 
 export const getMemberInformationContent = (
+  targetMember: Member,
   contentId: string,
   setContentId: Dispatch<SetStateAction<string>>
 ) => {
   switch (contentId) {
     case MEMBER_INFORMATION_HEADER_ID.PERSONAL_INFORMATION:
-      return <InformationList />;
+      return <InformationList targetMember={targetMember} />;
     case MEMBER_INFORMATION_HEADER_ID.FAMILY_INFORMATION:
-      return <FamilyInformationList setContentId={setContentId} />;
+      return (
+        <FamilyInformationList
+          targetMember={targetMember}
+          setContentId={setContentId}
+        />
+      );
     case MEMBER_INFORMATION_HEADER_ID.GROUP:
-      return <MemberGroup />;
+      return <MemberGroup targetMember={targetMember} />;
     case MEMBER_INFORMATION_HEADER_ID.EDUCATION:
-      return <MemberEducation />;
+      return <MemberEducation targetMember={targetMember} />;
+    case MEMBER_INFORMATION_HEADER_ID.MINISTRY:
+      return <MemberMinistry targetMember={targetMember} />;
   }
 };
 
 export const getGroupManagementContent = (contentId: string, group: Group) => {
   switch (contentId) {
     case GROUP_MANAGEMENT_HEADER_ID.GROUP_INFORMATION:
-      return <GroupInformation groupId={group.id as string} />;
+      return <GroupInformation group={group} />;
     case GROUP_MANAGEMENT_HEADER_ID.MEMBER_LIST:
       return <GroupMember group={group} />;
   }

@@ -4,15 +4,14 @@ import styled from 'styled-components';
 import Button from '@/components/atoms/common/button/button';
 import LabelInput from '@/components/atoms/common/input/label-input';
 import { GRAY, MAIN } from '@/constants/styles/color';
-import { Group } from '@/models/management/management';
-import { GroupHistory } from '@/models/member/history';
-import GroupDropdown from '@/components/atoms/common/dropdown/group-dropdown';
+import { Ministry, MinistryGroup } from '@/models/management/management';
+import { MinistryHistory } from '@/models/member/history';
 import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-item';
 import LabelDropdown from '@/components/atoms/common/dropdown/label-dropdown';
 
 import { useI18n } from '../../../../../locales/client';
 
-const GroupModalViewContainer = styled.div`
+const MinistryModalViewContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -32,60 +31,60 @@ const ButtonContainer = styled.div`
   padding: 20px;
 `;
 
-type GroupModalViewProps = {
+type MinistryModalViewProps = {
   isHistory: boolean;
-  prevGroup: GroupHistory;
-  selectedGroup: Group;
-  roleDropdownItems: DropdownValueType[];
-  selectedRoleId: string;
+  prevMinistry: MinistryHistory;
+  selectedMinistry: Ministry;
+  ministryDropdownItems: DropdownValueType[];
+  selectedMinistryId: string;
   isButtonEnabled: boolean;
   startDate: string;
   endDate: string;
   onChangeStartDate: (event: ChangeEvent<HTMLInputElement>) => void;
   onChangeEndDate: (event: ChangeEvent<HTMLInputElement>) => void;
-  onClickSaveCurrentGroup?: (groupId: string, startDate: string) => void;
-  onClickSaveGroupHistory?: (startDate: string, endDate: string) => void;
-  onClickSaveGroup: (group: Group) => void;
-  onChangeRoleId: (id: string) => void;
+  onClickSaveCurrentMinistry?: (groupId: string, startDate: string) => void;
+  onClickSaveMinistryHistory?: (startDate: string, endDate: string) => void;
+  onClickSaveMinistry: (group: MinistryGroup) => void;
+  onChangeMinistryId: (id: string) => void;
 };
 
-const GroupModalView = ({
+const MinistryModalView = ({
   isHistory,
-  prevGroup,
-  roleDropdownItems,
-  selectedGroup,
-  selectedRoleId,
+  prevMinistry,
+  ministryDropdownItems,
+  selectedMinistry,
+  selectedMinistryId,
   isButtonEnabled,
   startDate,
   endDate,
   onChangeStartDate,
   onChangeEndDate,
-  onClickSaveCurrentGroup,
-  onClickSaveGroupHistory,
-  onClickSaveGroup,
-  onChangeRoleId,
-}: GroupModalViewProps) => {
+  onClickSaveCurrentMinistry,
+  onClickSaveMinistryHistory,
+  onClickSaveMinistry,
+  onChangeMinistryId,
+}: MinistryModalViewProps) => {
   const t = useI18n();
 
   return (
-    <GroupModalViewContainer>
+    <MinistryModalViewContainer>
       {/* 내용 */}
       <ContentContainer>
         {/* 소그룹 선택 드롭다운 부분*/}
-        {!isHistory && (
-          <GroupDropdown
-            value={selectedGroup?.name || t('none')}
-            isHistory={isHistory}
-            onClickSaveGroup={onClickSaveGroup}
-          />
-        )}
+        {/*{!isHistory && (*/}
+        {/*  <MinistryDropdown*/}
+        {/*    value={selectedMinistry?.name || t('none')}*/}
+        {/*    isHistory={isHistory}*/}
+        {/*    onClickSaveMinistry={onClickSaveMinistry}*/}
+        {/*  />*/}
+        {/*)}*/}
         {/* 역할 */}
         {!isHistory && (
           <LabelDropdown
             label={t('groupRole')}
-            value={selectedRoleId}
-            items={roleDropdownItems}
-            onChangeItem={onChangeRoleId}
+            value={selectedMinistryId}
+            items={ministryDropdownItems}
+            onChangeItem={onChangeMinistryId}
             disabled={isHistory}
           />
         )}
@@ -113,17 +112,20 @@ const GroupModalView = ({
           height={30}
           onClick={() => {
             if (isHistory) {
-              onClickSaveGroupHistory &&
-                onClickSaveGroupHistory(startDate, endDate);
+              onClickSaveMinistryHistory &&
+                onClickSaveMinistryHistory(startDate, endDate);
             } else {
-              onClickSaveCurrentGroup &&
-                onClickSaveCurrentGroup(selectedGroup.id as string, startDate);
+              onClickSaveCurrentMinistry &&
+                onClickSaveCurrentMinistry(
+                  selectedMinistry.id as string,
+                  startDate
+                );
             }
           }}
         />
       </ButtonContainer>
-    </GroupModalViewContainer>
+    </MinistryModalViewContainer>
   );
 };
 
-export default GroupModalView;
+export default MinistryModalView;

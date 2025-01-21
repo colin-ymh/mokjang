@@ -2,12 +2,12 @@ import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 
-import { OfficersApi } from '@/api/management/officers.api';
+import { OfficersApi } from '@/api/management/officer/officers.api';
 import OfficerManagementView from '@/components/organisms/management/officer/officer-management.view';
 import { DEFAULT_OFFICER, Officer } from '@/models/management/management';
 import { BLANK } from '@/constants/constant';
 import { getFormattedTitle } from '@/utils/format';
-import { getIsWellFormedName } from '@/utils/check';
+import { getIsWellFormedTitle } from '@/utils/check';
 
 type OfficerManagementProps = {};
 
@@ -48,7 +48,7 @@ const OfficerManagement = ({}: OfficerManagementProps) => {
 
   // 새로운 교육 저장
   const onClickSaveOfficer = () => {
-    if (getIsWellFormedName(newOfficerName)) {
+    if (getIsWellFormedTitle(newOfficerName)) {
       officersApi
         .createOfficer({ churchId }, { name: newOfficerName })
         .then(() => {
@@ -108,7 +108,7 @@ const OfficerManagement = ({}: OfficerManagementProps) => {
       }
 
       if (e.key === 'Enter') {
-        if (getIsWellFormedName(newOfficerName)) {
+        if (getIsWellFormedTitle(newOfficerName)) {
           onClickSaveOfficer();
         } else {
           setIsAddModalShown(false);

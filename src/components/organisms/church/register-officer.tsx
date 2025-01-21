@@ -3,10 +3,10 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 
 import { DEFAULT_OFFICER, Officer } from '@/models/management/management';
-import { OfficersApi } from '@/api/management/officers.api';
+import { OfficersApi } from '@/api/management/officer/officers.api';
 import { usePageRouter } from '@/utils/router';
 import RegisterOfficerView from '@/components/organisms/church/register-officer.view';
-import { getIsWellFormedName } from '@/utils/check';
+import { getIsWellFormedTitle } from '@/utils/check';
 import { BLANK } from '@/constants/constant';
 import { getFormattedName } from '@/utils/format';
 
@@ -36,7 +36,7 @@ const RegisterOfficer = ({}: OfficerListProps) => {
 
   // 새로운 직분 저장
   const onClickSaveOfficer = () => {
-    if (getIsWellFormedName(newOfficerName)) {
+    if (getIsWellFormedTitle(newOfficerName)) {
       officersApi
         .createOfficer({ churchId }, { name: newOfficerName })
         .then(() => {
@@ -80,7 +80,7 @@ const RegisterOfficer = ({}: OfficerListProps) => {
       }
 
       if (e.key === 'Enter') {
-        if (getIsWellFormedName(newOfficerName)) {
+        if (getIsWellFormedTitle(newOfficerName)) {
           onClickSaveOfficer();
         }
       }

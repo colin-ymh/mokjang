@@ -9,7 +9,6 @@ import {
   fetchMembers,
   setMembers,
 } from '@/redux/reducers/member-filter-reducer';
-import { setTargetMember } from '@/redux/reducers/target-member';
 import styled from 'styled-components';
 
 import { MembersApi } from '@/api/churches/members.api';
@@ -54,6 +53,9 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
 
   // 데이터 로딩 상태
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  // 교인 상세를 위해 선택한 교인
+  const [targetMember, setTargetMember] = useState<Member>(DEFAULT_MEMBER);
 
   // // 서버로부터 교인 목록을 받아와서, 클라이언트에 적합하게 변환
   // const getMembersFromServer = async (
@@ -145,7 +147,7 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
     membersApi.getMember({ churchId, memberId }).then((response) => {
       const member = getMemberFromServer(response.data.data);
 
-      dispatch(setTargetMember(member));
+      setTargetMember(member);
       dispatch(setMember(member));
       setIsMemberInformationShown(true);
     });
@@ -184,7 +186,9 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
       onClickMemberItem,
       loadMembers,
     },
-    information: {},
+    information: {
+      targetMember,
+    },
   };
 
   return (

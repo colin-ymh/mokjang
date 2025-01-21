@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import MainInput from '@/components/atoms/common/input/main-input';
 import { BLACK, GRAY, MAIN, WHITE } from '@/constants/styles/color';
-import { getIsWellFormedName } from '@/utils/check';
+import { getIsWellFormedTitle } from '@/utils/check';
 
 import Check from '../../../../../public/svg/check.svg';
 import { useI18n } from '../../../../../locales/client';
@@ -54,7 +54,7 @@ const AddOfficer = forwardRef<HTMLInputElement, AddOfficerProps>(
           placeholder={t('placeholder.name')}
         />
         <CheckButton
-          $isEnabled={getIsWellFormedName(name)}
+          $isEnabled={getIsWellFormedTitle(name)}
           onMouseDown={onClickSaveOfficer}
         />
       </AddOfficerContainer>

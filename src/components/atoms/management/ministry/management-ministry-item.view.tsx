@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { GRAY, MAIN, WHITE } from '@/constants/styles/color';
 import SlideButtonList from '@/components/atoms/common/button/slide-button-list';
 import MainInput from '@/components/atoms/common/input/main-input';
-import { getIsWellFormedName } from '@/utils/check';
+import { getIsWellFormedTitle } from '@/utils/check';
 
 import Check from '../../../../../public/svg/check.svg';
 import Plus from '../../../../../public/svg/plus.svg';
@@ -162,7 +162,7 @@ const ManagementMinistryItemView = ({
         <RightContainer>
           {isEdit ? (
             <CheckButton
-              $isEnabled={getIsWellFormedName(editName)}
+              $isEnabled={getIsWellFormedTitle(editName)}
               onMouseDown={onClickSaveName}
             />
           ) : ministry.id === null ? (

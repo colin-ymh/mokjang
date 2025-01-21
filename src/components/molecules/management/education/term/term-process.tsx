@@ -55,16 +55,22 @@ type TermProcessProps = {
   isInformation: boolean;
   term: EducationTerm;
   session: EducationSession;
+  onClickItem: (isSession: boolean) => void;
 };
 
-const TermProcess = ({ isInformation, term, session }: TermProcessProps) => {
+const TermProcess = ({
+  isInformation,
+  term,
+  session,
+  onClickItem,
+}: TermProcessProps) => {
   const t = useI18n();
 
   return isInformation ? (
     <ProcessContainer>
       <RowContainer>
         {/* 기수 */}
-        <InformationItem>
+        <InformationItem onClick={() => onClickItem(false)}>
           <TitleContainer>
             <MainText color={GRAY.DEFAULT}>{t('term')}</MainText>
           </TitleContainer>
@@ -74,7 +80,7 @@ const TermProcess = ({ isInformation, term, session }: TermProcessProps) => {
         </InformationItem>
 
         {/* 총 회차 */}
-        <InformationItem>
+        <InformationItem onClick={() => onClickItem(false)}>
           <TitleContainer>
             <MainText color={GRAY.DEFAULT}>
               {`${t('total')} ${t('session')}`}
@@ -87,7 +93,7 @@ const TermProcess = ({ isInformation, term, session }: TermProcessProps) => {
       </RowContainer>
       <RowContainer>
         {/* 진행자 */}
-        <InformationItem>
+        <InformationItem onClick={() => onClickItem(false)}>
           <TitleContainer>
             <MainText color={GRAY.DEFAULT}>{t('instructor')}</MainText>
           </TitleContainer>
@@ -96,7 +102,7 @@ const TermProcess = ({ isInformation, term, session }: TermProcessProps) => {
           </ContentContainer>
         </InformationItem>
         {/* 교육 기간 */}
-        <InformationItem>
+        <InformationItem onClick={() => onClickItem(false)}>
           <TitleContainer>
             <MainText color={GRAY.DEFAULT}>{t('period')}</MainText>
           </TitleContainer>
@@ -112,7 +118,7 @@ const TermProcess = ({ isInformation, term, session }: TermProcessProps) => {
     <ProcessContainer>
       <RowContainer>
         {/* 교육 일시 */}
-        <InformationItem>
+        <InformationItem onClick={() => onClickItem(true)}>
           <TitleContainer>
             <MainText color={GRAY.DEFAULT}>{t('educationDate')}</MainText>
           </TitleContainer>
@@ -121,7 +127,7 @@ const TermProcess = ({ isInformation, term, session }: TermProcessProps) => {
           </ContentContainer>
         </InformationItem>
         {/* 인원 수 */}
-        <InformationItem>
+        <InformationItem onClick={() => onClickItem(true)}>
           <TitleContainer>
             <MainText color={GRAY.DEFAULT}>{t('people')}</MainText>
           </TitleContainer>
@@ -132,7 +138,7 @@ const TermProcess = ({ isInformation, term, session }: TermProcessProps) => {
       </RowContainer>
       <RowContainer>
         {/* 회차 보고 */}
-        <InformationItem>
+        <InformationItem onClick={() => onClickItem(true)}>
           <TitleContainer>
             <MainText color={GRAY.DEFAULT}>{t('sessionContent')}</MainText>
           </TitleContainer>

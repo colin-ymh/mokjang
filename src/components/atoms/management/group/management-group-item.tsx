@@ -13,7 +13,7 @@ import { GroupsApi } from '@/api/management/group/groups.api';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 import { getFormattedTitle } from '@/utils/format';
-import { getIsWellFormedName } from '@/utils/check';
+import { getIsWellFormedTitle } from '@/utils/check';
 import AddGroup from '@/components/atoms/management/group/add-group';
 import { BLANK } from '@/constants/constant';
 import { fetchGroups } from '@/redux/reducers/church-reducer';
@@ -67,7 +67,7 @@ const ManagementGroupItem = ({
 
   // 새로운 그룹 추가하기
   const onClickSaveNewGroup = () => {
-    if (getIsWellFormedName(newGroupName)) {
+    if (getIsWellFormedTitle(newGroupName)) {
       groupsApi
         .createGroup(
           { churchId },
@@ -134,7 +134,7 @@ const ManagementGroupItem = ({
   const onClickSaveName = () => {
     if (editName === group.name) {
       setIsEdit(false);
-    } else if (getIsWellFormedName(editName)) {
+    } else if (getIsWellFormedTitle(editName)) {
       groupsApi
         .editGroup(
           { churchId, groupId: group.id as string },
@@ -213,13 +213,13 @@ const ManagementGroupItem = ({
 
       if (e.key === 'Enter') {
         if (nameInputRef.current === document.activeElement) {
-          if (getIsWellFormedName(editName)) {
+          if (getIsWellFormedTitle(editName)) {
             onClickSaveName();
           } else {
             setIsEdit(false);
           }
         } else if (newGroupRef.current === document.activeElement) {
-          if (getIsWellFormedName(newGroupName)) {
+          if (getIsWellFormedTitle(newGroupName)) {
             onClickSaveNewGroup();
           } else {
             setIsAddShown(false);

@@ -4,11 +4,11 @@ import styled from 'styled-components';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { SIZE } from '@/constants/styles/style';
 import LabelInput from '@/components/atoms/common/input/label-input';
-import LabelDropdown from '@/components/atoms/common/dropdown/label-dropdown';
 import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-item';
 import { GRAY, MAIN, WHITE } from '@/constants/styles/color';
 
 import { useI18n } from '../../../../../locales/client';
+import MemberDropdown from '@/components/atoms/common/dropdown/member-dropdown';
 
 const RegisterContainer = styled.div`
   display: flex;
@@ -27,10 +27,12 @@ const TextContainer = styled.div`
 const ContentContainer = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: flex-start;
   padding: 0 20px;
   gap: 20px;
   overflow-y: auto;
   margin-bottom: 60px;
+  height: 100%;
 `;
 
 const SaveButton = styled.div<{ $isEnabled: boolean }>`
@@ -110,13 +112,15 @@ const TermRegisterView = ({
           value={endDate}
           onChange={onChangeEndDate}
         />
-        <LabelDropdown
-          label={`${t('education')} ${t('instructor')}`}
+        <MainText>{t('instructor')}</MainText>
+        <MemberDropdown
+          // label={`${t('education')} ${t('instructor')}`}
           value={instructorValue}
           items={searchedMembers}
           onChangeItem={onClickInstructor}
           onChange={onChangeInstructorValue}
           isEditable={true}
+          reverseDirection={true}
         />
       </ContentContainer>
       <SaveButton $isEnabled={isSaveEnabled} onClick={onClickSave}>

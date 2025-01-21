@@ -32,7 +32,7 @@ const DropdownContainer = styled.div`
   display: flex;
   position: absolute;
   left: -330px;
-  top: -50px;
+  top: -70px;
 `;
 
 type GroupModalProps = {
@@ -40,7 +40,7 @@ type GroupModalProps = {
   currentGroup: Group;
   groups: Group[];
   parentGroups: Group[];
-  isEdit: boolean;
+  isHistory: boolean;
   selectedGroup: Group;
   isDropdownShown: boolean;
   onClickOpenDropdown: () => void;
@@ -55,7 +55,7 @@ const GroupDropdownView = ({
   currentGroup,
   groups,
   parentGroups,
-  isEdit,
+  isHistory,
   selectedGroup,
   isDropdownShown,
   onClickOpenDropdown,
@@ -70,7 +70,7 @@ const GroupDropdownView = ({
     <LabelInputContainer>
       <MainText>{t('group')}</MainText>
       {/* 현재 상태값 & 버튼 */}
-      <GroupButton onClick={() => !isEdit && onClickOpenDropdown()}>
+      <GroupButton onClick={() => !isHistory && onClickOpenDropdown()}>
         <MainText>{value}</MainText>
       </GroupButton>
 

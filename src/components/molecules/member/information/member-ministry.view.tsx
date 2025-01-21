@@ -2,12 +2,12 @@ import styled from 'styled-components';
 
 import { GRAY } from '@/constants/styles/color';
 import { MainText } from '@/components/atoms/common/text/main-text';
-import GroupModal from '@/components/atoms/common/modal/group-modal';
-import { GroupHistory } from '@/models/member/history';
-import GroupHistoryItem from '@/components/atoms/member/information/group-history-item';
+import { MinistryHistory } from '@/models/member/history';
+import MinistryHistoryItem from '@/components/atoms/member/information/ministry-history-item';
 import CustomPopup from '@/components/atoms/common/popup/custom-popup';
 
 import { useI18n } from '../../../../../locales/client';
+import MinistryModal from '@/components/atoms/common/modal/ministry-modal';
 
 const ListContainer = styled.div`
   display: flex;
@@ -26,51 +26,51 @@ const ListTypeHeader = styled.div`
   padding: 0 20px;
 `;
 
-const GroupListContainer = styled.div`
+const MinistryListContainer = styled.div`
   display: flex;
   flex-direction: column;
   padding: 0 20px;
 `;
 
-type MemberGroupViewProps = {
-  groupHistory: GroupHistory[];
-  targetGroup: GroupHistory;
+type MemberMinistryViewProps = {
+  ministryHistory: MinistryHistory[];
+  targetMinistry: MinistryHistory;
   isModalShown: boolean;
   onClickCloseModal: () => void;
-  onClickEditGroup: (group: GroupHistory) => void;
-  onClickSaveGroupHistory: (startDate?: string, endDate?: string) => void;
-  onClickDeleteGroup: (groupId: string) => void;
+  onClickEditMinistry: (ministry: MinistryHistory) => void;
+  onClickSaveMinistryHistory: (startDate?: string, endDate?: string) => void;
+  onClickDeleteMinistry: (ministryId: string) => void;
 };
 
-const MemberGroupView = ({
-  groupHistory,
-  targetGroup,
+const MemberMinistryView = ({
+  ministryHistory,
+  targetMinistry,
   isModalShown,
   onClickCloseModal,
-  onClickEditGroup,
-  onClickDeleteGroup,
-  onClickSaveGroupHistory,
-}: MemberGroupViewProps) => {
+  onClickEditMinistry,
+  onClickDeleteMinistry,
+  onClickSaveMinistryHistory,
+}: MemberMinistryViewProps) => {
   const t = useI18n();
   return (
     <ListContainer>
       {/* 그룹 헤더 */}
       <ListTypeHeader>
-        <MainText color={GRAY.DARK}>{t('group')}</MainText>
+        <MainText color={GRAY.DARK}>{t('ministry')}</MainText>
       </ListTypeHeader>
       {/* 이력 */}
-      <GroupListContainer>
-        {groupHistory.map((group) => {
+      <MinistryListContainer>
+        {ministryHistory.map((ministry) => {
           return (
-            <GroupHistoryItem
-              key={group.id}
-              group={group}
-              onClickEditGroup={onClickEditGroup}
-              onClickDeleteGroup={onClickDeleteGroup}
+            <MinistryHistoryItem
+              key={ministry.id}
+              ministry={ministry}
+              onClickEditMinistry={onClickEditMinistry}
+              onClickDeleteMinistry={onClickDeleteMinistry}
             />
           );
         })}
-      </GroupListContainer>
+      </MinistryListContainer>
       {/* 그룹 추가 및 수정 모달*/}
       <CustomPopup
         isShow={isModalShown}
@@ -79,14 +79,14 @@ const MemberGroupView = ({
         height={30}
         isPercentage={true}
       >
-        <GroupModal
+        <MinistryModal
           isHistory={true}
-          prevGroup={targetGroup}
-          onClickSaveGroupHistory={onClickSaveGroupHistory}
+          prevMinistry={targetMinistry}
+          onClickSaveMinistryHistory={onClickSaveMinistryHistory}
         />
       </CustomPopup>
     </ListContainer>
   );
 };
 
-export default MemberGroupView;
+export default MemberMinistryView;

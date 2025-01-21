@@ -6,24 +6,32 @@ import { GroupHistory } from '@/models/member/history';
 import { DEFAULT_GROUP, Group } from '@/models/management/management';
 import { getFormattedDate } from '@/utils/format';
 import { getIsWellFormedDate } from '@/utils/check';
+import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-item';
 
 type GroupModalProps = {
+  isHistory: boolean;
   prevGroup: GroupHistory;
-  onClickClose: () => void;
-  onClickSaveNewGroup: (groupId: string, startDate: string) => void;
-  onClickSaveEditGroup: (startDate?: string, endDate?: string) => void;
+  onClickSaveCurrentGroup?: (groupId: string, startDate: string) => void;
+  onClickSaveGroupHistory?: (startDate?: string, endDate?: string) => void;
 };
 
 const GroupModal = ({
+  isHistory,
   prevGroup,
-  onClickClose,
-  onClickSaveNewGroup,
-  onClickSaveEditGroup,
+  onClickSaveCurrentGroup,
+  onClickSaveGroupHistory,
 }: GroupModalProps) => {
-  const isEdit = prevGroup.id !== BLANK;
-
   // 선택된 그룹
   const [selectedGroup, setSelectedGroup] = useState<Group>(DEFAULT_GROUP);
+  // 역할 선택지
+  const [roleDropdownItems, setRoleDropdownItems] = useState<
+    DropdownValueType[]
+  >([]);
+
+  // 선택된 역할
+  const [selectedRoleId, setSelectedRoleId] = useState<string>(
+    isHistory ? prevGroup.groupRoleId : BLANK
+  );
 
   // 시작 날짜
   const [startDate, setStartDate] = useState<string>(
@@ -45,6 +53,13 @@ const GroupModal = ({
     }
   };
 
+  // 그룹 설정 완료 버튼
+  const onChangeRoleId = (id: string) => {
+    if (id) {
+      setSelectedRoleId(id);
+    }
+  };
+
   // 시작 날짜 변경
   const onChangeStartDate = (event: ChangeEvent<HTMLInputElement>) => {
     const newStartDate = getFormattedDate(event.target.value);
@@ -59,7 +74,7 @@ const GroupModal = ({
 
   // 저장 가능 여부 확인
   useEffect(() => {
-    if (isEdit) {
+    if (isHistory) {
       if (
         getIsWellFormedDate(startDate) &&
         (getIsWellFormedDate(endDate) || endDate === BLANK)
@@ -77,19 +92,34 @@ const GroupModal = ({
     }
   }, [startDate, endDate]);
 
+  useEffect(() => {
+    if (selectedGroup.roles.length > 0) {
+      const newItems = selectedGroup.roles.map((role) => {
+        return {
+          value: role.id,
+          title: role.role,
+        };
+      });
+
+      setRoleDropdownItems(newItems);
+    }
+  }, [selectedGroup]);
+
   const props = {
-    isEdit,
+    isHistory,
     prevGroup,
+    roleDropdownItems,
     selectedGroup,
+    selectedRoleId,
     isButtonEnabled,
     startDate,
     endDate,
     onChangeStartDate,
     onChangeEndDate,
-    onClickClose,
-    onClickSaveNewGroup,
-    onClickSaveEditGroup,
     onClickSaveGroup,
+    onChangeRoleId,
+    onClickSaveCurrentGroup,
+    onClickSaveGroupHistory,
   };
 
   return (

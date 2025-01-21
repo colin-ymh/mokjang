@@ -1,6 +1,6 @@
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/redux/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '@/redux/store';
 
 import {
   DEFAULT_GROUP_ROLE,
@@ -12,23 +12,17 @@ import EditGroupView from '@/components/molecules/management/group/edit-group.vi
 import { getFormattedName } from '@/utils/format';
 import { GroupsApi } from '@/api/management/group/groups.api';
 import { BLANK } from '@/constants/constant';
-import { getIsWellFormedName } from '@/utils/check';
+import { getIsWellFormedTitle } from '@/utils/check';
+import { fetchGroups } from '@/redux/reducers/church-reducer';
 
 type EditGroupProps = {
   group: Group;
   roles: GroupRole[];
   onClickClose: () => void;
-  fetchGroup: () => void;
-  fetchRoles: () => void;
 };
 
-const EditGroup = ({
-  group,
-  roles,
-  onClickClose,
-  fetchGroup,
-  fetchRoles,
-}: EditGroupProps) => {
+const EditGroup = ({ group, roles, onClickClose }: EditGroupProps) => {
+  const dispatch = useDispatch<AppDispatch>();
   const groupRolesApi = new GroupRolesApi(false);
   const groupsApi = new GroupsApi(false);
   const churchId = useSelector((state: RootState) => state.church.churchId);
@@ -133,7 +127,7 @@ const EditGroup = ({
       );
 
       // 상태 초기화 및 리렌더링
-      fetchRoles();
+      dispatch(fetchGroups());
       onClickClose();
       setNewRoles([]);
       setSelectedRole(DEFAULT_GROUP_ROLE);
@@ -143,13 +137,6 @@ const EditGroup = ({
   };
 
   useEffect(() => {
-    if (churchId && group) {
-      fetchGroup();
-      fetchRoles();
-    }
-  }, [churchId, group]);
-
-  useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.isComposing) {
         return;
@@ -157,7 +144,7 @@ const EditGroup = ({
 
       if (e.key === 'Enter') {
         if (newRoleRef.current) {
-          if (getIsWellFormedName(newRoleName)) {
+          if (getIsWellFormedTitle(newRoleName)) {
             onClickSaveNewRole();
           } else {
             newRoleRef.current.blur();

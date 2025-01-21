@@ -18,7 +18,7 @@ type AddEnrollmentModalProps = {
   enrollments: EducationEnrollment[];
   isShown: boolean;
   onClickClose: () => void;
-  fetchEnrollments: () => void;
+  fetchTerms: () => void;
 };
 
 const AddEnrollmentModal = ({
@@ -26,7 +26,7 @@ const AddEnrollmentModal = ({
   enrollments,
   isShown,
   onClickClose,
-  fetchEnrollments,
+  fetchTerms,
 }: AddEnrollmentModalProps) => {
   const membersApi = new MembersApi(false);
   const educationEnrollmentsApi = new EducationEnrollmentsApi(false);
@@ -87,7 +87,7 @@ const AddEnrollmentModal = ({
         );
 
         // 모든 API 호출이 완료된 후 실행
-        fetchEnrollments();
+        fetchTerms();
         onClickClose();
         resetData();
       } catch (error) {

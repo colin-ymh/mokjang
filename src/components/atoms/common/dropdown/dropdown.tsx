@@ -187,8 +187,7 @@ const Dropdown = forwardRef<HTMLInputElement, DropdownProps>(
         <TransparentBackground
           isOpened={isOpened}
           onClick={onClickBackground}
-          // 직접 수정인 경우에는 외부 영역 흐리게 처리 안함
-          blur={backgroundBlur && !isEditable}
+          blur={false}
         />
         {/* 드롭다운 렌더링 */}
         <DropdownView {...props} />

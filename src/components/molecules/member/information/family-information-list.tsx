@@ -8,20 +8,23 @@ import { FAMILY } from '@/constants/constant';
 import { MembersApi } from '@/api/churches/members.api';
 import { getMemberFromServer } from '@/utils/member';
 import FamilyInformationListView from '@/components/molecules/member/information/family-information-list.view';
-import { DEFAULT_FAMILY_MEMBER, FamilyMember } from '@/models/member/member';
+import {
+  DEFAULT_FAMILY_MEMBER,
+  FamilyMember,
+  Member,
+} from '@/models/member/member';
 import { MEMBER_INFORMATION_HEADER_ID } from '@/constants/layout/header';
 
 type FamilyInformationListProps = {
+  targetMember: Member;
   setContentId: Dispatch<SetStateAction<string>>;
 };
 
 const FamilyInformationList = ({
+  targetMember,
   setContentId,
 }: FamilyInformationListProps) => {
   const { churchId } = useSelector((state: RootState) => state.church);
-  const targetMember = useSelector(
-    (state: RootState) => state.targetMember.targetMember
-  );
   const dispatch = useDispatch<AppDispatch>();
   const familyApi = new FamilyApi(false);
   const membersApi = new MembersApi(false);

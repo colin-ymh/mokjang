@@ -5,18 +5,20 @@ import { RootState } from '@/redux/store';
 import { MembersApi } from '@/api/churches/members.api';
 import { EducationTermsApi } from '@/api/management/education/education-terms.api';
 import TermRegisterView from '@/components/atoms/management/education/term-register.view';
-import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-item';
 import { BLANK } from '@/constants/constant';
 import { Member } from '@/models/member/member';
 import { Education, EducationTerm } from '@/models/management/management';
 import { getIsWellFormedDate, getIsWellFormedTerm } from '@/utils/check';
 import { getFormattedDate, getFormattedName } from '@/utils/format';
+import { MemberDropdownValueType } from '@/models/dropdown/dropdown';
+import { getAge, getDateFromString } from '@/utils/date';
 
 type TermRegisterProps = {
   education: Education;
   terms: EducationTerm[];
   onClickClose: () => void;
   fetchTerms: () => void;
+  targetTerm?: EducationTerm;
 };
 
 const TermRegister = ({
@@ -24,43 +26,39 @@ const TermRegister = ({
   terms,
   onClickClose,
   fetchTerms,
+  targetTerm,
 }: TermRegisterProps) => {
   const membersApi = new MembersApi(false);
   const educationTermsApi = new EducationTermsApi(false);
 
-  // 마지막 기수를 얻어내는 함수
-  // const getLastTerm = (terms: EducationTerm[]) => {
-  //   if (terms.length === 0) return '0'; // 빈 배열일 경우 null 반환
-  //
-  //   // endDate 기준으로 내림차순 정렬 후 첫 번째 항목 반환
-  //   const sortedTerms = terms
-  //     .filter((term) => term.endDate !== undefined)
-  //     .sort(
-  //       (a, b) =>
-  //         new Date(b.endDate!).getTime() - new Date(a.endDate!).getTime()
-  //     );
-  //
-  //   return sortedTerms.length > 0 ? sortedTerms[0].term : '0';
-  // };
-
   const churchId = useSelector((state: RootState) => state.church.churchId);
 
   // 기수
-  const [term, setTerm] = useState<string>(BLANK);
+  const [term, setTerm] = useState<string>(targetTerm?.term || BLANK);
   // 교육 횟수
-  const [session, setSession] = useState<string>(BLANK);
-  // 교육 시작일
-  const [startDate, setStartDate] = useState<string>(BLANK);
-  // 교육 종료일
-  const [endDate, setEndDate] = useState<string>(BLANK);
-  // 교육 담당자 입력란
-  const [instructorValue, setInstructorValue] = useState<string>(BLANK);
-  // 검색된 교인목록
-  const [searchedMembers, setSearchedMembers] = useState<DropdownValueType[]>(
-    []
+  const [session, setSession] = useState<string>(
+    targetTerm?.numberOfSessions || BLANK
   );
+  // 교육 시작일
+  const [startDate, setStartDate] = useState<string>(
+    targetTerm?.startDate ? getFormattedDate(targetTerm.startDate) : BLANK
+  );
+  // 교육 종료일
+  const [endDate, setEndDate] = useState<string>(
+    targetTerm?.endDate ? getFormattedDate(targetTerm.endDate) : BLANK
+  );
+  // 교육 담당자 입력란
+  const [instructorValue, setInstructorValue] = useState<string>(
+    targetTerm?.instructor?.name || BLANK
+  );
+  // 검색된 교인목록
+  const [searchedMembers, setSearchedMembers] = useState<
+    MemberDropdownValueType[]
+  >([]);
   // 선택된 담당자 Id
-  const [instructorId, setInstructorId] = useState<string>(BLANK);
+  const [instructorId, setInstructorId] = useState<string>(
+    targetTerm?.instructorId || BLANK
+  );
 
   // 저장 가능 여부
   const [isSaveEnabled, setIsSaveEnabled] = useState<boolean>(false);
@@ -105,25 +103,48 @@ const TermRegister = ({
   // 기수 저장 버튼 이벤트
   const onClickSave = () => {
     if (isSaveEnabled) {
-      educationTermsApi
-        .createEducationTerms(
-          {
-            churchId,
-            educationId: education.id,
-          },
-          {
-            startDate,
-            endDate,
-            term: parseInt(term),
-            numberOfSessions: parseInt(session),
-            instructorId: instructorId ? parseInt(instructorId) : undefined,
-          }
-        )
-        .then(() => {
-          onClickClose();
-          fetchTerms();
-          clearData();
-        });
+      if (targetTerm?.id) {
+        educationTermsApi
+          .editEducationTerms(
+            {
+              churchId,
+              educationId: education.id,
+              educationTermId: targetTerm.id,
+            },
+            {
+              startDate,
+              endDate,
+              term: targetTerm.term !== term ? parseInt(term) : undefined,
+              numberOfSessions: parseInt(session),
+              instructorId: instructorId ? parseInt(instructorId) : undefined,
+            }
+          )
+          .then(() => {
+            onClickClose();
+            fetchTerms();
+            clearData();
+          });
+      } else {
+        educationTermsApi
+          .createEducationTerms(
+            {
+              churchId,
+              educationId: education.id,
+            },
+            {
+              startDate,
+              endDate,
+              term: parseInt(term),
+              numberOfSessions: parseInt(session),
+              instructorId: instructorId ? parseInt(instructorId) : undefined,
+            }
+          )
+          .then(() => {
+            onClickClose();
+            fetchTerms();
+            clearData();
+          });
+      }
     }
   };
 
@@ -143,11 +164,13 @@ const TermRegister = ({
       membersApi
         .getMembers({ churchId, page: 1, take: 5, name: instructorValue })
         .then((response) => {
-          const newMembers: DropdownValueType[] = response.data.data.map(
+          const newMembers: MemberDropdownValueType[] = response.data.data.map(
             (member: Member) => {
               return {
                 value: member.id,
                 title: member.name,
+                profileImage: member?.profileImage,
+                age: member?.birth && getAge(getDateFromString(member.birth)),
               };
             }
           );

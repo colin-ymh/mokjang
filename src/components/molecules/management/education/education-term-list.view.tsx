@@ -47,7 +47,7 @@ type EducationTermViewProps = {
   terms: EducationTerm[];
   isModalShown: boolean;
   fetchTerms: () => void;
-  onClickModalOpen: () => void;
+  onClickItem: () => void;
   onClickModalClose: () => void;
 };
 
@@ -56,7 +56,7 @@ const EducationTermListView = ({
   terms,
   isModalShown,
   fetchTerms,
-  onClickModalOpen,
+  onClickItem,
   onClickModalClose,
 }: EducationTermViewProps) => {
   const t = useI18n();
@@ -65,7 +65,7 @@ const EducationTermListView = ({
     <EducationTermContainer>
       <ListTypeHeader>
         <MainText color={GRAY.DARK}>{t('term')}</MainText>
-        <PlusButton onClick={onClickModalOpen} />
+        <PlusButton onClick={onClickItem} />
         <CustomPopup
           isShow={isModalShown}
           onClickClose={onClickModalClose}
@@ -81,7 +81,7 @@ const EducationTermListView = ({
           />
         </CustomPopup>
       </ListTypeHeader>
-      <TermTable education={education} terms={terms} />
+      <TermTable education={education} terms={terms} fetchTerms={fetchTerms} />
     </EducationTermContainer>
   );
 };

@@ -103,6 +103,12 @@ export const getIsWellFormedName = (name: string) => {
   return /^[가-힣a-zA-Z\s]+$/g.test(name);
 };
 
+export const getIsWellFormedTitle = (name: string) => {
+  if (name === BLANK) return false;
+  // 한글, 영문, 공백만 허용
+  return /^[가-힣a-zA-Z0-9\s]+$/g.test(name);
+};
+
 export const getIsWellFormedVehicleNumber = (vehicleNumber: string) => {
   if (vehicleNumber.length !== 4) return false;
   return true;

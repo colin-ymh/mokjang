@@ -65,7 +65,8 @@ export type TermInformationContentProps = {
   selectedSessionId: string;
   enrollments: EducationEnrollment[];
   sessions: EducationSession[];
-  fetchEnrollments: () => void;
+  fetchTerms: () => void;
+  onClickItem: (isSession: boolean) => void;
 };
 
 const TermInformationContent = ({
@@ -74,7 +75,8 @@ const TermInformationContent = ({
   selectedSessionId,
   enrollments,
   sessions,
-  fetchEnrollments,
+  fetchTerms,
+  onClickItem,
 }: TermInformationContentProps) => {
   const t = useI18n();
   // 기수 정보인지 회차 정보인지
@@ -107,6 +109,7 @@ const TermInformationContent = ({
           sessions.find((session) => session.id === selectedSessionId) ||
           DEFAULT_EDUCATION_SESSION
         }
+        onClickItem={onClickItem}
       />
       {/* 등록 정보 */}
       <ListTypeHeader>
@@ -120,7 +123,7 @@ const TermInformationContent = ({
             enrollments={enrollments}
             isShown={isModalShown}
             onClickClose={onClickModalClose}
-            fetchEnrollments={fetchEnrollments}
+            fetchTerms={fetchTerms}
           />
         </ModalContainer>
       </ListTypeHeader>

@@ -4,14 +4,16 @@ import { RootState } from '@/redux/store';
 
 import MemberEducationView from '@/components/molecules/member/information/member-education.view';
 import { EducationHistory } from '@/models/member/history';
-import { EducationHistoryApi } from '@/api/history/education-history';
+import { EducationHistoryApi } from '@/api/history/education-history.api';
 import { ORDER_DIRECTION } from '@/constants/constant';
+import { Member } from '@/models/member/member';
 
-const MemberEducation = () => {
+type MemberEducation = {
+  targetMember: Member;
+};
+
+const MemberEducation = ({ targetMember }: MemberEducation) => {
   const churchId = useSelector((state: RootState) => state.church.churchId);
-  const targetMember = useSelector(
-    (state: RootState) => state.targetMember.targetMember
-  );
   const educationHistoryApi = new EducationHistoryApi(false);
 
   // 사용자의 그룹 이력

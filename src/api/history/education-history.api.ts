@@ -96,8 +96,8 @@ export class EducationHistoryApi {
 
   /**
    * 교육 이력 수정
-   * @param {createEducationHistoryParams} params
-   * @param {createEducationHistoryBody} body
+   * @param {editEducationHistoryParams} params
+   * @param {editEducationHistoryBody} body
    * @returns {Promise<AxiosResponse>}
    */
   public editEducationHistory = async (
@@ -117,7 +117,7 @@ export class EducationHistoryApi {
 
   /**
    * 교육 이력 삭제
-   * @param {createEducationHistoryParams} params
+   * @param {deleteEducationHistoryParams} params
    * @returns {Promise<AxiosResponse>}
    */
   public deleteEducationHistory = async (
