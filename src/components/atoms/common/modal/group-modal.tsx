@@ -38,8 +38,8 @@ const GroupModal = ({
   // 저장 가능 여부
   const [isButtonEnabled, setIsButtonEnabled] = useState<boolean>(false);
 
-  // 최하위 뎁스의 소그룹을 선택 -> 적용
-  const onClickChild = (group: Group) => {
+  // 그룹 설정 완료 버튼
+  const onClickSaveGroup = (group: Group) => {
     if (group) {
       setSelectedGroup(group);
     }
@@ -89,7 +89,7 @@ const GroupModal = ({
     onClickClose,
     onClickSaveNewGroup,
     onClickSaveEditGroup,
-    onClickChild,
+    onClickSaveGroup,
   };
 
   return (

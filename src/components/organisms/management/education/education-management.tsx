@@ -7,7 +7,7 @@ import { EDUCATION_MANAGEMENT_HEADER_ID } from '@/constants/layout/header';
 import EducationManagementView from '@/components/organisms/management/education/education-management.view';
 import { DEFAULT_EDUCATION, Education } from '@/models/management/management';
 import { BLANK } from '@/constants/constant';
-import { getFormattedName } from '@/utils/format';
+import { getFormattedTitle } from '@/utils/format';
 import { getIsWellFormedName } from '@/utils/check';
 import { useEducationManagementHeaderBarItems } from '@/hooks/layout/header-bar-items';
 
@@ -53,7 +53,7 @@ const EducationManagement = ({}: EducationManagementProps) => {
 
   // 이름 변경
   const onChangeName = (event: ChangeEvent<HTMLInputElement>) => {
-    const newName = getFormattedName(event.target.value);
+    const newName = getFormattedTitle(event.target.value);
     setNewEducationName(newName);
   };
 

@@ -53,7 +53,7 @@ const TermInformationHeader = ({
           size={SIZE.EXTRA_LARGE}
         >{`${education.name} ${term?.term}기`}</MainText>
         <MainText size={SIZE.MEDIUM} color={GRAY.DARK}>
-          {term?.instructor.name}
+          {term?.instructor?.name}
         </MainText>
       </Information>
 

@@ -7,6 +7,7 @@ import {
   EDUCATION_TERM_HEADER_ID,
   GROUP_MANAGEMENT_HEADER_ID,
   MEMBER_INFORMATION_HEADER_ID,
+  MINISTRY_MANAGEMENT_HEADER_ID,
 } from '@/constants/layout/header';
 
 import { useI18n, useScopedI18n } from '../../../locales/client';
@@ -103,6 +104,23 @@ export const useGroupManagementHeaderBarItems = () => {
     {
       id: GROUP_MANAGEMENT_HEADER_ID.MEMBER_LIST,
       title: t_header(GROUP_MANAGEMENT_HEADER_ID.MEMBER_LIST),
+    },
+  ];
+
+  return items;
+};
+
+export const useMinistryManagementHeaderBarItems = () => {
+  const t_header = useScopedI18n('header');
+
+  const items = [
+    {
+      id: MINISTRY_MANAGEMENT_HEADER_ID.MINISTRY_GROUP_INFORMATION,
+      title: t_header(MINISTRY_MANAGEMENT_HEADER_ID.MINISTRY_GROUP_INFORMATION),
+    },
+    {
+      id: MINISTRY_MANAGEMENT_HEADER_ID.MINISTRY_MEMBER_LIST,
+      title: t_header(MINISTRY_MANAGEMENT_HEADER_ID.MINISTRY_MEMBER_LIST),
     },
   ];
 

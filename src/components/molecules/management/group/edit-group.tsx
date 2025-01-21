@@ -64,9 +64,9 @@ const EditGroup = ({
       ...newRoles,
       {
         role: newRoleName,
-        id: new Date().toDateString(),
-        churchId: new Date().toDateString(),
-        groupId: new Date().toDateString(),
+        id: new Date().getTime().toString(),
+        churchId: new Date().getTime().toString(),
+        groupId: new Date().getTime().toString(),
       },
     ]);
     setNewRoleName(BLANK);

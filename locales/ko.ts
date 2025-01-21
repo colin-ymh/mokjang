@@ -31,6 +31,8 @@ export default {
   groupName: '그룹명',
   groupRole: '그룹역할',
 
+  ministryGroupList: '사역 그룹 목록',
+
   educationList: '교육 목록',
   educationName: '교육명',
   educationStatus: '상태',
@@ -138,6 +140,9 @@ export default {
 
   'header.groupInformation': '그룹 정보',
   'header.groupMembers': '그룹원',
+
+  'header.ministryGroupInformation': '그룹 정보',
+  'header.ministryGroupMembers': '그룹원',
   /*-------------------header (side bar button)-------------------*/
 
   /*-------------------member content (member header bar button)-------------------*/

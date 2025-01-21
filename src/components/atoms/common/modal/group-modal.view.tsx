@@ -6,10 +6,10 @@ import LabelInput from '@/components/atoms/common/input/label-input';
 import { GRAY, MAIN } from '@/constants/styles/color';
 import { Group } from '@/models/management/management';
 import { GroupHistory } from '@/models/member/history';
+import GroupDropdown from '@/components/atoms/common/dropdown/group-dropdown';
 
 import { useI18n } from '../../../../../locales/client';
 import Cancel from '../../../../../public/svg/cancel.svg';
-import GroupDropdown from '@/components/atoms/common/dropdown/group-dropdown';
 
 const GroupModalViewContainer = styled.div`
   display: flex;
@@ -58,7 +58,7 @@ type GroupModalViewProps = {
   onClickClose: () => void;
   onClickSaveNewGroup: (groupId: string, startDate: string) => void;
   onClickSaveEditGroup: (startDate: string, endDate: string) => void;
-  onClickChild: (group: Group) => void;
+  onClickSaveGroup: (group: Group) => void;
 };
 
 const GroupModalView = ({
@@ -73,7 +73,7 @@ const GroupModalView = ({
   onClickClose,
   onClickSaveNewGroup,
   onClickSaveEditGroup,
-  onClickChild,
+  onClickSaveGroup,
 }: GroupModalViewProps) => {
   const t = useI18n();
 
@@ -91,8 +91,7 @@ const GroupModalView = ({
             isEdit ? prevGroup.groupName : selectedGroup?.name || t('none')
           }
           isEdit={isEdit}
-          selectedGroup={selectedGroup}
-          onClickChild={onClickChild}
+          onClickSaveGroup={onClickSaveGroup}
         />
         {/* 시작 날짜 */}
         <LabelInput

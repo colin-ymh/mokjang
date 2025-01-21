@@ -9,7 +9,7 @@ type EditMemberOfficerParams = {
 };
 
 type EditMemberOfficerBody = {
-  isDeleteOfficer?: boolean;
+  isDeleteOfficer: boolean;
   officerId?: string;
   officerStartDate?: string;
   officerStartChurch?: string;
@@ -66,7 +66,7 @@ export class MemberManagementsApi {
   ): Promise<AxiosResponse> => {
     const { churchId, memberId } = params;
 
-    const url = `${this._url}/churches/${churchId}/members/${memberId}/settings/officers`;
+    const url = `${this._url}/churches/${churchId}/members/${memberId}/officers`;
 
     try {
       return await axios.patch(url, body);

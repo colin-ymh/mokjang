@@ -2,29 +2,28 @@ import { ChangeEvent, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 
-import { GroupHistoryApi } from '@/api/history/group-history';
 import { MembersApi } from '@/api/churches/members.api';
-import AddGroupMemberModalView from '@/components/atoms/common/modal/add-group-member-modal.view';
 import { BLANK } from '@/constants/constant';
+import AddMinistryGroupMemberModalView from '@/components/atoms/common/modal/add-ministry-group-member-modal.view';
 import { Member } from '@/models/member/member';
-import { Group } from '@/models/management/management';
+import { MinistryGroup } from '@/models/management/management';
 import { getFormattedName } from '@/utils/format';
 
-type AddGroupMemberModalProps = {
-  group: Group;
+type AddMinistryGroupMemberModalProps = {
+  ministryGroup: MinistryGroup;
   isShown: boolean;
   fetchMembers: () => void;
   onClickClose: () => void;
 };
 
-const AddGroupMemberModal = ({
-  group,
+const AddMinistryGroupMemberModal = ({
+  ministryGroup,
   isShown,
   fetchMembers,
   onClickClose,
-}: AddGroupMemberModalProps) => {
+}: AddMinistryGroupMemberModalProps) => {
   const membersApi = new MembersApi(false);
-  const groupHistoryApi = new GroupHistoryApi(false);
+  // const ministryGroupHistoryApi = new MinistryGroupHistoryApi(false);
   const churchId = useSelector((state: RootState) => state.church.churchId);
 
   // 검색하고자 하는 교인 이름
@@ -66,22 +65,20 @@ const AddGroupMemberModal = ({
   // 추가 버튼 이벤트
   const onClickSave = () => {
     if (selectedMembers.length !== 0) {
-      selectedMembers.map((member) => {
-        groupHistoryApi.createGroupHistory(
-          { churchId, memberId: member.id },
-          {
-            groupId: group.id as string,
-            startDate: new Date().toDateString(),
-            autoEndDate: true,
-          }
-        );
-      });
-      // 모달 닫기
-      setTimeout(() => {
-        fetchMembers();
-      }, 100);
-      onClickClose();
-      resetData();
+      // selectedMembers.map((member) => {
+      //   ministryGroupHistoryApi.createMinistryGroupHistory(
+      //     { churchId, memberId: member.id },
+      //     {
+      //       ministryGroupId: ministryGroup.id as string,
+      //       startDate: new Date().toDateString(),
+      //       autoEndDate: true,
+      //     }
+      //   );
+      // });
+      // // 모달 닫기
+      // fetchMembers();
+      // onClickClose();
+      // resetData();
     }
   };
 
@@ -111,7 +108,7 @@ const AddGroupMemberModal = ({
   }, [onClickClose]);
 
   const props = {
-    group,
+    ministryGroup,
     isShown,
     searchName,
     searchedMembers,
@@ -124,9 +121,9 @@ const AddGroupMemberModal = ({
   };
   return (
     <>
-      <AddGroupMemberModalView {...props} />
+      <AddMinistryGroupMemberModalView {...props} />
     </>
   );
 };
 
-export default AddGroupMemberModal;
+export default AddMinistryGroupMemberModal;

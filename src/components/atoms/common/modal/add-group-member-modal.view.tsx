@@ -140,7 +140,9 @@ const AddGroupMemberModalView = ({
                   key={member.id}
                   member={member}
                   isEnable={group.id !== getCurrentGroup(member.group)?.groupId}
-                  selectedMembers={selectedMembers}
+                  isSelected={selectedMembers.some(
+                    (selectedMember) => selectedMember.id === member.id
+                  )}
                   onClick={onClickMember}
                 />
               );
@@ -155,7 +157,9 @@ const AddGroupMemberModalView = ({
                   key={member.id}
                   member={member}
                   isEnable={group.id !== getCurrentGroup(member.group)?.groupId}
-                  selectedMembers={selectedMembers}
+                  isSelected={selectedMembers.some(
+                    (selectedMember) => selectedMember.id === member.id
+                  )}
                   onClick={onClickMember}
                 />
               );

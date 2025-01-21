@@ -11,7 +11,7 @@ import { RootState } from '@/redux/store';
 
 import { DEFAULT_OFFICER, Officer } from '@/models/management/management';
 import { OfficersApi } from '@/api/management/officers.api';
-import { getFormattedName } from '@/utils/format';
+import { getFormattedTitle } from '@/utils/format';
 import { getIsWellFormedName } from '@/utils/check';
 import { BLANK } from '@/constants/constant';
 import ManagementOfficerItemView from '@/components/atoms/management/officer/management-officer-item.view';
@@ -49,12 +49,6 @@ const ManagementOfficerItem = ({
 
   // 수정되는 이름
   const [editName, setEditName] = useState<string>(officer.name);
-
-  // 새그룹 이름 변경
-  const onChangeNewOfficerName = (event: ChangeEvent<HTMLInputElement>) => {
-    const newName = getFormattedName(event.target.value);
-    setNewOfficerName(newName);
-  };
 
   // 새로운 그룹 추가하기
   const onClickSaveNewOfficer = () => {
@@ -106,7 +100,7 @@ const ManagementOfficerItem = ({
 
   // 이름 수정 이벤트
   const onChangeName = (event: ChangeEvent<HTMLInputElement>) => {
-    const newName = getFormattedName(event.target.value);
+    const newName = getFormattedTitle(event.target.value);
     setEditName(newName);
   };
 

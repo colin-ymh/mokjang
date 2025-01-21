@@ -4,21 +4,21 @@ import { SERVER_URL, TEST_SERVER_URL } from '@/constants/state/url';
 class HTTPError extends Error {}
 
 type GetGroupsParams = {
-  churchId: string; // 교회 id
+  churchId: string;
 };
 
 type GetGroupParams = {
-  churchId: string; // 교회 id
+  churchId: string;
   groupId: string;
 };
 
 type GetChildGroupsParams = {
-  churchId: string; // 교회 id
+  churchId: string;
   groupId: string;
 };
 
 type CreateGroupParams = {
-  churchId: string; // 교회 id
+  churchId: string;
 };
 
 type CreateGroupBody = {
@@ -27,7 +27,7 @@ type CreateGroupBody = {
 };
 
 type EditGroupParams = {
-  churchId: string; // 교회 id
+  churchId: string;
   groupId: string;
 };
 
@@ -37,7 +37,7 @@ type EditGroupBody = {
 };
 
 type DeleteGroupParams = {
-  churchId: string; // 교회 id
+  churchId: string;
   groupId: string;
 };
 

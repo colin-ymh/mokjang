@@ -205,12 +205,8 @@ const PersonalRegister = () => {
     // vehicleNumber 배열을 복사하여 새로운 배열 생성
     const newVehicleNumber = [...member.vehicleNumber];
 
-    const number = getFormattedVehicleNumber(event.target.value);
-
-    if (number) {
-      // 수정할 인덱스의 값을 변경
-      newVehicleNumber[index] = number;
-    }
+    // 수정할 인덱스의 값을 변경
+    newVehicleNumber[index] = getFormattedVehicleNumber(event.target.value);
 
     // 새로운 member 객체와 vehicleNumber 배열을 디스패치
     dispatch(setMember({ ...member, vehicleNumber: newVehicleNumber }));

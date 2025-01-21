@@ -19,6 +19,11 @@ export enum GROUP_MANAGEMENT_HEADER_ID {
   MEMBER_LIST = 'groupMembers',
 }
 
+export enum MINISTRY_MANAGEMENT_HEADER_ID {
+  MINISTRY_GROUP_INFORMATION = 'ministryGroupInformation',
+  MINISTRY_MEMBER_LIST = 'ministryGroupMembers',
+}
+
 export enum EDUCATION_MANAGEMENT_HEADER_ID {
   TERM = 'term',
 }

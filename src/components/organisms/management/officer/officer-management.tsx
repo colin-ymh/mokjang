@@ -6,7 +6,7 @@ import { OfficersApi } from '@/api/management/officers.api';
 import OfficerManagementView from '@/components/organisms/management/officer/officer-management.view';
 import { DEFAULT_OFFICER, Officer } from '@/models/management/management';
 import { BLANK } from '@/constants/constant';
-import { getFormattedName } from '@/utils/format';
+import { getFormattedTitle } from '@/utils/format';
 import { getIsWellFormedName } from '@/utils/check';
 
 type OfficerManagementProps = {};
@@ -42,7 +42,7 @@ const OfficerManagement = ({}: OfficerManagementProps) => {
 
   // 이름 변경
   const onChangeName = (event: ChangeEvent<HTMLInputElement>) => {
-    const newName = getFormattedName(event.target.value);
+    const newName = getFormattedTitle(event.target.value);
     setNewOfficerName(newName);
   };
 

@@ -4,21 +4,19 @@ import { AppDispatch, RootState } from '@/redux/store';
 import { setMemberFilter } from '@/redux/reducers/member-filter-reducer';
 
 import GroupFilterView from '@/components/molecules/layout/group-filter.view';
-import { GroupsApi } from '@/api/management/group/groups.api';
 import { Group } from '@/models/management/management';
 import { BLANK } from '@/constants/constant';
 import { getOrderedGroups } from '@/utils/group';
 
 const GroupFilter = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const groupsApi = new GroupsApi(false);
-  const churchId = useSelector((state: RootState) => state.church.churchId);
+  const { groups } = useSelector((state: RootState) => state.church);
   const memberFilter = useSelector(
     (state: RootState) => state.memberFilter.memberFilter
   );
 
   // 전체 그룹 배열
-  const [groups, setGroups] = useState<Group[]>([]);
+  const [orderedGroups, setOrderedGroups] = useState<Group[]>([]);
   // 선택된 그룹 id
   const [selectedGroupId, setSelectedGroupId] = useState<string>(BLANK);
   // 선택된 그룹 + 모든 자식 그룹들의 id
@@ -26,14 +24,10 @@ const GroupFilter = () => {
 
   // 교회 정보를 통해 소그룹들 불러오기
   useEffect(() => {
-    if (churchId) {
-      groupsApi.getGroups({ churchId }).then((response) => {
-        if (response.status === 200) {
-          setGroups(getOrderedGroups(response.data));
-        }
-      });
+    if (groups) {
+      setOrderedGroups(getOrderedGroups(groups));
     }
-  }, [churchId]);
+  }, [groups]);
 
   // 새로운 그룹을 설정
   const onClickGroup = (groupIds: string[]) => {
@@ -49,7 +43,7 @@ const GroupFilter = () => {
   }, [groupIds]);
 
   const props = {
-    groups,
+    groups: orderedGroups,
     selectedGroupId,
     onClickGroup,
   };

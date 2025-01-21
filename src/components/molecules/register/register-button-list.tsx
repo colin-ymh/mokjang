@@ -11,8 +11,10 @@ import { MembersApi } from '@/api/churches/members.api';
 import { MemberManagementsApi } from '@/api/churches/member-managements.api';
 import { RequestInfoApi } from '@/api/churches/request-info.api';
 import {
+  BLANK,
   MEMBER_REGISTER_STAGE,
   MEMBER_REGISTER_TYPE,
+  NONE,
   NULL,
 } from '@/constants/constant';
 import RegisterButtonListView from '@/components/molecules/register/register-button-list.view';
@@ -20,6 +22,10 @@ import RegisterButtonListView from '@/components/molecules/register/register-but
 import { getCreateMemberBody, getEditMemberBody } from '@/utils/member';
 
 import { useScopedI18n } from '../../../../locales/client';
+import {
+  fetchMembers,
+  setMembers,
+} from '@/redux/reducers/member-filter-reducer';
 
 type RegisterButtonListProps = {
   setIsShown?: Dispatch<SetStateAction<boolean>>;
@@ -45,18 +51,24 @@ const RegisterButtonList = ({ setIsShown }: RegisterButtonListProps) => {
       requestInfoApi
         .inviteMember({ churchId, isTest: true }, getCreateMemberBody(member))
         .then((response) => {
-          console.log(response);
           // 등록 성공 시
           if (response.status === 201) {
             // 교인 Id 할당
             const memberId = response.data.id;
             dispatch(setMember({ ...member, id: memberId }));
-            dispatch(setMember(DEFAULT_MEMBER));
+            dispatch(fetchMembers({ churchId, currentPage: 1 })).then(
+              (result) => {
+                if (fetchMembers.fulfilled.match(result)) {
+                  dispatch(setMembers(result.payload));
+                }
+              }
+            );
             // 성공 팝업
             setIsToastShow(true);
           }
         });
     } else if (stage === MEMBER_REGISTER_STAGE.PERSONAL) {
+      dispatch(setMember(DEFAULT_MEMBER));
       dispatch(setStage(MEMBER_REGISTER_STAGE.REQUIRED));
     } else if (stage === MEMBER_REGISTER_STAGE.RELIGIOUS) {
       dispatch(setStage(MEMBER_REGISTER_STAGE.PERSONAL));
@@ -75,10 +87,15 @@ const RegisterButtonList = ({ setIsShown }: RegisterButtonListProps) => {
             // 교인 Id 할당
             const memberId = response.data.id;
             dispatch(setMember({ ...member, id: memberId }));
-
+            dispatch(fetchMembers({ churchId, currentPage: 1 })).then(
+              (result) => {
+                if (fetchMembers.fulfilled.match(result)) {
+                  dispatch(setMembers(result.payload));
+                }
+              }
+            );
             // 성공 팝업
             setIsToastShow(true);
-            dispatch(setMember(DEFAULT_MEMBER));
             // 다음 단계로 이동
             dispatch(setStage(MEMBER_REGISTER_STAGE.PERSONAL));
           }
@@ -93,6 +110,13 @@ const RegisterButtonList = ({ setIsShown }: RegisterButtonListProps) => {
             )
             .then(() => {
               dispatch(setMember(DEFAULT_MEMBER));
+              dispatch(fetchMembers({ churchId, currentPage: 1 })).then(
+                (result) => {
+                  if (fetchMembers.fulfilled.match(result)) {
+                    dispatch(setMembers(result.payload));
+                  }
+                }
+              );
               if (setIsShown) setIsShown(false);
             });
         }
@@ -109,19 +133,44 @@ const RegisterButtonList = ({ setIsShown }: RegisterButtonListProps) => {
           )
           .then(() => {
             dispatch(setMember(DEFAULT_MEMBER));
+            dispatch(fetchMembers({ churchId, currentPage: 1 })).then(
+              (result) => {
+                if (fetchMembers.fulfilled.match(result)) {
+                  dispatch(setMembers(result.payload));
+                }
+              }
+            );
             if (setIsShown) setIsShown(false);
           });
 
         // 직분 업데이트
         if (member.officerId !== NULL) {
-          memberManagementsApi.editMemberOfficer(
-            { churchId, memberId: member.id },
-            {
-              officerId: member.officerId,
-              officerStartChurch: member.officerStartChurch,
-              officerStartDate: member.officerStartDate,
-            }
-          );
+          memberManagementsApi
+            .editMemberOfficer(
+              { churchId, memberId: member.id },
+              {
+                isDeleteOfficer: false,
+                officerId:
+                  member.officerId !== NONE ? member.officerId : undefined,
+                officerStartChurch:
+                  member.officerStartChurch === BLANK
+                    ? undefined
+                    : member.officerStartChurch,
+                officerStartDate:
+                  member.officerStartDate === BLANK
+                    ? undefined
+                    : member.officerStartDate,
+              }
+            )
+            .then(() => {
+              dispatch(fetchMembers({ churchId, currentPage: 1 })).then(
+                (result) => {
+                  if (fetchMembers.fulfilled.match(result)) {
+                    dispatch(setMembers(result.payload));
+                  }
+                }
+              );
+            });
         }
       }
     }

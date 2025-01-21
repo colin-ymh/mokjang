@@ -1,7 +1,9 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { BLANK, NULL, ORDER_DIRECTION } from '@/constants/constant';
 import { MEMBER } from '@/constants/member/member-column';
 import { Member } from '@/models/member/member';
+import { RootState } from '@/redux/store';
+import { MembersApi } from '@/api/churches/members.api';
 
 type MEMBER_FILTER = {
   [MEMBER.NAME]: string;
@@ -223,6 +225,54 @@ const initialState: MemberFilterState = {
   filterAfter: BLANK,
   filterBefore: BLANK,
 };
+
+export const fetchMembers = createAsyncThunk<
+  Member[],
+  { churchId: string; currentPage: number },
+  { state: RootState }
+>(
+  'members/fetchMembers',
+  async ({ churchId, currentPage }, { getState, rejectWithValue }) => {
+    const state = getState().memberFilter;
+    const { memberOrderBy, memberOrderDirection, memberFilter } = state;
+    const membersApi = new MembersApi(false);
+
+    try {
+      let order = memberOrderBy;
+      if (order === MEMBER.AGE) order = MEMBER.BIRTH;
+
+      const response = await membersApi.getMembers({
+        churchId,
+        page: currentPage,
+        take: 30, // 무한 스크롤 최적화
+        order: order !== NULL ? order : undefined,
+        orderDirection: memberOrderDirection,
+        selectedColumns: memberFilter.selectedColumns,
+        name: memberFilter.name,
+        school: memberFilter.school,
+        group: memberFilter.group,
+        officer: memberFilter.officer,
+        vehicleNumber: memberFilter.vehicleNumber,
+        gender: memberFilter.gender as string[],
+        educations: memberFilter.educations,
+        ministries: memberFilter.ministries,
+        baptism: memberFilter.baptism,
+        marriage: memberFilter.marriage,
+        birthAfter: memberFilter.birthAfter,
+        birthBefore: memberFilter.birthBefore,
+        registerAfter: memberFilter.registerAfter,
+        registerBefore: memberFilter.registerBefore,
+        updateAfter: memberFilter.updateAfter,
+        updateBefore: memberFilter.updateBefore,
+      });
+
+      return response.data.data;
+    } catch (error) {
+      console.error('교인 목록 불러오기 실패', error);
+      return rejectWithValue('교인 목록을 불러오는 중 오류가 발생했습니다.');
+    }
+  }
+);
 
 const MemberFilterSlice = createSlice({
   name: 'register',

@@ -6,20 +6,19 @@ import { GroupsApi } from '@/api/management/group/groups.api';
 import { Group } from '@/models/management/management';
 import GroupDropdownView from '@/components/atoms/common/dropdown/group-dropdown.view';
 import { getOrderedGroups } from '@/utils/group';
+
 import { useI18n } from '../../../../../locales/client';
 
 type GroupModalProps = {
   value: string;
   isEdit: boolean;
-  selectedGroup: Group;
-  onClickChild: (group: Group) => void;
+  onClickSaveGroup: (group: Group) => void;
 };
 
 const GroupDropdown = ({
   value,
   isEdit,
-  selectedGroup,
-  onClickChild,
+  onClickSaveGroup,
 }: GroupModalProps) => {
   const t = useI18n();
   const groupsApi = new GroupsApi(false);
@@ -41,6 +40,9 @@ const GroupDropdown = ({
 
   // 현재 보고있는 그룹
   const [currentGroup, setCurrentGroup] = useState<Group>(START_GROUP);
+
+  // 현재 선택된 그룹
+  const [selectedGroup, setSelectedGroup] = useState<Group>(START_GROUP);
 
   // 보고있는 그룹 배열
   const [groups, setGroups] = useState<Group[]>([]);
@@ -80,6 +82,7 @@ const GroupDropdown = ({
 
   // 부모그룹 선택 시, 자식 그룹으로 변환
   const onClickParent = (group: Group) => {
+    setSelectedGroup(group);
     if (group.childGroupIds.length > 0 && group.childGroups) {
       setGroups(group.childGroups);
       setCurrentGroup(group);
@@ -135,15 +138,15 @@ const GroupDropdown = ({
   const props = {
     value,
     currentGroup,
+    selectedGroup,
     groups,
     parentGroups,
-    selectedGroup,
     isEdit,
     isDropdownShown,
     onClickOpenDropdown,
     onClickCloseDropdown,
     onClickParent,
-    onClickChild,
+    onClickSaveGroup,
     onClickGoBack,
   };
 

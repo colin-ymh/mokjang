@@ -10,12 +10,13 @@ import React, {
 import { DEFAULT_GROUP, Group } from '@/models/management/management';
 import ManagementGroupItemView from '@/components/atoms/management/group/management-group-item.view';
 import { GroupsApi } from '@/api/management/group/groups.api';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/redux/store';
-import { getFormattedName } from '@/utils/format';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '@/redux/store';
+import { getFormattedTitle } from '@/utils/format';
 import { getIsWellFormedName } from '@/utils/check';
 import AddGroup from '@/components/atoms/management/group/add-group';
 import { BLANK } from '@/constants/constant';
+import { fetchGroups } from '@/redux/reducers/church-reducer';
 
 type ManagementGroupItemProps = {
   group: Group;
@@ -23,7 +24,6 @@ type ManagementGroupItemProps = {
   selectedGroupId: string | null;
   setSelectedGroup: Dispatch<SetStateAction<Group>>;
   closedGroups: Set<number>;
-  fetchGroups: () => void;
   onClickToggle: (id: string) => void;
 };
 
@@ -33,13 +33,13 @@ const ManagementGroupItem = ({
   selectedGroupId,
   setSelectedGroup,
   closedGroups,
-  fetchGroups,
   onClickToggle,
 }: ManagementGroupItemProps) => {
   const groupsApi = new GroupsApi(false);
   const churchId = useSelector((state: RootState) => state.church.churchId);
   const isHaveChildren = group.childGroups && group.childGroups.length > 0;
   const isOpen = !closedGroups.has(parseInt(group.id as string));
+  const dispatch = useDispatch<AppDispatch>();
 
   // 이름 수정창 ref
   const nameInputRef = useRef<HTMLInputElement>(null);
@@ -61,7 +61,7 @@ const ManagementGroupItem = ({
 
   // 새그룹 이름 변경
   const onChangeNewGroupName = (event: ChangeEvent<HTMLInputElement>) => {
-    const newName = getFormattedName(event.target.value);
+    const newName = getFormattedTitle(event.target.value);
     setNewGroupName(newName);
   };
 
@@ -74,9 +74,10 @@ const ManagementGroupItem = ({
           { name: newGroupName, parentGroupId: group.id }
         )
         .then(() => {
-          fetchGroups();
-          setIsAddShown(false);
-          setNewGroupName(BLANK);
+          dispatch(fetchGroups()).then(() => {
+            setIsAddShown(false);
+            setNewGroupName(BLANK);
+          });
         });
     }
   };
@@ -108,7 +109,7 @@ const ManagementGroupItem = ({
   // 그룹 삭제
   const onClickGroupDelete = (groupId: string) => {
     groupsApi.deleteGroup({ churchId, groupId }).then(() => {
-      fetchGroups();
+      dispatch(fetchGroups());
       setSelectedGroup(DEFAULT_GROUP);
     });
   };
@@ -125,7 +126,7 @@ const ManagementGroupItem = ({
 
   // 이름 수정 이벤트
   const onChangeName = (event: ChangeEvent<HTMLInputElement>) => {
-    const newName = getFormattedName(event.target.value);
+    const newName = getFormattedTitle(event.target.value);
     setEditName(newName);
   };
 
@@ -140,9 +141,10 @@ const ManagementGroupItem = ({
           { name: editName }
         )
         .then((response) => {
-          setSelectedGroup(response.data);
-          fetchGroups();
-          setIsEdit(false);
+          dispatch(fetchGroups()).then(() => {
+            setSelectedGroup(response.data);
+            setIsEdit(false);
+          });
         });
     }
   };
@@ -152,7 +154,7 @@ const ManagementGroupItem = ({
     if (groupId !== parentGroupId) {
       groupsApi
         .editGroup({ churchId, groupId }, { parentGroupId })
-        .then(() => fetchGroups())
+        .then(() => dispatch(fetchGroups()))
         .catch((error) => {
           console.log(error);
         });
@@ -280,7 +282,6 @@ const ManagementGroupItem = ({
             selectedGroupId={selectedGroupId}
             setSelectedGroup={setSelectedGroup}
             closedGroups={closedGroups}
-            fetchGroups={fetchGroups}
             onClickToggle={onClickToggle}
           />
         ))}

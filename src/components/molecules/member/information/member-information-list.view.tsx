@@ -99,7 +99,6 @@ const InformationListView = ({
   prevMember,
   onClickItem,
 }: InformationListViewProps) => {
-  console.log(prevMember);
   const t = useI18n();
   const t_header = useScopedI18n('header');
 

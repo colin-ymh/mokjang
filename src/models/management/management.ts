@@ -39,6 +39,41 @@ export const DEFAULT_GROUP_ROLE = {
   role: BLANK,
 };
 
+export type MinistryGroup = {
+  churchId: string;
+  name: string;
+  parentMinistryGroupId: string | null;
+  id: string | null;
+  childMinistryGroupIds: string[];
+  childMinistryGroups?: MinistryGroup[];
+  ministries?: Ministry[];
+};
+
+export const DEFAULT_MINISTRY_GROUP = {
+  churchId: BLANK,
+  name: BLANK,
+  parentMinistryGroupId: BLANK,
+  id: BLANK,
+  childMinistryGroupIds: [],
+};
+
+export type Ministry = {
+  id: string;
+  name: string;
+  membersCount: number;
+  churchId: string;
+  ministryGroupId: string;
+  ministryGroup?: MinistryGroup;
+};
+
+export const DEFAULT_MINISTRY = {
+  id: BLANK,
+  name: BLANK,
+  membersCount: 0,
+  churchId: BLANK,
+  ministryGroupId: BLANK,
+};
+
 export type Education = {
   id: string;
   churchId: string;

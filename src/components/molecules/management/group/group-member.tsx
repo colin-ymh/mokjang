@@ -2,6 +2,7 @@ import GroupMemberView from '@/components/molecules/management/group/group-membe
 import { Group } from '@/models/management/management';
 import { Member } from '@/models/member/member';
 import { useEffect, useState } from 'react';
+
 import { MembersApi } from '@/api/churches/members.api';
 
 type GroupMemberProps = {

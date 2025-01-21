@@ -49,20 +49,23 @@ type AddMemberItemProps = {
   member: Member;
   isEnable: boolean;
   isSelected: boolean;
-  selectedMembers: Member[];
   onClick: (member: Member) => void;
 };
 
 const AddMemberItem = ({
-  selectedMembers,
+  member,
   isEnable,
   isSelected,
   onClick,
-  member,
 }: AddMemberItemProps) => {
   return (
     <BackgroundContainer>
-      <ItemContainer $isEnable={isEnable} onClick={() => onClick(member)}>
+      <ItemContainer
+        $isEnable={isEnable}
+        onClick={() => {
+          isEnable && onClick(member);
+        }}
+      >
         <ProfileImage
           src={member.profileImage || DefaultImage}
           alt={MEMBER.PROFILE_IMAGE}

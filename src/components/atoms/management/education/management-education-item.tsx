@@ -11,7 +11,7 @@ import { RootState } from '@/redux/store';
 
 import { DEFAULT_EDUCATION, Education } from '@/models/management/management';
 import { EducationsApi } from '@/api/management/education/educations.api';
-import { getFormattedName } from '@/utils/format';
+import { getFormattedTitle } from '@/utils/format';
 import { getIsWellFormedName } from '@/utils/check';
 import ManagementEducationItemView from '@/components/atoms/management/education/management-education-item.view';
 
@@ -69,7 +69,7 @@ const ManagementEducationItem = ({
 
   // 이름 수정 이벤트
   const onChangeName = (event: ChangeEvent<HTMLInputElement>) => {
-    const newName = getFormattedName(event.target.value);
+    const newName = getFormattedTitle(event.target.value);
     setEditName(newName);
   };
 

@@ -1,6 +1,6 @@
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/redux/store';
-import { MinistriesApi } from '@/api/management/ministries.api';
+import { MinistriesApi } from '@/api/management/ministry/ministries.api';
 import { EducationsApi } from '@/api/management/education/educations.api';
 import { OfficersApi } from '@/api/management/officers.api';
 import {

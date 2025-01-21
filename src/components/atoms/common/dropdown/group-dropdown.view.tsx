@@ -4,9 +4,9 @@ import { MainText } from '@/components/atoms/common/text/main-text';
 import { GRAY } from '@/constants/styles/color';
 import SelectGroupModal from '@/components/atoms/common/modal/select-group-modal';
 import { Group } from '@/models/management/management';
+import TransparentBackground from '@/components/atoms/common/etc/transparent-background';
 
 import { useI18n } from '../../../../../locales/client';
-import TransparentBackground from '@/components/atoms/common/etc/transparent-background';
 
 const LabelInputContainer = styled.div`
   flex: 1;
@@ -46,7 +46,7 @@ type GroupModalProps = {
   onClickOpenDropdown: () => void;
   onClickCloseDropdown: () => void;
   onClickParent: (group: Group) => void;
-  onClickChild: (group: Group) => void;
+  onClickSaveGroup: (group: Group) => void;
   onClickGoBack: () => void;
 };
 
@@ -61,7 +61,7 @@ const GroupDropdownView = ({
   onClickOpenDropdown,
   onClickCloseDropdown,
   onClickParent,
-  onClickChild,
+  onClickSaveGroup,
   onClickGoBack,
 }: GroupModalProps) => {
   const t = useI18n();
@@ -88,7 +88,7 @@ const GroupDropdownView = ({
             selectedGroup={selectedGroup}
             parentGroups={parentGroups}
             onClickParent={onClickParent}
-            onClickChild={onClickChild}
+            onClickSaveGroup={onClickSaveGroup}
             onClickCloseDropdown={onClickCloseDropdown}
             onClickGoBack={onClickGoBack}
           />

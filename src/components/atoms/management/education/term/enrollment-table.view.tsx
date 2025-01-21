@@ -17,7 +17,6 @@ import {
 } from '@/constants/management/education-term-column';
 import { getAge, getDateFromString } from '@/utils/date';
 import { getFormattedMobilePhone } from '@/utils/format';
-import { EducationAttendanceApi } from '@/api/management/education/education-attendance.api';
 import CheckButton from '@/components/atoms/common/button/check-button';
 import { MEMBER } from '@/constants/member/member-column';
 
@@ -193,7 +192,6 @@ const EnrollmentTableView = ({
   onChangeAttendance,
 }: EnrollmentTableProps) => {
   const { height } = useWindowSize();
-  const educationAttendanceApi = new EducationAttendanceApi(false);
 
   // isInformation에 따라 ATTENDANCE 열 숨기기
   const filteredTermTableHeader = isInformation
@@ -225,7 +223,7 @@ const EnrollmentTableView = ({
         return (
           <ProfileContainer>
             <ProfileImage
-              src={enrollment.member.profileImage || DefaultImage}
+              src={enrollment.member?.profileImage || DefaultImage}
               alt={MEMBER.PROFILE_IMAGE}
             />
             <MainText>{enrollment.memberName}</MainText>
@@ -234,7 +232,7 @@ const EnrollmentTableView = ({
       case EDUCATION_ENROLLMENT.AGE:
         return (
           <MainText>
-            {getAge(getDateFromString(enrollment.member.birth))}
+            {getAge(getDateFromString(enrollment.member?.birth))}
           </MainText>
         );
       case EDUCATION_ENROLLMENT.GROUP:
@@ -248,7 +246,8 @@ const EnrollmentTableView = ({
       case EDUCATION_ENROLLMENT.MOBILE_PHONE:
         return (
           <MainText>
-            {getFormattedMobilePhone(enrollment?.member.mobilePhone)}
+            {enrollment?.member?.mobilePhone &&
+              getFormattedMobilePhone(enrollment.member.mobilePhone)}
           </MainText>
         );
       default:

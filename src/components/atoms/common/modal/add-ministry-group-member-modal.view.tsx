@@ -3,9 +3,8 @@ import styled from 'styled-components';
 
 import { GRAY, MAIN, WHITE } from '@/constants/styles/color';
 import { Member } from '@/models/member/member';
-import { EducationEnrollment } from '@/models/management/management';
+import { MinistryGroup } from '@/models/management/management';
 import BorderInput from '@/components/atoms/common/input/border-input';
-import AddMemberItem from '@/components/atoms/management/group/add-member-item';
 import Button from '@/components/atoms/common/button/button';
 
 import Cancel from '../../../../../public/svg/cancel.svg';
@@ -57,7 +56,7 @@ const MemberListContainer = styled.div`
   display: flex;
   flex-direction: column;
   padding: 0 20px;
-  height: 280px;
+  height: 330px;
   overflow-y: scroll;
 `;
 
@@ -78,11 +77,11 @@ const SelectedMemberList = styled.div`
   flex-direction: column;
   padding: 0 20px;
   overflow-y: scroll;
-  height: 350px;
+  height: 320px;
 `;
 
-type AddEnrollmentModalViewProps = {
-  enrollments: EducationEnrollment[];
+type AddMinistryMemberModalViewProps = {
+  ministryGroup: MinistryGroup;
   isShown: boolean;
   searchName: string;
   searchedMembers: Member[];
@@ -94,8 +93,8 @@ type AddEnrollmentModalViewProps = {
   onClickSave: () => void;
 };
 
-const AddEnrollmentModalView = ({
-  enrollments,
+const AddMinistryMemberModalView = ({
+  ministryGroup,
   isShown,
   searchName,
   searchedMembers,
@@ -105,7 +104,7 @@ const AddEnrollmentModalView = ({
   onClickMember,
   onClickClose,
   onClickSave,
-}: AddEnrollmentModalViewProps) => {
+}: AddMinistryMemberModalViewProps) => {
   const t = useI18n();
 
   return (
@@ -121,23 +120,6 @@ const AddEnrollmentModalView = ({
       </HeaderContainer>
       {/* 내용 */}
       <ContentContainer>
-        <SelectedMemberContainer $isShown={selectedMembers.length > 0}>
-          <SelectedMemberList>
-            {selectedMembers.map((member) => {
-              return (
-                <AddMemberItem
-                  key={member.id}
-                  member={member}
-                  isEnable={enrollments.every(
-                    (enrollment) => enrollment.memberId !== member.id
-                  )}
-                  isSelected={true}
-                  onClick={onClickMember}
-                />
-              );
-            })}
-          </SelectedMemberList>
-        </SelectedMemberContainer>
         <AddContainer>
           {/* 검색창 */}
           <SearchContainer>
@@ -150,27 +132,32 @@ const AddEnrollmentModalView = ({
           </SearchContainer>
           {/* 교인 목록 */}
           <MemberListContainer>
-            {searchedMembers.map((member) => {
-              const isSelected = selectedMembers.some(
-                (m) => m.id === member.id
-              );
-
-              return isSelected ? (
-                <div key={member.id}></div>
-              ) : (
-                <AddMemberItem
-                  key={member.id}
-                  member={member}
-                  isEnable={enrollments.every(
-                    (enrollment) => enrollment.memberId !== member.id
-                  )}
-                  isSelected={isSelected}
-                  onClick={onClickMember}
-                />
-              );
-            })}
+            {/*{searchedMembers.map((member) => {*/}
+            {/*  return (*/}
+            {/*    <AddMemberItem*/}
+            {/*      key={member.id}*/}
+            {/*      member={member}*/}
+            {/*      isEnable={ministryGroup.id !== getCurrentMinistry(member.ministryGroup)?.ministryGroupId}*/}
+            {/*      selectedMembers={selectedMembers}*/}
+            {/*      onClick={onClickMember}*/}
+            {/*    />*/}
+            {/*  );*/}
+            {/*})}*/}
           </MemberListContainer>
-
+        </AddContainer>
+        <SelectedMemberContainer $isShown={selectedMembers.length > 0}>
+          <SelectedMemberList>
+            {/*{selectedMembers.map((member) => {*/}
+            {/*  return (*/}
+            {/*    <AddMemberItem*/}
+            {/*      key={member.id}*/}
+            {/*      member={member}*/}
+            {/*      isEnable={member.ministries.includes()}*/}
+            {/*      onClick={onClickMember}*/}
+            {/*    />*/}
+            {/*  );*/}
+            {/*})}*/}
+          </SelectedMemberList>
           {/* 저장 버튼 */}
           <ButtonContainer>
             <Button
@@ -182,10 +169,10 @@ const AddEnrollmentModalView = ({
               }
             />
           </ButtonContainer>
-        </AddContainer>
+        </SelectedMemberContainer>
       </ContentContainer>
     </ModalContainer>
   );
 };
 
-export default AddEnrollmentModalView;
+export default AddMinistryMemberModalView;

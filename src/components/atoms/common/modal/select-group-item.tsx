@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { Group } from '@/models/management/management';
 import { MainText } from '@/components/atoms/common/text/main-text';
-import { GRAY, WHITE } from '@/constants/styles/color';
+import { BLACK, GRAY, MAIN, WHITE } from '@/constants/styles/color';
 
 const BackgroundContainer = styled.div`
   display: flex;
@@ -28,13 +28,20 @@ const ItemContainer = styled.div`
 type GroupDropdownItemProps = {
   group: Group;
   onClick: (group: Group) => void;
+  isSelected: boolean;
 };
 
-const SelectGroupItem = ({ group, onClick }: GroupDropdownItemProps) => {
+const SelectGroupItem = ({
+  group,
+  onClick,
+  isSelected,
+}: GroupDropdownItemProps) => {
   return (
     <BackgroundContainer>
       <ItemContainer onClick={() => onClick(group)}>
-        <MainText>{group.name}</MainText>
+        <MainText color={isSelected ? MAIN.DEFAULT : BLACK}>
+          {group.name}
+        </MainText>
       </ItemContainer>
     </BackgroundContainer>
   );

@@ -10,6 +10,7 @@ import {
   GROUP_MANAGEMENT_HEADER_ID,
   HEADER_ID,
   MEMBER_INFORMATION_HEADER_ID,
+  MINISTRY_MANAGEMENT_HEADER_ID,
 } from '@/constants/layout/header';
 
 import MemberTabHeader from '@/components/molecules/layout/header/member-tab-header';
@@ -21,11 +22,18 @@ import MemberEducation from '@/components/molecules/member/information/member-ed
 import GroupManagement from '@/components/organisms/management/group/group-management';
 import GroupInformation from '@/components/molecules/management/group/group-information';
 import GroupMember from '@/components/molecules/management/group/group-member';
-import { Education, Group } from '@/models/management/management';
+import {
+  Education,
+  Group,
+  MinistryGroup,
+} from '@/models/management/management';
 import MemberGroup from '@/components/molecules/member/information/member-group';
 import EducationManagement from '@/components/organisms/management/education/education-management';
 import OfficerManagement from '@/components/organisms/management/officer/officer-management';
 import EducationTermList from '@/components/molecules/management/education/education-term-list';
+import MinistryGroupInformation from '@/components/molecules/management/ministry/ministry-group-information';
+import MinistryGroupMember from '@/components/molecules/management/ministry/ministry-group-member';
+import MinistryGroupManagement from '@/components/organisms/management/ministry/ministry-group-management';
 
 export const getContent = (id: string): ReactNode => {
   switch (id) {
@@ -43,7 +51,7 @@ export const getContent = (id: string): ReactNode => {
     case MANAGEMENT_CONTENT_ID.GROUP:
       return <GroupManagement />;
     case MANAGEMENT_CONTENT_ID.MINISTRY:
-      return null;
+      return <MinistryGroupManagement />;
     case MANAGEMENT_CONTENT_ID.EDUCATION:
       return <EducationManagement />;
     case MANAGEMENT_CONTENT_ID.OFFICER:
@@ -89,6 +97,22 @@ export const getGroupManagementContent = (contentId: string, group: Group) => {
       return <GroupInformation groupId={group.id as string} />;
     case GROUP_MANAGEMENT_HEADER_ID.MEMBER_LIST:
       return <GroupMember group={group} />;
+  }
+};
+
+export const getMinistryGroupManagementContent = (
+  contentId: string,
+  ministryGroup: MinistryGroup
+) => {
+  switch (contentId) {
+    case MINISTRY_MANAGEMENT_HEADER_ID.MINISTRY_GROUP_INFORMATION:
+      return (
+        <MinistryGroupInformation
+          ministryGroupId={ministryGroup.id as string}
+        />
+      );
+    case MINISTRY_MANAGEMENT_HEADER_ID.MINISTRY_MEMBER_LIST:
+      return <MinistryGroupMember ministryGroup={ministryGroup} />;
   }
 };
 

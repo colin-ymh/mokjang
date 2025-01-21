@@ -6,6 +6,8 @@ import { BLACK, WHITE } from '@/constants/styles/color';
 import { MainText } from '@/components/atoms/common/text/main-text';
 
 import ChevronLeft from '../../../../../public/svg/chevron-left.svg';
+import Button from '@/components/atoms/common/button/button';
+import { useI18n } from '../../../../../locales/client';
 
 const SelectGroupContainer = styled.div`
   display: flex;
@@ -16,6 +18,7 @@ const SelectGroupContainer = styled.div`
   box-shadow: 0 1px 6px rgba(0, 0, 0, 0.3);
   flex-direction: column;
   z-index: 400;
+  position: relative;
 `;
 
 const GoBackContainer = styled.div`
@@ -39,13 +42,22 @@ const GroupList = styled.div`
   padding: 10px;
 `;
 
+const ButtonContainer = styled.div`
+  display: flex;
+  padding: 10px;
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: 10px;
+`;
+
 type SelectGroupModalProps = {
   groups: Group[];
   currentGroup: Group;
   selectedGroup: Group;
   parentGroups: Group[];
   onClickParent: (group: Group) => void;
-  onClickChild: (group: Group) => void;
+  onClickSaveGroup: (group: Group) => void;
   onClickCloseDropdown: () => void;
   onClickGoBack: () => void;
 };
@@ -56,10 +68,12 @@ const SelectGroupModal = ({
   selectedGroup,
   parentGroups,
   onClickParent,
-  onClickChild,
+  onClickSaveGroup,
   onClickCloseDropdown,
   onClickGoBack,
 }: SelectGroupModalProps) => {
+  const t = useI18n();
+
   return (
     <SelectGroupContainer>
       <GoBackContainer>
@@ -79,17 +93,23 @@ const SelectGroupModal = ({
               key={group.id}
               group={group}
               onClick={() => {
-                if (group.childGroupIds.length === 0) {
-                  onClickChild(group);
-                  onClickCloseDropdown();
-                } else {
-                  onClickParent(group);
-                }
+                onClickParent(group);
               }}
+              isSelected={group.id === selectedGroup.id}
             />
           );
         })}
       </GroupList>
+      <ButtonContainer>
+        <Button
+          text={t('button.save')}
+          onClick={() => {
+            onClickSaveGroup(selectedGroup);
+            onClickCloseDropdown();
+          }}
+          height={30}
+        />
+      </ButtonContainer>
     </SelectGroupContainer>
   );
 };

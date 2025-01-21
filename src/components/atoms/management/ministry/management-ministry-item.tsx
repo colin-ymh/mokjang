@@ -10,66 +10,67 @@ import React, {
 import { getFormattedTitle } from '@/utils/format';
 import { getIsWellFormedName } from '@/utils/check';
 import { BLANK } from '@/constants/constant';
-import { GroupRole } from '@/models/management/management';
-import ManagementRoleItemView from '@/components/atoms/management/group/management-role-item.view';
+import { Ministry } from '@/models/management/management';
+import ManagementMinistryItemView from '@/components/atoms/management/ministry/management-ministry-item.view';
 
-type ManagementRoleItemProps = {
-  role: GroupRole;
-  roles: GroupRole[];
-  selectedRoleId: string | null;
-  setRoles: Dispatch<SetStateAction<GroupRole[]>>;
-  setSelectedRole: Dispatch<SetStateAction<GroupRole>>;
+type ManagementMinistryItemProps = {
+  ministry: Ministry;
+  ministries: Ministry[];
+  selectedMinistryId: string | null;
+  setMinistries: Dispatch<SetStateAction<Ministry[]>>;
+  setSelectedMinistry: Dispatch<SetStateAction<Ministry>>;
 };
 
-const ManagementRoleItem = ({
-  role,
-  roles,
-  selectedRoleId,
-  setRoles,
-  setSelectedRole,
-}: ManagementRoleItemProps) => {
+const ManagementMinistryItem = ({
+  ministry,
+  ministries,
+  selectedMinistryId,
+  setMinistries,
+  setSelectedMinistry,
+}: ManagementMinistryItemProps) => {
   // 이름 수정창 ref
   const nameInputRef = useRef<HTMLInputElement>(null);
 
   // 새로 추가하는 그룹 입력창 ref
-  const newRoleRef = useRef<HTMLInputElement>(null);
+  const newMinistryRef = useRef<HTMLInputElement>(null);
 
   // 새로 추가중인지 여부
   const [isAddShown, setIsAddShown] = useState<boolean>(false);
 
   // 새 그룹의 이름
-  const [newRoleName, setNewRoleName] = useState<string>(BLANK);
+  const [newMinistryName, setNewMinistryName] = useState<string>(BLANK);
 
   // 수정중인지 여부
   const [isEdit, setIsEdit] = useState<boolean>(false);
 
   // 수정되는 이름
-  const [editName, setEditName] = useState<string>(role.role);
+  const [editName, setEditName] = useState<string>(ministry.name);
 
   // 새로운 그룹 추가하기
-  const onClickSaveNewRole = () => {
-    if (getIsWellFormedName(newRoleName)) {
-      setRoles([
-        ...roles,
+  const onClickSaveNewMinistry = () => {
+    if (getIsWellFormedName(newMinistryName)) {
+      setMinistries([
+        ...ministries,
         {
-          role: newRoleName,
+          name: newMinistryName,
           // 나머지는 다 임시 추가
           id: new Date().getTime().toString(),
           churchId: new Date().getTime().toString(),
-          groupId: new Date().getTime().toString(),
+          ministryGroupId: new Date().getTime().toString(),
+          membersCount: 0,
         },
       ]);
     }
   };
 
   // 확인 중인 그룹 변경
-  const onClickRole = (role: GroupRole) => {
-    setSelectedRole(role);
+  const onClickMinistry = (ministry: Ministry) => {
+    setSelectedMinistry(ministry);
   };
 
   // 그룹 수정 활성화
-  const onClickRoleEdit = () => {
-    setEditName(role.role);
+  const onClickMinistryEdit = () => {
+    setEditName(ministry.name);
     setIsEdit(true);
 
     // isEdit이 true로 전환된 이후
@@ -82,17 +83,19 @@ const ManagementRoleItem = ({
   };
 
   // 그룹 삭제
-  const onClickRoleDelete = (roleId: string) => {
-    const newRoles = roles.filter((role) => role.id !== roleId);
-    setRoles(newRoles);
+  const onClickMinistryDelete = (ministryId: string) => {
+    const newMinistrys = ministries.filter(
+      (ministry) => ministry.id !== ministryId
+    );
+    setMinistries(newMinistrys);
   };
 
   // 그룹 추가 활성화
-  const onClickRoleAdd = () => {
+  const onClickMinistryAdd = () => {
     setIsAddShown(true);
     setTimeout(() => {
-      if (newRoleRef.current) {
-        newRoleRef.current.focus();
+      if (newMinistryRef.current) {
+        newMinistryRef.current.focus();
       }
     });
   };
@@ -105,24 +108,27 @@ const ManagementRoleItem = ({
 
   // 수정된 이름 저장
   const onClickSaveName = () => {
-    if (editName === role.role) {
+    if (editName === ministry.name) {
       setIsEdit(false);
     } else if (getIsWellFormedName(editName)) {
-      const newRoles = roles.map((role) => {
-        return role.id !== selectedRoleId
-          ? role
+      const newMinistrys = ministries.map((ministry) => {
+        return ministry.id !== selectedMinistryId
+          ? ministry
           : {
-              ...role,
-              role: editName,
+              ...ministry,
+              ministry: editName,
             };
       });
-      setRoles(newRoles);
+      setMinistries(newMinistrys);
       setIsEdit(false);
     }
   };
 
   // 드래그 이후 드롭
-  const onDropRole = (roleId: string, parentRoleId: string | null) => {};
+  const onDropMinistry = (
+    ministryId: string,
+    parentMinistryId: string | null
+  ) => {};
 
   // 수정 중 focus 가 풀리면 수정 취소
   useEffect(() => {
@@ -145,7 +151,7 @@ const ManagementRoleItem = ({
 
   // 추가 중 focus 가 풀리면 추가 취소
   useEffect(() => {
-    const inputElement = newRoleRef.current;
+    const inputElement = newMinistryRef.current;
 
     const handleBlur = () => {
       setIsAddShown(false);
@@ -160,7 +166,7 @@ const ManagementRoleItem = ({
         inputElement.removeEventListener('blur', handleBlur);
       }
     };
-  }, [newRoleRef, isAddShown]);
+  }, [newMinistryRef, isAddShown]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -181,9 +187,9 @@ const ManagementRoleItem = ({
           } else {
             setIsEdit(false);
           }
-        } else if (newRoleRef.current === document.activeElement) {
-          if (getIsWellFormedName(newRoleName)) {
-            onClickSaveNewRole();
+        } else if (newMinistryRef.current === document.activeElement) {
+          if (getIsWellFormedName(newMinistryName)) {
+            onClickSaveNewMinistry();
           } else {
             setIsAddShown(false);
           }
@@ -191,7 +197,7 @@ const ManagementRoleItem = ({
       } else if (e.key === 'Escape') {
         if (nameInputRef.current === document.activeElement) {
           setIsEdit(false);
-        } else if (newRoleRef.current === document.activeElement) {
+        } else if (newMinistryRef.current === document.activeElement) {
           setIsAddShown(false);
         }
       }
@@ -202,28 +208,28 @@ const ManagementRoleItem = ({
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [editName, newRoleName, onClickSaveName, onClickSaveNewRole]);
+  }, [editName, newMinistryName, onClickSaveName, onClickSaveNewMinistry]);
 
   const props = {
     isEdit,
     nameInputRef,
-    selectedRoleId,
-    role,
+    selectedMinistryId,
+    ministry,
     editName,
-    onDropRole,
-    onClickRole,
-    onClickRoleEdit,
-    onClickRoleDelete,
-    onClickRoleAdd,
+    onDropMinistry,
+    onClickMinistry,
+    onClickMinistryEdit,
+    onClickMinistryDelete,
+    onClickMinistryAdd,
     onChangeName,
     onClickSaveName,
   };
 
   return (
     <>
-      <ManagementRoleItemView {...props} />
+      <ManagementMinistryItemView {...props} />
     </>
   );
 };
 
-export default ManagementRoleItem;
+export default ManagementMinistryItem;
