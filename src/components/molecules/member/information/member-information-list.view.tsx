@@ -117,9 +117,7 @@ const InformationListView = ({
               <MainText color={GRAY.DEFAULT}>{t(MEMBER.GROUP)}</MainText>
             </TitleContainer>
             <ContentContainer>
-              <MainText>
-                {prevMember?.group[prevMember?.group.length - 1]?.groupName}
-              </MainText>
+              <MainText>{prevMember?.group?.name}</MainText>
             </ContentContainer>
           </InformationItem>
           {/* 역할 */}
@@ -128,9 +126,7 @@ const InformationListView = ({
               <MainText color={GRAY.DEFAULT}>{t('groupRole')}</MainText>
             </TitleContainer>
             <ContentContainer>
-              <MainText>
-                {prevMember?.group[prevMember?.group.length - 1]?.groupRoleName}
-              </MainText>
+              <MainText>{prevMember?.groupRole?.role}</MainText>
             </ContentContainer>
           </InformationItem>
         </RowContainer>

@@ -2,15 +2,19 @@ import { ChangeEvent, useEffect, useState } from 'react';
 
 import { BLANK } from '@/constants/constant';
 import GroupModalView from '@/components/atoms/common/modal/group-modal.view';
-import { GroupHistory } from '@/models/member/history';
-import { DEFAULT_GROUP, Group } from '@/models/management/management';
+import {
+  DEFAULT_GROUP,
+  Group,
+  GroupRole,
+} from '@/models/management/management';
 import { getFormattedDate } from '@/utils/format';
 import { getIsWellFormedDate } from '@/utils/check';
 import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-item';
 
 type GroupModalProps = {
   isHistory: boolean;
-  prevGroup: GroupHistory;
+  prevGroup: Group;
+  prevGroupRole: GroupRole;
   onClickSaveCurrentGroup?: (groupId: string, startDate: string) => void;
   onClickSaveGroupHistory?: (startDate?: string, endDate?: string) => void;
 };
@@ -18,6 +22,7 @@ type GroupModalProps = {
 const GroupModal = ({
   isHistory,
   prevGroup,
+  prevGroupRole,
   onClickSaveCurrentGroup,
   onClickSaveGroupHistory,
 }: GroupModalProps) => {
@@ -33,7 +38,7 @@ const GroupModal = ({
 
   // 선택된 역할
   const [selectedRoleId, setSelectedRoleId] = useState<string>(
-    prevGroup ? prevGroup.groupRoleId : BLANK
+    prevGroupRole ? prevGroupRole.id : BLANK
   );
 
   // 시작 날짜

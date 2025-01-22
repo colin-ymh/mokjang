@@ -106,6 +106,10 @@ const RequiredRegister = () => {
 
   // 인도자 dropdown 선택 시 이벤트
   const onChangeGuidedById = (value: string) => {
+    const newGuide = guideItems.find((g) => g.value === value);
+    if (newGuide) {
+      setGuideName(newGuide.title);
+    }
     dispatch(setMember({ ...member, guidedById: value }));
   };
 
@@ -145,13 +149,12 @@ const RequiredRegister = () => {
 
   // 가족 선택 시 이벤트
   const onChangeFamilyMemberId = (value: string) => {
+    const newFamily = guideItems.find((g) => g.value === value);
+    if (newFamily) {
+      setGuideName(newFamily.title);
+      setFamilyGender(newFamily.gender);
+    }
     dispatch(setMember({ ...member, familyMemberId: value }));
-
-    membersApi.getMember({ churchId, memberId: value }).then((response) => {
-      if (response.status === 200) {
-        setFamilyGender(response.data.data.gender);
-      }
-    });
   };
 
   const onChangeFamilyRelation = (value: FAMILY) => {

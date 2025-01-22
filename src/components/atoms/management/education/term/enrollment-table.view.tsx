@@ -236,11 +236,7 @@ const EnrollmentTableView = ({
           </MainText>
         );
       case EDUCATION_ENROLLMENT.GROUP:
-        return (
-          <MainText>
-            {/* {getCurrentGroup(enrollment.member.group)?.groupName} */}
-          </MainText>
-        );
+        return <MainText></MainText>;
       case EDUCATION_ENROLLMENT.NOTE:
         return <MainText>{enrollment?.note}</MainText>;
       case EDUCATION_ENROLLMENT.MOBILE_PHONE:

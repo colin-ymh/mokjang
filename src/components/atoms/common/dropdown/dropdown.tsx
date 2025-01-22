@@ -15,7 +15,7 @@ import { InputProps } from '@/components/atoms/common/input/main-input';
 export type DropdownProps<
   ItemType extends DropdownValueType = DropdownValueType,
 > = InputProps & {
-  ref?: RefObject<HTMLDivElement>;
+  ref?: RefObject<HTMLInputElement>;
   items: ItemType[]; // dropdown 선택 가능 요소들
   value: any; // dropdown 에서 선택된 값
   onChangeItem?: (value: any) => void;
@@ -63,6 +63,11 @@ const Dropdown = forwardRef<HTMLInputElement, DropdownProps>(
 
     // 드롭다운 내에서 관리하는 value (외부 데이터를 직접 수정하지 않도록 관리)
     const [innerValue, setInnerValue] = useState<any>(value);
+
+    // 현재 focus된 item
+    const [focusedIndex, setFocusedIndex] = useState<number>(
+      items.findIndex((item) => item.value === innerValue)
+    );
 
     useEffect(() => {
       setInnerValue(value);
@@ -132,39 +137,49 @@ const Dropdown = forwardRef<HTMLInputElement, DropdownProps>(
       // setIsOpened(true);
     };
 
-    const onPressEnter = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    const onKeyDownHandler = (event: React.KeyboardEvent<HTMLInputElement>) => {
       if (event.keyCode === 229) return;
-      // 엔터키 입력 시
-      if (event.key === 'Enter') {
+      if (event.key === 'ArrowUp') {
+        event.preventDefault();
+        setFocusedIndex((focusedIndex + items.length - 1) % items.length);
+      } else if (event.key === 'ArrowDown') {
+        event.preventDefault();
+        setFocusedIndex((focusedIndex + 1) % items.length);
+      } else if (event.key === 'Enter') {
+        event.preventDefault();
+        if (onChangeItem && items[focusedIndex]) {
+          onChangeItem(items[focusedIndex].value);
+        }
+        setIsOpened(false);
+      } else if (event.key === 'Escape') {
         setIsOpened(false);
       }
     };
 
     useEffect(() => {
-      const onKeyDown = (e: KeyboardEvent) => {
-        if (e.key === 'Escape') {
-          setIsOpened(false);
-        }
-      };
-
-      window.addEventListener('keydown', onKeyDown);
+      window.addEventListener('keydown', onKeyDownHandler as any);
       return () => {
-        window.removeEventListener('keydown', onKeyDown);
+        window.removeEventListener('keydown', onKeyDownHandler as any);
       };
-    }, [setIsOpened]);
+    }, [setIsOpened, focusedIndex]);
+
+    useEffect(() => {
+      setFocusedIndex(0);
+    }, [items]);
 
     const props = {
       ref,
       //
       items,
       innerValue,
+      focusedIndex,
 
       //
       isOpened,
       onClickDropdown,
       onClickItem,
       onChangeInput,
-      onPressEnter,
+      onKeyDownHandler,
       onFocusInput,
       enterKeyHint,
 

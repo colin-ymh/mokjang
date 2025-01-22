@@ -15,7 +15,6 @@ import {
   getFormattedMobilePhone,
   getLocaleDateFromDashDate,
 } from '@/utils/format';
-import { getCurrentGroup } from '@/utils/history';
 
 import DefaultImage from '../../../../../public/png/default-member-image.png';
 
@@ -176,7 +175,7 @@ const GroupMemberTableView = ({
   const getMemberTableContent = (id: MEMBER, member: Member) => {
     switch (id) {
       case MEMBER.GROUP:
-        return <MainText>{getCurrentGroup(member.group)?.groupName}</MainText>;
+        return <MainText>{member.group.name}</MainText>;
 
       case MEMBER.NAME:
         return (

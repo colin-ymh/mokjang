@@ -7,7 +7,6 @@ import MemberImageInput from '@/components/atoms/register/member-image-input';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { SIZE } from '@/constants/styles/style';
 import { GRAY } from '@/constants/styles/color';
-import { getCurrentGroup } from '@/utils/history';
 import { Member } from '@/models/member/member';
 
 const InformationHeader = styled.div`
@@ -68,12 +67,12 @@ const MemberInformationHeader = ({
             </MainText>
             <MainText size={SIZE.MEDIUM} color={GRAY.DARK}>
               {targetMember.group &&
-                getCurrentGroup(targetMember.group)?.groupName &&
+                targetMember.group?.name &&
                 targetMember?.officer?.name &&
                 'ㆍ'}
             </MainText>
             <MainText size={SIZE.MEDIUM} color={GRAY.DARK}>
-              {getCurrentGroup(targetMember.group)?.groupName}
+              {targetMember.group?.name}
             </MainText>
           </ChurchMemberInfoContainer>
         </TextContainer>

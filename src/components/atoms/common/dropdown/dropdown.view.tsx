@@ -45,11 +45,12 @@ const DropdownList = styled.div<{
 type DropdownViewProps = {
   items: DropdownValueType[];
   innerValue: any;
+  focusedIndex: number;
   isOpened: boolean;
   onClickDropdown: () => void;
   onClickItem: (value: any) => void;
   onChangeInput: (event: ChangeEvent<HTMLInputElement>) => void;
-  onPressEnter: (event: React.KeyboardEvent<HTMLInputElement>) => void;
+  onKeyDownHandler: (event: React.KeyboardEvent<HTMLInputElement>) => void;
   onFocusInput: () => void;
   reverseDirection?: boolean;
   isEditable?: boolean;
@@ -70,12 +71,13 @@ const DropdownView = forwardRef<
       //
       items,
       innerValue,
+      focusedIndex,
       //
       isOpened,
       onClickDropdown, // 드롭다운 열고 닫기
       onClickItem, // 드롭다운 아이템 선택
       onChangeInput, // input 창에 직접 수정
-      onPressEnter,
+      onKeyDownHandler,
       onFocusInput,
       enterKeyHint,
       //
@@ -113,7 +115,7 @@ const DropdownView = forwardRef<
             {...inputProps}
             onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) => {
               inputProps.onKeyDown?.(event);
-              onPressEnter(event);
+              onKeyDownHandler(event);
             }}
             readOnly={!isEditable}
             onFocus={onFocusInput}
@@ -128,9 +130,10 @@ const DropdownView = forwardRef<
             {items.map((item, index) => (
               <DropdownItem
                 key={index}
-                isSelected={item.value === innerValue}
                 item={item}
                 onClick={onClickItem}
+                isSelected={item.value === innerValue}
+                isFocused={focusedIndex === index}
               />
             ))}
           </DropdownList>

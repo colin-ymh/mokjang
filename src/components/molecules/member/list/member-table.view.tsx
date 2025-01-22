@@ -18,7 +18,6 @@ import {
 import { Member } from '@/models/member/member';
 import MemberTableHeader from '@/components/atoms/member/list/member-table-header';
 import useWindowSize from '@/hooks/window/window';
-import { getCurrentGroup } from '@/utils/history';
 
 import DefaultImage from '../../../../../public/png/default-member-image.png';
 import { useI18n } from '../../../../../locales/client';
@@ -163,7 +162,7 @@ const MemberTableView = ({
   const getMemberTableContent = (id: MEMBER, member: Member) => {
     switch (id) {
       case MEMBER.GROUP:
-        return <MainText>{getCurrentGroup(member.group)?.groupName}</MainText>;
+        return <MainText>{member?.group?.name}</MainText>;
 
       case MEMBER.NAME:
         return (

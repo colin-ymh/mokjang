@@ -1,6 +1,7 @@
 import { BAPTISM, BLANK, FAMILY, MARRIAGE, NULL } from '@/constants/constant';
 import { DEFAULT_MEMBER } from '@/redux/reducers/member-register-reducer';
 import { EducationHistory, GroupHistory } from '@/models/member/history';
+import { Group, GroupRole, Officer } from '@/models/management/management';
 
 export type FamilyMember = {
   meId: string;
@@ -43,11 +44,15 @@ export type Member = {
   guidedById: string; // 인도자 id
   // 성도정보
   baptism: BAPTISM; // 신급
-  ministries: ChurchInformation[];
   groupId: string; // 소그룹
-  group: GroupHistory[];
+  groupRoleId: string;
+  group: Group;
+  groupRole: GroupRole;
+  groupHistory: GroupHistory[];
   officerId: string; // 직분
-  officer: ChurchInformation;
+  officer: Officer;
+  officerHistory: Officer[];
+  ministries: ChurchInformation[];
   officerStartDate: string;
   officerStartChurch: string;
   educationHistory: EducationHistory[];

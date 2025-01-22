@@ -16,7 +16,7 @@ const DropdownContainer = styled.div`
   width: 100%;
 `;
 
-const ItemContainer = styled.div`
+const ItemContainer = styled.div<{ $isFocused: boolean }>`
   display: flex;
   align-items: center;
   gap: 10px;
@@ -24,6 +24,8 @@ const ItemContainer = styled.div`
   transition: background-color 0.3s ease;
   border-radius: 5px;
   cursor: pointer;
+  background-color: ${({ $isFocused }) => $isFocused && GRAY.LIGHT};
+
   &:hover {
     background-color: ${GRAY.LIGHT};
   }
@@ -45,16 +47,18 @@ type MemberDropdownItemProps = {
   isSelected: boolean;
   item: MemberDropdownType;
   onClick: (index: number) => void;
+  isFocused: boolean;
 };
 
 const MemberDropdownItem = ({
-  isSelected,
-  onClick,
   item,
+  onClick,
+  isSelected,
+  isFocused,
 }: MemberDropdownItemProps) => {
   return (
     <DropdownContainer>
-      <ItemContainer onClick={() => onClick(item.value)}>
+      <ItemContainer onClick={() => onClick(item.value)} $isFocused={isFocused}>
         <ProfileImage
           src={item.profileImage || DefaultImage}
           alt={MEMBER.PROFILE_IMAGE}

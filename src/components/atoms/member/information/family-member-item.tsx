@@ -8,7 +8,6 @@ import { getAge } from '@/utils/date';
 import { GENDER } from '@/constants/constant';
 import { getFormattedMobilePhone } from '@/utils/format';
 import { FamilyMember } from '@/models/member/member';
-import { getCurrentGroup } from '@/utils/history';
 import SlideButtonList from '@/components/atoms/common/button/slide-button-list';
 
 import DefaultImage from '../../../../../public/png/default-member-image.png';
@@ -102,8 +101,7 @@ const FamilyMemberItem = ({
         <MemberInformationContainer>
           <MainText color={GRAY.DEFAULT}>{t(MEMBER.GROUP)}</MainText>
           <MainText>
-            {member.familyMember?.group &&
-              getCurrentGroup(member.familyMember?.group)?.groupName}
+            {member.familyMember?.group && member.familyMember.group.name}
           </MainText>
         </MemberInformationContainer>
         {/* 전화번호 */}

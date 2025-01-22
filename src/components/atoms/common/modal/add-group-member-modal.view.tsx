@@ -10,7 +10,6 @@ import Button from '@/components/atoms/common/button/button';
 
 import Cancel from '../../../../../public/svg/cancel.svg';
 import { useI18n } from '../../../../../locales/client';
-import { getCurrentGroup } from '@/utils/history';
 
 const ModalContainer = styled.div<{ $isShown: boolean }>`
   display: ${({ $isShown }) => ($isShown ? 'flex' : 'none')};
@@ -139,7 +138,7 @@ const AddGroupMemberModalView = ({
                 <AddMemberItem
                   key={member.id}
                   member={member}
-                  isEnable={group.id !== getCurrentGroup(member.group)?.groupId}
+                  isEnable={group.id !== member.group?.id}
                   isSelected={selectedMembers.some(
                     (selectedMember) => selectedMember.id === member.id
                   )}
@@ -156,7 +155,7 @@ const AddGroupMemberModalView = ({
                 <AddMemberItem
                   key={member.id}
                   member={member}
-                  isEnable={group.id !== getCurrentGroup(member.group)?.groupId}
+                  isEnable={group.id !== member.group?.id}
                   isSelected={selectedMembers.some(
                     (selectedMember) => selectedMember.id === member.id
                   )}

@@ -9,12 +9,14 @@ const DropdownContainer = styled.div`
   width: 100%;
 `;
 
-const ItemContainer = styled.div`
+const ItemContainer = styled.div<{ $isFocused: boolean }>`
   display: flex;
   padding: 10px;
   transition: background-color 0.3s ease;
   border-radius: 5px;
   cursor: pointer;
+  background-color: ${({ $isFocused }) => $isFocused && GRAY.LIGHT};
+
   &:hover {
     background-color: ${GRAY.LIGHT};
   }
@@ -26,15 +28,21 @@ export type DropdownValueType = {
 };
 
 type DropdownItemProps = {
-  isSelected: boolean;
   item: DropdownValueType;
   onClick: (index: number) => void;
+  isSelected: boolean;
+  isFocused: boolean;
 };
 
-const DropdownItem = ({ isSelected, onClick, item }: DropdownItemProps) => {
+const DropdownItem = ({
+  isSelected,
+  onClick,
+  item,
+  isFocused,
+}: DropdownItemProps) => {
   return (
     <DropdownContainer>
-      <ItemContainer onClick={() => onClick(item.value)}>
+      <ItemContainer onClick={() => onClick(item.value)} $isFocused={isFocused}>
         <MainText color={isSelected ? MAIN.DEFAULT : BLACK}>
           {item.title}
         </MainText>
