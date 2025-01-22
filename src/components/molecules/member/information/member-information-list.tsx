@@ -102,8 +102,8 @@ const InformationList = ({ targetMember }: InformationListProps) => {
       <CustomPopup
         isShow={isEditShown}
         onClickClose={onClickClose}
-        width={30}
-        height={80}
+        width={400}
+        height={600}
         isPercentage={true}
         headerRight={<Button text="저장" onClick={onClickSave} />}
       >
@@ -112,9 +112,8 @@ const InformationList = ({ targetMember }: InformationListProps) => {
       <CustomPopup
         isShow={isGroupModalShown}
         onClickClose={onClickCloseGroupModal}
-        width={20}
-        height={50}
-        isPercentage={true}
+        width={400}
+        height={600}
       >
         <GroupModal isHistory={false} prevGroup={DEFAULT_GROUP_HISTORY} />
       </CustomPopup>

@@ -8,7 +8,7 @@ import { usePageRouter } from '@/utils/router';
 import RegisterOfficerView from '@/components/organisms/church/register-officer.view';
 import { getIsWellFormedTitle } from '@/utils/check';
 import { BLANK } from '@/constants/constant';
-import { getFormattedName } from '@/utils/format';
+import { getFormattedTitle } from '@/utils/format';
 
 type OfficerListProps = {};
 
@@ -30,7 +30,7 @@ const RegisterOfficer = ({}: OfficerListProps) => {
 
   // 이름 변경
   const onChangeName = (event: ChangeEvent<HTMLInputElement>) => {
-    const newName = getFormattedName(event.target.value);
+    const newName = getFormattedTitle(event.target.value);
     setNewOfficerName(newName);
   };
 

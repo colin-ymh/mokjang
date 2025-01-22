@@ -9,7 +9,7 @@ import {
 } from '@/models/management/management';
 import { GroupRolesApi } from '@/api/management/group/group-roles.api';
 import EditGroupView from '@/components/molecules/management/group/edit-group.view';
-import { getFormattedName } from '@/utils/format';
+import { getFormattedTitle } from '@/utils/format';
 import { GroupsApi } from '@/api/management/group/groups.api';
 import { BLANK } from '@/constants/constant';
 import { getIsWellFormedTitle } from '@/utils/check';
@@ -44,12 +44,12 @@ const EditGroup = ({ group, roles, onClickClose }: EditGroupProps) => {
 
   // 이름 변경 시 이벤트
   const onChangeName = (event: ChangeEvent<HTMLInputElement>) => {
-    setNewName(getFormattedName(event.target.value));
+    setNewName(getFormattedTitle(event.target.value));
   };
 
   // 새 역할 이름 변경 시 이벤트
   const onChangeNewRoleName = (event: ChangeEvent<HTMLInputElement>) => {
-    setNewRoleName(getFormattedName(event.target.value));
+    setNewRoleName(getFormattedTitle(event.target.value));
   };
 
   // 새 역할 임시 저장

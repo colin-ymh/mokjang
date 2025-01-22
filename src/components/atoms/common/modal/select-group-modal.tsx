@@ -4,9 +4,9 @@ import { Group } from '@/models/management/management';
 import SelectGroupModalItem from '@/components/atoms/common/modal/select-group-item';
 import { BLACK, WHITE } from '@/constants/styles/color';
 import { MainText } from '@/components/atoms/common/text/main-text';
+import Button from '@/components/atoms/common/button/button';
 
 import ChevronLeft from '../../../../../public/svg/chevron-left.svg';
-import Button from '@/components/atoms/common/button/button';
 import { useI18n } from '../../../../../locales/client';
 
 const SelectGroupContainer = styled.div`

@@ -113,6 +113,7 @@ const TermTable = ({ education, terms, fetchTerms }: TermTableProps) => {
 
   const props = {
     terms,
+    education,
     onClickTerm,
     onClickHeader,
     scrollRef,

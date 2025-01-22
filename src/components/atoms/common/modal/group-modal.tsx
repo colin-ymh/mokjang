@@ -22,7 +22,10 @@ const GroupModal = ({
   onClickSaveGroupHistory,
 }: GroupModalProps) => {
   // 선택된 그룹
-  const [selectedGroup, setSelectedGroup] = useState<Group>(DEFAULT_GROUP);
+  const [selectedGroup, setSelectedGroup] = useState<Group>(
+    prevGroup ? prevGroup : DEFAULT_GROUP
+  );
+
   // 역할 선택지
   const [roleDropdownItems, setRoleDropdownItems] = useState<
     DropdownValueType[]
@@ -30,7 +33,7 @@ const GroupModal = ({
 
   // 선택된 역할
   const [selectedRoleId, setSelectedRoleId] = useState<string>(
-    isHistory ? prevGroup.groupRoleId : BLANK
+    prevGroup ? prevGroup.groupRoleId : BLANK
   );
 
   // 시작 날짜

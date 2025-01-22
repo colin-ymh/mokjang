@@ -79,7 +79,6 @@ const RegisterGroupView = ({
             selectedGroupId={selectedGroupId}
             setSelectedGroup={setSelectedGroup}
             closedGroups={closedGroups}
-            fetchGroups={fetchGroups}
             onClickToggle={onClickToggle}
           />
         ))}

@@ -75,9 +75,8 @@ const MemberMinistryView = ({
       <CustomPopup
         isShow={isModalShown}
         onClickClose={onClickCloseModal}
-        width={20}
-        height={30}
-        isPercentage={true}
+        width={400}
+        height={400}
       >
         <MinistryModal
           isHistory={true}

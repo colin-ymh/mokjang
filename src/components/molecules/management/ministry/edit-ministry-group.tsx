@@ -18,14 +18,14 @@ type EditMinistryGroupProps = {
   ministryGroup: MinistryGroup;
   ministries: Ministry[];
   onClickClose: () => void;
-  fetchMinistryGroup: () => void;
+  fetchMinistryGroups: () => void;
 };
 
 const EditMinistryMinistryGroup = ({
   ministryGroup,
   ministries,
   onClickClose,
-  fetchMinistryGroup,
+  fetchMinistryGroups,
 }: EditMinistryGroupProps) => {
   const ministryGroupMinistriesApi = new MinistriesApi(false);
   const ministryGroupsApi = new MinistryGroupsApi(false);
@@ -137,7 +137,7 @@ const EditMinistryMinistryGroup = ({
       );
 
       // 상태 초기화 및 리렌더링
-      fetchMinistryGroup();
+      fetchMinistryGroups();
       onClickClose();
       setNewMinistries([]);
       setSelectedMinistry(DEFAULT_MINISTRY);

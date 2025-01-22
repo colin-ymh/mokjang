@@ -3,27 +3,31 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 
 import { MinistryGroup } from '@/models/management/management';
-
-import { useI18n } from '../../../../../locales/client';
 import MinistryGroupListView from '@/components/molecules/management/ministry/ministry-group-list.view';
-import { MinistryGroupsApi } from '@/api/management/ministry/ministry-groups.api';
 import { getOrderedMinistryGroups } from '@/utils/ministry';
 
+import { useI18n } from '../../../../../locales/client';
+
 type MinistryGroupListProps = {
+  ministryGroups: MinistryGroup[];
   selectedMinistryGroupId: string | null;
   setSelectedMinistryGroup: Dispatch<SetStateAction<MinistryGroup>>;
+  fetchMinistryGroups: () => void;
 };
 
 const MinistryGroupList = ({
+  ministryGroups,
   selectedMinistryGroupId,
   setSelectedMinistryGroup,
+  fetchMinistryGroups,
 }: MinistryGroupListProps) => {
   const t = useI18n();
-  const ministryGroupsApi = new MinistryGroupsApi(false);
   const churchId = useSelector((state: RootState) => state.church.churchId);
 
-  // 전체 그룹 배열
-  const [ministryGroups, setMinistryGroups] = useState<MinistryGroup[]>([]);
+  // 정렬된 사역 그룹
+  const [orderedMinistryGroups, setOrderedMinistryGroups] = useState<
+    MinistryGroup[]
+  >([]);
 
   // 닫혀있는 그룹들
   const [closedMinistryGroups, setClosedMinistryGroups] = useState<Set<number>>(
@@ -31,24 +35,20 @@ const MinistryGroupList = ({
   );
 
   // 그룹 불러오기
-  const fetchMinistryGroups = () => {
-    ministryGroupsApi.getMinistryGroups({ churchId }).then((response) => {
-      if (response.status === 200) {
-        const orderedMinistryGroups = getOrderedMinistryGroups(response.data);
+  const fetchOrderedMinistryGroups = () => {
+    const orderedMinistryGroups = getOrderedMinistryGroups(ministryGroups);
 
-        // 최상단에 "전체" 그룹을 추가
-        const allMinistryGroup: MinistryGroup = {
-          id: null, // 고유 ID (임의로 0으로 설정)
-          name: t('all'),
-          parentMinistryGroupId: null,
-          childMinistryGroups: orderedMinistryGroups, // 모든 그룹을 하위 그룹으로 설정
-          churchId,
-          childMinistryGroupIds: [],
-        };
+    // 최상단에 "전체" 그룹을 추가
+    const allMinistryGroup: MinistryGroup = {
+      id: null, // 고유 ID (임의로 0으로 설정)
+      name: t('all'),
+      parentMinistryGroupId: null,
+      childMinistryGroups: orderedMinistryGroups, // 모든 그룹을 하위 그룹으로 설정
+      churchId,
+      childMinistryGroupIds: [],
+    };
 
-        setMinistryGroups([allMinistryGroup]);
-      }
-    });
+    setOrderedMinistryGroups([allMinistryGroup]);
   };
 
   // 그룹 열고 닫기
@@ -66,15 +66,14 @@ const MinistryGroupList = ({
     });
   };
 
-  // 교회 정보를 통해 소그룹들 불러오기
   useEffect(() => {
-    if (churchId) {
-      fetchMinistryGroups();
+    if (ministryGroups) {
+      fetchOrderedMinistryGroups();
     }
-  }, [churchId]);
+  }, [ministryGroups]);
 
   const props = {
-    ministryGroups,
+    ministryGroups: orderedMinistryGroups,
     closedMinistryGroups,
     selectedMinistryGroupId,
     setSelectedMinistryGroup,

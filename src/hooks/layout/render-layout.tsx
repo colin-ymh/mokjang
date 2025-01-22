@@ -112,13 +112,15 @@ export const getGroupManagementContent = (contentId: string, group: Group) => {
 
 export const getMinistryGroupManagementContent = (
   contentId: string,
-  ministryGroup: MinistryGroup
+  ministryGroup: MinistryGroup,
+  fetchMinistryGroups: () => void
 ) => {
   switch (contentId) {
     case MINISTRY_MANAGEMENT_HEADER_ID.MINISTRY_GROUP_INFORMATION:
       return (
         <MinistryGroupInformation
-          ministryGroupId={ministryGroup.id as string}
+          ministryGroup={ministryGroup}
+          fetchMinistryGroups={fetchMinistryGroups}
         />
       );
     case MINISTRY_MANAGEMENT_HEADER_ID.MINISTRY_MEMBER_LIST:

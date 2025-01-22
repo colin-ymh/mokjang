@@ -8,7 +8,7 @@ import { usePageRouter } from '@/utils/router';
 import RegisterEducationView from '@/components/organisms/church/register-education.view';
 import { getIsWellFormedTitle } from '@/utils/check';
 import { BLANK } from '@/constants/constant';
-import { getFormattedName } from '@/utils/format';
+import { getFormattedTitle } from '@/utils/format';
 
 type EducationListProps = {};
 
@@ -30,7 +30,7 @@ const RegisterEducation = ({}: EducationListProps) => {
 
   // 이름 변경
   const onChangeName = (event: ChangeEvent<HTMLInputElement>) => {
-    const newName = getFormattedName(event.target.value);
+    const newName = getFormattedTitle(event.target.value);
     setNewEducationName(newName);
   };
 

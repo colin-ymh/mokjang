@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { GRAY, WHITE } from '@/constants/styles/color';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import useWindowSize from '@/hooks/window/window';
-import { EducationTerm } from '@/models/management/management';
+import { Education, EducationTerm } from '@/models/management/management';
 import {
   EDUCATION_TERM,
   TERM_TABLE_HEADER_ITEM,
@@ -144,6 +144,7 @@ export const TERM_TABLE_HEADER: TERM_TABLE_HEADER_ITEM[] = [
 
 type TermTableProps = {
   terms: EducationTerm[];
+  education: Education;
   onClickTerm: (term: EducationTerm) => void;
   onClickHeader: (id: EDUCATION_TERM) => void;
   scrollRef: MutableRefObject<HTMLDivElement | null>;
@@ -152,6 +153,7 @@ type TermTableProps = {
 
 const TermTableView = ({
   terms,
+  education,
   onClickTerm,
   onClickHeader,
   scrollRef,
@@ -164,7 +166,7 @@ const TermTableView = ({
       case EDUCATION_TERM.TERM:
         return <MainText>{term.term}</MainText>;
       case EDUCATION_TERM.EDUCATION:
-        return <MainText>{term.educationName}</MainText>;
+        return <MainText>{education.name}</MainText>;
       case EDUCATION_TERM.PERIOD:
         return (
           <MainText>

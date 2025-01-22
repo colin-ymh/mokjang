@@ -2,18 +2,13 @@ import styled from 'styled-components';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { GRAY } from '@/constants/styles/color';
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
-import {
-  DEFAULT_MINISTRY_GROUP,
-  Ministry,
-  MinistryGroup,
-} from '@/models/management/management';
+import { Ministry, MinistryGroup } from '@/models/management/management';
 import { useEffect, useState } from 'react';
 import CustomPopup from '@/components/atoms/common/popup/custom-popup';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
-import { MinistryGroupsApi } from '@/api/management/ministry/ministry-groups.api';
-import { MinistriesApi } from '@/api/management/ministry/ministries.api';
 import EditMinistryGroup from '@/components/molecules/management/ministry/edit-ministry-group';
+import { MinistryGroupsApi } from '@/api/management/ministry/ministry-groups.api';
 
 const MinistryGroupInformationContainer = styled.div`
   display: flex;
@@ -70,29 +65,19 @@ const ContentContainer = styled.div`
   gap: 10px;
 `;
 
-const DivideLine = styled.div`
-  width: 100%;
-  height: 1px;
-  background-color: ${GRAY.LIGHT};
-`;
-
 type MinistryGroupInformationProps = {
-  ministryGroupId: string;
+  ministryGroup: MinistryGroup;
+  fetchMinistryGroups: () => void;
 };
 
 const MinistryMinistryGroupInformation = ({
-  ministryGroupId,
+  ministryGroup,
+  fetchMinistryGroups,
 }: MinistryGroupInformationProps) => {
   const t = useI18n();
   const t_header = useScopedI18n('header');
   const ministryGroupsApi = new MinistryGroupsApi(false);
-  const ministriesApi = new MinistriesApi(false);
   const churchId = useSelector((state: RootState) => state.church.churchId);
-
-  // 그룹
-  const [ministryGroup, setMinistryGroup] = useState<MinistryGroup>(
-    DEFAULT_MINISTRY_GROUP
-  );
 
   // 그룹 역할
   const [ministries, setMinistries] = useState<Ministry[]>([]);
@@ -110,21 +95,26 @@ const MinistryMinistryGroupInformation = ({
     setIsModalShown(false);
   };
 
-  // 서버에서 그룹 불러오기
-  const fetchMinistryGroup = () => {
+  // 사역 그룹의 역할 불러오기
+  const fetchMinistries = () => {
     ministryGroupsApi
-      .getMinistryGroup({ churchId, ministryGroupId })
+      .getMinistryGroup({
+        churchId,
+        ministryGroupId: ministryGroup.id as string,
+      })
       .then((response) => {
-        setMinistryGroup(response.data);
-        if (response.data?.ministries) setMinistries(response.data.ministries);
+        const newMinistryGroup: MinistryGroup = response.data;
+        if (newMinistryGroup?.ministries) {
+          setMinistries(newMinistryGroup.ministries);
+        }
       });
   };
 
   useEffect(() => {
-    if (churchId && ministryGroupId) {
-      fetchMinistryGroup();
+    if (ministryGroup.id) {
+      fetchMinistries();
     }
-  }, [churchId, ministryGroupId]);
+  }, [ministryGroup]);
 
   return (
     <MinistryGroupInformationContainer>
@@ -154,7 +144,7 @@ const MinistryMinistryGroupInformation = ({
               <MainText color={GRAY.DARK}>{t('groupRole')}</MainText>
             </TitleContainer>
             <ContentContainer>
-              {ministryGroup?.ministries?.map((ministry) => {
+              {ministries.map((ministry) => {
                 return <MainText key={ministry.id}>{ministry.name}</MainText>;
               })}
             </ContentContainer>
@@ -173,7 +163,7 @@ const MinistryMinistryGroupInformation = ({
           ministryGroup={ministryGroup}
           ministries={ministries}
           onClickClose={onClickClose}
-          fetchMinistryGroup={fetchMinistryGroup}
+          fetchMinistryGroups={fetchMinistryGroups}
         />
       </CustomPopup>
     </MinistryGroupInformationContainer>

@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import Button from '@/components/atoms/common/button/button';
 import LabelInput from '@/components/atoms/common/input/label-input';
 import { GRAY, MAIN } from '@/constants/styles/color';
-import { Ministry, MinistryGroup } from '@/models/management/management';
+import { MinistryGroup } from '@/models/management/management';
 import { MinistryHistory } from '@/models/member/history';
 import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-item';
 import LabelDropdown from '@/components/atoms/common/dropdown/label-dropdown';
@@ -33,9 +33,9 @@ const ButtonContainer = styled.div`
 
 type MinistryModalViewProps = {
   isHistory: boolean;
-  prevMinistry: MinistryHistory;
-  selectedMinistry: Ministry;
+  prevMinistry?: MinistryHistory;
   ministryDropdownItems: DropdownValueType[];
+  selectedMinistryGroup: MinistryGroup;
   selectedMinistryId: string;
   isButtonEnabled: boolean;
   startDate: string;
@@ -52,17 +52,17 @@ const MinistryModalView = ({
   isHistory,
   prevMinistry,
   ministryDropdownItems,
-  selectedMinistry,
+  selectedMinistryGroup,
   selectedMinistryId,
   isButtonEnabled,
   startDate,
   endDate,
   onChangeStartDate,
   onChangeEndDate,
-  onClickSaveCurrentMinistry,
-  onClickSaveMinistryHistory,
   onClickSaveMinistry,
   onChangeMinistryId,
+  onClickSaveCurrentMinistry,
+  onClickSaveMinistryHistory,
 }: MinistryModalViewProps) => {
   const t = useI18n();
 
@@ -116,10 +116,7 @@ const MinistryModalView = ({
                 onClickSaveMinistryHistory(startDate, endDate);
             } else {
               onClickSaveCurrentMinistry &&
-                onClickSaveCurrentMinistry(
-                  selectedMinistry.id as string,
-                  startDate
-                );
+                onClickSaveCurrentMinistry(selectedMinistryId, startDate);
             }
           }}
         />

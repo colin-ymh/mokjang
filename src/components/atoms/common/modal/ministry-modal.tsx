@@ -10,6 +10,7 @@ import {
 import { getFormattedDate } from '@/utils/format';
 import { getIsWellFormedDate } from '@/utils/check';
 import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-item';
+import MinistryModalView from '@/components/atoms/common/modal/ministry-modal.view';
 
 type MinistryModalProps = {
   isHistory: boolean;
@@ -29,6 +30,7 @@ const MinistryModal = ({
   // 선택된 그룹
   const [selectedMinistryGroup, setSelectedMinistryGroup] =
     useState<MinistryGroup>(DEFAULT_MINISTRY_GROUP);
+
   // 역할 선택지
   const [ministryDropdownItems, setMinistryDropdownItems] = useState<
     DropdownValueType[]
@@ -99,16 +101,16 @@ const MinistryModal = ({
   }, [startDate, endDate]);
 
   useEffect(() => {
-    // if (selectedMinistryGroup..length > 0) {
-    //   const newItems = selectedMinistryGroup.ministrys.map((ministry) => {
-    //     return {
-    //       value: ministry.id,
-    //       title: ministry.ministry,
-    //     };
-    //   });
-    //
-    //   setMinistryDropdownItems(newItems);
-    // }
+    if (selectedMinistryGroup.ministries) {
+      const newItems = selectedMinistryGroup.ministries.map((ministry) => {
+        return {
+          value: ministry.id,
+          title: ministry.name,
+        };
+      });
+
+      setMinistryDropdownItems(newItems);
+    }
   }, [selectedMinistryGroup]);
 
   const props = {
@@ -128,7 +130,11 @@ const MinistryModal = ({
     onClickSaveMinistryHistory,
   };
 
-  return <>{/*<MinistryModalView {...props} />*/}</>;
+  return (
+    <>
+      <MinistryModalView {...props} />
+    </>
+  );
 };
 
 export default MinistryModal;
