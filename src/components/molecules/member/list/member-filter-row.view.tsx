@@ -6,15 +6,15 @@ import { GRAY } from '@/constants/styles/color';
 import TableSetting from '@/components/molecules/member/list/table-setting';
 import Dropdown from '@/components/atoms/common/dropdown/dropdown';
 import BorderInput from '@/components/atoms/common/input/border-input';
-import { useSearchFilterDropdownItems } from '@/hooks/dropdown/dropdown-items';
 import { MEMBER } from '@/constants/member/member-column';
 import TransparentBackground from '@/components/atoms/common/etc/transparent-background';
 import FilteredItem, {
   FilteredItemType,
 } from '@/components/atoms/member/list/filtered-item';
+import { useSearchFilterDropdownItems } from '@/hooks/dropdown/dropdown-items';
+import useWindowSize from '@/hooks/window/window';
 
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
-import useWindowSize from '@/hooks/window/window';
 
 const MemberFilterContainer = styled.div`
   display: flex;
@@ -124,7 +124,9 @@ const MemberFilterRowView = ({
               onClick={() => setIsAddFilterShown(false)}
               blur={false}
             />
-            <TableSetting setIsShown={setIsAddFilterShown} />
+            {isAddFilterShown && (
+              <TableSetting setIsShown={setIsAddFilterShown} />
+            )}
           </AddFilterContainer>
         </ButtonContainer>
         {/* 필터 설정된 값들 */}
@@ -154,12 +156,7 @@ const MemberFilterRowView = ({
           width={150}
           onKeyDown={onKeyDown}
         />
-        <Button
-          text={t('search')}
-          // width={150}
-          height={30}
-          onClick={onClickSearch}
-        />
+        <Button text={t('search')} height={30} onClick={onClickSearch} />
       </SearchContainer>
     </MemberFilterContainer>
   );

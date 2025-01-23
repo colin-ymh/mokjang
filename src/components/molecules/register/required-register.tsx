@@ -149,9 +149,9 @@ const RequiredRegister = () => {
 
   // 가족 선택 시 이벤트
   const onChangeFamilyMemberId = (value: string) => {
-    const newFamily = guideItems.find((g) => g.value === value);
+    const newFamily = familyMemberItems.find((g) => g.value === value);
     if (newFamily) {
-      setGuideName(newFamily.title);
+      setFamilyMemberName(newFamily.title);
       setFamilyGender(newFamily.gender);
     }
     dispatch(setMember({ ...member, familyMemberId: value }));

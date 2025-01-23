@@ -16,7 +16,7 @@ import Button from '@/components/atoms/common/button/button';
 import { Member } from '@/models/member/member';
 import { getEditMemberBody, getMemberFromServer } from '@/utils/member';
 import GroupModal from '@/components/atoms/common/modal/group-modal';
-import { DEFAULT_GROUP_HISTORY } from '@/models/member/history';
+import { DEFAULT_GROUP } from '@/models/management/management';
 
 type InformationListProps = { targetMember: Member };
 
@@ -115,7 +115,7 @@ const InformationList = ({ targetMember }: InformationListProps) => {
         width={400}
         height={600}
       >
-        <GroupModal isHistory={false} prevGroup={DEFAULT_GROUP_HISTORY} />
+        <GroupModal isHistory={false} prevGroup={DEFAULT_GROUP} />
       </CustomPopup>
     </>
   );

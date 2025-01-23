@@ -16,10 +16,10 @@ import MemberInformation from '@/components/organisms/member/information/member-
 import CustomPopup from '@/components/atoms/common/popup/custom-popup';
 import MemberListView from '@/components/organisms/member/list/member-list.view';
 import Button from '@/components/atoms/common/button/button';
+import { Member } from '@/models/member/member';
 import { getMemberFromServer } from '@/utils/member';
 
 import { useScopedI18n } from '../../../../../locales/client';
-import { Member } from '@/models/member/member';
 
 const ButtonContainer = styled.div`
   display: flex;

@@ -64,10 +64,8 @@ const Dropdown = forwardRef<HTMLInputElement, DropdownProps>(
     // 드롭다운 내에서 관리하는 value (외부 데이터를 직접 수정하지 않도록 관리)
     const [innerValue, setInnerValue] = useState<any>(value);
 
-    // 현재 focus된 item
-    const [focusedIndex, setFocusedIndex] = useState<number>(
-      items.findIndex((item) => item.value === innerValue)
-    );
+    // 현재 focus 된 item
+    const [focusedIndex, setFocusedIndex] = useState<number>(0);
 
     useEffect(() => {
       setInnerValue(value);
@@ -157,15 +155,22 @@ const Dropdown = forwardRef<HTMLInputElement, DropdownProps>(
     };
 
     useEffect(() => {
-      window.addEventListener('keydown', onKeyDownHandler as any);
-      return () => {
-        window.removeEventListener('keydown', onKeyDownHandler as any);
-      };
-    }, [setIsOpened, focusedIndex]);
+      if (isOpened) {
+        window.addEventListener('keydown', onKeyDownHandler as any);
+        return () => {
+          window.removeEventListener('keydown', onKeyDownHandler as any);
+        };
+      }
+    }, [isOpened, setIsOpened, focusedIndex]);
 
     useEffect(() => {
       setFocusedIndex(0);
     }, [items]);
+
+    useEffect(() => {
+      const newIndex = items.findIndex((item) => item.value === value);
+      setFocusedIndex(newIndex);
+    }, [value]);
 
     const props = {
       ref,

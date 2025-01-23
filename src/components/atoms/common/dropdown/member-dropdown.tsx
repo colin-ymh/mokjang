@@ -129,7 +129,7 @@ const MemberDropdown = forwardRef<HTMLInputElement, DropdownProps>(
           setIsOpened(true);
         } else setIsOpened(false);
       }
-    }, [value, items]);
+    }, [items]);
 
     const onFocusInput = () => {
       // setIsOpened(true);
@@ -157,15 +157,18 @@ const MemberDropdown = forwardRef<HTMLInputElement, DropdownProps>(
     };
 
     useEffect(() => {
-      const handleKeyDown = (event: KeyboardEvent) => {
-        onKeyDownHandler(event as any); // `event`를 그대로 `onKeyDownHandler`에 전달
-      };
+      if (isOpened) {
+        const handleKeyDown = (event: KeyboardEvent) => {
+          onKeyDownHandler(event as any); // `event`를 그대로 `onKeyDownHandler`에 전달
+        };
 
-      window.addEventListener('keydown', handleKeyDown);
-      return () => {
-        window.removeEventListener('keydown', handleKeyDown);
-      };
-    }, []);
+        window.addEventListener('keydown', handleKeyDown);
+        return () => {
+          window.removeEventListener('keydown', handleKeyDown);
+        };
+      }
+    }, [isOpened]);
+
     const props = {
       ref,
       //

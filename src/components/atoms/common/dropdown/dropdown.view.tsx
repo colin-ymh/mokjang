@@ -115,7 +115,7 @@ const DropdownView = forwardRef<
             {...inputProps}
             onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) => {
               inputProps.onKeyDown?.(event);
-              onKeyDownHandler(event);
+              isOpened && onKeyDownHandler(event);
             }}
             readOnly={!isEditable}
             onFocus={onFocusInput}
