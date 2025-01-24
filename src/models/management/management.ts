@@ -182,9 +182,9 @@ export const DEFAULT_SESSION_ATTENDANCE = {
 
 export type Officer = {
   id: string;
-  churchId: string;
+  churchId?: string;
   name: string;
-  membersCount: number;
+  membersCount?: number;
 };
 
 export const DEFAULT_OFFICER: Officer = {

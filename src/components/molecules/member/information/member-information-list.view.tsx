@@ -10,6 +10,7 @@ import { getThisYearBirth } from '@/utils/date';
 
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
 import Pencil from '../../../../../public/svg/pencil.svg';
+import { Ministry } from '@/models/management/management';
 
 const InformationContainer = styled.div`
   display: flex;
@@ -83,6 +84,18 @@ const ContentContainer = styled.div`
   display: flex;
   gap: 10px;
 `;
+
+const MinistryContainer = styled.div`
+  display: flex;
+  border-radius: 5px;
+  justify-content: center;
+  align-items: center;
+
+  &:hover {
+    background-color: ${GRAY.DEFAULT};
+  }
+`;
+
 const Divider = styled.div`
   width: 100%;
   height: 1px;
@@ -94,12 +107,16 @@ type InformationListViewProps = {
   prevMember: Member;
   onClickItem: (id: MEMBER) => void;
   onClickOpenGroupModal: () => void;
+  onClickOpenMinistryModal: (ministry?: Ministry) => void;
+  onClickOpenOfficerModal: () => void;
 };
 
 const InformationListView = ({
   prevMember,
   onClickItem,
   onClickOpenGroupModal,
+  onClickOpenMinistryModal,
+  onClickOpenOfficerModal,
 }: InformationListViewProps) => {
   const t = useI18n();
   const t_header = useScopedI18n('header');
@@ -132,15 +149,13 @@ const InformationListView = ({
         </RowContainer>
         <Divider />
         <RowContainer>
-          {/* 사역 */}
-          <InformationItem>
+          {/* 직분 */}
+          <InformationItem onClick={onClickOpenOfficerModal}>
             <TitleContainer>
-              <MainText color={GRAY.DEFAULT}>{t('ministry')}</MainText>
+              <MainText color={GRAY.DEFAULT}>{t(MEMBER.OFFICER)}</MainText>
             </TitleContainer>
             <ContentContainer>
-              {prevMember?.ministries?.map((item) => {
-                return <MainText key={item.id}>{item.name}</MainText>;
-              })}
+              <MainText>{prevMember?.officer?.name}</MainText>
             </ContentContainer>
           </InformationItem>
           {/* 신급 */}
@@ -155,27 +170,30 @@ const InformationListView = ({
         </RowContainer>
         <Divider />
         <RowContainer>
-          {/* 직분 */}
-          <InformationItem>
+          {/* 사역 */}
+          <InformationItem
+            onClick={(event) => {
+              event.stopPropagation();
+              onClickOpenMinistryModal();
+            }}
+          >
             <TitleContainer>
-              <MainText color={GRAY.DEFAULT}>{t(MEMBER.OFFICER)}</MainText>
+              <MainText color={GRAY.DEFAULT}>{t('ministry')}</MainText>
             </TitleContainer>
             <ContentContainer>
-              <MainText>{prevMember?.officer?.name}</MainText>
-            </ContentContainer>
-          </InformationItem>
-          {/* 임직일 */}
-          <InformationItem>
-            <TitleContainer>
-              <MainText color={GRAY.DEFAULT}>
-                {t(MEMBER.OFFICER_START_DATE)}
-              </MainText>
-            </TitleContainer>
-            <ContentContainer>
-              <MainText>
-                {prevMember.officerStartDate &&
-                  getLocaleDateFromDashDate(prevMember.officerStartDate)}
-              </MainText>
+              {prevMember?.ministries?.map((item) => {
+                return (
+                  <MinistryContainer
+                    key={item.id}
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      onClickOpenMinistryModal(item);
+                    }}
+                  >
+                    <MainText>{item.name}</MainText>
+                  </MinistryContainer>
+                );
+              })}
             </ContentContainer>
           </InformationItem>
         </RowContainer>
@@ -193,7 +211,6 @@ const InformationListView = ({
             <ContentContainer>
               <MainText>{prevMember.name}</MainText>
             </ContentContainer>
-
             <PencilButton />
           </InformationItem>
           <BlankSpace />
@@ -208,7 +225,6 @@ const InformationListView = ({
             <ContentContainer>
               <MainText>{t(prevMember.gender as GENDER)}</MainText>
             </ContentContainer>
-
             <PencilButton />
           </InformationItem>
           <BlankSpace />
@@ -358,7 +374,7 @@ const InformationListView = ({
             <MainText color={GRAY.DEFAULT}>{t(MEMBER.VEHICLE_NUMBER)}</MainText>
           </TitleContainer>
           <ContentContainer>
-            {prevMember.vehicleNumber.map((number) => (
+            {prevMember?.vehicleNumber?.map((number) => (
               <MainText key={number}>{number}</MainText>
             ))}
           </ContentContainer>

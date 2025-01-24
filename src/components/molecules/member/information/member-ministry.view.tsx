@@ -2,12 +2,15 @@ import styled from 'styled-components';
 
 import { GRAY } from '@/constants/styles/color';
 import { MainText } from '@/components/atoms/common/text/main-text';
-import { MinistryHistory } from '@/models/member/history';
+import {
+  DEFAULT_MINISTRY_HISTORY,
+  MinistryHistory,
+} from '@/models/member/history';
 import MinistryHistoryItem from '@/components/atoms/member/information/ministry-history-item';
 import CustomPopup from '@/components/atoms/common/popup/custom-popup';
+import MinistryModal from '@/components/atoms/common/modal/ministry-modal';
 
 import { useI18n } from '../../../../../locales/client';
-import MinistryModal from '@/components/atoms/common/modal/ministry-modal';
 
 const ListContainer = styled.div`
   display: flex;
@@ -34,7 +37,7 @@ const MinistryListContainer = styled.div`
 
 type MemberMinistryViewProps = {
   ministryHistory: MinistryHistory[];
-  targetMinistry: MinistryHistory;
+  targetMinistryHistory: MinistryHistory;
   isModalShown: boolean;
   onClickCloseModal: () => void;
   onClickEditMinistry: (ministry: MinistryHistory) => void;
@@ -44,7 +47,7 @@ type MemberMinistryViewProps = {
 
 const MemberMinistryView = ({
   ministryHistory,
-  targetMinistry,
+  targetMinistryHistory,
   isModalShown,
   onClickCloseModal,
   onClickEditMinistry,
@@ -52,24 +55,42 @@ const MemberMinistryView = ({
   onClickSaveMinistryHistory,
 }: MemberMinistryViewProps) => {
   const t = useI18n();
+  const currentHistory = ministryHistory.find(
+    (history) => history.endDate === null
+  );
   return (
     <ListContainer>
       {/* 그룹 헤더 */}
       <ListTypeHeader>
         <MainText color={GRAY.DARK}>{t('ministry')}</MainText>
       </ListTypeHeader>
+      {/* 현재 사역 이력 */}
+      <MinistryListContainer>
+        <MinistryHistoryItem
+          ministry={currentHistory || DEFAULT_MINISTRY_HISTORY}
+          onClickEditMinistry={onClickEditMinistry}
+          onClickDeleteMinistry={onClickDeleteMinistry}
+          isCurrent={true}
+        />
+      </MinistryListContainer>
+      {/* 그룹 헤더 */}
+      <ListTypeHeader>
+        <MainText color={GRAY.DARK}>{t('history')}</MainText>
+      </ListTypeHeader>
       {/* 이력 */}
       <MinistryListContainer>
-        {ministryHistory.map((ministry) => {
-          return (
-            <MinistryHistoryItem
-              key={ministry.id}
-              ministry={ministry}
-              onClickEditMinistry={onClickEditMinistry}
-              onClickDeleteMinistry={onClickDeleteMinistry}
-            />
-          );
-        })}
+        {ministryHistory
+          .filter((ministry) => ministry.endDate)
+          .map((ministry) => {
+            return (
+              <MinistryHistoryItem
+                key={ministry.id}
+                ministry={ministry}
+                onClickEditMinistry={onClickEditMinistry}
+                onClickDeleteMinistry={onClickDeleteMinistry}
+              />
+            );
+          })}
       </MinistryListContainer>
       {/* 그룹 추가 및 수정 모달*/}
       <CustomPopup
@@ -79,8 +100,7 @@ const MemberMinistryView = ({
         height={400}
       >
         <MinistryModal
-          isHistory={true}
-          prevMinistry={targetMinistry}
+          targetHistory={targetMinistryHistory}
           onClickSaveMinistryHistory={onClickSaveMinistryHistory}
         />
       </CustomPopup>

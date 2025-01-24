@@ -1,19 +1,20 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { BLANK } from '@/constants/constant';
-import { Education, Group, Officer } from '@/models/management/management';
+import {
+  Education,
+  Group,
+  Ministry,
+  MinistryGroup,
+  Officer,
+} from '@/models/management/management';
 import { RootState } from '@/redux/store';
 import { GroupsApi } from '@/api/management/group/groups.api';
-
-type churchManagementItem = {
-  id: string;
-  membersCount: number;
-  name: string;
-};
 
 type ChurchState = {
   churchId: string;
   officers: Officer[];
-  ministries: churchManagementItem[];
+  ministryGroups: MinistryGroup[];
+  ministries: Ministry[];
   educations: Education[];
   groups: Group[];
 };
@@ -21,6 +22,7 @@ type ChurchState = {
 const initialState: ChurchState = {
   churchId: BLANK,
   officers: [],
+  ministryGroups: [],
   ministries: [],
   educations: [],
   groups: [],
@@ -60,7 +62,10 @@ const ChurchSlice = createSlice({
     setOfficers(state, action: PayloadAction<Officer[]>) {
       state.officers = action.payload;
     },
-    setMinistries(state, action: PayloadAction<churchManagementItem[]>) {
+    setMinistryGroups(state, action: PayloadAction<MinistryGroup[]>) {
+      state.ministryGroups = action.payload;
+    },
+    setMinistries(state, action: PayloadAction<Ministry[]>) {
       state.ministries = action.payload;
     },
     setEducations(state, action: PayloadAction<Education[]>) {
@@ -80,6 +85,7 @@ const ChurchSlice = createSlice({
 export const {
   setChurchId,
   setOfficers,
+  setMinistryGroups,
   setMinistries,
   setEducations,
   setGroups,

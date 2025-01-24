@@ -36,6 +36,7 @@ import MinistryGroupManagement from '@/components/organisms/management/ministry/
 import MemberMinistry from '@/components/molecules/member/information/member-ministry';
 import { Member } from '@/models/member/member';
 import GroupInformation from '@/components/molecules/management/group/group-information';
+import MemberOfficer from '@/components/molecules/member/information/member-officer';
 
 export const getContent = (id: string): ReactNode => {
   switch (id) {
@@ -84,7 +85,7 @@ export const getMemberInformationContent = (
 ) => {
   switch (contentId) {
     case MEMBER_INFORMATION_HEADER_ID.PERSONAL_INFORMATION:
-      return <InformationList targetMember={targetMember} />;
+      return <InformationList targetMemberId={targetMember.id} />;
     case MEMBER_INFORMATION_HEADER_ID.FAMILY_INFORMATION:
       return (
         <FamilyInformationList
@@ -98,6 +99,8 @@ export const getMemberInformationContent = (
       return <MemberEducation targetMember={targetMember} />;
     case MEMBER_INFORMATION_HEADER_ID.MINISTRY:
       return <MemberMinistry targetMember={targetMember} />;
+    case MEMBER_INFORMATION_HEADER_ID.OFFICER:
+      return <MemberOfficer targetMember={targetMember} />;
   }
 };
 

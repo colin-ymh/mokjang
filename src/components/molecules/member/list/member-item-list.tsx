@@ -1,12 +1,14 @@
-import styled from 'styled-components';
 import Image from 'next/image';
-import { GRAY } from '@/constants/styles/color';
-import DefaultImage from '../../../../../public/png/default-member-image.png';
-import { MainText } from '@/components/atoms/common/text/main-text';
-import { useI18n } from '../../../../../locales/client';
-import { MemberTableProps } from '@/components/molecules/member/list/member-table';
+import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
+
+import { GRAY } from '@/constants/styles/color';
+import { MemberTableProps } from '@/components/molecules/member/list/member-table';
+import { MainText } from '@/components/atoms/common/text/main-text';
+
+import DefaultImage from '../../../../../public/png/default-member-image.png';
+import { useI18n } from '../../../../../locales/client';
 
 const MemberListContainer = styled.div`
   display: flex;
@@ -54,9 +56,9 @@ const MemberItemList = ({ onClickMemberItem }: MemberTableProps) => {
             alt={`profileImage`}
           />
           <MemberDetails>
-            <MainText>{`${member.name} ${member.officerId || t('churchMember')}`}</MainText>
+            <MainText>{`${member.name} ${member.officer?.id || t('churchMember')}`}</MainText>
             <MainText>{member.mobilePhone}</MainText>
-            <MainText>{member.groupId}</MainText>
+            <MainText>{member.group?.id}</MainText>
           </MemberDetails>
         </MemberItem>
       ))}

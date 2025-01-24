@@ -135,7 +135,7 @@ export class MinistryHistoryApi {
   ): Promise<AxiosResponse> => {
     const { churchId, memberId, ministryHistoryId } = params;
 
-    const url = `${this._url}/churches/${churchId}/members/${memberId}/ministries/${ministryHistoryId}`;
+    const url = `${this._url}/churches/${churchId}/members/${memberId}/ministries/history/${ministryHistoryId}`;
 
     try {
       return await axios.patch(url, body);
@@ -154,7 +154,7 @@ export class MinistryHistoryApi {
   ): Promise<AxiosResponse> => {
     const { churchId, memberId, ministryHistoryId } = params;
 
-    const url = `${this._url}/churches/${churchId}/members/${memberId}/ministries/${ministryHistoryId}`;
+    const url = `${this._url}/churches/${churchId}/members/${memberId}/ministries/history/${ministryHistoryId}`;
 
     try {
       return await axios.delete(url);

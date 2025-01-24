@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 
 import { GroupsApi } from '@/api/management/group/groups.api';
-import { Group } from '@/models/management/management';
+import { DEFAULT_GROUP, Group } from '@/models/management/management';
 import GroupDropdownView from '@/components/atoms/common/dropdown/group-dropdown.view';
 import { getOrderedGroups } from '@/utils/group';
 
@@ -11,15 +11,10 @@ import { useI18n } from '../../../../../locales/client';
 
 type GroupModalProps = {
   value: string;
-  isHistory: boolean;
   onClickSaveGroup: (group: Group) => void;
 };
 
-const GroupDropdown = ({
-  value,
-  isHistory,
-  onClickSaveGroup,
-}: GroupModalProps) => {
+const GroupDropdown = ({ value, onClickSaveGroup }: GroupModalProps) => {
   const t = useI18n();
   const groupsApi = new GroupsApi(false);
   const churchId = useSelector((state: RootState) => state.church.churchId);
@@ -42,7 +37,7 @@ const GroupDropdown = ({
   const [currentGroup, setCurrentGroup] = useState<Group>(START_GROUP);
 
   // 현재 선택된 그룹
-  const [selectedGroup, setSelectedGroup] = useState<Group>(START_GROUP);
+  const [selectedGroup, setSelectedGroup] = useState<Group>(DEFAULT_GROUP);
 
   // 보고있는 그룹 배열
   const [groups, setGroups] = useState<Group[]>([]);
@@ -131,6 +126,30 @@ const GroupDropdown = ({
     return null; // 찾지 못하면 null 반환
   };
 
+  const findGroup = (groupId: string | null, groups: Group[]): Group | null => {
+    for (const group of groups) {
+      if (group.id === groupId) {
+        return group; // 찾으면 반환
+      }
+      if (group.childGroups && group.childGroups.length > 0) {
+        const foundGroup = findGroup(groupId, group.childGroups);
+        if (foundGroup) return foundGroup;
+      }
+    }
+    return null; // 못 찾으면 null 반환
+  };
+
+  useEffect(() => {
+    if (value) {
+      const newSelectedGroup = findGroup(value, allGroups);
+      if (newSelectedGroup) {
+        setSelectedGroup(newSelectedGroup);
+      }
+    } else {
+      setSelectedGroup(DEFAULT_GROUP);
+    }
+  }, [value, allGroups]);
+
   useEffect(() => {
     fetchGroups();
   }, []);
@@ -141,7 +160,6 @@ const GroupDropdown = ({
     selectedGroup,
     groups,
     parentGroups,
-    isHistory,
     isDropdownShown,
     onClickOpenDropdown,
     onClickCloseDropdown,

@@ -7,11 +7,12 @@ import { getFormattedDate, getLocaleDateFromDashDate } from '@/utils/format';
 import { GRAY } from '@/constants/styles/color';
 import SlideButtonList from '@/components/atoms/common/button/slide-button-list';
 
-const BackgroundContainer = styled.div`
+const BackgroundContainer = styled.div<{ $isCurrent?: boolean }>`
   display: flex;
   width: 100%;
   padding: 10px 0;
-  border-bottom: 1px solid ${GRAY.LIGHT};
+  border-bottom: ${({ $isCurrent }) => ($isCurrent ? '0px' : '1px')} solid
+    ${GRAY.LIGHT};
 `;
 
 const ItemContainer = styled.div`
@@ -56,27 +57,29 @@ type GroupHistoryItemProps = {
   group: GroupHistory;
   onClickEditGroup: (group: GroupHistory) => void;
   onClickDeleteGroup: (groupId: string) => void;
+  isCurrent?: boolean;
 };
 
 const GroupHistoryItem = ({
   group,
   onClickEditGroup,
   onClickDeleteGroup,
+  isCurrent,
 }: GroupHistoryItemProps) => {
   const t = useI18n();
 
   return (
-    <BackgroundContainer>
+    <BackgroundContainer $isCurrent={isCurrent}>
       <ItemContainer>
         {/* 그룹명 */}
         <NameContainer>
           <MainText color={GRAY.DARK}>{t('groupName')}</MainText>
-          <MainText>{group.groupName}</MainText>
+          <MainText>{group.groupSnapShot}</MainText>
         </NameContainer>
         {/* 역할 */}
         <RoleContainer>
           <MainText color={GRAY.DARK}>{t('groupRole')}</MainText>
-          <MainText>{group.groupRoleName}</MainText>
+          <MainText>{group.groupRoleSnapShot}</MainText>
         </RoleContainer>
         {/* 기간 */}
         <PeriodContainer>
@@ -93,12 +96,14 @@ const GroupHistoryItem = ({
           </DateContainer>
         </PeriodContainer>
         {/* 버튼들 */}
-        <SlideButtonList
-          isAddShown={false}
-          buttonSize={25}
-          onClickEdit={() => onClickEditGroup(group)}
-          onClickDelete={() => onClickDeleteGroup(group.id)}
-        />
+        {!isCurrent && (
+          <SlideButtonList
+            isAddShown={false}
+            buttonSize={25}
+            onClickEdit={() => onClickEditGroup(group)}
+            onClickDelete={() => onClickDeleteGroup(group.id)}
+          />
+        )}
       </ItemContainer>
     </BackgroundContainer>
   );

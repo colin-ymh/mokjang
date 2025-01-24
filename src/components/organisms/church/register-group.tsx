@@ -80,7 +80,6 @@ const RegisterGroup = ({}: GroupListProps) => {
     closedGroups,
     selectedGroupId: selectedGroup.id,
     setSelectedGroup,
-    fetchGroups,
     onClickToggle,
     onClickSave,
   };

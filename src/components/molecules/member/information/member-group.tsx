@@ -23,19 +23,19 @@ const MemberGroup = ({ targetMember }: MemberGroupProps) => {
   const [isModalShown, setIsModalShown] = useState<boolean>(false);
 
   // 수정하려는 그룹
-  const [targetGroup, setTargetGroup] = useState<GroupHistory>(
+  const [targetGroupHistory, setTargetGroupHistory] = useState<GroupHistory>(
     DEFAULT_GROUP_HISTORY
   );
 
   // 모달 닫기
   const onClickCloseModal = () => {
     setIsModalShown(false);
-    setTargetGroup(DEFAULT_GROUP_HISTORY);
+    setTargetGroupHistory(DEFAULT_GROUP_HISTORY);
   };
 
   // 그룹 선택 시
   const onClickEditGroup = (group: GroupHistory) => {
-    setTargetGroup(group);
+    setTargetGroupHistory(group);
     setIsModalShown(true);
   };
 
@@ -48,7 +48,7 @@ const MemberGroup = ({ targetMember }: MemberGroupProps) => {
         orderDirection: ORDER_DIRECTION.DESC,
       })
       .then((response) => {
-        const newGroupHistory = response.data;
+        const newGroupHistory = response.data.data;
         setGroupHistory(newGroupHistory);
       });
   };
@@ -65,14 +65,14 @@ const MemberGroup = ({ targetMember }: MemberGroupProps) => {
         {
           churchId,
           memberId: targetMember.id,
-          groupHistoryId: targetGroup.id,
+          groupHistoryId: targetGroupHistory.id,
         },
         { startDate, endDate }
       )
       .then(() => {
         setIsModalShown(false);
         fetchData();
-        setTargetGroup(DEFAULT_GROUP_HISTORY);
+        setTargetGroupHistory(DEFAULT_GROUP_HISTORY);
       });
   };
 
@@ -91,7 +91,7 @@ const MemberGroup = ({ targetMember }: MemberGroupProps) => {
 
   const props = {
     groupHistory,
-    targetGroup,
+    targetGroupHistory,
     isModalShown,
     onClickCloseModal,
     onClickEditGroup,

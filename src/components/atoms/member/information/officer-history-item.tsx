@@ -1,10 +1,11 @@
 import styled from 'styled-components';
 
-import { MinistryHistory } from '@/models/member/history';
+import { OfficerHistory } from '@/models/member/history';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { getFormattedDate, getLocaleDateFromDashDate } from '@/utils/format';
 import { GRAY } from '@/constants/styles/color';
 import SlideButtonList from '@/components/atoms/common/button/slide-button-list';
+
 import { useI18n } from '../../../../../locales/client';
 
 const BackgroundContainer = styled.div<{ $isCurrent?: boolean }>`
@@ -53,45 +54,45 @@ const DateContainer = styled.div`
   gap: 5px;
 `;
 
-type MinistryHistoryItemProps = {
-  ministry: MinistryHistory;
-  onClickEditMinistry: (ministry: MinistryHistory) => void;
-  onClickDeleteMinistry: (ministryId: string) => void;
+type OfficerHistoryItemProps = {
+  officer: OfficerHistory;
+  onClickEditOfficer: (officer: OfficerHistory) => void;
+  onClickDeleteOfficer: (officerId: string) => void;
   isCurrent?: boolean;
 };
 
-const MinistryHistoryItem = ({
-  ministry,
-  onClickEditMinistry,
-  onClickDeleteMinistry,
+const OfficerHistoryItem = ({
+  officer,
+  onClickEditOfficer,
+  onClickDeleteOfficer,
   isCurrent,
-}: MinistryHistoryItemProps) => {
+}: OfficerHistoryItemProps) => {
   const t = useI18n();
 
   return (
     <BackgroundContainer $isCurrent={isCurrent}>
       <ItemContainer>
-        {/* 그룹명 */}
+        {/* 직분명 */}
         <NameContainer>
-          <MainText color={GRAY.DARK}>{t('groupName')}</MainText>
-          <MainText>{ministry.ministryGroupSnapShot}</MainText>
+          <MainText color={GRAY.DARK}>{t('officer')}</MainText>
+          <MainText>{officer.officerSnapShot}</MainText>
         </NameContainer>
-        {/* 역할 */}
+        {/* 직분 시작 교회 */}
         <RoleContainer>
-          <MainText color={GRAY.DARK}>{t('groupRole')}</MainText>
-          <MainText>{ministry.ministrySnapShot}</MainText>
+          <MainText color={GRAY.DARK}>{t('officerStartChurch')}</MainText>
+          <MainText>{officer.officerStartChurch}</MainText>
         </RoleContainer>
         {/* 기간 */}
         <PeriodContainer>
           <MainText color={GRAY.DARK}>{t('period')}</MainText>
           <DateContainer>
             <MainText>
-              {getLocaleDateFromDashDate(getFormattedDate(ministry.startDate))}
+              {getLocaleDateFromDashDate(getFormattedDate(officer.startDate))}
             </MainText>
             <MainText>{'-'}</MainText>
             <MainText>
-              {ministry?.endDate &&
-                getLocaleDateFromDashDate(getFormattedDate(ministry?.endDate))}
+              {officer?.endDate &&
+                getLocaleDateFromDashDate(getFormattedDate(officer?.endDate))}
             </MainText>
           </DateContainer>
         </PeriodContainer>
@@ -100,8 +101,8 @@ const MinistryHistoryItem = ({
           <SlideButtonList
             isAddShown={false}
             buttonSize={25}
-            onClickEdit={() => onClickEditMinistry(ministry)}
-            onClickDelete={() => onClickDeleteMinistry(ministry.id)}
+            onClickEdit={() => onClickEditOfficer(officer)}
+            onClickDelete={() => onClickDeleteOfficer(officer.id)}
           />
         )}
       </ItemContainer>
@@ -109,4 +110,4 @@ const MinistryHistoryItem = ({
   );
 };
 
-export default MinistryHistoryItem;
+export default OfficerHistoryItem;

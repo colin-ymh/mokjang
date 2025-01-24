@@ -208,9 +208,9 @@ const MemberTableView = ({
       case MEMBER.EDUCATIONS:
         return (
           <MainText>
-            {member.educationHistory?.map((item) => {
-              return item.educationTerm.educationName;
-            })}
+            {/*{member.educations?.map((education) => {*/}
+            {/*  return education.educationTerm.educationName;*/}
+            {/*})}*/}
           </MainText>
         );
       case MEMBER.HOME_PHONE:

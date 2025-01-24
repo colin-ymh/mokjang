@@ -11,7 +11,7 @@ export type ButtonProps = MainTextProps & {
   text?: string;
   disabled?: boolean;
   onClick?: (event: any) => void;
-  width?: number;
+  width?: number | 'auto';
   height?: number;
   backgroundColor?: string;
   color?: string;
@@ -23,7 +23,7 @@ export type ButtonProps = MainTextProps & {
 
 const ButtonContainer = styled.button<{
   disabled?: boolean;
-  width?: number;
+  width?: number | 'auto';
   height?: number;
   $backgroundColor?: string;
   $isShadow?: boolean;
@@ -34,7 +34,8 @@ const ButtonContainer = styled.button<{
   align-items: center;
   justify-content: center;
   background-color: ${({ $backgroundColor }) => $backgroundColor};
-  width: ${({ width }) => (width ? `${width}px` : `100%`)};
+  width: ${({ width }) =>
+    width ? (width === 'auto' ? width : `${width}px`) : `100%`};
   height: ${({ height }) => (height ? `${height}px` : `100%`)};
   border-radius: ${({ $borderRadius }) =>
     ` ${$borderRadius !== null ? $borderRadius : 5}px`};
@@ -45,6 +46,7 @@ const ButtonContainer = styled.button<{
   box-shadow: ${({ $isShadow, disabled }) =>
     $isShadow && !disabled ? `2px 2px 10px rgba(0, 0, 0, 0.3)` : `none`};
   overflow: hidden;
+  flex-shrink: 0;
 `;
 
 const Button = ({

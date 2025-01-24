@@ -1,15 +1,17 @@
 import { BLANK, EDUCATION_STATUS } from '@/constants/constant';
 import {
   DEFAULT_EDUCATION_TERM,
+  DEFAULT_OFFICER,
   EducationTerm,
+  Officer,
 } from '@/models/management/management';
 
 export type GroupHistory = {
   id: string;
   groupId: string;
-  groupName: string;
   groupRoleId: string;
-  groupRoleName: string;
+  groupSnapShot: string;
+  groupRoleSnapShot: string;
   startDate: string;
   endDate: string;
 };
@@ -17,9 +19,9 @@ export type GroupHistory = {
 export const DEFAULT_GROUP_HISTORY: GroupHistory = {
   id: BLANK,
   groupId: BLANK,
-  groupName: BLANK,
+  groupSnapShot: BLANK,
   groupRoleId: BLANK,
-  groupRoleName: BLANK,
+  groupRoleSnapShot: BLANK,
   startDate: BLANK,
   endDate: BLANK,
 };
@@ -61,4 +63,26 @@ export const DEFAULT_MINISTRY_HISTORY: MinistryHistory = {
   ministryGroupSnapShot: BLANK,
   startDate: BLANK,
   endDate: BLANK,
+};
+
+export type OfficerHistory = {
+  id: string;
+  memberId: string;
+  officerId: string;
+  officerSnapShot: string;
+  officerStartChurch?: string;
+  startDate: string;
+  endDate: string;
+  officer: Officer;
+};
+
+export const DEFAULT_OFFICER_HISTORY: OfficerHistory = {
+  id: BLANK,
+  memberId: BLANK,
+  officerId: BLANK,
+  officerSnapShot: BLANK,
+  officerStartChurch: BLANK,
+  startDate: BLANK,
+  endDate: BLANK,
+  officer: DEFAULT_OFFICER,
 };

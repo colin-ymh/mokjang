@@ -4,50 +4,50 @@ import { ORDER_DIRECTION } from '@/constants/constant';
 
 class HTTPError extends Error {}
 
-type GetGroupHistoryParams = {
+type getOfficerHistoryParams = {
   churchId: string;
   memberId: string;
   orderDirection?: ORDER_DIRECTION;
 };
 
-type createGroupHistoryParams = {
+type createOfficerHistoryParams = {
   churchId: string;
   memberId: string;
 };
 
-type createGroupHistoryBody = {
-  groupId: string;
-  groupRoleId?: string;
+type createOfficerHistoryBody = {
+  officerId: string;
+  officerStartChurch?: string;
   startDate?: string;
 };
 
-type stopGroupHistoryParams = {
+type stopOfficerHistoryParams = {
   churchId: string;
   memberId: string;
 };
 
-type stopGroupHistoryBody = {
+type stopOfficerHistoryBody = {
   endDate?: string;
 };
 
-type editGroupHistoryParams = {
+type editOfficerHistoryParams = {
   churchId: string;
   memberId: string;
-  groupHistoryId: string;
+  officerHistoryId: string;
 };
 
-type editGroupHistoryBody = {
+type editOfficerHistoryBody = {
   startDate?: string;
   endDate?: string;
 };
 
-type deleteGroupHistoryParams = {
+type deleteOfficerHistoryParams = {
   churchId: string;
   memberId: string;
-  groupHistoryId: string;
+  officerHistoryId: string;
 };
 
-export class GroupHistoryApi {
+export class OfficerHistoryApi {
   private _url: string;
 
   constructor(useBaseURL: boolean) {
@@ -57,16 +57,16 @@ export class GroupHistoryApi {
   }
 
   /**
-   * 그룹 이력 조회
-   * @param {GetGroupHistoryParams} params
+   * 직분 이력 조회
+   * @param {getOfficerHistoryParams} params
    * @returns {Promise<AxiosResponse>}
    */
-  public getGroupHistory = async (
-    params: GetGroupHistoryParams
+  public getOfficerHistory = async (
+    params: getOfficerHistoryParams
   ): Promise<AxiosResponse> => {
     const { churchId, memberId, orderDirection } = params;
 
-    const url = `${this._url}/churches/${churchId}/members/${memberId}/groups`;
+    const url = `${this._url}/churches/${churchId}/members/${memberId}/officers`;
 
     try {
       return await axios.get(url, {
@@ -80,18 +80,18 @@ export class GroupHistoryApi {
   };
 
   /**
-   * 그룹 이력 생성
-   * @param {createGroupHistoryParams} params
-   * @param {createGroupHistoryBody} body
+   * 직분 이력 생성
+   * @param {createOfficerHistoryParams} params
+   * @param {createOfficerHistoryBody} body
    * @returns {Promise<AxiosResponse>}
    */
-  public createGroupHistory = async (
-    params: createGroupHistoryParams,
-    body: createGroupHistoryBody
+  public createOfficerHistory = async (
+    params: createOfficerHistoryParams,
+    body: createOfficerHistoryBody
   ): Promise<AxiosResponse> => {
     const { churchId, memberId } = params;
 
-    const url = `${this._url}/churches/${churchId}/members/${memberId}/groups`;
+    const url = `${this._url}/churches/${churchId}/members/${memberId}/officers`;
 
     try {
       return await axios.post(url, body);
@@ -101,18 +101,18 @@ export class GroupHistoryApi {
   };
 
   /**
-   * 그룹 종료
-   * @param {stopGroupHistoryParams} params
-   * @param {stopGroupHistoryBody} body
+   * 직분 종료
+   * @param {stopOfficerHistoryParams} params
+   * @param {stopOfficerHistoryBody} body
    * @returns {Promise<AxiosResponse>}
    */
-  public stopGroupHistory = async (
-    params: stopGroupHistoryParams,
-    body: stopGroupHistoryBody
+  public stopOfficerHistory = async (
+    params: stopOfficerHistoryParams,
+    body: stopOfficerHistoryBody
   ): Promise<AxiosResponse> => {
     const { churchId, memberId } = params;
 
-    const url = `${this._url}/churches/${churchId}/members/${memberId}/groups/`;
+    const url = `${this._url}/churches/${churchId}/members/${memberId}/officers`;
 
     try {
       return await axios.delete(url, {
@@ -124,18 +124,18 @@ export class GroupHistoryApi {
   };
 
   /**
-   * 그룹 이력 수정
-   * @param {editGroupHistoryParams} params
-   * @param {editGroupHistoryBody} body
+   * 직분 이력 수정
+   * @param {editOfficerHistoryParams} params
+   * @param {editOfficerHistoryBody} body
    * @returns {Promise<AxiosResponse>}
    */
-  public editGroupHistory = async (
-    params: editGroupHistoryParams,
-    body: editGroupHistoryBody
+  public editOfficerHistory = async (
+    params: editOfficerHistoryParams,
+    body: editOfficerHistoryBody
   ): Promise<AxiosResponse> => {
-    const { churchId, memberId, groupHistoryId } = params;
+    const { churchId, memberId, officerHistoryId } = params;
 
-    const url = `${this._url}/churches/${churchId}/members/${memberId}/groups/${groupHistoryId}`;
+    const url = `${this._url}/churches/${churchId}/members/${memberId}/officers/${officerHistoryId}`;
 
     try {
       return await axios.patch(url, body);
@@ -145,16 +145,16 @@ export class GroupHistoryApi {
   };
 
   /**
-   * 그룹 이력 삭제
-   * @param {deleteGroupHistoryParams} params
+   * 직분 이력 삭제
+   * @param {deleteOfficerHistoryParams} params
    * @returns {Promise<AxiosResponse>}
    */
-  public deleteGroupHistory = async (
-    params: deleteGroupHistoryParams
+  public deleteOfficerHistory = async (
+    params: deleteOfficerHistoryParams
   ): Promise<AxiosResponse> => {
-    const { churchId, memberId, groupHistoryId } = params;
+    const { churchId, memberId, officerHistoryId } = params;
 
-    const url = `${this._url}/churches/${churchId}/members/${memberId}/groups/${groupHistoryId}`;
+    const url = `${this._url}/churches/${churchId}/members/${memberId}/officers/${officerHistoryId}`;
 
     try {
       return await axios.delete(url);

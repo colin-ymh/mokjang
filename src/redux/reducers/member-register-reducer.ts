@@ -6,7 +6,6 @@ import {
   GENDER,
   MEMBER_REGISTER_STAGE,
   MEMBER_REGISTER_TYPE,
-  NONE,
   NULL,
 } from '@/constants/constant';
 import { getIsWellFormedMobilePhone, getIsWellFormedName } from '@/utils/check';
@@ -17,11 +16,6 @@ type MemberRegisterState = {
   stage: MEMBER_REGISTER_STAGE;
   type: MEMBER_REGISTER_TYPE;
   isStageClear: boolean;
-};
-
-export const NONE_INFORMATION = {
-  id: NONE,
-  name: NONE,
 };
 
 export const DEFAULT_MEMBER: Member = {
@@ -39,21 +33,13 @@ export const DEFAULT_MEMBER: Member = {
   birth: BLANK,
   isLunar: false,
   baptism: BAPTISM.NONE,
-  previousChurch: BLANK,
   gender: GENDER.MALE,
-  vehicleNumber: [BLANK, BLANK, BLANK],
-  officerId: NONE,
-  officer: NONE_INFORMATION,
-  officerStartDate: BLANK,
-  officerStartChurch: BLANK,
   guidedById: BLANK,
+  vehicleNumber: [BLANK, BLANK, BLANK],
   familyMemberId: BLANK,
   family: [],
   relation: FAMILY.FAMILY,
-  ministries: [],
-  groupId: NONE,
-  group: [],
-  educationHistory: [],
+  // 교회 정보
   registeredAt: BLANK,
   updatedAt: BLANK,
 };

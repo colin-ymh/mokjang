@@ -26,19 +26,18 @@ const MemberMinistry = ({ targetMember }: MemberMinistryProps) => {
   const [isModalShown, setIsModalShown] = useState<boolean>(false);
 
   // 수정하려는 그룹
-  const [targetMinistry, setTargetMinistry] = useState<MinistryHistory>(
-    DEFAULT_MINISTRY_HISTORY
-  );
+  const [targetMinistryHistory, setTargetMinistryHistory] =
+    useState<MinistryHistory>(DEFAULT_MINISTRY_HISTORY);
 
   // 모달 닫기
   const onClickCloseModal = () => {
     setIsModalShown(false);
-    setTargetMinistry(DEFAULT_MINISTRY_HISTORY);
+    setTargetMinistryHistory(DEFAULT_MINISTRY_HISTORY);
   };
 
   // 그룹 선택 시
   const onClickEditMinistry = (ministry: MinistryHistory) => {
-    setTargetMinistry(ministry);
+    setTargetMinistryHistory(ministry);
     setIsModalShown(true);
   };
 
@@ -51,7 +50,7 @@ const MemberMinistry = ({ targetMember }: MemberMinistryProps) => {
         orderDirection: ORDER_DIRECTION.DESC,
       })
       .then((response) => {
-        const newMinistryHistory = response.data;
+        const newMinistryHistory = response.data.data;
         setMinistryHistory(newMinistryHistory);
       });
   };
@@ -68,14 +67,14 @@ const MemberMinistry = ({ targetMember }: MemberMinistryProps) => {
         {
           churchId,
           memberId: targetMember.id,
-          ministryHistoryId: targetMinistry.id,
+          ministryHistoryId: targetMinistryHistory.id,
         },
         { startDate, endDate }
       )
       .then(() => {
         setIsModalShown(false);
         fetchData();
-        setTargetMinistry(DEFAULT_MINISTRY_HISTORY);
+        setTargetMinistryHistory(DEFAULT_MINISTRY_HISTORY);
       });
   };
 
@@ -94,7 +93,7 @@ const MemberMinistry = ({ targetMember }: MemberMinistryProps) => {
 
   const props = {
     ministryHistory,
-    targetMinistry,
+    targetMinistryHistory,
     isModalShown,
     onClickCloseModal,
     onClickEditMinistry,

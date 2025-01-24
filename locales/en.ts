@@ -9,6 +9,7 @@ export default {
   all: 'All',
   period: 'Period',
   total: 'Total',
+  history: 'History',
 
   people: 'People',
 
@@ -182,6 +183,7 @@ export default {
   'button.save': 'Save',
   'button.edit': 'Edit',
   'button.delete': 'Delete',
+  'button.stop': 'Stop',
   'button.fetchFamily': 'Save Every Family',
   'button.saveFamily': 'Save',
   'button.goBack': 'Go Back',

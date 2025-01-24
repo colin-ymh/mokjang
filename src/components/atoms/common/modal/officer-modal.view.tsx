@@ -6,15 +6,13 @@ import LabelInput from '@/components/atoms/common/input/label-input';
 import { GRAY, MAIN, WHITE } from '@/constants/styles/color';
 import LabelDropdown from '@/components/atoms/common/dropdown/label-dropdown';
 
-import { GroupHistory } from '@/models/member/history';
-import { Group } from '@/models/management/management';
-import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-item';
-import GroupDropdown from '@/components/atoms/common/dropdown/group-dropdown';
-
 import { useI18n } from '../../../../../locales/client';
+import { useOfficerDropdownItems } from '@/hooks/dropdown/dropdown-items';
+import { OfficerHistory } from '@/models/member/history';
 import Cancel from '../../../../../public/svg/cancel.svg';
+import { NONE } from '@/constants/constant';
 
-const GroupModalViewContainer = styled.div`
+const OfficerModalViewContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -50,70 +48,56 @@ const ButtonContainer = styled.div`
   padding: 20px;
 `;
 
-type GroupModalViewProps = {
-  targetHistory: GroupHistory | undefined;
-  selectedGroup: Group;
-  selectedRoleId: string;
-  roleItems: DropdownValueType[];
+type OfficerModalViewProps = {
+  targetHistory: OfficerHistory | undefined;
+  selectedOfficerId: string;
   isButtonEnabled: boolean;
   startDate: string;
   endDate: string;
   onChangeStartDate: (event: ChangeEvent<HTMLInputElement>) => void;
   onChangeEndDate: (event: ChangeEvent<HTMLInputElement>) => void;
-  onClickSaveNewGroup?: (
-    groupId: string,
-    groupRoleId: string,
-    startDate: string
-  ) => void;
-  onClickSaveGroupHistory?: (startDate?: string, endDate?: string) => void;
-  onClickCancelGroup?: () => void;
-  onChangeRoleId: (id: string) => void;
-  onChangeGroup: (group: Group) => void;
+  onClickSaveNewOfficer?: (officerId: string, startDate: string) => void;
+  onClickSaveOfficerHistory?: (startDate?: string, endDate?: string) => void;
+  onClickCancelOfficer?: () => void;
+  onChangeOfficerId: (id: string) => void;
 };
 
-const GroupModalView = ({
+const OfficerModalView = ({
   targetHistory,
-  selectedGroup,
-  roleItems,
-  selectedRoleId,
+  selectedOfficerId,
   isButtonEnabled,
   startDate,
   endDate,
   onChangeStartDate,
   onChangeEndDate,
-  onChangeGroup,
-  onChangeRoleId,
-  onClickSaveNewGroup,
-  onClickSaveGroupHistory,
-  onClickCancelGroup,
-}: GroupModalViewProps) => {
+  onChangeOfficerId,
+  onClickSaveNewOfficer,
+  onClickSaveOfficerHistory,
+  onClickCancelOfficer,
+}: OfficerModalViewProps) => {
   const t = useI18n();
+  const officerDropdownItems = useOfficerDropdownItems();
 
   return (
-    <GroupModalViewContainer>
+    <OfficerModalViewContainer>
       {/* 내용 */}
       <ContentContainer>
         <GroupContainer>
-          {/* 그룹 */}
-          <GroupDropdown
-            value={selectedGroup.id as string}
-            onClickSaveGroup={onChangeGroup}
-          />
-          <Button width={42} height={42} onClick={onClickCancelGroup}>
+          {/* 직분 */}
+          {!targetHistory?.endDate && (
+            <LabelDropdown
+              label={t('officer')}
+              value={selectedOfficerId}
+              items={officerDropdownItems}
+              onChangeItem={onChangeOfficerId}
+            />
+          )}
+          <Button width={38} height={38} onClick={onClickCancelOfficer}>
             <CancelButton />
           </Button>
         </GroupContainer>
-        {/* 역할 */}
-        {selectedGroup.id && !targetHistory?.endDate && (
-          <LabelDropdown
-            label={t('groupRole')}
-            value={selectedRoleId}
-            items={roleItems}
-            onChangeItem={onChangeRoleId}
-          />
-        )}
         {/* 시작 날짜 */}
-        {selectedGroup.id && (
+        {selectedOfficerId !== NONE && (
           <LabelInput
             label={t('startDate')}
             value={startDate}
@@ -140,21 +124,17 @@ const GroupModalView = ({
           height={30}
           onClick={() => {
             if (targetHistory?.endDate) {
-              onClickSaveGroupHistory &&
-                onClickSaveGroupHistory(startDate, endDate);
+              onClickSaveOfficerHistory &&
+                onClickSaveOfficerHistory(startDate, endDate);
             } else {
-              onClickSaveNewGroup &&
-                onClickSaveNewGroup(
-                  selectedGroup.id as string,
-                  selectedRoleId,
-                  startDate
-                );
+              onClickSaveNewOfficer &&
+                onClickSaveNewOfficer(selectedOfficerId, startDate);
             }
           }}
         />
       </ButtonContainer>
-    </GroupModalViewContainer>
+    </OfficerModalViewContainer>
   );
 };
 
-export default GroupModalView;
+export default OfficerModalView;

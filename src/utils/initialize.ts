@@ -8,12 +8,15 @@ import {
   setEducations,
   setGroups,
   setMinistries,
+  setMinistryGroups,
   setOfficers,
 } from '@/redux/reducers/church-reducer';
 import { GroupsApi } from '@/api/management/group/groups.api';
+import { MinistryGroupsApi } from '@/api/management/ministry/ministry-groups.api';
 
 export const useInitializeChurch = (id: string) => {
   const dispatch = useDispatch<AppDispatch>();
+  const ministryGroupsApi = new MinistryGroupsApi(false);
   const ministriesApi = new MinistriesApi(false);
   const officersApi = new OfficersApi(false);
   const educationsApi = new EducationsApi(false);
@@ -21,6 +24,10 @@ export const useInitializeChurch = (id: string) => {
 
   const initialize = () => {
     dispatch(setChurchId(id));
+
+    ministryGroupsApi
+      .getMinistryGroups({ churchId: id })
+      .then((response) => dispatch(setMinistryGroups(response.data)));
 
     ministriesApi
       .getMinistries({ churchId: id })

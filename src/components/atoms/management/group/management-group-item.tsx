@@ -6,17 +6,17 @@ import React, {
   useRef,
   useState,
 } from 'react';
-
-import { DEFAULT_GROUP, Group } from '@/models/management/management';
-import ManagementGroupItemView from '@/components/atoms/management/group/management-group-item.view';
-import { GroupsApi } from '@/api/management/group/groups.api';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
-import { getFormattedTitle } from '@/utils/format';
-import { getIsWellFormedTitle } from '@/utils/check';
+import { fetchGroups } from '@/redux/reducers/church-reducer';
+
+import { GroupsApi } from '@/api/management/group/groups.api';
 import AddGroup from '@/components/atoms/management/group/add-group';
 import { BLANK } from '@/constants/constant';
-import { fetchGroups } from '@/redux/reducers/church-reducer';
+import ManagementGroupItemView from '@/components/atoms/management/group/management-group-item.view';
+import { DEFAULT_GROUP, Group } from '@/models/management/management';
+import { getFormattedTitle } from '@/utils/format';
+import { getIsWellFormedTitle } from '@/utils/check';
 
 type ManagementGroupItemProps = {
   group: Group;
@@ -142,6 +142,7 @@ const ManagementGroupItem = ({
         )
         .then((response) => {
           dispatch(fetchGroups()).then(() => {
+            console.log(response);
             setSelectedGroup(response.data);
             setIsEdit(false);
           });

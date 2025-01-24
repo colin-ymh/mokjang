@@ -47,7 +47,6 @@ type GroupListViewProps = {
   closedGroups: Set<number>;
   selectedGroupId: string | null;
   setSelectedGroup: Dispatch<SetStateAction<Group>>;
-  fetchGroups: () => void;
   onClickToggle: (id: string) => void;
   onClickSave: () => void;
 };
@@ -57,7 +56,6 @@ const RegisterGroupView = ({
   closedGroups,
   selectedGroupId,
   setSelectedGroup,
-  fetchGroups,
   onClickToggle,
   onClickSave,
 }: GroupListViewProps) => {

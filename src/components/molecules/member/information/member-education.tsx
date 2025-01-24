@@ -16,20 +16,20 @@ const MemberEducation = ({ targetMember }: MemberEducation) => {
   const churchId = useSelector((state: RootState) => state.church.churchId);
   const educationHistoryApi = new EducationHistoryApi(false);
 
-  // 사용자의 그룹 이력
+  // 사용자의 교육 이력
   const [educationHistory, setEducationHistory] = useState<EducationHistory[]>(
     []
   );
 
-  // // 그룹 추가 모달 활성화 여부
+  // // 교육 추가 모달 활성화 여부
   // const [isModalShown, setIsModalShown] = useState<boolean>(false);
   //
-  // // 수정하려는 그룹
+  // // 수정하려는 교육
   // const [targetEducation, setTargetEducation] = useState<EducationHistory>(
   //   DEFAULT_EDUCATION_HISTORY
   // );
 
-  // // 그룹 추가 모달 활성화
+  // // 교육 추가 모달 활성화
   // const onClickOpenModal = () => {
   //   setIsModalShown(true);
   // };
@@ -40,7 +40,7 @@ const MemberEducation = ({ targetMember }: MemberEducation) => {
   //   setTargetEducation(DEFAULT_EDUCATION_HISTORY);
   // };
 
-  // // 그룹 선택 시
+  // // 교육 선택 시
   // const onClickEditEducation = (education: EducationHistory) => {
   //   setTargetEducation(education);
   //   setIsModalShown(true);
@@ -60,12 +60,12 @@ const MemberEducation = ({ targetMember }: MemberEducation) => {
       });
   };
 
-  // 교인의 그룹 이력 불러오기
+  // 교인의 교육 이력 불러오기
   useEffect(() => {
     fetchData();
   }, [targetMember.id]);
 
-  // // 새그룹 저장하기
+  // // 새교육 저장하기
   // const onClickSaveNewEducation = (
   //   educationId: string,
   //   startDate: string,
@@ -84,7 +84,7 @@ const MemberEducation = ({ targetMember }: MemberEducation) => {
   //     });
   // };
   //
-  // // 기존 그룹 수정하기
+  // // 기존 교육 수정하기
   // const onClickSaveEditEducation = (
   //   educationId?: string,
   //   startDate?: string,
@@ -107,7 +107,7 @@ const MemberEducation = ({ targetMember }: MemberEducation) => {
   //     });
   // };
   //
-  // // 기존 그룹 삭제하기
+  // // 기존 교육 삭제하기
   // const onClickDeleteEducation = (educationId: string) => {
   //   educationHistoryApi
   //     .deleteEducationHistory({

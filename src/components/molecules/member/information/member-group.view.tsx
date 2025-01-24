@@ -2,10 +2,10 @@ import styled from 'styled-components';
 
 import { GRAY } from '@/constants/styles/color';
 import { MainText } from '@/components/atoms/common/text/main-text';
-import GroupModal from '@/components/atoms/common/modal/group-modal';
-import { GroupHistory } from '@/models/member/history';
+import { DEFAULT_GROUP_HISTORY, GroupHistory } from '@/models/member/history';
 import GroupHistoryItem from '@/components/atoms/member/information/group-history-item';
 import CustomPopup from '@/components/atoms/common/popup/custom-popup';
+import GroupModal from '@/components/atoms/common/modal/group-modal';
 
 import { useI18n } from '../../../../../locales/client';
 
@@ -34,7 +34,7 @@ const GroupListContainer = styled.div`
 
 type MemberGroupViewProps = {
   groupHistory: GroupHistory[];
-  targetGroup: GroupHistory;
+  targetGroupHistory: GroupHistory;
   isModalShown: boolean;
   onClickCloseModal: () => void;
   onClickEditGroup: (group: GroupHistory) => void;
@@ -44,7 +44,7 @@ type MemberGroupViewProps = {
 
 const MemberGroupView = ({
   groupHistory,
-  targetGroup,
+  targetGroupHistory,
   isModalShown,
   onClickCloseModal,
   onClickEditGroup,
@@ -52,24 +52,43 @@ const MemberGroupView = ({
   onClickSaveGroupHistory,
 }: MemberGroupViewProps) => {
   const t = useI18n();
+  const currentHistory = groupHistory.find(
+    (history) => history.endDate === null
+  );
+  console.log(groupHistory);
   return (
     <ListContainer>
       {/* 그룹 헤더 */}
       <ListTypeHeader>
         <MainText color={GRAY.DARK}>{t('group')}</MainText>
       </ListTypeHeader>
+      {/* 현재 사역 이력 */}
+      <GroupListContainer>
+        <GroupHistoryItem
+          group={currentHistory || DEFAULT_GROUP_HISTORY}
+          onClickEditGroup={onClickEditGroup}
+          onClickDeleteGroup={onClickDeleteGroup}
+          isCurrent={true}
+        />
+      </GroupListContainer>
+      {/* 그룹 헤더 */}
+      <ListTypeHeader>
+        <MainText color={GRAY.DARK}>{t('history')}</MainText>
+      </ListTypeHeader>
       {/* 이력 */}
       <GroupListContainer>
-        {groupHistory.map((group) => {
-          return (
-            <GroupHistoryItem
-              key={group.id}
-              group={group}
-              onClickEditGroup={onClickEditGroup}
-              onClickDeleteGroup={onClickDeleteGroup}
-            />
-          );
-        })}
+        {groupHistory
+          .filter((group) => group.endDate)
+          .map((group) => {
+            return (
+              <GroupHistoryItem
+                key={group.id}
+                group={group}
+                onClickEditGroup={onClickEditGroup}
+                onClickDeleteGroup={onClickDeleteGroup}
+              />
+            );
+          })}
       </GroupListContainer>
       {/* 그룹 추가 및 수정 모달*/}
       <CustomPopup
@@ -79,8 +98,7 @@ const MemberGroupView = ({
         height={400}
       >
         <GroupModal
-          isHistory={true}
-          prevGroup={targetGroup}
+          targetHistory={targetGroupHistory}
           onClickSaveGroupHistory={onClickSaveGroupHistory}
         />
       </CustomPopup>

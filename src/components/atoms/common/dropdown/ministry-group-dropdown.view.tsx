@@ -2,8 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { GRAY } from '@/constants/styles/color';
-import SelectGroupModal from '@/components/atoms/common/modal/select-group-modal';
-import { Group } from '@/models/management/management';
+import SelectMinistryGroupModal from '@/components/atoms/common/modal/select-ministry-group-modal';
+import { MinistryGroup } from '@/models/management/management';
 import TransparentBackground from '@/components/atoms/common/etc/transparent-background';
 
 import { useI18n } from '../../../../../locales/client';
@@ -17,7 +17,7 @@ const LabelInputContainer = styled.div`
   position: relative;
 `;
 
-const GroupButton = styled.div`
+const MinistryGroupButton = styled.div`
   display: flex;
   cursor: pointer;
   padding-left: 10px;
@@ -35,42 +35,41 @@ const DropdownContainer = styled.div`
   top: -0px;
 `;
 
-type GroupModalProps = {
+type MinistryGroupModalProps = {
   value: string;
-  currentGroup: Group;
-  groups: Group[];
-  parentGroups: Group[];
-  selectedGroup: Group;
+  currentMinistryGroup: MinistryGroup;
+  ministryGroups: MinistryGroup[];
+  parentMinistryGroups: MinistryGroup[];
+  selectedMinistryGroup: MinistryGroup;
   isDropdownShown: boolean;
   onClickOpenDropdown: () => void;
   onClickCloseDropdown: () => void;
-  onClickParent: (group: Group) => void;
-  onClickSaveGroup: (group: Group) => void;
+  onClickParent: (ministryGroup: MinistryGroup) => void;
+  onClickSaveMinistryGroup: (ministryGroup: MinistryGroup) => void;
   onClickGoBack: () => void;
 };
 
-const GroupDropdownView = ({
+const MinistryGroupDropdownView = ({
   value,
-  currentGroup,
-  groups,
-  parentGroups,
-  selectedGroup,
+  currentMinistryGroup,
+  ministryGroups,
+  parentMinistryGroups,
+  selectedMinistryGroup,
   isDropdownShown,
   onClickOpenDropdown,
   onClickCloseDropdown,
   onClickParent,
-  onClickSaveGroup,
+  onClickSaveMinistryGroup,
   onClickGoBack,
-}: GroupModalProps) => {
+}: MinistryGroupModalProps) => {
   const t = useI18n();
-
   return (
     <LabelInputContainer>
       <MainText>{t('group')}</MainText>
       {/* 현재 상태값 & 버튼 */}
-      <GroupButton onClick={() => onClickOpenDropdown()}>
-        <MainText>{selectedGroup.name}</MainText>
-      </GroupButton>
+      <MinistryGroupButton onClick={() => onClickOpenDropdown()}>
+        <MainText>{selectedMinistryGroup.name}</MainText>
+      </MinistryGroupButton>
 
       {/* 드롭다운 */}
       <DropdownContainer>
@@ -80,13 +79,13 @@ const GroupDropdownView = ({
           zIndex={300}
         />
         {isDropdownShown && (
-          <SelectGroupModal
-            currentGroup={currentGroup}
-            groups={groups}
-            selectedGroup={selectedGroup}
-            parentGroups={parentGroups}
+          <SelectMinistryGroupModal
+            currentMinistryGroup={currentMinistryGroup}
+            ministryGroups={ministryGroups}
+            selectedMinistryGroup={selectedMinistryGroup}
+            parentMinistryGroups={parentMinistryGroups}
             onClickParent={onClickParent}
-            onClickSaveGroup={onClickSaveGroup}
+            onClickSaveMinistryGroup={onClickSaveMinistryGroup}
             onClickCloseDropdown={onClickCloseDropdown}
             onClickGoBack={onClickGoBack}
           />
@@ -96,4 +95,4 @@ const GroupDropdownView = ({
   );
 };
 
-export default GroupDropdownView;
+export default MinistryGroupDropdownView;

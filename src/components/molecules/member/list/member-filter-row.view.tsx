@@ -52,11 +52,10 @@ const FilteredItemList = styled.div<{ $width: number }>`
 const SearchContainer = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: flex-end;
   align-items: center;
   gap: 10px;
   right: 20px;
-
   position: absolute;
 `;
 
@@ -143,7 +142,7 @@ const MemberFilterRowView = ({
           items={searchFilterDropdownItems}
           onChangeItem={onClickSearchFilterItem}
           height={30}
-          width={80}
+          width={100}
           borderColor={GRAY.LIGHT}
           backgroundBlur={false}
         />
@@ -153,10 +152,15 @@ const MemberFilterRowView = ({
           onChange={onChangeSearchValue}
           borderColor={GRAY.LIGHT}
           height={30}
-          width={150}
+          width={160}
           onKeyDown={onKeyDown}
         />
-        <Button text={t('search')} height={30} onClick={onClickSearch} />
+        <Button
+          text={t('search')}
+          height={30}
+          width={'auto'}
+          onClick={onClickSearch}
+        />
       </SearchContainer>
     </MemberFilterContainer>
   );

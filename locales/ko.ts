@@ -9,6 +9,7 @@ export default {
   all: '전체',
   period: '기간',
   total: '총',
+  history: '이력',
 
   people: '인원',
 
@@ -189,6 +190,7 @@ export default {
   'button.save': '저장',
   'button.edit': '수정하기',
   'button.delete': '삭제하기',
+  'button.stop': '종료하기',
   'button.fetchFamily': '가족 불러오기',
   'button.saveFamily': '해당 가족만 추가하기',
   'button.goBack': '이전으로',

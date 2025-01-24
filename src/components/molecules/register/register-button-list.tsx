@@ -144,16 +144,16 @@ const RegisterButtonList = ({ setIsShown }: RegisterButtonListProps) => {
           });
 
         // 직분 업데이트
-        if (member.officerId !== NULL) {
+        if (member?.officer?.id !== NULL) {
           memberManagementsApi
             .editMemberOfficer(
               { churchId, memberId: member.id },
               {
                 isDeleteOfficer: false,
                 officerId:
-                  member.officerId !== NONE ? member.officerId : undefined,
+                  member.officer?.id !== NONE ? member?.officer?.id : undefined,
                 officerStartChurch:
-                  member.officerStartChurch === BLANK
+                  member?.officerStartChurch === BLANK
                     ? undefined
                     : member.officerStartChurch,
                 officerStartDate:
