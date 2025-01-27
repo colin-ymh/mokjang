@@ -17,6 +17,8 @@ import {
 } from '@/utils/format';
 
 import DefaultImage from '../../../../../public/png/default-member-image.png';
+import { usePathname } from 'next/navigation';
+import { LOCALE } from '@/constants/state/locale';
 
 const getColumnWidth = (id: string) => {
   switch (id) {
@@ -171,11 +173,13 @@ const GroupMemberTableView = ({
   onScroll,
 }: MemberTableProps) => {
   const { height } = useWindowSize();
+  const pathname = usePathname();
+  const basePath = pathname.split('/')[1] as LOCALE;
 
   const getMemberTableContent = (id: MEMBER, member: Member) => {
     switch (id) {
       case MEMBER.GROUP:
-        return <MainText>{member.group.name}</MainText>;
+        return <MainText>{member?.group?.name}</MainText>;
 
       case MEMBER.NAME:
         return (
@@ -197,7 +201,10 @@ const GroupMemberTableView = ({
         return (
           <MainText>
             {member.birth &&
-              getLocaleDateFromDashDate(getFormattedDate(member.birth))}
+              getLocaleDateFromDashDate(
+                basePath,
+                getFormattedDate(member.birth)
+              )}
           </MainText>
         );
       case MEMBER.AGE:

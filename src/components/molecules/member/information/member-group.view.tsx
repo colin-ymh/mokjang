@@ -55,7 +55,6 @@ const MemberGroupView = ({
   const currentHistory = groupHistory.find(
     (history) => history.endDate === null
   );
-  console.log(groupHistory);
   return (
     <ListContainer>
       {/* 그룹 헤더 */}

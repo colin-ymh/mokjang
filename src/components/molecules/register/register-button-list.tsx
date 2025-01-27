@@ -6,26 +6,24 @@ import {
   setMember,
   setStage,
 } from '@/redux/reducers/member-register-reducer';
+import {
+  fetchMembers,
+  setMembers,
+} from '@/redux/reducers/member-filter-reducer';
 
 import { MembersApi } from '@/api/churches/members.api';
-import { MemberManagementsApi } from '@/api/churches/member-managements.api';
 import { RequestInfoApi } from '@/api/churches/request-info.api';
 import {
   BLANK,
   MEMBER_REGISTER_STAGE,
   MEMBER_REGISTER_TYPE,
   NONE,
-  NULL,
 } from '@/constants/constant';
 import RegisterButtonListView from '@/components/molecules/register/register-button-list.view';
-
 import { getCreateMemberBody, getEditMemberBody } from '@/utils/member';
+import { OfficerHistoryApi } from '@/api/history/officer-history.api';
 
 import { useScopedI18n } from '../../../../locales/client';
-import {
-  fetchMembers,
-  setMembers,
-} from '@/redux/reducers/member-filter-reducer';
 
 type RegisterButtonListProps = {
   setIsShown?: Dispatch<SetStateAction<boolean>>;
@@ -33,7 +31,7 @@ type RegisterButtonListProps = {
 
 const RegisterButtonList = ({ setIsShown }: RegisterButtonListProps) => {
   const membersApi = new MembersApi(false);
-  const memberManagementsApi = new MemberManagementsApi(false);
+  const officerHistoryApi = new OfficerHistoryApi(false);
   const dispatch = useDispatch<AppDispatch>();
   const churchId: string = useSelector(
     (state: RootState) => state.church.churchId
@@ -144,19 +142,17 @@ const RegisterButtonList = ({ setIsShown }: RegisterButtonListProps) => {
           });
 
         // 직분 업데이트
-        if (member?.officer?.id !== NULL) {
-          memberManagementsApi
-            .editMemberOfficer(
+        if (member?.officerId && member?.officerId !== NONE) {
+          officerHistoryApi
+            .createOfficerHistory(
               { churchId, memberId: member.id },
               {
-                isDeleteOfficer: false,
-                officerId:
-                  member.officer?.id !== NONE ? member?.officer?.id : undefined,
+                officerId: member?.officerId,
                 officerStartChurch:
                   member?.officerStartChurch === BLANK
                     ? undefined
                     : member.officerStartChurch,
-                officerStartDate:
+                startDate:
                   member.officerStartDate === BLANK
                     ? undefined
                     : member.officerStartDate,

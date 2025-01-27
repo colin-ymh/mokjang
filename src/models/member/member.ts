@@ -39,9 +39,11 @@ export type Member = {
   groupRole?: GroupRole;
   ministries?: Ministry[];
   educations?: Education[];
+  officerId?: string;
   officer?: Officer;
   officerStartChurch?: string;
   officerStartDate?: string;
+  previousChurch?: string;
   // 추가 정보
   address: string;
   detailAddress: string;

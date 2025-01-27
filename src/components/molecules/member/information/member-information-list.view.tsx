@@ -11,6 +11,8 @@ import { getThisYearBirth } from '@/utils/date';
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
 import Pencil from '../../../../../public/svg/pencil.svg';
 import { Ministry } from '@/models/management/management';
+import { usePathname } from 'next/navigation';
+import { LOCALE } from '@/constants/state/locale';
 
 const InformationContainer = styled.div`
   display: flex;
@@ -106,6 +108,7 @@ const Divider = styled.div`
 type InformationListViewProps = {
   prevMember: Member;
   onClickItem: (id: MEMBER) => void;
+  onClickOpenBaptismModal: () => void;
   onClickOpenGroupModal: () => void;
   onClickOpenMinistryModal: (ministry?: Ministry) => void;
   onClickOpenOfficerModal: () => void;
@@ -114,12 +117,15 @@ type InformationListViewProps = {
 const InformationListView = ({
   prevMember,
   onClickItem,
+  onClickOpenBaptismModal,
   onClickOpenGroupModal,
   onClickOpenMinistryModal,
   onClickOpenOfficerModal,
 }: InformationListViewProps) => {
   const t = useI18n();
   const t_header = useScopedI18n('header');
+  const pathname = usePathname();
+  const basePath = pathname.split('/')[1] as LOCALE;
 
   return (
     <InformationContainer>
@@ -159,7 +165,7 @@ const InformationListView = ({
             </ContentContainer>
           </InformationItem>
           {/* 신급 */}
-          <InformationItem>
+          <InformationItem onClick={onClickOpenBaptismModal}>
             <TitleContainer>
               <MainText color={GRAY.DEFAULT}>{t('baptism')}</MainText>
             </TitleContainer>
@@ -246,7 +252,9 @@ const InformationListView = ({
                       : CALENDAR_MODE.SOLAR
                   )}
               </MainText>
-              <MainText>{getLocaleDateFromDashDate(prevMember.birth)}</MainText>
+              <MainText>
+                {getLocaleDateFromDashDate(basePath, prevMember.birth)}
+              </MainText>
             </ContentContainer>
             <PencilButton />
           </InformationItem>
@@ -259,6 +267,7 @@ const InformationListView = ({
               <MainText>
                 {prevMember.birth &&
                   getLocaleDateFromDashDate(
+                    basePath,
                     getThisYearBirth(prevMember.birth, prevMember.isLunar)
                   )}
               </MainText>
@@ -374,8 +383,8 @@ const InformationListView = ({
             <MainText color={GRAY.DEFAULT}>{t(MEMBER.VEHICLE_NUMBER)}</MainText>
           </TitleContainer>
           <ContentContainer>
-            {prevMember?.vehicleNumber?.map((number) => (
-              <MainText key={number}>{number}</MainText>
+            {prevMember?.vehicleNumber?.map((number, index) => (
+              <MainText key={index}>{number}</MainText>
             ))}
           </ContentContainer>
           <PencilButton />

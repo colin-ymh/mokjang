@@ -3,13 +3,14 @@ import styled from 'styled-components';
 
 import LabelDropdown from '@/components/atoms/common/dropdown/label-dropdown';
 import { onClickEnter } from '@/utils/input';
-import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-item';
 import { BLANK, FAMILY } from '@/constants/constant';
 import { FamilyMember } from '@/models/member/member';
 import Button from '@/components/atoms/common/button/button';
 
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
 import Cancel from '../../../../../public/svg/cancel.svg';
+import { MemberDropdownValueType } from '@/models/dropdown/dropdown';
+import MemberDropdown from '@/components/atoms/common/dropdown/member-dropdown';
 
 const FamilyModalViewContainer = styled.div`
   display: flex;
@@ -36,6 +37,8 @@ const ContentContainer = styled.div`
 
 const ButtonContainer = styled.div`
   display: flex;
+  flex-direction: column;
+  gap: 10px;
   padding: 20px;
 `;
 
@@ -50,9 +53,9 @@ type FamilyModalViewProps = {
   familyMember: FamilyMember;
   familyMemberName: string;
   familyMemberId: string;
-  familyMemberItems: DropdownValueType[];
+  familyMemberItems: MemberDropdownValueType[];
   familyRelation: FAMILY;
-  familyRelationItems: DropdownValueType[];
+  familyRelationItems: MemberDropdownValueType[];
   isEdit: boolean;
   onClickClose: () => void;
   onClickCreateFamily: (
@@ -92,9 +95,9 @@ const FamilyModalView = ({
       {/* 내용 */}
       <ContentContainer>
         {/* 가족 */}
-        <LabelDropdown
+        <MemberDropdown
           enterKeyHint={'done'}
-          label={t('family')}
+          // label={t('family')}
           value={familyMemberName}
           items={familyMemberItems}
           onChange={onChangeFamilyMemberName}

@@ -6,6 +6,7 @@ import {
   GENDER,
   MEMBER_REGISTER_STAGE,
   MEMBER_REGISTER_TYPE,
+  NONE,
   NULL,
 } from '@/constants/constant';
 import { getIsWellFormedMobilePhone, getIsWellFormedName } from '@/utils/check';
@@ -42,6 +43,7 @@ export const DEFAULT_MEMBER: Member = {
   // 교회 정보
   registeredAt: BLANK,
   updatedAt: BLANK,
+  officerId: NONE,
 };
 
 const initialState: MemberRegisterState = {

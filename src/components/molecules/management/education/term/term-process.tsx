@@ -10,6 +10,8 @@ import {
 } from '@/models/management/management';
 
 import { useI18n } from '../../../../../../locales/client';
+import { usePathname } from 'next/navigation';
+import { LOCALE } from '@/constants/state/locale';
 
 const ProcessContainer = styled.div`
   display: flex;
@@ -65,6 +67,8 @@ const TermProcess = ({
   onClickItem,
 }: TermProcessProps) => {
   const t = useI18n();
+  const pathname = usePathname();
+  const basePath = pathname.split('/')[1] as LOCALE;
 
   return isInformation ? (
     <ProcessContainer>
@@ -108,8 +112,9 @@ const TermProcess = ({
           </TitleContainer>
           <ContentContainer>
             <MainText>{`${getLocaleDateFromDashDate(
+              basePath,
               term.startDate
-            )} - ${getLocaleDateFromDashDate(term.endDate)}`}</MainText>
+            )} - ${getLocaleDateFromDashDate(basePath, term.endDate)}`}</MainText>
           </ContentContainer>
         </InformationItem>
       </RowContainer>

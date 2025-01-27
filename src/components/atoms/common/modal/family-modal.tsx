@@ -4,13 +4,13 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 
 import { GetMembersResponse, MembersApi } from '@/api/churches/members.api';
-import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-item';
 import { BLANK, FAMILY, GENDER } from '@/constants/constant';
 import FamilyModalView from '@/components/atoms/common/modal/family-modal.view';
 import { useFamilyRelationDropdownItems } from '@/hooks/dropdown/dropdown-items';
 
 import { getTrimmedString } from '@/utils/format';
 import { FamilyMember } from '@/models/member/member';
+import { MemberDropdownValueType } from '@/models/dropdown/dropdown';
 
 type FamilyModalProps = {
   familyMember: FamilyMember;
@@ -39,7 +39,7 @@ const FamilyModal = ({
 
   // 검색된 가족 목록
   const [familyMemberItems, setFamilyMemberItems] = useState<
-    DropdownValueType[]
+    MemberDropdownValueType[]
   >([]);
 
   // 가족 이름
@@ -81,7 +81,7 @@ const FamilyModal = ({
         })
         .then((response: AxiosResponse) => {
           const members: GetMembersResponse[] = response.data.data;
-          const newFamilyMemberItems: DropdownValueType[] = members.map(
+          const newFamilyMemberItems: MemberDropdownValueType[] = members.map(
             (member) => {
               return { value: member.id, title: member.name };
             }

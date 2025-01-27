@@ -11,6 +11,8 @@ import {
 } from '@/constants/management/education-term-column';
 import TermTableHeader from '@/components/atoms/management/education/term-table-header';
 import { getFormattedDate, getLocaleDateFromDashDate } from '@/utils/format';
+import { usePathname } from 'next/navigation';
+import { LOCALE } from '@/constants/state/locale';
 
 const TableContainer = styled.div`
   display: flex;
@@ -160,6 +162,8 @@ const TermTableView = ({
   onScroll,
 }: TermTableProps) => {
   const { height } = useWindowSize();
+  const pathname = usePathname();
+  const basePath = pathname.split('/')[1] as LOCALE;
 
   const getTermTableContent = (id: EDUCATION_TERM, term: EducationTerm) => {
     switch (id) {
@@ -170,7 +174,7 @@ const TermTableView = ({
       case EDUCATION_TERM.PERIOD:
         return (
           <MainText>
-            {`${getLocaleDateFromDashDate(getFormattedDate(term?.startDate))} - ${getLocaleDateFromDashDate(getFormattedDate(term?.startDate))}`}
+            {`${getLocaleDateFromDashDate(basePath, getFormattedDate(term?.startDate))} - ${getLocaleDateFromDashDate(basePath, getFormattedDate(term?.startDate))}`}
           </MainText>
         );
       case EDUCATION_TERM.EDUCATION_ENROLLMENTS:

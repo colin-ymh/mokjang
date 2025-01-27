@@ -2,10 +2,7 @@ import styled from 'styled-components';
 
 import { GRAY } from '@/constants/styles/color';
 import { MainText } from '@/components/atoms/common/text/main-text';
-import {
-  DEFAULT_MINISTRY_HISTORY,
-  MinistryHistory,
-} from '@/models/member/history';
+import { MinistryHistory } from '@/models/member/history';
 import MinistryHistoryItem from '@/components/atoms/member/information/ministry-history-item';
 import CustomPopup from '@/components/atoms/common/popup/custom-popup';
 import MinistryModal from '@/components/atoms/common/modal/ministry-modal';
@@ -66,13 +63,21 @@ const MemberMinistryView = ({
       </ListTypeHeader>
       {/* 현재 사역 이력 */}
       <MinistryListContainer>
-        <MinistryHistoryItem
-          ministry={currentHistory || DEFAULT_MINISTRY_HISTORY}
-          onClickEditMinistry={onClickEditMinistry}
-          onClickDeleteMinistry={onClickDeleteMinistry}
-          isCurrent={true}
-        />
+        {ministryHistory
+          .filter((ministry) => ministry.endDate === null)
+          .map((ministry) => {
+            return (
+              <MinistryHistoryItem
+                key={ministry.id}
+                ministry={ministry}
+                onClickEditMinistry={onClickEditMinistry}
+                onClickDeleteMinistry={onClickDeleteMinistry}
+                isCurrent={true}
+              />
+            );
+          })}
       </MinistryListContainer>
+
       {/* 그룹 헤더 */}
       <ListTypeHeader>
         <MainText color={GRAY.DARK}>{t('history')}</MainText>

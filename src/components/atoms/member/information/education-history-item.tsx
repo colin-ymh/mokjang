@@ -6,12 +6,15 @@ import { GRAY } from '@/constants/styles/color';
 
 import { useI18n } from '../../../../../locales/client';
 import { getFormattedDate, getLocaleDateFromDashDate } from '@/utils/format';
+import { usePathname } from 'next/navigation';
+import { LOCALE } from '@/constants/state/locale';
 
-const BackgroundContainer = styled.div`
+const BackgroundContainer = styled.div<{ $isCurrent?: boolean }>`
   display: flex;
   width: 100%;
   padding: 10px 0;
-  border-bottom: 1px solid ${GRAY.LIGHT};
+  border-bottom: ${({ $isCurrent }) => ($isCurrent ? '0px' : '1px')} solid
+    ${GRAY.LIGHT};
 `;
 
 const ItemContainer = styled.div`
@@ -54,19 +57,23 @@ const DateContainer = styled.div`
 
 type EducationHistoryItemProps = {
   education: EducationHistory;
+  isCurrent?: boolean;
   // onClickEditEducation: (education: EducationHistory) => void;
   // onClickDeleteEducation: (educationId: string) => void;
 };
 
 const EducationHistoryItem = ({
   education,
+  isCurrent,
   // onClickEditEducation,
   // onClickDeleteEducation,
 }: EducationHistoryItemProps) => {
   const t = useI18n();
-
+  // 로케일 코드
+  const pathname = usePathname();
+  const basePath = pathname.split('/')[1] as LOCALE;
   return (
-    <BackgroundContainer>
+    <BackgroundContainer $isCurrent={isCurrent}>
       <ItemContainer>
         {/* 그룹명 */}
         <NameContainer>
@@ -84,6 +91,7 @@ const EducationHistoryItem = ({
           <DateContainer>
             <MainText>
               {getLocaleDateFromDashDate(
+                basePath,
                 getFormattedDate(education.educationTerm.startDate)
               )}
             </MainText>
@@ -91,6 +99,7 @@ const EducationHistoryItem = ({
             <MainText>
               {education.educationTerm?.endDate &&
                 getLocaleDateFromDashDate(
+                  basePath,
                   getFormattedDate(education.educationTerm?.endDate)
                 )}
             </MainText>

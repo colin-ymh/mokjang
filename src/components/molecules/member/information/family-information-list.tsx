@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 import { setTargetMember } from '@/redux/reducers/target-member';
@@ -36,6 +36,9 @@ const FamilyInformationList = ({
   const [targetFamilyMember, setTargetFamilyMember] = useState<FamilyMember>(
     DEFAULT_FAMILY_MEMBER
   );
+
+  // 가족 멤버들
+  const [familyMembers, setFamilyMembers] = useState<FamilyMember[]>([]);
 
   // 가족 추가 버튼
   const onClickOpenModal = () => {
@@ -154,9 +157,27 @@ const FamilyInformationList = ({
     }
   };
 
+  useEffect(() => {
+    if (targetMember.id) {
+      familyApi
+        .getFamily({ churchId, memberId: targetMember.id })
+        .then((response) => {
+          const newFamilyMembers = response.data.map((member: FamilyMember) => {
+            return {
+              ...member,
+              familyMemberId: getMemberFromServer(member.familyMember),
+            };
+          });
+
+          setFamilyMembers(newFamilyMembers);
+        });
+    }
+  }, [targetMember]);
+
   const props = {
     isModalShown,
     targetFamilyMember,
+    familyMembers,
     onClickOpenModal,
     onClickCloseModal,
     onClickCreateFamily,

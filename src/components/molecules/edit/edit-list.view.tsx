@@ -21,9 +21,14 @@ import { RootState } from '@/redux/store';
 import styled from 'styled-components';
 import MemberImageInput from '@/components/atoms/register/member-image-input';
 import LabelRadioButton from '@/components/atoms/common/input/radio-button/label-radio-button';
-import { CALENDAR_MODE, GENDER, MARRIAGE, NULL } from '@/constants/constant';
+import {
+  BLANK,
+  CALENDAR_MODE,
+  GENDER,
+  MARRIAGE,
+  NULL,
+} from '@/constants/constant';
 import { getTrimmedString } from '@/utils/format';
-import { usePathname } from 'next/navigation';
 import VehicleNumberInput from '@/components/atoms/register/vehicle-number-input';
 import { VehicleNumberInputRef } from '@/components/atoms/register/vehicle-number-input.view';
 import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-item';
@@ -234,7 +239,7 @@ const EditListView = ({
           ref={birthInputRef}
           inputMode={'numeric'}
           label={t('birth')}
-          value={member.birth}
+          value={member.birth || BLANK}
           onChange={onChangeBirth}
           placeholder={t_placeholder('birth')}
           borderColor={
@@ -272,7 +277,7 @@ const EditListView = ({
         enterKeyHint={'done'}
         ref={occupationInputRef}
         label={t('occupation')}
-        value={member.occupation}
+        value={member.occupation || BLANK}
         onChange={onChangeOccupation}
         placeholder={t_placeholder('occupation')}
         zIndex={1}
@@ -293,7 +298,7 @@ const EditListView = ({
         enterKeyHint={'done'}
         ref={detailMarriageInputRef}
         label={t('detailMarriage')}
-        value={member.detailMarriage}
+        value={member.detailMarriage || BLANK}
         onChange={onChangeDetailMarriage}
         placeholder={t_placeholder('detailMarriage')}
         borderColor={
@@ -305,17 +310,18 @@ const EditListView = ({
         enterKeyHint={'done'}
         ref={addressInputRef}
         label={t('address')}
-        value={member.address}
+        value={member.address || BLANK}
         placeholder={t_placeholder('address')}
         onClick={onClickAddress}
         borderColor={getTrimmedString(member.address) ? BLACK : undefined}
+        onChange={(event: ChangeEvent<HTMLInputElement>) => {}}
       />
       {/* 상세주소 */}
       <LabelInput
         enterKeyHint={'done'}
         ref={detailAddressInputRef}
         label={t('detailAddress')}
-        value={member.detailAddress}
+        value={member.detailAddress || BLANK}
         onChange={onChangeDetailAddress}
         placeholder={t_placeholder('detailAddress')}
         borderColor={getTrimmedString(member.detailAddress) ? BLACK : undefined}
@@ -325,7 +331,7 @@ const EditListView = ({
         ref={homePhoneInputRef}
         inputMode={'numeric'}
         label={t('homePhone')}
-        value={member.homePhone}
+        value={member.homePhone || BLANK}
         onChange={(event: ChangeEvent<HTMLInputElement>) =>
           onChangeHomePhone(event)
         }

@@ -7,6 +7,7 @@ import EducationHistoryItem from '@/components/atoms/member/information/educatio
 
 import { useI18n } from '../../../../../locales/client';
 import Plus from '../../../../../public/svg/plus.svg';
+import { EDUCATION_STATUS } from '@/constants/constant';
 
 const ListContainer = styled.div`
   display: flex;
@@ -103,19 +104,44 @@ const MemberEducationView = ({
         {/*  <PlusButton />*/}
         {/*</ButtonContainer>*/}
       </ListTypeHeader>
-      {/* 이력 */}
+      {/* 현재 교육 이력 */}
       <EducationListContainer>
-        {educationHistory &&
-          educationHistory?.map((education) => {
+        {educationHistory
+          .filter(
+            (education) => education.status === EDUCATION_STATUS.IN_PROGRESS
+          )
+          .map((education) => {
             return (
               <EducationHistoryItem
                 key={education.id}
                 education={education}
-                // onClickEditEducation={onClickEditEducation}
-                // onClickDeleteEducation={onClickDeleteEducation}
+                isCurrent={true}
               />
             );
           })}
+      </EducationListContainer>
+
+      {/* 그룹 헤더 */}
+      <ListTypeHeader>
+        <MainText color={GRAY.DARK}>{t('history')}</MainText>
+      </ListTypeHeader>
+      {/* 이력 */}
+      <EducationListContainer>
+        {educationHistory &&
+          educationHistory
+            ?.filter(
+              (education) => education.status === EDUCATION_STATUS.COMPLETED
+            )
+            .map((education) => {
+              return (
+                <EducationHistoryItem
+                  key={education.id}
+                  education={education}
+                  // onClickEditEducation={onClickEditEducation}
+                  // onClickDeleteEducation={onClickDeleteEducation}
+                />
+              );
+            })}
       </EducationListContainer>
       {/* 교육 추가 및 수정 모달*/}
       {/*{isModalShown && (*/}

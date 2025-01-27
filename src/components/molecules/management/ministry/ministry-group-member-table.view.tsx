@@ -17,6 +17,8 @@ import {
   getLocaleDateFromDashDate,
 } from '@/utils/format';
 import { getAge, getDateFromString } from '@/utils/date';
+import { usePathname } from 'next/navigation';
+import { LOCALE } from '@/constants/state/locale';
 
 const getColumnWidth = (id: string) => {
   switch (id) {
@@ -171,6 +173,8 @@ const MinistryMinistryGroupMemberTableView = ({
   onScroll,
 }: MemberTableProps) => {
   const { height } = useWindowSize();
+  const pathname = usePathname();
+  const basePath = pathname.split('/')[1] as LOCALE;
 
   const getMemberTableContent = (id: MEMBER, member: Member) => {
     switch (id) {
@@ -197,7 +201,10 @@ const MinistryMinistryGroupMemberTableView = ({
         return (
           <MainText>
             {member.birth &&
-              getLocaleDateFromDashDate(getFormattedDate(member.birth))}
+              getLocaleDateFromDashDate(
+                basePath,
+                getFormattedDate(member.birth)
+              )}
           </MainText>
         );
       case MEMBER.AGE:

@@ -1,5 +1,4 @@
-import { getDateFromString, getIsChild } from '@/utils/date';
-import { NONE, BLANK, NULL } from '@/constants/constant';
+import { BLANK, NONE, NULL } from '@/constants/constant';
 import {
   getIsWellFormedBirth,
   getIsWellFormedHomePhone,
@@ -46,12 +45,16 @@ export const getEditMemberBody = (member: Member) => {
     newMember.birth = member.birth;
     newMember.isLunar = member.isLunar;
 
-    // 미성년자인 경우에만, 학교 입력
-    if (getIsChild(getDateFromString(member.birth))) {
-      if (member.school && getTrimmedString(member.school)) {
-        newMember.school = member.school;
-      }
-    }
+    // // 미성년자인 경우에만, 학교 입력
+    // if (getIsChild(getDateFromString(member.birth))) {
+    //   if (member.school && getTrimmedString(member.school)) {
+    //     newMember.school = member.school;
+    //   }
+    // }
+  }
+
+  if (member.school && getTrimmedString(member.school)) {
+    newMember.school = member.school;
   }
 
   if (member.address && getTrimmedString(member.address)) {
@@ -113,10 +116,13 @@ export const getEditMemberBody = (member: Member) => {
 export const getMemberFromServer = (member: Member) => {
   const newMember: Member = {
     ...member,
-    birth: member.birth && getFormattedDate(member.birth),
-    mobilePhone:
-      member.mobilePhone && getFormattedMobilePhone(member.mobilePhone),
-    homePhone: member.homePhone && getFormattedHomePhone(member.homePhone),
+    birth: member?.birth ? getFormattedDate(member.birth) : BLANK,
+    mobilePhone: member?.mobilePhone
+      ? getFormattedMobilePhone(member.mobilePhone)
+      : BLANK,
+    homePhone: member?.homePhone
+      ? getFormattedHomePhone(member.homePhone)
+      : BLANK,
   };
 
   return newMember;

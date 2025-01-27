@@ -1,5 +1,4 @@
 import { BLANK } from '@/constants/constant';
-import { usePathname } from 'next/navigation';
 import { LOCALE } from '@/constants/state/locale';
 
 export const getTrimmedString = (value: string) => {
@@ -125,12 +124,11 @@ const getEnglishMonthName = (month: number): string => {
 };
 
 // YYYY-MM-DD 을 YYYY년 MM월 DD일 형식으로 포맷
-export const getLocaleDateFromDashDate = (date: string): string => {
+export const getLocaleDateFromDashDate = (
+  basePath: LOCALE,
+  date: string
+): string => {
   if (!date) return ''; // 빈 입력 처리
-
-  // 로케일 코드
-  const pathname = usePathname();
-  const basePath = pathname.split('/')[1];
 
   // YYYY-MM-DD에서 숫자만 남기기
   const cleaned = date.replace(/[^0-9]/g, ''); // 숫자 외 제거

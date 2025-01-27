@@ -27,7 +27,10 @@ const AddGroupMemberModal = ({
   const groupHistoryApi = new GroupHistoryApi(false);
   const churchId = useSelector((state: RootState) => state.church.churchId);
 
-  // 검색하고자 하는 교인 이름
+  // ===============================
+  // 상태값 관리
+  // ===============================
+  // 검색어
   const [searchName, setSearchName] = useState<string>(BLANK);
 
   // 검색된 교인 목록
@@ -36,66 +39,96 @@ const AddGroupMemberModal = ({
   // 선택된 교인 목록
   const [selectedMembers, setSelectedMembers] = useState<Member[]>([]);
 
+  // ===============================
+  // 유틸 함수
+  // ===============================
   // 데이터 리셋
   const resetData = () => {
     setSearchName(BLANK);
     setSelectedMembers([]);
   };
 
-  // 검색창 이벤트
-  const onChangeSearch = (event: ChangeEvent<HTMLInputElement>) => {
-    const name = getFormattedName(event.target.value);
-    setSearchName(name);
+  // 교인 목록 검색
+  const fetchSearchedMembers = async (name: string) => {
+    const response = await membersApi.getMembers({
+      churchId,
+      page: 1,
+      take: 1000,
+      name,
+    });
+    setSearchedMembers(response.data.data);
   };
 
-  // 교인 선택
-  const onClickMember = (targetMember: Member) => {
-    // 이미 존재하는지 확인
-    const isMemberSelected = selectedMembers.some(
-      (member) => member.id === targetMember.id
-    );
+  // 선택된 교인을 목표 그룹에 추가
+  // 이미 다른 그룹에 속해 있으면 stop 후 create
+  // 이미 동일 그룹이면 건너뜀(중복 추가 방지)
+  const addMembersToGroup = async (membersToAdd: Member[]) => {
+    for (const mem of membersToAdd) {
+      // 이미 같은 그룹이면 스킵
+      if (mem.group?.id === group.id) {
+        continue;
+      }
 
-    // 이미 존재한다면 제거, 없으면 추가
-    const newSelectedMembers = isMemberSelected
-      ? selectedMembers.filter((member) => member.id !== targetMember.id)
-      : [...selectedMembers, targetMember];
-
-    setSelectedMembers(newSelectedMembers);
-  };
-
-  // 추가 버튼 이벤트
-  const onClickSave = () => {
-    if (selectedMembers.length !== 0) {
-      selectedMembers.map((member) => {
-        groupHistoryApi.createGroupHistory(
-          { churchId, memberId: member.id },
-          {
-            groupId: group.id as string,
-            startDate: new Date().toDateString(),
-            autoEndDate: true,
-          }
+      // 이미 다른 그룹에 속해 있다면 이력 중단
+      if (mem.group?.id && mem.group.id !== group.id) {
+        await groupHistoryApi.stopGroupHistory(
+          { churchId, memberId: mem.id },
+          {}
         );
-      });
-      // 모달 닫기
-      setTimeout(() => {
-        fetchMembers();
-      }, 100);
-      onClickClose();
-      resetData();
+      }
+
+      // 새 그룹에 이력 생성
+      await groupHistoryApi.createGroupHistory(
+        { churchId, memberId: mem.id },
+        {
+          groupId: group.id as string,
+        }
+      );
     }
   };
 
-  // 검색 내용이 변경되면, 검색된 교인 목록 변경
+  // ===============================
+  // 이벤트 핸들러
+  // ===============================
+  const onChangeSearch = (event: ChangeEvent<HTMLInputElement>) => {
+    setSearchName(getFormattedName(event.target.value));
+  };
+
+  // 교인 목록에서 선택/해제
+  const onClickMember = (targetMember: Member) => {
+    setSelectedMembers((prev) => {
+      const isMemberSelected = prev.some((m) => m.id === targetMember.id);
+      return isMemberSelected
+        ? prev.filter((m) => m.id !== targetMember.id)
+        : [...prev, targetMember];
+    });
+  };
+
+  // "추가" 버튼 클릭 시
+  const onClickSave = async () => {
+    if (selectedMembers.length === 0) return;
+
+    // 이미 그룹에 속한 교인이면 stop 후 create
+    // 중복 그룹이면 스킵
+    await addMembersToGroup(selectedMembers);
+
+    // 목록 갱신 후 모달 닫기
+    fetchMembers();
+    onClickClose();
+    resetData();
+  };
+
+  // ===============================
+  // useEffect
+  // ===============================
+  // 검색어/모달 열림 상태가 바뀌면 교인 목록 다시 가져오기
   useEffect(() => {
-    membersApi
-      .getMembers({ churchId, page: 1, take: 1000, name: searchName })
-      .then((response) => {
-        const newMembers = response.data.data;
-        setSearchedMembers(newMembers);
-      });
+    if (isShown) {
+      fetchSearchedMembers(searchName);
+    }
   }, [searchName, isShown]);
 
-  // esc
+  // esc 키 입력 시 닫기
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
@@ -103,29 +136,26 @@ const AddGroupMemberModal = ({
         resetData();
       }
     };
-
     window.addEventListener('keydown', onKeyDown);
-    return () => {
-      window.removeEventListener('keydown', onKeyDown);
-    };
+    return () => window.removeEventListener('keydown', onKeyDown);
   }, [onClickClose]);
 
-  const props = {
-    group,
-    isShown,
-    searchName,
-    searchedMembers,
-    selectedMembers,
-    resetData,
-    onChangeSearch,
-    onClickMember,
-    onClickClose,
-    onClickSave,
-  };
+  // ===============================
+  // 렌더링
+  // ===============================
   return (
-    <>
-      <AddGroupMemberModalView {...props} />
-    </>
+    <AddGroupMemberModalView
+      group={group}
+      isShown={isShown}
+      searchName={searchName}
+      searchedMembers={searchedMembers}
+      selectedMembers={selectedMembers}
+      resetData={resetData}
+      onChangeSearch={onChangeSearch}
+      onClickMember={onClickMember}
+      onClickClose={onClickClose}
+      onClickSave={onClickSave}
+    />
   );
 };
 

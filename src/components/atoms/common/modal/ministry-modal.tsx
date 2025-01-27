@@ -43,7 +43,7 @@ const MinistryGroupModal = ({
   const [ministryItems, setMinistryItems] = useState<DropdownValueType[]>([]);
 
   // 선택된 사역 역할
-  const [selectedMinistryId, setSelectedMinistryId] = useState<string>(NONE);
+  const [selectedMinistryId, setSelectedMinistryId] = useState<string>(BLANK);
 
   // 사역 시작 날짜
   const [startDate, setStartDate] = useState<string>(BLANK);
@@ -163,8 +163,11 @@ const MinistryGroupModal = ({
             .map((ministry) => {
               return { value: ministry.id, title: ministry.name };
             });
-          if (newMinistryItems.length !== 0)
+          if (newMinistryItems.length !== 0) {
             setSelectedMinistryId(newMinistryItems[0].value);
+          } else {
+            setSelectedMinistryId(BLANK);
+          }
           setMinistryItems(newMinistryItems);
         });
     }

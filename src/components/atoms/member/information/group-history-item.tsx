@@ -6,6 +6,8 @@ import { useI18n } from '../../../../../locales/client';
 import { getFormattedDate, getLocaleDateFromDashDate } from '@/utils/format';
 import { GRAY } from '@/constants/styles/color';
 import SlideButtonList from '@/components/atoms/common/button/slide-button-list';
+import { usePathname } from 'next/navigation';
+import { LOCALE } from '@/constants/state/locale';
 
 const BackgroundContainer = styled.div<{ $isCurrent?: boolean }>`
   display: flex;
@@ -67,6 +69,8 @@ const GroupHistoryItem = ({
   isCurrent,
 }: GroupHistoryItemProps) => {
   const t = useI18n();
+  const pathname = usePathname();
+  const basePath = pathname.split('/')[1] as LOCALE;
 
   return (
     <BackgroundContainer $isCurrent={isCurrent}>
@@ -86,12 +90,18 @@ const GroupHistoryItem = ({
           <MainText color={GRAY.DARK}>{t('period')}</MainText>
           <DateContainer>
             <MainText>
-              {getLocaleDateFromDashDate(getFormattedDate(group.startDate))}
+              {getLocaleDateFromDashDate(
+                basePath,
+                getFormattedDate(group.startDate)
+              )}
             </MainText>
             <MainText>{'-'}</MainText>
             <MainText>
               {group?.endDate &&
-                getLocaleDateFromDashDate(getFormattedDate(group?.endDate))}
+                getLocaleDateFromDashDate(
+                  basePath,
+                  getFormattedDate(group?.endDate)
+                )}
             </MainText>
           </DateContainer>
         </PeriodContainer>

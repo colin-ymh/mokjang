@@ -149,7 +149,10 @@ const ReligiousRegisterView = ({
           placeholder={t_placeholder('officerStartChurch')}
           onKeyDown={(event) => onClickEnter(event, previousChurchInputRef)}
           borderColor={
-            getTrimmedString(member.officerStartChurch) ? BLACK : undefined
+            member.officerStartChurch &&
+            getTrimmedString(member.officerStartChurch)
+              ? BLACK
+              : undefined
           }
         />
       </OfficerWrapper>
@@ -163,7 +166,9 @@ const ReligiousRegisterView = ({
         placeholder={t_placeholder('previousChurch')}
         onKeyDown={onClickEnter}
         borderColor={
-          getTrimmedString(member.previousChurch) ? BLACK : undefined
+          member.previousChurch && getTrimmedString(member.previousChurch)
+            ? BLACK
+            : undefined
         }
       />
       <Invisible />

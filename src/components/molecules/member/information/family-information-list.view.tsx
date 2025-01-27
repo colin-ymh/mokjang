@@ -1,6 +1,4 @@
 import styled from 'styled-components';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/redux/store';
 
 import { FAMILY } from '@/constants/constant';
 import { MainText } from '@/components/atoms/common/text/main-text';
@@ -71,6 +69,7 @@ const FamilyModalContainer = styled.div<{ $isShown: boolean }>`
 type FamilyInformationListViewProps = {
   isModalShown: boolean;
   targetFamilyMember: FamilyMember;
+  familyMembers: FamilyMember[];
   onClickOpenModal: () => void;
   onClickCloseModal: () => void;
   onClickCreateFamily: (
@@ -87,6 +86,7 @@ type FamilyInformationListViewProps = {
 const FamilyInformationListView = ({
   isModalShown,
   targetFamilyMember,
+  familyMembers,
   onClickOpenModal,
   onClickCloseModal,
   onClickCreateFamily,
@@ -96,10 +96,6 @@ const FamilyInformationListView = ({
   onClickEdit,
 }: FamilyInformationListViewProps) => {
   const t_header = useScopedI18n('header');
-  const targetMember = useSelector(
-    (state: RootState) => state.targetMember.targetMember
-  );
-
   return (
     <ListContainer>
       {/* 가족정보 헤더 */}
@@ -112,12 +108,14 @@ const FamilyInformationListView = ({
       </ListTypeHeader>
       {/* 가족 목록 */}
       <FamilyItemListContainer>
-        {targetMember.family.map((member: FamilyMember) => {
+        {familyMembers.map((member: FamilyMember) => {
           return (
-            <div key={member.familyMemberId}>
+            <div key={member.familyMember.id}>
               <FamilyMemberItem
                 member={member}
-                onClickFamilyMember={onClickFamilyMember}
+                onClickFamilyMember={() =>
+                  onClickFamilyMember(member.familyMember.id)
+                }
                 onClickEdit={onClickEdit}
                 onClickDelete={onClickDelete}
               />

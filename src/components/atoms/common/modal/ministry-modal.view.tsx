@@ -12,6 +12,7 @@ import { MinistryHistory } from '@/models/member/history';
 
 import { useI18n } from '../../../../../locales/client';
 import Cancel from '../../../../../public/svg/cancel.svg';
+import { BLANK } from '@/constants/constant';
 
 const MinistryGroupModalViewContainer = styled.div`
   display: flex;
@@ -88,6 +89,12 @@ const MinistryGroupModalView = ({
 }: MinistryGroupModalViewProps) => {
   const t = useI18n();
 
+  // 직접입력
+  const customDropdownItem = {
+    value: 'custom',
+    title: BLANK,
+  };
+
   return (
     <MinistryGroupModalViewContainer>
       {/* 내용 */}
@@ -107,8 +114,9 @@ const MinistryGroupModalView = ({
           <LabelDropdown
             label={t('ministry')}
             value={selectedMinistryId}
-            items={ministryItems}
+            items={[customDropdownItem, ...ministryItems]}
             onChangeItem={onChangeMinistryId}
+            isEditable={selectedMinistryId === 'custom'}
           />
         )}
         {/* 시작 날짜 */}

@@ -21,6 +21,8 @@ import useWindowSize from '@/hooks/window/window';
 
 import DefaultImage from '../../../../../public/png/default-member-image.png';
 import { useI18n } from '../../../../../locales/client';
+import { usePathname } from 'next/navigation';
+import { LOCALE } from '@/constants/state/locale';
 
 const getColumnWidth = (id: string) => {
   switch (id) {
@@ -158,6 +160,8 @@ const MemberTableView = ({
     (state: RootState) => state.memberFilter.memberTableHeaderItemList
   );
   const t = useI18n();
+  const pathname = usePathname();
+  const basePath = pathname.split('/')[1] as LOCALE;
 
   const getMemberTableContent = (id: MEMBER, member: Member) => {
     switch (id) {
@@ -184,7 +188,10 @@ const MemberTableView = ({
         return (
           <MainText>
             {member.birth &&
-              getLocaleDateFromDashDate(getFormattedDate(member.birth))}
+              getLocaleDateFromDashDate(
+                basePath,
+                getFormattedDate(member.birth)
+              )}
           </MainText>
         );
       case MEMBER.AGE:
@@ -231,14 +238,20 @@ const MemberTableView = ({
         return (
           <MainText>
             {member.registeredAt &&
-              getLocaleDateFromDashDate(getFormattedDate(member.registeredAt))}
+              getLocaleDateFromDashDate(
+                basePath,
+                getFormattedDate(member.registeredAt)
+              )}
           </MainText>
         );
       case MEMBER.UPDATED_AT:
         return (
           <MainText>
             {member.updatedAt &&
-              getLocaleDateFromDashDate(getFormattedDate(member.updatedAt))}
+              getLocaleDateFromDashDate(
+                basePath,
+                getFormattedDate(member.updatedAt)
+              )}
           </MainText>
         );
       default:

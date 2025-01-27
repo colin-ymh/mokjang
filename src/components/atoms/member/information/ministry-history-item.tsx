@@ -6,6 +6,8 @@ import { getFormattedDate, getLocaleDateFromDashDate } from '@/utils/format';
 import { GRAY } from '@/constants/styles/color';
 import SlideButtonList from '@/components/atoms/common/button/slide-button-list';
 import { useI18n } from '../../../../../locales/client';
+import { usePathname } from 'next/navigation';
+import { LOCALE } from '@/constants/state/locale';
 
 const BackgroundContainer = styled.div<{ $isCurrent?: boolean }>`
   display: flex;
@@ -67,6 +69,9 @@ const MinistryHistoryItem = ({
   isCurrent,
 }: MinistryHistoryItemProps) => {
   const t = useI18n();
+  // 로케일 코드
+  const pathname = usePathname();
+  const basePath = pathname.split('/')[1] as LOCALE;
 
   return (
     <BackgroundContainer $isCurrent={isCurrent}>
@@ -86,12 +91,18 @@ const MinistryHistoryItem = ({
           <MainText color={GRAY.DARK}>{t('period')}</MainText>
           <DateContainer>
             <MainText>
-              {getLocaleDateFromDashDate(getFormattedDate(ministry.startDate))}
+              {getLocaleDateFromDashDate(
+                basePath,
+                getFormattedDate(ministry.startDate)
+              )}
             </MainText>
             <MainText>{'-'}</MainText>
             <MainText>
               {ministry?.endDate &&
-                getLocaleDateFromDashDate(getFormattedDate(ministry?.endDate))}
+                getLocaleDateFromDashDate(
+                  basePath,
+                  getFormattedDate(ministry?.endDate)
+                )}
             </MainText>
           </DateContainer>
         </PeriodContainer>

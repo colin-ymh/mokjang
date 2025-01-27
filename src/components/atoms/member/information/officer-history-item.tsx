@@ -7,6 +7,8 @@ import { GRAY } from '@/constants/styles/color';
 import SlideButtonList from '@/components/atoms/common/button/slide-button-list';
 
 import { useI18n } from '../../../../../locales/client';
+import { usePathname } from 'next/navigation';
+import { LOCALE } from '@/constants/state/locale';
 
 const BackgroundContainer = styled.div<{ $isCurrent?: boolean }>`
   display: flex;
@@ -68,6 +70,8 @@ const OfficerHistoryItem = ({
   isCurrent,
 }: OfficerHistoryItemProps) => {
   const t = useI18n();
+  const pathname = usePathname();
+  const basePath = pathname.split('/')[1] as LOCALE;
 
   return (
     <BackgroundContainer $isCurrent={isCurrent}>
@@ -87,12 +91,18 @@ const OfficerHistoryItem = ({
           <MainText color={GRAY.DARK}>{t('period')}</MainText>
           <DateContainer>
             <MainText>
-              {getLocaleDateFromDashDate(getFormattedDate(officer.startDate))}
+              {getLocaleDateFromDashDate(
+                basePath,
+                getFormattedDate(officer.startDate)
+              )}
             </MainText>
             <MainText>{'-'}</MainText>
             <MainText>
               {officer?.endDate &&
-                getLocaleDateFromDashDate(getFormattedDate(officer?.endDate))}
+                getLocaleDateFromDashDate(
+                  basePath,
+                  getFormattedDate(officer?.endDate)
+                )}
             </MainText>
           </DateContainer>
         </PeriodContainer>
