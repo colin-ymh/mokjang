@@ -131,7 +131,7 @@ const MemberFilterRowView = ({
         {/* 필터 설정된 값들 */}
         <FilteredItemList $width={width - 650}>
           {filteredItems.map((item) => (
-            <FilteredItem key={item.value} item={item} />
+            <FilteredItem key={item.title} item={item} />
           ))}
         </FilteredItemList>
       </FilterList>

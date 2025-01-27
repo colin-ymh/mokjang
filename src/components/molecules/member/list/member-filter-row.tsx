@@ -1,14 +1,14 @@
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '@/redux/store';
+import { setMemberFilter } from '@/redux/reducers/member-filter-reducer';
 
+import { getTrimmedString } from '@/utils/format';
 import MemberFilterRowView, {
   SEARCH_FILTER,
 } from '@/components/molecules/member/list/member-filter-row.view';
 import { MEMBER } from '@/constants/member/member-column';
 import { BLANK } from '@/constants/constant';
-import { getTrimmedString } from '@/utils/format';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '@/redux/store';
-import { setMemberFilter } from '@/redux/reducers/member-filter-reducer';
 import { FilteredItemType } from '@/components/atoms/member/list/filtered-item';
 
 const MemberFilterRow = () => {
@@ -63,74 +63,51 @@ const MemberFilterRow = () => {
 
     // 성별
     if (memberFilter.gender.length > 0) {
-      memberFilter.gender.forEach((item) => {
-        newFilterItems.push({ title: MEMBER.GENDER, value: item });
-      });
+      newFilterItems.push({ title: MEMBER.GENDER, value: memberFilter.gender });
     }
     // 직분
     if (memberFilter.officer.length > 0) {
-      memberFilter.officer.forEach((item) => {
-        newFilterItems.push({ title: MEMBER.OFFICER, value: item });
+      newFilterItems.push({
+        title: MEMBER.OFFICER,
+        value: memberFilter.officer,
       });
     }
     // 결혼
     if (memberFilter.marriage.length > 0) {
-      memberFilter.marriage.forEach((item) => {
-        newFilterItems.push({ title: MEMBER.MARRIAGE, value: item });
+      newFilterItems.push({
+        title: MEMBER.MARRIAGE,
+        value: memberFilter.marriage,
       });
     }
     // 신급
     if (memberFilter.baptism.length > 0) {
-      memberFilter.baptism.forEach((item) => {
-        newFilterItems.push({ title: MEMBER.BAPTISM, value: item });
+      newFilterItems.push({
+        title: MEMBER.BAPTISM,
+        value: memberFilter.baptism,
       });
     }
 
-    // 생년월일 ~부터
-    if (memberFilter.birthAfter) {
+    // 생년월일
+    if (memberFilter.birthAfter || memberFilter.birthBefore) {
       newFilterItems.push({
-        title: MEMBER.BIRTH_AFTER,
-        value: memberFilter.birthAfter,
+        title: MEMBER.BIRTH,
+        value: [memberFilter.birthAfter, memberFilter.birthBefore],
       });
     }
 
-    // 생년월일 ~까지
-    if (memberFilter.birthBefore) {
+    // 등록일
+    if (memberFilter.registerAfter || memberFilter.registerBefore) {
       newFilterItems.push({
-        title: MEMBER.BIRTH_BEFORE,
-        value: memberFilter.birthBefore,
+        title: MEMBER.REGISTERED_AT,
+        value: [memberFilter.registerAfter, memberFilter.registerBefore],
       });
     }
 
-    // 등록일 ~부터
-    if (memberFilter.registerAfter) {
+    // 수정일
+    if (memberFilter.updateAfter || memberFilter.updateBefore) {
       newFilterItems.push({
-        title: MEMBER.REGISTER_AFTER,
-        value: memberFilter.registerAfter,
-      });
-    }
-
-    // 등록일 ~까지
-    if (memberFilter.registerBefore) {
-      newFilterItems.push({
-        title: MEMBER.REGISTER_BEFORE,
-        value: memberFilter.registerBefore,
-      });
-    }
-
-    // 수정일 ~부터
-    if (memberFilter.updateAfter) {
-      newFilterItems.push({
-        title: MEMBER.UPDATE_AFTER,
-        value: memberFilter.updateAfter,
-      });
-    }
-
-    // 수정일 ~까지
-    if (memberFilter.updateBefore) {
-      newFilterItems.push({
-        title: MEMBER.UPDATE_BEFORE,
-        value: memberFilter.updateBefore,
+        title: MEMBER.UPDATED_AT,
+        value: [memberFilter.updateAfter, memberFilter.updateBefore],
       });
     }
 
@@ -138,28 +115,29 @@ const MemberFilterRow = () => {
     if (memberFilter.name) {
       newFilterItems.push({
         title: MEMBER.NAME,
-        value: memberFilter.name,
+        value: [memberFilter.name],
       });
     }
+
     // 직업
     if (memberFilter.occupation) {
       newFilterItems.push({
         title: MEMBER.OCCUPATION,
-        value: memberFilter.occupation,
+        value: [memberFilter.occupation],
       });
     }
     // 학교
     if (memberFilter.school) {
       newFilterItems.push({
         title: MEMBER.SCHOOL,
-        value: memberFilter.school,
+        value: [memberFilter.school],
       });
     }
     // 차량 번호
     if (memberFilter.vehicleNumber) {
       newFilterItems.push({
         title: MEMBER.VEHICLE_NUMBER,
-        value: memberFilter.vehicleNumber,
+        value: [memberFilter.vehicleNumber],
       });
     }
 

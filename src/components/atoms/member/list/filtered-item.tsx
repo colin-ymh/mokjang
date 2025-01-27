@@ -60,17 +60,14 @@ export type FilteredItemType = {
     | MEMBER.EDUCATIONS
     | MEMBER.MARRIAGE
     | MEMBER.BAPTISM
-    | MEMBER.BIRTH_AFTER
-    | MEMBER.BIRTH_BEFORE
-    | MEMBER.REGISTER_AFTER
-    | MEMBER.REGISTER_BEFORE
-    | MEMBER.UPDATE_AFTER
-    | MEMBER.UPDATE_BEFORE
+    | MEMBER.BIRTH
+    | MEMBER.REGISTERED_AT
+    | MEMBER.UPDATED_AT
     | MEMBER.NAME
     | MEMBER.VEHICLE_NUMBER
     | MEMBER.SCHOOL
     | MEMBER.OCCUPATION;
-  value: string;
+  value: string[];
 };
 
 type FilteredItemProps = {
@@ -89,20 +86,40 @@ const FilteredItem = ({ item }: FilteredItemProps) => {
 
   // 해당 필터 내용 삭제
   const onClickCancel = () => {
-    if (
-      [
-        MEMBER.BIRTH_AFTER,
-        MEMBER.BIRTH_BEFORE,
-        MEMBER.REGISTER_AFTER,
-        MEMBER.REGISTER_BEFORE,
-        MEMBER.UPDATE_AFTER,
-        MEMBER.UPDATE_BEFORE,
-      ].includes(item.title)
-    ) {
-      dispatch(setMemberFilter({ ...memberFilter, [item.title]: BLANK }));
-      if (item.title.includes('After')) {
+    if (item.title === MEMBER.BIRTH) {
+      dispatch(
+        setMemberFilter({
+          ...memberFilter,
+          birthAfter: BLANK,
+          birthBefore: BLANK,
+        })
+      );
+      if (filterValue === item.title) {
         dispatch(setFilterAfter(BLANK));
-      } else if (item.title.includes('Before')) {
+        dispatch(setFilterBefore(BLANK));
+      }
+    } else if (item.title === MEMBER.REGISTERED_AT) {
+      dispatch(
+        setMemberFilter({
+          ...memberFilter,
+          registerAfter: BLANK,
+          registerBefore: BLANK,
+        })
+      );
+      if (filterValue === item.title) {
+        dispatch(setFilterAfter(BLANK));
+        dispatch(setFilterBefore(BLANK));
+      }
+    } else if (item.title === MEMBER.UPDATED_AT) {
+      dispatch(
+        setMemberFilter({
+          ...memberFilter,
+          updateAfter: BLANK,
+          updateBefore: BLANK,
+        })
+      );
+      if (filterValue === item.title) {
+        dispatch(setFilterAfter(BLANK));
         dispatch(setFilterBefore(BLANK));
       }
     } else if (
@@ -115,15 +132,12 @@ const FilteredItem = ({ item }: FilteredItemProps) => {
     ) {
       dispatch(setMemberFilter({ ...memberFilter, [item.title]: BLANK }));
     } else {
-      const newItems = (memberFilter[item.title] as string[]).filter(
-        (i) => i !== item.value
-      );
-      dispatch(setMemberFilter({ ...memberFilter, [item.title]: newItems }));
+      dispatch(setMemberFilter({ ...memberFilter, [item.title]: [] }));
 
       // 현재 필터 설정 중이었다면
       // 삭제된 내용을 적용
       if (filterValue === item.title) {
-        dispatch(setFilterItems(newItems));
+        dispatch(setFilterItems([]));
       }
     }
   };
@@ -135,61 +149,77 @@ const FilteredItem = ({ item }: FilteredItemProps) => {
 
     switch (item.title) {
       case MEMBER.GENDER:
-        currentItem = t(item.value as GENDER);
+        currentItem = item.value
+          .map((gender) => t(gender as GENDER))
+          .join(', ');
         break;
       case MEMBER.MARRIAGE:
-        currentItem = t(item.value as MARRIAGE);
+        currentItem = item.value
+          .map((marriage) => t(marriage as MARRIAGE))
+          .join(', ');
         break;
-      case MEMBER.GROUP:
-        currentItem = groups.find((group) => group.id === item.value)?.name;
+      case MEMBER.GROUP: {
+        // 여러 그룹 ID가 배열로 넘어온 경우
+        currentItem = item.value
+          .map((groupId) => groups.find((group) => group.id === groupId)?.name)
+          .filter(Boolean) // undefined/null 필터링
+          .join(', ');
+
         break;
+      }
       case MEMBER.OFFICER:
-        currentItem = officers.find(
-          (officer) => officer.id === item.value
-        )?.name;
+        // 여러 그룹 ID가 배열로 넘어온 경우
+        currentItem = item.value
+          .map(
+            (officerId) =>
+              officers.find((officer) => officer.id === officerId)?.name
+          )
+          .filter(Boolean)
+          .join(', ');
         break;
       case MEMBER.MINISTRIES:
-        currentItem = ministries.find(
-          (ministry) => ministry.id === item.value
-        )?.name;
+        // 여러 그룹 ID가 배열로 넘어온 경우
+        currentItem = item.value
+          .map(
+            (ministryId) =>
+              ministries.find((ministry) => ministry.id === ministryId)?.name
+          )
+          .filter(Boolean) // undefined/null 필터링
+          .join(', ');
         break;
       case MEMBER.EDUCATIONS:
-        currentItem = educations.find(
-          (education) => education.id === item.value
-        )?.name;
+        // 여러 그룹 ID가 배열로 넘어온 경우
+        currentItem = item.value
+          .map(
+            (educationId) =>
+              educations.find((education) => education.id === educationId)?.name
+          )
+          .filter(Boolean) // undefined/null 필터링
+          .join(', ');
         break;
-      case MEMBER.BIRTH_AFTER:
-        currentItem = item.value;
+      case MEMBER.BIRTH:
+        currentItem = item.value.filter(Boolean).join(' ~ ');
         break;
-      case MEMBER.BIRTH_BEFORE:
-        currentItem = item.value;
+      case MEMBER.REGISTERED_AT:
+        currentItem = item.value.filter(Boolean).join(' ~ ');
         break;
-      case MEMBER.REGISTER_AFTER:
-        currentItem = item.value;
-        break;
-      case MEMBER.REGISTER_BEFORE:
-        currentItem = item.value;
-        break;
-      case MEMBER.UPDATE_AFTER:
-        currentItem = item.value;
-        break;
-      case MEMBER.UPDATE_BEFORE:
-        currentItem = item.value;
+      case MEMBER.UPDATED_AT:
+        currentItem = item.value.filter(Boolean).join(' ~ ');
         break;
       case MEMBER.NAME:
-        currentItem = item.value;
+        currentItem = item.value[0];
         break;
       case MEMBER.SCHOOL:
-        currentItem = item.value;
+        currentItem = item.value[0];
         break;
       case MEMBER.OCCUPATION:
-        currentItem = item.value;
+        currentItem = item.value[0];
         break;
       case MEMBER.VEHICLE_NUMBER:
-        currentItem = item.value;
+        currentItem = item.value[0];
         break;
       default:
-        currentItem = item.value;
+        currentItem = item.value[0];
         return;
     }
 
