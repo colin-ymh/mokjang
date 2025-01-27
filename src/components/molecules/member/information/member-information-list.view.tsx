@@ -1,18 +1,18 @@
 import styled from 'styled-components';
+import { usePathname } from 'next/navigation';
 
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { MEMBER } from '@/constants/member/member-column';
 import { BLACK, GRAY, WHITE } from '@/constants/styles/color';
 import { CALENDAR_MODE, GENDER, MARRIAGE } from '@/constants/constant';
+import { LOCALE } from '@/constants/state/locale';
 import { Member } from '@/models/member/member';
+import { Ministry } from '@/models/management/management';
 import { getLocaleDateFromDashDate } from '@/utils/format';
 import { getThisYearBirth } from '@/utils/date';
 
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
 import Pencil from '../../../../../public/svg/pencil.svg';
-import { Ministry } from '@/models/management/management';
-import { usePathname } from 'next/navigation';
-import { LOCALE } from '@/constants/state/locale';
 
 const InformationContainer = styled.div`
   display: flex;
@@ -54,18 +54,18 @@ const PencilButton = styled(Pencil)`
   display: none; /* 기본적으로 숨김 */
 `;
 
-const InformationItem = styled.div`
+const InformationItem = styled.div<{ $disabled?: boolean }>`
   flex: 1;
   flex-shrink: 0;
   display: flex;
   flex-direction: row;
   padding: 10px;
   border-radius: 5px;
-  cursor: pointer;
+  cursor: ${({ $disabled }) => ($disabled ? 'default' : 'pointer')};
   position: relative;
 
   &:hover {
-    background-color: ${GRAY.LIGHT};
+    background-color: ${({ $disabled }) => ($disabled ? 'auto' : GRAY.LIGHT)};
   }
 
   &:hover ${PencilButton} {
@@ -105,6 +105,10 @@ const Divider = styled.div`
   margin: 10px 0;
 `;
 
+const PaddingBottom = styled.div`
+  height: 30px;
+`;
+
 type InformationListViewProps = {
   prevMember: Member;
   onClickItem: (id: MEMBER) => void;
@@ -142,6 +146,7 @@ const InformationListView = ({
             <ContentContainer>
               <MainText>{prevMember?.group?.name}</MainText>
             </ContentContainer>
+            <PencilButton />
           </InformationItem>
           {/* 역할 */}
           <InformationItem onClick={onClickOpenGroupModal}>
@@ -151,6 +156,7 @@ const InformationListView = ({
             <ContentContainer>
               <MainText>{prevMember?.groupRole?.role}</MainText>
             </ContentContainer>
+            <PencilButton />
           </InformationItem>
         </RowContainer>
         <Divider />
@@ -163,6 +169,7 @@ const InformationListView = ({
             <ContentContainer>
               <MainText>{prevMember?.officer?.name}</MainText>
             </ContentContainer>
+            <PencilButton />
           </InformationItem>
           {/* 신급 */}
           <InformationItem onClick={onClickOpenBaptismModal}>
@@ -172,6 +179,7 @@ const InformationListView = ({
             <ContentContainer>
               <MainText>{t(prevMember.baptism)}</MainText>
             </ContentContainer>
+            <PencilButton />
           </InformationItem>
         </RowContainer>
         <Divider />
@@ -201,7 +209,9 @@ const InformationListView = ({
                 );
               })}
             </ContentContainer>
+            <PencilButton />
           </InformationItem>
+          <BlankSpace />
         </RowContainer>
       </InformationListContainer>
       <ListTypeHeader>
@@ -219,10 +229,6 @@ const InformationListView = ({
             </ContentContainer>
             <PencilButton />
           </InformationItem>
-          <BlankSpace />
-        </RowContainer>
-        <Divider />
-        <RowContainer>
           {/* 성별 */}
           <InformationItem onClick={() => onClickItem(MEMBER.GENDER)}>
             <TitleContainer>
@@ -233,7 +239,6 @@ const InformationListView = ({
             </ContentContainer>
             <PencilButton />
           </InformationItem>
-          <BlankSpace />
         </RowContainer>
         <Divider />
         {/* 생년월일 라인 */}
@@ -259,7 +264,7 @@ const InformationListView = ({
             <PencilButton />
           </InformationItem>
           {/* 생일 */}
-          <InformationItem onClick={() => onClickItem(MEMBER.BIRTH)}>
+          <InformationItem $disabled={true}>
             <TitleContainer>
               <MainText color={GRAY.DEFAULT}>{t('birthDay')}</MainText>
             </TitleContainer>
@@ -272,8 +277,6 @@ const InformationListView = ({
                   )}
               </MainText>
             </ContentContainer>
-
-            <PencilButton />
           </InformationItem>
         </RowContainer>
         <Divider />
@@ -377,20 +380,25 @@ const InformationListView = ({
           </InformationItem>
         </RowContainer>
         <Divider />
-        {/* 차량 번호 */}
-        <InformationItem onClick={() => onClickItem(MEMBER.VEHICLE_NUMBER)}>
-          <TitleContainer>
-            <MainText color={GRAY.DEFAULT}>{t(MEMBER.VEHICLE_NUMBER)}</MainText>
-          </TitleContainer>
-          <ContentContainer>
-            {prevMember?.vehicleNumber?.map((number, index) => (
-              <MainText key={index}>{number}</MainText>
-            ))}
-          </ContentContainer>
-          <PencilButton />
-        </InformationItem>
-        <Divider />
+        <RowContainer>
+          {/* 차량 번호 */}
+          <InformationItem onClick={() => onClickItem(MEMBER.VEHICLE_NUMBER)}>
+            <TitleContainer>
+              <MainText color={GRAY.DEFAULT}>
+                {t(MEMBER.VEHICLE_NUMBER)}
+              </MainText>
+            </TitleContainer>
+            <ContentContainer>
+              {prevMember?.vehicleNumber?.map((number, index) => (
+                <MainText key={index}>{number}</MainText>
+              ))}
+            </ContentContainer>
+            <PencilButton />
+          </InformationItem>
+          <BlankSpace />
+        </RowContainer>
       </InformationListContainer>
+      <PaddingBottom />
     </InformationContainer>
   );
 };

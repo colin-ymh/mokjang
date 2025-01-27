@@ -1,15 +1,13 @@
 import React, {
-  InputHTMLAttributes,
-  forwardRef,
-  useRef,
   ChangeEvent,
-  useEffect,
-  useImperativeHandle,
+  forwardRef,
+  InputHTMLAttributes,
   RefObject,
+  useImperativeHandle,
+  useRef,
 } from 'react';
 import BorderInput from '@/components/atoms/common/input/border-input';
-import { getFormattedVehicleNumber, getTrimmedString } from '@/utils/format';
-import gsap from 'gsap';
+import { getFormattedVehicleNumber } from '@/utils/format';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import Plus from '../../../../public/svg/plus.svg';
 import { BLACK, DESTRUCTIVE, MAIN, WHITE } from '@/constants/styles/color';
@@ -26,26 +24,26 @@ const VehicleNumberInputViewContainer = styled.div`
 
 const InputList = styled.div`
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 2%;
+  gap: 10px;
   transition: all 0.3s ease;
 `;
 
 const FixedInputItem = styled.div<{ $zIndex: number }>`
   display: flex;
-  width: 32%;
   justify-content: center;
   align-items: center;
   z-index: ${({ $zIndex }) => $zIndex};
 `;
 
-const InputItem = styled.div<{ $zIndex: number }>`
-  display: none;
-  width: 0;
-  justify-content: center;
-  align-items: center;
-  z-index: ${({ $zIndex }) => $zIndex};
-`;
+// const InputItem = styled.div<{ $zIndex: number }>`
+//   display: none;
+//   //width: 0;
+//   justify-content: center;
+//   align-items: center;
+//   z-index: ${({ $zIndex }) => $zIndex};
+// `;
 
 const PlusButton = styled(Plus)`
   stroke: ${WHITE};
@@ -64,9 +62,9 @@ export type VehicleNumberInputRef = {
 type VehicleNumberInputViewProps = InputHTMLAttributes<HTMLInputElement> & {
   label?: string;
   value: string[];
-  count: number;
+  // count: number;
   onChangeInput: (event: ChangeEvent<HTMLInputElement>, index: number) => void;
-  onClickPlusButton: () => void;
+  // onClickPlusButton: () => void;
   height?: number;
   width?: number;
 };
@@ -79,9 +77,9 @@ const VehicleNumberInputView = forwardRef<
     {
       label,
       value,
-      count,
+      // count,
       onChangeInput,
-      onClickPlusButton,
+      // onClickPlusButton,
       height,
       width,
       ...props
@@ -99,37 +97,37 @@ const VehicleNumberInputView = forwardRef<
       thirdInputRef,
     }));
 
-    const secondAnimationRef = useRef<HTMLDivElement>(null);
-    const thirdAnimationRef = useRef<HTMLDivElement>(null);
+    // const secondAnimationRef = useRef<HTMLDivElement>(null);
+    // const thirdAnimationRef = useRef<HTMLDivElement>(null);
 
-    useEffect(() => {
-      if (count === 2 && secondAnimationRef.current) {
-        gsap.fromTo(
-          secondAnimationRef.current,
-          { x: '-50%', width: '0%', display: 'none' },
-          {
-            x: '0%',
-            width: '32%',
-            display: 'flex',
-            duration: 0.3,
-            ease: 'power1.out',
-          }
-        );
-      }
-      if (count === 3 && thirdAnimationRef.current) {
-        gsap.fromTo(
-          thirdAnimationRef.current,
-          { x: '-50%', width: '0%', display: 'none' },
-          {
-            x: '0%',
-            width: '32%',
-            display: 'flex',
-            duration: 0.3,
-            ease: 'power1.out',
-          }
-        );
-      }
-    }, [count]);
+    // useEffect(() => {
+    //   if (count === 2 && secondAnimationRef.current) {
+    //     gsap.fromTo(
+    //       secondAnimationRef.current,
+    //       { x: '-50%', width: '0%', display: 'none' },
+    //       {
+    //         x: '0%',
+    //         width: '32%',
+    //         display: 'flex',
+    //         duration: 0.3,
+    //         ease: 'power1.out',
+    //       }
+    //     );
+    //   }
+    //   if (count === 3 && thirdAnimationRef.current) {
+    //     gsap.fromTo(
+    //       thirdAnimationRef.current,
+    //       { x: '-50%', width: '0%', display: 'none' },
+    //       {
+    //         x: '0%',
+    //         width: '32%',
+    //         display: 'flex',
+    //         duration: 0.3,
+    //         ease: 'power1.out',
+    //       }
+    //     );
+    //   }
+    // }, [count]);
 
     return (
       <VehicleNumberInputViewContainer>
@@ -152,7 +150,10 @@ const VehicleNumberInputView = forwardRef<
               {...props}
             />
           </FixedInputItem>
-          <InputItem $zIndex={2} ref={secondAnimationRef}>
+          <FixedInputItem
+            $zIndex={2}
+            // ref={secondAnimationRef}
+          >
             <BorderInput
               ref={secondInputRef}
               value={getFormattedVehicleNumber(value[1])}
@@ -168,8 +169,11 @@ const VehicleNumberInputView = forwardRef<
               }
               {...props}
             />
-          </InputItem>
-          <InputItem $zIndex={1} ref={thirdAnimationRef}>
+          </FixedInputItem>
+          <FixedInputItem
+            $zIndex={1}
+            // ref={thirdAnimationRef}
+          >
             <BorderInput
               ref={thirdInputRef}
               value={getFormattedVehicleNumber(value[2])}
@@ -185,8 +189,8 @@ const VehicleNumberInputView = forwardRef<
               }
               {...props}
             />
-          </InputItem>
-          {count < 3 && <PlusButton onClick={onClickPlusButton} />}
+          </FixedInputItem>
+          {/*{count < 3 && <PlusButton onClick={onClickPlusButton} />}*/}
         </InputList>
       </VehicleNumberInputViewContainer>
     );

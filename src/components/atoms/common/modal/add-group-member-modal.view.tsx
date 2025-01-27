@@ -57,7 +57,7 @@ const MemberListContainer = styled.div`
   display: flex;
   flex-direction: column;
   padding: 0 20px;
-  height: 330px;
+  height: 280px;
   overflow-y: scroll;
 `;
 
@@ -78,7 +78,7 @@ const SelectedMemberList = styled.div`
   flex-direction: column;
   padding: 0 20px;
   overflow-y: scroll;
-  height: 320px;
+  height: 380px;
 `;
 
 type AddGroupMemberModalViewProps = {
@@ -121,33 +121,6 @@ const AddGroupMemberModalView = ({
       </HeaderContainer>
       {/* 내용 */}
       <ContentContainer>
-        <AddContainer>
-          {/* 검색창 */}
-          <SearchContainer>
-            <BorderInput
-              value={searchName}
-              onChange={onChangeSearch}
-              height={30}
-              placeholder={t('placeholder.name')}
-            />
-          </SearchContainer>
-          {/* 교인 목록 */}
-          <MemberListContainer>
-            {searchedMembers.map((member) => {
-              return (
-                <AddMemberItem
-                  key={member.id}
-                  member={member}
-                  isEnable={group.id !== member.group?.id}
-                  isSelected={selectedMembers.some(
-                    (selectedMember) => selectedMember.id === member.id
-                  )}
-                  onClick={onClickMember}
-                />
-              );
-            })}
-          </MemberListContainer>
-        </AddContainer>
         <SelectedMemberContainer $isShown={selectedMembers.length > 0}>
           <SelectedMemberList>
             {selectedMembers.map((member) => {
@@ -164,6 +137,37 @@ const AddGroupMemberModalView = ({
               );
             })}
           </SelectedMemberList>
+        </SelectedMemberContainer>
+        <AddContainer>
+          {/* 검색창 */}
+          <SearchContainer>
+            <BorderInput
+              value={searchName}
+              onChange={onChangeSearch}
+              height={30}
+              placeholder={t('placeholder.name')}
+            />
+          </SearchContainer>
+          {/* 교인 목록 */}
+          <MemberListContainer>
+            {searchedMembers
+              .filter((member) =>
+                selectedMembers.every((sm) => sm.id !== member.id)
+              )
+              .map((member) => {
+                return (
+                  <AddMemberItem
+                    key={member.id}
+                    member={member}
+                    isEnable={group.id !== member.group?.id}
+                    isSelected={selectedMembers.some(
+                      (selectedMember) => selectedMember.id === member.id
+                    )}
+                    onClick={onClickMember}
+                  />
+                );
+              })}
+          </MemberListContainer>
           {/* 저장 버튼 */}
           <ButtonContainer>
             <Button
@@ -175,7 +179,7 @@ const AddGroupMemberModalView = ({
               }
             />
           </ButtonContainer>
-        </SelectedMemberContainer>
+        </AddContainer>
       </ContentContainer>
     </ModalContainer>
   );

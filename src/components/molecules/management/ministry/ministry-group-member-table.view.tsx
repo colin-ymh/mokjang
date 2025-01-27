@@ -179,7 +179,7 @@ const MinistryMinistryGroupMemberTableView = ({
   const getMemberTableContent = (id: MEMBER, member: Member) => {
     switch (id) {
       case MEMBER.GROUP:
-        return <MainText>{}</MainText>;
+        return <MainText>{member?.group?.name}</MainText>;
 
       case MEMBER.NAME:
         return (

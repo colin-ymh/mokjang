@@ -236,7 +236,7 @@ const EnrollmentTableView = ({
           </MainText>
         );
       case EDUCATION_ENROLLMENT.GROUP:
-        return <MainText></MainText>;
+        return <MainText>{enrollment.member?.group?.name}</MainText>;
       case EDUCATION_ENROLLMENT.NOTE:
         return <MainText>{enrollment?.note}</MainText>;
       case EDUCATION_ENROLLMENT.MOBILE_PHONE:
@@ -268,27 +268,30 @@ const EnrollmentTableView = ({
       <Scroll ref={scrollRef} onScroll={onScroll} height={height}>
         <EnrollmentTable>
           <tbody>
-            {enrollments.map((enrollment, index) => (
-              <EnrollmentTableRow
-                key={enrollment.id}
-                onClick={() => onClickEnrollment(enrollment)}
-              >
-                {filteredTermTableHeader.map((item) => (
-                  <TableData key={item.id} id={item.id} $index={index}>
-                    <ContentWrapper>
-                      {getEnrollmentTableContent(
-                        item.id as EDUCATION_ENROLLMENT,
-                        enrollment,
-                        // 해당 등록에 맞는 출석부 불러오기
-                        attendance.find(
-                          (attd) => attd.educationEnrollmentId === enrollment.id
-                        )
-                      )}
-                    </ContentWrapper>
-                  </TableData>
-                ))}
-              </EnrollmentTableRow>
-            ))}
+            {enrollments
+              .filter((enrollment) => enrollment.member !== null)
+              .map((enrollment, index) => (
+                <EnrollmentTableRow
+                  key={enrollment.id}
+                  onClick={() => onClickEnrollment(enrollment)}
+                >
+                  {filteredTermTableHeader.map((item) => (
+                    <TableData key={item.id} id={item.id} $index={index}>
+                      <ContentWrapper>
+                        {getEnrollmentTableContent(
+                          item.id as EDUCATION_ENROLLMENT,
+                          enrollment,
+                          // 해당 등록에 맞는 출석부 불러오기
+                          attendance.find(
+                            (attd) =>
+                              attd.educationEnrollmentId === enrollment.id
+                          )
+                        )}
+                      </ContentWrapper>
+                    </TableData>
+                  ))}
+                </EnrollmentTableRow>
+              ))}
           </tbody>
         </EnrollmentTable>
       </Scroll>

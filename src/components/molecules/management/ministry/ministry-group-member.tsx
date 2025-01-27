@@ -4,6 +4,7 @@ import { MinistryGroup } from '@/models/management/management';
 import { Member } from '@/models/member/member';
 import { MembersApi } from '@/api/churches/members.api';
 import MinistryGroupMemberView from '@/components/molecules/management/ministry/ministry-group-member.view';
+import { MEMBER } from '@/constants/member/member-column';
 
 type MinistryGroupMemberProps = {
   ministryGroup: MinistryGroup;
@@ -36,6 +37,12 @@ const MinistryGroupMember = ({ ministryGroup }: MinistryGroupMemberProps) => {
           ministries: ministryGroup.ministries?.map((ministry) => {
             return ministry.id;
           }),
+          selectedColumns: [
+            MEMBER.GROUP,
+            MEMBER.BIRTH,
+            MEMBER.OFFICER,
+            MEMBER.MOBILE_PHONE,
+          ],
         })
         .then((response) => {
           setMembers(response.data.data);

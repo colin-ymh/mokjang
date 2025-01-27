@@ -4,6 +4,7 @@ import { Member } from '@/models/member/member';
 import { useEffect, useState } from 'react';
 
 import { MembersApi } from '@/api/churches/members.api';
+import { MEMBER } from '@/constants/member/member-column';
 
 type GroupMemberProps = {
   group: Group;
@@ -33,6 +34,7 @@ const GroupMember = ({ group }: GroupMemberProps) => {
       .getMembers({
         churchId: group.churchId,
         group: [group.id as string],
+        selectedColumns: [MEMBER.OFFICER, MEMBER.BIRTH, MEMBER.MOBILE_PHONE],
       })
       .then((response) => {
         setMembers(response.data.data);

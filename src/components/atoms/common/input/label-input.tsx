@@ -18,6 +18,7 @@ type LabelInputProps = InputProps & {
   label: string;
   zIndex?: number;
   borderColor?: string;
+  // labelColor?: string;
 };
 
 // forwardRef 를 사용하여 ref 를 props 로 전달받을 수 있게

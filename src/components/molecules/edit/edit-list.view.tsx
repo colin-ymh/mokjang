@@ -1,26 +1,32 @@
-import RadioButton from '@/components/atoms/common/input/radio-button/radio-button';
-import {
-  useCalendarModeRadioButtonItems,
-  useGenderRadioButtonItems,
-} from '@/hooks/radio-button/radio-button-items';
-import RegisterRadioButton from '@/components/atoms/register/register-radio-button';
-import { BLACK, DESTRUCTIVE } from '@/constants/styles/color';
+import React, { ChangeEvent, useEffect, useRef } from 'react';
+import styled from 'styled-components';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
+
 import LabelInput from '@/components/atoms/common/input/label-input';
+import LabelDropdown from '@/components/atoms/common/dropdown/label-dropdown';
+import LabelRadioButton from '@/components/atoms/common/input/radio-button/label-radio-button';
+import VehicleNumberInput from '@/components/atoms/register/vehicle-number-input';
+import MemberImageInput from '@/components/atoms/register/member-image-input';
+
+import RadioButton from '@/components/atoms/common/input/radio-button/radio-button';
+import RegisterRadioButton from '@/components/atoms/register/register-radio-button';
+
+import { useI18n, useScopedI18n } from '../../../../locales/client';
 import {
   getIsWellFormedBirth,
   getIsWellFormedHomePhone,
   getIsWellFormedMobilePhone,
   getIsWellFormedName,
 } from '@/utils/check';
-import LabelDropdown from '@/components/atoms/common/dropdown/label-dropdown';
+import { getTrimmedString } from '@/utils/format';
 import { useMarriageDropdownItems } from '@/hooks/dropdown/dropdown-items';
-import React, { ChangeEvent, useEffect, useRef } from 'react';
-import { useI18n, useScopedI18n } from '../../../../locales/client';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/redux/store';
-import styled from 'styled-components';
-import MemberImageInput from '@/components/atoms/register/member-image-input';
-import LabelRadioButton from '@/components/atoms/common/input/radio-button/label-radio-button';
+import {
+  useCalendarModeRadioButtonItems,
+  useGenderRadioButtonItems,
+} from '@/hooks/radio-button/radio-button-items';
+
+import { BLACK, DESTRUCTIVE } from '@/constants/styles/color';
 import {
   BLANK,
   CALENDAR_MODE,
@@ -28,10 +34,8 @@ import {
   MARRIAGE,
   NULL,
 } from '@/constants/constant';
-import { getTrimmedString } from '@/utils/format';
-import VehicleNumberInput from '@/components/atoms/register/vehicle-number-input';
-import { VehicleNumberInputRef } from '@/components/atoms/register/vehicle-number-input.view';
 import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-item';
+import { VehicleNumberInputRef } from '@/components/atoms/register/vehicle-number-input.view';
 import { MEMBER } from '@/constants/member/member-column';
 
 const RequiredRegisterContainer = styled.div`
@@ -115,7 +119,7 @@ const EditListView = ({
 
   const { member } = useSelector((state: RootState) => state.memberRegister);
 
-  // 각 input 에 대한 ref
+  // ref 모음
   const nameInputRef = useRef<HTMLInputElement>(null);
   const mobilePhoneInputRef = useRef<HTMLInputElement>(null);
   const guideInputRef = useRef<HTMLInputElement>(null);
@@ -129,59 +133,70 @@ const EditListView = ({
   const homePhoneInputRef = useRef<HTMLInputElement>(null);
   const vehicleInputRef = useRef<VehicleNumberInputRef>(null);
 
+  // "포커스 & 스크롤"을 수행하는 유틸 함수
+  const scrollToFocus = (inputRef: React.RefObject<HTMLInputElement>) => {
+    // 스크롤 되기 전에 focus()를 먼저 실행
+    if (inputRef.current) {
+      inputRef.current.focus();
+      // 스크롤
+      inputRef.current.scrollIntoView({
+        behavior: 'smooth', // 부드러운 스크롤
+        block: 'center', // 화면 중앙쯤에 위치시키기
+      });
+    }
+  };
+
   useEffect(() => {
     switch (focusItem) {
       case MEMBER.NAME:
-        if (nameInputRef.current) nameInputRef.current.focus();
+        scrollToFocus(nameInputRef);
         break;
       case MEMBER.MOBILE_PHONE:
-        if (mobilePhoneInputRef.current) mobilePhoneInputRef.current.focus();
+        scrollToFocus(mobilePhoneInputRef);
         break;
       case MEMBER.GUIDED_BY_ID:
-        if (guideInputRef.current) guideInputRef.current.focus();
+        scrollToFocus(guideInputRef);
         break;
       case MEMBER.BIRTH:
-        if (birthInputRef.current) birthInputRef.current.focus();
+        scrollToFocus(birthInputRef);
         break;
       case MEMBER.SCHOOL:
-        if (schoolInputRef.current) schoolInputRef.current.focus();
+        scrollToFocus(schoolInputRef);
         break;
       case MEMBER.OCCUPATION:
-        if (occupationInputRef.current) occupationInputRef.current.focus();
+        scrollToFocus(occupationInputRef);
         break;
       case MEMBER.MARRIAGE:
-        if (marriageInputRef.current) marriageInputRef.current.focus();
+        scrollToFocus(marriageInputRef);
         break;
       case MEMBER.DETAIL_MARRIAGE:
-        if (detailMarriageInputRef.current)
-          detailMarriageInputRef.current.focus();
+        scrollToFocus(detailMarriageInputRef);
         break;
       case MEMBER.ADDRESS:
-        if (addressInputRef.current) addressInputRef.current.focus();
+        scrollToFocus(addressInputRef);
         break;
       case MEMBER.DETAIL_ADDRESS:
-        if (detailAddressInputRef.current)
-          detailAddressInputRef.current.focus();
+        scrollToFocus(detailAddressInputRef);
         break;
       case MEMBER.HOME_PHONE:
-        if (homePhoneInputRef.current) homePhoneInputRef.current.focus();
+        scrollToFocus(homePhoneInputRef);
         break;
       default:
         break;
     }
   }, [focusItem]);
+
   return (
     <RequiredRegisterContainer>
       <ImageContainer>
-        {/* 프로필 이미지*/}
         <MemberImageInput
           value={member.profileImage}
           onChange={onChangeProfileImage}
         />
       </ImageContainer>
+
       {/* 이름 */}
       <LabelInput
-        enterKeyHint={'done'}
         ref={nameInputRef}
         label={t('name')}
         value={member.name}
@@ -195,11 +210,11 @@ const EditListView = ({
             : undefined
         }
       />
+
       {/* 휴대폰 번호 */}
       <LabelInput
-        enterKeyHint={'done'}
-        inputMode={'numeric'}
         ref={mobilePhoneInputRef}
+        inputMode="numeric"
         label={t('mobilePhone')}
         value={member.mobilePhone}
         onChange={onChangeMobilePhone}
@@ -212,9 +227,9 @@ const EditListView = ({
             : undefined
         }
       />
+
       {/* 인도자 */}
       <LabelDropdown
-        enterKeyHint={'done'}
         ref={guideInputRef}
         label={t('guide')}
         value={guideName}
@@ -222,8 +237,9 @@ const EditListView = ({
         onChange={onChangeGuideName}
         onChangeItem={onChangeGuidedById}
         placeholder={t_placeholder('guide')}
-        isEditable={true}
+        isEditable
       />
+
       {/* 성별 */}
       <LabelRadioButton
         label={t('gender')}
@@ -232,12 +248,12 @@ const EditListView = ({
         onChange={onChangeGender}
         customButton={RegisterRadioButton}
       />
+
       {/* 생년월일 */}
       <BirthContainer>
-        {/* 생년월일 입력창 */}
         <LabelInput
           ref={birthInputRef}
-          inputMode={'numeric'}
+          inputMode="numeric"
           label={t('birth')}
           value={member.birth || BLANK}
           onChange={onChangeBirth}
@@ -250,7 +266,6 @@ const EditListView = ({
               : undefined
           }
         />
-        {/* 양력 음력 */}
         <RadioButton
           items={useCalendarModeRadioButtonItems()}
           selectedValue={
@@ -260,29 +275,29 @@ const EditListView = ({
           customButton={RegisterRadioButton}
         />
       </BirthContainer>
-      {/* 학교  */}
+
+      {/* 학교 */}
       <LabelDropdown
-        enterKeyHint={'done'}
         ref={schoolInputRef}
         label={t('school')}
         items={schoolItems}
         value={member.school}
-        onChangeItem={(value) => onChangeSchool(value)}
+        onChangeItem={onChangeSchool}
         placeholder={t_placeholder('school')}
-        isEditable={true}
+        isEditable
         borderColor={getTrimmedString(member.school) ? BLACK : undefined}
       />
+
       {/* 직업 */}
       <LabelInput
-        enterKeyHint={'done'}
         ref={occupationInputRef}
         label={t('occupation')}
         value={member.occupation || BLANK}
         onChange={onChangeOccupation}
         placeholder={t_placeholder('occupation')}
-        zIndex={1}
         borderColor={getTrimmedString(member.occupation) ? BLACK : undefined}
       />
+
       {/* 결혼 */}
       <LabelDropdown
         ref={marriageInputRef}
@@ -291,11 +306,13 @@ const EditListView = ({
         items={useMarriageDropdownItems()}
         onChangeItem={onChangeMarriage}
         placeholder={t_placeholder('marriage')}
-        borderColor={member.marriage !== NULL ? BLACK : undefined}
+        borderColor={
+          member.marriage && member.marriage !== NULL ? BLACK : undefined
+        }
       />
+
       {/* 결혼 상세 정보 */}
       <LabelInput
-        enterKeyHint={'done'}
         ref={detailMarriageInputRef}
         label={t('detailMarriage')}
         value={member.detailMarriage || BLANK}
@@ -305,20 +322,20 @@ const EditListView = ({
           getTrimmedString(member.detailMarriage) ? BLACK : undefined
         }
       />
+
       {/* 도로명주소 */}
       <LabelInput
-        enterKeyHint={'done'}
         ref={addressInputRef}
         label={t('address')}
         value={member.address || BLANK}
         placeholder={t_placeholder('address')}
         onClick={onClickAddress}
+        onChange={() => {}} // 필요하다면 구현
         borderColor={getTrimmedString(member.address) ? BLACK : undefined}
-        onChange={(event: ChangeEvent<HTMLInputElement>) => {}}
       />
+
       {/* 상세주소 */}
       <LabelInput
-        enterKeyHint={'done'}
         ref={detailAddressInputRef}
         label={t('detailAddress')}
         value={member.detailAddress || BLANK}
@@ -326,15 +343,14 @@ const EditListView = ({
         placeholder={t_placeholder('detailAddress')}
         borderColor={getTrimmedString(member.detailAddress) ? BLACK : undefined}
       />
+
       {/* 전화 번호 */}
       <LabelInput
         ref={homePhoneInputRef}
-        inputMode={'numeric'}
+        inputMode="numeric"
         label={t('homePhone')}
         value={member.homePhone || BLANK}
-        onChange={(event: ChangeEvent<HTMLInputElement>) =>
-          onChangeHomePhone(event)
-        }
+        onChange={onChangeHomePhone}
         placeholder={t_placeholder('homePhone')}
         borderColor={
           member.homePhone
@@ -344,15 +360,16 @@ const EditListView = ({
             : undefined
         }
       />
+
       {/* 차량 번호 */}
       <VehicleNumberInput
-        enterKeyHint={'done'}
         ref={vehicleInputRef}
         label={t('vehicleNumber')}
         value={member.vehicleNumber}
         onChangeInput={onChangeVehicleNumber}
         placeholder={t_placeholder('vehicleNumber')}
       />
+
       <Invisible />
     </RequiredRegisterContainer>
   );
