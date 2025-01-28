@@ -10,7 +10,6 @@ import Dropdown, {
 import { FLEX_DIRECTION } from '@/constants/styles/style';
 
 const LabelDropdownContainer = styled.div<{
-  width?: number;
   $flexDirection: FLEX_DIRECTION;
 }>`
   display: flex;
@@ -30,13 +29,11 @@ const LabelDropdown = forwardRef<HTMLInputElement, LabelDropdownProps>(
   (
     {
       label,
+      flexDirection = FLEX_DIRECTION.COLUMN,
+      // DropdownProps
       value,
       onChangeItem,
       items,
-      enterKeyHint,
-      height,
-      width,
-      flexDirection = FLEX_DIRECTION.COLUMN,
       ...dropdownProps
     },
     ref
@@ -49,8 +46,6 @@ const LabelDropdown = forwardRef<HTMLInputElement, LabelDropdownProps>(
           value={value}
           items={items}
           onChangeItem={onChangeItem}
-          height={height}
-          width={width}
           {...dropdownProps}
         />
       </LabelDropdownContainer>
@@ -58,4 +53,5 @@ const LabelDropdown = forwardRef<HTMLInputElement, LabelDropdownProps>(
   }
 );
 
+LabelDropdown.displayName = 'LabelDropdown';
 export default LabelDropdown;

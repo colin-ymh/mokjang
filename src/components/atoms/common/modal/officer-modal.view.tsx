@@ -10,7 +10,6 @@ import { useI18n } from '../../../../../locales/client';
 import { useOfficerDropdownItems } from '@/hooks/dropdown/dropdown-items';
 import { OfficerHistory } from '@/models/member/history';
 import Cancel from '../../../../../public/svg/cancel.svg';
-import { NONE } from '@/constants/constant';
 
 const OfficerModalViewContainer = styled.div`
   display: flex;
@@ -82,29 +81,27 @@ const OfficerModalView = ({
     <OfficerModalViewContainer>
       {/* 내용 */}
       <ContentContainer>
-        <GroupContainer>
-          {/* 직분 */}
-          {!targetHistory?.endDate && (
+        {!targetHistory?.endDate && (
+          <GroupContainer>
+            {/* 직분 */}
             <LabelDropdown
               label={t('officer')}
               value={selectedOfficerId}
               items={officerDropdownItems}
               onChangeItem={onChangeOfficerId}
             />
-          )}
-          <Button width={38} height={38} onClick={onClickCancelOfficer}>
-            <CancelButton />
-          </Button>
-        </GroupContainer>
-        {/* 시작 날짜 */}
-        {selectedOfficerId !== NONE && (
-          <LabelInput
-            label={t('startDate')}
-            value={startDate}
-            onChange={onChangeStartDate}
-            placeholder={t('placeholder.startDate')}
-          />
+            <Button width={38} height={38} onClick={onClickCancelOfficer}>
+              <CancelButton />
+            </Button>
+          </GroupContainer>
         )}
+        {/* 시작 날짜 */}
+        <LabelInput
+          label={t('startDate')}
+          value={startDate}
+          onChange={onChangeStartDate}
+          placeholder={t('placeholder.startDate')}
+        />
         {/* 종료 날짜 */}
         {targetHistory?.endDate && (
           <LabelInput

@@ -57,7 +57,14 @@ const CheckButton = ({
   };
 
   return (
-    <CheckButtonContainer onClick={onClick} width={width} height={height}>
+    <CheckButtonContainer
+      onClick={(event) => {
+        event.stopPropagation();
+        onClick();
+      }}
+      width={width}
+      height={height}
+    >
       <CheckIcon $isChecked={isChecked} />
     </CheckButtonContainer>
   );

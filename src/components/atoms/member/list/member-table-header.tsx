@@ -9,6 +9,7 @@ import { SIZE } from '@/constants/styles/style';
 import { getTranslatedMemberColumn } from '@/utils/translate';
 
 import { useI18n } from '../../../../../locales/client';
+import React from 'react';
 
 const HeaderContainer = styled.div`
   display: flex;
@@ -45,21 +46,30 @@ type MemberTableHeaderProps = {
 
 // Component
 const MemberTableHeader = ({ item, onClick }: MemberTableHeaderProps) => {
-  const { memberOrderBy, memberOrderDirection } = useSelector(
+  const { memberOrderBy } = useSelector(
     (state: RootState) => state.memberFilter
   );
   const t = useI18n();
-
   const isActive = memberOrderBy === item.id;
-  // const isAscending = memberOrderDirection === ORDER_DIRECTION.ASC;
 
   return (
     <HeaderContainer onClick={() => item.isSortable && onClick(item.id)}>
-      <TextContainer>
-        <MainText color={isActive ? MAIN.DEFAULT : GRAY.DARK}>
-          {getTranslatedMemberColumn(t, item.id)}
-        </MainText>
-      </TextContainer>
+      {item.id === MEMBER.CHECK ? (
+        /* =========================
+           1) 체크박스 열인 경우
+           ========================= */
+        <div></div>
+      ) : (
+        /* =========================
+           2) 일반 열인 경우
+           ========================= */
+
+        <TextContainer>
+          <MainText color={isActive ? MAIN.DEFAULT : GRAY.DARK}>
+            {getTranslatedMemberColumn(t, item.id)}
+          </MainText>
+        </TextContainer>
+      )}
       {item.isSortable && (
         <IconContainer>
           <MainText

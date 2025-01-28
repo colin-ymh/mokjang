@@ -3,8 +3,8 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 
 import { BLANK, NONE } from '@/constants/constant';
-import { getFormattedDate } from '@/utils/format';
-import { getIsWellFormedDate } from '@/utils/check';
+import { getFormattedDate, getFormattedTitle } from '@/utils/format';
+import { getIsWellFormedDate, getIsWellFormedTitle } from '@/utils/check';
 import {
   DEFAULT_MINISTRY_GROUP,
   Ministry,
@@ -14,6 +14,7 @@ import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-i
 import { MinistriesApi } from '@/api/management/ministry/ministries.api';
 import { MinistryHistory } from '@/models/member/history';
 import MinistryModalView from '@/components/atoms/common/modal/ministry-modal.view';
+import { CUSTOM_VALUE } from '@/components/atoms/common/dropdown/dropdown';
 
 type MinistryGroupModalProps = {
   targetHistory?: MinistryHistory;
@@ -23,12 +24,18 @@ type MinistryGroupModalProps = {
     startDate: string
   ) => void;
   onClickSaveMinistryHistory?: (startDate?: string, endDate?: string) => void;
+  onClickCreateMinistry?: (
+    ministryGroupId: string,
+    startDate: string,
+    newName: string
+  ) => void;
 };
 
 const MinistryGroupModal = ({
   targetHistory,
   onClickSaveNewMinistry,
   onClickSaveMinistryHistory,
+  onClickCreateMinistry,
 }: MinistryGroupModalProps) => {
   const ministriesApi = new MinistriesApi(false);
   const { ministryGroups, churchId } = useSelector(
@@ -42,6 +49,9 @@ const MinistryGroupModal = ({
   // 역할 목록
   const [ministryItems, setMinistryItems] = useState<DropdownValueType[]>([]);
 
+  // 새로 추가할 사역
+  const [newMinistryName, setNewMinistryName] = useState<string>(BLANK);
+
   // 선택된 사역 역할
   const [selectedMinistryId, setSelectedMinistryId] = useState<string>(BLANK);
 
@@ -53,6 +63,12 @@ const MinistryGroupModal = ({
 
   // 저장 가능 여부
   const [isButtonEnabled, setIsButtonEnabled] = useState<boolean>(false);
+
+  // 추가할 사역 변경
+  const onChangeCustomInput = (event: ChangeEvent<HTMLInputElement>) => {
+    const newName = getFormattedTitle(event.target.value);
+    setNewMinistryName(newName);
+  };
 
   // 사역 그룹 설정 완료 버튼
   const onChangeMinistryGroup = (ministryGroup: MinistryGroup) => {
@@ -84,11 +100,19 @@ const MinistryGroupModal = ({
 
   // 저장 가능 여부 확인
   useEffect(() => {
-    if (targetHistory?.id !== BLANK && selectedMinistryGroup.id === BLANK) {
+    if (
+      selectedMinistryId === CUSTOM_VALUE &&
+      !getIsWellFormedTitle(newMinistryName)
+    ) {
+      setIsButtonEnabled(false);
+    } else if (
+      targetHistory?.id !== BLANK &&
+      selectedMinistryGroup.id === BLANK
+    ) {
       setIsButtonEnabled(true);
     }
     // 생성 시
-    if (!targetHistory) {
+    else if (!targetHistory) {
       setIsButtonEnabled(
         selectedMinistryId !== NONE && getIsWellFormedDate(startDate)
       );
@@ -103,7 +127,7 @@ const MinistryGroupModal = ({
         getIsWellFormedDate(startDate) && getIsWellFormedDate(endDate)
       );
     }
-  }, [startDate, endDate]);
+  }, [selectedMinistryId, newMinistryName, startDate, endDate]);
 
   useEffect(() => {
     // 목표 이력이 존재 X => 생성
@@ -177,6 +201,7 @@ const MinistryGroupModal = ({
     targetHistory,
     selectedMinistryGroup,
     ministryItems,
+    newMinistryName,
     selectedMinistryId,
     isButtonEnabled,
     startDate,
@@ -188,6 +213,8 @@ const MinistryGroupModal = ({
     onClickSaveNewMinistry,
     onClickSaveMinistryHistory,
     onClickCancelMinistryGroup,
+    onChangeCustomInput,
+    onClickCreateMinistry,
   };
 
   return (

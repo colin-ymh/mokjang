@@ -31,6 +31,7 @@ export type TERM_TABLE_HEADER_ITEM = {
 };
 
 export enum EDUCATION_ENROLLMENT {
+  CHECK = 'check',
   MEMBER_NAME = 'memberName',
   AGE = MEMBER.AGE,
   GROUP = MEMBER.GROUP,

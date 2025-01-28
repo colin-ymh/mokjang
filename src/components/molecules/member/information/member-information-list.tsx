@@ -29,6 +29,7 @@ import { Member } from '@/models/member/member';
 import { DEFAULT_MINISTRY, Ministry } from '@/models/management/management';
 import MinistryModal from '@/components/atoms/common/modal/ministry-modal';
 import BaptismModal from '@/components/atoms/common/modal/baptism-modal';
+import { MinistriesApi } from '@/api/management/ministry/ministries.api';
 
 type InformationListProps = { targetMemberId: string };
 
@@ -38,6 +39,7 @@ const InformationList = ({ targetMemberId }: InformationListProps) => {
   const officerHistoryApi = new OfficerHistoryApi(false);
   const groupHistoryApi = new GroupHistoryApi(false);
   const membersApi = new MembersApi(false);
+  const ministriesApi = new MinistriesApi(false);
 
   const { churchId } = useSelector((state: RootState) => state.church);
   const { member } = useSelector((state: RootState) => state.memberRegister);
@@ -321,6 +323,22 @@ const InformationList = ({ targetMemberId }: InformationListProps) => {
     }
   };
 
+  // 새로운 사역 만들기
+  const onClickCreateMinistry = (
+    ministryGroupId: string,
+    startDate: string,
+    ministryName: string
+  ) => {
+    ministriesApi
+      .createMinistry({ churchId }, { ministryGroupId, name: ministryName })
+      .then((response) => {
+        const newMinistry: Ministry = response.data;
+        console.log(newMinistry);
+
+        onClickSaveNewMinistry(ministryGroupId, newMinistry.id, startDate);
+      });
+  };
+
   // ================================
   // 직분 수정
   // ================================
@@ -529,6 +547,7 @@ const InformationList = ({ targetMemberId }: InformationListProps) => {
         <MinistryModal
           targetHistory={targetMinistryHistory}
           onClickSaveNewMinistry={onClickSaveNewMinistry}
+          onClickCreateMinistry={onClickCreateMinistry}
         />
       </CustomPopup>
 

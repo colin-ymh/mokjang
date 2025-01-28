@@ -1,5 +1,6 @@
 import React, { MutableRefObject } from 'react';
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
@@ -18,18 +19,20 @@ import {
 import { Member } from '@/models/member/member';
 import MemberTableHeader from '@/components/atoms/member/list/member-table-header';
 import useWindowSize from '@/hooks/window/window';
+import { LOCALE } from '@/constants/state/locale';
 
 import DefaultImage from '../../../../../public/png/default-member-image.png';
 import { useI18n } from '../../../../../locales/client';
-import { usePathname } from 'next/navigation';
-import { LOCALE } from '@/constants/state/locale';
+import CheckButton from '@/components/atoms/common/button/check-button';
 
 const getColumnWidth = (id: string) => {
   switch (id) {
+    case MEMBER.CHECK:
+      return 10;
     case MEMBER.GROUP:
       return 40;
     case MEMBER.NAME:
-      return 40;
+      return 100;
     case MEMBER.GENDER:
       return 40;
     case MEMBER.OFFICER:
@@ -142,16 +145,20 @@ const ProfileImage = styled(Image)`
 
 type MemberTableProps = {
   members: Member[];
+  checkedMemberIds: string[];
   onClickHeader: (id: MEMBER) => void;
   onClickMemberItem: (memberId: string) => void;
+  onClickCheckMember: (memberId: string) => void;
   scrollRef: MutableRefObject<HTMLDivElement | null>;
   onScroll: () => void;
 };
 
 const MemberTableView = ({
   members,
+  checkedMemberIds,
   onClickHeader,
   onClickMemberItem,
+  onClickCheckMember,
   scrollRef,
   onScroll,
 }: MemberTableProps) => {
@@ -165,6 +172,14 @@ const MemberTableView = ({
 
   const getMemberTableContent = (id: MEMBER, member: Member) => {
     switch (id) {
+      case MEMBER.CHECK:
+        return (
+          <CheckButton
+            value={checkedMemberIds.includes(member.id)}
+            onChange={() => onClickCheckMember(member.id)}
+          />
+        );
+
       case MEMBER.GROUP:
         return <MainText>{member?.group?.name}</MainText>;
 

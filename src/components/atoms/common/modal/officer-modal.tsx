@@ -1,11 +1,11 @@
 import { ChangeEvent, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
 
 import OfficerModalView from '@/components/atoms/common/modal/officer-modal.view';
 import { BLANK, NONE } from '@/constants/constant';
 import { OfficerHistory } from '@/models/member/history';
 import { getFormattedDate } from '@/utils/format';
-import { RootState } from '@/redux/store';
-import { useSelector } from 'react-redux';
 import { getIsWellFormedDate } from '@/utils/check';
 
 type OfficerModalProps = {

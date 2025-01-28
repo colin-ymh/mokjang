@@ -98,6 +98,8 @@ const ProfileImage = styled(Image)`
 
 const getColumnWidth = (id: EDUCATION_ENROLLMENT) => {
   switch (id) {
+    case EDUCATION_ENROLLMENT.CHECK:
+      return 2;
     case EDUCATION_ENROLLMENT.ATTENDANCE:
       return 5;
     case EDUCATION_ENROLLMENT.MEMBER_NAME:
@@ -116,6 +118,14 @@ const getColumnWidth = (id: EDUCATION_ENROLLMENT) => {
 };
 
 export const TERM_TABLE_HEADER: ENROLLMENT_TABLE_HEADER_ITEM[] = [
+  {
+    id: EDUCATION_ENROLLMENT.CHECK,
+    isShown: true,
+    isSortable: false,
+    isFilterable: false,
+    isFixed: true,
+    isDate: false,
+  },
   {
     id: EDUCATION_ENROLLMENT.MEMBER_NAME,
     isShown: true,
@@ -169,27 +179,33 @@ export const TERM_TABLE_HEADER: ENROLLMENT_TABLE_HEADER_ITEM[] = [
 type EnrollmentTableProps = {
   enrollments: EducationEnrollment[];
   attendance: SessionAttendance[];
+  scrollRef: MutableRefObject<HTMLDivElement | null>;
   isInformation: boolean;
+  checkedMemberIds: string[];
   onClickEnrollment: (enrollment: EducationEnrollment) => void;
   onClickHeader: (id: EDUCATION_ENROLLMENT) => void;
-  scrollRef: MutableRefObject<HTMLDivElement | null>;
   onScroll: () => void;
   onChangeAttendance: (
     termId: string,
     attendanceId: string,
     isPresent: boolean
   ) => void;
+  onClickCheckAll: () => void;
+  onClickCheckMember: (memberId: string) => void;
 };
 
 const EnrollmentTableView = ({
   enrollments,
   attendance,
+  scrollRef,
   isInformation,
+  checkedMemberIds,
   onClickEnrollment,
   onClickHeader,
-  scrollRef,
   onScroll,
   onChangeAttendance,
+  onClickCheckAll,
+  onClickCheckMember,
 }: EnrollmentTableProps) => {
   const { height } = useWindowSize();
 
@@ -206,6 +222,13 @@ const EnrollmentTableView = ({
     attendanceValue: SessionAttendance = DEFAULT_SESSION_ATTENDANCE
   ) => {
     switch (id) {
+      case EDUCATION_ENROLLMENT.CHECK:
+        return (
+          <CheckButton
+            value={checkedMemberIds.includes(enrollment.memberId)}
+            onChange={() => onClickCheckMember(enrollment.memberId)}
+          />
+        );
       case EDUCATION_ENROLLMENT.ATTENDANCE:
         return (
           <CheckButton
@@ -258,7 +281,12 @@ const EnrollmentTableView = ({
           <tr>
             {filteredTermTableHeader.map((item) => (
               <TableHeader key={item.id} id={item.id}>
-                <EnrollmentTableHeader item={item} onClick={onClickHeader} />
+                <EnrollmentTableHeader
+                  item={item}
+                  onClick={onClickHeader}
+                  isCheckAll={enrollments.length === checkedMemberIds.length}
+                  onClickCheckAll={onClickCheckAll}
+                />
               </TableHeader>
             ))}
           </tr>

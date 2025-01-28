@@ -93,16 +93,18 @@ const GroupModalView = ({
     <GroupModalViewContainer>
       {/* 내용 */}
       <ContentContainer>
-        <GroupContainer>
-          {/* 그룹 */}
-          <GroupDropdown
-            value={selectedGroup.id as string}
-            onClickSaveGroup={onChangeGroup}
-          />
-          <Button width={42} height={42} onClick={onClickCancelGroup}>
-            <CancelButton />
-          </Button>
-        </GroupContainer>
+        {!targetHistory?.endDate && (
+          <GroupContainer>
+            {/* 그룹 */}
+            <GroupDropdown
+              value={selectedGroup.id as string}
+              onClickSaveGroup={onChangeGroup}
+            />
+            <Button width={42} height={42} onClick={onClickCancelGroup}>
+              <CancelButton />
+            </Button>
+          </GroupContainer>
+        )}
         {/* 역할 */}
         {selectedGroup.id && !targetHistory?.endDate && (
           <LabelDropdown
@@ -113,14 +115,12 @@ const GroupModalView = ({
           />
         )}
         {/* 시작 날짜 */}
-        {selectedGroup.id && (
-          <LabelInput
-            label={t('startDate')}
-            value={startDate}
-            onChange={onChangeStartDate}
-            placeholder={t('placeholder.startDate')}
-          />
-        )}
+        <LabelInput
+          label={t('startDate')}
+          value={startDate}
+          onChange={onChangeStartDate}
+          placeholder={t('placeholder.startDate')}
+        />
         {/* 종료 날짜 */}
         {targetHistory?.endDate && (
           <LabelInput

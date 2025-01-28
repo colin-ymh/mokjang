@@ -77,6 +77,14 @@ export type TABLE_HEADER_ITEM = {
 
 export const INITIAL_TABLE_HEADER_LIST: TABLE_HEADER_ITEM[] = [
   {
+    id: MEMBER.CHECK,
+    isShown: true,
+    isSortable: true,
+    isFilterable: false,
+    isFixed: true,
+    isDate: false,
+  },
+  {
     id: MEMBER.GROUP,
     isShown: true,
     isSortable: true,

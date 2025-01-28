@@ -1,4 +1,5 @@
 export enum MEMBER {
+  CHECK = 'check',
   ID = 'id',
   NAME = 'name',
   MOBILE_PHONE = 'mobilePhone',

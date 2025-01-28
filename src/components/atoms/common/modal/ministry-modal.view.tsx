@@ -12,7 +12,7 @@ import { MinistryHistory } from '@/models/member/history';
 
 import { useI18n } from '../../../../../locales/client';
 import Cancel from '../../../../../public/svg/cancel.svg';
-import { BLANK } from '@/constants/constant';
+import { CUSTOM_VALUE } from '@/components/atoms/common/dropdown/dropdown';
 
 const MinistryGroupModalViewContainer = styled.div`
   display: flex;
@@ -54,6 +54,7 @@ type MinistryGroupModalViewProps = {
   targetHistory: MinistryHistory | undefined;
   selectedMinistryGroup: MinistryGroup;
   selectedMinistryId: string;
+  newMinistryName: string;
   ministryItems: DropdownValueType[];
   isButtonEnabled: boolean;
   startDate: string;
@@ -69,12 +70,19 @@ type MinistryGroupModalViewProps = {
   onClickCancelMinistryGroup?: () => void;
   onChangeMinistryId: (id: string) => void;
   onChangeMinistryGroup: (ministry: MinistryGroup) => void;
+  onChangeCustomInput: (event: ChangeEvent<HTMLInputElement>) => void;
+  onClickCreateMinistry?: (
+    groupId: string,
+    startDate: string,
+    name: string
+  ) => void;
 };
 
 const MinistryGroupModalView = ({
   targetHistory,
   selectedMinistryGroup,
   ministryItems,
+  newMinistryName,
   selectedMinistryId,
   isButtonEnabled,
   startDate,
@@ -86,48 +94,48 @@ const MinistryGroupModalView = ({
   onClickSaveNewMinistry,
   onClickSaveMinistryGroup,
   onClickCancelMinistryGroup,
+  onChangeCustomInput,
+  onClickCreateMinistry,
 }: MinistryGroupModalViewProps) => {
   const t = useI18n();
-
-  // 직접입력
-  const customDropdownItem = {
-    value: 'custom',
-    title: BLANK,
-  };
 
   return (
     <MinistryGroupModalViewContainer>
       {/* 내용 */}
       <ContentContainer>
-        <MinistryGroupContainer>
-          {/* 그룹 */}
-          <MinistryGroupDropdown
-            value={selectedMinistryGroup.id as string}
-            onClickSaveMinistryGroup={onChangeMinistryGroup}
-          />
-          <Button width={42} height={42} onClick={onClickCancelMinistryGroup}>
-            <CancelButton />
-          </Button>
-        </MinistryGroupContainer>
+        {!targetHistory?.endDate && (
+          <MinistryGroupContainer>
+            {/* 그룹 */}
+            <MinistryGroupDropdown
+              value={selectedMinistryGroup.id as string}
+              onClickSaveMinistryGroup={onChangeMinistryGroup}
+            />
+            <Button width={42} height={42} onClick={onClickCancelMinistryGroup}>
+              <CancelButton />
+            </Button>
+          </MinistryGroupContainer>
+        )}
         {/* 역할 */}
         {selectedMinistryGroup.id && !targetHistory?.endDate && (
           <LabelDropdown
             label={t('ministry')}
             value={selectedMinistryId}
-            items={[customDropdownItem, ...ministryItems]}
+            items={ministryItems}
             onChangeItem={onChangeMinistryId}
             isEditable={selectedMinistryId === 'custom'}
+            backgroundBlur={false}
+            customValue={newMinistryName}
+            isCustom={true}
+            onChangeCustomInput={onChangeCustomInput}
           />
         )}
         {/* 시작 날짜 */}
-        {selectedMinistryGroup.id && (
-          <LabelInput
-            label={t('startDate')}
-            value={startDate}
-            onChange={onChangeStartDate}
-            placeholder={t('placeholder.startDate')}
-          />
-        )}
+        <LabelInput
+          label={t('startDate')}
+          value={startDate}
+          onChange={onChangeStartDate}
+          placeholder={t('placeholder.startDate')}
+        />
         {/* 종료 날짜 */}
         {targetHistory?.endDate && (
           <LabelInput
@@ -149,6 +157,13 @@ const MinistryGroupModalView = ({
             if (targetHistory?.endDate) {
               onClickSaveMinistryGroup &&
                 onClickSaveMinistryGroup(startDate, endDate);
+            } else if (selectedMinistryId === CUSTOM_VALUE) {
+              onClickCreateMinistry &&
+                onClickCreateMinistry(
+                  selectedMinistryGroup.id as string,
+                  startDate,
+                  newMinistryName
+                );
             } else {
               onClickSaveNewMinistry &&
                 onClickSaveNewMinistry(

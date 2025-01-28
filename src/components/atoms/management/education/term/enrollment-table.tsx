@@ -32,6 +32,39 @@ const EnrollmentTable = ({
   // 출석부
   const [attendance, setAttendance] = useState<SessionAttendance[]>([]);
 
+  // 선택된 교인 id 배열
+  const [checkedMemberIds, setCheckedMemberIds] = useState<string[]>([]);
+
+  // 전체 선택 버튼 이벤트
+  const onClickCheckAll = () => {
+    // 전체 선택된 경우
+    if (checkedMemberIds.length === enrollments.length) {
+      setCheckedMemberIds([]);
+    }
+    // 미선택된 등록이 있는 경우
+    else {
+      const newMemberIds = enrollments.map((enrollment) => {
+        return enrollment.memberId;
+      });
+      setCheckedMemberIds(newMemberIds);
+    }
+  };
+
+  // 특정 교인 선택 이벤트
+  const onClickCheckMember = (memberId: string) => {
+    // 이미 선택된 경우 => 제외
+    if (checkedMemberIds.includes(memberId)) {
+      const newCheckedMemberIds = checkedMemberIds.filter(
+        (id) => id !== memberId
+      );
+      setCheckedMemberIds(newCheckedMemberIds);
+    }
+    // 선택되지 않은 경우 => 추가
+    else {
+      setCheckedMemberIds([...checkedMemberIds, memberId]);
+    }
+  };
+
   // 상세 모달 활성화 여부
   const [isDetailModalShown, setIsDetailModalShown] = useState<boolean>(false);
 
@@ -107,15 +140,22 @@ const EnrollmentTable = ({
     }
   }, [churchId, educationId, sessionId, enrollments]);
 
+  useEffect(() => {
+    setCheckedMemberIds([]);
+  }, [sessionId]);
+
   const props = {
     enrollments,
     attendance,
+    scrollRef,
     isInformation,
+    checkedMemberIds,
     onClickEnrollment,
     onClickHeader,
-    scrollRef,
     onScroll,
     onChangeAttendance,
+    onClickCheckAll,
+    onClickCheckMember,
   };
 
   return (

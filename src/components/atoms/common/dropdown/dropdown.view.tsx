@@ -12,7 +12,7 @@ import { InputProps } from '@/components/atoms/common/input/main-input';
 
 const DropdownContainer = styled.div<{ $isOpened: boolean; width?: number }>`
   position: relative;
-  z-index: ${({ $isOpened }) => ($isOpened ? 50 : null)};
+  z-index: ${({ $isOpened }) => ($isOpened ? 50 : 'auto')};
   width: ${({ width }) => (width ? `${width}px` : `100%`)};
 `;
 
@@ -23,9 +23,7 @@ const DropdownButton = styled.div`
   cursor: pointer;
 `;
 
-const DropdownList = styled.div<{
-  $reverseDirection?: boolean;
-}>`
+const DropdownList = styled.div<{ $reverseDirection?: boolean }>`
   position: absolute;
   margin-top: 10px;
   border-radius: 5px;
@@ -37,94 +35,87 @@ const DropdownList = styled.div<{
   padding: 5px;
   justify-content: flex-start;
   align-items: flex-start;
-  overflow: scroll;
+  overflow-y: auto;
   max-height: 200px;
-  bottom: ${({ $reverseDirection }) => ($reverseDirection ? '55px' : null)};
+  bottom: ${({ $reverseDirection }) => ($reverseDirection ? '55px' : 'auto')};
 `;
 
 type DropdownViewProps = {
   items: DropdownValueType[];
   innerValue: any;
+  customValue?: string;
+  isCustomMode: boolean;
   focusedIndex: number;
   isOpened: boolean;
   onClickDropdown: () => void;
   onClickItem: (value: any) => void;
   onChangeInput: (event: ChangeEvent<HTMLInputElement>) => void;
   onKeyDownHandler: (event: React.KeyboardEvent<HTMLInputElement>) => void;
-  onFocusInput: () => void;
   reverseDirection?: boolean;
   isEditable?: boolean;
   enterKeyHint: string;
   borderColor?: string;
   width?: number;
   height?: number;
-  isContainerHidden?: boolean;
   backgroundColor?: string;
-};
+  disabled?: boolean;
+} & InputProps;
 
-const DropdownView = forwardRef<
-  HTMLInputElement,
-  DropdownViewProps & InputProps
->(
+const DropdownView = forwardRef<HTMLInputElement, DropdownViewProps>(
   (
     {
-      //
       items,
       innerValue,
+      customValue,
+      isCustomMode,
       focusedIndex,
-      //
       isOpened,
-      onClickDropdown, // 드롭다운 열고 닫기
-      onClickItem, // 드롭다운 아이템 선택
-      onChangeInput, // input 창에 직접 수정
+      onClickDropdown,
+      onClickItem,
+      onChangeInput,
       onKeyDownHandler,
-      onFocusInput,
-      enterKeyHint,
-      //
       reverseDirection,
       isEditable,
+      enterKeyHint,
       borderColor,
-      height,
       width,
-      isContainerHidden,
-      disabled,
+      height,
       backgroundColor,
+      disabled,
       ...inputProps
     },
     ref
   ) => {
+    // 현재 표시할 텍스트 (드롭다운 아이템 중 매칭되는 title, 없으면 그냥 innerValue)
+    const displayValue =
+      items.find((item) => item.value === innerValue)?.title || innerValue;
+
     return (
       <DropdownContainer $isOpened={isOpened} width={width}>
-        {/* 실제 드롭다운의 값이 보이는 공간*/}
+        {/* 드롭다운 버튼(실제로는 BorderInput이 들어감) */}
         <DropdownButton onClick={onClickDropdown}>
-          {/* 실제 값을 input 창으로 관리*/}
-          {/* 수정을 원하는 경우, 바로 입력이 가능하도록 */}
           <BorderInput
             ref={ref}
-            value={
-              // 사용자가 드롭다운 아이템을 선택한 경우 => items 에서 해당 값을 찾아서 title을 보여줌
-              // 사용자가 직접 입력한 경우 => items에 해당 값이 없음 => 입력한 값을 그대로 보여줌
-              items.find((item) => item.value === innerValue)?.title ||
-              innerValue
-            }
+            value={isCustomMode ? customValue : displayValue}
             onChange={onChangeInput}
             borderColor={borderColor}
             backgroundColor={backgroundColor}
             height={height}
             width={width}
-            {...inputProps}
-            onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) => {
-              inputProps.onKeyDown?.(event);
-              isOpened && onKeyDownHandler(event);
-            }}
-            readOnly={!isEditable}
-            onFocus={onFocusInput}
+            readOnly={!isEditable} // 커스텀 모드일 땐 isEditable=true
             enterKeyHint={enterKeyHint}
             disabled={disabled}
+            onKeyDown={(event) => {
+              inputProps.onKeyDown?.(event);
+              if (isOpened) {
+                onKeyDownHandler(event);
+              }
+            }}
+            {...inputProps}
           />
         </DropdownButton>
 
-        {/* 드롭다운 item 을 선택할 수 있는 영역*/}
+        {/* 드롭다운 메뉴 목록 */}
         {isOpened && !disabled && (
           <DropdownList $reverseDirection={reverseDirection}>
             {items.map((item, index) => (
@@ -143,4 +134,5 @@ const DropdownView = forwardRef<
   }
 );
 
+DropdownView.displayName = 'DropdownView';
 export default DropdownView;

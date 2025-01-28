@@ -160,17 +160,17 @@ export const GROUP_MEMBER_TABLE_HEADER: TABLE_HEADER_ITEM[] = [
 type MemberTableProps = {
   groupMembers: Member[];
   onClickHeader: (id: MEMBER) => void;
-  // onClickMemberItem: (memberId: string) => void;
   scrollRef: MutableRefObject<HTMLDivElement | null>;
   onScroll: () => void;
+  onClickMember: (member: Member) => void;
 };
 
 const GroupMemberTableView = ({
   groupMembers,
   onClickHeader,
-  // onClickMemberItem,
   scrollRef,
   onScroll,
+  onClickMember,
 }: MemberTableProps) => {
   const { height } = useWindowSize();
   const pathname = usePathname();
@@ -242,7 +242,7 @@ const GroupMemberTableView = ({
             {groupMembers.map((member, index) => (
               <MemberTableRow
                 key={member.id}
-                // onClick={() => onClickMemberItem(member.id)}
+                onClick={() => onClickMember(member)}
               >
                 {GROUP_MEMBER_TABLE_HEADER.filter((item) => item.isShown).map(
                   (item) => (
