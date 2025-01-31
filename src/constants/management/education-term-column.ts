@@ -38,6 +38,7 @@ export enum EDUCATION_ENROLLMENT {
   ATTENDANCE = 'attendance',
   NOTE = 'note',
   MOBILE_PHONE = MEMBER.MOBILE_PHONE,
+  STATUS = 'status',
 }
 
 export type ENROLLMENT_TABLE_HEADER_ITEM = {

@@ -21,6 +21,7 @@ import CheckButton from '@/components/atoms/common/button/check-button';
 import { MEMBER } from '@/constants/member/member-column';
 
 import DefaultImage from '../../../../../../public/png/default-member-image.png';
+import { EDUCATION_STATUS } from '@/constants/constant';
 
 const TableContainer = styled.div`
   display: flex;
@@ -108,6 +109,8 @@ const getColumnWidth = (id: EDUCATION_ENROLLMENT) => {
       return 5;
     case EDUCATION_ENROLLMENT.GROUP:
       return 10;
+    case EDUCATION_ENROLLMENT.STATUS:
+      return 10;
     case EDUCATION_ENROLLMENT.NOTE:
       return 20;
     case EDUCATION_ENROLLMENT.MOBILE_PHONE:
@@ -159,6 +162,14 @@ export const TERM_TABLE_HEADER: ENROLLMENT_TABLE_HEADER_ITEM[] = [
     isDate: false,
   },
   {
+    id: EDUCATION_ENROLLMENT.STATUS,
+    isShown: true,
+    isSortable: false,
+    isFilterable: false,
+    isFixed: true,
+    isDate: false,
+  },
+  {
     id: EDUCATION_ENROLLMENT.ATTENDANCE,
     isShown: true,
     isSortable: false,
@@ -185,6 +196,11 @@ type EnrollmentTableProps = {
   onClickEnrollment: (enrollment: EducationEnrollment) => void;
   onClickHeader: (id: EDUCATION_ENROLLMENT) => void;
   onScroll: () => void;
+  onChangeStatus: (
+    termId: string,
+    enrollmentId: string,
+    status: EDUCATION_STATUS
+  ) => void;
   onChangeAttendance: (
     termId: string,
     attendanceId: string,
@@ -203,6 +219,7 @@ const EnrollmentTableView = ({
   onClickEnrollment,
   onClickHeader,
   onScroll,
+  onChangeStatus,
   onChangeAttendance,
   onClickCheckAll,
   onClickCheckMember,
@@ -214,7 +231,9 @@ const EnrollmentTableView = ({
     ? TERM_TABLE_HEADER.filter(
         (item) => item.id !== EDUCATION_ENROLLMENT.ATTENDANCE
       )
-    : TERM_TABLE_HEADER;
+    : TERM_TABLE_HEADER.filter(
+        (item) => item.id !== EDUCATION_ENROLLMENT.STATUS
+      );
 
   const getEnrollmentTableContent = (
     id: EDUCATION_ENROLLMENT,
@@ -229,6 +248,19 @@ const EnrollmentTableView = ({
             onChange={() => onClickCheckMember(enrollment.memberId)}
           />
         );
+      case EDUCATION_ENROLLMENT.STATUS:
+        return (
+          <CheckButton
+            value={enrollment.status === EDUCATION_STATUS.COMPLETED}
+            onChange={(value) => {
+              onChangeStatus(
+                enrollment.educationTermId,
+                enrollment.id,
+                value ? EDUCATION_STATUS.COMPLETED : EDUCATION_STATUS.INCOMPLETE
+              );
+            }}
+          />
+        );
       case EDUCATION_ENROLLMENT.ATTENDANCE:
         return (
           <CheckButton
@@ -236,7 +268,7 @@ const EnrollmentTableView = ({
             onChange={(value) => {
               onChangeAttendance(
                 enrollment.educationTermId,
-                attendanceValue.id,
+                enrollment.id,
                 value
               );
             }}
@@ -249,13 +281,14 @@ const EnrollmentTableView = ({
               src={enrollment.member?.profileImage || DefaultImage}
               alt={MEMBER.PROFILE_IMAGE}
             />
-            <MainText>{enrollment.memberName}</MainText>
+            <MainText>{enrollment.member.name}</MainText>
           </ProfileContainer>
         );
       case EDUCATION_ENROLLMENT.AGE:
         return (
           <MainText>
-            {getAge(getDateFromString(enrollment.member?.birth))}
+            {enrollment.member?.birth &&
+              getAge(getDateFromString(enrollment.member?.birth))}
           </MainText>
         );
       case EDUCATION_ENROLLMENT.GROUP:
@@ -297,7 +330,7 @@ const EnrollmentTableView = ({
         <EnrollmentTable>
           <tbody>
             {enrollments
-              .filter((enrollment) => enrollment.member !== null)
+              .filter((enrollment) => !!enrollment.member)
               .map((enrollment, index) => (
                 <EnrollmentTableRow
                   key={enrollment.id}

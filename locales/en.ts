@@ -36,6 +36,7 @@ export default {
   educationStatus: 'Status',
   educationInformation: 'Education Information',
   educationProcess: 'Current Process',
+  status: 'Status',
 
   educationDate: 'Date',
   sessionContent: 'Report',
@@ -222,6 +223,11 @@ export default {
   'placeholder.family': 'Enter the family name.',
   'placeholder.startDate': 'Enter the start date.',
   'placeholder.endDate': 'Enter the end date.',
+  'placeholder.term': 'Enter the term.',
+  'placeholder.session': 'Enter the total sessions.',
+  'placeholder.instructor': 'Enter the instructor.',
+  'placeholder.sessionDate': 'Enter the session date.',
+  'placeholder.sessionContent': 'Enter the session report.',
   /*-------------------placeholder-------------------*/
 
   /*-------------------radiobutton-------------------*/

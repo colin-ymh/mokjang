@@ -6,9 +6,9 @@ import Trash from '../../../../../public/svg/trash.svg';
 import Pencil from '../../../../../public/svg/pencil.svg';
 import Plus from '../../../../../public/svg/plus.svg';
 
-const ListContainer = styled.div`
+const ListContainer = styled.div<{ $position: string }>`
   display: flex;
-  position: absolute;
+  position: ${({ $position }) => $position};
   right: 0;
   border-radius: 5px;
 `;
@@ -101,6 +101,7 @@ type EditDeleteModalProps = {
   isAddShown?: boolean;
   buttonSize?: number;
   hoverBackgroundColor?: string;
+  position?: string;
 };
 
 const SlideButtonList = ({
@@ -112,6 +113,7 @@ const SlideButtonList = ({
   isAddShown = true,
   buttonSize = 18,
   hoverBackgroundColor,
+  position = 'absolute',
 }: EditDeleteModalProps) => {
   const [isHovered, setIsHovered] = useState<boolean>(false);
 
@@ -121,6 +123,7 @@ const SlideButtonList = ({
 
   return (
     <ListContainer
+      $position={position}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >

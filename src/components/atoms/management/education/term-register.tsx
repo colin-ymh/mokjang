@@ -96,8 +96,14 @@ const TermRegister = ({
   };
 
   // 담당자 선택 이벤트
-  const onClickInstructor = (id: string) => {
-    setInstructorId(id);
+  const onClickInstructor = (instructorId: string) => {
+    setInstructorId(instructorId);
+    const newValue = searchedMembers.find(
+      (member) => member.value === instructorId
+    );
+    if (newValue) {
+      setInstructorValue(newValue.title);
+    }
   };
 
   // 기수 저장 버튼 이벤트

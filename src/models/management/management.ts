@@ -97,7 +97,6 @@ export const DEFAULT_EDUCATION: Education = {
 export type EducationEnrollment = {
   id: string;
   memberId: string;
-  memberName: string;
   educationTermId: string;
   status: EDUCATION_STATUS;
   note: string;
@@ -107,7 +106,6 @@ export type EducationEnrollment = {
 export const DEFAULT_EDUCATION_ENROLLMENT: EducationEnrollment = {
   id: BLANK,
   memberId: BLANK,
-  memberName: BLANK,
   educationTermId: BLANK,
   status: EDUCATION_STATUS.IN_PROGRESS,
   note: BLANK,
@@ -155,6 +153,7 @@ export type EducationSession = {
   educationTermId: string;
   session: number;
   content: string;
+  sessionDate: string;
 };
 
 export const DEFAULT_EDUCATION_SESSION: EducationSession = {
@@ -162,6 +161,7 @@ export const DEFAULT_EDUCATION_SESSION: EducationSession = {
   educationTermId: BLANK,
   session: 0,
   content: BLANK,
+  sessionDate: BLANK,
 };
 
 export type SessionAttendance = {

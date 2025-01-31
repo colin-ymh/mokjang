@@ -77,7 +77,7 @@ const AddMemberItem = ({
 
         {isEnable && (
           <ButtonContainer>
-            <CheckButton value={isSelected} />
+            <CheckButton value={isSelected} isStopPropagation={false} />
           </ButtonContainer>
         )}
       </ItemContainer>

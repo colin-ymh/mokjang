@@ -5,10 +5,10 @@ import { MainText } from '@/components/atoms/common/text/main-text';
 import { SIZE } from '@/constants/styles/style';
 import LabelInput from '@/components/atoms/common/input/label-input';
 import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-item';
+import MemberDropdown from '@/components/atoms/common/dropdown/member-dropdown';
 import { GRAY, MAIN, WHITE } from '@/constants/styles/color';
 
-import { useI18n } from '../../../../../locales/client';
-import MemberDropdown from '@/components/atoms/common/dropdown/member-dropdown';
+import { useI18n, useScopedI18n } from '../../../../../locales/client';
 
 const RegisterContainer = styled.div`
   display: flex;
@@ -62,7 +62,7 @@ type TermRegisterViewProps = {
   onChangeStartDate: (event: ChangeEvent<HTMLInputElement>) => void;
   onChangeEndDate: (event: ChangeEvent<HTMLInputElement>) => void;
   onChangeInstructorValue: (event: ChangeEvent<HTMLInputElement>) => void;
-  onClickInstructor: (id: string) => void;
+  onClickInstructor: (instructorId: string) => void;
   onClickSave: () => void;
 };
 
@@ -84,6 +84,8 @@ const TermRegisterView = ({
   onClickSave,
 }: TermRegisterViewProps) => {
   const t = useI18n();
+  const t_placeholder = useScopedI18n('placeholder');
+
   return (
     <RegisterContainer>
       <TextContainer>
@@ -96,21 +98,25 @@ const TermRegisterView = ({
           label={`${t('education')} ${t('term')}`}
           value={term}
           onChange={onChangeTerm}
+          placeholder={t_placeholder('term')}
         />
         <LabelInput
           label={`${t('education')} ${t('session')}`}
           value={session}
           onChange={onChangeSession}
+          placeholder={t_placeholder('session')}
         />
         <LabelInput
           label={`${t('education')} ${t('startDate')}`}
           value={startDate}
           onChange={onChangeStartDate}
+          placeholder={t_placeholder('startDate')}
         />
         <LabelInput
           label={`${t('education')} ${t('endDate')}`}
           value={endDate}
           onChange={onChangeEndDate}
+          placeholder={t_placeholder('endDate')}
         />
         <MainText>{t('instructor')}</MainText>
         <MemberDropdown
@@ -121,6 +127,7 @@ const TermRegisterView = ({
           onChange={onChangeInstructorValue}
           isEditable={true}
           reverseDirection={true}
+          placeholder={t_placeholder('instructor')}
         />
       </ContentContainer>
       <SaveButton $isEnabled={isSaveEnabled} onClick={onClickSave}>

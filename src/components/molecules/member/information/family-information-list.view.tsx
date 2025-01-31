@@ -5,10 +5,10 @@ import { MainText } from '@/components/atoms/common/text/main-text';
 import { FamilyMember } from '@/models/member/member';
 import { GRAY, WHITE } from '@/constants/styles/color';
 import FamilyModal from '@/components/atoms/common/modal/family-modal';
-import FamilyMemberItem from '@/components/atoms/member/information/family-member-item';
 
 import { useScopedI18n } from '../../../../../locales/client';
 import Plus from '../../../../../public/svg/plus.svg';
+import FamilyTable from '@/components/atoms/member/information/family-table';
 
 const ListContainer = styled.div`
   display: flex;
@@ -47,11 +47,6 @@ const PlusButton = styled(Plus)`
   height: 25px;
 `;
 
-const FamilyItemListContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin: 0 20px;
-`;
 const FamilyModalContainer = styled.div<{ $isShown: boolean }>`
   //display: ${({ $isShown }) => ($isShown ? 'flex' : 'none')};
   display: flex;
@@ -107,23 +102,12 @@ const FamilyInformationListView = ({
         </ButtonContainer>
       </ListTypeHeader>
       {/* 가족 목록 */}
-      <FamilyItemListContainer>
-        {familyMembers.map((member: FamilyMember) => {
-          return (
-            <div key={member.familyMember.id}>
-              <FamilyMemberItem
-                member={member}
-                onClickFamilyMember={() =>
-                  onClickFamilyMember(member.familyMember.id)
-                }
-                onClickEdit={onClickEdit}
-                onClickDelete={onClickDelete}
-              />
-              <Divider />
-            </div>
-          );
-        })}
-      </FamilyItemListContainer>
+      <FamilyTable
+        familyMembers={familyMembers}
+        onClickMember={onClickFamilyMember}
+        onClickEdit={onClickEdit}
+        onClickDelete={onClickDelete}
+      />
       {/* 교인 가족 추가 및 수정 모달*/}
       {isModalShown && (
         <FamilyModalContainer $isShown={isModalShown}>

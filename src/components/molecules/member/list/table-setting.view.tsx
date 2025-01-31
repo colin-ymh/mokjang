@@ -150,7 +150,7 @@ const TableSettingView = ({
         <ContentContainer>
           <OrderItemList>
             {memberTableHeaderItemList
-              // .filter((item) => !item.isFixed)
+              .filter((item) => item.id !== 'check')
               .map((item, index) => (
                 <TableOrderItem
                   key={item.id}

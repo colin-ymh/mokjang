@@ -39,7 +39,7 @@ export const useInitializeChurch = (id: string) => {
 
     educationsApi
       .getEducations({ churchId: id })
-      .then((response) => dispatch(setEducations(response.data)));
+      .then((response) => dispatch(setEducations(response.data.data)));
 
     groupsApi
       .getGroups({ churchId: id })

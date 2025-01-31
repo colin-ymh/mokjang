@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { ChangeEvent } from 'react';
 import LabelInput from '@/components/atoms/common/input/label-input';
-import { useI18n } from '../../../../../../locales/client';
+import { useI18n, useScopedI18n } from '../../../../../../locales/client';
 import LabelTextarea from '@/components/atoms/common/input/label-textarea';
 import Button from '@/components/atoms/common/button/button';
 
@@ -40,6 +40,7 @@ const EditSessionView = ({
   onClickSave,
 }: EditSessionViewProps) => {
   const t = useI18n();
+  const t_placeholder = useScopedI18n('placeholder');
   return (
     <SessionContainer>
       <ContentContainer>
@@ -47,12 +48,14 @@ const EditSessionView = ({
           label={t('educationDate')}
           value={sessionDate}
           onChange={onChangeSessionDate}
+          placeholder={t_placeholder('sessionDate')}
         />
         <LabelTextarea
           label={t('sessionContent')}
           value={sessionContent}
           onChange={onChangeSessionContent}
           height={200}
+          placeholder={t_placeholder('sessionContent')}
         />
       </ContentContainer>
       <ButtonContainer>

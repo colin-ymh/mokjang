@@ -143,10 +143,10 @@ const MemberDropdown = forwardRef<HTMLInputElement, DropdownProps>(
         setFocusedIndex((focusedIndex + items.length - 1) % items.length);
       } else if (event.key === 'ArrowDown') {
         event.preventDefault();
-
         setFocusedIndex((focusedIndex + 1) % items.length);
       } else if (event.key === 'Enter') {
         event.preventDefault();
+
         if (onChangeItem && items[focusedIndex]) {
           onChangeItem(items[focusedIndex].value);
         }

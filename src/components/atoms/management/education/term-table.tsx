@@ -77,7 +77,7 @@ const TermTable = ({ education, terms, fetchTerms }: TermTableProps) => {
         educationTermId: selectedTerm.id,
       })
       .then((response) => {
-        setEnrollments(response.data);
+        setEnrollments(response.data.data);
       });
   };
 

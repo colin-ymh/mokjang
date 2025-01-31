@@ -59,25 +59,6 @@ export class EducationAttendanceApi {
   };
 
   /**
-   * 교육 기수 만들기
-   * @param {CreateEducationAttendancesParams} params
-   * @returns {Promise<AxiosResponse>}
-   */
-  public createEducationAttendances = async (
-    params: CreateEducationAttendancesParams
-  ): Promise<AxiosResponse> => {
-    const { churchId, educationId, educationTermId, sessionId } = params;
-
-    const url = `${this._url}/churches/${churchId}/management/educations/${educationId}/terms/${educationTermId}/sessions/${sessionId}/attendance/create-table`;
-
-    try {
-      return await axios.post(url);
-    } catch (error) {
-      throw new HTTPError(`Fetch error: ${error}`);
-    }
-  };
-
-  /**
    * 교육 기수 수정하기
    * @param {EditEducationAttendanceParams} params
    * @param {EditEducationAttendanceBody} body

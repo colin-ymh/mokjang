@@ -175,4 +175,23 @@ export class EducationTermsApi {
       throw new HTTPError(`Fetch error: ${error}`);
     }
   };
+
+  /**
+   * 교육 기수 출석부 생성/새로고침
+   * @param {DeleteEducationTermsParams} params
+   * @returns {Promise<AxiosResponse>}
+   */
+  public syncEducationTerms = async (
+    params: DeleteEducationTermsParams
+  ): Promise<AxiosResponse> => {
+    const { churchId, educationId, educationTermId } = params;
+
+    const url = `${this._url}/churches/${churchId}/management/educations/${educationId}/terms/${educationTermId}/sync-attendance`;
+
+    try {
+      return await axios.post(url);
+    } catch (error) {
+      throw new HTTPError(`Fetch error: ${error}`);
+    }
+  };
 }

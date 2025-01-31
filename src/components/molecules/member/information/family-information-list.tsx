@@ -1,7 +1,6 @@
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '@/redux/store';
-import { setTargetMember } from '@/redux/reducers/target-member';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
 
 import { FamilyApi } from '@/api/churches/family.api';
 import { FAMILY } from '@/constants/constant';
@@ -18,14 +17,15 @@ import { MEMBER_INFORMATION_HEADER_ID } from '@/constants/layout/header';
 type FamilyInformationListProps = {
   targetMember: Member;
   setContentId: Dispatch<SetStateAction<string>>;
+  setTargetMember: Dispatch<SetStateAction<Member>>;
 };
 
 const FamilyInformationList = ({
   targetMember,
+  setTargetMember,
   setContentId,
 }: FamilyInformationListProps) => {
   const { churchId } = useSelector((state: RootState) => state.church);
-  const dispatch = useDispatch<AppDispatch>();
   const familyApi = new FamilyApi(false);
   const membersApi = new MembersApi(false);
 
@@ -53,7 +53,6 @@ const FamilyInformationList = ({
   ) => {
     if (familyMemberId && relation) {
       if (isFetch) {
-        console.log('fetch');
         familyApi
           .fetchFamily(
             { churchId, memberId: targetMember.id },
@@ -64,7 +63,7 @@ const FamilyInformationList = ({
               .getMember({ churchId, memberId: targetMember.id })
               .then((response) => {
                 const member = getMemberFromServer(response.data.data);
-                dispatch(setTargetMember(member));
+                setTargetMember(member);
               });
           });
       } else {
@@ -78,7 +77,7 @@ const FamilyInformationList = ({
               .getMember({ churchId, memberId: targetMember.id })
               .then((response) => {
                 const member = getMemberFromServer(response.data.data);
-                dispatch(setTargetMember(member));
+                setTargetMember(member);
               });
           });
       }
@@ -105,7 +104,7 @@ const FamilyInformationList = ({
             .getMember({ churchId, memberId: targetMember.id })
             .then((response) => {
               const member = getMemberFromServer(response.data.data);
-              dispatch(setTargetMember(member));
+              setTargetMember(member);
             });
         });
     }
@@ -127,7 +126,7 @@ const FamilyInformationList = ({
         .getMember({ churchId, memberId: familyMemberId })
         .then((response) => {
           const newMember = getMemberFromServer(response.data.data);
-          dispatch(setTargetMember(newMember));
+          setTargetMember(newMember);
           setContentId(MEMBER_INFORMATION_HEADER_ID.PERSONAL_INFORMATION);
         });
     }
@@ -143,7 +142,7 @@ const FamilyInformationList = ({
             .getMember({ churchId, memberId: targetMember.id })
             .then((response) => {
               const member = getMemberFromServer(response.data.data);
-              dispatch(setTargetMember(member));
+              setTargetMember(member);
             });
         });
     }

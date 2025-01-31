@@ -35,6 +35,8 @@ export type Member = {
   isLunar: boolean;
   birth: string;
   gender: string;
+  groupId?: string;
+  groupRoleId?: string;
   group?: Group;
   groupRole?: GroupRole;
   ministries?: Ministry[];

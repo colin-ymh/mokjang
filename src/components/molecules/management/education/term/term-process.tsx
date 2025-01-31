@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { GRAY } from '@/constants/styles/color';
-import { getLocaleDateFromDashDate } from '@/utils/format';
+import { getFormattedDate, getLocaleDateFromDashDate } from '@/utils/format';
 import {
   EducationSession,
   EducationTerm,
@@ -128,7 +128,13 @@ const TermProcess = ({
             <MainText color={GRAY.DEFAULT}>{t('educationDate')}</MainText>
           </TitleContainer>
           <ContentContainer>
-            <MainText>{}</MainText>
+            <MainText>
+              {session.sessionDate &&
+                getLocaleDateFromDashDate(
+                  basePath,
+                  getFormattedDate(session.sessionDate)
+                )}
+            </MainText>
           </ContentContainer>
         </InformationItem>
         {/* 인원 수 */}

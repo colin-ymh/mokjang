@@ -71,7 +71,7 @@ const InformationList = ({ targetMemberId }: InformationListProps) => {
   const [isBaptismModalShown, setIsBaptismModalShown] =
     useState<boolean>(false);
 
-  // 소그룹 수정 모달
+  // 그룹 수정 모달
   const [isGroupModalShown, setIsGroupModalShown] = useState<boolean>(false);
 
   // 사역 수정 모달
@@ -155,7 +155,7 @@ const InformationList = ({ targetMemberId }: InformationListProps) => {
         .then((response) => {
           setIsBaptismModalShown(false);
           const updatedMember = getMemberFromServer(response.data);
-          setPrevMember(updatedMember);
+          setPrevMember({ ...prevMember, baptism: updatedMember.baptism });
 
           const newMembers = members.map((m: Member) =>
             m.id === updatedMember.id ? updatedMember : m

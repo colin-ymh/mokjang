@@ -28,6 +28,7 @@ type CheckButtonProps = {
   disabled?: boolean;
   width?: number;
   height?: number;
+  isStopPropagation?: boolean;
 };
 
 const CheckButton = ({
@@ -36,6 +37,7 @@ const CheckButton = ({
   disabled = false,
   width = 20,
   height = 20,
+  isStopPropagation = true,
 }: CheckButtonProps) => {
   // 로컬 상태 관리
   const [isChecked, setIsChecked] = useState<boolean>(value);
@@ -59,7 +61,7 @@ const CheckButton = ({
   return (
     <CheckButtonContainer
       onClick={(event) => {
-        event.stopPropagation();
+        isStopPropagation && event.stopPropagation();
         onClick();
       }}
       width={width}

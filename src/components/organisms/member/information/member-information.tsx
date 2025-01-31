@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import styled from 'styled-components';
 
 import { MEMBER_INFORMATION_HEADER_ID } from '@/constants/layout/header';
@@ -22,9 +22,13 @@ const ContentContainer = styled.div`
 
 type MemberInformationProps = {
   targetMember: Member;
+  setTargetMember: Dispatch<SetStateAction<Member>>;
 };
 
-const MemberInformation = ({ targetMember }: MemberInformationProps) => {
+const MemberInformation = ({
+  targetMember,
+  setTargetMember,
+}: MemberInformationProps) => {
   const [contentId, setContentId] = useState<string>(
     MEMBER_INFORMATION_HEADER_ID.PERSONAL_INFORMATION
   );
@@ -41,7 +45,12 @@ const MemberInformation = ({ targetMember }: MemberInformationProps) => {
         targetMember={targetMember}
       />
       <ContentContainer>
-        {getMemberInformationContent(targetMember, contentId, setContentId)}
+        {getMemberInformationContent(
+          targetMember,
+          setTargetMember,
+          contentId,
+          setContentId
+        )}
       </ContentContainer>
     </InformationContainer>
   );

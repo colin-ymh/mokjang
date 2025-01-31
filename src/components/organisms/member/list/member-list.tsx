@@ -188,6 +188,7 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
     },
     information: {
       targetMember,
+      setTargetMember,
     },
   };
 

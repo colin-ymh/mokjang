@@ -41,6 +41,7 @@ export default {
   educationProcess: '진행사항',
   educationDate: '교육 일시',
   sessionContent: '회차 보고',
+  status: '수료',
 
   officerList: '직분 목록',
   officerName: '직분명',
@@ -83,10 +84,10 @@ export default {
   officerStartChurch: '임직 교회',
   previousChurch: '이전 교회 이름',
 
-  group: '소그룹',
+  group: '그룹',
   ministry: '사역',
   education: '교육',
-  groups: '소그룹',
+  groups: '그룹',
   ministries: '사역',
   educations: '교육',
 
@@ -161,7 +162,7 @@ export default {
   'tableHeader.numberOfSession': '진행 상태',
 
   'tableHeader.memberName': '교인명',
-  'tableHeader.group': '소그룹',
+  'tableHeader.group': '그룹',
   'tableHeader.age': '나이',
   'tableHeader.attendance': '출석',
   'tableHeader.note': '비고',
@@ -228,6 +229,11 @@ export default {
   'placeholder.family': '가족을 입력해주세요.',
   'placeholder.startDate': '시작날짜를 입력해주세요.',
   'placeholder.endDate': '종료날짜를 입력해주세요.',
+  'placeholder.term': '기수를 입력해주세요.',
+  'placeholder.session': '총 회차를 입력해주세요.',
+  'placeholder.instructor': '진행자를 선택해주세요.',
+  'placeholder.sessionDate': '교육 일시를 입력해주세요.',
+  'placeholder.sessionContent': '회차 보고를 입력해주세요.',
   /*-------------------placeholder-------------------*/
 
   /*-------------------radiobutton-------------------*/

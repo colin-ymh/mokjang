@@ -30,8 +30,8 @@ type EditEducationSessionsParams = {
 };
 
 type EditEducationSessionsBody = {
+  sessionDate?: string;
   content?: string;
-  deleteContent?: boolean;
 };
 
 type DeleteEducationSessionsParams = {

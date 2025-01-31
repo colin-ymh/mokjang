@@ -73,7 +73,10 @@ const GroupMemberTable = ({
         height={90}
         isPercentage={true}
       >
-        <MemberInformation targetMember={targetMember} />
+        <MemberInformation
+          targetMember={targetMember}
+          setTargetMember={setTargetMember}
+        />
       </CustomPopup>
     </>
   );

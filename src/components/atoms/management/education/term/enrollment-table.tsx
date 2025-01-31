@@ -11,6 +11,8 @@ import EnrollmentTableView from '@/components/atoms/management/education/term/en
 import { EDUCATION_ENROLLMENT } from '@/constants/management/education-term-column';
 import { EducationAttendanceApi } from '@/api/management/education/education-attendance.api';
 import { EDUCATION_TERM_HEADER_ID } from '@/constants/layout/header';
+import { EDUCATION_STATUS } from '@/constants/constant';
+import { EducationEnrollmentsApi } from '@/api/management/education/education-enrollments.api';
 
 export type EnrollmentTableProps = {
   enrollments: EducationEnrollment[];
@@ -27,6 +29,7 @@ const EnrollmentTable = ({
 }: EnrollmentTableProps) => {
   const churchId = useSelector((state: RootState) => state.church.churchId);
   const scrollRef = useRef<HTMLDivElement | null>(null);
+  const educationEnrollmentsApi = new EducationEnrollmentsApi(false);
   const educationAttendanceApi = new EducationAttendanceApi(false);
 
   // 출석부
@@ -88,6 +91,27 @@ const EnrollmentTable = ({
 
   // 스크롤 시 이벤트
   const onScroll = () => {};
+
+  // 수려 상태 변경
+  const onChangeStatus = (
+    termId: string,
+    enrollmentId: string,
+    status: EDUCATION_STATUS
+  ) => {
+    educationEnrollmentsApi
+      .editEducationEnrollments(
+        {
+          churchId,
+          educationId,
+          educationTermId: termId,
+          educationEnrollmentId: enrollmentId,
+        },
+        {
+          status,
+        }
+      )
+      .then(() => {});
+  };
 
   // 출석 상태 변경
   const onChangeAttendance = (
@@ -153,6 +177,7 @@ const EnrollmentTable = ({
     onClickEnrollment,
     onClickHeader,
     onScroll,
+    onChangeStatus,
     onChangeAttendance,
     onClickCheckAll,
     onClickCheckMember,

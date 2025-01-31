@@ -107,7 +107,6 @@ const AddEnrollmentModalView = ({
   onClickSave,
 }: AddEnrollmentModalViewProps) => {
   const t = useI18n();
-
   return (
     <ModalContainer $isShown={isShown}>
       {/* 헤더 */}

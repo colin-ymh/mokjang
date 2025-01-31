@@ -35,7 +35,7 @@ const EducationTermList = ({ education }: EducationTermProps) => {
       educationTermsApi
         .getEducationTerms({ churchId, educationId: education.id })
         .then((response) => {
-          const newTerms = response.data;
+          const newTerms = response.data.data;
           setTerms(newTerms);
         });
     }

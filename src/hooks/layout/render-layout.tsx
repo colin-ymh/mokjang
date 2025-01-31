@@ -80,6 +80,7 @@ export const getHeader = (id: string) => {
 
 export const getMemberInformationContent = (
   targetMember: Member,
+  setTargetMember: Dispatch<SetStateAction<Member>>,
   contentId: string,
   setContentId: Dispatch<SetStateAction<string>>
 ) => {
@@ -90,6 +91,7 @@ export const getMemberInformationContent = (
       return (
         <FamilyInformationList
           targetMember={targetMember}
+          setTargetMember={setTargetMember}
           setContentId={setContentId}
         />
       );

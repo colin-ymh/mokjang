@@ -26,7 +26,7 @@ const EducationListView = ({
 }: EducationListViewProps) => {
   return (
     <FilterContainer>
-      {educations.map((education) => (
+      {educations?.map((education) => (
         <ManagementEducationItem
           key={education.id}
           education={education}

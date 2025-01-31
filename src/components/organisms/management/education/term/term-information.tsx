@@ -1,7 +1,4 @@
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/redux/store';
-import { EducationAttendanceApi } from '@/api/management/education/education-attendance.api';
 import TermInformationView from '@/components/organisms/management/education/term/term-information.view';
 import {
   DEFAULT_EDUCATION_SESSION,
@@ -30,8 +27,8 @@ const TermInformation = ({
   sessions,
   fetchTerms,
 }: TermInformationProps) => {
-  const educationAttendanceApi = new EducationAttendanceApi(false);
-  const churchId = useSelector((state: RootState) => state.church.churchId);
+  // const educationAttendanceApi = new EducationAttendanceApi(false);
+  // const churchId = useSelector((state: RootState) => state.church.churchId);
 
   // 선택된 회차
   const [selectedSessionId, setSelectedSessionId] = useState<string>(
@@ -72,9 +69,9 @@ const TermInformation = ({
     try {
       if (id !== EDUCATION_TERM_HEADER_ID.INFORMATION) {
         // getAttendance가 끝난 후 setSelectedSessionId 호출
-        await getAttendance(id).then(() => {
-          setSelectedSessionId(id);
-        });
+        // await getAttendance(id).then(() => {
+        setSelectedSessionId(id);
+        // });
       } else {
         setSelectedSessionId(id);
       }
@@ -84,30 +81,30 @@ const TermInformation = ({
   };
 
   // 특정 회차의 출석부 생성하기
-  const getAttendance = async (sessionId: string) => {
-    await educationAttendanceApi
-      .getEducationAttendances({
-        churchId,
-        educationId: education.id,
-        educationTermId: term.id,
-        sessionId,
-      })
-      .then((response) => {
-        // 현재 출석부
-        const prevAttendance = response.data;
-
-        // 현재 등록 인원 수와 출석부 길이를 비교
-        // 다르다면, 출석부 새로 생성
-        if (enrollments.length !== prevAttendance.length) {
-          educationAttendanceApi.createEducationAttendances({
-            churchId,
-            educationId: education.id,
-            educationTermId: term.id,
-            sessionId,
-          });
-        }
-      });
-  };
+  // const getAttendance = async (sessionId: string) => {
+  //   await educationAttendanceApi
+  //     .getEducationAttendances({
+  //       churchId,
+  //       educationId: education.id,
+  //       educationTermId: term.id,
+  //       sessionId,
+  //     })
+  //     .then((response) => {
+  //       // 현재 출석부
+  //       const prevAttendance = response.data;
+  //
+  //       // 현재 등록 인원 수와 출석부 길이를 비교
+  //       // 다르다면, 출석부 새로 생성
+  //       if (enrollments.length !== prevAttendance.length) {
+  //         educationAttendanceApi.createEducationAttendances({
+  //           churchId,
+  //           educationId: education.id,
+  //           educationTermId: term.id,
+  //           sessionId,
+  //         });
+  //       }
+  //     });
+  // };
 
   const props = {
     header: {
