@@ -45,7 +45,7 @@ type MemberInformationHeaderProps = {
   targetMember: Member;
   contentId: string;
   onClickItem: (id: string) => void;
-  onClickDelete: () => void;
+  onClickDelete?: () => void;
 };
 
 const MemberInformationHeader = ({
@@ -102,16 +102,18 @@ const MemberInformationHeader = ({
           onClickDelete={onClickOpen}
         />
 
-        <ConfirmPopup
-          title={t_popup('deleteMemberTitle')}
-          body={t_popup('deleteMemberContent')}
-          buttonNum={2}
-          isShow={isPopupShown}
-          onClickLeftButton={onClickClose}
-          onClickRightButton={onClickDelete}
-          leftButtonText={t_button('cancel')}
-          rightButtonText={t_button('delete')}
-        />
+        {onClickDelete && (
+          <ConfirmPopup
+            title={t_popup('deleteMemberTitle')}
+            body={t_popup('deleteMemberContent')}
+            buttonNum={2}
+            isShow={isPopupShown}
+            onClickLeftButton={onClickClose}
+            onClickRightButton={onClickDelete}
+            leftButtonText={t_button('cancel')}
+            rightButtonText={t_button('delete')}
+          />
+        )}
       </Information>
 
       {/* 개인정보, 가족 등의 탭 바*/}

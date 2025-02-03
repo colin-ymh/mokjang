@@ -23,7 +23,7 @@ const ContentContainer = styled.div`
 type MemberInformationProps = {
   targetMember: Member;
   setTargetMember: Dispatch<SetStateAction<Member>>;
-  onClickDelete: () => void;
+  onClickDelete?: () => void;
 };
 
 const MemberInformation = ({

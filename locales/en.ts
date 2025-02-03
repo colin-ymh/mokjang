@@ -241,5 +241,8 @@ export default {
     'Do you want to cancel church member registration?',
   'popup.cancelRegisterContent': 'The entered information will not be saved.',
   'popup.registerSuccess': 'The church member has been registered.',
+
+  'popup.deleteMemberTitle': 'Do you want to delete this member?',
+  'popup.deleteMemberContent': 'Deleted member cannot be restored.',
   /*-------------------popup-------------------*/
 } as const;

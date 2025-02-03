@@ -246,5 +246,8 @@ export default {
   'popup.cancelRegisterTitle': '교인 등록을 종료하시겠습니까?',
   'popup.cancelRegisterContent': '입력된 정보는 저장되지 않습니다.',
   'popup.registerSuccess': '교인이 등록되었습니다.',
+
+  'popup.deleteMemberTitle': '교인을 삭제하시겠습니까?',
+  'popup.deleteMemberContent': '삭제된 교인은 복구할 수 없습니다.',
   /*-------------------popup-------------------*/
 } as const;
