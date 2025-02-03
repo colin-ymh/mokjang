@@ -6,7 +6,6 @@ import React, {
   RefObject,
   useCallback,
   useEffect,
-  useRef,
   useState,
 } from 'react';
 import TransparentBackground from '@/components/atoms/common/etc/transparent-background';
@@ -73,18 +72,10 @@ const Dropdown = forwardRef<HTMLInputElement, DropdownProps>(
       customValue,
       isCustom = false,
       onChangeCustomInput,
-
       ...inputProps
     },
-    parentRef
+    ref
   ) => {
-    const localRef = useRef<HTMLInputElement>(null);
-
-    // parentRef를 우선시하되, 없으면 localRef 사용
-    const inputRef = (parentRef as RefObject<HTMLInputElement>)?.current
-      ? (parentRef as RefObject<HTMLInputElement>)
-      : localRef;
-
     // 드롭다운 열림 여부
     const [isOpened, setIsOpened] = useState(false);
     // 내부적으로 관리하는 선택값
@@ -93,6 +84,13 @@ const Dropdown = forwardRef<HTMLInputElement, DropdownProps>(
     const [focusedIndex, setFocusedIndex] = useState<number>(0);
     // '직접 입력' 모드 여부
     const [isCustomMode, setIsCustomMode] = useState(false);
+
+    // 인풋에 focus되면 setIsOpened(true)로 열기
+    const onFocusInput = useCallback(() => {
+      if (items.length > 0) {
+        setIsOpened(true);
+      }
+    }, [items]);
 
     // --------------------------------
     // 1) items 배열에 "직접 입력" 항목 추가 (isCustom=true일 때)
@@ -167,7 +165,9 @@ const Dropdown = forwardRef<HTMLInputElement, DropdownProps>(
 
           // 드롭다운 닫히고 난 뒤에 input에 포커스
           requestAnimationFrame(() => {
-            inputRef.current?.focus();
+            if (ref && typeof ref !== 'function') {
+              ref.current?.focus();
+            }
           });
 
           onClickItemExtra?.();
@@ -255,12 +255,13 @@ const Dropdown = forwardRef<HTMLInputElement, DropdownProps>(
     }, [isOpened, combinedItems]);
 
     const propsForView = {
-      ref: inputRef,
+      ref,
       items: combinedItems,
       innerValue,
       customValue,
       isCustomMode,
       focusedIndex,
+      onFocusInput,
       isOpened,
       reverseDirection,
       // 만약 "직접 입력" 모드면 isEditable 강제 true

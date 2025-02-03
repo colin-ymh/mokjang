@@ -17,6 +17,7 @@ type TermInformationProps = {
   term: EducationTerm;
   enrollments: EducationEnrollment[];
   sessions: EducationSession[];
+  fetchEnrollments: () => void;
   fetchTerms: () => void;
 };
 
@@ -25,6 +26,7 @@ const TermInformation = ({
   term,
   enrollments,
   sessions,
+  fetchEnrollments,
   fetchTerms,
 }: TermInformationProps) => {
   // const educationAttendanceApi = new EducationAttendanceApi(false);
@@ -120,6 +122,7 @@ const TermInformation = ({
       enrollments,
       sessions,
       fetchTerms,
+      fetchEnrollments,
       educationId: education.id,
       onClickItem,
     },
@@ -132,7 +135,7 @@ const TermInformation = ({
         isShow={isTermModalShown}
         onClickClose={onClickModalClose}
         width={30}
-        height={60}
+        height={80}
         isPercentage={true}
       >
         <TermRegister
@@ -147,7 +150,7 @@ const TermInformation = ({
         isShow={isSessionModalShown}
         onClickClose={onClickSessionModalClose}
         width={30}
-        height={60}
+        height={80}
         isPercentage={true}
       >
         <EditSession

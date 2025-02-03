@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 import { setMembers } from '@/redux/reducers/member-filter-reducer';
@@ -31,9 +31,15 @@ import MinistryModal from '@/components/atoms/common/modal/ministry-modal';
 import BaptismModal from '@/components/atoms/common/modal/baptism-modal';
 import { MinistriesApi } from '@/api/management/ministry/ministries.api';
 
-type InformationListProps = { targetMemberId: string };
+type InformationListProps = {
+  targetMemberId: string;
+  setTargetMember: Dispatch<SetStateAction<Member>>;
+};
 
-const InformationList = ({ targetMemberId }: InformationListProps) => {
+const InformationList = ({
+  targetMemberId,
+  setTargetMember,
+}: InformationListProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const ministryHistoryApi = new MinistryHistoryApi(false);
   const officerHistoryApi = new OfficerHistoryApi(false);
@@ -92,6 +98,7 @@ const InformationList = ({ targetMemberId }: InformationListProps) => {
     closeModal();
     const newMember = getMemberFromServer(response.data.data);
     setPrevMember(newMember);
+    setTargetMember(newMember);
 
     const newMembers = members.map((m: Member) =>
       m.id === newMember.id ? newMember : m
@@ -188,7 +195,7 @@ const InformationList = ({ targetMemberId }: InformationListProps) => {
           { churchId, memberId: targetMemberId },
           {
             groupId,
-            groupRoleId,
+            groupRoleId: groupRoleId || undefined,
             startDate,
           }
         )
@@ -206,8 +213,11 @@ const InformationList = ({ targetMemberId }: InformationListProps) => {
         .then((response) =>
           handleHistorySuccess(response, () => setIsGroupModalShown(false))
         );
-    } else if (groupId === prevMember.group?.id) {
-      // 그룹 동일 => 날짜 수정
+    } else if (
+      groupId === prevMember.group?.id &&
+      groupRoleId === prevMember.groupRole?.id
+    ) {
+      // 그룹과 역할 동일 => 날짜 수정
       groupHistoryApi
         .editGroupHistory(
           {
@@ -228,7 +238,7 @@ const InformationList = ({ targetMemberId }: InformationListProps) => {
               { churchId, memberId: targetMemberId },
               {
                 groupId,
-                groupRoleId,
+                groupRoleId: groupRoleId || undefined,
                 startDate,
               }
             )
@@ -506,7 +516,7 @@ const InformationList = ({ targetMemberId }: InformationListProps) => {
         width={30}
         height={80}
         isPercentage={true}
-        headerRight={<Button text="저장" onClick={onClickSave} />}
+        headerLeft={<Button text="저장" onClick={onClickSave} />}
       >
         <MemberEdit focusItem={focusItem} />
       </CustomPopup>

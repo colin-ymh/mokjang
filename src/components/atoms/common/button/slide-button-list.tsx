@@ -14,9 +14,9 @@ const ListContainer = styled.div<{ $position: string }>`
 `;
 
 // Kebab 버튼
-const KebabButton = styled(Kebab)<{ $isHovered: boolean; $buttonSize: number }>`
+const KebabButton = styled(Kebab)<{ $isOpened: boolean; $buttonSize: number }>`
   display: flex;
-  width: ${({ $isHovered, $buttonSize }) => ($isHovered ? '0' : $buttonSize)}px;
+  width: ${({ $isOpened, $buttonSize }) => ($isOpened ? '0' : $buttonSize)}px;
   height: ${({ $buttonSize }) => $buttonSize}px;
   stroke: ${GRAY.DARK};
   cursor: pointer;
@@ -25,7 +25,7 @@ const KebabButton = styled(Kebab)<{ $isHovered: boolean; $buttonSize: number }>`
 
 // 버튼들이 들어갈 컨테이너
 const ButtonContainer = styled.div<{
-  $isHovered: boolean;
+  $isOpened: boolean;
   $buttonCount: number;
   $buttonSize: number;
   $hoverBackgroundColor?: string;
@@ -36,8 +36,8 @@ const ButtonContainer = styled.div<{
   overflow: hidden; // width가 작아질 때 아이콘이 안 보이는 효과
 
   // hover 상태일 때만 총 너비를 버튼 개수 × 버튼 크기 + 간격으로 계산
-  width: ${({ $isHovered, $buttonCount, $buttonSize }) =>
-    $isHovered
+  width: ${({ $isOpened, $buttonCount, $buttonSize }) =>
+    $isOpened
       ? `${$buttonCount * $buttonSize + Math.max($buttonCount - 1, 0) * 10}px`
       : '0'};
   transition: all 0.1s ease-in-out;
@@ -115,7 +115,7 @@ const SlideButtonList = ({
   hoverBackgroundColor,
   position = 'absolute',
 }: EditDeleteModalProps) => {
-  const [isHovered, setIsHovered] = useState<boolean>(false);
+  const [isOpened, setIsOpened] = useState<boolean>(false);
 
   // 현재 몇 개의 버튼이 표시되는지를 계산
   const buttonCount =
@@ -124,15 +124,15 @@ const SlideButtonList = ({
   return (
     <ListContainer
       $position={position}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      onClick={() => setIsOpened(true)}
+      onMouseLeave={() => setIsOpened(false)}
     >
       {/* Kebab 버튼 (hover 전에는 보이고, hover 후에는 사라짐) */}
-      <KebabButton $isHovered={isHovered} $buttonSize={buttonSize} />
+      <KebabButton $isOpened={isOpened} $buttonSize={buttonSize} />
 
       {/* 수정/삭제/추가 버튼 */}
       <ButtonContainer
-        $isHovered={isHovered}
+        $isOpened={isOpened}
         $buttonCount={buttonCount}
         $buttonSize={buttonSize}
         $hoverBackgroundColor={hoverBackgroundColor}

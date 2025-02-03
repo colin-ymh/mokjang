@@ -2,13 +2,16 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 import {
+  fetchMembers,
   setMemberOrderBy,
   setMemberOrderDirection,
+  setMembers,
 } from '@/redux/reducers/member-filter-reducer';
 
 import MemberTableView from '@/components/molecules/member/list/member-table.view';
 import { MEMBER } from '@/constants/member/member-column';
 import { ORDER_DIRECTION } from '@/constants/constant';
+import { MembersApi } from '@/api/churches/members.api';
 
 export type MemberTableProps = {
   onClickMemberItem: (memberId: string) => void;
@@ -17,8 +20,20 @@ export type MemberTableProps = {
 
 const MemberTable = ({ onClickMemberItem, loadMembers }: MemberTableProps) => {
   const dispatch = useDispatch<AppDispatch>();
+  const membersApi = new MembersApi(false);
+  const { churchId } = useSelector((state: RootState) => state.church);
   const { members, memberFilter, memberOrderBy, memberOrderDirection } =
     useSelector((state: RootState) => state.memberFilter);
+
+  const [isPopupShown, setIsPopupShown] = useState<boolean>(false);
+
+  const onClickOpen = () => {
+    setIsPopupShown(true);
+  };
+
+  const onClickClose = () => {
+    setIsPopupShown(false);
+  };
 
   // 선택된 교인 id 배열
   const [checkedMemberIds, setCheckedMemberIds] = useState<string[]>([]);
@@ -72,6 +87,32 @@ const MemberTable = ({ onClickMemberItem, loadMembers }: MemberTableProps) => {
     }
   };
 
+  // 선택된 교인들 삭제하기
+  const onClickDeleteMembers = async () => {
+    try {
+      // 1) 모든 삭제 요청(비동기)을 배열로 만든 후,
+      const deletePromises = checkedMemberIds.map((memberId: string) => {
+        return membersApi.deleteMember({ churchId, memberId });
+      });
+
+      // 2) Promise.all로 전부 완료될 때까지 대기
+      await Promise.all(deletePromises);
+
+      setCheckedMemberIds([]);
+
+      // 3) 모든 삭제가 끝난 후 교인 목록 다시 불러오기
+      await dispatch(fetchMembers({ churchId, currentPage: 1 })).then(
+        (result) => {
+          if (fetchMembers.fulfilled.match(result)) {
+            dispatch(setMembers(result.payload));
+          }
+        }
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   // 정렬 변경 시 스크롤을 최상단으로 이동
   useEffect(() => {
     if (scrollRef.current) {
@@ -80,6 +121,9 @@ const MemberTable = ({ onClickMemberItem, loadMembers }: MemberTableProps) => {
   }, [memberOrderBy, memberOrderDirection, memberFilter]);
 
   const props = {
+    isPopupShown,
+    onClickOpen,
+    onClickClose,
     members,
     checkedMemberIds,
     onClickHeader,
@@ -87,6 +131,7 @@ const MemberTable = ({ onClickMemberItem, loadMembers }: MemberTableProps) => {
     scrollRef,
     onScroll,
     onClickCheckMember,
+    onClickDeleteMembers,
   };
 
   return (

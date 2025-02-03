@@ -1,10 +1,8 @@
 import styled from 'styled-components';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/redux/store';
 
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { MEMBER } from '@/constants/member/member-column';
-import { GRAY, MAIN } from '@/constants/styles/color';
+import { GRAY } from '@/constants/styles/color';
 import { SIZE } from '@/constants/styles/style';
 import { getTranslatedMemberColumn } from '@/utils/translate';
 
@@ -36,7 +34,7 @@ const IconContainer = styled.div`
   cursor: pointer;
 `;
 
-type MemberTableHeaderProps = {
+type GroupMemberTableHeaderProps = {
   item: {
     id: MEMBER;
     isSortable: boolean;
@@ -44,13 +42,11 @@ type MemberTableHeaderProps = {
   onClick: (id: MEMBER) => void;
 };
 
-// Component
-const MemberTableHeader = ({ item, onClick }: MemberTableHeaderProps) => {
-  const { memberOrderBy } = useSelector(
-    (state: RootState) => state.memberFilter
-  );
+const GroupMemberTableHeader = ({
+  item,
+  onClick,
+}: GroupMemberTableHeaderProps) => {
   const t = useI18n();
-  const isActive = memberOrderBy === item.id;
 
   return (
     <HeaderContainer onClick={() => item.isSortable && onClick(item.id)}>
@@ -64,17 +60,14 @@ const MemberTableHeader = ({ item, onClick }: MemberTableHeaderProps) => {
            2) 일반 열인 경우
            ========================= */
         <TextContainer>
-          <MainText color={isActive ? MAIN.DEFAULT : GRAY.DARK}>
+          <MainText color={GRAY.DARK}>
             {getTranslatedMemberColumn(t, item.id)}
           </MainText>
         </TextContainer>
       )}
       {item.isSortable && (
         <IconContainer>
-          <MainText
-            size={SIZE.LARGE}
-            color={isActive ? MAIN.DEFAULT : GRAY.DEFAULT}
-          >
+          <MainText size={SIZE.LARGE} color={GRAY.DEFAULT}>
             {'⇅'}
           </MainText>
         </IconContainer>
@@ -83,4 +76,4 @@ const MemberTableHeader = ({ item, onClick }: MemberTableHeaderProps) => {
   );
 };
 
-export default MemberTableHeader;
+export default GroupMemberTableHeader;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 import HeaderBarView from '@/components/atoms/layout/header/header-bar.view';
@@ -8,6 +8,9 @@ import { MainText } from '@/components/atoms/common/text/main-text';
 import { SIZE } from '@/constants/styles/style';
 import { GRAY } from '@/constants/styles/color';
 import { Member } from '@/models/member/member';
+import KebapDropdown from '@/components/atoms/common/dropdown/kebap-dropdown';
+import ConfirmPopup from '@/components/atoms/common/popup/error-popup';
+import { useScopedI18n } from '../../../../../locales/client';
 
 const InformationHeader = styled.div`
   display: flex;
@@ -22,6 +25,7 @@ const Information = styled.div`
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
+  position: relative;
 `;
 
 const TextContainer = styled.div`
@@ -41,14 +45,28 @@ type MemberInformationHeaderProps = {
   targetMember: Member;
   contentId: string;
   onClickItem: (id: string) => void;
+  onClickDelete: () => void;
 };
 
 const MemberInformationHeader = ({
   targetMember,
   contentId,
   onClickItem,
+  onClickDelete,
 }: MemberInformationHeaderProps) => {
+  const t_button = useScopedI18n('button');
+  const t_popup = useScopedI18n('popup');
   const headerBarItems = useMemberInformationHeaderBarItems();
+
+  const [isPopupShown, setIsPopupShown] = useState<boolean>(false);
+
+  const onClickOpen = () => {
+    setIsPopupShown(true);
+  };
+
+  const onClickClose = () => {
+    setIsPopupShown(false);
+  };
 
   return (
     <InformationHeader>
@@ -76,6 +94,24 @@ const MemberInformationHeader = ({
             </MainText>
           </ChurchMemberInfoContainer>
         </TextContainer>
+
+        <KebapDropdown
+          buttonSize={30}
+          top={0}
+          right={-10}
+          onClickDelete={onClickOpen}
+        />
+
+        <ConfirmPopup
+          title={t_popup('deleteMemberTitle')}
+          body={t_popup('deleteMemberContent')}
+          buttonNum={2}
+          isShow={isPopupShown}
+          onClickLeftButton={onClickClose}
+          onClickRightButton={onClickDelete}
+          leftButtonText={t_button('cancel')}
+          rightButtonText={t_button('delete')}
+        />
       </Information>
 
       {/* 개인정보, 가족 등의 탭 바*/}

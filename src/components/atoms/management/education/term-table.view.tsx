@@ -151,6 +151,7 @@ type TermTableProps = {
   onClickHeader: (id: EDUCATION_TERM) => void;
   scrollRef: MutableRefObject<HTMLDivElement | null>;
   onScroll: () => void;
+  fetchEnrollments: () => void;
 };
 
 const TermTableView = ({

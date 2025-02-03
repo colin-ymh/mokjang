@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import { MainText } from '@/components/atoms/common/text/main-text';
-import CheckButton from '@/components/atoms/common/button/check-button';
 
 import { EDUCATION_ENROLLMENT } from '@/constants/management/education-term-column';
 import { getTranslatedEnrollmentColumn } from '@/utils/translate';
@@ -64,12 +63,13 @@ const EnrollmentTableHeader = ({
         /* =========================
            1) 체크박스 열인 경우
            ========================= */
-        <CheckButton
-          value={isCheckAll}
-          onChange={(checked) => {
-            onClickCheckAll?.(checked);
-          }}
-        />
+        // <CheckButton
+        //   value={isCheckAll}
+        //   onChange={(checked) => {
+        //     onClickCheckAll?.(checked);
+        //   }}
+        // />
+        <div></div>
       ) : (
         /* =========================
            2) 일반 열인 경우

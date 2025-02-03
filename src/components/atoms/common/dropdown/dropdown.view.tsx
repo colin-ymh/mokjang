@@ -46,6 +46,7 @@ type DropdownViewProps = {
   customValue?: string;
   isCustomMode: boolean;
   focusedIndex: number;
+  onFocusInput: () => void;
   isOpened: boolean;
   onClickDropdown: () => void;
   onClickItem: (value: any) => void;
@@ -69,6 +70,7 @@ const DropdownView = forwardRef<HTMLInputElement, DropdownViewProps>(
       customValue,
       isCustomMode,
       focusedIndex,
+      onFocusInput,
       isOpened,
       onClickDropdown,
       onClickItem,
@@ -98,6 +100,7 @@ const DropdownView = forwardRef<HTMLInputElement, DropdownViewProps>(
             ref={ref}
             value={isCustomMode ? customValue : displayValue}
             onChange={onChangeInput}
+            onFocus={onFocusInput}
             borderColor={borderColor}
             backgroundColor={backgroundColor}
             height={height}

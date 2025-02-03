@@ -20,10 +20,12 @@ import { Member } from '@/models/member/member';
 import MemberTableHeader from '@/components/atoms/member/list/member-table-header';
 import useWindowSize from '@/hooks/window/window';
 import { LOCALE } from '@/constants/state/locale';
+import CheckButton from '@/components/atoms/common/button/check-button';
+import Button from '@/components/atoms/common/button/button';
 
 import DefaultImage from '../../../../../public/png/default-member-image.png';
-import { useI18n } from '../../../../../locales/client';
-import CheckButton from '@/components/atoms/common/button/check-button';
+import { useI18n, useScopedI18n } from '../../../../../locales/client';
+import ConfirmPopup from '@/components/atoms/common/popup/error-popup';
 
 const getColumnWidth = (id: string) => {
   switch (id) {
@@ -66,6 +68,7 @@ const TableContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  justify-content: center;
   overflow-y: hidden;
 `;
 
@@ -73,6 +76,7 @@ const MemberTable = styled.table`
   width: 100%;
   border-collapse: collapse;
   table-layout: fixed; /* 테이블 레이아웃 고정 */
+  position: relative;
 `;
 
 const TableHeader = styled.th<{ id: string }>`
@@ -143,7 +147,24 @@ const ProfileImage = styled(Image)`
   overflow: hidden;
 `;
 
+const PopupButtonContainer = styled.div<{ $isShown: boolean }>`
+  position: absolute;
+  bottom: 70px;
+  left: 50%; /* 부모의 왼쪽 기준 50% */
+  justify-content: center; /* 내부 요소들 중앙 정렬(버튼 여러 개라면 유용) */
+
+  /* 트랜지션 효과 */
+  transition: opacity 0.2s ease;
+
+  /* display: none 대신, opacity와 pointer-events로 show/hide */
+  opacity: ${({ $isShown }) => ($isShown ? 1 : 0)};
+  pointer-events: ${({ $isShown }) => ($isShown ? 'auto' : 'none')};
+`;
+
 type MemberTableProps = {
+  isPopupShown: boolean;
+  onClickOpen: () => void;
+  onClickClose: () => void;
   members: Member[];
   checkedMemberIds: string[];
   onClickHeader: (id: MEMBER) => void;
@@ -151,9 +172,13 @@ type MemberTableProps = {
   onClickCheckMember: (memberId: string) => void;
   scrollRef: MutableRefObject<HTMLDivElement | null>;
   onScroll: () => void;
+  onClickDeleteMembers: () => void;
 };
 
 const MemberTableView = ({
+  isPopupShown,
+  onClickOpen,
+  onClickClose,
   members,
   checkedMemberIds,
   onClickHeader,
@@ -161,12 +186,15 @@ const MemberTableView = ({
   onClickCheckMember,
   scrollRef,
   onScroll,
+  onClickDeleteMembers,
 }: MemberTableProps) => {
   const { height } = useWindowSize();
   const memberTableHeaderItemList = useSelector(
     (state: RootState) => state.memberFilter.memberTableHeaderItemList
   );
   const t = useI18n();
+  const t_button = useScopedI18n('button');
+  const t_popup = useScopedI18n('popup');
   const pathname = usePathname();
   const basePath = pathname.split('/')[1] as LOCALE;
 
@@ -312,6 +340,25 @@ const MemberTableView = ({
           </tbody>
         </MemberTable>
       </Scroll>
+      <PopupButtonContainer $isShown={checkedMemberIds.length > 0}>
+        <Button
+          text={t('button.delete')}
+          width={120}
+          height={40}
+          onClick={onClickOpen}
+          fontSize={16}
+        />
+      </PopupButtonContainer>
+      <ConfirmPopup
+        title={t_popup('deleteMemberTitle')}
+        body={t_popup('deleteMemberContent')}
+        buttonNum={2}
+        isShow={isPopupShown}
+        onClickLeftButton={onClickClose}
+        onClickRightButton={onClickDeleteMembers}
+        leftButtonText={t_button('cancel')}
+        rightButtonText={t_button('delete')}
+      />
     </TableContainer>
   );
 };

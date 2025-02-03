@@ -66,6 +66,7 @@ export type TermInformationContentProps = {
   enrollments: EducationEnrollment[];
   sessions: EducationSession[];
   fetchTerms: () => void;
+  fetchEnrollments: () => void;
   onClickItem: (isSession: boolean) => void;
 };
 
@@ -75,6 +76,7 @@ const TermInformationContent = ({
   selectedSessionId,
   enrollments,
   sessions,
+  fetchEnrollments,
   fetchTerms,
   onClickItem,
 }: TermInformationContentProps) => {
@@ -129,9 +131,11 @@ const TermInformationContent = ({
       </ListTypeHeader>
       {/* 등록된 교인 목록 */}
       <EnrollmentTable
+        term={term}
         enrollments={enrollments}
         educationId={educationId}
         sessionId={selectedSessionId}
+        fetchEnrollments={fetchEnrollments}
         isInformation={
           selectedSessionId === EDUCATION_TERM_HEADER_ID.INFORMATION
         }

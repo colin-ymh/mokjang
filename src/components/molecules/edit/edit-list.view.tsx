@@ -147,43 +147,45 @@ const EditListView = ({
   };
 
   useEffect(() => {
-    switch (focusItem) {
-      case MEMBER.NAME:
-        scrollToFocus(nameInputRef);
-        break;
-      case MEMBER.MOBILE_PHONE:
-        scrollToFocus(mobilePhoneInputRef);
-        break;
-      case MEMBER.GUIDED_BY_ID:
-        scrollToFocus(guideInputRef);
-        break;
-      case MEMBER.BIRTH:
-        scrollToFocus(birthInputRef);
-        break;
-      case MEMBER.SCHOOL:
-        scrollToFocus(schoolInputRef);
-        break;
-      case MEMBER.OCCUPATION:
-        scrollToFocus(occupationInputRef);
-        break;
-      case MEMBER.MARRIAGE:
-        scrollToFocus(marriageInputRef);
-        break;
-      case MEMBER.DETAIL_MARRIAGE:
-        scrollToFocus(detailMarriageInputRef);
-        break;
-      case MEMBER.ADDRESS:
-        scrollToFocus(addressInputRef);
-        break;
-      case MEMBER.DETAIL_ADDRESS:
-        scrollToFocus(detailAddressInputRef);
-        break;
-      case MEMBER.HOME_PHONE:
-        scrollToFocus(homePhoneInputRef);
-        break;
-      default:
-        break;
-    }
+    requestAnimationFrame(() => {
+      switch (focusItem) {
+        case MEMBER.NAME:
+          scrollToFocus(nameInputRef);
+          break;
+        case MEMBER.MOBILE_PHONE:
+          scrollToFocus(mobilePhoneInputRef);
+          break;
+        case MEMBER.GUIDED_BY_ID:
+          scrollToFocus(guideInputRef);
+          break;
+        case MEMBER.BIRTH:
+          scrollToFocus(birthInputRef);
+          break;
+        case MEMBER.SCHOOL:
+          scrollToFocus(schoolInputRef);
+          break;
+        case MEMBER.OCCUPATION:
+          scrollToFocus(occupationInputRef);
+          break;
+        case MEMBER.MARRIAGE:
+          scrollToFocus(marriageInputRef);
+          break;
+        case MEMBER.DETAIL_MARRIAGE:
+          scrollToFocus(detailMarriageInputRef);
+          break;
+        case MEMBER.ADDRESS:
+          scrollToFocus(addressInputRef);
+          break;
+        case MEMBER.DETAIL_ADDRESS:
+          scrollToFocus(detailAddressInputRef);
+          break;
+        case MEMBER.HOME_PHONE:
+          scrollToFocus(homePhoneInputRef);
+          break;
+        default:
+          break;
+      }
+    });
   }, [focusItem]);
 
   return (
@@ -238,6 +240,7 @@ const EditListView = ({
         onChangeItem={onChangeGuidedById}
         placeholder={t_placeholder('guide')}
         isEditable
+        backgroundBlur={false}
       />
 
       {/* 성별 */}
@@ -286,6 +289,7 @@ const EditListView = ({
         placeholder={t_placeholder('school')}
         isEditable
         borderColor={getTrimmedString(member.school) ? BLACK : undefined}
+        backgroundBlur={false}
       />
 
       {/* 직업 */}
@@ -309,6 +313,7 @@ const EditListView = ({
         borderColor={
           member.marriage && member.marriage !== NULL ? BLACK : undefined
         }
+        backgroundBlur={false}
       />
 
       {/* 결혼 상세 정보 */}

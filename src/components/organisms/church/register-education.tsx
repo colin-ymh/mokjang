@@ -50,7 +50,7 @@ const RegisterEducation = ({}: EducationListProps) => {
   const fetchEducations = () => {
     educationsApi.getEducations({ churchId }).then((response) => {
       if (response.status === 200) {
-        const newEducations = response.data;
+        const newEducations = response.data.data;
         setEducations(newEducations);
       }
     });

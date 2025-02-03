@@ -50,7 +50,7 @@ const ContentContainer = styled.div`
 
 const TitleContainer = styled.div`
   display: flex;
-  width: 150px;
+  width: 100px;
 `;
 
 type TermProcessProps = {
@@ -113,8 +113,8 @@ const TermProcess = ({
           <ContentContainer>
             <MainText>{`${getLocaleDateFromDashDate(
               basePath,
-              term.startDate
-            )} - ${getLocaleDateFromDashDate(basePath, term.endDate)}`}</MainText>
+              getFormattedDate(term.startDate)
+            )} - ${getLocaleDateFromDashDate(basePath, getFormattedDate(term.endDate))}`}</MainText>
           </ContentContainer>
         </InformationItem>
       </RowContainer>

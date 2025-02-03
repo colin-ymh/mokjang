@@ -98,11 +98,12 @@ const OfficerHistoryItem = ({
             </MainText>
             <MainText>{'-'}</MainText>
             <MainText>
-              {officer?.endDate &&
-                getLocaleDateFromDashDate(
-                  basePath,
-                  getFormattedDate(officer?.endDate)
-                )}
+              {officer?.endDate
+                ? getLocaleDateFromDashDate(
+                    basePath,
+                    getFormattedDate(officer?.endDate)
+                  )
+                : t('inProgress')}
             </MainText>
           </DateContainer>
         </PeriodContainer>

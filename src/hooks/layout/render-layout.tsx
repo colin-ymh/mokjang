@@ -86,7 +86,12 @@ export const getMemberInformationContent = (
 ) => {
   switch (contentId) {
     case MEMBER_INFORMATION_HEADER_ID.PERSONAL_INFORMATION:
-      return <InformationList targetMemberId={targetMember.id} />;
+      return (
+        <InformationList
+          targetMemberId={targetMember.id}
+          setTargetMember={setTargetMember}
+        />
+      );
     case MEMBER_INFORMATION_HEADER_ID.FAMILY_INFORMATION:
       return (
         <FamilyInformationList

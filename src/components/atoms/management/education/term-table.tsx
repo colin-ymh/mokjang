@@ -118,6 +118,7 @@ const TermTable = ({ education, terms, fetchTerms }: TermTableProps) => {
     onClickHeader,
     scrollRef,
     onScroll,
+    fetchEnrollments,
   };
 
   return (
@@ -135,6 +136,7 @@ const TermTable = ({ education, terms, fetchTerms }: TermTableProps) => {
           term={selectedTerm}
           enrollments={enrollments}
           sessions={sessions}
+          fetchEnrollments={fetchEnrollments}
           fetchTerms={fetchTerms}
         />
       </CustomPopup>

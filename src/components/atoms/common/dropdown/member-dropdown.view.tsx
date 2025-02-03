@@ -125,7 +125,7 @@ const MemberDropdownView = forwardRef<
         </DropdownButton>
 
         {/* 드롭다운 item 을 선택할 수 있는 영역*/}
-        {isOpened && !disabled && (
+        {isOpened && !disabled && items.length > 0 && (
           <DropdownList $reverseDirection={reverseDirection}>
             {items.map((item, index) => (
               <MemberDropdownItem

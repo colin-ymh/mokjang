@@ -73,17 +73,21 @@ const SelectGroupModal = ({
   onClickGoBack,
 }: SelectGroupModalProps) => {
   const t = useI18n();
+  const groupList =
+    currentGroup !== selectedGroup
+      ? [...parentGroups, currentGroup, selectedGroup]
+      : [...parentGroups, currentGroup];
 
   return (
     <SelectGroupContainer>
       <GoBackContainer>
         <GoBackButton
-          onClick={() => parentGroups.length !== 0 && onClickGoBack()}
+          onClick={() =>
+            parentGroups.length !== 0 ? onClickGoBack() : onClickCloseDropdown()
+          }
         />
         <MainText>
-          {[...parentGroups, currentGroup]
-            .map((parent) => parent.name)
-            .join(' > ')}
+          {groupList.map((parent) => parent.name).join(' > ')}
         </MainText>
       </GoBackContainer>
       <GroupList>

@@ -122,7 +122,7 @@ const MemberDropdown = forwardRef<HTMLInputElement, DropdownProps>(
 
     // 외부에서 드롭다운 아이템들이 변경
     useEffect(() => {
-      if (onChange) {
+      if (onChange && value !== innerValue) {
         // 아이템이 있으면 드롭다운 열기
         if (items.length > 0) {
           // setFocusedIndex(0);

@@ -1,9 +1,13 @@
-import EditListView from '@/components/molecules/edit/edit-list.view';
-import { GetMembersResponse, MembersApi } from '@/api/churches/members.api';
+import React, { ChangeEvent, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
+import { setMember, setType } from '@/redux/reducers/member-register-reducer';
+import { AxiosResponse } from 'axios';
+import DaumPostcodeEmbed, { Address } from 'react-daum-postcode';
+
+import EditListView from '@/components/molecules/edit/edit-list.view';
+import { GetMembersResponse, MembersApi } from '@/api/churches/members.api';
 import { Member } from '@/models/member/member';
-import React, { ChangeEvent, useState } from 'react';
 import {
   BLANK,
   CALENDAR_MODE,
@@ -12,7 +16,6 @@ import {
   MEMBER_REGISTER_TYPE,
 } from '@/constants/constant';
 import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-item';
-import { setMember, setType } from '@/redux/reducers/member-register-reducer';
 import {
   getFormattedDate,
   getFormattedHomePhone,
@@ -26,9 +29,7 @@ import {
   getIsWellFormedHomePhone,
   getIsWellFormedMobilePhone,
 } from '@/utils/check';
-import { AxiosResponse } from 'axios';
 import { getSchool } from '@/api/school-api';
-import DaumPostcodeEmbed, { Address } from 'react-daum-postcode';
 import PagePopup from '@/components/atoms/common/popup/page-popup';
 import { MEMBER } from '@/constants/member/member-column';
 

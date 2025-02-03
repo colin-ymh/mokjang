@@ -167,6 +167,7 @@ export default {
   'tableHeader.attendance': '출석',
   'tableHeader.note': '비고',
   'tableHeader.mobilePhone': '휴대전화',
+  'tableHeader.status': '수료',
   /*-------------------table header-------------------*/
 
   /*------------------- register-------------------*/
@@ -227,12 +228,12 @@ export default {
   'placeholder.marriage': '결혼 상태를 입력해주세요',
   'placeholder.detailMarriage': '결혼 상세 상태를 입력해주세요',
   'placeholder.family': '가족을 입력해주세요.',
-  'placeholder.startDate': '시작날짜를 입력해주세요.',
-  'placeholder.endDate': '종료날짜를 입력해주세요.',
+  'placeholder.startDate': '시작날짜를 입력해주세요. (yyyy-mm-dd) ',
+  'placeholder.endDate': '종료날짜를 입력해주세요. (yyyy-mm-dd) ',
   'placeholder.term': '기수를 입력해주세요.',
   'placeholder.session': '총 회차를 입력해주세요.',
   'placeholder.instructor': '진행자를 선택해주세요.',
-  'placeholder.sessionDate': '교육 일시를 입력해주세요.',
+  'placeholder.sessionDate': '교육 일시를 입력해주세요. (yyyy-mm-dd) ',
   'placeholder.sessionContent': '회차 보고를 입력해주세요.',
   /*-------------------placeholder-------------------*/
 

@@ -6,6 +6,10 @@ import { setContentId } from '@/redux/reducers/layout-reducer';
 import MemberTabHeaderView from '@/components/molecules/layout/header/member-tab-header.view';
 import CustomPopup from '@/components/atoms/common/popup/custom-popup';
 import MemberRegister from '@/components/organisms/register/member-register';
+import {
+  DEFAULT_MEMBER,
+  setMember,
+} from '@/redux/reducers/member-register-reducer';
 
 type MemberManagementHeadBarProps = {};
 
@@ -17,6 +21,7 @@ const MemberTabHeader = ({}: MemberManagementHeadBarProps) => {
 
   // 교인 등록하기 팝업 닫기
   const onClickClose = () => {
+    dispatch(setMember(DEFAULT_MEMBER));
     setIsRegisterShown(false);
   };
 

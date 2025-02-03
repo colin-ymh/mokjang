@@ -1,12 +1,12 @@
 import React, { MutableRefObject } from 'react';
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 import styled from 'styled-components';
 import { TABLE_HEADER_ITEM } from '@/redux/reducers/member-filter-reducer';
 
 import { GRAY, WHITE } from '@/constants/styles/color';
 import { MEMBER } from '@/constants/member/member-column';
 import { MainText } from '@/components/atoms/common/text/main-text';
-import MemberTableHeader from '@/components/atoms/member/list/member-table-header';
 import { Member } from '@/models/member/member';
 import useWindowSize from '@/hooks/window/window';
 import { getAge, getDateFromString } from '@/utils/date';
@@ -15,10 +15,10 @@ import {
   getFormattedMobilePhone,
   getLocaleDateFromDashDate,
 } from '@/utils/format';
+import { LOCALE } from '@/constants/state/locale';
 
 import DefaultImage from '../../../../../public/png/default-member-image.png';
-import { usePathname } from 'next/navigation';
-import { LOCALE } from '@/constants/state/locale';
+import GroupMemberTableHeader from '@/components/atoms/management/group/group-member-table-header';
 
 const getColumnWidth = (id: string) => {
   switch (id) {
@@ -118,7 +118,7 @@ export const GROUP_MEMBER_TABLE_HEADER: TABLE_HEADER_ITEM[] = [
   {
     id: MEMBER.GROUP,
     isShown: true,
-    isSortable: true,
+    isSortable: false,
     isFilterable: false,
     isFixed: true,
     isDate: false,
@@ -126,15 +126,15 @@ export const GROUP_MEMBER_TABLE_HEADER: TABLE_HEADER_ITEM[] = [
   {
     id: MEMBER.OFFICER,
     isShown: true,
-    isSortable: true,
-    isFilterable: true,
+    isSortable: false,
+    isFilterable: false,
     isFixed: false,
     isDate: false,
   },
   {
     id: MEMBER.NAME,
     isShown: true,
-    isSortable: true,
+    isSortable: false,
     isFilterable: false,
     isFixed: true,
     isDate: false,
@@ -142,7 +142,7 @@ export const GROUP_MEMBER_TABLE_HEADER: TABLE_HEADER_ITEM[] = [
   {
     id: MEMBER.AGE,
     isShown: true,
-    isSortable: true,
+    isSortable: false,
     isFilterable: false,
     isFixed: false,
     isDate: false,
@@ -228,7 +228,7 @@ const GroupMemberTableView = ({
             {GROUP_MEMBER_TABLE_HEADER.filter((item) => item.isShown).map(
               (item) => (
                 <TableHeader key={item.id} id={item.id}>
-                  <MemberTableHeader item={item} onClick={onClickHeader} />
+                  <GroupMemberTableHeader item={item} onClick={onClickHeader} />
                 </TableHeader>
               )
             )}

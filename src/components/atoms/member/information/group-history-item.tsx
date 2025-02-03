@@ -97,11 +97,12 @@ const GroupHistoryItem = ({
             </MainText>
             <MainText>{'-'}</MainText>
             <MainText>
-              {group?.endDate &&
-                getLocaleDateFromDashDate(
-                  basePath,
-                  getFormattedDate(group?.endDate)
-                )}
+              {group?.endDate
+                ? getLocaleDateFromDashDate(
+                    basePath,
+                    getFormattedDate(group?.endDate)
+                  )
+                : t('inProgress')}
             </MainText>
           </DateContainer>
         </PeriodContainer>

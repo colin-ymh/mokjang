@@ -15,7 +15,6 @@ import { MembersApi } from '@/api/churches/members.api';
 import MemberInformation from '@/components/organisms/member/information/member-information';
 import CustomPopup from '@/components/atoms/common/popup/custom-popup';
 import MemberListView from '@/components/organisms/member/list/member-list.view';
-import Button from '@/components/atoms/common/button/button';
 import { Member } from '@/models/member/member';
 import { getMemberFromServer } from '@/utils/member';
 
@@ -160,8 +159,8 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
   };
 
   // 교인 삭제하기
-  const onClickDelete = () => {
-    membersApi
+  const onClickDelete = async () => {
+    await membersApi
       .deleteMember({ churchId, memberId: member.id })
       .then((response) => {
         if (response.status === 200) {
@@ -189,6 +188,7 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
     information: {
       targetMember,
       setTargetMember,
+      onClickDelete,
     },
   };
 
@@ -202,11 +202,6 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
         width={70}
         height={90}
         isPercentage={true}
-        headerRight={
-          <ButtonContainer>
-            <Button text={t_button('delete')} onClick={onClickDelete} />
-          </ButtonContainer>
-        }
       >
         <MemberInformation {...props.information} />
       </CustomPopup>

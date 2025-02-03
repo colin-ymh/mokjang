@@ -147,8 +147,11 @@ const GroupModal = ({
           const newRoleItems = newRoles.map((role) => {
             return { value: role.id, title: role.role };
           });
-          if (newRoleItems.length !== 0)
+          if (newRoleItems.length !== 0) {
             setSelectedRoleId(newRoleItems[0].value);
+          } else {
+            setSelectedRoleId(BLANK);
+          }
           setRoleItems(newRoleItems);
         });
     }

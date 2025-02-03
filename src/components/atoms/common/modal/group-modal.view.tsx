@@ -106,14 +106,16 @@ const GroupModalView = ({
           </GroupContainer>
         )}
         {/* 역할 */}
-        {selectedGroup.id && !targetHistory?.endDate && (
-          <LabelDropdown
-            label={t('groupRole')}
-            value={selectedRoleId}
-            items={roleItems}
-            onChangeItem={onChangeRoleId}
-          />
-        )}
+        {roleItems.length > 0 &&
+          selectedGroup.id &&
+          !targetHistory?.endDate && (
+            <LabelDropdown
+              label={t('groupRole')}
+              value={selectedRoleId}
+              items={roleItems}
+              onChangeItem={onChangeRoleId}
+            />
+          )}
         {/* 시작 날짜 */}
         <LabelInput
           label={t('startDate')}

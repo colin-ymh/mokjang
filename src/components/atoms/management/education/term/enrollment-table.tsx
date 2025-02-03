@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/redux/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '@/redux/store';
 
 import {
   DEFAULT_EDUCATION_ENROLLMENT,
   EducationEnrollment,
+  EducationTerm,
   SessionAttendance,
 } from '@/models/management/management';
 import EnrollmentTableView from '@/components/atoms/management/education/term/enrollment-table.view';
@@ -13,20 +14,26 @@ import { EducationAttendanceApi } from '@/api/management/education/education-att
 import { EDUCATION_TERM_HEADER_ID } from '@/constants/layout/header';
 import { EDUCATION_STATUS } from '@/constants/constant';
 import { EducationEnrollmentsApi } from '@/api/management/education/education-enrollments.api';
+import { fetchMembers } from '@/redux/reducers/member-filter-reducer';
 
 export type EnrollmentTableProps = {
+  term: EducationTerm;
   enrollments: EducationEnrollment[];
   sessionId: string;
   educationId: string;
   isInformation: boolean;
+  fetchEnrollments: () => void;
 };
 
 const EnrollmentTable = ({
+  term,
   enrollments,
   sessionId,
   educationId,
   isInformation,
+  fetchEnrollments,
 }: EnrollmentTableProps) => {
+  const dispatch = useDispatch<AppDispatch>();
   const churchId = useSelector((state: RootState) => state.church.churchId);
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const educationEnrollmentsApi = new EducationEnrollmentsApi(false);
@@ -154,8 +161,39 @@ const EnrollmentTable = ({
         educationId,
       })
       .then((response) => {
-        setAttendance(response.data);
+        setAttendance(response.data.data);
       });
+  };
+
+  // 선택된 등록 교인들 삭제하기
+  const onClickDeleteMembers = async () => {
+    try {
+      // 1) 모든 삭제 요청(비동기)을 배열로 만든 후,
+      const deletePromises = checkedMemberIds.map((enrollmentId: string) => {
+        return educationEnrollmentsApi.deleteEducationEnrollments({
+          churchId,
+          educationId,
+          educationTermId: term.id,
+          educationEnrollmentId: enrollmentId,
+        });
+      });
+
+      // 2) Promise.all로 전부 완료될 때까지 대기
+      await Promise.all(deletePromises);
+
+      setCheckedMemberIds([]);
+
+      // 3) 모든 삭제가 끝난 후 등록 초기화
+      await dispatch(fetchMembers({ churchId, currentPage: 1 })).then(
+        (result) => {
+          if (fetchMembers.fulfilled.match(result)) {
+            fetchEnrollments();
+          }
+        }
+      );
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
@@ -181,6 +219,7 @@ const EnrollmentTable = ({
     onChangeAttendance,
     onClickCheckAll,
     onClickCheckMember,
+    onClickDeleteMembers,
   };
 
   return (

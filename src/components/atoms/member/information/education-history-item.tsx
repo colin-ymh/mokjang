@@ -97,11 +97,12 @@ const EducationHistoryItem = ({
             </MainText>
             <MainText>{'-'}</MainText>
             <MainText>
-              {education.educationTerm?.endDate &&
-                getLocaleDateFromDashDate(
-                  basePath,
-                  getFormattedDate(education.educationTerm?.endDate)
-                )}
+              {education.educationTerm?.endDate
+                ? getLocaleDateFromDashDate(
+                    basePath,
+                    getFormattedDate(education.educationTerm?.endDate)
+                  )
+                : t('inProgress')}
             </MainText>
           </DateContainer>
         </PeriodContainer>

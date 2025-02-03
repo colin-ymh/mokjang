@@ -161,6 +161,7 @@ export default {
   'tableHeader.attendance': 'Attendance',
   'tableHeader.note': 'Memo',
   'tableHeader.mobilePhone': 'Mobile Phone',
+  'tableHeader.status': 'Status',
   /*-------------------table header-------------------*/
 
   /*------------------- register-------------------*/
@@ -213,7 +214,7 @@ export default {
   'placeholder.school': 'Enter the school name.',
   'placeholder.officer': 'Enter the officer name.',
   'placeholder.officerStartDate':
-    'Enter a officer start date. (e.g., yyyy-mm-dd)',
+    'Enter a officer start date (e.g., yyyy-mm-dd).',
   'placeholder.officerStartChurch': 'Enter a officer start church name.',
   'placeholder.guide': "Enter the guide's name.",
   'placeholder.previousChurch': 'Enter the name of the previous church.',
@@ -221,12 +222,12 @@ export default {
   'placeholder.marriage': 'Enter the marriage state.',
   'placeholder.detailMarriage': 'Enter the detail marriage state.',
   'placeholder.family': 'Enter the family name.',
-  'placeholder.startDate': 'Enter the start date.',
-  'placeholder.endDate': 'Enter the end date.',
+  'placeholder.startDate': 'Enter the start date  (e.g., YYYY.MM.DD).',
+  'placeholder.endDate': 'Enter the end date (e.g., YYYY.MM.DD).',
   'placeholder.term': 'Enter the term.',
   'placeholder.session': 'Enter the total sessions.',
   'placeholder.instructor': 'Enter the instructor.',
-  'placeholder.sessionDate': 'Enter the session date.',
+  'placeholder.sessionDate': 'Enter the session date (e.g., YYYY.MM.DD).',
   'placeholder.sessionContent': 'Enter the session report.',
   /*-------------------placeholder-------------------*/
 

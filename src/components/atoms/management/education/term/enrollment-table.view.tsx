@@ -22,12 +22,15 @@ import { MEMBER } from '@/constants/member/member-column';
 
 import DefaultImage from '../../../../../../public/png/default-member-image.png';
 import { EDUCATION_STATUS } from '@/constants/constant';
+import Button from '@/components/atoms/common/button/button';
+import { useI18n } from '../../../../../../locales/client';
 
 const TableContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   overflow-y: hidden;
+  position: relative;
 `;
 
 const EnrollmentTable = styled.table`
@@ -97,6 +100,20 @@ const ProfileImage = styled(Image)`
   overflow: hidden;
 `;
 
+const PopupButtonContainer = styled.div<{ $isShown: boolean }>`
+  position: absolute;
+  bottom: 100px;
+  left: 50%; /* 부모의 왼쪽 기준 50% */
+  justify-content: center; /* 내부 요소들 중앙 정렬(버튼 여러 개라면 유용) */
+
+  /* 트랜지션 효과 */
+  transition: opacity 0.2s ease;
+  transform: translateX(-50%); /* 가로축 가운데 정렬 */
+  /* display: none 대신, opacity와 pointer-events로 show/hide */
+  opacity: ${({ $isShown }) => ($isShown ? 1 : 0)};
+  pointer-events: ${({ $isShown }) => ($isShown ? 'auto' : 'none')};
+`;
+
 const getColumnWidth = (id: EDUCATION_ENROLLMENT) => {
   switch (id) {
     case EDUCATION_ENROLLMENT.CHECK:
@@ -110,7 +127,7 @@ const getColumnWidth = (id: EDUCATION_ENROLLMENT) => {
     case EDUCATION_ENROLLMENT.GROUP:
       return 10;
     case EDUCATION_ENROLLMENT.STATUS:
-      return 10;
+      return 5;
     case EDUCATION_ENROLLMENT.NOTE:
       return 20;
     case EDUCATION_ENROLLMENT.MOBILE_PHONE:
@@ -208,6 +225,7 @@ type EnrollmentTableProps = {
   ) => void;
   onClickCheckAll: () => void;
   onClickCheckMember: (memberId: string) => void;
+  onClickDeleteMembers: () => void;
 };
 
 const EnrollmentTableView = ({
@@ -223,7 +241,9 @@ const EnrollmentTableView = ({
   onChangeAttendance,
   onClickCheckAll,
   onClickCheckMember,
+  onClickDeleteMembers,
 }: EnrollmentTableProps) => {
+  const t = useI18n();
   const { height } = useWindowSize();
 
   // isInformation에 따라 ATTENDANCE 열 숨기기
@@ -244,8 +264,8 @@ const EnrollmentTableView = ({
       case EDUCATION_ENROLLMENT.CHECK:
         return (
           <CheckButton
-            value={checkedMemberIds.includes(enrollment.memberId)}
-            onChange={() => onClickCheckMember(enrollment.memberId)}
+            value={checkedMemberIds.includes(enrollment.id)}
+            onChange={() => onClickCheckMember(enrollment.id)}
           />
         );
       case EDUCATION_ENROLLMENT.STATUS:
@@ -356,6 +376,14 @@ const EnrollmentTableView = ({
           </tbody>
         </EnrollmentTable>
       </Scroll>
+      <PopupButtonContainer $isShown={checkedMemberIds.length > 0}>
+        <Button
+          text={t('button.delete')}
+          width={100}
+          height={30}
+          onClick={onClickDeleteMembers}
+        />
+      </PopupButtonContainer>
     </TableContainer>
   );
 };
