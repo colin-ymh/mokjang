@@ -10,6 +10,8 @@ export default {
   period: 'Period',
   total: 'Total',
   history: 'History',
+  isDone: 'Completed',
+  isNotDone: 'Incomplete',
 
   people: 'People',
 
@@ -37,6 +39,7 @@ export default {
   educationInformation: 'Education Information',
   educationProcess: 'Current Process',
   status: 'Status',
+  isSessionDone: 'Completed',
 
   educationDate: 'Date',
   sessionContent: 'Report',

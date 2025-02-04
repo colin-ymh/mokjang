@@ -157,6 +157,15 @@ const TermProcess = ({
             <MainText>{session.content}</MainText>
           </ContentContainer>
         </InformationItem>
+        {/* 회차 완료 */}
+        <InformationItem onClick={() => onClickItem(true)}>
+          <TitleContainer>
+            <MainText color={GRAY.DEFAULT}>{t('isSessionDone')}</MainText>
+          </TitleContainer>
+          <ContentContainer>
+            <MainText>{session.isDone ? t('isDone') : t('isNotDone')}</MainText>
+          </ContentContainer>
+        </InformationItem>
       </RowContainer>
     </ProcessContainer>
   );

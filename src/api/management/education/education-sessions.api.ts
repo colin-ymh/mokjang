@@ -30,6 +30,7 @@ type EditEducationSessionsParams = {
 };
 
 type EditEducationSessionsBody = {
+  isDone?: boolean;
   sessionDate?: string;
   content?: string;
 };

@@ -10,6 +10,8 @@ export default {
   period: '기간',
   total: '총',
   history: '이력',
+  isDone: '완료',
+  isNotDone: '미완료',
 
   people: '인원',
 
@@ -42,6 +44,7 @@ export default {
   educationDate: '교육 일시',
   sessionContent: '회차 보고',
   status: '수료',
+  isSessionDone: '교육 완료',
 
   officerList: '직분 목록',
   officerName: '직분명',

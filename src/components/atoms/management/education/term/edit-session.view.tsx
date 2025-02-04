@@ -4,6 +4,8 @@ import LabelInput from '@/components/atoms/common/input/label-input';
 import { useI18n, useScopedI18n } from '../../../../../../locales/client';
 import LabelTextarea from '@/components/atoms/common/input/label-textarea';
 import Button from '@/components/atoms/common/button/button';
+import { MainText } from '@/components/atoms/common/text/main-text';
+import CheckButton from '@/components/atoms/common/button/check-button';
 
 const SessionContainer = styled.div`
   display: flex;
@@ -20,22 +22,32 @@ const ContentContainer = styled.div`
   gap: 20px;
 `;
 
+const DoneContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
 const ButtonContainer = styled.div`
   display: flex;
 `;
 
 type EditSessionViewProps = {
   sessionDate: string;
+  isSessionDone: boolean;
   sessionContent: string;
   onChangeSessionDate: (event: ChangeEvent<HTMLInputElement>) => void;
+  onChangeSessionDone: (isDone: boolean) => void;
   onChangeSessionContent: (event: ChangeEvent<HTMLTextAreaElement>) => void;
   onClickSave: () => void;
 };
 
 const EditSessionView = ({
   sessionDate,
+  isSessionDone,
   sessionContent,
   onChangeSessionDate,
+  onChangeSessionDone,
   onChangeSessionContent,
   onClickSave,
 }: EditSessionViewProps) => {
@@ -50,6 +62,10 @@ const EditSessionView = ({
           onChange={onChangeSessionDate}
           placeholder={t_placeholder('sessionDate')}
         />
+        <DoneContainer>
+          <MainText>{t('isSessionDone')}</MainText>
+          <CheckButton value={isSessionDone} onChange={onChangeSessionDone} />
+        </DoneContainer>
         <LabelTextarea
           label={t('sessionContent')}
           value={sessionContent}

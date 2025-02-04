@@ -28,6 +28,9 @@ const EditSession = ({
       ? getFormattedDate(targetSession.sessionDate)
       : BLANK
   );
+  const [isSessionDone, setIsSessionDone] = useState<boolean>(
+    targetSession.isDone
+  );
   const [sessionContent, setSessionContent] = useState<string>(
     targetSession.content
   );
@@ -36,6 +39,10 @@ const EditSession = ({
     const newDate = getFormattedDate(event.target.value);
 
     setSessionDate(newDate);
+  };
+
+  const onChangeSessionDone = (isDone: boolean) => {
+    setIsSessionDone(isDone);
   };
 
   const onChangeSessionContent = (event: ChangeEvent<HTMLTextAreaElement>) => {
@@ -52,8 +59,9 @@ const EditSession = ({
           educationSessionId: targetSession.id,
         },
         {
-          sessionDate,
-          content: sessionContent,
+          sessionDate: sessionDate || undefined,
+          content: sessionContent || undefined,
+          isDone: isSessionDone || undefined,
         }
       )
       .then(() => {
@@ -64,8 +72,10 @@ const EditSession = ({
 
   const props = {
     sessionDate,
+    isSessionDone,
     sessionContent,
     onChangeSessionDate,
+    onChangeSessionDone,
     onChangeSessionContent,
     onClickSave,
   };

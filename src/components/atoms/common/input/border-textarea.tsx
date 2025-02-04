@@ -21,7 +21,7 @@ const StyledTextarea = styled.textarea<{
   height: ${({ height }) => (height ? `${height}px` : '100%')};
   background-color: ${({ $disabled, $backgroundColor }) =>
     $backgroundColor ? $backgroundColor : $disabled ? GRAY.LIGHT : WHITE};
-  resize: vertical;
+  resize: none;
 
   &:focus {
     outline: none;
