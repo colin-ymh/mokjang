@@ -3,7 +3,7 @@ import { Group } from '@/models/management/management';
 import { Member } from '@/models/member/member';
 import { useEffect, useState } from 'react';
 
-import { MembersApi } from '@/api/churches/members.api';
+import { MembersApi } from '@/api/members/members.api';
 import { MEMBER } from '@/constants/member/member-column';
 
 type GroupMemberProps = {

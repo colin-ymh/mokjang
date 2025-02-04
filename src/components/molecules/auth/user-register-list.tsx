@@ -1,19 +1,25 @@
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 
+import { AuthApi, IS_TEST } from '@/api/auth/auth.api';
+import { setAuthorizationToken } from '@/api/authorize-axios';
 import { BLANK } from '@/constants/constant';
-import { getFormattedMobilePhone, getFormattedName } from '@/utils/format';
-import { AuthApi } from '@/api/auth/auth.api';
-import { usePageRouter } from '@/utils/router';
 import UserRegisterListView from '@/components/molecules/auth/user-register-list.view';
+import { getFormattedMobilePhone, getFormattedName } from '@/utils/format';
+import { usePageRouter } from '@/utils/router';
 
 const UserRegisterList = () => {
   const router = usePageRouter();
   const authApi = new AuthApi(false);
 
+  // 인증 시간 타이머
+  const [second, setSecond] = useState<number>(0);
+
   // 이름
   const [name, setName] = useState<string>(BLANK);
+
   // 전화번호
   const [mobilePhone, setMobilePhone] = useState<string>(BLANK);
+
   // 인증번호
   const [verifyNumber, setVerifyNumber] = useState<string>(BLANK);
 
@@ -50,13 +56,18 @@ const UserRegisterList = () => {
   const onClickRequest = () => {
     authApi
       .getVerificationRequest(
-        { isTest: true },
-        { name, mobilePhone: mobilePhone.replace(/-/g, '') }
+        {},
+        {
+          name,
+          mobilePhone: mobilePhone.replace(/-/g, ''),
+          isTest: IS_TEST.INTERNAL_TEST,
+        }
       )
       .then((response) => {
         if (response.status === 201) {
           setIsRequested(true);
           console.log(response.data);
+          setSecond(180);
         }
       });
   };
@@ -81,14 +92,50 @@ const UserRegisterList = () => {
     setIsConsent(!isConsent);
   };
 
-  // 회원가입 완료버튼
+  // 회원가입 완료 버튼
   const onClickDone = () => {
-    router.push('');
+    authApi
+      .getSignIn({ privacyPolicyAgreed: isVerified })
+      .then((response) => {
+        const accessToken = response.data.accessToken;
+        const refreshToken = response.data.refreshToken;
+
+        // AccessToken을 authorizeAxios에 설정
+        setAuthorizationToken(accessToken);
+        // RefreshToken을 localStorage에 저장
+        localStorage.setItem('refreshToken', refreshToken);
+
+        router.push('/church/register');
+      })
+      .catch((error) => {
+        console.log('로그인 실패:', error);
+      });
   };
+
+  // 타이머 감소 로직: 인증 요청 후 1초마다 감소
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+
+    if (isRequested && second > 0) {
+      timer = setInterval(() => {
+        setSecond((prevSecond) => prevSecond - 1);
+      }, 1000); // 1초마다 감소
+    }
+
+    // second가 0이 되면 타이머 정지
+    if (second === 0 && isRequested) {
+      setIsRequested(false);
+    }
+
+    // 컴포넌트 언마운트 시 타이머 정리
+    return () => clearInterval(timer);
+  }, [isRequested, second]);
+
   const props = {
     name,
     mobilePhone,
     verifyNumber,
+    second,
     isRequested,
     isVerified,
     isConsent,

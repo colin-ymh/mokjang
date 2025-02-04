@@ -168,6 +168,7 @@ export default {
   'tableHeader.note': '비고',
   'tableHeader.mobilePhone': '휴대전화',
   'tableHeader.status': '수료',
+  'tableHeader.isDoneCount': '진행 상황',
   /*-------------------table header-------------------*/
 
   /*------------------- register-------------------*/
@@ -205,6 +206,7 @@ export default {
   'button.request': '요청하기',
   'button.add': '추가하기',
   'button.signIn': '회원가입 완료하기',
+  'button.logOut': '로그아웃',
   'button.addMember': '교인 추가',
   'button.saveTerm': '기수 추가하기',
 

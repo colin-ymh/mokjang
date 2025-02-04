@@ -2,9 +2,9 @@ import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 
-import { FamilyApi } from '@/api/churches/family.api';
+import { FamilyApi } from '@/api/members/family.api';
 import { FAMILY } from '@/constants/constant';
-import { MembersApi } from '@/api/churches/members.api';
+import { MembersApi } from '@/api/members/members.api';
 import { getMemberFromServer } from '@/utils/member';
 import FamilyInformationListView from '@/components/molecules/member/information/family-information-list.view';
 import {
@@ -67,15 +67,17 @@ const FamilyInformationList = ({
               });
           });
       } else {
+        console.log('추가');
         familyApi
           .createFamily(
             { churchId, memberId: targetMember.id },
             { familyMemberId, relation }
           )
-          .then((response) => {
+          .then(() => {
             membersApi
               .getMember({ churchId, memberId: targetMember.id })
               .then((response) => {
+                console.log(response);
                 const member = getMemberFromServer(response.data.data);
                 setTargetMember(member);
               });

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useRouter } from 'next/navigation';
 import { AppDispatch, RootState } from '@/redux/store';
-import { setMember, setStage } from '@/redux/reducers/member-register-reducer';
+import { setStage } from '@/redux/reducers/member-register-reducer';
 
 import {
   MEMBER_REGISTER_STAGE,
@@ -10,7 +10,7 @@ import {
 } from '@/constants/constant';
 import RegisterButtonListView from '@/components/molecules/register/register-button-list.view';
 import { getEditMemberBody } from '@/utils/member';
-import { RequestInfoApi } from '@/api/churches/request-info.api';
+import { RequestInfoApi } from '@/api/members/request-info.api';
 
 import { useScopedI18n } from '../../../../locales/client';
 
@@ -99,7 +99,7 @@ const ExtraButtonList = () => {
     onClickRight,
     getRightButtonTitle,
     isToastShow,
-    setIsToastShow
+    setIsToastShow,
   };
 
   return (

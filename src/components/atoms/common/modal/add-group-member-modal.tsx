@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 
 import { GroupHistoryApi } from '@/api/history/group-history.api';
-import { MembersApi } from '@/api/churches/members.api';
+import { MembersApi } from '@/api/members/members.api';
 import AddGroupMemberModalView from '@/components/atoms/common/modal/add-group-member-modal.view';
 import { BLANK } from '@/constants/constant';
 import { Member } from '@/models/member/member';

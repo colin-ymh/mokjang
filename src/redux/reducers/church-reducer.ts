@@ -9,9 +9,11 @@ import {
 } from '@/models/management/management';
 import { RootState } from '@/redux/store';
 import { GroupsApi } from '@/api/management/group/groups.api';
+import { Church, DEFAULT_CHURCH } from '@/models/church/church';
 
 type ChurchState = {
   churchId: string;
+  church: Church;
   officers: Officer[];
   ministryGroups: MinistryGroup[];
   ministries: Ministry[];
@@ -21,6 +23,7 @@ type ChurchState = {
 
 const initialState: ChurchState = {
   churchId: BLANK,
+  church: DEFAULT_CHURCH,
   officers: [],
   ministryGroups: [],
   ministries: [],
@@ -59,6 +62,9 @@ const ChurchSlice = createSlice({
     setChurchId(state, action: PayloadAction<string>) {
       state.churchId = action.payload;
     },
+    setChurch(state, action: PayloadAction<Church>) {
+      state.church = action.payload;
+    },
     setOfficers(state, action: PayloadAction<Officer[]>) {
       state.officers = action.payload;
     },
@@ -84,6 +90,7 @@ const ChurchSlice = createSlice({
 
 export const {
   setChurchId,
+  setChurch,
   setOfficers,
   setMinistryGroups,
   setMinistries,

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 import { MinistryGroup } from '@/models/management/management';
 import { Member } from '@/models/member/member';
-import { MembersApi } from '@/api/churches/members.api';
+import { MembersApi } from '@/api/members/members.api';
 import MinistryGroupMemberView from '@/components/molecules/management/ministry/ministry-group-member.view';
 import { MEMBER } from '@/constants/member/member-column';
 

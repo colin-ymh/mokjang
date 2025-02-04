@@ -1,5 +1,4 @@
 import axios, { AxiosResponse } from 'axios';
-import { EditMemberBody } from '@/api/churches/members.api';
 import { FAMILY } from '@/constants/constant';
 import { SERVER_URL, TEST_SERVER_URL } from '@/constants/state/url';
 

@@ -10,7 +10,7 @@ import {
   getFormattedMobilePhone,
   getTrimmedString,
 } from '@/utils/format';
-import { CreateMemberBody, EditMemberBody } from '@/api/churches/members.api';
+import { CreateMemberBody, EditMemberBody } from '@/api/members/members.api';
 import { Member } from '@/models/member/member';
 
 export const getCreateMemberBody = (member: Member) => {

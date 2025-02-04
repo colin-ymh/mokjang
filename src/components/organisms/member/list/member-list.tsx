@@ -11,7 +11,7 @@ import {
 } from '@/redux/reducers/member-filter-reducer';
 import styled from 'styled-components';
 
-import { MembersApi } from '@/api/churches/members.api';
+import { MembersApi } from '@/api/members/members.api';
 import MemberInformation from '@/components/organisms/member/information/member-information';
 import CustomPopup from '@/components/atoms/common/popup/custom-popup';
 import MemberListView from '@/components/organisms/member/list/member-list.view';

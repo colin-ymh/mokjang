@@ -11,7 +11,7 @@ import {
 import MemberTableView from '@/components/molecules/member/list/member-table.view';
 import { MEMBER } from '@/constants/member/member-column';
 import { ORDER_DIRECTION } from '@/constants/constant';
-import { MembersApi } from '@/api/churches/members.api';
+import { MembersApi } from '@/api/members/members.api';
 
 export type MemberTableProps = {
   onClickMemberItem: (memberId: string) => void;

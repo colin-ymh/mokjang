@@ -4,7 +4,7 @@ import { useParams } from 'next/navigation';
 
 import CheckRegisterView from '@/components/organisms/register/check-register.view';
 import { BLANK } from '@/constants/constant';
-import { RequestInfoApi } from '@/api/churches/request-info.api';
+import { RequestInfoApi } from '@/api/members/request-info.api';
 import { getFormattedMobilePhone, getFormattedName } from '@/utils/format';
 import { usePageRouter } from '@/utils/router';
 import { useDispatch, useSelector } from 'react-redux';

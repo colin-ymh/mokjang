@@ -129,6 +129,7 @@ export type EducationTerm = {
   instructor: Member;
   educationSessions: EducationSession[];
   educationEnrollments: EducationEnrollment[];
+  isDoneCount: number;
 };
 
 export const DEFAULT_EDUCATION_TERM: EducationTerm = {
@@ -146,6 +147,7 @@ export const DEFAULT_EDUCATION_TERM: EducationTerm = {
   educationName: BLANK,
   enrollmentCount: 0,
   instructor: DEFAULT_MEMBER,
+  isDoneCount: 0,
 };
 
 export type EducationSession = {
@@ -154,6 +156,7 @@ export type EducationSession = {
   session: number;
   content: string;
   sessionDate: string;
+  isDone: boolean;
 };
 
 export const DEFAULT_EDUCATION_SESSION: EducationSession = {
@@ -162,6 +165,7 @@ export const DEFAULT_EDUCATION_SESSION: EducationSession = {
   session: 0,
   content: BLANK,
   sessionDate: BLANK,
+  isDone: false,
 };
 
 export type SessionAttendance = {

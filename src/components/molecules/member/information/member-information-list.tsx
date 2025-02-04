@@ -7,7 +7,7 @@ import {
   setMember,
 } from '@/redux/reducers/member-register-reducer';
 
-import { MembersApi } from '@/api/churches/members.api';
+import { MembersApi } from '@/api/members/members.api';
 import { MinistryHistoryApi } from '@/api/history/ministry-history.api';
 import { OfficerHistoryApi } from '@/api/history/officer-history.api';
 import { GroupHistoryApi } from '@/api/history/group-history.api';

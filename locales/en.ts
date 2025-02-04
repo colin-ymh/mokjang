@@ -162,6 +162,8 @@ export default {
   'tableHeader.note': 'Memo',
   'tableHeader.mobilePhone': 'Mobile Phone',
   'tableHeader.status': 'Status',
+
+  'tableHeader.isDoneCount': 'Progressed',
   /*-------------------table header-------------------*/
 
   /*------------------- register-------------------*/
@@ -198,6 +200,7 @@ export default {
   'button.request': 'Request',
   'button.add': 'Add',
   'button.signIn': 'Sign In',
+  'button.logOut': 'Log Out',
   'button.saveTerm': 'Save New Term',
   'button.addMember': 'Add Member',
 

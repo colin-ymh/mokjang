@@ -3,7 +3,7 @@ import { AxiosResponse } from 'axios';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 
-import { GetMembersResponse, MembersApi } from '@/api/churches/members.api';
+import { GetMembersResponse, MembersApi } from '@/api/members/members.api';
 import { BLANK, FAMILY, GENDER } from '@/constants/constant';
 import FamilyModalView from '@/components/atoms/common/modal/family-modal.view';
 import { useFamilyRelationDropdownItems } from '@/hooks/dropdown/dropdown-items';

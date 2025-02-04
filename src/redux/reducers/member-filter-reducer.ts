@@ -3,7 +3,7 @@ import { BLANK, NULL, ORDER_DIRECTION } from '@/constants/constant';
 import { MEMBER } from '@/constants/member/member-column';
 import { Member } from '@/models/member/member';
 import { RootState } from '@/redux/store';
-import { MembersApi } from '@/api/churches/members.api';
+import { MembersApi } from '@/api/members/members.api';
 
 type MEMBER_FILTER = {
   [MEMBER.NAME]: string;

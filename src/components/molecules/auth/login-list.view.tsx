@@ -1,17 +1,30 @@
+import { ChangeEvent } from 'react';
 import styled from 'styled-components';
+
 import { MainText } from '@/components/atoms/common/text/main-text';
-import { BLACK, GRAY } from '@/constants/styles/color';
-import { AUTH } from '@/api/auth/auth.api';
+import { GRAY } from '@/constants/styles/color';
+import LabelInput from '@/components/atoms/common/input/label-input';
+import { SIZE } from '@/constants/styles/style';
+import Button from '@/components/atoms/common/button/button';
 
 const ListContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
 
-  gap: 10px;
+  gap: 50px;
   padding: 10px;
   width: 80%;
+`;
+
+const InputContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  gap: 10px;
 `;
 
 const OAuthItem = styled.div`
@@ -26,24 +39,41 @@ const OAuthItem = styled.div`
 `;
 
 type LoginListViewProps = {
-  onClickItem: (provider: AUTH) => void;
+  name: string;
+  phone: string;
+  onChangeName: (event: ChangeEvent<HTMLInputElement>) => void;
+  onChangePhone: (event: ChangeEvent<HTMLInputElement>) => void;
+  onClickItem: () => void;
 };
 
-const LoginListView = ({ onClickItem }: LoginListViewProps) => {
+const LoginListView = ({
+  name,
+  phone,
+  onChangeName,
+  onChangePhone,
+  onClickItem,
+}: LoginListViewProps) => {
   return (
     <ListContainer>
-      <OAuthItem onClick={() => onClickItem(AUTH.NAVER)}>
-        <MainText color={BLACK}>{'네이버'}</MainText>
-      </OAuthItem>
-      <OAuthItem onClick={() => onClickItem(AUTH.GOOGLE)}>
-        <MainText color={BLACK}>{'구글'}</MainText>
-      </OAuthItem>
-      <OAuthItem onClick={() => onClickItem(AUTH.KAKAO)}>
-        <MainText color={BLACK}>{'카카오'}</MainText>
-      </OAuthItem>
-      <OAuthItem>
-        <MainText color={BLACK}>{'애플'}</MainText>
-      </OAuthItem>
+      <MainText size={SIZE.LARGE}>{'목장 테스트 로그인'}</MainText>
+      <InputContainer>
+        <LabelInput label={'이름'} value={name} onChange={onChangeName} />
+        <LabelInput label={'전화번호'} value={phone} onChange={onChangePhone} />
+      </InputContainer>
+
+      {/*<OAuthItem onClick={() => onClickItem(AUTH.NAVER)}>*/}
+      {/*  <MainText color={BLACK}>{'네이버'}</MainText>*/}
+      {/*</OAuthItem>*/}
+      {/*<OAuthItem onClick={() => onClickItem(AUTH.GOOGLE)}>*/}
+      {/*  <MainText color={BLACK}>{'구글'}</MainText>*/}
+      {/*</OAuthItem>*/}
+      {/*<OAuthItem onClick={() => onClickItem(AUTH.KAKAO)}>*/}
+      {/*  <MainText color={BLACK}>{'카카오'}</MainText>*/}
+      {/*</OAuthItem>*/}
+      {/*<OAuthItem>*/}
+      {/*  <MainText color={BLACK}>{'애플'}</MainText>*/}
+      {/*</OAuthItem>*/}
+      <Button text={'로그인'} onClick={onClickItem} height={40} />
     </ListContainer>
   );
 };

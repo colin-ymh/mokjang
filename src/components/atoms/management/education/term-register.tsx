@@ -2,7 +2,7 @@ import React, { ChangeEvent, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 
-import { MembersApi } from '@/api/churches/members.api';
+import { MembersApi } from '@/api/members/members.api';
 import { EducationTermsApi } from '@/api/management/education/education-terms.api';
 import TermRegisterView from '@/components/atoms/management/education/term-register.view';
 import { BLANK } from '@/constants/constant';

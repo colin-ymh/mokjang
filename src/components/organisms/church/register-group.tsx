@@ -1,52 +1,44 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
-
-import { GroupsApi } from '@/api/management/group/groups.api';
+import RegisterGroupView from '@/components/organisms/church/register-group.view';
 import { DEFAULT_GROUP, Group } from '@/models/management/management';
 import { getOrderedGroups } from '@/utils/group';
-import RegisterGroupView from '@/components/organisms/church/register-group.view';
-import { useI18n } from '../../../../locales/client';
 import { usePageRouter } from '@/utils/router';
+
+import { useI18n } from '../../../../locales/client';
 
 type GroupListProps = {};
 
 const RegisterGroup = ({}: GroupListProps) => {
   const t = useI18n();
-  const groupsApi = new GroupsApi(false);
-  const churchId = useSelector((state: RootState) => state.church.churchId);
+  const { churchId, groups } = useSelector((state: RootState) => state.church);
   const router = usePageRouter();
 
-  // 선택된 그룹
+  // 선택된 그룹 (의미 없을수도)
   const [selectedGroup, setSelectedGroup] = useState<Group>(DEFAULT_GROUP);
 
   // 전체 그룹 배열
-  const [groups, setGroups] = useState<Group[]>([]);
+  const [orderedGroups, setOrderedGroups] = useState<Group[]>([]);
 
   // 닫혀있는 그룹들
   const [closedGroups, setClosedGroups] = useState<Set<number>>(new Set());
 
   // 그룹 불러오기
-  const fetchGroups = () => {
-    groupsApi.getGroups({ churchId }).then((response) => {
-      if (response.status === 200) {
-        const orderedGroups = getOrderedGroups(response.data);
+  const fetchOrderedGroups = () => {
+    // 최상단에 "전체" 그룹을 추가
+    const allGroup: Group = {
+      id: null, // 고유 ID (임의로 0으로 설정)
+      name: t('all'),
+      parentGroupId: null,
+      childGroups: getOrderedGroups(groups), // 모든 그룹을 하위 그룹으로 설정
+      membersCount: 0,
+      churchId,
+      childGroupIds: [],
+      roles: [],
+    };
 
-        // 최상단에 "전체" 그룹을 추가
-        const allGroup: Group = {
-          id: null, // 고유 ID (임의로 0으로 설정)
-          name: t('all'),
-          parentGroupId: null,
-          childGroups: orderedGroups, // 모든 그룹을 하위 그룹으로 설정
-          membersCount: 0,
-          churchId,
-          childGroupIds: [],
-          roles: [],
-        };
-
-        setGroups([allGroup]);
-      }
-    });
+    setOrderedGroups([allGroup]);
   };
 
   // 그룹 열고 닫기
@@ -69,20 +61,22 @@ const RegisterGroup = ({}: GroupListProps) => {
     router.push('church/register/officer');
   };
 
+  // 교회 정보를 통해 소그룹들 불러오기
   useEffect(() => {
     if (churchId) {
-      fetchGroups();
+      fetchOrderedGroups();
     }
-  }, [churchId]);
+  }, [churchId, groups]);
 
   const props = {
-    groups,
+    groups: orderedGroups,
     closedGroups,
     selectedGroupId: selectedGroup.id,
-    setSelectedGroup,
+    setSelectedGroup: setSelectedGroup,
     onClickToggle,
     onClickSave,
   };
+
   return (
     <>
       <RegisterGroupView {...props} />

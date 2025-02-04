@@ -83,10 +83,10 @@ const getColumnWidth = (id: EDUCATION_TERM) => {
     case EDUCATION_TERM.PERIOD:
       return 40;
     case EDUCATION_TERM.EDUCATION_ENROLLMENTS:
-      return 5;
+      return 10;
     case EDUCATION_TERM.INSTRUCTOR:
       return 20;
-    case EDUCATION_TERM.NUMBER_OF_SESSION:
+    case EDUCATION_TERM.IS_DONE_COUNT:
       return 10;
     default:
       return 0;
@@ -135,7 +135,7 @@ export const TERM_TABLE_HEADER: TERM_TABLE_HEADER_ITEM[] = [
     isDate: false,
   },
   {
-    id: EDUCATION_TERM.NUMBER_OF_SESSION,
+    id: EDUCATION_TERM.IS_DONE_COUNT,
     isShown: true,
     isSortable: false,
     isFilterable: false,
@@ -182,8 +182,10 @@ const TermTableView = ({
         return <MainText>{term?.enrollmentCount}</MainText>;
       case EDUCATION_TERM.INSTRUCTOR:
         return <MainText>{term?.instructor?.name}</MainText>;
-      case EDUCATION_TERM.NUMBER_OF_SESSION:
-        return <MainText></MainText>;
+      case EDUCATION_TERM.IS_DONE_COUNT:
+        return (
+          <MainText>{`${term?.isDoneCount} / ${term?.numberOfSessions}`}</MainText>
+        );
       default:
         return null;
     }

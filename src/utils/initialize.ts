@@ -1,9 +1,12 @@
-import { useDispatch } from 'react-redux';
-import { AppDispatch } from '@/redux/store';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '@/redux/store';
+
 import { MinistriesApi } from '@/api/management/ministry/ministries.api';
 import { EducationsApi } from '@/api/management/education/educations.api';
 import { OfficersApi } from '@/api/management/officer/officers.api';
 import {
+  setChurch,
   setChurchId,
   setEducations,
   setGroups,
@@ -13,38 +16,103 @@ import {
 } from '@/redux/reducers/church-reducer';
 import { GroupsApi } from '@/api/management/group/groups.api';
 import { MinistryGroupsApi } from '@/api/management/ministry/ministry-groups.api';
+import { usePageRouter } from '@/utils/router';
+import { setAuthorizationToken } from '@/api/authorize-axios';
+import { setUser } from '@/redux/reducers/user-reducer';
+import { AuthApi } from '@/api/auth/auth.api';
 
-export const useInitializeChurch = (id: string) => {
+export const useInitializeChurch = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const churchId = useSelector((state: RootState) => state.church.churchId); // 전역 상태에서 churchId 가져오기
+
   const ministryGroupsApi = new MinistryGroupsApi(false);
   const ministriesApi = new MinistriesApi(false);
   const officersApi = new OfficersApi(false);
   const educationsApi = new EducationsApi(false);
   const groupsApi = new GroupsApi(false);
 
+  // **전역 상태의 churchId를 이용하여 초기화**
   const initialize = () => {
-    dispatch(setChurchId(id));
+    if (!churchId) {
+      console.warn('교회 ID가 설정되지 않았습니다.');
+      return;
+    }
 
     ministryGroupsApi
-      .getMinistryGroups({ churchId: id })
-      .then((response) => dispatch(setMinistryGroups(response.data)));
+      .getMinistryGroups({ churchId })
+      .then((response) => dispatch(setMinistryGroups(response.data)))
+      .catch((error) => console.error('Ministry Groups 불러오기 실패:', error));
 
     ministriesApi
-      .getMinistries({ churchId: id })
-      .then((response) => dispatch(setMinistries(response.data)));
+      .getMinistries({ churchId })
+      .then((response) => dispatch(setMinistries(response.data)))
+      .catch((error) => console.error('Ministries 불러오기 실패:', error));
 
     officersApi
-      .getOfficers({ churchId: id })
-      .then((response) => dispatch(setOfficers(response.data)));
+      .getOfficers({ churchId })
+      .then((response) => dispatch(setOfficers(response.data)))
+      .catch((error) => console.error('Officers 불러오기 실패:', error));
 
     educationsApi
-      .getEducations({ churchId: id })
-      .then((response) => dispatch(setEducations(response.data.data)));
+      .getEducations({ churchId })
+      .then((response) => dispatch(setEducations(response.data.data)))
+      .catch((error) => console.error('Educations 불러오기 실패:', error));
 
     groupsApi
-      .getGroups({ churchId: id })
-      .then((response) => dispatch(setGroups(response.data)));
+      .getGroups({ churchId })
+      .then((response) => dispatch(setGroups(response.data)))
+      .catch((error) => console.error('Groups 불러오기 실패:', error));
   };
 
-  return initialize;
+  // **churchId가 변경될 때마다 자동으로 initialize 호출**
+  useEffect(() => {
+    if (churchId) {
+      initialize(); // 전역 상태의 churchId로 초기화
+    }
+  }, [churchId]);
+
+  return initialize; // 필요 시 수동으로 호출할 수 있도록 반환
+};
+
+export const useInitializeUser = () => {
+  const router = usePageRouter();
+  const dispatch = useDispatch<AppDispatch>();
+  const authApi = new AuthApi(false);
+
+  // **브라우저 환경에서만 accessToken을 가져옴**
+  const accessToken =
+    typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
+
+  return () => {
+    if (!accessToken) {
+      router.push('/login');
+      return;
+    }
+
+    try {
+      setAuthorizationToken(accessToken);
+
+      authApi.getUser().then((response) => {
+        const newUser = response.data;
+        dispatch(setUser(newUser));
+
+        // 등록된 교회가 있는 경우
+        if (newUser?.adminChurch?.id || newUser?.managingChurch?.id) {
+          dispatch(setChurch(newUser.adminChurch));
+          dispatch(setChurchId(newUser.adminChurch.id));
+          router.push(''); // 홈 페이지로 리다이렉트
+        }
+        // 등록된 교회가 없는 경우
+        else {
+          router.push('/church/register'); // 교회 등록 페이지로 리다이렉트
+        }
+      });
+    } catch (error) {
+      // **토큰 삭제 및 로그인 페이지로 이동**
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('accessToken');
+      }
+      router.push('/login');
+    }
+  }; // **initialize 함수를 반환**
 };

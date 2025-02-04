@@ -77,3 +77,13 @@ export const getNewMemberDate = (): string => {
   // yyyy-mm-dd 형태로 반환
   return `${year}-${month}-${day}`;
 };
+
+/**
+ * second 를 mm:ss 형식으로 변경
+ */
+export const getMinuteFromSecond = (target: number) => {
+  const minute = String(Math.floor(target / 60)).padStart(2, '0');
+  const second = String(target % 60).padStart(2, '0');
+
+  return `${minute}:${second}`;
+};

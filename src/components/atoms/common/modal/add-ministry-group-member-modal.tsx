@@ -2,7 +2,7 @@ import { ChangeEvent, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 
-import { MembersApi } from '@/api/churches/members.api';
+import { MembersApi } from '@/api/members/members.api';
 import { BLANK } from '@/constants/constant';
 import AddMinistryGroupMemberModalView from '@/components/atoms/common/modal/add-ministry-group-member-modal.view';
 import { Member } from '@/models/member/member';

@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 import { setMember, setType } from '@/redux/reducers/member-register-reducer';
 
-import { GetMembersResponse, MembersApi } from '@/api/churches/members.api';
+import { GetMembersResponse, MembersApi } from '@/api/members/members.api';
 import RequiredRegisterView from '@/components/molecules/register/required-register.view';
 import {
   BLANK,

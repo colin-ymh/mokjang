@@ -5,10 +5,10 @@ import { MainText } from '@/components/atoms/common/text/main-text';
 import { FamilyMember } from '@/models/member/member';
 import { GRAY, WHITE } from '@/constants/styles/color';
 import FamilyModal from '@/components/atoms/common/modal/family-modal';
+import FamilyTable from '@/components/atoms/member/information/family-table';
 
 import { useScopedI18n } from '../../../../../locales/client';
 import Plus from '../../../../../public/svg/plus.svg';
-import FamilyTable from '@/components/atoms/member/information/family-table';
 
 const ListContainer = styled.div`
   display: flex;

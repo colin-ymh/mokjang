@@ -261,7 +261,7 @@ const FamilyTableView = ({
       case MEMBER.AGE:
         return (
           <MainText>
-            {member.familyMember.birth &&
+            {member.familyMember?.birth &&
               getAge(getDateFromString(member.familyMember.birth))}
           </MainText>
         );

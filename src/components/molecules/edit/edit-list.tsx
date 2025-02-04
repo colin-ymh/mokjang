@@ -6,7 +6,7 @@ import { AxiosResponse } from 'axios';
 import DaumPostcodeEmbed, { Address } from 'react-daum-postcode';
 
 import EditListView from '@/components/molecules/edit/edit-list.view';
-import { GetMembersResponse, MembersApi } from '@/api/churches/members.api';
+import { GetMembersResponse, MembersApi } from '@/api/members/members.api';
 import { Member } from '@/models/member/member';
 import {
   BLANK,

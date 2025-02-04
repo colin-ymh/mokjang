@@ -1,7 +1,8 @@
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { MainText } from '@/components/atoms/common/text/main-text';
-import { GRAY } from '@/constants/styles/color';
 import { SIZE } from '@/constants/styles/style';
+import { RootState } from '@/redux/store';
 
 const HeaderContainer = styled.div`
   display: flex;
@@ -14,12 +15,11 @@ const HeaderContainer = styled.div`
 `;
 
 const SideBarHeader = () => {
+  const { church } = useSelector((state: RootState) => state.church);
+
   return (
     <HeaderContainer>
-      <MainText size={SIZE.EXTRA_LARGE}>워크리움 교회</MainText>
-      <MainText size={SIZE.LARGE} fontWeight={600} color={GRAY.DARK}>
-        나천호 목사
-      </MainText>
+      <MainText size={SIZE.EXTRA_LARGE}>{church.name}</MainText>
     </HeaderContainer>
   );
 };

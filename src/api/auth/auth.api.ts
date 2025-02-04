@@ -1,10 +1,14 @@
 import axios, { AxiosResponse } from 'axios';
-import { EditMemberBody } from '@/api/churches/members.api';
-import { FAMILY } from '@/constants/constant';
 import { SERVER_URL, TEST_SERVER_URL } from '@/constants/state/url';
 import authorizeAxios from '@/api/authorize-axios';
 
 class HTTPError extends Error {}
+
+export enum IS_TEST {
+  INTERNAL_TEST = 'internalTest',
+  BETA_TEST = 'betaTest',
+  PRODUCTION = 'production',
+}
 
 export enum AUTH {
   GOOGLE = 'google',
@@ -17,17 +21,16 @@ type getOAuthParams = {
 };
 
 type getTestAuthParams = {
-  provider: AUTH;
+  provider: string;
   providerId: string;
 };
 
-type getVerificationRequestParams = {
-  isTest: boolean;
-};
+type getVerificationRequestParams = {};
 
 type getVerificationRequestBody = {
   name: string;
   mobilePhone: string;
+  isTest: IS_TEST;
 };
 
 type getVerificationVerifyBody = {
@@ -96,13 +99,7 @@ export class AuthApi {
     params: getVerificationRequestParams,
     body: getVerificationRequestBody
   ): Promise<AxiosResponse> => {
-    const { isTest } = params;
-
     const url = new URL('/auth/verification/request', this._url);
-
-    if (isTest !== undefined) {
-      url.searchParams.append('isTest', String(isTest));
-    }
 
     try {
       return await authorizeAxios.post(url.toString(), body);
@@ -144,7 +141,7 @@ export class AuthApi {
   };
 
   /**
-   * 리프레시 토큰 재발급
+   * Access 토큰 재발급
    * @returns {Promise<AxiosResponse>}
    */
   public getRefreshToken = async (): Promise<AxiosResponse> => {
@@ -152,6 +149,20 @@ export class AuthApi {
 
     try {
       return await authorizeAxios.post(url.toString());
+    } catch (error) {
+      throw new HTTPError(`Fetch error: ${error}`);
+    }
+  };
+
+  /**
+   * 유저 정보 가져오기
+   * @returns {Promise<AxiosResponse>}
+   */
+  public getUser = async (): Promise<AxiosResponse> => {
+    const url = new URL('/auth/user', this._url);
+
+    try {
+      return await authorizeAxios.get(url.toString());
     } catch (error) {
       throw new HTTPError(`Fetch error: ${error}`);
     }

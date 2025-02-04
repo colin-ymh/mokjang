@@ -1,20 +1,16 @@
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent } from 'react';
 import styled from 'styled-components';
 
 import LabelInput from '@/components/atoms/common/input/label-input';
 import Button from '@/components/atoms/common/button/button';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { BLUE, GRAY, MAIN } from '@/constants/styles/color';
+import { MEMBER } from '@/constants/member/member-column';
+import { getIsWellFormedMobilePhone, getIsWellFormedName } from '@/utils/check';
+import { getMinuteFromSecond } from '@/utils/date';
 
 import { useI18n, useScopedI18n } from '../../../../locales/client';
 import Check from '../../../../public/svg/check.svg';
-import { BLANK } from '@/constants/constant';
-import { MEMBER } from '@/constants/member/member-column';
-import { getFormattedMobilePhone, getFormattedName } from '@/utils/format';
-import { getIsWellFormedMobilePhone, getIsWellFormedName } from '@/utils/check';
-import { AuthApi } from '@/api/auth/auth.api';
-import { usePageRouter } from '@/utils/router';
-import UserRegisterList from '@/components/molecules/auth/user-register-list';
 
 const ListContainer = styled.div`
   display: flex;
@@ -31,11 +27,32 @@ const InputContainer = styled.div`
   padding: 0 40px;
 `;
 
-const RowContainer = styled.div`
+const RowContainer = styled.div<{ $isShown?: boolean }>`
   display: flex;
   flex-direction: row;
   align-items: flex-end;
   gap: 10px;
+
+  /* 트랜지션 효과 */
+  transition: opacity 0.2s ease;
+
+  /* display: none 대신, opacity와 pointer-events로 show/hide */
+  opacity: ${({ $isShown }) => ($isShown ? 1 : 0)};
+  pointer-events: ${({ $isShown }) => ($isShown ? 'auto' : 'none')};
+`;
+
+const TimeContainer = styled.div<{ $isShown?: boolean }>`
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  padding-left: 10px;
+
+  /* 트랜지션 효과 */
+  transition: opacity 0.2s ease;
+
+  /* display: none 대신, opacity와 pointer-events로 show/hide */
+  opacity: ${({ $isShown }) => ($isShown ? 1 : 0)};
+  pointer-events: ${({ $isShown }) => ($isShown ? 'auto' : 'none')};
 `;
 
 const ConsentContainer = styled.div`
@@ -63,6 +80,7 @@ type UserRegisterListViewProps = {
   name: string;
   mobilePhone: string;
   verifyNumber: string;
+  second: number;
   isRequested: boolean;
   isVerified: boolean;
   isConsent: boolean;
@@ -79,6 +97,7 @@ const UserRegisterListView = ({
   name,
   mobilePhone,
   verifyNumber,
+  second,
   isRequested,
   isVerified,
   isConsent,
@@ -103,7 +122,7 @@ const UserRegisterListView = ({
           onChange={onChangeName}
           disabled={isVerified}
         />
-        <RowContainer>
+        <RowContainer $isShown={true}>
           <LabelInput
             value={mobilePhone}
             label={t(MEMBER.MOBILE_PHONE)}
@@ -132,7 +151,7 @@ const UserRegisterListView = ({
             }
           />
         </RowContainer>
-        <RowContainer>
+        <RowContainer $isShown={!!second}>
           <LabelInput
             value={verifyNumber}
             label={t('verifyNumber')}
@@ -155,6 +174,9 @@ const UserRegisterListView = ({
             onClick={onClickVerify}
           />
         </RowContainer>
+        <TimeContainer $isShown={!!second}>
+          <MainText>{getMinuteFromSecond(second)}</MainText>
+        </TimeContainer>
         <ConsentContainer>
           <MainText fontSize={12} color={BLUE.DEFAULT}>
             개인정보 수집 및 이용 동의

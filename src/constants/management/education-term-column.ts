@@ -16,6 +16,7 @@ export enum EDUCATION_TERM {
   INSTRUCTOR = 'instructor',
   EDUCATION_SESSIONS = 'educationSessions',
   EDUCATION_ENROLLMENTS = 'educationEnrollments',
+  IS_DONE_COUNT = 'isDoneCount',
 
   // 임의추가
   PERIOD = 'period',

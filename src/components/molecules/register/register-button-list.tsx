@@ -11,8 +11,8 @@ import {
   setMembers,
 } from '@/redux/reducers/member-filter-reducer';
 
-import { MembersApi } from '@/api/churches/members.api';
-import { RequestInfoApi } from '@/api/churches/request-info.api';
+import { MembersApi } from '@/api/members/members.api';
+import { RequestInfoApi } from '@/api/members/request-info.api';
 import {
   BLANK,
   MEMBER_REGISTER_STAGE,
