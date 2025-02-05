@@ -192,6 +192,7 @@ const EditListView = ({
     <RequiredRegisterContainer>
       <ImageContainer>
         <MemberImageInput
+          memberId={member.id}
           value={member.profileImage}
           onChange={onChangeProfileImage}
         />

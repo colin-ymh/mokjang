@@ -135,6 +135,7 @@ const PersonalRegisterView = ({
       <ImageContainer>
         {/* 프로필 이미지*/}
         <MemberImageInput
+          memberId={member.id}
           value={member.profileImage}
           onChange={onChangeProfileImage}
         />
