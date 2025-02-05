@@ -22,10 +22,9 @@ import useWindowSize from '@/hooks/window/window';
 import { LOCALE } from '@/constants/state/locale';
 import CheckButton from '@/components/atoms/common/button/check-button';
 import Button from '@/components/atoms/common/button/button';
-
-import DefaultImage from '../../../../../public/png/default-member-image.png';
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
 import ConfirmPopup from '@/components/atoms/common/popup/error-popup';
+import { getRandomImage } from '@/utils/image';
 
 const getColumnWidth = (id: string) => {
   switch (id) {
@@ -91,6 +90,7 @@ const TableHeader = styled.th<{ id: string }>`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  background-color: ${GRAY.SIDE_BAR};
 
   width: ${({ id }) => {
     return `${getColumnWidth(id)}px`;
@@ -117,8 +117,7 @@ const TableData = styled.td<{ id: string; $index: number }>`
   border-bottom: 1px solid ${GRAY.LIGHT};
   border-right: 1px solid ${GRAY.LIGHT};
   padding: 5px;
-  background-color: ${({ $index }) =>
-    $index % 2 === 0 ? WHITE : GRAY.SIDE_BAR};
+  background-color: ${({ $index }) => ($index % 2 === 0 ? WHITE : WHITE)};
   cursor: pointer;
   z-index: 10;
   width: ${({ id }) => `${getColumnWidth(id)}px`};
@@ -215,7 +214,7 @@ const MemberTableView = ({
         return (
           <ProfileContainer>
             <ProfileImage
-              src={member.profileImage || DefaultImage}
+              src={member.profileImage || getRandomImage(member.id)}
               alt={MEMBER.PROFILE_IMAGE}
             />
             <MainText>{member.name}</MainText>

@@ -124,7 +124,10 @@ const SlideButtonList = ({
   return (
     <ListContainer
       $position={position}
-      onClick={() => setIsOpened(true)}
+      onClick={(event) => {
+        event.stopPropagation();
+        setIsOpened(true);
+      }}
       onMouseLeave={() => setIsOpened(false)}
     >
       {/* Kebab 버튼 (hover 전에는 보이고, hover 후에는 사라짐) */}

@@ -1,6 +1,12 @@
 import Resizer from 'react-image-file-resizer';
 import { Area } from 'react-easy-crop';
 
+import profile1 from '../../public/png/profile1.png';
+import profile2 from '../../public/png/profile2.png';
+import profile3 from '../../public/png/profile3.png';
+import profile4 from '../../public/png/profile4.png';
+import profile5 from '../../public/png/profile5.png';
+
 /**
  * 이미지 크기를 조정하고 Base64 문자열로 반환
  * @param imageFile 조정하고자 하는 이미지 파일
@@ -117,4 +123,14 @@ export const getCroppedImage = async (
       resolve(canvas.toDataURL('image/jpeg'));
     };
   });
+};
+
+const images = [profile1, profile2, profile3, profile4, profile5];
+/**
+ * FGT 를 위한 랜덤 기본 이미지 제공
+ */
+export const getRandomImage = (id: string) => {
+  const random = parseInt(id) % 5;
+
+  return images[random];
 };

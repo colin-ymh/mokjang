@@ -21,7 +21,7 @@ const AddMinistryGroupContainer = styled.div<{ $level: number }>`
   justify-content: center;
   align-items: center;
   position: relative;
-  gap: 10px;
+  //gap: 10px;
 
   width: ${({ $level }) => `${100 - $level * 5}%`};
 `;

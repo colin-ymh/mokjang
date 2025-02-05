@@ -16,9 +16,8 @@ import {
   getLocaleDateFromDashDate,
 } from '@/utils/format';
 import { LOCALE } from '@/constants/state/locale';
-
-import DefaultImage from '../../../../../public/png/default-member-image.png';
 import GroupMemberTableHeader from '@/components/atoms/management/group/group-member-table-header';
+import { getRandomImage } from '@/utils/image';
 
 const getColumnWidth = (id: string) => {
   switch (id) {
@@ -185,7 +184,7 @@ const GroupMemberTableView = ({
         return (
           <ProfileContainer>
             <ProfileImage
-              src={member.profileImage || DefaultImage}
+              src={member.profileImage || getRandomImage(member.id)}
               alt={MEMBER.PROFILE_IMAGE}
             />
             <MainText>{member.name}</MainText>

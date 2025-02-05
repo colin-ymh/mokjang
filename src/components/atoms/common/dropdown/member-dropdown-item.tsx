@@ -7,8 +7,7 @@ import { MainText } from '@/components/atoms/common/text/main-text';
 import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-item';
 import { GENDER } from '@/constants/constant';
 import { MEMBER } from '@/constants/member/member-column';
-
-import DefaultImage from '../../../../../public/png/default-member-image.png';
+import { getRandomImage } from '@/utils/image';
 
 const DropdownContainer = styled.div`
   display: flex;
@@ -60,7 +59,7 @@ const MemberDropdownItem = ({
     <DropdownContainer>
       <ItemContainer onClick={() => onClick(item.value)} $isFocused={isFocused}>
         <ProfileImage
-          src={item.profileImage || DefaultImage}
+          src={item.profileImage || getRandomImage(item.value)}
           alt={MEMBER.PROFILE_IMAGE}
         />
         <MainText color={isSelected ? MAIN.DEFAULT : BLACK}>

@@ -6,6 +6,7 @@ import { MainText } from '@/components/atoms/common/text/main-text';
 
 import Kebab from '../../../../../public/svg/kebab.svg';
 import { useScopedI18n } from '../../../../../locales/client';
+import TransparentBackground from '@/components/atoms/common/etc/transparent-background';
 
 const ListContainer = styled.div<{
   $position: string;
@@ -87,6 +88,10 @@ const SlideButtonList = ({
 
   return (
     <ListContainer $position={position} top={top} right={right}>
+      <TransparentBackground
+        isOpened={isOpened}
+        onClick={() => setIsOpened(false)}
+      />
       {/* Kebab 버튼 (hover 전에는 보이고, hover 후에는 사라짐) */}
       <KebabButton $buttonSize={buttonSize} onClick={onClickKebab} />
       {/* 수정/삭제/추가 버튼 */}

@@ -9,11 +9,11 @@ import { BLANK } from '@/constants/constant';
 import {
   getCroppedImage,
   getFileFromBase64,
+  getRandomImage,
   getResizedImage,
 } from '@/utils/image';
 
 import Delete from '../../../../public/svg/cancel.svg';
-import DefaultImage from '../../../../public/png/default-member-image.png';
 import { useScopedI18n } from '../../../../locales/client';
 
 const MemberImageInputContainer = styled.div`
@@ -73,6 +73,7 @@ const ButtonContainer = styled.div`
 `;
 
 type MemberImageInputProps = {
+  memberId: string;
   value: string;
   onChange: (image: string) => void;
   width?: number;
@@ -81,6 +82,7 @@ type MemberImageInputProps = {
 
 /* 이미지 기본값 110*110px */
 const MemberImageInput = ({
+  memberId,
   value,
   onChange,
   width = 90,
@@ -178,11 +180,11 @@ const MemberImageInput = ({
       <ImageContainer>
         {/* 실제 이미지가 들어가고, 사용자에게 보여지는 부분*/}
         <MemberImage
-          src={croppedImage || DefaultImage}
+          src={croppedImage || getRandomImage(memberId)}
           alt="member profile image"
           $width={width}
           $height={height}
-          onClick={onClickMemberImage}
+          // onClick={onClickMemberImage}
         />
         {/* 이미지 삭제 버튼 */}
         <DeleteButton

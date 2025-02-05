@@ -44,7 +44,7 @@ const ButtonContainer = styled.button<{
   cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
   transition: all 0.3s ease;
   box-shadow: ${({ $isShadow, disabled }) =>
-    $isShadow && !disabled ? `2px 2px 10px rgba(0, 0, 0, 0.3)` : `none`};
+    $isShadow && !disabled ? `1px 1px 1px rgba(0, 0, 0, 0.2)` : `none`};
   overflow: hidden;
   flex-shrink: 0;
 `;
