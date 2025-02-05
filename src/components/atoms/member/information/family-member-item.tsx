@@ -126,7 +126,7 @@ const FamilyMemberItem = ({
         }}
         isAddShown={false}
         buttonSize={25}
-        hoverBackgroundColor={WHITE}
+        backgroundColor={WHITE}
       />
     </ItemContainer>
   );
