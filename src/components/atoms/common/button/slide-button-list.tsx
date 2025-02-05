@@ -28,7 +28,7 @@ const ButtonContainer = styled.div<{
   $isOpened: boolean;
   $buttonCount: number;
   $buttonSize: number;
-  $hoverBackgroundColor?: string;
+  $backgroundColor?: string;
 }>`
   display: flex;
   flex-direction: row;
@@ -43,8 +43,7 @@ const ButtonContainer = styled.div<{
   transition: all 0.1s ease-in-out;
 
   &:hover {
-    background-color: ${({ $hoverBackgroundColor }) =>
-      $hoverBackgroundColor || 'auto'};
+    background-color: ${({ $backgroundColor }) => $backgroundColor || 'auto'};
   }
 `;
 
@@ -100,7 +99,7 @@ type EditDeleteModalProps = {
   isDeleteShown?: boolean;
   isAddShown?: boolean;
   buttonSize?: number;
-  hoverBackgroundColor?: string;
+  backgroundColor?: string;
   position?: string;
 };
 
@@ -112,7 +111,7 @@ const SlideButtonList = ({
   isDeleteShown = true,
   isAddShown = true,
   buttonSize = 18,
-  hoverBackgroundColor,
+  backgroundColor,
   position = 'absolute',
 }: EditDeleteModalProps) => {
   const [isOpened, setIsOpened] = useState<boolean>(false);
@@ -138,7 +137,7 @@ const SlideButtonList = ({
         $isOpened={isOpened}
         $buttonCount={buttonCount}
         $buttonSize={buttonSize}
-        $hoverBackgroundColor={hoverBackgroundColor}
+        $backgroundColor={backgroundColor}
       >
         {isDeleteShown && (
           <DeleteButton onClick={onClickDelete} $buttonSize={buttonSize} />

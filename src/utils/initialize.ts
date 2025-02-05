@@ -79,11 +79,10 @@ export const useInitializeUser = () => {
   const dispatch = useDispatch<AppDispatch>();
   const authApi = new AuthApi(false);
 
-  // **브라우저 환경에서만 accessToken을 가져옴**
   const accessToken =
     typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
 
-  return () => {
+  return async () => {
     if (!accessToken) {
       router.push('/login');
       return;
@@ -92,27 +91,25 @@ export const useInitializeUser = () => {
     try {
       setAuthorizationToken(accessToken);
 
-      authApi.getUser().then((response) => {
-        const newUser = response.data;
-        dispatch(setUser(newUser));
+      // API 요청은 여기서 처리
+      const response = await authApi.getUser();
+      const newUser = response.data;
 
-        // 등록된 교회가 있는 경우
-        if (newUser?.adminChurch?.id || newUser?.managingChurch?.id) {
-          dispatch(setChurch(newUser.adminChurch));
-          dispatch(setChurchId(newUser.adminChurch.id));
-          router.push(''); // 홈 페이지로 리다이렉트
-        }
-        // 등록된 교회가 없는 경우
-        else {
-          router.push('/church/register'); // 교회 등록 페이지로 리다이렉트
-        }
-      });
+      // 상태 업데이트는 여기서 처리
+      dispatch(setUser(newUser));
+
+      if (newUser?.adminChurch?.id || newUser?.managingChurch?.id) {
+        dispatch(setChurch(newUser.adminChurch));
+        dispatch(setChurchId(newUser.adminChurch.id));
+        router.push(''); // 홈 페이지로 리다이렉트
+      } else {
+        router.push('/church/register'); // 교회 등록 페이지로 리다이렉트
+      }
     } catch (error) {
-      // **토큰 삭제 및 로그인 페이지로 이동**
       if (typeof window !== 'undefined') {
         localStorage.removeItem('accessToken');
       }
       router.push('/login');
     }
-  }; // **initialize 함수를 반환**
+  };
 };

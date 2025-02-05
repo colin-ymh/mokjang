@@ -99,6 +99,7 @@ const MemberTable = ({ onClickMemberItem, loadMembers }: MemberTableProps) => {
       await Promise.all(deletePromises);
 
       setCheckedMemberIds([]);
+      setIsPopupShown(false);
 
       // 3) 모든 삭제가 끝난 후 교인 목록 다시 불러오기
       await dispatch(fetchMembers({ churchId, currentPage: 1 })).then(

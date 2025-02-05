@@ -23,7 +23,7 @@ const AddGroupContainer = styled.div<{ $level: number }>`
   position: relative;
   //gap: 10px;
 
-  width: ${({ $level }) => `${100 - $level * 5}%`};
+  width: ${({ $level }) => `${100 - $level * 10}%`};
 `;
 
 const PlusButton = styled(Plus)`

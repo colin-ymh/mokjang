@@ -42,7 +42,7 @@ export default {
   educationInformation: '교육 정보',
   educationProcess: '진행사항',
   educationDate: '교육 일시',
-  sessionContent: '회차 보고',
+  sessionContent: '교육 내용',
   status: '수료',
   isSessionDone: '교육 완료',
 
@@ -193,7 +193,7 @@ export default {
 
   /*-------------------button-------------------*/
   'button.register': '등록하기',
-  'button.save': '저장',
+  'button.save': '저장하기',
   'button.edit': '수정하기',
   'button.delete': '삭제하기',
   'button.stop': '종료하기',
@@ -239,7 +239,7 @@ export default {
   'placeholder.session': '총 회차를 입력해주세요.',
   'placeholder.instructor': '진행자를 선택해주세요.',
   'placeholder.sessionDate': '교육 일시를 입력해주세요. (yyyy-mm-dd) ',
-  'placeholder.sessionContent': '회차 보고를 입력해주세요.',
+  'placeholder.sessionContent': '교육 내용를 입력해주세요.',
   /*-------------------placeholder-------------------*/
 
   /*-------------------radiobutton-------------------*/
