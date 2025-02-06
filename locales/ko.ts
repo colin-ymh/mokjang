@@ -201,7 +201,7 @@ export default {
   'button.saveFamily': '해당 가족만 추가하기',
   'button.goBack': '이전으로',
   'button.extra': '더 입력하기',
-  'button.invite': '초대하기',
+  'button.invite': '초대문자 전송하기',
   'button.cancel': '취소',
   'button.confirm': '확인',
   'button.filterSetting': '목록 설정',

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import { AxiosResponse } from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
@@ -24,6 +24,7 @@ import { getIsWellFormedMobilePhone } from '@/utils/check';
 import { Member } from '@/models/member/member';
 import { getAge, getDateFromString } from '@/utils/date';
 import { MemberDropdownType } from '@/components/atoms/common/dropdown/member-dropdown-item';
+import { useDebounce } from '@/hooks/debounce/debounce';
 
 const RequiredRegister = () => {
   const membersApi = new MembersApi(false);
@@ -43,17 +44,22 @@ const RequiredRegister = () => {
 
   // 인도자 이름
   const [guideName, setGuideName] = useState<string>(BLANK);
+
   // 검색된 인도자 목록
   const [guideItems, setGuideItems] = useState<MemberDropdownType[]>([]);
 
   // 가족 이름
   const [familyMemberName, setFamilyMemberName] = useState<string>(BLANK);
+
   // 검색된 가족 목록
   const [familyMemberItems, setFamilyMemberItems] = useState<
     MemberDropdownType[]
   >([]);
   // 선택된 가족의 성별
   const [familyGender, setFamilyGender] = useState<GENDER | undefined>();
+
+  const debouncedGuideName = useDebounce(guideName, 500);
+  const debouncedFamilyMemberName = useDebounce(familyMemberName, 500);
 
   // 새신자 타입 변경 시 이벤트
   const onChangeType = (type: MEMBER_REGISTER_TYPE) => {
@@ -78,38 +84,38 @@ const RequiredRegister = () => {
   };
 
   // 인도자 input 변경 시 이벤트
-  const onChangeGuideName = async (event: ChangeEvent<HTMLInputElement>) => {
+  const onChangeGuideName = (event: ChangeEvent<HTMLInputElement>) => {
+    setGuideName(getTrimmedString(event.target.value));
+  };
+
+  const fetchGuideMembers = async () => {
+    if (!debouncedGuideName) return;
     try {
-      const newGuideName = getTrimmedString(event.target.value);
-      setGuideName(newGuideName);
-
-      if (newGuideName) {
-        const response: AxiosResponse = await membersApi.getMembers({
-          churchId,
-          name: newGuideName,
-          page: 1,
-          take: 5,
-        });
-
-        const members: GetMembersResponse[] = response.data.data;
-        const newGuideItems: MemberDropdownType[] = members.map((member) => {
-          return {
-            value: member.id,
-            title: member.name,
-            gender: (member?.gender as GENDER) || undefined,
-            profileImage: member.profileImage || undefined,
-            age: member.birth
-              ? getAge(getDateFromString(member.birth))
-              : undefined,
-          };
-        });
-
-        setGuideItems(newGuideItems);
-      }
+      const response: AxiosResponse = await membersApi.getMembers({
+        churchId,
+        name: debouncedGuideName,
+        page: 1,
+        take: 5,
+      });
+      setGuideItems(
+        response.data.data.map((member: GetMembersResponse) => ({
+          value: member.id,
+          title: member.name,
+          gender: (member?.gender as GENDER) || undefined,
+          profileImage: member.profileImage || undefined,
+          age: member.birth
+            ? getAge(getDateFromString(member.birth))
+            : undefined,
+        }))
+      );
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));
     }
   };
+
+  useEffect(() => {
+    fetchGuideMembers();
+  }, [debouncedGuideName]);
 
   // 인도자 dropdown 선택 시 이벤트
   const onChangeGuidedById = (value: string) => {
@@ -121,42 +127,38 @@ const RequiredRegister = () => {
   };
 
   // 가족 이름 변경 시 이벤트
-  const onChangeFamilyMemberName = async (
-    event: ChangeEvent<HTMLInputElement>
-  ) => {
+  const onChangeFamilyMemberName = (event: ChangeEvent<HTMLInputElement>) => {
+    setFamilyMemberName(getTrimmedString(event.target.value));
+  };
+
+  const fetchFamilyMembers = async () => {
+    if (!debouncedFamilyMemberName) return;
     try {
-      const newFamilyMemberName = getTrimmedString(event.target.value);
-      setFamilyMemberName(newFamilyMemberName);
-
-      if (newFamilyMemberName) {
-        const response: AxiosResponse = await membersApi.getMembers({
-          churchId,
-          name: newFamilyMemberName,
-          page: 1,
-          take: 5,
-        });
-
-        const members: GetMembersResponse[] = response.data.data;
-        const newFamilyMemberItems: MemberDropdownType[] = members.map(
-          (member) => {
-            return {
-              value: member.id,
-              title: member.name,
-              gender: (member?.gender as GENDER) || undefined,
-              profileImage: member.profileImage || undefined,
-              age: member.birth
-                ? getAge(getDateFromString(member.birth))
-                : undefined,
-            };
-          }
-        );
-
-        setFamilyMemberItems(newFamilyMemberItems);
-      }
+      const response: AxiosResponse = await membersApi.getMembers({
+        churchId,
+        name: debouncedFamilyMemberName,
+        page: 1,
+        take: 5,
+      });
+      setFamilyMemberItems(
+        response.data.data.map((member: GetMembersResponse) => ({
+          value: member.id,
+          title: member.name,
+          gender: (member?.gender as GENDER) || undefined,
+          profileImage: member.profileImage || undefined,
+          age: member.birth
+            ? getAge(getDateFromString(member.birth))
+            : undefined,
+        }))
+      );
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));
     }
   };
+
+  useEffect(() => {
+    fetchFamilyMembers();
+  }, [debouncedFamilyMemberName]);
 
   // 가족 선택 시 이벤트
   const onChangeFamilyMemberId = (value: string) => {

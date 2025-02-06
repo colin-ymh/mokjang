@@ -1,6 +1,6 @@
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/redux/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '@/redux/store';
 
 import { DEFAULT_OFFICER, Officer } from '@/models/management/management';
 import { OfficersApi } from '@/api/management/officer/officers.api';
@@ -9,12 +9,16 @@ import RegisterOfficerView from '@/components/organisms/church/register-officer.
 import { getIsWellFormedTitle } from '@/utils/check';
 import { BLANK } from '@/constants/constant';
 import { getFormattedTitle } from '@/utils/format';
+import { setOfficers } from '@/redux/reducers/church-reducer';
 
 type OfficerListProps = {};
 
 const RegisterOfficer = ({}: OfficerListProps) => {
   const officersApi = new OfficersApi(false);
-  const churchId = useSelector((state: RootState) => state.church.churchId);
+  const dispatch = useDispatch<AppDispatch>();
+  const { churchId, officers } = useSelector(
+    (state: RootState) => state.church
+  );
   const router = usePageRouter();
   const nameInputRef = useRef<HTMLInputElement>(null);
 
@@ -26,9 +30,6 @@ const RegisterOfficer = ({}: OfficerListProps) => {
   // 선택된 직분
   const [selectedOfficer, setSelectedOfficer] =
     useState<Officer>(DEFAULT_OFFICER);
-
-  // 전체 직분 배열
-  const [officers, setOfficers] = useState<Officer[]>([]);
 
   // 새로운 직분 이름
   const [newOfficerName, setNewOfficerName] = useState<string>(BLANK);
@@ -58,7 +59,7 @@ const RegisterOfficer = ({}: OfficerListProps) => {
       const response = await officersApi.getOfficers({ churchId });
       if (response.status === 200) {
         const newOfficers = response.data;
-        setOfficers(newOfficers);
+        dispatch(setOfficers(newOfficers));
       }
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));

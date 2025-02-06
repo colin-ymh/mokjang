@@ -27,7 +27,7 @@ authorizeAxios.interceptors.request.use((config) => {
   if (token && config.headers) {
     config.headers.Authorization = `Bearer ${token}`;
   }
-  console.log('Authorization Header:', config.headers.Authorization);
+  // console.log('Authorization Header:', config.headers.Authorization);
   return config;
 });
 

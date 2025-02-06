@@ -130,11 +130,11 @@ const ChurchRegisterList = () => {
           value={denomination}
           onChange={onChangeDenomination}
         />
-        <LabelInput
-          label={'고유번호'}
-          value={identifyNumber}
-          onChange={onChangedIdentifyNumber}
-        />
+        {/*<LabelInput*/}
+        {/*  label={'고유번호'}*/}
+        {/*  value={identifyNumber}*/}
+        {/*  onChange={onChangedIdentifyNumber}*/}
+        {/*/>*/}
         <LabelInput
           label={'교회주소'}
           value={address}

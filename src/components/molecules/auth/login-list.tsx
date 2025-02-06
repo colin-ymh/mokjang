@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/redux/store';
 import { setChurch, setChurchId } from '@/redux/reducers/church-reducer';
@@ -83,6 +83,24 @@ const LoginList = () => {
       setThrownError(error instanceof Error ? error : new Error(String(error)));
     }
   };
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.isComposing) {
+        return;
+      }
+
+      if (e.key === 'Enter') {
+        onClickItem();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [name, phone]);
 
   const props = {
     name,

@@ -58,7 +58,7 @@ const Dropdown = forwardRef<HTMLInputElement, DropdownProps>(
       items,
       value,
       onChangeItem,
-      backgroundBlur = true,
+      backgroundBlur = false,
       reverseDirection = false,
       isEditable = false,
       enterKeyHint = 'enter',

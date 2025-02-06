@@ -52,7 +52,7 @@ const RegisterButtonList = ({ setIsShown }: RegisterButtonListProps) => {
     try {
       if (stage === MEMBER_REGISTER_STAGE.REQUIRED) {
         const response = await requestInfoApi.inviteMember(
-          { churchId, isTest: true },
+          { churchId, isTest: false },
           getCreateMemberBody(member)
         );
         // 등록 성공 시
