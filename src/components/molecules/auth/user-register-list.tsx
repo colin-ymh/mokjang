@@ -6,10 +6,14 @@ import { BLANK } from '@/constants/constant';
 import UserRegisterListView from '@/components/molecules/auth/user-register-list.view';
 import { getFormattedMobilePhone, getFormattedName } from '@/utils/format';
 import { usePageRouter } from '@/utils/router';
+import { AppDispatch } from '@/redux/store';
+import { useDispatch } from 'react-redux';
+import { setUser } from '@/redux/reducers/user-reducer';
 
 const UserRegisterList = () => {
   const router = usePageRouter();
   const authApi = new AuthApi(false);
+  const dispatch = useDispatch<AppDispatch>();
   const [thrownError, setThrownError] = useState<Error | null>(null);
 
   // 렌더링 시점(컴포넌트 return)에서 조건부로 에러 발생
@@ -107,15 +111,21 @@ const UserRegisterList = () => {
         privacyPolicyAgreed: isVerified,
       });
 
-      const accessToken = response.data.accessToken;
-      const refreshToken = response.data.refreshToken;
+      if (response.status === 201) {
+        const accessToken = response.data.accessToken;
+        const refreshToken = response.data.refreshToken;
 
-      // AccessToken을 authorizeAxios에 설정
-      setAuthorizationToken(accessToken);
-      // RefreshToken을 localStorage에 저장
-      localStorage.setItem('refreshToken', refreshToken);
+        // AccessToken을 authorizeAxios에 설정
+        setAuthorizationToken(accessToken);
+        // RefreshToken을 localStorage에 저장
+        localStorage.setItem('refreshToken', refreshToken);
 
-      router.push('/church/register');
+        router.push('/church/register');
+
+        const userResponse = await authApi.getUser();
+        const newUser = userResponse.data;
+        dispatch(setUser(newUser));
+      }
     } catch (error) {
       console.log('로그인 실패:', error);
       setThrownError(error instanceof Error ? error : new Error(String(error)));

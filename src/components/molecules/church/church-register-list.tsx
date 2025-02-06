@@ -13,6 +13,8 @@ import { useScopedI18n } from '../../../../locales/client';
 import { AppDispatch } from '@/redux/store';
 import { useDispatch } from 'react-redux';
 import { setChurch, setChurchId } from '@/redux/reducers/church-reducer';
+import RadioButton from '@/components/atoms/common/input/radio-button/radio-button';
+import { MainText } from '@/components/atoms/common/text/main-text';
 
 const ListContainer = styled.div`
   display: flex;
@@ -38,6 +40,16 @@ const ButtonContainer = styled.div`
   bottom: 0;
   padding: 20px 0;
 `;
+
+const memberSizeItems = [
+  { value: 'xxs', title: '-50' },
+  { value: 'xs', title: '50-100' },
+  { value: 's', title: '100-300' },
+  { value: 'm', title: '300-500' },
+  { value: 'l', title: '500-1000' },
+  { value: 'xl', title: '1000-5000' },
+  { value: 'xxl', title: '5000-' },
+];
 
 const ChurchRegisterList = () => {
   const churchesApi = new ChurchesApi(false);
@@ -150,10 +162,16 @@ const ChurchRegisterList = () => {
           value={phone}
           onChange={onChangePhoneNumber}
         />
-        <LabelInput
-          label={'교인 수'}
-          value={memberSize}
-          onChange={onChangeMemberSize}
+        {/*<LabelInput*/}
+        {/*  label={'교인 수'}*/}
+        {/*  value={memberSize}*/}
+        {/*  onChange={onChangeMemberSize}*/}
+        {/*/>*/}
+        <MainText>{'교인 수'}</MainText>
+        <RadioButton
+          items={memberSizeItems}
+          selectedValue={memberSize}
+          onChange={(value) => setMemberSize(value)}
         />
       </InputContainer>
       <ButtonContainer>
