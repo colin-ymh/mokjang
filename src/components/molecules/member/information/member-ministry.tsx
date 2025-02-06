@@ -29,6 +29,12 @@ const MemberMinistry = ({ targetMember }: MemberMinistryProps) => {
   const [targetMinistryHistory, setTargetMinistryHistory] =
     useState<MinistryHistory>(DEFAULT_MINISTRY_HISTORY);
 
+  // 에러 상태 관리
+  const [thrownError, setThrownError] = useState<Error | null>(null);
+  if (thrownError) {
+    throw thrownError;
+  }
+
   // 모달 닫기
   const onClickCloseModal = () => {
     setIsModalShown(false);
@@ -42,17 +48,18 @@ const MemberMinistry = ({ targetMember }: MemberMinistryProps) => {
   };
 
   // 서버에서 데이터 로드
-  const fetchData = () => {
-    ministryHistoryApi
-      .getMinistryHistory({
+  const fetchData = async () => {
+    try {
+      const response = await ministryHistoryApi.getMinistryHistory({
         churchId,
         memberId: targetMember.id,
         orderDirection: ORDER_DIRECTION.DESC,
-      })
-      .then((response) => {
-        const newMinistryHistory = response.data.data;
-        setMinistryHistory(newMinistryHistory);
       });
+      const newMinistryHistory = response.data.data;
+      setMinistryHistory(newMinistryHistory);
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
+    }
   };
 
   // 교인의 그룹 이력 불러오기
@@ -61,34 +68,39 @@ const MemberMinistry = ({ targetMember }: MemberMinistryProps) => {
   }, [targetMember.id]);
 
   // 기존 그룹 수정하기
-  const onClickSaveMinistryHistory = (startDate?: string, endDate?: string) => {
-    ministryHistoryApi
-      .editMinistryHistory(
+  const onClickSaveMinistryHistory = async (
+    startDate?: string,
+    endDate?: string
+  ) => {
+    try {
+      await ministryHistoryApi.editMinistryHistory(
         {
           churchId,
           memberId: targetMember.id,
           ministryHistoryId: targetMinistryHistory.id,
         },
         { startDate, endDate }
-      )
-      .then(() => {
-        setIsModalShown(false);
-        fetchData();
-        setTargetMinistryHistory(DEFAULT_MINISTRY_HISTORY);
-      });
+      );
+      setIsModalShown(false);
+      fetchData();
+      setTargetMinistryHistory(DEFAULT_MINISTRY_HISTORY);
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
+    }
   };
 
   // 기존 그룹 삭제하기
-  const onClickDeleteMinistry = (ministryId: string) => {
-    ministryHistoryApi
-      .deleteMinistryHistory({
+  const onClickDeleteMinistry = async (ministryId: string) => {
+    try {
+      await ministryHistoryApi.deleteMinistryHistory({
         churchId,
         memberId: targetMember.id,
         ministryHistoryId: ministryId,
-      })
-      .then(() => {
-        fetchData();
       });
+      fetchData();
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
+    }
   };
 
   const props = {

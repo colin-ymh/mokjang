@@ -36,6 +36,11 @@ const RequiredRegister = () => {
     (state: RootState): Member => state.memberRegister.member
   );
 
+  const [thrownError, setThrownError] = useState<Error | null>(null);
+  if (thrownError) {
+    throw thrownError;
+  }
+
   // 인도자 이름
   const [guideName, setGuideName] = useState<string>(BLANK);
   // 검색된 인도자 목록
@@ -73,34 +78,36 @@ const RequiredRegister = () => {
   };
 
   // 인도자 input 변경 시 이벤트
-  const onChangeGuideName = (event: ChangeEvent<HTMLInputElement>) => {
-    const newGuideName = getTrimmedString(event.target.value);
-    setGuideName(newGuideName);
+  const onChangeGuideName = async (event: ChangeEvent<HTMLInputElement>) => {
+    try {
+      const newGuideName = getTrimmedString(event.target.value);
+      setGuideName(newGuideName);
 
-    if (newGuideName) {
-      membersApi
-        .getMembers({
+      if (newGuideName) {
+        const response: AxiosResponse = await membersApi.getMembers({
           churchId,
           name: newGuideName,
           page: 1,
           take: 5,
-        })
-        .then((response: AxiosResponse) => {
-          const members: GetMembersResponse[] = response.data.data;
-          const newGuideItems: MemberDropdownType[] = members.map((member) => {
-            return {
-              value: member.id,
-              title: member.name,
-              gender: (member?.gender as GENDER) || undefined,
-              profileImage: member.profileImage || undefined,
-              age: member.birth
-                ? getAge(getDateFromString(member.birth))
-                : undefined,
-            };
-          });
-
-          setGuideItems(newGuideItems);
         });
+
+        const members: GetMembersResponse[] = response.data.data;
+        const newGuideItems: MemberDropdownType[] = members.map((member) => {
+          return {
+            value: member.id,
+            title: member.name,
+            gender: (member?.gender as GENDER) || undefined,
+            profileImage: member.profileImage || undefined,
+            age: member.birth
+              ? getAge(getDateFromString(member.birth))
+              : undefined,
+          };
+        });
+
+        setGuideItems(newGuideItems);
+      }
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
     }
   };
 
@@ -114,36 +121,40 @@ const RequiredRegister = () => {
   };
 
   // 가족 이름 변경 시 이벤트
-  const onChangeFamilyMemberName = (event: ChangeEvent<HTMLInputElement>) => {
-    const newFamilyMemberName = getTrimmedString(event.target.value);
-    setFamilyMemberName(newFamilyMemberName);
+  const onChangeFamilyMemberName = async (
+    event: ChangeEvent<HTMLInputElement>
+  ) => {
+    try {
+      const newFamilyMemberName = getTrimmedString(event.target.value);
+      setFamilyMemberName(newFamilyMemberName);
 
-    if (newFamilyMemberName) {
-      membersApi
-        .getMembers({
+      if (newFamilyMemberName) {
+        const response: AxiosResponse = await membersApi.getMembers({
           churchId,
           name: newFamilyMemberName,
           page: 1,
           take: 5,
-        })
-        .then((response: AxiosResponse) => {
-          const members: GetMembersResponse[] = response.data.data;
-          const newFamilyMemberItems: MemberDropdownType[] = members.map(
-            (member) => {
-              return {
-                value: member.id,
-                title: member.name,
-                gender: (member?.gender as GENDER) || undefined,
-                profileImage: member.profileImage || undefined,
-                age: member.birth
-                  ? getAge(getDateFromString(member.birth))
-                  : undefined,
-              };
-            }
-          );
-
-          setFamilyMemberItems(newFamilyMemberItems);
         });
+
+        const members: GetMembersResponse[] = response.data.data;
+        const newFamilyMemberItems: MemberDropdownType[] = members.map(
+          (member) => {
+            return {
+              value: member.id,
+              title: member.name,
+              gender: (member?.gender as GENDER) || undefined,
+              profileImage: member.profileImage || undefined,
+              age: member.birth
+                ? getAge(getDateFromString(member.birth))
+                : undefined,
+            };
+          }
+        );
+
+        setFamilyMemberItems(newFamilyMemberItems);
+      }
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
     }
   };
 

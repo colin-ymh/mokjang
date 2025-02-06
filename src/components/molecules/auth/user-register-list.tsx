@@ -10,6 +10,12 @@ import { usePageRouter } from '@/utils/router';
 const UserRegisterList = () => {
   const router = usePageRouter();
   const authApi = new AuthApi(false);
+  const [thrownError, setThrownError] = useState<Error | null>(null);
+
+  // 렌더링 시점(컴포넌트 return)에서 조건부로 에러 발생
+  if (thrownError) {
+    throw thrownError;
+  }
 
   // 인증 시간 타이머
   const [second, setSecond] = useState<number>(0);
@@ -48,43 +54,45 @@ const UserRegisterList = () => {
       .replace(/\D/g, '')
       .trim()
       .slice(0, 6);
-    // 숫자만 남기기
     setVerifyNumber(newVerifyNumber);
   };
 
   // 요청 버튼
-  const onClickRequest = () => {
-    authApi
-      .getVerificationRequest(
+  const onClickRequest = async () => {
+    try {
+      const response = await authApi.getVerificationRequest(
         {},
         {
           name,
           mobilePhone: mobilePhone.replace(/-/g, ''),
           isTest: IS_TEST.BETA_TEST,
         }
-      )
-      .then((response) => {
-        if (response.status === 201) {
-          setIsRequested(true);
-          console.log(response.data);
-          setSecond(180);
-        }
-      });
+      );
+
+      if (response.status === 201) {
+        setIsRequested(true);
+        console.log(response.data);
+        setSecond(180);
+      }
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
+    }
   };
 
   // 인증 버튼
-  const onClickVerify = () => {
-    authApi
-      .getVerificationVerify({ code: verifyNumber })
-      .then((response) => {
-        // 성공
-        if (response.data?.verified) {
-          setIsVerified(true);
-        }
-      })
-      .catch((error) => {
-        setIsVerified(false);
+  const onClickVerify = async () => {
+    try {
+      const response = await authApi.getVerificationVerify({
+        code: verifyNumber,
       });
+
+      if (response.data?.verified) {
+        setIsVerified(true);
+      }
+    } catch (error) {
+      setIsVerified(false);
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
+    }
   };
 
   // 개인정보 처리 동의 버튼
@@ -93,23 +101,25 @@ const UserRegisterList = () => {
   };
 
   // 회원가입 완료 버튼
-  const onClickDone = () => {
-    authApi
-      .getSignIn({ privacyPolicyAgreed: isVerified })
-      .then((response) => {
-        const accessToken = response.data.accessToken;
-        const refreshToken = response.data.refreshToken;
-
-        // AccessToken을 authorizeAxios에 설정
-        setAuthorizationToken(accessToken);
-        // RefreshToken을 localStorage에 저장
-        localStorage.setItem('refreshToken', refreshToken);
-
-        router.push('/church/register');
-      })
-      .catch((error) => {
-        console.log('로그인 실패:', error);
+  const onClickDone = async () => {
+    try {
+      const response = await authApi.getSignIn({
+        privacyPolicyAgreed: isVerified,
       });
+
+      const accessToken = response.data.accessToken;
+      const refreshToken = response.data.refreshToken;
+
+      // AccessToken을 authorizeAxios에 설정
+      setAuthorizationToken(accessToken);
+      // RefreshToken을 localStorage에 저장
+      localStorage.setItem('refreshToken', refreshToken);
+
+      router.push('/church/register');
+    } catch (error) {
+      console.log('로그인 실패:', error);
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
+    }
   };
 
   // 타이머 감소 로직: 인증 요청 후 1초마다 감소
@@ -119,15 +129,13 @@ const UserRegisterList = () => {
     if (isRequested && second > 0) {
       timer = setInterval(() => {
         setSecond((prevSecond) => prevSecond - 1);
-      }, 1000); // 1초마다 감소
+      }, 1000);
     }
 
-    // second가 0이 되면 타이머 정지
     if (second === 0 && isRequested) {
       setIsRequested(false);
     }
 
-    // 컴포넌트 언마운트 시 타이머 정리
     return () => clearInterval(timer);
   }, [isRequested, second]);
 

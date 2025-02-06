@@ -29,6 +29,12 @@ const EditGroup = ({ group, roles, onClickClose }: EditGroupProps) => {
 
   const newRoleRef = useRef<HTMLInputElement>(null);
 
+  const [thrownError, setThrownError] = useState<Error | null>(null);
+  // 렌더링 시점(컴포넌트 return)에서 조건부로 에러 발생
+  if (thrownError) {
+    throw thrownError;
+  }
+
   // 변경될 이름
   const [newName, setNewName] = useState<string>(group.name);
 
@@ -132,7 +138,7 @@ const EditGroup = ({ group, roles, onClickClose }: EditGroupProps) => {
       setNewRoles([]);
       setSelectedRole(DEFAULT_GROUP_ROLE);
     } catch (error) {
-      console.log(error);
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
     }
   };
 

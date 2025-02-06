@@ -48,6 +48,12 @@ const EditList = ({ focusItem }: EditListProps) => {
     (state: RootState): Member => state.memberRegister.member
   );
 
+  const [thrownError, setThrownError] = useState<Error | null>(null);
+  // 렌더링 시점(컴포넌트 return)에서 조건부로 에러 발생
+  if (thrownError) {
+    throw thrownError;
+  }
+
   // 인도자 이름
   const [guideName, setGuideName] = useState<string>(BLANK);
   // 검색된 인도자 목록
@@ -76,26 +82,30 @@ const EditList = ({ focusItem }: EditListProps) => {
   };
 
   // 인도자 input 변경 시 이벤트
-  const onChangeGuideName = (event: ChangeEvent<HTMLInputElement>) => {
+  const onChangeGuideName = async (event: ChangeEvent<HTMLInputElement>) => {
     const newGuideName = getTrimmedString(event.target.value);
     setGuideName(newGuideName);
 
     if (newGuideName) {
-      membersApi
-        .getMembers({
+      try {
+        const response: AxiosResponse = await membersApi.getMembers({
           churchId,
           name: newGuideName,
           page: 1,
           take: 5,
-        })
-        .then((response: AxiosResponse) => {
-          const members: GetMembersResponse[] = response.data.data;
-          const newGuideItems: DropdownValueType[] = members.map((member) => {
-            return { value: member.id, title: member.name };
-          });
-
-          setGuideItems(newGuideItems);
         });
+
+        const members: GetMembersResponse[] = response.data.data;
+        const newGuideItems: DropdownValueType[] = members.map((member) => {
+          return { value: member.id, title: member.name };
+        });
+
+        setGuideItems(newGuideItems);
+      } catch (error) {
+        setThrownError(
+          error instanceof Error ? error : new Error(String(error))
+        );
+      }
     }
   };
 

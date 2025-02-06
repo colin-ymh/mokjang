@@ -29,6 +29,10 @@ const ExtraButtonList = () => {
   const t_button = useScopedI18n('button');
 
   const [isToastShow, setIsToastShow] = useState<boolean>(false);
+  const [thrownError, setThrownError] = useState<Error | null>(null);
+  if (thrownError) {
+    throw thrownError;
+  }
 
   const onClickLeft = () => {
     if (stage === MEMBER_REGISTER_STAGE.PERSONAL) {
@@ -38,39 +42,37 @@ const ExtraButtonList = () => {
     }
   };
 
-  const onClickRight = () => {
-    if (stage === MEMBER_REGISTER_STAGE.PERSONAL) {
-      if (type === MEMBER_REGISTER_TYPE.NEW) {
-        requestInfoApi
-          .editRequestInfo(
+  const onClickRight = async () => {
+    try {
+      if (stage === MEMBER_REGISTER_STAGE.PERSONAL) {
+        if (type === MEMBER_REGISTER_TYPE.NEW) {
+          await requestInfoApi.editRequestInfo(
             { churchId, requestInfoId },
             {
               ...getEditMemberBody(member),
               name: member.name,
               mobilePhone: member.mobilePhone.replace(/\D/g, ''),
             }
-          )
-          .then((response) => {
-            // 성공 팝업
-            setIsToastShow(true);
-          });
-      } else {
-        dispatch(setStage(MEMBER_REGISTER_STAGE.RELIGIOUS));
-      }
-    } else if (stage === MEMBER_REGISTER_STAGE.RELIGIOUS) {
-      requestInfoApi
-        .editRequestInfo(
+          );
+          // 성공 팝업
+          setIsToastShow(true);
+        } else {
+          dispatch(setStage(MEMBER_REGISTER_STAGE.RELIGIOUS));
+        }
+      } else if (stage === MEMBER_REGISTER_STAGE.RELIGIOUS) {
+        await requestInfoApi.editRequestInfo(
           { churchId, requestInfoId },
           {
             ...getEditMemberBody(member),
             name: member.name,
             mobilePhone: member.mobilePhone.replace(/\D/g, ''),
           }
-        )
-        .then((response) => {
-          // 성공 팝업
-          setIsToastShow(true);
-        });
+        );
+        // 성공 팝업
+        setIsToastShow(true);
+      }
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
     }
   };
 

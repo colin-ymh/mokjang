@@ -29,6 +29,12 @@ const FamilyInformationList = ({
   const familyApi = new FamilyApi(false);
   const membersApi = new MembersApi(false);
 
+  const [thrownError, setThrownError] = useState<Error | null>(null);
+  // 렌더링 시점(컴포넌트 return)에서 조건부로 에러 발생
+  if (thrownError) {
+    throw thrownError;
+  }
+
   // 가족 관계 설정 모달 활성화 여부
   const [isModalShown, setIsModalShown] = useState<boolean>(false);
 
@@ -46,42 +52,36 @@ const FamilyInformationList = ({
   };
 
   // 가족 추가 완료 버튼
-  const onClickCreateFamily = (
+  const onClickCreateFamily = async (
     familyMemberId: string,
     relation: FAMILY,
     isFetch: boolean
   ) => {
     if (familyMemberId && relation) {
-      if (isFetch) {
-        familyApi
-          .fetchFamily(
+      try {
+        if (isFetch) {
+          await familyApi.fetchFamily(
             { churchId, memberId: targetMember.id },
             { familyMemberId, relation }
-          )
-          .then((response) => {
-            membersApi
-              .getMember({ churchId, memberId: targetMember.id })
-              .then((response) => {
-                const member = getMemberFromServer(response.data.data);
-                setTargetMember(member);
-              });
-          });
-      } else {
-        console.log('추가');
-        familyApi
-          .createFamily(
+          );
+        } else {
+          console.log('추가');
+          await familyApi.createFamily(
             { churchId, memberId: targetMember.id },
             { familyMemberId, relation }
-          )
-          .then(() => {
-            membersApi
-              .getMember({ churchId, memberId: targetMember.id })
-              .then((response) => {
-                console.log(response);
-                const member = getMemberFromServer(response.data.data);
-                setTargetMember(member);
-              });
-          });
+          );
+        }
+
+        const response = await membersApi.getMember({
+          churchId,
+          memberId: targetMember.id,
+        });
+        const member = getMemberFromServer(response.data.data);
+        setTargetMember(member);
+      } catch (error) {
+        setThrownError(
+          error instanceof Error ? error : new Error(String(error))
+        );
       }
     }
 
@@ -90,25 +90,28 @@ const FamilyInformationList = ({
   };
 
   // 가족 수정 완료 버튼
-  const onClickEditFamily = (familyMemberId: string, relation: FAMILY) => {
+  const onClickEditFamily = async (
+    familyMemberId: string,
+    relation: FAMILY
+  ) => {
     if (familyMemberId && relation) {
-      familyApi
-        .editFamily(
-          {
-            churchId,
-            memberId: targetMember.id,
-            familyMemberId: familyMemberId,
-          },
+      try {
+        await familyApi.editFamily(
+          { churchId, memberId: targetMember.id, familyMemberId },
           { relation }
-        )
-        .then((response) => {
-          membersApi
-            .getMember({ churchId, memberId: targetMember.id })
-            .then((response) => {
-              const member = getMemberFromServer(response.data.data);
-              setTargetMember(member);
-            });
+        );
+
+        const response = await membersApi.getMember({
+          churchId,
+          memberId: targetMember.id,
         });
+        const member = getMemberFromServer(response.data.data);
+        setTargetMember(member);
+      } catch (error) {
+        setThrownError(
+          error instanceof Error ? error : new Error(String(error))
+        );
+      }
     }
 
     setTargetFamilyMember(DEFAULT_FAMILY_MEMBER);
@@ -122,31 +125,45 @@ const FamilyInformationList = ({
   };
 
   // 가족 상세보기로 변경
-  const onClickFamilyMember = (familyMemberId: string) => {
+  const onClickFamilyMember = async (familyMemberId: string) => {
     if (familyMemberId) {
-      membersApi
-        .getMember({ churchId, memberId: familyMemberId })
-        .then((response) => {
-          const newMember = getMemberFromServer(response.data.data);
-          setTargetMember(newMember);
-          setContentId(MEMBER_INFORMATION_HEADER_ID.PERSONAL_INFORMATION);
+      try {
+        const response = await membersApi.getMember({
+          churchId,
+          memberId: familyMemberId,
         });
+        const newMember = getMemberFromServer(response.data.data);
+        setTargetMember(newMember);
+        setContentId(MEMBER_INFORMATION_HEADER_ID.PERSONAL_INFORMATION);
+      } catch (error) {
+        setThrownError(
+          error instanceof Error ? error : new Error(String(error))
+        );
+      }
     }
   };
 
   // 가족 삭제하기
-  const onClickDelete = (familyMemberId: string) => {
+  const onClickDelete = async (familyMemberId: string) => {
     if (familyMemberId) {
-      familyApi
-        .deleteFamily({ churchId, familyMemberId, memberId: targetMember.id })
-        .then((response) => {
-          membersApi
-            .getMember({ churchId, memberId: targetMember.id })
-            .then((response) => {
-              const member = getMemberFromServer(response.data.data);
-              setTargetMember(member);
-            });
+      try {
+        await familyApi.deleteFamily({
+          churchId,
+          familyMemberId,
+          memberId: targetMember.id,
         });
+
+        const response = await membersApi.getMember({
+          churchId,
+          memberId: targetMember.id,
+        });
+        const member = getMemberFromServer(response.data.data);
+        setTargetMember(member);
+      } catch (error) {
+        setThrownError(
+          error instanceof Error ? error : new Error(String(error))
+        );
+      }
     }
   };
 
@@ -159,20 +176,31 @@ const FamilyInformationList = ({
   };
 
   useEffect(() => {
-    if (targetMember.id) {
-      familyApi
-        .getFamily({ churchId, memberId: targetMember.id })
-        .then((response) => {
-          const newFamilyMembers = response.data.map((member: FamilyMember) => {
-            return {
-              ...member,
-              familyMemberId: getMemberFromServer(member.familyMember),
-            };
+    const fetchFamilyMembers = async () => {
+      try {
+        if (targetMember.id) {
+          const response = await familyApi.getFamily({
+            churchId,
+            memberId: targetMember.id,
           });
 
+          const newFamilyMembers = response.data.map(
+            (member: FamilyMember) => ({
+              ...member,
+              familyMemberId: getMemberFromServer(member.familyMember),
+            })
+          );
+
           setFamilyMembers(newFamilyMembers);
-        });
-    }
+        }
+      } catch (error) {
+        setThrownError(
+          error instanceof Error ? error : new Error(String(error))
+        );
+      }
+    };
+
+    fetchFamilyMembers();
   }, [targetMember]);
 
   const props = {

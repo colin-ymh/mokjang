@@ -2,7 +2,6 @@ import React, {
   ChangeEvent,
   Dispatch,
   SetStateAction,
-  useEffect,
   useRef,
   useState,
 } from 'react';
@@ -42,6 +41,13 @@ const ManagementMinistryMinistryGroupItem = ({
 }: ManagementMinistryGroupItemProps) => {
   const ministryGroupsApi = new MinistryGroupsApi(false);
   const churchId = useSelector((state: RootState) => state.church.churchId);
+  const [thrownError, setThrownError] = useState<Error | null>(null);
+
+  // 렌더링 시점(컴포넌트 return)에서 조건부로 에러 발생
+  if (thrownError) {
+    throw thrownError;
+  }
+
   const isHaveChildren =
     ministryGroup.childMinistryGroups &&
     ministryGroup.childMinistryGroups.length > 0;
@@ -72,38 +78,41 @@ const ManagementMinistryMinistryGroupItem = ({
   const onChangeNewMinistryGroupName = (
     event: ChangeEvent<HTMLInputElement>
   ) => {
-    const newName = getFormattedTitle(event.target.value);
-    setNewMinistryGroupName(newName);
+    setNewMinistryGroupName(getFormattedTitle(event.target.value));
   };
 
   // 새로운 그룹 추가하기
-  const onClickSaveNewMinistryGroup = () => {
-    if (getIsWellFormedTitle(newMinistryGroupName)) {
-      ministryGroupsApi
-        .createMinistryGroup(
-          { churchId },
-          {
-            name: newMinistryGroupName,
-            parentMinistryGroupId: ministryGroup.id,
-          }
-        )
-        .then(() => {
-          fetchMinistryGroups();
-          setIsAddShown(false);
-          setNewMinistryGroupName(BLANK);
-        });
+  const onClickSaveNewMinistryGroup = async () => {
+    if (!getIsWellFormedTitle(newMinistryGroupName)) return;
+
+    try {
+      await ministryGroupsApi.createMinistryGroup(
+        { churchId },
+        {
+          name: newMinistryGroupName,
+          parentMinistryGroupId: ministryGroup.id,
+        }
+      );
+      fetchMinistryGroups();
+      setIsAddShown(false);
+      setNewMinistryGroupName(BLANK);
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
     }
   };
 
   // 확인 중인 그룹 변경
-  const onClickMinistryGroup = (ministryGroupId: string | null) => {
-    if (ministryGroupId) {
-      ministryGroupsApi
-        .getMinistryGroup({ churchId, ministryGroupId })
-        .then((response) => {
-          const newMinistryGroup: MinistryGroup = response.data;
-          setSelectedMinistryGroup(newMinistryGroup);
-        });
+  const onClickMinistryGroup = async (ministryGroupId: string | null) => {
+    if (!ministryGroupId) return;
+
+    try {
+      const response = await ministryGroupsApi.getMinistryGroup({
+        churchId,
+        ministryGroupId,
+      });
+      setSelectedMinistryGroup(response.data);
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
     }
   };
 
@@ -111,162 +120,71 @@ const ManagementMinistryMinistryGroupItem = ({
   const onClickMinistryGroupEdit = () => {
     setEditName(ministryGroup.name);
     setIsEdit(true);
-
-    // isEdit이 true로 전환된 이후
-    setTimeout(() => {
-      // 포커스
-      if (nameInputRef.current) {
-        nameInputRef.current.focus();
-      }
-    });
+    setTimeout(() => nameInputRef.current?.focus());
   };
 
   // 그룹 삭제
-  const onClickMinistryGroupDelete = (ministryGroupId: string) => {
-    ministryGroupsApi
-      .deleteMinistryGroup({ churchId, ministryGroupId })
-      .then(() => {
-        fetchMinistryGroups();
-        setSelectedMinistryGroup(DEFAULT_MINISTRY_GROUP);
+  const onClickMinistryGroupDelete = async (ministryGroupId: string) => {
+    try {
+      await ministryGroupsApi.deleteMinistryGroup({
+        churchId,
+        ministryGroupId,
       });
+      fetchMinistryGroups();
+      setSelectedMinistryGroup(DEFAULT_MINISTRY_GROUP);
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
+    }
   };
 
   // 그룹 추가 활성화
   const onClickMinistryGroupAdd = () => {
     setIsAddShown(true);
-    setTimeout(() => {
-      if (newMinistryGroupRef.current) {
-        newMinistryGroupRef.current.focus();
-      }
-    });
+    setTimeout(() => newMinistryGroupRef.current?.focus());
   };
 
   // 이름 수정 이벤트
   const onChangeName = (event: ChangeEvent<HTMLInputElement>) => {
-    const newName = getFormattedTitle(event.target.value);
-    setEditName(newName);
+    setEditName(getFormattedTitle(event.target.value));
   };
 
   // 수정된 이름 저장
-  const onClickSaveName = () => {
-    if (editName === ministryGroup.name) {
+  const onClickSaveName = async () => {
+    if (editName === ministryGroup.name || !getIsWellFormedTitle(editName)) {
       setIsEdit(false);
-    } else if (getIsWellFormedTitle(editName)) {
-      ministryGroupsApi
-        .editMinistryGroup(
-          { churchId, ministryGroupId: ministryGroup.id as string },
-          { name: editName }
-        )
-        .then((response) => {
-          setSelectedMinistryGroup(response.data);
-          fetchMinistryGroups();
-          setIsEdit(false);
-        });
+      return;
+    }
+
+    try {
+      const response = await ministryGroupsApi.editMinistryGroup(
+        { churchId, ministryGroupId: ministryGroup.id as string },
+        { name: editName }
+      );
+      setSelectedMinistryGroup(response.data);
+      fetchMinistryGroups();
+      setIsEdit(false);
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
     }
   };
 
   // 드래그 이후 드롭
-  const onDropMinistryGroup = (
+  const onDropMinistryGroup = async (
     ministryGroupId: string,
     parentMinistryGroupId: string | null
   ) => {
-    if (ministryGroupId !== parentMinistryGroupId) {
-      ministryGroupsApi
-        .editMinistryGroup(
-          { churchId, ministryGroupId },
-          { parentMinistryGroupId }
-        )
-        .then(() => fetchMinistryGroups())
-        .catch((error) => {
-          console.log(error);
-        });
+    if (ministryGroupId === parentMinistryGroupId) return;
+
+    try {
+      await ministryGroupsApi.editMinistryGroup(
+        { churchId, ministryGroupId },
+        { parentMinistryGroupId }
+      );
+      fetchMinistryGroups();
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
     }
   };
-
-  // 수정 중 focus 가 풀리면 수정 취소
-  useEffect(() => {
-    const inputElement = nameInputRef.current;
-
-    const handleBlur = () => {
-      setIsEdit(false);
-    };
-
-    if (inputElement) {
-      inputElement.addEventListener('blur', handleBlur);
-    }
-
-    return () => {
-      if (inputElement) {
-        inputElement.removeEventListener('blur', handleBlur);
-      }
-    };
-  }, [nameInputRef, isEdit]);
-
-  // 추가 중 focus 가 풀리면 추가 취소
-  useEffect(() => {
-    const inputElement = newMinistryGroupRef.current;
-
-    const handleBlur = () => {
-      setIsAddShown(false);
-    };
-
-    if (inputElement) {
-      inputElement.addEventListener('blur', handleBlur);
-    }
-
-    return () => {
-      if (inputElement) {
-        inputElement.removeEventListener('blur', handleBlur);
-      }
-    };
-  }, [newMinistryGroupRef, isAddShown]);
-
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      // !!!!!!!!!!!! 시발 !!!!!!!!!!!!
-      // 한글 키보드로 입력 시, compose 를 하네;;;;;이 개같은거
-      // isComposing 이 true => false 이 지랄을 하면서
-      // 엔터가 두 번 입력되는 것 처럼 보였던 것이다
-      // 이 개같은 것 때문에 시간을 존나 날려먹었다
-      // !!!!!!!!!!!! 시발 !!!!!!!!!!!!
-      if (e.isComposing) {
-        return;
-      }
-
-      if (e.key === 'Enter') {
-        if (nameInputRef.current === document.activeElement) {
-          if (getIsWellFormedTitle(editName)) {
-            onClickSaveName();
-          } else {
-            setIsEdit(false);
-          }
-        } else if (newMinistryGroupRef.current === document.activeElement) {
-          if (getIsWellFormedTitle(newMinistryGroupName)) {
-            onClickSaveNewMinistryGroup();
-          } else {
-            setIsAddShown(false);
-          }
-        }
-      } else if (e.key === 'Escape') {
-        if (nameInputRef.current === document.activeElement) {
-          setIsEdit(false);
-        } else if (newMinistryGroupRef.current === document.activeElement) {
-          setIsAddShown(false);
-        }
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [
-    editName,
-    newMinistryGroupName,
-    onClickSaveName,
-    onClickSaveNewMinistryGroup,
-  ]);
 
   const props = {
     isHaveChildren,
@@ -299,9 +217,7 @@ const ManagementMinistryMinistryGroupItem = ({
         onClickSaveMinistryGroup={onClickSaveNewMinistryGroup}
       />
       {isOpen &&
-        ministryGroup.childMinistryGroups &&
-        ministryGroup.childMinistryGroups.length > 0 &&
-        ministryGroup.childMinistryGroups.map((childMinistryGroup) => (
+        ministryGroup.childMinistryGroups?.map((childMinistryGroup) => (
           <ManagementMinistryMinistryGroupItem
             key={childMinistryGroup.id}
             ministryGroup={childMinistryGroup}

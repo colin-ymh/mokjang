@@ -40,191 +40,127 @@ const ManagementGroupItem = ({
   const isHaveChildren = group.childGroups && group.childGroups.length > 0;
   const isOpen = !closedGroups.has(parseInt(group.id as string));
   const dispatch = useDispatch<AppDispatch>();
+  const [thrownError, setThrownError] = useState<Error | null>(null);
 
-  // 이름 수정창 ref
+  // 렌더링 시점(컴포넌트 return)에서 조건부로 에러 발생
+  if (thrownError) {
+    throw thrownError;
+  }
+
   const nameInputRef = useRef<HTMLInputElement>(null);
-
-  // 새로 추가하는 그룹 입력창 ref
   const newGroupRef = useRef<HTMLInputElement>(null);
-
-  // 새로 추가중인지 여부
   const [isAddShown, setIsAddShown] = useState<boolean>(false);
-
-  // 새 그룹의 이름
   const [newGroupName, setNewGroupName] = useState<string>(BLANK);
-
-  // 수정중인지 여부
   const [isEdit, setIsEdit] = useState<boolean>(false);
-
-  // 수정되는 이름
   const [editName, setEditName] = useState<string>(group.name);
 
-  // 새그룹 이름 변경
   const onChangeNewGroupName = (event: ChangeEvent<HTMLInputElement>) => {
-    const newName = getFormattedTitle(event.target.value);
-    setNewGroupName(newName);
+    setNewGroupName(getFormattedTitle(event.target.value));
   };
 
-  // 새로운 그룹 추가하기
-  const onClickSaveNewGroup = () => {
-    if (getIsWellFormedTitle(newGroupName)) {
-      groupsApi
-        .createGroup(
-          { churchId },
-          { name: newGroupName, parentGroupId: group.id }
-        )
-        .then(() => {
-          dispatch(fetchGroups()).then(() => {
-            setIsAddShown(false);
-            setNewGroupName(BLANK);
-          });
-        });
+  const onClickSaveNewGroup = async () => {
+    if (!getIsWellFormedTitle(newGroupName)) return;
+
+    try {
+      await groupsApi.createGroup(
+        { churchId },
+        { name: newGroupName, parentGroupId: group.id }
+      );
+      await dispatch(fetchGroups());
+      setIsAddShown(false);
+      setNewGroupName(BLANK);
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
     }
   };
 
-  // 확인 중인 그룹 변경
-  const onClickGroup = (groupId: string | null) => {
-    if (groupId) {
-      groupsApi.getGroup({ churchId, groupId }).then((response) => {
-        const newGroup: Group = response.data;
-        setSelectedGroup(newGroup);
-      });
+  const onClickGroup = async (groupId: string | null) => {
+    if (!groupId) return;
+
+    try {
+      const response = await groupsApi.getGroup({ churchId, groupId });
+      setSelectedGroup(response.data);
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
     }
   };
 
-  // 그룹 수정 활성화
   const onClickGroupEdit = () => {
     setEditName(group.name);
     setIsEdit(true);
-
-    // isEdit이 true로 전환된 이후
-    setTimeout(() => {
-      // 포커스
-      if (nameInputRef.current) {
-        nameInputRef.current.focus();
-      }
-    });
+    setTimeout(() => nameInputRef.current?.focus());
   };
 
-  // 그룹 삭제
-  const onClickGroupDelete = (groupId: string) => {
-    groupsApi.deleteGroup({ churchId, groupId }).then(() => {
-      dispatch(fetchGroups());
+  const onClickGroupDelete = async (groupId: string) => {
+    try {
+      await groupsApi.deleteGroup({ churchId, groupId });
+      await dispatch(fetchGroups());
       setSelectedGroup(DEFAULT_GROUP);
-    });
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
+    }
   };
 
-  // 그룹 추가 활성화
   const onClickGroupAdd = () => {
     setIsAddShown(true);
-    setTimeout(() => {
-      if (newGroupRef.current) {
-        newGroupRef.current.focus();
-      }
-    });
+    setTimeout(() => newGroupRef.current?.focus());
   };
 
-  // 이름 수정 이벤트
   const onChangeName = (event: ChangeEvent<HTMLInputElement>) => {
-    const newName = getFormattedTitle(event.target.value);
-    setEditName(newName);
+    setEditName(getFormattedTitle(event.target.value));
   };
 
-  // 수정된 이름 저장
-  const onClickSaveName = () => {
-    if (editName === group.name) {
+  const onClickSaveName = async () => {
+    if (editName === group.name || !getIsWellFormedTitle(editName)) {
       setIsEdit(false);
-    } else if (getIsWellFormedTitle(editName)) {
-      groupsApi
-        .editGroup(
-          { churchId, groupId: group.id as string },
-          { name: editName }
-        )
-        .then((response) => {
-          dispatch(fetchGroups()).then(() => {
-            console.log(response);
-            setSelectedGroup(response.data);
-            setIsEdit(false);
-          });
-        });
+      return;
     }
-  };
 
-  // 드래그 이후 드롭
-  const onDropGroup = (groupId: string, parentGroupId: string | null) => {
-    if (groupId !== parentGroupId) {
-      groupsApi
-        .editGroup({ churchId, groupId }, { parentGroupId })
-        .then(() => dispatch(fetchGroups()))
-        .catch((error) => {
-          console.log(error);
-        });
-    }
-  };
-
-  // 수정 중 focus 가 풀리면 수정 취소
-  useEffect(() => {
-    const inputElement = nameInputRef.current;
-
-    const handleBlur = () => {
+    try {
+      const response = await groupsApi.editGroup(
+        { churchId, groupId: group.id as string },
+        { name: editName }
+      );
+      await dispatch(fetchGroups());
+      setSelectedGroup(response.data);
       setIsEdit(false);
-    };
-
-    if (inputElement) {
-      inputElement.addEventListener('blur', handleBlur);
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
     }
+  };
 
-    return () => {
-      if (inputElement) {
-        inputElement.removeEventListener('blur', handleBlur);
-      }
-    };
-  }, [nameInputRef, isEdit]);
+  const onDropGroup = async (groupId: string, parentGroupId: string | null) => {
+    if (groupId === parentGroupId) return;
 
-  // 추가 중 focus 가 풀리면 추가 취소
+    try {
+      await groupsApi.editGroup({ churchId, groupId }, { parentGroupId });
+      await dispatch(fetchGroups());
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
+    }
+  };
+
   useEffect(() => {
-    const inputElement = newGroupRef.current;
+    const handleBlur = () => setIsEdit(false);
+    nameInputRef.current?.addEventListener('blur', handleBlur);
+    return () => nameInputRef.current?.removeEventListener('blur', handleBlur);
+  }, [isEdit]);
 
-    const handleBlur = () => {
-      setIsAddShown(false);
-    };
-
-    if (inputElement) {
-      inputElement.addEventListener('blur', handleBlur);
-    }
-
-    return () => {
-      if (inputElement) {
-        inputElement.removeEventListener('blur', handleBlur);
-      }
-    };
-  }, [newGroupRef, isAddShown]);
+  useEffect(() => {
+    const handleBlur = () => setIsAddShown(false);
+    newGroupRef.current?.addEventListener('blur', handleBlur);
+    return () => newGroupRef.current?.removeEventListener('blur', handleBlur);
+  }, [isAddShown]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // !!!!!!!!!!!! 시발 !!!!!!!!!!!!
-      // 한글 키보드로 입력 시, compose 를 하네;;;;;이 개같은거
-      // isComposing 이 true => false 이 지랄을 하면서
-      // 엔터가 두 번 입력되는 것 처럼 보였던 것이다
-      // 이 개같은 것 때문에 시간을 존나 날려먹었다
-      // !!!!!!!!!!!! 시발 !!!!!!!!!!!!
-      if (e.isComposing) {
-        return;
-      }
+      if (e.isComposing) return;
 
       if (e.key === 'Enter') {
         if (nameInputRef.current === document.activeElement) {
-          if (getIsWellFormedTitle(editName)) {
-            onClickSaveName();
-          } else {
-            setIsEdit(false);
-          }
+          onClickSaveName();
         } else if (newGroupRef.current === document.activeElement) {
-          if (getIsWellFormedTitle(newGroupName)) {
-            onClickSaveNewGroup();
-          } else {
-            setIsAddShown(false);
-          }
+          onClickSaveNewGroup();
         }
       } else if (e.key === 'Escape') {
         if (nameInputRef.current === document.activeElement) {
@@ -236,11 +172,8 @@ const ManagementGroupItem = ({
     };
 
     window.addEventListener('keydown', handleKeyDown);
-
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [editName, newGroupName, onClickSaveName, onClickSaveNewGroup]);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [editName, newGroupName]);
 
   const props = {
     isHaveChildren,
@@ -273,9 +206,7 @@ const ManagementGroupItem = ({
         onClickSaveGroup={onClickSaveNewGroup}
       />
       {isOpen &&
-        group.childGroups &&
-        group.childGroups.length > 0 &&
-        group.childGroups.map((childGroup) => (
+        group.childGroups?.map((childGroup) => (
           <ManagementGroupItem
             key={childGroup.id}
             group={childGroup}

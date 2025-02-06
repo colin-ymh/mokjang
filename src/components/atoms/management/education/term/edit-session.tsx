@@ -34,10 +34,15 @@ const EditSession = ({
   const [sessionContent, setSessionContent] = useState<string>(
     targetSession.content
   );
+  const [thrownError, setThrownError] = useState<Error | null>(null);
+
+  // 렌더링 시점(컴포넌트 return)에서 조건부로 에러 발생
+  if (thrownError) {
+    throw thrownError;
+  }
 
   const onChangeSessionDate = (event: ChangeEvent<HTMLInputElement>) => {
     const newDate = getFormattedDate(event.target.value);
-
     setSessionDate(newDate);
   };
 
@@ -49,9 +54,9 @@ const EditSession = ({
     setSessionContent(event.target.value);
   };
 
-  const onClickSave = () => {
-    educationSessionsApi
-      .editEducationSessions(
+  const onClickSave = async () => {
+    try {
+      await educationSessionsApi.editEducationSessions(
         {
           churchId,
           educationId,
@@ -63,11 +68,12 @@ const EditSession = ({
           content: sessionContent || undefined,
           isDone: isSessionDone || undefined,
         }
-      )
-      .then(() => {
-        onClickClose();
-        fetchTerms();
-      });
+      );
+      onClickClose();
+      fetchTerms();
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
+    }
   };
 
   const props = {
@@ -79,11 +85,8 @@ const EditSession = ({
     onChangeSessionContent,
     onClickSave,
   };
-  return (
-    <>
-      <EditSessionView {...props} />
-    </>
-  );
+
+  return <EditSessionView {...props} />;
 };
 
 export default EditSession;

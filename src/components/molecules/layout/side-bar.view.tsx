@@ -1,3 +1,6 @@
+'use client';
+
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
@@ -11,10 +14,11 @@ import GroupFilter from '@/components/molecules/layout/group-filter';
 
 import { useI18n, useScopedI18n } from '../../../../locales/client';
 import Button from '@/components/atoms/common/button/button';
+import { ErrorApi } from '@/api/error/error.api';
 
 const SideBarContainer = styled.div`
-  display: flex; // Flexbox 활성화
-  flex-direction: column; // 세로(수직) 방향으로 배치
+  display: flex;
+  flex-direction: column;
   height: 100%;
 
   @media (min-width: ${MEDIA_MIN_WIDTH.MOBILE}) {
@@ -26,7 +30,7 @@ const SideBarContainer = styled.div`
   }
 
   @media (min-width: ${MEDIA_MIN_WIDTH.DESKTOP}) {
-    display: flex; // 데스크탑에서는 Flexbox 사용
+    display: flex;
     width: 180px;
     background-color: ${GRAY.SIDE_BAR};
     padding: 0 10px;
@@ -40,14 +44,13 @@ const SideBarContainer = styled.div`
 const ButtonContainer = styled.div`
   display: flex;
   flex-direction: column;
-  flex-grow: 1; // 남은 공간을 모두 차지
+  flex-grow: 1;
   justify-content: flex-start;
 `;
 
 const BottomContainer = styled.div`
   display: flex;
-  flex-shrink: 0; // 크기를 고정하여 줄어들지 않도록 설정
-  //justify-content: center;
+  flex-shrink: 0;
   padding: 10px;
 `;
 
@@ -62,6 +65,13 @@ type SideBarViewProps = {
 };
 
 const SideBarView = ({ onClickLogOut }: SideBarViewProps) => {
+  const [thrownError, setThrownError] = useState<Error | null>(null);
+  // 렌더링 시점(컴포넌트 return)에서 조건부로 에러 발생
+  if (thrownError) {
+    throw thrownError;
+  }
+
+  const errorApi = new ErrorApi(false);
   const t = useI18n();
   const t_header = useScopedI18n('header');
   const headerId = useSelector((state: RootState) => state.layout.headerId);

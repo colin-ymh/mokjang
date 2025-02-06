@@ -26,6 +26,10 @@ const MemberTable = ({ onClickMemberItem, loadMembers }: MemberTableProps) => {
     useSelector((state: RootState) => state.memberFilter);
 
   const [isPopupShown, setIsPopupShown] = useState<boolean>(false);
+  const [thrownError, setThrownError] = useState<Error | null>(null);
+  if (thrownError) {
+    throw thrownError;
+  }
 
   const onClickOpen = () => {
     setIsPopupShown(true);
@@ -110,7 +114,7 @@ const MemberTable = ({ onClickMemberItem, loadMembers }: MemberTableProps) => {
         }
       );
     } catch (error) {
-      console.log(error);
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
     }
   };
 

@@ -32,6 +32,12 @@ const EditMinistryMinistryGroup = ({
   const churchId = useSelector((state: RootState) => state.church.churchId);
   const newMinistryRef = useRef<HTMLInputElement>(null);
 
+  const [thrownError, setThrownError] = useState<Error | null>(null);
+  // 렌더링 시점(컴포넌트 return)에서 조건부로 에러 발생
+  if (thrownError) {
+    throw thrownError;
+  }
+
   // 변경될 이름
   const [newName, setNewName] = useState<string>(ministryGroup.name);
 
@@ -142,7 +148,7 @@ const EditMinistryMinistryGroup = ({
       setNewMinistries([]);
       setSelectedMinistry(DEFAULT_MINISTRY);
     } catch (error) {
-      console.log(error);
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
     }
   };
 

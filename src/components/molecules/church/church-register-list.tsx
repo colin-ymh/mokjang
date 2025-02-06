@@ -44,6 +44,12 @@ const ChurchRegisterList = () => {
   const dispatch = useDispatch<AppDispatch>();
   const t_button = useScopedI18n('button');
   const router = usePageRouter();
+  const [thrownError, setThrownError] = useState<Error | null>(null);
+
+  // 렌더링 시점(컴포넌트 return)에서 조건부로 에러 발생
+  if (thrownError) {
+    throw thrownError;
+  }
 
   const [name, setName] = useState<string>(BLANK);
   const [denomination, setDenomination] = useState<string>(BLANK);
@@ -92,9 +98,9 @@ const ChurchRegisterList = () => {
     setMemberSize(formattedSize);
   };
 
-  const onClickButton = () => {
-    churchesApi
-      .createChurch({
+  const onClickButton = async () => {
+    try {
+      const response = await churchesApi.createChurch({
         name,
         address: '테스트',
         denomination: '테스트',
@@ -102,15 +108,17 @@ const ChurchRegisterList = () => {
         detailAddress: '테스트',
         memberSize: 'xxl',
         phone: '01012345678',
-      })
-      .then((response) => {
-        const newChurch: Church = response.data;
-
-        dispatch(setChurchId(newChurch.id));
-        dispatch(setChurch(newChurch));
-
-        router.push('/church/register/group');
       });
+
+      const newChurch: Church = response.data;
+
+      dispatch(setChurchId(newChurch.id));
+      dispatch(setChurch(newChurch));
+
+      router.push('/church/register/group');
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
+    }
   };
 
   return (

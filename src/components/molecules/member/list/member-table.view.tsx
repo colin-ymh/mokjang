@@ -222,7 +222,9 @@ const MemberTableView = ({
         );
       case MEMBER.MOBILE_PHONE:
         return (
-          <MainText>{getFormattedMobilePhone(member?.mobilePhone)}</MainText>
+          <MainText>
+            {member?.mobilePhone && getFormattedMobilePhone(member.mobilePhone)}
+          </MainText>
         );
       case MEMBER.GENDER:
         return <MainText>{t(member.gender as GENDER)}</MainText>;

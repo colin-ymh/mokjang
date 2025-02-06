@@ -43,108 +43,107 @@ const RegisterButtonList = ({ setIsShown }: RegisterButtonListProps) => {
   const t_button = useScopedI18n('button');
 
   const [isToastShow, setIsToastShow] = useState<boolean>(false);
+  const [thrownError, setThrownError] = useState<Error | null>(null);
+  if (thrownError) {
+    throw thrownError;
+  }
 
-  const onClickLeft = () => {
-    if (stage === MEMBER_REGISTER_STAGE.REQUIRED) {
-      requestInfoApi
-        .inviteMember({ churchId, isTest: true }, getCreateMemberBody(member))
-        .then((response) => {
-          // 등록 성공 시
-          if (response.status === 201) {
-            // 교인 Id 할당
-            const memberId = response.data.id;
-            dispatch(setMember({ ...member, id: memberId }));
-            dispatch(fetchMembers({ churchId, currentPage: 1 })).then(
-              (result) => {
-                if (fetchMembers.fulfilled.match(result)) {
-                  dispatch(setMembers(result.payload));
-                }
-              }
-            );
-            // 성공 팝업
-            setIsToastShow(true);
+  const onClickLeft = async () => {
+    try {
+      if (stage === MEMBER_REGISTER_STAGE.REQUIRED) {
+        const response = await requestInfoApi.inviteMember(
+          { churchId, isTest: true },
+          getCreateMemberBody(member)
+        );
+        // 등록 성공 시
+        if (response.status === 201) {
+          // 교인 Id 할당
+          const memberId = response.data.id;
+          dispatch(setMember({ ...member, id: memberId }));
+          const result = await dispatch(
+            fetchMembers({ churchId, currentPage: 1 })
+          );
+          if (fetchMembers.fulfilled.match(result)) {
+            dispatch(setMembers(result.payload));
           }
-        });
-    } else if (stage === MEMBER_REGISTER_STAGE.PERSONAL) {
-      dispatch(setMember(DEFAULT_MEMBER));
-      dispatch(setStage(MEMBER_REGISTER_STAGE.REQUIRED));
-    } else if (stage === MEMBER_REGISTER_STAGE.RELIGIOUS) {
-      dispatch(setStage(MEMBER_REGISTER_STAGE.PERSONAL));
+          // 성공 팝업
+          setIsToastShow(true);
+        }
+      } else if (stage === MEMBER_REGISTER_STAGE.PERSONAL) {
+        dispatch(setMember(DEFAULT_MEMBER));
+        dispatch(setStage(MEMBER_REGISTER_STAGE.REQUIRED));
+      } else if (stage === MEMBER_REGISTER_STAGE.RELIGIOUS) {
+        dispatch(setStage(MEMBER_REGISTER_STAGE.PERSONAL));
+      }
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
     }
   };
 
-  const onClickRight = () => {
-    // 최초 화면
-    if (stage === MEMBER_REGISTER_STAGE.REQUIRED) {
-      // 최초 교인 등록
-      membersApi
-        .createMember({ churchId }, getCreateMemberBody(member))
-        .then((response) => {
-          // 등록 성공 시
-          if (response.status === 201) {
-            // 교인 Id 할당
-            const memberId = response.data.id;
-            dispatch(setMember({ ...member, id: memberId }));
-            dispatch(fetchMembers({ churchId, currentPage: 1 })).then(
-              (result) => {
-                if (fetchMembers.fulfilled.match(result)) {
-                  dispatch(setMembers(result.payload));
-                }
-              }
-            );
-            // 성공 팝업
-            setIsToastShow(true);
-            // 다음 단계로 이동
-            dispatch(setStage(MEMBER_REGISTER_STAGE.PERSONAL));
+  const onClickRight = async () => {
+    try {
+      // 최초 화면
+      if (stage === MEMBER_REGISTER_STAGE.REQUIRED) {
+        // 최초 교인 등록
+        const response = await membersApi.createMember(
+          { churchId },
+          getCreateMemberBody(member)
+        );
+        // 등록 성공 시
+        if (response.status === 201) {
+          // 교인 Id 할당
+          const memberId = response.data.id;
+          dispatch(setMember({ ...member, id: memberId }));
+          const result = await dispatch(
+            fetchMembers({ churchId, currentPage: 1 })
+          );
+          if (fetchMembers.fulfilled.match(result)) {
+            dispatch(setMembers(result.payload));
           }
-        });
-    } else if (stage === MEMBER_REGISTER_STAGE.PERSONAL) {
-      if (type === MEMBER_REGISTER_TYPE.NEW) {
-        if (member?.id) {
-          membersApi
-            .editMember(
+          // 성공 팝업
+          setIsToastShow(true);
+          // 다음 단계로 이동
+          dispatch(setStage(MEMBER_REGISTER_STAGE.PERSONAL));
+        }
+      } else if (stage === MEMBER_REGISTER_STAGE.PERSONAL) {
+        if (type === MEMBER_REGISTER_TYPE.NEW) {
+          if (member?.id) {
+            await membersApi.editMember(
               { churchId, memberId: member.id },
               getEditMemberBody(member)
-            )
-            .then(() => {
-              dispatch(setMember(DEFAULT_MEMBER));
-              dispatch(fetchMembers({ churchId, currentPage: 1 })).then(
-                (result) => {
-                  if (fetchMembers.fulfilled.match(result)) {
-                    dispatch(setMembers(result.payload));
-                  }
-                }
-              );
-              if (setIsShown) setIsShown(false);
-            });
+            );
+            dispatch(setMember(DEFAULT_MEMBER));
+            const result = await dispatch(
+              fetchMembers({ churchId, currentPage: 1 })
+            );
+            if (fetchMembers.fulfilled.match(result)) {
+              dispatch(setMembers(result.payload));
+            }
+            if (setIsShown) setIsShown(false);
+          }
+        } else {
+          dispatch(setStage(MEMBER_REGISTER_STAGE.RELIGIOUS));
         }
-      } else {
-        dispatch(setStage(MEMBER_REGISTER_STAGE.RELIGIOUS));
-      }
-    } else if (stage === MEMBER_REGISTER_STAGE.RELIGIOUS) {
-      if (member?.id) {
-        // 교인 업데이트
-        membersApi
-          .editMember(
+      } else if (stage === MEMBER_REGISTER_STAGE.RELIGIOUS) {
+        if (member?.id) {
+          // 교인 업데이트
+          await membersApi.editMember(
             { churchId, memberId: member.id },
             getEditMemberBody(member)
-          )
-          .then(() => {
-            dispatch(setMember(DEFAULT_MEMBER));
-            dispatch(fetchMembers({ churchId, currentPage: 1 })).then(
-              (result) => {
-                if (fetchMembers.fulfilled.match(result)) {
-                  dispatch(setMembers(result.payload));
-                }
-              }
-            );
-            if (setIsShown) setIsShown(false);
-          });
+          );
 
-        // 직분 업데이트
-        if (member?.officerId && member?.officerId !== NONE) {
-          officerHistoryApi
-            .createOfficerHistory(
+          dispatch(setMember(DEFAULT_MEMBER));
+          const result = await dispatch(
+            fetchMembers({ churchId, currentPage: 1 })
+          );
+          if (fetchMembers.fulfilled.match(result)) {
+            dispatch(setMembers(result.payload));
+          }
+          if (setIsShown) setIsShown(false);
+
+          // 직분 업데이트
+          if (member?.officerId && member?.officerId !== NONE) {
+            await officerHistoryApi.createOfficerHistory(
               { churchId, memberId: member.id },
               {
                 officerId: member?.officerId,
@@ -157,18 +156,19 @@ const RegisterButtonList = ({ setIsShown }: RegisterButtonListProps) => {
                     ? undefined
                     : member.officerStartDate,
               }
-            )
-            .then(() => {
-              dispatch(fetchMembers({ churchId, currentPage: 1 })).then(
-                (result) => {
-                  if (fetchMembers.fulfilled.match(result)) {
-                    dispatch(setMembers(result.payload));
-                  }
-                }
-              );
-            });
+            );
+
+            const result = await dispatch(
+              fetchMembers({ churchId, currentPage: 1 })
+            );
+            if (fetchMembers.fulfilled.match(result)) {
+              dispatch(setMembers(result.payload));
+            }
+          }
         }
       }
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
     }
   };
 

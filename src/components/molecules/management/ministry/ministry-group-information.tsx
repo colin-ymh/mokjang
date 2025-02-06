@@ -28,7 +28,6 @@ const ListTypeHeader = styled.div`
 
 const MinistryGroupContentContainer = styled.div`
   display: flex;
-
   flex-direction: row;
   padding: 10px;
   gap: 5px;
@@ -79,6 +78,12 @@ const MinistryMinistryGroupInformation = ({
   const ministryGroupsApi = new MinistryGroupsApi(false);
   const churchId = useSelector((state: RootState) => state.church.churchId);
 
+  const [thrownError, setThrownError] = useState<Error | null>(null);
+  // 렌더링 시점(컴포넌트 return)에서 조건부로 에러 발생
+  if (thrownError) {
+    throw thrownError;
+  }
+
   // 그룹 역할
   const [ministries, setMinistries] = useState<Ministry[]>([]);
 
@@ -96,18 +101,20 @@ const MinistryMinistryGroupInformation = ({
   };
 
   // 사역 그룹의 역할 불러오기
-  const fetchMinistries = () => {
-    ministryGroupsApi
-      .getMinistryGroup({
+  const fetchMinistries = async () => {
+    try {
+      const response = await ministryGroupsApi.getMinistryGroup({
         churchId,
         ministryGroupId: ministryGroup.id as string,
-      })
-      .then((response) => {
-        const newMinistryGroup: MinistryGroup = response.data;
-        if (newMinistryGroup?.ministries) {
-          setMinistries(newMinistryGroup.ministries);
-        }
       });
+
+      const newMinistryGroup: MinistryGroup = response.data;
+      if (newMinistryGroup?.ministries) {
+        setMinistries(newMinistryGroup.ministries);
+      }
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
+    }
   };
 
   useEffect(() => {

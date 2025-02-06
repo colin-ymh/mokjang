@@ -2,8 +2,7 @@ import axios, { AxiosResponse } from 'axios';
 import { SERVER_URL, TEST_SERVER_URL } from '@/constants/state/url';
 import { EDUCATION_TERM } from '@/constants/management/education-term-column';
 import { ORDER_DIRECTION } from '@/constants/constant';
-
-class HTTPError extends Error {}
+import { CustomError } from '@/api/error/error';
 
 export enum EDUCATION_TERM_ORDER {
   TERM = EDUCATION_TERM.TERM,
@@ -91,8 +90,17 @@ export class EducationTermsApi {
           orderDirection,
         },
       });
-    } catch (error) {
-      throw new HTTPError(`Fetch error: ${error}`);
+    } catch (serverError: any) {
+      if (serverError.response) {
+        const { message, error, statusCode } = serverError.response.data;
+        throw new CustomError(message, error, statusCode);
+      } else {
+        throw new CustomError(
+          '알 수 없는 에러가 발생했습니다',
+          500,
+          'Unknown Error'
+        );
+      }
     }
   };
 
@@ -110,8 +118,17 @@ export class EducationTermsApi {
 
     try {
       return await axios.get(url);
-    } catch (error) {
-      throw new HTTPError(`Fetch error: ${error}`);
+    } catch (serverError: any) {
+      if (serverError.response) {
+        const { message, error, statusCode } = serverError.response.data;
+        throw new CustomError(message, error, statusCode);
+      } else {
+        throw new CustomError(
+          '알 수 없는 에러가 발생했습니다',
+          500,
+          'Unknown Error'
+        );
+      }
     }
   };
 
@@ -131,8 +148,17 @@ export class EducationTermsApi {
 
     try {
       return await axios.post(url, body);
-    } catch (error) {
-      throw new HTTPError(`Fetch error: ${error}`);
+    } catch (serverError: any) {
+      if (serverError.response) {
+        const { message, error, statusCode } = serverError.response.data;
+        throw new CustomError(message, error, statusCode);
+      } else {
+        throw new CustomError(
+          '알 수 없는 에러가 발생했습니다',
+          500,
+          'Unknown Error'
+        );
+      }
     }
   };
 
@@ -152,8 +178,17 @@ export class EducationTermsApi {
 
     try {
       return await axios.patch(url, body);
-    } catch (error) {
-      throw new HTTPError(`Fetch error: ${error}`);
+    } catch (serverError: any) {
+      if (serverError.response) {
+        const { message, error, statusCode } = serverError.response.data;
+        throw new CustomError(message, error, statusCode);
+      } else {
+        throw new CustomError(
+          '알 수 없는 에러가 발생했습니다',
+          500,
+          'Unknown Error'
+        );
+      }
     }
   };
 
@@ -171,8 +206,17 @@ export class EducationTermsApi {
 
     try {
       return await axios.delete(url);
-    } catch (error) {
-      throw new HTTPError(`Fetch error: ${error}`);
+    } catch (serverError: any) {
+      if (serverError.response) {
+        const { message, error, statusCode } = serverError.response.data;
+        throw new CustomError(message, error, statusCode);
+      } else {
+        throw new CustomError(
+          '알 수 없는 에러가 발생했습니다',
+          500,
+          'Unknown Error'
+        );
+      }
     }
   };
 
@@ -190,8 +234,17 @@ export class EducationTermsApi {
 
     try {
       return await axios.post(url);
-    } catch (error) {
-      throw new HTTPError(`Fetch error: ${error}`);
+    } catch (serverError: any) {
+      if (serverError.response) {
+        const { message, error, statusCode } = serverError.response.data;
+        throw new CustomError(message, error, statusCode);
+      } else {
+        throw new CustomError(
+          '알 수 없는 에러가 발생했습니다',
+          500,
+          'Unknown Error'
+        );
+      }
     }
   };
 }

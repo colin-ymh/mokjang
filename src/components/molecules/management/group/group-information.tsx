@@ -74,6 +74,12 @@ const GroupInformation = ({ group }: GroupInformationProps) => {
   const groupRolesApi = new GroupRolesApi(false);
   const { churchId } = useSelector((state: RootState) => state.church);
 
+  const [thrownError, setThrownError] = useState<Error | null>(null);
+  // 렌더링 시점(컴포넌트 return)에서 조건부로 에러 발생
+  if (thrownError) {
+    throw thrownError;
+  }
+
   // 그룹 역할 상태 관리
   const [roles, setRoles] = useState<GroupRole[]>([]);
   const [isModalShown, setIsModalShown] = useState<boolean>(false);
@@ -83,12 +89,19 @@ const GroupInformation = ({ group }: GroupInformationProps) => {
   const onClickClose = () => setIsModalShown(false);
 
   // 서버에서 역할 불러오기
-  const fetchRoles = useCallback(() => {
+  const fetchRoles = useCallback(async () => {
     if (churchId && group.id) {
-      groupRolesApi
-        .getGroupRoles({ churchId, groupId: String(group.id) })
-        .then((response) => setRoles(response.data))
-        .catch((error) => console.error('Error fetching roles:', error));
+      try {
+        const response = await groupRolesApi.getGroupRoles({
+          churchId,
+          groupId: String(group.id),
+        });
+        setRoles(response.data);
+      } catch (error) {
+        setThrownError(
+          error instanceof Error ? error : new Error(String(error))
+        );
+      }
     }
   }, [churchId, group.id, groupRolesApi]);
 

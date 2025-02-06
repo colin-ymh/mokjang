@@ -30,72 +30,55 @@ const TermRegister = ({
 }: TermRegisterProps) => {
   const membersApi = new MembersApi(false);
   const educationTermsApi = new EducationTermsApi(false);
-
   const churchId = useSelector((state: RootState) => state.church.churchId);
+  const [thrownError, setThrownError] = useState<Error | null>(null);
 
-  // 기수
+  // 렌더링 시점(컴포넌트 return)에서 조건부로 에러 발생
+  if (thrownError) {
+    throw thrownError;
+  }
+
   const [term, setTerm] = useState<string>(targetTerm?.term || BLANK);
-  // 교육 횟수
   const [session, setSession] = useState<string>(
     targetTerm?.numberOfSessions || BLANK
   );
-  // 교육 시작일
   const [startDate, setStartDate] = useState<string>(
     targetTerm?.startDate ? getFormattedDate(targetTerm.startDate) : BLANK
   );
-  // 교육 종료일
   const [endDate, setEndDate] = useState<string>(
     targetTerm?.endDate ? getFormattedDate(targetTerm.endDate) : BLANK
   );
-  // 교육 담당자 입력란
   const [instructorValue, setInstructorValue] = useState<string>(
     targetTerm?.instructor?.name || BLANK
   );
-  // 검색된 교인목록
   const [searchedMembers, setSearchedMembers] = useState<
     MemberDropdownValueType[]
   >([]);
-  // 선택된 담당자 Id
   const [instructorId, setInstructorId] = useState<string>(
     targetTerm?.instructorId || BLANK
   );
-
-  // 저장 가능 여부
   const [isSaveEnabled, setIsSaveEnabled] = useState<boolean>(false);
 
-  // 기수 변경 이벤트
   const onChangeTerm = (event: ChangeEvent<HTMLInputElement>) => {
-    // 숫자만 입력 가능
-    const newTerm = event.target.value.replace(/\D/g, ''); // 숫자 외 제거
-    setTerm(newTerm);
+    setTerm(event.target.value.replace(/\D/g, ''));
   };
 
-  // 교육 횟수 변경 이벤트
   const onChangeSession = (event: ChangeEvent<HTMLInputElement>) => {
-    // 숫자만 입력 가능
-    const newSession = event.target.value.replace(/\D/g, ''); // 숫자 외 제거
-    setSession(newSession);
+    setSession(event.target.value.replace(/\D/g, ''));
   };
 
-  // 교육 시작일 변경 이벤트
   const onChangeStartDate = (event: ChangeEvent<HTMLInputElement>) => {
-    const newStartDate = getFormattedDate(event.target.value);
-    setStartDate(newStartDate);
+    setStartDate(getFormattedDate(event.target.value));
   };
 
-  // 교육 종료일 변경 이벤트
   const onChangeEndDate = (event: ChangeEvent<HTMLInputElement>) => {
-    const newEndDate = getFormattedDate(event.target.value);
-    setEndDate(newEndDate);
+    setEndDate(getFormattedDate(event.target.value));
   };
 
-  // 교육 담당자 검색창 변경 이벤트
   const onChangeInstructorValue = (event: ChangeEvent<HTMLInputElement>) => {
-    const newValue = getFormattedName(event.target.value);
-    setInstructorValue(newValue);
+    setInstructorValue(getFormattedName(event.target.value));
   };
 
-  // 담당자 선택 이벤트
   const onClickInstructor = (instructorId: string) => {
     setInstructorId(instructorId);
     const newValue = searchedMembers.find(
@@ -106,55 +89,49 @@ const TermRegister = ({
     }
   };
 
-  // 기수 저장 버튼 이벤트
-  const onClickSave = () => {
-    if (isSaveEnabled) {
+  const onClickSave = async () => {
+    if (!isSaveEnabled) return;
+
+    try {
       if (targetTerm?.id) {
-        educationTermsApi
-          .editEducationTerms(
-            {
-              churchId,
-              educationId: education.id,
-              educationTermId: targetTerm.id,
-            },
-            {
-              startDate,
-              endDate,
-              term: targetTerm.term !== term ? parseInt(term) : undefined,
-              numberOfSessions: parseInt(session),
-              instructorId: instructorId ? parseInt(instructorId) : undefined,
-            }
-          )
-          .then(() => {
-            onClickClose();
-            fetchTerms();
-            clearData();
-          });
+        await educationTermsApi.editEducationTerms(
+          {
+            churchId,
+            educationId: education.id,
+            educationTermId: targetTerm.id,
+          },
+          {
+            startDate,
+            endDate,
+            term: targetTerm.term !== term ? parseInt(term) : undefined,
+            numberOfSessions: parseInt(session),
+            instructorId: instructorId ? parseInt(instructorId) : undefined,
+          }
+        );
       } else {
-        educationTermsApi
-          .createEducationTerms(
-            {
-              churchId,
-              educationId: education.id,
-            },
-            {
-              startDate,
-              endDate,
-              term: parseInt(term),
-              numberOfSessions: parseInt(session),
-              instructorId: instructorId ? parseInt(instructorId) : undefined,
-            }
-          )
-          .then(() => {
-            onClickClose();
-            fetchTerms();
-            clearData();
-          });
+        await educationTermsApi.createEducationTerms(
+          {
+            churchId,
+            educationId: education.id,
+          },
+          {
+            startDate,
+            endDate,
+            term: parseInt(term),
+            numberOfSessions: parseInt(session),
+            instructorId: instructorId ? parseInt(instructorId) : undefined,
+          }
+        );
       }
+
+      onClickClose();
+      fetchTerms();
+      clearData();
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
     }
   };
 
-  // 내용 초기화
   const clearData = () => {
     setTerm(term + 1);
     setSession(BLANK);
@@ -164,37 +141,50 @@ const TermRegister = ({
     setInstructorValue(BLANK);
   };
 
-  // 검색 내용 변경 시, 교인 목록 불러오기
   useEffect(() => {
-    if (instructorValue) {
-      membersApi
-        .getMembers({ churchId, page: 1, take: 5, name: instructorValue })
-        .then((response) => {
-          const newMembers: MemberDropdownValueType[] = response.data.data.map(
-            (member: Member) => {
-              return {
-                value: member.id,
-                title: member.name,
-                profileImage: member?.profileImage,
-                age: member?.birth && getAge(getDateFromString(member.birth)),
-              };
-            }
-          );
+    const fetchMembers = async () => {
+      if (!instructorValue) return;
 
-          setSearchedMembers(newMembers);
+      try {
+        const response = await membersApi.getMembers({
+          churchId,
+          page: 1,
+          take: 5,
+          name: instructorValue,
         });
-    }
+
+        setSearchedMembers(
+          response.data.data.map((member: Member) => ({
+            value: member.id,
+            title: member.name,
+            profileImage: member?.profileImage,
+            age: member?.birth && getAge(getDateFromString(member.birth)),
+          }))
+        );
+      } catch (error) {
+        setThrownError(
+          error instanceof Error ? error : new Error(String(error))
+        );
+      }
+    };
+
+    fetchMembers();
   }, [instructorValue]);
 
-  // 내용 변경 시, 저장 가능 여부 변경
   useEffect(() => {
-    if (term?.length === 0) return setIsSaveEnabled(false);
-    if (!getIsWellFormedTerm(terms, term)) return setIsSaveEnabled(false);
-    if (session?.length === 0) return setIsSaveEnabled(false);
-    if (!getIsWellFormedDate(startDate)) return setIsSaveEnabled(false);
-    if (!getIsWellFormedDate(endDate)) return setIsSaveEnabled(false);
+    if (!term || !getIsWellFormedTerm(terms, term)) {
+      setIsSaveEnabled(false);
+      return;
+    }
+    if (
+      !session ||
+      !getIsWellFormedDate(startDate) ||
+      !getIsWellFormedDate(endDate)
+    ) {
+      setIsSaveEnabled(false);
+      return;
+    }
 
-    // 모든 조건을 통과하면 저장 가능
     setIsSaveEnabled(true);
   }, [term, session, startDate, endDate]);
 
@@ -216,11 +206,7 @@ const TermRegister = ({
     onClickSave,
   };
 
-  return (
-    <>
-      <TermRegisterView {...props} />
-    </>
-  );
+  return <TermRegisterView {...props} />;
 };
 
 export default TermRegister;

@@ -18,6 +18,11 @@ const RegisterOfficer = ({}: OfficerListProps) => {
   const router = usePageRouter();
   const nameInputRef = useRef<HTMLInputElement>(null);
 
+  const [thrownError, setThrownError] = useState<Error | null>(null);
+  if (thrownError) {
+    throw thrownError;
+  }
+
   // 선택된 직분
   const [selectedOfficer, setSelectedOfficer] =
     useState<Officer>(DEFAULT_OFFICER);
@@ -35,25 +40,29 @@ const RegisterOfficer = ({}: OfficerListProps) => {
   };
 
   // 새로운 직분 저장
-  const onClickSaveOfficer = () => {
-    if (getIsWellFormedTitle(newOfficerName)) {
-      officersApi
-        .createOfficer({ churchId }, { name: newOfficerName })
-        .then(() => {
-          fetchOfficers();
-          setNewOfficerName(BLANK);
-        });
+  const onClickSaveOfficer = async () => {
+    try {
+      if (getIsWellFormedTitle(newOfficerName)) {
+        await officersApi.createOfficer({ churchId }, { name: newOfficerName });
+        fetchOfficers();
+        setNewOfficerName(BLANK);
+      }
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
     }
   };
 
   // 직분 불러오기
-  const fetchOfficers = () => {
-    officersApi.getOfficers({ churchId }).then((response) => {
+  const fetchOfficers = async () => {
+    try {
+      const response = await officersApi.getOfficers({ churchId });
       if (response.status === 200) {
         const newOfficers = response.data;
         setOfficers(newOfficers);
       }
-    });
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
+    }
   };
 
   // 다음 설정으로 이동

@@ -30,74 +30,73 @@ const ManagementEducationItem = ({
 }: ManagementEducationItemProps) => {
   const educationsApi = new EducationsApi(false);
   const churchId = useSelector((state: RootState) => state.church.churchId);
+  const [thrownError, setThrownError] = useState<Error | null>(null);
 
-  // 이름 수정창 ref
+  // 렌더링 시점(컴포넌트 return)에서 조건부로 에러 발생
+  if (thrownError) {
+    throw thrownError;
+  }
+
   const nameInputRef = useRef<HTMLInputElement>(null);
-
-  // 수정중인지 여부
   const [isEdit, setIsEdit] = useState<boolean>(false);
-
-  // 수정되는 이름
   const [editName, setEditName] = useState<string>(education.name);
 
-  // 확인 중인 교육 변경
   const onClickEducation = (education: Education) => {
     setSelectedEducation(education);
   };
 
-  // 교육 수정 활성화
   const onClickEducationEdit = () => {
     setEditName(education.name);
     setIsEdit(true);
-
-    // isEdit이 true로 전환된 이후
     setTimeout(() => {
-      // 포커스
       if (nameInputRef.current) {
         nameInputRef.current.focus();
       }
     });
   };
 
-  // 교육 삭제
-  const onClickEducationDelete = (educationId: string) => {
-    educationsApi.deleteEducation({ churchId, educationId }).then(() => {
+  const onClickEducationDelete = async (educationId: string) => {
+    try {
+      await educationsApi.deleteEducation({ churchId, educationId });
       fetchEducations();
       setSelectedEducation(DEFAULT_EDUCATION);
-    });
-  };
-
-  // 이름 수정 이벤트
-  const onChangeName = (event: ChangeEvent<HTMLInputElement>) => {
-    const newName = getFormattedTitle(event.target.value);
-    setEditName(newName);
-  };
-
-  // 수정된 이름 저장
-  const onClickSaveName = () => {
-    if (editName === education.name) {
-      setIsEdit(false);
-    } else if (getIsWellFormedTitle(editName)) {
-      educationsApi
-        .editEducation(
-          { churchId, educationId: education.id as string },
-          { name: editName }
-        )
-        .then((response) => {
-          setSelectedEducation(response.data);
-          fetchEducations();
-          setIsEdit(false);
-        });
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
     }
   };
 
-  // 드래그 이후 드롭
+  const onChangeName = (event: ChangeEvent<HTMLInputElement>) => {
+    setEditName(getFormattedTitle(event.target.value));
+  };
+
+  const onClickSaveName = async () => {
+    if (editName === education.name) {
+      setIsEdit(false);
+      return;
+    }
+
+    if (getIsWellFormedTitle(editName)) {
+      try {
+        const response = await educationsApi.editEducation(
+          { churchId, educationId: education.id as string },
+          { name: editName }
+        );
+        setSelectedEducation(response.data);
+        fetchEducations();
+        setIsEdit(false);
+      } catch (error) {
+        setThrownError(
+          error instanceof Error ? error : new Error(String(error))
+        );
+      }
+    }
+  };
+
   const onDropEducation = (
     educationId: string,
     parentEducationId: string | null
   ) => {};
 
-  // 수정 중 focus 가 풀리면 수정 취소
   useEffect(() => {
     const inputElement = nameInputRef.current;
 
@@ -118,12 +117,6 @@ const ManagementEducationItem = ({
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // !!!!!!!!!!!! 시발 !!!!!!!!!!!!
-      // 한글 키보드로 입력 시, compose 를 하네;;;;;이 개같은거
-      // isComposing 이 true => false 이 지랄을 하면서
-      // 엔터가 두 번 입력되는 것 처럼 보였던 것이다
-      // 이 개같은 것 때문에 시간을 존나 날려먹었다
-      // !!!!!!!!!!!! 시발 !!!!!!!!!!!!
       if (e.isComposing) {
         return;
       }
@@ -164,11 +157,7 @@ const ManagementEducationItem = ({
     onClickSaveName,
   };
 
-  return (
-    <>
-      <ManagementEducationItemView {...props} />
-    </>
-  );
+  return <ManagementEducationItemView {...props} />;
 };
 
 export default ManagementEducationItem;
