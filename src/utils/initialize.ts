@@ -92,8 +92,8 @@ export const useInitializeUser = () => {
         typeof window !== 'undefined'
           ? localStorage.getItem('refreshToken')
           : null;
-      console.log('accessToken', accessToken);
-      console.log('refreshToken', refreshToken);
+      // console.log('accessToken', accessToken);
+      // console.log('refreshToken', refreshToken);
 
       // 2) Access Token이 없으면 Refresh Token 확인
       if (!accessToken) {

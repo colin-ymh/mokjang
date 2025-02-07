@@ -42,13 +42,13 @@ const ButtonContainer = styled.div`
 `;
 
 const memberSizeItems = [
-  { value: 'xxs', title: '-50' },
-  { value: 'xs', title: '50-100' },
-  { value: 's', title: '100-300' },
-  { value: 'm', title: '300-500' },
-  { value: 'l', title: '500-1000' },
-  { value: 'xl', title: '1000-5000' },
-  { value: 'xxl', title: '5000-' },
+  { value: 'xxs', title: '50명 이하' },
+  { value: 'xs', title: '51명~100명' },
+  { value: 's', title: '101명~300명' },
+  { value: 'm', title: '301명~500명' },
+  { value: 'l', title: '501명~1000명' },
+  { value: 'xl', title: '1001명~5000명' },
+  { value: 'xxl', title: '5000명 초과' },
 ];
 
 const ChurchRegisterList = () => {
@@ -116,7 +116,7 @@ const ChurchRegisterList = () => {
         name,
         address: '테스트',
         denomination: '테스트',
-        identifyNumber: '0',
+        identifyNumber: new Date().getTime().toString(),
         detailAddress: '테스트',
         memberSize: 'xxl',
         phone: '01012345678',
