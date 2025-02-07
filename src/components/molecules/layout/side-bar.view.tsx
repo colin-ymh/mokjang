@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 
-import { GRAY } from '@/constants/styles/color';
+import { DESTRUCTIVE, GRAY } from '@/constants/styles/color';
 import SideBarButton from '@/components/atoms/layout/side-bar/side-bar-button';
 import SideBarHeader from '@/components/atoms/layout/side-bar/side-bar-header';
 import { MEDIA_MIN_WIDTH } from '@/constants/constant';
@@ -15,6 +15,8 @@ import GroupFilter from '@/components/molecules/layout/group-filter';
 import { useI18n, useScopedI18n } from '../../../../locales/client';
 import Button from '@/components/atoms/common/button/button';
 import { ErrorApi } from '@/api/error/error.api';
+import { MainText } from '@/components/atoms/common/text/main-text';
+import { SIZE } from '@/constants/styles/style';
 
 const SideBarContainer = styled.div`
   display: flex;
@@ -48,10 +50,18 @@ const ButtonContainer = styled.div`
   justify-content: flex-start;
 `;
 
+const TextContainer = styled.div`
+  display: flex;
+  flex-shrink: 0;
+  flex-direction: column;
+  gap: 5px;
+  padding-bottom: 10px;
+`;
+
 const BottomContainer = styled.div`
   display: flex;
   flex-shrink: 0;
-  padding: 10px;
+  padding-bottom: 10px;
 `;
 
 const GroupFilterContainer = styled.div<{ $isOpened: boolean }>`
@@ -80,7 +90,7 @@ const SideBarView = ({ onClickLogOut }: SideBarViewProps) => {
     <SideBarContainer>
       <SideBarHeader />
       <ButtonContainer>
-        <SideBarButton id={HEADER_ID.HOME} title={t_header(HEADER_ID.HOME)} />
+        {/*<SideBarButton id={HEADER_ID.HOME} title={t_header(HEADER_ID.HOME)} />*/}
         <SideBarButton
           id={HEADER_ID.MEMBER}
           title={t_header(HEADER_ID.MEMBER)}
@@ -93,13 +103,28 @@ const SideBarView = ({ onClickLogOut }: SideBarViewProps) => {
           title={t(HEADER_ID.MANAGEMENT)}
         />
       </ButtonContainer>
+      <TextContainer>
+        <MainText fontWeight={600} color={GRAY.DEFAULT}>
+          {'TEL'}
+        </MainText>
+        <MainText size={SIZE.MEDIUM} color={GRAY.DEFAULT}>
+          {'나천호 010-9909-6581'}
+        </MainText>
+        <MainText size={SIZE.MEDIUM} color={GRAY.DEFAULT}>
+          {'유민혁 010-5696-6896'}
+        </MainText>
+        <MainText size={SIZE.MEDIUM} color={GRAY.DEFAULT}>
+          {'김홍남 010-5024-4636'}
+        </MainText>
+      </TextContainer>
       <BottomContainer>
         <Button
           text={t('button.logOut')}
           onClick={onClickLogOut}
           height={30}
-          width={80}
-          backgroundColor={GRAY.DEFAULT}
+          // width={80}
+          backgroundColor={GRAY.LIGHT}
+          color={DESTRUCTIVE.LIGHT}
         />
       </BottomContainer>
     </SideBarContainer>

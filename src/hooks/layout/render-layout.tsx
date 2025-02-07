@@ -67,8 +67,8 @@ export const getContent = (id: string): ReactNode => {
 
 export const getHeader = (id: string) => {
   switch (id) {
-    case HEADER_ID.HOME:
-      return null;
+    // case HEADER_ID.HOME:
+    //   return null;
     case HEADER_ID.MEMBER:
       return <MemberTabHeader />;
     case HEADER_ID.MANAGEMENT:

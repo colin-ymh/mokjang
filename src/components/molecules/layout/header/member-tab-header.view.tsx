@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { GRAY, MAIN } from '@/constants/styles/color';
+import { BLACK, GRAY } from '@/constants/styles/color';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import HeaderBar from '@/components/atoms/layout/header/header-bar';
 import { useMemberHeaderBarItems } from '@/hooks/layout/header-bar-items';
@@ -68,7 +68,7 @@ const MemberTabHeaderView = ({
             width={200}
             height={30}
             onClick={onClickDummyMembers}
-            backgroundColor={MAIN.LIGHT}
+            backgroundColor={BLACK}
           />
           <Button
             text={t_button('addMember')}

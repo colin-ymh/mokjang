@@ -1,8 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { HEADER_ID } from '@/constants/layout/header';
-import { HOME_CONTENT_ID, MEMBER_CONTENT_ID } from '@/constants/layout/content';
-import { ReactNode } from 'react';
-import MemberTabHeader from '@/components/molecules/layout/header/member-tab-header';
+import { MEMBER_CONTENT_ID } from '@/constants/layout/content';
 
 type LayoutState = {
   headerId: string;
@@ -10,8 +8,10 @@ type LayoutState = {
 };
 
 const initialState: LayoutState = {
-  headerId: HEADER_ID.HOME,
-  contentId: HOME_CONTENT_ID.HOME,
+  // headerId: HEADER_ID.HOME,
+  // contentId: HOME_CONTENT_ID.HOME,
+  headerId: HEADER_ID.MEMBER,
+  contentId: MEMBER_CONTENT_ID.MEMBER,
 };
 
 const LayoutSlice = createSlice({
