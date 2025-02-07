@@ -76,7 +76,7 @@ const UserRegisterList = () => {
       if (response.status === 201) {
         setIsRequested(true);
         // console.log(response.data);
-        setSecond(300);
+        setSecond(1800);
       }
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));

@@ -67,7 +67,6 @@ const RootLayout = (props: RootLayoutProps | RootLayoutPropsExtended) => {
   const { children } = {
     ...props,
   };
-
   return (
     <html lang="ko">
       <head>
