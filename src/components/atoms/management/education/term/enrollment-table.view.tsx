@@ -287,7 +287,7 @@ const EnrollmentTableView = ({
             onChange={(value) => {
               onChangeAttendance(
                 enrollment.educationTermId,
-                enrollment.id,
+                attendanceValue.id,
                 value
               );
             }}

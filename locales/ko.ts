@@ -5,7 +5,7 @@ export default {
   search: '검색',
   after: '부터',
   before: '까지',
-  management: '설정',
+  management: '교회 관리',
   all: '전체',
   period: '기간',
   total: '총',
@@ -254,5 +254,7 @@ export default {
 
   'popup.deleteMemberTitle': '교인을 삭제하시겠습니까?',
   'popup.deleteMemberContent': '삭제된 교인은 복구할 수 없습니다.',
+
+  'popup.verifyFail': '잘못된 인증번호 입니다.',
   /*-------------------popup-------------------*/
 } as const;

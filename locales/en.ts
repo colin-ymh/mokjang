@@ -250,5 +250,7 @@ export default {
 
   'popup.deleteMemberTitle': 'Do you want to delete this member?',
   'popup.deleteMemberContent': 'Deleted member cannot be restored.',
+
+  'popup.verifyFail': 'Wrong Number :(',
   /*-------------------popup-------------------*/
 } as const;

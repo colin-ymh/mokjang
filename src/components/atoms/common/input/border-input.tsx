@@ -67,6 +67,7 @@ const BorderInput = forwardRef<HTMLInputElement, BorderInputProps>(
         $backgroundColor={backgroundColor}
         height={height}
         width={width}
+        disabled={disabled}
         $disabled={disabled}
         {...props}
       />

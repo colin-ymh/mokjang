@@ -2,6 +2,7 @@ import React, {
   ChangeEvent,
   Dispatch,
   SetStateAction,
+  useEffect,
   useRef,
   useState,
 } from 'react';
@@ -185,6 +186,42 @@ const ManagementMinistryMinistryGroupItem = ({
       setThrownError(error instanceof Error ? error : new Error(String(error)));
     }
   };
+
+  useEffect(() => {
+    const handleBlur = () => setIsEdit(false);
+    nameInputRef.current?.addEventListener('blur', handleBlur);
+    return () => nameInputRef.current?.removeEventListener('blur', handleBlur);
+  }, [isEdit]);
+
+  useEffect(() => {
+    const handleBlur = () => setIsAddShown(false);
+    newMinistryGroupRef.current?.addEventListener('blur', handleBlur);
+    return () =>
+      newMinistryGroupRef.current?.removeEventListener('blur', handleBlur);
+  }, [isAddShown]);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.isComposing) return;
+
+      if (e.key === 'Enter') {
+        if (nameInputRef.current === document.activeElement) {
+          onClickSaveName();
+        } else if (newMinistryGroupRef.current === document.activeElement) {
+          onClickSaveNewMinistryGroup();
+        }
+      } else if (e.key === 'Escape') {
+        if (nameInputRef.current === document.activeElement) {
+          setIsEdit(false);
+        } else if (newMinistryGroupRef.current === document.activeElement) {
+          setIsAddShown(false);
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [editName, newMinistryGroupName]);
 
   const props = {
     isHaveChildren,

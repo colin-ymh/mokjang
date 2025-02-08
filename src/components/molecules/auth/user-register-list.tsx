@@ -9,12 +9,19 @@ import { usePageRouter } from '@/utils/router';
 import { AppDispatch } from '@/redux/store';
 import { useDispatch } from 'react-redux';
 import { setUser } from '@/redux/reducers/user-reducer';
+import ToastPopup from '@/components/atoms/common/popup/toast-popup';
+import { useScopedI18n } from '../../../../locales/client';
+import { DESTRUCTIVE } from '@/constants/styles/color';
+import { TOAST_DIRECTION } from '@/components/atoms/common/popup/toast-popup.view';
 
 const UserRegisterList = () => {
+  const t_popup = useScopedI18n('popup');
   const router = usePageRouter();
   const authApi = new AuthApi(false);
   const dispatch = useDispatch<AppDispatch>();
   const [thrownError, setThrownError] = useState<Error | null>(null);
+
+  const [isErrorShown, setIsErrorShown] = useState<boolean>(false);
 
   // 렌더링 시점(컴포넌트 return)에서 조건부로 에러 발생
   if (thrownError) {
@@ -70,6 +77,7 @@ const UserRegisterList = () => {
           name,
           mobilePhone: mobilePhone.replace(/-/g, ''),
           isTest: IS_TEST.BETA_TEST,
+          // isTest: IS_TEST.INTERNAL_TEST,
         }
       );
 
@@ -95,7 +103,7 @@ const UserRegisterList = () => {
       }
     } catch (error) {
       setIsVerified(false);
-      setThrownError(error instanceof Error ? error : new Error(String(error)));
+      setIsErrorShown(true);
     }
   };
 
@@ -169,6 +177,14 @@ const UserRegisterList = () => {
   return (
     <>
       <UserRegisterListView {...props} />
+      {isErrorShown && (
+        <ToastPopup
+          text={t_popup('verifyFail')}
+          setIsShow={setIsErrorShown}
+          backgroundColor={DESTRUCTIVE.DEFAULT}
+          direction={TOAST_DIRECTION.BOTTOM}
+        />
+      )}
     </>
   );
 };

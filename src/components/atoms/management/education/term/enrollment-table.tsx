@@ -95,6 +95,7 @@ const EnrollmentTable = ({
         },
         { status }
       );
+      fetchEnrollments();
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));
     }

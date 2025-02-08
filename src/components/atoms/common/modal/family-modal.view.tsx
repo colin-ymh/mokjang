@@ -11,6 +11,7 @@ import { useI18n, useScopedI18n } from '../../../../../locales/client';
 import Cancel from '../../../../../public/svg/cancel.svg';
 import { MemberDropdownValueType } from '@/models/dropdown/dropdown';
 import MemberDropdown from '@/components/atoms/common/dropdown/member-dropdown';
+import { GRAY } from '@/constants/styles/color';
 
 const FamilyModalViewContainer = styled.div`
   display: flex;
@@ -142,6 +143,8 @@ const FamilyModalView = ({
             onClick={() => {
               onClickCreateFamily(familyMemberId, familyRelation, true);
             }}
+            backgroundColor={GRAY.LIGHT}
+            disabled={true}
           />
         </ButtonContainer>
       )}

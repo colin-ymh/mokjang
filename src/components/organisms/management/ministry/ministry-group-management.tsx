@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
 
 import { MINISTRY_MANAGEMENT_HEADER_ID } from '@/constants/layout/header';
 import { useMinistryManagementHeaderBarItems } from '@/hooks/layout/header-bar-items';
@@ -8,8 +10,6 @@ import {
 } from '@/models/management/management';
 import MinistryManagementView from '@/components/organisms/management/ministry/ministry-group-management.view';
 import { MinistryGroupsApi } from '@/api/management/ministry/ministry-groups.api';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/redux/store';
 
 type MinistryManagementProps = {};
 
