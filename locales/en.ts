@@ -251,6 +251,8 @@ export default {
   'popup.deleteMemberTitle': 'Do you want to delete this member?',
   'popup.deleteMemberContent': 'Deleted member cannot be restored.',
 
-  'popup.verifyFail': 'Wrong Number :(',
+  'popup.verifyFail': "You've entered wrong number.",
+  'popup.duplicatedRole': 'That role is already duplicated.',
+  'popup.duplicatedMinistry': 'That ministry is already duplicated.',
   /*-------------------popup-------------------*/
 } as const;

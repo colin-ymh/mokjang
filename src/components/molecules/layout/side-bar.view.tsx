@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 
-import { DESTRUCTIVE, GRAY } from '@/constants/styles/color';
+import { BLACK, DESTRUCTIVE, GRAY, WHITE } from '@/constants/styles/color';
 import SideBarButton from '@/components/atoms/layout/side-bar/side-bar-button';
 import SideBarHeader from '@/components/atoms/layout/side-bar/side-bar-header';
 import { MEDIA_MIN_WIDTH } from '@/constants/constant';
@@ -62,6 +62,8 @@ const BottomContainer = styled.div`
   display: flex;
   flex-shrink: 0;
   padding-bottom: 10px;
+  flex-direction: column;
+  gap: 10px;
 `;
 
 const GroupFilterContainer = styled.div<{ $isOpened: boolean }>`
@@ -119,6 +121,19 @@ const SideBarView = ({ onClickLogOut }: SideBarViewProps) => {
       </TextContainer>
       <BottomContainer>
         <Button
+          text={'설문조사 진행하기'}
+          onClick={() =>
+            window.open(
+              'https://docs.google.com/forms/d/1e58wUrCS3sWSmE-3wKVxtVNNEcrnwGBXNuflUiZ1cUk/viewform?edit_requested=true',
+              '_blank'
+            )
+          }
+          height={30}
+          // width={80}
+          backgroundColor={BLACK}
+          color={WHITE}
+        />
+        <Button
           text={t('button.logOut')}
           onClick={onClickLogOut}
           height={30}
@@ -126,6 +141,22 @@ const SideBarView = ({ onClickLogOut }: SideBarViewProps) => {
           backgroundColor={GRAY.LIGHT}
           color={DESTRUCTIVE.LIGHT}
         />
+        {/*<Button*/}
+        {/*  text={'에러 테스트'}*/}
+        {/*  onClick={async () => {*/}
+        {/*    try {*/}
+        {/*      await errorApi.getError({});*/}
+        {/*    } catch (error) {*/}
+        {/*      setThrownError(*/}
+        {/*        error instanceof Error ? error : new Error(String(error))*/}
+        {/*      );*/}
+        {/*    }*/}
+        {/*  }}*/}
+        {/*  height={30}*/}
+        {/*  // width={80}*/}
+        {/*  backgroundColor={BLACK}*/}
+        {/*  color={WHITE}*/}
+        {/*/>*/}
       </BottomContainer>
     </SideBarContainer>
   );

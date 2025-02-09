@@ -256,5 +256,7 @@ export default {
   'popup.deleteMemberContent': '삭제된 교인은 복구할 수 없습니다.',
 
   'popup.verifyFail': '잘못된 인증번호 입니다.',
+  'popup.duplicatedRole': '이미 등록된 그룹 역할입니다.',
+  'popup.duplicatedMinistry': '이미 등록된 사역입니다.',
   /*-------------------popup-------------------*/
 } as const;

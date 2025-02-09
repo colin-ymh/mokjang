@@ -1,7 +1,6 @@
 'use client';
 
 import ConfirmPopup from '@/components/atoms/common/popup/error-popup';
-import { usePageRouter } from '@/utils/router';
 import { useEffect, useState } from 'react';
 
 export default function Error({
@@ -11,7 +10,7 @@ export default function Error({
   error: Error;
   reset: () => void;
 }) {
-  const router = usePageRouter();
+  // const router = usePageRouter();
   const [isShown, setIsShown] = useState<boolean>(false);
 
   useEffect(() => {
@@ -26,7 +25,7 @@ export default function Error({
       isShow={isShown}
       onClickSingleButton={() => {
         setIsShown(false);
-        router.push('');
+        reset();
       }}
       singleButtonText={'확인'}
     />
