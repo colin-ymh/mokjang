@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { Group } from '@/models/management/management';
 import { GRAY, MAIN } from '@/constants/styles/color';
 import { MainText } from '@/components/atoms/common/text/main-text';
+import { SIZE } from '@/constants/styles/style';
 
 const FilterContainer = styled.div`
   display: flex;
@@ -43,7 +44,7 @@ const ChildGroupsContainer = styled.div`
 
 type GroupFilterViewProps = {
   groups: Group[];
-  selectedGroupId: string;
+  selectedGroupId: string | null;
   onClickGroup: (groupIds: string[]) => void;
 };
 
@@ -52,7 +53,7 @@ const renderGroups = (
   groups: Group[],
   level: number,
   openGroups: Record<number, boolean>,
-  selectedGroupId: string,
+  selectedGroupId: string | null,
   onClickToggle: (id: number) => void,
   onClickGroup: (groupIds: string[]) => void
 ) => {
@@ -83,7 +84,7 @@ const renderGroups = (
               onClickToggle(parseInt(group.id as string));
             }}
           >
-            <MainText color={GRAY.DARK}>
+            <MainText color={GRAY.DARK} size={SIZE.SMALL}>
               {isHaveChildren ? (isOpen ? '▼' : '▶') : ''}
             </MainText>
           </ToggleButton>

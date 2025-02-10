@@ -127,7 +127,7 @@ export const FAMILY_MEMBER_TABLE_HEADER: TABLE_HEADER_ITEM[] = [
   {
     id: MEMBER.RELATION,
     isShown: true,
-    isSortable: true,
+    isSortable: false,
     isFilterable: false,
     isFixed: true,
     isDate: false,
@@ -135,7 +135,7 @@ export const FAMILY_MEMBER_TABLE_HEADER: TABLE_HEADER_ITEM[] = [
   {
     id: MEMBER.NAME,
     isShown: true,
-    isSortable: true,
+    isSortable: false,
     isFilterable: true,
     isFixed: false,
     isDate: false,
@@ -143,7 +143,7 @@ export const FAMILY_MEMBER_TABLE_HEADER: TABLE_HEADER_ITEM[] = [
   {
     id: MEMBER.AGE,
     isShown: true,
-    isSortable: true,
+    isSortable: false,
     isFilterable: false,
     isFixed: true,
     isDate: false,
@@ -151,7 +151,7 @@ export const FAMILY_MEMBER_TABLE_HEADER: TABLE_HEADER_ITEM[] = [
   {
     id: MEMBER.OFFICER,
     isShown: true,
-    isSortable: true,
+    isSortable: false,
     isFilterable: false,
     isFixed: false,
     isDate: false,
