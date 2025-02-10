@@ -6,10 +6,27 @@ import { BLANK } from '@/constants/constant';
 import UserRegisterListView from '@/components/molecules/auth/user-register-list.view';
 import { getFormattedMobilePhone, getFormattedName } from '@/utils/format';
 import { usePageRouter } from '@/utils/router';
+import { AppDispatch } from '@/redux/store';
+import { useDispatch } from 'react-redux';
+import { setUser } from '@/redux/reducers/user-reducer';
+import ToastPopup from '@/components/atoms/common/popup/toast-popup';
+import { useScopedI18n } from '../../../../locales/client';
+import { DESTRUCTIVE } from '@/constants/styles/color';
+import { TOAST_DIRECTION } from '@/components/atoms/common/popup/toast-popup.view';
 
 const UserRegisterList = () => {
+  const t_popup = useScopedI18n('popup');
   const router = usePageRouter();
   const authApi = new AuthApi(false);
+  const dispatch = useDispatch<AppDispatch>();
+  const [thrownError, setThrownError] = useState<Error | null>(null);
+
+  const [isErrorShown, setIsErrorShown] = useState<boolean>(false);
+
+  // 렌더링 시점(컴포넌트 return)에서 조건부로 에러 발생
+  if (thrownError) {
+    throw thrownError;
+  }
 
   // 인증 시간 타이머
   const [second, setSecond] = useState<number>(0);
@@ -48,43 +65,46 @@ const UserRegisterList = () => {
       .replace(/\D/g, '')
       .trim()
       .slice(0, 6);
-    // 숫자만 남기기
     setVerifyNumber(newVerifyNumber);
   };
 
   // 요청 버튼
-  const onClickRequest = () => {
-    authApi
-      .getVerificationRequest(
+  const onClickRequest = async () => {
+    try {
+      const response = await authApi.getVerificationRequest(
         {},
         {
           name,
           mobilePhone: mobilePhone.replace(/-/g, ''),
-          isTest: IS_TEST.INTERNAL_TEST,
+          isTest: IS_TEST.BETA_TEST,
+          // isTest: IS_TEST.INTERNAL_TEST,
         }
-      )
-      .then((response) => {
-        if (response.status === 201) {
-          setIsRequested(true);
-          console.log(response.data);
-          setSecond(180);
-        }
-      });
+      );
+
+      if (response.status === 201) {
+        setIsRequested(true);
+        // console.log(response.data);
+        setSecond(1800);
+      }
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
+    }
   };
 
   // 인증 버튼
-  const onClickVerify = () => {
-    authApi
-      .getVerificationVerify({ code: verifyNumber })
-      .then((response) => {
-        // 성공
-        if (response.data?.verified) {
-          setIsVerified(true);
-        }
-      })
-      .catch((error) => {
-        setIsVerified(false);
+  const onClickVerify = async () => {
+    try {
+      const response = await authApi.getVerificationVerify({
+        code: verifyNumber,
       });
+
+      if (response.data?.verified) {
+        setIsVerified(true);
+      }
+    } catch (error) {
+      setIsVerified(false);
+      setIsErrorShown(true);
+    }
   };
 
   // 개인정보 처리 동의 버튼
@@ -93,10 +113,13 @@ const UserRegisterList = () => {
   };
 
   // 회원가입 완료 버튼
-  const onClickDone = () => {
-    authApi
-      .getSignIn({ privacyPolicyAgreed: isVerified })
-      .then((response) => {
+  const onClickDone = async () => {
+    try {
+      const response = await authApi.getSignIn({
+        privacyPolicyAgreed: isVerified,
+      });
+
+      if (response.status === 201) {
         const accessToken = response.data.accessToken;
         const refreshToken = response.data.refreshToken;
 
@@ -106,10 +129,15 @@ const UserRegisterList = () => {
         localStorage.setItem('refreshToken', refreshToken);
 
         router.push('/church/register');
-      })
-      .catch((error) => {
-        console.log('로그인 실패:', error);
-      });
+
+        const userResponse = await authApi.getUser();
+        const newUser = userResponse.data;
+        dispatch(setUser(newUser));
+      }
+    } catch (error) {
+      console.log('로그인 실패:', error);
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
+    }
   };
 
   // 타이머 감소 로직: 인증 요청 후 1초마다 감소
@@ -119,15 +147,13 @@ const UserRegisterList = () => {
     if (isRequested && second > 0) {
       timer = setInterval(() => {
         setSecond((prevSecond) => prevSecond - 1);
-      }, 1000); // 1초마다 감소
+      }, 1000);
     }
 
-    // second가 0이 되면 타이머 정지
     if (second === 0 && isRequested) {
       setIsRequested(false);
     }
 
-    // 컴포넌트 언마운트 시 타이머 정리
     return () => clearInterval(timer);
   }, [isRequested, second]);
 
@@ -151,6 +177,14 @@ const UserRegisterList = () => {
   return (
     <>
       <UserRegisterListView {...props} />
+      {isErrorShown && (
+        <ToastPopup
+          text={t_popup('verifyFail')}
+          setIsShow={setIsErrorShown}
+          backgroundColor={DESTRUCTIVE.DEFAULT}
+          direction={TOAST_DIRECTION.BOTTOM}
+        />
+      )}
     </>
   );
 };

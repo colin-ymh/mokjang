@@ -5,6 +5,7 @@ import React, {
   forwardRef,
   RefObject,
   useEffect,
+  useRef,
   useState,
 } from 'react';
 import TransparentBackground from '@/components/atoms/common/etc/transparent-background';
@@ -69,6 +70,9 @@ const MemberDropdown = forwardRef<HTMLInputElement, DropdownProps>(
     // 현재 focus된 item
     const [focusedIndex, setFocusedIndex] = useState<number>(0);
 
+    // 이전 items.length를 추적하기 위한 Ref
+    const prevItemsLength = useRef<number>(items.length);
+
     // 드롭다운 외부 영역 클릭 시 일어나는 이벤트
     const onClickBackground = () => {
       setIsOpened(false);
@@ -76,7 +80,8 @@ const MemberDropdown = forwardRef<HTMLInputElement, DropdownProps>(
 
     // 드롭다운 영역 클릭 시 일어나는 이벤트
     const onClickDropdown = () => {
-      if ((!isOpened && items.length === 0) || disabled) return;
+      if (items.length === 0) return; // 처음 클릭 시 items가 비어있다면 열리지 않음
+      // 나머지 disabled 검사 등...
       setIsOpened((prev) => !prev);
     };
 
@@ -122,13 +127,12 @@ const MemberDropdown = forwardRef<HTMLInputElement, DropdownProps>(
 
     // 외부에서 드롭다운 아이템들이 변경
     useEffect(() => {
-      if (onChange && value !== innerValue) {
-        // 아이템이 있으면 드롭다운 열기
-        if (items.length > 0) {
-          // setFocusedIndex(0);
-          setIsOpened(true);
-        } else setIsOpened(false);
+      if (prevItemsLength.current === 0 && items.length > 0) {
+        // 이전엔 비어있었는데 지금은 채워졌다면...
+        setIsOpened(true); // 자동으로 열기
       }
+      // 매번 마지막에 현재 길이를 저장
+      prevItemsLength.current = items.length;
     }, [items]);
 
     const onFocusInput = () => {

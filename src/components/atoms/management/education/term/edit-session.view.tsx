@@ -1,25 +1,39 @@
+import React, { ChangeEvent } from 'react';
 import styled from 'styled-components';
-import { ChangeEvent } from 'react';
+
 import LabelInput from '@/components/atoms/common/input/label-input';
-import { useI18n, useScopedI18n } from '../../../../../../locales/client';
 import LabelTextarea from '@/components/atoms/common/input/label-textarea';
 import Button from '@/components/atoms/common/button/button';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import CheckButton from '@/components/atoms/common/button/check-button';
+import { SIZE } from '@/constants/styles/style';
+
+import { useI18n, useScopedI18n } from '../../../../../../locales/client';
 
 const SessionContainer = styled.div`
   display: flex;
-  justify-content: space-between;
   flex-direction: column;
-  padding: 20px;
+  justify-content: flex-start;
+  height: 100%;
   width: 100%;
+  overflow: hidden;
+  position: relative;
+`;
+
+const TextContainer = styled.div`
+  padding: 30px 20px;
 `;
 
 const ContentContainer = styled.div`
   display: flex;
   flex-direction: column;
-  width: 100%;
+  justify-content: flex-start;
+  padding: 0 20px;
   gap: 20px;
+  overflow-y: auto;
+  margin-bottom: 60px;
+  height: 100%;
+  flex-grow: 1;
 `;
 
 const DoneContainer = styled.div`
@@ -30,6 +44,7 @@ const DoneContainer = styled.div`
 
 const ButtonContainer = styled.div`
   display: flex;
+  padding: 10px;
 `;
 
 type EditSessionViewProps = {
@@ -55,6 +70,11 @@ const EditSessionView = ({
   const t_placeholder = useScopedI18n('placeholder');
   return (
     <SessionContainer>
+      <TextContainer>
+        <MainText size={SIZE.EXTRA_LARGE}>
+          {t('register.termHeaderPhrase')}
+        </MainText>
+      </TextContainer>
       <ContentContainer>
         <LabelInput
           label={t('educationDate')}

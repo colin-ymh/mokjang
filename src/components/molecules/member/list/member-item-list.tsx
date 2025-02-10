@@ -6,9 +6,8 @@ import { RootState } from '@/redux/store';
 import { GRAY } from '@/constants/styles/color';
 import { MemberTableProps } from '@/components/molecules/member/list/member-table';
 import { MainText } from '@/components/atoms/common/text/main-text';
-
-import DefaultImage from '../../../../../public/png/default-member-image.png';
 import { useI18n } from '../../../../../locales/client';
+import { getRandomImage } from '@/utils/image';
 
 const MemberListContainer = styled.div`
   display: flex;
@@ -52,7 +51,7 @@ const MemberItemList = ({ onClickMemberItem }: MemberTableProps) => {
           onClick={() => onClickMemberItem(member.id)}
         >
           <ProfileImage
-            src={member.profileImage || DefaultImage}
+            src={member.profileImage || getRandomImage(member.id)}
             alt={`profileImage`}
           />
           <MemberDetails>

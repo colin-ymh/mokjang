@@ -2,8 +2,7 @@ import { AxiosResponse } from 'axios';
 
 import { SERVER_URL, TEST_SERVER_URL } from '@/constants/state/url';
 import authorizeAxios from '@/api/authorize-axios';
-
-class HTTPError extends Error {}
+import { CustomError } from '@/api/error/error';
 
 type createChurchBody = {
   name: string;
@@ -58,8 +57,17 @@ export class ChurchesApi {
 
     try {
       return await authorizeAxios.post(url.toString(), body);
-    } catch (error) {
-      throw new HTTPError(`Fetch error: ${error}`);
+    } catch (serverError: any) {
+      if (serverError.response) {
+        const { message, error, statusCode } = serverError.response.data;
+        throw new CustomError(message, error, statusCode);
+      } else {
+        throw new CustomError(
+          '알 수 없는 에러가 발생했습니다',
+          500,
+          'Unknown Error'
+        );
+      }
     }
   };
 
@@ -76,8 +84,17 @@ export class ChurchesApi {
 
     try {
       return await authorizeAxios.get(url.toString());
-    } catch (error) {
-      throw new HTTPError(`Fetch error: ${error}`);
+    } catch (serverError: any) {
+      if (serverError.response) {
+        const { message, error, statusCode } = serverError.response.data;
+        throw new CustomError(message, error, statusCode);
+      } else {
+        throw new CustomError(
+          '알 수 없는 에러가 발생했습니다',
+          500,
+          'Unknown Error'
+        );
+      }
     }
   };
 
@@ -96,8 +113,17 @@ export class ChurchesApi {
 
     try {
       return await authorizeAxios.patch(url.toString(), body);
-    } catch (error) {
-      throw new HTTPError(`Fetch error: ${error}`);
+    } catch (serverError: any) {
+      if (serverError.response) {
+        const { message, error, statusCode } = serverError.response.data;
+        throw new CustomError(message, error, statusCode);
+      } else {
+        throw new CustomError(
+          '알 수 없는 에러가 발생했습니다',
+          500,
+          'Unknown Error'
+        );
+      }
     }
   };
 
@@ -113,8 +139,17 @@ export class ChurchesApi {
 
     try {
       return await authorizeAxios.delete(url.toString());
-    } catch (error) {
-      throw new HTTPError(`Fetch error: ${error}`);
+    } catch (serverError: any) {
+      if (serverError.response) {
+        const { message, error, statusCode } = serverError.response.data;
+        throw new CustomError(message, error, statusCode);
+      } else {
+        throw new CustomError(
+          '알 수 없는 에러가 발생했습니다',
+          500,
+          'Unknown Error'
+        );
+      }
     }
   };
 }

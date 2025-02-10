@@ -13,6 +13,12 @@ type MinistryGroupMemberProps = {
 const MinistryGroupMember = ({ ministryGroup }: MinistryGroupMemberProps) => {
   const membersApi = new MembersApi(false);
 
+  const [thrownError, setThrownError] = useState<Error | null>(null);
+  // 렌더링 시점(컴포넌트 return)에서 조건부로 에러 발생
+  if (thrownError) {
+    throw thrownError;
+  }
+
   // 그룹에 속한 교인 목록
   const [members, setMembers] = useState<Member[]>([]);
 
@@ -29,26 +35,25 @@ const MinistryGroupMember = ({ ministryGroup }: MinistryGroupMemberProps) => {
     setIsModalShown(false);
   };
 
-  const fetchMembers = () => {
-    if (ministryGroup.ministries?.length !== 0) {
-      membersApi
-        .getMembers({
+  const fetchMembers = async () => {
+    try {
+      if (ministryGroup.ministries?.length !== 0) {
+        const response = await membersApi.getMembers({
           churchId: ministryGroup.churchId,
-          ministries: ministryGroup.ministries?.map((ministry) => {
-            return ministry.id;
-          }),
+          ministries: ministryGroup.ministries?.map((ministry) => ministry.id),
           selectedColumns: [
             MEMBER.GROUP,
             MEMBER.BIRTH,
             MEMBER.OFFICER,
             MEMBER.MOBILE_PHONE,
           ],
-        })
-        .then((response) => {
-          setMembers(response.data.data);
         });
-    } else {
-      setMembers([]);
+        setMembers(response.data.data);
+      } else {
+        setMembers([]);
+      }
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
     }
   };
 

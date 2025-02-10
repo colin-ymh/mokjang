@@ -64,7 +64,7 @@ const MemberTableHeader = ({ item, onClick }: MemberTableHeaderProps) => {
            2) 일반 열인 경우
            ========================= */
         <TextContainer>
-          <MainText color={isActive ? MAIN.DEFAULT : GRAY.DARK}>
+          <MainText color={isActive ? MAIN.DEFAULT : GRAY.EXTRA_DARK}>
             {getTranslatedMemberColumn(t, item.id)}
           </MainText>
         </TextContainer>

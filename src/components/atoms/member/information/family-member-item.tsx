@@ -9,9 +9,8 @@ import { GENDER } from '@/constants/constant';
 import { getFormattedMobilePhone } from '@/utils/format';
 import { FamilyMember } from '@/models/member/member';
 import SlideButtonList from '@/components/atoms/common/button/slide-button-list';
-
-import DefaultImage from '../../../../../public/png/default-member-image.png';
 import { useI18n } from '../../../../../locales/client';
+import { getRandomImage } from '@/utils/image';
 
 const ItemContainer = styled.div`
   display: flex;
@@ -74,7 +73,10 @@ const FamilyMemberItem = ({
           <MainText fontWeight={600}>{t(member.relation)}</MainText>
         </MemberInformationContainer>
         {/* 이미지 */}
-        <ProfileImage src={DefaultImage} alt={'profileImage'} />
+        <ProfileImage
+          src={getRandomImage(member.familyMemberId)}
+          alt={'profileImage'}
+        />
         {/* 이름 */}
         <MemberInformationContainer>
           <MainText color={GRAY.DEFAULT}>{t(MEMBER.NAME)}</MainText>
@@ -124,7 +126,7 @@ const FamilyMemberItem = ({
         }}
         isAddShown={false}
         buttonSize={25}
-        hoverBackgroundColor={WHITE}
+        backgroundColor={WHITE}
       />
     </ItemContainer>
   );

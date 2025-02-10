@@ -62,14 +62,16 @@ const MemberGroupView = ({
         <MainText color={GRAY.DARK}>{t('group')}</MainText>
       </ListTypeHeader>
       {/* 현재 사역 이력 */}
-      <GroupListContainer>
-        <GroupHistoryItem
-          group={currentHistory || DEFAULT_GROUP_HISTORY}
-          onClickEditGroup={onClickEditGroup}
-          onClickDeleteGroup={onClickDeleteGroup}
-          isCurrent={true}
-        />
-      </GroupListContainer>
+      {currentHistory && (
+        <GroupListContainer>
+          <GroupHistoryItem
+            group={currentHistory || DEFAULT_GROUP_HISTORY}
+            onClickEditGroup={onClickEditGroup}
+            onClickDeleteGroup={onClickDeleteGroup}
+            isCurrent={true}
+          />
+        </GroupListContainer>
+      )}
       {/* 그룹 헤더 */}
       <ListTypeHeader>
         <MainText color={GRAY.DARK}>{t('history')}</MainText>

@@ -8,8 +8,7 @@ import { GRAY } from '@/constants/styles/color';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { getAge, getDateFromString } from '@/utils/date';
 import CheckButton from '@/components/atoms/common/button/check-button';
-
-import DefaultImage from '../../../../../public/png/default-member-image.png';
+import { getRandomImage } from '@/utils/image';
 
 const BackgroundContainer = styled.div`
   display: flex;
@@ -67,7 +66,7 @@ const AddMemberItem = ({
         }}
       >
         <ProfileImage
-          src={member.profileImage || DefaultImage}
+          src={member.profileImage || getRandomImage(member.id)}
           alt={MEMBER.PROFILE_IMAGE}
         />
         <MainText>{member.name}</MainText>

@@ -24,6 +24,11 @@ const CheckRegister = () => {
   };
   const requestInfoApi = new RequestInfoApi(false);
 
+  const [thrownError, setThrownError] = useState<Error | null>(null);
+  if (thrownError) {
+    throw thrownError;
+  }
+
   // 버튼 활성화 여부
   const [isButtonEnable, setIsButtonEnable] = useState<boolean>(false);
 
@@ -52,24 +57,28 @@ const CheckRegister = () => {
   };
 
   // 확인 버튼 이벤트
-  const onClickButton = () => {
-    // 서버를 통해 유효성 검증
-    requestInfoApi
-      .getRequestValidation(
-        { churchId, requestInfoId },
-        {
-          name: member.name,
-          mobilePhone: member.mobilePhone.replace(/\D/g, ''),
-        }
-      )
-      .then((response) => {
-        if (response.data.success) {
-          // 검증 완료 시
-          router.push(`/church/${churchId}/request/${requestInfoId}/extra`);
-        } else {
-          // 실패 처리
-        }
-      });
+  const onClickButton = async () => {
+    try {
+      // 서버를 통해 유효성 검증
+      await requestInfoApi
+        .getRequestValidation(
+          { churchId, requestInfoId },
+          {
+            name: member.name,
+            mobilePhone: member.mobilePhone.replace(/\D/g, ''),
+          }
+        )
+        .then((response) => {
+          if (response.data.success) {
+            // 검증 완료 시
+            router.push(`/church/${churchId}/request/${requestInfoId}/extra`);
+          } else {
+            // 실패 처리
+          }
+        });
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
+    }
   };
 
   const props = {

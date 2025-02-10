@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 
@@ -17,13 +17,13 @@ import {
 import { GroupsApi } from '@/api/management/group/groups.api';
 import { MinistryGroupsApi } from '@/api/management/ministry/ministry-groups.api';
 import { usePageRouter } from '@/utils/router';
+import { AuthApi } from '@/api/auth/auth.api';
 import { setAuthorizationToken } from '@/api/authorize-axios';
 import { setUser } from '@/redux/reducers/user-reducer';
-import { AuthApi } from '@/api/auth/auth.api';
 
 export const useInitializeChurch = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const churchId = useSelector((state: RootState) => state.church.churchId); // 전역 상태에서 churchId 가져오기
+  const churchId = useSelector((state: RootState) => state.church.churchId);
 
   const ministryGroupsApi = new MinistryGroupsApi(false);
   const ministriesApi = new MinistriesApi(false);
@@ -31,47 +31,44 @@ export const useInitializeChurch = () => {
   const educationsApi = new EducationsApi(false);
   const groupsApi = new GroupsApi(false);
 
-  // **전역 상태의 churchId를 이용하여 초기화**
-  const initialize = () => {
+  const [thrownError, setThrownError] = useState<Error | null>(null);
+  if (thrownError) {
+    throw thrownError;
+  }
+
+  const initialize = async () => {
     if (!churchId) {
       console.warn('교회 ID가 설정되지 않았습니다.');
       return;
     }
 
-    ministryGroupsApi
-      .getMinistryGroups({ churchId })
-      .then((response) => dispatch(setMinistryGroups(response.data)))
-      .catch((error) => console.error('Ministry Groups 불러오기 실패:', error));
+    try {
+      const [ministryGroups, ministries, officers, educations, groups] =
+        await Promise.all([
+          ministryGroupsApi.getMinistryGroups({ churchId }),
+          ministriesApi.getMinistries({ churchId }),
+          officersApi.getOfficers({ churchId }),
+          educationsApi.getEducations({ churchId }),
+          groupsApi.getGroups({ churchId }),
+        ]);
 
-    ministriesApi
-      .getMinistries({ churchId })
-      .then((response) => dispatch(setMinistries(response.data)))
-      .catch((error) => console.error('Ministries 불러오기 실패:', error));
-
-    officersApi
-      .getOfficers({ churchId })
-      .then((response) => dispatch(setOfficers(response.data)))
-      .catch((error) => console.error('Officers 불러오기 실패:', error));
-
-    educationsApi
-      .getEducations({ churchId })
-      .then((response) => dispatch(setEducations(response.data.data)))
-      .catch((error) => console.error('Educations 불러오기 실패:', error));
-
-    groupsApi
-      .getGroups({ churchId })
-      .then((response) => dispatch(setGroups(response.data)))
-      .catch((error) => console.error('Groups 불러오기 실패:', error));
+      dispatch(setMinistryGroups(ministryGroups.data));
+      dispatch(setMinistries(ministries.data));
+      dispatch(setOfficers(officers.data));
+      dispatch(setEducations(educations.data.data));
+      dispatch(setGroups(groups.data));
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
+    }
   };
 
-  // **churchId가 변경될 때마다 자동으로 initialize 호출**
   useEffect(() => {
     if (churchId) {
-      initialize(); // 전역 상태의 churchId로 초기화
+      initialize();
     }
   }, [churchId]);
 
-  return initialize; // 필요 시 수동으로 호출할 수 있도록 반환
+  return initialize;
 };
 
 export const useInitializeUser = () => {
@@ -79,40 +76,79 @@ export const useInitializeUser = () => {
   const dispatch = useDispatch<AppDispatch>();
   const authApi = new AuthApi(false);
 
-  // **브라우저 환경에서만 accessToken을 가져옴**
-  const accessToken =
-    typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
+  const [thrownError, setThrownError] = useState<Error | null>(null);
+  if (thrownError) {
+    throw thrownError;
+  }
 
-  return () => {
-    if (!accessToken) {
-      router.push('/login');
-      return;
-    }
-
+  return async () => {
     try {
-      setAuthorizationToken(accessToken);
+      // 1) 로컬 스토리지에서 Access/Refresh Token 가져오기
+      const accessToken =
+        typeof window !== 'undefined'
+          ? localStorage.getItem('accessToken')
+          : null;
+      const refreshToken =
+        typeof window !== 'undefined'
+          ? localStorage.getItem('refreshToken')
+          : null;
+      // console.log('accessToken', accessToken);
+      // console.log('refreshToken', refreshToken);
 
-      authApi.getUser().then((response) => {
-        const newUser = response.data;
-        dispatch(setUser(newUser));
+      // 2) Access Token이 없으면 Refresh Token 확인
+      if (!accessToken) {
+        // Refresh Token도 없으면 → 로그인 화면
+        if (!refreshToken) {
+          router.push('/login');
+          return;
+        } else {
+          setAuthorizationToken(refreshToken);
 
-        // 등록된 교회가 있는 경우
-        if (newUser?.adminChurch?.id || newUser?.managingChurch?.id) {
-          dispatch(setChurch(newUser.adminChurch));
-          dispatch(setChurchId(newUser.adminChurch.id));
-          router.push(''); // 홈 페이지로 리다이렉트
+          // Refresh Token을 Authorization 헤더에 추가하여 새로운 Access Token 요청
+          const refreshResponse = await authApi.getRefreshToken();
+
+          const newAccessToken = refreshResponse.data.accessToken;
+
+          if (!newAccessToken) {
+            // 실패 시 로그인
+            router.push('/login');
+            return;
+          }
+
+          // 새 Access Token 저장
+          setAuthorizationToken(newAccessToken);
         }
-        // 등록된 교회가 없는 경우
-        else {
-          router.push('/church/register'); // 교회 등록 페이지로 리다이렉트
-        }
-      });
-    } catch (error) {
-      // **토큰 삭제 및 로그인 페이지로 이동**
+      } else {
+        // Access Token이 있다면 일단 설정
+        setAuthorizationToken(accessToken);
+      }
+
+      // 3) 이제 사용자 정보를 요청 (이미 Access Token이 설정된 상태)
+      const response = await authApi.getUser();
+      const newUser = response.data;
+
+      // 4) Redux 상태 업데이트
+      dispatch(setUser(newUser));
+      // 교회 정보가 있다면 상태 저장 후 홈으로 이동
+      if (newUser?.adminChurch?.id || newUser?.managingChurch?.id) {
+        const c = newUser.adminChurch || newUser.managingChurch;
+        dispatch(setChurch(c));
+        dispatch(setChurchId(c.id));
+        router.push('');
+      } else {
+        // 교회가 없으면 교회 등록
+        router.push('/church/register');
+      }
+    } catch (error: any) {
+      // 토큰이 유효하지 않으면 삭제 후 로그인 페이지로 이동
       if (typeof window !== 'undefined') {
         localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
       }
+      setThrownError(
+        error instanceof Error ? error : new Error('Unknown error')
+      );
       router.push('/login');
     }
-  }; // **initialize 함수를 반환**
+  };
 };

@@ -20,7 +20,6 @@ import FamilyInformationList from '@/components/molecules/member/information/fam
 import ManagementTabHeader from '@/components/molecules/layout/header/management-tab-header';
 import MemberEducation from '@/components/molecules/member/information/member-education';
 import GroupManagement from '@/components/organisms/management/group/group-management';
-import GroupMember from '@/components/molecules/management/group/group-member';
 import {
   Education,
   Group,
@@ -37,6 +36,7 @@ import MemberMinistry from '@/components/molecules/member/information/member-min
 import { Member } from '@/models/member/member';
 import GroupInformation from '@/components/molecules/management/group/group-information';
 import MemberOfficer from '@/components/molecules/member/information/member-officer';
+import GroupMember from '@/components/molecules/management/group/group-member';
 
 export const getContent = (id: string): ReactNode => {
   switch (id) {
@@ -67,8 +67,8 @@ export const getContent = (id: string): ReactNode => {
 
 export const getHeader = (id: string) => {
   switch (id) {
-    case HEADER_ID.HOME:
-      return null;
+    // case HEADER_ID.HOME:
+    //   return null;
     case HEADER_ID.MEMBER:
       return <MemberTabHeader />;
     case HEADER_ID.MANAGEMENT:

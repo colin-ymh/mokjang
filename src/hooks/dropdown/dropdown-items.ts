@@ -124,6 +124,22 @@ export const useSearchFilterDropdownItems = () => {
       value: MEMBER.VEHICLE_NUMBER,
       title: t(MEMBER.VEHICLE_NUMBER),
     },
+    {
+      value: MEMBER.MOBILE_PHONE,
+      title: t(MEMBER.MOBILE_PHONE),
+    },
+    {
+      value: MEMBER.ADDRESS,
+      title: t(MEMBER.ADDRESS),
+    },
+    {
+      value: MEMBER.HOME_PHONE,
+      title: t(MEMBER.HOME_PHONE),
+    },
+    {
+      value: MEMBER.OCCUPATION,
+      title: t(MEMBER.OCCUPATION),
+    },
   ];
 
   return items;

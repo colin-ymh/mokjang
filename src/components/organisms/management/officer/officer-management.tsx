@@ -1,6 +1,6 @@
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/redux/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '@/redux/store';
 
 import { OfficersApi } from '@/api/management/officer/officers.api';
 import OfficerManagementView from '@/components/organisms/management/officer/officer-management.view';
@@ -8,20 +8,26 @@ import { DEFAULT_OFFICER, Officer } from '@/models/management/management';
 import { BLANK } from '@/constants/constant';
 import { getFormattedTitle } from '@/utils/format';
 import { getIsWellFormedTitle } from '@/utils/check';
+import { setOfficers } from '@/redux/reducers/church-reducer';
 
 type OfficerManagementProps = {};
 
 const OfficerManagement = ({}: OfficerManagementProps) => {
   const officersApi = new OfficersApi(false);
-  const churchId = useSelector((state: RootState) => state.church.churchId);
+  const dispatch = useDispatch<AppDispatch>();
+  const { churchId, officers } = useSelector(
+    (state: RootState) => state.church
+  );
   const nameInputRef = useRef<HTMLInputElement>(null);
+
+  const [thrownError, setThrownError] = useState<Error | null>(null);
+  if (thrownError) {
+    throw thrownError;
+  }
 
   // 선택된 교육
   const [selectedOfficer, setSelectedOfficer] =
     useState<Officer>(DEFAULT_OFFICER);
-
-  // 전체 교육 배열
-  const [officers, setOfficers] = useState<Officer[]>([]);
 
   // 새로운 교육 추가 모달 활성화 여부
   const [isAddModalShown, setIsAddModalShown] = useState<boolean>(false);
@@ -47,26 +53,30 @@ const OfficerManagement = ({}: OfficerManagementProps) => {
   };
 
   // 새로운 교육 저장
-  const onClickSaveOfficer = () => {
-    if (getIsWellFormedTitle(newOfficerName)) {
-      officersApi
-        .createOfficer({ churchId }, { name: newOfficerName })
-        .then(() => {
-          fetchOfficers();
-          setIsAddModalShown(false);
-          setNewOfficerName(BLANK);
-        });
+  const onClickSaveOfficer = async () => {
+    try {
+      if (getIsWellFormedTitle(newOfficerName)) {
+        await officersApi.createOfficer({ churchId }, { name: newOfficerName });
+        fetchOfficers();
+        setIsAddModalShown(false);
+        setNewOfficerName(BLANK);
+      }
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
     }
   };
 
   // 교육 불러오기
-  const fetchOfficers = () => {
-    officersApi.getOfficers({ churchId }).then((response) => {
+  const fetchOfficers = async () => {
+    try {
+      const response = await officersApi.getOfficers({ churchId });
       if (response.status === 200) {
         const newOfficers = response.data;
-        setOfficers(newOfficers);
+        dispatch(setOfficers(newOfficers));
       }
-    });
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
+    }
   };
 
   // 교회 정보를 통해 교육들 불러오기

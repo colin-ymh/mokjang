@@ -72,6 +72,7 @@ const MemberInformationHeader = ({
     <InformationHeader>
       <Information>
         <MemberImageInput
+          memberId={targetMember.id}
           value={targetMember?.profileImage}
           onChange={() => {}}
           width={80}

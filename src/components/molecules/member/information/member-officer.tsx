@@ -29,6 +29,12 @@ const MemberOfficer = ({ targetMember }: MemberOfficerProps) => {
   const [targetOfficerHistory, setTargetOfficerHistory] =
     useState<OfficerHistory>(DEFAULT_OFFICER_HISTORY);
 
+  // 에러 상태 관리
+  const [thrownError, setThrownError] = useState<Error | null>(null);
+  if (thrownError) {
+    throw thrownError;
+  }
+
   // 모달 닫기
   const onClickCloseModal = () => {
     setIsModalShown(false);
@@ -42,19 +48,20 @@ const MemberOfficer = ({ targetMember }: MemberOfficerProps) => {
   };
 
   // 서버에서 데이터 로드
-  const fetchData = () => {
-    officerHistoryApi
-      .getOfficerHistory({
+  const fetchData = async () => {
+    try {
+      const response = await officerHistoryApi.getOfficerHistory({
         churchId,
         memberId: targetMember.id,
         orderDirection: ORDER_DIRECTION.DESC,
-      })
-      .then((response) => {
-        const newOfficerHistory = response.data.data;
-        if (newOfficerHistory) {
-          setOfficerHistory(newOfficerHistory);
-        }
       });
+      const newOfficerHistory = response.data.data;
+      if (newOfficerHistory) {
+        setOfficerHistory(newOfficerHistory);
+      }
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
+    }
   };
 
   // 교인의 직분 이력 불러오기
@@ -63,34 +70,39 @@ const MemberOfficer = ({ targetMember }: MemberOfficerProps) => {
   }, [targetMember.id]);
 
   // 기존 직분 수정하기
-  const onClickSaveOfficerHistory = (startDate?: string, endDate?: string) => {
-    officerHistoryApi
-      .editOfficerHistory(
+  const onClickSaveOfficerHistory = async (
+    startDate?: string,
+    endDate?: string
+  ) => {
+    try {
+      await officerHistoryApi.editOfficerHistory(
         {
           churchId,
           memberId: targetMember.id,
           officerHistoryId: targetOfficerHistory.id,
         },
         { startDate, endDate }
-      )
-      .then(() => {
-        setIsModalShown(false);
-        fetchData();
-        setTargetOfficerHistory(DEFAULT_OFFICER_HISTORY);
-      });
+      );
+      setIsModalShown(false);
+      fetchData();
+      setTargetOfficerHistory(DEFAULT_OFFICER_HISTORY);
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
+    }
   };
 
   // 기존 직분 삭제하기
-  const onClickDeleteOfficer = (officerId: string) => {
-    officerHistoryApi
-      .deleteOfficerHistory({
+  const onClickDeleteOfficer = async (officerId: string) => {
+    try {
+      await officerHistoryApi.deleteOfficerHistory({
         churchId,
         memberId: targetMember.id,
         officerHistoryId: officerId,
-      })
-      .then(() => {
-        fetchData();
       });
+      fetchData();
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
+    }
   };
 
   const props = {

@@ -148,7 +148,7 @@ const TermProcess = ({
         </InformationItem>
       </RowContainer>
       <RowContainer>
-        {/* 회차 보고 */}
+        {/* 교육 내용 */}
         <InformationItem onClick={() => onClickItem(true)}>
           <TitleContainer>
             <MainText color={GRAY.DEFAULT}>{t('sessionContent')}</MainText>

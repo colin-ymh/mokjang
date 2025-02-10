@@ -66,12 +66,14 @@ const MemberOfficerView = ({
       </ListTypeHeader>
       {/* 이력 */}
       <OfficerListContainer>
-        <OfficerHistoryItem
-          officer={currentHistory || DEFAULT_OFFICER_HISTORY}
-          onClickEditOfficer={onClickEditOfficer}
-          onClickDeleteOfficer={onClickDeleteOfficer}
-          isCurrent={true}
-        />
+        {currentHistory && (
+          <OfficerHistoryItem
+            officer={currentHistory || DEFAULT_OFFICER_HISTORY}
+            onClickEditOfficer={onClickEditOfficer}
+            onClickDeleteOfficer={onClickDeleteOfficer}
+            isCurrent={true}
+          />
+        )}
       </OfficerListContainer>
       {/* 그룹 헤더 */}
       <ListTypeHeader>

@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { GRAY } from '@/constants/styles/color';
+import { BLACK, GRAY } from '@/constants/styles/color';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import HeaderBar from '@/components/atoms/layout/header/header-bar';
 import { useMemberHeaderBarItems } from '@/hooks/layout/header-bar-items';
@@ -33,16 +33,20 @@ const ButtonContainer = styled.div`
   display: flex;
   position: absolute;
   right: 0;
+  gap: 10px;
+  flex-direction: row;
 `;
 
 type MemberHeadBarViewProps = {
   onClickRegisterMemberButton: () => void;
   onClickHeaderBar: (id: string) => void;
+  onClickDummyMembers: () => void;
 };
 
 const MemberTabHeaderView = ({
   onClickRegisterMemberButton,
   onClickHeaderBar,
+  onClickDummyMembers,
 }: MemberHeadBarViewProps) => {
   const t_button = useScopedI18n('button');
   const t_header = useScopedI18n('header');
@@ -60,8 +64,16 @@ const MemberTabHeaderView = ({
         />
         <ButtonContainer>
           <Button
+            text={'테스트용 교인 생성하기'}
+            width={200}
+            height={30}
+            onClick={onClickDummyMembers}
+            backgroundColor={BLACK}
+          />
+          <Button
             text={t_button('addMember')}
             height={30}
+            width={100}
             onClick={onClickRegisterMemberButton}
           />
         </ButtonContainer>

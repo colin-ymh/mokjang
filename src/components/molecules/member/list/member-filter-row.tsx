@@ -3,7 +3,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 import { setMemberFilter } from '@/redux/reducers/member-filter-reducer';
 
-import { getTrimmedString } from '@/utils/format';
+import {
+  getFormattedHomePhone,
+  getFormattedMobilePhone,
+  getTrimmedString,
+} from '@/utils/format';
 import MemberFilterRowView, {
   SEARCH_FILTER,
 } from '@/components/molecules/member/list/member-filter-row.view';
@@ -138,6 +142,28 @@ const MemberFilterRow = () => {
       newFilterItems.push({
         title: MEMBER.VEHICLE_NUMBER,
         value: [memberFilter.vehicleNumber],
+      });
+    }
+
+    // 주소
+    if (memberFilter.address) {
+      newFilterItems.push({
+        title: MEMBER.ADDRESS,
+        value: [memberFilter.address],
+      });
+    }
+    // 휴대전화
+    if (memberFilter.mobilePhone) {
+      newFilterItems.push({
+        title: MEMBER.MOBILE_PHONE,
+        value: [getFormattedMobilePhone(memberFilter.mobilePhone)],
+      });
+    }
+    // 집전화
+    if (memberFilter.homePhone) {
+      newFilterItems.push({
+        title: MEMBER.HOME_PHONE,
+        value: [getFormattedHomePhone(memberFilter.homePhone)],
       });
     }
 

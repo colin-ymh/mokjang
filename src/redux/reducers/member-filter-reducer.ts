@@ -19,6 +19,9 @@ type MEMBER_FILTER = {
   [MEMBER.GENDER]: string[];
   [MEMBER.BAPTISM]: string[];
   [MEMBER.MARRIAGE]: string[];
+  [MEMBER.MOBILE_PHONE]: string;
+  [MEMBER.HOME_PHONE]: string;
+  [MEMBER.ADDRESS]: string;
   birthAfter: string;
   birthBefore: string;
   registerAfter: string;
@@ -45,6 +48,9 @@ export const INITIAL_MEMBER_FILTER: MEMBER_FILTER = {
   school: BLANK,
   occupation: BLANK,
   vehicleNumber: BLANK,
+  mobilePhone: BLANK,
+  homePhone: BLANK,
+  address: BLANK,
   gender: [],
   baptism: [],
   officer: [],
@@ -256,11 +262,9 @@ export const fetchMembers = createAsyncThunk<
         order: order !== NULL ? order : undefined,
         orderDirection: memberOrderDirection,
         selectedColumns: memberFilter.selectedColumns,
-        name: memberFilter.name,
-        school: memberFilter.school,
+        // 필터
         group: memberFilter.group,
         officer: memberFilter.officer,
-        vehicleNumber: memberFilter.vehicleNumber,
         gender: memberFilter.gender as string[],
         educations: memberFilter.educations,
         ministries: memberFilter.ministries,
@@ -272,6 +276,14 @@ export const fetchMembers = createAsyncThunk<
         registerBefore: memberFilter.registerBefore,
         updateAfter: memberFilter.updateAfter,
         updateBefore: memberFilter.updateBefore,
+        // 검색
+        name: memberFilter.name,
+        school: memberFilter.school,
+        vehicleNumber: memberFilter.vehicleNumber,
+        address: memberFilter.address,
+        mobilePhone: memberFilter.mobilePhone,
+        homePhone: memberFilter.homePhone,
+        occupation: memberFilter.occupation,
       });
 
       return response.data.data;

@@ -7,6 +7,7 @@ import { Group } from '@/models/management/management';
 import TransparentBackground from '@/components/atoms/common/etc/transparent-background';
 
 import { useI18n } from '../../../../../locales/client';
+import CustomPopup from '@/components/atoms/common/popup/custom-popup';
 
 const LabelInputContainer = styled.div`
   flex: 1;
@@ -79,7 +80,12 @@ const GroupDropdownView = ({
           onClick={onClickCloseDropdown}
           zIndex={300}
         />
-        {isDropdownShown && (
+        <CustomPopup
+          isShow={isDropdownShown}
+          onClickClose={onClickCloseDropdown}
+          width={400}
+          height={600}
+        >
           <SelectGroupModal
             currentGroup={currentGroup}
             groups={groups}
@@ -90,7 +96,7 @@ const GroupDropdownView = ({
             onClickCloseDropdown={onClickCloseDropdown}
             onClickGoBack={onClickGoBack}
           />
-        )}
+        </CustomPopup>
       </DropdownContainer>
     </LabelInputContainer>
   );

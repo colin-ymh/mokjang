@@ -21,14 +21,14 @@ export const useMemberHeaderBarItems = () => {
       id: MEMBER_CONTENT_ID.MEMBER,
       title: t_memberContent(MEMBER_CONTENT_ID.MEMBER),
     },
-    {
-      id: MEMBER_CONTENT_ID.ADMINISTRATOR,
-      title: t_memberContent(MEMBER_CONTENT_ID.ADMINISTRATOR),
-    },
-    {
-      id: MEMBER_CONTENT_ID.NEW_MEMBER,
-      title: t_memberContent(MEMBER_CONTENT_ID.NEW_MEMBER),
-    },
+    // {
+    //   id: MEMBER_CONTENT_ID.ADMINISTRATOR,
+    //   title: t_memberContent(MEMBER_CONTENT_ID.ADMINISTRATOR),
+    // },
+    // {
+    //   id: MEMBER_CONTENT_ID.NEW_MEMBER,
+    //   title: t_memberContent(MEMBER_CONTENT_ID.NEW_MEMBER),
+    // },
   ];
 
   return items;

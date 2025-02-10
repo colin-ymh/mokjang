@@ -1,7 +1,6 @@
 import axios from 'axios';
 
 import { TEST_SERVER_URL } from '@/constants/state/url';
-import { usePageRouter } from '@/utils/router';
 
 let token: string | null = null;
 
@@ -27,7 +26,7 @@ authorizeAxios.interceptors.request.use((config) => {
   if (token && config.headers) {
     config.headers.Authorization = `Bearer ${token}`;
   }
-  console.log('Authorization Header:', config.headers.Authorization);
+  // console.log('Authorization Header:', config.headers.Authorization);
   return config;
 });
 
@@ -35,18 +34,14 @@ authorizeAxios.interceptors.request.use((config) => {
 authorizeAxios.interceptors.response.use(
   (response) => response,
   async (error) => {
-    const router = usePageRouter();
-    const originalRequest = error.config;
-
     // Access Token이 만료된 경우 처리
-    if (error.response?.status === 401 && !originalRequest._retry) {
-      originalRequest._retry = true;
+    if (error.status === 401) {
+      const originalRequest = error.config;
 
       const refreshToken = localStorage.getItem('refreshToken');
       if (!refreshToken) {
         // Refresh Token이 없으면 로그인 페이지로 리다이렉트
         localStorage.removeItem('accessToken');
-        router.push('/login');
         return Promise.reject(error);
       }
 
@@ -74,7 +69,6 @@ authorizeAxios.interceptors.response.use(
         // Refresh Token 만료 시 로그아웃 처리
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');
-        router.push('/login');
         return Promise.reject(refreshError);
       }
     }

@@ -43,6 +43,11 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
     useSelector((state: RootState) => state.memberFilter);
   const member = useSelector((state: RootState) => state.memberRegister.member);
 
+  const [thrownError, setThrownError] = useState<Error | null>(null);
+  if (thrownError) {
+    throw thrownError;
+  }
+
   // 교인 상세정보 팝업 On/Off
   const [isMemberInformationShown, setIsMemberInformationShown] =
     useState<boolean>(false);
@@ -56,83 +61,53 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
   // 교인 상세를 위해 선택한 교인
   const [targetMember, setTargetMember] = useState<Member>(DEFAULT_MEMBER);
 
-  // // 서버로부터 교인 목록을 받아와서, 클라이언트에 적합하게 변환
-  // const getMembersFromServer = async (
-  //   currentPage: number
-  // ): Promise<Member[]> => {
-  //   if (!churchId) {
-  //     return [];
-  //   }
-  //
-  //   let order = memberOrderBy;
-  //   if (order === MEMBER.AGE) order = MEMBER.BIRTH;
-  //
-  //   try {
-  //     const response = await membersApi.getMembers({
-  //       churchId,
-  //       page: currentPage,
-  //       take: 30, // 무한 스크롤에 적합한 소량의 데이터 요청
-  //       order: order !== NULL ? order : undefined,
-  //       orderDirection: memberOrderDirection,
-  //       selectedColumns: memberFilter.selectedColumns,
-  //       name: memberFilter.name,
-  //       school: memberFilter.school,
-  //       group: memberFilter.group,
-  //       officer: memberFilter.officer,
-  //       vehicleNumber: memberFilter.vehicleNumber,
-  //       gender: memberFilter.gender as GENDER[],
-  //       educations: memberFilter.educations,
-  //       ministries: memberFilter.ministries,
-  //       baptism: memberFilter.baptism,
-  //       marriage: memberFilter.marriage,
-  //       birthAfter: memberFilter.birthAfter,
-  //       birthBefore: memberFilter.birthBefore,
-  //       registerAfter: isNewMember ? getNewMemberDate() : undefined,
-  //       registerBefore: memberFilter.registerBefore,
-  //       updateAfter: memberFilter.updateAfter,
-  //       updateBefore: memberFilter.updateBefore,
-  //     });
-  //
-  //     return response.data.data;
-  //   } catch (error) {
-  //     console.error('교인 목록 불러오기 실패', error);
-  //     return [];
-  //   }
-  // };
-
   // 무한 스크롤로 데이터 추가 로드
   const loadMembers = async () => {
     if (isLoading) return; // 로딩 중에는 추가 요청 방지
     setIsLoading(true);
 
-    await dispatch(fetchMembers({ churchId, currentPage: page + 1 })).then(
-      (result) => {
-        if (fetchMembers.fulfilled.match(result)) {
-          const newMembers: Member[] = result.payload;
-          if (newMembers.length > 0) {
-            // 기존 데이터와 합치면서 중복 제거
-            const existingIds = new Set(members.map((member) => member.id));
-            const filteredNewMembers = newMembers.filter(
-              (member) => !existingIds.has(member.id)
-            );
-            dispatch(setMembers([...members, ...filteredNewMembers]));
-            setPage((prev) => prev + 1); // 다음 페이지로 이동
-          }
+    try {
+      const result = await dispatch(
+        fetchMembers({ churchId, currentPage: page + 1 })
+      );
+      if (fetchMembers.fulfilled.match(result)) {
+        const newMembers: Member[] = result.payload;
+        if (newMembers.length > 0) {
+          // 기존 데이터와 합치면서 중복 제거
+          const existingIds = new Set(members.map((member) => member.id));
+          const filteredNewMembers = newMembers.filter(
+            (member) => !existingIds.has(member.id)
+          );
+          dispatch(setMembers([...members, ...filteredNewMembers]));
+          setPage((prev) => prev + 1); // 다음 페이지로 이동
         }
       }
-    );
-
-    setIsLoading(false);
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   // 필터 정보가 변경될 때, 교인들을 다시 불러오는 부분
   useEffect(() => {
-    dispatch(fetchMembers({ churchId, currentPage: 1 })).then((result) => {
-      if (fetchMembers.fulfilled.match(result)) {
-        dispatch(setMembers(result.payload));
-        setPage(1);
+    const fetchInitialMembers = async () => {
+      try {
+        const result = await dispatch(
+          fetchMembers({ churchId, currentPage: 1 })
+        );
+        if (fetchMembers.fulfilled.match(result)) {
+          dispatch(setMembers(result.payload));
+          setPage(1);
+        }
+      } catch (error) {
+        setThrownError(
+          error instanceof Error ? error : new Error(String(error))
+        );
       }
-    });
+    };
+
+    fetchInitialMembers();
   }, [
     churchId,
     memberFilter,
@@ -142,14 +117,17 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
   ]);
 
   // 목록에서 교인을 선택하여 상세 페이지로 이동
-  const onClickMemberItem = (memberId: string) => {
-    membersApi.getMember({ churchId, memberId }).then((response) => {
+  const onClickMemberItem = async (memberId: string) => {
+    try {
+      const response = await membersApi.getMember({ churchId, memberId });
       const member = getMemberFromServer(response.data.data);
 
       setTargetMember(member);
       dispatch(setMember(member));
       setIsMemberInformationShown(true);
-    });
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
+    }
   };
 
   // 상세 페이지 종료
@@ -160,23 +138,27 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
 
   // 교인 삭제하기
   const onClickDelete = async () => {
-    await membersApi
-      .deleteMember({ churchId, memberId: member.id })
-      .then((response) => {
-        if (response.status === 200) {
-          // 초기화 후 다시 로드
-          setPage(1);
-          dispatch(fetchMembers({ churchId, currentPage: 1 })).then(
-            (result) => {
-              if (fetchMembers.fulfilled.match(result)) {
-                dispatch(setMembers(result.payload));
-              }
-            }
-          );
-        }
+    try {
+      const response = await membersApi.deleteMember({
+        churchId,
+        memberId: member.id,
       });
-    dispatch(setMember(DEFAULT_MEMBER));
-    setIsMemberInformationShown(false);
+      if (response.status === 200) {
+        // 초기화 후 다시 로드
+        setPage(1);
+        const result = await dispatch(
+          fetchMembers({ churchId, currentPage: 1 })
+        );
+        if (fetchMembers.fulfilled.match(result)) {
+          dispatch(setMembers(result.payload));
+        }
+      }
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
+    } finally {
+      dispatch(setMember(DEFAULT_MEMBER));
+      setIsMemberInformationShown(false);
+    }
   };
 
   const props = {

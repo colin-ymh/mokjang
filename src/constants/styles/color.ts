@@ -6,7 +6,8 @@ export enum GRAY {
   SIDE_BAR = '#F9FAFA',
   LIGHT = '#e1e1e1',
   DEFAULT = '#B9B9B9',
-  DARK = '#8D8D8D',
+  DARK = '#4a4a4a',
+  EXTRA_DARK = '#3a3a3a',
 }
 
 export enum MAIN {
@@ -19,10 +20,6 @@ export enum DESTRUCTIVE {
   LIGHT = '#fa7778',
   DEFAULT = '#F83D3E',
   DARK = '#ae2b2b',
-}
-
-export enum GREEN {
-  DEFAULT = '#50C878',
 }
 
 export enum BLUE {

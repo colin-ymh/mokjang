@@ -154,7 +154,7 @@ const UserRegisterListView = ({
         <RowContainer $isShown={!!second}>
           <LabelInput
             value={verifyNumber}
-            label={t('verifyNumber')}
+            label={`${t('verifyNumber')} (관리자 나천호에게 연락 부탁드립니다)`}
             height={40}
             onChange={onChangeVerifyNumber}
             disabled={isVerified}

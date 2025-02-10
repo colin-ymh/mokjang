@@ -35,7 +35,7 @@ const MinistryGroupItem = styled.div<{ $level: number }>`
   border-radius: 5px;
   gap: 10px;
   cursor: pointer;
-  width: ${({ $level }) => `${100 - $level * 5}%`};
+  width: ${({ $level }) => `${100 - $level * 10}%`};
   height: 30px;
 `;
 

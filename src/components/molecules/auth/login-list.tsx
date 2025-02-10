@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/redux/store';
 import { setChurch, setChurchId } from '@/redux/reducers/church-reducer';
@@ -15,8 +15,14 @@ const LoginList = () => {
   // const router = useRouter();
   const router = usePageRouter();
   const authApi = new AuthApi(false);
+  const [thrownError, setThrownError] = useState<Error | null>(null);
   const [name, setName] = useState<string>('');
   const [phone, setPhone] = useState<string>('');
+
+  // 렌더링 시점(컴포넌트 return)에서 조건부로 에러 발생
+  if (thrownError) {
+    throw thrownError;
+  }
 
   const onChangeName = (event: ChangeEvent<HTMLInputElement>) => {
     const newName = getFormattedName(event.target.value);
@@ -28,47 +34,73 @@ const LoginList = () => {
     setPhone(newPhone);
   };
 
-  const onClickItem = () => {
-    // router.push(authApi.getOAuth({ provider }));
-    authApi
-      .getTestAuth({ provider: name, providerId: phone })
-      .then((response) => {
-        if (response.status === 200) {
-          // 가입이 안된 유저
-          if (response.data?.temporal) {
-            // 임시토큰 저장
-            setAuthorizationToken(response.data?.temporal);
-            router.push('/login/register');
-          }
+  const onClickItem = async () => {
+    try {
+      // router.push(authApi.getOAuth({ provider }));
+      const response = await authApi.getTestAuth({
+        provider: name,
+        providerId: phone,
+      });
 
-          // 이미 가입된 회원인 경우
-          else {
-            // 액세스토큰, 리프레시토큰 저장
-            setAuthorizationToken(
-              response.data?.accessToken,
-              response.data?.refreshToken
+      if (response.status === 200) {
+        // 가입이 안된 유저
+        if (response.data?.temporal) {
+          // 임시토큰 저장
+          setAuthorizationToken(response.data?.temporal);
+          router.push('/login/register');
+        }
+        // 이미 가입된 회원인 경우
+        else {
+          // 액세스토큰, 리프레시토큰 저장
+          setAuthorizationToken(
+            response.data?.accessToken,
+            response.data?.refreshToken
+          );
+
+          try {
+            const userResponse = await authApi.getUser();
+            const newUser = userResponse.data;
+            dispatch(setUser(newUser));
+
+            // 등록된 교회가 있는 경우
+            if (newUser?.adminChurch?.id || newUser?.managingChurch?.id) {
+              dispatch(setChurch(newUser.adminChurch));
+              dispatch(setChurchId(newUser.adminChurch.id));
+              router.push('');
+            }
+            // 등록된 교회가 없는 경우
+            else {
+              router.push('/church/register');
+            }
+          } catch (error) {
+            setThrownError(
+              error instanceof Error ? error : new Error(String(error))
             );
-
-            authApi.getUser().then((response) => {
-              const newUser = response.data;
-              dispatch(setUser(newUser));
-
-              // 등록된 교회가 있는 경우
-              if (newUser?.adminChurch?.id || newUser?.managingChurch?.id) {
-                dispatch(setChurch(newUser.adminChurch));
-                dispatch(setChurchId(newUser.adminChurch.id));
-                router.push('');
-              }
-
-              // 등록된 교회가 없는 경우
-              else {
-                router.push('/church/register');
-              }
-            });
           }
         }
-      });
+      }
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
+    }
   };
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.isComposing) {
+        return;
+      }
+
+      if (e.key === 'Enter') {
+        onClickItem();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [name, phone]);
 
   const props = {
     name,

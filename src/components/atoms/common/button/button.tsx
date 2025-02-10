@@ -42,11 +42,20 @@ const ButtonContainer = styled.button<{
   border: ${({ $borderColor }) =>
     $borderColor ? `1px solid ${$borderColor}` : 'none'};
   cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
-  transition: all 0.3s ease;
+  transition: all 0.1s ease; /* 트랜지션 추가 */
   box-shadow: ${({ $isShadow, disabled }) =>
-    $isShadow && !disabled ? `2px 2px 10px rgba(0, 0, 0, 0.3)` : `none`};
+    $isShadow && !disabled ? `2px 2px 5px rgba(0, 0, 0, 0.2)` : `none`};
   overflow: hidden;
   flex-shrink: 0;
+
+  //&:hover {
+  //  transform: scale(1.03); /* 마우스 올리면 살짝 커짐 */
+  //}
+
+  &:active {
+    transform: scale(0.98); /* 클릭하면 작아지는 효과 */
+    box-shadow: none; /* 클릭 시 그림자 제거로 눌린 느낌 */
+  }
 `;
 
 const Button = ({

@@ -7,6 +7,7 @@ import { MinistryGroup } from '@/models/management/management';
 import TransparentBackground from '@/components/atoms/common/etc/transparent-background';
 
 import { useI18n } from '../../../../../locales/client';
+import CustomPopup from '@/components/atoms/common/popup/custom-popup';
 
 const LabelInputContainer = styled.div`
   flex: 1;
@@ -78,7 +79,12 @@ const MinistryGroupDropdownView = ({
           onClick={onClickCloseDropdown}
           zIndex={300}
         />
-        {isDropdownShown && (
+        <CustomPopup
+          isShow={isDropdownShown}
+          onClickClose={onClickCloseDropdown}
+          width={400}
+          height={600}
+        >
           <SelectMinistryGroupModal
             currentMinistryGroup={currentMinistryGroup}
             ministryGroups={ministryGroups}
@@ -89,7 +95,7 @@ const MinistryGroupDropdownView = ({
             onClickCloseDropdown={onClickCloseDropdown}
             onClickGoBack={onClickGoBack}
           />
-        )}
+        </CustomPopup>
       </DropdownContainer>
     </LabelInputContainer>
   );
