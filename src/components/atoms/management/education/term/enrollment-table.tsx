@@ -38,161 +38,125 @@ const EnrollmentTable = ({
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const educationEnrollmentsApi = new EducationEnrollmentsApi(false);
   const educationAttendanceApi = new EducationAttendanceApi(false);
+  const [thrownError, setThrownError] = useState<Error | null>(null);
 
-  // 출석부
+  // 렌더링 시점(컴포넌트 return)에서 조건부로 에러 발생
+  if (thrownError) {
+    throw thrownError;
+  }
+
   const [attendance, setAttendance] = useState<SessionAttendance[]>([]);
-
-  // 선택된 교인 id 배열
   const [checkedMemberIds, setCheckedMemberIds] = useState<string[]>([]);
-
-  // 전체 선택 버튼 이벤트
-  const onClickCheckAll = () => {
-    // 전체 선택된 경우
-    if (checkedMemberIds.length === enrollments.length) {
-      setCheckedMemberIds([]);
-    }
-    // 미선택된 등록이 있는 경우
-    else {
-      const newMemberIds = enrollments.map((enrollment) => {
-        return enrollment.memberId;
-      });
-      setCheckedMemberIds(newMemberIds);
-    }
-  };
-
-  // 특정 교인 선택 이벤트
-  const onClickCheckMember = (memberId: string) => {
-    // 이미 선택된 경우 => 제외
-    if (checkedMemberIds.includes(memberId)) {
-      const newCheckedMemberIds = checkedMemberIds.filter(
-        (id) => id !== memberId
-      );
-      setCheckedMemberIds(newCheckedMemberIds);
-    }
-    // 선택되지 않은 경우 => 추가
-    else {
-      setCheckedMemberIds([...checkedMemberIds, memberId]);
-    }
-  };
-
-  // 상세 모달 활성화 여부
   const [isDetailModalShown, setIsDetailModalShown] = useState<boolean>(false);
-
-  // 선택된 인원
   const [selectedEnrollment, setSelectedEnrollment] =
     useState<EducationEnrollment>(DEFAULT_EDUCATION_ENROLLMENT);
 
-  // 기수 클릭 시 이벤트
+  const onClickCheckAll = () => {
+    if (checkedMemberIds.length === enrollments.length) {
+      setCheckedMemberIds([]);
+    } else {
+      setCheckedMemberIds(enrollments.map((enrollment) => enrollment.memberId));
+    }
+  };
+
+  const onClickCheckMember = (memberId: string) => {
+    setCheckedMemberIds((prev) =>
+      prev.includes(memberId)
+        ? prev.filter((id) => id !== memberId)
+        : [...prev, memberId]
+    );
+  };
+
   const onClickEnrollment = (enrollment: EducationEnrollment) => {
     setIsDetailModalShown(true);
     setSelectedEnrollment(enrollment);
   };
 
-  // 모달 닫기
   const onClickClose = () => {
     setIsDetailModalShown(false);
   };
 
-  // 열 헤더를 눌러 정렬
   const onClickHeader = (id: EDUCATION_ENROLLMENT) => {};
 
-  // 스크롤 시 이벤트
   const onScroll = () => {};
 
-  // 수려 상태 변경
-  const onChangeStatus = (
+  const onChangeStatus = async (
     termId: string,
     enrollmentId: string,
     status: EDUCATION_STATUS
   ) => {
-    educationEnrollmentsApi
-      .editEducationEnrollments(
+    try {
+      await educationEnrollmentsApi.editEducationEnrollments(
         {
           churchId,
           educationId,
           educationTermId: termId,
           educationEnrollmentId: enrollmentId,
         },
-        {
-          status,
-        }
-      )
-      .then(() => {});
+        { status }
+      );
+      fetchEnrollments();
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
+    }
   };
 
-  // 출석 상태 변경
-  const onChangeAttendance = (
+  const onChangeAttendance = async (
     termId: string,
     attendanceId: string,
     isPresent: boolean
   ) => {
-    educationAttendanceApi
-      .editEducationAttendance(
+    try {
+      await educationAttendanceApi.editEducationAttendance(
         {
           churchId,
           educationId,
           sessionId,
           educationTermId: termId,
-          attendanceId: attendanceId,
+          attendanceId,
         },
-        {
-          isPresent,
-        }
-      )
-      .then(() => {
-        fetchAttendance();
-      });
+        { isPresent }
+      );
+      fetchAttendance();
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
+    }
   };
 
-  // 정렬 변경 시 스크롤을 최상단으로 이동
-  useEffect(() => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollTop = 0;
-    }
-  }, []);
-
-  // 출석부 조회
-  const fetchAttendance = () => {
-    educationAttendanceApi
-      .getEducationAttendances({
+  const fetchAttendance = async () => {
+    try {
+      const response = await educationAttendanceApi.getEducationAttendances({
         churchId,
-        educationTermId: enrollments[0].educationTermId,
+        educationTermId: enrollments[0]?.educationTermId,
         sessionId,
         educationId,
-      })
-      .then((response) => {
-        setAttendance(response.data.data);
       });
+      setAttendance(response.data.data);
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
+    }
   };
 
-  // 선택된 등록 교인들 삭제하기
   const onClickDeleteMembers = async () => {
     try {
-      // 1) 모든 삭제 요청(비동기)을 배열로 만든 후,
-      const deletePromises = checkedMemberIds.map((enrollmentId: string) => {
-        return educationEnrollmentsApi.deleteEducationEnrollments({
+      const deletePromises = checkedMemberIds.map((enrollmentId) =>
+        educationEnrollmentsApi.deleteEducationEnrollments({
           churchId,
           educationId,
           educationTermId: term.id,
           educationEnrollmentId: enrollmentId,
-        });
-      });
+        })
+      );
 
-      // 2) Promise.all로 전부 완료될 때까지 대기
       await Promise.all(deletePromises);
-
       setCheckedMemberIds([]);
 
-      // 3) 모든 삭제가 끝난 후 등록 초기화
-      await dispatch(fetchMembers({ churchId, currentPage: 1 })).then(
-        (result) => {
-          if (fetchMembers.fulfilled.match(result)) {
-            fetchEnrollments();
-          }
-        }
-      );
+      const result = await dispatch(fetchMembers({ churchId, currentPage: 1 }));
+      if (fetchMembers.fulfilled.match(result)) {
+        fetchEnrollments();
+      }
     } catch (error) {
-      console.log(error);
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
     }
   };
 
@@ -205,6 +169,12 @@ const EnrollmentTable = ({
   useEffect(() => {
     setCheckedMemberIds([]);
   }, [sessionId]);
+
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = 0;
+    }
+  }, []);
 
   const props = {
     enrollments,
@@ -222,19 +192,7 @@ const EnrollmentTable = ({
     onClickDeleteMembers,
   };
 
-  return (
-    <>
-      <EnrollmentTableView {...props} />
-      {/*<CustomPopup*/}
-      {/*  isShow={isDetailModalShown}*/}
-      {/*  onClickClose={onClickClose}*/}
-      {/*  width={70}*/}
-      {/*  height={90}*/}
-      {/*  isPercentage={true}*/}
-      {/*>*/}
-      {/*</CustomPopup>*/}
-    </>
-  );
+  return <EnrollmentTableView {...props} />;
 };
 
 export default EnrollmentTable;

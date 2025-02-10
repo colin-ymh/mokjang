@@ -19,11 +19,10 @@ import { getAge, getDateFromString } from '@/utils/date';
 import { getFormattedMobilePhone } from '@/utils/format';
 import CheckButton from '@/components/atoms/common/button/check-button';
 import { MEMBER } from '@/constants/member/member-column';
-
-import DefaultImage from '../../../../../../public/png/default-member-image.png';
 import { EDUCATION_STATUS } from '@/constants/constant';
 import Button from '@/components/atoms/common/button/button';
 import { useI18n } from '../../../../../../locales/client';
+import { getRandomImage } from '@/utils/image';
 
 const TableContainer = styled.div`
   display: flex;
@@ -288,7 +287,7 @@ const EnrollmentTableView = ({
             onChange={(value) => {
               onChangeAttendance(
                 enrollment.educationTermId,
-                enrollment.id,
+                attendanceValue.id,
                 value
               );
             }}
@@ -298,7 +297,10 @@ const EnrollmentTableView = ({
         return (
           <ProfileContainer>
             <ProfileImage
-              src={enrollment.member?.profileImage || DefaultImage}
+              src={
+                enrollment.member?.profileImage ||
+                getRandomImage(enrollment.member.id)
+              }
               alt={MEMBER.PROFILE_IMAGE}
             />
             <MainText>{enrollment.member.name}</MainText>

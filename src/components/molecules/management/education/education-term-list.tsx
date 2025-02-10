@@ -14,6 +14,12 @@ const EducationTermList = ({ education }: EducationTermProps) => {
   const churchId = useSelector((state: RootState) => state.church.churchId);
   const educationTermsApi = new EducationTermsApi(false);
 
+  const [thrownError, setThrownError] = useState<Error | null>(null);
+  // 렌더링 시점(컴포넌트 return)에서 조건부로 에러 발생
+  if (thrownError) {
+    throw thrownError;
+  }
+
   // 기수 목록
   const [terms, setTerms] = useState<EducationTerm[]>([]);
 
@@ -30,18 +36,26 @@ const EducationTermList = ({ education }: EducationTermProps) => {
     setIsModalShown(false);
   };
 
-  const fetchTerms = () => {
+  // 기수들 불러오기
+  const fetchTerms = async () => {
     if (education?.id) {
-      educationTermsApi
-        .getEducationTerms({ churchId, educationId: education.id })
-        .then((response) => {
-          const newTerms = response.data.data;
-          setTerms(newTerms);
+      try {
+        const response = await educationTermsApi.getEducationTerms({
+          churchId,
+          educationId: education.id,
         });
+
+        const newTerms = response.data.data;
+        setTerms(newTerms);
+      } catch (error) {
+        setThrownError(
+          error instanceof Error ? error : new Error(String(error))
+        );
+      }
     }
   };
 
-  // 기수들 불러오기
+  // 기수들 불러오기 (education 변경 시 실행)
   useEffect(() => {
     fetchTerms();
   }, [education]);

@@ -45,7 +45,7 @@ const UserRegister = () => {
   return (
     <UserRegisterContainer>
       <LogoContainer>
-        <Logo />
+        {/*<Logo />*/}
         <MainText color={WHITE} size={SIZE.LARGE}>
           {'MOKJANG'}
         </MainText>

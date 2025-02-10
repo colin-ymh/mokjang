@@ -16,6 +16,12 @@ const MemberGroup = ({ targetMember }: MemberGroupProps) => {
   const churchId = useSelector((state: RootState) => state.church.churchId);
   const groupHistoryApi = new GroupHistoryApi(false);
 
+  const [thrownError, setThrownError] = useState<Error | null>(null);
+  // 렌더링 시점(컴포넌트 return)에서 조건부로 에러 발생
+  if (thrownError) {
+    throw thrownError;
+  }
+
   // 사용자의 그룹 이력
   const [groupHistory, setGroupHistory] = useState<GroupHistory[]>([]);
 
@@ -40,17 +46,19 @@ const MemberGroup = ({ targetMember }: MemberGroupProps) => {
   };
 
   // 서버에서 데이터 로드
-  const fetchData = () => {
-    groupHistoryApi
-      .getGroupHistory({
+  const fetchData = async () => {
+    try {
+      const response = await groupHistoryApi.getGroupHistory({
         churchId,
         memberId: targetMember.id,
         orderDirection: ORDER_DIRECTION.DESC,
-      })
-      .then((response) => {
-        const newGroupHistory = response.data.data;
-        setGroupHistory(newGroupHistory);
       });
+
+      const newGroupHistory = response.data.data;
+      setGroupHistory(newGroupHistory);
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
+    }
   };
 
   // 교인의 그룹 이력 불러오기
@@ -59,34 +67,41 @@ const MemberGroup = ({ targetMember }: MemberGroupProps) => {
   }, [targetMember.id]);
 
   // 기존 그룹 수정하기
-  const onClickSaveGroupHistory = (startDate?: string, endDate?: string) => {
-    groupHistoryApi
-      .editGroupHistory(
+  const onClickSaveGroupHistory = async (
+    startDate?: string,
+    endDate?: string
+  ) => {
+    try {
+      await groupHistoryApi.editGroupHistory(
         {
           churchId,
           memberId: targetMember.id,
           groupHistoryId: targetGroupHistory.id,
         },
         { startDate, endDate }
-      )
-      .then(() => {
-        setIsModalShown(false);
-        fetchData();
-        setTargetGroupHistory(DEFAULT_GROUP_HISTORY);
-      });
+      );
+
+      setIsModalShown(false);
+      fetchData();
+      setTargetGroupHistory(DEFAULT_GROUP_HISTORY);
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
+    }
   };
 
   // 기존 그룹 삭제하기
-  const onClickDeleteGroup = (groupId: string) => {
-    groupHistoryApi
-      .deleteGroupHistory({
+  const onClickDeleteGroup = async (groupId: string) => {
+    try {
+      await groupHistoryApi.deleteGroupHistory({
         churchId,
         memberId: targetMember.id,
         groupHistoryId: groupId,
-      })
-      .then(() => {
-        fetchData();
       });
+
+      fetchData();
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
+    }
   };
 
   const props = {

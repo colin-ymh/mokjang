@@ -51,6 +51,11 @@ const InformationList = ({
   const { member } = useSelector((state: RootState) => state.memberRegister);
   const { members } = useSelector((state: RootState) => state.memberFilter);
 
+  const [thrownError, setThrownError] = useState<Error | null>(null);
+  if (thrownError) {
+    throw thrownError;
+  }
+
   // 교인 초기 상태
   const [prevMember, setPrevMember] = useState<Member>(DEFAULT_MEMBER);
 
@@ -422,13 +427,17 @@ const InformationList = ({
   // ================================
   // 서버에서 특정 교인 정보 불러오기
   // ================================
-  const fetchMember = () => {
-    membersApi
-      .getMember({ churchId, memberId: targetMemberId })
-      .then((response) => {
-        const newMember = getMemberFromServer(response.data.data);
-        if (newMember) setPrevMember(newMember);
+  const fetchMember = async () => {
+    try {
+      const response = await membersApi.getMember({
+        churchId,
+        memberId: targetMemberId,
       });
+      const newMember = getMemberFromServer(response.data.data);
+      if (newMember) setPrevMember(newMember);
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
+    }
   };
 
   useEffect(() => {
@@ -438,50 +447,64 @@ const InformationList = ({
   // ================================
   // 현재 이력/상태 정보 불러오기
   // ================================
-  const fetchCurrentOfficerHistory = () => {
-    if (prevMember.officer?.id) {
-      officerHistoryApi
-        .getOfficerHistory({ churchId, memberId: prevMember.id })
-        .then((response) => {
-          const current = response.data.data.find(
-            (history: OfficerHistory) => history.endDate === null
-          );
-          if (current) setTargetOfficerHistory(current);
-        });
-    } else {
+  const fetchCurrentOfficerHistory = async () => {
+    if (!prevMember.officer?.id) {
       setTargetOfficerHistory(undefined);
+      return;
+    }
+
+    try {
+      const response = await officerHistoryApi.getOfficerHistory({
+        churchId,
+        memberId: prevMember.id,
+      });
+      const current = response.data.data.find(
+        (history: OfficerHistory) => history.endDate === null
+      );
+      if (current) setTargetOfficerHistory(current);
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
     }
   };
 
-  const fetchCurrentGroupHistory = () => {
-    if (prevMember.group?.id) {
-      groupHistoryApi
-        .getGroupHistory({ churchId, memberId: prevMember.id })
-        .then((response) => {
-          const current = response.data.data.find(
-            (history: GroupHistory) => history.endDate === null
-          );
-          if (current) setTargetGroupHistory(current);
-        });
-    } else {
+  const fetchCurrentGroupHistory = async () => {
+    if (!prevMember.group?.id) {
       setTargetGroupHistory(undefined);
+      return;
+    }
+
+    try {
+      const response = await groupHistoryApi.getGroupHistory({
+        churchId,
+        memberId: prevMember.id,
+      });
+      const current = response.data.data.find(
+        (history: GroupHistory) => history.endDate === null
+      );
+      if (current) setTargetGroupHistory(current);
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
     }
   };
 
-  const fetchCurrentMinistryHistory = () => {
-    // targetMinistry가 설정되어 있을 때만 조회
-    if (targetMinistry.id) {
-      ministryHistoryApi
-        .getMinistryHistory({ churchId, memberId: prevMember.id })
-        .then((response) => {
-          const current = response.data.data.find(
-            (history: MinistryHistory) =>
-              history.ministrySnapShot === targetMinistry.name
-          );
-          if (current) setTargetMinistryHistory(current);
-        });
-    } else {
+  const fetchCurrentMinistryHistory = async () => {
+    if (!targetMinistry.id) {
       setTargetMinistryHistory(undefined);
+      return;
+    }
+
+    try {
+      const response = await ministryHistoryApi.getMinistryHistory({
+        churchId,
+        memberId: prevMember.id,
+      });
+      const current = response.data.data.find(
+        (history: MinistryHistory) =>
+          history.ministrySnapShot === targetMinistry.name
+      );
+      if (current) setTargetMinistryHistory(current);
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
     }
   };
 

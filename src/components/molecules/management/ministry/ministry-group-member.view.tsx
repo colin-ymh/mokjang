@@ -75,7 +75,7 @@ const MinistryGroupMemberView = ({
         <MainText color={GRAY.DARK}>
           {t_header('ministryGroupMembers')}
         </MainText>
-        <PlusButton onClick={onClickModalOpen} />
+        {/*<PlusButton onClick={onClickModalOpen} />*/}
         <ModalContainer>
           <AddMinistryGroupMemberModal
             ministryGroup={ministryGroup}

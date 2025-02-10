@@ -18,6 +18,11 @@ const EducationManagement = ({}: EducationManagementProps) => {
   const churchId = useSelector((state: RootState) => state.church.churchId);
   const nameInputRef = useRef<HTMLInputElement>(null);
 
+  const [thrownError, setThrownError] = useState<Error | null>(null);
+  if (thrownError) {
+    throw thrownError;
+  }
+
   // 교육 설정 탭 헤더
   const headerBarItems = useEducationManagementHeaderBarItems();
 
@@ -58,26 +63,33 @@ const EducationManagement = ({}: EducationManagementProps) => {
   };
 
   // 새로운 교육 저장
-  const onClickSaveEducation = () => {
-    if (getIsWellFormedTitle(newEducationName)) {
-      educationsApi
-        .createEducation({ churchId }, { name: newEducationName })
-        .then(() => {
-          fetchEducations();
-          setIsAddModalShown(false);
-          setNewEducationName(BLANK);
-        });
+  const onClickSaveEducation = async () => {
+    try {
+      if (getIsWellFormedTitle(newEducationName)) {
+        await educationsApi.createEducation(
+          { churchId },
+          { name: newEducationName }
+        );
+        fetchEducations();
+        setIsAddModalShown(false);
+        setNewEducationName(BLANK);
+      }
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
     }
   };
 
   // 교육 불러오기
-  const fetchEducations = () => {
-    educationsApi.getEducations({ churchId }).then((response) => {
+  const fetchEducations = async () => {
+    try {
+      const response = await educationsApi.getEducations({ churchId });
       if (response.status === 200) {
         const newEducations = response.data.data;
         setEducations(newEducations);
       }
-    });
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
+    }
   };
 
   // 새로운 탭 이벤트

@@ -16,11 +16,10 @@ import { getAge, getDateFromString } from '@/utils/date';
 import { GRAY, WHITE } from '@/constants/styles/color';
 import useWindowSize from '@/hooks/window/window';
 import { LOCALE } from '@/constants/state/locale';
-
-import DefaultImage from '../../../../../public/png/default-member-image.png';
 import { TABLE_HEADER_ITEM } from '@/redux/reducers/member-filter-reducer';
 import { useI18n } from '../../../../../locales/client';
 import SlideButtonList from '@/components/atoms/common/button/slide-button-list';
+import { getRandomImage } from '@/utils/image';
 
 const getColumnWidth = (id: string) => {
   switch (id) {
@@ -128,7 +127,7 @@ export const FAMILY_MEMBER_TABLE_HEADER: TABLE_HEADER_ITEM[] = [
   {
     id: MEMBER.RELATION,
     isShown: true,
-    isSortable: true,
+    isSortable: false,
     isFilterable: false,
     isFixed: true,
     isDate: false,
@@ -136,7 +135,7 @@ export const FAMILY_MEMBER_TABLE_HEADER: TABLE_HEADER_ITEM[] = [
   {
     id: MEMBER.NAME,
     isShown: true,
-    isSortable: true,
+    isSortable: false,
     isFilterable: true,
     isFixed: false,
     isDate: false,
@@ -144,7 +143,7 @@ export const FAMILY_MEMBER_TABLE_HEADER: TABLE_HEADER_ITEM[] = [
   {
     id: MEMBER.AGE,
     isShown: true,
-    isSortable: true,
+    isSortable: false,
     isFilterable: false,
     isFixed: true,
     isDate: false,
@@ -152,7 +151,7 @@ export const FAMILY_MEMBER_TABLE_HEADER: TABLE_HEADER_ITEM[] = [
   {
     id: MEMBER.OFFICER,
     isShown: true,
-    isSortable: true,
+    isSortable: false,
     isFilterable: false,
     isFixed: false,
     isDate: false,
@@ -218,7 +217,10 @@ const FamilyTableView = ({
         return (
           <ProfileContainer>
             <ProfileImage
-              src={member.familyMember?.profileImage || DefaultImage}
+              src={
+                member.familyMember?.profileImage ||
+                getRandomImage(member.familyMember.id)
+              }
               alt={MEMBER.PROFILE_IMAGE}
             />
             <MainText>{member.familyMember?.name}</MainText>

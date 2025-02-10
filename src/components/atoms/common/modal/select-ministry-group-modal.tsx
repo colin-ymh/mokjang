@@ -12,10 +12,9 @@ import { useI18n } from '../../../../../locales/client';
 const SelectMinistryGroupContainer = styled.div`
   display: flex;
   background-color: ${WHITE};
-  width: 300px;
-  height: 400px;
+  width: 100%;
+  height: 100%;
   border-radius: 5px;
-  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.3);
   flex-direction: column;
   z-index: 400;
   position: relative;

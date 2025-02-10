@@ -5,12 +5,9 @@ import { TABLE_HEADER_ITEM } from '@/redux/reducers/member-filter-reducer';
 
 import { GRAY, WHITE } from '@/constants/styles/color';
 import { MEMBER } from '@/constants/member/member-column';
-import MemberTableHeader from '@/components/atoms/member/list/member-table-header';
 import { Member } from '@/models/member/member';
 import useWindowSize from '@/hooks/window/window';
 import { MainText } from '@/components/atoms/common/text/main-text';
-
-import DefaultImage from '../../../../../public/png/default-member-image.png';
 import {
   getFormattedDate,
   getFormattedMobilePhone,
@@ -19,6 +16,8 @@ import {
 import { getAge, getDateFromString } from '@/utils/date';
 import { usePathname } from 'next/navigation';
 import { LOCALE } from '@/constants/state/locale';
+import { getRandomImage } from '@/utils/image';
+import GroupMemberTableHeader from '@/components/atoms/management/group/group-member-table-header';
 
 const getColumnWidth = (id: string) => {
   switch (id) {
@@ -118,7 +117,7 @@ export const GROUP_MEMBER_TABLE_HEADER: TABLE_HEADER_ITEM[] = [
   {
     id: MEMBER.GROUP,
     isShown: true,
-    isSortable: true,
+    isSortable: false,
     isFilterable: false,
     isFixed: true,
     isDate: false,
@@ -126,7 +125,7 @@ export const GROUP_MEMBER_TABLE_HEADER: TABLE_HEADER_ITEM[] = [
   {
     id: MEMBER.OFFICER,
     isShown: true,
-    isSortable: true,
+    isSortable: false,
     isFilterable: true,
     isFixed: false,
     isDate: false,
@@ -134,7 +133,7 @@ export const GROUP_MEMBER_TABLE_HEADER: TABLE_HEADER_ITEM[] = [
   {
     id: MEMBER.NAME,
     isShown: true,
-    isSortable: true,
+    isSortable: false,
     isFilterable: false,
     isFixed: true,
     isDate: false,
@@ -142,7 +141,7 @@ export const GROUP_MEMBER_TABLE_HEADER: TABLE_HEADER_ITEM[] = [
   {
     id: MEMBER.AGE,
     isShown: true,
-    isSortable: true,
+    isSortable: false,
     isFilterable: false,
     isFixed: false,
     isDate: false,
@@ -185,7 +184,7 @@ const MinistryMinistryGroupMemberTableView = ({
         return (
           <ProfileContainer>
             <ProfileImage
-              src={member.profileImage || DefaultImage}
+              src={member.profileImage || getRandomImage(member.id)}
               alt={MEMBER.PROFILE_IMAGE}
             />
             <MainText>{member.name}</MainText>
@@ -228,7 +227,7 @@ const MinistryMinistryGroupMemberTableView = ({
             {GROUP_MEMBER_TABLE_HEADER.filter((item) => item.isShown).map(
               (item) => (
                 <TableHeader key={item.id} id={item.id}>
-                  <MemberTableHeader item={item} onClick={onClickHeader} />
+                  <GroupMemberTableHeader item={item} onClick={onClickHeader} />
                 </TableHeader>
               )
             )}

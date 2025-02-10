@@ -14,6 +14,11 @@ const GroupManagement = ({}: GroupManagementProps) => {
   const { churchId, groups } = useSelector((state: RootState) => state.church);
   const groupsApi = new GroupsApi(false);
 
+  const [thrownError, setThrownError] = useState<Error | null>(null);
+  if (thrownError) {
+    throw thrownError;
+  }
+
   // 그룹 설정 탭 헤더
   const headerBarItems = useGroupManagementHeaderBarItems();
 
@@ -31,13 +36,17 @@ const GroupManagement = ({}: GroupManagementProps) => {
   };
 
   // 그룹 불러오기
-  const fetchGroup = () => {
-    if (selectedGroup.id) {
-      groupsApi
-        .getGroup({ churchId, groupId: selectedGroup.id })
-        .then((response) => {
-          setSelectedGroup(response.data);
-        });
+  const fetchGroup = async () => {
+    try {
+      if (selectedGroup.id) {
+        await groupsApi
+          .getGroup({ churchId, groupId: selectedGroup.id })
+          .then((response) => {
+            setSelectedGroup(response.data);
+          });
+      }
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
     }
   };
 

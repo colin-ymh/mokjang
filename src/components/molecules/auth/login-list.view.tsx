@@ -13,9 +13,15 @@ const ListContainer = styled.div`
   justify-content: center;
   align-items: flex-start;
 
-  gap: 50px;
+  gap: 40px;
   padding: 10px;
   width: 80%;
+`;
+
+const TextContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 `;
 
 const InputContainer = styled.div`
@@ -55,7 +61,15 @@ const LoginListView = ({
 }: LoginListViewProps) => {
   return (
     <ListContainer>
-      <MainText size={SIZE.LARGE}>{'목장 테스트 로그인'}</MainText>
+      <TextContainer>
+        <MainText size={SIZE.LARGE}>{'목장 테스트 로그인'}</MainText>
+        <MainText size={SIZE.MEDIUM} color={GRAY.DEFAULT}>
+          {'테스트용 로그인을 위한 화면입니다.'}
+        </MainText>
+        <MainText size={SIZE.MEDIUM} color={GRAY.DEFAULT}>
+          {'이름과 전화번호가 아이디와 비밀번호로 사용됩니다.'}
+        </MainText>
+      </TextContainer>
       <InputContainer>
         <LabelInput label={'이름'} value={name} onChange={onChangeName} />
         <LabelInput label={'전화번호'} value={phone} onChange={onChangePhone} />

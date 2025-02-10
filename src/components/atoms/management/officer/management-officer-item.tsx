@@ -2,7 +2,6 @@ import React, {
   ChangeEvent,
   Dispatch,
   SetStateAction,
-  useEffect,
   useRef,
   useState,
 } from 'react';
@@ -31,6 +30,12 @@ const ManagementOfficerItem = ({
 }: ManagementOfficerItemProps) => {
   const officersApi = new OfficersApi(false);
   const churchId = useSelector((state: RootState) => state.church.churchId);
+  const [thrownError, setThrownError] = useState<Error | null>(null);
+
+  // 렌더링 시점(컴포넌트 return)에서 조건부로 에러 발생
+  if (thrownError) {
+    throw thrownError;
+  }
 
   // 이름 수정창 ref
   const nameInputRef = useRef<HTMLInputElement>(null);
@@ -51,15 +56,16 @@ const ManagementOfficerItem = ({
   const [editName, setEditName] = useState<string>(officer.name);
 
   // 새로운 그룹 추가하기
-  const onClickSaveNewOfficer = () => {
-    if (getIsWellFormedTitle(newOfficerName)) {
-      officersApi
-        .createOfficer({ churchId }, { name: newOfficerName })
-        .then(() => {
-          fetchOfficers();
-          setIsAddShown(false);
-          setNewOfficerName(BLANK);
-        });
+  const onClickSaveNewOfficer = async () => {
+    if (!getIsWellFormedTitle(newOfficerName)) return;
+
+    try {
+      await officersApi.createOfficer({ churchId }, { name: newOfficerName });
+      fetchOfficers();
+      setIsAddShown(false);
+      setNewOfficerName(BLANK);
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
     }
   };
 
@@ -73,7 +79,6 @@ const ManagementOfficerItem = ({
 
     // isEdit이 true로 전환된 이후
     setTimeout(() => {
-      // 포커스
       if (nameInputRef.current) {
         nameInputRef.current.focus();
       }
@@ -81,11 +86,14 @@ const ManagementOfficerItem = ({
   };
 
   // 그룹 삭제
-  const onClickOfficerDelete = (officerId: string) => {
-    officersApi.deleteOfficer({ churchId, officerId }).then(() => {
+  const onClickOfficerDelete = async (officerId: string) => {
+    try {
+      await officersApi.deleteOfficer({ churchId, officerId });
       fetchOfficers();
       setSelectedOfficer(DEFAULT_OFFICER);
-    });
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
+    }
   };
 
   // 그룹 추가 활성화
@@ -100,25 +108,26 @@ const ManagementOfficerItem = ({
 
   // 이름 수정 이벤트
   const onChangeName = (event: ChangeEvent<HTMLInputElement>) => {
-    const newName = getFormattedTitle(event.target.value);
-    setEditName(newName);
+    setEditName(getFormattedTitle(event.target.value));
   };
 
   // 수정된 이름 저장
-  const onClickSaveName = () => {
-    if (editName === officer.name) {
+  const onClickSaveName = async () => {
+    if (editName === officer.name || !getIsWellFormedTitle(editName)) {
       setIsEdit(false);
-    } else if (getIsWellFormedTitle(editName)) {
-      officersApi
-        .editOfficer(
-          { churchId, officerId: officer.id as string },
-          { name: editName }
-        )
-        .then((response) => {
-          setSelectedOfficer(response.data);
-          fetchOfficers();
-          setIsEdit(false);
-        });
+      return;
+    }
+
+    try {
+      const response = await officersApi.editOfficer(
+        { churchId, officerId: officer.id as string },
+        { name: editName }
+      );
+      setSelectedOfficer(response.data);
+      fetchOfficers();
+      setIsEdit(false);
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
     }
   };
 
@@ -127,86 +136,6 @@ const ManagementOfficerItem = ({
     officerId: string,
     parentOfficerId: string | null
   ) => {};
-
-  // 수정 중 focus 가 풀리면 수정 취소
-  useEffect(() => {
-    const inputElement = nameInputRef.current;
-
-    const handleBlur = () => {
-      setIsEdit(false);
-    };
-
-    if (inputElement) {
-      inputElement.addEventListener('blur', handleBlur);
-    }
-
-    return () => {
-      if (inputElement) {
-        inputElement.removeEventListener('blur', handleBlur);
-      }
-    };
-  }, [nameInputRef, isEdit]);
-
-  // 추가 중 focus 가 풀리면 추가 취소
-  useEffect(() => {
-    const inputElement = newOfficerRef.current;
-
-    const handleBlur = () => {
-      setIsAddShown(false);
-    };
-
-    if (inputElement) {
-      inputElement.addEventListener('blur', handleBlur);
-    }
-
-    return () => {
-      if (inputElement) {
-        inputElement.removeEventListener('blur', handleBlur);
-      }
-    };
-  }, [newOfficerRef, isAddShown]);
-
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      // !!!!!!!!!!!! 시발 !!!!!!!!!!!!
-      // 한글 키보드로 입력 시, compose 를 하네;;;;;이 개같은거
-      // isComposing 이 true => false 이 지랄을 하면서
-      // 엔터가 두 번 입력되는 것 처럼 보였던 것이다
-      // 이 개같은 것 때문에 시간을 존나 날려먹었다
-      // !!!!!!!!!!!! 시발 !!!!!!!!!!!!
-      if (e.isComposing) {
-        return;
-      }
-
-      if (e.key === 'Enter') {
-        if (nameInputRef.current === document.activeElement) {
-          if (getIsWellFormedTitle(editName)) {
-            onClickSaveName();
-          } else {
-            setIsEdit(false);
-          }
-        } else if (newOfficerRef.current === document.activeElement) {
-          if (getIsWellFormedTitle(newOfficerName)) {
-            onClickSaveNewOfficer();
-          } else {
-            setIsAddShown(false);
-          }
-        }
-      } else if (e.key === 'Escape') {
-        if (nameInputRef.current === document.activeElement) {
-          setIsEdit(false);
-        } else if (newOfficerRef.current === document.activeElement) {
-          setIsAddShown(false);
-        }
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [editName, newOfficerName, onClickSaveName, onClickSaveNewOfficer]);
 
   const props = {
     isEdit,

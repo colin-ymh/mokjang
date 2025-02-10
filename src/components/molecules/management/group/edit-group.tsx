@@ -14,6 +14,9 @@ import { GroupsApi } from '@/api/management/group/groups.api';
 import { BLANK } from '@/constants/constant';
 import { getIsWellFormedTitle } from '@/utils/check';
 import { fetchGroups } from '@/redux/reducers/church-reducer';
+import ToastPopup from '@/components/atoms/common/popup/toast-popup';
+import { DESTRUCTIVE } from '@/constants/styles/color';
+import { useScopedI18n } from '../../../../../locales/client';
 
 type EditGroupProps = {
   group: Group;
@@ -23,11 +26,20 @@ type EditGroupProps = {
 
 const EditGroup = ({ group, roles, onClickClose }: EditGroupProps) => {
   const dispatch = useDispatch<AppDispatch>();
+  const t_popup = useScopedI18n('popup');
   const groupRolesApi = new GroupRolesApi(false);
   const groupsApi = new GroupsApi(false);
   const churchId = useSelector((state: RootState) => state.church.churchId);
 
   const newRoleRef = useRef<HTMLInputElement>(null);
+
+  const [thrownError, setThrownError] = useState<Error | null>(null);
+  // 렌더링 시점(컴포넌트 return)에서 조건부로 에러 발생
+  if (thrownError) {
+    throw thrownError;
+  }
+
+  const [isPopupShown, setIsPopupShown] = useState<boolean>(false);
 
   // 변경될 이름
   const [newName, setNewName] = useState<string>(group.name);
@@ -54,16 +66,20 @@ const EditGroup = ({ group, roles, onClickClose }: EditGroupProps) => {
 
   // 새 역할 임시 저장
   const onClickSaveNewRole = () => {
-    setNewRoles([
-      ...newRoles,
-      {
-        role: newRoleName,
-        id: new Date().getTime().toString(),
-        churchId: new Date().getTime().toString(),
-        groupId: new Date().getTime().toString(),
-      },
-    ]);
-    setNewRoleName(BLANK);
+    if (newRoles.every((r) => r.role !== newRoleName)) {
+      setNewRoles([
+        ...newRoles,
+        {
+          role: newRoleName,
+          id: new Date().getTime().toString(),
+          churchId: new Date().getTime().toString(),
+          groupId: new Date().getTime().toString(),
+        },
+      ]);
+      setNewRoleName(BLANK);
+    } else {
+      setIsPopupShown(true);
+    }
   };
 
   // 저장하기
@@ -132,7 +148,7 @@ const EditGroup = ({ group, roles, onClickClose }: EditGroupProps) => {
       setNewRoles([]);
       setSelectedRole(DEFAULT_GROUP_ROLE);
     } catch (error) {
-      console.log(error);
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
     }
   };
 
@@ -180,6 +196,13 @@ const EditGroup = ({ group, roles, onClickClose }: EditGroupProps) => {
   return (
     <>
       <EditGroupView {...props} />
+      {isPopupShown && (
+        <ToastPopup
+          text={t_popup('duplicatedRole')}
+          setIsShow={setIsPopupShown}
+          backgroundColor={DESTRUCTIVE.DEFAULT}
+        />
+      )}
     </>
   );
 };

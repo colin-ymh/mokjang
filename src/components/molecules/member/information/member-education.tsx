@@ -16,6 +16,12 @@ const MemberEducation = ({ targetMember }: MemberEducation) => {
   const churchId = useSelector((state: RootState) => state.church.churchId);
   const educationHistoryApi = new EducationHistoryApi(false);
 
+  const [thrownError, setThrownError] = useState<Error | null>(null);
+  // 렌더링 시점(컴포넌트 return)에서 조건부로 에러 발생
+  if (thrownError) {
+    throw thrownError;
+  }
+
   // 사용자의 교육 이력
   const [educationHistory, setEducationHistory] = useState<EducationHistory[]>(
     []
@@ -47,17 +53,19 @@ const MemberEducation = ({ targetMember }: MemberEducation) => {
   // };
 
   // 서버에서 데이터 로드
-  const fetchData = () => {
-    educationHistoryApi
-      .getEducationHistory({
+  const fetchData = async () => {
+    try {
+      const response = await educationHistoryApi.getEducationHistory({
         churchId,
         memberId: targetMember.id,
         orderDirection: ORDER_DIRECTION.DESC,
-      })
-      .then((response) => {
-        const newEducationHistory = response.data.data;
-        setEducationHistory(newEducationHistory);
       });
+
+      const newEducationHistory = response.data.data;
+      setEducationHistory(newEducationHistory);
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
+    }
   };
 
   // 교인의 교육 이력 불러오기

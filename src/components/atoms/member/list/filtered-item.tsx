@@ -66,7 +66,10 @@ export type FilteredItemType = {
     | MEMBER.NAME
     | MEMBER.VEHICLE_NUMBER
     | MEMBER.SCHOOL
-    | MEMBER.OCCUPATION;
+    | MEMBER.OCCUPATION
+    | MEMBER.MOBILE_PHONE
+    | MEMBER.HOME_PHONE
+    | MEMBER.ADDRESS;
   value: string[];
 };
 
@@ -128,6 +131,9 @@ const FilteredItem = ({ item }: FilteredItemProps) => {
         MEMBER.SCHOOL,
         MEMBER.OCCUPATION,
         MEMBER.VEHICLE_NUMBER,
+        MEMBER.ADDRESS,
+        MEMBER.MOBILE_PHONE,
+        MEMBER.HOME_PHONE,
       ].includes(item.title)
     ) {
       dispatch(setMemberFilter({ ...memberFilter, [item.title]: BLANK }));
@@ -218,6 +224,16 @@ const FilteredItem = ({ item }: FilteredItemProps) => {
       case MEMBER.VEHICLE_NUMBER:
         currentItem = item.value[0];
         break;
+      case MEMBER.MOBILE_PHONE:
+        currentItem = item.value[0];
+        break;
+      case MEMBER.HOME_PHONE:
+        currentItem = item.value[0];
+        break;
+      case MEMBER.ADDRESS:
+        currentItem = item.value[0];
+        break;
+
       default:
         currentItem = item.value[0];
         return;

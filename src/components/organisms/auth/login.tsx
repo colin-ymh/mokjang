@@ -44,7 +44,7 @@ const Login = () => {
   return (
     <LoginContainer>
       <LogoContainer>
-        <Logo />
+        {/*<Logo />*/}
         <MainText color={WHITE} size={SIZE.LARGE}>
           {'MOKJANG'}
         </MainText>

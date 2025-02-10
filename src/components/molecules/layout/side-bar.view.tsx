@@ -1,8 +1,11 @@
+'use client';
+
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 
-import { GRAY } from '@/constants/styles/color';
+import { BLACK, DESTRUCTIVE, GRAY, WHITE } from '@/constants/styles/color';
 import SideBarButton from '@/components/atoms/layout/side-bar/side-bar-button';
 import SideBarHeader from '@/components/atoms/layout/side-bar/side-bar-header';
 import { MEDIA_MIN_WIDTH } from '@/constants/constant';
@@ -11,10 +14,13 @@ import GroupFilter from '@/components/molecules/layout/group-filter';
 
 import { useI18n, useScopedI18n } from '../../../../locales/client';
 import Button from '@/components/atoms/common/button/button';
+import { ErrorApi } from '@/api/error/error.api';
+import { MainText } from '@/components/atoms/common/text/main-text';
+import { SIZE } from '@/constants/styles/style';
 
 const SideBarContainer = styled.div`
-  display: flex; // Flexbox 활성화
-  flex-direction: column; // 세로(수직) 방향으로 배치
+  display: flex;
+  flex-direction: column;
   height: 100%;
 
   @media (min-width: ${MEDIA_MIN_WIDTH.MOBILE}) {
@@ -26,7 +32,7 @@ const SideBarContainer = styled.div`
   }
 
   @media (min-width: ${MEDIA_MIN_WIDTH.DESKTOP}) {
-    display: flex; // 데스크탑에서는 Flexbox 사용
+    display: flex;
     width: 180px;
     background-color: ${GRAY.SIDE_BAR};
     padding: 0 10px;
@@ -40,15 +46,24 @@ const SideBarContainer = styled.div`
 const ButtonContainer = styled.div`
   display: flex;
   flex-direction: column;
-  flex-grow: 1; // 남은 공간을 모두 차지
+  flex-grow: 1;
   justify-content: flex-start;
+`;
+
+const TextContainer = styled.div`
+  display: flex;
+  flex-shrink: 0;
+  flex-direction: column;
+  gap: 5px;
+  padding-bottom: 10px;
 `;
 
 const BottomContainer = styled.div`
   display: flex;
-  flex-shrink: 0; // 크기를 고정하여 줄어들지 않도록 설정
-  //justify-content: center;
-  padding: 10px;
+  flex-shrink: 0;
+  padding-bottom: 10px;
+  flex-direction: column;
+  gap: 10px;
 `;
 
 const GroupFilterContainer = styled.div<{ $isOpened: boolean }>`
@@ -62,6 +77,13 @@ type SideBarViewProps = {
 };
 
 const SideBarView = ({ onClickLogOut }: SideBarViewProps) => {
+  const [thrownError, setThrownError] = useState<Error | null>(null);
+  // 렌더링 시점(컴포넌트 return)에서 조건부로 에러 발생
+  if (thrownError) {
+    throw thrownError;
+  }
+
+  const errorApi = new ErrorApi(false);
   const t = useI18n();
   const t_header = useScopedI18n('header');
   const headerId = useSelector((state: RootState) => state.layout.headerId);
@@ -70,7 +92,7 @@ const SideBarView = ({ onClickLogOut }: SideBarViewProps) => {
     <SideBarContainer>
       <SideBarHeader />
       <ButtonContainer>
-        <SideBarButton id={HEADER_ID.HOME} title={t_header(HEADER_ID.HOME)} />
+        {/*<SideBarButton id={HEADER_ID.HOME} title={t_header(HEADER_ID.HOME)} />*/}
         <SideBarButton
           id={HEADER_ID.MEMBER}
           title={t_header(HEADER_ID.MEMBER)}
@@ -83,14 +105,58 @@ const SideBarView = ({ onClickLogOut }: SideBarViewProps) => {
           title={t(HEADER_ID.MANAGEMENT)}
         />
       </ButtonContainer>
+      <TextContainer>
+        <MainText fontWeight={600} color={GRAY.DEFAULT}>
+          {'TEL'}
+        </MainText>
+        <MainText size={SIZE.MEDIUM} color={GRAY.DEFAULT}>
+          {'나천호 010-9909-6581'}
+        </MainText>
+        <MainText size={SIZE.MEDIUM} color={GRAY.DEFAULT}>
+          {'유민혁 010-5696-6896'}
+        </MainText>
+        <MainText size={SIZE.MEDIUM} color={GRAY.DEFAULT}>
+          {'김홍남 010-5024-4636'}
+        </MainText>
+      </TextContainer>
       <BottomContainer>
+        <Button
+          text={'설문조사 진행하기'}
+          onClick={() =>
+            window.open(
+              'https://docs.google.com/forms/d/1e58wUrCS3sWSmE-3wKVxtVNNEcrnwGBXNuflUiZ1cUk/viewform?edit_requested=true',
+              '_blank'
+            )
+          }
+          height={30}
+          // width={80}
+          backgroundColor={BLACK}
+          color={WHITE}
+        />
         <Button
           text={t('button.logOut')}
           onClick={onClickLogOut}
           height={30}
-          width={80}
-          backgroundColor={GRAY.DEFAULT}
+          // width={80}
+          backgroundColor={GRAY.LIGHT}
+          color={DESTRUCTIVE.LIGHT}
         />
+        {/*<Button*/}
+        {/*  text={'에러 테스트'}*/}
+        {/*  onClick={async () => {*/}
+        {/*    try {*/}
+        {/*      await errorApi.getError({});*/}
+        {/*    } catch (error) {*/}
+        {/*      setThrownError(*/}
+        {/*        error instanceof Error ? error : new Error(String(error))*/}
+        {/*      );*/}
+        {/*    }*/}
+        {/*  }}*/}
+        {/*  height={30}*/}
+        {/*  // width={80}*/}
+        {/*  backgroundColor={BLACK}*/}
+        {/*  color={WHITE}*/}
+        {/*/>*/}
       </BottomContainer>
     </SideBarContainer>
   );

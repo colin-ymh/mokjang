@@ -13,6 +13,8 @@ import { useScopedI18n } from '../../../../locales/client';
 import { AppDispatch } from '@/redux/store';
 import { useDispatch } from 'react-redux';
 import { setChurch, setChurchId } from '@/redux/reducers/church-reducer';
+import RadioButton from '@/components/atoms/common/input/radio-button/radio-button';
+import { MainText } from '@/components/atoms/common/text/main-text';
 
 const ListContainer = styled.div`
   display: flex;
@@ -39,11 +41,27 @@ const ButtonContainer = styled.div`
   padding: 20px 0;
 `;
 
+const memberSizeItems = [
+  { value: 'xxs', title: '50명 이하' },
+  { value: 'xs', title: '51명~100명' },
+  { value: 's', title: '101명~300명' },
+  { value: 'm', title: '301명~500명' },
+  { value: 'l', title: '501명~1000명' },
+  { value: 'xl', title: '1001명~5000명' },
+  { value: 'xxl', title: '5000명 초과' },
+];
+
 const ChurchRegisterList = () => {
   const churchesApi = new ChurchesApi(false);
   const dispatch = useDispatch<AppDispatch>();
   const t_button = useScopedI18n('button');
   const router = usePageRouter();
+  const [thrownError, setThrownError] = useState<Error | null>(null);
+
+  // 렌더링 시점(컴포넌트 return)에서 조건부로 에러 발생
+  if (thrownError) {
+    throw thrownError;
+  }
 
   const [name, setName] = useState<string>(BLANK);
   const [denomination, setDenomination] = useState<string>(BLANK);
@@ -92,25 +110,27 @@ const ChurchRegisterList = () => {
     setMemberSize(formattedSize);
   };
 
-  const onClickButton = () => {
-    churchesApi
-      .createChurch({
+  const onClickButton = async () => {
+    try {
+      const response = await churchesApi.createChurch({
         name,
         address: '테스트',
         denomination: '테스트',
-        identifyNumber: '0',
+        identifyNumber: new Date().getTime().toString(),
         detailAddress: '테스트',
         memberSize: 'xxl',
         phone: '01012345678',
-      })
-      .then((response) => {
-        const newChurch: Church = response.data;
-
-        dispatch(setChurchId(newChurch.id));
-        dispatch(setChurch(newChurch));
-
-        router.push('/church/register/group');
       });
+
+      const newChurch: Church = response.data;
+
+      dispatch(setChurchId(newChurch.id));
+      dispatch(setChurch(newChurch));
+
+      router.push('/church/register/group');
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
+    }
   };
 
   return (
@@ -122,11 +142,11 @@ const ChurchRegisterList = () => {
           value={denomination}
           onChange={onChangeDenomination}
         />
-        <LabelInput
-          label={'고유번호'}
-          value={identifyNumber}
-          onChange={onChangedIdentifyNumber}
-        />
+        {/*<LabelInput*/}
+        {/*  label={'고유번호'}*/}
+        {/*  value={identifyNumber}*/}
+        {/*  onChange={onChangedIdentifyNumber}*/}
+        {/*/>*/}
         <LabelInput
           label={'교회주소'}
           value={address}
@@ -142,10 +162,16 @@ const ChurchRegisterList = () => {
           value={phone}
           onChange={onChangePhoneNumber}
         />
-        <LabelInput
-          label={'교인 수'}
-          value={memberSize}
-          onChange={onChangeMemberSize}
+        {/*<LabelInput*/}
+        {/*  label={'교인 수'}*/}
+        {/*  value={memberSize}*/}
+        {/*  onChange={onChangeMemberSize}*/}
+        {/*/>*/}
+        <MainText>{'교인 수'}</MainText>
+        <RadioButton
+          items={memberSizeItems}
+          selectedValue={memberSize}
+          onChange={(value) => setMemberSize(value)}
         />
       </InputContainer>
       <ButtonContainer>

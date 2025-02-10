@@ -12,10 +12,10 @@ import { useI18n } from '../../../../../locales/client';
 const SelectGroupContainer = styled.div`
   display: flex;
   background-color: ${WHITE};
-  width: 300px;
-  height: 400px;
   border-radius: 5px;
-  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.3);
+  width: 100%;
+  height: 100%;
+  //box-shadow: 0 1px 6px rgba(0, 0, 0, 0.3);
   flex-direction: column;
   z-index: 400;
   position: relative;
@@ -23,7 +23,7 @@ const SelectGroupContainer = styled.div`
 
 const GoBackContainer = styled.div`
   display: flex;
-  height: 30px;
+  //height: 30px;
   padding: 10px;
   gap: 10px;
   align-items: center;

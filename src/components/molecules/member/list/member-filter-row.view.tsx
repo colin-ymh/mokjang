@@ -72,7 +72,14 @@ const AddFilterContainer = styled.div<{ $isShown: boolean }>`
   left: 10px;
 `;
 
-export type SEARCH_FILTER = MEMBER.NAME | MEMBER.SCHOOL | MEMBER.VEHICLE_NUMBER;
+export type SEARCH_FILTER =
+  | MEMBER.NAME
+  | MEMBER.SCHOOL
+  | MEMBER.VEHICLE_NUMBER
+  | MEMBER.HOME_PHONE
+  | MEMBER.MOBILE_PHONE
+  | MEMBER.OCCUPATION
+  | MEMBER.ADDRESS;
 
 type MemberFilterViewProps = {
   isAddFilterShown: boolean;

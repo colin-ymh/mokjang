@@ -4,7 +4,7 @@ import { GroupHistory } from '@/models/member/history';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { useI18n } from '../../../../../locales/client';
 import { getFormattedDate, getLocaleDateFromDashDate } from '@/utils/format';
-import { GRAY } from '@/constants/styles/color';
+import { GRAY, WHITE } from '@/constants/styles/color';
 import SlideButtonList from '@/components/atoms/common/button/slide-button-list';
 import { usePathname } from 'next/navigation';
 import { LOCALE } from '@/constants/state/locale';
@@ -113,6 +113,7 @@ const GroupHistoryItem = ({
             buttonSize={25}
             onClickEdit={() => onClickEditGroup(group)}
             onClickDelete={() => onClickDeleteGroup(group.id)}
+            backgroundColor={WHITE}
           />
         )}
       </ItemContainer>

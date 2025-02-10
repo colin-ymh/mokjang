@@ -13,6 +13,12 @@ type GroupMemberProps = {
 const GroupMember = ({ group }: GroupMemberProps) => {
   const membersApi = new MembersApi(false);
 
+  const [thrownError, setThrownError] = useState<Error | null>(null);
+  // 렌더링 시점(컴포넌트 return)에서 조건부로 에러 발생
+  if (thrownError) {
+    throw thrownError;
+  }
+
   // 그룹에 속한 교인 목록
   const [members, setMembers] = useState<Member[]>([]);
 
@@ -29,16 +35,20 @@ const GroupMember = ({ group }: GroupMemberProps) => {
     setIsModalShown(false);
   };
 
-  const fetchMembers = () => {
-    membersApi
-      .getMembers({
-        churchId: group.churchId,
-        group: [group.id as string],
-        selectedColumns: [MEMBER.OFFICER, MEMBER.BIRTH, MEMBER.MOBILE_PHONE],
-      })
-      .then((response) => {
-        setMembers(response.data.data);
-      });
+  const fetchMembers = async () => {
+    try {
+      await membersApi
+        .getMembers({
+          churchId: group.churchId,
+          group: [group.id as string],
+          selectedColumns: [MEMBER.OFFICER, MEMBER.BIRTH, MEMBER.MOBILE_PHONE],
+        })
+        .then((response) => {
+          setMembers(response.data.data);
+        });
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
+    }
   };
 
   // 교인 불러오기

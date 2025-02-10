@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { AppDispatch } from '@/redux/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '@/redux/store';
 import { setContentId } from '@/redux/reducers/layout-reducer';
 
 import MemberTabHeaderView from '@/components/molecules/layout/header/member-tab-header.view';
@@ -10,11 +10,18 @@ import {
   DEFAULT_MEMBER,
   setMember,
 } from '@/redux/reducers/member-register-reducer';
+import { DummyApi } from '@/api/dummy.api';
+import {
+  fetchMembers,
+  setMembers,
+} from '@/redux/reducers/member-filter-reducer';
 
 type MemberManagementHeadBarProps = {};
 
 const MemberTabHeader = ({}: MemberManagementHeadBarProps) => {
   const dispatch = useDispatch<AppDispatch>();
+  const { churchId } = useSelector((state: RootState) => state.church);
+  const dummyApi = new DummyApi(false);
 
   // 교인 등록하기 on/off
   const [isRegisterShown, setIsRegisterShown] = useState<boolean>(false);
@@ -35,9 +42,21 @@ const MemberTabHeader = ({}: MemberManagementHeadBarProps) => {
     dispatch(setContentId(id));
   };
 
+  // 테스트 교인 생성
+  const onClickDummyMembers = async () => {
+    dummyApi.createDummyMembers({ churchId }).then(() => {
+      dispatch(fetchMembers({ churchId, currentPage: 1 })).then((result) => {
+        if (fetchMembers.fulfilled.match(result)) {
+          dispatch(setMembers(result.payload));
+        }
+      });
+    });
+  };
+
   const props = {
     onClickRegisterMemberButton,
     onClickHeaderBar,
+    onClickDummyMembers,
   };
 
   return (

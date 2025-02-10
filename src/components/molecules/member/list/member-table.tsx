@@ -26,6 +26,10 @@ const MemberTable = ({ onClickMemberItem, loadMembers }: MemberTableProps) => {
     useSelector((state: RootState) => state.memberFilter);
 
   const [isPopupShown, setIsPopupShown] = useState<boolean>(false);
+  const [thrownError, setThrownError] = useState<Error | null>(null);
+  if (thrownError) {
+    throw thrownError;
+  }
 
   const onClickOpen = () => {
     setIsPopupShown(true);
@@ -99,6 +103,7 @@ const MemberTable = ({ onClickMemberItem, loadMembers }: MemberTableProps) => {
       await Promise.all(deletePromises);
 
       setCheckedMemberIds([]);
+      setIsPopupShown(false);
 
       // 3) 모든 삭제가 끝난 후 교인 목록 다시 불러오기
       await dispatch(fetchMembers({ churchId, currentPage: 1 })).then(
@@ -109,7 +114,7 @@ const MemberTable = ({ onClickMemberItem, loadMembers }: MemberTableProps) => {
         }
       );
     } catch (error) {
-      console.log(error);
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
     }
   };
 

@@ -13,6 +13,9 @@ import { getIsWellFormedTitle } from '@/utils/check';
 import { MinistriesApi } from '@/api/management/ministry/ministries.api';
 import { MinistryGroupsApi } from '@/api/management/ministry/ministry-groups.api';
 import EditMinistryGroupView from '@/components/molecules/management/ministry/edit-ministry-group.view';
+import ToastPopup from '@/components/atoms/common/popup/toast-popup';
+import { DESTRUCTIVE } from '@/constants/styles/color';
+import { useScopedI18n } from '../../../../../locales/client';
 
 type EditMinistryGroupProps = {
   ministryGroup: MinistryGroup;
@@ -27,10 +30,19 @@ const EditMinistryMinistryGroup = ({
   onClickClose,
   fetchMinistryGroups,
 }: EditMinistryGroupProps) => {
+  const t_popup = useScopedI18n('popup');
   const ministryGroupMinistriesApi = new MinistriesApi(false);
   const ministryGroupsApi = new MinistryGroupsApi(false);
   const churchId = useSelector((state: RootState) => state.church.churchId);
   const newMinistryRef = useRef<HTMLInputElement>(null);
+
+  const [thrownError, setThrownError] = useState<Error | null>(null);
+  // 렌더링 시점(컴포넌트 return)에서 조건부로 에러 발생
+  if (thrownError) {
+    throw thrownError;
+  }
+
+  const [isPopupShown, setIsPopupShown] = useState<boolean>(false);
 
   // 변경될 이름
   const [newName, setNewName] = useState<string>(ministryGroup.name);
@@ -57,17 +69,21 @@ const EditMinistryMinistryGroup = ({
 
   // 새 역할 임시 저장
   const onClickSaveNewMinistry = () => {
-    setNewMinistries([
-      ...newMinistries,
-      {
-        name: newMinistryName,
-        id: new Date().getTime().toString(),
-        churchId: new Date().getTime().toString(),
-        ministryGroupId: new Date().getTime().toString(),
-        membersCount: 0,
-      },
-    ]);
-    setNewMinistryName(BLANK);
+    if (newMinistries.every((m) => m.name !== newMinistryName)) {
+      setNewMinistries([
+        ...newMinistries,
+        {
+          name: newMinistryName,
+          id: new Date().getTime().toString(),
+          churchId: new Date().getTime().toString(),
+          ministryGroupId: new Date().getTime().toString(),
+          membersCount: 0,
+        },
+      ]);
+      setNewMinistryName(BLANK);
+    } else {
+      setIsPopupShown(true);
+    }
   };
 
   // 저장하기
@@ -142,7 +158,7 @@ const EditMinistryMinistryGroup = ({
       setNewMinistries([]);
       setSelectedMinistry(DEFAULT_MINISTRY);
     } catch (error) {
-      console.log(error);
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
     }
   };
 
@@ -190,6 +206,13 @@ const EditMinistryMinistryGroup = ({
   return (
     <>
       <EditMinistryGroupView {...props} />
+      {isPopupShown && (
+        <ToastPopup
+          text={t_popup('duplicatedMinistry')}
+          setIsShow={setIsPopupShown}
+          backgroundColor={DESTRUCTIVE.DEFAULT}
+        />
+      )}
     </>
   );
 };

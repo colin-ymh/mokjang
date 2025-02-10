@@ -54,8 +54,8 @@ const PlusButton = styled(Plus)`
 const ModalContainer = styled.div`
   display: flex;
   position: absolute;
-  right: 20px;
-  top: 50px;
+  right: 50px;
+  top: -100px;
   z-index: 100;
 `;
 

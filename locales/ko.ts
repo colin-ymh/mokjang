@@ -5,7 +5,7 @@ export default {
   search: '검색',
   after: '부터',
   before: '까지',
-  management: '설정',
+  management: '교회 관리',
   all: '전체',
   period: '기간',
   total: '총',
@@ -42,7 +42,7 @@ export default {
   educationInformation: '교육 정보',
   educationProcess: '진행사항',
   educationDate: '교육 일시',
-  sessionContent: '회차 보고',
+  sessionContent: '교육 내용',
   status: '수료',
   isSessionDone: '교육 완료',
 
@@ -193,7 +193,7 @@ export default {
 
   /*-------------------button-------------------*/
   'button.register': '등록하기',
-  'button.save': '저장',
+  'button.save': '저장하기',
   'button.edit': '수정하기',
   'button.delete': '삭제하기',
   'button.stop': '종료하기',
@@ -201,7 +201,7 @@ export default {
   'button.saveFamily': '해당 가족만 추가하기',
   'button.goBack': '이전으로',
   'button.extra': '더 입력하기',
-  'button.invite': '초대하기',
+  'button.invite': '초대문자 전송하기',
   'button.cancel': '취소',
   'button.confirm': '확인',
   'button.filterSetting': '목록 설정',
@@ -239,7 +239,7 @@ export default {
   'placeholder.session': '총 회차를 입력해주세요.',
   'placeholder.instructor': '진행자를 선택해주세요.',
   'placeholder.sessionDate': '교육 일시를 입력해주세요. (yyyy-mm-dd) ',
-  'placeholder.sessionContent': '회차 보고를 입력해주세요.',
+  'placeholder.sessionContent': '교육 내용를 입력해주세요.',
   /*-------------------placeholder-------------------*/
 
   /*-------------------radiobutton-------------------*/
@@ -254,5 +254,9 @@ export default {
 
   'popup.deleteMemberTitle': '교인을 삭제하시겠습니까?',
   'popup.deleteMemberContent': '삭제된 교인은 복구할 수 없습니다.',
+
+  'popup.verifyFail': '잘못된 인증번호 입니다.',
+  'popup.duplicatedRole': '이미 등록된 그룹 역할입니다.',
+  'popup.duplicatedMinistry': '이미 등록된 사역입니다.',
   /*-------------------popup-------------------*/
 } as const;
