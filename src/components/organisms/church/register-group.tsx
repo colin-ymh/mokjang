@@ -7,6 +7,7 @@ import { getOrderedGroups } from '@/utils/group';
 import { usePageRouter } from '@/utils/router';
 
 import { useI18n } from '../../../../locales/client';
+import Loading from '@/components/atoms/common/etc/loading';
 
 type GroupListProps = {};
 
@@ -14,6 +15,8 @@ const RegisterGroup = ({}: GroupListProps) => {
   const t = useI18n();
   const { churchId, groups } = useSelector((state: RootState) => state.church);
   const router = usePageRouter();
+
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   // 선택된 그룹 (의미 없을수도)
   const [selectedGroup, setSelectedGroup] = useState<Group>(DEFAULT_GROUP);
@@ -58,7 +61,12 @@ const RegisterGroup = ({}: GroupListProps) => {
 
   // 다음 설정으로 이동
   const onClickSave = () => {
-    router.replace('church/register/officer');
+    setIsLoading(true);
+    try {
+      router.replace('church/register/officer');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   // 교회 정보를 통해 소그룹들 불러오기
@@ -80,6 +88,7 @@ const RegisterGroup = ({}: GroupListProps) => {
   return (
     <>
       <RegisterGroupView {...props} />
+      <Loading isShow={isLoading} />
     </>
   );
 };

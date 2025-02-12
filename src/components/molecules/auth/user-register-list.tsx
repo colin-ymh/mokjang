@@ -1,52 +1,51 @@
-import { ChangeEvent, useEffect, useState } from 'react';
+'use client';
 
-import { AuthApi, IS_TEST } from '@/api/auth/auth.api';
-import { setAuthorizationToken } from '@/api/authorize-axios';
-import { BLANK } from '@/constants/constant';
-import UserRegisterListView from '@/components/molecules/auth/user-register-list.view';
-import { getFormattedMobilePhone, getFormattedName } from '@/utils/format';
-import { usePageRouter } from '@/utils/router';
-import { AppDispatch } from '@/redux/store';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { AppDispatch } from '@/redux/store';
 import { setUser } from '@/redux/reducers/user-reducer';
+
+import { setAuthorizationToken } from '@/api/authorize-axios';
+import { AuthApi, IS_TEST } from '@/api/auth/auth.api';
+import UserRegisterListView from '@/components/molecules/auth/user-register-list.view';
 import ToastPopup from '@/components/atoms/common/popup/toast-popup';
-import { useScopedI18n } from '../../../../locales/client';
 import { DESTRUCTIVE } from '@/constants/styles/color';
 import { TOAST_DIRECTION } from '@/components/atoms/common/popup/toast-popup.view';
+import Loading from '@/components/atoms/common/etc/loading';
+import { getFormattedMobilePhone, getFormattedName } from '@/utils/format';
+import { usePageRouter } from '@/utils/router';
+
+import { useScopedI18n } from '../../../../locales/client';
 
 const UserRegisterList = () => {
   const t_popup = useScopedI18n('popup');
   const router = usePageRouter();
   const authApi = new AuthApi(false);
   const dispatch = useDispatch<AppDispatch>();
+
   const [thrownError, setThrownError] = useState<Error | null>(null);
-
-  const [isErrorShown, setIsErrorShown] = useState<boolean>(false);
-
-  // 렌더링 시점(컴포넌트 return)에서 조건부로 에러 발생
   if (thrownError) {
     throw thrownError;
   }
+
+  const [isErrorShown, setIsErrorShown] = useState<boolean>(false);
+  // 로딩 상태 추가
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   // 인증 시간 타이머
   const [second, setSecond] = useState<number>(0);
 
   // 이름
-  const [name, setName] = useState<string>(BLANK);
-
+  const [name, setName] = useState<string>('');
   // 전화번호
-  const [mobilePhone, setMobilePhone] = useState<string>(BLANK);
-
+  const [mobilePhone, setMobilePhone] = useState<string>('');
   // 인증번호
-  const [verifyNumber, setVerifyNumber] = useState<string>(BLANK);
-
+  const [verifyNumber, setVerifyNumber] = useState<string>('');
   // 요청 여부
   const [isRequested, setIsRequested] = useState<boolean>(false);
-
   // 인증 여부
   const [isVerified, setIsVerified] = useState<boolean>(false);
-
-  // 개인정보 동의여부
+  // 개인정보 동의 여부
   const [isConsent, setIsConsent] = useState<boolean>(false);
 
   // 이름 변경 이벤트
@@ -76,14 +75,13 @@ const UserRegisterList = () => {
         {
           name,
           mobilePhone: mobilePhone.replace(/-/g, ''),
-          isTest: IS_TEST.BETA_TEST,
-          // isTest: IS_TEST.INTERNAL_TEST,
+          isTest: IS_TEST.INTERNAL_TEST,
         }
       );
 
       if (response.status === 201) {
         setIsRequested(true);
-        // console.log(response.data);
+        console.log(response.data);
         setSecond(1800);
       }
     } catch (error) {
@@ -97,7 +95,6 @@ const UserRegisterList = () => {
       const response = await authApi.getVerificationVerify({
         code: verifyNumber,
       });
-
       if (response.data?.verified) {
         setIsVerified(true);
       }
@@ -112,20 +109,18 @@ const UserRegisterList = () => {
     setIsConsent(!isConsent);
   };
 
-  // 회원가입 완료 버튼
+  // 회원가입 완료 버튼: 로딩 상태를 처리
   const onClickDone = async () => {
+    setIsLoading(true); // 로딩 시작
     try {
       const response = await authApi.getSignIn({
         privacyPolicyAgreed: isVerified,
       });
-
       if (response.status === 201) {
         const accessToken = response.data.accessToken;
         const refreshToken = response.data.refreshToken;
 
-        // AccessToken을 authorizeAxios에 설정
         setAuthorizationToken(accessToken);
-        // RefreshToken을 localStorage에 저장
         localStorage.setItem('refreshToken', refreshToken);
 
         router.replace('/church/register');
@@ -137,23 +132,22 @@ const UserRegisterList = () => {
     } catch (error) {
       console.log('로그인 실패:', error);
       setThrownError(error instanceof Error ? error : new Error(String(error)));
+    } finally {
+      setIsLoading(false); // 서버 요청 완료 후 로딩 종료
     }
   };
 
-  // 타이머 감소 로직: 인증 요청 후 1초마다 감소
+  // 타이머 감소 로직
   useEffect(() => {
     let timer: NodeJS.Timeout;
-
     if (isRequested && second > 0) {
       timer = setInterval(() => {
         setSecond((prevSecond) => prevSecond - 1);
       }, 1000);
     }
-
     if (second === 0 && isRequested) {
       setIsRequested(false);
     }
-
     return () => clearInterval(timer);
   }, [isRequested, second]);
 
@@ -185,6 +179,7 @@ const UserRegisterList = () => {
           direction={TOAST_DIRECTION.BOTTOM}
         />
       )}
+      <Loading isShow={isLoading} />
     </>
   );
 };

@@ -5,18 +5,19 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 
+import { ErrorApi } from '@/api/error/error.api';
 import { BLACK, DESTRUCTIVE, GRAY, WHITE } from '@/constants/styles/color';
 import SideBarButton from '@/components/atoms/layout/side-bar/side-bar-button';
 import SideBarHeader from '@/components/atoms/layout/side-bar/side-bar-header';
 import { MEDIA_MIN_WIDTH } from '@/constants/constant';
 import { HEADER_ID } from '@/constants/layout/header';
 import GroupFilter from '@/components/molecules/layout/group-filter';
-
-import { useI18n, useScopedI18n } from '../../../../locales/client';
 import Button from '@/components/atoms/common/button/button';
-import { ErrorApi } from '@/api/error/error.api';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { SIZE } from '@/constants/styles/style';
+
+import { useI18n, useScopedI18n } from '../../../../locales/client';
+import Loading from '@/components/atoms/common/etc/loading';
 
 const SideBarContainer = styled.div`
   display: flex;
@@ -77,6 +78,7 @@ type SideBarViewProps = {
 };
 
 const SideBarView = ({ onClickLogOut }: SideBarViewProps) => {
+  const [isLoading, setIsLoading] = useState(false);
   const [thrownError, setThrownError] = useState<Error | null>(null);
   // 렌더링 시점(컴포넌트 return)에서 조건부로 에러 발생
   if (thrownError) {
@@ -119,7 +121,18 @@ const SideBarView = ({ onClickLogOut }: SideBarViewProps) => {
           {'김홍남 010-5024-4636'}
         </MainText>
       </TextContainer>
+      <Loading isShow={isLoading} />
       <BottomContainer>
+        <Button
+          text={'로딩 테스트'}
+          height={30}
+          onClick={() => {
+            setIsLoading(true);
+            setTimeout(() => {
+              setIsLoading(false);
+            }, 3000);
+          }}
+        />
         <Button
           text={'설문조사 진행하기'}
           onClick={() =>

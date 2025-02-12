@@ -10,6 +10,7 @@ import { getIsWellFormedTitle } from '@/utils/check';
 import { BLANK } from '@/constants/constant';
 import { getFormattedTitle } from '@/utils/format';
 import { setOfficers } from '@/redux/reducers/church-reducer';
+import Loading from '@/components/atoms/common/etc/loading';
 
 type OfficerListProps = {};
 
@@ -26,6 +27,9 @@ const RegisterOfficer = ({}: OfficerListProps) => {
   if (thrownError) {
     throw thrownError;
   }
+
+  // 로딩 상태
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   // 선택된 직분
   const [selectedOfficer, setSelectedOfficer] =
@@ -68,7 +72,12 @@ const RegisterOfficer = ({}: OfficerListProps) => {
 
   // 다음 설정으로 이동
   const onClickSave = () => {
-    router.replace('church/register/education');
+    setIsLoading(true);
+    try {
+      router.replace('church/register/education');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -117,6 +126,7 @@ const RegisterOfficer = ({}: OfficerListProps) => {
   return (
     <>
       <RegisterOfficerView {...props} />
+      <Loading isShow={isLoading} />
     </>
   );
 };
