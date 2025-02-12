@@ -19,11 +19,11 @@ const App = () => {
   useEffect(() => {
     // **로그인이 안된 상태라면 로그인 페이지로 리다이렉트**
     if (!user?.id) {
-      router.push('/login');
+      router.replace('/login');
     }
     // **churchId가 등록되지 않은 상태면 교회 등록 페이지로 리다이렉트**
     else if (!churchId) {
-      router.push('/church/register');
+      router.replace('/church/register');
     }
   }, [user, churchId, router]); // **의존성 배열 추가**
 

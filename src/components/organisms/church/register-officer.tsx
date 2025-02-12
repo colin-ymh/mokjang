@@ -68,7 +68,7 @@ const RegisterOfficer = ({}: OfficerListProps) => {
 
   // 다음 설정으로 이동
   const onClickSave = () => {
-    router.push('church/register/education');
+    router.replace('church/register/education');
   };
 
   useEffect(() => {

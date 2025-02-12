@@ -4,15 +4,16 @@ import { AppDispatch } from '@/redux/store';
 import { setChurch, setChurchId } from '@/redux/reducers/church-reducer';
 import { setUser } from '@/redux/reducers/user-reducer';
 
-import { AuthApi } from '@/api/auth/auth.api';
+import { AUTH, AuthApi } from '@/api/auth/auth.api';
 import { setAuthorizationToken } from '@/api/authorize-axios';
 import LoginListView from '@/components/molecules/auth/login-list.view';
 import { usePageRouter } from '@/utils/router';
 import { getFormattedMobilePhone, getFormattedName } from '@/utils/format';
+import { useRouter } from 'next/navigation';
 
 const LoginList = () => {
   const dispatch = useDispatch<AppDispatch>();
-  // const router = useRouter();
+  const nextRouter = useRouter();
   const router = usePageRouter();
   const authApi = new AuthApi(false);
   const [thrownError, setThrownError] = useState<Error | null>(null);
@@ -34,9 +35,13 @@ const LoginList = () => {
     setPhone(newPhone);
   };
 
-  const onClickItem = async () => {
+  const onClickItem = async (provider?: AUTH) => {
+    if (provider) {
+      nextRouter.replace(authApi.getOAuth({ provider }));
+      return;
+    }
+
     try {
-      // router.push(authApi.getOAuth({ provider }));
       const response = await authApi.getTestAuth({
         provider: name,
         providerId: phone,
@@ -47,7 +52,7 @@ const LoginList = () => {
         if (response.data?.temporal) {
           // 임시토큰 저장
           setAuthorizationToken(response.data?.temporal);
-          router.push('/login/register');
+          router.replace('/login/register');
         }
         // 이미 가입된 회원인 경우
         else {
@@ -66,11 +71,11 @@ const LoginList = () => {
             if (newUser?.adminChurch?.id || newUser?.managingChurch?.id) {
               dispatch(setChurch(newUser.adminChurch));
               dispatch(setChurchId(newUser.adminChurch.id));
-              router.push('');
+              router.replace('');
             }
             // 등록된 교회가 없는 경우
             else {
-              router.push('/church/register');
+              router.replace('/church/register');
             }
           } catch (error) {
             setThrownError(

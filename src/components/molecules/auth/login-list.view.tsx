@@ -3,8 +3,9 @@ import styled from 'styled-components';
 
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { GRAY } from '@/constants/styles/color';
-import LabelInput from '@/components/atoms/common/input/label-input';
+import { AUTH } from '@/api/auth/auth.api';
 import { SIZE } from '@/constants/styles/style';
+import LabelInput from '@/components/atoms/common/input/label-input';
 import Button from '@/components/atoms/common/button/button';
 
 const ListContainer = styled.div`
@@ -49,7 +50,7 @@ type LoginListViewProps = {
   phone: string;
   onChangeName: (event: ChangeEvent<HTMLInputElement>) => void;
   onChangePhone: (event: ChangeEvent<HTMLInputElement>) => void;
-  onClickItem: () => void;
+  onClickItem: (provider: AUTH) => void;
 };
 
 const LoginListView = ({
@@ -74,6 +75,7 @@ const LoginListView = ({
         <LabelInput label={'이름'} value={name} onChange={onChangeName} />
         <LabelInput label={'전화번호'} value={phone} onChange={onChangePhone} />
       </InputContainer>
+      <Button text={'로그인'} onClick={onClickItem} height={40} />
 
       {/*<OAuthItem onClick={() => onClickItem(AUTH.NAVER)}>*/}
       {/*  <MainText color={BLACK}>{'네이버'}</MainText>*/}
@@ -87,7 +89,6 @@ const LoginListView = ({
       {/*<OAuthItem>*/}
       {/*  <MainText color={BLACK}>{'애플'}</MainText>*/}
       {/*</OAuthItem>*/}
-      <Button text={'로그인'} onClick={onClickItem} height={40} />
     </ListContainer>
   );
 };

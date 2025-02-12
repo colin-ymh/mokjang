@@ -127,7 +127,7 @@ const ChurchRegisterList = () => {
       dispatch(setChurchId(newChurch.id));
       dispatch(setChurch(newChurch));
 
-      router.push('/church/register/group');
+      router.replace('/church/register/group');
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));
     }

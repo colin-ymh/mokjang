@@ -23,7 +23,7 @@ const SideBar = () => {
     } catch (error) {
       console.log(error);
     } finally {
-      router.push('/login');
+      router.replace('/login');
     }
   };
 

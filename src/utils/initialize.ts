@@ -16,10 +16,10 @@ import {
 } from '@/redux/reducers/church-reducer';
 import { GroupsApi } from '@/api/management/group/groups.api';
 import { MinistryGroupsApi } from '@/api/management/ministry/ministry-groups.api';
-import { usePageRouter } from '@/utils/router';
 import { AuthApi } from '@/api/auth/auth.api';
 import { setAuthorizationToken } from '@/api/authorize-axios';
 import { setUser } from '@/redux/reducers/user-reducer';
+import { useRouter } from 'next/navigation';
 
 export const useInitializeChurch = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -72,7 +72,7 @@ export const useInitializeChurch = () => {
 };
 
 export const useInitializeUser = () => {
-  const router = usePageRouter();
+  const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
   const authApi = new AuthApi(false);
 
@@ -99,7 +99,7 @@ export const useInitializeUser = () => {
       if (!accessToken) {
         // Refresh Token도 없으면 → 로그인 화면
         if (!refreshToken) {
-          router.push('/login');
+          router.replace('/login');
           return;
         } else {
           setAuthorizationToken(refreshToken);
@@ -111,7 +111,7 @@ export const useInitializeUser = () => {
 
           if (!newAccessToken) {
             // 실패 시 로그인
-            router.push('/login');
+            router.replace('/login');
             return;
           }
 
@@ -134,10 +134,10 @@ export const useInitializeUser = () => {
         const c = newUser.adminChurch || newUser.managingChurch;
         dispatch(setChurch(c));
         dispatch(setChurchId(c.id));
-        router.push('');
+        router.replace('');
       } else {
         // 교회가 없으면 교회 등록
-        router.push('/church/register');
+        router.replace('/church/register');
       }
     } catch (error: any) {
       // 토큰이 유효하지 않으면 삭제 후 로그인 페이지로 이동
@@ -148,7 +148,7 @@ export const useInitializeUser = () => {
       setThrownError(
         error instanceof Error ? error : new Error('Unknown error')
       );
-      router.push('/login');
+      router.replace('/login');
     }
   };
 };

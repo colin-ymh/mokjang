@@ -1,7 +1,8 @@
 'use client';
 
-import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
+
+import { useRouter, useSearchParams } from 'next/navigation';
 import { setAuthorizationToken } from '@/api/authorize-axios';
 
 export default function OAuthCallback() {
@@ -13,10 +14,10 @@ export default function OAuthCallback() {
     if (code) {
       setAuthorizationToken(code);
       // 이후 로직 (예: 로컬스토리지 저장, API 호출 등)
-      router.replace('/ko/login/register');
+      router.replace('/login/register');
       console.log('code :', code);
     }
   }, [code, router]);
 
-  return <div></div>;
+  return <div>{'hello'}</div>;
 }

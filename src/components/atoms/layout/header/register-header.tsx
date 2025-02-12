@@ -32,7 +32,7 @@ const RegisterHeader = () => {
     setIsConfirmShow(false);
 
     const basePath = pathname.split('/')[1]; // 언어 코드 추출 (ko 또는 en)
-    router.push(`/${basePath}`);
+    router.replace(`/${basePath}`);
   };
 
   const props = {

@@ -58,7 +58,7 @@ const RegisterGroup = ({}: GroupListProps) => {
 
   // 다음 설정으로 이동
   const onClickSave = () => {
-    router.push('church/register/officer');
+    router.replace('church/register/officer');
   };
 
   // 교회 정보를 통해 소그룹들 불러오기

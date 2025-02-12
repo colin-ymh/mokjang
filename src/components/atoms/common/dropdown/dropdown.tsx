@@ -6,6 +6,7 @@ import React, {
   RefObject,
   useCallback,
   useEffect,
+  useRef,
   useState,
 } from 'react';
 import TransparentBackground from '@/components/atoms/common/etc/transparent-background';
@@ -80,21 +81,24 @@ const Dropdown = forwardRef<HTMLInputElement, DropdownProps>(
     const [isOpened, setIsOpened] = useState(false);
     // 내부적으로 관리하는 선택값
     const [innerValue, setInnerValue] = useState<any>(value);
-    // 키보드 포커스 인덱스
+    // 키보드 포커스 인덱스 (상태)
     const [focusedIndex, setFocusedIndex] = useState<number>(0);
+    // 최신 focusedIndex를 저장하는 ref (항상 최신값 사용)
+    const focusedIndexRef = useRef<number>(focusedIndex);
+
     // '직접 입력' 모드 여부
     const [isCustomMode, setIsCustomMode] = useState(false);
 
-    // 인풋에 focus되면 setIsOpened(true)로 열기
+    // 인풋에 focus되면 열기 처리
     const onFocusInput = useCallback(() => {
       if (items.length > 0) {
         setIsOpened(true);
       }
     }, [items]);
 
-    // --------------------------------
+    // -------------------------------
     // 1) items 배열에 "직접 입력" 항목 추가 (isCustom=true일 때)
-    // --------------------------------
+    // -------------------------------
     const combinedItems = isCustom
       ? [{ value: CUSTOM_VALUE, title: '직접 입력' }, ...items]
       : items;
@@ -104,33 +108,13 @@ const Dropdown = forwardRef<HTMLInputElement, DropdownProps>(
       setInnerValue(value);
     }, [value]);
 
-    // 항목 업데이트 시 포커스 인덱스 초기화
-    // useEffect(() => {
-    //   // setFocusedIndex(0);
-    // }, [combinedItems]);
-
-    // value가 바뀌거나 items가 바뀔 때 open/close를 제어
+    // value나 items가 바뀔 때 open/close 제어 (원하는 로직에 맞게 수정)
     useEffect(() => {
       if (onChange) {
-        // items가 생기면 열어주고, 없으면 닫기
         if (combinedItems.length > 0) setIsOpened(true);
         else setIsOpened(false);
       }
     }, [value, combinedItems, onChange]);
-
-    // 현재 value가 변경되면, 해당 값의 인덱스로 focusedIndex 조정
-    // useEffect(() => {
-    //   const newIndex = combinedItems.findIndex((item) => item.value === value);
-    //   // setFocusedIndex(newIndex);
-    // }, [value, combinedItems]);
-
-    // useEffect(() => {
-    //   if (isCustomMode) {
-    //     // 예: combinedItems[0]이 직접입력인 경우 그냥 0으로 고정
-    //     // 만약 '직접 입력' 항목이 다른 위치라면 findIndex로 찾으면 됨
-    //     setFocusedIndex(0);
-    //   }
-    // }, [isCustomMode]);
 
     /** 드롭다운 열고 닫기 */
     const toggleDropdown = useCallback(() => {
@@ -151,61 +135,47 @@ const Dropdown = forwardRef<HTMLInputElement, DropdownProps>(
 
         // 직접 입력 항목인 경우
         if (newValue === CUSTOM_VALUE) {
-          // 직접 입력을 선택했을 때도 onChangeItem으로 CUSTOM_VALUE 넘기기
           if (onChangeItem) {
             onChangeItem(CUSTOM_VALUE);
           }
-
-          // 입력란을 빈칸으로 하고, 직접 입력 모드로 전환
           setIsCustomMode(true);
-          // setFocusedIndex(0);
           setTimeout(() => {
             setInnerValue('');
           });
-
-          // 드롭다운 닫히고 난 뒤에 input에 포커스
           requestAnimationFrame(() => {
             if (ref && typeof ref !== 'function') {
               ref.current?.focus();
             }
           });
-
           onClickItemExtra?.();
           return;
         }
 
-        // 일반 항목
+        // 일반 항목 선택
         setInnerValue(newValue);
         setIsCustomMode(false);
 
-        // 외부로 항목 값을 전달
         const matched = combinedItems.find((item) => newValue === item.value);
         if (matched && onChangeItem) {
           onChangeItem(matched.value);
         }
         onClickItemExtra?.();
       },
-      [disabled, combinedItems, onChangeItem, onClickItemExtra]
+      [disabled, combinedItems, onChangeItem, onClickItemExtra, ref]
     );
 
-    /** 입력창이 변경될 때 */
+    /** 입력창 변경 (직접 입력) */
     const handleChangeInput = useCallback(
       (event: ChangeEvent<HTMLInputElement>) => {
-        // 기본 isEditable OR 커스텀 모드인 경우에만 입력 처리
         if (isEditable || isCustomMode) {
           const newValue = event.target.value;
           setInnerValue(newValue);
-
-          // 만약 커스텀 모드라면, onChangeCustomInput 우선 호출
           if (isCustomMode && onChangeCustomInput) {
             onChangeCustomInput(event);
           }
-
-          // 기존 onChange
           if (onChange) {
             onChange(event);
           } else if (onChangeItem && !isCustomMode) {
-            // 일반 editable일 때
             onChangeItem(newValue);
           }
         }
@@ -218,41 +188,53 @@ const Dropdown = forwardRef<HTMLInputElement, DropdownProps>(
       (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (!isOpened) return;
         if (event.keyCode === 229) return; // 한글 입력 등 무시
+        if (combinedItems.length === 0) return;
 
         if (event.key === 'ArrowUp') {
           event.preventDefault();
-          setFocusedIndex(
-            (focusedIndex + combinedItems.length - 1) % combinedItems.length
-          );
+          setFocusedIndex((prevIndex) => {
+            const newIndex =
+              (prevIndex + combinedItems.length - 1) % combinedItems.length;
+            focusedIndexRef.current = newIndex;
+            return newIndex;
+          });
         } else if (event.key === 'ArrowDown') {
           event.preventDefault();
-          setFocusedIndex((focusedIndex + 1) % combinedItems.length);
+          setFocusedIndex((prevIndex) => {
+            const newIndex = (prevIndex + 1) % combinedItems.length;
+            focusedIndexRef.current = newIndex;
+            return newIndex;
+          });
         } else if (event.key === 'Enter') {
           event.preventDefault();
-          if (combinedItems[focusedIndex]) {
-            handleClickItem(combinedItems[focusedIndex].value);
+          // 최신 focusedIndex 값을 ref에서 사용
+          const index = focusedIndexRef.current;
+          if (combinedItems[index]) {
+            onChangeItem?.(combinedItems[index].value);
           }
+          setIsOpened(false);
         } else if (event.key === 'Escape') {
           setIsOpened(false);
         }
       },
-      [isOpened, focusedIndex, combinedItems, handleClickItem]
+      [isOpened, combinedItems, onChangeItem]
     );
 
+    // 전역 이벤트 대신, 인풋 자체의 onKeyDown에 달거나,
+    // 전역 리스너 사용 시, functional update를 사용하여 최신 focusedIndexRef 유지
     useEffect(() => {
-      const listener = (e: KeyboardEvent) =>
-        onKeyDownHandler(e as unknown as React.KeyboardEvent<HTMLInputElement>);
-
-      // isOpened가 true이면 리스너 등록
+      const listener = (event: KeyboardEvent) => {
+        onKeyDownHandler(
+          event as unknown as React.KeyboardEvent<HTMLInputElement>
+        );
+      };
       if (isOpened) {
         window.addEventListener('keydown', listener);
       }
-
-      // 항상(언마운트나 deps가 바뀔 때) 실행되는 정리 단계
       return () => {
         window.removeEventListener('keydown', listener);
       };
-    }, [isOpened, combinedItems]);
+    }, [isOpened, onKeyDownHandler]);
 
     const propsForView = {
       ref,
@@ -264,7 +246,6 @@ const Dropdown = forwardRef<HTMLInputElement, DropdownProps>(
       onFocusInput,
       isOpened,
       reverseDirection,
-      // 만약 "직접 입력" 모드면 isEditable 강제 true
       isEditable: isEditable || isCustomMode,
       borderColor,
       width,
@@ -273,7 +254,6 @@ const Dropdown = forwardRef<HTMLInputElement, DropdownProps>(
       disabled,
       enterKeyHint,
       ...inputProps,
-      // 이벤트 핸들러들
       onClickDropdown: toggleDropdown,
       onClickItem: handleClickItem,
       onChangeInput: handleChangeInput,
@@ -282,13 +262,11 @@ const Dropdown = forwardRef<HTMLInputElement, DropdownProps>(
 
     return (
       <>
-        {/** 빈 영역 터치 시 닫기 */}
         <TransparentBackground
           isOpened={isOpened}
           onClick={onClickBackground}
           blur={backgroundBlur}
         />
-        {/** 실제 드롭다운 뷰 */}
         <DropdownView {...propsForView} />
       </>
     );

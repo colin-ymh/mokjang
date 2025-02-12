@@ -71,7 +71,9 @@ const CheckRegister = () => {
         .then((response) => {
           if (response.data.success) {
             // 검증 완료 시
-            router.push(`/church/${churchId}/request/${requestInfoId}/extra`);
+            router.replace(
+              `/church/${churchId}/request/${requestInfoId}/extra`
+            );
           } else {
             // 실패 처리
           }

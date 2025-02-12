@@ -128,7 +128,7 @@ const UserRegisterList = () => {
         // RefreshToken을 localStorage에 저장
         localStorage.setItem('refreshToken', refreshToken);
 
-        router.push('/church/register');
+        router.replace('/church/register');
 
         const userResponse = await authApi.getUser();
         const newUser = userResponse.data;

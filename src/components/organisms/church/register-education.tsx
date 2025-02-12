@@ -70,7 +70,7 @@ const RegisterEducation = ({}: EducationListProps) => {
 
   // 다음 설정으로 이동
   const onClickSave = () => {
-    router.push('');
+    router.replace('');
   };
 
   useEffect(() => {

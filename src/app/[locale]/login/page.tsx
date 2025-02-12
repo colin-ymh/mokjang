@@ -16,11 +16,11 @@ const LoginPage = () => {
   useEffect(() => {
     // **로그인이 된 상태라면 메인 페이지로 리다이렉트**
     if (user?.id && churchId) {
-      router.push('/');
+      router.replace('/');
     }
     // **교회 ID가 등록되지 않았다면 교회 등록 페이지로 리다이렉트**
     else if (user?.id && !churchId) {
-      router.push('/church/register');
+      router.replace('/church/register');
     }
   }, [user, churchId, router]);
 
