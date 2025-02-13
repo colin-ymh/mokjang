@@ -273,6 +273,12 @@ export default {
   'popup.deleteHistoryTitle': '해당 이력을 삭제하시겠습니까?',
   'popup.deleteHistoryBody': '삭제된 이력은 복구할 수 없습니다.',
 
+  'popup.deleteFamilyTitle': '해당 가족 관계를 삭제하시겠습니까?',
+  'popup.deleteFamilyBody': '삭제된 관계는 복구할 수 없습니다.',
+
+  'popup.deleteTermTitle': '해당 교육 기수를 삭제하시겠습니까?',
+  'popup.deleteTermBody': '삭제된 기수는 복구할 수 없습니다.',
+
   'popup.verifyFail': '잘못된 인증번호 입니다.',
   'popup.duplicatedRole': '이미 등록된 그룹 역할입니다.',
   'popup.duplicatedMinistry': '이미 등록된 사역입니다.',

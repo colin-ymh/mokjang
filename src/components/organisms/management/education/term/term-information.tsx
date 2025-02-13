@@ -11,6 +11,9 @@ import { EDUCATION_TERM_HEADER_ID } from '@/constants/layout/header';
 import CustomPopup from '@/components/atoms/common/popup/custom-popup';
 import TermRegister from '@/components/atoms/management/education/term-register';
 import EditSession from '@/components/atoms/management/education/term/edit-session';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
+import { EducationTermsApi } from '@/api/management/education/education-terms.api';
 
 type TermInformationProps = {
   education: Education;
@@ -19,6 +22,7 @@ type TermInformationProps = {
   sessions: EducationSession[];
   fetchEnrollments: () => void;
   fetchTerms: () => void;
+  onClickClose: () => void;
 };
 
 const TermInformation = ({
@@ -28,9 +32,16 @@ const TermInformation = ({
   sessions,
   fetchEnrollments,
   fetchTerms,
+  onClickClose,
 }: TermInformationProps) => {
   // const educationAttendanceApi = new EducationAttendanceApi(false);
-  // const churchId = useSelector((state: RootState) => state.church.churchId);
+  const churchId = useSelector((state: RootState) => state.church.churchId);
+  const educationTermsApi = new EducationTermsApi(false);
+
+  const [thrownError, setThrownError] = useState<Error | null>(null);
+  if (thrownError) {
+    throw thrownError;
+  }
 
   // 선택된 회차
   const [selectedSessionId, setSelectedSessionId] = useState<string>(
@@ -78,7 +89,24 @@ const TermInformation = ({
         setSelectedSessionId(id);
       }
     } catch (error) {
-      console.log(error);
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
+    }
+  };
+
+  // 기수 삭제하기
+  const onClickConfirmDelete = async (id: string) => {
+    try {
+      const response = await educationTermsApi.deleteEducationTerms({
+        churchId,
+        educationId: education.id,
+        educationTermId: term.id,
+      });
+      if (response) {
+        fetchTerms();
+        onClickClose();
+      }
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
     }
   };
 
@@ -115,6 +143,7 @@ const TermInformation = ({
       selectedSessionId,
       sessions,
       onClickHeaderItem,
+      onClickConfirmDelete,
     },
     content: {
       term,

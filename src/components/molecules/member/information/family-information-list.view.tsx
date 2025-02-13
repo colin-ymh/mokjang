@@ -75,7 +75,7 @@ type FamilyInformationListViewProps = {
   onClickEditFamily: (familyMemberId: string, relation: FAMILY) => void;
   onClickFamilyMember: (familyMemberId: string) => void;
   onClickEdit: (member: FamilyMember) => void;
-  onClickDelete: (familyMemberId: string) => void;
+  onClickConfirmDelete: (familyMemberId: string) => void;
 };
 
 const FamilyInformationListView = ({
@@ -87,7 +87,7 @@ const FamilyInformationListView = ({
   onClickCreateFamily,
   onClickEditFamily,
   onClickFamilyMember,
-  onClickDelete,
+  onClickConfirmDelete,
   onClickEdit,
 }: FamilyInformationListViewProps) => {
   const t_header = useScopedI18n('header');
@@ -106,7 +106,7 @@ const FamilyInformationListView = ({
         familyMembers={familyMembers}
         onClickMember={onClickFamilyMember}
         onClickEdit={onClickEdit}
-        onClickDelete={onClickDelete}
+        onClickConfirmDelete={onClickConfirmDelete}
       />
       {/* 교인 가족 추가 및 수정 모달*/}
       {isModalShown && (

@@ -34,7 +34,6 @@ const FamilyInformationList = ({
   if (thrownError) {
     throw thrownError;
   }
-
   // 가족 관계 설정 모달 활성화 여부
   const [isModalShown, setIsModalShown] = useState<boolean>(false);
 
@@ -142,8 +141,7 @@ const FamilyInformationList = ({
     }
   };
 
-  // 가족 삭제하기
-  const onClickDelete = async (familyMemberId: string) => {
+  const onClickConfirmDelete = async (familyMemberId: string) => {
     if (familyMemberId) {
       try {
         await familyApi.deleteFamily({
@@ -186,7 +184,7 @@ const FamilyInformationList = ({
           const newFamilyMembers = response.data.map(
             (member: FamilyMember) => ({
               ...member,
-              familyMemberId: getMemberFromServer(member.familyMember),
+              familyMember: getMemberFromServer(member.familyMember),
             })
           );
 
@@ -212,7 +210,7 @@ const FamilyInformationList = ({
     onClickEditFamily,
     onClickFamilyMember,
     onClickEdit,
-    onClickDelete,
+    onClickConfirmDelete,
   };
 
   return (

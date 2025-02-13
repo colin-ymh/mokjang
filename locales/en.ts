@@ -270,6 +270,12 @@ export default {
   'popup.deleteHistoryTitle': 'Do you want to delete this history?',
   'popup.deleteHistoryBody': 'Deleted history cannot be restored.',
 
+  'popup.deleteFamilyTitle': 'Do you want to delete this family relationship?',
+  'popup.deleteFamilyBody': 'Deleted relationship cannot be restored.',
+
+  'popup.deleteTermTitle': 'Do you want to delete this term?',
+  'popup.deleteTermBody': 'Deleted term cannot be restored.',
+
   'popup.verifyFail': "You've entered wrong number.",
   'popup.duplicatedRole': 'That role is already duplicated.',
   'popup.duplicatedMinistry': 'That ministry is already duplicated.',
