@@ -15,6 +15,8 @@ import { EDUCATION_TERM_HEADER_ID } from '@/constants/layout/header';
 import { EDUCATION_STATUS } from '@/constants/constant';
 import { EducationEnrollmentsApi } from '@/api/management/education/education-enrollments.api';
 import { fetchMembers } from '@/redux/reducers/member-filter-reducer';
+import { useScopedI18n } from '../../../../../../locales/client';
+import ConfirmPopup from '@/components/atoms/common/popup/error-popup';
 
 export type EnrollmentTableProps = {
   term: EducationTerm;
@@ -33,6 +35,9 @@ const EnrollmentTable = ({
   isInformation,
   fetchEnrollments,
 }: EnrollmentTableProps) => {
+  const t_popup = useScopedI18n('popup');
+  const t_button = useScopedI18n('button');
+
   const dispatch = useDispatch<AppDispatch>();
   const churchId = useSelector((state: RootState) => state.church.churchId);
   const scrollRef = useRef<HTMLDivElement | null>(null);
@@ -45,6 +50,7 @@ const EnrollmentTable = ({
     throw thrownError;
   }
 
+  const [isPopupShown, setIsPopupShown] = useState<boolean>(false);
   const [attendance, setAttendance] = useState<SessionAttendance[]>([]);
   const [checkedMemberIds, setCheckedMemberIds] = useState<string[]>([]);
   const [isDetailModalShown, setIsDetailModalShown] = useState<boolean>(false);
@@ -137,7 +143,11 @@ const EnrollmentTable = ({
     }
   };
 
-  const onClickDeleteMembers = async () => {
+  const onClickDeleteMembers = () => {
+    setIsPopupShown(true);
+  };
+
+  const onClickConfirmDelete = async () => {
     try {
       const deletePromises = checkedMemberIds.map((enrollmentId) =>
         educationEnrollmentsApi.deleteEducationEnrollments({
@@ -157,6 +167,8 @@ const EnrollmentTable = ({
       }
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));
+    } finally {
+      setIsPopupShown(false);
     }
   };
 
@@ -192,7 +204,21 @@ const EnrollmentTable = ({
     onClickDeleteMembers,
   };
 
-  return <EnrollmentTableView {...props} />;
+  return (
+    <>
+      <EnrollmentTableView {...props} />
+      <ConfirmPopup
+        title={t_popup('deleteEnrollmentTitle')}
+        body={t_popup('deleteEnrollmentBody')}
+        isShow={isPopupShown}
+        onClickLeftButton={() => setIsPopupShown(false)}
+        onClickRightButton={onClickConfirmDelete}
+        leftButtonText={t_button('cancel')}
+        rightButtonText={t_button('confirm')}
+        buttonNum={2}
+      />
+    </>
+  );
 };
 
 export default EnrollmentTable;

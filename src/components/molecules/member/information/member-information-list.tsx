@@ -258,10 +258,10 @@ const InformationList = ({
   // 사역 수정
   // ================================
   const onClickOpenMinistryModal = (ministry?: Ministry) => {
-    setIsMinistryModalShown(true);
     if (ministry) {
       setTargetMinistry(ministry);
     }
+    setIsMinistryModalShown(true);
   };
 
   const onClickCloseMinistryModal = () => {
@@ -498,11 +498,13 @@ const InformationList = ({
         churchId,
         memberId: prevMember.id,
       });
-      const current = response.data.data.find(
+      const currentHistory = response.data.data.find(
         (history: MinistryHistory) =>
           history.ministrySnapShot === targetMinistry.name
       );
-      if (current) setTargetMinistryHistory(current);
+      if (currentHistory) {
+        setTargetMinistryHistory(currentHistory);
+      }
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));
     }

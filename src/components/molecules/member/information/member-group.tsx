@@ -90,7 +90,7 @@ const MemberGroup = ({ targetMember }: MemberGroupProps) => {
   };
 
   // 기존 그룹 삭제하기
-  const onClickDeleteGroup = async (groupId: string) => {
+  const onClickConfirmDelete = async (groupId: string) => {
     try {
       await groupHistoryApi.deleteGroupHistory({
         churchId,
@@ -111,7 +111,7 @@ const MemberGroup = ({ targetMember }: MemberGroupProps) => {
     onClickCloseModal,
     onClickEditGroup,
     onClickSaveGroupHistory,
-    onClickDeleteGroup,
+    onClickConfirmDelete,
   };
 
   return (

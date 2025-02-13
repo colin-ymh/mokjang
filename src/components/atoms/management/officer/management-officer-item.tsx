@@ -14,6 +14,8 @@ import { getFormattedTitle } from '@/utils/format';
 import { getIsWellFormedTitle } from '@/utils/check';
 import { BLANK } from '@/constants/constant';
 import ManagementOfficerItemView from '@/components/atoms/management/officer/management-officer-item.view';
+import { useScopedI18n } from '../../../../../locales/client';
+import ConfirmPopup from '@/components/atoms/common/popup/error-popup';
 
 type ManagementOfficerItemProps = {
   officer: Officer;
@@ -28,6 +30,8 @@ const ManagementOfficerItem = ({
   setSelectedOfficer,
   fetchOfficers,
 }: ManagementOfficerItemProps) => {
+  const t_popup = useScopedI18n('popup');
+  const t_button = useScopedI18n('button');
   const officersApi = new OfficersApi(false);
   const churchId = useSelector((state: RootState) => state.church.churchId);
   const [thrownError, setThrownError] = useState<Error | null>(null);
@@ -36,6 +40,8 @@ const ManagementOfficerItem = ({
   if (thrownError) {
     throw thrownError;
   }
+
+  const [isPopupShown, setIsPopupShown] = useState<boolean>(false);
 
   // 이름 수정창 ref
   const nameInputRef = useRef<HTMLInputElement>(null);
@@ -86,7 +92,11 @@ const ManagementOfficerItem = ({
   };
 
   // 그룹 삭제
-  const onClickOfficerDelete = async (officerId: string) => {
+  const onClickOfficerDelete = () => {
+    setIsPopupShown(true);
+  };
+
+  const onClickConfirmDelete = async (officerId: string) => {
     try {
       await officersApi.deleteOfficer({ churchId, officerId });
       fetchOfficers();
@@ -155,6 +165,16 @@ const ManagementOfficerItem = ({
   return (
     <>
       <ManagementOfficerItemView {...props} />
+      <ConfirmPopup
+        title={t_popup('deleteOfficerTitle')}
+        body={t_popup('deleteOfficerBody')}
+        isShow={isPopupShown}
+        onClickLeftButton={() => setIsPopupShown(false)}
+        onClickRightButton={() => onClickConfirmDelete(officer.id as string)}
+        leftButtonText={t_button('cancel')}
+        rightButtonText={t_button('confirm')}
+        buttonNum={2}
+      />
     </>
   );
 };

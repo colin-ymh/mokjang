@@ -116,7 +116,7 @@ type ManagementMinistryGroupItemViewProps = {
   onClickToggle: (id: string) => void;
   onClickMinistryGroup: (ministryGroupId: string) => void;
   onClickMinistryGroupEdit: () => void;
-  onClickMinistryGroupDelete: (ministryGroupId: string) => void;
+  onClickMinistryGroupDelete: () => void;
   onClickMinistryGroupAdd: () => void;
   onChangeName: (event: ChangeEvent<HTMLInputElement>) => void;
   onClickSaveName: () => void;
@@ -207,9 +207,7 @@ const ManagementMinistryMinistryGroupItemView = ({
           ) : (
             <SlideButtonList
               onClickEdit={onClickMinistryGroupEdit}
-              onClickDelete={() =>
-                onClickMinistryGroupDelete(ministryGroup.id as string)
-              }
+              onClickDelete={onClickMinistryGroupDelete}
               onClickAdd={onClickMinistryGroupAdd}
             />
           )}

@@ -2,12 +2,14 @@ import styled from 'styled-components';
 
 import { GroupHistory } from '@/models/member/history';
 import { MainText } from '@/components/atoms/common/text/main-text';
-import { useI18n } from '../../../../../locales/client';
+import { useI18n, useScopedI18n } from '../../../../../locales/client';
 import { getFormattedDate, getLocaleDateFromDashDate } from '@/utils/format';
 import { GRAY, WHITE } from '@/constants/styles/color';
 import SlideButtonList from '@/components/atoms/common/button/slide-button-list';
 import { usePathname } from 'next/navigation';
 import { LOCALE } from '@/constants/state/locale';
+import React, { useState } from 'react';
+import ConfirmPopup from '@/components/atoms/common/popup/error-popup';
 
 const BackgroundContainer = styled.div<{ $isCurrent?: boolean }>`
   display: flex;
@@ -58,16 +60,24 @@ const DateContainer = styled.div`
 type GroupHistoryItemProps = {
   group: GroupHistory;
   onClickEditGroup: (group: GroupHistory) => void;
-  onClickDeleteGroup: (groupId: string) => void;
+  onClickConfirmDelete: (groupId: string) => void;
   isCurrent?: boolean;
 };
 
 const GroupHistoryItem = ({
   group,
   onClickEditGroup,
-  onClickDeleteGroup,
+  onClickConfirmDelete,
   isCurrent,
 }: GroupHistoryItemProps) => {
+  const t_popup = useScopedI18n('popup');
+  const t_button = useScopedI18n('button');
+  const [isPopupShown, setIsPopupShown] = useState<boolean>(false);
+
+  const onClickDeleteGroup = () => {
+    setIsPopupShown(true);
+  };
+
   const t = useI18n();
   const pathname = usePathname();
   const basePath = pathname.split('/')[1] as LOCALE;
@@ -112,11 +122,21 @@ const GroupHistoryItem = ({
             isAddShown={false}
             buttonSize={25}
             onClickEdit={() => onClickEditGroup(group)}
-            onClickDelete={() => onClickDeleteGroup(group.id)}
+            onClickDelete={() => onClickDeleteGroup()}
             backgroundColor={WHITE}
           />
         )}
       </ItemContainer>
+      <ConfirmPopup
+        title={t_popup('deleteHistoryTitle')}
+        body={t_popup('deleteHistoryBody')}
+        isShow={isPopupShown}
+        onClickLeftButton={() => setIsPopupShown(false)}
+        onClickRightButton={() => onClickConfirmDelete(group.id)}
+        leftButtonText={t_button('cancel')}
+        rightButtonText={t_button('confirm')}
+        buttonNum={2}
+      />
     </BackgroundContainer>
   );
 };

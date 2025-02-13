@@ -5,9 +5,11 @@ import { MainText } from '@/components/atoms/common/text/main-text';
 import { getFormattedDate, getLocaleDateFromDashDate } from '@/utils/format';
 import { GRAY } from '@/constants/styles/color';
 import SlideButtonList from '@/components/atoms/common/button/slide-button-list';
-import { useI18n } from '../../../../../locales/client';
+import { useI18n, useScopedI18n } from '../../../../../locales/client';
 import { usePathname } from 'next/navigation';
 import { LOCALE } from '@/constants/state/locale';
+import React, { useState } from 'react';
+import ConfirmPopup from '@/components/atoms/common/popup/error-popup';
 
 const BackgroundContainer = styled.div<{ $isCurrent?: boolean }>`
   display: flex;
@@ -58,16 +60,24 @@ const DateContainer = styled.div`
 type MinistryHistoryItemProps = {
   ministry: MinistryHistory;
   onClickEditMinistry: (ministry: MinistryHistory) => void;
-  onClickDeleteMinistry: (ministryId: string) => void;
+  onClickConfirmDelete: (ministryId: string) => void;
   isCurrent?: boolean;
 };
 
 const MinistryHistoryItem = ({
   ministry,
   onClickEditMinistry,
-  onClickDeleteMinistry,
+  onClickConfirmDelete,
   isCurrent,
 }: MinistryHistoryItemProps) => {
+  const t_popup = useScopedI18n('popup');
+  const t_button = useScopedI18n('button');
+  const [isPopupShown, setIsPopupShown] = useState<boolean>(false);
+
+  const onClickDeleteMinistry = () => {
+    setIsPopupShown(true);
+  };
+
   const t = useI18n();
   // 로케일 코드
   const pathname = usePathname();
@@ -113,10 +123,20 @@ const MinistryHistoryItem = ({
             isAddShown={false}
             buttonSize={25}
             onClickEdit={() => onClickEditMinistry(ministry)}
-            onClickDelete={() => onClickDeleteMinistry(ministry.id)}
+            onClickDelete={onClickDeleteMinistry}
           />
         )}
       </ItemContainer>
+      <ConfirmPopup
+        title={t_popup('deleteHistoryTitle')}
+        body={t_popup('deleteHistoryBody')}
+        isShow={isPopupShown}
+        onClickLeftButton={() => setIsPopupShown(false)}
+        onClickRightButton={() => onClickConfirmDelete(ministry.id)}
+        leftButtonText={t_button('cancel')}
+        rightButtonText={t_button('confirm')}
+        buttonNum={2}
+      />
     </BackgroundContainer>
   );
 };

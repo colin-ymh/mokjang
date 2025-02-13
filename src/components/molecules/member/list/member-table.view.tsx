@@ -352,7 +352,7 @@ const MemberTableView = ({
       </PopupButtonContainer>
       <ConfirmPopup
         title={t_popup('deleteMemberTitle')}
-        body={t_popup('deleteMemberContent')}
+        body={t_popup('deleteMemberBody')}
         buttonNum={2}
         isShow={isPopupShown}
         onClickLeftButton={onClickClose}

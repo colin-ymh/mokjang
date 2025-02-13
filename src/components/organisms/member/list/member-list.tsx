@@ -19,6 +19,7 @@ import { Member } from '@/models/member/member';
 import { getMemberFromServer } from '@/utils/member';
 
 import { useScopedI18n } from '../../../../../locales/client';
+import Loading from '@/components/atoms/common/etc/loading';
 
 const ButtonContainer = styled.div`
   display: flex;
@@ -187,6 +188,7 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
       >
         <MemberInformation {...props.information} />
       </CustomPopup>
+      <Loading isShow={isLoading} />
     </>
   );
 };

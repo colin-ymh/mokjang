@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { MainText } from '@/components/atoms/common/text/main-text';
-import { BLACK, DESTRUCTIVE, MAIN, WHITE } from '@/constants/styles/color';
+import { DESTRUCTIVE, MAIN, WHITE } from '@/constants/styles/color';
 import { SIZE } from '@/constants/styles/style';
 
 interface ConfirmPopupProps {
@@ -34,7 +34,7 @@ const ModalOverlay = styled.div`
 
 const ModalContainer = styled.div`
   background-color: #fff;
-  width: 254px;
+  min-width: 254px;
   border-radius: 5px;
   box-shadow: 0 5px 5px rgba(0, 0, 0, 0.3);
   display: flex;
@@ -48,7 +48,8 @@ const TextContainer = styled.div`
   width: 80%;
   text-align: center;
   margin: 20px 25px 0 25px;
-  white-space: pre-line;
+  white-space: pre-wrap;
+  word-break: break-word;
   gap: 10px;
 `;
 

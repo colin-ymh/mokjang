@@ -9,7 +9,7 @@ import FamilyModalView from '@/components/atoms/common/modal/family-modal.view';
 import { useFamilyRelationDropdownItems } from '@/hooks/dropdown/dropdown-items';
 
 import { getTrimmedString } from '@/utils/format';
-import { FamilyMember } from '@/models/member/member';
+import { FamilyMember, Member } from '@/models/member/member';
 import { MemberDropdownValueType } from '@/models/dropdown/dropdown';
 
 type FamilyModalProps = {
@@ -96,8 +96,10 @@ const FamilyModal = ({
   const onChangeFamilyMemberId = (value: string) => {
     membersApi.getMember({ churchId, memberId: value }).then((response) => {
       if (response.status === 200) {
-        setFamilyGender(response.data.data.gender);
-        setFamilyMemberId(response.data.data.id);
+        const newMember: Member = response.data.data;
+        setFamilyGender(newMember.gender as GENDER);
+        setFamilyMemberId(newMember.id);
+        setFamilyMemberName(newMember.name);
       }
     });
   };

@@ -39,7 +39,7 @@ type MemberGroupViewProps = {
   onClickCloseModal: () => void;
   onClickEditGroup: (group: GroupHistory) => void;
   onClickSaveGroupHistory: (startDate?: string, endDate?: string) => void;
-  onClickDeleteGroup: (groupId: string) => void;
+  onClickConfirmDelete: (groupId: string) => void;
 };
 
 const MemberGroupView = ({
@@ -48,7 +48,7 @@ const MemberGroupView = ({
   isModalShown,
   onClickCloseModal,
   onClickEditGroup,
-  onClickDeleteGroup,
+  onClickConfirmDelete,
   onClickSaveGroupHistory,
 }: MemberGroupViewProps) => {
   const t = useI18n();
@@ -67,7 +67,7 @@ const MemberGroupView = ({
           <GroupHistoryItem
             group={currentHistory || DEFAULT_GROUP_HISTORY}
             onClickEditGroup={onClickEditGroup}
-            onClickDeleteGroup={onClickDeleteGroup}
+            onClickConfirmDelete={onClickConfirmDelete}
             isCurrent={true}
           />
         </GroupListContainer>
@@ -86,7 +86,7 @@ const MemberGroupView = ({
                 key={group.id}
                 group={group}
                 onClickEditGroup={onClickEditGroup}
-                onClickDeleteGroup={onClickDeleteGroup}
+                onClickConfirmDelete={onClickConfirmDelete}
               />
             );
           })}

@@ -161,7 +161,6 @@ const MemberDropdown = forwardRef<HTMLInputElement, DropdownProps>(
           setFocusedIndex((prevIndex) => {
             const newIndex = (prevIndex + 1) % items.length;
             focusedIndexRef.current = newIndex;
-            console.log(newIndex);
             return newIndex;
           });
         } else if (event.key === 'Enter') {

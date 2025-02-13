@@ -39,7 +39,7 @@ type MemberMinistryViewProps = {
   onClickCloseModal: () => void;
   onClickEditMinistry: (ministry: MinistryHistory) => void;
   onClickSaveMinistryHistory: (startDate?: string, endDate?: string) => void;
-  onClickDeleteMinistry: (ministryId: string) => void;
+  onClickConfirmDelete: (ministryId: string) => void;
 };
 
 const MemberMinistryView = ({
@@ -48,7 +48,7 @@ const MemberMinistryView = ({
   isModalShown,
   onClickCloseModal,
   onClickEditMinistry,
-  onClickDeleteMinistry,
+  onClickConfirmDelete,
   onClickSaveMinistryHistory,
 }: MemberMinistryViewProps) => {
   const t = useI18n();
@@ -71,7 +71,7 @@ const MemberMinistryView = ({
                 key={ministry.id}
                 ministry={ministry}
                 onClickEditMinistry={onClickEditMinistry}
-                onClickDeleteMinistry={onClickDeleteMinistry}
+                onClickConfirmDelete={onClickConfirmDelete}
                 isCurrent={true}
               />
             );
@@ -92,7 +92,7 @@ const MemberMinistryView = ({
                 key={ministry.id}
                 ministry={ministry}
                 onClickEditMinistry={onClickEditMinistry}
-                onClickDeleteMinistry={onClickDeleteMinistry}
+                onClickConfirmDelete={onClickConfirmDelete}
               />
             );
           })}

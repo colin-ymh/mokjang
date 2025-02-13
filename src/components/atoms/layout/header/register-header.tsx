@@ -45,7 +45,7 @@ const RegisterHeader = () => {
       <RegisterHeaderView {...props} />
       <ConfirmPopup
         title={t_popup('cancelRegisterTitle')}
-        body={t_popup('cancelRegisterContent')}
+        body={t_popup('cancelRegisterBody')}
         isShow={isConfirmShow}
         buttonNum={2}
         leftButtonText={t_button('cancel')}

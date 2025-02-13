@@ -113,7 +113,7 @@ type ManagementGroupItemViewProps = {
   onClickToggle: (id: string) => void;
   onClickGroup: (groupId: string) => void;
   onClickGroupEdit: () => void;
-  onClickGroupDelete: (groupId: string) => void;
+  onClickGroupDelete: () => void;
   onClickGroupAdd: () => void;
   onChangeName: (event: ChangeEvent<HTMLInputElement>) => void;
   onClickSaveName: () => void;
@@ -204,7 +204,7 @@ const ManagementGroupItemView = ({
           ) : (
             <SlideButtonList
               onClickEdit={onClickGroupEdit}
-              onClickDelete={() => onClickGroupDelete(group.id as string)}
+              onClickDelete={onClickGroupDelete}
               onClickAdd={onClickGroupAdd}
               backgroundColor={WHITE}
             />

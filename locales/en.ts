@@ -245,11 +245,30 @@ export default {
   /*-------------------popup-------------------*/
   'popup.cancelRegisterTitle':
     'Do you want to cancel church member registration?',
-  'popup.cancelRegisterContent': 'The entered information will not be saved.',
+  'popup.cancelRegisterBody': 'The entered information will not be saved.',
   'popup.registerSuccess': 'The church member has been registered.',
 
   'popup.deleteMemberTitle': 'Do you want to delete this member?',
-  'popup.deleteMemberContent': 'Deleted member cannot be restored.',
+  'popup.deleteMemberBody': 'Deleted member cannot be restored.',
+
+  'popup.deleteGroupTitle': 'Do you want to delete this group?',
+  'popup.deleteGroupBody': 'Deleted group cannot be restored.',
+
+  'popup.deleteOfficerTitle': 'Do you want to delete this officer?',
+  'popup.deleteOfficerBody': 'Deleted officer cannot be restored.',
+
+  'popup.deleteEducationTitle': 'Do you want to delete this education?',
+  'popup.deleteEducationBody': 'Deleted education cannot be restored.',
+
+  'popup.deleteMinistryGroupTitle':
+    'Do you want to delete this ministry group?',
+  'popup.deleteMinistryGroupBody': 'Deleted ministry group cannot be restored.',
+
+  'popup.deleteEnrollmentTitle': 'Do you want to delete this enrollment(s)?',
+  'popup.deleteEnrollmentBody': 'Deleted enrollment cannot be restored.',
+
+  'popup.deleteHistoryTitle': 'Do you want to delete this history?',
+  'popup.deleteHistoryBody': 'Deleted history cannot be restored.',
 
   'popup.verifyFail': "You've entered wrong number.",
   'popup.duplicatedRole': 'That role is already duplicated.',

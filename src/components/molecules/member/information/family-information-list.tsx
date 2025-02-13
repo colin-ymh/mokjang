@@ -65,7 +65,6 @@ const FamilyInformationList = ({
             { familyMemberId, relation }
           );
         } else {
-          console.log('추가');
           await familyApi.createFamily(
             { churchId, memberId: targetMember.id },
             { familyMemberId, relation }

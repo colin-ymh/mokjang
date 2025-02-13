@@ -249,11 +249,29 @@ export default {
 
   /*-------------------popup-------------------*/
   'popup.cancelRegisterTitle': '교인 등록을 종료하시겠습니까?',
-  'popup.cancelRegisterContent': '입력된 정보는 저장되지 않습니다.',
+  'popup.cancelRegisterBody': '입력된 정보는 저장되지 않습니다.',
   'popup.registerSuccess': '교인이 등록되었습니다.',
 
-  'popup.deleteMemberTitle': '교인을 삭제하시겠습니까?',
-  'popup.deleteMemberContent': '삭제된 교인은 복구할 수 없습니다.',
+  'popup.deleteMemberTitle': '해당 교인을 삭제하시겠습니까?',
+  'popup.deleteMemberBody': '삭제된 교인은 복구할 수 없습니다.',
+
+  'popup.deleteGroupTitle': '해당 그룹을 삭제하시겠습니까?',
+  'popup.deleteGroupBody': '삭제된 그룹은 복구할 수 없습니다.',
+
+  'popup.deleteEducationTitle': '해당 교육을 삭제하시겠습니까?',
+  'popup.deleteEducationBody': '삭제된 교육은 복구할 수 없습니다.',
+
+  'popup.deleteOfficerTitle': '해당 직분을 삭제하시겠습니까?',
+  'popup.deleteOfficerBody': '삭제된 직분은 복구할 수 없습니다.',
+
+  'popup.deleteMinistryGroupTitle': '해당 사역 그룹을 삭제하시겠습니까?',
+  'popup.deleteMinistryGroupBody': '삭제된 사역 그룹은 복구할 수 없습니다.',
+
+  'popup.deleteEnrollmentTitle': '선택된 교인(들)을 교육에서 삭제하시겠습니까?',
+  'popup.deleteEnrollmentBody': '삭제된 등록 내역은 복구할 수 없습니다.',
+
+  'popup.deleteHistoryTitle': '해당 이력을 삭제하시겠습니까?',
+  'popup.deleteHistoryBody': '삭제된 이력은 복구할 수 없습니다.',
 
   'popup.verifyFail': '잘못된 인증번호 입니다.',
   'popup.duplicatedRole': '이미 등록된 그룹 역할입니다.',
