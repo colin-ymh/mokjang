@@ -17,6 +17,7 @@ import ManagementEducationItemView from '@/components/atoms/management/education
 import ConfirmPopup from '@/components/atoms/common/popup/error-popup';
 
 import { useScopedI18n } from '../../../../../locales/client';
+import ToastPopup from '@/components/atoms/common/popup/toast-popup';
 
 type ManagementEducationItemProps = {
   education: Education;
@@ -45,6 +46,7 @@ const ManagementEducationItem = ({
 
   const nameInputRef = useRef<HTMLInputElement>(null);
 
+  const [isToastShown, setIsToastShown] = useState<boolean>(false);
   const [isPopupShown, setIsPopupShown] = useState<boolean>(false);
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [editName, setEditName] = useState<string>(education.name);
@@ -102,6 +104,8 @@ const ManagementEducationItem = ({
         setThrownError(
           error instanceof Error ? error : new Error(String(error))
         );
+      } finally {
+        setIsToastShown(true);
       }
     }
   };
@@ -174,6 +178,12 @@ const ManagementEducationItem = ({
   return (
     <>
       <ManagementEducationItemView {...props} />
+      {isToastShown && (
+        <ToastPopup
+          setIsShow={setIsToastShown}
+          text={t_popup('saveComplete')}
+        />
+      )}
       <ConfirmPopup
         title={t_popup('deleteEducationTitle')}
         body={t_popup('deleteEducationBody')}

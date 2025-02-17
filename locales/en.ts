@@ -211,6 +211,11 @@ export default {
 
   /*-------------------placeholder-------------------*/
   'placeholder.name': 'Enter the name.',
+  'placeholder.groupName': 'Enter the group name.',
+  'placeholder.ministryGroupName': 'Enter the ministry group name.',
+  'placeholder.ministryName': 'Enter the ministry name.',
+  'placeholder.officerName': 'Enter the officer name.',
+  'placeholder.educationName': 'Enter the education name.',
   'placeholder.mobilePhone': 'Enter the mobile phone number.',
   'placeholder.birth': 'Enter the date of birth (e.g., YYYY.MM.DD).',
   'placeholder.homePhone': 'Enter the home phone number.',
@@ -235,6 +240,7 @@ export default {
   'placeholder.instructor': 'Enter the instructor.',
   'placeholder.sessionDate': 'Enter the session date (e.g., YYYY.MM.DD).',
   'placeholder.sessionContent': 'Enter the session report.',
+  'placeholder.search': 'Enter the search term.',
   /*-------------------placeholder-------------------*/
 
   /*-------------------radiobutton-------------------*/
@@ -275,6 +281,8 @@ export default {
 
   'popup.deleteTermTitle': 'Do you want to delete this term?',
   'popup.deleteTermBody': 'Deleted term cannot be restored.',
+
+  'popup.saveComplete': 'Save Complete.',
 
   'popup.verifyFail': "You've entered wrong number.",
   'popup.duplicatedRole': 'That role is already duplicated.',

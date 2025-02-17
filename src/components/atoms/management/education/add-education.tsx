@@ -51,7 +51,7 @@ const AddEducation = forwardRef<HTMLInputElement, AddEducationProps>(
           onChange={onChangeName}
           height={10}
           color={BLACK}
-          placeholder={t('placeholder.name')}
+          placeholder={t('placeholder.educationName')}
         />
         <CheckButton
           $isEnabled={getIsWellFormedTitle(name)}

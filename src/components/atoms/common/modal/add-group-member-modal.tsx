@@ -1,4 +1,10 @@
-import { ChangeEvent, useEffect, useState } from 'react';
+import {
+  ChangeEvent,
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useState,
+} from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 
@@ -15,6 +21,7 @@ type AddGroupMemberModalProps = {
   isShown: boolean;
   fetchMembers: () => void;
   onClickClose: () => void;
+  setIsToastShown: Dispatch<SetStateAction<boolean>>;
 };
 
 const AddGroupMemberModal = ({
@@ -22,6 +29,7 @@ const AddGroupMemberModal = ({
   isShown,
   fetchMembers,
   onClickClose,
+  setIsToastShown,
 }: AddGroupMemberModalProps) => {
   const membersApi = new MembersApi(false);
   const groupHistoryApi = new GroupHistoryApi(false);
@@ -106,16 +114,20 @@ const AddGroupMemberModal = ({
 
   // "추가" 버튼 클릭 시
   const onClickSave = async () => {
-    if (selectedMembers.length === 0) return;
+    try {
+      if (selectedMembers.length === 0) return;
 
-    // 이미 그룹에 속한 교인이면 stop 후 create
-    // 중복 그룹이면 스킵
-    await addMembersToGroup(selectedMembers);
+      // 이미 그룹에 속한 교인이면 stop 후 create
+      // 중복 그룹이면 스킵
+      await addMembersToGroup(selectedMembers);
 
-    // 목록 갱신 후 모달 닫기
-    fetchMembers();
-    onClickClose();
-    resetData();
+      // 목록 갱신 후 모달 닫기
+      fetchMembers();
+      onClickClose();
+      resetData();
+    } finally {
+      setIsToastShown(true);
+    }
   };
 
   // ===============================

@@ -22,6 +22,7 @@ import ManagementMinistryGroupItemView from '@/components/atoms/management/minis
 import AddMinistryGroup from '@/components/atoms/management/ministry/add-ministry-group';
 import { useScopedI18n } from '../../../../../locales/client';
 import ConfirmPopup from '@/components/atoms/common/popup/error-popup';
+import ToastPopup from '@/components/atoms/common/popup/toast-popup';
 
 type ManagementMinistryGroupItemProps = {
   ministryGroup: MinistryGroup;
@@ -53,6 +54,7 @@ const ManagementMinistryMinistryGroupItem = ({
     throw thrownError;
   }
 
+  const [isToastShown, setIsToastShown] = useState<boolean>(false);
   const [isPopupShown, setIsPopupShown] = useState<boolean>(false);
 
   const isHaveChildren =
@@ -105,6 +107,8 @@ const ManagementMinistryMinistryGroupItem = ({
       setNewMinistryGroupName(BLANK);
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));
+    } finally {
+      setIsToastShown(true);
     }
   };
 
@@ -176,6 +180,8 @@ const ManagementMinistryMinistryGroupItem = ({
       setIsEdit(false);
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));
+    } finally {
+      setIsToastShown(true);
     }
   };
 
@@ -255,6 +261,12 @@ const ManagementMinistryMinistryGroupItem = ({
   return (
     <>
       <ManagementMinistryGroupItemView {...props} />
+      {isToastShown && (
+        <ToastPopup
+          setIsShow={setIsToastShown}
+          text={t_popup('saveComplete')}
+        />
+      )}
       <ConfirmPopup
         title={t_popup('deleteMinistryGroupTitle')}
         body={t_popup('deleteMinistryGroupBody')}

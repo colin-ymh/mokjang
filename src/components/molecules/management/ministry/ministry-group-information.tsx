@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import EditMinistryGroup from '@/components/molecules/management/ministry/edit-ministry-group';
 import { MinistryGroupsApi } from '@/api/management/ministry/ministry-groups.api';
+import ToastPopup from '@/components/atoms/common/popup/toast-popup';
 
 const MinistryGroupInformationContainer = styled.div`
   display: flex;
@@ -75,6 +76,7 @@ const MinistryMinistryGroupInformation = ({
 }: MinistryGroupInformationProps) => {
   const t = useI18n();
   const t_header = useScopedI18n('header');
+  const t_popup = useScopedI18n('popup');
   const ministryGroupsApi = new MinistryGroupsApi(false);
   const churchId = useSelector((state: RootState) => state.church.churchId);
 
@@ -83,6 +85,8 @@ const MinistryMinistryGroupInformation = ({
   if (thrownError) {
     throw thrownError;
   }
+
+  const [isToastShown, setIsToastShown] = useState<boolean>(false);
 
   // 그룹 역할
   const [ministries, setMinistries] = useState<Ministry[]>([]);
@@ -171,8 +175,15 @@ const MinistryMinistryGroupInformation = ({
           ministries={ministries}
           onClickClose={onClickClose}
           fetchMinistryGroups={fetchMinistryGroups}
+          setIsToastShown={setIsToastShown}
         />
       </CustomPopup>
+      {isToastShown && (
+        <ToastPopup
+          setIsShow={setIsToastShown}
+          text={t_popup('saveComplete')}
+        />
+      )}
     </MinistryGroupInformationContainer>
   );
 };

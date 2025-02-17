@@ -51,7 +51,7 @@ const AddOfficer = forwardRef<HTMLInputElement, AddOfficerProps>(
           onChange={onChangeName}
           height={10}
           color={BLACK}
-          placeholder={t('placeholder.name')}
+          placeholder={t('placeholder.officerName')}
         />
         <CheckButton
           $isEnabled={getIsWellFormedTitle(name)}

@@ -14,6 +14,8 @@ import EditSession from '@/components/atoms/management/education/term/edit-sessi
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { EducationTermsApi } from '@/api/management/education/education-terms.api';
+import { useScopedI18n } from '../../../../../../locales/client';
+import ToastPopup from '@/components/atoms/common/popup/toast-popup';
 
 type TermInformationProps = {
   education: Education;
@@ -34,6 +36,7 @@ const TermInformation = ({
   fetchTerms,
   onClickClose,
 }: TermInformationProps) => {
+  const t_popup = useScopedI18n('popup');
   // const educationAttendanceApi = new EducationAttendanceApi(false);
   const churchId = useSelector((state: RootState) => state.church.churchId);
   const educationTermsApi = new EducationTermsApi(false);
@@ -42,6 +45,8 @@ const TermInformation = ({
   if (thrownError) {
     throw thrownError;
   }
+
+  const [isToastShown, setIsToastShown] = useState<boolean>(false);
 
   // 선택된 회차
   const [selectedSessionId, setSelectedSessionId] = useState<string>(
@@ -160,6 +165,12 @@ const TermInformation = ({
   return (
     <>
       <TermInformationView {...props} />
+      {isToastShown && (
+        <ToastPopup
+          setIsShow={setIsToastShown}
+          text={t_popup('saveComplete')}
+        />
+      )}
       <CustomPopup
         isShow={isTermModalShown}
         onClickClose={onClickModalClose}
@@ -173,6 +184,7 @@ const TermInformation = ({
           onClickClose={onClickModalClose}
           fetchTerms={fetchTerms}
           targetTerm={term}
+          setIsToastShown={setIsToastShown}
         />
       </CustomPopup>
       <CustomPopup
@@ -190,6 +202,7 @@ const TermInformation = ({
           educationId={education.id}
           onClickClose={onClickSessionModalClose}
           fetchTerms={fetchTerms}
+          setIsToastShown={setIsToastShown}
         />
       </CustomPopup>
     </>

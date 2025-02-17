@@ -1,4 +1,10 @@
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import React, {
+  ChangeEvent,
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useState,
+} from 'react';
 import { AxiosResponse } from 'axios';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
@@ -21,6 +27,7 @@ type FamilyModalProps = {
     isFetch: boolean
   ) => void;
   onClickEditFamily: (familyMemberId: string, relation: FAMILY) => void;
+  setIsToastShown: Dispatch<SetStateAction<boolean>>;
 };
 
 const FamilyModal = ({
@@ -28,6 +35,7 @@ const FamilyModal = ({
   onClickClose,
   onClickCreateFamily,
   onClickEditFamily,
+  setIsToastShown,
 }: FamilyModalProps) => {
   const membersApi = new MembersApi(false);
   const churchId: string = useSelector(

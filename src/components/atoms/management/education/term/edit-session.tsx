@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, Dispatch, SetStateAction, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 
@@ -13,6 +13,7 @@ type EditSessionProps = {
   educationId: string;
   onClickClose: () => void;
   fetchTerms: () => void;
+  setIsToastShown: Dispatch<SetStateAction<boolean>>;
 };
 
 const EditSession = ({
@@ -20,6 +21,7 @@ const EditSession = ({
   educationId,
   onClickClose,
   fetchTerms,
+  setIsToastShown,
 }: EditSessionProps) => {
   const churchId = useSelector((state: RootState) => state.church.churchId);
   const educationSessionsApi = new EducationSessionsApi(false);
@@ -73,6 +75,8 @@ const EditSession = ({
       fetchTerms();
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));
+    } finally {
+      setIsToastShown(true);
     }
   };
 

@@ -9,6 +9,7 @@ import FamilyTable from '@/components/atoms/member/information/family-table';
 
 import { useScopedI18n } from '../../../../../locales/client';
 import Plus from '../../../../../public/svg/plus.svg';
+import { Dispatch, SetStateAction } from 'react';
 
 const ListContainer = styled.div`
   display: flex;
@@ -76,6 +77,7 @@ type FamilyInformationListViewProps = {
   onClickFamilyMember: (familyMemberId: string) => void;
   onClickEdit: (member: FamilyMember) => void;
   onClickConfirmDelete: (familyMemberId: string) => void;
+  setIsToastShown: Dispatch<SetStateAction<boolean>>;
 };
 
 const FamilyInformationListView = ({
@@ -89,6 +91,7 @@ const FamilyInformationListView = ({
   onClickFamilyMember,
   onClickConfirmDelete,
   onClickEdit,
+  setIsToastShown,
 }: FamilyInformationListViewProps) => {
   const t_header = useScopedI18n('header');
   return (
@@ -116,6 +119,7 @@ const FamilyInformationListView = ({
             onClickClose={onClickCloseModal}
             onClickCreateFamily={onClickCreateFamily}
             onClickEditFamily={onClickEditFamily}
+            setIsToastShown={setIsToastShown}
           />
         </FamilyModalContainer>
       )}

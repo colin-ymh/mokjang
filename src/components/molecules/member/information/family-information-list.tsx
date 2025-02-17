@@ -13,6 +13,8 @@ import {
   Member,
 } from '@/models/member/member';
 import { MEMBER_INFORMATION_HEADER_ID } from '@/constants/layout/header';
+import { useScopedI18n } from '../../../../../locales/client';
+import ToastPopup from '@/components/atoms/common/popup/toast-popup';
 
 type FamilyInformationListProps = {
   targetMember: Member;
@@ -25,6 +27,7 @@ const FamilyInformationList = ({
   setTargetMember,
   setContentId,
 }: FamilyInformationListProps) => {
+  const t_popup = useScopedI18n('popup');
   const { churchId } = useSelector((state: RootState) => state.church);
   const familyApi = new FamilyApi(false);
   const membersApi = new MembersApi(false);
@@ -34,6 +37,9 @@ const FamilyInformationList = ({
   if (thrownError) {
     throw thrownError;
   }
+
+  const [isToastShown, setIsToastShown] = useState(false);
+
   // 가족 관계 설정 모달 활성화 여부
   const [isModalShown, setIsModalShown] = useState<boolean>(false);
 
@@ -80,6 +86,8 @@ const FamilyInformationList = ({
         setThrownError(
           error instanceof Error ? error : new Error(String(error))
         );
+      } finally {
+        setIsToastShown(true);
       }
     }
 
@@ -211,11 +219,18 @@ const FamilyInformationList = ({
     onClickFamilyMember,
     onClickEdit,
     onClickConfirmDelete,
+    setIsToastShown,
   };
 
   return (
     <>
       <FamilyInformationListView {...props} />
+      {isToastShown && (
+        <ToastPopup
+          setIsShow={setIsToastShown}
+          text={t_popup('saveComplete')}
+        />
+      )}
     </>
   );
 };

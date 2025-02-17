@@ -9,6 +9,7 @@ import TermRegister from '@/components/atoms/management/education/term-register'
 
 import { useI18n } from '../../../../../locales/client';
 import Plus from '../../../../../public/svg/plus.svg';
+import { Dispatch, SetStateAction } from 'react';
 
 const EducationTermContainer = styled.div`
   display: flex;
@@ -49,6 +50,7 @@ type EducationTermViewProps = {
   fetchTerms: () => void;
   onClickItem: () => void;
   onClickModalClose: () => void;
+  setIsToastShown: Dispatch<SetStateAction<boolean>>;
 };
 
 const EducationTermListView = ({
@@ -58,6 +60,7 @@ const EducationTermListView = ({
   fetchTerms,
   onClickItem,
   onClickModalClose,
+  setIsToastShown,
 }: EducationTermViewProps) => {
   const t = useI18n();
 
@@ -78,6 +81,7 @@ const EducationTermListView = ({
             terms={terms}
             onClickClose={onClickModalClose}
             fetchTerms={fetchTerms}
+            setIsToastShown={setIsToastShown}
           />
         </CustomPopup>
       </ListTypeHeader>

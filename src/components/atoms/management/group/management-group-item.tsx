@@ -19,6 +19,7 @@ import { getFormattedTitle } from '@/utils/format';
 import { getIsWellFormedTitle } from '@/utils/check';
 import ConfirmPopup from '@/components/atoms/common/popup/error-popup';
 import { useScopedI18n } from '../../../../../locales/client';
+import ToastPopup from '@/components/atoms/common/popup/toast-popup';
 
 type ManagementGroupItemProps = {
   group: Group;
@@ -56,6 +57,7 @@ const ManagementGroupItem = ({
   const nameInputRef = useRef<HTMLInputElement>(null);
   const newGroupRef = useRef<HTMLInputElement>(null);
 
+  const [isToastShown, setIsToastShown] = useState<boolean>(false);
   const [isPopupShown, setIsPopupShown] = useState<boolean>(false);
 
   const [isAddShown, setIsAddShown] = useState<boolean>(false);
@@ -80,6 +82,8 @@ const ManagementGroupItem = ({
       setNewGroupName(BLANK);
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));
+    } finally {
+      setIsToastShown(true);
     }
   };
 
@@ -139,6 +143,8 @@ const ManagementGroupItem = ({
       setIsEdit(false);
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));
+    } finally {
+      setIsToastShown(true);
     }
   };
 
@@ -210,6 +216,12 @@ const ManagementGroupItem = ({
   return (
     <>
       <ManagementGroupItemView {...props} />
+      {isToastShown && (
+        <ToastPopup
+          setIsShow={setIsToastShown}
+          text={t_popup('saveComplete')}
+        />
+      )}
       <ConfirmPopup
         title={t_popup('deleteGroupTitle')}
         body={t_popup('deleteGroupBody')}

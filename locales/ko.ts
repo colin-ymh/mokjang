@@ -217,6 +217,11 @@ export default {
 
   /*-------------------placeholder-------------------*/
   'placeholder.name': '이름을 입력해주세요.',
+  'placeholder.groupName': '그룹명을 입력해주세요.',
+  'placeholder.ministryGroupName': '사역그룹명을 입력해주세요.',
+  'placeholder.ministryName': '사역명을 입력해주세요.',
+  'placeholder.officerName': '직분명을 입력해주세요.',
+  'placeholder.educationName': '교육명을 입력해주세요.',
   'placeholder.mobilePhone': '휴대전화 번호를 입력해주세요.',
   'placeholder.birth': '생년월일을 입력해주세요. (yyyy-mm-dd)',
   'placeholder.homePhone': '집 전화번호를 입력해주세요.',
@@ -240,6 +245,7 @@ export default {
   'placeholder.instructor': '진행자를 선택해주세요.',
   'placeholder.sessionDate': '교육 일시를 입력해주세요. (yyyy-mm-dd) ',
   'placeholder.sessionContent': '교육 내용를 입력해주세요.',
+  'placeholder.search': '검색어를 입력해주세요.',
   /*-------------------placeholder-------------------*/
 
   /*-------------------radiobutton-------------------*/
@@ -278,6 +284,8 @@ export default {
 
   'popup.deleteTermTitle': '해당 교육 기수를 삭제하시겠습니까?',
   'popup.deleteTermBody': '삭제된 기수는 복구할 수 없습니다.',
+
+  'popup.saveComplete': '저장이 완료되었습니다.',
 
   'popup.verifyFail': '잘못된 인증번호 입니다.',
   'popup.duplicatedRole': '이미 등록된 그룹 역할입니다.',

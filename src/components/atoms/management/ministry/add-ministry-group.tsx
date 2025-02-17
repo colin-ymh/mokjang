@@ -69,7 +69,7 @@ const AddMinistryGroup = forwardRef<HTMLInputElement, AddMinistryGroupProps>(
             onChange={onChangeName}
             height={10}
             color={BLACK}
-            placeholder={t_placeholder('name')}
+            placeholder={t_placeholder('ministryGroupName')}
           />
           <CheckButton
             $isEnabled={getIsWellFormedTitle(name)}

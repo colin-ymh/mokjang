@@ -5,12 +5,15 @@ import { RootState } from '@/redux/store';
 import { Education, EducationTerm } from '@/models/management/management';
 import EducationTermListView from '@/components/molecules/management/education/education-term-list.view';
 import { EducationTermsApi } from '@/api/management/education/education-terms.api';
+import { useScopedI18n } from '../../../../../locales/client';
+import ToastPopup from '@/components/atoms/common/popup/toast-popup';
 
 type EducationTermProps = {
   education: Education;
 };
 
 const EducationTermList = ({ education }: EducationTermProps) => {
+  const t_popup = useScopedI18n('popup');
   const churchId = useSelector((state: RootState) => state.church.churchId);
   const educationTermsApi = new EducationTermsApi(false);
 
@@ -19,6 +22,8 @@ const EducationTermList = ({ education }: EducationTermProps) => {
   if (thrownError) {
     throw thrownError;
   }
+
+  const [isToastShown, setIsToastShown] = useState<boolean>(false);
 
   // 기수 목록
   const [terms, setTerms] = useState<EducationTerm[]>([]);
@@ -67,11 +72,18 @@ const EducationTermList = ({ education }: EducationTermProps) => {
     fetchTerms,
     onClickItem,
     onClickModalClose,
+    setIsToastShown,
   };
 
   return (
     <>
       <EducationTermListView {...props} />
+      {isToastShown && (
+        <ToastPopup
+          setIsShow={setIsToastShown}
+          text={t_popup('saveComplete')}
+        />
+      )}
     </>
   );
 };

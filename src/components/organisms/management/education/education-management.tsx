@@ -7,13 +7,17 @@ import { EDUCATION_MANAGEMENT_HEADER_ID } from '@/constants/layout/header';
 import EducationManagementView from '@/components/organisms/management/education/education-management.view';
 import { DEFAULT_EDUCATION, Education } from '@/models/management/management';
 import { BLANK } from '@/constants/constant';
+import ToastPopup from '@/components/atoms/common/popup/toast-popup';
+import { useEducationManagementHeaderBarItems } from '@/hooks/layout/header-bar-items';
 import { getFormattedTitle } from '@/utils/format';
 import { getIsWellFormedTitle } from '@/utils/check';
-import { useEducationManagementHeaderBarItems } from '@/hooks/layout/header-bar-items';
+
+import { useScopedI18n } from '../../../../../locales/client';
 
 type EducationManagementProps = {};
 
 const EducationManagement = ({}: EducationManagementProps) => {
+  const t_popup = useScopedI18n('popup');
   const educationsApi = new EducationsApi(false);
   const churchId = useSelector((state: RootState) => state.church.churchId);
   const nameInputRef = useRef<HTMLInputElement>(null);
@@ -22,6 +26,8 @@ const EducationManagement = ({}: EducationManagementProps) => {
   if (thrownError) {
     throw thrownError;
   }
+
+  const [isToastShown, setIsToastShown] = useState<boolean>(false);
 
   // 교육 설정 탭 헤더
   const headerBarItems = useEducationManagementHeaderBarItems();
@@ -76,6 +82,8 @@ const EducationManagement = ({}: EducationManagementProps) => {
       }
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));
+    } finally {
+      setIsToastShown(true);
     }
   };
 
@@ -172,6 +180,12 @@ const EducationManagement = ({}: EducationManagementProps) => {
   return (
     <>
       <EducationManagementView {...props} />
+      {isToastShown && (
+        <ToastPopup
+          setIsShow={setIsToastShown}
+          text={t_popup('saveComplete')}
+        />
+      )}
     </>
   );
 };

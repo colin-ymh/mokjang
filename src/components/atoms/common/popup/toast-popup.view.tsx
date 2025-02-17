@@ -22,17 +22,21 @@ const PopupContainer = styled.div<{
   position: fixed;
   z-index: 100;
   justify-content: flex-start;
-  padding-left: 20px;
   align-items: center;
+  padding-left: 20px;
   background-color: ${({ $backgroundColor }) => $backgroundColor};
   height: 50px;
-  width: 80%;
+  width: 50%;
   max-width: 400px;
   border-radius: 5px;
   opacity: 0;
-  //  방향에 따라 초기값 변경
+
+  left: 50%;
+  transform: translateX(-50%);
+
+  // 방향에 따라 초기 위치 설정
   ${({ $direction }) =>
-    $direction === TOAST_DIRECTION.TOP ? 'top: -50px;' : 'bottom: -50px'}
+    $direction === TOAST_DIRECTION.TOP ? 'top: -50px;' : 'bottom: -50px;'}
 `;
 
 const CancelButton = styled(Cancel)`

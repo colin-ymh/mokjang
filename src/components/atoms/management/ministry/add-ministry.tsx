@@ -52,7 +52,7 @@ const AddMinistry = forwardRef<HTMLInputElement, AddMinistryProps>(
           onChange={onChangeName}
           height={10}
           color={BLACK}
-          placeholder={t('placeholder.name')}
+          placeholder={t('placeholder.ministryName')}
         />
         <CheckButton
           $isEnabled={getIsWellFormedTitle(name)}

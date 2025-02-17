@@ -1,4 +1,11 @@
-import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import {
+  ChangeEvent,
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 
@@ -22,6 +29,7 @@ type EditMinistryGroupProps = {
   ministries: Ministry[];
   onClickClose: () => void;
   fetchMinistryGroups: () => void;
+  setIsToastShown: Dispatch<SetStateAction<boolean>>;
 };
 
 const EditMinistryMinistryGroup = ({
@@ -29,6 +37,7 @@ const EditMinistryMinistryGroup = ({
   ministries,
   onClickClose,
   fetchMinistryGroups,
+  setIsToastShown,
 }: EditMinistryGroupProps) => {
   const t_popup = useScopedI18n('popup');
   const ministryGroupMinistriesApi = new MinistriesApi(false);
@@ -159,6 +168,8 @@ const EditMinistryMinistryGroup = ({
       setSelectedMinistry(DEFAULT_MINISTRY);
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));
+    } finally {
+      setIsToastShown(true);
     }
   };
 
