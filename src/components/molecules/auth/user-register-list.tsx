@@ -5,7 +5,10 @@ import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/redux/store';
 import { setUser } from '@/redux/reducers/user-reducer';
 
-import { setAuthorizationToken } from '@/api/authorize-axios';
+// import {
+//   resetAuthorizationToken,
+//   setAuthorizationToken,
+// } from '@/api/authorize-axios';
 import { AuthApi, IS_TEST } from '@/api/auth/auth.api';
 import UserRegisterListView from '@/components/molecules/auth/user-register-list.view';
 import ToastPopup from '@/components/atoms/common/popup/toast-popup';
@@ -117,12 +120,6 @@ const UserRegisterList = () => {
         privacyPolicyAgreed: isVerified,
       });
       if (response.status === 201) {
-        const accessToken = response.data.accessToken;
-        const refreshToken = response.data.refreshToken;
-
-        setAuthorizationToken(accessToken);
-        localStorage.setItem('refreshToken', refreshToken);
-
         router.replace('/church/register');
 
         const userResponse = await authApi.getUser();
@@ -135,6 +132,14 @@ const UserRegisterList = () => {
     } finally {
       setIsLoading(false); // 서버 요청 완료 후 로딩 종료
     }
+  };
+
+  // 로그아웃 버튼
+  const onClickLogOut = () => {
+    const authApi = new AuthApi(false);
+    authApi.getLogOut().then(() => {
+      router.replace('/login');
+    });
   };
 
   // 타이머 감소 로직
@@ -166,6 +171,7 @@ const UserRegisterList = () => {
     onClickVerify,
     onClickConsent,
     onClickDone,
+    onClickLogOut,
   };
 
   return (

@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios';
 import { SERVER_URL, TEST_SERVER_URL } from '@/constants/state/url';
 import authorizeAxios from '@/api/authorize-axios';
 import { CustomError } from '@/api/error/error';
@@ -54,13 +54,14 @@ export class AuthApi {
    * @param {getOAuthParams} params
    * @returns {Promise<AxiosResponse>}
    */
-  public getOAuth = (params: getOAuthParams): string => {
+  public getOAuth = (params: getOAuthParams) => {
     const { provider } = params;
 
     const url = `${this._url}/auth/login/${provider}`;
 
     try {
       return url;
+      // return await axios.get(url.toString());
     } catch (serverError: any) {
       if (serverError.response) {
         const { message, error, statusCode } = serverError.response.data;
@@ -91,7 +92,7 @@ export class AuthApi {
     url.searchParams.set('providerId', providerId);
 
     try {
-      return await axios.get(url.toString());
+      return await authorizeAxios.get(url.toString());
     } catch (serverError: any) {
       if (serverError.response) {
         const { message, error, statusCode } = serverError.response.data;
@@ -223,6 +224,58 @@ export class AuthApi {
       } else {
         throw new CustomError(
           '알 수 없는 에러가 발생했습니다',
+          500,
+          'Unknown Error'
+        );
+      }
+    }
+  };
+
+  /**
+   * Temporal Token 이 쿠키에 존재하는지 확인
+   * @returns {Promise<AxiosResponse>}
+   */
+  public getIsTemporalToken = async (): Promise<AxiosResponse> => {
+    const url = new URL('/auth/temporal-token', this._url);
+
+    try {
+      return await authorizeAxios.get(url.toString());
+    } catch (serverError: any) {
+      if (serverError.response) {
+        const { message, error, statusCode } = serverError.response.data;
+        throw new CustomError(message, error, statusCode);
+      } else {
+        throw new CustomError(
+          '알 수 없는 에러가 발생했습니다',
+          500,
+          'Unknown Error'
+        );
+      }
+    }
+  };
+
+  /**
+   * 로그아웃 (쿠키 만료)
+   * @returns {Promise<AxiosResponse>}
+   */
+  public getLogOut = async (): Promise<AxiosResponse> => {
+    const url = new URL('/auth/logout', this._url);
+
+    try {
+      // 반드시 withCredentials: true 옵션을 사용해야
+      // 브라우저가 쿠키를 전송하고, 응답의 Set-Cookie도 적용해 쿠키가 만료됨
+      return await authorizeAxios.post(
+        url.toString(),
+        {},
+        { withCredentials: true }
+      );
+    } catch (serverError: any) {
+      if (serverError.response) {
+        const { message, error, statusCode } = serverError.response.data;
+        throw new CustomError(message, error, statusCode);
+      } else {
+        throw new CustomError(
+          '알 수 없는 에러가 발생했습니다.',
           500,
           'Unknown Error'
         );

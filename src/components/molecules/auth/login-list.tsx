@@ -1,20 +1,12 @@
 import { ChangeEvent, useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { AppDispatch } from '@/redux/store';
-import { setChurch, setChurchId } from '@/redux/reducers/church-reducer';
-import { setUser } from '@/redux/reducers/user-reducer';
-
-import { AUTH, AuthApi } from '@/api/auth/auth.api';
-import { setAuthorizationToken } from '@/api/authorize-axios';
-import LoginListView from '@/components/molecules/auth/login-list.view';
-import { usePageRouter } from '@/utils/router';
-import { getFormattedMobilePhone, getFormattedName } from '@/utils/format';
 import { useRouter } from 'next/navigation';
 
+import { AUTH, AuthApi } from '@/api/auth/auth.api';
+import LoginListView from '@/components/molecules/auth/login-list.view';
+import { getFormattedMobilePhone, getFormattedName } from '@/utils/format';
+
 const LoginList = () => {
-  const dispatch = useDispatch<AppDispatch>();
   const nextRouter = useRouter();
-  const router = usePageRouter();
   const authApi = new AuthApi(false);
   const [thrownError, setThrownError] = useState<Error | null>(null);
   const [name, setName] = useState<string>('');
@@ -36,56 +28,25 @@ const LoginList = () => {
   };
 
   const onClickItem = async (provider?: AUTH) => {
+    // 외부 로그인 (OAuth)
     if (provider) {
       nextRouter.replace(authApi.getOAuth({ provider }));
       return;
     }
 
+    // 테스트용 로그인
     try {
-      const response = await authApi.getTestAuth({
-        provider: name,
-        providerId: phone,
-      });
-
-      if (response.status === 200) {
-        // 가입이 안된 유저
-        if (response.data?.temporal) {
-          // 임시토큰 저장
-          setAuthorizationToken(response.data?.temporal);
-          router.replace('/login/register');
-        }
-        // 이미 가입된 회원인 경우
-        else {
-          // 액세스토큰, 리프레시토큰 저장
-          setAuthorizationToken(
-            response.data?.accessToken,
-            response.data?.refreshToken
-          );
-
-          try {
-            const userResponse = await authApi.getUser();
-            const newUser = userResponse.data;
-            dispatch(setUser(newUser));
-
-            // 등록된 교회가 있는 경우
-            if (newUser?.adminChurch?.id || newUser?.managingChurch?.id) {
-              dispatch(setChurch(newUser.adminChurch));
-              dispatch(setChurchId(newUser.adminChurch.id));
-              router.replace('');
-            }
-            // 등록된 교회가 없는 경우
-            else {
-              router.replace('/church/register');
-            }
-          } catch (error) {
-            setThrownError(
-              error instanceof Error ? error : new Error(String(error))
-            );
-          }
-        }
-      }
+      await authApi
+        .getTestAuth({
+          provider: name,
+          providerId: phone,
+        })
+        .then((response) => {
+          // 로그인 성공 이후, 페이지 새로고침 => layout 에서 user 와 church 를 initialize
+          window.location.href = '/login';
+        });
     } catch (error) {
-      setThrownError(error instanceof Error ? error : new Error(String(error)));
+      // setThrownError(error instanceof Error ? error : new Error(String(error)));
     }
   };
 

@@ -8,21 +8,24 @@ import { DEFAULT_USER } from '@/models/user/user';
 import { DEFAULT_CHURCH } from '@/models/church/church';
 import { BLANK } from '@/constants/constant';
 import { usePageRouter } from '@/utils/router';
+import { AuthApi } from '@/api/auth/auth.api';
 
 const SideBar = () => {
   const dispatch = useDispatch<AppDispatch>();
   const router = usePageRouter();
+  const authApi = new AuthApi(false);
 
   const onClickLogOut = () => {
+    console.log('logout');
     try {
       dispatch(setUser(DEFAULT_USER));
       dispatch(setChurch(DEFAULT_CHURCH));
       dispatch(setChurchId(BLANK));
-      localStorage.removeItem('accessToken');
-      localStorage.removeItem('refreshToken');
+      authApi.getLogOut();
     } catch (error) {
       console.log(error);
     } finally {
+      console.log('success');
       router.replace('/login');
     }
   };

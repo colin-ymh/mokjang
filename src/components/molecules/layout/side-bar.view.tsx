@@ -94,7 +94,7 @@ const SideBarView = ({ onClickLogOut }: SideBarViewProps) => {
     <SideBarContainer>
       <SideBarHeader />
       <ButtonContainer>
-        {/*<SideBarButton id={HEADER_ID.HOME} title={t_header(HEADER_ID.HOME)} />*/}
+        <SideBarButton id={HEADER_ID.HOME} title={t_header(HEADER_ID.HOME)} />
         <SideBarButton
           id={HEADER_ID.MEMBER}
           title={t_header(HEADER_ID.MEMBER)}

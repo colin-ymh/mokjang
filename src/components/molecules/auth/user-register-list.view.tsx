@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import LabelInput from '@/components/atoms/common/input/label-input';
 import Button from '@/components/atoms/common/button/button';
 import { MainText } from '@/components/atoms/common/text/main-text';
-import { BLUE, GRAY, MAIN } from '@/constants/styles/color';
+import { BLACK, BLUE, GRAY, MAIN } from '@/constants/styles/color';
 import { MEMBER } from '@/constants/member/member-column';
 import { getIsWellFormedMobilePhone, getIsWellFormedName } from '@/utils/check';
 import { getMinuteFromSecond } from '@/utils/date';
@@ -73,7 +73,9 @@ const CheckButton = styled(Check)<{ $isChecked: boolean }>`
 
 const ButtonContainer = styled.div`
   display: flex;
+  flex-direction: column;
   padding: 0 40px;
+  gap: 10px;
 `;
 
 type UserRegisterListViewProps = {
@@ -91,6 +93,7 @@ type UserRegisterListViewProps = {
   onClickVerify: () => void;
   onClickConsent: () => void;
   onClickDone: () => void;
+  onClickLogOut: () => void;
 };
 
 const UserRegisterListView = ({
@@ -108,6 +111,7 @@ const UserRegisterListView = ({
   onClickVerify,
   onClickConsent,
   onClickDone,
+  onClickLogOut,
 }: UserRegisterListViewProps) => {
   const t = useI18n();
   const t_button = useScopedI18n('button');
@@ -191,6 +195,12 @@ const UserRegisterListView = ({
           backgroundColor={isVerified && isConsent ? MAIN.DEFAULT : GRAY.LIGHT}
           disabled={!(isVerified && isConsent)}
           onClick={onClickDone}
+        />
+        <Button
+          text={t_button('logOut')}
+          height={40}
+          backgroundColor={BLACK}
+          onClick={onClickLogOut}
         />
       </ButtonContainer>
     </ListContainer>
