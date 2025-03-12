@@ -8,6 +8,7 @@ const HeaderBarContainer = styled.div`
   display: flex;
   flex-direction: row;
   width: 100%;
+  overflow-x: auto;
 `;
 
 const BarItem = styled.div<{ $isSelected: boolean }>`

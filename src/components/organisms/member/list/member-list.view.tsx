@@ -9,13 +9,15 @@ import MemberItemList from '@/components/molecules/member/list/member-item-list'
 
 const MemberListContainer = styled.div`
   display: flex;
-
   flex-direction: column;
   height: 100%;
   width: 100%;
+  overflow-y: auto;
 `;
 
 const MobileView = styled.div`
+  display: flex;
+
   @media (min-width: ${MEDIA_MIN_WIDTH.DESKTOP}) {
     display: none;
   }

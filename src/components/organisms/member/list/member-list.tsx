@@ -9,7 +9,6 @@ import {
   fetchMembers,
   setMembers,
 } from '@/redux/reducers/member-filter-reducer';
-import styled from 'styled-components';
 
 import { MembersApi } from '@/api/members/members.api';
 import MemberInformation from '@/components/organisms/member/information/member-information';
@@ -17,24 +16,13 @@ import CustomPopup from '@/components/atoms/common/popup/custom-popup';
 import MemberListView from '@/components/organisms/member/list/member-list.view';
 import { Member } from '@/models/member/member';
 import { getMemberFromServer } from '@/utils/member';
-
-import { useScopedI18n } from '../../../../../locales/client';
 import Loading from '@/components/atoms/common/etc/loading';
-
-const ButtonContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-`;
 
 type MemberListProps = {
   isNewMember?: boolean;
 };
 
 const MemberList = ({ isNewMember }: MemberListProps) => {
-  const t_button = useScopedI18n('button');
   const membersApi = new MembersApi(false);
   const dispatch = useDispatch<AppDispatch>();
   const churchId: string = useSelector(

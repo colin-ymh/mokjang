@@ -6,11 +6,15 @@ import { RootState } from '@/redux/store';
 import { GRAY } from '@/constants/styles/color';
 import { MemberTableProps } from '@/components/molecules/member/list/member-table';
 import { MainText } from '@/components/atoms/common/text/main-text';
-import { useI18n } from '../../../../../locales/client';
 import { getRandomImage } from '@/utils/image';
+
+import { useI18n } from '../../../../../locales/client';
+import { getFormattedMobilePhone } from '@/utils/format';
 
 const MemberListContainer = styled.div`
   display: flex;
+  width: 100%;
+  height: 100%;
   flex-direction: column;
   border-top: 1px solid ${GRAY.LIGHT};
 `;
@@ -22,7 +26,7 @@ const MemberItem = styled.div`
   border-radius: 5px;
   gap: 10px;
   border-bottom: 1px solid ${GRAY.LIGHT};
-  height: 70px;
+  height: 50px;
   cursor: pointer;
 `;
 
@@ -40,8 +44,7 @@ const MemberDetails = styled.div`
 
 const MemberItemList = ({ onClickMemberItem }: MemberTableProps) => {
   const t = useI18n();
-  const { members, memberFilter, memberOrderBy, memberOrderDirection } =
-    useSelector((state: RootState) => state.memberFilter);
+  const { members } = useSelector((state: RootState) => state.memberFilter);
 
   return (
     <MemberListContainer>
@@ -55,9 +58,12 @@ const MemberItemList = ({ onClickMemberItem }: MemberTableProps) => {
             alt={`profileImage`}
           />
           <MemberDetails>
-            <MainText>{`${member.name} ${member.officer?.id || t('churchMember')}`}</MainText>
-            <MainText>{member.mobilePhone}</MainText>
-            <MainText>{member.group?.id}</MainText>
+            <MainText>{`${member.name} ${member.officer?.name || t('churchMember')}`}</MainText>
+            <MainText>
+              {member?.mobilePhone &&
+                getFormattedMobilePhone(member.mobilePhone)}
+            </MainText>
+            <MainText>{member.group?.name}</MainText>
           </MemberDetails>
         </MemberItem>
       ))}

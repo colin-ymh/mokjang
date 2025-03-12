@@ -4,7 +4,12 @@ import { usePathname } from 'next/navigation';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { MEMBER } from '@/constants/member/member-column';
 import { BLACK, GRAY, WHITE } from '@/constants/styles/color';
-import { CALENDAR_MODE, GENDER, MARRIAGE } from '@/constants/constant';
+import {
+  CALENDAR_MODE,
+  GENDER,
+  MARRIAGE,
+  MEDIA_MAX_WIDTH,
+} from '@/constants/constant';
 import { LOCALE } from '@/constants/state/locale';
 import { Member } from '@/models/member/member';
 import { Ministry } from '@/models/management/management';
@@ -41,6 +46,10 @@ const RowContainer = styled.div`
   display: flex;
   flex-direction: row;
   gap: 10px;
+
+  @media (max-width: 768px) {
+    flex-direction: column; /* 모바일에서는 한 줄에 하나씩 표시 */
+  }
 `;
 
 const PencilButton = styled(Pencil)`
@@ -63,13 +72,14 @@ const InformationItem = styled.div<{ $disabled?: boolean }>`
   border-radius: 5px;
   cursor: ${({ $disabled }) => ($disabled ? 'default' : 'pointer')};
   position: relative;
+  width: 100%; /* 모바일에서도 너비가 꽉 차도록 설정 */
 
   &:hover {
     background-color: ${({ $disabled }) => ($disabled ? 'auto' : GRAY.LIGHT)};
   }
 
   &:hover ${PencilButton} {
-    display: block; /* hover 상태에서 PencilButton 표시 */
+    display: block;
   }
 `;
 
@@ -80,6 +90,10 @@ const BlankSpace = styled.div`
 const TitleContainer = styled.div`
   display: flex;
   width: 150px;
+
+  @media (max-width: ${MEDIA_MAX_WIDTH.MOBILE}) {
+    width: 100px;
+  }
 `;
 
 const ContentContainer = styled.div`
@@ -103,6 +117,17 @@ const Divider = styled.div`
   height: 1px;
   background-color: ${GRAY.LIGHT};
   margin: 10px 0;
+`;
+
+const RowDivider = styled.div`
+  display: none; /* 기본적으로 숨김 */
+
+  @media (max-width: ${MEDIA_MAX_WIDTH.MOBILE}) {
+    display: block; /* 모바일에서는 표시 */
+    width: 100%;
+    height: 1px;
+    background-color: ${GRAY.LIGHT};
+  }
 `;
 
 const PaddingBottom = styled.div`
@@ -148,6 +173,7 @@ const InformationListView = ({
             </ContentContainer>
             <PencilButton />
           </InformationItem>
+          <RowDivider />
           {/* 역할 */}
           <InformationItem onClick={onClickOpenGroupModal}>
             <TitleContainer>
@@ -171,6 +197,7 @@ const InformationListView = ({
             </ContentContainer>
             <PencilButton />
           </InformationItem>
+          <RowDivider />
           {/* 신급 */}
           <InformationItem onClick={onClickOpenBaptismModal}>
             <TitleContainer>
@@ -229,6 +256,7 @@ const InformationListView = ({
             </ContentContainer>
             <PencilButton />
           </InformationItem>
+          <RowDivider />
           {/* 성별 */}
           <InformationItem onClick={() => onClickItem(MEMBER.GENDER)}>
             <TitleContainer>
@@ -263,6 +291,7 @@ const InformationListView = ({
             </ContentContainer>
             <PencilButton />
           </InformationItem>
+          <RowDivider />
           {/* 생일 */}
           <InformationItem $disabled={true}>
             <TitleContainer>
@@ -292,6 +321,7 @@ const InformationListView = ({
             </ContentContainer>
             <PencilButton />
           </InformationItem>
+          <RowDivider />
           {/* 집전화번호 */}
           <InformationItem onClick={() => onClickItem(MEMBER.HOME_PHONE)}>
             <TitleContainer>
@@ -316,6 +346,7 @@ const InformationListView = ({
             </ContentContainer>
             <PencilButton />
           </InformationItem>
+          <RowDivider />
           {/* 상세 주소 */}
           <InformationItem onClick={() => onClickItem(MEMBER.DETAIL_ADDRESS)}>
             <TitleContainer>
@@ -342,6 +373,7 @@ const InformationListView = ({
             </ContentContainer>
             <PencilButton />
           </InformationItem>
+          <RowDivider />
           {/* 학교 */}
           <InformationItem onClick={() => onClickItem(MEMBER.SCHOOL)}>
             <TitleContainer>
@@ -366,6 +398,7 @@ const InformationListView = ({
             </ContentContainer>
             <PencilButton />
           </InformationItem>
+          <RowDivider />
           {/* 결혼 상세 */}
           <InformationItem onClick={() => onClickItem(MEMBER.DETAIL_MARRIAGE)}>
             <TitleContainer>

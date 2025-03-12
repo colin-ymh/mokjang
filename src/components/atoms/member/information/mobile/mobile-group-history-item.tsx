@@ -9,8 +9,8 @@ import { GRAY, WHITE } from '@/constants/styles/color';
 import SlideButtonList from '@/components/atoms/common/button/slide-button-list';
 import { LOCALE } from '@/constants/state/locale';
 import ConfirmPopup from '@/components/atoms/common/popup/error-popup';
-
-import { useI18n, useScopedI18n } from '../../../../../locales/client';
+import { useI18n, useScopedI18n } from '../../../../../../locales/client';
+import { SIZE } from '@/constants/styles/style';
 
 const BackgroundContainer = styled.div<{ $isCurrent?: boolean }>`
   display: flex;
@@ -23,11 +23,12 @@ const BackgroundContainer = styled.div<{ $isCurrent?: boolean }>`
 const ItemContainer = styled.div`
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   width: 100%;
-  padding: 10px 50px;
+  padding: 10px 30px;
   border-radius: 5px;
   position: relative;
+  flex-direction: column;
   //cursor: pointer;
   transition: background-color 0.3s;
   // &:hover {
@@ -35,22 +36,16 @@ const ItemContainer = styled.div`
   // }
 `;
 
-const NameContainer = styled.div`
+const TitleContainer = styled.div`
   display: flex;
-  gap: 20px;
-  flex: 1;
-`;
-
-const RoleContainer = styled.div`
-  display: flex;
-  gap: 20px;
-  flex: 1;
+  gap: 5px;
+  align-items: center;
+  justify-content: center;
 `;
 
 const PeriodContainer = styled.div`
   display: flex;
   gap: 20px;
-  flex: 2;
 `;
 
 const DateContainer = styled.div`
@@ -58,19 +53,19 @@ const DateContainer = styled.div`
   gap: 5px;
 `;
 
-type GroupHistoryItemProps = {
+type MobileGroupHistoryItemProps = {
   group: GroupHistory;
   onClickEditGroup: (group: GroupHistory) => void;
   onClickConfirmDelete: (groupId: string) => void;
   isCurrent?: boolean;
 };
 
-const GroupHistoryItem = ({
+const MobileGroupHistoryItem = ({
   group,
   onClickEditGroup,
   onClickConfirmDelete,
   isCurrent,
-}: GroupHistoryItemProps) => {
+}: MobileGroupHistoryItemProps) => {
   const t_popup = useScopedI18n('popup');
   const t_button = useScopedI18n('button');
   const [isPopupShown, setIsPopupShown] = useState<boolean>(false);
@@ -86,19 +81,15 @@ const GroupHistoryItem = ({
   return (
     <BackgroundContainer $isCurrent={isCurrent}>
       <ItemContainer>
-        {/* 그룹명 */}
-        <NameContainer>
-          <MainText color={GRAY.DARK}>{t('groupName')}</MainText>
-          <MainText>{group.groupSnapShot}</MainText>
-        </NameContainer>
-        {/* 역할 */}
-        <RoleContainer>
-          <MainText color={GRAY.DARK}>{t('groupRole')}</MainText>
-          <MainText>{group.groupRoleSnapShot}</MainText>
-        </RoleContainer>
+        {/* 그룹명 + 역할 */}
+        <TitleContainer>
+          <MainText size={SIZE.MEDIUM}>{group.groupSnapShot}</MainText>
+          <MainText size={SIZE.MEDIUM} color={GRAY.SEMI_DARK}>
+            {group.groupRoleSnapShot}
+          </MainText>
+        </TitleContainer>
         {/* 기간 */}
         <PeriodContainer>
-          <MainText color={GRAY.DARK}>{t('period')}</MainText>
           <DateContainer>
             <MainText>
               {getLocaleDateFromDashDate(
@@ -125,6 +116,7 @@ const GroupHistoryItem = ({
             onClickEdit={() => onClickEditGroup(group)}
             onClickDelete={() => onClickDeleteGroup()}
             backgroundColor={WHITE}
+            right={10}
           />
         )}
       </ItemContainer>
@@ -142,4 +134,4 @@ const GroupHistoryItem = ({
   );
 };
 
-export default GroupHistoryItem;
+export default MobileGroupHistoryItem;

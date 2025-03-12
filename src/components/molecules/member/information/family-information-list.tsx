@@ -3,9 +3,9 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 
 import { FamilyApi } from '@/api/members/family.api';
-import { FAMILY } from '@/constants/constant';
 import { MembersApi } from '@/api/members/members.api';
 import { getMemberFromServer } from '@/utils/member';
+import { FAMILY } from '@/constants/constant';
 import FamilyInformationListView from '@/components/molecules/member/information/family-information-list.view';
 import {
   DEFAULT_FAMILY_MEMBER,
@@ -13,8 +13,9 @@ import {
   Member,
 } from '@/models/member/member';
 import { MEMBER_INFORMATION_HEADER_ID } from '@/constants/layout/header';
-import { useScopedI18n } from '../../../../../locales/client';
 import ToastPopup from '@/components/atoms/common/popup/toast-popup';
+
+import { useScopedI18n } from '../../../../../locales/client';
 
 type FamilyInformationListProps = {
   targetMember: Member;

@@ -6,10 +6,10 @@ import Trash from '../../../../../public/svg/trash.svg';
 import Pencil from '../../../../../public/svg/pencil.svg';
 import Plus from '../../../../../public/svg/plus.svg';
 
-const ListContainer = styled.div<{ $position: string }>`
+const ListContainer = styled.div<{ $position: string; $right: number }>`
   display: flex;
   position: ${({ $position }) => $position};
-  right: 0;
+  right: ${({ $right }) => `${$right}px`};
   border-radius: 5px;
 `;
 
@@ -101,6 +101,7 @@ type EditDeleteModalProps = {
   buttonSize?: number;
   backgroundColor?: string;
   position?: string;
+  right?: number;
 };
 
 const SlideButtonList = ({
@@ -113,6 +114,7 @@ const SlideButtonList = ({
   buttonSize = 18,
   backgroundColor,
   position = 'absolute',
+  right = 0,
 }: EditDeleteModalProps) => {
   const [isOpened, setIsOpened] = useState<boolean>(false);
 
@@ -123,6 +125,7 @@ const SlideButtonList = ({
   return (
     <ListContainer
       $position={position}
+      $right={right}
       onClick={(event) => {
         event.stopPropagation();
         setIsOpened(true);
