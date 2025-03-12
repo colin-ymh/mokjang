@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const PopupMain = styled.div`
+export const PopupContent = styled.div`
   width: 100%;
   max-width: 100%;
   height: 100%;
@@ -8,4 +8,4 @@ export const PopupMain = styled.div`
   margin-top: 50px;
 `;
 
-export default PopupMain;
+export default PopupContent;

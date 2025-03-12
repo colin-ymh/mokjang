@@ -3,7 +3,7 @@
 import React from 'react';
 
 import Wrap from '@/components/atoms/layout/wrap';
-import ModalMain from '@/components/atoms/layout/main/modal-main';
+import ModalContent from '@/components/atoms/layout/content/modal-content';
 import ModalContainer from '@/components/atoms/layout/container/modal-container';
 
 export type ModalLayoutProps = {
@@ -14,7 +14,7 @@ const ModalLayout = ({ children }: ModalLayoutProps) => {
   return (
     <Wrap>
       <ModalContainer>
-        <ModalMain>{children}</ModalMain>
+        <ModalContent>{children}</ModalContent>
       </ModalContainer>
     </Wrap>
   );

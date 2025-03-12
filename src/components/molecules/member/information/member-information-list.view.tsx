@@ -72,7 +72,7 @@ const InformationItem = styled.div<{ $disabled?: boolean }>`
   border-radius: 5px;
   cursor: ${({ $disabled }) => ($disabled ? 'default' : 'pointer')};
   position: relative;
-  width: 100%; /* 모바일에서도 너비가 꽉 차도록 설정 */
+  width: 100%;
 
   &:hover {
     background-color: ${({ $disabled }) => ($disabled ? 'auto' : GRAY.LIGHT)};
@@ -89,7 +89,7 @@ const BlankSpace = styled.div`
 
 const TitleContainer = styled.div`
   display: flex;
-  width: 150px;
+  width: 100px;
 
   @media (max-width: ${MEDIA_MAX_WIDTH.MOBILE}) {
     width: 100px;

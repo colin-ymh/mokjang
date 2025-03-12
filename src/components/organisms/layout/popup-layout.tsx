@@ -5,7 +5,7 @@ import React from 'react';
 import Wrap from '@/components/atoms/layout/wrap';
 import Container from '@/components/atoms/layout/container/container';
 import PopupHeader from '@/components/atoms/layout/header/popup-header';
-import PopupMain from '@/components/atoms/layout/main/popup-main';
+import PopupContent from '@/components/atoms/layout/content/popup-content';
 
 export type PopupLayoutProps = {
   onClickLeft: () => void;
@@ -20,7 +20,7 @@ const PopupLayout = ({
     <Wrap>
       <Container>
         <PopupHeader onClickLeft={onClickLeft} />
-        <PopupMain>{children}</PopupMain>
+        <PopupContent>{children}</PopupContent>
       </Container>
     </Wrap>
   );

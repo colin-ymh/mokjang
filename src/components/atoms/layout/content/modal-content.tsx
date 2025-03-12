@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { WHITE } from '@/constants/styles/color';
 import { MEDIA_MIN_WIDTH } from '@/constants/constant';
 
-export const ModalMain = styled.div`
+export const ModalContent = styled.div`
   background-color: ${WHITE};
   border-radius: 5px;
   box-shadow: 0 5px 5px rgba(0, 0, 0, 0.5);
@@ -25,4 +25,4 @@ export const ModalMain = styled.div`
   }
 `;
 
-export default ModalMain;
+export default ModalContent;

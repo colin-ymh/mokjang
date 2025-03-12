@@ -99,7 +99,7 @@ const TableHeader = styled.th<{ id: string }>`
 
 const Scroll = styled.div<{ height: number }>`
   width: auto;
-  height: ${({ height }) => `${height - 200}px`};
+  height: ${({ height }) => `${height - 240}px`};
   overflow-y: auto;
   position: relative;
   text-overflow: ellipsis; /* 넘치는 텍스트 ... 처리 */
