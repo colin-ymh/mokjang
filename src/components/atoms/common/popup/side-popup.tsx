@@ -10,7 +10,7 @@ import ExitButton from '../../../../../public/svg/cancel.svg';
 const SidePanel = styled.div<{ isShow: boolean; width: number }>`
   position: fixed;
   top: 0;
-  right: ${({ isShow }) => (isShow ? '0' : '-100%')}; /* 기본적으로 숨김 */
+  right: ${({ isShow }) => (isShow ? '0' : '-100%')};
   height: 100%;
   width: ${({ width }) => `${width}px`};
   background-color: ${WHITE};
@@ -18,6 +18,7 @@ const SidePanel = styled.div<{ isShow: boolean; width: number }>`
   display: flex;
   flex-direction: column;
   border-left: 1px solid ${GRAY.LIGHT};
+  z-index: 50;
 
   @media (max-width: ${MEDIA_MAX_WIDTH.MOBILE}) {
     height: 100%;

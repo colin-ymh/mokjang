@@ -18,7 +18,7 @@ const InformationHeader = styled.div`
   flex-direction: column;
   justify-content: space-between;
   padding: 20px 20px 0 20px;
-  gap: 30px;
+  gap: 10px;
 `;
 
 const Information = styled.div`

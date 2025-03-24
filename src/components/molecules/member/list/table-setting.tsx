@@ -23,6 +23,7 @@ import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-i
 import { getTranslatedMemberColumn } from '@/utils/translate';
 import { MEMBER } from '@/constants/member/member-column';
 import { BLANK, NULL } from '@/constants/constant';
+import { getStringFromDate } from '@/utils/date';
 import { getFormattedDate } from '@/utils/format';
 
 import { useI18n } from '../../../../../locales/client';
@@ -52,10 +53,20 @@ const TableSetting = ({ setIsShown }: AddFilterProps) => {
 
   // 칼럼들을 드래그하여 순서 변경
   const onDragItem = (fromIndex: number, toIndex: number) => {
+    if (toIndex < 3) return;
+    // 인덱스가 같으면 아무런 변경 없이 종료
+    if (fromIndex === toIndex) return;
+
+    // 기존 헤더 배열의 복사본 생성
     const updatedHeaders = [...memberTableHeaderItemList];
+
+    // fromIndex 위치의 항목을 배열에서 제거하고 추출
     const [movedItem] = updatedHeaders.splice(fromIndex, 1);
+
+    // toIndex 위치에 추출한 항목을 삽입
     updatedHeaders.splice(toIndex, 0, movedItem);
 
+    // 변경된 헤더 배열을 Redux 스토어에 업데이트
     dispatch(setMemberTableHeaderItemList(updatedHeaders));
   };
 
@@ -163,13 +174,26 @@ const TableSetting = ({ setIsShown }: AddFilterProps) => {
   };
 
   // ~부터 날짜 변경
-  const onChangeAfter = (event: ChangeEvent<HTMLInputElement>) => {
+  // 달력에서 선택
+  const onChangeAfter = (date: Date | null) => {
+    const newFilterAfter = getStringFromDate(date);
+    dispatch(setFilterAfter(newFilterAfter));
+  };
+
+  // 직접 입력
+  const onChangeRawAfter = (event: ChangeEvent<HTMLInputElement>) => {
     const newDateAfter = getFormattedDate(event.target.value);
     dispatch(setFilterAfter(newDateAfter));
   };
 
   // ~까지 날짜 변경
-  const onChangeBefore = (event: ChangeEvent<HTMLInputElement>) => {
+  const onChangeBefore = (date: Date | null) => {
+    const newDateBefore = getStringFromDate(date);
+    dispatch(setFilterBefore(newDateBefore));
+  };
+
+  // 직접 입력
+  const onChangeRawBefore = (event: ChangeEvent<HTMLInputElement>) => {
     const newDateBefore = getFormattedDate(event.target.value);
     dispatch(setFilterBefore(newDateBefore));
   };
@@ -237,7 +261,9 @@ const TableSetting = ({ setIsShown }: AddFilterProps) => {
     onClickCancel,
     onClickReset,
     onChangeAfter,
+    onChangeRawAfter,
     onChangeBefore,
+    onChangeRawBefore,
   };
 
   return (

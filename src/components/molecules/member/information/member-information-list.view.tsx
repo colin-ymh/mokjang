@@ -89,7 +89,7 @@ const BlankSpace = styled.div`
 
 const TitleContainer = styled.div`
   display: flex;
-  width: 100px;
+  min-width: 100px;
 
   @media (max-width: ${MEDIA_MAX_WIDTH.MOBILE}) {
     width: 100px;
@@ -132,6 +132,12 @@ const RowDivider = styled.div`
 
 const PaddingBottom = styled.div`
   height: 30px;
+`;
+
+const WrapText = styled(MainText)`
+  white-space: pre-wrap; /* 여러 줄로 표시 & 공백/줄바꿈 문자도 해석 */
+  word-break: break-word; /* 긴 단어를 영역 벗어나기 전에 줄바꿈 */
+  overflow-wrap: break-word; /* 추가적인 안전 장치 */
 `;
 
 type InformationListViewProps = {
@@ -342,7 +348,7 @@ const InformationListView = ({
               <MainText color={GRAY.DEFAULT}>{t(MEMBER.ADDRESS)}</MainText>
             </TitleContainer>
             <ContentContainer>
-              <MainText>{prevMember.address}</MainText>
+              <WrapText>{prevMember.address}</WrapText>
             </ContentContainer>
             <PencilButton />
           </InformationItem>

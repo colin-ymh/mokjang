@@ -81,6 +81,13 @@ export type TABLE_HEADER_ITEM = {
   isDate?: boolean;
 };
 
+export const BLANK_HEADER = {
+  id: BLANK,
+  isShown: true,
+  isSortable: false,
+  isFilterable: false,
+};
+
 export const INITIAL_TABLE_HEADER_LIST: TABLE_HEADER_ITEM[] = [
   {
     id: MEMBER.CHECK,

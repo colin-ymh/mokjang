@@ -1,35 +1,39 @@
-import { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import { ButtonProps } from '@/components/atoms/common/button/button';
+import { GRAY, MAIN, WHITE } from '@/constants/styles/color';
 
-import Button, { ButtonProps } from '@/components/atoms/common/button/button';
+const ToggleContainer = styled.div<{ $value: boolean }>`
+  position: relative;
+  width: 40px;
+  height: 22px;
+  background-color: ${({ $value }) => ($value ? MAIN.DEFAULT : GRAY.LIGHT)};
+  border-radius: 11px;
+  cursor: pointer;
+  transition: background-color 0.5s ease;
+`;
 
-type ToggleButtonItem = {
-  value: any;
-  title: string;
-  backgroundColor?: string;
-};
+const Toggle = styled.div<{ $value: boolean }>`
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: ${WHITE};
+  transition: transform 0.5s ease;
+  transform: ${({ $value }) => ($value ? 'translateX(18px)' : 'translateX(0)')};
+`;
 
 type ToggleButtonProps = ButtonProps & {
-  value: any;
-  items: ToggleButtonItem[];
+  value: boolean;
   onClick: (value: any) => void;
 };
 
-const ToggleButton = ({ value, items, onClick }: ToggleButtonProps) => {
-  const [selectedIndex, setSelectedIndex] = useState<number>(0);
-
-  useEffect(() => {
-    const newIndex = items.findIndex((item) => item.value === value);
-    setSelectedIndex(newIndex);
-  }, [value]);
-
+const ToggleButton = ({ value, onClick }: ToggleButtonProps) => {
   return (
-    <>
-      <Button
-        text={items[selectedIndex].title}
-        onClick={() => onClick(items[(selectedIndex + 1) % items.length].value)}
-        backgroundColor={items[selectedIndex].backgroundColor}
-      />
-    </>
+    <ToggleContainer $value={value} onClick={onClick}>
+      <Toggle $value={value} />
+    </ToggleContainer>
   );
 };
 

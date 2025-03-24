@@ -36,6 +36,7 @@ const MemberListView = (props: MemberTableProps) => {
   return (
     <MemberListContainer>
       <MemberFilterRow />
+
       {/* 모바일에서 보일 목록형 UI */}
       <MobileView>
         <MemberItemList {...props} />

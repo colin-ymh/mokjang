@@ -5,6 +5,7 @@ export const Main = styled.div`
   width: 100%;
   max-width: 100%;
   overflow: hidden;
+  height: 100%;
 `;
 
 export default Main;

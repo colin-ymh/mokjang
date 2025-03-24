@@ -23,6 +23,7 @@ const MemberFilterContainer = styled.div`
   justify-content: space-between;
   width: 100%;
   position: relative;
+  border-bottom: 1px solid ${GRAY.LIGHT};
 `;
 
 const FilterList = styled.div`

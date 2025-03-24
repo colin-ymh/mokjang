@@ -1,4 +1,5 @@
 import { getSolar } from '@/utils/lunar/lunar-solar';
+import { BLANK } from '@/constants/constant';
 
 /**
  * YYYY-MM-dd => Date Object
@@ -12,6 +13,20 @@ export const getDateFromString = (dateString: string | null) => {
 
   if (limited.length === 10) return new Date(limited);
   else return null;
+};
+
+/**
+ * Date Object => YYYY-MM-dd
+ * @param date
+ */
+export const getStringFromDate = (date: Date | null) => {
+  if (!date) return BLANK;
+
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // 0-based index이므로 +1
+  const day = String(date.getDate()).padStart(2, '0');
+
+  return `${year}-${month}-${day}`;
 };
 
 /**

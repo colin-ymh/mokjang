@@ -5,6 +5,7 @@ const Container = styled.div`
   flex: 1;
   flex-direction: row;
   overflow: hidden;
+  height: 100%;
 `;
 
 export default Container;
