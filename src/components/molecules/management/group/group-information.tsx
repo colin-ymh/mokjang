@@ -9,6 +9,7 @@ import EditGroup from '@/components/molecules/management/group/edit-group';
 import { GroupRolesApi } from '@/api/management/group/group-roles.api';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
+import ToastPopup from '@/components/atoms/common/popup/toast-popup';
 
 const GroupInformationContainer = styled.div`
   display: flex;
@@ -70,6 +71,7 @@ type GroupInformationProps = {
 
 const GroupInformation = ({ group }: GroupInformationProps) => {
   const t = useI18n();
+  const t_popup = useScopedI18n('popup');
   const t_header = useScopedI18n('header');
   const groupRolesApi = new GroupRolesApi(false);
   const { churchId } = useSelector((state: RootState) => state.church);
@@ -83,6 +85,7 @@ const GroupInformation = ({ group }: GroupInformationProps) => {
   // 그룹 역할 상태 관리
   const [roles, setRoles] = useState<GroupRole[]>([]);
   const [isModalShown, setIsModalShown] = useState<boolean>(false);
+  const [isToastShown, setIsToastShown] = useState<boolean>(false);
 
   // 그룹 정보 수정 모달 열기
   const onClickOpen = () => setIsModalShown(true);
@@ -152,8 +155,20 @@ const GroupInformation = ({ group }: GroupInformationProps) => {
         height={70}
         isPercentage={true}
       >
-        <EditGroup group={group} roles={roles} onClickClose={onClickClose} />
+        <EditGroup
+          group={group}
+          roles={roles}
+          onClickClose={onClickClose}
+          setIsToastShown={setIsToastShown}
+        />
       </CustomPopup>
+
+      {isToastShown && (
+        <ToastPopup
+          setIsShow={setIsToastShown}
+          text={t_popup('saveComplete')}
+        />
+      )}
     </GroupInformationContainer>
   );
 };

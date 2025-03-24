@@ -1,3 +1,4 @@
+import React from 'react';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
@@ -9,7 +10,6 @@ import { SIZE } from '@/constants/styles/style';
 import { getTranslatedMemberColumn } from '@/utils/translate';
 
 import { useI18n } from '../../../../../locales/client';
-import React from 'react';
 
 const HeaderContainer = styled.div`
   display: flex;
@@ -18,6 +18,7 @@ const HeaderContainer = styled.div`
   overflow: hidden;
   position: relative;
   cursor: pointer;
+  height: 23px;
 `;
 
 const TextContainer = styled.div`
@@ -64,7 +65,10 @@ const MemberTableHeader = ({ item, onClick }: MemberTableHeaderProps) => {
            2) 일반 열인 경우
            ========================= */
         <TextContainer>
-          <MainText color={isActive ? MAIN.DEFAULT : GRAY.EXTRA_DARK}>
+          <MainText
+            color={isActive ? MAIN.DEFAULT : GRAY.EXTRA_DARK}
+            size={SIZE.SMALL}
+          >
             {getTranslatedMemberColumn(t, item.id)}
           </MainText>
         </TextContainer>
@@ -72,7 +76,7 @@ const MemberTableHeader = ({ item, onClick }: MemberTableHeaderProps) => {
       {item.isSortable && (
         <IconContainer>
           <MainText
-            size={SIZE.LARGE}
+            size={SIZE.MEDIUM}
             color={isActive ? MAIN.DEFAULT : GRAY.DEFAULT}
           >
             {'⇅'}

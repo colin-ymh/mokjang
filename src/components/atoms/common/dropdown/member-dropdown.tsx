@@ -4,6 +4,7 @@ import React, {
   ChangeEvent,
   forwardRef,
   RefObject,
+  useCallback,
   useEffect,
   useRef,
   useState,
@@ -67,8 +68,10 @@ const MemberDropdown = forwardRef<HTMLInputElement, DropdownProps>(
       setInnerValue(value);
     }, [value]);
 
-    // 현재 focus된 item
+    // 현재 포커스된 인덱스 (상태)
     const [focusedIndex, setFocusedIndex] = useState<number>(0);
+    // 항상 최신 focusedIndex를 저장하는 ref
+    const focusedIndexRef = useRef<number>(focusedIndex);
 
     // 이전 items.length를 추적하기 위한 Ref
     const prevItemsLength = useRef<number>(items.length);
@@ -139,39 +142,58 @@ const MemberDropdown = forwardRef<HTMLInputElement, DropdownProps>(
       // setIsOpened(true);
     };
 
-    const onKeyDownHandler = (event: React.KeyboardEvent<HTMLInputElement>) => {
-      if (event.keyCode === 229) return;
-      if (items.length === 0) return;
-      if (event.key === 'ArrowUp') {
-        event.preventDefault();
-        setFocusedIndex((focusedIndex + items.length - 1) % items.length);
-      } else if (event.key === 'ArrowDown') {
-        event.preventDefault();
-        setFocusedIndex((focusedIndex + 1) % items.length);
-      } else if (event.key === 'Enter') {
-        event.preventDefault();
+    /** 키보드 핸들러 (Functional Update와 ref 동기화 사용) */
+    const onKeyDownHandler = useCallback(
+      (event: React.KeyboardEvent<HTMLInputElement>) => {
+        if (!isOpened) return;
+        if (event.keyCode === 229) return;
+        if (items.length === 0) return;
 
-        if (onChangeItem && items[focusedIndex]) {
-          onChangeItem(items[focusedIndex].value);
+        if (event.key === 'ArrowUp') {
+          event.preventDefault();
+          setFocusedIndex((prevIndex) => {
+            const newIndex = (prevIndex + items.length - 1) % items.length;
+            focusedIndexRef.current = newIndex;
+            return newIndex;
+          });
+        } else if (event.key === 'ArrowDown') {
+          event.preventDefault();
+          setFocusedIndex((prevIndex) => {
+            const newIndex = (prevIndex + 1) % items.length;
+            focusedIndexRef.current = newIndex;
+            return newIndex;
+          });
+        } else if (event.key === 'Enter') {
+          event.preventDefault();
+          // 최신 인덱스는 ref에 저장된 값을 사용
+          const currentIndex = focusedIndexRef.current;
+          if (items[currentIndex]) {
+            onChangeItem?.(items[currentIndex].value);
+          }
+          setIsOpened(false);
+        } else if (event.key === 'Escape') {
+          setIsOpened(false);
         }
-        setIsOpened(false);
-      } else if (event.key === 'Escape') {
-        setIsOpened(false);
-      }
-    };
+      },
+      [isOpened, items, onChangeItem]
+    );
 
+    // 전역 이벤트 리스너 대신, 가능하면 해당 input에 직접 onKeyDown을 전달하는 것이 좋습니다.
+    // 여기서는 window에 리스너를 등록하는 방식으로 구현.
     useEffect(() => {
-      if (isOpened) {
-        const handleKeyDown = (event: KeyboardEvent) => {
-          onKeyDownHandler(event as any); // `event`를 그대로 `onKeyDownHandler`에 전달
-        };
+      const listener = (event: KeyboardEvent) => {
+        onKeyDownHandler(
+          event as unknown as React.KeyboardEvent<HTMLInputElement>
+        );
+      };
 
-        window.addEventListener('keydown', handleKeyDown);
-        return () => {
-          window.removeEventListener('keydown', handleKeyDown);
-        };
+      if (isOpened) {
+        window.addEventListener('keydown', listener);
       }
-    }, [isOpened]);
+      return () => {
+        window.removeEventListener('keydown', listener);
+      };
+    }, [isOpened, onKeyDownHandler]);
 
     const props = {
       ref,

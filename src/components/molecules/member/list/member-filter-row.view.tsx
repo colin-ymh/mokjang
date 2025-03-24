@@ -23,6 +23,7 @@ const MemberFilterContainer = styled.div`
   justify-content: space-between;
   width: 100%;
   position: relative;
+  border-bottom: 1px solid ${GRAY.LIGHT};
 `;
 
 const FilterList = styled.div`
@@ -109,6 +110,7 @@ const MemberFilterRowView = ({
   onKeyDown,
 }: MemberFilterViewProps) => {
   const t = useI18n();
+  const t_placeholder = useScopedI18n('placeholder');
   const t_button = useScopedI18n('button');
   const searchFilterDropdownItems = useSearchFilterDropdownItems();
 
@@ -161,6 +163,7 @@ const MemberFilterRowView = ({
           height={30}
           width={160}
           onKeyDown={onKeyDown}
+          placeholder={t_placeholder('search')}
         />
         <Button
           text={t('search')}

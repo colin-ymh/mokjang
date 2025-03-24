@@ -7,9 +7,6 @@ export const { getI18n, getScopedI18n, getCurrentLocale, getStaticParams } =
       en: () => import('./en'),
     },
     {
-      // Uncomment to use custom segment name
-      // segmentName: 'locale',
-      // Uncomment to set fallback locale
-      // fallbackLocale: en,
+      fallbackLocale: 'ko' as unknown as Record<string, unknown>,
     }
   );

@@ -217,6 +217,11 @@ export default {
 
   /*-------------------placeholder-------------------*/
   'placeholder.name': '이름을 입력해주세요.',
+  'placeholder.groupName': '그룹명을 입력해주세요.',
+  'placeholder.ministryGroupName': '사역그룹명을 입력해주세요.',
+  'placeholder.ministryName': '사역명을 입력해주세요.',
+  'placeholder.officerName': '직분명을 입력해주세요.',
+  'placeholder.educationName': '교육명을 입력해주세요.',
   'placeholder.mobilePhone': '휴대전화 번호를 입력해주세요.',
   'placeholder.birth': '생년월일을 입력해주세요. (yyyy-mm-dd)',
   'placeholder.homePhone': '집 전화번호를 입력해주세요.',
@@ -240,6 +245,7 @@ export default {
   'placeholder.instructor': '진행자를 선택해주세요.',
   'placeholder.sessionDate': '교육 일시를 입력해주세요. (yyyy-mm-dd) ',
   'placeholder.sessionContent': '교육 내용를 입력해주세요.',
+  'placeholder.search': '검색어를 입력해주세요.',
   /*-------------------placeholder-------------------*/
 
   /*-------------------radiobutton-------------------*/
@@ -249,11 +255,37 @@ export default {
 
   /*-------------------popup-------------------*/
   'popup.cancelRegisterTitle': '교인 등록을 종료하시겠습니까?',
-  'popup.cancelRegisterContent': '입력된 정보는 저장되지 않습니다.',
+  'popup.cancelRegisterBody': '입력된 정보는 저장되지 않습니다.',
   'popup.registerSuccess': '교인이 등록되었습니다.',
 
-  'popup.deleteMemberTitle': '교인을 삭제하시겠습니까?',
-  'popup.deleteMemberContent': '삭제된 교인은 복구할 수 없습니다.',
+  'popup.deleteMemberTitle': '해당 교인을 삭제하시겠습니까?',
+  'popup.deleteMemberBody': '삭제된 교인은 복구할 수 없습니다.',
+
+  'popup.deleteGroupTitle': '해당 그룹을 삭제하시겠습니까?',
+  'popup.deleteGroupBody': '삭제된 그룹은 복구할 수 없습니다.',
+
+  'popup.deleteEducationTitle': '해당 교육을 삭제하시겠습니까?',
+  'popup.deleteEducationBody': '삭제된 교육은 복구할 수 없습니다.',
+
+  'popup.deleteOfficerTitle': '해당 직분을 삭제하시겠습니까?',
+  'popup.deleteOfficerBody': '삭제된 직분은 복구할 수 없습니다.',
+
+  'popup.deleteMinistryGroupTitle': '해당 사역 그룹을 삭제하시겠습니까?',
+  'popup.deleteMinistryGroupBody': '삭제된 사역 그룹은 복구할 수 없습니다.',
+
+  'popup.deleteEnrollmentTitle': '선택된 교인(들)을 교육에서 삭제하시겠습니까?',
+  'popup.deleteEnrollmentBody': '삭제된 등록 내역은 복구할 수 없습니다.',
+
+  'popup.deleteHistoryTitle': '해당 이력을 삭제하시겠습니까?',
+  'popup.deleteHistoryBody': '삭제된 이력은 복구할 수 없습니다.',
+
+  'popup.deleteFamilyTitle': '해당 가족 관계를 삭제하시겠습니까?',
+  'popup.deleteFamilyBody': '삭제된 관계는 복구할 수 없습니다.',
+
+  'popup.deleteTermTitle': '해당 교육 기수를 삭제하시겠습니까?',
+  'popup.deleteTermBody': '삭제된 기수는 복구할 수 없습니다.',
+
+  'popup.saveComplete': '저장이 완료되었습니다.',
 
   'popup.verifyFail': '잘못된 인증번호 입니다.',
   'popup.duplicatedRole': '이미 등록된 그룹 역할입니다.',

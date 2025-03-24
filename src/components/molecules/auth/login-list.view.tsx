@@ -1,10 +1,12 @@
 import { ChangeEvent } from 'react';
 import styled from 'styled-components';
 
+import { AUTH } from '@/api/auth/auth.api';
+
 import { MainText } from '@/components/atoms/common/text/main-text';
-import { GRAY } from '@/constants/styles/color';
-import LabelInput from '@/components/atoms/common/input/label-input';
+import { BLACK, GRAY } from '@/constants/styles/color';
 import { SIZE } from '@/constants/styles/style';
+import LabelInput from '@/components/atoms/common/input/label-input';
 import Button from '@/components/atoms/common/button/button';
 
 const ListContainer = styled.div`
@@ -13,7 +15,7 @@ const ListContainer = styled.div`
   justify-content: center;
   align-items: flex-start;
 
-  gap: 40px;
+  gap: 10px;
   padding: 10px;
   width: 80%;
 `;
@@ -49,7 +51,7 @@ type LoginListViewProps = {
   phone: string;
   onChangeName: (event: ChangeEvent<HTMLInputElement>) => void;
   onChangePhone: (event: ChangeEvent<HTMLInputElement>) => void;
-  onClickItem: () => void;
+  onClickItem: (provider?: AUTH) => void;
 };
 
 const LoginListView = ({
@@ -74,20 +76,20 @@ const LoginListView = ({
         <LabelInput label={'이름'} value={name} onChange={onChangeName} />
         <LabelInput label={'전화번호'} value={phone} onChange={onChangePhone} />
       </InputContainer>
+      <Button text={'로그인'} onClick={() => onClickItem()} height={40} />
 
-      {/*<OAuthItem onClick={() => onClickItem(AUTH.NAVER)}>*/}
-      {/*  <MainText color={BLACK}>{'네이버'}</MainText>*/}
-      {/*</OAuthItem>*/}
-      {/*<OAuthItem onClick={() => onClickItem(AUTH.GOOGLE)}>*/}
-      {/*  <MainText color={BLACK}>{'구글'}</MainText>*/}
-      {/*</OAuthItem>*/}
-      {/*<OAuthItem onClick={() => onClickItem(AUTH.KAKAO)}>*/}
-      {/*  <MainText color={BLACK}>{'카카오'}</MainText>*/}
-      {/*</OAuthItem>*/}
-      {/*<OAuthItem>*/}
-      {/*  <MainText color={BLACK}>{'애플'}</MainText>*/}
-      {/*</OAuthItem>*/}
-      <Button text={'로그인'} onClick={onClickItem} height={40} />
+      <OAuthItem onClick={() => onClickItem(AUTH.NAVER)}>
+        <MainText color={BLACK}>{'네이버'}</MainText>
+      </OAuthItem>
+      <OAuthItem onClick={() => onClickItem(AUTH.GOOGLE)}>
+        <MainText color={BLACK}>{'구글'}</MainText>
+      </OAuthItem>
+      <OAuthItem onClick={() => onClickItem(AUTH.KAKAO)}>
+        <MainText color={BLACK}>{'카카오'}</MainText>
+      </OAuthItem>
+      <OAuthItem>
+        <MainText color={BLACK}>{'애플'}</MainText>
+      </OAuthItem>
     </ListContainer>
   );
 };

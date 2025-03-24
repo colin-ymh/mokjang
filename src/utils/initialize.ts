@@ -16,9 +16,8 @@ import {
 } from '@/redux/reducers/church-reducer';
 import { GroupsApi } from '@/api/management/group/groups.api';
 import { MinistryGroupsApi } from '@/api/management/ministry/ministry-groups.api';
-import { usePageRouter } from '@/utils/router';
 import { AuthApi } from '@/api/auth/auth.api';
-import { setAuthorizationToken } from '@/api/authorize-axios';
+import { usePageRouter } from '@/utils/router';
 import { setUser } from '@/redux/reducers/user-reducer';
 
 export const useInitializeChurch = () => {
@@ -71,84 +70,47 @@ export const useInitializeChurch = () => {
   return initialize;
 };
 
+// 초기 유저 정보를 확인해 리다이렉트
 export const useInitializeUser = () => {
-  const router = usePageRouter();
   const dispatch = useDispatch<AppDispatch>();
+  const router = usePageRouter();
   const authApi = new AuthApi(false);
-
-  const [thrownError, setThrownError] = useState<Error | null>(null);
-  if (thrownError) {
-    throw thrownError;
-  }
 
   return async () => {
     try {
-      // 1) 로컬 스토리지에서 Access/Refresh Token 가져오기
-      const accessToken =
-        typeof window !== 'undefined'
-          ? localStorage.getItem('accessToken')
-          : null;
-      const refreshToken =
-        typeof window !== 'undefined'
-          ? localStorage.getItem('refreshToken')
-          : null;
-      // console.log('accessToken', accessToken);
-      // console.log('refreshToken', refreshToken);
+      // (1) 임시 토큰 체크
+      const temporalResponse = await authApi.getIsTemporalToken();
+      const isTemporalToken = temporalResponse.data;
 
-      // 2) Access Token이 없으면 Refresh Token 확인
-      if (!accessToken) {
-        // Refresh Token도 없으면 → 로그인 화면
-        if (!refreshToken) {
-          router.push('/login');
-          return;
-        } else {
-          setAuthorizationToken(refreshToken);
-
-          // Refresh Token을 Authorization 헤더에 추가하여 새로운 Access Token 요청
-          const refreshResponse = await authApi.getRefreshToken();
-
-          const newAccessToken = refreshResponse.data.accessToken;
-
-          if (!newAccessToken) {
-            // 실패 시 로그인
-            router.push('/login');
-            return;
-          }
-
-          // 새 Access Token 저장
-          setAuthorizationToken(newAccessToken);
-        }
-      } else {
-        // Access Token이 있다면 일단 설정
-        setAuthorizationToken(accessToken);
+      if (isTemporalToken) {
+        // 임시 토큰만 있으면 회원가입 진행 페이지로
+        router.replace('/login/register');
+        return;
       }
+    } catch (error) {
+      console.log('No Temporal Token');
+    }
 
-      // 3) 이제 사용자 정보를 요청 (이미 Access Token이 설정된 상태)
+    try {
+      // (2) Access Token으로 유저 정보 가져오기
       const response = await authApi.getUser();
       const newUser = response.data;
 
-      // 4) Redux 상태 업데이트
+      // (3) Redux에 사용자 정보 저장
       dispatch(setUser(newUser));
-      // 교회 정보가 있다면 상태 저장 후 홈으로 이동
-      if (newUser?.adminChurch?.id || newUser?.managingChurch?.id) {
-        const c = newUser.adminChurch || newUser.managingChurch;
+
+      // (4) 교회 정보 확인 후 라우팅
+      const c = newUser?.adminChurch || newUser?.managingChurch;
+      if (c?.id) {
         dispatch(setChurch(c));
         dispatch(setChurchId(c.id));
-        router.push('');
+        router.replace('/');
       } else {
-        // 교회가 없으면 교회 등록
-        router.push('/church/register');
+        router.replace('/church/register');
       }
     } catch (error: any) {
-      // 토큰이 유효하지 않으면 삭제 후 로그인 페이지로 이동
-      if (typeof window !== 'undefined') {
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('refreshToken');
-      }
-      setThrownError(
-        error instanceof Error ? error : new Error('Unknown error')
-      );
-      router.push('/login');
+      // (5) Access Token 인증 실패 → 로그인 페이지
+      router.replace('/login');
     }
   };
 };

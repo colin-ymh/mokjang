@@ -69,7 +69,7 @@ const AddGroup = forwardRef<HTMLInputElement, AddGroupProps>(
             onChange={onChangeName}
             height={10}
             color={BLACK}
-            placeholder={t_placeholder('name')}
+            placeholder={t_placeholder('groupName')}
           />
           <CheckButton
             $isEnabled={getIsWellFormedTitle(name)}

@@ -2,6 +2,7 @@ import React, {
   ChangeEvent,
   Dispatch,
   SetStateAction,
+  useEffect,
   useRef,
   useState,
 } from 'react';
@@ -14,6 +15,9 @@ import { getFormattedTitle } from '@/utils/format';
 import { getIsWellFormedTitle } from '@/utils/check';
 import { BLANK } from '@/constants/constant';
 import ManagementOfficerItemView from '@/components/atoms/management/officer/management-officer-item.view';
+import { useScopedI18n } from '../../../../../locales/client';
+import ConfirmPopup from '@/components/atoms/common/popup/error-popup';
+import ToastPopup from '@/components/atoms/common/popup/toast-popup';
 
 type ManagementOfficerItemProps = {
   officer: Officer;
@@ -28,6 +32,8 @@ const ManagementOfficerItem = ({
   setSelectedOfficer,
   fetchOfficers,
 }: ManagementOfficerItemProps) => {
+  const t_popup = useScopedI18n('popup');
+  const t_button = useScopedI18n('button');
   const officersApi = new OfficersApi(false);
   const churchId = useSelector((state: RootState) => state.church.churchId);
   const [thrownError, setThrownError] = useState<Error | null>(null);
@@ -37,16 +43,20 @@ const ManagementOfficerItem = ({
     throw thrownError;
   }
 
+  const [isToastShown, setIsToastShown] = useState<boolean>(false);
+
+  const [isPopupShown, setIsPopupShown] = useState<boolean>(false);
+
   // 이름 수정창 ref
   const nameInputRef = useRef<HTMLInputElement>(null);
 
-  // 새로 추가하는 그룹 입력창 ref
+  // 새로 추가하는 직분 입력창 ref
   const newOfficerRef = useRef<HTMLInputElement>(null);
 
   // 새로 추가중인지 여부
   const [isAddShown, setIsAddShown] = useState<boolean>(false);
 
-  // 새 그룹의 이름
+  // 새 직분의 이름
   const [newOfficerName, setNewOfficerName] = useState<string>(BLANK);
 
   // 수정중인지 여부
@@ -55,7 +65,7 @@ const ManagementOfficerItem = ({
   // 수정되는 이름
   const [editName, setEditName] = useState<string>(officer.name);
 
-  // 새로운 그룹 추가하기
+  // 새로운 직분 추가하기
   const onClickSaveNewOfficer = async () => {
     if (!getIsWellFormedTitle(newOfficerName)) return;
 
@@ -69,10 +79,10 @@ const ManagementOfficerItem = ({
     }
   };
 
-  // 확인 중인 그룹 변경
+  // 확인 중인 직분 변경
   const onClickOfficer = (officerId: string | null) => {};
 
-  // 그룹 수정 활성화
+  // 직분 수정 활성화
   const onClickOfficerEdit = () => {
     setEditName(officer.name);
     setIsEdit(true);
@@ -85,8 +95,12 @@ const ManagementOfficerItem = ({
     });
   };
 
-  // 그룹 삭제
-  const onClickOfficerDelete = async (officerId: string) => {
+  // 직분 삭제
+  const onClickOfficerDelete = () => {
+    setIsPopupShown(true);
+  };
+
+  const onClickConfirmDelete = async (officerId: string) => {
     try {
       await officersApi.deleteOfficer({ churchId, officerId });
       fetchOfficers();
@@ -96,7 +110,7 @@ const ManagementOfficerItem = ({
     }
   };
 
-  // 그룹 추가 활성화
+  // 직분 추가 활성화
   const onClickOfficerAdd = () => {
     setIsAddShown(true);
     setTimeout(() => {
@@ -128,6 +142,8 @@ const ManagementOfficerItem = ({
       setIsEdit(false);
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));
+    } finally {
+      setIsToastShown(true);
     }
   };
 
@@ -136,6 +152,36 @@ const ManagementOfficerItem = ({
     officerId: string,
     parentOfficerId: string | null
   ) => {};
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // !!!!!!!!!!!! 시발 !!!!!!!!!!!!
+      // 한글 키보드로 입력 시, compose 를 하네;;;;;이 개같은거
+      // isComposing 이 true => false 이 지랄을 하면서
+      // 엔터가 두 번 입력되는 것 처럼 보였던 것이다
+      // 이 개같은 것 때문에 시간을 존나 날려먹었다
+      // !!!!!!!!!!!! 시발 !!!!!!!!!!!!
+      if (e.isComposing) {
+        return;
+      }
+
+      if (e.key === 'Enter') {
+        if (getIsWellFormedTitle(editName)) {
+          onClickSaveName();
+        } else {
+          setIsEdit(false);
+        }
+      } else if (e.key === 'Escape') {
+        setIsEdit(false);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [editName]);
 
   const props = {
     isEdit,
@@ -155,6 +201,22 @@ const ManagementOfficerItem = ({
   return (
     <>
       <ManagementOfficerItemView {...props} />
+      {isToastShown && (
+        <ToastPopup
+          setIsShow={setIsToastShown}
+          text={t_popup('saveComplete')}
+        />
+      )}
+      <ConfirmPopup
+        title={t_popup('deleteOfficerTitle')}
+        body={t_popup('deleteOfficerBody')}
+        isShow={isPopupShown}
+        onClickLeftButton={() => setIsPopupShown(false)}
+        onClickRightButton={() => onClickConfirmDelete(officer.id as string)}
+        leftButtonText={t_button('cancel')}
+        rightButtonText={t_button('confirm')}
+        buttonNum={2}
+      />
     </>
   );
 };

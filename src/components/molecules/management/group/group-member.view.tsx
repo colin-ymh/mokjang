@@ -9,6 +9,7 @@ import { Member } from '@/models/member/member';
 
 import { useScopedI18n } from '../../../../../locales/client';
 import Plus from '../../../../../public/svg/plus.svg';
+import { Dispatch, SetStateAction } from 'react';
 
 const GroupMemberContainer = styled.div`
   display: flex;
@@ -57,6 +58,7 @@ type GroupMemberViewProps = {
   fetchMembers: () => void;
   onClickModalOpen: () => void;
   onClickModalClose: () => void;
+  setIsToastShown: Dispatch<SetStateAction<boolean>>;
 };
 
 const GroupMemberView = ({
@@ -66,6 +68,7 @@ const GroupMemberView = ({
   fetchMembers,
   onClickModalOpen,
   onClickModalClose,
+  setIsToastShown,
 }: GroupMemberViewProps) => {
   const t_header = useScopedI18n('header');
 
@@ -81,6 +84,7 @@ const GroupMemberView = ({
             isShown={isModalShown}
             fetchMembers={fetchMembers}
             onClickClose={onClickModalClose}
+            setIsToastShown={setIsToastShown}
           />
         </ModalContainer>
       </ListTypeHeader>

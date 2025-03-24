@@ -8,9 +8,9 @@ const Wrap = styled.div`
   height: 100%;
   width: 100%;
 
-  @media (min-width: ${MEDIA_MIN_WIDTH.DESKTOP}) {
-    flex-direction: row;
-  }
+  // @media (min-width: ${MEDIA_MIN_WIDTH.DESKTOP}) {
+  //   flex-direction: row;
+  // }
 `;
 
 export default Wrap;

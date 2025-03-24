@@ -1,14 +1,16 @@
 import styled from 'styled-components';
+import { usePathname } from 'next/navigation';
 
 import { OfficerHistory } from '@/models/member/history';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { getFormattedDate, getLocaleDateFromDashDate } from '@/utils/format';
 import { GRAY } from '@/constants/styles/color';
 import SlideButtonList from '@/components/atoms/common/button/slide-button-list';
-
-import { useI18n } from '../../../../../locales/client';
-import { usePathname } from 'next/navigation';
 import { LOCALE } from '@/constants/state/locale';
+
+import { useI18n, useScopedI18n } from '../../../../../locales/client';
+import React, { useState } from 'react';
+import ConfirmPopup from '@/components/atoms/common/popup/error-popup';
 
 const BackgroundContainer = styled.div<{ $isCurrent?: boolean }>`
   display: flex;
@@ -59,16 +61,25 @@ const DateContainer = styled.div`
 type OfficerHistoryItemProps = {
   officer: OfficerHistory;
   onClickEditOfficer: (officer: OfficerHistory) => void;
-  onClickDeleteOfficer: (officerId: string) => void;
+  onClickConfirmDelete: (officerId: string) => void;
   isCurrent?: boolean;
 };
 
 const OfficerHistoryItem = ({
   officer,
   onClickEditOfficer,
-  onClickDeleteOfficer,
+  onClickConfirmDelete,
   isCurrent,
 }: OfficerHistoryItemProps) => {
+  const t_popup = useScopedI18n('popup');
+  const t_button = useScopedI18n('button');
+  const [isPopupShown, setIsPopupShown] = useState<boolean>(false);
+
+  // 기존 직분 삭제하기
+  const onClickDeleteOfficer = () => {
+    setIsPopupShown(true);
+  };
+
   const t = useI18n();
   const pathname = usePathname();
   const basePath = pathname.split('/')[1] as LOCALE;
@@ -113,10 +124,20 @@ const OfficerHistoryItem = ({
             isAddShown={false}
             buttonSize={25}
             onClickEdit={() => onClickEditOfficer(officer)}
-            onClickDelete={() => onClickDeleteOfficer(officer.id)}
+            onClickDelete={onClickDeleteOfficer}
           />
         )}
       </ItemContainer>
+      <ConfirmPopup
+        title={t_popup('deleteHistoryTitle')}
+        body={t_popup('deleteHistoryBody')}
+        isShow={isPopupShown}
+        onClickLeftButton={() => setIsPopupShown(false)}
+        onClickRightButton={() => onClickConfirmDelete(officer.id)}
+        leftButtonText={t_button('cancel')}
+        rightButtonText={t_button('confirm')}
+        buttonNum={2}
+      />
     </BackgroundContainer>
   );
 };

@@ -1,4 +1,11 @@
-import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import {
+  ChangeEvent,
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 
@@ -22,9 +29,15 @@ type EditGroupProps = {
   group: Group;
   roles: GroupRole[];
   onClickClose: () => void;
+  setIsToastShown: Dispatch<SetStateAction<boolean>>;
 };
 
-const EditGroup = ({ group, roles, onClickClose }: EditGroupProps) => {
+const EditGroup = ({
+  group,
+  roles,
+  onClickClose,
+  setIsToastShown,
+}: EditGroupProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const t_popup = useScopedI18n('popup');
   const groupRolesApi = new GroupRolesApi(false);
@@ -149,6 +162,8 @@ const EditGroup = ({ group, roles, onClickClose }: EditGroupProps) => {
       setSelectedRole(DEFAULT_GROUP_ROLE);
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));
+    } finally {
+      setIsToastShown(true);
     }
   };
 

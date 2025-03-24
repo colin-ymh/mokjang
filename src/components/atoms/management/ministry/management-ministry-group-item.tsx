@@ -20,6 +20,9 @@ import { BLANK } from '@/constants/constant';
 import { MinistryGroupsApi } from '@/api/management/ministry/ministry-groups.api';
 import ManagementMinistryGroupItemView from '@/components/atoms/management/ministry/management-ministry-group-item.view';
 import AddMinistryGroup from '@/components/atoms/management/ministry/add-ministry-group';
+import { useScopedI18n } from '../../../../../locales/client';
+import ConfirmPopup from '@/components/atoms/common/popup/error-popup';
+import ToastPopup from '@/components/atoms/common/popup/toast-popup';
 
 type ManagementMinistryGroupItemProps = {
   ministryGroup: MinistryGroup;
@@ -40,6 +43,8 @@ const ManagementMinistryMinistryGroupItem = ({
   fetchMinistryGroups,
   onClickToggle,
 }: ManagementMinistryGroupItemProps) => {
+  const t_popup = useScopedI18n('popup');
+  const t_button = useScopedI18n('button');
   const ministryGroupsApi = new MinistryGroupsApi(false);
   const churchId = useSelector((state: RootState) => state.church.churchId);
   const [thrownError, setThrownError] = useState<Error | null>(null);
@@ -48,6 +53,9 @@ const ManagementMinistryMinistryGroupItem = ({
   if (thrownError) {
     throw thrownError;
   }
+
+  const [isToastShown, setIsToastShown] = useState<boolean>(false);
+  const [isPopupShown, setIsPopupShown] = useState<boolean>(false);
 
   const isHaveChildren =
     ministryGroup.childMinistryGroups &&
@@ -99,6 +107,8 @@ const ManagementMinistryMinistryGroupItem = ({
       setNewMinistryGroupName(BLANK);
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));
+    } finally {
+      setIsToastShown(true);
     }
   };
 
@@ -125,7 +135,11 @@ const ManagementMinistryMinistryGroupItem = ({
   };
 
   // 그룹 삭제
-  const onClickMinistryGroupDelete = async (ministryGroupId: string) => {
+  const onClickMinistryGroupDelete = () => {
+    setIsPopupShown(true);
+  };
+
+  const onClickConfirmDelete = async (ministryGroupId: string) => {
     try {
       await ministryGroupsApi.deleteMinistryGroup({
         churchId,
@@ -166,6 +180,8 @@ const ManagementMinistryMinistryGroupItem = ({
       setIsEdit(false);
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));
+    } finally {
+      setIsToastShown(true);
     }
   };
 
@@ -245,6 +261,24 @@ const ManagementMinistryMinistryGroupItem = ({
   return (
     <>
       <ManagementMinistryGroupItemView {...props} />
+      {isToastShown && (
+        <ToastPopup
+          setIsShow={setIsToastShown}
+          text={t_popup('saveComplete')}
+        />
+      )}
+      <ConfirmPopup
+        title={t_popup('deleteMinistryGroupTitle')}
+        body={t_popup('deleteMinistryGroupBody')}
+        isShow={isPopupShown}
+        onClickLeftButton={() => setIsPopupShown(false)}
+        onClickRightButton={() =>
+          onClickConfirmDelete(ministryGroup.id as string)
+        }
+        leftButtonText={t_button('cancel')}
+        rightButtonText={t_button('confirm')}
+        buttonNum={2}
+      />
       <AddMinistryGroup
         ref={newMinistryGroupRef}
         isShown={isAddShown}

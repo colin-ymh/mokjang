@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { MainText } from '@/components/atoms/common/text/main-text';
-import { BLACK, DESTRUCTIVE, MAIN, WHITE } from '@/constants/styles/color';
+import { DESTRUCTIVE, MAIN, WHITE } from '@/constants/styles/color';
 import { SIZE } from '@/constants/styles/style';
 
 interface ConfirmPopupProps {
@@ -34,7 +34,7 @@ const ModalOverlay = styled.div`
 
 const ModalContainer = styled.div`
   background-color: #fff;
-  width: 254px;
+  min-width: 254px;
   border-radius: 5px;
   box-shadow: 0 5px 5px rgba(0, 0, 0, 0.3);
   display: flex;
@@ -48,7 +48,8 @@ const TextContainer = styled.div`
   width: 80%;
   text-align: center;
   margin: 20px 25px 0 25px;
-  white-space: pre-line;
+  white-space: pre-wrap;
+  word-break: break-word;
   gap: 10px;
 `;
 
@@ -126,12 +127,21 @@ const ConfirmPopup = ({
 }: ConfirmPopupProps) => {
   if (!isShow) return null;
 
+  const handleClick = (event: React.MouseEvent) => {
+    event.stopPropagation();
+  };
+
   const getButtons = () => {
     switch (buttonNum) {
       case 1:
         return (
           <ButtonContainer>
-            <SingleButton onClick={onClickSingleButton}>
+            <SingleButton
+              onClick={(event) => {
+                event.stopPropagation();
+                onClickSingleButton && onClickSingleButton();
+              }}
+            >
               {singleButtonText}
             </SingleButton>
           </ButtonContainer>
@@ -140,11 +150,20 @@ const ConfirmPopup = ({
         return (
           <ButtonContainer>
             <TwoButtonContainer>
-              <LeftButton onClick={onClickLeftButton}>
+              <LeftButton
+                onClick={(event) => {
+                  event.stopPropagation();
+                  onClickLeftButton && onClickLeftButton();
+                }}
+              >
                 {leftButtonText}
               </LeftButton>
-              {/*<VerticalDivideLine />*/}
-              <RightButton onClick={onClickRightButton}>
+              <RightButton
+                onClick={(event) => {
+                  event.stopPropagation();
+                  onClickRightButton && onClickRightButton();
+                }}
+              >
                 {rightButtonText}
               </RightButton>
             </TwoButtonContainer>
@@ -153,15 +172,41 @@ const ConfirmPopup = ({
       case 3:
         return (
           <ThreeButtonContainer>
-            <Button onClick={onClickLeftButton}>{leftButtonText}</Button>
-            <Button onClick={onClickMiddleButton}>{middleButtonText}</Button>
-            <Button onClick={onClickRightButton}>{rightButtonText}</Button>
+            <Button
+              onClick={(event) => {
+                event.stopPropagation();
+                onClickLeftButton && onClickLeftButton();
+              }}
+            >
+              {leftButtonText}
+            </Button>
+            <Button
+              onClick={(event) => {
+                event.stopPropagation();
+                onClickMiddleButton && onClickMiddleButton();
+              }}
+            >
+              {middleButtonText}
+            </Button>
+            <Button
+              onClick={(event) => {
+                event.stopPropagation();
+                onClickRightButton && onClickRightButton();
+              }}
+            >
+              {rightButtonText}
+            </Button>
           </ThreeButtonContainer>
         );
       default:
         return (
           <ButtonContainer>
-            <SingleButton onClick={onClickSingleButton}>
+            <SingleButton
+              onClick={(event) => {
+                event.stopPropagation();
+                onClickSingleButton && onClickSingleButton();
+              }}
+            >
               {singleButtonText}
             </SingleButton>
           </ButtonContainer>
@@ -170,8 +215,8 @@ const ConfirmPopup = ({
   };
 
   return (
-    <ModalOverlay>
-      <ModalContainer>
+    <ModalOverlay onClick={handleClick}>
+      <ModalContainer onClick={handleClick}>
         <TextContainer>
           <MainText fontWeight={500}>{title}</MainText>
           <MainText size={SIZE.SMALL}>{body}</MainText>

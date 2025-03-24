@@ -8,7 +8,7 @@ import { RootState } from '@/redux/store';
 import { GRAY, WHITE } from '@/constants/styles/color';
 import { MEMBER } from '@/constants/member/member-column';
 import { MainText } from '@/components/atoms/common/text/main-text';
-import { BAPTISM, GENDER } from '@/constants/constant';
+import { BAPTISM, BLANK, GENDER } from '@/constants/constant';
 import { getAge, getDateFromString } from '@/utils/date';
 import {
   getFormattedDate,
@@ -22,114 +22,127 @@ import useWindowSize from '@/hooks/window/window';
 import { LOCALE } from '@/constants/state/locale';
 import CheckButton from '@/components/atoms/common/button/check-button';
 import Button from '@/components/atoms/common/button/button';
-import { useI18n, useScopedI18n } from '../../../../../locales/client';
 import ConfirmPopup from '@/components/atoms/common/popup/error-popup';
 import { getRandomImage } from '@/utils/image';
 
+import { useI18n, useScopedI18n } from '../../../../../locales/client';
+import { BLANK_HEADER } from '@/redux/reducers/member-filter-reducer';
+
+// 1. 컬럼별 PX 폭 (마지막 REMARKS만 auto 할 예정)
 const getColumnWidth = (id: string) => {
   switch (id) {
     case MEMBER.CHECK:
-      return 10;
+      return 25;
     case MEMBER.GROUP:
-      return 40;
+      return 60;
     case MEMBER.NAME:
-      return 100;
+      return 120;
     case MEMBER.GENDER:
-      return 40;
+      return 60;
     case MEMBER.OFFICER:
-      return 40;
+      return 80;
     case MEMBER.AGE:
-      return 40;
+      return 50;
     case MEMBER.MOBILE_PHONE:
-      return 150;
+      return 140;
     case MEMBER.HOME_PHONE:
       return 140;
     case MEMBER.ADDRESS:
-      return 150;
+      return 180;
     case MEMBER.OCCUPATION:
-      return 80;
-    case MEMBER.SCHOOL:
       return 100;
+    case MEMBER.SCHOOL:
+      return 120;
     case MEMBER.BAPTISM:
-      return 50;
+      return 80;
     case MEMBER.BIRTH:
-      return 150;
+      return 120;
     case MEMBER.REGISTERED_AT:
-      return 150;
+      return 130;
     case MEMBER.UPDATED_AT:
-      return 150;
+      return 130;
     default:
-      return 50;
+      // 비고(REMARKS) 컬럼 등
+      return 80;
   }
 };
 
-const TableContainer = styled.div`
+// 2. 테이블 컨테이너 (100% 폭 + 스크롤)
+const TableContainer = styled.div<{ height: number }>`
+  /* 항상 가로 100%를 채움 */
+  width: 100%;
+  /* 세로 높이만큼 상하 스크롤 */
+  height: ${({ height }) => `${height - 200}px`};
+
+  /* 오버플로 시 스크롤 */
+  overflow-x: auto;
+  overflow-y: auto;
+
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-  overflow-y: hidden;
 `;
 
+// 3. 테이블은 width: 100% + table-layout: fixed
 const MemberTable = styled.table`
   width: 100%;
+  table-layout: fixed;
   border-collapse: collapse;
-  table-layout: fixed; /* 테이블 레이아웃 고정 */
-  position: relative;
+  border-spacing: 0;
+  /* 아래 옵션으로 텍스트 줄바꿈 등 처리. 
+       white-space: nowrap; 로 하면 줄바꿈 없이 가로로 늘어나게 됨 */
+  white-space: normal;
 `;
 
-const TableHeader = styled.th<{ id: string }>`
-  border-bottom: 1px solid ${GRAY.LIGHT};
-  border-top: 1px solid ${GRAY.LIGHT};
+// 4. 헤더(TH)
+const TableHeader = styled.th<{ id: string; isLast?: boolean }>`
   border-right: 1px solid ${GRAY.LIGHT};
-  padding: 5px;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  flex-shrink: 0;
+  padding: 3px;
+  background-color: ${GRAY.SIDE_BAR};
+  position: sticky;
+  top: 0;
+  z-index: 5;
+
+  /* 만약 마지막 컬럼이면 width: auto */
+  width: ${({ id, isLast }) => (isLast ? 'auto' : `${getColumnWidth(id)}px`)};
+
+  /* 텍스트 넘침 처리 */
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
-  background-color: ${GRAY.SIDE_BAR};
-
-  width: ${({ id }) => {
-    return `${getColumnWidth(id)}px`;
-  }};
 `;
 
-const Scroll = styled.div<{ height: number }>`
-  width: auto;
-  height: ${({ height }) => `${height - 200}px`};
-  overflow-y: auto;
-  position: relative;
-  text-overflow: ellipsis; /* 넘치는 텍스트 ... 처리 */
-  white-space: nowrap; /* 줄바꿈 방지 */
-  flex-shrink: 0; /* 자식 콘텐츠 크기와 관계없이 고정 */
-`;
-
+// 5. 본문(TR/TD)
 const MemberTableRow = styled.tr`
   &:hover td {
     background-color: ${GRAY.LIGHT};
   }
 `;
 
-const TableData = styled.td<{ id: string; $index: number }>`
-  border-bottom: 1px solid ${GRAY.LIGHT};
-  border-right: 1px solid ${GRAY.LIGHT};
-  padding: 5px;
+const TableData = styled.td<{ id: string; $index: number; isLast?: boolean }>`
+  border: 1px solid ${GRAY.LIGHT};
+  padding: 3px;
   background-color: ${({ $index }) => ($index % 2 === 0 ? WHITE : WHITE)};
   cursor: pointer;
-  z-index: 10;
-  width: ${({ id }) => `${getColumnWidth(id)}px`};
+
+  /* 마지막 컬럼이면 auto, 아니면 px 고정 */
+  width: ${({ id, isLast }) => (isLast ? 'auto' : `${getColumnWidth(id)}px`)};
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  &:first-child {
+    border-left: none;
+  }
 `;
 
 const ContentWrapper = styled.div`
   display: flex;
   align-items: center;
-  max-width: 100%; /* 부모인 td의 너비에 맞춤 */
-  overflow: hidden; /* 넘치는 내용 숨김 */
-  text-overflow: ellipsis; /* 넘치는 텍스트 ... 처리 */
-  white-space: nowrap; /* 줄바꿈 방지 */
+  /* 그냥 늘어날 수 있게, 필요한 경우 ellipsis 처리 */
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 
 const ProfileContainer = styled.div`
@@ -140,8 +153,8 @@ const ProfileContainer = styled.div`
 `;
 
 const ProfileImage = styled(Image)`
-  width: 35px;
-  height: 35px;
+  width: 30px;
+  height: 30px;
   border-radius: 20%;
   overflow: hidden;
 `;
@@ -149,17 +162,16 @@ const ProfileImage = styled(Image)`
 const PopupButtonContainer = styled.div<{ $isShown: boolean }>`
   position: absolute;
   bottom: 70px;
-  left: 50%; /* 부모의 왼쪽 기준 50% */
-  justify-content: center; /* 내부 요소들 중앙 정렬(버튼 여러 개라면 유용) */
-
-  /* 트랜지션 효과 */
+  left: 50%;
+  transform: translateX(-50%);
+  justify-content: center;
   transition: opacity 0.2s ease;
 
-  /* display: none 대신, opacity와 pointer-events로 show/hide */
   opacity: ${({ $isShown }) => ($isShown ? 1 : 0)};
   pointer-events: ${({ $isShown }) => ($isShown ? 'auto' : 'none')};
 `;
 
+// 이 예시에서는 실제 MEMBER + "비고" 컬럼(REMARKS)까지 표시
 type MemberTableProps = {
   isPopupShown: boolean;
   onClickOpen: () => void;
@@ -188,16 +200,24 @@ const MemberTableView = ({
   onClickDeleteMembers,
 }: MemberTableProps) => {
   const { height } = useWindowSize();
-  const memberTableHeaderItemList = useSelector(
-    (state: RootState) => state.memberFilter.memberTableHeaderItemList
-  );
   const t = useI18n();
   const t_button = useScopedI18n('button');
   const t_popup = useScopedI18n('popup');
   const pathname = usePathname();
   const basePath = pathname.split('/')[1] as LOCALE;
 
-  const getMemberTableContent = (id: MEMBER, member: Member) => {
+  const memberTableHeaderItemList = useSelector(
+    (state: RootState) => state.memberFilter.memberTableHeaderItemList
+  );
+
+  // 실제 표시할 컬럼 ID 배열 + 마지막에 비고란 추가
+  const visibleColumns = [
+    ...memberTableHeaderItemList.filter((item) => item.isShown),
+    BLANK_HEADER,
+  ];
+
+  // 각 TD에 들어갈 content
+  const getMemberTableContent = (id: string, member: Member) => {
     switch (id) {
       case MEMBER.CHECK:
         return (
@@ -206,10 +226,8 @@ const MemberTableView = ({
             onChange={() => onClickCheckMember(member.id)}
           />
         );
-
       case MEMBER.GROUP:
         return <MainText>{member?.group?.name}</MainText>;
-
       case MEMBER.NAME:
         return (
           <ProfileContainer>
@@ -251,17 +269,7 @@ const MemberTableView = ({
       case MEMBER.MINISTRIES:
         return (
           <MainText>
-            {member.ministries?.map((item) => {
-              return item.name;
-            })}
-          </MainText>
-        );
-      case MEMBER.EDUCATIONS:
-        return (
-          <MainText>
-            {/*{member.educations?.map((education) => {*/}
-            {/*  return education.educationTerm.educationName;*/}
-            {/*})}*/}
+            {member.ministries?.map((item) => item.name).join(', ')}
           </MainText>
         );
       case MEMBER.HOME_PHONE:
@@ -276,8 +284,6 @@ const MemberTableView = ({
         return <MainText>{member.occupation}</MainText>;
       case MEMBER.SCHOOL:
         return <MainText>{member.school}</MainText>;
-      case MEMBER.MARRIAGE:
-        return <MainText>{t(member.marriage)}</MainText>;
       case MEMBER.REGISTERED_AT:
         return (
           <MainText>
@@ -298,61 +304,76 @@ const MemberTableView = ({
               )}
           </MainText>
         );
+      case BLANK:
+        return <div></div>;
       default:
         return null;
     }
   };
 
   return (
-    <TableContainer>
-      <MemberTable>
-        <thead>
-          <tr>
-            {memberTableHeaderItemList
-              .filter((item) => item.isShown)
-              .map((item) => (
-                <TableHeader key={item.id} id={item.id}>
-                  <MemberTableHeader item={item} onClick={onClickHeader} />
+    <>
+      {/* 컨테이너: 항상 가로 100%, 필요하면 스크롤 */}
+      <TableContainer ref={scrollRef} onScroll={onScroll} height={height}>
+        <MemberTable>
+          <thead>
+            <tr>
+              {visibleColumns.map((item, index) => (
+                <TableHeader
+                  key={item.id}
+                  id={item.id}
+                  isLast={index === visibleColumns.length - 1}
+                >
+                  {item.id !== BLANK && (
+                    <MemberTableHeader
+                      item={{
+                        ...item,
+                        id: item.id as MEMBER,
+                      }}
+                      onClick={onClickHeader}
+                    />
+                  )}
                 </TableHeader>
               ))}
-          </tr>
-        </thead>
-      </MemberTable>
-
-      <Scroll ref={scrollRef} onScroll={onScroll} height={height}>
-        <MemberTable>
+            </tr>
+          </thead>
           <tbody>
-            {members.map((member, index) => (
+            {members.map((member, rowIndex) => (
               <MemberTableRow
                 key={member.id}
                 onClick={() => onClickMemberItem(member.id)}
               >
-                {memberTableHeaderItemList
-                  .filter((item) => item.isShown)
-                  .map((item) => (
-                    <TableData key={item.id} id={item.id} $index={index}>
-                      <ContentWrapper>
-                        {getMemberTableContent(item.id, member)}
-                      </ContentWrapper>
-                    </TableData>
-                  ))}
+                {visibleColumns.map((item, index) => (
+                  <TableData
+                    key={item.id}
+                    id={item.id}
+                    $index={rowIndex}
+                    isLast={index === visibleColumns.length - 1}
+                  >
+                    <ContentWrapper>
+                      {getMemberTableContent(item.id, member)}
+                    </ContentWrapper>
+                  </TableData>
+                ))}
               </MemberTableRow>
             ))}
           </tbody>
         </MemberTable>
-      </Scroll>
+      </TableContainer>
+
       <PopupButtonContainer $isShown={checkedMemberIds.length > 0}>
         <Button
-          text={t('button.delete')}
+          text={t_button('delete')}
           width={120}
           height={40}
           onClick={onClickOpen}
           fontSize={16}
         />
       </PopupButtonContainer>
+
       <ConfirmPopup
         title={t_popup('deleteMemberTitle')}
-        body={t_popup('deleteMemberContent')}
+        body={t_popup('deleteMemberBody')}
         buttonNum={2}
         isShow={isPopupShown}
         onClickLeftButton={onClickClose}
@@ -360,7 +381,7 @@ const MemberTableView = ({
         leftButtonText={t_button('cancel')}
         rightButtonText={t_button('delete')}
       />
-    </TableContainer>
+    </>
   );
 };
 

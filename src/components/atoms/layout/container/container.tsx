@@ -3,8 +3,9 @@ import styled from 'styled-components';
 const Container = styled.div`
   display: flex;
   flex: 1;
-  flex-direction: column;
+  flex-direction: row;
   overflow: hidden;
+  height: 100%;
 `;
 
 export default Container;

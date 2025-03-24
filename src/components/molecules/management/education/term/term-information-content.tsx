@@ -15,7 +15,8 @@ import { EDUCATION_TERM_HEADER_ID } from '@/constants/layout/header';
 import AddEnrollmentModal from '@/components/atoms/common/modal/add-enrollment-modal';
 
 import Plus from '../../../../../../public/svg/plus.svg';
-import { useI18n } from '../../../../../../locales/client';
+import { useI18n, useScopedI18n } from '../../../../../../locales/client';
+import ToastPopup from '@/components/atoms/common/popup/toast-popup';
 
 const InformationContent = styled.div`
   display: flex;
@@ -81,6 +82,10 @@ const TermInformationContent = ({
   onClickItem,
 }: TermInformationContentProps) => {
   const t = useI18n();
+  const t_popup = useScopedI18n('popup');
+
+  const [isToastShown, setIsToastShown] = useState<boolean>(false);
+
   // 기수 정보인지 회차 정보인지
   const isInformation =
     selectedSessionId === EDUCATION_TERM_HEADER_ID.INFORMATION;
@@ -100,6 +105,12 @@ const TermInformationContent = ({
 
   return (
     <InformationContent>
+      {isToastShown && (
+        <ToastPopup
+          setIsShow={setIsToastShown}
+          text={t_popup('saveComplete')}
+        />
+      )}
       {/* 진행 사항 */}
       <ListTypeHeader>
         <MainText color={GRAY.DARK}>{t('educationProcess')}</MainText>
@@ -126,6 +137,7 @@ const TermInformationContent = ({
             isShown={isModalShown}
             onClickClose={onClickModalClose}
             fetchTerms={fetchTerms}
+            setIsToastShown={setIsToastShown}
           />
         </ModalContainer>
       </ListTypeHeader>

@@ -113,10 +113,10 @@ const MemberDropdownView = forwardRef<
             height={height}
             width={width}
             {...inputProps}
-            onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) => {
-              inputProps.onKeyDown?.(event);
-              onKeyDownHandler(event);
-            }}
+            // onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) => {
+            //   inputProps.onKeyDown?.(event);
+            //   onKeyDownHandler(event);
+            // }}
             readOnly={!isEditable}
             onFocus={onFocusInput}
             enterKeyHint={enterKeyHint}
@@ -125,7 +125,7 @@ const MemberDropdownView = forwardRef<
         </DropdownButton>
 
         {/* 드롭다운 item 을 선택할 수 있는 영역*/}
-        {isOpened && !disabled && items.length > 0 && (
+        {isOpened && !disabled && (
           <DropdownList $reverseDirection={reverseDirection}>
             {items.map((item, index) => (
               <MemberDropdownItem

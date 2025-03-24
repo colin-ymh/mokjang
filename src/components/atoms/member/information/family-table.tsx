@@ -11,14 +11,14 @@ type FamilyTableProps = {
   familyMembers: FamilyMember[];
   onClickMember: (familyMemberId: string) => void;
   onClickEdit: (member: FamilyMember) => void;
-  onClickDelete: (familyMemberId: string) => void;
+  onClickConfirmDelete: (familyMemberId: string) => void;
 };
 
 const FamilyTable = ({
   familyMembers,
   onClickMember,
   onClickEdit,
-  onClickDelete,
+  onClickConfirmDelete,
 }: FamilyTableProps) => {
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const { officers, groups } = useSelector((state: RootState) => state.church);
@@ -69,7 +69,7 @@ const FamilyTable = ({
     getGroupTitle,
     onClickHeader,
     onClickEdit,
-    onClickDelete,
+    onClickConfirmDelete,
   };
 
   return (

@@ -10,6 +10,7 @@ import { GRAY } from '@/constants/styles/color';
 import { Member } from '@/models/member/member';
 import KebapDropdown from '@/components/atoms/common/dropdown/kebap-dropdown';
 import ConfirmPopup from '@/components/atoms/common/popup/error-popup';
+
 import { useScopedI18n } from '../../../../../locales/client';
 
 const InformationHeader = styled.div`
@@ -17,7 +18,7 @@ const InformationHeader = styled.div`
   flex-direction: column;
   justify-content: space-between;
   padding: 20px 20px 0 20px;
-  gap: 30px;
+  gap: 10px;
 `;
 
 const Information = styled.div`
@@ -106,7 +107,7 @@ const MemberInformationHeader = ({
         {onClickDelete && (
           <ConfirmPopup
             title={t_popup('deleteMemberTitle')}
-            body={t_popup('deleteMemberContent')}
+            body={t_popup('deleteMemberBody')}
             buttonNum={2}
             isShow={isPopupShown}
             onClickLeftButton={onClickClose}

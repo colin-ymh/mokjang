@@ -170,7 +170,7 @@ const MinistryGroupModal = ({
         if (targetEndDate) setEndDate(targetEndDate);
       }
     }
-  }, [targetHistory, ministryItems]);
+  }, [targetHistory]);
 
   // 그룹 변경 시, 역할 드롭다운 내용 변경
   useEffect(() => {

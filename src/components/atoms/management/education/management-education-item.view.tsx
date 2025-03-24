@@ -83,7 +83,7 @@ type ManagementEducationItemViewProps = {
   ) => void;
   onClickEducation: (education: Education) => void;
   onClickEducationEdit: () => void;
-  onClickEducationDelete: (educationId: string) => void;
+  onClickEducationDelete: () => void;
   onChangeName: (event: ChangeEvent<HTMLInputElement>) => void;
   onClickSaveName: () => void;
 };
@@ -153,9 +153,7 @@ const ManagementEducationItemView = ({
           ) : (
             <SlideButtonList
               onClickEdit={onClickEducationEdit}
-              onClickDelete={() =>
-                onClickEducationDelete(education.id as string)
-              }
+              onClickDelete={onClickEducationDelete}
               isAddShown={false}
             />
           )}

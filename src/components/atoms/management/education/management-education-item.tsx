@@ -14,6 +14,10 @@ import { EducationsApi } from '@/api/management/education/educations.api';
 import { getFormattedTitle } from '@/utils/format';
 import { getIsWellFormedTitle } from '@/utils/check';
 import ManagementEducationItemView from '@/components/atoms/management/education/management-education-item.view';
+import ConfirmPopup from '@/components/atoms/common/popup/error-popup';
+
+import { useScopedI18n } from '../../../../../locales/client';
+import ToastPopup from '@/components/atoms/common/popup/toast-popup';
 
 type ManagementEducationItemProps = {
   education: Education;
@@ -28,6 +32,9 @@ const ManagementEducationItem = ({
   setSelectedEducation,
   fetchEducations,
 }: ManagementEducationItemProps) => {
+  const t_popup = useScopedI18n('popup');
+  const t_button = useScopedI18n('button');
+
   const educationsApi = new EducationsApi(false);
   const churchId = useSelector((state: RootState) => state.church.churchId);
   const [thrownError, setThrownError] = useState<Error | null>(null);
@@ -38,6 +45,9 @@ const ManagementEducationItem = ({
   }
 
   const nameInputRef = useRef<HTMLInputElement>(null);
+
+  const [isToastShown, setIsToastShown] = useState<boolean>(false);
+  const [isPopupShown, setIsPopupShown] = useState<boolean>(false);
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [editName, setEditName] = useState<string>(education.name);
 
@@ -55,13 +65,19 @@ const ManagementEducationItem = ({
     });
   };
 
-  const onClickEducationDelete = async (educationId: string) => {
+  const onClickEducationDelete = () => {
+    setIsPopupShown(true);
+  };
+
+  const onClickConfirmDelete = async (educationId: string) => {
     try {
       await educationsApi.deleteEducation({ churchId, educationId });
       fetchEducations();
       setSelectedEducation(DEFAULT_EDUCATION);
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));
+    } finally {
+      setIsPopupShown(false);
     }
   };
 
@@ -88,6 +104,8 @@ const ManagementEducationItem = ({
         setThrownError(
           error instanceof Error ? error : new Error(String(error))
         );
+      } finally {
+        setIsToastShown(true);
       }
     }
   };
@@ -157,7 +175,27 @@ const ManagementEducationItem = ({
     onClickSaveName,
   };
 
-  return <ManagementEducationItemView {...props} />;
+  return (
+    <>
+      <ManagementEducationItemView {...props} />
+      {isToastShown && (
+        <ToastPopup
+          setIsShow={setIsToastShown}
+          text={t_popup('saveComplete')}
+        />
+      )}
+      <ConfirmPopup
+        title={t_popup('deleteEducationTitle')}
+        body={t_popup('deleteEducationBody')}
+        isShow={isPopupShown}
+        onClickLeftButton={() => setIsPopupShown(false)}
+        onClickRightButton={() => onClickConfirmDelete(education.id as string)}
+        leftButtonText={t_button('cancel')}
+        rightButtonText={t_button('confirm')}
+        buttonNum={2}
+      />
+    </>
+  );
 };
 
 export default ManagementEducationItem;

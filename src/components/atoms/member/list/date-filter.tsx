@@ -1,9 +1,11 @@
 import { ChangeEvent } from 'react';
 import styled from 'styled-components';
 
-import BorderInput from '@/components/atoms/common/input/border-input';
 import { GRAY } from '@/constants/styles/color';
 import { MainText } from '@/components/atoms/common/text/main-text';
+import DateInput from '@/components/atoms/common/input/date-input';
+import { getDateFromString } from '@/utils/date';
+
 import { useI18n } from '../../../../../locales/client';
 
 const FilterContainer = styled.div`
@@ -24,24 +26,30 @@ const RowContainer = styled.div`
 type DateFilterProps = {
   dateAfter: string;
   dateBefore: string;
-  onChangeAfter: (event: ChangeEvent<HTMLInputElement>) => void;
-  onChangeBefore: (event: ChangeEvent<HTMLInputElement>) => void;
+  onChangeAfter: (date: Date | null) => void;
+  onChangeRawAfter: (event: ChangeEvent<HTMLInputElement>) => void;
+  onChangeBefore: (date: Date | null) => void;
+  onChangeRawBefore: (event: ChangeEvent<HTMLInputElement>) => void;
 };
 
 const DateFilter = ({
   dateAfter,
   dateBefore,
   onChangeAfter,
+  onChangeRawAfter,
   onChangeBefore,
+  onChangeRawBefore,
 }: DateFilterProps) => {
   const t = useI18n();
 
   return (
     <FilterContainer>
       <RowContainer>
-        <BorderInput
+        <DateInput
           value={dateAfter}
+          selected={getDateFromString(dateAfter)}
           onChange={onChangeAfter}
+          onChangeRaw={onChangeRawAfter}
           borderColor={GRAY.LIGHT}
           height={35}
           placeholder={'YYYY-MM-DD'}
@@ -49,9 +57,11 @@ const DateFilter = ({
         <MainText>{t('after')}</MainText>
       </RowContainer>
       <RowContainer>
-        <BorderInput
+        <DateInput
           value={dateBefore}
+          selected={getDateFromString(dateBefore)}
           onChange={onChangeBefore}
+          onChangeRaw={onChangeRawBefore}
           borderColor={GRAY.LIGHT}
           height={35}
           placeholder={'YYYY-MM-DD'}

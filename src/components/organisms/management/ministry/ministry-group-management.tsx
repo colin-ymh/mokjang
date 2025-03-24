@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/redux/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '@/redux/store';
 
 import { MINISTRY_MANAGEMENT_HEADER_ID } from '@/constants/layout/header';
 import { useMinistryManagementHeaderBarItems } from '@/hooks/layout/header-bar-items';
@@ -10,12 +10,16 @@ import {
 } from '@/models/management/management';
 import MinistryManagementView from '@/components/organisms/management/ministry/ministry-group-management.view';
 import { MinistryGroupsApi } from '@/api/management/ministry/ministry-groups.api';
+import { setMinistryGroups } from '@/redux/reducers/church-reducer';
 
 type MinistryManagementProps = {};
 
 const MinistryGroupManagement = ({}: MinistryManagementProps) => {
+  const dispatch = useDispatch<AppDispatch>();
   const ministryGroupsApi = new MinistryGroupsApi(false);
-  const churchId = useSelector((state: RootState) => state.church.churchId);
+  const { churchId, ministryGroups } = useSelector(
+    (state: RootState) => state.church
+  );
   // 그룹 설정 탭 헤더
   const headerBarItems = useMinistryManagementHeaderBarItems();
 
@@ -27,9 +31,6 @@ const MinistryGroupManagement = ({}: MinistryManagementProps) => {
   // 선택된 그룹
   const [selectedMinistryGroup, setSelectedMinistryGroup] =
     useState<MinistryGroup>(DEFAULT_MINISTRY_GROUP);
-
-  // 전체 그룹 배열
-  const [ministryGroups, setMinistryGroups] = useState<MinistryGroup[]>([]);
 
   // 선택된 그룹 정보 탭
   const [headerBarId, setHeaderBarId] = useState<MINISTRY_MANAGEMENT_HEADER_ID>(
@@ -47,7 +48,7 @@ const MinistryGroupManagement = ({}: MinistryManagementProps) => {
       await ministryGroupsApi
         .getMinistryGroups({ churchId })
         .then((response) => {
-          setMinistryGroups(response.data);
+          dispatch(setMinistryGroups(response.data));
         });
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));

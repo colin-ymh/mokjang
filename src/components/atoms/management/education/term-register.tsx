@@ -1,4 +1,10 @@
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import React, {
+  ChangeEvent,
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useState,
+} from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 
@@ -19,6 +25,7 @@ type TermRegisterProps = {
   onClickClose: () => void;
   fetchTerms: () => void;
   targetTerm?: EducationTerm;
+  setIsToastShown?: Dispatch<SetStateAction<boolean>>;
 };
 
 const TermRegister = ({
@@ -27,6 +34,7 @@ const TermRegister = ({
   onClickClose,
   fetchTerms,
   targetTerm,
+  setIsToastShown,
 }: TermRegisterProps) => {
   const membersApi = new MembersApi(false);
   const educationTermsApi = new EducationTermsApi(false);
@@ -123,12 +131,13 @@ const TermRegister = ({
           }
         );
       }
-
       onClickClose();
       fetchTerms();
       clearData();
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));
+    } finally {
+      setIsToastShown && setIsToastShown(true);
     }
   };
 
@@ -206,7 +215,11 @@ const TermRegister = ({
     onClickSave,
   };
 
-  return <TermRegisterView {...props} />;
+  return (
+    <>
+      <TermRegisterView {...props} />
+    </>
+  );
 };
 
 export default TermRegister;

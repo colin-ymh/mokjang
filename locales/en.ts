@@ -211,6 +211,11 @@ export default {
 
   /*-------------------placeholder-------------------*/
   'placeholder.name': 'Enter the name.',
+  'placeholder.groupName': 'Enter the group name.',
+  'placeholder.ministryGroupName': 'Enter the ministry group name.',
+  'placeholder.ministryName': 'Enter the ministry name.',
+  'placeholder.officerName': 'Enter the officer name.',
+  'placeholder.educationName': 'Enter the education name.',
   'placeholder.mobilePhone': 'Enter the mobile phone number.',
   'placeholder.birth': 'Enter the date of birth (e.g., YYYY.MM.DD).',
   'placeholder.homePhone': 'Enter the home phone number.',
@@ -235,6 +240,7 @@ export default {
   'placeholder.instructor': 'Enter the instructor.',
   'placeholder.sessionDate': 'Enter the session date (e.g., YYYY.MM.DD).',
   'placeholder.sessionContent': 'Enter the session report.',
+  'placeholder.search': 'Enter the search term.',
   /*-------------------placeholder-------------------*/
 
   /*-------------------radiobutton-------------------*/
@@ -245,11 +251,38 @@ export default {
   /*-------------------popup-------------------*/
   'popup.cancelRegisterTitle':
     'Do you want to cancel church member registration?',
-  'popup.cancelRegisterContent': 'The entered information will not be saved.',
+  'popup.cancelRegisterBody': 'The entered information will not be saved.',
   'popup.registerSuccess': 'The church member has been registered.',
 
   'popup.deleteMemberTitle': 'Do you want to delete this member?',
-  'popup.deleteMemberContent': 'Deleted member cannot be restored.',
+  'popup.deleteMemberBody': 'Deleted member cannot be restored.',
+
+  'popup.deleteGroupTitle': 'Do you want to delete this group?',
+  'popup.deleteGroupBody': 'Deleted group cannot be restored.',
+
+  'popup.deleteOfficerTitle': 'Do you want to delete this officer?',
+  'popup.deleteOfficerBody': 'Deleted officer cannot be restored.',
+
+  'popup.deleteEducationTitle': 'Do you want to delete this education?',
+  'popup.deleteEducationBody': 'Deleted education cannot be restored.',
+
+  'popup.deleteMinistryGroupTitle':
+    'Do you want to delete this ministry group?',
+  'popup.deleteMinistryGroupBody': 'Deleted ministry group cannot be restored.',
+
+  'popup.deleteEnrollmentTitle': 'Do you want to delete this enrollment(s)?',
+  'popup.deleteEnrollmentBody': 'Deleted enrollment cannot be restored.',
+
+  'popup.deleteHistoryTitle': 'Do you want to delete this history?',
+  'popup.deleteHistoryBody': 'Deleted history cannot be restored.',
+
+  'popup.deleteFamilyTitle': 'Do you want to delete this family relationship?',
+  'popup.deleteFamilyBody': 'Deleted relationship cannot be restored.',
+
+  'popup.deleteTermTitle': 'Do you want to delete this term?',
+  'popup.deleteTermBody': 'Deleted term cannot be restored.',
+
+  'popup.saveComplete': 'Save Complete.',
 
   'popup.verifyFail': "You've entered wrong number.",
   'popup.duplicatedRole': 'That role is already duplicated.',

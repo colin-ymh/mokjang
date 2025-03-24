@@ -98,8 +98,10 @@ type TableSettingViewProps = {
   onClickFilterItem: (itemId: string) => void;
   onClickCancel: () => void;
   onClickReset: () => void;
-  onChangeAfter: (value: ChangeEvent<HTMLInputElement>) => void;
-  onChangeBefore: (value: ChangeEvent<HTMLInputElement>) => void;
+  onChangeAfter: (date: Date | null) => void;
+  onChangeRawAfter: (event: ChangeEvent<HTMLInputElement>) => void;
+  onChangeBefore: (date: Date | null) => void;
+  onChangeRawBefore: (event: ChangeEvent<HTMLInputElement>) => void;
 };
 
 const TableSettingView = ({
@@ -111,7 +113,9 @@ const TableSettingView = ({
   onClickCancel,
   onClickReset,
   onChangeAfter,
+  onChangeRawAfter,
   onChangeBefore,
+  onChangeRawBefore,
 }: TableSettingViewProps) => {
   const { memberTableHeaderItemList, filterItems, filterAfter, filterBefore } =
     useSelector((state: RootState) => state.memberFilter);
@@ -180,7 +184,9 @@ const TableSettingView = ({
                 dateAfter={filterAfter}
                 dateBefore={filterBefore}
                 onChangeAfter={onChangeAfter}
+                onChangeRawAfter={onChangeRawAfter}
                 onChangeBefore={onChangeBefore}
+                onChangeRawBefore={onChangeRawBefore}
               />
             ) : (
               <FilterItemList

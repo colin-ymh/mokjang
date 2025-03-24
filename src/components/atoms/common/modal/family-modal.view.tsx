@@ -12,6 +12,7 @@ import Cancel from '../../../../../public/svg/cancel.svg';
 import { MemberDropdownValueType } from '@/models/dropdown/dropdown';
 import MemberDropdown from '@/components/atoms/common/dropdown/member-dropdown';
 import { GRAY } from '@/constants/styles/color';
+import { MainText } from '@/components/atoms/common/text/main-text';
 
 const FamilyModalViewContainer = styled.div`
   display: flex;
@@ -95,6 +96,7 @@ const FamilyModalView = ({
       </HeaderContainer>
       {/* 내용 */}
       <ContentContainer>
+        <MainText>{t('family')}</MainText>
         {/* 가족 */}
         <MemberDropdown
           enterKeyHint={'done'}

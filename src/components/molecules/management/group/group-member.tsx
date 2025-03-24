@@ -5,6 +5,8 @@ import { useEffect, useState } from 'react';
 
 import { MembersApi } from '@/api/members/members.api';
 import { MEMBER } from '@/constants/member/member-column';
+import { useScopedI18n } from '../../../../../locales/client';
+import ToastPopup from '@/components/atoms/common/popup/toast-popup';
 
 type GroupMemberProps = {
   group: Group;
@@ -12,12 +14,15 @@ type GroupMemberProps = {
 
 const GroupMember = ({ group }: GroupMemberProps) => {
   const membersApi = new MembersApi(false);
+  const t_popup = useScopedI18n('popup');
 
   const [thrownError, setThrownError] = useState<Error | null>(null);
   // 렌더링 시점(컴포넌트 return)에서 조건부로 에러 발생
   if (thrownError) {
     throw thrownError;
   }
+
+  const [isToastShown, setIsToastShown] = useState<boolean>(false);
 
   // 그룹에 속한 교인 목록
   const [members, setMembers] = useState<Member[]>([]);
@@ -63,11 +68,18 @@ const GroupMember = ({ group }: GroupMemberProps) => {
     fetchMembers,
     onClickModalOpen,
     onClickModalClose,
+    setIsToastShown,
   };
 
   return (
     <>
       <GroupMemberView {...props} />
+      {isToastShown && (
+        <ToastPopup
+          setIsShow={setIsToastShown}
+          text={t_popup('saveComplete')}
+        />
+      )}
     </>
   );
 };

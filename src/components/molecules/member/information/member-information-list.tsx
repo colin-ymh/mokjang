@@ -30,6 +30,8 @@ import { DEFAULT_MINISTRY, Ministry } from '@/models/management/management';
 import MinistryModal from '@/components/atoms/common/modal/ministry-modal';
 import BaptismModal from '@/components/atoms/common/modal/baptism-modal';
 import { MinistriesApi } from '@/api/management/ministry/ministries.api';
+import ToastPopup from '@/components/atoms/common/popup/toast-popup';
+import { useScopedI18n } from '../../../../../locales/client';
 
 type InformationListProps = {
   targetMemberId: string;
@@ -47,6 +49,8 @@ const InformationList = ({
   const membersApi = new MembersApi(false);
   const ministriesApi = new MinistriesApi(false);
 
+  const t_popup = useScopedI18n('popup');
+
   const { churchId } = useSelector((state: RootState) => state.church);
   const { member } = useSelector((state: RootState) => state.memberRegister);
   const { members } = useSelector((state: RootState) => state.memberFilter);
@@ -55,6 +59,9 @@ const InformationList = ({
   if (thrownError) {
     throw thrownError;
   }
+
+  // 저장 완료 토스트 팝업
+  const [isToastShown, setIsToastShown] = useState<boolean>(false);
 
   // 교인 초기 상태
   const [prevMember, setPrevMember] = useState<Member>(DEFAULT_MEMBER);
@@ -125,25 +132,31 @@ const InformationList = ({
     dispatch(setMember(DEFAULT_MEMBER));
   };
 
-  const onClickSave = () => {
-    membersApi
-      .editMember(
-        { churchId, memberId: prevMember.id },
-        getEditMemberBody(member)
-      )
-      .then((response) => {
-        if (response.status === 200) {
-          setIsEditShown(false);
-          const newMember = getMemberFromServer(response.data);
-          setPrevMember(newMember);
+  const onClickSave = async () => {
+    try {
+      await membersApi
+        .editMember(
+          { churchId, memberId: prevMember.id },
+          getEditMemberBody(member)
+        )
+        .then((response) => {
+          if (response.status === 200) {
+            setIsEditShown(false);
+            const newMember = getMemberFromServer(response.data);
+            setPrevMember(newMember);
 
-          // 교인 목록에서도 업데이트
-          const newMembers = members.map((mem: Member) =>
-            mem.id === newMember.id ? newMember : mem
-          );
-          dispatch(setMembers(newMembers));
-        }
-      });
+            // 교인 목록에서도 업데이트
+            const newMembers = members.map((mem: Member) =>
+              mem.id === newMember.id ? newMember : mem
+            );
+            dispatch(setMembers(newMembers));
+          }
+        });
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
+    } finally {
+      setIsToastShown(true);
+    }
   };
 
   // ================================
@@ -157,23 +170,29 @@ const InformationList = ({
     setIsBaptismModalShown(false);
   };
 
-  const onClickSaveBaptism = (newBaptism: BAPTISM) => {
-    if (newBaptism !== prevMember.baptism) {
-      membersApi
-        .editMember(
-          { churchId, memberId: prevMember.id },
-          { baptism: newBaptism }
-        )
-        .then((response) => {
-          setIsBaptismModalShown(false);
-          const updatedMember = getMemberFromServer(response.data);
-          setPrevMember({ ...prevMember, baptism: updatedMember.baptism });
+  const onClickSaveBaptism = async (newBaptism: BAPTISM) => {
+    try {
+      if (newBaptism !== prevMember.baptism) {
+        membersApi
+          .editMember(
+            { churchId, memberId: prevMember.id },
+            { baptism: newBaptism }
+          )
+          .then((response) => {
+            setIsBaptismModalShown(false);
+            const updatedMember = getMemberFromServer(response.data);
+            setPrevMember({ ...prevMember, baptism: updatedMember.baptism });
 
-          const newMembers = members.map((m: Member) =>
-            m.id === updatedMember.id ? updatedMember : m
-          );
-          dispatch(setMembers(newMembers));
-        });
+            const newMembers = members.map((m: Member) =>
+              m.id === updatedMember.id ? updatedMember : m
+            );
+            dispatch(setMembers(newMembers));
+          });
+      }
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
+    } finally {
+      setIsToastShown(true);
     }
   };
 
@@ -188,69 +207,77 @@ const InformationList = ({
     setIsGroupModalShown(false);
   };
 
-  const onClickSaveNewGroup = (
+  const onClickSaveNewGroup = async (
     groupId: string,
     groupRoleId: string,
     startDate: string
   ) => {
-    // 이력이 없는 경우 = 새로 생성
-    if (!targetGroupHistory) {
-      groupHistoryApi
-        .createGroupHistory(
-          { churchId, memberId: targetMemberId },
-          {
-            groupId,
-            groupRoleId: groupRoleId || undefined,
-            startDate,
-          }
-        )
-        .then((response) =>
-          handleHistorySuccess(response, () => setIsGroupModalShown(false))
-        );
-      return;
-    }
+    try {
+      // 이력이 없는 경우 = 새로 생성
+      if (!targetGroupHistory) {
+        await groupHistoryApi
+          .createGroupHistory(
+            { churchId, memberId: targetMemberId },
+            {
+              groupId,
+              groupRoleId: groupRoleId || undefined,
+              startDate,
+            }
+          )
+          .then((response) =>
+            handleHistorySuccess(response, () => setIsGroupModalShown(false))
+          );
+        return;
+      }
 
-    // 이력이 있는 경우
-    if (groupId === BLANK) {
-      // 그룹 제거(이력 종료)
-      groupHistoryApi
-        .stopGroupHistory({ churchId, memberId: targetMemberId }, {})
-        .then((response) =>
-          handleHistorySuccess(response, () => setIsGroupModalShown(false))
-        );
-    } else if (
-      groupId === prevMember.group?.id &&
-      groupRoleId === prevMember.groupRole?.id
-    ) {
-      // 그룹과 역할 동일 => 날짜 수정
-      groupHistoryApi
-        .editGroupHistory(
-          {
-            churchId,
-            memberId: targetMemberId,
-            groupHistoryId: targetGroupHistory.id,
-          },
-          { startDate }
-        )
-        .then(() => setIsGroupModalShown(false));
-    } else {
-      // 기존 이력 종료 후 새로운 이력 생성
-      groupHistoryApi
-        .stopGroupHistory({ churchId, memberId: targetMemberId }, {})
-        .then(() => {
-          groupHistoryApi
-            .createGroupHistory(
-              { churchId, memberId: targetMemberId },
-              {
-                groupId,
-                groupRoleId: groupRoleId || undefined,
-                startDate,
-              }
-            )
-            .then((response) =>
-              handleHistorySuccess(response, () => setIsGroupModalShown(false))
-            );
-        });
+      // 이력이 있는 경우
+      if (groupId === BLANK) {
+        // 그룹 제거(이력 종료)
+        await groupHistoryApi
+          .stopGroupHistory({ churchId, memberId: targetMemberId }, {})
+          .then((response) =>
+            handleHistorySuccess(response, () => setIsGroupModalShown(false))
+          );
+      } else if (
+        groupId === prevMember.group?.id &&
+        groupRoleId === prevMember.groupRole?.id
+      ) {
+        // 그룹과 역할 동일 => 날짜 수정
+        await groupHistoryApi
+          .editGroupHistory(
+            {
+              churchId,
+              memberId: targetMemberId,
+              groupHistoryId: targetGroupHistory.id,
+            },
+            { startDate }
+          )
+          .then(() => setIsGroupModalShown(false));
+      } else {
+        // 기존 이력 종료 후 새로운 이력 생성
+        await groupHistoryApi
+          .stopGroupHistory({ churchId, memberId: targetMemberId }, {})
+          .then(() => {
+            groupHistoryApi
+              .createGroupHistory(
+                { churchId, memberId: targetMemberId },
+                {
+                  groupId,
+                  groupRoleId: groupRoleId || undefined,
+                  startDate,
+                }
+              )
+              .then((response) =>
+                handleHistorySuccess(response, () =>
+                  setIsGroupModalShown(false)
+                )
+              );
+          });
+      }
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
+    } finally {
+      setIsToastShown(true);
     }
   };
 
@@ -258,10 +285,10 @@ const InformationList = ({
   // 사역 수정
   // ================================
   const onClickOpenMinistryModal = (ministry?: Ministry) => {
-    setIsMinistryModalShown(true);
     if (ministry) {
       setTargetMinistry(ministry);
     }
+    setIsMinistryModalShown(true);
   };
 
   const onClickCloseMinistryModal = () => {
@@ -269,89 +296,106 @@ const InformationList = ({
     setTargetMinistry(DEFAULT_MINISTRY);
   };
 
-  const onClickSaveNewMinistry = (
+  const onClickSaveNewMinistry = async (
     ministryGroupId: string,
     ministryId: string,
     startDate: string
   ) => {
-    // 이력이 없는 경우(새로 생성)
-    if (!targetMinistryHistory) {
-      ministryHistoryApi
-        .createMinistryHistory(
-          { churchId, memberId: targetMemberId },
-          {
-            ministryId,
-            startDate,
-          }
-        )
-        .then((response) =>
-          handleHistorySuccess(response, () => setIsMinistryModalShown(false))
-        );
-      return;
-    }
+    try {
+      // 이력이 없는 경우(새로 생성)
+      if (!targetMinistryHistory) {
+        await ministryHistoryApi
+          .createMinistryHistory(
+            { churchId, memberId: targetMemberId },
+            {
+              ministryId,
+              startDate,
+            }
+          )
+          .then((response) =>
+            handleHistorySuccess(response, () => setIsMinistryModalShown(false))
+          );
+        return;
+      }
 
-    // 기존 이력이 있는 경우
-    if (ministryGroupId === BLANK) {
-      // 완전히 사역 중단
-      ministryHistoryApi
-        .stopMinistryHistory(
-          { churchId, memberId: targetMemberId, ministryId: targetMinistry.id },
-          {}
-        )
-        .then((response) =>
-          handleHistorySuccess(response, () => setIsMinistryModalShown(false))
-        );
-    } else if (ministryId === targetMinistry.id) {
-      // 사역 동일 => 날짜만 수정
-      ministryHistoryApi
-        .editMinistryHistory(
-          {
-            churchId,
-            memberId: targetMemberId,
-            ministryHistoryId: targetMinistryHistory.id,
-          },
-          { startDate }
-        )
-        .then(() => setIsMinistryModalShown(false));
-    } else {
-      // 기존 이력 중단 후 새로운 이력 생성
-      ministryHistoryApi
-        .stopMinistryHistory(
-          { churchId, memberId: targetMemberId, ministryId: targetMinistry.id },
-          {}
-        )
-        .then(() => {
-          ministryHistoryApi
-            .createMinistryHistory(
-              { churchId, memberId: targetMemberId },
-              {
-                ministryId,
-                startDate,
-              }
-            )
-            .then((response) =>
-              handleHistorySuccess(response, () =>
-                setIsMinistryModalShown(false)
+      // 기존 이력이 있는 경우
+      if (ministryGroupId === BLANK) {
+        // 완전히 사역 중단
+        await ministryHistoryApi
+          .stopMinistryHistory(
+            {
+              churchId,
+              memberId: targetMemberId,
+              ministryId: targetMinistry.id,
+            },
+            {}
+          )
+          .then((response) =>
+            handleHistorySuccess(response, () => setIsMinistryModalShown(false))
+          );
+      } else if (ministryId === targetMinistry.id) {
+        // 사역 동일 => 날짜만 수정
+        await ministryHistoryApi
+          .editMinistryHistory(
+            {
+              churchId,
+              memberId: targetMemberId,
+              ministryHistoryId: targetMinistryHistory.id,
+            },
+            { startDate }
+          )
+          .then(() => setIsMinistryModalShown(false));
+      } else {
+        // 기존 이력 중단 후 새로운 이력 생성
+        await ministryHistoryApi
+          .stopMinistryHistory(
+            {
+              churchId,
+              memberId: targetMemberId,
+              ministryId: targetMinistry.id,
+            },
+            {}
+          )
+          .then(() => {
+            ministryHistoryApi
+              .createMinistryHistory(
+                { churchId, memberId: targetMemberId },
+                {
+                  ministryId,
+                  startDate,
+                }
               )
-            );
-        });
+              .then((response) =>
+                handleHistorySuccess(response, () =>
+                  setIsMinistryModalShown(false)
+                )
+              );
+          });
+      }
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
+    } finally {
+      setIsToastShown(true);
     }
   };
 
   // 새로운 사역 만들기
-  const onClickCreateMinistry = (
+  const onClickCreateMinistry = async (
     ministryGroupId: string,
     startDate: string,
     ministryName: string
   ) => {
-    ministriesApi
-      .createMinistry({ churchId }, { ministryGroupId, name: ministryName })
-      .then((response) => {
-        const newMinistry: Ministry = response.data;
-        console.log(newMinistry);
+    try {
+      ministriesApi
+        .createMinistry({ churchId }, { ministryGroupId, name: ministryName })
+        .then((response) => {
+          const newMinistry: Ministry = response.data;
 
-        onClickSaveNewMinistry(ministryGroupId, newMinistry.id, startDate);
-      });
+          onClickSaveNewMinistry(ministryGroupId, newMinistry.id, startDate);
+        });
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
+    }
   };
 
   // ================================
@@ -365,62 +409,71 @@ const InformationList = ({
     setIsOfficerModalShown(false);
   };
 
-  const onClickSaveNewOfficer = (officerId: string, startDate: string) => {
-    // 이력이 없는 경우 = 새로 생성
-    if (!targetOfficerHistory) {
-      officerHistoryApi
-        .createOfficerHistory(
-          { churchId, memberId: targetMemberId },
-          {
-            officerId,
-            startDate,
-          }
-        )
-        .then((response) =>
-          handleHistorySuccess(response, () => setIsOfficerModalShown(false))
-        );
-      return;
-    }
+  const onClickSaveNewOfficer = async (
+    officerId: string,
+    startDate: string
+  ) => {
+    try {
+      // 이력이 없는 경우 = 새로 생성
+      if (!targetOfficerHistory) {
+        await officerHistoryApi
+          .createOfficerHistory(
+            { churchId, memberId: targetMemberId },
+            {
+              officerId,
+              startDate,
+            }
+          )
+          .then((response) =>
+            handleHistorySuccess(response, () => setIsOfficerModalShown(false))
+          );
+        return;
+      }
 
-    // 기존 이력이 있는 경우
-    if (officerId === NONE) {
-      // 직분 중단
-      officerHistoryApi
-        .stopOfficerHistory({ churchId, memberId: targetMemberId }, {})
-        .then((response) =>
-          handleHistorySuccess(response, () => setIsOfficerModalShown(false))
-        );
-    } else if (officerId === prevMember.officer?.id) {
-      // 직분 동일 => 날짜만 수정
-      officerHistoryApi
-        .editOfficerHistory(
-          {
-            churchId,
-            memberId: targetMemberId,
-            officerHistoryId: targetOfficerHistory.id,
-          },
-          { startDate }
-        )
-        .then(() => setIsOfficerModalShown(false));
-    } else {
-      // 기존 이력 종료 후 새로 생성
-      officerHistoryApi
-        .stopOfficerHistory({ churchId, memberId: targetMemberId }, {})
-        .then(() => {
-          officerHistoryApi
-            .createOfficerHistory(
-              { churchId, memberId: targetMemberId },
-              {
-                officerId,
-                startDate,
-              }
-            )
-            .then((response) =>
-              handleHistorySuccess(response, () =>
-                setIsOfficerModalShown(false)
+      // 기존 이력이 있는 경우
+      if (officerId === NONE) {
+        // 직분 중단
+        await officerHistoryApi
+          .stopOfficerHistory({ churchId, memberId: targetMemberId }, {})
+          .then((response) =>
+            handleHistorySuccess(response, () => setIsOfficerModalShown(false))
+          );
+      } else if (officerId === prevMember.officer?.id) {
+        // 직분 동일 => 날짜만 수정
+        await officerHistoryApi
+          .editOfficerHistory(
+            {
+              churchId,
+              memberId: targetMemberId,
+              officerHistoryId: targetOfficerHistory.id,
+            },
+            { startDate }
+          )
+          .then(() => setIsOfficerModalShown(false));
+      } else {
+        // 기존 이력 종료 후 새로 생성
+        await officerHistoryApi
+          .stopOfficerHistory({ churchId, memberId: targetMemberId }, {})
+          .then(() => {
+            officerHistoryApi
+              .createOfficerHistory(
+                { churchId, memberId: targetMemberId },
+                {
+                  officerId,
+                  startDate,
+                }
               )
-            );
-        });
+              .then((response) =>
+                handleHistorySuccess(response, () =>
+                  setIsOfficerModalShown(false)
+                )
+              );
+          });
+      }
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
+    } finally {
+      setIsToastShown(true);
     }
   };
 
@@ -498,11 +551,13 @@ const InformationList = ({
         churchId,
         memberId: prevMember.id,
       });
-      const current = response.data.data.find(
+      const currentHistory = response.data.data.find(
         (history: MinistryHistory) =>
           history.ministrySnapShot === targetMinistry.name
       );
-      if (current) setTargetMinistryHistory(current);
+      if (currentHistory) {
+        setTargetMinistryHistory(currentHistory);
+      }
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));
     }
@@ -532,6 +587,12 @@ const InformationList = ({
   return (
     <>
       <MemberInformationListView {...props} />
+      {isToastShown && (
+        <ToastPopup
+          setIsShow={setIsToastShown}
+          text={t_popup('saveComplete')}
+        />
+      )}
       {/* 교인 정보 수정 */}
       <CustomPopup
         isShow={isEditShown}

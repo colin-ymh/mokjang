@@ -32,7 +32,7 @@ const RegisterHeader = () => {
     setIsConfirmShow(false);
 
     const basePath = pathname.split('/')[1]; // 언어 코드 추출 (ko 또는 en)
-    router.push(`/${basePath}`);
+    router.replace(`/${basePath}`);
   };
 
   const props = {
@@ -45,7 +45,7 @@ const RegisterHeader = () => {
       <RegisterHeaderView {...props} />
       <ConfirmPopup
         title={t_popup('cancelRegisterTitle')}
-        body={t_popup('cancelRegisterContent')}
+        body={t_popup('cancelRegisterBody')}
         isShow={isConfirmShow}
         buttonNum={2}
         leftButtonText={t_button('cancel')}

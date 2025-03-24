@@ -81,6 +81,12 @@ export enum MEDIA_MIN_WIDTH {
   DESKTOP = '1024px',
 }
 
+export enum MEDIA_MAX_WIDTH {
+  MOBILE = '767px', // TABLET 시작점 - 1
+  TABLET = '1023px', // DESKTOP 시작점 - 1
+  DESKTOP = '100vw', // 최댓값 (디폴트로 설정 가능)
+}
+
 // 오름차순/내림차순
 export enum ORDER_DIRECTION {
   ASC = 'asc',

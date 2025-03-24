@@ -15,6 +15,7 @@ import { useDispatch } from 'react-redux';
 import { setChurch, setChurchId } from '@/redux/reducers/church-reducer';
 import RadioButton from '@/components/atoms/common/input/radio-button/radio-button';
 import { MainText } from '@/components/atoms/common/text/main-text';
+import Loading from '@/components/atoms/common/etc/loading';
 
 const ListContainer = styled.div`
   display: flex;
@@ -62,6 +63,8 @@ const ChurchRegisterList = () => {
   if (thrownError) {
     throw thrownError;
   }
+
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const [name, setName] = useState<string>(BLANK);
   const [denomination, setDenomination] = useState<string>(BLANK);
@@ -111,6 +114,7 @@ const ChurchRegisterList = () => {
   };
 
   const onClickButton = async () => {
+    setIsLoading(true);
     try {
       const response = await churchesApi.createChurch({
         name,
@@ -127,14 +131,17 @@ const ChurchRegisterList = () => {
       dispatch(setChurchId(newChurch.id));
       dispatch(setChurch(newChurch));
 
-      router.push('/church/register/group');
+      router.replace('/church/register/group');
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
     <ListContainer>
+      <Loading isShow={isLoading} />
       <InputContainer>
         <LabelInput label={'교회명'} value={name} onChange={onChangeName} />
         <LabelInput

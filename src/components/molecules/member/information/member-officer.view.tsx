@@ -42,7 +42,7 @@ type MemberOfficerViewProps = {
   onClickCloseModal: () => void;
   onClickEditOfficer: (officer: OfficerHistory) => void;
   onClickSaveOfficerHistory: (startDate?: string, endDate?: string) => void;
-  onClickDeleteOfficer: (officerId: string) => void;
+  onClickConfirmDelete: (officerId: string) => void;
 };
 
 const MemberOfficerView = ({
@@ -51,8 +51,8 @@ const MemberOfficerView = ({
   isModalShown,
   onClickCloseModal,
   onClickEditOfficer,
-  onClickDeleteOfficer,
   onClickSaveOfficerHistory,
+  onClickConfirmDelete,
 }: MemberOfficerViewProps) => {
   const t = useI18n();
   const currentHistory = officerHistory.find(
@@ -70,7 +70,7 @@ const MemberOfficerView = ({
           <OfficerHistoryItem
             officer={currentHistory || DEFAULT_OFFICER_HISTORY}
             onClickEditOfficer={onClickEditOfficer}
-            onClickDeleteOfficer={onClickDeleteOfficer}
+            onClickConfirmDelete={onClickConfirmDelete}
             isCurrent={true}
           />
         )}
@@ -89,7 +89,7 @@ const MemberOfficerView = ({
                 key={officer.id}
                 officer={officer}
                 onClickEditOfficer={onClickEditOfficer}
-                onClickDeleteOfficer={onClickDeleteOfficer}
+                onClickConfirmDelete={onClickConfirmDelete}
               />
             );
           })}

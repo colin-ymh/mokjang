@@ -7,19 +7,15 @@ import MemberTableHeader from '@/components/atoms/member/list/member-table-heade
 import { MEMBER } from '@/constants/member/member-column';
 import { FamilyMember } from '@/models/member/member';
 import { MainText } from '@/components/atoms/common/text/main-text';
-import {
-  getFormattedDate,
-  getFormattedMobilePhone,
-  getLocaleDateFromDashDate,
-} from '@/utils/format';
+import { getFormattedDate, getLocaleDateFromDashDate } from '@/utils/format';
 import { getAge, getDateFromString } from '@/utils/date';
 import { GRAY, WHITE } from '@/constants/styles/color';
 import useWindowSize from '@/hooks/window/window';
 import { LOCALE } from '@/constants/state/locale';
 import { TABLE_HEADER_ITEM } from '@/redux/reducers/member-filter-reducer';
 import { useI18n } from '../../../../../locales/client';
-import SlideButtonList from '@/components/atoms/common/button/slide-button-list';
 import { getRandomImage } from '@/utils/image';
+import LastFamilyTableContent from '@/components/atoms/member/information/last-family-table-content';
 
 const getColumnWidth = (id: string) => {
   switch (id) {
@@ -183,7 +179,7 @@ type FamilyTableProps = {
   getOfficerTitle: (id: string) => string;
   getGroupTitle: (id: string) => string;
   onClickEdit: (member: FamilyMember) => void;
-  onClickDelete: (memberId: string) => void;
+  onClickConfirmDelete: (memberId: string) => void;
 };
 
 const FamilyTableView = ({
@@ -195,7 +191,7 @@ const FamilyTableView = ({
   getOfficerTitle,
   getGroupTitle,
   onClickEdit,
-  onClickDelete,
+  onClickConfirmDelete,
 }: FamilyTableProps) => {
   const { height } = useWindowSize();
   const t = useI18n();
@@ -226,30 +222,6 @@ const FamilyTableView = ({
             <MainText>{member.familyMember?.name}</MainText>
           </ProfileContainer>
         );
-      case MEMBER.MOBILE_PHONE:
-        return (
-          <PhoneContainer>
-            <MainText>
-              {member?.familyMember?.mobilePhone &&
-                getFormattedMobilePhone(member.familyMember.mobilePhone)}
-            </MainText>
-
-            {/* 수정/삭제 모달 */}
-            <SlideButtonList
-              onClickEdit={(event) => {
-                event.stopPropagation();
-                onClickEdit(member);
-              }}
-              onClickDelete={(event) => {
-                event.stopPropagation();
-                onClickDelete(member.familyMemberId);
-              }}
-              isAddShown={false}
-              buttonSize={25}
-              position={'relative'}
-            />
-          </PhoneContainer>
-        );
       case MEMBER.BIRTH:
         return (
           <MainText>
@@ -273,6 +245,15 @@ const FamilyTableView = ({
             {member.familyMember?.officerId &&
               getOfficerTitle(member.familyMember.officerId)}
           </MainText>
+        );
+      case MEMBER.MOBILE_PHONE:
+        // 테이블 마지막 요소 -> 케밥 버튼과 팝업이 존재해 컴포넌트 분리
+        return (
+          <LastFamilyTableContent
+            member={member}
+            onClickEdit={onClickEdit}
+            onClickConfirmDelete={onClickConfirmDelete}
+          />
         );
       default:
         return null;

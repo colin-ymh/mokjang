@@ -17,6 +17,9 @@ import ManagementGroupItemView from '@/components/atoms/management/group/managem
 import { DEFAULT_GROUP, Group } from '@/models/management/management';
 import { getFormattedTitle } from '@/utils/format';
 import { getIsWellFormedTitle } from '@/utils/check';
+import ConfirmPopup from '@/components/atoms/common/popup/error-popup';
+import { useScopedI18n } from '../../../../../locales/client';
+import ToastPopup from '@/components/atoms/common/popup/toast-popup';
 
 type ManagementGroupItemProps = {
   group: Group;
@@ -35,11 +38,15 @@ const ManagementGroupItem = ({
   closedGroups,
   onClickToggle,
 }: ManagementGroupItemProps) => {
+  const t_popup = useScopedI18n('popup');
+  const t_button = useScopedI18n('button');
+  const dispatch = useDispatch<AppDispatch>();
   const groupsApi = new GroupsApi(false);
   const churchId = useSelector((state: RootState) => state.church.churchId);
+
   const isHaveChildren = group.childGroups && group.childGroups.length > 0;
   const isOpen = !closedGroups.has(parseInt(group.id as string));
-  const dispatch = useDispatch<AppDispatch>();
+
   const [thrownError, setThrownError] = useState<Error | null>(null);
 
   // 렌더링 시점(컴포넌트 return)에서 조건부로 에러 발생
@@ -49,6 +56,10 @@ const ManagementGroupItem = ({
 
   const nameInputRef = useRef<HTMLInputElement>(null);
   const newGroupRef = useRef<HTMLInputElement>(null);
+
+  const [isToastShown, setIsToastShown] = useState<boolean>(false);
+  const [isPopupShown, setIsPopupShown] = useState<boolean>(false);
+
   const [isAddShown, setIsAddShown] = useState<boolean>(false);
   const [newGroupName, setNewGroupName] = useState<string>(BLANK);
   const [isEdit, setIsEdit] = useState<boolean>(false);
@@ -71,6 +82,8 @@ const ManagementGroupItem = ({
       setNewGroupName(BLANK);
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));
+    } finally {
+      setIsToastShown(true);
     }
   };
 
@@ -91,7 +104,11 @@ const ManagementGroupItem = ({
     setTimeout(() => nameInputRef.current?.focus());
   };
 
-  const onClickGroupDelete = async (groupId: string) => {
+  const onClickGroupDelete = () => {
+    setIsPopupShown(true);
+  };
+
+  const onClickConfirmDelete = async (groupId: string) => {
     try {
       await groupsApi.deleteGroup({ churchId, groupId });
       await dispatch(fetchGroups());
@@ -126,6 +143,8 @@ const ManagementGroupItem = ({
       setIsEdit(false);
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));
+    } finally {
+      setIsToastShown(true);
     }
   };
 
@@ -197,6 +216,22 @@ const ManagementGroupItem = ({
   return (
     <>
       <ManagementGroupItemView {...props} />
+      {isToastShown && (
+        <ToastPopup
+          setIsShow={setIsToastShown}
+          text={t_popup('saveComplete')}
+        />
+      )}
+      <ConfirmPopup
+        title={t_popup('deleteGroupTitle')}
+        body={t_popup('deleteGroupBody')}
+        isShow={isPopupShown}
+        onClickLeftButton={() => setIsPopupShown(false)}
+        onClickRightButton={() => onClickConfirmDelete(group.id as string)}
+        leftButtonText={t_button('cancel')}
+        rightButtonText={t_button('confirm')}
+        buttonNum={2}
+      />
       <AddGroup
         ref={newGroupRef}
         isShown={isAddShown}

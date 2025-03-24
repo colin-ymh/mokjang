@@ -3,9 +3,9 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 
 import { FamilyApi } from '@/api/members/family.api';
-import { FAMILY } from '@/constants/constant';
 import { MembersApi } from '@/api/members/members.api';
 import { getMemberFromServer } from '@/utils/member';
+import { FAMILY } from '@/constants/constant';
 import FamilyInformationListView from '@/components/molecules/member/information/family-information-list.view';
 import {
   DEFAULT_FAMILY_MEMBER,
@@ -13,6 +13,9 @@ import {
   Member,
 } from '@/models/member/member';
 import { MEMBER_INFORMATION_HEADER_ID } from '@/constants/layout/header';
+import ToastPopup from '@/components/atoms/common/popup/toast-popup';
+
+import { useScopedI18n } from '../../../../../locales/client';
 
 type FamilyInformationListProps = {
   targetMember: Member;
@@ -25,6 +28,7 @@ const FamilyInformationList = ({
   setTargetMember,
   setContentId,
 }: FamilyInformationListProps) => {
+  const t_popup = useScopedI18n('popup');
   const { churchId } = useSelector((state: RootState) => state.church);
   const familyApi = new FamilyApi(false);
   const membersApi = new MembersApi(false);
@@ -34,6 +38,8 @@ const FamilyInformationList = ({
   if (thrownError) {
     throw thrownError;
   }
+
+  const [isToastShown, setIsToastShown] = useState(false);
 
   // 가족 관계 설정 모달 활성화 여부
   const [isModalShown, setIsModalShown] = useState<boolean>(false);
@@ -65,7 +71,6 @@ const FamilyInformationList = ({
             { familyMemberId, relation }
           );
         } else {
-          console.log('추가');
           await familyApi.createFamily(
             { churchId, memberId: targetMember.id },
             { familyMemberId, relation }
@@ -82,6 +87,8 @@ const FamilyInformationList = ({
         setThrownError(
           error instanceof Error ? error : new Error(String(error))
         );
+      } finally {
+        setIsToastShown(true);
       }
     }
 
@@ -143,8 +150,7 @@ const FamilyInformationList = ({
     }
   };
 
-  // 가족 삭제하기
-  const onClickDelete = async (familyMemberId: string) => {
+  const onClickConfirmDelete = async (familyMemberId: string) => {
     if (familyMemberId) {
       try {
         await familyApi.deleteFamily({
@@ -187,7 +193,7 @@ const FamilyInformationList = ({
           const newFamilyMembers = response.data.map(
             (member: FamilyMember) => ({
               ...member,
-              familyMemberId: getMemberFromServer(member.familyMember),
+              familyMember: getMemberFromServer(member.familyMember),
             })
           );
 
@@ -213,12 +219,19 @@ const FamilyInformationList = ({
     onClickEditFamily,
     onClickFamilyMember,
     onClickEdit,
-    onClickDelete,
+    onClickConfirmDelete,
+    setIsToastShown,
   };
 
   return (
     <>
       <FamilyInformationListView {...props} />
+      {isToastShown && (
+        <ToastPopup
+          setIsShow={setIsToastShown}
+          text={t_popup('saveComplete')}
+        />
+      )}
     </>
   );
 };

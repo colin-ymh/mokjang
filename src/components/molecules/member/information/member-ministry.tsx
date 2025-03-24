@@ -89,8 +89,8 @@ const MemberMinistry = ({ targetMember }: MemberMinistryProps) => {
     }
   };
 
-  // 기존 그룹 삭제하기
-  const onClickDeleteMinistry = async (ministryId: string) => {
+  // 기존 사역 이력 삭제하기
+  const onClickConfirmDelete = async (ministryId: string) => {
     try {
       await ministryHistoryApi.deleteMinistryHistory({
         churchId,
@@ -110,7 +110,7 @@ const MemberMinistry = ({ targetMember }: MemberMinistryProps) => {
     onClickCloseModal,
     onClickEditMinistry,
     onClickSaveMinistryHistory,
-    onClickDeleteMinistry,
+    onClickConfirmDelete,
   };
 
   return (

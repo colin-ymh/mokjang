@@ -96,7 +96,7 @@ type ManagementOfficerItemViewProps = {
   onDropOfficer: (officerId: string, parentOfficerId: string | null) => void;
   onClickOfficer: (officerId: string) => void;
   onClickOfficerEdit: () => void;
-  onClickOfficerDelete: (officerId: string) => void;
+  onClickOfficerDelete: () => void;
   onClickOfficerAdd: () => void;
   onChangeName: (event: ChangeEvent<HTMLInputElement>) => void;
   onClickSaveName: () => void;
@@ -170,7 +170,7 @@ const ManagementOfficerItemView = ({
           ) : (
             <SlideButtonList
               onClickEdit={onClickOfficerEdit}
-              onClickDelete={() => onClickOfficerDelete(officer.id as string)}
+              onClickDelete={onClickOfficerDelete}
               isAddShown={false}
             />
           )}

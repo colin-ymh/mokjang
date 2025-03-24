@@ -9,10 +9,13 @@ import { BLANK } from '@/constants/constant';
 import { getFormattedTitle } from '@/utils/format';
 import { getIsWellFormedTitle } from '@/utils/check';
 import { setOfficers } from '@/redux/reducers/church-reducer';
+import { useScopedI18n } from '../../../../../locales/client';
+import ToastPopup from '@/components/atoms/common/popup/toast-popup';
 
 type OfficerManagementProps = {};
 
 const OfficerManagement = ({}: OfficerManagementProps) => {
+  const t_popup = useScopedI18n('popup');
   const officersApi = new OfficersApi(false);
   const dispatch = useDispatch<AppDispatch>();
   const { churchId, officers } = useSelector(
@@ -25,17 +28,19 @@ const OfficerManagement = ({}: OfficerManagementProps) => {
     throw thrownError;
   }
 
-  // 선택된 교육
+  const [isToastShown, setIsToastShown] = useState<boolean>(false);
+
+  // 선택된 직분
   const [selectedOfficer, setSelectedOfficer] =
     useState<Officer>(DEFAULT_OFFICER);
 
-  // 새로운 교육 추가 모달 활성화 여부
+  // 새로운 직분 추가 모달 활성화 여부
   const [isAddModalShown, setIsAddModalShown] = useState<boolean>(false);
 
-  // 새로운 교육 이름
+  // 새로운 직분 이름
   const [newOfficerName, setNewOfficerName] = useState<string>(BLANK);
 
-  // 교육 추가 모달 열기
+  // 직분 추가 모달 열기
   const onClickModalOpen = () => {
     setIsAddModalShown(true);
 
@@ -52,7 +57,7 @@ const OfficerManagement = ({}: OfficerManagementProps) => {
     setNewOfficerName(newName);
   };
 
-  // 새로운 교육 저장
+  // 새로운 직분 저장
   const onClickSaveOfficer = async () => {
     try {
       if (getIsWellFormedTitle(newOfficerName)) {
@@ -63,10 +68,12 @@ const OfficerManagement = ({}: OfficerManagementProps) => {
       }
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));
+    } finally {
+      setIsToastShown(true);
     }
   };
 
-  // 교육 불러오기
+  // 직분 불러오기
   const fetchOfficers = async () => {
     try {
       const response = await officersApi.getOfficers({ churchId });
@@ -79,7 +86,7 @@ const OfficerManagement = ({}: OfficerManagementProps) => {
     }
   };
 
-  // 교회 정보를 통해 교육들 불러오기
+  // 교회 정보를 통해 직분들 불러오기
   useEffect(() => {
     if (churchId) {
       fetchOfficers();
@@ -151,6 +158,12 @@ const OfficerManagement = ({}: OfficerManagementProps) => {
   return (
     <>
       <OfficerManagementView {...props} />
+      {isToastShown && (
+        <ToastPopup
+          setIsShow={setIsToastShown}
+          text={t_popup('saveComplete')}
+        />
+      )}
     </>
   );
 };

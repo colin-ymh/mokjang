@@ -4,7 +4,12 @@ import { usePathname } from 'next/navigation';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { MEMBER } from '@/constants/member/member-column';
 import { BLACK, GRAY, WHITE } from '@/constants/styles/color';
-import { CALENDAR_MODE, GENDER, MARRIAGE } from '@/constants/constant';
+import {
+  CALENDAR_MODE,
+  GENDER,
+  MARRIAGE,
+  MEDIA_MAX_WIDTH,
+} from '@/constants/constant';
 import { LOCALE } from '@/constants/state/locale';
 import { Member } from '@/models/member/member';
 import { Ministry } from '@/models/management/management';
@@ -41,6 +46,10 @@ const RowContainer = styled.div`
   display: flex;
   flex-direction: row;
   gap: 10px;
+
+  @media (max-width: 768px) {
+    flex-direction: column; /* 모바일에서는 한 줄에 하나씩 표시 */
+  }
 `;
 
 const PencilButton = styled(Pencil)`
@@ -63,13 +72,14 @@ const InformationItem = styled.div<{ $disabled?: boolean }>`
   border-radius: 5px;
   cursor: ${({ $disabled }) => ($disabled ? 'default' : 'pointer')};
   position: relative;
+  width: 100%;
 
   &:hover {
     background-color: ${({ $disabled }) => ($disabled ? 'auto' : GRAY.LIGHT)};
   }
 
   &:hover ${PencilButton} {
-    display: block; /* hover 상태에서 PencilButton 표시 */
+    display: block;
   }
 `;
 
@@ -79,7 +89,11 @@ const BlankSpace = styled.div`
 
 const TitleContainer = styled.div`
   display: flex;
-  width: 150px;
+  min-width: 100px;
+
+  @media (max-width: ${MEDIA_MAX_WIDTH.MOBILE}) {
+    width: 100px;
+  }
 `;
 
 const ContentContainer = styled.div`
@@ -105,8 +119,25 @@ const Divider = styled.div`
   margin: 10px 0;
 `;
 
+const RowDivider = styled.div`
+  display: none; /* 기본적으로 숨김 */
+
+  @media (max-width: ${MEDIA_MAX_WIDTH.MOBILE}) {
+    display: block; /* 모바일에서는 표시 */
+    width: 100%;
+    height: 1px;
+    background-color: ${GRAY.LIGHT};
+  }
+`;
+
 const PaddingBottom = styled.div`
   height: 30px;
+`;
+
+const WrapText = styled(MainText)`
+  white-space: pre-wrap; /* 여러 줄로 표시 & 공백/줄바꿈 문자도 해석 */
+  word-break: break-word; /* 긴 단어를 영역 벗어나기 전에 줄바꿈 */
+  overflow-wrap: break-word; /* 추가적인 안전 장치 */
 `;
 
 type InformationListViewProps = {
@@ -148,6 +179,7 @@ const InformationListView = ({
             </ContentContainer>
             <PencilButton />
           </InformationItem>
+          <RowDivider />
           {/* 역할 */}
           <InformationItem onClick={onClickOpenGroupModal}>
             <TitleContainer>
@@ -171,6 +203,7 @@ const InformationListView = ({
             </ContentContainer>
             <PencilButton />
           </InformationItem>
+          <RowDivider />
           {/* 신급 */}
           <InformationItem onClick={onClickOpenBaptismModal}>
             <TitleContainer>
@@ -229,6 +262,7 @@ const InformationListView = ({
             </ContentContainer>
             <PencilButton />
           </InformationItem>
+          <RowDivider />
           {/* 성별 */}
           <InformationItem onClick={() => onClickItem(MEMBER.GENDER)}>
             <TitleContainer>
@@ -263,6 +297,7 @@ const InformationListView = ({
             </ContentContainer>
             <PencilButton />
           </InformationItem>
+          <RowDivider />
           {/* 생일 */}
           <InformationItem $disabled={true}>
             <TitleContainer>
@@ -292,6 +327,7 @@ const InformationListView = ({
             </ContentContainer>
             <PencilButton />
           </InformationItem>
+          <RowDivider />
           {/* 집전화번호 */}
           <InformationItem onClick={() => onClickItem(MEMBER.HOME_PHONE)}>
             <TitleContainer>
@@ -312,10 +348,11 @@ const InformationListView = ({
               <MainText color={GRAY.DEFAULT}>{t(MEMBER.ADDRESS)}</MainText>
             </TitleContainer>
             <ContentContainer>
-              <MainText>{prevMember.address}</MainText>
+              <WrapText>{prevMember.address}</WrapText>
             </ContentContainer>
             <PencilButton />
           </InformationItem>
+          <RowDivider />
           {/* 상세 주소 */}
           <InformationItem onClick={() => onClickItem(MEMBER.DETAIL_ADDRESS)}>
             <TitleContainer>
@@ -342,6 +379,7 @@ const InformationListView = ({
             </ContentContainer>
             <PencilButton />
           </InformationItem>
+          <RowDivider />
           {/* 학교 */}
           <InformationItem onClick={() => onClickItem(MEMBER.SCHOOL)}>
             <TitleContainer>
@@ -366,6 +404,7 @@ const InformationListView = ({
             </ContentContainer>
             <PencilButton />
           </InformationItem>
+          <RowDivider />
           {/* 결혼 상세 */}
           <InformationItem onClick={() => onClickItem(MEMBER.DETAIL_MARRIAGE)}>
             <TitleContainer>

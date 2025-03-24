@@ -138,6 +138,7 @@ const TermTable = ({ education, terms, fetchTerms }: TermTableProps) => {
           sessions={sessions}
           fetchEnrollments={fetchEnrollments}
           fetchTerms={fetchTerms}
+          onClickClose={onClickClose}
         />
       </CustomPopup>
     </>

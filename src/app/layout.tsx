@@ -13,6 +13,8 @@ import { useInitializeChurch, useInitializeUser } from '@/utils/initialize';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
 
+import 'react-datepicker/dist/react-datepicker.css';
+
 const GlobalStyle = createGlobalStyle`
     html,
     body {

@@ -1,4 +1,10 @@
-import { ChangeEvent, useEffect, useState } from 'react';
+import {
+  ChangeEvent,
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useState,
+} from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 
@@ -19,6 +25,7 @@ type AddEnrollmentModalProps = {
   isShown: boolean;
   onClickClose: () => void;
   fetchTerms: () => void;
+  setIsToastShown: Dispatch<SetStateAction<boolean>>;
 };
 
 const AddEnrollmentModal = ({
@@ -27,6 +34,7 @@ const AddEnrollmentModal = ({
   isShown,
   onClickClose,
   fetchTerms,
+  setIsToastShown,
 }: AddEnrollmentModalProps) => {
   const membersApi = new MembersApi(false);
   const educationEnrollmentsApi = new EducationEnrollmentsApi(false);
@@ -92,6 +100,8 @@ const AddEnrollmentModal = ({
         resetData();
       } catch (error) {
         console.error('Error creating enrollments:', error);
+      } finally {
+        setIsToastShown(true);
       }
     }
   };

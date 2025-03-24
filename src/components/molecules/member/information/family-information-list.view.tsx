@@ -1,6 +1,7 @@
+import { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
 
-import { FAMILY } from '@/constants/constant';
+import { FAMILY, MEDIA_MIN_WIDTH } from '@/constants/constant';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { FamilyMember } from '@/models/member/member';
 import { GRAY, WHITE } from '@/constants/styles/color';
@@ -9,6 +10,7 @@ import FamilyTable from '@/components/atoms/member/information/family-table';
 
 import { useScopedI18n } from '../../../../../locales/client';
 import Plus from '../../../../../public/svg/plus.svg';
+import MobileFamilyList from '@/components/atoms/member/information/mobile/mobile-family-list';
 
 const ListContainer = styled.div`
   display: flex;
@@ -27,10 +29,21 @@ const ListTypeHeader = styled.div`
   padding: 0 20px;
 `;
 
-const Divider = styled.div`
-  width: 100%;
-  height: 1px;
-  background-color: ${GRAY.LIGHT};
+const MobileView = styled.div`
+  display: flex;
+
+  @media (min-width: ${MEDIA_MIN_WIDTH.DESKTOP}) {
+    display: none;
+  }
+`;
+
+const DesktopView = styled.div`
+  display: none;
+  justify-content: flex-start;
+
+  @media (min-width: ${MEDIA_MIN_WIDTH.DESKTOP}) {
+    display: flex;
+  }
 `;
 
 const ButtonContainer = styled.div`
@@ -75,7 +88,8 @@ type FamilyInformationListViewProps = {
   onClickEditFamily: (familyMemberId: string, relation: FAMILY) => void;
   onClickFamilyMember: (familyMemberId: string) => void;
   onClickEdit: (member: FamilyMember) => void;
-  onClickDelete: (familyMemberId: string) => void;
+  onClickConfirmDelete: (familyMemberId: string) => void;
+  setIsToastShown: Dispatch<SetStateAction<boolean>>;
 };
 
 const FamilyInformationListView = ({
@@ -87,8 +101,9 @@ const FamilyInformationListView = ({
   onClickCreateFamily,
   onClickEditFamily,
   onClickFamilyMember,
-  onClickDelete,
+  onClickConfirmDelete,
   onClickEdit,
+  setIsToastShown,
 }: FamilyInformationListViewProps) => {
   const t_header = useScopedI18n('header');
   return (
@@ -102,12 +117,22 @@ const FamilyInformationListView = ({
         </ButtonContainer>
       </ListTypeHeader>
       {/* 가족 목록 */}
-      <FamilyTable
-        familyMembers={familyMembers}
-        onClickMember={onClickFamilyMember}
-        onClickEdit={onClickEdit}
-        onClickDelete={onClickDelete}
-      />
+      <DesktopView>
+        <FamilyTable
+          familyMembers={familyMembers}
+          onClickMember={onClickFamilyMember}
+          onClickEdit={onClickEdit}
+          onClickConfirmDelete={onClickConfirmDelete}
+        />
+      </DesktopView>
+      <MobileView>
+        <MobileFamilyList
+          familyMembers={familyMembers}
+          onClickMember={onClickFamilyMember}
+          onClickEdit={onClickEdit}
+          onClickConfirmDelete={onClickConfirmDelete}
+        />
+      </MobileView>
       {/* 교인 가족 추가 및 수정 모달*/}
       {isModalShown && (
         <FamilyModalContainer $isShown={isModalShown}>
@@ -116,6 +141,7 @@ const FamilyInformationListView = ({
             onClickClose={onClickCloseModal}
             onClickCreateFamily={onClickCreateFamily}
             onClickEditFamily={onClickEditFamily}
+            setIsToastShown={setIsToastShown}
           />
         </FamilyModalContainer>
       )}

@@ -91,8 +91,7 @@ const MemberOfficer = ({ targetMember }: MemberOfficerProps) => {
     }
   };
 
-  // 기존 직분 삭제하기
-  const onClickDeleteOfficer = async (officerId: string) => {
+  const onClickConfirmDelete = async (officerId: string) => {
     try {
       await officerHistoryApi.deleteOfficerHistory({
         churchId,
@@ -112,7 +111,7 @@ const MemberOfficer = ({ targetMember }: MemberOfficerProps) => {
     onClickCloseModal,
     onClickEditOfficer,
     onClickSaveOfficerHistory,
-    onClickDeleteOfficer,
+    onClickConfirmDelete,
   };
 
   return (
