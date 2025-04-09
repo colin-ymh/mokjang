@@ -19,11 +19,14 @@ import { getFormattedMobilePhone, getFormattedName } from '@/utils/format';
 import { usePageRouter } from '@/utils/router';
 
 import { useScopedI18n } from '../../../../locales/client';
+import { UserApi } from '@/api/user/user.api';
 
 const UserRegisterList = () => {
   const t_popup = useScopedI18n('popup');
   const router = usePageRouter();
   const authApi = new AuthApi(false);
+  const userApi = new UserApi(false);
+
   const dispatch = useDispatch<AppDispatch>();
 
   const [thrownError, setThrownError] = useState<Error | null>(null);
@@ -78,7 +81,7 @@ const UserRegisterList = () => {
         {
           name,
           mobilePhone: mobilePhone.replace(/-/g, ''),
-          isTest: IS_TEST.INTERNAL_TEST,
+          isTest: IS_TEST.PRODUCTION,
         }
       );
 
@@ -119,10 +122,11 @@ const UserRegisterList = () => {
       const response = await authApi.getSignIn({
         privacyPolicyAgreed: isVerified,
       });
+      console.log(response);
       if (response.status === 201) {
         router.replace('/church/register');
 
-        const userResponse = await authApi.getUser();
+        const userResponse = await userApi.getUser();
         const newUser = userResponse.data;
         dispatch(setUser(newUser));
       }

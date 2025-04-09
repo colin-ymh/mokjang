@@ -19,6 +19,7 @@ import { MinistryGroupsApi } from '@/api/management/ministry/ministry-groups.api
 import { AuthApi } from '@/api/auth/auth.api';
 import { usePageRouter } from '@/utils/router';
 import { setUser } from '@/redux/reducers/user-reducer';
+import { UserApi } from '@/api/user/user.api';
 
 export const useInitializeChurch = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -75,6 +76,7 @@ export const useInitializeUser = () => {
   const dispatch = useDispatch<AppDispatch>();
   const router = usePageRouter();
   const authApi = new AuthApi(false);
+  const userApi = new UserApi(false);
 
   return async () => {
     try {
@@ -93,14 +95,18 @@ export const useInitializeUser = () => {
 
     try {
       // (2) Access Token으로 유저 정보 가져오기
-      const response = await authApi.getUser();
+      const response = await userApi.getUser();
       const newUser = response.data;
+      console.log(newUser);
 
       // (3) Redux에 사용자 정보 저장
       dispatch(setUser(newUser));
 
       // (4) 교회 정보 확인 후 라우팅
-      const c = newUser?.adminChurch || newUser?.managingChurch;
+      const c = newUser.church;
+
+      console.log(c);
+
       if (c?.id) {
         dispatch(setChurch(c));
         dispatch(setChurchId(c.id));
