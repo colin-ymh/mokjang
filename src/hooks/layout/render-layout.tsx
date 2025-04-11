@@ -1,23 +1,24 @@
 import { Dispatch, ReactNode, SetStateAction } from 'react';
 
 import {
+  CHURCH_CONTENT_ID,
   HOME_CONTENT_ID,
-  MANAGEMENT_CONTENT_ID,
   MEMBER_CONTENT_ID,
 } from '@/constants/layout/content';
 import {
   EDUCATION_MANAGEMENT_HEADER_ID,
   GROUP_MANAGEMENT_HEADER_ID,
-  HEADER_ID,
+  MAIN_HEADER_ID,
+  MANAGEMENT_HEADER_ID,
   MEMBER_INFORMATION_HEADER_ID,
   MINISTRY_MANAGEMENT_HEADER_ID,
+  SIDE_ID,
 } from '@/constants/layout/header';
 
-import MemberTabHeader from '@/components/molecules/layout/header/member-tab-header';
+import MainMemberHeader from '@/components/molecules/layout/header/main/main-member-header';
 import MemberList from '@/components/organisms/member/list/member-list';
 import InformationList from '@/components/molecules/member/information/member-information-list';
 import FamilyInformationList from '@/components/molecules/member/information/family-information-list';
-import ManagementTabHeader from '@/components/molecules/layout/header/management-tab-header';
 import MemberEducation from '@/components/molecules/member/information/member-education';
 import GroupManagement from '@/components/organisms/management/group/group-management';
 import {
@@ -26,7 +27,6 @@ import {
   MinistryGroup,
 } from '@/models/management/management';
 import MemberGroup from '@/components/molecules/member/information/member-group';
-import EducationManagement from '@/components/organisms/management/education/education-management';
 import OfficerManagement from '@/components/organisms/management/officer/officer-management';
 import EducationTermList from '@/components/molecules/management/education/education-term-list';
 import MinistryGroupInformation from '@/components/molecules/management/ministry/ministry-group-information';
@@ -37,29 +37,25 @@ import { Member } from '@/models/member/member';
 import GroupInformation from '@/components/molecules/management/group/group-information';
 import MemberOfficer from '@/components/molecules/member/information/member-officer';
 import GroupMember from '@/components/molecules/management/group/group-member';
+import MainSideButtonList from '@/components/molecules/layout/side/main-side/main-side-button-list';
+import ManagementSideButtonList from '@/components/molecules/layout/side/management-side/management-side-button-list';
+import ManagementChurchHeader from '@/components/molecules/layout/header/management/management-church-header';
+import ManagementAdministratorHeader from '@/components/molecules/layout/header/management/management-administrator-header';
+import MainVisitationHeader from '@/components/molecules/layout/header/main/main-visitation-header';
+import MainEducationHeader from '@/components/molecules/layout/header/main/main-education-header';
+import EducationManagement from '@/components/organisms/management/education/education-management';
+import VisitationList from '@/components/organisms/visitation/list/visitation-list';
 
-export const getContent = (id: string): ReactNode => {
+export const getSide = (id: string) => {
   switch (id) {
-    // 홈
-    case HOME_CONTENT_ID.HOME:
+    case SIDE_ID.MAIN:
+      return <MainSideButtonList />;
+    case SIDE_ID.NOTIFICATION:
       return null;
-    // 교인 관리
-    case MEMBER_CONTENT_ID.MEMBER:
-      return <MemberList />;
-    case MEMBER_CONTENT_ID.ADMINISTRATOR:
-      return <MemberList />;
-    case MEMBER_CONTENT_ID.NEW_MEMBER:
-      return <MemberList isNewMember={true} />;
-    // 교회 설정
-    case MANAGEMENT_CONTENT_ID.GROUP:
-      return <GroupManagement />;
-    case MANAGEMENT_CONTENT_ID.MINISTRY:
-      return <MinistryGroupManagement />;
-    case MANAGEMENT_CONTENT_ID.EDUCATION:
-      return <EducationManagement />;
-    case MANAGEMENT_CONTENT_ID.OFFICER:
-      return <OfficerManagement />;
-    // 그 외
+    case SIDE_ID.MANAGEMENT:
+      return <ManagementSideButtonList />;
+    case SIDE_ID.GUIDE:
+      return null;
     default:
       return null;
   }
@@ -67,12 +63,60 @@ export const getContent = (id: string): ReactNode => {
 
 export const getHeader = (id: string) => {
   switch (id) {
-    // case HEADER_ID.HOME:
-    //   return null;
-    case HEADER_ID.MEMBER:
-      return <MemberTabHeader />;
-    case HEADER_ID.MANAGEMENT:
-      return <ManagementTabHeader />;
+    // 메인
+    case MAIN_HEADER_ID.HOME:
+      return null;
+    case MAIN_HEADER_ID.MEMBER:
+      return <MainMemberHeader />;
+    case MAIN_HEADER_ID.VISITATION:
+      return <MainVisitationHeader />;
+    case MAIN_HEADER_ID.EDUCATION:
+      return <MainEducationHeader />;
+    case MAIN_HEADER_ID.TASK:
+      return null;
+    case MAIN_HEADER_ID.CALENDAR:
+      return null;
+    // 관리
+    case MANAGEMENT_HEADER_ID.CHURCH:
+      return <ManagementChurchHeader />;
+    case MANAGEMENT_HEADER_ID.ADMINISTRATOR:
+      return <ManagementAdministratorHeader />;
+    default:
+      return null;
+  }
+};
+
+export const getContent = (id: string, headerId: string | null): ReactNode => {
+  switch (id) {
+    // 중복 contentId 관리
+    case 'all':
+      if (headerId === MAIN_HEADER_ID.MEMBER) {
+        return <MemberList />;
+      } else if (headerId === MAIN_HEADER_ID.VISITATION) {
+        return <VisitationList />;
+      } else if (headerId === MAIN_HEADER_ID.EDUCATION) {
+        return <EducationManagement />;
+      } else {
+        return null;
+      }
+    // 홈
+    case HOME_CONTENT_ID.HOME:
+      return null;
+    // 교인 관리
+    // case MEMBER_CONTENT_ID.ALL:
+    //   return <MemberList />;
+    case MEMBER_CONTENT_ID.ADMINISTRATOR:
+      return <MemberList />;
+    case MEMBER_CONTENT_ID.NEW:
+      return <MemberList isNewMember={true} />;
+    // 교회 설정
+    case CHURCH_CONTENT_ID.GROUP:
+      return <GroupManagement />;
+    case CHURCH_CONTENT_ID.MINISTRY:
+      return <MinistryGroupManagement />;
+    case CHURCH_CONTENT_ID.OFFICER:
+      return <OfficerManagement />;
+    // 그 외
     default:
       return null;
   }
@@ -81,10 +125,10 @@ export const getHeader = (id: string) => {
 export const getMemberInformationContent = (
   targetMember: Member,
   setTargetMember: Dispatch<SetStateAction<Member>>,
-  contentId: string,
-  setContentId: Dispatch<SetStateAction<string>>
+  memberContentId: string,
+  setMemberContentId: Dispatch<SetStateAction<string>>
 ) => {
-  switch (contentId) {
+  switch (memberContentId) {
     case MEMBER_INFORMATION_HEADER_ID.PERSONAL_INFORMATION:
       return (
         <InformationList
@@ -97,7 +141,7 @@ export const getMemberInformationContent = (
         <FamilyInformationList
           targetMember={targetMember}
           setTargetMember={setTargetMember}
-          setContentId={setContentId}
+          setMemberContentId={setMemberContentId}
         />
       );
     case MEMBER_INFORMATION_HEADER_ID.GROUP:

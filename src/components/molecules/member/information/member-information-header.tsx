@@ -44,14 +44,14 @@ const ChurchMemberInfoContainer = styled.div`
 
 type MemberInformationHeaderProps = {
   targetMember: Member;
-  contentId: string;
+  memberContentId: string;
   onClickItem: (id: string) => void;
   onClickDelete?: () => void;
 };
 
 const MemberInformationHeader = ({
   targetMember,
-  contentId,
+  memberContentId,
   onClickItem,
   onClickDelete,
 }: MemberInformationHeaderProps) => {
@@ -120,7 +120,7 @@ const MemberInformationHeader = ({
 
       {/* 개인정보, 가족 등의 탭 바*/}
       <HeaderBarView
-        value={contentId}
+        value={memberContentId}
         items={headerBarItems}
         onClick={onClickItem}
       />

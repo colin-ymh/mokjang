@@ -5,10 +5,6 @@ import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/redux/store';
 import { setUser } from '@/redux/reducers/user-reducer';
 
-// import {
-//   resetAuthorizationToken,
-//   setAuthorizationToken,
-// } from '@/api/authorize-axios';
 import { AuthApi, IS_TEST } from '@/api/auth/auth.api';
 import UserRegisterListView from '@/components/molecules/auth/user-register-list.view';
 import ToastPopup from '@/components/atoms/common/popup/toast-popup';

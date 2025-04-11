@@ -3,10 +3,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 import { setMemberFilter } from '@/redux/reducers/member-filter-reducer';
 
-import GroupFilterView from '@/components/molecules/layout/group-filter.view';
+import GroupFilterView from '@/components/atoms/layout/side/main-side/group-filter.view';
 import { Group } from '@/models/management/management';
 import { getOrderedGroups } from '@/utils/group';
-import { useI18n } from '../../../../locales/client';
+import { useI18n } from '../../../../../../locales/client';
 
 const GroupFilter = () => {
   const t = useI18n();

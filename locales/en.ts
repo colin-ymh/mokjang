@@ -5,7 +5,6 @@ export default {
   search: 'Search',
   after: 'From',
   before: 'To',
-  management: 'Management',
   all: 'All',
   period: 'Period',
   total: 'Total',
@@ -134,7 +133,16 @@ export default {
 
   /*-------------------header (side bar button)-------------------*/
   'header.home': 'Home',
-  'header.member': 'Membership',
+  'header.member': 'Member',
+  'header.visitation': 'Visitation',
+  'header.education': 'Education',
+  'header.task': 'Task',
+  'header.calendar': 'Calendar',
+
+  'header.church': 'Church',
+  'header.administrator': 'Administrator',
+  'header.setting': 'Setting',
+  'header.add': 'Add',
 
   'header.memberInformation': 'Member Information',
   'header.personalInformation': 'Personal Information',
@@ -145,9 +153,9 @@ export default {
   /*-------------------header (side bar button)-------------------*/
 
   /*-------------------member content (member header bar button)-------------------*/
-  'member-content.memberList': 'All',
-  'member-content.administratorList': 'Administrators',
-  'member-content.newMemberList': 'New Members',
+  'member-content.all': 'All',
+  'member-content.administrator': 'Administrator',
+  'member-content.new': 'New',
   /*-------------------member content (member header bar button)-------------------*/
 
   /*-------------------table header -------------------*/

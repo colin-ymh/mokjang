@@ -4,13 +4,12 @@ import styled from 'styled-components';
 import { BLACK, GRAY } from '@/constants/styles/color';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import HeaderBar from '@/components/atoms/layout/header/header-bar';
-import { useMemberHeaderBarItems } from '@/hooks/layout/header-bar-items';
+import { useMainMemberHeaderBarItems } from '@/hooks/layout/header-bar-items';
 import Button from '@/components/atoms/common/button/button';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/redux/store';
 import { SIZE } from '@/constants/styles/style';
 
-import { useScopedI18n } from '../../../../../locales/client';
+import { useScopedI18n } from '../../../../../../locales/client';
+import { useParams } from 'next/navigation';
 
 const HeaderContainer = styled.div`
   display: block;
@@ -37,21 +36,23 @@ const ButtonContainer = styled.div`
   flex-direction: row;
 `;
 
-type MemberHeadBarViewProps = {
+type MainMemberHeaderViewProps = {
   onClickRegisterMemberButton: () => void;
   onClickHeaderBar: (id: string) => void;
   onClickDummyMembers: () => void;
 };
 
-const MemberTabHeaderView = ({
+const MainMemberHeaderView = ({
   onClickRegisterMemberButton,
   onClickHeaderBar,
   onClickDummyMembers,
-}: MemberHeadBarViewProps) => {
+}: MainMemberHeaderViewProps) => {
+  const slug = useParams().slug as string[];
+  const contentId = slug[2];
+
   const t_button = useScopedI18n('button');
   const t_header = useScopedI18n('header');
-  const contentId = useSelector((state: RootState) => state.layout.contentId);
-  const headerBarItems = useMemberHeaderBarItems();
+  const headerBarItems = useMainMemberHeaderBarItems();
 
   return (
     <HeaderContainer>
@@ -82,4 +83,4 @@ const MemberTabHeaderView = ({
   );
 };
 
-export default MemberTabHeaderView;
+export default MainMemberHeaderView;

@@ -1,11 +1,26 @@
-export enum HEADER_ID {
+export enum SIDE_ID {
+  MAIN = 'main',
+  NOTIFICATION = 'notification',
+  MANAGEMENT = 'management',
+  GUIDE = 'guide',
+}
+
+export enum MAIN_HEADER_ID {
   HOME = 'home',
   MEMBER = 'member',
-  MANAGEMENT = 'management',
+  VISITATION = 'visitation',
+  EDUCATION = 'education',
+  TASK = 'task',
+  CALENDAR = 'calendar',
+}
+
+export enum MANAGEMENT_HEADER_ID {
+  CHURCH = 'church',
+  ADMINISTRATOR = 'administrator',
+  SETTING = 'setting',
 }
 
 export enum MEMBER_INFORMATION_HEADER_ID {
-  // MEMBER_INFORMATION = "memberInformation",
   PERSONAL_INFORMATION = 'personalInformation',
   FAMILY_INFORMATION = 'familyInformation',
   OFFICER = 'officer',

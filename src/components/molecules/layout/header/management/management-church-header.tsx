@@ -1,0 +1,22 @@
+import ManagementChurchHeaderView from '@/components/molecules/layout/header/management/management-church-header.view';
+import { usePageRouter } from '@/utils/router';
+
+type ManagementTabHeaderProps = {};
+
+const ManagementChurchHeader = ({}: ManagementTabHeaderProps) => {
+  const router = usePageRouter();
+
+  // 헤더 탭바 이벤트
+  const onClickHeaderBar = (id: string) => {
+    router.push(`/admin/management/church/${id}`);
+  };
+
+  const props = { onClickHeaderBar };
+
+  return (
+    <>
+      <ManagementChurchHeaderView {...props} />
+    </>
+  );
+};
+export default ManagementChurchHeader;

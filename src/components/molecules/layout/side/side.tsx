@@ -1,16 +1,21 @@
+import { memo, ReactNode } from 'react';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/redux/store';
 import { setChurch, setChurchId } from '@/redux/reducers/church-reducer';
 import { setUser } from '@/redux/reducers/user-reducer';
 
-import SideBarView from '@/components/molecules/layout/side-bar.view';
+import { AuthApi } from '@/api/auth/auth.api';
+import { BLANK } from '@/constants/constant';
+import SideView from '@/components/molecules/layout/side/side.view';
 import { DEFAULT_USER } from '@/models/user/user';
 import { DEFAULT_CHURCH } from '@/models/church/church';
-import { BLANK } from '@/constants/constant';
 import { usePageRouter } from '@/utils/router';
-import { AuthApi } from '@/api/auth/auth.api';
 
-const SideBar = () => {
+type SideProps = {
+  sideButtonList: ReactNode;
+};
+
+const Side = memo(({ sideButtonList }: SideProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const router = usePageRouter();
   const authApi = new AuthApi(false);
@@ -31,14 +36,15 @@ const SideBar = () => {
   };
 
   const props = {
+    sideButtonList,
     onClickLogOut,
   };
 
   return (
     <>
-      <SideBarView {...props} />
+      <SideView {...props} />
     </>
   );
-};
+});
 
-export default SideBar;
+export default Side;

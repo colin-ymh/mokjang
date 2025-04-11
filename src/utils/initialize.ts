@@ -110,7 +110,7 @@ export const useInitializeUser = () => {
       if (c?.id) {
         dispatch(setChurch(c));
         dispatch(setChurchId(c.id));
-        router.replace('/');
+        router.replace('/admin');
       } else {
         router.replace('/church/register');
       }

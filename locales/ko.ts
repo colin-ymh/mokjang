@@ -5,7 +5,6 @@ export default {
   search: '검색',
   after: '부터',
   before: '까지',
-  management: '교회 관리',
   all: '전체',
   period: '기간',
   total: '총',
@@ -137,7 +136,16 @@ export default {
 
   /*-------------------header (side bar button)-------------------*/
   'header.home': '홈',
-  'header.member': '교인 관리',
+  'header.member': '교인관리',
+  'header.visitation': '심방',
+  'header.education': '교육',
+  'header.task': '업무',
+  'header.calendar': '일정표',
+
+  'header.church': '교회설정',
+  'header.administrator': '관리자',
+  'header.setting': '설정',
+  'header.add': '추가',
 
   'header.memberInformation': '교인 정보',
   'header.personalInformation': '개인 정보',
@@ -150,11 +158,22 @@ export default {
   'header.ministryGroupMembers': '그룹원',
   /*-------------------header (side bar button)-------------------*/
 
-  /*-------------------member content (member header bar button)-------------------*/
-  'member-content.memberList': '전체',
-  'member-content.administratorList': '관리자',
-  'member-content.newMemberList': '새신자',
-  /*-------------------member content (member header bar button)-------------------*/
+  /*-------------------content (header bar button)-------------------*/
+  'member-content.all': '전체',
+  'member-content.administrator': '관리자',
+  'member-content.new': '새신자',
+
+  'church-content.group': '그룹',
+  'church-content.ministry': '사역',
+  'church-content.officer': '직분',
+
+  'administrator-content.setting': '관리자 설정',
+  'administrator-content.add': '관리자 추가',
+
+  'visiting-content.all': '전체',
+  'visiting-content.my': '내 심방',
+
+  /*-------------------content (header bar button)-------------------*/
 
   /*-------------------table header -------------------*/
   'tableHeader.term': '기수',

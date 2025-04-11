@@ -1,6 +1,8 @@
 import {
-  MANAGEMENT_CONTENT_ID,
+  ADMINISTRATOR_CONTENT_ID,
+  CHURCH_CONTENT_ID,
   MEMBER_CONTENT_ID,
+  VISITING_CONTENT_ID,
 } from '@/constants/layout/content';
 import {
   EDUCATION_MANAGEMENT_HEADER_ID,
@@ -9,26 +11,56 @@ import {
   MEMBER_INFORMATION_HEADER_ID,
   MINISTRY_MANAGEMENT_HEADER_ID,
 } from '@/constants/layout/header';
-
-import { useI18n, useScopedI18n } from '../../../locales/client';
 import { EducationSession } from '@/models/management/management';
 
-export const useMemberHeaderBarItems = () => {
+import { useI18n, useScopedI18n } from '../../../locales/client';
+
+export const useMainMemberHeaderBarItems = () => {
   const t_memberContent = useScopedI18n('member-content');
 
   const items = [
     {
-      id: MEMBER_CONTENT_ID.MEMBER,
-      title: t_memberContent(MEMBER_CONTENT_ID.MEMBER),
+      id: MEMBER_CONTENT_ID.ALL,
+      title: t_memberContent(MEMBER_CONTENT_ID.ALL),
     },
-    // {
-    //   id: MEMBER_CONTENT_ID.ADMINISTRATOR,
-    //   title: t_memberContent(MEMBER_CONTENT_ID.ADMINISTRATOR),
-    // },
-    // {
-    //   id: MEMBER_CONTENT_ID.NEW_MEMBER,
-    //   title: t_memberContent(MEMBER_CONTENT_ID.NEW_MEMBER),
-    // },
+    {
+      id: MEMBER_CONTENT_ID.ADMINISTRATOR,
+      title: t_memberContent(MEMBER_CONTENT_ID.ADMINISTRATOR),
+    },
+    {
+      id: MEMBER_CONTENT_ID.NEW,
+      title: t_memberContent(MEMBER_CONTENT_ID.NEW),
+    },
+  ];
+
+  return items;
+};
+
+export const useMainVisitationHeaderBarItems = () => {
+  const t_visitingContent = useScopedI18n('visiting-content');
+
+  const items = [
+    {
+      id: VISITING_CONTENT_ID.ALL,
+      title: t_visitingContent(VISITING_CONTENT_ID.ALL),
+    },
+    {
+      id: VISITING_CONTENT_ID.MY,
+      title: t_visitingContent(VISITING_CONTENT_ID.MY),
+    },
+  ];
+
+  return items;
+};
+
+export const useMainEducationHeaderBarItems = () => {
+  const t_visitingContent = useScopedI18n('visiting-content');
+
+  const items = [
+    {
+      id: VISITING_CONTENT_ID.ALL,
+      title: t_visitingContent(VISITING_CONTENT_ID.ALL),
+    },
   ];
 
   return items;
@@ -68,25 +100,38 @@ export const useMemberInformationHeaderBarItems = () => {
   return items;
 };
 
-export const useManagementHeaderBarItems = () => {
+export const useManagementChurchHeaderBarItems = () => {
   const t = useI18n();
 
   const items = [
     {
-      id: MANAGEMENT_CONTENT_ID.GROUP,
-      title: t(MANAGEMENT_CONTENT_ID.GROUP),
+      id: CHURCH_CONTENT_ID.GROUP,
+      title: t(CHURCH_CONTENT_ID.GROUP),
     },
     {
-      id: MANAGEMENT_CONTENT_ID.OFFICER,
-      title: t(MANAGEMENT_CONTENT_ID.OFFICER),
+      id: CHURCH_CONTENT_ID.OFFICER,
+      title: t(CHURCH_CONTENT_ID.OFFICER),
     },
     {
-      id: MANAGEMENT_CONTENT_ID.MINISTRY,
-      title: t(MANAGEMENT_CONTENT_ID.MINISTRY),
+      id: CHURCH_CONTENT_ID.MINISTRY,
+      title: t(CHURCH_CONTENT_ID.MINISTRY),
+    },
+  ];
+
+  return items;
+};
+
+export const useManagementAdministratorHeaderBarItems = () => {
+  const t_header = useScopedI18n('header');
+
+  const items = [
+    {
+      id: ADMINISTRATOR_CONTENT_ID.SETTING,
+      title: t_header(ADMINISTRATOR_CONTENT_ID.SETTING),
     },
     {
-      id: MANAGEMENT_CONTENT_ID.EDUCATION,
-      title: t(MANAGEMENT_CONTENT_ID.EDUCATION),
+      id: ADMINISTRATOR_CONTENT_ID.ADD,
+      title: t_header(ADMINISTRATOR_CONTENT_ID.ADD),
     },
   ];
 

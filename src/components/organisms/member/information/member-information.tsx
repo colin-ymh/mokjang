@@ -31,18 +31,18 @@ const MemberInformation = ({
   setTargetMember,
   onClickDelete,
 }: MemberInformationProps) => {
-  const [contentId, setContentId] = useState<string>(
+  const [memberContentId, setMemberContentId] = useState<string>(
     MEMBER_INFORMATION_HEADER_ID.PERSONAL_INFORMATION
   );
 
   const onClickHeaderBarItem = (id: string) => {
-    setContentId(id);
+    setMemberContentId(id);
   };
 
   return (
     <InformationContainer>
       <MemberInformationHeader
-        contentId={contentId}
+        memberContentId={memberContentId}
         onClickItem={onClickHeaderBarItem}
         targetMember={targetMember}
         onClickDelete={onClickDelete}
@@ -51,8 +51,8 @@ const MemberInformation = ({
         {getMemberInformationContent(
           targetMember,
           setTargetMember,
-          contentId,
-          setContentId
+          memberContentId,
+          setMemberContentId
         )}
       </ContentContainer>
     </InformationContainer>

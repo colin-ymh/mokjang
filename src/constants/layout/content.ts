@@ -3,14 +3,27 @@ export enum HOME_CONTENT_ID {
 }
 
 export enum MEMBER_CONTENT_ID {
-  MEMBER = 'memberList',
-  ADMINISTRATOR = 'administratorList',
-  NEW_MEMBER = 'newMemberList',
+  ALL = 'all',
+  ADMINISTRATOR = 'administrator',
+  NEW = 'new',
 }
 
-export enum MANAGEMENT_CONTENT_ID {
+export enum CHURCH_CONTENT_ID {
   GROUP = 'group',
   OFFICER = 'officer',
-  EDUCATION = 'education',
   MINISTRY = 'ministry',
+}
+
+export enum ADMINISTRATOR_CONTENT_ID {
+  SETTING = 'setting',
+  ADD = 'add',
+}
+
+export enum VISITING_CONTENT_ID {
+  ALL = 'all',
+  MY = 'my',
+}
+
+export enum EDUCATION_CONTENT_ID {
+  ALL = 'all',
 }

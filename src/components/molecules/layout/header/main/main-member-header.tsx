@@ -1,9 +1,8 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
-import { setContentId } from '@/redux/reducers/layout-reducer';
 
-import MemberTabHeaderView from '@/components/molecules/layout/header/member-tab-header.view';
+import MainMemberHeaderView from '@/components/molecules/layout/header/main/main-member-header.view';
 import CustomPopup from '@/components/atoms/common/popup/custom-popup';
 import MemberRegister from '@/components/organisms/register/member-register';
 import {
@@ -15,13 +14,15 @@ import {
   fetchMembers,
   setMembers,
 } from '@/redux/reducers/member-filter-reducer';
+import { usePageRouter } from '@/utils/router';
 
-type MemberManagementHeadBarProps = {};
+type MainMemberHeaderProps = {};
 
-const MemberTabHeader = ({}: MemberManagementHeadBarProps) => {
+const MainMemberHeader = ({}: MainMemberHeaderProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const { churchId } = useSelector((state: RootState) => state.church);
   const dummyApi = new DummyApi(false);
+  const router = usePageRouter();
 
   // 교인 등록하기 on/off
   const [isRegisterShown, setIsRegisterShown] = useState<boolean>(false);
@@ -39,7 +40,7 @@ const MemberTabHeader = ({}: MemberManagementHeadBarProps) => {
 
   // 헤더 탭바 이벤트
   const onClickHeaderBar = (id: string) => {
-    dispatch(setContentId(id));
+    router.push(`admin/main/member/${id}`);
   };
 
   // 테스트 교인 생성
@@ -61,7 +62,7 @@ const MemberTabHeader = ({}: MemberManagementHeadBarProps) => {
 
   return (
     <>
-      <MemberTabHeaderView {...props} />
+      <MainMemberHeaderView {...props} />
       <CustomPopup
         isShow={isRegisterShown}
         onClickClose={onClickClose}
@@ -74,4 +75,4 @@ const MemberTabHeader = ({}: MemberManagementHeadBarProps) => {
     </>
   );
 };
-export default MemberTabHeader;
+export default MainMemberHeader;
