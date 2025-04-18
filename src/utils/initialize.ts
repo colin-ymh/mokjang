@@ -90,14 +90,13 @@ export const useInitializeUser = () => {
         return;
       }
     } catch (error) {
-      console.log('No Temporal Token');
+      // console.log('No Temporal Token');
     }
 
     try {
       // (2) Access Token으로 유저 정보 가져오기
       const response = await userApi.getUser();
       const newUser = response.data;
-      console.log(newUser);
 
       // (3) Redux에 사용자 정보 저장
       dispatch(setUser(newUser));
@@ -105,12 +104,10 @@ export const useInitializeUser = () => {
       // (4) 교회 정보 확인 후 라우팅
       const c = newUser.church;
 
-      console.log(c);
-
       if (c?.id) {
         dispatch(setChurch(c));
         dispatch(setChurchId(c.id));
-        router.replace('/admin');
+        // router.replace('/admin');
       } else {
         router.replace('/church/register');
       }

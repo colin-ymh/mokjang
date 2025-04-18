@@ -35,6 +35,8 @@ const PersonalRegister = () => {
   const [schoolItems, setSchoolItems] = useState<DropdownValueType[]>([]);
   const [isAddressOpen, setIsAddressOpen] = useState<boolean>(false);
 
+  const onClickAddressClose = () => setIsAddressOpen(false);
+
   // 학교 input 창 애니메이션 효과
   const schoolAnimationRef = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
@@ -235,7 +237,7 @@ const PersonalRegister = () => {
   return (
     <>
       <PersonalRegisterView {...props} />
-      <PagePopup isShow={isAddressOpen} setIsShow={setIsAddressOpen}>
+      <PagePopup isShow={isAddressOpen} onClickClose={onClickAddressClose}>
         <DaumPostcodeEmbed
           onComplete={onCompleteAddress}
           style={{ width: '100%', height: '100%' }}

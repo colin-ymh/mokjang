@@ -23,12 +23,12 @@ const InformationContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  gap: 10px;
+  overflow-x: hidden;
 `;
 
 const ListTypeHeader = styled.div`
   display: flex;
-  height: 40px;
+  min-height: 40px;
   background-color: ${GRAY.SIDE_BAR};
   border-top: 1px solid ${GRAY.LIGHT};
   justify-content: flex-start;
@@ -39,13 +39,16 @@ const ListTypeHeader = styled.div`
 const InformationListContainer = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 0 20px;
 `;
 
 const RowContainer = styled.div`
   display: flex;
   flex-direction: row;
-  gap: 10px;
+  border-bottom: 1px solid ${GRAY.LIGHT};
+
+  &:last-child {
+    border-bottom: none;
+  }
 
   @media (max-width: 768px) {
     flex-direction: column; /* 모바일에서는 한 줄에 하나씩 표시 */
@@ -68,18 +71,19 @@ const InformationItem = styled.div<{ $disabled?: boolean }>`
   flex-shrink: 0;
   display: flex;
   flex-direction: row;
-  padding: 10px;
-  border-radius: 5px;
+  padding: 15px 0;
   cursor: ${({ $disabled }) => ($disabled ? 'default' : 'pointer')};
   position: relative;
   width: 100%;
 
-  &:hover {
-    background-color: ${({ $disabled }) => ($disabled ? 'auto' : GRAY.LIGHT)};
-  }
+  @media (max-width: ${MEDIA_MAX_WIDTH.DESKTOP}) {
+    &:hover {
+      background-color: ${({ $disabled }) => ($disabled ? 'auto' : GRAY.LIGHT)};
+    }
 
-  &:hover ${PencilButton} {
-    display: block;
+    &:hover ${PencilButton} {
+      display: block;
+    }
   }
 `;
 
@@ -89,6 +93,7 @@ const BlankSpace = styled.div`
 
 const TitleContainer = styled.div`
   display: flex;
+  padding-left: 20px;
   min-width: 100px;
 
   @media (max-width: ${MEDIA_MAX_WIDTH.MOBILE}) {
@@ -110,13 +115,6 @@ const MinistryContainer = styled.div`
   &:hover {
     background-color: ${GRAY.DEFAULT};
   }
-`;
-
-const Divider = styled.div`
-  width: 100%;
-  height: 1px;
-  background-color: ${GRAY.LIGHT};
-  margin: 10px 0;
 `;
 
 const RowDivider = styled.div`
@@ -191,7 +189,6 @@ const InformationListView = ({
             <PencilButton />
           </InformationItem>
         </RowContainer>
-        <Divider />
         <RowContainer>
           {/* 직분 */}
           <InformationItem onClick={onClickOpenOfficerModal}>
@@ -215,7 +212,6 @@ const InformationListView = ({
             <PencilButton />
           </InformationItem>
         </RowContainer>
-        <Divider />
         <RowContainer>
           {/* 사역 */}
           <InformationItem
@@ -274,7 +270,6 @@ const InformationListView = ({
             <PencilButton />
           </InformationItem>
         </RowContainer>
-        <Divider />
         {/* 생년월일 라인 */}
         <RowContainer>
           {/* 생년월일 */}
@@ -314,7 +309,6 @@ const InformationListView = ({
             </ContentContainer>
           </InformationItem>
         </RowContainer>
-        <Divider />
         {/* 번호 라인 */}
         <RowContainer>
           {/* 휴대전화번호 */}
@@ -339,7 +333,6 @@ const InformationListView = ({
             <PencilButton />
           </InformationItem>
         </RowContainer>
-        <Divider />
         {/* 주소 라인 */}
         <RowContainer>
           {/* 도로명 주소 */}
@@ -366,7 +359,6 @@ const InformationListView = ({
             <PencilButton />
           </InformationItem>
         </RowContainer>
-        <Divider />
         {/* 직업 라인 */}
         <RowContainer>
           {/* 직업 */}
@@ -391,7 +383,6 @@ const InformationListView = ({
             <PencilButton />
           </InformationItem>
         </RowContainer>
-        <Divider />
         {/* 결혼 라인 */}
         <RowContainer>
           {/* 결혼 */}
@@ -418,7 +409,6 @@ const InformationListView = ({
             <PencilButton />
           </InformationItem>
         </RowContainer>
-        <Divider />
         <RowContainer>
           {/* 차량 번호 */}
           <InformationItem onClick={() => onClickItem(MEMBER.VEHICLE_NUMBER)}>

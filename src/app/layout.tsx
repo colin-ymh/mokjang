@@ -23,6 +23,10 @@ const GlobalStyle = createGlobalStyle`
         background-color: white;
         min-width: 320px;
         font-family: 'Noto Sans KR', monospace;
+        touch-action: none;
+        overscroll-behavior: none;
+
+        -webkit-tap-highlight-color: transparent;
     }
 
     body > div:first-child,
@@ -78,7 +82,7 @@ const RootLayout = (props: RootLayoutProps | RootLayoutPropsExtended) => {
         />
         <meta
           name="viewport"
-          content="initial-scale=1.0,user-scalable=no,maximum-scale=1,width=device-width"
+          content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
         />
       </head>
       <body>

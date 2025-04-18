@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 import {
@@ -16,7 +16,8 @@ import MemberListView from '@/components/organisms/member/list/member-list.view'
 import { Member } from '@/models/member/member';
 import { getMemberFromServer } from '@/utils/member';
 import Loading from '@/components/atoms/common/etc/loading';
-import SidePopup from '@/components/atoms/common/popup/side-popup';
+import SlidePopup from '@/components/atoms/common/popup/slide-popup';
+import KebabDropdown from '@/components/atoms/common/dropdown/kebab-dropdown';
 
 type MemberListProps = {
   isNewMember?: boolean;
@@ -167,9 +168,15 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
     <>
       <MemberListView {...props.list} />
       {/* 교인 상세정보 팝업*/}
-      <SidePopup isShow={isMemberInformationShown} onClickClose={onClickClose}>
+      <SlidePopup
+        isShow={isMemberInformationShown}
+        onClickClose={onClickClose}
+        headerRight={
+          <KebabDropdown buttonSize={30} onClickDelete={onClickDelete} />
+        }
+      >
         <MemberInformation {...props.information} />
-      </SidePopup>
+      </SlidePopup>
       <Loading isShow={isLoading} />
     </>
   );

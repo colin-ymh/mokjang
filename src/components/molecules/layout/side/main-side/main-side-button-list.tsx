@@ -2,12 +2,13 @@
 
 import React from 'react';
 import styled from 'styled-components';
+import { useParams } from 'next/navigation';
+
 import MainSideButton from '@/components/atoms/layout/side/main-side/main-side-button';
 import { MAIN_HEADER_ID } from '@/constants/layout/header';
 import GroupFilter from '@/components/atoms/layout/side/main-side/group-filter';
 
 import { useScopedI18n } from '../../../../../../locales/client';
-import { useParams } from 'next/navigation';
 
 const ButtonContainer = styled.div`
   display: flex;

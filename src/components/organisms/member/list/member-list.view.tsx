@@ -29,20 +29,20 @@ const DesktopView = styled.div`
 
   @media (min-width: ${MEDIA_MIN_WIDTH.DESKTOP}) {
     display: flex;
+    flex-direction: column;
   }
 `;
 
 const MemberListView = (props: MemberTableProps) => {
   return (
     <MemberListContainer>
-      <MemberFilterRow />
-
       {/* 모바일에서 보일 목록형 UI */}
       <MobileView>
         <MemberItemList {...props} />
       </MobileView>
       {/* 데스크탑에서 보일 테이블형 UI */}
       <DesktopView>
+        <MemberFilterRow />
         <MemberTable {...props} />
       </DesktopView>
     </MemberListContainer>

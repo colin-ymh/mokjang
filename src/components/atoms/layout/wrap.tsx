@@ -7,6 +7,7 @@ const Wrap = styled.div`
   min-height: 100vh;
   height: 100%;
   width: 100%;
+  overflow: hidden;
 
   // @media (min-width: ${MEDIA_MIN_WIDTH.DESKTOP}) {
   //   flex-direction: row;

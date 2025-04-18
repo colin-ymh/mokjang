@@ -13,7 +13,6 @@ import { OfficerHistoryApi } from '@/api/history/officer-history.api';
 import { GroupHistoryApi } from '@/api/history/group-history.api';
 import MemberInformationListView from '@/components/molecules/member/information/member-information-list.view';
 import { MEMBER } from '@/constants/member/member-column';
-import CustomPopup from '@/components/atoms/common/popup/custom-popup';
 import Button from '@/components/atoms/common/button/button';
 import MemberEdit from '@/components/organisms/edit/member-edit';
 import OfficerModal from '@/components/atoms/common/modal/officer-modal';
@@ -32,6 +31,8 @@ import BaptismModal from '@/components/atoms/common/modal/baptism-modal';
 import { MinistriesApi } from '@/api/management/ministry/ministries.api';
 import ToastPopup from '@/components/atoms/common/popup/toast-popup';
 import { useScopedI18n } from '../../../../../locales/client';
+import BottomSheet from '@/components/atoms/common/bottom-sheet/bottom-sheet';
+import SlidePopup from '@/components/atoms/common/popup/slide-popup';
 
 type InformationListProps = {
   targetMemberId: string;
@@ -100,15 +101,25 @@ const InformationList = ({
   const [isOfficerModalShown, setIsOfficerModalShown] =
     useState<boolean>(false);
 
+  useEffect(() => {
+    setIsBaptismModalShown(false);
+    setIsGroupModalShown(false);
+    setIsMinistryModalShown(false);
+    setIsOfficerModalShown(false);
+  }, [member.id]);
+
   // ================================
   // 공통 유틸: API 응답 후 상태 업데이트
   // ================================
-  const handleHistorySuccess = (
-    response: any,
-    closeModal: () => void
-  ): void => {
+  const handleHistorySuccess = async (closeModal: () => void) => {
     closeModal();
-    const newMember = getMemberFromServer(response.data.data);
+
+    const response = await membersApi.getMember({
+      churchId,
+      memberId: targetMemberId,
+    });
+    const newMember = response.data.data;
+
     setPrevMember(newMember);
     setTargetMember(newMember);
 
@@ -224,9 +235,9 @@ const InformationList = ({
               startDate,
             }
           )
-          .then((response) =>
-            handleHistorySuccess(response, () => setIsGroupModalShown(false))
-          );
+          .then((response) => {
+            handleHistorySuccess(() => setIsGroupModalShown(false));
+          });
         return;
       }
 
@@ -236,7 +247,7 @@ const InformationList = ({
         await groupHistoryApi
           .stopGroupHistory({ churchId, memberId: targetMemberId }, {})
           .then((response) =>
-            handleHistorySuccess(response, () => setIsGroupModalShown(false))
+            handleHistorySuccess(() => setIsGroupModalShown(false))
           );
       } else if (
         groupId === prevMember.group?.id &&
@@ -268,9 +279,7 @@ const InformationList = ({
                 }
               )
               .then((response) =>
-                handleHistorySuccess(response, () =>
-                  setIsGroupModalShown(false)
-                )
+                handleHistorySuccess(() => setIsGroupModalShown(false))
               );
           });
       }
@@ -313,7 +322,7 @@ const InformationList = ({
             }
           )
           .then((response) =>
-            handleHistorySuccess(response, () => setIsMinistryModalShown(false))
+            handleHistorySuccess(() => setIsMinistryModalShown(false))
           );
         return;
       }
@@ -331,7 +340,7 @@ const InformationList = ({
             {}
           )
           .then((response) =>
-            handleHistorySuccess(response, () => setIsMinistryModalShown(false))
+            handleHistorySuccess(() => setIsMinistryModalShown(false))
           );
       } else if (ministryId === targetMinistry.id) {
         // 사역 동일 => 날짜만 수정
@@ -366,9 +375,7 @@ const InformationList = ({
                 }
               )
               .then((response) =>
-                handleHistorySuccess(response, () =>
-                  setIsMinistryModalShown(false)
-                )
+                handleHistorySuccess(() => setIsMinistryModalShown(false))
               );
           });
       }
@@ -425,7 +432,7 @@ const InformationList = ({
             }
           )
           .then((response) =>
-            handleHistorySuccess(response, () => setIsOfficerModalShown(false))
+            handleHistorySuccess(() => setIsOfficerModalShown(false))
           );
         return;
       }
@@ -436,7 +443,7 @@ const InformationList = ({
         await officerHistoryApi
           .stopOfficerHistory({ churchId, memberId: targetMemberId }, {})
           .then((response) =>
-            handleHistorySuccess(response, () => setIsOfficerModalShown(false))
+            handleHistorySuccess(() => setIsOfficerModalShown(false))
           );
       } else if (officerId === prevMember.officer?.id) {
         // 직분 동일 => 날짜만 수정
@@ -464,9 +471,7 @@ const InformationList = ({
                 }
               )
               .then((response) =>
-                handleHistorySuccess(response, () =>
-                  setIsOfficerModalShown(false)
-                )
+                handleHistorySuccess(() => setIsOfficerModalShown(false))
               );
           });
       }
@@ -594,69 +599,81 @@ const InformationList = ({
         />
       )}
       {/* 교인 정보 수정 */}
-      <CustomPopup
+      <SlidePopup
         isShow={isEditShown}
         onClickClose={onClickClose}
-        width={30}
-        height={80}
-        isPercentage={true}
-        headerLeft={<Button text="저장" onClick={onClickSave} />}
+        headerRight={<Button text="저장" onClick={onClickSave} />}
       >
         <MemberEdit focusItem={focusItem} />
-      </CustomPopup>
+      </SlidePopup>
 
       {/* 신급 수정 */}
-      <CustomPopup
-        isShow={isBaptismModalShown}
-        onClickClose={onClickCloseBaptismModal}
-        width={400}
-        height={400}
+      <BottomSheet
+        isOpened={isBaptismModalShown}
+        onDismiss={onClickCloseBaptismModal}
+        snapPoints={[50]}
+        isSnapPercentage={true}
       >
         <BaptismModal
           targetBaptism={prevMember.baptism}
           onClickSave={onClickSaveBaptism}
         />
-      </CustomPopup>
+      </BottomSheet>
 
       {/* 소그룹 수정 */}
-      <CustomPopup
-        isShow={isGroupModalShown}
-        onClickClose={onClickCloseGroupModal}
-        width={400}
-        height={600}
+      <BottomSheet
+        isOpened={isGroupModalShown}
+        onDismiss={onClickCloseGroupModal}
+        snapPoints={[50]}
+        isSnapPercentage={true}
       >
         <GroupModal
+          targetMemberId={targetMemberId}
           targetHistory={targetGroupHistory}
           onClickSaveNewGroup={onClickSaveNewGroup}
         />
-      </CustomPopup>
+      </BottomSheet>
+
+      {/*/!* 소그룹 수정 *!/*/}
+      {/*<CustomPopup*/}
+      {/*  isShow={isGroupModalShown}*/}
+      {/*  onClickClose={onClickCloseGroupModal}*/}
+      {/*  width={400}*/}
+      {/*  height={600}*/}
+      {/*>*/}
+      {/*  <GroupModal*/}
+      {/*    targetHistory={targetGroupHistory}*/}
+      {/*    onClickSaveNewGroup={onClickSaveNewGroup}*/}
+      {/*  />*/}
+      {/*</CustomPopup>*/}
 
       {/* 사역 수정 */}
-      <CustomPopup
-        isShow={isMinistryModalShown}
-        onClickClose={onClickCloseMinistryModal}
-        width={400}
-        height={600}
+      <BottomSheet
+        isOpened={isMinistryModalShown}
+        onDismiss={onClickCloseMinistryModal}
+        snapPoints={[50]}
+        isSnapPercentage={true}
       >
         <MinistryModal
+          targetMemberId={targetMemberId}
           targetHistory={targetMinistryHistory}
           onClickSaveNewMinistry={onClickSaveNewMinistry}
           onClickCreateMinistry={onClickCreateMinistry}
         />
-      </CustomPopup>
+      </BottomSheet>
 
       {/* 직분 수정 */}
-      <CustomPopup
-        isShow={isOfficerModalShown}
-        onClickClose={onClickCloseOfficerModal}
-        width={400}
-        height={600}
+      <BottomSheet
+        isOpened={isOfficerModalShown}
+        onDismiss={onClickCloseOfficerModal}
+        snapPoints={[50]}
+        isSnapPercentage={true}
       >
         <OfficerModal
           targetHistory={targetOfficerHistory}
           onClickSaveNewOfficer={onClickSaveNewOfficer}
         />
-      </CustomPopup>
+      </BottomSheet>
     </>
   );
 };

@@ -51,7 +51,7 @@ const App = () => {
         );
       } else if (headerId === MAIN_HEADER_ID.VISITATION) {
         router.push(
-          `/admin/main/${MAIN_HEADER_ID.MEMBER}/${VISITING_CONTENT_ID.ALL}`
+          `/admin/main/${MAIN_HEADER_ID.VISITATION}/${VISITING_CONTENT_ID.ALL}`
         );
       }
     } else if (

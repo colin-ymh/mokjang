@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import { Group } from '@/models/management/management';
 import { GRAY, MAIN } from '@/constants/styles/color';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { SIZE } from '@/constants/styles/style';
+import { MEDIA_MIN_WIDTH } from '@/constants/constant';
 
 const FilterContainer = styled.div`
   display: flex;
@@ -16,10 +17,10 @@ const FilterContainer = styled.div`
 const GroupItemContainer = styled.div<{ $level: number }>`
   display: flex;
   align-items: center;
-  padding: 5px 5px 5px ${({ $level }) => $level * 20 + 10}px;
+  justify-content: space-between;
+  padding: 5px 20px 5px ${({ $level }) => $level * 20 + 10}px;
   transition: background-color 0.3s;
   border-radius: 5px;
-  gap: 10px;
   cursor: pointer;
 
   &:hover {
@@ -27,13 +28,42 @@ const GroupItemContainer = styled.div<{ $level: number }>`
   }
 `;
 
-const ToggleButton = styled.div`
+const LeftContainer = styled.div`
+  display: flex;
+  gap: 10px;
+  align-items: center;
+`;
+
+const RightContainer = styled.div`
+  display: flex;
+  gap: 10px;
+  align-items: center;
+`;
+
+const DesktopToggleButton = styled.div`
+  display: none;
+
+  @media (min-width: ${MEDIA_MIN_WIDTH.DESKTOP}) {
+    display: flex;
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    justify-content: center;
+    align-items: center;
+  }
+`;
+
+const MobileToggleButton = styled.div`
   display: flex;
   cursor: pointer;
   width: 20px;
   height: 20px;
   justify-content: center;
   align-items: center;
+
+  @media (min-width: ${MEDIA_MIN_WIDTH.DESKTOP}) {
+    display: none;
+  }
 `;
 
 const ChildGroupsContainer = styled.div`
@@ -44,6 +74,7 @@ const ChildGroupsContainer = styled.div`
 
 type GroupFilterViewProps = {
   groups: Group[];
+  isDefaultOpen: boolean;
   selectedGroupId: string | null;
   onClickGroup: (groupIds: string[]) => void;
 };
@@ -78,25 +109,42 @@ const renderGroups = (
           $level={level}
           onClick={() => onClickGroup(getGroupIds(group))}
         >
-          <ToggleButton
-            onClick={(e) => {
-              e.stopPropagation(); // 이벤트 전파 중지
-              onClickToggle(parseInt(group.id as string));
-            }}
-          >
-            <MainText color={GRAY.DARK} size={SIZE.SMALL}>
-              {isHaveChildren ? (isOpen ? '▼' : '▶') : ''}
+          <LeftContainer>
+            <DesktopToggleButton
+              onClick={(e) => {
+                e.stopPropagation(); // 이벤트 전파 중지
+                onClickToggle(parseInt(group.id as string));
+              }}
+            >
+              <MainText color={GRAY.DARK} size={SIZE.SMALL}>
+                {isHaveChildren ? (isOpen ? '▼' : '▶') : ''}
+              </MainText>
+            </DesktopToggleButton>
+            <MainText
+              color={
+                (group.id as string) === selectedGroupId
+                  ? MAIN.DEFAULT
+                  : GRAY.DARK
+              }
+            >
+              {group.name}
             </MainText>
-          </ToggleButton>
-          <MainText
-            color={
-              (group.id as string) === selectedGroupId
-                ? MAIN.DEFAULT
-                : GRAY.DARK
-            }
-          >
-            {group.name}
-          </MainText>
+          </LeftContainer>
+          <RightContainer>
+            <MainText size={SIZE.SMALL} color={GRAY.DEFAULT}>
+              {group.id && group.membersCount}
+            </MainText>
+            <MobileToggleButton
+              onClick={(e) => {
+                e.stopPropagation(); // 이벤트 전파 중지
+                onClickToggle(parseInt(group.id as string));
+              }}
+            >
+              <MainText color={GRAY.DARK} size={SIZE.SMALL}>
+                {isHaveChildren ? (isOpen ? '▼' : '▶') : ''}
+              </MainText>
+            </MobileToggleButton>
+          </RightContainer>
         </GroupItemContainer>
         {isOpen &&
           group.childGroups &&
@@ -116,10 +164,32 @@ const renderGroups = (
 
 const GroupFilterView = ({
   groups,
+  isDefaultOpen,
   selectedGroupId,
   onClickGroup,
 }: GroupFilterViewProps) => {
   const [openGroups, setOpenGroups] = useState<Record<number, boolean>>({});
+
+  const getAllGroupIds = (groups: Group[]): number[] => {
+    let ids: number[] = [NaN];
+    groups.forEach((group) => {
+      if (group.id !== null) ids.push(parseInt(group.id as string));
+      if (group.childGroups?.length) {
+        ids = ids.concat(getAllGroupIds(group.childGroups));
+      }
+    });
+    return ids;
+  };
+
+  useEffect(() => {
+    if (isDefaultOpen) {
+      const allGroupIds = getAllGroupIds(groups);
+      const initialOpenGroups = Object.fromEntries(
+        allGroupIds.map((id) => [id, true])
+      );
+      setOpenGroups(initialOpenGroups);
+    }
+  }, [groups, isDefaultOpen]);
 
   const onClickToggle = (id: number) => {
     setOpenGroups((prevState) => ({

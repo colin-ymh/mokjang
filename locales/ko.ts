@@ -136,7 +136,7 @@ export default {
 
   /*-------------------header (side bar button)-------------------*/
   'header.home': '홈',
-  'header.member': '교인관리',
+  'header.member': '교인목록',
   'header.visitation': '심방',
   'header.education': '교육',
   'header.task': '업무',

@@ -22,6 +22,9 @@ const Background = styled.div<BackgroundProps>`
     $blur ? 'rgba(0, 0, 0, 0.1)' : 'transparent'};
   z-index: ${({ $zIndex }) => $zIndex}
   display: ${({ $isOpened }) => ($isOpened ? 'block' : 'none')};
+
+  pointer-events: auto; 
+  touch-action: none;   
 `;
 
 // 특정 페이지 내에서 활성화 된 구역 외 다른 곳을 터치 했을 때 특정 기능을 수행 하도록 하는 투명 background 버튼
@@ -36,7 +39,11 @@ const TransparentBackground = ({
   return (
     <Background
       $isOpened={isOpened}
-      onClick={onClick}
+      onClick={(event) => {
+        event.stopPropagation();
+
+        onClick(event);
+      }}
       $blur={blur}
       $zIndex={zIndex}
     />

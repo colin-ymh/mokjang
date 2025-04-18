@@ -8,7 +8,6 @@ import { MainText } from '@/components/atoms/common/text/main-text';
 import { SIZE } from '@/constants/styles/style';
 import { GRAY } from '@/constants/styles/color';
 import { Member } from '@/models/member/member';
-import KebapDropdown from '@/components/atoms/common/dropdown/kebap-dropdown';
 import ConfirmPopup from '@/components/atoms/common/popup/error-popup';
 
 import { useScopedI18n } from '../../../../../locales/client';
@@ -96,13 +95,6 @@ const MemberInformationHeader = ({
             </MainText>
           </ChurchMemberInfoContainer>
         </TextContainer>
-
-        <KebapDropdown
-          buttonSize={30}
-          top={0}
-          right={-10}
-          onClickDelete={onClickOpen}
-        />
 
         {onClickDelete && (
           <ConfirmPopup

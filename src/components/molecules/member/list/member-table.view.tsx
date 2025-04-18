@@ -72,7 +72,7 @@ const TableContainer = styled.div<{ height: number }>`
   /* 항상 가로 100%를 채움 */
   width: 100%;
   /* 세로 높이만큼 상하 스크롤 */
-  height: ${({ height }) => `${height - 200}px`};
+  height: ${({ height }) => `${height - 220}px`};
 
   /* 오버플로 시 스크롤 */
   overflow-x: auto;

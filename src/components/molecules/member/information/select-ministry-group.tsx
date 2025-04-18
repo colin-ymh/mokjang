@@ -1,25 +1,74 @@
-import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/redux/store';
+import styled from 'styled-components';
 
 import {
   DEFAULT_MINISTRY_GROUP,
   MinistryGroup,
 } from '@/models/management/management';
+import { BLACK, WHITE } from '@/constants/styles/color';
+import { MainText } from '@/components/atoms/common/text/main-text';
+import Button from '@/components/atoms/common/button/button';
+import SelectMinistryGroupItem from '@/components/atoms/member/information/select-ministry-group-item';
+
+import ChevronLeft from '../../../../../public/svg/chevron-left.svg';
 import { useI18n } from '../../../../../locales/client';
 import { MinistryGroupsApi } from '@/api/management/ministry/ministry-groups.api';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
+import { useEffect, useState } from 'react';
 import { getOrderedMinistryGroups } from '@/utils/ministry';
-import MinistryGroupDropdownView from '@/components/atoms/common/dropdown/ministry-group-dropdown.view';
 
-type MinistryGroupModalProps = {
-  value: string;
-  onClickSaveMinistryGroup: (ministryGroup: MinistryGroup) => void;
+const SelectMinistryGroupContainer = styled.div`
+  display: flex;
+  background-color: ${WHITE};
+  width: 100%;
+  height: 100%;
+  border-radius: 5px;
+  flex-direction: column;
+  z-index: 400;
+  position: relative;
+`;
+
+const GoBackContainer = styled.div`
+  display: flex;
+  height: 30px;
+  padding: 10px;
+  gap: 10px;
+  align-items: center;
+`;
+
+const GoBackButton = styled(ChevronLeft)`
+  width: 20px;
+  height: 20px;
+  stroke: ${BLACK};
+  stroke-width: 1px;
+`;
+
+const MinistryGroupList = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  padding: 10px;
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: 10px;
+`;
+
+type SelectMinistryGroupModalProps = {
+  value: string | null;
+  onClickSave: (group: MinistryGroup) => void;
+  onClickClose: () => void;
 };
 
-const MinistryGroupDropdown = ({
+const SelectMinistryGroup = ({
   value,
-  onClickSaveMinistryGroup,
-}: MinistryGroupModalProps) => {
+  onClickSave,
+  onClickClose,
+}: SelectMinistryGroupModalProps) => {
   const t = useI18n();
   const ministryGroupsApi = new MinistryGroupsApi(false);
   const churchId = useSelector((state: RootState) => state.church.churchId);
@@ -55,9 +104,6 @@ const MinistryGroupDropdown = ({
     MinistryGroup[]
   >([]);
 
-  // 그룹 선택 드롭다운
-  const [isDropdownShown, setIsDropdownShown] = useState<boolean>(false);
-
   // 뒤로 가기 (부모 그룹으로 올라가기)
   const onClickGoBack = () => {
     if (parentMinistryGroups.length > 0) {
@@ -75,17 +121,12 @@ const MinistryGroupDropdown = ({
   };
 
   // 그룹 드롭다운 닫기
-  const onClickCloseDropdown = () => {
-    setIsDropdownShown(false);
+  const onClose = () => {
+    onClickClose();
     setParentMinistryGroups([]);
     setCurrentMinistryGroup(START_GROUP);
     setAllMinistryGroups([]);
     fetchMinistryGroups();
-  };
-
-  // 그룹 드롭다운 열기
-  const onClickOpenDropdown = () => {
-    setIsDropdownShown(true);
   };
 
   // 부모그룹 선택 시, 자식 그룹으로 변환
@@ -193,25 +234,46 @@ const MinistryGroupDropdown = ({
     fetchMinistryGroups();
   }, []);
 
-  const props = {
-    value,
-    currentMinistryGroup,
-    selectedMinistryGroup,
-    ministryGroups,
-    parentMinistryGroups,
-    isDropdownShown,
-    onClickOpenDropdown,
-    onClickCloseDropdown,
-    onClickParent,
-    onClickSaveMinistryGroup,
-    onClickGoBack,
-  };
-
   return (
-    <>
-      <MinistryGroupDropdownView {...props} />
-    </>
+    <SelectMinistryGroupContainer>
+      <GoBackContainer>
+        <GoBackButton
+          onClick={() =>
+            parentMinistryGroups.length !== 0 ? onClickGoBack() : onClose()
+          }
+        />
+        <MainText>
+          {[...parentMinistryGroups, currentMinistryGroup]
+            .map((parent) => parent.name)
+            .join(' > ')}
+        </MainText>
+      </GoBackContainer>
+      <MinistryGroupList>
+        {ministryGroups.map((ministry) => {
+          return (
+            <SelectMinistryGroupItem
+              key={ministry.id}
+              ministry={ministry}
+              onClick={() => {
+                onClickParent(ministry);
+              }}
+              isSelected={ministry.id === selectedMinistryGroup.id}
+            />
+          );
+        })}
+      </MinistryGroupList>
+      <ButtonContainer>
+        <Button
+          text={t('button.save')}
+          onClick={() => {
+            onClickSave(selectedMinistryGroup);
+            onClose();
+          }}
+          height={30}
+        />
+      </ButtonContainer>
+    </SelectMinistryGroupContainer>
   );
 };
 
-export default MinistryGroupDropdown;
+export default SelectMinistryGroup;

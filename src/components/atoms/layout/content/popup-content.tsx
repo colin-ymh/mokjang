@@ -6,6 +6,8 @@ export const PopupContent = styled.div`
   height: 100%;
 
   margin-top: 50px;
+  //z-index: 9;
+  overflow-y: scroll;
 `;
 
 export default PopupContent;

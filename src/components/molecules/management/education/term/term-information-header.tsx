@@ -11,7 +11,7 @@ import {
   EducationSession,
   EducationTerm,
 } from '@/models/management/management';
-import KebapDropdown from '@/components/atoms/common/dropdown/kebap-dropdown';
+import KebabDropdown from '@/components/atoms/common/dropdown/kebab-dropdown';
 import { useScopedI18n } from '../../../../../../locales/client';
 import ConfirmPopup from '@/components/atoms/common/popup/error-popup';
 
@@ -83,7 +83,7 @@ const TermInformationHeader = ({
           </MainText>
         </TextContainer>
 
-        <KebapDropdown
+        <KebabDropdown
           buttonSize={30}
           top={0}
           right={-10}

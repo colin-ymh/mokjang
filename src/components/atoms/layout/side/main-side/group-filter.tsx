@@ -8,7 +8,12 @@ import { Group } from '@/models/management/management';
 import { getOrderedGroups } from '@/utils/group';
 import { useI18n } from '../../../../../../locales/client';
 
-const GroupFilter = () => {
+type GroupFilterProps = {
+  isDefaultOpen?: boolean;
+  onClick?: (id: string | null) => void;
+};
+
+const GroupFilter = ({ isDefaultOpen = false, onClick }: GroupFilterProps) => {
   const t = useI18n();
   const { churchId, groups } = useSelector((state: RootState) => state.church);
   const dispatch = useDispatch<AppDispatch>();
@@ -46,6 +51,10 @@ const GroupFilter = () => {
   const onClickGroup = (groupIds: string[]) => {
     setSelectedGroupId(groupIds[0]);
     setGroupIds(groupIds);
+
+    if (onClick) {
+      onClick(groupIds[0]);
+    }
   };
 
   // 그룹이 변경되면 교인 목록에 적용
@@ -59,6 +68,7 @@ const GroupFilter = () => {
 
   const props = {
     groups: orderedGroups,
+    isDefaultOpen,
     selectedGroupId,
     onClickGroup,
   };

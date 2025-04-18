@@ -1,8 +1,9 @@
 import styled from 'styled-components';
-import LoginList from '@/components/molecules/auth/login-list';
+import { MAIN, WHITE } from '@/constants/styles/color';
+
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { SIZE } from '@/constants/styles/style';
-import { MAIN, WHITE } from '@/constants/styles/color';
+import LoginList from '@/components/molecules/auth/login-list';
 
 import Sheep from '../../../../public/svg/sheep.svg';
 

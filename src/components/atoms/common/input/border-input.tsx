@@ -17,7 +17,7 @@ const BorderInputContainer = styled.input<{
 }>`
   width: ${({ width }) => (width ? `${width}px` : '100%')};
   box-sizing: border-box;
-  font-size: 14px;
+  font-size: 16px;
   padding: 10px 15px;
   border: 1px solid ${({ $borderColor }) => $borderColor};
   border-radius: 5px;

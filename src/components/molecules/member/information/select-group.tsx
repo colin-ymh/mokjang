@@ -1,20 +1,25 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 
-import { GroupsApi } from '@/api/management/group/groups.api';
 import { DEFAULT_GROUP, Group } from '@/models/management/management';
-import GroupDropdownView from '@/components/atoms/common/dropdown/group-dropdown.view';
+
+import { GroupsApi } from '@/api/management/group/groups.api';
 import { getOrderedGroups } from '@/utils/group';
-
 import { useI18n } from '../../../../../locales/client';
+import SelectGroupView from '@/components/molecules/member/information/select-group.view';
 
-type GroupModalProps = {
-  value: string;
-  onClickSaveGroup: (group: Group) => void;
+type SelectGroupModalProps = {
+  value: string | null;
+  onClickSave: (group: Group) => void;
+  onClickClose: () => void;
 };
 
-const GroupDropdown = ({ value, onClickSaveGroup }: GroupModalProps) => {
+const SelectGroup = ({
+  value,
+  onClickSave,
+  onClickClose,
+}: SelectGroupModalProps) => {
   const t = useI18n();
   const groupsApi = new GroupsApi(false);
   const churchId = useSelector((state: RootState) => state.church.churchId);
@@ -33,11 +38,11 @@ const GroupDropdown = ({ value, onClickSaveGroup }: GroupModalProps) => {
   // 전체 그룹
   const [allGroups, setAllGroups] = useState<Group[]>([]);
 
-  // 현재 보고있는 그룹
-  const [currentGroup, setCurrentGroup] = useState<Group>(START_GROUP);
-
   // 현재 선택된 그룹
   const [selectedGroup, setSelectedGroup] = useState<Group>(DEFAULT_GROUP);
+
+  // 현재 보고있는 그룹
+  const [currentGroup, setCurrentGroup] = useState<Group>(START_GROUP);
 
   // 보고있는 그룹 배열
   const [groups, setGroups] = useState<Group[]>([]);
@@ -45,8 +50,10 @@ const GroupDropdown = ({ value, onClickSaveGroup }: GroupModalProps) => {
   // 부모 계층 배열
   const [parentGroups, setParentGroups] = useState<Group[]>([]);
 
-  // 그룹 선택 드롭다운
-  const [isDropdownShown, setIsDropdownShown] = useState<boolean>(false);
+  const groupList =
+    currentGroup !== selectedGroup
+      ? [...parentGroups, currentGroup, selectedGroup]
+      : [...parentGroups, currentGroup];
 
   // 뒤로 가기 (부모 그룹으로 올라가기)
   const onClickGoBack = () => {
@@ -59,57 +66,6 @@ const GroupDropdown = ({ value, onClickSaveGroup }: GroupModalProps) => {
       // 부모 계층에서 해당 부모 삭제
       setParentGroups(parentGroups.slice(0, -1));
     }
-  };
-
-  // 그룹 드롭다운 닫기
-  const onClickCloseDropdown = () => {
-    setIsDropdownShown(false);
-    setParentGroups([]);
-    setCurrentGroup(START_GROUP);
-    setAllGroups([]);
-    fetchGroups();
-  };
-
-  // 그룹 드롭다운 열기
-  const onClickOpenDropdown = () => {
-    setIsDropdownShown(true);
-  };
-
-  // 부모그룹 선택 시, 자식 그룹으로 변환
-  const onClickParent = (group: Group) => {
-    setSelectedGroup(group);
-    if (group.childGroupIds.length > 0 && group.childGroups) {
-      setGroups(group.childGroups);
-      setCurrentGroup(group);
-      setParentGroups([
-        ...parentGroups,
-        getGroup(group.parentGroupId, allGroups) as Group,
-      ]);
-    }
-  };
-
-  // 전체 그룹 불러오기
-  const fetchGroups = () => {
-    groupsApi.getGroups({ churchId }).then((response) => {
-      if (response.status === 200) {
-        const orderedGroups = getOrderedGroups(response.data);
-
-        // 최상단에 "전체" 그룹을 추가
-        const allGroup: Group = {
-          id: null, // 고유 ID (임의로 0으로 설정)
-          name: t('all'),
-          parentGroupId: null,
-          childGroups: orderedGroups, // 모든 그룹을 하위 그룹으로 설정
-          membersCount: 0,
-          churchId,
-          childGroupIds: [],
-          roles: [],
-        };
-
-        setAllGroups([allGroup]);
-        setGroups(orderedGroups);
-      }
-    });
   };
 
   // 특정 그룹 찾기 (재귀적으로 검색)
@@ -139,6 +95,51 @@ const GroupDropdown = ({ value, onClickSaveGroup }: GroupModalProps) => {
     return null; // 못 찾으면 null 반환
   };
 
+  // 부모그룹 선택 시, 자식 그룹으로 변환
+  const onClickParent = (group: Group) => {
+    setSelectedGroup(group);
+    if (group.childGroupIds.length > 0 && group.childGroups) {
+      setGroups(group.childGroups);
+      setCurrentGroup(group);
+      setParentGroups([
+        ...parentGroups,
+        getGroup(group.parentGroupId, allGroups) as Group,
+      ]);
+    }
+  };
+
+  const onClose = () => {
+    onClickClose();
+    setParentGroups([]);
+    setCurrentGroup(START_GROUP);
+    setAllGroups([]);
+    fetchGroups();
+  };
+
+  // 전체 그룹 불러오기
+  const fetchGroups = () => {
+    groupsApi.getGroups({ churchId }).then((response) => {
+      if (response.status === 200) {
+        const orderedGroups = getOrderedGroups(response.data);
+
+        // 최상단에 "전체" 그룹을 추가
+        const allGroup: Group = {
+          id: null, // 고유 ID (임의로 0으로 설정)
+          name: t('all'),
+          parentGroupId: null,
+          childGroups: orderedGroups, // 모든 그룹을 하위 그룹으로 설정
+          membersCount: 0,
+          churchId,
+          childGroupIds: [],
+          roles: [],
+        };
+
+        setAllGroups([allGroup]);
+        setGroups(orderedGroups);
+      }
+    });
+  };
+
   useEffect(() => {
     if (value) {
       const newSelectedGroup = findGroup(value, allGroups);
@@ -155,24 +156,21 @@ const GroupDropdown = ({ value, onClickSaveGroup }: GroupModalProps) => {
   }, []);
 
   const props = {
-    value,
-    currentGroup,
     selectedGroup,
     groups,
+    groupList,
     parentGroups,
-    isDropdownShown,
-    onClickOpenDropdown,
-    onClickCloseDropdown,
-    onClickParent,
-    onClickSaveGroup,
     onClickGoBack,
+    onClose,
+    onClickParent,
+    onClickSave,
   };
 
   return (
     <>
-      <GroupDropdownView {...props} />
+      <SelectGroupView {...props} />
     </>
   );
 };
 
-export default GroupDropdown;
+export default SelectGroup;
