@@ -3,16 +3,17 @@
 import React, { ChangeEvent, forwardRef } from 'react';
 import styled from 'styled-components';
 
-import { WHITE } from '@/constants/styles/color';
+import { BLACK, WHITE } from '@/constants/styles/color';
 import BorderInput from '@/components/atoms/common/input/border-input';
 import { InputProps } from '@/components/atoms/common/input/main-input';
-import MemberDropdownItem, {
-  MemberDropdownType,
-} from '@/components/atoms/common/dropdown/member-dropdown-item';
+import MemberDropdownItem from '@/components/atoms/common/dropdown/member-dropdown-item';
+
+import ChevronLeft from '../../../../../public/svg/chevron-down.svg';
+import { MemberDropdownValueType } from '@/models/dropdown/dropdown';
 
 const DropdownContainer = styled.div<{ $isOpened: boolean; width?: number }>`
   position: relative;
-  z-index: ${({ $isOpened }) => ($isOpened ? 50 : null)};
+  z-index: ${({ $isOpened }) => ($isOpened ? 50 : 'auto')};
   width: ${({ width }) => (width ? `${width}px` : `100%`)};
 `;
 
@@ -21,9 +22,11 @@ const DropdownButton = styled.div`
   width: 100%;
   flex-direction: row;
   cursor: pointer;
+  position: relative;
 `;
 
 const DropdownList = styled.div<{
+  $isOpened: boolean;
   $reverseDirection?: boolean;
 }>`
   position: absolute;
@@ -33,107 +36,124 @@ const DropdownList = styled.div<{
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
   display: flex;
   flex-direction: column;
-  gap: 5px;
-  padding: 5px;
+  width: 100%;
   justify-content: flex-start;
   align-items: flex-start;
-  overflow: scroll;
+  overflow-y: auto;
   max-height: 200px;
-  bottom: ${({ $reverseDirection }) => ($reverseDirection ? '55px' : null)};
+  bottom: ${({ $reverseDirection }) => ($reverseDirection ? '55px' : 'auto')};
+
+  /* 애니메이션 */
+  transform-origin: ${({ $reverseDirection }) =>
+    $reverseDirection ? 'bottom' : 'top'};
+  transform: scaleY(${({ $isOpened }) => ($isOpened ? 1 : 0)});
+  opacity: ${({ $isOpened }) => ($isOpened ? 1 : 0)};
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease;
+  pointer-events: ${({ $isOpened }) => ($isOpened ? 'auto' : 'none')};
 `;
 
-type MemberDropdownViewProps = {
-  items: MemberDropdownType[];
+const Chevron = styled(ChevronLeft)<{ $isOpened: boolean }>`
+  width: 20px;
+  height: 20px;
+  stroke: ${BLACK};
+  stroke-width: 1px;
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%)
+    rotate(${({ $isOpened }) => ($isOpened ? '180deg' : '360deg')});
+  transition: transform 0.2s ease;
+`;
+
+type DropdownViewProps = {
+  items: MemberDropdownValueType[];
   innerValue: any;
+  customValue?: string;
   focusedIndex: number;
+  onFocusInput: () => void;
   isOpened: boolean;
   onClickDropdown: () => void;
   onClickItem: (value: any) => void;
   onChangeInput: (event: ChangeEvent<HTMLInputElement>) => void;
   onKeyDownHandler: (event: React.KeyboardEvent<HTMLInputElement>) => void;
-  onFocusInput: () => void;
   reverseDirection?: boolean;
   isEditable?: boolean;
   enterKeyHint: string;
   borderColor?: string;
   width?: number;
   height?: number;
-  isContainerHidden?: boolean;
   backgroundColor?: string;
-};
+  disabled?: boolean;
+} & InputProps;
 
-const MemberDropdownView = forwardRef<
-  HTMLInputElement,
-  MemberDropdownViewProps & InputProps
->(
+const DropdownView = forwardRef<HTMLInputElement, DropdownViewProps>(
   (
     {
-      //
       items,
       innerValue,
+      customValue,
       focusedIndex,
-      //
-      isOpened,
-      onClickDropdown, // 드롭다운 열고 닫기
-      onClickItem, // 드롭다운 아이템 선택
-      onChangeInput, // input 창에 직접 수정
-      onKeyDownHandler,
       onFocusInput,
-      enterKeyHint,
-      //
+      isOpened,
+      onClickDropdown,
+      onClickItem,
+      onChangeInput,
+      onKeyDownHandler,
       reverseDirection,
       isEditable,
+      enterKeyHint,
       borderColor,
-      height,
       width,
-      isContainerHidden,
-      disabled,
+      height,
       backgroundColor,
+      disabled,
       ...inputProps
     },
     ref
   ) => {
+    const displayValue =
+      items.find((item) => item.value === innerValue)?.title || innerValue;
+
     return (
       <DropdownContainer $isOpened={isOpened} width={width}>
-        {/* 실제 드롭다운의 값이 보이는 공간*/}
         <DropdownButton onClick={onClickDropdown}>
-          {/* 실제 값을 input 창으로 관리*/}
-          {/* 수정을 원하는 경우, 바로 입력이 가능하도록 */}
           <BorderInput
             ref={ref}
-            value={
-              // 사용자가 드롭다운 아이템을 선택한 경우 => items 에서 해당 값을 찾아서 title을 보여줌
-              // 사용자가 직접 입력한 경우 => items에 해당 값이 없음 => 입력한 값을 그대로 보여줌
-              items.find((item) => item.value === innerValue)?.title ||
-              innerValue
-            }
+            value={displayValue}
             onChange={onChangeInput}
+            onFocus={onFocusInput}
             borderColor={borderColor}
             backgroundColor={backgroundColor}
             height={height}
             width={width}
-            {...inputProps}
-            // onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) => {
-            //   inputProps.onKeyDown?.(event);
-            //   onKeyDownHandler(event);
-            // }}
             readOnly={!isEditable}
-            onFocus={onFocusInput}
             enterKeyHint={enterKeyHint}
             disabled={disabled}
+            onKeyDown={(event) => {
+              inputProps.onKeyDown?.(event);
+              if (isOpened) {
+                onKeyDownHandler(event);
+              }
+            }}
+            {...inputProps}
           />
+          <Chevron $isOpened={isOpened} />
         </DropdownButton>
 
-        {/* 드롭다운 item 을 선택할 수 있는 영역*/}
-        {isOpened && !disabled && (
-          <DropdownList $reverseDirection={reverseDirection}>
+        {!disabled && (
+          <DropdownList
+            $isOpened={isOpened}
+            $reverseDirection={reverseDirection}
+          >
             {items.map((item, index) => (
               <MemberDropdownItem
                 key={index}
-                isSelected={item.value === innerValue}
-                isFocused={index === focusedIndex}
                 item={item}
                 onClick={onClickItem}
+                isSelected={item.value === innerValue}
+                isFocused={focusedIndex === index}
               />
             ))}
           </DropdownList>
@@ -143,4 +163,5 @@ const MemberDropdownView = forwardRef<
   }
 );
 
-export default MemberDropdownView;
+DropdownView.displayName = 'DropdownView';
+export default DropdownView;

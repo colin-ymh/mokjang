@@ -6,7 +6,7 @@ import { RootState } from '@/redux/store';
 import LabelInput from '@/components/atoms/common/input/label-input';
 import LabelDropdown from '@/components/atoms/common/dropdown/label-dropdown';
 import LabelRadioButton from '@/components/atoms/common/input/radio-button/label-radio-button';
-import MemberImageInput from '@/components/atoms/register/member-image-input';
+import ProfileImageInput from '@/components/atoms/common/image/profile-image-input';
 
 import RadioButton from '@/components/atoms/common/input/radio-button/radio-button';
 import RegisterRadioButton from '@/components/atoms/register/register-radio-button';
@@ -190,7 +190,7 @@ const EditListView = ({
   return (
     <RequiredRegisterContainer>
       <ImageContainer>
-        <MemberImageInput
+        <ProfileImageInput
           memberId={member.id}
           value={member.profileImage}
           onChange={onChangeProfileImage}

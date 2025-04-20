@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import HeaderBarView from '@/components/atoms/layout/header/header-bar.view';
 import { useMemberInformationHeaderBarItems } from '@/hooks/layout/header-bar-items';
-import MemberImageInput from '@/components/atoms/register/member-image-input';
+import ProfileImageInput from '@/components/atoms/common/image/profile-image-input';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { SIZE } from '@/constants/styles/style';
 import { GRAY } from '@/constants/styles/color';
@@ -71,7 +71,7 @@ const MemberInformationHeader = ({
   return (
     <InformationHeader>
       <Information>
-        <MemberImageInput
+        <ProfileImageInput
           memberId={targetMember.id}
           value={targetMember?.profileImage}
           onChange={() => {}}

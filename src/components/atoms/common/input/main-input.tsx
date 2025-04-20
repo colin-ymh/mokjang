@@ -14,7 +14,7 @@ const MainInputContainer = styled.input<{
 }>`
   width: ${({ $width }) => ($width ? `${$width}px` : '100%')};
   font-size: 14px;
-  padding: 12px 16px;
+  padding: 10px;
   transition: all 0.3s ease;
   border: 1px solid rgba(0, 0, 0, 0);
   outline: none;

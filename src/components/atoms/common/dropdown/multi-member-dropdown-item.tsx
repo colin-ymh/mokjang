@@ -4,10 +4,9 @@ import Image from 'next/image';
 
 import { BLACK, MAIN } from '@/constants/styles/color';
 import { MainText } from '@/components/atoms/common/text/main-text';
-import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-item';
-import { GENDER } from '@/constants/constant';
 import { MEMBER } from '@/constants/member/member-column';
 import { getRandomImage } from '@/utils/image';
+import { MemberDropdownType } from '@/components/atoms/common/dropdown/member-dropdown-item';
 
 const DropdownContainer = styled.div`
   display: flex;
@@ -35,28 +34,22 @@ const ProfileImage = styled(Image)`
   border-radius: 20%;
 `;
 
-export type MemberDropdownType = DropdownValueType & {
-  profileImage?: string;
-  age?: number;
-  gender?: GENDER;
-};
-
-type MemberDropdownItemProps = {
+type MultiMemberDropdownItemProps = {
   isSelected: boolean;
   item: MemberDropdownType;
-  onClick: (index: number) => void;
+  onClick: (item: MemberDropdownType) => void;
   isFocused: boolean;
 };
 
-const MemberDropdownItem = ({
+const MultiMemberDropdownItem = ({
   item,
   onClick,
   isSelected,
   isFocused,
-}: MemberDropdownItemProps) => {
+}: MultiMemberDropdownItemProps) => {
   return (
     <DropdownContainer>
-      <ItemContainer onClick={() => onClick(item.value)} $isFocused={isFocused}>
+      <ItemContainer onClick={() => onClick(item)} $isFocused={isFocused}>
         <ProfileImage
           src={item.profileImage || getRandomImage(item.value)}
           alt={MEMBER.PROFILE_IMAGE}
@@ -72,4 +65,4 @@ const MemberDropdownItem = ({
   );
 };
 
-export default MemberDropdownItem;
+export default MultiMemberDropdownItem;

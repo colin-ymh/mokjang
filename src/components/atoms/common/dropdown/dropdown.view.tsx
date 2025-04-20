@@ -3,12 +3,14 @@
 import React, { ChangeEvent, forwardRef } from 'react';
 import styled from 'styled-components';
 
-import { WHITE } from '@/constants/styles/color';
+import { BLACK, WHITE } from '@/constants/styles/color';
 import DropdownItem, {
   DropdownValueType,
 } from '@/components/atoms/common/dropdown/dropdown-item';
 import BorderInput from '@/components/atoms/common/input/border-input';
 import { InputProps } from '@/components/atoms/common/input/main-input';
+
+import ChevronLeft from '../../../../../public/svg/chevron-down.svg';
 
 const DropdownContainer = styled.div<{ $isOpened: boolean; width?: number }>`
   position: relative;
@@ -21,9 +23,13 @@ const DropdownButton = styled.div`
   width: 100%;
   flex-direction: row;
   cursor: pointer;
+  position: relative;
 `;
 
-const DropdownList = styled.div<{ $reverseDirection?: boolean }>`
+const DropdownList = styled.div<{
+  $isOpened: boolean;
+  $reverseDirection?: boolean;
+}>`
   position: absolute;
   margin-top: 10px;
   border-radius: 5px;
@@ -31,13 +37,35 @@ const DropdownList = styled.div<{ $reverseDirection?: boolean }>`
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
   display: flex;
   flex-direction: column;
-  gap: 5px;
-  padding: 5px;
+  width: 100%;
   justify-content: flex-start;
   align-items: flex-start;
   overflow-y: auto;
   max-height: 200px;
   bottom: ${({ $reverseDirection }) => ($reverseDirection ? '55px' : 'auto')};
+
+  /* 애니메이션 */
+  transform-origin: ${({ $reverseDirection }) =>
+    $reverseDirection ? 'bottom' : 'top'};
+  transform: scaleY(${({ $isOpened }) => ($isOpened ? 1 : 0)});
+  opacity: ${({ $isOpened }) => ($isOpened ? 1 : 0)};
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease;
+  pointer-events: ${({ $isOpened }) => ($isOpened ? 'auto' : 'none')};
+`;
+
+const Chevron = styled(ChevronLeft)<{ $isOpened: boolean }>`
+  width: 18px;
+  height: 18px;
+  stroke: ${BLACK};
+  stroke-width: 1px;
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%)
+    rotate(${({ $isOpened }) => ($isOpened ? '180deg' : '360deg')});
+  transition: transform 0.2s ease;
 `;
 
 type DropdownViewProps = {
@@ -88,13 +116,11 @@ const DropdownView = forwardRef<HTMLInputElement, DropdownViewProps>(
     },
     ref
   ) => {
-    // 현재 표시할 텍스트 (드롭다운 아이템 중 매칭되는 title, 없으면 그냥 innerValue)
     const displayValue =
       items.find((item) => item.value === innerValue)?.title || innerValue;
 
     return (
       <DropdownContainer $isOpened={isOpened} width={width}>
-        {/* 드롭다운 버튼(실제로는 BorderInput이 들어감) */}
         <DropdownButton onClick={onClickDropdown}>
           <BorderInput
             ref={ref}
@@ -105,7 +131,7 @@ const DropdownView = forwardRef<HTMLInputElement, DropdownViewProps>(
             backgroundColor={backgroundColor}
             height={height}
             width={width}
-            readOnly={!isEditable} // 커스텀 모드일 땐 isEditable=true
+            readOnly={!isEditable}
             enterKeyHint={enterKeyHint}
             disabled={disabled}
             onKeyDown={(event) => {
@@ -116,11 +142,14 @@ const DropdownView = forwardRef<HTMLInputElement, DropdownViewProps>(
             }}
             {...inputProps}
           />
+          <Chevron $isOpened={isOpened} />
         </DropdownButton>
 
-        {/* 드롭다운 메뉴 목록 */}
-        {isOpened && !disabled && (
-          <DropdownList $reverseDirection={reverseDirection}>
+        {!disabled && (
+          <DropdownList
+            $isOpened={isOpened}
+            $reverseDirection={reverseDirection}
+          >
             {items.map((item, index) => (
               <DropdownItem
                 key={index}

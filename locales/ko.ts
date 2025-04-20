@@ -12,6 +12,23 @@ export default {
   isDone: '완료',
   isNotDone: '미완료',
 
+  title: '제목',
+
+  visitedMember: '대상자',
+  receiver: '보고대상자',
+
+  visitationContent: '심방내용',
+  visitationPray: '기도제목',
+
+  method: '방식',
+
+  inPerson: '대면',
+  remote: '비대면',
+
+  reserve: '예약',
+  done: '완료',
+  pending: '지연',
+
   people: '인원',
 
   instructor: '진행자',
@@ -42,7 +59,7 @@ export default {
   educationProcess: '진행사항',
   educationDate: '교육 일시',
   sessionContent: '교육 내용',
-  status: '수료',
+  status: '상태',
   isSessionDone: '교육 완료',
 
   officerList: '직분 목록',
@@ -212,7 +229,7 @@ export default {
 
   /*-------------------button-------------------*/
   'button.register': '등록하기',
-  'button.save': '저장하기',
+  'button.save': '저장',
   'button.edit': '수정하기',
   'button.delete': '삭제하기',
   'button.stop': '종료하기',
@@ -265,6 +282,9 @@ export default {
   'placeholder.sessionDate': '교육 일시를 입력해주세요. (yyyy-mm-dd) ',
   'placeholder.sessionContent': '교육 내용를 입력해주세요.',
   'placeholder.search': '검색어를 입력해주세요.',
+  'placeholder.title': '제목을 입력해주세요.',
+  'placeholder.visitationContent': '심방 내용을 입력해주세요.',
+  'placeholder.visitationPray': '기도 제목을 입력해주세요.',
   /*-------------------placeholder-------------------*/
 
   /*-------------------radiobutton-------------------*/

@@ -14,6 +14,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
 
 import 'react-datepicker/dist/react-datepicker.css';
+import 'react-quill/dist/quill.snow.css';
 
 const GlobalStyle = createGlobalStyle`
     html,

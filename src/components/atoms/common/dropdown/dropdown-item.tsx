@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { BLACK, GRAY, MAIN } from '@/constants/styles/color';
+
+import { BLACK, MAIN } from '@/constants/styles/color';
 import { MainText } from '@/components/atoms/common/text/main-text';
 
 const DropdownContainer = styled.div`
@@ -13,12 +14,11 @@ const ItemContainer = styled.div<{ $isFocused: boolean }>`
   display: flex;
   padding: 10px;
   transition: background-color 0.3s ease;
-  border-radius: 5px;
   cursor: pointer;
-  background-color: ${({ $isFocused }) => $isFocused && GRAY.LIGHT};
+  background-color: ${({ $isFocused }) => $isFocused && MAIN.EXTRA_LIGHT};
 
   &:hover {
-    background-color: ${GRAY.LIGHT};
+    background-color: ${MAIN.EXTRA_LIGHT};
   }
 `;
 

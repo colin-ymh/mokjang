@@ -12,6 +12,7 @@ export enum GRAY {
 }
 
 export enum MAIN {
+  EXTRA_LIGHT = '#daefce',
   LIGHT = '#A0CA88',
   DEFAULT = '#299951',
   DARK = '#184727',

@@ -14,6 +14,10 @@ import { MEMBER } from '@/constants/member/member-column';
 
 import { useI18n } from '../../../locales/client';
 import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-item';
+import {
+  VISITATION_METHOD,
+  VISITATION_STATUS,
+} from '@/models/visitation/visitation';
 
 export const useBaptismDropdownItems = () => {
   const t = useI18n();
@@ -295,6 +299,44 @@ export const useEducationStatusDropdownItems = () => {
     {
       value: EDUCATION_STATUS.INCOMPLETE,
       title: t(EDUCATION_STATUS.INCOMPLETE),
+    },
+  ];
+
+  return items;
+};
+
+export const useVisitationStatusDropdownItems = () => {
+  const t = useI18n();
+
+  const items = [
+    {
+      value: VISITATION_STATUS.RESERVE,
+      title: t(VISITATION_STATUS.RESERVE),
+    },
+    {
+      value: VISITATION_STATUS.DONE,
+      title: t(VISITATION_STATUS.DONE),
+    },
+    {
+      value: VISITATION_STATUS.PENDING,
+      title: t(VISITATION_STATUS.PENDING),
+    },
+  ];
+
+  return items;
+};
+
+export const useVisitationMethodDropdownItems = () => {
+  const t = useI18n();
+
+  const items = [
+    {
+      value: VISITATION_METHOD.IN_PERSON,
+      title: t(VISITATION_METHOD.IN_PERSON),
+    },
+    {
+      value: VISITATION_METHOD.REMOTE,
+      title: t(VISITATION_METHOD.REMOTE),
     },
   ];
 

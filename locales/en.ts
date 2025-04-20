@@ -12,6 +12,23 @@ export default {
   isDone: 'Completed',
   isNotDone: 'Incomplete',
 
+  title: 'title',
+
+  method: 'Method',
+
+  visitedMember: 'target',
+  receiver: 'Notification Receiver',
+
+  visitationContent: 'Content',
+  visitationPray: 'Pray',
+
+  inPerson: 'In Person',
+  remote: 'Remote',
+
+  reserve: 'Reserved',
+  done: 'Done',
+  pending: 'Pending',
+
   people: 'People',
 
   instructor: 'Instructor',
@@ -249,6 +266,9 @@ export default {
   'placeholder.sessionDate': 'Enter the session date (e.g., YYYY.MM.DD).',
   'placeholder.sessionContent': 'Enter the session report.',
   'placeholder.search': 'Enter the search term.',
+  'placeholder.title': 'Enter the title.',
+  'placeholder.visitationContent': 'Enter the content.',
+  'placeholder.visitationPray': 'Enter the pray.',
   /*-------------------placeholder-------------------*/
 
   /*-------------------radiobutton-------------------*/

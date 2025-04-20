@@ -12,7 +12,7 @@ import LabelDropdown from '@/components/atoms/common/dropdown/label-dropdown';
 import { useMarriageDropdownItems } from '@/hooks/dropdown/dropdown-items';
 import VehicleNumberInput from '@/components/atoms/register/vehicle-number-input';
 import { VehicleNumberInputRef } from '@/components/atoms/register/vehicle-number-input.view';
-import MemberImageInput from '@/components/atoms/register/member-image-input';
+import ProfileImageInput from '@/components/atoms/common/image/profile-image-input';
 import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-item';
 import RadioButton from '@/components/atoms/common/input/radio-button/radio-button';
 import { CALENDAR_MODE, MARRIAGE, NULL } from '@/constants/constant';
@@ -134,7 +134,7 @@ const PersonalRegisterView = ({
     <PersonalRegisterContainer>
       <ImageContainer>
         {/* 프로필 이미지*/}
-        <MemberImageInput
+        <ProfileImageInput
           memberId={member.id}
           value={member.profileImage}
           onChange={onChangeProfileImage}
