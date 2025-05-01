@@ -36,7 +36,7 @@ const Thumb = styled(Image)`
   border-radius: 12px;
   object-fit: cover;
   cursor: pointer;
-  background: ${GRAY.LIGHT};
+  background: ${GRAY.SEMI_LIGHT};
 `;
 
 const DeleteBtn = styled(DeleteSvg)<{ $visible: boolean }>`
@@ -233,7 +233,7 @@ const ProfileImageInput = forwardRef<HTMLDivElement, Props>(
                   width={120}
                   backgroundColor={WHITE}
                   color={GRAY.DEFAULT}
-                  borderColor={GRAY.LIGHT}
+                  borderColor={GRAY.SEMI_LIGHT}
                 />
                 <Button
                   text={t('save')}

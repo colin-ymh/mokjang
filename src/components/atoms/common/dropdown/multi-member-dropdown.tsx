@@ -41,6 +41,7 @@ export type MultiMemberDropdownProps = InputProps & {
   backgroundColor?: string;
 
   isSingle?: boolean;
+  isUserMember?: boolean;
 };
 
 const MultiMemberDropdown = forwardRef<
@@ -62,6 +63,7 @@ const MultiMemberDropdown = forwardRef<
       height,
       disabled,
       isSingle = false,
+      isUserMember = false,
       ...inputProps
     },
     ref

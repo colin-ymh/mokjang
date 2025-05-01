@@ -39,7 +39,7 @@ const SaveButton = styled.div<{ $isEnabled: boolean }>`
   display: flex;
   position: absolute;
   background-color: ${({ $isEnabled }) =>
-    $isEnabled ? MAIN.DEFAULT : GRAY.LIGHT};
+    $isEnabled ? MAIN.DEFAULT : GRAY.SEMI_LIGHT};
   cursor: ${({ $isEnabled }) => ($isEnabled ? 'pointer' : 'auto')};
   height: 50px;
   width: 100%;

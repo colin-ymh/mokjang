@@ -5,7 +5,7 @@ import { BLACK, GRAY, MAIN, WHITE } from '@/constants/styles/color';
 
 const BackgroundContainer = styled.div`
   display: flex;
-  border-bottom: 1px solid ${GRAY.LIGHT};
+  border-bottom: 1px solid ${GRAY.SEMI_LIGHT};
   padding: 5px;
 `;
 
@@ -21,7 +21,7 @@ const ItemContainer = styled.div`
   transition: background-color 0.2s;
 
   &:hover {
-    background-color: ${GRAY.LIGHT};
+    background-color: ${GRAY.SEMI_LIGHT};
   }
 `;
 

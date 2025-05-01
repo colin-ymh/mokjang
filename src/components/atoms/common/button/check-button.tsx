@@ -8,7 +8,7 @@ import Check from '../../../../../public/svg/check.svg';
 const CheckButtonContainer = styled.div<{ width: number; height: number }>`
   display: flex;
   border: 1px solid ${GRAY.DEFAULT};
-  border-radius: 5px;
+  border-radius: 30%;
   width: ${({ width }) => width}px;
   height: ${({ height }) => height}px;
 `;
@@ -17,8 +17,6 @@ const CheckIcon = styled(Check)<{ $isChecked: boolean }>`
   display: block;
   opacity: ${({ $isChecked }) => ($isChecked ? 1 : 0)};
   //transition: opacity 0.2s;
-  width: 20px;
-  height: 20px;
   stroke: ${MAIN.DEFAULT};
 `;
 
@@ -35,8 +33,8 @@ const CheckButton = ({
   value,
   onChange,
   disabled = false,
-  width = 20,
-  height = 20,
+  width = 10,
+  height = 10,
   isStopPropagation = true,
 }: CheckButtonProps) => {
   // 로컬 상태 관리

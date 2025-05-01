@@ -59,7 +59,7 @@ const CustomDatePickerWrapper = styled.div`
 
     &:not([aria-disabled='true']):hover {
       border-radius: 100%;
-      background-color: ${GRAY.LIGHT};
+      background-color: ${GRAY.SEMI_LIGHT};
     }
 
     &--today {

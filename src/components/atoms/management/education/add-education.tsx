@@ -16,7 +16,7 @@ const AddEducationContainer = styled.div<{ $isShown: boolean }>`
   gap: 10px;
   width: 100%;
   padding: 5px 0;
-  border-bottom: 1px solid ${GRAY.LIGHT};
+  border-bottom: 1px solid ${GRAY.SEMI_LIGHT};
 `;
 
 const CheckButton = styled(Check)<{ $isEnabled: boolean }>`
@@ -28,7 +28,7 @@ const CheckButton = styled(Check)<{ $isEnabled: boolean }>`
   stroke-width: 2px;
   border-radius: 5px;
   background-color: ${({ $isEnabled }) =>
-    $isEnabled ? MAIN.DEFAULT : GRAY.LIGHT};
+    $isEnabled ? MAIN.DEFAULT : GRAY.SEMI_LIGHT};
   cursor: ${({ $isEnabled }) => ($isEnabled ? 'pointer' : 'default')};
   flex-shrink: 0;
 `;

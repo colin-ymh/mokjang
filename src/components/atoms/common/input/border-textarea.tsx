@@ -20,7 +20,7 @@ const StyledTextarea = styled.textarea<{
   transition: all 0.3s ease;
   height: ${({ height }) => (height ? `${height}px` : '100%')};
   background-color: ${({ $disabled, $backgroundColor }) =>
-    $backgroundColor ? $backgroundColor : $disabled ? GRAY.LIGHT : WHITE};
+    $backgroundColor ? $backgroundColor : $disabled ? GRAY.SEMI_LIGHT : WHITE};
   resize: none;
 
   &:focus {

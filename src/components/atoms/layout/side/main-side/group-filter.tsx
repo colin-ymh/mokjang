@@ -4,9 +4,10 @@ import { AppDispatch, RootState } from '@/redux/store';
 import { setMemberFilter } from '@/redux/reducers/member-filter-reducer';
 
 import GroupFilterView from '@/components/atoms/layout/side/main-side/group-filter.view';
-import { Group } from '@/models/management/management';
+import { DEFAULT_GROUP, Group } from '@/models/management/management';
 import { getOrderedGroups } from '@/utils/group';
 import { useI18n } from '../../../../../../locales/client';
+import { setTargetGroup } from '@/redux/reducers/target-group';
 
 type GroupFilterProps = {
   isDefaultOpen?: boolean;
@@ -54,6 +55,15 @@ const GroupFilter = ({ isDefaultOpen = false, onClick }: GroupFilterProps) => {
 
     if (onClick) {
       onClick(groupIds[0]);
+    }
+
+    if (groupIds[0] !== null) {
+      const newGroup = groups.find((group) => group.id === groupIds[0]);
+      if (newGroup) {
+        dispatch(setTargetGroup(newGroup));
+      }
+    } else {
+      dispatch(setTargetGroup(DEFAULT_GROUP));
     }
   };
 

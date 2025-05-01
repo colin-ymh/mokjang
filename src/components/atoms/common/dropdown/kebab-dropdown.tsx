@@ -52,7 +52,7 @@ const Dropdown = styled.div<{ $isOpened: boolean }>`
     flex-direction: column;
     border-radius: 10px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-    background-color: ${GRAY.SIDE_BAR};
+    background-color: ${GRAY.LIGHT};
   }
 
   @media (min-width: ${MEDIA_MIN_WIDTH.DESKTOP}) {
@@ -75,9 +75,9 @@ const ButtonItem = styled.div`
     height: 30px;
     justify-content: center;
     align-items: center;
-    background-color: ${GRAY.SIDE_BAR};
+    background-color: ${GRAY.LIGHT};
 
-    border-bottom: 1px solid ${GRAY.LIGHT};
+    border-bottom: 1px solid ${GRAY.SEMI_LIGHT};
 
     &:last-child {
       border-bottom: none;
@@ -89,7 +89,7 @@ const ButtonItem = styled.div`
     border-radius: 5px;
     cursor: pointer;
     &:hover {
-      background-color: ${GRAY.LIGHT};
+      background-color: ${GRAY.SEMI_LIGHT};
     }
   }
 `;
@@ -109,7 +109,7 @@ const CancelButton = styled.div<{ $isOpened: boolean }>`
   flex-direction: column;
   border-radius: 10px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-  background-color: ${GRAY.LIGHT};
+  background-color: ${GRAY.SEMI_LIGHT};
   transform: translateY(100%); /* ↓ 초기 상태 */
 
   @media (min-width: ${MEDIA_MIN_WIDTH.DESKTOP}) {
@@ -202,10 +202,17 @@ const KebabDropdown = ({
     }
   }, [isOpened]);
 
-  const handleToggle = () => (isOpened ? closeDropdown() : openDropdown());
+  const handleToggle = () => {
+    isOpened ? closeDropdown() : openDropdown();
+  };
 
   return (
-    <ListContainer $position={position} top={top} right={right}>
+    <ListContainer
+      $position={position}
+      top={top}
+      right={right}
+      onClick={(event) => event.stopPropagation()}
+    >
       <TransparentBackground isOpened={isOpened} onClick={closeDropdown} />
 
       {/* 케밥(⋮) 아이콘 */}

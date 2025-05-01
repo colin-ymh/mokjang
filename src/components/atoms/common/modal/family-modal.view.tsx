@@ -145,7 +145,7 @@ const FamilyModalView = ({
             onClick={() => {
               onClickCreateFamily(familyMemberId, familyRelation, true);
             }}
-            backgroundColor={GRAY.LIGHT}
+            backgroundColor={GRAY.SEMI_LIGHT}
             disabled={true}
           />
         </ButtonContainer>

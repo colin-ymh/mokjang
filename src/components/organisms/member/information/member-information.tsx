@@ -23,13 +23,11 @@ const ContentContainer = styled.div`
 type MemberInformationProps = {
   targetMember: Member;
   setTargetMember: Dispatch<SetStateAction<Member>>;
-  onClickDelete?: () => void;
 };
 
 const MemberInformation = ({
   targetMember,
   setTargetMember,
-  onClickDelete,
 }: MemberInformationProps) => {
   const [memberContentId, setMemberContentId] = useState<string>(
     MEMBER_INFORMATION_HEADER_ID.PERSONAL_INFORMATION
@@ -45,7 +43,6 @@ const MemberInformation = ({
         memberContentId={memberContentId}
         onClickItem={onClickHeaderBarItem}
         targetMember={targetMember}
-        onClickDelete={onClickDelete}
       />
       <ContentContainer>
         {getMemberInformationContent(

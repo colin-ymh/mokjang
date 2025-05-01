@@ -3,12 +3,8 @@
 import React, { ReactNode } from 'react';
 import styled from 'styled-components';
 
-import { DESTRUCTIVE, GRAY } from '@/constants/styles/color';
-import SideHeader from '@/components/atoms/layout/side/side-header';
-import Button from '@/components/atoms/common/button/button';
+import { GRAY, WHITE } from '@/constants/styles/color';
 import { MEDIA_MIN_WIDTH } from '@/constants/constant';
-
-import { useI18n } from '../../../../../locales/client';
 
 const SideBarContainer = styled.div`
   display: flex;
@@ -26,11 +22,9 @@ const SideBarContainer = styled.div`
   @media (min-width: ${MEDIA_MIN_WIDTH.DESKTOP}) {
     display: flex;
     width: 180px;
-    background-color: ${GRAY.SIDE_BAR};
-    padding: 0 10px;
-    border-right: 1px solid ${GRAY.LIGHT};
+    background-color: ${WHITE};
+    border-right: 1px solid ${GRAY.SEMI_LIGHT};
     overflow: hidden;
-    flex-shrink: 0;
     position: relative;
   }
 `;
@@ -50,25 +44,14 @@ const BottomContainer = styled.div`
 
 type SideBarViewProps = {
   sideButtonList: ReactNode;
-  onClickLogOut: () => void;
+  // onClickLogOut: () => void;
 };
 
-const SideView = ({ sideButtonList, onClickLogOut }: SideBarViewProps) => {
-  const t = useI18n();
-
+const SideView = ({ sideButtonList }: SideBarViewProps) => {
   return (
     <SideBarContainer>
-      <SideHeader />
+      {/*<SideHeader />*/}
       <ButtonContainer>{sideButtonList}</ButtonContainer>
-      <BottomContainer>
-        <Button
-          text={t('button.logOut')}
-          onClick={onClickLogOut}
-          height={30}
-          backgroundColor={GRAY.LIGHT}
-          color={DESTRUCTIVE.LIGHT}
-        />
-      </BottomContainer>
     </SideBarContainer>
   );
 };

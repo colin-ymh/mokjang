@@ -3,6 +3,7 @@ import {
   EDUCATION_ENROLLMENT,
   EDUCATION_TERM,
 } from '@/constants/management/education-term-column';
+import { VISITATION } from '@/constants/visitation/visitation-column';
 
 export const getTranslatedMemberColumn = (
   t: (key: string, ...args: any[]) => string,
@@ -56,5 +57,19 @@ export const getTranslatedEnrollmentColumn = (
       | EDUCATION_ENROLLMENT.NOTE
       | EDUCATION_ENROLLMENT.MOBILE_PHONE
       | EDUCATION_ENROLLMENT.STATUS
+  );
+};
+
+export const getTranslatedVisitationColumn = (
+  t: (key: string, ...args: any[]) => string,
+  id: VISITATION
+): string => {
+  return t(
+    id as
+      | VISITATION.TITLE
+      | VISITATION.VISITED
+      | VISITATION.STATUS
+      | VISITATION.DATE
+      | VISITATION.INSTRUCTOR
   );
 };

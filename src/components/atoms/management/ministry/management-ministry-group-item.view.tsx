@@ -20,7 +20,7 @@ const MinistryGroupItemContainer = styled.div<{
   flex-direction: column;
   justify-content: center;
   align-items: flex-end;
-  border-bottom: 1px solid ${GRAY.LIGHT};
+  border-bottom: 1px solid ${GRAY.SEMI_LIGHT};
   padding: 1px;
   opacity: ${({ $isDragging }) => ($isDragging ? 0.5 : 1)};
 `;
@@ -81,7 +81,7 @@ const CheckButton = styled(Check)<{ $isEnabled: boolean }>`
   stroke-width: 2px;
   border-radius: 5px;
   background-color: ${({ $isEnabled }) =>
-    $isEnabled ? MAIN.DEFAULT : GRAY.LIGHT};
+    $isEnabled ? MAIN.DEFAULT : GRAY.SEMI_LIGHT};
   cursor: ${({ $isEnabled }) => ($isEnabled ? 'pointer' : 'default')};
 `;
 
@@ -96,7 +96,7 @@ const PlusButton = styled(Plus)`
   padding: 1px;
 
   &:hover {
-    background-color: ${GRAY.LIGHT};
+    background-color: ${GRAY.SEMI_LIGHT};
   }
 `;
 

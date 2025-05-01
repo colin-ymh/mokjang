@@ -40,6 +40,8 @@ export type InputProps = InputHTMLAttributes<HTMLInputElement> & {
   backgroundColor?: string;
   onClick?: (event: any) => void;
   borderBottomColor?: string;
+  onFocus?: (event: any) => void;
+  onBlur?: (event: any) => void;
 };
 
 // forwardRef 를 사용하여 ref 를 전달받을 수 있도록
@@ -55,6 +57,8 @@ const MainInput = forwardRef<HTMLInputElement, InputProps>(
       backgroundColor,
       onClick,
       borderBottomColor,
+      onFocus,
+      onBlur,
       ...props
     },
     ref
@@ -70,6 +74,8 @@ const MainInput = forwardRef<HTMLInputElement, InputProps>(
         $backgroundColor={backgroundColor}
         $borderBottomColor={borderBottomColor}
         onKeyDown={onKeyDown}
+        onFocus={onFocus}
+        onBlur={onBlur}
         $isReadOnly={readOnly}
         readOnly={readOnly}
         {...props}

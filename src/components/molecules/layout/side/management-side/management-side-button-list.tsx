@@ -13,6 +13,7 @@ const ButtonContainer = styled.div`
   flex-direction: column;
   flex-grow: 1;
   justify-content: flex-start;
+  padding: 20px 15px;
 `;
 
 type SideBarViewProps = {};

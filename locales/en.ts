@@ -17,10 +17,18 @@ export default {
   method: 'Method',
 
   visitedMember: 'target',
-  receiver: 'Notification Receiver',
+  receiver: 'Receiver',
 
   visitationContent: 'Content',
   visitationPray: 'Pray',
+  visitationTitle: 'Title',
+  visitationDate: 'Visit Date',
+  visitationStatus: 'Status',
+  visitationMethod: 'Method',
+  visitationType: 'Type',
+  instructorId: 'Instructor',
+  fromVisitationDate: 'Visited After',
+  toVisitationDate: 'Visited Before',
 
   inPerson: 'In Person',
   remote: 'Remote',
@@ -148,6 +156,11 @@ export default {
   granddaughter: 'Granddaughter',
   relative: 'Relative',
 
+  /*-------------------title (popup title)-------------------*/
+  'title.memberRegister': 'Member Register',
+  'title.addVisitation': 'Add Visitation',
+  /*-------------------title (popup title)-------------------*/
+
   /*-------------------header (side bar button)-------------------*/
   'header.home': 'Home',
   'header.member': 'Member',
@@ -212,6 +225,7 @@ export default {
 
   /*-------------------button-------------------*/
   'button.register': 'Register',
+  'button.memberRegister': 'Member Register',
   'button.save': 'Save',
   'button.edit': 'Edit',
   'button.delete': 'Delete',
@@ -231,7 +245,7 @@ export default {
   'button.logOut': 'Log Out',
   'button.saveTerm': 'Save New Term',
   'button.addMember': 'Add Member',
-
+  'button.filterVisitationDate': 'period',
   /*-------------------button-------------------*/
 
   /*-------------------placeholder-------------------*/
@@ -315,5 +329,8 @@ export default {
   'popup.verifyFail': "You've entered wrong number.",
   'popup.duplicatedRole': 'That role is already duplicated.',
   'popup.duplicatedMinistry': 'That ministry is already duplicated.',
+
+  'popup.deleteVisitationTitle': 'Do you want to delete this visitation?',
+  'popup.deleteVisitationBody': 'Deleted visitation cannot be restored.',
   /*-------------------popup-------------------*/
 } as const;

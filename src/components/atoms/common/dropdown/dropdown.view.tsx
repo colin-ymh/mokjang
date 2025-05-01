@@ -1,6 +1,6 @@
 'use client';
 
-import React, { ChangeEvent, forwardRef } from 'react';
+import React, { ChangeEvent, forwardRef, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import { BLACK, WHITE } from '@/constants/styles/color';
@@ -12,9 +12,13 @@ import { InputProps } from '@/components/atoms/common/input/main-input';
 
 import ChevronLeft from '../../../../../public/svg/chevron-down.svg';
 
-const DropdownContainer = styled.div<{ $isOpened: boolean; width?: number }>`
+const DropdownContainer = styled.div<{
+  $isOpened: boolean;
+  $isTransitionDone: boolean;
+  width?: number;
+}>`
   position: relative;
-  z-index: ${({ $isOpened }) => ($isOpened ? 50 : 'auto')};
+  z-index: ${({ $isTransitionDone }) => ($isTransitionDone ? 50 : 'auto')};
   width: ${({ width }) => (width ? `${width}px` : `100%`)};
 `;
 
@@ -31,7 +35,7 @@ const DropdownList = styled.div<{
   $reverseDirection?: boolean;
 }>`
   position: absolute;
-  margin-top: 10px;
+  margin-top: 5px;
   border-radius: 5px;
   background-color: ${WHITE};
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
@@ -116,11 +120,25 @@ const DropdownView = forwardRef<HTMLInputElement, DropdownViewProps>(
     },
     ref
   ) => {
+    // animate 중 z-index 유지 플래그
+    const [isTransitionDone, setIsTransitionDone] = useState(false);
+
+    // 열릴 때는 즉시 z-index 올리기
+    useEffect(() => {
+      if (isOpened) {
+        setIsTransitionDone(true);
+      }
+    }, [isOpened]);
+
     const displayValue =
       items.find((item) => item.value === innerValue)?.title || innerValue;
 
     return (
-      <DropdownContainer $isOpened={isOpened} width={width}>
+      <DropdownContainer
+        $isOpened={isOpened}
+        $isTransitionDone={isTransitionDone}
+        width={width}
+      >
         <DropdownButton onClick={onClickDropdown}>
           <BorderInput
             ref={ref}
@@ -149,6 +167,12 @@ const DropdownView = forwardRef<HTMLInputElement, DropdownViewProps>(
           <DropdownList
             $isOpened={isOpened}
             $reverseDirection={reverseDirection}
+            onTransitionEnd={(e) => {
+              // transform 애니메이션이 끝날 때
+              if (e.propertyName === 'transform' && !isOpened) {
+                setIsTransitionDone(false);
+              }
+            }}
           >
             {items.map((item, index) => (
               <DropdownItem

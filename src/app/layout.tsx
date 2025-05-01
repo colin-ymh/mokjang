@@ -28,6 +28,15 @@ const GlobalStyle = createGlobalStyle`
         overscroll-behavior: none;
 
         -webkit-tap-highlight-color: transparent;
+
+        /* 텍스트 선택 막기 */
+        user-select: none !important;
+        -webkit-user-select: none !important;
+        -moz-user-select: none !important;
+        -ms-user-select: none !important;
+
+        /* 이미지 등 드래그 막기 */
+        -webkit-user-drag: none !important;
     }
 
     body > div:first-child,

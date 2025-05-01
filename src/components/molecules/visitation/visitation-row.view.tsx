@@ -2,27 +2,42 @@ import { ChangeEvent, Dispatch, Ref, SetStateAction } from 'react';
 import styled from 'styled-components';
 
 import Button from '@/components/atoms/common/button/button';
-import { GRAY } from '@/constants/styles/color';
-import TableSetting from '@/components/molecules/member/list/table-setting';
+import { GRAY, WHITE } from '@/constants/styles/color';
 import Dropdown from '@/components/atoms/common/dropdown/dropdown';
 import BorderInput from '@/components/atoms/common/input/border-input';
-import { MEMBER } from '@/constants/member/member-column';
+import { VISITATION } from '@/constants/visitation/visitation-column';
 import TransparentBackground from '@/components/atoms/common/etc/transparent-background';
-import FilteredItem, {
-  FilteredItemType,
-} from '@/components/atoms/member/list/filtered-item';
-import { useSearchFilterDropdownItems } from '@/hooks/dropdown/dropdown-items';
+
+import { useVisitationSearchFilterDropdownItems } from '@/hooks/dropdown/dropdown-items';
 import useWindowSize from '@/hooks/window/window';
 import { useI18n, useScopedI18n } from '../../../../locales/client';
+import VisitationFilteredItem, {
+  VisitationFilteredItemType,
+} from '@/components/atoms/visitation/visitation-filtered-item';
 
 const VisitationContainer = styled.div`
   display: flex;
-  flex-direction: row;
-  align-items: center;
+  flex-direction: column;
   justify-content: space-between;
   width: 100%;
+  height: 100px;
+  flex-shrink: 0;
   position: relative;
-  border-bottom: 1px solid ${GRAY.LIGHT};
+`;
+
+const RowTop = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-shrink: 0;
+`;
+
+const RowBottom = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-shrink: 0;
+  padding: 10px 20px;
 `;
 
 const FilterList = styled.div`
@@ -51,6 +66,7 @@ const FilteredItemList = styled.div<{ $width: number }>`
 
 const SearchContainer = styled.div`
   display: flex;
+  padding: 10px;
   flex-direction: row;
   justify-content: flex-end;
   align-items: center;
@@ -72,23 +88,16 @@ const AddFilterContainer = styled.div<{ $isShown: boolean }>`
   left: 10px;
 `;
 
-export type SEARCH_FILTER =
-  | MEMBER.NAME
-  | MEMBER.SCHOOL
-  | MEMBER.VEHICLE_NUMBER
-  | MEMBER.HOME_PHONE
-  | MEMBER.MOBILE_PHONE
-  | MEMBER.OCCUPATION
-  | MEMBER.ADDRESS;
+export type VISITATION_SEARCH_FILTER = VISITATION.TITLE | VISITATION.INSTRUCTOR;
 
 type VisitationViewProps = {
   isAddFilterShown: boolean;
-  searchFilter: SEARCH_FILTER;
+  searchFilter: VISITATION_SEARCH_FILTER;
   searchValue: string;
   searchRef: Ref<HTMLInputElement>;
-  filteredItems: FilteredItemType[];
+  filteredItems: VisitationFilteredItemType[];
   setIsAddFilterShown: Dispatch<SetStateAction<boolean>>;
-  onClickSearchFilterItem: (value: SEARCH_FILTER) => void;
+  onClickSearchFilterItem: (value: VISITATION_SEARCH_FILTER) => void;
   onChangeSearchValue: (event: ChangeEvent<HTMLInputElement>) => void;
   onClickTableSetting: () => void;
   onClickSearch: () => void;
@@ -111,66 +120,76 @@ const VisitationRowView = ({
   const t = useI18n();
   const t_placeholder = useScopedI18n('placeholder');
   const t_button = useScopedI18n('button');
-  const searchFilterDropdownItems = useSearchFilterDropdownItems();
+  const searchFilterDropdownItems = useVisitationSearchFilterDropdownItems();
 
   const { width } = useWindowSize();
+
   return (
     <VisitationContainer>
-      {/* 검색 부분 */}
-      <SearchContainer>
-        <Dropdown
-          value={searchFilter}
-          items={searchFilterDropdownItems}
-          onChangeItem={onClickSearchFilterItem}
-          height={30}
-          width={100}
-          borderColor={GRAY.LIGHT}
-          backgroundBlur={false}
-        />
-        <BorderInput
-          ref={searchRef}
-          value={searchValue}
-          onChange={onChangeSearchValue}
-          borderColor={GRAY.LIGHT}
-          height={30}
-          width={160}
-          onKeyDown={onKeyDown}
-          placeholder={t_placeholder('search')}
-        />
-        <Button
-          text={t('search')}
-          height={30}
-          width={'auto'}
-          onClick={onClickSearch}
-        />
-      </SearchContainer>
-      <FilterList>
-        <ButtonContainer>
-          {/* 설정 활성화 버튼 */}
-          <Button
-            text={t_button('filterSetting')}
-            height={30}
-            onClick={onClickTableSetting}
-          />
-          {/* 설정 모달 */}
-          <AddFilterContainer $isShown={isAddFilterShown}>
-            <TransparentBackground
-              isOpened={isAddFilterShown}
-              onClick={() => setIsAddFilterShown(false)}
-              blur={false}
+      <RowTop>
+        <FilterList>
+          <ButtonContainer>
+            {/* 설정 활성화 버튼 */}
+            <Button
+              text={t_button('filterVisitationDate')}
+              height={30}
+              width={60}
+              onClick={onClickTableSetting}
+              backgroundColor={WHITE}
+              borderColor={GRAY.DEFAULT}
+              color={GRAY.DARK}
             />
-            {isAddFilterShown && (
-              <TableSetting setIsShown={setIsAddFilterShown} />
-            )}
-          </AddFilterContainer>
-        </ButtonContainer>
-        {/* 필터 설정된 값들 */}
-        <FilteredItemList $width={width - 650}>
-          {filteredItems.map((item) => (
-            <FilteredItem key={item.title} item={item} />
-          ))}
-        </FilteredItemList>
-      </FilterList>
+            {/* 설정 모달 */}
+            <AddFilterContainer $isShown={isAddFilterShown}>
+              <TransparentBackground
+                isOpened={isAddFilterShown}
+                onClick={() => setIsAddFilterShown(false)}
+                blur={false}
+              />
+              {/*{isAddFilterShown && (*/}
+              {/*  <TableSetting setIsShown={setIsAddFilterShown} />*/}
+              {/*)}*/}
+            </AddFilterContainer>
+          </ButtonContainer>
+          {/* 필터 설정된 값들 */}
+          <FilteredItemList $width={width - 650}>
+            {filteredItems.map((item) => (
+              <VisitationFilteredItem key={item.title} item={item} />
+            ))}
+          </FilteredItemList>
+        </FilterList>
+        {/* 검색 부분 */}
+        <SearchContainer>
+          <Dropdown
+            value={searchFilter}
+            items={searchFilterDropdownItems}
+            onChangeItem={onClickSearchFilterItem}
+            height={30}
+            width={100}
+            borderColor={GRAY.SEMI_LIGHT}
+            backgroundBlur={false}
+          />
+          <BorderInput
+            ref={searchRef}
+            value={searchValue}
+            onChange={onChangeSearchValue}
+            borderColor={GRAY.SEMI_LIGHT}
+            height={30}
+            width={160}
+            onKeyDown={onKeyDown}
+            placeholder={t_placeholder('search')}
+          />
+          <Button
+            text={t('search')}
+            height={30}
+            width={'auto'}
+            onClick={onClickSearch}
+            backgroundColor={WHITE}
+            borderColor={GRAY.DEFAULT}
+            color={GRAY.DARK}
+          />
+        </SearchContainer>
+      </RowTop>
     </VisitationContainer>
   );
 };

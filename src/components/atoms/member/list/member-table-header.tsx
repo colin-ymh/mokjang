@@ -5,7 +5,7 @@ import { RootState } from '@/redux/store';
 
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { MEMBER } from '@/constants/member/member-column';
-import { GRAY, MAIN } from '@/constants/styles/color';
+import { BLACK, GRAY, MAIN } from '@/constants/styles/color';
 import { SIZE } from '@/constants/styles/style';
 import { getTranslatedMemberColumn } from '@/utils/translate';
 
@@ -18,7 +18,7 @@ const HeaderContainer = styled.div`
   overflow: hidden;
   position: relative;
   cursor: pointer;
-  height: 23px;
+  height: 30px;
 `;
 
 const TextContainer = styled.div`
@@ -66,8 +66,9 @@ const MemberTableHeader = ({ item, onClick }: MemberTableHeaderProps) => {
            ========================= */
         <TextContainer>
           <MainText
-            color={isActive ? MAIN.DEFAULT : GRAY.EXTRA_DARK}
+            color={isActive ? BLACK : GRAY.DARK}
             size={SIZE.SMALL}
+            fontWeight={600}
           >
             {getTranslatedMemberColumn(t, item.id)}
           </MainText>
@@ -76,7 +77,7 @@ const MemberTableHeader = ({ item, onClick }: MemberTableHeaderProps) => {
       {item.isSortable && (
         <IconContainer>
           <MainText
-            size={SIZE.MEDIUM}
+            size={SIZE.EXTRA_SMALL}
             color={isActive ? MAIN.DEFAULT : GRAY.DEFAULT}
           >
             {'⇅'}

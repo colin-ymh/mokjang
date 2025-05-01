@@ -2,29 +2,21 @@ import React, { ReactNode, useEffect } from 'react';
 import styled from 'styled-components';
 
 import { WHITE } from '@/constants/styles/color';
-import { MainText } from '@/components/atoms/common/text/main-text';
 import { MEDIA_MIN_WIDTH } from '@/constants/constant';
-
-import ExitButton from '../../../../../public/svg/cancel.svg';
-
-const ModalOverlay = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.1);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 100;
-`;
+import TransparentBackground from '@/components/atoms/common/etc/transparent-background';
+import PopupLayout from '@/components/organisms/layout/popup-layout';
 
 const ModalContainer = styled.div<{
   width?: number;
   height?: number;
   $isPercentage?: boolean;
 }>`
+  position: fixed; /* 화면에 고정 */
+  top: 50%; /* 세로 중앙 */
+  left: 50%; /* 가로 중앙 */
+  transform: translate(-50%, -50%); /* 정확히 중앙으로 이동 */
+  z-index: 1000;
+
   display: flex;
   flex-direction: column;
   background-color: ${WHITE};
@@ -45,60 +37,40 @@ const ModalContainer = styled.div<{
   }
 `;
 
-const HeaderContainer = styled.div`
-  position: sticky;
-  top: 0;
-  display: flex;
-  background-color: ${WHITE};
-  justify-content: space-between;
-  align-items: center;
-  z-index: 10;
-  height: 50px;
-  flex-shrink: 0;
-`;
-
-const HeaderLeft = styled.div`
-  display: flex;
-  padding-left: 10px;
-`;
-
-const HeaderRight = styled.div`
-  display: flex;
-  padding-right: 10px;
-  cursor: pointer;
-`;
-
-const ContentContainer = styled.div`
-  display: flex;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-`;
-
 type CustomPopupProps = {
   isShow: boolean;
-  onClickClose: () => void;
-  headerLeft?: ReactNode;
   width?: number;
   height?: number;
   isPercentage?: boolean;
+
+  onClickCancel: () => void;
+  onClickDone?: () => void;
+  headerTitle?: string;
+  headerRight?: ReactNode;
+  cancelText?: string;
+  doneText?: string;
   children: ReactNode;
 };
 
 const CustomPopup = ({
   isShow,
-  onClickClose,
-  headerLeft,
   width,
   height,
   isPercentage = false,
+
+  onClickCancel,
+  onClickDone,
+  headerTitle,
+  headerRight,
+  cancelText,
+  doneText,
   children,
 }: CustomPopupProps) => {
   useEffect(() => {
     // ESC 누르면 닫기
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
-        onClickClose();
+        onClickCancel();
       }
     };
 
@@ -109,28 +81,30 @@ const CustomPopup = ({
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [isShow, onClickClose]);
+  }, [isShow, onClickCancel]);
 
   if (!isShow) return null;
 
   return (
-    <ModalOverlay>
+    <>
+      <TransparentBackground isOpened={isShow} onClick={onClickCancel} />
       <ModalContainer
         width={width}
         height={height}
         $isPercentage={isPercentage}
       >
-        <HeaderContainer>
-          <HeaderLeft>
-            <MainText>{headerLeft}</MainText>
-          </HeaderLeft>
-          <HeaderRight>
-            <ExitButton onClick={onClickClose} />
-          </HeaderRight>
-        </HeaderContainer>
-        <ContentContainer>{children}</ContentContainer>
+        <PopupLayout
+          onClickCancel={onClickCancel}
+          onClickDone={onClickDone}
+          headerTitle={headerTitle}
+          headerRight={headerRight}
+          cancelText={cancelText}
+          doneText={doneText}
+        >
+          {children}
+        </PopupLayout>
       </ModalContainer>
-    </ModalOverlay>
+    </>
   );
 };
 

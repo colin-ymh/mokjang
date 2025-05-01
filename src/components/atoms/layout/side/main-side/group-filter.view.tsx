@@ -24,7 +24,7 @@ const GroupItemContainer = styled.div<{ $level: number }>`
   cursor: pointer;
 
   &:hover {
-    background-color: ${GRAY.LIGHT};
+    background-color: ${GRAY.SEMI_LIGHT};
   }
 `;
 

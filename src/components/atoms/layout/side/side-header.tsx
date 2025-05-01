@@ -1,7 +1,5 @@
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { MainText } from '@/components/atoms/common/text/main-text';
-import { SIZE } from '@/constants/styles/style';
 import { RootState } from '@/redux/store';
 import { GRAY } from '@/constants/styles/color';
 
@@ -18,7 +16,7 @@ const HeaderContainer = styled.div`
 const ProfileImage = styled.div`
   width: 30px;
   height: 30px;
-  background-color: ${GRAY.LIGHT};
+  background-color: ${GRAY.SEMI_LIGHT};
   border-radius: 5px;
 `;
 
@@ -27,8 +25,8 @@ const SideHeader = () => {
 
   return (
     <HeaderContainer>
-      <ProfileImage />
-      <MainText size={SIZE.EXTRA_LARGE}>{user.name}</MainText>
+      {/*<ProfileImage />*/}
+      {/*<MainText size={SIZE.EXTRA_LARGE}>{user.name}</MainText>*/}
     </HeaderContainer>
   );
 };

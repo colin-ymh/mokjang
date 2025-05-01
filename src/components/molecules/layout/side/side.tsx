@@ -1,14 +1,9 @@
 import { memo, ReactNode } from 'react';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/redux/store';
-import { setChurch, setChurchId } from '@/redux/reducers/church-reducer';
-import { setUser } from '@/redux/reducers/user-reducer';
 
 import { AuthApi } from '@/api/auth/auth.api';
-import { BLANK } from '@/constants/constant';
 import SideView from '@/components/molecules/layout/side/side.view';
-import { DEFAULT_USER } from '@/models/user/user';
-import { DEFAULT_CHURCH } from '@/models/church/church';
 import { usePageRouter } from '@/utils/router';
 
 type SideProps = {
@@ -20,24 +15,24 @@ const Side = memo(({ sideButtonList }: SideProps) => {
   const router = usePageRouter();
   const authApi = new AuthApi(false);
 
-  const onClickLogOut = () => {
-    console.log('logout');
-    try {
-      dispatch(setUser(DEFAULT_USER));
-      dispatch(setChurch(DEFAULT_CHURCH));
-      dispatch(setChurchId(BLANK));
-      authApi.getLogOut();
-    } catch (error) {
-      console.log(error);
-    } finally {
-      console.log('success');
-      router.replace('/login');
-    }
-  };
+  // const onClickLogOut = () => {
+  //   console.log('logout');
+  //   try {
+  //     dispatch(setUser(DEFAULT_USER));
+  //     dispatch(setChurch(DEFAULT_CHURCH));
+  //     dispatch(setChurchId(BLANK));
+  //     authApi.getLogOut();
+  //   } catch (error) {
+  //     console.log(error);
+  //   } finally {
+  //     console.log('success');
+  //     router.replace('/login');
+  //   }
+  // };
 
   const props = {
     sideButtonList,
-    onClickLogOut,
+    // onClickLogOut,
   };
 
   return (

@@ -1,23 +1,20 @@
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
-import { setMemberFilter } from '@/redux/reducers/member-filter-reducer';
 
-import {
-  getFormattedHomePhone,
-  getFormattedMobilePhone,
-  getTrimmedString,
-} from '@/utils/format';
-import { SEARCH_FILTER } from '@/components/molecules/member/list/member-filter-row.view';
-import { MEMBER } from '@/constants/member/member-column';
+import { getTrimmedString } from '@/utils/format';
+import { VISITATION } from '@/constants/visitation/visitation-column';
 import { BLANK } from '@/constants/constant';
-import { FilteredItemType } from '@/components/atoms/member/list/filtered-item';
-import VisitationRowView from '@/components/molecules/visitation/visitation-row.view';
+import VisitationRowView, {
+  SEARCH_FILTER,
+} from '@/components/molecules/visitation/visitation-row.view';
+import { VisitationFilteredItemType } from '@/components/atoms/visitation/visitation-filtered-item';
+import { setVisitationFilter } from '@/redux/reducers/visitation-filter-reducer';
 
 const VisitationRow = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { memberFilter } = useSelector(
-    (state: RootState) => state.memberFilter
+  const { visitationFilter } = useSelector(
+    (state: RootState) => state.visitationFilter
   );
   // 목록 설정  모달 on off
   const [isAddFilterShown, setIsAddFilterShown] = useState<boolean>(false);
@@ -28,14 +25,18 @@ const VisitationRow = () => {
   };
 
   // 검색 필터 주제
-  const [searchFilter, setSearchFilter] = useState<SEARCH_FILTER>(MEMBER.NAME);
+  const [searchFilter, setSearchFilter] = useState<SEARCH_FILTER>(
+    VISITATION.TITLE
+  );
   // 검색 내용 ref
   const searchRef = useRef<HTMLInputElement>(null);
   // 검색 필터 내용
   const [searchValue, setSearchValue] = useState<string>(BLANK);
 
   // 필터 내용 태그
-  const [filteredItems, setFilteredItems] = useState<FilteredItemType[]>([]);
+  const [filteredItems, setFilteredItems] = useState<
+    VisitationFilteredItemType[]
+  >([]);
 
   // 검색 주제 선택
   const onClickSearchFilterItem = (value: SEARCH_FILTER) => {
@@ -50,7 +51,9 @@ const VisitationRow = () => {
 
   // 검색 버튼
   const onClickSearch = () => {
-    dispatch(setMemberFilter({ ...memberFilter, [searchFilter]: searchValue }));
+    dispatch(
+      setVisitationFilter({ ...visitationFilter, [searchFilter]: searchValue })
+    );
   };
 
   // 검색 중 엔터
@@ -62,112 +65,53 @@ const VisitationRow = () => {
 
   // 필터된 내용들을 태그 형식으로 변환
   useEffect(() => {
-    let newFilterItems: FilteredItemType[] = [];
+    let newFilterItems: VisitationFilteredItemType[] = [];
 
-    // 성별
-    if (memberFilter.gender.length > 0) {
-      newFilterItems.push({ title: MEMBER.GENDER, value: memberFilter.gender });
-    }
-    // 직분
-    if (memberFilter.officer.length > 0) {
+    // 상태
+    if (visitationFilter.visitationStatus.length > 0) {
       newFilterItems.push({
-        title: MEMBER.OFFICER,
-        value: memberFilter.officer,
+        title: VISITATION.STATUS,
+        value: visitationFilter.visitationStatus,
       });
     }
-    // 결혼
-    if (memberFilter.marriage.length > 0) {
+    // 방식
+    if (visitationFilter.visitationMethod.length > 0) {
       newFilterItems.push({
-        title: MEMBER.MARRIAGE,
-        value: memberFilter.marriage,
+        title: VISITATION.METHOD,
+        value: visitationFilter.visitationMethod,
       });
     }
-    // 신급
-    if (memberFilter.baptism.length > 0) {
+    // 종류
+    if (visitationFilter.visitationType.length > 0) {
       newFilterItems.push({
-        title: MEMBER.BAPTISM,
-        value: memberFilter.baptism,
+        title: VISITATION.TYPE,
+        value: visitationFilter.visitationType,
       });
     }
-
-    // 생년월일
-    if (memberFilter.birthAfter || memberFilter.birthBefore) {
-      newFilterItems.push({
-        title: MEMBER.BIRTH,
-        value: [memberFilter.birthAfter, memberFilter.birthBefore],
-      });
-    }
-
     // 등록일
-    if (memberFilter.registerAfter || memberFilter.registerBefore) {
+    if (
+      visitationFilter.fromVisitationDate ||
+      visitationFilter.toVisitationDate
+    ) {
       newFilterItems.push({
-        title: MEMBER.REGISTERED_AT,
-        value: [memberFilter.registerAfter, memberFilter.registerBefore],
-      });
-    }
-
-    // 수정일
-    if (memberFilter.updateAfter || memberFilter.updateBefore) {
-      newFilterItems.push({
-        title: MEMBER.UPDATED_AT,
-        value: [memberFilter.updateAfter, memberFilter.updateBefore],
+        title: VISITATION.DATE,
+        value: [
+          visitationFilter.fromVisitationDate,
+          visitationFilter.toVisitationDate,
+        ],
       });
     }
 
     // 이름
-    if (memberFilter.name) {
+    if (visitationFilter.visitationTitle) {
       newFilterItems.push({
-        title: MEMBER.NAME,
-        value: [memberFilter.name],
-      });
-    }
-
-    // 직업
-    if (memberFilter.occupation) {
-      newFilterItems.push({
-        title: MEMBER.OCCUPATION,
-        value: [memberFilter.occupation],
-      });
-    }
-    // 학교
-    if (memberFilter.school) {
-      newFilterItems.push({
-        title: MEMBER.SCHOOL,
-        value: [memberFilter.school],
-      });
-    }
-    // 차량 번호
-    if (memberFilter.vehicleNumber) {
-      newFilterItems.push({
-        title: MEMBER.VEHICLE_NUMBER,
-        value: [memberFilter.vehicleNumber],
-      });
-    }
-
-    // 주소
-    if (memberFilter.address) {
-      newFilterItems.push({
-        title: MEMBER.ADDRESS,
-        value: [memberFilter.address],
-      });
-    }
-    // 휴대전화
-    if (memberFilter.mobilePhone) {
-      newFilterItems.push({
-        title: MEMBER.MOBILE_PHONE,
-        value: [getFormattedMobilePhone(memberFilter.mobilePhone)],
-      });
-    }
-    // 집전화
-    if (memberFilter.homePhone) {
-      newFilterItems.push({
-        title: MEMBER.HOME_PHONE,
-        value: [getFormattedHomePhone(memberFilter.homePhone)],
+        title: VISITATION.TITLE,
+        value: [visitationFilter.visitationTitle],
       });
     }
 
     setFilteredItems(newFilterItems);
-  }, [memberFilter]);
+  }, [visitationFilter]);
 
   const props = {
     isAddFilterShown,

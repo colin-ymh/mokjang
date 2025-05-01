@@ -13,7 +13,7 @@ import { MemberDropdownType } from '@/components/atoms/common/dropdown/member-dr
 const Wrapper = styled.div<{ $isOpened: boolean; width?: number }>`
   position: relative;
   width: ${({ width }) => (width ? `${width}px` : '100%')};
-  z-index: ${({ $isOpened }) => ($isOpened ? 50 : 'auto')};
+  z-index: ${({ $isOpened }) => ($isOpened ? 30 : 'auto')};
 `;
 
 const ButtonArea = styled.div`
@@ -38,7 +38,7 @@ const InputContainer = styled.div<{
   border: 1px solid ${({ $borderColor }) => $borderColor ?? GRAY.DEFAULT};
   border-radius: 5px;
   background-color: ${({ $disabled, $backgroundColor }) =>
-    $disabled ? GRAY.LIGHT : ($backgroundColor ?? WHITE)};
+    $disabled ? GRAY.SEMI_LIGHT : ($backgroundColor ?? WHITE)};
   transition: border 0.3s ease;
   height: ${({ height }) => (height ? `${height}px` : 'auto')};
   overflow: hidden;
@@ -61,7 +61,7 @@ const Tag = styled.button<{ $isEditable: boolean }>`
   align-items: center;
   gap: 4px;
   background: ${({ $isEditable }) =>
-    $isEditable ? GRAY.LIGHT : 'transparent'};
+    $isEditable ? GRAY.SEMI_LIGHT : 'transparent'};
   border: none;
   border-radius: 4px;
   padding: 5px;
@@ -156,7 +156,16 @@ const MultiMemberDropdownView = forwardRef<
   ) => (
     <Wrapper $isOpened={isOpened} width={width}>
       {/* 입력 영역 (Tag + 검색 input) */}
-      <ButtonArea onClick={() => !disabled && setIsOpened(!isOpened)}>
+      <ButtonArea
+        onClick={() => {
+          if (disabled) return;
+          if (items.length > 0) {
+            setIsOpened(true);
+          } else {
+            setIsOpened(false);
+          }
+        }}
+      >
         <InputContainer
           $borderColor={borderColor}
           $backgroundColor={backgroundColor}
@@ -197,7 +206,7 @@ const MultiMemberDropdownView = forwardRef<
       </ButtonArea>
 
       {/* 옵션 리스트 */}
-      <List $open={isOpened} $reverse={reverseDirection}>
+      <List $open={items.length > 0 && isOpened} $reverse={reverseDirection}>
         {items.map((item, idx) => (
           <MultiMemberDropdownItem
             key={item.value}

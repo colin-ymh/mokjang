@@ -18,6 +18,7 @@ import {
   VISITATION_METHOD,
   VISITATION_STATUS,
 } from '@/models/visitation/visitation';
+import { VISITATION } from '@/constants/visitation/visitation-column';
 
 export const useBaptismDropdownItems = () => {
   const t = useI18n();
@@ -143,6 +144,23 @@ export const useSearchFilterDropdownItems = () => {
     {
       value: MEMBER.OCCUPATION,
       title: t(MEMBER.OCCUPATION),
+    },
+  ];
+
+  return items;
+};
+
+export const useVisitationSearchFilterDropdownItems = () => {
+  const t = useI18n();
+
+  const items = [
+    {
+      value: VISITATION.TITLE,
+      title: t(VISITATION.TITLE),
+    },
+    {
+      value: VISITATION.INSTRUCTOR,
+      title: t(VISITATION.INSTRUCTOR),
     },
   ];
 

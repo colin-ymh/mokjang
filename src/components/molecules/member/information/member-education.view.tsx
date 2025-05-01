@@ -19,8 +19,8 @@ const ListContainer = styled.div`
 const ListTypeHeader = styled.div`
   display: flex;
   height: 40px;
-  background-color: ${GRAY.SIDE_BAR};
-  border-top: 1px solid ${GRAY.LIGHT};
+  background-color: ${GRAY.LIGHT};
+  border-top: 1px solid ${GRAY.SEMI_LIGHT};
   justify-content: space-between;
   align-items: center;
   padding: 0 20px;

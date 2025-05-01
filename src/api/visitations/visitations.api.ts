@@ -11,18 +11,20 @@ import {
   VISITATION_TYPE,
   VisitationDetail,
 } from '@/models/visitation/visitation';
+import { VISITATION } from '@/constants/visitation/visitation-column';
 
 type GetVisitationsParams = {
   churchId: string;
-  take?: string;
-  page?: string;
+  take?: number;
+  page?: number;
+  order?: VISITATION;
   orderDirection?: ORDER_DIRECTION;
 
   fromVisitationDate?: string;
   toVisitationDate?: string;
-  visitationStatus?: VISITATION_STATUS;
-  visitationMethod?: VISITATION_METHOD;
-  visitationType?: VISITATION_TYPE;
+  visitationStatus?: VISITATION_STATUS[];
+  visitationMethod?: VISITATION_METHOD[];
+  visitationType?: VISITATION_TYPE[];
   visitationTitle?: string;
   instructorId?: string;
 };
@@ -32,6 +34,7 @@ type CreateVisitationParams = {
 };
 
 type CreateVisitationBody = {
+  isTest: boolean;
   visitationStatus: VISITATION_STATUS;
   visitationMethod: VISITATION_METHOD;
   visitationTitle: string;
@@ -57,8 +60,8 @@ type EditVisitationBody = {
   visitationTitle?: string;
   instructorId?: string;
   visitationDate?: string;
-  addMemberIds: string[];
-  deleteMemberIds: string[];
+  addMemberIds?: string[];
+  deleteMemberIds?: string[];
 };
 
 type DeleteVisitationParams = {
@@ -75,6 +78,24 @@ type EditVisitationDetailsParams = {
 type EditVisitationDetailsBody = {
   visitationContent?: string;
   visitationPray?: string;
+};
+
+type AddReceiversParams = {
+  churchId: string;
+  visitationId: string;
+};
+
+type AddReceiversBody = {
+  receiverIds: string[];
+};
+
+type DeleteReceiversParams = {
+  churchId: string;
+  visitationId: string;
+};
+
+type DeleteReceiversBody = {
+  receiverIds: string[];
 };
 
 export class VisitationsApi {
@@ -167,7 +188,7 @@ export class VisitationsApi {
     const url = `${this._url}/churches/${churchId}/visitations`;
 
     try {
-      return await axios.post(url, body);
+      return await authorizeAxios.post(url, body);
     } catch (serverError: any) {
       if (serverError.response) {
         const { message, error, statusCode } = serverError.response.data;
@@ -255,6 +276,54 @@ export class VisitationsApi {
     const { churchId, visitationId, detailId } = params;
 
     const url = `${this._url}/churches/${churchId}/visitations/${visitationId}/details/${detailId}`;
+
+    try {
+      return await axios.patch(url, body);
+    } catch (serverError: any) {
+      if (serverError.response) {
+        const { message, error, statusCode } = serverError.response.data;
+        throw new CustomError(message, error, statusCode);
+      } else {
+        throw new CustomError(
+          '알 수 없는 에러가 발생했습니다',
+          500,
+          'Unknown Error'
+        );
+      }
+    }
+  };
+
+  public addReceivers = async (
+    params: AddReceiversParams,
+    body: AddReceiversBody
+  ) => {
+    const { churchId, visitationId } = params;
+
+    const url = `${this._url}/churches/${churchId}/visitations/${visitationId}/add-receivers`;
+
+    try {
+      return await axios.patch(url, body);
+    } catch (serverError: any) {
+      if (serverError.response) {
+        const { message, error, statusCode } = serverError.response.data;
+        throw new CustomError(message, error, statusCode);
+      } else {
+        throw new CustomError(
+          '알 수 없는 에러가 발생했습니다',
+          500,
+          'Unknown Error'
+        );
+      }
+    }
+  };
+
+  public deleteReceivers = async (
+    params: DeleteReceiversParams,
+    body: DeleteReceiversBody
+  ) => {
+    const { churchId, visitationId } = params;
+
+    const url = `${this._url}/churches/${churchId}/visitations/${visitationId}/delete-receivers`;
 
     try {
       return await axios.patch(url, body);

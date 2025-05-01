@@ -29,8 +29,8 @@ const InformationContainer = styled.div`
 const ListTypeHeader = styled.div`
   display: flex;
   min-height: 40px;
-  background-color: ${GRAY.SIDE_BAR};
-  border-top: 1px solid ${GRAY.LIGHT};
+  background-color: ${GRAY.LIGHT};
+  border-top: 1px solid ${GRAY.SEMI_LIGHT};
   justify-content: flex-start;
   align-items: center;
   padding-left: 20px;
@@ -44,7 +44,7 @@ const InformationListContainer = styled.div`
 const RowContainer = styled.div`
   display: flex;
   flex-direction: row;
-  border-bottom: 1px solid ${GRAY.LIGHT};
+  border-bottom: 1px solid ${GRAY.SEMI_LIGHT};
 
   &:last-child {
     border-bottom: none;
@@ -78,7 +78,8 @@ const InformationItem = styled.div<{ $disabled?: boolean }>`
 
   @media (max-width: ${MEDIA_MAX_WIDTH.DESKTOP}) {
     &:hover {
-      background-color: ${({ $disabled }) => ($disabled ? 'auto' : GRAY.LIGHT)};
+      background-color: ${({ $disabled }) =>
+        $disabled ? 'auto' : GRAY.SEMI_LIGHT};
     }
 
     &:hover ${PencilButton} {
@@ -124,7 +125,7 @@ const RowDivider = styled.div`
     display: block; /* 모바일에서는 표시 */
     width: 100%;
     height: 1px;
-    background-color: ${GRAY.LIGHT};
+    background-color: ${GRAY.SEMI_LIGHT};
   }
 `;
 

@@ -16,7 +16,7 @@ const HeaderContainer = styled.div`
   justify-content: flex-start;
   padding: 30px 20px 0 20px;
   gap: 20px;
-  border-bottom: 1px solid ${GRAY.LIGHT};
+  border-bottom: 1px solid ${GRAY.SEMI_LIGHT};
 `;
 
 const HeaderBottomContainer = styled.div`

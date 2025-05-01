@@ -68,7 +68,7 @@ const GroupMemberTable = ({
       {/* 교인 상세정보 팝업*/}
       <CustomPopup
         isShow={isMemberInformationShown}
-        onClickClose={onClickClose}
+        onClickCancel={onClickClose}
         width={70}
         height={90}
         isPercentage={true}

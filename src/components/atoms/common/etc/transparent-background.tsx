@@ -23,8 +23,8 @@ const Background = styled.div<BackgroundProps>`
   z-index: ${({ $zIndex }) => $zIndex}
   display: ${({ $isOpened }) => ($isOpened ? 'block' : 'none')};
 
-  pointer-events: auto; 
-  touch-action: none;   
+  pointer-events: all;  /* 여기서 반드시 이벤트를 다 받아야 함 */
+  touch-action: none;   /* 모바일 터치 방지 */
 `;
 
 // 특정 페이지 내에서 활성화 된 구역 외 다른 곳을 터치 했을 때 특정 기능을 수행 하도록 하는 투명 background 버튼

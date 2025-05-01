@@ -173,7 +173,7 @@ const TermInformation = ({
       )}
       <CustomPopup
         isShow={isTermModalShown}
-        onClickClose={onClickModalClose}
+        onClickCancel={onClickModalClose}
         width={30}
         height={80}
         isPercentage={true}
@@ -189,7 +189,7 @@ const TermInformation = ({
       </CustomPopup>
       <CustomPopup
         isShow={isSessionModalShown}
-        onClickClose={onClickSessionModalClose}
+        onClickCancel={onClickSessionModalClose}
         width={30}
         height={80}
         isPercentage={true}

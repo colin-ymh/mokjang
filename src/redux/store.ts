@@ -6,6 +6,9 @@ import MemberFilterReducer from '@/redux/reducers/member-filter-reducer';
 import ChurchReducer from '@/redux/reducers/church-reducer';
 import TargetMember from '@/redux/reducers/target-member';
 import UserReducer from '@/redux/reducers/user-reducer';
+import TargetVisitation from '@/redux/reducers/target-visitation';
+import TargetGroup from '@/redux/reducers/target-group';
+import VisitationFilterReducer from '@/redux/reducers/visitation-filter-reducer';
 
 const store = configureStore({
   reducer: {
@@ -14,7 +17,10 @@ const store = configureStore({
     church: ChurchReducer,
     memberRegister: MemberRegisterReducer,
     memberFilter: MemberFilterReducer,
+    visitationFilter: VisitationFilterReducer,
     targetMember: TargetMember,
+    targetVisitation: TargetVisitation,
+    targetGroup: TargetGroup,
   },
 });
 

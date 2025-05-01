@@ -8,13 +8,12 @@ import { useMainMemberHeaderBarItems } from '@/hooks/layout/header-bar-items';
 import { DIRECTION, SIZE } from '@/constants/styles/style';
 
 import { useScopedI18n } from '../../../../../../locales/client';
-import AddUser from '../../../../../../public/svg/user-plus.svg';
 import { MEDIA_MIN_WIDTH } from '@/constants/constant';
-import HeaderBar from '@/components/atoms/layout/header/header-bar';
 import SlidePopup from '@/components/atoms/common/popup/slide-popup';
 import GroupFilter from '@/components/atoms/layout/side/main-side/group-filter';
 import CustomPopup from '@/components/atoms/common/popup/custom-popup';
 import MemberRegister from '@/components/organisms/register/member-register';
+import Button from '@/components/atoms/common/button/button';
 
 const HeaderContainer = styled.div`
   display: flex;
@@ -28,9 +27,10 @@ const HeaderContainer = styled.div`
   }
 
   @media (min-width: ${MEDIA_MIN_WIDTH.DESKTOP}) {
-    height: auto;
-    padding: 20px 20px 0 20px;
-    border-bottom: 1px solid ${GRAY.LIGHT};
+    height: 120px;
+    padding: 0;
+    justify-content: space-between;
+    border-bottom: 0.7px solid ${GRAY.SEMI_LIGHT};
   }
 `;
 
@@ -39,7 +39,7 @@ const HeaderTopContainer = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  position: relative;
+  padding: 20px;
 `;
 
 const DesktopTitle = styled.div`
@@ -63,37 +63,16 @@ const GroupButton = styled.div`
   background-color: transparent;
 `;
 
-const HeaderBottomContainer = styled.div`
-  display: none;
-
-  @media (min-width: ${MEDIA_MIN_WIDTH.DESKTOP}) {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    position: relative;
-  }
-`;
-
-const ButtonContainer = styled.div`
-  display: flex;
-  position: absolute;
-  right: 0;
-  gap: 10px;
-  flex-direction: row;
-`;
-
-const AddButton = styled(AddUser)`
-  width: 25px;
-  height: 25px;
-  cursor: pointer;
-  pointer-events: auto;
-
-  &:hover {
-    background-color: ${GRAY.LIGHT};
-    border-radius: 5px;
-  }
-`;
+// const HeaderBottomContainer = styled.div`
+//   display: none;
+//
+//   @media (min-width: ${MEDIA_MIN_WIDTH.DESKTOP}) {
+//     display: flex;
+//     flex-direction: row;
+//     justify-content: space-between;
+//     align-items: center;
+//   }
+// `;
 
 const GroupFilterContainer = styled.div`
   display: flex;
@@ -144,7 +123,9 @@ const MainMemberHeaderView = ({
   const slug = useParams().slug as string[];
   const contentId = slug[2];
 
+  const t_button = useScopedI18n('button');
   const t_header = useScopedI18n('header');
+  const t_title = useScopedI18n('title');
   const headerBarItems = useMainMemberHeaderBarItems();
 
   return (
@@ -158,25 +139,27 @@ const MainMemberHeaderView = ({
             <MainText size={SIZE.EXTRA_LARGE}>{selectedGroupName}</MainText>
           </GroupButton>
         </MobileTitle>
-        <ButtonContainer>
-          {/*<Button*/}
-          {/*  text={'테스트용 교인 생성하기'}*/}
-          {/*  width={200}*/}
-          {/*  height={30}*/}
-          {/*  onClick={onClickDummyMembers}*/}
-          {/*  backgroundColor={BLACK}*/}
-          {/*/>*/}
-          <AddButton onClick={onClickRegisterMemberButton} />
-          {/*<GroupButton onClick={onClickGroupButton} />*/}
-        </ButtonContainer>
-      </HeaderTopContainer>
-      <HeaderBottomContainer>
-        <HeaderBar
-          value={contentId}
-          items={headerBarItems}
-          onClick={onClickHeaderBar}
+        {/*<Button*/}
+        {/*  text={'테스트용 교인 생성하기'}*/}
+        {/*  width={200}*/}
+        {/*  height={30}*/}
+        {/*  onClick={onClickDummyMembers}*/}
+        {/*  backgroundColor={BLACK}*/}
+        {/*/>*/}
+        <Button
+          text={t_button('memberRegister')}
+          onClick={onClickRegisterMemberButton}
+          width={100}
+          height={30}
         />
-      </HeaderBottomContainer>
+      </HeaderTopContainer>
+      {/*<HeaderBottomContainer>*/}
+      {/*<HeaderBar*/}
+      {/*  value={contentId}*/}
+      {/*  items={headerBarItems}*/}
+      {/*  onClick={onClickHeaderBar}*/}
+      {/*/>*/}
+      {/*</HeaderBottomContainer>*/}
       {/* 팝업 */}
       {/* 그룹 필터링 팝업 */}
       <SlidePopup
@@ -192,10 +175,12 @@ const MainMemberHeaderView = ({
       <DesktopRegister>
         <CustomPopup
           isShow={isRegisterShown}
-          onClickClose={onClickClose}
           width={30}
           height={80}
           isPercentage={true}
+          onClickCancel={onClickClose}
+          onClickDone={() => {}}
+          headerTitle={t_title('memberRegister')}
         >
           <MemberRegister setIsShown={setIsRegisterShown} />
         </CustomPopup>

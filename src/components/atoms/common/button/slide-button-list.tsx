@@ -58,7 +58,7 @@ const EditButton = styled(Pencil)<{ $buttonSize: number }>`
   padding: 1px;
 
   &:hover {
-    background-color: ${GRAY.LIGHT};
+    background-color: ${GRAY.SEMI_LIGHT};
   }
 `;
 
@@ -72,7 +72,7 @@ const DeleteButton = styled(Trash)<{ $buttonSize: number }>`
   padding: 1px;
 
   &:hover {
-    background-color: ${GRAY.LIGHT};
+    background-color: ${GRAY.SEMI_LIGHT};
   }
 `;
 
@@ -87,7 +87,7 @@ const PlusButton = styled(Plus)<{ $buttonSize: number }>`
   padding: 1px;
 
   &:hover {
-    background-color: ${GRAY.LIGHT};
+    background-color: ${GRAY.SEMI_LIGHT};
   }
 `;
 

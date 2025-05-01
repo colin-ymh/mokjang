@@ -3,9 +3,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 
 import { MEDIA_MIN_WIDTH } from '@/constants/constant';
-import { GRAY } from '@/constants/styles/color';
-import { MainText } from '@/components/atoms/common/text/main-text';
-import { SIZE } from '@/constants/styles/style';
+import { GRAY, WHITE } from '@/constants/styles/color';
 import { SIDE_ID } from '@/constants/layout/header';
 
 import Bell from '../../../../../public/svg/bell.svg';
@@ -20,11 +18,13 @@ const TopContainer = styled.div`
   @media (min-width: ${MEDIA_MIN_WIDTH.DESKTOP}) {
     display: flex;
     flex-direction: row;
-    padding: 10px 20px;
+    padding: 0 20px;
+    height: 40px;
+    flex-shrink: 0;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid ${GRAY.LIGHT};
-    background-color: ${GRAY.SIDE_BAR};
+    border-bottom: 1px solid ${GRAY.SEMI_LIGHT};
+    background-color: ${WHITE};
   }
 `;
 
@@ -43,54 +43,54 @@ const TopRight = styled.div`
 const ChurchImage = styled.div`
   width: 30px;
   height: 30px;
-  background-color: ${GRAY.LIGHT};
+  background-color: ${GRAY.SEMI_LIGHT};
   border-radius: 5px;
 `;
 
 const NotificationButton = styled(Bell)`
-  width: 25px;
-  height: 25px;
+  width: 20px;
+  height: 20px;
   cursor: pointer;
   pointer-events: auto;
 
   &:hover {
-    background-color: ${GRAY.LIGHT};
+    background-color: ${GRAY.SEMI_LIGHT};
     border-radius: 5px;
   }
 `;
 
 const ManagementButton = styled(Setting)`
-  width: 25px;
-  height: 25px;
+  width: 20px;
+  height: 20px;
   cursor: pointer;
   pointer-events: auto;
 
   &:hover {
-    background-color: ${GRAY.LIGHT};
+    background-color: ${GRAY.SEMI_LIGHT};
     border-radius: 5px;
   }
 `;
 
 const GuideButton = styled(Question)`
-  width: 25px;
-  height: 25px;
+  width: 20px;
+  height: 20px;
   cursor: pointer;
   pointer-events: auto;
 
   &:hover {
-    background-color: ${GRAY.LIGHT};
+    background-color: ${GRAY.SEMI_LIGHT};
     border-radius: 5px;
   }
 `;
 
 const MainButton = styled(Home)`
-  width: 25px;
-  height: 25px;
+  width: 20px;
+  height: 20px;
   cursor: pointer;
   pointer-events: auto;
 
   &:hover {
-    background-color: ${GRAY.LIGHT};
+    background-color: ${GRAY.SEMI_LIGHT};
     border-radius: 5px;
   }
 `;
@@ -105,8 +105,8 @@ const TopView = ({ onClickButton }: TopViewProps) => {
   return (
     <TopContainer>
       <TopLeft>
-        <ChurchImage />
-        <MainText size={SIZE.EXTRA_LARGE}>{church.name}</MainText>
+        {/*<ChurchImage />*/}
+        {/*<MainText size={SIZE.LARGE}>{church.name}</MainText>*/}
       </TopLeft>
       <TopRight>
         <MainButton onClick={() => onClickButton(SIDE_ID.MAIN)} />

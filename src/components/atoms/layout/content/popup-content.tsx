@@ -1,13 +1,9 @@
 import styled from 'styled-components';
 
 export const PopupContent = styled.div`
-  width: 100%;
-  max-width: 100%;
-  height: 100%;
-
-  margin-top: 50px;
-  //z-index: 9;
-  overflow-y: scroll;
+  display: flex;
+  flex: 1; /* 남은 공간 전부 차지 */
+  overflow-y: auto; /* 이 부분만 스크롤 */
 `;
 
 export default PopupContent;

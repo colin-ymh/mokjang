@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 import HeaderBarView from '@/components/atoms/layout/header/header-bar.view';
@@ -8,9 +8,6 @@ import { MainText } from '@/components/atoms/common/text/main-text';
 import { SIZE } from '@/constants/styles/style';
 import { GRAY } from '@/constants/styles/color';
 import { Member } from '@/models/member/member';
-import ConfirmPopup from '@/components/atoms/common/popup/error-popup';
-
-import { useScopedI18n } from '../../../../../locales/client';
 
 const InformationHeader = styled.div`
   display: flex;
@@ -45,28 +42,14 @@ type MemberInformationHeaderProps = {
   targetMember: Member;
   memberContentId: string;
   onClickItem: (id: string) => void;
-  onClickDelete?: () => void;
 };
 
 const MemberInformationHeader = ({
   targetMember,
   memberContentId,
   onClickItem,
-  onClickDelete,
 }: MemberInformationHeaderProps) => {
-  const t_button = useScopedI18n('button');
-  const t_popup = useScopedI18n('popup');
   const headerBarItems = useMemberInformationHeaderBarItems();
-
-  const [isPopupShown, setIsPopupShown] = useState<boolean>(false);
-
-  const onClickOpen = () => {
-    setIsPopupShown(true);
-  };
-
-  const onClickClose = () => {
-    setIsPopupShown(false);
-  };
 
   return (
     <InformationHeader>
@@ -95,19 +78,6 @@ const MemberInformationHeader = ({
             </MainText>
           </ChurchMemberInfoContainer>
         </TextContainer>
-
-        {onClickDelete && (
-          <ConfirmPopup
-            title={t_popup('deleteMemberTitle')}
-            body={t_popup('deleteMemberBody')}
-            buttonNum={2}
-            isShow={isPopupShown}
-            onClickLeftButton={onClickClose}
-            onClickRightButton={onClickDelete}
-            leftButtonText={t_button('cancel')}
-            rightButtonText={t_button('delete')}
-          />
-        )}
       </Information>
 
       {/* 개인정보, 가족 등의 탭 바*/}

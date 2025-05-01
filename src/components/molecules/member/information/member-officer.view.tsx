@@ -22,8 +22,8 @@ const ListContainer = styled.div`
 const ListTypeHeader = styled.div`
   display: flex;
   height: 40px;
-  background-color: ${GRAY.SIDE_BAR};
-  border-top: 1px solid ${GRAY.LIGHT};
+  background-color: ${GRAY.LIGHT};
+  border-top: 1px solid ${GRAY.SEMI_LIGHT};
   justify-content: space-between;
   align-items: center;
   padding: 0 20px;
@@ -97,7 +97,7 @@ const MemberOfficerView = ({
       {/* 그룹 추가 및 수정 모달*/}
       <CustomPopup
         isShow={isModalShown}
-        onClickClose={onClickCloseModal}
+        onClickCancel={onClickCloseModal}
         width={400}
         height={400}
       >

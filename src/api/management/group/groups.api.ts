@@ -1,9 +1,21 @@
 import axios, { AxiosResponse } from 'axios';
 import { SERVER_URL, TEST_SERVER_URL } from '@/constants/state/url';
 import { CustomError } from '@/api/error/error';
+import { ORDER_DIRECTION } from '@/constants/constant';
+
+enum GROUP_ORDER {
+  CREATED_AT = 'createdAt',
+  UPDATED_AT = 'updatedAt',
+  NAME = 'name',
+}
 
 type GetGroupsParams = {
   churchId: string;
+  take?: number;
+  page?: number;
+  order?: GROUP_ORDER;
+  orderDirection?: ORDER_DIRECTION;
+  parentGroupId?: string;
 };
 
 type GetGroupParams = {

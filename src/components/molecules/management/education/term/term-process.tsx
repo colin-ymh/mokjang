@@ -19,7 +19,7 @@ const ProcessContainer = styled.div`
   justify-content: flex-start;
   gap: 10px;
   padding: 10px 20px;
-  border-bottom: 1px solid ${GRAY.LIGHT};
+  border-bottom: 1px solid ${GRAY.SEMI_LIGHT};
 `;
 
 const RowContainer = styled.div`
@@ -39,7 +39,7 @@ const InformationItem = styled.div`
   position: relative;
 
   &:hover {
-    background-color: ${GRAY.LIGHT};
+    background-color: ${GRAY.SEMI_LIGHT};
   }
 `;
 

@@ -16,6 +16,7 @@ const SlidePanel = styled.div<{
   transition: transform 0.3s ease-in-out;
   display: flex;
   flex-direction: column;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 
   ${({ direction, isShow, size }) => {
     switch (direction) {
@@ -68,19 +69,19 @@ const SlidePanel = styled.div<{
       switch (direction) {
         case DIRECTION.LEFT:
           return `
-           border-right: 1px solid ${GRAY.LIGHT};
+           border-right: 1px solid ${GRAY.SEMI_LIGHT};
         `;
         case DIRECTION.RIGHT:
           return `
-           border-left: 1px solid ${GRAY.LIGHT};
+           border-left: 1px solid ${GRAY.SEMI_LIGHT};
         `;
         case DIRECTION.TOP:
           return `
-          border-bottom: 1px solid ${GRAY.LIGHT};
+          border-bottom: 1px solid ${GRAY.SEMI_LIGHT};
         `;
         case DIRECTION.BOTTOM:
           return `
-           border-top: 1px solid ${GRAY.LIGHT};
+           border-top: 1px solid ${GRAY.SEMI_LIGHT};
         `;
         default:
           return '';
@@ -92,18 +93,28 @@ const SlidePanel = styled.div<{
 type SlidePopupProps = {
   isShow: boolean;
   direction?: DIRECTION;
-  onClickClose: () => void;
-  headerRight?: ReactNode;
   size?: number; // 수평 슬라이드면 width, 수직 슬라이드면 height
+
+  isFooterShown?: boolean;
+  onClickClose: () => void;
+  onClickDone?: () => void;
+  headerTitle?: string;
+  headerRight?: ReactNode;
+
   children: ReactNode;
 };
 
 const SlidePopup = ({
   isShow,
   direction = DIRECTION.RIGHT,
-  onClickClose,
-  headerRight,
   size = 670,
+
+  isFooterShown,
+  onClickClose,
+  onClickDone,
+  headerTitle,
+  headerRight,
+
   children,
 }: SlidePopupProps) => {
   useEffect(() => {
@@ -127,7 +138,13 @@ const SlidePopup = ({
       size={size}
       onClick={(e) => e.stopPropagation()}
     >
-      <PopupLayout onClickClose={onClickClose} headerRight={headerRight}>
+      <PopupLayout
+        onClickCancel={onClickClose}
+        onClickDone={onClickDone}
+        headerTitle={headerTitle}
+        headerRight={headerRight}
+        isFooterShown={isFooterShown}
+      >
         {children}
       </PopupLayout>
     </SlidePanel>

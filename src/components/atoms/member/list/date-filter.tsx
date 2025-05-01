@@ -50,7 +50,7 @@ const DateFilter = ({
           selected={getDateFromString(dateAfter)}
           onChange={onChangeAfter}
           onChangeRaw={onChangeRawAfter}
-          borderColor={GRAY.LIGHT}
+          borderColor={GRAY.SEMI_LIGHT}
           height={35}
           placeholder={'YYYY-MM-DD'}
         />
@@ -62,7 +62,7 @@ const DateFilter = ({
           selected={getDateFromString(dateBefore)}
           onChange={onChangeBefore}
           onChangeRaw={onChangeRawBefore}
-          borderColor={GRAY.LIGHT}
+          borderColor={GRAY.SEMI_LIGHT}
           height={35}
           placeholder={'YYYY-MM-DD'}
         />

@@ -177,7 +177,7 @@ const AddEnrollmentModalView = ({
               height={30}
               onClick={onClickSave}
               backgroundColor={
-                selectedMembers.length > 0 ? MAIN.DEFAULT : GRAY.LIGHT
+                selectedMembers.length > 0 ? MAIN.DEFAULT : GRAY.SEMI_LIGHT
               }
             />
           </ButtonContainer>

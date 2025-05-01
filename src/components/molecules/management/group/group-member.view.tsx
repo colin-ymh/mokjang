@@ -21,7 +21,7 @@ const ListTypeHeader = styled.div`
   position: relative;
   flex-direction: row;
   height: 40px;
-  background-color: ${GRAY.SIDE_BAR};
+  background-color: ${GRAY.LIGHT};
   justify-content: flex-start;
   align-items: center;
   padding: 0 20px;
@@ -39,7 +39,7 @@ const PlusButton = styled(Plus)`
   transition: background-color 0.2s;
 
   &:hover {
-    background-color: ${GRAY.LIGHT};
+    background-color: ${GRAY.SEMI_LIGHT};
   }
 `;
 

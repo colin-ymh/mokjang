@@ -2,15 +2,15 @@ import React from 'react';
 import PopupHeaderView from '@/components/atoms/layout/header/popup-header.view';
 
 type PopupHeaderProps = {
-  onClickClose: () => void;
+  headerTitle?: string;
   headerRight?: React.ReactNode;
+  onClickCancel: () => void;
+  onClickDone?: () => void;
+  cancelText: string;
+  doneText: string;
 };
 
-const PopupHeader = ({ onClickClose, headerRight }: PopupHeaderProps) => {
-  const props = {
-    onClickClose,
-    headerRight,
-  };
+const PopupHeader = (props: PopupHeaderProps) => {
   return (
     <>
       <PopupHeaderView {...props} />

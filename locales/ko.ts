@@ -19,6 +19,14 @@ export default {
 
   visitationContent: '심방내용',
   visitationPray: '기도제목',
+  visitationTitle: '제목',
+  visitationDate: '심방일자',
+  visitationMethod: '심방 방식',
+  visitationStatus: '상태',
+  visitationType: '심방 종류',
+  instructorId: '담당자',
+  fromVisitationDate: '심방 날짜 ~부터',
+  toVisitationDate: '심방 날짜 ~까지',
 
   method: '방식',
 
@@ -151,6 +159,11 @@ export default {
   granddaughter: '손녀',
   relative: '친인척',
 
+  /*-------------------title (popup title)-------------------*/
+  'title.memberRegister': '교인 등록',
+  'title.addVisitation': '심방 추가',
+  /*-------------------title (popup title)-------------------*/
+
   /*-------------------header (side bar button)-------------------*/
   'header.home': '홈',
   'header.member': '교인목록',
@@ -229,6 +242,7 @@ export default {
 
   /*-------------------button-------------------*/
   'button.register': '등록하기',
+  'button.memberRegister': '등록하기',
   'button.save': '저장',
   'button.edit': '수정하기',
   'button.delete': '삭제하기',
@@ -248,7 +262,8 @@ export default {
   'button.logOut': '로그아웃',
   'button.addMember': '교인 추가',
   'button.saveTerm': '기수 추가하기',
-
+  'button.addVisitation': '심방 입력하기',
+  'button.filterVisitationDate': '기간',
   /*-------------------button-------------------*/
 
   /*-------------------placeholder-------------------*/
@@ -329,5 +344,8 @@ export default {
   'popup.verifyFail': '잘못된 인증번호 입니다.',
   'popup.duplicatedRole': '이미 등록된 그룹 역할입니다.',
   'popup.duplicatedMinistry': '이미 등록된 사역입니다.',
+
+  'popup.deleteVisitationTitle': '해당 심방을 삭제하시겠습니까?',
+  'popup.deleteVisitationBody': '삭제된 심방은 복구할 수 없습니다.',
   /*-------------------popup-------------------*/
 } as const;

@@ -21,7 +21,7 @@ const InformationHeader = styled.div`
   justify-content: space-between;
   padding: 20px 20px 0 20px;
   gap: 30px;
-  border-bottom: 1px solid ${GRAY.LIGHT};
+  border-bottom: 1px solid ${GRAY.SEMI_LIGHT};
 `;
 
 const Information = styled.div`

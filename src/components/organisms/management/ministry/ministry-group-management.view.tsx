@@ -25,7 +25,7 @@ const MinistryListContainer = styled.div`
   flex-direction: column;
   padding: 20px;
   gap: 20px;
-  border-right: 1px solid ${GRAY.LIGHT};
+  border-right: 1px solid ${GRAY.SEMI_LIGHT};
   width: 200px;
   flex-shrink: 0;
 `;
@@ -40,7 +40,7 @@ const MinistryInformationHeader = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  border-bottom: 1px solid ${GRAY.LIGHT};
+  border-bottom: 1px solid ${GRAY.SEMI_LIGHT};
   gap: 10px;
   padding: 20px 20px 0 20px;
 `;

@@ -11,13 +11,9 @@ import {
 } from '@/redux/reducers/member-filter-reducer';
 
 import { MembersApi } from '@/api/members/members.api';
-import MemberInformation from '@/components/organisms/member/information/member-information';
 import MemberListView from '@/components/organisms/member/list/member-list.view';
 import { Member } from '@/models/member/member';
 import { getMemberFromServer } from '@/utils/member';
-import Loading from '@/components/atoms/common/etc/loading';
-import SlidePopup from '@/components/atoms/common/popup/slide-popup';
-import KebabDropdown from '@/components/atoms/common/dropdown/kebab-dropdown';
 
 type MemberListProps = {
   isNewMember?: boolean;
@@ -50,6 +46,17 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
 
   // 교인 상세를 위해 선택한 교인
   const [targetMember, setTargetMember] = useState<Member>(DEFAULT_MEMBER);
+
+  // 삭제 확인 팝업
+  const [isPopupShown, setIsPopupShown] = useState<boolean>(false);
+
+  const onClickConfirmOpen = () => {
+    setIsPopupShown(true);
+  };
+
+  const onClickConfirmClose = () => {
+    setIsPopupShown(false);
+  };
 
   // 무한 스크롤로 데이터 추가 로드
   const loadMembers = async () => {
@@ -151,6 +158,10 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
     }
   };
 
+  useEffect(() => {
+    setIsPopupShown(false);
+  }, [targetMember]);
+
   const props = {
     list: {
       members,
@@ -158,26 +169,21 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
       loadMembers,
     },
     information: {
+      isMemberInformationShown,
+      isLoading,
+      isPopupShown,
       targetMember,
       setTargetMember,
+      onClickClose,
       onClickDelete,
+      onClickConfirmOpen,
+      onClickConfirmClose,
     },
   };
 
   return (
     <>
-      <MemberListView {...props.list} />
-      {/* 교인 상세정보 팝업*/}
-      <SlidePopup
-        isShow={isMemberInformationShown}
-        onClickClose={onClickClose}
-        headerRight={
-          <KebabDropdown buttonSize={30} onClickDelete={onClickDelete} />
-        }
-      >
-        <MemberInformation {...props.information} />
-      </SlidePopup>
-      <Loading isShow={isLoading} />
+      <MemberListView {...props} />
     </>
   );
 };

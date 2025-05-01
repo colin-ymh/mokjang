@@ -16,7 +16,7 @@ const MemberListContainer = styled.div`
   width: 100%;
   height: 100%;
   flex-direction: column;
-  border-top: 1px solid ${GRAY.LIGHT};
+  border-top: 1px solid ${GRAY.SEMI_LIGHT};
 `;
 
 const MemberItem = styled.div`
@@ -25,7 +25,7 @@ const MemberItem = styled.div`
   padding: 10px;
   border-radius: 5px;
   gap: 10px;
-  border-bottom: 1px solid ${GRAY.LIGHT};
+  border-bottom: 1px solid ${GRAY.SEMI_LIGHT};
   height: 50px;
   cursor: pointer;
 `;

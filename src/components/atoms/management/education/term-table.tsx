@@ -126,7 +126,7 @@ const TermTable = ({ education, terms, fetchTerms }: TermTableProps) => {
       <TermTableView {...props} />
       <CustomPopup
         isShow={isDetailModalShown}
-        onClickClose={onClickClose}
+        onClickCancel={onClickClose}
         width={70}
         height={90}
         isPercentage={true}
