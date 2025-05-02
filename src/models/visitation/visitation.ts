@@ -40,7 +40,8 @@ export type Visitation = {
   visitationMethod: VISITATION_METHOD;
   visitationTitle: string;
   instructorId: string;
-  visitationDate: string;
+  visitationStartDate: string;
+  visitationEndDate: string;
   visitationDetails: VisitationDetail[];
   receiverIds: string[];
   creatorId: string;
@@ -63,7 +64,8 @@ export const DEFAULT_VISITATION: Visitation = {
   visitationMethod: VISITATION_METHOD.IN_PERSON,
   visitationTitle: BLANK,
   instructorId: BLANK,
-  visitationDate: '2025-11-20',
+  visitationStartDate: BLANK,
+  visitationEndDate: BLANK,
   visitationDetails: [DEFAULT_VISITATION_DETAIL],
   receiverIds: [],
   creatorId: BLANK,

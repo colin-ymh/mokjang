@@ -14,6 +14,18 @@ export const getDateFromString = (dateString: string | null) => {
   if (limited.length === 10) return new Date(limited);
   else return null;
 };
+/**
+ * YYYY-MM-DDTHH:mm => Date Object
+ * @param dateString
+ */
+export const getDateTimeFromString = (dateString: string | null) => {
+  if (!dateString) return null;
+
+  const parsed = new Date(dateString);
+
+  // 유효한 날짜인지 확인
+  return isNaN(parsed.getTime()) ? null : parsed;
+};
 
 /**
  * Date Object => YYYY-MM-dd
@@ -27,6 +39,23 @@ export const getStringFromDate = (date: Date | null) => {
   const day = String(date.getDate()).padStart(2, '0');
 
   return `${year}-${month}-${day}`;
+};
+
+/**
+ * Date Object => YYYY-MM-dd T HH:mm
+ * @param date
+ */
+export const getStringFromDateTime = (date: Date | null) => {
+  if (!date) return BLANK;
+
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // 0-based index이므로 +1
+  const day = String(date.getDate()).padStart(2, '0');
+
+  const hour = String(date.getHours()).padStart(2, '0');
+  const minute = String(date.getMinutes()).padStart(2, '0');
+
+  return `${year}-${month}-${day} ${hour}:${minute}`;
 };
 
 /**

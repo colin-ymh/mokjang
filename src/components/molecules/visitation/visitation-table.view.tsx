@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 
-import { GRAY } from '@/constants/styles/color';
+import { GRAY, WHITE } from '@/constants/styles/color';
 import { VISITATION } from '@/constants/visitation/visitation-column';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { BLANK } from '@/constants/constant';
@@ -14,6 +14,9 @@ import VisitationTableHeader from '@/components/atoms/visitation/visitation-tabl
 import { BLANK_HEADER } from '@/redux/reducers/member-filter-reducer';
 import { useI18n } from '../../../../locales/client';
 import { getFormattedDate } from '@/utils/format';
+import { getStatusColor } from '@/utils/color';
+import { getRandomImage } from '@/utils/image';
+import { MEMBER } from '@/constants/member/member-column';
 
 // 1. 컬럼별 PX 폭 (마지막 REMARKS만 auto 할 예정)
 const getColumnWidth = (id: string) => {
@@ -39,7 +42,7 @@ const TableContainer = styled.div<{ height: number }>`
   /* 항상 가로 100%를 채움 */
   width: 100%;
   /* 세로 높이만큼 상하 스크롤 */
-  height: ${({ height }) => `${height - 200}px`};
+  height: ${({ height }) => `${height - 260}px`};
 
   /* 오버플로 시 스크롤 */
   overflow-x: auto;
@@ -66,6 +69,7 @@ const TableHeader = styled.th<{ id: string; isLast?: boolean }>`
   position: sticky;
   top: 0;
   z-index: 5;
+  background-color: ${WHITE};
 
   /* 만약 마지막 컬럼이면 width: auto */
   width: ${({ id, isLast }) => (isLast ? 'auto' : `${getColumnWidth(id)}px`)};
@@ -118,6 +122,35 @@ const ContentWrapper = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+`;
+
+const MembersContainer = styled.div`
+  display: flex;
+  gap: 10px;
+  justify-content: flex-start;
+  align-items: center;
+`;
+
+const ProfileContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
+`;
+
+const StatusContainer = styled.div`
+  display: flex;
+  gap: 10px;
+  justify-content: flex-start;
+  align-items: center;
+`;
+
+const ColoredDot = styled.div<{ color: string }>`
+  display: flex;
+  width: 10px;
+  height: 10px;
+  border-radius: 100%;
+  background-color: ${({ color }) => color};
 `;
 
 const ProfileImage = styled(Image)`
@@ -175,18 +208,42 @@ const VisitationTableView = ({
         return <MainText>{visitation?.visitationTitle}</MainText>;
       case VISITATION.VISITED:
         return (
-          <MainText>
-            {visitation.members.map((member) => member.name).join(', ')}
-          </MainText>
+          <MembersContainer>
+            {visitation.members.map((member) => (
+              <ProfileContainer>
+                {/*<ProfileImage*/}
+                {/*  src={getRandomImage(member.id)}*/}
+                {/*  alt={MEMBER.PROFILE_IMAGE}*/}
+                {/*/>*/}
+                <MainText>{`${member?.name}`}</MainText>
+              </ProfileContainer>
+            ))}
+          </MembersContainer>
         );
       case VISITATION.STATUS:
-        return <MainText>{t(visitation?.visitationStatus)}</MainText>;
+        return (
+          <StatusContainer>
+            <ColoredDot color={getStatusColor(visitation.visitationStatus)} />
+            <MainText>{t(visitation?.visitationStatus)}</MainText>
+          </StatusContainer>
+        );
       case VISITATION.DATE:
         return (
-          <MainText>{getFormattedDate(visitation.visitationDate)}</MainText>
+          <MainText>
+            {visitation.visitationStartDate &&
+              getFormattedDate(visitation.visitationStartDate)}
+          </MainText>
         );
       case VISITATION.INSTRUCTOR:
-        return <MainText>{visitation.instructor.name}</MainText>;
+        return (
+          <ProfileContainer>
+            <ProfileImage
+              src={getRandomImage(visitation.instructor.id)}
+              alt={MEMBER.PROFILE_IMAGE}
+            />
+            <MainText>{visitation.instructor?.name}</MainText>
+          </ProfileContainer>
+        );
       case BLANK:
         return <div></div>;
       default:

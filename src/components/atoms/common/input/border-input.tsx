@@ -14,11 +14,13 @@ const BorderInputContainer = styled.input<{
   width?: number;
   $disabled?: boolean;
   $backgroundColor?: string;
+  $paddingLeft?: number;
 }>`
   width: ${({ width }) => (width ? `${width}px` : '100%')};
   box-sizing: border-box;
   font-size: 14px;
   padding: 10px;
+  padding-left: ${({ $paddingLeft }) => `${$paddingLeft}px` || '30'};
   border: 1px solid ${({ $borderColor }) => $borderColor};
   border-radius: 5px;
   color: ${BLACK};
@@ -52,6 +54,7 @@ const BorderInput = forwardRef<HTMLInputElement, BorderInputProps>(
       width,
       disabled = false,
       backgroundColor = WHITE,
+      paddingLeft,
       ...props
     },
     ref
@@ -69,6 +72,7 @@ const BorderInput = forwardRef<HTMLInputElement, BorderInputProps>(
         width={width}
         disabled={disabled}
         $disabled={disabled}
+        $paddingLeft={paddingLeft}
         {...props}
       />
     );

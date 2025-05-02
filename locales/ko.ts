@@ -162,6 +162,7 @@ export default {
   /*-------------------title (popup title)-------------------*/
   'title.memberRegister': '교인 등록',
   'title.addVisitation': '심방 추가',
+  'title.editVisitation': '심방 수정',
   /*-------------------title (popup title)-------------------*/
 
   /*-------------------header (side bar button)-------------------*/
@@ -244,7 +245,7 @@ export default {
   'button.register': '등록하기',
   'button.memberRegister': '등록하기',
   'button.save': '저장',
-  'button.edit': '수정하기',
+  'button.edit': '수정',
   'button.delete': '삭제하기',
   'button.stop': '종료하기',
   'button.fetchFamily': '가족 불러오기',

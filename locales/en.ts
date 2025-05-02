@@ -159,6 +159,7 @@ export default {
   /*-------------------title (popup title)-------------------*/
   'title.memberRegister': 'Member Register',
   'title.addVisitation': 'Add Visitation',
+  'title.editVisitation': 'Edit Visitation',
   /*-------------------title (popup title)-------------------*/
 
   /*-------------------header (side bar button)-------------------*/

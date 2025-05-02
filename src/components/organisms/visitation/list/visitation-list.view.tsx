@@ -14,6 +14,10 @@ import VisitationTable, {
 } from '@/components/molecules/visitation/visitation-table';
 import VisitationRow from '@/components/molecules/visitation/visitation-row';
 import AddVisitation from '@/components/organisms/visitation/add/add-visitation';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
+import VisitationInformation from '@/components/organisms/visitation/information/visitation-information';
+import KebabDropdown from '@/components/atoms/common/dropdown/kebab-dropdown';
 
 const VisitationListContainer = styled.div`
   display: flex;
@@ -72,27 +76,40 @@ type VisitationListViewProps = {
   list: VisitationTableProps;
   information: {
     isVisitationInformationShown: boolean;
+    isEditShown: boolean;
     isLoading: boolean;
     isPopupShown: boolean;
     onClickClose: () => void;
     onClickDelete: () => void;
     onClickConfirmOpen: () => void;
     onClickConfirmClose: () => void;
+    onClickEditDone: () => void;
+    onClickEditOpen: () => void;
+    onClickEditClose: () => void;
   };
 };
 
 const VisitationListView = (props: VisitationListViewProps) => {
   const t_button = useScopedI18n('button');
   const t_popup = useScopedI18n('popup');
+  const t_title = useScopedI18n('title');
   const {
     isVisitationInformationShown,
+    isEditShown,
     isLoading,
     isPopupShown,
     onClickClose,
     onClickDelete,
     onClickConfirmOpen,
     onClickConfirmClose,
+    onClickEditDone,
+    onClickEditOpen,
+    onClickEditClose,
   } = props.information;
+
+  const { targetVisitation } = useSelector(
+    (state: RootState) => state.targetVisitation
+  );
 
   return (
     <VisitationListContainer>
@@ -110,11 +127,24 @@ const VisitationListView = (props: VisitationListViewProps) => {
         isShow={isVisitationInformationShown}
         onClickClose={onClickClose}
         isFooterShown={false}
+        headerTitle={targetVisitation?.visitationTitle}
         headerRight={
           <ButtonRow>
-            <ButtonContainer onClick={onClickConfirmOpen}>
-              <Trash />
-            </ButtonContainer>
+            <KebabDropdown
+              items={[
+                {
+                  value: 'delete',
+                  title: t_button('delete'),
+                  onClick: onClickConfirmOpen,
+                },
+                {
+                  value: 'edit',
+                  title: t_button('edit'),
+                  onClick: onClickEditOpen,
+                },
+              ]}
+              width={150}
+            />
             <ButtonContainer onClick={onClickClose}>
               <Cancel />
             </ButtonContainer>
@@ -136,8 +166,18 @@ const VisitationListView = (props: VisitationListViewProps) => {
             leftButtonText={t_button('cancel')}
             rightButtonText={t_button('delete')}
           />
-          <AddVisitation />
+          <VisitationInformation />
         </>
+      </SlidePopup>
+      {/* 심방 수정 팝업*/}
+      <SlidePopup
+        isShow={isEditShown}
+        onClickClose={onClickEditClose}
+        onClickDone={onClickEditDone}
+        doneText={t_button('edit')}
+        headerTitle={t_title('editVisitation')}
+      >
+        <AddVisitation />
       </SlidePopup>
       <Loading isShow={isLoading} />
     </VisitationListContainer>

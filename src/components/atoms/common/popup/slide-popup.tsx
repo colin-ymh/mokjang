@@ -100,6 +100,8 @@ type SlidePopupProps = {
   onClickDone?: () => void;
   headerTitle?: string;
   headerRight?: ReactNode;
+  cancelText?: string;
+  doneText?: string;
 
   children: ReactNode;
 };
@@ -114,6 +116,8 @@ const SlidePopup = ({
   onClickDone,
   headerTitle,
   headerRight,
+  cancelText,
+  doneText,
 
   children,
 }: SlidePopupProps) => {
@@ -143,6 +147,8 @@ const SlidePopup = ({
         onClickDone={onClickDone}
         headerTitle={headerTitle}
         headerRight={headerRight}
+        doneText={doneText}
+        cancelText={cancelText}
         isFooterShown={isFooterShown}
       >
         {children}

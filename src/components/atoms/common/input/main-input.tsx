@@ -11,10 +11,12 @@ const MainInputContainer = styled.input<{
   $backgroundColor?: string;
   $borderBottomColor?: string;
   $isReadOnly?: boolean;
+  $paddingLeft?: number;
 }>`
   width: ${({ $width }) => ($width ? `${$width}px` : '100%')};
   font-size: 14px;
   padding: 10px;
+  padding-left: ${({ $paddingLeft }) => $paddingLeft || 'auto'};
   transition: all 0.3s ease;
   border: 1px solid rgba(0, 0, 0, 0);
   outline: none;
@@ -42,6 +44,7 @@ export type InputProps = InputHTMLAttributes<HTMLInputElement> & {
   borderBottomColor?: string;
   onFocus?: (event: any) => void;
   onBlur?: (event: any) => void;
+  paddingLeft?: number;
 };
 
 // forwardRef 를 사용하여 ref 를 전달받을 수 있도록
@@ -59,6 +62,7 @@ const MainInput = forwardRef<HTMLInputElement, InputProps>(
       borderBottomColor,
       onFocus,
       onBlur,
+      paddingLeft,
       ...props
     },
     ref
@@ -78,6 +82,7 @@ const MainInput = forwardRef<HTMLInputElement, InputProps>(
         onBlur={onBlur}
         $isReadOnly={readOnly}
         readOnly={readOnly}
+        $paddingLeft={paddingLeft}
         {...props}
       />
     );

@@ -12,7 +12,6 @@ const StyledQuill = styled(ReactQuill)<{
   border: 1px solid ${GRAY.DEFAULT};
   border-radius: 5px;
   overflow: hidden;
-
   display: flex;
   flex-direction: column-reverse;
 

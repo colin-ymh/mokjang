@@ -8,7 +8,11 @@ import {
 
 import { VisitationsApi } from '@/api/visitations/visitations.api';
 import VisitationListView from '@/components/organisms/visitation/list/visitation-list.view';
-import { DEFAULT_VISITATION, Visitation } from '@/models/visitation/visitation';
+import {
+  DEFAULT_VISITATION,
+  Visitation,
+  VisitationDetail,
+} from '@/models/visitation/visitation';
 import { setTargetVisitation } from '@/redux/reducers/target-visitation';
 
 type VisitationListProps = {
@@ -31,14 +35,35 @@ const VisitationList = ({ isNewVisitation }: VisitationListProps) => {
     (state: RootState) => state.targetVisitation
   );
 
+  const [prevMemberIds, setPrevMemberIds] = useState<string[]>([]);
+  const [prevReceiverIds, setReceiverIds] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (targetVisitation.members) {
+      const memberIds = targetVisitation.visitationDetails.map((detail) => {
+        return detail.memberId;
+      });
+
+      setPrevMemberIds(memberIds);
+
+      const receiverIds = targetVisitation.reports.map((report) => {
+        return report.receiver.id;
+      });
+      setReceiverIds(receiverIds);
+    }
+  }, [targetVisitation.id]);
+
   const [thrownError, setThrownError] = useState<Error | null>(null);
   if (thrownError) {
     throw thrownError;
   }
 
-  // 교인 상세정보 팝업 On/Off
+  // 상세정보 팝업 On/Off
   const [isVisitationInformationShown, setIsVisitationInformationShown] =
     useState<boolean>(false);
+
+  // 수정 팝업 On/Off
+  const [isEditShown, setIsEditShown] = useState<boolean>(false);
 
   // 서버에서 불러오는 교인 목록 페이지
   const [page, setPage] = useState<number>(1);
@@ -114,6 +139,115 @@ const VisitationList = ({ isNewVisitation }: VisitationListProps) => {
     isNewVisitation,
   ]);
 
+  const onClickEditDone = async () => {
+    try {
+      const newMemberIds = targetVisitation.visitationDetails.map((detail) => {
+        return detail.memberId;
+      });
+
+      const addMemberIds = newMemberIds.filter(
+        (id) => !prevMemberIds.includes(id)
+      );
+      const deleteMemberIds = prevMemberIds.filter(
+        (id) => !newMemberIds.includes(id)
+      );
+
+      // 1. 메인 심방 정보 수정
+      const visitationResponse = await visitationsApi.editVisitation(
+        { churchId, visitationId: targetVisitation.id },
+        {
+          visitationStatus: targetVisitation.visitationStatus || undefined,
+          visitationMethod: targetVisitation.visitationMethod || undefined,
+          instructorId: targetVisitation.instructorId || undefined,
+          visitationDate: '2025-11-20',
+          visitationTitle: targetVisitation.visitationTitle || undefined,
+          addMemberIds: addMemberIds.length !== 0 ? addMemberIds : undefined,
+          deleteMemberIds:
+            deleteMemberIds.length !== 0 ? deleteMemberIds : undefined,
+        }
+      );
+
+      if (targetVisitation?.receiverIds) {
+        const addReceiverIds = targetVisitation.receiverIds?.filter(
+          (id) => !prevReceiverIds.includes(id)
+        );
+        const deleteReceiverIds = prevReceiverIds.filter(
+          (id) => !targetVisitation.receiverIds?.includes(id)
+        );
+
+        if (addReceiverIds.length > 0) {
+          await visitationsApi.addReceivers(
+            { churchId, visitationId: targetVisitation.id },
+            { receiverIds: addReceiverIds }
+          );
+        }
+        if (deleteReceiverIds.length > 0) {
+          await visitationsApi.deleteReceivers(
+            { churchId, visitationId: targetVisitation.id },
+            { receiverIds: deleteReceiverIds }
+          );
+        }
+      }
+
+      // 2. 심방 상세 정보 수정
+      await visitationsApi
+        .getVisitation({ churchId, visitationId: targetVisitation.id })
+        .then(async (response) => {
+          const newVisitation: Visitation = response.data;
+
+          // 2-1. id 할당
+          const newVisitationDetails = targetVisitation.visitationDetails.map(
+            (visitation): VisitationDetail => {
+              const matchedDetail = newVisitation.visitationDetails.find(
+                (detail) => detail.memberId === visitation.memberId
+              );
+
+              return {
+                ...visitation,
+                id: matchedDetail?.id,
+              };
+            }
+          );
+
+          // 2-2 업데이트
+          for (const detail of newVisitationDetails) {
+            await visitationsApi.editVisitationDetails(
+              {
+                churchId,
+                visitationId: targetVisitation.id,
+                detailId: detail.id as string,
+              },
+              {
+                visitationContent: detail.visitationContent,
+                visitationPray: detail.visitationPray,
+              }
+            );
+          }
+        });
+
+      // 2. 심방 상세 정보 수정
+      await visitationsApi
+        .getVisitation({ churchId, visitationId: targetVisitation.id })
+        .then(async (response) => {
+          const newVisitation: Visitation = response.data;
+
+          const newVisitations = visitations.map((v) => {
+            return v.id !== newVisitation.id ? v : newVisitation;
+          });
+
+          dispatch(setVisitations(newVisitations));
+          dispatch(setTargetVisitation(newVisitation));
+
+          setIsEditShown(false);
+          setTimeout(() => {
+            setIsVisitationInformationShown(true);
+          }, 500);
+        });
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
+    }
+  };
+
   // 목록에서 교인을 선택하여 상세 페이지로 이동
   const onClickVisitationItem = async (visitationId: string) => {
     try {
@@ -161,6 +295,22 @@ const VisitationList = ({ isNewVisitation }: VisitationListProps) => {
     }
   };
 
+  // 수정 페이지 종료
+  const onClickEditClose = () => {
+    setIsEditShown(false);
+    setTimeout(() => {
+      setIsVisitationInformationShown(true);
+    }, 500);
+  };
+
+  // 수정 페이지 열기
+  const onClickEditOpen = () => {
+    setIsVisitationInformationShown(false);
+    setTimeout(() => {
+      setIsEditShown(true);
+    }, 500);
+  };
+
   useEffect(() => {
     setIsPopupShown(false);
   }, [targetVisitation]);
@@ -172,12 +322,16 @@ const VisitationList = ({ isNewVisitation }: VisitationListProps) => {
     },
     information: {
       isVisitationInformationShown,
+      isEditShown,
       isLoading,
       isPopupShown,
       onClickClose,
       onClickDelete,
       onClickConfirmOpen,
       onClickConfirmClose,
+      onClickEditDone,
+      onClickEditOpen,
+      onClickEditClose,
     },
   };
 

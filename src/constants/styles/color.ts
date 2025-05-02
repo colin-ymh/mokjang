@@ -31,3 +31,9 @@ export enum BLUE {
 export enum RED {
   DEFAULT = '#fb3c3c',
 }
+
+export enum STATUS_COLOR {
+  DONE = '#2EE431',
+  RESERVE = '#fff52a',
+  PENDING = '#ffa737',
+}

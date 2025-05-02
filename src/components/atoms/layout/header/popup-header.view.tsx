@@ -90,7 +90,7 @@ const PopupHeaderView = ({
       </HeaderLeft>
 
       <HeaderTitle>
-        <MainText size={SIZE.EXTRA_LARGE} fontWeight={600}>
+        <MainText size={SIZE.LARGE} fontWeight={600}>
           {headerTitle}
         </MainText>
       </HeaderTitle>

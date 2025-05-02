@@ -19,6 +19,7 @@ import {
   VISITATION_STATUS,
 } from '@/models/visitation/visitation';
 import { VISITATION } from '@/constants/visitation/visitation-column';
+import { STATUS_COLOR } from '@/constants/styles/color';
 
 export const useBaptismDropdownItems = () => {
   const t = useI18n();
@@ -330,14 +331,17 @@ export const useVisitationStatusDropdownItems = () => {
     {
       value: VISITATION_STATUS.RESERVE,
       title: t(VISITATION_STATUS.RESERVE),
+      color: STATUS_COLOR.RESERVE,
     },
     {
       value: VISITATION_STATUS.DONE,
       title: t(VISITATION_STATUS.DONE),
+      color: STATUS_COLOR.DONE,
     },
     {
       value: VISITATION_STATUS.PENDING,
       title: t(VISITATION_STATUS.PENDING),
+      color: STATUS_COLOR.PENDING,
     },
   ];
 
@@ -358,5 +362,26 @@ export const useVisitationMethodDropdownItems = () => {
     },
   ];
 
+  return items;
+};
+
+export const useTimeDropdownItems = () => {
+  const items = [];
+
+  for (let totalMinutes = 0; totalMinutes < 24 * 60; totalMinutes += 15) {
+    const hour24 = Math.floor(totalMinutes / 60);
+    const minute = totalMinutes % 60;
+
+    const period = hour24 < 12 ? 'AM' : 'PM';
+    const hour12 = hour24 % 12 === 0 ? 12 : hour24 % 12;
+    const title = `${hour12.toString().padStart(2, '0')}:${minute
+      .toString()
+      .padStart(2, '0')} ${period}`;
+
+    items.push({
+      value: totalMinutes,
+      title,
+    });
+  }
   return items;
 };
