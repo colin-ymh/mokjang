@@ -6,8 +6,8 @@ import {
   useRef,
   useState,
 } from 'react';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/redux/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '@/redux/store';
 
 import {
   DEFAULT_MINISTRY,
@@ -23,27 +23,29 @@ import EditMinistryGroupView from '@/components/molecules/management/ministry/ed
 import ToastPopup from '@/components/atoms/common/popup/toast-popup';
 import { DESTRUCTIVE } from '@/constants/styles/color';
 import { useScopedI18n } from '../../../../../locales/client';
+import { fetchMinistryGroups } from '@/redux/reducers/church-reducer';
 
 type EditMinistryGroupProps = {
   ministryGroup: MinistryGroup;
   ministries: Ministry[];
   onClickClose: () => void;
-  fetchMinistryGroups: () => void;
   setIsToastShown: Dispatch<SetStateAction<boolean>>;
+  fetchMinistries: () => void;
 };
 
 const EditMinistryMinistryGroup = ({
   ministryGroup,
   ministries,
   onClickClose,
-  fetchMinistryGroups,
   setIsToastShown,
+  fetchMinistries,
 }: EditMinistryGroupProps) => {
   const t_popup = useScopedI18n('popup');
   const ministryGroupMinistriesApi = new MinistriesApi(false);
   const ministryGroupsApi = new MinistryGroupsApi(false);
   const churchId = useSelector((state: RootState) => state.church.churchId);
   const newMinistryRef = useRef<HTMLInputElement>(null);
+  const dispatch = useDispatch<AppDispatch>();
 
   const [thrownError, setThrownError] = useState<Error | null>(null);
   // 렌더링 시점(컴포넌트 return)에서 조건부로 에러 발생
@@ -162,7 +164,8 @@ const EditMinistryMinistryGroup = ({
       );
 
       // 상태 초기화 및 리렌더링
-      fetchMinistryGroups();
+      dispatch(fetchMinistryGroups());
+      fetchMinistries();
       onClickClose();
       setNewMinistries([]);
       setSelectedMinistry(DEFAULT_MINISTRY);

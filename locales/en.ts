@@ -12,6 +12,11 @@ export default {
   isDone: 'Completed',
   isNotDone: 'Incomplete',
 
+  inChargeId: 'In Charge',
+  taskStatus: 'Status',
+  taskDate: 'Task Date',
+  comment: 'Comment',
+
   title: 'title',
 
   method: 'Method',
@@ -246,7 +251,11 @@ export default {
   'button.logOut': 'Log Out',
   'button.saveTerm': 'Save New Term',
   'button.addMember': 'Add Member',
-  'button.filterVisitationDate': 'period',
+  'button.addVisitation': 'Add Visitation',
+  'button.addTask': 'Add Task',
+  'button.filterVisitationDate': 'Date',
+  'button.filterTaskDate': 'Date',
+  'button.setting': 'setting',
   /*-------------------button-------------------*/
 
   /*-------------------placeholder-------------------*/
@@ -284,6 +293,7 @@ export default {
   'placeholder.title': 'Enter the title.',
   'placeholder.visitationContent': 'Enter the content.',
   'placeholder.visitationPray': 'Enter the pray.',
+  'placeholder.comment': 'Enter the comment.',
   /*-------------------placeholder-------------------*/
 
   /*-------------------radiobutton-------------------*/
@@ -333,5 +343,8 @@ export default {
 
   'popup.deleteVisitationTitle': 'Do you want to delete this visitation?',
   'popup.deleteVisitationBody': 'Deleted visitation cannot be restored.',
+
+  'popup.deleteTaskTitle': 'Do you want to delete this task?',
+  'popup.deleteTaskBody': 'Deleted task cannot be restored.',
   /*-------------------popup-------------------*/
 } as const;

@@ -15,7 +15,7 @@ import {
   SIDE_ID,
 } from '@/constants/layout/header';
 
-import MainMemberHeader from '@/components/molecules/layout/header/main/main-member-header';
+import MainMemberHeader from '@/components/molecules/layout/header/main/member/main-member-header';
 import MemberList from '@/components/organisms/member/list/member-list';
 import InformationList from '@/components/molecules/member/information/member-information-list';
 import FamilyInformationList from '@/components/molecules/member/information/family-information-list';
@@ -41,10 +41,12 @@ import MainSideButtonList from '@/components/molecules/layout/side/main-side/mai
 import ManagementSideButtonList from '@/components/molecules/layout/side/management-side/management-side-button-list';
 import ManagementChurchHeader from '@/components/molecules/layout/header/management/management-church-header';
 import ManagementAdministratorHeader from '@/components/molecules/layout/header/management/management-administrator-header';
-import MainVisitationHeader from '@/components/molecules/layout/header/main/main-visitation-header';
-import MainEducationHeader from '@/components/molecules/layout/header/main/main-education-header';
+import MainVisitationHeader from '@/components/molecules/layout/header/main/visitation/main-visitation-header';
+import MainEducationHeader from '@/components/molecules/layout/header/main/education/main-education-header';
 import EducationManagement from '@/components/organisms/management/education/education-management';
 import VisitationList from '@/components/organisms/visitation/list/visitation-list';
+import TaskList from '@/components/organisms/task/list/task-list';
+import MainTaskHeader from '@/components/molecules/layout/header/main/task/main-task-header';
 
 export const getSide = (id: string) => {
   switch (id) {
@@ -73,7 +75,7 @@ export const getHeader = (id: string) => {
     case MAIN_HEADER_ID.EDUCATION:
       return <MainEducationHeader />;
     case MAIN_HEADER_ID.TASK:
-      return null;
+      return <MainTaskHeader />;
     case MAIN_HEADER_ID.CALENDAR:
       return null;
     // 관리
@@ -96,6 +98,8 @@ export const getContent = (id: string, headerId: string | null): ReactNode => {
         return <VisitationList />;
       } else if (headerId === MAIN_HEADER_ID.EDUCATION) {
         return <EducationManagement />;
+      } else if (headerId === MAIN_HEADER_ID.TASK) {
+        return <TaskList />;
       } else {
         return null;
       }
@@ -166,17 +170,11 @@ export const getGroupManagementContent = (contentId: string, group: Group) => {
 
 export const getMinistryGroupManagementContent = (
   contentId: string,
-  ministryGroup: MinistryGroup,
-  fetchMinistryGroups: () => void
+  ministryGroup: MinistryGroup
 ) => {
   switch (contentId) {
     case MINISTRY_MANAGEMENT_HEADER_ID.MINISTRY_GROUP_INFORMATION:
-      return (
-        <MinistryGroupInformation
-          ministryGroup={ministryGroup}
-          fetchMinistryGroups={fetchMinistryGroups}
-        />
-      );
+      return <MinistryGroupInformation ministryGroup={ministryGroup} />;
     case MINISTRY_MANAGEMENT_HEADER_ID.MINISTRY_MEMBER_LIST:
       return <MinistryGroupMember ministryGroup={ministryGroup} />;
   }

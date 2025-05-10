@@ -16,7 +16,8 @@ import {
 import {
   CHURCH_CONTENT_ID,
   MEMBER_CONTENT_ID,
-  VISITING_CONTENT_ID,
+  TASK_CONTENT_ID,
+  VISITATION_CONTENT_ID,
 } from '@/constants/layout/content';
 import { usePageRouter } from '@/utils/router';
 
@@ -51,7 +52,11 @@ const App = () => {
         );
       } else if (headerId === MAIN_HEADER_ID.VISITATION) {
         router.push(
-          `/admin/main/${MAIN_HEADER_ID.VISITATION}/${VISITING_CONTENT_ID.ALL}`
+          `/admin/main/${MAIN_HEADER_ID.VISITATION}/${VISITATION_CONTENT_ID.ALL}`
+        );
+      } else if (headerId === MAIN_HEADER_ID.TASK) {
+        router.push(
+          `/admin/main/${MAIN_HEADER_ID.TASK}/${TASK_CONTENT_ID.ALL}`
         );
       }
     } else if (

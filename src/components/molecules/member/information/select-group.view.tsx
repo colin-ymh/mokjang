@@ -1,119 +1,90 @@
+// components/molecules/member/information/select-group.view.tsx
 import styled from 'styled-components';
-
 import { Group } from '@/models/management/management';
-import SelectGroupViewModalItem from '@/components/atoms/member/information/select-group-item';
+import SelectGroupItem from '@/components/atoms/member/information/select-group-item';
 import { BLACK } from '@/constants/styles/color';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import Button from '@/components/atoms/common/button/button';
-
-import ChevronLeft from '../../../../../public/svg/chevron-left.svg';
+import ChevronLeft from '/public/svg/chevron-left.svg';
 import { useI18n } from '../../../../../locales/client';
 
-const SelectGroupViewContainer = styled.div`
-  display: flex;
-  width: 100%;
-  height: 100%;
-  flex-direction: column;
-  justify-content: space-between;
-`;
-
-const ContentContainer = styled.div`
+/* ---------- styled ---------- */
+const Container = styled.div`
   display: flex;
   flex-direction: column;
-  width: 100%;
   height: 100%;
+  width: 100%;
 `;
-
-const GoBackContainer = styled.div`
+const Header = styled.div`
   display: flex;
-  //height: 30px;
-  padding: 10px;
-  gap: 10px;
   align-items: center;
+  gap: 10px;
+  padding: 10px;
 `;
-
-const GoBackButton = styled(ChevronLeft)`
+const BackIcon = styled(ChevronLeft)`
   width: 20px;
   height: 20px;
   stroke: ${BLACK};
   stroke-width: 1px;
 `;
-
-const GroupList = styled.div`
-  display: flex;
-  flex-direction: column;
+const List = styled.div`
+  flex: 1;
   padding: 10px;
+  overflow-y: auto;
 `;
-
-const ButtonContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+const Footer = styled.div`
   padding: 20px;
 `;
 
-type SelectGroupViewModalProps = {
+/* ---------- props ---------- */
+type ViewProps = {
+  currentChildren: Group[];
   selectedGroup: Group;
-  groups: Group[];
-  groupList: Group[];
-  parentGroups: Group[];
-  onClickGoBack: () => void;
+  breadcrumb: Group[];
+  hasParent: boolean;
+  onGoBack: () => void;
+  onEnterGroup: (g: Group) => void;
+  onSave: () => void;
   onClose: () => void;
-  onClickParent: (group: Group) => void;
-  onClickSave: (group: Group) => void;
 };
 
 const SelectGroupView = ({
+  currentChildren,
   selectedGroup,
-  groups,
-  groupList,
-  parentGroups,
-  onClickGoBack,
+  breadcrumb,
+  hasParent,
+  onGoBack,
+  onEnterGroup,
+  onSave,
   onClose,
-  onClickParent,
-  onClickSave,
-}: SelectGroupViewModalProps) => {
+}: ViewProps) => {
   const t = useI18n();
 
   return (
-    <SelectGroupViewContainer>
-      <ContentContainer>
-        <GoBackContainer>
-          <GoBackButton
-            onClick={() =>
-              parentGroups.length !== 0 ? onClickGoBack() : onClose()
-            }
+    <Container>
+      {/* ----- 상단 헤더 ----- */}
+      <Header>
+        <BackIcon onClick={hasParent ? onGoBack : onClose} />
+        <MainText>{breadcrumb.map((g) => g.name).join(' > ')}</MainText>
+      </Header>
+
+      {/* ----- 그룹 리스트 ----- */}
+      <List>
+        {currentChildren.map((g) => (
+          <SelectGroupItem
+            key={g.id}
+            group={g}
+            onClick={() => onEnterGroup(g)}
+            isSelected={g.id === selectedGroup.id}
           />
-          <MainText>
-            {groupList.map((parent) => parent.name).join(' > ')}
-          </MainText>
-        </GoBackContainer>
-        <GroupList>
-          {groups.map((group) => {
-            return (
-              <SelectGroupViewModalItem
-                key={group.id}
-                group={group}
-                onClick={() => {
-                  onClickParent(group);
-                }}
-                isSelected={group.id === selectedGroup.id}
-              />
-            );
-          })}
-        </GroupList>
-      </ContentContainer>
-      <ButtonContainer>
-        <Button
-          text={t('button.save')}
-          onClick={() => {
-            onClickSave(selectedGroup);
-            onClose();
-          }}
-          height={30}
-        />
-      </ButtonContainer>
-    </SelectGroupViewContainer>
+        ))}
+      </List>
+
+      {/* ----- 하단 버튼 ----- */}
+      <Footer>
+        <Button text={t('button.save')} onClick={onSave} height={30} />
+      </Footer>
+    </Container>
   );
 };
 

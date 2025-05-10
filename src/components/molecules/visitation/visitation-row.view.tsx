@@ -1,4 +1,4 @@
-import { ChangeEvent, Dispatch, Ref, SetStateAction } from 'react';
+import { ChangeEvent, Ref } from 'react';
 import styled from 'styled-components';
 
 import Button from '@/components/atoms/common/button/button';
@@ -6,7 +6,6 @@ import { GRAY, WHITE } from '@/constants/styles/color';
 import Dropdown from '@/components/atoms/common/dropdown/dropdown';
 import BorderInput from '@/components/atoms/common/input/border-input';
 import { VISITATION } from '@/constants/visitation/visitation-column';
-import TransparentBackground from '@/components/atoms/common/etc/transparent-background';
 
 import { useVisitationSearchFilterDropdownItems } from '@/hooks/dropdown/dropdown-items';
 import useWindowSize from '@/hooks/window/window';
@@ -14,6 +13,9 @@ import { useI18n, useScopedI18n } from '../../../../locales/client';
 import VisitationFilteredItem, {
   VisitationFilteredItemType,
 } from '@/components/atoms/visitation/visitation-filtered-item';
+import PeriodModal from '@/components/atoms/common/modal/period-modal';
+import { RootState } from '@/redux/store';
+import { useSelector } from 'react-redux';
 
 const VisitationContainer = styled.div`
   display: flex;
@@ -91,36 +93,42 @@ const AddFilterContainer = styled.div<{ $isShown: boolean }>`
 export type VISITATION_SEARCH_FILTER = VISITATION.TITLE | VISITATION.INSTRUCTOR;
 
 type VisitationViewProps = {
-  isAddFilterShown: boolean;
+  isModalShown: boolean;
   searchFilter: VISITATION_SEARCH_FILTER;
   searchValue: string;
   searchRef: Ref<HTMLInputElement>;
   filteredItems: VisitationFilteredItemType[];
-  setIsAddFilterShown: Dispatch<SetStateAction<boolean>>;
   onClickSearchFilterItem: (value: VISITATION_SEARCH_FILTER) => void;
   onChangeSearchValue: (event: ChangeEvent<HTMLInputElement>) => void;
-  onClickTableSetting: () => void;
+  onClickPeriodModal: () => void;
   onClickSearch: () => void;
   onKeyDown: (event: React.KeyboardEvent<HTMLInputElement>) => void;
+  onClickClosePeriodModal: () => void;
+  onClickSavePeriod: (startDate: string, endDate: string) => void;
 };
 
 const VisitationRowView = ({
-  isAddFilterShown,
+  isModalShown,
   searchFilter,
   searchValue,
   searchRef,
   filteredItems,
-  setIsAddFilterShown,
-  onClickTableSetting,
+  onClickPeriodModal,
   onClickSearchFilterItem,
   onChangeSearchValue,
   onClickSearch,
   onKeyDown,
+  onClickClosePeriodModal,
+  onClickSavePeriod,
 }: VisitationViewProps) => {
   const t = useI18n();
   const t_placeholder = useScopedI18n('placeholder');
   const t_button = useScopedI18n('button');
   const searchFilterDropdownItems = useVisitationSearchFilterDropdownItems();
+
+  const { visitationFilter } = useSelector(
+    (state: RootState) => state.visitationFilter
+  );
 
   const { width } = useWindowSize();
 
@@ -134,22 +142,19 @@ const VisitationRowView = ({
               text={t_button('filterVisitationDate')}
               height={30}
               width={60}
-              onClick={onClickTableSetting}
+              onClick={onClickPeriodModal}
               backgroundColor={WHITE}
               borderColor={GRAY.DEFAULT}
               color={GRAY.DARK}
             />
             {/* 설정 모달 */}
-            <AddFilterContainer $isShown={isAddFilterShown}>
-              <TransparentBackground
-                isOpened={isAddFilterShown}
-                onClick={() => setIsAddFilterShown(false)}
-                blur={false}
-              />
-              {/*{isAddFilterShown && (*/}
-              {/*  <TableSetting setIsShown={setIsAddFilterShown} />*/}
-              {/*)}*/}
-            </AddFilterContainer>
+            <PeriodModal
+              isShown={isModalShown}
+              onClickClose={onClickClosePeriodModal}
+              startDate={visitationFilter.fromVisitationDate}
+              endDate={visitationFilter.toVisitationDate}
+              onClickSave={onClickSavePeriod}
+            />
           </ButtonContainer>
           {/* 필터 설정된 값들 */}
           <FilteredItemList $width={width - 650}>

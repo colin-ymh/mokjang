@@ -1,32 +1,53 @@
+import { Group } from '@/models/management/management';
+import { GroupsApi } from '@/api/management/group/groups.api';
+
+const getGroupById = (list: Group[], id: string): Group | undefined => {
+  for (const g of list) {
+    if (g.id === id) return g;
+    if (g.childGroups) {
+      const found = getGroupById(g.childGroups, id);
+      if (found) return found;
+    }
+  }
+};
+
 /**
  * 계층 구조에 따라 그룹을 정렬하는 함수
  */
-import { Group } from '@/models/management/management';
+export const getOrderedGroups = async (churchId: string) => {
+  const groupsApi = new GroupsApi(false);
 
-export const getOrderedGroups = (groups: Group[]) => {
-  // 그룹을 id로 매핑하여 빠르게 찾을 수 있도록 맵 생성
-  // const groupMap = new Map<number, Group>();
-  // for (const group of groups) {
-  //   groupMap.set(parseInt(group.id as string), { ...group, childGroups: [] }); // 복사본 생성
-  // }
+  let groups: Group[] = [];
+  let parentGroupIds: (string | undefined)[] = [undefined];
 
-  // 최상위 그룹을 담을 배열
-  const topLevelGroups: Group[] = [];
+  while (parentGroupIds.length > 0) {
+    const parentGroupId = parentGroupIds.pop();
 
-  // for (const group of groups) {
-  //   if (group.parentGroupId === null || group.parentGroupId === group.id) {
-  //     // 부모가 없는 그룹은 최상위 그룹에 추가
-  //     topLevelGroups.push(groupMap.get(parseInt(group.id as string))!);
-  //   } else {
-  //     // 부모가 있는 그룹은 부모의 childGroups 에 추가
-  //     const parentGroup = groupMap.get(parseInt(group.parentGroupId));
-  //     if (parentGroup?.childGroups) {
-  //       parentGroup.childGroups.push(
-  //         groupMap.get(parseInt(group.id as string))!
-  //       );
-  //     }
-  //   }
-  // }
+    const response = await groupsApi.getGroups({ churchId, parentGroupId });
 
-  return topLevelGroups;
+    const newGroups: Group[] = response.data.data;
+
+    for (const newGroup of newGroups) {
+      // 부모 그룹이 있으면, 해당 부모의 childGroups 배열에 삽입
+      if (newGroup.parentGroupId) {
+        const parent = getGroupById(groups, newGroup.parentGroupId);
+        if (parent) {
+          if (!parent.childGroups) {
+            parent.childGroups = [];
+          }
+          parent.childGroups.push(newGroup);
+        }
+      }
+      // 부모 그룹이 없으면, 최상위 그룹
+      else {
+        groups.push(newGroup);
+      }
+
+      if (newGroup.childGroupIds.length > 0) {
+        parentGroupIds.push(newGroup.id as string);
+      }
+    }
+  }
+
+  return groups;
 };

@@ -20,6 +20,8 @@ import {
 } from '@/models/visitation/visitation';
 import { VISITATION } from '@/constants/visitation/visitation-column';
 import { STATUS_COLOR } from '@/constants/styles/color';
+import { TASK } from '@/constants/task/task-column';
+import { TASK_STATUS } from '@/models/task/task';
 
 export const useBaptismDropdownItems = () => {
   const t = useI18n();
@@ -162,6 +164,23 @@ export const useVisitationSearchFilterDropdownItems = () => {
     {
       value: VISITATION.INSTRUCTOR,
       title: t(VISITATION.INSTRUCTOR),
+    },
+  ];
+
+  return items;
+};
+
+export const useTaskSearchFilterDropdownItems = () => {
+  const t = useI18n();
+
+  const items = [
+    {
+      value: TASK.TITLE,
+      title: t(TASK.TITLE),
+    },
+    {
+      value: TASK.IN_CHARGE,
+      title: t(TASK.IN_CHARGE),
     },
   ];
 
@@ -341,6 +360,35 @@ export const useVisitationStatusDropdownItems = () => {
     {
       value: VISITATION_STATUS.PENDING,
       title: t(VISITATION_STATUS.PENDING),
+      color: STATUS_COLOR.PENDING,
+    },
+  ];
+
+  return items;
+};
+
+export const useTaskStatusDropdownItems = () => {
+  const t = useI18n();
+
+  const items = [
+    {
+      value: TASK_STATUS.RESERVE,
+      title: t(TASK_STATUS.RESERVE),
+      color: STATUS_COLOR.RESERVE,
+    },
+    {
+      value: TASK_STATUS.IN_PROGRESS,
+      title: t(TASK_STATUS.IN_PROGRESS),
+      color: STATUS_COLOR.IN_PROGRESS,
+    },
+    {
+      value: TASK_STATUS.DONE,
+      title: t(TASK_STATUS.DONE),
+      color: STATUS_COLOR.DONE,
+    },
+    {
+      value: TASK_STATUS.PENDING,
+      title: t(TASK_STATUS.PENDING),
       color: STATUS_COLOR.PENDING,
     },
   ];

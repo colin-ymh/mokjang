@@ -153,13 +153,14 @@ const VisitationList = ({ isNewVisitation }: VisitationListProps) => {
       );
 
       // 1. 메인 심방 정보 수정
-      const visitationResponse = await visitationsApi.editVisitation(
+      await visitationsApi.editVisitation(
         { churchId, visitationId: targetVisitation.id },
         {
           visitationStatus: targetVisitation.visitationStatus || undefined,
           visitationMethod: targetVisitation.visitationMethod || undefined,
           instructorId: targetVisitation.instructorId || undefined,
-          visitationDate: '2025-11-20',
+          visitationStartDate: targetVisitation.visitationStartDate,
+          visitationEndDate: targetVisitation.visitationEndDate,
           visitationTitle: targetVisitation.visitationTitle || undefined,
           addMemberIds: addMemberIds.length !== 0 ? addMemberIds : undefined,
           deleteMemberIds:

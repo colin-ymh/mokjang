@@ -34,12 +34,12 @@ type CreateVisitationParams = {
 };
 
 type CreateVisitationBody = {
-  isTest: boolean;
   visitationStatus: VISITATION_STATUS;
   visitationMethod: VISITATION_METHOD;
   visitationTitle: string;
   instructorId: string;
-  visitationDate: string;
+  visitationStartDate: string;
+  visitationEndDate: string;
   visitationDetails: VisitationDetail[];
   receiverIds?: string[];
 };
@@ -59,7 +59,8 @@ type EditVisitationBody = {
   visitationMethod?: VISITATION_METHOD;
   visitationTitle?: string;
   instructorId?: string;
-  visitationDate?: string;
+  visitationStartDate?: string;
+  visitationEndDate?: string;
   addMemberIds?: string[];
   deleteMemberIds?: string[];
 };

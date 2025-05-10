@@ -1,4 +1,4 @@
-import MainEducationHeaderView from '@/components/molecules/layout/header/main/main-education-header.view';
+import MainEducationHeaderView from '@/components/molecules/layout/header/main/education/main-education-header.view';
 import { usePageRouter } from '@/utils/router';
 
 type MainEducationHeaderProps = {};

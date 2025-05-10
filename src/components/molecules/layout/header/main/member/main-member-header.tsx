@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 
-import MainMemberHeaderView from '@/components/molecules/layout/header/main/main-member-header.view';
+import MainMemberHeaderView from '@/components/molecules/layout/header/main/member/main-member-header.view';
 import {
   DEFAULT_MEMBER,
   setMember,
@@ -13,7 +13,7 @@ import {
   setMembers,
 } from '@/redux/reducers/member-filter-reducer';
 import { usePageRouter } from '@/utils/router';
-import { useI18n } from '../../../../../../locales/client';
+import { useI18n } from '../../../../../../../locales/client';
 
 type MainMemberHeaderProps = {};
 

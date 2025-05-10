@@ -102,7 +102,8 @@ type SlidePopupProps = {
   headerRight?: ReactNode;
   cancelText?: string;
   doneText?: string;
-
+  cancelBackgroundColor?: string;
+  doneBackgroundColor?: string;
   children: ReactNode;
 };
 
@@ -118,7 +119,8 @@ const SlidePopup = ({
   headerRight,
   cancelText,
   doneText,
-
+  cancelBackgroundColor,
+  doneBackgroundColor,
   children,
 }: SlidePopupProps) => {
   useEffect(() => {
@@ -149,6 +151,8 @@ const SlidePopup = ({
         headerRight={headerRight}
         doneText={doneText}
         cancelText={cancelText}
+        doneBackgroundColor={doneBackgroundColor}
+        cancelBackgroundColor={cancelBackgroundColor}
         isFooterShown={isFooterShown}
       >
         {children}

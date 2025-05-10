@@ -46,23 +46,19 @@ const MinistryInformationHeader = styled.div`
 `;
 
 type MinistryManagementViewProps = {
-  ministryGroups: MinistryGroup[];
   selectedMinistryGroup: MinistryGroup;
   setSelectedMinistryGroup: Dispatch<SetStateAction<MinistryGroup>>;
   headerBarId: string;
   headerBarItems: HeaderBarItem[];
   onClickHeaderBar: (id: MINISTRY_MANAGEMENT_HEADER_ID) => void;
-  fetchMinistryGroups: () => void;
 };
 
 const MinistryManagementView = ({
-  ministryGroups,
   selectedMinistryGroup,
   setSelectedMinistryGroup,
   headerBarId,
   headerBarItems,
   onClickHeaderBar,
-  fetchMinistryGroups,
 }: MinistryManagementViewProps) => {
   const t = useI18n();
   return (
@@ -73,10 +69,8 @@ const MinistryManagementView = ({
           {t('ministryGroupList')}
         </MainText>
         <MinistryGroupList
-          ministryGroups={ministryGroups}
           selectedMinistryGroupId={selectedMinistryGroup.id}
           setSelectedMinistryGroup={setSelectedMinistryGroup}
-          fetchMinistryGroups={fetchMinistryGroups}
         />
       </MinistryListContainer>
       {/* 교회 정보 */}
@@ -93,11 +87,7 @@ const MinistryManagementView = ({
           />
         </MinistryInformationHeader>
         {/* 컨텐츠 */}
-        {getMinistryGroupManagementContent(
-          headerBarId,
-          selectedMinistryGroup,
-          fetchMinistryGroups
-        )}
+        {getMinistryGroupManagementContent(headerBarId, selectedMinistryGroup)}
       </MinistryInformationContainer>
     </MinistryManagementContainer>
   );

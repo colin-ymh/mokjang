@@ -15,14 +15,12 @@ type OfficerListViewProps = {
   officers: Officer[];
   selectedOfficerId: string | null;
   setSelectedOfficer: Dispatch<SetStateAction<Officer>>;
-  fetchOfficers: () => void;
 };
 
 const OfficerListView = ({
   officers,
   selectedOfficerId,
   setSelectedOfficer,
-  fetchOfficers,
 }: OfficerListViewProps) => {
   return (
     <FilterContainer>
@@ -32,7 +30,6 @@ const OfficerListView = ({
           officer={officer}
           selectedOfficerId={selectedOfficerId}
           setSelectedOfficer={setSelectedOfficer}
-          fetchOfficers={fetchOfficers}
         />
       ))}
     </FilterContainer>

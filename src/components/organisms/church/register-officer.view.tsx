@@ -47,7 +47,6 @@ type OfficerListViewProps = {
   officers: Officer[];
   selectedOfficerId: string | null;
   setSelectedOfficer: Dispatch<SetStateAction<Officer>>;
-  fetchOfficers: () => void;
   nameInputRef: LegacyRef<HTMLInputElement>;
   newOfficerName: string;
   onChangeName: (event: ChangeEvent<HTMLInputElement>) => void;
@@ -59,7 +58,6 @@ const RegisterOfficerView = ({
   officers,
   selectedOfficerId,
   setSelectedOfficer,
-  fetchOfficers,
   nameInputRef,
   newOfficerName,
   onChangeName,
@@ -83,7 +81,6 @@ const RegisterOfficerView = ({
             officer={officer}
             selectedOfficerId={selectedOfficerId}
             setSelectedOfficer={setSelectedOfficer}
-            fetchOfficers={fetchOfficers}
           />
         ))}
         <AddOfficer

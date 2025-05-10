@@ -85,7 +85,9 @@ const Quill = ({
     <StyledQuill
       theme="snow"
       value={value}
-      onChange={onChange}
+      onChange={(event) => {
+        onChange(event);
+      }}
       $minHeight={minHeight}
       // readOnly={!isEditable}
       onFocus={onFocus}

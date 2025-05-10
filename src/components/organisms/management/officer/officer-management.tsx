@@ -8,7 +8,7 @@ import { DEFAULT_OFFICER, Officer } from '@/models/management/management';
 import { BLANK } from '@/constants/constant';
 import { getFormattedTitle } from '@/utils/format';
 import { getIsWellFormedTitle } from '@/utils/check';
-import { setOfficers } from '@/redux/reducers/church-reducer';
+import { fetchOfficers } from '@/redux/reducers/church-reducer';
 import { useScopedI18n } from '../../../../../locales/client';
 import ToastPopup from '@/components/atoms/common/popup/toast-popup';
 
@@ -62,7 +62,7 @@ const OfficerManagement = ({}: OfficerManagementProps) => {
     try {
       if (getIsWellFormedTitle(newOfficerName)) {
         await officersApi.createOfficer({ churchId }, { name: newOfficerName });
-        fetchOfficers();
+        dispatch(fetchOfficers());
         setIsAddModalShown(false);
         setNewOfficerName(BLANK);
       }
@@ -72,26 +72,6 @@ const OfficerManagement = ({}: OfficerManagementProps) => {
       setIsToastShown(true);
     }
   };
-
-  // 직분 불러오기
-  const fetchOfficers = async () => {
-    try {
-      const response = await officersApi.getOfficers({ churchId });
-      if (response.status === 200) {
-        const newOfficers = response.data;
-        dispatch(setOfficers(newOfficers));
-      }
-    } catch (error) {
-      setThrownError(error instanceof Error ? error : new Error(String(error)));
-    }
-  };
-
-  // 교회 정보를 통해 직분들 불러오기
-  useEffect(() => {
-    if (churchId) {
-      fetchOfficers();
-    }
-  }, [churchId]);
 
   // 수정 중 focus 가 풀리면 수정 취소
   useEffect(() => {

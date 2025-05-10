@@ -99,7 +99,7 @@ const GroupInformation = ({ group }: GroupInformationProps) => {
           churchId,
           groupId: String(group.id),
         });
-        setRoles(response.data);
+        setRoles(response.data.data);
       } catch (error) {
         setThrownError(
           error instanceof Error ? error : new Error(String(error))
@@ -160,6 +160,7 @@ const GroupInformation = ({ group }: GroupInformationProps) => {
           roles={roles}
           onClickClose={onClickClose}
           setIsToastShown={setIsToastShown}
+          fetchRoles={fetchRoles}
         />
       </CustomPopup>
 

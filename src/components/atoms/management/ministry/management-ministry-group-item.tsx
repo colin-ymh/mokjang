@@ -12,8 +12,8 @@ import {
   MinistryGroup,
 } from '@/models/management/management';
 
-import { useSelector } from 'react-redux';
-import { RootState } from '@/redux/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '@/redux/store';
 import { getFormattedTitle } from '@/utils/format';
 import { getIsWellFormedTitle } from '@/utils/check';
 import { BLANK } from '@/constants/constant';
@@ -23,6 +23,7 @@ import AddMinistryGroup from '@/components/atoms/management/ministry/add-ministr
 import { useScopedI18n } from '../../../../../locales/client';
 import ConfirmPopup from '@/components/atoms/common/popup/error-popup';
 import ToastPopup from '@/components/atoms/common/popup/toast-popup';
+import { fetchMinistryGroups } from '@/redux/reducers/church-reducer';
 
 type ManagementMinistryGroupItemProps = {
   ministryGroup: MinistryGroup;
@@ -30,7 +31,6 @@ type ManagementMinistryGroupItemProps = {
   selectedMinistryGroupId: string | null;
   setSelectedMinistryGroup: Dispatch<SetStateAction<MinistryGroup>>;
   closedMinistryGroups: Set<number>;
-  fetchMinistryGroups: () => void;
   onClickToggle: (id: string) => void;
 };
 
@@ -40,13 +40,13 @@ const ManagementMinistryMinistryGroupItem = ({
   selectedMinistryGroupId,
   setSelectedMinistryGroup,
   closedMinistryGroups,
-  fetchMinistryGroups,
   onClickToggle,
 }: ManagementMinistryGroupItemProps) => {
   const t_popup = useScopedI18n('popup');
   const t_button = useScopedI18n('button');
   const ministryGroupsApi = new MinistryGroupsApi(false);
   const churchId = useSelector((state: RootState) => state.church.churchId);
+  const dispatch = useDispatch<AppDispatch>();
   const [thrownError, setThrownError] = useState<Error | null>(null);
 
   // 렌더링 시점(컴포넌트 return)에서 조건부로 에러 발생
@@ -102,7 +102,7 @@ const ManagementMinistryMinistryGroupItem = ({
           parentMinistryGroupId: ministryGroup.id,
         }
       );
-      fetchMinistryGroups();
+      dispatch(fetchMinistryGroups());
       setIsAddShown(false);
       setNewMinistryGroupName(BLANK);
     } catch (error) {
@@ -145,7 +145,7 @@ const ManagementMinistryMinistryGroupItem = ({
         churchId,
         ministryGroupId,
       });
-      fetchMinistryGroups();
+      dispatch(fetchMinistryGroups());
       setSelectedMinistryGroup(DEFAULT_MINISTRY_GROUP);
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));
@@ -176,7 +176,7 @@ const ManagementMinistryMinistryGroupItem = ({
         { name: editName }
       );
       setSelectedMinistryGroup(response.data);
-      fetchMinistryGroups();
+      dispatch(fetchMinistryGroups());
       setIsEdit(false);
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));
@@ -197,7 +197,7 @@ const ManagementMinistryMinistryGroupItem = ({
         { churchId, ministryGroupId },
         { parentMinistryGroupId }
       );
-      fetchMinistryGroups();
+      dispatch(fetchMinistryGroups());
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));
     }
@@ -296,7 +296,6 @@ const ManagementMinistryMinistryGroupItem = ({
             selectedMinistryGroupId={selectedMinistryGroupId}
             setSelectedMinistryGroup={setSelectedMinistryGroup}
             closedMinistryGroups={closedMinistryGroups}
-            fetchMinistryGroups={fetchMinistryGroups}
             onClickToggle={onClickToggle}
           />
         ))}

@@ -8,8 +8,8 @@ import CustomPopup from '@/components/atoms/common/popup/custom-popup';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import EditMinistryGroup from '@/components/molecules/management/ministry/edit-ministry-group';
-import { MinistryGroupsApi } from '@/api/management/ministry/ministry-groups.api';
 import ToastPopup from '@/components/atoms/common/popup/toast-popup';
+import { MinistriesApi } from '@/api/management/ministry/ministries.api';
 
 const MinistryGroupInformationContainer = styled.div`
   display: flex;
@@ -67,17 +67,15 @@ const ContentContainer = styled.div`
 
 type MinistryGroupInformationProps = {
   ministryGroup: MinistryGroup;
-  fetchMinistryGroups: () => void;
 };
 
 const MinistryMinistryGroupInformation = ({
   ministryGroup,
-  fetchMinistryGroups,
 }: MinistryGroupInformationProps) => {
   const t = useI18n();
   const t_header = useScopedI18n('header');
   const t_popup = useScopedI18n('popup');
-  const ministryGroupsApi = new MinistryGroupsApi(false);
+  const ministriesApi = new MinistriesApi(false);
   const churchId = useSelector((state: RootState) => state.church.churchId);
 
   const [thrownError, setThrownError] = useState<Error | null>(null);
@@ -107,15 +105,12 @@ const MinistryMinistryGroupInformation = ({
   // 사역 그룹의 역할 불러오기
   const fetchMinistries = async () => {
     try {
-      const response = await ministryGroupsApi.getMinistryGroup({
+      const response = await ministriesApi.getMinistries({
         churchId,
         ministryGroupId: ministryGroup.id as string,
       });
 
-      const newMinistryGroup: MinistryGroup = response.data;
-      if (newMinistryGroup?.ministries) {
-        setMinistries(newMinistryGroup.ministries);
-      }
+      setMinistries(response.data.data);
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));
     }
@@ -174,8 +169,8 @@ const MinistryMinistryGroupInformation = ({
           ministryGroup={ministryGroup}
           ministries={ministries}
           onClickClose={onClickClose}
-          fetchMinistryGroups={fetchMinistryGroups}
           setIsToastShown={setIsToastShown}
+          fetchMinistries={fetchMinistries}
         />
       </CustomPopup>
       {isToastShown && (

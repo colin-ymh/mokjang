@@ -2,13 +2,13 @@ import React from 'react';
 import styled from 'styled-components';
 import { useParams } from 'next/navigation';
 
-import { GRAY } from '@/constants/styles/color';
+import { GRAY, MAIN } from '@/constants/styles/color';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import HeaderBar from '@/components/atoms/layout/header/header-bar';
 import { SIZE } from '@/constants/styles/style';
 import { useMainVisitationHeaderBarItems } from '@/hooks/layout/header-bar-items';
 
-import { useScopedI18n } from '../../../../../../locales/client';
+import { useScopedI18n } from '../../../../../../../locales/client';
 import AddVisitation from '@/components/organisms/visitation/add/add-visitation';
 import { MEDIA_MIN_WIDTH } from '@/constants/constant';
 import SlidePopup from '@/components/atoms/common/popup/slide-popup';
@@ -52,6 +52,7 @@ const HeaderBottomContainer = styled.div`
 `;
 
 type MainVisitationHeaderViewProps = {
+  isSaveEnabled: boolean;
   isAddVisitationOpened: boolean;
   onClickHeaderBar: (id: string) => void;
   onClickAddVisitation: () => void;
@@ -60,6 +61,7 @@ type MainVisitationHeaderViewProps = {
 };
 
 const MainVisitationHeaderView = ({
+  isSaveEnabled,
   isAddVisitationOpened,
   onClickHeaderBar,
   onClickAddVisitation,
@@ -98,6 +100,7 @@ const MainVisitationHeaderView = ({
         isShow={isAddVisitationOpened}
         onClickClose={onClickCloseModal}
         onClickDone={onClickSaveVisitation}
+        doneBackgroundColor={isSaveEnabled ? MAIN.DEFAULT : MAIN.LIGHT}
       >
         <AddVisitation />
       </SlidePopup>

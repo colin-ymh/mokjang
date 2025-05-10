@@ -9,6 +9,8 @@ import UserReducer from '@/redux/reducers/user-reducer';
 import TargetVisitation from '@/redux/reducers/target-visitation';
 import TargetGroup from '@/redux/reducers/target-group';
 import VisitationFilterReducer from '@/redux/reducers/visitation-filter-reducer';
+import TaskFilterReducer from '@/redux/reducers/task-filter-reducer';
+import TargetTask from '@/redux/reducers/target-task';
 
 const store = configureStore({
   reducer: {
@@ -18,8 +20,10 @@ const store = configureStore({
     memberRegister: MemberRegisterReducer,
     memberFilter: MemberFilterReducer,
     visitationFilter: VisitationFilterReducer,
+    taskFilter: TaskFilterReducer,
     targetMember: TargetMember,
     targetVisitation: TargetVisitation,
+    targetTask: TargetTask,
     targetGroup: TargetGroup,
   },
 });

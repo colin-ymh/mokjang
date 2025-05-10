@@ -1,210 +1,117 @@
-import styled from 'styled-components';
-import LabelInput from '@/components/atoms/common/input/label-input';
-import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import { BLANK } from '@/constants/constant';
-import { getFormattedDate, getFormattedTitle } from '@/utils/format';
-import { useI18n, useScopedI18n } from '../../../../../locales/client';
-import { BLACK, GRAY } from '@/constants/styles/color';
+import { getFormattedTitle } from '@/utils/format';
 import {
   VISITATION_METHOD,
   VISITATION_STATUS,
+  VisitationDetail,
 } from '@/models/visitation/visitation';
-import {
-  useVisitationMethodDropdownItems,
-  useVisitationStatusDropdownItems,
-} from '@/hooks/dropdown/dropdown-items';
-import LabelDropdown from '@/components/atoms/common/dropdown/label-dropdown';
-import MultiMemberDropdown from '@/components/atoms/common/dropdown/multi-member-dropdown';
 import { MemberDropdownType } from '@/components/atoms/common/dropdown/member-dropdown-item';
-import { MainText } from '@/components/atoms/common/text/main-text';
-import Quill from '@/components/atoms/common/input/quill';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 import { setTargetVisitation } from '@/redux/reducers/target-visitation';
-import { Member } from '@/models/member/member';
 import { DEFAULT_MEMBER } from '@/redux/reducers/member-register-reducer';
-import StatusDropdown from '@/components/atoms/common/dropdown/status-dropdown';
-import { getDateTimeFromString, getStringFromDateTime } from '@/utils/date';
-import { ko } from 'date-fns/locale';
-import CustomDatePicker from '@/vendor/date-picker/custom-date-picker';
+import { getStringFromDateTime } from '@/utils/date';
+import AddVisitationView from '@/components/organisms/visitation/add/add-visitation.view';
 
-const AddVisitationContainer = styled.div`
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  padding: 25px 20px 50px 20px;
-  gap: 20px;
-  overflow-y: auto;
-`;
-
-const LabelContainer = styled.div`
-  display: flex;
-  width: 100%;
-  flex-direction: column;
-  gap: 10px;
-`;
-
-const InputContainer = styled.div`
-  display: flex;
-  width: 100%;
-  flex-direction: column;
-`;
-
-const PeriodContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 10px;
-  border: 1px solid ${GRAY.DEFAULT};
-  border-radius: 5px;
-  height: 40px;
-  justify-content: flex-start;
-  align-items: center;
-  padding: 0 10px;
-`;
-
-const DetailContainer = styled.div`
-  display: flex;
-  width: 100%;
-  flex-direction: column;
-  gap: 10px;
-  padding: 10px 0;
-`;
-
-type AddVisitationProps = {};
-
-const AddVisitation = ({}: AddVisitationProps) => {
+const AddVisitation = () => {
   const { targetVisitation } = useSelector(
     (state: RootState) => state.targetVisitation
   );
   const dispatch = useDispatch<AppDispatch>();
 
-  const t = useI18n();
-  const t_placeholder = useScopedI18n('placeholder');
-
-  // ===== status =====
-  const statusDropdownItems = useVisitationStatusDropdownItems();
-
-  const onChangeStatus = (status: VISITATION_STATUS) => {
+  /* ── Status ── */
+  const onChangeStatus = (status: VISITATION_STATUS) =>
     dispatch(
       setTargetVisitation({ ...targetVisitation, visitationStatus: status })
     );
-  };
-  // ===== status =====
 
-  // ===== title =====
-  const titleRef = useRef<HTMLInputElement>(null);
-
-  const onChangeTitle = (event: ChangeEvent<HTMLInputElement>): void => {
+  /* ── Title ── */
+  const onChangeTitle = (e: ChangeEvent<HTMLInputElement>) =>
     dispatch(
       setTargetVisitation({
         ...targetVisitation,
-        visitationTitle: getFormattedTitle(event.target.value),
+        visitationTitle: getFormattedTitle(e.target.value),
       })
     );
-  };
-  // ===== title =====
 
-  // ===== period =====
-  const onChangeStartDate = (date: Date | null): void => {
-    if (date) {
-      dispatch(
-        setTargetVisitation({
-          ...targetVisitation,
-          visitationStartDate: getStringFromDateTime(date),
-        })
-      );
-    }
-  };
-  // ===== period =====
+  /* ── Period ── */
+  const onChangeStartDate = (d: Date | null) =>
+    d &&
+    dispatch(
+      setTargetVisitation({
+        ...targetVisitation,
+        visitationStartDate: getStringFromDateTime(d),
+      })
+    );
+  const onChangeEndDate = (d: Date | null) =>
+    d &&
+    dispatch(
+      setTargetVisitation({
+        ...targetVisitation,
+        visitationEndDate: getStringFromDateTime(d),
+      })
+    );
 
-  // ===== visited member =====
-  const visitedMemberRef = useRef<HTMLInputElement>(null);
-
-  // 선택된 교인들 (대상자)
+  /* ── Visited Members ── */
   const [visitedMembers, setVisitedMembers] = useState<MemberDropdownType[]>(
     []
   );
 
   useEffect(() => {
     if (targetVisitation.members) {
-      const newVisitedMembers = targetVisitation.members.map((member) => {
-        return {
-          value: member.id,
-          title: member.name,
-        };
-      });
-
-      setVisitedMembers(newVisitedMembers);
+      setVisitedMembers(
+        targetVisitation.members.map((m) => ({ value: m.id, title: m.name }))
+      );
     } else {
       setVisitedMembers([]);
     }
-  }, [targetVisitation.members]);
+  }, [targetVisitation.id]);
 
-  const onChangeVisitedMembers = (values: MemberDropdownType[]) => {
+  const onChangeVisitedMembers = (values: MemberDropdownType[]) =>
     setVisitedMembers(values);
-  };
 
-  // ===== visited member =====
+  /* ── Method ── */
+  const onChangeMethod = (m: VISITATION_METHOD) =>
+    dispatch(setTargetVisitation({ ...targetVisitation, visitationMethod: m }));
 
-  // ===== method =====
-  const methodItems = useVisitationMethodDropdownItems();
-
-  const onChangeMethod = (method: VISITATION_METHOD) => {
-    dispatch(
-      setTargetVisitation({ ...targetVisitation, visitationMethod: method })
-    );
-  };
-
-  // ===== method =====
-
-  // ===== instructor =====
-  const instructorRef = useRef<HTMLInputElement>(null);
-
-  // 담당자
+  /* ── Instructor ── */
   const [instructor, setInstructor] = useState<MemberDropdownType[]>([]);
 
   useEffect(() => {
     if (targetVisitation.instructorId) {
-      const newInstructor = {
-        value: targetVisitation.instructor.id,
-        title: targetVisitation.instructor.name,
-      };
-
-      setInstructor([newInstructor]);
+      setInstructor([
+        {
+          value: targetVisitation.instructor.id,
+          title: targetVisitation.instructor.name,
+        },
+      ]);
     } else {
       setInstructor([]);
     }
-  }, [targetVisitation.instructor]);
+  }, [targetVisitation.id]);
 
   const onChangeInstructor = (values: MemberDropdownType[]) => {
-    const newInstructor = values[0];
     setInstructor(values);
-
     dispatch(
       setTargetVisitation({
         ...targetVisitation,
-        instructorId: newInstructor ? newInstructor.value : BLANK,
+        instructorId: values[0] ? values[0].value : BLANK,
       })
     );
   };
 
-  // ===== instructor =====
-
-  // ===== receiver =====
-  const receiverRef = useRef<HTMLInputElement>(null);
-
-  // 선택된 보고대상자들
+  /* ── Receivers ── */
   const [receivers, setReceivers] = useState<MemberDropdownType[]>([]);
 
   useEffect(() => {
     if (targetVisitation.reports) {
-      const newReceivers = targetVisitation.reports.map((report) => {
-        return {
-          value: report.receiver.id,
-          title: report.receiver.name,
-        };
-      });
-      setReceivers(newReceivers);
+      setReceivers(
+        targetVisitation.reports.map((r) => ({
+          value: r.receiver.id,
+          title: r.receiver.name,
+        }))
+      );
     } else {
       setReceivers([]);
     }
@@ -212,98 +119,100 @@ const AddVisitation = ({}: AddVisitationProps) => {
 
   const onChangeReceivers = (values: MemberDropdownType[]) => {
     setReceivers(values);
-
-    const receiverIds = values.map((value) => {
-      return value.value;
-    });
-
-    dispatch(
-      setTargetVisitation({ ...targetVisitation, receiverIds: receiverIds })
-    );
-  };
-
-  // ===== receiver =====
-
-  const onChangeContent = (memberId: string, content: string) => {
-    const newDetails = targetVisitation.visitationDetails.map((detail) =>
-      detail.memberId === memberId
-        ? { ...detail, visitationContent: content }
-        : detail
-    );
-
     dispatch(
       setTargetVisitation({
         ...targetVisitation,
-        visitationDetails: newDetails,
+        receiverIds: values.map((v) => v.value),
       })
     );
   };
 
-  const onChangePray = (memberId: string, pray: string) => {
-    const newDetails = targetVisitation.visitationDetails.map((detail) =>
-      detail.memberId === memberId
-        ? { ...detail, visitationPray: pray }
-        : detail
-    );
+  /* ───────────────────────────── Local details (content / pray) ───────────────────────────── */
+  const createPlaceholderDetail = (): VisitationDetail => ({
+    id: BLANK,
+    memberId: BLANK,
+    visitationContent: BLANK,
+    visitationPray: BLANK,
+    member: DEFAULT_MEMBER,
+  });
 
-    dispatch(
-      setTargetVisitation({
-        ...targetVisitation,
-        visitationDetails: newDetails,
-      })
-    );
-  };
+  const [localDetails, setLocalDetails] = useState<VisitationDetail[]>(
+    targetVisitation.visitationDetails.length > 0
+      ? targetVisitation.visitationDetails
+      : [createPlaceholderDetail()]
+  );
 
+  /* Redux 에서 새로운 visitation 을 불러오면 로컬 detail 초기화 */
   useEffect(() => {
-    const newMembers = visitedMembers.map((member): Member => {
-      return { ...DEFAULT_MEMBER, id: member.value, name: member.title };
-    });
+    setLocalDetails((prev) =>
+      targetVisitation.visitationDetails.length > 0
+        ? targetVisitation.visitationDetails
+        : prev
+    );
+  }, [targetVisitation.id]);
 
-    const isSame =
-      JSON.stringify(targetVisitation.members) === JSON.stringify(newMembers);
+  /** content/pray 입력 핸들러 */
+  const onChangeContent = (memberId: string, content: string) =>
+    setLocalDetails((prev) =>
+      prev.map((d) =>
+        d.memberId === memberId ? { ...d, visitationContent: content } : d
+      )
+    );
 
-    if (!isSame) {
-      dispatch(
-        setTargetVisitation({ ...targetVisitation, members: newMembers })
-      );
-    }
+  const onChangePray = (memberId: string, pray: string) =>
+    setLocalDetails((prev) =>
+      prev.map((d) =>
+        d.memberId === memberId ? { ...d, visitationPray: pray } : d
+      )
+    );
 
-    const prevDetails = targetVisitation.visitationDetails;
-
-    // 대상자 모두 삭제
-    // 기존에 작성된 내용은 유지하고, 할당된 id 만 초기화
-    if (visitedMembers.length === 0) {
-      dispatch(
-        setTargetVisitation({
-          ...targetVisitation,
-          visitationDetails: [
-            { ...prevDetails[0], memberId: BLANK, member: DEFAULT_MEMBER },
-          ],
-        })
-      );
-    }
-
-    // 대상자 없음 => 생성
-    // 기존에 작성된 내용은 유지하고, id 만 새로 할당
-    else if (visitedMembers.length === 1) {
+  /** debounce: 500ms 동안 입력이 없을 때만 전역 상태 반영 */
+  useEffect(() => {
+    const timer = setTimeout(() => {
       dispatch(
         setTargetVisitation({
           ...targetVisitation,
-          visitationDetails: [
-            {
-              ...prevDetails[0],
-              memberId: visitedMembers[0].value,
-              member: { ...DEFAULT_MEMBER, name: visitedMembers[0].title },
-            },
-          ],
+          visitationDetails: localDetails,
         })
       );
-    }
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [localDetails]);
 
-    // 그 외
-    else {
+  /* ── visitedMembers ↔ localDetails 동기화 ── */
+  useEffect(() => {
+    const newMembers = visitedMembers.map((vm) => ({
+      ...DEFAULT_MEMBER,
+      id: vm.value,
+      name: vm.title,
+    }));
+
+    setLocalDetails((prev) => {
+      let next = [...prev];
+
+      // 1) 대상자 없음 (placeholder 유지)
+      if (visitedMembers.length === 0) {
+        if (next.length === 0) next.push(createPlaceholderDetail());
+        if (next.length > 1) next = [next[0]]; // 여전히 첫 번째 항목만 사용
+        return next;
+      }
+
+      // 2) 대상자 1명 & placeholder 변환
+      if (
+        visitedMembers.length === 1 &&
+        next.length === 1 &&
+        next[0].memberId === BLANK
+      ) {
+        next[0] = {
+          ...next[0],
+          memberId: visitedMembers[0].value,
+          member: { ...DEFAULT_MEMBER, name: visitedMembers[0].title },
+        };
+      }
+
+      // 3) 추가/삭제 반영
       const added = visitedMembers
-        .filter((vm) => !prevDetails.some((d) => d.memberId === vm.value))
+        .filter((vm) => !next.some((d) => d.memberId === vm.value))
         .map((vm) => ({
           id: BLANK,
           memberId: vm.value,
@@ -311,184 +220,36 @@ const AddVisitation = ({}: AddVisitationProps) => {
           visitationPray: BLANK,
           member: { ...DEFAULT_MEMBER, name: vm.title },
         }));
-
-      // 2) 제거된 멤버 필드 삭제
-      const updated = prevDetails.filter((d) =>
+      const updated = next.filter((d) =>
         visitedMembers.some((vm) => vm.value === d.memberId)
       );
+      return [...updated, ...added];
+    });
 
-      dispatch(
-        setTargetVisitation({
-          ...targetVisitation,
-          visitationDetails: [...updated, ...added],
-        })
-      );
-    }
+    // 전역 상태(멤버 목록)는 즉시 반영 (세부내용은 debounce)
+    dispatch(setTargetVisitation({ ...targetVisitation, members: newMembers }));
   }, [visitedMembers]);
 
-  // ===== Detail =====
-
+  const props = {
+    visitedMembers,
+    instructor,
+    receivers,
+    localDetails,
+    onChangeStatus,
+    onChangeTitle,
+    onChangeStartDate,
+    onChangeEndDate,
+    onChangeVisitedMembers,
+    onChangeMethod,
+    onChangeInstructor,
+    onChangeReceivers,
+    onChangeContent,
+    onChangePray,
+  };
   return (
-    <AddVisitationContainer>
-      {/* 상태 */}
-      <InputContainer>
-        <MainText>{t('status')}</MainText>
-        <StatusDropdown
-          value={targetVisitation.visitationStatus}
-          items={statusDropdownItems}
-          onChangeItem={onChangeStatus}
-          width={100}
-          height={40}
-        />
-      </InputContainer>
-
-      {/* 제목 */}
-      <InputContainer>
-        <LabelInput
-          ref={titleRef}
-          label={t('title')}
-          value={targetVisitation.visitationTitle}
-          onChange={onChangeTitle}
-          placeholder={t_placeholder('title')}
-          borderColor={GRAY.DEFAULT}
-          height={40}
-        />
-      </InputContainer>
-
-      {/* 기간 */}
-      <InputContainer>
-        <LabelContainer>
-          <MainText>{t('period')}</MainText>
-          <PeriodContainer>
-            <CustomDatePicker
-              value={targetVisitation.visitationStartDate}
-              selected={getDateTimeFromString(
-                targetVisitation.visitationStartDate
-              )}
-              onChange={onChangeStartDate}
-              dateFormat="yyyy-MM-dd"
-              placeholderText={t('startDate')}
-              showYearDropdown={true}
-              scrollableYearDropdown
-              yearDropdownItemNumber={50}
-              locale={ko}
-              // showTimeSelect={true}
-              showTimeInput={true}
-              showTimeCaption={true}
-              timeCaption={'시간'}
-              timeIntervals={15}
-              timeFormat="aa h:mm"
-            />
-            {/*<MainText*/}
-            {/*  color={!targetVisitation.visitationStartDate ? 'gray' : BLACK}*/}
-            {/*>*/}
-            {/*  {targetVisitation.visitationStartDate*/}
-            {/*    ? getFormattedDate(targetVisitation.visitationStartDate)*/}
-            {/*    : t('startDate')}*/}
-            {/*</MainText>*/}
-            <MainText>{'-'}</MainText>
-            <MainText
-              color={!targetVisitation.visitationEndDate ? 'gray' : BLACK}
-            >
-              {targetVisitation.visitationEndDate
-                ? getFormattedDate(targetVisitation.visitationEndDate)
-                : t('endDate')}
-            </MainText>
-          </PeriodContainer>
-        </LabelContainer>
-      </InputContainer>
-
-      {/* 대상자 */}
-      <InputContainer>
-        <LabelContainer>
-          <MainText>{t('visitedMember')}</MainText>
-          <MultiMemberDropdown
-            ref={visitedMemberRef}
-            values={visitedMembers}
-            onChangeValues={onChangeVisitedMembers}
-            height={40}
-            placeholder={
-              visitedMembers.length === 0 ? t_placeholder('name') : BLANK
-            }
-          />
-        </LabelContainer>
-      </InputContainer>
-
-      {/* 방식 */}
-      <LabelDropdown
-        label={t('method')}
-        value={targetVisitation.visitationMethod}
-        items={methodItems}
-        onChangeItem={onChangeMethod}
-        height={40}
-      />
-
-      {/* 담당자 */}
-      <InputContainer>
-        <LabelContainer>
-          <MainText>{t('instructor')}</MainText>
-          <MultiMemberDropdown
-            ref={instructorRef}
-            values={instructor}
-            onChangeValues={onChangeInstructor}
-            height={40}
-            isSingle={true}
-            placeholder={
-              instructor.length === 0 ? t_placeholder('name') : BLANK
-            }
-            // isUserMember={true}
-          />
-        </LabelContainer>
-      </InputContainer>
-
-      {targetVisitation.visitationDetails.map((detail) => (
-        <DetailContainer key={detail.memberId}>
-          {detail.member?.name &&
-            targetVisitation.visitationDetails.length !== 1 && (
-              <MainText fontWeight={600}>{detail.member.name}</MainText>
-            )}
-          {/* 내용 */}
-          <InputContainer>
-            <LabelContainer>
-              <MainText>{t('visitationContent')}</MainText>
-              <Quill
-                value={detail.visitationContent}
-                onChange={(event) => onChangeContent(detail.memberId, event)}
-                minHeight={120}
-                placeholder={t_placeholder('visitationContent')}
-              />
-            </LabelContainer>
-          </InputContainer>
-
-          {/* 기도제목 */}
-          <InputContainer>
-            <LabelContainer>
-              <MainText>{t('visitationPray')}</MainText>
-              <Quill
-                value={detail.visitationPray}
-                onChange={(event) => onChangePray(detail.memberId, event)}
-                minHeight={120}
-                placeholder={t_placeholder('visitationPray')}
-              />
-            </LabelContainer>
-          </InputContainer>
-        </DetailContainer>
-      ))}
-
-      {/* 보고대상자 */}
-      <InputContainer>
-        <LabelContainer>
-          <MainText>{t('receiver')}</MainText>
-          <MultiMemberDropdown
-            ref={receiverRef}
-            values={receivers}
-            onChangeValues={onChangeReceivers}
-            height={40}
-            placeholder={receivers.length === 0 ? t_placeholder('name') : BLANK}
-          />
-        </LabelContainer>
-      </InputContainer>
-    </AddVisitationContainer>
+    <>
+      <AddVisitationView {...props} />
+    </>
   );
 };
 

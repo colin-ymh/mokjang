@@ -4,6 +4,7 @@ import {
   EDUCATION_TERM,
 } from '@/constants/management/education-term-column';
 import { VISITATION } from '@/constants/visitation/visitation-column';
+import { TASK } from '@/constants/task/task-column';
 
 export const getTranslatedMemberColumn = (
   t: (key: string, ...args: any[]) => string,
@@ -72,4 +73,11 @@ export const getTranslatedVisitationColumn = (
       | VISITATION.DATE
       | VISITATION.INSTRUCTOR
   );
+};
+
+export const getTranslatedTaskColumn = (
+  t: (key: string, ...args: any[]) => string,
+  id: TASK
+): string => {
+  return t(id as TASK.TITLE | TASK.STATUS | TASK.DATE | TASK.IN_CHARGE);
 };

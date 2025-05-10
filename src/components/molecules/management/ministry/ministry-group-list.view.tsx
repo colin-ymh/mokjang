@@ -3,6 +3,8 @@ import styled from 'styled-components';
 
 import { MinistryGroup } from '@/models/management/management';
 import ManagementMinistryGroupItem from '@/components/atoms/management/ministry/management-ministry-group-item';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
 
 const FilterContainer = styled.div`
   display: flex;
@@ -12,22 +14,19 @@ const FilterContainer = styled.div`
 `;
 
 type MinistryGroupListViewProps = {
-  ministryGroups: MinistryGroup[];
   closedMinistryGroups: Set<number>;
   selectedMinistryGroupId: string | null;
   setSelectedMinistryGroup: Dispatch<SetStateAction<MinistryGroup>>;
-  fetchMinistryGroups: () => void;
   onClickToggle: (id: string) => void;
 };
 
 const MinistryMinistryGroupListView = ({
-  ministryGroups,
   closedMinistryGroups,
   selectedMinistryGroupId,
   setSelectedMinistryGroup,
-  fetchMinistryGroups,
   onClickToggle,
 }: MinistryGroupListViewProps) => {
+  const { ministryGroups } = useSelector((state: RootState) => state.church);
   return (
     <FilterContainer>
       {ministryGroups.map((ministryGroup) => (
@@ -38,7 +37,6 @@ const MinistryMinistryGroupListView = ({
           selectedMinistryGroupId={selectedMinistryGroupId}
           setSelectedMinistryGroup={setSelectedMinistryGroup}
           closedMinistryGroups={closedMinistryGroups}
-          fetchMinistryGroups={fetchMinistryGroups}
           onClickToggle={onClickToggle}
         />
       ))}

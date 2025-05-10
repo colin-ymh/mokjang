@@ -2,12 +2,21 @@ import axios, { AxiosResponse } from 'axios';
 import { SERVER_URL, TEST_SERVER_URL } from '@/constants/state/url';
 import { ORDER_DIRECTION } from '@/constants/constant';
 import { CustomError } from '@/api/error/error';
+import qs from 'qs';
+
+export enum MINISTRY_ORDER {
+  CREATED_AT = 'createdAt',
+  UPDATED_AT = 'updatedAt',
+  NAME = 'name',
+}
 
 type GetMinistriesParams = {
   churchId: string;
   ministryGroupId?: string;
-  order?: string;
+  order?: MINISTRY_ORDER;
   orderDirection?: ORDER_DIRECTION;
+  take?: number;
+  page?: number;
 };
 
 type CreateMinistryParams = {
@@ -56,12 +65,43 @@ export class MinistriesApi {
   public getMinistries = async (
     params: GetMinistriesParams
   ): Promise<AxiosResponse> => {
-    const { churchId } = params;
+    const {
+      churchId,
+      take = 5,
+      page = 1,
+      order,
+      orderDirection,
+      ministryGroupId,
+    } = params;
+
+    const queryParams: Record<string, any> = Object.fromEntries(
+      Object.entries({
+        take,
+        page,
+        order,
+        orderDirection,
+        ministryGroupId,
+      }).filter(
+        ([_, value]) =>
+          value !== undefined &&
+          value !== '' &&
+          !(Array.isArray(value) && value.length === 0)
+      )
+    );
 
     const url = `${this._url}/churches/${churchId}/management/ministries`;
 
     try {
-      return await axios.get(url);
+      return await axios.get(url, {
+        params: queryParams,
+        paramsSerializer: (params) => {
+          return qs.stringify(params, {
+            arrayFormat: 'repeat',
+            skipNulls: true,
+            encodeValuesOnly: true,
+          });
+        },
+      });
     } catch (serverError: any) {
       if (serverError.response) {
         const { message, error, statusCode } = serverError.response.data;

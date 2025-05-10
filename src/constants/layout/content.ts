@@ -19,7 +19,12 @@ export enum ADMINISTRATOR_CONTENT_ID {
   ADD = 'add',
 }
 
-export enum VISITING_CONTENT_ID {
+export enum VISITATION_CONTENT_ID {
+  ALL = 'all',
+  MY = 'my',
+}
+
+export enum TASK_CONTENT_ID {
   ALL = 'all',
   MY = 'my',
 }

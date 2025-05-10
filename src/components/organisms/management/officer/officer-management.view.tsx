@@ -66,7 +66,6 @@ const OfficerInformationHeader = styled.div`
 
 type OfficerManagementViewProps = {
   officers: Officer[];
-  fetchOfficers: () => void;
   selectedOfficer: Officer;
   setSelectedOfficer: Dispatch<SetStateAction<Officer>>;
   isAddModalShown: boolean;
@@ -79,7 +78,6 @@ type OfficerManagementViewProps = {
 
 const OfficerManagementView = ({
   officers,
-  fetchOfficers,
   selectedOfficer,
   setSelectedOfficer,
   isAddModalShown,
@@ -113,7 +111,6 @@ const OfficerManagementView = ({
         {/* 직분 목록 */}
         <OfficerList
           officers={officers}
-          fetchOfficers={fetchOfficers}
           selectedOfficerId={selectedOfficer.id}
           setSelectedOfficer={setSelectedOfficer}
         />

@@ -1,9 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { GRAY, WHITE } from '@/constants/styles/color';
+import { GRAY, MAIN, WHITE } from '@/constants/styles/color';
 import Button from '@/components/atoms/common/button/button';
-import { useScopedI18n } from '../../../../../locales/client';
 
 const FooterContainer = styled.header`
   display: flex;
@@ -36,6 +35,9 @@ type PopupFooterViewProps = {
   onClickDone?: () => void;
   cancelText: string;
   doneText: string;
+  cancelBackgroundColor?: string;
+  doneBackgroundColor?: string;
+  doneDisabled?: boolean;
 };
 
 const PopupFooterView = ({
@@ -43,9 +45,10 @@ const PopupFooterView = ({
   onClickDone,
   cancelText,
   doneText,
+  cancelBackgroundColor,
+  doneBackgroundColor,
+  doneDisabled,
 }: PopupFooterViewProps) => {
-  const t_button = useScopedI18n('button');
-
   return (
     <FooterContainer>
       <FooterLeft></FooterLeft>
@@ -57,13 +60,14 @@ const PopupFooterView = ({
           width={80}
           height={35}
           color={GRAY.DARK}
-          backgroundColor={WHITE}
+          backgroundColor={cancelBackgroundColor || WHITE}
           borderColor={GRAY.SEMI_LIGHT}
         />
         {onClickDone && (
           <Button
             text={doneText}
             onClick={onClickDone}
+            backgroundColor={doneBackgroundColor || MAIN.DEFAULT}
             width={80}
             height={35}
           />

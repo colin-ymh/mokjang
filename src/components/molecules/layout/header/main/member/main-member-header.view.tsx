@@ -7,7 +7,7 @@ import { MainText } from '@/components/atoms/common/text/main-text';
 import { useMainMemberHeaderBarItems } from '@/hooks/layout/header-bar-items';
 import { DIRECTION, SIZE } from '@/constants/styles/style';
 
-import { useScopedI18n } from '../../../../../../locales/client';
+import { useScopedI18n } from '../../../../../../../locales/client';
 import { MEDIA_MIN_WIDTH } from '@/constants/constant';
 import SlidePopup from '@/components/atoms/common/popup/slide-popup';
 import GroupFilter from '@/components/atoms/layout/side/main-side/group-filter';

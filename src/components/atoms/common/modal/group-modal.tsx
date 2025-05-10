@@ -168,7 +168,7 @@ const GroupModal = ({
       groupRolesApi
         .getGroupRoles({ churchId, groupId: selectedGroup.id })
         .then((response) => {
-          const newRoles: GroupRole[] = response.data;
+          const newRoles: GroupRole[] = response.data.data;
           const newRoleItems = newRoles.map((role) => {
             return { value: role.id, title: role.role };
           });

@@ -2,7 +2,7 @@ import {
   ADMINISTRATOR_CONTENT_ID,
   CHURCH_CONTENT_ID,
   MEMBER_CONTENT_ID,
-  VISITING_CONTENT_ID,
+  VISITATION_CONTENT_ID,
 } from '@/constants/layout/content';
 import {
   EDUCATION_MANAGEMENT_HEADER_ID,
@@ -37,16 +37,33 @@ export const useMainMemberHeaderBarItems = () => {
 };
 
 export const useMainVisitationHeaderBarItems = () => {
-  const t_visitingContent = useScopedI18n('visiting-content');
+  const t_visitationContent = useScopedI18n('visitation-content');
 
   const items = [
     {
-      id: VISITING_CONTENT_ID.ALL,
-      title: t_visitingContent(VISITING_CONTENT_ID.ALL),
+      id: VISITATION_CONTENT_ID.ALL,
+      title: t_visitationContent(VISITATION_CONTENT_ID.ALL),
     },
     {
-      id: VISITING_CONTENT_ID.MY,
-      title: t_visitingContent(VISITING_CONTENT_ID.MY),
+      id: VISITATION_CONTENT_ID.MY,
+      title: t_visitationContent(VISITATION_CONTENT_ID.MY),
+    },
+  ];
+
+  return items;
+};
+
+export const useMainTaskHeaderBarItems = () => {
+  const t_visitationContent = useScopedI18n('visitation-content');
+
+  const items = [
+    {
+      id: VISITATION_CONTENT_ID.ALL,
+      title: t_visitationContent(VISITATION_CONTENT_ID.ALL),
+    },
+    {
+      id: VISITATION_CONTENT_ID.MY,
+      title: t_visitationContent(VISITATION_CONTENT_ID.MY),
     },
   ];
 
@@ -54,12 +71,12 @@ export const useMainVisitationHeaderBarItems = () => {
 };
 
 export const useMainEducationHeaderBarItems = () => {
-  const t_visitingContent = useScopedI18n('visiting-content');
+  const t_visitationContent = useScopedI18n('visitation-content');
 
   const items = [
     {
-      id: VISITING_CONTENT_ID.ALL,
-      title: t_visitingContent(VISITING_CONTENT_ID.ALL),
+      id: VISITATION_CONTENT_ID.ALL,
+      title: t_visitationContent(VISITATION_CONTENT_ID.ALL),
     },
   ];
 

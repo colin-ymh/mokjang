@@ -14,11 +14,11 @@ import VisitationTableHeader from '@/components/atoms/visitation/visitation-tabl
 import { BLANK_HEADER } from '@/redux/reducers/member-filter-reducer';
 import { useI18n } from '../../../../locales/client';
 import { getFormattedDate } from '@/utils/format';
-import { getStatusColor } from '@/utils/color';
+import { getVisitationStatusColor } from '@/utils/color';
 import { getRandomImage } from '@/utils/image';
 import { MEMBER } from '@/constants/member/member-column';
 
-// 1. 컬럼별 PX 폭 (마지막 REMARKS만 auto 할 예정)
+// 1. 컬럼별 PX 폭
 const getColumnWidth = (id: string) => {
   switch (id) {
     case VISITATION.TITLE:
@@ -223,7 +223,9 @@ const VisitationTableView = ({
       case VISITATION.STATUS:
         return (
           <StatusContainer>
-            <ColoredDot color={getStatusColor(visitation.visitationStatus)} />
+            <ColoredDot
+              color={getVisitationStatusColor(visitation.visitationStatus)}
+            />
             <MainText>{t(visitation?.visitationStatus)}</MainText>
           </StatusContainer>
         );

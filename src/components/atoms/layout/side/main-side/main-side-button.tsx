@@ -46,6 +46,9 @@ const MainSideButton = ({ id, title }: SideBarButtonProps) => {
       case MAIN_HEADER_ID.EDUCATION:
         router.push(`admin/main/education/all`);
         return;
+      case MAIN_HEADER_ID.TASK:
+        router.push(`admin/main/task/all`);
+        return;
       default:
         router.push(`admin/main/${id}`);
     }

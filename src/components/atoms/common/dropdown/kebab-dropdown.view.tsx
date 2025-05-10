@@ -117,7 +117,10 @@ const KebabDropdownView = ({
           <DropdownItem
             key={index}
             item={item}
-            onClick={item.onClick}
+            onClick={() => {
+              item.onClick();
+              onClickKebab();
+            }}
             isSelected={false}
             isFocused={focusedIndex === index}
           />

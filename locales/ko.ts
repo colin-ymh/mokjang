@@ -14,6 +14,11 @@ export default {
 
   title: '제목',
 
+  inChargeId: '담당자',
+  taskStatus: '상태',
+  taskDate: '업무일자',
+  comment: '내용',
+
   visitedMember: '대상자',
   receiver: '보고대상자',
 
@@ -21,7 +26,7 @@ export default {
   visitationPray: '기도제목',
   visitationTitle: '제목',
   visitationDate: '심방일자',
-  visitationMethod: '심방 방식',
+  visitationMethod: '심방방식',
   visitationStatus: '상태',
   visitationType: '심방 종류',
   instructorId: '담당자',
@@ -161,8 +166,12 @@ export default {
 
   /*-------------------title (popup title)-------------------*/
   'title.memberRegister': '교인 등록',
+
   'title.addVisitation': '심방 추가',
   'title.editVisitation': '심방 수정',
+
+  'title.addTask': '업무 추가',
+  'title.editTask': '업무 수정',
   /*-------------------title (popup title)-------------------*/
 
   /*-------------------header (side bar button)-------------------*/
@@ -201,8 +210,8 @@ export default {
   'administrator-content.setting': '관리자 설정',
   'administrator-content.add': '관리자 추가',
 
-  'visiting-content.all': '전체',
-  'visiting-content.my': '내 심방',
+  'visitation-content.all': '전체',
+  'visitation-content.my': '내 심방',
 
   /*-------------------content (header bar button)-------------------*/
 
@@ -264,7 +273,10 @@ export default {
   'button.addMember': '교인 추가',
   'button.saveTerm': '기수 추가하기',
   'button.addVisitation': '심방 입력하기',
+  'button.addTask': '업무 입력하기',
   'button.filterVisitationDate': '기간',
+  'button.filterTaskDate': '기간',
+  'button.setting': '설정',
   /*-------------------button-------------------*/
 
   /*-------------------placeholder-------------------*/
@@ -301,6 +313,7 @@ export default {
   'placeholder.title': '제목을 입력해주세요.',
   'placeholder.visitationContent': '심방 내용을 입력해주세요.',
   'placeholder.visitationPray': '기도 제목을 입력해주세요.',
+  'placeholder.comment': '업무 내용을 입력해주세요.',
   /*-------------------placeholder-------------------*/
 
   /*-------------------radiobutton-------------------*/
@@ -348,5 +361,8 @@ export default {
 
   'popup.deleteVisitationTitle': '해당 심방을 삭제하시겠습니까?',
   'popup.deleteVisitationBody': '삭제된 심방은 복구할 수 없습니다.',
+
+  'popup.deleteTaskTitle': '해당 업무을 삭제하시겠습니까?',
+  'popup.deleteTaskBody': '삭제된 업무은 복구할 수 없습니다.',
   /*-------------------popup-------------------*/
 } as const;

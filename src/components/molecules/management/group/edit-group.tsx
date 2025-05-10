@@ -30,6 +30,7 @@ type EditGroupProps = {
   roles: GroupRole[];
   onClickClose: () => void;
   setIsToastShown: Dispatch<SetStateAction<boolean>>;
+  fetchRoles: () => void;
 };
 
 const EditGroup = ({
@@ -37,6 +38,7 @@ const EditGroup = ({
   roles,
   onClickClose,
   setIsToastShown,
+  fetchRoles,
 }: EditGroupProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const t_popup = useScopedI18n('popup');
@@ -157,6 +159,7 @@ const EditGroup = ({
 
       // 상태 초기화 및 리렌더링
       dispatch(fetchGroups());
+      fetchRoles();
       onClickClose();
       setNewRoles([]);
       setSelectedRole(DEFAULT_GROUP_ROLE);

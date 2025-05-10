@@ -6,7 +6,7 @@ import { getTrimmedString } from '@/utils/format';
 import { VISITATION } from '@/constants/visitation/visitation-column';
 import { BLANK } from '@/constants/constant';
 import VisitationRowView, {
-  SEARCH_FILTER,
+  VISITATION_SEARCH_FILTER,
 } from '@/components/molecules/visitation/visitation-row.view';
 import { VisitationFilteredItemType } from '@/components/atoms/visitation/visitation-filtered-item';
 import { setVisitationFilter } from '@/redux/reducers/visitation-filter-reducer';
@@ -16,16 +16,33 @@ const VisitationRow = () => {
   const { visitationFilter } = useSelector(
     (state: RootState) => state.visitationFilter
   );
-  // 목록 설정  모달 on off
-  const [isAddFilterShown, setIsAddFilterShown] = useState<boolean>(false);
+  // 기간 설정  모달 on off
+  const [isModalShown, setIsAddFilterShown] = useState<boolean>(false);
 
   // 목록 설정 모달 열기
-  const onClickTableSetting = () => {
-    setIsAddFilterShown(!isAddFilterShown);
+  const onClickPeriodModal = () => {
+    setIsAddFilterShown(!isModalShown);
+  };
+
+  // 목록 설정 닫기
+  const onClickClosePeriodModal = () => {
+    setIsAddFilterShown(false);
+  };
+
+  // 기간 저장
+  const onClickSavePeriod = (startDate: string, endDate: string) => {
+    dispatch(
+      setVisitationFilter({
+        ...visitationFilter,
+        [VISITATION.FROM_DATE]: startDate,
+        [VISITATION.TO_DATE]: endDate,
+      })
+    );
+    setIsAddFilterShown(false);
   };
 
   // 검색 필터 주제
-  const [searchFilter, setSearchFilter] = useState<SEARCH_FILTER>(
+  const [searchFilter, setSearchFilter] = useState<VISITATION_SEARCH_FILTER>(
     VISITATION.TITLE
   );
   // 검색 내용 ref
@@ -39,7 +56,7 @@ const VisitationRow = () => {
   >([]);
 
   // 검색 주제 선택
-  const onClickSearchFilterItem = (value: SEARCH_FILTER) => {
+  const onClickSearchFilterItem = (value: VISITATION_SEARCH_FILTER) => {
     setSearchFilter(value);
   };
 
@@ -88,7 +105,8 @@ const VisitationRow = () => {
         value: visitationFilter.visitationType,
       });
     }
-    // 등록일
+
+    // 일자
     if (
       visitationFilter.fromVisitationDate ||
       visitationFilter.toVisitationDate
@@ -113,18 +131,21 @@ const VisitationRow = () => {
     setFilteredItems(newFilterItems);
   }, [visitationFilter]);
 
+  useEffect(() => {}, []);
+
   const props = {
-    isAddFilterShown,
+    isModalShown,
     searchFilter,
     searchValue,
     searchRef,
     filteredItems,
-    setIsAddFilterShown,
-    onClickTableSetting,
+    onClickPeriodModal,
     onClickSearchFilterItem,
     onChangeSearchValue,
     onClickSearch,
     onKeyDown,
+    onClickClosePeriodModal,
+    onClickSavePeriod,
   };
 
   return (

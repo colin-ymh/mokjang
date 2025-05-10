@@ -6,7 +6,7 @@ import { MainText } from '@/components/atoms/common/text/main-text';
 import HeaderBar from '@/components/atoms/layout/header/header-bar';
 import { SIZE } from '@/constants/styles/style';
 
-import { useScopedI18n } from '../../../../../../locales/client';
+import { useScopedI18n } from '../../../../../../../locales/client';
 import { useParams } from 'next/navigation';
 import { useMainEducationHeaderBarItems } from '@/hooks/layout/header-bar-items';
 
