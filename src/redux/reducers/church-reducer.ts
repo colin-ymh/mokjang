@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { BLANK } from '@/constants/constant';
 import {
-  Education,
   Group,
   Ministry,
   MinistryGroup,
@@ -19,7 +18,6 @@ type ChurchState = {
   officers: Officer[];
   ministryGroups: MinistryGroup[];
   ministries: Ministry[];
-  educations: Education[];
   groups: Group[];
 };
 
@@ -29,7 +27,6 @@ const initialState: ChurchState = {
   officers: [],
   ministryGroups: [],
   ministries: [],
-  educations: [],
   groups: [],
 };
 
@@ -143,9 +140,6 @@ const ChurchSlice = createSlice({
     setMinistries(state, action: PayloadAction<Ministry[]>) {
       state.ministries = action.payload;
     },
-    setEducations(state, action: PayloadAction<Education[]>) {
-      state.educations = action.payload;
-    },
     setGroups(state, action: PayloadAction<Group[]>) {
       state.groups = action.payload;
     },
@@ -171,7 +165,6 @@ export const {
   setOfficers,
   setMinistryGroups,
   setMinistries,
-  setEducations,
   setGroups,
 } = ChurchSlice.actions;
 

@@ -8,6 +8,7 @@ type PopupFooterProps = {
   doneText: string;
   cancelBackgroundColor?: string;
   doneBackgroundColor?: string;
+  doneDisabled?: boolean;
 };
 
 const PopupFooter = ({
@@ -17,6 +18,7 @@ const PopupFooter = ({
   doneText,
   cancelBackgroundColor,
   doneBackgroundColor,
+  doneDisabled,
 }: PopupFooterProps) => {
   const props = {
     onClickCancel,
@@ -25,6 +27,7 @@ const PopupFooter = ({
     doneText,
     cancelBackgroundColor,
     doneBackgroundColor,
+    doneDisabled,
   };
   return (
     <>

@@ -9,7 +9,7 @@ import {
 import { MemberDropdownType } from '@/components/atoms/common/dropdown/member-dropdown-item';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
-import { setTargetVisitation } from '@/redux/reducers/target-visitation';
+import { setTargetVisitation } from '@/redux/reducers/target-visitation-reducer';
 import { DEFAULT_MEMBER } from '@/redux/reducers/member-register-reducer';
 import { getStringFromDateTime } from '@/utils/date';
 import AddVisitationView from '@/components/organisms/visitation/add/add-visitation.view';

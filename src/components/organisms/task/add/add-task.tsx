@@ -5,7 +5,7 @@ import { TASK_STATUS } from '@/models/task/task';
 import { MemberDropdownType } from '@/components/atoms/common/dropdown/member-dropdown-item';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
-import { setTargetTask } from '@/redux/reducers/target-task';
+import { setTargetTask } from '@/redux/reducers/target-task-reducer';
 import { getStringFromDateTime } from '@/utils/date';
 import AddTaskView from '@/components/organisms/task/add/add-task.view';
 

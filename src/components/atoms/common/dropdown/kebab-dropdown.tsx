@@ -112,6 +112,7 @@ const KebabDropdown = ({
         isOpened={isOpened}
         onClick={onClickBackground}
         blur={backgroundBlur}
+        zIndex={10}
       />
       <KebabDropdownView {...propsForView} />
     </>

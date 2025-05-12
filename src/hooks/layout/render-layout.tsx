@@ -2,6 +2,7 @@ import { Dispatch, ReactNode, SetStateAction } from 'react';
 
 import {
   CHURCH_CONTENT_ID,
+  EDUCATION_CONTENT_ID,
   HOME_CONTENT_ID,
   MEMBER_CONTENT_ID,
 } from '@/constants/layout/content';
@@ -21,14 +22,9 @@ import InformationList from '@/components/molecules/member/information/member-in
 import FamilyInformationList from '@/components/molecules/member/information/family-information-list';
 import MemberEducation from '@/components/molecules/member/information/member-education';
 import GroupManagement from '@/components/organisms/management/group/group-management';
-import {
-  Education,
-  Group,
-  MinistryGroup,
-} from '@/models/management/management';
+import { Group, MinistryGroup } from '@/models/management/management';
 import MemberGroup from '@/components/molecules/member/information/member-group';
 import OfficerManagement from '@/components/organisms/management/officer/officer-management';
-import EducationTermList from '@/components/molecules/management/education/education-term-list';
 import MinistryGroupInformation from '@/components/molecules/management/ministry/ministry-group-information';
 import MinistryGroupMember from '@/components/molecules/management/ministry/ministry-group-member';
 import MinistryGroupManagement from '@/components/organisms/management/ministry/ministry-group-management';
@@ -43,10 +39,13 @@ import ManagementChurchHeader from '@/components/molecules/layout/header/managem
 import ManagementAdministratorHeader from '@/components/molecules/layout/header/management/management-administrator-header';
 import MainVisitationHeader from '@/components/molecules/layout/header/main/visitation/main-visitation-header';
 import MainEducationHeader from '@/components/molecules/layout/header/main/education/main-education-header';
-import EducationManagement from '@/components/organisms/management/education/education-management';
 import VisitationList from '@/components/organisms/visitation/list/visitation-list';
 import TaskList from '@/components/organisms/task/list/task-list';
 import MainTaskHeader from '@/components/molecules/layout/header/main/task/main-task-header';
+import EducationList from '@/components/organisms/education/education/list/education-list';
+import { Education } from '@/models/education/education';
+import InProgressEducationList from '@/components/organisms/education/in-progress/in-progress-education-list';
+import EducationTermList from '@/components/organisms/education/education-term/list/education-term-list';
 
 export const getSide = (id: string) => {
   switch (id) {
@@ -74,6 +73,7 @@ export const getHeader = (id: string) => {
       return <MainVisitationHeader />;
     case MAIN_HEADER_ID.EDUCATION:
       return <MainEducationHeader />;
+
     case MAIN_HEADER_ID.TASK:
       return <MainTaskHeader />;
     case MAIN_HEADER_ID.CALENDAR:
@@ -97,7 +97,7 @@ export const getContent = (id: string, headerId: string | null): ReactNode => {
       } else if (headerId === MAIN_HEADER_ID.VISITATION) {
         return <VisitationList />;
       } else if (headerId === MAIN_HEADER_ID.EDUCATION) {
-        return <EducationManagement />;
+        return <EducationList />;
       } else if (headerId === MAIN_HEADER_ID.TASK) {
         return <TaskList />;
       } else {
@@ -106,6 +106,7 @@ export const getContent = (id: string, headerId: string | null): ReactNode => {
     // 홈
     case HOME_CONTENT_ID.HOME:
       return null;
+
     // 교인 관리
     // case MEMBER_CONTENT_ID.ALL:
     //   return <MemberList />;
@@ -113,6 +114,13 @@ export const getContent = (id: string, headerId: string | null): ReactNode => {
       return <MemberList />;
     case MEMBER_CONTENT_ID.NEW:
       return <MemberList isNewMember={true} />;
+
+    // 교육
+    case EDUCATION_CONTENT_ID.IN_PROGRESS:
+      return <InProgressEducationList />;
+    case EDUCATION_CONTENT_ID.TERM:
+      return <EducationTermList />;
+
     // 교회 설정
     case CHURCH_CONTENT_ID.GROUP:
       return <GroupManagement />;
@@ -186,6 +194,6 @@ export const getEducationManagementContent = (
 ) => {
   switch (contentId) {
     case EDUCATION_MANAGEMENT_HEADER_ID.TERM:
-      return <EducationTermList education={education} />;
+      return <></>;
   }
 };

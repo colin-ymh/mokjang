@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 import { TASK_STATUS } from '@/models/task/task';
-import { setTargetTask } from '@/redux/reducers/target-task';
+import { setTargetTask } from '@/redux/reducers/target-task-reducer';
 import { TasksApi } from '@/api/tasks/tasks.api';
 import { setTasks } from '@/redux/reducers/task-filter-reducer';
 import TaskInformationView from '@/components/organisms/task/information/task-information.view';

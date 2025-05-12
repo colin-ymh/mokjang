@@ -20,6 +20,7 @@ export type PopupLayoutProps = {
   cancelBackgroundColor?: string;
   doneBackgroundColor?: string;
   isFooterShown?: boolean;
+  doneDisabled?: boolean;
   children: React.ReactNode;
 };
 
@@ -33,6 +34,7 @@ const PopupLayout = ({
   cancelBackgroundColor,
   doneBackgroundColor,
   isFooterShown = true,
+  doneDisabled = false,
   children,
 }: PopupLayoutProps): JSX.Element => {
   const t_button = useScopedI18n('button');
@@ -56,6 +58,7 @@ const PopupLayout = ({
             doneText={doneText || t_button('save')}
             cancelBackgroundColor={cancelBackgroundColor}
             doneBackgroundColor={doneBackgroundColor}
+            doneDisabled={doneDisabled}
           />
         )}
       </PopupContainer>

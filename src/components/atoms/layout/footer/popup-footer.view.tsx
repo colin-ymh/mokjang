@@ -70,6 +70,7 @@ const PopupFooterView = ({
             backgroundColor={doneBackgroundColor || MAIN.DEFAULT}
             width={80}
             height={35}
+            disabled={doneDisabled}
           />
         )}
       </FooterRight>

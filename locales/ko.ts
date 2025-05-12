@@ -67,6 +67,7 @@ export default {
 
   educationList: '교육 목록',
   educationName: '교육명',
+  educationDescription: '내용',
   educationStatus: '상태',
   educationInformation: '교육 정보',
   educationProcess: '진행사항',
@@ -172,6 +173,12 @@ export default {
 
   'title.addTask': '업무 추가',
   'title.editTask': '업무 수정',
+
+  'title.addEducation': '교육 추가',
+  'title.editEducation': '교육 수정',
+
+  'title.addEducationTerm': '기수 추가',
+  'title.editEducationTerm': '기수 수정',
   /*-------------------title (popup title)-------------------*/
 
   /*-------------------header (side bar button)-------------------*/
@@ -212,6 +219,9 @@ export default {
 
   'visitation-content.all': '전체',
   'visitation-content.my': '내 심방',
+
+  'education-content.all': '전체',
+  'education-content.inProgress': '진행중',
 
   /*-------------------content (header bar button)-------------------*/
 
@@ -274,6 +284,8 @@ export default {
   'button.saveTerm': '기수 추가하기',
   'button.addVisitation': '심방 입력하기',
   'button.addTask': '업무 입력하기',
+  'button.addEducation': '교육 추가하기',
+  'button.addEducationTerm': '기수 추가하기',
   'button.filterVisitationDate': '기간',
   'button.filterTaskDate': '기간',
   'button.setting': '설정',
@@ -286,6 +298,7 @@ export default {
   'placeholder.ministryName': '사역명을 입력해주세요.',
   'placeholder.officerName': '직분명을 입력해주세요.',
   'placeholder.educationName': '교육명을 입력해주세요.',
+  'placeholder.educationDescription': '내용을 입력해주세요.',
   'placeholder.mobilePhone': '휴대전화 번호를 입력해주세요.',
   'placeholder.birth': '생년월일을 입력해주세요. (yyyy-mm-dd)',
   'placeholder.homePhone': '집 전화번호를 입력해주세요.',
@@ -314,6 +327,7 @@ export default {
   'placeholder.visitationContent': '심방 내용을 입력해주세요.',
   'placeholder.visitationPray': '기도 제목을 입력해주세요.',
   'placeholder.comment': '업무 내용을 입력해주세요.',
+
   /*-------------------placeholder-------------------*/
 
   /*-------------------radiobutton-------------------*/
@@ -334,6 +348,9 @@ export default {
 
   'popup.deleteEducationTitle': '해당 교육을 삭제하시겠습니까?',
   'popup.deleteEducationBody': '삭제된 교육은 복구할 수 없습니다.',
+
+  'popup.deleteEducationTermTitle': '해당 기수를 삭제하시겠습니까?',
+  'popup.deleteEducationTermBody': '삭제된 기수는 복구할 수 없습니다.',
 
   'popup.deleteOfficerTitle': '해당 직분을 삭제하시겠습니까?',
   'popup.deleteOfficerBody': '삭제된 직분은 복구할 수 없습니다.',

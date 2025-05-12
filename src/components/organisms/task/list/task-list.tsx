@@ -6,7 +6,7 @@ import { fetchTasks, setTasks } from '@/redux/reducers/task-filter-reducer';
 import { TasksApi } from '@/api/tasks/tasks.api';
 import TaskListView from '@/components/organisms/task/list/task-list.view';
 import { DEFAULT_TASK, Task } from '@/models/task/task';
-import { setTargetTask } from '@/redux/reducers/target-task';
+import { setTargetTask } from '@/redux/reducers/target-task-reducer';
 
 type TaskListProps = {
   isNewTask?: boolean;

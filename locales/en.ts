@@ -65,6 +65,7 @@ export default {
   educationList: 'Education List',
   educationName: 'Education Name',
   educationStatus: 'Status',
+  educationDescription: 'Description',
   educationInformation: 'Education Information',
   educationProcess: 'Current Process',
   status: 'Status',
@@ -163,8 +164,18 @@ export default {
 
   /*-------------------title (popup title)-------------------*/
   'title.memberRegister': 'Member Register',
+
   'title.addVisitation': 'Add Visitation',
   'title.editVisitation': 'Edit Visitation',
+
+  'title.addTask': 'Add Task',
+  'title.editTask': 'Edit Task',
+
+  'title.addEducation': 'Add Education',
+  'title.editEducation': 'Edit Education',
+
+  'title.addEducationTerm': 'Add Education Term',
+  'title.editEducationTerm': 'Edit Education Term',
   /*-------------------title (popup title)-------------------*/
 
   /*-------------------header (side bar button)-------------------*/
@@ -192,6 +203,19 @@ export default {
   'member-content.all': 'All',
   'member-content.administrator': 'Administrator',
   'member-content.new': 'New',
+
+  'church-content.group': 'Group',
+  'church-content.ministry': 'Ministry',
+  'church-content.officer': 'Officer',
+
+  'administrator-content.setting': 'Setting',
+  'administrator-content.add': 'Add',
+
+  'visitation-content.all': 'All',
+  'visitation-content.my': 'My',
+
+  'education-content.all': 'All',
+  'education-content.inProgress': 'In Progress',
   /*-------------------member content (member header bar button)-------------------*/
 
   /*-------------------table header -------------------*/
@@ -252,6 +276,8 @@ export default {
   'button.saveTerm': 'Save New Term',
   'button.addMember': 'Add Member',
   'button.addVisitation': 'Add Visitation',
+  'button.addEducation': 'Add Education',
+  'button.addEducationTerm': 'Add Education Term',
   'button.addTask': 'Add Task',
   'button.filterVisitationDate': 'Date',
   'button.filterTaskDate': 'Date',
@@ -265,6 +291,7 @@ export default {
   'placeholder.ministryName': 'Enter the ministry name.',
   'placeholder.officerName': 'Enter the officer name.',
   'placeholder.educationName': 'Enter the education name.',
+  'placeholder.educationDescription': 'Enter the education description.',
   'placeholder.mobilePhone': 'Enter the mobile phone number.',
   'placeholder.birth': 'Enter the date of birth (e.g., YYYY.MM.DD).',
   'placeholder.homePhone': 'Enter the home phone number.',
@@ -318,6 +345,10 @@ export default {
 
   'popup.deleteEducationTitle': 'Do you want to delete this education?',
   'popup.deleteEducationBody': 'Deleted education cannot be restored.',
+
+  'popup.deleteEducationTermTitle':
+    'Do you want to delete this education term?',
+  'popup.deleteEducationTermBody': 'Deleted education term cannot be restored.',
 
   'popup.deleteMinistryGroupTitle':
     'Do you want to delete this ministry group?',

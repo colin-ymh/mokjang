@@ -1,52 +1,42 @@
 'use client';
 
+import { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import styled from 'styled-components';
 
 export type TransparentBackgroundProps = {
   isOpened: boolean;
-  onClick: (event: React.MouseEvent<HTMLDivElement>) => void;
+  onClick: (e: React.MouseEvent<HTMLDivElement>) => void;
   blur?: boolean;
-  zIndex?: number;
+  zIndex?: number; // 필요 시 커스터마이즈
 };
 
-type BackgroundProps = {
-  $isOpened: boolean;
-  $blur: boolean;
-  $zIndex?: number;
-};
-
-const Background = styled.div<BackgroundProps>`
+/* 오버레이 스타일 */
+const Overlay = styled.div<{ $blur: boolean; $zIndex: number }>`
   position: fixed;
   inset: 0;
-  background-color: ${({ $blur }) =>
-    $blur ? 'rgba(0, 0, 0, 0.1)' : 'transparent'};
-  z-index: ${({ $zIndex }) => $zIndex}
-  display: ${({ $isOpened }) => ($isOpened ? 'block' : 'none')};
-
-  pointer-events: all;  /* 여기서 반드시 이벤트를 다 받아야 함 */
-  touch-action: none;   /* 모바일 터치 방지 */
+  background: ${({ $blur }) => ($blur ? 'rgba(0, 0, 0, 0.1)' : 'transparent')};
+  z-index: ${({ $zIndex }) => $zIndex};
+  pointer-events: auto; /* 뒷면 터치 차단 */
+  touch-action: none;
 `;
 
-// 특정 페이지 내에서 활성화 된 구역 외 다른 곳을 터치 했을 때 특정 기능을 수행 하도록 하는 투명 background 버튼
 const TransparentBackground = ({
   isOpened,
   onClick,
-  zIndex = 40,
   blur = false,
+  zIndex = 50, // 드롭다운보다 확실히 높게
 }: TransparentBackgroundProps) => {
-  if (!isOpened) return null;
+  /* Next.js SSR 호환: 브라우저에서만 Portal 렌더 */
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
 
-  return (
-    <Background
-      $isOpened={isOpened}
-      onClick={(event) => {
-        event.stopPropagation();
+  if (!isOpened || !mounted) return null;
 
-        onClick(event);
-      }}
-      $blur={blur}
-      $zIndex={zIndex}
-    />
+  /* body 바로 아래로 Portal */
+  return createPortal(
+    <Overlay $blur={blur} $zIndex={zIndex} onClick={onClick} />,
+    document.body
   );
 };
 

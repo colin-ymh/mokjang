@@ -22,6 +22,8 @@ import { VISITATION } from '@/constants/visitation/visitation-column';
 import { STATUS_COLOR } from '@/constants/styles/color';
 import { TASK } from '@/constants/task/task-column';
 import { TASK_STATUS } from '@/models/task/task';
+import { EDUCATION } from '@/constants/education/education-column';
+import { EDUCATION_TERM } from '@/constants/education/education-term-column';
 
 export const useBaptismDropdownItems = () => {
   const t = useI18n();
@@ -75,19 +77,6 @@ export const useMinistryDropdownItems = () => {
 
   const items = ministries.map((ministry) => {
     return { value: ministry.id, title: ministry.name };
-  });
-
-  items.push({ value: NULL, title: t(NULL) });
-
-  return items;
-};
-
-export const useEducationDropdownItems = () => {
-  const t = useI18n();
-  const educations = useSelector((state: RootState) => state.church.educations);
-
-  const items = educations.map((educations) => {
-    return { value: educations.id, title: educations.name };
   });
 
   items.push({ value: NULL, title: t(NULL) });
@@ -181,6 +170,32 @@ export const useTaskSearchFilterDropdownItems = () => {
     {
       value: TASK.IN_CHARGE,
       title: t(TASK.IN_CHARGE),
+    },
+  ];
+
+  return items;
+};
+
+export const useEducationSearchFilterDropdownItems = () => {
+  const t = useI18n();
+
+  const items = [
+    {
+      value: EDUCATION.NAME,
+      title: t('educationName'),
+    },
+  ];
+
+  return items;
+};
+
+export const useEducationTermSearchFilterDropdownItems = () => {
+  const t = useI18n();
+
+  const items = [
+    {
+      value: EDUCATION_TERM.EDUCATION,
+      title: t('educationName'),
     },
   ];
 

@@ -1,17 +1,16 @@
 import {
   ADMINISTRATOR_CONTENT_ID,
   CHURCH_CONTENT_ID,
+  EDUCATION_CONTENT_ID,
   MEMBER_CONTENT_ID,
   VISITATION_CONTENT_ID,
 } from '@/constants/layout/content';
 import {
   EDUCATION_MANAGEMENT_HEADER_ID,
-  EDUCATION_TERM_HEADER_ID,
   GROUP_MANAGEMENT_HEADER_ID,
   MEMBER_INFORMATION_HEADER_ID,
   MINISTRY_MANAGEMENT_HEADER_ID,
 } from '@/constants/layout/header';
-import { EducationSession } from '@/models/management/management';
 
 import { useI18n, useScopedI18n } from '../../../locales/client';
 
@@ -71,12 +70,16 @@ export const useMainTaskHeaderBarItems = () => {
 };
 
 export const useMainEducationHeaderBarItems = () => {
-  const t_visitationContent = useScopedI18n('visitation-content');
+  const t_educationContent = useScopedI18n('education-content');
 
   const items = [
     {
-      id: VISITATION_CONTENT_ID.ALL,
-      title: t_visitationContent(VISITATION_CONTENT_ID.ALL),
+      id: EDUCATION_CONTENT_ID.ALL,
+      title: t_educationContent(EDUCATION_CONTENT_ID.ALL),
+    },
+    {
+      id: EDUCATION_CONTENT_ID.IN_PROGRESS,
+      title: t_educationContent(EDUCATION_CONTENT_ID.IN_PROGRESS),
     },
   ];
 
@@ -202,21 +205,21 @@ export const useEducationManagementHeaderBarItems = () => {
   return items;
 };
 
-export const useTermInformationHeaderBarItems = (
-  sessions: EducationSession[]
-) => {
-  const t = useI18n();
-
-  const items = [
-    {
-      id: EDUCATION_TERM_HEADER_ID.INFORMATION,
-      title: t(EDUCATION_TERM_HEADER_ID.INFORMATION),
-    },
-    ...sessions.map((session) => ({
-      id: session.id,
-      title: `${session.session}${t('session')}`,
-    })),
-  ];
-
-  return items;
-};
+// export const useTermInformationHeaderBarItems = (
+//   sessions: EducationSession[]
+// ) => {
+//   const t = useI18n();
+//
+//   const items = [
+//     {
+//       id: EDUCATION_TERM_HEADER_ID.INFORMATION,
+//       title: t(EDUCATION_TERM_HEADER_ID.INFORMATION),
+//     },
+//     ...sessions.map((session) => ({
+//       id: session.id,
+//       title: `${session.session}${t('session')}`,
+//     })),
+//   ];
+//
+//   return items;
+// };

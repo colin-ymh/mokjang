@@ -133,12 +133,6 @@ const TaskFilterSlice = createSlice({
     setTaskOrderDirection(state, action: PayloadAction<ORDER_DIRECTION>) {
       state.taskOrderDirection = action.payload;
     },
-    setTaskTableHeaderItemList(
-      state,
-      action: PayloadAction<TASK_TABLE_HEADER_ITEM[]>
-    ) {
-      state.taskTableHeaderItemList = action.payload;
-    },
   },
 });
 
@@ -147,6 +141,5 @@ export const {
   setTaskFilter,
   setTaskOrderBy,
   setTaskOrderDirection,
-  setTaskTableHeaderItemList,
 } = TaskFilterSlice.actions;
 export default TaskFilterSlice.reducer;

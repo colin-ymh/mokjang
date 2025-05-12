@@ -5,7 +5,7 @@ import { setMemberFilter } from '@/redux/reducers/member-filter-reducer';
 
 import GroupFilterView from '@/components/atoms/layout/side/main-side/group-filter.view';
 import { DEFAULT_GROUP } from '@/models/management/management';
-import { setTargetGroup } from '@/redux/reducers/target-group';
+import { setTargetGroup } from '@/redux/reducers/target-group-reducer';
 
 type GroupFilterProps = {
   isDefaultOpen?: boolean;

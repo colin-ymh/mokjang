@@ -49,6 +49,9 @@ type CustomPopupProps = {
   headerRight?: ReactNode;
   cancelText?: string;
   doneText?: string;
+  cancelBackgroundColor?: string;
+  doneBackgroundColor?: string;
+  doneDisabled?: boolean;
   children: ReactNode;
 };
 
@@ -64,6 +67,9 @@ const CustomPopup = ({
   headerRight,
   cancelText,
   doneText,
+  cancelBackgroundColor,
+  doneBackgroundColor,
+  doneDisabled,
   children,
 }: CustomPopupProps) => {
   useEffect(() => {
@@ -100,6 +106,9 @@ const CustomPopup = ({
           headerRight={headerRight}
           cancelText={cancelText}
           doneText={doneText}
+          doneBackgroundColor={doneBackgroundColor}
+          cancelBackgroundColor={cancelBackgroundColor}
+          doneDisabled={doneDisabled}
         >
           {children}
         </PopupLayout>

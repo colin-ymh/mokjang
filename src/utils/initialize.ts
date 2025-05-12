@@ -3,20 +3,20 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 
 import { MinistriesApi } from '@/api/management/ministry/ministries.api';
-import { EducationsApi } from '@/api/management/education/educations.api';
+import { EducationsApi } from '@/api/education/educations.api';
 import {
   fetchGroups,
   fetchMinistryGroups,
   fetchOfficers,
   setChurch,
   setChurchId,
-  setEducations,
   setMinistries,
 } from '@/redux/reducers/church-reducer';
 import { AuthApi } from '@/api/auth/auth.api';
 import { usePageRouter } from '@/utils/router';
 import { setUser } from '@/redux/reducers/user-reducer';
 import { UserApi } from '@/api/user/user.api';
+import { setEducations } from '@/redux/reducers/education-filter-reducer';
 
 export const useInitializeChurch = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -47,7 +47,6 @@ export const useInitializeChurch = () => {
       ]);
 
       dispatch(setMinistries(ministries.data.data));
-
       dispatch(setEducations(educations.data.data));
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));

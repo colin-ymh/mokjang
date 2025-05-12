@@ -2,11 +2,11 @@ import React, { ChangeEvent, Dispatch, LegacyRef, SetStateAction } from 'react';
 import styled from 'styled-components';
 
 import { Education } from '@/models/management/management';
-import ManagementEducationItem from '@/components/atoms/management/education/management-education-item';
+import ManagementEducationItem from '@/components/atoms/education/management-education-item';
 import Button from '@/components/atoms/common/button/button';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { SIZE } from '@/constants/styles/style';
-import AddEducation from '@/components/atoms/management/education/add-education';
+import AddEducation from '@/components/atoms/education/add-education';
 
 import { useScopedI18n } from '../../../../locales/client';
 

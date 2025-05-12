@@ -31,4 +31,6 @@ export enum TASK_CONTENT_ID {
 
 export enum EDUCATION_CONTENT_ID {
   ALL = 'all',
+  IN_PROGRESS = 'inProgress',
+  TERM = 'term',
 }

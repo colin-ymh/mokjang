@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 import { TasksApi } from '@/api/tasks/tasks.api';
-import { setTargetTask } from '@/redux/reducers/target-task';
+import { setTargetTask } from '@/redux/reducers/target-task-reducer';
 import { DEFAULT_TASK } from '@/models/task/task';
 import { setTasks } from '@/redux/reducers/task-filter-reducer';
 import { getIsWellFormedTitle } from '@/utils/check';

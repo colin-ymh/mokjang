@@ -2,9 +2,10 @@ import { MEMBER } from '@/constants/member/member-column';
 import {
   EDUCATION_ENROLLMENT,
   EDUCATION_TERM,
-} from '@/constants/management/education-term-column';
+} from '@/constants/education/education-term-column';
 import { VISITATION } from '@/constants/visitation/visitation-column';
 import { TASK } from '@/constants/task/task-column';
+import { EDUCATION } from '@/constants/education/education-column';
 
 export const getTranslatedMemberColumn = (
   t: (key: string, ...args: any[]) => string,
@@ -73,6 +74,20 @@ export const getTranslatedVisitationColumn = (
       | VISITATION.DATE
       | VISITATION.INSTRUCTOR
   );
+};
+
+export const getTranslatedEducationColumn = (
+  t: (key: string, ...args: any[]) => string,
+  id: EDUCATION
+): string => {
+  return t('educationName');
+};
+
+export const getTranslatedEducationTermColumn = (
+  t: (key: string, ...args: any[]) => string,
+  id: EDUCATION_TERM
+): string => {
+  return t(id as 'educationName' | 'status' | EDUCATION_TERM.PERIOD);
 };
 
 export const getTranslatedTaskColumn = (

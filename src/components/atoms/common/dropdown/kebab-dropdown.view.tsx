@@ -23,7 +23,7 @@ const DropdownButton = styled.div`
   display: flex;
   width: 100%;
   cursor: pointer;
-  position: relative;
+  //position: relative;
 `;
 
 const DropdownList = styled.div<{
@@ -99,7 +99,12 @@ const KebabDropdownView = ({
       $isOpened={isOpened}
       $isTransitionDone={isTransitionDone}
     >
-      <DropdownButton onClick={onClickKebab}>
+      <DropdownButton
+        onClick={(event: any) => {
+          event.stopPropagation();
+          onClickKebab();
+        }}
+      >
         <KebabButton />
       </DropdownButton>
 

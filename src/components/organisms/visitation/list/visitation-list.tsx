@@ -13,7 +13,7 @@ import {
   Visitation,
   VisitationDetail,
 } from '@/models/visitation/visitation';
-import { setTargetVisitation } from '@/redux/reducers/target-visitation';
+import { setTargetVisitation } from '@/redux/reducers/target-visitation-reducer';
 
 type VisitationListProps = {
   isNewVisitation?: boolean;

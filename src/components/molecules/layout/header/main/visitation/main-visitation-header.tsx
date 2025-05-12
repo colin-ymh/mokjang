@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 import { VisitationsApi } from '@/api/visitations/visitations.api';
-import { setTargetVisitation } from '@/redux/reducers/target-visitation';
+import { setTargetVisitation } from '@/redux/reducers/target-visitation-reducer';
 import { DEFAULT_VISITATION } from '@/models/visitation/visitation';
 import { setVisitations } from '@/redux/reducers/visitation-filter-reducer';
 import { getIsWellFormedTitle } from '@/utils/check';

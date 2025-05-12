@@ -156,12 +156,6 @@ const VisitationFilterSlice = createSlice({
     setVisitationOrderDirection(state, action: PayloadAction<ORDER_DIRECTION>) {
       state.visitationOrderDirection = action.payload;
     },
-    setVisitationTableHeaderItemList(
-      state,
-      action: PayloadAction<VISITATION_TABLE_HEADER_ITEM[]>
-    ) {
-      state.visitationTableHeaderItemList = action.payload;
-    },
   },
 });
 
@@ -170,6 +164,5 @@ export const {
   setVisitationFilter,
   setVisitationOrderBy,
   setVisitationOrderDirection,
-  setVisitationTableHeaderItemList,
 } = VisitationFilterSlice.actions;
 export default VisitationFilterSlice.reducer;
