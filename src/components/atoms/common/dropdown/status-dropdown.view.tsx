@@ -18,7 +18,7 @@ const DropdownContainer = styled.div<{
   width?: number;
 }>`
   position: relative;
-  z-index: ${({ $isTransitionDone }) => ($isTransitionDone ? 50 : 'auto')};
+  z-index: ${({ $isTransitionDone }) => ($isTransitionDone ? 100 : 'auto')};
   width: ${({ width }) => (width ? `${width}px` : `100%`)};
 `;
 
@@ -27,6 +27,7 @@ const DropdownButton = styled.div`
   width: 100%;
   flex-direction: row;
   cursor: pointer;
+  justify-content: center;
   position: relative;
 `;
 
@@ -38,7 +39,8 @@ const ColoredDot = styled.div<{ color?: string }>`
   background-color: ${({ color }) => color};
   position: absolute;
   left: 10px;
-  top: 15px;
+  top: 50%;
+  transform: translateY(-50%);
 `;
 
 const DropdownList = styled.div<{

@@ -15,6 +15,7 @@ import { DEFAULT_EDUCATION, Education } from '@/models/education/education';
 import { setTargetEducation } from '@/redux/reducers/target-education-reducer';
 import { getIsWellFormedTitle } from '@/utils/check';
 import { usePageRouter } from '@/utils/router';
+import { EducationTermsApi } from '@/api/education/education-terms.api';
 
 export type EducationTableProps = {
   loadEducations: () => Promise<void>;
@@ -35,6 +36,7 @@ const EducationTable = ({ loadEducations }: EducationTableProps) => {
   );
 
   const educationsApi = new EducationsApi(false);
+  const educationTermsApi = new EducationTermsApi(false);
   const router = usePageRouter();
 
   const [isEditModalOpened, setIsEditModalOpened] = useState<boolean>(false);

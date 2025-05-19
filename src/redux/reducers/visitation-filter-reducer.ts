@@ -101,11 +101,14 @@ const initialState: VisitationFilterState = {
 
 export const fetchVisitations = createAsyncThunk<
   Visitation[],
-  { churchId: string; currentPage: number },
+  { churchId: string; currentPage: number; instructorId?: string },
   { state: RootState }
 >(
   'visitations/fetchVisitations',
-  async ({ churchId, currentPage }, { getState, rejectWithValue }) => {
+  async (
+    { churchId, currentPage, instructorId },
+    { getState, rejectWithValue }
+  ) => {
     const state = getState().visitationFilter;
     const { visitationOrderBy, visitationOrderDirection, visitationFilter } =
       state;
@@ -123,7 +126,7 @@ export const fetchVisitations = createAsyncThunk<
         visitationMethod: visitationFilter.visitationMethod,
         visitationType: visitationFilter.visitationType,
         visitationTitle: visitationFilter.visitationTitle,
-        instructorId: visitationFilter.instructorId,
+        instructorId: instructorId || visitationFilter.instructorId,
         fromVisitationDate: visitationFilter.fromVisitationDate,
         toVisitationDate: visitationFilter.toVisitationDate,
         // 검색

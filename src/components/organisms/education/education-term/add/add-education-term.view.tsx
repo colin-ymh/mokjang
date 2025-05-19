@@ -10,9 +10,9 @@ import { getDateTimeFromString } from '@/utils/date';
 import { ko } from 'date-fns/locale';
 import CustomDatePicker from '@/vendor/date-picker/custom-date-picker';
 import Quill from '@/components/atoms/common/input/quill';
-import { MemberDropdownValueType } from '@/models/dropdown/dropdown';
 import MultiMemberDropdown from '@/components/atoms/common/dropdown/multi-member-dropdown';
-import { BLANK } from '@/constants/constant';
+import EducationEnrollmentList from '@/components/atoms/education/education-enrollment/education-enrollment-list';
+import { MemberDropdownValueType } from '@/models/dropdown/dropdown';
 
 const AddEducationTermViewContainer = styled.div`
   display: flex;
@@ -49,24 +49,26 @@ const PeriodContainer = styled.div`
   padding: 0 10px;
 `;
 
+const EnrollmentList = styled.div`
+  display: flex;
+`;
+
 type AddEducationTermViewProps = {
-  receivers: MemberDropdownValueType[];
   comment: string;
   onChangeTerm: (event: ChangeEvent<HTMLInputElement>) => void;
   onChangeStartDate: (date: Date | null) => void;
   onChangeEndDate: (date: Date | null) => void;
   onChangeComment: (comment: string) => void;
-  onChangeReceivers: (values: MemberDropdownValueType[]) => void;
+  onClickNewEnrollment: (values: MemberDropdownValueType[]) => void;
 };
 
 const AddEducationTermView = ({
-  receivers,
   comment,
   onChangeTerm,
   onChangeStartDate,
   onChangeEndDate,
   onChangeComment,
-  onChangeReceivers,
+  onClickNewEnrollment,
 }: AddEducationTermViewProps) => {
   const { targetEducationTerm } = useSelector(
     (state: RootState) => state.targetEducationTerm
@@ -146,15 +148,17 @@ const AddEducationTermView = ({
         </LabelContainer>
       </InputContainer>
 
-      {/* 보고대상자 */}
+      {/* 수강 교인 */}
       <InputContainer>
         <LabelContainer>
-          <MainText>{t('receiver')}</MainText>
+          <MainText>{'수강 교인'}</MainText>
           <MultiMemberDropdown
-            values={receivers}
-            onChangeValues={onChangeReceivers}
-            height={40}
-            placeholder={receivers.length === 0 ? t_placeholder('name') : BLANK}
+            values={[]}
+            onChangeValues={onClickNewEnrollment}
+            placeholder={t_placeholder('name')}
+          />
+          <EducationEnrollmentList
+            enrollments={targetEducationTerm.educationEnrollments}
           />
         </LabelContainer>
       </InputContainer>

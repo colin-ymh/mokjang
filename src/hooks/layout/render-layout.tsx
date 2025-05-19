@@ -103,13 +103,22 @@ export const getContent = (id: string, headerId: string | null): ReactNode => {
       } else {
         return null;
       }
+
+    // 중복 contentId 관리
+    case 'my':
+      if (headerId === MAIN_HEADER_ID.VISITATION) {
+        return <VisitationList isMy={true} />;
+      } else if (headerId === MAIN_HEADER_ID.TASK) {
+        return <TaskList isMy={true} />;
+      } else {
+        return null;
+      }
+
     // 홈
     case HOME_CONTENT_ID.HOME:
       return null;
 
     // 교인 관리
-    // case MEMBER_CONTENT_ID.ALL:
-    //   return <MemberList />;
     case MEMBER_CONTENT_ID.ADMINISTRATOR:
       return <MemberList />;
     case MEMBER_CONTENT_ID.NEW:

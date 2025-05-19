@@ -220,6 +220,9 @@ export default {
   'visitation-content.all': '전체',
   'visitation-content.my': '내 심방',
 
+  'task-content.all': '전체',
+  'task-content.my': '내 업무',
+
   'education-content.all': '전체',
   'education-content.inProgress': '진행중',
 

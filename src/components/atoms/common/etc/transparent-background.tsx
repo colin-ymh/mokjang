@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { createPortal } from 'react-dom';
 import styled from 'styled-components';
 
 export type TransparentBackgroundProps = {
@@ -25,19 +24,17 @@ const TransparentBackground = ({
   isOpened,
   onClick,
   blur = false,
-  zIndex = 50, // 드롭다운보다 확실히 높게
+  zIndex = 50,
 }: TransparentBackgroundProps) => {
-  /* Next.js SSR 호환: 브라우저에서만 Portal 렌더 */
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
-
   if (!isOpened || !mounted) return null;
 
-  /* body 바로 아래로 Portal */
-  return createPortal(
-    <Overlay $blur={blur} $zIndex={zIndex} onClick={onClick} />,
-    document.body
-  );
+  return <Overlay $blur={blur} $zIndex={zIndex} onClick={onClick} />;
+  // return createPortal(
+  //   <Overlay $blur={blur} $zIndex={zIndex} onClick={onClick} />,
+  //   document.body
+  // );
 };
 
 export default TransparentBackground;

@@ -210,6 +210,7 @@ const StatusDropdown = forwardRef<HTMLInputElement, DropdownProps>(
           event.preventDefault();
           // 최신 focusedIndex 값을 ref에서 사용
           const index = focusedIndexRef.current;
+          setInnerValue(combinedItems[index].value);
           if (combinedItems[index]) {
             onChangeItem?.(combinedItems[index].value);
           }
@@ -263,12 +264,13 @@ const StatusDropdown = forwardRef<HTMLInputElement, DropdownProps>(
 
     return (
       <>
+        <StatusDropdownView {...propsForView} />
         <TransparentBackground
           isOpened={isOpened}
           onClick={onClickBackground}
           blur={backgroundBlur}
+          zIndex={50}
         />
-        <StatusDropdownView {...propsForView} />
       </>
     );
   }

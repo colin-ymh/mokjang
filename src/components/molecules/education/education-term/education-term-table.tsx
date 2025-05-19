@@ -1,14 +1,16 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 
-import { ORDER_DIRECTION } from '@/constants/constant';
+import { BLANK, ORDER_DIRECTION } from '@/constants/constant';
 import { EDUCATION_TERM } from '@/constants/education/education-term-column';
 import {
   setEducationTermOrderBy,
   setEducationTermOrderDirection,
+  setEducationTerms,
 } from '@/redux/reducers/education-term-filter-reducer';
 import EducationTermTableView from '@/components/molecules/education/education-term/education-term-table.view';
+import { EducationSessionsApi } from '@/api/education/education-sessions.api';
 
 export type EducationTermTableProps = {
   onClickEducationTermItem: (educationTermId: string) => void;
@@ -20,13 +22,45 @@ const EducationTermTable = ({
   loadEducationTerms,
 }: EducationTermTableProps) => {
   const dispatch = useDispatch<AppDispatch>();
-
+  const educationSessionsApi = new EducationSessionsApi(false);
+  const [openedTermId, setOpenedTermId] = useState<string>(BLANK);
+  const { targetEducation } = useSelector(
+    (state: RootState) => state.targetEducation
+  );
+  const { churchId } = useSelector((state: RootState) => state.church);
   const {
     educationTerms,
     educationTermFilter,
     educationTermOrderBy,
     educationTermOrderDirection,
   } = useSelector((state: RootState) => state.educationTermFilter);
+
+  const onClickTermChevron = (termId: string) => {
+    if (openedTermId === termId) {
+      setOpenedTermId(BLANK);
+    } else {
+      educationSessionsApi
+        .getEducationSessions({
+          churchId,
+          educationId: targetEducation.id,
+          educationTermId: termId,
+        })
+        .then((response) => {
+          const newSessions = response.data;
+
+          const newEducationTerms = educationTerms.map((term) => {
+            if (term.id === termId) {
+              return { ...term, educationSessions: newSessions };
+            } else {
+              return term;
+            }
+          });
+
+          dispatch(setEducationTerms(newEducationTerms));
+        });
+      setOpenedTermId(termId);
+    }
+  };
 
   // 열 헤더를 눌러 정렬
   const onClickHeader = (id: EDUCATION_TERM) => {
@@ -67,7 +101,9 @@ const EducationTermTable = ({
   }, [educationTermOrderBy, educationTermOrderDirection, educationTermFilter]);
 
   const props = {
+    openedTermId,
     educationTerms,
+    onClickTermChevron,
     onClickHeader,
     onClickEducationTermItem,
     scrollRef,

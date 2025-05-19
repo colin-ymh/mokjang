@@ -84,11 +84,14 @@ const initialState: TaskFilterState = {
 
 export const fetchTasks = createAsyncThunk<
   Task[],
-  { churchId: string; currentPage: number },
+  { churchId: string; currentPage: number; inChargeId?: string },
   { state: RootState }
 >(
   'tasks/fetchTasks',
-  async ({ churchId, currentPage }, { getState, rejectWithValue }) => {
+  async (
+    { churchId, currentPage, inChargeId },
+    { getState, rejectWithValue }
+  ) => {
     const state = getState().taskFilter;
     const { taskOrderBy, taskOrderDirection, taskFilter } = state;
     const tasksApi = new TasksApi(false);
@@ -103,7 +106,7 @@ export const fetchTasks = createAsyncThunk<
         // 필터
         taskStatus: taskFilter.taskStatus,
         title: taskFilter.title,
-        inChargeId: taskFilter.inChargeId,
+        inChargeId: inChargeId || taskFilter.inChargeId,
         fromTaskDate: taskFilter.fromTaskDate,
         toTaskDate: taskFilter.toTaskDate,
         // 검색

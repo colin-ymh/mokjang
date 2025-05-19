@@ -13,7 +13,7 @@ import { MemberDropdownType } from '@/components/atoms/common/dropdown/member-dr
 const Wrapper = styled.div<{ $isOpened: boolean; width?: number }>`
   position: relative;
   width: ${({ width }) => (width ? `${width}px` : '100%')};
-  z-index: ${({ $isOpened }) => ($isOpened ? 30 : 'auto')};
+  z-index: ${({ $isOpened }) => ($isOpened ? 100 : 'auto')};
 `;
 
 const ButtonArea = styled.div`

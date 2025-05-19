@@ -214,6 +214,9 @@ export default {
   'visitation-content.all': 'All',
   'visitation-content.my': 'My',
 
+  'task-content.all': 'All',
+  'task-content.my': 'My',
+
   'education-content.all': 'All',
   'education-content.inProgress': 'In Progress',
   /*-------------------member content (member header bar button)-------------------*/

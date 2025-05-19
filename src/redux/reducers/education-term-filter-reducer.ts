@@ -1,10 +1,11 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { BLANK, NULL, ORDER_DIRECTION } from '@/constants/constant';
-import { EducationTerm } from '@/models/education/education';
+import { EducationSession, EducationTerm } from '@/models/education/education';
 import { RootState } from '@/redux/store';
 
 import { EDUCATION_TERM } from '@/constants/education/education-term-column';
 import { EducationTermsApi } from '@/api/education/education-terms.api';
+import { EducationSessionsApi } from '@/api/education/education-sessions.api';
 
 type EDUCATION_TERM_FILTER = {
   [EDUCATION_TERM.EDUCATION]: string;
@@ -61,11 +62,14 @@ const initialState: EducationTermFilterState = {
 
 export const fetchEducationTerms = createAsyncThunk<
   EducationTerm[],
-  { churchId: string; currentPage: number },
+  { churchId: string; currentPage: number; educationId?: string },
   { state: RootState }
 >(
   'educations/fetchEducationTerms',
-  async ({ churchId, currentPage }, { getState, rejectWithValue }) => {
+  async (
+    { churchId, currentPage, educationId },
+    { getState, rejectWithValue }
+  ) => {
     const state = getState().educationTermFilter;
     const {
       educationTermOrderBy,
@@ -77,7 +81,7 @@ export const fetchEducationTerms = createAsyncThunk<
     try {
       const response = await educationTermsApi.getEducationTerms({
         churchId,
-        educationId: '1',
+        educationId: educationId || '1',
         page: currentPage,
         take: 30, // 무한 스크롤 최적화
         order: educationTermOrderBy !== NULL ? educationTermOrderBy : undefined,
@@ -88,6 +92,42 @@ export const fetchEducationTerms = createAsyncThunk<
     } catch (error) {
       console.error('교육 목록 불러오기 실패', error);
       return rejectWithValue('교육 목록을 불러오는 중 오류가 발생했습니다.');
+    }
+  }
+);
+
+export const fetchEducationSessions = createAsyncThunk<
+  EducationTerm[],
+  { churchId: string },
+  { state: RootState }
+>(
+  'educations/fetchEducationSessions',
+  async ({ churchId }, { getState, rejectWithValue }) => {
+    const state = getState().educationTermFilter;
+    const { educationTerms } = state;
+    const educationSessionsApi = new EducationSessionsApi(false);
+
+    try {
+      const newEducationTerms = await Promise.all(
+        educationTerms.map(async (educationTerm) => {
+          const response = await educationSessionsApi.getEducationSessions({
+            churchId,
+            educationId: educationTerm.educationId,
+            educationTermId: educationTerm.id,
+          });
+
+          const newEducationSessions: EducationSession[] = response.data.data;
+
+          return { ...educationTerm, educationSessions: newEducationSessions };
+        })
+      );
+
+      return newEducationTerms;
+    } catch (error) {
+      console.error('교육 세션 목록 불러오기 실패', error);
+      return rejectWithValue(
+        '교육 세션 목록을 불러오는 중 오류가 발생했습니다.'
+      );
     }
   }
 );

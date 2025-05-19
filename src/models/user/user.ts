@@ -1,5 +1,7 @@
-import { Church } from '@/models/church/church';
+import { Church, DEFAULT_CHURCH } from '@/models/church/church';
 import { BLANK } from '@/constants/constant';
+import { Member } from '@/models/member/member';
+import { DEFAULT_MEMBER } from '@/redux/reducers/member-register-reducer';
 
 export type User = {
   id: string;
@@ -9,8 +11,10 @@ export type User = {
   mobilePhone: string;
   mobilePhoneVerified: boolean;
   privacyPolicyAgreed: boolean;
-  adminChurch?: Church;
-  managingChurch?: Church;
+  churchId?: string;
+  role?: string;
+  church: Church;
+  member: Member;
 };
 
 export const DEFAULT_USER: User = {
@@ -21,4 +25,6 @@ export const DEFAULT_USER: User = {
   mobilePhone: BLANK,
   mobilePhoneVerified: false,
   privacyPolicyAgreed: false,
+  church: DEFAULT_CHURCH,
+  member: DEFAULT_MEMBER,
 };

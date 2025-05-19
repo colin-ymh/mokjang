@@ -53,16 +53,16 @@ export const useMainVisitationHeaderBarItems = () => {
 };
 
 export const useMainTaskHeaderBarItems = () => {
-  const t_visitationContent = useScopedI18n('visitation-content');
+  const t_taskContent = useScopedI18n('task-content');
 
   const items = [
     {
       id: VISITATION_CONTENT_ID.ALL,
-      title: t_visitationContent(VISITATION_CONTENT_ID.ALL),
+      title: t_taskContent(VISITATION_CONTENT_ID.ALL),
     },
     {
       id: VISITATION_CONTENT_ID.MY,
-      title: t_visitationContent(VISITATION_CONTENT_ID.MY),
+      title: t_taskContent(VISITATION_CONTENT_ID.MY),
     },
   ];
 

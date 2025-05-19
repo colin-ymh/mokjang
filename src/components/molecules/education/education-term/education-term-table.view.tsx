@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 
-import { GRAY, WHITE } from '@/constants/styles/color';
+import { BLACK, GRAY, WHITE } from '@/constants/styles/color';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { BLANK } from '@/constants/constant';
 
@@ -13,9 +13,10 @@ import useWindowSize from '@/hooks/window/window';
 import { BLANK_HEADER } from '@/redux/reducers/member-filter-reducer';
 // import { getEducationTermStatusColor } from '@/utils/color';
 import EducationTermTableHeader from '@/components/atoms/education/education-term/education-term-table-header';
-import { EducationTerm } from '@/models/education/education';
+import { EducationSession, EducationTerm } from '@/models/education/education';
 import { EDUCATION_TERM } from '@/constants/education/education-term-column';
 import { useI18n } from '../../../../../locales/client';
+import ChevronDown from '../../../../../public/svg/chevron-down.svg';
 
 // 1. 컬럼별 PX 폭
 const getColumnWidth = (id: string) => {
@@ -94,6 +95,14 @@ const EducationTermTableRow = styled.tr`
   }
 `;
 
+/* educationSession 전용 Row (optional) */
+const EducationSessionTableRow = styled.tr`
+  background: ${GRAY.EXTRA_LIGHT};
+  &:hover td {
+    background-color: ${GRAY.LIGHT};
+  }
+`;
+
 const TableData = styled.td<{ id: string; $index: number; isLast?: boolean }>`
   padding: 10px;
 
@@ -119,6 +128,22 @@ const ContentWrapper = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+`;
+
+const TermContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+  position: relative;
+`;
+
+const Chevron = styled(ChevronDown)<{ $isOpened: boolean }>`
+  width: 18px;
+  height: 18px;
+  stroke: ${BLACK};
+  transform: rotate(${({ $isOpened }) => ($isOpened ? '180deg' : '0deg')});
+  transition: transform 0.2s ease;
 `;
 
 const MembersContainer = styled.div`
@@ -171,7 +196,9 @@ const PopupButtonContainer = styled.div<{ $isShown: boolean }>`
 
 // 이 예시에서는 실제 EDUCATION_TERM + "비고" 컬럼(REMARKS)까지 표시
 type EducationTermTableProps = {
+  openedTermId: string;
   educationTerms: EducationTerm[];
+  onClickTermChevron: (termId: string) => void;
   onClickHeader: (id: EDUCATION_TERM) => void;
   onClickEducationTermItem: (educationTermId: string) => void;
   scrollRef: MutableRefObject<HTMLDivElement | null>;
@@ -179,7 +206,9 @@ type EducationTermTableProps = {
 };
 
 const EducationTermTableView = ({
+  openedTermId,
   educationTerms,
+  onClickTermChevron,
   onClickHeader,
   onClickEducationTermItem,
   scrollRef,
@@ -206,7 +235,18 @@ const EducationTermTableView = ({
   ) => {
     switch (id) {
       case EDUCATION_TERM.TERM:
-        return <MainText>{educationTerm?.term}</MainText>;
+        return (
+          <TermContainer>
+            <Chevron
+              $isOpened={openedTermId === educationTerm.id}
+              onClick={(event: React.MouseEvent) => {
+                event.stopPropagation();
+                onClickTermChevron(educationTerm.id);
+              }}
+            />
+            <MainText>{educationTerm?.term}</MainText>
+          </TermContainer>
+        );
 
       // case EDUCATION_TERM.STATUS:
       //   return (
@@ -228,6 +268,23 @@ const EducationTermTableView = ({
         );
       case BLANK:
         return <div></div>;
+      default:
+        return null;
+    }
+  };
+
+  /* educationSession 행에 들어갈 content */
+  const getEducationSessionTableContent = (
+    id: string,
+    session: EducationSession
+  ) => {
+    switch (id) {
+      case EDUCATION_TERM.TERM:
+        return (
+          <ContentWrapper style={{ paddingLeft: 32 }}>• {}</ContentWrapper>
+        );
+      case EDUCATION_TERM.PERIOD:
+        return <MainText>{}</MainText>;
       default:
         return null;
     }
@@ -261,25 +318,46 @@ const EducationTermTableView = ({
           </thead>
           <tbody>
             {educationTerms.map((educationTerm, rowIndex) => (
-              <EducationTermTableRow
-                key={educationTerm.id}
-                onClick={() => {
-                  onClickEducationTermItem(educationTerm.id);
-                }}
-              >
-                {visibleColumns.map((item, index) => (
-                  <TableData
-                    key={item.id}
-                    id={item.id}
-                    $index={rowIndex}
-                    isLast={index === visibleColumns.length - 1}
-                  >
-                    <ContentWrapper>
-                      {getEducationTermTableContent(item.id, educationTerm)}
-                    </ContentWrapper>
-                  </TableData>
-                ))}
-              </EducationTermTableRow>
+              <React.Fragment key={educationTerm.id}>
+                {/* ① Term Row */}
+                <EducationTermTableRow
+                  onClick={() => {
+                    onClickEducationTermItem(educationTerm.id);
+                  }}
+                >
+                  {visibleColumns.map((item, index) => (
+                    <TableData
+                      key={`${educationTerm.id}-${item.id}`}
+                      id={item.id}
+                      $index={rowIndex}
+                      isLast={index === visibleColumns.length - 1}
+                    >
+                      <ContentWrapper>
+                        {getEducationTermTableContent(item.id, educationTerm)}
+                      </ContentWrapper>
+                    </TableData>
+                  ))}
+                </EducationTermTableRow>
+
+                {/* ② 세션 Row (열린 상태일 때만) */}
+                {openedTermId === educationTerm.id &&
+                  educationTerm.educationSessions?.map((session) => (
+                    <EducationSessionTableRow key={session.id}>
+                      {visibleColumns.map((item, index) => (
+                        <TableData
+                          key={`${session.id}-${item.id}`}
+                          id={item.id}
+                          $index={rowIndex}
+                          isLast={index === visibleColumns.length - 1}
+                          /* 세션 Row는 클릭 시 부모로 전파되지 않게 막을 수도 있음 */
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          {getEducationSessionTableContent(item.id, session)}
+                        </TableData>
+                      ))}
+                    </EducationSessionTableRow>
+                  ))}
+              </React.Fragment>
             ))}
           </tbody>
         </EducationTermTable>

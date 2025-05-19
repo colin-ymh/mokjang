@@ -7,8 +7,13 @@ import { AppDispatch, RootState } from '@/redux/store';
 import { setEducations } from '@/redux/reducers/education-filter-reducer';
 import { getIsWellFormedTitle } from '@/utils/check';
 import { setTargetEducation } from '@/redux/reducers/target-education-reducer';
-import { DEFAULT_EDUCATION } from '@/models/education/education';
+import {
+  DEFAULT_EDUCATION,
+  DEFAULT_EDUCATION_TERM,
+} from '@/models/education/education';
 import { EducationTermsApi } from '@/api/education/education-terms.api';
+import { setTargetEducationTerm } from '@/redux/reducers/target-education-term-reducer';
+import { setEducationTerms } from '@/redux/reducers/education-term-filter-reducer';
 
 type MainEducationHeaderProps = {};
 
@@ -25,6 +30,9 @@ const MainEducationHeader = ({}: MainEducationHeaderProps) => {
   );
   const { educations } = useSelector(
     (state: RootState) => state.educationFilter
+  );
+  const { educationTerms } = useSelector(
+    (state: RootState) => state.educationTermFilter
   );
 
   const educationsApi = new EducationsApi(false);
@@ -53,6 +61,7 @@ const MainEducationHeader = ({}: MainEducationHeaderProps) => {
   // 기수 => 교육으로 돌아가기
   const onClickGoBack = () => {
     router.push(`admin/main/education/all`);
+    dispatch(setEducationTerms([]));
   };
 
   // ========== 교육 ==========
@@ -62,6 +71,7 @@ const MainEducationHeader = ({}: MainEducationHeaderProps) => {
 
   const onClickCloseModal = () => {
     setIsAddEducationOpened(false);
+    dispatch(setTargetEducation(DEFAULT_EDUCATION));
   };
 
   const onClickSaveEducation = () => {
@@ -103,6 +113,7 @@ const MainEducationHeader = ({}: MainEducationHeaderProps) => {
 
   const onClickCloseTermModal = () => {
     setIsAddEducationTermOpened(false);
+    dispatch(setTargetEducationTerm(DEFAULT_EDUCATION_TERM));
   };
 
   const onClickSaveEducationTerm = () => {
@@ -118,10 +129,10 @@ const MainEducationHeader = ({}: MainEducationHeaderProps) => {
           }
         )
         .then((response) => {
-          // const newEducation = response.data;
-          //
-          // dispatch(setEducations([...educations, newEducation]));
-          // dispatch(setTargetEducation(DEFAULT_EDUCATION));
+          const newEducationTerm = response.data;
+          const newEducationTerms = [...educationTerms, newEducationTerm];
+
+          dispatch(setEducationTerms(newEducationTerms));
           setIsAddEducationTermOpened(false);
         });
     } catch (error) {

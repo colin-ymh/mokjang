@@ -16,12 +16,13 @@ import {
 import { setTargetVisitation } from '@/redux/reducers/target-visitation-reducer';
 
 type VisitationListProps = {
-  isNewVisitation?: boolean;
+  isMy?: boolean;
 };
 
-const VisitationList = ({ isNewVisitation }: VisitationListProps) => {
+const VisitationList = ({ isMy = false }: VisitationListProps) => {
   const visitationsApi = new VisitationsApi(false);
   const dispatch = useDispatch<AppDispatch>();
+  const { user } = useSelector((state: RootState) => state.user);
   const churchId: string = useSelector(
     (state: RootState) => state.church.churchId
   );
@@ -89,7 +90,11 @@ const VisitationList = ({ isNewVisitation }: VisitationListProps) => {
 
     try {
       const result = await dispatch(
-        fetchVisitations({ churchId, currentPage: page + 1 })
+        fetchVisitations({
+          churchId,
+          currentPage: page + 1,
+          instructorId: isMy ? user.member.id : undefined,
+        })
       );
       if (fetchVisitations.fulfilled.match(result)) {
         const newVisitations: Visitation[] = result.payload;
@@ -117,7 +122,11 @@ const VisitationList = ({ isNewVisitation }: VisitationListProps) => {
     const fetchInitialVisitations = async () => {
       try {
         const result = await dispatch(
-          fetchVisitations({ churchId, currentPage: 1 })
+          fetchVisitations({
+            churchId,
+            currentPage: 1,
+            instructorId: isMy ? user.member.id : undefined,
+          })
         );
         if (fetchVisitations.fulfilled.match(result)) {
           dispatch(setVisitations(result.payload));
@@ -136,7 +145,7 @@ const VisitationList = ({ isNewVisitation }: VisitationListProps) => {
     visitationFilter,
     visitationOrderBy,
     visitationOrderDirection,
-    isNewVisitation,
+    isMy,
   ]);
 
   const onClickEditDone = async () => {
@@ -282,7 +291,11 @@ const VisitationList = ({ isNewVisitation }: VisitationListProps) => {
         // 초기화 후 다시 로드
         setPage(1);
         const result = await dispatch(
-          fetchVisitations({ churchId, currentPage: 1 })
+          fetchVisitations({
+            churchId,
+            currentPage: 1,
+            instructorId: isMy ? user.member.id : undefined,
+          })
         );
         if (fetchVisitations.fulfilled.match(result)) {
           dispatch(setVisitations(result.payload));

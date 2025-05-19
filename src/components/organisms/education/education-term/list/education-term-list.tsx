@@ -75,7 +75,11 @@ const EducationTermList = ({ isNewEducationTerm }: EducationTermListProps) => {
 
     try {
       const result = await dispatch(
-        fetchEducationTerms({ churchId, currentPage: page + 1 })
+        fetchEducationTerms({
+          churchId,
+          currentPage: page + 1,
+          educationId: targetEducation.id,
+        })
       );
       if (fetchEducationTerms.fulfilled.match(result)) {
         const newEducationTerms: EducationTerm[] = result.payload;
@@ -105,7 +109,11 @@ const EducationTermList = ({ isNewEducationTerm }: EducationTermListProps) => {
     const fetchInitialEducationTerms = async () => {
       try {
         const result = await dispatch(
-          fetchEducationTerms({ churchId, currentPage: 1 })
+          fetchEducationTerms({
+            churchId,
+            currentPage: 1,
+            educationId: targetEducation.id,
+          })
         );
         if (fetchEducationTerms.fulfilled.match(result)) {
           dispatch(setEducationTerms(result.payload));
@@ -170,7 +178,11 @@ const EducationTermList = ({ isNewEducationTerm }: EducationTermListProps) => {
         // 초기화 후 다시 로드
         setPage(1);
         const result = await dispatch(
-          fetchEducationTerms({ churchId, currentPage: 1 })
+          fetchEducationTerms({
+            churchId,
+            currentPage: 1,
+            educationId: targetEducation.id,
+          })
         );
         if (fetchEducationTerms.fulfilled.match(result)) {
           dispatch(setEducationTerms(result.payload));

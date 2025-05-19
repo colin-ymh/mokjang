@@ -9,12 +9,14 @@ import { DEFAULT_TASK, Task } from '@/models/task/task';
 import { setTargetTask } from '@/redux/reducers/target-task-reducer';
 
 type TaskListProps = {
-  isNewTask?: boolean;
+  isMy?: boolean;
 };
 
-const TaskList = ({ isNewTask }: TaskListProps) => {
+const TaskList = ({ isMy = false }: TaskListProps) => {
   const tasksApi = new TasksApi(false);
   const dispatch = useDispatch<AppDispatch>();
+  const { user } = useSelector((state: RootState) => state.user);
+
   const churchId: string = useSelector(
     (state: RootState) => state.church.churchId
   );
@@ -61,7 +63,11 @@ const TaskList = ({ isNewTask }: TaskListProps) => {
 
     try {
       const result = await dispatch(
-        fetchTasks({ churchId, currentPage: page + 1 })
+        fetchTasks({
+          churchId,
+          currentPage: page + 1,
+          inChargeId: isMy ? user.member.id : undefined,
+        })
       );
       if (fetchTasks.fulfilled.match(result)) {
         const newTasks: Task[] = result.payload;
@@ -86,7 +92,13 @@ const TaskList = ({ isNewTask }: TaskListProps) => {
   useEffect(() => {
     const fetchInitialTasks = async () => {
       try {
-        const result = await dispatch(fetchTasks({ churchId, currentPage: 1 }));
+        const result = await dispatch(
+          fetchTasks({
+            churchId,
+            currentPage: 1,
+            inChargeId: isMy ? user.member.id : undefined,
+          })
+        );
         if (fetchTasks.fulfilled.match(result)) {
           dispatch(setTasks(result.payload));
           setPage(1);
@@ -99,13 +111,16 @@ const TaskList = ({ isNewTask }: TaskListProps) => {
     };
 
     fetchInitialTasks();
-  }, [churchId, taskFilter, taskOrderBy, taskOrderDirection, isNewTask]);
+  }, [churchId, taskFilter, taskOrderBy, taskOrderDirection, isMy]);
 
   const onClickEditDone = async () => {
     try {
       // 1. 메인 심방 정보 수정
       await tasksApi.editTask(
-        { churchId, taskId: targetTask.id },
+        {
+          churchId,
+          taskId: targetTask.id,
+        },
         {
           taskStatus: targetTask.taskStatus || undefined,
           inChargeId: targetTask.inChargeId || undefined,
@@ -148,7 +163,6 @@ const TaskList = ({ isNewTask }: TaskListProps) => {
 
           dispatch(setTasks(newTasks));
           dispatch(setTargetTask(newTask));
-          console.log(newTask);
 
           setIsEditShown(false);
           setTimeout(() => {
@@ -192,7 +206,13 @@ const TaskList = ({ isNewTask }: TaskListProps) => {
       if (response.status === 200) {
         // 초기화 후 다시 로드
         setPage(1);
-        const result = await dispatch(fetchTasks({ churchId, currentPage: 1 }));
+        const result = await dispatch(
+          fetchTasks({
+            churchId,
+            currentPage: 1,
+            inChargeId: isMy ? user.member.id : undefined,
+          })
+        );
         if (fetchTasks.fulfilled.match(result)) {
           dispatch(setTasks(result.payload));
         }

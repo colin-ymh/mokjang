@@ -344,14 +344,17 @@ export const useEducationStatusDropdownItems = () => {
     {
       value: EDUCATION_STATUS.IN_PROGRESS,
       title: t(EDUCATION_STATUS.IN_PROGRESS),
+      color: STATUS_COLOR.IN_PROGRESS,
     },
     {
       value: EDUCATION_STATUS.COMPLETED,
       title: t(EDUCATION_STATUS.COMPLETED),
+      color: STATUS_COLOR.COMPLETED,
     },
     {
       value: EDUCATION_STATUS.INCOMPLETE,
       title: t(EDUCATION_STATUS.INCOMPLETE),
+      color: STATUS_COLOR.INCOMPLETE,
     },
   ];
 

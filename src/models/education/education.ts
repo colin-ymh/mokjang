@@ -8,7 +8,7 @@ export type Education = {
   churchId: string;
   description: string;
   name: string;
-  educationTerm: EducationTerm[];
+  educationTerms: EducationTerm[];
 };
 
 export const DEFAULT_EDUCATION: Education = {
@@ -16,7 +16,7 @@ export const DEFAULT_EDUCATION: Education = {
   churchId: BLANK,
   description: BLANK,
   name: BLANK,
-  educationTerm: [],
+  educationTerms: [],
 };
 
 export type EducationEnrollment = {

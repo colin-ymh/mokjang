@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
-import { BLANK } from '@/constants/constant';
+import { BLANK, EDUCATION_STATUS } from '@/constants/constant';
 import { getFormattedTitle } from '@/utils/format';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
@@ -7,7 +7,8 @@ import { AppDispatch, RootState } from '@/redux/store';
 import { getStringFromDateTime } from '@/utils/date';
 import { setTargetEducationTerm } from '@/redux/reducers/target-education-term-reducer';
 import AddEducationTermView from '@/components/organisms/education/education-term/add/add-education-term.view';
-import { MemberDropdownType } from '@/components/atoms/common/dropdown/member-dropdown-item';
+import { MemberDropdownValueType } from '@/models/dropdown/dropdown';
+import { DEFAULT_MEMBER } from '@/redux/reducers/member-register-reducer';
 
 type AddEducationTermProps = {};
 
@@ -73,49 +74,45 @@ const AddEducationTerm = ({}: AddEducationTermProps) => {
   }, [targetEducationTerm.id]);
   // ===== comment =====
 
-  // ===== receiver =====
-  // 선택된 보고대상자들
-  const [receivers, setReceivers] = useState<MemberDropdownType[]>([]);
+  // ===== 수강 교인 =====
+  const onClickNewEnrollment = (values: MemberDropdownValueType[]) => {
+    const newEnrollment = values[0];
 
-  useEffect(() => {
-    if (targetEducationTerm.reports) {
-      const newReceivers = targetEducationTerm.reports.map((report) => {
-        return {
-          value: report.receiver.id,
-          title: report.receiver.name,
-        };
-      });
-      setReceivers(newReceivers);
-    } else {
-      setReceivers([]);
+    if (
+      newEnrollment.value &&
+      targetEducationTerm.educationEnrollments.every(
+        (enrollment) => enrollment.memberId !== newEnrollment.value
+      )
+    ) {
+      const newEnrollments = [
+        ...targetEducationTerm.educationEnrollments,
+        {
+          id: new Date().toString(),
+          memberId: newEnrollment.value,
+          educationTermId: targetEducationTerm.id,
+          status: EDUCATION_STATUS.INCOMPLETE,
+          note: BLANK,
+          member: { ...DEFAULT_MEMBER, name: newEnrollment.title },
+        },
+      ];
+
+      dispatch(
+        setTargetEducationTerm({
+          ...targetEducationTerm,
+          educationEnrollments: newEnrollments,
+        })
+      );
     }
-  }, [targetEducationTerm.reports]);
-
-  const onChangeReceivers = (values: MemberDropdownType[]) => {
-    setReceivers(values);
-
-    const receiverIds = values.map((value) => {
-      return value.value;
-    });
-
-    dispatch(
-      setTargetEducationTerm({
-        ...targetEducationTerm,
-        receiverIds: receiverIds,
-      })
-    );
   };
-
-  // ===== receiver =====
+  // ===== 수강 교인 =====
 
   const props = {
     comment,
-    receivers,
     onChangeTerm,
     onChangeStartDate,
     onChangeEndDate,
     onChangeComment,
-    onChangeReceivers,
+    onClickNewEnrollment,
   };
 
   return (
