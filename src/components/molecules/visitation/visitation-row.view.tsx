@@ -3,11 +3,12 @@ import styled from 'styled-components';
 
 import Button from '@/components/atoms/common/button/button';
 import { GRAY, WHITE } from '@/constants/styles/color';
-import Dropdown from '@/components/atoms/common/dropdown/dropdown';
-import BorderInput from '@/components/atoms/common/input/border-input';
 import { VISITATION } from '@/constants/visitation/visitation-column';
 
-import { useVisitationSearchFilterDropdownItems } from '@/hooks/dropdown/dropdown-items';
+import {
+  useVisitationSearchFilterDropdownItems,
+  useVisitationStatusFilterDropdownItems,
+} from '@/hooks/dropdown/dropdown-items';
 import useWindowSize from '@/hooks/window/window';
 import { useI18n, useScopedI18n } from '../../../../locales/client';
 import VisitationFilteredItem, {
@@ -16,6 +17,9 @@ import VisitationFilteredItem, {
 import PeriodModal from '@/components/atoms/common/modal/period-modal';
 import { RootState } from '@/redux/store';
 import { useSelector } from 'react-redux';
+import { VISITATION_STATUS } from '@/models/visitation/visitation';
+import StatusDropdown from '@/components/atoms/common/dropdown/status-dropdown';
+import SearchInput from '@/components/atoms/common/input/search-input';
 
 const VisitationContainer = styled.div`
   display: flex;
@@ -94,10 +98,12 @@ export type VISITATION_SEARCH_FILTER = VISITATION.TITLE | VISITATION.INSTRUCTOR;
 
 type VisitationViewProps = {
   isModalShown: boolean;
+  statusFilter: VISITATION_STATUS | undefined;
   searchFilter: VISITATION_SEARCH_FILTER;
   searchValue: string;
   searchRef: Ref<HTMLInputElement>;
   filteredItems: VisitationFilteredItemType[];
+  onClickStatusFilterItem: (value: VISITATION_STATUS) => void;
   onClickSearchFilterItem: (value: VISITATION_SEARCH_FILTER) => void;
   onChangeSearchValue: (event: ChangeEvent<HTMLInputElement>) => void;
   onClickPeriodModal: () => void;
@@ -109,10 +115,12 @@ type VisitationViewProps = {
 
 const VisitationRowView = ({
   isModalShown,
+  statusFilter,
   searchFilter,
   searchValue,
   searchRef,
   filteredItems,
+  onClickStatusFilterItem,
   onClickPeriodModal,
   onClickSearchFilterItem,
   onChangeSearchValue,
@@ -125,6 +133,7 @@ const VisitationRowView = ({
   const t_placeholder = useScopedI18n('placeholder');
   const t_button = useScopedI18n('button');
   const searchFilterDropdownItems = useVisitationSearchFilterDropdownItems();
+  const statusFilterDropdownItems = useVisitationStatusFilterDropdownItems();
 
   const { visitationFilter } = useSelector(
     (state: RootState) => state.visitationFilter
@@ -159,39 +168,33 @@ const VisitationRowView = ({
           {/* 필터 설정된 값들 */}
           <FilteredItemList $width={width - 650}>
             {filteredItems.map((item) => (
-              <VisitationFilteredItem key={item.title} item={item} />
+              <VisitationFilteredItem
+                key={`${item.title}-${item.value?.join?.('-') ?? ''}`}
+                item={item}
+              />
             ))}
           </FilteredItemList>
         </FilterList>
         {/* 검색 부분 */}
         <SearchContainer>
-          <Dropdown
-            value={searchFilter}
-            items={searchFilterDropdownItems}
-            onChangeItem={onClickSearchFilterItem}
+          <StatusDropdown
+            value={statusFilter}
+            items={statusFilterDropdownItems}
+            onChangeItem={onClickStatusFilterItem}
             height={30}
-            width={100}
+            width={130}
             borderColor={GRAY.SEMI_LIGHT}
             backgroundBlur={false}
           />
-          <BorderInput
-            ref={searchRef}
-            value={searchValue}
-            onChange={onChangeSearchValue}
-            borderColor={GRAY.SEMI_LIGHT}
-            height={30}
-            width={160}
+          <SearchInput
+            searchRef={searchRef}
+            searchFilter={searchFilter}
+            searchFilterDropdownItems={searchFilterDropdownItems}
+            onClickSearchFilterItem={onClickSearchFilterItem}
+            searchValue={searchValue}
+            onChangeSearchValue={onChangeSearchValue}
             onKeyDown={onKeyDown}
-            placeholder={t_placeholder('search')}
-          />
-          <Button
-            text={t('search')}
-            height={30}
-            width={'auto'}
-            onClick={onClickSearch}
-            backgroundColor={WHITE}
-            borderColor={GRAY.DEFAULT}
-            color={GRAY.DARK}
+            onClickSearch={onClickSearch}
           />
         </SearchContainer>
       </RowTop>

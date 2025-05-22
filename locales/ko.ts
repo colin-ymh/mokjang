@@ -14,10 +14,11 @@ export default {
 
   title: '제목',
 
-  inChargeId: '담당자',
+  inCharge: '담당자',
   taskStatus: '상태',
   taskDate: '업무일자',
   comment: '내용',
+  content: '내용',
 
   visitedMember: '대상자',
   receiver: '보고대상자',
@@ -179,6 +180,9 @@ export default {
 
   'title.addEducationTerm': '기수 추가',
   'title.editEducationTerm': '기수 수정',
+
+  'title.addEducationSession': '회차 추가',
+  'title.editEducationSession': '회차 수정',
   /*-------------------title (popup title)-------------------*/
 
   /*-------------------header (side bar button)-------------------*/
@@ -234,7 +238,6 @@ export default {
   'tableHeader.period': '기간',
   'tableHeader.educationEnrollments': '교육인원',
   'tableHeader.instructor': '진행자',
-  'tableHeader.numberOfSession': '진행 상태',
 
   'tableHeader.memberName': '교인명',
   'tableHeader.group': '그룹',
@@ -330,6 +333,8 @@ export default {
   'placeholder.visitationContent': '심방 내용을 입력해주세요.',
   'placeholder.visitationPray': '기도 제목을 입력해주세요.',
   'placeholder.comment': '업무 내용을 입력해주세요.',
+  'placeholder.content': '내용을 입력해주세요.',
+  'placeholder.selectStatus': '진행 상태 선택',
 
   /*-------------------placeholder-------------------*/
 
@@ -354,6 +359,9 @@ export default {
 
   'popup.deleteEducationTermTitle': '해당 기수를 삭제하시겠습니까?',
   'popup.deleteEducationTermBody': '삭제된 기수는 복구할 수 없습니다.',
+
+  'popup.deleteEducationSessionTitle': '해당 회차를 삭제하시겠습니까?',
+  'popup.deleteEducationSessionBody': '삭제된 회차는 복구할 수 없습니다.',
 
   'popup.deleteOfficerTitle': '해당 직분을 삭제하시겠습니까?',
   'popup.deleteOfficerBody': '삭제된 직분은 복구할 수 없습니다.',

@@ -52,6 +52,9 @@ type EditTaskBody = {
   inChargeId?: string;
   taskStartDate?: string;
   taskEndDate?: string;
+  parentTaskId?: string;
+  receiverId?: string;
+  comment?: string;
 };
 
 type DeleteTaskParams = {
@@ -112,6 +115,7 @@ export class TasksApi {
       toTaskDate,
       taskStatus,
       inChargeId,
+      title,
       // 필요하다면 선택 컬럼 등 추가
     } = params;
 
@@ -125,6 +129,7 @@ export class TasksApi {
         toTaskDate,
         taskStatus,
         inChargeId,
+        title,
       }).filter(
         ([_, value]) =>
           value !== undefined &&

@@ -9,6 +9,11 @@ import { setTargetEducationTerm } from '@/redux/reducers/target-education-term-r
 import AddEducationTermView from '@/components/organisms/education/education-term/add/add-education-term.view';
 import { MemberDropdownValueType } from '@/models/dropdown/dropdown';
 import { DEFAULT_MEMBER } from '@/redux/reducers/member-register-reducer';
+import {
+  EDUCATION_TERM_STATUS,
+  EducationEnrollment,
+} from '@/models/education/education';
+import { MemberDropdownType } from '@/components/atoms/common/dropdown/member-dropdown-item';
 
 type AddEducationTermProps = {};
 
@@ -17,6 +22,14 @@ const AddEducationTerm = ({}: AddEducationTermProps) => {
     (state: RootState) => state.targetEducationTerm
   );
   const dispatch = useDispatch<AppDispatch>();
+
+  // ===== status =====
+  const onChangeStatus = (status: EDUCATION_TERM_STATUS) => {
+    dispatch(
+      setTargetEducationTerm({ ...targetEducationTerm, status: status })
+    );
+  };
+  // ===== status =====
 
   // ===== term =====
   const onChangeTerm = (event: ChangeEvent<HTMLInputElement>): void => {
@@ -53,26 +66,57 @@ const AddEducationTerm = ({}: AddEducationTermProps) => {
   };
   // ===== period =====
 
-  // ===== comment =====
-  const [comment, setComment] = useState<string>(BLANK);
+  // ===== inCharge =====
+  // 담당자
+  const [inCharge, setInCharge] = useState<MemberDropdownType[]>([]);
 
-  const onChangeComment = (newComment: string) => {
-    setComment(newComment);
+  useEffect(() => {
+    if (targetEducationTerm.inChargeId) {
+      const newInCharge = {
+        value: targetEducationTerm.inCharge.id,
+        title: targetEducationTerm.inCharge.name,
+      };
+
+      setInCharge([newInCharge]);
+    } else {
+      setInCharge([]);
+    }
+  }, [targetEducationTerm.id]);
+
+  const onChangeInCharge = (values: MemberDropdownType[]) => {
+    const newInCharge = values[0];
+    setInCharge(values);
+
+    dispatch(
+      setTargetEducationTerm({
+        ...targetEducationTerm,
+        inChargeId: newInCharge ? newInCharge.value : BLANK,
+      })
+    );
+  };
+
+  // ===== inCharge =====
+
+  // ===== content =====
+  const [content, setContent] = useState<string>(BLANK);
+
+  const onChangeContent = (newContent: string) => {
+    setContent(newContent);
   };
 
   useEffect(() => {
-    // dispatch(
-    //   setTargetEducationTerm({
-    //     ...targetEducationTerm,
-    //     comment,
-    //   })
-    // );
-  }, [comment]);
+    dispatch(
+      setTargetEducationTerm({
+        ...targetEducationTerm,
+        content,
+      })
+    );
+  }, [content]);
 
   useEffect(() => {
-    // setComment(targetEducationTerm.comment);
+    setContent(targetEducationTerm.content);
   }, [targetEducationTerm.id]);
-  // ===== comment =====
+  // ===== content =====
 
   // ===== 수강 교인 =====
   const onClickNewEnrollment = (values: MemberDropdownValueType[]) => {
@@ -104,15 +148,42 @@ const AddEducationTerm = ({}: AddEducationTermProps) => {
       );
     }
   };
+
+  // 수강 교인 상태 변경
+  const onChangeEnrollmentStatus = (
+    value: EDUCATION_STATUS,
+    targetEnrollment: EducationEnrollment
+  ) => {
+    const newEnrollments = targetEducationTerm.educationEnrollments.map(
+      (enrollment) => {
+        if (enrollment.memberId === targetEnrollment.memberId) {
+          return { ...enrollment, status: value };
+        } else {
+          return enrollment;
+        }
+      }
+    );
+
+    dispatch(
+      setTargetEducationTerm({
+        ...targetEducationTerm,
+        educationEnrollments: newEnrollments,
+      })
+    );
+  };
   // ===== 수강 교인 =====
 
   const props = {
-    comment,
+    content,
+    inCharge,
+    onChangeStatus,
     onChangeTerm,
     onChangeStartDate,
     onChangeEndDate,
-    onChangeComment,
+    onChangeInCharge,
+    onChangeContent,
     onClickNewEnrollment,
+    onChangeEnrollmentStatus,
   };
 
   return (

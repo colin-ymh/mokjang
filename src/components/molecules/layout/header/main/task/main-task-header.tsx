@@ -58,7 +58,7 @@ const MainTaskHeader = ({}: MainTaskHeaderProps) => {
             taskEndDate: targetTask.taskEndDate,
             title: targetTask.title,
             comment: targetTask.comment,
-            // receiverIds: targetTask.receiverIds,
+            receiverIds: targetTask.receiverIds,
           }
         )
         .then((response) => {

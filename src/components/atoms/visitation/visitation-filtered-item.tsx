@@ -87,6 +87,8 @@ const VisitationFilteredItem = ({ item }: VisitationFilteredItemProps) => {
       dispatch(
         setVisitationFilter({ ...visitationFilter, [item.title]: BLANK })
       );
+    } else {
+      dispatch(setVisitationFilter({ ...visitationFilter, [item.title]: [] }));
     }
   };
 

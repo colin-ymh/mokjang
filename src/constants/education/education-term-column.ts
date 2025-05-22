@@ -4,10 +4,10 @@ export enum EDUCATION_TERM {
   ID = 'id',
   EDUCATION_ID = 'educationId',
   TERM = 'term',
-  NUMBER_OF_SESSION = 'numberOfSession',
   EDUCATION = 'education',
-  INSTRUCTOR = 'instructor',
+  IN_CHARGE = 'inCharge',
   EDUCATION_ENROLLMENTS = 'educationEnrollments',
+  STATUS = 'status',
 
   // 임의추가
   PERIOD = 'period',

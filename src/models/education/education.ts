@@ -3,6 +3,13 @@ import { Member } from '@/models/member/member';
 import { DEFAULT_MEMBER } from '@/redux/reducers/member-register-reducer';
 import { VisitationReport } from '@/models/visitation/visitation';
 
+export enum EDUCATION_TERM_STATUS {
+  RESERVE = 'reserve',
+  IN_PROGRESS = 'inProgress',
+  DONE = 'done',
+  PENDING = 'pending',
+}
+
 export type Education = {
   id: string;
   churchId: string;
@@ -42,16 +49,16 @@ export type EducationTerm = {
   educationId: string;
   educationName: string;
   term: string;
-  numberOfSessions: string;
-  completionCriteria?: string;
   startDate: string;
   endDate: string;
-  instructorId?: string;
+  inChargeId: string;
+  content: string;
+  status: EDUCATION_TERM_STATUS;
   enrollmentCount?: number;
   inProgressCount: number;
   completedCount: number;
   incompleteCount: number;
-  instructor: Member;
+  inCharge: Member;
   educationSessions: EducationSession[];
   educationEnrollments: EducationEnrollment[];
   isDoneCount: number;
@@ -63,9 +70,11 @@ export const DEFAULT_EDUCATION_TERM: EducationTerm = {
   id: BLANK,
   educationId: BLANK,
   term: BLANK,
-  numberOfSessions: BLANK,
+  content: BLANK,
+  status: EDUCATION_TERM_STATUS.RESERVE,
   startDate: BLANK,
   endDate: BLANK,
+  inChargeId: BLANK,
   inProgressCount: 0,
   completedCount: 0,
   incompleteCount: 0,
@@ -73,7 +82,7 @@ export const DEFAULT_EDUCATION_TERM: EducationTerm = {
   educationEnrollments: [],
   educationName: BLANK,
   enrollmentCount: 0,
-  instructor: DEFAULT_MEMBER,
+  inCharge: DEFAULT_MEMBER,
   isDoneCount: 0,
   reports: [],
   receiverIds: [],

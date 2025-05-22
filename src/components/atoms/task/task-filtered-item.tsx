@@ -9,10 +9,10 @@ import { SIZE } from '@/constants/styles/style';
 
 import { useI18n } from '../../../../locales/client';
 import Cancel from '../../../../public/svg/cancel.svg';
-import { TASK_STATUS } from '@/models/task/task';
 import { AppDispatch, RootState } from '@/redux/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { setTaskFilter } from '@/redux/reducers/task-filter-reducer';
+import { TASK_STATUS } from '@/models/task/task';
 
 const ItemContainer = styled.div`
   display: flex;
@@ -73,6 +73,8 @@ const TaskFilteredItem = ({ item }: TaskFilteredItemProps) => {
       );
     } else if ([TASK.TITLE, TASK.IN_CHARGE].includes(item.title)) {
       dispatch(setTaskFilter({ ...taskFilter, [item.title]: BLANK }));
+    } else {
+      dispatch(setTaskFilter({ ...taskFilter, [item.title]: [] }));
     }
   };
 

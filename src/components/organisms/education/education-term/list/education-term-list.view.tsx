@@ -18,6 +18,8 @@ import EducationTermRow from '@/components/molecules/education/education-term/ed
 import EducationTermTable, {
   EducationTermTableProps,
 } from '@/components/molecules/education/education-term/education-term-table';
+import EducationTermInformation from '@/components/organisms/education/education-term/information/education-term-information';
+import AddEducationTerm from '@/components/organisms/education/education-term/add/add-education-term';
 
 const EducationTermListContainer = styled.div`
   display: flex;
@@ -75,17 +77,27 @@ const Cancel = styled(CancelIcon)`
 type EducationTermListViewProps = {
   list: EducationTermTableProps;
   information: {
-    isEducationTermInformationShown: boolean;
-    isEditShown: boolean;
     isLoading: boolean;
-    isPopupShown: boolean;
-    onClickClose: () => void;
-    onClickDelete: () => void;
-    onClickConfirmOpen: () => void;
-    onClickConfirmClose: () => void;
-    onClickEditDone: () => void;
-    onClickEditOpen: () => void;
-    onClickEditClose: () => void;
+    isEducationTermInformationShown: boolean;
+    isEditTermShown: boolean;
+    isTermPopupShown: boolean;
+    onClickCloseTerm: () => void;
+    onClickDeleteTerm: () => void;
+    onClickDeleteTermConfirmOpen: () => void;
+    onClickDeleteTermConfirmClose: () => void;
+    onClickEditTermDone: () => void;
+    onClickEditTermOpen: () => void;
+    onClickEditTermClose: () => void;
+    isEducationSessionInformationShown: boolean;
+    isEditSessionShown: boolean;
+    isSessionPopupShown: boolean;
+    onClickCloseSession: () => void;
+    onClickDeleteSession: () => void;
+    onClickDeleteSessionConfirmOpen: () => void;
+    onClickDeleteSessionConfirmClose: () => void;
+    onClickEditSessionDone: () => void;
+    onClickEditSessionOpen: () => void;
+    onClickEditSessionClose: () => void;
   };
 };
 
@@ -94,21 +106,37 @@ const EducationTermListView = (props: EducationTermListViewProps) => {
   const t_popup = useScopedI18n('popup');
   const t_title = useScopedI18n('title');
   const {
-    isEducationTermInformationShown,
-    isEditShown,
     isLoading,
-    isPopupShown,
-    onClickClose,
-    onClickDelete,
-    onClickConfirmOpen,
-    onClickConfirmClose,
-    onClickEditDone,
-    onClickEditOpen,
-    onClickEditClose,
+    isEducationTermInformationShown,
+    isEditTermShown,
+    isTermPopupShown,
+    onClickCloseTerm,
+    onClickDeleteTerm,
+    onClickDeleteTermConfirmOpen,
+    onClickDeleteTermConfirmClose,
+    onClickEditTermDone,
+    onClickEditTermOpen,
+    onClickEditTermClose,
+    isEducationSessionInformationShown,
+    isEditSessionShown,
+    isSessionPopupShown,
+    onClickCloseSession,
+    onClickDeleteSession,
+    onClickDeleteSessionConfirmOpen,
+    onClickDeleteSessionConfirmClose,
+    onClickEditSessionDone,
+    onClickEditSessionOpen,
+    onClickEditSessionClose,
   } = props.information;
 
+  const { targetEducation } = useSelector(
+    (state: RootState) => state.targetEducation
+  );
   const { targetEducationTerm } = useSelector(
     (state: RootState) => state.targetEducationTerm
+  );
+  const { targetEducationSession } = useSelector(
+    (state: RootState) => state.targetEducationSession
   );
 
   return (
@@ -122,12 +150,12 @@ const EducationTermListView = (props: EducationTermListViewProps) => {
         <EducationTermRow />
         <EducationTermTable {...props.list} />
       </DesktopView>
-      {/* 심방 상세정보 팝업*/}
+      {/* 기수 상세정보 팝업*/}
       <SlidePopup
         isShow={isEducationTermInformationShown}
-        onClickClose={onClickClose}
+        onClickClose={onClickCloseTerm}
         isFooterShown={false}
-        headerTitle={targetEducationTerm?.term}
+        headerTitle={`${targetEducation.name} ${targetEducationTerm?.term}기`}
         headerRight={
           <ButtonRow>
             <KebabDropdown
@@ -135,50 +163,109 @@ const EducationTermListView = (props: EducationTermListViewProps) => {
                 {
                   value: 'delete',
                   title: t_button('delete'),
-                  onClick: onClickConfirmOpen,
+                  onClick: onClickDeleteTermConfirmOpen,
                 },
                 {
                   value: 'edit',
                   title: t_button('edit'),
-                  onClick: onClickEditOpen,
+                  onClick: onClickEditTermOpen,
                 },
               ]}
               width={150}
             />
-            <ButtonContainer onClick={onClickClose}>
+            <ButtonContainer onClick={onClickCloseTerm}>
               <Cancel />
             </ButtonContainer>
           </ButtonRow>
         }
       >
         <>
-          {/* 삭제 확인 팝업 */}
+          {/* 기수 삭제 확인 팝업 */}
           <ConfirmPopup
             title={t_popup('deleteEducationTermTitle')}
             body={t_popup('deleteEducationTermBody')}
             buttonNum={2}
-            isShow={isPopupShown}
-            onClickLeftButton={onClickConfirmClose}
+            isShow={isTermPopupShown}
+            onClickLeftButton={onClickDeleteTermConfirmClose}
             onClickRightButton={() => {
-              onClickDelete();
-              onClickConfirmClose();
+              onClickDeleteTerm();
+              onClickDeleteTermConfirmClose();
             }}
             leftButtonText={t_button('cancel')}
             rightButtonText={t_button('delete')}
           />
-          {/*<EducationTermInformation />*/}
+          <EducationTermInformation />
         </>
       </SlidePopup>
-      {/* 심방 수정 팝업*/}
-      {/*<SlidePopup*/}
-      {/*  isShow={isEditShown}*/}
-      {/*  onClickClose={onClickEditClose}*/}
-      {/*  onClickDone={onClickEditDone}*/}
-      {/*  doneText={t_button('edit')}*/}
-      {/*  headerTitle={t_title('editEducationTerm')}*/}
-      {/*>*/}
-      {/*  <AddEducationTerm />*/}
-      {/*</SlidePopup>*/}
+      {/* 기수 수정 팝업*/}
+      <SlidePopup
+        isShow={isEditTermShown}
+        onClickClose={onClickEditTermClose}
+        onClickDone={onClickEditTermDone}
+        doneText={t_button('edit')}
+        headerTitle={t_title('editEducationTerm')}
+      >
+        <AddEducationTerm />
+      </SlidePopup>
+      {/* ----------- 회차 ----------*/}
+      {/* 회차 상세정보 팝업*/}
+      <SlidePopup
+        isShow={isEducationSessionInformationShown}
+        onClickClose={onClickCloseSession}
+        isFooterShown={false}
+        headerTitle={`${targetEducation}기 ${targetEducation.name}`}
+        headerRight={
+          <ButtonRow>
+            <KebabDropdown
+              items={[
+                {
+                  value: 'delete',
+                  title: t_button('delete'),
+                  onClick: onClickDeleteSessionConfirmOpen,
+                },
+                {
+                  value: 'edit',
+                  title: t_button('edit'),
+                  onClick: onClickEditSessionOpen,
+                },
+              ]}
+              width={150}
+            />
+            <ButtonContainer onClick={onClickCloseSession}>
+              <Cancel />
+            </ButtonContainer>
+          </ButtonRow>
+        }
+      >
+        <>
+          {/* 회차 삭제 확인 팝업 */}
+          <ConfirmPopup
+            title={t_popup('deleteEducationSessionTitle')}
+            body={t_popup('deleteEducationSessionBody')}
+            buttonNum={2}
+            isShow={isSessionPopupShown}
+            onClickLeftButton={onClickDeleteSessionConfirmClose}
+            onClickRightButton={() => {
+              onClickDeleteSession();
+              onClickDeleteSessionConfirmClose();
+            }}
+            leftButtonText={t_button('cancel')}
+            rightButtonText={t_button('delete')}
+          />
+          {/*<EducationSessionInformation />*/}
+        </>
+      </SlidePopup>
+      {/* 회차 수정 팝업*/}
+      <SlidePopup
+        isShow={isEditSessionShown}
+        onClickClose={onClickEditSessionClose}
+        onClickDone={onClickEditSessionDone}
+        doneText={t_button('edit')}
+        headerTitle={t_title('editEducationSession')}
+      >
+        <AddEducationTerm />
+      </SlidePopup>
+      {/* ----------- 회차 ----------*/}
       <Loading isShow={isLoading} />
     </EducationTermListContainer>
   );

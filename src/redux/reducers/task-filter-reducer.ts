@@ -4,12 +4,14 @@ import { Task, TASK_STATUS } from '@/models/task/task';
 import { RootState } from '@/redux/store';
 import { TASK } from '@/constants/task/task-column';
 import { TasksApi } from '@/api/tasks/tasks.api';
+import { Member } from '@/models/member/member';
+import { DEFAULT_MEMBER } from '@/redux/reducers/member-register-reducer';
 
 type TASK_FILTER = {
   [TASK.FROM_DATE]: string;
   [TASK.STATUS]: TASK_STATUS[];
   [TASK.TITLE]: string;
-  [TASK.IN_CHARGE]: string;
+  [TASK.IN_CHARGE]: Member;
   [TASK.TO_DATE]: string;
   [TASK.FROM_DATE]: string;
 };
@@ -27,7 +29,7 @@ export const INITIAL_TASK_FILTER: TASK_FILTER = {
   [TASK.TO_DATE]: BLANK,
   [TASK.STATUS]: [],
   [TASK.TITLE]: BLANK,
-  [TASK.IN_CHARGE]: BLANK,
+  [TASK.IN_CHARGE]: DEFAULT_MEMBER,
 };
 
 export type TASK_TABLE_HEADER_ITEM = {
@@ -106,7 +108,7 @@ export const fetchTasks = createAsyncThunk<
         // 필터
         taskStatus: taskFilter.taskStatus,
         title: taskFilter.title,
-        inChargeId: inChargeId || taskFilter.inChargeId,
+        inChargeId: inChargeId || taskFilter.inCharge.id,
         fromTaskDate: taskFilter.fromTaskDate,
         toTaskDate: taskFilter.toTaskDate,
         // 검색

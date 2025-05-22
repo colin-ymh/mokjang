@@ -17,6 +17,10 @@ import { EducationSession, EducationTerm } from '@/models/education/education';
 import { EDUCATION_TERM } from '@/constants/education/education-term-column';
 import { useI18n } from '../../../../../locales/client';
 import ChevronDown from '../../../../../public/svg/chevron-down.svg';
+import { getEducationTermStatusColor } from '@/utils/color';
+import { getFormattedDate } from '@/utils/format';
+import { getRandomImage } from '@/utils/image';
+import { MEMBER } from '@/constants/member/member-column';
 
 // 1. 컬럼별 PX 폭
 const getColumnWidth = (id: string) => {
@@ -97,7 +101,7 @@ const EducationTermTableRow = styled.tr`
 
 /* educationSession 전용 Row (optional) */
 const EducationSessionTableRow = styled.tr`
-  background: ${GRAY.EXTRA_LIGHT};
+  border-bottom: 1px solid ${GRAY.EXTRA_LIGHT};
   &:hover td {
     background-color: ${GRAY.LIGHT};
   }
@@ -194,6 +198,13 @@ const PopupButtonContainer = styled.div<{ $isShown: boolean }>`
   pointer-events: ${({ $isShown }) => ($isShown ? 'auto' : 'none')};
 `;
 
+const SessionContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-left: 50px;
+`;
+
 // 이 예시에서는 실제 EDUCATION_TERM + "비고" 컬럼(REMARKS)까지 표시
 type EducationTermTableProps = {
   openedTermId: string;
@@ -244,27 +255,39 @@ const EducationTermTableView = ({
                 onClickTermChevron(educationTerm.id);
               }}
             />
-            <MainText>{educationTerm?.term}</MainText>
+            <MainText>{`${educationTerm?.term}기`}</MainText>
           </TermContainer>
         );
 
-      // case EDUCATION_TERM.STATUS:
-      //   return (
-      //     <StatusContainer>
-      //       <ColoredDot
-      //         color={getEducationTermStatusColor(
-      //           educationTerm.educationTermStatus
-      //         )}
-      //       />
-      //       <MainText>{t(educationTerm?.educationTermStatus)}</MainText>
-      //     </StatusContainer>
-      //   );
+      case EDUCATION_TERM.STATUS:
+        return (
+          <StatusContainer>
+            <ColoredDot
+              color={getEducationTermStatusColor(educationTerm.status)}
+            />
+            <MainText>{t(educationTerm?.status)}</MainText>
+          </StatusContainer>
+        );
       case EDUCATION_TERM.PERIOD:
         return (
           <MainText>
-            {/*{educationTerm.educationTermStartDate &&*/}
-            {/*  getFormattedDate(educationTerm.educationTermStartDate)}*/}
+            {`${
+              educationTerm.startDate &&
+              getFormattedDate(educationTerm.startDate)
+            } - ${
+              educationTerm.endDate && getFormattedDate(educationTerm.endDate)
+            }`}
           </MainText>
+        );
+      case EDUCATION_TERM.IN_CHARGE:
+        return (
+          <ProfileContainer>
+            <ProfileImage
+              src={getRandomImage(educationTerm.inCharge.id)}
+              alt={MEMBER.PROFILE_IMAGE}
+            />
+            <MainText>{educationTerm.inCharge?.name}</MainText>
+          </ProfileContainer>
         );
       case BLANK:
         return <div></div>;
@@ -281,9 +304,13 @@ const EducationTermTableView = ({
     switch (id) {
       case EDUCATION_TERM.TERM:
         return (
-          <ContentWrapper style={{ paddingLeft: 32 }}>• {}</ContentWrapper>
+          <SessionContainer>
+            <MainText>{`${session.session}${t('session')}`}</MainText>
+          </SessionContainer>
         );
       case EDUCATION_TERM.PERIOD:
+        return <MainText>{}</MainText>;
+      case EDUCATION_TERM.STATUS:
         return <MainText>{}</MainText>;
       default:
         return null;

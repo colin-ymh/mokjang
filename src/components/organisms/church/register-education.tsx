@@ -2,13 +2,13 @@ import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 
-import { DEFAULT_EDUCATION, Education } from '@/models/management/management';
 import { EducationsApi } from '@/api/education/educations.api';
 import { usePageRouter } from '@/utils/router';
 import RegisterEducationView from '@/components/organisms/church/register-education.view';
 import { getIsWellFormedTitle } from '@/utils/check';
 import { BLANK } from '@/constants/constant';
 import { getFormattedTitle } from '@/utils/format';
+import { DEFAULT_EDUCATION, Education } from '@/models/education/education';
 
 type EducationListProps = {};
 

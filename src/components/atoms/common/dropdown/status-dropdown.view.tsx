@@ -32,7 +32,7 @@ const DropdownButton = styled.div`
 `;
 
 const ColoredDot = styled.div<{ color?: string }>`
-  display: flex;
+  display: ${({ color }) => (color ? 'flex' : 'none')};
   width: 10px;
   height: 10px;
   border-radius: 100%;
@@ -174,7 +174,7 @@ const StatusDropdownView = forwardRef<HTMLInputElement, DropdownViewProps>(
                 onKeyDownHandler(event);
               }
             }}
-            paddingLeft={25}
+            paddingLeft={innerValue ? 25 : 10}
             {...inputProps}
           />
           <Chevron $isOpened={isOpened} />

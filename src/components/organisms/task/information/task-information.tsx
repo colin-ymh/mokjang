@@ -29,7 +29,7 @@ const TaskInformation = ({}: TaskInformationProps) => {
       tasksApi
         .editTask({ churchId, taskId: targetTask.id }, { taskStatus: status })
         .then((response) => {
-          const newTask = response.data;
+          const newTask = response.data.data;
 
           dispatch(setTargetTask({ ...targetTask, taskStatus: status }));
 

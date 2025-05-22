@@ -14,10 +14,17 @@ import {
 import { EducationTermsApi } from '@/api/education/education-terms.api';
 import { setTargetEducationTerm } from '@/redux/reducers/target-education-term-reducer';
 import { setEducationTerms } from '@/redux/reducers/education-term-filter-reducer';
+import { useParams } from 'next/navigation';
+import { EDUCATION_CONTENT_ID } from '@/constants/layout/content';
+import { EducationEnrollmentsApi } from '@/api/education/education-enrollments.api';
 
 type MainEducationHeaderProps = {};
 
 const MainEducationHeader = ({}: MainEducationHeaderProps) => {
+  const slug = useParams().slug as string[];
+  const contentId = slug[2];
+
+  const isTerm = contentId === EDUCATION_CONTENT_ID.TERM;
   const router = usePageRouter();
   const dispatch = useDispatch<AppDispatch>();
 
@@ -37,6 +44,7 @@ const MainEducationHeader = ({}: MainEducationHeaderProps) => {
 
   const educationsApi = new EducationsApi(false);
   const educationTermsApi = new EducationTermsApi(false);
+  const educationEnrollmentsApi = new EducationEnrollmentsApi(false);
 
   const [isAddEducationOpened, setIsAddEducationOpened] =
     useState<boolean>(false);
@@ -61,6 +69,8 @@ const MainEducationHeader = ({}: MainEducationHeaderProps) => {
   // 기수 => 교육으로 돌아가기
   const onClickGoBack = () => {
     router.push(`admin/main/education/all`);
+    dispatch(setTargetEducationTerm(DEFAULT_EDUCATION_TERM));
+    dispatch(setTargetEducation(DEFAULT_EDUCATION));
     dispatch(setEducationTerms([]));
   };
 
@@ -109,6 +119,7 @@ const MainEducationHeader = ({}: MainEducationHeaderProps) => {
   // ========== 기수 ==========
   const onClickAddEducationTerm = () => {
     setIsAddEducationTermOpened(true);
+    dispatch(setTargetEducationTerm({ ...DEFAULT_EDUCATION_TERM, id: 'TEMP' }));
   };
 
   const onClickCloseTermModal = () => {
@@ -123,16 +134,36 @@ const MainEducationHeader = ({}: MainEducationHeaderProps) => {
           { churchId, educationId: targetEducation.id },
           {
             term: targetEducationTerm.term,
-            numberOfSessions: '10',
             startDate: targetEducationTerm.startDate,
             endDate: targetEducationTerm.endDate,
+            inChargeId: targetEducationTerm.inChargeId,
+            content: targetEducationTerm.content,
           }
         )
         .then((response) => {
-          const newEducationTerm = response.data;
+          const newEducationTerm = response.data.data;
+
+          // 저장할 수강 교인이 있는 경우
+          if (targetEducationTerm.educationEnrollments.length > 0) {
+            targetEducationTerm.educationEnrollments.map((enrollment) => {
+              educationEnrollmentsApi.createEducationEnrollments(
+                {
+                  churchId,
+                  educationId: newEducationTerm.educationId,
+                  educationTermId: newEducationTerm.id,
+                },
+                {
+                  memberId: enrollment.memberId,
+                  status: enrollment.status,
+                }
+              );
+            });
+          }
+
           const newEducationTerms = [...educationTerms, newEducationTerm];
 
           dispatch(setEducationTerms(newEducationTerms));
+          dispatch(setTargetEducationTerm(DEFAULT_EDUCATION_TERM));
           setIsAddEducationTermOpened(false);
         });
     } catch (error) {
@@ -141,10 +172,38 @@ const MainEducationHeader = ({}: MainEducationHeaderProps) => {
   };
 
   useEffect(() => {
+    if (getIsWellFormedTitle(targetEducation.name)) {
+      setIsTermSaveEnabled(false);
+      return;
+    }
+
+    setIsTermSaveEnabled(true);
+  }, [targetEducation]);
+
+  useEffect(() => {
+    if (!targetEducationTerm.term) {
+      setIsTermSaveEnabled(false);
+      return;
+    }
+    if (!targetEducationTerm.startDate || !targetEducationTerm.endDate) {
+      setIsTermSaveEnabled(false);
+      return;
+    }
+
     setIsTermSaveEnabled(true);
   }, [targetEducationTerm]);
 
   // ========== 기수 ==========
+
+  // 선택된 교육이 없으면 교육 화면으로 이동
+  useEffect(() => {
+    if (isTerm && !targetEducation.id) {
+      router.push(`admin/main/education/all`);
+      dispatch(setTargetEducationTerm(DEFAULT_EDUCATION_TERM));
+      dispatch(setTargetEducation(DEFAULT_EDUCATION));
+      dispatch(setEducationTerms([]));
+    }
+  }, [targetEducation.id]);
 
   const props = {
     isAddEducationOpened,

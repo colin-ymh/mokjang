@@ -32,6 +32,15 @@ const TaskList = ({ isMy = false }: TaskListProps) => {
     throw thrownError;
   }
 
+  useEffect(() => {
+    if (targetTask.receiverIds) {
+      const receiverIds = targetTask.reports.map((report) => {
+        return report.receiver.id;
+      });
+      setReceiverIds(receiverIds);
+    }
+  }, [targetTask.id]);
+
   // 상세정보 팝업 On/Off
   const [isTaskInformationShown, setIsTaskInformationShown] =
     useState<boolean>(false);
@@ -127,6 +136,7 @@ const TaskList = ({ isMy = false }: TaskListProps) => {
           taskStartDate: targetTask.taskStartDate || undefined,
           taskEndDate: targetTask.taskEndDate || undefined,
           title: targetTask.title || undefined,
+          comment: targetTask.comment || undefined,
         }
       );
 

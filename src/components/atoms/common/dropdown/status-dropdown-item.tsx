@@ -24,8 +24,8 @@ const ItemContainer = styled.div<{ $isFocused: boolean }>`
   }
 `;
 
-const ColoredDot = styled.div<{ color: string }>`
-  display: flex;
+const ColoredDot = styled.div<{ color?: string }>`
+  display: ${({ color }) => (color ? 'flex' : 'none')};
   width: 10px;
   height: 10px;
   border-radius: 100%;
@@ -35,7 +35,7 @@ const ColoredDot = styled.div<{ color: string }>`
 export type StatusDropdownValueType = {
   value: any;
   title: string;
-  color: string;
+  color?: string;
 };
 
 type StatusDropdownItemProps = {

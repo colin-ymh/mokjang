@@ -232,8 +232,13 @@ const VisitationTableView = ({
       case VISITATION.DATE:
         return (
           <MainText>
-            {visitation.visitationStartDate &&
-              getFormattedDate(visitation.visitationStartDate)}
+            {`${
+              visitation.visitationStartDate &&
+              getFormattedDate(visitation.visitationStartDate)
+            } - ${
+              visitation.visitationEndDate &&
+              getFormattedDate(visitation.visitationEndDate)
+            }`}
           </MainText>
         );
       case VISITATION.INSTRUCTOR:

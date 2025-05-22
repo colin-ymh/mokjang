@@ -1,14 +1,12 @@
 import React, { ChangeEvent, Dispatch, LegacyRef, SetStateAction } from 'react';
 import styled from 'styled-components';
 
-import { Education } from '@/models/management/management';
-import ManagementEducationItem from '@/components/atoms/education/management-education-item';
 import Button from '@/components/atoms/common/button/button';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { SIZE } from '@/constants/styles/style';
-import AddEducation from '@/components/atoms/education/add-education';
 
 import { useScopedI18n } from '../../../../locales/client';
+import { Education } from '@/models/education/education';
 
 const EducationContainer = styled.div`
   display: flex;
@@ -77,22 +75,22 @@ const RegisterEducationView = ({
         </MainText>
       </TextContainer>
       <EducationListContainer>
-        {educations.map((education) => (
-          <ManagementEducationItem
-            key={education.id}
-            education={education}
-            selectedEducationId={selectedEducationId}
-            setSelectedEducation={setSelectedEducation}
-            fetchEducations={fetchEducations}
-          />
-        ))}
-        <AddEducation
-          ref={nameInputRef}
-          isShown={true}
-          name={newEducationName}
-          onChangeName={onChangeName}
-          onClickSaveEducation={onClickSaveEducation}
-        />
+        {/*{educations.map((education) => (*/}
+        {/*  <ManagementEducationItem*/}
+        {/*    key={education.id}*/}
+        {/*    education={education}*/}
+        {/*    selectedEducationId={selectedEducationId}*/}
+        {/*    setSelectedEducation={setSelectedEducation}*/}
+        {/*    fetchEducations={fetchEducations}*/}
+        {/*  />*/}
+        {/*))}*/}
+        {/*<AddEducation*/}
+        {/*  ref={nameInputRef}*/}
+        {/*  isShown={true}*/}
+        {/*  name={newEducationName}*/}
+        {/*  onChangeName={onChangeName}*/}
+        {/*  onClickSaveEducation={onClickSaveEducation}*/}
+        {/*/>*/}
       </EducationListContainer>
       <ButtonContainer>
         <Button text={t_button('register')} height={40} onClick={onClickSave} />

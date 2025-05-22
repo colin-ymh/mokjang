@@ -12,7 +12,7 @@ export default {
   isDone: 'Completed',
   isNotDone: 'Incomplete',
 
-  inChargeId: 'In Charge',
+  inCharge: 'In Charge',
   taskStatus: 'Status',
   taskDate: 'Task Date',
   comment: 'Comment',
@@ -227,7 +227,6 @@ export default {
   'tableHeader.period': 'Period',
   'tableHeader.educationEnrollments': 'Number of Enrollments',
   'tableHeader.instructor': 'Instructor',
-  'tableHeader.numberOfSession': 'Progress',
 
   'tableHeader.memberName': 'Name',
   'tableHeader.group': 'Group',
@@ -324,6 +323,7 @@ export default {
   'placeholder.visitationContent': 'Enter the content.',
   'placeholder.visitationPray': 'Enter the pray.',
   'placeholder.comment': 'Enter the comment.',
+  'placeholder.selectStatus': 'Select the status',
   /*-------------------placeholder-------------------*/
 
   /*-------------------radiobutton-------------------*/

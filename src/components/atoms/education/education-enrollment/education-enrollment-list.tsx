@@ -8,6 +8,7 @@ import Image from 'next/image';
 import StatusDropdown from '@/components/atoms/common/dropdown/status-dropdown';
 import { useEducationStatusDropdownItems } from '@/hooks/dropdown/dropdown-items';
 import { GRAY } from '@/constants/styles/color';
+import { EDUCATION_STATUS } from '@/constants/constant';
 
 const EnrollmentListContainer = styled.div`
   display: flex;
@@ -45,12 +46,18 @@ const ProfileImage = styled(Image)`
 
 type EducationEnrollmentListProps = {
   enrollments: EducationEnrollment[];
+  onChangeStatus: (
+    status: EDUCATION_STATUS,
+    enrollment: EducationEnrollment
+  ) => void;
 };
 
 const EducationEnrollmentList = ({
   enrollments,
+  onChangeStatus,
 }: EducationEnrollmentListProps) => {
   const statusDropdownItems = useEducationStatusDropdownItems();
+
   return (
     <EnrollmentListContainer>
       {enrollments.map((enrollment) => (
@@ -71,6 +78,7 @@ const EducationEnrollmentList = ({
             items={statusDropdownItems}
             height={30}
             width={100}
+            onChangeItem={(value) => onChangeStatus(value, enrollment)}
           />
         </EnrollmentItem>
       ))}

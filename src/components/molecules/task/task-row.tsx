@@ -10,6 +10,7 @@ import TaskRowView, {
   TASK_SEARCH_FILTER,
 } from '@/components/molecules/task/task-row.view';
 import { TaskFilteredItemType } from '@/components/atoms/task/task-filtered-item';
+import { TASK_STATUS } from '@/models/task/task';
 
 const TaskRow = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -37,6 +38,31 @@ const TaskRow = () => {
       })
     );
     setIsAddFilterShown(false);
+  };
+
+  // 상태 필터
+  const [statusFilter, setStatusFilter] = useState<TASK_STATUS | undefined>(
+    undefined
+  );
+
+  // 상태 선택
+  const onClickStatusFilterItem = (value: TASK_STATUS) => {
+    setStatusFilter(value);
+    if (value) {
+      dispatch(
+        setTaskFilter({
+          ...taskFilter,
+          [TASK.STATUS]: [value],
+        })
+      );
+    } else {
+      dispatch(
+        setTaskFilter({
+          ...taskFilter,
+          [TASK.STATUS]: [],
+        })
+      );
+    }
   };
 
   // 검색 필터 주제
@@ -85,6 +111,8 @@ const TaskRow = () => {
         title: TASK.STATUS,
         value: taskFilter.taskStatus,
       });
+    } else {
+      setStatusFilter(undefined);
     }
 
     // 등록일
@@ -103,6 +131,14 @@ const TaskRow = () => {
       });
     }
 
+    // 이름
+    if (taskFilter.inCharge.id) {
+      newFilterItems.push({
+        title: TASK.IN_CHARGE,
+        value: [taskFilter.inCharge.name],
+      });
+    }
+
     setFilteredItems(newFilterItems);
   }, [taskFilter]);
 
@@ -111,7 +147,9 @@ const TaskRow = () => {
     searchFilter,
     searchValue,
     searchRef,
+    statusFilter,
     filteredItems,
+    onClickStatusFilterItem,
     onClickPeriodModal,
     onClickSearchFilterItem,
     onChangeSearchValue,

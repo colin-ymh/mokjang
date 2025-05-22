@@ -10,6 +10,7 @@ import VisitationRowView, {
 } from '@/components/molecules/visitation/visitation-row.view';
 import { VisitationFilteredItemType } from '@/components/atoms/visitation/visitation-filtered-item';
 import { setVisitationFilter } from '@/redux/reducers/visitation-filter-reducer';
+import { VISITATION_STATUS } from '@/models/visitation/visitation';
 
 const VisitationRow = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -39,6 +40,31 @@ const VisitationRow = () => {
       })
     );
     setIsAddFilterShown(false);
+  };
+
+  // 상태 필터
+  const [statusFilter, setStatusFilter] = useState<
+    VISITATION_STATUS | undefined
+  >(undefined);
+
+  // 검색 주제 선택
+  const onClickStatusFilterItem = (value: VISITATION_STATUS) => {
+    setStatusFilter(value);
+    if (value) {
+      dispatch(
+        setVisitationFilter({
+          ...visitationFilter,
+          [VISITATION.STATUS]: [value],
+        })
+      );
+    } else {
+      dispatch(
+        setVisitationFilter({
+          ...visitationFilter,
+          [VISITATION.STATUS]: [],
+        })
+      );
+    }
   };
 
   // 검색 필터 주제
@@ -90,7 +116,10 @@ const VisitationRow = () => {
         title: VISITATION.STATUS,
         value: visitationFilter.visitationStatus,
       });
+    } else {
+      setStatusFilter(undefined);
     }
+
     // 방식
     if (visitationFilter.visitationMethod.length > 0) {
       newFilterItems.push({
@@ -135,10 +164,12 @@ const VisitationRow = () => {
 
   const props = {
     isModalShown,
+    statusFilter,
     searchFilter,
     searchValue,
     searchRef,
     filteredItems,
+    onClickStatusFilterItem,
     onClickPeriodModal,
     onClickSearchFilterItem,
     onChangeSearchValue,

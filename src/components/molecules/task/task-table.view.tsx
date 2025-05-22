@@ -214,7 +214,9 @@ const TaskTableView = ({
       case TASK.DATE:
         return (
           <MainText>
-            {task.taskStartDate && getFormattedDate(task.taskStartDate)}
+            {`${
+              task.taskStartDate && getFormattedDate(task.taskStartDate)
+            } - ${task.taskEndDate && getFormattedDate(task.taskEndDate)}`}
           </MainText>
         );
       case TASK.IN_CHARGE:

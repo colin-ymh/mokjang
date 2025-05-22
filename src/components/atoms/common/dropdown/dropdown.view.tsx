@@ -7,8 +7,9 @@ import { BLACK, WHITE } from '@/constants/styles/color';
 import DropdownItem, {
   DropdownValueType,
 } from '@/components/atoms/common/dropdown/dropdown-item';
-import BorderInput from '@/components/atoms/common/input/border-input';
-import { InputProps } from '@/components/atoms/common/input/main-input';
+import BorderInput, {
+  BorderInputProps,
+} from '@/components/atoms/common/input/border-input';
 
 import ChevronLeft from '../../../../../public/svg/chevron-down.svg';
 
@@ -92,7 +93,7 @@ type DropdownViewProps = {
   height?: number;
   backgroundColor?: string;
   disabled?: boolean;
-} & InputProps;
+} & BorderInputProps;
 
 const DropdownView = forwardRef<HTMLInputElement, DropdownViewProps>(
   (

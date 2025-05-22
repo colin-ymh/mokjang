@@ -24,6 +24,7 @@ import { TASK } from '@/constants/task/task-column';
 import { TASK_STATUS } from '@/models/task/task';
 import { EDUCATION } from '@/constants/education/education-column';
 import { EDUCATION_TERM } from '@/constants/education/education-term-column';
+import { EDUCATION_TERM_STATUS } from '@/models/education/education';
 
 export const useBaptismDropdownItems = () => {
   const t = useI18n();
@@ -385,6 +386,35 @@ export const useVisitationStatusDropdownItems = () => {
   return items;
 };
 
+export const useVisitationStatusFilterDropdownItems = () => {
+  const t = useI18n();
+
+  const items = [
+    {
+      value: undefined,
+      title: t('placeholder.selectStatus'),
+      color: undefined,
+    },
+    {
+      value: VISITATION_STATUS.RESERVE,
+      title: t(VISITATION_STATUS.RESERVE),
+      color: STATUS_COLOR.RESERVE,
+    },
+    {
+      value: VISITATION_STATUS.DONE,
+      title: t(VISITATION_STATUS.DONE),
+      color: STATUS_COLOR.DONE,
+    },
+    {
+      value: VISITATION_STATUS.PENDING,
+      title: t(VISITATION_STATUS.PENDING),
+      color: STATUS_COLOR.PENDING,
+    },
+  ];
+
+  return items;
+};
+
 export const useTaskStatusDropdownItems = () => {
   const t = useI18n();
 
@@ -407,6 +437,69 @@ export const useTaskStatusDropdownItems = () => {
     {
       value: TASK_STATUS.PENDING,
       title: t(TASK_STATUS.PENDING),
+      color: STATUS_COLOR.PENDING,
+    },
+  ];
+
+  return items;
+};
+
+export const useTaskStatusFilterDropdownItems = () => {
+  const t = useI18n();
+
+  const items = [
+    {
+      value: undefined,
+      title: t('placeholder.selectStatus'),
+      color: undefined,
+    },
+    {
+      value: TASK_STATUS.RESERVE,
+      title: t(TASK_STATUS.RESERVE),
+      color: STATUS_COLOR.RESERVE,
+    },
+    {
+      value: TASK_STATUS.IN_PROGRESS,
+      title: t(TASK_STATUS.IN_PROGRESS),
+      color: STATUS_COLOR.IN_PROGRESS,
+    },
+    {
+      value: TASK_STATUS.DONE,
+      title: t(TASK_STATUS.DONE),
+      color: STATUS_COLOR.DONE,
+    },
+    {
+      value: TASK_STATUS.PENDING,
+      title: t(TASK_STATUS.PENDING),
+      color: STATUS_COLOR.PENDING,
+    },
+  ];
+
+  return items;
+};
+
+export const useEducationTermStatusDropdownItems = () => {
+  const t = useI18n();
+
+  const items = [
+    {
+      value: EDUCATION_TERM_STATUS.RESERVE,
+      title: t(EDUCATION_TERM_STATUS.RESERVE),
+      color: STATUS_COLOR.RESERVE,
+    },
+    {
+      value: EDUCATION_TERM_STATUS.IN_PROGRESS,
+      title: t(EDUCATION_TERM_STATUS.IN_PROGRESS),
+      color: STATUS_COLOR.IN_PROGRESS,
+    },
+    {
+      value: EDUCATION_TERM_STATUS.DONE,
+      title: t(EDUCATION_TERM_STATUS.DONE),
+      color: STATUS_COLOR.DONE,
+    },
+    {
+      value: EDUCATION_TERM_STATUS.PENDING,
+      title: t(EDUCATION_TERM_STATUS.PENDING),
       color: STATUS_COLOR.PENDING,
     },
   ];

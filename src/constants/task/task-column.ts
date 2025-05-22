@@ -4,7 +4,7 @@ export enum TASK {
   FROM_DATE = 'fromTaskDate',
   TO_DATE = 'toTaskDate',
   DATE = 'taskDate',
-  IN_CHARGE = 'inChargeId',
+  IN_CHARGE = 'inCharge',
   CREATED_AT = 'createdAt',
   UPDATED_AT = 'updatedAt',
 }

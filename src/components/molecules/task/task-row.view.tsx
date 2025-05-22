@@ -3,19 +3,23 @@ import styled from 'styled-components';
 
 import Button from '@/components/atoms/common/button/button';
 import { GRAY, WHITE } from '@/constants/styles/color';
-import Dropdown from '@/components/atoms/common/dropdown/dropdown';
-import BorderInput from '@/components/atoms/common/input/border-input';
 import { TASK } from '@/constants/task/task-column';
 
-import { useTaskSearchFilterDropdownItems } from '@/hooks/dropdown/dropdown-items';
+import {
+  useTaskSearchFilterDropdownItems,
+  useTaskStatusFilterDropdownItems,
+} from '@/hooks/dropdown/dropdown-items';
 import useWindowSize from '@/hooks/window/window';
-import { useI18n, useScopedI18n } from '../../../../locales/client';
+import { useScopedI18n } from '../../../../locales/client';
 import TaskFilteredItem, {
   TaskFilteredItemType,
 } from '@/components/atoms/task/task-filtered-item';
 import PeriodModal from '@/components/atoms/common/modal/period-modal';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
+import { TASK_STATUS } from '@/models/task/task';
+import SearchInput from '@/components/atoms/common/input/search-input';
+import StatusDropdown from '@/components/atoms/common/dropdown/status-dropdown';
 
 const TaskContainer = styled.div`
   display: flex;
@@ -97,7 +101,9 @@ type TaskViewProps = {
   searchFilter: TASK_SEARCH_FILTER;
   searchValue: string;
   searchRef: Ref<HTMLInputElement>;
+  statusFilter: TASK_STATUS | undefined;
   filteredItems: TaskFilteredItemType[];
+  onClickStatusFilterItem: (value: TASK_STATUS) => void;
   onClickClosePeriodModal: () => void;
   onClickSearchFilterItem: (value: TASK_SEARCH_FILTER) => void;
   onChangeSearchValue: (event: ChangeEvent<HTMLInputElement>) => void;
@@ -112,7 +118,9 @@ const TaskRowView = ({
   searchFilter,
   searchValue,
   searchRef,
+  statusFilter,
   filteredItems,
+  onClickStatusFilterItem,
   onClickClosePeriodModal,
   onClickPeriodModal,
   onClickSearchFilterItem,
@@ -121,10 +129,9 @@ const TaskRowView = ({
   onKeyDown,
   onClickSavePeriod,
 }: TaskViewProps) => {
-  const t = useI18n();
-  const t_placeholder = useScopedI18n('placeholder');
   const t_button = useScopedI18n('button');
   const searchFilterDropdownItems = useTaskSearchFilterDropdownItems();
+  const statusFilterDropdownItems = useTaskStatusFilterDropdownItems();
 
   const { taskFilter } = useSelector((state: RootState) => state.taskFilter);
 
@@ -157,39 +164,33 @@ const TaskRowView = ({
           {/* 필터 설정된 값들 */}
           <FilteredItemList $width={width - 650}>
             {filteredItems.map((item) => (
-              <TaskFilteredItem key={item.title} item={item} />
+              <TaskFilteredItem
+                key={`${item.title}-${item.value?.join?.('-') ?? ''}`}
+                item={item}
+              />
             ))}
           </FilteredItemList>
         </FilterList>
         {/* 검색 부분 */}
         <SearchContainer>
-          <Dropdown
-            value={searchFilter}
-            items={searchFilterDropdownItems}
-            onChangeItem={onClickSearchFilterItem}
+          <StatusDropdown
+            value={statusFilter}
+            items={statusFilterDropdownItems}
+            onChangeItem={onClickStatusFilterItem}
             height={30}
-            width={100}
+            width={130}
             borderColor={GRAY.SEMI_LIGHT}
             backgroundBlur={false}
           />
-          <BorderInput
-            ref={searchRef}
-            value={searchValue}
-            onChange={onChangeSearchValue}
-            borderColor={GRAY.SEMI_LIGHT}
-            height={30}
-            width={160}
+          <SearchInput
+            searchRef={searchRef}
+            searchFilter={searchFilter}
+            searchFilterDropdownItems={searchFilterDropdownItems}
+            onClickSearchFilterItem={onClickSearchFilterItem}
+            searchValue={searchValue}
+            onChangeSearchValue={onChangeSearchValue}
             onKeyDown={onKeyDown}
-            placeholder={t_placeholder('search')}
-          />
-          <Button
-            text={t('search')}
-            height={30}
-            width={'auto'}
-            onClick={onClickSearch}
-            backgroundColor={WHITE}
-            borderColor={GRAY.DEFAULT}
-            color={GRAY.DARK}
+            onClickSearch={onClickSearch}
           />
         </SearchContainer>
       </RowTop>

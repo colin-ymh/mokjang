@@ -12,11 +12,11 @@ import React, {
 import TransparentBackground from '@/components/atoms/common/etc/transparent-background';
 import DropdownView from '@/components/atoms/common/dropdown/dropdown.view';
 import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-item';
-import { InputProps } from '@/components/atoms/common/input/main-input';
+import { BorderInputProps } from '@/components/atoms/common/input/border-input';
 
 export type DropdownProps<
   ItemType extends DropdownValueType = DropdownValueType,
-> = InputProps & {
+> = BorderInputProps & {
   ref?: RefObject<HTMLInputElement>;
   items: ItemType[]; // dropdown 선택 가능 요소들
   value: any; // dropdown에서 선택된 값

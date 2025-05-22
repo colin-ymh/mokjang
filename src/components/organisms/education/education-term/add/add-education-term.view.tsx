@@ -11,8 +11,16 @@ import { ko } from 'date-fns/locale';
 import CustomDatePicker from '@/vendor/date-picker/custom-date-picker';
 import Quill from '@/components/atoms/common/input/quill';
 import MultiMemberDropdown from '@/components/atoms/common/dropdown/multi-member-dropdown';
-import EducationEnrollmentList from '@/components/atoms/education/education-enrollment/education-enrollment-list';
 import { MemberDropdownValueType } from '@/models/dropdown/dropdown';
+import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-item';
+import {
+  EDUCATION_TERM_STATUS,
+  EducationEnrollment,
+} from '@/models/education/education';
+import StatusDropdown from '@/components/atoms/common/dropdown/status-dropdown';
+import { useEducationTermStatusDropdownItems } from '@/hooks/dropdown/dropdown-items';
+import { BLANK, EDUCATION_STATUS } from '@/constants/constant';
+import EducationEnrollmentList from '@/components/atoms/education/education-enrollment/education-enrollment-list';
 
 const AddEducationTermViewContainer = styled.div`
   display: flex;
@@ -54,21 +62,32 @@ const EnrollmentList = styled.div`
 `;
 
 type AddEducationTermViewProps = {
-  comment: string;
+  inCharge: DropdownValueType[];
+  content: string;
+  onChangeStatus: (value: EDUCATION_TERM_STATUS) => void;
   onChangeTerm: (event: ChangeEvent<HTMLInputElement>) => void;
   onChangeStartDate: (date: Date | null) => void;
   onChangeEndDate: (date: Date | null) => void;
-  onChangeComment: (comment: string) => void;
+  onChangeInCharge: (values: DropdownValueType[]) => void;
+  onChangeContent: (content: string) => void;
   onClickNewEnrollment: (values: MemberDropdownValueType[]) => void;
+  onChangeEnrollmentStatus: (
+    value: EDUCATION_STATUS,
+    enrollment: EducationEnrollment
+  ) => void;
 };
 
 const AddEducationTermView = ({
-  comment,
+  inCharge,
+  content,
+  onChangeStatus,
   onChangeTerm,
   onChangeStartDate,
   onChangeEndDate,
-  onChangeComment,
+  onChangeInCharge,
+  onChangeContent,
   onClickNewEnrollment,
+  onChangeEnrollmentStatus,
 }: AddEducationTermViewProps) => {
   const { targetEducationTerm } = useSelector(
     (state: RootState) => state.targetEducationTerm
@@ -77,8 +96,22 @@ const AddEducationTermView = ({
   const t = useI18n();
   const t_placeholder = useScopedI18n('placeholder');
 
+  const statusDropdownItems = useEducationTermStatusDropdownItems();
+
   return (
     <AddEducationTermViewContainer>
+      {/* 상태 */}
+      <InputContainer>
+        <MainText>{t('status')}</MainText>
+        <StatusDropdown
+          value={targetEducationTerm.status}
+          items={statusDropdownItems}
+          onChangeItem={onChangeStatus}
+          width={100}
+          height={40}
+        />
+      </InputContainer>
+
       {/* 기수 */}
       <InputContainer>
         <LabelInput
@@ -138,12 +171,27 @@ const AddEducationTermView = ({
       {/* 내용 */}
       <InputContainer>
         <LabelContainer>
-          <MainText>{t('comment')}</MainText>
+          <MainText>{t('content')}</MainText>
           <Quill
-            value={comment}
-            onChange={(event) => onChangeComment(event)}
+            value={content}
+            onChange={(event) => onChangeContent(event)}
             minHeight={120}
-            placeholder={t_placeholder('comment')}
+            placeholder={t_placeholder('content')}
+          />
+        </LabelContainer>
+      </InputContainer>
+
+      {/* 담당자 */}
+      <InputContainer>
+        <LabelContainer>
+          <MainText>{t('inCharge')}</MainText>
+          <MultiMemberDropdown
+            values={inCharge}
+            onChangeValues={onChangeInCharge}
+            height={40}
+            isSingle={true}
+            placeholder={inCharge.length === 0 ? t_placeholder('name') : BLANK}
+            // isUserMember={true}
           />
         </LabelContainer>
       </InputContainer>
@@ -159,6 +207,7 @@ const AddEducationTermView = ({
           />
           <EducationEnrollmentList
             enrollments={targetEducationTerm.educationEnrollments}
+            onChangeStatus={onChangeEnrollmentStatus}
           />
         </LabelContainer>
       </InputContainer>

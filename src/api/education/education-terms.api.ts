@@ -1,8 +1,10 @@
-import axios, { AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios';
 import { SERVER_URL, TEST_SERVER_URL } from '@/constants/state/url';
 import { EDUCATION_TERM } from '@/constants/education/education-term-column';
 import { ORDER_DIRECTION } from '@/constants/constant';
 import { CustomError } from '@/api/error/error';
+import authorizeAxios from '@/api/authorize-axios';
+import { EDUCATION_TERM_STATUS } from '@/models/education/education';
 
 type GetEducationTermsParams = {
   churchId: string;
@@ -26,26 +28,25 @@ type CreateEducationTermsParams = {
 
 type CreateEducationTermsBody = {
   term: string;
-  numberOfSessions: string;
   startDate: string;
   endDate: string;
-  completionCriteria?: string;
-  instructorId?: string;
+  content?: string;
+  inChargeId?: string;
 };
 
-type EditEducationTermsParams = {
+type EditEducationTermParams = {
   churchId: string;
   educationId: string;
   educationTermId: string;
 };
 
-type EditEducationTermsBody = {
+type EditEducationTermBody = {
   term?: string;
-  numberOfSessions: string;
-  completionCriteria?: string;
-  startDate: string;
-  endDate: string;
-  instructorId?: string;
+  startDate?: string;
+  endDate?: string;
+  content?: string;
+  status?: EDUCATION_TERM_STATUS;
+  inChargeId?: string;
 };
 
 type DeleteEducationTermsParams = {
@@ -80,7 +81,7 @@ export class EducationTermsApi {
     const url = `${this._url}/churches/${churchId}/management/educations/${educationId}/terms`;
 
     try {
-      return await axios.get(url, {
+      return await authorizeAxios.get(url, {
         params: {
           order,
           orderDirection,
@@ -113,7 +114,7 @@ export class EducationTermsApi {
     const url = `${this._url}/churches/${churchId}/management/educations/${educationId}/terms/${educationTermId}`;
 
     try {
-      return await axios.get(url);
+      return await authorizeAxios.get(url);
     } catch (serverError: any) {
       if (serverError.response) {
         const { message, error, statusCode } = serverError.response.data;
@@ -143,7 +144,7 @@ export class EducationTermsApi {
     const url = `${this._url}/churches/${churchId}/management/educations/${educationId}/terms`;
 
     try {
-      return await axios.post(url, body);
+      return await authorizeAxios.post(url, body);
     } catch (serverError: any) {
       if (serverError.response) {
         const { message, error, statusCode } = serverError.response.data;
@@ -160,20 +161,20 @@ export class EducationTermsApi {
 
   /**
    * 교육 기수 수정하기
-   * @param {EditEducationTermsParams} params
-   * @param {EditEducationTermsBody} body
+   * @param {EditEducationTermParams} params
+   * @param {EditEducationTermBody} body
    * @returns {Promise<AxiosResponse>}
    */
-  public editEducationTerms = async (
-    params: EditEducationTermsParams,
-    body: EditEducationTermsBody
+  public editEducationTerm = async (
+    params: EditEducationTermParams,
+    body: EditEducationTermBody
   ): Promise<AxiosResponse> => {
     const { churchId, educationId, educationTermId } = params;
 
     const url = `${this._url}/churches/${churchId}/management/educations/${educationId}/terms/${educationTermId}`;
 
     try {
-      return await axios.patch(url, body);
+      return await authorizeAxios.patch(url, body);
     } catch (serverError: any) {
       if (serverError.response) {
         const { message, error, statusCode } = serverError.response.data;
@@ -201,7 +202,7 @@ export class EducationTermsApi {
     const url = `${this._url}/churches/${churchId}/management/educations/${educationId}/terms/${educationTermId}`;
 
     try {
-      return await axios.delete(url);
+      return await authorizeAxios.delete(url);
     } catch (serverError: any) {
       if (serverError.response) {
         const { message, error, statusCode } = serverError.response.data;
@@ -229,7 +230,7 @@ export class EducationTermsApi {
     const url = `${this._url}/churches/${churchId}/management/educations/${educationId}/terms/${educationTermId}/sync-attendance`;
 
     try {
-      return await axios.post(url);
+      return await authorizeAxios.post(url);
     } catch (serverError: any) {
       if (serverError.response) {
         const { message, error, statusCode } = serverError.response.data;

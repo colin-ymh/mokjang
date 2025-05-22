@@ -15,26 +15,26 @@ type GetEducationSessionParams = {
   educationSessionId: string;
 };
 
-type CreateEducationSessionsParams = {
+type CreateEducationSessionParams = {
   churchId: string;
   educationId: string;
   educationTermId: string;
 };
 
-type EditEducationSessionsParams = {
+type EditEducationSessionParams = {
   churchId: string;
   educationId: string;
   educationTermId: string;
   educationSessionId: string;
 };
 
-type EditEducationSessionsBody = {
+type EditEducationSessionBody = {
   isDone?: boolean;
   sessionDate?: string;
   content?: string;
 };
 
-type DeleteEducationSessionsParams = {
+type DeleteEducationSessionParams = {
   churchId: string;
   educationId: string;
   educationTermId: string;
@@ -82,7 +82,7 @@ export class EducationSessionsApi {
    * @param {GetEducationSessionsParams} params
    * @returns {Promise<AxiosResponse>}
    */
-  public getEducationTerm = async (
+  public getEducationSession = async (
     params: GetEducationSessionParams
   ): Promise<AxiosResponse> => {
     const { churchId, educationId, educationTermId, educationSessionId } =
@@ -108,11 +108,11 @@ export class EducationSessionsApi {
 
   /**
    * 교육 회차 상태 만들기
-   * @param {CreateEducationSessionsParams} params
+   * @param {CreateEducationSessionParams} params
    * @returns {Promise<AxiosResponse>}
    */
-  public createEducationSessions = async (
-    params: CreateEducationSessionsParams
+  public createEducationSession = async (
+    params: CreateEducationSessionParams
   ): Promise<AxiosResponse> => {
     const { churchId, educationId, educationTermId } = params;
 
@@ -136,13 +136,13 @@ export class EducationSessionsApi {
 
   /**
    * 교육 회차 상태 수정하기
-   * @param {EditEducationSessionsParams} params
-   * @param {EditEducationSessionsBody} body
+   * @param {EditEducationSessionParams} params
+   * @param {EditEducationSessionBody} body
    * @returns {Promise<AxiosResponse>}
    */
-  public editEducationSessions = async (
-    params: EditEducationSessionsParams,
-    body: EditEducationSessionsBody
+  public editEducationSession = async (
+    params: EditEducationSessionParams,
+    body: EditEducationSessionBody
   ): Promise<AxiosResponse> => {
     const { churchId, educationId, educationTermId, educationSessionId } =
       params;
@@ -167,11 +167,11 @@ export class EducationSessionsApi {
 
   /**
    * 교육 회차 상태 삭제하기
-   * @param {DeleteEducationSessionsParams} params
+   * @param {DeleteEducationSessionParams} params
    * @returns {Promise<AxiosResponse>}
    */
-  public deleteEducationSessions = async (
-    params: DeleteEducationSessionsParams
+  public deleteEducationSession = async (
+    params: DeleteEducationSessionParams
   ): Promise<AxiosResponse> => {
     const { churchId, educationId, educationTermId, educationSessionId } =
       params;

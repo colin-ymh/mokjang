@@ -43,6 +43,22 @@ export const INITIAL_EDUCATION_TERM_TABLE_HEADER_LIST: EDUCATION_TABLE_HEADER_IT
       isDate: false,
     },
     {
+      id: EDUCATION_TERM.STATUS,
+      isShown: true,
+      isSortable: false,
+      isFilterable: true,
+      isFixed: true,
+      isDate: false,
+    },
+    {
+      id: EDUCATION_TERM.IN_CHARGE,
+      isShown: true,
+      isSortable: false,
+      isFilterable: true,
+      isFixed: true,
+      isDate: false,
+    },
+    {
       id: EDUCATION_TERM.PERIOD,
       isShown: true,
       isSortable: false,
@@ -116,7 +132,7 @@ export const fetchEducationSessions = createAsyncThunk<
             educationTermId: educationTerm.id,
           });
 
-          const newEducationSessions: EducationSession[] = response.data.data;
+          const newEducationSessions: EducationSession[] = response.data;
 
           return { ...educationTerm, educationSessions: newEducationSessions };
         })
@@ -163,6 +179,11 @@ const EducationTermFilterSlice = createSlice({
     ) {
       state.educationTermTableHeaderItemList = action.payload;
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(fetchEducationSessions.fulfilled, (state, action) => {
+      state.educationTerms = action.payload;
+    });
   },
 });
 

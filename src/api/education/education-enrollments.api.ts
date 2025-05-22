@@ -15,6 +15,8 @@ type GetEducationEnrollmentsParams = {
   churchId: string;
   educationId: string;
   educationTermId: string;
+  take?: number;
+  page?: number;
   order?: EDUCATION_ENROLLMENT_ORDER;
   orderDirection?: ORDER_DIRECTION;
 };
@@ -31,20 +33,20 @@ type CreateEducationEnrollmentsBody = {
   note?: string;
 };
 
-type EditEducationEnrollmentsParams = {
+type EditEducationEnrollmentParams = {
   churchId: string;
   educationId: string;
   educationTermId: string;
   educationEnrollmentId: string;
 };
 
-type EditEducationEnrollmentsBody = {
+type EditEducationEnrollmentBody = {
   status?: EDUCATION_STATUS;
   note?: string;
   isDeleteNote?: boolean;
 };
 
-type DeleteEducationEnrollmentsParams = {
+type DeleteEducationEnrollmentParams = {
   churchId: string;
   educationId: string;
   educationTermId: string;
@@ -119,13 +121,13 @@ export class EducationEnrollmentsApi {
 
   /**
    * 교육 대상자 상태 수정하기
-   * @param {EditEducationEnrollmentsParams} params
-   * @param {EditEducationEnrollmentsBody} body
+   * @param {EditEducationEnrollmentParams} params
+   * @param {EditEducationEnrollmentBody} body
    * @returns {Promise<AxiosResponse>}
    */
-  public editEducationEnrollments = async (
-    params: EditEducationEnrollmentsParams,
-    body: EditEducationEnrollmentsBody
+  public editEducationEnrollment = async (
+    params: EditEducationEnrollmentParams,
+    body: EditEducationEnrollmentBody
   ): Promise<AxiosResponse> => {
     const { churchId, educationId, educationTermId, educationEnrollmentId } =
       params;
@@ -150,11 +152,11 @@ export class EducationEnrollmentsApi {
 
   /**
    * 교육 대상자 상태 삭제하기
-   * @param {DeleteEducationEnrollmentsParams} params
+   * @param {DeleteEducationEnrollmentParams} params
    * @returns {Promise<AxiosResponse>}
    */
-  public deleteEducationEnrollments = async (
-    params: DeleteEducationEnrollmentsParams
+  public deleteEducationEnrollment = async (
+    params: DeleteEducationEnrollmentParams
   ): Promise<AxiosResponse> => {
     const { churchId, educationId, educationTermId, educationEnrollmentId } =
       params;

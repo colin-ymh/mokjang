@@ -15,6 +15,10 @@ const BorderInputContainer = styled.input<{
   $disabled?: boolean;
   $backgroundColor?: string;
   $paddingLeft?: number;
+  $borderTopLeftRadius?: number;
+  $borderTopRightRadius?: number;
+  $borderBottomLeftRadius?: number;
+  $borderBottomRightRadius?: number;
 }>`
   width: ${({ width }) => (width ? `${width}px` : '100%')};
   box-sizing: border-box;
@@ -22,13 +26,21 @@ const BorderInputContainer = styled.input<{
   padding: 10px;
   padding-left: ${({ $paddingLeft }) => `${$paddingLeft}px` || '30'};
   border: 1px solid ${({ $borderColor }) => $borderColor};
-  border-radius: 5px;
   color: ${BLACK};
-  transition: all 0.3s ease;
+  transition: border 0.3s ease;
   height: ${({ height }) => (height ? `${height}px` : 'auto')};
   pointer-events: ${({ $isEditable }) => ($isEditable ? 'auto' : 'none')};
   background-color: ${({ $disabled, $backgroundColor }) =>
     $disabled ? GRAY.SEMI_LIGHT : $backgroundColor || WHITE};
+
+  border-top-left-radius: ${({ $borderTopLeftRadius }) =>
+    $borderTopLeftRadius ?? 5}px;
+  border-top-right-radius: ${({ $borderTopRightRadius }) =>
+    $borderTopRightRadius ?? 5}px;
+  border-bottom-left-radius: ${({ $borderBottomLeftRadius }) =>
+    $borderBottomLeftRadius ?? 5}px;
+  border-bottom-right-radius: ${({ $borderBottomRightRadius }) =>
+    $borderBottomRightRadius ?? 5}px;
 
   &:focus {
     outline: none;
@@ -36,11 +48,15 @@ const BorderInputContainer = styled.input<{
   }
 `;
 
-type BorderInputProps = InputProps & {
+export type BorderInputProps = InputProps & {
   borderColor?: string;
   height?: number;
   width?: number;
   backgroundColor?: string;
+  borderTopLeftRadius?: number;
+  borderTopRightRadius?: number;
+  borderBottomLeftRadius?: number;
+  borderBottomRightRadius?: number;
 };
 
 const BorderInput = forwardRef<HTMLInputElement, BorderInputProps>(
@@ -55,6 +71,10 @@ const BorderInput = forwardRef<HTMLInputElement, BorderInputProps>(
       disabled = false,
       backgroundColor = WHITE,
       paddingLeft,
+      borderTopLeftRadius,
+      borderTopRightRadius,
+      borderBottomLeftRadius,
+      borderBottomRightRadius,
       ...props
     },
     ref
@@ -73,6 +93,10 @@ const BorderInput = forwardRef<HTMLInputElement, BorderInputProps>(
         disabled={disabled}
         $disabled={disabled}
         $paddingLeft={paddingLeft}
+        $borderTopLeftRadius={borderTopLeftRadius}
+        $borderTopRightRadius={borderTopRightRadius}
+        $borderBottomLeftRadius={borderBottomLeftRadius}
+        $borderBottomRightRadius={borderBottomRightRadius}
         {...props}
       />
     );

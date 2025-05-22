@@ -7,7 +7,6 @@ import { EDUCATION_TERM } from '@/constants/education/education-term-column';
 import {
   setEducationTermOrderBy,
   setEducationTermOrderDirection,
-  setEducationTerms,
 } from '@/redux/reducers/education-term-filter-reducer';
 import EducationTermTableView from '@/components/molecules/education/education-term/education-term-table.view';
 import { EducationSessionsApi } from '@/api/education/education-sessions.api';
@@ -39,25 +38,25 @@ const EducationTermTable = ({
     if (openedTermId === termId) {
       setOpenedTermId(BLANK);
     } else {
-      educationSessionsApi
-        .getEducationSessions({
-          churchId,
-          educationId: targetEducation.id,
-          educationTermId: termId,
-        })
-        .then((response) => {
-          const newSessions = response.data;
-
-          const newEducationTerms = educationTerms.map((term) => {
-            if (term.id === termId) {
-              return { ...term, educationSessions: newSessions };
-            } else {
-              return term;
-            }
-          });
-
-          dispatch(setEducationTerms(newEducationTerms));
-        });
+      // educationSessionsApi
+      //   .getEducationSessions({
+      //     churchId,
+      //     educationId: targetEducation.id,
+      //     educationTermId: termId,
+      //   })
+      //   .then((response) => {
+      //     const newSessions = response.data;
+      //
+      //     const newEducationTerms = educationTerms.map((term) => {
+      //       if (term.id === termId) {
+      //         return { ...term, educationSessions: newSessions };
+      //       } else {
+      //         return term;
+      //       }
+      //     });
+      //
+      //     dispatch(setEducationTerms(newEducationTerms));
+      //   });
       setOpenedTermId(termId);
     }
   };

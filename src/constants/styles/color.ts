@@ -39,4 +39,5 @@ export enum STATUS_COLOR {
   RESERVE = '#ff7118',
   INCOMPLETE = '#f43232',
   PENDING = '#f43232',
+  UNDEFINED = WHITE,
 }

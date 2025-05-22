@@ -158,7 +158,7 @@ const AddTaskView = ({
       {/* 담당자 */}
       <InputContainer>
         <LabelContainer>
-          <MainText>{t('inChargeId')}</MainText>
+          <MainText>{t('inCharge')}</MainText>
           <MultiMemberDropdown
             values={inCharge}
             onChangeValues={onChangeInCharge}
