@@ -1,10 +1,21 @@
-import { BLANK, EDUCATION_STATUS } from '@/constants/constant';
+import { BLANK } from '@/constants/constant';
 import { Member } from '@/models/member/member';
 import { DEFAULT_MEMBER } from '@/redux/reducers/member-register-reducer';
 import { VisitationReport } from '@/models/visitation/visitation';
 
 export enum EDUCATION_TERM_STATUS {
-  RESERVE = 'reserve',
+  IN_PROGRESS = 'inProgress',
+  DONE = 'done',
+  PENDING = 'pending',
+}
+
+// 교육 이수상태
+export enum EDUCATION_ENROLLMENT_STATUS {
+  COMPLETED = 'completed',
+  INCOMPLETE = 'incomplete',
+}
+
+export enum EDUCATION_SESSION_STATUS {
   IN_PROGRESS = 'inProgress',
   DONE = 'done',
   PENDING = 'pending',
@@ -30,7 +41,7 @@ export type EducationEnrollment = {
   id: string;
   memberId: string;
   educationTermId: string;
-  status: EDUCATION_STATUS;
+  status: EDUCATION_ENROLLMENT_STATUS;
   note: string;
   member: Member;
 };
@@ -39,7 +50,7 @@ export const DEFAULT_EDUCATION_ENROLLMENT: EducationEnrollment = {
   id: BLANK,
   memberId: BLANK,
   educationTermId: BLANK,
-  status: EDUCATION_STATUS.IN_PROGRESS,
+  status: EDUCATION_ENROLLMENT_STATUS.INCOMPLETE,
   note: BLANK,
   member: DEFAULT_MEMBER,
 };
@@ -71,7 +82,7 @@ export const DEFAULT_EDUCATION_TERM: EducationTerm = {
   educationId: BLANK,
   term: BLANK,
   content: BLANK,
-  status: EDUCATION_TERM_STATUS.RESERVE,
+  status: EDUCATION_TERM_STATUS.IN_PROGRESS,
   startDate: BLANK,
   endDate: BLANK,
   inChargeId: BLANK,
@@ -90,19 +101,33 @@ export const DEFAULT_EDUCATION_TERM: EducationTerm = {
 
 export type EducationSession = {
   id: string;
+  status: EDUCATION_SESSION_STATUS;
+  title: string;
+  inChargeId: string;
+  inCharge: Member;
   educationTermId: string;
-  session: number;
+  session: string;
   content: string;
-  sessionDate: string;
+  startDate: string;
+  endDate: string;
+  receiverIds: string[];
+  reports: VisitationReport[];
   isDone: boolean;
 };
 
 export const DEFAULT_EDUCATION_SESSION: EducationSession = {
   id: BLANK,
+  status: EDUCATION_SESSION_STATUS.PENDING,
   educationTermId: BLANK,
-  session: 0,
+  inChargeId: BLANK,
+  inCharge: DEFAULT_MEMBER,
+  session: BLANK,
   content: BLANK,
-  sessionDate: BLANK,
+  title: BLANK,
+  startDate: BLANK,
+  endDate: BLANK,
+  reports: [],
+  receiverIds: [],
   isDone: false,
 };
 

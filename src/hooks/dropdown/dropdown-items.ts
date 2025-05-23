@@ -3,7 +3,6 @@ import { RootState } from '@/redux/store';
 
 import {
   BAPTISM,
-  EDUCATION_STATUS,
   FAMILY,
   GENDER,
   MARRIAGE,
@@ -24,7 +23,11 @@ import { TASK } from '@/constants/task/task-column';
 import { TASK_STATUS } from '@/models/task/task';
 import { EDUCATION } from '@/constants/education/education-column';
 import { EDUCATION_TERM } from '@/constants/education/education-term-column';
-import { EDUCATION_TERM_STATUS } from '@/models/education/education';
+import {
+  EDUCATION_ENROLLMENT_STATUS,
+  EDUCATION_SESSION_STATUS,
+  EDUCATION_TERM_STATUS,
+} from '@/models/education/education';
 
 export const useBaptismDropdownItems = () => {
   const t = useI18n();
@@ -338,24 +341,43 @@ export const useFamilyRelationDropdownItems = (gender?: GENDER | undefined) => {
   return items;
 };
 
-export const useEducationStatusDropdownItems = () => {
+export const useEducationEnrollmentStatusDropdownItems = () => {
   const t = useI18n();
 
   const items = [
     {
-      value: EDUCATION_STATUS.IN_PROGRESS,
-      title: t(EDUCATION_STATUS.IN_PROGRESS),
-      color: STATUS_COLOR.IN_PROGRESS,
-    },
-    {
-      value: EDUCATION_STATUS.COMPLETED,
-      title: t(EDUCATION_STATUS.COMPLETED),
+      value: EDUCATION_ENROLLMENT_STATUS.COMPLETED,
+      title: t(EDUCATION_ENROLLMENT_STATUS.COMPLETED),
       color: STATUS_COLOR.COMPLETED,
     },
     {
-      value: EDUCATION_STATUS.INCOMPLETE,
-      title: t(EDUCATION_STATUS.INCOMPLETE),
+      value: EDUCATION_ENROLLMENT_STATUS.INCOMPLETE,
+      title: t(EDUCATION_ENROLLMENT_STATUS.INCOMPLETE),
       color: STATUS_COLOR.INCOMPLETE,
+    },
+  ];
+
+  return items;
+};
+
+export const useEducationSessionStatusDropdownItems = () => {
+  const t = useI18n();
+
+  const items = [
+    {
+      value: EDUCATION_SESSION_STATUS.IN_PROGRESS,
+      title: t(EDUCATION_SESSION_STATUS.IN_PROGRESS),
+      color: STATUS_COLOR.IN_PROGRESS,
+    },
+    {
+      value: EDUCATION_SESSION_STATUS.DONE,
+      title: t(EDUCATION_SESSION_STATUS.DONE),
+      color: STATUS_COLOR.DONE,
+    },
+    {
+      value: EDUCATION_SESSION_STATUS.PENDING,
+      title: t(EDUCATION_SESSION_STATUS.PENDING),
+      color: STATUS_COLOR.PENDING,
     },
   ];
 
@@ -482,11 +504,6 @@ export const useEducationTermStatusDropdownItems = () => {
   const t = useI18n();
 
   const items = [
-    {
-      value: EDUCATION_TERM_STATUS.RESERVE,
-      title: t(EDUCATION_TERM_STATUS.RESERVE),
-      color: STATUS_COLOR.RESERVE,
-    },
     {
       value: EDUCATION_TERM_STATUS.IN_PROGRESS,
       title: t(EDUCATION_TERM_STATUS.IN_PROGRESS),

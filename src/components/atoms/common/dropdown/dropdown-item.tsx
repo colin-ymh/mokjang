@@ -42,7 +42,13 @@ const DropdownItem = ({
 }: DropdownItemProps) => {
   return (
     <DropdownContainer>
-      <ItemContainer onClick={() => onClick(item.value)} $isFocused={isFocused}>
+      <ItemContainer
+        onClick={(event) => {
+          event.stopPropagation();
+          onClick(item.value);
+        }}
+        $isFocused={isFocused}
+      >
         <MainText color={isSelected ? MAIN.DEFAULT : BLACK}>
           {item.title}
         </MainText>

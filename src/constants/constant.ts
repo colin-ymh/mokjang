@@ -92,10 +92,3 @@ export enum ORDER_DIRECTION {
   ASC = 'asc',
   DESC = 'desc',
 }
-
-// 교육 이수상태
-export enum EDUCATION_STATUS {
-  IN_PROGRESS = 'inProgress',
-  COMPLETED = 'completed',
-  INCOMPLETE = 'incomplete',
-}

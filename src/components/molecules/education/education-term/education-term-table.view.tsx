@@ -21,6 +21,7 @@ import { getEducationTermStatusColor } from '@/utils/color';
 import { getFormattedDate } from '@/utils/format';
 import { getRandomImage } from '@/utils/image';
 import { MEMBER } from '@/constants/member/member-column';
+import Plus from '../../../../../public/svg/plus.svg';
 
 // 1. 컬럼별 PX 폭
 const getColumnWidth = (id: string) => {
@@ -93,6 +94,7 @@ const TableHeader = styled.th<{ id: string; isLast?: boolean }>`
 
 // 5. 본문(TR/TD)
 const EducationTermTableRow = styled.tr`
+  position: relative;
   border-bottom: 1px solid ${GRAY.EXTRA_LIGHT};
   &:hover td {
     background-color: ${GRAY.LIGHT};
@@ -205,6 +207,24 @@ const SessionContainer = styled.div`
   padding-left: 50px;
 `;
 
+const PlusButton = styled(Plus)`
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+
+  stroke: ${BLACK};
+  stroke-width: 1.5px;
+  width: 25px;
+  height: 25px;
+  border-radius: 10%;
+  cursor: pointer;
+
+  &:hover {
+    background-color: ${GRAY.DEFAULT};
+  }
+`;
+
 // 이 예시에서는 실제 EDUCATION_TERM + "비고" 컬럼(REMARKS)까지 표시
 type EducationTermTableProps = {
   openedTermId: string;
@@ -212,8 +232,13 @@ type EducationTermTableProps = {
   onClickTermChevron: (termId: string) => void;
   onClickHeader: (id: EDUCATION_TERM) => void;
   onClickEducationTermItem: (educationTermId: string) => void;
+  onClickEducationSessionItem: (
+    educationTermId: string,
+    educationSessionId: string
+  ) => void;
   scrollRef: MutableRefObject<HTMLDivElement | null>;
   onScroll: () => void;
+  onClickOpenAddEducationSession: () => void;
 };
 
 const EducationTermTableView = ({
@@ -222,8 +247,10 @@ const EducationTermTableView = ({
   onClickTermChevron,
   onClickHeader,
   onClickEducationTermItem,
+  onClickEducationSessionItem,
   scrollRef,
   onScroll,
+  onClickOpenAddEducationSession,
 }: EducationTermTableProps) => {
   const t = useI18n();
   const { height } = useWindowSize();
@@ -290,7 +317,16 @@ const EducationTermTableView = ({
           </ProfileContainer>
         );
       case BLANK:
-        return <div></div>;
+        return (
+          <div>
+            <PlusButton
+              onClick={(event: any) => {
+                event.stopPropagation();
+                onClickOpenAddEducationSession();
+              }}
+            />
+          </div>
+        );
       default:
         return null;
     }
@@ -369,15 +405,21 @@ const EducationTermTableView = ({
                 {/* ② 세션 Row (열린 상태일 때만) */}
                 {openedTermId === educationTerm.id &&
                   educationTerm.educationSessions?.map((session) => (
-                    <EducationSessionTableRow key={session.id}>
+                    <EducationSessionTableRow
+                      key={session.id}
+                      onClick={() =>
+                        onClickEducationSessionItem(
+                          educationTerm.id,
+                          session.id
+                        )
+                      }
+                    >
                       {visibleColumns.map((item, index) => (
                         <TableData
                           key={`${session.id}-${item.id}`}
                           id={item.id}
                           $index={rowIndex}
                           isLast={index === visibleColumns.length - 1}
-                          /* 세션 Row는 클릭 시 부모로 전파되지 않게 막을 수도 있음 */
-                          onClick={(e) => e.stopPropagation()}
                         >
                           {getEducationSessionTableContent(item.id, session)}
                         </TableData>

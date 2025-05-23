@@ -368,6 +368,67 @@ const EducationTermList = ({ isNewEducationTerm }: EducationTermListProps) => {
 
   // ========== 회차 ==========
 
+  // 회차 추가 팝업 on/off
+  const [isAddEducationSessionShown, setIsAddEducationSessionShown] =
+    useState<boolean>(false);
+
+  const onClickOpenAddEducationSession = () => {
+    if (isEducationTermInformationShown) {
+      setIsEducationTermInformationShown(false);
+      setTimeout(() => {
+        setIsAddEducationSessionShown(true);
+      }, 500);
+    } else {
+      setIsAddEducationSessionShown(true);
+    }
+  };
+
+  const onClickCloseAddEducationSession = () => {
+    setIsAddEducationSessionShown(false);
+    if (targetEducationTerm.id) {
+      setTimeout(() => {
+        setIsEducationTermInformationShown(true);
+      }, 500);
+    }
+  };
+
+  const onClickAddSessionsDone = async () => {
+    try {
+      await educationSessionsApi
+        .createEducationSession({
+          churchId,
+          educationId: targetEducation.id,
+          educationTermId: targetEducationTerm.id,
+        })
+        .then((response) => {
+          const newSession = response.data;
+
+          const newTargetEducationTerm = {
+            ...targetEducationTerm,
+            educationSessions: [
+              ...targetEducationTerm.educationSessions,
+              newSession,
+            ],
+          };
+          dispatch(setTargetEducationTerm(newTargetEducationTerm));
+
+          const newEducationTerms = educationTerms.map((term) => {
+            if (term.id === newTargetEducationTerm.id) {
+              return newTargetEducationTerm;
+            } else {
+              return term;
+            }
+          });
+          dispatch(setEducationTerms(newEducationTerms));
+        });
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
+    } finally {
+      dispatch(setTargetEducationSession(DEFAULT_EDUCATION_SESSION));
+      setIsAddEducationSessionShown(false);
+    }
+  };
+
   // 회차 상세정보 팝업 On/Off
   const [
     isEducationSessionInformationShown,
@@ -405,17 +466,20 @@ const EducationTermList = ({ isNewEducationTerm }: EducationTermListProps) => {
   };
 
   // 목록에서 회차를 선택하여 상세 페이지로 이동
-  const onClickEducationSessionItem = async (educationSessionId: string) => {
+  const onClickEducationSessionItem = async (
+    educationTermId: string,
+    educationSessionId: string
+  ) => {
     try {
       await educationSessionsApi
         .getEducationSession({
           churchId,
           educationId: targetEducation.id,
-          educationTermId: targetEducationTerm.id,
+          educationTermId,
           educationSessionId,
         })
         .then(async (response) => {
-          const educationSession: EducationSession = response.data.data;
+          const educationSession: EducationSession = response.data;
 
           dispatch(setTargetEducationSession(educationSession));
           setIsEducationSessionInformationShown(true);
@@ -497,6 +561,8 @@ const EducationTermList = ({ isNewEducationTerm }: EducationTermListProps) => {
     list: {
       onClickEducationTermItem,
       loadEducationTerms,
+      onClickEducationSessionItem,
+      onClickOpenAddEducationSession,
     },
     information: {
       isLoading,
@@ -512,9 +578,13 @@ const EducationTermList = ({ isNewEducationTerm }: EducationTermListProps) => {
       onClickEditTermOpen,
       onClickEditTermClose,
       // 회차
+      isAddEducationSessionShown,
       isEducationSessionInformationShown,
       isEditSessionShown,
       isSessionPopupShown,
+      onClickOpenAddEducationSession,
+      onClickCloseAddEducationSession,
+      onClickAddSessionsDone,
       onClickCloseSession,
       onClickDeleteSession,
       onClickDeleteSessionConfirmOpen,

@@ -14,11 +14,18 @@ import { EducationSessionsApi } from '@/api/education/education-sessions.api';
 export type EducationTermTableProps = {
   onClickEducationTermItem: (educationTermId: string) => void;
   loadEducationTerms: () => Promise<void>;
+  onClickEducationSessionItem: (
+    educationTermId: string,
+    educationSessionId: string
+  ) => void;
+  onClickOpenAddEducationSession: () => void;
 };
 
 const EducationTermTable = ({
   onClickEducationTermItem,
   loadEducationTerms,
+  onClickEducationSessionItem,
+  onClickOpenAddEducationSession,
 }: EducationTermTableProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const educationSessionsApi = new EducationSessionsApi(false);
@@ -105,8 +112,10 @@ const EducationTermTable = ({
     onClickTermChevron,
     onClickHeader,
     onClickEducationTermItem,
+    onClickEducationSessionItem,
     scrollRef,
     onScroll,
+    onClickOpenAddEducationSession,
   };
 
   return (

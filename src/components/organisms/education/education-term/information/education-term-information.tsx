@@ -3,18 +3,22 @@ import { AppDispatch, RootState } from '@/redux/store';
 import { EducationTermsApi } from '@/api/education/education-terms.api';
 import { useState } from 'react';
 import {
+  EDUCATION_ENROLLMENT_STATUS,
   EDUCATION_TERM_STATUS,
   EducationEnrollment,
 } from '@/models/education/education';
 import { setTargetEducationTerm } from '@/redux/reducers/target-education-term-reducer';
 import { setEducationTerms } from '@/redux/reducers/education-term-filter-reducer';
 import EducationTermInformationView from '@/components/organisms/education/education-term/information/education-term-information.view';
-import { EDUCATION_STATUS } from '@/constants/constant';
 import { EducationEnrollmentsApi } from '@/api/education/education-enrollments.api';
 
-type EducationTermInformationProps = {};
+type EducationTermInformationProps = {
+  onClickAddSession: () => void;
+};
 
-const EducationTermInformation = ({}: EducationTermInformationProps) => {
+const EducationTermInformation = ({
+  onClickAddSession,
+}: EducationTermInformationProps) => {
   const { educationTerms } = useSelector(
     (state: RootState) => state.educationTermFilter
   );
@@ -49,7 +53,7 @@ const EducationTermInformation = ({}: EducationTermInformationProps) => {
           { status: status }
         )
         .then((response) => {
-          const newEducationTerm = response.data;
+          const newEducationTerm = response.data.data;
 
           dispatch(
             setTargetEducationTerm({
@@ -72,7 +76,7 @@ const EducationTermInformation = ({}: EducationTermInformationProps) => {
 
   // 수강 교인 상태 변경
   const onChangeEnrollmentStatus = (
-    value: EDUCATION_STATUS,
+    value: EDUCATION_ENROLLMENT_STATUS,
     enrollment: EducationEnrollment
   ) => {
     try {
@@ -119,6 +123,7 @@ const EducationTermInformation = ({}: EducationTermInformationProps) => {
   const props = {
     onChangeStatus,
     onChangeEnrollmentStatus,
+    onClickAddSession,
   };
   return (
     <>

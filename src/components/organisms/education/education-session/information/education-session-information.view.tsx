@@ -1,23 +1,19 @@
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
-import { useEducationTermStatusDropdownItems } from '@/hooks/dropdown/dropdown-items';
+import { useEducationSessionStatusDropdownItems } from '@/hooks/dropdown/dropdown-items';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { getFormattedDate } from '@/utils/format';
 import { GRAY } from '@/constants/styles/color';
-import { getRandomImage } from '@/utils/image';
-import { MEMBER } from '@/constants/member/member-column';
 import React from 'react';
 import Image from 'next/image';
 import StatusDropdown from '@/components/atoms/common/dropdown/status-dropdown';
 import {
   EDUCATION_ENROLLMENT_STATUS,
-  EDUCATION_TERM_STATUS,
+  EDUCATION_SESSION_STATUS,
   EducationEnrollment,
 } from '@/models/education/education';
-import EducationEnrollmentList from '@/components/atoms/education/education-enrollment/education-enrollment-list';
 import { useI18n } from '../../../../../../locales/client';
-import EducationTermSessionList from '@/components/molecules/education/education-term/education-term-session-list';
 
 const InformationContainer = styled.div`
   display: flex;
@@ -79,7 +75,7 @@ const ColumnContainer = styled.div`
   gap: 10px;
 `;
 
-const EnrollmentContainer = styled.div`
+const AttendanceContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -93,25 +89,23 @@ const LabelContainer = styled.div`
   gap: 10px;
 `;
 
-type EducationTermInformationViewProps = {
-  onChangeStatus: (status: EDUCATION_TERM_STATUS) => void;
+type EducationSessionInformationViewProps = {
+  onChangeStatus: (status: EDUCATION_SESSION_STATUS) => void;
   onChangeEnrollmentStatus: (
     value: EDUCATION_ENROLLMENT_STATUS,
     enrollment: EducationEnrollment
   ) => void;
-  onClickAddSession: () => void;
 };
 
-const EducationTermInformationView = ({
+const EducationSessionInformationView = ({
   onChangeStatus,
   onChangeEnrollmentStatus,
-  onClickAddSession,
-}: EducationTermInformationViewProps) => {
+}: EducationSessionInformationViewProps) => {
   const t = useI18n();
-  const { targetEducationTerm } = useSelector(
-    (state: RootState) => state.targetEducationTerm
+  const { targetEducationSession } = useSelector(
+    (state: RootState) => state.targetEducationSession
   );
-  const statusDropdownItems = useEducationTermStatusDropdownItems();
+  const statusDropdownItems = useEducationSessionStatusDropdownItems();
 
   return (
     <InformationContainer>
@@ -120,7 +114,7 @@ const EducationTermInformationView = ({
         <ColumnContainer>
           <MainText>{t('status')}</MainText>
           <StatusDropdown
-            value={targetEducationTerm.status}
+            value={targetEducationSession.status}
             items={statusDropdownItems}
             onChangeItem={onChangeStatus}
             width={150}
@@ -135,11 +129,11 @@ const EducationTermInformationView = ({
           </TitleContainer>
           <ContentContainer>
             <ProfileContainer>
-              <ProfileImage
-                src={getRandomImage(targetEducationTerm.inCharge.id)}
-                alt={MEMBER.PROFILE_IMAGE}
-              />
-              <MainText>{targetEducationTerm.inCharge?.name}</MainText>
+              {/*<ProfileImage*/}
+              {/*  src={getRandomImage(targetEducationSession.inCharge.id)}*/}
+              {/*  alt={MEMBER.PROFILE_IMAGE}*/}
+              {/*/>*/}
+              {/*<MainText>{targetEducationSession.inCharge?.name}</MainText>*/}
             </ProfileContainer>
           </ContentContainer>
         </RowContainer>
@@ -150,13 +144,13 @@ const EducationTermInformationView = ({
           </TitleContainer>
           <ContentContainer>
             <MainText>
-              {targetEducationTerm.startDate &&
-                getFormattedDate(targetEducationTerm.startDate)}
+              {targetEducationSession.startDate &&
+                getFormattedDate(targetEducationSession.startDate)}
             </MainText>
             <MainText>{'-'}</MainText>
             <MainText>
-              {targetEducationTerm.endDate &&
-                getFormattedDate(targetEducationTerm.endDate)}
+              {targetEducationSession.endDate &&
+                getFormattedDate(targetEducationSession.endDate)}
             </MainText>
           </ContentContainer>
         </RowContainer>
@@ -167,28 +161,25 @@ const EducationTermInformationView = ({
           </TitleContainer>
           <ContentContainer>
             <MainText
-              dangerouslySetInnerHTML={{ __html: targetEducationTerm.content }}
+              dangerouslySetInnerHTML={{
+                __html: targetEducationSession.content,
+              }}
             />
           </ContentContainer>
         </RowContainer>
       </MetaContainer>
-      {/* 회차 */}
-      <EducationTermSessionList
-        educationSessions={targetEducationTerm.educationSessions}
-        onClickAddButton={onClickAddSession}
-      />
       <DivideLine />
-      <EnrollmentContainer>
+      <AttendanceContainer>
         <LabelContainer>
-          <MainText>{`${t('educationEnrollment')} (${targetEducationTerm.enrollmentCount})`}</MainText>
-          <EducationEnrollmentList
-            enrollments={targetEducationTerm.educationEnrollments}
-            onChangeStatus={onChangeEnrollmentStatus}
-          />
+          <MainText>{`${t('attendance')}`}</MainText>
+          {/*<EducationEnrollmentList*/}
+          {/*  enrollments={targetEducationSession.educationEnrollments}*/}
+          {/*  onChangeStatus={onChangeEnrollmentStatus}*/}
+          {/*/>*/}
         </LabelContainer>
-      </EnrollmentContainer>
+      </AttendanceContainer>
     </InformationContainer>
   );
 };
 
-export default EducationTermInformationView;
+export default EducationSessionInformationView;

@@ -13,13 +13,15 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 
 import KebabDropdown from '@/components/atoms/common/dropdown/kebab-dropdown';
-import { useScopedI18n } from '../../../../../../locales/client';
+import { useI18n, useScopedI18n } from '../../../../../../locales/client';
 import EducationTermRow from '@/components/molecules/education/education-term/education-term-row';
 import EducationTermTable, {
   EducationTermTableProps,
 } from '@/components/molecules/education/education-term/education-term-table';
 import EducationTermInformation from '@/components/organisms/education/education-term/information/education-term-information';
 import AddEducationTerm from '@/components/organisms/education/education-term/add/add-education-term';
+import AddEducationSession from '@/components/organisms/education/education-session/add/add-education-session';
+import EducationSessionInformation from '@/components/organisms/education/education-session/information/education-session-information';
 
 const EducationTermListContainer = styled.div`
   display: flex;
@@ -88,9 +90,13 @@ type EducationTermListViewProps = {
     onClickEditTermDone: () => void;
     onClickEditTermOpen: () => void;
     onClickEditTermClose: () => void;
+    isAddEducationSessionShown: boolean;
     isEducationSessionInformationShown: boolean;
     isEditSessionShown: boolean;
     isSessionPopupShown: boolean;
+    onClickOpenAddEducationSession: () => void;
+    onClickCloseAddEducationSession: () => void;
+    onClickAddSessionsDone: () => void;
     onClickCloseSession: () => void;
     onClickDeleteSession: () => void;
     onClickDeleteSessionConfirmOpen: () => void;
@@ -102,6 +108,7 @@ type EducationTermListViewProps = {
 };
 
 const EducationTermListView = (props: EducationTermListViewProps) => {
+  const t = useI18n();
   const t_button = useScopedI18n('button');
   const t_popup = useScopedI18n('popup');
   const t_title = useScopedI18n('title');
@@ -117,9 +124,13 @@ const EducationTermListView = (props: EducationTermListViewProps) => {
     onClickEditTermDone,
     onClickEditTermOpen,
     onClickEditTermClose,
+    isAddEducationSessionShown,
     isEducationSessionInformationShown,
     isEditSessionShown,
     isSessionPopupShown,
+    onClickOpenAddEducationSession,
+    onClickCloseAddEducationSession,
+    onClickAddSessionsDone,
     onClickCloseSession,
     onClickDeleteSession,
     onClickDeleteSessionConfirmOpen,
@@ -194,7 +205,9 @@ const EducationTermListView = (props: EducationTermListViewProps) => {
             leftButtonText={t_button('cancel')}
             rightButtonText={t_button('delete')}
           />
-          <EducationTermInformation />
+          <EducationTermInformation
+            onClickAddSession={onClickOpenAddEducationSession}
+          />
         </>
       </SlidePopup>
       {/* 기수 수정 팝업*/}
@@ -208,12 +221,22 @@ const EducationTermListView = (props: EducationTermListViewProps) => {
         <AddEducationTerm />
       </SlidePopup>
       {/* ----------- 회차 ----------*/}
+      {/* 회차 추가 팝업*/}
+      <SlidePopup
+        isShow={isAddEducationSessionShown}
+        onClickClose={onClickCloseAddEducationSession}
+        onClickDone={onClickAddSessionsDone}
+        doneText={t_button('save')}
+        headerTitle={t_title('addEducationSession')}
+      >
+        <AddEducationSession />
+      </SlidePopup>
       {/* 회차 상세정보 팝업*/}
       <SlidePopup
         isShow={isEducationSessionInformationShown}
         onClickClose={onClickCloseSession}
         isFooterShown={false}
-        headerTitle={`${targetEducation}기 ${targetEducation.name}`}
+        headerTitle={`${targetEducationSession.session}${t('session')}`}
         headerRight={
           <ButtonRow>
             <KebabDropdown
@@ -252,7 +275,7 @@ const EducationTermListView = (props: EducationTermListViewProps) => {
             leftButtonText={t_button('cancel')}
             rightButtonText={t_button('delete')}
           />
-          {/*<EducationSessionInformation />*/}
+          <EducationSessionInformation />
         </>
       </SlidePopup>
       {/* 회차 수정 팝업*/}

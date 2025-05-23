@@ -6,7 +6,7 @@ import { MainText } from '@/components/atoms/common/text/main-text';
 import React from 'react';
 import Image from 'next/image';
 import StatusDropdown from '@/components/atoms/common/dropdown/status-dropdown';
-import { useEducationStatusDropdownItems } from '@/hooks/dropdown/dropdown-items';
+import { useEducationEnrollmentStatusDropdownItems } from '@/hooks/dropdown/dropdown-items';
 import { GRAY } from '@/constants/styles/color';
 import { EDUCATION_STATUS } from '@/constants/constant';
 
@@ -56,7 +56,7 @@ const EducationEnrollmentList = ({
   enrollments,
   onChangeStatus,
 }: EducationEnrollmentListProps) => {
-  const statusDropdownItems = useEducationStatusDropdownItems();
+  const statusDropdownItems = useEducationEnrollmentStatusDropdownItems();
 
   return (
     <EnrollmentListContainer>

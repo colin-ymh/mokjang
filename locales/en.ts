@@ -19,6 +19,8 @@ export default {
 
   title: 'title',
 
+  educationEnrollment: 'Enrollment',
+
   method: 'Method',
 
   visitedMember: 'target',
@@ -313,8 +315,8 @@ export default {
   'placeholder.family': 'Enter the family name.',
   'placeholder.startDate': 'Enter the start date  (e.g., YYYY.MM.DD).',
   'placeholder.endDate': 'Enter the end date (e.g., YYYY.MM.DD).',
-  'placeholder.term': 'Enter the term.',
-  'placeholder.session': 'Enter the total sessions.',
+  'placeholder.term': 'Enter the term number.',
+  'placeholder.session': 'Enter the session number.',
   'placeholder.instructor': 'Enter the instructor.',
   'placeholder.sessionDate': 'Enter the session date (e.g., YYYY.MM.DD).',
   'placeholder.sessionContent': 'Enter the session report.',

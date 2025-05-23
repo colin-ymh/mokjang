@@ -62,10 +62,10 @@ const Loading = ({ isShow, loadingText = 'Loading...' }: LoadingProps) => {
     let timer: NodeJS.Timeout;
 
     if (isShow) {
-      // 0.5초 후에 로딩을 렌더링하도록 타이머 설정
+      // 0.2초 후에 로딩을 렌더링하도록 타이머 설정
       timer = setTimeout(() => {
         setShouldRender(true);
-      }, 500);
+      }, 200);
     } else {
       // isShow가 false이면 즉시 렌더링 중지
       setShouldRender(false);

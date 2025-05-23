@@ -37,8 +37,6 @@ export const getEducationTermStatusColor = (status: EDUCATION_TERM_STATUS) => {
       return STATUS_COLOR.DONE;
     case EDUCATION_TERM_STATUS.IN_PROGRESS:
       return STATUS_COLOR.IN_PROGRESS;
-    case EDUCATION_TERM_STATUS.RESERVE:
-      return STATUS_COLOR.RESERVE;
     case EDUCATION_TERM_STATUS.PENDING:
       return STATUS_COLOR.PENDING;
     default:

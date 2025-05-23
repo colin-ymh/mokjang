@@ -1,15 +1,8 @@
 import axios, { AxiosResponse } from 'axios';
 import { SERVER_URL, TEST_SERVER_URL } from '@/constants/state/url';
-import { EDUCATION_STATUS, ORDER_DIRECTION } from '@/constants/constant';
+import { ORDER_DIRECTION } from '@/constants/constant';
 import { CustomError } from '@/api/error/error';
-
-enum EDUCATION_ENROLLMENT_ORDER {
-  MEMBER_ID = 'memberId',
-  MEMBER_NAME = 'memberName',
-  STATUS = 'status',
-  CREATED_AT = 'createdAt',
-  UPDATED_AT = 'updatedAt',
-}
+import { EDUCATION_ENROLLMENT_STATUS } from '@/models/education/education';
 
 type GetEducationEnrollmentsParams = {
   churchId: string;
@@ -17,7 +10,7 @@ type GetEducationEnrollmentsParams = {
   educationTermId: string;
   take?: number;
   page?: number;
-  order?: EDUCATION_ENROLLMENT_ORDER;
+  order?: string;
   orderDirection?: ORDER_DIRECTION;
 };
 
@@ -29,7 +22,7 @@ type CreateEducationEnrollmentsParams = {
 
 type CreateEducationEnrollmentsBody = {
   memberId: string;
-  status?: EDUCATION_STATUS;
+  status?: EDUCATION_ENROLLMENT_STATUS;
   note?: string;
 };
 
@@ -41,7 +34,7 @@ type EditEducationEnrollmentParams = {
 };
 
 type EditEducationEnrollmentBody = {
-  status?: EDUCATION_STATUS;
+  status?: EDUCATION_ENROLLMENT_STATUS;
   note?: string;
   isDeleteNote?: boolean;
 };

@@ -1,6 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 import { SERVER_URL, TEST_SERVER_URL } from '@/constants/state/url';
 import { CustomError } from '@/api/error/error';
+import { EDUCATION_SESSION_STATUS } from '@/models/education/education';
 
 type GetEducationSessionsParams = {
   churchId: string;
@@ -32,6 +33,7 @@ type EditEducationSessionBody = {
   isDone?: boolean;
   sessionDate?: string;
   content?: string;
+  status?: EDUCATION_SESSION_STATUS;
 };
 
 type DeleteEducationSessionParams = {

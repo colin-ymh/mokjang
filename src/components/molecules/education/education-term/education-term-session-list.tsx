@@ -55,6 +55,7 @@ const EducationTermSessionList = ({
   onClickAddButton,
 }: EducationTermSessionListProps) => {
   const t = useI18n();
+
   return (
     <SessionListContainer>
       <HeaderContainer>

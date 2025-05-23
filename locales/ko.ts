@@ -14,6 +14,8 @@ export default {
 
   title: '제목',
 
+  educationEnrollment: '수강 교인',
+
   inCharge: '담당자',
   taskStatus: '상태',
   taskDate: '업무일자',
@@ -324,7 +326,7 @@ export default {
   'placeholder.startDate': '시작날짜를 입력해주세요. (yyyy-mm-dd) ',
   'placeholder.endDate': '종료날짜를 입력해주세요. (yyyy-mm-dd) ',
   'placeholder.term': '기수를 입력해주세요.',
-  'placeholder.session': '총 회차를 입력해주세요.',
+  'placeholder.session': '회차를 입력해주세요.',
   'placeholder.instructor': '진행자를 선택해주세요.',
   'placeholder.sessionDate': '교육 일시를 입력해주세요. (yyyy-mm-dd) ',
   'placeholder.sessionContent': '교육 내용를 입력해주세요.',

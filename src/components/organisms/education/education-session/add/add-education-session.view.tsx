@@ -13,16 +13,12 @@ import Quill from '@/components/atoms/common/input/quill';
 import MultiMemberDropdown from '@/components/atoms/common/dropdown/multi-member-dropdown';
 import { MemberDropdownValueType } from '@/models/dropdown/dropdown';
 import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-item';
-import {
-  EDUCATION_TERM_STATUS,
-  EducationEnrollment,
-} from '@/models/education/education';
+import { EDUCATION_TERM_STATUS } from '@/models/education/education';
 import StatusDropdown from '@/components/atoms/common/dropdown/status-dropdown';
-import { useEducationTermStatusDropdownItems } from '@/hooks/dropdown/dropdown-items';
-import { BLANK, EDUCATION_STATUS } from '@/constants/constant';
-import EducationEnrollmentList from '@/components/atoms/education/education-enrollment/education-enrollment-list';
+import { useEducationSessionStatusDropdownItems } from '@/hooks/dropdown/dropdown-items';
+import { BLANK } from '@/constants/constant';
 
-const AddEducationTermViewContainer = styled.div`
+const AddEducationSessionViewContainer = styled.div`
   display: flex;
   flex: 1;
   flex-direction: column;
@@ -61,64 +57,78 @@ const EnrollmentList = styled.div`
   display: flex;
 `;
 
-type AddEducationTermViewProps = {
+type AddEducationSessionViewProps = {
   inCharge: DropdownValueType[];
   content: string;
+  receivers: MemberDropdownValueType[];
   onChangeStatus: (value: EDUCATION_TERM_STATUS) => void;
-  onChangeTerm: (event: ChangeEvent<HTMLInputElement>) => void;
+  onChangeTitle: (event: ChangeEvent<HTMLInputElement>) => void;
+  onChangeSession: (event: ChangeEvent<HTMLInputElement>) => void;
   onChangeStartDate: (date: Date | null) => void;
   onChangeEndDate: (date: Date | null) => void;
   onChangeInCharge: (values: DropdownValueType[]) => void;
   onChangeContent: (content: string) => void;
-  onClickNewEnrollment: (values: MemberDropdownValueType[]) => void;
-  onChangeEnrollmentStatus: (
-    value: EDUCATION_STATUS,
-    enrollment: EducationEnrollment
-  ) => void;
+  // onClickNewEnrollment: (values: MemberDropdownValueType[]) => void;
+  // onChangeEnrollmentStatus: (
+  //   value: EDUCATION_STATUS,
+  //   enrollment: EducationEnrollment
+  // ) => void;
+  onChangeReceivers: (values: MemberDropdownValueType[]) => void;
 };
 
-const AddEducationTermView = ({
-  inCharge,
+const AddEducationSessionView = ({
   content,
+  inCharge,
+  receivers,
   onChangeStatus,
-  onChangeTerm,
+  onChangeTitle,
+  onChangeSession,
   onChangeStartDate,
   onChangeEndDate,
   onChangeInCharge,
   onChangeContent,
-  onClickNewEnrollment,
-  onChangeEnrollmentStatus,
-}: AddEducationTermViewProps) => {
-  const { targetEducationTerm } = useSelector(
-    (state: RootState) => state.targetEducationTerm
+  onChangeReceivers,
+}: AddEducationSessionViewProps) => {
+  const { targetEducationSession } = useSelector(
+    (state: RootState) => state.targetEducationSession
   );
 
   const t = useI18n();
   const t_placeholder = useScopedI18n('placeholder');
 
-  const statusDropdownItems = useEducationTermStatusDropdownItems();
+  const statusDropdownItems = useEducationSessionStatusDropdownItems();
 
   return (
-    <AddEducationTermViewContainer>
+    <AddEducationSessionViewContainer>
       {/* 상태 */}
       <InputContainer>
         <MainText>{t('status')}</MainText>
         <StatusDropdown
-          value={targetEducationTerm.status}
+          value={targetEducationSession.status}
           items={statusDropdownItems}
           onChangeItem={onChangeStatus}
           width={100}
           height={40}
         />
       </InputContainer>
-
-      {/* 기수 */}
+      {/* 제목 */}
       <InputContainer>
         <LabelInput
-          label={t('term')}
-          value={targetEducationTerm.term}
-          onChange={onChangeTerm}
-          placeholder={t_placeholder('term')}
+          label={t('title')}
+          value={targetEducationSession.title}
+          onChange={onChangeTitle}
+          placeholder={t_placeholder('title')}
+          borderColor={GRAY.DEFAULT}
+          height={40}
+        />
+      </InputContainer>
+      {/* 회차 */}
+      <InputContainer>
+        <LabelInput
+          label={t('session')}
+          value={targetEducationSession.session}
+          onChange={onChangeSession}
+          placeholder={t_placeholder('session')}
           borderColor={GRAY.DEFAULT}
           height={40}
         />
@@ -130,8 +140,8 @@ const AddEducationTermView = ({
           <MainText>{t('period')}</MainText>
           <PeriodContainer>
             <CustomDatePicker
-              value={targetEducationTerm.startDate}
-              selected={getDateTimeFromString(targetEducationTerm.startDate)}
+              value={targetEducationSession.startDate}
+              selected={getDateTimeFromString(targetEducationSession.startDate)}
               onChange={onChangeStartDate}
               dateFormat="yyyy-MM-dd"
               placeholderText={t('startDate')}
@@ -148,8 +158,8 @@ const AddEducationTermView = ({
             />
             <MainText>{'-'}</MainText>
             <CustomDatePicker
-              value={targetEducationTerm.endDate}
-              selected={getDateTimeFromString(targetEducationTerm.endDate)}
+              value={targetEducationSession.endDate}
+              selected={getDateTimeFromString(targetEducationSession.endDate)}
               onChange={onChangeEndDate}
               dateFormat="yyyy-MM-dd"
               placeholderText={t('endDate')}
@@ -195,24 +205,36 @@ const AddEducationTermView = ({
           />
         </LabelContainer>
       </InputContainer>
-
-      {/* 수강 교인 */}
+      {/* 보고대상자 */}
       <InputContainer>
         <LabelContainer>
-          <MainText>{t('educationEnrollment')}</MainText>
+          <MainText>{t('receiver')}</MainText>
           <MultiMemberDropdown
-            values={[]}
-            onChangeValues={onClickNewEnrollment}
-            placeholder={t_placeholder('name')}
-          />
-          <EducationEnrollmentList
-            enrollments={targetEducationTerm.educationEnrollments}
-            onChangeStatus={onChangeEnrollmentStatus}
+            values={receivers}
+            onChangeValues={onChangeReceivers}
+            height={40}
+            placeholder={receivers.length === 0 ? t_placeholder('name') : BLANK}
           />
         </LabelContainer>
       </InputContainer>
-    </AddEducationTermViewContainer>
+
+      {/* 수강 교인 */}
+      {/*<InputContainer>*/}
+      {/*  <LabelContainer>*/}
+      {/*    <MainText>{'수강 교인'}</MainText>*/}
+      {/*    <MultiMemberDropdown*/}
+      {/*      values={[]}*/}
+      {/*      onChangeValues={onClickNewEnrollment}*/}
+      {/*      placeholder={t_placeholder('name')}*/}
+      {/*    />*/}
+      {/*    <EducationEnrollmentList*/}
+      {/*      enrollments={targetEducationSession.educationEnrollments}*/}
+      {/*      onChangeStatus={onChangeEnrollmentStatus}*/}
+      {/*    />*/}
+      {/*  </LabelContainer>*/}
+      {/*</InputContainer>*/}
+    </AddEducationSessionViewContainer>
   );
 };
 
-export default AddEducationTermView;
+export default AddEducationSessionView;

@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
-import { BLANK, EDUCATION_STATUS } from '@/constants/constant';
+import { BLANK } from '@/constants/constant';
 import { getFormattedTitle } from '@/utils/format';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
@@ -10,6 +10,7 @@ import AddEducationTermView from '@/components/organisms/education/education-ter
 import { MemberDropdownValueType } from '@/models/dropdown/dropdown';
 import { DEFAULT_MEMBER } from '@/redux/reducers/member-register-reducer';
 import {
+  EDUCATION_ENROLLMENT_STATUS,
   EDUCATION_TERM_STATUS,
   EducationEnrollment,
 } from '@/models/education/education';
@@ -134,7 +135,7 @@ const AddEducationTerm = ({}: AddEducationTermProps) => {
           id: new Date().toString(),
           memberId: newEnrollment.value,
           educationTermId: targetEducationTerm.id,
-          status: EDUCATION_STATUS.INCOMPLETE,
+          status: EDUCATION_ENROLLMENT_STATUS.INCOMPLETE,
           note: BLANK,
           member: { ...DEFAULT_MEMBER, name: newEnrollment.title },
         },
@@ -151,7 +152,7 @@ const AddEducationTerm = ({}: AddEducationTermProps) => {
 
   // 수강 교인 상태 변경
   const onChangeEnrollmentStatus = (
-    value: EDUCATION_STATUS,
+    value: EDUCATION_ENROLLMENT_STATUS,
     targetEnrollment: EducationEnrollment
   ) => {
     const newEnrollments = targetEducationTerm.educationEnrollments.map(
