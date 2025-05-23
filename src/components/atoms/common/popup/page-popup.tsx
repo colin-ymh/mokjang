@@ -19,19 +19,19 @@ const PagePopupContainer = styled.div`
 
 interface PagePopupProps {
   isShow: boolean;
-  onClickClose: () => void;
+  onClickCancel: () => void;
   children: ReactNode;
 }
 
 // 특정 컴포넌트를 전체화면 페이지인 것처럼 보아게 해주는 모달
-const PagePopup = ({ isShow, onClickClose, children }: PagePopupProps) => {
+const PagePopup = ({ isShow, onClickCancel, children }: PagePopupProps) => {
   if (!isShow) {
     return <Hide />;
   }
 
   return (
     <PagePopupContainer>
-      <PopupLayout onClickClose={onClickClose}>{children}</PopupLayout>
+      <PopupLayout onClickCancel={onClickCancel}>{children}</PopupLayout>
     </PagePopupContainer>
   );
 };

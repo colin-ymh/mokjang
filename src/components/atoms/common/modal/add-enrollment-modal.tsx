@@ -11,13 +11,13 @@ import { RootState } from '@/redux/store';
 import { MembersApi } from '@/api/members/members.api';
 import { BLANK } from '@/constants/constant';
 import { Member } from '@/models/member/member';
-import {
-  EducationEnrollment,
-  EducationTerm,
-} from '@/models/management/management';
 import { getFormattedName } from '@/utils/format';
 import { EducationEnrollmentsApi } from '@/api/education/education-enrollments.api';
 import AddEnrollmentModalView from '@/components/atoms/common/modal/add-enrollment-modal.view';
+import {
+  EducationEnrollment,
+  EducationTerm,
+} from '@/models/education/education';
 
 type AddEnrollmentModalProps = {
   term: EducationTerm;

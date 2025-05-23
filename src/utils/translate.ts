@@ -42,7 +42,6 @@ export const getTranslatedTermColumn = (
       | EDUCATION_TERM.PERIOD
       | EDUCATION_TERM.EDUCATION_ENROLLMENTS
       | EDUCATION_TERM.IN_CHARGE
-      | EDUCATION_TERM.NUMBER_OF_SESSION
   );
 };
 

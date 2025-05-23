@@ -13,7 +13,7 @@ import Quill from '@/components/atoms/common/input/quill';
 import MultiMemberDropdown from '@/components/atoms/common/dropdown/multi-member-dropdown';
 import { MemberDropdownValueType } from '@/models/dropdown/dropdown';
 import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-item';
-import { EDUCATION_TERM_STATUS } from '@/models/education/education';
+import { EDUCATION_SESSION_STATUS } from '@/models/education/education';
 import StatusDropdown from '@/components/atoms/common/dropdown/status-dropdown';
 import { useEducationSessionStatusDropdownItems } from '@/hooks/dropdown/dropdown-items';
 import { BLANK } from '@/constants/constant';
@@ -61,7 +61,7 @@ type AddEducationSessionViewProps = {
   inCharge: DropdownValueType[];
   content: string;
   receivers: MemberDropdownValueType[];
-  onChangeStatus: (value: EDUCATION_TERM_STATUS) => void;
+  onChangeStatus: (value: EDUCATION_SESSION_STATUS) => void;
   onChangeTitle: (event: ChangeEvent<HTMLInputElement>) => void;
   onChangeSession: (event: ChangeEvent<HTMLInputElement>) => void;
   onChangeStartDate: (date: Date | null) => void;

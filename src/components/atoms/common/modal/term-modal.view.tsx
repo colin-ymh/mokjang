@@ -5,12 +5,12 @@ import LabelDropdown from '@/components/atoms/common/dropdown/label-dropdown';
 import Button from '@/components/atoms/common/button/button';
 import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-item';
 import LabelInput from '@/components/atoms/common/input/label-input';
-import { EDUCATION_STATUS } from '@/constants/constant';
 import { useEducationEnrollmentStatusDropdownItems } from '@/hooks/dropdown/dropdown-items';
 
 import { useI18n } from '../../../../../locales/client';
 import Cancel from '../../../../../public/svg/cancel.svg';
 import { GRAY, MAIN } from '@/constants/styles/color';
+import { EDUCATION_ENROLLMENT_STATUS } from '@/models/education/education';
 
 const EducationModalViewContainer = styled.div`
   display: flex;
@@ -50,26 +50,26 @@ const CancelButton = styled(Cancel)`
 type EducationModalViewProps = {
   isEdit: boolean;
   educationId: string;
-  educationStatus: EDUCATION_STATUS;
+  educationStatus: EDUCATION_ENROLLMENT_STATUS;
   educationItems: DropdownValueType[];
   startDate: string;
   endDate: string;
   isButtonEnabled: boolean;
   onClickClose: () => void;
   onChangeEducation: (id: string) => void;
-  onChangeStatus: (value: EDUCATION_STATUS) => void;
+  onChangeStatus: (value: EDUCATION_ENROLLMENT_STATUS) => void;
   onChangeStartDate: (event: ChangeEvent<HTMLInputElement>) => void;
   onChangeEndDate: (event: ChangeEvent<HTMLInputElement>) => void;
   onClickSaveNewEducation: (
     educationId: string,
     startDate: string,
-    status: EDUCATION_STATUS
+    status: EDUCATION_ENROLLMENT_STATUS
   ) => void;
   onClickSaveEditEducation: (
     educationId?: string,
     startDate?: string,
     endDate?: string,
-    status?: EDUCATION_STATUS
+    status?: EDUCATION_ENROLLMENT_STATUS
   ) => void;
 };
 

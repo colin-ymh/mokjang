@@ -1,5 +1,5 @@
 import { BLANK } from '@/constants/constant';
-import { EducationTerm } from '@/models/management/management';
+import { EducationTerm } from '@/models/education/education';
 
 export const getIsWellFormedMobilePhone = (mobilePhone: string) => {
   if (mobilePhone.slice(0, 3) !== '010') return false;

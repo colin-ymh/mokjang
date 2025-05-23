@@ -79,7 +79,10 @@ type FilteredItemProps = {
 
 const FilteredItem = ({ item }: FilteredItemProps) => {
   const t = useI18n();
-  const { groups, officers, ministries, educations } = useSelector(
+  const { educations } = useSelector(
+    (state: RootState) => state.educationFilter
+  );
+  const { groups, officers, ministries } = useSelector(
     (state: RootState) => state.church
   );
   const dispatch = useDispatch<AppDispatch>();
@@ -193,16 +196,16 @@ const FilteredItem = ({ item }: FilteredItemProps) => {
           .filter(Boolean) // undefined/null 필터링
           .join(', ');
         break;
-      case MEMBER.EDUCATIONS:
-        // 여러 그룹 ID가 배열로 넘어온 경우
-        currentItem = item.value
-          .map(
-            (educationId) =>
-              educations.find((education) => education.id === educationId)?.name
-          )
-          .filter(Boolean) // undefined/null 필터링
-          .join(', ');
-        break;
+      // case MEMBER.EDUCATIONS:
+      //   // 여러 그룹 ID가 배열로 넘어온 경우
+      //   currentItem = item.value
+      //     .map(
+      //       (educationId) =>
+      //         educations.find((education) => education.id === educationId)?.name
+      //     )
+      //     .filter(Boolean) // undefined/null 필터링
+      //     .join(', ');
+      //   break;
       case MEMBER.BIRTH:
         currentItem = item.value.filter(Boolean).join(' ~ ');
         break;

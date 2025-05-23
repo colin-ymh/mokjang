@@ -68,7 +68,7 @@ const App = () => {
         `/admin/management/${MANAGEMENT_HEADER_ID.CHURCH}/${CHURCH_CONTENT_ID.GROUP}`
       );
     }
-  }, [sideId, headerId, contentId, user?.id, churchId]);
+  }, [sideId, headerId, contentId, user?.id, churchId, router]);
 
   const side = useMemo(() => {
     return sideId ? getSide(sideId) : null;
@@ -80,7 +80,7 @@ const App = () => {
 
   const content = useMemo(() => {
     return contentId ? getContent(contentId, headerId) : null;
-  }, [contentId, headerId]);
+  }, [contentId, headerId, router]);
 
   // 렌더링은 조건적으로 null을 반환하되, useEffect 이후로!
   if (!user?.id || !churchId) {

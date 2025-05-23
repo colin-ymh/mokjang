@@ -1,5 +1,8 @@
 import styled from 'styled-components';
-import { EducationEnrollment } from '@/models/education/education';
+import {
+  EDUCATION_ENROLLMENT_STATUS,
+  EducationEnrollment,
+} from '@/models/education/education';
 import { getRandomImage } from '@/utils/image';
 import { MEMBER } from '@/constants/member/member-column';
 import { MainText } from '@/components/atoms/common/text/main-text';
@@ -8,7 +11,6 @@ import Image from 'next/image';
 import StatusDropdown from '@/components/atoms/common/dropdown/status-dropdown';
 import { useEducationEnrollmentStatusDropdownItems } from '@/hooks/dropdown/dropdown-items';
 import { GRAY } from '@/constants/styles/color';
-import { EDUCATION_STATUS } from '@/constants/constant';
 
 const EnrollmentListContainer = styled.div`
   display: flex;
@@ -47,7 +49,7 @@ const ProfileImage = styled(Image)`
 type EducationEnrollmentListProps = {
   enrollments: EducationEnrollment[];
   onChangeStatus: (
-    status: EDUCATION_STATUS,
+    status: EDUCATION_ENROLLMENT_STATUS,
     enrollment: EducationEnrollment
   ) => void;
 };

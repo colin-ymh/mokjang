@@ -8,6 +8,8 @@ import CustomPopup from '@/components/atoms/common/popup/custom-popup';
 import MinistryModal from '@/components/atoms/common/modal/ministry-modal';
 
 import { useI18n } from '../../../../../locales/client';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
 
 const ListContainer = styled.div`
   display: flex;
@@ -52,8 +54,8 @@ const MemberMinistryView = ({
   onClickSaveMinistryHistory,
 }: MemberMinistryViewProps) => {
   const t = useI18n();
-  const currentHistory = ministryHistory.find(
-    (history) => history.endDate === null
+  const { targetMember } = useSelector(
+    (state: RootState) => state.targetMember
   );
   return (
     <ListContainer>
@@ -105,6 +107,7 @@ const MemberMinistryView = ({
         height={400}
       >
         <MinistryModal
+          targetMemberId={targetMember.id}
           targetHistory={targetMinistryHistory}
           onClickSaveMinistryHistory={onClickSaveMinistryHistory}
         />

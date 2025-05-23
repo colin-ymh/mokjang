@@ -14,12 +14,13 @@ import MultiMemberDropdown from '@/components/atoms/common/dropdown/multi-member
 import { MemberDropdownValueType } from '@/models/dropdown/dropdown';
 import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-item';
 import {
+  EDUCATION_ENROLLMENT_STATUS,
   EDUCATION_TERM_STATUS,
   EducationEnrollment,
 } from '@/models/education/education';
 import StatusDropdown from '@/components/atoms/common/dropdown/status-dropdown';
 import { useEducationTermStatusDropdownItems } from '@/hooks/dropdown/dropdown-items';
-import { BLANK, EDUCATION_STATUS } from '@/constants/constant';
+import { BLANK } from '@/constants/constant';
 import EducationEnrollmentList from '@/components/atoms/education/education-enrollment/education-enrollment-list';
 
 const AddEducationTermViewContainer = styled.div`
@@ -72,7 +73,7 @@ type AddEducationTermViewProps = {
   onChangeContent: (content: string) => void;
   onClickNewEnrollment: (values: MemberDropdownValueType[]) => void;
   onChangeEnrollmentStatus: (
-    value: EDUCATION_STATUS,
+    value: EDUCATION_ENROLLMENT_STATUS,
     enrollment: EducationEnrollment
   ) => void;
 };

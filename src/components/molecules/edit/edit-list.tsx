@@ -265,7 +265,7 @@ const EditList = ({ focusItem }: EditListProps) => {
   return (
     <>
       <EditListView {...props} />
-      <PagePopup isShow={isAddressOpen} onClickClose={onClickAddressClose}>
+      <PagePopup isShow={isAddressOpen} onClickCancel={onClickAddressClose}>
         <DaumPostcodeEmbed
           onComplete={onCompleteAddress}
           style={{ width: '100%', height: '100%' }}

@@ -74,7 +74,7 @@ const InitializeStore = () => {
     dispatch(initializeIsWebview()); // 웹뷰 상태 초기화
     initializeChurch();
     initializeUser();
-  }, [dispatch]);
+  }, [dispatch, initializeChurch, initializeUser]);
 
   return null;
 };

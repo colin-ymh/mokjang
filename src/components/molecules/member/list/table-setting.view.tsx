@@ -119,8 +119,11 @@ const TableSettingView = ({
 }: TableSettingViewProps) => {
   const { memberTableHeaderItemList, filterItems, filterAfter, filterBefore } =
     useSelector((state: RootState) => state.memberFilter);
-  const { officers, educations, ministries } = useSelector(
+  const { officers, ministries } = useSelector(
     (state: RootState) => state.church
+  );
+  const { educations } = useSelector(
+    (state: RootState) => state.educationFilter
   );
 
   const t = useI18n();

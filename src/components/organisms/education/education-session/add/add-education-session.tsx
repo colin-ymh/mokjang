@@ -7,7 +7,7 @@ import { AppDispatch, RootState } from '@/redux/store';
 import { getStringFromDateTime } from '@/utils/date';
 import { setTargetEducationSession } from '@/redux/reducers/target-education-session-reducer';
 import AddEducationSessionView from '@/components/organisms/education/education-session/add/add-education-session.view';
-import { EDUCATION_TERM_STATUS } from '@/models/education/education';
+import { EDUCATION_SESSION_STATUS } from '@/models/education/education';
 import { MemberDropdownType } from '@/components/atoms/common/dropdown/member-dropdown-item';
 
 type AddEducationSessionProps = {};
@@ -19,7 +19,7 @@ const AddEducationSession = ({}: AddEducationSessionProps) => {
   const dispatch = useDispatch<AppDispatch>();
 
   // ===== status =====
-  const onChangeStatus = (status: EDUCATION_TERM_STATUS) => {
+  const onChangeStatus = (status: EDUCATION_SESSION_STATUS) => {
     dispatch(
       setTargetEducationSession({ ...targetEducationSession, status: status })
     );

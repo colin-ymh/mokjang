@@ -1,6 +1,4 @@
-import { BLANK, EDUCATION_STATUS } from '@/constants/constant';
-import { Member } from '@/models/member/member';
-import { DEFAULT_MEMBER } from '@/redux/reducers/member-register-reducer';
+import { BLANK } from '@/constants/constant';
 
 export type Group = {
   id: string | null;

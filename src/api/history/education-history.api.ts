@@ -1,8 +1,9 @@
 import axios, { AxiosResponse } from 'axios';
 
 import { SERVER_URL, TEST_SERVER_URL } from '@/constants/state/url';
-import { EDUCATION_STATUS, ORDER_DIRECTION } from '@/constants/constant';
+import { ORDER_DIRECTION } from '@/constants/constant';
 import { CustomError } from '@/api/error/error';
+import { EDUCATION_ENROLLMENT_STATUS } from '@/models/education/education';
 
 type GetEducationHistoryParams = {
   churchId: string; // 교회 id
@@ -17,7 +18,7 @@ type createEducationHistoryParams = {
 
 type createEducationHistoryBody = {
   educationId: string;
-  status: EDUCATION_STATUS;
+  status: EDUCATION_ENROLLMENT_STATUS;
   startDate: string;
   endDate?: string;
 };
@@ -30,7 +31,7 @@ type editEducationHistoryParams = {
 
 type editEducationHistoryBody = {
   educationId?: string;
-  status?: EDUCATION_STATUS;
+  status?: EDUCATION_ENROLLMENT_STATUS;
   startDate?: string;
   endDate?: string;
 };

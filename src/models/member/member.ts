@@ -1,12 +1,12 @@
 import { BAPTISM, BLANK, FAMILY, MARRIAGE, NULL } from '@/constants/constant';
 import { DEFAULT_MEMBER } from '@/redux/reducers/member-register-reducer';
 import {
-  Education,
   Group,
   GroupRole,
   Ministry,
   Officer,
 } from '@/models/management/management';
+import { Education } from '@/models/education/education';
 
 export type FamilyMember = {
   meId: string;

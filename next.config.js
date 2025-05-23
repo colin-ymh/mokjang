@@ -15,7 +15,7 @@ const nextConfig = {
         },
       },
     },
-    appDir: true,
+    // appDir: true,
   },
   compiler: {
     styledComponents: true, // styled-components 활성화
