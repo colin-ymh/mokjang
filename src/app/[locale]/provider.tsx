@@ -1,7 +1,6 @@
 'use client';
 
 import type { ReactNode } from 'react';
-import { useEffect } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 
 import { I18nProviderClient, useCurrentLocale } from '../../../locales/client';
@@ -13,27 +12,27 @@ type ProviderProps = {
 const TranslateProvider = ({ children }: ProviderProps) => {
   const router = useRouter();
   const pathname = usePathname();
-  const locale = useCurrentLocale(); // ✅ 훅은 항상 최상단에 위치
-
-  useEffect(() => {
-    const localePrefix = getLocalePrefixFromPath(pathname);
-
-    if (!localePrefix && typeof window !== 'undefined') {
-      const browserLang = navigator.language.slice(0, 2);
-      router.replace(`/${browserLang}${pathname}`);
-    }
-  }, [pathname, router]);
-
   const localePrefix = getLocalePrefixFromPath(pathname);
-  if (!localePrefix) return null; // ✅ 조건부 렌더링은 useEffect 뒤에서만
+
+  if (!localePrefix) {
+    router.push(`/${navigator.language.slice(0, 2)}${pathname}`);
+    return;
+  }
+
+  const locale = useCurrentLocale();
 
   return <I18nProviderClient locale={locale}>{children}</I18nProviderClient>;
 };
 
 export default TranslateProvider;
 
-/** "/ko/..." → "ko", "/en/..." → "en", 그 외는 undefined */
+/**
+ * "/ko/..."면 "ko",
+ * "/en/..."이면 "en",
+ * 그 외는 undefined 를 반환하는 헬퍼 함수
+ */
 function getLocalePrefixFromPath(pathname: string): string | undefined {
+  // 로케일 목록이 많아질 경우 이 로직을 확장할 수 있음
   if (pathname.startsWith('/ko')) return 'ko';
   if (pathname.startsWith('/en')) return 'en';
   return undefined;
