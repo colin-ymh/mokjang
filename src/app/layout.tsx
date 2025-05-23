@@ -14,6 +14,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
 
 import 'react-datepicker/dist/react-datepicker.css';
+import 'react-quill/dist/quill.snow.css';
 
 const GlobalStyle = createGlobalStyle`
     html,
@@ -23,6 +24,19 @@ const GlobalStyle = createGlobalStyle`
         background-color: white;
         min-width: 320px;
         font-family: 'Noto Sans KR', monospace;
+        touch-action: none;
+        overscroll-behavior: none;
+
+        -webkit-tap-highlight-color: transparent;
+
+        /* 텍스트 선택 막기 */
+        user-select: none !important;
+        -webkit-user-select: none !important;
+        -moz-user-select: none !important;
+        -ms-user-select: none !important;
+
+        /* 이미지 등 드래그 막기 */
+        -webkit-user-drag: none !important;
     }
 
     body > div:first-child,
@@ -78,7 +92,7 @@ const RootLayout = (props: RootLayoutProps | RootLayoutPropsExtended) => {
         />
         <meta
           name="viewport"
-          content="initial-scale=1.0,user-scalable=no,maximum-scale=1,width=device-width"
+          content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
         />
       </head>
       <body>

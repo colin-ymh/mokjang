@@ -19,14 +19,14 @@ import { useScopedI18n } from '../../../../../locales/client';
 
 type FamilyInformationListProps = {
   targetMember: Member;
-  setContentId: Dispatch<SetStateAction<string>>;
+  setMemberContentId: Dispatch<SetStateAction<string>>;
   setTargetMember: Dispatch<SetStateAction<Member>>;
 };
 
 const FamilyInformationList = ({
   targetMember,
   setTargetMember,
-  setContentId,
+  setMemberContentId,
 }: FamilyInformationListProps) => {
   const t_popup = useScopedI18n('popup');
   const { churchId } = useSelector((state: RootState) => state.church);
@@ -141,7 +141,7 @@ const FamilyInformationList = ({
         });
         const newMember = getMemberFromServer(response.data.data);
         setTargetMember(newMember);
-        setContentId(MEMBER_INFORMATION_HEADER_ID.PERSONAL_INFORMATION);
+        setMemberContentId(MEMBER_INFORMATION_HEADER_ID.PERSONAL_INFORMATION);
       } catch (error) {
         setThrownError(
           error instanceof Error ? error : new Error(String(error))

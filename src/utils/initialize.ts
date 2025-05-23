@@ -3,32 +3,27 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 
 import { MinistriesApi } from '@/api/management/ministry/ministries.api';
-import { EducationsApi } from '@/api/management/education/educations.api';
-import { OfficersApi } from '@/api/management/officer/officers.api';
+import { EducationsApi } from '@/api/education/educations.api';
 import {
+  fetchGroups,
+  fetchMinistryGroups,
+  fetchOfficers,
   setChurch,
   setChurchId,
-  setEducations,
-  setGroups,
   setMinistries,
-  setMinistryGroups,
-  setOfficers,
 } from '@/redux/reducers/church-reducer';
-import { GroupsApi } from '@/api/management/group/groups.api';
-import { MinistryGroupsApi } from '@/api/management/ministry/ministry-groups.api';
 import { AuthApi } from '@/api/auth/auth.api';
 import { usePageRouter } from '@/utils/router';
 import { setUser } from '@/redux/reducers/user-reducer';
+import { UserApi } from '@/api/user/user.api';
+import { setEducations } from '@/redux/reducers/education-filter-reducer';
 
 export const useInitializeChurch = () => {
   const dispatch = useDispatch<AppDispatch>();
   const churchId = useSelector((state: RootState) => state.church.churchId);
 
-  const ministryGroupsApi = new MinistryGroupsApi(false);
   const ministriesApi = new MinistriesApi(false);
-  const officersApi = new OfficersApi(false);
   const educationsApi = new EducationsApi(false);
-  const groupsApi = new GroupsApi(false);
 
   const [thrownError, setThrownError] = useState<Error | null>(null);
   if (thrownError) {
@@ -42,20 +37,17 @@ export const useInitializeChurch = () => {
     }
 
     try {
-      const [ministryGroups, ministries, officers, educations, groups] =
-        await Promise.all([
-          ministryGroupsApi.getMinistryGroups({ churchId }),
-          ministriesApi.getMinistries({ churchId }),
-          officersApi.getOfficers({ churchId }),
-          educationsApi.getEducations({ churchId }),
-          groupsApi.getGroups({ churchId }),
-        ]);
+      dispatch(fetchGroups());
+      dispatch(fetchMinistryGroups());
+      dispatch(fetchOfficers());
 
-      dispatch(setMinistryGroups(ministryGroups.data));
-      dispatch(setMinistries(ministries.data));
-      dispatch(setOfficers(officers.data));
+      const [ministries, educations] = await Promise.all([
+        ministriesApi.getMinistries({ churchId }),
+        educationsApi.getEducations({ churchId }),
+      ]);
+
+      dispatch(setMinistries(ministries.data.data));
       dispatch(setEducations(educations.data.data));
-      dispatch(setGroups(groups.data));
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));
     }
@@ -75,6 +67,7 @@ export const useInitializeUser = () => {
   const dispatch = useDispatch<AppDispatch>();
   const router = usePageRouter();
   const authApi = new AuthApi(false);
+  const userApi = new UserApi(false);
 
   return async () => {
     try {
@@ -88,23 +81,24 @@ export const useInitializeUser = () => {
         return;
       }
     } catch (error) {
-      console.log('No Temporal Token');
+      // console.log('No Temporal Token');
     }
 
     try {
       // (2) Access Token으로 유저 정보 가져오기
-      const response = await authApi.getUser();
+      const response = await userApi.getUser();
       const newUser = response.data;
 
       // (3) Redux에 사용자 정보 저장
       dispatch(setUser(newUser));
 
       // (4) 교회 정보 확인 후 라우팅
-      const c = newUser?.adminChurch || newUser?.managingChurch;
+      const c = newUser.church;
+
       if (c?.id) {
         dispatch(setChurch(c));
         dispatch(setChurchId(c.id));
-        router.replace('/');
+        // router.replace('/admin');
       } else {
         router.replace('/church/register');
       }

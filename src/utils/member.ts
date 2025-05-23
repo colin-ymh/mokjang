@@ -127,3 +127,15 @@ export const getMemberFromServer = (member: Member) => {
 
   return newMember;
 };
+
+/**
+ * 교인의 이름과 직분을 합쳐 표기
+ * @param member
+ */
+export const getMemberNameOfficer = (member: Member) => {
+  if (member?.officer) {
+    return `${member.name} ${member.officer.name}`;
+  } else {
+    return member.name;
+  }
+};

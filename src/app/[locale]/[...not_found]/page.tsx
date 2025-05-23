@@ -1,5 +1,13 @@
-import { notFound } from 'next/navigation';
+'use client';
 
-export default function NotFoundCatchAll() {
-  notFound();
-}
+import { usePageRouter } from '@/utils/router';
+
+const NotFound = () => {
+  const router = usePageRouter();
+
+  router.push(`admin/main`);
+
+  return <></>;
+};
+
+export default NotFound;

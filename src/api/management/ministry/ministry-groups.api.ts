@@ -1,9 +1,22 @@
 import axios, { AxiosResponse } from 'axios';
 import { SERVER_URL, TEST_SERVER_URL } from '@/constants/state/url';
 import { CustomError } from '@/api/error/error';
+import { ORDER_DIRECTION } from '@/constants/constant';
+import qs from 'qs';
+
+export enum MINISTRY_GROUP_ORDER {
+  CREATED_AT = 'createdAt',
+  UPDATED_AT = 'updatedAt',
+  NAME = 'name',
+}
 
 type GetMinistryGroupsParams = {
   churchId: string;
+  take?: number;
+  page?: number;
+  order?: MINISTRY_GROUP_ORDER;
+  orderDirection?: ORDER_DIRECTION;
+  parentMinistryGroupId?: string;
 };
 
 type CreateMinistryGroupParams = {
@@ -57,12 +70,33 @@ export class MinistryGroupsApi {
   public getMinistryGroups = async (
     params: GetMinistryGroupsParams
   ): Promise<AxiosResponse> => {
-    const { churchId } = params;
+    const { churchId, take = 5, page = 1, order, orderDirection } = params;
+
+    const queryParams: Record<string, any> = Object.fromEntries(
+      Object.entries({
+        take,
+        page,
+        order,
+        orderDirection,
+      }).filter(
+        ([_, value]) =>
+          value !== undefined && !(Array.isArray(value) && value.length === 0)
+      )
+    );
 
     const url = `${this._url}/churches/${churchId}/management/ministry-groups`;
 
     try {
-      return await axios.get(url);
+      return await axios.get(url, {
+        params: queryParams,
+        paramsSerializer: (params) => {
+          return qs.stringify(params, {
+            arrayFormat: 'repeat',
+            skipNulls: true,
+            encodeValuesOnly: true,
+          });
+        },
+      });
     } catch (serverError: any) {
       if (serverError.response) {
         const { message, error, statusCode } = serverError.response.data;

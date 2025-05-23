@@ -7,7 +7,7 @@ import EducationHistoryItem from '@/components/atoms/member/information/educatio
 
 import { useI18n } from '../../../../../locales/client';
 import Plus from '../../../../../public/svg/plus.svg';
-import { EDUCATION_STATUS } from '@/constants/constant';
+import { EDUCATION_ENROLLMENT_STATUS } from '@/models/education/education';
 
 const ListContainer = styled.div`
   display: flex;
@@ -19,8 +19,8 @@ const ListContainer = styled.div`
 const ListTypeHeader = styled.div`
   display: flex;
   height: 40px;
-  background-color: ${GRAY.SIDE_BAR};
-  border-top: 1px solid ${GRAY.LIGHT};
+  background-color: ${GRAY.LIGHT};
+  border-top: 1px solid ${GRAY.SEMI_LIGHT};
   justify-content: space-between;
   align-items: center;
   padding: 0 20px;
@@ -106,19 +106,19 @@ const MemberEducationView = ({
       </ListTypeHeader>
       {/* 현재 교육 이력 */}
       <EducationListContainer>
-        {educationHistory
-          .filter(
-            (education) => education.status === EDUCATION_STATUS.IN_PROGRESS
-          )
-          .map((education) => {
-            return (
-              <EducationHistoryItem
-                key={education.id}
-                education={education}
-                isCurrent={true}
-              />
-            );
-          })}
+        {/*{educationHistory*/}
+        {/*  .filter(*/}
+        {/*    (education) => education.status === EDUCATION_ENROLLMENT_STATUS.IN_PROGRESS*/}
+        {/*  )*/}
+        {/*  .map((education) => {*/}
+        {/*    return (*/}
+        {/*      <EducationHistoryItem*/}
+        {/*        key={education.id}*/}
+        {/*        education={education}*/}
+        {/*        isCurrent={true}*/}
+        {/*      />*/}
+        {/*    );*/}
+        {/*  })}*/}
       </EducationListContainer>
 
       {/* 그룹 헤더 */}
@@ -130,7 +130,8 @@ const MemberEducationView = ({
         {educationHistory &&
           educationHistory
             ?.filter(
-              (education) => education.status === EDUCATION_STATUS.COMPLETED
+              (education) =>
+                education.status === EDUCATION_ENROLLMENT_STATUS.COMPLETED
             )
             .map((education) => {
               return (

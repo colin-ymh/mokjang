@@ -21,7 +21,7 @@ const ListTypeHeader = styled.div`
   display: flex;
   width: 100%;
   height: 40px;
-  background-color: ${GRAY.SIDE_BAR};
+  background-color: ${GRAY.LIGHT};
   justify-content: space-between;
   align-items: center;
   padding: 0 20px;
@@ -51,7 +51,7 @@ const InformationContainer = styled.div`
   width: 100%;
 
   &:hover {
-    background-color: ${GRAY.LIGHT};
+    background-color: ${GRAY.SEMI_LIGHT};
   }
 `;
 
@@ -99,7 +99,7 @@ const GroupInformation = ({ group }: GroupInformationProps) => {
           churchId,
           groupId: String(group.id),
         });
-        setRoles(response.data);
+        setRoles(response.data.data);
       } catch (error) {
         setThrownError(
           error instanceof Error ? error : new Error(String(error))
@@ -150,7 +150,7 @@ const GroupInformation = ({ group }: GroupInformationProps) => {
       {/* 그룹 수정 모달 */}
       <CustomPopup
         isShow={isModalShown}
-        onClickClose={onClickClose}
+        onClickCancel={onClickClose}
         width={30}
         height={70}
         isPercentage={true}
@@ -160,6 +160,7 @@ const GroupInformation = ({ group }: GroupInformationProps) => {
           roles={roles}
           onClickClose={onClickClose}
           setIsToastShown={setIsToastShown}
+          fetchRoles={fetchRoles}
         />
       </CustomPopup>
 

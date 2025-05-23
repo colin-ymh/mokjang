@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import Image from 'next/image';
 
-import { BLACK, GRAY, MAIN } from '@/constants/styles/color';
+import { BLACK, MAIN } from '@/constants/styles/color';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-item';
 import { GENDER } from '@/constants/constant';
@@ -19,14 +19,13 @@ const ItemContainer = styled.div<{ $isFocused: boolean }>`
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 10px;
+  padding: 5px;
   transition: background-color 0.3s ease;
-  border-radius: 5px;
   cursor: pointer;
-  background-color: ${({ $isFocused }) => $isFocused && GRAY.LIGHT};
+  background-color: ${({ $isFocused }) => $isFocused && MAIN.EXTRA_LIGHT};
 
   &:hover {
-    background-color: ${GRAY.LIGHT};
+    background-color: ${MAIN.EXTRA_LIGHT};
   }
 `;
 

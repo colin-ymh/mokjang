@@ -186,52 +186,6 @@ export class AuthApi {
   };
 
   /**
-   * Access 토큰 재발급
-   * @returns {Promise<AxiosResponse>}
-   */
-  public getRefreshToken = async (): Promise<AxiosResponse> => {
-    const url = new URL('/auth/token/rotate', this._url);
-
-    try {
-      return await authorizeAxios.post(url.toString());
-    } catch (serverError: any) {
-      if (serverError.response) {
-        const { message, error, statusCode } = serverError.response.data;
-        throw new CustomError(message, error, statusCode);
-      } else {
-        throw new CustomError(
-          '알 수 없는 에러가 발생했습니다',
-          500,
-          'Unknown Error'
-        );
-      }
-    }
-  };
-
-  /**
-   * 유저 정보 가져오기
-   * @returns {Promise<AxiosResponse>}
-   */
-  public getUser = async (): Promise<AxiosResponse> => {
-    const url = new URL('/auth/user', this._url);
-
-    try {
-      return await authorizeAxios.get(url.toString());
-    } catch (serverError: any) {
-      if (serverError.response) {
-        const { message, error, statusCode } = serverError.response.data;
-        throw new CustomError(message, error, statusCode);
-      } else {
-        throw new CustomError(
-          '알 수 없는 에러가 발생했습니다',
-          500,
-          'Unknown Error'
-        );
-      }
-    }
-  };
-
-  /**
    * Temporal Token 이 쿠키에 존재하는지 확인
    * @returns {Promise<AxiosResponse>}
    */

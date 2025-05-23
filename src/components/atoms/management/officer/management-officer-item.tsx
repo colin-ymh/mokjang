@@ -6,8 +6,8 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/redux/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '@/redux/store';
 
 import { DEFAULT_OFFICER, Officer } from '@/models/management/management';
 import { OfficersApi } from '@/api/management/officer/officers.api';
@@ -18,25 +18,26 @@ import ManagementOfficerItemView from '@/components/atoms/management/officer/man
 import { useScopedI18n } from '../../../../../locales/client';
 import ConfirmPopup from '@/components/atoms/common/popup/error-popup';
 import ToastPopup from '@/components/atoms/common/popup/toast-popup';
+import { fetchOfficers } from '@/redux/reducers/church-reducer';
 
 type ManagementOfficerItemProps = {
   officer: Officer;
   selectedOfficerId: string | null;
   setSelectedOfficer: Dispatch<SetStateAction<Officer>>;
-  fetchOfficers: () => void;
 };
 
 const ManagementOfficerItem = ({
   officer,
   selectedOfficerId,
   setSelectedOfficer,
-  fetchOfficers,
 }: ManagementOfficerItemProps) => {
   const t_popup = useScopedI18n('popup');
   const t_button = useScopedI18n('button');
   const officersApi = new OfficersApi(false);
   const churchId = useSelector((state: RootState) => state.church.churchId);
   const [thrownError, setThrownError] = useState<Error | null>(null);
+
+  const dispatch = useDispatch<AppDispatch>();
 
   // 렌더링 시점(컴포넌트 return)에서 조건부로 에러 발생
   if (thrownError) {
@@ -71,7 +72,7 @@ const ManagementOfficerItem = ({
 
     try {
       await officersApi.createOfficer({ churchId }, { name: newOfficerName });
-      fetchOfficers();
+      dispatch(fetchOfficers());
       setIsAddShown(false);
       setNewOfficerName(BLANK);
     } catch (error) {
@@ -103,7 +104,7 @@ const ManagementOfficerItem = ({
   const onClickConfirmDelete = async (officerId: string) => {
     try {
       await officersApi.deleteOfficer({ churchId, officerId });
-      fetchOfficers();
+      dispatch(fetchOfficers());
       setSelectedOfficer(DEFAULT_OFFICER);
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));
@@ -138,7 +139,7 @@ const ManagementOfficerItem = ({
         { name: editName }
       );
       setSelectedOfficer(response.data);
-      fetchOfficers();
+      dispatch(fetchOfficers());
       setIsEdit(false);
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));

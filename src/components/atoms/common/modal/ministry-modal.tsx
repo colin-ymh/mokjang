@@ -17,6 +17,7 @@ import MinistryModalView from '@/components/atoms/common/modal/ministry-modal.vi
 import { CUSTOM_VALUE } from '@/components/atoms/common/dropdown/dropdown';
 
 type MinistryGroupModalProps = {
+  targetMemberId: string;
   targetHistory?: MinistryHistory;
   onClickSaveNewMinistry?: (
     ministryGroupId: string,
@@ -32,6 +33,7 @@ type MinistryGroupModalProps = {
 };
 
 const MinistryGroupModal = ({
+  targetMemberId,
   targetHistory,
   onClickSaveNewMinistry,
   onClickSaveMinistryHistory,
@@ -63,6 +65,23 @@ const MinistryGroupModal = ({
 
   // 저장 가능 여부
   const [isButtonEnabled, setIsButtonEnabled] = useState<boolean>(false);
+
+  // 그룹 선택 모달
+  const [isSelectOpened, setIsSelectOpened] = useState<boolean>(false);
+
+  // 그룹 모달 닫기
+  const onClickClose = () => {
+    setIsSelectOpened(false);
+  };
+
+  // 그룹 모달 열기
+  const onClickOpen = () => {
+    setIsSelectOpened(true);
+  };
+
+  useEffect(() => {
+    setIsSelectOpened(false);
+  }, [targetMemberId]);
 
   // 추가할 사역 변경
   const onChangeCustomInput = (event: ChangeEvent<HTMLInputElement>) => {
@@ -130,8 +149,6 @@ const MinistryGroupModal = ({
   }, [selectedMinistryId, newMinistryName, startDate, endDate]);
 
   useEffect(() => {
-    // 목표 이력이 존재 X => 생성
-
     if (targetHistory) {
       // 목표 이력이 존재 O
       // && endDate가 X => 현재 이력 수정
@@ -169,6 +186,11 @@ const MinistryGroupModal = ({
         if (targetStartDate) setStartDate(targetStartDate);
         if (targetEndDate) setEndDate(targetEndDate);
       }
+    } else {
+      setSelectedMinistryId(NONE);
+      setSelectedMinistryGroup(DEFAULT_MINISTRY_GROUP);
+      setStartDate(BLANK);
+      setEndDate(BLANK);
     }
   }, [targetHistory]);
 
@@ -215,6 +237,9 @@ const MinistryGroupModal = ({
     onClickCancelMinistryGroup,
     onChangeCustomInput,
     onClickCreateMinistry,
+    isSelectOpened,
+    onClickOpen,
+    onClickClose,
   };
 
   return (

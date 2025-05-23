@@ -3,7 +3,6 @@ import { RootState } from '@/redux/store';
 
 import {
   BAPTISM,
-  EDUCATION_STATUS,
   FAMILY,
   GENDER,
   MARRIAGE,
@@ -14,6 +13,21 @@ import { MEMBER } from '@/constants/member/member-column';
 
 import { useI18n } from '../../../locales/client';
 import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-item';
+import {
+  VISITATION_METHOD,
+  VISITATION_STATUS,
+} from '@/models/visitation/visitation';
+import { VISITATION } from '@/constants/visitation/visitation-column';
+import { STATUS_COLOR } from '@/constants/styles/color';
+import { TASK } from '@/constants/task/task-column';
+import { TASK_STATUS } from '@/models/task/task';
+import { EDUCATION } from '@/constants/education/education-column';
+import { EDUCATION_TERM } from '@/constants/education/education-term-column';
+import {
+  EDUCATION_ENROLLMENT_STATUS,
+  EDUCATION_SESSION_STATUS,
+  EDUCATION_TERM_STATUS,
+} from '@/models/education/education';
 
 export const useBaptismDropdownItems = () => {
   const t = useI18n();
@@ -74,19 +88,6 @@ export const useMinistryDropdownItems = () => {
   return items;
 };
 
-export const useEducationDropdownItems = () => {
-  const t = useI18n();
-  const educations = useSelector((state: RootState) => state.church.educations);
-
-  const items = educations.map((educations) => {
-    return { value: educations.id, title: educations.name };
-  });
-
-  items.push({ value: NULL, title: t(NULL) });
-
-  return items;
-};
-
 export const useMarriageDropdownItems = () => {
   const t = useI18n();
 
@@ -139,6 +140,66 @@ export const useSearchFilterDropdownItems = () => {
     {
       value: MEMBER.OCCUPATION,
       title: t(MEMBER.OCCUPATION),
+    },
+  ];
+
+  return items;
+};
+
+export const useVisitationSearchFilterDropdownItems = () => {
+  const t = useI18n();
+
+  const items = [
+    {
+      value: VISITATION.TITLE,
+      title: t(VISITATION.TITLE),
+    },
+    {
+      value: VISITATION.INSTRUCTOR,
+      title: t(VISITATION.INSTRUCTOR),
+    },
+  ];
+
+  return items;
+};
+
+export const useTaskSearchFilterDropdownItems = () => {
+  const t = useI18n();
+
+  const items = [
+    {
+      value: TASK.TITLE,
+      title: t(TASK.TITLE),
+    },
+    {
+      value: TASK.IN_CHARGE,
+      title: t(TASK.IN_CHARGE),
+    },
+  ];
+
+  return items;
+};
+
+export const useEducationSearchFilterDropdownItems = () => {
+  const t = useI18n();
+
+  const items = [
+    {
+      value: EDUCATION.NAME,
+      title: t('educationName'),
+    },
+  ];
+
+  return items;
+};
+
+export const useEducationTermSearchFilterDropdownItems = () => {
+  const t = useI18n();
+
+  const items = [
+    {
+      value: EDUCATION_TERM.EDUCATION,
+      title: t('educationName'),
     },
   ];
 
@@ -280,23 +341,223 @@ export const useFamilyRelationDropdownItems = (gender?: GENDER | undefined) => {
   return items;
 };
 
-export const useEducationStatusDropdownItems = () => {
+export const useEducationEnrollmentStatusDropdownItems = () => {
   const t = useI18n();
 
   const items = [
     {
-      value: EDUCATION_STATUS.IN_PROGRESS,
-      title: t(EDUCATION_STATUS.IN_PROGRESS),
+      value: EDUCATION_ENROLLMENT_STATUS.COMPLETED,
+      title: t(EDUCATION_ENROLLMENT_STATUS.COMPLETED),
+      color: STATUS_COLOR.COMPLETED,
     },
     {
-      value: EDUCATION_STATUS.COMPLETED,
-      title: t(EDUCATION_STATUS.COMPLETED),
-    },
-    {
-      value: EDUCATION_STATUS.INCOMPLETE,
-      title: t(EDUCATION_STATUS.INCOMPLETE),
+      value: EDUCATION_ENROLLMENT_STATUS.INCOMPLETE,
+      title: t(EDUCATION_ENROLLMENT_STATUS.INCOMPLETE),
+      color: STATUS_COLOR.INCOMPLETE,
     },
   ];
 
+  return items;
+};
+
+export const useEducationSessionStatusDropdownItems = () => {
+  const t = useI18n();
+
+  const items = [
+    {
+      value: EDUCATION_SESSION_STATUS.IN_PROGRESS,
+      title: t(EDUCATION_SESSION_STATUS.IN_PROGRESS),
+      color: STATUS_COLOR.IN_PROGRESS,
+    },
+    {
+      value: EDUCATION_SESSION_STATUS.DONE,
+      title: t(EDUCATION_SESSION_STATUS.DONE),
+      color: STATUS_COLOR.DONE,
+    },
+    {
+      value: EDUCATION_SESSION_STATUS.PENDING,
+      title: t(EDUCATION_SESSION_STATUS.PENDING),
+      color: STATUS_COLOR.PENDING,
+    },
+  ];
+
+  return items;
+};
+
+export const useVisitationStatusDropdownItems = () => {
+  const t = useI18n();
+
+  const items = [
+    {
+      value: VISITATION_STATUS.RESERVE,
+      title: t(VISITATION_STATUS.RESERVE),
+      color: STATUS_COLOR.RESERVE,
+    },
+    {
+      value: VISITATION_STATUS.DONE,
+      title: t(VISITATION_STATUS.DONE),
+      color: STATUS_COLOR.DONE,
+    },
+    {
+      value: VISITATION_STATUS.PENDING,
+      title: t(VISITATION_STATUS.PENDING),
+      color: STATUS_COLOR.PENDING,
+    },
+  ];
+
+  return items;
+};
+
+export const useVisitationStatusFilterDropdownItems = () => {
+  const t = useI18n();
+
+  const items = [
+    {
+      value: undefined,
+      title: t('placeholder.selectStatus'),
+      color: undefined,
+    },
+    {
+      value: VISITATION_STATUS.RESERVE,
+      title: t(VISITATION_STATUS.RESERVE),
+      color: STATUS_COLOR.RESERVE,
+    },
+    {
+      value: VISITATION_STATUS.DONE,
+      title: t(VISITATION_STATUS.DONE),
+      color: STATUS_COLOR.DONE,
+    },
+    {
+      value: VISITATION_STATUS.PENDING,
+      title: t(VISITATION_STATUS.PENDING),
+      color: STATUS_COLOR.PENDING,
+    },
+  ];
+
+  return items;
+};
+
+export const useTaskStatusDropdownItems = () => {
+  const t = useI18n();
+
+  const items = [
+    {
+      value: TASK_STATUS.RESERVE,
+      title: t(TASK_STATUS.RESERVE),
+      color: STATUS_COLOR.RESERVE,
+    },
+    {
+      value: TASK_STATUS.IN_PROGRESS,
+      title: t(TASK_STATUS.IN_PROGRESS),
+      color: STATUS_COLOR.IN_PROGRESS,
+    },
+    {
+      value: TASK_STATUS.DONE,
+      title: t(TASK_STATUS.DONE),
+      color: STATUS_COLOR.DONE,
+    },
+    {
+      value: TASK_STATUS.PENDING,
+      title: t(TASK_STATUS.PENDING),
+      color: STATUS_COLOR.PENDING,
+    },
+  ];
+
+  return items;
+};
+
+export const useTaskStatusFilterDropdownItems = () => {
+  const t = useI18n();
+
+  const items = [
+    {
+      value: undefined,
+      title: t('placeholder.selectStatus'),
+      color: undefined,
+    },
+    {
+      value: TASK_STATUS.RESERVE,
+      title: t(TASK_STATUS.RESERVE),
+      color: STATUS_COLOR.RESERVE,
+    },
+    {
+      value: TASK_STATUS.IN_PROGRESS,
+      title: t(TASK_STATUS.IN_PROGRESS),
+      color: STATUS_COLOR.IN_PROGRESS,
+    },
+    {
+      value: TASK_STATUS.DONE,
+      title: t(TASK_STATUS.DONE),
+      color: STATUS_COLOR.DONE,
+    },
+    {
+      value: TASK_STATUS.PENDING,
+      title: t(TASK_STATUS.PENDING),
+      color: STATUS_COLOR.PENDING,
+    },
+  ];
+
+  return items;
+};
+
+export const useEducationTermStatusDropdownItems = () => {
+  const t = useI18n();
+
+  const items = [
+    {
+      value: EDUCATION_TERM_STATUS.IN_PROGRESS,
+      title: t(EDUCATION_TERM_STATUS.IN_PROGRESS),
+      color: STATUS_COLOR.IN_PROGRESS,
+    },
+    {
+      value: EDUCATION_TERM_STATUS.DONE,
+      title: t(EDUCATION_TERM_STATUS.DONE),
+      color: STATUS_COLOR.DONE,
+    },
+    {
+      value: EDUCATION_TERM_STATUS.PENDING,
+      title: t(EDUCATION_TERM_STATUS.PENDING),
+      color: STATUS_COLOR.PENDING,
+    },
+  ];
+
+  return items;
+};
+
+export const useVisitationMethodDropdownItems = () => {
+  const t = useI18n();
+
+  const items = [
+    {
+      value: VISITATION_METHOD.IN_PERSON,
+      title: t(VISITATION_METHOD.IN_PERSON),
+    },
+    {
+      value: VISITATION_METHOD.REMOTE,
+      title: t(VISITATION_METHOD.REMOTE),
+    },
+  ];
+
+  return items;
+};
+
+export const useTimeDropdownItems = () => {
+  const items = [];
+
+  for (let totalMinutes = 0; totalMinutes < 24 * 60; totalMinutes += 15) {
+    const hour24 = Math.floor(totalMinutes / 60);
+    const minute = totalMinutes % 60;
+
+    const period = hour24 < 12 ? 'AM' : 'PM';
+    const hour12 = hour24 % 12 === 0 ? 12 : hour24 % 12;
+    const title = `${hour12.toString().padStart(2, '0')}:${minute
+      .toString()
+      .padStart(2, '0')} ${period}`;
+
+    items.push({
+      value: totalMinutes,
+      title,
+    });
+  }
   return items;
 };

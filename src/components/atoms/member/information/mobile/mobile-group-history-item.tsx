@@ -17,7 +17,7 @@ const BackgroundContainer = styled.div<{ $isCurrent?: boolean }>`
   width: 100%;
   padding: 10px 0;
   border-bottom: ${({ $isCurrent }) => ($isCurrent ? '0px' : '1px')} solid
-    ${GRAY.LIGHT};
+    ${GRAY.SEMI_LIGHT};
 `;
 
 const ItemContainer = styled.div`
@@ -32,7 +32,7 @@ const ItemContainer = styled.div`
   //cursor: pointer;
   transition: background-color 0.3s;
   // &:hover {
-  //   background-color: ${GRAY.LIGHT};
+  //   background-color: ${GRAY.SEMI_LIGHT};
   // }
 `;
 

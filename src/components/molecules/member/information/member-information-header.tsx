@@ -1,17 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 import HeaderBarView from '@/components/atoms/layout/header/header-bar.view';
 import { useMemberInformationHeaderBarItems } from '@/hooks/layout/header-bar-items';
-import MemberImageInput from '@/components/atoms/register/member-image-input';
+import ProfileImageInput from '@/components/atoms/common/image/profile-image-input';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { SIZE } from '@/constants/styles/style';
 import { GRAY } from '@/constants/styles/color';
 import { Member } from '@/models/member/member';
-import KebapDropdown from '@/components/atoms/common/dropdown/kebap-dropdown';
-import ConfirmPopup from '@/components/atoms/common/popup/error-popup';
-
-import { useScopedI18n } from '../../../../../locales/client';
 
 const InformationHeader = styled.div`
   display: flex;
@@ -44,35 +40,21 @@ const ChurchMemberInfoContainer = styled.div`
 
 type MemberInformationHeaderProps = {
   targetMember: Member;
-  contentId: string;
+  memberContentId: string;
   onClickItem: (id: string) => void;
-  onClickDelete?: () => void;
 };
 
 const MemberInformationHeader = ({
   targetMember,
-  contentId,
+  memberContentId,
   onClickItem,
-  onClickDelete,
 }: MemberInformationHeaderProps) => {
-  const t_button = useScopedI18n('button');
-  const t_popup = useScopedI18n('popup');
   const headerBarItems = useMemberInformationHeaderBarItems();
-
-  const [isPopupShown, setIsPopupShown] = useState<boolean>(false);
-
-  const onClickOpen = () => {
-    setIsPopupShown(true);
-  };
-
-  const onClickClose = () => {
-    setIsPopupShown(false);
-  };
 
   return (
     <InformationHeader>
       <Information>
-        <MemberImageInput
+        <ProfileImageInput
           memberId={targetMember.id}
           value={targetMember?.profileImage}
           onChange={() => {}}
@@ -96,31 +78,11 @@ const MemberInformationHeader = ({
             </MainText>
           </ChurchMemberInfoContainer>
         </TextContainer>
-
-        <KebapDropdown
-          buttonSize={30}
-          top={0}
-          right={-10}
-          onClickDelete={onClickOpen}
-        />
-
-        {onClickDelete && (
-          <ConfirmPopup
-            title={t_popup('deleteMemberTitle')}
-            body={t_popup('deleteMemberBody')}
-            buttonNum={2}
-            isShow={isPopupShown}
-            onClickLeftButton={onClickClose}
-            onClickRightButton={onClickDelete}
-            leftButtonText={t_button('cancel')}
-            rightButtonText={t_button('delete')}
-          />
-        )}
       </Information>
 
       {/* 개인정보, 가족 등의 탭 바*/}
       <HeaderBarView
-        value={contentId}
+        value={memberContentId}
         items={headerBarItems}
         onClick={onClickItem}
       />

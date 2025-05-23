@@ -5,14 +5,12 @@ import OfficerListView from '@/components/molecules/management/officer/officer-l
 
 type OfficerListProps = {
   officers: Officer[];
-  fetchOfficers: () => void;
   selectedOfficerId: string | null;
   setSelectedOfficer: Dispatch<SetStateAction<Officer>>;
 };
 
 const OfficerList = ({
   officers,
-  fetchOfficers,
   selectedOfficerId,
   setSelectedOfficer,
 }: OfficerListProps) => {
@@ -20,7 +18,6 @@ const OfficerList = ({
     officers,
     selectedOfficerId,
     setSelectedOfficer,
-    fetchOfficers,
   };
   return (
     <>

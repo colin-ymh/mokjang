@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '@/redux/store';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
 
 import { MINISTRY_MANAGEMENT_HEADER_ID } from '@/constants/layout/header';
 import { useMinistryManagementHeaderBarItems } from '@/hooks/layout/header-bar-items';
@@ -9,24 +9,13 @@ import {
   MinistryGroup,
 } from '@/models/management/management';
 import MinistryManagementView from '@/components/organisms/management/ministry/ministry-group-management.view';
-import { MinistryGroupsApi } from '@/api/management/ministry/ministry-groups.api';
-import { setMinistryGroups } from '@/redux/reducers/church-reducer';
 
 type MinistryManagementProps = {};
 
 const MinistryGroupManagement = ({}: MinistryManagementProps) => {
-  const dispatch = useDispatch<AppDispatch>();
-  const ministryGroupsApi = new MinistryGroupsApi(false);
-  const { churchId, ministryGroups } = useSelector(
-    (state: RootState) => state.church
-  );
+  const { ministryGroups } = useSelector((state: RootState) => state.church);
   // 그룹 설정 탭 헤더
   const headerBarItems = useMinistryManagementHeaderBarItems();
-
-  const [thrownError, setThrownError] = useState<Error | null>(null);
-  if (thrownError) {
-    throw thrownError;
-  }
 
   // 선택된 그룹
   const [selectedMinistryGroup, setSelectedMinistryGroup] =
@@ -42,24 +31,6 @@ const MinistryGroupManagement = ({}: MinistryManagementProps) => {
     setHeaderBarId(id);
   };
 
-  // 서버에서 사역 그룹을 불러오기
-  const fetchMinistryGroups = async () => {
-    try {
-      await ministryGroupsApi
-        .getMinistryGroups({ churchId })
-        .then((response) => {
-          dispatch(setMinistryGroups(response.data));
-        });
-    } catch (error) {
-      setThrownError(error instanceof Error ? error : new Error(String(error)));
-    }
-  };
-
-  // 초기 사역 그룹을 불러옴
-  useEffect(() => {
-    fetchMinistryGroups();
-  }, []);
-
   // 변화가 발생하면, 사역 그룹을 리렌더링 => 이후 선택된 사역 그룹을 업데이트
   useEffect(() => {
     if (ministryGroups) {
@@ -74,12 +45,10 @@ const MinistryGroupManagement = ({}: MinistryManagementProps) => {
   }, [ministryGroups]);
 
   const props = {
-    ministryGroups,
     selectedMinistryGroup,
     setSelectedMinistryGroup,
     headerBarId,
     headerBarItems,
-    fetchMinistryGroups,
     onClickHeaderBar,
   };
 

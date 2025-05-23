@@ -16,6 +16,7 @@ import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-i
 import { GroupRolesApi } from '@/api/management/group/group-roles.api';
 
 type GroupModalProps = {
+  targetMemberId: string;
   targetHistory?: GroupHistory;
   onClickSaveNewGroup?: (
     groupId: string,
@@ -26,31 +27,49 @@ type GroupModalProps = {
 };
 
 const GroupModal = ({
+  targetMemberId,
   targetHistory,
   onClickSaveNewGroup,
   onClickSaveGroupHistory,
 }: GroupModalProps) => {
   const groupRolesApi = new GroupRolesApi(false);
   const { groups, churchId } = useSelector((state: RootState) => state.church);
-  // 선택된 사역 그룹
+  // 선택된 그룹
   const [selectedGroup, setSelectedGroup] = useState<Group>(DEFAULT_GROUP);
 
   // 역할 목록
   const [roleItems, setRoleItems] = useState<DropdownValueType[]>([]);
 
-  // 선택된 사역 역할
+  // 선택된 그룹 역할
   const [selectedRoleId, setSelectedRoleId] = useState<string>(NONE);
 
-  // 사역 시작 날짜
+  // 그룹 시작 날짜
   const [startDate, setStartDate] = useState<string>(BLANK);
 
-  // 사역 종료 날짜
+  // 그룹 종료 날짜
   const [endDate, setEndDate] = useState<string>(BLANK);
 
   // 저장 가능 여부
   const [isButtonEnabled, setIsButtonEnabled] = useState<boolean>(false);
 
-  // 사역 그룹 설정 완료 버튼
+  // 그룹 선택 모달
+  const [isSelectOpened, setIsSelectOpened] = useState<boolean>(false);
+
+  // 그룹 모달 닫기
+  const onClickClose = () => {
+    setIsSelectOpened(false);
+  };
+
+  // 그룹 모달 열기
+  const onClickOpen = () => {
+    setIsSelectOpened(true);
+  };
+
+  useEffect(() => {
+    setIsSelectOpened(false);
+  }, [targetMemberId]);
+
+  // 그룹 그룹 설정 완료 버튼
   const onChangeGroup = (group: Group) => {
     setSelectedGroup(group);
   };
@@ -59,7 +78,7 @@ const GroupModal = ({
     setSelectedGroup(DEFAULT_GROUP);
   };
 
-  // 사역 드롭다운 설정 완료 버튼
+  // 그룹 드롭다운 설정 완료 버튼
   const onChangeRoleId = (id: string) => {
     if (id) {
       setSelectedRoleId(id);
@@ -102,8 +121,6 @@ const GroupModal = ({
   }, [startDate, endDate]);
 
   useEffect(() => {
-    // 목표 이력이 존재 X => 생성
-
     if (targetHistory) {
       // 목표 이력이 존재 O
       // && endDate가 X => 현재 이력 수정
@@ -135,6 +152,14 @@ const GroupModal = ({
         if (targetEndDate) setEndDate(targetEndDate);
       }
     }
+
+    // 목표 이력이 존재 X
+    else {
+      setSelectedGroup(DEFAULT_GROUP);
+      setSelectedRoleId(NONE);
+      setStartDate(BLANK);
+      setEndDate(BLANK);
+    }
   }, [targetHistory]);
 
   // 그룹 변경 시, 역할 드롭다운 내용 변경
@@ -143,7 +168,7 @@ const GroupModal = ({
       groupRolesApi
         .getGroupRoles({ churchId, groupId: selectedGroup.id })
         .then((response) => {
-          const newRoles: GroupRole[] = response.data;
+          const newRoles: GroupRole[] = response.data.data;
           const newRoleItems = newRoles.map((role) => {
             return { value: role.id, title: role.role };
           });
@@ -172,6 +197,9 @@ const GroupModal = ({
     onClickSaveNewGroup,
     onClickSaveGroupHistory,
     onClickCancelGroup,
+    isSelectOpened,
+    onClickOpen,
+    onClickClose,
   };
 
   return (

@@ -92,7 +92,7 @@ export const INITIAL_TABLE_HEADER_LIST: TABLE_HEADER_ITEM[] = [
   {
     id: MEMBER.CHECK,
     isShown: true,
-    isSortable: true,
+    isSortable: false,
     isFilterable: false,
     isFixed: true,
     isDate: false,

@@ -9,17 +9,28 @@ import LabelDropdown from '@/components/atoms/common/dropdown/label-dropdown';
 import { GroupHistory } from '@/models/member/history';
 import { Group } from '@/models/management/management';
 import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-item';
-import GroupDropdown from '@/components/atoms/common/dropdown/group-dropdown';
 
 import { useI18n } from '../../../../../locales/client';
 import Cancel from '../../../../../public/svg/cancel.svg';
+import { MainText } from '@/components/atoms/common/text/main-text';
+import SelectGroup from '@/components/molecules/member/information/select-group';
 
 const GroupModalViewContainer = styled.div`
   display: flex;
+  height: 100%;
+`;
+
+const ModalContainer = styled.div<{ $isShown: boolean }>`
+  display: ${({ $isShown }) => ($isShown ? 'flex' : 'none')};
   flex-direction: column;
   justify-content: space-between;
   width: 100%;
   height: 100%;
+`;
+
+const SelectContainer = styled.div<{ $isShown: boolean }>`
+  display: ${({ $isShown }) => ($isShown ? 'flex' : 'none')};
+  width: 100%;
 `;
 
 const ContentContainer = styled.div`
@@ -34,6 +45,26 @@ const GroupContainer = styled.div`
   flex-direction: row;
   align-items: flex-end;
   gap: 10px;
+`;
+
+const SelectedGroupContainer = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 10px;
+  position: relative;
+`;
+
+const GroupButton = styled.div`
+  display: flex;
+  cursor: pointer;
+  padding-left: 10px;
+  height: 40px;
+  align-items: center;
+  justify-content: flex-start;
+  border-radius: 5px;
+  border: 1px solid ${GRAY.DEFAULT};
 `;
 
 const CancelButton = styled(Cancel)`
@@ -69,6 +100,9 @@ type GroupModalViewProps = {
   onClickCancelGroup?: () => void;
   onChangeRoleId: (id: string) => void;
   onChangeGroup: (group: Group) => void;
+  isSelectOpened: boolean;
+  onClickOpen: () => void;
+  onClickClose: () => void;
 };
 
 const GroupModalView = ({
@@ -86,75 +120,92 @@ const GroupModalView = ({
   onClickSaveNewGroup,
   onClickSaveGroupHistory,
   onClickCancelGroup,
+  isSelectOpened,
+  onClickOpen,
+  onClickClose,
 }: GroupModalViewProps) => {
   const t = useI18n();
 
   return (
     <GroupModalViewContainer>
-      {/* 내용 */}
-      <ContentContainer>
-        {!targetHistory?.endDate && (
-          <GroupContainer>
-            {/* 그룹 */}
-            <GroupDropdown
-              value={selectedGroup.id as string}
-              onClickSaveGroup={onChangeGroup}
-            />
-            <Button width={42} height={42} onClick={onClickCancelGroup}>
-              <CancelButton />
-            </Button>
-          </GroupContainer>
-        )}
-        {/* 역할 */}
-        {roleItems.length > 0 &&
-          selectedGroup.id &&
-          !targetHistory?.endDate && (
-            <LabelDropdown
-              label={t('groupRole')}
-              value={selectedRoleId}
-              items={roleItems}
-              onChangeItem={onChangeRoleId}
+      <ModalContainer $isShown={!isSelectOpened}>
+        {/* 내용 */}
+        <ContentContainer>
+          {!targetHistory?.endDate && (
+            <GroupContainer>
+              {/* 그룹 */}
+              <SelectedGroupContainer>
+                <MainText>{t('group')}</MainText>
+                {/* 현재 상태값 & 버튼 */}
+                <GroupButton onClick={onClickOpen}>
+                  <MainText>{selectedGroup.name}</MainText>
+                </GroupButton>
+              </SelectedGroupContainer>
+              <Button width={42} height={42} onClick={onClickCancelGroup}>
+                <CancelButton />
+              </Button>
+            </GroupContainer>
+          )}
+
+          {/* 역할 */}
+          {roleItems.length > 0 &&
+            selectedGroup.id &&
+            !targetHistory?.endDate && (
+              <LabelDropdown
+                label={t('groupRole')}
+                value={selectedRoleId}
+                items={roleItems}
+                onChangeItem={onChangeRoleId}
+              />
+            )}
+          {/* 시작 날짜 */}
+          <LabelInput
+            label={t('startDate')}
+            value={startDate}
+            onChange={onChangeStartDate}
+            placeholder={t('placeholder.startDate')}
+          />
+          {/* 종료 날짜 */}
+          {targetHistory?.endDate && (
+            <LabelInput
+              label={t('endDate')}
+              value={endDate}
+              onChange={onChangeEndDate}
+              placeholder={t('placeholder.endDate')}
             />
           )}
-        {/* 시작 날짜 */}
-        <LabelInput
-          label={t('startDate')}
-          value={startDate}
-          onChange={onChangeStartDate}
-          placeholder={t('placeholder.startDate')}
-        />
-        {/* 종료 날짜 */}
-        {targetHistory?.endDate && (
-          <LabelInput
-            label={t('endDate')}
-            value={endDate}
-            onChange={onChangeEndDate}
-            placeholder={t('placeholder.endDate')}
+        </ContentContainer>
+        {/* 버튼 */}
+        <ButtonContainer>
+          <Button
+            text={t('button.save')}
+            disabled={!isButtonEnabled}
+            backgroundColor={isButtonEnabled ? MAIN.DEFAULT : GRAY.SEMI_LIGHT}
+            height={30}
+            onClick={() => {
+              if (targetHistory?.endDate) {
+                onClickSaveGroupHistory &&
+                  onClickSaveGroupHistory(startDate, endDate);
+              } else {
+                onClickSaveNewGroup &&
+                  onClickSaveNewGroup(
+                    selectedGroup.id as string,
+                    selectedRoleId,
+                    startDate
+                  );
+              }
+            }}
           />
-        )}
-      </ContentContainer>
-      {/* 버튼 */}
-      <ButtonContainer>
-        <Button
-          text={t('button.save')}
-          disabled={!isButtonEnabled}
-          backgroundColor={isButtonEnabled ? MAIN.DEFAULT : GRAY.LIGHT}
-          height={30}
-          onClick={() => {
-            if (targetHistory?.endDate) {
-              onClickSaveGroupHistory &&
-                onClickSaveGroupHistory(startDate, endDate);
-            } else {
-              onClickSaveNewGroup &&
-                onClickSaveNewGroup(
-                  selectedGroup.id as string,
-                  selectedRoleId,
-                  startDate
-                );
-            }
-          }}
+        </ButtonContainer>
+      </ModalContainer>
+      {/* 그룹 선택 모달 */}
+      <SelectContainer $isShown={isSelectOpened}>
+        <SelectGroup
+          value={selectedGroup.id}
+          onClickSave={onChangeGroup}
+          onClickClose={onClickClose}
         />
-      </ButtonContainer>
+      </SelectContainer>
     </GroupModalViewContainer>
   );
 };

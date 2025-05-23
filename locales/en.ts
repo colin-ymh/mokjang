@@ -5,13 +5,44 @@ export default {
   search: 'Search',
   after: 'From',
   before: 'To',
-  management: 'Management',
   all: 'All',
   period: 'Period',
   total: 'Total',
   history: 'History',
   isDone: 'Completed',
   isNotDone: 'Incomplete',
+
+  inCharge: 'In Charge',
+  taskStatus: 'Status',
+  taskDate: 'Task Date',
+  comment: 'Comment',
+
+  title: 'title',
+
+  educationEnrollment: 'Enrollment',
+
+  method: 'Method',
+
+  visitedMember: 'target',
+  receiver: 'Receiver',
+
+  visitationContent: 'Content',
+  visitationPray: 'Pray',
+  visitationTitle: 'Title',
+  visitationDate: 'Visit Date',
+  visitationStatus: 'Status',
+  visitationMethod: 'Method',
+  visitationType: 'Type',
+  instructorId: 'Instructor',
+  fromVisitationDate: 'Visited After',
+  toVisitationDate: 'Visited Before',
+
+  inPerson: 'In Person',
+  remote: 'Remote',
+
+  reserve: 'Reserved',
+  done: 'Done',
+  pending: 'Pending',
 
   people: 'People',
 
@@ -36,6 +67,7 @@ export default {
   educationList: 'Education List',
   educationName: 'Education Name',
   educationStatus: 'Status',
+  educationDescription: 'Description',
   educationInformation: 'Education Information',
   educationProcess: 'Current Process',
   status: 'Status',
@@ -132,9 +164,34 @@ export default {
   granddaughter: 'Granddaughter',
   relative: 'Relative',
 
+  /*-------------------title (popup title)-------------------*/
+  'title.memberRegister': 'Member Register',
+
+  'title.addVisitation': 'Add Visitation',
+  'title.editVisitation': 'Edit Visitation',
+
+  'title.addTask': 'Add Task',
+  'title.editTask': 'Edit Task',
+
+  'title.addEducation': 'Add Education',
+  'title.editEducation': 'Edit Education',
+
+  'title.addEducationTerm': 'Add Education Term',
+  'title.editEducationTerm': 'Edit Education Term',
+  /*-------------------title (popup title)-------------------*/
+
   /*-------------------header (side bar button)-------------------*/
   'header.home': 'Home',
-  'header.member': 'Membership',
+  'header.member': 'Member',
+  'header.visitation': 'Visitation',
+  'header.education': 'Education',
+  'header.task': 'Task',
+  'header.calendar': 'Calendar',
+
+  'header.church': 'Church',
+  'header.administrator': 'Administrator',
+  'header.setting': 'Setting',
+  'header.add': 'Add',
 
   'header.memberInformation': 'Member Information',
   'header.personalInformation': 'Personal Information',
@@ -145,9 +202,25 @@ export default {
   /*-------------------header (side bar button)-------------------*/
 
   /*-------------------member content (member header bar button)-------------------*/
-  'member-content.memberList': 'All',
-  'member-content.administratorList': 'Administrators',
-  'member-content.newMemberList': 'New Members',
+  'member-content.all': 'All',
+  'member-content.administrator': 'Administrator',
+  'member-content.new': 'New',
+
+  'church-content.group': 'Group',
+  'church-content.ministry': 'Ministry',
+  'church-content.officer': 'Officer',
+
+  'administrator-content.setting': 'Setting',
+  'administrator-content.add': 'Add',
+
+  'visitation-content.all': 'All',
+  'visitation-content.my': 'My',
+
+  'task-content.all': 'All',
+  'task-content.my': 'My',
+
+  'education-content.all': 'All',
+  'education-content.inProgress': 'In Progress',
   /*-------------------member content (member header bar button)-------------------*/
 
   /*-------------------table header -------------------*/
@@ -156,7 +229,6 @@ export default {
   'tableHeader.period': 'Period',
   'tableHeader.educationEnrollments': 'Number of Enrollments',
   'tableHeader.instructor': 'Instructor',
-  'tableHeader.numberOfSession': 'Progress',
 
   'tableHeader.memberName': 'Name',
   'tableHeader.group': 'Group',
@@ -187,6 +259,7 @@ export default {
 
   /*-------------------button-------------------*/
   'button.register': 'Register',
+  'button.memberRegister': 'Member Register',
   'button.save': 'Save',
   'button.edit': 'Edit',
   'button.delete': 'Delete',
@@ -206,7 +279,13 @@ export default {
   'button.logOut': 'Log Out',
   'button.saveTerm': 'Save New Term',
   'button.addMember': 'Add Member',
-
+  'button.addVisitation': 'Add Visitation',
+  'button.addEducation': 'Add Education',
+  'button.addEducationTerm': 'Add Education Term',
+  'button.addTask': 'Add Task',
+  'button.filterVisitationDate': 'Date',
+  'button.filterTaskDate': 'Date',
+  'button.setting': 'setting',
   /*-------------------button-------------------*/
 
   /*-------------------placeholder-------------------*/
@@ -216,6 +295,7 @@ export default {
   'placeholder.ministryName': 'Enter the ministry name.',
   'placeholder.officerName': 'Enter the officer name.',
   'placeholder.educationName': 'Enter the education name.',
+  'placeholder.educationDescription': 'Enter the education description.',
   'placeholder.mobilePhone': 'Enter the mobile phone number.',
   'placeholder.birth': 'Enter the date of birth (e.g., YYYY.MM.DD).',
   'placeholder.homePhone': 'Enter the home phone number.',
@@ -235,12 +315,17 @@ export default {
   'placeholder.family': 'Enter the family name.',
   'placeholder.startDate': 'Enter the start date  (e.g., YYYY.MM.DD).',
   'placeholder.endDate': 'Enter the end date (e.g., YYYY.MM.DD).',
-  'placeholder.term': 'Enter the term.',
-  'placeholder.session': 'Enter the total sessions.',
+  'placeholder.term': 'Enter the term number.',
+  'placeholder.session': 'Enter the session number.',
   'placeholder.instructor': 'Enter the instructor.',
   'placeholder.sessionDate': 'Enter the session date (e.g., YYYY.MM.DD).',
   'placeholder.sessionContent': 'Enter the session report.',
   'placeholder.search': 'Enter the search term.',
+  'placeholder.title': 'Enter the title.',
+  'placeholder.visitationContent': 'Enter the content.',
+  'placeholder.visitationPray': 'Enter the pray.',
+  'placeholder.comment': 'Enter the comment.',
+  'placeholder.selectStatus': 'Select the status',
   /*-------------------placeholder-------------------*/
 
   /*-------------------radiobutton-------------------*/
@@ -266,6 +351,10 @@ export default {
   'popup.deleteEducationTitle': 'Do you want to delete this education?',
   'popup.deleteEducationBody': 'Deleted education cannot be restored.',
 
+  'popup.deleteEducationTermTitle':
+    'Do you want to delete this education term?',
+  'popup.deleteEducationTermBody': 'Deleted education term cannot be restored.',
+
   'popup.deleteMinistryGroupTitle':
     'Do you want to delete this ministry group?',
   'popup.deleteMinistryGroupBody': 'Deleted ministry group cannot be restored.',
@@ -287,5 +376,11 @@ export default {
   'popup.verifyFail': "You've entered wrong number.",
   'popup.duplicatedRole': 'That role is already duplicated.',
   'popup.duplicatedMinistry': 'That ministry is already duplicated.',
+
+  'popup.deleteVisitationTitle': 'Do you want to delete this visitation?',
+  'popup.deleteVisitationBody': 'Deleted visitation cannot be restored.',
+
+  'popup.deleteTaskTitle': 'Do you want to delete this task?',
+  'popup.deleteTaskBody': 'Deleted task cannot be restored.',
   /*-------------------popup-------------------*/
 } as const;

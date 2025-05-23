@@ -10,7 +10,6 @@ export default function Error({
   error: Error;
   reset: () => void;
 }) {
-  // const router = usePageRouter();
   const [isShown, setIsShown] = useState<boolean>(false);
 
   useEffect(() => {

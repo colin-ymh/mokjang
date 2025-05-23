@@ -1,10 +1,10 @@
-import { BLANK, EDUCATION_STATUS } from '@/constants/constant';
+import { BLANK } from '@/constants/constant';
+import { DEFAULT_OFFICER, Officer } from '@/models/management/management';
 import {
   DEFAULT_EDUCATION_TERM,
-  DEFAULT_OFFICER,
+  EDUCATION_ENROLLMENT_STATUS,
   EducationTerm,
-  Officer,
-} from '@/models/management/management';
+} from '@/models/education/education';
 
 export type GroupHistory = {
   id: string;
@@ -33,7 +33,7 @@ export type EducationHistory = {
   memberId: string;
   memberName: string;
   note: string;
-  status: EDUCATION_STATUS;
+  status: EDUCATION_ENROLLMENT_STATUS;
 };
 
 export const DEFAULT_EDUCATION_HISTORY: EducationHistory = {
@@ -43,7 +43,7 @@ export const DEFAULT_EDUCATION_HISTORY: EducationHistory = {
   memberId: BLANK,
   memberName: BLANK,
   note: BLANK,
-  status: EDUCATION_STATUS.IN_PROGRESS,
+  status: EDUCATION_ENROLLMENT_STATUS.INCOMPLETE,
 };
 
 export type MinistryHistory = {

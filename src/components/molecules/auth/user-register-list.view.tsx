@@ -68,7 +68,7 @@ const CheckButton = styled(Check)<{ $isChecked: boolean }>`
   height: 25px;
   stroke-width: 3px;
   transition: stroke 0.2s ease-in-out;
-  stroke: ${({ $isChecked }) => ($isChecked ? MAIN.DEFAULT : GRAY.LIGHT)};
+  stroke: ${({ $isChecked }) => ($isChecked ? MAIN.DEFAULT : GRAY.SEMI_LIGHT)};
 `;
 
 const ButtonContainer = styled.div`
@@ -144,7 +144,7 @@ const UserRegisterListView = ({
               getIsWellFormedName(name) &&
               getIsWellFormedMobilePhone(mobilePhone)
                 ? MAIN.DEFAULT
-                : GRAY.LIGHT
+                : GRAY.SEMI_LIGHT
             }
             disabled={
               !(
@@ -170,7 +170,7 @@ const UserRegisterListView = ({
             backgroundColor={
               !isVerified && isRequested && verifyNumber.length === 6
                 ? MAIN.DEFAULT
-                : GRAY.LIGHT
+                : GRAY.SEMI_LIGHT
             }
             disabled={
               !(!isVerified && isRequested && verifyNumber.length === 6)
@@ -192,7 +192,9 @@ const UserRegisterListView = ({
         <Button
           text={t_button('signIn')}
           height={40}
-          backgroundColor={isVerified && isConsent ? MAIN.DEFAULT : GRAY.LIGHT}
+          backgroundColor={
+            isVerified && isConsent ? MAIN.DEFAULT : GRAY.SEMI_LIGHT
+          }
           disabled={!(isVerified && isConsent)}
           onClick={onClickDone}
         />

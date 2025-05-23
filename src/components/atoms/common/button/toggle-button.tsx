@@ -6,7 +6,8 @@ const ToggleContainer = styled.div<{ $value: boolean }>`
   position: relative;
   width: 40px;
   height: 22px;
-  background-color: ${({ $value }) => ($value ? MAIN.DEFAULT : GRAY.LIGHT)};
+  background-color: ${({ $value }) =>
+    $value ? MAIN.DEFAULT : GRAY.SEMI_LIGHT};
   border-radius: 11px;
   cursor: pointer;
   transition: background-color 0.5s ease;

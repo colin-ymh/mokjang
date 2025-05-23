@@ -32,7 +32,7 @@ const SettingHeader = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  border-bottom: 1px solid ${GRAY.LIGHT};
+  border-bottom: 1px solid ${GRAY.DEFAULT};
 `;
 
 const TitleContainer = styled.div`
@@ -59,7 +59,7 @@ const OrderItemList = styled.div`
 const DivideLine = styled.div`
   height: 100%;
   width: 1px;
-  background-color: ${GRAY.LIGHT};
+  background-color: ${GRAY.DEFAULT};
 `;
 
 const ButtonContainer = styled.div`
@@ -172,7 +172,7 @@ const TableSettingView = ({
           <Dropdown
             value={filterValue}
             items={filterDropdownItems}
-            borderColor={GRAY.LIGHT}
+            borderColor={GRAY.DEFAULT}
             onChangeItem={onChangeFilter}
           />
           <FilterContainer>

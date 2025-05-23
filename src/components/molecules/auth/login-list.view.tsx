@@ -39,7 +39,7 @@ const OAuthItem = styled.div`
   cursor: pointer;
   display: flex;
   border-radius: 5px;
-  border: 1px solid ${GRAY.LIGHT};
+  border: 1px solid ${GRAY.SEMI_LIGHT};
   height: 40px;
   width: 100%;
   justify-content: center;

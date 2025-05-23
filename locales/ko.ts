@@ -5,13 +5,45 @@ export default {
   search: '검색',
   after: '부터',
   before: '까지',
-  management: '교회 관리',
   all: '전체',
   period: '기간',
   total: '총',
   history: '이력',
   isDone: '완료',
   isNotDone: '미완료',
+
+  title: '제목',
+
+  educationEnrollment: '수강 교인',
+
+  inCharge: '담당자',
+  taskStatus: '상태',
+  taskDate: '업무일자',
+  comment: '내용',
+  content: '내용',
+
+  visitedMember: '대상자',
+  receiver: '보고대상자',
+
+  visitationContent: '심방내용',
+  visitationPray: '기도제목',
+  visitationTitle: '제목',
+  visitationDate: '심방일자',
+  visitationMethod: '심방방식',
+  visitationStatus: '상태',
+  visitationType: '심방 종류',
+  instructorId: '담당자',
+  fromVisitationDate: '심방 날짜 ~부터',
+  toVisitationDate: '심방 날짜 ~까지',
+
+  method: '방식',
+
+  inPerson: '대면',
+  remote: '비대면',
+
+  reserve: '예약',
+  done: '완료',
+  pending: '지연',
 
   people: '인원',
 
@@ -38,12 +70,13 @@ export default {
 
   educationList: '교육 목록',
   educationName: '교육명',
+  educationDescription: '내용',
   educationStatus: '상태',
   educationInformation: '교육 정보',
   educationProcess: '진행사항',
   educationDate: '교육 일시',
   sessionContent: '교육 내용',
-  status: '수료',
+  status: '상태',
   isSessionDone: '교육 완료',
 
   officerList: '직분 목록',
@@ -135,9 +168,37 @@ export default {
   granddaughter: '손녀',
   relative: '친인척',
 
+  /*-------------------title (popup title)-------------------*/
+  'title.memberRegister': '교인 등록',
+
+  'title.addVisitation': '심방 추가',
+  'title.editVisitation': '심방 수정',
+
+  'title.addTask': '업무 추가',
+  'title.editTask': '업무 수정',
+
+  'title.addEducation': '교육 추가',
+  'title.editEducation': '교육 수정',
+
+  'title.addEducationTerm': '기수 추가',
+  'title.editEducationTerm': '기수 수정',
+
+  'title.addEducationSession': '회차 추가',
+  'title.editEducationSession': '회차 수정',
+  /*-------------------title (popup title)-------------------*/
+
   /*-------------------header (side bar button)-------------------*/
   'header.home': '홈',
-  'header.member': '교인 관리',
+  'header.member': '교인목록',
+  'header.visitation': '심방',
+  'header.education': '교육',
+  'header.task': '업무',
+  'header.calendar': '일정표',
+
+  'header.church': '교회설정',
+  'header.administrator': '관리자',
+  'header.setting': '설정',
+  'header.add': '추가',
 
   'header.memberInformation': '교인 정보',
   'header.personalInformation': '개인 정보',
@@ -150,11 +211,28 @@ export default {
   'header.ministryGroupMembers': '그룹원',
   /*-------------------header (side bar button)-------------------*/
 
-  /*-------------------member content (member header bar button)-------------------*/
-  'member-content.memberList': '전체',
-  'member-content.administratorList': '관리자',
-  'member-content.newMemberList': '새신자',
-  /*-------------------member content (member header bar button)-------------------*/
+  /*-------------------content (header bar button)-------------------*/
+  'member-content.all': '전체',
+  'member-content.administrator': '관리자',
+  'member-content.new': '새신자',
+
+  'church-content.group': '그룹',
+  'church-content.ministry': '사역',
+  'church-content.officer': '직분',
+
+  'administrator-content.setting': '관리자 설정',
+  'administrator-content.add': '관리자 추가',
+
+  'visitation-content.all': '전체',
+  'visitation-content.my': '내 심방',
+
+  'task-content.all': '전체',
+  'task-content.my': '내 업무',
+
+  'education-content.all': '전체',
+  'education-content.inProgress': '진행중',
+
+  /*-------------------content (header bar button)-------------------*/
 
   /*-------------------table header -------------------*/
   'tableHeader.term': '기수',
@@ -162,7 +240,6 @@ export default {
   'tableHeader.period': '기간',
   'tableHeader.educationEnrollments': '교육인원',
   'tableHeader.instructor': '진행자',
-  'tableHeader.numberOfSession': '진행 상태',
 
   'tableHeader.memberName': '교인명',
   'tableHeader.group': '그룹',
@@ -193,8 +270,9 @@ export default {
 
   /*-------------------button-------------------*/
   'button.register': '등록하기',
-  'button.save': '저장하기',
-  'button.edit': '수정하기',
+  'button.memberRegister': '등록하기',
+  'button.save': '저장',
+  'button.edit': '수정',
   'button.delete': '삭제하기',
   'button.stop': '종료하기',
   'button.fetchFamily': '가족 불러오기',
@@ -212,7 +290,13 @@ export default {
   'button.logOut': '로그아웃',
   'button.addMember': '교인 추가',
   'button.saveTerm': '기수 추가하기',
-
+  'button.addVisitation': '심방 입력하기',
+  'button.addTask': '업무 입력하기',
+  'button.addEducation': '교육 추가하기',
+  'button.addEducationTerm': '기수 추가하기',
+  'button.filterVisitationDate': '기간',
+  'button.filterTaskDate': '기간',
+  'button.setting': '설정',
   /*-------------------button-------------------*/
 
   /*-------------------placeholder-------------------*/
@@ -222,6 +306,7 @@ export default {
   'placeholder.ministryName': '사역명을 입력해주세요.',
   'placeholder.officerName': '직분명을 입력해주세요.',
   'placeholder.educationName': '교육명을 입력해주세요.',
+  'placeholder.educationDescription': '내용을 입력해주세요.',
   'placeholder.mobilePhone': '휴대전화 번호를 입력해주세요.',
   'placeholder.birth': '생년월일을 입력해주세요. (yyyy-mm-dd)',
   'placeholder.homePhone': '집 전화번호를 입력해주세요.',
@@ -241,11 +326,18 @@ export default {
   'placeholder.startDate': '시작날짜를 입력해주세요. (yyyy-mm-dd) ',
   'placeholder.endDate': '종료날짜를 입력해주세요. (yyyy-mm-dd) ',
   'placeholder.term': '기수를 입력해주세요.',
-  'placeholder.session': '총 회차를 입력해주세요.',
+  'placeholder.session': '회차를 입력해주세요.',
   'placeholder.instructor': '진행자를 선택해주세요.',
   'placeholder.sessionDate': '교육 일시를 입력해주세요. (yyyy-mm-dd) ',
   'placeholder.sessionContent': '교육 내용를 입력해주세요.',
   'placeholder.search': '검색어를 입력해주세요.',
+  'placeholder.title': '제목을 입력해주세요.',
+  'placeholder.visitationContent': '심방 내용을 입력해주세요.',
+  'placeholder.visitationPray': '기도 제목을 입력해주세요.',
+  'placeholder.comment': '업무 내용을 입력해주세요.',
+  'placeholder.content': '내용을 입력해주세요.',
+  'placeholder.selectStatus': '진행 상태 선택',
+
   /*-------------------placeholder-------------------*/
 
   /*-------------------radiobutton-------------------*/
@@ -266,6 +358,12 @@ export default {
 
   'popup.deleteEducationTitle': '해당 교육을 삭제하시겠습니까?',
   'popup.deleteEducationBody': '삭제된 교육은 복구할 수 없습니다.',
+
+  'popup.deleteEducationTermTitle': '해당 기수를 삭제하시겠습니까?',
+  'popup.deleteEducationTermBody': '삭제된 기수는 복구할 수 없습니다.',
+
+  'popup.deleteEducationSessionTitle': '해당 회차를 삭제하시겠습니까?',
+  'popup.deleteEducationSessionBody': '삭제된 회차는 복구할 수 없습니다.',
 
   'popup.deleteOfficerTitle': '해당 직분을 삭제하시겠습니까?',
   'popup.deleteOfficerBody': '삭제된 직분은 복구할 수 없습니다.',
@@ -290,5 +388,11 @@ export default {
   'popup.verifyFail': '잘못된 인증번호 입니다.',
   'popup.duplicatedRole': '이미 등록된 그룹 역할입니다.',
   'popup.duplicatedMinistry': '이미 등록된 사역입니다.',
+
+  'popup.deleteVisitationTitle': '해당 심방을 삭제하시겠습니까?',
+  'popup.deleteVisitationBody': '삭제된 심방은 복구할 수 없습니다.',
+
+  'popup.deleteTaskTitle': '해당 업무을 삭제하시겠습니까?',
+  'popup.deleteTaskBody': '삭제된 업무은 복구할 수 없습니다.',
   /*-------------------popup-------------------*/
 } as const;

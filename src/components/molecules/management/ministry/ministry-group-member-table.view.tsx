@@ -50,8 +50,8 @@ const MemberTable = styled.table`
 `;
 
 const TableHeader = styled.th<{ id: string }>`
-  border-bottom: 1px solid ${GRAY.LIGHT};
-  border-right: 1px solid ${GRAY.LIGHT};
+  border-bottom: 1px solid ${GRAY.SEMI_LIGHT};
+  border-right: 1px solid ${GRAY.SEMI_LIGHT};
   padding: 5px;
   justify-content: center;
   align-items: center;
@@ -77,16 +77,15 @@ const Scroll = styled.div<{ height: number }>`
 
 const MemberTableRow = styled.tr`
   &:hover td {
-    background-color: ${GRAY.LIGHT};
+    background-color: ${GRAY.SEMI_LIGHT};
   }
 `;
 
 const TableData = styled.td<{ id: string; $index: number }>`
-  border-bottom: 1px solid ${GRAY.LIGHT};
-  border-right: 1px solid ${GRAY.LIGHT};
+  border-bottom: 1px solid ${GRAY.SEMI_LIGHT};
+  border-right: 1px solid ${GRAY.SEMI_LIGHT};
   padding: 5px;
-  background-color: ${({ $index }) =>
-    $index % 2 === 0 ? WHITE : GRAY.SIDE_BAR};
+  background-color: ${({ $index }) => ($index % 2 === 0 ? WHITE : GRAY.LIGHT)};
   cursor: pointer;
   width: ${({ id }) => {
     return `${getColumnWidth(id)}px`;

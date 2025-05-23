@@ -19,6 +19,8 @@ export type ButtonProps = MainTextProps & {
   borderRadius?: number;
   children?: ReactNode;
   borderColor?: string;
+  onMouseUp?: (event: any) => void;
+  onMouseDown?: (event: any) => void;
 };
 
 const ButtonContainer = styled.button<{

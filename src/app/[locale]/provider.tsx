@@ -14,8 +14,10 @@ const TranslateProvider = ({ children }: ProviderProps) => {
   const pathname = usePathname();
   const localePrefix = getLocalePrefixFromPath(pathname);
 
+  console.log(pathname);
+
   if (!localePrefix) {
-    router.push(`/${navigator.language.slice(0, 2)}`);
+    router.push(`/${navigator.language.slice(0, 2)}${pathname}`);
     return;
   }
 

@@ -1,10 +1,22 @@
 import axios, { AxiosResponse } from 'axios';
 import { SERVER_URL, TEST_SERVER_URL } from '@/constants/state/url';
 import { CustomError } from '@/api/error/error';
+import { ORDER_DIRECTION } from '@/constants/constant';
+import qs from 'qs';
+
+export enum GROUP_ROLE_ORDER {
+  CREATED_AT = 'createdAt',
+  UPDATED_AT = 'updatedAt',
+  ROLE = 'role',
+}
 
 type GetGroupRolesParams = {
   churchId: string;
   groupId: string;
+  take?: number;
+  page?: number;
+  order?: GROUP_ROLE_ORDER;
+  orderDirection?: ORDER_DIRECTION;
 };
 
 type CreateEveryGroupRoleParams = {
@@ -57,12 +69,40 @@ export class GroupRolesApi {
   public getGroupRoles = async (
     params: GetGroupRolesParams
   ): Promise<AxiosResponse> => {
-    const { churchId, groupId } = params;
+    const {
+      churchId,
+      groupId,
+      take = 5,
+      page = 1,
+      order,
+      orderDirection,
+    } = params;
+
+    const queryParams: Record<string, any> = Object.fromEntries(
+      Object.entries({
+        take,
+        page,
+        order,
+        orderDirection,
+      }).filter(
+        ([_, value]) =>
+          value !== undefined && !(Array.isArray(value) && value.length === 0)
+      )
+    );
 
     const url = `${this._url}/churches/${churchId}/management/groups/${groupId}/role`;
 
     try {
-      return await axios.get(url);
+      return await axios.get(url, {
+        params: queryParams,
+        paramsSerializer: (params) => {
+          return qs.stringify(params, {
+            arrayFormat: 'repeat',
+            skipNulls: true,
+            encodeValuesOnly: true,
+          });
+        },
+      });
     } catch (serverError: any) {
       if (serverError.response) {
         const { message, error, statusCode } = serverError.response.data;

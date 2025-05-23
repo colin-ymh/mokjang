@@ -9,7 +9,7 @@ import RegisterOfficerView from '@/components/organisms/church/register-officer.
 import { getIsWellFormedTitle } from '@/utils/check';
 import { BLANK } from '@/constants/constant';
 import { getFormattedTitle } from '@/utils/format';
-import { setOfficers } from '@/redux/reducers/church-reducer';
+import { fetchOfficers } from '@/redux/reducers/church-reducer';
 import Loading from '@/components/atoms/common/etc/loading';
 
 type OfficerListProps = {};
@@ -49,21 +49,8 @@ const RegisterOfficer = ({}: OfficerListProps) => {
     try {
       if (getIsWellFormedTitle(newOfficerName)) {
         await officersApi.createOfficer({ churchId }, { name: newOfficerName });
-        fetchOfficers();
+        dispatch(fetchOfficers());
         setNewOfficerName(BLANK);
-      }
-    } catch (error) {
-      setThrownError(error instanceof Error ? error : new Error(String(error)));
-    }
-  };
-
-  // 직분 불러오기
-  const fetchOfficers = async () => {
-    try {
-      const response = await officersApi.getOfficers({ churchId });
-      if (response.status === 200) {
-        const newOfficers = response.data;
-        dispatch(setOfficers(newOfficers));
       }
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));
@@ -79,12 +66,6 @@ const RegisterOfficer = ({}: OfficerListProps) => {
       setIsLoading(false);
     }
   };
-
-  useEffect(() => {
-    if (churchId) {
-      fetchOfficers();
-    }
-  }, [churchId]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {

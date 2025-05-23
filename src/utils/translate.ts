@@ -2,7 +2,10 @@ import { MEMBER } from '@/constants/member/member-column';
 import {
   EDUCATION_ENROLLMENT,
   EDUCATION_TERM,
-} from '@/constants/management/education-term-column';
+} from '@/constants/education/education-term-column';
+import { VISITATION } from '@/constants/visitation/visitation-column';
+import { TASK } from '@/constants/task/task-column';
+import { EDUCATION } from '@/constants/education/education-column';
 
 export const getTranslatedMemberColumn = (
   t: (key: string, ...args: any[]) => string,
@@ -38,7 +41,7 @@ export const getTranslatedTermColumn = (
       | EDUCATION_TERM.EDUCATION
       | EDUCATION_TERM.PERIOD
       | EDUCATION_TERM.EDUCATION_ENROLLMENTS
-      | EDUCATION_TERM.INSTRUCTOR
+      | EDUCATION_TERM.IN_CHARGE
       | EDUCATION_TERM.NUMBER_OF_SESSION
   );
 };
@@ -57,4 +60,39 @@ export const getTranslatedEnrollmentColumn = (
       | EDUCATION_ENROLLMENT.MOBILE_PHONE
       | EDUCATION_ENROLLMENT.STATUS
   );
+};
+
+export const getTranslatedVisitationColumn = (
+  t: (key: string, ...args: any[]) => string,
+  id: VISITATION
+): string => {
+  return t(
+    id as
+      | VISITATION.TITLE
+      | VISITATION.VISITED
+      | VISITATION.STATUS
+      | VISITATION.DATE
+      | VISITATION.INSTRUCTOR
+  );
+};
+
+export const getTranslatedEducationColumn = (
+  t: (key: string, ...args: any[]) => string,
+  id: EDUCATION
+): string => {
+  return t('educationName');
+};
+
+export const getTranslatedEducationTermColumn = (
+  t: (key: string, ...args: any[]) => string,
+  id: EDUCATION_TERM
+): string => {
+  return t(id as 'educationName' | 'status' | EDUCATION_TERM.PERIOD);
+};
+
+export const getTranslatedTaskColumn = (
+  t: (key: string, ...args: any[]) => string,
+  id: TASK
+): string => {
+  return t(id as TASK.TITLE | TASK.STATUS | TASK.DATE | TASK.IN_CHARGE);
 };

@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useRef } from 'react';
 import DatePicker, {
   DatePickerProps,
   ReactDatePickerCustomHeaderProps,
@@ -59,7 +59,7 @@ const CustomDatePickerWrapper = styled.div`
 
     &:not([aria-disabled='true']):hover {
       border-radius: 100%;
-      background-color: ${GRAY.LIGHT};
+      background-color: ${GRAY.SEMI_LIGHT};
     }
 
     &--today {
@@ -100,6 +100,36 @@ export default function CustomDatePicker({
 }: CustomDatePickerProps) {
   const currentYear = getYear(new Date());
   const [startYear, endYear] = yearRange ?? [currentYear - 5, currentYear + 5];
+  const datePickerRef = useRef<any>(null);
+
+  const focusTimeInput = () => {
+    // 재시도 횟수 제한
+    let attempts = 0;
+    const maxAttempts = 5;
+
+    const tryFocus = () => {
+      const timeInput = document.querySelector<HTMLInputElement>(
+        '.react-datepicker__time-container input[type="time"]'
+      );
+
+      if (timeInput) {
+        timeInput.focus();
+      } else if (attempts < maxAttempts) {
+        attempts++;
+        setTimeout(tryFocus, 50); // 재시도
+      }
+    };
+
+    tryFocus();
+  };
+
+  const handleSelect = (date: Date | null) => {
+    console.log(date);
+    setTimeout(focusTimeInput, 0);
+    if (date) {
+      (props.onChange as (date: Date) => void)?.(date);
+    }
+  };
 
   const years = _.range(startYear, endYear + 1);
   const months = [
@@ -169,7 +199,13 @@ export default function CustomDatePicker({
 
   return (
     <CustomDatePickerWrapper>
-      <DatePicker {...props} locale="ko" renderCustomHeader={customHeader} />
+      <DatePicker
+        {...props}
+        ref={datePickerRef}
+        locale="ko"
+        renderCustomHeader={customHeader}
+        onSelect={handleSelect}
+      />
     </CustomDatePickerWrapper>
   );
 }

@@ -129,12 +129,10 @@ export class OfficerHistoryApi {
   ): Promise<AxiosResponse> => {
     const { churchId, memberId } = params;
 
-    const url = `${this._url}/churches/${churchId}/members/${memberId}/officers`;
+    const url = `${this._url}/churches/${churchId}/members/${memberId}/officers/end`;
 
     try {
-      return await axios.delete(url, {
-        data: body,
-      });
+      return await axios.patch(url, body);
     } catch (serverError: any) {
       if (serverError.response) {
         const { message, error, statusCode } = serverError.response.data;

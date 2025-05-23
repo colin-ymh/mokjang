@@ -117,7 +117,7 @@ const OfficerModalView = ({
         <Button
           text={t('button.save')}
           disabled={!isButtonEnabled}
-          backgroundColor={isButtonEnabled ? MAIN.DEFAULT : GRAY.LIGHT}
+          backgroundColor={isButtonEnabled ? MAIN.DEFAULT : GRAY.SEMI_LIGHT}
           height={30}
           onClick={() => {
             if (targetHistory?.endDate) {

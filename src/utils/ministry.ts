@@ -1,42 +1,62 @@
+import { MinistryGroup } from '@/models/management/management';
+import { MinistryGroupsApi } from '@/api/management/ministry/ministry-groups.api';
+
+const getMinistryGroupById = (
+  list: MinistryGroup[],
+  id: string
+): MinistryGroup | undefined => {
+  for (const g of list) {
+    if (g.id === id) return g;
+    if (g.childMinistryGroups) {
+      const found = getMinistryGroupById(g.childMinistryGroups, id);
+      if (found) return found;
+    }
+  }
+};
+
 /**
  * 계층 구조에 따라 사역 그룹을 정렬하는 함수
  */
-import { MinistryGroup } from '@/models/management/management';
+export const getOrderedMinistryGroups = async (churchId: string) => {
+  const ministryGroupsApi = new MinistryGroupsApi(false);
 
-export const getOrderedMinistryGroups = (ministryGroups: MinistryGroup[]) => {
-  // 그룹을 id로 매핑하여 빠르게 찾을 수 있도록 맵 생성
-  const ministryGroupMap = new Map<number, MinistryGroup>();
-  for (const ministryGroup of ministryGroups) {
-    ministryGroupMap.set(parseInt(ministryGroup.id as string), {
-      ...ministryGroup,
-      childMinistryGroups: [],
-    }); // 복사본 생성
-  }
+  let ministryGroups: MinistryGroup[] = [];
+  let parentMinistryGroupIds: (string | undefined)[] = [undefined];
 
-  // 최상위 그룹을 담을 배열
-  const topLevelMinistryGroups: MinistryGroup[] = [];
+  while (parentMinistryGroupIds.length > 0) {
+    const parentMinistryGroupId = parentMinistryGroupIds.pop();
 
-  for (const ministryGroup of ministryGroups) {
-    if (
-      ministryGroup.parentMinistryGroupId === null ||
-      ministryGroup.parentMinistryGroupId === ministryGroup.id
-    ) {
-      // 부모가 없는 그룹은 최상위 그룹에 추가
-      topLevelMinistryGroups.push(
-        ministryGroupMap.get(parseInt(ministryGroup.id as string))!
-      );
-    } else {
-      // 부모가 있는 그룹은 부모의 childMinistryGroups 에 추가
-      const parentMinistryGroup = ministryGroupMap.get(
-        parseInt(ministryGroup.parentMinistryGroupId)
-      );
-      if (parentMinistryGroup?.childMinistryGroups) {
-        parentMinistryGroup.childMinistryGroups.push(
-          ministryGroupMap.get(parseInt(ministryGroup.id as string))!
+    const response = await ministryGroupsApi.getMinistryGroups({
+      churchId,
+      parentMinistryGroupId,
+    });
+
+    const newMinistryGroups: MinistryGroup[] = response.data.data;
+
+    for (const newMinistryGroup of newMinistryGroups) {
+      // 부모 그룹이 있으면, 해당 부모의 childGroups 배열에 삽입
+      if (newMinistryGroup.parentMinistryGroupId) {
+        const parent = getMinistryGroupById(
+          ministryGroups,
+          newMinistryGroup.parentMinistryGroupId
         );
+        if (parent) {
+          if (!parent.childMinistryGroups) {
+            parent.childMinistryGroups = [];
+          }
+          parent.childMinistryGroups.push(newMinistryGroup);
+        }
+      }
+      // 부모 그룹이 없으면, 최상위 그룹
+      else {
+        ministryGroups.push(newMinistryGroup);
+      }
+
+      if (newMinistryGroup.childMinistryGroupIds.length > 0) {
+        parentMinistryGroupIds.push(newMinistryGroup.id as string);
       }
     }
   }
 
-  return topLevelMinistryGroups;
+  return ministryGroups;
 };

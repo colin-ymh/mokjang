@@ -117,6 +117,8 @@ const EditList = ({ focusItem }: EditListProps) => {
   const [schoolItems, setSchoolItems] = useState<DropdownValueType[]>([]);
   const [isAddressOpen, setIsAddressOpen] = useState<boolean>(false);
 
+  const onClickAddressClose = () => setIsAddressOpen(false);
+
   // 이미지 변경 이벤트
   const onChangeProfileImage = (profileImage: string) => {
     dispatch(setMember({ ...member, profileImage }));
@@ -263,7 +265,7 @@ const EditList = ({ focusItem }: EditListProps) => {
   return (
     <>
       <EditListView {...props} />
-      <PagePopup isShow={isAddressOpen} setIsShow={setIsAddressOpen}>
+      <PagePopup isShow={isAddressOpen} onClickClose={onClickAddressClose}>
         <DaumPostcodeEmbed
           onComplete={onCompleteAddress}
           style={{ width: '100%', height: '100%' }}

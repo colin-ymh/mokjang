@@ -2,19 +2,20 @@ export const BLACK = '#121212';
 export const WHITE = '#FFFFFF';
 
 export enum GRAY {
-  BACKGROUND = '#fafafa',
-  SIDE_BAR = '#F9FAFA',
-  LIGHT = '#e1e1e1',
-  DEFAULT = '#B9B9B9',
+  EXTRA_LIGHT = '#fafafa',
+  LIGHT = '#F9FAFA',
+  SEMI_LIGHT = '#e1e1e1',
+  DEFAULT = '#E7E7E7',
   SEMI_DARK = '#605f5f',
   DARK = '#4a4a4a',
   EXTRA_DARK = '#3a3a3a',
 }
 
 export enum MAIN {
-  LIGHT = '#A0CA88',
-  DEFAULT = '#299951',
-  DARK = '#184727',
+  EXTRA_LIGHT = '#e0f6ff',
+  LIGHT = '#c9e0ff',
+  DEFAULT = '#6BA9FF',
+  DARK = '#4392FF',
 }
 
 export enum DESTRUCTIVE {
@@ -29,4 +30,14 @@ export enum BLUE {
 
 export enum RED {
   DEFAULT = '#fb3c3c',
+}
+
+export enum STATUS_COLOR {
+  DONE = '#2EE431',
+  COMPLETED = '#2EE431',
+  IN_PROGRESS = '#ffda22',
+  RESERVE = '#ff7118',
+  INCOMPLETE = '#f43232',
+  PENDING = '#f43232',
+  UNDEFINED = WHITE,
 }

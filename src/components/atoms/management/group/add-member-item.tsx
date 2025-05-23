@@ -14,7 +14,7 @@ const BackgroundContainer = styled.div`
   display: flex;
   position: relative;
   padding: 5px 0;
-  border-bottom: 1px solid ${GRAY.LIGHT};
+  border-bottom: 1px solid ${GRAY.SEMI_LIGHT};
 `;
 
 const ItemContainer = styled.div<{ $isEnable: boolean }>`
@@ -29,7 +29,7 @@ const ItemContainer = styled.div<{ $isEnable: boolean }>`
   transition: background-color 0.2s;
 
   &:hover {
-    background-color: ${GRAY.LIGHT};
+    background-color: ${GRAY.SEMI_LIGHT};
   }
 `;
 

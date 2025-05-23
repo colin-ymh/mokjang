@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 
-import { GRAY, WHITE } from '@/constants/styles/color';
+import { GRAY } from '@/constants/styles/color';
 import { MEMBER } from '@/constants/member/member-column';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { BAPTISM, BLANK, GENDER } from '@/constants/constant';
@@ -32,35 +32,35 @@ import { BLANK_HEADER } from '@/redux/reducers/member-filter-reducer';
 const getColumnWidth = (id: string) => {
   switch (id) {
     case MEMBER.CHECK:
-      return 25;
+      return 30;
     case MEMBER.GROUP:
-      return 60;
+      return 120;
     case MEMBER.NAME:
-      return 120;
+      return 200;
     case MEMBER.GENDER:
-      return 60;
-    case MEMBER.OFFICER:
-      return 80;
-    case MEMBER.AGE:
-      return 50;
-    case MEMBER.MOBILE_PHONE:
-      return 140;
-    case MEMBER.HOME_PHONE:
-      return 140;
-    case MEMBER.ADDRESS:
-      return 180;
-    case MEMBER.OCCUPATION:
       return 100;
+    case MEMBER.OFFICER:
+      return 100;
+    case MEMBER.AGE:
+      return 100;
+    case MEMBER.MOBILE_PHONE:
+      return 200;
+    case MEMBER.HOME_PHONE:
+      return 200;
+    case MEMBER.ADDRESS:
+      return 300;
+    case MEMBER.OCCUPATION:
+      return 150;
     case MEMBER.SCHOOL:
-      return 120;
+      return 150;
     case MEMBER.BAPTISM:
-      return 80;
+      return 100;
     case MEMBER.BIRTH:
-      return 120;
+      return 200;
     case MEMBER.REGISTERED_AT:
-      return 130;
+      return 200;
     case MEMBER.UPDATED_AT:
-      return 130;
+      return 200;
     default:
       // 비고(REMARKS) 컬럼 등
       return 80;
@@ -72,7 +72,7 @@ const TableContainer = styled.div<{ height: number }>`
   /* 항상 가로 100%를 채움 */
   width: 100%;
   /* 세로 높이만큼 상하 스크롤 */
-  height: ${({ height }) => `${height - 200}px`};
+  height: ${({ height }) => `${height - 260}px`};
 
   /* 오버플로 시 스크롤 */
   overflow-x: auto;
@@ -95,9 +95,8 @@ const MemberTable = styled.table`
 
 // 4. 헤더(TH)
 const TableHeader = styled.th<{ id: string; isLast?: boolean }>`
-  border-right: 1px solid ${GRAY.LIGHT};
   padding: 3px;
-  background-color: ${GRAY.SIDE_BAR};
+  background-color: ${GRAY.LIGHT};
   position: sticky;
   top: 0;
   z-index: 5;
@@ -108,19 +107,30 @@ const TableHeader = styled.th<{ id: string; isLast?: boolean }>`
   /* 텍스트 넘침 처리 */
   overflow: hidden;
   text-overflow: ellipsis;
+
+  /* pseudo‐element 로 보더를 직접 그려서 절대 안 사라지게 */
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: ${GRAY.DEFAULT};
+  }
 `;
 
 // 5. 본문(TR/TD)
 const MemberTableRow = styled.tr`
+  border-bottom: 1px solid ${GRAY.EXTRA_LIGHT};
   &:hover td {
     background-color: ${GRAY.LIGHT};
   }
 `;
 
 const TableData = styled.td<{ id: string; $index: number; isLast?: boolean }>`
-  border: 1px solid ${GRAY.LIGHT};
-  padding: 3px;
-  background-color: ${({ $index }) => ($index % 2 === 0 ? WHITE : WHITE)};
+  padding: 10px;
+
   cursor: pointer;
 
   /* 마지막 컬럼이면 auto, 아니면 px 고정 */
@@ -155,7 +165,7 @@ const ProfileContainer = styled.div`
 const ProfileImage = styled(Image)`
   width: 30px;
   height: 30px;
-  border-radius: 20%;
+  border-radius: 35%;
   overflow: hidden;
 `;
 

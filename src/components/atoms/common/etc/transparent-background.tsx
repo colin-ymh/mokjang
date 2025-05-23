@@ -1,46 +1,40 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 export type TransparentBackgroundProps = {
   isOpened: boolean;
-  onClick: (event: React.MouseEvent<HTMLDivElement>) => void;
+  onClick: (e: React.MouseEvent<HTMLDivElement>) => void;
   blur?: boolean;
-  zIndex?: number;
+  zIndex?: number; // 필요 시 커스터마이즈
 };
 
-type BackgroundProps = {
-  $isOpened: boolean;
-  $blur: boolean;
-  $zIndex?: number;
-};
-
-const Background = styled.div<BackgroundProps>`
+/* 오버레이 스타일 */
+const Overlay = styled.div<{ $blur: boolean; $zIndex: number }>`
   position: fixed;
   inset: 0;
-  background-color: ${({ $blur }) =>
-    $blur ? 'rgba(0, 0, 0, 0.1)' : 'transparent'};
-  z-index: ${({ $zIndex }) => $zIndex}
-  display: ${({ $isOpened }) => ($isOpened ? 'block' : 'none')};
+  background: ${({ $blur }) => ($blur ? 'rgba(0, 0, 0, 0.1)' : 'transparent')};
+  z-index: ${({ $zIndex }) => $zIndex};
+  pointer-events: auto; /* 뒷면 터치 차단 */
+  touch-action: none;
 `;
 
-// 특정 페이지 내에서 활성화 된 구역 외 다른 곳을 터치 했을 때 특정 기능을 수행 하도록 하는 투명 background 버튼
 const TransparentBackground = ({
   isOpened,
   onClick,
-  zIndex = 40,
   blur = false,
+  zIndex = 50,
 }: TransparentBackgroundProps) => {
-  if (!isOpened) return null;
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+  if (!isOpened || !mounted) return null;
 
-  return (
-    <Background
-      $isOpened={isOpened}
-      onClick={onClick}
-      $blur={blur}
-      $zIndex={zIndex}
-    />
-  );
+  return <Overlay $blur={blur} $zIndex={zIndex} onClick={onClick} />;
+  // return createPortal(
+  //   <Overlay $blur={blur} $zIndex={zIndex} onClick={onClick} />,
+  //   document.body
+  // );
 };
 
 export default TransparentBackground;

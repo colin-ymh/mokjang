@@ -28,14 +28,14 @@ const FilterItem = styled.div`
   transition: background-color 0.2s ease-in-out;
 
   &:hover {
-    background-color: ${GRAY.LIGHT};
+    background-color: ${GRAY.SEMI_LIGHT};
   }
 `;
 
 const ItemDivideLine = styled.div`
   height: 1px;
   width: 100%;
-  background-color: ${GRAY.LIGHT};
+  background-color: ${GRAY.SEMI_LIGHT};
 `;
 
 const CheckButton = styled(Check)<{ $isSelected: boolean }>`
@@ -55,7 +55,6 @@ const FilterItemList = ({
   filterItems,
   onClickFilterItem,
 }: FilterItemListProps) => {
-
   return (
     <FilterContainer>
       {items?.map((item) => {

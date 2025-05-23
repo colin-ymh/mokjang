@@ -12,7 +12,7 @@ const BackgroundContainer = styled.div<{ $isShown: boolean }>`
   display: ${({ $isShown }) => ($isShown ? 'flex' : 'none')};
   justify-content: flex-end;
   width: 100%;
-  border-bottom: 1px solid ${GRAY.LIGHT};
+  border-bottom: 1px solid ${GRAY.SEMI_LIGHT};
 `;
 
 const AddMinistryGroupContainer = styled.div<{ $level: number }>`
@@ -43,7 +43,7 @@ const CheckButton = styled(Check)<{ $isEnabled: boolean }>`
   stroke-width: 2px;
   border-radius: 5px;
   background-color: ${({ $isEnabled }) =>
-    $isEnabled ? MAIN.DEFAULT : GRAY.LIGHT};
+    $isEnabled ? MAIN.DEFAULT : GRAY.SEMI_LIGHT};
   cursor: ${({ $isEnabled }) => ($isEnabled ? 'pointer' : 'default')};
   flex-shrink: 0;
 `;

@@ -10,3 +10,10 @@ export enum SIZE {
   LARGE = 'large',
   EXTRA_LARGE = 'extraLarge',
 }
+
+export enum DIRECTION {
+  TOP = 'top',
+  BOTTOM = 'bottom',
+  LEFT = 'left',
+  RIGHT = 'right',
+}

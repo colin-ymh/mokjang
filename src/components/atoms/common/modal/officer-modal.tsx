@@ -79,8 +79,6 @@ const OfficerModal = ({
   }, [startDate, endDate]);
 
   useEffect(() => {
-    // 목표 이력이 존재 X => 생성
-
     if (targetHistory) {
       // 목표 이력이 존재 O
       // && endDate가 X => 현재 이력 수정
@@ -105,6 +103,10 @@ const OfficerModal = ({
         if (targetStartDate) setStartDate(targetStartDate);
         if (targetEndDate) setEndDate(targetEndDate);
       }
+    } else {
+      setSelectedOfficerId(NONE);
+      setStartDate(BLANK);
+      setEndDate(BLANK);
     }
   }, [targetHistory]);
 
