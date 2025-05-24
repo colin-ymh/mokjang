@@ -1,11 +1,11 @@
 import { MEMBER } from '@/constants/member/member-column';
 import {
+  EDUCATION,
   EDUCATION_ENROLLMENT,
   EDUCATION_TERM,
-} from '@/constants/education/education-term-column';
+} from '@/constants/education/education-column';
 import { VISITATION } from '@/constants/visitation/visitation-column';
 import { TASK } from '@/constants/task/task-column';
-import { EDUCATION } from '@/constants/education/education-column';
 
 export const getTranslatedMemberColumn = (
   t: (key: string, ...args: any[]) => string,

@@ -150,25 +150,47 @@ const MultiMemberDropdown = forwardRef<
 
     useEffect(() => {
       if (searchText) {
-        membersApi
-          .getMembers({
-            churchId,
-            name: searchText,
-            page: 1,
-            take: 5,
-          })
-          .then((response: AxiosResponse) => {
-            const members: GetMembersResponse[] = response.data.data;
-            const newMemberItems: MemberDropdownType[] = members.map(
-              (member) => {
-                return { value: member.id, title: member.name };
-              }
-            );
+        if (isUserMember) {
+          membersApi
+            .getUserMembers({
+              churchId,
+              name: searchText,
+              page: 1,
+              take: 5,
+            })
+            .then((response: AxiosResponse) => {
+              const members: GetMembersResponse[] = response.data.data;
+              const newMemberItems: MemberDropdownType[] = members.map(
+                (member) => {
+                  return { value: member.id, title: member.name };
+                }
+              );
 
-            setItems(newMemberItems);
-            setFocusedIndex(0);
-            focusedIndexRef.current = 0;
-          });
+              setItems(newMemberItems);
+              setFocusedIndex(0);
+              focusedIndexRef.current = 0;
+            });
+        } else {
+          membersApi
+            .getMembers({
+              churchId,
+              name: searchText,
+              page: 1,
+              take: 5,
+            })
+            .then((response: AxiosResponse) => {
+              const members: GetMembersResponse[] = response.data.data;
+              const newMemberItems: MemberDropdownType[] = members.map(
+                (member) => {
+                  return { value: member.id, title: member.name };
+                }
+              );
+
+              setItems(newMemberItems);
+              setFocusedIndex(0);
+              focusedIndexRef.current = 0;
+            });
+        }
       } else {
         setItems([]);
       }

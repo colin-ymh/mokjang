@@ -8,7 +8,7 @@ import { BLACK, GRAY, MAIN } from '@/constants/styles/color';
 import { SIZE } from '@/constants/styles/style';
 import { getTranslatedEducationTermColumn } from '@/utils/translate';
 import { useI18n } from '../../../../../locales/client';
-import { EDUCATION_TERM } from '@/constants/education/education-term-column';
+import { EDUCATION_TERM } from '@/constants/education/education-column';
 
 const HeaderContainer = styled.div`
   display: flex;

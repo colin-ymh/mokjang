@@ -1,12 +1,10 @@
 import { ChangeEvent } from 'react';
 import styled from 'styled-components';
-
-import { GRAY } from '@/constants/styles/color';
 import { MainText } from '@/components/atoms/common/text/main-text';
-import DateInput from '@/components/atoms/common/input/date-input';
-import { getDateFromString } from '@/utils/date';
+import { getDateFromDateString } from '@/utils/date';
 
 import { useI18n } from '../../../../../locales/client';
+import CustomDatePicker from '@/vendor/date-picker/custom-date-picker';
 
 const FilterContainer = styled.div`
   display: flex;
@@ -45,26 +43,26 @@ const DateFilter = ({
   return (
     <FilterContainer>
       <RowContainer>
-        <DateInput
+        <CustomDatePicker
           value={dateAfter}
-          selected={getDateFromString(dateAfter)}
+          selected={dateAfter ? getDateFromDateString(dateAfter) : null}
           onChange={onChangeAfter}
-          onChangeRaw={onChangeRawAfter}
-          borderColor={GRAY.SEMI_LIGHT}
+          // onChangeRaw={onChangeRawAfter}
+          // borderColor={GRAY.SEMI_LIGHT}
           height={35}
-          placeholder={'YYYY-MM-DD'}
+          placeholderText={t('startDate')}
         />
         <MainText>{t('after')}</MainText>
       </RowContainer>
       <RowContainer>
-        <DateInput
+        <CustomDatePicker
           value={dateBefore}
-          selected={getDateFromString(dateBefore)}
+          selected={dateBefore ? getDateFromDateString(dateBefore) : null}
           onChange={onChangeBefore}
-          onChangeRaw={onChangeRawBefore}
-          borderColor={GRAY.SEMI_LIGHT}
+          // onChangeRaw={onChangeRawBefore}
+          // borderColor={GRAY.SEMI_LIGHT}
           height={35}
-          placeholder={'YYYY-MM-DD'}
+          placeholderText={t('endDate')}
         />
         <MainText>{t('before')}</MainText>
       </RowContainer>

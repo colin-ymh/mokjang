@@ -2,23 +2,16 @@ import { BLANK } from '@/constants/constant';
 import { Member } from '@/models/member/member';
 import { DEFAULT_MEMBER } from '@/redux/reducers/member-register-reducer';
 import { VisitationReport } from '@/models/visitation/visitation';
-
-export enum EDUCATION_TERM_STATUS {
-  IN_PROGRESS = 'inProgress',
-  DONE = 'done',
-  PENDING = 'pending',
-}
+import {
+  EDUCATION_SESSION_STATUS,
+  EDUCATION_TERM_STATUS,
+  STATUS,
+} from '@/constants/status/status';
 
 // 교육 이수상태
 export enum EDUCATION_ENROLLMENT_STATUS {
   COMPLETED = 'completed',
   INCOMPLETE = 'incomplete',
-}
-
-export enum EDUCATION_SESSION_STATUS {
-  IN_PROGRESS = 'inProgress',
-  DONE = 'done',
-  PENDING = 'pending',
 }
 
 export type Education = {
@@ -82,7 +75,7 @@ export const DEFAULT_EDUCATION_TERM: EducationTerm = {
   educationId: BLANK,
   term: BLANK,
   content: BLANK,
-  status: EDUCATION_TERM_STATUS.IN_PROGRESS,
+  status: STATUS.IN_PROGRESS,
   startDate: BLANK,
   endDate: BLANK,
   inChargeId: BLANK,
@@ -102,7 +95,7 @@ export const DEFAULT_EDUCATION_TERM: EducationTerm = {
 export type EducationSession = {
   id: string;
   status: EDUCATION_SESSION_STATUS;
-  title: string;
+  name: string;
   inChargeId: string;
   inCharge: Member;
   educationTermId: string;
@@ -113,36 +106,40 @@ export type EducationSession = {
   receiverIds: string[];
   reports: VisitationReport[];
   isDone: boolean;
+  educationAttendances: EducationAttendance[];
 };
 
 export const DEFAULT_EDUCATION_SESSION: EducationSession = {
   id: BLANK,
-  status: EDUCATION_SESSION_STATUS.PENDING,
+  status: STATUS.RESERVE,
   educationTermId: BLANK,
   inChargeId: BLANK,
   inCharge: DEFAULT_MEMBER,
   session: BLANK,
   content: BLANK,
-  title: BLANK,
+  name: BLANK,
   startDate: BLANK,
   endDate: BLANK,
   reports: [],
   receiverIds: [],
   isDone: false,
+  educationAttendances: [],
 };
 
-export type SessionAttendance = {
+export type EducationAttendance = {
   id: string;
   educationSessionId: string;
   educationEnrollmentId: string;
   isPresent: boolean;
   note: string;
+  educationEnrollment: EducationEnrollment;
 };
 
-export const DEFAULT_SESSION_ATTENDANCE = {
+export const DEFAULT_EDUCATION_ATTENDANCE = {
   id: BLANK,
   educationSessionId: BLANK,
   educationEnrollmentId: BLANK,
   isPresent: false,
   note: BLANK,
+  educationEnrollment: DEFAULT_EDUCATION_ENROLLMENT,
 };

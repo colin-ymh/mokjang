@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import SlidePopup from '@/components/atoms/common/popup/slide-popup';
 import Loading from '@/components/atoms/common/etc/loading';
 import React from 'react';
-import { BLACK, DESTRUCTIVE } from '@/constants/styles/color';
+import { BLACK, DESTRUCTIVE, MAIN } from '@/constants/styles/color';
 import CancelIcon from '../../../../../../public/svg/cancel.svg';
 import TrashIcon from '../../../../../../public/svg/trash.svg';
 import ConfirmPopup from '@/components/atoms/common/popup/error-popup';
@@ -22,6 +22,7 @@ import EducationTermInformation from '@/components/organisms/education/education
 import AddEducationTerm from '@/components/organisms/education/education-term/add/add-education-term';
 import AddEducationSession from '@/components/organisms/education/education-session/add/add-education-session';
 import EducationSessionInformation from '@/components/organisms/education/education-session/information/education-session-information';
+import { EducationTerm } from '@/models/education/education';
 
 const EducationTermListContainer = styled.div`
   display: flex;
@@ -80,30 +81,42 @@ type EducationTermListViewProps = {
   list: EducationTermTableProps;
   information: {
     isLoading: boolean;
-    isEducationTermInformationShown: boolean;
-    isEditTermShown: boolean;
-    isTermPopupShown: boolean;
-    onClickCloseTerm: () => void;
-    onClickDeleteTerm: () => void;
-    onClickDeleteTermConfirmOpen: () => void;
-    onClickDeleteTermConfirmClose: () => void;
-    onClickEditTermDone: () => void;
-    onClickEditTermOpen: () => void;
-    onClickEditTermClose: () => void;
-    isAddEducationSessionShown: boolean;
-    isEducationSessionInformationShown: boolean;
-    isEditSessionShown: boolean;
-    isSessionPopupShown: boolean;
-    onClickOpenAddEducationSession: () => void;
-    onClickCloseAddEducationSession: () => void;
-    onClickAddSessionsDone: () => void;
-    onClickCloseSession: () => void;
-    onClickDeleteSession: () => void;
-    onClickDeleteSessionConfirmOpen: () => void;
-    onClickDeleteSessionConfirmClose: () => void;
-    onClickEditSessionDone: () => void;
-    onClickEditSessionOpen: () => void;
-    onClickEditSessionClose: () => void;
+    // 기수
+    term: {
+      isTermSaveEnabled: boolean;
+      isEducationTermInformationShown: boolean;
+      isEditTermShown: boolean;
+      isTermPopupShown: boolean;
+      onClickCloseTerm: () => void;
+      onClickDeleteTerm: () => void;
+      onClickDeleteTermConfirmOpen: () => void;
+      onClickDeleteTermConfirmClose: () => void;
+      onClickEditTermDone: () => void;
+      onClickEditTermOpen: () => void;
+      onClickEditTermClose: () => void;
+    };
+    // 회차
+    session: {
+      isSessionSaveEnabled: boolean;
+      isAddEducationSessionShown: boolean;
+      isEducationSessionInformationShown: boolean;
+      isEditSessionShown: boolean;
+      isSessionPopupShown: boolean;
+      onClickEducationSessionItem: (
+        educationTermId: string,
+        educationSessionId: string
+      ) => void;
+      onClickOpenAddEducationSession: (educationTerm?: EducationTerm) => void;
+      onClickCloseAddEducationSession: () => void;
+      onClickAddSessionsDone: () => void;
+      onClickCloseSession: () => void;
+      onClickDeleteSession: () => void;
+      onClickDeleteSessionConfirmOpen: () => void;
+      onClickDeleteSessionConfirmClose: () => void;
+      onClickEditSessionDone: () => void;
+      onClickEditSessionOpen: () => void;
+      onClickEditSessionClose: () => void;
+    };
   };
 };
 
@@ -112,8 +125,9 @@ const EducationTermListView = (props: EducationTermListViewProps) => {
   const t_button = useScopedI18n('button');
   const t_popup = useScopedI18n('popup');
   const t_title = useScopedI18n('title');
+  const { isLoading } = props.information;
   const {
-    isLoading,
+    isTermSaveEnabled,
     isEducationTermInformationShown,
     isEditTermShown,
     isTermPopupShown,
@@ -124,10 +138,14 @@ const EducationTermListView = (props: EducationTermListViewProps) => {
     onClickEditTermDone,
     onClickEditTermOpen,
     onClickEditTermClose,
+  } = props.information.term;
+  const {
+    isSessionSaveEnabled,
     isAddEducationSessionShown,
     isEducationSessionInformationShown,
     isEditSessionShown,
     isSessionPopupShown,
+    onClickEducationSessionItem,
     onClickOpenAddEducationSession,
     onClickCloseAddEducationSession,
     onClickAddSessionsDone,
@@ -138,7 +156,7 @@ const EducationTermListView = (props: EducationTermListViewProps) => {
     onClickEditSessionDone,
     onClickEditSessionOpen,
     onClickEditSessionClose,
-  } = props.information;
+  } = props.information.session;
 
   const { targetEducation } = useSelector(
     (state: RootState) => state.targetEducation
@@ -207,6 +225,7 @@ const EducationTermListView = (props: EducationTermListViewProps) => {
           />
           <EducationTermInformation
             onClickAddSession={onClickOpenAddEducationSession}
+            onClickEducationSessionItem={onClickEducationSessionItem}
           />
         </>
       </SlidePopup>
@@ -217,6 +236,8 @@ const EducationTermListView = (props: EducationTermListViewProps) => {
         onClickDone={onClickEditTermDone}
         doneText={t_button('edit')}
         headerTitle={t_title('editEducationTerm')}
+        doneBackgroundColor={isTermSaveEnabled ? MAIN.DEFAULT : MAIN.LIGHT}
+        doneDisabled={!isTermSaveEnabled}
       >
         <AddEducationTerm />
       </SlidePopup>
@@ -228,6 +249,8 @@ const EducationTermListView = (props: EducationTermListViewProps) => {
         onClickDone={onClickAddSessionsDone}
         doneText={t_button('save')}
         headerTitle={t_title('addEducationSession')}
+        doneBackgroundColor={isSessionSaveEnabled ? MAIN.DEFAULT : MAIN.LIGHT}
+        doneDisabled={!isSessionSaveEnabled}
       >
         <AddEducationSession />
       </SlidePopup>
@@ -236,7 +259,7 @@ const EducationTermListView = (props: EducationTermListViewProps) => {
         isShow={isEducationSessionInformationShown}
         onClickClose={onClickCloseSession}
         isFooterShown={false}
-        headerTitle={`${targetEducationSession.session}${t('session')}`}
+        headerTitle={`${targetEducationSession.session}${t('session')} ${targetEducationSession.name}`}
         headerRight={
           <ButtonRow>
             <KebabDropdown
@@ -285,8 +308,10 @@ const EducationTermListView = (props: EducationTermListViewProps) => {
         onClickDone={onClickEditSessionDone}
         doneText={t_button('edit')}
         headerTitle={t_title('editEducationSession')}
+        doneBackgroundColor={isSessionSaveEnabled ? MAIN.DEFAULT : MAIN.LIGHT}
+        doneDisabled={!isSessionSaveEnabled}
       >
-        <AddEducationTerm />
+        <AddEducationSession />
       </SlidePopup>
       {/* ----------- 회차 ----------*/}
       <Loading isShow={isLoading} />

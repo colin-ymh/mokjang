@@ -8,7 +8,7 @@ import { MEMBER } from '@/constants/member/member-column';
 import { FamilyMember } from '@/models/member/member';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { getFormattedDate, getLocaleDateFromDashDate } from '@/utils/format';
-import { getAge, getDateFromString } from '@/utils/date';
+import { getAge, getDateFromDateString } from '@/utils/date';
 import { GRAY, WHITE } from '@/constants/styles/color';
 import useWindowSize from '@/hooks/window/window';
 import { LOCALE } from '@/constants/state/locale';
@@ -235,7 +235,7 @@ const FamilyTableView = ({
         return (
           <MainText>
             {member.familyMember?.birth &&
-              getAge(getDateFromString(member.familyMember.birth))}
+              getAge(getDateFromDateString(member.familyMember.birth))}
           </MainText>
         );
       case MEMBER.OFFICER:

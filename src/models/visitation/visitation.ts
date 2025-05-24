@@ -1,12 +1,7 @@
 import { BLANK } from '@/constants/constant';
 import { Member } from '@/models/member/member';
 import { DEFAULT_MEMBER } from '@/redux/reducers/member-register-reducer';
-
-export enum VISITATION_STATUS {
-  RESERVE = 'reserve',
-  DONE = 'done',
-  PENDING = 'pending',
-}
+import { STATUS, VISITATION_STATUS } from '@/constants/status/status';
 
 export enum VISITATION_METHOD {
   IN_PERSON = 'inPerson',
@@ -60,7 +55,7 @@ export const DEFAULT_VISITATION_DETAIL: VisitationDetail = {
 export const DEFAULT_VISITATION: Visitation = {
   id: BLANK,
   churchId: BLANK,
-  visitationStatus: VISITATION_STATUS.RESERVE,
+  visitationStatus: STATUS.RESERVE,
   visitationMethod: VISITATION_METHOD.IN_PERSON,
   visitationTitle: BLANK,
   instructorId: BLANK,

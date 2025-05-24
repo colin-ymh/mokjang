@@ -10,7 +10,8 @@ import TaskRowView, {
   TASK_SEARCH_FILTER,
 } from '@/components/molecules/task/task-row.view';
 import { TaskFilteredItemType } from '@/components/atoms/task/task-filtered-item';
-import { TASK_STATUS } from '@/models/task/task';
+
+import { TASK_STATUS } from '@/constants/status/status';
 
 const TaskRow = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -116,10 +117,10 @@ const TaskRow = () => {
     }
 
     // 등록일
-    if (taskFilter.fromTaskDate || taskFilter.toTaskDate) {
+    if (taskFilter.fromTaskStartDate || taskFilter.toTaskStartDate) {
       newFilterItems.push({
         title: TASK.DATE,
-        value: [taskFilter.fromTaskDate, taskFilter.toTaskDate],
+        value: [taskFilter.fromTaskStartDate, taskFilter.toTaskStartDate],
       });
     }
 

@@ -23,7 +23,7 @@ import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-i
 import { getTranslatedMemberColumn } from '@/utils/translate';
 import { MEMBER } from '@/constants/member/member-column';
 import { BLANK, NULL } from '@/constants/constant';
-import { getStringFromDate } from '@/utils/date';
+import { getDateStringFromDate } from '@/utils/date';
 import { getFormattedDate } from '@/utils/format';
 
 import { useI18n } from '../../../../../locales/client';
@@ -176,7 +176,7 @@ const TableSetting = ({ setIsShown }: AddFilterProps) => {
   // ~부터 날짜 변경
   // 달력에서 선택
   const onChangeAfter = (date: Date | null) => {
-    const newFilterAfter = getStringFromDate(date);
+    const newFilterAfter = getDateStringFromDate(date);
     dispatch(setFilterAfter(newFilterAfter));
   };
 
@@ -188,7 +188,7 @@ const TableSetting = ({ setIsShown }: AddFilterProps) => {
 
   // ~까지 날짜 변경
   const onChangeBefore = (date: Date | null) => {
-    const newDateBefore = getStringFromDate(date);
+    const newDateBefore = getDateStringFromDate(date);
     dispatch(setFilterBefore(newDateBefore));
   };
 

@@ -46,6 +46,7 @@ const AddEducation = ({}: AddEducationProps) => {
         placeholder={t_placeholder('educationName')}
         value={targetEducation.name}
         onChange={onChangeName}
+        isRequired={true}
       />
       <LabelTextarea
         label={t('educationDescription')}

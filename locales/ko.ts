@@ -53,7 +53,7 @@ export default {
   term: '기수',
   present: '출석',
   absent: '결석',
-  attendance: '출석부',
+  attendance: '출석',
 
   inProgress: '진행중',
   completed: '수료',

@@ -2,8 +2,9 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { BLANK, NULL, ORDER_DIRECTION } from '@/constants/constant';
 import { Education } from '@/models/education/education';
 import { RootState } from '@/redux/store';
-import { EDUCATION } from '@/constants/education/education-column';
 import { EducationsApi } from '@/api/education/educations.api';
+
+import { EDUCATION } from '@/constants/education/education-column';
 
 type EDUCATION_FILTER = {
   [EDUCATION.NAME]: string;
@@ -69,6 +70,7 @@ export const fetchEducations = createAsyncThunk<
         take: 30, // 무한 스크롤 최적화
         order: educationOrderBy !== NULL ? educationOrderBy : undefined,
         orderDirection: educationOrderDirection,
+        name: educationFilter.name,
       });
 
       return response.data.data;

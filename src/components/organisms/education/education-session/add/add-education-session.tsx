@@ -4,11 +4,18 @@ import { getFormattedTitle } from '@/utils/format';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 
-import { getStringFromDateTime } from '@/utils/date';
+import {
+  getDateFromString,
+  getDateStringFromDate,
+  getHourFromMinute,
+  getTimeStringFromDate,
+} from '@/utils/date';
 import { setTargetEducationSession } from '@/redux/reducers/target-education-session-reducer';
 import AddEducationSessionView from '@/components/organisms/education/education-session/add/add-education-session.view';
-import { EDUCATION_SESSION_STATUS } from '@/models/education/education';
 import { MemberDropdownType } from '@/components/atoms/common/dropdown/member-dropdown-item';
+
+import { EDUCATION_SESSION_STATUS } from '@/constants/status/status';
+import { EducationAttendance } from '@/models/education/education';
 
 type AddEducationSessionProps = {};
 
@@ -31,44 +38,87 @@ const AddEducationSession = ({}: AddEducationSessionProps) => {
     dispatch(
       setTargetEducationSession({
         ...targetEducationSession,
-        title: getFormattedTitle(event.target.value),
+        name: getFormattedTitle(event.target.value),
       })
     );
   };
   // ===== title =====
 
-  // ===== session =====
-  const onChangeSession = (event: ChangeEvent<HTMLInputElement>): void => {
+  // ===== period =====
+  const onChangeStartDate = (date: Date | null) => {
+    if (date) {
+      const newDate = getDateStringFromDate(date);
+      let prevTime = '00:00';
+
+      if (targetEducationSession.startDate) {
+        prevTime = getTimeStringFromDate(
+          getDateFromString(targetEducationSession.startDate)
+        );
+      }
+
+      dispatch(
+        setTargetEducationSession({
+          ...targetEducationSession,
+          startDate: `${newDate}T${prevTime}`,
+        })
+      );
+    }
+  };
+
+  const onChangeStartTime = (value: number) => {
+    let prevDate = '2000-01-01';
+    const newTime = getHourFromMinute(value);
+
+    if (targetEducationSession.startDate) {
+      prevDate = getDateStringFromDate(
+        getDateFromString(targetEducationSession.startDate)
+      );
+    }
+
     dispatch(
       setTargetEducationSession({
         ...targetEducationSession,
-        session: getFormattedTitle(event.target.value),
+        startDate: `${prevDate}T${newTime}`,
       })
     );
   };
-  // ===== session =====
 
-  // ===== period =====
-  const onChangeStartDate = (date: Date | null): void => {
+  const onChangeEndDate = (date: Date | null) => {
     if (date) {
+      const newDate = getDateStringFromDate(date);
+      let prevTime = '00:00';
+
+      if (targetEducationSession.endDate) {
+        prevTime = getTimeStringFromDate(
+          getDateFromString(targetEducationSession.endDate)
+        );
+      }
+
       dispatch(
         setTargetEducationSession({
           ...targetEducationSession,
-          startDate: getStringFromDateTime(date),
+          endDate: `${newDate}T${prevTime}`,
         })
       );
     }
   };
 
-  const onChangeEndDate = (date: Date | null): void => {
-    if (date) {
-      dispatch(
-        setTargetEducationSession({
-          ...targetEducationSession,
-          endDate: getStringFromDateTime(date),
-        })
+  const onChangeEndTime = (value: number) => {
+    let prevDate = '2000-01-01';
+    const newTime = getHourFromMinute(value);
+
+    if (targetEducationSession.endDate) {
+      prevDate = getDateStringFromDate(
+        getDateFromString(targetEducationSession.endDate)
       );
     }
+
+    dispatch(
+      setTargetEducationSession({
+        ...targetEducationSession,
+        endDate: `${prevDate}T${newTime}`,
+      })
+    );
   };
   // ===== period =====
 
@@ -125,27 +175,27 @@ const AddEducationSession = ({}: AddEducationSessionProps) => {
   // ===== content =====
 
   // 출석 내용 변경
-  // const onChangeEnrollmentStatus = (
-  //   value: EDUCATION_STATUS,
-  //   targetEnrollment: EducationEnrollment
-  // ) => {
-  //   const newEnrollments = targetEducationSession.educationEnrollments.map(
-  //     (enrollment) => {
-  //       if (enrollment.memberId === targetEnrollment.memberId) {
-  //         return { ...enrollment, status: value };
-  //       } else {
-  //         return enrollment;
-  //       }
-  //     }
-  //   );
-  //
-  //   dispatch(
-  //     setTargetEducationSession({
-  //       ...targetEducationSession,
-  //       educationEnrollments: newEnrollments,
-  //     })
-  //   );
-  // };
+  const onChangeAttendanceStatus = (
+    value: boolean,
+    targetAttendance: EducationAttendance
+  ) => {
+    const newAttendances = targetEducationSession.educationAttendances.map(
+      (attendance) => {
+        if (attendance.id === targetAttendance.id) {
+          return { ...attendance, status: value };
+        } else {
+          return attendance;
+        }
+      }
+    );
+
+    dispatch(
+      setTargetEducationSession({
+        ...targetEducationSession,
+        educationAttendances: newAttendances,
+      })
+    );
+  };
   // ===== 수강 교인 =====
 
   // ===== receiver =====
@@ -189,12 +239,14 @@ const AddEducationSession = ({}: AddEducationSessionProps) => {
     receivers,
     onChangeStatus,
     onChangeTitle,
-    onChangeSession,
     onChangeStartDate,
+    onChangeStartTime,
     onChangeEndDate,
+    onChangeEndTime,
     onChangeInCharge,
     onChangeContent,
     onChangeReceivers,
+    onChangeAttendanceStatus,
   };
 
   return (

@@ -51,9 +51,9 @@ const MainVisitationHeader = ({}: MainVisitationHeaderProps) => {
     dispatch(setTargetVisitation(DEFAULT_VISITATION));
   };
 
-  const onClickSaveVisitation = () => {
+  const onClickSaveVisitation = async () => {
     try {
-      visitationsApi
+      await visitationsApi
         .createVisitation(
           { churchId },
           {

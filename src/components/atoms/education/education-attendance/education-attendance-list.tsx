@@ -1,25 +1,22 @@
 import styled from 'styled-components';
-import {
-  EDUCATION_ENROLLMENT_STATUS,
-  EducationEnrollment,
-} from '@/models/education/education';
+import { EducationAttendance } from '@/models/education/education';
 import { getRandomImage } from '@/utils/image';
 import { MEMBER } from '@/constants/member/member-column';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import React from 'react';
 import Image from 'next/image';
 import StatusDropdown from '@/components/atoms/common/dropdown/status-dropdown';
-import { useEducationEnrollmentStatusDropdownItems } from '@/hooks/dropdown/dropdown-items';
+import { useAttendanceStatusDropdownItems } from '@/hooks/dropdown/dropdown-items';
 import { GRAY } from '@/constants/styles/color';
 
-const EnrollmentListContainer = styled.div`
+const AttendanceListContainer = styled.div`
   display: flex;
   flex-direction: column;
   height: 300px;
   overflow-y: auto;
 `;
 
-const EnrollmentItem = styled.div`
+const AttendanceItem = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -46,46 +43,43 @@ const ProfileImage = styled(Image)`
   border-radius: 20%;
 `;
 
-type EducationEnrollmentListProps = {
-  enrollments: EducationEnrollment[];
-  onChangeStatus: (
-    status: EDUCATION_ENROLLMENT_STATUS,
-    enrollment: EducationEnrollment
-  ) => void;
+type EducationAttendanceListProps = {
+  attendances: EducationAttendance[];
+  onChangeStatus: (status: boolean, attendance: EducationAttendance) => void;
 };
 
-const EducationEnrollmentList = ({
-  enrollments,
+const EducationAttendanceList = ({
+  attendances,
   onChangeStatus,
-}: EducationEnrollmentListProps) => {
-  const statusDropdownItems = useEducationEnrollmentStatusDropdownItems();
+}: EducationAttendanceListProps) => {
+  const statusDropdownItems = useAttendanceStatusDropdownItems();
 
   return (
-    <EnrollmentListContainer>
-      {enrollments?.map((enrollment) => (
-        <EnrollmentItem key={enrollment.id}>
+    <AttendanceListContainer>
+      {attendances?.map((attendance) => (
+        <AttendanceItem key={attendance.id}>
           <ProfileContainer>
             <ProfileImage
               src={
-                enrollment.member?.profileImage ||
-                getRandomImage(enrollment.memberId)
+                attendance.educationEnrollment.member.profileImage ||
+                getRandomImage(attendance.educationEnrollment.memberId)
               }
               alt={MEMBER.PROFILE_IMAGE}
             />
-            <MainText>{enrollment.member.name}</MainText>
+            <MainText>{attendance.educationEnrollment.member.name}</MainText>
           </ProfileContainer>
 
           <StatusDropdown
-            value={enrollment.status}
+            value={attendance.isPresent}
             items={statusDropdownItems}
             height={30}
             width={100}
-            onChangeItem={(value) => onChangeStatus(value, enrollment)}
+            onChangeItem={(value) => onChangeStatus(value, attendance)}
           />
-        </EnrollmentItem>
+        </AttendanceItem>
       ))}
-    </EnrollmentListContainer>
+    </AttendanceListContainer>
   );
 };
 
-export default EducationEnrollmentList;
+export default EducationAttendanceList;

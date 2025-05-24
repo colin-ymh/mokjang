@@ -17,9 +17,9 @@ import TaskFilteredItem, {
 import PeriodModal from '@/components/atoms/common/modal/period-modal';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
-import { TASK_STATUS } from '@/models/task/task';
 import SearchInput from '@/components/atoms/common/input/search-input';
 import StatusDropdown from '@/components/atoms/common/dropdown/status-dropdown';
+import { TASK_STATUS } from '@/constants/status/status';
 
 const TaskContainer = styled.div`
   display: flex;
@@ -156,8 +156,8 @@ const TaskRowView = ({
             <PeriodModal
               isShown={isModalShown}
               onClickClose={onClickClosePeriodModal}
-              startDate={taskFilter.fromTaskDate}
-              endDate={taskFilter.toTaskDate}
+              startDate={taskFilter.fromTaskStartDate}
+              endDate={taskFilter.toTaskStartDate}
               onClickSave={onClickSavePeriod}
             />
           </ButtonContainer>

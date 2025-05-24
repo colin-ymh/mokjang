@@ -3,7 +3,6 @@ import { BLANK } from '@/constants/constant';
 import { getFormattedTitle } from '@/utils/format';
 import {
   VISITATION_METHOD,
-  VISITATION_STATUS,
   VisitationDetail,
 } from '@/models/visitation/visitation';
 import { MemberDropdownType } from '@/components/atoms/common/dropdown/member-dropdown-item';
@@ -11,8 +10,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 import { setTargetVisitation } from '@/redux/reducers/target-visitation-reducer';
 import { DEFAULT_MEMBER } from '@/redux/reducers/member-register-reducer';
-import { getStringFromDateTime } from '@/utils/date';
+import {
+  getDateFromString,
+  getDateStringFromDate,
+  getHourFromMinute,
+  getTimeStringFromDate,
+} from '@/utils/date';
 import AddVisitationView from '@/components/organisms/visitation/add/add-visitation.view';
+import { VISITATION_STATUS } from '@/constants/status/status';
 
 const AddVisitation = () => {
   const { targetVisitation } = useSelector(
@@ -36,22 +41,81 @@ const AddVisitation = () => {
     );
 
   /* ── Period ── */
-  const onChangeStartDate = (d: Date | null) =>
-    d &&
+  const onChangeStartDate = (date: Date | null) => {
+    if (date) {
+      const newDate = getDateStringFromDate(date);
+      let prevTime = '00:00';
+
+      if (targetVisitation.visitationStartDate) {
+        prevTime = getTimeStringFromDate(
+          getDateFromString(targetVisitation.visitationStartDate)
+        );
+      }
+
+      dispatch(
+        setTargetVisitation({
+          ...targetVisitation,
+          visitationStartDate: `${newDate}T${prevTime}`,
+        })
+      );
+    }
+  };
+
+  const onChangeStartTime = (value: number) => {
+    let prevDate = '2000-01-01';
+    const newTime = getHourFromMinute(value);
+
+    if (targetVisitation.visitationStartDate) {
+      prevDate = getDateStringFromDate(
+        getDateFromString(targetVisitation.visitationStartDate)
+      );
+    }
+
     dispatch(
       setTargetVisitation({
         ...targetVisitation,
-        visitationStartDate: getStringFromDateTime(d),
+        visitationStartDate: `${prevDate}T${newTime}`,
       })
     );
-  const onChangeEndDate = (d: Date | null) =>
-    d &&
+  };
+
+  const onChangeEndDate = (date: Date | null) => {
+    if (date) {
+      const newDate = getDateStringFromDate(date);
+      let prevTime = '00:00';
+
+      if (targetVisitation.visitationEndDate) {
+        prevTime = getTimeStringFromDate(
+          getDateFromString(targetVisitation.visitationEndDate)
+        );
+      }
+
+      dispatch(
+        setTargetVisitation({
+          ...targetVisitation,
+          visitationEndDate: `${newDate}T${prevTime}`,
+        })
+      );
+    }
+  };
+
+  const onChangeEndTime = (value: number) => {
+    let prevDate = '2000-01-01';
+    const newTime = getHourFromMinute(value);
+
+    if (targetVisitation.visitationEndDate) {
+      prevDate = getDateStringFromDate(
+        getDateFromString(targetVisitation.visitationEndDate)
+      );
+    }
+
     dispatch(
       setTargetVisitation({
         ...targetVisitation,
-        visitationEndDate: getStringFromDateTime(d),
+        visitationEndDate: `${prevDate}T${newTime}`,
       })
     );
+  };
 
   /* ── Visited Members ── */
   const [visitedMembers, setVisitedMembers] = useState<MemberDropdownType[]>(
@@ -238,7 +302,9 @@ const AddVisitation = () => {
     onChangeStatus,
     onChangeTitle,
     onChangeStartDate,
+    onChangeStartTime,
     onChangeEndDate,
+    onChangeEndTime,
     onChangeVisitedMembers,
     onChangeMethod,
     onChangeInstructor,

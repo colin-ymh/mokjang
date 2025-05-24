@@ -1,11 +1,11 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
-import { VISITATION_STATUS } from '@/models/visitation/visitation';
 import { setTargetVisitation } from '@/redux/reducers/target-visitation-reducer';
 import { VisitationsApi } from '@/api/visitations/visitations.api';
 import React, { useState } from 'react';
 import { setVisitations } from '@/redux/reducers/visitation-filter-reducer';
 import VisitationInformationView from '@/components/organisms/visitation/information/visitation-information.view';
+import { VISITATION_STATUS } from '@/constants/status/status';
 
 type VisitationInformationProps = {};
 

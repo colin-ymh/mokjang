@@ -14,7 +14,7 @@ import TaskTableHeader from '@/components/atoms/task/task-table-header';
 import { BLANK_HEADER } from '@/redux/reducers/member-filter-reducer';
 import { useI18n } from '../../../../locales/client';
 import { getFormattedDate } from '@/utils/format';
-import { getTaskStatusColor } from '@/utils/color';
+import { getStatusColor } from '@/utils/color';
 import { getRandomImage } from '@/utils/image';
 import { MEMBER } from '@/constants/member/member-column';
 
@@ -207,7 +207,7 @@ const TaskTableView = ({
       case TASK.STATUS:
         return (
           <StatusContainer>
-            <ColoredDot color={getTaskStatusColor(task.taskStatus)} />
+            <ColoredDot color={getStatusColor(task.taskStatus)} />
             <MainText>{t(task?.taskStatus)}</MainText>
           </StatusContainer>
         );

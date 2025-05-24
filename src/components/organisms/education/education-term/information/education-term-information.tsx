@@ -4,7 +4,6 @@ import { EducationTermsApi } from '@/api/education/education-terms.api';
 import { useState } from 'react';
 import {
   EDUCATION_ENROLLMENT_STATUS,
-  EDUCATION_TERM_STATUS,
   EducationEnrollment,
 } from '@/models/education/education';
 import { setTargetEducationTerm } from '@/redux/reducers/target-education-term-reducer';
@@ -12,12 +11,19 @@ import { setEducationTerms } from '@/redux/reducers/education-term-filter-reduce
 import EducationTermInformationView from '@/components/organisms/education/education-term/information/education-term-information.view';
 import { EducationEnrollmentsApi } from '@/api/education/education-enrollments.api';
 
+import { EDUCATION_TERM_STATUS } from '@/constants/status/status';
+
 type EducationTermInformationProps = {
   onClickAddSession: () => void;
+  onClickEducationSessionItem: (
+    educationTermId: string,
+    educationSessionId: string
+  ) => void;
 };
 
 const EducationTermInformation = ({
   onClickAddSession,
+  onClickEducationSessionItem,
 }: EducationTermInformationProps) => {
   const { educationTerms } = useSelector(
     (state: RootState) => state.educationTermFilter
@@ -124,6 +130,7 @@ const EducationTermInformation = ({
     onChangeStatus,
     onChangeEnrollmentStatus,
     onClickAddSession,
+    onClickEducationSessionItem,
   };
   return (
     <>

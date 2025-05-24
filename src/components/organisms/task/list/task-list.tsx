@@ -7,6 +7,8 @@ import { TasksApi } from '@/api/tasks/tasks.api';
 import TaskListView from '@/components/organisms/task/list/task-list.view';
 import { DEFAULT_TASK, Task } from '@/models/task/task';
 import { setTargetTask } from '@/redux/reducers/target-task-reducer';
+import { getIsWellFormedTitle } from '@/utils/check';
+import { BLANK } from '@/constants/constant';
 
 type TaskListProps = {
   isMy?: boolean;
@@ -26,6 +28,8 @@ const TaskList = ({ isMy = false }: TaskListProps) => {
   const { targetTask } = useSelector((state: RootState) => state.targetTask);
 
   const [prevReceiverIds, setReceiverIds] = useState<string[]>([]);
+
+  const [isSaveEnabled, setIsSaveEnabled] = useState<boolean>(false);
 
   const [thrownError, setThrownError] = useState<Error | null>(null);
   if (thrownError) {
@@ -255,12 +259,30 @@ const TaskList = ({ isMy = false }: TaskListProps) => {
     setIsPopupShown(false);
   }, [targetTask]);
 
+  useEffect(() => {
+    if (!getIsWellFormedTitle(targetTask.title)) {
+      setIsSaveEnabled(false);
+      return;
+    }
+    if (targetTask.inChargeId === BLANK) {
+      setIsSaveEnabled(false);
+      return;
+    }
+    if (!targetTask.taskStartDate || !targetTask.taskEndDate) {
+      setIsSaveEnabled(false);
+      return;
+    }
+
+    setIsSaveEnabled(true);
+  }, [targetTask]);
+
   const props = {
     list: {
       onClickTaskItem,
       loadTasks,
     },
     information: {
+      isSaveEnabled,
       isTaskInformationShown,
       isEditShown,
       isLoading,

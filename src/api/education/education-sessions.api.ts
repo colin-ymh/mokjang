@@ -1,7 +1,9 @@
 import axios, { AxiosResponse } from 'axios';
 import { SERVER_URL, TEST_SERVER_URL } from '@/constants/state/url';
 import { CustomError } from '@/api/error/error';
-import { EDUCATION_SESSION_STATUS } from '@/models/education/education';
+import authorizeAxios from '@/api/authorize-axios';
+
+import { EDUCATION_SESSION_STATUS } from '@/constants/status/status';
 
 type GetEducationSessionsParams = {
   churchId: string;
@@ -22,6 +24,16 @@ type CreateEducationSessionParams = {
   educationTermId: string;
 };
 
+type CreateEducationSessionBody = {
+  name: string;
+  startDate: string;
+  endDate: string;
+  inChargeId?: string;
+  content: string;
+  status: EDUCATION_SESSION_STATUS;
+  receiverIds: string[];
+};
+
 type EditEducationSessionParams = {
   churchId: string;
   educationId: string;
@@ -30,8 +42,10 @@ type EditEducationSessionParams = {
 };
 
 type EditEducationSessionBody = {
-  isDone?: boolean;
-  sessionDate?: string;
+  name?: string;
+  startDate?: string;
+  endDate?: string;
+  inChargeId?: string;
   content?: string;
   status?: EDUCATION_SESSION_STATUS;
 };
@@ -41,6 +55,24 @@ type DeleteEducationSessionParams = {
   educationId: string;
   educationTermId: string;
   educationSessionId: string;
+};
+
+type AddReceiversParams = {
+  churchId: string;
+  visitationId: string;
+};
+
+type AddReceiversBody = {
+  receiverIds: string[];
+};
+
+type DeleteReceiversParams = {
+  churchId: string;
+  visitationId: string;
+};
+
+type DeleteReceiversBody = {
+  receiverIds: string[];
 };
 
 export class EducationSessionsApi {
@@ -111,17 +143,19 @@ export class EducationSessionsApi {
   /**
    * 교육 회차 상태 만들기
    * @param {CreateEducationSessionParams} params
+   * @param {CreateEducationSessionParams} body
    * @returns {Promise<AxiosResponse>}
    */
   public createEducationSession = async (
-    params: CreateEducationSessionParams
+    params: CreateEducationSessionParams,
+    body: CreateEducationSessionBody
   ): Promise<AxiosResponse> => {
     const { churchId, educationId, educationTermId } = params;
 
     const url = `${this._url}/churches/${churchId}/management/educations/${educationId}/terms/${educationTermId}/sessions`;
 
     try {
-      return await axios.post(url);
+      return await authorizeAxios.post(url, body);
     } catch (serverError: any) {
       if (serverError.response) {
         const { message, error, statusCode } = serverError.response.data;
@@ -182,6 +216,54 @@ export class EducationSessionsApi {
 
     try {
       return await axios.delete(url);
+    } catch (serverError: any) {
+      if (serverError.response) {
+        const { message, error, statusCode } = serverError.response.data;
+        throw new CustomError(message, error, statusCode);
+      } else {
+        throw new CustomError(
+          '알 수 없는 에러가 발생했습니다',
+          500,
+          'Unknown Error'
+        );
+      }
+    }
+  };
+
+  public addReceivers = async (
+    params: AddReceiversParams,
+    body: AddReceiversBody
+  ) => {
+    const { churchId, visitationId } = params;
+
+    const url = `${this._url}/churches/${churchId}/visitations/${visitationId}/add-receivers`;
+
+    try {
+      return await axios.patch(url, body);
+    } catch (serverError: any) {
+      if (serverError.response) {
+        const { message, error, statusCode } = serverError.response.data;
+        throw new CustomError(message, error, statusCode);
+      } else {
+        throw new CustomError(
+          '알 수 없는 에러가 발생했습니다',
+          500,
+          'Unknown Error'
+        );
+      }
+    }
+  };
+
+  public deleteReceivers = async (
+    params: DeleteReceiversParams,
+    body: DeleteReceiversBody
+  ) => {
+    const { churchId, visitationId } = params;
+
+    const url = `${this._url}/churches/${churchId}/visitations/${visitationId}/delete-receivers`;
+
+    try {
+      return await axios.patch(url, body);
     } catch (serverError: any) {
       if (serverError.response) {
         const { message, error, statusCode } = serverError.response.data;

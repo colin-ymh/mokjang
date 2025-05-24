@@ -3,21 +3,25 @@ import { AppDispatch, RootState } from '@/redux/store';
 import { EducationSessionsApi } from '@/api/education/education-sessions.api';
 import { useState } from 'react';
 import {
-  EDUCATION_ENROLLMENT_STATUS,
-  EDUCATION_SESSION_STATUS,
-  EducationEnrollment,
+  EducationAttendance,
   EducationSession,
 } from '@/models/education/education';
 import { setTargetEducationSession } from '@/redux/reducers/target-education-session-reducer';
 import EducationSessionInformationView from '@/components/organisms/education/education-session/information/education-session-information.view';
-import { EducationEnrollmentsApi } from '@/api/education/education-enrollments.api';
 import { setTargetEducationTerm } from '@/redux/reducers/target-education-term-reducer';
+
+import { EDUCATION_SESSION_STATUS } from '@/constants/status/status';
+import { setEducationTerms } from '@/redux/reducers/education-term-filter-reducer';
+import { EducationAttendanceApi } from '@/api/education/education-attendance.api';
 
 type EducationSessionInformationProps = {};
 
 const EducationSessionInformation = ({}: EducationSessionInformationProps) => {
   const { targetEducation } = useSelector(
     (state: RootState) => state.targetEducation
+  );
+  const { educationTerms } = useSelector(
+    (state: RootState) => state.educationTermFilter
   );
   const { targetEducationTerm } = useSelector(
     (state: RootState) => state.targetEducationTerm
@@ -29,7 +33,7 @@ const EducationSessionInformation = ({}: EducationSessionInformationProps) => {
 
   const dispatch = useDispatch<AppDispatch>();
   const educationSessionsApi = new EducationSessionsApi(false);
-  const educationEnrollmentsApi = new EducationEnrollmentsApi(false);
+  const educationAttendanceApi = new EducationAttendanceApi(false);
 
   const [thrownError, setThrownError] = useState<Error | null>(null);
   if (thrownError) {
@@ -69,12 +73,18 @@ const EducationSessionInformation = ({}: EducationSessionInformationProps) => {
               }
             });
 
-          dispatch(
-            setTargetEducationTerm({
-              ...targetEducationTerm,
-              educationSessions: newEducationSessions,
-            })
+          const newTargetEducationTerm = {
+            ...targetEducationTerm,
+            educationSessions: newEducationSessions,
+          };
+          dispatch(setTargetEducationTerm(newTargetEducationTerm));
+
+          const newEducationTerms = educationTerms.map((term) =>
+            term.id === newTargetEducationTerm.id
+              ? newTargetEducationTerm
+              : term
           );
+          dispatch(setEducationTerms(newEducationTerms));
         });
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));
@@ -82,47 +92,48 @@ const EducationSessionInformation = ({}: EducationSessionInformationProps) => {
   };
   // ===== status =====
 
-  // 수강 교인 상태 변경
-  const onChangeEnrollmentStatus = (
-    value: EDUCATION_ENROLLMENT_STATUS,
-    enrollment: EducationEnrollment
+  // 출석 상태 변경
+  const onChangeAttendanceStatus = (
+    value: boolean,
+    attendance: EducationAttendance
   ) => {
     try {
-      // educationEnrollmentsApi
-      //   .editEducationEnrollment(
-      //     {
-      //       churchId,
-      //       educationId: targetEducation.id,
-      //       educationSessionId: targetEducationSession.id,
-      //       educationEnrollmentId: enrollment.id,
-      //     },
-      //     { status: value }
-      //   )
-      //   .then((response) => {
-      //     const newEducationEnrollment = response.data;
-      //
-      //     const newEducationEnrollments =
-      //       targetEducationSession.educationEnrollments.map((enrollment) => {
-      //         if (enrollment.id === newEducationEnrollment.id) {
-      //           return newEducationEnrollment;
-      //         } else {
-      //           return enrollment;
-      //         }
-      //       });
-      //
-      //     const newEducationSession = {
-      //       ...targetEducationSession,
-      //       educationEnrollments: newEducationEnrollments,
-      //     };
-      //
-      //     dispatch(setTargetEducationSession(newEducationSession));
-      //
-      //     const newEducationSessions = educationSessions.map((v) => {
-      //       return v.id !== targetEducationSession.id ? v : newEducationSession;
-      //     });
-      //
-      //     dispatch(setEducationSessions(newEducationSessions));
-      //   });
+      educationAttendanceApi
+        .editEducationAttendance(
+          {
+            churchId,
+            educationId: targetEducation.id,
+            educationTermId: targetEducationTerm.id,
+            sessionId: targetEducationSession.id,
+            attendanceId: attendance.id,
+          },
+          { isPresent: value }
+        )
+        .then((response) => {
+          const newEducationAttendance = response.data;
+
+          const newEducationAttendances =
+            targetEducationSession.educationAttendances.map((attendance) => {
+              if (attendance.id === newEducationAttendance.id) {
+                return newEducationAttendance;
+              } else {
+                return attendance;
+              }
+            });
+
+          const newEducationSession = {
+            ...targetEducationSession,
+            educationEnrollments: newEducationAttendances,
+          };
+
+          dispatch(setTargetEducationSession(newEducationSession));
+
+          // const newEducationSessions = educationSessions.map((v) => {
+          //   return v.id !== targetEducationSession.id ? v : newEducationSession;
+          // });
+          //
+          // dispatch(setEducationSessions(newEducationSessions));
+        });
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));
     }
@@ -130,7 +141,7 @@ const EducationSessionInformation = ({}: EducationSessionInformationProps) => {
 
   const props = {
     onChangeStatus,
-    onChangeEnrollmentStatus,
+    onChangeAttendanceStatus,
   };
   return (
     <>

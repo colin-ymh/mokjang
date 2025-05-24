@@ -13,7 +13,7 @@ import DaumPostcodeEmbed, { Address } from 'react-daum-postcode';
 import { gsap } from 'gsap';
 
 import { getSchool } from '@/api/school-api';
-import { getDateFromString, getIsChild } from '@/utils/date';
+import { getDateFromDateString, getIsChild } from '@/utils/date';
 import { setMember } from '@/redux/reducers/member-register-reducer';
 import PersonalRegisterView from '@/components/molecules/register/personal-register.view';
 import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-item';
@@ -41,7 +41,7 @@ const PersonalRegister = () => {
   const schoolAnimationRef = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
     if (schoolAnimationRef.current) {
-      const isChild = getIsChild(getDateFromString(member.birth));
+      const isChild = getIsChild(getDateFromDateString(member.birth));
       if (isChild && getIsWellFormedBirth(member.birth)) {
         // 미성년자일 경우 애니메이션으로 나타남
         gsap.to(schoolAnimationRef.current, {

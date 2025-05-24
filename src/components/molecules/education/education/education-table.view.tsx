@@ -4,7 +4,6 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 
 import { GRAY, MAIN, WHITE } from '@/constants/styles/color';
-import { EDUCATION } from '@/constants/education/education-column';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { Education } from '@/models/education/education';
 import useWindowSize from '@/hooks/window/window';
@@ -14,6 +13,8 @@ import KebabDropdown from '@/components/atoms/common/dropdown/kebab-dropdown';
 import ConfirmPopup from '@/components/atoms/common/popup/confirm-popup';
 import AddEducation from '@/components/organisms/education/education/add/add-education';
 import CustomPopup from '@/components/atoms/common/popup/custom-popup';
+
+import { EDUCATION } from '@/constants/education/education-column';
 
 // 1. 컬럼별 PX 폭
 // const getColumnWidth = (id: string) => {

@@ -6,10 +6,10 @@ import { useI18n, useScopedI18n } from '../../../../../locales/client';
 import { GRAY } from '@/constants/styles/color';
 import {
   VISITATION_METHOD,
-  VISITATION_STATUS,
   VisitationDetail,
 } from '@/models/visitation/visitation';
 import {
+  useTimeDropdownItems,
   useVisitationMethodDropdownItems,
   useVisitationStatusDropdownItems,
 } from '@/hooks/dropdown/dropdown-items';
@@ -21,10 +21,16 @@ import Quill from '@/components/atoms/common/input/quill';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import StatusDropdown from '@/components/atoms/common/dropdown/status-dropdown';
-import { getDateTimeFromString } from '@/utils/date';
-import { ko } from 'date-fns/locale';
-import CustomDatePicker from '@/vendor/date-picker/custom-date-picker';
 import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-item';
+import CustomDatePicker from '@/vendor/date-picker/custom-date-picker';
+import {
+  getDateFromDateString,
+  getDateFromString,
+  getDateStringFromDate,
+  getTotalMinuteFromDate,
+} from '@/utils/date';
+import Dropdown from '@/components/atoms/common/dropdown/dropdown';
+import { VISITATION_STATUS } from '@/constants/status/status';
 
 /* ──────────────────────────────── Styled Components ─────────────────────────────── */
 const AddVisitationViewContainer = styled.div`
@@ -51,12 +57,8 @@ const PeriodContainer = styled.div`
   display: flex;
   flex-direction: row;
   gap: 10px;
-  border: 1px solid ${GRAY.DEFAULT};
-  border-radius: 5px;
-  height: 40px;
   justify-content: flex-start;
   align-items: center;
-  padding: 0 10px;
 `;
 const DetailContainer = styled.div`
   display: flex;
@@ -64,6 +66,11 @@ const DetailContainer = styled.div`
   flex-direction: column;
   gap: 10px;
   padding: 10px 0;
+`;
+
+const RequiredMark = styled.span`
+  color: red;
+  margin-right: 4px;
 `;
 
 type AddVisitationViewProps = {
@@ -74,7 +81,9 @@ type AddVisitationViewProps = {
   onChangeStatus: (status: VISITATION_STATUS) => void;
   onChangeTitle: (event: ChangeEvent<HTMLInputElement>) => void;
   onChangeStartDate: (event: Date | null) => void;
+  onChangeStartTime: (value: number) => void;
   onChangeEndDate: (event: Date | null) => void;
+  onChangeEndTime: (value: number) => void;
   onChangeVisitedMembers: (members: MemberDropdownType[]) => void;
   onChangeMethod: (method: VISITATION_METHOD) => void;
   onChangeInstructor: (instructor: MemberDropdownType[]) => void;
@@ -91,7 +100,9 @@ const AddVisitationView = ({
   onChangeStatus,
   onChangeTitle,
   onChangeStartDate,
+  onChangeStartTime,
   onChangeEndDate,
+  onChangeEndTime,
   onChangeVisitedMembers,
   onChangeMethod,
   onChangeInstructor,
@@ -107,6 +118,7 @@ const AddVisitationView = ({
 
   const statusDropdownItems = useVisitationStatusDropdownItems();
   const methodItems = useVisitationMethodDropdownItems();
+  const timeDropdownItems = useTimeDropdownItems();
 
   return (
     <AddVisitationViewContainer>
@@ -131,50 +143,82 @@ const AddVisitationView = ({
           placeholder={t_placeholder('title')}
           borderColor={GRAY.DEFAULT}
           height={40}
+          isRequired={true}
         />
       </InputContainer>
 
       {/* 기간 */}
       <InputContainer>
         <LabelContainer>
-          <MainText>{t('period')}</MainText>
+          <MainText>
+            <RequiredMark>*</RequiredMark>
+            {t('period')}
+          </MainText>
           <PeriodContainer>
+            {/* 시작 날짜 */}
             <CustomDatePicker
-              value={targetVisitation.visitationStartDate}
-              selected={getDateTimeFromString(
+              value={
                 targetVisitation.visitationStartDate
-              )}
+                  ? getDateStringFromDate(
+                      getDateFromDateString(
+                        targetVisitation.visitationStartDate
+                      )
+                    )
+                  : undefined
+              }
+              selected={
+                targetVisitation.visitationStartDate
+                  ? getDateFromString(targetVisitation.visitationStartDate)
+                  : null
+              }
               onChange={onChangeStartDate}
-              dateFormat="yyyy-MM-dd"
               placeholderText={t('startDate')}
-              showYearDropdown
-              scrollableYearDropdown
-              yearDropdownItemNumber={50}
-              locale={ko}
-              showTimeInput
-              showTimeCaption
-              timeCaption="시간"
-              timeIntervals={15}
-              timeFormat="aa h:mm"
+              width={100}
+            />
+            {/* 시작 시간 */}
+            <Dropdown
+              value={
+                targetVisitation.visitationStartDate
+                  ? getTotalMinuteFromDate(
+                      getDateFromString(targetVisitation.visitationStartDate)
+                    )
+                  : 0
+              }
+              items={timeDropdownItems}
+              onChangeItem={onChangeStartTime}
+              width={100}
             />
             <MainText>-</MainText>
+            {/* 종료 날짜 */}
             <CustomDatePicker
-              value={targetVisitation.visitationEndDate}
-              selected={getDateTimeFromString(
+              value={
                 targetVisitation.visitationEndDate
-              )}
+                  ? getDateStringFromDate(
+                      getDateFromDateString(targetVisitation.visitationEndDate)
+                    )
+                  : undefined
+              }
+              selected={
+                targetVisitation.visitationEndDate
+                  ? getDateFromString(targetVisitation.visitationEndDate)
+                  : null
+              }
               onChange={onChangeEndDate}
-              dateFormat="yyyy-MM-dd"
               placeholderText={t('endDate')}
-              showYearDropdown
-              scrollableYearDropdown
-              yearDropdownItemNumber={50}
-              locale={ko}
-              showTimeInput
-              showTimeCaption
-              timeCaption="시간"
-              timeIntervals={15}
-              timeFormat="aa h:mm"
+              width={100}
+            />
+            {/* 종료 시간 */}
+            <Dropdown
+              value={
+                targetVisitation.visitationEndDate
+                  ? getTotalMinuteFromDate(
+                      getDateFromString(targetVisitation.visitationEndDate)
+                    )
+                  : 0
+              }
+              items={timeDropdownItems}
+              onChangeItem={onChangeEndTime}
+              width={100}
             />
           </PeriodContainer>
         </LabelContainer>
@@ -183,7 +227,10 @@ const AddVisitationView = ({
       {/* 대상자 */}
       <InputContainer>
         <LabelContainer>
-          <MainText>{t('visitedMember')}</MainText>
+          <MainText>
+            <RequiredMark>*</RequiredMark>
+            {t('visitedMember')}
+          </MainText>
           <MultiMemberDropdown
             values={visitedMembers}
             onChangeValues={onChangeVisitedMembers}
@@ -207,7 +254,10 @@ const AddVisitationView = ({
       {/* 담당자 */}
       <InputContainer>
         <LabelContainer>
-          <MainText>{t('instructor')}</MainText>
+          <MainText>
+            <RequiredMark>*</RequiredMark>
+            {t('instructor')}
+          </MainText>
           <MultiMemberDropdown
             values={instructor}
             onChangeValues={onChangeInstructor}
@@ -216,6 +266,7 @@ const AddVisitationView = ({
             placeholder={
               instructor.length === 0 ? t_placeholder('name') : BLANK
             }
+            isUserMember={true}
           />
         </LabelContainer>
       </InputContainer>
@@ -262,6 +313,7 @@ const AddVisitationView = ({
             onChangeValues={onChangeReceivers}
             height={40}
             placeholder={receivers.length === 0 ? t_placeholder('name') : BLANK}
+            isUserMember={true}
           />
         </LabelContainer>
       </InputContainer>

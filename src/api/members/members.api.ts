@@ -211,6 +211,119 @@ export class MembersApi {
   };
 
   /**
+   * 유저로 등록된 교인들 불러오기
+   * @param {GetMembersParams} params
+   * @returns {Promise<AxiosResponse>}
+   */
+  public getUserMembers = async (
+    params: GetMembersParams
+  ): Promise<AxiosResponse> => {
+    const {
+      churchId,
+      take = 5,
+      page = 1,
+      order,
+      orderDirection,
+      name,
+      mobilePhone,
+      school,
+      address,
+      homePhone,
+      occupation,
+      vehicleNumber,
+      birthAfter,
+      birthBefore,
+      registerAfter,
+      registerBefore,
+      updateAfter,
+      updateBefore,
+      gender,
+      baptism,
+      marriage,
+      group,
+      officer,
+      ministries,
+      educations,
+      selectedColumns,
+    } = params;
+
+    const queryParams: Record<string, any> = Object.fromEntries(
+      Object.entries({
+        take,
+        page,
+        order,
+        orderDirection,
+        name,
+        mobilePhone,
+        school,
+        address,
+        homePhone,
+        occupation,
+        birthAfter,
+        birthBefore,
+        registerAfter,
+        registerBefore,
+        updateAfter,
+        updateBefore,
+        gender,
+        baptism,
+        marriage,
+        group,
+        officer,
+        ministries,
+        educations,
+        vehicleNumber,
+        select__group: true,
+        select__mobilePhone: selectedColumns?.includes(MEMBER.MOBILE_PHONE),
+        select__birth:
+          selectedColumns?.includes(MEMBER.BIRTH) ||
+          selectedColumns?.includes(MEMBER.AGE),
+        select__gender: selectedColumns?.includes(MEMBER.GENDER),
+        select__officer: selectedColumns?.includes(MEMBER.OFFICER),
+        select__ministries: selectedColumns?.includes(MEMBER.MINISTRIES),
+        select__educations: selectedColumns?.includes(MEMBER.EDUCATIONS),
+        select__marriage: selectedColumns?.includes(MEMBER.MARRIAGE),
+        select__address: selectedColumns?.includes(MEMBER.ADDRESS),
+        select__homePhone: selectedColumns?.includes(MEMBER.HOME_PHONE),
+        select__occupation: selectedColumns?.includes(MEMBER.OCCUPATION),
+        select__school: selectedColumns?.includes(MEMBER.SCHOOL),
+        select__vehicleNumber: selectedColumns?.includes(MEMBER.VEHICLE_NUMBER),
+      }).filter(
+        ([_, value]) =>
+          value !== undefined &&
+          value !== '' &&
+          !(Array.isArray(value) && value.length === 0)
+      )
+    );
+
+    const url = `${this._url}/churches/${churchId}/user-members`;
+
+    try {
+      return await axios.get(url, {
+        params: queryParams,
+        paramsSerializer: (params) => {
+          return qs.stringify(params, {
+            arrayFormat: 'repeat',
+            skipNulls: true,
+            encodeValuesOnly: true,
+          });
+        },
+      });
+    } catch (serverError: any) {
+      if (serverError.response) {
+        const { message, error, statusCode } = serverError.response.data;
+        throw new CustomError(message, error, statusCode);
+      } else {
+        throw new CustomError(
+          '알 수 없는 에러가 발생했습니다',
+          500,
+          'Unknown Error'
+        );
+      }
+    }
+  };
+
+  /**
    * 교인 불러오기
    * @param {GetMemberParams} params
    * @returns

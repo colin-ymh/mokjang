@@ -14,6 +14,8 @@ import {
   VisitationDetail,
 } from '@/models/visitation/visitation';
 import { setTargetVisitation } from '@/redux/reducers/target-visitation-reducer';
+import { getIsWellFormedTitle } from '@/utils/check';
+import { BLANK } from '@/constants/constant';
 
 type VisitationListProps = {
   isMy?: boolean;
@@ -35,6 +37,8 @@ const VisitationList = ({ isMy = false }: VisitationListProps) => {
   const { targetVisitation } = useSelector(
     (state: RootState) => state.targetVisitation
   );
+
+  const [isSaveEnabled, setIsSaveEnabled] = useState<boolean>(false);
 
   const [prevMemberIds, setPrevMemberIds] = useState<string[]>([]);
   const [prevReceiverIds, setReceiverIds] = useState<string[]>([]);
@@ -329,12 +333,37 @@ const VisitationList = ({ isMy = false }: VisitationListProps) => {
     setIsPopupShown(false);
   }, [targetVisitation]);
 
+  useEffect(() => {
+    if (!getIsWellFormedTitle(targetVisitation.visitationTitle)) {
+      setIsSaveEnabled(false);
+      return;
+    }
+    if (targetVisitation.members.length === 0) {
+      setIsSaveEnabled(false);
+      return;
+    }
+    if (targetVisitation.instructorId === BLANK) {
+      setIsSaveEnabled(false);
+      return;
+    }
+    if (
+      !targetVisitation.visitationStartDate ||
+      !targetVisitation.visitationEndDate
+    ) {
+      setIsSaveEnabled(false);
+      return;
+    }
+
+    setIsSaveEnabled(true);
+  }, [targetVisitation]);
+
   const props = {
     list: {
       onClickVisitationItem,
       loadVisitations,
     },
     information: {
+      isSaveEnabled,
       isVisitationInformationShown,
       isEditShown,
       isLoading,

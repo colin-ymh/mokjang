@@ -5,35 +5,37 @@ import { BLANK } from '@/constants/constant';
  * YYYY-MM-dd => Date Object
  * @param dateString
  */
-export const getDateFromString = (dateString: string | null) => {
-  if (!dateString) return null;
-
+export const getDateFromDateString = (dateString: string) => {
   const lengthLimit = 10;
   const limited = dateString.slice(0, lengthLimit);
 
-  if (limited.length === 10) return new Date(limited);
-  else return null;
+  return new Date(limited);
 };
+
+/**
+ * Date Object => minute
+ * @param date
+ */
+export const getTotalMinuteFromDate = (date: Date) => {
+  const hour = date.getHours();
+  const minute = date.getMinutes();
+
+  return hour * 60 + minute;
+};
+
 /**
  * YYYY-MM-DDTHH:mm => Date Object
  * @param dateString
  */
-export const getDateTimeFromString = (dateString: string | null) => {
-  if (!dateString) return null;
-
-  const parsed = new Date(dateString);
-
-  // 유효한 날짜인지 확인
-  return isNaN(parsed.getTime()) ? null : parsed;
+export const getDateFromString = (dateString: string) => {
+  return new Date(dateString);
 };
 
 /**
  * Date Object => YYYY-MM-dd
  * @param date
  */
-export const getStringFromDate = (date: Date | null) => {
-  if (!date) return BLANK;
-
+export const getDateStringFromDate = (date: Date) => {
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, '0'); // 0-based index이므로 +1
   const day = String(date.getDate()).padStart(2, '0');
@@ -42,10 +44,21 @@ export const getStringFromDate = (date: Date | null) => {
 };
 
 /**
+ * Date Object => HH:mm
+ * @param date
+ */
+export const getTimeStringFromDate = (date: Date) => {
+  const hour = String(date.getHours()).padStart(2, '0');
+  const minute = String(date.getMinutes()).padStart(2, '0');
+
+  return `${hour}:${minute}`;
+};
+
+/**
  * Date Object => YYYY-MM-dd T HH:mm
  * @param date
  */
-export const getStringFromDateTime = (date: Date | null) => {
+export const getStringFromDate = (date: Date) => {
   if (!date) return BLANK;
 
   const year = date.getFullYear();
@@ -63,18 +76,14 @@ export const getStringFromDateTime = (date: Date | null) => {
  * @param date
  * @return {boolean}
  */
-export const getIsChild = (date: Date | null): boolean => {
-  if (!date) {
-    return false;
-  }
-
+export const getIsChild = (date: Date): boolean => {
   const CURRENT_YEAR = new Date().getFullYear();
   const TARGET_YEAR = date.getFullYear();
 
   return CURRENT_YEAR - TARGET_YEAR <= 18;
 };
 
-export const getAge = (date: Date | null): number => {
+export const getAge = (date: Date): number => {
   if (date === null) return 0;
 
   const today = new Date();
@@ -130,4 +139,14 @@ export const getMinuteFromSecond = (target: number) => {
   const second = String(target % 60).padStart(2, '0');
 
   return `${minute}:${second}`;
+};
+
+/**
+ * minute 를 hh:mm 형식으로 변경
+ */
+export const getHourFromMinute = (target: number) => {
+  const hour = String(Math.floor(target / 60)).padStart(2, '0');
+  const minute = String(target % 60).padStart(2, '0');
+
+  return `${hour}:${minute}`;
 };

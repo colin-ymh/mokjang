@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import SlidePopup from '@/components/atoms/common/popup/slide-popup';
 import Loading from '@/components/atoms/common/etc/loading';
 import React from 'react';
-import { BLACK, DESTRUCTIVE } from '@/constants/styles/color';
+import { BLACK, DESTRUCTIVE, MAIN } from '@/constants/styles/color';
 import CancelIcon from '../../../../../public/svg/cancel.svg';
 import TrashIcon from '../../../../../public/svg/trash.svg';
 import ConfirmPopup from '@/components/atoms/common/popup/error-popup';
@@ -75,6 +75,7 @@ const Cancel = styled(CancelIcon)`
 type VisitationListViewProps = {
   list: VisitationTableProps;
   information: {
+    isSaveEnabled: boolean;
     isVisitationInformationShown: boolean;
     isEditShown: boolean;
     isLoading: boolean;
@@ -94,6 +95,7 @@ const VisitationListView = (props: VisitationListViewProps) => {
   const t_popup = useScopedI18n('popup');
   const t_title = useScopedI18n('title');
   const {
+    isSaveEnabled,
     isVisitationInformationShown,
     isEditShown,
     isLoading,
@@ -176,6 +178,8 @@ const VisitationListView = (props: VisitationListViewProps) => {
         onClickDone={onClickEditDone}
         doneText={t_button('edit')}
         headerTitle={t_title('editVisitation')}
+        doneBackgroundColor={isSaveEnabled ? MAIN.DEFAULT : MAIN.LIGHT}
+        doneDisabled={!isSaveEnabled}
       >
         <AddVisitation />
       </SlidePopup>

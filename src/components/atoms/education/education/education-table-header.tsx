@@ -4,11 +4,12 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 
 import { MainText } from '@/components/atoms/common/text/main-text';
-import { EDUCATION } from '@/constants/education/education-column';
 import { BLACK, GRAY, MAIN } from '@/constants/styles/color';
 import { SIZE } from '@/constants/styles/style';
 import { getTranslatedEducationColumn } from '@/utils/translate';
 import { useI18n } from '../../../../../locales/client';
+
+import { EDUCATION } from '@/constants/education/education-column';
 
 const HeaderContainer = styled.div`
   display: flex;

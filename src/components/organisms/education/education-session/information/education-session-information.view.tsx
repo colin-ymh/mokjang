@@ -8,12 +8,11 @@ import { GRAY } from '@/constants/styles/color';
 import React from 'react';
 import Image from 'next/image';
 import StatusDropdown from '@/components/atoms/common/dropdown/status-dropdown';
-import {
-  EDUCATION_ENROLLMENT_STATUS,
-  EDUCATION_SESSION_STATUS,
-  EducationEnrollment,
-} from '@/models/education/education';
+import { EducationAttendance } from '@/models/education/education';
 import { useI18n } from '../../../../../../locales/client';
+
+import { EDUCATION_SESSION_STATUS } from '@/constants/status/status';
+import EducationAttendanceList from '@/components/atoms/education/education-attendance/education-attendance-list';
 
 const InformationContainer = styled.div`
   display: flex;
@@ -91,15 +90,15 @@ const LabelContainer = styled.div`
 
 type EducationSessionInformationViewProps = {
   onChangeStatus: (status: EDUCATION_SESSION_STATUS) => void;
-  onChangeEnrollmentStatus: (
-    value: EDUCATION_ENROLLMENT_STATUS,
-    enrollment: EducationEnrollment
+  onChangeAttendanceStatus: (
+    value: boolean,
+    attendance: EducationAttendance
   ) => void;
 };
 
 const EducationSessionInformationView = ({
   onChangeStatus,
-  onChangeEnrollmentStatus,
+  onChangeAttendanceStatus,
 }: EducationSessionInformationViewProps) => {
   const t = useI18n();
   const { targetEducationSession } = useSelector(
@@ -172,10 +171,10 @@ const EducationSessionInformationView = ({
       <AttendanceContainer>
         <LabelContainer>
           <MainText>{`${t('attendance')}`}</MainText>
-          {/*<EducationEnrollmentList*/}
-          {/*  enrollments={targetEducationSession.educationEnrollments}*/}
-          {/*  onChangeStatus={onChangeEnrollmentStatus}*/}
-          {/*/>*/}
+          <EducationAttendanceList
+            attendances={targetEducationSession.educationAttendances}
+            onChangeStatus={onChangeAttendanceStatus}
+          />
         </LabelContainer>
       </AttendanceContainer>
     </InformationContainer>

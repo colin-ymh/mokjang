@@ -7,11 +7,11 @@ import { CustomError } from '@/api/error/error';
 import { ORDER_DIRECTION } from '@/constants/constant';
 import {
   VISITATION_METHOD,
-  VISITATION_STATUS,
   VISITATION_TYPE,
   VisitationDetail,
 } from '@/models/visitation/visitation';
 import { VISITATION } from '@/constants/visitation/visitation-column';
+import { VISITATION_STATUS } from '@/constants/status/status';
 
 type GetVisitationsParams = {
   churchId: string;

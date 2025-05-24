@@ -5,8 +5,8 @@ import { SERVER_URL, TEST_SERVER_URL } from '@/constants/state/url';
 import authorizeAxios from '@/api/authorize-axios';
 import { CustomError } from '@/api/error/error';
 import { ORDER_DIRECTION } from '@/constants/constant';
-import { TASK_STATUS } from '@/models/task/task';
 import { TASK } from '@/constants/task/task-column';
+import { TASK_STATUS } from '@/constants/status/status';
 
 type GetTasksParams = {
   churchId: string;
@@ -15,8 +15,8 @@ type GetTasksParams = {
   order?: TASK;
   orderDirection?: ORDER_DIRECTION;
 
-  fromTaskDate?: string;
-  toTaskDate?: string;
+  fromTaskStartDate?: string;
+  toTaskStartDate?: string;
   taskStatus?: TASK_STATUS[];
   title?: string;
   inChargeId?: string;
@@ -111,8 +111,8 @@ export class TasksApi {
       page = 1,
       orderDirection,
 
-      fromTaskDate,
-      toTaskDate,
+      fromTaskStartDate,
+      toTaskStartDate,
       taskStatus,
       inChargeId,
       title,
@@ -125,8 +125,8 @@ export class TasksApi {
         take,
         page,
         orderDirection,
-        fromTaskDate,
-        toTaskDate,
+        fromTaskStartDate,
+        toTaskStartDate,
         taskStatus,
         inChargeId,
         title,

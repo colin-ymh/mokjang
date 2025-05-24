@@ -8,7 +8,6 @@ import {
 } from '@/redux/reducers/education-filter-reducer';
 
 import EducationTableView from '@/components/molecules/education/education/education-table.view';
-import { EDUCATION } from '@/constants/education/education-column';
 import { ORDER_DIRECTION } from '@/constants/constant';
 import { EducationsApi } from '@/api/education/educations.api';
 import { DEFAULT_EDUCATION, Education } from '@/models/education/education';
@@ -16,6 +15,8 @@ import { setTargetEducation } from '@/redux/reducers/target-education-reducer';
 import { getIsWellFormedTitle } from '@/utils/check';
 import { usePageRouter } from '@/utils/router';
 import { EducationTermsApi } from '@/api/education/education-terms.api';
+
+import { EDUCATION } from '@/constants/education/education-column';
 
 export type EducationTableProps = {
   loadEducations: () => Promise<void>;

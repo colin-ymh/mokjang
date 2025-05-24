@@ -84,9 +84,9 @@ const MainEducationHeader = ({}: MainEducationHeaderProps) => {
     dispatch(setTargetEducation(DEFAULT_EDUCATION));
   };
 
-  const onClickSaveEducation = () => {
+  const onClickSaveEducation = async () => {
     try {
-      educationsApi
+      await educationsApi
         .createEducation(
           { churchId },
           {
@@ -127,9 +127,9 @@ const MainEducationHeader = ({}: MainEducationHeaderProps) => {
     dispatch(setTargetEducationTerm(DEFAULT_EDUCATION_TERM));
   };
 
-  const onClickSaveEducationTerm = () => {
+  const onClickSaveEducationTerm = async () => {
     try {
-      educationTermsApi
+      await educationTermsApi
         .createEducationTerm(
           { churchId, educationId: targetEducation.id },
           {
