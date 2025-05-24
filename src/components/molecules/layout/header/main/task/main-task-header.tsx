@@ -46,9 +46,9 @@ const MainTaskHeader = ({}: MainTaskHeaderProps) => {
     dispatch(setTargetTask(DEFAULT_TASK));
   };
 
-  const onClickSaveTask = () => {
+  const onClickSaveTask = async () => {
     try {
-      tasksApi
+      await tasksApi
         .createTask(
           { churchId },
           {

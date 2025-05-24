@@ -11,12 +11,12 @@ import { useI18n } from '../../../../locales/client';
 import Cancel from '../../../../public/svg/cancel.svg';
 import {
   VISITATION_METHOD,
-  VISITATION_STATUS,
   VISITATION_TYPE,
 } from '@/models/visitation/visitation';
 import { AppDispatch, RootState } from '@/redux/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { setVisitationFilter } from '@/redux/reducers/visitation-filter-reducer';
+import { VISITATION_STATUS } from '@/constants/status/status';
 
 const ItemContainer = styled.div`
   display: flex;

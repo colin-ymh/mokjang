@@ -162,6 +162,7 @@ const MainEducationHeaderView = ({
         onClickClose={onClickCloseTermModal}
         onClickDone={onClickSaveEducationTerm}
         doneBackgroundColor={isTermSaveEnabled ? MAIN.DEFAULT : MAIN.LIGHT}
+        doneDisabled={!isTermSaveEnabled}
       >
         <AddEducationTerm />
       </SlidePopup>

@@ -3,13 +3,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 
 import { getTrimmedString } from '@/utils/format';
-import { EDUCATION } from '@/constants/education/education-column';
 import { BLANK } from '@/constants/constant';
 import EducationRowView, {
   EDUCATION_SEARCH_FILTER,
 } from '@/components/molecules/education/education/education-row.view';
 import { EducationFilteredItemType } from '@/components/atoms/education/education/education-filtered-item';
 import { setEducationFilter } from '@/redux/reducers/education-filter-reducer';
+
+import { EDUCATION } from '@/constants/education/education-column';
 
 const EducationRow = () => {
   const dispatch = useDispatch<AppDispatch>();

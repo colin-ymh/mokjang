@@ -2,7 +2,6 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { useVisitationStatusDropdownItems } from '@/hooks/dropdown/dropdown-items';
-import { VISITATION_STATUS } from '@/models/visitation/visitation';
 import { useI18n } from '../../../../../locales/client';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { getFormattedDate } from '@/utils/format';
@@ -12,6 +11,7 @@ import { MEMBER } from '@/constants/member/member-column';
 import React from 'react';
 import Image from 'next/image';
 import StatusDropdown from '@/components/atoms/common/dropdown/status-dropdown';
+import { VISITATION_STATUS } from '@/constants/status/status';
 
 const InformationContainer = styled.div`
   display: flex;

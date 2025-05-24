@@ -12,7 +12,8 @@ import Cancel from '../../../../public/svg/cancel.svg';
 import { AppDispatch, RootState } from '@/redux/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { setTaskFilter } from '@/redux/reducers/task-filter-reducer';
-import { TASK_STATUS } from '@/models/task/task';
+
+import { TASK_STATUS } from '@/constants/status/status';
 
 const ItemContainer = styled.div`
   display: flex;
@@ -67,8 +68,8 @@ const TaskFilteredItem = ({ item }: TaskFilteredItemProps) => {
       dispatch(
         setTaskFilter({
           ...taskFilter,
-          fromTaskDate: BLANK,
-          toTaskDate: BLANK,
+          fromTaskStartDate: BLANK,
+          toTaskStartDate: BLANK,
         })
       );
     } else if ([TASK.TITLE, TASK.IN_CHARGE].includes(item.title)) {

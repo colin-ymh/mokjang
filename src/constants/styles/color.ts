@@ -33,11 +33,15 @@ export enum RED {
 }
 
 export enum STATUS_COLOR {
-  DONE = '#2EE431',
-  COMPLETED = '#2EE431',
+  RESERVE = '#a69f9f',
   IN_PROGRESS = '#ffda22',
-  RESERVE = '#ff7118',
-  INCOMPLETE = '#f43232',
+  DONE = '#2EE431',
   PENDING = '#f43232',
+
+  COMPLETED = '#2EE431',
+  INCOMPLETE = '#f43232',
+
+  PRESENT = '#2EE431',
+  ABSENT = '#f43232',
   UNDEFINED = WHITE,
 }

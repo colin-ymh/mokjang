@@ -174,7 +174,7 @@ const StatusDropdownView = forwardRef<HTMLInputElement, DropdownViewProps>(
                 onKeyDownHandler(event);
               }
             }}
-            paddingLeft={innerValue ? 25 : 10}
+            paddingLeft={innerValue !== undefined ? 25 : 10}
             {...inputProps}
           />
           <Chevron $isOpened={isOpened} />

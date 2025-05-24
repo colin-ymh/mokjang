@@ -102,6 +102,7 @@ const MainVisitationHeaderView = ({
         onClickClose={onClickCloseModal}
         onClickDone={onClickSaveVisitation}
         doneBackgroundColor={isSaveEnabled ? MAIN.DEFAULT : MAIN.LIGHT}
+        doneDisabled={!isSaveEnabled}
       >
         <AddVisitation />
       </SlidePopup>

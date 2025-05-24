@@ -1,11 +1,12 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { BLANK, NULL, ORDER_DIRECTION } from '@/constants/constant';
-import { Task, TASK_STATUS } from '@/models/task/task';
+import { Task } from '@/models/task/task';
 import { RootState } from '@/redux/store';
 import { TASK } from '@/constants/task/task-column';
 import { TasksApi } from '@/api/tasks/tasks.api';
 import { Member } from '@/models/member/member';
 import { DEFAULT_MEMBER } from '@/redux/reducers/member-register-reducer';
+import { TASK_STATUS } from '@/constants/status/status';
 
 type TASK_FILTER = {
   [TASK.FROM_DATE]: string;
@@ -109,15 +110,15 @@ export const fetchTasks = createAsyncThunk<
         taskStatus: taskFilter.taskStatus,
         title: taskFilter.title,
         inChargeId: inChargeId || taskFilter.inCharge.id,
-        fromTaskDate: taskFilter.fromTaskDate,
-        toTaskDate: taskFilter.toTaskDate,
+        fromTaskStartDate: taskFilter.fromTaskStartDate,
+        toTaskStartDate: taskFilter.toTaskStartDate,
         // 검색
       });
 
       return response.data.data;
     } catch (error) {
-      console.error('심방 목록 불러오기 실패', error);
-      return rejectWithValue('심방 목록을 불러오는 중 오류가 발생했습니다.');
+      console.error('업무 목록 불러오기 실패', error);
+      return rejectWithValue('업무 목록을 불러오는 중 오류가 발생했습니다.');
     }
   }
 );

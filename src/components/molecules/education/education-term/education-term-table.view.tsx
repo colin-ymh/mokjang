@@ -14,10 +14,10 @@ import { BLANK_HEADER } from '@/redux/reducers/member-filter-reducer';
 // import { getEducationTermStatusColor } from '@/utils/color';
 import EducationTermTableHeader from '@/components/atoms/education/education-term/education-term-table-header';
 import { EducationSession, EducationTerm } from '@/models/education/education';
-import { EDUCATION_TERM } from '@/constants/education/education-term-column';
+import { EDUCATION_TERM } from '@/constants/education/education-column';
 import { useI18n } from '../../../../../locales/client';
 import ChevronDown from '../../../../../public/svg/chevron-down.svg';
-import { getEducationTermStatusColor } from '@/utils/color';
+import { getStatusColor } from '@/utils/color';
 import { getFormattedDate } from '@/utils/format';
 import { getRandomImage } from '@/utils/image';
 import { MEMBER } from '@/constants/member/member-column';
@@ -27,13 +27,13 @@ import Plus from '../../../../../public/svg/plus.svg';
 const getColumnWidth = (id: string) => {
   switch (id) {
     case EDUCATION_TERM.TERM:
-      return 200;
-    // case EDUCATION_TERM.STATUS:
-    //   return 150;
+      return 300;
+    case EDUCATION_TERM.STATUS:
+      return 150;
     case EDUCATION_TERM.PERIOD:
       return 200;
-    // case EDUCATION_TERM.INSTRUCTOR:
-    //   return 150;
+    case EDUCATION_TERM.IN_CHARGE:
+      return 150;
     default:
       // 비고(REMARKS) 컬럼 등
       return 80;
@@ -205,6 +205,7 @@ const SessionContainer = styled.div`
   flex-direction: row;
   align-items: center;
   padding-left: 50px;
+  gap: 10px;
 `;
 
 const PlusButton = styled(Plus)`
@@ -238,7 +239,7 @@ type EducationTermTableProps = {
   ) => void;
   scrollRef: MutableRefObject<HTMLDivElement | null>;
   onScroll: () => void;
-  onClickOpenAddEducationSession: () => void;
+  onClickOpenAddEducationSession: (educationTerm?: EducationTerm) => void;
 };
 
 const EducationTermTableView = ({
@@ -289,9 +290,7 @@ const EducationTermTableView = ({
       case EDUCATION_TERM.STATUS:
         return (
           <StatusContainer>
-            <ColoredDot
-              color={getEducationTermStatusColor(educationTerm.status)}
-            />
+            <ColoredDot color={getStatusColor(educationTerm.status)} />
             <MainText>{t(educationTerm?.status)}</MainText>
           </StatusContainer>
         );
@@ -322,7 +321,7 @@ const EducationTermTableView = ({
             <PlusButton
               onClick={(event: any) => {
                 event.stopPropagation();
-                onClickOpenAddEducationSession();
+                onClickOpenAddEducationSession(educationTerm);
               }}
             />
           </div>
@@ -337,17 +336,40 @@ const EducationTermTableView = ({
     id: string,
     session: EducationSession
   ) => {
+    // term 컬럼에 맞춰서 작성해야함
     switch (id) {
       case EDUCATION_TERM.TERM:
         return (
           <SessionContainer>
             <MainText>{`${session.session}${t('session')}`}</MainText>
+            <MainText>{session.name}</MainText>
           </SessionContainer>
         );
       case EDUCATION_TERM.PERIOD:
-        return <MainText>{}</MainText>;
+        return (
+          <MainText>
+            {`${session.startDate && getFormattedDate(session.startDate)} - ${
+              session.endDate && getFormattedDate(session.endDate)
+            }`}
+          </MainText>
+        );
       case EDUCATION_TERM.STATUS:
-        return <MainText>{}</MainText>;
+        return (
+          <StatusContainer>
+            <ColoredDot color={getStatusColor(session.status)} />
+            <MainText>{t(session?.status)}</MainText>
+          </StatusContainer>
+        );
+      case EDUCATION_TERM.IN_CHARGE:
+        return (
+          <ProfileContainer>
+            <ProfileImage
+              src={getRandomImage(session.inCharge.id)}
+              alt={MEMBER.PROFILE_IMAGE}
+            />
+            <MainText>{session.inCharge?.name}</MainText>
+          </ProfileContainer>
+        );
       default:
         return null;
     }

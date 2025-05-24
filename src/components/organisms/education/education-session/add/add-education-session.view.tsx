@@ -6,17 +6,27 @@ import { GRAY } from '@/constants/styles/color';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
-import { getDateTimeFromString } from '@/utils/date';
-import { ko } from 'date-fns/locale';
-import CustomDatePicker from '@/vendor/date-picker/custom-date-picker';
 import Quill from '@/components/atoms/common/input/quill';
 import MultiMemberDropdown from '@/components/atoms/common/dropdown/multi-member-dropdown';
 import { MemberDropdownValueType } from '@/models/dropdown/dropdown';
 import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-item';
-import { EDUCATION_SESSION_STATUS } from '@/models/education/education';
 import StatusDropdown from '@/components/atoms/common/dropdown/status-dropdown';
-import { useEducationSessionStatusDropdownItems } from '@/hooks/dropdown/dropdown-items';
+import {
+  useEducationSessionStatusDropdownItems,
+  useTimeDropdownItems,
+} from '@/hooks/dropdown/dropdown-items';
 import { BLANK } from '@/constants/constant';
+import CustomDatePicker from '@/vendor/date-picker/custom-date-picker';
+import {
+  getDateFromDateString,
+  getDateFromString,
+  getDateStringFromDate,
+  getTotalMinuteFromDate,
+} from '@/utils/date';
+import Dropdown from '@/components/atoms/common/dropdown/dropdown';
+
+import { EDUCATION_SESSION_STATUS } from '@/constants/status/status';
+import { EducationAttendance } from '@/models/education/education';
 
 const AddEducationSessionViewContainer = styled.div`
   display: flex;
@@ -45,16 +55,13 @@ const PeriodContainer = styled.div`
   display: flex;
   flex-direction: row;
   gap: 10px;
-  border: 1px solid ${GRAY.DEFAULT};
-  border-radius: 5px;
-  height: 40px;
   justify-content: flex-start;
   align-items: center;
-  padding: 0 10px;
 `;
 
-const EnrollmentList = styled.div`
-  display: flex;
+const RequiredMark = styled.span`
+  color: red;
+  margin-right: 4px;
 `;
 
 type AddEducationSessionViewProps = {
@@ -63,16 +70,16 @@ type AddEducationSessionViewProps = {
   receivers: MemberDropdownValueType[];
   onChangeStatus: (value: EDUCATION_SESSION_STATUS) => void;
   onChangeTitle: (event: ChangeEvent<HTMLInputElement>) => void;
-  onChangeSession: (event: ChangeEvent<HTMLInputElement>) => void;
   onChangeStartDate: (date: Date | null) => void;
+  onChangeStartTime: (value: number) => void;
   onChangeEndDate: (date: Date | null) => void;
+  onChangeEndTime: (value: number) => void;
   onChangeInCharge: (values: DropdownValueType[]) => void;
   onChangeContent: (content: string) => void;
-  // onClickNewEnrollment: (values: MemberDropdownValueType[]) => void;
-  // onChangeEnrollmentStatus: (
-  //   value: EDUCATION_STATUS,
-  //   enrollment: EducationEnrollment
-  // ) => void;
+  onChangeAttendanceStatus: (
+    value: boolean,
+    educationAttendance: EducationAttendance
+  ) => void;
   onChangeReceivers: (values: MemberDropdownValueType[]) => void;
 };
 
@@ -82,12 +89,14 @@ const AddEducationSessionView = ({
   receivers,
   onChangeStatus,
   onChangeTitle,
-  onChangeSession,
   onChangeStartDate,
+  onChangeStartTime,
   onChangeEndDate,
+  onChangeEndTime,
   onChangeInCharge,
   onChangeContent,
   onChangeReceivers,
+  onChangeAttendanceStatus,
 }: AddEducationSessionViewProps) => {
   const { targetEducationSession } = useSelector(
     (state: RootState) => state.targetEducationSession
@@ -97,6 +106,7 @@ const AddEducationSessionView = ({
   const t_placeholder = useScopedI18n('placeholder');
 
   const statusDropdownItems = useEducationSessionStatusDropdownItems();
+  const timeDropdownItems = useTimeDropdownItems();
 
   return (
     <AddEducationSessionViewContainer>
@@ -114,65 +124,86 @@ const AddEducationSessionView = ({
       {/* 제목 */}
       <InputContainer>
         <LabelInput
-          label={t('title')}
-          value={targetEducationSession.title}
+          label={t('name')}
+          value={targetEducationSession.name}
           onChange={onChangeTitle}
-          placeholder={t_placeholder('title')}
+          placeholder={t_placeholder('name')}
           borderColor={GRAY.DEFAULT}
           height={40}
-        />
-      </InputContainer>
-      {/* 회차 */}
-      <InputContainer>
-        <LabelInput
-          label={t('session')}
-          value={targetEducationSession.session}
-          onChange={onChangeSession}
-          placeholder={t_placeholder('session')}
-          borderColor={GRAY.DEFAULT}
-          height={40}
+          isRequired={true}
         />
       </InputContainer>
 
       {/* 기간 */}
       <InputContainer>
         <LabelContainer>
-          <MainText>{t('period')}</MainText>
+          <MainText>
+            <RequiredMark>*</RequiredMark>
+            {t('period')}
+          </MainText>
           <PeriodContainer>
+            {/* 시작 날짜 */}
             <CustomDatePicker
-              value={targetEducationSession.startDate}
-              selected={getDateTimeFromString(targetEducationSession.startDate)}
+              value={
+                targetEducationSession.startDate
+                  ? getDateStringFromDate(
+                      getDateFromDateString(targetEducationSession.startDate)
+                    )
+                  : undefined
+              }
+              selected={
+                targetEducationSession.startDate
+                  ? getDateFromString(targetEducationSession.startDate)
+                  : null
+              }
               onChange={onChangeStartDate}
-              dateFormat="yyyy-MM-dd"
               placeholderText={t('startDate')}
-              showYearDropdown={true}
-              scrollableYearDropdown
-              yearDropdownItemNumber={50}
-              locale={ko}
-              // showTimeSelect={true}
-              showTimeInput={true}
-              showTimeCaption={true}
-              timeCaption={'시간'}
-              timeIntervals={15}
-              timeFormat="aa h:mm"
+              width={100}
             />
-            <MainText>{'-'}</MainText>
+            {/* 시작 시간 */}
+            <Dropdown
+              value={
+                targetEducationSession.startDate
+                  ? getTotalMinuteFromDate(
+                      getDateFromString(targetEducationSession.startDate)
+                    )
+                  : 0
+              }
+              items={timeDropdownItems}
+              onChangeItem={onChangeStartTime}
+              width={100}
+            />
+            <MainText>-</MainText>
+            {/* 종료 날짜 */}
             <CustomDatePicker
-              value={targetEducationSession.endDate}
-              selected={getDateTimeFromString(targetEducationSession.endDate)}
+              value={
+                targetEducationSession.endDate
+                  ? getDateStringFromDate(
+                      getDateFromDateString(targetEducationSession.endDate)
+                    )
+                  : undefined
+              }
+              selected={
+                targetEducationSession.endDate
+                  ? getDateFromString(targetEducationSession.endDate)
+                  : null
+              }
               onChange={onChangeEndDate}
-              dateFormat="yyyy-MM-dd"
               placeholderText={t('endDate')}
-              showYearDropdown={true}
-              scrollableYearDropdown
-              yearDropdownItemNumber={50}
-              locale={ko}
-              // showTimeSelect={true}
-              showTimeInput={true}
-              showTimeCaption={true}
-              timeCaption={'시간'}
-              timeIntervals={15}
-              timeFormat="aa h:mm"
+              width={100}
+            />
+            {/* 종료 시간 */}
+            <Dropdown
+              value={
+                targetEducationSession.endDate
+                  ? getTotalMinuteFromDate(
+                      getDateFromString(targetEducationSession.endDate)
+                    )
+                  : 0
+              }
+              items={timeDropdownItems}
+              onChangeItem={onChangeEndTime}
+              width={100}
             />
           </PeriodContainer>
         </LabelContainer>
@@ -201,7 +232,7 @@ const AddEducationSessionView = ({
             height={40}
             isSingle={true}
             placeholder={inCharge.length === 0 ? t_placeholder('name') : BLANK}
-            // isUserMember={true}
+            isUserMember={true}
           />
         </LabelContainer>
       </InputContainer>
@@ -214,25 +245,10 @@ const AddEducationSessionView = ({
             onChangeValues={onChangeReceivers}
             height={40}
             placeholder={receivers.length === 0 ? t_placeholder('name') : BLANK}
+            isUserMember={true}
           />
         </LabelContainer>
       </InputContainer>
-
-      {/* 수강 교인 */}
-      {/*<InputContainer>*/}
-      {/*  <LabelContainer>*/}
-      {/*    <MainText>{'수강 교인'}</MainText>*/}
-      {/*    <MultiMemberDropdown*/}
-      {/*      values={[]}*/}
-      {/*      onChangeValues={onClickNewEnrollment}*/}
-      {/*      placeholder={t_placeholder('name')}*/}
-      {/*    />*/}
-      {/*    <EducationEnrollmentList*/}
-      {/*      enrollments={targetEducationSession.educationEnrollments}*/}
-      {/*      onChangeStatus={onChangeEnrollmentStatus}*/}
-      {/*    />*/}
-      {/*  </LabelContainer>*/}
-      {/*</InputContainer>*/}
     </AddEducationSessionViewContainer>
   );
 };

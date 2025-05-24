@@ -9,13 +9,13 @@ import DatePicker, {
 import 'react-datepicker/dist/react-datepicker.css';
 
 import styled from 'styled-components';
-import { getMonth, getYear } from 'date-fns';
 import { ko } from 'date-fns/locale';
 
-import _ from 'lodash';
-
 import { BLACK, GRAY, MAIN, WHITE } from '@/constants/styles/color';
+import { getMonth, getYear } from 'date-fns';
 import Button from '@/components/atoms/common/button/button';
+import BorderInput from '@/components/atoms/common/input/border-input';
+import _ from 'lodash';
 
 registerLocale('ko', ko);
 
@@ -92,10 +92,14 @@ export type CustomDatePickerProps = DatePickerProps & {
   yearRange?: [number, number];
   /** (react-datepicker는 원래 value 사용X, selected로 동작) */
   value?: string;
+  width?: number;
+  height?: number;
 };
 
 export default function CustomDatePicker({
   yearRange,
+  width,
+  height,
   ...props
 }: CustomDatePickerProps) {
   const currentYear = getYear(new Date());
@@ -124,11 +128,15 @@ export default function CustomDatePicker({
   };
 
   const handleSelect = (date: Date | null) => {
-    console.log(date);
-    setTimeout(focusTimeInput, 0);
-    if (date) {
-      (props.onChange as (date: Date) => void)?.(date);
-    }
+    if (!date) return;
+
+    // 기존 selected와 동일하면 무시
+    const prev = props.selected;
+    const prevTime = prev instanceof Date ? prev.getTime() : null;
+    const newTime = date.getTime();
+    if (prevTime === newTime) return;
+
+    (props.onChange as (date: Date) => void)?.(date);
   };
 
   const years = _.range(startYear, endYear + 1);
@@ -205,6 +213,15 @@ export default function CustomDatePicker({
         locale="ko"
         renderCustomHeader={customHeader}
         onSelect={handleSelect}
+        customInput={
+          <BorderInput width={width} height={height} readOnly={true} />
+        }
+        showTimeSelect={false}
+        dateFormat="yyyy-MM-dd"
+        showYearDropdown
+        scrollableYearDropdown
+        yearDropdownItemNumber={50}
+        popperPlacement={'bottom-start'}
       />
     </CustomDatePickerWrapper>
   );

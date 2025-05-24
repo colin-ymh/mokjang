@@ -2,13 +2,7 @@ import { BLANK } from '@/constants/constant';
 import { Member } from '@/models/member/member';
 import { DEFAULT_MEMBER } from '@/redux/reducers/member-register-reducer';
 import { VisitationReport } from '@/models/visitation/visitation';
-
-export enum TASK_STATUS {
-  RESERVE = 'reserve',
-  IN_PROGRESS = 'inProgress',
-  DONE = 'done',
-  PENDING = 'pending',
-}
+import { STATUS, TASK_STATUS } from '@/constants/status/status';
 
 export type Task = {
   id: string;
@@ -31,7 +25,7 @@ export type Task = {
 export const DEFAULT_TASK: Task = {
   id: BLANK,
   churchId: BLANK,
-  taskStatus: TASK_STATUS.RESERVE,
+  taskStatus: STATUS.RESERVE,
   title: BLANK,
   taskStartDate: BLANK,
   taskEndDate: BLANK,

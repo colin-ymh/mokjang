@@ -3,7 +3,7 @@ import { BLANK, NULL, ORDER_DIRECTION } from '@/constants/constant';
 import { EducationSession, EducationTerm } from '@/models/education/education';
 import { RootState } from '@/redux/store';
 
-import { EDUCATION_TERM } from '@/constants/education/education-term-column';
+import { EDUCATION_TERM } from '@/constants/education/education-column';
 import { EducationTermsApi } from '@/api/education/education-terms.api';
 import { EducationSessionsApi } from '@/api/education/education-sessions.api';
 
@@ -132,7 +132,7 @@ export const fetchEducationSessions = createAsyncThunk<
             educationTermId: educationTerm.id,
           });
 
-          const newEducationSessions: EducationSession[] = response.data;
+          const newEducationSessions: EducationSession[] = response.data.data;
 
           return { ...educationTerm, educationSessions: newEducationSessions };
         })

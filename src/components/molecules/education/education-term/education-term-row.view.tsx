@@ -1,11 +1,6 @@
 import { ChangeEvent, Ref } from 'react';
 import styled from 'styled-components';
 
-import Button from '@/components/atoms/common/button/button';
-import { GRAY, WHITE } from '@/constants/styles/color';
-import Dropdown from '@/components/atoms/common/dropdown/dropdown';
-import BorderInput from '@/components/atoms/common/input/border-input';
-
 import { useEducationTermSearchFilterDropdownItems } from '@/hooks/dropdown/dropdown-items';
 import useWindowSize from '@/hooks/window/window';
 import { RootState } from '@/redux/store';
@@ -14,7 +9,8 @@ import EducationTermFilteredItem, {
   EducationTermFilteredItemType,
 } from '@/components/atoms/education/education-term/education-term-filtered-item';
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
-import { EDUCATION_TERM } from '@/constants/education/education-term-column';
+import { EDUCATION_TERM } from '@/constants/education/education-column';
+import SearchInput from '@/components/atoms/common/input/search-input';
 
 const EducationTermContainer = styled.div`
   display: flex;
@@ -164,33 +160,15 @@ const EducationTermRowView = ({
         </FilterList>
         {/* 검색 부분 */}
         <SearchContainer>
-          <Dropdown
-            value={searchFilter}
-            items={searchFilterDropdownItems}
-            onChangeItem={onClickSearchFilterItem}
-            height={30}
-            width={100}
-            borderColor={GRAY.SEMI_LIGHT}
-            backgroundBlur={false}
-          />
-          <BorderInput
-            ref={searchRef}
-            value={searchValue}
-            onChange={onChangeSearchValue}
-            borderColor={GRAY.SEMI_LIGHT}
-            height={30}
-            width={160}
+          <SearchInput
+            searchRef={searchRef}
+            searchFilter={searchFilter}
+            searchFilterDropdownItems={searchFilterDropdownItems}
+            onClickSearchFilterItem={onClickSearchFilterItem}
+            searchValue={searchValue}
+            onChangeSearchValue={onChangeSearchValue}
             onKeyDown={onKeyDown}
-            placeholder={t_placeholder('search')}
-          />
-          <Button
-            text={t('search')}
-            height={30}
-            width={'auto'}
-            onClick={onClickSearch}
-            backgroundColor={WHITE}
-            borderColor={GRAY.DEFAULT}
-            color={GRAY.DARK}
+            onClickSearch={onClickSearch}
           />
         </SearchContainer>
       </RowTop>

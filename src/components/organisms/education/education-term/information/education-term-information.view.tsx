@@ -12,12 +12,13 @@ import Image from 'next/image';
 import StatusDropdown from '@/components/atoms/common/dropdown/status-dropdown';
 import {
   EDUCATION_ENROLLMENT_STATUS,
-  EDUCATION_TERM_STATUS,
   EducationEnrollment,
 } from '@/models/education/education';
 import EducationEnrollmentList from '@/components/atoms/education/education-enrollment/education-enrollment-list';
 import { useI18n } from '../../../../../../locales/client';
 import EducationTermSessionList from '@/components/molecules/education/education-term/education-term-session-list';
+
+import { EDUCATION_TERM_STATUS } from '@/constants/status/status';
 
 const InformationContainer = styled.div`
   display: flex;
@@ -100,12 +101,17 @@ type EducationTermInformationViewProps = {
     enrollment: EducationEnrollment
   ) => void;
   onClickAddSession: () => void;
+  onClickEducationSessionItem: (
+    educationTermId: string,
+    educationSessionId: string
+  ) => void;
 };
 
 const EducationTermInformationView = ({
   onChangeStatus,
   onChangeEnrollmentStatus,
   onClickAddSession,
+  onClickEducationSessionItem,
 }: EducationTermInformationViewProps) => {
   const t = useI18n();
   const { targetEducationTerm } = useSelector(
@@ -176,6 +182,7 @@ const EducationTermInformationView = ({
       <EducationTermSessionList
         educationSessions={targetEducationTerm.educationSessions}
         onClickAddButton={onClickAddSession}
+        onClickEducationSessionItem={onClickEducationSessionItem}
       />
       <DivideLine />
       <EnrollmentContainer>

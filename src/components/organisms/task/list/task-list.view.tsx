@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import SlidePopup from '@/components/atoms/common/popup/slide-popup';
 import Loading from '@/components/atoms/common/etc/loading';
 import React from 'react';
-import { BLACK, DESTRUCTIVE } from '@/constants/styles/color';
+import { BLACK, DESTRUCTIVE, MAIN } from '@/constants/styles/color';
 import CancelIcon from '../../../../../public/svg/cancel.svg';
 import TrashIcon from '../../../../../public/svg/trash.svg';
 import ConfirmPopup from '@/components/atoms/common/popup/error-popup';
@@ -75,6 +75,7 @@ const Cancel = styled(CancelIcon)`
 type TaskListViewProps = {
   list: TaskTableProps;
   information: {
+    isSaveEnabled: boolean;
     isTaskInformationShown: boolean;
     isEditShown: boolean;
     isLoading: boolean;
@@ -94,6 +95,7 @@ const TaskListView = (props: TaskListViewProps) => {
   const t_popup = useScopedI18n('popup');
   const t_title = useScopedI18n('title');
   const {
+    isSaveEnabled,
     isTaskInformationShown,
     isEditShown,
     isLoading,
@@ -174,6 +176,8 @@ const TaskListView = (props: TaskListViewProps) => {
         onClickDone={onClickEditDone}
         doneText={t_button('edit')}
         headerTitle={t_title('editTask')}
+        doneBackgroundColor={isSaveEnabled ? MAIN.DEFAULT : MAIN.LIGHT}
+        doneDisabled={!isSaveEnabled}
       >
         <AddTask />
       </SlidePopup>

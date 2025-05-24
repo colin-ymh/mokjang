@@ -3,6 +3,8 @@ import { SERVER_URL, TEST_SERVER_URL } from '@/constants/state/url';
 import { ORDER_DIRECTION } from '@/constants/constant';
 import { CustomError } from '@/api/error/error';
 import { EDUCATION_ENROLLMENT_STATUS } from '@/models/education/education';
+import { EDUCATION_ENROLLMENT } from '@/constants/education/education-column';
+import authorizeAxios from '@/api/authorize-axios';
 
 type GetEducationEnrollmentsParams = {
   churchId: string;
@@ -10,7 +12,7 @@ type GetEducationEnrollmentsParams = {
   educationTermId: string;
   take?: number;
   page?: number;
-  order?: string;
+  order?: EDUCATION_ENROLLMENT;
   orderDirection?: ORDER_DIRECTION;
 };
 
@@ -97,7 +99,7 @@ export class EducationEnrollmentsApi {
     const url = `${this._url}/churches/${churchId}/management/educations/${educationId}/terms/${educationTermId}/enrollments`;
 
     try {
-      return await axios.post(url, body);
+      return await authorizeAxios.post(url, body);
     } catch (serverError: any) {
       if (serverError.response) {
         const { message, error, statusCode } = serverError.response.data;

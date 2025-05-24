@@ -3,12 +3,12 @@ import { BLANK, NULL, ORDER_DIRECTION } from '@/constants/constant';
 import {
   Visitation,
   VISITATION_METHOD,
-  VISITATION_STATUS,
   VISITATION_TYPE,
 } from '@/models/visitation/visitation';
 import { RootState } from '@/redux/store';
 import { VisitationsApi } from '@/api/visitations/visitations.api';
 import { VISITATION } from '@/constants/visitation/visitation-column';
+import { VISITATION_STATUS } from '@/constants/status/status';
 
 type VISITATION_FILTER = {
   [VISITATION.FROM_DATE]: string;

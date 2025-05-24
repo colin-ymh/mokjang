@@ -2,8 +2,10 @@ import { AxiosResponse } from 'axios';
 import { SERVER_URL, TEST_SERVER_URL } from '@/constants/state/url';
 import { CustomError } from '@/api/error/error';
 import { ORDER_DIRECTION } from '@/constants/constant';
-import { EDUCATION } from '@/constants/education/education-column';
+import axios from '@/api/authorize-axios';
 import authorizeAxios from '@/api/authorize-axios';
+
+import { EDUCATION } from '@/constants/education/education-column';
 
 type GetEducationsParams = {
   churchId: string; // 교회 id
@@ -11,6 +13,7 @@ type GetEducationsParams = {
   page?: number;
   order?: EDUCATION;
   orderDirection?: ORDER_DIRECTION;
+  name?: string;
 };
 
 type GetEducationParams = {
@@ -63,7 +66,7 @@ export class EducationsApi {
     const url = `${this._url}/churches/${churchId}/management/educations`;
 
     try {
-      return await authorizeAxios.get(url);
+      return await axios.get(url);
     } catch (serverError: any) {
       if (serverError.response) {
         const { message, error, statusCode } = serverError.response.data;
@@ -91,7 +94,7 @@ export class EducationsApi {
     const url = `${this._url}/churches/${churchId}/management/educations/${educationId}`;
 
     try {
-      return await authorizeAxios.get(url);
+      return await axios.get(url);
     } catch (serverError: any) {
       if (serverError.response) {
         const { message, error, statusCode } = serverError.response.data;
@@ -151,7 +154,7 @@ export class EducationsApi {
     const url = `${this._url}/churches/${churchId}/management/educations/${educationId}`;
 
     try {
-      return await authorizeAxios.patch(url, body);
+      return await axios.patch(url, body);
     } catch (serverError: any) {
       if (serverError.response) {
         const { message, error, statusCode } = serverError.response.data;
@@ -179,7 +182,7 @@ export class EducationsApi {
     const url = `${this._url}/churches/${churchId}/management/educations/${educationId}`;
 
     try {
-      return await authorizeAxios.delete(url);
+      return await axios.delete(url);
     } catch (serverError: any) {
       if (serverError.response) {
         const { message, error, statusCode } = serverError.response.data;

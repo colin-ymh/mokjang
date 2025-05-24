@@ -13,21 +13,16 @@ import { MEMBER } from '@/constants/member/member-column';
 
 import { useI18n } from '../../../locales/client';
 import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-item';
-import {
-  VISITATION_METHOD,
-  VISITATION_STATUS,
-} from '@/models/visitation/visitation';
+import { VISITATION_METHOD } from '@/models/visitation/visitation';
 import { VISITATION } from '@/constants/visitation/visitation-column';
 import { STATUS_COLOR } from '@/constants/styles/color';
 import { TASK } from '@/constants/task/task-column';
-import { TASK_STATUS } from '@/models/task/task';
-import { EDUCATION } from '@/constants/education/education-column';
-import { EDUCATION_TERM } from '@/constants/education/education-term-column';
 import {
-  EDUCATION_ENROLLMENT_STATUS,
-  EDUCATION_SESSION_STATUS,
-  EDUCATION_TERM_STATUS,
-} from '@/models/education/education';
+  EDUCATION,
+  EDUCATION_TERM,
+} from '@/constants/education/education-column';
+import { EDUCATION_ENROLLMENT_STATUS } from '@/models/education/education';
+import { STATUS } from '@/constants/status/status';
 
 export const useBaptismDropdownItems = () => {
   const t = useI18n();
@@ -365,18 +360,18 @@ export const useEducationSessionStatusDropdownItems = () => {
 
   const items = [
     {
-      value: EDUCATION_SESSION_STATUS.IN_PROGRESS,
-      title: t(EDUCATION_SESSION_STATUS.IN_PROGRESS),
-      color: STATUS_COLOR.IN_PROGRESS,
+      value: STATUS.RESERVE,
+      title: t(STATUS.RESERVE),
+      color: STATUS_COLOR.RESERVE,
     },
     {
-      value: EDUCATION_SESSION_STATUS.DONE,
-      title: t(EDUCATION_SESSION_STATUS.DONE),
+      value: STATUS.DONE,
+      title: t(STATUS.DONE),
       color: STATUS_COLOR.DONE,
     },
     {
-      value: EDUCATION_SESSION_STATUS.PENDING,
-      title: t(EDUCATION_SESSION_STATUS.PENDING),
+      value: STATUS.PENDING,
+      title: t(STATUS.PENDING),
       color: STATUS_COLOR.PENDING,
     },
   ];
@@ -389,18 +384,18 @@ export const useVisitationStatusDropdownItems = () => {
 
   const items = [
     {
-      value: VISITATION_STATUS.RESERVE,
-      title: t(VISITATION_STATUS.RESERVE),
+      value: STATUS.RESERVE,
+      title: t(STATUS.RESERVE),
       color: STATUS_COLOR.RESERVE,
     },
     {
-      value: VISITATION_STATUS.DONE,
-      title: t(VISITATION_STATUS.DONE),
+      value: STATUS.DONE,
+      title: t(STATUS.DONE),
       color: STATUS_COLOR.DONE,
     },
     {
-      value: VISITATION_STATUS.PENDING,
-      title: t(VISITATION_STATUS.PENDING),
+      value: STATUS.PENDING,
+      title: t(STATUS.PENDING),
       color: STATUS_COLOR.PENDING,
     },
   ];
@@ -418,18 +413,18 @@ export const useVisitationStatusFilterDropdownItems = () => {
       color: undefined,
     },
     {
-      value: VISITATION_STATUS.RESERVE,
-      title: t(VISITATION_STATUS.RESERVE),
+      value: STATUS.RESERVE,
+      title: t(STATUS.RESERVE),
       color: STATUS_COLOR.RESERVE,
     },
     {
-      value: VISITATION_STATUS.DONE,
-      title: t(VISITATION_STATUS.DONE),
+      value: STATUS.DONE,
+      title: t(STATUS.DONE),
       color: STATUS_COLOR.DONE,
     },
     {
-      value: VISITATION_STATUS.PENDING,
-      title: t(VISITATION_STATUS.PENDING),
+      value: STATUS.PENDING,
+      title: t(STATUS.PENDING),
       color: STATUS_COLOR.PENDING,
     },
   ];
@@ -442,23 +437,23 @@ export const useTaskStatusDropdownItems = () => {
 
   const items = [
     {
-      value: TASK_STATUS.RESERVE,
-      title: t(TASK_STATUS.RESERVE),
+      value: STATUS.RESERVE,
+      title: t(STATUS.RESERVE),
       color: STATUS_COLOR.RESERVE,
     },
     {
-      value: TASK_STATUS.IN_PROGRESS,
-      title: t(TASK_STATUS.IN_PROGRESS),
+      value: STATUS.IN_PROGRESS,
+      title: t(STATUS.IN_PROGRESS),
       color: STATUS_COLOR.IN_PROGRESS,
     },
     {
-      value: TASK_STATUS.DONE,
-      title: t(TASK_STATUS.DONE),
+      value: STATUS.DONE,
+      title: t(STATUS.DONE),
       color: STATUS_COLOR.DONE,
     },
     {
-      value: TASK_STATUS.PENDING,
-      title: t(TASK_STATUS.PENDING),
+      value: STATUS.PENDING,
+      title: t(STATUS.PENDING),
       color: STATUS_COLOR.PENDING,
     },
   ];
@@ -476,23 +471,23 @@ export const useTaskStatusFilterDropdownItems = () => {
       color: undefined,
     },
     {
-      value: TASK_STATUS.RESERVE,
-      title: t(TASK_STATUS.RESERVE),
+      value: STATUS.RESERVE,
+      title: t(STATUS.RESERVE),
       color: STATUS_COLOR.RESERVE,
     },
     {
-      value: TASK_STATUS.IN_PROGRESS,
-      title: t(TASK_STATUS.IN_PROGRESS),
+      value: STATUS.IN_PROGRESS,
+      title: t(STATUS.IN_PROGRESS),
       color: STATUS_COLOR.IN_PROGRESS,
     },
     {
-      value: TASK_STATUS.DONE,
-      title: t(TASK_STATUS.DONE),
+      value: STATUS.DONE,
+      title: t(STATUS.DONE),
       color: STATUS_COLOR.DONE,
     },
     {
-      value: TASK_STATUS.PENDING,
-      title: t(TASK_STATUS.PENDING),
+      value: STATUS.PENDING,
+      title: t(STATUS.PENDING),
       color: STATUS_COLOR.PENDING,
     },
   ];
@@ -505,18 +500,23 @@ export const useEducationTermStatusDropdownItems = () => {
 
   const items = [
     {
-      value: EDUCATION_TERM_STATUS.IN_PROGRESS,
-      title: t(EDUCATION_TERM_STATUS.IN_PROGRESS),
+      value: STATUS.RESERVE,
+      title: t(STATUS.RESERVE),
+      color: STATUS_COLOR.RESERVE,
+    },
+    {
+      value: STATUS.IN_PROGRESS,
+      title: t(STATUS.IN_PROGRESS),
       color: STATUS_COLOR.IN_PROGRESS,
     },
     {
-      value: EDUCATION_TERM_STATUS.DONE,
-      title: t(EDUCATION_TERM_STATUS.DONE),
+      value: STATUS.DONE,
+      title: t(STATUS.DONE),
       color: STATUS_COLOR.DONE,
     },
     {
-      value: EDUCATION_TERM_STATUS.PENDING,
-      title: t(EDUCATION_TERM_STATUS.PENDING),
+      value: STATUS.PENDING,
+      title: t(STATUS.PENDING),
       color: STATUS_COLOR.PENDING,
     },
   ];
@@ -559,5 +559,24 @@ export const useTimeDropdownItems = () => {
       title,
     });
   }
+  return items;
+};
+
+export const useAttendanceStatusDropdownItems = () => {
+  const t = useI18n();
+
+  const items = [
+    {
+      value: true,
+      title: t('present'),
+      color: STATUS_COLOR.PRESENT,
+    },
+    {
+      value: false,
+      title: t('absent'),
+      color: STATUS_COLOR.ABSENT,
+    },
+  ];
+
   return items;
 };

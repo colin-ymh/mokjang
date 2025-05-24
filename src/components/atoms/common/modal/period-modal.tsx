@@ -1,14 +1,14 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 import TransparentBackground from '@/components/atoms/common/etc/transparent-background';
-import DateInput from '@/components/atoms/common/input/date-input';
 import Button from '@/components/atoms/common/button/button';
 import { BLACK, GRAY, WHITE } from '@/constants/styles/color';
-import { getDateFromString, getStringFromDate } from '@/utils/date';
+import { getDateFromDateString, getDateStringFromDate } from '@/utils/date';
 
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
 import { MainText } from '@/components/atoms/common/text/main-text';
+import CustomDatePicker from '@/vendor/date-picker/custom-date-picker';
 
 const ModalContainer = styled.div<{ $isShown: boolean }>`
   display: ${({ $isShown }) => ($isShown ? 'flex' : 'none')};
@@ -62,14 +62,14 @@ const PeriodModal = ({
 
   const onChangeStartDate = (date: Date | null) => {
     if (date) {
-      const newDate = getStringFromDate(date);
+      const newDate = getDateStringFromDate(date);
       setInnerStartDate(newDate);
     }
   };
 
   const onChangeEndDate = (date: Date | null): void => {
     if (date) {
-      const newDate = getStringFromDate(date);
+      const newDate = getDateStringFromDate(date);
       setInnerEndDate(newDate);
     }
   };
@@ -84,15 +84,19 @@ const PeriodModal = ({
       <PeriodContainer>
         <MainText>{t('period')}</MainText>
         <InputContainer>
-          <DateInput
+          <CustomDatePicker
             value={innerStartDate}
-            selected={getDateFromString(startDate)}
+            selected={startDate ? getDateFromDateString(startDate) : null}
             onChange={onChangeStartDate}
+            placeholderText={t('startDate')}
+            // width={150}
           />
-          <DateInput
+          <CustomDatePicker
             value={innerEndDate}
-            selected={getDateFromString(endDate)}
+            selected={endDate ? getDateFromDateString(endDate) : null}
             onChange={onChangeEndDate}
+            placeholderText={t('endDate')}
+            // width={150}
           />
           <Button
             text={t_button('setting')}

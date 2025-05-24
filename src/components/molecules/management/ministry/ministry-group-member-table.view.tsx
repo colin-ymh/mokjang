@@ -13,7 +13,7 @@ import {
   getFormattedMobilePhone,
   getLocaleDateFromDashDate,
 } from '@/utils/format';
-import { getAge, getDateFromString } from '@/utils/date';
+import { getAge, getDateFromDateString } from '@/utils/date';
 import { usePathname } from 'next/navigation';
 import { LOCALE } from '@/constants/state/locale';
 import { getRandomImage } from '@/utils/image';
@@ -208,7 +208,7 @@ const MinistryMinistryGroupMemberTableView = ({
       case MEMBER.AGE:
         return (
           <MainText>
-            {member.birth && getAge(getDateFromString(member.birth))}
+            {member.birth && getAge(getDateFromDateString(member.birth))}
           </MainText>
         );
       case MEMBER.OFFICER:

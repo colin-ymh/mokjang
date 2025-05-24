@@ -4,17 +4,23 @@ import { getFormattedTitle } from '@/utils/format';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 
-import { getStringFromDateTime } from '@/utils/date';
+import {
+  getDateFromString,
+  getDateStringFromDate,
+  getHourFromMinute,
+  getTimeStringFromDate,
+} from '@/utils/date';
 import { setTargetEducationTerm } from '@/redux/reducers/target-education-term-reducer';
 import AddEducationTermView from '@/components/organisms/education/education-term/add/add-education-term.view';
 import { MemberDropdownValueType } from '@/models/dropdown/dropdown';
 import { DEFAULT_MEMBER } from '@/redux/reducers/member-register-reducer';
 import {
   EDUCATION_ENROLLMENT_STATUS,
-  EDUCATION_TERM_STATUS,
   EducationEnrollment,
 } from '@/models/education/education';
 import { MemberDropdownType } from '@/components/atoms/common/dropdown/member-dropdown-item';
+
+import { EDUCATION_TERM_STATUS } from '@/constants/status/status';
 
 type AddEducationTermProps = {};
 
@@ -44,26 +50,81 @@ const AddEducationTerm = ({}: AddEducationTermProps) => {
   // ===== term =====
 
   // ===== period =====
-  const onChangeStartDate = (date: Date | null): void => {
+  /* ── Period ── */
+  const onChangeStartDate = (date: Date | null) => {
     if (date) {
+      const newDate = getDateStringFromDate(date);
+      let prevTime = '00:00';
+
+      if (targetEducationTerm.startDate) {
+        prevTime = getTimeStringFromDate(
+          getDateFromString(targetEducationTerm.startDate)
+        );
+      }
+
       dispatch(
         setTargetEducationTerm({
           ...targetEducationTerm,
-          startDate: getStringFromDateTime(date),
+          startDate: `${newDate}T${prevTime}`,
         })
       );
     }
   };
 
-  const onChangeEndDate = (date: Date | null): void => {
+  const onChangeStartTime = (value: number) => {
+    let prevDate = '2000-01-01';
+    const newTime = getHourFromMinute(value);
+
+    if (targetEducationTerm.startDate) {
+      prevDate = getDateStringFromDate(
+        getDateFromString(targetEducationTerm.startDate)
+      );
+    }
+
+    dispatch(
+      setTargetEducationTerm({
+        ...targetEducationTerm,
+        startDate: `${prevDate}T${newTime}`,
+      })
+    );
+  };
+
+  const onChangeEndDate = (date: Date | null) => {
     if (date) {
+      const newDate = getDateStringFromDate(date);
+      let prevTime = '00:00';
+
+      if (targetEducationTerm.endDate) {
+        prevTime = getTimeStringFromDate(
+          getDateFromString(targetEducationTerm.endDate)
+        );
+      }
+
       dispatch(
         setTargetEducationTerm({
           ...targetEducationTerm,
-          endDate: getStringFromDateTime(date),
+          endDate: `${newDate}T${prevTime}`,
         })
       );
     }
+  };
+
+  const onChangeEndTime = (value: number) => {
+    let prevDate = '2000-01-01';
+    const newTime = getHourFromMinute(value);
+
+    if (targetEducationTerm.endDate) {
+      prevDate = getDateStringFromDate(
+        getDateFromString(targetEducationTerm.endDate)
+      );
+    }
+
+    dispatch(
+      setTargetEducationTerm({
+        ...targetEducationTerm,
+        endDate: `${prevDate}T${newTime}`,
+      })
+    );
   };
   // ===== period =====
 
@@ -180,7 +241,9 @@ const AddEducationTerm = ({}: AddEducationTermProps) => {
     onChangeStatus,
     onChangeTerm,
     onChangeStartDate,
+    onChangeStartTime,
     onChangeEndDate,
+    onChangeEndTime,
     onChangeInCharge,
     onChangeContent,
     onClickNewEnrollment,

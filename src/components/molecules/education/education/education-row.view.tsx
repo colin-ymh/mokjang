@@ -1,20 +1,14 @@
 import { ChangeEvent, Ref } from 'react';
 import styled from 'styled-components';
 
-import Button from '@/components/atoms/common/button/button';
-import { GRAY, WHITE } from '@/constants/styles/color';
-import Dropdown from '@/components/atoms/common/dropdown/dropdown';
-import BorderInput from '@/components/atoms/common/input/border-input';
-import { EDUCATION } from '@/constants/education/education-column';
-
 import { useEducationSearchFilterDropdownItems } from '@/hooks/dropdown/dropdown-items';
 import useWindowSize from '@/hooks/window/window';
-import { useI18n, useScopedI18n } from '../../../../../locales/client';
 import EducationFilteredItem, {
   EducationFilteredItemType,
 } from '@/components/atoms/education/education/education-filtered-item';
-import { RootState } from '@/redux/store';
-import { useSelector } from 'react-redux';
+
+import { EDUCATION } from '@/constants/education/education-column';
+import SearchInput from '@/components/atoms/common/input/search-input';
 
 const EducationContainer = styled.div`
   display: flex;
@@ -31,14 +25,6 @@ const RowTop = styled.div`
   flex-direction: row;
   justify-content: space-between;
   flex-shrink: 0;
-`;
-
-const RowBottom = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  flex-shrink: 0;
-  padding: 10px 20px;
 `;
 
 const FilterList = styled.div`
@@ -76,19 +62,6 @@ const SearchContainer = styled.div`
   position: absolute;
 `;
 
-const AddFilterContainer = styled.div<{ $isShown: boolean }>`
-  display: ${({ $isShown }) => ($isShown ? 'flex' : 'none')};
-  position: absolute;
-
-  z-index: 60;
-  background-color: white;
-  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.3);
-  border-radius: 5px;
-
-  top: 50px;
-  left: 10px;
-`;
-
 export type EDUCATION_SEARCH_FILTER = EDUCATION.NAME;
 
 type EducationViewProps = {
@@ -112,14 +85,7 @@ const EducationRowView = ({
   onClickSearch,
   onKeyDown,
 }: EducationViewProps) => {
-  const t = useI18n();
-  const t_placeholder = useScopedI18n('placeholder');
-  const t_button = useScopedI18n('button');
   const searchFilterDropdownItems = useEducationSearchFilterDropdownItems();
-
-  const { educationFilter } = useSelector(
-    (state: RootState) => state.educationFilter
-  );
 
   const { width } = useWindowSize();
 
@@ -137,33 +103,15 @@ const EducationRowView = ({
         </FilterList>
         {/* 검색 부분 */}
         <SearchContainer>
-          <Dropdown
-            value={searchFilter}
-            items={searchFilterDropdownItems}
-            onChangeItem={onClickSearchFilterItem}
-            height={30}
-            width={100}
-            borderColor={GRAY.SEMI_LIGHT}
-            backgroundBlur={false}
-          />
-          <BorderInput
-            ref={searchRef}
-            value={searchValue}
-            onChange={onChangeSearchValue}
-            borderColor={GRAY.SEMI_LIGHT}
-            height={30}
-            width={160}
+          <SearchInput
+            searchRef={searchRef}
+            searchFilter={searchFilter}
+            searchFilterDropdownItems={searchFilterDropdownItems}
+            onClickSearchFilterItem={onClickSearchFilterItem}
+            searchValue={searchValue}
+            onChangeSearchValue={onChangeSearchValue}
             onKeyDown={onKeyDown}
-            placeholder={t_placeholder('search')}
-          />
-          <Button
-            text={t('search')}
-            height={30}
-            width={'auto'}
-            onClick={onClickSearch}
-            backgroundColor={WHITE}
-            borderColor={GRAY.DEFAULT}
-            color={GRAY.DARK}
+            onClickSearch={onClickSearch}
           />
         </SearchContainer>
       </RowTop>

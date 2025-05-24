@@ -17,9 +17,9 @@ import VisitationFilteredItem, {
 import PeriodModal from '@/components/atoms/common/modal/period-modal';
 import { RootState } from '@/redux/store';
 import { useSelector } from 'react-redux';
-import { VISITATION_STATUS } from '@/models/visitation/visitation';
 import StatusDropdown from '@/components/atoms/common/dropdown/status-dropdown';
 import SearchInput from '@/components/atoms/common/input/search-input';
+import { VISITATION_STATUS } from '@/constants/status/status';
 
 const VisitationContainer = styled.div`
   display: flex;

@@ -1,13 +1,18 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import { BLANK } from '@/constants/constant';
 import { getFormattedTitle } from '@/utils/format';
-import { TASK_STATUS } from '@/models/task/task';
 import { MemberDropdownType } from '@/components/atoms/common/dropdown/member-dropdown-item';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
-import { setTargetTask } from '@/redux/reducers/target-task-reducer';
-import { getStringFromDateTime } from '@/utils/date';
+import {
+  getDateFromString,
+  getDateStringFromDate,
+  getHourFromMinute,
+  getTimeStringFromDate,
+} from '@/utils/date';
 import AddTaskView from '@/components/organisms/task/add/add-task.view';
+import { setTargetTask } from '@/redux/reducers/target-task-reducer';
+import { TASK_STATUS } from '@/constants/status/status';
 
 type AddTaskProps = {};
 
@@ -33,26 +38,80 @@ const AddTask = ({}: AddTaskProps) => {
   // ===== title =====
 
   // ===== period =====
-  const onChangeStartDate = (date: Date | null): void => {
+  const onChangeStartDate = (date: Date | null) => {
     if (date) {
+      const newDate = getDateStringFromDate(date);
+      let prevTime = '00:00';
+
+      if (targetTask.taskStartDate) {
+        prevTime = getTimeStringFromDate(
+          getDateFromString(targetTask.taskStartDate)
+        );
+      }
+
       dispatch(
         setTargetTask({
           ...targetTask,
-          taskStartDate: getStringFromDateTime(date),
+          taskStartDate: `${newDate}T${prevTime}`,
         })
       );
     }
   };
 
-  const onChangeEndDate = (date: Date | null): void => {
+  const onChangeStartTime = (value: number) => {
+    let prevDate = '2000-01-01';
+    const newTime = getHourFromMinute(value);
+
+    if (targetTask.taskStartDate) {
+      prevDate = getDateStringFromDate(
+        getDateFromString(targetTask.taskStartDate)
+      );
+    }
+
+    dispatch(
+      setTargetTask({
+        ...targetTask,
+        taskStartDate: `${prevDate}T${newTime}`,
+      })
+    );
+  };
+
+  const onChangeEndDate = (date: Date | null) => {
     if (date) {
+      const newDate = getDateStringFromDate(date);
+      let prevTime = '00:00';
+
+      if (targetTask.taskEndDate) {
+        prevTime = getTimeStringFromDate(
+          getDateFromString(targetTask.taskEndDate)
+        );
+      }
+
       dispatch(
         setTargetTask({
           ...targetTask,
-          taskEndDate: getStringFromDateTime(date),
+          taskEndDate: `${newDate}T${prevTime}`,
         })
       );
     }
+  };
+
+  const onChangeEndTime = (value: number) => {
+    let prevDate = '2000-01-01';
+    const newTime = getHourFromMinute(value);
+
+    if (targetTask.taskEndDate) {
+      prevDate = getDateStringFromDate(
+        getDateFromString(targetTask.taskEndDate)
+      );
+    }
+
+    dispatch(
+      setTargetTask({
+        ...targetTask,
+        taskEndDate: `${prevDate}T${newTime}`,
+      })
+    );
   };
   // ===== period =====
 
@@ -145,7 +204,9 @@ const AddTask = ({}: AddTaskProps) => {
     onChangeStatus,
     onChangeTitle,
     onChangeStartDate,
+    onChangeStartTime,
     onChangeEndDate,
+    onChangeEndTime,
     onChangeInCharge,
     onChangeComment,
     onChangeReceivers,

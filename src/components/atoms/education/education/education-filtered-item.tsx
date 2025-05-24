@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import { MainText } from '@/components/atoms/common/text/main-text';
-import { EDUCATION } from '@/constants/education/education-column';
 import { BLANK } from '@/constants/constant';
 import { MAIN, WHITE } from '@/constants/styles/color';
 import { SIZE } from '@/constants/styles/style';
@@ -12,6 +11,8 @@ import Cancel from '../../../../../public/svg/cancel.svg';
 import { AppDispatch, RootState } from '@/redux/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { setEducationFilter } from '@/redux/reducers/education-filter-reducer';
+
+import { EDUCATION } from '@/constants/education/education-column';
 
 const ItemContainer = styled.div`
   display: flex;

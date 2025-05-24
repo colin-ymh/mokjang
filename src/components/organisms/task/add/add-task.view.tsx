@@ -4,19 +4,27 @@ import React, { ChangeEvent } from 'react';
 import { BLANK } from '@/constants/constant';
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
 import { GRAY } from '@/constants/styles/color';
-import { TASK_STATUS } from '@/models/task/task';
-import { useTaskStatusDropdownItems } from '@/hooks/dropdown/dropdown-items';
+import {
+  useTaskStatusDropdownItems,
+  useTimeDropdownItems,
+} from '@/hooks/dropdown/dropdown-items';
 import MultiMemberDropdown from '@/components/atoms/common/dropdown/multi-member-dropdown';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import StatusDropdown from '@/components/atoms/common/dropdown/status-dropdown';
-import { getDateTimeFromString } from '@/utils/date';
-import { ko } from 'date-fns/locale';
-import CustomDatePicker from '@/vendor/date-picker/custom-date-picker';
 import Quill from '@/components/atoms/common/input/quill';
 import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-item';
 import { MemberDropdownValueType } from '@/models/dropdown/dropdown';
+import CustomDatePicker from '@/vendor/date-picker/custom-date-picker';
+import {
+  getDateFromDateString,
+  getDateFromString,
+  getDateStringFromDate,
+  getTotalMinuteFromDate,
+} from '@/utils/date';
+import Dropdown from '@/components/atoms/common/dropdown/dropdown';
+import { TASK_STATUS } from '@/constants/status/status';
 
 const AddTaskViewContainer = styled.div`
   display: flex;
@@ -45,12 +53,13 @@ const PeriodContainer = styled.div`
   display: flex;
   flex-direction: row;
   gap: 10px;
-  border: 1px solid ${GRAY.DEFAULT};
-  border-radius: 5px;
-  height: 40px;
   justify-content: flex-start;
   align-items: center;
-  padding: 0 10px;
+`;
+
+const RequiredMark = styled.span`
+  color: red;
+  margin-right: 4px;
 `;
 
 type AddTaskViewProps = {
@@ -60,7 +69,9 @@ type AddTaskViewProps = {
   onChangeStatus: (status: TASK_STATUS) => void;
   onChangeTitle: (event: ChangeEvent<HTMLInputElement>) => void;
   onChangeStartDate: (date: Date | null) => void;
+  onChangeStartTime: (value: number) => void;
   onChangeEndDate: (date: Date | null) => void;
+  onChangeEndTime: (value: number) => void;
   onChangeInCharge: (inCharge: MemberDropdownValueType[]) => void;
   onChangeComment: (comment: string) => void;
   onChangeReceivers: (receivers: DropdownValueType[]) => void;
@@ -73,7 +84,9 @@ const AddTaskView = ({
   onChangeStatus,
   onChangeTitle,
   onChangeStartDate,
+  onChangeStartTime,
   onChangeEndDate,
+  onChangeEndTime,
   onChangeInCharge,
   onChangeComment,
   onChangeReceivers,
@@ -84,6 +97,7 @@ const AddTaskView = ({
   const t_placeholder = useScopedI18n('placeholder');
 
   const statusDropdownItems = useTaskStatusDropdownItems();
+  const timeDropdownItems = useTimeDropdownItems();
 
   return (
     <AddTaskViewContainer>
@@ -108,48 +122,80 @@ const AddTaskView = ({
           placeholder={t_placeholder('title')}
           borderColor={GRAY.DEFAULT}
           height={40}
+          isRequired={true}
         />
       </InputContainer>
 
       {/* 기간 */}
       <InputContainer>
         <LabelContainer>
-          <MainText>{t('period')}</MainText>
+          <MainText>
+            <RequiredMark>*</RequiredMark>
+            {t('period')}
+          </MainText>
           <PeriodContainer>
+            {/* 시작 날짜 */}
             <CustomDatePicker
-              value={targetTask.taskStartDate}
-              selected={getDateTimeFromString(targetTask.taskStartDate)}
+              value={
+                targetTask.taskStartDate
+                  ? getDateStringFromDate(
+                      getDateFromDateString(targetTask.taskStartDate)
+                    )
+                  : undefined
+              }
+              selected={
+                targetTask.taskStartDate
+                  ? getDateFromString(targetTask.taskStartDate)
+                  : null
+              }
               onChange={onChangeStartDate}
-              dateFormat="yyyy-MM-dd"
               placeholderText={t('startDate')}
-              showYearDropdown={true}
-              scrollableYearDropdown
-              yearDropdownItemNumber={50}
-              locale={ko}
-              // showTimeSelect={true}
-              showTimeInput={true}
-              showTimeCaption={true}
-              timeCaption={'시간'}
-              timeIntervals={15}
-              timeFormat="aa h:mm"
+              width={100}
             />
-            <MainText>{'-'}</MainText>
+            {/* 시작 시간 */}
+            <Dropdown
+              value={
+                targetTask.taskStartDate
+                  ? getTotalMinuteFromDate(
+                      getDateFromString(targetTask.taskStartDate)
+                    )
+                  : 0
+              }
+              items={timeDropdownItems}
+              onChangeItem={onChangeStartTime}
+              width={100}
+            />
+            <MainText>-</MainText>
+            {/* 종료 날짜 */}
             <CustomDatePicker
-              value={targetTask.taskEndDate}
-              selected={getDateTimeFromString(targetTask.taskEndDate)}
+              value={
+                targetTask.taskEndDate
+                  ? getDateStringFromDate(
+                      getDateFromDateString(targetTask.taskEndDate)
+                    )
+                  : undefined
+              }
+              selected={
+                targetTask.taskEndDate
+                  ? getDateFromString(targetTask.taskEndDate)
+                  : null
+              }
               onChange={onChangeEndDate}
-              dateFormat="yyyy-MM-dd"
               placeholderText={t('endDate')}
-              showYearDropdown={true}
-              scrollableYearDropdown
-              yearDropdownItemNumber={50}
-              locale={ko}
-              // showTimeSelect={true}
-              showTimeInput={true}
-              showTimeCaption={true}
-              timeCaption={'시간'}
-              timeIntervals={15}
-              timeFormat="aa h:mm"
+              width={100}
+            />
+            {/* 종료 시간 */}
+            <Dropdown
+              value={
+                targetTask.taskEndDate
+                  ? getTotalMinuteFromDate(
+                      getDateFromString(targetTask.taskEndDate)
+                    )
+                  : 0
+              }
+              items={timeDropdownItems}
+              onChangeItem={onChangeEndTime}
+              width={100}
             />
           </PeriodContainer>
         </LabelContainer>
@@ -158,14 +204,17 @@ const AddTaskView = ({
       {/* 담당자 */}
       <InputContainer>
         <LabelContainer>
-          <MainText>{t('inCharge')}</MainText>
+          <MainText>
+            <RequiredMark>*</RequiredMark>
+            {t('inCharge')}
+          </MainText>
           <MultiMemberDropdown
             values={inCharge}
             onChangeValues={onChangeInCharge}
             height={40}
             isSingle={true}
             placeholder={inCharge.length === 0 ? t_placeholder('name') : BLANK}
-            // isUserMember={true}
+            isUserMember={true}
           />
         </LabelContainer>
       </InputContainer>
@@ -192,6 +241,7 @@ const AddTaskView = ({
             onChangeValues={onChangeReceivers}
             height={40}
             placeholder={receivers.length === 0 ? t_placeholder('name') : BLANK}
+            isUserMember={true}
           />
         </LabelContainer>
       </InputContainer>

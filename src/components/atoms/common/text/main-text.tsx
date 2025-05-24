@@ -58,7 +58,7 @@ export const MainText = styled.span<MainTextProps>`
   font-weight: ${({ size, fontWeight }) => getFontWeight(size, fontWeight)};
   transition: all 0.3s ease;
 
-  //white-space: nowrap; /* 텍스트를 한 줄로 유지 */
+  white-space: nowrap; /* 텍스트를 한 줄로 유지 */
   max-width: 100%; /* 버튼 크기를 벗어나지 않도록 제한 */
   font-family: 'Noto Sans KR', sans-serif; /* Noto Sans KR 적용 */
 `;

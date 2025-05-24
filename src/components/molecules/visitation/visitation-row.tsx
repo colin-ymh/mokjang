@@ -10,7 +10,8 @@ import VisitationRowView, {
 } from '@/components/molecules/visitation/visitation-row.view';
 import { VisitationFilteredItemType } from '@/components/atoms/visitation/visitation-filtered-item';
 import { setVisitationFilter } from '@/redux/reducers/visitation-filter-reducer';
-import { VISITATION_STATUS } from '@/models/visitation/visitation';
+
+import { VISITATION_STATUS } from '@/constants/status/status';
 
 const VisitationRow = () => {
   const dispatch = useDispatch<AppDispatch>();

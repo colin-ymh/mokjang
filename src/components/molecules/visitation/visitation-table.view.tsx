@@ -14,7 +14,7 @@ import VisitationTableHeader from '@/components/atoms/visitation/visitation-tabl
 import { BLANK_HEADER } from '@/redux/reducers/member-filter-reducer';
 import { useI18n } from '../../../../locales/client';
 import { getFormattedDate } from '@/utils/format';
-import { getVisitationStatusColor } from '@/utils/color';
+import { getStatusColor } from '@/utils/color';
 import { getRandomImage } from '@/utils/image';
 import { MEMBER } from '@/constants/member/member-column';
 
@@ -223,9 +223,7 @@ const VisitationTableView = ({
       case VISITATION.STATUS:
         return (
           <StatusContainer>
-            <ColoredDot
-              color={getVisitationStatusColor(visitation.visitationStatus)}
-            />
+            <ColoredDot color={getStatusColor(visitation.visitationStatus)} />
             <MainText>{t(visitation?.visitationStatus)}</MainText>
           </StatusContainer>
         );

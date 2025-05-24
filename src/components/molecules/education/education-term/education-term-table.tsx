@@ -3,13 +3,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 
 import { BLANK, ORDER_DIRECTION } from '@/constants/constant';
-import { EDUCATION_TERM } from '@/constants/education/education-term-column';
+import { EDUCATION_TERM } from '@/constants/education/education-column';
 import {
   setEducationTermOrderBy,
   setEducationTermOrderDirection,
 } from '@/redux/reducers/education-term-filter-reducer';
 import EducationTermTableView from '@/components/molecules/education/education-term/education-term-table.view';
 import { EducationSessionsApi } from '@/api/education/education-sessions.api';
+import { EducationTerm } from '@/models/education/education';
 
 export type EducationTermTableProps = {
   onClickEducationTermItem: (educationTermId: string) => void;
@@ -18,7 +19,7 @@ export type EducationTermTableProps = {
     educationTermId: string,
     educationSessionId: string
   ) => void;
-  onClickOpenAddEducationSession: () => void;
+  onClickOpenAddEducationSession: (educationTerm?: EducationTerm) => void;
 };
 
 const EducationTermTable = ({

@@ -102,6 +102,7 @@ const MainTaskHeaderView = ({
         onClickClose={onClickCloseModal}
         onClickDone={onClickSaveTask}
         doneBackgroundColor={isSaveEnabled ? MAIN.DEFAULT : MAIN.LIGHT}
+        doneDisabled={!isSaveEnabled}
       >
         <AddTask />
       </SlidePopup>

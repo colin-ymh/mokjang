@@ -85,7 +85,7 @@ const EducationList = ({ isNewEducation }: EducationListProps) => {
     }
   };
 
-  // 필터 정보가 변경될 때, 교인들을 다시 불러오는 부분
+  // 필터 정보가 변경될 때, 교육들을 다시 불러오는 부분
   useEffect(() => {
     const fetchInitialEducations = async () => {
       try {

@@ -9,7 +9,7 @@ import { GRAY } from '@/constants/styles/color';
 import { MEMBER } from '@/constants/member/member-column';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { BAPTISM, BLANK, GENDER } from '@/constants/constant';
-import { getAge, getDateFromString } from '@/utils/date';
+import { getAge, getDateFromDateString } from '@/utils/date';
 import {
   getFormattedDate,
   getFormattedHomePhone,
@@ -269,7 +269,7 @@ const MemberTableView = ({
       case MEMBER.AGE:
         return (
           <MainText>
-            {member.birth && getAge(getDateFromString(member.birth))}
+            {member.birth && getAge(getDateFromDateString(member.birth))}
           </MainText>
         );
       case MEMBER.BAPTISM:

@@ -21,6 +21,8 @@ import EducationTermListView from '@/components/organisms/education/education-te
 import { EducationEnrollmentsApi } from '@/api/education/education-enrollments.api';
 import { EducationSessionsApi } from '@/api/education/education-sessions.api';
 import { setTargetEducationSession } from '@/redux/reducers/target-education-session-reducer';
+import { EducationAttendanceApi } from '@/api/education/education-attendance.api';
+import { getIsWellFormedTitle } from '@/utils/check';
 
 type EducationTermListProps = {
   isNewEducationTerm?: boolean;
@@ -30,6 +32,7 @@ const EducationTermList = ({ isNewEducationTerm }: EducationTermListProps) => {
   const educationTermsApi = new EducationTermsApi(false);
   const educationEnrollmentsApi = new EducationEnrollmentsApi(false);
   const educationSessionsApi = new EducationSessionsApi(false);
+  const educationAttendanceApi = new EducationAttendanceApi(false);
 
   const dispatch = useDispatch<AppDispatch>();
   const churchId: string = useSelector(
@@ -51,6 +54,10 @@ const EducationTermList = ({ isNewEducationTerm }: EducationTermListProps) => {
   const { targetEducationSession } = useSelector(
     (state: RootState) => state.targetEducationSession
   );
+
+  const [isTermSaveEnabled, setIsTermSaveEnabled] = useState<boolean>(false);
+  const [isSessionSaveEnabled, setIsSessionSaveEnabled] =
+    useState<boolean>(false);
 
   const [thrownError, setThrownError] = useState<Error | null>(null);
   if (thrownError) {
@@ -292,7 +299,7 @@ const EducationTermList = ({ isNewEducationTerm }: EducationTermListProps) => {
               educationTermId,
             });
 
-          const sessions = sessionResponse.data;
+          const sessions = sessionResponse.data.data;
 
           dispatch(
             setTargetEducationTerm({
@@ -364,6 +371,19 @@ const EducationTermList = ({ isNewEducationTerm }: EducationTermListProps) => {
   useEffect(() => {
     setIsTermPopupShown(false);
   }, [targetEducationTerm]);
+
+  useEffect(() => {
+    if (!targetEducationTerm.term) {
+      setIsTermSaveEnabled(false);
+      return;
+    }
+    if (!targetEducationTerm.startDate || !targetEducationTerm.endDate) {
+      setIsTermSaveEnabled(false);
+      return;
+    }
+
+    setIsTermSaveEnabled(true);
+  }, [targetEducationTerm]);
   // ========== 기수 ==========
 
   // ========== 회차 ==========
@@ -372,7 +392,9 @@ const EducationTermList = ({ isNewEducationTerm }: EducationTermListProps) => {
   const [isAddEducationSessionShown, setIsAddEducationSessionShown] =
     useState<boolean>(false);
 
-  const onClickOpenAddEducationSession = () => {
+  const [isDirectSession, setIsDirectSession] = useState<boolean>(false);
+
+  const onClickOpenAddEducationSession = (educationTerm?: EducationTerm) => {
     if (isEducationTermInformationShown) {
       setIsEducationTermInformationShown(false);
       setTimeout(() => {
@@ -380,28 +402,55 @@ const EducationTermList = ({ isNewEducationTerm }: EducationTermListProps) => {
       }, 500);
     } else {
       setIsAddEducationSessionShown(true);
+      if (educationTerm) {
+        dispatch(setTargetEducationTerm(educationTerm));
+
+        dispatch(
+          setTargetEducationSession({
+            ...DEFAULT_EDUCATION_SESSION,
+            id: new Date().toString(),
+          })
+        );
+        setIsDirectSession(true);
+      }
     }
   };
 
   const onClickCloseAddEducationSession = () => {
     setIsAddEducationSessionShown(false);
-    if (targetEducationTerm.id) {
+
+    if (!isDirectSession) {
       setTimeout(() => {
         setIsEducationTermInformationShown(true);
       }, 500);
+    } else {
+      dispatch(setTargetEducationTerm(DEFAULT_EDUCATION_TERM));
+
+      setIsDirectSession(false);
     }
   };
 
   const onClickAddSessionsDone = async () => {
     try {
       await educationSessionsApi
-        .createEducationSession({
-          churchId,
-          educationId: targetEducation.id,
-          educationTermId: targetEducationTerm.id,
-        })
+        .createEducationSession(
+          {
+            churchId,
+            educationId: targetEducation.id,
+            educationTermId: targetEducationTerm.id,
+          },
+          {
+            name: targetEducationSession.name,
+            startDate: targetEducationSession.startDate,
+            endDate: targetEducationSession.endDate,
+            content: targetEducationSession.content,
+            inChargeId: targetEducationSession.inChargeId,
+            status: targetEducationSession.status,
+            receiverIds: targetEducationSession.receiverIds,
+          }
+        )
         .then((response) => {
-          const newSession = response.data;
+          const newSession = response.data.data;
 
           const newTargetEducationTerm = {
             ...targetEducationTerm,
@@ -426,6 +475,16 @@ const EducationTermList = ({ isNewEducationTerm }: EducationTermListProps) => {
     } finally {
       dispatch(setTargetEducationSession(DEFAULT_EDUCATION_SESSION));
       setIsAddEducationSessionShown(false);
+
+      if (!isDirectSession) {
+        setTimeout(() => {
+          setIsEducationTermInformationShown(true);
+        }, 500);
+      } else {
+        dispatch(setTargetEducationTerm(DEFAULT_EDUCATION_TERM));
+
+        setIsDirectSession(false);
+      }
     }
   };
 
@@ -479,13 +538,49 @@ const EducationTermList = ({ isNewEducationTerm }: EducationTermListProps) => {
           educationSessionId,
         })
         .then(async (response) => {
-          const educationSession: EducationSession = response.data;
+          const educationSession: EducationSession = response.data.data;
 
-          dispatch(setTargetEducationSession(educationSession));
-          setIsEducationSessionInformationShown(true);
+          if (!targetEducationTerm.id) {
+            const newTargetEducationTerm = educationTerms.find(
+              (term) => term.id === educationTermId
+            );
+
+            if (newTargetEducationTerm) {
+              dispatch(setTargetEducationTerm(newTargetEducationTerm));
+            }
+          }
+
+          await educationAttendanceApi
+            .getEducationAttendances({
+              churchId,
+              educationId: targetEducation.id,
+              educationTermId,
+              sessionId: educationSessionId,
+            })
+            .then((response) => {
+              const newEducationAttendances = response.data.data;
+
+              dispatch(
+                setTargetEducationSession({
+                  ...educationSession,
+                  educationAttendances: newEducationAttendances,
+                })
+              );
+            });
         });
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));
+    } finally {
+      if (isEducationTermInformationShown) {
+        setIsEducationTermInformationShown(false);
+        setTimeout(() => {
+          setIsEducationSessionInformationShown(true);
+          setIsDirectSession(false);
+        }, 500);
+      } else {
+        setIsDirectSession(true);
+        setIsEducationSessionInformationShown(true);
+      }
     }
   };
 
@@ -493,6 +588,14 @@ const EducationTermList = ({ isNewEducationTerm }: EducationTermListProps) => {
   const onClickCloseSession = () => {
     setIsEducationSessionInformationShown(false);
     dispatch(setTargetEducationSession(DEFAULT_EDUCATION_SESSION));
+
+    if (!isDirectSession) {
+      setTimeout(() => {
+        setIsEducationTermInformationShown(true);
+      }, 500);
+    }
+
+    setIsDirectSession(false);
   };
 
   // 회차 삭제하기
@@ -555,6 +658,19 @@ const EducationTermList = ({ isNewEducationTerm }: EducationTermListProps) => {
     setIsSessionPopupShown(false);
   }, [targetEducationSession]);
 
+  useEffect(() => {
+    if (!getIsWellFormedTitle(targetEducationSession.name)) {
+      setIsSessionSaveEnabled(false);
+      return;
+    }
+    if (!targetEducationSession.startDate || !targetEducationSession.endDate) {
+      setIsSessionSaveEnabled(false);
+      return;
+    }
+
+    setIsSessionSaveEnabled(true);
+  }, [targetEducationSession]);
+
   // ========== 회차 ==========
 
   const props = {
@@ -567,31 +683,38 @@ const EducationTermList = ({ isNewEducationTerm }: EducationTermListProps) => {
     information: {
       isLoading,
       // 기수
-      isEducationTermInformationShown,
-      isEditTermShown,
-      isTermPopupShown,
-      onClickCloseTerm,
-      onClickDeleteTerm,
-      onClickDeleteTermConfirmOpen,
-      onClickDeleteTermConfirmClose,
-      onClickEditTermDone,
-      onClickEditTermOpen,
-      onClickEditTermClose,
+      term: {
+        isTermSaveEnabled,
+        isEducationTermInformationShown,
+        isEditTermShown,
+        isTermPopupShown,
+        onClickCloseTerm,
+        onClickDeleteTerm,
+        onClickDeleteTermConfirmOpen,
+        onClickDeleteTermConfirmClose,
+        onClickEditTermDone,
+        onClickEditTermOpen,
+        onClickEditTermClose,
+      },
       // 회차
-      isAddEducationSessionShown,
-      isEducationSessionInformationShown,
-      isEditSessionShown,
-      isSessionPopupShown,
-      onClickOpenAddEducationSession,
-      onClickCloseAddEducationSession,
-      onClickAddSessionsDone,
-      onClickCloseSession,
-      onClickDeleteSession,
-      onClickDeleteSessionConfirmOpen,
-      onClickDeleteSessionConfirmClose,
-      onClickEditSessionDone,
-      onClickEditSessionOpen,
-      onClickEditSessionClose,
+      session: {
+        isSessionSaveEnabled,
+        isAddEducationSessionShown,
+        isEducationSessionInformationShown,
+        isEditSessionShown,
+        isSessionPopupShown,
+        onClickEducationSessionItem,
+        onClickOpenAddEducationSession,
+        onClickCloseAddEducationSession,
+        onClickAddSessionsDone,
+        onClickCloseSession,
+        onClickDeleteSession,
+        onClickDeleteSessionConfirmOpen,
+        onClickDeleteSessionConfirmClose,
+        onClickEditSessionDone,
+        onClickEditSessionOpen,
+        onClickEditSessionClose,
+      },
     },
   };
 

@@ -4,8 +4,6 @@ import styled from 'styled-components';
 import Button from '@/components/atoms/common/button/button';
 import { GRAY, MAIN, WHITE } from '@/constants/styles/color';
 import TableSetting from '@/components/molecules/member/list/table-setting';
-import Dropdown from '@/components/atoms/common/dropdown/dropdown';
-import BorderInput from '@/components/atoms/common/input/border-input';
 import { MEMBER } from '@/constants/member/member-column';
 import TransparentBackground from '@/components/atoms/common/etc/transparent-background';
 import FilteredItem, {
@@ -18,6 +16,7 @@ import { useI18n, useScopedI18n } from '../../../../../locales/client';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
+import SearchInput from '@/components/atoms/common/input/search-input';
 
 const MemberFilterContainer = styled.div`
   display: flex;
@@ -180,33 +179,15 @@ const MemberFilterRowView = ({
         </FilterList>
         {/* 검색 부분 */}
         <SearchContainer>
-          <Dropdown
-            value={searchFilter}
-            items={searchFilterDropdownItems}
-            onChangeItem={onClickSearchFilterItem}
-            height={30}
-            width={100}
-            borderColor={GRAY.SEMI_LIGHT}
-            backgroundBlur={false}
-          />
-          <BorderInput
-            ref={searchRef}
-            value={searchValue}
-            onChange={onChangeSearchValue}
-            borderColor={GRAY.SEMI_LIGHT}
-            height={30}
-            width={160}
+          <SearchInput
+            searchRef={searchRef}
+            searchFilter={searchFilter}
+            searchFilterDropdownItems={searchFilterDropdownItems}
+            onClickSearchFilterItem={onClickSearchFilterItem}
+            searchValue={searchValue}
+            onChangeSearchValue={onChangeSearchValue}
             onKeyDown={onKeyDown}
-            placeholder={t_placeholder('search')}
-          />
-          <Button
-            text={t('search')}
-            height={30}
-            width={'auto'}
-            onClick={onClickSearch}
-            backgroundColor={WHITE}
-            borderColor={GRAY.DEFAULT}
-            color={GRAY.DARK}
+            onClickSearch={onClickSearch}
           />
         </SearchContainer>
       </RowTop>

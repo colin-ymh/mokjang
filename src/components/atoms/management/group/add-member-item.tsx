@@ -6,7 +6,7 @@ import { Member } from '@/models/member/member';
 import { MEMBER } from '@/constants/member/member-column';
 import { GRAY } from '@/constants/styles/color';
 import { MainText } from '@/components/atoms/common/text/main-text';
-import { getAge, getDateFromString } from '@/utils/date';
+import { getAge, getDateFromDateString } from '@/utils/date';
 import CheckButton from '@/components/atoms/common/button/check-button';
 import { getRandomImage } from '@/utils/image';
 
@@ -71,7 +71,7 @@ const AddMemberItem = ({
         />
         <MainText>{member.name}</MainText>
         <MainText color={GRAY.DARK}>
-          {member.birth && `(${getAge(getDateFromString(member.birth))})`}
+          {member.birth && `(${getAge(getDateFromDateString(member.birth))})`}
         </MainText>
 
         {isEnable && (

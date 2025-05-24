@@ -5,6 +5,7 @@ import React from 'react';
 import Plus from '../../../../../public/svg/plus.svg';
 import { BLACK, GRAY } from '@/constants/styles/color';
 import { useI18n } from '../../../../../locales/client';
+import { getStatusColor } from '@/utils/color';
 
 const SessionListContainer = styled.div`
   display: flex;
@@ -43,16 +44,48 @@ const SessionItem = styled.div`
   padding: 10px 20px;
   padding-left: 30px;
   border-top: 1px solid ${GRAY.DEFAULT};
+  justify-content: space-between;
+
+  cursor: pointer;
+  &:hover {
+    background-color: ${GRAY.LIGHT};
+  }
+`;
+
+const LeftContainer = styled.div`
+  display: flex;
+  gap: 10px;
+  flex-direction: row;
+`;
+
+const RightContainer = styled.div`
+  display: flex;
+  gap: 10px;
+  justify-content: flex-start;
+  align-items: center;
+`;
+
+const ColoredDot = styled.div<{ color: string }>`
+  display: flex;
+  width: 10px;
+  height: 10px;
+  border-radius: 100%;
+  background-color: ${({ color }) => color};
 `;
 
 type EducationTermSessionListProps = {
   educationSessions: EducationSession[];
   onClickAddButton: () => void;
+  onClickEducationSessionItem: (
+    educationTermId: string,
+    educationSessionId: string
+  ) => void;
 };
 
 const EducationTermSessionList = ({
   educationSessions,
   onClickAddButton,
+  onClickEducationSessionItem,
 }: EducationTermSessionListProps) => {
   const t = useI18n();
 
@@ -65,8 +98,20 @@ const EducationTermSessionList = ({
       {/* 회차 목록 */}
       <ListContainer>
         {educationSessions.map((session) => (
-          <SessionItem key={session.id}>
-            <MainText>{`${session.session}${t('session')}`}</MainText>
+          <SessionItem
+            key={session.id}
+            onClick={() =>
+              onClickEducationSessionItem(session.educationTermId, session.id)
+            }
+          >
+            <LeftContainer>
+              <MainText>{`${session.session}${t('session')}`}</MainText>
+              <MainText>{session.name}</MainText>
+            </LeftContainer>
+            <RightContainer>
+              <ColoredDot color={getStatusColor(session.status)} />
+              <MainText>{t(session.status)}</MainText>
+            </RightContainer>
           </SessionItem>
         ))}
       </ListContainer>

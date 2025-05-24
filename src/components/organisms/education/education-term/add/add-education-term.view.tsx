@@ -6,22 +6,31 @@ import { GRAY } from '@/constants/styles/color';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
-import { getDateTimeFromString } from '@/utils/date';
-import { ko } from 'date-fns/locale';
-import CustomDatePicker from '@/vendor/date-picker/custom-date-picker';
 import Quill from '@/components/atoms/common/input/quill';
 import MultiMemberDropdown from '@/components/atoms/common/dropdown/multi-member-dropdown';
 import { MemberDropdownValueType } from '@/models/dropdown/dropdown';
 import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-item';
 import {
   EDUCATION_ENROLLMENT_STATUS,
-  EDUCATION_TERM_STATUS,
   EducationEnrollment,
 } from '@/models/education/education';
 import StatusDropdown from '@/components/atoms/common/dropdown/status-dropdown';
-import { useEducationTermStatusDropdownItems } from '@/hooks/dropdown/dropdown-items';
+import {
+  useEducationTermStatusDropdownItems,
+  useTimeDropdownItems,
+} from '@/hooks/dropdown/dropdown-items';
 import { BLANK } from '@/constants/constant';
 import EducationEnrollmentList from '@/components/atoms/education/education-enrollment/education-enrollment-list';
+import CustomDatePicker from '@/vendor/date-picker/custom-date-picker';
+import {
+  getDateFromDateString,
+  getDateFromString,
+  getDateStringFromDate,
+  getTotalMinuteFromDate,
+} from '@/utils/date';
+import Dropdown from '@/components/atoms/common/dropdown/dropdown';
+
+import { EDUCATION_TERM_STATUS } from '@/constants/status/status';
 
 const AddEducationTermViewContainer = styled.div`
   display: flex;
@@ -50,16 +59,13 @@ const PeriodContainer = styled.div`
   display: flex;
   flex-direction: row;
   gap: 10px;
-  border: 1px solid ${GRAY.DEFAULT};
-  border-radius: 5px;
-  height: 40px;
   justify-content: flex-start;
   align-items: center;
-  padding: 0 10px;
 `;
 
-const EnrollmentList = styled.div`
-  display: flex;
+const RequiredMark = styled.span`
+  color: red;
+  margin-right: 4px;
 `;
 
 type AddEducationTermViewProps = {
@@ -68,7 +74,9 @@ type AddEducationTermViewProps = {
   onChangeStatus: (value: EDUCATION_TERM_STATUS) => void;
   onChangeTerm: (event: ChangeEvent<HTMLInputElement>) => void;
   onChangeStartDate: (date: Date | null) => void;
+  onChangeStartTime: (value: number) => void;
   onChangeEndDate: (date: Date | null) => void;
+  onChangeEndTime: (value: number) => void;
   onChangeInCharge: (values: DropdownValueType[]) => void;
   onChangeContent: (content: string) => void;
   onClickNewEnrollment: (values: MemberDropdownValueType[]) => void;
@@ -84,7 +92,9 @@ const AddEducationTermView = ({
   onChangeStatus,
   onChangeTerm,
   onChangeStartDate,
+  onChangeStartTime,
   onChangeEndDate,
+  onChangeEndTime,
   onChangeInCharge,
   onChangeContent,
   onClickNewEnrollment,
@@ -98,6 +108,7 @@ const AddEducationTermView = ({
   const t_placeholder = useScopedI18n('placeholder');
 
   const statusDropdownItems = useEducationTermStatusDropdownItems();
+  const timeDropdownItems = useTimeDropdownItems();
 
   return (
     <AddEducationTermViewContainer>
@@ -122,48 +133,80 @@ const AddEducationTermView = ({
           placeholder={t_placeholder('term')}
           borderColor={GRAY.DEFAULT}
           height={40}
+          isRequired={true}
         />
       </InputContainer>
 
       {/* 기간 */}
       <InputContainer>
         <LabelContainer>
-          <MainText>{t('period')}</MainText>
+          <MainText>
+            <RequiredMark>*</RequiredMark>
+            {t('period')}
+          </MainText>
           <PeriodContainer>
+            {/* 시작 날짜 */}
             <CustomDatePicker
-              value={targetEducationTerm.startDate}
-              selected={getDateTimeFromString(targetEducationTerm.startDate)}
+              value={
+                targetEducationTerm.startDate
+                  ? getDateStringFromDate(
+                      getDateFromDateString(targetEducationTerm.startDate)
+                    )
+                  : undefined
+              }
+              selected={
+                targetEducationTerm.startDate
+                  ? getDateFromString(targetEducationTerm.startDate)
+                  : null
+              }
               onChange={onChangeStartDate}
-              dateFormat="yyyy-MM-dd"
               placeholderText={t('startDate')}
-              showYearDropdown={true}
-              scrollableYearDropdown
-              yearDropdownItemNumber={50}
-              locale={ko}
-              // showTimeSelect={true}
-              showTimeInput={true}
-              showTimeCaption={true}
-              timeCaption={'시간'}
-              timeIntervals={15}
-              timeFormat="aa h:mm"
+              width={100}
             />
-            <MainText>{'-'}</MainText>
+            {/* 시작 시간 */}
+            <Dropdown
+              value={
+                targetEducationTerm.startDate
+                  ? getTotalMinuteFromDate(
+                      getDateFromString(targetEducationTerm.startDate)
+                    )
+                  : 0
+              }
+              items={timeDropdownItems}
+              onChangeItem={onChangeStartTime}
+              width={100}
+            />
+            <MainText>-</MainText>
+            {/* 종료 날짜 */}
             <CustomDatePicker
-              value={targetEducationTerm.endDate}
-              selected={getDateTimeFromString(targetEducationTerm.endDate)}
+              value={
+                targetEducationTerm.endDate
+                  ? getDateStringFromDate(
+                      getDateFromDateString(targetEducationTerm.endDate)
+                    )
+                  : undefined
+              }
+              selected={
+                targetEducationTerm.endDate
+                  ? getDateFromString(targetEducationTerm.endDate)
+                  : null
+              }
               onChange={onChangeEndDate}
-              dateFormat="yyyy-MM-dd"
               placeholderText={t('endDate')}
-              showYearDropdown={true}
-              scrollableYearDropdown
-              yearDropdownItemNumber={50}
-              locale={ko}
-              // showTimeSelect={true}
-              showTimeInput={true}
-              showTimeCaption={true}
-              timeCaption={'시간'}
-              timeIntervals={15}
-              timeFormat="aa h:mm"
+              width={100}
+            />
+            {/* 종료 시간 */}
+            <Dropdown
+              value={
+                targetEducationTerm.endDate
+                  ? getTotalMinuteFromDate(
+                      getDateFromString(targetEducationTerm.endDate)
+                    )
+                  : 0
+              }
+              items={timeDropdownItems}
+              onChangeItem={onChangeEndTime}
+              width={100}
             />
           </PeriodContainer>
         </LabelContainer>
@@ -192,7 +235,7 @@ const AddEducationTermView = ({
             height={40}
             isSingle={true}
             placeholder={inCharge.length === 0 ? t_placeholder('name') : BLANK}
-            // isUserMember={true}
+            isUserMember={true}
           />
         </LabelContainer>
       </InputContainer>
