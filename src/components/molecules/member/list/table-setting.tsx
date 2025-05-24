@@ -176,8 +176,10 @@ const TableSetting = ({ setIsShown }: AddFilterProps) => {
   // ~부터 날짜 변경
   // 달력에서 선택
   const onChangeAfter = (date: Date | null) => {
-    const newFilterAfter = getDateStringFromDate(date);
-    dispatch(setFilterAfter(newFilterAfter));
+    if (date) {
+      const newFilterAfter = getDateStringFromDate(date);
+      dispatch(setFilterAfter(newFilterAfter));
+    }
   };
 
   // 직접 입력
@@ -188,8 +190,10 @@ const TableSetting = ({ setIsShown }: AddFilterProps) => {
 
   // ~까지 날짜 변경
   const onChangeBefore = (date: Date | null) => {
-    const newDateBefore = getDateStringFromDate(date);
-    dispatch(setFilterBefore(newDateBefore));
+    if (date) {
+      const newDateBefore = getDateStringFromDate(date);
+      dispatch(setFilterBefore(newDateBefore));
+    }
   };
 
   // 직접 입력
