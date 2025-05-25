@@ -259,7 +259,7 @@ const EducationTermListView = (props: EducationTermListViewProps) => {
         isShow={isEducationSessionInformationShown}
         onClickClose={onClickCloseSession}
         isFooterShown={false}
-        headerTitle={`${targetEducationSession.session}${t('session')} ${targetEducationSession.name}`}
+        headerTitle={`${targetEducationSession.session}${t('session')} ${targetEducationSession.title}`}
         headerRight={
           <ButtonRow>
             <KebabDropdown

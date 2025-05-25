@@ -75,7 +75,7 @@ const RequiredMark = styled.span`
 
 type AddVisitationViewProps = {
   visitedMembers: DropdownValueType[];
-  instructor: DropdownValueType[];
+  inCharge: DropdownValueType[];
   receivers: DropdownValueType[];
   localDetails: VisitationDetail[];
   onChangeStatus: (status: VISITATION_STATUS) => void;
@@ -86,7 +86,7 @@ type AddVisitationViewProps = {
   onChangeEndTime: (value: number) => void;
   onChangeVisitedMembers: (members: MemberDropdownType[]) => void;
   onChangeMethod: (method: VISITATION_METHOD) => void;
-  onChangeInstructor: (instructor: MemberDropdownType[]) => void;
+  onChangeInCharge: (inCharge: MemberDropdownType[]) => void;
   onChangeReceivers: (receiver: MemberDropdownType[]) => void;
   onChangeContent: (memberId: string, content: string) => void;
   onChangePray: (memberId: string, content: string) => void;
@@ -94,7 +94,7 @@ type AddVisitationViewProps = {
 
 const AddVisitationView = ({
   visitedMembers,
-  instructor,
+  inCharge,
   receivers,
   localDetails,
   onChangeStatus,
@@ -105,7 +105,7 @@ const AddVisitationView = ({
   onChangeEndTime,
   onChangeVisitedMembers,
   onChangeMethod,
-  onChangeInstructor,
+  onChangeInCharge,
   onChangeReceivers,
   onChangeContent,
   onChangePray,
@@ -126,7 +126,7 @@ const AddVisitationView = ({
       <InputContainer>
         <MainText>{t('status')}</MainText>
         <StatusDropdown
-          value={targetVisitation.visitationStatus}
+          value={targetVisitation.status}
           items={statusDropdownItems}
           onChangeItem={onChangeStatus}
           width={100}
@@ -138,7 +138,7 @@ const AddVisitationView = ({
       <InputContainer>
         <LabelInput
           label={t('title')}
-          value={targetVisitation.visitationTitle}
+          value={targetVisitation.title}
           onChange={onChangeTitle}
           placeholder={t_placeholder('title')}
           borderColor={GRAY.DEFAULT}
@@ -158,17 +158,15 @@ const AddVisitationView = ({
             {/* 시작 날짜 */}
             <CustomDatePicker
               value={
-                targetVisitation.visitationStartDate
+                targetVisitation.startDate
                   ? getDateStringFromDate(
-                      getDateFromDateString(
-                        targetVisitation.visitationStartDate
-                      )
+                      getDateFromDateString(targetVisitation.startDate)
                     )
                   : undefined
               }
               selected={
-                targetVisitation.visitationStartDate
-                  ? getDateFromString(targetVisitation.visitationStartDate)
+                targetVisitation.startDate
+                  ? getDateFromString(targetVisitation.startDate)
                   : null
               }
               onChange={onChangeStartDate}
@@ -178,9 +176,9 @@ const AddVisitationView = ({
             {/* 시작 시간 */}
             <Dropdown
               value={
-                targetVisitation.visitationStartDate
+                targetVisitation.startDate
                   ? getTotalMinuteFromDate(
-                      getDateFromString(targetVisitation.visitationStartDate)
+                      getDateFromString(targetVisitation.startDate)
                     )
                   : 0
               }
@@ -192,15 +190,15 @@ const AddVisitationView = ({
             {/* 종료 날짜 */}
             <CustomDatePicker
               value={
-                targetVisitation.visitationEndDate
+                targetVisitation.endDate
                   ? getDateStringFromDate(
-                      getDateFromDateString(targetVisitation.visitationEndDate)
+                      getDateFromDateString(targetVisitation.endDate)
                     )
                   : undefined
               }
               selected={
-                targetVisitation.visitationEndDate
-                  ? getDateFromString(targetVisitation.visitationEndDate)
+                targetVisitation.endDate
+                  ? getDateFromString(targetVisitation.endDate)
                   : null
               }
               onChange={onChangeEndDate}
@@ -210,9 +208,9 @@ const AddVisitationView = ({
             {/* 종료 시간 */}
             <Dropdown
               value={
-                targetVisitation.visitationEndDate
+                targetVisitation.endDate
                   ? getTotalMinuteFromDate(
-                      getDateFromString(targetVisitation.visitationEndDate)
+                      getDateFromString(targetVisitation.endDate)
                     )
                   : 0
               }
@@ -256,16 +254,14 @@ const AddVisitationView = ({
         <LabelContainer>
           <MainText>
             <RequiredMark>*</RequiredMark>
-            {t('instructor')}
+            {t('inCharge')}
           </MainText>
           <MultiMemberDropdown
-            values={instructor}
-            onChangeValues={onChangeInstructor}
+            values={inCharge}
+            onChangeValues={onChangeInCharge}
             height={40}
             isSingle
-            placeholder={
-              instructor.length === 0 ? t_placeholder('name') : BLANK
-            }
+            placeholder={inCharge.length === 0 ? t_placeholder('name') : BLANK}
             isUserMember={true}
           />
         </LabelContainer>

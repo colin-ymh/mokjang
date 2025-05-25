@@ -4,7 +4,7 @@ import { AppDispatch, RootState } from '@/redux/store';
 
 import { getTrimmedString } from '@/utils/format';
 import { BLANK } from '@/constants/constant';
-import { setEducationTermFilter } from '@/redux/reducers/education-term-filter-reducer';
+import { setEducationTermFilter } from '@/redux/reducers/filter/education-term-filter-reducer';
 import { EDUCATION_TERM } from '@/constants/education/education-column';
 import { EducationTermFilteredItemType } from '@/components/atoms/education/education-term/education-term-filtered-item';
 import EducationTermRowView, {

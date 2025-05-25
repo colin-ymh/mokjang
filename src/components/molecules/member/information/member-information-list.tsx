@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
-import { setMembers } from '@/redux/reducers/member-filter-reducer';
+import { setMembers } from '@/redux/reducers/filter/member-filter-reducer';
 import {
   DEFAULT_MEMBER,
   setMember,

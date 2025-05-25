@@ -4,7 +4,7 @@ import { AppDispatch, RootState } from '@/redux/store';
 import {
   fetchEducationTerms,
   setEducationTerms,
-} from '@/redux/reducers/education-term-filter-reducer';
+} from '@/redux/reducers/filter/education-term-filter-reducer';
 import { EducationTerm } from '@/models/education/education';
 import InProgressEducationListView from '@/components/organisms/education/in-progress/in-progress-education-list.view';
 

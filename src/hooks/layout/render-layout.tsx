@@ -46,6 +46,7 @@ import EducationList from '@/components/organisms/education/education/list/educa
 import { Education } from '@/models/education/education';
 import InProgressEducationList from '@/components/organisms/education/in-progress/in-progress-education-list';
 import EducationTermList from '@/components/organisms/education/education-term/list/education-term-list';
+import { HEADER_BAR } from '@/constants/constant';
 
 export const getSide = (id: string) => {
   switch (id) {
@@ -90,8 +91,8 @@ export const getHeader = (id: string) => {
 
 export const getContent = (id: string, headerId: string | null): ReactNode => {
   switch (id) {
-    // 중복 contentId 관리
-    case 'all':
+    // 전체
+    case HEADER_BAR.ALL:
       if (headerId === MAIN_HEADER_ID.MEMBER) {
         return <MemberList />;
       } else if (headerId === MAIN_HEADER_ID.VISITATION) {
@@ -104,12 +105,22 @@ export const getContent = (id: string, headerId: string | null): ReactNode => {
         return null;
       }
 
-    // 중복 contentId 관리
-    case 'my':
+    // 내 ~~
+    case HEADER_BAR.MY:
       if (headerId === MAIN_HEADER_ID.VISITATION) {
-        return <VisitationList isMy={true} />;
+        return <VisitationList headerType={HEADER_BAR.MY} />;
       } else if (headerId === MAIN_HEADER_ID.TASK) {
-        return <TaskList isMy={true} />;
+        return <TaskList headerType={HEADER_BAR.MY} />;
+      } else {
+        return null;
+      }
+
+    // 보고받은 ~~
+    case HEADER_BAR.REPORTED:
+      if (headerId === MAIN_HEADER_ID.VISITATION) {
+        return <VisitationList headerType={HEADER_BAR.REPORTED} />;
+      } else if (headerId === MAIN_HEADER_ID.TASK) {
+        return <TaskList headerType={HEADER_BAR.REPORTED} />;
       } else {
         return null;
       }

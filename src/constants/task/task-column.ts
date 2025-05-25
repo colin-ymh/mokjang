@@ -1,5 +1,5 @@
 export enum TASK {
-  STATUS = 'taskStatus',
+  STATUS = 'status',
   TITLE = 'title',
   FROM_DATE = 'fromTaskStartDate',
   TO_DATE = 'toTaskStartDate',

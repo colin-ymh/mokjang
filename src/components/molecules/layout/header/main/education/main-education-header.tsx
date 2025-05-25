@@ -4,16 +4,16 @@ import { useEffect, useState } from 'react';
 import { EducationsApi } from '@/api/education/educations.api';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
-import { setEducations } from '@/redux/reducers/education-filter-reducer';
+import { setEducations } from '@/redux/reducers/filter/education-filter-reducer';
 import { getIsWellFormedTitle } from '@/utils/check';
-import { setTargetEducation } from '@/redux/reducers/target-education-reducer';
+import { setTargetEducation } from '@/redux/reducers/target/target-education-reducer';
 import {
   DEFAULT_EDUCATION,
   DEFAULT_EDUCATION_TERM,
 } from '@/models/education/education';
 import { EducationTermsApi } from '@/api/education/education-terms.api';
-import { setTargetEducationTerm } from '@/redux/reducers/target-education-term-reducer';
-import { setEducationTerms } from '@/redux/reducers/education-term-filter-reducer';
+import { setTargetEducationTerm } from '@/redux/reducers/target/target-education-term-reducer';
+import { setEducationTerms } from '@/redux/reducers/filter/education-term-filter-reducer';
 import { useParams } from 'next/navigation';
 import { EDUCATION_CONTENT_ID } from '@/constants/layout/content';
 import { EducationEnrollmentsApi } from '@/api/education/education-enrollments.api';
@@ -118,8 +118,21 @@ const MainEducationHeader = ({}: MainEducationHeaderProps) => {
 
   // ========== 기수 ==========
   const onClickAddEducationTerm = () => {
+    let nextTerm = 1;
+    educationTerms.forEach((term) => {
+      if (parseInt(term.term) > nextTerm) {
+        nextTerm = parseInt(term.term) + 1;
+      }
+    });
+
     setIsAddEducationTermOpened(true);
-    dispatch(setTargetEducationTerm({ ...DEFAULT_EDUCATION_TERM, id: 'TEMP' }));
+    dispatch(
+      setTargetEducationTerm({
+        ...DEFAULT_EDUCATION_TERM,
+        id: 'TEMP',
+        term: nextTerm.toString(),
+      })
+    );
   };
 
   const onClickCloseTermModal = () => {

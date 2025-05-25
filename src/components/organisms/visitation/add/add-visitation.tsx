@@ -8,7 +8,7 @@ import {
 import { MemberDropdownType } from '@/components/atoms/common/dropdown/member-dropdown-item';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
-import { setTargetVisitation } from '@/redux/reducers/target-visitation-reducer';
+import { setTargetVisitation } from '@/redux/reducers/target/target-visitation-reducer';
 import { DEFAULT_MEMBER } from '@/redux/reducers/member-register-reducer';
 import {
   getDateFromString,
@@ -27,16 +27,14 @@ const AddVisitation = () => {
 
   /* ── Status ── */
   const onChangeStatus = (status: VISITATION_STATUS) =>
-    dispatch(
-      setTargetVisitation({ ...targetVisitation, visitationStatus: status })
-    );
+    dispatch(setTargetVisitation({ ...targetVisitation, status: status }));
 
   /* ── Title ── */
   const onChangeTitle = (e: ChangeEvent<HTMLInputElement>) =>
     dispatch(
       setTargetVisitation({
         ...targetVisitation,
-        visitationTitle: getFormattedTitle(e.target.value),
+        title: getFormattedTitle(e.target.value),
       })
     );
 
@@ -46,16 +44,16 @@ const AddVisitation = () => {
       const newDate = getDateStringFromDate(date);
       let prevTime = '00:00';
 
-      if (targetVisitation.visitationStartDate) {
+      if (targetVisitation.startDate) {
         prevTime = getTimeStringFromDate(
-          getDateFromString(targetVisitation.visitationStartDate)
+          getDateFromString(targetVisitation.startDate)
         );
       }
 
       dispatch(
         setTargetVisitation({
           ...targetVisitation,
-          visitationStartDate: `${newDate}T${prevTime}`,
+          startDate: `${newDate}T${prevTime}`,
         })
       );
     }
@@ -65,16 +63,16 @@ const AddVisitation = () => {
     let prevDate = '2000-01-01';
     const newTime = getHourFromMinute(value);
 
-    if (targetVisitation.visitationStartDate) {
+    if (targetVisitation.startDate) {
       prevDate = getDateStringFromDate(
-        getDateFromString(targetVisitation.visitationStartDate)
+        getDateFromString(targetVisitation.startDate)
       );
     }
 
     dispatch(
       setTargetVisitation({
         ...targetVisitation,
-        visitationStartDate: `${prevDate}T${newTime}`,
+        startDate: `${prevDate}T${newTime}`,
       })
     );
   };
@@ -84,16 +82,16 @@ const AddVisitation = () => {
       const newDate = getDateStringFromDate(date);
       let prevTime = '00:00';
 
-      if (targetVisitation.visitationEndDate) {
+      if (targetVisitation.endDate) {
         prevTime = getTimeStringFromDate(
-          getDateFromString(targetVisitation.visitationEndDate)
+          getDateFromString(targetVisitation.endDate)
         );
       }
 
       dispatch(
         setTargetVisitation({
           ...targetVisitation,
-          visitationEndDate: `${newDate}T${prevTime}`,
+          endDate: `${newDate}T${prevTime}`,
         })
       );
     }
@@ -103,16 +101,16 @@ const AddVisitation = () => {
     let prevDate = '2000-01-01';
     const newTime = getHourFromMinute(value);
 
-    if (targetVisitation.visitationEndDate) {
+    if (targetVisitation.endDate) {
       prevDate = getDateStringFromDate(
-        getDateFromString(targetVisitation.visitationEndDate)
+        getDateFromString(targetVisitation.endDate)
       );
     }
 
     dispatch(
       setTargetVisitation({
         ...targetVisitation,
-        visitationEndDate: `${prevDate}T${newTime}`,
+        endDate: `${prevDate}T${newTime}`,
       })
     );
   };
@@ -140,27 +138,27 @@ const AddVisitation = () => {
     dispatch(setTargetVisitation({ ...targetVisitation, visitationMethod: m }));
 
   /* ── Instructor ── */
-  const [instructor, setInstructor] = useState<MemberDropdownType[]>([]);
+  const [inCharge, setInCharge] = useState<MemberDropdownType[]>([]);
 
   useEffect(() => {
-    if (targetVisitation.instructorId) {
-      setInstructor([
+    if (targetVisitation.inChargeId) {
+      setInCharge([
         {
-          value: targetVisitation.instructor.id,
-          title: targetVisitation.instructor.name,
+          value: targetVisitation.inCharge.id,
+          title: targetVisitation.inCharge.name,
         },
       ]);
     } else {
-      setInstructor([]);
+      setInCharge([]);
     }
   }, [targetVisitation.id]);
 
-  const onChangeInstructor = (values: MemberDropdownType[]) => {
-    setInstructor(values);
+  const onChangeInCharge = (values: MemberDropdownType[]) => {
+    setInCharge(values);
     dispatch(
       setTargetVisitation({
         ...targetVisitation,
-        instructorId: values[0] ? values[0].value : BLANK,
+        inChargeId: values[0] ? values[0].value : BLANK,
       })
     );
   };
@@ -296,7 +294,7 @@ const AddVisitation = () => {
 
   const props = {
     visitedMembers,
-    instructor,
+    inCharge,
     receivers,
     localDetails,
     onChangeStatus,
@@ -307,7 +305,7 @@ const AddVisitation = () => {
     onChangeEndTime,
     onChangeVisitedMembers,
     onChangeMethod,
-    onChangeInstructor,
+    onChangeInCharge,
     onChangeReceivers,
     onChangeContent,
     onChangePray,

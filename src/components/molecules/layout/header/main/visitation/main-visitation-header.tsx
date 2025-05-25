@@ -4,9 +4,9 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 import { VisitationsApi } from '@/api/visitations/visitations.api';
-import { setTargetVisitation } from '@/redux/reducers/target-visitation-reducer';
+import { setTargetVisitation } from '@/redux/reducers/target/target-visitation-reducer';
 import { DEFAULT_VISITATION } from '@/models/visitation/visitation';
-import { setVisitations } from '@/redux/reducers/visitation-filter-reducer';
+import { setVisitations } from '@/redux/reducers/filter/visitation-filter-reducer';
 import { getIsWellFormedTitle } from '@/utils/check';
 import { BLANK } from '@/constants/constant';
 
@@ -57,11 +57,11 @@ const MainVisitationHeader = ({}: MainVisitationHeaderProps) => {
         .createVisitation(
           { churchId },
           {
-            visitationStatus: targetVisitation.visitationStatus,
+            status: targetVisitation.status,
             visitationMethod: targetVisitation.visitationMethod,
-            instructorId: targetVisitation.instructorId,
-            visitationStartDate: targetVisitation.visitationStartDate,
-            visitationEndDate: targetVisitation.visitationEndDate,
+            inChargeId: targetVisitation.inChargeId,
+            startDate: targetVisitation.startDate,
+            endDate: targetVisitation.endDate,
             visitationDetails: targetVisitation.visitationDetails.map(
               (detail) => {
                 return {
@@ -71,7 +71,7 @@ const MainVisitationHeader = ({}: MainVisitationHeaderProps) => {
                 };
               }
             ),
-            visitationTitle: targetVisitation.visitationTitle,
+            title: targetVisitation.title,
             receiverIds: targetVisitation.receiverIds,
           }
         )
@@ -89,7 +89,7 @@ const MainVisitationHeader = ({}: MainVisitationHeaderProps) => {
   };
 
   useEffect(() => {
-    if (!getIsWellFormedTitle(targetVisitation.visitationTitle)) {
+    if (!getIsWellFormedTitle(targetVisitation.title)) {
       setIsSaveEnabled(false);
       return;
     }
@@ -97,14 +97,11 @@ const MainVisitationHeader = ({}: MainVisitationHeaderProps) => {
       setIsSaveEnabled(false);
       return;
     }
-    if (targetVisitation.instructorId === BLANK) {
+    if (targetVisitation.inChargeId === BLANK) {
       setIsSaveEnabled(false);
       return;
     }
-    if (
-      !targetVisitation.visitationStartDate ||
-      !targetVisitation.visitationEndDate
-    ) {
+    if (!targetVisitation.startDate || !targetVisitation.endDate) {
       setIsSaveEnabled(false);
       return;
     }

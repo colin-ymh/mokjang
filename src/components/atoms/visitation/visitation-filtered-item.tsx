@@ -15,7 +15,7 @@ import {
 } from '@/models/visitation/visitation';
 import { AppDispatch, RootState } from '@/redux/store';
 import { useDispatch, useSelector } from 'react-redux';
-import { setVisitationFilter } from '@/redux/reducers/visitation-filter-reducer';
+import { setVisitationFilter } from '@/redux/reducers/filter/visitation-filter-reducer';
 import { VISITATION_STATUS } from '@/constants/status/status';
 
 const ItemContainer = styled.div`
@@ -58,7 +58,7 @@ export type VisitationFilteredItemType = {
     | VISITATION.METHOD
     | VISITATION.TYPE
     | VISITATION.DATE
-    | VISITATION.INSTRUCTOR;
+    | VISITATION.IN_CHARGE;
   value: string[];
 };
 
@@ -83,7 +83,7 @@ const VisitationFilteredItem = ({ item }: VisitationFilteredItemProps) => {
           toVisitationDate: BLANK,
         })
       );
-    } else if ([VISITATION.TITLE, VISITATION.INSTRUCTOR].includes(item.title)) {
+    } else if ([VISITATION.TITLE, VISITATION.IN_CHARGE].includes(item.title)) {
       dispatch(
         setVisitationFilter({ ...visitationFilter, [item.title]: BLANK })
       );

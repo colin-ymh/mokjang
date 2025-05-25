@@ -9,7 +9,7 @@ import {
 import {
   fetchMembers,
   setMembers,
-} from '@/redux/reducers/member-filter-reducer';
+} from '@/redux/reducers/filter/member-filter-reducer';
 
 import { MembersApi } from '@/api/members/members.api';
 import { RequestInfoApi } from '@/api/members/request-info.api';

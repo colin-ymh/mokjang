@@ -4,7 +4,7 @@ import { AppDispatch, RootState } from '@/redux/store';
 import {
   fetchEducations,
   setEducations,
-} from '@/redux/reducers/education-filter-reducer';
+} from '@/redux/reducers/filter/education-filter-reducer';
 
 import { Education } from '@/models/education/education';
 import { EducationsApi } from '@/api/education/educations.api';

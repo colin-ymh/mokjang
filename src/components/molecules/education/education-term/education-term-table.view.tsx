@@ -10,7 +10,7 @@ import { BLANK } from '@/constants/constant';
 
 import useWindowSize from '@/hooks/window/window';
 
-import { BLANK_HEADER } from '@/redux/reducers/member-filter-reducer';
+import { BLANK_HEADER } from '@/redux/reducers/filter/member-filter-reducer';
 // import { getEducationTermStatusColor } from '@/utils/color';
 import EducationTermTableHeader from '@/components/atoms/education/education-term/education-term-table-header';
 import { EducationSession, EducationTerm } from '@/models/education/education';
@@ -342,7 +342,7 @@ const EducationTermTableView = ({
         return (
           <SessionContainer>
             <MainText>{`${session.session}${t('session')}`}</MainText>
-            <MainText>{session.name}</MainText>
+            <MainText>{session.title}</MainText>
           </SessionContainer>
         );
       case EDUCATION_TERM.PERIOD:

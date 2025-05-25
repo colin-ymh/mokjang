@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
-import { setMemberFilter } from '@/redux/reducers/member-filter-reducer';
+import { setMemberFilter } from '@/redux/reducers/filter/member-filter-reducer';
 
 import { MemberTableProps } from '@/components/molecules/member/list/member-table';
 import { MainText } from '@/components/atoms/common/text/main-text';

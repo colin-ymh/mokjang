@@ -1,20 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
-import { fetchTasks, setTasks } from '@/redux/reducers/task-filter-reducer';
+import {
+  fetchTasks,
+  setTasks,
+} from '@/redux/reducers/filter/task-filter-reducer';
 
 import { TasksApi } from '@/api/tasks/tasks.api';
 import TaskListView from '@/components/organisms/task/list/task-list.view';
 import { DEFAULT_TASK, Task } from '@/models/task/task';
-import { setTargetTask } from '@/redux/reducers/target-task-reducer';
+import { setTargetTask } from '@/redux/reducers/target/target-task-reducer';
 import { getIsWellFormedTitle } from '@/utils/check';
-import { BLANK } from '@/constants/constant';
+import { BLANK, HEADER_BAR } from '@/constants/constant';
 
 type TaskListProps = {
-  isMy?: boolean;
+  headerType?: HEADER_BAR;
 };
 
-const TaskList = ({ isMy = false }: TaskListProps) => {
+const TaskList = ({ headerType = HEADER_BAR.ALL }: TaskListProps) => {
   const tasksApi = new TasksApi(false);
   const dispatch = useDispatch<AppDispatch>();
   const { user } = useSelector((state: RootState) => state.user);
@@ -79,7 +82,9 @@ const TaskList = ({ isMy = false }: TaskListProps) => {
         fetchTasks({
           churchId,
           currentPage: page + 1,
-          inChargeId: isMy ? user.member.id : undefined,
+          inChargeId: headerType === HEADER_BAR.MY ? user.member.id : undefined,
+          memberId:
+            headerType === HEADER_BAR.REPORTED ? user.member.id : undefined,
         })
       );
       if (fetchTasks.fulfilled.match(result)) {
@@ -109,7 +114,10 @@ const TaskList = ({ isMy = false }: TaskListProps) => {
           fetchTasks({
             churchId,
             currentPage: 1,
-            inChargeId: isMy ? user.member.id : undefined,
+            inChargeId:
+              headerType === HEADER_BAR.MY ? user.member.id : undefined,
+            memberId:
+              headerType === HEADER_BAR.REPORTED ? user.member.id : undefined,
           })
         );
         if (fetchTasks.fulfilled.match(result)) {
@@ -124,7 +132,13 @@ const TaskList = ({ isMy = false }: TaskListProps) => {
     };
 
     fetchInitialTasks();
-  }, [churchId, taskFilter, taskOrderBy, taskOrderDirection, isMy]);
+  }, [
+    churchId,
+    taskFilter,
+    taskOrderBy,
+    taskOrderDirection,
+    headerType === HEADER_BAR.MY,
+  ]);
 
   const onClickEditDone = async () => {
     try {
@@ -135,10 +149,10 @@ const TaskList = ({ isMy = false }: TaskListProps) => {
           taskId: targetTask.id,
         },
         {
-          taskStatus: targetTask.taskStatus || undefined,
+          status: targetTask.status || undefined,
           inChargeId: targetTask.inChargeId || undefined,
-          taskStartDate: targetTask.taskStartDate || undefined,
-          taskEndDate: targetTask.taskEndDate || undefined,
+          startDate: targetTask.startDate || undefined,
+          endDate: targetTask.endDate || undefined,
           title: targetTask.title || undefined,
           comment: targetTask.comment || undefined,
         }
@@ -224,7 +238,8 @@ const TaskList = ({ isMy = false }: TaskListProps) => {
           fetchTasks({
             churchId,
             currentPage: 1,
-            inChargeId: isMy ? user.member.id : undefined,
+            inChargeId:
+              headerType === HEADER_BAR.MY ? user.member.id : undefined,
           })
         );
         if (fetchTasks.fulfilled.match(result)) {
@@ -268,7 +283,7 @@ const TaskList = ({ isMy = false }: TaskListProps) => {
       setIsSaveEnabled(false);
       return;
     }
-    if (!targetTask.taskStartDate || !targetTask.taskEndDate) {
+    if (!targetTask.startDate || !targetTask.endDate) {
       setIsSaveEnabled(false);
       return;
     }

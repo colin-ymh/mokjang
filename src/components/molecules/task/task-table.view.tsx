@@ -11,7 +11,7 @@ import { BLANK } from '@/constants/constant';
 import { Task } from '@/models/task/task';
 import useWindowSize from '@/hooks/window/window';
 import TaskTableHeader from '@/components/atoms/task/task-table-header';
-import { BLANK_HEADER } from '@/redux/reducers/member-filter-reducer';
+import { BLANK_HEADER } from '@/redux/reducers/filter/member-filter-reducer';
 import { useI18n } from '../../../../locales/client';
 import { getFormattedDate } from '@/utils/format';
 import { getStatusColor } from '@/utils/color';
@@ -207,16 +207,16 @@ const TaskTableView = ({
       case TASK.STATUS:
         return (
           <StatusContainer>
-            <ColoredDot color={getStatusColor(task.taskStatus)} />
-            <MainText>{t(task?.taskStatus)}</MainText>
+            <ColoredDot color={getStatusColor(task.status)} />
+            <MainText>{t(task?.status)}</MainText>
           </StatusContainer>
         );
       case TASK.DATE:
         return (
           <MainText>
             {`${
-              task.taskStartDate && getFormattedDate(task.taskStartDate)
-            } - ${task.taskEndDate && getFormattedDate(task.taskEndDate)}`}
+              task.startDate && getFormattedDate(task.startDate)
+            } - ${task.endDate && getFormattedDate(task.endDate)}`}
           </MainText>
         );
       case TASK.IN_CHARGE:

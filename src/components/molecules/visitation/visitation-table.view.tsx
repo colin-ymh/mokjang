@@ -11,7 +11,7 @@ import { BLANK } from '@/constants/constant';
 import { Visitation } from '@/models/visitation/visitation';
 import useWindowSize from '@/hooks/window/window';
 import VisitationTableHeader from '@/components/atoms/visitation/visitation-table-header';
-import { BLANK_HEADER } from '@/redux/reducers/member-filter-reducer';
+import { BLANK_HEADER } from '@/redux/reducers/filter/member-filter-reducer';
 import { useI18n } from '../../../../locales/client';
 import { getFormattedDate } from '@/utils/format';
 import { getStatusColor } from '@/utils/color';
@@ -29,7 +29,7 @@ const getColumnWidth = (id: string) => {
       return 150;
     case VISITATION.DATE:
       return 200;
-    case VISITATION.INSTRUCTOR:
+    case VISITATION.IN_CHARGE:
       return 150;
     default:
       // 비고(REMARKS) 컬럼 등
@@ -205,11 +205,11 @@ const VisitationTableView = ({
   const getVisitationTableContent = (id: string, visitation: Visitation) => {
     switch (id) {
       case VISITATION.TITLE:
-        return <MainText>{visitation?.visitationTitle}</MainText>;
+        return <MainText>{visitation?.title}</MainText>;
       case VISITATION.VISITED:
         return (
           <MembersContainer>
-            {visitation.members.map((member) => (
+            {visitation.members?.map((member) => (
               <ProfileContainer>
                 {/*<ProfileImage*/}
                 {/*  src={getRandomImage(member.id)}*/}
@@ -223,30 +223,26 @@ const VisitationTableView = ({
       case VISITATION.STATUS:
         return (
           <StatusContainer>
-            <ColoredDot color={getStatusColor(visitation.visitationStatus)} />
-            <MainText>{t(visitation?.visitationStatus)}</MainText>
+            <ColoredDot color={getStatusColor(visitation.status)} />
+            <MainText>{t(visitation?.status)}</MainText>
           </StatusContainer>
         );
       case VISITATION.DATE:
         return (
           <MainText>
             {`${
-              visitation.visitationStartDate &&
-              getFormattedDate(visitation.visitationStartDate)
-            } - ${
-              visitation.visitationEndDate &&
-              getFormattedDate(visitation.visitationEndDate)
-            }`}
+              visitation.startDate && getFormattedDate(visitation.startDate)
+            } - ${visitation.endDate && getFormattedDate(visitation.endDate)}`}
           </MainText>
         );
-      case VISITATION.INSTRUCTOR:
+      case VISITATION.IN_CHARGE:
         return (
           <ProfileContainer>
             <ProfileImage
-              src={getRandomImage(visitation.instructor.id)}
+              src={getRandomImage(visitation.inCharge.id)}
               alt={MEMBER.PROFILE_IMAGE}
             />
-            <MainText>{visitation.instructor?.name}</MainText>
+            <MainText>{visitation.inCharge?.name}</MainText>
           </ProfileContainer>
         );
       case BLANK:

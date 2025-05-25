@@ -150,8 +150,8 @@ export const useVisitationSearchFilterDropdownItems = () => {
       title: t(VISITATION.TITLE),
     },
     {
-      value: VISITATION.INSTRUCTOR,
-      title: t(VISITATION.INSTRUCTOR),
+      value: VISITATION.IN_CHARGE,
+      title: t(VISITATION.IN_CHARGE),
     },
   ];
 

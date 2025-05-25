@@ -10,7 +10,7 @@ import {
   getHourFromMinute,
   getTimeStringFromDate,
 } from '@/utils/date';
-import { setTargetEducationSession } from '@/redux/reducers/target-education-session-reducer';
+import { setTargetEducationSession } from '@/redux/reducers/target/target-education-session-reducer';
 import AddEducationSessionView from '@/components/organisms/education/education-session/add/add-education-session.view';
 import { MemberDropdownType } from '@/components/atoms/common/dropdown/member-dropdown-item';
 
@@ -38,7 +38,7 @@ const AddEducationSession = ({}: AddEducationSessionProps) => {
     dispatch(
       setTargetEducationSession({
         ...targetEducationSession,
-        name: getFormattedTitle(event.target.value),
+        title: getFormattedTitle(event.target.value),
       })
     );
   };

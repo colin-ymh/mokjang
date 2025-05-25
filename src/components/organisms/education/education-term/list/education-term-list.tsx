@@ -5,11 +5,11 @@ import {
   fetchEducationSessions,
   fetchEducationTerms,
   setEducationTerms,
-} from '@/redux/reducers/education-term-filter-reducer';
+} from '@/redux/reducers/filter/education-term-filter-reducer';
 
 import { EducationTermsApi } from '@/api/education/education-terms.api';
 
-import { setTargetEducationTerm } from '@/redux/reducers/target-education-term-reducer';
+import { setTargetEducationTerm } from '@/redux/reducers/target/target-education-term-reducer';
 import {
   DEFAULT_EDUCATION_SESSION,
   DEFAULT_EDUCATION_TERM,
@@ -20,7 +20,7 @@ import {
 import EducationTermListView from '@/components/organisms/education/education-term/list/education-term-list.view';
 import { EducationEnrollmentsApi } from '@/api/education/education-enrollments.api';
 import { EducationSessionsApi } from '@/api/education/education-sessions.api';
-import { setTargetEducationSession } from '@/redux/reducers/target-education-session-reducer';
+import { setTargetEducationSession } from '@/redux/reducers/target/target-education-session-reducer';
 import { EducationAttendanceApi } from '@/api/education/education-attendance.api';
 import { getIsWellFormedTitle } from '@/utils/check';
 
@@ -440,7 +440,7 @@ const EducationTermList = ({ isNewEducationTerm }: EducationTermListProps) => {
             educationTermId: targetEducationTerm.id,
           },
           {
-            name: targetEducationSession.name,
+            title: targetEducationSession.title,
             startDate: targetEducationSession.startDate,
             endDate: targetEducationSession.endDate,
             content: targetEducationSession.content,
@@ -659,7 +659,7 @@ const EducationTermList = ({ isNewEducationTerm }: EducationTermListProps) => {
   }, [targetEducationSession]);
 
   useEffect(() => {
-    if (!getIsWellFormedTitle(targetEducationSession.name)) {
+    if (!getIsWellFormedTitle(targetEducationSession.title)) {
       setIsSessionSaveEnabled(false);
       return;
     }

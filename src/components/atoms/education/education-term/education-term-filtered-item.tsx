@@ -11,7 +11,7 @@ import { AppDispatch, RootState } from '@/redux/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { EDUCATION_TERM } from '@/constants/education/education-column';
 import { useI18n } from '../../../../../locales/client';
-import { setEducationTermFilter } from '@/redux/reducers/education-term-filter-reducer';
+import { setEducationTermFilter } from '@/redux/reducers/filter/education-term-filter-reducer';
 
 const ItemContainer = styled.div`
   display: flex;

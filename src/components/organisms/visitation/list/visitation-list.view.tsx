@@ -129,7 +129,7 @@ const VisitationListView = (props: VisitationListViewProps) => {
         isShow={isVisitationInformationShown}
         onClickClose={onClickClose}
         isFooterShown={false}
-        headerTitle={targetVisitation?.visitationTitle}
+        headerTitle={targetVisitation?.title}
         headerRight={
           <ButtonRow>
             <KebabDropdown

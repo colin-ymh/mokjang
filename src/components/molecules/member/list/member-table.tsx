@@ -6,7 +6,7 @@ import {
   setMemberOrderBy,
   setMemberOrderDirection,
   setMembers,
-} from '@/redux/reducers/member-filter-reducer';
+} from '@/redux/reducers/filter/member-filter-reducer';
 
 import MemberTableView from '@/components/molecules/member/list/member-table.view';
 import { MEMBER } from '@/constants/member/member-column';

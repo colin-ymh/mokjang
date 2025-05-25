@@ -3,6 +3,7 @@ import {
   CHURCH_CONTENT_ID,
   EDUCATION_CONTENT_ID,
   MEMBER_CONTENT_ID,
+  TASK_CONTENT_ID,
   VISITATION_CONTENT_ID,
 } from '@/constants/layout/content';
 import {
@@ -47,6 +48,10 @@ export const useMainVisitationHeaderBarItems = () => {
       id: VISITATION_CONTENT_ID.MY,
       title: t_visitationContent(VISITATION_CONTENT_ID.MY),
     },
+    {
+      id: VISITATION_CONTENT_ID.REPORTED,
+      title: t_visitationContent(VISITATION_CONTENT_ID.REPORTED),
+    },
   ];
 
   return items;
@@ -57,12 +62,16 @@ export const useMainTaskHeaderBarItems = () => {
 
   const items = [
     {
-      id: VISITATION_CONTENT_ID.ALL,
-      title: t_taskContent(VISITATION_CONTENT_ID.ALL),
+      id: TASK_CONTENT_ID.ALL,
+      title: t_taskContent(TASK_CONTENT_ID.ALL),
     },
     {
-      id: VISITATION_CONTENT_ID.MY,
-      title: t_taskContent(VISITATION_CONTENT_ID.MY),
+      id: TASK_CONTENT_ID.MY,
+      title: t_taskContent(TASK_CONTENT_ID.MY),
+    },
+    {
+      id: TASK_CONTENT_ID.REPORTED,
+      title: t_taskContent(TASK_CONTENT_ID.REPORTED),
     },
   ];
 

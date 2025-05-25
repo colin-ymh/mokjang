@@ -11,7 +11,7 @@ import {
   getTimeStringFromDate,
 } from '@/utils/date';
 import AddTaskView from '@/components/organisms/task/add/add-task.view';
-import { setTargetTask } from '@/redux/reducers/target-task-reducer';
+import { setTargetTask } from '@/redux/reducers/target/target-task-reducer';
 import { TASK_STATUS } from '@/constants/status/status';
 
 type AddTaskProps = {};
@@ -22,7 +22,7 @@ const AddTask = ({}: AddTaskProps) => {
 
   // ===== status =====
   const onChangeStatus = (status: TASK_STATUS) => {
-    dispatch(setTargetTask({ ...targetTask, taskStatus: status }));
+    dispatch(setTargetTask({ ...targetTask, status: status }));
   };
   // ===== status =====
 
@@ -43,16 +43,16 @@ const AddTask = ({}: AddTaskProps) => {
       const newDate = getDateStringFromDate(date);
       let prevTime = '00:00';
 
-      if (targetTask.taskStartDate) {
+      if (targetTask.startDate) {
         prevTime = getTimeStringFromDate(
-          getDateFromString(targetTask.taskStartDate)
+          getDateFromString(targetTask.startDate)
         );
       }
 
       dispatch(
         setTargetTask({
           ...targetTask,
-          taskStartDate: `${newDate}T${prevTime}`,
+          startDate: `${newDate}T${prevTime}`,
         })
       );
     }
@@ -62,16 +62,14 @@ const AddTask = ({}: AddTaskProps) => {
     let prevDate = '2000-01-01';
     const newTime = getHourFromMinute(value);
 
-    if (targetTask.taskStartDate) {
-      prevDate = getDateStringFromDate(
-        getDateFromString(targetTask.taskStartDate)
-      );
+    if (targetTask.startDate) {
+      prevDate = getDateStringFromDate(getDateFromString(targetTask.startDate));
     }
 
     dispatch(
       setTargetTask({
         ...targetTask,
-        taskStartDate: `${prevDate}T${newTime}`,
+        startDate: `${prevDate}T${newTime}`,
       })
     );
   };
@@ -81,16 +79,14 @@ const AddTask = ({}: AddTaskProps) => {
       const newDate = getDateStringFromDate(date);
       let prevTime = '00:00';
 
-      if (targetTask.taskEndDate) {
-        prevTime = getTimeStringFromDate(
-          getDateFromString(targetTask.taskEndDate)
-        );
+      if (targetTask.endDate) {
+        prevTime = getTimeStringFromDate(getDateFromString(targetTask.endDate));
       }
 
       dispatch(
         setTargetTask({
           ...targetTask,
-          taskEndDate: `${newDate}T${prevTime}`,
+          endDate: `${newDate}T${prevTime}`,
         })
       );
     }
@@ -100,16 +96,14 @@ const AddTask = ({}: AddTaskProps) => {
     let prevDate = '2000-01-01';
     const newTime = getHourFromMinute(value);
 
-    if (targetTask.taskEndDate) {
-      prevDate = getDateStringFromDate(
-        getDateFromString(targetTask.taskEndDate)
-      );
+    if (targetTask.endDate) {
+      prevDate = getDateStringFromDate(getDateFromString(targetTask.endDate));
     }
 
     dispatch(
       setTargetTask({
         ...targetTask,
-        taskEndDate: `${prevDate}T${newTime}`,
+        endDate: `${prevDate}T${newTime}`,
       })
     );
   };

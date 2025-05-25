@@ -105,7 +105,7 @@ const AddTaskView = ({
       <InputContainer>
         <MainText>{t('status')}</MainText>
         <StatusDropdown
-          value={targetTask.taskStatus}
+          value={targetTask.status}
           items={statusDropdownItems}
           onChangeItem={onChangeStatus}
           width={100}
@@ -137,15 +137,15 @@ const AddTaskView = ({
             {/* 시작 날짜 */}
             <CustomDatePicker
               value={
-                targetTask.taskStartDate
+                targetTask.startDate
                   ? getDateStringFromDate(
-                      getDateFromDateString(targetTask.taskStartDate)
+                      getDateFromDateString(targetTask.startDate)
                     )
                   : undefined
               }
               selected={
-                targetTask.taskStartDate
-                  ? getDateFromString(targetTask.taskStartDate)
+                targetTask.startDate
+                  ? getDateFromString(targetTask.startDate)
                   : null
               }
               onChange={onChangeStartDate}
@@ -155,9 +155,9 @@ const AddTaskView = ({
             {/* 시작 시간 */}
             <Dropdown
               value={
-                targetTask.taskStartDate
+                targetTask.startDate
                   ? getTotalMinuteFromDate(
-                      getDateFromString(targetTask.taskStartDate)
+                      getDateFromString(targetTask.startDate)
                     )
                   : 0
               }
@@ -169,15 +169,15 @@ const AddTaskView = ({
             {/* 종료 날짜 */}
             <CustomDatePicker
               value={
-                targetTask.taskEndDate
+                targetTask.endDate
                   ? getDateStringFromDate(
-                      getDateFromDateString(targetTask.taskEndDate)
+                      getDateFromDateString(targetTask.endDate)
                     )
                   : undefined
               }
               selected={
-                targetTask.taskEndDate
-                  ? getDateFromString(targetTask.taskEndDate)
+                targetTask.endDate
+                  ? getDateFromString(targetTask.endDate)
                   : null
               }
               onChange={onChangeEndDate}
@@ -187,9 +187,9 @@ const AddTaskView = ({
             {/* 종료 시간 */}
             <Dropdown
               value={
-                targetTask.taskEndDate
+                targetTask.endDate
                   ? getTotalMinuteFromDate(
-                      getDateFromString(targetTask.taskEndDate)
+                      getDateFromString(targetTask.endDate)
                     )
                   : 0
               }

@@ -1,7 +1,7 @@
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
-import { setMemberFilter } from '@/redux/reducers/member-filter-reducer';
+import { setMemberFilter } from '@/redux/reducers/filter/member-filter-reducer';
 
 import {
   getFormattedHomePhone,

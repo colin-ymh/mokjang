@@ -17,7 +17,7 @@ export default {
   educationEnrollment: '수강 교인',
 
   inCharge: '담당자',
-  taskStatus: '상태',
+  inChargeId: '담당자',
   taskDate: '업무일자',
   comment: '내용',
   content: '내용',
@@ -27,12 +27,9 @@ export default {
 
   visitationContent: '심방내용',
   visitationPray: '기도제목',
-  visitationTitle: '제목',
   visitationDate: '심방일자',
   visitationMethod: '심방방식',
-  visitationStatus: '상태',
   visitationType: '심방 종류',
-  instructorId: '담당자',
   fromVisitationDate: '심방 날짜 ~부터',
   toVisitationDate: '심방 날짜 ~까지',
 
@@ -47,7 +44,6 @@ export default {
 
   people: '인원',
 
-  instructor: '진행자',
   session: '회차',
 
   term: '기수',
@@ -225,9 +221,11 @@ export default {
 
   'visitation-content.all': '전체',
   'visitation-content.my': '내 심방',
+  'visitation-content.reported': '보고받은 심방',
 
   'task-content.all': '전체',
   'task-content.my': '내 업무',
+  'task-content.reported': '보고받은 업무',
 
   'education-content.all': '전체',
   'education-content.inProgress': '진행중',
@@ -239,7 +237,6 @@ export default {
   'tableHeader.education': '교육명',
   'tableHeader.period': '기간',
   'tableHeader.educationEnrollments': '교육인원',
-  'tableHeader.instructor': '진행자',
 
   'tableHeader.memberName': '교인명',
   'tableHeader.group': '그룹',
@@ -327,7 +324,7 @@ export default {
   'placeholder.endDate': '종료날짜를 입력해주세요. (yyyy-mm-dd) ',
   'placeholder.term': '기수를 입력해주세요.',
   'placeholder.session': '회차를 입력해주세요.',
-  'placeholder.instructor': '진행자를 선택해주세요.',
+  'placeholder.inCharge': '진행자를 선택해주세요.',
   'placeholder.sessionDate': '교육 일시를 입력해주세요. (yyyy-mm-dd) ',
   'placeholder.sessionContent': '교육 내용를 입력해주세요.',
   'placeholder.search': '검색어를 입력해주세요.',

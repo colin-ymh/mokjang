@@ -4,7 +4,7 @@ import { AppDispatch, RootState } from '@/redux/store';
 import {
   setTaskOrderBy,
   setTaskOrderDirection,
-} from '@/redux/reducers/task-filter-reducer';
+} from '@/redux/reducers/filter/task-filter-reducer';
 
 import TaskTableView from '@/components/molecules/task/task-table.view';
 import { TASK } from '@/constants/task/task-column';

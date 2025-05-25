@@ -26,7 +26,7 @@ import ConfirmPopup from '@/components/atoms/common/popup/error-popup';
 import { getRandomImage } from '@/utils/image';
 
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
-import { BLANK_HEADER } from '@/redux/reducers/member-filter-reducer';
+import { BLANK_HEADER } from '@/redux/reducers/filter/member-filter-reducer';
 
 // 1. 컬럼별 PX 폭 (마지막 REMARKS만 auto 할 예정)
 const getColumnWidth = (id: string) => {

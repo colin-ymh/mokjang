@@ -11,7 +11,7 @@ import { useI18n } from '../../../../locales/client';
 import Cancel from '../../../../public/svg/cancel.svg';
 import { AppDispatch, RootState } from '@/redux/store';
 import { useDispatch, useSelector } from 'react-redux';
-import { setTaskFilter } from '@/redux/reducers/task-filter-reducer';
+import { setTaskFilter } from '@/redux/reducers/filter/task-filter-reducer';
 
 import { TASK_STATUS } from '@/constants/status/status';
 

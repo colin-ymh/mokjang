@@ -6,8 +6,8 @@ import {
   EDUCATION_ENROLLMENT_STATUS,
   EducationEnrollment,
 } from '@/models/education/education';
-import { setTargetEducationTerm } from '@/redux/reducers/target-education-term-reducer';
-import { setEducationTerms } from '@/redux/reducers/education-term-filter-reducer';
+import { setTargetEducationTerm } from '@/redux/reducers/target/target-education-term-reducer';
+import { setEducationTerms } from '@/redux/reducers/filter/education-term-filter-reducer';
 import EducationTermInformationView from '@/components/organisms/education/education-term/information/education-term-information.view';
 import { EducationEnrollmentsApi } from '@/api/education/education-enrollments.api';
 

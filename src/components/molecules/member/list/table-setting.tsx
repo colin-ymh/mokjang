@@ -16,7 +16,7 @@ import {
   setFilterValue,
   setMemberFilter,
   setMemberTableHeaderItemList,
-} from '@/redux/reducers/member-filter-reducer';
+} from '@/redux/reducers/filter/member-filter-reducer';
 
 import TableSettingView from '@/components/molecules/member/list/table-setting.view';
 import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-item';

@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
-import { setTargetTask } from '@/redux/reducers/target-task-reducer';
+import { setTargetTask } from '@/redux/reducers/target/target-task-reducer';
 import { TasksApi } from '@/api/tasks/tasks.api';
-import { setTasks } from '@/redux/reducers/task-filter-reducer';
+import { setTasks } from '@/redux/reducers/filter/task-filter-reducer';
 import TaskInformationView from '@/components/organisms/task/information/task-information.view';
 import { TASK_STATUS } from '@/constants/status/status';
 
@@ -27,14 +27,14 @@ const TaskInformation = ({}: TaskInformationProps) => {
   const onChangeStatus = (status: TASK_STATUS) => {
     try {
       tasksApi
-        .editTask({ churchId, taskId: targetTask.id }, { taskStatus: status })
+        .editTask({ churchId, taskId: targetTask.id }, { status })
         .then((response) => {
           const newTask = response.data.data;
 
-          dispatch(setTargetTask({ ...targetTask, taskStatus: status }));
+          dispatch(setTargetTask({ ...targetTask, status }));
 
           const newTasks = tasks.map((v) => {
-            return v.id !== newTask.id ? v : { ...v, taskStatus: status };
+            return v.id !== newTask.id ? v : { ...v, status };
           });
 
           dispatch(setTasks(newTasks));

@@ -16,7 +16,7 @@ import { AuthApi } from '@/api/auth/auth.api';
 import { usePageRouter } from '@/utils/router';
 import { setUser } from '@/redux/reducers/user-reducer';
 import { UserApi } from '@/api/user/user.api';
-import { setEducations } from '@/redux/reducers/education-filter-reducer';
+import { setEducations } from '@/redux/reducers/filter/education-filter-reducer';
 
 export const useInitializeChurch = () => {
   const dispatch = useDispatch<AppDispatch>();

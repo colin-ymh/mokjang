@@ -17,7 +17,7 @@ type GetTasksParams = {
 
   fromTaskStartDate?: string;
   toTaskStartDate?: string;
-  taskStatus?: TASK_STATUS[];
+  status?: TASK_STATUS[];
   title?: string;
   inChargeId?: string;
 };
@@ -27,11 +27,11 @@ type CreateTaskParams = {
 };
 
 type CreateTaskBody = {
-  taskStatus: TASK_STATUS;
+  status: TASK_STATUS;
   title: string;
   inChargeId: string;
-  taskStartDate: string;
-  taskEndDate: string;
+  startDate: string;
+  endDate: string;
   receiverIds?: string[];
   comment: string;
 };
@@ -47,11 +47,11 @@ type EditTaskParams = {
 };
 
 type EditTaskBody = {
-  taskStatus?: TASK_STATUS;
+  status?: TASK_STATUS;
   title?: string;
   inChargeId?: string;
-  taskStartDate?: string;
-  taskEndDate?: string;
+  startDate?: string;
+  endDate?: string;
   parentTaskId?: string;
   receiverId?: string;
   comment?: string;
@@ -113,7 +113,7 @@ export class TasksApi {
 
       fromTaskStartDate,
       toTaskStartDate,
-      taskStatus,
+      status,
       inChargeId,
       title,
       // 필요하다면 선택 컬럼 등 추가
@@ -127,7 +127,7 @@ export class TasksApi {
         orderDirection,
         fromTaskStartDate,
         toTaskStartDate,
-        taskStatus,
+        status,
         inChargeId,
         title,
       }).filter(

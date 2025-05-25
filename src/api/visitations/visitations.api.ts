@@ -22,11 +22,11 @@ type GetVisitationsParams = {
 
   fromVisitationDate?: string;
   toVisitationDate?: string;
-  visitationStatus?: VISITATION_STATUS[];
+  status?: VISITATION_STATUS[];
   visitationMethod?: VISITATION_METHOD[];
   visitationType?: VISITATION_TYPE[];
-  visitationTitle?: string;
-  instructorId?: string;
+  title?: string;
+  inChargeId?: string;
 };
 
 type CreateVisitationParams = {
@@ -34,12 +34,12 @@ type CreateVisitationParams = {
 };
 
 type CreateVisitationBody = {
-  visitationStatus: VISITATION_STATUS;
+  status: VISITATION_STATUS;
   visitationMethod: VISITATION_METHOD;
-  visitationTitle: string;
-  instructorId: string;
-  visitationStartDate: string;
-  visitationEndDate: string;
+  title: string;
+  inChargeId: string;
+  startDate: string;
+  endDate: string;
   visitationDetails: VisitationDetail[];
   receiverIds?: string[];
 };
@@ -55,12 +55,12 @@ type EditVisitationParams = {
 };
 
 type EditVisitationBody = {
-  visitationStatus?: VISITATION_STATUS;
+  status?: VISITATION_STATUS;
   visitationMethod?: VISITATION_METHOD;
-  visitationTitle?: string;
-  instructorId?: string;
-  visitationStartDate?: string;
-  visitationEndDate?: string;
+  title?: string;
+  inChargeId?: string;
+  startDate?: string;
+  endDate?: string;
   addMemberIds?: string[];
   deleteMemberIds?: string[];
 };
@@ -123,11 +123,11 @@ export class VisitationsApi {
 
       fromVisitationDate,
       toVisitationDate,
-      visitationStatus,
+      status,
       visitationMethod,
       visitationType,
-      visitationTitle,
-      instructorId,
+      title,
+      inChargeId,
       // 필요하다면 선택 컬럼 등 추가
     } = params;
 
@@ -139,11 +139,11 @@ export class VisitationsApi {
         orderDirection,
         fromVisitationDate,
         toVisitationDate,
-        visitationStatus,
+        status,
         visitationMethod,
         visitationType,
-        visitationTitle,
-        instructorId,
+        title,
+        inChargeId,
       }).filter(
         ([_, value]) =>
           value !== undefined &&

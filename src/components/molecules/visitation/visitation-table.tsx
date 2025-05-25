@@ -4,7 +4,7 @@ import { AppDispatch, RootState } from '@/redux/store';
 import {
   setVisitationOrderBy,
   setVisitationOrderDirection,
-} from '@/redux/reducers/visitation-filter-reducer';
+} from '@/redux/reducers/filter/visitation-filter-reducer';
 
 import VisitationTableView from '@/components/molecules/visitation/visitation-table.view';
 import { VISITATION } from '@/constants/visitation/visitation-column';
