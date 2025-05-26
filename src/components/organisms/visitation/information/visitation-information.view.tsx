@@ -111,7 +111,7 @@ const VisitationInformationView = ({
         <ColumnContainer>
           <MainText>{t('status')}</MainText>
           <StatusDropdown
-            value={targetVisitation.visitationStatus}
+            value={targetVisitation.status}
             items={statusDropdownItems}
             onChangeItem={onChangeStatus}
             width={150}
@@ -138,15 +138,15 @@ const VisitationInformationView = ({
         {/* 진행자 */}
         <RowContainer>
           <TitleContainer>
-            <MainText>{t('instructor')}</MainText>
+            <MainText>{t('inCharge')}</MainText>
           </TitleContainer>
           <ContentContainer>
             <ProfileContainer>
               <ProfileImage
-                src={getRandomImage(targetVisitation.instructor.id)}
+                src={getRandomImage(targetVisitation.inCharge.id)}
                 alt={MEMBER.PROFILE_IMAGE}
               />
-              <MainText>{targetVisitation.instructor?.name}</MainText>
+              <MainText>{targetVisitation.inCharge?.name}</MainText>
             </ProfileContainer>
           </ContentContainer>
         </RowContainer>
@@ -166,13 +166,13 @@ const VisitationInformationView = ({
           </TitleContainer>
           <ContentContainer>
             <MainText>
-              {targetVisitation.visitationStartDate &&
-                getFormattedDate(targetVisitation.visitationStartDate)}
+              {targetVisitation.startDate &&
+                getFormattedDate(targetVisitation.startDate)}
             </MainText>
             <MainText>{'-'}</MainText>
             <MainText>
-              {targetVisitation.visitationEndDate &&
-                getFormattedDate(targetVisitation.visitationEndDate)}
+              {targetVisitation.endDate &&
+                getFormattedDate(targetVisitation.endDate)}
             </MainText>
           </ContentContainer>
         </RowContainer>

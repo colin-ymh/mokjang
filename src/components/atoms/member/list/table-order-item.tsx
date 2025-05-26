@@ -8,7 +8,7 @@ import {
   setMemberFilter,
   setMemberTableHeaderItemList,
   TABLE_HEADER_ITEM,
-} from '@/redux/reducers/member-filter-reducer';
+} from '@/redux/reducers/filter/member-filter-reducer';
 
 import { MEMBER } from '@/constants/member/member-column';
 import { MainText } from '@/components/atoms/common/text/main-text';

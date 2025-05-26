@@ -7,7 +7,7 @@ import { EDUCATION_TERM } from '@/constants/education/education-column';
 import {
   setEducationTermOrderBy,
   setEducationTermOrderDirection,
-} from '@/redux/reducers/education-term-filter-reducer';
+} from '@/redux/reducers/filter/education-term-filter-reducer';
 import EducationTermTableView from '@/components/molecules/education/education-term/education-term-table.view';
 import { EducationSessionsApi } from '@/api/education/education-sessions.api';
 import { EducationTerm } from '@/models/education/education';

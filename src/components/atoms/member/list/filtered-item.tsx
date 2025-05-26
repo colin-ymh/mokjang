@@ -16,7 +16,7 @@ import {
   setFilterBefore,
   setFilterItems,
   setMemberFilter,
-} from '@/redux/reducers/member-filter-reducer';
+} from '@/redux/reducers/filter/member-filter-reducer';
 
 const ItemContainer = styled.div`
   display: flex;

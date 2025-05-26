@@ -4,7 +4,7 @@ import { AppDispatch, RootState } from '@/redux/store';
 import {
   fetchVisitations,
   setVisitations,
-} from '@/redux/reducers/visitation-filter-reducer';
+} from '@/redux/reducers/filter/visitation-filter-reducer';
 
 import { VisitationsApi } from '@/api/visitations/visitations.api';
 import VisitationListView from '@/components/organisms/visitation/list/visitation-list.view';
@@ -13,15 +13,17 @@ import {
   Visitation,
   VisitationDetail,
 } from '@/models/visitation/visitation';
-import { setTargetVisitation } from '@/redux/reducers/target-visitation-reducer';
+import { setTargetVisitation } from '@/redux/reducers/target/target-visitation-reducer';
 import { getIsWellFormedTitle } from '@/utils/check';
-import { BLANK } from '@/constants/constant';
+import { BLANK, HEADER_BAR } from '@/constants/constant';
 
 type VisitationListProps = {
-  isMy?: boolean;
+  headerType?: HEADER_BAR;
 };
 
-const VisitationList = ({ isMy = false }: VisitationListProps) => {
+const VisitationList = ({
+  headerType = HEADER_BAR.ALL,
+}: VisitationListProps) => {
   const visitationsApi = new VisitationsApi(false);
   const dispatch = useDispatch<AppDispatch>();
   const { user } = useSelector((state: RootState) => state.user);
@@ -97,7 +99,9 @@ const VisitationList = ({ isMy = false }: VisitationListProps) => {
         fetchVisitations({
           churchId,
           currentPage: page + 1,
-          instructorId: isMy ? user.member.id : undefined,
+          inChargeId: headerType === HEADER_BAR.MY ? user.member.id : undefined,
+          memberId:
+            headerType === HEADER_BAR.REPORTED ? user.member.id : undefined,
         })
       );
       if (fetchVisitations.fulfilled.match(result)) {
@@ -129,7 +133,10 @@ const VisitationList = ({ isMy = false }: VisitationListProps) => {
           fetchVisitations({
             churchId,
             currentPage: 1,
-            instructorId: isMy ? user.member.id : undefined,
+            inChargeId:
+              headerType === HEADER_BAR.MY ? user.member.id : undefined,
+            memberId:
+              headerType === HEADER_BAR.REPORTED ? user.member.id : undefined,
           })
         );
         if (fetchVisitations.fulfilled.match(result)) {
@@ -149,7 +156,7 @@ const VisitationList = ({ isMy = false }: VisitationListProps) => {
     visitationFilter,
     visitationOrderBy,
     visitationOrderDirection,
-    isMy,
+    headerType,
   ]);
 
   const onClickEditDone = async () => {
@@ -169,12 +176,12 @@ const VisitationList = ({ isMy = false }: VisitationListProps) => {
       await visitationsApi.editVisitation(
         { churchId, visitationId: targetVisitation.id },
         {
-          visitationStatus: targetVisitation.visitationStatus || undefined,
+          status: targetVisitation.status || undefined,
           visitationMethod: targetVisitation.visitationMethod || undefined,
-          instructorId: targetVisitation.instructorId || undefined,
-          visitationStartDate: targetVisitation.visitationStartDate,
-          visitationEndDate: targetVisitation.visitationEndDate,
-          visitationTitle: targetVisitation.visitationTitle || undefined,
+          inChargeId: targetVisitation.inChargeId || undefined,
+          startDate: targetVisitation.startDate,
+          endDate: targetVisitation.endDate,
+          title: targetVisitation.title || undefined,
           addMemberIds: addMemberIds.length !== 0 ? addMemberIds : undefined,
           deleteMemberIds:
             deleteMemberIds.length !== 0 ? deleteMemberIds : undefined,
@@ -298,7 +305,10 @@ const VisitationList = ({ isMy = false }: VisitationListProps) => {
           fetchVisitations({
             churchId,
             currentPage: 1,
-            instructorId: isMy ? user.member.id : undefined,
+            inChargeId:
+              headerType === HEADER_BAR.MY ? user.member.id : undefined,
+            memberId:
+              headerType === HEADER_BAR.REPORTED ? user.member.id : undefined,
           })
         );
         if (fetchVisitations.fulfilled.match(result)) {
@@ -334,7 +344,7 @@ const VisitationList = ({ isMy = false }: VisitationListProps) => {
   }, [targetVisitation]);
 
   useEffect(() => {
-    if (!getIsWellFormedTitle(targetVisitation.visitationTitle)) {
+    if (!getIsWellFormedTitle(targetVisitation.title)) {
       setIsSaveEnabled(false);
       return;
     }
@@ -342,14 +352,11 @@ const VisitationList = ({ isMy = false }: VisitationListProps) => {
       setIsSaveEnabled(false);
       return;
     }
-    if (targetVisitation.instructorId === BLANK) {
+    if (targetVisitation.inChargeId === BLANK) {
       setIsSaveEnabled(false);
       return;
     }
-    if (
-      !targetVisitation.visitationStartDate ||
-      !targetVisitation.visitationEndDate
-    ) {
+    if (!targetVisitation.startDate || !targetVisitation.endDate) {
       setIsSaveEnabled(false);
       return;
     }

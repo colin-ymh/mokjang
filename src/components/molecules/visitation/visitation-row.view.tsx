@@ -94,7 +94,7 @@ const AddFilterContainer = styled.div<{ $isShown: boolean }>`
   left: 10px;
 `;
 
-export type VISITATION_SEARCH_FILTER = VISITATION.TITLE | VISITATION.INSTRUCTOR;
+export type VISITATION_SEARCH_FILTER = VISITATION.TITLE | VISITATION.IN_CHARGE;
 
 type VisitationViewProps = {
   isModalShown: boolean;
@@ -160,8 +160,8 @@ const VisitationRowView = ({
             <PeriodModal
               isShown={isModalShown}
               onClickClose={onClickClosePeriodModal}
-              startDate={visitationFilter.fromVisitationDate}
-              endDate={visitationFilter.toVisitationDate}
+              startDate={visitationFilter.fromStartDate}
+              endDate={visitationFilter.toStartDate}
               onClickSave={onClickSavePeriod}
             />
           </ButtonContainer>

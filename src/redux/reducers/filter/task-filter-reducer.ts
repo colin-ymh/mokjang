@@ -7,6 +7,8 @@ import { TasksApi } from '@/api/tasks/tasks.api';
 import { Member } from '@/models/member/member';
 import { DEFAULT_MEMBER } from '@/redux/reducers/member-register-reducer';
 import { TASK_STATUS } from '@/constants/status/status';
+import { TaskReportsApi } from '@/api/reports/task-reports.api';
+import { TaskReport } from '@/models/report/report';
 
 type TASK_FILTER = {
   [TASK.FROM_DATE]: string;
@@ -87,35 +89,60 @@ const initialState: TaskFilterState = {
 
 export const fetchTasks = createAsyncThunk<
   Task[],
-  { churchId: string; currentPage: number; inChargeId?: string },
+  {
+    churchId: string;
+    currentPage: number;
+    inChargeId?: string;
+    memberId?: string;
+  },
   { state: RootState }
 >(
   'tasks/fetchTasks',
   async (
-    { churchId, currentPage, inChargeId },
+    { churchId, currentPage, inChargeId, memberId },
     { getState, rejectWithValue }
   ) => {
     const state = getState().taskFilter;
     const { taskOrderBy, taskOrderDirection, taskFilter } = state;
     const tasksApi = new TasksApi(false);
+    const taskReportsApi = new TaskReportsApi(false);
 
     try {
-      const response = await tasksApi.getTasks({
-        churchId,
-        page: currentPage,
-        take: 30, // 무한 스크롤 최적화
-        order: taskOrderBy !== NULL ? taskOrderBy : undefined,
-        orderDirection: taskOrderDirection,
-        // 필터
-        taskStatus: taskFilter.taskStatus,
-        title: taskFilter.title,
-        inChargeId: inChargeId || taskFilter.inCharge.id,
-        fromTaskStartDate: taskFilter.fromTaskStartDate,
-        toTaskStartDate: taskFilter.toTaskStartDate,
-        // 검색
-      });
+      if (memberId) {
+        const response = await taskReportsApi.getTaskReports({
+          churchId,
+          memberId,
+          page: currentPage,
+          take: 30, // 무한 스크롤 최적화
+          order: taskOrderBy !== NULL ? taskOrderBy : undefined,
+          orderDirection: taskOrderDirection,
+        });
 
-      return response.data.data;
+        const taskReports: TaskReport[] = response.data.data;
+
+        const newTasks = taskReports.map((report) => {
+          return report.task;
+        });
+
+        return newTasks;
+      } else {
+        const response = await tasksApi.getTasks({
+          churchId,
+          page: currentPage,
+          take: 30, // 무한 스크롤 최적화
+          order: taskOrderBy !== NULL ? taskOrderBy : undefined,
+          orderDirection: taskOrderDirection,
+          // 필터
+          status: taskFilter.status,
+          title: taskFilter.title,
+          inChargeId: inChargeId || taskFilter.inCharge.id,
+          fromStartDate: taskFilter.fromStartDate,
+          toStartDate: taskFilter.toStartDate,
+          // 검색
+        });
+
+        return response.data.data;
+      }
     } catch (error) {
       console.error('업무 목록 불러오기 실패', error);
       return rejectWithValue('업무 목록을 불러오는 중 오류가 발생했습니다.');

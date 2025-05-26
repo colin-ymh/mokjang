@@ -8,7 +8,7 @@ import EducationRowView, {
   EDUCATION_SEARCH_FILTER,
 } from '@/components/molecules/education/education/education-row.view';
 import { EducationFilteredItemType } from '@/components/atoms/education/education/education-filtered-item';
-import { setEducationFilter } from '@/redux/reducers/education-filter-reducer';
+import { setEducationFilter } from '@/redux/reducers/filter/education-filter-reducer';
 
 import { EDUCATION } from '@/constants/education/education-column';
 

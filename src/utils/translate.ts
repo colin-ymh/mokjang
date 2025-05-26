@@ -71,7 +71,7 @@ export const getTranslatedVisitationColumn = (
       | VISITATION.VISITED
       | VISITATION.STATUS
       | VISITATION.DATE
-      | VISITATION.INSTRUCTOR
+      | VISITATION.IN_CHARGE
   );
 };
 

@@ -3,7 +3,7 @@ import { getFormattedTitle } from '@/utils/format';
 import { ChangeEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
-import { setTargetEducation } from '@/redux/reducers/target-education-reducer';
+import { setTargetEducation } from '@/redux/reducers/target/target-education-reducer';
 import LabelInput from '@/components/atoms/common/input/label-input';
 import { useI18n, useScopedI18n } from '../../../../../../locales/client';
 import LabelTextarea from '@/components/atoms/common/input/label-textarea';

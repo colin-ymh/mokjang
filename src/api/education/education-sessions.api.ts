@@ -25,7 +25,7 @@ type CreateEducationSessionParams = {
 };
 
 type CreateEducationSessionBody = {
-  name: string;
+  title: string;
   startDate: string;
   endDate: string;
   inChargeId?: string;
@@ -42,7 +42,7 @@ type EditEducationSessionParams = {
 };
 
 type EditEducationSessionBody = {
-  name?: string;
+  title?: string;
   startDate?: string;
   endDate?: string;
   inChargeId?: string;

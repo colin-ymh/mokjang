@@ -1,7 +1,7 @@
 import React, { MutableRefObject } from 'react';
 import Image from 'next/image';
 import styled from 'styled-components';
-import { TABLE_HEADER_ITEM } from '@/redux/reducers/member-filter-reducer';
+import { TABLE_HEADER_ITEM } from '@/redux/reducers/filter/member-filter-reducer';
 
 import { GRAY, WHITE } from '@/constants/styles/color';
 import { MEMBER } from '@/constants/member/member-column';

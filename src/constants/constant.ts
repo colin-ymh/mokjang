@@ -92,3 +92,9 @@ export enum ORDER_DIRECTION {
   ASC = 'asc',
   DESC = 'desc',
 }
+
+export enum HEADER_BAR {
+  ALL = 'all',
+  MY = 'my',
+  REPORTED = 'reported',
+}

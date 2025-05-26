@@ -124,10 +124,10 @@ const AddEducationSessionView = ({
       {/* 제목 */}
       <InputContainer>
         <LabelInput
-          label={t('name')}
-          value={targetEducationSession.name}
+          label={t('title')}
+          value={targetEducationSession.title}
           onChange={onChangeTitle}
-          placeholder={t_placeholder('name')}
+          placeholder={t_placeholder('title')}
           borderColor={GRAY.DEFAULT}
           height={40}
           isRequired={true}

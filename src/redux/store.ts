@@ -2,20 +2,20 @@ import { configureStore } from '@reduxjs/toolkit';
 
 import WebviewReducer from './reducers/webview-reducer';
 import MemberRegisterReducer from '@/redux/reducers/member-register-reducer';
-import MemberFilterReducer from '@/redux/reducers/member-filter-reducer';
+import MemberFilterReducer from '@/redux/reducers/filter/member-filter-reducer';
 import ChurchReducer from '@/redux/reducers/church-reducer';
-import TargetMember from '@/redux/reducers/target-member-reducer';
+import TargetMember from '@/redux/reducers/target/target-member-reducer';
 import UserReducer from '@/redux/reducers/user-reducer';
-import TargetVisitation from '@/redux/reducers/target-visitation-reducer';
-import TargetGroup from '@/redux/reducers/target-group-reducer';
-import VisitationFilterReducer from '@/redux/reducers/visitation-filter-reducer';
-import TaskFilterReducer from '@/redux/reducers/task-filter-reducer';
-import TargetTask from '@/redux/reducers/target-task-reducer';
-import EducationFilterReducer from '@/redux/reducers/education-filter-reducer';
-import TargetEducationReducer from '@/redux/reducers/target-education-reducer';
-import EducationTermFilterReducer from '@/redux/reducers/education-term-filter-reducer';
-import TargetEducationTermReducer from '@/redux/reducers/target-education-term-reducer';
-import TargetEducationSessionReducer from '@/redux/reducers/target-education-session-reducer';
+import TargetVisitation from '@/redux/reducers/target/target-visitation-reducer';
+import TargetGroup from '@/redux/reducers/target/target-group-reducer';
+import VisitationFilterReducer from '@/redux/reducers/filter/visitation-filter-reducer';
+import TaskFilterReducer from '@/redux/reducers/filter/task-filter-reducer';
+import TargetTask from '@/redux/reducers/target/target-task-reducer';
+import EducationFilterReducer from '@/redux/reducers/filter/education-filter-reducer';
+import TargetEducationReducer from '@/redux/reducers/target/target-education-reducer';
+import EducationTermFilterReducer from '@/redux/reducers/filter/education-term-filter-reducer';
+import TargetEducationTermReducer from '@/redux/reducers/target/target-education-term-reducer';
+import TargetEducationSessionReducer from '@/redux/reducers/target/target-education-session-reducer';
 
 const store = configureStore({
   reducer: {

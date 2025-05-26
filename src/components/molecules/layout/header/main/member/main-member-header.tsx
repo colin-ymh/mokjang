@@ -11,7 +11,7 @@ import { DummyApi } from '@/api/dummy.api';
 import {
   fetchMembers,
   setMembers,
-} from '@/redux/reducers/member-filter-reducer';
+} from '@/redux/reducers/filter/member-filter-reducer';
 import { usePageRouter } from '@/utils/router';
 import { useI18n } from '../../../../../../../locales/client';
 

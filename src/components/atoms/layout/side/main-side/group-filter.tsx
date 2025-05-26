@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
-import { setMemberFilter } from '@/redux/reducers/member-filter-reducer';
+import { setMemberFilter } from '@/redux/reducers/filter/member-filter-reducer';
 
 import GroupFilterView from '@/components/atoms/layout/side/main-side/group-filter.view';
 import { DEFAULT_GROUP } from '@/models/management/management';
-import { setTargetGroup } from '@/redux/reducers/target-group-reducer';
+import { setTargetGroup } from '@/redux/reducers/target/target-group-reducer';
 
 type GroupFilterProps = {
   isDefaultOpen?: boolean;

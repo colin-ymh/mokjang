@@ -12,7 +12,7 @@ import { getAge, getDateFromDateString } from '@/utils/date';
 import { GRAY, WHITE } from '@/constants/styles/color';
 import useWindowSize from '@/hooks/window/window';
 import { LOCALE } from '@/constants/state/locale';
-import { TABLE_HEADER_ITEM } from '@/redux/reducers/member-filter-reducer';
+import { TABLE_HEADER_ITEM } from '@/redux/reducers/filter/member-filter-reducer';
 import { useI18n } from '../../../../../locales/client';
 import { getRandomImage } from '@/utils/image';
 import LastFamilyTableContent from '@/components/atoms/member/information/last-family-table-content';

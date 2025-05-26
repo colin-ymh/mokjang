@@ -4,9 +4,9 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 import { TasksApi } from '@/api/tasks/tasks.api';
-import { setTargetTask } from '@/redux/reducers/target-task-reducer';
+import { setTargetTask } from '@/redux/reducers/target/target-task-reducer';
 import { DEFAULT_TASK } from '@/models/task/task';
-import { setTasks } from '@/redux/reducers/task-filter-reducer';
+import { setTasks } from '@/redux/reducers/filter/task-filter-reducer';
 import { getIsWellFormedTitle } from '@/utils/check';
 import { BLANK } from '@/constants/constant';
 
@@ -52,12 +52,12 @@ const MainTaskHeader = ({}: MainTaskHeaderProps) => {
         .createTask(
           { churchId },
           {
-            taskStatus: targetTask.taskStatus,
+            status: targetTask.status,
             inChargeId: targetTask.inChargeId,
-            taskStartDate: targetTask.taskStartDate,
-            taskEndDate: targetTask.taskEndDate,
+            startDate: targetTask.startDate,
+            endDate: targetTask.endDate,
             title: targetTask.title,
-            comment: targetTask.comment,
+            content: targetTask.content,
             receiverIds: targetTask.receiverIds,
           }
         )
@@ -89,7 +89,7 @@ const MainTaskHeader = ({}: MainTaskHeaderProps) => {
       setIsSaveEnabled(false);
       return;
     }
-    if (!targetTask.taskStartDate || !targetTask.taskEndDate) {
+    if (!targetTask.startDate || !targetTask.endDate) {
       setIsSaveEnabled(false);
       return;
     }

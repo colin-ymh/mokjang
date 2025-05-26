@@ -10,7 +10,7 @@ import { useI18n } from '../../../../../locales/client';
 import Cancel from '../../../../../public/svg/cancel.svg';
 import { AppDispatch, RootState } from '@/redux/store';
 import { useDispatch, useSelector } from 'react-redux';
-import { setEducationFilter } from '@/redux/reducers/education-filter-reducer';
+import { setEducationFilter } from '@/redux/reducers/filter/education-filter-reducer';
 
 import { EDUCATION } from '@/constants/education/education-column';
 

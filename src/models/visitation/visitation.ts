@@ -2,6 +2,7 @@ import { BLANK } from '@/constants/constant';
 import { Member } from '@/models/member/member';
 import { DEFAULT_MEMBER } from '@/redux/reducers/member-register-reducer';
 import { STATUS, VISITATION_STATUS } from '@/constants/status/status';
+import { VisitationReport } from '@/models/report/report';
 
 export enum VISITATION_METHOD {
   IN_PERSON = 'inPerson',
@@ -12,13 +13,6 @@ export enum VISITATION_TYPE {
   SINGLE = 'single',
   GROUP = 'group',
 }
-
-export type VisitationReport = {
-  id: string;
-  isConfirmed: boolean;
-  isRead: boolean;
-  receiver: Member;
-};
 
 export type VisitationDetail = {
   memberId: string;
@@ -31,17 +25,17 @@ export type VisitationDetail = {
 export type Visitation = {
   id: string;
   churchId: string;
-  visitationStatus: VISITATION_STATUS;
+  status: VISITATION_STATUS;
   visitationMethod: VISITATION_METHOD;
-  visitationTitle: string;
-  instructorId: string;
-  visitationStartDate: string;
-  visitationEndDate: string;
+  title: string;
+  inChargeId: string;
+  startDate: string;
+  endDate: string;
   visitationDetails: VisitationDetail[];
   receiverIds: string[];
   creatorId: string;
   members: Member[];
-  instructor: Member;
+  inCharge: Member;
   creator: Member;
   reports: VisitationReport[];
 };
@@ -55,17 +49,17 @@ export const DEFAULT_VISITATION_DETAIL: VisitationDetail = {
 export const DEFAULT_VISITATION: Visitation = {
   id: BLANK,
   churchId: BLANK,
-  visitationStatus: STATUS.RESERVE,
+  status: STATUS.RESERVE,
   visitationMethod: VISITATION_METHOD.IN_PERSON,
-  visitationTitle: BLANK,
-  instructorId: BLANK,
-  visitationStartDate: BLANK,
-  visitationEndDate: BLANK,
+  title: BLANK,
+  inChargeId: BLANK,
+  startDate: BLANK,
+  endDate: BLANK,
   visitationDetails: [DEFAULT_VISITATION_DETAIL],
   receiverIds: [],
   creatorId: BLANK,
   members: [],
-  instructor: DEFAULT_MEMBER,
+  inCharge: DEFAULT_MEMBER,
   creator: DEFAULT_MEMBER,
   reports: [],
 };

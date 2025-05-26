@@ -13,9 +13,9 @@ export default {
   isNotDone: 'Incomplete',
 
   inCharge: 'In Charge',
-  taskStatus: 'Status',
+  inChargeId: 'In Charge',
   taskDate: 'Task Date',
-  comment: 'Comment',
+  content: 'Content',
 
   title: 'title',
 
@@ -28,14 +28,11 @@ export default {
 
   visitationContent: 'Content',
   visitationPray: 'Pray',
-  visitationTitle: 'Title',
   visitationDate: 'Visit Date',
-  visitationStatus: 'Status',
   visitationMethod: 'Method',
   visitationType: 'Type',
-  instructorId: 'Instructor',
-  fromVisitationDate: 'Visited After',
-  toVisitationDate: 'Visited Before',
+  fromStartDate: 'Start After',
+  toStartDate: 'Start Before',
 
   inPerson: 'In Person',
   remote: 'Remote',
@@ -46,7 +43,6 @@ export default {
 
   people: 'People',
 
-  instructor: 'Instructor',
   session: 'Session',
 
   present: 'Present',
@@ -215,9 +211,11 @@ export default {
 
   'visitation-content.all': 'All',
   'visitation-content.my': 'My',
+  'visitation-content.reported': 'Reported',
 
   'task-content.all': 'All',
   'task-content.my': 'My',
+  'task-content.reported': 'Reported',
 
   'education-content.all': 'All',
   'education-content.inProgress': 'In Progress',
@@ -228,7 +226,6 @@ export default {
   'tableHeader.education': 'Education',
   'tableHeader.period': 'Period',
   'tableHeader.educationEnrollments': 'Number of Enrollments',
-  'tableHeader.instructor': 'Instructor',
 
   'tableHeader.memberName': 'Name',
   'tableHeader.group': 'Group',
@@ -317,14 +314,14 @@ export default {
   'placeholder.endDate': 'Enter the end date (e.g., YYYY.MM.DD).',
   'placeholder.term': 'Enter the term number.',
   'placeholder.session': 'Enter the session number.',
-  'placeholder.instructor': 'Enter the instructor.',
+  'placeholder.inCharge': 'Enter the inCharge.',
   'placeholder.sessionDate': 'Enter the session date (e.g., YYYY.MM.DD).',
   'placeholder.sessionContent': 'Enter the session report.',
   'placeholder.search': 'Enter the search term.',
   'placeholder.title': 'Enter the title.',
   'placeholder.visitationContent': 'Enter the content.',
   'placeholder.visitationPray': 'Enter the pray.',
-  'placeholder.comment': 'Enter the comment.',
+  'placeholder.content': 'Enter the content.',
   'placeholder.selectStatus': 'Select the status',
   /*-------------------placeholder-------------------*/
 

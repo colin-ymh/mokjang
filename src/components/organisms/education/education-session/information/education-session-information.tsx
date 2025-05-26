@@ -6,12 +6,12 @@ import {
   EducationAttendance,
   EducationSession,
 } from '@/models/education/education';
-import { setTargetEducationSession } from '@/redux/reducers/target-education-session-reducer';
+import { setTargetEducationSession } from '@/redux/reducers/target/target-education-session-reducer';
 import EducationSessionInformationView from '@/components/organisms/education/education-session/information/education-session-information.view';
-import { setTargetEducationTerm } from '@/redux/reducers/target-education-term-reducer';
+import { setTargetEducationTerm } from '@/redux/reducers/target/target-education-term-reducer';
 
 import { EDUCATION_SESSION_STATUS } from '@/constants/status/status';
-import { setEducationTerms } from '@/redux/reducers/education-term-filter-reducer';
+import { setEducationTerms } from '@/redux/reducers/filter/education-term-filter-reducer';
 import { EducationAttendanceApi } from '@/api/education/education-attendance.api';
 
 type EducationSessionInformationProps = {};

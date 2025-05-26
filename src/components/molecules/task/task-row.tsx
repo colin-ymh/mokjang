@@ -2,7 +2,7 @@ import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { AppDispatch, RootState } from '@/redux/store';
-import { setTaskFilter } from '@/redux/reducers/task-filter-reducer';
+import { setTaskFilter } from '@/redux/reducers/filter/task-filter-reducer';
 import { getTrimmedString } from '@/utils/format';
 import { TASK } from '@/constants/task/task-column';
 import { BLANK } from '@/constants/constant';
@@ -107,20 +107,20 @@ const TaskRow = () => {
     let newFilterItems: TaskFilteredItemType[] = [];
 
     // 상태
-    if (taskFilter.taskStatus.length > 0) {
+    if (taskFilter.status.length > 0) {
       newFilterItems.push({
         title: TASK.STATUS,
-        value: taskFilter.taskStatus,
+        value: taskFilter.status,
       });
     } else {
       setStatusFilter(undefined);
     }
 
     // 등록일
-    if (taskFilter.fromTaskStartDate || taskFilter.toTaskStartDate) {
+    if (taskFilter.fromStartDate || taskFilter.toStartDate) {
       newFilterItems.push({
         title: TASK.DATE,
-        value: [taskFilter.fromTaskStartDate, taskFilter.toTaskStartDate],
+        value: [taskFilter.fromStartDate, taskFilter.toStartDate],
       });
     }
 

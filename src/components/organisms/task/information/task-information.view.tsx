@@ -105,7 +105,7 @@ const TaskInformationView = ({ onChangeStatus }: TaskInformationViewProps) => {
         <ColumnContainer>
           <MainText>{t('status')}</MainText>
           <StatusDropdown
-            value={targetTask.taskStatus}
+            value={targetTask.status}
             items={statusDropdownItems}
             onChangeItem={onChangeStatus}
             width={150}
@@ -115,7 +115,7 @@ const TaskInformationView = ({ onChangeStatus }: TaskInformationViewProps) => {
         {/* 진행자 */}
         <RowContainer>
           <TitleContainer>
-            <MainText>{t('instructor')}</MainText>
+            <MainText>{t('inCharge')}</MainText>
           </TitleContainer>
           <ContentContainer>
             <ProfileContainer>
@@ -134,13 +134,11 @@ const TaskInformationView = ({ onChangeStatus }: TaskInformationViewProps) => {
           </TitleContainer>
           <ContentContainer>
             <MainText>
-              {targetTask.taskStartDate &&
-                getFormattedDate(targetTask.taskStartDate)}
+              {targetTask.startDate && getFormattedDate(targetTask.startDate)}
             </MainText>
             <MainText>{'-'}</MainText>
             <MainText>
-              {targetTask.taskEndDate &&
-                getFormattedDate(targetTask.taskEndDate)}
+              {targetTask.endDate && getFormattedDate(targetTask.endDate)}
             </MainText>
           </ContentContainer>
         </RowContainer>
@@ -150,12 +148,12 @@ const TaskInformationView = ({ onChangeStatus }: TaskInformationViewProps) => {
         {/* 내용 */}
         <ColumnContainer>
           <TitleContainer>
-            <MainText>{t('comment')}</MainText>
+            <MainText>{t('content')}</MainText>
           </TitleContainer>
           <CommentContentContainer>
             <MainText
               dangerouslySetInnerHTML={{
-                __html: targetTask.comment,
+                __html: targetTask.content,
               }}
             />
           </CommentContentContainer>

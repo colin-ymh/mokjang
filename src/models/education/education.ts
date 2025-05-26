@@ -1,12 +1,12 @@
 import { BLANK } from '@/constants/constant';
 import { Member } from '@/models/member/member';
 import { DEFAULT_MEMBER } from '@/redux/reducers/member-register-reducer';
-import { VisitationReport } from '@/models/visitation/visitation';
 import {
   EDUCATION_SESSION_STATUS,
   EDUCATION_TERM_STATUS,
   STATUS,
 } from '@/constants/status/status';
+import { VisitationReport } from '@/models/report/report';
 
 // 교육 이수상태
 export enum EDUCATION_ENROLLMENT_STATUS {
@@ -95,7 +95,7 @@ export const DEFAULT_EDUCATION_TERM: EducationTerm = {
 export type EducationSession = {
   id: string;
   status: EDUCATION_SESSION_STATUS;
-  name: string;
+  title: string;
   inChargeId: string;
   inCharge: Member;
   educationTermId: string;
@@ -117,7 +117,7 @@ export const DEFAULT_EDUCATION_SESSION: EducationSession = {
   inCharge: DEFAULT_MEMBER,
   session: BLANK,
   content: BLANK,
-  name: BLANK,
+  title: BLANK,
   startDate: BLANK,
   endDate: BLANK,
   reports: [],

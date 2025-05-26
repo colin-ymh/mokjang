@@ -106,7 +106,7 @@ const EducationTermSessionList = ({
           >
             <LeftContainer>
               <MainText>{`${session.session}${t('session')}`}</MainText>
-              <MainText>{session.name}</MainText>
+              <MainText>{session.title}</MainText>
             </LeftContainer>
             <RightContainer>
               <ColoredDot color={getStatusColor(session.status)} />

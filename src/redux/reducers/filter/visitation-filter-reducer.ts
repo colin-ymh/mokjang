@@ -9,6 +9,8 @@ import { RootState } from '@/redux/store';
 import { VisitationsApi } from '@/api/visitations/visitations.api';
 import { VISITATION } from '@/constants/visitation/visitation-column';
 import { VISITATION_STATUS } from '@/constants/status/status';
+import { VisitationReportsApi } from '@/api/reports/visitation-reports.api';
+import { VisitationReport } from '@/models/report/report';
 
 type VISITATION_FILTER = {
   [VISITATION.FROM_DATE]: string;
@@ -17,7 +19,7 @@ type VISITATION_FILTER = {
   [VISITATION.METHOD]: VISITATION_METHOD[];
   [VISITATION.TYPE]: VISITATION_TYPE[];
   [VISITATION.TITLE]: string;
-  [VISITATION.INSTRUCTOR]: string;
+  [VISITATION.IN_CHARGE]: string;
 };
 
 type VisitationFilterState = {
@@ -35,7 +37,7 @@ export const INITIAL_VISITATION_FILTER: VISITATION_FILTER = {
   [VISITATION.METHOD]: [],
   [VISITATION.TYPE]: [],
   [VISITATION.TITLE]: BLANK,
-  [VISITATION.INSTRUCTOR]: BLANK,
+  [VISITATION.IN_CHARGE]: BLANK,
 };
 
 export type VISITATION_TABLE_HEADER_ITEM = {
@@ -82,7 +84,7 @@ export const INITIAL_VISITATION_TABLE_HEADER_LIST: VISITATION_TABLE_HEADER_ITEM[
       isDate: true,
     },
     {
-      id: VISITATION.INSTRUCTOR,
+      id: VISITATION.IN_CHARGE,
       isShown: true,
       isSortable: false,
       isFilterable: true,
@@ -101,38 +103,74 @@ const initialState: VisitationFilterState = {
 
 export const fetchVisitations = createAsyncThunk<
   Visitation[],
-  { churchId: string; currentPage: number; instructorId?: string },
+  {
+    churchId: string;
+    currentPage: number;
+    inChargeId?: string;
+    memberId?: string;
+  },
   { state: RootState }
 >(
   'visitations/fetchVisitations',
   async (
-    { churchId, currentPage, instructorId },
+    { churchId, currentPage, inChargeId, memberId },
     { getState, rejectWithValue }
   ) => {
     const state = getState().visitationFilter;
     const { visitationOrderBy, visitationOrderDirection, visitationFilter } =
       state;
     const visitationsApi = new VisitationsApi(false);
+    const visitationReportsApi = new VisitationReportsApi(false);
 
     try {
-      const response = await visitationsApi.getVisitations({
-        churchId,
-        page: currentPage,
-        take: 30, // 무한 스크롤 최적화
-        order: visitationOrderBy !== NULL ? visitationOrderBy : undefined,
-        orderDirection: visitationOrderDirection,
-        // 필터
-        visitationStatus: visitationFilter.visitationStatus,
-        visitationMethod: visitationFilter.visitationMethod,
-        visitationType: visitationFilter.visitationType,
-        visitationTitle: visitationFilter.visitationTitle,
-        instructorId: instructorId || visitationFilter.instructorId,
-        fromVisitationDate: visitationFilter.fromVisitationDate,
-        toVisitationDate: visitationFilter.toVisitationDate,
-        // 검색
-      });
+      if (memberId) {
+        const response = await visitationReportsApi.getVisitationReports({
+          churchId,
+          memberId,
+          page: currentPage,
+          take: 30, // 무한 스크롤 최적화
+          order: visitationOrderBy !== NULL ? visitationOrderBy : undefined,
+          orderDirection: visitationOrderDirection,
+          // 필터
+          // visitationStatus: visitationFilter.visitationStatus,
+          // visitationMethod: visitationFilter.visitationMethod,
+          // visitationType: visitationFilter.visitationType,
+          // visitationTitle: visitationFilter.visitationTitle,
+          // inChargeId: inChargeId || visitationFilter.inChargeId,
+          // fromStartDate: visitationFilter.fromStartDate,
+          // toStartDate: visitationFilter.toStartDate,
+          // 검색
+        });
 
-      return response.data.data;
+        const visitationReports: VisitationReport[] = response.data.data;
+
+        const newVisitations = visitationReports.map((report) => {
+          return report.visitation;
+        });
+
+        console.log(newVisitations);
+
+        return newVisitations;
+      } else {
+        const response = await visitationsApi.getVisitations({
+          churchId,
+          page: currentPage,
+          take: 30, // 무한 스크롤 최적화
+          order: visitationOrderBy !== NULL ? visitationOrderBy : undefined,
+          orderDirection: visitationOrderDirection,
+          // 필터
+          status: visitationFilter.status,
+          visitationMethod: visitationFilter.visitationMethod,
+          visitationType: visitationFilter.visitationType,
+          title: visitationFilter.title,
+          inChargeId: inChargeId || visitationFilter.inChargeId,
+          fromStartDate: visitationFilter.fromStartDate,
+          toStartDate: visitationFilter.toStartDate,
+          // 검색
+        });
+
+        return response.data.data;
+      }
     } catch (error) {
       console.error('심방 목록 불러오기 실패', error);
       return rejectWithValue('심방 목록을 불러오는 중 오류가 발생했습니다.');

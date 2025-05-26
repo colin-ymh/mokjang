@@ -65,7 +65,7 @@ const RequiredMark = styled.span`
 type AddTaskViewProps = {
   inCharge: DropdownValueType[];
   receivers: DropdownValueType[];
-  comment: string;
+  content: string;
   onChangeStatus: (status: TASK_STATUS) => void;
   onChangeTitle: (event: ChangeEvent<HTMLInputElement>) => void;
   onChangeStartDate: (date: Date | null) => void;
@@ -73,14 +73,14 @@ type AddTaskViewProps = {
   onChangeEndDate: (date: Date | null) => void;
   onChangeEndTime: (value: number) => void;
   onChangeInCharge: (inCharge: MemberDropdownValueType[]) => void;
-  onChangeComment: (comment: string) => void;
+  onChangeContent: (content: string) => void;
   onChangeReceivers: (receivers: DropdownValueType[]) => void;
 };
 
 const AddTaskView = ({
   inCharge,
   receivers,
-  comment,
+  content,
   onChangeStatus,
   onChangeTitle,
   onChangeStartDate,
@@ -88,7 +88,7 @@ const AddTaskView = ({
   onChangeEndDate,
   onChangeEndTime,
   onChangeInCharge,
-  onChangeComment,
+  onChangeContent,
   onChangeReceivers,
 }: AddTaskViewProps) => {
   const { targetTask } = useSelector((state: RootState) => state.targetTask);
@@ -105,7 +105,7 @@ const AddTaskView = ({
       <InputContainer>
         <MainText>{t('status')}</MainText>
         <StatusDropdown
-          value={targetTask.taskStatus}
+          value={targetTask.status}
           items={statusDropdownItems}
           onChangeItem={onChangeStatus}
           width={100}
@@ -137,15 +137,15 @@ const AddTaskView = ({
             {/* 시작 날짜 */}
             <CustomDatePicker
               value={
-                targetTask.taskStartDate
+                targetTask.startDate
                   ? getDateStringFromDate(
-                      getDateFromDateString(targetTask.taskStartDate)
+                      getDateFromDateString(targetTask.startDate)
                     )
                   : undefined
               }
               selected={
-                targetTask.taskStartDate
-                  ? getDateFromString(targetTask.taskStartDate)
+                targetTask.startDate
+                  ? getDateFromString(targetTask.startDate)
                   : null
               }
               onChange={onChangeStartDate}
@@ -155,9 +155,9 @@ const AddTaskView = ({
             {/* 시작 시간 */}
             <Dropdown
               value={
-                targetTask.taskStartDate
+                targetTask.startDate
                   ? getTotalMinuteFromDate(
-                      getDateFromString(targetTask.taskStartDate)
+                      getDateFromString(targetTask.startDate)
                     )
                   : 0
               }
@@ -169,15 +169,15 @@ const AddTaskView = ({
             {/* 종료 날짜 */}
             <CustomDatePicker
               value={
-                targetTask.taskEndDate
+                targetTask.endDate
                   ? getDateStringFromDate(
-                      getDateFromDateString(targetTask.taskEndDate)
+                      getDateFromDateString(targetTask.endDate)
                     )
                   : undefined
               }
               selected={
-                targetTask.taskEndDate
-                  ? getDateFromString(targetTask.taskEndDate)
+                targetTask.endDate
+                  ? getDateFromString(targetTask.endDate)
                   : null
               }
               onChange={onChangeEndDate}
@@ -187,9 +187,9 @@ const AddTaskView = ({
             {/* 종료 시간 */}
             <Dropdown
               value={
-                targetTask.taskEndDate
+                targetTask.endDate
                   ? getTotalMinuteFromDate(
-                      getDateFromString(targetTask.taskEndDate)
+                      getDateFromString(targetTask.endDate)
                     )
                   : 0
               }
@@ -222,12 +222,12 @@ const AddTaskView = ({
       {/* 내용 */}
       <InputContainer>
         <LabelContainer>
-          <MainText>{t('comment')}</MainText>
+          <MainText>{t('content')}</MainText>
           <Quill
-            value={comment}
-            onChange={(event) => onChangeComment(event)}
+            value={content}
+            onChange={(event) => onChangeContent(event)}
             minHeight={120}
-            placeholder={t_placeholder('comment')}
+            placeholder={t_placeholder('content')}
           />
         </LabelContainer>
       </InputContainer>

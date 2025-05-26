@@ -5,13 +5,13 @@ import {
   setEducationOrderBy,
   setEducationOrderDirection,
   setEducations,
-} from '@/redux/reducers/education-filter-reducer';
+} from '@/redux/reducers/filter/education-filter-reducer';
 
 import EducationTableView from '@/components/molecules/education/education/education-table.view';
 import { ORDER_DIRECTION } from '@/constants/constant';
 import { EducationsApi } from '@/api/education/educations.api';
 import { DEFAULT_EDUCATION, Education } from '@/models/education/education';
-import { setTargetEducation } from '@/redux/reducers/target-education-reducer';
+import { setTargetEducation } from '@/redux/reducers/target/target-education-reducer';
 import { getIsWellFormedTitle } from '@/utils/check';
 import { usePageRouter } from '@/utils/router';
 import { EducationTermsApi } from '@/api/education/education-terms.api';

@@ -9,7 +9,7 @@ import VisitationRowView, {
   VISITATION_SEARCH_FILTER,
 } from '@/components/molecules/visitation/visitation-row.view';
 import { VisitationFilteredItemType } from '@/components/atoms/visitation/visitation-filtered-item';
-import { setVisitationFilter } from '@/redux/reducers/visitation-filter-reducer';
+import { setVisitationFilter } from '@/redux/reducers/filter/visitation-filter-reducer';
 
 import { VISITATION_STATUS } from '@/constants/status/status';
 
@@ -112,10 +112,10 @@ const VisitationRow = () => {
     let newFilterItems: VisitationFilteredItemType[] = [];
 
     // 상태
-    if (visitationFilter.visitationStatus.length > 0) {
+    if (visitationFilter.status.length > 0) {
       newFilterItems.push({
         title: VISITATION.STATUS,
-        value: visitationFilter.visitationStatus,
+        value: visitationFilter.status,
       });
     } else {
       setStatusFilter(undefined);
@@ -137,24 +137,18 @@ const VisitationRow = () => {
     }
 
     // 일자
-    if (
-      visitationFilter.fromVisitationDate ||
-      visitationFilter.toVisitationDate
-    ) {
+    if (visitationFilter.fromStartDate || visitationFilter.toStartDate) {
       newFilterItems.push({
         title: VISITATION.DATE,
-        value: [
-          visitationFilter.fromVisitationDate,
-          visitationFilter.toVisitationDate,
-        ],
+        value: [visitationFilter.fromStartDate, visitationFilter.toStartDate],
       });
     }
 
     // 이름
-    if (visitationFilter.visitationTitle) {
+    if (visitationFilter.title) {
       newFilterItems.push({
         title: VISITATION.TITLE,
-        value: [visitationFilter.visitationTitle],
+        value: [visitationFilter.title],
       });
     }
 
