@@ -1,5 +1,5 @@
+import { forwardRef, ReactNode } from 'react';
 import styled from 'styled-components';
-import { ReactNode, RefObject } from 'react';
 
 const BottomSheetContainer = styled.div<{ height: number; $isOpened: boolean }>`
   display: flex;
@@ -49,7 +49,6 @@ const Content = styled.div`
 `;
 
 type Props = {
-  ref: RefObject<HTMLDivElement>;
   isOpened: boolean;
   height: number;
   children: ReactNode;
@@ -57,22 +56,17 @@ type Props = {
   onTouchStart?: (e: React.TouchEvent<HTMLDivElement>) => void;
 };
 
-const BottomSheetView = ({
-  ref,
-  isOpened,
-  height,
-  children,
-  onMouseDown,
-  onTouchStart,
-}: Props) => {
-  return (
-    <BottomSheetContainer ref={ref} height={height} $isOpened={isOpened}>
-      <Header onMouseDown={onMouseDown} onTouchStart={onTouchStart}>
-        <HandleBar />
-      </Header>
-      <Content>{children}</Content>
-    </BottomSheetContainer>
-  );
-};
+const BottomSheetView = forwardRef<HTMLDivElement, Props>(
+  ({ isOpened, height, children, onMouseDown, onTouchStart }, ref) => {
+    return (
+      <BottomSheetContainer ref={ref} height={height} $isOpened={isOpened}>
+        <Header onMouseDown={onMouseDown} onTouchStart={onTouchStart}>
+          <HandleBar />
+        </Header>
+        <Content>{children}</Content>
+      </BottomSheetContainer>
+    );
+  }
+);
 
 export default BottomSheetView;

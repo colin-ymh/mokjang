@@ -130,7 +130,8 @@ const images = [profile1, profile2, profile3, profile4, profile5];
  * FGT 를 위한 랜덤 기본 이미지 제공
  */
 export const getRandomImage = (id: string) => {
-  const random = parseInt(id) % 5;
+  const parsed = parseInt(id);
+  const index = isNaN(parsed) ? 0 : parsed % images.length;
 
-  return images[random];
+  return images[index] || profile1;
 };

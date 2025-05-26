@@ -1,60 +1,18 @@
 'use client';
 
-import React, { useEffect } from 'react';
-import { Provider, useDispatch } from 'react-redux';
-import { createGlobalStyle } from 'styled-components';
-
-import TranslateProvider from '@/app/[locale]/provider';
+import React from 'react';
+import { Provider } from 'react-redux';
 import StyledComponentsRegistry from '@/hooks/registry';
 
 import store from '@/redux/store';
-import { initializeIsWebview } from '@/redux/reducers/webview-reducer';
-import { useInitializeChurch, useInitializeUser } from '@/utils/initialize';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
 
 import 'react-datepicker/dist/react-datepicker.css';
 import 'react-quill/dist/quill.snow.css';
+import InitializeStore from '@/components/atoms/layout/initialize-store';
+import GlobalStyle from '@/components/atoms/layout/global-style';
 
-const GlobalStyle = createGlobalStyle`
-    html,
-    body {
-        margin: 0;
-        height: 100%;
-        background-color: white;
-        min-width: 320px;
-        font-family: 'Noto Sans KR', monospace;
-        touch-action: none;
-        overscroll-behavior: none;
-
-        -webkit-tap-highlight-color: transparent;
-
-        /* 텍스트 선택 막기 */
-        user-select: none !important;
-        -webkit-user-select: none !important;
-        -moz-user-select: none !important;
-        -ms-user-select: none !important;
-
-        /* 이미지 등 드래그 막기 */
-        -webkit-user-drag: none !important;
-    }
-
-    body > div:first-child,
-    div#__next,
-    div#__next > div {
-        height: 100%;
-    }
-
-    /* 스크롤바 숨기기 */
-    ::-webkit-scrollbar {
-        display: none; /* Webkit 브라우저에서 스크롤바 숨기기 */
-    }
-
-    /* Firefox에서 스크롤바 숨기기 */
-    body {
-        scrollbar-width: none; /* Firefox에서 스크롤바 너비 제거 */
-    }
-`;
 type RootLayoutProps = {
   children?: React.ReactNode;
 };
@@ -62,21 +20,6 @@ type RootLayoutProps = {
 type RootLayoutPropsExtended = {
   children?: React.ReactNode;
   modal?: React.ReactNode;
-};
-
-// Provider 내부에 전역변수 initialize
-const InitializeStore = () => {
-  const initializeUser = useInitializeUser();
-  const initializeChurch = useInitializeChurch();
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(initializeIsWebview()); // 웹뷰 상태 초기화
-    initializeChurch();
-    initializeUser();
-  }, [dispatch, initializeChurch, initializeUser]);
-
-  return null;
 };
 
 const RootLayout = (props: RootLayoutProps | RootLayoutPropsExtended) => {
@@ -96,17 +39,25 @@ const RootLayout = (props: RootLayoutProps | RootLayoutPropsExtended) => {
         />
       </head>
       <body>
+        {/* 로케일 Provider: 유저와 교회 정보 기반의 로케일 설정 */}
+        {/*<TranslateProvider>*/}
+        {/* SSR style 렌더링 */}
         <StyledComponentsRegistry>
+          {/* Redux */}
           <Provider store={store}>
-            <TranslateProvider>
+            {/* 초기 전역 상태 설정 */}
+            <InitializeStore>
+              {/* Drag And Drop */}
               <DndProvider backend={HTML5Backend}>
-                <InitializeStore />
+                {/* 전역 스타일 적용 */}
                 <GlobalStyle />
+                {/* 실제 페이지 렌더링 */}
                 {children}
               </DndProvider>
-            </TranslateProvider>
+            </InitializeStore>
           </Provider>
         </StyledComponentsRegistry>
+        {/*</TranslateProvider>*/}
       </body>
     </html>
   );

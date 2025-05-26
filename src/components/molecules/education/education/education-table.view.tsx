@@ -54,7 +54,7 @@ const EducationTable = styled.table`
 `;
 
 // 4. 헤더(TH)
-const TableHeader = styled.th<{ id: string; isLast?: boolean }>`
+const TableHeader = styled.th<{ id: string; $isLast?: boolean }>`
   padding: 3px 10px;
   position: sticky;
   top: 0;
@@ -88,7 +88,7 @@ const EducationTableRow = styled.tr`
   }
 `;
 
-const TableData = styled.td<{ id: string; $index: number; isLast?: boolean }>`
+const TableData = styled.td<{ id: string; $index: number; $isLast?: boolean }>`
   padding: 10px;
 
   cursor: pointer;
@@ -221,7 +221,7 @@ const EducationTableView = ({
                 <TableHeader
                   key={item.id}
                   id={item.id}
-                  isLast={index === visibleColumns.length - 1}
+                  $isLast={index === visibleColumns.length - 1}
                 >
                   {
                     <EducationTableHeader
@@ -247,7 +247,7 @@ const EducationTableView = ({
                     key={item.id}
                     id={item.id}
                     $index={rowIndex}
-                    isLast={index === visibleColumns.length - 1}
+                    $isLast={index === visibleColumns.length - 1}
                   >
                     <ContentWrapper>
                       {getEducationTableContent(item.id, education)}
