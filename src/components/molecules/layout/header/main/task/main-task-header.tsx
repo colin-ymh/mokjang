@@ -57,7 +57,7 @@ const MainTaskHeader = ({}: MainTaskHeaderProps) => {
             startDate: targetTask.startDate,
             endDate: targetTask.endDate,
             title: targetTask.title,
-            comment: targetTask.comment,
+            content: targetTask.content,
             receiverIds: targetTask.receiverIds,
           }
         )

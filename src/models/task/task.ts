@@ -11,7 +11,7 @@ export type Task = {
   title: string;
   startDate: string;
   endDate: string;
-  comment: string;
+  content: string;
   parentTaskId: string;
   inChargeId: string;
   creatorId: string;
@@ -29,7 +29,7 @@ export const DEFAULT_TASK: Task = {
   title: BLANK,
   startDate: BLANK,
   endDate: BLANK,
-  comment: BLANK,
+  content: BLANK,
   parentTaskId: BLANK,
   inChargeId: BLANK,
   creatorId: BLANK,

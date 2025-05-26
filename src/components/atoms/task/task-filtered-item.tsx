@@ -68,8 +68,8 @@ const TaskFilteredItem = ({ item }: TaskFilteredItemProps) => {
       dispatch(
         setTaskFilter({
           ...taskFilter,
-          fromTaskStartDate: BLANK,
-          toTaskStartDate: BLANK,
+          fromStartDate: BLANK,
+          toStartDate: BLANK,
         })
       );
     } else if ([TASK.TITLE, TASK.IN_CHARGE].includes(item.title)) {

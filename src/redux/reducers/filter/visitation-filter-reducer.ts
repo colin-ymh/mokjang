@@ -137,8 +137,8 @@ export const fetchVisitations = createAsyncThunk<
           // visitationType: visitationFilter.visitationType,
           // visitationTitle: visitationFilter.visitationTitle,
           // inChargeId: inChargeId || visitationFilter.inChargeId,
-          // fromVisitationDate: visitationFilter.fromVisitationDate,
-          // toVisitationDate: visitationFilter.toVisitationDate,
+          // fromStartDate: visitationFilter.fromStartDate,
+          // toStartDate: visitationFilter.toStartDate,
           // 검색
         });
 
@@ -164,8 +164,8 @@ export const fetchVisitations = createAsyncThunk<
           visitationType: visitationFilter.visitationType,
           title: visitationFilter.title,
           inChargeId: inChargeId || visitationFilter.inChargeId,
-          fromVisitationDate: visitationFilter.fromVisitationDate,
-          toVisitationDate: visitationFilter.toVisitationDate,
+          fromStartDate: visitationFilter.fromStartDate,
+          toStartDate: visitationFilter.toStartDate,
           // 검색
         });
 

@@ -15,8 +15,8 @@ type GetTasksParams = {
   order?: TASK;
   orderDirection?: ORDER_DIRECTION;
 
-  fromTaskStartDate?: string;
-  toTaskStartDate?: string;
+  fromStartDate?: string;
+  toStartDate?: string;
   status?: TASK_STATUS[];
   title?: string;
   inChargeId?: string;
@@ -33,7 +33,7 @@ type CreateTaskBody = {
   startDate: string;
   endDate: string;
   receiverIds?: string[];
-  comment: string;
+  content: string;
 };
 
 type GetTaskParams = {
@@ -54,7 +54,7 @@ type EditTaskBody = {
   endDate?: string;
   parentTaskId?: string;
   receiverId?: string;
-  comment?: string;
+  content?: string;
 };
 
 type DeleteTaskParams = {
@@ -111,8 +111,8 @@ export class TasksApi {
       page = 1,
       orderDirection,
 
-      fromTaskStartDate,
-      toTaskStartDate,
+      fromStartDate,
+      toStartDate,
       status,
       inChargeId,
       title,
@@ -125,8 +125,8 @@ export class TasksApi {
         take,
         page,
         orderDirection,
-        fromTaskStartDate,
-        toTaskStartDate,
+        fromStartDate,
+        toStartDate,
         status,
         inChargeId,
         title,

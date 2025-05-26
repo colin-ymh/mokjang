@@ -20,8 +20,8 @@ type GetVisitationsParams = {
   order?: VISITATION;
   orderDirection?: ORDER_DIRECTION;
 
-  fromVisitationDate?: string;
-  toVisitationDate?: string;
+  fromStartDate?: string;
+  toStartDate?: string;
   status?: VISITATION_STATUS[];
   visitationMethod?: VISITATION_METHOD[];
   visitationType?: VISITATION_TYPE[];
@@ -121,8 +121,8 @@ export class VisitationsApi {
       page = 1,
       orderDirection,
 
-      fromVisitationDate,
-      toVisitationDate,
+      fromStartDate,
+      toStartDate,
       status,
       visitationMethod,
       visitationType,
@@ -137,8 +137,8 @@ export class VisitationsApi {
         take,
         page,
         orderDirection,
-        fromVisitationDate,
-        toVisitationDate,
+        fromStartDate,
+        toStartDate,
         status,
         visitationMethod,
         visitationType,

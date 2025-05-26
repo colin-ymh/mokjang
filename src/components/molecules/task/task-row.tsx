@@ -117,10 +117,10 @@ const TaskRow = () => {
     }
 
     // 등록일
-    if (taskFilter.fromTaskStartDate || taskFilter.toTaskStartDate) {
+    if (taskFilter.fromStartDate || taskFilter.toStartDate) {
       newFilterItems.push({
         title: TASK.DATE,
-        value: [taskFilter.fromTaskStartDate, taskFilter.toTaskStartDate],
+        value: [taskFilter.fromStartDate, taskFilter.toStartDate],
       });
     }
 

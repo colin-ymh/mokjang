@@ -19,7 +19,6 @@ export default {
   inCharge: '담당자',
   inChargeId: '담당자',
   taskDate: '업무일자',
-  comment: '내용',
   content: '내용',
 
   visitedMember: '대상자',
@@ -30,8 +29,8 @@ export default {
   visitationDate: '심방일자',
   visitationMethod: '심방방식',
   visitationType: '심방 종류',
-  fromVisitationDate: '심방 날짜 ~부터',
-  toVisitationDate: '심방 날짜 ~까지',
+  fromStartDate: '날짜 ~부터',
+  toStartDate: '날짜 ~까지',
 
   method: '방식',
 
@@ -331,7 +330,6 @@ export default {
   'placeholder.title': '제목을 입력해주세요.',
   'placeholder.visitationContent': '심방 내용을 입력해주세요.',
   'placeholder.visitationPray': '기도 제목을 입력해주세요.',
-  'placeholder.comment': '업무 내용을 입력해주세요.',
   'placeholder.content': '내용을 입력해주세요.',
   'placeholder.selectStatus': '진행 상태 선택',
 

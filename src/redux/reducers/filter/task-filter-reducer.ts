@@ -136,8 +136,8 @@ export const fetchTasks = createAsyncThunk<
           status: taskFilter.status,
           title: taskFilter.title,
           inChargeId: inChargeId || taskFilter.inCharge.id,
-          fromTaskStartDate: taskFilter.fromTaskStartDate,
-          toTaskStartDate: taskFilter.toTaskStartDate,
+          fromStartDate: taskFilter.fromStartDate,
+          toStartDate: taskFilter.toStartDate,
           // 검색
         });
 

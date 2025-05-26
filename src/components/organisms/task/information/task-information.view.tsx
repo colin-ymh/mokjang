@@ -148,12 +148,12 @@ const TaskInformationView = ({ onChangeStatus }: TaskInformationViewProps) => {
         {/* 내용 */}
         <ColumnContainer>
           <TitleContainer>
-            <MainText>{t('comment')}</MainText>
+            <MainText>{t('content')}</MainText>
           </TitleContainer>
           <CommentContentContainer>
             <MainText
               dangerouslySetInnerHTML={{
-                __html: targetTask.comment,
+                __html: targetTask.content,
               }}
             />
           </CommentContentContainer>

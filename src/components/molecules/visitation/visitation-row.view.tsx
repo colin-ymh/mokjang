@@ -160,8 +160,8 @@ const VisitationRowView = ({
             <PeriodModal
               isShown={isModalShown}
               onClickClose={onClickClosePeriodModal}
-              startDate={visitationFilter.fromVisitationDate}
-              endDate={visitationFilter.toVisitationDate}
+              startDate={visitationFilter.fromStartDate}
+              endDate={visitationFilter.toStartDate}
               onClickSave={onClickSavePeriod}
             />
           </ButtonContainer>

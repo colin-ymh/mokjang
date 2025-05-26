@@ -16,8 +16,8 @@ type GetTaskReportsParams = {
   order?: TASK;
   orderDirection?: ORDER_DIRECTION;
 
-  fromTaskDate?: string;
-  toTaskDate?: string;
+  fromStartDate?: string;
+  toStartDate?: string;
   status?: TASK_STATUS[];
   taskTitle?: string;
   inChargeId?: string;
@@ -69,8 +69,8 @@ export class TaskReportsApi {
       order,
       orderDirection,
 
-      // fromTaskDate,
-      // toTaskDate,
+      // fromStartDate,
+      // toStartDate,
       // status,
       // taskMethod,
       // taskType,
@@ -86,8 +86,8 @@ export class TaskReportsApi {
         page,
         order,
         orderDirection,
-        // fromTaskDate,
-        // toTaskDate,
+        // fromStartDate,
+        // toStartDate,
         // status,
         // taskTitle,
         // inChargeId,

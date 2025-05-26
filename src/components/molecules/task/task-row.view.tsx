@@ -156,8 +156,8 @@ const TaskRowView = ({
             <PeriodModal
               isShown={isModalShown}
               onClickClose={onClickClosePeriodModal}
-              startDate={taskFilter.fromTaskStartDate}
-              endDate={taskFilter.toTaskStartDate}
+              startDate={taskFilter.fromStartDate}
+              endDate={taskFilter.toStartDate}
               onClickSave={onClickSavePeriod}
             />
           </ButtonContainer>

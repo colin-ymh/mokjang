@@ -137,16 +137,10 @@ const VisitationRow = () => {
     }
 
     // 일자
-    if (
-      visitationFilter.fromVisitationDate ||
-      visitationFilter.toVisitationDate
-    ) {
+    if (visitationFilter.fromStartDate || visitationFilter.toStartDate) {
       newFilterItems.push({
         title: VISITATION.DATE,
-        value: [
-          visitationFilter.fromVisitationDate,
-          visitationFilter.toVisitationDate,
-        ],
+        value: [visitationFilter.fromStartDate, visitationFilter.toStartDate],
       });
     }
 

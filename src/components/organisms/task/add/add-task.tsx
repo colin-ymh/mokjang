@@ -140,26 +140,26 @@ const AddTask = ({}: AddTaskProps) => {
 
   // ===== inCharge =====
 
-  // ===== comment =====
-  const [comment, setComment] = useState<string>(BLANK);
+  // ===== content =====
+  const [content, setContent] = useState<string>(BLANK);
 
-  const onChangeComment = (newComment: string) => {
-    setComment(newComment);
+  const onChangeContent = (newContent: string) => {
+    setContent(newContent);
   };
 
   useEffect(() => {
     dispatch(
       setTargetTask({
         ...targetTask,
-        comment,
+        content,
       })
     );
-  }, [comment]);
+  }, [content]);
 
   useEffect(() => {
-    setComment(targetTask.comment);
+    setContent(targetTask.content);
   }, [targetTask.id]);
-  // ===== comment =====
+  // ===== content =====
 
   // ===== receiver =====
   // 선택된 보고대상자들
@@ -194,7 +194,7 @@ const AddTask = ({}: AddTaskProps) => {
   const props = {
     inCharge,
     receivers,
-    comment,
+    content,
     onChangeStatus,
     onChangeTitle,
     onChangeStartDate,
@@ -202,7 +202,7 @@ const AddTask = ({}: AddTaskProps) => {
     onChangeEndDate,
     onChangeEndTime,
     onChangeInCharge,
-    onChangeComment,
+    onChangeContent,
     onChangeReceivers,
   };
 

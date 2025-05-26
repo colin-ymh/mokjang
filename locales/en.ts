@@ -15,7 +15,7 @@ export default {
   inCharge: 'In Charge',
   inChargeId: 'In Charge',
   taskDate: 'Task Date',
-  comment: 'Comment',
+  content: 'Content',
 
   title: 'title',
 
@@ -31,8 +31,8 @@ export default {
   visitationDate: 'Visit Date',
   visitationMethod: 'Method',
   visitationType: 'Type',
-  fromVisitationDate: 'Visited After',
-  toVisitationDate: 'Visited Before',
+  fromStartDate: 'Start After',
+  toStartDate: 'Start Before',
 
   inPerson: 'In Person',
   remote: 'Remote',
@@ -321,7 +321,7 @@ export default {
   'placeholder.title': 'Enter the title.',
   'placeholder.visitationContent': 'Enter the content.',
   'placeholder.visitationPray': 'Enter the pray.',
-  'placeholder.comment': 'Enter the comment.',
+  'placeholder.content': 'Enter the content.',
   'placeholder.selectStatus': 'Select the status',
   /*-------------------placeholder-------------------*/
 

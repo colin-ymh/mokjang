@@ -65,7 +65,7 @@ const RequiredMark = styled.span`
 type AddTaskViewProps = {
   inCharge: DropdownValueType[];
   receivers: DropdownValueType[];
-  comment: string;
+  content: string;
   onChangeStatus: (status: TASK_STATUS) => void;
   onChangeTitle: (event: ChangeEvent<HTMLInputElement>) => void;
   onChangeStartDate: (date: Date | null) => void;
@@ -73,14 +73,14 @@ type AddTaskViewProps = {
   onChangeEndDate: (date: Date | null) => void;
   onChangeEndTime: (value: number) => void;
   onChangeInCharge: (inCharge: MemberDropdownValueType[]) => void;
-  onChangeComment: (comment: string) => void;
+  onChangeContent: (content: string) => void;
   onChangeReceivers: (receivers: DropdownValueType[]) => void;
 };
 
 const AddTaskView = ({
   inCharge,
   receivers,
-  comment,
+  content,
   onChangeStatus,
   onChangeTitle,
   onChangeStartDate,
@@ -88,7 +88,7 @@ const AddTaskView = ({
   onChangeEndDate,
   onChangeEndTime,
   onChangeInCharge,
-  onChangeComment,
+  onChangeContent,
   onChangeReceivers,
 }: AddTaskViewProps) => {
   const { targetTask } = useSelector((state: RootState) => state.targetTask);
@@ -222,12 +222,12 @@ const AddTaskView = ({
       {/* 내용 */}
       <InputContainer>
         <LabelContainer>
-          <MainText>{t('comment')}</MainText>
+          <MainText>{t('content')}</MainText>
           <Quill
-            value={comment}
-            onChange={(event) => onChangeComment(event)}
+            value={content}
+            onChange={(event) => onChangeContent(event)}
             minHeight={120}
-            placeholder={t_placeholder('comment')}
+            placeholder={t_placeholder('content')}
           />
         </LabelContainer>
       </InputContainer>

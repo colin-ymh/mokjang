@@ -154,7 +154,7 @@ const TaskList = ({ headerType = HEADER_BAR.ALL }: TaskListProps) => {
           startDate: targetTask.startDate || undefined,
           endDate: targetTask.endDate || undefined,
           title: targetTask.title || undefined,
-          comment: targetTask.comment || undefined,
+          content: targetTask.content || undefined,
         }
       );
 

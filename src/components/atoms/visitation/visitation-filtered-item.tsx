@@ -79,8 +79,8 @@ const VisitationFilteredItem = ({ item }: VisitationFilteredItemProps) => {
       dispatch(
         setVisitationFilter({
           ...visitationFilter,
-          fromVisitationDate: BLANK,
-          toVisitationDate: BLANK,
+          fromStartDate: BLANK,
+          toStartDate: BLANK,
         })
       );
     } else if ([VISITATION.TITLE, VISITATION.IN_CHARGE].includes(item.title)) {
