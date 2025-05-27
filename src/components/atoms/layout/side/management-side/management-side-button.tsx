@@ -35,13 +35,13 @@ const ManagementSideButton = ({ id, title }: SideBarButtonProps) => {
   const onClick = (id: string) => {
     switch (id) {
       case MANAGEMENT_HEADER_ID.CHURCH:
-        router.push(`admin/management/church/group`);
+        router.push(`/management/church/group`);
         return;
       case MANAGEMENT_HEADER_ID.ADMINISTRATOR:
-        router.push(`admin/management/administrator/setting`);
+        router.push(`/management/administrator/setting`);
         return;
       default:
-        router.push(`admin/management/${id}`);
+        router.push(`/management/${id}`);
     }
   };
 

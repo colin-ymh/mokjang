@@ -17,6 +17,7 @@ export enum MAIN_HEADER_ID {
 export enum MANAGEMENT_HEADER_ID {
   CHURCH = 'church',
   ADMINISTRATOR = 'administrator',
+  PERMISSION_GROUP = 'permissionGroup',
   SETTING = 'setting',
 }
 
@@ -41,8 +42,4 @@ export enum MINISTRY_MANAGEMENT_HEADER_ID {
 
 export enum EDUCATION_MANAGEMENT_HEADER_ID {
   TERM = 'term',
-}
-
-export enum EDUCATION_TERM_HEADER_ID {
-  INFORMATION = 'educationInformation',
 }

@@ -53,7 +53,7 @@ const EducationTable = ({ loadEducations }: EducationTableProps) => {
 
   const onClickEducationItem = (education: Education) => {
     dispatch(setTargetEducation(education));
-    router.push(`admin/main/education/term`);
+    router.push(`/main/education/term`);
   };
 
   // 열 헤더를 눌러 정렬

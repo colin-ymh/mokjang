@@ -6,7 +6,7 @@ const Top = () => {
   const router = usePageRouter();
 
   const onClickButton = (id: SIDE_ID) => {
-    router.replace(`admin/${id}`);
+    router.replace(`/${id}`);
   };
 
   const props = {

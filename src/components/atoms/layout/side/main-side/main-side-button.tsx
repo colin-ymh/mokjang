@@ -35,22 +35,22 @@ const MainSideButton = ({ id, title }: SideBarButtonProps) => {
   const onClick = (id: string) => {
     switch (id) {
       case MAIN_HEADER_ID.HOME:
-        router.push(`admin/main/home`);
+        router.push(`/main/home`);
         return;
       case MAIN_HEADER_ID.MEMBER:
-        router.push(`admin/main/member/all`);
+        router.push(`/main/member/all`);
         return;
       case MAIN_HEADER_ID.VISITATION:
-        router.push(`admin/main/visitation/all`);
+        router.push(`/main/visitation/all`);
         return;
       case MAIN_HEADER_ID.EDUCATION:
-        router.push(`admin/main/education/all`);
+        router.push(`/main/education/all`);
         return;
       case MAIN_HEADER_ID.TASK:
-        router.push(`admin/main/task/all`);
+        router.push(`/main/task/all`);
         return;
       default:
-        router.push(`admin/main/${id}`);
+        router.push(`/main/${id}`);
     }
   };
 

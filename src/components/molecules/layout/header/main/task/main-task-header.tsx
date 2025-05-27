@@ -33,7 +33,7 @@ const MainTaskHeader = ({}: MainTaskHeaderProps) => {
 
   // 헤더 탭바 이벤트
   const onClickHeaderBar = (id: string) => {
-    router.push(`admin/main/task/${id}`);
+    router.push(`/main/task/${id}`);
   };
 
   const onClickAddTask = () => {
