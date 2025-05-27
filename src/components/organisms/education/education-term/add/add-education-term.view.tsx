@@ -228,7 +228,10 @@ const AddEducationTermView = ({
       {/* 담당자 */}
       <InputContainer>
         <LabelContainer>
-          <MainText>{t('inCharge')}</MainText>
+          <MainText>
+            <RequiredMark>*</RequiredMark>
+            {t('inCharge')}
+          </MainText>
           <MultiMemberDropdown
             values={inCharge}
             onChangeValues={onChangeInCharge}

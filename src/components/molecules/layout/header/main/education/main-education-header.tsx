@@ -202,6 +202,10 @@ const MainEducationHeader = ({}: MainEducationHeaderProps) => {
       setIsTermSaveEnabled(false);
       return;
     }
+    if (!targetEducationTerm.inChargeId) {
+      setIsTermSaveEnabled(false);
+      return;
+    }
 
     setIsTermSaveEnabled(true);
   }, [targetEducationTerm]);

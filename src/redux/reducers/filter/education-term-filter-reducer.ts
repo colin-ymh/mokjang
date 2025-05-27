@@ -6,6 +6,7 @@ import { RootState } from '@/redux/store';
 import { EDUCATION_TERM } from '@/constants/education/education-column';
 import { EducationTermsApi } from '@/api/education/education-terms.api';
 import { EducationSessionsApi } from '@/api/education/education-sessions.api';
+import { EducationsApi } from '@/api/education/educations.api';
 
 type EDUCATION_TERM_FILTER = {
   [EDUCATION_TERM.EDUCATION]: string;
@@ -78,12 +79,17 @@ const initialState: EducationTermFilterState = {
 
 export const fetchEducationTerms = createAsyncThunk<
   EducationTerm[],
-  { churchId: string; currentPage: number; educationId?: string },
+  {
+    churchId: string;
+    currentPage: number;
+    educationId?: string;
+    isInProgress?: boolean;
+  },
   { state: RootState }
 >(
   'educations/fetchEducationTerms',
   async (
-    { churchId, currentPage, educationId },
+    { churchId, currentPage, educationId, isInProgress },
     { getState, rejectWithValue }
   ) => {
     const state = getState().educationTermFilter;
@@ -92,19 +98,35 @@ export const fetchEducationTerms = createAsyncThunk<
       educationTermOrderDirection,
       educationTermFilter,
     } = state;
+
+    const educationsApi = new EducationsApi(false);
     const educationTermsApi = new EducationTermsApi(false);
 
     try {
-      const response = await educationTermsApi.getEducationTerms({
-        churchId,
-        educationId: educationId || '1',
-        page: currentPage,
-        take: 30, // 무한 스크롤 최적화
-        order: educationTermOrderBy !== NULL ? educationTermOrderBy : undefined,
-        orderDirection: educationTermOrderDirection,
-      });
+      if (isInProgress) {
+        const response = await educationsApi.getInProgressEducations({
+          churchId,
+          page: currentPage,
+          take: 30, // 무한 스크롤 최적화
+          order:
+            educationTermOrderBy !== NULL ? educationTermOrderBy : undefined,
+          orderDirection: educationTermOrderDirection,
+        });
 
-      return response.data.data;
+        return response.data.data;
+      } else {
+        const response = await educationTermsApi.getEducationTerms({
+          churchId,
+          educationId: educationId || '1',
+          page: currentPage,
+          take: 30, // 무한 스크롤 최적화
+          order:
+            educationTermOrderBy !== NULL ? educationTermOrderBy : undefined,
+          orderDirection: educationTermOrderDirection,
+        });
+
+        return response.data.data;
+      }
     } catch (error) {
       console.error('교육 목록 불러오기 실패', error);
       return rejectWithValue('교육 목록을 불러오는 중 오류가 발생했습니다.');

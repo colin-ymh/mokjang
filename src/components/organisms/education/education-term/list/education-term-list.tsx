@@ -25,10 +25,10 @@ import { EducationAttendanceApi } from '@/api/education/education-attendance.api
 import { getIsWellFormedTitle } from '@/utils/check';
 
 type EducationTermListProps = {
-  isNewEducationTerm?: boolean;
+  isInProgress?: boolean;
 };
 
-const EducationTermList = ({ isNewEducationTerm }: EducationTermListProps) => {
+const EducationTermList = ({ isInProgress }: EducationTermListProps) => {
   const educationTermsApi = new EducationTermsApi(false);
   const educationEnrollmentsApi = new EducationEnrollmentsApi(false);
   const educationSessionsApi = new EducationSessionsApi(false);
@@ -38,7 +38,9 @@ const EducationTermList = ({ isNewEducationTerm }: EducationTermListProps) => {
   const churchId: string = useSelector(
     (state: RootState) => state.church.churchId
   );
-
+  const { educations } = useSelector(
+    (state: RootState) => state.educationFilter
+  );
   const {
     educationTerms,
     educationTermFilter,
@@ -102,6 +104,7 @@ const EducationTermList = ({ isNewEducationTerm }: EducationTermListProps) => {
           churchId,
           currentPage: page + 1,
           educationId: targetEducation.id,
+          isInProgress,
         })
       );
       if (fetchEducationTerms.fulfilled.match(result)) {
@@ -137,6 +140,7 @@ const EducationTermList = ({ isNewEducationTerm }: EducationTermListProps) => {
             churchId,
             currentPage: 1,
             educationId: targetEducation.id,
+            isInProgress,
           })
         );
         if (fetchEducationTerms.fulfilled.match(result)) {
@@ -158,7 +162,7 @@ const EducationTermList = ({ isNewEducationTerm }: EducationTermListProps) => {
     educationTermFilter,
     educationTermOrderBy,
     educationTermOrderDirection,
-    isNewEducationTerm,
+    isInProgress,
   ]);
 
   const onClickEditTermDone = async () => {
@@ -271,12 +275,15 @@ const EducationTermList = ({ isNewEducationTerm }: EducationTermListProps) => {
   };
 
   // 목록에서 기수를 선택하여 상세 페이지로 이동
-  const onClickEducationTermItem = async (educationTermId: string) => {
+  const onClickEducationTermItem = async (
+    educationId: string,
+    educationTermId: string
+  ) => {
     try {
       await educationTermsApi
         .getEducationTerm({
           churchId,
-          educationId: targetEducation.id,
+          educationId,
           educationTermId,
         })
         .then(async (response) => {
@@ -285,7 +292,7 @@ const EducationTermList = ({ isNewEducationTerm }: EducationTermListProps) => {
           const enrollmentResponse =
             await educationEnrollmentsApi.getEducationEnrollments({
               churchId,
-              educationId: targetEducation.id,
+              educationId,
               educationTermId,
               take: educationTerm.enrollmentCount,
             });
@@ -295,7 +302,7 @@ const EducationTermList = ({ isNewEducationTerm }: EducationTermListProps) => {
           const sessionResponse =
             await educationSessionsApi.getEducationSessions({
               churchId,
-              educationId: targetEducation.id,
+              educationId,
               educationTermId,
             });
 
@@ -338,6 +345,7 @@ const EducationTermList = ({ isNewEducationTerm }: EducationTermListProps) => {
             churchId,
             currentPage: 1,
             educationId: targetEducation.id,
+            isInProgress,
           })
         );
         if (fetchEducationTerms.fulfilled.match(result)) {
@@ -378,6 +386,10 @@ const EducationTermList = ({ isNewEducationTerm }: EducationTermListProps) => {
       return;
     }
     if (!targetEducationTerm.startDate || !targetEducationTerm.endDate) {
+      setIsTermSaveEnabled(false);
+      return;
+    }
+    if (!targetEducationTerm.inChargeId) {
       setIsTermSaveEnabled(false);
       return;
     }
@@ -436,7 +448,7 @@ const EducationTermList = ({ isNewEducationTerm }: EducationTermListProps) => {
         .createEducationSession(
           {
             churchId,
-            educationId: targetEducation.id,
+            educationId: targetEducationTerm.educationId,
             educationTermId: targetEducationTerm.id,
           },
           {
@@ -664,6 +676,10 @@ const EducationTermList = ({ isNewEducationTerm }: EducationTermListProps) => {
       return;
     }
     if (!targetEducationSession.startDate || !targetEducationSession.endDate) {
+      setIsSessionSaveEnabled(false);
+      return;
+    }
+    if (!targetEducationSession.inChargeId) {
       setIsSessionSaveEnabled(false);
       return;
     }

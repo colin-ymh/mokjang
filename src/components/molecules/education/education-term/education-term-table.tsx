@@ -9,17 +9,19 @@ import {
   setEducationTermOrderDirection,
 } from '@/redux/reducers/filter/education-term-filter-reducer';
 import EducationTermTableView from '@/components/molecules/education/education-term/education-term-table.view';
-import { EducationSessionsApi } from '@/api/education/education-sessions.api';
 import { EducationTerm } from '@/models/education/education';
 
 export type EducationTermTableProps = {
-  onClickEducationTermItem: (educationTermId: string) => void;
+  onClickEducationTermItem: (
+    educationId: string,
+    educationTermId: string
+  ) => void;
   loadEducationTerms: () => Promise<void>;
   onClickEducationSessionItem: (
     educationTermId: string,
     educationSessionId: string
   ) => void;
-  onClickOpenAddEducationSession: (educationTerm?: EducationTerm) => void;
+  onClickOpenAddEducationSession?: (educationTerm?: EducationTerm) => void;
 };
 
 const EducationTermTable = ({
@@ -29,12 +31,7 @@ const EducationTermTable = ({
   onClickOpenAddEducationSession,
 }: EducationTermTableProps) => {
   const dispatch = useDispatch<AppDispatch>();
-  const educationSessionsApi = new EducationSessionsApi(false);
   const [openedTermId, setOpenedTermId] = useState<string>(BLANK);
-  const { targetEducation } = useSelector(
-    (state: RootState) => state.targetEducation
-  );
-  const { churchId } = useSelector((state: RootState) => state.church);
   const {
     educationTerms,
     educationTermFilter,
@@ -46,25 +43,6 @@ const EducationTermTable = ({
     if (openedTermId === termId) {
       setOpenedTermId(BLANK);
     } else {
-      // educationSessionsApi
-      //   .getEducationSessions({
-      //     churchId,
-      //     educationId: targetEducation.id,
-      //     educationTermId: termId,
-      //   })
-      //   .then((response) => {
-      //     const newSessions = response.data;
-      //
-      //     const newEducationTerms = educationTerms.map((term) => {
-      //       if (term.id === termId) {
-      //         return { ...term, educationSessions: newSessions };
-      //       } else {
-      //         return term;
-      //       }
-      //     });
-      //
-      //     dispatch(setEducationTerms(newEducationTerms));
-      //   });
       setOpenedTermId(termId);
     }
   };

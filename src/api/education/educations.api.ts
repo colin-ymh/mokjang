@@ -5,13 +5,25 @@ import { ORDER_DIRECTION } from '@/constants/constant';
 import axios from '@/api/authorize-axios';
 import authorizeAxios from '@/api/authorize-axios';
 
-import { EDUCATION } from '@/constants/education/education-column';
+import {
+  EDUCATION,
+  EDUCATION_TERM,
+} from '@/constants/education/education-column';
 
 type GetEducationsParams = {
   churchId: string; // 교회 id
   take?: number;
   page?: number;
   order?: EDUCATION;
+  orderDirection?: ORDER_DIRECTION;
+  name?: string;
+};
+
+type GetInProgressEducationsParams = {
+  churchId: string; // 교회 id
+  take?: number;
+  page?: number;
+  order?: EDUCATION_TERM;
   orderDirection?: ORDER_DIRECTION;
   name?: string;
 };
@@ -64,6 +76,34 @@ export class EducationsApi {
     const { churchId } = params;
 
     const url = `${this._url}/churches/${churchId}/management/educations`;
+
+    try {
+      return await axios.get(url);
+    } catch (serverError: any) {
+      if (serverError.response) {
+        const { message, error, statusCode } = serverError.response.data;
+        throw new CustomError(message, error, statusCode);
+      } else {
+        throw new CustomError(
+          '알 수 없는 에러가 발생했습니다',
+          500,
+          'Unknown Error'
+        );
+      }
+    }
+  };
+
+  /**
+   * 진행중인 교육 불러오기
+   * @param {GetInProgressEducationsParams} params
+   * @returns {Promise<AxiosResponse>}
+   */
+  public getInProgressEducations = async (
+    params: GetInProgressEducationsParams
+  ): Promise<AxiosResponse> => {
+    const { churchId } = params;
+
+    const url = `${this._url}/churches/${churchId}/management/educations/in-progress`;
 
     try {
       return await axios.get(url);

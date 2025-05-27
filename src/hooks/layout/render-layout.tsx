@@ -44,7 +44,7 @@ import TaskList from '@/components/organisms/task/list/task-list';
 import MainTaskHeader from '@/components/molecules/layout/header/main/task/main-task-header';
 import EducationList from '@/components/organisms/education/education/list/education-list';
 import { Education } from '@/models/education/education';
-import InProgressEducationList from '@/components/organisms/education/in-progress/in-progress-education-list';
+
 import EducationTermList from '@/components/organisms/education/education-term/list/education-term-list';
 import { HEADER_BAR } from '@/constants/constant';
 
@@ -137,7 +137,7 @@ export const getContent = (id: string, headerId: string | null): ReactNode => {
 
     // 교육
     case EDUCATION_CONTENT_ID.IN_PROGRESS:
-      return <InProgressEducationList />;
+      return <EducationTermList isInProgress={true} />;
     case EDUCATION_CONTENT_ID.TERM:
       return <EducationTermList />;
 

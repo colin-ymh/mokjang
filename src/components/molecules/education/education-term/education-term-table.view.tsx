@@ -232,14 +232,17 @@ type EducationTermTableProps = {
   educationTerms: EducationTerm[];
   onClickTermChevron: (termId: string) => void;
   onClickHeader: (id: EDUCATION_TERM) => void;
-  onClickEducationTermItem: (educationTermId: string) => void;
+  onClickEducationTermItem: (
+    educationId: string,
+    educationTermId: string
+  ) => void;
   onClickEducationSessionItem: (
     educationTermId: string,
     educationSessionId: string
   ) => void;
   scrollRef: MutableRefObject<HTMLDivElement | null>;
   onScroll: () => void;
-  onClickOpenAddEducationSession: (educationTerm?: EducationTerm) => void;
+  onClickOpenAddEducationSession?: (educationTerm?: EducationTerm) => void;
 };
 
 const EducationTermTableView = ({
@@ -283,7 +286,7 @@ const EducationTermTableView = ({
                 onClickTermChevron(educationTerm.id);
               }}
             />
-            <MainText>{`${educationTerm?.term}기`}</MainText>
+            <MainText>{`${educationTerm.educationName} ${educationTerm?.term}기`}</MainText>
           </TermContainer>
         );
 
@@ -321,7 +324,8 @@ const EducationTermTableView = ({
             <PlusButton
               onClick={(event: any) => {
                 event.stopPropagation();
-                onClickOpenAddEducationSession(educationTerm);
+                onClickOpenAddEducationSession &&
+                  onClickOpenAddEducationSession(educationTerm);
               }}
             />
           </div>
@@ -407,7 +411,10 @@ const EducationTermTableView = ({
                 {/* ① Term Row */}
                 <EducationTermTableRow
                   onClick={() => {
-                    onClickEducationTermItem(educationTerm.id);
+                    onClickEducationTermItem(
+                      educationTerm.educationId,
+                      educationTerm.id
+                    );
                   }}
                 >
                   {visibleColumns.map((item, index) => (
