@@ -8,7 +8,7 @@ const ManagementChurchHeader = ({}: ManagementTabHeaderProps) => {
 
   // 헤더 탭바 이벤트
   const onClickHeaderBar = (id: string) => {
-    router.push(`/admin/management/church/${id}`);
+    router.push(`/management/church/${id}`);
   };
 
   const props = { onClickHeaderBar };

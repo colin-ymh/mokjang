@@ -9,14 +9,14 @@ import {
 } from '@/models/member/history';
 import { OfficerHistoryApi } from '@/api/history/officer-history.api';
 import { ORDER_DIRECTION } from '@/constants/constant';
-import { Member } from '@/models/member/member';
 
-type MemberOfficerProps = {
-  targetMember: Member;
-};
+type MemberOfficerProps = {};
 
-const MemberOfficer = ({ targetMember }: MemberOfficerProps) => {
+const MemberOfficer = ({}: MemberOfficerProps) => {
   const churchId = useSelector((state: RootState) => state.church.churchId);
+  const { targetMember } = useSelector(
+    (state: RootState) => state.targetMember
+  );
   const officerHistoryApi = new OfficerHistoryApi(false);
 
   // 사용자의 직분 이력

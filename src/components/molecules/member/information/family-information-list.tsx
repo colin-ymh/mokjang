@@ -1,35 +1,33 @@
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/redux/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '@/redux/store';
 
 import { FamilyApi } from '@/api/members/family.api';
 import { MembersApi } from '@/api/members/members.api';
 import { getMemberFromServer } from '@/utils/member';
 import { FAMILY } from '@/constants/constant';
 import FamilyInformationListView from '@/components/molecules/member/information/family-information-list.view';
-import {
-  DEFAULT_FAMILY_MEMBER,
-  FamilyMember,
-  Member,
-} from '@/models/member/member';
+import { DEFAULT_FAMILY_MEMBER, FamilyMember } from '@/models/member/member';
 import { MEMBER_INFORMATION_HEADER_ID } from '@/constants/layout/header';
 import ToastPopup from '@/components/atoms/common/popup/toast-popup';
 
 import { useScopedI18n } from '../../../../../locales/client';
+import { setTargetMember } from '@/redux/reducers/target/target-member-reducer';
 
 type FamilyInformationListProps = {
-  targetMember: Member;
   setMemberContentId: Dispatch<SetStateAction<string>>;
-  setTargetMember: Dispatch<SetStateAction<Member>>;
 };
 
 const FamilyInformationList = ({
-  targetMember,
-  setTargetMember,
   setMemberContentId,
 }: FamilyInformationListProps) => {
   const t_popup = useScopedI18n('popup');
+  const dispatch = useDispatch<AppDispatch>();
   const { churchId } = useSelector((state: RootState) => state.church);
+  const { targetMember } = useSelector(
+    (state: RootState) => state.targetMember
+  );
+
   const familyApi = new FamilyApi(false);
   const membersApi = new MembersApi(false);
 
@@ -82,7 +80,7 @@ const FamilyInformationList = ({
           memberId: targetMember.id,
         });
         const member = getMemberFromServer(response.data.data);
-        setTargetMember(member);
+        dispatch(setTargetMember(member));
       } catch (error) {
         setThrownError(
           error instanceof Error ? error : new Error(String(error))
@@ -113,7 +111,7 @@ const FamilyInformationList = ({
           memberId: targetMember.id,
         });
         const member = getMemberFromServer(response.data.data);
-        setTargetMember(member);
+        dispatch(setTargetMember(member));
       } catch (error) {
         setThrownError(
           error instanceof Error ? error : new Error(String(error))
@@ -140,7 +138,7 @@ const FamilyInformationList = ({
           memberId: familyMemberId,
         });
         const newMember = getMemberFromServer(response.data.data);
-        setTargetMember(newMember);
+        dispatch(setTargetMember(newMember));
         setMemberContentId(MEMBER_INFORMATION_HEADER_ID.PERSONAL_INFORMATION);
       } catch (error) {
         setThrownError(
@@ -164,7 +162,7 @@ const FamilyInformationList = ({
           memberId: targetMember.id,
         });
         const member = getMemberFromServer(response.data.data);
-        setTargetMember(member);
+        dispatch(setTargetMember(member));
       } catch (error) {
         setThrownError(
           error instanceof Error ? error : new Error(String(error))

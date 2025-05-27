@@ -5,7 +5,7 @@ export default function LocaleRootPage({
 }: {
   params: { locale: string };
 }) {
-  // /ko  → /ko/admin/main
-  // /en  → /en/admin/main
-  redirect(`/${params.locale}/admin/main`);
+  // /ko  → /ko/main
+  // /en  → /en/main
+  redirect(`/${params.locale}/main`);
 }

@@ -38,7 +38,7 @@ const MainVisitationHeader = ({}: MainVisitationHeaderProps) => {
 
   // 헤더 탭바 이벤트
   const onClickHeaderBar = (id: string) => {
-    router.push(`admin/main/visitation/${id}`);
+    router.push(`/main/visitation/${id}`);
   };
 
   const onClickAddVisitation = () => {

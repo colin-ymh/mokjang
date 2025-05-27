@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 import { setMembers } from '@/redux/reducers/filter/member-filter-reducer';
@@ -33,16 +33,11 @@ import ToastPopup from '@/components/atoms/common/popup/toast-popup';
 import { useScopedI18n } from '../../../../../locales/client';
 import BottomSheet from '@/components/atoms/common/bottom-sheet/bottom-sheet';
 import SlidePopup from '@/components/atoms/common/popup/slide-popup';
+import { setTargetMember } from '@/redux/reducers/target/target-member-reducer';
 
-type InformationListProps = {
-  targetMemberId: string;
-  setTargetMember: Dispatch<SetStateAction<Member>>;
-};
+type InformationListProps = {};
 
-const InformationList = ({
-  targetMemberId,
-  setTargetMember,
-}: InformationListProps) => {
+const InformationList = ({}: InformationListProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const ministryHistoryApi = new MinistryHistoryApi(false);
   const officerHistoryApi = new OfficerHistoryApi(false);
@@ -55,6 +50,9 @@ const InformationList = ({
   const { churchId } = useSelector((state: RootState) => state.church);
   const { member } = useSelector((state: RootState) => state.memberRegister);
   const { members } = useSelector((state: RootState) => state.memberFilter);
+  const { targetMember } = useSelector(
+    (state: RootState) => state.targetMember
+  );
 
   const [thrownError, setThrownError] = useState<Error | null>(null);
   if (thrownError) {
@@ -63,9 +61,6 @@ const InformationList = ({
 
   // 저장 완료 토스트 팝업
   const [isToastShown, setIsToastShown] = useState<boolean>(false);
-
-  // 교인 초기 상태
-  const [prevMember, setPrevMember] = useState<Member>(DEFAULT_MEMBER);
 
   // 현재 활성화된 이력
   const [targetOfficerHistory, setTargetOfficerHistory] = useState<
@@ -116,12 +111,11 @@ const InformationList = ({
 
     const response = await membersApi.getMember({
       churchId,
-      memberId: targetMemberId,
+      memberId: targetMember.id,
     });
     const newMember = response.data.data;
 
-    setPrevMember(newMember);
-    setTargetMember(newMember);
+    dispatch(setTargetMember(newMember));
 
     const newMembers = members.map((m: Member) =>
       m.id === newMember.id ? newMember : m
@@ -133,7 +127,7 @@ const InformationList = ({
   // 개인정보 (이름, 생년월일 등) 수정
   // ================================
   const onClickItem = (id: MEMBER) => {
-    dispatch(setMember(prevMember));
+    dispatch(setMember(targetMember));
     setFocusItem(id);
     setIsEditShown(true);
   };
@@ -147,14 +141,14 @@ const InformationList = ({
     try {
       await membersApi
         .editMember(
-          { churchId, memberId: prevMember.id },
+          { churchId, memberId: targetMember.id },
           getEditMemberBody(member)
         )
         .then((response) => {
           if (response.status === 200) {
             setIsEditShown(false);
             const newMember = getMemberFromServer(response.data);
-            setPrevMember(newMember);
+            dispatch(setTargetMember(newMember));
 
             // 교인 목록에서도 업데이트
             const newMembers = members.map((mem: Member) =>
@@ -183,16 +177,21 @@ const InformationList = ({
 
   const onClickSaveBaptism = async (newBaptism: BAPTISM) => {
     try {
-      if (newBaptism !== prevMember.baptism) {
+      if (newBaptism !== targetMember.baptism) {
         membersApi
           .editMember(
-            { churchId, memberId: prevMember.id },
+            { churchId, memberId: targetMember.id },
             { baptism: newBaptism }
           )
           .then((response) => {
             setIsBaptismModalShown(false);
             const updatedMember = getMemberFromServer(response.data);
-            setPrevMember({ ...prevMember, baptism: updatedMember.baptism });
+            dispatch(
+              setTargetMember({
+                ...targetMember,
+                baptism: updatedMember.baptism,
+              })
+            );
 
             const newMembers = members.map((m: Member) =>
               m.id === updatedMember.id ? updatedMember : m
@@ -228,7 +227,7 @@ const InformationList = ({
       if (!targetGroupHistory) {
         await groupHistoryApi
           .createGroupHistory(
-            { churchId, memberId: targetMemberId },
+            { churchId, memberId: targetMember.id },
             {
               groupId,
               groupRoleId: groupRoleId || undefined,
@@ -245,20 +244,20 @@ const InformationList = ({
       if (groupId === BLANK) {
         // 그룹 제거(이력 종료)
         await groupHistoryApi
-          .stopGroupHistory({ churchId, memberId: targetMemberId }, {})
+          .stopGroupHistory({ churchId, memberId: targetMember.id }, {})
           .then((response) =>
             handleHistorySuccess(() => setIsGroupModalShown(false))
           );
       } else if (
-        groupId === prevMember.group?.id &&
-        groupRoleId === prevMember.groupRole?.id
+        groupId === targetMember.group?.id &&
+        groupRoleId === targetMember.groupRole?.id
       ) {
         // 그룹과 역할 동일 => 날짜 수정
         await groupHistoryApi
           .editGroupHistory(
             {
               churchId,
-              memberId: targetMemberId,
+              memberId: targetMember.id,
               groupHistoryId: targetGroupHistory.id,
             },
             { startDate }
@@ -267,11 +266,11 @@ const InformationList = ({
       } else {
         // 기존 이력 종료 후 새로운 이력 생성
         await groupHistoryApi
-          .stopGroupHistory({ churchId, memberId: targetMemberId }, {})
+          .stopGroupHistory({ churchId, memberId: targetMember.id }, {})
           .then(() => {
             groupHistoryApi
               .createGroupHistory(
-                { churchId, memberId: targetMemberId },
+                { churchId, memberId: targetMember.id },
                 {
                   groupId,
                   groupRoleId: groupRoleId || undefined,
@@ -315,7 +314,7 @@ const InformationList = ({
       if (!targetMinistryHistory) {
         await ministryHistoryApi
           .createMinistryHistory(
-            { churchId, memberId: targetMemberId },
+            { churchId, memberId: targetMember.id },
             {
               ministryId,
               startDate,
@@ -334,7 +333,7 @@ const InformationList = ({
           .stopMinistryHistory(
             {
               churchId,
-              memberId: targetMemberId,
+              memberId: targetMember.id,
               ministryId: targetMinistry.id,
             },
             {}
@@ -348,7 +347,7 @@ const InformationList = ({
           .editMinistryHistory(
             {
               churchId,
-              memberId: targetMemberId,
+              memberId: targetMember.id,
               ministryHistoryId: targetMinistryHistory.id,
             },
             { startDate }
@@ -360,7 +359,7 @@ const InformationList = ({
           .stopMinistryHistory(
             {
               churchId,
-              memberId: targetMemberId,
+              memberId: targetMember.id,
               ministryId: targetMinistry.id,
             },
             {}
@@ -368,7 +367,7 @@ const InformationList = ({
           .then(() => {
             ministryHistoryApi
               .createMinistryHistory(
-                { churchId, memberId: targetMemberId },
+                { churchId, memberId: targetMember.id },
                 {
                   ministryId,
                   startDate,
@@ -425,7 +424,7 @@ const InformationList = ({
       if (!targetOfficerHistory) {
         await officerHistoryApi
           .createOfficerHistory(
-            { churchId, memberId: targetMemberId },
+            { churchId, memberId: targetMember.id },
             {
               officerId,
               startDate,
@@ -441,17 +440,17 @@ const InformationList = ({
       if (officerId === NONE) {
         // 직분 중단
         await officerHistoryApi
-          .stopOfficerHistory({ churchId, memberId: targetMemberId }, {})
+          .stopOfficerHistory({ churchId, memberId: targetMember.id }, {})
           .then((response) =>
             handleHistorySuccess(() => setIsOfficerModalShown(false))
           );
-      } else if (officerId === prevMember.officer?.id) {
+      } else if (officerId === targetMember.officer?.id) {
         // 직분 동일 => 날짜만 수정
         await officerHistoryApi
           .editOfficerHistory(
             {
               churchId,
-              memberId: targetMemberId,
+              memberId: targetMember.id,
               officerHistoryId: targetOfficerHistory.id,
             },
             { startDate }
@@ -460,11 +459,11 @@ const InformationList = ({
       } else {
         // 기존 이력 종료 후 새로 생성
         await officerHistoryApi
-          .stopOfficerHistory({ churchId, memberId: targetMemberId }, {})
+          .stopOfficerHistory({ churchId, memberId: targetMember.id }, {})
           .then(() => {
             officerHistoryApi
               .createOfficerHistory(
-                { churchId, memberId: targetMemberId },
+                { churchId, memberId: targetMember.id },
                 {
                   officerId,
                   startDate,
@@ -483,32 +482,10 @@ const InformationList = ({
   };
 
   // ================================
-  // 서버에서 특정 교인 정보 불러오기
-  // ================================
-  const fetchMember = async () => {
-    try {
-      if (targetMemberId) {
-        const response = await membersApi.getMember({
-          churchId,
-          memberId: targetMemberId,
-        });
-        const newMember = getMemberFromServer(response.data.data);
-        if (newMember) setPrevMember(newMember);
-      }
-    } catch (error) {
-      setThrownError(error instanceof Error ? error : new Error(String(error)));
-    }
-  };
-
-  useEffect(() => {
-    fetchMember();
-  }, [targetMemberId]);
-
-  // ================================
   // 현재 이력/상태 정보 불러오기
   // ================================
   const fetchCurrentOfficerHistory = async () => {
-    if (!prevMember.officer?.id) {
+    if (!targetMember.officer?.id) {
       setTargetOfficerHistory(undefined);
       return;
     }
@@ -516,7 +493,7 @@ const InformationList = ({
     try {
       const response = await officerHistoryApi.getOfficerHistory({
         churchId,
-        memberId: prevMember.id,
+        memberId: targetMember.id,
       });
       const current = response.data.data.find(
         (history: OfficerHistory) => history.endDate === null
@@ -528,7 +505,7 @@ const InformationList = ({
   };
 
   const fetchCurrentGroupHistory = async () => {
-    if (!prevMember.group?.id) {
+    if (!targetMember.group?.id) {
       setTargetGroupHistory(undefined);
       return;
     }
@@ -536,7 +513,7 @@ const InformationList = ({
     try {
       const response = await groupHistoryApi.getGroupHistory({
         churchId,
-        memberId: prevMember.id,
+        memberId: targetMember.id,
       });
       const current = response.data.data.find(
         (history: GroupHistory) => history.endDate === null
@@ -556,7 +533,7 @@ const InformationList = ({
     try {
       const response = await ministryHistoryApi.getMinistryHistory({
         churchId,
-        memberId: prevMember.id,
+        memberId: targetMember.id,
       });
       const currentHistory = response.data.data.find(
         (history: MinistryHistory) =>
@@ -573,7 +550,7 @@ const InformationList = ({
   useEffect(() => {
     fetchCurrentOfficerHistory();
     fetchCurrentGroupHistory();
-  }, [prevMember]);
+  }, [targetMember]);
 
   useEffect(() => {
     fetchCurrentMinistryHistory();
@@ -583,7 +560,6 @@ const InformationList = ({
   // 렌더링
   // ================================
   const props = {
-    prevMember,
     onClickItem,
     onClickOpenBaptismModal,
     onClickOpenGroupModal,
@@ -617,7 +593,7 @@ const InformationList = ({
         isSnapPercentage={true}
       >
         <BaptismModal
-          targetBaptism={prevMember.baptism}
+          targetBaptism={targetMember.baptism}
           onClickSave={onClickSaveBaptism}
         />
       </BottomSheet>
@@ -630,7 +606,6 @@ const InformationList = ({
         isSnapPercentage={true}
       >
         <GroupModal
-          targetMemberId={targetMemberId}
           targetHistory={targetGroupHistory}
           onClickSaveNewGroup={onClickSaveNewGroup}
         />
@@ -657,7 +632,6 @@ const InformationList = ({
         isSnapPercentage={true}
       >
         <MinistryModal
-          targetMemberId={targetMemberId}
           targetHistory={targetMinistryHistory}
           onClickSaveNewMinistry={onClickSaveNewMinistry}
           onClickCreateMinistry={onClickCreateMinistry}

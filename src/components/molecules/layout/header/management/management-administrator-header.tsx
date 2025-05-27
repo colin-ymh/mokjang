@@ -9,7 +9,7 @@ const ManagementAdministratorHeader =
 
     // 헤더 탭바 이벤트
     const onClickHeaderBar = (id: string) => {
-      router.push(`/admin/management/administrator/${id}`);
+      router.push(`/management/administrator/${id}`);
     };
 
     const props = { onClickHeaderBar };

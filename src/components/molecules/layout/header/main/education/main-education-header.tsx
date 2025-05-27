@@ -63,12 +63,12 @@ const MainEducationHeader = ({}: MainEducationHeaderProps) => {
 
   // 헤더 탭바 이벤트
   const onClickHeaderBar = (id: string) => {
-    router.push(`admin/main/education/${id}`);
+    router.push(`/main/education/${id}`);
   };
 
   // 기수 => 교육으로 돌아가기
   const onClickGoBack = () => {
-    router.push(`admin/main/education/all`);
+    router.push(`/main/education/all`);
     dispatch(setTargetEducationTerm(DEFAULT_EDUCATION_TERM));
     dispatch(setTargetEducation(DEFAULT_EDUCATION));
     dispatch(setEducationTerms([]));
@@ -215,7 +215,7 @@ const MainEducationHeader = ({}: MainEducationHeaderProps) => {
   // 선택된 교육이 없으면 교육 화면으로 이동
   useEffect(() => {
     if (isTerm && !targetEducation.id) {
-      router.push(`admin/main/education/all`);
+      router.push(`/main/education/all`);
       dispatch(setTargetEducationTerm(DEFAULT_EDUCATION_TERM));
       dispatch(setTargetEducation(DEFAULT_EDUCATION));
       dispatch(setEducationTerms([]));

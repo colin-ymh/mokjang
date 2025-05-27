@@ -14,7 +14,7 @@ export default function LoginPage() {
 
   useEffect(() => {
     if (user?.id) {
-      router.replace('/admin'); // ✅ redirect는 useEffect 내부에서
+      router.replace('/main'); // ✅ redirect는 useEffect 내부에서
     }
   }, [user?.id, router]);
 

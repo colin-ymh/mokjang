@@ -6,15 +6,15 @@ import MemberGroupView from '@/components/molecules/member/information/member-gr
 import { DEFAULT_GROUP_HISTORY, GroupHistory } from '@/models/member/history';
 import { GroupHistoryApi } from '@/api/history/group-history.api';
 import { ORDER_DIRECTION } from '@/constants/constant';
-import { Member } from '@/models/member/member';
 
-type MemberGroupProps = {
-  targetMember: Member;
-};
+type MemberGroupProps = {};
 
-const MemberGroup = ({ targetMember }: MemberGroupProps) => {
+const MemberGroup = ({}: MemberGroupProps) => {
   const churchId = useSelector((state: RootState) => state.church.churchId);
   const groupHistoryApi = new GroupHistoryApi(false);
+  const { targetMember } = useSelector(
+    (state: RootState) => state.targetMember
+  );
 
   const [thrownError, setThrownError] = useState<Error | null>(null);
   // 렌더링 시점(컴포넌트 return)에서 조건부로 에러 발생

@@ -53,7 +53,7 @@ const MainMemberHeader = ({}: MainMemberHeaderProps) => {
 
   // 헤더 탭바 이벤트
   const onClickHeaderBar = (id: string) => {
-    router.push(`admin/main/member/${id}`);
+    router.push(`/main/member/${id}`);
   };
 
   // 테스트 교인 생성

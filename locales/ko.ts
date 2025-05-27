@@ -134,8 +134,8 @@ export default {
   confirmation: '입교',
 
   // marriage 결혼
-  married: '기혼',
-  single: '미혼',
+  Married: '기혼',
+  Single: '미혼',
 
   // 양력 음력
   solar: '양력',

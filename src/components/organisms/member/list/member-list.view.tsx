@@ -9,8 +9,7 @@ import MemberItemList from '@/components/molecules/member/list/member-item-list'
 import SlidePopup from '@/components/atoms/common/popup/slide-popup';
 import MemberInformation from '@/components/organisms/member/information/member-information';
 import Loading from '@/components/atoms/common/etc/loading';
-import React, { Dispatch, SetStateAction } from 'react';
-import { Member } from '@/models/member/member';
+import React from 'react';
 import { BLACK, DESTRUCTIVE } from '@/constants/styles/color';
 import CancelIcon from '../../../../../public/svg/cancel.svg';
 import TrashIcon from '../../../../../public/svg/trash.svg';
@@ -77,8 +76,6 @@ type MemberListViewProps = {
     isLoading: boolean;
     isPopupShown: boolean;
     onClickClose: () => void;
-    targetMember: Member;
-    setTargetMember: Dispatch<SetStateAction<Member>>;
     onClickDelete: () => void;
     onClickConfirmOpen: () => void;
     onClickConfirmClose: () => void;
@@ -140,7 +137,7 @@ const MemberListView = (props: MemberListViewProps) => {
             leftButtonText={t_button('cancel')}
             rightButtonText={t_button('delete')}
           />
-          <MemberInformation {...props.information} />
+          <MemberInformation />
         </>
       </SlidePopup>
       <Loading isShow={isLoading} />

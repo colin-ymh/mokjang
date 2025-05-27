@@ -11,13 +11,14 @@ import {
   MEDIA_MAX_WIDTH,
 } from '@/constants/constant';
 import { LOCALE } from '@/constants/state/locale';
-import { Member } from '@/models/member/member';
 import { Ministry } from '@/models/management/management';
 import { getLocaleDateFromDashDate } from '@/utils/format';
 import { getThisYearBirth } from '@/utils/date';
 
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
 import Pencil from '../../../../../public/svg/pencil.svg';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
 
 const InformationContainer = styled.div`
   display: flex;
@@ -140,7 +141,6 @@ const WrapText = styled(MainText)`
 `;
 
 type InformationListViewProps = {
-  prevMember: Member;
   onClickItem: (id: MEMBER) => void;
   onClickOpenBaptismModal: () => void;
   onClickOpenGroupModal: () => void;
@@ -149,13 +149,16 @@ type InformationListViewProps = {
 };
 
 const InformationListView = ({
-  prevMember,
   onClickItem,
   onClickOpenBaptismModal,
   onClickOpenGroupModal,
   onClickOpenMinistryModal,
   onClickOpenOfficerModal,
 }: InformationListViewProps) => {
+  const { targetMember } = useSelector(
+    (state: RootState) => state.targetMember
+  );
+
   const t = useI18n();
   const t_header = useScopedI18n('header');
   const pathname = usePathname();
@@ -174,7 +177,7 @@ const InformationListView = ({
               <MainText color={GRAY.DEFAULT}>{t(MEMBER.GROUP)}</MainText>
             </TitleContainer>
             <ContentContainer>
-              <MainText>{prevMember?.group?.name}</MainText>
+              <MainText>{targetMember?.group?.name}</MainText>
             </ContentContainer>
             <PencilButton />
           </InformationItem>
@@ -185,7 +188,7 @@ const InformationListView = ({
               <MainText color={GRAY.DEFAULT}>{t('groupRole')}</MainText>
             </TitleContainer>
             <ContentContainer>
-              <MainText>{prevMember?.groupRole?.role}</MainText>
+              <MainText>{targetMember?.groupRole?.role}</MainText>
             </ContentContainer>
             <PencilButton />
           </InformationItem>
@@ -197,7 +200,7 @@ const InformationListView = ({
               <MainText color={GRAY.DEFAULT}>{t(MEMBER.OFFICER)}</MainText>
             </TitleContainer>
             <ContentContainer>
-              <MainText>{prevMember?.officer?.name}</MainText>
+              <MainText>{targetMember?.officer?.name}</MainText>
             </ContentContainer>
             <PencilButton />
           </InformationItem>
@@ -208,7 +211,7 @@ const InformationListView = ({
               <MainText color={GRAY.DEFAULT}>{t('baptism')}</MainText>
             </TitleContainer>
             <ContentContainer>
-              <MainText>{t(prevMember.baptism)}</MainText>
+              <MainText>{t(targetMember.baptism)}</MainText>
             </ContentContainer>
             <PencilButton />
           </InformationItem>
@@ -225,7 +228,7 @@ const InformationListView = ({
               <MainText color={GRAY.DEFAULT}>{t('ministry')}</MainText>
             </TitleContainer>
             <ContentContainer>
-              {prevMember?.ministries?.map((item) => {
+              {targetMember?.ministries?.map((item) => {
                 return (
                   <MinistryContainer
                     key={item.id}
@@ -255,7 +258,7 @@ const InformationListView = ({
               <MainText color={GRAY.DEFAULT}>{t(MEMBER.NAME)}</MainText>
             </TitleContainer>
             <ContentContainer>
-              <MainText>{prevMember.name}</MainText>
+              <MainText>{targetMember.name}</MainText>
             </ContentContainer>
             <PencilButton />
           </InformationItem>
@@ -266,7 +269,7 @@ const InformationListView = ({
               <MainText color={GRAY.DEFAULT}>{t(MEMBER.GENDER)}</MainText>
             </TitleContainer>
             <ContentContainer>
-              <MainText>{t(prevMember.gender as GENDER)}</MainText>
+              <MainText>{t(targetMember.gender as GENDER)}</MainText>
             </ContentContainer>
             <PencilButton />
           </InformationItem>
@@ -280,15 +283,15 @@ const InformationListView = ({
             </TitleContainer>
             <ContentContainer>
               <MainText>
-                {prevMember.birth &&
+                {targetMember.birth &&
                   t(
-                    prevMember.isLunar
+                    targetMember.isLunar
                       ? CALENDAR_MODE.LUNAR
                       : CALENDAR_MODE.SOLAR
                   )}
               </MainText>
               <MainText>
-                {getLocaleDateFromDashDate(basePath, prevMember.birth)}
+                {getLocaleDateFromDashDate(basePath, targetMember.birth)}
               </MainText>
             </ContentContainer>
             <PencilButton />
@@ -301,10 +304,10 @@ const InformationListView = ({
             </TitleContainer>
             <ContentContainer>
               <MainText>
-                {prevMember.birth &&
+                {targetMember.birth &&
                   getLocaleDateFromDashDate(
                     basePath,
-                    getThisYearBirth(prevMember.birth, prevMember.isLunar)
+                    getThisYearBirth(targetMember.birth, targetMember.isLunar)
                   )}
               </MainText>
             </ContentContainer>
@@ -318,7 +321,7 @@ const InformationListView = ({
               <MainText color={GRAY.DEFAULT}>{t(MEMBER.MOBILE_PHONE)}</MainText>
             </TitleContainer>
             <ContentContainer>
-              <MainText>{prevMember.mobilePhone}</MainText>
+              <MainText>{targetMember.mobilePhone}</MainText>
             </ContentContainer>
             <PencilButton />
           </InformationItem>
@@ -329,7 +332,7 @@ const InformationListView = ({
               <MainText color={GRAY.DEFAULT}>{t(MEMBER.HOME_PHONE)}</MainText>
             </TitleContainer>
             <ContentContainer>
-              <MainText>{prevMember.homePhone}</MainText>
+              <MainText>{targetMember.homePhone}</MainText>
             </ContentContainer>
             <PencilButton />
           </InformationItem>
@@ -342,7 +345,7 @@ const InformationListView = ({
               <MainText color={GRAY.DEFAULT}>{t(MEMBER.ADDRESS)}</MainText>
             </TitleContainer>
             <ContentContainer>
-              <WrapText>{prevMember.address}</WrapText>
+              <WrapText>{targetMember.address}</WrapText>
             </ContentContainer>
             <PencilButton />
           </InformationItem>
@@ -355,7 +358,7 @@ const InformationListView = ({
               </MainText>
             </TitleContainer>
             <ContentContainer>
-              <MainText>{prevMember.detailAddress}</MainText>
+              <MainText>{targetMember.detailAddress}</MainText>
             </ContentContainer>
             <PencilButton />
           </InformationItem>
@@ -368,7 +371,7 @@ const InformationListView = ({
               <MainText color={GRAY.DEFAULT}>{t(MEMBER.OCCUPATION)}</MainText>
             </TitleContainer>
             <ContentContainer>
-              <MainText>{prevMember.occupation}</MainText>
+              <MainText>{targetMember.occupation}</MainText>
             </ContentContainer>
             <PencilButton />
           </InformationItem>
@@ -379,7 +382,7 @@ const InformationListView = ({
               <MainText color={GRAY.DEFAULT}>{t(MEMBER.SCHOOL)}</MainText>
             </TitleContainer>
             <ContentContainer>
-              <MainText>{prevMember.school}</MainText>
+              <MainText>{targetMember.school}</MainText>
             </ContentContainer>
             <PencilButton />
           </InformationItem>
@@ -392,7 +395,7 @@ const InformationListView = ({
               <MainText color={GRAY.DEFAULT}>{t(MEMBER.MARRIAGE)}</MainText>
             </TitleContainer>
             <ContentContainer>
-              <MainText>{t(prevMember.marriage as MARRIAGE)}</MainText>
+              <MainText>{t(targetMember.marriage as MARRIAGE)}</MainText>
             </ContentContainer>
             <PencilButton />
           </InformationItem>
@@ -405,7 +408,7 @@ const InformationListView = ({
               </MainText>
             </TitleContainer>
             <ContentContainer>
-              <MainText>{prevMember.detailMarriage}</MainText>
+              <MainText>{targetMember.detailMarriage}</MainText>
             </ContentContainer>
             <PencilButton />
           </InformationItem>
@@ -419,7 +422,7 @@ const InformationListView = ({
               </MainText>
             </TitleContainer>
             <ContentContainer>
-              {prevMember?.vehicleNumber?.map((number, index) => (
+              {targetMember?.vehicleNumber?.map((number, index) => (
                 <MainText key={index}>{number}</MainText>
               ))}
             </ContentContainer>

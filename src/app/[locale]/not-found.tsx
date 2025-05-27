@@ -1,5 +1,9 @@
-const NotFound = () => {
-  return <div>Not found</div>;
-};
+import { redirect } from 'next/navigation';
 
-export default NotFound;
+export default function NotFoundRedirect({
+  params,
+}: {
+  params: { locale: string };
+}) {
+  redirect(`/${params.locale}/main`);
+}

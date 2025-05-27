@@ -16,7 +16,6 @@ import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-i
 import { GroupRolesApi } from '@/api/management/group/group-roles.api';
 
 type GroupModalProps = {
-  targetMemberId: string;
   targetHistory?: GroupHistory;
   onClickSaveNewGroup?: (
     groupId: string,
@@ -27,13 +26,16 @@ type GroupModalProps = {
 };
 
 const GroupModal = ({
-  targetMemberId,
   targetHistory,
   onClickSaveNewGroup,
   onClickSaveGroupHistory,
 }: GroupModalProps) => {
   const groupRolesApi = new GroupRolesApi(false);
   const { groups, churchId } = useSelector((state: RootState) => state.church);
+  const { targetMember } = useSelector(
+    (state: RootState) => state.targetMember
+  );
+
   // 선택된 그룹
   const [selectedGroup, setSelectedGroup] = useState<Group>(DEFAULT_GROUP);
 
@@ -67,7 +69,7 @@ const GroupModal = ({
 
   useEffect(() => {
     setIsSelectOpened(false);
-  }, [targetMemberId]);
+  }, [targetMember.id]);
 
   // 그룹 그룹 설정 완료 버튼
   const onChangeGroup = (group: Group) => {

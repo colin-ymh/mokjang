@@ -36,9 +36,9 @@ const App = () => {
     if (!user?.id || !churchId) return;
 
     if (sideId === SIDE_ID.MAIN && !headerId) {
-      router.push(`/admin/main/${MAIN_HEADER_ID.MEMBER}`);
+      router.push(`main/${MAIN_HEADER_ID.MEMBER}`);
     } else if (sideId === SIDE_ID.MANAGEMENT && !headerId) {
-      router.push(`/admin/management/${MANAGEMENT_HEADER_ID.CHURCH}`);
+      router.push(`management/${MANAGEMENT_HEADER_ID.CHURCH}`);
     }
   }, [sideId, headerId, user?.id, churchId]);
 
@@ -47,17 +47,13 @@ const App = () => {
 
     if (sideId === SIDE_ID.MAIN && !contentId) {
       if (headerId === MAIN_HEADER_ID.MEMBER) {
-        router.push(
-          `/admin/main/${MAIN_HEADER_ID.MEMBER}/${MEMBER_CONTENT_ID.ALL}`
-        );
+        router.push(`main/${MAIN_HEADER_ID.MEMBER}/${MEMBER_CONTENT_ID.ALL}`);
       } else if (headerId === MAIN_HEADER_ID.VISITATION) {
         router.push(
-          `/admin/main/${MAIN_HEADER_ID.VISITATION}/${VISITATION_CONTENT_ID.ALL}`
+          `main/${MAIN_HEADER_ID.VISITATION}/${VISITATION_CONTENT_ID.ALL}`
         );
       } else if (headerId === MAIN_HEADER_ID.TASK) {
-        router.push(
-          `/admin/main/${MAIN_HEADER_ID.TASK}/${TASK_CONTENT_ID.ALL}`
-        );
+        router.push(`main/${MAIN_HEADER_ID.TASK}/${TASK_CONTENT_ID.ALL}`);
       }
     } else if (
       sideId === SIDE_ID.MANAGEMENT &&
@@ -65,7 +61,7 @@ const App = () => {
       !contentId
     ) {
       router.push(
-        `/admin/management/${MANAGEMENT_HEADER_ID.CHURCH}/${CHURCH_CONTENT_ID.GROUP}`
+        `management/${MANAGEMENT_HEADER_ID.CHURCH}/${CHURCH_CONTENT_ID.GROUP}`
       );
     }
   }, [sideId, headerId, contentId, user?.id, churchId, router]);
