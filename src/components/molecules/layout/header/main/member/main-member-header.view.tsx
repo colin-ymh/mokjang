@@ -10,7 +10,6 @@ import { DIRECTION, SIZE } from '@/constants/styles/style';
 import { useScopedI18n } from '../../../../../../../locales/client';
 import { MEDIA_MIN_WIDTH } from '@/constants/constant';
 import SlidePopup from '@/components/atoms/common/popup/slide-popup';
-import GroupFilter from '@/components/atoms/layout/side/main-side/group-filter';
 import CustomPopup from '@/components/atoms/common/popup/custom-popup';
 import MemberRegister from '@/components/organisms/register/member-register';
 import Button from '@/components/atoms/common/button/button';
@@ -168,7 +167,7 @@ const MainMemberHeaderView = ({
         onClickClose={onDismissModal}
       >
         <GroupFilterContainer>
-          <GroupFilter isDefaultOpen onClick={onClickNewGroup} />
+          {/*<GroupFilter isDefaultOpen onClick={onClickNewGroup} />*/}
         </GroupFilterContainer>
       </SlidePopup>
       {/* 데스크톱 교인 추가 */}

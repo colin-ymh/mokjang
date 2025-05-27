@@ -64,7 +64,7 @@ const VisitationTable = styled.table`
 `;
 
 // 4. 헤더(TH)
-const TableHeader = styled.th<{ id: string; isLast?: boolean }>`
+const TableHeader = styled.th<{ id: string; $isLast?: boolean }>`
   padding: 3px 10px;
   position: sticky;
   top: 0;
@@ -72,7 +72,7 @@ const TableHeader = styled.th<{ id: string; isLast?: boolean }>`
   background-color: ${WHITE};
 
   /* 만약 마지막 컬럼이면 width: auto */
-  width: ${({ id, isLast }) => (isLast ? 'auto' : `${getColumnWidth(id)}px`)};
+  width: ${({ id, $isLast }) => ($isLast ? 'auto' : `${getColumnWidth(id)}px`)};
   /* 텍스트 넘침 처리 */
   overflow: hidden;
   text-overflow: ellipsis;
@@ -97,13 +97,13 @@ const VisitationTableRow = styled.tr`
   }
 `;
 
-const TableData = styled.td<{ id: string; $index: number; isLast?: boolean }>`
+const TableData = styled.td<{ id: string; $index: number; $isLast?: boolean }>`
   padding: 10px;
 
   cursor: pointer;
 
   /* 마지막 컬럼이면 auto, 아니면 px 고정 */
-  width: ${({ id, isLast }) => (isLast ? 'auto' : `${getColumnWidth(id)}px`)};
+  width: ${({ id, $isLast }) => ($isLast ? 'auto' : `${getColumnWidth(id)}px`)};
 
   white-space: nowrap;
   overflow: hidden;
@@ -210,7 +210,7 @@ const VisitationTableView = ({
         return (
           <MembersContainer>
             {visitation.members?.map((member) => (
-              <ProfileContainer>
+              <ProfileContainer key={member.id}>
                 {/*<ProfileImage*/}
                 {/*  src={getRandomImage(member.id)}*/}
                 {/*  alt={MEMBER.PROFILE_IMAGE}*/}
@@ -263,7 +263,7 @@ const VisitationTableView = ({
                 <TableHeader
                   key={item.id}
                   id={item.id}
-                  isLast={index === visibleColumns.length - 1}
+                  $isLast={index === visibleColumns.length - 1}
                 >
                   {item.id !== BLANK && (
                     <VisitationTableHeader
@@ -291,7 +291,7 @@ const VisitationTableView = ({
                     key={item.id}
                     id={item.id}
                     $index={rowIndex}
-                    isLast={index === visibleColumns.length - 1}
+                    $isLast={index === visibleColumns.length - 1}
                   >
                     <ContentWrapper>
                       {getVisitationTableContent(item.id, visitation)}

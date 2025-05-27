@@ -7,7 +7,6 @@ import {
   VISITATION_CONTENT_ID,
 } from '@/constants/layout/content';
 import {
-  EDUCATION_MANAGEMENT_HEADER_ID,
   GROUP_MANAGEMENT_HEADER_ID,
   MEMBER_INFORMATION_HEADER_ID,
   MINISTRY_MANAGEMENT_HEADER_ID,
@@ -200,35 +199,3 @@ export const useMinistryManagementHeaderBarItems = () => {
 
   return items;
 };
-
-export const useEducationManagementHeaderBarItems = () => {
-  const t = useI18n();
-
-  const items = [
-    {
-      id: EDUCATION_MANAGEMENT_HEADER_ID.TERM,
-      title: t(EDUCATION_MANAGEMENT_HEADER_ID.TERM),
-    },
-  ];
-
-  return items;
-};
-
-// export const useTermInformationHeaderBarItems = (
-//   sessions: EducationSession[]
-// ) => {
-//   const t = useI18n();
-//
-//   const items = [
-//     {
-//       id: EDUCATION_TERM_HEADER_ID.INFORMATION,
-//       title: t(EDUCATION_TERM_HEADER_ID.INFORMATION),
-//     },
-//     ...sessions.map((session) => ({
-//       id: session.id,
-//       title: `${session.session}${t('session')}`,
-//     })),
-//   ];
-//
-//   return items;
-// };

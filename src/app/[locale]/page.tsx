@@ -1,13 +1,11 @@
-'use client';
+import { redirect } from 'next/navigation';
 
-import { usePageRouter } from '@/utils/router';
-
-const App = () => {
-  const router = usePageRouter();
-
-  router.push(`admin/main`);
-
-  return <></>;
-};
-
-export default App;
+export default function LocaleRootPage({
+  params,
+}: {
+  params: { locale: string };
+}) {
+  // /ko  → /ko/admin/main
+  // /en  → /en/admin/main
+  redirect(`/${params.locale}/admin/main`);
+}

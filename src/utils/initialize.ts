@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 
@@ -20,26 +20,32 @@ import { setEducations } from '@/redux/reducers/filter/education-filter-reducer'
 
 export const useInitializeChurch = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const churchId = useSelector((state: RootState) => state.church.churchId);
+  const churchId = useSelector((s: RootState) => s.church.churchId);
 
-  const ministriesApi = new MinistriesApi(false);
-  const educationsApi = new EducationsApi(false);
+  /* ✔️ 1회 실행 여부 저장 */
+  const didRunRef = useRef(false);
+
+  const ministriesApi = useMemo(() => new MinistriesApi(false), []);
+  const educationsApi = useMemo(() => new EducationsApi(false), []);
 
   const [thrownError, setThrownError] = useState<Error | null>(null);
-  if (thrownError) {
-    throw thrownError;
-  }
+  if (thrownError) throw thrownError;
 
-  const initialize = async () => {
+  /* 실제 초기화 함수 */
+  const initialize = useCallback(async () => {
+    if (didRunRef.current) return; // 이미 실행했으면 무시
     if (!churchId) {
-      console.warn('교회 ID가 설정되지 않았습니다.');
+      console.log('교회 ID 없음');
       return;
     }
+    didRunRef.current = true; // ➜ 더 이상 실행 금지
 
     try {
-      dispatch(fetchGroups());
-      dispatch(fetchMinistryGroups());
-      dispatch(fetchOfficers());
+      await Promise.all([
+        dispatch(fetchGroups()),
+        dispatch(fetchMinistryGroups()),
+        dispatch(fetchOfficers()),
+      ]);
 
       const [ministries, educations] = await Promise.all([
         ministriesApi.getMinistries({ churchId }),
@@ -48,18 +54,17 @@ export const useInitializeChurch = () => {
 
       dispatch(setMinistries(ministries.data.data));
       dispatch(setEducations(educations.data.data));
-    } catch (error) {
-      setThrownError(error instanceof Error ? error : new Error(String(error)));
+    } catch (err) {
+      setThrownError(err instanceof Error ? err : new Error(String(err)));
     }
-  };
+  }, [churchId, dispatch, ministriesApi, educationsApi]);
 
+  /* churchId 값이 처음 생겼을 때만 실행 */
   useEffect(() => {
-    if (churchId) {
-      initialize();
-    }
-  }, [churchId]);
+    if (churchId) initialize();
+  }, [churchId, initialize]);
 
-  return initialize;
+  return initialize; // 필요하면 밖에서 수동 호출도 가능
 };
 
 // 초기 유저 정보를 확인해 리다이렉트
@@ -69,42 +74,48 @@ export const useInitializeUser = () => {
   const authApi = new AuthApi(false);
   const userApi = new UserApi(false);
 
-  return async () => {
-    try {
-      // (1) 임시 토큰 체크
-      const temporalResponse = await authApi.getIsTemporalToken();
-      const isTemporalToken = temporalResponse.data;
+  /** ➜ 이 ref 가 true 면 두 번 다시 실행하지 않음 */
+  const didRunRef = useRef(false);
 
-      if (isTemporalToken) {
-        // 임시 토큰만 있으면 회원가입 진행 페이지로
-        router.replace('/login/register');
+  /** 라우트 이동 시에도 변하지 않는 redirect 상태 */
+  const [redirectPath, setRedirectPath] = useState<string | null>(null);
+
+  /* redirectPath 가 정해지면 실제 라우팅 */
+  useEffect(() => {
+    if (redirectPath) router.replace(redirectPath);
+  }, [redirectPath, router]);
+
+  /** 한 번만 만들어지는 초기화 함수 */
+  return useCallback(async () => {
+    /* 이미 실행했다면 바로 return */
+    if (didRunRef.current) return;
+    didRunRef.current = true;
+
+    /* 1) 임시 토큰 체크 */
+    try {
+      const { data: isTemp } = await authApi.getIsTemporalToken();
+      if (isTemp) {
+        setRedirectPath('/login/register');
         return;
       }
-    } catch (error) {
-      // console.log('No Temporal Token');
+    } catch {
+      /* 토큰 없음 → 정상 흐름 */
     }
 
+    /* 2) 사용자 정보 조회 */
     try {
-      // (2) Access Token으로 유저 정보 가져오기
-      const response = await userApi.getUser();
-      const newUser = response.data;
+      const { data: user } = await userApi.getUser();
+      dispatch(setUser(user));
 
-      // (3) Redux에 사용자 정보 저장
-      dispatch(setUser(newUser));
-
-      // (4) 교회 정보 확인 후 라우팅
-      const c = newUser.church;
-
-      if (c?.id) {
-        dispatch(setChurch(c));
-        dispatch(setChurchId(c.id));
-        // router.replace('/admin');
+      const church = user.church;
+      if (church?.id) {
+        dispatch(setChurch(church));
+        dispatch(setChurchId(church.id));
       } else {
-        router.replace('/church/register');
+        setRedirectPath('/church/register');
       }
-    } catch (error: any) {
-      // (5) Access Token 인증 실패 → 로그인 페이지
-      router.replace('/login');
+    } catch {
+      setRedirectPath('/login');
     }
-  };
+  }, [authApi, userApi, dispatch]);
 };

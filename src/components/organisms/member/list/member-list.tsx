@@ -103,7 +103,6 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
         );
       }
     };
-
     fetchInitialMembers();
   }, [
     churchId,

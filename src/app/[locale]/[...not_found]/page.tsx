@@ -1,13 +1,9 @@
-'use client';
+import { redirect } from 'next/navigation';
 
-import { usePageRouter } from '@/utils/router';
-
-const NotFound = () => {
-  const router = usePageRouter();
-
-  router.push(`admin/main`);
-
-  return <></>;
-};
-
-export default NotFound;
+export default function NotFoundRedirect({
+  params,
+}: {
+  params: { locale: string };
+}) {
+  redirect(`/${params.locale}/admin/main`);
+}

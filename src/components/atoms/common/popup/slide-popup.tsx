@@ -6,7 +6,7 @@ import { MEDIA_MAX_WIDTH } from '@/constants/constant';
 import PopupLayout from '@/components/organisms/layout/popup-layout';
 
 const SlidePanel = styled.div<{
-  isShow: boolean;
+  $isShow: boolean;
   direction: DIRECTION;
   size: number;
 }>`
@@ -18,7 +18,7 @@ const SlidePanel = styled.div<{
   flex-direction: column;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 
-  ${({ direction, isShow, size }) => {
+  ${({ direction, $isShow, size }) => {
     switch (direction) {
       case DIRECTION.LEFT:
         return `
@@ -26,7 +26,7 @@ const SlidePanel = styled.div<{
           bottom: 0;
           left: 0;
           width: ${size}px;
-          transform: translateX(${isShow ? 0 : '-100%'});
+          transform: translateX(${$isShow ? 0 : '-100%'});
         `;
       case DIRECTION.RIGHT:
         return `
@@ -34,7 +34,7 @@ const SlidePanel = styled.div<{
           bottom: 0;
           right: 0;
           width: ${size}px;
-          transform: translateX(${isShow ? 0 : '100%'});
+          transform: translateX(${$isShow ? 0 : '100%'});
         `;
       case DIRECTION.TOP:
         return `
@@ -42,7 +42,7 @@ const SlidePanel = styled.div<{
           right: 0;
           top: 0;
           height: ${size}px;
-          transform: translateY(${isShow ? 0 : '-100%'});
+          transform: translateY(${$isShow ? 0 : '-100%'});
         `;
       case DIRECTION.BOTTOM:
         return `
@@ -50,7 +50,7 @@ const SlidePanel = styled.div<{
           right: 0;
           bottom: 0;
           height: ${size}px;
-          transform: translateY(${isShow ? 0 : '100%'});
+          transform: translateY(${$isShow ? 0 : '100%'});
         `;
       default:
         return '';
@@ -65,7 +65,7 @@ const SlidePanel = styled.div<{
   }
 
   @media (max-width: ${MEDIA_MAX_WIDTH.DESKTOP}) {
-    ${({ direction, isShow, size }) => {
+    ${({ direction }) => {
       switch (direction) {
         case DIRECTION.LEFT:
           return `
@@ -141,7 +141,7 @@ const SlidePopup = ({
 
   return (
     <SlidePanel
-      isShow={isShow}
+      $isShow={isShow}
       direction={direction}
       size={size}
       onClick={(e) => e.stopPropagation()}

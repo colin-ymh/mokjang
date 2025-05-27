@@ -487,12 +487,14 @@ const InformationList = ({
   // ================================
   const fetchMember = async () => {
     try {
-      const response = await membersApi.getMember({
-        churchId,
-        memberId: targetMemberId,
-      });
-      const newMember = getMemberFromServer(response.data.data);
-      if (newMember) setPrevMember(newMember);
+      if (targetMemberId) {
+        const response = await membersApi.getMember({
+          churchId,
+          memberId: targetMemberId,
+        });
+        const newMember = getMemberFromServer(response.data.data);
+        if (newMember) setPrevMember(newMember);
+      }
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));
     }

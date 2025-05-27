@@ -138,7 +138,7 @@ const UserRegisterList = () => {
   const onClickLogOut = () => {
     const authApi = new AuthApi(false);
     authApi.getLogOut().then(() => {
-      router.replace('/login');
+      window.location.href = '/login';
     });
   };
 
