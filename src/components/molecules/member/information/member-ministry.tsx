@@ -9,14 +9,14 @@ import {
 } from '@/models/member/history';
 import { MinistryHistoryApi } from '@/api/history/ministry-history.api';
 import { ORDER_DIRECTION } from '@/constants/constant';
-import { Member } from '@/models/member/member';
 
-type MemberMinistryProps = {
-  targetMember: Member;
-};
+type MemberMinistryProps = {};
 
-const MemberMinistry = ({ targetMember }: MemberMinistryProps) => {
+const MemberMinistry = ({}: MemberMinistryProps) => {
   const churchId = useSelector((state: RootState) => state.church.churchId);
+  const { targetMember } = useSelector(
+    (state: RootState) => state.targetMember
+  );
   const ministryHistoryApi = new MinistryHistoryApi(false);
 
   // 사용자의 그룹 이력

@@ -14,6 +14,7 @@ import { MembersApi } from '@/api/members/members.api';
 import MemberListView from '@/components/organisms/member/list/member-list.view';
 import { Member } from '@/models/member/member';
 import { getMemberFromServer } from '@/utils/member';
+import { setTargetMember } from '@/redux/reducers/target/target-member-reducer';
 
 type MemberListProps = {
   isNewMember?: boolean;
@@ -27,6 +28,9 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
   );
   const { members, memberFilter, memberOrderBy, memberOrderDirection } =
     useSelector((state: RootState) => state.memberFilter);
+  const { targetMember } = useSelector(
+    (state: RootState) => state.targetMember
+  );
   const member = useSelector((state: RootState) => state.memberRegister.member);
 
   const [thrownError, setThrownError] = useState<Error | null>(null);
@@ -43,9 +47,6 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
 
   // 데이터 로딩 상태
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  // 교인 상세를 위해 선택한 교인
-  const [targetMember, setTargetMember] = useState<Member>(DEFAULT_MEMBER);
 
   // 삭제 확인 팝업
   const [isPopupShown, setIsPopupShown] = useState<boolean>(false);
@@ -118,7 +119,7 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
       const response = await membersApi.getMember({ churchId, memberId });
       const member = getMemberFromServer(response.data.data);
 
-      setTargetMember(member);
+      dispatch(setTargetMember(member));
       dispatch(setMember(member));
       setIsMemberInformationShown(true);
     } catch (error) {
@@ -171,8 +172,6 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
       isMemberInformationShown,
       isLoading,
       isPopupShown,
-      targetMember,
-      setTargetMember,
       onClickClose,
       onClickDelete,
       onClickConfirmOpen,

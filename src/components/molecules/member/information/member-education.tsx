@@ -6,13 +6,13 @@ import MemberEducationView from '@/components/molecules/member/information/membe
 import { EducationHistory } from '@/models/member/history';
 import { EducationHistoryApi } from '@/api/history/education-history.api';
 import { ORDER_DIRECTION } from '@/constants/constant';
-import { Member } from '@/models/member/member';
 
-type MemberEducation = {
-  targetMember: Member;
-};
+type MemberEducation = {};
 
-const MemberEducation = ({ targetMember }: MemberEducation) => {
+const MemberEducation = ({}: MemberEducation) => {
+  const { targetMember } = useSelector(
+    (state: RootState) => state.targetMember
+  );
   const churchId = useSelector((state: RootState) => state.church.churchId);
   const educationHistoryApi = new EducationHistoryApi(false);
 

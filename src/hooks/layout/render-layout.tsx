@@ -29,7 +29,6 @@ import MinistryGroupInformation from '@/components/molecules/management/ministry
 import MinistryGroupMember from '@/components/molecules/management/ministry/ministry-group-member';
 import MinistryGroupManagement from '@/components/organisms/management/ministry/ministry-group-management';
 import MemberMinistry from '@/components/molecules/member/information/member-ministry';
-import { Member } from '@/models/member/member';
 import GroupInformation from '@/components/molecules/management/group/group-information';
 import MemberOfficer from '@/components/molecules/member/information/member-officer';
 import GroupMember from '@/components/molecules/management/group/group-member';
@@ -155,35 +154,22 @@ export const getContent = (id: string, headerId: string | null): ReactNode => {
 };
 
 export const getMemberInformationContent = (
-  targetMember: Member,
-  setTargetMember: Dispatch<SetStateAction<Member>>,
   memberContentId: string,
   setMemberContentId: Dispatch<SetStateAction<string>>
 ) => {
   switch (memberContentId) {
     case MEMBER_INFORMATION_HEADER_ID.PERSONAL_INFORMATION:
-      return (
-        <InformationList
-          targetMemberId={targetMember.id}
-          setTargetMember={setTargetMember}
-        />
-      );
+      return <InformationList />;
     case MEMBER_INFORMATION_HEADER_ID.FAMILY_INFORMATION:
-      return (
-        <FamilyInformationList
-          targetMember={targetMember}
-          setTargetMember={setTargetMember}
-          setMemberContentId={setMemberContentId}
-        />
-      );
+      return <FamilyInformationList setMemberContentId={setMemberContentId} />;
     case MEMBER_INFORMATION_HEADER_ID.GROUP:
-      return <MemberGroup targetMember={targetMember} />;
+      return <MemberGroup />;
     case MEMBER_INFORMATION_HEADER_ID.EDUCATION:
-      return <MemberEducation targetMember={targetMember} />;
+      return <MemberEducation />;
     case MEMBER_INFORMATION_HEADER_ID.MINISTRY:
-      return <MemberMinistry targetMember={targetMember} />;
+      return <MemberMinistry />;
     case MEMBER_INFORMATION_HEADER_ID.OFFICER:
-      return <MemberOfficer targetMember={targetMember} />;
+      return <MemberOfficer />;
   }
 };
 

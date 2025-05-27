@@ -3,29 +3,7 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 
-import LabelInput from '@/components/atoms/common/input/label-input';
-import LabelDropdown from '@/components/atoms/common/dropdown/label-dropdown';
-import LabelRadioButton from '@/components/atoms/common/input/radio-button/label-radio-button';
-import ProfileImageInput from '@/components/atoms/common/image/profile-image-input';
-
-import RadioButton from '@/components/atoms/common/input/radio-button/radio-button';
-import RegisterRadioButton from '@/components/atoms/register/register-radio-button';
-
 import { useI18n, useScopedI18n } from '../../../../locales/client';
-import {
-  getIsWellFormedBirth,
-  getIsWellFormedHomePhone,
-  getIsWellFormedMobilePhone,
-  getIsWellFormedName,
-} from '@/utils/check';
-import { getTrimmedString } from '@/utils/format';
-import { useMarriageDropdownItems } from '@/hooks/dropdown/dropdown-items';
-import {
-  useCalendarModeRadioButtonItems,
-  useGenderRadioButtonItems,
-} from '@/hooks/radio-button/radio-button-items';
-
-import { BLACK, DESTRUCTIVE } from '@/constants/styles/color';
 import {
   BLANK,
   CALENDAR_MODE,
@@ -36,6 +14,25 @@ import {
 import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-item';
 import { VehicleNumberInputRef } from '@/components/atoms/register/vehicle-number-input.view';
 import { MEMBER } from '@/constants/member/member-column';
+import ProfileImageInput from '@/components/atoms/common/image/profile-image-input';
+import LabelInput from '@/components/atoms/common/input/label-input';
+import {
+  getIsWellFormedBirth,
+  getIsWellFormedHomePhone,
+  getIsWellFormedMobilePhone,
+  getIsWellFormedName,
+} from '@/utils/check';
+import { BLACK, DESTRUCTIVE } from '@/constants/styles/color';
+import { getTrimmedString } from '@/utils/format';
+import LabelDropdown from '@/components/atoms/common/dropdown/label-dropdown';
+import LabelRadioButton from '@/components/atoms/common/input/radio-button/label-radio-button';
+import {
+  useCalendarModeRadioButtonItems,
+  useGenderRadioButtonItems,
+} from '@/hooks/radio-button/radio-button-items';
+import RegisterRadioButton from '@/components/atoms/register/register-radio-button';
+import RadioButton from '@/components/atoms/common/input/radio-button/radio-button';
+import { useMarriageDropdownItems } from '@/hooks/dropdown/dropdown-items';
 
 const RequiredRegisterContainer = styled.div`
   display: flex;
@@ -284,7 +281,7 @@ const EditListView = ({
         ref={schoolInputRef}
         label={t('school')}
         items={schoolItems}
-        value={member.school}
+        value={member.school || BLANK}
         onChangeItem={onChangeSchool}
         placeholder={t_placeholder('school')}
         isEditable

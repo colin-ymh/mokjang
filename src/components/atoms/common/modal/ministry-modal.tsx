@@ -17,7 +17,6 @@ import MinistryModalView from '@/components/atoms/common/modal/ministry-modal.vi
 import { CUSTOM_VALUE } from '@/components/atoms/common/dropdown/dropdown';
 
 type MinistryGroupModalProps = {
-  targetMemberId: string;
   targetHistory?: MinistryHistory;
   onClickSaveNewMinistry?: (
     ministryGroupId: string,
@@ -33,7 +32,6 @@ type MinistryGroupModalProps = {
 };
 
 const MinistryGroupModal = ({
-  targetMemberId,
   targetHistory,
   onClickSaveNewMinistry,
   onClickSaveMinistryHistory,
@@ -42,6 +40,9 @@ const MinistryGroupModal = ({
   const ministriesApi = new MinistriesApi(false);
   const { ministryGroups, churchId } = useSelector(
     (state: RootState) => state.church
+  );
+  const { targetMember } = useSelector(
+    (state: RootState) => state.targetMember
   );
 
   // 선택된 사역 그룹
@@ -81,7 +82,7 @@ const MinistryGroupModal = ({
 
   useEffect(() => {
     setIsSelectOpened(false);
-  }, [targetMemberId]);
+  }, [targetMember.id]);
 
   // 추가할 사역 변경
   const onChangeCustomInput = (event: ChangeEvent<HTMLInputElement>) => {

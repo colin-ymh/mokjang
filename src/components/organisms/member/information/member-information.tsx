@@ -1,10 +1,11 @@
-import { Dispatch, SetStateAction, useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 
 import { MEMBER_INFORMATION_HEADER_ID } from '@/constants/layout/header';
 import MemberInformationHeader from '@/components/molecules/member/information/member-information-header';
-import { Member } from '@/models/member/member';
 import { getMemberInformationContent } from '@/hooks/layout/render-layout';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
 
 const InformationContainer = styled.div`
   display: flex;
@@ -20,15 +21,12 @@ const ContentContainer = styled.div`
   flex-grow: 1;
 `;
 
-type MemberInformationProps = {
-  targetMember: Member;
-  setTargetMember: Dispatch<SetStateAction<Member>>;
-};
+type MemberInformationProps = {};
 
-const MemberInformation = ({
-  targetMember,
-  setTargetMember,
-}: MemberInformationProps) => {
+const MemberInformation = ({}: MemberInformationProps) => {
+  const { targetMember } = useSelector(
+    (state: RootState) => state.targetMember
+  );
   const [memberContentId, setMemberContentId] = useState<string>(
     MEMBER_INFORMATION_HEADER_ID.PERSONAL_INFORMATION
   );
@@ -45,12 +43,7 @@ const MemberInformation = ({
         targetMember={targetMember}
       />
       <ContentContainer>
-        {getMemberInformationContent(
-          targetMember,
-          setTargetMember,
-          memberContentId,
-          setMemberContentId
-        )}
+        {getMemberInformationContent(memberContentId, setMemberContentId)}
       </ContentContainer>
     </InformationContainer>
   );

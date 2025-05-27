@@ -64,6 +64,7 @@ export class TaskReportsApi {
   ): Promise<AxiosResponse> => {
     const {
       churchId,
+      memberId,
       take = 5,
       page = 1,
       order,
@@ -100,7 +101,7 @@ export class TaskReportsApi {
     );
 
     /* ②요청 URL ------------------------------------------------------- */
-    const url = `${this._url}/churches/${churchId}/reports/tasks`;
+    const url = `${this._url}/churches/${churchId}/members/${memberId}/reports/tasks`;
 
     try {
       /* ③axios 호출 + qs 직렬화 --------------------------------------- */
@@ -128,9 +129,9 @@ export class TaskReportsApi {
   };
 
   public getTaskReport = async (params: GetTaskReportParams) => {
-    const { churchId, taskReportId } = params;
+    const { churchId, taskReportId, memberId } = params;
 
-    const url = `${this._url}/churches/${churchId}/reports/tasks/${taskReportId}`;
+    const url = `${this._url}/churches/${churchId}/members/${memberId}/reports/tasks/${taskReportId}`;
 
     try {
       return await axios.get(url);
@@ -149,9 +150,9 @@ export class TaskReportsApi {
   };
 
   public editTask = async (params: EditTaskParams, body: EditTaskBody) => {
-    const { churchId, taskReportId } = params;
+    const { churchId, taskReportId, memberId } = params;
 
-    const url = `${this._url}/churches/${churchId}/reports/tasks/${taskReportId}`;
+    const url = `${this._url}/churches/${churchId}/members/${memberId}/reports/tasks/${taskReportId}`;
 
     try {
       return await axios.patch(url, body);
@@ -170,9 +171,9 @@ export class TaskReportsApi {
   };
 
   public deleteTask = async (params: DeleteTaskParams) => {
-    const { churchId, taskReportId } = params;
+    const { churchId, taskReportId, memberId } = params;
 
-    const url = `${this._url}/churches/${churchId}/reports/tasks/${taskReportId}`;
+    const url = `${this._url}/churches/${churchId}/members/${memberId}/reports/tasks/${taskReportId}`;
 
     try {
       return await axios.delete(url);
