@@ -122,10 +122,15 @@ const MemberItemList = ({
     }
   };
 
+  // 초기 실행 방지
+  const hasMounted = useRef(false);
+
   useEffect(() => {
-    // searchValue 가 바뀌면 타이머 시작
+    if (!hasMounted.current) {
+      hasMounted.current = true;
+      return;
+    }
     const timer = setTimeout(() => {
-      // 0.5초간 변경 없으면 실행
       getNewMemberList();
     }, 500);
 
