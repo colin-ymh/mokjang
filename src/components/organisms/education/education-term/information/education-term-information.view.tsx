@@ -5,10 +5,7 @@ import { useEducationTermStatusDropdownItems } from '@/hooks/dropdown/dropdown-i
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { getFormattedDate } from '@/utils/format';
 import { GRAY } from '@/constants/styles/color';
-import { getRandomImage } from '@/utils/image';
-import { MEMBER } from '@/constants/member/member-column';
 import React from 'react';
-import Image from 'next/image';
 import StatusDropdown from '@/components/atoms/common/dropdown/status-dropdown';
 import {
   EDUCATION_ENROLLMENT_STATUS,
@@ -19,6 +16,7 @@ import { useI18n } from '../../../../../../locales/client';
 import EducationTermSessionList from '@/components/molecules/education/education-term/education-term-session-list';
 
 import { EDUCATION_TERM_STATUS } from '@/constants/status/status';
+import MemberProfilePopupButton from '@/components/molecules/common/button/member-profile-popup-button';
 
 const InformationContainer = styled.div`
   display: flex;
@@ -52,20 +50,6 @@ const ContentContainer = styled.div`
   justify-content: flex-start;
   align-items: center;
   gap: 10px;
-`;
-
-const ProfileContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 5px;
-`;
-
-const ProfileImage = styled(Image)`
-  width: 30px;
-  height: 30px;
-  border-radius: 35%;
-  overflow: hidden;
 `;
 
 const DivideLine = styled.div`
@@ -140,13 +124,10 @@ const EducationTermInformationView = ({
             <MainText>{t('inCharge')}</MainText>
           </TitleContainer>
           <ContentContainer>
-            <ProfileContainer>
-              <ProfileImage
-                src={getRandomImage(targetEducationTerm.inCharge.id)}
-                alt={MEMBER.PROFILE_IMAGE}
-              />
-              <MainText>{targetEducationTerm.inCharge?.name}</MainText>
-            </ProfileContainer>
+            <MemberProfilePopupButton
+              key={targetEducationTerm.inCharge.id}
+              member={targetEducationTerm.inCharge}
+            />
           </ContentContainer>
         </RowContainer>
         {/* 일자 */}

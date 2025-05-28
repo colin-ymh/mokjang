@@ -1,5 +1,4 @@
 import React, { MutableRefObject } from 'react';
-import Image from 'next/image';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
@@ -19,9 +18,8 @@ import { useI18n } from '../../../../../locales/client';
 import ChevronDown from '../../../../../public/svg/chevron-down.svg';
 import { getStatusColor } from '@/utils/color';
 import { getFormattedDate } from '@/utils/format';
-import { getRandomImage } from '@/utils/image';
-import { MEMBER } from '@/constants/member/member-column';
 import Plus from '../../../../../public/svg/plus.svg';
+import MemberProfile from '@/components/atoms/member/member-profile';
 
 // 1. 컬럼별 PX 폭
 const getColumnWidth = (id: string) => {
@@ -152,20 +150,6 @@ const Chevron = styled(ChevronDown)<{ $isOpened: boolean }>`
   transition: transform 0.2s ease;
 `;
 
-const MembersContainer = styled.div`
-  display: flex;
-  gap: 10px;
-  justify-content: flex-start;
-  align-items: center;
-`;
-
-const ProfileContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 5px;
-`;
-
 const StatusContainer = styled.div`
   display: flex;
   gap: 10px;
@@ -179,25 +163,6 @@ const ColoredDot = styled.div<{ color: string }>`
   height: 10px;
   border-radius: 100%;
   background-color: ${({ color }) => color};
-`;
-
-const ProfileImage = styled(Image)`
-  width: 30px;
-  height: 30px;
-  border-radius: 20%;
-  overflow: hidden;
-`;
-
-const PopupButtonContainer = styled.div<{ $isShown: boolean }>`
-  position: absolute;
-  bottom: 70px;
-  left: 50%;
-  transform: translateX(-50%);
-  justify-content: center;
-  transition: opacity 0.2s ease;
-
-  opacity: ${({ $isShown }) => ($isShown ? 1 : 0)};
-  pointer-events: ${({ $isShown }) => ($isShown ? 'auto' : 'none')};
 `;
 
 const SessionContainer = styled.div`
@@ -226,7 +191,6 @@ const PlusButton = styled(Plus)`
   }
 `;
 
-// 이 예시에서는 실제 EDUCATION_TERM + "비고" 컬럼(REMARKS)까지 표시
 type EducationTermTableProps = {
   openedTermId: string;
   educationTerms: EducationTerm[];
@@ -309,15 +273,7 @@ const EducationTermTableView = ({
           </MainText>
         );
       case EDUCATION_TERM.IN_CHARGE:
-        return (
-          <ProfileContainer>
-            <ProfileImage
-              src={getRandomImage(educationTerm.inCharge.id)}
-              alt={MEMBER.PROFILE_IMAGE}
-            />
-            <MainText>{educationTerm.inCharge?.name}</MainText>
-          </ProfileContainer>
-        );
+        return <MemberProfile member={educationTerm.inCharge} />;
       case BLANK:
         return (
           <div>
@@ -365,15 +321,7 @@ const EducationTermTableView = ({
           </StatusContainer>
         );
       case EDUCATION_TERM.IN_CHARGE:
-        return (
-          <ProfileContainer>
-            <ProfileImage
-              src={getRandomImage(session.inCharge.id)}
-              alt={MEMBER.PROFILE_IMAGE}
-            />
-            <MainText>{session.inCharge?.name}</MainText>
-          </ProfileContainer>
-        );
+        return <MemberProfile member={session.inCharge} />;
       default:
         return null;
     }

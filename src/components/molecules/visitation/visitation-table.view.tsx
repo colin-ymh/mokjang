@@ -15,8 +15,7 @@ import { BLANK_HEADER } from '@/redux/reducers/filter/member-filter-reducer';
 import { useI18n } from '../../../../locales/client';
 import { getFormattedDate } from '@/utils/format';
 import { getStatusColor } from '@/utils/color';
-import { getRandomImage } from '@/utils/image';
-import { MEMBER } from '@/constants/member/member-column';
+import MemberProfile from '@/components/atoms/member/member-profile';
 
 // 1. 컬럼별 PX 폭
 const getColumnWidth = (id: string) => {
@@ -131,13 +130,6 @@ const MembersContainer = styled.div`
   align-items: center;
 `;
 
-const ProfileContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 5px;
-`;
-
 const StatusContainer = styled.div`
   display: flex;
   gap: 10px;
@@ -158,18 +150,6 @@ const ProfileImage = styled(Image)`
   height: 30px;
   border-radius: 20%;
   overflow: hidden;
-`;
-
-const PopupButtonContainer = styled.div<{ $isShown: boolean }>`
-  position: absolute;
-  bottom: 70px;
-  left: 50%;
-  transform: translateX(-50%);
-  justify-content: center;
-  transition: opacity 0.2s ease;
-
-  opacity: ${({ $isShown }) => ($isShown ? 1 : 0)};
-  pointer-events: ${({ $isShown }) => ($isShown ? 'auto' : 'none')};
 `;
 
 // 이 예시에서는 실제 VISITATION + "비고" 컬럼(REMARKS)까지 표시
@@ -210,13 +190,7 @@ const VisitationTableView = ({
         return (
           <MembersContainer>
             {visitation.members?.map((member) => (
-              <ProfileContainer key={member.id}>
-                {/*<ProfileImage*/}
-                {/*  src={getRandomImage(member.id)}*/}
-                {/*  alt={MEMBER.PROFILE_IMAGE}*/}
-                {/*/>*/}
-                <MainText>{`${member?.name}`}</MainText>
-              </ProfileContainer>
+              <MemberProfile key={member.id} member={member} />
             ))}
           </MembersContainer>
         );
@@ -236,15 +210,7 @@ const VisitationTableView = ({
           </MainText>
         );
       case VISITATION.IN_CHARGE:
-        return (
-          <ProfileContainer>
-            <ProfileImage
-              src={getRandomImage(visitation.inCharge.id)}
-              alt={MEMBER.PROFILE_IMAGE}
-            />
-            <MainText>{visitation.inCharge?.name}</MainText>
-          </ProfileContainer>
-        );
+        return <MemberProfile member={visitation.inCharge} />;
       case BLANK:
         return <div></div>;
       default:

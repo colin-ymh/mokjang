@@ -79,8 +79,7 @@ const InformationItem = styled.div<{ $disabled?: boolean }>`
 
   @media (max-width: ${MEDIA_MAX_WIDTH.DESKTOP}) {
     &:hover {
-      background-color: ${({ $disabled }) =>
-        $disabled ? 'auto' : GRAY.SEMI_LIGHT};
+      background-color: ${({ $disabled }) => ($disabled ? 'auto' : GRAY.LIGHT)};
     }
 
     &:hover ${PencilButton} {
@@ -141,11 +140,11 @@ const WrapText = styled(MainText)`
 `;
 
 type InformationListViewProps = {
-  onClickItem: (id: MEMBER) => void;
-  onClickOpenBaptismModal: () => void;
-  onClickOpenGroupModal: () => void;
-  onClickOpenMinistryModal: (ministry?: Ministry) => void;
-  onClickOpenOfficerModal: () => void;
+  onClickItem?: (id: MEMBER) => void;
+  onClickOpenBaptismModal?: () => void;
+  onClickOpenGroupModal?: () => void;
+  onClickOpenMinistryModal?: (ministry?: Ministry) => void;
+  onClickOpenOfficerModal?: () => void;
 };
 
 const InformationListView = ({
@@ -221,7 +220,7 @@ const InformationListView = ({
           <InformationItem
             onClick={(event) => {
               event.stopPropagation();
-              onClickOpenMinistryModal();
+              onClickOpenMinistryModal && onClickOpenMinistryModal();
             }}
           >
             <TitleContainer>
@@ -234,7 +233,8 @@ const InformationListView = ({
                     key={item.id}
                     onClick={(event) => {
                       event.stopPropagation();
-                      onClickOpenMinistryModal(item);
+                      onClickOpenMinistryModal &&
+                        onClickOpenMinistryModal(item);
                     }}
                   >
                     <MainText>{item.name}</MainText>
@@ -253,7 +253,9 @@ const InformationListView = ({
       <InformationListContainer>
         <RowContainer>
           {/* 이름 */}
-          <InformationItem onClick={() => onClickItem(MEMBER.NAME)}>
+          <InformationItem
+            onClick={() => onClickItem && onClickItem(MEMBER.NAME)}
+          >
             <TitleContainer>
               <MainText color={GRAY.DEFAULT}>{t(MEMBER.NAME)}</MainText>
             </TitleContainer>
@@ -264,7 +266,9 @@ const InformationListView = ({
           </InformationItem>
           <RowDivider />
           {/* 성별 */}
-          <InformationItem onClick={() => onClickItem(MEMBER.GENDER)}>
+          <InformationItem
+            onClick={() => onClickItem && onClickItem(MEMBER.GENDER)}
+          >
             <TitleContainer>
               <MainText color={GRAY.DEFAULT}>{t(MEMBER.GENDER)}</MainText>
             </TitleContainer>
@@ -277,7 +281,9 @@ const InformationListView = ({
         {/* 생년월일 라인 */}
         <RowContainer>
           {/* 생년월일 */}
-          <InformationItem onClick={() => onClickItem(MEMBER.BIRTH)}>
+          <InformationItem
+            onClick={() => onClickItem && onClickItem(MEMBER.BIRTH)}
+          >
             <TitleContainer>
               <MainText color={GRAY.DEFAULT}>{t(MEMBER.BIRTH)}</MainText>
             </TitleContainer>
@@ -316,7 +322,9 @@ const InformationListView = ({
         {/* 번호 라인 */}
         <RowContainer>
           {/* 휴대전화번호 */}
-          <InformationItem onClick={() => onClickItem(MEMBER.MOBILE_PHONE)}>
+          <InformationItem
+            onClick={() => onClickItem && onClickItem(MEMBER.MOBILE_PHONE)}
+          >
             <TitleContainer>
               <MainText color={GRAY.DEFAULT}>{t(MEMBER.MOBILE_PHONE)}</MainText>
             </TitleContainer>
@@ -327,7 +335,9 @@ const InformationListView = ({
           </InformationItem>
           <RowDivider />
           {/* 집전화번호 */}
-          <InformationItem onClick={() => onClickItem(MEMBER.HOME_PHONE)}>
+          <InformationItem
+            onClick={() => onClickItem && onClickItem(MEMBER.HOME_PHONE)}
+          >
             <TitleContainer>
               <MainText color={GRAY.DEFAULT}>{t(MEMBER.HOME_PHONE)}</MainText>
             </TitleContainer>
@@ -340,7 +350,9 @@ const InformationListView = ({
         {/* 주소 라인 */}
         <RowContainer>
           {/* 도로명 주소 */}
-          <InformationItem onClick={() => onClickItem(MEMBER.ADDRESS)}>
+          <InformationItem
+            onClick={() => onClickItem && onClickItem(MEMBER.ADDRESS)}
+          >
             <TitleContainer>
               <MainText color={GRAY.DEFAULT}>{t(MEMBER.ADDRESS)}</MainText>
             </TitleContainer>
@@ -351,7 +363,9 @@ const InformationListView = ({
           </InformationItem>
           <RowDivider />
           {/* 상세 주소 */}
-          <InformationItem onClick={() => onClickItem(MEMBER.DETAIL_ADDRESS)}>
+          <InformationItem
+            onClick={() => onClickItem && onClickItem(MEMBER.DETAIL_ADDRESS)}
+          >
             <TitleContainer>
               <MainText color={GRAY.DEFAULT}>
                 {t(MEMBER.DETAIL_ADDRESS)}
@@ -366,7 +380,9 @@ const InformationListView = ({
         {/* 직업 라인 */}
         <RowContainer>
           {/* 직업 */}
-          <InformationItem onClick={() => onClickItem(MEMBER.OCCUPATION)}>
+          <InformationItem
+            onClick={() => onClickItem && onClickItem(MEMBER.OCCUPATION)}
+          >
             <TitleContainer>
               <MainText color={GRAY.DEFAULT}>{t(MEMBER.OCCUPATION)}</MainText>
             </TitleContainer>
@@ -377,7 +393,9 @@ const InformationListView = ({
           </InformationItem>
           <RowDivider />
           {/* 학교 */}
-          <InformationItem onClick={() => onClickItem(MEMBER.SCHOOL)}>
+          <InformationItem
+            onClick={() => onClickItem && onClickItem(MEMBER.SCHOOL)}
+          >
             <TitleContainer>
               <MainText color={GRAY.DEFAULT}>{t(MEMBER.SCHOOL)}</MainText>
             </TitleContainer>
@@ -390,7 +408,9 @@ const InformationListView = ({
         {/* 결혼 라인 */}
         <RowContainer>
           {/* 결혼 */}
-          <InformationItem onClick={() => onClickItem(MEMBER.MARRIAGE)}>
+          <InformationItem
+            onClick={() => onClickItem && onClickItem(MEMBER.MARRIAGE)}
+          >
             <TitleContainer>
               <MainText color={GRAY.DEFAULT}>{t(MEMBER.MARRIAGE)}</MainText>
             </TitleContainer>
@@ -401,7 +421,9 @@ const InformationListView = ({
           </InformationItem>
           <RowDivider />
           {/* 결혼 상세 */}
-          <InformationItem onClick={() => onClickItem(MEMBER.DETAIL_MARRIAGE)}>
+          <InformationItem
+            onClick={() => onClickItem && onClickItem(MEMBER.DETAIL_MARRIAGE)}
+          >
             <TitleContainer>
               <MainText color={GRAY.DEFAULT}>
                 {t(MEMBER.DETAIL_MARRIAGE)}
@@ -415,7 +437,9 @@ const InformationListView = ({
         </RowContainer>
         <RowContainer>
           {/* 차량 번호 */}
-          <InformationItem onClick={() => onClickItem(MEMBER.VEHICLE_NUMBER)}>
+          <InformationItem
+            onClick={() => onClickItem && onClickItem(MEMBER.VEHICLE_NUMBER)}
+          >
             <TitleContainer>
               <MainText color={GRAY.DEFAULT}>
                 {t(MEMBER.VEHICLE_NUMBER)}
