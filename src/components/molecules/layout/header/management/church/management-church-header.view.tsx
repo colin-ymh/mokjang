@@ -7,32 +7,55 @@ import HeaderBar from '@/components/atoms/layout/header/header-bar';
 import { useManagementChurchHeaderBarItems } from '@/hooks/layout/header-bar-items';
 import { SIZE } from '@/constants/styles/style';
 
-import { useScopedI18n } from '../../../../../../locales/client';
+import { useScopedI18n } from '../../../../../../../locales/client';
 import { useParams } from 'next/navigation';
+import { MEDIA_MIN_WIDTH } from '@/constants/constant';
+import { MANAGEMENT_HEADER_ID } from '@/constants/layout/header';
 
 const HeaderContainer = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  padding: 30px 20px 0 20px;
-  gap: 20px;
-  border-bottom: 1px solid ${GRAY.SEMI_LIGHT};
+
+  @media (min-width: ${MEDIA_MIN_WIDTH.MOBILE}) {
+    height: 40px;
+    padding: 0 20px;
+    justify-content: center;
+  }
+
+  @media (min-width: ${MEDIA_MIN_WIDTH.DESKTOP}) {
+    height: 120px;
+    justify-content: space-between;
+    padding: 0;
+    border-bottom: 0.7px solid ${GRAY.SEMI_LIGHT};
+  }
 `;
 
-const HeaderBottomContainer = styled.div`
+const HeaderTopContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  padding: 20px 20px 0 20px;
 `;
 
-type ManagementTabHeaderViewProps = {
+const HeaderBottomContainer = styled.div`
+  display: none;
+
+  @media (min-width: ${MEDIA_MIN_WIDTH.DESKTOP}) {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+  }
+`;
+type ManagementChurchHeaderViewProps = {
   onClickHeaderBar: (id: string) => void;
 };
 
 const ManagementChurchHeaderView = ({
   onClickHeaderBar,
-}: ManagementTabHeaderViewProps) => {
+}: ManagementChurchHeaderViewProps) => {
   const slug = useParams().slug as string[];
   const contentId = slug[2];
 
@@ -41,7 +64,11 @@ const ManagementChurchHeaderView = ({
 
   return (
     <HeaderContainer>
-      <MainText size={SIZE.EXTRA_LARGE}>{t_header('church')}</MainText>
+      <HeaderTopContainer>
+        <MainText size={SIZE.EXTRA_LARGE}>
+          {t_header(MANAGEMENT_HEADER_ID.CHURCH)}
+        </MainText>
+      </HeaderTopContainer>
       <HeaderBottomContainer>
         <HeaderBar
           value={contentId}

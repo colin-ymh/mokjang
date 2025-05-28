@@ -5,32 +5,25 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 
 import { GRAY, WHITE } from '@/constants/styles/color';
-import { VISITATION } from '@/constants/visitation/visitation-column';
+import { USER } from '@/constants/user/user-column';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { BLANK } from '@/constants/constant';
-import { Visitation } from '@/models/visitation/visitation';
+import { User } from '@/models/user/user';
 import useWindowSize from '@/hooks/window/window';
-import VisitationTableHeader from '@/components/atoms/visitation/visitation-table-header';
+import UserTableHeader from '@/components/atoms/user/user-table-header';
 import { BLANK_HEADER } from '@/redux/reducers/filter/member-filter-reducer';
-import { useI18n } from '../../../../locales/client';
-import { getFormattedDate } from '@/utils/format';
-import { getStatusColor } from '@/utils/color';
 import { getRandomImage } from '@/utils/image';
 import { MEMBER } from '@/constants/member/member-column';
 
 // 1. 컬럼별 PX 폭
 const getColumnWidth = (id: string) => {
   switch (id) {
-    case VISITATION.TITLE:
+    case USER.NAME:
       return 200;
-    case VISITATION.VISITED:
+    case USER.MOBILE_PHONE:
+      return 300;
+    case MEMBER.NAME:
       return 200;
-    case VISITATION.STATUS:
-      return 150;
-    case VISITATION.DATE:
-      return 200;
-    case VISITATION.IN_CHARGE:
-      return 150;
     default:
       // 비고(REMARKS) 컬럼 등
       return 80;
@@ -53,7 +46,7 @@ const TableContainer = styled.div<{ height: number }>`
 `;
 
 // 3. 테이블은 width: 100% + table-layout: fixed
-const VisitationTable = styled.table`
+const UserTable = styled.table`
   width: 100%;
   table-layout: fixed;
   border-collapse: collapse;
@@ -90,7 +83,7 @@ const TableHeader = styled.th<{ id: string; $isLast?: boolean }>`
 `;
 
 // 5. 본문(TR/TD)
-const VisitationTableRow = styled.tr`
+const UserTableRow = styled.tr`
   border-bottom: 1px solid ${GRAY.EXTRA_LIGHT};
   &:hover td {
     background-color: ${GRAY.LIGHT};
@@ -124,33 +117,11 @@ const ContentWrapper = styled.div`
   white-space: nowrap;
 `;
 
-const MembersContainer = styled.div`
-  display: flex;
-  gap: 10px;
-  justify-content: flex-start;
-  align-items: center;
-`;
-
 const ProfileContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: 5px;
-`;
-
-const StatusContainer = styled.div`
-  display: flex;
-  gap: 10px;
-  justify-content: flex-start;
-  align-items: center;
-`;
-
-const ColoredDot = styled.div<{ color: string }>`
-  display: flex;
-  width: 10px;
-  height: 10px;
-  border-radius: 100%;
-  background-color: ${({ color }) => color};
 `;
 
 const ProfileImage = styled(Image)`
@@ -160,89 +131,48 @@ const ProfileImage = styled(Image)`
   overflow: hidden;
 `;
 
-const PopupButtonContainer = styled.div<{ $isShown: boolean }>`
-  position: absolute;
-  bottom: 70px;
-  left: 50%;
-  transform: translateX(-50%);
-  justify-content: center;
-  transition: opacity 0.2s ease;
-
-  opacity: ${({ $isShown }) => ($isShown ? 1 : 0)};
-  pointer-events: ${({ $isShown }) => ($isShown ? 'auto' : 'none')};
-`;
-
-// 이 예시에서는 실제 VISITATION + "비고" 컬럼(REMARKS)까지 표시
-type VisitationTableProps = {
-  visitations: Visitation[];
-  onClickHeader: (id: VISITATION) => void;
-  onClickVisitationItem: (visitationId: string) => void;
+// 이 예시에서는 실제 USER + "비고" 컬럼(REMARKS)까지 표시
+type UserTableProps = {
+  onClickHeader: (id: USER | MEMBER) => void;
+  onClickUserItem: (userId: string) => void;
   scrollRef: MutableRefObject<HTMLDivElement | null>;
   onScroll: () => void;
 };
 
-const VisitationTableView = ({
-  visitations,
+const UserTableView = ({
   onClickHeader,
-  onClickVisitationItem,
+  onClickUserItem,
   scrollRef,
   onScroll,
-}: VisitationTableProps) => {
-  const t = useI18n();
+}: UserTableProps) => {
   const { height } = useWindowSize();
 
-  const visitationTableHeaderItemList = useSelector(
-    (state: RootState) => state.visitationFilter.visitationTableHeaderItemList
+  const { users } = useSelector((state: RootState) => state.userFilter);
+  const userTableHeaderItemList = useSelector(
+    (state: RootState) => state.userFilter.userTableHeaderItemList
   );
 
   // 실제 표시할 컬럼 ID 배열 + 마지막에 비고란 추가
   const visibleColumns = [
-    ...visitationTableHeaderItemList.filter((item) => item.isShown),
+    ...userTableHeaderItemList.filter((item) => item.isShown),
     BLANK_HEADER,
   ];
 
   // 각 TD에 들어갈 content
-  const getVisitationTableContent = (id: string, visitation: Visitation) => {
+  const getUserTableContent = (id: string, user: User) => {
     switch (id) {
-      case VISITATION.TITLE:
-        return <MainText>{visitation?.title}</MainText>;
-      case VISITATION.VISITED:
+      case USER.NAME:
+        return <MainText>{user?.name}</MainText>;
+      case USER.MOBILE_PHONE:
+        return <MainText>{user?.mobilePhone}</MainText>;
+      case MEMBER.NAME:
         return (
-          <MembersContainer>
-            {visitation.members?.map((member) => (
-              <ProfileContainer key={member.id}>
-                {/*<ProfileImage*/}
-                {/*  src={getRandomImage(member.id)}*/}
-                {/*  alt={MEMBER.PROFILE_IMAGE}*/}
-                {/*/>*/}
-                <MainText>{`${member?.name}`}</MainText>
-              </ProfileContainer>
-            ))}
-          </MembersContainer>
-        );
-      case VISITATION.STATUS:
-        return (
-          <StatusContainer>
-            <ColoredDot color={getStatusColor(visitation.status)} />
-            <MainText>{t(visitation?.status)}</MainText>
-          </StatusContainer>
-        );
-      case VISITATION.DATE:
-        return (
-          <MainText>
-            {`${
-              visitation.startDate && getFormattedDate(visitation.startDate)
-            } - ${visitation.endDate && getFormattedDate(visitation.endDate)}`}
-          </MainText>
-        );
-      case VISITATION.IN_CHARGE:
-        return (
-          <ProfileContainer>
+          <ProfileContainer key={user.member.id}>
             <ProfileImage
-              src={getRandomImage(visitation.inCharge.id)}
+              src={getRandomImage(user.member.id)}
               alt={MEMBER.PROFILE_IMAGE}
             />
-            <MainText>{visitation.inCharge?.name}</MainText>
+            <MainText>{`${user.member?.name}`}</MainText>
           </ProfileContainer>
         );
       case BLANK:
@@ -256,7 +186,7 @@ const VisitationTableView = ({
     <>
       {/* 컨테이너: 항상 가로 100%, 필요하면 스크롤 */}
       <TableContainer ref={scrollRef} onScroll={onScroll} height={height}>
-        <VisitationTable>
+        <UserTable>
           <thead>
             <tr>
               {visibleColumns.map((item, index) => (
@@ -266,10 +196,10 @@ const VisitationTableView = ({
                   $isLast={index === visibleColumns.length - 1}
                 >
                   {item.id !== BLANK && (
-                    <VisitationTableHeader
+                    <UserTableHeader
                       item={{
                         ...item,
-                        id: item.id as VISITATION,
+                        id: item.id as USER | MEMBER,
                       }}
                       onClick={onClickHeader}
                     />
@@ -279,11 +209,11 @@ const VisitationTableView = ({
             </tr>
           </thead>
           <tbody>
-            {visitations.map((visitation, rowIndex) => (
-              <VisitationTableRow
-                key={visitation.id}
+            {users.map((user, rowIndex) => (
+              <UserTableRow
+                key={user.id}
                 onClick={() => {
-                  onClickVisitationItem(visitation.id);
+                  onClickUserItem(user.id);
                 }}
               >
                 {visibleColumns.map((item, index) => (
@@ -294,17 +224,17 @@ const VisitationTableView = ({
                     $isLast={index === visibleColumns.length - 1}
                   >
                     <ContentWrapper>
-                      {getVisitationTableContent(item.id, visitation)}
+                      {getUserTableContent(item.id, user)}
                     </ContentWrapper>
                   </TableData>
                 ))}
-              </VisitationTableRow>
+              </UserTableRow>
             ))}
           </tbody>
-        </VisitationTable>
+        </UserTable>
       </TableContainer>
     </>
   );
 };
 
-export default VisitationTableView;
+export default UserTableView;

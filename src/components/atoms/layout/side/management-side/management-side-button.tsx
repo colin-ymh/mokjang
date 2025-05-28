@@ -17,7 +17,7 @@ const ButtonContainer = styled.div`
   cursor: pointer;
 
   &:hover {
-    background-color: ${GRAY.SEMI_LIGHT};
+    background-color: ${GRAY.LIGHT};
   }
 `;
 
@@ -38,7 +38,7 @@ const ManagementSideButton = ({ id, title }: SideBarButtonProps) => {
         router.push(`/management/church/group`);
         return;
       case MANAGEMENT_HEADER_ID.ADMINISTRATOR:
-        router.push(`/management/administrator/setting`);
+        router.push(`/management/administrator`);
         return;
       default:
         router.push(`/management/${id}`);
@@ -50,7 +50,7 @@ const ManagementSideButton = ({ id, title }: SideBarButtonProps) => {
       <MainText
         size={SIZE.LARGE}
         fontWeight={600}
-        color={id === headerId ? GRAY.DARK : GRAY.DEFAULT}
+        color={id === headerId ? GRAY.DARK : GRAY.SEMI_DARK}
       >
         {title}
       </MainText>

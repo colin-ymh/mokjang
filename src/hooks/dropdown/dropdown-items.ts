@@ -23,6 +23,7 @@ import {
 } from '@/constants/education/education-column';
 import { EDUCATION_ENROLLMENT_STATUS } from '@/models/education/education';
 import { STATUS } from '@/constants/status/status';
+import { USER } from '@/constants/user/user-column';
 
 export const useBaptismDropdownItems = () => {
   const t = useI18n();
@@ -201,32 +202,15 @@ export const useEducationTermSearchFilterDropdownItems = () => {
   return items;
 };
 
-export const useGenderDropdownItems = () => {
+export const useUserSearchFilterDropdownItems = () => {
   const t = useI18n();
 
   const items = [
     {
-      value: GENDER.MALE,
-      title: t(GENDER.MALE),
-    },
-    {
-      value: GENDER.FEMALE,
-      title: t(GENDER.FEMALE),
+      value: USER.NAME,
+      title: t('name'),
     },
   ];
-
-  return items;
-};
-
-export const useGroupDropdownItems = () => {
-  const t = useI18n();
-  const groups = useSelector((state: RootState) => state.church.groups);
-
-  const items = groups.map((group) => {
-    return { value: group.id, title: group.name };
-  });
-
-  items.push({ value: NULL, title: t(NULL) });
 
   return items;
 };

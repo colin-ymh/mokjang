@@ -186,6 +186,9 @@ export default {
 
   'header.church': 'Church',
   'header.administrator': 'Administrator',
+  'header.approval': 'Approval',
+  'header.permission': 'Permission',
+  'header.user': 'User',
   'header.setting': 'Setting',
   'header.add': 'Add',
 

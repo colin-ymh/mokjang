@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { useParams } from 'next/navigation';
 
-import { BLACK, GRAY } from '@/constants/styles/color';
+import { GRAY } from '@/constants/styles/color';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { SIZE } from '@/constants/styles/style';
 import { usePageRouter } from '@/utils/router';
@@ -17,7 +17,7 @@ const ButtonContainer = styled.div`
   cursor: pointer;
 
   &:hover {
-    background-color: ${GRAY.SEMI_LIGHT};
+    background-color: ${GRAY.LIGHT};
   }
 `;
 
@@ -59,7 +59,7 @@ const MainSideButton = ({ id, title }: SideBarButtonProps) => {
       <MainText
         size={SIZE.LARGE}
         fontWeight={600}
-        color={id === headerId ? BLACK : GRAY.DARK}
+        color={id === headerId ? GRAY.DARK : GRAY.SEMI_DARK}
       >
         {title}
       </MainText>

@@ -13,6 +13,7 @@ import SlidePopup from '@/components/atoms/common/popup/slide-popup';
 import CustomPopup from '@/components/atoms/common/popup/custom-popup';
 import MemberRegister from '@/components/organisms/register/member-register';
 import Button from '@/components/atoms/common/button/button';
+import { MAIN_HEADER_ID } from '@/constants/layout/header';
 
 const HeaderContainer = styled.div`
   display: flex;
@@ -131,7 +132,9 @@ const MainMemberHeaderView = ({
     <HeaderContainer>
       <HeaderTopContainer>
         <DesktopTitle>
-          <MainText size={SIZE.EXTRA_LARGE}>{t_header('member')}</MainText>
+          <MainText size={SIZE.EXTRA_LARGE}>
+            {t_header(MAIN_HEADER_ID.MEMBER)}
+          </MainText>
         </DesktopTitle>
         <MobileTitle>
           <GroupButton onClick={onClickGroupButton}>

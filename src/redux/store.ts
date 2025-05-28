@@ -16,6 +16,7 @@ import TargetEducationReducer from '@/redux/reducers/target/target-education-red
 import EducationTermFilterReducer from '@/redux/reducers/filter/education-term-filter-reducer';
 import TargetEducationTermReducer from '@/redux/reducers/target/target-education-term-reducer';
 import TargetEducationSessionReducer from '@/redux/reducers/target/target-education-session-reducer';
+import UserFilterReducer from '@/redux/reducers/filter/user-filter-reducer';
 
 const store = configureStore({
   reducer: {
@@ -35,6 +36,7 @@ const store = configureStore({
     targetEducationSession: TargetEducationSessionReducer,
     targetTask: TargetTask,
     targetGroup: TargetGroup,
+    userFilter: UserFilterReducer,
   },
 });
 

@@ -23,7 +23,7 @@ const TopContainer = styled.div`
     flex-shrink: 0;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid ${GRAY.SEMI_LIGHT};
+    border-bottom: 0.7px solid ${GRAY.SEMI_LIGHT};
     background-color: ${WHITE};
   }
 `;

@@ -5,6 +5,7 @@ import { ORDER_DIRECTION } from '@/constants/constant';
 import { MEMBER } from '@/constants/member/member-column';
 import { SERVER_URL, TEST_SERVER_URL } from '@/constants/state/url';
 import { CustomError } from '@/api/error/error';
+import { USER } from '@/constants/user/user-column';
 
 enum USER_MEMBER_ROLE {
   MAIN_ADMIN = 'mainAdmin',
@@ -17,7 +18,7 @@ type GetUserMembersParams = {
   churchId: string; // 교회 id
   page?: number; // 페이지 번호
   take?: number; // 요청 개수
-  order?: MEMBER; // 정렬 기준
+  order?: MEMBER | USER; // 정렬 기준
   orderDirection?: ORDER_DIRECTION; // 오름차순 내림차순
 
   // 필터링 내용
@@ -43,7 +44,7 @@ type GetUserMembersParams = {
   marriage?: string[];
 
   //   활성화된 컬럼들
-  selectedColumns?: MEMBER[];
+  selectedColumns?: (MEMBER | USER)[];
 };
 
 type EditRoleParams = {
@@ -150,7 +151,7 @@ export class UserMembersApi {
       )
     );
 
-    const url = `${this._url}/churches/${churchId}/members`;
+    const url = `${this._url}/churches/${churchId}/user-members`;
 
     try {
       return await axios.get(url, {

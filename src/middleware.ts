@@ -1,8 +1,11 @@
 // src/middleware.ts
 import { NextRequest, NextResponse } from 'next/server';
+import { LOCALE } from '@/constants/state/locale';
 
-const LOCALES = ['ko', 'en'] as const;
-const DEFAULT_LOCALE = 'ko';
+const DEFAULT_LOCALE = LOCALE.KO;
+
+// enum을 배열로 변환
+const LOCALES = Object.values(LOCALE);
 
 export default function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
@@ -16,6 +19,7 @@ export default function middleware(req: NextRequest) {
   if (
     pathname.startsWith('/_next') ||
     pathname.startsWith('/api') ||
+    pathname.startsWith('/favicon.ico') ||
     pathname.match(/\.(png|jpe?g|svg|css|js|webp)$/)
   ) {
     return NextResponse.next();
@@ -23,8 +27,9 @@ export default function middleware(req: NextRequest) {
 
   // 브라우저 언어
   const accept = req.headers.get('accept-language') ?? '';
-  const browserLocale = accept.split(',')[0].split('-')[0];
-  const locale = LOCALES.includes(browserLocale as any)
+  const browserLocale = accept.split(',')[0].split('-')[0] as LOCALE;
+
+  const locale = LOCALES.includes(browserLocale)
     ? browserLocale
     : DEFAULT_LOCALE;
 

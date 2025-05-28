@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 
-import { GRAY } from '@/constants/styles/color';
+import { GRAY, WHITE } from '@/constants/styles/color';
 import { MEMBER } from '@/constants/member/member-column';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { BAPTISM, BLANK, GENDER } from '@/constants/constant';
@@ -96,7 +96,7 @@ const MemberTable = styled.table`
 // 4. 헤더(TH)
 const TableHeader = styled.th<{ id: string; $isLast?: boolean }>`
   padding: 3px;
-  background-color: ${GRAY.LIGHT};
+  background-color: ${WHITE};
   position: sticky;
   top: 0;
   z-index: 5;
@@ -115,8 +115,8 @@ const TableHeader = styled.th<{ id: string; $isLast?: boolean }>`
     bottom: 0;
     left: 0;
     right: 0;
-    height: 1px;
-    background: ${GRAY.DEFAULT};
+    height: 0.7px;
+    background: ${GRAY.SEMI_LIGHT};
   }
 `;
 
