@@ -131,8 +131,8 @@ export default {
   confirmation: 'Confirmation',
 
   // marriage 결혼
-  Married: 'Married',
-  Single: 'Single',
+  married: 'Married',
+  single: 'Single',
 
   // 양력 음력
   solar: 'Solar',

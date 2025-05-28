@@ -11,8 +11,6 @@ import GroupModal from '@/components/atoms/common/modal/group-modal';
 
 import { useI18n } from '../../../../../locales/client';
 import { MEDIA_MAX_WIDTH, MEDIA_MIN_WIDTH } from '@/constants/constant';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/redux/store';
 
 const ListContainer = styled.div`
   display: flex;
@@ -80,9 +78,6 @@ const MemberGroupView = ({
   const t = useI18n();
   const currentHistory = groupHistory.find(
     (history) => history.endDate === null
-  );
-  const { targetMember } = useSelector(
-    (state: RootState) => state.targetMember
   );
 
   return (
@@ -153,7 +148,6 @@ const MemberGroupView = ({
         height={400}
       >
         <GroupModal
-          targetMemberId={targetMember.id}
           targetHistory={targetGroupHistory}
           onClickSaveGroupHistory={onClickSaveGroupHistory}
         />

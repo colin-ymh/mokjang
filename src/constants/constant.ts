@@ -34,8 +34,8 @@ export enum GENDER {
 
 // 결혼 상태
 export enum MARRIAGE {
-  MARRIED = 'Married', // 기혼
-  SINGLE = 'Single', // 미혼
+  MARRIED = 'married', // 기혼
+  SINGLE = 'single', // 미혼
 }
 
 // 가족 관계
