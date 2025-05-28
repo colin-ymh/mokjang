@@ -1,5 +1,4 @@
 import React, { MutableRefObject } from 'react';
-import Image from 'next/image';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
@@ -15,8 +14,7 @@ import { BLANK_HEADER } from '@/redux/reducers/filter/member-filter-reducer';
 import { useI18n } from '../../../../locales/client';
 import { getFormattedDate } from '@/utils/format';
 import { getStatusColor } from '@/utils/color';
-import { getRandomImage } from '@/utils/image';
-import { MEMBER } from '@/constants/member/member-column';
+import MemberProfile from '@/components/atoms/member/member-profile';
 
 // 1. 컬럼별 PX 폭 (마지막 REMARKS만 auto 할 예정)
 const getColumnWidth = (id: string) => {
@@ -122,20 +120,6 @@ const ContentWrapper = styled.div`
   white-space: nowrap;
 `;
 
-const MembersContainer = styled.div`
-  display: flex;
-  gap: 10px;
-  justify-content: flex-start;
-  align-items: center;
-`;
-
-const ProfileContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 5px;
-`;
-
 const StatusContainer = styled.div`
   display: flex;
   gap: 10px;
@@ -151,26 +135,6 @@ const ColoredDot = styled.div<{ color: string }>`
   background-color: ${({ color }) => color};
 `;
 
-const ProfileImage = styled(Image)`
-  width: 30px;
-  height: 30px;
-  border-radius: 20%;
-  overflow: hidden;
-`;
-
-const PopupButtonContainer = styled.div<{ $isShown: boolean }>`
-  position: absolute;
-  bottom: 70px;
-  left: 50%;
-  transform: translateX(-50%);
-  justify-content: center;
-  transition: opacity 0.2s ease;
-
-  opacity: ${({ $isShown }) => ($isShown ? 1 : 0)};
-  pointer-events: ${({ $isShown }) => ($isShown ? 'auto' : 'none')};
-`;
-
-// 이 예시에서는 실제 TASK + "비고" 컬럼(REMARKS)까지 표시
 type TaskTableProps = {
   tasks: Task[];
   onClickHeader: (id: TASK) => void;
@@ -220,15 +184,7 @@ const TaskTableView = ({
           </MainText>
         );
       case TASK.IN_CHARGE:
-        return (
-          <ProfileContainer>
-            <ProfileImage
-              src={getRandomImage(task.inCharge.id)}
-              alt={MEMBER.PROFILE_IMAGE}
-            />
-            <MainText>{task.inCharge?.name}</MainText>
-          </ProfileContainer>
-        );
+        return <MemberProfile member={task.inCharge} />;
       case BLANK:
         return <div></div>;
       default:

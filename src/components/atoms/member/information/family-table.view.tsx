@@ -1,6 +1,5 @@
 import React, { MutableRefObject } from 'react';
 import styled from 'styled-components';
-import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 
 import MemberTableHeader from '@/components/atoms/member/list/member-table-header';
@@ -14,8 +13,8 @@ import useWindowSize from '@/hooks/window/window';
 import { LOCALE } from '@/constants/state/locale';
 import { TABLE_HEADER_ITEM } from '@/redux/reducers/filter/member-filter-reducer';
 import { useI18n } from '../../../../../locales/client';
-import { getRandomImage } from '@/utils/image';
 import LastFamilyTableContent from '@/components/atoms/member/information/last-family-table-content';
+import MemberProfile from '@/components/atoms/member/member-profile';
 
 const getColumnWidth = (id: string) => {
   switch (id) {
@@ -98,26 +97,6 @@ const ContentWrapper = styled.div`
   text-overflow: ellipsis; /* 넘치는 텍스트 ... 처리 */
   white-space: nowrap; /* 줄바꿈 방지 */
 `;
-
-const ProfileContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 10px;
-`;
-
-const ProfileImage = styled(Image)`
-  width: 35px;
-  height: 35px;
-  border-radius: 20%;
-`;
-
-const PhoneContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
-
 export const FAMILY_MEMBER_TABLE_HEADER: TABLE_HEADER_ITEM[] = [
   {
     id: MEMBER.RELATION,
@@ -209,18 +188,7 @@ const FamilyTableView = ({
           </MainText>
         );
       case MEMBER.NAME:
-        return (
-          <ProfileContainer>
-            <ProfileImage
-              src={
-                member.familyMember?.profileImage ||
-                getRandomImage(member.familyMember.id)
-              }
-              alt={MEMBER.PROFILE_IMAGE}
-            />
-            <MainText>{member.familyMember?.name}</MainText>
-          </ProfileContainer>
-        );
+        return <MemberProfile member={member.familyMember} />;
       case MEMBER.BIRTH:
         return (
           <MainText>

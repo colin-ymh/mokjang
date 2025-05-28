@@ -1,13 +1,10 @@
 import styled from 'styled-components';
 import { EducationAttendance } from '@/models/education/education';
-import { getRandomImage } from '@/utils/image';
-import { MEMBER } from '@/constants/member/member-column';
-import { MainText } from '@/components/atoms/common/text/main-text';
 import React from 'react';
-import Image from 'next/image';
 import StatusDropdown from '@/components/atoms/common/dropdown/status-dropdown';
 import { useAttendanceStatusDropdownItems } from '@/hooks/dropdown/dropdown-items';
 import { GRAY } from '@/constants/styles/color';
+import MemberProfilePopupButton from '@/components/molecules/common/button/member-profile-popup-button';
 
 const AttendanceListContainer = styled.div`
   display: flex;
@@ -29,20 +26,6 @@ const AttendanceItem = styled.div`
   }
 `;
 
-const ProfileContainer = styled.div`
-  display: flex;
-  gap: 5px;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-`;
-
-const ProfileImage = styled(Image)`
-  width: 30px;
-  height: 30px;
-  border-radius: 20%;
-`;
-
 type EducationAttendanceListProps = {
   attendances: EducationAttendance[];
   onChangeStatus: (status: boolean, attendance: EducationAttendance) => void;
@@ -58,16 +41,10 @@ const EducationAttendanceList = ({
     <AttendanceListContainer>
       {attendances?.map((attendance) => (
         <AttendanceItem key={attendance.id}>
-          <ProfileContainer>
-            <ProfileImage
-              src={
-                attendance.educationEnrollment.member.profileImage ||
-                getRandomImage(attendance.educationEnrollment.memberId)
-              }
-              alt={MEMBER.PROFILE_IMAGE}
-            />
-            <MainText>{attendance.educationEnrollment.member.name}</MainText>
-          </ProfileContainer>
+          <MemberProfilePopupButton
+            key={attendance.educationEnrollment.member.id}
+            member={attendance.educationEnrollment.member}
+          />
 
           <StatusDropdown
             value={attendance.isPresent}

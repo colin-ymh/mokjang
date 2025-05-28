@@ -18,7 +18,7 @@ import {
 
 import MainMemberHeader from '@/components/molecules/layout/header/main/member/main-member-header';
 import MemberList from '@/components/organisms/member/list/member-list';
-import InformationList from '@/components/molecules/member/information/member-information-list';
+import MemberInformationList from '@/components/molecules/member/information/member-information-list';
 import FamilyInformationList from '@/components/molecules/member/information/family-information-list';
 import MemberEducation from '@/components/molecules/member/information/member-education';
 import GroupManagement from '@/components/organisms/management/group/group-management';
@@ -46,6 +46,7 @@ import { Education } from '@/models/education/education';
 
 import EducationTermList from '@/components/organisms/education/education-term/list/education-term-list';
 import { HEADER_BAR } from '@/constants/constant';
+import MemberInformationListView from '@/components/molecules/member/information/member-information-list.view';
 
 export const getSide = (id: string) => {
   switch (id) {
@@ -155,11 +156,16 @@ export const getContent = (id: string, headerId: string | null): ReactNode => {
 
 export const getMemberInformationContent = (
   memberContentId: string,
-  setMemberContentId: Dispatch<SetStateAction<string>>
+  setMemberContentId: Dispatch<SetStateAction<string>>,
+  isPopup?: boolean
 ) => {
   switch (memberContentId) {
     case MEMBER_INFORMATION_HEADER_ID.PERSONAL_INFORMATION:
-      return <InformationList />;
+      if (isPopup) {
+        return <MemberInformationListView />;
+      } else {
+        return <MemberInformationList />;
+      }
     case MEMBER_INFORMATION_HEADER_ID.FAMILY_INFORMATION:
       return <FamilyInformationList setMemberContentId={setMemberContentId} />;
     case MEMBER_INFORMATION_HEADER_ID.GROUP:

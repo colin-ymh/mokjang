@@ -4,7 +4,7 @@ export const WHITE = '#FFFFFF';
 export enum GRAY {
   EXTRA_LIGHT = '#fafafa',
   LIGHT = '#F9FAFA',
-  SEMI_LIGHT = '#e1e1e1',
+  SEMI_LIGHT = '#e3e2e2',
   DEFAULT = '#E7E7E7',
   SEMI_DARK = '#605f5f',
   DARK = '#4a4a4a',

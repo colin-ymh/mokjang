@@ -35,9 +35,9 @@ import BottomSheet from '@/components/atoms/common/bottom-sheet/bottom-sheet';
 import SlidePopup from '@/components/atoms/common/popup/slide-popup';
 import { setTargetMember } from '@/redux/reducers/target/target-member-reducer';
 
-type InformationListProps = {};
+type MemberInformationListProps = {};
 
-const InformationList = ({}: InformationListProps) => {
+const MemberInformationList = ({}: MemberInformationListProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const ministryHistoryApi = new MinistryHistoryApi(false);
   const officerHistoryApi = new OfficerHistoryApi(false);
@@ -654,4 +654,4 @@ const InformationList = ({}: InformationListProps) => {
   );
 };
 
-export default InformationList;
+export default MemberInformationList;

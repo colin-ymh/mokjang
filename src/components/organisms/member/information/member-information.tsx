@@ -21,9 +21,11 @@ const ContentContainer = styled.div`
   flex-grow: 1;
 `;
 
-type MemberInformationProps = {};
+type MemberInformationProps = {
+  isPopup?: boolean;
+};
 
-const MemberInformation = ({}: MemberInformationProps) => {
+const MemberInformation = ({ isPopup }: MemberInformationProps) => {
   const { targetMember } = useSelector(
     (state: RootState) => state.targetMember
   );
@@ -43,7 +45,11 @@ const MemberInformation = ({}: MemberInformationProps) => {
         targetMember={targetMember}
       />
       <ContentContainer>
-        {getMemberInformationContent(memberContentId, setMemberContentId)}
+        {getMemberInformationContent(
+          memberContentId,
+          setMemberContentId,
+          isPopup
+        )}
       </ContentContainer>
     </InformationContainer>
   );
