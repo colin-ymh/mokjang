@@ -23,7 +23,7 @@ const SideBarContainer = styled.div`
     display: flex;
     width: 180px;
     background-color: ${WHITE};
-    border-right: 1px solid ${GRAY.SEMI_LIGHT};
+    border-right: 0.7px solid ${GRAY.SEMI_LIGHT};
     overflow: hidden;
     position: relative;
   }

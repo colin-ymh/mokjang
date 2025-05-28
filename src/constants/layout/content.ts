@@ -16,9 +16,8 @@ export enum CHURCH_CONTENT_ID {
   MINISTRY = 'ministry',
 }
 
-export enum ADMINISTRATOR_CONTENT_ID {
-  SETTING = 'setting',
-  ADD = 'add',
+export enum USER_CONTENT_ID {
+  USER = 'user',
 }
 
 export enum VISITATION_CONTENT_ID {

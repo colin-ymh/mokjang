@@ -5,7 +5,7 @@ import Dropdown from '@/components/atoms/common/dropdown/dropdown';
 import { BLACK, GRAY } from '@/constants/styles/color';
 import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-item';
 
-import { useI18n, useScopedI18n } from '../../../../../locales/client';
+import { useScopedI18n } from '../../../../../locales/client';
 import Search from '../../../../../public/svg/search.svg';
 
 const SearchContainer = styled.div`
@@ -66,7 +66,6 @@ const SearchInput = ({
   onKeyDown,
   onClickSearch,
 }: SearchInputProps) => {
-  const t = useI18n();
   const t_placeholder = useScopedI18n('placeholder');
 
   return (

@@ -192,6 +192,9 @@ export default {
 
   'header.church': '교회설정',
   'header.administrator': '관리자',
+  'header.approval': '등록대기',
+  'header.permission': '권한유형',
+  'header.user': '회원',
   'header.setting': '설정',
   'header.add': '추가',
 

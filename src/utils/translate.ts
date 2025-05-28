@@ -6,6 +6,7 @@ import {
 } from '@/constants/education/education-column';
 import { VISITATION } from '@/constants/visitation/visitation-column';
 import { TASK } from '@/constants/task/task-column';
+import { USER } from '@/constants/user/user-column';
 
 export const getTranslatedMemberColumn = (
   t: (key: string, ...args: any[]) => string,
@@ -94,4 +95,29 @@ export const getTranslatedTaskColumn = (
   id: TASK
 ): string => {
   return t(id as TASK.TITLE | TASK.STATUS | TASK.DATE | TASK.IN_CHARGE);
+};
+
+export const getTranslatedUserColumn = (
+  t: (key: string, ...args: any[]) => string,
+  id: USER | MEMBER
+): string => {
+  return t(
+    id as
+      | USER.NAME
+      | MEMBER.NAME
+      | MEMBER.PROFILE_IMAGE
+      | MEMBER.GENDER
+      | MEMBER.OFFICER
+      | MEMBER.AGE
+      | MEMBER.MOBILE_PHONE
+      | MEMBER.HOME_PHONE
+      | MEMBER.ADDRESS
+      | MEMBER.OCCUPATION
+      | MEMBER.SCHOOL
+      | MEMBER.MARRIAGE
+      | MEMBER.BAPTISM
+      | MEMBER.BIRTH
+      | MEMBER.REGISTERED_AT
+      | MEMBER.UPDATED_AT
+  );
 };

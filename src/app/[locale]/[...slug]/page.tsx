@@ -75,7 +75,7 @@ const App = () => {
   }, [headerId]);
 
   const content = useMemo(() => {
-    return contentId ? getContent(contentId, headerId) : null;
+    return getContent(contentId, headerId);
   }, [contentId, headerId, router]);
 
   // 렌더링은 조건적으로 null을 반환하되, useEffect 이후로!

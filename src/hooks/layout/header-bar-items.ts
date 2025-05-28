@@ -1,5 +1,4 @@
 import {
-  ADMINISTRATOR_CONTENT_ID,
   CHURCH_CONTENT_ID,
   EDUCATION_CONTENT_ID,
   MEMBER_CONTENT_ID,
@@ -143,23 +142,6 @@ export const useManagementChurchHeaderBarItems = () => {
     {
       id: CHURCH_CONTENT_ID.MINISTRY,
       title: t(CHURCH_CONTENT_ID.MINISTRY),
-    },
-  ];
-
-  return items;
-};
-
-export const useManagementAdministratorHeaderBarItems = () => {
-  const t_header = useScopedI18n('header');
-
-  const items = [
-    {
-      id: ADMINISTRATOR_CONTENT_ID.SETTING,
-      title: t_header(ADMINISTRATOR_CONTENT_ID.SETTING),
-    },
-    {
-      id: ADMINISTRATOR_CONTENT_ID.ADD,
-      title: t_header(ADMINISTRATOR_CONTENT_ID.ADD),
     },
   ];
 

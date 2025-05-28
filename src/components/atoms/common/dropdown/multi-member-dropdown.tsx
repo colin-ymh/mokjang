@@ -19,6 +19,7 @@ import { BLANK } from '@/constants/constant';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { MemberDropdownType } from '@/components/atoms/common/dropdown/member-dropdown-item';
+import { UserMembersApi } from '@/api/user-members/user-members.api';
 
 export type MultiMemberDropdownProps = InputProps & {
   ref?: RefObject<HTMLInputElement>;
@@ -69,6 +70,7 @@ const MultiMemberDropdown = forwardRef<
     ref
   ) => {
     const membersApi = new MembersApi(false);
+    const userMembersApi = new UserMembersApi(false);
     const { churchId } = useSelector((state: RootState) => state.church);
 
     /* ---------------- 상태 ---------------- */
@@ -151,7 +153,7 @@ const MultiMemberDropdown = forwardRef<
     useEffect(() => {
       if (searchText) {
         if (isUserMember) {
-          membersApi
+          userMembersApi
             .getUserMembers({
               churchId,
               name: searchText,

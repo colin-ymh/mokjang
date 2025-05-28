@@ -13,6 +13,7 @@ import AddTask from '@/components/organisms/task/add/add-task';
 import { MEDIA_MIN_WIDTH } from '@/constants/constant';
 import SlidePopup from '@/components/atoms/common/popup/slide-popup';
 import Button from '@/components/atoms/common/button/button';
+import { MAIN_HEADER_ID } from '@/constants/layout/header';
 
 const HeaderContainer = styled.div`
   display: flex;
@@ -80,7 +81,9 @@ const MainTaskHeaderView = ({
   return (
     <HeaderContainer>
       <HeaderTopContainer>
-        <MainText size={SIZE.EXTRA_LARGE}>{t_header('task')}</MainText>
+        <MainText size={SIZE.EXTRA_LARGE}>
+          {t_header(MAIN_HEADER_ID.TASK)}
+        </MainText>
         <Button
           text={t_button('addTask')}
           onClick={onClickAddTask}

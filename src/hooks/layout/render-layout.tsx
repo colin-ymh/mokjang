@@ -5,9 +5,9 @@ import {
   EDUCATION_CONTENT_ID,
   HOME_CONTENT_ID,
   MEMBER_CONTENT_ID,
+  USER_CONTENT_ID,
 } from '@/constants/layout/content';
 import {
-  EDUCATION_MANAGEMENT_HEADER_ID,
   GROUP_MANAGEMENT_HEADER_ID,
   MAIN_HEADER_ID,
   MANAGEMENT_HEADER_ID,
@@ -34,18 +34,21 @@ import MemberOfficer from '@/components/molecules/member/information/member-offi
 import GroupMember from '@/components/molecules/management/group/group-member';
 import MainSideButtonList from '@/components/molecules/layout/side/main-side/main-side-button-list';
 import ManagementSideButtonList from '@/components/molecules/layout/side/management-side/management-side-button-list';
-import ManagementChurchHeader from '@/components/molecules/layout/header/management/management-church-header';
-import ManagementAdministratorHeader from '@/components/molecules/layout/header/management/management-administrator-header';
+import ManagementChurchHeader from '@/components/molecules/layout/header/management/church/management-church-header';
+import ManagementAdministratorHeader from '@/components/molecules/layout/header/management/administrator/management-administrator-header';
 import MainVisitationHeader from '@/components/molecules/layout/header/main/visitation/main-visitation-header';
 import MainEducationHeader from '@/components/molecules/layout/header/main/education/main-education-header';
 import VisitationList from '@/components/organisms/visitation/list/visitation-list';
 import TaskList from '@/components/organisms/task/list/task-list';
 import MainTaskHeader from '@/components/molecules/layout/header/main/task/main-task-header';
 import EducationList from '@/components/organisms/education/education/list/education-list';
-import { Education } from '@/models/education/education';
 
 import EducationTermList from '@/components/organisms/education/education-term/list/education-term-list';
 import { HEADER_BAR } from '@/constants/constant';
+import ManagementApprovalHeader from '@/components/molecules/layout/header/management/approval/management-approval-header';
+import ManagementPermissionHeader from '@/components/molecules/layout/header/management/permission/management-permission-header';
+import ManagementUserHeader from '@/components/molecules/layout/header/management/user/management-user-header';
+import UserList from '@/components/organisms/user/list/user-list';
 import MemberInformationListView from '@/components/molecules/member/information/member-information-list.view';
 
 export const getSide = (id: string) => {
@@ -84,13 +87,57 @@ export const getHeader = (id: string) => {
       return <ManagementChurchHeader />;
     case MANAGEMENT_HEADER_ID.ADMINISTRATOR:
       return <ManagementAdministratorHeader />;
+    case MANAGEMENT_HEADER_ID.APPROVAL:
+      return <ManagementApprovalHeader />;
+    case MANAGEMENT_HEADER_ID.PERMISSION:
+      return <ManagementPermissionHeader />;
+    case MANAGEMENT_HEADER_ID.USER:
+      return <ManagementUserHeader />;
     default:
       return null;
   }
 };
 
-export const getContent = (id: string, headerId: string | null): ReactNode => {
+export const getContent = (
+  id: string | null,
+  headerId: string | null
+): ReactNode => {
   switch (id) {
+    // 세부 컨텐츠 없음
+    case null:
+      switch (headerId) {
+        // 홈
+        case HOME_CONTENT_ID.HOME:
+          return null;
+
+        // 교인 관리
+        case MEMBER_CONTENT_ID.ADMINISTRATOR:
+          return <MemberList />;
+        case MEMBER_CONTENT_ID.NEW:
+          return <MemberList isNewMember={true} />;
+
+        // 교육
+        case EDUCATION_CONTENT_ID.IN_PROGRESS:
+          return <EducationTermList isInProgress={true} />;
+        case EDUCATION_CONTENT_ID.TERM:
+          return <EducationTermList />;
+
+        // 교회 설정
+        case CHURCH_CONTENT_ID.GROUP:
+          return <GroupManagement />;
+        case CHURCH_CONTENT_ID.MINISTRY:
+          return <MinistryGroupManagement />;
+        case CHURCH_CONTENT_ID.OFFICER:
+          return <OfficerManagement />;
+
+        // 회원
+        case USER_CONTENT_ID.USER:
+          return <UserList />;
+
+        default:
+          return null;
+      }
+
     // 전체
     case HEADER_BAR.ALL:
       if (headerId === MAIN_HEADER_ID.MEMBER) {
@@ -125,30 +172,6 @@ export const getContent = (id: string, headerId: string | null): ReactNode => {
         return null;
       }
 
-    // 홈
-    case HOME_CONTENT_ID.HOME:
-      return null;
-
-    // 교인 관리
-    case MEMBER_CONTENT_ID.ADMINISTRATOR:
-      return <MemberList />;
-    case MEMBER_CONTENT_ID.NEW:
-      return <MemberList isNewMember={true} />;
-
-    // 교육
-    case EDUCATION_CONTENT_ID.IN_PROGRESS:
-      return <EducationTermList isInProgress={true} />;
-    case EDUCATION_CONTENT_ID.TERM:
-      return <EducationTermList />;
-
-    // 교회 설정
-    case CHURCH_CONTENT_ID.GROUP:
-      return <GroupManagement />;
-    case CHURCH_CONTENT_ID.MINISTRY:
-      return <MinistryGroupManagement />;
-    case CHURCH_CONTENT_ID.OFFICER:
-      return <OfficerManagement />;
-    // 그 외
     default:
       return null;
   }
@@ -197,15 +220,5 @@ export const getMinistryGroupManagementContent = (
       return <MinistryGroupInformation ministryGroup={ministryGroup} />;
     case MINISTRY_MANAGEMENT_HEADER_ID.MINISTRY_MEMBER_LIST:
       return <MinistryGroupMember ministryGroup={ministryGroup} />;
-  }
-};
-
-export const getEducationManagementContent = (
-  contentId: string,
-  education: Education
-) => {
-  switch (contentId) {
-    case EDUCATION_MANAGEMENT_HEADER_ID.TERM:
-      return <></>;
   }
 };

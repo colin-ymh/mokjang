@@ -85,8 +85,8 @@ const TableHeader = styled.th<{ id: string; $isLast?: boolean }>`
     bottom: 0;
     left: 0;
     right: 0;
-    height: 1px;
-    background: ${GRAY.DEFAULT};
+    height: 0.7px;
+    background: ${GRAY.SEMI_LIGHT};
   }
 `;
 

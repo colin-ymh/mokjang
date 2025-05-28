@@ -21,6 +21,7 @@ import { EDUCATION_CONTENT_ID } from '@/constants/layout/content';
 import ChevronLeft from '../../../../../../../public/svg/chevron-left.svg';
 import AddEducationTerm from '@/components/organisms/education/education-term/add/add-education-term';
 import SlidePopup from '@/components/atoms/common/popup/slide-popup';
+import { MAIN_HEADER_ID } from '@/constants/layout/header';
 
 const HeaderContainer = styled.div`
   display: flex;
@@ -123,7 +124,7 @@ const MainEducationHeaderView = ({
         <TitleContainer>
           {isTerm && <GoBackButton onClick={onClickGoBack} />}
           <MainText size={SIZE.EXTRA_LARGE}>
-            {isTerm ? targetEducation.name : t_header('education')}
+            {isTerm ? targetEducation.name : t_header(MAIN_HEADER_ID.EDUCATION)}
           </MainText>
         </TitleContainer>
         <Button

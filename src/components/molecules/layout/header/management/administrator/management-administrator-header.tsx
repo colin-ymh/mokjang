@@ -1,5 +1,5 @@
 import { usePageRouter } from '@/utils/router';
-import ManagementAdministratorHeaderView from '@/components/molecules/layout/header/management/management-administrator-header.view';
+import ManagementAdministratorHeaderView from '@/components/molecules/layout/header/management/administrator/management-administrator-header.view';
 
 type ManagementAdministratorHeaderProps = {};
 

@@ -16,8 +16,10 @@ export enum MAIN_HEADER_ID {
 
 export enum MANAGEMENT_HEADER_ID {
   CHURCH = 'church',
+  APPROVAL = 'approval',
   ADMINISTRATOR = 'administrator',
-  PERMISSION_GROUP = 'permissionGroup',
+  PERMISSION = 'permission',
+  USER = 'user',
   SETTING = 'setting',
 }
 
