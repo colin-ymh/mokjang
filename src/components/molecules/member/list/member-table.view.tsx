@@ -1,5 +1,4 @@
 import React, { MutableRefObject } from 'react';
-import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
@@ -23,10 +22,10 @@ import { LOCALE } from '@/constants/state/locale';
 import CheckButton from '@/components/atoms/common/button/check-button';
 import Button from '@/components/atoms/common/button/button';
 import ConfirmPopup from '@/components/atoms/common/popup/error-popup';
-import { getRandomImage } from '@/utils/image';
 
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
 import { BLANK_HEADER } from '@/redux/reducers/filter/member-filter-reducer';
+import MemberProfile from '@/components/atoms/member/member-profile';
 
 // 1. 컬럼별 PX 폭 (마지막 REMARKS만 auto 할 예정)
 const getColumnWidth = (id: string) => {
@@ -155,20 +154,6 @@ const ContentWrapper = styled.div`
   white-space: nowrap;
 `;
 
-const ProfileContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 10px;
-`;
-
-const ProfileImage = styled(Image)`
-  width: 30px;
-  height: 30px;
-  border-radius: 35%;
-  overflow: hidden;
-`;
-
 const PopupButtonContainer = styled.div<{ $isShown: boolean }>`
   position: absolute;
   bottom: 70px;
@@ -239,15 +224,7 @@ const MemberTableView = ({
       case MEMBER.GROUP:
         return <MainText>{member?.group?.name}</MainText>;
       case MEMBER.NAME:
-        return (
-          <ProfileContainer>
-            <ProfileImage
-              src={member.profileImage || getRandomImage(member.id)}
-              alt={MEMBER.PROFILE_IMAGE}
-            />
-            <MainText>{member.name}</MainText>
-          </ProfileContainer>
-        );
+        return <MemberProfile member={member} />;
       case MEMBER.MOBILE_PHONE:
         return (
           <MainText>

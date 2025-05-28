@@ -5,6 +5,7 @@ import { WHITE } from '@/constants/styles/color';
 import { MEDIA_MIN_WIDTH } from '@/constants/constant';
 import TransparentBackground from '@/components/atoms/common/etc/transparent-background';
 import PopupLayout from '@/components/organisms/layout/popup-layout';
+import { createPortal } from 'react-dom';
 
 const ModalContainer = styled.div<{
   width?: number;
@@ -42,6 +43,7 @@ type CustomPopupProps = {
   width?: number;
   height?: number;
   isPercentage?: boolean;
+  isPortal?: boolean;
 
   onClickCancel: () => void;
   onClickDone?: () => void;
@@ -52,6 +54,8 @@ type CustomPopupProps = {
   cancelBackgroundColor?: string;
   doneBackgroundColor?: string;
   doneDisabled?: boolean;
+  isFooterShown?: boolean;
+
   children: ReactNode;
 };
 
@@ -60,6 +64,7 @@ const CustomPopup = ({
   width,
   height,
   isPercentage = false,
+  isPortal,
 
   onClickCancel,
   onClickDone,
@@ -70,6 +75,8 @@ const CustomPopup = ({
   cancelBackgroundColor,
   doneBackgroundColor,
   doneDisabled,
+  isFooterShown,
+
   children,
 }: CustomPopupProps) => {
   useEffect(() => {
@@ -91,7 +98,7 @@ const CustomPopup = ({
 
   if (!isShow) return null;
 
-  return (
+  const modalContent = (
     <>
       <TransparentBackground isOpened={isShow} onClick={onClickCancel} />
       <ModalContainer
@@ -109,12 +116,15 @@ const CustomPopup = ({
           doneBackgroundColor={doneBackgroundColor}
           cancelBackgroundColor={cancelBackgroundColor}
           doneDisabled={doneDisabled}
+          isFooterShown={isFooterShown}
         >
           {children}
         </PopupLayout>
       </ModalContainer>
     </>
   );
+
+  return isPortal ? createPortal(modalContent, document.body) : modalContent;
 };
 
 export default CustomPopup;

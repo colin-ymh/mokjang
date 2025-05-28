@@ -6,12 +6,10 @@ import { useI18n } from '../../../../../locales/client';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { getFormattedDate } from '@/utils/format';
 import { GRAY } from '@/constants/styles/color';
-import { getRandomImage } from '@/utils/image';
-import { MEMBER } from '@/constants/member/member-column';
 import React from 'react';
-import Image from 'next/image';
 import StatusDropdown from '@/components/atoms/common/dropdown/status-dropdown';
 import { VISITATION_STATUS } from '@/constants/status/status';
+import MemberProfilePopupButton from '@/components/molecules/common/button/member-profile-popup-button';
 
 const InformationContainer = styled.div`
   display: flex;
@@ -45,20 +43,6 @@ const ContentContainer = styled.div`
   justify-content: flex-start;
   align-items: center;
   gap: 10px;
-`;
-
-const ProfileContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 5px;
-`;
-
-const ProfileImage = styled(Image)`
-  width: 30px;
-  height: 30px;
-  border-radius: 35%;
-  overflow: hidden;
 `;
 
 const DivideLine = styled.div`
@@ -125,13 +109,7 @@ const VisitationInformationView = ({
           </TitleContainer>
           <ContentContainer>
             {targetVisitation.members.map((member) => (
-              <ProfileContainer>
-                <ProfileImage
-                  src={getRandomImage(member.id)}
-                  alt={MEMBER.PROFILE_IMAGE}
-                />
-                <MainText>{member?.name}</MainText>
-              </ProfileContainer>
+              <MemberProfilePopupButton key={member.id} member={member} />
             ))}
           </ContentContainer>
         </RowContainer>
@@ -141,13 +119,10 @@ const VisitationInformationView = ({
             <MainText>{t('inCharge')}</MainText>
           </TitleContainer>
           <ContentContainer>
-            <ProfileContainer>
-              <ProfileImage
-                src={getRandomImage(targetVisitation.inCharge.id)}
-                alt={MEMBER.PROFILE_IMAGE}
-              />
-              <MainText>{targetVisitation.inCharge?.name}</MainText>
-            </ProfileContainer>
+            <MemberProfilePopupButton
+              key={targetVisitation.inCharge.id}
+              member={targetVisitation.inCharge}
+            />
           </ContentContainer>
         </RowContainer>
         {/* 방식 */}

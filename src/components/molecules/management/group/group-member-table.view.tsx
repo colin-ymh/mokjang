@@ -1,5 +1,4 @@
 import React, { MutableRefObject } from 'react';
-import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import styled from 'styled-components';
 import { TABLE_HEADER_ITEM } from '@/redux/reducers/filter/member-filter-reducer';
@@ -17,7 +16,7 @@ import {
 } from '@/utils/format';
 import { LOCALE } from '@/constants/state/locale';
 import GroupMemberTableHeader from '@/components/atoms/management/group/group-member-table-header';
-import { getRandomImage } from '@/utils/image';
+import MemberProfile from '@/components/atoms/member/member-profile';
 
 const getColumnWidth = (id: string) => {
   switch (id) {
@@ -99,19 +98,6 @@ const ContentWrapper = styled.div`
   white-space: nowrap; /* 줄바꿈 방지 */
 `;
 
-const ProfileContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 10px;
-`;
-
-const ProfileImage = styled(Image)`
-  width: 35px;
-  height: 35px;
-  border-radius: 20%;
-`;
-
 export const GROUP_MEMBER_TABLE_HEADER: TABLE_HEADER_ITEM[] = [
   {
     id: MEMBER.GROUP,
@@ -180,15 +166,7 @@ const GroupMemberTableView = ({
         return <MainText>{member?.group?.name}</MainText>;
 
       case MEMBER.NAME:
-        return (
-          <ProfileContainer>
-            <ProfileImage
-              src={member.profileImage || getRandomImage(member.id)}
-              alt={MEMBER.PROFILE_IMAGE}
-            />
-            <MainText>{member.name}</MainText>
-          </ProfileContainer>
-        );
+        return <MemberProfile member={member} />;
       case MEMBER.MOBILE_PHONE:
         return (
           <MainText>

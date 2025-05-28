@@ -6,13 +6,13 @@ import { MainText } from '@/components/atoms/common/text/main-text';
 import { getFormattedDate } from '@/utils/format';
 import { GRAY } from '@/constants/styles/color';
 import React from 'react';
-import Image from 'next/image';
 import StatusDropdown from '@/components/atoms/common/dropdown/status-dropdown';
 import { EducationAttendance } from '@/models/education/education';
 import { useI18n } from '../../../../../../locales/client';
 
 import { EDUCATION_SESSION_STATUS } from '@/constants/status/status';
 import EducationAttendanceList from '@/components/atoms/education/education-attendance/education-attendance-list';
+import MemberProfilePopupButton from '@/components/molecules/common/button/member-profile-popup-button';
 
 const InformationContainer = styled.div`
   display: flex;
@@ -46,20 +46,6 @@ const ContentContainer = styled.div`
   justify-content: flex-start;
   align-items: center;
   gap: 10px;
-`;
-
-const ProfileContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 5px;
-`;
-
-const ProfileImage = styled(Image)`
-  width: 30px;
-  height: 30px;
-  border-radius: 35%;
-  overflow: hidden;
 `;
 
 const DivideLine = styled.div`
@@ -127,13 +113,10 @@ const EducationSessionInformationView = ({
             <MainText>{t('inCharge')}</MainText>
           </TitleContainer>
           <ContentContainer>
-            <ProfileContainer>
-              {/*<ProfileImage*/}
-              {/*  src={getRandomImage(targetEducationSession.inCharge.id)}*/}
-              {/*  alt={MEMBER.PROFILE_IMAGE}*/}
-              {/*/>*/}
-              {/*<MainText>{targetEducationSession.inCharge?.name}</MainText>*/}
-            </ProfileContainer>
+            <MemberProfilePopupButton
+              key={targetEducationSession.inCharge.id}
+              member={targetEducationSession.inCharge}
+            />
           </ContentContainer>
         </RowContainer>
         {/* 일자 */}
