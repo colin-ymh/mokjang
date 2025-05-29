@@ -155,7 +155,7 @@ const MemberFilterRowView = ({
               width={75}
               onClick={onClickTableSetting}
               backgroundColor={WHITE}
-              borderColor={GRAY.DEFAULT}
+              borderColor={GRAY.LIGHT}
               color={GRAY.DARK}
             />
             {/* 설정 모달 */}
@@ -194,7 +194,7 @@ const MemberFilterRowView = ({
       <RowBottom>
         <MemberCount>
           <MainText fontWeight={600}>
-            총{' '}
+            총
             <MainText fontWeight={600} color={MAIN.DEFAULT}>
               {targetGroup.id ? targetGroup.membersCount : church.memberCount}
             </MainText>

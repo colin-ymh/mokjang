@@ -10,7 +10,7 @@ import {
   useVisitationStatusFilterDropdownItems,
 } from '@/hooks/dropdown/dropdown-items';
 import useWindowSize from '@/hooks/window/window';
-import { useI18n, useScopedI18n } from '../../../../locales/client';
+import { useScopedI18n } from '../../../../locales/client';
 import VisitationFilteredItem, {
   VisitationFilteredItemType,
 } from '@/components/atoms/visitation/visitation-filtered-item';
@@ -36,14 +36,6 @@ const RowTop = styled.div`
   flex-direction: row;
   justify-content: space-between;
   flex-shrink: 0;
-`;
-
-const RowBottom = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  flex-shrink: 0;
-  padding: 10px 20px;
 `;
 
 const FilterList = styled.div`
@@ -81,19 +73,6 @@ const SearchContainer = styled.div`
   position: absolute;
 `;
 
-const AddFilterContainer = styled.div<{ $isShown: boolean }>`
-  display: ${({ $isShown }) => ($isShown ? 'flex' : 'none')};
-  position: absolute;
-
-  z-index: 60;
-  background-color: white;
-  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.3);
-  border-radius: 5px;
-
-  top: 50px;
-  left: 10px;
-`;
-
 export type VISITATION_SEARCH_FILTER = VISITATION.TITLE | VISITATION.IN_CHARGE;
 
 type VisitationViewProps = {
@@ -129,8 +108,6 @@ const VisitationRowView = ({
   onClickClosePeriodModal,
   onClickSavePeriod,
 }: VisitationViewProps) => {
-  const t = useI18n();
-  const t_placeholder = useScopedI18n('placeholder');
   const t_button = useScopedI18n('button');
   const searchFilterDropdownItems = useVisitationSearchFilterDropdownItems();
   const statusFilterDropdownItems = useVisitationStatusFilterDropdownItems();
@@ -153,7 +130,7 @@ const VisitationRowView = ({
               width={60}
               onClick={onClickPeriodModal}
               backgroundColor={WHITE}
-              borderColor={GRAY.DEFAULT}
+              borderColor={GRAY.LIGHT}
               color={GRAY.DARK}
             />
             {/* 설정 모달 */}

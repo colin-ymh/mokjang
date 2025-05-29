@@ -30,8 +30,8 @@ const InformationContainer = styled.div`
 const ListTypeHeader = styled.div`
   display: flex;
   min-height: 40px;
-  background-color: ${GRAY.LIGHT};
-  border-top: 1px solid ${GRAY.SEMI_LIGHT};
+  background-color: ${GRAY.EXTRA_LIGHT};
+  border-top: 1px solid ${GRAY.LIGHT};
   justify-content: flex-start;
   align-items: center;
   padding-left: 20px;
@@ -79,7 +79,8 @@ const InformationItem = styled.div<{ $disabled?: boolean }>`
 
   @media (max-width: ${MEDIA_MAX_WIDTH.DESKTOP}) {
     &:hover {
-      background-color: ${({ $disabled }) => ($disabled ? 'auto' : GRAY.LIGHT)};
+      background-color: ${({ $disabled }) =>
+        $disabled ? 'auto' : GRAY.EXTRA_LIGHT};
     }
 
     &:hover ${PencilButton} {

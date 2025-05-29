@@ -38,14 +38,6 @@ const RowTop = styled.div`
   flex-shrink: 0;
 `;
 
-const RowBottom = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  flex-shrink: 0;
-  padding: 10px 20px;
-`;
-
 const FilterList = styled.div`
   display: flex;
   width: 100%;
@@ -79,19 +71,6 @@ const SearchContainer = styled.div`
   gap: 10px;
   right: 20px;
   position: absolute;
-`;
-
-const AddFilterContainer = styled.div<{ $isShown: boolean }>`
-  display: ${({ $isShown }) => ($isShown ? 'flex' : 'none')};
-  position: absolute;
-
-  z-index: 60;
-  background-color: white;
-  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.3);
-  border-radius: 5px;
-
-  top: 50px;
-  left: 10px;
 `;
 
 export type TASK_SEARCH_FILTER = TASK.TITLE | TASK.IN_CHARGE;
@@ -149,7 +128,7 @@ const TaskRowView = ({
               width={60}
               onClick={onClickPeriodModal}
               backgroundColor={WHITE}
-              borderColor={GRAY.DEFAULT}
+              borderColor={GRAY.LIGHT}
               color={GRAY.DARK}
             />
             {/* 설정 모달 */}

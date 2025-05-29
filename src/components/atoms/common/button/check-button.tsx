@@ -1,23 +1,19 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-import { GRAY, MAIN } from '@/constants/styles/color';
+import { GRAY, MAIN, WHITE } from '@/constants/styles/color';
 
-import Check from '../../../../../public/svg/check.svg';
-
-const CheckButtonContainer = styled.div<{ width: number; height: number }>`
+const CheckButtonContainer = styled.div<{
+  width: number;
+  height: number;
+  $isChecked: boolean;
+}>`
   display: flex;
-  border: 1px solid ${GRAY.DEFAULT};
+  border: 1px solid ${GRAY.LIGHT};
   border-radius: 30%;
   width: ${({ width }) => width}px;
   height: ${({ height }) => height}px;
-`;
-
-const CheckIcon = styled(Check)<{ $isChecked: boolean }>`
-  display: block;
-  opacity: ${({ $isChecked }) => ($isChecked ? 1 : 0)};
-  //transition: opacity 0.2s;
-  stroke: ${MAIN.DEFAULT};
+  background-color: ${({ $isChecked }) => ($isChecked ? MAIN.DEFAULT : WHITE)};
 `;
 
 type CheckButtonProps = {
@@ -64,9 +60,8 @@ const CheckButton = ({
       }}
       width={width}
       height={height}
-    >
-      <CheckIcon $isChecked={isChecked} />
-    </CheckButtonContainer>
+      $isChecked={isChecked}
+    />
   );
 };
 

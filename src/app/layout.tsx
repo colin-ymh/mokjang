@@ -39,8 +39,6 @@ const RootLayout = (props: RootLayoutProps | RootLayoutPropsExtended) => {
         />
       </head>
       <body>
-        {/* 로케일 Provider: 유저와 교회 정보 기반의 로케일 설정 */}
-        {/*<TranslateProvider>*/}
         {/* SSR style 렌더링 */}
         <StyledComponentsRegistry>
           {/* Redux */}
@@ -57,7 +55,6 @@ const RootLayout = (props: RootLayoutProps | RootLayoutPropsExtended) => {
             </InitializeStore>
           </Provider>
         </StyledComponentsRegistry>
-        {/*</TranslateProvider>*/}
       </body>
     </html>
   );

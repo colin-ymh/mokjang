@@ -32,11 +32,19 @@ const SettingHeader = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  border-bottom: 1px solid ${GRAY.DEFAULT};
+  padding-bottom: 10px;
+  border-bottom: 1px solid ${GRAY.LIGHT};
 `;
 
 const TitleContainer = styled.div`
-  padding: 10px;
+  display: flex;
+  padding-left: 5px;
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
 `;
 
 const SettingContent = styled.div`
@@ -59,13 +67,7 @@ const OrderItemList = styled.div`
 const DivideLine = styled.div`
   height: 100%;
   width: 1px;
-  background-color: ${GRAY.DEFAULT};
-`;
-
-const ButtonContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 10px;
+  background-color: ${GRAY.LIGHT};
 `;
 
 const CancelButton = styled(Cancel)`
@@ -144,7 +146,7 @@ const TableSettingView = ({
       {/* Header */}
       <SettingHeader>
         <TitleContainer>
-          <MainText size={SIZE.LARGE}>{t_button('filterSetting')}</MainText>
+          <MainText size={SIZE.MEDIUM}>{t_button('filterSetting')}</MainText>
         </TitleContainer>
         <ButtonContainer>
           <ResetButton onClick={onClickReset} />
@@ -175,7 +177,7 @@ const TableSettingView = ({
           <Dropdown
             value={filterValue}
             items={filterDropdownItems}
-            borderColor={GRAY.DEFAULT}
+            borderColor={GRAY.LIGHT}
             onChangeItem={onChangeFilter}
           />
           <FilterContainer>

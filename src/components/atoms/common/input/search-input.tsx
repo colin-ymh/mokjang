@@ -21,9 +21,10 @@ const InputContainer = styled.input`
   padding: 10px;
   color: ${BLACK};
   transition: all 0.3s ease;
-  border: 1px solid ${GRAY.DEFAULT};
+  border: 1px solid ${GRAY.LIGHT};
   border-right: 0;
   border-left: 0;
+  outline: none;
 `;
 
 const SearchButton = styled.div`
@@ -32,7 +33,7 @@ const SearchButton = styled.div`
   width: 40px;
   justify-content: center;
   align-items: center;
-  border: 1px solid ${GRAY.DEFAULT};
+  border: 1px solid ${GRAY.LIGHT};
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
   flex-shrink: 0;
@@ -41,8 +42,9 @@ const SearchButton = styled.div`
 const SearchIcon = styled(Search)`
   width: 20px;
   height: 20px;
-  stroke: ${BLACK};
-  stroke-width: 1px;
+  stroke: ${GRAY.DARK};
+  stroke-width: 1.5px;
+  cursor: pointer;
 `;
 
 type SearchInputProps = {
@@ -76,7 +78,7 @@ const SearchInput = ({
         onChangeItem={onClickSearchFilterItem}
         height={32}
         width={100}
-        borderColor={GRAY.SEMI_LIGHT}
+        borderColor={GRAY.LIGHT}
         backgroundBlur={false}
         borderTopRightRadius={0}
         borderBottomRightRadius={0}

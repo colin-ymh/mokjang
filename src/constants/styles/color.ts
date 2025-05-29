@@ -2,13 +2,13 @@ export const BLACK = '#121212';
 export const WHITE = '#FFFFFF';
 
 export enum GRAY {
-  EXTRA_LIGHT = '#fafafa',
-  LIGHT = '#F9FAFA',
-  SEMI_LIGHT = '#e3e2e2',
-  DEFAULT = '#E7E7E7',
-  SEMI_DARK = '#605f5f',
-  DARK = '#4a4a4a',
-  EXTRA_DARK = '#3a3a3a',
+  EXTRA_LIGHT = '#efefef',
+  LIGHT = '#dfdfdf',
+  SEMI_LIGHT = '#cfcfcf',
+  DEFAULT = '#9f9f9f',
+  SEMI_DARK = '#7f7f7f',
+  DARK = '#5f5f5f',
+  EXTRA_DARK = '3f3f3f',
 }
 
 export enum MAIN {
