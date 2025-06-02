@@ -1,10 +1,13 @@
 import { Dispatch, ReactNode, SetStateAction } from 'react';
 
 import {
+  ADMINISTRATOR_CONTENT_ID,
   CHURCH_CONTENT_ID,
   EDUCATION_CONTENT_ID,
   HOME_CONTENT_ID,
+  JOIN_REQUEST_CONTENT_ID,
   MEMBER_CONTENT_ID,
+  PERMISSION_CONTENT_ID,
   USER_CONTENT_ID,
 } from '@/constants/layout/content';
 import {
@@ -42,14 +45,15 @@ import VisitationList from '@/components/organisms/visitation/list/visitation-li
 import TaskList from '@/components/organisms/task/list/task-list';
 import MainTaskHeader from '@/components/molecules/layout/header/main/task/main-task-header';
 import EducationList from '@/components/organisms/education/education/list/education-list';
-
-import EducationTermList from '@/components/organisms/education/education-term/list/education-term-list';
 import { HEADER_BAR } from '@/constants/constant';
-import ManagementApprovalHeader from '@/components/molecules/layout/header/management/approval/management-approval-header';
+import ManagementJoinRequestHeader from '@/components/molecules/layout/header/management/join-request/management-join-request-header';
 import ManagementPermissionHeader from '@/components/molecules/layout/header/management/permission/management-permission-header';
 import ManagementUserHeader from '@/components/molecules/layout/header/management/user/management-user-header';
 import UserList from '@/components/organisms/user/list/user-list';
 import MemberInformationListView from '@/components/molecules/member/information/member-information-list.view';
+import PermissionTemplateList from '@/components/organisms/permission/list/permission-template-list';
+import EducationTermList from '@/components/organisms/education/education-term/list/education-term-list';
+import JoinRequestList from '@/components/organisms/join-request/list/join-request-list';
 
 export const getSide = (id: string) => {
   switch (id) {
@@ -87,8 +91,8 @@ export const getHeader = (id: string) => {
       return <ManagementChurchHeader />;
     case MANAGEMENT_HEADER_ID.ADMINISTRATOR:
       return <ManagementAdministratorHeader />;
-    case MANAGEMENT_HEADER_ID.APPROVAL:
-      return <ManagementApprovalHeader />;
+    case MANAGEMENT_HEADER_ID.JOIN:
+      return <ManagementJoinRequestHeader />;
     case MANAGEMENT_HEADER_ID.PERMISSION:
       return <ManagementPermissionHeader />;
     case MANAGEMENT_HEADER_ID.USER:
@@ -110,29 +114,21 @@ export const getContent = (
         case HOME_CONTENT_ID.HOME:
           return null;
 
-        // 교인 관리
-        case MEMBER_CONTENT_ID.ADMINISTRATOR:
-          return <MemberList />;
-        case MEMBER_CONTENT_ID.NEW:
-          return <MemberList isNewMember={true} />;
-
-        // 교육
-        case EDUCATION_CONTENT_ID.IN_PROGRESS:
-          return <EducationTermList isInProgress={true} />;
-        case EDUCATION_CONTENT_ID.TERM:
-          return <EducationTermList />;
-
-        // 교회 설정
-        case CHURCH_CONTENT_ID.GROUP:
-          return <GroupManagement />;
-        case CHURCH_CONTENT_ID.MINISTRY:
-          return <MinistryGroupManagement />;
-        case CHURCH_CONTENT_ID.OFFICER:
-          return <OfficerManagement />;
-
         // 회원
         case USER_CONTENT_ID.USER:
           return <UserList />;
+
+        // 권한 유형
+        case PERMISSION_CONTENT_ID.PERMISSION:
+          return <PermissionTemplateList />;
+
+        // 관리자
+        case ADMINISTRATOR_CONTENT_ID.ADMINISTRATOR:
+          return <MemberList />;
+
+        // 등록 요청
+        case JOIN_REQUEST_CONTENT_ID.JOIN_REQUEST:
+          return <JoinRequestList />;
 
         default:
           return null;
@@ -171,6 +167,23 @@ export const getContent = (
       } else {
         return null;
       }
+
+    // 교회 설정
+    case CHURCH_CONTENT_ID.GROUP:
+      return <GroupManagement />;
+    case CHURCH_CONTENT_ID.MINISTRY:
+      return <MinistryGroupManagement />;
+    case CHURCH_CONTENT_ID.OFFICER:
+      return <OfficerManagement />;
+
+    case MEMBER_CONTENT_ID.NEW:
+      return <MemberList isNewMember={true} />;
+
+    // 교육
+    case EDUCATION_CONTENT_ID.IN_PROGRESS:
+      return <EducationTermList isInProgress={true} />;
+    case EDUCATION_CONTENT_ID.TERM:
+      return <EducationTermList />;
 
     default:
       return null;

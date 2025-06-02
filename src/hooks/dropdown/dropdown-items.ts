@@ -24,6 +24,7 @@ import {
 import { EDUCATION_ENROLLMENT_STATUS } from '@/models/education/education';
 import { STATUS } from '@/constants/status/status';
 import { USER } from '@/constants/user/user-column';
+import { JOIN_REQUEST } from '@/constants/join-request/join-request-column';
 
 export const useBaptismDropdownItems = () => {
   const t = useI18n();
@@ -208,7 +209,20 @@ export const useUserSearchFilterDropdownItems = () => {
   const items = [
     {
       value: USER.NAME,
-      title: t('name'),
+      title: t(USER.NAME),
+    },
+  ];
+
+  return items;
+};
+
+export const useJoinRequestSearchFilterDropdownItems = () => {
+  const t = useI18n();
+
+  const items = [
+    {
+      value: JOIN_REQUEST.NAME,
+      title: t(JOIN_REQUEST.NAME),
     },
   ];
 
@@ -502,6 +516,40 @@ export const useEducationTermStatusDropdownItems = () => {
       value: STATUS.PENDING,
       title: t(STATUS.PENDING),
       color: STATUS_COLOR.PENDING,
+    },
+  ];
+
+  return items;
+};
+
+export const useJoinRequestStatusFilterDropdownItems = () => {
+  const t = useI18n();
+
+  const items = [
+    {
+      value: undefined,
+      title: t('placeholder.selectStatus'),
+      color: undefined,
+    },
+    {
+      value: STATUS.PENDING,
+      title: t(STATUS.PENDING),
+      color: STATUS_COLOR.PENDING,
+    },
+    {
+      value: STATUS.APPROVED,
+      title: t(STATUS.APPROVED),
+      color: STATUS_COLOR.APPROVED,
+    },
+    {
+      value: STATUS.REJECTED,
+      title: t(STATUS.REJECTED),
+      color: STATUS_COLOR.REJECTED,
+    },
+    {
+      value: STATUS.CANCELED,
+      title: t(STATUS.CANCELED),
+      color: STATUS_COLOR.CANCELED,
     },
   ];
 

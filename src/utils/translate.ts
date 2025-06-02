@@ -7,6 +7,8 @@ import {
 import { VISITATION } from '@/constants/visitation/visitation-column';
 import { TASK } from '@/constants/task/task-column';
 import { USER } from '@/constants/user/user-column';
+import { PERMISSION_TEMPLATE } from '@/constants/permission/permission-column';
+import { JOIN_REQUEST } from '@/constants/join-request/join-request-column';
 
 export const getTranslatedMemberColumn = (
   t: (key: string, ...args: any[]) => string,
@@ -119,5 +121,25 @@ export const getTranslatedUserColumn = (
       | MEMBER.BIRTH
       | MEMBER.REGISTERED_AT
       | MEMBER.UPDATED_AT
+  );
+};
+
+export const getTranslatedPermissionTemplateColumn = (
+  t: (key: string, ...args: any[]) => string,
+  id: PERMISSION_TEMPLATE
+): string => {
+  return t(id as PERMISSION_TEMPLATE.NAME);
+};
+
+export const getTranslatedJoinRequestColumn = (
+  t: (key: string, ...args: any[]) => string,
+  id: JOIN_REQUEST | USER
+): string => {
+  return t(
+    id as
+      | USER.NAME
+      | USER.MOBILE_PHONE
+      | JOIN_REQUEST.CREATED_AT
+      | JOIN_REQUEST.STATUS
   );
 };

@@ -31,6 +31,7 @@ import {
 import Dropdown from '@/components/atoms/common/dropdown/dropdown';
 
 import { EDUCATION_TERM_STATUS } from '@/constants/status/status';
+import RequiredMark from '@/components/atoms/common/text/required-mark';
 
 const AddEducationTermViewContainer = styled.div`
   display: flex;
@@ -61,11 +62,6 @@ const PeriodContainer = styled.div`
   gap: 10px;
   justify-content: flex-start;
   align-items: center;
-`;
-
-const RequiredMark = styled.span`
-  color: red;
-  margin-right: 4px;
 `;
 
 type AddEducationTermViewProps = {
@@ -131,7 +127,7 @@ const AddEducationTermView = ({
           value={targetEducationTerm.term}
           onChange={onChangeTerm}
           placeholder={t_placeholder('term')}
-          borderColor={GRAY.DEFAULT}
+          borderColor={GRAY.LIGHT}
           height={40}
           isRequired={true}
         />
@@ -141,7 +137,7 @@ const AddEducationTermView = ({
       <InputContainer>
         <LabelContainer>
           <MainText>
-            <RequiredMark>*</RequiredMark>
+            <RequiredMark />
             {t('period')}
           </MainText>
           <PeriodContainer>
@@ -229,7 +225,7 @@ const AddEducationTermView = ({
       <InputContainer>
         <LabelContainer>
           <MainText>
-            <RequiredMark>*</RequiredMark>
+            <RequiredMark />
             {t('inCharge')}
           </MainText>
           <MultiMemberDropdown

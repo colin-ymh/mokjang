@@ -17,6 +17,10 @@ import EducationTermFilterReducer from '@/redux/reducers/filter/education-term-f
 import TargetEducationTermReducer from '@/redux/reducers/target/target-education-term-reducer';
 import TargetEducationSessionReducer from '@/redux/reducers/target/target-education-session-reducer';
 import UserFilterReducer from '@/redux/reducers/filter/user-filter-reducer';
+import TargetPermissionTemplateReducer from '@/redux/reducers/target/target-permission-template-reducer';
+import PermissionTemplateFilterReducer from '@/redux/reducers/filter/permission-template-filter-reducer';
+import JoinRequestFilterReducer from '@/redux/reducers/filter/join-request-filter-reducer';
+import TargetJoinRequestReducer from '@/redux/reducers/target/target-join-request-reducer';
 
 const store = configureStore({
   reducer: {
@@ -24,11 +28,16 @@ const store = configureStore({
     user: UserReducer,
     church: ChurchReducer,
     memberRegister: MemberRegisterReducer,
+    // filter
     memberFilter: MemberFilterReducer,
     visitationFilter: VisitationFilterReducer,
     educationFilter: EducationFilterReducer,
     educationTermFilter: EducationTermFilterReducer,
     taskFilter: TaskFilterReducer,
+    userFilter: UserFilterReducer,
+    permissionTemplateFilter: PermissionTemplateFilterReducer,
+    joinRequestFilter: JoinRequestFilterReducer,
+    // target
     targetMember: TargetMember,
     targetVisitation: TargetVisitation,
     targetEducation: TargetEducationReducer,
@@ -36,7 +45,8 @@ const store = configureStore({
     targetEducationSession: TargetEducationSessionReducer,
     targetTask: TargetTask,
     targetGroup: TargetGroup,
-    userFilter: UserFilterReducer,
+    targetPermissionTemplate: TargetPermissionTemplateReducer,
+    targetJoinRequest: TargetJoinRequestReducer,
   },
 });
 

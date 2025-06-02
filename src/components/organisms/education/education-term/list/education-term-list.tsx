@@ -38,9 +38,6 @@ const EducationTermList = ({ isInProgress }: EducationTermListProps) => {
   const churchId: string = useSelector(
     (state: RootState) => state.church.churchId
   );
-  const { educations } = useSelector(
-    (state: RootState) => state.educationFilter
-  );
   const {
     educationTerms,
     educationTermFilter,

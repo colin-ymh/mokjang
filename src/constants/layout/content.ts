@@ -20,6 +20,18 @@ export enum USER_CONTENT_ID {
   USER = 'user',
 }
 
+export enum ADMINISTRATOR_CONTENT_ID {
+  ADMINISTRATOR = 'administrator',
+}
+
+export enum PERMISSION_CONTENT_ID {
+  PERMISSION = 'permission',
+}
+
+export enum JOIN_REQUEST_CONTENT_ID {
+  JOIN_REQUEST = 'join',
+}
+
 export enum VISITATION_CONTENT_ID {
   ALL = HEADER_BAR.ALL,
   MY = HEADER_BAR.MY,

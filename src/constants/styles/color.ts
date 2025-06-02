@@ -34,9 +34,9 @@ export enum RED {
 
 export enum STATUS_COLOR {
   RESERVE = '#a69f9f',
-  IN_PROGRESS = '#ffda22',
+  IN_PROGRESS = '#2b98ff',
   DONE = '#2EE431',
-  PENDING = '#f43232',
+  PENDING = '#ff5f1a',
 
   COMPLETED = '#2EE431',
   INCOMPLETE = '#f43232',
@@ -44,4 +44,8 @@ export enum STATUS_COLOR {
   PRESENT = '#2EE431',
   ABSENT = '#f43232',
   UNDEFINED = WHITE,
+
+  CANCELED = '#a69f9f',
+  APPROVED = '#2EE431',
+  REJECTED = '#f43232',
 }

@@ -25,6 +25,7 @@ import {
 } from '@/utils/date';
 import Dropdown from '@/components/atoms/common/dropdown/dropdown';
 import { TASK_STATUS } from '@/constants/status/status';
+import RequiredMark from '@/components/atoms/common/text/required-mark';
 
 const AddTaskViewContainer = styled.div`
   display: flex;
@@ -55,11 +56,6 @@ const PeriodContainer = styled.div`
   gap: 10px;
   justify-content: flex-start;
   align-items: center;
-`;
-
-const RequiredMark = styled.span`
-  color: red;
-  margin-right: 4px;
 `;
 
 type AddTaskViewProps = {
@@ -120,7 +116,7 @@ const AddTaskView = ({
           value={targetTask.title}
           onChange={onChangeTitle}
           placeholder={t_placeholder('title')}
-          borderColor={GRAY.DEFAULT}
+          borderColor={GRAY.LIGHT}
           height={40}
           isRequired={true}
         />
@@ -130,7 +126,7 @@ const AddTaskView = ({
       <InputContainer>
         <LabelContainer>
           <MainText>
-            <RequiredMark>*</RequiredMark>
+            <RequiredMark />
             {t('period')}
           </MainText>
           <PeriodContainer>
@@ -205,7 +201,7 @@ const AddTaskView = ({
       <InputContainer>
         <LabelContainer>
           <MainText>
-            <RequiredMark>*</RequiredMark>
+            <RequiredMark />
             {t('inCharge')}
           </MainText>
           <MultiMemberDropdown

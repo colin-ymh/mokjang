@@ -17,7 +17,18 @@ export default {
   taskDate: 'Task Date',
   content: 'Content',
 
+  createdAt: 'Created At',
+
   title: 'title',
+
+  member: 'Member',
+  visitation: 'Visitation',
+  task: 'Task',
+
+  read: 'Read',
+  write: 'Write',
+
+  permission: 'Permission',
 
   educationEnrollment: 'Enrollment',
 
@@ -52,6 +63,9 @@ export default {
   inProgress: 'In Progress',
   completed: 'Completed',
   incomplete: 'Incomplete',
+  approved: 'Approved',
+  rejected: 'Rejected',
+  canceled: 'Canceled',
 
   startDate: 'Start Date',
   endDate: 'End Date',
@@ -174,6 +188,14 @@ export default {
 
   'title.addEducationTerm': 'Add Education Term',
   'title.editEducationTerm': 'Edit Education Term',
+
+  'title.addEducationSession': 'Add Education Session',
+  'title.editEducationSession': 'Edit Education Session',
+
+  'title.addPermissionTemplate': 'Add Permission Template',
+  'title.editPermissionTemplate': 'Edit Permission Template',
+
+  'title.linkMemberUser': 'Link Member',
   /*-------------------title (popup title)-------------------*/
 
   /*-------------------header (side bar button)-------------------*/
@@ -186,7 +208,7 @@ export default {
 
   'header.church': 'Church',
   'header.administrator': 'Administrator',
-  'header.approval': 'Approval',
+  'header.join': 'Join Request',
   'header.permission': 'Permission',
   'header.user': 'User',
   'header.setting': 'Setting',
@@ -283,9 +305,14 @@ export default {
   'button.addEducation': 'Add Education',
   'button.addEducationTerm': 'Add Education Term',
   'button.addTask': 'Add Task',
+  'button.addPermissionTemplate': 'Add Permission Template',
   'button.filterVisitationDate': 'Date',
   'button.filterTaskDate': 'Date',
   'button.setting': 'setting',
+  'button.approve': 'Approve',
+  'button.reject': 'Reject',
+  'button.link': 'Link',
+  'button.makeMemberInformation': 'Make the Member Information',
   /*-------------------button-------------------*/
 
   /*-------------------placeholder-------------------*/
@@ -382,5 +409,10 @@ export default {
 
   'popup.deleteTaskTitle': 'Do you want to delete this task?',
   'popup.deleteTaskBody': 'Deleted task cannot be restored.',
+
+  'popup.deletePermissionTemplateTitle':
+    'Do you want to delete this Permission Template?',
+  'popup.deletePermissionTemplateBody':
+    'Deleted Permission Template cannot be restored.',
   /*-------------------popup-------------------*/
 } as const;

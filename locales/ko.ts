@@ -12,7 +12,17 @@ export default {
   isDone: '완료',
   isNotDone: '미완료',
 
+  createdAt: '생성일자',
   title: '제목',
+
+  member: '교인',
+  visitation: '심방',
+  task: '업무',
+
+  read: '읽기',
+  write: '쓰기',
+
+  permission: '권한',
 
   educationEnrollment: '수강 교인',
 
@@ -53,6 +63,10 @@ export default {
   inProgress: '진행중',
   completed: '수료',
   incomplete: '미수료',
+
+  approved: '승인됨',
+  rejected: '거절됨',
+  canceled: '취소됨',
 
   startDate: '시작 날짜',
   endDate: '종료 날짜',
@@ -180,6 +194,11 @@ export default {
 
   'title.addEducationSession': '회차 추가',
   'title.editEducationSession': '회차 수정',
+
+  'title.addPermissionTemplate': '권한유형 추가',
+  'title.editPermissionTemplate': '권한유형 수정',
+
+  'title.linkMemberUser': '교인정보 연결하기',
   /*-------------------title (popup title)-------------------*/
 
   /*-------------------header (side bar button)-------------------*/
@@ -192,7 +211,7 @@ export default {
 
   'header.church': '교회설정',
   'header.administrator': '관리자',
-  'header.approval': '등록대기',
+  'header.join': '등록대기',
   'header.permission': '권한유형',
   'header.user': '회원',
   'header.setting': '설정',
@@ -293,9 +312,14 @@ export default {
   'button.addTask': '업무 입력하기',
   'button.addEducation': '교육 추가하기',
   'button.addEducationTerm': '기수 추가하기',
+  'button.addPermissionTemplate': '권한유형 추가하기',
   'button.filterVisitationDate': '기간',
   'button.filterTaskDate': '기간',
   'button.setting': '설정',
+  'button.approve': '승인',
+  'button.reject': '거절',
+  'button.link': '연결',
+  'button.makeMemberInformation': '교인정보 생성하기',
   /*-------------------button-------------------*/
 
   /*-------------------placeholder-------------------*/
@@ -392,5 +416,8 @@ export default {
 
   'popup.deleteTaskTitle': '해당 업무을 삭제하시겠습니까?',
   'popup.deleteTaskBody': '삭제된 업무은 복구할 수 없습니다.',
+
+  'popup.deletePermissionTemplateTitle': '해당 권한유형을 삭제하시겠습니까?',
+  'popup.deletePermissionTemplateBody': '삭제된 권한유형은 복구할 수 없습니다.',
   /*-------------------popup-------------------*/
 } as const;

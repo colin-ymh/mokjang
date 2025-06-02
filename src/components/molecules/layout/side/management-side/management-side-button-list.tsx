@@ -36,8 +36,8 @@ const ManagementSideButtonList = ({}: SideBarViewProps) => {
         title={t_header(MANAGEMENT_HEADER_ID.PERMISSION)}
       />
       <ManagementSideButton
-        id={MANAGEMENT_HEADER_ID.APPROVAL}
-        title={t_header(MANAGEMENT_HEADER_ID.APPROVAL)}
+        id={MANAGEMENT_HEADER_ID.JOIN}
+        title={t_header(MANAGEMENT_HEADER_ID.JOIN)}
       />
       <ManagementSideButton
         id={MANAGEMENT_HEADER_ID.USER}

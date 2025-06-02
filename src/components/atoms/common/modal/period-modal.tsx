@@ -102,7 +102,7 @@ const PeriodModal = ({
             text={t_button('setting')}
             onClick={() => onClickSave(innerStartDate, innerEndDate)}
             backgroundColor={WHITE}
-            borderColor={GRAY.DEFAULT}
+            borderColor={GRAY.LIGHT}
             color={BLACK}
             width={50}
           />
