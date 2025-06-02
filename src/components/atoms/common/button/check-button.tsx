@@ -14,6 +14,7 @@ const CheckButtonContainer = styled.div<{
   width: ${({ width }) => width}px;
   height: ${({ height }) => height}px;
   background-color: ${({ $isChecked }) => ($isChecked ? MAIN.DEFAULT : WHITE)};
+  cursor: pointer;
 `;
 
 type CheckButtonProps = {
@@ -29,8 +30,8 @@ const CheckButton = ({
   value,
   onChange,
   disabled = false,
-  width = 10,
-  height = 10,
+  width = 20,
+  height = 20,
   isStopPropagation = true,
 }: CheckButtonProps) => {
   // 로컬 상태 관리

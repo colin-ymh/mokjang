@@ -3,6 +3,9 @@ export enum STATUS {
   IN_PROGRESS = 'inProgress',
   DONE = 'done',
   PENDING = 'pending',
+  APPROVED = 'approved',
+  REJECTED = 'rejected',
+  CANCELED = 'canceled',
 }
 
 export type VISITATION_STATUS = STATUS.RESERVE | STATUS.DONE | STATUS.PENDING;
@@ -23,3 +26,9 @@ export type EDUCATION_SESSION_STATUS =
   | STATUS.RESERVE
   | STATUS.DONE
   | STATUS.PENDING;
+
+export type JOIN_REQUEST_STATUS =
+  | STATUS.PENDING
+  | STATUS.APPROVED
+  | STATUS.REJECTED
+  | STATUS.CANCELED;

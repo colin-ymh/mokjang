@@ -51,7 +51,7 @@ type ManagementTabHeaderViewProps = {
   onClickHeaderBar: (id: string) => void;
 };
 
-const ManagementApprovalHeaderView = ({
+const ManagementJoinRequestHeaderView = ({
   onClickHeaderBar,
 }: ManagementTabHeaderViewProps) => {
   const slug = useParams().slug as string[];
@@ -64,7 +64,7 @@ const ManagementApprovalHeaderView = ({
     <HeaderContainer>
       <HeaderTopContainer>
         <MainText size={SIZE.EXTRA_LARGE}>
-          {t_header(MANAGEMENT_HEADER_ID.APPROVAL)}
+          {t_header(MANAGEMENT_HEADER_ID.JOIN)}
         </MainText>
       </HeaderTopContainer>
       <HeaderBottomContainer>
@@ -78,4 +78,4 @@ const ManagementApprovalHeaderView = ({
   );
 };
 
-export default ManagementApprovalHeaderView;
+export default ManagementJoinRequestHeaderView;

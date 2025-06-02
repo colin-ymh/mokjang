@@ -11,10 +11,11 @@ import Search from '../../../../../public/svg/search.svg';
 const SearchContainer = styled.div`
   display: flex;
   flex-direction: row;
+  width: 100%;
 `;
 
-const InputContainer = styled.input`
-  width: 150px;
+const InputContainer = styled.input<{ $isLeft: boolean; $inputWidth?: string }>`
+  width: ${({ $inputWidth }) => ($inputWidth ? `${$inputWidth}px` : '100%')};
   height: 32px;
   box-sizing: border-box;
   font-size: 14px;
@@ -23,7 +24,9 @@ const InputContainer = styled.input`
   transition: all 0.3s ease;
   border: 1px solid ${GRAY.LIGHT};
   border-right: 0;
-  border-left: 0;
+  border-left: ${({ $isLeft }) => ($isLeft ? 'auto' : 0)};
+  border-top-left-radius: ${({ $isLeft }) => ($isLeft ? '5px' : 0)};
+  border-bottom-left-radius: ${({ $isLeft }) => ($isLeft ? '5px' : 0)};
   outline: none;
 `;
 
@@ -49,13 +52,15 @@ const SearchIcon = styled(Search)`
 
 type SearchInputProps = {
   searchRef: Ref<HTMLInputElement>;
-  searchFilter: any;
-  searchFilterDropdownItems: DropdownValueType[];
-  onClickSearchFilterItem: (value: any) => void;
+  searchFilter?: any;
+  searchFilterDropdownItems?: DropdownValueType[];
+  onClickSearchFilterItem?: (value: any) => void;
   searchValue: string;
   onChangeSearchValue: (event: ChangeEvent<HTMLInputElement>) => void;
   onKeyDown: KeyboardEventHandler<HTMLInputElement>;
   onClickSearch: () => void;
+  placeholder?: string;
+  inputWidth?: string;
 };
 
 const SearchInput = ({
@@ -67,28 +72,34 @@ const SearchInput = ({
   onChangeSearchValue,
   onKeyDown,
   onClickSearch,
+  placeholder,
+  inputWidth,
 }: SearchInputProps) => {
   const t_placeholder = useScopedI18n('placeholder');
 
   return (
     <SearchContainer>
-      <Dropdown
-        value={searchFilter}
-        items={searchFilterDropdownItems}
-        onChangeItem={onClickSearchFilterItem}
-        height={32}
-        width={100}
-        borderColor={GRAY.LIGHT}
-        backgroundBlur={false}
-        borderTopRightRadius={0}
-        borderBottomRightRadius={0}
-      />
+      {searchFilterDropdownItems && (
+        <Dropdown
+          value={searchFilter}
+          items={searchFilterDropdownItems}
+          onChangeItem={onClickSearchFilterItem}
+          height={32}
+          width={100}
+          borderColor={GRAY.LIGHT}
+          backgroundBlur={false}
+          borderTopRightRadius={0}
+          borderBottomRightRadius={0}
+        />
+      )}
       <InputContainer
         ref={searchRef}
         value={searchValue}
         onChange={onChangeSearchValue}
         onKeyDown={onKeyDown}
-        placeholder={t_placeholder('search')}
+        placeholder={placeholder || t_placeholder('search')}
+        $isLeft={!searchFilterDropdownItems}
+        $inputWidth={inputWidth}
       />
       <SearchButton onClick={onClickSearch}>
         <SearchIcon />

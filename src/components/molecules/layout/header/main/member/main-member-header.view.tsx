@@ -14,6 +14,7 @@ import CustomPopup from '@/components/atoms/common/popup/custom-popup';
 import MemberRegister from '@/components/organisms/register/member-register';
 import Button from '@/components/atoms/common/button/button';
 import { MAIN_HEADER_ID } from '@/constants/layout/header';
+import GroupFilter from '@/components/atoms/layout/side/main-side/group-filter';
 
 const HeaderContainer = styled.div`
   display: flex;
@@ -77,6 +78,7 @@ const GroupButton = styled.div`
 const GroupFilterContainer = styled.div`
   display: flex;
   padding: 10px;
+  width: 100%;
 `;
 
 const DesktopRegister = styled.div`
@@ -170,7 +172,7 @@ const MainMemberHeaderView = ({
         onClickClose={onDismissModal}
       >
         <GroupFilterContainer>
-          {/*<GroupFilter isDefaultOpen onClick={onClickNewGroup} />*/}
+          <GroupFilter isDefaultOpen onClick={onClickNewGroup} />
         </GroupFilterContainer>
       </SlidePopup>
       {/* 데스크톱 교인 추가 */}

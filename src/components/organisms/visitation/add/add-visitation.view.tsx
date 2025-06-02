@@ -31,6 +31,7 @@ import {
 } from '@/utils/date';
 import Dropdown from '@/components/atoms/common/dropdown/dropdown';
 import { VISITATION_STATUS } from '@/constants/status/status';
+import RequiredMark from '@/components/atoms/common/text/required-mark';
 
 /* ──────────────────────────────── Styled Components ─────────────────────────────── */
 const AddVisitationViewContainer = styled.div`
@@ -60,17 +61,13 @@ const PeriodContainer = styled.div`
   justify-content: flex-start;
   align-items: center;
 `;
+
 const DetailContainer = styled.div`
   display: flex;
   width: 100%;
   flex-direction: column;
   gap: 10px;
   padding: 10px 0;
-`;
-
-const RequiredMark = styled.span`
-  color: red;
-  margin-right: 4px;
 `;
 
 type AddVisitationViewProps = {
@@ -141,7 +138,7 @@ const AddVisitationView = ({
           value={targetVisitation.title}
           onChange={onChangeTitle}
           placeholder={t_placeholder('title')}
-          borderColor={GRAY.DEFAULT}
+          borderColor={GRAY.LIGHT}
           height={40}
           isRequired={true}
         />
@@ -151,7 +148,7 @@ const AddVisitationView = ({
       <InputContainer>
         <LabelContainer>
           <MainText>
-            <RequiredMark>*</RequiredMark>
+            <RequiredMark />
             {t('period')}
           </MainText>
           <PeriodContainer>
@@ -226,7 +223,7 @@ const AddVisitationView = ({
       <InputContainer>
         <LabelContainer>
           <MainText>
-            <RequiredMark>*</RequiredMark>
+            <RequiredMark />
             {t('visitedMember')}
           </MainText>
           <MultiMemberDropdown
@@ -253,7 +250,7 @@ const AddVisitationView = ({
       <InputContainer>
         <LabelContainer>
           <MainText>
-            <RequiredMark>*</RequiredMark>
+            <RequiredMark />
             {t('inCharge')}
           </MainText>
           <MultiMemberDropdown

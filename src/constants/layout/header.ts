@@ -16,7 +16,7 @@ export enum MAIN_HEADER_ID {
 
 export enum MANAGEMENT_HEADER_ID {
   CHURCH = 'church',
-  APPROVAL = 'approval',
+  JOIN = 'join',
   ADMINISTRATOR = 'administrator',
   PERMISSION = 'permission',
   USER = 'user',

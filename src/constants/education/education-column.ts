@@ -13,26 +13,6 @@ export enum EDUCATION_TERM {
   PERIOD = 'period',
 }
 
-export enum EDUCATION_SESSION {
-  ID = 'id',
-  EDUCATION = 'education',
-  SESSION = 'session',
-  IN_CHARGE = 'inCharge',
-  STATUS = 'status',
-
-  // 임의추가
-  PERIOD = 'period',
-}
-
-export type TERM_TABLE_HEADER_ITEM = {
-  id: EDUCATION_TERM;
-  isShown: boolean;
-  isSortable: boolean;
-  isFilterable: boolean;
-  isFixed?: boolean;
-  isDate?: boolean;
-};
-
 export enum EDUCATION_ENROLLMENT {
   CHECK = 'check',
   MEMBER_NAME = 'memberName',
@@ -43,15 +23,6 @@ export enum EDUCATION_ENROLLMENT {
   MOBILE_PHONE = MEMBER.MOBILE_PHONE,
   STATUS = 'status',
 }
-
-export type ENROLLMENT_TABLE_HEADER_ITEM = {
-  id: EDUCATION_ENROLLMENT;
-  isShown: boolean;
-  isSortable: boolean;
-  isFilterable: boolean;
-  isFixed?: boolean;
-  isDate?: boolean;
-};
 
 export enum EDUCATION {
   NAME = 'name',

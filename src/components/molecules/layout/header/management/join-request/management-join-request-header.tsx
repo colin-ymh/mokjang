@@ -1,9 +1,9 @@
 import { usePageRouter } from '@/utils/router';
-import ManagementApprovalHeaderView from '@/components/molecules/layout/header/management/approval/management-approval-header.view';
+import ManagementJoinRequestHeaderView from '@/components/molecules/layout/header/management/join-request/management-join-request-header.view';
 
 type ManagementTabHeaderProps = {};
 
-const ManagementApprovalHeader = ({}: ManagementTabHeaderProps) => {
+const ManagementJoinRequestHeader = ({}: ManagementTabHeaderProps) => {
   const router = usePageRouter();
 
   // 헤더 탭바 이벤트
@@ -15,8 +15,8 @@ const ManagementApprovalHeader = ({}: ManagementTabHeaderProps) => {
 
   return (
     <>
-      <ManagementApprovalHeaderView {...props} />
+      <ManagementJoinRequestHeaderView {...props} />
     </>
   );
 };
-export default ManagementApprovalHeader;
+export default ManagementJoinRequestHeader;
