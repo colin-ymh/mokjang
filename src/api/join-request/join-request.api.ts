@@ -4,7 +4,7 @@ import qs from 'qs';
 import { SERVER_URL, TEST_SERVER_URL } from '@/constants/state/url';
 import authorizeAxios from '@/api/authorize-axios';
 import { CustomError } from '@/api/error/error';
-import { ORDER_DIRECTION } from '@/constants/constant';
+import { CHURCH_USER_ROLE, ORDER_DIRECTION } from '@/constants/constant';
 import { JOIN_REQUEST } from '@/constants/join-request/join-request-column';
 import { JOIN_REQUEST_STATUS } from '@/constants/status/status';
 import { USER } from '@/constants/user/user-column';
@@ -21,7 +21,7 @@ type GetJoinRequestsParams = {
   orderDirection?: ORDER_DIRECTION;
   fromCreatedAt?: string;
   toCreatedAt?: string;
-  status: JOIN_REQUEST_STATUS[];
+  status: JOIN_REQUEST_STATUS;
 };
 
 type ApproveJoinRequestParams = {
@@ -31,6 +31,7 @@ type ApproveJoinRequestParams = {
 
 type ApproveJoinRequestBody = {
   linkMemberId: string;
+  userRole: CHURCH_USER_ROLE;
 };
 
 type RejectJoinRequestParams = {

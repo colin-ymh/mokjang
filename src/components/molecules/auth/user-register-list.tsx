@@ -77,7 +77,7 @@ const UserRegisterList = () => {
         {
           name,
           mobilePhone: mobilePhone.replace(/-/g, ''),
-          isTest: IS_TEST.PRODUCTION,
+          isTest: IS_TEST.INTERNAL_TEST,
         }
       );
 
@@ -118,13 +118,11 @@ const UserRegisterList = () => {
       const response = await authApi.getSignIn({
         privacyPolicyAgreed: isVerified,
       });
-      console.log(response);
       if (response.status === 201) {
-        router.replace('/church/register');
-
         const userResponse = await userApi.getUser();
         const newUser = userResponse.data;
         dispatch(setUser(newUser));
+        router.push('/');
       }
     } catch (error) {
       console.log('로그인 실패:', error);

@@ -5,6 +5,7 @@ export enum DOMAIN {
   VISITATION = 'visitation',
   TASK = 'task',
   EDUCATION = 'education',
+  OFFICER = 'officer',
 }
 
 export enum ACTION {
@@ -26,12 +27,18 @@ export const DEFAULT_PERMISSION_UNIT: PermissionUnit = {
 
 export type PermissionTemplate = {
   id: string;
-  name: string;
+  churchId: string;
+  title: string;
+  memberCount: number;
   unitIds: string[];
+  permissionUnits: PermissionUnit[];
 };
 
 export const DEFAULT_PERMISSION_TEMPLATE: PermissionTemplate = {
   id: BLANK,
-  name: BLANK,
+  churchId: BLANK,
+  title: BLANK,
   unitIds: [],
+  memberCount: 0,
+  permissionUnits: [],
 };

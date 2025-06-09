@@ -62,7 +62,7 @@ const ManagementPermissionHeader = ({}: ManagementPermissionHeaderProps) => {
         .createPermissionTemplate(
           { churchId },
           {
-            name: targetPermissionTemplate.name,
+            title: targetPermissionTemplate.title,
             unitIds: targetPermissionTemplate.unitIds,
           }
         )
@@ -72,7 +72,7 @@ const ManagementPermissionHeader = ({}: ManagementPermissionHeaderProps) => {
           permissionsApi
             .getPermissionTemplate({
               churchId,
-              permissionTemplateId: tempPermissionTemplate.id,
+              templateId: tempPermissionTemplate.id,
             })
             .then((response) => {
               const newPermissionTemplate = response.data.data;
@@ -92,7 +92,7 @@ const ManagementPermissionHeader = ({}: ManagementPermissionHeaderProps) => {
   };
 
   useEffect(() => {
-    if (!getIsWellFormedTitle(targetPermissionTemplate.name)) {
+    if (!getIsWellFormedTitle(targetPermissionTemplate.title)) {
       setIsSaveEnabled(false);
       return;
     }

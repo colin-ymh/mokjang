@@ -359,6 +359,12 @@ const EducationTermList = ({ isInProgress }: EducationTermListProps) => {
 
   // 기수 수정 페이지 종료
   const onClickEditTermClose = () => {
+    const prevEducationTerm = educationTerms.find(
+      (educationTerm) => educationTerm.id === targetEducationTerm.id
+    );
+    if (prevEducationTerm) {
+      dispatch(setTargetEducationTerm(prevEducationTerm));
+    }
     setIsEditTermShown(false);
     setTimeout(() => {
       setIsEducationTermInformationShown(true);
@@ -649,6 +655,12 @@ const EducationTermList = ({ isInProgress }: EducationTermListProps) => {
 
   // 회차 수정 페이지 종료
   const onClickEditSessionClose = () => {
+    const prevEducationSession = targetEducationTerm.educationSessions.find(
+      (educationSession) => educationSession.id === targetEducationSession.id
+    );
+    if (prevEducationSession) {
+      dispatch(setTargetEducationSession(prevEducationSession));
+    }
     setIsEditSessionShown(false);
     setTimeout(() => {
       setIsEducationSessionInformationShown(true);

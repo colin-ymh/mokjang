@@ -1,36 +1,52 @@
-import React, { useState } from 'react';
-
+import React, { useEffect, useState } from 'react';
+import PermissionTemplateInformationView from '@/components/organisms/permission/information/permission-template-information.view';
+import { PERMISSION_TEMPLATE_HEADER_ID } from '@/constants/layout/header';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
-import { PermissionsApi } from '@/api/permissions/permissions.api';
-import PermissionTemplateInformationView from '@/components/organisms/permission/information/permission-template-information.view';
+import {
+  fetchPermissionManagers,
+  setPermissionManagers,
+} from '@/redux/reducers/filter/permission-template-filter-reducer';
+import { CHURCH_USER_ROLE } from '@/constants/constant';
 
 type PermissionTemplateInformationProps = {};
 
 const PermissionTemplateInformation =
   ({}: PermissionTemplateInformationProps) => {
-    const { permissionTemplates } = useSelector(
-      (state: RootState) => state.permissionTemplateFilter
-    );
+    const dispatch = useDispatch<AppDispatch>();
+    const { churchId } = useSelector((state: RootState) => state.church);
     const { targetPermissionTemplate } = useSelector(
       (state: RootState) => state.targetPermissionTemplate
     );
-    const { churchId } = useSelector((state: RootState) => state.church);
 
-    const dispatch = useDispatch<AppDispatch>();
-    const permissionsApi = new PermissionsApi(false);
+    const [headerBarValue, setHeaderBarValue] =
+      useState<PERMISSION_TEMPLATE_HEADER_ID>(
+        PERMISSION_TEMPLATE_HEADER_ID.PERMISSION_UNIT
+      );
 
-    const [thrownError, setThrownError] = useState<Error | null>(null);
-    if (thrownError) {
-      throw thrownError;
-    }
+    const onChangeHeader = (value: PERMISSION_TEMPLATE_HEADER_ID) => {
+      setHeaderBarValue(value);
+    };
 
-    // ===== status =====
-    const onChangePermissionUnit = (unitId: string) => {};
-    // ===== status =====
+    useEffect(() => {
+      if (
+        targetPermissionTemplate.id &&
+        targetPermissionTemplate.id !== CHURCH_USER_ROLE.OWNER
+      ) {
+        dispatch(
+          fetchPermissionManagers({
+            churchId,
+            templateId: targetPermissionTemplate.id,
+          })
+        );
+      } else {
+        dispatch(setPermissionManagers([]));
+      }
+    }, [targetPermissionTemplate.id]);
 
     const props = {
-      onChangePermissionUnit,
+      headerBarValue,
+      onChangeHeader,
     };
 
     return (

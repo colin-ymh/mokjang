@@ -49,6 +49,8 @@ const LinkMemberUser = ({ onChangeLinkMember }: LinkMemberUserProps) => {
   // 교인 목록에서 선택/해제
   const onClickMember = (member: Member) => {
     setSelectedMember(member);
+    setSearchName(BLANK);
+    setSearchedMembers([]);
   };
 
   // 검색

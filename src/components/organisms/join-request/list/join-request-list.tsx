@@ -8,6 +8,7 @@ import {
 } from '@/redux/reducers/filter/join-request-filter-reducer';
 import { JoinRequest } from '@/models/join-request/join-request';
 import JoinRequestListView from '@/components/organisms/join-request/list/join-request-list.view';
+import { STATUS } from '@/constants/status/status';
 
 type JoinRequestListProps = {
   headerType?: HEADER_BAR;
@@ -48,6 +49,7 @@ const JoinRequestList = ({
         fetchJoinRequests({
           churchId,
           currentPage: page + 1,
+          status: STATUS.PENDING,
         })
       );
       if (fetchJoinRequests.fulfilled.match(result)) {
@@ -81,6 +83,7 @@ const JoinRequestList = ({
           fetchJoinRequests({
             churchId,
             currentPage: 1,
+            status: STATUS.PENDING,
           })
         );
         if (fetchJoinRequests.fulfilled.match(result)) {

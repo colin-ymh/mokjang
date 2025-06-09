@@ -55,6 +55,7 @@ type CustomPopupProps = {
   doneBackgroundColor?: string;
   doneDisabled?: boolean;
   isFooterShown?: boolean;
+  isHeaderShown?: boolean;
 
   children: ReactNode;
 };
@@ -76,6 +77,7 @@ const CustomPopup = ({
   doneBackgroundColor,
   doneDisabled,
   isFooterShown,
+  isHeaderShown,
 
   children,
 }: CustomPopupProps) => {
@@ -117,6 +119,7 @@ const CustomPopup = ({
           cancelBackgroundColor={cancelBackgroundColor}
           doneDisabled={doneDisabled}
           isFooterShown={isFooterShown}
+          isHeaderShown={isHeaderShown}
         >
           {children}
         </PopupLayout>

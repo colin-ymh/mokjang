@@ -26,7 +26,7 @@ const SideHeader = () => {
   return (
     <HeaderContainer>
       {/*<ProfileImage />*/}
-      {/*<MainText size={SIZE.EXTRA_LARGE}>{user.name}</MainText>*/}
+      {/*<MainText size={SIZE.EXTRA_LARGE}>{church-church-church-user.name}</MainText>*/}
     </HeaderContainer>
   );
 };

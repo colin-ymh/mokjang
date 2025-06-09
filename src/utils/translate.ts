@@ -9,6 +9,7 @@ import { TASK } from '@/constants/task/task-column';
 import { USER } from '@/constants/user/user-column';
 import { PERMISSION_TEMPLATE } from '@/constants/permission/permission-column';
 import { JOIN_REQUEST } from '@/constants/join-request/join-request-column';
+import { CHURCH_USER } from '@/constants/church-user/church-user-column';
 
 export const getTranslatedMemberColumn = (
   t: (key: string, ...args: any[]) => string,
@@ -99,28 +100,16 @@ export const getTranslatedTaskColumn = (
   return t(id as TASK.TITLE | TASK.STATUS | TASK.DATE | TASK.IN_CHARGE);
 };
 
-export const getTranslatedUserColumn = (
+export const getTranslatedChurchUserColumn = (
   t: (key: string, ...args: any[]) => string,
-  id: USER | MEMBER
+  id: CHURCH_USER
 ): string => {
   return t(
     id as
-      | USER.NAME
-      | MEMBER.NAME
-      | MEMBER.PROFILE_IMAGE
-      | MEMBER.GENDER
-      | MEMBER.OFFICER
-      | MEMBER.AGE
-      | MEMBER.MOBILE_PHONE
-      | MEMBER.HOME_PHONE
-      | MEMBER.ADDRESS
-      | MEMBER.OCCUPATION
-      | MEMBER.SCHOOL
-      | MEMBER.MARRIAGE
-      | MEMBER.BAPTISM
-      | MEMBER.BIRTH
-      | MEMBER.REGISTERED_AT
-      | MEMBER.UPDATED_AT
+      | CHURCH_USER.ACCOUNT
+      | CHURCH_USER.MEMBER
+      | CHURCH_USER.PERMISSION_TEMPLATE
+      | CHURCH_USER.PERMISSION_ACTIVE
   );
 };
 
@@ -128,7 +117,7 @@ export const getTranslatedPermissionTemplateColumn = (
   t: (key: string, ...args: any[]) => string,
   id: PERMISSION_TEMPLATE
 ): string => {
-  return t(id as PERMISSION_TEMPLATE.NAME);
+  return t(id as PERMISSION_TEMPLATE.TITLE);
 };
 
 export const getTranslatedJoinRequestColumn = (

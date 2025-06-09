@@ -49,22 +49,22 @@ const JoinRequestRow = () => {
 
   // 상태 선택
   const onClickStatusFilterItem = (value: JOIN_REQUEST_STATUS) => {
-    setStatusFilter(value);
-    if (value) {
-      dispatch(
-        setJoinRequestFilter({
-          ...joinRequestFilter,
-          [JOIN_REQUEST.STATUS]: [value],
-        })
-      );
-    } else {
-      dispatch(
-        setJoinRequestFilter({
-          ...joinRequestFilter,
-          [JOIN_REQUEST.STATUS]: [],
-        })
-      );
-    }
+    // setStatusFilter(value);
+    // if (value) {
+    //   dispatch(
+    //     setJoinRequestFilter({
+    //       ...joinRequestFilter,
+    //       [JOIN_REQUEST.STATUS]: [value],
+    //     })
+    //   );
+    // } else {
+    //   dispatch(
+    //     setJoinRequestFilter({
+    //       ...joinRequestFilter,
+    //       [JOIN_REQUEST.STATUS]: [],
+    //     })
+    //   );
+    // }
   };
 
   // 검색 필터 주제
@@ -112,15 +112,15 @@ const JoinRequestRow = () => {
   useEffect(() => {
     let newFilterItems: JoinRequestFilteredItemType[] = [];
 
-    // 상태
-    if (joinRequestFilter.status.length > 0) {
-      newFilterItems.push({
-        title: JOIN_REQUEST.STATUS,
-        value: joinRequestFilter.status,
-      });
-    } else {
-      setStatusFilter(undefined);
-    }
+    // // 상태
+    // if (joinRequestFilter.status.length > 0) {
+    //   newFilterItems.push({
+    //     title: JOIN_REQUEST.STATUS,
+    //     value: joinRequestFilter.status,
+    //   });
+    // } else {
+    //   setStatusFilter(undefined);
+    // }
 
     // 등록일
     if (joinRequestFilter.fromCreatedAt || joinRequestFilter.toCreatedAt) {

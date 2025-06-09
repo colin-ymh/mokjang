@@ -1,11 +1,11 @@
 import { Dispatch, ReactNode, SetStateAction } from 'react';
 
 import {
-  ADMINISTRATOR_CONTENT_ID,
   CHURCH_CONTENT_ID,
   EDUCATION_CONTENT_ID,
   HOME_CONTENT_ID,
   JOIN_REQUEST_CONTENT_ID,
+  MANAGER_CONTENT_ID,
   MEMBER_CONTENT_ID,
   PERMISSION_CONTENT_ID,
   USER_CONTENT_ID,
@@ -38,7 +38,7 @@ import GroupMember from '@/components/molecules/management/group/group-member';
 import MainSideButtonList from '@/components/molecules/layout/side/main-side/main-side-button-list';
 import ManagementSideButtonList from '@/components/molecules/layout/side/management-side/management-side-button-list';
 import ManagementChurchHeader from '@/components/molecules/layout/header/management/church/management-church-header';
-import ManagementAdministratorHeader from '@/components/molecules/layout/header/management/administrator/management-administrator-header';
+import ManagementManagerHeader from '@/components/molecules/layout/header/management/manager/management-manager-header';
 import MainVisitationHeader from '@/components/molecules/layout/header/main/visitation/main-visitation-header';
 import MainEducationHeader from '@/components/molecules/layout/header/main/education/main-education-header';
 import VisitationList from '@/components/organisms/visitation/list/visitation-list';
@@ -49,7 +49,7 @@ import { HEADER_BAR } from '@/constants/constant';
 import ManagementJoinRequestHeader from '@/components/molecules/layout/header/management/join-request/management-join-request-header';
 import ManagementPermissionHeader from '@/components/molecules/layout/header/management/permission/management-permission-header';
 import ManagementUserHeader from '@/components/molecules/layout/header/management/user/management-user-header';
-import UserList from '@/components/organisms/user/list/user-list';
+import ChurchUserList from '@/components/organisms/church-user/list/church-user-list';
 import MemberInformationListView from '@/components/molecules/member/information/member-information-list.view';
 import PermissionTemplateList from '@/components/organisms/permission/list/permission-template-list';
 import EducationTermList from '@/components/organisms/education/education-term/list/education-term-list';
@@ -89,8 +89,8 @@ export const getHeader = (id: string) => {
     // 관리
     case MANAGEMENT_HEADER_ID.CHURCH:
       return <ManagementChurchHeader />;
-    case MANAGEMENT_HEADER_ID.ADMINISTRATOR:
-      return <ManagementAdministratorHeader />;
+    case MANAGEMENT_HEADER_ID.MANAGER:
+      return <ManagementManagerHeader />;
     case MANAGEMENT_HEADER_ID.JOIN:
       return <ManagementJoinRequestHeader />;
     case MANAGEMENT_HEADER_ID.PERMISSION:
@@ -116,15 +116,15 @@ export const getContent = (
 
         // 회원
         case USER_CONTENT_ID.USER:
-          return <UserList />;
+          return <ChurchUserList />;
 
         // 권한 유형
         case PERMISSION_CONTENT_ID.PERMISSION:
           return <PermissionTemplateList />;
 
         // 관리자
-        case ADMINISTRATOR_CONTENT_ID.ADMINISTRATOR:
-          return <MemberList />;
+        case MANAGER_CONTENT_ID.MANAGER:
+          return <ChurchUserList isManager />;
 
         // 등록 요청
         case JOIN_REQUEST_CONTENT_ID.JOIN_REQUEST:

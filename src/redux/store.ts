@@ -16,11 +16,12 @@ import TargetEducationReducer from '@/redux/reducers/target/target-education-red
 import EducationTermFilterReducer from '@/redux/reducers/filter/education-term-filter-reducer';
 import TargetEducationTermReducer from '@/redux/reducers/target/target-education-term-reducer';
 import TargetEducationSessionReducer from '@/redux/reducers/target/target-education-session-reducer';
-import UserFilterReducer from '@/redux/reducers/filter/user-filter-reducer';
+import ChurchUserFilterReducer from '@/redux/reducers/filter/church-user-filter-reducer';
 import TargetPermissionTemplateReducer from '@/redux/reducers/target/target-permission-template-reducer';
 import PermissionTemplateFilterReducer from '@/redux/reducers/filter/permission-template-filter-reducer';
 import JoinRequestFilterReducer from '@/redux/reducers/filter/join-request-filter-reducer';
 import TargetJoinRequestReducer from '@/redux/reducers/target/target-join-request-reducer';
+import TargetChurchUserReducer from '@/redux/reducers/target/target-church-user-reducer';
 
 const store = configureStore({
   reducer: {
@@ -34,7 +35,7 @@ const store = configureStore({
     educationFilter: EducationFilterReducer,
     educationTermFilter: EducationTermFilterReducer,
     taskFilter: TaskFilterReducer,
-    userFilter: UserFilterReducer,
+    churchUserFilter: ChurchUserFilterReducer,
     permissionTemplateFilter: PermissionTemplateFilterReducer,
     joinRequestFilter: JoinRequestFilterReducer,
     // target
@@ -47,6 +48,7 @@ const store = configureStore({
     targetGroup: TargetGroup,
     targetPermissionTemplate: TargetPermissionTemplateReducer,
     targetJoinRequest: TargetJoinRequestReducer,
+    targetChurchUser: TargetChurchUserReducer,
   },
 });
 

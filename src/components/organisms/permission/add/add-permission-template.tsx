@@ -18,7 +18,7 @@ const AddPermissionTemplate = ({}: AddPermissionTemplateProps) => {
     dispatch(
       setTargetPermissionTemplate({
         ...targetPermissionTemplate,
-        name: getFormattedTitle(event.target.value),
+        title: getFormattedTitle(event.target.value),
       })
     );
   };

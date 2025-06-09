@@ -5,7 +5,6 @@ import { LOCALE } from '@/constants/state/locale';
 export const usePageRouter = () => {
   const router = useRouter();
   const pathname = usePathname();
-
   const basePath = pathname.split('/')[1]; // 언어 코드 추출
 
   // basePath가 LOCALE에 포함되어 있는지 확인

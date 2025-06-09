@@ -82,9 +82,12 @@ const TaskList = ({ headerType = HEADER_BAR.ALL }: TaskListProps) => {
         fetchTasks({
           churchId,
           currentPage: page + 1,
-          inChargeId: headerType === HEADER_BAR.MY ? user.member.id : undefined,
+          inChargeId:
+            headerType === HEADER_BAR.MY ? user.churchUser[0].id : undefined,
           memberId:
-            headerType === HEADER_BAR.REPORTED ? user.member.id : undefined,
+            headerType === HEADER_BAR.REPORTED
+              ? user.churchUser[0].id
+              : undefined,
         })
       );
       if (fetchTasks.fulfilled.match(result)) {
@@ -115,9 +118,11 @@ const TaskList = ({ headerType = HEADER_BAR.ALL }: TaskListProps) => {
             churchId,
             currentPage: 1,
             inChargeId:
-              headerType === HEADER_BAR.MY ? user.member.id : undefined,
+              headerType === HEADER_BAR.MY ? user.churchUser[0].id : undefined,
             memberId:
-              headerType === HEADER_BAR.REPORTED ? user.member.id : undefined,
+              headerType === HEADER_BAR.REPORTED
+                ? user.churchUser[0].id
+                : undefined,
           })
         );
         if (fetchTasks.fulfilled.match(result)) {
@@ -239,7 +244,7 @@ const TaskList = ({ headerType = HEADER_BAR.ALL }: TaskListProps) => {
             churchId,
             currentPage: 1,
             inChargeId:
-              headerType === HEADER_BAR.MY ? user.member.id : undefined,
+              headerType === HEADER_BAR.MY ? user.churchUser[0].id : undefined,
           })
         );
         if (fetchTasks.fulfilled.match(result)) {
@@ -256,6 +261,10 @@ const TaskList = ({ headerType = HEADER_BAR.ALL }: TaskListProps) => {
 
   // 수정 페이지 종료
   const onClickEditClose = () => {
+    const prevTask = tasks.find((task) => task.id === targetTask.id);
+    if (prevTask) {
+      dispatch(setTargetTask(prevTask));
+    }
     setIsEditShown(false);
     setTimeout(() => {
       setIsTaskInformationShown(true);

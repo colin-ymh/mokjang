@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
-import { BLANK, ORDER_DIRECTION } from '@/constants/constant';
+import { BLANK, CHURCH_USER_ROLE, ORDER_DIRECTION } from '@/constants/constant';
 import {
   setJoinRequestOrderBy,
   setJoinRequestOrderDirection,
@@ -57,7 +57,10 @@ const JoinRequestTable = ({ loadJoinRequests }: JoinRequestTableProps) => {
       await joinRequestsApi
         .approveJoinRequest(
           { churchId, joinId: targetJoinRequest.id },
-          { linkMemberId: targetLinkMemberId }
+          {
+            linkMemberId: targetLinkMemberId,
+            userRole: CHURCH_USER_ROLE.MANAGER,
+          }
         )
         .then((response) => {
           const newJoinRequests = joinRequests.filter(

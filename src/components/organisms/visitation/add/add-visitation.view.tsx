@@ -259,7 +259,7 @@ const AddVisitationView = ({
             height={40}
             isSingle
             placeholder={inCharge.length === 0 ? t_placeholder('name') : BLANK}
-            isUserMember={true}
+            isManager={true}
           />
         </LabelContainer>
       </InputContainer>
@@ -306,7 +306,7 @@ const AddVisitationView = ({
             onChangeValues={onChangeReceivers}
             height={40}
             placeholder={receivers.length === 0 ? t_placeholder('name') : BLANK}
-            isUserMember={true}
+            isManager={true}
           />
         </LabelContainer>
       </InputContainer>

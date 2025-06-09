@@ -19,7 +19,8 @@ import { BLANK } from '@/constants/constant';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { MemberDropdownType } from '@/components/atoms/common/dropdown/member-dropdown-item';
-import { UserMembersApi } from '@/api/user-members/user-members.api';
+import { ManagersApi } from '@/api/managers/managers.api';
+import { ChurchUser } from '@/models/church-user/church-user';
 
 export type MultiMemberDropdownProps = InputProps & {
   ref?: RefObject<HTMLInputElement>;
@@ -42,7 +43,7 @@ export type MultiMemberDropdownProps = InputProps & {
   backgroundColor?: string;
 
   isSingle?: boolean;
-  isUserMember?: boolean;
+  isManager?: boolean;
 };
 
 const MultiMemberDropdown = forwardRef<
@@ -64,13 +65,13 @@ const MultiMemberDropdown = forwardRef<
       height,
       disabled,
       isSingle = false,
-      isUserMember = false,
+      isManager = false,
       ...inputProps
     },
     ref
   ) => {
     const membersApi = new MembersApi(false);
-    const userMembersApi = new UserMembersApi(false);
+    const managersApi = new ManagersApi(false);
     const { churchId } = useSelector((state: RootState) => state.church);
 
     /* ---------------- 상태 ---------------- */
@@ -152,19 +153,19 @@ const MultiMemberDropdown = forwardRef<
 
     useEffect(() => {
       if (searchText) {
-        if (isUserMember) {
-          userMembersApi
-            .getUserMembers({
+        if (isManager) {
+          managersApi
+            .getManagers({
               churchId,
               name: searchText,
               page: 1,
               take: 5,
             })
             .then((response: AxiosResponse) => {
-              const members: GetMembersResponse[] = response.data.data;
-              const newMemberItems: MemberDropdownType[] = members.map(
-                (member) => {
-                  return { value: member.id, title: member.name };
+              const managers = response.data.data;
+              const newMemberItems: MemberDropdownType[] = managers.map(
+                (manager: ChurchUser) => {
+                  return { value: manager.id, title: manager.member.name };
                 }
               );
 

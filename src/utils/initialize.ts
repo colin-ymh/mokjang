@@ -8,7 +8,6 @@ import {
   fetchGroups,
   fetchMinistryGroups,
   fetchOfficers,
-  setChurch,
   setChurchId,
   setMinistries,
 } from '@/redux/reducers/church-reducer';
@@ -17,6 +16,8 @@ import { usePageRouter } from '@/utils/router';
 import { setUser } from '@/redux/reducers/user-reducer';
 import { UserApi } from '@/api/user/user.api';
 import { setEducations } from '@/redux/reducers/filter/education-filter-reducer';
+import { User } from '@/models/user/user';
+import { fetchPermissionUnits } from '@/redux/reducers/filter/permission-template-filter-reducer';
 
 export const useInitializeChurch = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -45,6 +46,7 @@ export const useInitializeChurch = () => {
         dispatch(fetchGroups()),
         dispatch(fetchMinistryGroups()),
         dispatch(fetchOfficers()),
+        dispatch(fetchPermissionUnits({ churchId })),
       ]);
 
       const [ministries, educations] = await Promise.all([
@@ -74,7 +76,7 @@ export const useInitializeUser = () => {
   const authApi = new AuthApi(false);
   const userApi = new UserApi(false);
 
-  /** ➜ 이 ref 가 true 면 두 번 다시 실행하지 않음 */
+  // /** ➜ 이 ref 가 true 면 두 번 다시 실행하지 않음 */
   const didRunRef = useRef(false);
 
   /** 라우트 이동 시에도 변하지 않는 redirect 상태 */
@@ -83,7 +85,7 @@ export const useInitializeUser = () => {
   /* redirectPath 가 정해지면 실제 라우팅 */
   useEffect(() => {
     if (redirectPath) router.replace(redirectPath);
-  }, [redirectPath, router]);
+  }, [redirectPath]);
 
   /** 한 번만 만들어지는 초기화 함수 */
   return useCallback(async () => {
@@ -104,15 +106,13 @@ export const useInitializeUser = () => {
 
     /* 2) 사용자 정보 조회 */
     try {
-      const { data: user } = await userApi.getUser();
+      const response = await userApi.getUser();
+      const user: User = response.data;
       dispatch(setUser(user));
-
-      const church = user.church;
-      if (church?.id) {
-        dispatch(setChurch(church));
-        dispatch(setChurchId(church.id));
+      if (user.churchUser.length) {
+        dispatch(setChurchId(user.churchUser[0].churchId));
       } else {
-        setRedirectPath('/church/register');
+        setRedirectPath('/');
       }
     } catch {
       setRedirectPath('/login');

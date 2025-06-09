@@ -13,23 +13,23 @@ import {
 } from '@/models/permission/permission';
 import { setTargetPermissionTemplate } from '@/redux/reducers/target/target-permission-template-reducer';
 import { getIsWellFormedTitle } from '@/utils/check';
-import { HEADER_BAR } from '@/constants/constant';
 import { PermissionsApi } from '@/api/permissions/permissions.api';
+import { CHURCH_USER_ROLE } from '@/constants/constant';
+import { getOwnerPermissionTemplate } from '@/utils/permission';
+import { useI18n } from '../../../../../locales/client';
 
-type PermissionTemplateListProps = {
-  headerType?: HEADER_BAR;
-};
+type PermissionTemplateListProps = {};
 
-const PermissionTemplateList = ({
-  headerType = HEADER_BAR.ALL,
-}: PermissionTemplateListProps) => {
+const PermissionTemplateList = ({}: PermissionTemplateListProps) => {
   const permissionsApi = new PermissionsApi(false);
+  const t = useI18n();
   const dispatch = useDispatch<AppDispatch>();
 
   const churchId: string = useSelector(
     (state: RootState) => state.church.churchId
   );
   const {
+    permissionUnits,
     permissionTemplates,
     permissionTemplateFilter,
     permissionTemplateOrderBy,
@@ -139,7 +139,6 @@ const PermissionTemplateList = ({
     permissionTemplateFilter,
     permissionTemplateOrderBy,
     permissionTemplateOrderDirection,
-    headerType === HEADER_BAR.MY,
   ]);
 
   const onClickEditDone = async () => {
@@ -148,10 +147,14 @@ const PermissionTemplateList = ({
       await permissionsApi.editPermissionTemplate(
         {
           churchId,
-          permissionTemplateId: targetPermissionTemplate.id,
+          templateId: targetPermissionTemplate.id,
         },
         {
-          name: targetPermissionTemplate.name || undefined,
+          title: permissionTemplates
+            .map((template) => template.title)
+            .includes(targetPermissionTemplate.title)
+            ? undefined
+            : targetPermissionTemplate.title,
           unitIds: targetPermissionTemplate.unitIds || undefined,
         }
       );
@@ -159,7 +162,7 @@ const PermissionTemplateList = ({
       await permissionsApi
         .getPermissionTemplate({
           churchId,
-          permissionTemplateId: targetPermissionTemplate.id,
+          templateId: targetPermissionTemplate.id,
         })
         .then(async (response) => {
           const newPermissionTemplate: PermissionTemplate = response.data.data;
@@ -184,17 +187,29 @@ const PermissionTemplateList = ({
   };
 
   // 목록에서 업무을 선택하여 상세 페이지로 이동
-  const onClickPermissionTemplateItem = async (
-    permissionTemplateId: string
-  ) => {
+  const onClickPermissionTemplateItem = async (templateId: string) => {
     try {
-      const response = await permissionsApi.getPermissionTemplate({
-        churchId,
-        permissionTemplateId,
-      });
-      const permissionTemplate = response.data.data;
+      let permissionTemplate: PermissionTemplate;
+      if (templateId === CHURCH_USER_ROLE.OWNER) {
+        permissionTemplate = getOwnerPermissionTemplate(
+          t,
+          churchId,
+          permissionUnits
+        );
+      } else {
+        const response = await permissionsApi.getPermissionTemplate({
+          churchId,
+          templateId,
+        });
+        permissionTemplate = response.data.data;
+      }
 
-      dispatch(setTargetPermissionTemplate(permissionTemplate));
+      dispatch(
+        setTargetPermissionTemplate({
+          ...permissionTemplate,
+          unitIds: permissionTemplate.permissionUnits.map((unit) => unit.id),
+        })
+      );
       setIsPermissionTemplateInformationShown(true);
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));
@@ -212,7 +227,7 @@ const PermissionTemplateList = ({
     try {
       const response = await permissionsApi.deletePermissionTemplate({
         churchId,
-        permissionTemplateId: targetPermissionTemplate.id,
+        templateId: targetPermissionTemplate.id,
       });
       if (response.status === 200) {
         // 초기화 후 다시 로드
@@ -237,6 +252,17 @@ const PermissionTemplateList = ({
 
   // 수정 페이지 종료
   const onClickEditClose = () => {
+    const prevPermissionTemplate = permissionTemplates.find(
+      (template) => template.id === targetPermissionTemplate.id
+    );
+    if (prevPermissionTemplate) {
+      dispatch(
+        setTargetPermissionTemplate({
+          ...prevPermissionTemplate,
+          permissionUnits: targetPermissionTemplate.permissionUnits,
+        })
+      );
+    }
     setIsEditShown(false);
     setTimeout(() => {
       setIsPermissionTemplateInformationShown(true);
@@ -256,7 +282,7 @@ const PermissionTemplateList = ({
   }, [targetPermissionTemplate]);
 
   useEffect(() => {
-    if (!getIsWellFormedTitle(targetPermissionTemplate.name)) {
+    if (!getIsWellFormedTitle(targetPermissionTemplate.title)) {
       setIsSaveEnabled(false);
       return;
     }

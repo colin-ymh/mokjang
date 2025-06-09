@@ -210,7 +210,7 @@ const AddTaskView = ({
             height={40}
             isSingle={true}
             placeholder={inCharge.length === 0 ? t_placeholder('name') : BLANK}
-            isUserMember={true}
+            isManager={true}
           />
         </LabelContainer>
       </InputContainer>
@@ -237,7 +237,7 @@ const AddTaskView = ({
             onChangeValues={onChangeReceivers}
             height={40}
             placeholder={receivers.length === 0 ? t_placeholder('name') : BLANK}
-            isUserMember={true}
+            isManager={true}
           />
         </LabelContainer>
       </InputContainer>

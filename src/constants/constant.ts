@@ -98,3 +98,15 @@ export enum HEADER_BAR {
   MY = 'my',
   REPORTED = 'reported',
 }
+
+export enum USER_ROLE {
+  OWNER = 'owner',
+  MEMBER = 'member',
+  NONE = 'none',
+}
+
+export enum CHURCH_USER_ROLE {
+  OWNER = 'owner',
+  MANAGER = 'manager',
+  MEMBER = 'member',
+}

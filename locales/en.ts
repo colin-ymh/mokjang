@@ -12,6 +12,8 @@ export default {
   isDone: 'Completed',
   isNotDone: 'Incomplete',
 
+  lastLogin: 'Last Login',
+
   inCharge: 'In Charge',
   inChargeId: 'In Charge',
   taskDate: 'Task Date',
@@ -21,14 +23,21 @@ export default {
 
   title: 'title',
 
+  owner: 'Owner',
+  range: 'Range',
   member: 'Member',
   visitation: 'Visitation',
   task: 'Task',
+  active: 'Active',
+  inactive: 'Inactive',
+
+  linkedMemberUndefined: 'Linked Member is undefined',
 
   read: 'Read',
   write: 'Write',
 
   permission: 'Permission',
+  permissionTemplate: 'Permission Template',
 
   educationEnrollment: 'Enrollment',
 
@@ -96,6 +105,7 @@ export default {
   updateAfter: 'Updated After',
   updateBefore: 'Updated Before',
 
+  joinedAt: 'Joined Date',
   registeredAt: 'Registered Date',
   updatedAt: 'Updated Date',
 
@@ -207,7 +217,7 @@ export default {
   'header.calendar': 'Calendar',
 
   'header.church': 'Church',
-  'header.administrator': 'Administrator',
+  'header.manager': 'Manager',
   'header.join': 'Join Request',
   'header.permission': 'Permission',
   'header.user': 'User',
@@ -220,19 +230,21 @@ export default {
 
   'header.groupInformation': 'Information',
   'header.groupMembers': 'Members',
+
+  'header.permissionUnit': 'Permission',
   /*-------------------header (side bar button)-------------------*/
 
   /*-------------------member content (member header bar button)-------------------*/
   'member-content.all': 'All',
-  'member-content.administrator': 'Administrator',
+  'member-content.manager': 'Manager',
   'member-content.new': 'New',
 
   'church-content.group': 'Group',
   'church-content.ministry': 'Ministry',
   'church-content.officer': 'Officer',
 
-  'administrator-content.setting': 'Setting',
-  'administrator-content.add': 'Add',
+  'manager-content.setting': 'Setting',
+  'manager-content.add': 'Add',
 
   'visitation-content.all': 'All',
   'visitation-content.my': 'My',
@@ -313,6 +325,8 @@ export default {
   'button.reject': 'Reject',
   'button.link': 'Link',
   'button.makeMemberInformation': 'Make the Member Information',
+  'button.linkMemberInformation': 'Link Member',
+  'button.unlinkMemberInformation': 'Unlink Member',
   /*-------------------button-------------------*/
 
   /*-------------------placeholder-------------------*/
@@ -414,5 +428,9 @@ export default {
     'Do you want to delete this Permission Template?',
   'popup.deletePermissionTemplateBody':
     'Deleted Permission Template cannot be restored.',
+
+  'popup.deleteChurchUserTitle': 'Do you want to delete this Church User?',
+  'popup.deleteChurchUserBody': 'Deleted Church User cannot be restored.',
+
   /*-------------------popup-------------------*/
 } as const;

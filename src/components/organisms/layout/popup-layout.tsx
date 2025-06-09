@@ -20,6 +20,7 @@ export type PopupLayoutProps = {
   cancelBackgroundColor?: string;
   doneBackgroundColor?: string;
   isFooterShown?: boolean;
+  isHeaderShown?: boolean;
   doneDisabled?: boolean;
   children: React.ReactNode;
 };
@@ -33,6 +34,7 @@ const PopupLayout = ({
   doneText,
   cancelBackgroundColor,
   doneBackgroundColor,
+  isHeaderShown = true,
   isFooterShown = true,
   doneDisabled = false,
   children,
@@ -41,14 +43,16 @@ const PopupLayout = ({
   return (
     <Wrap>
       <PopupContainer>
-        <PopupHeader
-          headerTitle={headerTitle}
-          headerRight={headerRight}
-          onClickCancel={onClickCancel}
-          onClickDone={onClickDone}
-          cancelText={cancelText || t_button('cancel')}
-          doneText={doneText || t_button('save')}
-        />
+        {isHeaderShown && (
+          <PopupHeader
+            headerTitle={headerTitle}
+            headerRight={headerRight}
+            onClickCancel={onClickCancel}
+            onClickDone={onClickDone}
+            cancelText={cancelText || t_button('cancel')}
+            doneText={doneText || t_button('save')}
+          />
+        )}
         <PopupContent>{children}</PopupContent>
         {isFooterShown && (
           <PopupFooter

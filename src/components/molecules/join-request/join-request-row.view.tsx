@@ -1,9 +1,7 @@
 import { ChangeEvent, Ref } from 'react';
 import styled from 'styled-components';
-import { GRAY } from '@/constants/styles/color';
 import useWindowSize from '@/hooks/window/window';
 import SearchInput from '@/components/atoms/common/input/search-input';
-import StatusDropdown from '@/components/atoms/common/dropdown/status-dropdown';
 import { JOIN_REQUEST_STATUS } from '@/constants/status/status';
 import JoinRequestFilteredItem, {
   JoinRequestFilteredItemType,
@@ -123,15 +121,15 @@ const JoinRequestequestRowView = ({
         </FilterList>
         {/* 검색 부분 */}
         <SearchContainer>
-          <StatusDropdown
-            value={statusFilter}
-            items={statusFilterDropdownItems}
-            onChangeItem={onClickStatusFilterItem}
-            height={30}
-            width={130}
-            borderColor={GRAY.SEMI_LIGHT}
-            backgroundBlur={false}
-          />
+          {/*<StatusDropdown*/}
+          {/*  value={statusFilter}*/}
+          {/*  items={statusFilterDropdownItems}*/}
+          {/*  onChangeItem={onClickStatusFilterItem}*/}
+          {/*  height={30}*/}
+          {/*  width={130}*/}
+          {/*  borderColor={GRAY.SEMI_LIGHT}*/}
+          {/*  backgroundBlur={false}*/}
+          {/*/>*/}
           <SearchInput
             searchRef={searchRef}
             searchFilter={searchFilter}

@@ -234,7 +234,7 @@ const AddEducationTermView = ({
             height={40}
             isSingle={true}
             placeholder={inCharge.length === 0 ? t_placeholder('name') : BLANK}
-            isUserMember={true}
+            isManager={true}
           />
         </LabelContainer>
       </InputContainer>

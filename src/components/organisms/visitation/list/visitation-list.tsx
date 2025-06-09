@@ -99,9 +99,12 @@ const VisitationList = ({
         fetchVisitations({
           churchId,
           currentPage: page + 1,
-          inChargeId: headerType === HEADER_BAR.MY ? user.member.id : undefined,
+          inChargeId:
+            headerType === HEADER_BAR.MY ? user.churchUser[0].id : undefined,
           memberId:
-            headerType === HEADER_BAR.REPORTED ? user.member.id : undefined,
+            headerType === HEADER_BAR.REPORTED
+              ? user.churchUser[0].id
+              : undefined,
         })
       );
       if (fetchVisitations.fulfilled.match(result)) {
@@ -134,9 +137,11 @@ const VisitationList = ({
             churchId,
             currentPage: 1,
             inChargeId:
-              headerType === HEADER_BAR.MY ? user.member.id : undefined,
+              headerType === HEADER_BAR.MY ? user.churchUser[0].id : undefined,
             memberId:
-              headerType === HEADER_BAR.REPORTED ? user.member.id : undefined,
+              headerType === HEADER_BAR.REPORTED
+                ? user.churchUser[0].id
+                : undefined,
           })
         );
         if (fetchVisitations.fulfilled.match(result)) {
@@ -165,13 +170,6 @@ const VisitationList = ({
         return detail.memberId;
       });
 
-      const addMemberIds = newMemberIds.filter(
-        (id) => !prevMemberIds.includes(id)
-      );
-      const deleteMemberIds = prevMemberIds.filter(
-        (id) => !newMemberIds.includes(id)
-      );
-
       // 1. 메인 심방 정보 수정
       await visitationsApi.editVisitation(
         { churchId, visitationId: targetVisitation.id },
@@ -182,9 +180,7 @@ const VisitationList = ({
           startDate: targetVisitation.startDate,
           endDate: targetVisitation.endDate,
           title: targetVisitation.title || undefined,
-          addMemberIds: addMemberIds.length !== 0 ? addMemberIds : undefined,
-          deleteMemberIds:
-            deleteMemberIds.length !== 0 ? deleteMemberIds : undefined,
+          memberIds: newMemberIds,
         }
       );
 
@@ -306,9 +302,11 @@ const VisitationList = ({
             churchId,
             currentPage: 1,
             inChargeId:
-              headerType === HEADER_BAR.MY ? user.member.id : undefined,
+              headerType === HEADER_BAR.MY ? user.churchUser[0].id : undefined,
             memberId:
-              headerType === HEADER_BAR.REPORTED ? user.member.id : undefined,
+              headerType === HEADER_BAR.REPORTED
+                ? user.churchUser[0].id
+                : undefined,
           })
         );
         if (fetchVisitations.fulfilled.match(result)) {
@@ -325,6 +323,12 @@ const VisitationList = ({
 
   // 수정 페이지 종료
   const onClickEditClose = () => {
+    const prevVisitation = visitations.find(
+      (visitation) => visitation.id === targetVisitation.id
+    );
+    if (prevVisitation) {
+      dispatch(setTargetVisitation(prevVisitation));
+    }
     setIsEditShown(false);
     setTimeout(() => {
       setIsVisitationInformationShown(true);

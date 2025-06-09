@@ -10,7 +10,6 @@ import { USER } from '@/constants/user/user-column';
 type JOIN_REQUEST_FILTER = {
   [JOIN_REQUEST.NAME]: string;
   [JOIN_REQUEST.MOBILE_PHONE]: string;
-  [JOIN_REQUEST.STATUS]: JOIN_REQUEST_STATUS[];
   [JOIN_REQUEST.FROM_CREATED_AT]: string;
   [JOIN_REQUEST.TO_CREATED_AT]: string;
 };
@@ -26,7 +25,6 @@ type JoinRequestFilterState = {
 export const INITIAL_JOIN_REQUEST_FILTER: JOIN_REQUEST_FILTER = {
   [JOIN_REQUEST.NAME]: BLANK,
   [JOIN_REQUEST.MOBILE_PHONE]: BLANK,
-  [JOIN_REQUEST.STATUS]: [],
   [JOIN_REQUEST.FROM_CREATED_AT]: BLANK,
   [JOIN_REQUEST.TO_CREATED_AT]: BLANK,
 };
@@ -58,14 +56,14 @@ export const INITIAL_JOIN_REQUEST_TABLE_HEADER_LIST: JOIN_REQUEST_TABLE_HEADER_I
       isFixed: true,
       isDate: false,
     },
-    {
-      id: JOIN_REQUEST.STATUS,
-      isShown: true,
-      isSortable: false,
-      isFilterable: false,
-      isFixed: true,
-      isDate: false,
-    },
+    // {
+    //   id: JOIN_REQUEST.STATUS,
+    //   isShown: true,
+    //   isSortable: false,
+    //   isFilterable: false,
+    //   isFixed: true,
+    //   isDate: false,
+    // },
     {
       id: JOIN_REQUEST.CREATED_AT,
       isShown: true,
@@ -89,11 +87,12 @@ export const fetchJoinRequests = createAsyncThunk<
   {
     churchId: string;
     currentPage: number;
+    status: JOIN_REQUEST_STATUS;
   },
   { state: RootState }
 >(
   'joinRequests/fetchJoinRequests',
-  async ({ churchId, currentPage }, { getState, rejectWithValue }) => {
+  async ({ churchId, currentPage, status }, { getState, rejectWithValue }) => {
     const state = getState().joinRequestFilter;
     const { joinRequestOrderBy, joinRequestOrderDirection, joinRequestFilter } =
       state;
@@ -107,8 +106,7 @@ export const fetchJoinRequests = createAsyncThunk<
         order: joinRequestOrderBy !== NULL ? joinRequestOrderBy : undefined,
         orderDirection: joinRequestOrderDirection,
         // 필터
-        status: joinRequestFilter.status,
-        fromCreatedAt: joinRequestFilter.fromCreatedAt,
+        status,
         toCreatedAt: joinRequestFilter.toCreatedAt,
         // 검색
       });

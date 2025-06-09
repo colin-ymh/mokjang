@@ -1,4 +1,5 @@
 export enum PERMISSION_TEMPLATE {
-  NAME = 'name',
+  TITLE = 'permissionTemplate',
   UNITS = 'unitIds',
+  RANGE = 'range',
 }

@@ -7,14 +7,16 @@ const CheckButtonContainer = styled.div<{
   width: number;
   height: number;
   $isChecked: boolean;
+  $disabled: boolean;
 }>`
   display: flex;
   border: 1px solid ${GRAY.LIGHT};
   border-radius: 30%;
   width: ${({ width }) => width}px;
   height: ${({ height }) => height}px;
-  background-color: ${({ $isChecked }) => ($isChecked ? MAIN.DEFAULT : WHITE)};
-  cursor: pointer;
+  background-color: ${({ $isChecked, $disabled }) =>
+    $isChecked ? ($disabled ? GRAY.DEFAULT : MAIN.DEFAULT) : WHITE};
+  cursor: ${({ $disabled }) => ($disabled ? 'default' : 'pointer')};
 `;
 
 type CheckButtonProps = {
@@ -62,6 +64,7 @@ const CheckButton = ({
       width={width}
       height={height}
       $isChecked={isChecked}
+      $disabled={disabled}
     />
   );
 };

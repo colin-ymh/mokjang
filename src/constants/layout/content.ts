@@ -6,7 +6,7 @@ export enum HOME_CONTENT_ID {
 
 export enum MEMBER_CONTENT_ID {
   ALL = HEADER_BAR.ALL,
-  ADMINISTRATOR = 'administrator',
+  MANAGER = 'manager',
   NEW = 'new',
 }
 
@@ -20,8 +20,8 @@ export enum USER_CONTENT_ID {
   USER = 'user',
 }
 
-export enum ADMINISTRATOR_CONTENT_ID {
-  ADMINISTRATOR = 'administrator',
+export enum MANAGER_CONTENT_ID {
+  MANAGER = 'manager',
 }
 
 export enum PERMISSION_CONTENT_ID {

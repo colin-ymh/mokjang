@@ -5,9 +5,8 @@ import { useI18n, useScopedI18n } from '../../../../../locales/client';
 import { GRAY } from '@/constants/styles/color';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
-import { ACTION, DOMAIN, PermissionUnit } from '@/models/permission/permission';
 import { MainText } from '@/components/atoms/common/text/main-text';
-import PermissionUnitList from '@/components/molecules/permission/permission-unit-list';
+import PermissionUnitList from '@/components/molecules/permission/information/permission-unit-list';
 
 const AddPermissionTemplateViewContainer = styled.div`
   display: flex;
@@ -32,14 +31,6 @@ const InputContainer = styled.div`
   gap: 10px;
 `;
 
-const PeriodContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 10px;
-  justify-content: flex-start;
-  align-items: center;
-`;
-
 type AddPermissionTemplateViewProps = {
   onChangeName: (event: ChangeEvent<HTMLInputElement>) => void;
   onChangeUnitIds: (unitIds: string[]) => void;
@@ -52,17 +43,9 @@ const AddPermissionTemplateView = ({
   const { targetPermissionTemplate } = useSelector(
     (state: RootState) => state.targetPermissionTemplate
   );
-
-  const tempUnits: PermissionUnit[] = [
-    { id: '1', domain: DOMAIN.MEMBER, action: ACTION.READ },
-    { id: '2', domain: DOMAIN.MEMBER, action: ACTION.WRITE },
-    { id: '3', domain: DOMAIN.VISITATION, action: ACTION.READ },
-    { id: '4', domain: DOMAIN.VISITATION, action: ACTION.WRITE },
-    { id: '5', domain: DOMAIN.TASK, action: ACTION.READ },
-    { id: '6', domain: DOMAIN.TASK, action: ACTION.WRITE },
-    { id: '7', domain: DOMAIN.EDUCATION, action: ACTION.READ },
-    { id: '8', domain: DOMAIN.EDUCATION, action: ACTION.WRITE },
-  ];
+  const { permissionUnits } = useSelector(
+    (state: RootState) => state.permissionTemplateFilter
+  );
 
   const t = useI18n();
   const t_placeholder = useScopedI18n('placeholder');
@@ -72,10 +55,10 @@ const AddPermissionTemplateView = ({
       {/* 제목 */}
       <InputContainer>
         <LabelInput
-          label={t('name')}
-          value={targetPermissionTemplate.name}
+          label={t('title')}
+          value={targetPermissionTemplate.title}
           onChange={onChangeName}
-          placeholder={t_placeholder('name')}
+          placeholder={t_placeholder('title')}
           borderColor={GRAY.LIGHT}
           height={40}
           isRequired={true}
@@ -86,7 +69,7 @@ const AddPermissionTemplateView = ({
         <LabelContainer>
           <MainText>{t('permission')}</MainText>
           <PermissionUnitList
-            units={tempUnits}
+            units={permissionUnits}
             unitIds={targetPermissionTemplate.unitIds}
             onChangeUnitIds={onChangeUnitIds}
           />

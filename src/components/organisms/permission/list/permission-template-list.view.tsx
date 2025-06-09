@@ -5,18 +5,17 @@ import { BLACK, DESTRUCTIVE, MAIN } from '@/constants/styles/color';
 import CancelIcon from '../../../../../public/svg/cancel.svg';
 import TrashIcon from '../../../../../public/svg/trash.svg';
 import { useScopedI18n } from '../../../../../locales/client';
-import { MEDIA_MIN_WIDTH } from '@/constants/constant';
-
-import { useSelector } from 'react-redux';
-import { RootState } from '@/redux/store';
+import { CHURCH_USER_ROLE, MEDIA_MIN_WIDTH } from '@/constants/constant';
 import PermissionTemplateTable, {
   PermissionTemplateTableProps,
-} from '@/components/molecules/permission/permission-template-table';
+} from '@/components/molecules/permission/list/permission-template-table';
 import SlidePopup from '@/components/atoms/common/popup/slide-popup';
 import KebabDropdown from '@/components/atoms/common/dropdown/kebab-dropdown';
 import ConfirmPopup from '@/components/atoms/common/popup/error-popup';
 import PermissionTemplateInformation from '@/components/organisms/permission/information/permission-template-information';
 import AddPermissionTemplate from '@/components/organisms/permission/add/add-permission-template';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
 
 const PermissionTemplateListContainer = styled.div`
   display: flex;
@@ -93,6 +92,10 @@ const PermissionTemplateListView = (props: PermissionTemplateListViewProps) => {
   const t_button = useScopedI18n('button');
   const t_popup = useScopedI18n('popup');
   const t_title = useScopedI18n('title');
+
+  const { targetPermissionTemplate } = useSelector(
+    (state: RootState) => state.targetPermissionTemplate
+  );
   const {
     isSaveEnabled,
     isPermissionTemplateInformationShown,
@@ -107,10 +110,6 @@ const PermissionTemplateListView = (props: PermissionTemplateListViewProps) => {
     onClickEditOpen,
     onClickEditClose,
   } = props.information;
-
-  const { targetPermissionTemplate } = useSelector(
-    (state: RootState) => state.targetPermissionTemplate
-  );
 
   return (
     <PermissionTemplateListContainer>
@@ -127,24 +126,25 @@ const PermissionTemplateListView = (props: PermissionTemplateListViewProps) => {
         isShow={isPermissionTemplateInformationShown}
         onClickClose={onClickClose}
         isFooterShown={false}
-        headerTitle={targetPermissionTemplate?.name}
         headerRight={
           <ButtonRow>
-            <KebabDropdown
-              items={[
-                {
-                  value: 'delete',
-                  title: t_button('delete'),
-                  onClick: onClickConfirmOpen,
-                },
-                {
-                  value: 'edit',
-                  title: t_button('edit'),
-                  onClick: onClickEditOpen,
-                },
-              ]}
-              width={150}
-            />
+            {targetPermissionTemplate.id !== CHURCH_USER_ROLE.OWNER && (
+              <KebabDropdown
+                items={[
+                  {
+                    value: 'delete',
+                    title: t_button('delete'),
+                    onClick: onClickConfirmOpen,
+                  },
+                  {
+                    value: 'edit',
+                    title: t_button('edit'),
+                    onClick: onClickEditOpen,
+                  },
+                ]}
+                width={150}
+              />
+            )}
             <ButtonContainer onClick={onClickClose}>
               <Cancel />
             </ButtonContainer>

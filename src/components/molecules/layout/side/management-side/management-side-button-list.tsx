@@ -28,8 +28,8 @@ const ManagementSideButtonList = ({}: SideBarViewProps) => {
         title={t_header(MANAGEMENT_HEADER_ID.CHURCH)}
       />
       <ManagementSideButton
-        id={MANAGEMENT_HEADER_ID.ADMINISTRATOR}
-        title={t_header(MANAGEMENT_HEADER_ID.ADMINISTRATOR)}
+        id={MANAGEMENT_HEADER_ID.MANAGER}
+        title={t_header(MANAGEMENT_HEADER_ID.MANAGER)}
       />
       <ManagementSideButton
         id={MANAGEMENT_HEADER_ID.PERMISSION}

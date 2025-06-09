@@ -37,8 +37,8 @@ const ManagementSideButton = ({ id, title }: SideBarButtonProps) => {
       case MANAGEMENT_HEADER_ID.CHURCH:
         router.push(`/management/church/group`);
         return;
-      case MANAGEMENT_HEADER_ID.ADMINISTRATOR:
-        router.push(`/management/administrator`);
+      case MANAGEMENT_HEADER_ID.MANAGER:
+        router.push(`/management/manager`);
         return;
       default:
         router.push(`/management/${id}`);

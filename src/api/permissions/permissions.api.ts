@@ -10,10 +10,6 @@ import { DOMAIN } from '@/models/permission/permission';
 
 type GetPermissionUnitsParams = {
   churchId: string;
-  take?: number;
-  page?: number;
-  order?: PERMISSION_TEMPLATE;
-  orderDirection?: ORDER_DIRECTION;
   domain?: DOMAIN;
 };
 
@@ -23,10 +19,6 @@ type GetPermissionTemplatesParams = {
   page?: number;
   order?: PERMISSION_TEMPLATE;
   orderDirection?: ORDER_DIRECTION;
-
-  fromStartDate?: string;
-  toStartDate?: string;
-  name?: string;
 };
 
 type CreatePermissionTemplateParams = {
@@ -34,28 +26,33 @@ type CreatePermissionTemplateParams = {
 };
 
 type CreatePermissionTemplateBody = {
-  name: string;
+  title: string;
   unitIds: string[];
 };
 
 type GetPermissionTemplateParams = {
   churchId: string;
-  permissionTemplateId: string;
+  templateId: string;
 };
 
 type EditPermissionTemplateParams = {
   churchId: string;
-  permissionTemplateId: string;
+  templateId: string;
 };
 
 type EditPermissionTemplateBody = {
-  name?: string;
+  title?: string;
   unitIds?: string[];
 };
 
 type DeletePermissionTemplateParams = {
   churchId: string;
-  permissionTemplateId: string;
+  templateId: string;
+};
+
+type GetPermissionManagersParams = {
+  churchId: string;
+  templateId: string;
 };
 
 export class PermissionsApi {
@@ -68,7 +65,7 @@ export class PermissionsApi {
   }
 
   /**
-   * 권한유형들 정보 가져오기
+   * 권한 단위 조회
    * @returns {Promise<AxiosResponse>}
    */
   public getPermissionUnits = async (
@@ -76,9 +73,6 @@ export class PermissionsApi {
   ): Promise<AxiosResponse> => {
     const {
       churchId,
-      take = 5,
-      page = 1,
-      orderDirection,
       domain,
       // 필요하다면 선택 컬럼 등 추가
     } = params;
@@ -86,9 +80,6 @@ export class PermissionsApi {
     /* ①queryParams 구성 ─────────────────────────────────────────────── */
     const queryParams: Record<string, any> = Object.fromEntries(
       Object.entries({
-        take,
-        page,
-        orderDirection,
         domain,
       }).filter(
         ([_, value]) =>
@@ -125,7 +116,7 @@ export class PermissionsApi {
   };
 
   /**
-   * 권한유형들 정보 가져오기
+   * 권한 유형 조회
    * @returns {Promise<AxiosResponse>}
    */
   public getPermissionTemplates = async (
@@ -136,10 +127,6 @@ export class PermissionsApi {
       take = 5,
       page = 1,
       orderDirection,
-
-      fromStartDate,
-      toStartDate,
-      name,
       // 필요하다면 선택 컬럼 등 추가
     } = params;
 
@@ -149,14 +136,9 @@ export class PermissionsApi {
         take,
         page,
         orderDirection,
-        fromStartDate,
-        toStartDate,
-        name,
       }).filter(
         ([_, value]) =>
-          value !== undefined &&
-          value !== '' &&
-          !(Array.isArray(value) && value.length === 0)
+          value !== undefined && !(Array.isArray(value) && value.length === 0)
       )
     );
 
@@ -212,12 +194,35 @@ export class PermissionsApi {
     }
   };
 
+  public createSamplePermissionTemplate = async (
+    params: CreatePermissionTemplateParams
+  ) => {
+    const { churchId } = params;
+
+    const url = `${this._url}/churches/${churchId}/permissions/templates/sample`;
+
+    try {
+      return await authorizeAxios.post(url);
+    } catch (serverError: any) {
+      if (serverError.response) {
+        const { message, error, statusCode } = serverError.response.data;
+        throw new CustomError(message, error, statusCode);
+      } else {
+        throw new CustomError(
+          '알 수 없는 에러가 발생했습니다',
+          500,
+          'Unknown Error'
+        );
+      }
+    }
+  };
+
   public getPermissionTemplate = async (
     params: GetPermissionTemplateParams
   ) => {
-    const { churchId, permissionTemplateId } = params;
+    const { churchId, templateId } = params;
 
-    const url = `${this._url}/churches/${churchId}/permissions/templates/${permissionTemplateId}`;
+    const url = `${this._url}/churches/${churchId}/permissions/templates/${templateId}`;
 
     try {
       return await axios.get(url);
@@ -239,9 +244,9 @@ export class PermissionsApi {
     params: EditPermissionTemplateParams,
     body: EditPermissionTemplateBody
   ) => {
-    const { churchId, permissionTemplateId } = params;
+    const { churchId, templateId } = params;
 
-    const url = `${this._url}/churches/${churchId}/permissions/templates/${permissionTemplateId}`;
+    const url = `${this._url}/churches/${churchId}/permissions/templates/${templateId}`;
 
     try {
       return await axios.patch(url, body);
@@ -262,12 +267,35 @@ export class PermissionsApi {
   public deletePermissionTemplate = async (
     params: DeletePermissionTemplateParams
   ) => {
-    const { churchId, permissionTemplateId } = params;
+    const { churchId, templateId } = params;
 
-    const url = `${this._url}/churches/${churchId}/permissions/templates/${permissionTemplateId}`;
+    const url = `${this._url}/churches/${churchId}/permissions/templates/${templateId}`;
 
     try {
       return await axios.delete(url);
+    } catch (serverError: any) {
+      if (serverError.response) {
+        const { message, error, statusCode } = serverError.response.data;
+        throw new CustomError(message, error, statusCode);
+      } else {
+        throw new CustomError(
+          '알 수 없는 에러가 발생했습니다',
+          500,
+          'Unknown Error'
+        );
+      }
+    }
+  };
+
+  public getPermissionManagers = async (
+    params: GetPermissionTemplateParams
+  ) => {
+    const { churchId, templateId } = params;
+
+    const url = `${this._url}/churches/${churchId}/permissions/templates/${templateId}/managers`;
+
+    try {
+      return await axios.get(url);
     } catch (serverError: any) {
       if (serverError.response) {
         const { message, error, statusCode } = serverError.response.data;

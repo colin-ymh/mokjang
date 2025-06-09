@@ -12,8 +12,16 @@ export default {
   isDone: '완료',
   isNotDone: '미완료',
 
+  lastLogin: '마지막 로그인',
+
   createdAt: '생성일자',
   title: '제목',
+  owner: '소유자',
+  range: '범위',
+  active: '활성',
+  inactive: '비활성',
+
+  linkedMemberUndefined: '연결된 교인정보 없음',
 
   member: '교인',
   visitation: '심방',
@@ -23,6 +31,7 @@ export default {
   write: '쓰기',
 
   permission: '권한',
+  permissionTemplate: '권한유형',
 
   educationEnrollment: '수강 교인',
 
@@ -91,6 +100,7 @@ export default {
   officerList: '직분 목록',
   officerName: '직분명',
 
+  joinedAt: '등록일',
   registeredAt: '등록일자',
   updatedAt: '수정일자',
 
@@ -210,7 +220,7 @@ export default {
   'header.calendar': '일정표',
 
   'header.church': '교회설정',
-  'header.administrator': '관리자',
+  'header.manager': '관리자',
   'header.join': '등록대기',
   'header.permission': '권한유형',
   'header.user': '회원',
@@ -226,19 +236,24 @@ export default {
 
   'header.ministryGroupInformation': '그룹 정보',
   'header.ministryGroupMembers': '그룹원',
+
+  'header.permissionUnit': '권한',
+
+  'header.managerPermission': '권한',
+  'header.account': '계정',
   /*-------------------header (side bar button)-------------------*/
 
   /*-------------------content (header bar button)-------------------*/
   'member-content.all': '전체',
-  'member-content.administrator': '관리자',
+  'member-content.manager': '관리자',
   'member-content.new': '새신자',
 
   'church-content.group': '그룹',
   'church-content.ministry': '사역',
   'church-content.officer': '직분',
 
-  'administrator-content.setting': '관리자 설정',
-  'administrator-content.add': '관리자 추가',
+  'manager-content.setting': '관리자 설정',
+  'manager-content.add': '관리자 추가',
 
   'visitation-content.all': '전체',
   'visitation-content.my': '내 심방',
@@ -267,6 +282,13 @@ export default {
   'tableHeader.mobilePhone': '휴대전화',
   'tableHeader.status': '수료',
   'tableHeader.isDoneCount': '진행 상황',
+
+  'tableHeader.account': '계정정보',
+  'tableHeader.member': '교인정보',
+  'tableHeader.permissionTemplate': '권한유형',
+  'tableHeader.permissionActive': '활성',
+
+  'tableHeader.range': '활성',
   /*-------------------table header-------------------*/
 
   /*------------------- register-------------------*/
@@ -320,6 +342,8 @@ export default {
   'button.reject': '거절',
   'button.link': '연결',
   'button.makeMemberInformation': '교인정보 생성하기',
+  'button.linkMemberInformation': '교인정보 연결하기',
+  'button.unlinkMemberInformation': '교인정보 연결끊기',
   /*-------------------button-------------------*/
 
   /*-------------------placeholder-------------------*/
@@ -419,5 +443,8 @@ export default {
 
   'popup.deletePermissionTemplateTitle': '해당 권한유형을 삭제하시겠습니까?',
   'popup.deletePermissionTemplateBody': '삭제된 권한유형은 복구할 수 없습니다.',
+
+  'popup.deleteChurchUserTitle': '해당 관리자를 삭제하시겠습니까?',
+  'popup.deleteChurchUserBody': '삭제된 관리자는 복구할 수 없습니다.',
   /*-------------------popup-------------------*/
 } as const;

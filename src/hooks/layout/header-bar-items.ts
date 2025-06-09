@@ -6,9 +6,11 @@ import {
   VISITATION_CONTENT_ID,
 } from '@/constants/layout/content';
 import {
+  CHURCH_USER_HEADER_ID,
   GROUP_MANAGEMENT_HEADER_ID,
   MEMBER_INFORMATION_HEADER_ID,
   MINISTRY_MANAGEMENT_HEADER_ID,
+  PERMISSION_TEMPLATE_HEADER_ID,
 } from '@/constants/layout/header';
 
 import { useI18n, useScopedI18n } from '../../../locales/client';
@@ -22,8 +24,8 @@ export const useMainMemberHeaderBarItems = () => {
       title: t_memberContent(MEMBER_CONTENT_ID.ALL),
     },
     {
-      id: MEMBER_CONTENT_ID.ADMINISTRATOR,
-      title: t_memberContent(MEMBER_CONTENT_ID.ADMINISTRATOR),
+      id: MEMBER_CONTENT_ID.MANAGER,
+      title: t_memberContent(MEMBER_CONTENT_ID.MANAGER),
     },
     {
       id: MEMBER_CONTENT_ID.NEW,
@@ -178,6 +180,43 @@ export const useMinistryManagementHeaderBarItems = () => {
       title: t_header(MINISTRY_MANAGEMENT_HEADER_ID.MINISTRY_MEMBER_LIST),
     },
   ];
+
+  return items;
+};
+
+export const usePermissionTemplateHeaderBarItems = () => {
+  const t_header = useScopedI18n('header');
+
+  const items = [
+    {
+      id: PERMISSION_TEMPLATE_HEADER_ID.PERMISSION_UNIT,
+      title: t_header(PERMISSION_TEMPLATE_HEADER_ID.PERMISSION_UNIT),
+    },
+    {
+      id: PERMISSION_TEMPLATE_HEADER_ID.MANAGER,
+      title: t_header(PERMISSION_TEMPLATE_HEADER_ID.MANAGER),
+    },
+  ];
+
+  return items;
+};
+
+export const useChurchUserHeaderBarItems = (isManager: boolean) => {
+  const t_header = useScopedI18n('header');
+
+  const items = [
+    {
+      id: CHURCH_USER_HEADER_ID.ACCOUNT,
+      title: t_header(CHURCH_USER_HEADER_ID.ACCOUNT),
+    },
+  ];
+
+  if (isManager) {
+    items.push({
+      id: CHURCH_USER_HEADER_ID.PERMISSION,
+      title: t_header(CHURCH_USER_HEADER_ID.PERMISSION),
+    });
+  }
 
   return items;
 };

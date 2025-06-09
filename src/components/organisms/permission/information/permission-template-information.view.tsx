@@ -1,30 +1,80 @@
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
-import { useI18n } from '../../../../../locales/client';
 import React from 'react';
+import { MainText } from '@/components/atoms/common/text/main-text';
+import { SIZE } from '@/constants/styles/style';
+import HeaderBar from '@/components/atoms/layout/header/header-bar';
+import { PERMISSION_TEMPLATE_HEADER_ID } from '@/constants/layout/header';
+import { usePermissionTemplateHeaderBarItems } from '@/hooks/layout/header-bar-items';
+import PermissionUnitList from '@/components/molecules/permission/information/permission-unit-list';
+import PermissionManagerList from '@/components/molecules/permission/information/permission-manager-list';
 
 const InformationContainer = styled.div`
   display: flex;
   flex: 1;
   flex-direction: column;
-  overflow-y: auto;
+`;
+
+const HeaderContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  height: 50px;
+`;
+
+const ContentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  gap: 10px;
 `;
 
 type PermissionTemplateInformationViewProps = {
-  onChangePermissionUnit: (unitId: string) => void;
+  headerBarValue: PERMISSION_TEMPLATE_HEADER_ID;
+  onChangeHeader: (value: PERMISSION_TEMPLATE_HEADER_ID) => void;
 };
 
 const PermissionTemplateInformationView = ({
-  onChangePermissionUnit,
+  headerBarValue,
+  onChangeHeader,
 }: PermissionTemplateInformationViewProps) => {
-  const t = useI18n();
-
+  const headerBarItems = usePermissionTemplateHeaderBarItems();
   const { targetPermissionTemplate } = useSelector(
     (state: RootState) => state.targetPermissionTemplate
   );
+  const { permissionManagers, permissionUnits } = useSelector(
+    (state: RootState) => state.permissionTemplateFilter
+  );
 
-  return <InformationContainer></InformationContainer>;
+  return (
+    <InformationContainer>
+      <HeaderContainer>
+        <MainText size={SIZE.LARGE} fontWeight={600}>
+          {targetPermissionTemplate.title}
+        </MainText>
+      </HeaderContainer>
+      <ContentContainer>
+        <HeaderBar
+          value={headerBarValue}
+          items={headerBarItems}
+          onClick={onChangeHeader}
+        />
+        {headerBarValue === PERMISSION_TEMPLATE_HEADER_ID.PERMISSION_UNIT && (
+          <PermissionUnitList
+            units={permissionUnits}
+            unitIds={targetPermissionTemplate?.permissionUnits?.map(
+              (unit) => unit.id
+            )}
+            isEditable={false}
+          />
+        )}
+        {headerBarValue === PERMISSION_TEMPLATE_HEADER_ID.MANAGER && (
+          <PermissionManagerList managers={permissionManagers} />
+        )}
+      </ContentContainer>
+    </InformationContainer>
+  );
 };
 
 export default PermissionTemplateInformationView;

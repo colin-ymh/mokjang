@@ -61,8 +61,7 @@ type EditVisitationBody = {
   inChargeId?: string;
   startDate?: string;
   endDate?: string;
-  addMemberIds?: string[];
-  deleteMemberIds?: string[];
+  memberIds?: string[];
 };
 
 type DeleteVisitationParams = {
