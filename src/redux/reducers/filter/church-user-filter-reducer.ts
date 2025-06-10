@@ -58,6 +58,14 @@ export const INITIAL_CHURCH_USER_TABLE_HEADER_LIST: CHURCH_USER_TABLE_HEADER_ITE
       isDate: false,
     },
     {
+      id: CHURCH_USER.PERMISSION_SCOPE,
+      isShown: true,
+      isSortable: false,
+      isFilterable: true,
+      isFixed: true,
+      isDate: false,
+    },
+    {
       id: CHURCH_USER.PERMISSION_ACTIVE,
       isShown: true,
       isSortable: false,

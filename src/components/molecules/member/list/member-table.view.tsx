@@ -31,7 +31,7 @@ import MemberProfile from '@/components/atoms/member/member-profile';
 const getColumnWidth = (id: string) => {
   switch (id) {
     case MEMBER.CHECK:
-      return 30;
+      return 40;
     case MEMBER.GROUP:
       return 120;
     case MEMBER.NAME:

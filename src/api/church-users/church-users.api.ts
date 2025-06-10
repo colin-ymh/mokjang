@@ -18,12 +18,12 @@ type GetChurchUsersParams = {
 
 type GetChurchUserParams = {
   churchId: string; // 교회 id
-  userId: string;
+  churchUserId: string;
 };
 
 type LinkMemberParams = {
   churchId: string;
-  userId: string;
+  churchUserId: string;
 };
 
 type LinkMemberBody = {
@@ -32,12 +32,12 @@ type LinkMemberBody = {
 
 type UnlinkMemberParams = {
   churchId: string;
-  userId: string;
+  churchUserId: string;
 };
 
 type LeaveChurchParams = {
   churchId: string;
-  userId: string;
+  churchUserId: string;
 };
 
 export class ChurchUsersApi {
@@ -118,9 +118,9 @@ export class ChurchUsersApi {
   public getChurchUser = async (
     params: GetChurchUserParams
   ): Promise<AxiosResponse> => {
-    const { churchId, userId } = params;
+    const { churchId, churchUserId } = params;
 
-    const url = `${this._url}/churches/${churchId}/church-users/${userId}`;
+    const url = `${this._url}/churches/${churchId}/church-users/${churchUserId}`;
 
     try {
       return await axios.get(url);
@@ -148,9 +148,9 @@ export class ChurchUsersApi {
     params: LinkMemberParams,
     body: LinkMemberBody
   ): Promise<AxiosResponse> => {
-    const { churchId, userId } = params;
+    const { churchId, churchUserId } = params;
 
-    const url = `${this._url}/churches/${churchId}/church-users/${userId}/link-member`;
+    const url = `${this._url}/churches/${churchId}/church-users/${churchUserId}/link-member`;
 
     try {
       return await axios.patch(url, body);
@@ -176,9 +176,9 @@ export class ChurchUsersApi {
   public unlinkMember = async (
     params: UnlinkMemberParams
   ): Promise<AxiosResponse> => {
-    const { churchId, userId } = params;
+    const { churchId, churchUserId } = params;
 
-    const url = `${this._url}/churches/${churchId}/church-users/${userId}/unlink-member`;
+    const url = `${this._url}/churches/${churchId}/church-users/${churchUserId}/unlink-member`;
 
     try {
       return await axios.patch(url);
@@ -204,9 +204,9 @@ export class ChurchUsersApi {
   public leaveChurch = async (
     params: LeaveChurchParams
   ): Promise<AxiosResponse> => {
-    const { churchId, userId } = params;
+    const { churchId, churchUserId } = params;
 
-    const url = `${this._url}/churches/${churchId}/church-users/${userId}/leave-church`;
+    const url = `${this._url}/churches/${churchId}/church-users/${churchUserId}/leave-church`;
 
     try {
       return await axios.patch(url);

@@ -12,6 +12,7 @@ import {
 import ChurchUserListView from '@/components/organisms/church-user/list/church-user-list.view';
 import { ChurchUsersApi } from '@/api/church-users/church-users.api';
 import { setTargetChurchUser } from '@/redux/reducers/target/target-church-user-reducer';
+import { ManagersApi } from '@/api/managers/managers.api';
 
 type UserListProps = {
   isManager?: boolean;
@@ -34,6 +35,7 @@ const ChurchUserList = ({ isManager = false }: UserListProps) => {
   );
 
   const churchUsersApi = new ChurchUsersApi(false);
+  const managersApi = new ManagersApi(false);
 
   const [thrownError, setThrownError] = useState<Error | null>(null);
   if (thrownError) {
@@ -121,14 +123,17 @@ const ChurchUserList = ({ isManager = false }: UserListProps) => {
   }, [churchId, churchUserFilter, churchUserOrderBy, churchUserOrderDirection]);
 
   // 목록에서 교인을 선택하여 상세 페이지로 이동
-  const onClickUserItem = async (userId: string) => {
+  const onClickUserItem = async (user: ChurchUser) => {
     try {
-      const response = await churchUsersApi.getChurchUser({
+      const request = isManager
+        ? managersApi.getManager
+        : churchUsersApi.getChurchUser;
+      const response = await request({
         churchId,
-        userId,
+        churchUserId: user.id,
       });
 
-      const churchUser = response.data;
+      const churchUser = response.data.data;
       dispatch(setTargetChurchUser(churchUser));
       setIsChurchUserInformationShown(true);
     } catch (error) {
@@ -137,14 +142,17 @@ const ChurchUserList = ({ isManager = false }: UserListProps) => {
   };
 
   // 상세 페이지 닫기
-  const onClickCloseInformation = () => setIsChurchUserInformationShown(false);
+  const onClickCloseInformation = () => {
+    setIsChurchUserInformationShown(false);
+    dispatch(setTargetChurchUser(DEFAULT_CHURCH_USER));
+  };
 
   // 회원 / 관리자 삭제 => 교회 추방
   const onClickDelete = async () => {
     try {
       const response = await churchUsersApi.leaveChurch({
         churchId,
-        userId: targetChurchUser.id,
+        churchUserId: targetChurchUser.id,
       });
       if (response.status === 200) {
         // 초기화 후 다시 로드

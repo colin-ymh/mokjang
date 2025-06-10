@@ -32,6 +32,7 @@ export default {
 
   permission: '권한',
   permissionTemplate: '권한유형',
+  permissionScope: '권한범위',
 
   educationEnrollment: '수강 교인',
 
@@ -287,6 +288,7 @@ export default {
   'tableHeader.member': '교인정보',
   'tableHeader.permissionTemplate': '권한유형',
   'tableHeader.permissionActive': '활성',
+  'tableHeader.permissionScope': '권한범위',
 
   'tableHeader.range': '활성',
   /*-------------------table header-------------------*/

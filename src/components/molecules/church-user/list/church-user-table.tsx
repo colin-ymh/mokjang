@@ -8,9 +8,10 @@ import {
   setChurchUserOrderDirection,
 } from '@/redux/reducers/filter/church-user-filter-reducer';
 import ChurchUserTableView from '@/components/molecules/church-user/list/church-user-table.view';
+import { ChurchUser } from '@/models/church-user/church-user';
 
 export type UserTableProps = {
-  onClickUserItem: (churchUserId: string) => void;
+  onClickUserItem: (user: ChurchUser) => void;
   loadUsers: () => Promise<void>;
 };
 

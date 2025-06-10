@@ -116,8 +116,8 @@ const renderGroups = (
                 onClickToggle(parseInt(group.id as string));
               }}
             >
-              <MainText color={GRAY.DARK} size={SIZE.SMALL}>
-                {isHaveChildren ? (isOpen ? '▼' : '▶') : ''}
+              <MainText color={GRAY.DEFAULT} size={SIZE.EXTRA_SMALL}>
+                {isHaveChildren ? (isOpen ? '▼' : '▶') : '⦁'}
               </MainText>
             </DesktopToggleButton>
             <MainText
@@ -131,7 +131,7 @@ const renderGroups = (
             </MainText>
           </LeftContainer>
           <RightContainer>
-            <MainText size={SIZE.SMALL} color={GRAY.DEFAULT}>
+            <MainText color={GRAY.DEFAULT} size={SIZE.EXTRA_SMALL}>
               {group.id && group.membersCount}
             </MainText>
             <MobileToggleButton

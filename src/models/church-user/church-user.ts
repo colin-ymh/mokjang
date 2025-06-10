@@ -2,6 +2,7 @@ import { BLANK, CHURCH_USER_ROLE } from '@/constants/constant';
 import { Member } from '@/models/member/member';
 import {
   DEFAULT_PERMISSION_TEMPLATE,
+  PermissionScope,
   PermissionTemplate,
 } from '@/models/permission/permission';
 import { DEFAULT_MEMBER } from '@/redux/reducers/member-register-reducer';
@@ -22,6 +23,7 @@ export type ChurchUser = {
   member: Member;
   user: User;
   permissionTemplate: PermissionTemplate;
+  permissionScopes: PermissionScope[];
 };
 
 export const DEFAULT_CHURCH_USER: ChurchUser = {
@@ -38,4 +40,5 @@ export const DEFAULT_CHURCH_USER: ChurchUser = {
   member: DEFAULT_MEMBER,
   user: DEFAULT_USER,
   permissionTemplate: DEFAULT_PERMISSION_TEMPLATE,
+  permissionScopes: [],
 };

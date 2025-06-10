@@ -39,10 +39,10 @@ const ManagementSideButtonList = ({}: SideBarViewProps) => {
         id={MANAGEMENT_HEADER_ID.JOIN}
         title={t_header(MANAGEMENT_HEADER_ID.JOIN)}
       />
-      <ManagementSideButton
-        id={MANAGEMENT_HEADER_ID.USER}
-        title={t_header(MANAGEMENT_HEADER_ID.USER)}
-      />
+      {/*<ManagementSideButton*/}
+      {/*  id={MANAGEMENT_HEADER_ID.USER}*/}
+      {/*  title={t_header(MANAGEMENT_HEADER_ID.USER)}*/}
+      {/*/>*/}
       <ManagementSideButton
         id={MANAGEMENT_HEADER_ID.SETTING}
         title={t_header(MANAGEMENT_HEADER_ID.SETTING)}

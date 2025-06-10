@@ -4,7 +4,6 @@ import ChurchUserPermissionView from '@/components/molecules/church-user/informa
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
-import { BLANK } from '@/constants/constant';
 import {
   fetchPermissionTemplates,
   setPermissionTemplates,
@@ -18,6 +17,7 @@ import { ManagersApi } from '@/api/managers/managers.api';
 import { ChurchUser } from '@/models/church-user/church-user';
 import { setTargetChurchUser } from '@/redux/reducers/target/target-church-user-reducer';
 import { setChurchUsers } from '@/redux/reducers/filter/church-user-filter-reducer';
+import { Group } from '@/models/management/management';
 
 const PermissionContainer = styled.div`
   display: flex;
@@ -59,7 +59,7 @@ const ChurchUserPermission = ({}: ChurchUserPermissionProps) => {
   );
 
   const [selectedPermissionTemplateId, setSelectedPermissionTemplateId] =
-    useState<string>(targetChurchUser.permissionTemplate?.id || BLANK);
+    useState<string | null>(targetChurchUser.permissionTemplate?.id || null);
 
   const [selectedPermissionUnits, setSelectedPermissionUnits] = useState<
     PermissionUnit[]
@@ -99,45 +99,71 @@ const ChurchUserPermission = ({}: ChurchUserPermissionProps) => {
   const onClickGroupPopupClose = () => setIsGroupPopupShown(false);
 
   // 권한 유형 드롭다운 선택
-  const onChangeTemplate = async (id: string) => {
+  const onChangeTemplate = async (id: string | null) => {
     try {
-      await managersApi
-        .assignPermissionTemplate(
-          { churchId, managerId: targetChurchUser.memberId },
-          {
-            permissionTemplateId: id,
-          }
-        )
-        .then((response) => {
-          const newChurchUser: ChurchUser = response.data.data;
-          dispatch(setTargetChurchUser(newChurchUser));
-
-          const newChurchUsers = churchUsers.map((churchUser) => {
-            if (churchUser.id === newChurchUser.id) {
-              return newChurchUser;
-            } else {
-              return churchUser;
+      if (id) {
+        await managersApi
+          .assignPermissionTemplate(
+            { churchId, churchUserId: targetChurchUser.id },
+            {
+              permissionTemplateId: id,
             }
+          )
+          .then((response) => {
+            const newChurchUser: ChurchUser = response.data.data;
+            dispatch(setTargetChurchUser(newChurchUser));
+
+            const newChurchUsers = churchUsers.map((churchUser) => {
+              if (churchUser.id === newChurchUser.id) {
+                return newChurchUser;
+              } else {
+                return churchUser;
+              }
+            });
+            dispatch(setChurchUsers(newChurchUsers));
+            setSelectedPermissionTemplateId(id);
           });
-          dispatch(setChurchUsers(newChurchUsers));
-          setSelectedPermissionTemplateId(id);
-        });
+      } else {
+        await managersApi
+          .unassignPermissionTemplate({
+            churchId,
+            churchUserId: targetChurchUser.id,
+          })
+          .then((response) => {
+            const newChurchUser: ChurchUser = response.data.data;
+            dispatch(setTargetChurchUser(newChurchUser));
+
+            const newChurchUsers = churchUsers.map((churchUser) => {
+              if (churchUser.id === newChurchUser.id) {
+                return newChurchUser;
+              } else {
+                return churchUser;
+              }
+            });
+            dispatch(setChurchUsers(newChurchUsers));
+            setSelectedPermissionTemplateId(id);
+          });
+      }
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));
     }
   };
 
   const getPermissionUnits = async () => {
-    try {
-      const response = await permissionsApi.getPermissionTemplate({
-        churchId,
-        templateId: selectedPermissionTemplateId,
-      });
+    if (selectedPermissionTemplateId) {
+      try {
+        const response = await permissionsApi.getPermissionTemplate({
+          churchId,
+          templateId: selectedPermissionTemplateId,
+        });
 
-      const newPermissionTemplate: PermissionTemplate = response.data.data;
-      return newPermissionTemplate.permissionUnits;
-    } catch (error) {
-      setThrownError(error instanceof Error ? error : new Error(String(error)));
+        const newPermissionTemplate: PermissionTemplate = response.data.data;
+        return newPermissionTemplate.permissionUnits;
+      } catch (error) {
+        setThrownError(
+          error instanceof Error ? error : new Error(String(error))
+        );
+      }
     }
   };
 
@@ -149,11 +175,73 @@ const ChurchUserPermission = ({}: ChurchUserPermissionProps) => {
     });
   }, [selectedPermissionTemplateId]);
 
-  const onChangeSelectedGroupIds = (ids: (string | null)[]) => {
-    setSelectedGroupIds(ids);
+  const onClickDoneGroup = async () => {
+    try {
+      const isAllGroups = selectedGroupIds.includes(null);
+      const groupIds = selectedGroupIds.filter((groupId) => groupId !== null);
+      const response = await managersApi.editPermissionScopes(
+        {
+          churchId,
+          churchUserId: targetChurchUser.id,
+        },
+        {
+          isAllGroups,
+          groupIds,
+        }
+      );
+      const newChurchUser = response.data;
+      dispatch(setTargetChurchUser(newChurchUser));
+      const newChurchUsers = churchUsers.map((churchUser) => {
+        if (churchUser.id === targetChurchUser.id) return newChurchUser;
+        else return churchUser;
+      });
+      dispatch(setChurchUsers(newChurchUsers));
+
+      setIsGroupPopupShown(false);
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
+    }
   };
 
-  const onClickDoneGroup = () => {};
+  const getGroupIds = (group: Group): string[] => {
+    // 재귀적으로 현재 그룹과 모든 하위 그룹의 ID를 수집
+    let collectedIds: string[] = [group.id as string]; // 본인 그룹의 ID 추가
+    if (group.childGroups && group.childGroups.length > 0) {
+      group.childGroups.forEach((child) => {
+        collectedIds = collectedIds.concat(getGroupIds(child)); // 하위 그룹의 자식들도 재귀적으로 추가
+      });
+    }
+    return collectedIds;
+  };
+
+  // 새로운 그룹을 설정
+  const onClickGroup = (group: Group) => {
+    let newSelectedGroupIds: (string | null)[];
+
+    if (selectedGroupIds.includes(group.id)) {
+      // 선택 해제
+      newSelectedGroupIds = selectedGroupIds.filter((id) => id !== group.id);
+    } else {
+      // 선택 추가
+      const childIdsToRemove = getGroupIds(group);
+
+      newSelectedGroupIds = [
+        ...selectedGroupIds.filter(
+          (id) => !childIdsToRemove.includes(id ?? '')
+        ),
+        group.id,
+      ];
+    }
+
+    setSelectedGroupIds(newSelectedGroupIds);
+  };
+
+  useEffect(() => {
+    setIsGroupPopupShown(false);
+    setSelectedGroupIds(
+      targetChurchUser.permissionScopes.map((scope) => scope.group?.id || null)
+    );
+  }, [targetChurchUser.id]);
 
   const props = {
     isGroupPopupShown,
@@ -163,7 +251,7 @@ const ChurchUserPermission = ({}: ChurchUserPermissionProps) => {
     onClickGroupPopupOpen,
     onClickGroupPopupClose,
     onChangeTemplate,
-    onChangeSelectedGroupIds,
+    onClickGroup,
     onClickDoneGroup,
   };
   return (

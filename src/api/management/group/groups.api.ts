@@ -24,6 +24,15 @@ type GetGroupParams = {
   groupId: string;
 };
 
+type GetGroupsByNameParams = {
+  churchId: string;
+  take?: number;
+  page?: number;
+  order?: GROUP_ORDER;
+  orderDirection?: ORDER_DIRECTION;
+  name: string;
+};
+
 type GetChildGroupsParams = {
   churchId: string;
   groupId: string;
@@ -133,6 +142,65 @@ export class GroupsApi {
 
     try {
       return await axios.get(url);
+    } catch (serverError: any) {
+      if (serverError.response) {
+        const { message, error, statusCode } = serverError.response.data;
+        throw new CustomError(message, error, statusCode);
+      } else {
+        throw new CustomError(
+          '알 수 없는 에러가 발생했습니다',
+          500,
+          'Unknown Error'
+        );
+      }
+    }
+  };
+
+  /**
+   * 그룹 이름으로 검색
+   * @param {GetGroupsByNameParams} params
+   * @returns {Promise<AxiosResponse>}
+   */
+  public getGroupsByName = async (
+    params: GetGroupsByNameParams
+  ): Promise<AxiosResponse> => {
+    const {
+      churchId,
+      take = 5,
+      page = 1,
+      order,
+      orderDirection,
+      name,
+    } = params;
+
+    const queryParams: Record<string, any> = Object.fromEntries(
+      Object.entries({
+        take,
+        page,
+        order,
+        orderDirection,
+        name,
+      }).filter(
+        ([_, value]) =>
+          value !== undefined &&
+          value !== '' &&
+          !(Array.isArray(value) && value.length === 0)
+      )
+    );
+
+    const url = `${this._url}/churches/${churchId}/management/groups/search`;
+
+    try {
+      return await axios.get(url, {
+        params: queryParams,
+        paramsSerializer: (params) => {
+          return qs.stringify(params, {
+            arrayFormat: 'repeat',
+            skipNulls: true,
+            encodeValuesOnly: true,
+          });
+        },
+      });
     } catch (serverError: any) {
       if (serverError.response) {
         const { message, error, statusCode } = serverError.response.data;

@@ -14,6 +14,7 @@ import { CHURCH_USER } from '@/constants/church-user/church-user-column';
 import MemberProfile from '@/components/atoms/member/member-profile';
 import { useI18n } from '../../../../../locales/client';
 import { getFormattedMobilePhone } from '@/utils/format';
+import { getPermissionScopeTitle } from '@/utils/permission';
 
 // 1. 컬럼별 PX 폭
 const getColumnWidth = (id: string) => {
@@ -23,6 +24,8 @@ const getColumnWidth = (id: string) => {
     case CHURCH_USER.MEMBER:
       return 300;
     case CHURCH_USER.PERMISSION_TEMPLATE:
+      return 300;
+    case CHURCH_USER.PERMISSION_SCOPE:
       return 300;
     case CHURCH_USER.PERMISSION_ACTIVE:
       return 200;
@@ -122,7 +125,7 @@ const ContentWrapper = styled.div`
 // 이 예시에서는 실제 CHURCH_USER + "비고" 컬럼(REMARKS)까지 표시
 type UserTableProps = {
   onClickHeader: (id: CHURCH_USER) => void;
-  onClickUserItem: (userId: string) => void;
+  onClickUserItem: (user: ChurchUser) => void;
   scrollRef: MutableRefObject<HTMLDivElement | null>;
   onScroll: () => void;
 };
@@ -167,7 +170,15 @@ const ChurchUserTableView = ({
           <MainText>
             {churchUser.role === CHURCH_USER_ROLE.OWNER
               ? t(CHURCH_USER_ROLE.OWNER)
-              : churchUser?.permissionTemplate?.title}
+              : churchUser?.permissionTemplate?.title || t('none')}
+          </MainText>
+        );
+      case CHURCH_USER.PERMISSION_SCOPE:
+        return (
+          <MainText>
+            {churchUser.role === CHURCH_USER_ROLE.OWNER
+              ? t('all')
+              : getPermissionScopeTitle(t, churchUser.permissionScopes)}
           </MainText>
         );
       case CHURCH_USER.PERMISSION_ACTIVE:
@@ -214,7 +225,7 @@ const ChurchUserTableView = ({
               <UserTableRow
                 key={churchUser.id}
                 onClick={() => {
-                  onClickUserItem(churchUser.userId);
+                  onClickUserItem(churchUser);
                 }}
               >
                 {visibleColumns.map((item, index) => (

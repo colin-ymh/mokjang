@@ -14,17 +14,17 @@ const FilterContainer = styled.div`
   width: 100%;
 `;
 
-const GroupItemContainer = styled.div<{ $level: number }>`
+const GroupItemContainer = styled.div<{ $level: number; $isDisabled: boolean }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 5px 20px 5px ${({ $level }) => $level * 20 + 10}px;
   transition: background-color 0.3s;
   border-radius: 5px;
-  cursor: pointer;
+  cursor: ${({ $isDisabled }) => ($isDisabled ? 'not-allowed' : 'pointer')};
 
   &:hover {
-    background-color: ${GRAY.SEMI_LIGHT};
+    background-color: ${({ $isDisabled }) => !$isDisabled && GRAY.LIGHT};
   }
 `;
 
@@ -127,10 +127,7 @@ const renderGroups = (
           onClick={() => {
             if (!isDisabled) onClickGroup(group);
           }}
-          style={{
-            opacity: isDisabled ? 0.4 : 1,
-            cursor: isDisabled ? 'not-allowed' : 'pointer',
-          }}
+          $isDisabled={isDisabled}
         >
           <LeftContainer>
             <DesktopToggleButton
@@ -139,15 +136,20 @@ const renderGroups = (
                 onClickToggle(parseInt(group.id as string));
               }}
             >
-              <MainText color={GRAY.DARK} size={SIZE.SMALL}>
-                {isHaveChildren ? (isOpen ? '▼' : '▶') : ''}
+              <MainText
+                color={isDisabled ? GRAY.LIGHT : GRAY.DARK}
+                size={SIZE.EXTRA_SMALL}
+              >
+                {isHaveChildren ? (isOpen ? '▼' : '▶') : '⦁'}
               </MainText>
             </DesktopToggleButton>
             <MainText
               color={
-                selectedGroupIds.includes(group.id as string)
-                  ? MAIN.DEFAULT
-                  : GRAY.DARK
+                isDisabled
+                  ? MAIN.LIGHT
+                  : selectedGroupIds.includes(group.id as string)
+                    ? MAIN.DEFAULT
+                    : GRAY.DARK
               }
             >
               {group.name}
@@ -160,7 +162,10 @@ const renderGroups = (
                 onClickToggle(parseInt(group.id as string));
               }}
             >
-              <MainText color={GRAY.DARK} size={SIZE.SMALL}>
+              <MainText
+                color={isDisabled ? GRAY.LIGHT : GRAY.DARK}
+                size={SIZE.EXTRA_SMALL}
+              >
                 {isHaveChildren ? (isOpen ? '▼' : '▶') : ''}
               </MainText>
             </MobileToggleButton>

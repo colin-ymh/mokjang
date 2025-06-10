@@ -58,7 +58,7 @@ const ChurchUserAccount = ({}: ChurchUserAccountProps) => {
     try {
       await churchUsersApi
         .linkMember(
-          { churchId, userId: targetChurchUser.userId },
+          { churchId, churchUserId: targetChurchUser.id },
           { linkMemberId: selectedMemberId }
         )
         .then((response) => {});
@@ -74,7 +74,7 @@ const ChurchUserAccount = ({}: ChurchUserAccountProps) => {
   const onClickUnlink = async () => {
     try {
       await churchUsersApi
-        .unlinkMember({ churchId, userId: targetChurchUser.userId })
+        .unlinkMember({ churchId, churchUserId: targetChurchUser.id })
         .then((response) => {
           const newChurchUser = response.data.data;
           dispatch(setTargetChurchUser(newChurchUser));

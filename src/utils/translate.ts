@@ -110,6 +110,7 @@ export const getTranslatedChurchUserColumn = (
       | CHURCH_USER.MEMBER
       | CHURCH_USER.PERMISSION_TEMPLATE
       | CHURCH_USER.PERMISSION_ACTIVE
+      | CHURCH_USER.PERMISSION_SCOPE
   );
 };
 

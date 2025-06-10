@@ -25,11 +25,6 @@ import { TEST_SERVER_URL } from '@/constants/state/url';
 //   localStorage.removeItem('refreshToken');
 // }
 
-const authorizeAxios = axios.create({
-  baseURL: TEST_SERVER_URL,
-  withCredentials: true,
-});
-
 // // 요청 인터셉터
 // authorizeAxios.interceptors.request.use((config) => {
 //   // token 이 세팅되어 있다면 Authorization 헤더 추가
@@ -40,26 +35,41 @@ const authorizeAxios = axios.create({
 //   return config;
 // });
 
-// 응답 인터셉터: Access Token 만료 시 Refresh Token을 사용해 재발급
+const authorizeAxios = axios.create({
+  baseURL: TEST_SERVER_URL,
+  withCredentials: true,
+});
+
+// 401 처리용 플래그 키
+const RETRY_FLAG = '_retry_by_interceptor';
+
 authorizeAxios.interceptors.response.use(
   (response) => response,
   async (error) => {
-    // Access Token이 만료된 경우 처리
-    if (error.status === 401) {
-      const originalRequest = error.config;
+    const { config, response } = error;
+
+    // ① 재귀 방지: 이미 재시도했거나 /auth/token/rotate 요청이면 패스
+    const isRotateCall = config.url?.includes('/auth/token/rotate');
+    if (isRotateCall || config[RETRY_FLAG]) {
+      return Promise.reject(error);
+    }
+
+    // ② 401이면 토큰 재발급 후 원 요청 재시도
+    if (response?.status === 401) {
+      console.log('access token not found');
+      config[RETRY_FLAG] = true; // 한 번만 재시도
 
       try {
-        // Refresh Token을 Authorization 헤더에 추가하여 새로운 Access Token 요청
-        // const refreshResponse =
-        await axios.post(`${TEST_SERVER_URL}/auth/token/rotate`);
-        // 재시도
-        return authorizeAxios(originalRequest);
-      } catch (refreshError) {
-        return Promise.reject(refreshError);
+        console.log('refresh access token');
+        await authorizeAxios.post('/auth/token/rotate');
+        // .then((response) => console.log(response)); // Refresh Token은 쿠키로 전송
+        return authorizeAxios(config); // Access Token 쿠키로 자동 포함
+      } catch (refreshErr) {
+        return Promise.reject(refreshErr); // 재발급 실패 → 그대로 오류
       }
     }
 
-    return Promise.reject(error);
+    return Promise.reject(error); // 그 외 오류
   }
 );
 

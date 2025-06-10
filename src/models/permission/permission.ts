@@ -1,4 +1,5 @@
 import { BLANK } from '@/constants/constant';
+import { DEFAULT_GROUP, Group } from '@/models/management/management';
 
 export enum DOMAIN {
   MEMBER = 'member',
@@ -41,4 +42,16 @@ export const DEFAULT_PERMISSION_TEMPLATE: PermissionTemplate = {
   unitIds: [],
   memberCount: 0,
   permissionUnits: [],
+};
+
+export type PermissionScope = {
+  id: string;
+  isAllGroups: boolean;
+  group: Group;
+};
+
+export const DEFAULT_PERMISSION_SCOPE: PermissionScope = {
+  id: BLANK,
+  isAllGroups: false,
+  group: DEFAULT_GROUP,
 };

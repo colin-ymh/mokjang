@@ -16,17 +16,17 @@ type GetManagersParams = {
 
 type GetManagerParams = {
   churchId: string; // 교회 id
-  managerId: string;
+  churchUserId: string;
 };
 
 type TogglePermissionActivityParams = {
   churchId: string;
-  managerId: string;
+  churchUserId: string;
 };
 
 type AssignPermissionTemplateParams = {
   churchId: string;
-  managerId: string;
+  churchUserId: string;
 };
 
 type AssignPermissionTemplateBody = {
@@ -35,7 +35,17 @@ type AssignPermissionTemplateBody = {
 
 type UnassignPermissionTemplateParams = {
   churchId: string;
-  managerId: string;
+  churchUserId: string;
+};
+
+type EditPermissionScopesParams = {
+  churchId: string;
+  churchUserId: string;
+};
+
+type EditPermissionScopesBody = {
+  groupIds: string[];
+  isAllGroups?: boolean;
 };
 
 export class ManagersApi {
@@ -114,12 +124,12 @@ export class ManagersApi {
   public getManager = async (
     params: GetManagerParams
   ): Promise<AxiosResponse> => {
-    const { churchId, managerId } = params;
+    const { churchId, churchUserId } = params;
 
-    const url = `${this._url}/churches/${churchId}/managers/${managerId}`;
+    const url = `${this._url}/churches/${churchId}/managers/${churchUserId}`;
 
     try {
-      return await axios.patch(url);
+      return await axios.get(url);
     } catch (serverError: any) {
       if (serverError.response) {
         const { message, error, statusCode } = serverError.response.data;
@@ -142,9 +152,9 @@ export class ManagersApi {
   public togglePermissionActivity = async (
     params: TogglePermissionActivityParams
   ): Promise<AxiosResponse> => {
-    const { churchId, managerId } = params;
+    const { churchId, churchUserId } = params;
 
-    const url = `${this._url}/churches/${churchId}/managers/${managerId}/toggle-permission-activity`;
+    const url = `${this._url}/churches/${churchId}/managers/${churchUserId}/toggle-permission-activity`;
 
     try {
       return await axios.patch(url);
@@ -172,9 +182,9 @@ export class ManagersApi {
     params: AssignPermissionTemplateParams,
     body: AssignPermissionTemplateBody
   ): Promise<AxiosResponse> => {
-    const { churchId, managerId } = params;
+    const { churchId, churchUserId } = params;
 
-    const url = `${this._url}/churches/${churchId}/managers/${managerId}/assign-permission-template`;
+    const url = `${this._url}/churches/${churchId}/managers/${churchUserId}/assign-permission-template`;
 
     try {
       return await axios.patch(url, body);
@@ -197,15 +207,45 @@ export class ManagersApi {
    * @param  {UnassignPermissionTemplateParams} params
    * @returns
    */
-  public unassignPermissionTemplateChurch = async (
+  public unassignPermissionTemplate = async (
     params: UnassignPermissionTemplateParams
   ): Promise<AxiosResponse> => {
-    const { churchId, managerId } = params;
+    const { churchId, churchUserId } = params;
 
-    const url = `${this._url}/churches/${churchId}/managers/${managerId}/unassign-permission-template`;
+    const url = `${this._url}/churches/${churchId}/managers/${churchUserId}/unassign-permission-template`;
 
     try {
       return await axios.patch(url);
+    } catch (serverError: any) {
+      if (serverError.response) {
+        const { message, error, statusCode } = serverError.response.data;
+        throw new CustomError(message, error, statusCode);
+      } else {
+        throw new CustomError(
+          '알 수 없는 에러가 발생했습니다',
+          500,
+          'Unknown Error'
+        );
+      }
+    }
+  };
+
+  /**
+   * 권한 범위 관리
+   * @param  {EditPermissionScopesParams} params
+   * @param  {EditPermissionScopesBody} body
+   * @returns
+   */
+  public editPermissionScopes = async (
+    params: EditPermissionScopesParams,
+    body: EditPermissionScopesBody
+  ): Promise<AxiosResponse> => {
+    const { churchId, churchUserId } = params;
+
+    const url = `${this._url}/churches/${churchId}/managers/${churchUserId}/permission-scope`;
+
+    try {
+      return await axios.patch(url, body);
     } catch (serverError: any) {
       if (serverError.response) {
         const { message, error, statusCode } = serverError.response.data;

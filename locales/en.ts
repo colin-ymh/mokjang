@@ -38,6 +38,7 @@ export default {
 
   permission: 'Permission',
   permissionTemplate: 'Permission Template',
+  permissionScope: 'Permission Scope',
 
   educationEnrollment: 'Enrollment',
 
@@ -273,6 +274,12 @@ export default {
   'tableHeader.status': 'Status',
 
   'tableHeader.isDoneCount': 'Progressed',
+
+  'tableHeader.account': 'Account',
+  'tableHeader.member': 'Member',
+  'tableHeader.permissionTemplate': 'Template',
+  'tableHeader.permissionActive': 'Active',
+  'tableHeader.permissionScope': 'Scope',
   /*-------------------table header-------------------*/
 
   /*------------------- register-------------------*/
