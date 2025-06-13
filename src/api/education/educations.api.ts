@@ -9,6 +9,7 @@ import {
   EDUCATION,
   EDUCATION_TERM,
 } from '@/constants/education/education-column';
+import qs from 'qs';
 
 type GetEducationsParams = {
   churchId: string; // 교회 id
@@ -73,12 +74,35 @@ export class EducationsApi {
   public getEducations = async (
     params: GetEducationsParams
   ): Promise<AxiosResponse> => {
-    const { churchId } = params;
+    const { churchId, take = 5, page = 1, orderDirection, name } = params;
+
+    /* ①queryParams 구성 ─────────────────────────────────────────────── */
+    const queryParams: Record<string, any> = Object.fromEntries(
+      Object.entries({
+        take,
+        page,
+        orderDirection,
+        name,
+      }).filter(
+        ([_, value]) =>
+          value !== undefined &&
+          value !== '' &&
+          !(Array.isArray(value) && value.length === 0)
+      )
+    );
 
     const url = `${this._url}/churches/${churchId}/management/educations`;
 
     try {
-      return await axios.get(url);
+      return await authorizeAxios.get(url, {
+        params: queryParams,
+        paramsSerializer: (params) =>
+          qs.stringify(params, {
+            arrayFormat: 'repeat',
+            skipNulls: true,
+            encodeValuesOnly: true,
+          }),
+      });
     } catch (serverError: any) {
       if (serverError.response) {
         const { message, error, statusCode } = serverError.response.data;

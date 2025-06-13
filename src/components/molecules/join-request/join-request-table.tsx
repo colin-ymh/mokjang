@@ -84,13 +84,13 @@ const JoinRequestTable = ({ loadJoinRequests }: JoinRequestTableProps) => {
   };
 
   // 거절
-  const onClickReject = async () => {
+  const onClickReject = async (joinId: string) => {
     try {
       await joinRequestsApi
-        .rejectJoinRequest({ churchId, joinId: targetJoinRequest.id })
+        .rejectJoinRequest({ churchId, joinId })
         .then((response) => {
           const newJoinRequests = joinRequests.filter(
-            (request) => request.id !== targetJoinRequest.id
+            (request) => request.id !== joinId
           );
           dispatch(setJoinRequests(newJoinRequests));
           setTargetLinkMemberId(BLANK);

@@ -266,7 +266,7 @@ const AddVisitationView = ({
 
       {/* 세부 내용 */}
       {localDetails.map((detail) => (
-        <DetailContainer key={detail.memberId}>
+        <DetailContainer key={detail.id}>
           {detail.member?.name && localDetails.length !== 1 && (
             <MainText fontWeight={600}>{detail.member.name}</MainText>
           )}

@@ -165,7 +165,10 @@ const MultiMemberDropdown = forwardRef<
               const managers = response.data.data;
               const newMemberItems: MemberDropdownType[] = managers.map(
                 (manager: ChurchUser) => {
-                  return { value: manager.id, title: manager.member.name };
+                  return {
+                    value: manager.memberId,
+                    title: manager.member.name,
+                  };
                 }
               );
 

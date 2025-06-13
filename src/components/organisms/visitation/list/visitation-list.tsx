@@ -16,6 +16,8 @@ import {
 import { setTargetVisitation } from '@/redux/reducers/target/target-visitation-reducer';
 import { getIsWellFormedTitle } from '@/utils/check';
 import { BLANK, HEADER_BAR } from '@/constants/constant';
+import ToastPopup from '@/components/atoms/common/popup/toast-popup';
+import { DESTRUCTIVE } from '@/constants/styles/color';
 
 type VisitationListProps = {
   headerType?: HEADER_BAR;
@@ -42,23 +44,19 @@ const VisitationList = ({
 
   const [isSaveEnabled, setIsSaveEnabled] = useState<boolean>(false);
 
-  const [prevMemberIds, setPrevMemberIds] = useState<string[]>([]);
   const [prevReceiverIds, setReceiverIds] = useState<string[]>([]);
 
   useEffect(() => {
     if (targetVisitation.members) {
-      const memberIds = targetVisitation.visitationDetails.map((detail) => {
-        return detail.memberId;
-      });
-
-      setPrevMemberIds(memberIds);
-
       const receiverIds = targetVisitation.reports.map((report) => {
         return report.receiver.id;
       });
       setReceiverIds(receiverIds);
     }
   }, [targetVisitation.id]);
+
+  const [isToastShown, setIsToastShown] = useState<boolean>(false);
+  const [toastText, setToastText] = useState<string>(BLANK);
 
   const [thrownError, setThrownError] = useState<Error | null>(null);
   if (thrownError) {
@@ -210,7 +208,7 @@ const VisitationList = ({
       await visitationsApi
         .getVisitation({ churchId, visitationId: targetVisitation.id })
         .then(async (response) => {
-          const newVisitation: Visitation = response.data;
+          const newVisitation: Visitation = response.data.data;
 
           // 2-1. id 할당
           const newVisitationDetails = targetVisitation.visitationDetails.map(
@@ -246,7 +244,7 @@ const VisitationList = ({
       await visitationsApi
         .getVisitation({ churchId, visitationId: targetVisitation.id })
         .then(async (response) => {
-          const newVisitation: Visitation = response.data;
+          const newVisitation: Visitation = response.data.data;
 
           const newVisitations = visitations.map((v) => {
             return v.id !== newVisitation.id ? v : newVisitation;
@@ -261,18 +259,22 @@ const VisitationList = ({
           }, 500);
         });
     } catch (error) {
-      setThrownError(error instanceof Error ? error : new Error(String(error)));
+      if (error instanceof Error) {
+        setToastText(error.message);
+      } else {
+        setThrownError(new Error(String(error)));
+      }
     }
   };
 
-  // 목록에서 교인을 선택하여 상세 페이지로 이동
+  // 목록에서 심방을 선택하여 상세 페이지로 이동
   const onClickVisitationItem = async (visitationId: string) => {
     try {
       const response = await visitationsApi.getVisitation({
         churchId,
         visitationId,
       });
-      const visitation = response.data;
+      const visitation = response.data.data;
 
       dispatch(setTargetVisitation(visitation));
       setIsVisitationInformationShown(true);
@@ -287,7 +289,7 @@ const VisitationList = ({
     dispatch(setTargetVisitation(DEFAULT_VISITATION));
   };
 
-  // 교인 삭제하기
+  // 심방 삭제하기
   const onClickDelete = async () => {
     try {
       const response = await visitationsApi.deleteVisitation({
@@ -314,7 +316,11 @@ const VisitationList = ({
         }
       }
     } catch (error) {
-      setThrownError(error instanceof Error ? error : new Error(String(error)));
+      if (error instanceof Error) {
+        setToastText(error.message);
+      } else {
+        setThrownError(new Error(String(error)));
+      }
     } finally {
       dispatch(setTargetVisitation(DEFAULT_VISITATION));
       setIsVisitationInformationShown(false);
@@ -368,6 +374,12 @@ const VisitationList = ({
     setIsSaveEnabled(true);
   }, [targetVisitation]);
 
+  useEffect(() => {
+    if (toastText) {
+      setIsToastShown(true);
+    }
+  }, [toastText]);
+
   const props = {
     list: {
       onClickVisitationItem,
@@ -392,6 +404,13 @@ const VisitationList = ({
   return (
     <>
       <VisitationListView {...props} />
+      {isToastShown && (
+        <ToastPopup
+          setIsShow={setIsToastShown}
+          text={toastText}
+          backgroundColor={DESTRUCTIVE.LIGHT}
+        />
+      )}
     </>
   );
 };

@@ -154,41 +154,41 @@ const VisitationInformationView = ({
       </MetaContainer>
       {/* 상세 */}
       <DetailList>
-        {targetVisitation.visitationDetails.map((detail) => (
-          <div key={detail.memberId}>
-            <DivideLine />
-            <DetailContainer>
-              {detail.member?.name &&
-                targetVisitation.visitationDetails.length !== 1 && (
-                  <MainText fontWeight={600}>{detail.member.name}</MainText>
-                )}
-              {/* 심방내용 */}
-              <ColumnContainer>
-                <TitleContainer>
-                  <MainText>{t('visitationContent')}</MainText>
-                </TitleContainer>
-                <DetailContentContainer>
-                  <MainText
-                    dangerouslySetInnerHTML={{
-                      __html: detail.visitationContent,
-                    }}
-                  />
-                </DetailContentContainer>
-              </ColumnContainer>
-              {/* 기도제목 */}
-              <ColumnContainer>
-                <TitleContainer>
-                  <MainText>{t('visitationPray')}</MainText>
-                </TitleContainer>
-                <DetailContentContainer>
-                  <MainText
-                    dangerouslySetInnerHTML={{ __html: detail.visitationPray }}
-                  />
-                </DetailContentContainer>
-              </ColumnContainer>
-            </DetailContainer>
-          </div>
-        ))}
+        {/*{targetVisitation.visitationDetails.map((detail) => (*/}
+        {/*  <div key={detail.memberId}>*/}
+        {/*    <DivideLine />*/}
+        {/*    <DetailContainer>*/}
+        {/*      {detail.member?.name &&*/}
+        {/*        targetVisitation.visitationDetails.length !== 1 && (*/}
+        {/*          <MainText fontWeight={600}>{detail.member.name}</MainText>*/}
+        {/*        )}*/}
+        {/*      /!* 심방내용 *!/*/}
+        {/*      <ColumnContainer>*/}
+        {/*        <TitleContainer>*/}
+        {/*          <MainText>{t('visitationContent')}</MainText>*/}
+        {/*        </TitleContainer>*/}
+        {/*        <DetailContentContainer>*/}
+        {/*          <MainText*/}
+        {/*            dangerouslySetInnerHTML={{*/}
+        {/*              __html: detail.visitationContent,*/}
+        {/*            }}*/}
+        {/*          />*/}
+        {/*        </DetailContentContainer>*/}
+        {/*      </ColumnContainer>*/}
+        {/*      /!* 기도제목 *!/*/}
+        {/*      <ColumnContainer>*/}
+        {/*        <TitleContainer>*/}
+        {/*          <MainText>{t('visitationPray')}</MainText>*/}
+        {/*        </TitleContainer>*/}
+        {/*        <DetailContentContainer>*/}
+        {/*          <MainText*/}
+        {/*            dangerouslySetInnerHTML={{ __html: detail.visitationPray }}*/}
+        {/*          />*/}
+        {/*        </DetailContentContainer>*/}
+        {/*      </ColumnContainer>*/}
+        {/*    </DetailContainer>*/}
+        {/*  </div>*/}
+        {/*))}*/}
       </DetailList>
     </InformationContainer>
   );

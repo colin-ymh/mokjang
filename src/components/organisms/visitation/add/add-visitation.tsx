@@ -199,7 +199,7 @@ const AddVisitation = () => {
   });
 
   const [localDetails, setLocalDetails] = useState<VisitationDetail[]>(
-    targetVisitation.visitationDetails.length > 0
+    targetVisitation.visitationDetails?.length > 0
       ? targetVisitation.visitationDetails
       : [createPlaceholderDetail()]
   );

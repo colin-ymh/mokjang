@@ -23,6 +23,9 @@ import { EducationSessionsApi } from '@/api/education/education-sessions.api';
 import { setTargetEducationSession } from '@/redux/reducers/target/target-education-session-reducer';
 import { EducationAttendanceApi } from '@/api/education/education-attendance.api';
 import { getIsWellFormedTitle } from '@/utils/check';
+import { BLANK } from '@/constants/constant';
+import ToastPopup from '@/components/atoms/common/popup/toast-popup';
+import { DESTRUCTIVE } from '@/constants/styles/color';
 
 type EducationTermListProps = {
   isInProgress?: boolean;
@@ -57,6 +60,9 @@ const EducationTermList = ({ isInProgress }: EducationTermListProps) => {
   const [isTermSaveEnabled, setIsTermSaveEnabled] = useState<boolean>(false);
   const [isSessionSaveEnabled, setIsSessionSaveEnabled] =
     useState<boolean>(false);
+
+  const [isToastShown, setIsToastShown] = useState<boolean>(false);
+  const [toastText, setToastText] = useState<string>(BLANK);
 
   const [thrownError, setThrownError] = useState<Error | null>(null);
   if (thrownError) {
@@ -267,7 +273,11 @@ const EducationTermList = ({ isInProgress }: EducationTermListProps) => {
       setIsEditTermShown(false);
       setTimeout(() => setIsEducationTermInformationShown(true), 500);
     } catch (error) {
-      setThrownError(error instanceof Error ? error : new Error(String(error)));
+      if (error instanceof Error) {
+        setToastText(error.message);
+      } else {
+        setThrownError(new Error(String(error)));
+      }
     }
   };
 
@@ -350,7 +360,11 @@ const EducationTermList = ({ isInProgress }: EducationTermListProps) => {
         }
       }
     } catch (error) {
-      setThrownError(error instanceof Error ? error : new Error(String(error)));
+      if (error instanceof Error) {
+        setToastText(error.message);
+      } else {
+        setThrownError(new Error(String(error)));
+      }
     } finally {
       dispatch(setTargetEducationTerm(DEFAULT_EDUCATION_TERM));
       setIsEducationTermInformationShown(false);
@@ -486,7 +500,11 @@ const EducationTermList = ({ isInProgress }: EducationTermListProps) => {
           dispatch(setEducationTerms(newEducationTerms));
         });
     } catch (error) {
-      setThrownError(error instanceof Error ? error : new Error(String(error)));
+      if (error instanceof Error) {
+        setToastText(error.message);
+      } else {
+        setThrownError(new Error(String(error)));
+      }
     } finally {
       dispatch(setTargetEducationSession(DEFAULT_EDUCATION_SESSION));
       setIsAddEducationSessionShown(false);
@@ -584,7 +602,11 @@ const EducationTermList = ({ isInProgress }: EducationTermListProps) => {
             });
         });
     } catch (error) {
-      setThrownError(error instanceof Error ? error : new Error(String(error)));
+      if (error instanceof Error) {
+        setToastText(error.message);
+      } else {
+        setThrownError(new Error(String(error)));
+      }
     } finally {
       if (isEducationTermInformationShown) {
         setIsEducationTermInformationShown(false);
@@ -698,6 +720,12 @@ const EducationTermList = ({ isInProgress }: EducationTermListProps) => {
 
   // ========== 회차 ==========
 
+  useEffect(() => {
+    if (toastText) {
+      setIsToastShown(true);
+    }
+  }, [toastText]);
+
   const props = {
     list: {
       onClickEducationTermItem,
@@ -746,6 +774,13 @@ const EducationTermList = ({ isInProgress }: EducationTermListProps) => {
   return (
     <>
       <EducationTermListView {...props} />
+      {isToastShown && (
+        <ToastPopup
+          setIsShow={setIsToastShown}
+          text={toastText}
+          backgroundColor={DESTRUCTIVE.LIGHT}
+        />
+      )}
     </>
   );
 };

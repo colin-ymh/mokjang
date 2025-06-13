@@ -9,6 +9,8 @@ import { DEFAULT_VISITATION } from '@/models/visitation/visitation';
 import { setVisitations } from '@/redux/reducers/filter/visitation-filter-reducer';
 import { getIsWellFormedTitle } from '@/utils/check';
 import { BLANK } from '@/constants/constant';
+import ToastPopup from '@/components/atoms/common/popup/toast-popup';
+import { DESTRUCTIVE } from '@/constants/styles/color';
 
 type MainVisitationHeaderProps = {};
 
@@ -30,6 +32,9 @@ const MainVisitationHeader = ({}: MainVisitationHeaderProps) => {
 
   const [isAddVisitationOpened, setIsAddVisitationOpened] =
     useState<boolean>(false);
+
+  const [isToastShown, setIsToastShown] = useState<boolean>(false);
+  const [toastText, setToastText] = useState<string>(BLANK);
 
   const [thrownError, setThrownError] = useState<Error | null>(null);
   if (thrownError) {
@@ -76,7 +81,7 @@ const MainVisitationHeader = ({}: MainVisitationHeaderProps) => {
           }
         )
         .then((response) => {
-          const newVisitation = response.data;
+          const newVisitation = response.data.data;
 
           const newVisitations = [...visitations, newVisitation];
           dispatch(setVisitations(newVisitations));
@@ -84,7 +89,11 @@ const MainVisitationHeader = ({}: MainVisitationHeaderProps) => {
       setIsAddVisitationOpened(false);
       dispatch(setTargetVisitation(DEFAULT_VISITATION));
     } catch (error) {
-      setThrownError(error instanceof Error ? error : new Error(String(error)));
+      if (error instanceof Error) {
+        setToastText(error.message);
+      } else {
+        setThrownError(new Error(String(error)));
+      }
     }
   };
 
@@ -118,9 +127,22 @@ const MainVisitationHeader = ({}: MainVisitationHeaderProps) => {
     onClickSaveVisitation,
   };
 
+  useEffect(() => {
+    if (toastText) {
+      setIsToastShown(true);
+    }
+  }, [toastText]);
+
   return (
     <>
       <MainVisitationHeaderView {...props} />
+      {isToastShown && (
+        <ToastPopup
+          setIsShow={setIsToastShown}
+          text={toastText}
+          backgroundColor={DESTRUCTIVE.LIGHT}
+        />
+      )}
     </>
   );
 };

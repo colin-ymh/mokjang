@@ -9,7 +9,7 @@ const ProfileContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 5px;
+  gap: 10px;
 `;
 
 const ButtonText = styled(MainText)`
@@ -24,7 +24,7 @@ type MemberProfileProps = {
 const MemberProfile = ({ member, onClick }: MemberProfileProps) => {
   return (
     <ProfileContainer>
-      <ProfileImage value={member.profileImageUrl} />
+      <ProfileImage value={member?.profileImageUrl} />
       <ButtonText
         onClick={(event) => {
           event.stopPropagation();

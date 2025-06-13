@@ -9,6 +9,8 @@ import { DEFAULT_TASK } from '@/models/task/task';
 import { setTasks } from '@/redux/reducers/filter/task-filter-reducer';
 import { getIsWellFormedTitle } from '@/utils/check';
 import { BLANK } from '@/constants/constant';
+import ToastPopup from '@/components/atoms/common/popup/toast-popup';
+import { DESTRUCTIVE } from '@/constants/styles/color';
 
 type MainTaskHeaderProps = {};
 
@@ -25,6 +27,9 @@ const MainTaskHeader = ({}: MainTaskHeaderProps) => {
   const [isSaveEnabled, setIsSaveEnabled] = useState<boolean>(false);
 
   const [isAddTaskOpened, setIsAddTaskOpened] = useState<boolean>(false);
+
+  const [isToastShown, setIsToastShown] = useState<boolean>(false);
+  const [toastText, setToastText] = useState<string>(BLANK);
 
   const [thrownError, setThrownError] = useState<Error | null>(null);
   if (thrownError) {
@@ -76,7 +81,11 @@ const MainTaskHeader = ({}: MainTaskHeaderProps) => {
       setIsAddTaskOpened(false);
       dispatch(setTargetTask(DEFAULT_TASK));
     } catch (error) {
-      setThrownError(error instanceof Error ? error : new Error(String(error)));
+      if (error instanceof Error) {
+        setToastText(error.message);
+      } else {
+        setThrownError(new Error(String(error)));
+      }
     }
   };
 
@@ -97,6 +106,12 @@ const MainTaskHeader = ({}: MainTaskHeaderProps) => {
     setIsSaveEnabled(true);
   }, [targetTask]);
 
+  useEffect(() => {
+    if (toastText) {
+      setIsToastShown(true);
+    }
+  }, [toastText]);
+
   const props = {
     isSaveEnabled,
     isAddTaskOpened,
@@ -109,6 +124,13 @@ const MainTaskHeader = ({}: MainTaskHeaderProps) => {
   return (
     <>
       <MainTaskHeaderView {...props} />
+      {isToastShown && (
+        <ToastPopup
+          setIsShow={setIsToastShown}
+          text={toastText}
+          backgroundColor={DESTRUCTIVE.LIGHT}
+        />
+      )}
     </>
   );
 };
