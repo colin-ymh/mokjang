@@ -1,15 +1,14 @@
-import Image from 'next/image';
 import styled from 'styled-components';
 
 import { GRAY, WHITE } from '@/constants/styles/color';
 import { MainText } from '@/components/atoms/common/text/main-text';
-import { getRandomImage } from '@/utils/image';
 
 import { useI18n, useScopedI18n } from '../../../../../../locales/client';
 import { FamilyMember } from '@/models/member/member';
 import SlideButtonList from '@/components/atoms/common/button/slide-button-list';
 import React, { useState } from 'react';
 import ConfirmPopup from '@/components/atoms/common/popup/error-popup';
+import ProfileImage from '@/components/atoms/common/image/profile-image';
 
 const MemberListContainer = styled.div`
   display: flex;
@@ -29,13 +28,6 @@ const MemberItem = styled.div`
   height: 50px;
   cursor: pointer;
 `;
-
-const ProfileImage = styled(Image)`
-  width: 50px;
-  height: 50px;
-  border-radius: 9px;
-`;
-
 const MemberDetails = styled.div`
   display: flex;
   flex-direction: column;
@@ -69,13 +61,7 @@ const MobileFamilyList = ({
           key={familyMember.familyMemberId}
           onClick={() => onClickMember(familyMember.familyMemberId)}
         >
-          <ProfileImage
-            src={
-              familyMember.familyMember.profileImage ||
-              getRandomImage(familyMember.familyMember.id)
-            }
-            alt={`profileImage`}
-          />
+          <ProfileImage value={familyMember.familyMember.profileImageUrl} />
           <MemberDetails>
             <MainText fontWeight={600}>{t(familyMember.relation)}</MainText>
             <MainText>{`${familyMember.familyMember.name} ${familyMember.familyMember.officer?.name || t('churchMember')}`}</MainText>

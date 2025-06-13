@@ -29,7 +29,7 @@ export type ChurchInformation = {
 
 export type Member = {
   id: string;
-  profileImage: string;
+  profileImageUrl: string;
   name: string;
   mobilePhone: string;
   isLunar: boolean;

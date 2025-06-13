@@ -37,6 +37,10 @@ export const getCreateMemberBody = (member: Member) => {
 export const getEditMemberBody = (member: Member) => {
   const newMember: EditMemberBody = {};
 
+  if (member.profileImageUrl) {
+    newMember.profileImageUrl = member.profileImageUrl;
+  }
+
   if (member.guidedById) {
     newMember.guidedById = member.guidedById;
   }

@@ -13,7 +13,6 @@ import { OfficerHistoryApi } from '@/api/history/officer-history.api';
 import { GroupHistoryApi } from '@/api/history/group-history.api';
 import MemberInformationListView from '@/components/molecules/member/information/member-information-list.view';
 import { MEMBER } from '@/constants/member/member-column';
-import Button from '@/components/atoms/common/button/button';
 import MemberEdit from '@/components/organisms/edit/member-edit';
 import OfficerModal from '@/components/atoms/common/modal/officer-modal';
 import GroupModal from '@/components/atoms/common/modal/group-modal';
@@ -34,6 +33,7 @@ import { useScopedI18n } from '../../../../../locales/client';
 import BottomSheet from '@/components/atoms/common/bottom-sheet/bottom-sheet';
 import SlidePopup from '@/components/atoms/common/popup/slide-popup';
 import { setTargetMember } from '@/redux/reducers/target/target-member-reducer';
+import { uploadFiles } from '@/utils/upload';
 
 type MemberInformationListProps = {};
 
@@ -46,6 +46,7 @@ const MemberInformationList = ({}: MemberInformationListProps) => {
   const ministriesApi = new MinistriesApi(false);
 
   const t_popup = useScopedI18n('popup');
+  const t_button = useScopedI18n('button');
 
   const { churchId } = useSelector((state: RootState) => state.church);
   const { member } = useSelector((state: RootState) => state.memberRegister);
@@ -80,6 +81,13 @@ const MemberInformationList = ({}: MemberInformationListProps) => {
   // 개인정보 수정 모달
   const [isEditShown, setIsEditShown] = useState<boolean>(false);
   const [focusItem, setFocusItem] = useState<MEMBER>(MEMBER.NAME);
+
+  // 임시 프로필 이미지
+  const [profileImage, setProfileImage] = useState<File | null>(null);
+
+  const onChangeProfileImage = (image: File | null) => {
+    setProfileImage(image);
+  };
 
   // 신급 수정 모달
   const [isBaptismModalShown, setIsBaptismModalShown] =
@@ -139,18 +147,26 @@ const MemberInformationList = ({}: MemberInformationListProps) => {
 
   const onClickSave = async () => {
     try {
+      let updatedMember = { ...member };
+      if (profileImage) {
+        const uploadedUrls = await uploadFiles([profileImage]);
+        const uploadedUrl = uploadedUrls[0];
+        if (uploadedUrl) {
+          updatedMember = { ...member, profileImageUrl: uploadedUrl };
+          dispatch(setMember(updatedMember));
+        }
+      }
+
       await membersApi
         .editMember(
           { churchId, memberId: targetMember.id },
-          getEditMemberBody(member)
+          getEditMemberBody(updatedMember)
         )
         .then((response) => {
           if (response.status === 200) {
             setIsEditShown(false);
-            const newMember = getMemberFromServer(response.data);
+            const newMember = getMemberFromServer(response.data.data);
             dispatch(setTargetMember(newMember));
-
-            // 교인 목록에서도 업데이트
             const newMembers = members.map((mem: Member) =>
               mem.id === newMember.id ? newMember : mem
             );
@@ -580,9 +596,13 @@ const MemberInformationList = ({}: MemberInformationListProps) => {
       <SlidePopup
         isShow={isEditShown}
         onClickClose={onClickClose}
-        headerRight={<Button text="저장" onClick={onClickSave} />}
+        doneText={t_button('save')}
+        onClickDone={onClickSave}
       >
-        <MemberEdit focusItem={focusItem} />
+        <MemberEdit
+          focusItem={focusItem}
+          onChangeProfileImage={onChangeProfileImage}
+        />
       </SlidePopup>
 
       {/* 신급 수정 */}

@@ -65,7 +65,7 @@ type EditMemberParams = {
 };
 
 export type EditMemberBody = {
-  profileImage?: string;
+  profileImageUrl?: string;
   birth?: string;
   isLunar?: boolean;
   gender?: string;

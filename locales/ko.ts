@@ -448,5 +448,6 @@ export default {
 
   'popup.deleteChurchUserTitle': '해당 관리자를 삭제하시겠습니까?',
   'popup.deleteChurchUserBody': '삭제된 관리자는 복구할 수 없습니다.',
+
   /*-------------------popup-------------------*/
 } as const;

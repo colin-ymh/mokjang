@@ -21,7 +21,7 @@ type MemberRegisterState = {
 
 export const DEFAULT_MEMBER: Member = {
   id: BLANK,
-  profileImage: BLANK,
+  profileImageUrl: BLANK,
   name: BLANK,
   mobilePhone: BLANK,
   homePhone: BLANK,

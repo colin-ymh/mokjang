@@ -2,8 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { WHITE } from '@/constants/styles/color';
-import EditList from '@/components/molecules/edit/edit-list';
-import { MEMBER } from '@/constants/member/member-column';
+import EditList, { EditListProps } from '@/components/molecules/edit/edit-list';
 
 const RegisterContainer = styled.div`
   display: flex;
@@ -14,14 +13,7 @@ const RegisterContainer = styled.div`
   overflow-y: scroll;
 `;
 
-type MemberEditProps = {
-  focusItem: MEMBER;
-};
-
-const MemberEdit = ({ focusItem }: MemberEditProps) => {
-  const props = {
-    focusItem,
-  };
+const MemberEdit = (props: EditListProps) => {
   return (
     <RegisterContainer>
       <EditList {...props} />
