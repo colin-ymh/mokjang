@@ -1,14 +1,12 @@
 import React from 'react';
-import Image from 'next/image';
 import styled from 'styled-components';
 
 import { Member } from '@/models/member/member';
-import { MEMBER } from '@/constants/member/member-column';
 import { GRAY } from '@/constants/styles/color';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { getAge, getDateFromDateString } from '@/utils/date';
 import CheckButton from '@/components/atoms/common/button/check-button';
-import { getRandomImage } from '@/utils/image';
+import ProfileImage from '@/components/atoms/common/image/profile-image';
 
 const BackgroundContainer = styled.div`
   display: flex;
@@ -31,12 +29,6 @@ const ItemContainer = styled.div<{ $isEnable: boolean }>`
   &:hover {
     background-color: ${GRAY.SEMI_LIGHT};
   }
-`;
-
-const ProfileImage = styled(Image)`
-  width: 30px;
-  height: 30px;
-  border-radius: 20%;
 `;
 
 const ButtonContainer = styled.div`
@@ -65,10 +57,7 @@ const AddMemberItem = ({
           isEnable && onClick(member);
         }}
       >
-        <ProfileImage
-          src={member.profileImage || getRandomImage(member.id)}
-          alt={MEMBER.PROFILE_IMAGE}
-        />
+        <ProfileImage value={member.profileImageUrl} />
         <MainText>{member.name}</MainText>
         <MainText color={GRAY.DARK}>
           {member.birth && `(${getAge(getDateFromDateString(member.birth))})`}

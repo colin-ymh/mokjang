@@ -33,11 +33,12 @@ import { getSchool } from '@/api/school-api';
 import PagePopup from '@/components/atoms/common/popup/page-popup';
 import { MEMBER } from '@/constants/member/member-column';
 
-type EditListProps = {
-  focusItem: MEMBER;
+export type EditListProps = {
+  focusItem?: MEMBER;
+  onChangeProfileImage: (image: File | null) => void;
 };
 
-const EditList = ({ focusItem }: EditListProps) => {
+const EditList = ({ focusItem, onChangeProfileImage }: EditListProps) => {
   const membersApi = new MembersApi(false);
   const dispatch = useDispatch<AppDispatch>();
   const churchId: string = useSelector(
@@ -118,11 +119,6 @@ const EditList = ({ focusItem }: EditListProps) => {
   const [isAddressOpen, setIsAddressOpen] = useState<boolean>(false);
 
   const onClickAddressClose = () => setIsAddressOpen(false);
-
-  // 이미지 변경 이벤트
-  const onChangeProfileImage = (profileImage: string) => {
-    dispatch(setMember({ ...member, profileImage }));
-  };
 
   // 성별 변경 시 이벤트
   const onChangeGender = (gender: GENDER) => {

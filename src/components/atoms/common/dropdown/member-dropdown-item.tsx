@@ -1,13 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
-import Image from 'next/image';
 
 import { BLACK, MAIN } from '@/constants/styles/color';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-item';
-import { GENDER } from '@/constants/constant';
-import { MEMBER } from '@/constants/member/member-column';
-import { getRandomImage } from '@/utils/image';
+import { BLANK, GENDER } from '@/constants/constant';
+import ProfileImage from '@/components/atoms/common/image/profile-image';
 
 const DropdownContainer = styled.div`
   display: flex;
@@ -27,12 +25,6 @@ const ItemContainer = styled.div<{ $isFocused: boolean }>`
   &:hover {
     background-color: ${MAIN.EXTRA_LIGHT};
   }
-`;
-
-const ProfileImage = styled(Image)`
-  width: 30px;
-  height: 30px;
-  border-radius: 20%;
 `;
 
 export type MemberDropdownType = DropdownValueType & {
@@ -57,10 +49,7 @@ const MemberDropdownItem = ({
   return (
     <DropdownContainer>
       <ItemContainer onClick={() => onClick(item.value)} $isFocused={isFocused}>
-        <ProfileImage
-          src={item.profileImage || getRandomImage(item.value)}
-          alt={MEMBER.PROFILE_IMAGE}
-        />
+        <ProfileImage value={item.profileImage || BLANK} />
         <MainText color={isSelected ? MAIN.DEFAULT : BLACK}>
           {item.title}
         </MainText>

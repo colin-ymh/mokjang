@@ -9,6 +9,7 @@ const SlidePanel = styled.div<{
   $isShow: boolean;
   direction: DIRECTION;
   size: number;
+  $isPercentage: boolean;
 }>`
   position: fixed;
   background-color: ${WHITE};
@@ -18,40 +19,41 @@ const SlidePanel = styled.div<{
   flex-direction: column;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 
-  ${({ direction, $isShow, size }) => {
+  ${({ direction, $isShow, size, $isPercentage }) => {
+    const sizeValue = $isPercentage ? `${size}%` : `${size}px`;
     switch (direction) {
       case DIRECTION.LEFT:
         return `
-          top: 0;
-          bottom: 0;
-          left: 0;
-          width: ${size}px;
-          transform: translateX(${$isShow ? 0 : '-100%'});
-        `;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        width: ${sizeValue};
+        transform: translateX(${$isShow ? 0 : '-100%'});
+      `;
       case DIRECTION.RIGHT:
         return `
-          top: 0;
-          bottom: 0;
-          right: 0;
-          width: ${size}px;
-          transform: translateX(${$isShow ? 0 : '100%'});
-        `;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        width: ${sizeValue};
+        transform: translateX(${$isShow ? 0 : '100%'});
+      `;
       case DIRECTION.TOP:
         return `
-          left: 0;
-          right: 0;
-          top: 0;
-          height: ${size}px;
-          transform: translateY(${$isShow ? 0 : '-100%'});
-        `;
+        left: 0;
+        right: 0;
+        top: 0;
+        height: ${sizeValue};
+        transform: translateY(${$isShow ? 0 : '-100%'});
+      `;
       case DIRECTION.BOTTOM:
         return `
-          left: 0;
-          right: 0;
-          bottom: 0;
-          height: ${size}px;
-          transform: translateY(${$isShow ? 0 : '100%'});
-        `;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: ${sizeValue};
+        transform: translateY(${$isShow ? 0 : '100%'});
+      `;
       default:
         return '';
     }
@@ -94,6 +96,7 @@ type SlidePopupProps = {
   isShow: boolean;
   direction?: DIRECTION;
   size?: number; // 수평 슬라이드면 width, 수직 슬라이드면 height
+  isPercentage?: boolean;
 
   isFooterShown?: boolean;
   onClickClose: () => void;
@@ -112,6 +115,7 @@ const SlidePopup = ({
   isShow,
   direction = DIRECTION.RIGHT,
   size = 670,
+  isPercentage = false,
 
   isFooterShown,
   onClickClose,
@@ -145,6 +149,7 @@ const SlidePopup = ({
       direction={direction}
       size={size}
       onClick={(e) => e.stopPropagation()}
+      $isPercentage={isPercentage}
     >
       <PopupLayout
         onClickCancel={onClickClose}

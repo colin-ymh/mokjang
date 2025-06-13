@@ -1,5 +1,4 @@
-import { ChangeEvent, useEffect, useRef, useState } from 'react';
-import Image from 'next/image';
+import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -13,7 +12,6 @@ import { BLANK } from '@/constants/constant';
 import { SIZE } from '@/constants/styles/style';
 import { GRAY } from '@/constants/styles/color';
 
-import { getRandomImage } from '@/utils/image';
 import {
   getFormattedMobilePhone,
   getFormattedName,
@@ -22,6 +20,7 @@ import {
 
 import useWindowSize from '@/hooks/window/window';
 import { useI18n } from '../../../../../locales/client';
+import ProfileImage from '@/components/atoms/common/image/profile-image';
 
 const MemberItemListContainer = styled.div`
   padding: 10px 20px;
@@ -44,12 +43,6 @@ const MemberItem = styled.div`
   border-radius: 5px;
   gap: 10px;
   cursor: pointer;
-`;
-
-const ProfileImage = styled(Image)`
-  width: 40px;
-  height: 40px;
-  border-radius: 7px;
 `;
 
 const MemberDetails = styled.div`
@@ -163,10 +156,7 @@ const MemberItemList = ({
             key={member.id}
             onClick={() => onClickMemberItem(member.id)}
           >
-            <ProfileImage
-              src={member.profileImage || getRandomImage(member.id)}
-              alt={`profileImage`}
-            />
+            <ProfileImage value={member.profileImageUrl} />
             <MemberDetails>
               <MainText
                 color={GRAY.DARK}

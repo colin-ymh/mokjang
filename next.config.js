@@ -8,6 +8,7 @@ const nextConfig = {
     });
     return config;
   },
+
   experimental: {
     turbo: {
       rules: {
@@ -19,8 +20,19 @@ const nextConfig = {
     },
     // appDir: true,
   },
+
   compiler: {
-    styledComponents: true, // styled-components 활성화
+    styledComponents: true,
+  },
+
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'd3rowf2cf035m4.cloudfront.net',
+        // pathname: '/**', // 모든 경로 허용 (필요시)
+      },
+    ],
   },
 };
 

@@ -14,7 +14,6 @@ import {
 import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-item';
 import { VehicleNumberInputRef } from '@/components/atoms/register/vehicle-number-input.view';
 import { MEMBER } from '@/constants/member/member-column';
-import ProfileImageInput from '@/components/atoms/common/image/profile-image-input';
 import LabelInput from '@/components/atoms/common/input/label-input';
 import {
   getIsWellFormedBirth,
@@ -33,6 +32,7 @@ import {
 import RegisterRadioButton from '@/components/atoms/register/register-radio-button';
 import RadioButton from '@/components/atoms/common/input/radio-button/radio-button';
 import { useMarriageDropdownItems } from '@/hooks/dropdown/dropdown-items';
+import ProfileImageInput from '@/components/atoms/common/image/profile-image-input';
 
 const RequiredRegisterContainer = styled.div`
   display: flex;
@@ -63,7 +63,7 @@ const Invisible = styled.div`
 `;
 
 type EditListViewProps = {
-  focusItem: MEMBER;
+  focusItem?: MEMBER;
   guideName: string;
   guideItems: DropdownValueType[];
   schoolItems: DropdownValueType[];
@@ -71,7 +71,7 @@ type EditListViewProps = {
   onChangeMobilePhone: (event: ChangeEvent<HTMLInputElement>) => void;
   onChangeGuideName: (event: ChangeEvent<HTMLInputElement>) => void;
   onChangeGuidedById: (value: string) => void;
-  onChangeProfileImage: (image: string) => void;
+  onChangeProfileImage: (image: File | null) => void;
   onChangeBirth: (event: ChangeEvent<HTMLInputElement>) => void;
   onChangeCalendarMode: (mode: CALENDAR_MODE) => void;
   onChangeHomePhone: (event: ChangeEvent<HTMLInputElement>) => void;
@@ -188,8 +188,7 @@ const EditListView = ({
     <RequiredRegisterContainer>
       <ImageContainer>
         <ProfileImageInput
-          memberId={member.id}
-          value={member.profileImage}
+          value={member.profileImageUrl}
           onChange={onChangeProfileImage}
         />
       </ImageContainer>

@@ -69,8 +69,8 @@ const PersonalRegister = () => {
   }, [schoolAnimationRef, member.birth]);
 
   // 이미지 변경 이벤트
-  const onChangeProfileImage = (profileImage: string) => {
-    dispatch(setMember({ ...member, profileImage }));
+  const onChangeProfileImage = (profileImageUrl: string) => {
+    dispatch(setMember({ ...member, profileImageUrl }));
   };
 
   // 성별 변경 시 이벤트

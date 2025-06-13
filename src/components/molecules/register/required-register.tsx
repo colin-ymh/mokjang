@@ -102,7 +102,7 @@ const RequiredRegister = () => {
           value: member.id,
           title: member.name,
           gender: (member?.gender as GENDER) || undefined,
-          profileImage: member.profileImage || undefined,
+          profileImage: member.profileImageUrl || undefined,
           age: member.birth
             ? getAge(getDateFromDateString(member.birth))
             : undefined,
@@ -145,7 +145,7 @@ const RequiredRegister = () => {
           value: member.id,
           title: member.name,
           gender: (member?.gender as GENDER) || undefined,
-          profileImage: member.profileImage || undefined,
+          profileImage: member.profileImageUrl || undefined,
           age: member.birth
             ? getAge(getDateFromDateString(member.birth))
             : undefined,

@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import Image from 'next/image';
 
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { GRAY, WHITE } from '@/constants/styles/color';
@@ -10,7 +9,7 @@ import { getFormattedMobilePhone } from '@/utils/format';
 import { FamilyMember } from '@/models/member/member';
 import SlideButtonList from '@/components/atoms/common/button/slide-button-list';
 import { useI18n } from '../../../../../locales/client';
-import { getRandomImage } from '@/utils/image';
+import ProfileImage from '@/components/atoms/common/image/profile-image';
 
 const ItemContainer = styled.div`
   display: flex;
@@ -31,13 +30,6 @@ const InformationList = styled.div`
   align-items: center;
   width: 95%;
   overflow-x: auto;
-`;
-
-const ProfileImage = styled(Image)`
-  width: 30px;
-  height: 30px;
-  border-radius: 20%;
-  margin-left: 5px;
 `;
 
 const MemberInformationContainer = styled.div`
@@ -73,10 +65,7 @@ const FamilyMemberItem = ({
           <MainText fontWeight={600}>{t(member.relation)}</MainText>
         </MemberInformationContainer>
         {/* 이미지 */}
-        <ProfileImage
-          src={getRandomImage(member.familyMemberId)}
-          alt={'profileImage'}
-        />
+        <ProfileImage value={member.familyMember.profileImageUrl} />
         {/* 이름 */}
         <MemberInformationContainer>
           <MainText color={GRAY.DEFAULT}>{t(MEMBER.NAME)}</MainText>
