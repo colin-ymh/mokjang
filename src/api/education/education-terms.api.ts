@@ -3,7 +3,6 @@ import { SERVER_URL, TEST_SERVER_URL } from '@/constants/state/url';
 import { EDUCATION_TERM } from '@/constants/education/education-column';
 import { ORDER_DIRECTION } from '@/constants/constant';
 import { CustomError } from '@/api/error/error';
-import axios from '@/api/authorize-axios';
 import authorizeAxios from '@/api/authorize-axios';
 
 import { EDUCATION_TERM_STATUS } from '@/constants/status/status';
@@ -83,7 +82,7 @@ export class EducationTermsApi {
     const url = `${this._url}/churches/${churchId}/management/educations/${educationId}/terms`;
 
     try {
-      return await axios.get(url, {
+      return await authorizeAxios.get(url, {
         params: {
           order,
           orderDirection,
@@ -116,7 +115,7 @@ export class EducationTermsApi {
     const url = `${this._url}/churches/${churchId}/management/educations/${educationId}/terms/${educationTermId}`;
 
     try {
-      return await axios.get(url);
+      return await authorizeAxios.get(url);
     } catch (serverError: any) {
       if (serverError.response) {
         const { message, error, statusCode } = serverError.response.data;
@@ -176,7 +175,7 @@ export class EducationTermsApi {
     const url = `${this._url}/churches/${churchId}/management/educations/${educationId}/terms/${educationTermId}`;
 
     try {
-      return await axios.patch(url, body);
+      return await authorizeAxios.patch(url, body);
     } catch (serverError: any) {
       if (serverError.response) {
         const { message, error, statusCode } = serverError.response.data;
@@ -204,7 +203,7 @@ export class EducationTermsApi {
     const url = `${this._url}/churches/${churchId}/management/educations/${educationId}/terms/${educationTermId}`;
 
     try {
-      return await axios.delete(url);
+      return await authorizeAxios.delete(url);
     } catch (serverError: any) {
       if (serverError.response) {
         const { message, error, statusCode } = serverError.response.data;
@@ -232,7 +231,7 @@ export class EducationTermsApi {
     const url = `${this._url}/churches/${churchId}/management/educations/${educationId}/terms/${educationTermId}/sync-attendance`;
 
     try {
-      return await axios.post(url);
+      return await authorizeAxios.post(url);
     } catch (serverError: any) {
       if (serverError.response) {
         const { message, error, statusCode } = serverError.response.data;

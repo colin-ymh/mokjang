@@ -1,5 +1,3 @@
-import styled from 'styled-components';
-import { GRAY } from '@/constants/styles/color';
 import ChurchUserPermissionView from '@/components/molecules/church-user/information/church-user-permission.view';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -18,25 +16,6 @@ import { ChurchUser } from '@/models/church-user/church-user';
 import { setTargetChurchUser } from '@/redux/reducers/target/target-church-user-reducer';
 import { setChurchUsers } from '@/redux/reducers/filter/church-user-filter-reducer';
 import { Group } from '@/models/management/management';
-
-const PermissionContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-const RowContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  padding: 5px 10px;
-  height: 50px;
-
-  border-bottom: 1px solid ${GRAY.LIGHT};
-  &:last-child {
-    border-bottom: none;
-  }
-`;
 
 type ChurchUserPermissionProps = {};
 

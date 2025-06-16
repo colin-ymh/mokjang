@@ -6,6 +6,7 @@ import { setMemberFilter } from '@/redux/reducers/filter/member-filter-reducer';
 import GroupFilterView from '@/components/atoms/layout/side/main-side/group-filter.view';
 import { DEFAULT_GROUP } from '@/models/management/management';
 import { setTargetGroup } from '@/redux/reducers/target/target-group-reducer';
+import { getGroup } from '@/utils/group';
 
 type GroupFilterProps = {
   isDefaultOpen?: boolean;
@@ -35,7 +36,8 @@ const GroupFilter = ({ isDefaultOpen = false, onClick }: GroupFilterProps) => {
     }
 
     if (groupIds[0] !== null) {
-      const newGroup = groups.find((group) => group.id === groupIds[0]);
+      const newGroup = getGroup(groupIds[0], groups);
+
       if (newGroup) {
         dispatch(setTargetGroup(newGroup));
       }

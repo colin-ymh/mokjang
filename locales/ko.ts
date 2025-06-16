@@ -12,6 +12,10 @@ export default {
   isDone: '완료',
   isNotDone: '미완료',
 
+  concealed: '권한 없음',
+
+  management: '교회 설정',
+
   lastLogin: '마지막 로그인',
 
   createdAt: '생성일자',

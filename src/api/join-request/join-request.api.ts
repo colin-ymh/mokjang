@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios';
 import qs from 'qs';
 
 import { SERVER_URL, TEST_SERVER_URL } from '@/constants/state/url';
@@ -200,7 +200,7 @@ export class JoinRequestsApi {
     const url = `${this._url}/churches/${churchId}/join/${joinId}`;
 
     try {
-      return await axios.delete(url);
+      return await authorizeAxios.delete(url);
     } catch (serverError: any) {
       if (serverError.response) {
         const { message, error, statusCode } = serverError.response.data;

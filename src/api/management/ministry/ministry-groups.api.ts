@@ -1,8 +1,9 @@
-import axios, { AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios';
 import { SERVER_URL, TEST_SERVER_URL } from '@/constants/state/url';
 import { CustomError } from '@/api/error/error';
 import { ORDER_DIRECTION } from '@/constants/constant';
 import qs from 'qs';
+import authorizeAxios from '@/api/authorize-axios';
 
 export enum MINISTRY_GROUP_ORDER {
   CREATED_AT = 'createdAt',
@@ -87,7 +88,7 @@ export class MinistryGroupsApi {
     const url = `${this._url}/churches/${churchId}/management/ministry-groups`;
 
     try {
-      return await axios.get(url, {
+      return await authorizeAxios.get(url, {
         params: queryParams,
         paramsSerializer: (params) => {
           return qs.stringify(params, {
@@ -126,7 +127,7 @@ export class MinistryGroupsApi {
     const url = `${this._url}/churches/${churchId}/management/ministry-groups`;
 
     try {
-      return await axios.post(url, body);
+      return await authorizeAxios.post(url, body);
     } catch (serverError: any) {
       if (serverError.response) {
         const { message, error, statusCode } = serverError.response.data;
@@ -154,7 +155,7 @@ export class MinistryGroupsApi {
     const url = `${this._url}/churches/${churchId}/management/ministry-groups/${ministryGroupId}`;
 
     try {
-      return await axios.get(url);
+      return await authorizeAxios.get(url);
     } catch (serverError: any) {
       if (serverError.response) {
         const { message, error, statusCode } = serverError.response.data;
@@ -184,7 +185,7 @@ export class MinistryGroupsApi {
     const url = `${this._url}/churches/${churchId}/management/ministry-groups/${ministryGroupId}`;
 
     try {
-      return await axios.patch(url, body);
+      return await authorizeAxios.patch(url, body);
     } catch (serverError: any) {
       if (serverError.response) {
         const { message, error, statusCode } = serverError.response.data;
@@ -212,7 +213,7 @@ export class MinistryGroupsApi {
     const url = `${this._url}/churches/${churchId}/management/ministry-groups/${ministryGroupId}`;
 
     try {
-      return await axios.delete(url);
+      return await authorizeAxios.delete(url);
     } catch (serverError: any) {
       if (serverError.response) {
         const { message, error, statusCode } = serverError.response.data;
@@ -240,7 +241,7 @@ export class MinistryGroupsApi {
     const url = `${this._url}/churches/${churchId}/management/ministry-groups/${ministryGroupId}/childGroups`;
 
     try {
-      return await axios.get(url);
+      return await authorizeAxios.get(url);
     } catch (serverError: any) {
       if (serverError.response) {
         const { message, error, statusCode } = serverError.response.data;

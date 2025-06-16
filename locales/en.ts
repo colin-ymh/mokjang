@@ -12,6 +12,10 @@ export default {
   isDone: 'Completed',
   isNotDone: 'Incomplete',
 
+  concealed: 'No Permission',
+
+  management: 'Management',
+
   lastLogin: 'Last Login',
 
   inCharge: 'In Charge',

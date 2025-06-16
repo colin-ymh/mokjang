@@ -97,7 +97,7 @@ const EducationTermSessionList = ({
       </HeaderContainer>
       {/* 회차 목록 */}
       <ListContainer>
-        {educationSessions.map((session) => (
+        {educationSessions?.map((session) => (
           <SessionItem
             key={session.id}
             onClick={() =>

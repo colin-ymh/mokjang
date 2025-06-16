@@ -1,6 +1,7 @@
-import axios, { AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios';
 import { SERVER_URL, TEST_SERVER_URL } from '@/constants/state/url';
 import { CustomError } from '@/api/error/error';
+import authorizeAxios from '@/api/authorize-axios';
 
 type GetEducationAttendancesParams = {
   churchId: string;
@@ -51,7 +52,7 @@ export class EducationAttendanceApi {
     const url = `${this._url}/churches/${churchId}/management/educations/${educationId}/terms/${educationTermId}/sessions/${sessionId}/attendance`;
 
     try {
-      return await axios.get(url);
+      return await authorizeAxios.get(url);
     } catch (serverError: any) {
       if (serverError.response) {
         const { message, error, statusCode } = serverError.response.data;
@@ -82,7 +83,7 @@ export class EducationAttendanceApi {
     const url = `${this._url}/churches/${churchId}/management/educations/${educationId}/terms/${educationTermId}/sessions/${sessionId}/attendance/${attendanceId}`;
 
     try {
-      return await axios.patch(url, body);
+      return await authorizeAxios.patch(url, body);
     } catch (serverError: any) {
       if (serverError.response) {
         const { message, error, statusCode } = serverError.response.data;

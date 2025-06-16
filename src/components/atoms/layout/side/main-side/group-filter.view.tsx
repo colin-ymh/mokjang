@@ -131,9 +131,9 @@ const renderGroups = (
             </MainText>
           </LeftContainer>
           <RightContainer>
-            <MainText color={GRAY.DEFAULT} size={SIZE.EXTRA_SMALL}>
-              {group.id && group.membersCount}
-            </MainText>
+            {/*<MainText color={GRAY.DEFAULT} size={SIZE.EXTRA_SMALL}>*/}
+            {/*  {group.id && group.membersCount}*/}
+            {/*</MainText>*/}
             <MobileToggleButton
               onClick={(e) => {
                 e.stopPropagation(); // 이벤트 전파 중지

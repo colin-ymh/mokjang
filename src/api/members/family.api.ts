@@ -1,7 +1,8 @@
-import axios, { AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios';
 import { FAMILY } from '@/constants/constant';
 import { SERVER_URL, TEST_SERVER_URL } from '@/constants/state/url';
 import { CustomError } from '@/api/error/error';
+import authorizeAxios from '@/api/authorize-axios';
 
 type GetFamilyParams = {
   churchId: string;
@@ -56,7 +57,7 @@ export class FamilyApi {
     const url = `${this._url}/churches/${churchId}/members/${memberId}/family`;
 
     try {
-      return await axios.get(url);
+      return await authorizeAxios.get(url);
     } catch (serverError: any) {
       if (serverError.response) {
         const { message, error, statusCode } = serverError.response.data;
@@ -86,7 +87,7 @@ export class FamilyApi {
     const url = `${this._url}/churches/${churchId}/members/${memberId}/family`;
 
     try {
-      return await axios.post(url, body);
+      return await authorizeAxios.post(url, body);
     } catch (serverError: any) {
       if (serverError.response) {
         const { message, error, statusCode } = serverError.response.data;
@@ -116,7 +117,7 @@ export class FamilyApi {
     const url = `${this._url}/churches/${churchId}/members/${memberId}/family/fetch-family`;
 
     try {
-      return await axios.post(url, body);
+      return await authorizeAxios.post(url, body);
     } catch (serverError: any) {
       if (serverError.response) {
         const { message, error, statusCode } = serverError.response.data;
@@ -146,7 +147,7 @@ export class FamilyApi {
     const url = `${this._url}/churches/${churchId}/members/${memberId}/family/${familyMemberId}`;
 
     try {
-      return await axios.patch(url, body);
+      return await authorizeAxios.patch(url, body);
     } catch (serverError: any) {
       if (serverError.response) {
         const { message, error, statusCode } = serverError.response.data;
@@ -174,7 +175,7 @@ export class FamilyApi {
     const url = `${this._url}/churches/${churchId}/members/${memberId}/family/${familyMemberId}`;
 
     try {
-      return await axios.delete(url);
+      return await authorizeAxios.delete(url);
     } catch (serverError: any) {
       if (serverError.response) {
         const { message, error, statusCode } = serverError.response.data;

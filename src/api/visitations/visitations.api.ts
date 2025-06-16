@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios';
 import qs from 'qs';
 
 import { SERVER_URL, TEST_SERVER_URL } from '@/constants/state/url';
@@ -209,7 +209,7 @@ export class VisitationsApi {
     const url = `${this._url}/churches/${churchId}/visitations/${visitationId}`;
 
     try {
-      return await axios.get(url);
+      return await authorizeAxios.get(url);
     } catch (serverError: any) {
       if (serverError.response) {
         const { message, error, statusCode } = serverError.response.data;
@@ -233,7 +233,7 @@ export class VisitationsApi {
     const url = `${this._url}/churches/${churchId}/visitations/${visitationId}`;
 
     try {
-      return await axios.patch(url, body);
+      return await authorizeAxios.patch(url, body);
     } catch (serverError: any) {
       if (serverError.response) {
         const { message, error, statusCode } = serverError.response.data;
@@ -254,7 +254,7 @@ export class VisitationsApi {
     const url = `${this._url}/churches/${churchId}/visitations/${visitationId}`;
 
     try {
-      return await axios.delete(url);
+      return await authorizeAxios.delete(url);
     } catch (serverError: any) {
       if (serverError.response) {
         const { message, error, statusCode } = serverError.response.data;
@@ -278,7 +278,7 @@ export class VisitationsApi {
     const url = `${this._url}/churches/${churchId}/visitations/${visitationId}/details/${detailId}`;
 
     try {
-      return await axios.patch(url, body);
+      return await authorizeAxios.patch(url, body);
     } catch (serverError: any) {
       if (serverError.response) {
         const { message, error, statusCode } = serverError.response.data;
@@ -302,7 +302,7 @@ export class VisitationsApi {
     const url = `${this._url}/churches/${churchId}/visitations/${visitationId}/add-receivers`;
 
     try {
-      return await axios.patch(url, body);
+      return await authorizeAxios.patch(url, body);
     } catch (serverError: any) {
       if (serverError.response) {
         const { message, error, statusCode } = serverError.response.data;
@@ -326,7 +326,7 @@ export class VisitationsApi {
     const url = `${this._url}/churches/${churchId}/visitations/${visitationId}/delete-receivers`;
 
     try {
-      return await axios.patch(url, body);
+      return await authorizeAxios.patch(url, body);
     } catch (serverError: any) {
       if (serverError.response) {
         const { message, error, statusCode } = serverError.response.data;

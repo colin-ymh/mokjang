@@ -23,6 +23,7 @@ const HeaderContainer = styled.div`
   flex-direction: column;
   padding: 20px;
   height: 50px;
+  flex-shrink: 0;
 `;
 
 const ContentContainer = styled.div`

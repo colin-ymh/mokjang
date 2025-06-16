@@ -42,7 +42,7 @@ const LoginList = () => {
           providerId: phone,
         })
         .then((response) => {
-          // 로그인 성공 이후, 페이지 새로고침 => layout 에서 church-church-church-user 와 church 를 initialize
+          // 로그인 성공 이후, 페이지 새로고침
           window.location.href = '/login';
         });
     } catch (error) {

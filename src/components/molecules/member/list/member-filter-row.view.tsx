@@ -12,7 +12,7 @@ import FilteredItem, {
 import { useSearchFilterDropdownItems } from '@/hooks/dropdown/dropdown-items';
 import useWindowSize from '@/hooks/window/window';
 
-import { useI18n, useScopedI18n } from '../../../../../locales/client';
+import { useScopedI18n } from '../../../../../locales/client';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
@@ -131,8 +131,6 @@ const MemberFilterRowView = ({
   onClickSearch,
   onKeyDown,
 }: MemberFilterViewProps) => {
-  const t = useI18n();
-  const t_placeholder = useScopedI18n('placeholder');
   const t_button = useScopedI18n('button');
   const searchFilterDropdownItems = useSearchFilterDropdownItems();
 

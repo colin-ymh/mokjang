@@ -1,9 +1,10 @@
-import axios, { AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios';
 import qs from 'qs';
 
 import { ORDER_DIRECTION } from '@/constants/constant';
 import { SERVER_URL, TEST_SERVER_URL } from '@/constants/state/url';
 import { CustomError } from '@/api/error/error';
+import authorizeAxios from '@/api/authorize-axios';
 
 type GetManagersParams = {
   churchId: string; // 교회 id
@@ -92,7 +93,7 @@ export class ManagersApi {
     const url = `${this._url}/churches/${churchId}/managers`;
 
     try {
-      return await axios.get(url, {
+      return await authorizeAxios.get(url, {
         params: queryParams,
         paramsSerializer: (params) => {
           return qs.stringify(params, {
@@ -129,7 +130,7 @@ export class ManagersApi {
     const url = `${this._url}/churches/${churchId}/managers/${churchUserId}`;
 
     try {
-      return await axios.get(url);
+      return await authorizeAxios.get(url);
     } catch (serverError: any) {
       if (serverError.response) {
         const { message, error, statusCode } = serverError.response.data;
@@ -157,7 +158,7 @@ export class ManagersApi {
     const url = `${this._url}/churches/${churchId}/managers/${churchUserId}/toggle-permission-activity`;
 
     try {
-      return await axios.patch(url);
+      return await authorizeAxios.patch(url);
     } catch (serverError: any) {
       if (serverError.response) {
         const { message, error, statusCode } = serverError.response.data;
@@ -187,7 +188,7 @@ export class ManagersApi {
     const url = `${this._url}/churches/${churchId}/managers/${churchUserId}/assign-permission-template`;
 
     try {
-      return await axios.patch(url, body);
+      return await authorizeAxios.patch(url, body);
     } catch (serverError: any) {
       if (serverError.response) {
         const { message, error, statusCode } = serverError.response.data;
@@ -215,7 +216,7 @@ export class ManagersApi {
     const url = `${this._url}/churches/${churchId}/managers/${churchUserId}/unassign-permission-template`;
 
     try {
-      return await axios.patch(url);
+      return await authorizeAxios.patch(url);
     } catch (serverError: any) {
       if (serverError.response) {
         const { message, error, statusCode } = serverError.response.data;
@@ -245,7 +246,7 @@ export class ManagersApi {
     const url = `${this._url}/churches/${churchId}/managers/${churchUserId}/permission-scope`;
 
     try {
-      return await axios.patch(url, body);
+      return await authorizeAxios.patch(url, body);
     } catch (serverError: any) {
       if (serverError.response) {
         const { message, error, statusCode } = serverError.response.data;

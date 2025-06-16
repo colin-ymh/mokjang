@@ -8,6 +8,7 @@ import {
   fetchGroups,
   fetchMinistryGroups,
   fetchOfficers,
+  setChurch,
   setChurchId,
   setMinistries,
 } from '@/redux/reducers/church-reducer';
@@ -18,6 +19,7 @@ import { UserApi } from '@/api/user/user.api';
 import { setEducations } from '@/redux/reducers/filter/education-filter-reducer';
 import { User } from '@/models/user/user';
 import { fetchPermissionUnits } from '@/redux/reducers/filter/permission-template-filter-reducer';
+import { ChurchesApi } from '@/api/churches/churches.api';
 
 export const useInitializeChurch = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -75,6 +77,7 @@ export const useInitializeUser = () => {
   const router = usePageRouter();
   const authApi = new AuthApi(false);
   const userApi = new UserApi(false);
+  const churchesApi = new ChurchesApi(false);
 
   // /** ➜ 이 ref 가 true 면 두 번 다시 실행하지 않음 */
   const didRunRef = useRef(false);
@@ -110,7 +113,13 @@ export const useInitializeUser = () => {
       const user: User = response.data;
       dispatch(setUser(user));
       if (user.churchUser.length) {
-        dispatch(setChurchId(user.churchUser[0].churchId));
+        const churchId = user.churchUser[0].churchId;
+        dispatch(setChurchId(churchId));
+
+        await churchesApi.getChurch({ churchId }).then((res) => {
+          const newChurch = res.data;
+          dispatch(setChurch(newChurch));
+        });
       } else {
         setRedirectPath('/');
       }

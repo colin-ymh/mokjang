@@ -38,16 +38,16 @@ const getFontWeight = (size?: SIZE, fontWeight?: number) => {
   // size에 따른 기본 font-weight 값 설정
   switch (size) {
     case SIZE.EXTRA_SMALL:
-      return 200;
+      return 100;
     case SIZE.SMALL:
       return 300;
     case SIZE.LARGE:
-      return 500;
+      return 700;
     case SIZE.EXTRA_LARGE:
-      return 600;
+      return 900;
     case SIZE.MEDIUM:
     default:
-      return 400;
+      return 500;
   }
 };
 

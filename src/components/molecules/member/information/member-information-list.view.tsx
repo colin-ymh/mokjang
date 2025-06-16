@@ -447,9 +447,9 @@ const InformationListView = ({
               </MainText>
             </TitleContainer>
             <ContentContainer>
-              {targetMember?.vehicleNumber?.map((number, index) => (
-                <MainText key={index}>{number}</MainText>
-              ))}
+              {/*{targetMember?.vehicleNumber?.map((number, index) => (*/}
+              {/*  <MainText key={index}>{number}</MainText>*/}
+              {/*))}*/}
             </ContentContainer>
             <PencilButton />
           </InformationItem>

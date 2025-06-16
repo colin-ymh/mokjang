@@ -5,6 +5,8 @@ import PermissionUnitItem from '@/components/atoms/permission/information/permis
 const ListContainer = styled.div`
   display: flex;
   flex-direction: column;
+  flex-grow: 1;
+  overflow-y: auto;
 `;
 
 type PermissionUnitListProps = {

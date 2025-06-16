@@ -56,11 +56,11 @@ authorizeAxios.interceptors.response.use(
 
     // ② 401이면 토큰 재발급 후 원 요청 재시도
     if (response?.status === 401) {
-      console.log('access token not found');
+      // console.log('access token not found');
       config[RETRY_FLAG] = true; // 한 번만 재시도
 
       try {
-        console.log('refresh access token');
+        // console.log('refresh access token');
         await authorizeAxios.post('/auth/token/rotate');
         // .then((response) => console.log(response)); // Refresh Token은 쿠키로 전송
         return authorizeAxios(config); // Access Token 쿠키로 자동 포함

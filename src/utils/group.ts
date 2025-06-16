@@ -1,4 +1,4 @@
-import { Group } from '@/models/management/management';
+import { DEFAULT_GROUP, Group } from '@/models/management/management';
 import { GroupsApi } from '@/api/management/group/groups.api';
 
 const getGroupById = (list: Group[], id: string): Group | undefined => {
@@ -50,4 +50,28 @@ export const getOrderedGroups = async (churchId: string) => {
   }
 
   return groups;
+};
+
+/**
+ * 그룹 ID 로 해당 그룹을 찾기
+ * @param groupId
+ * @param groups
+ */
+export const getGroup = (groupId: string, groups: Group[]) => {
+  const q = [...groups];
+
+  while (q.length > 0) {
+    const cur: Group = q.shift()!;
+
+    if (cur.id === groupId) {
+      return cur;
+    }
+
+    // 하위 그룹들을 큐에 추가
+    if (cur.childGroups && cur.childGroups.length > 0) {
+      q.push(...cur.childGroups);
+    }
+  }
+
+  return DEFAULT_GROUP;
 };

@@ -1,8 +1,9 @@
-import axios, { AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios';
 import { SERVER_URL, TEST_SERVER_URL } from '@/constants/state/url';
 import { CustomError } from '@/api/error/error';
 import { ORDER_DIRECTION } from '@/constants/constant';
 import qs from 'qs';
+import authorizeAxios from '@/api/authorize-axios';
 
 export enum GROUP_ROLE_ORDER {
   CREATED_AT = 'createdAt',
@@ -93,7 +94,7 @@ export class GroupRolesApi {
     const url = `${this._url}/churches/${churchId}/management/groups/${groupId}/role`;
 
     try {
-      return await axios.get(url, {
+      return await authorizeAxios.get(url, {
         params: queryParams,
         paramsSerializer: (params) => {
           return qs.stringify(params, {
@@ -132,7 +133,7 @@ export class GroupRolesApi {
     const url = `${this._url}/churches/${churchId}/management/groups/roles`;
 
     try {
-      return await axios.post(url, body);
+      return await authorizeAxios.post(url, body);
     } catch (serverError: any) {
       if (serverError.response) {
         const { message, error, statusCode } = serverError.response.data;
@@ -162,7 +163,7 @@ export class GroupRolesApi {
     const url = `${this._url}/churches/${churchId}/management/groups/${groupId}/role`;
 
     try {
-      return await axios.post(url, body);
+      return await authorizeAxios.post(url, body);
     } catch (serverError: any) {
       if (serverError.response) {
         const { message, error, statusCode } = serverError.response.data;
@@ -192,7 +193,7 @@ export class GroupRolesApi {
     const url = `${this._url}/churches/${churchId}/management/groups/${groupId}/role/${roleId}`;
 
     try {
-      return await axios.patch(url, body);
+      return await authorizeAxios.patch(url, body);
     } catch (serverError: any) {
       if (serverError.response) {
         const { message, error, statusCode } = serverError.response.data;
@@ -220,7 +221,7 @@ export class GroupRolesApi {
     const url = `${this._url}/churches/${churchId}/management/groups/${groupId}/role/${roleId}`;
 
     try {
-      return await axios.delete(url);
+      return await authorizeAxios.delete(url);
     } catch (serverError: any) {
       if (serverError.response) {
         const { message, error, statusCode } = serverError.response.data;
