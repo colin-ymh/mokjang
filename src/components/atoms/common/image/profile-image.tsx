@@ -14,7 +14,7 @@ const Profile = styled(Image)<{ $isButton: boolean }>`
 `;
 
 type ProfileImageProps = {
-  value: string;
+  value?: string;
   width?: number;
   height?: number;
   onClick?: () => void;

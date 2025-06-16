@@ -158,7 +158,7 @@ type JoinRequestTableProps = {
   onClickOpenLink: (target: JoinRequest) => void;
   onClickApprove: () => void;
   onClickCancelLink: () => void;
-  onClickReject: () => void;
+  onClickReject: (joinId: string) => void;
   onChangeLinkMember: (memberId: string) => void;
 };
 
@@ -228,7 +228,7 @@ const JoinRequestTableView = ({
               width={50}
               height={30}
               backgroundColor={DESTRUCTIVE.DEFAULT}
-              onClick={onClickReject}
+              onClick={() => onClickReject(joinRequest.id)}
             />
           </ButtonContainer>
         );
