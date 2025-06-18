@@ -12,6 +12,25 @@ export default {
   isDone: '완료',
   isNotDone: '미완료',
 
+  worshipGroup: '대상그룹',
+  worshipDay: '예배요일',
+  repeatPeriod: '반복주기',
+  attendanceRate: '출석률',
+
+  sunday: '일요일',
+  monday: '월요일',
+  tuesday: '화요일',
+  wednesday: '수요일',
+  thursday: '목요일',
+  friday: '금요일',
+  saturday: '토요일',
+
+  everyWeek: '매주',
+  everyOtherWeek: '격주',
+
+  worship: '예배',
+  description: '설명',
+
   concealed: '권한 없음',
 
   management: '교회 설정',
@@ -214,11 +233,19 @@ export default {
   'title.editPermissionTemplate': '권한유형 수정',
 
   'title.linkMemberUser': '교인정보 연결하기',
+
+  'title.addWorshipSession': '출석내용 입력',
+  'title.editWorshipSession': '출석내용 수정',
+
+  'title.addWorship': '예배 추가',
+  'title.editWorship': '예배 수정',
   /*-------------------title (popup title)-------------------*/
 
   /*-------------------header (side bar button)-------------------*/
   'header.home': '홈',
   'header.member': '교인목록',
+  'header.attendance': '출석',
+  'header.worship': '예배',
   'header.visitation': '심방',
   'header.education': '교육',
   'header.task': '업무',
@@ -350,6 +377,8 @@ export default {
   'button.makeMemberInformation': '교인정보 생성하기',
   'button.linkMemberInformation': '교인정보 연결하기',
   'button.unlinkMemberInformation': '교인정보 연결끊기',
+  'button.addWorshipSession': '출석내용 입력하기',
+  'button.addWorship': '예배 추가하기',
   /*-------------------button-------------------*/
 
   /*-------------------placeholder-------------------*/
@@ -389,6 +418,8 @@ export default {
   'placeholder.visitationPray': '기도 제목을 입력해주세요.',
   'placeholder.content': '내용을 입력해주세요.',
   'placeholder.selectStatus': '진행 상태 선택',
+  'placeholder.worshipTitle': '예배명을 입력해주세요.',
+  'placeholder.worshipDescription': '예배 내용을 입력해주세요.',
 
   /*-------------------placeholder-------------------*/
 
@@ -453,5 +484,7 @@ export default {
   'popup.deleteChurchUserTitle': '해당 관리자를 삭제하시겠습니까?',
   'popup.deleteChurchUserBody': '삭제된 관리자는 복구할 수 없습니다.',
 
+  'popup.deleteWorshipTitle': '해당 예배를 삭제하시겠습니까?',
+  'popup.deleteWorshipBody': '삭제된 예배는 복구할 수 없습니다.',
   /*-------------------popup-------------------*/
 } as const;

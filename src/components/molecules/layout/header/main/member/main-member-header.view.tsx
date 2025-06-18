@@ -172,7 +172,7 @@ const MainMemberHeaderView = ({
         onClickClose={onDismissModal}
       >
         <GroupFilterContainer>
-          <GroupFilter isDefaultOpen onClick={onClickNewGroup} />
+          <GroupFilter isDefaultOpen onChange={onClickNewGroup} />
         </GroupFilterContainer>
       </SlidePopup>
       {/* 데스크톱 교인 추가 */}

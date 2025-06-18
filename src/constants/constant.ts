@@ -2,6 +2,18 @@ export const NONE = 'none'; // 없음 이라는 값
 export const BLANK = '';
 export const NULL = 'null'; // 진짜로 없는 값
 
+export enum DAY {
+  SUNDAY = 'sunday',
+  MONDAY = 'monday',
+  TUESDAY = 'tuesday',
+  WEDNESDAY = 'wednesday',
+  THURSDAY = 'thursday',
+  FRIDAY = 'friday',
+  SATURDAY = 'saturday',
+}
+
+export const DAYS = Object.values(DAY);
+
 // 신급
 export enum BAPTISM {
   BAPTIZED = 'baptized',

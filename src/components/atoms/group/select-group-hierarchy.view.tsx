@@ -6,6 +6,9 @@ import { GRAY, MAIN } from '@/constants/styles/color';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { SIZE } from '@/constants/styles/style';
 import { MEDIA_MIN_WIDTH } from '@/constants/constant';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
+import { useI18n } from '../../../../locales/client';
 
 const FilterContainer = styled.div`
   display: flex;
@@ -73,41 +76,30 @@ const ChildGroupsContainer = styled.div`
 `;
 
 type GroupFilterViewProps = {
-  groups: Group[];
   isDefaultOpen: boolean;
   selectedGroupId: string | null;
-  onClickGroup: (groupIds: string[]) => void;
+  onClickGroup: (groupId: string | null) => void;
 };
 
 // 재귀적으로 그룹을 렌더링하는 함수
 const renderGroups = (
+  t: (key: string, ...args: any[]) => string,
   groups: Group[],
   level: number,
   openGroups: Record<number, boolean>,
   selectedGroupId: string | null,
   onClickToggle: (id: number) => void,
-  onClickGroup: (groupIds: string[]) => void
+  onClickGroup: (groupId: string | null) => void
 ) => {
   return groups.map((group) => {
     const isHaveChildren = group.childGroups && group.childGroups.length > 0;
     const isOpen = openGroups[parseInt(group.id as string)] ?? false; // 기본적으로 닫힘 상태
 
-    const getGroupIds = (group: Group): string[] => {
-      // 재귀적으로 현재 그룹과 모든 하위 그룹의 ID를 수집
-      let collectedIds: string[] = [group.id as string]; // 본인 그룹의 ID 추가
-      if (group.childGroups && group.childGroups.length > 0) {
-        group.childGroups.forEach((child) => {
-          collectedIds = collectedIds.concat(getGroupIds(child)); // 하위 그룹의 자식들도 재귀적으로 추가
-        });
-      }
-      return collectedIds;
-    };
-
     return (
       <ChildGroupsContainer key={parseInt(group.id as string)}>
         <GroupItemContainer
           $level={level}
-          onClick={() => onClickGroup(getGroupIds(group))}
+          onClick={() => onClickGroup(group.id)}
         >
           <LeftContainer>
             <DesktopToggleButton
@@ -127,7 +119,7 @@ const renderGroups = (
                   : GRAY.DARK
               }
             >
-              {group.name}
+              {group.name || t('all')}
             </MainText>
           </LeftContainer>
           <RightContainer>
@@ -150,6 +142,7 @@ const renderGroups = (
           group.childGroups &&
           group.childGroups.length > 0 &&
           renderGroups(
+            t,
             group.childGroups,
             level + 1,
             openGroups,
@@ -162,12 +155,14 @@ const renderGroups = (
   });
 };
 
-const GroupFilterView = ({
-  groups,
+const SelectGroupHierarchyView = ({
   isDefaultOpen,
   selectedGroupId,
   onClickGroup,
 }: GroupFilterViewProps) => {
+  const t = useI18n();
+  const { groups } = useSelector((state: RootState) => state.church);
+
   const [openGroups, setOpenGroups] = useState<Record<number, boolean>>({});
 
   const getAllGroupIds = (groups: Group[]): number[] => {
@@ -200,6 +195,7 @@ const GroupFilterView = ({
   return (
     <FilterContainer>
       {renderGroups(
+        t,
         groups,
         0,
         openGroups,
@@ -211,4 +207,4 @@ const GroupFilterView = ({
   );
 };
 
-export default GroupFilterView;
+export default SelectGroupHierarchyView;

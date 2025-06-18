@@ -3,6 +3,7 @@ import { RootState } from '@/redux/store';
 
 import {
   BAPTISM,
+  DAYS,
   FAMILY,
   GENDER,
   MARRIAGE,
@@ -607,6 +608,60 @@ export const useAttendanceStatusDropdownItems = () => {
       value: false,
       title: t('absent'),
       color: STATUS_COLOR.ABSENT,
+    },
+  ];
+
+  return items;
+};
+
+export const useDayDropdownItems = () => {
+  const t = useI18n();
+
+  const items = [
+    {
+      value: 0,
+      title: t(DAYS[0]),
+    },
+    {
+      value: 1,
+      title: t(DAYS[1]),
+    },
+    {
+      value: 2,
+      title: t(DAYS[2]),
+    },
+    {
+      value: 3,
+      title: t(DAYS[3]),
+    },
+    {
+      value: 4,
+      title: t(DAYS[4]),
+    },
+    {
+      value: 5,
+      title: t(DAYS[5]),
+    },
+    {
+      value: 6,
+      title: t(DAYS[6]),
+    },
+  ];
+
+  return items;
+};
+
+export const useRepeatPeriodDropdownItems = () => {
+  const t = useI18n();
+
+  const items = [
+    {
+      value: 1,
+      title: t('everyWeek'),
+    },
+    {
+      value: 2,
+      title: t('everyOtherWeek'),
     },
   ];
 

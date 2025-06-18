@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 
 import { MinistriesApi } from '@/api/management/ministry/ministries.api';
-import { EducationsApi } from '@/api/education/educations.api';
 import {
   fetchGroups,
   fetchMinistryGroups,
@@ -16,7 +15,6 @@ import { AuthApi } from '@/api/auth/auth.api';
 import { usePageRouter } from '@/utils/router';
 import { setUser } from '@/redux/reducers/user-reducer';
 import { UserApi } from '@/api/user/user.api';
-import { setEducations } from '@/redux/reducers/filter/education-filter-reducer';
 import { User } from '@/models/user/user';
 import { fetchPermissionUnits } from '@/redux/reducers/filter/permission-template-filter-reducer';
 import { ChurchesApi } from '@/api/churches/churches.api';
@@ -29,7 +27,6 @@ export const useInitializeChurch = () => {
   const didRunRef = useRef(false);
 
   const ministriesApi = useMemo(() => new MinistriesApi(false), []);
-  const educationsApi = useMemo(() => new EducationsApi(false), []);
 
   const [thrownError, setThrownError] = useState<Error | null>(null);
   if (thrownError) throw thrownError;
@@ -51,17 +48,15 @@ export const useInitializeChurch = () => {
         dispatch(fetchPermissionUnits({ churchId })),
       ]);
 
-      const [ministries, educations] = await Promise.all([
+      const [ministries] = await Promise.all([
         ministriesApi.getMinistries({ churchId }),
-        educationsApi.getEducations({ churchId }),
       ]);
 
       dispatch(setMinistries(ministries.data.data));
-      dispatch(setEducations(educations.data.data));
     } catch (err) {
       setThrownError(err instanceof Error ? err : new Error(String(err)));
     }
-  }, [churchId, dispatch, ministriesApi, educationsApi]);
+  }, [churchId, dispatch, ministriesApi]);
 
   /* churchId 값이 처음 생겼을 때만 실행 */
   useEffect(() => {

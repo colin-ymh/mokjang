@@ -46,6 +46,14 @@ const MainSideButtonList = ({}: SideBarViewProps) => {
         <GroupFilter />
       </GroupFilterContainer>
       <MainSideButton
+        id={MAIN_HEADER_ID.ATTENDANCE}
+        title={t_header(MAIN_HEADER_ID.ATTENDANCE)}
+      />
+      <MainSideButton
+        id={MAIN_HEADER_ID.WORSHIP}
+        title={t_header(MAIN_HEADER_ID.WORSHIP)}
+      />
+      <MainSideButton
         id={MAIN_HEADER_ID.VISITATION}
         title={t_header(MAIN_HEADER_ID.VISITATION)}
       />

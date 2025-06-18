@@ -1,6 +1,7 @@
 import { Dispatch, ReactNode, SetStateAction } from 'react';
 
 import {
+  ATTENDANCE_CONTENT_ID,
   CHURCH_CONTENT_ID,
   EDUCATION_CONTENT_ID,
   HOME_CONTENT_ID,
@@ -9,6 +10,7 @@ import {
   MEMBER_CONTENT_ID,
   PERMISSION_CONTENT_ID,
   USER_CONTENT_ID,
+  WORSHIP_CONTENT_ID,
 } from '@/constants/layout/content';
 import {
   GROUP_MANAGEMENT_HEADER_ID,
@@ -54,6 +56,10 @@ import MemberInformationListView from '@/components/molecules/member/information
 import PermissionTemplateList from '@/components/organisms/permission/list/permission-template-list';
 import EducationTermList from '@/components/organisms/education/education-term/list/education-term-list';
 import JoinRequestList from '@/components/organisms/join-request/list/join-request-list';
+import MainAttendanceHeader from '@/components/molecules/layout/header/main/attendance/main-attendance-header';
+import AttendanceList from '@/components/organisms/attendance/list/attendance-list';
+import MainWorshipHeader from '@/components/molecules/layout/header/main/worship/main-worship-header';
+import WorshipList from '@/components/organisms/worship/list/worship-list';
 
 export const getSide = (id: string) => {
   switch (id) {
@@ -77,6 +83,10 @@ export const getHeader = (id: string) => {
       return null;
     case MAIN_HEADER_ID.MEMBER:
       return <MainMemberHeader />;
+    case MAIN_HEADER_ID.ATTENDANCE:
+      return <MainAttendanceHeader />;
+    case MAIN_HEADER_ID.WORSHIP:
+      return <MainWorshipHeader />;
     case MAIN_HEADER_ID.VISITATION:
       return <MainVisitationHeader />;
     case MAIN_HEADER_ID.EDUCATION:
@@ -113,6 +123,14 @@ export const getContent = (
         // 홈
         case HOME_CONTENT_ID.HOME:
           return null;
+
+        // 출석
+        case ATTENDANCE_CONTENT_ID.ATTENDANCE:
+          return <AttendanceList />;
+
+        // 예배
+        case WORSHIP_CONTENT_ID.WORSHIP:
+          return <WorshipList />;
 
         // 회원
         case USER_CONTENT_ID.USER:
