@@ -3,10 +3,9 @@ import { BLANK, NULL, ORDER_DIRECTION } from '@/constants/constant';
 import { RootState } from '@/redux/store';
 import { WORSHIP_ENROLLMENT } from '@/constants/worship/worship-column';
 import { WorshipEnrollment } from '@/models/worship/worship';
-import { EducationEnrollmentsApi } from '@/api/education/education-enrollments.api';
+import { WorshipEnrollmentsApi } from '@/api/worship/worship-enrollments.api';
 
 type WORSHIP_ENROLLMENT_FILTER = {
-  [WORSHIP_ENROLLMENT.WORSHIP]: string;
   [WORSHIP_ENROLLMENT.GROUP]: string;
   [WORSHIP_ENROLLMENT.FROM_DATE]: string;
   [WORSHIP_ENROLLMENT.TO_DATE]: string;
@@ -21,7 +20,6 @@ type WorshipEnrollmentFilterState = {
 };
 
 export const INITIAL_WORSHIP_ENROLLMENT_FILTER: WORSHIP_ENROLLMENT_FILTER = {
-  [WORSHIP_ENROLLMENT.WORSHIP]: BLANK,
   [WORSHIP_ENROLLMENT.GROUP]: BLANK,
   [WORSHIP_ENROLLMENT.FROM_DATE]: BLANK,
   [WORSHIP_ENROLLMENT.TO_DATE]: BLANK,
@@ -74,29 +72,32 @@ export const fetchWorshipEnrollments = createAsyncThunk<
   {
     churchId: string;
     currentPage: number;
+    worshipId: string;
   },
   { state: RootState }
 >(
   'educations/fetchWorshipEnrollments',
-  async ({ churchId, currentPage }, { getState, rejectWithValue }) => {
+  async (
+    { churchId, worshipId, currentPage },
+    { getState, rejectWithValue }
+  ) => {
     const state = getState().worshipEnrollmentFilter;
     const {
       worshipEnrollmentOrderBy,
       worshipEnrollmentOrderDirection,
       worshipEnrollmentFilter,
     } = state;
-
-    const educationEnrollmentsApi = new EducationEnrollmentsApi(false);
+    const worshipEnrollmentsApi = new WorshipEnrollmentsApi(false);
 
     try {
-      const response = await educationEnrollmentsApi.getEducationEnrollments({
+      const response = await worshipEnrollmentsApi.getWorshipEnrollments({
         churchId,
-        educationId: '3',
-        educationTermId: '1',
+        worshipId,
         page: currentPage,
         take: 30, // 무한 스크롤 최적화
         order: undefined,
         orderDirection: worshipEnrollmentOrderDirection,
+        groupId: worshipEnrollmentFilter.group,
       });
 
       return response.data.data;

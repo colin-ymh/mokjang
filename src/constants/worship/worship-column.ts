@@ -15,3 +15,13 @@ export enum WORSHIP_ENROLLMENT {
   FROM_DATE = 'fromSessionDate',
   TO_DATE = 'toSessionDate',
 }
+
+export enum WORSHIP_SESSION {
+  TITLE = 'title',
+  DESCRIPTION = 'description',
+  DATE = 'date',
+
+  WORSHIP = 'worship',
+  FROM_DATE = 'fromSessionDate',
+  TO_DATE = 'toSessionDate',
+}

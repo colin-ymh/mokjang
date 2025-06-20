@@ -110,18 +110,20 @@ const ContentWrapper = styled.div`
 
 type AttendanceTableProps = {
   worshipEnrollments: WorshipEnrollment[];
-  onClickHeader: (id: WORSHIP_ENROLLMENT) => void;
-  onClickWorshipEnrollment: (id: string) => void;
   scrollRef: MutableRefObject<HTMLDivElement | null>;
   onScroll: () => void;
+  onClickHeader: (id: WORSHIP_ENROLLMENT, isSession: boolean) => void;
+  onClickSessionDone: () => void;
+  onClickSessionClose: () => void;
 };
 
 const AttendanceTableView = ({
   worshipEnrollments,
-  onClickHeader,
-  onClickWorshipEnrollment,
   scrollRef,
   onScroll,
+  onClickHeader,
+  onClickSessionDone,
+  onClickSessionClose,
 }: AttendanceTableProps) => {
   const { height } = useWindowSize();
 
@@ -190,12 +192,7 @@ const AttendanceTableView = ({
           </thead>
           <tbody>
             {worshipEnrollments.map((enrollment) => (
-              <AttendanceTableRow
-                key={enrollment.id}
-                onClick={() => {
-                  onClickWorshipEnrollment(enrollment.id);
-                }}
-              >
+              <AttendanceTableRow key={enrollment.id}>
                 {visibleColumns.map((item) => (
                   <TableData
                     key={item.id}

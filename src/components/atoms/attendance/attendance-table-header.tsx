@@ -40,8 +40,9 @@ type TaskTableHeaderProps = {
   item: {
     id: WORSHIP_ENROLLMENT;
     isSortable: boolean;
+    isSession: boolean;
   };
-  onClick: (id: WORSHIP_ENROLLMENT) => void;
+  onClick: (id: WORSHIP_ENROLLMENT, isSession: boolean) => void;
 };
 
 const AttendanceTableHeader = ({ item, onClick }: TaskTableHeaderProps) => {
@@ -52,7 +53,7 @@ const AttendanceTableHeader = ({ item, onClick }: TaskTableHeaderProps) => {
   const isActive = worshipEnrollmentOrderBy === item.id;
 
   return (
-    <HeaderContainer onClick={() => item.isSortable && onClick(item.id)}>
+    <HeaderContainer onClick={() => onClick(item.id, item.isSession)}>
       <TextContainer>
         <MainText
           color={isActive ? BLACK : GRAY.DARK}

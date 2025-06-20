@@ -20,6 +20,8 @@ import _ from 'lodash';
 registerLocale('ko', ko);
 
 const CustomDatePickerWrapper = styled.div`
+  display: flex;
+  z-index: 10;
   // 달력 팝업 영역
   .react-datepicker-popper {
     // 팝업 위 삼각형
@@ -94,12 +96,18 @@ export type CustomDatePickerProps = DatePickerProps & {
   value?: string;
   width?: number;
   height?: number;
+  /** 최소 선택 가능 날짜 */
+  minDate?: string;
+  /** 최대 선택 가능 날짜 */
+  maxDate?: string;
 };
 
 export default function CustomDatePicker({
   yearRange,
   width,
   height,
+  minDate,
+  maxDate,
   ...props
 }: CustomDatePickerProps) {
   const currentYear = getYear(new Date());
@@ -222,6 +230,8 @@ export default function CustomDatePicker({
         scrollableYearDropdown
         yearDropdownItemNumber={50}
         popperPlacement={'bottom-start'}
+        minDate={minDate ? new Date(minDate) : new Date(1999, 0, 1)}
+        maxDate={maxDate ? new Date(maxDate) : new Date(2100, 11, 31)}
       />
     </CustomDatePickerWrapper>
   );

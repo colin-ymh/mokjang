@@ -368,6 +368,7 @@ export default {
   'button.unlinkMemberInformation': 'Unlink Member',
   'button.addWorshipSession': 'Make Attendance',
   'button.addWorship': 'Add Worship',
+  'button.check': 'Check',
   /*-------------------button-------------------*/
 
   /*-------------------placeholder-------------------*/

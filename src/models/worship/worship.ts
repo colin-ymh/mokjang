@@ -1,6 +1,7 @@
 import { BLANK } from '@/constants/constant';
 import { Member } from '@/models/member/member';
 import { DEFAULT_MEMBER } from '@/redux/reducers/member-register-reducer';
+import { Group } from '@/models/management/management';
 
 export type Worship = {
   id: string;
@@ -9,6 +10,7 @@ export type Worship = {
   worshipDay: number;
   repeatPeriod: number;
   worshipTargetGroupIds: string[];
+  worshipTargetGroups: WorshipTargetGroup[];
 };
 
 export const DEFAULT_WORSHIP: Worship = {
@@ -18,6 +20,12 @@ export const DEFAULT_WORSHIP: Worship = {
   worshipDay: 0,
   repeatPeriod: 1,
   worshipTargetGroupIds: [],
+  worshipTargetGroups: [],
+};
+
+export type WorshipTargetGroup = {
+  id: string;
+  group: Group;
 };
 
 export type WorshipSession = {

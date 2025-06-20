@@ -1,18 +1,24 @@
 import { useState } from 'react';
 
-import SelectGroupHierarchyView from '@/components/atoms/group/select-group-hierarchy.view';
+import SelectGroupHierarchyView from '@/components/organisms/group/select-group-hierarchy.view';
 
 type GroupFilterProps = {
   isDefaultOpen?: boolean;
+  topLevelGroupId?: string | null;
+  prevSelectedGroupId?: string | null;
   onChange?: (id: string | null) => void;
 };
 
 const SelectGroupHierarchy = ({
   isDefaultOpen = false,
+  topLevelGroupId = null,
+  prevSelectedGroupId,
   onChange,
 }: GroupFilterProps) => {
   // 선택된 그룹 id
-  const [selectedGroupId, setSelectedGroupId] = useState<string | null>(null);
+  const [selectedGroupId, setSelectedGroupId] = useState<string | null>(
+    prevSelectedGroupId || null
+  );
 
   // 새로운 그룹을 설정
   const onClickGroup = (groupId: string | null) => {
@@ -23,6 +29,7 @@ const SelectGroupHierarchy = ({
 
   const props = {
     isDefaultOpen,
+    topLevelGroupId,
     selectedGroupId,
     onClickGroup,
   };

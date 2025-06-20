@@ -1,17 +1,10 @@
 import styled from 'styled-components';
-
-import SlidePopup from '@/components/atoms/common/popup/slide-popup';
-import Loading from '@/components/atoms/common/etc/loading';
 import React from 'react';
-import { useScopedI18n } from '../../../../../locales/client';
 import { MEDIA_MIN_WIDTH } from '@/constants/constant';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/redux/store';
 import AttendanceTable, {
   AttendanceTableProps,
 } from '@/components/molecules/attendance/attendance-table';
 import AttendanceRow from '@/components/molecules/attendance/attendance-row';
-import AttendanceInformation from '@/components/organisms/attendance/information/attendance-information';
 
 const AttendanceListContainer = styled.div`
   display: flex;
@@ -43,23 +36,10 @@ const DesktopView = styled.div`
 
 type AttendanceListViewProps = {
   list: AttendanceTableProps;
-  information: {
-    isAttendanceInformationShown: boolean;
-    isLoading: boolean;
-    onClickClose: () => void;
-  };
+  information: {};
 };
 
 const AttendanceListView = (props: AttendanceListViewProps) => {
-  const t_button = useScopedI18n('button');
-  const t_title = useScopedI18n('title');
-  const { isAttendanceInformationShown, isLoading, onClickClose } =
-    props.information;
-
-  const { targetWorshipSession } = useSelector(
-    (state: RootState) => state.targetWorshipSession
-  );
-
   return (
     <AttendanceListContainer>
       {/* 모바일에서 보일 목록형 UI */}
@@ -71,18 +51,6 @@ const AttendanceListView = (props: AttendanceListViewProps) => {
         <AttendanceRow />
         <AttendanceTable {...props.list} />
       </DesktopView>
-
-      {/* 회차 상세정보 팝업*/}
-      <SlidePopup
-        isShow={isAttendanceInformationShown}
-        onClickClose={onClickClose}
-        isFooterShown={false}
-        headerTitle={targetWorshipSession?.title}
-      >
-        <AttendanceInformation />
-      </SlidePopup>
-
-      <Loading isShow={isLoading} />
     </AttendanceListContainer>
   );
 };

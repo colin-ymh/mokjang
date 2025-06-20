@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 import { setMemberFilter } from '@/redux/reducers/filter/member-filter-reducer';
-import SelectGroupHierarchy from '@/components/atoms/group/select-group-hierarchy';
+import SelectGroupHierarchy from '@/components/organisms/group/select-group-hierarchy';
 import { getGroup } from '@/utils/group';
 import { setTargetGroup } from '@/redux/reducers/target/target-group-reducer';
 import { DEFAULT_GROUP } from '@/models/management/management';
@@ -44,6 +44,7 @@ const GroupFilter = ({ isDefaultOpen = false, onChange }: GroupFilterProps) => {
   const props = {
     isDefaultOpen,
     onChange: onChangeGroup,
+    prevSelectedGroupId: memberFilter?.group[0],
   };
 
   return (

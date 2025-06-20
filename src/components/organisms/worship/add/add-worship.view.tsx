@@ -12,7 +12,7 @@ import {
 import FakeDropdownButton from '@/components/atoms/common/button/fake-dropdown-button';
 import { Group } from '@/models/management/management';
 import CustomPopup from '@/components/atoms/common/popup/custom-popup';
-import SelectGroupHierarchy from '@/components/atoms/group/select-group-hierarchy';
+import SelectGroupHierarchy from '@/components/organisms/group/select-group-hierarchy';
 import { MainText } from '@/components/atoms/common/text/main-text';
 
 import { useI18n, useScopedI18n } from '../../../../../locales/client';

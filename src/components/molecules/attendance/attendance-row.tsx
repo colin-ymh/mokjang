@@ -12,6 +12,13 @@ import {
   fetchWorships,
   setWorships,
 } from '@/redux/reducers/filter/worship-filter-reducer';
+import { WorshipsApi } from '@/api/worship/worships.api';
+import { DEFAULT_WORSHIP, Worship } from '@/models/worship/worship';
+import {
+  setTargetWorship,
+  setTargetWorshipGroup,
+} from '@/redux/reducers/target/target-worship-reducer';
+import { getDateStringFromDate } from '@/utils/date';
 
 const AttendanceRow = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -23,8 +30,13 @@ const AttendanceRow = () => {
   );
   const { groups } = useSelector((state: RootState) => state.church);
 
+  const worshipsApi = new WorshipsApi(false);
+
   // 그룹 모달 on off
   const [isGroupModalShown, setIsGroupModalShown] = useState<boolean>(false);
+
+  const [fromDate, setFromDate] = useState<string>(BLANK);
+  const [toDate, setToDate] = useState<string>(BLANK);
 
   const [thrownError, setThrownError] = useState<Error | null>(null);
   if (thrownError) {
@@ -41,25 +53,40 @@ const AttendanceRow = () => {
     setIsGroupModalShown(false);
   };
 
+  // 시작 날짜
+  const onChangeFromDate = (date: Date | null) => {
+    if (date) {
+      const newDate = getDateStringFromDate(date);
+      setFromDate(newDate);
+    }
+  };
+
+  // 종료 날짜
+  const onChangeToDate = (date: Date | null) => {
+    if (date) {
+      const newDate = getDateStringFromDate(date);
+      setToDate(newDate);
+    }
+  };
+
   // 기간 저장
-  const onClickSavePeriod = (startDate: string, endDate: string) => {
+  const onClickSavePeriod = () => {
     dispatch(
       setWorshipEnrollmentFilter({
         ...worshipEnrollmentFilter,
-        [WORSHIP_ENROLLMENT.FROM_DATE]: startDate,
-        [WORSHIP_ENROLLMENT.TO_DATE]: endDate,
+        [WORSHIP_ENROLLMENT.FROM_DATE]: fromDate,
+        [WORSHIP_ENROLLMENT.TO_DATE]: toDate,
       })
     );
-    setIsGroupModalShown(false);
   };
 
-  // 그룹 필터
-  const [group, setGroup] = useState<Group>(DEFAULT_GROUP);
+  // 최상위 그룹
+  const [topLevelGroup, setTopLevelGroup] = useState<Group>(DEFAULT_GROUP);
 
   // 그룹 선택
   const onChangeGroup = (id: string | null) => {
     const newGroup = getGroup(id, groups);
-    setGroup(newGroup);
+    dispatch(setTargetWorshipGroup(newGroup));
 
     dispatch(
       setWorshipEnrollmentFilter({
@@ -71,18 +98,51 @@ const AttendanceRow = () => {
     setIsGroupModalShown(false);
   };
 
-  // 예배 필터
-  const [worshipId, setWorshipId] = useState<string | undefined>();
+  // 예배 선택
+  const onChangeWorship = async (id: string) => {
+    if (id === BLANK) {
+      dispatch(setTargetWorship(DEFAULT_WORSHIP));
 
-  // 상태 선택
-  const onChangeWorship = (id: string) => {
-    setWorshipId(id);
-    dispatch(
-      setWorshipEnrollmentFilter({
-        ...worshipEnrollmentFilter,
-        [WORSHIP_ENROLLMENT.WORSHIP]: id,
-      })
-    );
+      dispatch(setTargetWorshipGroup(DEFAULT_GROUP));
+      setTopLevelGroup(DEFAULT_GROUP);
+      dispatch(
+        setWorshipEnrollmentFilter({
+          ...worshipEnrollmentFilter,
+          [WORSHIP_ENROLLMENT.GROUP]: BLANK,
+        })
+      );
+
+      return;
+    }
+    try {
+      // 해당 예배의 그룹 범위에 따라 그룹 선택 초기화
+      const response = await worshipsApi.getWorship({
+        churchId,
+        worshipId: id,
+      });
+
+      const newWorship: Worship = response.data.data;
+
+      dispatch(setTargetWorship(newWorship));
+
+      if (newWorship.worshipTargetGroups.length > 0) {
+        const newGroup = getGroup(
+          newWorship.worshipTargetGroups[0].group.id,
+          groups
+        );
+        dispatch(setTargetWorshipGroup(newGroup));
+        setTopLevelGroup(newGroup);
+
+        dispatch(
+          setWorshipEnrollmentFilter({
+            ...worshipEnrollmentFilter,
+            [WORSHIP_ENROLLMENT.GROUP]: newGroup.id || BLANK,
+          })
+        );
+      }
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
+    }
   };
 
   // 필터 정보가 변경될 때, 예배 목록들을 다시 불러오는 부분
@@ -107,12 +167,13 @@ const AttendanceRow = () => {
 
   const props = {
     isGroupModalShown,
-    group,
-    worshipId,
+    topLevelGroup,
     onChangeGroup,
     onChangeWorship,
     onClickOpenGroupModal,
     onClickCloseGroupModal,
+    onChangeFromDate,
+    onChangeToDate,
     onClickSavePeriod,
   };
 

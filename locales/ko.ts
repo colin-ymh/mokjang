@@ -379,6 +379,7 @@ export default {
   'button.unlinkMemberInformation': '교인정보 연결끊기',
   'button.addWorshipSession': '출석내용 입력하기',
   'button.addWorship': '예배 추가하기',
+  'button.check': '조회',
   /*-------------------button-------------------*/
 
   /*-------------------placeholder-------------------*/
