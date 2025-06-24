@@ -19,7 +19,7 @@ import { BLANK } from '@/constants/constant';
 import CustomDatePicker from '@/vendor/date-picker/custom-date-picker';
 import {
   getDateFromDateString,
-  getDateFromString,
+  getDateFromInput,
   getDateStringFromDate,
   getTotalMinuteFromDate,
 } from '@/utils/date';
@@ -143,13 +143,13 @@ const AddEducationSessionView = ({
               value={
                 targetEducationSession.startDate
                   ? getDateStringFromDate(
-                      getDateFromDateString(targetEducationSession.startDate)
+                      getDateFromInput(targetEducationSession.startDate)
                     )
                   : undefined
               }
               selected={
                 targetEducationSession.startDate
-                  ? getDateFromString(targetEducationSession.startDate)
+                  ? getDateFromDateString(targetEducationSession.startDate)
                   : null
               }
               onChange={onChangeStartDate}
@@ -161,7 +161,7 @@ const AddEducationSessionView = ({
               value={
                 targetEducationSession.startDate
                   ? getTotalMinuteFromDate(
-                      getDateFromString(targetEducationSession.startDate)
+                      getDateFromDateString(targetEducationSession.startDate)
                     )
                   : 0
               }
@@ -175,13 +175,13 @@ const AddEducationSessionView = ({
               value={
                 targetEducationSession.endDate
                   ? getDateStringFromDate(
-                      getDateFromDateString(targetEducationSession.endDate)
+                      getDateFromInput(targetEducationSession.endDate)
                     )
                   : undefined
               }
               selected={
                 targetEducationSession.endDate
-                  ? getDateFromString(targetEducationSession.endDate)
+                  ? getDateFromDateString(targetEducationSession.endDate)
                   : null
               }
               onChange={onChangeEndDate}
@@ -193,7 +193,7 @@ const AddEducationSessionView = ({
               value={
                 targetEducationSession.endDate
                   ? getTotalMinuteFromDate(
-                      getDateFromString(targetEducationSession.endDate)
+                      getDateFromDateString(targetEducationSession.endDate)
                     )
                   : 0
               }

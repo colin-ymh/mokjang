@@ -5,26 +5,39 @@ import { ORDER_DIRECTION } from '@/constants/constant';
 import { SERVER_URL, TEST_SERVER_URL } from '@/constants/state/url';
 import { CustomError } from '@/api/error/error';
 import authorizeAxios from '@/api/authorize-axios';
-import { WORSHIP_ENROLLMENT } from '@/constants/worship/worship-column';
+import { WORSHIP_ATTENDANCE } from '@/constants/worship/worship-column';
+import { WORSHIP_ATTENDANCE_STATUS } from '@/models/worship/worship';
 
-type GetWorshipEnrollmentsParams = {
+type GetWorshipAttendancesParams = {
   churchId: string; // 교회 id
   worshipId: string;
+  sessionId: string;
   page?: number; // 페이지 번호
   take?: number; // 요청 개수
-  order?: WORSHIP_ENROLLMENT; // 정렬 기준
+  order?: WORSHIP_ATTENDANCE; // 정렬 기준
   orderDirection?: ORDER_DIRECTION; // 오름차순 내림차순
   groupId?: string;
-  fromSessionDate?: string;
-  toSessionDate?: string;
 };
 
-type RefreshWorshipEnrollmentsParams = {
+type RefreshWorshipAttendancesParams = {
   churchId: string;
   worshipId: string;
+  sessionId: string;
 };
 
-export class WorshipEnrollmentsApi {
+type EditWorshipAttendanceParams = {
+  churchId: string; // 교회 id
+  worshipId: string;
+  sessionId: string;
+  attendanceId: string;
+};
+
+type EditWorshipAttendanceBody = {
+  attendanceStatus?: WORSHIP_ATTENDANCE_STATUS;
+  note?: string;
+};
+
+export class WorshipAttendancesApi {
   private _url: string;
 
   constructor(useBaseURL: boolean) {
@@ -34,23 +47,22 @@ export class WorshipEnrollmentsApi {
   }
 
   /**
-   * 예배 대상 조회
-   * @param {GetWorshipEnrollmentsParams} params
+   * 출석 조회
+   * @param {GetWorshipAttendancesParams} params
    * @returns {Promise<AxiosResponse>}
    */
-  public getWorshipEnrollments = async (
-    params: GetWorshipEnrollmentsParams
+  public getWorshipAttendances = async (
+    params: GetWorshipAttendancesParams
   ): Promise<AxiosResponse> => {
     const {
       churchId,
       worshipId,
+      sessionId,
       take = 5,
       page = 1,
       order,
       orderDirection,
       groupId,
-      fromSessionDate,
-      toSessionDate,
     } = params;
 
     const queryParams: Record<string, any> = Object.fromEntries(
@@ -60,8 +72,6 @@ export class WorshipEnrollmentsApi {
         order,
         orderDirection,
         groupId,
-        fromSessionDate,
-        toSessionDate,
       }).filter(
         ([_, value]) =>
           value !== undefined &&
@@ -70,7 +80,7 @@ export class WorshipEnrollmentsApi {
       )
     );
 
-    const url = `${this._url}/churches/${churchId}/worships/${worshipId}/enrollments`;
+    const url = `${this._url}/churches/${churchId}/worships/${worshipId}/sessions/${sessionId}/attendances`;
 
     try {
       return await authorizeAxios.get(url, {
@@ -98,19 +108,49 @@ export class WorshipEnrollmentsApi {
   };
 
   /**
-   * 예배 대상 새로고침
-   * @param  {RefreshWorshipEnrollmentsParams} params
+   * 출석 새로고침
+   * @param  {RefreshWorshipAttendancesParams} params
    * @returns
    */
-  public refreshWorshipEnrollments = async (
-    params: RefreshWorshipEnrollmentsParams
+  public refreshWorshipAttendances = async (
+    params: RefreshWorshipAttendancesParams
   ): Promise<AxiosResponse> => {
-    const { churchId, worshipId } = params;
+    const { churchId, worshipId, sessionId } = params;
 
-    const url = `${this._url}/churches/${churchId}/worships/${worshipId}/refresh`;
+    const url = `${this._url}/churches/${churchId}/worships/${worshipId}/sessions/${sessionId}/attendances/refresh`;
 
     try {
       return await authorizeAxios.post(url);
+    } catch (serverError: any) {
+      if (serverError.response) {
+        const { message, error, statusCode } = serverError.response.data;
+        throw new CustomError(message, error, statusCode);
+      } else {
+        throw new CustomError(
+          '알 수 없는 에러가 발생했습니다',
+          500,
+          'Unknown Error'
+        );
+      }
+    }
+  };
+
+  /**
+   * 출석 수정
+   * @param  {EditWorshipAttendanceParams} params
+   * @param  {EditWorshipAttendanceBody} body
+   * @returns
+   */
+  public editWorshipAttendance = async (
+    params: EditWorshipAttendanceParams,
+    body: EditWorshipAttendanceBody
+  ): Promise<AxiosResponse> => {
+    const { churchId, worshipId, sessionId, attendanceId } = params;
+
+    const url = `${this._url}/churches/${churchId}/worships/${worshipId}/sessions/${sessionId}/attendances/${attendanceId}`;
+
+    try {
+      return await authorizeAxios.patch(url, body);
     } catch (serverError: any) {
       if (serverError.response) {
         const { message, error, statusCode } = serverError.response.data;

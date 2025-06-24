@@ -3,8 +3,8 @@ import React from 'react';
 import { MEDIA_MIN_WIDTH } from '@/constants/constant';
 import AttendanceTable, {
   AttendanceTableProps,
-} from '@/components/molecules/attendance/attendance-table';
-import AttendanceRow from '@/components/molecules/attendance/attendance-row';
+} from '@/components/molecules/attendance/list/attendance-table';
+import AttendanceRow from '@/components/molecules/attendance/list/attendance-row';
 
 const AttendanceListContainer = styled.div`
   display: flex;

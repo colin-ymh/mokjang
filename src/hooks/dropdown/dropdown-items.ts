@@ -9,6 +9,7 @@ import {
   MARRIAGE,
   NONE,
   NULL,
+  WORSHIP_PERIOD,
 } from '@/constants/constant';
 import { MEMBER } from '@/constants/member/member-column';
 
@@ -662,6 +663,35 @@ export const useRepeatPeriodDropdownItems = () => {
     {
       value: 2,
       title: t('everyOtherWeek'),
+    },
+  ];
+
+  return items;
+};
+
+export const useWorshipPeriodDropdownItems = () => {
+  const t = useI18n();
+
+  const items = [
+    {
+      value: WORSHIP_PERIOD.CUSTOM,
+      title: t(WORSHIP_PERIOD.CUSTOM),
+    },
+    {
+      value: WORSHIP_PERIOD.THIS_WEEK,
+      title: t(WORSHIP_PERIOD.THIS_WEEK),
+    },
+    {
+      value: WORSHIP_PERIOD.THIS_MONTH,
+      title: t(WORSHIP_PERIOD.THIS_MONTH),
+    },
+    {
+      value: WORSHIP_PERIOD.LAST_MONTH,
+      title: t(WORSHIP_PERIOD.LAST_MONTH),
+    },
+    {
+      value: WORSHIP_PERIOD.LAST_THREE_MONTH,
+      title: t(WORSHIP_PERIOD.LAST_THREE_MONTH),
     },
   ];
 

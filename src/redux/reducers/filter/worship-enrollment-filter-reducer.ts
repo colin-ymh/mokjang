@@ -26,11 +26,13 @@ export const INITIAL_WORSHIP_ENROLLMENT_FILTER: WORSHIP_ENROLLMENT_FILTER = {
 };
 
 export type EDUCATION_TABLE_HEADER_ITEM = {
-  id: WORSHIP_ENROLLMENT;
+  id: WORSHIP_ENROLLMENT | string;
   isSortable: boolean;
   isFilterable: boolean;
   isSession: boolean;
   isDate?: boolean;
+  title?: string;
+  date?: Date;
 };
 
 export const INITIAL_WORSHIP_ENROLLMENT_TABLE_HEADER_LIST: EDUCATION_TABLE_HEADER_ITEM[] =
@@ -95,9 +97,11 @@ export const fetchWorshipEnrollments = createAsyncThunk<
         worshipId,
         page: currentPage,
         take: 30, // 무한 스크롤 최적화
-        order: undefined,
+        order: WORSHIP_ENROLLMENT.CREATED_AT,
         orderDirection: worshipEnrollmentOrderDirection,
         groupId: worshipEnrollmentFilter.group,
+        fromSessionDate: worshipEnrollmentFilter.fromSessionDate,
+        toSessionDate: worshipEnrollmentFilter.toSessionDate,
       });
 
       return response.data.data;

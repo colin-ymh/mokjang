@@ -12,7 +12,7 @@ import {
   getFormattedMobilePhone,
   getLocaleDateFromDashDate,
 } from '@/utils/format';
-import { getAge, getDateFromDateString } from '@/utils/date';
+import { getAge, getDateFromInput } from '@/utils/date';
 import { usePathname } from 'next/navigation';
 import { LOCALE } from '@/constants/state/locale';
 import GroupMemberTableHeader from '@/components/atoms/management/group/group-member-table-header';
@@ -186,7 +186,7 @@ const MinistryMinistryGroupMemberTableView = ({
       case MEMBER.AGE:
         return (
           <MainText>
-            {member.birth && getAge(getDateFromDateString(member.birth))}
+            {member.birth && getAge(getDateFromInput(member.birth))}
           </MainText>
         );
       case MEMBER.OFFICER:

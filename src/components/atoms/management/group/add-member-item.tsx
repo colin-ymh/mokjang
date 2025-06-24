@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { Member } from '@/models/member/member';
 import { GRAY } from '@/constants/styles/color';
 import { MainText } from '@/components/atoms/common/text/main-text';
-import { getAge, getDateFromDateString } from '@/utils/date';
+import { getAge, getDateFromInput } from '@/utils/date';
 import CheckButton from '@/components/atoms/common/button/check-button';
 import ProfileImage from '@/components/atoms/common/image/profile-image';
 
@@ -60,7 +60,7 @@ const AddMemberItem = ({
         <ProfileImage value={member.profileImageUrl} />
         <MainText>{member.name}</MainText>
         <MainText color={GRAY.DARK}>
-          {member.birth && `(${getAge(getDateFromDateString(member.birth))})`}
+          {member.birth && `(${getAge(getDateFromInput(member.birth))})`}
         </MainText>
 
         {isEnable && (

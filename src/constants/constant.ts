@@ -122,3 +122,11 @@ export enum CHURCH_USER_ROLE {
   MANAGER = 'manager',
   MEMBER = 'member',
 }
+
+export enum WORSHIP_PERIOD {
+  CUSTOM = 'customSelect',
+  THIS_WEEK = 'thisWeek',
+  THIS_MONTH = 'thisMonth',
+  LAST_MONTH = 'lastMonth',
+  LAST_THREE_MONTH = 'lastThreeMonth',
+}

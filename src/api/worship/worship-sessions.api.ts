@@ -22,6 +22,12 @@ type GetWorshipSessionParams = {
   sessionId: string;
 };
 
+type GetWorshipSessionByDateParams = {
+  churchId: string; // 교회 id
+  worshipId: string;
+  sessionDate: Date;
+};
+
 type CreateWorshipSessionParams = {
   churchId: string;
   worshipId: string;
@@ -40,7 +46,6 @@ type EditWorshipSessionParams = {
 };
 
 type EditWorshipSessionBody = {
-  title: string;
   sessionDate: string;
   description: string;
 };
@@ -130,6 +135,52 @@ export class WorshipSessionsApi {
 
     try {
       return await authorizeAxios.post(url);
+    } catch (serverError: any) {
+      if (serverError.response) {
+        const { message, error, statusCode } = serverError.response.data;
+        throw new CustomError(message, error, statusCode);
+      } else {
+        throw new CustomError(
+          '알 수 없는 에러가 발생했습니다',
+          500,
+          'Unknown Error'
+        );
+      }
+    }
+  };
+
+  /**
+   * 예배 회차 단일 조회
+   * @param  {GetWorshipSessionByDateParams} params
+   * @returns
+   */
+  public getWorshipSessionByDate = async (
+    params: GetWorshipSessionByDateParams
+  ): Promise<AxiosResponse> => {
+    const { churchId, worshipId, sessionDate } = params;
+
+    const url = `${this._url}/churches/${churchId}/worships/${worshipId}/sessions`;
+
+    const queryParams: Record<string, any> = Object.fromEntries(
+      Object.entries({
+        sessionDate,
+      }).filter(
+        ([_, value]) =>
+          value !== undefined && !(Array.isArray(value) && value.length === 0)
+      )
+    );
+
+    try {
+      return await authorizeAxios.post(url, '', {
+        params: queryParams,
+        paramsSerializer: (params) => {
+          return qs.stringify(params, {
+            arrayFormat: 'repeat',
+            skipNulls: true,
+            encodeValuesOnly: true,
+          });
+        },
+      });
     } catch (serverError: any) {
       if (serverError.response) {
         const { message, error, statusCode } = serverError.response.data;

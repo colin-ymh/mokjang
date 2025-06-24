@@ -57,6 +57,7 @@ export type BorderInputProps = InputProps & {
   borderTopRightRadius?: number;
   borderBottomLeftRadius?: number;
   borderBottomRightRadius?: number;
+  readOnly?: boolean;
 };
 
 const BorderInput = forwardRef<HTMLInputElement, BorderInputProps>(

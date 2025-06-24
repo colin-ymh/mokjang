@@ -21,7 +21,7 @@ import {
 } from '@/hooks/radio-button/radio-button-items';
 
 import { getTrimmedString } from '@/utils/format';
-import { getDateFromDateString, getIsChild } from '@/utils/date';
+import { getDateFromInput, getIsChild } from '@/utils/date';
 import { onClickEnter } from '@/utils/input';
 
 import { useI18n, useScopedI18n } from '../../../../locales/client';
@@ -152,9 +152,7 @@ const PersonalRegisterView = ({
           label={t('birth')}
           value={member.birth}
           onChange={(event: ChangeEvent<HTMLInputElement>) => {
-            const isChild = getIsChild(
-              getDateFromDateString(event.target.value)
-            );
+            const isChild = getIsChild(getDateFromInput(event.target.value));
             onChangeBirth(event, isChild ? schoolInputRef : occupationInputRef);
           }}
           placeholder={t_placeholder('birth')}

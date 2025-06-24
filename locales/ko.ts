@@ -11,11 +11,13 @@ export default {
   history: '이력',
   isDone: '완료',
   isNotDone: '미완료',
+  customSelect: '직접선택',
 
   worshipGroup: '대상그룹',
   worshipDay: '예배요일',
   repeatPeriod: '반복주기',
   attendanceRate: '출석률',
+  note: '특이사항',
 
   sunday: '일요일',
   monday: '월요일',
@@ -27,6 +29,11 @@ export default {
 
   everyWeek: '매주',
   everyOtherWeek: '격주',
+
+  thisWeek: '이번주',
+  thisMonth: '이번달',
+  lastMonth: '지난달',
+  lastThreeMonth: '최근 3개월',
 
   worship: '예배',
   description: '설명',
@@ -239,6 +246,8 @@ export default {
 
   'title.addWorship': '예배 추가',
   'title.editWorship': '예배 수정',
+
+  'title.attendanceInformation': '출석보고서',
   /*-------------------title (popup title)-------------------*/
 
   /*-------------------header (side bar button)-------------------*/

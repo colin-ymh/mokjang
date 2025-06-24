@@ -3,14 +3,28 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 
-import { GRAY, WHITE } from '@/constants/styles/color';
+import { DESTRUCTIVE, GRAY, MAIN, WHITE } from '@/constants/styles/color';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { BLANK } from '@/constants/constant';
 import useWindowSize from '@/hooks/window/window';
 import MemberProfile from '@/components/atoms/member/member-profile';
-import { WorshipEnrollment } from '@/models/worship/worship';
+import {
+  WORSHIP_ATTENDANCE_STATUS,
+  WorshipEnrollment,
+} from '@/models/worship/worship';
 import { WORSHIP_ENROLLMENT } from '@/constants/worship/worship-column';
-import AttendanceTableHeader from '@/components/atoms/attendance/attendance-table-header';
+import AttendanceTableHeader from '@/components/atoms/attendance/list/attendance-table-header';
+import {
+  getDateFromDateString,
+  getDateFromInput,
+  getIsSameDate,
+  getMonthDateFromDate,
+  getWorshipSessionDates,
+} from '@/utils/date';
+import { EDUCATION_TABLE_HEADER_ITEM } from '@/redux/reducers/filter/worship-enrollment-filter-reducer';
+
+import Present from '../../../../../public/svg/circle.svg';
+import Absent from '../../../../../public/svg/cancel.svg';
 
 // 1. 컬럼별 PX 폭 (마지막 REMARKS만 auto 할 예정)
 const getColumnWidth = (id: string) => {
@@ -31,7 +45,7 @@ const TableContainer = styled.div<{ height: number }>`
   /* 항상 가로 100%를 채움 */
   width: 100%;
   /* 세로 높이만큼 상하 스크롤 */
-  height: ${({ height }) => `${height - 230}px`};
+  height: ${({ height }) => `${height - 220}px`};
 
   /* 오버플로 시 스크롤 */
   overflow-x: hidden;
@@ -57,7 +71,7 @@ const TableHeader = styled.th<{ id: string; $isSession?: boolean }>`
   top: 0;
   z-index: 5;
   background-color: ${WHITE};
-
+  border-right: 1px solid ${GRAY.LIGHT};
   /* 만약 마지막 컬럼이면 width: auto */
   width: ${({ id, $isSession }) =>
     $isSession ? 'auto' : `${getColumnWidth(id)}px`};
@@ -84,10 +98,8 @@ const AttendanceTableRow = styled.tr`
 
 const TableData = styled.td<{ id: string; $isSession: boolean }>`
   padding: 10px;
-
   width: ${({ id, $isSession }) =>
     $isSession ? 'auto' : `${getColumnWidth(id)}px`};
-
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -96,6 +108,13 @@ const TableData = styled.td<{ id: string; $isSession: boolean }>`
   &:first-child {
     border-left: none;
   }
+`;
+
+const IconContainer = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
 `;
 
 const ContentWrapper = styled.div`
@@ -108,13 +127,23 @@ const ContentWrapper = styled.div`
   white-space: nowrap;
 `;
 
+const PresentIcon = styled(Present)`
+  width: 40px;
+  height: 40px;
+  stroke: ${MAIN.DEFAULT};
+`;
+
+const AbsentIcon = styled(Absent)`
+  width: 40px;
+  height: 40px;
+  stroke: ${DESTRUCTIVE.DEFAULT};
+`;
+
 type AttendanceTableProps = {
   worshipEnrollments: WorshipEnrollment[];
   scrollRef: MutableRefObject<HTMLDivElement | null>;
   onScroll: () => void;
-  onClickHeader: (id: WORSHIP_ENROLLMENT, isSession: boolean) => void;
-  onClickSessionDone: () => void;
-  onClickSessionClose: () => void;
+  onClickHeader: (id: WORSHIP_ENROLLMENT | string, isSession: boolean) => void;
 };
 
 const AttendanceTableView = ({
@@ -122,9 +151,13 @@ const AttendanceTableView = ({
   scrollRef,
   onScroll,
   onClickHeader,
-  onClickSessionDone,
-  onClickSessionClose,
 }: AttendanceTableProps) => {
+  const { worshipEnrollmentFilter } = useSelector(
+    (state: RootState) => state.worshipEnrollmentFilter
+  );
+  const { targetWorship } = useSelector(
+    (state: RootState) => state.targetWorship
+  );
   const { height } = useWindowSize();
 
   const worshipEnrollmentTableHeaderItemList = useSelector(
@@ -132,35 +165,80 @@ const AttendanceTableView = ({
       state.worshipEnrollmentFilter.worshipEnrollmentTableHeaderItemList
   );
 
-  // 실제 표시할 컬럼 ID 배열 + 마지막에 비고란 추가
-  const visibleColumns = [
+  const sessionDates = getWorshipSessionDates(
+    getDateFromInput(worshipEnrollmentFilter.fromSessionDate),
+    getDateFromInput(worshipEnrollmentFilter.toSessionDate),
+    targetWorship.worshipDay,
+    targetWorship.repeatPeriod
+  );
+
+  // 실제 표시할 컬럼 ID 배열 + 세션 날짜 행 + 공란
+  const visibleColumns: EDUCATION_TABLE_HEADER_ITEM[] = [
     ...worshipEnrollmentTableHeaderItemList,
-    ...[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((index) => {
-      return {
-        id: index.toString(),
+    ...sessionDates.map((sessionDate, index) => ({
+      id: index.toString(),
+      title: getMonthDateFromDate(sessionDate),
+      date: sessionDate,
+      isSortable: false,
+      isFilterable: false,
+      isSession: true,
+    })),
+    // 14개까지 빈 컬럼 추가
+    ...Array.from(
+      { length: Math.max(0, 14 - sessionDates.length) },
+      (_, index) => ({
+        id: (sessionDates.length + index).toString(),
+        title: '',
         isSortable: false,
         isFilterable: false,
         isSession: true,
-      };
-    }),
+      })
+    ),
   ];
 
   // 각 TD에 들어갈 content
   const getAttendanceTableContent = (
-    id: string,
-    enrollment: WorshipEnrollment
+    id: WORSHIP_ENROLLMENT | string,
+    enrollment: WorshipEnrollment,
+    date?: Date
   ) => {
-    switch (id) {
-      case WORSHIP_ENROLLMENT.NAME:
-        return <MemberProfile member={enrollment.member} />;
-      case WORSHIP_ENROLLMENT.GROUP:
-        return <MainText>{enrollment.member.group?.name}</MainText>;
-      case WORSHIP_ENROLLMENT.ATTENDANCE_RATE:
-        return <MainText></MainText>;
-      case BLANK:
+    if (date) {
+      const attendance = enrollment.worshipAttendances.find((attendance) =>
+        getIsSameDate(
+          date as Date,
+          getDateFromDateString(attendance.sessionDate)
+        )
+      );
+      if (attendance?.attendanceStatus === WORSHIP_ATTENDANCE_STATUS.ABSENT) {
+        return (
+          <IconContainer>
+            <AbsentIcon />
+          </IconContainer>
+        );
+      } else if (
+        attendance?.attendanceStatus === WORSHIP_ATTENDANCE_STATUS.PRESENT
+      ) {
+        return (
+          <IconContainer>
+            <PresentIcon />
+          </IconContainer>
+        );
+      } else {
         return <div></div>;
-      default:
-        return null;
+      }
+    } else {
+      switch (id) {
+        case WORSHIP_ENROLLMENT.NAME:
+          return <MemberProfile member={enrollment.member} />;
+        case WORSHIP_ENROLLMENT.GROUP:
+          return <MainText>{enrollment.member.group?.name}</MainText>;
+        case WORSHIP_ENROLLMENT.ATTENDANCE_RATE:
+          return <MainText></MainText>;
+        case BLANK:
+          return <div></div>;
+        default:
+          return null;
+      }
     }
   };
 
@@ -200,7 +278,11 @@ const AttendanceTableView = ({
                     $isSession={item.isSession}
                   >
                     <ContentWrapper>
-                      {getAttendanceTableContent(item.id, enrollment)}
+                      {getAttendanceTableContent(
+                        item.id,
+                        enrollment,
+                        item?.date
+                      )}
                     </ContentWrapper>
                   </TableData>
                 ))}

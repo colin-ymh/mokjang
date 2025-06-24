@@ -8,6 +8,7 @@ import { SIZE } from '@/constants/styles/style';
 import { useScopedI18n } from '../../../../../../../locales/client';
 import { MEDIA_MIN_WIDTH } from '@/constants/constant';
 import { MAIN_HEADER_ID } from '@/constants/layout/header';
+import Button from '@/components/atoms/common/button/button';
 
 const HeaderContainer = styled.div`
   display: flex;
@@ -49,12 +50,15 @@ const HeaderBottomContainer = styled.div`
 
 type MainAttendanceHeaderViewProps = {
   onClickHeaderBar: (id: string) => void;
+  onClickSessionOpen: () => void;
 };
 
 const MainAttendanceHeaderView = ({
   onClickHeaderBar,
+  onClickSessionOpen,
 }: MainAttendanceHeaderViewProps) => {
   const t_header = useScopedI18n('header');
+  const t_button = useScopedI18n('button');
 
   return (
     <HeaderContainer>
@@ -62,6 +66,12 @@ const MainAttendanceHeaderView = ({
         <MainText size={SIZE.EXTRA_LARGE}>
           {t_header(MAIN_HEADER_ID.ATTENDANCE)}
         </MainText>
+        <Button
+          text={t_button('addWorshipSession')}
+          onClick={onClickSessionOpen}
+          width={150}
+          height={30}
+        />
       </HeaderTopContainer>
       <HeaderBottomContainer></HeaderBottomContainer>
     </HeaderContainer>

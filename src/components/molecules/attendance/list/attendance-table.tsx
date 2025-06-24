@@ -4,34 +4,51 @@ import { AppDispatch, RootState } from '@/redux/store';
 import { BLANK, ORDER_DIRECTION } from '@/constants/constant';
 import { WORSHIP_ENROLLMENT } from '@/constants/worship/worship-column';
 import {
+  fetchWorshipEnrollments,
   setWorshipEnrollmentOrderBy,
   setWorshipEnrollmentOrderDirection,
+  setWorshipEnrollments,
 } from '@/redux/reducers/filter/worship-enrollment-filter-reducer';
-import AttendanceTableView from '@/components/molecules/attendance/attendance-table.view';
+import AttendanceTableView from '@/components/molecules/attendance/list/attendance-table.view';
 import SlidePopup from '@/components/atoms/common/popup/slide-popup';
 import AttendanceInformation from '@/components/organisms/attendance/information/attendance-information';
-import { setTargetWorshipSession } from '@/redux/reducers/target/target-worship-session-reducer';
+import {
+  setTargetWorshipSession,
+  setTargetWorshipSessionGroup,
+  setTargetWorshipSessionWorship,
+} from '@/redux/reducers/target/target-worship-session-reducer';
 import { DEFAULT_WORSHIP_SESSION } from '@/models/worship/worship';
 import ToastPopup from '@/components/atoms/common/popup/toast-popup';
 import { DESTRUCTIVE } from '@/constants/styles/color';
 import { WorshipSessionsApi } from '@/api/worship/worship-sessions.api';
+import { useScopedI18n } from '../../../../../locales/client';
+import { getDateFromDateString, getDateStringFromDate } from '@/utils/date';
+import { WorshipAttendancesApi } from '@/api/worship/worship-attendances.api';
 
 export type AttendanceTableProps = {
   loadWorshipEnrollments: () => Promise<void>;
 };
 
 const AttendanceTable = ({ loadWorshipEnrollments }: AttendanceTableProps) => {
+  const t_title = useScopedI18n('title');
+  const t_button = useScopedI18n('button');
+
   const dispatch = useDispatch<AppDispatch>();
 
   const worshipSessionsApi = new WorshipSessionsApi(false);
+  const worshipAttendancesApi = new WorshipAttendancesApi(false);
 
   const { churchId } = useSelector((state: RootState) => state.church);
 
-  const { targetWorship } = useSelector(
+  const { targetWorship, targetWorshipGroup } = useSelector(
     (state: RootState) => state.targetWorship
   );
-  const { targetWorshipSession } = useSelector(
+  const { targetWorshipSession, targetWorshipSessionWorship } = useSelector(
     (state: RootState) => state.targetWorshipSession
+  );
+
+  const { worshipAttendances } = useSelector(
+    (state: RootState) => state.worshipAttendanceFilter
   );
 
   const {
@@ -77,17 +94,25 @@ const AttendanceTable = ({ loadWorshipEnrollments }: AttendanceTableProps) => {
   ]);
 
   // 테이블 헤더 클릭 이벤트
-  const onClickHeader = async (id: WORSHIP_ENROLLMENT, isSession: boolean) => {
+  const onClickHeader = async (
+    id: WORSHIP_ENROLLMENT | string,
+    isSession: boolean,
+    sessionDate?: Date
+  ) => {
     // 세션 열인 경우 세션 상세로
-    if (isSession) {
+    if (isSession && sessionDate) {
       try {
-        const response = await worshipSessionsApi.createRecentWorshipSession({
+        const response = await worshipSessionsApi.getWorshipSessionByDate({
           churchId,
           worshipId: targetWorship.id,
+          sessionDate,
         });
 
         const newWorshipSession = response.data.data;
         dispatch(setTargetWorshipSession(newWorshipSession));
+        dispatch(setTargetWorshipSessionGroup(targetWorshipGroup));
+        dispatch(setTargetWorshipSessionWorship(targetWorship));
+
         setIsSessionShown(true);
       } catch (error) {
         setThrownError(
@@ -97,7 +122,7 @@ const AttendanceTable = ({ loadWorshipEnrollments }: AttendanceTableProps) => {
     }
     // 그 외는 정렬
     else {
-      let newOrderBy = id;
+      let newOrderBy = id as WORSHIP_ENROLLMENT;
 
       if (newOrderBy !== worshipEnrollmentOrderBy) {
         dispatch(setWorshipEnrollmentOrderBy(newOrderBy));
@@ -114,36 +139,51 @@ const AttendanceTable = ({ loadWorshipEnrollments }: AttendanceTableProps) => {
     }
   };
 
-  const onClickSessionDone = async () => {
-    try {
-      const response = await worshipSessionsApi.editWorshipSession(
-        {
-          churchId,
-          worshipId: targetWorship.id,
-          sessionId: targetWorshipSession.id,
-        },
-        {
-          title: targetWorshipSession.title,
-          description: targetWorshipSession.description,
-          sessionDate: targetWorshipSession.sessionDate,
-        }
-      );
+  // 상세 페이지 종료
+  const onClickSessionClose = () => {
+    setIsSessionShown(false);
+    dispatch(setTargetWorshipSession(DEFAULT_WORSHIP_SESSION));
+  };
 
-      dispatch(setTargetWorshipSession(DEFAULT_WORSHIP_SESSION));
-      setIsSessionShown(false);
+  const onClickSessionSave = async () => {
+    try {
+      await Promise.all(
+        worshipAttendances.map(async (attendance) => {
+          await worshipAttendancesApi.editWorshipAttendance(
+            {
+              churchId,
+              worshipId: targetWorshipSessionWorship.id,
+              sessionId: targetWorshipSession.id,
+              attendanceId: attendance.id,
+            },
+            {
+              attendanceStatus: attendance.attendanceStatus,
+              note: attendance.note,
+            }
+          );
+        })
+      );
     } catch (error) {
       if (error instanceof Error) {
         setToastText(error.message);
       } else {
         setThrownError(new Error(String(error)));
       }
-    }
-  };
+    } finally {
+      const result = await dispatch(
+        fetchWorshipEnrollments({
+          churchId,
+          currentPage: 1,
+          worshipId: targetWorshipSessionWorship.id,
+        })
+      );
 
-  // 상세 페이지 종료
-  const onClickSessionClose = () => {
-    setIsSessionShown(false);
-    dispatch(setTargetWorshipSession(DEFAULT_WORSHIP_SESSION));
+      if (fetchWorshipEnrollments.fulfilled.match(result)) {
+        dispatch(setWorshipEnrollments(result.payload));
+      }
+
+      setIsSessionShown(false);
+    }
   };
 
   const props = {
@@ -151,8 +191,6 @@ const AttendanceTable = ({ loadWorshipEnrollments }: AttendanceTableProps) => {
     scrollRef,
     onScroll,
     onClickHeader,
-    onClickSessionDone,
-    onClickSessionClose,
   };
 
   return (
@@ -163,8 +201,9 @@ const AttendanceTable = ({ loadWorshipEnrollments }: AttendanceTableProps) => {
       <SlidePopup
         isShow={isSessionShown}
         onClickClose={onClickSessionClose}
-        isFooterShown={false}
-        headerTitle={targetWorshipSession?.title}
+        headerTitle={`${targetWorshipSessionWorship.title} ${t_title('attendanceInformation')} (${getDateStringFromDate(getDateFromDateString(targetWorshipSession.sessionDate))})`}
+        doneText={t_button('save')}
+        onClickDone={onClickSessionSave}
       >
         <AttendanceInformation />
       </SlidePopup>

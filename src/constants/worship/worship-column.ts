@@ -14,6 +14,9 @@ export enum WORSHIP_ENROLLMENT {
   WORSHIP = 'worship',
   FROM_DATE = 'fromSessionDate',
   TO_DATE = 'toSessionDate',
+
+  CREATED_AT = 'createdAt',
+  UPDATED_AT = 'updatedAt',
 }
 
 export enum WORSHIP_SESSION {
@@ -24,4 +27,14 @@ export enum WORSHIP_SESSION {
   WORSHIP = 'worship',
   FROM_DATE = 'fromSessionDate',
   TO_DATE = 'toSessionDate',
+}
+
+export enum WORSHIP_ATTENDANCE {
+  NAME = 'name',
+  PRESENT = 'present',
+  ABSENT = 'absent',
+  NOTE = 'note',
+
+  CREATED_AT = 'createdAt',
+  UPDATED_AT = 'updatedAt',
 }

@@ -32,18 +32,18 @@ export type WorshipSession = {
   id: string;
   worshipId: string;
   worship: Worship;
-  title: string;
   description: string;
   sessionDate: string;
+  worshipAttendances: WorshipAttendance[];
 };
 
 export const DEFAULT_WORSHIP_SESSION: WorshipSession = {
   id: BLANK,
   worshipId: BLANK,
   worship: DEFAULT_WORSHIP,
-  title: BLANK,
   description: BLANK,
   sessionDate: BLANK,
+  worshipAttendances: [],
 };
 
 export type WorshipEnrollment = {
@@ -70,10 +70,16 @@ export const DEFAULT_WORSHIP_ENROLLMENT: WorshipEnrollment = {
   attendanceRate: 0,
 };
 
+export enum WORSHIP_ATTENDANCE_STATUS {
+  UNKNOWN = 'unknown',
+  PRESENT = 'present',
+  ABSENT = 'absent',
+}
+
 export type WorshipAttendance = {
   id: string;
   worshipSession: WorshipSession;
-  isAttended?: boolean;
+  attendanceStatus: WORSHIP_ATTENDANCE_STATUS;
   note: string;
   sessionDate: string;
   worshipEnrollment: WorshipEnrollment;
@@ -82,6 +88,7 @@ export type WorshipAttendance = {
 export const DEFAULT_WORSHIP_ATTENDANCE: WorshipAttendance = {
   id: BLANK,
   worshipSession: DEFAULT_WORSHIP_SESSION,
+  attendanceStatus: WORSHIP_ATTENDANCE_STATUS.UNKNOWN,
   note: BLANK,
   sessionDate: BLANK,
   worshipEnrollment: DEFAULT_WORSHIP_ENROLLMENT,

@@ -102,34 +102,49 @@ const WorshipTable = ({ loadWorships }: WorshipTableProps) => {
       dispatch(setWorships(newWorships));
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));
+    } finally {
+      setIsDeleteModalOpened(false);
     }
   };
 
-  const onClickEditDone = () => {
+  const onClickEditDone = async () => {
     try {
-      worshipsApi
-        .editWorship(
-          { churchId, worshipId: targetWorship.id },
-          {
-            title: targetWorship.title,
-            description: targetWorship.description,
-          }
-        )
-        .then((response) => {
-          const newWorship = response.data;
+      const prevWorship = worships.find(
+        (worship) => worship.id === targetWorship.id
+      );
 
-          const newWorships = worships.map((worship: Worship) => {
-            if (worship.id !== newWorship.id) {
-              return newWorship;
-            } else {
-              return worship;
+      if (prevWorship) {
+        await worshipsApi
+          .editWorship(
+            { churchId, worshipId: targetWorship.id },
+            {
+              title:
+                prevWorship.title !== targetWorship.title
+                  ? targetWorship.title
+                  : undefined,
+              description: targetWorship.description,
+              worshipDay: targetWorship.worshipDay,
+              repeatPeriod: targetWorship.repeatPeriod,
+              worshipTargetGroupIds: targetWorship.worshipTargetGroupIds,
             }
-          });
+          )
+          .then((response) => {
+            const newWorship = response.data.data;
+            console.log(newWorship);
 
-          dispatch(setWorships(newWorships));
-          dispatch(setTargetWorship(DEFAULT_WORSHIP));
-          setIsEditModalOpened(false);
-        });
+            const newWorships = worships.map((worship: Worship) => {
+              if (worship.id === newWorship.id) {
+                return newWorship;
+              } else {
+                return worship;
+              }
+            });
+
+            dispatch(setWorships(newWorships));
+            dispatch(setTargetWorship(DEFAULT_WORSHIP));
+            setIsEditModalOpened(false);
+          });
+      }
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));
     }

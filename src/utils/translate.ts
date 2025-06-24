@@ -12,6 +12,7 @@ import { JOIN_REQUEST } from '@/constants/join-request/join-request-column';
 import { CHURCH_USER } from '@/constants/church-user/church-user-column';
 import {
   WORSHIP,
+  WORSHIP_ATTENDANCE,
   WORSHIP_ENROLLMENT,
 } from '@/constants/worship/worship-column';
 
@@ -147,6 +148,19 @@ export const getTranslatedAttendanceColumn = (
       | WORSHIP_ENROLLMENT.NAME
       | WORSHIP_ENROLLMENT.GROUP
       | WORSHIP_ENROLLMENT.ATTENDANCE_RATE
+  );
+};
+
+export const getTranslatedAttendanceInformationColumn = (
+  t: (key: string, ...args: any[]) => string,
+  id: WORSHIP_ATTENDANCE
+): string => {
+  return t(
+    id as
+      | WORSHIP_ATTENDANCE.NAME
+      | WORSHIP_ATTENDANCE.ABSENT
+      | WORSHIP_ATTENDANCE.PRESENT
+      | WORSHIP_ATTENDANCE.NOTE
   );
 };
 

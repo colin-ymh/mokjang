@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
@@ -58,6 +58,23 @@ const AddWorship = ({}: AddWorshipProps) => {
   const onChangeRepeatPeriod = (repeatPeriod: number) => {
     dispatch(setTargetWorship({ ...targetWorship, repeatPeriod }));
   };
+
+  useEffect(() => {
+    if (targetWorship?.worshipTargetGroups?.length > 0) {
+      const newGroup = getGroup(
+        targetWorship.worshipTargetGroups[0].group.id,
+        groups
+      );
+      setSelectedGroup(newGroup);
+
+      dispatch(
+        setTargetWorship({
+          ...targetWorship,
+          worshipTargetGroupIds: newGroup.id ? [newGroup.id] : [],
+        })
+      );
+    }
+  }, [targetWorship.worshipTargetGroups]);
 
   const props = {
     selectedGroup,

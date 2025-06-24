@@ -11,14 +11,21 @@ export default {
   history: 'History',
   isDone: 'Completed',
   isNotDone: 'Incomplete',
+  customSelect: 'Custom Select',
 
   worshipGroup: 'Worship Group',
   worshipDay: 'Worship Day',
   repeatPeriod: 'Repeat Period',
   attendanceRate: 'Attendance Rate',
+  note: 'Note',
 
   everyWeek: 'Every Week',
   everyOtherWeek: 'Every Other Week',
+
+  thisWeek: 'This Week',
+  thisMonth: 'This Month',
+  lastMonth: 'Last Month',
+  lastThreeMonth: 'Last Three Month',
 
   sunday: 'Sunday',
   monday: 'Monday',
@@ -237,6 +244,8 @@ export default {
 
   'title.addWorship': 'Add Worship',
   'title.editWorship': 'Edit Worship',
+
+  'title.attendanceInformation': 'Attendance Information',
   /*-------------------title (popup title)-------------------*/
 
   /*-------------------header (side bar button)-------------------*/

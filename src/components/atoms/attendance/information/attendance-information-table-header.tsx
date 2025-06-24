@@ -6,9 +6,10 @@ import { RootState } from '@/redux/store';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { BLACK, GRAY, MAIN } from '@/constants/styles/color';
 import { SIZE } from '@/constants/styles/style';
-import { getTranslatedAttendanceColumn } from '@/utils/translate';
-import { useI18n } from '../../../../locales/client';
-import { WORSHIP_ENROLLMENT } from '@/constants/worship/worship-column';
+import { getTranslatedAttendanceInformationColumn } from '@/utils/translate';
+import { useI18n } from '../../../../../locales/client';
+import { WORSHIP_ATTENDANCE } from '@/constants/worship/worship-column';
+import { ATTENDANCE_INFORMATION_TABLE_HEADER_ITEM } from '@/redux/reducers/filter/worship-attendance-filter-reducer';
 
 const HeaderContainer = styled.div`
   display: flex;
@@ -36,31 +37,31 @@ const IconContainer = styled.div`
   cursor: pointer;
 `;
 
-type TaskTableHeaderProps = {
-  item: {
-    id: WORSHIP_ENROLLMENT;
-    isSortable: boolean;
-    isSession: boolean;
-  };
-  onClick: (id: WORSHIP_ENROLLMENT, isSession: boolean) => void;
+type AttendanceInformationTableHeaderProps = {
+  item: ATTENDANCE_INFORMATION_TABLE_HEADER_ITEM;
 };
 
-const AttendanceTableHeader = ({ item, onClick }: TaskTableHeaderProps) => {
-  const { worshipEnrollmentOrderBy } = useSelector(
-    (state: RootState) => state.worshipEnrollmentFilter
+const AttendanceInformationInformationTableHeader = ({
+  item,
+}: AttendanceInformationTableHeaderProps) => {
+  const { worshipAttendanceOrderBy } = useSelector(
+    (state: RootState) => state.worshipAttendanceFilter
   );
   const t = useI18n();
-  const isActive = worshipEnrollmentOrderBy === item.id;
+  const isActive = worshipAttendanceOrderBy === item.id;
 
   return (
-    <HeaderContainer onClick={() => onClick(item.id, item.isSession)}>
+    <HeaderContainer>
       <TextContainer>
         <MainText
           color={isActive ? BLACK : GRAY.DARK}
           size={SIZE.SMALL}
           fontWeight={600}
         >
-          {getTranslatedAttendanceColumn(t, item.id)}
+          {getTranslatedAttendanceInformationColumn(
+            t,
+            item.id as WORSHIP_ATTENDANCE
+          )}
         </MainText>
       </TextContainer>
       {item.isSortable && (
@@ -77,4 +78,4 @@ const AttendanceTableHeader = ({ item, onClick }: TaskTableHeaderProps) => {
   );
 };
 
-export default AttendanceTableHeader;
+export default AttendanceInformationInformationTableHeader;

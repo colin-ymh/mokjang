@@ -26,6 +26,7 @@ import WorshipEnrollmentFilterReducer from '@/redux/reducers/filter/worship-enro
 import TargetWorshipReducer from '@/redux/reducers/target/target-worship-reducer';
 import TargetWorshipSessionReducer from '@/redux/reducers/target/target-worship-session-reducer';
 import WorshipFilterReducer from '@/redux/reducers/filter/worship-filter-reducer';
+import WorshipAttendanceFilterReducer from '@/redux/reducers/filter/worship-attendance-filter-reducer';
 
 const store = configureStore({
   reducer: {
@@ -44,6 +45,7 @@ const store = configureStore({
     joinRequestFilter: JoinRequestFilterReducer,
     worshipFilter: WorshipFilterReducer,
     worshipEnrollmentFilter: WorshipEnrollmentFilterReducer,
+    worshipAttendanceFilter: WorshipAttendanceFilterReducer,
     // target
     targetMember: TargetMember,
     targetVisitation: TargetVisitation,

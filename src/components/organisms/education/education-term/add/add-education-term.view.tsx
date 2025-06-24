@@ -24,7 +24,7 @@ import EducationEnrollmentList from '@/components/atoms/education/education-enro
 import CustomDatePicker from '@/vendor/date-picker/custom-date-picker';
 import {
   getDateFromDateString,
-  getDateFromString,
+  getDateFromInput,
   getDateStringFromDate,
   getTotalMinuteFromDate,
 } from '@/utils/date';
@@ -146,13 +146,13 @@ const AddEducationTermView = ({
               value={
                 targetEducationTerm.startDate
                   ? getDateStringFromDate(
-                      getDateFromDateString(targetEducationTerm.startDate)
+                      getDateFromInput(targetEducationTerm.startDate)
                     )
                   : undefined
               }
               selected={
                 targetEducationTerm.startDate
-                  ? getDateFromString(targetEducationTerm.startDate)
+                  ? getDateFromDateString(targetEducationTerm.startDate)
                   : null
               }
               onChange={onChangeStartDate}
@@ -164,7 +164,7 @@ const AddEducationTermView = ({
               value={
                 targetEducationTerm.startDate
                   ? getTotalMinuteFromDate(
-                      getDateFromString(targetEducationTerm.startDate)
+                      getDateFromDateString(targetEducationTerm.startDate)
                     )
                   : 0
               }
@@ -178,13 +178,13 @@ const AddEducationTermView = ({
               value={
                 targetEducationTerm.endDate
                   ? getDateStringFromDate(
-                      getDateFromDateString(targetEducationTerm.endDate)
+                      getDateFromInput(targetEducationTerm.endDate)
                     )
                   : undefined
               }
               selected={
                 targetEducationTerm.endDate
-                  ? getDateFromString(targetEducationTerm.endDate)
+                  ? getDateFromDateString(targetEducationTerm.endDate)
                   : null
               }
               onChange={onChangeEndDate}
@@ -196,7 +196,7 @@ const AddEducationTermView = ({
               value={
                 targetEducationTerm.endDate
                   ? getTotalMinuteFromDate(
-                      getDateFromString(targetEducationTerm.endDate)
+                      getDateFromDateString(targetEducationTerm.endDate)
                     )
                   : 0
               }

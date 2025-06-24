@@ -19,7 +19,7 @@ import { MemberDropdownValueType } from '@/models/dropdown/dropdown';
 import CustomDatePicker from '@/vendor/date-picker/custom-date-picker';
 import {
   getDateFromDateString,
-  getDateFromString,
+  getDateFromInput,
   getDateStringFromDate,
   getTotalMinuteFromDate,
 } from '@/utils/date';
@@ -135,13 +135,13 @@ const AddTaskView = ({
               value={
                 targetTask.startDate
                   ? getDateStringFromDate(
-                      getDateFromDateString(targetTask.startDate)
+                      getDateFromInput(targetTask.startDate)
                     )
                   : undefined
               }
               selected={
                 targetTask.startDate
-                  ? getDateFromString(targetTask.startDate)
+                  ? getDateFromDateString(targetTask.startDate)
                   : null
               }
               onChange={onChangeStartDate}
@@ -153,7 +153,7 @@ const AddTaskView = ({
               value={
                 targetTask.startDate
                   ? getTotalMinuteFromDate(
-                      getDateFromString(targetTask.startDate)
+                      getDateFromDateString(targetTask.startDate)
                     )
                   : 0
               }
@@ -166,14 +166,12 @@ const AddTaskView = ({
             <CustomDatePicker
               value={
                 targetTask.endDate
-                  ? getDateStringFromDate(
-                      getDateFromDateString(targetTask.endDate)
-                    )
+                  ? getDateStringFromDate(getDateFromInput(targetTask.endDate))
                   : undefined
               }
               selected={
                 targetTask.endDate
-                  ? getDateFromString(targetTask.endDate)
+                  ? getDateFromDateString(targetTask.endDate)
                   : null
               }
               onChange={onChangeEndDate}
@@ -185,7 +183,7 @@ const AddTaskView = ({
               value={
                 targetTask.endDate
                   ? getTotalMinuteFromDate(
-                      getDateFromString(targetTask.endDate)
+                      getDateFromDateString(targetTask.endDate)
                     )
                   : 0
               }

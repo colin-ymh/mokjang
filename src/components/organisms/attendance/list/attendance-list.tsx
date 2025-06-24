@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
-import { HEADER_BAR } from '@/constants/constant';
 import {
   fetchWorshipEnrollments,
   setWorshipEnrollments,
@@ -10,15 +9,10 @@ import { WorshipEnrollment } from '@/models/worship/worship';
 import AttendanceListView from '@/components/organisms/attendance/list/attendance-list.view';
 import Loading from '@/components/atoms/common/etc/loading';
 
-type AttendanceListProps = {
-  headerType?: HEADER_BAR;
-};
+type AttendanceListProps = {};
 
-const AttendanceList = ({
-  headerType = HEADER_BAR.ALL,
-}: AttendanceListProps) => {
+const AttendanceList = ({}: AttendanceListProps) => {
   const dispatch = useDispatch<AppDispatch>();
-  const { user } = useSelector((state: RootState) => state.user);
 
   const churchId: string = useSelector(
     (state: RootState) => state.church.churchId
@@ -118,7 +112,6 @@ const AttendanceList = ({
     worshipEnrollmentFilter,
     worshipEnrollmentOrderBy,
     worshipEnrollmentOrderDirection,
-    headerType === HEADER_BAR.MY,
   ]);
 
   const props = {
