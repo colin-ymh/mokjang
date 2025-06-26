@@ -11,6 +11,8 @@ import Setting from '../../../../../public/svg/setting.svg';
 import Question from '../../../../../public/svg/question.svg';
 import Home from '../../../../../public/svg/home.svg';
 import LogoutButton from '@/components/atoms/common/button/logout-button';
+import { MainText } from '@/components/atoms/common/text/main-text';
+import { SIZE } from '@/constants/styles/style';
 
 const TopContainer = styled.div`
   display: none;
@@ -32,6 +34,7 @@ const TopContainer = styled.div`
 const TopLeft = styled.div`
   display: flex;
   flex-direction: row;
+  align-items: center;
   gap: 10px;
 `;
 
@@ -107,8 +110,8 @@ const TopView = ({ onClickButton }: TopViewProps) => {
     <TopContainer>
       <TopLeft>
         {/*<ChurchImage />*/}
-        {/*<MainText size={SIZE.LARGE}>{church.name}</MainText>*/}
-        <LogoutButton />
+        <LogoutButton width={100} />
+        <MainText size={SIZE.LARGE}>{`초대코드 ${church.joinCode}`}</MainText>
       </TopLeft>
       <TopRight>
         <MainButton onClick={() => onClickButton(SIDE_ID.MAIN)} />

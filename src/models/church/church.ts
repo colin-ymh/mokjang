@@ -13,6 +13,7 @@ export type Church = {
   dailyRequestAttempts: number;
   lastRequestDate: string;
   memberCount: number;
+  joinCode: string;
 };
 
 export const DEFAULT_CHURCH = {
@@ -28,4 +29,5 @@ export const DEFAULT_CHURCH = {
   dailyRequestAttempts: 0,
   lastRequestDate: BLANK,
   memberCount: 0,
+  joinCode: BLANK,
 };
