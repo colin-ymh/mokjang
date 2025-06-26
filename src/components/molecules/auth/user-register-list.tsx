@@ -77,7 +77,7 @@ const UserRegisterList = () => {
         {
           name,
           mobilePhone: mobilePhone.replace(/-/g, ''),
-          isTest: IS_TEST.INTERNAL_TEST,
+          isTest: IS_TEST.PRODUCTION,
         }
       );
 
