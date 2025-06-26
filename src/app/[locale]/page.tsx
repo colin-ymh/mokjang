@@ -7,6 +7,7 @@ import BorderInput from '@/components/atoms/common/input/border-input';
 import { useState } from 'react';
 import { usePageRouter } from '@/utils/router';
 import { JoinRequestsApi } from '@/api/join-request/join-request.api';
+import LogoutButton from '@/components/atoms/common/button/logout-button';
 
 const ButtonContainer = styled.div`
   display: flex;
@@ -48,6 +49,8 @@ export default function LoginPage() {
           onClick={onClickCreateChurch}
           height={30}
         />
+
+        <LogoutButton />
       </ButtonContainer>
     </ModalLayout>
   );

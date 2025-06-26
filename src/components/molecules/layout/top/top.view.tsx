@@ -10,6 +10,7 @@ import Bell from '../../../../../public/svg/bell.svg';
 import Setting from '../../../../../public/svg/setting.svg';
 import Question from '../../../../../public/svg/question.svg';
 import Home from '../../../../../public/svg/home.svg';
+import LogoutButton from '@/components/atoms/common/button/logout-button';
 
 const TopContainer = styled.div`
   display: none;
@@ -107,6 +108,7 @@ const TopView = ({ onClickButton }: TopViewProps) => {
       <TopLeft>
         {/*<ChurchImage />*/}
         {/*<MainText size={SIZE.LARGE}>{church.name}</MainText>*/}
+        <LogoutButton />
       </TopLeft>
       <TopRight>
         <MainButton onClick={() => onClickButton(SIDE_ID.MAIN)} />
