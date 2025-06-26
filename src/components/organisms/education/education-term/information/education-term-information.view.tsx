@@ -7,15 +7,15 @@ import { getFormattedDate } from '@/utils/format';
 import { GRAY } from '@/constants/styles/color';
 import React from 'react';
 import StatusDropdown from '@/components/atoms/common/dropdown/status-dropdown';
-import {
-  EDUCATION_ENROLLMENT_STATUS,
-  EducationEnrollment,
-} from '@/models/education/education';
+import { EducationEnrollment } from '@/models/education/education';
 import EducationEnrollmentList from '@/components/atoms/education/education-enrollment/education-enrollment-list';
 import { useI18n } from '../../../../../../locales/client';
 import EducationTermSessionList from '@/components/molecules/education/education-term/education-term-session-list';
 
-import { EDUCATION_TERM_STATUS } from '@/constants/status/status';
+import {
+  EDUCATION_ENROLLMENT_STATUS,
+  EDUCATION_TERM_STATUS,
+} from '@/constants/status/status';
 import MemberProfilePopupButton from '@/components/molecules/common/button/member-profile-popup-button';
 
 const InformationContainer = styled.div`

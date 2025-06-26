@@ -10,10 +10,7 @@ import Quill from '@/components/atoms/common/input/quill';
 import MultiMemberDropdown from '@/components/atoms/common/dropdown/multi-member-dropdown';
 import { MemberDropdownValueType } from '@/models/dropdown/dropdown';
 import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-item';
-import {
-  EDUCATION_ENROLLMENT_STATUS,
-  EducationEnrollment,
-} from '@/models/education/education';
+import { EducationEnrollment } from '@/models/education/education';
 import StatusDropdown from '@/components/atoms/common/dropdown/status-dropdown';
 import {
   useEducationTermStatusDropdownItems,
@@ -30,7 +27,10 @@ import {
 } from '@/utils/date';
 import Dropdown from '@/components/atoms/common/dropdown/dropdown';
 
-import { EDUCATION_TERM_STATUS } from '@/constants/status/status';
+import {
+  EDUCATION_ENROLLMENT_STATUS,
+  EDUCATION_TERM_STATUS,
+} from '@/constants/status/status';
 import RequiredMark from '@/components/atoms/common/text/required-mark';
 
 const AddEducationTermViewContainer = styled.div`

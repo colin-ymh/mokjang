@@ -18,6 +18,7 @@ import {
 import Loading from '@/components/atoms/common/etc/loading';
 import { WorshipSessionsApi } from '@/api/worship/worship-sessions.api';
 import { getDateFromDateString, getDateInWeekByDayOfWeek } from '@/utils/date';
+import { ATTENDANCE_CONTENT_ID } from '@/constants/layout/content';
 
 type AttendanceInformationProps = {};
 
@@ -42,6 +43,9 @@ const AttendanceInformation = ({}: AttendanceInformationProps) => {
     worshipAttendanceOrderDirection,
   } = useSelector((state: RootState) => state.worshipAttendanceFilter);
 
+  const [contentId, setContentId] = useState<ATTENDANCE_CONTENT_ID>(
+    ATTENDANCE_CONTENT_ID.ATTENDANCE
+  );
   // 그룹 모달 on off
   const [isGroupModalShown, setIsGroupModalShown] = useState<boolean>(false);
 
@@ -49,6 +53,10 @@ const AttendanceInformation = ({}: AttendanceInformationProps) => {
   if (thrownError) {
     throw thrownError;
   }
+
+  const onClickHeaderBar = (id: ATTENDANCE_CONTENT_ID) => {
+    setContentId(id);
+  };
 
   // 목록 설정 모달 열기
   const onClickOpenGroupModal = () => {
@@ -94,21 +102,23 @@ const AttendanceInformation = ({}: AttendanceInformationProps) => {
 
       const newWorshipSession = sessionResponse.data.data;
       dispatch(setTargetWorshipSession(newWorshipSession));
-
-      // 그룹 선택 초기화
-      if (newWorship.worshipTargetGroups.length > 0) {
-        const newGroup = getGroup(
-          newWorship.worshipTargetGroups[0].group.id,
-          groups
-        );
-        dispatch(setTargetWorshipSessionGroup(newGroup));
-        setTopLevelGroup(newGroup);
-      } else {
-        dispatch(setTargetWorshipSessionGroup(DEFAULT_GROUP));
-        setTopLevelGroup(DEFAULT_GROUP);
-      }
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));
+    }
+  };
+
+  const onChangeWorship = (newWorship: Worship) => {
+    // 그룹 선택 초기화
+    if (newWorship.worshipTargetGroups.length > 0) {
+      const newGroup = getGroup(
+        newWorship.worshipTargetGroups[0].group.id,
+        groups
+      );
+      dispatch(setTargetWorshipSessionGroup(newGroup));
+      setTopLevelGroup(newGroup);
+    } else {
+      dispatch(setTargetWorshipSessionGroup(DEFAULT_GROUP));
+      setTopLevelGroup(DEFAULT_GROUP);
     }
   };
 
@@ -209,13 +219,19 @@ const AttendanceInformation = ({}: AttendanceInformationProps) => {
   }, [
     churchId,
     targetWorshipSessionWorship.id,
+    targetWorshipSessionGroup.id,
     targetWorshipSession.id,
     worshipAttendanceFilter,
     worshipAttendanceOrderBy,
     worshipAttendanceOrderDirection,
   ]);
 
+  useEffect(() => {
+    onChangeWorship(targetWorshipSessionWorship);
+  }, [targetWorshipSessionWorship]);
+
   const props = {
+    contentId,
     isGroupModalShown,
     topLevelGroup,
     onClickGroupItem,
@@ -224,6 +240,7 @@ const AttendanceInformation = ({}: AttendanceInformationProps) => {
     onClickCloseGroupModal,
     onChangeDate,
     loadWorshipAttendances,
+    onClickHeaderBar,
   };
 
   return (

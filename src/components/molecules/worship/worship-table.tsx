@@ -130,7 +130,6 @@ const WorshipTable = ({ loadWorships }: WorshipTableProps) => {
           )
           .then((response) => {
             const newWorship = response.data.data;
-            console.log(newWorship);
 
             const newWorships = worships.map((worship: Worship) => {
               if (worship.id === newWorship.id) {

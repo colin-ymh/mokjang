@@ -46,8 +46,11 @@ type EditWorshipSessionParams = {
 };
 
 type EditWorshipSessionBody = {
-  sessionDate: string;
-  description: string;
+  title?: string;
+  bibleTitle?: string;
+  description?: string;
+  videoUrl?: string;
+  inChargeId?: string;
 };
 
 type DeleteWorshipSessionsParams = {

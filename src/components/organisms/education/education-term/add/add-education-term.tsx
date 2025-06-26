@@ -14,13 +14,14 @@ import { setTargetEducationTerm } from '@/redux/reducers/target/target-education
 import AddEducationTermView from '@/components/organisms/education/education-term/add/add-education-term.view';
 import { MemberDropdownValueType } from '@/models/dropdown/dropdown';
 import { DEFAULT_MEMBER } from '@/redux/reducers/member-register-reducer';
-import {
-  EDUCATION_ENROLLMENT_STATUS,
-  EducationEnrollment,
-} from '@/models/education/education';
+import { EducationEnrollment } from '@/models/education/education';
 import { MemberDropdownType } from '@/components/atoms/common/dropdown/member-dropdown-item';
 
-import { EDUCATION_TERM_STATUS } from '@/constants/status/status';
+import {
+  EDUCATION_ENROLLMENT_STATUS,
+  EDUCATION_TERM_STATUS,
+  STATUS,
+} from '@/constants/status/status';
 
 type AddEducationTermProps = {};
 
@@ -196,7 +197,7 @@ const AddEducationTerm = ({}: AddEducationTermProps) => {
           id: new Date().toString(),
           memberId: newEnrollment.value,
           educationTermId: targetEducationTerm.id,
-          status: EDUCATION_ENROLLMENT_STATUS.INCOMPLETE,
+          status: STATUS.INCOMPLETE as EDUCATION_ENROLLMENT_STATUS,
           note: BLANK,
           member: { ...DEFAULT_MEMBER, name: newEnrollment.title },
         },

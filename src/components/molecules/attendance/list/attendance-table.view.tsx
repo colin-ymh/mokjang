@@ -7,7 +7,6 @@ import { DESTRUCTIVE, GRAY, MAIN, WHITE } from '@/constants/styles/color';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { BLANK } from '@/constants/constant';
 import useWindowSize from '@/hooks/window/window';
-import MemberProfile from '@/components/atoms/member/member-profile';
 import {
   WORSHIP_ATTENDANCE_STATUS,
   WorshipEnrollment,
@@ -25,6 +24,7 @@ import { EDUCATION_TABLE_HEADER_ITEM } from '@/redux/reducers/filter/worship-enr
 
 import Present from '../../../../../public/svg/circle.svg';
 import Absent from '../../../../../public/svg/cancel.svg';
+import MemberProfilePopupButton from '@/components/molecules/common/button/member-profile-popup-button';
 
 // 1. 컬럼별 PX 폭 (마지막 REMARKS만 auto 할 예정)
 const getColumnWidth = (id: string) => {
@@ -110,13 +110,6 @@ const TableData = styled.td<{ id: string; $isSession: boolean }>`
   }
 `;
 
-const IconContainer = styled.div`
-  display: flex;
-  width: 100%;
-  justify-content: center;
-  align-items: center;
-`;
-
 const ContentWrapper = styled.div`
   display: flex;
   align-items: center;
@@ -127,15 +120,22 @@ const ContentWrapper = styled.div`
   white-space: nowrap;
 `;
 
+const IconContainer = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+`;
+
 const PresentIcon = styled(Present)`
-  width: 40px;
-  height: 40px;
+  width: 30px;
+  height: 30px;
   stroke: ${MAIN.DEFAULT};
 `;
 
 const AbsentIcon = styled(Absent)`
-  width: 40px;
-  height: 40px;
+  width: 30px;
+  height: 30px;
   stroke: ${DESTRUCTIVE.DEFAULT};
 `;
 
@@ -229,11 +229,19 @@ const AttendanceTableView = ({
     } else {
       switch (id) {
         case WORSHIP_ENROLLMENT.NAME:
-          return <MemberProfile member={enrollment.member} />;
+          return <MemberProfilePopupButton member={enrollment.member} />;
         case WORSHIP_ENROLLMENT.GROUP:
           return <MainText>{enrollment.member.group?.name}</MainText>;
         case WORSHIP_ENROLLMENT.ATTENDANCE_RATE:
-          return <MainText></MainText>;
+          return (
+            <MainText>
+              {/*{`${Math.round(*/}
+              {/*  (enrollment.presentCount /*/}
+              {/*    enrollment.worshipAttendances.length) **/}
+              {/*    100*/}
+              {/*)}%`}*/}
+            </MainText>
+          );
         case BLANK:
           return <div></div>;
         default:

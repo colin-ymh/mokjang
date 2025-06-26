@@ -13,6 +13,12 @@ export default {
   isNotDone: '미완료',
   customSelect: '직접선택',
 
+  worshipSessionTitle: '설교제목',
+  worshipSessionBibleTitle: '성경본문',
+  worshipSessionInCharge: '설교자',
+  worshipSessionVideoUrl: '예배영상 URL',
+  worshipSessionDescription: '특이사항',
+
   worshipGroup: '대상그룹',
   worshipDay: '예배요일',
   repeatPeriod: '반복주기',
@@ -247,7 +253,7 @@ export default {
   'title.addWorship': '예배 추가',
   'title.editWorship': '예배 수정',
 
-  'title.attendanceInformation': '출석보고서',
+  'title.attendanceInformation': '보고서',
   /*-------------------title (popup title)-------------------*/
 
   /*-------------------header (side bar button)-------------------*/
@@ -431,6 +437,11 @@ export default {
   'placeholder.worshipTitle': '예배명을 입력해주세요.',
   'placeholder.worshipDescription': '예배 내용을 입력해주세요.',
 
+  'placeholder.worshipSessionTitle': '설교제목을 입력해주세요.',
+  'placeholder.worshipSessionBibleTitle': '성경본문을 입력해주세요.',
+  'placeholder.worshipSessionInCharge': '설교자를 입력해주세요',
+  'placeholder.worshipSessionVideoUrl': '예배영상 URL을 입력해주세요',
+  'placeholder.worshipSessionDescription': '특이사항을 입력해주세요',
   /*-------------------placeholder-------------------*/
 
   /*-------------------radiobutton-------------------*/

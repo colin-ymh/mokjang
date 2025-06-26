@@ -11,11 +11,8 @@ export enum MEMBER_CONTENT_ID {
 }
 
 export enum ATTENDANCE_CONTENT_ID {
-  ATTENDANCE = 'attendance',
-}
-
-export enum WORSHIP_CONTENT_ID {
   WORSHIP = 'worship',
+  ATTENDANCE = 'attendance',
 }
 
 export enum CHURCH_CONTENT_ID {

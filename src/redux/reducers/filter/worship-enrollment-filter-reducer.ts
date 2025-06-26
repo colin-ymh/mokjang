@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { BLANK, NULL, ORDER_DIRECTION } from '@/constants/constant';
+import { BLANK, ORDER_DIRECTION } from '@/constants/constant';
 import { RootState } from '@/redux/store';
 import { WORSHIP_ENROLLMENT } from '@/constants/worship/worship-column';
 import { WorshipEnrollment } from '@/models/worship/worship';
@@ -14,7 +14,7 @@ type WORSHIP_ENROLLMENT_FILTER = {
 type WorshipEnrollmentFilterState = {
   worshipEnrollments: WorshipEnrollment[];
   worshipEnrollmentFilter: WORSHIP_ENROLLMENT_FILTER;
-  worshipEnrollmentOrderBy: WORSHIP_ENROLLMENT | typeof NULL;
+  worshipEnrollmentOrderBy?: WORSHIP_ENROLLMENT;
   worshipEnrollmentOrderDirection: ORDER_DIRECTION;
   worshipEnrollmentTableHeaderItemList: EDUCATION_TABLE_HEADER_ITEM[];
 };
@@ -63,7 +63,6 @@ export const INITIAL_WORSHIP_ENROLLMENT_TABLE_HEADER_LIST: EDUCATION_TABLE_HEADE
 const initialState: WorshipEnrollmentFilterState = {
   worshipEnrollments: [],
   worshipEnrollmentFilter: INITIAL_WORSHIP_ENROLLMENT_FILTER,
-  worshipEnrollmentOrderBy: NULL,
   worshipEnrollmentOrderDirection: ORDER_DIRECTION.ASC,
   worshipEnrollmentTableHeaderItemList:
     INITIAL_WORSHIP_ENROLLMENT_TABLE_HEADER_LIST,
@@ -97,7 +96,7 @@ export const fetchWorshipEnrollments = createAsyncThunk<
         worshipId,
         page: currentPage,
         take: 30, // 무한 스크롤 최적화
-        order: WORSHIP_ENROLLMENT.CREATED_AT,
+        order: worshipEnrollmentOrderBy,
         orderDirection: worshipEnrollmentOrderDirection,
         groupId: worshipEnrollmentFilter.group,
         fromSessionDate: worshipEnrollmentFilter.fromSessionDate,
@@ -130,7 +129,7 @@ const WorshipEnrollmentFilterSlice = createSlice({
     },
     setWorshipEnrollmentOrderBy(
       state,
-      action: PayloadAction<WORSHIP_ENROLLMENT | typeof NULL>
+      action: PayloadAction<WORSHIP_ENROLLMENT>
     ) {
       state.worshipEnrollmentOrderBy = action.payload;
     },

@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { NULL, ORDER_DIRECTION } from '@/constants/constant';
+import { ORDER_DIRECTION } from '@/constants/constant';
 import { RootState } from '@/redux/store';
 import { WORSHIP_ATTENDANCE } from '@/constants/worship/worship-column';
 import { WorshipAttendance } from '@/models/worship/worship';
@@ -10,7 +10,7 @@ type WORSHIP_ATTENDANCE_FILTER = {};
 type WorshipAttendanceFilterState = {
   worshipAttendances: WorshipAttendance[];
   worshipAttendanceFilter: WORSHIP_ATTENDANCE_FILTER;
-  worshipAttendanceOrderBy: WORSHIP_ATTENDANCE | typeof NULL;
+  worshipAttendanceOrderBy?: WORSHIP_ATTENDANCE;
   worshipAttendanceOrderDirection: ORDER_DIRECTION;
   worshipAttendanceTableHeaderItemList: ATTENDANCE_INFORMATION_TABLE_HEADER_ITEM[];
 };
@@ -21,6 +21,7 @@ export type ATTENDANCE_INFORMATION_TABLE_HEADER_ITEM = {
   id: WORSHIP_ATTENDANCE;
   isSortable: boolean;
   isFilterable: boolean;
+  isCheck?: boolean;
 };
 
 export const INITIAL_WORSHIP_INFORMATION_HEADER_LIST: ATTENDANCE_INFORMATION_TABLE_HEADER_ITEM[] =
@@ -34,11 +35,13 @@ export const INITIAL_WORSHIP_INFORMATION_HEADER_LIST: ATTENDANCE_INFORMATION_TAB
       id: WORSHIP_ATTENDANCE.PRESENT,
       isSortable: false,
       isFilterable: false,
+      isCheck: true,
     },
     {
       id: WORSHIP_ATTENDANCE.ABSENT,
       isSortable: false,
       isFilterable: false,
+      isCheck: true,
     },
     {
       id: WORSHIP_ATTENDANCE.NOTE,
@@ -50,7 +53,6 @@ export const INITIAL_WORSHIP_INFORMATION_HEADER_LIST: ATTENDANCE_INFORMATION_TAB
 const initialState: WorshipAttendanceFilterState = {
   worshipAttendances: [],
   worshipAttendanceFilter: INITIAL_WORSHIP_ATTENDANCE_FILTER,
-  worshipAttendanceOrderBy: NULL,
   worshipAttendanceOrderDirection: ORDER_DIRECTION.ASC,
   worshipAttendanceTableHeaderItemList: INITIAL_WORSHIP_INFORMATION_HEADER_LIST,
 };
@@ -86,7 +88,7 @@ export const fetchWorshipAttendances = createAsyncThunk<
         sessionId,
         page: currentPage,
         take: 30, // 무한 스크롤 최적화
-        order: WORSHIP_ATTENDANCE.CREATED_AT,
+        order: worshipAttendanceOrderBy,
         orderDirection: worshipAttendanceOrderDirection,
         groupId: groupId,
       });
@@ -117,7 +119,7 @@ const WorshipAttendanceFilterSlice = createSlice({
     },
     setWorshipAttendanceOrderBy(
       state,
-      action: PayloadAction<WORSHIP_ATTENDANCE | typeof NULL>
+      action: PayloadAction<WORSHIP_ATTENDANCE>
     ) {
       state.worshipAttendanceOrderBy = action.payload;
     },

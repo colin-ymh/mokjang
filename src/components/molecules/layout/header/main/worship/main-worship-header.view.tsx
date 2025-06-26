@@ -93,7 +93,7 @@ const MainWorshipHeaderView = ({
         />
       </HeaderTopContainer>
       <HeaderBottomContainer></HeaderBottomContainer>
-      {/* 교육 추가 */}
+      {/* 예배 추가 */}
       <CustomPopup
         isShow={isAddWorshipOpened}
         onClickCancel={onClickCloseModal}

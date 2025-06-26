@@ -23,7 +23,6 @@ import {
   EDUCATION,
   EDUCATION_TERM,
 } from '@/constants/education/education-column';
-import { EDUCATION_ENROLLMENT_STATUS } from '@/models/education/education';
 import { STATUS } from '@/constants/status/status';
 import { USER } from '@/constants/user/user-column';
 import { JOIN_REQUEST } from '@/constants/join-request/join-request-column';
@@ -341,14 +340,19 @@ export const useEducationEnrollmentStatusDropdownItems = () => {
 
   const items = [
     {
-      value: EDUCATION_ENROLLMENT_STATUS.COMPLETED,
-      title: t(EDUCATION_ENROLLMENT_STATUS.COMPLETED),
+      value: STATUS.COMPLETED,
+      title: t(STATUS.COMPLETED),
       color: STATUS_COLOR.COMPLETED,
     },
     {
-      value: EDUCATION_ENROLLMENT_STATUS.INCOMPLETE,
-      title: t(EDUCATION_ENROLLMENT_STATUS.INCOMPLETE),
+      value: STATUS.INCOMPLETE,
+      title: t(STATUS.INCOMPLETE),
       color: STATUS_COLOR.INCOMPLETE,
+    },
+    {
+      value: STATUS.IN_PROGRESS,
+      title: t(STATUS.IN_PROGRESS),
+      color: STATUS_COLOR.IN_PROGRESS,
     },
   ];
 

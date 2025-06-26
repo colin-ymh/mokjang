@@ -10,7 +10,6 @@ import {
   MEMBER_CONTENT_ID,
   PERMISSION_CONTENT_ID,
   USER_CONTENT_ID,
-  WORSHIP_CONTENT_ID,
 } from '@/constants/layout/content';
 import {
   GROUP_MANAGEMENT_HEADER_ID,
@@ -58,7 +57,6 @@ import EducationTermList from '@/components/organisms/education/education-term/l
 import JoinRequestList from '@/components/organisms/join-request/list/join-request-list';
 import MainAttendanceHeader from '@/components/molecules/layout/header/main/attendance/main-attendance-header';
 import AttendanceList from '@/components/organisms/attendance/list/attendance-list';
-import MainWorshipHeader from '@/components/molecules/layout/header/main/worship/main-worship-header';
 import WorshipList from '@/components/organisms/worship/list/worship-list';
 
 export const getSide = (id: string) => {
@@ -76,7 +74,7 @@ export const getSide = (id: string) => {
   }
 };
 
-export const getHeader = (id: string) => {
+export const getHeader = (id: string, contentId?: string) => {
   switch (id) {
     // 메인
     case MAIN_HEADER_ID.HOME:
@@ -85,13 +83,10 @@ export const getHeader = (id: string) => {
       return <MainMemberHeader />;
     case MAIN_HEADER_ID.ATTENDANCE:
       return <MainAttendanceHeader />;
-    case MAIN_HEADER_ID.WORSHIP:
-      return <MainWorshipHeader />;
     case MAIN_HEADER_ID.VISITATION:
       return <MainVisitationHeader />;
     case MAIN_HEADER_ID.EDUCATION:
       return <MainEducationHeader />;
-
     case MAIN_HEADER_ID.TASK:
       return <MainTaskHeader />;
     case MAIN_HEADER_ID.CALENDAR:
@@ -123,14 +118,6 @@ export const getContent = (
         // 홈
         case HOME_CONTENT_ID.HOME:
           return null;
-
-        // 출석
-        case ATTENDANCE_CONTENT_ID.ATTENDANCE:
-          return <AttendanceList />;
-
-        // 예배
-        case WORSHIP_CONTENT_ID.WORSHIP:
-          return <WorshipList />;
 
         // 회원
         case USER_CONTENT_ID.USER:
@@ -185,6 +172,13 @@ export const getContent = (
       } else {
         return null;
       }
+
+    // 출석
+    case ATTENDANCE_CONTENT_ID.ATTENDANCE:
+      return <AttendanceList />;
+    // 예배
+    case ATTENDANCE_CONTENT_ID.WORSHIP:
+      return <WorshipList />;
 
     // 교회 설정
     case CHURCH_CONTENT_ID.GROUP:

@@ -2,16 +2,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 import { EducationTermsApi } from '@/api/education/education-terms.api';
 import { useState } from 'react';
-import {
-  EDUCATION_ENROLLMENT_STATUS,
-  EducationEnrollment,
-} from '@/models/education/education';
+import { EducationEnrollment } from '@/models/education/education';
 import { setTargetEducationTerm } from '@/redux/reducers/target/target-education-term-reducer';
 import { setEducationTerms } from '@/redux/reducers/filter/education-term-filter-reducer';
 import EducationTermInformationView from '@/components/organisms/education/education-term/information/education-term-information.view';
 import { EducationEnrollmentsApi } from '@/api/education/education-enrollments.api';
 
-import { EDUCATION_TERM_STATUS } from '@/constants/status/status';
+import {
+  EDUCATION_ENROLLMENT_STATUS,
+  EDUCATION_TERM_STATUS,
+} from '@/constants/status/status';
 
 type EducationTermInformationProps = {
   onClickAddSession: () => void;

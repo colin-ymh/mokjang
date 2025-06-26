@@ -13,6 +13,12 @@ export default {
   isNotDone: 'Incomplete',
   customSelect: 'Custom Select',
 
+  worshipSessionTitle: 'Sermon Title',
+  worshipSessionBibleTitle: 'Bible',
+  worshipSessionInCharge: 'Preacher',
+  worshipSessionVideoUrl: 'Worship Video URL',
+  worshipSessionDescription: 'Note',
+
   worshipGroup: 'Worship Group',
   worshipDay: 'Worship Day',
   repeatPeriod: 'Repeat Period',
@@ -245,7 +251,7 @@ export default {
   'title.addWorship': 'Add Worship',
   'title.editWorship': 'Edit Worship',
 
-  'title.attendanceInformation': 'Attendance Information',
+  'title.attendanceInformation': 'Report',
   /*-------------------title (popup title)-------------------*/
 
   /*-------------------header (side bar button)-------------------*/
@@ -420,6 +426,12 @@ export default {
   'placeholder.selectStatus': 'Select the status',
   'placeholder.worshipTitle': 'Enter the worship title.',
   'placeholder.worshipDescription': 'Enter the worship description.',
+
+  'placeholder.worshipSessionTitle': 'Enter the sermon title.',
+  'placeholder.worshipSessionBibleTitle': 'Enter the bible title.',
+  'placeholder.worshipSessionInCharge': 'Enter the preacher name.',
+  'placeholder.worshipSessionVideoUrl': 'Enter the worship video url.',
+  'placeholder.worshipSessionDescription': 'Enter the worship description.',
   /*-------------------placeholder-------------------*/
 
   /*-------------------radiobutton-------------------*/

@@ -32,8 +32,14 @@ export type WorshipSession = {
   id: string;
   worshipId: string;
   worship: Worship;
+  title: string;
+  bibleTitle: string;
   description: string;
+  videoUrl: string;
+  note: string;
   sessionDate: string;
+  inCharge: Member;
+  inChargeId: string;
   worshipAttendances: WorshipAttendance[];
 };
 
@@ -41,7 +47,13 @@ export const DEFAULT_WORSHIP_SESSION: WorshipSession = {
   id: BLANK,
   worshipId: BLANK,
   worship: DEFAULT_WORSHIP,
+  title: BLANK,
+  bibleTitle: BLANK,
   description: BLANK,
+  videoUrl: BLANK,
+  note: BLANK,
+  inCharge: DEFAULT_MEMBER,
+  inChargeId: BLANK,
   sessionDate: BLANK,
   worshipAttendances: [],
 };

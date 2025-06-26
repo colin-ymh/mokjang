@@ -6,7 +6,6 @@ import { RootState } from '@/redux/store';
 import { GRAY, WHITE } from '@/constants/styles/color';
 import { BLANK } from '@/constants/constant';
 import useWindowSize from '@/hooks/window/window';
-import MemberProfile from '@/components/atoms/member/member-profile';
 import {
   WORSHIP_ATTENDANCE_STATUS,
   WorshipAttendance,
@@ -15,6 +14,7 @@ import { WORSHIP_ATTENDANCE } from '@/constants/worship/worship-column';
 import AttendanceInformationTableHeader from '@/components/atoms/attendance/information/attendance-information-table-header';
 import BorderTextarea from '@/components/atoms/common/input/border-textarea';
 import CheckButton from '@/components/atoms/common/button/check-button';
+import MemberProfilePopupButton from '@/components/molecules/common/button/member-profile-popup-button';
 
 // 1. 컬럼별 PX 폭 (마지막 REMARKS만 auto 할 예정)
 const getColumnWidth = (id: string) => {
@@ -86,14 +86,11 @@ const AttendanceTableRow = styled.tr`
   border-bottom: 1px solid ${GRAY.EXTRA_LIGHT};
 `;
 
-const TableData = styled.td<{ id: string }>`
-  padding: 10px;
+const TableData = styled.td<{ id: string; $isCheck?: boolean }>`
+  padding: ${({ $isCheck }) => ($isCheck ? 0 : 10)}px;
 
   width: ${({ id }) => `${getColumnWidth(id)}px`};
 
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   border-left: 1px solid ${GRAY.LIGHT};
 
   &:first-child {
@@ -106,9 +103,16 @@ const ContentWrapper = styled.div`
   align-items: center;
   /* 그냥 늘어날 수 있게, 필요한 경우 ellipsis 처리 */
   max-width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  height: 100%;
+`;
+
+const CheckButtonContainer = styled.div`
+  display: flex;
+  width: 100%;
+  height: 70px;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
 `;
 
 type AttendanceTableProps = {
@@ -145,24 +149,49 @@ const AttendanceInformationTableView = ({
   ) => {
     switch (id) {
       case WORSHIP_ATTENDANCE.NAME:
-        return <MemberProfile member={attendance.worshipEnrollment.member} />;
+        return (
+          <MemberProfilePopupButton
+            member={attendance.worshipEnrollment.member}
+          />
+        );
       case WORSHIP_ATTENDANCE.PRESENT:
         return (
-          <CheckButton
-            value={
-              attendance.attendanceStatus === WORSHIP_ATTENDANCE_STATUS.PRESENT
+          <CheckButtonContainer
+            onClick={() =>
+              onChangePresent(
+                attendance.attendanceStatus !==
+                  WORSHIP_ATTENDANCE_STATUS.PRESENT,
+                attendance.id
+              )
             }
-            onChange={(value) => onChangePresent(value, attendance.id)}
-          />
+          >
+            <CheckButton
+              value={
+                attendance.attendanceStatus ===
+                WORSHIP_ATTENDANCE_STATUS.PRESENT
+              }
+              onChange={(value) => onChangePresent(value, attendance.id)}
+            />
+          </CheckButtonContainer>
         );
       case WORSHIP_ATTENDANCE.ABSENT:
         return (
-          <CheckButton
-            value={
-              attendance.attendanceStatus === WORSHIP_ATTENDANCE_STATUS.ABSENT
+          <CheckButtonContainer
+            onClick={() =>
+              onChangeAbsent(
+                attendance.attendanceStatus !==
+                  WORSHIP_ATTENDANCE_STATUS.ABSENT,
+                attendance.id
+              )
             }
-            onChange={(value) => onChangeAbsent(value, attendance.id)}
-          />
+          >
+            <CheckButton
+              value={
+                attendance.attendanceStatus === WORSHIP_ATTENDANCE_STATUS.ABSENT
+              }
+              onChange={(value) => onChangeAbsent(value, attendance.id)}
+            />
+          </CheckButtonContainer>
         );
       case WORSHIP_ATTENDANCE.NOTE:
         return (
@@ -208,7 +237,7 @@ const AttendanceInformationTableView = ({
             {worshipAttendances.map((enrollment) => (
               <AttendanceTableRow key={enrollment.id}>
                 {worshipAttendanceTableHeaderItemList.map((item) => (
-                  <TableData key={item.id} id={item.id}>
+                  <TableData key={item.id} id={item.id} $isCheck={item.isCheck}>
                     <ContentWrapper>
                       {getAttendanceTableContent(item.id, enrollment)}
                     </ContentWrapper>

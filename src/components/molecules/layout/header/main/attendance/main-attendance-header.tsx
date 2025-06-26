@@ -2,7 +2,7 @@ import { usePageRouter } from '@/utils/router';
 import MainAttendanceHeaderView from '@/components/molecules/layout/header/main/attendance/main-attendance-header.view';
 import SlidePopup from '@/components/atoms/common/popup/slide-popup';
 import AttendanceInformation from '@/components/organisms/attendance/information/attendance-information';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 import {
@@ -10,18 +10,26 @@ import {
   setTargetWorshipSessionGroup,
   setTargetWorshipSessionWorship,
 } from '@/redux/reducers/target/target-worship-session-reducer';
-import { DEFAULT_WORSHIP_SESSION } from '@/models/worship/worship';
+import {
+  DEFAULT_WORSHIP,
+  DEFAULT_WORSHIP_SESSION,
+} from '@/models/worship/worship';
 import { WorshipSessionsApi } from '@/api/worship/worship-sessions.api';
 import { useScopedI18n } from '../../../../../../../locales/client';
 import { WorshipAttendancesApi } from '@/api/worship/worship-attendances.api';
 import { BLANK } from '@/constants/constant';
 import ToastPopup from '@/components/atoms/common/popup/toast-popup';
-import { DESTRUCTIVE } from '@/constants/styles/color';
+import { DESTRUCTIVE, MAIN } from '@/constants/styles/color';
 import {
   fetchWorshipEnrollments,
   setWorshipEnrollments,
 } from '@/redux/reducers/filter/worship-enrollment-filter-reducer';
-import { getDateFromDateString, getDateStringFromDate } from '@/utils/date';
+import CustomPopup from '@/components/atoms/common/popup/custom-popup';
+import AddWorship from '@/components/organisms/worship/add/add-worship';
+import { setTargetWorship } from '@/redux/reducers/target/target-worship-reducer';
+import { setWorships } from '@/redux/reducers/filter/worship-filter-reducer';
+import { getIsWellFormedTitle } from '@/utils/check';
+import { WorshipsApi } from '@/api/worship/worships.api';
 
 type MainAttendanceHeaderProps = {};
 
@@ -31,15 +39,19 @@ const MainAttendanceHeader = ({}: MainAttendanceHeaderProps) => {
   const t_button = useScopedI18n('button');
   const t_title = useScopedI18n('title');
 
+  const worshipsApi = new WorshipsApi(false);
   const worshipSessionsApi = new WorshipSessionsApi(false);
   const worshipAttendancesApi = new WorshipAttendancesApi(false);
+
+  const { worships } = useSelector((state: RootState) => state.worshipFilter);
+
   const { churchId } = useSelector((state: RootState) => state.church);
 
   const { targetWorship, targetWorshipGroup } = useSelector(
     (state: RootState) => state.targetWorship
   );
 
-  const { targetWorshipSession } = useSelector(
+  const { targetWorshipSession, targetWorshipSessionWorship } = useSelector(
     (state: RootState) => state.targetWorshipSession
   );
 
@@ -49,6 +61,10 @@ const MainAttendanceHeader = ({}: MainAttendanceHeaderProps) => {
 
   // 상세정보 팝업 On/Off
   const [isSessionShown, setIsSessionShown] = useState<boolean>(false);
+
+  // 예배
+  const [isAddWorshipOpened, setIsAddWorshipOpened] = useState<boolean>(false);
+  const [isSaveEnabled, setIsSaveEnabled] = useState<boolean>(false);
 
   const [isToastShown, setIsToastShown] = useState<boolean>(false);
   const [toastText, setToastText] = useState<string>(BLANK);
@@ -92,6 +108,23 @@ const MainAttendanceHeader = ({}: MainAttendanceHeaderProps) => {
 
   const onClickSessionSave = async () => {
     try {
+      // 회차 정보 수정
+      await worshipSessionsApi.editWorshipSession(
+        {
+          churchId,
+          worshipId: targetWorshipSessionWorship.id,
+          sessionId: targetWorshipSession.id,
+        },
+        {
+          title: targetWorshipSession.title || undefined,
+          bibleTitle: targetWorshipSession.bibleTitle || undefined,
+          videoUrl: targetWorshipSession.videoUrl || undefined,
+          inChargeId: targetWorshipSession.inChargeId || undefined,
+          description: targetWorshipSession.description || undefined,
+        }
+      );
+      //
+
       await Promise.all(
         worshipAttendances.map(async (attendance) => {
           await worshipAttendancesApi.editWorshipAttendance(
@@ -131,9 +164,63 @@ const MainAttendanceHeader = ({}: MainAttendanceHeaderProps) => {
     }
   };
 
+  const onClickAddWorship = () => {
+    setIsAddWorshipOpened(true);
+  };
+
+  const onClickCloseModal = () => {
+    setIsAddWorshipOpened(false);
+    dispatch(setTargetWorship(DEFAULT_WORSHIP));
+  };
+
+  const onClickSaveWorship = async () => {
+    try {
+      await worshipsApi
+        .createWorship(
+          { churchId },
+          {
+            title: targetWorship.title,
+            description: targetWorship.description,
+            worshipDay: targetWorship.worshipDay,
+            repeatPeriod: targetWorship.repeatPeriod,
+            worshipTargetGroupIds: targetWorship.worshipTargetGroupIds,
+          }
+        )
+        .then((response) => {
+          const newWorship = response.data.data;
+
+          dispatch(setWorships([...worships, newWorship]));
+          dispatch(setTargetWorship(DEFAULT_WORSHIP));
+          setIsAddWorshipOpened(false);
+        });
+    } catch (error) {
+      if (error instanceof Error) {
+        setToastText(error.message);
+      } else {
+        setThrownError(new Error(String(error)));
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (!getIsWellFormedTitle(targetWorship.title)) {
+      setIsSaveEnabled(false);
+      return;
+    }
+
+    setIsSaveEnabled(true);
+  }, [targetWorship]);
+
+  useEffect(() => {
+    if (toastText) {
+      setIsToastShown(true);
+    }
+  }, [toastText]);
+
   const props = {
     onClickHeaderBar,
     onClickSessionOpen,
+    onClickAddWorship,
   };
 
   return (
@@ -144,12 +231,25 @@ const MainAttendanceHeader = ({}: MainAttendanceHeaderProps) => {
       <SlidePopup
         isShow={isSessionShown}
         onClickClose={onClickSessionClose}
-        headerTitle={`${targetWorship.title} ${t_title('attendanceInformation')} (${getDateStringFromDate(getDateFromDateString(targetWorshipSession.sessionDate))})`}
         doneText={t_button('save')}
         onClickDone={onClickSessionSave}
       >
         <AttendanceInformation />
       </SlidePopup>
+
+      {/* 예배 추가 */}
+      <CustomPopup
+        isShow={isAddWorshipOpened}
+        onClickCancel={onClickCloseModal}
+        headerTitle={t_title('addWorship')}
+        width={500}
+        height={500}
+        onClickDone={onClickSaveWorship}
+        doneBackgroundColor={isSaveEnabled ? MAIN.DEFAULT : MAIN.LIGHT}
+        doneDisabled={!isSaveEnabled}
+      >
+        <AddWorship />
+      </CustomPopup>
 
       {isToastShown && (
         <ToastPopup

@@ -22,7 +22,6 @@ import ToastPopup from '@/components/atoms/common/popup/toast-popup';
 import { DESTRUCTIVE } from '@/constants/styles/color';
 import { WorshipSessionsApi } from '@/api/worship/worship-sessions.api';
 import { useScopedI18n } from '../../../../../locales/client';
-import { getDateFromDateString, getDateStringFromDate } from '@/utils/date';
 import { WorshipAttendancesApi } from '@/api/worship/worship-attendances.api';
 
 export type AttendanceTableProps = {
@@ -30,7 +29,6 @@ export type AttendanceTableProps = {
 };
 
 const AttendanceTable = ({ loadWorshipEnrollments }: AttendanceTableProps) => {
-  const t_title = useScopedI18n('title');
   const t_button = useScopedI18n('button');
 
   const dispatch = useDispatch<AppDispatch>();
@@ -147,6 +145,22 @@ const AttendanceTable = ({ loadWorshipEnrollments }: AttendanceTableProps) => {
 
   const onClickSessionSave = async () => {
     try {
+      // 회차 정보 수정
+      await worshipSessionsApi.editWorshipSession(
+        {
+          churchId,
+          worshipId: targetWorshipSessionWorship.id,
+          sessionId: targetWorshipSession.id,
+        },
+        {
+          title: targetWorshipSession.title || undefined,
+          bibleTitle: targetWorshipSession.bibleTitle || undefined,
+          videoUrl: targetWorshipSession.videoUrl || undefined,
+          inChargeId: targetWorshipSession.inChargeId || undefined,
+          description: targetWorshipSession.description || undefined,
+        }
+      );
+      // 출석 정보 업데이트
       await Promise.all(
         worshipAttendances.map(async (attendance) => {
           await worshipAttendancesApi.editWorshipAttendance(
@@ -170,6 +184,7 @@ const AttendanceTable = ({ loadWorshipEnrollments }: AttendanceTableProps) => {
         setThrownError(new Error(String(error)));
       }
     } finally {
+      // 전체 출석부 업데이트
       const result = await dispatch(
         fetchWorshipEnrollments({
           churchId,
@@ -201,7 +216,6 @@ const AttendanceTable = ({ loadWorshipEnrollments }: AttendanceTableProps) => {
       <SlidePopup
         isShow={isSessionShown}
         onClickClose={onClickSessionClose}
-        headerTitle={`${targetWorshipSessionWorship.title} ${t_title('attendanceInformation')} (${getDateStringFromDate(getDateFromDateString(targetWorshipSession.sessionDate))})`}
         doneText={t_button('save')}
         onClickDone={onClickSessionSave}
       >

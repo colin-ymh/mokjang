@@ -40,6 +40,9 @@ const MainSideButton = ({ id, title }: SideBarButtonProps) => {
       case MAIN_HEADER_ID.MEMBER:
         router.push(`/main/member/all`);
         return;
+      case MAIN_HEADER_ID.ATTENDANCE:
+        router.push(`/main/attendance/attendance`);
+        return;
       case MAIN_HEADER_ID.VISITATION:
         router.push(`/main/visitation/all`);
         return;
