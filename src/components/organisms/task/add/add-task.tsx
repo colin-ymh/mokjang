@@ -5,7 +5,7 @@ import { MemberDropdownType } from '@/components/atoms/common/dropdown/member-dr
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 import {
-  getDateFromString,
+  getDateFromDateString,
   getDateStringFromDate,
   getHourFromMinute,
   getTimeStringFromDate,
@@ -45,7 +45,7 @@ const AddTask = ({}: AddTaskProps) => {
 
       if (targetTask.startDate) {
         prevTime = getTimeStringFromDate(
-          getDateFromString(targetTask.startDate)
+          getDateFromDateString(targetTask.startDate)
         );
       }
 
@@ -63,7 +63,9 @@ const AddTask = ({}: AddTaskProps) => {
     const newTime = getHourFromMinute(value);
 
     if (targetTask.startDate) {
-      prevDate = getDateStringFromDate(getDateFromString(targetTask.startDate));
+      prevDate = getDateStringFromDate(
+        getDateFromDateString(targetTask.startDate)
+      );
     }
 
     dispatch(
@@ -80,7 +82,9 @@ const AddTask = ({}: AddTaskProps) => {
       let prevTime = '00:00';
 
       if (targetTask.endDate) {
-        prevTime = getTimeStringFromDate(getDateFromString(targetTask.endDate));
+        prevTime = getTimeStringFromDate(
+          getDateFromDateString(targetTask.endDate)
+        );
       }
 
       dispatch(
@@ -97,7 +101,9 @@ const AddTask = ({}: AddTaskProps) => {
     const newTime = getHourFromMinute(value);
 
     if (targetTask.endDate) {
-      prevDate = getDateStringFromDate(getDateFromString(targetTask.endDate));
+      prevDate = getDateStringFromDate(
+        getDateFromDateString(targetTask.endDate)
+      );
     }
 
     dispatch(

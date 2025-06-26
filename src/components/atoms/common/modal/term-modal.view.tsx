@@ -10,7 +10,8 @@ import { useEducationEnrollmentStatusDropdownItems } from '@/hooks/dropdown/drop
 import { useI18n } from '../../../../../locales/client';
 import Cancel from '../../../../../public/svg/cancel.svg';
 import { GRAY, MAIN } from '@/constants/styles/color';
-import { EDUCATION_ENROLLMENT_STATUS } from '@/models/education/education';
+
+import { EDUCATION_ENROLLMENT_STATUS } from '@/constants/status/status';
 
 const EducationModalViewContainer = styled.div`
   display: flex;

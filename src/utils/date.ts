@@ -5,7 +5,7 @@ import { BLANK } from '@/constants/constant';
  * YYYY-MM-dd => Date Object
  * @param dateString
  */
-export const getDateFromDateString = (dateString: string) => {
+export const getDateFromInput = (dateString: string) => {
   const lengthLimit = 10;
   const limited = dateString.slice(0, lengthLimit);
 
@@ -27,7 +27,7 @@ export const getTotalMinuteFromDate = (date: Date) => {
  * YYYY-MM-DDTHH:mm => Date Object
  * @param dateString
  */
-export const getDateFromString = (dateString: string) => {
+export const getDateFromDateString = (dateString: string) => {
   return new Date(dateString);
 };
 
@@ -41,6 +41,17 @@ export const getDateStringFromDate = (date: Date) => {
   const day = String(date.getDate()).padStart(2, '0');
 
   return `${year}-${month}-${day}`;
+};
+
+/**
+ * Date Object => MM/DD
+ * @param date
+ */
+export const getMonthDateFromDate = (date: Date) => {
+  const month = String(date.getMonth() + 1); // 0-based index이므로 +1
+  const day = String(date.getDate());
+
+  return `${month}/${day}`;
 };
 
 /**
@@ -149,4 +160,104 @@ export const getHourFromMinute = (target: number) => {
   const minute = String(target % 60).padStart(2, '0');
 
   return `${hour}:${minute}`;
+};
+
+/**
+ * N개월 후 날짜 반환
+ * @param date - 기준 날짜
+ * @param months - 추가할 개월 수
+ * @returns N개월 후 날짜
+ */
+export const getMonthsAfterDate = (date: Date, months: number): Date => {
+  const result = new Date(date);
+  const originalDay = result.getDate();
+
+  result.setMonth(result.getMonth() + months);
+
+  if (result.getDate() !== originalDay) {
+    result.setDate(0);
+  }
+
+  return result;
+};
+
+/**
+ * N개월 전 날짜 반환
+ * @param date - 기준 날짜
+ * @param months - 뺄 개월 수
+ * @returns N개월 전 날짜
+ */
+export const getMonthsBeforeDate = (date: Date, months: number): Date => {
+  const result = new Date(date);
+  const originalDay = result.getDate();
+
+  result.setMonth(result.getMonth() - months);
+
+  if (result.getDate() !== originalDay) {
+    result.setDate(0);
+  }
+
+  return result;
+};
+
+/**
+ * StartDate 를 기준으로 출석부 행에 들어갈 세션 날짜 계산
+ * @param startDate
+ * @param endDate
+ * @param worshipDay
+ * @param repeatPeriod
+ */
+export const getWorshipSessionDates = (
+  startDate: Date,
+  endDate: Date,
+  worshipDay: number,
+  repeatPeriod: number
+): Date[] => {
+  const dates: Date[] = [];
+
+  // startDate 이후로 가장 가까운 worshipDay의 날짜 계산
+  const startDay = startDate.getDay(); // 0=일요일, 1=월요일, ..., 6=토요일
+  const daysAhead = (worshipDay - startDay + 7) % 7;
+
+  const sessionStartDate = new Date(startDate);
+  if (daysAhead === 0) {
+    // startDate가 이미 worshipDay인 경우
+    sessionStartDate.setTime(startDate.getTime());
+  } else {
+    // 다음 worshipDay 까지의 날짜 추가
+    sessionStartDate.setDate(startDate.getDate() + daysAhead);
+  }
+
+  // sessionStartDate 부터 repeatPeriod * 7일씩 더하면서 날짜 추가
+  let currentDate = new Date(sessionStartDate);
+  while (currentDate <= endDate) {
+    dates.push(new Date(currentDate)); // 새로운 Date 객체로 복사하여 추가
+    currentDate.setDate(currentDate.getDate() + repeatPeriod * 7);
+  }
+
+  return dates;
+};
+
+export const getIsSameDate = (date1: Date, date2: Date) => {
+  return (
+    date1.getFullYear() === date2.getFullYear() &&
+    date1.getMonth() === date2.getMonth() &&
+    date1.getDate() === date2.getDate()
+  );
+};
+
+/**
+ * 특정 날짜와 요일 인덱스를 통해 해당 주차의 해당 요일 날짜를 반환
+ * @param date
+ * @param dayOfWeek
+ */
+export const getDateInWeekByDayOfWeek = (
+  date: Date,
+  dayOfWeek: number
+): Date => {
+  const selectedDayOfWeek = date.getDay();
+  const daysDifference = dayOfWeek - selectedDayOfWeek;
+  const targetDate = new Date(date);
+  targetDate.setDate(date.getDate() + daysDifference);
+  return targetDate;
 };

@@ -10,10 +10,7 @@ import Quill from '@/components/atoms/common/input/quill';
 import MultiMemberDropdown from '@/components/atoms/common/dropdown/multi-member-dropdown';
 import { MemberDropdownValueType } from '@/models/dropdown/dropdown';
 import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-item';
-import {
-  EDUCATION_ENROLLMENT_STATUS,
-  EducationEnrollment,
-} from '@/models/education/education';
+import { EducationEnrollment } from '@/models/education/education';
 import StatusDropdown from '@/components/atoms/common/dropdown/status-dropdown';
 import {
   useEducationTermStatusDropdownItems,
@@ -24,13 +21,16 @@ import EducationEnrollmentList from '@/components/atoms/education/education-enro
 import CustomDatePicker from '@/vendor/date-picker/custom-date-picker';
 import {
   getDateFromDateString,
-  getDateFromString,
+  getDateFromInput,
   getDateStringFromDate,
   getTotalMinuteFromDate,
 } from '@/utils/date';
 import Dropdown from '@/components/atoms/common/dropdown/dropdown';
 
-import { EDUCATION_TERM_STATUS } from '@/constants/status/status';
+import {
+  EDUCATION_ENROLLMENT_STATUS,
+  EDUCATION_TERM_STATUS,
+} from '@/constants/status/status';
 import RequiredMark from '@/components/atoms/common/text/required-mark';
 
 const AddEducationTermViewContainer = styled.div`
@@ -146,13 +146,13 @@ const AddEducationTermView = ({
               value={
                 targetEducationTerm.startDate
                   ? getDateStringFromDate(
-                      getDateFromDateString(targetEducationTerm.startDate)
+                      getDateFromInput(targetEducationTerm.startDate)
                     )
                   : undefined
               }
               selected={
                 targetEducationTerm.startDate
-                  ? getDateFromString(targetEducationTerm.startDate)
+                  ? getDateFromDateString(targetEducationTerm.startDate)
                   : null
               }
               onChange={onChangeStartDate}
@@ -164,7 +164,7 @@ const AddEducationTermView = ({
               value={
                 targetEducationTerm.startDate
                   ? getTotalMinuteFromDate(
-                      getDateFromString(targetEducationTerm.startDate)
+                      getDateFromDateString(targetEducationTerm.startDate)
                     )
                   : 0
               }
@@ -178,13 +178,13 @@ const AddEducationTermView = ({
               value={
                 targetEducationTerm.endDate
                   ? getDateStringFromDate(
-                      getDateFromDateString(targetEducationTerm.endDate)
+                      getDateFromInput(targetEducationTerm.endDate)
                     )
                   : undefined
               }
               selected={
                 targetEducationTerm.endDate
-                  ? getDateFromString(targetEducationTerm.endDate)
+                  ? getDateFromDateString(targetEducationTerm.endDate)
                   : null
               }
               onChange={onChangeEndDate}
@@ -196,7 +196,7 @@ const AddEducationTermView = ({
               value={
                 targetEducationTerm.endDate
                   ? getTotalMinuteFromDate(
-                      getDateFromString(targetEducationTerm.endDate)
+                      getDateFromDateString(targetEducationTerm.endDate)
                     )
                   : 0
               }

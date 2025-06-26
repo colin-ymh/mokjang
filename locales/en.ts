@@ -11,6 +11,39 @@ export default {
   history: 'History',
   isDone: 'Completed',
   isNotDone: 'Incomplete',
+  customSelect: 'Custom Select',
+
+  worshipSessionTitle: 'Sermon Title',
+  worshipSessionBibleTitle: 'Bible',
+  worshipSessionInCharge: 'Preacher',
+  worshipSessionVideoUrl: 'Worship Video URL',
+  worshipSessionDescription: 'Note',
+
+  worshipGroup: 'Worship Group',
+  worshipDay: 'Worship Day',
+  repeatPeriod: 'Repeat Period',
+  attendanceRate: 'Attendance Rate',
+  note: 'Note',
+
+  everyWeek: 'Every Week',
+  everyOtherWeek: 'Every Other Week',
+
+  thisWeek: 'This Week',
+  thisMonth: 'This Month',
+  lastMonth: 'Last Month',
+  lastThreeMonth: 'Last Three Month',
+
+  sunday: 'Sunday',
+  monday: 'Monday',
+  tuesday: 'Tuesday',
+  wednesday: 'Wednesday',
+  thursday: 'Thursday',
+  friday: 'Friday',
+  saturday: 'Saturday',
+
+  worship: 'Worship',
+
+  description: 'Description',
 
   concealed: 'No Permission',
 
@@ -211,11 +244,21 @@ export default {
   'title.editPermissionTemplate': 'Edit Permission Template',
 
   'title.linkMemberUser': 'Link Member',
+
+  'title.addWorshipSession': 'Add Worship Session',
+  'title.editWorshipSession': 'Edit Worship Session',
+
+  'title.addWorship': 'Add Worship',
+  'title.editWorship': 'Edit Worship',
+
+  'title.attendanceInformation': 'Report',
   /*-------------------title (popup title)-------------------*/
 
   /*-------------------header (side bar button)-------------------*/
   'header.home': 'Home',
   'header.member': 'Member',
+  'header.attendance': 'Attendance',
+  'header.worship': 'Worship',
   'header.visitation': 'Visitation',
   'header.education': 'Education',
   'header.task': 'Task',
@@ -338,6 +381,9 @@ export default {
   'button.makeMemberInformation': 'Make the Member Information',
   'button.linkMemberInformation': 'Link Member',
   'button.unlinkMemberInformation': 'Unlink Member',
+  'button.addWorshipSession': 'Make Attendance',
+  'button.addWorship': 'Add Worship',
+  'button.check': 'Check',
   /*-------------------button-------------------*/
 
   /*-------------------placeholder-------------------*/
@@ -378,6 +424,14 @@ export default {
   'placeholder.visitationPray': 'Enter the pray.',
   'placeholder.content': 'Enter the content.',
   'placeholder.selectStatus': 'Select the status',
+  'placeholder.worshipTitle': 'Enter the worship title.',
+  'placeholder.worshipDescription': 'Enter the worship description.',
+
+  'placeholder.worshipSessionTitle': 'Enter the sermon title.',
+  'placeholder.worshipSessionBibleTitle': 'Enter the bible title.',
+  'placeholder.worshipSessionInCharge': 'Enter the preacher name.',
+  'placeholder.worshipSessionVideoUrl': 'Enter the worship video url.',
+  'placeholder.worshipSessionDescription': 'Enter the worship description.',
   /*-------------------placeholder-------------------*/
 
   /*-------------------radiobutton-------------------*/
@@ -443,5 +497,7 @@ export default {
   'popup.deleteChurchUserTitle': 'Do you want to delete this Church User?',
   'popup.deleteChurchUserBody': 'Deleted Church User cannot be restored.',
 
+  'popup.deleteWorshipTitle': 'Do you want to delete this Worship?',
+  'popup.deleteWorshipBody': 'Deleted Worship cannot be restored.',
   /*-------------------popup-------------------*/
 } as const;

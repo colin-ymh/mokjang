@@ -25,7 +25,7 @@ import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-i
 import CustomDatePicker from '@/vendor/date-picker/custom-date-picker';
 import {
   getDateFromDateString,
-  getDateFromString,
+  getDateFromInput,
   getDateStringFromDate,
   getTotalMinuteFromDate,
 } from '@/utils/date';
@@ -157,13 +157,13 @@ const AddVisitationView = ({
               value={
                 targetVisitation.startDate
                   ? getDateStringFromDate(
-                      getDateFromDateString(targetVisitation.startDate)
+                      getDateFromInput(targetVisitation.startDate)
                     )
                   : undefined
               }
               selected={
                 targetVisitation.startDate
-                  ? getDateFromString(targetVisitation.startDate)
+                  ? getDateFromDateString(targetVisitation.startDate)
                   : null
               }
               onChange={onChangeStartDate}
@@ -175,7 +175,7 @@ const AddVisitationView = ({
               value={
                 targetVisitation.startDate
                   ? getTotalMinuteFromDate(
-                      getDateFromString(targetVisitation.startDate)
+                      getDateFromDateString(targetVisitation.startDate)
                     )
                   : 0
               }
@@ -189,13 +189,13 @@ const AddVisitationView = ({
               value={
                 targetVisitation.endDate
                   ? getDateStringFromDate(
-                      getDateFromDateString(targetVisitation.endDate)
+                      getDateFromInput(targetVisitation.endDate)
                     )
                   : undefined
               }
               selected={
                 targetVisitation.endDate
-                  ? getDateFromString(targetVisitation.endDate)
+                  ? getDateFromDateString(targetVisitation.endDate)
                   : null
               }
               onChange={onChangeEndDate}
@@ -207,7 +207,7 @@ const AddVisitationView = ({
               value={
                 targetVisitation.endDate
                   ? getTotalMinuteFromDate(
-                      getDateFromString(targetVisitation.endDate)
+                      getDateFromDateString(targetVisitation.endDate)
                     )
                   : 0
               }

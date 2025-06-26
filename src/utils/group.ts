@@ -1,5 +1,6 @@
 import { DEFAULT_GROUP, Group } from '@/models/management/management';
 import { GroupsApi } from '@/api/management/group/groups.api';
+import { BLANK } from '@/constants/constant';
 
 const getGroupById = (list: Group[], id: string): Group | undefined => {
   for (const g of list) {
@@ -57,7 +58,14 @@ export const getOrderedGroups = async (churchId: string) => {
  * @param groupId
  * @param groups
  */
-export const getGroup = (groupId: string, groups: Group[]) => {
+export const getGroup = (groupId: string | null, groups: Group[]) => {
+  if (groupId === null) {
+    return {
+      id: null,
+      name: BLANK,
+    } as Group;
+  }
+
   const q = [...groups];
 
   while (q.length > 0) {

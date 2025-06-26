@@ -2,17 +2,12 @@ import { BLANK } from '@/constants/constant';
 import { Member } from '@/models/member/member';
 import { DEFAULT_MEMBER } from '@/redux/reducers/member-register-reducer';
 import {
+  EDUCATION_ENROLLMENT_STATUS,
   EDUCATION_SESSION_STATUS,
   EDUCATION_TERM_STATUS,
   STATUS,
 } from '@/constants/status/status';
 import { VisitationReport } from '@/models/report/report';
-
-// 교육 이수상태
-export enum EDUCATION_ENROLLMENT_STATUS {
-  COMPLETED = 'completed',
-  INCOMPLETE = 'incomplete',
-}
 
 export type Education = {
   id: string;
@@ -43,7 +38,7 @@ export const DEFAULT_EDUCATION_ENROLLMENT: EducationEnrollment = {
   id: BLANK,
   memberId: BLANK,
   educationTermId: BLANK,
-  status: EDUCATION_ENROLLMENT_STATUS.INCOMPLETE,
+  status: STATUS.INCOMPLETE,
   note: BLANK,
   member: DEFAULT_MEMBER,
 };

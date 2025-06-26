@@ -62,4 +62,6 @@ export type Member = {
   baptism: BAPTISM;
   registeredAt: string;
   updatedAt: string;
+
+  isConcealed: boolean;
 };

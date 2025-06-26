@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 
 import {
-  getDateFromString,
+  getDateFromDateString,
   getDateStringFromDate,
   getHourFromMinute,
   getTimeStringFromDate,
@@ -52,7 +52,7 @@ const AddEducationSession = ({}: AddEducationSessionProps) => {
 
       if (targetEducationSession.startDate) {
         prevTime = getTimeStringFromDate(
-          getDateFromString(targetEducationSession.startDate)
+          getDateFromDateString(targetEducationSession.startDate)
         );
       }
 
@@ -71,7 +71,7 @@ const AddEducationSession = ({}: AddEducationSessionProps) => {
 
     if (targetEducationSession.startDate) {
       prevDate = getDateStringFromDate(
-        getDateFromString(targetEducationSession.startDate)
+        getDateFromDateString(targetEducationSession.startDate)
       );
     }
 
@@ -90,7 +90,7 @@ const AddEducationSession = ({}: AddEducationSessionProps) => {
 
       if (targetEducationSession.endDate) {
         prevTime = getTimeStringFromDate(
-          getDateFromString(targetEducationSession.endDate)
+          getDateFromDateString(targetEducationSession.endDate)
         );
       }
 
@@ -109,7 +109,7 @@ const AddEducationSession = ({}: AddEducationSessionProps) => {
 
     if (targetEducationSession.endDate) {
       prevDate = getDateStringFromDate(
-        getDateFromString(targetEducationSession.endDate)
+        getDateFromDateString(targetEducationSession.endDate)
       );
     }
 

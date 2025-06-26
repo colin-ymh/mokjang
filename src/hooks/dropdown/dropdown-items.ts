@@ -3,11 +3,13 @@ import { RootState } from '@/redux/store';
 
 import {
   BAPTISM,
+  DAYS,
   FAMILY,
   GENDER,
   MARRIAGE,
   NONE,
   NULL,
+  WORSHIP_PERIOD,
 } from '@/constants/constant';
 import { MEMBER } from '@/constants/member/member-column';
 
@@ -21,7 +23,6 @@ import {
   EDUCATION,
   EDUCATION_TERM,
 } from '@/constants/education/education-column';
-import { EDUCATION_ENROLLMENT_STATUS } from '@/models/education/education';
 import { STATUS } from '@/constants/status/status';
 import { USER } from '@/constants/user/user-column';
 import { JOIN_REQUEST } from '@/constants/join-request/join-request-column';
@@ -339,14 +340,19 @@ export const useEducationEnrollmentStatusDropdownItems = () => {
 
   const items = [
     {
-      value: EDUCATION_ENROLLMENT_STATUS.COMPLETED,
-      title: t(EDUCATION_ENROLLMENT_STATUS.COMPLETED),
+      value: STATUS.COMPLETED,
+      title: t(STATUS.COMPLETED),
       color: STATUS_COLOR.COMPLETED,
     },
     {
-      value: EDUCATION_ENROLLMENT_STATUS.INCOMPLETE,
-      title: t(EDUCATION_ENROLLMENT_STATUS.INCOMPLETE),
+      value: STATUS.INCOMPLETE,
+      title: t(STATUS.INCOMPLETE),
       color: STATUS_COLOR.INCOMPLETE,
+    },
+    {
+      value: STATUS.IN_PROGRESS,
+      title: t(STATUS.IN_PROGRESS),
+      color: STATUS_COLOR.IN_PROGRESS,
     },
   ];
 
@@ -607,6 +613,89 @@ export const useAttendanceStatusDropdownItems = () => {
       value: false,
       title: t('absent'),
       color: STATUS_COLOR.ABSENT,
+    },
+  ];
+
+  return items;
+};
+
+export const useDayDropdownItems = () => {
+  const t = useI18n();
+
+  const items = [
+    {
+      value: 0,
+      title: t(DAYS[0]),
+    },
+    {
+      value: 1,
+      title: t(DAYS[1]),
+    },
+    {
+      value: 2,
+      title: t(DAYS[2]),
+    },
+    {
+      value: 3,
+      title: t(DAYS[3]),
+    },
+    {
+      value: 4,
+      title: t(DAYS[4]),
+    },
+    {
+      value: 5,
+      title: t(DAYS[5]),
+    },
+    {
+      value: 6,
+      title: t(DAYS[6]),
+    },
+  ];
+
+  return items;
+};
+
+export const useRepeatPeriodDropdownItems = () => {
+  const t = useI18n();
+
+  const items = [
+    {
+      value: 1,
+      title: t('everyWeek'),
+    },
+    {
+      value: 2,
+      title: t('everyOtherWeek'),
+    },
+  ];
+
+  return items;
+};
+
+export const useWorshipPeriodDropdownItems = () => {
+  const t = useI18n();
+
+  const items = [
+    {
+      value: WORSHIP_PERIOD.CUSTOM,
+      title: t(WORSHIP_PERIOD.CUSTOM),
+    },
+    {
+      value: WORSHIP_PERIOD.THIS_WEEK,
+      title: t(WORSHIP_PERIOD.THIS_WEEK),
+    },
+    {
+      value: WORSHIP_PERIOD.THIS_MONTH,
+      title: t(WORSHIP_PERIOD.THIS_MONTH),
+    },
+    {
+      value: WORSHIP_PERIOD.LAST_MONTH,
+      title: t(WORSHIP_PERIOD.LAST_MONTH),
+    },
+    {
+      value: WORSHIP_PERIOD.LAST_THREE_MONTH,
+      title: t(WORSHIP_PERIOD.LAST_THREE_MONTH),
     },
   ];
 

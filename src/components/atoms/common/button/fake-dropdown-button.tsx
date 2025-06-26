@@ -8,11 +8,12 @@ import { BLACK, WHITE } from '@/constants/styles/color';
 
 import ChevronLeft from '../../../../../public/svg/chevron-down.svg';
 
-const DropdownButton = styled.div`
+const DropdownButton = styled.div<{ width?: number }>`
   display: flex;
   flex-direction: row;
   cursor: pointer;
   position: relative;
+  width: ${({ width }) => (width ? `${width}px` : '100%')};
 `;
 
 const Chevron = styled(ChevronLeft)<{ $isOpened: boolean }>`
@@ -32,16 +33,18 @@ type FakeDropdownButtonProps = BorderInputProps & {
   isOpened: boolean;
   title: string;
   onClick: () => void;
+  width?: number;
 };
 
 const FakeDropdownButton = ({
   isOpened,
   title,
   onClick,
+  width,
   ...props
 }: FakeDropdownButtonProps) => {
   return (
-    <DropdownButton onClick={onClick}>
+    <DropdownButton onClick={onClick} width={width}>
       <BorderInput
         value={title}
         readOnly={true}

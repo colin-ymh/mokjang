@@ -10,6 +10,11 @@ export enum MEMBER_CONTENT_ID {
   NEW = 'new',
 }
 
+export enum ATTENDANCE_CONTENT_ID {
+  WORSHIP = 'worship',
+  ATTENDANCE = 'attendance',
+}
+
 export enum CHURCH_CONTENT_ID {
   GROUP = 'group',
   OFFICER = 'officer',

@@ -1,13 +1,11 @@
 import styled from 'styled-components';
-import {
-  EDUCATION_ENROLLMENT_STATUS,
-  EducationEnrollment,
-} from '@/models/education/education';
+import { EducationEnrollment } from '@/models/education/education';
 import React from 'react';
 import StatusDropdown from '@/components/atoms/common/dropdown/status-dropdown';
 import { useEducationEnrollmentStatusDropdownItems } from '@/hooks/dropdown/dropdown-items';
 import { GRAY } from '@/constants/styles/color';
 import MemberProfilePopupButton from '@/components/molecules/common/button/member-profile-popup-button';
+import { EDUCATION_ENROLLMENT_STATUS } from '@/constants/status/status';
 
 const EnrollmentListContainer = styled.div`
   display: flex;

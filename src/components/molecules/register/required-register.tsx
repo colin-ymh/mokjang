@@ -22,7 +22,7 @@ import {
 } from '@/utils/format';
 import { getIsWellFormedMobilePhone } from '@/utils/check';
 import { Member } from '@/models/member/member';
-import { getAge, getDateFromDateString } from '@/utils/date';
+import { getAge, getDateFromInput } from '@/utils/date';
 import { MemberDropdownType } from '@/components/atoms/common/dropdown/member-dropdown-item';
 import { useDebounce } from '@/hooks/debounce/debounce';
 
@@ -104,7 +104,7 @@ const RequiredRegister = () => {
           gender: (member?.gender as GENDER) || undefined,
           profileImage: member.profileImageUrl || undefined,
           age: member.birth
-            ? getAge(getDateFromDateString(member.birth))
+            ? getAge(getDateFromInput(member.birth))
             : undefined,
         }))
       );
@@ -147,7 +147,7 @@ const RequiredRegister = () => {
           gender: (member?.gender as GENDER) || undefined,
           profileImage: member.profileImageUrl || undefined,
           age: member.birth
-            ? getAge(getDateFromDateString(member.birth))
+            ? getAge(getDateFromInput(member.birth))
             : undefined,
         }))
       );

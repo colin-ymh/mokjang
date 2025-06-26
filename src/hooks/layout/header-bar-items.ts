@@ -1,4 +1,5 @@
 import {
+  ATTENDANCE_CONTENT_ID,
   CHURCH_CONTENT_ID,
   EDUCATION_CONTENT_ID,
   MEMBER_CONTENT_ID,
@@ -217,6 +218,23 @@ export const useChurchUserHeaderBarItems = (isManager: boolean) => {
       title: t_header(CHURCH_USER_HEADER_ID.PERMISSION),
     });
   }
+
+  return items;
+};
+
+export const useAttendanceHeaderBarItems = () => {
+  const t_header = useScopedI18n('header');
+
+  const items = [
+    {
+      id: ATTENDANCE_CONTENT_ID.WORSHIP,
+      title: t_header(ATTENDANCE_CONTENT_ID.WORSHIP),
+    },
+    {
+      id: ATTENDANCE_CONTENT_ID.ATTENDANCE,
+      title: t_header(ATTENDANCE_CONTENT_ID.ATTENDANCE),
+    },
+  ];
 
   return items;
 };

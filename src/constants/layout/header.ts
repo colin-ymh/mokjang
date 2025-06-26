@@ -8,6 +8,8 @@ export enum SIDE_ID {
 export enum MAIN_HEADER_ID {
   HOME = 'home',
   MEMBER = 'member',
+  ATTENDANCE = 'attendance',
+  WORSHIP = 'worship',
   VISITATION = 'visitation',
   EDUCATION = 'education',
   TASK = 'task',

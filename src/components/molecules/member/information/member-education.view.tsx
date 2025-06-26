@@ -7,7 +7,8 @@ import EducationHistoryItem from '@/components/atoms/member/information/educatio
 
 import { useI18n } from '../../../../../locales/client';
 import Plus from '../../../../../public/svg/plus.svg';
-import { EDUCATION_ENROLLMENT_STATUS } from '@/models/education/education';
+
+import { STATUS } from '@/constants/status/status';
 
 const ListContainer = styled.div`
   display: flex;
@@ -129,10 +130,7 @@ const MemberEducationView = ({
       <EducationListContainer>
         {educationHistory &&
           educationHistory
-            ?.filter(
-              (education) =>
-                education.status === EDUCATION_ENROLLMENT_STATUS.COMPLETED
-            )
+            ?.filter((education) => education.status === STATUS.COMPLETED)
             .map((education) => {
               return (
                 <EducationHistoryItem

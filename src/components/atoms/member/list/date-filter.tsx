@@ -1,7 +1,7 @@
 import { ChangeEvent } from 'react';
 import styled from 'styled-components';
 import { MainText } from '@/components/atoms/common/text/main-text';
-import { getDateFromDateString } from '@/utils/date';
+import { getDateFromInput } from '@/utils/date';
 
 import { useI18n } from '../../../../../locales/client';
 import CustomDatePicker from '@/vendor/date-picker/custom-date-picker';
@@ -45,7 +45,7 @@ const DateFilter = ({
       <RowContainer>
         <CustomDatePicker
           value={dateAfter}
-          selected={dateAfter ? getDateFromDateString(dateAfter) : null}
+          selected={dateAfter ? getDateFromInput(dateAfter) : null}
           onChange={onChangeAfter}
           // onChangeRaw={onChangeRawAfter}
           // borderColor={GRAY.SEMI_LIGHT}
@@ -57,7 +57,7 @@ const DateFilter = ({
       <RowContainer>
         <CustomDatePicker
           value={dateBefore}
-          selected={dateBefore ? getDateFromDateString(dateBefore) : null}
+          selected={dateBefore ? getDateFromInput(dateBefore) : null}
           onChange={onChangeBefore}
           // onChangeRaw={onChangeRawBefore}
           // borderColor={GRAY.SEMI_LIGHT}

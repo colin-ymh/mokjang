@@ -6,6 +6,8 @@ export enum STATUS {
   APPROVED = 'approved',
   REJECTED = 'rejected',
   CANCELED = 'canceled',
+  COMPLETED = 'completed',
+  INCOMPLETE = 'incomplete',
 }
 
 export type VISITATION_STATUS = STATUS.RESERVE | STATUS.DONE | STATUS.PENDING;
@@ -32,3 +34,9 @@ export type JOIN_REQUEST_STATUS =
   | STATUS.APPROVED
   | STATUS.REJECTED
   | STATUS.CANCELED;
+
+// 교육 이수상태
+export type EDUCATION_ENROLLMENT_STATUS =
+  | STATUS.INCOMPLETE
+  | STATUS.COMPLETED
+  | STATUS.IN_PROGRESS;

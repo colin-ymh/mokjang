@@ -1,6 +1,7 @@
 import { Dispatch, ReactNode, SetStateAction } from 'react';
 
 import {
+  ATTENDANCE_CONTENT_ID,
   CHURCH_CONTENT_ID,
   EDUCATION_CONTENT_ID,
   HOME_CONTENT_ID,
@@ -54,6 +55,9 @@ import MemberInformationListView from '@/components/molecules/member/information
 import PermissionTemplateList from '@/components/organisms/permission/list/permission-template-list';
 import EducationTermList from '@/components/organisms/education/education-term/list/education-term-list';
 import JoinRequestList from '@/components/organisms/join-request/list/join-request-list';
+import MainAttendanceHeader from '@/components/molecules/layout/header/main/attendance/main-attendance-header';
+import AttendanceList from '@/components/organisms/attendance/list/attendance-list';
+import WorshipList from '@/components/organisms/worship/list/worship-list';
 
 export const getSide = (id: string) => {
   switch (id) {
@@ -70,18 +74,19 @@ export const getSide = (id: string) => {
   }
 };
 
-export const getHeader = (id: string) => {
+export const getHeader = (id: string, contentId?: string) => {
   switch (id) {
     // 메인
     case MAIN_HEADER_ID.HOME:
       return null;
     case MAIN_HEADER_ID.MEMBER:
       return <MainMemberHeader />;
+    case MAIN_HEADER_ID.ATTENDANCE:
+      return <MainAttendanceHeader />;
     case MAIN_HEADER_ID.VISITATION:
       return <MainVisitationHeader />;
     case MAIN_HEADER_ID.EDUCATION:
       return <MainEducationHeader />;
-
     case MAIN_HEADER_ID.TASK:
       return <MainTaskHeader />;
     case MAIN_HEADER_ID.CALENDAR:
@@ -167,6 +172,13 @@ export const getContent = (
       } else {
         return null;
       }
+
+    // 출석
+    case ATTENDANCE_CONTENT_ID.ATTENDANCE:
+      return <AttendanceList />;
+    // 예배
+    case ATTENDANCE_CONTENT_ID.WORSHIP:
+      return <WorshipList />;
 
     // 교회 설정
     case CHURCH_CONTENT_ID.GROUP:

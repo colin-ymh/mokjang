@@ -2,9 +2,9 @@ import { BLANK } from '@/constants/constant';
 import { DEFAULT_OFFICER, Officer } from '@/models/management/management';
 import {
   DEFAULT_EDUCATION_TERM,
-  EDUCATION_ENROLLMENT_STATUS,
   EducationTerm,
 } from '@/models/education/education';
+import { EDUCATION_ENROLLMENT_STATUS, STATUS } from '@/constants/status/status';
 
 export type GroupHistory = {
   id: string;
@@ -43,7 +43,7 @@ export const DEFAULT_EDUCATION_HISTORY: EducationHistory = {
   memberId: BLANK,
   memberName: BLANK,
   note: BLANK,
-  status: EDUCATION_ENROLLMENT_STATUS.INCOMPLETE,
+  status: STATUS.INCOMPLETE,
 };
 
 export type MinistryHistory = {

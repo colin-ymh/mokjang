@@ -11,7 +11,7 @@ import { AppDispatch, RootState } from '@/redux/store';
 import { setTargetVisitation } from '@/redux/reducers/target/target-visitation-reducer';
 import { DEFAULT_MEMBER } from '@/redux/reducers/member-register-reducer';
 import {
-  getDateFromString,
+  getDateFromDateString,
   getDateStringFromDate,
   getHourFromMinute,
   getTimeStringFromDate,
@@ -46,7 +46,7 @@ const AddVisitation = () => {
 
       if (targetVisitation.startDate) {
         prevTime = getTimeStringFromDate(
-          getDateFromString(targetVisitation.startDate)
+          getDateFromDateString(targetVisitation.startDate)
         );
       }
 
@@ -65,7 +65,7 @@ const AddVisitation = () => {
 
     if (targetVisitation.startDate) {
       prevDate = getDateStringFromDate(
-        getDateFromString(targetVisitation.startDate)
+        getDateFromDateString(targetVisitation.startDate)
       );
     }
 
@@ -84,7 +84,7 @@ const AddVisitation = () => {
 
       if (targetVisitation.endDate) {
         prevTime = getTimeStringFromDate(
-          getDateFromString(targetVisitation.endDate)
+          getDateFromDateString(targetVisitation.endDate)
         );
       }
 
@@ -103,7 +103,7 @@ const AddVisitation = () => {
 
     if (targetVisitation.endDate) {
       prevDate = getDateStringFromDate(
-        getDateFromString(targetVisitation.endDate)
+        getDateFromDateString(targetVisitation.endDate)
       );
     }
 

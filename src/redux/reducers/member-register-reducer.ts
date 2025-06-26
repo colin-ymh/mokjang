@@ -44,6 +44,8 @@ export const DEFAULT_MEMBER: Member = {
   registeredAt: BLANK,
   updatedAt: BLANK,
   officerId: NONE,
+
+  isConcealed: false,
 };
 
 const initialState: MemberRegisterState = {

@@ -22,6 +22,11 @@ import PermissionTemplateFilterReducer from '@/redux/reducers/filter/permission-
 import JoinRequestFilterReducer from '@/redux/reducers/filter/join-request-filter-reducer';
 import TargetJoinRequestReducer from '@/redux/reducers/target/target-join-request-reducer';
 import TargetChurchUserReducer from '@/redux/reducers/target/target-church-user-reducer';
+import WorshipEnrollmentFilterReducer from '@/redux/reducers/filter/worship-enrollment-filter-reducer';
+import TargetWorshipReducer from '@/redux/reducers/target/target-worship-reducer';
+import TargetWorshipSessionReducer from '@/redux/reducers/target/target-worship-session-reducer';
+import WorshipFilterReducer from '@/redux/reducers/filter/worship-filter-reducer';
+import WorshipAttendanceFilterReducer from '@/redux/reducers/filter/worship-attendance-filter-reducer';
 
 const store = configureStore({
   reducer: {
@@ -38,6 +43,9 @@ const store = configureStore({
     churchUserFilter: ChurchUserFilterReducer,
     permissionTemplateFilter: PermissionTemplateFilterReducer,
     joinRequestFilter: JoinRequestFilterReducer,
+    worshipFilter: WorshipFilterReducer,
+    worshipEnrollmentFilter: WorshipEnrollmentFilterReducer,
+    worshipAttendanceFilter: WorshipAttendanceFilterReducer,
     // target
     targetMember: TargetMember,
     targetVisitation: TargetVisitation,
@@ -49,6 +57,8 @@ const store = configureStore({
     targetPermissionTemplate: TargetPermissionTemplateReducer,
     targetJoinRequest: TargetJoinRequestReducer,
     targetChurchUser: TargetChurchUserReducer,
+    targetWorship: TargetWorshipReducer,
+    targetWorshipSession: TargetWorshipSessionReducer,
   },
 });
 

@@ -5,16 +5,15 @@ import { MainText } from '@/components/atoms/common/text/main-text';
 import { BLANK } from '@/constants/constant';
 import ProfileImage from '@/components/atoms/common/image/profile-image';
 
-const ProfileContainer = styled.div`
+const ProfileContainer = styled.div<{ $isButton: boolean }>`
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: 10px;
+  cursor: ${({ $isButton }) => ($isButton ? 'pointer' : 'default')};
 `;
 
-const ButtonText = styled(MainText)`
-  cursor: pointer;
-`;
+const ButtonText = styled(MainText)``;
 
 type MemberProfileProps = {
   member: Member;
@@ -23,14 +22,15 @@ type MemberProfileProps = {
 
 const MemberProfile = ({ member, onClick }: MemberProfileProps) => {
   return (
-    <ProfileContainer>
-      <ProfileImage value={member?.profileImageUrl} />
-      <ButtonText
-        onClick={(event) => {
-          event.stopPropagation();
-          onClick && onClick();
-        }}
-      >
+    <ProfileContainer
+      $isButton={!!onClick}
+      onClick={(event) => {
+        event.stopPropagation();
+        onClick && onClick();
+      }}
+    >
+      <ProfileImage value={member?.profileImageUrl} onClick={onClick} />
+      <ButtonText>
         {`${member.name} ${member.officer?.name || BLANK}`}
       </ButtonText>
     </ProfileContainer>

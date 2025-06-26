@@ -10,6 +10,11 @@ import { USER } from '@/constants/user/user-column';
 import { PERMISSION_TEMPLATE } from '@/constants/permission/permission-column';
 import { JOIN_REQUEST } from '@/constants/join-request/join-request-column';
 import { CHURCH_USER } from '@/constants/church-user/church-user-column';
+import {
+  WORSHIP,
+  WORSHIP_ATTENDANCE,
+  WORSHIP_ENROLLMENT,
+} from '@/constants/worship/worship-column';
 
 export const getTranslatedMemberColumn = (
   t: (key: string, ...args: any[]) => string,
@@ -132,4 +137,36 @@ export const getTranslatedJoinRequestColumn = (
       | JOIN_REQUEST.CREATED_AT
       | JOIN_REQUEST.STATUS
   );
+};
+
+export const getTranslatedAttendanceColumn = (
+  t: (key: string, ...args: any[]) => string,
+  id: WORSHIP_ENROLLMENT
+): string => {
+  return t(
+    id as
+      | WORSHIP_ENROLLMENT.NAME
+      | WORSHIP_ENROLLMENT.GROUP
+      | WORSHIP_ENROLLMENT.ATTENDANCE_RATE
+  );
+};
+
+export const getTranslatedAttendanceInformationColumn = (
+  t: (key: string, ...args: any[]) => string,
+  id: WORSHIP_ATTENDANCE
+): string => {
+  return t(
+    id as
+      | WORSHIP_ATTENDANCE.NAME
+      | WORSHIP_ATTENDANCE.ABSENT
+      | WORSHIP_ATTENDANCE.PRESENT
+      | WORSHIP_ATTENDANCE.NOTE
+  );
+};
+
+export const getTranslatedWorshipColumn = (
+  t: (key: string, ...args: any[]) => string,
+  id: WORSHIP
+): string => {
+  return t(id as WORSHIP.TITLE);
 };
