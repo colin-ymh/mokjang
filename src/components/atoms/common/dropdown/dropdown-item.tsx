@@ -10,13 +10,13 @@ const DropdownContainer = styled.div`
   width: 100%;
 `;
 
-const ItemContainer = styled.div<{ $isFocused: boolean }>`
+const ItemContainer = styled.div<{ $isFocused: boolean; $isRight?: boolean }>`
   display: flex;
   padding: 10px;
   transition: background-color 0.3s ease;
   cursor: pointer;
   background-color: ${({ $isFocused }) => $isFocused && MAIN.EXTRA_LIGHT};
-
+  justify-content: ${({ $isRight }) => $isRight && 'flex-end'};
   &:hover {
     background-color: ${MAIN.EXTRA_LIGHT};
   }
@@ -32,6 +32,7 @@ type DropdownItemProps = {
   onClick: (index: number) => void;
   isSelected: boolean;
   isFocused: boolean;
+  isRight?: boolean;
 };
 
 const DropdownItem = ({
@@ -39,6 +40,7 @@ const DropdownItem = ({
   onClick,
   item,
   isFocused,
+  isRight,
 }: DropdownItemProps) => {
   return (
     <DropdownContainer>
@@ -48,6 +50,7 @@ const DropdownItem = ({
           onClick(item.value);
         }}
         $isFocused={isFocused}
+        $isRight={isRight}
       >
         <MainText color={isSelected ? MAIN.DEFAULT : BLACK}>
           {item.title}

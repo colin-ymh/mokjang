@@ -10,6 +10,8 @@ import { DndProvider } from 'react-dnd';
 
 import 'react-datepicker/dist/react-datepicker.css';
 import 'react-quill/dist/quill.snow.css';
+import 'react-big-calendar/lib/css/react-big-calendar.css';
+// import 'react-big-calendar/lib/addons/dragAndDrop/styles'; // if using DnD
 import InitializeStore from '@/components/atoms/layout/initialize-store';
 import GlobalStyle from '@/components/atoms/layout/global-style';
 

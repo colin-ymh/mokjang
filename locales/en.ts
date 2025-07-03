@@ -13,6 +13,9 @@ export default {
   isNotDone: 'Incomplete',
   customSelect: 'Custom Select',
 
+  event: 'Event',
+  holiday: 'Holiday',
+
   worshipSessionTitle: 'Sermon Title',
   worshipSessionBibleTitle: 'Bible',
   worshipSessionInCharge: 'Preacher',
@@ -248,6 +251,8 @@ export default {
   'title.addWorshipSession': 'Add Worship Session',
   'title.editWorshipSession': 'Edit Worship Session',
 
+  'title.editWorshipInformation': 'Edit Worship Information',
+
   'title.addWorship': 'Add Worship',
   'title.editWorship': 'Edit Worship',
 
@@ -384,6 +389,9 @@ export default {
   'button.addWorshipSession': 'Make Attendance',
   'button.addWorship': 'Add Worship',
   'button.check': 'Check',
+
+  'button.today': 'Today',
+  'button.my': 'My Schedule',
   /*-------------------button-------------------*/
 
   /*-------------------placeholder-------------------*/

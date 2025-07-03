@@ -1,125 +1,135 @@
 import styled from 'styled-components';
-import LabelInput from '@/components/atoms/common/input/label-input';
-import { MemberDropdownType } from '@/components/atoms/common/dropdown/member-dropdown-item';
-import { MemberDropdownValueType } from '@/models/dropdown/dropdown';
-import React, { ChangeEvent } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
-import { useI18n, useScopedI18n } from '../../../../../locales/client';
+import { useI18n } from '../../../../../locales/client';
 import { MainText } from '@/components/atoms/common/text/main-text';
-import MultiMemberDropdown from '@/components/atoms/common/dropdown/multi-member-dropdown';
-import Quill from '@/components/atoms/common/input/quill';
-import { BLANK } from '@/constants/constant';
+import React from 'react';
+import MemberProfilePopupButton from '@/components/molecules/common/button/member-profile-popup-button';
 
-const SessionInformationContainer = styled.div`
+const InformationContainer = styled.div`
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  overflow-y: auto;
+`;
+
+const MetaContainer = styled.div`
   display: flex;
   flex-direction: column;
-  width: 100%;
-  gap: 20px;
+  padding: 25px 20px 50px 20px;
+  gap: 30px;
 `;
 
 const RowContainer = styled.div`
   display: flex;
   flex-direction: row;
+  align-items: center;
+`;
+
+const TitleContainer = styled.div`
+  display: flex;
+  width: 100px;
+  flex-shrink: 0;
+`;
+
+const ContentContainer = styled.div`
+  display: flex;
+  flex-grow: 1;
+  justify-content: flex-start;
+  align-items: center;
   gap: 10px;
 `;
 
-const LabelContainer = styled.div`
+const ColumnContainer = styled.div`
   display: flex;
-  width: 100%;
   flex-direction: column;
   gap: 10px;
 `;
 
-const InputContainer = styled.div`
+const CommentContainer = styled.div`
   display: flex;
-  width: 100%;
   flex-direction: column;
   gap: 10px;
+  padding: 20px;
 `;
 
-type WorshipSessionInformationViewProps = {
-  inCharge: MemberDropdownType[];
-  description: string;
-  onChangeSessionTitle: (event: ChangeEvent<HTMLInputElement>) => void;
-  onChangeBibleTitle: (event: ChangeEvent<HTMLInputElement>) => void;
-  onChangeVideoUrl: (event: ChangeEvent<HTMLInputElement>) => void;
-  onChangeInCharge: (inCharge: MemberDropdownValueType[]) => void;
-  onChangeDescription: (description: string) => void;
-};
+const CommentContentContainer = styled.div`
+  display: flex;
+  padding: 10px;
+  min-height: 50px;
+`;
 
-const WorshipSessionInformationView = ({
-  inCharge,
-  description,
-  onChangeSessionTitle,
-  onChangeBibleTitle,
-  onChangeVideoUrl,
-  onChangeInCharge,
-  onChangeDescription,
-}: WorshipSessionInformationViewProps) => {
-  const t = useI18n();
-  const t_placeholder = useScopedI18n('placeholder');
+type WorshipSessionInformationViewProps = {};
 
-  const { targetWorshipSession } = useSelector(
-    (state: RootState) => state.targetWorshipSession
-  );
+const WorshipSessionInformationView =
+  ({}: WorshipSessionInformationViewProps) => {
+    const t = useI18n();
 
-  return (
-    <SessionInformationContainer>
-      <LabelInput
-        label={t('worshipSessionTitle')}
-        value={targetWorshipSession.title}
-        onChange={onChangeSessionTitle}
-        placeholder={t_placeholder('worshipSessionTitle')}
-        height={40}
-      />
-      <RowContainer>
-        <LabelInput
-          label={t('worshipSessionBibleTitle')}
-          value={targetWorshipSession.bibleTitle}
-          onChange={onChangeBibleTitle}
-          placeholder={t_placeholder('worshipSessionBibleTitle')}
-          height={40}
-        />
-        <InputContainer>
-          <LabelContainer>
-            <MainText>{t('worshipSessionInCharge')}</MainText>
-          </LabelContainer>
-          <MultiMemberDropdown
-            values={inCharge}
-            onChangeValues={onChangeInCharge}
-            isSingle={true}
-            placeholder={
-              inCharge.length === 0
-                ? t_placeholder('worshipSessionInCharge')
-                : BLANK
-            }
-            isManager={true}
-            height={38}
-          />
-        </InputContainer>
-      </RowContainer>
-      <LabelInput
-        label={t('worshipSessionVideoUrl')}
-        value={targetWorshipSession.videoUrl}
-        onChange={onChangeVideoUrl}
-        placeholder={t_placeholder('worshipSessionVideoUrl')}
-        height={40}
-      />
-      {/* 내용 */}
-      <InputContainer>
-        <LabelContainer>
-          <MainText>{t('worshipSessionDescription')}</MainText>
-        </LabelContainer>
-        <Quill
-          value={description}
-          onChange={(event) => onChangeDescription(event)}
-          minHeight={120}
-          placeholder={t_placeholder('worshipSessionDescription')}
-        />
-      </InputContainer>
-    </SessionInformationContainer>
-  );
-};
+    const { targetWorshipSession } = useSelector(
+      (state: RootState) => state.targetWorshipSession
+    );
+    return (
+      <InformationContainer>
+        <MetaContainer>
+          {/* 제목 */}
+          <RowContainer>
+            <TitleContainer>
+              <MainText>{t('worshipSessionTitle')}</MainText>
+            </TitleContainer>
+            <ContentContainer>
+              <MainText>{targetWorshipSession.title}</MainText>
+            </ContentContainer>
+          </RowContainer>
+          {/* 성경 본문 */}
+          <RowContainer>
+            <TitleContainer>
+              <MainText>{t('worshipSessionBibleTitle')}</MainText>
+            </TitleContainer>
+            <ContentContainer>
+              <MainText>{targetWorshipSession.bibleTitle}</MainText>
+            </ContentContainer>
+          </RowContainer>
+          {/* 예배 영상 url */}
+          <RowContainer>
+            <TitleContainer>
+              <MainText>{t('worshipSessionVideoUrl')}</MainText>
+            </TitleContainer>
+            <ContentContainer>
+              <MainText>{targetWorshipSession.videoUrl}</MainText>
+            </ContentContainer>
+          </RowContainer>
+          {/* 진행자 */}
+          <RowContainer>
+            <TitleContainer>
+              <MainText>{t('worshipSessionInCharge')}</MainText>
+            </TitleContainer>
+            <ContentContainer>
+              {targetWorshipSession.inCharge && (
+                <MemberProfilePopupButton
+                  key={targetWorshipSession.inCharge?.id}
+                  member={targetWorshipSession.inCharge}
+                />
+              )}
+            </ContentContainer>
+          </RowContainer>
+        </MetaContainer>
+        <CommentContainer>
+          {/* 특이사항 */}
+          <ColumnContainer>
+            <TitleContainer>
+              <MainText>{t('worshipSessionDescription')}</MainText>
+            </TitleContainer>
+            <CommentContentContainer>
+              <MainText
+                dangerouslySetInnerHTML={{
+                  __html: targetWorshipSession.description,
+                }}
+              />
+            </CommentContentContainer>
+          </ColumnContainer>
+        </CommentContainer>
+      </InformationContainer>
+    );
+  };
 
 export default WorshipSessionInformationView;

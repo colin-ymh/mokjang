@@ -4,14 +4,10 @@ import { AppDispatch, RootState } from '@/redux/store';
 import { BLANK, ORDER_DIRECTION } from '@/constants/constant';
 import { WORSHIP_ENROLLMENT } from '@/constants/worship/worship-column';
 import {
-  fetchWorshipEnrollments,
   setWorshipEnrollmentOrderBy,
   setWorshipEnrollmentOrderDirection,
-  setWorshipEnrollments,
 } from '@/redux/reducers/filter/worship-enrollment-filter-reducer';
 import AttendanceTableView from '@/components/molecules/attendance/list/attendance-table.view';
-import SlidePopup from '@/components/atoms/common/popup/slide-popup';
-import AttendanceInformation from '@/components/organisms/attendance/information/attendance-information';
 import {
   setTargetWorshipSession,
   setTargetWorshipSessionGroup,
@@ -21,20 +17,16 @@ import { DEFAULT_WORSHIP_SESSION } from '@/models/worship/worship';
 import ToastPopup from '@/components/atoms/common/popup/toast-popup';
 import { DESTRUCTIVE } from '@/constants/styles/color';
 import { WorshipSessionsApi } from '@/api/worship/worship-sessions.api';
-import { useScopedI18n } from '../../../../../locales/client';
-import { WorshipAttendancesApi } from '@/api/worship/worship-attendances.api';
+import { getIsWellFormedTitle } from '@/utils/check';
 
 export type AttendanceTableProps = {
   loadWorshipEnrollments: () => Promise<void>;
 };
 
 const AttendanceTable = ({ loadWorshipEnrollments }: AttendanceTableProps) => {
-  const t_button = useScopedI18n('button');
-
   const dispatch = useDispatch<AppDispatch>();
 
   const worshipSessionsApi = new WorshipSessionsApi(false);
-  const worshipAttendancesApi = new WorshipAttendancesApi(false);
 
   const { churchId } = useSelector((state: RootState) => state.church);
 
@@ -43,10 +35,6 @@ const AttendanceTable = ({ loadWorshipEnrollments }: AttendanceTableProps) => {
   );
   const { targetWorshipSession, targetWorshipSessionWorship } = useSelector(
     (state: RootState) => state.targetWorshipSession
-  );
-
-  const { worshipAttendances } = useSelector(
-    (state: RootState) => state.worshipAttendanceFilter
   );
 
   const {
@@ -61,6 +49,9 @@ const AttendanceTable = ({ loadWorshipEnrollments }: AttendanceTableProps) => {
 
   // 상세정보 팝업 On/Off
   const [isSessionShown, setIsSessionShown] = useState<boolean>(false);
+
+  const [isEditOpened, setIsEditOpened] = useState<boolean>(false);
+  const [isEditEnabled, setIsEditEnabled] = useState<boolean>(false);
 
   const [thrownError, setThrownError] = useState<Error | null>(null);
   if (thrownError) {
@@ -146,7 +137,7 @@ const AttendanceTable = ({ loadWorshipEnrollments }: AttendanceTableProps) => {
   const onClickSessionSave = async () => {
     try {
       // 회차 정보 수정
-      await worshipSessionsApi.editWorshipSession(
+      const response = await worshipSessionsApi.editWorshipSession(
         {
           churchId,
           worshipId: targetWorshipSessionWorship.id,
@@ -160,48 +151,74 @@ const AttendanceTable = ({ loadWorshipEnrollments }: AttendanceTableProps) => {
           description: targetWorshipSession.description || undefined,
         }
       );
-      // 출석 정보 업데이트
-      await Promise.all(
-        worshipAttendances.map(async (attendance) => {
-          await worshipAttendancesApi.editWorshipAttendance(
-            {
-              churchId,
-              worshipId: targetWorshipSessionWorship.id,
-              sessionId: targetWorshipSession.id,
-              attendanceId: attendance.id,
-            },
-            {
-              attendanceStatus: attendance.attendanceStatus,
-              note: attendance.note,
-            }
-          );
-        })
-      );
+
+      const newSession = response.data.data;
+
+      dispatch(setTargetWorshipSession(newSession));
+      setIsEditOpened(false);
+      setTimeout(() => {
+        setIsSessionShown(true);
+      }, 500);
     } catch (error) {
       if (error instanceof Error) {
         setToastText(error.message);
       } else {
         setThrownError(new Error(String(error)));
       }
-    } finally {
-      // 전체 출석부 업데이트
-      const result = await dispatch(
-        fetchWorshipEnrollments({
-          churchId,
-          currentPage: 1,
-          worshipId: targetWorshipSessionWorship.id,
-        })
-      );
-
-      if (fetchWorshipEnrollments.fulfilled.match(result)) {
-        dispatch(setWorshipEnrollments(result.payload));
-      }
-
-      setIsSessionShown(false);
     }
   };
 
+  const onClickEditOpen = () => {
+    setIsSessionShown(false);
+    setTimeout(() => {
+      setIsEditOpened(true);
+    }, 500);
+  };
+
+  const onClickCloseEditModal = async () => {
+    try {
+      const response = await worshipSessionsApi.getWorshipSession({
+        churchId,
+        worshipId: targetWorshipSessionWorship.id,
+        sessionId: targetWorshipSession.id,
+      });
+
+      const prevSession = response.data.data;
+
+      dispatch(setTargetWorshipSession(prevSession));
+      setIsEditOpened(false);
+      setTimeout(() => {
+        setIsSessionShown(true);
+      }, 500);
+    } catch (error) {
+      if (error instanceof Error) {
+        setToastText(error.message);
+      } else {
+        setThrownError(new Error(String(error)));
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (
+      targetWorshipSession.title &&
+      !getIsWellFormedTitle(targetWorshipSession.title)
+    ) {
+      setIsEditEnabled(false);
+      return;
+    }
+
+    setIsEditEnabled(true);
+  }, [targetWorshipSession]);
+
   const props = {
+    isSessionShown,
+    isEditOpened,
+    isEditEnabled,
+    onClickCloseEditModal,
+    onClickSessionClose,
+    onClickEditOpen,
+    onClickSessionSave,
     worshipEnrollments,
     scrollRef,
     onScroll,
@@ -211,16 +228,6 @@ const AttendanceTable = ({ loadWorshipEnrollments }: AttendanceTableProps) => {
   return (
     <>
       <AttendanceTableView {...props} />
-
-      {/* 회차 상세정보 팝업*/}
-      <SlidePopup
-        isShow={isSessionShown}
-        onClickClose={onClickSessionClose}
-        doneText={t_button('save')}
-        onClickDone={onClickSessionSave}
-      >
-        <AttendanceInformation />
-      </SlidePopup>
 
       {isToastShown && (
         <ToastPopup

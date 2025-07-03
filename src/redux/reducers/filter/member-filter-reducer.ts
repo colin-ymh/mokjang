@@ -249,12 +249,13 @@ const initialState: MemberFilterState = {
 
 export const fetchMembers = createAsyncThunk<
   Member[],
-  { churchId: string; currentPage: number },
+  { currentPage: number },
   { state: RootState }
 >(
   'members/fetchMembers',
-  async ({ churchId, currentPage }, { getState, rejectWithValue }) => {
+  async ({ currentPage }, { getState, rejectWithValue }) => {
     const state = getState().memberFilter;
+    const churchId = getState().church.churchId;
     const { memberOrderBy, memberOrderDirection, memberFilter } = state;
     const membersApi = new MembersApi(false);
 

@@ -71,7 +71,6 @@ const ChurchUserList = ({ isManager = false }: UserListProps) => {
     try {
       const result = await dispatch(
         fetchChurchUsers({
-          churchId,
           currentPage: page + 1,
           isManager,
         })
@@ -103,7 +102,6 @@ const ChurchUserList = ({ isManager = false }: UserListProps) => {
       try {
         const result = await dispatch(
           fetchChurchUsers({
-            churchId,
             currentPage: 1,
             isManager,
           })
@@ -159,7 +157,6 @@ const ChurchUserList = ({ isManager = false }: UserListProps) => {
         setPage(1);
         const result = await dispatch(
           fetchChurchUsers({
-            churchId,
             currentPage: 1,
             isManager,
           })

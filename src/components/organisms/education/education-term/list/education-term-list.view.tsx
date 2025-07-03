@@ -3,9 +3,8 @@ import styled from 'styled-components';
 import SlidePopup from '@/components/atoms/common/popup/slide-popup';
 import Loading from '@/components/atoms/common/etc/loading';
 import React from 'react';
-import { BLACK, DESTRUCTIVE, MAIN } from '@/constants/styles/color';
+import { BLACK, MAIN } from '@/constants/styles/color';
 import CancelIcon from '../../../../../../public/svg/cancel.svg';
-import TrashIcon from '../../../../../../public/svg/trash.svg';
 import ConfirmPopup from '@/components/atoms/common/popup/error-popup';
 
 import { MEDIA_MIN_WIDTH } from '@/constants/constant';
@@ -61,13 +60,6 @@ const ButtonRow = styled.div`
 const ButtonContainer = styled.div`
   display: flex;
   cursor: pointer;
-`;
-
-const Trash = styled(TrashIcon)`
-  width: 25px;
-  height: 25px;
-  stroke: ${DESTRUCTIVE.LIGHT};
-  stroke-width: 1px;
 `;
 
 const Cancel = styled(CancelIcon)`

@@ -47,7 +47,6 @@ const JoinRequestList = ({
     try {
       const result = await dispatch(
         fetchJoinRequests({
-          churchId,
           currentPage: page + 1,
           status: STATUS.PENDING,
         })
@@ -81,7 +80,6 @@ const JoinRequestList = ({
       try {
         const result = await dispatch(
           fetchJoinRequests({
-            churchId,
             currentPage: 1,
             status: STATUS.PENDING,
           })
@@ -99,7 +97,6 @@ const JoinRequestList = ({
 
     fetchInitialJoinRequests();
   }, [
-    churchId,
     joinRequestFilter,
     joinRequestOrderBy,
     joinRequestOrderDirection,

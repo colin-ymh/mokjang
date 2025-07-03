@@ -106,13 +106,11 @@ const MemberTable = ({ onClickMemberItem, loadMembers }: MemberTableProps) => {
       setIsPopupShown(false);
 
       // 3) 모든 삭제가 끝난 후 교인 목록 다시 불러오기
-      await dispatch(fetchMembers({ churchId, currentPage: 1 })).then(
-        (result) => {
-          if (fetchMembers.fulfilled.match(result)) {
-            dispatch(setMembers(result.payload));
-          }
+      await dispatch(fetchMembers({ currentPage: 1 })).then((result) => {
+        if (fetchMembers.fulfilled.match(result)) {
+          dispatch(setMembers(result.payload));
         }
-      );
+      });
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));
     }

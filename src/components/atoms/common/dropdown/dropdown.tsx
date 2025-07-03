@@ -49,6 +49,8 @@ export type DropdownProps<
   isCustom?: boolean;
   /** 사용자가 직접 입력한 텍스트가 바뀔 때 호출할 콜백 */
   onChangeCustomInput?: (event: ChangeEvent<HTMLInputElement>) => void;
+  isChevronShown?: boolean;
+  isRight?: boolean;
 };
 
 export const CUSTOM_VALUE = 'custom';
@@ -73,6 +75,10 @@ const Dropdown = forwardRef<HTMLInputElement, DropdownProps>(
       customValue,
       isCustom = false,
       onChangeCustomInput,
+      isChevronShown = true,
+      fontSize,
+      fontWeight,
+      isRight,
       ...inputProps
     },
     ref
@@ -253,11 +259,15 @@ const Dropdown = forwardRef<HTMLInputElement, DropdownProps>(
       backgroundColor,
       disabled,
       enterKeyHint,
+      isChevronShown,
       ...inputProps,
       onClickDropdown: toggleDropdown,
       onClickItem: handleClickItem,
       onChangeInput: handleChangeInput,
       onKeyDownHandler,
+      fontSize,
+      fontWeight,
+      isRight,
     };
 
     return (

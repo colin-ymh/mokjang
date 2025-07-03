@@ -7,7 +7,6 @@ import {
 } from '@/redux/reducers/filter/education-filter-reducer';
 
 import { Education } from '@/models/education/education';
-import { EducationsApi } from '@/api/education/educations.api';
 import EducationListView from '@/components/organisms/education/education/list/education-list.view';
 
 type EducationListProps = {
@@ -15,11 +14,7 @@ type EducationListProps = {
 };
 
 const EducationList = ({ isNewEducation }: EducationListProps) => {
-  const educationsApi = new EducationsApi(false);
   const dispatch = useDispatch<AppDispatch>();
-  const churchId: string = useSelector(
-    (state: RootState) => state.church.churchId
-  );
   const {
     educations,
     educationFilter,
@@ -61,9 +56,7 @@ const EducationList = ({ isNewEducation }: EducationListProps) => {
     setIsLoading(true);
 
     try {
-      const result = await dispatch(
-        fetchEducations({ churchId, currentPage: page + 1 })
-      );
+      const result = await dispatch(fetchEducations({ currentPage: page + 1 }));
       if (fetchEducations.fulfilled.match(result)) {
         const newEducations: Education[] = result.payload;
         if (newEducations.length > 0) {
@@ -89,9 +82,7 @@ const EducationList = ({ isNewEducation }: EducationListProps) => {
   useEffect(() => {
     const fetchInitialEducations = async () => {
       try {
-        const result = await dispatch(
-          fetchEducations({ churchId, currentPage: 1 })
-        );
+        const result = await dispatch(fetchEducations({ currentPage: 1 }));
         if (fetchEducations.fulfilled.match(result)) {
           dispatch(setEducations(result.payload));
           setPage(1);
@@ -105,7 +96,6 @@ const EducationList = ({ isNewEducation }: EducationListProps) => {
 
     fetchInitialEducations();
   }, [
-    churchId,
     educationFilter,
     educationOrderBy,
     educationOrderDirection,

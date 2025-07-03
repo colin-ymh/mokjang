@@ -6,6 +6,7 @@ import { WorshipEnrollment } from '@/models/worship/worship';
 import { WorshipEnrollmentsApi } from '@/api/worship/worship-enrollments.api';
 
 type WORSHIP_ENROLLMENT_FILTER = {
+  [WORSHIP_ENROLLMENT.GROUP_NAME]: string;
   [WORSHIP_ENROLLMENT.GROUP]: string;
   [WORSHIP_ENROLLMENT.FROM_DATE]: string;
   [WORSHIP_ENROLLMENT.TO_DATE]: string;
@@ -20,6 +21,7 @@ type WorshipEnrollmentFilterState = {
 };
 
 export const INITIAL_WORSHIP_ENROLLMENT_FILTER: WORSHIP_ENROLLMENT_FILTER = {
+  [WORSHIP_ENROLLMENT.GROUP_NAME]: BLANK,
   [WORSHIP_ENROLLMENT.GROUP]: BLANK,
   [WORSHIP_ENROLLMENT.FROM_DATE]: BLANK,
   [WORSHIP_ENROLLMENT.TO_DATE]: BLANK,
@@ -45,7 +47,7 @@ export const INITIAL_WORSHIP_ENROLLMENT_TABLE_HEADER_LIST: EDUCATION_TABLE_HEADE
       isDate: false,
     },
     {
-      id: WORSHIP_ENROLLMENT.GROUP,
+      id: WORSHIP_ENROLLMENT.GROUP_NAME,
       isSortable: true,
       isFilterable: false,
       isSession: false,
@@ -53,7 +55,7 @@ export const INITIAL_WORSHIP_ENROLLMENT_TABLE_HEADER_LIST: EDUCATION_TABLE_HEADE
     },
     {
       id: WORSHIP_ENROLLMENT.ATTENDANCE_RATE,
-      isSortable: false,
+      isSortable: true,
       isFilterable: true,
       isSession: false,
       isDate: false,
@@ -63,6 +65,7 @@ export const INITIAL_WORSHIP_ENROLLMENT_TABLE_HEADER_LIST: EDUCATION_TABLE_HEADE
 const initialState: WorshipEnrollmentFilterState = {
   worshipEnrollments: [],
   worshipEnrollmentFilter: INITIAL_WORSHIP_ENROLLMENT_FILTER,
+  worshipEnrollmentOrderBy: WORSHIP_ENROLLMENT.GROUP_NAME,
   worshipEnrollmentOrderDirection: ORDER_DIRECTION.ASC,
   worshipEnrollmentTableHeaderItemList:
     INITIAL_WORSHIP_ENROLLMENT_TABLE_HEADER_LIST,

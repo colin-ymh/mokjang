@@ -4,12 +4,12 @@ import { RootState } from '@/redux/store';
 import { useTaskStatusDropdownItems } from '@/hooks/dropdown/dropdown-items';
 import { useI18n } from '../../../../../locales/client';
 import { MainText } from '@/components/atoms/common/text/main-text';
-import { getFormattedDate } from '@/utils/format';
 import React from 'react';
 import StatusDropdown from '@/components/atoms/common/dropdown/status-dropdown';
 import { GRAY } from '@/constants/styles/color';
 import { TASK_STATUS } from '@/constants/status/status';
 import MemberProfilePopupButton from '@/components/molecules/common/button/member-profile-popup-button';
+import { getDateFromDateString, getDateStringFromDate } from '@/utils/date';
 
 const InformationContainer = styled.div`
   display: flex;
@@ -115,11 +115,17 @@ const TaskInformationView = ({ onChangeStatus }: TaskInformationViewProps) => {
           </TitleContainer>
           <ContentContainer>
             <MainText>
-              {targetTask.startDate && getFormattedDate(targetTask.startDate)}
+              {targetTask.startDate &&
+                getDateStringFromDate(
+                  getDateFromDateString(targetTask.startDate)
+                )}
             </MainText>
             <MainText>{'-'}</MainText>
             <MainText>
-              {targetTask.endDate && getFormattedDate(targetTask.endDate)}
+              {targetTask.endDate &&
+                getDateStringFromDate(
+                  getDateFromDateString(targetTask.endDate)
+                )}
             </MainText>
           </ContentContainer>
         </RowContainer>

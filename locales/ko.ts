@@ -13,6 +13,9 @@ export default {
   isNotDone: '미완료',
   customSelect: '직접선택',
 
+  event: '이벤트',
+  holiday: '공휴일',
+
   worshipSessionTitle: '설교제목',
   worshipSessionBibleTitle: '성경본문',
   worshipSessionInCharge: '설교자',
@@ -250,6 +253,8 @@ export default {
   'title.addWorshipSession': '출석내용 입력',
   'title.editWorshipSession': '출석내용 수정',
 
+  'title.editWorshipInformation': '예배 내용 수정',
+
   'title.addWorship': '예배 추가',
   'title.editWorship': '예배 수정',
 
@@ -395,6 +400,9 @@ export default {
   'button.addWorshipSession': '출석내용 입력하기',
   'button.addWorship': '예배 추가하기',
   'button.check': '조회',
+
+  'button.today': '오늘',
+  'button.my': '내 일정',
   /*-------------------button-------------------*/
 
   /*-------------------placeholder-------------------*/

@@ -39,6 +39,7 @@ type BorderTextareaProps = {
   disabled?: boolean;
   placeholder?: string;
   readOnly?: boolean;
+  onBlur?: (event: React.FocusEvent<HTMLTextAreaElement>) => void;
 };
 
 // forwardRef 를 사용하여 ref 를 전달받을 수 있도록
@@ -54,6 +55,7 @@ const BorderTextarea = forwardRef<HTMLTextAreaElement, BorderTextareaProps>(
       onChange,
       placeholder,
       readOnly = false,
+      onBlur,
       ...props
     },
     ref
@@ -70,6 +72,7 @@ const BorderTextarea = forwardRef<HTMLTextAreaElement, BorderTextareaProps>(
         width={width}
         $disabled={disabled}
         placeholder={placeholder}
+        onBlur={onBlur}
         {...props}
       />
     );

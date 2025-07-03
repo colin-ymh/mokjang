@@ -2,6 +2,7 @@ import { Dispatch, ReactNode, SetStateAction } from 'react';
 
 import {
   ATTENDANCE_CONTENT_ID,
+  CALENDAR_CONTENT_ID,
   CHURCH_CONTENT_ID,
   EDUCATION_CONTENT_ID,
   HOME_CONTENT_ID,
@@ -58,6 +59,7 @@ import JoinRequestList from '@/components/organisms/join-request/list/join-reque
 import MainAttendanceHeader from '@/components/molecules/layout/header/main/attendance/main-attendance-header';
 import AttendanceList from '@/components/organisms/attendance/list/attendance-list';
 import WorshipList from '@/components/organisms/worship/list/worship-list';
+import MainCalendar from '@/components/organisms/calendar/main-calendar';
 
 export const getSide = (id: string) => {
   switch (id) {
@@ -134,6 +136,10 @@ export const getContent = (
         // 등록 요청
         case JOIN_REQUEST_CONTENT_ID.JOIN_REQUEST:
           return <JoinRequestList />;
+
+        // 달력
+        case CALENDAR_CONTENT_ID.CALENDAR:
+          return <MainCalendar />;
 
         default:
           return null;

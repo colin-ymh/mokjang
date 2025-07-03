@@ -12,9 +12,9 @@ import useWindowSize from '@/hooks/window/window';
 import TaskTableHeader from '@/components/atoms/task/task-table-header';
 import { BLANK_HEADER } from '@/redux/reducers/filter/member-filter-reducer';
 import { useI18n } from '../../../../locales/client';
-import { getFormattedDate } from '@/utils/format';
 import { getStatusColor } from '@/utils/color';
 import MemberProfile from '@/components/atoms/member/member-profile';
+import { getDateFromDateString, getDateStringFromDate } from '@/utils/date';
 
 // 1. 컬럼별 PX 폭 (마지막 REMARKS만 auto 할 예정)
 const getColumnWidth = (id: string) => {
@@ -179,8 +179,9 @@ const TaskTableView = ({
         return (
           <MainText>
             {`${
-              task.startDate && getFormattedDate(task.startDate)
-            } - ${task.endDate && getFormattedDate(task.endDate)}`}
+              task.startDate &&
+              getDateStringFromDate(getDateFromDateString(task.startDate))
+            } - ${task.endDate && getDateStringFromDate(getDateFromDateString(task.endDate))}`}
           </MainText>
         );
       case TASK.IN_CHARGE:

@@ -284,9 +284,7 @@ const AttendanceRow = () => {
   useEffect(() => {
     const fetchInitialWorships = async () => {
       try {
-        const result = await dispatch(
-          fetchWorships({ churchId, currentPage: 1 })
-        );
+        const result = await dispatch(fetchWorships({ currentPage: 1 }));
         if (fetchWorships.fulfilled.match(result)) {
           dispatch(setWorships(result.payload));
         }
@@ -298,7 +296,7 @@ const AttendanceRow = () => {
     };
 
     fetchInitialWorships();
-  }, [churchId]);
+  }, []);
 
   // 출석 필터 Initialize
   useEffect(() => {
@@ -318,6 +316,12 @@ const AttendanceRow = () => {
 
     // 날짜 선택
   }, [worships]);
+
+  useEffect(() => {
+    if (targetWorship.worshipTargetGroups.length > 0) {
+      setTopLevelGroup(targetWorship.worshipTargetGroups[0].group);
+    }
+  }, [targetWorship]);
 
   useEffect(() => {
     onChangeWorshipPeriod(worshipPeriod);

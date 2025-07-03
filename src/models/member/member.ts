@@ -33,6 +33,8 @@ export type Member = {
   name: string;
   mobilePhone: string;
   isLunar: boolean;
+  isLeafMonth: boolean;
+  birthdayMMDD: string;
   birth: string;
   gender: string;
   groupId?: string;
