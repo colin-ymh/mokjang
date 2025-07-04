@@ -31,11 +31,14 @@ const DomainFilter = () => {
     (state: RootState) => state.calendarFilter
   );
 
-  const domainFilterItems: DropdownValueType[] = Object.values(DOMAIN).map(
-    (key) => {
-      return { value: key, title: t(key as DOMAIN) };
-    }
-  );
+  const domainFilterItems: DropdownValueType[] = Object.values(DOMAIN)
+    .filter((domain) => domain !== DOMAIN.MANAGEMENT)
+    .map((domain) => {
+      if (domain === DOMAIN.MEMBER) {
+        return { value: domain, title: t('birthday') };
+      }
+      return { value: domain, title: t(domain) };
+    });
 
   const onClickCheck = (value: boolean, item: DOMAIN) => {
     if (value) {

@@ -267,6 +267,7 @@ const EducationTermList = ({ isInProgress }: EducationTermListProps) => {
         term.id === newEducationTerm.id ? newEducationTerm : term
       );
       dispatch(setEducationTerms(updatedTerms));
+      dispatch(fetchEducationSessions({}));
 
       setIsEditTermShown(false);
       setTimeout(() => setIsEducationTermInformationShown(true), 500);
@@ -480,10 +481,9 @@ const EducationTermList = ({ isInProgress }: EducationTermListProps) => {
 
           const newTargetEducationTerm = {
             ...targetEducationTerm,
-            educationSessions: [
-              ...targetEducationTerm.educationSessions,
-              newSession,
-            ],
+            educationSessions: targetEducationTerm.educationSessions
+              ? [...targetEducationTerm.educationSessions, newSession]
+              : [newSession],
           };
           dispatch(setTargetEducationTerm(newTargetEducationTerm));
 

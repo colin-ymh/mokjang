@@ -8,7 +8,7 @@ export enum DOMAIN {
   EDUCATION = 'education',
   MANAGEMENT = 'management',
   HOLIDAY = 'holiday',
-  EVENT = 'event',
+  CHURCH_EVENT = 'churchEvent',
 }
 
 export enum ACTION {

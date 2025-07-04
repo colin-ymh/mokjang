@@ -13,7 +13,9 @@ export default {
   isNotDone: 'Incomplete',
   customSelect: 'Custom Select',
 
-  event: 'Event',
+  date: 'Date',
+  birthday: 'Member Birthday',
+  churchEvent: 'Event',
   holiday: 'Holiday',
 
   worshipSessionTitle: 'Sermon Title',
@@ -440,6 +442,8 @@ export default {
   'placeholder.worshipSessionInCharge': 'Enter the preacher name.',
   'placeholder.worshipSessionVideoUrl': 'Enter the worship video url.',
   'placeholder.worshipSessionDescription': 'Enter the worship description.',
+
+  'placeholder.date': 'Select the date.',
   /*-------------------placeholder-------------------*/
 
   /*-------------------radiobutton-------------------*/

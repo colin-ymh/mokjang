@@ -31,7 +31,7 @@ export const getCalenderBackgroundColor = (domain: DOMAIN) => {
       return CALENDAR_COLOR.TASK;
     case DOMAIN.MEMBER:
       return CALENDAR_COLOR.MEMBER;
-    case DOMAIN.EVENT:
+    case DOMAIN.CHURCH_EVENT:
       return CALENDAR_COLOR.EVENT;
     case DOMAIN.HOLIDAY:
       return CALENDAR_COLOR.HOLIDAY;
@@ -50,7 +50,7 @@ export const getCalenderColor = (domain: DOMAIN) => {
       return WHITE;
     case DOMAIN.MEMBER:
       return WHITE;
-    case DOMAIN.EVENT:
+    case DOMAIN.CHURCH_EVENT:
       return WHITE;
     case DOMAIN.HOLIDAY:
       return BLACK;

@@ -6,6 +6,10 @@ import { DOMAIN } from '@/models/permission/permission';
 import KoreanLunarCalendar from 'korean-lunar-calendar';
 import { getDateFromDateString, getDateStringFromDate } from '@/utils/date';
 import dayjs from 'dayjs';
+import { ChurchEvent } from '@/models/church-event/church-event';
+import { EducationSession } from '@/models/education/education';
+import { Holiday } from '@/api/holiday-api';
+import { getFormattedDate } from '@/utils/format';
 
 export const getEventFromTask = (event: Task): CalendarEvent => {
   return {
@@ -14,6 +18,7 @@ export const getEventFromTask = (event: Task): CalendarEvent => {
     allDay: false,
     start: event.startDate,
     end: event.endDate,
+    task: event,
   };
 };
 
@@ -24,6 +29,31 @@ export const getEventFromVisitation = (event: Visitation): CalendarEvent => {
     allDay: false,
     start: event.startDate,
     end: event.endDate,
+    visitation: event,
+  };
+};
+
+export const getEventFromEducation = (
+  event: EducationSession
+): CalendarEvent => {
+  return {
+    id: `${DOMAIN.EDUCATION}-${event.id}`,
+    title: event.title,
+    allDay: false,
+    start: event.startDate,
+    end: event.endDate,
+    education: event,
+  };
+};
+
+export const getEventFromChurchEvent = (event: ChurchEvent): CalendarEvent => {
+  return {
+    id: `${DOMAIN.CHURCH_EVENT}-${event.id}`,
+    title: event.title,
+    allDay: true,
+    start: event.date,
+    end: event.date,
+    churchEvent: event,
   };
 };
 
@@ -91,6 +121,7 @@ export const getEventFromBirthday = (
     allDay: true,
     start: getDateStringFromDate(targetDate.toDate()),
     end: getDateStringFromDate(targetDate.toDate()),
+    member: event,
   };
 };
 
@@ -100,4 +131,14 @@ const getTitle = (member: Member) => {
   } else {
     return `${member.name} 생일`;
   }
+};
+
+export const getEventFromHoliday = (event: Holiday): CalendarEvent => {
+  return {
+    id: `${DOMAIN.HOLIDAY}-${event.dateName}`,
+    title: event.dateName,
+    allDay: true,
+    start: getFormattedDate(event.locdate.toString()),
+    end: getFormattedDate(event.locdate.toString()),
+  };
 };

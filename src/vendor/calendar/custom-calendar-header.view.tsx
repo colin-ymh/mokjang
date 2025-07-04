@@ -12,6 +12,9 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import TransparentBackground from '@/components/atoms/common/etc/transparent-background';
 import DomainFilter from '@/vendor/calendar/domain-filter';
+import CustomPopup from '@/components/atoms/common/popup/custom-popup';
+import React from 'react';
+import AddChurchEvent from '@/components/organisms/church-event/add/add-church-event';
 
 const HeaderContainer = styled.div`
   display: flex;
@@ -78,28 +81,39 @@ export enum NAVIGATE_ACTION {
 
 type CustomCalendarHeaderViewProps = ToolbarProps & {
   date: Date;
+  onNavigate: (action: NAVIGATE_ACTION, date: Date) => void;
   isFilterShown: boolean;
+  isSaveEventEnabled: boolean;
+  isAddEventModalOpened: boolean;
   onClickFilterClose: () => void;
   onChangeIsMy: (value: boolean) => void;
   onChangeMonthItem: (month: number) => void;
   onChangeYearItem: (year: number) => void;
   onClickFilter: () => void;
-  onNavigate: (action: NAVIGATE_ACTION, date: Date) => void;
+  onClickAddEvent: () => void;
+  onClickCancelAddEvent: () => void;
+  onClickSaveEvent: () => void;
 };
 
 const CustomCalendarHeaderView = ({
   date,
+  onNavigate,
   isFilterShown,
+  isSaveEventEnabled,
+  isAddEventModalOpened,
   onClickFilterClose,
   onChangeIsMy,
   onChangeMonthItem,
   onChangeYearItem,
   onClickFilter,
-  onNavigate,
+  onClickAddEvent,
+  onClickCancelAddEvent,
+  onClickSaveEvent,
 }: CustomCalendarHeaderViewProps) => {
   const params = useParams();
   const locale = params.locale as string;
   const t_button = useScopedI18n('button');
+  const t_title = useScopedI18n('title');
 
   const thisYear = new Date().getFullYear();
 
@@ -126,7 +140,9 @@ const CustomCalendarHeaderView = ({
   return (
     <HeaderContainer>
       <LeftContainer>
+        {/* 날짜 타이틀*/}
         <TitleContainer $isKO={locale === LOCALE.KO}>
+          {/* 월 */}
           <DropdownContainer>
             <Dropdown
               value={date.getMonth()}
@@ -145,6 +161,7 @@ const CustomCalendarHeaderView = ({
               </MainText>
             )}
           </DropdownContainer>
+          {/* 년 */}
           <DropdownContainer>
             <Dropdown
               value={date.getFullYear()}
@@ -164,7 +181,9 @@ const CustomCalendarHeaderView = ({
             )}
           </DropdownContainer>
         </TitleContainer>
+        {/* 타이틀 옆 버튼 (날짜 이동) */}
         <ButtonContainer>
+          {/* 오늘 */}
           <Button
             text={t_button('today')}
             width={60}
@@ -174,6 +193,7 @@ const CustomCalendarHeaderView = ({
             backgroundColor={WHITE}
             onClick={() => onNavigate(NAVIGATE_ACTION.TODAY)}
           />
+          {/* 지난달 */}
           <Button
             text={'<'}
             width={30}
@@ -183,6 +203,7 @@ const CustomCalendarHeaderView = ({
             backgroundColor={WHITE}
             onClick={() => onNavigate(NAVIGATE_ACTION.PREV)}
           />
+          {/* 다음달 */}
           <Button
             text={'>'}
             width={30}
@@ -196,6 +217,15 @@ const CustomCalendarHeaderView = ({
       </LeftContainer>
       <RightContainer>
         <ButtonContainer>
+          {/* 이벤트 추가 버튼 */}
+          <Button
+            text={t_button('addChurchEvent')}
+            width={120}
+            height={30}
+            color={WHITE}
+            backgroundColor={MAIN.DEFAULT}
+            onClick={onClickAddEvent}
+          />
           {/* 나의 일정만 보기 */}
           <Button
             text={t_button('my')}
@@ -216,6 +246,7 @@ const CustomCalendarHeaderView = ({
             backgroundColor={WHITE}
             onClick={onClickFilter}
           />
+          {/* 도메인 필터 팝업 */}
           <FilterContainer $isShown={isFilterShown}>
             <TransparentBackground
               isOpened={isFilterShown}
@@ -224,6 +255,19 @@ const CustomCalendarHeaderView = ({
             />
             {isFilterShown && <DomainFilter />}
           </FilterContainer>
+          {/* 일정 추가 팝업 */}
+          <CustomPopup
+            isShow={isAddEventModalOpened}
+            onClickCancel={onClickCancelAddEvent}
+            headerTitle={t_title('addChurchEvent')}
+            width={500}
+            height={500}
+            onClickDone={onClickSaveEvent}
+            doneBackgroundColor={isSaveEventEnabled ? MAIN.DEFAULT : MAIN.LIGHT}
+            doneDisabled={!isSaveEventEnabled}
+          >
+            <AddChurchEvent />
+          </CustomPopup>
         </ButtonContainer>
       </RightContainer>
     </HeaderContainer>

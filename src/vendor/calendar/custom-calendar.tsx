@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
@@ -11,6 +11,9 @@ import 'moment/locale/ko';
 import { useParams } from 'next/navigation';
 import CustomDateHeader from '@/vendor/calendar/custom-date-header';
 import { getEventStyle } from '@/utils/color';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
+import { DOMAIN } from '@/models/permission/permission';
 
 const CustomCalendarContainer = styled.div`
   display: flex;
@@ -75,23 +78,79 @@ type CustomCalendarProps = {
   events: CalendarEvent[];
   date: Date;
   onChangeDate: (date: Date) => void;
+  onSelectEvent: (event: CalendarEvent) => void;
 };
 
 const CustomCalendar = ({
   events,
   date,
   onChangeDate,
+  onSelectEvent,
 }: CustomCalendarProps) => {
   const params = useParams();
   moment.locale(params.locale as string);
   const localizer = momentLocalizer(moment);
+
+  const { calendarFilter } = useSelector(
+    (state: RootState) => state.calendarFilter
+  );
+  const { user } = useSelector((state: RootState) => state.user);
+
+  const [filteredEvents, setFilteredEvents] = useState<CalendarEvent[]>([]);
+
+  // 필터 값에 따라 이벤트 필터링
+  const getFilteredEvent = (events: CalendarEvent[]) => {
+    return events.filter((event) => {
+      if (event.id) {
+        // 도메인 확인
+        const [domain, id] = event.id?.split('-');
+        if (calendarFilter.selectedDomains.includes(domain as DOMAIN)) {
+          // 내 업무 확인
+          if (calendarFilter.isMy) {
+            switch (domain) {
+              case DOMAIN.VISITATION:
+                if (
+                  event.visitation?.inChargeId === user.churchUser[0].memberId
+                ) {
+                  return true;
+                }
+                break;
+              case DOMAIN.TASK:
+                if (event.task?.inChargeId === user.churchUser[0].memberId) {
+                  return true;
+                }
+                break;
+              case DOMAIN.EDUCATION:
+                if (
+                  event.education?.inChargeId === user.churchUser[0].memberId
+                ) {
+                  return true;
+                }
+                break;
+              default:
+                return false;
+            }
+          }
+          return true;
+        } else {
+          return false;
+        }
+      } else {
+        return false;
+      }
+    });
+  };
+
+  useEffect(() => {
+    setFilteredEvents(getFilteredEvent(events));
+  }, [events, calendarFilter]);
 
   return (
     <CustomCalendarContainer>
       <Calendar
         date={date}
         localizer={localizer}
-        events={events}
+        events={filteredEvents}
         startAccessor="start"
         endAccessor="end"
         showAllEvents={true}
@@ -104,6 +163,7 @@ const CustomCalendar = ({
             dateHeader: CustomDateHeader,
           },
         }}
+        onSelectEvent={onSelectEvent}
       />
     </CustomCalendarContainer>
   );
