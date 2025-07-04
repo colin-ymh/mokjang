@@ -13,7 +13,7 @@ export const getHolidays = async (
     'SqBnVPV5XO9FZ0QdMqAyDL5wRsTHkl371Wg4Bj%2Bt4ptRlBoDZJUI4MQ4fFSGCepK96iQO0Dtme%2FkarPXkDPqdw%3D%3D';
 
   const url =
-    'http://apis.data.go.kr/B090041/openapi/service/SpcdeInfoService/getRestDeInfo';
+    'https://apis.data.go.kr/B090041/openapi/service/SpcdeInfoService/getRestDeInfo';
 
   const params = {
     serviceKey: decodeURIComponent(serviceKey),
