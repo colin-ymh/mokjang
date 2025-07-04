@@ -15,9 +15,6 @@ type WorshipListProps = {
 
 const WorshipList = ({ isNewWorship }: WorshipListProps) => {
   const dispatch = useDispatch<AppDispatch>();
-  const churchId: string = useSelector(
-    (state: RootState) => state.church.churchId
-  );
   const { worships, worshipFilter, worshipOrderBy, worshipOrderDirection } =
     useSelector((state: RootState) => state.worshipFilter);
 
@@ -38,9 +35,7 @@ const WorshipList = ({ isNewWorship }: WorshipListProps) => {
     setIsLoading(true);
 
     try {
-      const result = await dispatch(
-        fetchWorships({ churchId, currentPage: page + 1 })
-      );
+      const result = await dispatch(fetchWorships({ currentPage: page + 1 }));
       if (fetchWorships.fulfilled.match(result)) {
         const newWorships: Worship[] = result.payload;
         if (newWorships.length > 0) {
@@ -64,9 +59,7 @@ const WorshipList = ({ isNewWorship }: WorshipListProps) => {
   useEffect(() => {
     const fetchInitialWorships = async () => {
       try {
-        const result = await dispatch(
-          fetchWorships({ churchId, currentPage: 1 })
-        );
+        const result = await dispatch(fetchWorships({ currentPage: 1 }));
         if (fetchWorships.fulfilled.match(result)) {
           dispatch(setWorships(result.payload));
           setPage(1);
@@ -79,13 +72,7 @@ const WorshipList = ({ isNewWorship }: WorshipListProps) => {
     };
 
     fetchInitialWorships();
-  }, [
-    churchId,
-    worshipFilter,
-    worshipOrderBy,
-    worshipOrderDirection,
-    isNewWorship,
-  ]);
+  }, [worshipFilter, worshipOrderBy, worshipOrderDirection, isNewWorship]);
 
   const props = {
     list: {

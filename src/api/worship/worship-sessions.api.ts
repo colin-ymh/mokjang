@@ -137,7 +137,7 @@ export class WorshipSessionsApi {
     const url = `${this._url}/churches/${churchId}/worships/${worshipId}/sessions/${sessionId}`;
 
     try {
-      return await authorizeAxios.post(url);
+      return await authorizeAxios.get(url);
     } catch (serverError: any) {
       if (serverError.response) {
         const { message, error, statusCode } = serverError.response.data;

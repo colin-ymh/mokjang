@@ -19,10 +19,15 @@ const BorderInputContainer = styled.input<{
   $borderTopRightRadius?: number;
   $borderBottomLeftRadius?: number;
   $borderBottomRightRadius?: number;
+  $fontSize?: number;
+  $fontWeight?: number;
+  $isRight?: boolean;
 }>`
   width: ${({ width }) => (width ? `${width}px` : '100%')};
   box-sizing: border-box;
-  font-size: 14px;
+  font-size: ${({ $fontSize }) => `${$fontSize}px` || '14px'};
+  font-weight: ${({ $fontWeight }) => `${$fontWeight}px` || '400'};
+  text-align: ${({ $isRight }) => ($isRight ? 'right' : 'left')};
   padding: 10px;
   padding-left: ${({ $paddingLeft }) => `${$paddingLeft}px` || '30'};
   border: 1px solid ${({ $borderColor }) => $borderColor};
@@ -58,6 +63,9 @@ export type BorderInputProps = InputProps & {
   borderBottomLeftRadius?: number;
   borderBottomRightRadius?: number;
   readOnly?: boolean;
+  fontSize?: number;
+  fontWeight?: number;
+  isRight?: boolean;
 };
 
 const BorderInput = forwardRef<HTMLInputElement, BorderInputProps>(
@@ -76,6 +84,9 @@ const BorderInput = forwardRef<HTMLInputElement, BorderInputProps>(
       borderTopRightRadius,
       borderBottomLeftRadius,
       borderBottomRightRadius,
+      fontSize,
+      fontWeight,
+      isRight,
       ...props
     },
     ref
@@ -98,6 +109,9 @@ const BorderInput = forwardRef<HTMLInputElement, BorderInputProps>(
         $borderTopRightRadius={borderTopRightRadius}
         $borderBottomLeftRadius={borderBottomLeftRadius}
         $borderBottomRightRadius={borderBottomRightRadius}
+        $fontSize={fontSize}
+        $fontWeight={fontWeight}
+        $isRight={isRight}
         {...props}
       />
     );

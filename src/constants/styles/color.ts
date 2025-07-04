@@ -49,3 +49,12 @@ export enum STATUS_COLOR {
   APPROVED = '#2EE431',
   REJECTED = '#f43232',
 }
+
+export enum CALENDAR_COLOR {
+  MEMBER = '#F2C94C',
+  VISITATION = '#9B51E0',
+  TASK = '#2F80ED',
+  EDUCATION = '#EB5757',
+  EVENT = '#27AE60',
+  HOLIDAY = '#BDBDBD',
+}

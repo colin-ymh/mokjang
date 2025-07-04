@@ -53,14 +53,15 @@ const initialState: EducationFilterState = {
 
 export const fetchEducations = createAsyncThunk<
   Education[],
-  { churchId: string; currentPage: number },
+  { currentPage: number },
   { state: RootState }
 >(
   'educations/fetchEducations',
-  async ({ churchId, currentPage }, { getState, rejectWithValue }) => {
+  async ({ currentPage }, { getState, rejectWithValue }) => {
     const state = getState().educationFilter;
     const { educationOrderBy, educationOrderDirection, educationFilter } =
       state;
+    const churchId = getState().church.churchId;
     const educationsApi = new EducationsApi(false);
 
     try {

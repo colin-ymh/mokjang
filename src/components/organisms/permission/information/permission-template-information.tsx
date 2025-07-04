@@ -14,7 +14,6 @@ type PermissionTemplateInformationProps = {};
 const PermissionTemplateInformation =
   ({}: PermissionTemplateInformationProps) => {
     const dispatch = useDispatch<AppDispatch>();
-    const { churchId } = useSelector((state: RootState) => state.church);
     const { targetPermissionTemplate } = useSelector(
       (state: RootState) => state.targetPermissionTemplate
     );
@@ -35,7 +34,6 @@ const PermissionTemplateInformation =
       ) {
         dispatch(
           fetchPermissionManagers({
-            churchId,
             templateId: targetPermissionTemplate.id,
           })
         );

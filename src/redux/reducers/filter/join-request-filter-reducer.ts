@@ -85,15 +85,15 @@ const initialState: JoinRequestFilterState = {
 export const fetchJoinRequests = createAsyncThunk<
   JoinRequest[],
   {
-    churchId: string;
     currentPage: number;
     status: JOIN_REQUEST_STATUS;
   },
   { state: RootState }
 >(
   'joinRequests/fetchJoinRequests',
-  async ({ churchId, currentPage, status }, { getState, rejectWithValue }) => {
+  async ({ currentPage, status }, { getState, rejectWithValue }) => {
     const state = getState().joinRequestFilter;
+    const churchId = getState().church.churchId;
     const { joinRequestOrderBy, joinRequestOrderDirection, joinRequestFilter } =
       state;
     const joinRequestsApi = new JoinRequestsApi(false);

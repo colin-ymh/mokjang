@@ -13,6 +13,7 @@ import {
 import AttendanceInformationView from '@/components/organisms/attendance/information/attendance-information.view';
 import {
   fetchWorshipAttendances,
+  setPrevWorshipAttendances,
   setWorshipAttendances,
 } from '@/redux/reducers/filter/worship-attendance-filter-reducer';
 import Loading from '@/components/atoms/common/etc/loading';
@@ -203,6 +204,7 @@ const AttendanceInformation = ({}: AttendanceInformationProps) => {
           );
           if (fetchWorshipAttendances.fulfilled.match(result)) {
             dispatch(setWorshipAttendances(result.payload));
+            dispatch(setPrevWorshipAttendances(result.payload));
             setPage(1);
           }
         } catch (error) {

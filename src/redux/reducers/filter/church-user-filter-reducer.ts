@@ -85,15 +85,13 @@ const initialState: ChurchUserFilterState = {
 
 export const fetchChurchUsers = createAsyncThunk<
   ChurchUser[],
-  { churchId: string; currentPage: number; isManager: boolean },
+  { currentPage: number; isManager: boolean },
   { state: RootState }
 >(
   'churchUsers/fetchChurchUsers',
-  async (
-    { churchId, currentPage, isManager },
-    { getState, rejectWithValue }
-  ) => {
+  async ({ currentPage, isManager }, { getState, rejectWithValue }) => {
     const state = getState().churchUserFilter;
+    const churchId = getState().church.churchId;
     const { churchUserOrderBy, churchUserOrderDirection, churchUserFilter } =
       state;
 

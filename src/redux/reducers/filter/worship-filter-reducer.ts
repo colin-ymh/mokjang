@@ -48,13 +48,14 @@ const initialState: WorshipFilterState = {
 
 export const fetchWorships = createAsyncThunk<
   Worship[],
-  { churchId: string; currentPage: number },
+  { currentPage: number },
   { state: RootState }
 >(
   'worships/fetchWorships',
-  async ({ churchId, currentPage }, { getState, rejectWithValue }) => {
+  async ({ currentPage }, { getState, rejectWithValue }) => {
     const state = getState().worshipFilter;
     const { worshipOrderBy, worshipOrderDirection, worshipFilter } = state;
+    const churchId = getState().church.churchId;
     const worshipsApi = new WorshipsApi(false);
 
     try {

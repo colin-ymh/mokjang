@@ -65,9 +65,7 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
     setIsLoading(true);
 
     try {
-      const result = await dispatch(
-        fetchMembers({ churchId, currentPage: page + 1 })
-      );
+      const result = await dispatch(fetchMembers({ currentPage: page + 1 }));
       if (fetchMembers.fulfilled.match(result)) {
         const newMembers: Member[] = result.payload;
         if (newMembers.length > 0) {
@@ -91,9 +89,7 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
   useEffect(() => {
     const fetchInitialMembers = async () => {
       try {
-        const result = await dispatch(
-          fetchMembers({ churchId, currentPage: 1 })
-        );
+        const result = await dispatch(fetchMembers({ currentPage: 1 }));
         if (fetchMembers.fulfilled.match(result)) {
           dispatch(setMembers(result.payload));
           setPage(1);
@@ -105,13 +101,7 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
       }
     };
     fetchInitialMembers();
-  }, [
-    churchId,
-    memberFilter,
-    memberOrderBy,
-    memberOrderDirection,
-    isNewMember,
-  ]);
+  }, [memberFilter, memberOrderBy, memberOrderDirection, isNewMember]);
 
   // 목록에서 교인을 선택하여 상세 페이지로 이동
   const onClickMemberItem = async (memberId: string) => {
@@ -143,9 +133,7 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
       if (response.status === 200) {
         // 초기화 후 다시 로드
         setPage(1);
-        const result = await dispatch(
-          fetchMembers({ churchId, currentPage: 1 })
-        );
+        const result = await dispatch(fetchMembers({ currentPage: 1 }));
         if (fetchMembers.fulfilled.match(result)) {
           dispatch(setMembers(result.payload));
         }

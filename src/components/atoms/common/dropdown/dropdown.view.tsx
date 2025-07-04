@@ -93,6 +93,8 @@ type DropdownViewProps = {
   height?: number;
   backgroundColor?: string;
   disabled?: boolean;
+  isChevronShown: boolean;
+  isRight?: boolean;
 } & BorderInputProps;
 
 const DropdownView = forwardRef<HTMLInputElement, DropdownViewProps>(
@@ -117,6 +119,10 @@ const DropdownView = forwardRef<HTMLInputElement, DropdownViewProps>(
       height,
       backgroundColor,
       disabled,
+      isChevronShown,
+      fontSize,
+      fontWeight,
+      isRight,
       ...inputProps
     },
     ref
@@ -159,9 +165,12 @@ const DropdownView = forwardRef<HTMLInputElement, DropdownViewProps>(
                 onKeyDownHandler(event);
               }
             }}
+            fontSize={fontSize}
+            fontWeight={fontWeight}
+            isRight={isRight}
             {...inputProps}
           />
-          <Chevron $isOpened={isOpened} />
+          {isChevronShown && <Chevron $isOpened={isOpened} />}
         </DropdownButton>
 
         {!disabled && (
@@ -182,6 +191,7 @@ const DropdownView = forwardRef<HTMLInputElement, DropdownViewProps>(
                 onClick={onClickItem}
                 isSelected={item.value === innerValue}
                 isFocused={focusedIndex === index}
+                isRight={isRight}
               />
             ))}
           </DropdownList>

@@ -59,7 +59,7 @@ const MainMemberHeader = ({}: MainMemberHeaderProps) => {
   // 테스트 교인 생성
   const onClickDummyMembers = async () => {
     dummyApi.createDummyMembers({ churchId }).then(() => {
-      dispatch(fetchMembers({ churchId, currentPage: 1 })).then((result) => {
+      dispatch(fetchMembers({ currentPage: 1 })).then((result) => {
         if (fetchMembers.fulfilled.match(result)) {
           dispatch(setMembers(result.payload));
         }

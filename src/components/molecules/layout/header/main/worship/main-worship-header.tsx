@@ -45,6 +45,7 @@ const MainWorshipHeader = ({}: MainWorshipHeaderProps) => {
 
   const onClickAddWorship = () => {
     setIsAddWorshipOpened(true);
+    dispatch(setTargetWorship({ ...DEFAULT_WORSHIP, id: 'TEMP' }));
   };
 
   const onClickCloseModal = () => {

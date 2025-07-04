@@ -1,0 +1,38 @@
+import axios from 'axios';
+
+export type Holiday = {
+  dateName: string;
+  locdate: number;
+};
+
+export const getHolidays = async (
+  year: string,
+  month: string
+): Promise<Holiday[]> => {
+  const serviceKey =
+    'SqBnVPV5XO9FZ0QdMqAyDL5wRsTHkl371Wg4Bj%2Bt4ptRlBoDZJUI4MQ4fFSGCepK96iQO0Dtme%2FkarPXkDPqdw%3D%3D';
+
+  const url =
+    'http://apis.data.go.kr/B090041/openapi/service/SpcdeInfoService/getRestDeInfo';
+
+  const params = {
+    serviceKey: decodeURIComponent(serviceKey),
+    solYear: year,
+    solMonth: month,
+    _type: 'json',
+  };
+
+  try {
+    const response = await axios.get(url, { params });
+
+    const items = response.data.response?.body?.items?.item;
+
+    if (!items) return [];
+
+    // 단일 객체일 경우 배열로 감싸기
+    return Array.isArray(items) ? items : [items];
+  } catch (error) {
+    console.error('공휴일 API 호출 오류:', error);
+    return [];
+  }
+};

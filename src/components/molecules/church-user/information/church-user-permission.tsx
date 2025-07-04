@@ -55,7 +55,6 @@ const ChurchUserPermission = ({}: ChurchUserPermissionProps) => {
       try {
         const result = await dispatch(
           fetchPermissionTemplates({
-            churchId,
             currentPage: 1,
           })
         );
@@ -70,7 +69,7 @@ const ChurchUserPermission = ({}: ChurchUserPermissionProps) => {
     };
 
     fetchInitialPermissionTemplates();
-  }, [churchId]);
+  }, []);
 
   // 권한 범위 팝업 열기
   const onClickGroupPopupOpen = () => setIsGroupPopupShown(true);

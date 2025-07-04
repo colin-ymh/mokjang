@@ -3,7 +3,13 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 
-import { DESTRUCTIVE, GRAY, MAIN, WHITE } from '@/constants/styles/color';
+import {
+  BLACK,
+  DESTRUCTIVE,
+  GRAY,
+  MAIN,
+  WHITE,
+} from '@/constants/styles/color';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { BLANK } from '@/constants/constant';
 import useWindowSize from '@/hooks/window/window';
@@ -24,14 +30,20 @@ import { EDUCATION_TABLE_HEADER_ITEM } from '@/redux/reducers/filter/worship-enr
 
 import Present from '../../../../../public/svg/circle.svg';
 import Absent from '../../../../../public/svg/cancel.svg';
+import CancelIcon from '../../../../../public/svg/cancel.svg';
 import MemberProfilePopupButton from '@/components/molecules/common/button/member-profile-popup-button';
+import SlidePopup from '@/components/atoms/common/popup/slide-popup';
+import KebabDropdown from '@/components/atoms/common/dropdown/kebab-dropdown';
+import AttendanceInformation from '@/components/organisms/attendance/information/attendance-information';
+import EditWorshipSession from '@/components/organisms/attendance/edit/edit-worship-session';
+import { useScopedI18n } from '../../../../../locales/client';
 
 // 1. 컬럼별 PX 폭 (마지막 REMARKS만 auto 할 예정)
 const getColumnWidth = (id: string) => {
   switch (id) {
     case WORSHIP_ENROLLMENT.NAME:
-      return 100;
-    case WORSHIP_ENROLLMENT.GROUP:
+      return 150;
+    case WORSHIP_ENROLLMENT.GROUP_NAME:
       return 100;
     case WORSHIP_ENROLLMENT.ATTENDANCE_RATE:
       return 50;
@@ -139,7 +151,34 @@ const AbsentIcon = styled(Absent)`
   stroke: ${DESTRUCTIVE.DEFAULT};
 `;
 
+const ButtonRow = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  justify-content: center;
+  align-items: center;
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  cursor: pointer;
+`;
+
+const Cancel = styled(CancelIcon)`
+  width: 30px;
+  height: 30px;
+  stroke: ${BLACK};
+  stroke-width: 1px;
+`;
+
 type AttendanceTableProps = {
+  isSessionShown: boolean;
+  isEditOpened: boolean;
+  isEditEnabled: boolean;
+  onClickSessionClose: () => void;
+  onClickSessionSave: () => void;
+  onClickEditOpen: () => void;
+  onClickCloseEditModal: () => void;
   worshipEnrollments: WorshipEnrollment[];
   scrollRef: MutableRefObject<HTMLDivElement | null>;
   onScroll: () => void;
@@ -147,11 +186,21 @@ type AttendanceTableProps = {
 };
 
 const AttendanceTableView = ({
+  isSessionShown,
+  isEditOpened,
+  isEditEnabled,
+  onClickCloseEditModal,
+  onClickSessionClose,
+  onClickEditOpen,
+  onClickSessionSave,
   worshipEnrollments,
   scrollRef,
   onScroll,
   onClickHeader,
 }: AttendanceTableProps) => {
+  const t_button = useScopedI18n('button');
+  const t_title = useScopedI18n('title');
+
   const { worshipEnrollmentFilter } = useSelector(
     (state: RootState) => state.worshipEnrollmentFilter
   );
@@ -230,16 +279,12 @@ const AttendanceTableView = ({
       switch (id) {
         case WORSHIP_ENROLLMENT.NAME:
           return <MemberProfilePopupButton member={enrollment.member} />;
-        case WORSHIP_ENROLLMENT.GROUP:
+        case WORSHIP_ENROLLMENT.GROUP_NAME:
           return <MainText>{enrollment.member.group?.name}</MainText>;
         case WORSHIP_ENROLLMENT.ATTENDANCE_RATE:
           return (
             <MainText>
-              {/*{`${Math.round(*/}
-              {/*  (enrollment.presentCount /*/}
-              {/*    enrollment.worshipAttendances.length) **/}
-              {/*    100*/}
-              {/*)}%`}*/}
+              {`${Math.round(enrollment.attendanceRate * 100)}%`}
             </MainText>
           );
         case BLANK:
@@ -299,6 +344,44 @@ const AttendanceTableView = ({
           </tbody>
         </AttendanceTable>
       </TableContainer>
+
+      {/* 회차 상세정보 팝업*/}
+      <SlidePopup
+        isShow={isSessionShown}
+        isFooterShown={false}
+        onClickClose={onClickSessionClose}
+        headerRight={
+          <ButtonRow>
+            <KebabDropdown
+              items={[
+                {
+                  value: 'edit',
+                  title: t_button('edit'),
+                  onClick: onClickEditOpen,
+                },
+              ]}
+              width={150}
+            />
+            <ButtonContainer onClick={onClickSessionClose}>
+              <Cancel />
+            </ButtonContainer>
+          </ButtonRow>
+        }
+      >
+        <AttendanceInformation />
+      </SlidePopup>
+
+      {/* 회차 상세 수정 팝업 */}
+      <SlidePopup
+        isShow={isEditOpened}
+        headerTitle={t_title('editWorshipInformation')}
+        onClickDone={onClickSessionSave}
+        doneBackgroundColor={isEditEnabled ? MAIN.DEFAULT : MAIN.LIGHT}
+        doneDisabled={!isEditEnabled}
+        onClickClose={onClickCloseEditModal}
+      >
+        <EditWorshipSession />
+      </SlidePopup>
     </>
   );
 };

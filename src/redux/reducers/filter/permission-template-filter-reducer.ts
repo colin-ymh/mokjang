@@ -72,14 +72,14 @@ const initialState: PermissionTemplateFilterState = {
 export const fetchPermissionTemplates = createAsyncThunk<
   PermissionTemplate[],
   {
-    churchId: string;
     currentPage: number;
   },
   { state: RootState }
 >(
   'permissionTemplates/fetchPermissionTemplates',
-  async ({ churchId, currentPage }, { getState, rejectWithValue }) => {
+  async ({ currentPage }, { getState, rejectWithValue }) => {
     const state = getState().permissionTemplateFilter;
+    const churchId = getState().church.churchId;
     const {
       permissionTemplateOrderBy,
       permissionTemplateOrderDirection,
@@ -111,13 +111,12 @@ export const fetchPermissionTemplates = createAsyncThunk<
 
 export const fetchPermissionUnits = createAsyncThunk<
   PermissionUnit[], // 1) fulfilled 시 반환 타입
-  {
-    churchId: string;
-  }, // 2) dispatch 시 넘길 인자 타입 (없으면 void)
+  {}, // 2) dispatch 시 넘길 인자 타입 (없으면 void)
   { state: RootState } // 3) ThunkAPI 설정 (getState 타입 등)
 >(
   'permissionUnits/fetchPermissionUnits',
-  async ({ churchId }, { rejectWithValue }) => {
+  async ({}, { rejectWithValue, getState }) => {
+    const churchId = getState().church.churchId;
     const permissionsApi = new PermissionsApi(false);
 
     try {
@@ -135,13 +134,13 @@ export const fetchPermissionUnits = createAsyncThunk<
 export const fetchPermissionManagers = createAsyncThunk<
   Member[], // 1) fulfilled 시 반환 타입
   {
-    churchId: string;
     templateId: string;
   }, // 2) dispatch 시 넘길 인자 타입 (없으면 void)
   { state: RootState } // 3) ThunkAPI 설정 (getState 타입 등)
 >(
   'permissionUnits/fetchPermissionManagers',
-  async ({ churchId, templateId }, { rejectWithValue }) => {
+  async ({ templateId }, { rejectWithValue, getState }) => {
+    const churchId = getState().church.churchId;
     const permissionsApi = new PermissionsApi(false);
 
     try {

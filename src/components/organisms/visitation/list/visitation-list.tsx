@@ -95,7 +95,6 @@ const VisitationList = ({
     try {
       const result = await dispatch(
         fetchVisitations({
-          churchId,
           currentPage: page + 1,
           inChargeId:
             headerType === HEADER_BAR.MY ? user.churchUser[0].id : undefined,
@@ -132,7 +131,6 @@ const VisitationList = ({
       try {
         const result = await dispatch(
           fetchVisitations({
-            churchId,
             currentPage: 1,
             inChargeId:
               headerType === HEADER_BAR.MY ? user.churchUser[0].id : undefined,
@@ -155,7 +153,6 @@ const VisitationList = ({
 
     fetchInitialVisitations();
   }, [
-    churchId,
     visitationFilter,
     visitationOrderBy,
     visitationOrderDirection,
@@ -301,7 +298,6 @@ const VisitationList = ({
         setPage(1);
         const result = await dispatch(
           fetchVisitations({
-            churchId,
             currentPage: 1,
             inChargeId:
               headerType === HEADER_BAR.MY ? user.churchUser[0].id : undefined,

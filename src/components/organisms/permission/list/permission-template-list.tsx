@@ -80,7 +80,6 @@ const PermissionTemplateList = ({}: PermissionTemplateListProps) => {
     try {
       const result = await dispatch(
         fetchPermissionTemplates({
-          churchId,
           currentPage: page + 1,
         })
       );
@@ -118,7 +117,6 @@ const PermissionTemplateList = ({}: PermissionTemplateListProps) => {
       try {
         const result = await dispatch(
           fetchPermissionTemplates({
-            churchId,
             currentPage: 1,
           })
         );
@@ -234,7 +232,6 @@ const PermissionTemplateList = ({}: PermissionTemplateListProps) => {
         setPage(1);
         const result = await dispatch(
           fetchPermissionTemplates({
-            churchId,
             currentPage: 1,
           })
         );

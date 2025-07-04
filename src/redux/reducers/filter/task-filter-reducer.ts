@@ -90,7 +90,6 @@ const initialState: TaskFilterState = {
 export const fetchTasks = createAsyncThunk<
   Task[],
   {
-    churchId: string;
     currentPage: number;
     inChargeId?: string;
     memberId?: string;
@@ -99,10 +98,11 @@ export const fetchTasks = createAsyncThunk<
 >(
   'tasks/fetchTasks',
   async (
-    { churchId, currentPage, inChargeId, memberId },
+    { currentPage, inChargeId, memberId },
     { getState, rejectWithValue }
   ) => {
     const state = getState().taskFilter;
+    const churchId = getState().church.churchId;
     const { taskOrderBy, taskOrderDirection, taskFilter } = state;
     const tasksApi = new TasksApi(false);
     const taskReportsApi = new TaskReportsApi(false);

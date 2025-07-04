@@ -8,6 +8,7 @@ import { WorshipAttendancesApi } from '@/api/worship/worship-attendances.api';
 type WORSHIP_ATTENDANCE_FILTER = {};
 
 type WorshipAttendanceFilterState = {
+  prevWorshipAttendances: WorshipAttendance[];
   worshipAttendances: WorshipAttendance[];
   worshipAttendanceFilter: WORSHIP_ATTENDANCE_FILTER;
   worshipAttendanceOrderBy?: WORSHIP_ATTENDANCE;
@@ -28,7 +29,7 @@ export const INITIAL_WORSHIP_INFORMATION_HEADER_LIST: ATTENDANCE_INFORMATION_TAB
   [
     {
       id: WORSHIP_ATTENDANCE.NAME,
-      isSortable: false,
+      isSortable: true,
       isFilterable: false,
     },
     {
@@ -51,8 +52,10 @@ export const INITIAL_WORSHIP_INFORMATION_HEADER_LIST: ATTENDANCE_INFORMATION_TAB
   ];
 
 const initialState: WorshipAttendanceFilterState = {
+  prevWorshipAttendances: [],
   worshipAttendances: [],
   worshipAttendanceFilter: INITIAL_WORSHIP_ATTENDANCE_FILTER,
+  worshipAttendanceOrderBy: WORSHIP_ATTENDANCE.GROUP_NAME,
   worshipAttendanceOrderDirection: ORDER_DIRECTION.ASC,
   worshipAttendanceTableHeaderItemList: INITIAL_WORSHIP_INFORMATION_HEADER_LIST,
 };
@@ -105,6 +108,12 @@ const WorshipAttendanceFilterSlice = createSlice({
   name: 'register',
   initialState,
   reducers: {
+    setPrevWorshipAttendances: (
+      state,
+      action: PayloadAction<WorshipAttendance[]>
+    ) => {
+      state.prevWorshipAttendances = action.payload;
+    },
     setWorshipAttendances: (
       state,
       action: PayloadAction<WorshipAttendance[]>
@@ -139,6 +148,7 @@ const WorshipAttendanceFilterSlice = createSlice({
 });
 
 export const {
+  setPrevWorshipAttendances,
   setWorshipAttendances,
   setWorshipAttendanceFilter,
   setWorshipAttendanceOrderBy,

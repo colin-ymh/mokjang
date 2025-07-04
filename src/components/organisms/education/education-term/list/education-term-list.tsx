@@ -104,7 +104,6 @@ const EducationTermList = ({ isInProgress }: EducationTermListProps) => {
     try {
       const result = await dispatch(
         fetchEducationTerms({
-          churchId,
           currentPage: page + 1,
           educationId: targetEducation.id,
           isInProgress,
@@ -123,7 +122,7 @@ const EducationTermList = ({ isInProgress }: EducationTermListProps) => {
           dispatch(
             setEducationTerms([...educationTerms, ...filteredNewEducationTerms])
           );
-          await dispatch(fetchEducationSessions({ churchId }));
+          await dispatch(fetchEducationSessions({}));
           setPage((prev) => prev + 1); // 다음 페이지로 이동
         }
       }
@@ -140,7 +139,6 @@ const EducationTermList = ({ isInProgress }: EducationTermListProps) => {
       try {
         const result = await dispatch(
           fetchEducationTerms({
-            churchId,
             currentPage: 1,
             educationId: targetEducation.id,
             isInProgress,
@@ -149,7 +147,7 @@ const EducationTermList = ({ isInProgress }: EducationTermListProps) => {
         if (fetchEducationTerms.fulfilled.match(result)) {
           const newEducationTerms: EducationTerm[] = result.payload;
           dispatch(setEducationTerms(newEducationTerms));
-          await dispatch(fetchEducationSessions({ churchId }));
+          await dispatch(fetchEducationSessions({}));
           setPage(1);
         }
       } catch (error) {
@@ -269,6 +267,7 @@ const EducationTermList = ({ isInProgress }: EducationTermListProps) => {
         term.id === newEducationTerm.id ? newEducationTerm : term
       );
       dispatch(setEducationTerms(updatedTerms));
+      dispatch(fetchEducationSessions({}));
 
       setIsEditTermShown(false);
       setTimeout(() => setIsEducationTermInformationShown(true), 500);
@@ -349,7 +348,6 @@ const EducationTermList = ({ isInProgress }: EducationTermListProps) => {
         setPage(1);
         const result = await dispatch(
           fetchEducationTerms({
-            churchId,
             currentPage: 1,
             educationId: targetEducation.id,
             isInProgress,
@@ -483,10 +481,9 @@ const EducationTermList = ({ isInProgress }: EducationTermListProps) => {
 
           const newTargetEducationTerm = {
             ...targetEducationTerm,
-            educationSessions: [
-              ...targetEducationTerm.educationSessions,
-              newSession,
-            ],
+            educationSessions: targetEducationTerm.educationSessions
+              ? [...targetEducationTerm.educationSessions, newSession]
+              : [newSession],
           };
           dispatch(setTargetEducationTerm(newTargetEducationTerm));
 

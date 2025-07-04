@@ -80,7 +80,6 @@ const initialState: EducationTermFilterState = {
 export const fetchEducationTerms = createAsyncThunk<
   EducationTerm[],
   {
-    churchId: string;
     currentPage: number;
     educationId?: string;
     isInProgress?: boolean;
@@ -89,10 +88,11 @@ export const fetchEducationTerms = createAsyncThunk<
 >(
   'educations/fetchEducationTerms',
   async (
-    { churchId, currentPage, educationId, isInProgress },
+    { currentPage, educationId, isInProgress },
     { getState, rejectWithValue }
   ) => {
     const state = getState().educationTermFilter;
+    const churchId = getState().church.churchId;
     const {
       educationTermOrderBy,
       educationTermOrderDirection,
@@ -136,12 +136,13 @@ export const fetchEducationTerms = createAsyncThunk<
 
 export const fetchEducationSessions = createAsyncThunk<
   EducationTerm[],
-  { churchId: string },
+  {},
   { state: RootState }
 >(
   'educations/fetchEducationSessions',
-  async ({ churchId }, { getState, rejectWithValue }) => {
+  async ({}, { getState, rejectWithValue }) => {
     const state = getState().educationTermFilter;
+    const churchId = getState().church.churchId;
     const { educationTerms } = state;
     const educationSessionsApi = new EducationSessionsApi(false);
 

@@ -12,7 +12,7 @@
 //   value: string;
 //   selected: Date | null;
 //   onChange: (date: Date | null) => void;
-//   onChangeRaw?: (event: ChangeEvent<HTMLInputElement>) => void;
+//   onChangeRaw?: (church-church-event: ChangeEvent<HTMLInputElement>) => void;
 //   borderColor?: string;
 //   height?: number;
 //   width?: number;
@@ -39,9 +39,9 @@
 //         value={value}
 //         selected={selected}
 //         onChange={(date) => onChange(date as Date | null)}
-//         onChangeRaw={(event) => {
-//           if (onChangeRaw && event?.target instanceof HTMLInputElement) {
-//             onChangeRaw(event as unknown as ChangeEvent<HTMLInputElement>);
+//         onChangeRaw={(church-church-event) => {
+//           if (onChangeRaw && church-church-event?.target instanceof HTMLInputElement) {
+//             onChangeRaw(church-church-event as unknown as ChangeEvent<HTMLInputElement>);
 //           }
 //         }}
 //         dateFormat="yyyy-MM-dd"

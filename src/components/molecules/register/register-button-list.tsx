@@ -60,9 +60,7 @@ const RegisterButtonList = ({ setIsShown }: RegisterButtonListProps) => {
           // 교인 Id 할당
           const memberId = response.data.id;
           dispatch(setMember({ ...member, id: memberId }));
-          const result = await dispatch(
-            fetchMembers({ churchId, currentPage: 1 })
-          );
+          const result = await dispatch(fetchMembers({ currentPage: 1 }));
           if (fetchMembers.fulfilled.match(result)) {
             dispatch(setMembers(result.payload));
           }
@@ -94,9 +92,7 @@ const RegisterButtonList = ({ setIsShown }: RegisterButtonListProps) => {
           // 교인 Id 할당
           const memberId = response.data.id;
           dispatch(setMember({ ...member, id: memberId }));
-          const result = await dispatch(
-            fetchMembers({ churchId, currentPage: 1 })
-          );
+          const result = await dispatch(fetchMembers({ currentPage: 1 }));
           if (fetchMembers.fulfilled.match(result)) {
             dispatch(setMembers(result.payload));
           }
@@ -113,9 +109,7 @@ const RegisterButtonList = ({ setIsShown }: RegisterButtonListProps) => {
               getEditMemberBody(member)
             );
             dispatch(setMember(DEFAULT_MEMBER));
-            const result = await dispatch(
-              fetchMembers({ churchId, currentPage: 1 })
-            );
+            const result = await dispatch(fetchMembers({ currentPage: 1 }));
             if (fetchMembers.fulfilled.match(result)) {
               dispatch(setMembers(result.payload));
             }
@@ -133,9 +127,7 @@ const RegisterButtonList = ({ setIsShown }: RegisterButtonListProps) => {
           );
 
           dispatch(setMember(DEFAULT_MEMBER));
-          const result = await dispatch(
-            fetchMembers({ churchId, currentPage: 1 })
-          );
+          const result = await dispatch(fetchMembers({ currentPage: 1 }));
           if (fetchMembers.fulfilled.match(result)) {
             dispatch(setMembers(result.payload));
           }
@@ -158,9 +150,7 @@ const RegisterButtonList = ({ setIsShown }: RegisterButtonListProps) => {
               }
             );
 
-            const result = await dispatch(
-              fetchMembers({ churchId, currentPage: 1 })
-            );
+            const result = await dispatch(fetchMembers({ currentPage: 1 }));
             if (fetchMembers.fulfilled.match(result)) {
               dispatch(setMembers(result.payload));
             }

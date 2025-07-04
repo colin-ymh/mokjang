@@ -59,14 +59,14 @@
 //   const [isButtonEnabled, setIsButtonEnabled] = useState<boolean>(false);
 //
 //   // 시작 날짜 변경
-//   const onChangeStartDate = (event: ChangeEvent<HTMLInputElement>) => {
-//     const newStartDate = getFormattedDate(event.target.value);
+//   const onChangeStartDate = (church-church-event: ChangeEvent<HTMLInputElement>) => {
+//     const newStartDate = getFormattedDate(church-church-event.target.value);
 //     setStartDate(newStartDate);
 //   };
 //
 //   // 종료 날짜 변경
-//   const onChangeEndDate = (event: ChangeEvent<HTMLInputElement>) => {
-//     const newEndDate = getFormattedDate(event.target.value);
+//   const onChangeEndDate = (church-church-event: ChangeEvent<HTMLInputElement>) => {
+//     const newEndDate = getFormattedDate(church-church-event.target.value);
 //     setEndDate(newEndDate);
 //   };
 //

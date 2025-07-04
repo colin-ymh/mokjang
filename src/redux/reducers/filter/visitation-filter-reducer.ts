@@ -104,7 +104,6 @@ const initialState: VisitationFilterState = {
 export const fetchVisitations = createAsyncThunk<
   Visitation[],
   {
-    churchId: string;
     currentPage: number;
     inChargeId?: string;
     memberId?: string;
@@ -113,10 +112,11 @@ export const fetchVisitations = createAsyncThunk<
 >(
   'visitations/fetchVisitations',
   async (
-    { churchId, currentPage, inChargeId, memberId },
+    { currentPage, inChargeId, memberId },
     { getState, rejectWithValue }
   ) => {
     const state = getState().visitationFilter;
+    const churchId = getState().church.churchId;
     const { visitationOrderBy, visitationOrderDirection, visitationFilter } =
       state;
     const visitationsApi = new VisitationsApi(false);

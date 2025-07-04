@@ -119,11 +119,11 @@ type AttendanceTableProps = {
   worshipAttendances: WorshipAttendance[];
   scrollRef: MutableRefObject<HTMLDivElement | null>;
   onScroll: () => void;
-  onChangePresent: (value: boolean, attendanceId: string) => void;
-  onChangeAbsent: (value: boolean, attendanceId: string) => void;
+  onChangePresent: (value: boolean, attendance: WorshipAttendance) => void;
+  onChangeAbsent: (value: boolean, attendance: WorshipAttendance) => void;
   onChangeNote: (
     event: ChangeEvent<HTMLTextAreaElement>,
-    attendanceId: string
+    attendance: WorshipAttendance
   ) => void;
 };
 
@@ -161,7 +161,7 @@ const AttendanceInformationTableView = ({
               onChangePresent(
                 attendance.attendanceStatus !==
                   WORSHIP_ATTENDANCE_STATUS.PRESENT,
-                attendance.id
+                attendance
               )
             }
           >
@@ -170,7 +170,7 @@ const AttendanceInformationTableView = ({
                 attendance.attendanceStatus ===
                 WORSHIP_ATTENDANCE_STATUS.PRESENT
               }
-              onChange={(value) => onChangePresent(value, attendance.id)}
+              onChange={(value) => onChangePresent(value, attendance)}
             />
           </CheckButtonContainer>
         );
@@ -181,7 +181,7 @@ const AttendanceInformationTableView = ({
               onChangeAbsent(
                 attendance.attendanceStatus !==
                   WORSHIP_ATTENDANCE_STATUS.ABSENT,
-                attendance.id
+                attendance
               )
             }
           >
@@ -189,7 +189,7 @@ const AttendanceInformationTableView = ({
               value={
                 attendance.attendanceStatus === WORSHIP_ATTENDANCE_STATUS.ABSENT
               }
-              onChange={(value) => onChangeAbsent(value, attendance.id)}
+              onChange={(value) => onChangeAbsent(value, attendance)}
             />
           </CheckButtonContainer>
         );
@@ -198,7 +198,7 @@ const AttendanceInformationTableView = ({
           <BorderTextarea
             value={attendance.note}
             borderColor={GRAY.LIGHT}
-            onChange={(event) => onChangeNote(event, attendance.id)}
+            onChange={(event) => onChangeNote(event, attendance)}
           />
         );
       case BLANK:
@@ -234,12 +234,12 @@ const AttendanceInformationTableView = ({
             </tr>
           </thead>
           <tbody>
-            {worshipAttendances.map((enrollment) => (
-              <AttendanceTableRow key={enrollment.id}>
+            {worshipAttendances.map((attendance) => (
+              <AttendanceTableRow key={attendance.id}>
                 {worshipAttendanceTableHeaderItemList.map((item) => (
                   <TableData key={item.id} id={item.id} $isCheck={item.isCheck}>
                     <ContentWrapper>
-                      {getAttendanceTableContent(item.id, enrollment)}
+                      {getAttendanceTableContent(item.id, attendance)}
                     </ContentWrapper>
                   </TableData>
                 ))}

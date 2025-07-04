@@ -13,6 +13,11 @@ export default {
   isNotDone: '미완료',
   customSelect: '직접선택',
 
+  date: '날짜',
+  birthday: '교인 생일',
+  churchEvent: '이벤트',
+  holiday: '공휴일',
+
   worshipSessionTitle: '설교제목',
   worshipSessionBibleTitle: '성경본문',
   worshipSessionInCharge: '설교자',
@@ -250,8 +255,13 @@ export default {
   'title.addWorshipSession': '출석내용 입력',
   'title.editWorshipSession': '출석내용 수정',
 
+  'title.editWorshipInformation': '예배 내용 수정',
+
   'title.addWorship': '예배 추가',
   'title.editWorship': '예배 수정',
+
+  'title.addChurchEvent': '이벤트 추가',
+  'title.editChurchEvent': '이벤트 수정',
 
   'title.attendanceInformation': '보고서',
   /*-------------------title (popup title)-------------------*/
@@ -395,6 +405,9 @@ export default {
   'button.addWorshipSession': '출석내용 입력하기',
   'button.addWorship': '예배 추가하기',
   'button.check': '조회',
+  'button.addChurchEvent': '이벤트 추가하기',
+  'button.today': '오늘',
+  'button.my': '내 일정',
   /*-------------------button-------------------*/
 
   /*-------------------placeholder-------------------*/
@@ -442,6 +455,9 @@ export default {
   'placeholder.worshipSessionInCharge': '설교자를 입력해주세요',
   'placeholder.worshipSessionVideoUrl': '예배영상 URL을 입력해주세요',
   'placeholder.worshipSessionDescription': '특이사항을 입력해주세요',
+
+  'placeholder.date': '날짜를 선택해주세요.',
+  'placeholder.description': '설명을 입력해주세요.',
   /*-------------------placeholder-------------------*/
 
   /*-------------------radiobutton-------------------*/

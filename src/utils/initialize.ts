@@ -45,7 +45,7 @@ export const useInitializeChurch = () => {
         dispatch(fetchGroups()),
         dispatch(fetchMinistryGroups()),
         dispatch(fetchOfficers()),
-        dispatch(fetchPermissionUnits({ churchId })),
+        dispatch(fetchPermissionUnits({})),
       ]);
 
       const [ministries] = await Promise.all([
