@@ -1,6 +1,5 @@
 import { BLANK } from '@/constants/constant';
-import { Member } from '@/models/member/member';
-import { DEFAULT_MEMBER } from '@/redux/reducers/member-register-reducer';
+import { DEFAULT_MEMBER, Member } from '@/models/member/member';
 import { STATUS, VISITATION_STATUS } from '@/constants/status/status';
 import { VisitationReport } from '@/models/report/report';
 

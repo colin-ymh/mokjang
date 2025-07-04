@@ -9,7 +9,6 @@ import { MemberDropdownType } from '@/components/atoms/common/dropdown/member-dr
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 import { setTargetVisitation } from '@/redux/reducers/target/target-visitation-reducer';
-import { DEFAULT_MEMBER } from '@/redux/reducers/member-register-reducer';
 import {
   getDateFromDateString,
   getDateStringFromDate,
@@ -18,6 +17,7 @@ import {
 } from '@/utils/date';
 import AddVisitationView from '@/components/organisms/visitation/add/add-visitation.view';
 import { VISITATION_STATUS } from '@/constants/status/status';
+import { DEFAULT_MEMBER } from '@/models/member/member';
 
 const AddVisitation = () => {
   const { targetVisitation } = useSelector(

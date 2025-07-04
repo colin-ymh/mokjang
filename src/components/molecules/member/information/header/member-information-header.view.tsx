@@ -10,8 +10,8 @@ import { RootState } from '@/redux/store';
 import { useSelector } from 'react-redux';
 import ProfileImage from '@/components/atoms/common/image/profile-image';
 import SlidePopup from '@/components/atoms/common/popup/slide-popup';
-import MemberEdit from '@/components/organisms/edit/member-edit';
 import { useScopedI18n } from '../../../../../../locales/client';
+import AddMember from '@/components/organisms/member/add/add-member';
 
 const InformationHeader = styled.div`
   display: flex;
@@ -112,7 +112,7 @@ const MemberInformationHeaderView = ({
         doneText={t_button('save')}
         onClickDone={onClickSave}
       >
-        <MemberEdit onChangeProfileImage={onChangeProfileImage} />
+        <AddMember onChangeProfileImage={onChangeProfileImage} />
       </SlidePopup>
     </InformationHeader>
   );

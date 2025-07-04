@@ -10,11 +10,10 @@ import { DIRECTION, SIZE } from '@/constants/styles/style';
 import { useScopedI18n } from '../../../../../../../locales/client';
 import { MEDIA_MIN_WIDTH } from '@/constants/constant';
 import SlidePopup from '@/components/atoms/common/popup/slide-popup';
-import CustomPopup from '@/components/atoms/common/popup/custom-popup';
-import MemberRegister from '@/components/organisms/register/member-register';
 import Button from '@/components/atoms/common/button/button';
 import { MAIN_HEADER_ID } from '@/constants/layout/header';
 import GroupFilter from '@/components/atoms/layout/side/main-side/group-filter';
+import AddMember from '@/components/organisms/member/add/add-member';
 
 const HeaderContainer = styled.div`
   display: flex;
@@ -107,6 +106,8 @@ type MainMemberHeaderViewProps = {
   onDismissModal: () => void;
   selectedGroupName: string;
   onClickNewGroup: (groupId: string | null) => void;
+  onChangeProfileImage: (image: File | null) => void;
+  onClickSave: () => void;
 };
 
 const MainMemberHeaderView = ({
@@ -121,6 +122,8 @@ const MainMemberHeaderView = ({
   onDismissModal,
   selectedGroupName,
   onClickNewGroup,
+  onChangeProfileImage,
+  onClickSave,
 }: MainMemberHeaderViewProps) => {
   const slug = useParams().slug as string[];
   const contentId = slug[2];
@@ -177,22 +180,19 @@ const MainMemberHeaderView = ({
       </SlidePopup>
       {/* 데스크톱 교인 추가 */}
       <DesktopRegister>
-        <CustomPopup
+        <SlidePopup
           isShow={isRegisterShown}
-          width={30}
-          height={80}
-          isPercentage={true}
-          onClickCancel={onClickClose}
-          onClickDone={() => {}}
+          onClickClose={onClickClose}
+          onClickDone={onClickSave}
           headerTitle={t_title('memberRegister')}
         >
-          <MemberRegister setIsShown={setIsRegisterShown} />
-        </CustomPopup>
+          <AddMember onChangeProfileImage={onChangeProfileImage} />
+        </SlidePopup>
       </DesktopRegister>
       {/* 모바일 교인 추가*/}
       <MobileRegister>
         <SlidePopup isShow={isRegisterShown} onClickClose={onClickClose}>
-          <MemberRegister setIsShown={setIsRegisterShown} />
+          <AddMember onChangeProfileImage={onChangeProfileImage} />
         </SlidePopup>
       </MobileRegister>
     </HeaderContainer>

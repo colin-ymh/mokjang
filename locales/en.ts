@@ -13,6 +13,7 @@ export default {
   isNotDone: 'Incomplete',
   customSelect: 'Custom Select',
 
+  leafMonth: 'Leaf Month',
   date: 'Date',
   birthday: 'Member Birthday',
   churchEvent: 'Event',
@@ -229,6 +230,7 @@ export default {
 
   /*-------------------title (popup title)-------------------*/
   'title.memberRegister': 'Member Register',
+  'title.editMember': 'Edit Member',
 
   'title.addVisitation': 'Add Visitation',
   'title.editVisitation': 'Edit Visitation',
@@ -405,7 +407,7 @@ export default {
   'placeholder.educationName': 'Enter the education name.',
   'placeholder.educationDescription': 'Enter the education description.',
   'placeholder.mobilePhone': 'Enter the mobile phone number.',
-  'placeholder.birth': 'Enter the date of birth (e.g., YYYY.MM.DD).',
+  'placeholder.birth': 'Enter the date of birth.',
   'placeholder.homePhone': 'Enter the home phone number.',
   'placeholder.occupation': 'Enter the occupation.',
   'placeholder.address': 'Enter the address.',

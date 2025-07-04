@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Member } from '@/models/member/member';
-import { DEFAULT_MEMBER } from '@/redux/reducers/member-register-reducer';
+import { DEFAULT_MEMBER, Member } from '@/models/member/member';
 
 type TargetMemberState = {
   targetMember: Member;

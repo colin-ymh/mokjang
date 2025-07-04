@@ -11,7 +11,6 @@ import { Task } from '@/models/task/task';
 import { setTargetVisitation } from '@/redux/reducers/target/target-visitation-reducer';
 import { Visitation } from '@/models/visitation/visitation';
 import { setTargetMember } from '@/redux/reducers/target/target-member-reducer';
-import { Member } from '@/models/member/member';
 import { setTargetChurchEvent } from '@/redux/reducers/target/target-church-event-reducer';
 import { ChurchEvent } from '@/models/church-event/church-event';
 import { setTargetEducationSession } from '@/redux/reducers/target/target-education-session-reducer';
@@ -19,6 +18,10 @@ import { CalendarApi } from '@/api/calendar/calendar.api';
 import { setTargetEducationTerm } from '@/redux/reducers/target/target-education-term-reducer';
 import { EducationTermsApi } from '@/api/education/education-terms.api';
 import { EducationAttendanceApi } from '@/api/education/education-attendance.api';
+import { MembersApi } from '@/api/members/members.api';
+import { EducationsApi } from '@/api/education/educations.api';
+import { setTargetEducation } from '@/redux/reducers/target/target-education-reducer';
+import { EducationSessionsApi } from '@/api/education/education-sessions.api';
 
 const MainCalendar = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -53,8 +56,17 @@ const MainCalendar = () => {
                 setOpenedDomain(DOMAIN.VISITATION);
                 return;
               case DOMAIN.MEMBER:
-                dispatch(setTargetMember(event.member as Member));
-                setOpenedDomain(DOMAIN.MEMBER);
+                if (event.member) {
+                  const membersApi = new MembersApi(false);
+                  const response = await membersApi.getMember({
+                    churchId,
+                    memberId: event.member.id,
+                  });
+
+                  const newMember = response.data.data;
+                  dispatch(setTargetMember(newMember));
+                  setOpenedDomain(DOMAIN.MEMBER);
+                }
                 return;
               case DOMAIN.CHURCH_EVENT:
                 dispatch(
@@ -64,7 +76,9 @@ const MainCalendar = () => {
                 return;
               case DOMAIN.EDUCATION:
                 const calendarApi = new CalendarApi(false);
+                const educationsApi = new EducationsApi(false);
                 const educationTermsApi = new EducationTermsApi(false);
+                const educationSessionsApi = new EducationSessionsApi(false);
                 const educationAttendanceApi = new EducationAttendanceApi(
                   false
                 );
@@ -82,6 +96,21 @@ const MainCalendar = () => {
                 });
                 const newEducationTerm = termResponse.data.data;
 
+                const educationResponse = await educationsApi.getEducation({
+                  churchId,
+                  educationId: newEducationSession.educationTerm.education.id,
+                });
+                const newEducation = educationResponse.data;
+
+                const sessionsResponse =
+                  await educationSessionsApi.getEducationSessions({
+                    churchId,
+                    educationId: newEducation.id,
+                    educationTermId: newEducationTerm.id,
+                  });
+
+                const newEducationSessions = sessionsResponse.data.data;
+
                 const attendanceResponse =
                   await educationAttendanceApi.getEducationAttendances({
                     churchId,
@@ -91,7 +120,13 @@ const MainCalendar = () => {
                   });
                 const newEducationAttendances = attendanceResponse.data.data;
 
-                dispatch(setTargetEducationTerm(newEducationTerm));
+                dispatch(setTargetEducation(newEducation));
+                dispatch(
+                  setTargetEducationTerm({
+                    ...newEducationTerm,
+                    educationSessions: newEducationSessions,
+                  })
+                );
                 dispatch(
                   setTargetEducationSession({
                     ...newEducationSession,

@@ -24,20 +24,6 @@ export enum BAPTISM {
   NONE = 'none',
 }
 
-// 성도 등록 타입
-export enum MEMBER_REGISTER_TYPE {
-  NEW = 'new',
-  TRANSFERRED = 'transferred',
-}
-
-// 성도 등록 단계
-export enum MEMBER_REGISTER_STAGE {
-  REQUIRED = 'required',
-  PERSONAL = 'personal',
-  RELIGIOUS = 'religious',
-  EDIT = 'edit',
-}
-
 // 성별
 export enum GENDER {
   MALE = 'male',

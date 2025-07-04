@@ -1,9 +1,4 @@
-import React, {
-  ChangeEvent,
-  forwardRef,
-  InputHTMLAttributes,
-  useEffect,
-} from 'react';
+import React, { ChangeEvent, forwardRef, InputHTMLAttributes } from 'react';
 
 import VehicleNumberInputView, {
   VehicleNumberInputRef,
@@ -26,92 +21,10 @@ const VehicleNumberInput = forwardRef<
     { label, value, onChangeInput, height, width, borderColor, ...inputProps },
     ref
   ) => {
-    // // 열려있는 번호 입력 창 개수
-    // const [count, setCount] = useState<number>(1);
-
-    // // 입력 창 추가로 열기 (최대 3개)
-    // const onClickPlusButton = () => {
-    //   if (count < 3) setCount(count + 1);
-    // };
-    //
-    useEffect(() => {
-      // 첫 번째 입력값이 완료되었을 때
-      if (
-        typeof ref !== 'function' &&
-        ref?.current?.secondInputRef?.current &&
-        value[0]?.length === 4
-      ) {
-        ref.current.secondInputRef.current.focus();
-      }
-
-      // 두 번째 입력값이 완료되었을 때
-      if (
-        typeof ref !== 'function' &&
-        ref?.current?.thirdInputRef?.current &&
-        value[1]?.length === 4
-      ) {
-        ref.current.thirdInputRef.current.focus();
-      }
-    }, [value]);
-
-    // useEffect(() => {
-    //   // 첫 번째 입력창 입력 종료 시
-    //   if (value[0]?.length === 4) {
-    //     // 최초인 경우, 다음 입력창 열기
-    //     if (count === 1) setCount(2);
-    //
-    //     // 다음 입력창으로 input focus 변경
-    //     if (
-    //       typeof ref !== 'function' &&
-    //       ref?.current?.secondInputRef?.current
-    //     ) {
-    //       ref.current.secondInputRef.current.focus();
-    //     }
-    //   }
-    //
-    //   // 두 번째 입력창 입력 종료 시
-    //   if (value[1]?.length === 4) {
-    //     // 최초인 경우, 다음 입력창 열기
-    //     if (count === 2) setCount(3);
-    //
-    //     // 다음 입력창으로 input focus 변경
-    //     if (typeof ref !== 'function' && ref?.current?.thirdInputRef?.current) {
-    //       ref.current.thirdInputRef.current.focus();
-    //     }
-    //   }
-    // }, [value]);
-
-    // useEffect(() => {
-    //   // 다음 ref 가 활성화되기 전까지 잠시 대기
-    //   const timer = setTimeout(() => {
-    //     if (typeof ref !== 'function') {
-    //       if (
-    //         count === 2 &&
-    //         value[2] === BLANK &&
-    //         ref?.current?.secondInputRef?.current
-    //       ) {
-    //         ref.current.secondInputRef.current.focus();
-    //       }
-    //
-    //       if (
-    //         count === 3 &&
-    //         value[3] === BLANK &&
-    //         ref?.current?.thirdInputRef?.current
-    //       ) {
-    //         ref.current.thirdInputRef.current.focus();
-    //       }
-    //     }
-    //   }, 100);
-    //
-    //   return () => clearTimeout(timer);
-    // }, [count, ref]);
-
     const props = {
       label,
       value,
-      // count,
       onChangeInput,
-      // onClickPlusButton,
       ...inputProps,
       height,
       width,

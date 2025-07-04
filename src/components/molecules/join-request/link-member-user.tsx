@@ -4,9 +4,8 @@ import { MembersApi } from '@/api/members/members.api';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { BLANK } from '@/constants/constant';
-import { Member } from '@/models/member/member';
+import { DEFAULT_MEMBER, Member } from '@/models/member/member';
 import { getFormattedName } from '@/utils/format';
-import { DEFAULT_MEMBER } from '@/redux/reducers/member-register-reducer';
 
 type LinkMemberUserProps = {
   onChangeLinkMember: (memberId: string) => void;

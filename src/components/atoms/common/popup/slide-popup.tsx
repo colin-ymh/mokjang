@@ -20,7 +20,11 @@ const SlidePanel = styled.div<{
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 
   ${({ direction, $isShow, size, $isPercentage }) => {
-    const sizeValue = $isPercentage ? `${size}%` : `${size}px`;
+    const sizeValue = $isPercentage
+      ? direction === DIRECTION.LEFT || direction === DIRECTION.RIGHT
+        ? `${size}vw` // 👈 가로 슬라이드는 viewport width 기준
+        : `${size}vh` // 👈 세로 슬라이드는 viewport height 기준
+      : `${size}px`;
     switch (direction) {
       case DIRECTION.LEFT:
         return `

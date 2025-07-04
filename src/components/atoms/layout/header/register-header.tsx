@@ -1,8 +1,6 @@
 import { usePathname, useRouter } from 'next/navigation';
 
 import RegisterHeaderView from '@/components/atoms/layout/header/register-header.view';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/redux/store';
 import { useState } from 'react';
 import ConfirmPopup from '@/components/atoms/common/popup/confirm-popup';
 import { useScopedI18n } from '../../../../../locales/client';
@@ -10,7 +8,6 @@ import { useScopedI18n } from '../../../../../locales/client';
 const RegisterHeader = () => {
   const t_popup = useScopedI18n('popup');
   const t_button = useScopedI18n('button');
-  const member = useSelector((state: RootState) => state.memberRegister.member);
   const router = useRouter();
   const pathname = usePathname(); // 현재 경로 가져오기
 
