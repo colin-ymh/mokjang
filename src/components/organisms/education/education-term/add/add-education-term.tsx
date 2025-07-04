@@ -13,7 +13,6 @@ import {
 import { setTargetEducationTerm } from '@/redux/reducers/target/target-education-term-reducer';
 import AddEducationTermView from '@/components/organisms/education/education-term/add/add-education-term.view';
 import { MemberDropdownValueType } from '@/models/dropdown/dropdown';
-import { DEFAULT_MEMBER } from '@/redux/reducers/member-register-reducer';
 import { EducationEnrollment } from '@/models/education/education';
 import { MemberDropdownType } from '@/components/atoms/common/dropdown/member-dropdown-item';
 
@@ -22,6 +21,7 @@ import {
   EDUCATION_TERM_STATUS,
   STATUS,
 } from '@/constants/status/status';
+import { DEFAULT_MEMBER } from '@/models/member/member';
 
 type AddEducationTermProps = {};
 

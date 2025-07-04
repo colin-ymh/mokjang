@@ -13,6 +13,8 @@ export default {
   isNotDone: '미완료',
   customSelect: '직접선택',
 
+  leafMonth: '윤달',
+
   date: '날짜',
   birthday: '교인 생일',
   churchEvent: '이벤트',
@@ -231,6 +233,7 @@ export default {
 
   /*-------------------title (popup title)-------------------*/
   'title.memberRegister': '교인 등록',
+  'title.editMember': '교인정보 수정',
 
   'title.addVisitation': '심방 추가',
   'title.editVisitation': '심방 수정',
@@ -419,7 +422,7 @@ export default {
   'placeholder.educationName': '교육명을 입력해주세요.',
   'placeholder.educationDescription': '내용을 입력해주세요.',
   'placeholder.mobilePhone': '휴대전화 번호를 입력해주세요.',
-  'placeholder.birth': '생년월일을 입력해주세요. (yyyy-mm-dd)',
+  'placeholder.birth': '생년월일을 선택해주세요.',
   'placeholder.homePhone': '집 전화번호를 입력해주세요.',
   'placeholder.occupation': '직업을 입력해주세요.',
   'placeholder.address': '도로명 주소를 입력해주세요.',

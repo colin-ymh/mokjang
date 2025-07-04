@@ -1,7 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 
 import WebviewReducer from './reducers/webview-reducer';
-import MemberRegisterReducer from '@/redux/reducers/member-register-reducer';
 import MemberFilterReducer from '@/redux/reducers/filter/member-filter-reducer';
 import ChurchReducer from '@/redux/reducers/church-reducer';
 import TargetMember from '@/redux/reducers/target/target-member-reducer';
@@ -35,7 +34,6 @@ const store = configureStore({
     webview: WebviewReducer,
     user: UserReducer,
     church: ChurchReducer,
-    memberRegister: MemberRegisterReducer,
     // filter
     memberFilter: MemberFilterReducer,
     visitationFilter: VisitationFilterReducer,

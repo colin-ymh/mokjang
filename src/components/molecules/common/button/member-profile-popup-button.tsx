@@ -1,15 +1,15 @@
-import { Member } from '@/models/member/member';
+import { DEFAULT_MEMBER, Member } from '@/models/member/member';
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { AppDispatch } from '@/redux/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '@/redux/store';
 import { setTargetMember } from '@/redux/reducers/target/target-member-reducer';
-import { DEFAULT_MEMBER } from '@/redux/reducers/member-register-reducer';
 import styled from 'styled-components';
 import CustomPopup from '@/components/atoms/common/popup/custom-popup';
 import MemberInformation from '@/components/organisms/member/information/member-information';
 import { BLACK } from '@/constants/styles/color';
 import CancelIcon from '../../../../../public/svg/cancel.svg';
 import MemberProfile from '@/components/atoms/member/member-profile';
+import { MembersApi } from '@/api/members/members.api';
 
 type MemberProfileButtonProps = {
   member: Member;
@@ -29,11 +29,27 @@ const Cancel = styled(CancelIcon)`
 
 const MemberProfilePopupButton = ({ member }: MemberProfileButtonProps) => {
   const dispatch = useDispatch<AppDispatch>();
+  const { churchId } = useSelector((state: RootState) => state.church);
   const [isShow, setIsShow] = useState<boolean>(false);
 
-  const onClickMember = () => {
-    dispatch(setTargetMember(member));
-    setIsShow(true);
+  const [thrownError, setThrownError] = useState<Error | null>(null);
+  if (thrownError) {
+    throw thrownError;
+  }
+
+  const onClickMember = async () => {
+    try {
+      const membersApi = new MembersApi(false);
+      const response = await membersApi.getMember({
+        churchId,
+        memberId: member.id,
+      });
+      const newMember = response.data.data;
+      dispatch(setTargetMember(newMember));
+      setIsShow(true);
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
+    }
   };
 
   const onClickClose = () => {

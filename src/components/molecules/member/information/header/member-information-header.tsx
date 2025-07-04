@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Member } from '@/models/member/member';
+import { DEFAULT_MEMBER, Member } from '@/models/member/member';
 import { uploadFiles } from '@/utils/upload';
 import { AppDispatch, RootState } from '@/redux/store';
 import { useDispatch, useSelector } from 'react-redux';
@@ -7,10 +7,6 @@ import { setTargetMember } from '@/redux/reducers/target/target-member-reducer';
 import { setMembers } from '@/redux/reducers/filter/member-filter-reducer';
 import { MembersApi } from '@/api/members/members.api';
 import MemberInformationHeaderView from '@/components/molecules/member/information/header/member-information-header.view';
-import {
-  DEFAULT_MEMBER,
-  setMember,
-} from '@/redux/reducers/member-register-reducer';
 import { getEditMemberBody, getMemberFromServer } from '@/utils/member';
 import ToastPopup from '@/components/atoms/common/popup/toast-popup';
 import { useScopedI18n } from '../../../../../../locales/client';
@@ -30,7 +26,6 @@ const MemberInformationHeader = ({
   const { targetMember } = useSelector(
     (state: RootState) => state.targetMember
   );
-  const { member } = useSelector((state: RootState) => state.memberRegister);
   const { members } = useSelector((state: RootState) => state.memberFilter);
   const { churchId } = useSelector((state: RootState) => state.church);
 
@@ -47,7 +42,7 @@ const MemberInformationHeader = ({
     if (image) {
       setProfileImage(image);
     } else {
-      dispatch(setMember({ ...member, profileImageUrl: BLANK }));
+      dispatch(setTargetMember({ ...targetMember, profileImageUrl: BLANK }));
     }
   };
 
@@ -59,28 +54,28 @@ const MemberInformationHeader = ({
   }
 
   const onClickProfile = () => {
-    dispatch(setMember(targetMember));
+    dispatch(setTargetMember(targetMember));
     setIsEditShown(true);
   };
 
   const onClickClose = () => {
-    dispatch(setMember(DEFAULT_MEMBER));
+    dispatch(setTargetMember(DEFAULT_MEMBER));
     setIsEditShown(false);
   };
 
   const onClickSave = async () => {
     try {
-      let updatedMember = { ...member };
+      let updatedMember = { ...targetMember };
       if (profileImage) {
         const uploadedUrls = await uploadFiles([profileImage]);
         const uploadedUrl = uploadedUrls[0];
         if (uploadedUrl) {
-          updatedMember = { ...member, profileImageUrl: uploadedUrl };
-          dispatch(setMember(updatedMember));
+          updatedMember = { ...targetMember, profileImageUrl: uploadedUrl };
+          dispatch(setTargetMember(updatedMember));
         }
       } else if (profileImage === null) {
-        updatedMember = { ...member, profileImageUrl: BLANK };
-        dispatch(setMember(updatedMember));
+        updatedMember = { ...targetMember, profileImageUrl: BLANK };
+        dispatch(setTargetMember(updatedMember));
       }
 
       await membersApi

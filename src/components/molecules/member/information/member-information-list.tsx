@@ -2,10 +2,6 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 import { setMembers } from '@/redux/reducers/filter/member-filter-reducer';
-import {
-  DEFAULT_MEMBER,
-  setMember,
-} from '@/redux/reducers/member-register-reducer';
 
 import { MembersApi } from '@/api/members/members.api';
 import { MinistryHistoryApi } from '@/api/history/ministry-history.api';
@@ -13,7 +9,6 @@ import { OfficerHistoryApi } from '@/api/history/officer-history.api';
 import { GroupHistoryApi } from '@/api/history/group-history.api';
 import MemberInformationListView from '@/components/molecules/member/information/member-information-list.view';
 import { MEMBER } from '@/constants/member/member-column';
-import MemberEdit from '@/components/organisms/edit/member-edit';
 import OfficerModal from '@/components/atoms/common/modal/officer-modal';
 import GroupModal from '@/components/atoms/common/modal/group-modal';
 import { BAPTISM, BLANK, NONE } from '@/constants/constant';
@@ -34,6 +29,7 @@ import BottomSheet from '@/components/atoms/common/bottom-sheet/bottom-sheet';
 import SlidePopup from '@/components/atoms/common/popup/slide-popup';
 import { setTargetMember } from '@/redux/reducers/target/target-member-reducer';
 import { uploadFiles } from '@/utils/upload';
+import AddMember from '@/components/organisms/member/add/add-member';
 
 type MemberInformationListProps = {};
 
@@ -45,11 +41,11 @@ const MemberInformationList = ({}: MemberInformationListProps) => {
   const membersApi = new MembersApi(false);
   const ministriesApi = new MinistriesApi(false);
 
+  const t_title = useScopedI18n('title');
   const t_popup = useScopedI18n('popup');
   const t_button = useScopedI18n('button');
 
   const { churchId } = useSelector((state: RootState) => state.church);
-  const { member } = useSelector((state: RootState) => state.memberRegister);
   const { members } = useSelector((state: RootState) => state.memberFilter);
   const { targetMember } = useSelector(
     (state: RootState) => state.targetMember
@@ -109,7 +105,7 @@ const MemberInformationList = ({}: MemberInformationListProps) => {
     setIsGroupModalShown(false);
     setIsMinistryModalShown(false);
     setIsOfficerModalShown(false);
-  }, [member.id]);
+  }, [targetMember.id]);
 
   // ================================
   // 공통 유틸: API 응답 후 상태 업데이트
@@ -135,25 +131,31 @@ const MemberInformationList = ({}: MemberInformationListProps) => {
   // 개인정보 (이름, 생년월일 등) 수정
   // ================================
   const onClickItem = (id: MEMBER) => {
-    dispatch(setMember(targetMember));
+    dispatch(setTargetMember(targetMember));
     setFocusItem(id);
     setIsEditShown(true);
   };
 
-  const onClickClose = () => {
+  const onClickClose = async () => {
+    const membersApi = new MembersApi(false);
     setIsEditShown(false);
-    dispatch(setMember(DEFAULT_MEMBER));
+    const response = await membersApi.getMember({
+      churchId,
+      memberId: targetMember.id,
+    });
+    const newMember = getMemberFromServer(response.data.data);
+    dispatch(setTargetMember(newMember));
   };
 
   const onClickSave = async () => {
     try {
-      let updatedMember = { ...member };
+      let updatedMember = { ...targetMember };
       if (profileImage) {
         const uploadedUrls = await uploadFiles([profileImage]);
         const uploadedUrl = uploadedUrls[0];
         if (uploadedUrl) {
-          updatedMember = { ...member, profileImageUrl: uploadedUrl };
-          dispatch(setMember(updatedMember));
+          updatedMember = { ...targetMember, profileImageUrl: uploadedUrl };
+          dispatch(setTargetMember(updatedMember));
         }
       }
 
@@ -598,8 +600,9 @@ const MemberInformationList = ({}: MemberInformationListProps) => {
         onClickClose={onClickClose}
         doneText={t_button('save')}
         onClickDone={onClickSave}
+        headerTitle={t_title('editMember')}
       >
-        <MemberEdit
+        <AddMember
           focusItem={focusItem}
           onChangeProfileImage={onChangeProfileImage}
         />

@@ -137,7 +137,7 @@ const MemberListView = (props: MemberListViewProps) => {
             leftButtonText={t_button('cancel')}
             rightButtonText={t_button('delete')}
           />
-          <MemberInformation />
+          {isMemberInformationShown && <MemberInformation />}
         </>
       </SlidePopup>
       <Loading isShow={isLoading} />

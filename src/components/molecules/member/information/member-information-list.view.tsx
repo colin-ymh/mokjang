@@ -135,9 +135,12 @@ const PaddingBottom = styled.div`
 `;
 
 const WrapText = styled(MainText)`
-  white-space: pre-wrap; /* 여러 줄로 표시 & 공백/줄바꿈 문자도 해석 */
-  word-break: break-word; /* 긴 단어를 영역 벗어나기 전에 줄바꿈 */
-  overflow-wrap: break-word; /* 추가적인 안전 장치 */
+  //white-space: pre-wrap; /* 여러 줄로 표시 & 공백/줄바꿈 문자도 해석 */
+  //word-break: break-word; /* 긴 단어를 영역 벗어나기 전에 줄바꿈 */
+  //overflow-wrap: break-word; /* 추가적인 안전 장치 */
+  white-space: nowrap; // 한 줄로 표시
+  overflow: hidden; // 넘친 텍스트 숨김
+  text-overflow: ellipsis; // 넘친 텍스트를 ...으로 표시
 `;
 
 type InformationListViewProps = {
@@ -447,9 +450,9 @@ const InformationListView = ({
               </MainText>
             </TitleContainer>
             <ContentContainer>
-              {/*{targetMember?.vehicleNumber?.map((number, index) => (*/}
-              {/*  <MainText key={index}>{number}</MainText>*/}
-              {/*))}*/}
+              {targetMember?.vehicleNumber?.map((number, index) => (
+                <MainText key={index}>{number}</MainText>
+              ))}
             </ContentContainer>
             <PencilButton />
           </InformationItem>

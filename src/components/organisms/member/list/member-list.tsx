@@ -2,17 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 import {
-  DEFAULT_MEMBER,
-  setMember,
-} from '@/redux/reducers/member-register-reducer';
-import {
   fetchMembers,
   setMembers,
 } from '@/redux/reducers/filter/member-filter-reducer';
 
 import { MembersApi } from '@/api/members/members.api';
 import MemberListView from '@/components/organisms/member/list/member-list.view';
-import { Member } from '@/models/member/member';
+import { DEFAULT_MEMBER, Member } from '@/models/member/member';
 import { getMemberFromServer } from '@/utils/member';
 import { setTargetMember } from '@/redux/reducers/target/target-member-reducer';
 
@@ -31,7 +27,6 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
   const { targetMember } = useSelector(
     (state: RootState) => state.targetMember
   );
-  const member = useSelector((state: RootState) => state.memberRegister.member);
 
   const [thrownError, setThrownError] = useState<Error | null>(null);
   if (thrownError) {
@@ -110,7 +105,7 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
       const member = getMemberFromServer(response.data.data);
 
       dispatch(setTargetMember(member));
-      dispatch(setMember(member));
+      dispatch(setTargetMember(member));
       setIsMemberInformationShown(true);
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));
@@ -120,7 +115,7 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
   // 상세 페이지 종료
   const onClickClose = () => {
     setIsMemberInformationShown(false);
-    dispatch(setMember(DEFAULT_MEMBER));
+    dispatch(setTargetMember(DEFAULT_MEMBER));
   };
 
   // 교인 삭제하기
@@ -128,7 +123,7 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
     try {
       const response = await membersApi.deleteMember({
         churchId,
-        memberId: member.id,
+        memberId: targetMember.id,
       });
       if (response.status === 200) {
         // 초기화 후 다시 로드
@@ -141,7 +136,7 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));
     } finally {
-      dispatch(setMember(DEFAULT_MEMBER));
+      dispatch(setTargetMember(DEFAULT_MEMBER));
       setIsMemberInformationShown(false);
     }
   };

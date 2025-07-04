@@ -1,12 +1,8 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 
 import MainMemberHeaderView from '@/components/molecules/layout/header/main/member/main-member-header.view';
-import {
-  DEFAULT_MEMBER,
-  setMember,
-} from '@/redux/reducers/member-register-reducer';
 import { DummyApi } from '@/api/dummy.api';
 import {
   fetchMembers,
@@ -14,15 +10,30 @@ import {
 } from '@/redux/reducers/filter/member-filter-reducer';
 import { usePageRouter } from '@/utils/router';
 import { useI18n } from '../../../../../../../locales/client';
+import { DEFAULT_MEMBER, Member } from '@/models/member/member';
+import { setTargetMember } from '@/redux/reducers/target/target-member-reducer';
+import { uploadFiles } from '@/utils/upload';
+import { getCreateMemberBody, getMemberFromServer } from '@/utils/member';
+import { MembersApi } from '@/api/members/members.api';
+import ToastPopup from '@/components/atoms/common/popup/toast-popup';
+import { BLACK, DESTRUCTIVE } from '@/constants/styles/color';
+import { BLANK } from '@/constants/constant';
 
 type MainMemberHeaderProps = {};
 
 const MainMemberHeader = ({}: MainMemberHeaderProps) => {
+  const router = usePageRouter();
+
   const dispatch = useDispatch<AppDispatch>();
-  const { churchId, groups } = useSelector((state: RootState) => state.church);
   const t = useI18n();
   const dummyApi = new DummyApi(false);
-  const router = usePageRouter();
+  const membersApi = new MembersApi(false);
+
+  const { churchId, groups } = useSelector((state: RootState) => state.church);
+  const { targetMember } = useSelector(
+    (state: RootState) => state.targetMember
+  );
+  const { members } = useSelector((state: RootState) => state.memberFilter);
 
   // 교인 등록하기 on/off
   const [isRegisterShown, setIsRegisterShown] = useState<boolean>(false);
@@ -30,9 +41,26 @@ const MainMemberHeader = ({}: MainMemberHeaderProps) => {
   // 모바일 그룹 필터 버튼
   const [isModalOpened, setIsModalOpened] = useState<boolean>(false);
 
+  // 임시 프로필 이미지
+  const [profileImage, setProfileImage] = useState<File | null>(null);
+
+  const [isToastShown, setIsToastShown] = useState<boolean>(false);
+  const [toastText, setToastText] = useState<string>(BLANK);
+  const [toastColor, setToastColor] = useState<string>(DESTRUCTIVE.LIGHT);
+
+  const [thrownError, setThrownError] = useState<Error | null>(null);
+  // 렌더링 시점(컴포넌트 return)에서 조건부로 에러 발생
+  if (thrownError) {
+    throw thrownError;
+  }
+
+  const onChangeProfileImage = (image: File | null) => {
+    setProfileImage(image);
+  };
+
   // 교인 등록하기 팝업 닫기
   const onClickClose = () => {
-    dispatch(setMember(DEFAULT_MEMBER));
+    dispatch(setTargetMember(DEFAULT_MEMBER));
     setIsRegisterShown(false);
   };
 
@@ -83,6 +111,48 @@ const MainMemberHeader = ({}: MainMemberHeaderProps) => {
     setIsModalOpened(false);
   };
 
+  const onClickSave = async () => {
+    try {
+      let updatedMember = { ...targetMember };
+      if (profileImage) {
+        const uploadedUrls = await uploadFiles([profileImage]);
+        const uploadedUrl = uploadedUrls[0];
+        if (uploadedUrl) {
+          updatedMember = { ...targetMember, profileImageUrl: uploadedUrl };
+          dispatch(setTargetMember(updatedMember));
+        }
+      }
+
+      await membersApi
+        .createMember({ churchId }, getCreateMemberBody(updatedMember))
+        .then((response) => {
+          if (response.status === 200) {
+            setIsRegisterShown(false);
+            const newMember = getMemberFromServer(response.data.data);
+            dispatch(setTargetMember(newMember));
+            const newMembers = members.map((mem: Member) =>
+              mem.id === newMember.id ? newMember : mem
+            );
+            dispatch(setMembers(newMembers));
+          }
+        });
+
+      dispatch(setTargetMember(DEFAULT_MEMBER));
+      setIsRegisterShown(false);
+
+      setToastText(t('popup.registerSuccess'));
+      setIsToastShown(true);
+      setToastColor(BLACK);
+    } catch (error) {
+      if (error instanceof Error) {
+        setToastText(error.message);
+        setToastColor(DESTRUCTIVE.LIGHT);
+      } else {
+        setThrownError(new Error(String(error)));
+      }
+    }
+  };
+
   const props = {
     isModalOpened,
     isRegisterShown,
@@ -95,11 +165,20 @@ const MainMemberHeader = ({}: MainMemberHeaderProps) => {
     onDismissModal,
     selectedGroupName,
     onClickNewGroup,
+    onChangeProfileImage,
+    onClickSave,
   };
 
   return (
     <>
       <MainMemberHeaderView {...props} />
+      {isToastShown && (
+        <ToastPopup
+          setIsShow={setIsToastShown}
+          text={toastText}
+          backgroundColor={toastColor}
+        />
+      )}
     </>
   );
 };

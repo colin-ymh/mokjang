@@ -1,11 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 
 import { MEMBER } from '@/constants/member/member-column';
-import { Member } from '@/models/member/member';
+import { DEFAULT_MEMBER, Member } from '@/models/member/member';
 import GroupMemberTableView from '@/components/molecules/management/group/group-member-table.view';
 import CustomPopup from '@/components/atoms/common/popup/custom-popup';
 import MemberInformation from '@/components/organisms/member/information/member-information';
-import { DEFAULT_MEMBER } from '@/redux/reducers/member-register-reducer';
 import { AppDispatch } from '@/redux/store';
 import { useDispatch } from 'react-redux';
 

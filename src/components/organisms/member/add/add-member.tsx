@@ -1,23 +1,13 @@
 import React, { ChangeEvent, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
-import { setMember, setType } from '@/redux/reducers/member-register-reducer';
 import { AxiosResponse } from 'axios';
 import DaumPostcodeEmbed, { Address } from 'react-daum-postcode';
 
-import EditListView from '@/components/molecules/edit/edit-list.view';
 import { GetMembersResponse, MembersApi } from '@/api/members/members.api';
-import { Member } from '@/models/member/member';
-import {
-  BLANK,
-  CALENDAR_MODE,
-  GENDER,
-  MARRIAGE,
-  MEMBER_REGISTER_TYPE,
-} from '@/constants/constant';
+import { BLANK, GENDER, MARRIAGE } from '@/constants/constant';
 import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-item';
 import {
-  getFormattedDate,
   getFormattedHomePhone,
   getFormattedMobilePhone,
   getFormattedName,
@@ -25,28 +15,30 @@ import {
   getTrimmedString,
 } from '@/utils/format';
 import {
-  getIsWellFormedBirth,
   getIsWellFormedHomePhone,
   getIsWellFormedMobilePhone,
 } from '@/utils/check';
 import { getSchool } from '@/api/school-api';
 import PagePopup from '@/components/atoms/common/popup/page-popup';
 import { MEMBER } from '@/constants/member/member-column';
+import { setTargetMember } from '@/redux/reducers/target/target-member-reducer';
+import AddMemberView from '@/components/organisms/member/add/add-member.view';
+import { getDateStringFromDate } from '@/utils/date';
 
-export type EditListProps = {
+export type AddMemberProps = {
   focusItem?: MEMBER;
   onChangeProfileImage: (image: File | null) => void;
 };
 
-const EditList = ({ focusItem, onChangeProfileImage }: EditListProps) => {
+const AddMember = ({ focusItem, onChangeProfileImage }: AddMemberProps) => {
   const membersApi = new MembersApi(false);
   const dispatch = useDispatch<AppDispatch>();
   const churchId: string = useSelector(
     (state: RootState) => state.church.churchId
   );
 
-  const member: Member = useSelector(
-    (state: RootState): Member => state.memberRegister.member
+  const { targetMember } = useSelector(
+    (state: RootState) => state.targetMember
   );
 
   const [thrownError, setThrownError] = useState<Error | null>(null);
@@ -60,21 +52,16 @@ const EditList = ({ focusItem, onChangeProfileImage }: EditListProps) => {
   // 검색된 인도자 목록
   const [guideItems, setGuideItems] = useState<DropdownValueType[]>([]);
 
-  // 새신자 타입 변경 시 이벤트
-  const onChangeType = (type: MEMBER_REGISTER_TYPE) => {
-    dispatch(setType(type));
-  };
-
   // 이름 변경 시 이벤트
   const onChangeName = (event: ChangeEvent<HTMLInputElement>) => {
     const newName = getFormattedName(event.target.value);
-    dispatch(setMember({ ...member, name: newName }));
+    dispatch(setTargetMember({ ...targetMember, name: newName }));
   };
 
   // 휴대폰 번호 변경 시 이벤트
   const onChangeMobilePhone = (event: ChangeEvent<HTMLInputElement>) => {
     const newMobilePhone = getFormattedMobilePhone(event.target.value);
-    dispatch(setMember({ ...member, mobilePhone: newMobilePhone }));
+    dispatch(setTargetMember({ ...targetMember, mobilePhone: newMobilePhone }));
 
     // 전화번호를 다 입력한 경우
     if (getIsWellFormedMobilePhone(newMobilePhone)) {
@@ -112,7 +99,7 @@ const EditList = ({ focusItem, onChangeProfileImage }: EditListProps) => {
 
   // 인도자 dropdown 선택 시 이벤트
   const onChangeGuidedById = (value: string) => {
-    dispatch(setMember({ ...member, guidedById: value }));
+    dispatch(setTargetMember({ ...targetMember, guidedById: value }));
   };
 
   const [schoolItems, setSchoolItems] = useState<DropdownValueType[]>([]);
@@ -122,29 +109,52 @@ const EditList = ({ focusItem, onChangeProfileImage }: EditListProps) => {
 
   // 성별 변경 시 이벤트
   const onChangeGender = (gender: GENDER) => {
-    dispatch(setMember({ ...member, gender }));
+    dispatch(setTargetMember({ ...targetMember, gender }));
   };
 
   // 생년월일 변경 시 이벤트
-  const onChangeBirth = (event: ChangeEvent<HTMLInputElement>) => {
-    const newBirth = getFormattedDate(event.target.value);
-    dispatch(setMember({ ...member, birth: newBirth }));
-
-    // 생년월일을 다 입력한 경우
-    if (getIsWellFormedBirth(newBirth)) {
-      (event.target as HTMLInputElement).blur();
+  const onChangeBirth = (date: Date | null) => {
+    if (date) {
+      dispatch(
+        setTargetMember({ ...targetMember, birth: getDateStringFromDate(date) })
+      );
     }
   };
 
   // 양력 음력 변경 이벤트
-  const onChangeCalendarMode = (mode: CALENDAR_MODE) => {
-    dispatch(setMember({ ...member, isLunar: mode === CALENDAR_MODE.LUNAR }));
+  const onClickIsLunar = (value: boolean) => {
+    if (!value) {
+      dispatch(
+        setTargetMember({
+          ...targetMember,
+          isLunar: value,
+          isLeafMonth: false,
+        })
+      );
+    } else {
+      dispatch(
+        setTargetMember({
+          ...targetMember,
+          isLunar: value,
+        })
+      );
+    }
+  };
+
+  // 윤달 변경 이벤트
+  const onClickIsLeafMonth = (value: boolean) => {
+    dispatch(
+      setTargetMember({
+        ...targetMember,
+        isLeafMonth: value,
+      })
+    );
   };
 
   // 학교 변경 시 이벤트
   const onChangeSchool = (value: string) => {
     const newSchool = getTrimmedString(value);
-    dispatch(setMember({ ...member, school: newSchool }));
+    dispatch(setTargetMember({ ...targetMember, school: newSchool }));
 
     // value 에 따라 학교 검색 API 요청
     getSchool(value, 1, 5).then((response) => {
@@ -159,17 +169,19 @@ const EditList = ({ focusItem, onChangeProfileImage }: EditListProps) => {
   // 직업 변경 시 이벤트
   const onChangeOccupation = (event: ChangeEvent<HTMLInputElement>) => {
     const newOccupation = event.target.value;
-    dispatch(setMember({ ...member, occupation: newOccupation }));
+    dispatch(setTargetMember({ ...targetMember, occupation: newOccupation }));
   };
 
   // 결혼 정보 변경 시 이벤트
   const onChangeMarriage = (value: MARRIAGE) => {
-    dispatch(setMember({ ...member, marriage: value }));
+    dispatch(setTargetMember({ ...targetMember, marriage: value }));
   };
 
   // 결혼 상세 변경 시 이벤트
   const onChangeDetailMarriage = (event: ChangeEvent<HTMLInputElement>) => {
-    dispatch(setMember({ ...member, detailMarriage: event.target.value }));
+    dispatch(
+      setTargetMember({ ...targetMember, detailMarriage: event.target.value })
+    );
   };
 
   // 도로명주소 입력창 이벤트
@@ -193,21 +205,22 @@ const EditList = ({ focusItem, onChangeProfileImage }: EditListProps) => {
       fullAddress += extraAddress !== '' ? ` (${extraAddress})` : '';
     }
 
-    const newMember: Member = member;
-    dispatch(setMember({ ...newMember, address: fullAddress }));
+    dispatch(setTargetMember({ ...targetMember, address: fullAddress }));
     setIsAddressOpen(false);
   };
 
   // 상세 주소 변경 시 이벤트
   const onChangeDetailAddress = (event: ChangeEvent<HTMLInputElement>) => {
     const newDetailAddress = event.target.value;
-    dispatch(setMember({ ...member, detailAddress: newDetailAddress }));
+    dispatch(
+      setTargetMember({ ...targetMember, detailAddress: newDetailAddress })
+    );
   };
 
   // 전화번호 변경 시 이벤트
   const onChangeHomePhone = (event: ChangeEvent<HTMLInputElement>) => {
     const newHomePhone = getFormattedHomePhone(event.target.value);
-    dispatch(setMember({ ...member, homePhone: newHomePhone }));
+    dispatch(setTargetMember({ ...targetMember, homePhone: newHomePhone }));
 
     if (getIsWellFormedHomePhone(newHomePhone)) {
       (event.target as HTMLInputElement).blur();
@@ -220,7 +233,7 @@ const EditList = ({ focusItem, onChangeProfileImage }: EditListProps) => {
     index: number
   ) => {
     // vehicleNumber 배열을 복사하여 새로운 배열 생성
-    const newVehicleNumber = [...member.vehicleNumber];
+    const newVehicleNumber = [...targetMember.vehicleNumber];
 
     const number = getFormattedVehicleNumber(event.target.value);
 
@@ -230,7 +243,9 @@ const EditList = ({ focusItem, onChangeProfileImage }: EditListProps) => {
     }
 
     // 새로운 member 객체와 vehicleNumber 배열을 디스패치
-    dispatch(setMember({ ...member, vehicleNumber: newVehicleNumber }));
+    dispatch(
+      setTargetMember({ ...targetMember, vehicleNumber: newVehicleNumber })
+    );
   };
 
   const props = {
@@ -239,14 +254,14 @@ const EditList = ({ focusItem, onChangeProfileImage }: EditListProps) => {
     guideItems,
     schoolItems,
     isAddressOpen,
-    onChangeType,
     onChangeName,
     onChangeMobilePhone,
     onChangeGuideName,
     onChangeGuidedById,
     onChangeProfileImage,
     onChangeBirth,
-    onChangeCalendarMode,
+    onClickIsLunar,
+    onClickIsLeafMonth,
     onChangeHomePhone,
     onChangeOccupation,
     onChangeDetailAddress,
@@ -260,7 +275,7 @@ const EditList = ({ focusItem, onChangeProfileImage }: EditListProps) => {
 
   return (
     <>
-      <EditListView {...props} />
+      <AddMemberView {...props} />
       <PagePopup isShow={isAddressOpen} onClickCancel={onClickAddressClose}>
         <DaumPostcodeEmbed
           onComplete={onCompleteAddress}
@@ -271,4 +286,4 @@ const EditList = ({ focusItem, onChangeProfileImage }: EditListProps) => {
   );
 };
 
-export default EditList;
+export default AddMember;

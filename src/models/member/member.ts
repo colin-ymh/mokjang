@@ -1,5 +1,12 @@
-import { BAPTISM, BLANK, FAMILY, MARRIAGE, NULL } from '@/constants/constant';
-import { DEFAULT_MEMBER } from '@/redux/reducers/member-register-reducer';
+import {
+  BAPTISM,
+  BLANK,
+  FAMILY,
+  GENDER,
+  MARRIAGE,
+  NONE,
+  NULL,
+} from '@/constants/constant';
 import {
   Group,
   GroupRole,
@@ -7,20 +14,6 @@ import {
   Officer,
 } from '@/models/management/management';
 import { Education } from '@/models/education/education';
-
-export type FamilyMember = {
-  meId: string;
-  familyMemberId: string;
-  relation: FAMILY;
-  familyMember: Member;
-};
-
-export const DEFAULT_FAMILY_MEMBER = {
-  meId: BLANK,
-  familyMemberId: BLANK,
-  relation: FAMILY.FAMILY,
-  familyMember: DEFAULT_MEMBER,
-};
 
 export type ChurchInformation = {
   id: string;
@@ -66,4 +59,49 @@ export type Member = {
   updatedAt: string;
 
   isConcealed: boolean;
+};
+
+export const DEFAULT_MEMBER: Member = {
+  id: BLANK,
+  profileImageUrl: BLANK,
+  name: BLANK,
+  mobilePhone: BLANK,
+  homePhone: BLANK,
+  marriage: NULL,
+  detailMarriage: BLANK,
+  address: BLANK,
+  detailAddress: BLANK,
+  school: BLANK,
+  occupation: BLANK,
+  birth: BLANK,
+  isLunar: false,
+  baptism: BAPTISM.NONE,
+  gender: GENDER.MALE,
+  guidedById: BLANK,
+  vehicleNumber: [BLANK, BLANK, BLANK],
+  familyMemberId: BLANK,
+  family: [],
+  relation: FAMILY.FAMILY,
+  // 교회 정보
+  registeredAt: BLANK,
+  updatedAt: BLANK,
+  officerId: NONE,
+
+  isConcealed: false,
+  isLeafMonth: false,
+  birthdayMMDD: BLANK,
+};
+
+export type FamilyMember = {
+  meId: string;
+  familyMemberId: string;
+  relation: FAMILY;
+  familyMember: Member;
+};
+
+export const DEFAULT_FAMILY_MEMBER = {
+  meId: BLANK,
+  familyMemberId: BLANK,
+  relation: FAMILY.FAMILY,
+  familyMember: DEFAULT_MEMBER,
 };

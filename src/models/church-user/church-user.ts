@@ -1,11 +1,10 @@
 import { BLANK, CHURCH_USER_ROLE } from '@/constants/constant';
-import { Member } from '@/models/member/member';
+import { DEFAULT_MEMBER, Member } from '@/models/member/member';
 import {
   DEFAULT_PERMISSION_TEMPLATE,
   PermissionScope,
   PermissionTemplate,
 } from '@/models/permission/permission';
-import { DEFAULT_MEMBER } from '@/redux/reducers/member-register-reducer';
 import { DEFAULT_USER, User } from '@/models/user/user';
 
 export type ChurchUser = {
