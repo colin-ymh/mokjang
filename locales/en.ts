@@ -260,6 +260,10 @@ export default {
   'title.addWorship': 'Add Worship',
   'title.editWorship': 'Edit Worship',
 
+  'title.churchEventInformation': 'Event Detail',
+  'title.addChurchEvent': 'Add Event',
+  'title.editChurchEvent': 'Edit Event',
+
   'title.attendanceInformation': 'Report',
   /*-------------------title (popup title)-------------------*/
 

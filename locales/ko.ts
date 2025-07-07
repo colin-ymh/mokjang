@@ -263,6 +263,7 @@ export default {
   'title.addWorship': '예배 추가',
   'title.editWorship': '예배 수정',
 
+  'title.churchEventInformation': '이벤트 상세',
   'title.addChurchEvent': '이벤트 추가',
   'title.editChurchEvent': '이벤트 수정',
 

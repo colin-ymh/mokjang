@@ -18,6 +18,7 @@ import ToastPopup from '@/components/atoms/common/popup/toast-popup';
 import { DESTRUCTIVE } from '@/constants/styles/color';
 import { WorshipSessionsApi } from '@/api/worship/worship-sessions.api';
 import { getIsWellFormedTitle } from '@/utils/check';
+import { getDateFromDateString } from '@/utils/date';
 
 export type AttendanceTableProps = {
   loadWorshipEnrollments: () => Promise<void>;
@@ -177,10 +178,10 @@ const AttendanceTable = ({ loadWorshipEnrollments }: AttendanceTableProps) => {
 
   const onClickCloseEditModal = async () => {
     try {
-      const response = await worshipSessionsApi.getWorshipSession({
+      const response = await worshipSessionsApi.getWorshipSessionByDate({
         churchId,
         worshipId: targetWorshipSessionWorship.id,
-        sessionId: targetWorshipSession.id,
+        sessionDate: getDateFromDateString(targetWorshipSession.sessionDate),
       });
 
       const prevSession = response.data.data;

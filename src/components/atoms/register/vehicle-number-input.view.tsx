@@ -25,15 +25,8 @@ const InputList = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 5px;
+  gap: 10px;
   transition: all 0.3s ease;
-`;
-
-const FixedInputItem = styled.div<{ $zIndex: number }>`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: ${({ $zIndex }) => $zIndex};
 `;
 
 export type VehicleNumberInputRef = {
@@ -69,57 +62,51 @@ const VehicleNumberInputView = forwardRef<
     <VehicleNumberInputViewContainer>
       {label && <MainText>{label}</MainText>}
       <InputList>
-        <FixedInputItem $zIndex={3}>
-          <BorderInput
-            ref={firstInputRef}
-            value={value[0]}
-            onChange={(event: ChangeEvent<HTMLInputElement>) =>
-              onChangeInput(event, 0)
-            }
-            borderColor={
-              value[0]
-                ? getIsWellFormedVehicleNumber(value[0])
-                  ? BLACK
-                  : DESTRUCTIVE.DEFAULT
-                : undefined
-            }
-            {...props}
-          />
-        </FixedInputItem>
-        <FixedInputItem $zIndex={2}>
-          <BorderInput
-            ref={secondInputRef}
-            value={getFormattedVehicleNumber(value[1])}
-            onChange={(event: ChangeEvent<HTMLInputElement>) =>
-              onChangeInput(event, 1)
-            }
-            borderColor={
-              value[1]
-                ? getIsWellFormedVehicleNumber(value[1])
-                  ? BLACK
-                  : DESTRUCTIVE.DEFAULT
-                : undefined
-            }
-            {...props}
-          />
-        </FixedInputItem>
-        <FixedInputItem $zIndex={1}>
-          <BorderInput
-            ref={thirdInputRef}
-            value={getFormattedVehicleNumber(value[2])}
-            onChange={(event: ChangeEvent<HTMLInputElement>) =>
-              onChangeInput(event, 2)
-            }
-            borderColor={
-              value[2]
-                ? getIsWellFormedVehicleNumber(value[2])
-                  ? BLACK
-                  : DESTRUCTIVE.DEFAULT
-                : undefined
-            }
-            {...props}
-          />
-        </FixedInputItem>
+        <BorderInput
+          ref={firstInputRef}
+          value={value[0]}
+          onChange={(event: ChangeEvent<HTMLInputElement>) =>
+            onChangeInput(event, 0)
+          }
+          borderColor={
+            value[0]
+              ? getIsWellFormedVehicleNumber(value[0])
+                ? BLACK
+                : DESTRUCTIVE.DEFAULT
+              : undefined
+          }
+          {...props}
+        />
+        <BorderInput
+          ref={secondInputRef}
+          value={getFormattedVehicleNumber(value[1])}
+          onChange={(event: ChangeEvent<HTMLInputElement>) =>
+            onChangeInput(event, 1)
+          }
+          borderColor={
+            value[1]
+              ? getIsWellFormedVehicleNumber(value[1])
+                ? BLACK
+                : DESTRUCTIVE.DEFAULT
+              : undefined
+          }
+          {...props}
+        />
+        <BorderInput
+          ref={thirdInputRef}
+          value={getFormattedVehicleNumber(value[2])}
+          onChange={(event: ChangeEvent<HTMLInputElement>) =>
+            onChangeInput(event, 2)
+          }
+          borderColor={
+            value[2]
+              ? getIsWellFormedVehicleNumber(value[2])
+                ? BLACK
+                : DESTRUCTIVE.DEFAULT
+              : undefined
+          }
+          {...props}
+        />
       </InputList>
     </VehicleNumberInputViewContainer>
   );

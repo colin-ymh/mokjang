@@ -20,8 +20,8 @@ const LabelButtonContainer = styled.div`
 `;
 
 const Button = styled.button<{ $isSelected: boolean }>`
-  width: 28px;
-  height: 28px;
+  width: 30px;
+  height: 30px;
   margin-right: 5px;
   aspect-ratio: 1;
   border-radius: 50px;

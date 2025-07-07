@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
-import { BLANK, GENDER, MARRIAGE, NULL } from '@/constants/constant';
+import { BLANK, FAMILY, GENDER, MARRIAGE, NULL } from '@/constants/constant';
 import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-item';
 import { VehicleNumberInputRef } from '@/components/atoms/register/vehicle-number-input.view';
 import { MEMBER } from '@/constants/member/member-column';
@@ -27,6 +27,9 @@ import CustomDatePicker from '@/vendor/date-picker/custom-date-picker';
 import { getDateFromDateString } from '@/utils/date';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import CheckButton from '@/components/atoms/common/button/check-button';
+import KoreanLunarCalendar, { CalendarData } from 'korean-lunar-calendar';
+import { MemberDropdownValueType } from '@/models/dropdown/dropdown';
+import MemberDropdown from '@/components/atoms/common/dropdown/member-dropdown';
 
 const RequiredRegisterContainer = styled.div`
   display: flex;
@@ -66,7 +69,7 @@ const LabelContainer = styled.div`
 
 const RowContainer = styled.div`
   display: flex;
-  align-items: flex-end;
+  align-items: flex-start;
   flex-direction: row;
   gap: 10px;
 `;
@@ -81,6 +84,14 @@ type EditListViewProps = {
   guideName: string;
   guideItems: DropdownValueType[];
   schoolItems: DropdownValueType[];
+  familyMemberItems: MemberDropdownValueType[];
+  familyMemberName: string;
+  familyMemberId: string;
+  familyRelation: FAMILY;
+  familyRelationItems: DropdownValueType[];
+  onChangeFamilyMemberId: (id: string) => void;
+  onChangeFamilyRelation: (value: FAMILY) => void;
+  onChangeFamilyMemberName: (event: ChangeEvent<HTMLInputElement>) => void;
   onChangeName: (event: ChangeEvent<HTMLInputElement>) => void;
   onChangeMobilePhone: (event: ChangeEvent<HTMLInputElement>) => void;
   onChangeGuideName: (event: ChangeEvent<HTMLInputElement>) => void;
@@ -108,8 +119,16 @@ const AddMemberView = ({
   guideName,
   guideItems,
   schoolItems,
+  familyMemberItems,
+  familyMemberName,
+  familyMemberId,
+  familyRelation,
+  familyRelationItems,
   onChangeName,
   onChangeMobilePhone,
+  onChangeFamilyMemberId,
+  onChangeFamilyRelation,
+  onChangeFamilyMemberName,
   onChangeGuideName,
   onChangeGuidedById,
   onChangeProfileImage,
@@ -126,12 +145,34 @@ const AddMemberView = ({
   onChangeGender,
   onClickAddress,
 }: EditListViewProps) => {
+  const LEAF_MONTH = new KoreanLunarCalendar();
+  const NOT_LEAF_MONTH = new KoreanLunarCalendar();
+
   const t = useI18n();
   const t_placeholder = useScopedI18n('placeholder');
 
   const { targetMember } = useSelector(
     (state: RootState) => state.targetMember
   );
+  const [YEAR = '', MONTH = '', DAY = ''] =
+    targetMember.birth?.split('-') || [];
+
+  LEAF_MONTH.setLunarDate(+YEAR, +MONTH, +DAY, true);
+  NOT_LEAF_MONTH.setLunarDate(+YEAR, +MONTH, +DAY, false);
+
+  const getIsLeafMonthEnable = (
+    date1: KoreanLunarCalendar,
+    date2: KoreanLunarCalendar
+  ) => {
+    const DATE1: CalendarData = date1.getSolarCalendar();
+    const DATE2: CalendarData = date2.getSolarCalendar();
+
+    return !(
+      DATE1.year === DATE2.year &&
+      DATE1.month === DATE2.month &&
+      DATE1.day === DATE2.day
+    );
+  };
 
   // ref 모음
   const nameInputRef = useRef<HTMLInputElement>(null);
@@ -211,24 +252,36 @@ const AddMemberView = ({
         />
       </ImageContainer>
 
-      {/* 이름 */}
-      <InputContainer>
-        <LabelInput
-          ref={nameInputRef}
-          label={t('name')}
-          value={targetMember.name}
-          onChange={onChangeName}
-          placeholder={t_placeholder('name')}
-          borderColor={
-            targetMember.name
-              ? getIsWellFormedName(targetMember.name)
-                ? BLACK
-                : DESTRUCTIVE.DEFAULT
-              : undefined
-          }
-          isRequired
-        />
-      </InputContainer>
+      <RowContainer>
+        {/* 이름 */}
+        <InputContainer>
+          <LabelInput
+            ref={nameInputRef}
+            label={t('name')}
+            value={targetMember.name}
+            onChange={onChangeName}
+            placeholder={t_placeholder('name')}
+            borderColor={
+              targetMember.name
+                ? getIsWellFormedName(targetMember.name)
+                  ? BLACK
+                  : DESTRUCTIVE.DEFAULT
+                : undefined
+            }
+            isRequired
+          />
+        </InputContainer>
+        {/* 성별 */}
+        <InputContainer>
+          <LabelRadioButton
+            label={t('gender')}
+            items={useGenderRadioButtonItems()}
+            selectedValue={targetMember.gender}
+            onChange={onChangeGender}
+            customButton={RegisterRadioButton}
+          />
+        </InputContainer>
+      </RowContainer>
 
       {/* 휴대폰 번호 */}
       <InputContainer>
@@ -250,30 +303,45 @@ const AddMemberView = ({
         />
       </InputContainer>
 
-      {/* 인도자 */}
-      <InputContainer>
-        <LabelDropdown
-          ref={guideInputRef}
-          label={t('guide')}
-          value={guideName}
-          items={guideItems}
-          onChange={onChangeGuideName}
-          onChangeItem={onChangeGuidedById}
-          placeholder={t_placeholder('guide')}
-          isEditable
-          backgroundBlur={false}
-        />
-      </InputContainer>
-      {/* 성별 */}
-      <InputContainer>
-        <LabelRadioButton
-          label={t('gender')}
-          items={useGenderRadioButtonItems()}
-          selectedValue={targetMember.gender}
-          onChange={onChangeGender}
-          customButton={RegisterRadioButton}
-        />
-      </InputContainer>
+      <RowContainer>
+        {/* 인도자 */}
+        <InputContainer>
+          <MainText>{t('guide')}</MainText>
+          <MemberDropdown
+            ref={guideInputRef}
+            value={guideName}
+            items={guideItems}
+            onChange={onChangeGuideName}
+            onChangeItem={onChangeGuidedById}
+            placeholder={t_placeholder('guide')}
+            isEditable
+            backgroundBlur={false}
+          />
+        </InputContainer>
+        {/* 가족 */}
+        <InputContainer>
+          <MainText>{t('family')}</MainText>
+          <MemberDropdown
+            value={familyMemberName}
+            items={familyMemberItems}
+            onChange={onChangeFamilyMemberName}
+            onChangeItem={onChangeFamilyMemberId}
+            placeholder={t_placeholder('family')}
+            isEditable
+            backgroundBlur={false}
+          />
+        </InputContainer>
+        <InputContainer>
+          {/* 가족관계 */}
+          <LabelDropdown
+            label={t('relation')}
+            value={familyRelation}
+            items={familyRelationItems}
+            onChangeItem={onChangeFamilyRelation}
+          />
+        </InputContainer>
+      </RowContainer>
+
       <RowContainer>
         <InputContainer>
           <LabelContainer>
@@ -287,6 +355,7 @@ const AddMemberView = ({
               }
               onChange={onChangeBirth}
               placeholderText={t('placeholder.birth')}
+              yearRange={[1900, new Date().getFullYear()]}
             />
           </LabelContainer>
         </InputContainer>
@@ -319,8 +388,16 @@ const AddMemberView = ({
                 onChange={onClickIsLeafMonth}
                 width={25}
                 height={25}
-                disabled={!targetMember.isLunar}
-                borderColor={targetMember.isLunar ? GRAY.DEFAULT : GRAY.LIGHT}
+                disabled={
+                  !targetMember.isLunar ||
+                  !getIsLeafMonthEnable(LEAF_MONTH, NOT_LEAF_MONTH)
+                }
+                borderColor={
+                  targetMember.isLunar &&
+                  getIsLeafMonthEnable(LEAF_MONTH, NOT_LEAF_MONTH)
+                    ? GRAY.DEFAULT
+                    : GRAY.LIGHT
+                }
               />
             </CheckButtonContainer>
           </InputContainer>

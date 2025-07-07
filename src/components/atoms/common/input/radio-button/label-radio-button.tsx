@@ -11,6 +11,7 @@ const RadioButtonContainer = styled.div`
   flex-direction: column;
   width: 100%;
   gap: 10px;
+  height: 40px;
 `;
 
 type LabelRadioButtonProps = RadioButtonProps & {

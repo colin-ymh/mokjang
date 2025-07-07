@@ -25,6 +25,7 @@ type AttendanceInformationProps = {};
 
 const AttendanceInformation = ({}: AttendanceInformationProps) => {
   const dispatch = useDispatch<AppDispatch>();
+
   const worshipsApi = new WorshipsApi(false);
   const worshipSessionsApi = new WorshipSessionsApi(false);
 
@@ -103,25 +104,38 @@ const AttendanceInformation = ({}: AttendanceInformationProps) => {
 
       const newWorshipSession = sessionResponse.data.data;
       dispatch(setTargetWorshipSession(newWorshipSession));
+
+      // 그룹 선택 초기화
+      if (newWorship.worshipTargetGroups.length > 0) {
+        const newGroup = getGroup(
+          newWorship.worshipTargetGroups[0].group.id,
+          groups
+        );
+        dispatch(setTargetWorshipSessionGroup(newGroup));
+        setTopLevelGroup(newGroup);
+      } else {
+        dispatch(setTargetWorshipSessionGroup(DEFAULT_GROUP));
+        setTopLevelGroup(DEFAULT_GROUP);
+      }
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));
     }
   };
 
-  const onChangeWorship = (newWorship: Worship) => {
-    // 그룹 선택 초기화
-    if (newWorship.worshipTargetGroups.length > 0) {
-      const newGroup = getGroup(
-        newWorship.worshipTargetGroups[0].group.id,
-        groups
-      );
-      dispatch(setTargetWorshipSessionGroup(newGroup));
-      setTopLevelGroup(newGroup);
-    } else {
-      dispatch(setTargetWorshipSessionGroup(DEFAULT_GROUP));
-      setTopLevelGroup(DEFAULT_GROUP);
-    }
-  };
+  // const onChangeWorship = (newWorship: Worship) => {
+  // // 그룹 선택 초기화
+  // if (newWorship.worshipTargetGroups.length > 0) {
+  //   const newGroup = getGroup(
+  //     newWorship.worshipTargetGroups[0].group.id,
+  //     groups
+  //   );
+  //   dispatch(setTargetWorshipSessionGroup(newGroup));
+  //   setTopLevelGroup(newGroup);
+  // } else {
+  //   dispatch(setTargetWorshipSessionGroup(DEFAULT_GROUP));
+  //   setTopLevelGroup(DEFAULT_GROUP);
+  // }
+  // };
 
   // 서버에서 불러오는 교인 목록 페이지
   const [page, setPage] = useState<number>(1);
@@ -228,9 +242,9 @@ const AttendanceInformation = ({}: AttendanceInformationProps) => {
     worshipAttendanceOrderDirection,
   ]);
 
-  useEffect(() => {
-    onChangeWorship(targetWorshipSessionWorship);
-  }, [targetWorshipSessionWorship]);
+  // useEffect(() => {
+  //   onChangeWorship(targetWorshipSessionWorship);
+  // }, [targetWorshipSessionWorship]);
 
   const props = {
     contentId,

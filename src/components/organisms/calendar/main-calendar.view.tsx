@@ -14,6 +14,7 @@ import { useI18n } from '../../../../locales/client';
 import EducationSessionInformation from '@/components/organisms/education/education-session/information/education-session-information';
 import MemberInformation from '@/components/organisms/member/information/member-information';
 import ChurchEventInformation from '@/components/organisms/church-event/information/church-event-information';
+import CustomPopup from '@/components/atoms/common/popup/custom-popup';
 
 const CalendarContainer = styled.div`
   display: flex;
@@ -68,9 +69,6 @@ const MainCalendarView = ({
   const { targetEducationSession } = useSelector(
     (state: RootState) => state.targetEducationSession
   );
-  const { targetChurchEvent } = useSelector(
-    (state: RootState) => state.targetChurchEvent
-  );
 
   return (
     <CalendarContainer>
@@ -96,7 +94,7 @@ const MainCalendarView = ({
           </ButtonRow>
         }
       >
-        <TaskInformation />
+        {openedDomain === DOMAIN.TASK && <TaskInformation />}
       </SlidePopup>
 
       {/* 심방 상세정보 팝업*/}
@@ -113,7 +111,7 @@ const MainCalendarView = ({
           </ButtonRow>
         }
       >
-        <VisitationInformation />
+        {openedDomain === DOMAIN.VISITATION && <VisitationInformation />}
       </SlidePopup>
 
       {/* 교육 상세정보 팝업*/}
@@ -130,7 +128,7 @@ const MainCalendarView = ({
           </ButtonRow>
         }
       >
-        <EducationSessionInformation />
+        {openedDomain === DOMAIN.EDUCATION && <EducationSessionInformation />}
       </SlidePopup>
 
       {/* 교인 상세정보 팝업*/}
@@ -150,12 +148,14 @@ const MainCalendarView = ({
         <MemberInformation />
       </SlidePopup>
 
-      {/* 교인 상세정보 팝업*/}
-      <SlidePopup
+      {/* 교회 이벤트 팝업*/}
+      <CustomPopup
         isShow={openedDomain === DOMAIN.CHURCH_EVENT}
-        onClickClose={onClickClose}
+        width={500}
+        height={300}
+        onClickCancel={onClickClose}
         isFooterShown={false}
-        headerTitle={targetChurchEvent.title}
+        headerTitle={t('title.churchEventInformation')}
         headerRight={
           <ButtonRow>
             <ButtonContainer onClick={onClickClose}>
@@ -165,7 +165,7 @@ const MainCalendarView = ({
         }
       >
         <ChurchEventInformation />
-      </SlidePopup>
+      </CustomPopup>
     </CalendarContainer>
   );
 };

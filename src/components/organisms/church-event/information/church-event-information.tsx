@@ -11,7 +11,7 @@ const InformationContainer = styled.div`
   flex: 1;
   flex-direction: column;
   overflow-y: auto;
-  gap: 10px;
+  gap: 20px;
   padding: 20px;
 `;
 
@@ -58,19 +58,15 @@ const ChurchEventInformation = ({}: ChurchEventInformationProps) => {
 
   return (
     <InformationContainer>
-      {/*/!* 제목 *!/*/}
-      {/*<RowContainer>*/}
-      {/*  <TitleContainer>*/}
-      {/*    <MainText>{t('title')}</MainText>*/}
-      {/*  </TitleContainer>*/}
-      {/*  <ContentContainer>*/}
-      {/*    <MainText>*/}
-      {/*      {getDateStringFromDate(*/}
-      {/*        getDateFromDateString(targetChurchEvent.title)*/}
-      {/*      )}*/}
-      {/*    </MainText>*/}
-      {/*  </ContentContainer>*/}
-      {/*</RowContainer>*/}
+      {/* 제목 */}
+      <RowContainer>
+        <TitleContainer>
+          <MainText>{t('title')}</MainText>
+        </TitleContainer>
+        <ContentContainer>
+          <MainText>{targetChurchEvent.title}</MainText>
+        </ContentContainer>
+      </RowContainer>
       {/* 일자 */}
       <RowContainer>
         <TitleContainer>

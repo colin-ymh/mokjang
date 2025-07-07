@@ -5,7 +5,7 @@ import { AxiosResponse } from 'axios';
 import DaumPostcodeEmbed, { Address } from 'react-daum-postcode';
 
 import { GetMembersResponse, MembersApi } from '@/api/members/members.api';
-import { BLANK, GENDER, MARRIAGE } from '@/constants/constant';
+import { BLANK, FAMILY, GENDER, MARRIAGE } from '@/constants/constant';
 import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-item';
 import {
   getFormattedHomePhone,
@@ -23,7 +23,10 @@ import PagePopup from '@/components/atoms/common/popup/page-popup';
 import { MEMBER } from '@/constants/member/member-column';
 import { setTargetMember } from '@/redux/reducers/target/target-member-reducer';
 import AddMemberView from '@/components/organisms/member/add/add-member.view';
-import { getDateStringFromDate } from '@/utils/date';
+import { getDateFromDateString, getDateStringFromDate } from '@/utils/date';
+import { MemberDropdownValueType } from '@/models/dropdown/dropdown';
+import { useFamilyRelationDropdownItems } from '@/hooks/dropdown/dropdown-items';
+import { Member } from '@/models/member/member';
 
 export type AddMemberProps = {
   focusItem?: MEMBER;
@@ -51,6 +54,67 @@ const AddMember = ({ focusItem, onChangeProfileImage }: AddMemberProps) => {
   const [guideName, setGuideName] = useState<string>(BLANK);
   // 검색된 인도자 목록
   const [guideItems, setGuideItems] = useState<DropdownValueType[]>([]);
+
+  // 검색된 가족 목록
+  const [familyMemberItems, setFamilyMemberItems] = useState<
+    MemberDropdownValueType[]
+  >([]);
+
+  // 가족 이름
+  const [familyMemberName, setFamilyMemberName] = useState<string>(BLANK);
+  // 선택된 가족의 성별
+  const [familyGender, setFamilyGender] = useState<GENDER | undefined>();
+  // 선택된 가족의 id
+  const [familyMemberId, setFamilyMemberId] = useState<string>(BLANK);
+
+  // 가족 관계
+  const [familyRelation, setFamilyRelation] = useState<FAMILY>(FAMILY.FAMILY);
+
+  // 가족 관계 드롭다운 아이템
+  const familyRelationItems = useFamilyRelationDropdownItems(familyGender);
+
+  // 가족 이름 변경 시 이벤트
+  const onChangeFamilyMemberName = (event: ChangeEvent<HTMLInputElement>) => {
+    const newFamilyMemberName = getTrimmedString(event.target.value);
+    setFamilyMemberName(newFamilyMemberName);
+
+    if (newFamilyMemberName) {
+      membersApi
+        .getMembers({
+          churchId,
+          name: newFamilyMemberName,
+          page: 1,
+          take: 5,
+        })
+        .then((response: AxiosResponse) => {
+          const members: GetMembersResponse[] = response.data.data;
+          const newFamilyMemberItems: MemberDropdownValueType[] = members.map(
+            (member) => {
+              return { value: member.id, title: member.name };
+            }
+          );
+
+          setFamilyMemberItems(newFamilyMemberItems);
+        });
+    }
+  };
+
+  // 가족 선택 시 이벤트
+  const onChangeFamilyMemberId = (value: string) => {
+    membersApi.getMember({ churchId, memberId: value }).then((response) => {
+      if (response.status === 200) {
+        const newMember: Member = response.data.data;
+        setFamilyGender(newMember.gender as GENDER);
+        setFamilyMemberId(newMember.id);
+        setFamilyMemberName(newMember.name);
+      }
+    });
+  };
+
+  // 가족 관계 변경 시 이벤트
+  const onChangeFamilyRelation = (value: FAMILY) => {
+    setFamilyRelation(value);
+  };
 
   // 이름 변경 시 이벤트
   const onChangeName = (event: ChangeEvent<HTMLInputElement>) => {
@@ -116,7 +180,15 @@ const AddMember = ({ focusItem, onChangeProfileImage }: AddMemberProps) => {
   const onChangeBirth = (date: Date | null) => {
     if (date) {
       dispatch(
-        setTargetMember({ ...targetMember, birth: getDateStringFromDate(date) })
+        setTargetMember({
+          ...targetMember,
+          birth: getDateStringFromDate(date),
+          isLeafMonth:
+            getDateFromDateString(targetMember.birth).getMonth() !==
+            date.getMonth()
+              ? false
+              : targetMember.isLeafMonth,
+        })
       );
     }
   };
@@ -254,6 +326,14 @@ const AddMember = ({ focusItem, onChangeProfileImage }: AddMemberProps) => {
     guideItems,
     schoolItems,
     isAddressOpen,
+    familyMemberItems,
+    familyMemberName,
+    familyMemberId,
+    familyRelation,
+    familyRelationItems,
+    onChangeFamilyMemberId,
+    onChangeFamilyRelation,
+    onChangeFamilyMemberName,
     onChangeName,
     onChangeMobilePhone,
     onChangeGuideName,
