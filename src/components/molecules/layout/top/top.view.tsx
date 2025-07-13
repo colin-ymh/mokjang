@@ -111,7 +111,7 @@ const TopView = ({ onClickButton }: TopViewProps) => {
       <TopLeft>
         {/*<ChurchImage />*/}
         <LogoutButton width={100} />
-        <MainText size={SIZE.LARGE}>{`초대코드 ${church.joinCode}`}</MainText>
+        <MainText size={SIZE.LARGE}>{`초대코드 ${church?.joinCode}`}</MainText>
       </TopLeft>
       <TopRight>
         <MainButton onClick={() => onClickButton(SIDE_ID.MAIN)} />

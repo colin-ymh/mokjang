@@ -72,7 +72,7 @@ export const fetchGroups = createAsyncThunk<
     const allGroup: Group = {
       id: null, // 고유 ID (임의로 0으로 설정)
       name: BLANK,
-
+      order: 0,
       parentGroupId: null,
       childGroups: orderedGroups, // 모든 그룹을 하위 그룹으로 설정
       membersCount: 0,

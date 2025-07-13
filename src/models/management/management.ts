@@ -9,6 +9,7 @@ export type Group = {
   childGroupIds: string[];
   childGroups?: Group[];
   roles: GroupRole[];
+  order: number;
   // members: Member[];
 };
 
@@ -21,6 +22,7 @@ export const DEFAULT_GROUP = {
   childGroupIds: [],
   members: [],
   roles: [],
+  order: 0,
 };
 
 export type GroupRole = {

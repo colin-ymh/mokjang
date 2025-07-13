@@ -21,10 +21,10 @@ const ListTypeHeader = styled.div`
   position: relative;
   flex-direction: row;
   height: 40px;
-  background-color: ${GRAY.LIGHT};
+  background-color: ${GRAY.EXTRA_LIGHT};
   justify-content: flex-start;
   align-items: center;
-  padding: 0 20px;
+  padding: 0 10px;
 `;
 
 const PlusButton = styled(Plus)`
@@ -59,6 +59,7 @@ type GroupMemberViewProps = {
   onClickModalOpen: () => void;
   onClickModalClose: () => void;
   setIsToastShown: Dispatch<SetStateAction<boolean>>;
+  loadMembers: () => void;
 };
 
 const GroupMemberView = ({
@@ -69,6 +70,7 @@ const GroupMemberView = ({
   onClickModalOpen,
   onClickModalClose,
   setIsToastShown,
+  loadMembers,
 }: GroupMemberViewProps) => {
   const t_header = useScopedI18n('header');
 
@@ -88,7 +90,7 @@ const GroupMemberView = ({
           />
         </ModalContainer>
       </ListTypeHeader>
-      <GroupMemberTable groupMembers={members} />
+      <GroupMemberTable groupMembers={members} loadMembers={loadMembers} />
     </GroupMemberContainer>
   );
 };

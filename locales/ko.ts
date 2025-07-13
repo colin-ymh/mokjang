@@ -13,6 +13,13 @@ export default {
   isNotDone: '미완료',
   customSelect: '직접선택',
 
+  church: '교회',
+  churchName: '교회명',
+  churchMainAdmin: '대표자',
+  churchPhone: '대표번호',
+  churchAddress: '교회주소',
+  churchIdentifyNumber: '사업자 고유번호',
+
   leafMonth: '윤달',
 
   date: '날짜',
@@ -268,6 +275,8 @@ export default {
   'title.editChurchEvent': '이벤트 수정',
 
   'title.attendanceInformation': '보고서',
+
+  'title.editGroupName': '그룹명 수정',
   /*-------------------title (popup title)-------------------*/
 
   /*-------------------header (side bar button)-------------------*/
@@ -412,6 +421,8 @@ export default {
   'button.addChurchEvent': '이벤트 추가하기',
   'button.today': '오늘',
   'button.my': '내 일정',
+  'button.editGroupName': '그룹명 변경하기',
+  'button.editChurch': '교회정보 변경하기',
   /*-------------------button-------------------*/
 
   /*-------------------placeholder-------------------*/
@@ -462,6 +473,12 @@ export default {
 
   'placeholder.date': '날짜를 선택해주세요.',
   'placeholder.description': '설명을 입력해주세요.',
+
+  'placeholder.churchName': '교회명을 입력해주세요.',
+  'placeholder.churchMainAdmin': '대표자를 선택해주세요.',
+  'placeholder.churchPhone': '대표번호를 입력해주세요.',
+  'placeholder.churchAddress': '교회주소를 선택해주세요',
+  'placeholder.churchIdentifyNumber': '사업자 고유번호를 입력해주세요.',
   /*-------------------placeholder-------------------*/
 
   /*-------------------radiobutton-------------------*/

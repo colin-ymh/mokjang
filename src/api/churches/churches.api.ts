@@ -23,10 +23,10 @@ type editChurchParams = {
 };
 
 type editChurchBody = {
-  name?: string;
-  identifyNumber?: string;
+  // name?: string;
+  // identifyNumber?: string;
   phone?: string;
-  denomination?: string;
+  // denomination?: string;
   address?: string;
   detailAddress?: string;
   memberSize?: string;
@@ -99,12 +99,12 @@ export class ChurchesApi {
   };
 
   /**
-   * 교회 수정
+   *
    * @param {editChurchParams} params
    * @param {editChurchBody} body
    * @returns {Promise<AxiosResponse>}
    */
-  public getVerificationRequest = async (
+  public editChurch = async (
     params: editChurchParams,
     body: editChurchBody
   ): Promise<AxiosResponse> => {

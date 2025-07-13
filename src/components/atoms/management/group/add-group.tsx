@@ -10,20 +10,18 @@ import { useScopedI18n } from '../../../../../locales/client';
 
 const BackgroundContainer = styled.div<{ $isShown: boolean }>`
   display: ${({ $isShown }) => ($isShown ? 'flex' : 'none')};
-  justify-content: flex-end;
+  justify-content: flex-start;
   width: 100%;
-  border-bottom: 1px solid ${GRAY.SEMI_LIGHT};
+  border-bottom: 1px solid ${GRAY.EXTRA_LIGHT};
 `;
 
 const AddGroupContainer = styled.div<{ $level: number }>`
   display: flex;
-  padding: 5px 0;
   justify-content: center;
   align-items: center;
   position: relative;
-  //gap: 10px;
-
-  width: ${({ $level }) => `${100 - $level * 10}%`};
+  padding: ${({ $level }) => `10px 10px 10px ${$level * 30}px`};
+  width: 100%;
 `;
 
 const PlusButton = styled(Plus)`

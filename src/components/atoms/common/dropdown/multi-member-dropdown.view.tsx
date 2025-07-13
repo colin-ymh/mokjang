@@ -35,7 +35,7 @@ const InputContainer = styled.div<{
   align-items: center;
   flex-direction: row;
   width: ${({ width }) => (width ? `${width}px` : '100%')};
-  border: 1px solid ${({ $borderColor }) => $borderColor ?? GRAY.DEFAULT};
+  border: 1px solid ${({ $borderColor }) => $borderColor ?? GRAY.SEMI_LIGHT};
   border-radius: 5px;
   background-color: ${({ $disabled, $backgroundColor }) =>
     $disabled ? GRAY.SEMI_LIGHT : ($backgroundColor ?? WHITE)};
@@ -60,9 +60,8 @@ const Tag = styled.button<{ $isEditable: boolean }>`
   display: flex;
   align-items: center;
   gap: 4px;
-  background: ${({ $isEditable }) =>
-    $isEditable ? GRAY.SEMI_LIGHT : 'transparent'};
-  border: none;
+  background: ${({ $isEditable }) => ($isEditable ? WHITE : 'transparent')};
+  border: 1px solid ${GRAY.SEMI_LIGHT};
   border-radius: 4px;
   padding: 5px;
   font-size: 12px;
@@ -72,6 +71,7 @@ const Tag = styled.button<{ $isEditable: boolean }>`
 const Close = styled.span`
   font-size: 12px;
   line-height: 1;
+  color: ${GRAY.SEMI_DARK};
 `;
 
 const Chevron = styled(ChevronLeft)<{ $isOpened: boolean; $isShown: boolean }>`
@@ -183,7 +183,7 @@ const MultiMemberDropdownView = forwardRef<
                   if (isEditable) removeValue(v);
                 }}
               >
-                <MainText>{v.title}</MainText>
+                <MainText color={GRAY.SEMI_DARK}>{v.title}</MainText>
                 {isEditable && <Close>&times;</Close>}
               </Tag>
             ))}

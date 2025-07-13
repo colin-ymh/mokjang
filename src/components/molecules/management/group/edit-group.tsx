@@ -102,7 +102,7 @@ const EditGroup = ({
     try {
       // 이름 변경
       if (group.name !== newName) {
-        await groupsApi.editGroup(
+        await groupsApi.editGroupName(
           { churchId, groupId: group.id as string },
           { name: newName }
         );

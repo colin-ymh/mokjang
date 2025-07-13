@@ -1,18 +1,19 @@
-import { Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
 
 import GroupList from '@/components/molecules/management/group/group-list';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { SIZE } from '@/constants/styles/style';
-import { GRAY } from '@/constants/styles/color';
-import { GROUP_MANAGEMENT_HEADER_ID } from '@/constants/layout/header';
-import HeaderBar, {
-  HeaderBarItem,
-} from '@/components/atoms/layout/header/header-bar';
-import { getGroupManagementContent } from '@/hooks/layout/render-layout';
+import { GRAY, WHITE } from '@/constants/styles/color';
 import { Group } from '@/models/management/management';
 
 import { useI18n } from '../../../../../locales/client';
+import GroupMember from '@/components/molecules/management/group/group-member';
+import Button from '@/components/atoms/common/button/button';
+import ToastPopup from '@/components/atoms/common/popup/toast-popup';
+import BorderInput from '@/components/atoms/common/input/border-input';
+import CustomPopup from '@/components/atoms/common/popup/custom-popup';
+import LabelInput from '@/components/atoms/common/input/label-input';
 
 const GroupManagementContainer = styled.div`
   display: flex;
@@ -25,9 +26,14 @@ const GroupListContainer = styled.div`
   flex-direction: column;
   padding: 20px;
   gap: 20px;
-  border-right: 1px solid ${GRAY.SEMI_LIGHT};
-  width: 200px;
+  border-right: 1px solid ${GRAY.EXTRA_LIGHT};
+  width: 500px;
   flex-shrink: 0;
+`;
+
+const AddContainer = styled.div`
+  display: flex;
+  gap: 5px;
 `;
 
 const GroupInformationContainer = styled.div<{ $isGroup: boolean }>`
@@ -38,58 +44,133 @@ const GroupInformationContainer = styled.div<{ $isGroup: boolean }>`
 
 const GroupInformationHeader = styled.div`
   display: flex;
-  flex-direction: column;
-  width: 100%;
+  flex-direction: row;
+  justify-content: space-between;
   border-bottom: 1px solid ${GRAY.SEMI_LIGHT};
-  gap: 10px;
-  padding: 20px 20px 0 20px;
+  padding: 20px;
+`;
+
+const EditContainer = styled.div`
+  display: flex;
+  padding: 10px;
+  width: 100%;
 `;
 
 type GroupManagementViewProps = {
+  newGroupName: string;
+  isEditShown: boolean;
+  editName: string;
+  onChangeEditGroupName: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onClickEditOpen: () => void;
+  onClickEditClose: () => void;
+  onClickSaveEdit: () => void;
+  onChangeNewGroupName: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onClickSaveNewGroup: () => void;
   selectedGroup: Group;
   setSelectedGroup: Dispatch<SetStateAction<Group>>;
-  headerBarId: string;
-  headerBarItems: HeaderBarItem[];
-  onClickHeaderBar: (id: GROUP_MANAGEMENT_HEADER_ID) => void;
+  isToastShown: boolean;
+  toastText: string;
+  toastColor: string;
+  setIsToastShown: Dispatch<SetStateAction<boolean>>;
 };
 
 const GroupManagementView = ({
+  newGroupName,
+  isEditShown,
+  editName,
+  onChangeEditGroupName,
+  onClickEditOpen,
+  onClickEditClose,
+  onClickSaveEdit,
+  onChangeNewGroupName,
+  onClickSaveNewGroup,
   selectedGroup,
   setSelectedGroup,
-  headerBarId,
-  headerBarItems,
-  onClickHeaderBar,
+  isToastShown,
+  toastText,
+  toastColor,
+  setIsToastShown,
 }: GroupManagementViewProps) => {
   const t = useI18n();
   return (
-    <GroupManagementContainer>
-      {/* 그룹 목록 */}
-      <GroupListContainer>
-        <MainText size={SIZE.LARGE} fontWeight={600}>
-          {t('groupList')}
-        </MainText>
-        <GroupList
-          selectedGroupId={selectedGroup.id}
-          setSelectedGroup={setSelectedGroup}
-        />
-      </GroupListContainer>
-      {/* 교회 정보 */}
-      <GroupInformationContainer $isGroup={!!selectedGroup.id}>
-        {/* 헤더 */}
-        <GroupInformationHeader>
+    <>
+      <GroupManagementContainer>
+        {/* 그룹 목록 */}
+        <GroupListContainer>
+          {/* 타이틀 */}
           <MainText size={SIZE.LARGE} fontWeight={600}>
-            {selectedGroup.name}
+            {t('groupList')}
           </MainText>
-          <HeaderBar
-            value={headerBarId}
-            items={headerBarItems}
-            onClick={onClickHeaderBar}
+          {/* 새 그룹 추가 창*/}
+          <AddContainer>
+            <BorderInput
+              value={newGroupName}
+              onChange={onChangeNewGroupName}
+              borderColor={GRAY.SEMI_LIGHT}
+            />
+            <Button
+              width={80}
+              text={t('button.add')}
+              onClick={onClickSaveNewGroup}
+              borderColor={GRAY.SEMI_LIGHT}
+              backgroundColor={WHITE}
+              color={GRAY.DARK}
+            />
+          </AddContainer>
+          {/* 그룹 목록 */}
+          <GroupList
+            selectedGroupId={selectedGroup.id}
+            setSelectedGroup={setSelectedGroup}
           />
-        </GroupInformationHeader>
-        {/* 컨텐츠 */}
-        {getGroupManagementContent(headerBarId, selectedGroup)}
-      </GroupInformationContainer>
-    </GroupManagementContainer>
+        </GroupListContainer>
+        {/* 그룹원 목록 */}
+        <GroupInformationContainer $isGroup={!!selectedGroup.id}>
+          {/* 헤더 */}
+          <GroupInformationHeader>
+            <MainText size={SIZE.LARGE} fontWeight={600}>
+              {selectedGroup.name}
+            </MainText>
+            <Button
+              color={GRAY.DARK}
+              text={t('button.editGroupName')}
+              height={30}
+              width={120}
+              backgroundColor={WHITE}
+              borderColor={GRAY.SEMI_LIGHT}
+              onClick={onClickEditOpen}
+            />
+          </GroupInformationHeader>
+          {/* 컨텐츠 */}
+          {selectedGroup.id && <GroupMember group={selectedGroup} />}
+        </GroupInformationContainer>
+      </GroupManagementContainer>
+      {/* 토스트 팝업 */}
+      {isToastShown && (
+        <ToastPopup
+          setIsShow={setIsToastShown}
+          text={toastText}
+          backgroundColor={toastColor}
+        />
+      )}
+      {/* 그룹명 수정 팝업 */}
+      <CustomPopup
+        isShow={isEditShown}
+        onClickCancel={onClickEditClose}
+        onClickDone={onClickSaveEdit}
+        width={400}
+        height={200}
+        headerTitle={t('title.editGroupName')}
+      >
+        <EditContainer>
+          <LabelInput
+            label={t('groupName')}
+            value={editName}
+            onChange={onChangeEditGroupName}
+            placeholder={t('placeholder.groupName')}
+          />
+        </EditContainer>
+      </CustomPopup>
+    </>
   );
 };
 

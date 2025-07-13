@@ -16,6 +16,7 @@ const HeaderContainer = styled.div`
   overflow: hidden;
   position: relative;
   cursor: pointer;
+  height: 30px;
 `;
 
 const TextContainer = styled.div`

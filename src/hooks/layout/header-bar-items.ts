@@ -8,7 +8,6 @@ import {
 } from '@/constants/layout/content';
 import {
   CHURCH_USER_HEADER_ID,
-  GROUP_MANAGEMENT_HEADER_ID,
   MEMBER_INFORMATION_HEADER_ID,
   MINISTRY_MANAGEMENT_HEADER_ID,
   PERMISSION_TEMPLATE_HEADER_ID,
@@ -135,6 +134,10 @@ export const useManagementChurchHeaderBarItems = () => {
 
   const items = [
     {
+      id: CHURCH_CONTENT_ID.CHURCH,
+      title: t(CHURCH_CONTENT_ID.CHURCH),
+    },
+    {
       id: CHURCH_CONTENT_ID.GROUP,
       title: t(CHURCH_CONTENT_ID.GROUP),
     },
@@ -145,23 +148,6 @@ export const useManagementChurchHeaderBarItems = () => {
     {
       id: CHURCH_CONTENT_ID.MINISTRY,
       title: t(CHURCH_CONTENT_ID.MINISTRY),
-    },
-  ];
-
-  return items;
-};
-
-export const useGroupManagementHeaderBarItems = () => {
-  const t_header = useScopedI18n('header');
-
-  const items = [
-    {
-      id: GROUP_MANAGEMENT_HEADER_ID.GROUP_INFORMATION,
-      title: t_header(GROUP_MANAGEMENT_HEADER_ID.GROUP_INFORMATION),
-    },
-    {
-      id: GROUP_MANAGEMENT_HEADER_ID.MEMBER_LIST,
-      title: t_header(GROUP_MANAGEMENT_HEADER_ID.MEMBER_LIST),
     },
   ];
 

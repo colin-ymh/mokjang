@@ -13,6 +13,13 @@ export default {
   isNotDone: 'Incomplete',
   customSelect: 'Custom Select',
 
+  church: 'Church',
+  churchName: 'Church Name',
+  churchMainAdmin: 'Church MainAdmin',
+  churchPhone: 'Church Phone',
+  churchAddress: 'Church Address',
+  churchIdentifyNumber: 'Identify Number',
+
   leafMonth: 'Leaf Month',
   date: 'Date',
   birthday: 'Member Birthday',
@@ -265,6 +272,8 @@ export default {
   'title.editChurchEvent': 'Edit Event',
 
   'title.attendanceInformation': 'Report',
+
+  'title.editGroupName': 'Edit Group Name',
   /*-------------------title (popup title)-------------------*/
 
   /*-------------------header (side bar button)-------------------*/
@@ -400,6 +409,9 @@ export default {
 
   'button.today': 'Today',
   'button.my': 'My Schedule',
+  'button.editGroupName': 'Edit Group Name',
+
+  'button.editChurch': 'Edit Church',
   /*-------------------button-------------------*/
 
   /*-------------------placeholder-------------------*/
@@ -450,6 +462,12 @@ export default {
   'placeholder.worshipSessionDescription': 'Enter the worship description.',
 
   'placeholder.date': 'Select the date.',
+
+  'placeholder.churchName': 'Enter the Church Name',
+  'placeholder.churchMainAdmin': 'Select the Church MainAdmin',
+  'placeholder.churchPhone': 'Enter the Church Phone Number',
+  'placeholder.churchAddress': 'Select the Church Address',
+  'placeholder.churchIdentifyNumber': 'Enter the Identify Number',
   /*-------------------placeholder-------------------*/
 
   /*-------------------radiobutton-------------------*/

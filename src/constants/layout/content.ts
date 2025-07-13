@@ -20,6 +20,7 @@ export enum CALENDAR_CONTENT_ID {
 }
 
 export enum CHURCH_CONTENT_ID {
+  CHURCH = 'church',
   GROUP = 'group',
   OFFICER = 'officer',
   MINISTRY = 'ministry',

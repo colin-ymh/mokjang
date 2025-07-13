@@ -73,7 +73,7 @@ const BorderInput = forwardRef<HTMLInputElement, BorderInputProps>(
     {
       onKeyDown,
       readOnly = false,
-      borderColor = GRAY.DEFAULT,
+      borderColor = GRAY.SEMI_LIGHT,
       value = BLANK,
       height,
       width,

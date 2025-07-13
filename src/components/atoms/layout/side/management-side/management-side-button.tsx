@@ -35,7 +35,7 @@ const ManagementSideButton = ({ id, title }: SideBarButtonProps) => {
   const onClick = (id: string) => {
     switch (id) {
       case MANAGEMENT_HEADER_ID.CHURCH:
-        router.push(`/management/church/group`);
+        router.push(`/management/church/church`);
         return;
       case MANAGEMENT_HEADER_ID.MANAGER:
         router.push(`/management/manager`);

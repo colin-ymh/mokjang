@@ -38,7 +38,9 @@ const App = () => {
     if (sideId === SIDE_ID.MAIN && !headerId) {
       router.push(`main/${MAIN_HEADER_ID.MEMBER}`);
     } else if (sideId === SIDE_ID.MANAGEMENT && !headerId) {
-      router.push(`management/${MANAGEMENT_HEADER_ID.CHURCH}`);
+      router.push(
+        `management/${MANAGEMENT_HEADER_ID.CHURCH}/${CHURCH_CONTENT_ID.CHURCH}`
+      );
     }
   }, [sideId, headerId, user?.id, churchId]);
 
@@ -61,7 +63,7 @@ const App = () => {
       !contentId
     ) {
       router.push(
-        `management/${MANAGEMENT_HEADER_ID.CHURCH}/${CHURCH_CONTENT_ID.GROUP}`
+        `management/${MANAGEMENT_HEADER_ID.CHURCH}/${CHURCH_CONTENT_ID.CHURCH}`
       );
     }
   }, [sideId, headerId, contentId, user?.id, churchId, router]);

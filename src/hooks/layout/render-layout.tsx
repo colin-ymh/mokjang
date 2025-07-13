@@ -60,6 +60,7 @@ import MainAttendanceHeader from '@/components/molecules/layout/header/main/atte
 import AttendanceList from '@/components/organisms/attendance/list/attendance-list';
 import WorshipList from '@/components/organisms/worship/list/worship-list';
 import MainCalendar from '@/components/organisms/calendar/main-calendar';
+import ChurchManagement from '@/components/organisms/management/church/church-management';
 
 export const getSide = (id: string) => {
   switch (id) {
@@ -187,6 +188,8 @@ export const getContent = (
       return <WorshipList />;
 
     // 교회 설정
+    case CHURCH_CONTENT_ID.CHURCH:
+      return <ChurchManagement />;
     case CHURCH_CONTENT_ID.GROUP:
       return <GroupManagement />;
     case CHURCH_CONTENT_ID.MINISTRY:

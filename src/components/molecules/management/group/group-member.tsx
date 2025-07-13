@@ -22,6 +22,12 @@ const GroupMember = ({ group }: GroupMemberProps) => {
     throw thrownError;
   }
 
+  // 서버에서 불러오는 교인 목록 페이지
+  const [page, setPage] = useState<number>(1);
+
+  // 데이터 로딩 상태
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   const [isToastShown, setIsToastShown] = useState<boolean>(false);
 
   // 그룹에 속한 교인 목록
@@ -41,25 +47,51 @@ const GroupMember = ({ group }: GroupMemberProps) => {
   };
 
   const fetchMembers = async () => {
+    if (isLoading) return; // 로딩 중에는 추가 요청 방지
+    setIsLoading(true);
+
     try {
-      await membersApi
-        .getMembers({
-          churchId: group.churchId,
-          group: [group.id as string],
-          selectedColumns: [MEMBER.OFFICER, MEMBER.BIRTH, MEMBER.MOBILE_PHONE],
-        })
-        .then((response) => {
-          setMembers(response.data.data);
-        });
+      const response = await membersApi.getMembers({
+        churchId: group.churchId,
+        group: [group.id as string],
+        selectedColumns: [MEMBER.OFFICER, MEMBER.BIRTH, MEMBER.MOBILE_PHONE],
+        page,
+        take: 30,
+      });
+
+      const newMembers: Member[] = response.data.data;
+
+      if (newMembers.length > 0) {
+        // 기존 데이터와 합치면서 중복 제거
+        const existingIds = new Set(members.map((member) => member.id));
+        const filteredNewMembers = newMembers.filter(
+          (member) => !existingIds.has(member.id)
+        );
+        setMembers([...members, ...filteredNewMembers]);
+        setPage((prev) => prev + 1); // 다음 페이지로 이동
+      }
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));
+    } finally {
+      setIsLoading(false);
     }
+  };
+
+  // 무한 스크롤로 데이터 추가 로드
+  const loadMembers = () => {
+    setPage(page + 1);
   };
 
   // 교인 불러오기
   useEffect(() => {
     fetchMembers();
-  }, [group]);
+  }, [page]);
+
+  useEffect(() => {
+    setMembers([]);
+    setPage(1);
+    fetchMembers();
+  }, [group.id]);
 
   const props = {
     group,
@@ -69,6 +101,7 @@ const GroupMember = ({ group }: GroupMemberProps) => {
     onClickModalOpen,
     onClickModalClose,
     setIsToastShown,
+    loadMembers,
   };
 
   return (

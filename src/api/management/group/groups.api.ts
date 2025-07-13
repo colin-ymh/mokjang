@@ -25,20 +25,6 @@ type GetGroupParams = {
   groupId: string;
 };
 
-type GetGroupsByNameParams = {
-  churchId: string;
-  take?: number;
-  page?: number;
-  order?: GROUP_ORDER;
-  orderDirection?: ORDER_DIRECTION;
-  name: string;
-};
-
-type GetChildGroupsParams = {
-  churchId: string;
-  groupId: string;
-};
-
 type CreateGroupParams = {
   churchId: string;
 };
@@ -48,14 +34,23 @@ type CreateGroupBody = {
   parentGroupId?: string | null;
 };
 
-type EditGroupParams = {
+type EditGroupNameParams = {
   churchId: string;
   groupId: string;
 };
 
-type EditGroupBody = {
+type EditGroupNameBody = {
   name?: string;
+};
+
+type EditGroupStructureParams = {
+  churchId: string;
+  groupId: string;
+};
+
+type EditGroupStructureBody = {
   parentGroupId?: string | null;
+  order?: number;
 };
 
 type DeleteGroupParams = {
@@ -82,7 +77,7 @@ export class GroupsApi {
   ): Promise<AxiosResponse> => {
     const {
       churchId,
-      take = 5,
+      take = 30,
       page = 1,
       order,
       orderDirection,
@@ -158,93 +153,6 @@ export class GroupsApi {
   };
 
   /**
-   * 그룹 이름으로 검색
-   * @param {GetGroupsByNameParams} params
-   * @returns {Promise<AxiosResponse>}
-   */
-  public getGroupsByName = async (
-    params: GetGroupsByNameParams
-  ): Promise<AxiosResponse> => {
-    const {
-      churchId,
-      take = 5,
-      page = 1,
-      order,
-      orderDirection,
-      name,
-    } = params;
-
-    const queryParams: Record<string, any> = Object.fromEntries(
-      Object.entries({
-        take,
-        page,
-        order,
-        orderDirection,
-        name,
-      }).filter(
-        ([_, value]) =>
-          value !== undefined &&
-          value !== '' &&
-          !(Array.isArray(value) && value.length === 0)
-      )
-    );
-
-    const url = `${this._url}/churches/${churchId}/management/groups/search`;
-
-    try {
-      return await authorizeAxios.get(url, {
-        params: queryParams,
-        paramsSerializer: (params) => {
-          return qs.stringify(params, {
-            arrayFormat: 'repeat',
-            skipNulls: true,
-            encodeValuesOnly: true,
-          });
-        },
-      });
-    } catch (serverError: any) {
-      if (serverError.response) {
-        const { message, error, statusCode } = serverError.response.data;
-        throw new CustomError(message, error, statusCode);
-      } else {
-        throw new CustomError(
-          '알 수 없는 에러가 발생했습니다',
-          500,
-          'Unknown Error'
-        );
-      }
-    }
-  };
-
-  /**
-   * 자식 소그룹 불러오기
-   * @param {GetChildGroupsParams} params
-   * @returns {Promise<AxiosResponse>}
-   */
-  public getChildGroups = async (
-    params: GetChildGroupsParams
-  ): Promise<AxiosResponse> => {
-    const { churchId, groupId } = params;
-
-    const url = `${this._url}/churches/${churchId}/management/groups/${groupId}/childGroups`;
-
-    try {
-      return await authorizeAxios.get(url);
-    } catch (serverError: any) {
-      if (serverError.response) {
-        const { message, error, statusCode } = serverError.response.data;
-        throw new CustomError(message, error, statusCode);
-      } else {
-        throw new CustomError(
-          '알 수 없는 에러가 발생했습니다',
-          500,
-          'Unknown Error'
-        );
-      }
-    }
-  };
-
-  /**
    * 소그룹 만들기
    * @param {CreateGroupParams} params
    * @param {CreateGroupBody} body
@@ -275,18 +183,48 @@ export class GroupsApi {
   };
 
   /**
-   * 소그룹 수정하기
-   * @param {EditGroupParams} params
-   * @param {EditGroupBody} body
+   * 그룹 이름 수정하기
+   * @param {EditGroupNameParams} params
+   * @param {EditGroupNameBody} body
    * @returns {Promise<AxiosResponse>}
    */
-  public editGroup = async (
-    params: EditGroupParams,
-    body: EditGroupBody
+  public editGroupName = async (
+    params: EditGroupNameParams,
+    body: EditGroupNameBody
   ): Promise<AxiosResponse> => {
     const { churchId, groupId } = params;
 
-    const url = `${this._url}/churches/${churchId}/management/groups/${groupId}`;
+    const url = `${this._url}/churches/${churchId}/management/groups/${groupId}/name`;
+
+    try {
+      return await authorizeAxios.patch(url, body);
+    } catch (serverError: any) {
+      if (serverError.response) {
+        const { message, error, statusCode } = serverError.response.data;
+        throw new CustomError(message, error, statusCode);
+      } else {
+        throw new CustomError(
+          '알 수 없는 에러가 발생했습니다',
+          500,
+          'Unknown Error'
+        );
+      }
+    }
+  };
+
+  /**
+   * 그룹 구조 수정하기
+   * @param {EditGroupStructureParams} params
+   * @param {EditGroupStructureBody} body
+   * @returns {Promise<AxiosResponse>}
+   */
+  public editGroupStructure = async (
+    params: EditGroupStructureParams,
+    body: EditGroupStructureBody
+  ): Promise<AxiosResponse> => {
+    const { churchId, groupId } = params;
+
+    const url = `${this._url}/churches/${churchId}/management/groups/${groupId}/structure`;
 
     try {
       return await authorizeAxios.patch(url, body);

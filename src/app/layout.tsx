@@ -14,6 +14,7 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 // import 'react-big-calendar/lib/addons/dragAndDrop/styles'; // if using DnD
 import InitializeStore from '@/components/atoms/layout/initialize-store';
 import GlobalStyle from '@/components/atoms/layout/global-style';
+import { CustomDragLayer } from '@/vendor/dnd/custom-drag-layer';
 
 type RootLayoutProps = {
   children?: React.ReactNode;
@@ -53,6 +54,7 @@ const RootLayout = (props: RootLayoutProps | RootLayoutPropsExtended) => {
                 <GlobalStyle />
                 {/* 실제 페이지 렌더링 */}
                 {children}
+                <CustomDragLayer />
               </DndProvider>
             </InitializeStore>
           </Provider>
