@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import Button from '@/components/atoms/common/button/button';
 import { GRAY, WHITE } from '@/constants/styles/color';
-import { TASK } from '@/constants/task/task-column';
+import { TASK } from '@/constants/column/task-column';
 
 import {
   useTaskSearchFilterDropdownItems,

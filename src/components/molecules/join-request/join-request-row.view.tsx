@@ -6,7 +6,7 @@ import { JOIN_REQUEST_STATUS } from '@/constants/status/status';
 import JoinRequestFilteredItem, {
   JoinRequestFilteredItemType,
 } from '@/components/atoms/join-request/join-request-filtered-item';
-import { JOIN_REQUEST } from '@/constants/join-request/join-request-column';
+import { JOIN_REQUEST } from '@/constants/column/join-request-column';
 import {
   useJoinRequestSearchFilterDropdownItems,
   useJoinRequestStatusFilterDropdownItems,

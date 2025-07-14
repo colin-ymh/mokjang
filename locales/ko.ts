@@ -277,6 +277,7 @@ export default {
   'title.attendanceInformation': '보고서',
 
   'title.editGroupName': '그룹명 수정',
+  'title.addWidget': '위젯 추가',
   /*-------------------title (popup title)-------------------*/
 
   /*-------------------header (side bar button)-------------------*/
@@ -386,6 +387,7 @@ export default {
   'button.edit': '수정',
   'button.delete': '삭제하기',
   'button.stop': '종료하기',
+  'button.close': '닫기',
   'button.fetchFamily': '가족 불러오기',
   'button.saveFamily': '해당 가족만 추가하기',
   'button.goBack': '이전으로',

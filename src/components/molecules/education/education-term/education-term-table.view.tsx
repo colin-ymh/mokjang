@@ -13,7 +13,7 @@ import { BLANK_HEADER } from '@/redux/reducers/filter/member-filter-reducer';
 // import { getEducationTermStatusColor } from '@/utils/color';
 import EducationTermTableHeader from '@/components/atoms/education/education-term/education-term-table-header';
 import { EducationSession, EducationTerm } from '@/models/education/education';
-import { EDUCATION_TERM } from '@/constants/education/education-column';
+import { EDUCATION_TERM } from '@/constants/column/education-column';
 import { useI18n } from '../../../../../locales/client';
 import ChevronDown from '../../../../../public/svg/chevron-down.svg';
 import { getStatusColor } from '@/utils/color';

@@ -116,3 +116,16 @@ export enum WORSHIP_PERIOD {
   LAST_MONTH = 'lastMonth',
   LAST_THREE_MONTH = 'lastThreeMonth',
 }
+
+export enum HOME_WIDGET {
+  MY_SCHEDULE = 'mySchedule',
+  REPORTED_SCHEDULE = 'reportedSchedule',
+  SCHEDULE_SUMMARY = 'scheduleSummary',
+  NEW_MEMBER = 'newMember',
+  ATTENDANCE = 'attendance',
+}
+
+export enum DND_ITEM_TYPE {
+  GROUP = 'group',
+  HOME_WIDGET = 'homeWidget',
+}

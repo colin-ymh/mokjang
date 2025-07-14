@@ -10,7 +10,7 @@ import useWindowSize from '@/hooks/window/window';
 import ChurchUserTableHeader from '@/components/atoms/church-user/list/church-user-table-header';
 import { BLANK_HEADER } from '@/redux/reducers/filter/member-filter-reducer';
 import { ChurchUser } from '@/models/church-user/church-user';
-import { CHURCH_USER } from '@/constants/church-user/church-user-column';
+import { CHURCH_USER } from '@/constants/column/church-user-column';
 import MemberProfile from '@/components/atoms/member/member-profile';
 import { useI18n } from '../../../../../locales/client';
 import { getFormattedMobilePhone } from '@/utils/format';

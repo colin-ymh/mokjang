@@ -5,7 +5,7 @@ import { ORDER_DIRECTION } from '@/constants/constant';
 import { SERVER_URL, TEST_SERVER_URL } from '@/constants/state/url';
 import { CustomError } from '@/api/error/error';
 import authorizeAxios from '@/api/authorize-axios';
-import { WORSHIP } from '@/constants/worship/worship-column';
+import { WORSHIP } from '@/constants/column/worship-column';
 
 type GetWorshipsParams = {
   churchId: string; // 교회 id

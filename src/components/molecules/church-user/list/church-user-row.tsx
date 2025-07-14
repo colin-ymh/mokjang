@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 
 import { getTrimmedString } from '@/utils/format';
-import { USER } from '@/constants/user/user-column';
+import { USER } from '@/constants/column/user-column';
 import { BLANK } from '@/constants/constant';
 import ChurchUserRowView, {
   USER_SEARCH_FILTER,

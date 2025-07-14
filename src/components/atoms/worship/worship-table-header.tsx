@@ -7,7 +7,7 @@ import { MainText } from '@/components/atoms/common/text/main-text';
 import { BLACK, GRAY, MAIN } from '@/constants/styles/color';
 import { SIZE } from '@/constants/styles/style';
 import { getTranslatedWorshipColumn } from '@/utils/translate';
-import { WORSHIP } from '@/constants/worship/worship-column';
+import { WORSHIP } from '@/constants/column/worship-column';
 import { useI18n } from '../../../../locales/client';
 
 const HeaderContainer = styled.div`

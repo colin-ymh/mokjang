@@ -8,7 +8,7 @@ import { MainText } from '@/components/atoms/common/text/main-text';
 import { GRAY } from '@/constants/styles/color';
 import { SIZE } from '@/constants/styles/style';
 import TableOrderItem from '@/components/atoms/member/list/table-order-item';
-import { MEMBER } from '@/constants/member/member-column';
+import { MEMBER } from '@/constants/column/member-column';
 import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-item';
 import Dropdown from '@/components/atoms/common/dropdown/dropdown';
 import { NULL } from '@/constants/constant';

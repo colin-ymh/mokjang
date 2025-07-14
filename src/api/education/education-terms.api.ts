@@ -1,6 +1,6 @@
 import { AxiosResponse } from 'axios';
 import { SERVER_URL, TEST_SERVER_URL } from '@/constants/state/url';
-import { EDUCATION_TERM } from '@/constants/education/education-column';
+import { EDUCATION_TERM } from '@/constants/column/education-column';
 import { ORDER_DIRECTION } from '@/constants/constant';
 import { CustomError } from '@/api/error/error';
 import authorizeAxios from '@/api/authorize-axios';

@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 
 import { MainText } from '@/components/atoms/common/text/main-text';
-import { PERMISSION_TEMPLATE } from '@/constants/permission/permission-column';
+import { PERMISSION_TEMPLATE } from '@/constants/column/permission-column';
 import { BLACK, GRAY, MAIN } from '@/constants/styles/color';
 import { SIZE } from '@/constants/styles/style';
 import { getTranslatedPermissionTemplateColumn } from '@/utils/translate';

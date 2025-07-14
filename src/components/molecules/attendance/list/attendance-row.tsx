@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { AppDispatch, RootState } from '@/redux/store';
 import { setWorshipEnrollmentFilter } from '@/redux/reducers/filter/worship-enrollment-filter-reducer';
-import { WORSHIP_ENROLLMENT } from '@/constants/worship/worship-column';
+import { WORSHIP_ENROLLMENT } from '@/constants/column/worship-column';
 import { BLANK, WORSHIP_PERIOD } from '@/constants/constant';
 import AttendanceRowView from '@/components/molecules/attendance/list/attendance-row.view';
 import { DEFAULT_GROUP, Group } from '@/models/management/management';

@@ -10,7 +10,7 @@ import {
   TABLE_HEADER_ITEM,
 } from '@/redux/reducers/filter/member-filter-reducer';
 
-import { MEMBER } from '@/constants/member/member-column';
+import { MEMBER } from '@/constants/column/member-column';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { BLACK, GRAY, MAIN } from '@/constants/styles/color';
 import { NULL } from '@/constants/constant';

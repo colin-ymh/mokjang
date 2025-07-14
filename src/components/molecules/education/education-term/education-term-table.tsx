@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 
 import { BLANK, ORDER_DIRECTION } from '@/constants/constant';
-import { EDUCATION_TERM } from '@/constants/education/education-column';
+import { EDUCATION_TERM } from '@/constants/column/education-column';
 import {
   setEducationTermOrderBy,
   setEducationTermOrderDirection,

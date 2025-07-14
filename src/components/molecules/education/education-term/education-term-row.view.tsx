@@ -9,7 +9,7 @@ import EducationTermFilteredItem, {
   EducationTermFilteredItemType,
 } from '@/components/atoms/education/education-term/education-term-filtered-item';
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
-import { EDUCATION_TERM } from '@/constants/education/education-column';
+import { EDUCATION_TERM } from '@/constants/column/education-column';
 import SearchInput from '@/components/atoms/common/input/search-input';
 
 const EducationTermContainer = styled.div`

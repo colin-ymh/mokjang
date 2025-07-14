@@ -5,7 +5,7 @@ import { ORDER_DIRECTION } from '@/constants/constant';
 import { SERVER_URL, TEST_SERVER_URL } from '@/constants/state/url';
 import { CustomError } from '@/api/error/error';
 import authorizeAxios from '@/api/authorize-axios';
-import { WORSHIP_ATTENDANCE } from '@/constants/worship/worship-column';
+import { WORSHIP_ATTENDANCE } from '@/constants/column/worship-column';
 import { WORSHIP_ATTENDANCE_STATUS } from '@/models/worship/worship';
 
 type GetWorshipAttendancesParams = {

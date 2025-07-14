@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { usePathname } from 'next/navigation';
 
 import { MainText } from '@/components/atoms/common/text/main-text';
-import { MEMBER } from '@/constants/member/member-column';
+import { MEMBER } from '@/constants/column/member-column';
 import { BLACK, GRAY, WHITE } from '@/constants/styles/color';
 import {
   CALENDAR_MODE,

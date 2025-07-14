@@ -21,7 +21,7 @@ import {
 import TableSettingView from '@/components/molecules/member/list/table-setting.view';
 import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-item';
 import { getTranslatedMemberColumn } from '@/utils/translate';
-import { MEMBER } from '@/constants/member/member-column';
+import { MEMBER } from '@/constants/column/member-column';
 import { BLANK, NULL } from '@/constants/constant';
 import { getDateStringFromDate } from '@/utils/date';
 import { getFormattedDate } from '@/utils/format';

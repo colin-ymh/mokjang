@@ -13,7 +13,7 @@ import { DEFAULT_WORSHIP, Worship } from '@/models/worship/worship';
 import { setTargetWorship } from '@/redux/reducers/target/target-worship-reducer';
 import { getIsWellFormedTitle } from '@/utils/check';
 
-import { WORSHIP } from '@/constants/worship/worship-column';
+import { WORSHIP } from '@/constants/column/worship-column';
 import WorshipTableView from '@/components/molecules/worship/worship-table.view';
 
 export type WorshipTableProps = {

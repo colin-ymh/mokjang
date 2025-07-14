@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { BLANK, ORDER_DIRECTION } from '@/constants/constant';
 import { RootState } from '@/redux/store';
-import { WORSHIP_ENROLLMENT } from '@/constants/worship/worship-column';
+import { WORSHIP_ENROLLMENT } from '@/constants/column/worship-column';
 import { WorshipEnrollment } from '@/models/worship/worship';
 import { WorshipEnrollmentsApi } from '@/api/worship/worship-enrollments.api';
 

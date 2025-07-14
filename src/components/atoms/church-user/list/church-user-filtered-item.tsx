@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import { MainText } from '@/components/atoms/common/text/main-text';
-import { USER } from '@/constants/user/user-column';
+import { USER } from '@/constants/column/user-column';
 import { BLANK } from '@/constants/constant';
 import { MAIN, WHITE } from '@/constants/styles/color';
 import { SIZE } from '@/constants/styles/style';

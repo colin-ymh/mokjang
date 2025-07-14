@@ -7,7 +7,7 @@ import EducationFilteredItem, {
   EducationFilteredItemType,
 } from '@/components/atoms/education/education/education-filtered-item';
 
-import { EDUCATION } from '@/constants/education/education-column';
+import { EDUCATION } from '@/constants/column/education-column';
 import SearchInput from '@/components/atoms/common/input/search-input';
 
 const EducationContainer = styled.div`

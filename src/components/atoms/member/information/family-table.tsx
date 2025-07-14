@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 
 import FamilyTableView from '@/components/atoms/member/information/family-table.view';
-import { MEMBER } from '@/constants/member/member-column';
+import { MEMBER } from '@/constants/column/member-column';
 import { FamilyMember } from '@/models/member/member';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';

@@ -13,7 +13,7 @@ import ConfirmPopup from '@/components/atoms/common/popup/confirm-popup';
 import AddWorship from '@/components/organisms/worship/add/add-worship';
 import CustomPopup from '@/components/atoms/common/popup/custom-popup';
 
-import { WORSHIP } from '@/constants/worship/worship-column';
+import { WORSHIP } from '@/constants/column/worship-column';
 import WorshipTableHeader from '@/components/atoms/worship/worship-table-header';
 
 // 1. 컬럼별 PX 폭

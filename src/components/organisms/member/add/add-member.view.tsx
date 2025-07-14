@@ -7,7 +7,7 @@ import { useI18n, useScopedI18n } from '../../../../../locales/client';
 import { BLANK, FAMILY, GENDER, MARRIAGE, NULL } from '@/constants/constant';
 import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-item';
 import { VehicleNumberInputRef } from '@/components/atoms/register/vehicle-number-input.view';
-import { MEMBER } from '@/constants/member/member-column';
+import { MEMBER } from '@/constants/column/member-column';
 import LabelInput from '@/components/atoms/common/input/label-input';
 import {
   getIsWellFormedHomePhone,

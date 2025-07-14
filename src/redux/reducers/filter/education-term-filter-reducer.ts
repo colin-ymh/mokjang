@@ -3,7 +3,7 @@ import { BLANK, NULL, ORDER_DIRECTION } from '@/constants/constant';
 import { EducationSession, EducationTerm } from '@/models/education/education';
 import { RootState } from '@/redux/store';
 
-import { EDUCATION_TERM } from '@/constants/education/education-column';
+import { EDUCATION_TERM } from '@/constants/column/education-column';
 import { EducationTermsApi } from '@/api/education/education-terms.api';
 import { EducationSessionsApi } from '@/api/education/education-sessions.api';
 import { EducationsApi } from '@/api/education/educations.api';

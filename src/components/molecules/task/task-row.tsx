@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 import { setTaskFilter } from '@/redux/reducers/filter/task-filter-reducer';
 import { getTrimmedString } from '@/utils/format';
-import { TASK } from '@/constants/task/task-column';
+import { TASK } from '@/constants/column/task-column';
 import { BLANK } from '@/constants/constant';
 import TaskRowView, {
   TASK_SEARCH_FILTER,

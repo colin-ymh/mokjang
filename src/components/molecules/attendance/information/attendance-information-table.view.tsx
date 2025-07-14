@@ -10,7 +10,7 @@ import {
   WORSHIP_ATTENDANCE_STATUS,
   WorshipAttendance,
 } from '@/models/worship/worship';
-import { WORSHIP_ATTENDANCE } from '@/constants/worship/worship-column';
+import { WORSHIP_ATTENDANCE } from '@/constants/column/worship-column';
 import AttendanceInformationTableHeader from '@/components/atoms/attendance/information/attendance-information-table-header';
 import BorderTextarea from '@/components/atoms/common/input/border-textarea';
 import CheckButton from '@/components/atoms/common/button/check-button';

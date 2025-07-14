@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
-import { CHURCH_USER } from '@/constants/church-user/church-user-column';
+import { CHURCH_USER } from '@/constants/column/church-user-column';
 import { ORDER_DIRECTION } from '@/constants/constant';
 import {
   setChurchUserOrderBy,

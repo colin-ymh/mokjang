@@ -9,7 +9,7 @@ import { SIZE } from '@/constants/styles/style';
 import Cancel from '../../../../../public/svg/cancel.svg';
 import { AppDispatch, RootState } from '@/redux/store';
 import { useDispatch, useSelector } from 'react-redux';
-import { EDUCATION_TERM } from '@/constants/education/education-column';
+import { EDUCATION_TERM } from '@/constants/column/education-column';
 import { useI18n } from '../../../../../locales/client';
 import { setEducationTermFilter } from '@/redux/reducers/filter/education-term-filter-reducer';
 

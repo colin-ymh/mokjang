@@ -6,7 +6,7 @@ import { getTrimmedString } from '@/utils/format';
 import { BLANK } from '@/constants/constant';
 import { JOIN_REQUEST_STATUS } from '@/constants/status/status';
 import { setJoinRequestFilter } from '@/redux/reducers/filter/join-request-filter-reducer';
-import { JOIN_REQUEST } from '@/constants/join-request/join-request-column';
+import { JOIN_REQUEST } from '@/constants/column/join-request-column';
 import JoinRequestRowView, {
   JOIN_REQUEST_SEARCH_FILTER,
 } from '@/components/molecules/join-request/join-request-row.view';

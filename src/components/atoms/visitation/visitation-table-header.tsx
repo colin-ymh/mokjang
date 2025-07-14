@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 
 import { MainText } from '@/components/atoms/common/text/main-text';
-import { VISITATION } from '@/constants/visitation/visitation-column';
+import { VISITATION } from '@/constants/column/visitation-column';
 import { BLACK, GRAY, MAIN } from '@/constants/styles/color';
 import { SIZE } from '@/constants/styles/style';
 import { getTranslatedVisitationColumn } from '@/utils/translate';

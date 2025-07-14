@@ -3,7 +3,7 @@ import qs from 'qs';
 
 import { BAPTISM, MARRIAGE, ORDER_DIRECTION } from '@/constants/constant';
 import { Member } from '@/models/member/member';
-import { MEMBER } from '@/constants/member/member-column';
+import { MEMBER } from '@/constants/column/member-column';
 import { SERVER_URL, TEST_SERVER_URL } from '@/constants/state/url';
 import { CustomError } from '@/api/error/error';
 import authorizeAxios from '@/api/authorize-axios';

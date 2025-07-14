@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { BLANK, NULL, ORDER_DIRECTION } from '@/constants/constant';
-import { MEMBER } from '@/constants/member/member-column';
+import { MEMBER } from '@/constants/column/member-column';
 import { Member } from '@/models/member/member';
 import { RootState } from '@/redux/store';
 import { MembersApi } from '@/api/members/members.api';

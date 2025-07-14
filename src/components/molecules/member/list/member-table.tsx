@@ -9,7 +9,7 @@ import {
 } from '@/redux/reducers/filter/member-filter-reducer';
 
 import MemberTableView from '@/components/molecules/member/list/member-table.view';
-import { MEMBER } from '@/constants/member/member-column';
+import { MEMBER } from '@/constants/column/member-column';
 import { ORDER_DIRECTION } from '@/constants/constant';
 import { MembersApi } from '@/api/members/members.api';
 

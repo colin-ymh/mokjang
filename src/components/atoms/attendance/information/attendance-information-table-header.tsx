@@ -8,7 +8,7 @@ import { BLACK, GRAY, MAIN } from '@/constants/styles/color';
 import { SIZE } from '@/constants/styles/style';
 import { getTranslatedAttendanceInformationColumn } from '@/utils/translate';
 import { useI18n } from '../../../../../locales/client';
-import { WORSHIP_ATTENDANCE } from '@/constants/worship/worship-column';
+import { WORSHIP_ATTENDANCE } from '@/constants/column/worship-column';
 import { ATTENDANCE_INFORMATION_TABLE_HEADER_ITEM } from '@/redux/reducers/filter/worship-attendance-filter-reducer';
 
 const HeaderContainer = styled.div`

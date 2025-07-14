@@ -1,5 +1,5 @@
 import { BAPTISM, GENDER, MARRIAGE } from '@/constants/constant';
-import { MEMBER } from '@/constants/member/member-column';
+import { MEMBER } from '@/constants/column/member-column';
 import { ChurchInformation } from '@/models/member/member';
 
 export const useMemberFilterContent = (

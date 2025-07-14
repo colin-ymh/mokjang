@@ -8,8 +8,8 @@ import { BLACK, GRAY, MAIN } from '@/constants/styles/color';
 import { SIZE } from '@/constants/styles/style';
 import { getTranslatedJoinRequestColumn } from '@/utils/translate';
 import { useI18n } from '../../../../locales/client';
-import { JOIN_REQUEST } from '@/constants/join-request/join-request-column';
-import { USER } from '@/constants/user/user-column';
+import { JOIN_REQUEST } from '@/constants/column/join-request-column';
+import { USER } from '@/constants/column/user-column';
 
 const HeaderContainer = styled.div`
   display: flex;

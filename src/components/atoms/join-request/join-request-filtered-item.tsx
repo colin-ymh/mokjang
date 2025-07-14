@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setJoinRequestFilter } from '@/redux/reducers/filter/join-request-filter-reducer';
 
 import { JOIN_REQUEST_STATUS } from '@/constants/status/status';
-import { JOIN_REQUEST } from '@/constants/join-request/join-request-column';
+import { JOIN_REQUEST } from '@/constants/column/join-request-column';
 
 const ItemContainer = styled.div`
   display: flex;

@@ -3,12 +3,13 @@ import { useDragLayer, XYCoord } from 'react-dnd';
 import styled from 'styled-components';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { GRAY } from '@/constants/styles/color';
+import { DND_ITEM_TYPE } from '@/constants/constant';
 
 // attrs로 style 프로퍼티만 동적으로 처리
 const LayerContainer = styled.div.attrs<{ x: number; y: number }>((props) => ({
   style: {
     transform: `translate(${props.x}px, ${props.y}px)`,
-    opacity: 0.4,
+    opacity: 0.1,
     pointerEvents: 'none',
   },
 }))<{ x: number; y: number }>`
@@ -31,13 +32,17 @@ const PreviewBox = styled.div`
 `;
 
 export const CustomDragLayer: React.FC = () => {
-  const { item, isDragging, currentOffset } = useDragLayer((monitor) => ({
-    item: monitor.getItem<any>(),
-    isDragging: monitor.isDragging(),
-    currentOffset: monitor.getSourceClientOffset(),
-  }));
+  const { item, itemType, isDragging, currentOffset } = useDragLayer(
+    (monitor) => ({
+      item: monitor.getItem<any>(),
+      itemType: monitor.getItemType(),
+      isDragging: monitor.isDragging(),
+      currentOffset: monitor.getSourceClientOffset(),
+    })
+  );
 
-  if (!isDragging || !currentOffset) return null;
+  if (itemType !== DND_ITEM_TYPE.GROUP || !isDragging || !currentOffset)
+    return null;
   const { x, y } = currentOffset as XYCoord;
 
   return (

@@ -17,7 +17,7 @@ import {
   WORSHIP_ATTENDANCE_STATUS,
   WorshipEnrollment,
 } from '@/models/worship/worship';
-import { WORSHIP_ENROLLMENT } from '@/constants/worship/worship-column';
+import { WORSHIP_ENROLLMENT } from '@/constants/column/worship-column';
 import AttendanceTableHeader from '@/components/atoms/attendance/list/attendance-table-header';
 import {
   getDateFromDateString,

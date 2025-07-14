@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 
 import { MainText } from '@/components/atoms/common/text/main-text';
-import { TASK } from '@/constants/task/task-column';
+import { TASK } from '@/constants/column/task-column';
 import { BLACK, GRAY, MAIN } from '@/constants/styles/color';
 import { SIZE } from '@/constants/styles/style';
 import { getTranslatedTaskColumn } from '@/utils/translate';

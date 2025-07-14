@@ -7,7 +7,7 @@ import {
 } from '@/models/visitation/visitation';
 import { RootState } from '@/redux/store';
 import { VisitationsApi } from '@/api/visitations/visitations.api';
-import { VISITATION } from '@/constants/visitation/visitation-column';
+import { VISITATION } from '@/constants/column/visitation-column';
 import { VISITATION_STATUS } from '@/constants/status/status';
 import { VisitationReportsApi } from '@/api/reports/visitation-reports.api';
 import { VisitationReport } from '@/models/report/report';

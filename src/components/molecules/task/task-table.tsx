@@ -7,7 +7,7 @@ import {
 } from '@/redux/reducers/filter/task-filter-reducer';
 
 import TaskTableView from '@/components/molecules/task/task-table.view';
-import { TASK } from '@/constants/task/task-column';
+import { TASK } from '@/constants/column/task-column';
 import { ORDER_DIRECTION } from '@/constants/constant';
 
 export type TaskTableProps = {

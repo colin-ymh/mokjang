@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { GRAY, WHITE } from '@/constants/styles/color';
-import { MEMBER } from '@/constants/member/member-column';
+import { MEMBER } from '@/constants/column/member-column';
 import { getAge } from '@/utils/date';
 import { GENDER } from '@/constants/constant';
 import { getFormattedMobilePhone } from '@/utils/format';

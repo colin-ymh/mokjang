@@ -274,6 +274,7 @@ export default {
   'title.attendanceInformation': 'Report',
 
   'title.editGroupName': 'Edit Group Name',
+  'title.addWidget': 'Add Widget',
   /*-------------------title (popup title)-------------------*/
 
   /*-------------------header (side bar button)-------------------*/
@@ -374,6 +375,7 @@ export default {
   'button.edit': 'Edit',
   'button.delete': 'Delete',
   'button.stop': 'Stop',
+  'button.close': 'Close',
   'button.fetchFamily': 'Save Every Family',
   'button.saveFamily': 'Save',
   'button.goBack': 'Go Back',

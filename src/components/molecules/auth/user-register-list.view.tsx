@@ -5,7 +5,7 @@ import LabelInput from '@/components/atoms/common/input/label-input';
 import Button from '@/components/atoms/common/button/button';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { BLACK, BLUE, GRAY, MAIN } from '@/constants/styles/color';
-import { MEMBER } from '@/constants/member/member-column';
+import { MEMBER } from '@/constants/column/member-column';
 import { getIsWellFormedMobilePhone, getIsWellFormedName } from '@/utils/check';
 import { getMinuteFromSecond } from '@/utils/date';
 

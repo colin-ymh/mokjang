@@ -5,9 +5,9 @@ import { SERVER_URL, TEST_SERVER_URL } from '@/constants/state/url';
 import authorizeAxios from '@/api/authorize-axios';
 import { CustomError } from '@/api/error/error';
 import { CHURCH_USER_ROLE, ORDER_DIRECTION } from '@/constants/constant';
-import { JOIN_REQUEST } from '@/constants/join-request/join-request-column';
+import { JOIN_REQUEST } from '@/constants/column/join-request-column';
 import { JOIN_REQUEST_STATUS } from '@/constants/status/status';
-import { USER } from '@/constants/user/user-column';
+import { USER } from '@/constants/column/user-column';
 
 type CreateJoinRequestBody = {
   joinCode: string;

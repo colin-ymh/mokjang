@@ -61,6 +61,7 @@ import AttendanceList from '@/components/organisms/attendance/list/attendance-li
 import WorshipList from '@/components/organisms/worship/list/worship-list';
 import MainCalendar from '@/components/organisms/calendar/main-calendar';
 import ChurchManagement from '@/components/organisms/management/church/church-management';
+import Home from '@/components/organisms/home/home';
 
 export const getSide = (id: string) => {
   switch (id) {
@@ -120,7 +121,7 @@ export const getContent = (
       switch (headerId) {
         // 홈
         case HOME_CONTENT_ID.HOME:
-          return null;
+          return <Home />;
 
         // 회원
         case USER_CONTENT_ID.USER:

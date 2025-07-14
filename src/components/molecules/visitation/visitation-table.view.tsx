@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 
 import { GRAY, WHITE } from '@/constants/styles/color';
-import { VISITATION } from '@/constants/visitation/visitation-column';
+import { VISITATION } from '@/constants/column/visitation-column';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { BLANK } from '@/constants/constant';
 import { Visitation } from '@/models/visitation/visitation';

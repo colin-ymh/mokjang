@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 
-import { MEMBER } from '@/constants/member/member-column';
+import { MEMBER } from '@/constants/column/member-column';
 import { Member } from '@/models/member/member';
 import MinistryGroupMemberTableView from '@/components/molecules/management/ministry/ministry-group-member-table.view';
 

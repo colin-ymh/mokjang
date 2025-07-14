@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { BLANK, NULL, ORDER_DIRECTION } from '@/constants/constant';
 import { RootState } from '@/redux/store';
-import { CHURCH_USER } from '@/constants/church-user/church-user-column';
+import { CHURCH_USER } from '@/constants/column/church-user-column';
 import { ChurchUser } from '@/models/church-user/church-user';
 import { ChurchUsersApi } from '@/api/church-users/church-users.api';
 import { ManagersApi } from '@/api/managers/managers.api';

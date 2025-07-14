@@ -9,7 +9,7 @@ import { SIZE } from '@/constants/styles/style';
 import { getTranslatedEducationColumn } from '@/utils/translate';
 import { useI18n } from '../../../../../locales/client';
 
-import { EDUCATION } from '@/constants/education/education-column';
+import { EDUCATION } from '@/constants/column/education-column';
 
 const HeaderContainer = styled.div`
   display: flex;

@@ -5,7 +5,7 @@ import { SERVER_URL, TEST_SERVER_URL } from '@/constants/state/url';
 import authorizeAxios from '@/api/authorize-axios';
 import { CustomError } from '@/api/error/error';
 import { ORDER_DIRECTION } from '@/constants/constant';
-import { TASK } from '@/constants/task/task-column';
+import { TASK } from '@/constants/column/task-column';
 import { TASK_STATUS } from '@/constants/status/status';
 
 type GetTaskReportsParams = {

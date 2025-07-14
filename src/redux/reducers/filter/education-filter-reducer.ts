@@ -4,7 +4,7 @@ import { Education } from '@/models/education/education';
 import { RootState } from '@/redux/store';
 import { EducationsApi } from '@/api/education/educations.api';
 
-import { EDUCATION } from '@/constants/education/education-column';
+import { EDUCATION } from '@/constants/column/education-column';
 
 type EDUCATION_FILTER = {
   [EDUCATION.NAME]: string;

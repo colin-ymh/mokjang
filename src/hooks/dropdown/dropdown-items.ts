@@ -11,21 +11,21 @@ import {
   NULL,
   WORSHIP_PERIOD,
 } from '@/constants/constant';
-import { MEMBER } from '@/constants/member/member-column';
+import { MEMBER } from '@/constants/column/member-column';
 
 import { useI18n } from '../../../locales/client';
 import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-item';
 import { VISITATION_METHOD } from '@/models/visitation/visitation';
-import { VISITATION } from '@/constants/visitation/visitation-column';
+import { VISITATION } from '@/constants/column/visitation-column';
 import { STATUS_COLOR } from '@/constants/styles/color';
-import { TASK } from '@/constants/task/task-column';
+import { TASK } from '@/constants/column/task-column';
 import {
   EDUCATION,
   EDUCATION_TERM,
-} from '@/constants/education/education-column';
+} from '@/constants/column/education-column';
 import { STATUS } from '@/constants/status/status';
-import { USER } from '@/constants/user/user-column';
-import { JOIN_REQUEST } from '@/constants/join-request/join-request-column';
+import { USER } from '@/constants/column/user-column';
+import { JOIN_REQUEST } from '@/constants/column/join-request-column';
 
 export const useBaptismDropdownItems = () => {
   const t = useI18n();

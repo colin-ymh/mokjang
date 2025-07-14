@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import { MainText } from '@/components/atoms/common/text/main-text';
-import { VISITATION } from '@/constants/visitation/visitation-column';
+import { VISITATION } from '@/constants/column/visitation-column';
 import { BLANK } from '@/constants/constant';
 import { MAIN, WHITE } from '@/constants/styles/color';
 import { SIZE } from '@/constants/styles/style';

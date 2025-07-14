@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 
 import { MainText } from '@/components/atoms/common/text/main-text';
-import { MEMBER } from '@/constants/member/member-column';
+import { MEMBER } from '@/constants/column/member-column';
 import { BLANK, GENDER, MARRIAGE } from '@/constants/constant';
 import { MAIN, WHITE } from '@/constants/styles/color';
 import { SIZE } from '@/constants/styles/style';

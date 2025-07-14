@@ -7,7 +7,7 @@ import {
 } from '@/redux/reducers/filter/visitation-filter-reducer';
 
 import VisitationTableView from '@/components/molecules/visitation/visitation-table.view';
-import { VISITATION } from '@/constants/visitation/visitation-column';
+import { VISITATION } from '@/constants/column/visitation-column';
 import { ORDER_DIRECTION } from '@/constants/constant';
 
 export type VisitationTableProps = {

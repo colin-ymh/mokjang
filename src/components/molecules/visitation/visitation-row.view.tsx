@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import Button from '@/components/atoms/common/button/button';
 import { GRAY, WHITE } from '@/constants/styles/color';
-import { VISITATION } from '@/constants/visitation/visitation-column';
+import { VISITATION } from '@/constants/column/visitation-column';
 
 import {
   useVisitationSearchFilterDropdownItems,

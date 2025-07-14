@@ -7,7 +7,7 @@ import {
 } from '@/redux/reducers/filter/permission-template-filter-reducer';
 
 import PermissionTemplateTableView from '@/components/molecules/permission/list/permission-template-table.view';
-import { PERMISSION_TEMPLATE } from '@/constants/permission/permission-column';
+import { PERMISSION_TEMPLATE } from '@/constants/column/permission-column';
 import { ORDER_DIRECTION } from '@/constants/constant';
 
 export type PermissionTemplateTableProps = {

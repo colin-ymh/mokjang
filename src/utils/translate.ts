@@ -1,20 +1,20 @@
-import { MEMBER } from '@/constants/member/member-column';
+import { MEMBER } from '@/constants/column/member-column';
 import {
   EDUCATION,
   EDUCATION_ENROLLMENT,
   EDUCATION_TERM,
-} from '@/constants/education/education-column';
-import { VISITATION } from '@/constants/visitation/visitation-column';
-import { TASK } from '@/constants/task/task-column';
-import { USER } from '@/constants/user/user-column';
-import { PERMISSION_TEMPLATE } from '@/constants/permission/permission-column';
-import { JOIN_REQUEST } from '@/constants/join-request/join-request-column';
-import { CHURCH_USER } from '@/constants/church-user/church-user-column';
+} from '@/constants/column/education-column';
+import { VISITATION } from '@/constants/column/visitation-column';
+import { TASK } from '@/constants/column/task-column';
+import { USER } from '@/constants/column/user-column';
+import { PERMISSION_TEMPLATE } from '@/constants/column/permission-column';
+import { JOIN_REQUEST } from '@/constants/column/join-request-column';
+import { CHURCH_USER } from '@/constants/column/church-user-column';
 import {
   WORSHIP,
   WORSHIP_ATTENDANCE,
   WORSHIP_ENROLLMENT,
-} from '@/constants/worship/worship-column';
+} from '@/constants/column/worship-column';
 
 export const getTranslatedMemberColumn = (
   t: (key: string, ...args: any[]) => string,

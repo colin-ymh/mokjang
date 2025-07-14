@@ -4,7 +4,7 @@ import { Member } from '@/models/member/member';
 import { useEffect, useState } from 'react';
 
 import { MembersApi } from '@/api/members/members.api';
-import { MEMBER } from '@/constants/member/member-column';
+import { MEMBER } from '@/constants/column/member-column';
 import { useScopedI18n } from '../../../../../locales/client';
 import ToastPopup from '@/components/atoms/common/popup/toast-popup';
 

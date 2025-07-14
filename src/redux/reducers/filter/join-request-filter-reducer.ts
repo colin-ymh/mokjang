@@ -2,10 +2,10 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { BLANK, NULL, ORDER_DIRECTION } from '@/constants/constant';
 import { RootState } from '@/redux/store';
 import { JOIN_REQUEST_STATUS } from '@/constants/status/status';
-import { JOIN_REQUEST } from '@/constants/join-request/join-request-column';
+import { JOIN_REQUEST } from '@/constants/column/join-request-column';
 import { JoinRequest } from '@/models/join-request/join-request';
 import { JoinRequestsApi } from '@/api/join-request/join-request.api';
-import { USER } from '@/constants/user/user-column';
+import { USER } from '@/constants/column/user-column';
 
 type JOIN_REQUEST_FILTER = {
   [JOIN_REQUEST.NAME]: string;

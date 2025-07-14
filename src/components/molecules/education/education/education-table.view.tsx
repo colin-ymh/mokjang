@@ -14,7 +14,7 @@ import ConfirmPopup from '@/components/atoms/common/popup/confirm-popup';
 import AddEducation from '@/components/organisms/education/education/add/add-education';
 import CustomPopup from '@/components/atoms/common/popup/custom-popup';
 
-import { EDUCATION } from '@/constants/education/education-column';
+import { EDUCATION } from '@/constants/column/education-column';
 
 // 1. 컬럼별 PX 폭
 // const getColumnWidth = (id: string) => {

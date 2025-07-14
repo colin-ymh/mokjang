@@ -1,4 +1,4 @@
-import { MEMBER } from '@/constants/member/member-column';
+import { MEMBER } from '@/constants/column/member-column';
 
 export enum EDUCATION_TERM {
   ID = 'id',

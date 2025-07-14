@@ -12,7 +12,7 @@ import { AppDispatch, RootState } from '@/redux/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { setEducationFilter } from '@/redux/reducers/filter/education-filter-reducer';
 
-import { EDUCATION } from '@/constants/education/education-column';
+import { EDUCATION } from '@/constants/column/education-column';
 
 const ItemContainer = styled.div`
   display: flex;

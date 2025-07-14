@@ -16,7 +16,7 @@ import { getIsWellFormedTitle } from '@/utils/check';
 import { usePageRouter } from '@/utils/router';
 import { EducationTermsApi } from '@/api/education/education-terms.api';
 
-import { EDUCATION } from '@/constants/education/education-column';
+import { EDUCATION } from '@/constants/column/education-column';
 
 export type EducationTableProps = {
   loadEducations: () => Promise<void>;

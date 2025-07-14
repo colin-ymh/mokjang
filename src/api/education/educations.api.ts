@@ -7,7 +7,7 @@ import authorizeAxios from '@/api/authorize-axios';
 import {
   EDUCATION,
   EDUCATION_TERM,
-} from '@/constants/education/education-column';
+} from '@/constants/column/education-column';
 import qs from 'qs';
 
 type GetEducationsParams = {

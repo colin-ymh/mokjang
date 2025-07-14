@@ -20,7 +20,7 @@ import {
 } from '@/utils/check';
 import { getSchool } from '@/api/school-api';
 import PagePopup from '@/components/atoms/common/popup/page-popup';
-import { MEMBER } from '@/constants/member/member-column';
+import { MEMBER } from '@/constants/column/member-column';
 import { setTargetMember } from '@/redux/reducers/target/target-member-reducer';
 import AddMemberView from '@/components/organisms/member/add/add-member.view';
 import { getDateFromDateString, getDateStringFromDate } from '@/utils/date';

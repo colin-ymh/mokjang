@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import { MainText } from '@/components/atoms/common/text/main-text';
-import { TASK } from '@/constants/task/task-column';
+import { TASK } from '@/constants/column/task-column';
 import { BLANK } from '@/constants/constant';
 import { MAIN, WHITE } from '@/constants/styles/color';
 import { SIZE } from '@/constants/styles/style';

@@ -4,7 +4,7 @@ import {
   PermissionTemplate,
   PermissionUnit,
 } from '@/models/permission/permission';
-import { PERMISSION_TEMPLATE } from '@/constants/permission/permission-column';
+import { PERMISSION_TEMPLATE } from '@/constants/column/permission-column';
 import { RootState } from '@/redux/store';
 import { PermissionsApi } from '@/api/permissions/permissions.api';
 import { Member } from '@/models/member/member';

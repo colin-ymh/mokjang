@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 
 import { GRAY, WHITE } from '@/constants/styles/color';
-import { PERMISSION_TEMPLATE } from '@/constants/permission/permission-column';
+import { PERMISSION_TEMPLATE } from '@/constants/column/permission-column';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { BLANK, CHURCH_USER_ROLE } from '@/constants/constant';
 import { PermissionTemplate } from '@/models/permission/permission';

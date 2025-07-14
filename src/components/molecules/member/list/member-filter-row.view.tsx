@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import Button from '@/components/atoms/common/button/button';
 import { GRAY, MAIN, WHITE } from '@/constants/styles/color';
 import TableSetting from '@/components/molecules/member/list/table-setting';
-import { MEMBER } from '@/constants/member/member-column';
+import { MEMBER } from '@/constants/column/member-column';
 import TransparentBackground from '@/components/atoms/common/etc/transparent-background';
 import FilteredItem, {
   FilteredItemType,

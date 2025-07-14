@@ -24,7 +24,7 @@ type ManagementGroupItemProps = {
   group: Group;
   level: number;
   selectedGroupId: string | null;
-  setSelectedGroup: Dispatch<SetStateAction<Group>>;
+  onClickGroup: (id: string) => void;
   closedGroups: Set<number>;
   onClickToggle: (id: string) => void;
   setIsToastShown: Dispatch<SetStateAction<boolean>>;
@@ -36,7 +36,7 @@ const ManagementGroupItem = ({
   group,
   level,
   selectedGroupId,
-  setSelectedGroup,
+  onClickGroup,
   closedGroups,
   onClickToggle,
   setIsToastShown,
@@ -58,10 +58,16 @@ const ManagementGroupItem = ({
     throw thrownError;
   }
 
+  // ----------------- 새로운 자식 그룹 추가 ----------------- //
   const newGroupRef = useRef<HTMLInputElement>(null);
 
   const [isAddShown, setIsAddShown] = useState<boolean>(false);
   const [newGroupName, setNewGroupName] = useState<string>(BLANK);
+
+  const onClickGroupAdd = () => {
+    setIsAddShown(true);
+    setTimeout(() => newGroupRef.current?.focus());
+  };
 
   const onChangeNewGroupName = (event: ChangeEvent<HTMLInputElement>) => {
     setNewGroupName(getFormattedTitle(event.target.value));
@@ -86,65 +92,40 @@ const ManagementGroupItem = ({
     }
   };
 
-  const onClickGroup = async (groupId: string | null) => {
-    if (!groupId) return;
-
-    try {
-      const response = await groupsApi.getGroup({ churchId, groupId });
-      setSelectedGroup(response.data);
-    } catch (error) {
-      setThrownError(error instanceof Error ? error : new Error(String(error)));
-    }
-  };
-
-  const onClickGroupAdd = () => {
-    setIsAddShown(true);
-    setTimeout(() => newGroupRef.current?.focus());
-  };
+  // ----------------- 새로운 자식 그룹 추가 ----------------- //
 
   /**
    * 그룹 아이템 드롭 시 이벤트
    * @param draggedGroup 드래그 앤 드롭 되는 아이템
    * @param order 새로운 순서
-   * @param canNest 부모 변경 여부
+   * @param newParentId 새로운 부모 ID
    */
   const onDropGroup = async (
     draggedGroup: Group,
     order: number,
-    canNest: boolean
+    newParentId?: string | null
   ) => {
-    // 자기 자신으로는 드롭 불가
-    if (draggedGroup.id === group.id) return;
-    // 순서 버그 방지
-    if (order < 1) return;
-
     try {
       // 부모 이동인 경우
-      if (canNest) {
-        // 이미 대상이 부모인 경우는 제외
-        if (draggedGroup.parentGroupId !== group.id) {
-          await groupsApi.editGroupStructure(
-            { churchId, groupId: draggedGroup.id as string },
-            {
-              parentGroupId: group.id,
-              order,
-            }
-          );
-          await dispatch(fetchGroups());
-        }
+      if (newParentId || newParentId === null) {
+        await groupsApi.editGroupStructure(
+          { churchId, groupId: draggedGroup.id as string },
+          {
+            parentGroupId: newParentId,
+            order,
+          }
+        );
+        await dispatch(fetchGroups());
       }
       // 부모 이동이 아닌 경우 -> 자식 간 순서 변경
       else {
-        // 부모가 다른 경우는 제외
-        if (draggedGroup.parentGroupId === group.parentGroupId) {
-          await groupsApi.editGroupStructure(
-            { churchId, groupId: draggedGroup.id as string },
-            {
-              order,
-            }
-          );
-          await dispatch(fetchGroups());
-        }
+        await groupsApi.editGroupStructure(
+          { churchId, groupId: draggedGroup.id as string },
+          {
+            order,
+          }
+        );
+        await dispatch(fetchGroups());
       }
     } catch (error) {
       if (error instanceof Error) {
@@ -157,12 +138,14 @@ const ManagementGroupItem = ({
     }
   };
 
+  // 새로운 자식 그룹 추가 창 마우스 이벤트
   useEffect(() => {
     const handleBlur = () => setIsAddShown(false);
     newGroupRef.current?.addEventListener('blur', handleBlur);
     return () => newGroupRef.current?.removeEventListener('blur', handleBlur);
   }, [isAddShown]);
 
+  // 키보드 이벤트
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.isComposing) return;
@@ -197,6 +180,7 @@ const ManagementGroupItem = ({
     <>
       <ManagementGroupItemView {...props} />
 
+      {/* 새로운 자식 그룹 생성 */}
       <AddGroup
         ref={newGroupRef}
         isShown={isAddShown}
@@ -205,6 +189,8 @@ const ManagementGroupItem = ({
         onChangeName={onChangeNewGroupName}
         onClickSaveGroup={onClickSaveNewGroup}
       />
+
+      {/* 자식들 재귀 생성 */}
       {isOpen &&
         group.childGroups?.map((childGroup) => (
           <ManagementGroupItem
@@ -212,7 +198,7 @@ const ManagementGroupItem = ({
             group={childGroup}
             level={level + 1}
             selectedGroupId={selectedGroupId}
-            setSelectedGroup={setSelectedGroup}
+            onClickGroup={onClickGroup}
             closedGroups={closedGroups}
             onClickToggle={onClickToggle}
             setToastColor={setToastColor}

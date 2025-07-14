@@ -10,7 +10,7 @@ import {
   VISITATION_TYPE,
   VisitationDetail,
 } from '@/models/visitation/visitation';
-import { VISITATION } from '@/constants/visitation/visitation-column';
+import { VISITATION } from '@/constants/column/visitation-column';
 import { VISITATION_STATUS } from '@/constants/status/status';
 
 type GetVisitationsParams = {

@@ -15,6 +15,7 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 import InitializeStore from '@/components/atoms/layout/initialize-store';
 import GlobalStyle from '@/components/atoms/layout/global-style';
 import { CustomDragLayer } from '@/vendor/dnd/custom-drag-layer';
+import CustomWidgetDragLayer from '@/vendor/dnd/custom-widget-drag-layer';
 
 type RootLayoutProps = {
   children?: React.ReactNode;
@@ -55,6 +56,7 @@ const RootLayout = (props: RootLayoutProps | RootLayoutPropsExtended) => {
                 {/* 실제 페이지 렌더링 */}
                 {children}
                 <CustomDragLayer />
+                <CustomWidgetDragLayer />
               </DndProvider>
             </InitializeStore>
           </Provider>

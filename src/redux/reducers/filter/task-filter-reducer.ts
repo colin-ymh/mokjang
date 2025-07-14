@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { BLANK, NULL, ORDER_DIRECTION } from '@/constants/constant';
 import { Task } from '@/models/task/task';
 import { RootState } from '@/redux/store';
-import { TASK } from '@/constants/task/task-column';
+import { TASK } from '@/constants/column/task-column';
 import { TasksApi } from '@/api/tasks/tasks.api';
 import { DEFAULT_MEMBER, Member } from '@/models/member/member';
 import { TASK_STATUS } from '@/constants/status/status';

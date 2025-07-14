@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 import { BLANK, ORDER_DIRECTION } from '@/constants/constant';
-import { WORSHIP_ENROLLMENT } from '@/constants/worship/worship-column';
+import { WORSHIP_ENROLLMENT } from '@/constants/column/worship-column';
 import {
   setWorshipEnrollmentOrderBy,
   setWorshipEnrollmentOrderDirection,

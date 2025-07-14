@@ -8,8 +8,8 @@ import {
   setJoinRequests,
 } from '@/redux/reducers/filter/join-request-filter-reducer';
 import JoinRequestTableView from '@/components/molecules/join-request/join-request-table.view';
-import { JOIN_REQUEST } from '@/constants/join-request/join-request-column';
-import { USER } from '@/constants/user/user-column';
+import { JOIN_REQUEST } from '@/constants/column/join-request-column';
+import { USER } from '@/constants/column/user-column';
 import { JoinRequestsApi } from '@/api/join-request/join-request.api';
 import {
   DEFAULT_JOIN_REQUEST,

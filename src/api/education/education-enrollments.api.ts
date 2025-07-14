@@ -2,7 +2,7 @@ import { AxiosResponse } from 'axios';
 import { SERVER_URL, TEST_SERVER_URL } from '@/constants/state/url';
 import { ORDER_DIRECTION } from '@/constants/constant';
 import { CustomError } from '@/api/error/error';
-import { EDUCATION_ENROLLMENT } from '@/constants/education/education-column';
+import { EDUCATION_ENROLLMENT } from '@/constants/column/education-column';
 import authorizeAxios from '@/api/authorize-axios';
 import { EDUCATION_ENROLLMENT_STATUS } from '@/constants/status/status';
 

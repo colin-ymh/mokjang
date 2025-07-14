@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { TABLE_HEADER_ITEM } from '@/redux/reducers/filter/member-filter-reducer';
 
 import { GRAY, WHITE } from '@/constants/styles/color';
-import { MEMBER } from '@/constants/member/member-column';
+import { MEMBER } from '@/constants/column/member-column';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { Member } from '@/models/member/member';
 import useWindowSize from '@/hooks/window/window';

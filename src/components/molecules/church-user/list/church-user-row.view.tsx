@@ -1,6 +1,6 @@
 import { ChangeEvent, Ref } from 'react';
 import styled from 'styled-components';
-import { USER } from '@/constants/user/user-column';
+import { USER } from '@/constants/column/user-column';
 
 import { useUserSearchFilterDropdownItems } from '@/hooks/dropdown/dropdown-items';
 import useWindowSize from '@/hooks/window/window';

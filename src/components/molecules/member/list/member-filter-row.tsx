@@ -11,7 +11,7 @@ import {
 import MemberFilterRowView, {
   SEARCH_FILTER,
 } from '@/components/molecules/member/list/member-filter-row.view';
-import { MEMBER } from '@/constants/member/member-column';
+import { MEMBER } from '@/constants/column/member-column';
 import { BLANK } from '@/constants/constant';
 import { FilteredItemType } from '@/components/atoms/member/list/filtered-item';
 

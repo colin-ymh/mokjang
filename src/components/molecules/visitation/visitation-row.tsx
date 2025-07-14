@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 
 import { getTrimmedString } from '@/utils/format';
-import { VISITATION } from '@/constants/visitation/visitation-column';
+import { VISITATION } from '@/constants/column/visitation-column';
 import { BLANK } from '@/constants/constant';
 import VisitationRowView, {
   VISITATION_SEARCH_FILTER,

@@ -4,7 +4,7 @@ import qs from 'qs';
 import { CHURCH_USER_ROLE, ORDER_DIRECTION } from '@/constants/constant';
 import { SERVER_URL, TEST_SERVER_URL } from '@/constants/state/url';
 import { CustomError } from '@/api/error/error';
-import { CHURCH_USER } from '@/constants/church-user/church-user-column';
+import { CHURCH_USER } from '@/constants/column/church-user-column';
 import authorizeAxios from '@/api/authorize-axios';
 
 type GetChurchUsersParams = {

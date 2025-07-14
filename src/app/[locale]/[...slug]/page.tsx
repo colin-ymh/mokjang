@@ -36,7 +36,7 @@ const App = () => {
     if (!user?.id || !churchId) return;
 
     if (sideId === SIDE_ID.MAIN && !headerId) {
-      router.push(`main/${MAIN_HEADER_ID.MEMBER}`);
+      router.push(`main/${MAIN_HEADER_ID.HOME}`);
     } else if (sideId === SIDE_ID.MANAGEMENT && !headerId) {
       router.push(
         `management/${MANAGEMENT_HEADER_ID.CHURCH}/${CHURCH_CONTENT_ID.CHURCH}`

@@ -8,7 +8,7 @@ import { MinistryHistoryApi } from '@/api/history/ministry-history.api';
 import { OfficerHistoryApi } from '@/api/history/officer-history.api';
 import { GroupHistoryApi } from '@/api/history/group-history.api';
 import MemberInformationListView from '@/components/molecules/member/information/member-information-list.view';
-import { MEMBER } from '@/constants/member/member-column';
+import { MEMBER } from '@/constants/column/member-column';
 import OfficerModal from '@/components/atoms/common/modal/officer-modal';
 import GroupModal from '@/components/atoms/common/modal/group-modal';
 import { BAPTISM, BLANK, NONE } from '@/constants/constant';

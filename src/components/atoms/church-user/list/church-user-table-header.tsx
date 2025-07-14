@@ -8,7 +8,7 @@ import { BLACK, GRAY, MAIN } from '@/constants/styles/color';
 import { SIZE } from '@/constants/styles/style';
 import { getTranslatedChurchUserColumn } from '@/utils/translate';
 import { useScopedI18n } from '../../../../../locales/client';
-import { CHURCH_USER } from '@/constants/church-user/church-user-column';
+import { CHURCH_USER } from '@/constants/column/church-user-column';
 
 const HeaderContainer = styled.div`
   display: flex;

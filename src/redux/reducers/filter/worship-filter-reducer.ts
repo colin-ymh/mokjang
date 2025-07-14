@@ -4,7 +4,7 @@ import { Worship } from '@/models/worship/worship';
 import { RootState } from '@/redux/store';
 import { WorshipsApi } from '@/api/worship/worships.api';
 
-import { WORSHIP } from '@/constants/worship/worship-column';
+import { WORSHIP } from '@/constants/column/worship-column';
 
 type WORSHIP_FILTER = {};
 

@@ -5,7 +5,7 @@ import { SERVER_URL, TEST_SERVER_URL } from '@/constants/state/url';
 import authorizeAxios from '@/api/authorize-axios';
 import { CustomError } from '@/api/error/error';
 import { ORDER_DIRECTION } from '@/constants/constant';
-import { PERMISSION_TEMPLATE } from '@/constants/permission/permission-column';
+import { PERMISSION_TEMPLATE } from '@/constants/column/permission-column';
 import { DOMAIN } from '@/models/permission/permission';
 
 type GetPermissionUnitsParams = {

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { usePathname } from 'next/navigation';
 
 import MemberTableHeader from '@/components/atoms/member/list/member-table-header';
-import { MEMBER } from '@/constants/member/member-column';
+import { MEMBER } from '@/constants/column/member-column';
 import { FamilyMember } from '@/models/member/member';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { getFormattedDate, getLocaleDateFromDashDate } from '@/utils/format';
