@@ -158,10 +158,10 @@ export const useMinistryManagementHeaderBarItems = () => {
   const t_header = useScopedI18n('header');
 
   const items = [
-    {
-      id: MINISTRY_MANAGEMENT_HEADER_ID.MINISTRY_GROUP_INFORMATION,
-      title: t_header(MINISTRY_MANAGEMENT_HEADER_ID.MINISTRY_GROUP_INFORMATION),
-    },
+    // {
+    //   id: MINISTRY_MANAGEMENT_HEADER_ID.MINISTRY_GROUP_INFORMATION,
+    //   title: t_header(MINISTRY_MANAGEMENT_HEADER_ID.MINISTRY_GROUP_INFORMATION),
+    // },
     {
       id: MINISTRY_MANAGEMENT_HEADER_ID.MINISTRY_MEMBER_LIST,
       title: t_header(MINISTRY_MANAGEMENT_HEADER_ID.MINISTRY_MEMBER_LIST),
