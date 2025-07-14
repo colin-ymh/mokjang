@@ -1,15 +1,21 @@
-import { ChangeEvent, Dispatch, ForwardedRef, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
 
-import OfficerList from '@/components/molecules/management/officer/officer-list';
+import OfficerList from '@/components/molecules/management/officer/list/officer-list';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { SIZE } from '@/constants/styles/style';
-import { GRAY } from '@/constants/styles/color';
-import AddOfficer from '@/components/atoms/management/officer/add-officer';
+import { GRAY, WHITE } from '@/constants/styles/color';
 import { Officer } from '@/models/management/management';
 
-import { useI18n } from '../../../../../locales/client';
-import Plus from '../../../../../public/svg/plus.svg';
+import { useI18n, useScopedI18n } from '../../../../../locales/client';
+import OfficerMember from '@/components/molecules/management/officer/member/officer-member';
+import Button from '@/components/atoms/common/button/button';
+import ToastPopup from '@/components/atoms/common/popup/toast-popup';
+import BorderInput from '@/components/atoms/common/input/border-input';
+import CustomPopup from '@/components/atoms/common/popup/custom-popup';
+import LabelInput from '@/components/atoms/common/input/label-input';
+import KebabDropdown from '@/components/atoms/common/dropdown/kebab-dropdown';
+import ConfirmPopup from '@/components/atoms/common/popup/confirm-popup';
 
 const OfficerManagementContainer = styled.div`
   display: flex;
@@ -22,31 +28,14 @@ const OfficerListContainer = styled.div`
   flex-direction: column;
   padding: 20px;
   gap: 20px;
-  border-right: 1px solid ${GRAY.SEMI_LIGHT};
-  width: 200px;
+  border-right: 1px solid ${GRAY.LIGHT};
+  width: 400px;
   flex-shrink: 0;
 `;
 
-const ListHeader = styled.div`
+const AddContainer = styled.div`
   display: flex;
-  position: relative;
-`;
-
-const PlusButton = styled(Plus)`
-  stroke: ${GRAY.DARK};
-  stroke-width: 2px;
-  width: 20px;
-  height: 20px;
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  cursor: pointer;
-  border-radius: 5px;
-  transition: background-color 0.2s;
-
-  &:hover {
-    background-color: ${GRAY.SEMI_LIGHT};
-  }
+  gap: 5px;
 `;
 
 const OfficerInformationContainer = styled.div<{ $isOfficer: boolean }>`
@@ -57,71 +46,160 @@ const OfficerInformationContainer = styled.div<{ $isOfficer: boolean }>`
 
 const OfficerInformationHeader = styled.div`
   display: flex;
-  flex-direction: column;
-  width: 100%;
+  flex-direction: row;
+  justify-content: space-between;
   border-bottom: 1px solid ${GRAY.SEMI_LIGHT};
-  gap: 10px;
-  padding: 20px 20px 0 20px;
+  padding: 20px;
+`;
+
+const EditContainer = styled.div`
+  display: flex;
+  padding: 10px;
+  width: 100%;
 `;
 
 type OfficerManagementViewProps = {
-  officers: Officer[];
+  newOfficerName: string;
+  isEditShown: boolean;
+  isDeleteShown: boolean;
+  editName: string;
+  onChangeEditOfficerName: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onClickDeleteOpen: () => void;
+  onClickDeleteClose: () => void;
+  onClickDelete: () => void;
+  onClickEditOpen: () => void;
+  onClickEditClose: () => void;
+  onClickSaveEdit: () => void;
+  onChangeNewOfficerName: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onClickSaveNewOfficer: () => void;
   selectedOfficer: Officer;
   setSelectedOfficer: Dispatch<SetStateAction<Officer>>;
-  isAddModalShown: boolean;
-  nameInputRef: ForwardedRef<HTMLInputElement>;
-  newOfficerName: string;
-  onClickModalOpen: () => void;
-  onChangeName: (event: ChangeEvent<HTMLInputElement>) => void;
-  onClickSaveOfficer: () => void;
+  isToastShown: boolean;
+  toastText: string;
+  toastColor: string;
+  setIsToastShown: Dispatch<SetStateAction<boolean>>;
 };
 
 const OfficerManagementView = ({
-  officers,
+  newOfficerName,
+  isEditShown,
+  isDeleteShown,
+  editName,
+  onChangeEditOfficerName,
+  onClickDeleteOpen,
+  onClickDeleteClose,
+  onClickDelete,
+  onClickEditOpen,
+  onClickEditClose,
+  onClickSaveEdit,
+  onChangeNewOfficerName,
+  onClickSaveNewOfficer,
   selectedOfficer,
   setSelectedOfficer,
-  isAddModalShown,
-  nameInputRef,
-  newOfficerName,
-  onClickModalOpen,
-  onChangeName,
-  onClickSaveOfficer,
+  isToastShown,
+  toastText,
+  toastColor,
+  setIsToastShown,
 }: OfficerManagementViewProps) => {
   const t = useI18n();
+  const t_button = useScopedI18n('button');
+  const t_popup = useScopedI18n('popup');
   return (
-    <OfficerManagementContainer>
-      {/* 직분 목록 */}
-      <OfficerListContainer>
-        {/* 헤더 */}
-        <ListHeader>
+    <>
+      <OfficerManagementContainer>
+        {/* 그룹 목록 */}
+        <OfficerListContainer>
+          {/* 타이틀 */}
           <MainText size={SIZE.LARGE} fontWeight={600}>
             {t('officerList')}
           </MainText>
-          {/* 추가 버튼 */}
-          <PlusButton onClick={onClickModalOpen} />
-        </ListHeader>
-        {/* 추가창 */}
-        <AddOfficer
-          ref={nameInputRef}
-          isShown={isAddModalShown}
-          name={newOfficerName}
-          onChangeName={onChangeName}
-          onClickSaveOfficer={onClickSaveOfficer}
+          {/* 새 그룹 추가 창*/}
+          <AddContainer>
+            <BorderInput
+              value={newOfficerName}
+              onChange={onChangeNewOfficerName}
+              borderColor={GRAY.SEMI_LIGHT}
+            />
+            <Button
+              width={80}
+              text={t('button.add')}
+              onClick={onClickSaveNewOfficer}
+              borderColor={GRAY.SEMI_LIGHT}
+              backgroundColor={WHITE}
+              color={GRAY.DARK}
+            />
+          </AddContainer>
+          {/* 그룹 목록 */}
+          <OfficerList
+            selectedOfficerId={selectedOfficer.id}
+            setSelectedOfficer={setSelectedOfficer}
+          />
+        </OfficerListContainer>
+        {/* 그룹원 목록 */}
+        <OfficerInformationContainer $isOfficer={!!selectedOfficer.id}>
+          {/* 헤더 */}
+          <OfficerInformationHeader>
+            <MainText size={SIZE.LARGE} fontWeight={600}>
+              {selectedOfficer.name}
+            </MainText>
+            <KebabDropdown
+              items={[
+                {
+                  value: 'delete',
+                  title: t_button('delete'),
+                  onClick: () => onClickDeleteOpen(),
+                },
+                {
+                  value: 'edit',
+                  title: t_button('edit'),
+                  onClick: () => onClickEditOpen(),
+                },
+              ]}
+              width={150}
+            />
+          </OfficerInformationHeader>
+          {/* 컨텐츠 */}
+          {selectedOfficer.id && <OfficerMember officer={selectedOfficer} />}
+        </OfficerInformationContainer>
+      </OfficerManagementContainer>
+      {/* 토스트 팝업 */}
+      {isToastShown && (
+        <ToastPopup
+          setIsShow={setIsToastShown}
+          text={toastText}
+          backgroundColor={toastColor}
         />
-        {/* 직분 목록 */}
-        <OfficerList
-          officers={officers}
-          selectedOfficerId={selectedOfficer.id}
-          setSelectedOfficer={setSelectedOfficer}
-        />
-      </OfficerListContainer>
-      {/* 직분 정보 */}
-      <OfficerInformationContainer $isOfficer={!!selectedOfficer.id}>
-        {/* 헤더 */}
-        <OfficerInformationHeader></OfficerInformationHeader>
-        {/* 컨텐츠 */}
-      </OfficerInformationContainer>
-    </OfficerManagementContainer>
+      )}
+      {/* 그룹명 수정 팝업 */}
+      <CustomPopup
+        isShow={isEditShown}
+        onClickCancel={onClickEditClose}
+        onClickDone={onClickSaveEdit}
+        width={400}
+        height={200}
+        headerTitle={t('title.editOfficerName')}
+      >
+        <EditContainer>
+          <LabelInput
+            label={t('officerName')}
+            value={editName}
+            onChange={onChangeEditOfficerName}
+            placeholder={t('placeholder.officerName')}
+          />
+        </EditContainer>
+      </CustomPopup>
+      {/* 그룹 삭제 팝업 */}
+      <ConfirmPopup
+        isShow={isDeleteShown}
+        onClickLeftButton={onClickDeleteClose}
+        onClickRightButton={onClickDelete}
+        title={t_popup('deleteOfficerTitle')}
+        body={t_popup('deleteOfficerBody')}
+        buttonNum={2}
+        leftButtonText={t_button('cancel')}
+        rightButtonText={t_button('confirm')}
+      />
+    </>
   );
 };
 

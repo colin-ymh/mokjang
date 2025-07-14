@@ -277,6 +277,7 @@ export default {
   'title.attendanceInformation': '보고서',
 
   'title.editGroupName': '그룹명 수정',
+  'title.editOfficerName': '직분명 수정',
   'title.addWidget': '위젯 추가',
   /*-------------------title (popup title)-------------------*/
 
@@ -302,10 +303,10 @@ export default {
   'header.personalInformation': '개인 정보',
   'header.familyInformation': '가족 정보',
 
-  'header.groupInformation': '그룹 정보',
   'header.groupMembers': '그룹원',
 
-  'header.ministryGroupInformation': '그룹 정보',
+  'header.officerMembers': '직분자',
+
   'header.ministryGroupMembers': '그룹원',
 
   'header.permissionUnit': '권한',
@@ -383,8 +384,8 @@ export default {
   /*-------------------button-------------------*/
   'button.register': '등록하기',
   'button.memberRegister': '등록하기',
-  'button.save': '저장',
-  'button.edit': '수정',
+  'button.save': '저장하기',
+  'button.edit': '수정하기',
   'button.delete': '삭제하기',
   'button.stop': '종료하기',
   'button.close': '닫기',
@@ -423,7 +424,6 @@ export default {
   'button.addChurchEvent': '이벤트 추가하기',
   'button.today': '오늘',
   'button.my': '내 일정',
-  'button.editGroupName': '그룹명 변경하기',
   'button.editChurch': '교회정보 변경하기',
   /*-------------------button-------------------*/
 
@@ -527,6 +527,7 @@ export default {
   'popup.deleteTermBody': '삭제된 기수는 복구할 수 없습니다.',
 
   'popup.saveComplete': '저장이 완료되었습니다.',
+  'popup.deleteComplete': '삭제가 완료되었습니다.',
 
   'popup.verifyFail': '잘못된 인증번호 입니다.',
   'popup.duplicatedRole': '이미 등록된 그룹 역할입니다.',

@@ -11,13 +11,13 @@ import { AppDispatch, RootState } from '@/redux/store';
 import { fetchGroups } from '@/redux/reducers/church-reducer';
 
 import { GroupsApi } from '@/api/management/group/groups.api';
-import AddGroup from '@/components/atoms/management/group/add-group';
+import AddGroup from '@/components/atoms/management/group/list/add-group';
 import { BLANK } from '@/constants/constant';
-import ManagementGroupItemView from '@/components/atoms/management/group/management-group-item.view';
+import ManagementGroupItemView from '@/components/atoms/management/group/list/management-group-item.view';
 import { Group } from '@/models/management/management';
 import { getFormattedTitle } from '@/utils/format';
 import { getIsWellFormedTitle } from '@/utils/check';
-import { useScopedI18n } from '../../../../../locales/client';
+import { useScopedI18n } from '../../../../../../locales/client';
 import { BLACK, DESTRUCTIVE } from '@/constants/styles/color';
 
 type ManagementGroupItemProps = {

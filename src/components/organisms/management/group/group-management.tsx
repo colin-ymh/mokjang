@@ -9,7 +9,7 @@ import { getFormattedTitle } from '@/utils/format';
 import { getIsWellFormedTitle } from '@/utils/check';
 import { fetchGroups } from '@/redux/reducers/church-reducer';
 import { BLANK } from '@/constants/constant';
-import { BLACK } from '@/constants/styles/color';
+import { BLACK, DESTRUCTIVE } from '@/constants/styles/color';
 import { useScopedI18n } from '../../../../../locales/client';
 
 type GroupManagementProps = {};
@@ -28,6 +28,8 @@ const GroupManagement = ({}: GroupManagementProps) => {
   const [isEditShown, setIsEditShown] = useState<boolean>(false);
   const [editName, setEditName] = useState<string>(BLANK);
 
+  const [isDeleteShown, setIsDeleteShown] = useState<boolean>(false);
+
   // 선택된 그룹
   const [selectedGroup, setSelectedGroup] = useState<Group>(DEFAULT_GROUP);
 
@@ -39,6 +41,43 @@ const GroupManagement = ({}: GroupManagementProps) => {
   if (thrownError) {
     throw thrownError;
   }
+
+  const onClickDeleteOpen = () => {
+    setIsDeleteShown(true);
+  };
+
+  const onClickDeleteClose = () => {
+    setIsDeleteShown(false);
+  };
+
+  const onClickDelete = async () => {
+    try {
+      await groupsApi
+        .deleteGroup({
+          churchId,
+          groupId: selectedGroup.id as string,
+        })
+        .then(() => {
+          setSelectedGroup(DEFAULT_GROUP);
+        });
+
+      await dispatch(fetchGroups());
+
+      setToastText(t_popup('deleteComplete'));
+      setIsToastShown(true);
+      setToastColor(BLACK);
+    } catch (error) {
+      if (error instanceof Error) {
+        setToastText(error.message);
+        setToastColor(DESTRUCTIVE.LIGHT);
+        setIsToastShown(true);
+      } else {
+        setThrownError(new Error(String(error)));
+      }
+    } finally {
+      setIsDeleteShown(false);
+    }
+  };
 
   const onClickEditOpen = () => {
     setIsEditShown(true);
@@ -74,7 +113,13 @@ const GroupManagement = ({}: GroupManagementProps) => {
       setIsToastShown(true);
       setToastColor(BLACK);
     } catch (error) {
-      setThrownError(error instanceof Error ? error : new Error(String(error)));
+      if (error instanceof Error) {
+        setToastText(error.message);
+        setToastColor(DESTRUCTIVE.LIGHT);
+        setIsToastShown(true);
+      } else {
+        setThrownError(new Error(String(error)));
+      }
     }
   };
 
@@ -89,7 +134,13 @@ const GroupManagement = ({}: GroupManagementProps) => {
       setIsToastShown(true);
       setToastColor(BLACK);
     } catch (error) {
-      setThrownError(error instanceof Error ? error : new Error(String(error)));
+      if (error instanceof Error) {
+        setToastText(error.message);
+        setToastColor(DESTRUCTIVE.LIGHT);
+        setIsToastShown(true);
+      } else {
+        setThrownError(new Error(String(error)));
+      }
     }
   };
 
@@ -104,12 +155,18 @@ const GroupManagement = ({}: GroupManagementProps) => {
           });
       }
     } catch (error) {
-      setThrownError(error instanceof Error ? error : new Error(String(error)));
+      if (error instanceof Error) {
+        setToastText(error.message);
+        setToastColor(DESTRUCTIVE.LIGHT);
+        setIsToastShown(true);
+      } else {
+        setThrownError(new Error(String(error)));
+      }
     }
   };
 
   useEffect(() => {
-    if (groups && selectedGroup.id !== null) {
+    if (groups && selectedGroup.id !== BLANK && selectedGroup.id !== null) {
       fetchGroup();
     }
   }, [groups]);
@@ -130,7 +187,11 @@ const GroupManagement = ({}: GroupManagementProps) => {
   const props = {
     newGroupName,
     isEditShown,
+    isDeleteShown,
     editName,
+    onClickDeleteOpen,
+    onClickDeleteClose,
+    onClickDelete,
     onChangeEditGroupName,
     onClickEditOpen,
     onClickEditClose,

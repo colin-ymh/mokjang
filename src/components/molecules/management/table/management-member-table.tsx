@@ -1,14 +1,14 @@
 import React, { useEffect, useRef } from 'react';
 import { Member } from '@/models/member/member';
-import GroupMemberTableView from '@/components/molecules/management/group/group-member-table.view';
+import ManagementMemberTableView from '@/components/molecules/management/table/management-member-table.view';
 
 export type GroupMemberTableProps = {
-  groupMembers: Member[];
+  members: Member[];
   loadMembers: () => void;
 };
 
-const GroupMemberTable = ({
-  groupMembers,
+const ManagementMemberTable = ({
+  members,
   loadMembers,
 }: GroupMemberTableProps) => {
   const scrollRef = useRef<HTMLDivElement | null>(null);
@@ -31,16 +31,16 @@ const GroupMemberTable = ({
   }, []);
 
   const props = {
-    groupMembers,
+    members,
     scrollRef,
     onScroll,
   };
 
   return (
     <>
-      <GroupMemberTableView {...props} />
+      <ManagementMemberTableView {...props} />
     </>
   );
 };
 
-export default GroupMemberTable;
+export default ManagementMemberTable;

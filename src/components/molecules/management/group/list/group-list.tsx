@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 
 import { Group } from '@/models/management/management';
-import GroupListView from '@/components/molecules/management/group/group-list.view';
+import GroupListView from '@/components/molecules/management/group/list/group-list.view';
 import { BLANK } from '@/constants/constant';
 import { BLACK } from '@/constants/styles/color';
 import ToastPopup from '@/components/atoms/common/popup/toast-popup';

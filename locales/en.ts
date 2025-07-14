@@ -274,6 +274,7 @@ export default {
   'title.attendanceInformation': 'Report',
 
   'title.editGroupName': 'Edit Group Name',
+  'title.editOfficerName': 'Edit Officer Name',
   'title.addWidget': 'Add Widget',
   /*-------------------title (popup title)-------------------*/
 
@@ -299,8 +300,11 @@ export default {
   'header.personalInformation': 'Personal Information',
   'header.familyInformation': 'Family Information',
 
-  'header.groupInformation': 'Information',
-  'header.groupMembers': 'Members',
+  'header.groupMembers': 'Group Members',
+
+  'header.officerMembers': 'Officer Members',
+
+  'header.ministryGroupMembers': 'Ministry Members',
 
   'header.permissionUnit': 'Permission',
   /*-------------------header (side bar button)-------------------*/
@@ -411,8 +415,6 @@ export default {
 
   'button.today': 'Today',
   'button.my': 'My Schedule',
-  'button.editGroupName': 'Edit Group Name',
-
   'button.editChurch': 'Edit Church',
   /*-------------------button-------------------*/
 
@@ -516,6 +518,7 @@ export default {
   'popup.deleteTermBody': 'Deleted term cannot be restored.',
 
   'popup.saveComplete': 'Save Complete.',
+  'popup.deleteComplete': 'Delete Complete.',
 
   'popup.verifyFail': "You've entered wrong number.",
   'popup.duplicatedRole': 'That role is already duplicated.',

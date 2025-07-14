@@ -8,31 +8,31 @@ import {
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 
-import { GroupHistoryApi } from '@/api/history/group-history.api';
+import { OfficerHistoryApi } from '@/api/history/officer-history.api';
 import { MembersApi } from '@/api/members/members.api';
-import AddGroupMemberModalView from '@/components/atoms/common/modal/add-group-member-modal.view';
+import AddOfficerMemberModalView from '@/components/atoms/management/officer/member/add-officer-member-modal.view';
 import { BLANK } from '@/constants/constant';
 import { Member } from '@/models/member/member';
-import { Group } from '@/models/management/management';
+import { Officer } from '@/models/management/management';
 import { getFormattedName } from '@/utils/format';
 
-type AddGroupMemberModalProps = {
-  group: Group;
+type AddOfficerMemberModalProps = {
+  officer: Officer;
   isShown: boolean;
   fetchMembers: () => void;
   onClickClose: () => void;
   setIsToastShown: Dispatch<SetStateAction<boolean>>;
 };
 
-const AddGroupMemberModal = ({
-  group,
+const AddOfficerMemberModal = ({
+  officer,
   isShown,
   fetchMembers,
   onClickClose,
   setIsToastShown,
-}: AddGroupMemberModalProps) => {
+}: AddOfficerMemberModalProps) => {
   const membersApi = new MembersApi(false);
-  const groupHistoryApi = new GroupHistoryApi(false);
+  const officerHistoryApi = new OfficerHistoryApi(false);
   const churchId = useSelector((state: RootState) => state.church.churchId);
 
   // ===============================
@@ -70,26 +70,26 @@ const AddGroupMemberModal = ({
   // 선택된 교인을 목표 그룹에 추가
   // 이미 다른 그룹에 속해 있으면 stop 후 create
   // 이미 동일 그룹이면 건너뜀(중복 추가 방지)
-  const addMembersToGroup = async (membersToAdd: Member[]) => {
+  const addMembersToOfficer = async (membersToAdd: Member[]) => {
     for (const mem of membersToAdd) {
       // 이미 같은 그룹이면 스킵
-      if (mem.group?.id === group.id) {
+      if (mem.officer?.id === officer.id) {
         continue;
       }
 
       // 이미 다른 그룹에 속해 있다면 이력 중단
-      if (mem.group?.id && mem.group.id !== group.id) {
-        await groupHistoryApi.stopGroupHistory(
+      if (mem.officer?.id && mem.officer.id !== officer.id) {
+        await officerHistoryApi.stopOfficerHistory(
           { churchId, memberId: mem.id },
           {}
         );
       }
 
       // 새 그룹에 이력 생성
-      await groupHistoryApi.createGroupHistory(
+      await officerHistoryApi.createOfficerHistory(
         { churchId, memberId: mem.id },
         {
-          groupId: group.id as string,
+          officerId: officer.id as string,
         }
       );
     }
@@ -119,7 +119,7 @@ const AddGroupMemberModal = ({
 
       // 이미 그룹에 속한 교인이면 stop 후 create
       // 중복 그룹이면 스킵
-      await addMembersToGroup(selectedMembers);
+      await addMembersToOfficer(selectedMembers);
 
       // 목록 갱신 후 모달 닫기
       fetchMembers();
@@ -156,8 +156,8 @@ const AddGroupMemberModal = ({
   // 렌더링
   // ===============================
   return (
-    <AddGroupMemberModalView
-      group={group}
+    <AddOfficerMemberModalView
+      officer={officer}
       isShown={isShown}
       searchName={searchName}
       searchedMembers={searchedMembers}
@@ -171,4 +171,4 @@ const AddGroupMemberModal = ({
   );
 };
 
-export default AddGroupMemberModal;
+export default AddOfficerMemberModal;

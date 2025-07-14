@@ -6,7 +6,7 @@ import { GRAY } from '@/constants/styles/color';
 import { SIZE } from '@/constants/styles/style';
 import { getTranslatedMemberColumn } from '@/utils/translate';
 
-import { useI18n } from '../../../../../locales/client';
+import { useI18n } from '../../../../../../locales/client';
 import React from 'react';
 
 const HeaderContainer = styled.div`

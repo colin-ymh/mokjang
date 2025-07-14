@@ -13,7 +13,6 @@ import {
   USER_CONTENT_ID,
 } from '@/constants/layout/content';
 import {
-  GROUP_MANAGEMENT_HEADER_ID,
   MAIN_HEADER_ID,
   MANAGEMENT_HEADER_ID,
   MEMBER_INFORMATION_HEADER_ID,
@@ -27,16 +26,14 @@ import MemberInformationList from '@/components/molecules/member/information/mem
 import FamilyInformationList from '@/components/molecules/member/information/family-information-list';
 import MemberEducation from '@/components/molecules/member/information/member-education';
 import GroupManagement from '@/components/organisms/management/group/group-management';
-import { Group, MinistryGroup } from '@/models/management/management';
+import { MinistryGroup } from '@/models/management/management';
 import MemberGroup from '@/components/molecules/member/information/member-group';
 import OfficerManagement from '@/components/organisms/management/officer/officer-management';
 import MinistryGroupInformation from '@/components/molecules/management/ministry/ministry-group-information';
 import MinistryGroupMember from '@/components/molecules/management/ministry/ministry-group-member';
 import MinistryGroupManagement from '@/components/organisms/management/ministry/ministry-group-management';
 import MemberMinistry from '@/components/molecules/member/information/member-ministry';
-import GroupInformation from '@/components/molecules/management/group/group-information';
 import MemberOfficer from '@/components/molecules/member/information/member-officer';
-import GroupMember from '@/components/molecules/management/group/group-member';
 import MainSideButtonList from '@/components/molecules/layout/side/main-side/main-side-button-list';
 import ManagementSideButtonList from '@/components/molecules/layout/side/management-side/management-side-button-list';
 import ManagementChurchHeader from '@/components/molecules/layout/header/management/church/management-church-header';
@@ -234,15 +231,6 @@ export const getMemberInformationContent = (
       return <MemberMinistry />;
     case MEMBER_INFORMATION_HEADER_ID.OFFICER:
       return <MemberOfficer />;
-  }
-};
-
-export const getGroupManagementContent = (contentId: string, group: Group) => {
-  switch (contentId) {
-    case GROUP_MANAGEMENT_HEADER_ID.GROUP_INFORMATION:
-      return <GroupInformation group={group} />;
-    case GROUP_MANAGEMENT_HEADER_ID.MEMBER_LIST:
-      return <GroupMember group={group} />;
   }
 };
 

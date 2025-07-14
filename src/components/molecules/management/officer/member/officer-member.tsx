@@ -1,20 +1,24 @@
-import GroupMemberView from '@/components/molecules/management/group/group-member.view';
-import { Group } from '@/models/management/management';
+import OfficerMemberView from '@/components/molecules/management/officer/member/officer-member.view';
+import { Officer } from '@/models/management/management';
 import { Member } from '@/models/member/member';
 import { useEffect, useState } from 'react';
 
 import { MembersApi } from '@/api/members/members.api';
 import { MEMBER } from '@/constants/column/member-column';
-import { useScopedI18n } from '../../../../../locales/client';
+import { useScopedI18n } from '../../../../../../locales/client';
 import ToastPopup from '@/components/atoms/common/popup/toast-popup';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
 
-type GroupMemberProps = {
-  group: Group;
+type OfficerMemberProps = {
+  officer: Officer;
 };
 
-const GroupMember = ({ group }: GroupMemberProps) => {
+const OfficerMember = ({ officer }: OfficerMemberProps) => {
   const membersApi = new MembersApi(false);
   const t_popup = useScopedI18n('popup');
+
+  const churchId = useSelector((state: RootState) => state.church.churchId);
 
   const [thrownError, setThrownError] = useState<Error | null>(null);
   // 렌더링 시점(컴포넌트 return)에서 조건부로 에러 발생
@@ -52,8 +56,8 @@ const GroupMember = ({ group }: GroupMemberProps) => {
 
     try {
       const response = await membersApi.getMembers({
-        churchId: group.churchId,
-        group: [group.id as string],
+        churchId,
+        officer: [officer.id as string],
         selectedColumns: [MEMBER.OFFICER, MEMBER.BIRTH, MEMBER.MOBILE_PHONE],
         page,
         take: 30,
@@ -91,10 +95,10 @@ const GroupMember = ({ group }: GroupMemberProps) => {
     setMembers([]);
     setPage(1);
     fetchMembers();
-  }, [group.id]);
+  }, [officer.id]);
 
   const props = {
-    group,
+    officer,
     members,
     isModalShown,
     fetchMembers,
@@ -106,7 +110,7 @@ const GroupMember = ({ group }: GroupMemberProps) => {
 
   return (
     <>
-      <GroupMemberView {...props} />
+      <OfficerMemberView {...props} />
       {isToastShown && (
         <ToastPopup
           setIsShow={setIsToastShown}
@@ -117,4 +121,4 @@ const GroupMember = ({ group }: GroupMemberProps) => {
   );
 };
 
-export default GroupMember;
+export default OfficerMember;

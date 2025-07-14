@@ -27,13 +27,22 @@ type CreateOfficerBody = {
   name: string;
 };
 
-type EditOfficerParams = {
+type EditOfficerNameParams = {
   churchId: string;
   officerId: string;
 };
 
-type EditOfficerBody = {
+type EditOfficerNameBody = {
   name: string;
+};
+
+type EditOfficerStructureParams = {
+  churchId: string;
+  officerId: string;
+};
+
+type EditOfficerStructureBody = {
+  order: number;
 };
 
 type DeleteOfficerParams = {
@@ -130,18 +139,48 @@ export class OfficersApi {
   };
 
   /**
-   * 직분 수정하기
-   * @param {EditOfficerParams} params
-   * @param {EditOfficerBody} body
+   * 직분명 수정하기
+   * @param {EditOfficerNameParams} params
+   * @param {EditOfficerNameBody} body
    * @returns {Promise<AxiosResponse>}
    */
-  public editOfficer = async (
-    params: EditOfficerParams,
-    body: EditOfficerBody
+  public editOfficerName = async (
+    params: EditOfficerNameParams,
+    body: EditOfficerNameBody
   ): Promise<AxiosResponse> => {
     const { churchId, officerId } = params;
 
-    const url = `${this._url}/churches/${churchId}/management/officers/${officerId}`;
+    const url = `${this._url}/churches/${churchId}/management/officers/${officerId}/name`;
+
+    try {
+      return await authorizeAxios.patch(url, body);
+    } catch (serverError: any) {
+      if (serverError.response) {
+        const { message, error, statusCode } = serverError.response.data;
+        throw new CustomError(message, error, statusCode);
+      } else {
+        throw new CustomError(
+          '알 수 없는 에러가 발생했습니다',
+          500,
+          'Unknown Error'
+        );
+      }
+    }
+  };
+
+  /**
+   * 직분 구조 수정하기
+   * @param {EditOfficerStructureParams} params
+   * @param {EditOfficerStructureBody} body
+   * @returns {Promise<AxiosResponse>}
+   */
+  public editOfficerStructure = async (
+    params: EditOfficerStructureParams,
+    body: EditOfficerStructureBody
+  ): Promise<AxiosResponse> => {
+    const { churchId, officerId } = params;
+
+    const url = `${this._url}/churches/${churchId}/management/officers/${officerId}/structure`;
 
     try {
       return await authorizeAxios.patch(url, body);

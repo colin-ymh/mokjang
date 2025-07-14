@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { BLANK } from '@/constants/constant';
+import { BLANK, ORDER_DIRECTION } from '@/constants/constant';
 import {
   Group,
   Ministry,
@@ -45,7 +45,12 @@ export const fetchOfficers = createAsyncThunk<
   }
 
   try {
-    const response = await officersApi.getOfficers({ churchId });
+    const response = await officersApi.getOfficers({
+      churchId,
+      take: 50,
+      page: 1,
+      orderDirection: ORDER_DIRECTION.ASC,
+    });
 
     return response.data.data;
   } catch (error) {

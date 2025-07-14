@@ -10,11 +10,11 @@ import styled from 'styled-components';
 import { Group } from '@/models/management/management';
 import { GRAY, MAIN } from '@/constants/styles/color';
 import { MainText } from '@/components/atoms/common/text/main-text';
-import Plus from '../../../../../public/svg/plus.svg';
+import Plus from '../../../../../../public/svg/plus.svg';
 import { SIZE } from '@/constants/styles/style';
-import { useI18n } from '../../../../../locales/client';
+import { useI18n } from '../../../../../../locales/client';
 import { getEmptyImage } from 'react-dnd-html5-backend';
-import { DND_ITEM_TYPE } from '@/constants/constant';
+import { DND_ITEM_TYPE, HOVER_POSITION } from '@/constants/constant';
 
 const GroupItemContainer = styled.div<{ $isDragging: boolean }>`
   display: flex;
@@ -115,12 +115,6 @@ type ManagementGroupItemViewProps = {
   onClickGroupAdd: () => void;
 };
 
-export enum HOVER_POSITION {
-  TOP = 'top',
-  MIDDLE = 'middle',
-  BOTTOM = 'bottom',
-}
-
 const ManagementGroupItemView: React.FC<ManagementGroupItemViewProps> = ({
   isHaveChildren,
   isOpen,
@@ -134,8 +128,8 @@ const ManagementGroupItemView: React.FC<ManagementGroupItemViewProps> = ({
   const t = useI18n();
   const ref = useRef<HTMLDivElement | null>(null);
 
+  const [isHovered, setIsHovered] = useState<boolean>(false);
   const [isSameParent, setIsSameParent] = useState<boolean>(false);
-
   const [hoverPosition, setHoverPosition] = useState<HOVER_POSITION>(
     HOVER_POSITION.MIDDLE
   );
@@ -256,7 +250,12 @@ const ManagementGroupItemView: React.FC<ManagementGroupItemViewProps> = ({
   dragRef(dropRef(ref));
 
   return (
-    <GroupItemContainer ref={ref} $isDragging={isDragging}>
+    <GroupItemContainer
+      ref={ref}
+      $isDragging={isDragging}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
       {hoverPosition === HOVER_POSITION.TOP && isOver && (
         <InsertLineTop $level={level} />
       )}
@@ -295,7 +294,7 @@ const ManagementGroupItemView: React.FC<ManagementGroupItemViewProps> = ({
         </LeftContainer>
 
         <RightContainer>
-          <PlusButton onClick={onClickGroupAdd} />
+          {isHovered && <PlusButton onClick={onClickGroupAdd} />}
         </RightContainer>
       </GroupItem>
     </GroupItemContainer>

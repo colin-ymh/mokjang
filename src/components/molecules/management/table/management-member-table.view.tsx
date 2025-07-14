@@ -15,7 +15,7 @@ import {
   getLocaleDateFromDashDate,
 } from '@/utils/format';
 import { LOCALE } from '@/constants/state/locale';
-import GroupMemberTableHeader from '@/components/atoms/management/group/group-member-table-header';
+import GroupMemberTableHeader from '@/components/atoms/management/group/member/group-member-table-header';
 import MemberProfilePopupButton from '@/components/molecules/common/button/member-profile-popup-button';
 
 const getColumnWidth = (id: string) => {
@@ -123,7 +123,7 @@ const ContentWrapper = styled.div`
   white-space: nowrap;
 `;
 
-export const GROUP_MEMBER_TABLE_HEADER: TABLE_HEADER_ITEM[] = [
+export const MANAGEMENT_MEMBER_TABLE_HEADER: TABLE_HEADER_ITEM[] = [
   {
     id: MEMBER.GROUP,
     isShown: true,
@@ -167,13 +167,13 @@ export const GROUP_MEMBER_TABLE_HEADER: TABLE_HEADER_ITEM[] = [
 ];
 
 type MemberTableProps = {
-  groupMembers: Member[];
+  members: Member[];
   scrollRef: MutableRefObject<HTMLDivElement | null>;
   onScroll: () => void;
 };
 
-const GroupMemberTableView = ({
-  groupMembers,
+const ManagementMemberTableView = ({
+  members,
   scrollRef,
   onScroll,
 }: MemberTableProps) => {
@@ -222,7 +222,7 @@ const GroupMemberTableView = ({
       <MemberTable>
         <thead>
           <tr>
-            {GROUP_MEMBER_TABLE_HEADER.filter((item) => item.isShown).map(
+            {MANAGEMENT_MEMBER_TABLE_HEADER.filter((item) => item.isShown).map(
               (item) => (
                 <TableHeader key={item.id} id={item.id}>
                   <GroupMemberTableHeader item={item} onClick={() => {}} />
@@ -232,22 +232,22 @@ const GroupMemberTableView = ({
           </tr>
         </thead>
         <tbody>
-          {groupMembers.map((member, rowIndex) => (
+          {members.map((member, rowIndex) => (
             <MemberTableRow key={member.id}>
-              {GROUP_MEMBER_TABLE_HEADER.filter((item) => item.isShown).map(
-                (item, index) => (
-                  <TableData
-                    key={item.id}
-                    id={item.id}
-                    $index={rowIndex}
-                    $isLast={index === GROUP_MEMBER_TABLE_HEADER.length - 1}
-                  >
-                    <ContentWrapper>
-                      {getMemberTableContent(item.id, member)}
-                    </ContentWrapper>
-                  </TableData>
-                )
-              )}
+              {MANAGEMENT_MEMBER_TABLE_HEADER.filter(
+                (item) => item.isShown
+              ).map((item, index) => (
+                <TableData
+                  key={item.id}
+                  id={item.id}
+                  $index={rowIndex}
+                  $isLast={index === MANAGEMENT_MEMBER_TABLE_HEADER.length - 1}
+                >
+                  <ContentWrapper>
+                    {getMemberTableContent(item.id, member)}
+                  </ContentWrapper>
+                </TableData>
+              ))}
             </MemberTableRow>
           ))}
         </tbody>
@@ -256,4 +256,4 @@ const GroupMemberTableView = ({
   );
 };
 
-export default GroupMemberTableView;
+export default ManagementMemberTableView;

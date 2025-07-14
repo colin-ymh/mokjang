@@ -1,19 +1,21 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
 
-import GroupList from '@/components/molecules/management/group/group-list';
+import GroupList from '@/components/molecules/management/group/list/group-list';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { SIZE } from '@/constants/styles/style';
 import { GRAY, WHITE } from '@/constants/styles/color';
 import { Group } from '@/models/management/management';
 
-import { useI18n } from '../../../../../locales/client';
-import GroupMember from '@/components/molecules/management/group/group-member';
+import { useI18n, useScopedI18n } from '../../../../../locales/client';
+import GroupMember from '@/components/molecules/management/group/member/group-member';
 import Button from '@/components/atoms/common/button/button';
 import ToastPopup from '@/components/atoms/common/popup/toast-popup';
 import BorderInput from '@/components/atoms/common/input/border-input';
 import CustomPopup from '@/components/atoms/common/popup/custom-popup';
 import LabelInput from '@/components/atoms/common/input/label-input';
+import KebabDropdown from '@/components/atoms/common/dropdown/kebab-dropdown';
+import ConfirmPopup from '@/components/atoms/common/popup/confirm-popup';
 
 const GroupManagementContainer = styled.div`
   display: flex;
@@ -26,8 +28,8 @@ const GroupListContainer = styled.div`
   flex-direction: column;
   padding: 20px;
   gap: 20px;
-  border-right: 1px solid ${GRAY.EXTRA_LIGHT};
-  width: 500px;
+  border-right: 1px solid ${GRAY.LIGHT};
+  width: 400px;
   flex-shrink: 0;
 `;
 
@@ -59,8 +61,12 @@ const EditContainer = styled.div`
 type GroupManagementViewProps = {
   newGroupName: string;
   isEditShown: boolean;
+  isDeleteShown: boolean;
   editName: string;
   onChangeEditGroupName: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onClickDeleteOpen: () => void;
+  onClickDeleteClose: () => void;
+  onClickDelete: () => void;
   onClickEditOpen: () => void;
   onClickEditClose: () => void;
   onClickSaveEdit: () => void;
@@ -77,8 +83,12 @@ type GroupManagementViewProps = {
 const GroupManagementView = ({
   newGroupName,
   isEditShown,
+  isDeleteShown,
   editName,
   onChangeEditGroupName,
+  onClickDeleteOpen,
+  onClickDeleteClose,
+  onClickDelete,
   onClickEditOpen,
   onClickEditClose,
   onClickSaveEdit,
@@ -92,6 +102,8 @@ const GroupManagementView = ({
   setIsToastShown,
 }: GroupManagementViewProps) => {
   const t = useI18n();
+  const t_button = useScopedI18n('button');
+  const t_popup = useScopedI18n('popup');
   return (
     <>
       <GroupManagementContainer>
@@ -130,14 +142,20 @@ const GroupManagementView = ({
             <MainText size={SIZE.LARGE} fontWeight={600}>
               {selectedGroup.name}
             </MainText>
-            <Button
-              color={GRAY.DARK}
-              text={t('button.editGroupName')}
-              height={30}
-              width={120}
-              backgroundColor={WHITE}
-              borderColor={GRAY.SEMI_LIGHT}
-              onClick={onClickEditOpen}
+            <KebabDropdown
+              items={[
+                {
+                  value: 'delete',
+                  title: t_button('delete'),
+                  onClick: () => onClickDeleteOpen(),
+                },
+                {
+                  value: 'edit',
+                  title: t_button('edit'),
+                  onClick: () => onClickEditOpen(),
+                },
+              ]}
+              width={150}
             />
           </GroupInformationHeader>
           {/* 컨텐츠 */}
@@ -170,6 +188,17 @@ const GroupManagementView = ({
           />
         </EditContainer>
       </CustomPopup>
+      {/* 그룹 삭제 팝업 */}
+      <ConfirmPopup
+        isShow={isDeleteShown}
+        onClickLeftButton={onClickDeleteClose}
+        onClickRightButton={onClickDelete}
+        title={t_popup('deleteGroupTitle')}
+        body={t_popup('deleteGroupBody')}
+        buttonNum={2}
+        leftButtonText={t_button('cancel')}
+        rightButtonText={t_button('confirm')}
+      />
     </>
   );
 };

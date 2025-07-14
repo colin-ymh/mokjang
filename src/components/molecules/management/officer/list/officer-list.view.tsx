@@ -1,8 +1,8 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
 
-import { Group } from '@/models/management/management';
-import ManagementGroupItem from '@/components/atoms/management/group/management-group-item';
+import { Officer } from '@/models/management/management';
+import ManagementOfficerItem from '@/components/atoms/management/officer/list/management-officer-item';
 import useWindowSize from '@/hooks/window/window';
 
 const FilterContainer = styled.div<{ height: number }>`
@@ -13,9 +13,9 @@ const FilterContainer = styled.div<{ height: number }>`
   height: ${({ height }) => `${height - 250}px`};
 `;
 
-type GroupListViewProps = {
+type OfficerListViewProps = {
   list: {
-    groups: Group[];
+    officers: Officer[];
   };
   toast: {
     setIsToastShown: Dispatch<SetStateAction<boolean>>;
@@ -23,26 +23,26 @@ type GroupListViewProps = {
     setToastColor: Dispatch<SetStateAction<string>>;
   };
   item: {
-    closedGroups: Set<number>;
-    selectedGroupId: string | null;
-    onClickGroup: (id: string) => void;
+    closedOfficers: Set<number>;
+    selectedOfficerId: string | null;
+    onClickOfficer: (id: string) => void;
     onClickToggle: (id: string) => void;
   };
 };
 
-const GroupListView = (props: GroupListViewProps) => {
+const OfficerListView = (props: OfficerListViewProps) => {
   const { height } = useWindowSize();
-  const { groups } = props.list;
+  const { officers } = props.list;
   const toastProps = props.toast;
   const itemProps = props.item;
   return (
     <>
       <FilterContainer height={height}>
-        {groups.map((group) => (
-          <ManagementGroupItem
-            key={group.id}
+        {officers.map((officer) => (
+          <ManagementOfficerItem
+            key={officer.id}
             level={0}
-            group={group}
+            officer={officer}
             {...itemProps}
             {...toastProps}
           />
@@ -52,4 +52,4 @@ const GroupListView = (props: GroupListViewProps) => {
   );
 };
 
-export default GroupListView;
+export default OfficerListView;

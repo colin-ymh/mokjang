@@ -1,149 +1,212 @@
-import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 
 import { OfficersApi } from '@/api/management/officer/officers.api';
 import OfficerManagementView from '@/components/organisms/management/officer/officer-management.view';
-import { DEFAULT_OFFICER, Officer } from '@/models/management/management';
-import { BLANK } from '@/constants/constant';
+import { DEFAULT_GROUP, Officer } from '@/models/management/management';
 import { getFormattedTitle } from '@/utils/format';
 import { getIsWellFormedTitle } from '@/utils/check';
 import { fetchOfficers } from '@/redux/reducers/church-reducer';
+import { BLANK } from '@/constants/constant';
+import { BLACK, DESTRUCTIVE } from '@/constants/styles/color';
 import { useScopedI18n } from '../../../../../locales/client';
-import ToastPopup from '@/components/atoms/common/popup/toast-popup';
 
 type OfficerManagementProps = {};
 
 const OfficerManagement = ({}: OfficerManagementProps) => {
-  const t_popup = useScopedI18n('popup');
-  const officersApi = new OfficersApi(false);
   const dispatch = useDispatch<AppDispatch>();
+  const t_popup = useScopedI18n('popup');
   const { churchId, officers } = useSelector(
     (state: RootState) => state.church
   );
-  const nameInputRef = useRef<HTMLInputElement>(null);
 
+  const officersApi = new OfficersApi(false);
+
+  // 새로 추가할 그룹명
+  const [newOfficerName, setNewOfficerName] = useState<string>(BLANK);
+
+  // 수정할 그룹명
+  const [isEditShown, setIsEditShown] = useState<boolean>(false);
+  const [editName, setEditName] = useState<string>(BLANK);
+
+  const [isDeleteShown, setIsDeleteShown] = useState<boolean>(false);
+
+  // 선택된 그룹
+  const [selectedOfficer, setSelectedOfficer] =
+    useState<Officer>(DEFAULT_GROUP);
+
+  // 에러 처리
+  const [isToastShown, setIsToastShown] = useState<boolean>(false);
+  const [toastText, setToastText] = useState<string>(BLANK);
+  const [toastColor, setToastColor] = useState<string>(BLACK);
   const [thrownError, setThrownError] = useState<Error | null>(null);
   if (thrownError) {
     throw thrownError;
   }
 
-  const [isToastShown, setIsToastShown] = useState<boolean>(false);
-
-  // 선택된 직분
-  const [selectedOfficer, setSelectedOfficer] =
-    useState<Officer>(DEFAULT_OFFICER);
-
-  // 새로운 직분 추가 모달 활성화 여부
-  const [isAddModalShown, setIsAddModalShown] = useState<boolean>(false);
-
-  // 새로운 직분 이름
-  const [newOfficerName, setNewOfficerName] = useState<string>(BLANK);
-
-  // 직분 추가 모달 열기
-  const onClickModalOpen = () => {
-    setIsAddModalShown(true);
-
-    setTimeout(() => {
-      if (nameInputRef.current) {
-        nameInputRef.current.focus();
-      }
-    });
+  const onClickDeleteOpen = () => {
+    setIsDeleteShown(true);
   };
 
-  // 이름 변경
-  const onChangeName = (event: ChangeEvent<HTMLInputElement>) => {
-    const newName = getFormattedTitle(event.target.value);
-    setNewOfficerName(newName);
+  const onClickDeleteClose = () => {
+    setIsDeleteShown(false);
   };
 
-  // 새로운 직분 저장
-  const onClickSaveOfficer = async () => {
+  const onClickDelete = async () => {
     try {
-      if (getIsWellFormedTitle(newOfficerName)) {
-        await officersApi.createOfficer({ churchId }, { name: newOfficerName });
-        dispatch(fetchOfficers());
-        setIsAddModalShown(false);
-        setNewOfficerName(BLANK);
-      }
-    } catch (error) {
-      setThrownError(error instanceof Error ? error : new Error(String(error)));
-    } finally {
+      await officersApi
+        .deleteOfficer({
+          churchId,
+          officerId: selectedOfficer.id as string,
+        })
+        .then(() => {
+          setSelectedOfficer(DEFAULT_GROUP);
+        });
+
+      await dispatch(fetchOfficers());
+
+      setToastText(t_popup('deleteComplete'));
       setIsToastShown(true);
+      setToastColor(BLACK);
+    } catch (error) {
+      if (error instanceof Error) {
+        setToastText(error.message);
+        setToastColor(DESTRUCTIVE.LIGHT);
+        setIsToastShown(true);
+      } else {
+        setThrownError(new Error(String(error)));
+      }
+    } finally {
+      setIsDeleteShown(false);
     }
   };
 
-  // 수정 중 focus 가 풀리면 수정 취소
-  useEffect(() => {
-    const inputElement = nameInputRef.current;
+  const onClickEditOpen = () => {
+    setIsEditShown(true);
+  };
 
-    const handleBlur = () => {
-      setIsAddModalShown(false);
-    };
+  const onClickEditClose = () => {
+    setIsEditShown(false);
+  };
 
-    if (inputElement) {
-      inputElement.addEventListener('blur', handleBlur);
+  const onChangeNewOfficerName = (event: ChangeEvent<HTMLInputElement>) => {
+    setNewOfficerName(getFormattedTitle(event.target.value));
+  };
+
+  const onChangeEditOfficerName = (event: ChangeEvent<HTMLInputElement>) => {
+    setEditName(getFormattedTitle(event.target.value));
+  };
+
+  const onClickSaveEdit = async () => {
+    if (!getIsWellFormedTitle(editName)) {
+      return;
     }
 
-    return () => {
-      if (inputElement) {
-        inputElement.removeEventListener('blur', handleBlur);
+    try {
+      const response = await officersApi.editOfficerName(
+        { churchId, officerId: selectedOfficer.id as string },
+        { name: editName }
+      );
+      await dispatch(fetchOfficers());
+      setSelectedOfficer(response.data);
+      setIsEditShown(false);
+      setEditName(BLANK);
+      setToastText(t_popup('saveComplete'));
+      setIsToastShown(true);
+      setToastColor(BLACK);
+    } catch (error) {
+      if (error instanceof Error) {
+        setToastText(error.message);
+        setToastColor(DESTRUCTIVE.LIGHT);
+        setIsToastShown(true);
+      } else {
+        setThrownError(new Error(String(error)));
       }
-    };
-  }, [nameInputRef]);
+    }
+  };
+
+  const onClickSaveNewOfficer = async () => {
+    if (!getIsWellFormedTitle(newOfficerName)) return;
+
+    try {
+      await officersApi.createOfficer({ churchId }, { name: newOfficerName });
+      await dispatch(fetchOfficers());
+      setNewOfficerName(BLANK);
+      setToastText(t_popup('saveComplete'));
+      setIsToastShown(true);
+      setToastColor(BLACK);
+    } catch (error) {
+      if (error instanceof Error) {
+        setToastText(error.message);
+        setToastColor(DESTRUCTIVE.LIGHT);
+        setIsToastShown(true);
+      } else {
+        setThrownError(new Error(String(error)));
+      }
+    }
+  };
+
+  // 그룹 불러오기
+  const fetchOfficer = () => {
+    if (selectedOfficer.id) {
+      const newOfficer = officers.find(
+        (officer) => officer.id === selectedOfficer.id
+      );
+      if (newOfficer) {
+        setSelectedOfficer(newOfficer);
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (
+      officers &&
+      selectedOfficer.id !== BLANK &&
+      selectedOfficer.id !== null
+    ) {
+      fetchOfficer();
+    }
+  }, [officers]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // !!!!!!!!!!!! 시발 !!!!!!!!!!!!
-      // 한글 키보드로 입력 시, compose 를 하네;;;;;이 개같은거
-      // isComposing 이 true => false 이 지랄을 하면서
-      // 엔터가 두 번 입력되는 것 처럼 보였던 것이다
-      // 이 개같은 것 때문에 시간을 존나 날려먹었다
-      // !!!!!!!!!!!! 시발 !!!!!!!!!!!!
-      if (e.isComposing) {
-        return;
-      }
+      if (e.isComposing) return;
 
       if (e.key === 'Enter') {
-        if (getIsWellFormedTitle(newOfficerName)) {
-          onClickSaveOfficer();
-        } else {
-          setIsAddModalShown(false);
-        }
-      } else if (e.key === 'Escape') {
-        setIsAddModalShown(false);
+        onClickSaveNewOfficer();
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
-
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-    };
+    return () => window.removeEventListener('keydown', handleKeyDown);
   }, [newOfficerName]);
 
   const props = {
-    officers,
-    fetchOfficers,
+    newOfficerName,
+    isEditShown,
+    isDeleteShown,
+    editName,
+    onClickDeleteOpen,
+    onClickDeleteClose,
+    onClickDelete,
+    onChangeEditOfficerName,
+    onClickEditOpen,
+    onClickEditClose,
+    onClickSaveEdit,
+    onChangeNewOfficerName,
+    onClickSaveNewOfficer,
     selectedOfficer,
     setSelectedOfficer,
-    isAddModalShown,
-    nameInputRef,
-    newOfficerName,
-    onClickModalOpen,
-    onChangeName,
-    onClickSaveOfficer,
+    isToastShown,
+    toastText,
+    toastColor,
+    setIsToastShown,
   };
 
   return (
     <>
       <OfficerManagementView {...props} />
-      {isToastShown && (
-        <ToastPopup
-          setIsShow={setIsToastShown}
-          text={t_popup('saveComplete')}
-        />
-      )}
     </>
   );
 };

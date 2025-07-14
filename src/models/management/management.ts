@@ -79,6 +79,7 @@ export type Officer = {
   churchId?: string;
   name: string;
   membersCount?: number;
+  order: number;
 };
 
 export const DEFAULT_OFFICER: Officer = {
@@ -86,4 +87,5 @@ export const DEFAULT_OFFICER: Officer = {
   churchId: BLANK,
   name: BLANK,
   membersCount: 0,
+  order: 0,
 };

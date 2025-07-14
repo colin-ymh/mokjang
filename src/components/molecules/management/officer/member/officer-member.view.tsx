@@ -1,17 +1,16 @@
 import styled from 'styled-components';
-
-import GroupMemberTable from '@/components/molecules/management/group/group-member-table';
 import { MainText } from '@/components/atoms/common/text/main-text';
-import AddGroupMemberModal from '@/components/atoms/common/modal/add-group-member-modal';
+import AddOfficerMemberModal from '@/components/atoms/management/officer/member/add-officer-member-modal';
 import { GRAY } from '@/constants/styles/color';
-import { Group } from '@/models/management/management';
+import { Officer } from '@/models/management/management';
 import { Member } from '@/models/member/member';
 
-import { useScopedI18n } from '../../../../../locales/client';
-import Plus from '../../../../../public/svg/plus.svg';
+import { useScopedI18n } from '../../../../../../locales/client';
+import Plus from '../../../../../../public/svg/plus.svg';
 import { Dispatch, SetStateAction } from 'react';
+import ManagementMemberTable from '@/components/molecules/management/table/management-member-table';
 
-const GroupMemberContainer = styled.div`
+const OfficerMemberContainer = styled.div`
   display: flex;
   flex-direction: column;
 `;
@@ -51,8 +50,8 @@ const ModalContainer = styled.div`
   z-index: 100;
 `;
 
-type GroupMemberViewProps = {
-  group: Group;
+type OfficerMemberViewProps = {
+  officer: Officer;
   members: Member[];
   isModalShown: boolean;
   fetchMembers: () => void;
@@ -62,8 +61,8 @@ type GroupMemberViewProps = {
   loadMembers: () => void;
 };
 
-const GroupMemberView = ({
-  group,
+const OfficerMemberView = ({
+  officer,
   members,
   isModalShown,
   fetchMembers,
@@ -71,18 +70,18 @@ const GroupMemberView = ({
   onClickModalClose,
   setIsToastShown,
   loadMembers,
-}: GroupMemberViewProps) => {
+}: OfficerMemberViewProps) => {
   const t_header = useScopedI18n('header');
 
   return (
-    <GroupMemberContainer>
+    <OfficerMemberContainer>
       <ListTypeHeader>
-        <MainText color={GRAY.DARK}>{t_header('groupMembers')}</MainText>
-        <MainText color={GRAY.DARK}>{`(${group.membersCount})`}</MainText>
+        <MainText color={GRAY.DARK}>{t_header('officerMembers')}</MainText>
+        <MainText color={GRAY.DARK}>{`(${officer.membersCount})`}</MainText>
         <PlusButton onClick={onClickModalOpen} />
         <ModalContainer>
-          <AddGroupMemberModal
-            group={group}
+          <AddOfficerMemberModal
+            officer={officer}
             isShown={isModalShown}
             fetchMembers={fetchMembers}
             onClickClose={onClickModalClose}
@@ -90,9 +89,9 @@ const GroupMemberView = ({
           />
         </ModalContainer>
       </ListTypeHeader>
-      <GroupMemberTable groupMembers={members} loadMembers={loadMembers} />
-    </GroupMemberContainer>
+      <ManagementMemberTable members={members} loadMembers={loadMembers} />
+    </OfficerMemberContainer>
   );
 };
 
-export default GroupMemberView;
+export default OfficerMemberView;

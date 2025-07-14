@@ -2,7 +2,7 @@ import React, { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
 
 import { Group } from '@/models/management/management';
-import ManagementGroupItem from '@/components/atoms/management/group/management-group-item';
+import ManagementGroupItem from '@/components/atoms/management/group/list/management-group-item';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { SIZE } from '@/constants/styles/style';
 import Button from '@/components/atoms/common/button/button';

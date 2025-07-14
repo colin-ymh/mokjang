@@ -15,7 +15,7 @@ import {
 import { getAge, getDateFromInput } from '@/utils/date';
 import { usePathname } from 'next/navigation';
 import { LOCALE } from '@/constants/state/locale';
-import GroupMemberTableHeader from '@/components/atoms/management/group/group-member-table-header';
+import GroupMemberTableHeader from '@/components/atoms/management/group/member/group-member-table-header';
 import MemberProfile from '@/components/atoms/member/member-profile';
 
 const getColumnWidth = (id: string) => {

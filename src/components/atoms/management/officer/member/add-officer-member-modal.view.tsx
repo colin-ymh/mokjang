@@ -3,13 +3,13 @@ import styled from 'styled-components';
 
 import { GRAY, MAIN, WHITE } from '@/constants/styles/color';
 import { Member } from '@/models/member/member';
-import { Group } from '@/models/management/management';
+import { Officer } from '@/models/management/management';
 import BorderInput from '@/components/atoms/common/input/border-input';
-import AddMemberItem from '@/components/atoms/management/group/add-member-item';
+import AddMemberItem from '@/components/atoms/common/modal/add-member-item';
 import Button from '@/components/atoms/common/button/button';
 
-import Cancel from '../../../../../public/svg/cancel.svg';
-import { useI18n } from '../../../../../locales/client';
+import Cancel from '../../../../../../public/svg/cancel.svg';
+import { useI18n } from '../../../../../../locales/client';
 
 const ModalContainer = styled.div<{ $isShown: boolean }>`
   display: ${({ $isShown }) => ($isShown ? 'flex' : 'none')};
@@ -81,8 +81,8 @@ const SelectedMemberList = styled.div`
   height: 380px;
 `;
 
-type AddGroupMemberModalViewProps = {
-  group: Group;
+type AddOfficerMemberModalViewProps = {
+  officer: Officer;
   isShown: boolean;
   searchName: string;
   searchedMembers: Member[];
@@ -94,8 +94,8 @@ type AddGroupMemberModalViewProps = {
   onClickSave: () => void;
 };
 
-const AddGroupMemberModalView = ({
-  group,
+const AddOfficerMemberModalView = ({
+  officer,
   isShown,
   searchName,
   searchedMembers,
@@ -105,7 +105,7 @@ const AddGroupMemberModalView = ({
   onClickMember,
   onClickClose,
   onClickSave,
-}: AddGroupMemberModalViewProps) => {
+}: AddOfficerMemberModalViewProps) => {
   const t = useI18n();
 
   return (
@@ -128,7 +128,7 @@ const AddGroupMemberModalView = ({
                 <AddMemberItem
                   key={member.id}
                   member={member}
-                  isEnable={group.id !== member.group?.id}
+                  isEnable={officer.id !== member.officer?.id}
                   isSelected={selectedMembers.some(
                     (selectedMember) => selectedMember.id === member.id
                   )}
@@ -159,7 +159,7 @@ const AddGroupMemberModalView = ({
                   <AddMemberItem
                     key={member.id}
                     member={member}
-                    isEnable={group.id !== member.group?.id}
+                    isEnable={officer.id !== member.officer?.id}
                     isSelected={selectedMembers.some(
                       (selectedMember) => selectedMember.id === member.id
                     )}
@@ -185,4 +185,4 @@ const AddGroupMemberModalView = ({
   );
 };
 
-export default AddGroupMemberModalView;
+export default AddOfficerMemberModalView;

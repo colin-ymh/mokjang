@@ -3,13 +3,13 @@ import styled from 'styled-components';
 
 import { GRAY, MAIN, WHITE } from '@/constants/styles/color';
 import { Member } from '@/models/member/member';
+import { Group } from '@/models/management/management';
 import BorderInput from '@/components/atoms/common/input/border-input';
-import AddMemberItem from '@/components/atoms/management/group/add-member-item';
+import AddMemberItem from '@/components/atoms/common/modal/add-member-item';
 import Button from '@/components/atoms/common/button/button';
 
-import Cancel from '../../../../../public/svg/cancel.svg';
-import { useI18n } from '../../../../../locales/client';
-import { EducationEnrollment } from '@/models/education/education';
+import Cancel from '../../../../../../public/svg/cancel.svg';
+import { useI18n } from '../../../../../../locales/client';
 
 const ModalContainer = styled.div<{ $isShown: boolean }>`
   display: ${({ $isShown }) => ($isShown ? 'flex' : 'none')};
@@ -78,11 +78,11 @@ const SelectedMemberList = styled.div`
   flex-direction: column;
   padding: 0 20px;
   overflow-y: scroll;
-  height: 350px;
+  height: 380px;
 `;
 
-type AddEnrollmentModalViewProps = {
-  enrollments: EducationEnrollment[];
+type AddGroupMemberModalViewProps = {
+  group: Group;
   isShown: boolean;
   searchName: string;
   searchedMembers: Member[];
@@ -94,8 +94,8 @@ type AddEnrollmentModalViewProps = {
   onClickSave: () => void;
 };
 
-const AddEnrollmentModalView = ({
-  enrollments,
+const AddGroupMemberModalView = ({
+  group,
   isShown,
   searchName,
   searchedMembers,
@@ -105,8 +105,9 @@ const AddEnrollmentModalView = ({
   onClickMember,
   onClickClose,
   onClickSave,
-}: AddEnrollmentModalViewProps) => {
+}: AddGroupMemberModalViewProps) => {
   const t = useI18n();
+
   return (
     <ModalContainer $isShown={isShown}>
       {/* 헤더 */}
@@ -127,10 +128,10 @@ const AddEnrollmentModalView = ({
                 <AddMemberItem
                   key={member.id}
                   member={member}
-                  isEnable={enrollments.every(
-                    (enrollment) => enrollment.memberId !== member.id
+                  isEnable={group.id !== member.group?.id}
+                  isSelected={selectedMembers.some(
+                    (selectedMember) => selectedMember.id === member.id
                   )}
-                  isSelected={true}
                   onClick={onClickMember}
                 />
               );
@@ -149,27 +150,24 @@ const AddEnrollmentModalView = ({
           </SearchContainer>
           {/* 교인 목록 */}
           <MemberListContainer>
-            {searchedMembers.map((member) => {
-              const isSelected = selectedMembers.some(
-                (m) => m.id === member.id
-              );
-
-              return isSelected ? (
-                <div key={member.id}></div>
-              ) : (
-                <AddMemberItem
-                  key={member.id}
-                  member={member}
-                  isEnable={enrollments.every(
-                    (enrollment) => enrollment.memberId !== member.id
-                  )}
-                  isSelected={isSelected}
-                  onClick={onClickMember}
-                />
-              );
-            })}
+            {searchedMembers
+              .filter((member) =>
+                selectedMembers.every((sm) => sm.id !== member.id)
+              )
+              .map((member) => {
+                return (
+                  <AddMemberItem
+                    key={member.id}
+                    member={member}
+                    isEnable={group.id !== member.group?.id}
+                    isSelected={selectedMembers.some(
+                      (selectedMember) => selectedMember.id === member.id
+                    )}
+                    onClick={onClickMember}
+                  />
+                );
+              })}
           </MemberListContainer>
-
           {/* 저장 버튼 */}
           <ButtonContainer>
             <Button
@@ -187,4 +185,4 @@ const AddEnrollmentModalView = ({
   );
 };
 
-export default AddEnrollmentModalView;
+export default AddGroupMemberModalView;

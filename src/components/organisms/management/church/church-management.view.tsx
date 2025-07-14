@@ -11,8 +11,8 @@ import EditChurchInformation from '@/components/molecules/management/church/edit
 const InformationContainer = styled.div`
   display: flex;
   flex-direction: column;
-  width: 500px;
-  border-right: 1px solid ${GRAY.EXTRA_LIGHT};
+  width: 400px;
+  border-right: 1px solid ${GRAY.LIGHT};
   padding: 20px;
 `;
 
