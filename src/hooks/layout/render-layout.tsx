@@ -1,4 +1,4 @@
-import { Dispatch, ReactNode, SetStateAction } from 'react';
+import React, { Dispatch, ReactNode, SetStateAction } from 'react';
 
 import {
   ATTENDANCE_CONTENT_ID,
@@ -44,7 +44,7 @@ import VisitationList from '@/components/organisms/visitation/list/visitation-li
 import TaskList from '@/components/organisms/task/list/task-list';
 import MainTaskHeader from '@/components/molecules/layout/header/main/task/main-task-header';
 import EducationList from '@/components/organisms/education/education/list/education-list';
-import { HEADER_BAR } from '@/constants/constant';
+import { HEADER_BAR, HOME_WIDGET } from '@/constants/constant';
 import ManagementJoinRequestHeader from '@/components/molecules/layout/header/management/join-request/management-join-request-header';
 import ManagementPermissionHeader from '@/components/molecules/layout/header/management/permission/management-permission-header';
 import ManagementUserHeader from '@/components/molecules/layout/header/management/user/management-user-header';
@@ -59,6 +59,8 @@ import WorshipList from '@/components/organisms/worship/list/worship-list';
 import MainCalendar from '@/components/organisms/calendar/main-calendar';
 import ChurchManagement from '@/components/organisms/management/church/church-management';
 import Home from '@/components/organisms/home/home';
+import NewMemberWidget from '@/components/molecules/home/widget/new-member-widget';
+import MyScheduleWidget from '@/components/molecules/home/widget/my-schedule-widget';
 
 export const getSide = (id: string) => {
   switch (id) {
@@ -243,5 +245,14 @@ export const getMinistryGroupManagementContent = (
       return <MinistryGroupInformation ministryGroup={ministryGroup} />;
     case MINISTRY_MANAGEMENT_HEADER_ID.MINISTRY_MEMBER_LIST:
       return <MinistryGroupMember ministryGroup={ministryGroup} />;
+  }
+};
+
+export const getWidgetById = (id: HOME_WIDGET) => {
+  switch (id) {
+    case HOME_WIDGET.NEW_MEMBER:
+      return <NewMemberWidget />;
+    case HOME_WIDGET.MY_SCHEDULE:
+      return <MyScheduleWidget />;
   }
 };

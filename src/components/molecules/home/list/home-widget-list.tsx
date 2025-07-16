@@ -1,30 +1,15 @@
 import React, { FC, useCallback } from 'react';
-import styled from 'styled-components';
-import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
 import { HOME_WIDGET } from '@/constants/constant';
-import useWindowSize from '@/hooks/window/window';
-import HomeWidgetItem from '@/components/atoms/home/home-widget-item';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 import { setHomeWidgets } from '@/redux/reducers/filter/home-widget-filter-reducer';
-
-// 그리드 레이아웃 컨테이너
-const WidgetList = styled.div<{ height: number }>`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 30px;
-  padding: 20px;
-  max-height: ${({ height }) => `${height - 50}px`};
-  overflow-y: auto;
-`;
+import HomeWidgetListView from '@/components/molecules/home/list/home-widget-list.view';
 
 const HomeWidgetList: FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { homeWidgets } = useSelector(
     (state: RootState) => state.homeWidgetFilter
   );
-  const { height } = useWindowSize();
 
   // 배열에서 from → to 위치로 요소 이동
   const moveWidget = useCallback(
@@ -46,20 +31,15 @@ const HomeWidgetList: FC = () => {
     dispatch(setHomeWidgets(newWidgets));
   };
 
+  const props = {
+    moveWidget,
+    onClickDelete,
+  };
+
   return (
-    <DndProvider backend={HTML5Backend}>
-      <WidgetList height={height}>
-        {homeWidgets.map((widget, idx) => (
-          <HomeWidgetItem
-            key={widget}
-            widget={widget}
-            index={idx}
-            moveWidget={moveWidget}
-            onClickDelete={() => onClickDelete(widget)}
-          />
-        ))}
-      </WidgetList>
-    </DndProvider>
+    <>
+      <HomeWidgetListView {...props} />
+    </>
   );
 };
 

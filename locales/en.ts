@@ -13,12 +13,20 @@ export default {
   isNotDone: 'Incomplete',
   customSelect: 'Custom Select',
 
+  memberCount: 'Members',
+  groupCount: 'Groups',
+  ministryGroupCount: 'Ministry Groups',
+
+  newMember: 'New Member',
+  weekNewMemberState: 'New Member Last 4 Weeks',
+
   church: 'Church',
   churchName: 'Church Name',
-  churchMainAdmin: 'Church MainAdmin',
+  pastor: 'Pastor',
   churchPhone: 'Church Phone',
   churchAddress: 'Church Address',
   churchIdentifyNumber: 'Identify Number',
+  denomination: 'Denomination',
 
   leafMonth: 'Leaf Month',
   date: 'Date',
@@ -276,6 +284,18 @@ export default {
   'title.editGroupName': 'Edit Group Name',
   'title.editOfficerName': 'Edit Officer Name',
   'title.addWidget': 'Add Widget',
+
+  'title.newMember': 'New Member Summary',
+  'title.worshipAttendance': 'Member Management Based on Attendance',
+  'title.mySchedule': 'My Schedules',
+  'title.reportedSchedule': 'Reported Schedules',
+  'title.myScheduleSummary': 'My Schedule Summary',
+  'title.churchScheduleSummary': 'Church Schedule Summary',
+
+  'title.churchInformation': 'Church Information',
+  'title.churchState': 'Church State',
+
+  'title.editChurch': 'Edit Church Information',
   /*-------------------title (popup title)-------------------*/
 
   /*-------------------header (side bar button)-------------------*/
@@ -472,6 +492,8 @@ export default {
   'placeholder.churchPhone': 'Enter the Church Phone Number',
   'placeholder.churchAddress': 'Select the Church Address',
   'placeholder.churchIdentifyNumber': 'Enter the Identify Number',
+  'placeholder.denomination': 'Enter the Denomination.',
+  'placeholder.pastor': 'Enter the Pastor.',
   /*-------------------placeholder-------------------*/
 
   /*-------------------radiobutton-------------------*/

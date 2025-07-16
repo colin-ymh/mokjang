@@ -8,6 +8,8 @@ import {
   MainTextProps,
 } from '@/components/atoms/common/text/main-text';
 import { WHITE } from '@/constants/styles/color';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
 
 export enum TOAST_DIRECTION {
   TOP = 'top',
@@ -48,45 +50,24 @@ const CancelButton = styled(Cancel)`
 `;
 
 type ToastPopupViewProps = MainTextProps & {
-  text?: string;
-  backgroundColor: string;
   isDeletable: boolean;
   direction: TOAST_DIRECTION;
   onClickDeleteButton: () => void;
 };
 
 const ToastPopupView = forwardRef<HTMLDivElement, ToastPopupViewProps>(
-  (
-    {
-      text,
-      backgroundColor,
-      isDeletable,
-      direction,
-      onClickDeleteButton,
-      //
-      fontSize,
-      fontWeight,
-      color,
-    },
-    ref
-  ) => {
+  ({ isDeletable, direction, onClickDeleteButton }, ref) => {
+    const { toastText, toastColor, toastBackgroundColor } = useSelector(
+      (state: RootState) => state.toastPopup
+    );
     return (
       <PopupContainer
         ref={ref}
-        $backgroundColor={backgroundColor}
+        $backgroundColor={toastBackgroundColor}
         $direction={direction}
       >
-        {text && (
-          <MainText fontSize={fontSize} fontWeight={fontWeight} color={color}>
-            {text}
-          </MainText>
-        )}
-        {isDeletable && (
-          <CancelButton
-            onClick={onClickDeleteButton}
-            text={'등록이 완료되었습니다.'}
-          />
-        )}
+        {toastText && <MainText color={toastColor}>{toastText}</MainText>}
+        {isDeletable && <CancelButton onClick={onClickDeleteButton} />}
       </PopupContainer>
     );
   }

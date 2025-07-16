@@ -17,7 +17,7 @@ import {
 import { BLACK, DESTRUCTIVE, GRAY } from '@/constants/styles/color';
 import { getTrimmedString } from '@/utils/format';
 import LabelDropdown from '@/components/atoms/common/dropdown/label-dropdown';
-import LabelRadioButton from '@/components/atoms/common/input/radio-button/label-radio-button';
+import LabelRadioButton from '@/components/atoms/common/radio-button/label-radio-button';
 import { useGenderRadioButtonItems } from '@/hooks/radio-button/radio-button-items';
 import RegisterRadioButton from '@/components/atoms/register/register-radio-button';
 import { useMarriageDropdownItems } from '@/hooks/dropdown/dropdown-items';

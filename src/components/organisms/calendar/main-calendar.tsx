@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
-import { fetchCalendarEvents } from '@/redux/reducers/filter/calendar-filter-reducer';
+import { fetchCalendarSchedules } from '@/redux/reducers/filter/calendar-filter-reducer';
 import { getDateStringFromDate } from '@/utils/date';
 import MainCalendarView from '@/components/organisms/calendar/main-calendar.view';
-import { CalendarEvent } from '@/models/calendar/calendar';
+import { Schedule } from '@/models/calendar/calendar';
 import { DOMAIN } from '@/models/permission/permission';
 import { setTargetTask } from '@/redux/reducers/target/target-task-reducer';
 import { Task } from '@/models/task/task';
@@ -38,7 +38,7 @@ const MainCalendar = () => {
   };
 
   // 이벤트 선택
-  const onSelectEvent = (event: CalendarEvent) => {
+  const onSelectSchedule = (event: Schedule) => {
     setOpenedDomain(null);
     setTimeout(
       async () => {
@@ -157,7 +157,7 @@ const MainCalendar = () => {
     newToDate.setMonth(newToDate.getMonth() + 3);
 
     dispatch(
-      fetchCalendarEvents({
+      fetchCalendarSchedules({
         fromDate: getDateStringFromDate(newFromDate),
         toDate: getDateStringFromDate(newToDate),
       })
@@ -169,7 +169,7 @@ const MainCalendar = () => {
     openedDomain,
     onClickClose,
     onChangeDate,
-    onSelectEvent,
+    onSelectSchedule,
   };
 
   return (

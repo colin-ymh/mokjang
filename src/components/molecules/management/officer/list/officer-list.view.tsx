@@ -5,11 +5,12 @@ import { Officer } from '@/models/management/management';
 import ManagementOfficerItem from '@/components/atoms/management/officer/list/management-officer-item';
 import useWindowSize from '@/hooks/window/window';
 
-const FilterContainer = styled.div<{ height: number }>`
+const OfficerListContainer = styled.div<{ height: number }>`
   display: flex;
   flex-direction: column;
   width: 100%;
   overflow-y: auto;
+  gap: 5px;
   height: ${({ height }) => `${height - 250}px`};
 `;
 
@@ -23,10 +24,8 @@ type OfficerListViewProps = {
     setToastColor: Dispatch<SetStateAction<string>>;
   };
   item: {
-    closedOfficers: Set<number>;
     selectedOfficerId: string | null;
     onClickOfficer: (id: string) => void;
-    onClickToggle: (id: string) => void;
   };
 };
 
@@ -37,7 +36,7 @@ const OfficerListView = (props: OfficerListViewProps) => {
   const itemProps = props.item;
   return (
     <>
-      <FilterContainer height={height}>
+      <OfficerListContainer height={height}>
         {officers.map((officer) => (
           <ManagementOfficerItem
             key={officer.id}
@@ -47,7 +46,7 @@ const OfficerListView = (props: OfficerListViewProps) => {
             {...toastProps}
           />
         ))}
-      </FilterContainer>
+      </OfficerListContainer>
     </>
   );
 };

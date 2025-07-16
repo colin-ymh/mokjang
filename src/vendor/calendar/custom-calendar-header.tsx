@@ -2,8 +2,8 @@ import { ToolbarProps } from 'react-big-calendar';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 import {
-  setCalendarEvents,
   setCalendarFilter,
+  setCalendarSchedules,
 } from '@/redux/reducers/filter/calendar-filter-reducer';
 import { useEffect, useState } from 'react';
 import CustomCalendarHeaderView, {
@@ -12,7 +12,7 @@ import CustomCalendarHeaderView, {
 import { DEFAULT_CHURCH_EVENT } from '@/models/church-event/church-event';
 import { setTargetChurchEvent } from '@/redux/reducers/target/target-church-event-reducer';
 import { ChurchEventsApi } from '@/api/church-event/church-events.api';
-import { getEventFromChurchEvent } from '@/utils/calendar';
+import { getScheduleFromChurchEvent } from '@/utils/calendar';
 import { getIsWellFormedTitle } from '@/utils/check';
 
 const CustomCalendarHeader = (toolbarProps: ToolbarProps) => {
@@ -22,7 +22,7 @@ const CustomCalendarHeader = (toolbarProps: ToolbarProps) => {
   const churchEventsApi = new ChurchEventsApi(false);
 
   const { churchId } = useSelector((state: RootState) => state.church);
-  const { calendarEvents, calendarFilter } = useSelector(
+  const { calendarSchedules, calendarFilter } = useSelector(
     (state: RootState) => state.calendarFilter
   );
   const { targetChurchEvent } = useSelector(
@@ -95,11 +95,11 @@ const CustomCalendarHeader = (toolbarProps: ToolbarProps) => {
       );
 
       const newEvent = response.data.data;
-      const newCalendarEvents = [
-        ...calendarEvents,
-        getEventFromChurchEvent(newEvent),
+      const newCalendarSchedules = [
+        ...calendarSchedules,
+        getScheduleFromChurchEvent(newEvent),
       ];
-      dispatch(setCalendarEvents(newCalendarEvents));
+      dispatch(setCalendarSchedules(newCalendarSchedules));
       setIsAddEventModalOpened(false);
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));

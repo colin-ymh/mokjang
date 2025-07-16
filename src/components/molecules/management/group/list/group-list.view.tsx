@@ -5,7 +5,7 @@ import { Group } from '@/models/management/management';
 import ManagementGroupItem from '@/components/atoms/management/group/list/management-group-item';
 import useWindowSize from '@/hooks/window/window';
 
-const FilterContainer = styled.div<{ height: number }>`
+const GroupListContainer = styled.div<{ height: number }>`
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -37,7 +37,7 @@ const GroupListView = (props: GroupListViewProps) => {
   const itemProps = props.item;
   return (
     <>
-      <FilterContainer height={height}>
+      <GroupListContainer height={height}>
         {groups.map((group) => (
           <ManagementGroupItem
             key={group.id}
@@ -47,7 +47,7 @@ const GroupListView = (props: GroupListViewProps) => {
             {...toastProps}
           />
         ))}
-      </FilterContainer>
+      </GroupListContainer>
     </>
   );
 };

@@ -13,12 +13,20 @@ export default {
   isNotDone: '미완료',
   customSelect: '직접선택',
 
+  memberCount: '교인 수',
+  groupCount: '그룹 수',
+  ministryGroupCount: '사역그룹 수',
+
+  newMember: '신규 등록자',
+  weekNewMemberState: '최근 4주간 등록 현황',
+
   church: '교회',
   churchName: '교회명',
-  churchMainAdmin: '대표자',
+  pastor: '담임목사',
   churchPhone: '대표번호',
   churchAddress: '교회주소',
   churchIdentifyNumber: '사업자 고유번호',
+  denomination: '교단',
 
   leafMonth: '윤달',
 
@@ -279,6 +287,18 @@ export default {
   'title.editGroupName': '그룹명 수정',
   'title.editOfficerName': '직분명 수정',
   'title.addWidget': '위젯 추가',
+
+  'title.newMember': '신규 등록자 요약',
+  'title.worshipAttendance': '출석률 기반 교인 관리',
+  'title.mySchedule': '내가 담당한 일정',
+  'title.reportedSchedule': '보고받은 일정',
+  'title.myScheduleSummary': '내 일정 상태 요약',
+  'title.churchScheduleSummary': '교회 일정 상태 요약',
+
+  'title.churchInformation': '교회정보',
+  'title.churchState': '교회현황',
+
+  'title.editChurch': '교회정보 수정',
   /*-------------------title (popup title)-------------------*/
 
   /*-------------------header (side bar button)-------------------*/
@@ -424,7 +444,7 @@ export default {
   'button.addChurchEvent': '이벤트 추가하기',
   'button.today': '오늘',
   'button.my': '내 일정',
-  'button.editChurch': '교회정보 변경하기',
+  'button.editChurch': '정보 수정',
   /*-------------------button-------------------*/
 
   /*-------------------placeholder-------------------*/
@@ -481,6 +501,8 @@ export default {
   'placeholder.churchPhone': '대표번호를 입력해주세요.',
   'placeholder.churchAddress': '교회주소를 선택해주세요',
   'placeholder.churchIdentifyNumber': '사업자 고유번호를 입력해주세요.',
+  'placeholder.denomination': '교단명을 입력해주세요.',
+  'placeholder.pastor': '담임목사를 입력해주세요.',
   /*-------------------placeholder-------------------*/
 
   /*-------------------radiobutton-------------------*/

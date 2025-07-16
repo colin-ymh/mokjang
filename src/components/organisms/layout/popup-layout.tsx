@@ -22,6 +22,7 @@ export type PopupLayoutProps = {
   isFooterShown?: boolean;
   isHeaderShown?: boolean;
   doneDisabled?: boolean;
+  isHeaderBorderShown?: boolean;
   children: React.ReactNode;
 };
 
@@ -37,6 +38,7 @@ const PopupLayout = ({
   isHeaderShown = true,
   isFooterShown = true,
   doneDisabled = false,
+  isHeaderBorderShown,
   children,
 }: PopupLayoutProps): JSX.Element => {
   const t_button = useScopedI18n('button');
@@ -51,6 +53,7 @@ const PopupLayout = ({
             onClickDone={onClickDone}
             cancelText={cancelText || t_button('cancel')}
             doneText={doneText || t_button('save')}
+            isHeaderBorderShown={isHeaderBorderShown}
           />
         )}
         <PopupContent>{children}</PopupContent>

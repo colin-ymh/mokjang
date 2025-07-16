@@ -5,16 +5,16 @@ import {
   useDrag,
   useDrop,
 } from 'react-dnd';
-import { MainText } from '@/components/atoms/common/text/main-text';
 import styled from 'styled-components';
-import { GRAY, MAIN } from '@/constants/styles/color';
+import { GRAY, MAIN, WHITE } from '@/constants/styles/color';
 import { getEmptyImage } from 'react-dnd-html5-backend';
 import { DND_ITEM_TYPE, HOME_WIDGET } from '@/constants/constant';
 
 import Cancel from '../../../../public/svg/cancel.svg';
+import { useScopedI18n } from '../../../../locales/client';
 
 // 드래그 타입 상수
-type DragItem = { index: number; id: HOME_WIDGET };
+type DragItem = { index: number; id: HOME_WIDGET; title: string };
 
 // 개별 위젯 아이템 스타일
 const WidgetItem = styled.div<{ $isDragging: boolean }>`
@@ -26,10 +26,9 @@ const WidgetItem = styled.div<{ $isDragging: boolean }>`
   height: 400px;
   box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
-  border: ${({ $isDragging }) => `${$isDragging ? 2 : 1}px solid ${$isDragging ? MAIN.LIGHT : GRAY.EXTRA_LIGHT};`}
-  background: white;
-  padding: 10px;
-  cursor: move;
+  border: ${({ $isDragging }) => `1px solid ${$isDragging ? MAIN.LIGHT : GRAY.EXTRA_LIGHT};`}
+  background: ${WHITE};
+  padding: 20px;
 `;
 
 const DeleteContainer = styled.div`
@@ -46,18 +45,21 @@ const DeleteButton = styled(Cancel)`
 `;
 
 type DraggableWidgetProps = {
-  widget: HOME_WIDGET;
+  id: HOME_WIDGET;
   index: number;
   moveWidget: (from: number, to: number) => void;
   onClickDelete: () => void;
+  widget: React.ReactNode;
 };
 
 const HomeWidgetItem = ({
-  widget,
+  id,
   index,
   moveWidget,
   onClickDelete,
+  widget,
 }: DraggableWidgetProps) => {
+  const t_title = useScopedI18n('title');
   const ref = useRef<HTMLDivElement>(null);
 
   // drop 훅: hover 시 moveWidget 호출
@@ -79,10 +81,10 @@ const HomeWidgetItem = ({
       const offsetY = clientOffset.y - top;
 
       // 가로·세로 각각 10% 여유를 뺀 중앙 80% 영역 체크
-      const minX = width * 0.1;
-      const maxX = width * 0.9;
-      const minY = height * 0.1;
-      const maxY = height * 0.9;
+      const minX = width * 0.05;
+      const maxX = width * 0.95;
+      const minY = height * 0.05;
+      const maxY = height * 0.95;
 
       // 80% 영역 밖이면 순서 변경하지 않음
       if (
@@ -107,7 +109,7 @@ const HomeWidgetItem = ({
     { isDragging: boolean }
   >({
     type: DND_ITEM_TYPE.HOME_WIDGET,
-    item: { index, id: widget },
+    item: { index, id, title: t_title(id) },
     collect: (monitor: DragSourceMonitor) => ({
       isDragging: monitor.isDragging(),
     }),
@@ -122,8 +124,7 @@ const HomeWidgetItem = ({
 
   return (
     <WidgetItem ref={ref} $isDragging={isDragging}>
-      {/* 실제 위젯 렌더링 자리 */}
-      <MainText>{widget}</MainText>
+      {widget}
       <DeleteContainer>
         <DeleteButton onClick={onClickDelete} />
       </DeleteContainer>

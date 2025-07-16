@@ -29,8 +29,9 @@ const GroupListContainer = styled.div`
   padding: 20px;
   gap: 20px;
   border-right: 1px solid ${GRAY.LIGHT};
-  width: 400px;
+  width: 300px;
   flex-shrink: 0;
+  background-color: ${WHITE};
 `;
 
 const AddContainer = styled.div`

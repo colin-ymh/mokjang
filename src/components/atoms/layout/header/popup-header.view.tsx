@@ -8,7 +8,7 @@ import Button from '@/components/atoms/common/button/button';
 import { MEDIA_MAX_WIDTH, MEDIA_MIN_WIDTH } from '@/constants/constant';
 
 /* ───────── 스타일 ───────── */
-const HeaderContainer = styled.header`
+const HeaderContainer = styled.header<{ $isHeaderBorderShown: boolean }>`
   position: relative;
   z-index: 10;
   overflow: visible;
@@ -18,7 +18,8 @@ const HeaderContainer = styled.header`
   height: 40px;
   flex-shrink: 0;
   background-color: ${WHITE};
-  border-bottom: 1px solid ${GRAY.LIGHT};
+  border-bottom: ${({ $isHeaderBorderShown }) =>
+    `1px solid ${$isHeaderBorderShown ? GRAY.LIGHT : 'transparent'}`};
 `;
 
 const HeaderLeft = styled.div`
@@ -68,6 +69,7 @@ type PopupHeaderViewProps = {
   onClickDone?: () => void;
   cancelText: string;
   doneText: string;
+  isHeaderBorderShown?: boolean;
 };
 
 const PopupHeaderView = ({
@@ -77,9 +79,10 @@ const PopupHeaderView = ({
   onClickDone,
   cancelText,
   doneText,
+  isHeaderBorderShown = true,
 }: PopupHeaderViewProps) => {
   return (
-    <HeaderContainer>
+    <HeaderContainer $isHeaderBorderShown={isHeaderBorderShown}>
       <HeaderLeft>
         <Button
           text={cancelText}

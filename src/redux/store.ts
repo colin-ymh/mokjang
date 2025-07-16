@@ -29,12 +29,14 @@ import WorshipAttendanceFilterReducer from '@/redux/reducers/filter/worship-atte
 import CalendarFilterReducer from '@/redux/reducers/filter/calendar-filter-reducer';
 import TargetChurchEventReducer from '@/redux/reducers/target/target-church-event-reducer';
 import HomeWidgetFilterReducer from '@/redux/reducers/filter/home-widget-filter-reducer';
+import ToastPopupReducer from '@/redux/reducers/toast-popup-reducer';
 
 const store = configureStore({
   reducer: {
     webview: WebviewReducer,
     user: UserReducer,
     church: ChurchReducer,
+    toastPopup: ToastPopupReducer,
     // filter
     memberFilter: MemberFilterReducer,
     visitationFilter: VisitationFilterReducer,

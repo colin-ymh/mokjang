@@ -2,7 +2,7 @@ import CustomCalendar from '@/vendor/calendar/custom-calendar';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
-import { CalendarEvent } from '@/models/calendar/calendar';
+import { Schedule } from '@/models/calendar/calendar';
 import CancelIcon from '../../../../public/svg/cancel.svg';
 import { BLACK } from '@/constants/styles/color';
 import SlidePopup from '@/components/atoms/common/popup/slide-popup';
@@ -47,7 +47,7 @@ type MainCalendarViewProps = {
   openedDomain: DOMAIN | null;
   onClickClose: () => void;
   onChangeDate: (date: Date) => void;
-  onSelectEvent: (event: CalendarEvent) => void;
+  onSelectSchedule: (event: Schedule) => void;
 };
 
 const MainCalendarView = ({
@@ -55,10 +55,10 @@ const MainCalendarView = ({
   openedDomain,
   onClickClose,
   onChangeDate,
-  onSelectEvent,
+  onSelectSchedule,
 }: MainCalendarViewProps) => {
   const t = useI18n();
-  const { calendarEvents } = useSelector(
+  const { calendarSchedules } = useSelector(
     (state: RootState) => state.calendarFilter
   );
 
@@ -76,8 +76,8 @@ const MainCalendarView = ({
       <CustomCalendar
         date={date}
         onChangeDate={onChangeDate}
-        events={calendarEvents}
-        onSelectEvent={onSelectEvent}
+        schedules={calendarSchedules}
+        onSelectSchedule={onSelectSchedule}
       />
 
       {/* 업무 상세정보 팝업*/}

@@ -2,6 +2,7 @@ export const BLACK = '#121212';
 export const WHITE = '#FFFFFF';
 
 export enum GRAY {
+  SUPER_LIGHT = '#f9fAfB',
   EXTRA_LIGHT = '#efefef',
   LIGHT = '#dfdfdf',
   SEMI_LIGHT = '#cfcfcf',
@@ -12,10 +13,10 @@ export enum GRAY {
 }
 
 export enum MAIN {
-  EXTRA_LIGHT = '#e0f6ff',
-  LIGHT = '#c9e0ff',
-  DEFAULT = '#6BA9FF',
-  DARK = '#4392FF',
+  EXTRA_LIGHT = '#EFF6FF',
+  LIGHT = '#6BA9FF',
+  DEFAULT = '#2563EB',
+  DARK = '#1a51cd',
 }
 
 export enum DESTRUCTIVE {
@@ -32,22 +33,61 @@ export enum RED {
   DEFAULT = '#fb3c3c',
 }
 
+export const TAG_BACKGROUND_COLOR = '#F3F4F7';
+export const TAG_FONT_COLOR = '#69717D';
+
 export enum STATUS_COLOR {
   RESERVE = '#a69f9f',
-  IN_PROGRESS = '#2b98ff',
-  DONE = '#2EE431',
-  PENDING = '#ff5f1a',
+  IN_PROGRESS = '#406bff',
+  DONE = '#3ae17a',
+  PENDING = '#ff9926',
 
-  COMPLETED = '#2EE431',
-  INCOMPLETE = '#f43232',
+  COMPLETED = '#3ae17a',
+  INCOMPLETE = '#f32827',
 
-  PRESENT = '#2EE431',
-  ABSENT = '#f43232',
+  PRESENT = '#3ae17a',
+  ABSENT = '#f32827',
   UNDEFINED = WHITE,
 
   CANCELED = '#a69f9f',
-  APPROVED = '#2EE431',
-  REJECTED = '#f43232',
+  APPROVED = '#3ae17a',
+  REJECTED = '#f32827',
+}
+
+export enum STATUS_FONT_COLOR {
+  RESERVE = '#69717D',
+  IN_PROGRESS = '#304FB6',
+  DONE = '#1E6839',
+  PENDING = '#854D0F',
+
+  COMPLETED = '#1E6839',
+  INCOMPLETE = '#991B1A',
+
+  PRESENT = '#1E6839',
+  ABSENT = '#991B1A',
+  UNDEFINED = WHITE,
+
+  CANCELED = '#a69f9f',
+  APPROVED = '#1E6839',
+  REJECTED = '#991B1A',
+}
+
+export enum STATUS_BACKGROUND_COLOR {
+  RESERVE = '#F3F4F7',
+  IN_PROGRESS = '#dbe9fe',
+  DONE = '#DCFCE7',
+  PENDING = '#FCF9C3',
+
+  COMPLETED = '#DCFCE7',
+  INCOMPLETE = '#FCE2E1',
+
+  PRESENT = '#DCFCE7',
+  ABSENT = '#FCE2E1',
+  UNDEFINED = WHITE,
+
+  CANCELED = '#a69f9f',
+  APPROVED = '#DCFCE7',
+  REJECTED = '#FCE2E1',
 }
 
 export enum CALENDAR_COLOR {

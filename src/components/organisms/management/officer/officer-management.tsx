@@ -4,7 +4,11 @@ import { AppDispatch, RootState } from '@/redux/store';
 
 import { OfficersApi } from '@/api/management/officer/officers.api';
 import OfficerManagementView from '@/components/organisms/management/officer/officer-management.view';
-import { DEFAULT_GROUP, Officer } from '@/models/management/management';
+import {
+  DEFAULT_GROUP,
+  DEFAULT_OFFICER,
+  Officer,
+} from '@/models/management/management';
 import { getFormattedTitle } from '@/utils/format';
 import { getIsWellFormedTitle } from '@/utils/check';
 import { fetchOfficers } from '@/redux/reducers/church-reducer';
@@ -23,9 +27,6 @@ const OfficerManagement = ({}: OfficerManagementProps) => {
 
   const officersApi = new OfficersApi(false);
 
-  // 새로 추가할 그룹명
-  const [newOfficerName, setNewOfficerName] = useState<string>(BLANK);
-
   // 수정할 그룹명
   const [isEditShown, setIsEditShown] = useState<boolean>(false);
   const [editName, setEditName] = useState<string>(BLANK);
@@ -34,7 +35,7 @@ const OfficerManagement = ({}: OfficerManagementProps) => {
 
   // 선택된 그룹
   const [selectedOfficer, setSelectedOfficer] =
-    useState<Officer>(DEFAULT_GROUP);
+    useState<Officer>(DEFAULT_OFFICER);
 
   // 에러 처리
   const [isToastShown, setIsToastShown] = useState<boolean>(false);
@@ -44,6 +45,14 @@ const OfficerManagement = ({}: OfficerManagementProps) => {
   if (thrownError) {
     throw thrownError;
   }
+
+  // 직분 클릭 이벤트
+  const onClickOfficer = async (officerId: string) => {
+    const newOfficer = officers.find((officer) => officer.id === officerId);
+    if (newOfficer) {
+      setSelectedOfficer(newOfficer);
+    }
+  };
 
   const onClickDeleteOpen = () => {
     setIsDeleteShown(true);
@@ -90,10 +99,6 @@ const OfficerManagement = ({}: OfficerManagementProps) => {
     setIsEditShown(false);
   };
 
-  const onChangeNewOfficerName = (event: ChangeEvent<HTMLInputElement>) => {
-    setNewOfficerName(getFormattedTitle(event.target.value));
-  };
-
   const onChangeEditOfficerName = (event: ChangeEvent<HTMLInputElement>) => {
     setEditName(getFormattedTitle(event.target.value));
   };
@@ -112,27 +117,6 @@ const OfficerManagement = ({}: OfficerManagementProps) => {
       setSelectedOfficer(response.data);
       setIsEditShown(false);
       setEditName(BLANK);
-      setToastText(t_popup('saveComplete'));
-      setIsToastShown(true);
-      setToastColor(BLACK);
-    } catch (error) {
-      if (error instanceof Error) {
-        setToastText(error.message);
-        setToastColor(DESTRUCTIVE.LIGHT);
-        setIsToastShown(true);
-      } else {
-        setThrownError(new Error(String(error)));
-      }
-    }
-  };
-
-  const onClickSaveNewOfficer = async () => {
-    if (!getIsWellFormedTitle(newOfficerName)) return;
-
-    try {
-      await officersApi.createOfficer({ churchId }, { name: newOfficerName });
-      await dispatch(fetchOfficers());
-      setNewOfficerName(BLANK);
       setToastText(t_popup('saveComplete'));
       setIsToastShown(true);
       setToastColor(BLACK);
@@ -169,21 +153,7 @@ const OfficerManagement = ({}: OfficerManagementProps) => {
     }
   }, [officers]);
 
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.isComposing) return;
-
-      if (e.key === 'Enter') {
-        onClickSaveNewOfficer();
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [newOfficerName]);
-
   const props = {
-    newOfficerName,
     isEditShown,
     isDeleteShown,
     editName,
@@ -194,10 +164,8 @@ const OfficerManagement = ({}: OfficerManagementProps) => {
     onClickEditOpen,
     onClickEditClose,
     onClickSaveEdit,
-    onChangeNewOfficerName,
-    onClickSaveNewOfficer,
     selectedOfficer,
-    setSelectedOfficer,
+    onClickOfficer,
     isToastShown,
     toastText,
     toastColor,

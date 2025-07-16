@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-import { CalendarEvent } from '@/models/calendar/calendar';
+import { Schedule } from '@/models/calendar/calendar';
 import styled from 'styled-components';
 import { MAIN, WHITE } from '@/constants/styles/color';
 import CustomCalendarHeader from '@/vendor/calendar/custom-calendar-header';
@@ -75,17 +75,17 @@ const CustomCalendarContainer = styled.div`
 `;
 
 type CustomCalendarProps = {
-  events: CalendarEvent[];
+  schedules: Schedule[];
   date: Date;
   onChangeDate: (date: Date) => void;
-  onSelectEvent: (event: CalendarEvent) => void;
+  onSelectSchedule: (event: Schedule) => void;
 };
 
 const CustomCalendar = ({
-  events,
+  schedules,
   date,
   onChangeDate,
-  onSelectEvent,
+  onSelectSchedule,
 }: CustomCalendarProps) => {
   const params = useParams();
   moment.locale(params.locale as string);
@@ -96,10 +96,10 @@ const CustomCalendar = ({
   );
   const { user } = useSelector((state: RootState) => state.user);
 
-  const [filteredEvents, setFilteredEvents] = useState<CalendarEvent[]>([]);
+  const [filteredSchedules, setFilteredSchedules] = useState<Schedule[]>([]);
 
   // 필터 값에 따라 이벤트 필터링
-  const getFilteredEvent = (events: CalendarEvent[]) => {
+  const getFilteredSchedule = (events: Schedule[]) => {
     return events.filter((event) => {
       if (event.id) {
         // 도메인 확인
@@ -142,15 +142,15 @@ const CustomCalendar = ({
   };
 
   useEffect(() => {
-    setFilteredEvents(getFilteredEvent(events));
-  }, [events, calendarFilter]);
+    setFilteredSchedules(getFilteredSchedule(schedules));
+  }, [schedules, calendarFilter]);
 
   return (
     <CustomCalendarContainer>
       <Calendar
         date={date}
         localizer={localizer}
-        events={filteredEvents}
+        events={filteredSchedules}
         startAccessor="start"
         endAccessor="end"
         showAllEvents={true}
@@ -163,7 +163,7 @@ const CustomCalendar = ({
             dateHeader: CustomDateHeader,
           },
         }}
-        onSelectEvent={onSelectEvent}
+        onSelectEvent={onSelectSchedule}
       />
     </CustomCalendarContainer>
   );

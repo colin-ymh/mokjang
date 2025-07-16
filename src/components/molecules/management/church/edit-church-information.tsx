@@ -1,10 +1,13 @@
 import { Church } from '@/models/church/church';
 import EditChurchInformationView from '@/components/molecules/management/church/edit-church-information.view';
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { getFormattedMobilePhone, getFormattedName } from '@/utils/format';
+import {
+  getFormattedIndentifyNumber,
+  getFormattedName,
+  getFormattedPhone,
+} from '@/utils/format';
 import DaumPostcodeEmbed, { Address } from 'react-daum-postcode';
 import PagePopup from '@/components/atoms/common/popup/page-popup';
-import { MemberDropdownType } from '@/components/atoms/common/dropdown/member-dropdown-item';
 
 type EditChurchInformationProps = {
   targetChurch: Church;
@@ -17,8 +20,6 @@ const EditChurchInformation = ({
 }: EditChurchInformationProps) => {
   const [isAddressOpen, setIsAddressOpen] = useState<boolean>(false);
 
-  const [mainAdmins, setMainAdmins] = useState<MemberDropdownType[]>([]);
-
   const onChangeName = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newName = getFormattedName(event.target.value);
     setTargetChurch({
@@ -28,15 +29,19 @@ const EditChurchInformation = ({
   };
 
   const onChangePhone = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const newPhone = getFormattedMobilePhone(event.target.value);
+    const newPhone = getFormattedPhone(event.target.value);
     setTargetChurch({
       ...targetChurch,
       phone: newPhone,
     });
   };
 
-  const onChaneLeaderItem = (members: MemberDropdownType[]) => {
-    setMainAdmins(members);
+  const onChangePastorName = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newName = getFormattedName(event.target.value);
+    setTargetChurch({
+      ...targetChurch,
+      pastor: newName,
+    });
   };
 
   const onClickAddress = () => {
@@ -83,18 +88,19 @@ const EditChurchInformation = ({
   const onChangeIdentifyNumber = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    const newIdentifyNumber = event.target.value.replace(/\D/g, '');
+    const newIdentifyNumber = getFormattedIndentifyNumber(event.target.value);
     setTargetChurch({
       ...targetChurch,
       identifyNumber: newIdentifyNumber,
     });
   };
 
-  useEffect(() => {
-    if (mainAdmins.length > 0) {
-      setTargetChurch({ ...targetChurch, mainAdminId: mainAdmins[0].value });
-    }
-  }, [mainAdmins]);
+  const onChangeDenomination = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setTargetChurch({
+      ...targetChurch,
+      denomination: event.target.value,
+    });
+  };
 
   useEffect(() => {
     if (targetChurch.mainAdminId) {
@@ -103,13 +109,13 @@ const EditChurchInformation = ({
 
   const props = {
     targetChurch,
-    mainAdmins,
     onChangeName,
     onChangePhone,
-    onChaneLeaderItem,
+    onChangePastorName,
     onClickAddress,
     onChangeDetailAddress,
     onChangeIdentifyNumber,
+    onChangeDenomination,
   };
 
   return (

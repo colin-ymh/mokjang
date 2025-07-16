@@ -1,12 +1,44 @@
 import {
   BLACK,
   CALENDAR_COLOR,
+  STATUS_BACKGROUND_COLOR,
   STATUS_COLOR,
+  STATUS_FONT_COLOR,
   WHITE,
 } from '@/constants/styles/color';
 import { STATUS } from '@/constants/status/status';
 import { DOMAIN } from '@/models/permission/permission';
-import { CalendarEvent } from '@/models/calendar/calendar';
+import { Schedule } from '@/models/calendar/calendar';
+
+export const getStatusBackgroundColor = (status: STATUS) => {
+  switch (status) {
+    case STATUS.DONE:
+      return STATUS_BACKGROUND_COLOR.DONE;
+    case STATUS.IN_PROGRESS:
+      return STATUS_BACKGROUND_COLOR.IN_PROGRESS;
+    case STATUS.RESERVE:
+      return STATUS_BACKGROUND_COLOR.RESERVE;
+    case STATUS.PENDING:
+      return STATUS_BACKGROUND_COLOR.PENDING;
+    default:
+      return WHITE;
+  }
+};
+
+export const getStatusFontColor = (status: STATUS) => {
+  switch (status) {
+    case STATUS.DONE:
+      return STATUS_FONT_COLOR.DONE;
+    case STATUS.IN_PROGRESS:
+      return STATUS_FONT_COLOR.IN_PROGRESS;
+    case STATUS.RESERVE:
+      return STATUS_FONT_COLOR.RESERVE;
+    case STATUS.PENDING:
+      return STATUS_FONT_COLOR.PENDING;
+    default:
+      return WHITE;
+  }
+};
 
 export const getStatusColor = (status: STATUS) => {
   switch (status) {
@@ -61,7 +93,7 @@ export const getCalenderColor = (domain: DOMAIN) => {
   }
 };
 
-export const getEventStyle = (event: CalendarEvent) => {
+export const getEventStyle = (event: Schedule) => {
   return {
     style: {
       backgroundColor: getCalenderBackgroundColor(

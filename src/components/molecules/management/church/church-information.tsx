@@ -1,19 +1,28 @@
 import styled from 'styled-components';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { useI18n } from '../../../../../locales/client';
-import { getFormattedMobilePhone } from '@/utils/format';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
+import { GRAY } from '@/constants/styles/color';
+import { SIZE } from '@/constants/styles/style';
 
 const InformationContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  padding: 20px;
   gap: 20px;
 `;
 
+const RowContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 50px;
+  justify-content: space-between;
+`;
+
 const ItemContainer = styled.div`
+  flex: 1;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -26,30 +35,38 @@ const ChurchInformation = ({}: ChurchInformationProps) => {
   const t = useI18n();
   return (
     <InformationContainer>
-      <ItemContainer>
-        <MainText fontWeight={600}>{t('churchName')}</MainText>
-        <MainText>{church.name}</MainText>
-      </ItemContainer>
-      <ItemContainer>
-        <MainText fontWeight={600}>{t('churchMainAdmin')}</MainText>
-        <MainText>{}</MainText>
-      </ItemContainer>
-      <ItemContainer>
-        <MainText fontWeight={600}>{t('churchPhone')}</MainText>
-        <MainText>{getFormattedMobilePhone(church.phone)}</MainText>
-      </ItemContainer>
-      <ItemContainer>
-        <MainText fontWeight={600}>{t('churchAddress')}</MainText>
-        <MainText>{church.address}</MainText>
-      </ItemContainer>
-      <ItemContainer>
-        <MainText fontWeight={600}>{t('detailAddress')}</MainText>
-        <MainText>{church.detailAddress}</MainText>
-      </ItemContainer>
-      <ItemContainer>
-        <MainText fontWeight={600}>{t('churchIdentifyNumber')}</MainText>
-        <MainText>{church.identifyNumber}</MainText>
-      </ItemContainer>
+      <RowContainer>
+        <ItemContainer>
+          <MainText color={GRAY.SEMI_DARK}>{t('churchName')}</MainText>
+          <MainText size={SIZE.EXTRA_LARGE}>{church.name}</MainText>
+        </ItemContainer>
+        <ItemContainer>
+          <MainText color={GRAY.SEMI_DARK}>{t('pastor')}</MainText>
+          <MainText size={SIZE.EXTRA_LARGE}>{}</MainText>
+        </ItemContainer>
+      </RowContainer>
+      <RowContainer>
+        <ItemContainer>
+          <MainText color={GRAY.SEMI_DARK}>{t('churchPhone')}</MainText>
+          <MainText>{church.phone}</MainText>
+        </ItemContainer>
+        <ItemContainer>
+          <MainText color={GRAY.SEMI_DARK}>{t('churchAddress')}</MainText>
+          <MainText>{church.address}</MainText>
+        </ItemContainer>
+      </RowContainer>
+      <RowContainer>
+        <ItemContainer>
+          <MainText color={GRAY.SEMI_DARK}>
+            {t('churchIdentifyNumber')}
+          </MainText>
+          <MainText>{church.identifyNumber}</MainText>
+        </ItemContainer>
+        <ItemContainer>
+          <MainText color={GRAY.SEMI_DARK}>{t('denomination')}</MainText>
+          <MainText>{church.denomination}</MainText>
+        </ItemContainer>
+      </RowContainer>
     </InformationContainer>
   );
 };

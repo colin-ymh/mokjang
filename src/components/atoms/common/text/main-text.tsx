@@ -22,7 +22,7 @@ const getFontSize = (size?: SIZE, fontSize?: number) => {
     case SIZE.LARGE:
       return `${16}px`;
     case SIZE.EXTRA_LARGE:
-      return `${20}px`;
+      return `${18}px`;
     case SIZE.MEDIUM:
     default:
       return `${14}px`;
@@ -32,22 +32,22 @@ const getFontSize = (size?: SIZE, fontSize?: number) => {
 // size에 따라 font-weight를 조정
 const getFontWeight = (size?: SIZE, fontWeight?: number) => {
   if (fontWeight) {
-    return fontWeight; // fontWeight가 설정된 경우 그대로 사용
+    return fontWeight.toString(); // fontWeight가 설정된 경우 그대로 사용
   }
 
   // size에 따른 기본 font-weight 값 설정
   switch (size) {
     case SIZE.EXTRA_SMALL:
-      return 100;
+      return '300';
     case SIZE.SMALL:
-      return 300;
+      return '400';
     case SIZE.LARGE:
-      return 700;
+      return '500';
     case SIZE.EXTRA_LARGE:
-      return 900;
+      return '700';
     case SIZE.MEDIUM:
     default:
-      return 500;
+      return '400';
   }
 };
 
@@ -60,5 +60,5 @@ export const MainText = styled.span<MainTextProps>`
 
   white-space: nowrap; /* 텍스트를 한 줄로 유지 */
   max-width: 100%; /* 버튼 크기를 벗어나지 않도록 제한 */
-  font-family: 'Noto Sans KR', sans-serif; /* Noto Sans KR 적용 */
+  font-family: 'Roboto', sans-serif;
 `;

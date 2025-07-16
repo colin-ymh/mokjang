@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { GRAY } from '@/constants/styles/color';
 import { DND_ITEM_TYPE } from '@/constants/constant';
 import { MainText } from '@/components/atoms/common/text/main-text';
+import { SIZE } from '@/constants/styles/style';
 
 // attrs로 style 프로퍼티만 동적으로 처리
 const LayerContainer = styled.div.attrs<{ x: number; y: number }>((props) => ({
@@ -23,13 +24,13 @@ const LayerContainer = styled.div.attrs<{ x: number; y: number }>((props) => ({
 
 const PreviewBox = styled.div`
   display: flex;
-  padding: 4px 8px;
+  padding: 20px;
   background-color: white;
   border: 1px solid ${GRAY.LIGHT};
-  border-radius: 4px;
+  border-radius: 10px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   width: 300px;
-  height: 100px;
+  height: 50px;
 `;
 
 export const CustomDragLayer: React.FC = () => {
@@ -50,7 +51,7 @@ export const CustomDragLayer: React.FC = () => {
   return (
     <LayerContainer x={x} y={y}>
       <PreviewBox>
-        <MainText>{item.id}</MainText>
+        <MainText size={SIZE.EXTRA_LARGE}>{item.title}</MainText>
       </PreviewBox>
     </LayerContainer>
   );

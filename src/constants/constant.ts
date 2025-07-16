@@ -120,9 +120,10 @@ export enum WORSHIP_PERIOD {
 export enum HOME_WIDGET {
   MY_SCHEDULE = 'mySchedule',
   REPORTED_SCHEDULE = 'reportedSchedule',
-  SCHEDULE_SUMMARY = 'scheduleSummary',
+  MY_SCHEDULE_SUMMARY = 'myScheduleSummary',
+  CHURCH_SCHEDULE_SUMMARY = 'churchScheduleSummary',
   NEW_MEMBER = 'newMember',
-  ATTENDANCE = 'attendance',
+  WORSHIP_ATTENDANCE = 'worshipAttendance',
 }
 
 export enum DND_ITEM_TYPE {
@@ -134,4 +135,9 @@ export enum HOVER_POSITION {
   TOP = 'top',
   MIDDLE = 'middle',
   BOTTOM = 'bottom',
+}
+
+export enum SEARCH_RANGE {
+  WEEKLY = 'weekly',
+  MONTHLY = 'monthly',
 }

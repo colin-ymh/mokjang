@@ -13,7 +13,7 @@ import { useScopedI18n } from '../../../../locales/client';
 import { AppDispatch } from '@/redux/store';
 import { useDispatch } from 'react-redux';
 import { setChurch, setChurchId } from '@/redux/reducers/church-reducer';
-import RadioButton from '@/components/atoms/common/input/radio-button/radio-button';
+import RadioButton from '@/components/atoms/common/radio-button/radio-button';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import Loading from '@/components/atoms/common/etc/loading';
 

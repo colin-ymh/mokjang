@@ -7,7 +7,7 @@ const GlobalStyle = createGlobalStyle`
         height: 100%;
         background-color: white;
         min-width: 320px;
-        font-family: 'Noto Sans KR', monospace;
+        font-family: 'Roboto', sans-serif;
         touch-action: none;
         overscroll-behavior: none;
 

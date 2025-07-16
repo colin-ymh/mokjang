@@ -5,30 +5,23 @@ import ToastPopupView, {
   TOAST_DIRECTION,
 } from '@/components/atoms/common/popup/toast-popup.view';
 import { MainTextProps } from '@/components/atoms/common/text/main-text';
-import { BLACK, WHITE } from '@/constants/styles/color';
+import { setIsToastShown } from '@/redux/reducers/toast-popup-reducer';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '@/redux/store';
 
 type ToastPopupProps = MainTextProps & {
-  setIsShow: (isOpen: boolean) => void;
-  text?: string;
-  backgroundColor?: string;
   timeout?: number;
   isDeletable?: boolean;
   direction?: TOAST_DIRECTION;
 };
 
 const ToastPopup = ({
-  setIsShow,
-  text,
-  backgroundColor = BLACK,
   timeout = 3000,
   isDeletable = false,
   direction = TOAST_DIRECTION.TOP,
-  // text style
-  fontSize,
-  fontWeight,
-  color = WHITE,
 }: ToastPopupProps) => {
   const ref = useRef<HTMLDivElement>(null);
+  const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
     if (ref.current) {
@@ -46,7 +39,7 @@ const ToastPopup = ({
           gsap
             .to(ref.current, { top: '-50px', opacity: 0, duration: 0.5 }) // 화면 아래로 이동하며 사라짐
             .then(() => {
-              setIsShow(false);
+              dispatch(setIsToastShown(false));
             });
         }, timeout);
 
@@ -68,7 +61,7 @@ const ToastPopup = ({
           gsap
             .to(ref.current, { bottom: '-50px', opacity: 0, duration: 0.5 })
             .then(() => {
-              setIsShow(false);
+              dispatch(setIsToastShown(false));
             });
         }, timeout);
 
@@ -76,17 +69,17 @@ const ToastPopup = ({
         return () => clearTimeout(timer);
       }
     }
-  }, [setIsShow, direction, timeout]);
+  }, [direction, timeout]);
 
   // 닫기 버튼 이벤트
   const onClickDeleteButton = () => {
-    setIsShow(false);
+    dispatch(setIsToastShown(false));
     // 상단 팝업인 경우
     if (direction === TOAST_DIRECTION.TOP) {
       gsap
         .to(ref.current, { top: '-50px', opacity: 0, duration: 0.5 }) // 화면 아래로 이동하며 사라짐
         .then(() => {
-          setIsShow(false);
+          dispatch(setIsToastShown(false));
         });
     }
     // 하단 팝업인 경우
@@ -94,23 +87,17 @@ const ToastPopup = ({
       gsap
         .to(ref.current, { bottom: '-50px', opacity: 0, duration: 0.5 })
         .then(() => {
-          setIsShow(false);
+          dispatch(setIsToastShown(false));
         });
     }
   };
 
   const props = {
     ref,
-    backgroundColor,
     timeout,
     isDeletable,
     direction,
     onClickDeleteButton,
-    //
-    text,
-    fontSize,
-    fontWeight,
-    color,
   };
   return (
     <>

@@ -33,6 +33,27 @@ export const getFormattedTitle = (value: string) => {
   return trimmedValue;
 };
 
+// 대표번호 string을 xxx-xx-xxxx-x 형식으로 포맷
+export const getFormattedIndentifyNumber = (identifyNumber: string) => {
+  // 숫자만 남기기
+  const cleaned = identifyNumber.replace(/\D/g, '');
+
+  // 최대 길이: 10자리
+  const lengthLimit = 10;
+  const limited = cleaned.slice(0, lengthLimit);
+
+  // 각 구간에 하이픈(-) 추가
+  if (limited.length < 4) {
+    return limited;
+  } else if (limited.length < 6) {
+    return `${limited.slice(0, 3)}-${limited.slice(3)}`;
+  } else if (limited.length < 10) {
+    return `${limited.slice(0, 3)}-${limited.slice(3, 5)}-${limited.slice(5)}`;
+  } else {
+    return `${limited.slice(0, 3)}-${limited.slice(3, 5)}-${limited.slice(5, 9)}-${limited.slice(9)}`;
+  }
+};
+
 // 휴대폰 번호 string을 010-xxxx-xxxx 형식으로 포맷
 export const getFormattedMobilePhone = (mobilePhone: string) => {
   // 숫자만 남기기
@@ -83,6 +104,48 @@ export const getFormattedHomePhone = (homePhone: string) => {
     } else {
       return `${limited.slice(0, 3)}-${limited.slice(3, 6)}-${limited.slice(6)}`;
     }
+  }
+};
+
+// 사용자 입력 string을 휴대폰 또는 일반 전화번호 형식으로 자동 포맷
+export const getFormattedPhone = (input: string): string => {
+  const cleaned = input.replace(/\D/g, '');
+
+  // 휴대폰 번호일 가능성: 010, 011, 016, 017, 018, 019로 시작
+  const mobilePrefixes = ['010', '011', '016', '017', '018', '019'];
+  const isMobile = mobilePrefixes.includes(cleaned.slice(0, 3));
+
+  if (isMobile) {
+    const limited = cleaned.slice(0, 11);
+    if (limited.length < 4) {
+      return limited;
+    } else if (limited.length < 8) {
+      return `${limited.slice(0, 3)}-${limited.slice(3)}`;
+    } else {
+      return `${limited.slice(0, 3)}-${limited.slice(3, 7)}-${limited.slice(7)}`;
+    }
+  }
+
+  // 지역번호가 02로 시작하는 경우
+  if (cleaned.startsWith('02')) {
+    const limited = cleaned.slice(0, 9);
+    if (limited.length < 3) {
+      return limited;
+    } else if (limited.length < 6) {
+      return `${limited.slice(0, 2)}-${limited.slice(2)}`;
+    } else {
+      return `${limited.slice(0, 2)}-${limited.slice(2, 5)}-${limited.slice(5)}`;
+    }
+  }
+
+  // 나머지 일반 전화번호 (지역번호 3자리)
+  const limited = cleaned.slice(0, 10);
+  if (limited.length < 4) {
+    return limited;
+  } else if (limited.length < 7) {
+    return `${limited.slice(0, 3)}-${limited.slice(3)}`;
+  } else {
+    return `${limited.slice(0, 3)}-${limited.slice(3, 6)}-${limited.slice(6)}`;
   }
 };
 

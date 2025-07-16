@@ -56,7 +56,7 @@ type CustomPopupProps = {
   doneDisabled?: boolean;
   isFooterShown?: boolean;
   isHeaderShown?: boolean;
-
+  isHeaderBorderShown?: boolean;
   children: ReactNode;
 };
 
@@ -78,7 +78,7 @@ const CustomPopup = ({
   doneDisabled,
   isFooterShown,
   isHeaderShown,
-
+  isHeaderBorderShown,
   children,
 }: CustomPopupProps) => {
   useEffect(() => {
@@ -120,6 +120,7 @@ const CustomPopup = ({
           doneDisabled={doneDisabled}
           isFooterShown={isFooterShown}
           isHeaderShown={isHeaderShown}
+          isHeaderBorderShown={isHeaderBorderShown}
         >
           {children}
         </PopupLayout>

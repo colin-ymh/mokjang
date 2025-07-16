@@ -8,30 +8,34 @@ import {
 import styled from 'styled-components';
 
 import { Officer } from '@/models/management/management';
-import { GRAY, MAIN } from '@/constants/styles/color';
+import { BLACK, GRAY, MAIN } from '@/constants/styles/color';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { SIZE } from '@/constants/styles/style';
 import { useI18n } from '../../../../../../locales/client';
 import { getEmptyImage } from 'react-dnd-html5-backend';
 import { DND_ITEM_TYPE, HOVER_POSITION } from '@/constants/constant';
 
-const OfficerItemContainer = styled.div<{ $isDragging: boolean }>`
+const OfficerItemContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  border-bottom: 1px solid ${GRAY.EXTRA_LIGHT};
   position: relative;
-  background-color: ${({ $isDragging }) => $isDragging && GRAY.LIGHT};
 `;
 
-const OfficerItem = styled.div<{ $level: number }>`
+const OfficerItem = styled.div<{
+  $level: number;
+  $isDragging: boolean;
+  $isSelected: boolean;
+}>`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: ${({ $level }) => `10px 10px 10px ${$level * 30}px`};
+  padding: ${({ $level }) => `10px 10px 10px ${$level * 30 + 10}px`};
   transition: background-color 0.3s;
   border-radius: 5px;
+  background-color: ${({ $isSelected }) => $isSelected && MAIN.EXTRA_LIGHT};
   cursor: pointer;
+  opacity: ${({ $isDragging }) => ($isDragging ? 0.3 : 1)};
 `;
 
 const InsertLineTop = styled.div<{ $level: number }>`
@@ -40,7 +44,7 @@ const InsertLineTop = styled.div<{ $level: number }>`
   left: ${({ $level }) => `${$level * 30}px`};
   width: 100%;
   height: 2px;
-  background-color: ${MAIN.DEFAULT};
+  background-color: ${MAIN.LIGHT};
   z-index: 1;
 `;
 const InsertLineBottom = styled.div<{ $level: number }>`
@@ -49,38 +53,10 @@ const InsertLineBottom = styled.div<{ $level: number }>`
   left: ${({ $level }) => `${$level * 30}px`};
   width: 100%;
   height: 2px;
-  background-color: ${MAIN.DEFAULT};
+  background-color: ${MAIN.LIGHT};
   z-index: 1;
 `;
 
-const NestInsertHighlight = styled.div`
-  position: absolute;
-  inset: 0;
-  background-color: ${MAIN.LIGHT};
-  opacity: 0.5;
-  border: 1px dashed ${MAIN.DEFAULT};
-  border-radius: 4px;
-  z-index: 0;
-`;
-
-const LeftContainer = styled.div`
-  display: flex;
-  justify-content: flex-start;
-  width: 100%;
-`;
-const RightContainer = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const ToggleButton = styled.div`
-  display: flex;
-  cursor: pointer;
-  width: 20px;
-  height: 20px;
-  justify-content: center;
-  align-items: center;
-`;
 const NameContainer = styled.div`
   display: flex;
   align-items: center;
@@ -88,30 +64,27 @@ const NameContainer = styled.div`
 `;
 
 type ManagementOfficerItemViewProps = {
-  isOpen: boolean;
   officer: Officer;
+  selectedOfficerId: string | null;
   level: number;
   onDropOfficer: (
     dragged: Officer,
     order: number,
     newParentOfficerId?: string | null
   ) => void;
-  onClickToggle: (id: string) => void;
   onClickOfficer: (id: string) => void;
 };
 
 const ManagementOfficerItemView: React.FC<ManagementOfficerItemViewProps> = ({
-  isOpen,
   officer,
+  selectedOfficerId,
   level,
   onDropOfficer,
-  onClickToggle,
   onClickOfficer,
 }) => {
   const t = useI18n();
   const ref = useRef<HTMLDivElement | null>(null);
 
-  const [isHovered, setIsHovered] = useState<boolean>(false);
   const [hoverPosition, setHoverPosition] = useState<HOVER_POSITION>(
     HOVER_POSITION.MIDDLE
   );
@@ -177,42 +150,30 @@ const ManagementOfficerItemView: React.FC<ManagementOfficerItemViewProps> = ({
   dragRef(dropRef(ref));
 
   return (
-    <OfficerItemContainer
-      ref={ref}
-      $isDragging={isDragging}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
+    <OfficerItemContainer ref={ref}>
       {hoverPosition === HOVER_POSITION.TOP && isOver && (
         <InsertLineTop $level={level} />
       )}
       {hoverPosition === HOVER_POSITION.BOTTOM && isOver && (
         <InsertLineBottom $level={level} />
       )}
-      {hoverPosition === HOVER_POSITION.MIDDLE && isOver && (
-        <NestInsertHighlight />
-      )}
 
-      <OfficerItem onClick={() => onClickOfficer(officer.id!)} $level={level}>
-        <LeftContainer>
-          <ToggleButton
-            onClick={(e) => {
-              e.stopPropagation();
-              onClickToggle(officer.id!);
-            }}
+      <OfficerItem
+        onClick={() => onClickOfficer(officer.id!)}
+        $level={level}
+        $isDragging={isDragging}
+        $isSelected={selectedOfficerId === officer.id}
+      >
+        <NameContainer>
+          <MainText
+            color={selectedOfficerId === officer.id ? MAIN.DEFAULT : BLACK}
           >
-            <MainText size={SIZE.EXTRA_SMALL}>{'⦁'}</MainText>
-          </ToggleButton>
-
-          <NameContainer>
-            <MainText>{officer.name || t('all')}</MainText>
-            <MainText size={SIZE.EXTRA_SMALL} color={GRAY.DEFAULT}>
-              {officer.membersCount}
-            </MainText>
-          </NameContainer>
-        </LeftContainer>
-
-        <RightContainer></RightContainer>
+            {officer.name}
+          </MainText>
+          <MainText size={SIZE.EXTRA_SMALL} color={GRAY.DEFAULT}>
+            {officer.membersCount}
+          </MainText>
+        </NameContainer>
       </OfficerItem>
     </OfficerItemContainer>
   );

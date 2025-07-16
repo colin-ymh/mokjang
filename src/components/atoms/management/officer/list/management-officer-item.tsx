@@ -13,8 +13,6 @@ type ManagementOfficerItemProps = {
   level: number;
   selectedOfficerId: string | null;
   onClickOfficer: (id: string) => void;
-  closedOfficers: Set<number>;
-  onClickToggle: (id: string) => void;
   setIsToastShown: Dispatch<SetStateAction<boolean>>;
   setToastText: Dispatch<SetStateAction<string>>;
   setToastColor: Dispatch<SetStateAction<string>>;
@@ -25,8 +23,6 @@ const ManagementOfficerItem = ({
   level,
   selectedOfficerId,
   onClickOfficer,
-  closedOfficers,
-  onClickToggle,
   setIsToastShown,
   setToastText,
   setToastColor,
@@ -34,8 +30,6 @@ const ManagementOfficerItem = ({
   const dispatch = useDispatch<AppDispatch>();
   const officersApi = new OfficersApi(false);
   const churchId = useSelector((state: RootState) => state.church.churchId);
-
-  const isOpen = !closedOfficers.has(parseInt(officer.id as string));
 
   const [thrownError, setThrownError] = useState<Error | null>(null);
 
@@ -70,11 +64,10 @@ const ManagementOfficerItem = ({
   };
 
   const props = {
-    isOpen,
     officer,
+    selectedOfficerId,
     level,
     onDropOfficer,
-    onClickToggle,
     onClickOfficer,
   };
 

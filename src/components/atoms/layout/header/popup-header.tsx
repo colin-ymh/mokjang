@@ -8,6 +8,7 @@ type PopupHeaderProps = {
   onClickDone?: () => void;
   cancelText: string;
   doneText: string;
+  isHeaderBorderShown?: boolean;
 };
 
 const PopupHeader = (props: PopupHeaderProps) => {

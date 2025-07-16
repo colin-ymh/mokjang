@@ -8,7 +8,7 @@ import {
 import styled from 'styled-components';
 
 import { Group } from '@/models/management/management';
-import { GRAY, MAIN } from '@/constants/styles/color';
+import { BLACK, GRAY, MAIN } from '@/constants/styles/color';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import Plus from '../../../../../../public/svg/plus.svg';
 import { SIZE } from '@/constants/styles/style';
@@ -16,23 +16,27 @@ import { useI18n } from '../../../../../../locales/client';
 import { getEmptyImage } from 'react-dnd-html5-backend';
 import { DND_ITEM_TYPE, HOVER_POSITION } from '@/constants/constant';
 
-const GroupItemContainer = styled.div<{ $isDragging: boolean }>`
+const GroupItemContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  border-bottom: 1px solid ${GRAY.EXTRA_LIGHT};
   position: relative;
-  background-color: ${({ $isDragging }) => $isDragging && GRAY.LIGHT};
 `;
 
-const GroupItem = styled.div<{ $level: number }>`
+const GroupItem = styled.div<{
+  $level: number;
+  $isDragging: boolean;
+  $isSelected: boolean;
+}>`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: ${({ $level }) => `10px 10px 10px ${$level * 30}px`};
+  padding: ${({ $level }) => `10px 10px 10px ${$level * 30 + 10}px`};
   transition: background-color 0.3s;
   border-radius: 5px;
+  background-color: ${({ $isSelected }) => $isSelected && MAIN.EXTRA_LIGHT};
   cursor: pointer;
+  opacity: ${({ $isDragging }) => ($isDragging ? 0.3 : 1)};
 `;
 
 const InsertLineTop = styled.div<{ $level: number }>`
@@ -41,7 +45,7 @@ const InsertLineTop = styled.div<{ $level: number }>`
   left: ${({ $level }) => `${$level * 30}px`};
   width: 100%;
   height: 2px;
-  background-color: ${MAIN.DEFAULT};
+  background-color: ${MAIN.LIGHT};
   z-index: 1;
 `;
 const InsertLineBottom = styled.div<{ $level: number }>`
@@ -50,14 +54,14 @@ const InsertLineBottom = styled.div<{ $level: number }>`
   left: ${({ $level }) => `${$level * 30}px`};
   width: 100%;
   height: 2px;
-  background-color: ${MAIN.DEFAULT};
+  background-color: ${MAIN.LIGHT};
   z-index: 1;
 `;
 
 const NestInsertHighlight = styled.div`
   position: absolute;
   inset: 0;
-  background-color: ${MAIN.LIGHT};
+  background-color: ${MAIN.EXTRA_LIGHT};
   opacity: 0.5;
   border: 1px dashed ${MAIN.DEFAULT};
   border-radius: 4px;
@@ -105,6 +109,7 @@ type ManagementGroupItemViewProps = {
   isOpen: boolean;
   group: Group;
   level: number;
+  selectedGroupId: string | null;
   onDropGroup: (
     dragged: Group,
     order: number,
@@ -120,6 +125,7 @@ const ManagementGroupItemView: React.FC<ManagementGroupItemViewProps> = ({
   isOpen,
   group,
   level,
+  selectedGroupId,
   onDropGroup,
   onClickToggle,
   onClickGroup,
@@ -252,7 +258,6 @@ const ManagementGroupItemView: React.FC<ManagementGroupItemViewProps> = ({
   return (
     <GroupItemContainer
       ref={ref}
-      $isDragging={isDragging}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -272,7 +277,12 @@ const ManagementGroupItemView: React.FC<ManagementGroupItemViewProps> = ({
         <NestInsertHighlight />
       )}
 
-      <GroupItem onClick={() => onClickGroup(group.id!)} $level={level}>
+      <GroupItem
+        onClick={() => onClickGroup(group.id!)}
+        $level={level}
+        $isDragging={isDragging}
+        $isSelected={selectedGroupId === group.id}
+      >
         <LeftContainer>
           <ToggleButton
             onClick={(e) => {
@@ -280,13 +290,17 @@ const ManagementGroupItemView: React.FC<ManagementGroupItemViewProps> = ({
               onClickToggle(group.id!);
             }}
           >
-            <MainText size={SIZE.EXTRA_SMALL}>
+            <MainText size={SIZE.EXTRA_SMALL} color={GRAY.DEFAULT}>
               {isHaveChildren ? (isOpen ? '▼' : '▶') : '⦁'}
             </MainText>
           </ToggleButton>
 
           <NameContainer>
-            <MainText>{group.name || t('all')}</MainText>
+            <MainText
+              color={selectedGroupId === group.id ? MAIN.DEFAULT : BLACK}
+            >
+              {group.name || t('all')}
+            </MainText>
             <MainText size={SIZE.EXTRA_SMALL} color={GRAY.DEFAULT}>
               {group.membersCount}
             </MainText>

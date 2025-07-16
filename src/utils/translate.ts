@@ -15,6 +15,8 @@ import {
   WORSHIP_ATTENDANCE,
   WORSHIP_ENROLLMENT,
 } from '@/constants/column/worship-column';
+import { LOCALE } from '@/constants/state/locale';
+import { getShortEnglishMonthName } from '@/utils/format';
 
 export const getTranslatedMemberColumn = (
   t: (key: string, ...args: any[]) => string,
@@ -169,4 +171,51 @@ export const getTranslatedWorshipColumn = (
   id: WORSHIP
 ): string => {
   return t(id as WORSHIP.TITLE);
+};
+
+export const getTranslatedBeforeSomeWeek = (
+  basePath: LOCALE,
+  week: number
+): string => {
+  if (basePath === LOCALE.EN) {
+    if (week === 1) {
+      return 'before 1 week';
+    } else {
+      return `before ${week} weeks`;
+    }
+  } else {
+    return `${week}주 전`;
+  }
+};
+export const getTranslatedMemberCount = (
+  basePath: LOCALE,
+  memberCount: number
+): string => {
+  if (basePath === LOCALE.EN) {
+    if (memberCount === 1) {
+      return '1 member';
+    } else {
+      return `${memberCount} members`;
+    }
+  } else {
+    return `${memberCount}명`;
+  }
+};
+
+/**
+ * Date Object => MM월 DD일 오후 HH:MM / 2 Feb. 5:30PM
+ * @param date
+ */
+export const getTranslatedScheduleDate = (locale: LOCALE, date: Date) => {
+  const month = String(date.getMonth() + 1); // 0-based index이므로 +1
+  const day = String(date.getDate()).padStart(2, '0');
+
+  const hour = String(date.getHours()).padStart(2, '0');
+  const minute = String(date.getMinutes()).padStart(2, '0');
+
+  if (locale === LOCALE.KO) {
+    return `${month}월 ${day}일 ${hour}:${minute}`;
+  }
+
+  return `${day} ${getShortEnglishMonthName(parseInt(month) - 1)}. ${hour}:${minute}`;
 };

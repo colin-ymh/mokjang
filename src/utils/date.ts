@@ -261,3 +261,13 @@ export const getDateInWeekByDayOfWeek = (
   targetDate.setDate(date.getDate() + daysDifference);
   return targetDate;
 };
+
+export const getLastSunday = (): Date => {
+  const today = new Date();
+  const day = today.getDay(); // 0 (일) ~ 6 (토)
+  const diff = day; // 오늘이 일요일이면 0
+  const lastSunday = new Date(today);
+  lastSunday.setDate(today.getDate() - diff);
+  lastSunday.setHours(0, 0, 0, 0); // 시간 초기화
+  return lastSunday;
+};

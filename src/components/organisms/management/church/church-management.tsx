@@ -46,7 +46,10 @@ const ChurchManagement = () => {
           phone: targetChurch.phone,
           address: targetChurch.address,
           detailAddress: targetChurch.detailAddress,
-          memberSize: targetChurch.memberSize,
+          name: targetChurch.name,
+          pastor: targetChurch.pastor,
+          identifyNumber: targetChurch.identifyNumber,
+          denomination: targetChurch.denomination,
         }
       );
 

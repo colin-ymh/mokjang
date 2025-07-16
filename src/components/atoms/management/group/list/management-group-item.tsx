@@ -168,6 +168,7 @@ const ManagementGroupItem = ({
   const props = {
     isHaveChildren,
     isOpen,
+    selectedGroupId,
     group,
     level,
     onDropGroup,

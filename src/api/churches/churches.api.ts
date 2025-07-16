@@ -23,13 +23,13 @@ type editChurchParams = {
 };
 
 type editChurchBody = {
-  // name?: string;
-  // identifyNumber?: string;
+  name?: string;
+  identifyNumber?: string;
   phone?: string;
-  // denomination?: string;
+  denomination?: string;
   address?: string;
   detailAddress?: string;
-  memberSize?: string;
+  pastor?: string;
 };
 
 type deleteChurchParams = {

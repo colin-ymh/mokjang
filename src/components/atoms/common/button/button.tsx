@@ -18,6 +18,7 @@ export type ButtonProps = MainTextProps & {
   isShadow?: boolean;
   borderRadius?: number;
   children?: ReactNode;
+  icon?: ReactNode;
   borderColor?: string;
   onMouseUp?: (event: any) => void;
   onMouseDown?: (event: any) => void;
@@ -37,27 +38,32 @@ const ButtonContainer = styled.button<{
   justify-content: center;
   background-color: ${({ $backgroundColor }) => $backgroundColor};
   width: ${({ width }) =>
-    width ? (width === 'auto' ? width : `${width}px`) : `100%`};
-  height: ${({ height }) => (height ? `${height}px` : `100%`)};
+    width ? (width === 'auto' ? width : `${width}px`) : '100%'};
+  height: ${({ height }) => (height ? `${height}px` : '100%')};
   border-radius: ${({ $borderRadius }) =>
-    ` ${$borderRadius !== null ? $borderRadius : 5}px`};
+    $borderRadius !== null && $borderRadius !== undefined
+      ? `${$borderRadius}px`
+      : '5px'};
   border: ${({ $borderColor }) =>
     $borderColor ? `1px solid ${$borderColor}` : 'none'};
   cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
-  transition: all 0.1s ease; /* 트랜지션 추가 */
+  transition: all 0.1s ease;
   box-shadow: ${({ $isShadow, disabled }) =>
-    $isShadow && !disabled ? `2px 2px 5px rgba(0, 0, 0, 0.2)` : `none`};
+    $isShadow && !disabled ? '2px 2px 5px rgba(0, 0, 0, 0.2)' : 'none'};
   overflow: hidden;
   flex-shrink: 0;
 
-  //&:hover {
-  //  transform: scale(1.03); /* 마우스 올리면 살짝 커짐 */
-  //}
-
   &:active {
-    transform: scale(0.98); /* 클릭하면 작아지는 효과 */
-    box-shadow: none; /* 클릭 시 그림자 제거로 눌린 느낌 */
+    transform: scale(0.98);
+    box-shadow: none;
   }
+`;
+
+const ContentWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px;
 `;
 
 const Button = ({
@@ -69,17 +75,21 @@ const Button = ({
   backgroundColor = MAIN.DEFAULT,
   isShadow = false,
   borderRadius = 5,
-  // text props
   color = WHITE,
   fontWeight,
   fontSize,
   children,
+  icon,
   borderColor,
+  onMouseDown,
+  onMouseUp,
 }: ButtonProps) => {
   return (
     <ButtonContainer
       disabled={disabled}
       onClick={disabled ? undefined : onClick}
+      onMouseDown={onMouseDown}
+      onMouseUp={onMouseUp}
       width={width}
       height={height}
       $borderRadius={borderRadius}
@@ -90,9 +100,12 @@ const Button = ({
       {children ? (
         children
       ) : (
-        <MainText color={color} fontWeight={fontWeight} fontSize={fontSize}>
-          {text}
-        </MainText>
+        <ContentWrapper>
+          {icon}
+          <MainText color={color} fontWeight={fontWeight} fontSize={fontSize}>
+            {text}
+          </MainText>
+        </ContentWrapper>
       )}
     </ButtonContainer>
   );

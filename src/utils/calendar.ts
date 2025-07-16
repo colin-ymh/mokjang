@@ -1,4 +1,4 @@
-import { CalendarEvent } from '@/models/calendar/calendar';
+import { Schedule, ServerSchedule } from '@/models/calendar/calendar';
 import { Task } from '@/models/task/task';
 import { Visitation } from '@/models/visitation/visitation';
 import { Member } from '@/models/member/member';
@@ -11,7 +11,7 @@ import { EducationSession } from '@/models/education/education';
 import { Holiday } from '@/api/holiday-api';
 import { getFormattedDate } from '@/utils/format';
 
-export const getEventFromTask = (event: Task): CalendarEvent => {
+export const getScheduleFromTask = (event: Task): Schedule => {
   return {
     id: `${DOMAIN.TASK}-${event.id}`,
     title: event.title,
@@ -22,7 +22,7 @@ export const getEventFromTask = (event: Task): CalendarEvent => {
   };
 };
 
-export const getEventFromVisitation = (event: Visitation): CalendarEvent => {
+export const getScheduleFromVisitation = (event: Visitation): Schedule => {
   return {
     id: `${DOMAIN.VISITATION}-${event.id}`,
     title: event.title,
@@ -33,9 +33,7 @@ export const getEventFromVisitation = (event: Visitation): CalendarEvent => {
   };
 };
 
-export const getEventFromEducation = (
-  event: EducationSession
-): CalendarEvent => {
+export const getScheduleFromEducation = (event: EducationSession): Schedule => {
   return {
     id: `${DOMAIN.EDUCATION}-${event.id}`,
     title: event.title,
@@ -46,7 +44,7 @@ export const getEventFromEducation = (
   };
 };
 
-export const getEventFromChurchEvent = (event: ChurchEvent): CalendarEvent => {
+export const getScheduleFromChurchEvent = (event: ChurchEvent): Schedule => {
   return {
     id: `${DOMAIN.CHURCH_EVENT}-${event.id}`,
     title: event.title,
@@ -57,11 +55,11 @@ export const getEventFromChurchEvent = (event: ChurchEvent): CalendarEvent => {
   };
 };
 
-export const getEventFromBirthday = (
+export const getScheduleFromBirthday = (
   fromDate: string,
   toDate: string,
   event: Member
-): CalendarEvent => {
+): Schedule => {
   const from = dayjs(fromDate);
   const to = dayjs(toDate);
 
@@ -117,7 +115,7 @@ export const getEventFromBirthday = (
 
   return {
     id: `${DOMAIN.MEMBER}-${event.id}`,
-    title: getTitle(event),
+    title: getBirthdayTitle(event),
     allDay: true,
     start: getDateStringFromDate(targetDate.toDate()),
     end: getDateStringFromDate(targetDate.toDate()),
@@ -125,7 +123,7 @@ export const getEventFromBirthday = (
   };
 };
 
-const getTitle = (member: Member) => {
+const getBirthdayTitle = (member: Member) => {
   if (member.officer) {
     return `${member.name} ${member.officer.name} 생일`;
   } else {
@@ -133,7 +131,7 @@ const getTitle = (member: Member) => {
   }
 };
 
-export const getEventFromHoliday = (event: Holiday): CalendarEvent => {
+export const getScheduleFromHoliday = (event: Holiday): Schedule => {
   return {
     id: `${DOMAIN.HOLIDAY}-${event.dateName}`,
     title: event.dateName,
@@ -141,4 +139,14 @@ export const getEventFromHoliday = (event: Holiday): CalendarEvent => {
     start: getFormattedDate(event.locdate.toString()),
     end: getFormattedDate(event.locdate.toString()),
   };
+};
+
+export const getHomeWidgetSchedule = (event: ServerSchedule) => {
+  return {
+    id: `${event.type}-${event.id}`,
+    title: event.title,
+    start: event.startDate,
+    end: event.endDate,
+    status: event.status,
+  } as Schedule;
 };

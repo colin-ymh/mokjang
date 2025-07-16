@@ -1,15 +1,15 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '@/redux/store';
-import { CalendarEvent } from '@/models/calendar/calendar';
+import { Schedule } from '@/models/calendar/calendar';
 import { VisitationsApi } from '@/api/visitations/visitations.api';
 import { TasksApi } from '@/api/tasks/tasks.api';
 import {
-  getEventFromBirthday,
-  getEventFromChurchEvent,
-  getEventFromEducation,
-  getEventFromHoliday,
-  getEventFromTask,
-  getEventFromVisitation,
+  getScheduleFromBirthday,
+  getScheduleFromChurchEvent,
+  getScheduleFromEducation,
+  getScheduleFromHoliday,
+  getScheduleFromTask,
+  getScheduleFromVisitation,
 } from '@/utils/calendar';
 import { Visitation } from '@/models/visitation/visitation';
 import { Task } from '@/models/task/task';
@@ -28,12 +28,12 @@ type CALENDAR_FILTER = {
 };
 
 type CalendarFilterState = {
-  calendarEvents: CalendarEvent[];
+  calendarSchedules: Schedule[];
   calendarFilter: CALENDAR_FILTER;
 };
 
 const initialState: CalendarFilterState = {
-  calendarEvents: [],
+  calendarSchedules: [],
   calendarFilter: {
     isMy: false,
     selectedDomains: Object.values(DOMAIN) as DOMAIN[],
@@ -56,7 +56,7 @@ const getCalendarVisitations = async (
 
     const newVisitations = response.data.data;
     const newEvents = newVisitations.map((visitation: Visitation) => {
-      return getEventFromVisitation(visitation);
+      return getScheduleFromVisitation(visitation);
     });
 
     return newEvents;
@@ -82,7 +82,7 @@ const getCalendarBirthdays = async (
 
     const newBirthdays = response.data;
     const newEvents = newBirthdays.map((member: Member) => {
-      return getEventFromBirthday(fromDate, toDate, member);
+      return getScheduleFromBirthday(fromDate, toDate, member);
     });
 
     return newEvents;
@@ -108,7 +108,7 @@ const getCalendarTasks = async (
 
     const newTasks = response.data.data;
     const newEvents = newTasks.map((task: Task) => {
-      return getEventFromTask(task);
+      return getScheduleFromTask(task);
     });
 
     return newEvents;
@@ -135,7 +135,7 @@ const getCalendarEducations = async (
 
     const newEducations = response.data;
     const newEvents = newEducations.map((education: EducationSession) => {
-      return getEventFromEducation(education);
+      return getScheduleFromEducation(education);
     });
 
     return newEvents;
@@ -168,8 +168,8 @@ const getCalendarHolidays = async (fromDate: string, toDate: string) => {
       allHolidays.push(...holidays);
     }
 
-    const newEvents: CalendarEvent[] = allHolidays.map((holiday: Holiday) => {
-      return getEventFromHoliday(holiday);
+    const newEvents: Schedule[] = allHolidays.map((holiday: Holiday) => {
+      return getScheduleFromHoliday(holiday);
     });
 
     return newEvents;
@@ -195,7 +195,7 @@ const getCalendarChurchEvents = async (
 
     const newEvents = response.data.data;
     return newEvents.map((event: ChurchEvent) => {
-      return getEventFromChurchEvent(event);
+      return getScheduleFromChurchEvent(event);
     });
   } catch (error) {
     console.log(error);
@@ -203,12 +203,12 @@ const getCalendarChurchEvents = async (
   }
 };
 
-export const fetchCalendarEvents = createAsyncThunk<
-  CalendarEvent[],
+export const fetchCalendarSchedules = createAsyncThunk<
+  Schedule[],
   { fromDate: string; toDate: string },
   { state: RootState }
 >(
-  'calendar/fetchCalendarEvents',
+  'calendar/fetchCalendarSchedules',
   async ({ fromDate, toDate }, { getState, rejectWithValue }) => {
     const churchId = getState().church.churchId;
     const user = getState().user.user;
@@ -216,12 +216,12 @@ export const fetchCalendarEvents = createAsyncThunk<
     const userId = user.churchUser[0]?.id;
 
     try {
-      let taskEvents: CalendarEvent[] = [];
-      let educationEvents: CalendarEvent[] = [];
-      let visitationEvents: CalendarEvent[] = [];
-      let birthdayEvents: CalendarEvent[] = [];
-      let churchEvents: CalendarEvent[] = [];
-      let holidayEvents: CalendarEvent[] = [];
+      let taskEvents: Schedule[] = [];
+      let educationEvents: Schedule[] = [];
+      let visitationEvents: Schedule[] = [];
+      let birthdayEvents: Schedule[] = [];
+      let churchEvents: Schedule[] = [];
+      let holidayEvents: Schedule[] = [];
 
       taskEvents = await getCalendarTasks(churchId, fromDate, toDate);
 
@@ -258,8 +258,8 @@ const CalendarFilterSlice = createSlice({
   name: 'calendarFilter',
   initialState,
   reducers: {
-    setCalendarEvents: (state, action: PayloadAction<CalendarEvent[]>) => {
-      state.calendarEvents = action.payload;
+    setCalendarSchedules: (state, action: PayloadAction<Schedule[]>) => {
+      state.calendarSchedules = action.payload;
     },
     setCalendarFilter: (state, action: PayloadAction<CALENDAR_FILTER>) => {
       state.calendarFilter = action.payload;
@@ -267,15 +267,15 @@ const CalendarFilterSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(
-      fetchCalendarEvents.fulfilled,
-      (state, action: PayloadAction<CalendarEvent[]>) => {
-        state.calendarEvents = action.payload;
+      fetchCalendarSchedules.fulfilled,
+      (state, action: PayloadAction<Schedule[]>) => {
+        state.calendarSchedules = action.payload;
       }
     );
   },
 });
 
-export const { setCalendarEvents, setCalendarFilter } =
+export const { setCalendarSchedules, setCalendarFilter } =
   CalendarFilterSlice.actions;
 
 export default CalendarFilterSlice.reducer;

@@ -1,7 +1,5 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
-
-import OfficerList from '@/components/molecules/management/officer/list/officer-list';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { SIZE } from '@/constants/styles/style';
 import { GRAY, WHITE } from '@/constants/styles/color';
@@ -10,12 +8,13 @@ import { Officer } from '@/models/management/management';
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
 import OfficerMember from '@/components/molecules/management/officer/member/officer-member';
 import Button from '@/components/atoms/common/button/button';
-import ToastPopup from '@/components/atoms/common/popup/toast-popup';
-import BorderInput from '@/components/atoms/common/input/border-input';
 import CustomPopup from '@/components/atoms/common/popup/custom-popup';
 import LabelInput from '@/components/atoms/common/input/label-input';
-import KebabDropdown from '@/components/atoms/common/dropdown/kebab-dropdown';
 import ConfirmPopup from '@/components/atoms/common/popup/confirm-popup';
+
+import Plus from '../../../../../public/svg/plus.svg';
+import Setting from '../../../../../public/svg/setting.svg';
+import OfficerSideBar from '@/components/molecules/management/officer/list/officer-side-bar';
 
 const OfficerManagementContainer = styled.div`
   display: flex;
@@ -23,25 +22,9 @@ const OfficerManagementContainer = styled.div`
   height: 100%;
 `;
 
-const OfficerListContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  padding: 20px;
-  gap: 20px;
-  border-right: 1px solid ${GRAY.LIGHT};
-  width: 400px;
-  flex-shrink: 0;
-`;
-
-const AddContainer = styled.div`
-  display: flex;
-  gap: 5px;
-`;
-
 const OfficerInformationContainer = styled.div<{ $isOfficer: boolean }>`
   display: ${({ $isOfficer }) => ($isOfficer ? 'flex' : 'none')};
   flex-direction: column;
-  width: 100%;
 `;
 
 const OfficerInformationHeader = styled.div`
@@ -52,14 +35,33 @@ const OfficerInformationHeader = styled.div`
   padding: 20px;
 `;
 
+const ButtonContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+`;
+
 const EditContainer = styled.div`
   display: flex;
   padding: 10px;
   width: 100%;
 `;
 
+const PlusIcon = styled(Plus)`
+  width: 14px;
+  height: 14px;
+  stroke: ${WHITE};
+  stroke-width: 0.1px;
+`;
+
+const SettingIcon = styled(Setting)`
+  width: 16px;
+  height: 16px;
+  stroke: ${GRAY.LIGHT};
+  stroke-width: 0.1px;
+`;
+
 type OfficerManagementViewProps = {
-  newOfficerName: string;
   isEditShown: boolean;
   isDeleteShown: boolean;
   editName: string;
@@ -70,10 +72,8 @@ type OfficerManagementViewProps = {
   onClickEditOpen: () => void;
   onClickEditClose: () => void;
   onClickSaveEdit: () => void;
-  onChangeNewOfficerName: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  onClickSaveNewOfficer: () => void;
   selectedOfficer: Officer;
-  setSelectedOfficer: Dispatch<SetStateAction<Officer>>;
+  onClickOfficer: (id: string) => void;
   isToastShown: boolean;
   toastText: string;
   toastColor: string;
@@ -81,7 +81,6 @@ type OfficerManagementViewProps = {
 };
 
 const OfficerManagementView = ({
-  newOfficerName,
   isEditShown,
   isDeleteShown,
   editName,
@@ -92,10 +91,8 @@ const OfficerManagementView = ({
   onClickEditOpen,
   onClickEditClose,
   onClickSaveEdit,
-  onChangeNewOfficerName,
-  onClickSaveNewOfficer,
   selectedOfficer,
-  setSelectedOfficer,
+  onClickOfficer,
   isToastShown,
   toastText,
   toastColor,
@@ -108,33 +105,10 @@ const OfficerManagementView = ({
     <>
       <OfficerManagementContainer>
         {/* 그룹 목록 */}
-        <OfficerListContainer>
-          {/* 타이틀 */}
-          <MainText size={SIZE.LARGE} fontWeight={600}>
-            {t('officerList')}
-          </MainText>
-          {/* 새 그룹 추가 창*/}
-          <AddContainer>
-            <BorderInput
-              value={newOfficerName}
-              onChange={onChangeNewOfficerName}
-              borderColor={GRAY.SEMI_LIGHT}
-            />
-            <Button
-              width={80}
-              text={t('button.add')}
-              onClick={onClickSaveNewOfficer}
-              borderColor={GRAY.SEMI_LIGHT}
-              backgroundColor={WHITE}
-              color={GRAY.DARK}
-            />
-          </AddContainer>
-          {/* 그룹 목록 */}
-          <OfficerList
-            selectedOfficerId={selectedOfficer.id}
-            setSelectedOfficer={setSelectedOfficer}
-          />
-        </OfficerListContainer>
+        <OfficerSideBar
+          selectedOfficer={selectedOfficer}
+          onClickOfficer={onClickOfficer}
+        />
         {/* 그룹원 목록 */}
         <OfficerInformationContainer $isOfficer={!!selectedOfficer.id}>
           {/* 헤더 */}
@@ -142,34 +116,31 @@ const OfficerManagementView = ({
             <MainText size={SIZE.LARGE} fontWeight={600}>
               {selectedOfficer.name}
             </MainText>
-            <KebabDropdown
-              items={[
-                {
-                  value: 'delete',
-                  title: t_button('delete'),
-                  onClick: () => onClickDeleteOpen(),
-                },
-                {
-                  value: 'edit',
-                  title: t_button('edit'),
-                  onClick: () => onClickEditOpen(),
-                },
-              ]}
-              width={150}
-            />
+            <ButtonContainer>
+              <Button
+                text={t('button.edit')}
+                onClick={onClickEditOpen}
+                color={GRAY.SEMI_DARK}
+                width={'auto'}
+                height={30}
+                backgroundColor={'transparent'}
+                icon={<SettingIcon />}
+              />
+              <Button
+                text={t('button.addMember')}
+                onClick={() => {}}
+                color={WHITE}
+                width={'auto'}
+                height={30}
+                icon={<PlusIcon />}
+              />
+            </ButtonContainer>
           </OfficerInformationHeader>
           {/* 컨텐츠 */}
           {selectedOfficer.id && <OfficerMember officer={selectedOfficer} />}
         </OfficerInformationContainer>
       </OfficerManagementContainer>
-      {/* 토스트 팝업 */}
-      {isToastShown && (
-        <ToastPopup
-          setIsShow={setIsToastShown}
-          text={toastText}
-          backgroundColor={toastColor}
-        />
-      )}
+
       {/* 그룹명 수정 팝업 */}
       <CustomPopup
         isShow={isEditShown}

@@ -1,21 +1,21 @@
 'use client';
 
 import React from 'react';
-import { Provider } from 'react-redux';
+import { Provider, useSelector } from 'react-redux';
 import StyledComponentsRegistry from '@/hooks/registry';
 
-import store from '@/redux/store';
+import store, { RootState } from '@/redux/store';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
 
 import 'react-datepicker/dist/react-datepicker.css';
 import 'react-quill/dist/quill.snow.css';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-// import 'react-big-calendar/lib/addons/dragAndDrop/styles'; // if using DnD
 import InitializeStore from '@/components/atoms/layout/initialize-store';
 import GlobalStyle from '@/components/atoms/layout/global-style';
 import { CustomDragLayer } from '@/vendor/dnd/custom-drag-layer';
 import CustomWidgetDragLayer from '@/vendor/dnd/custom-widget-drag-layer';
+import ToastManager from '@/components/atoms/common/popup/toast-layout';
 
 type RootLayoutProps = {
   children?: React.ReactNode;
@@ -30,11 +30,16 @@ const RootLayout = (props: RootLayoutProps | RootLayoutPropsExtended) => {
   const { children } = {
     ...props,
   };
+
+  const { isToastShown, toastText, toastColor, toastBackgroundColor } =
+    useSelector((state: RootState) => state.toastPopup);
   return (
     <html lang="ko">
       <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Roboto&display=swap"
           rel="stylesheet"
         />
         <meta
@@ -54,7 +59,10 @@ const RootLayout = (props: RootLayoutProps | RootLayoutPropsExtended) => {
                 {/* 전역 스타일 적용 */}
                 <GlobalStyle />
                 {/* 실제 페이지 렌더링 */}
+
                 {children}
+                {/* 토스트 팝업 */}
+                <ToastManager />
                 <CustomDragLayer />
                 <CustomWidgetDragLayer />
               </DndProvider>
