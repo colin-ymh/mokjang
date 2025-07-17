@@ -48,6 +48,7 @@ type CustomPopupProps = {
   onClickCancel: () => void;
   onClickDone?: () => void;
   headerTitle?: string;
+  headerDescription?: string;
   headerRight?: ReactNode;
   cancelText?: string;
   doneText?: string;
@@ -57,6 +58,7 @@ type CustomPopupProps = {
   isFooterShown?: boolean;
   isHeaderShown?: boolean;
   isHeaderBorderShown?: boolean;
+  headerHeight?: number;
   children: ReactNode;
 };
 
@@ -70,6 +72,7 @@ const CustomPopup = ({
   onClickCancel,
   onClickDone,
   headerTitle,
+  headerDescription,
   headerRight,
   cancelText,
   doneText,
@@ -79,6 +82,7 @@ const CustomPopup = ({
   isFooterShown,
   isHeaderShown,
   isHeaderBorderShown,
+  headerHeight,
   children,
 }: CustomPopupProps) => {
   useEffect(() => {
@@ -112,6 +116,7 @@ const CustomPopup = ({
           onClickCancel={onClickCancel}
           onClickDone={onClickDone}
           headerTitle={headerTitle}
+          headerDescription={headerDescription}
           headerRight={headerRight}
           cancelText={cancelText}
           doneText={doneText}
@@ -121,6 +126,7 @@ const CustomPopup = ({
           isFooterShown={isFooterShown}
           isHeaderShown={isHeaderShown}
           isHeaderBorderShown={isHeaderBorderShown}
+          headerHeight={headerHeight}
         >
           {children}
         </PopupLayout>

@@ -13,6 +13,15 @@ export default {
   isNotDone: 'Incomplete',
   customSelect: 'Custom Select',
 
+  groupLeader: 'Group Leader',
+  addMemberDescription:
+    'Members already belonging to the current group are not displayed',
+  editGroupLeader: 'Change Group Leader',
+  editGroupLeaderDescription: 'Choose a new group leader',
+
+  noGroup: 'N/A',
+  warning: 'Warning',
+
   memberCount: 'Members',
   groupCount: 'Groups',
   ministryGroupCount: 'Ministry Groups',
@@ -296,6 +305,8 @@ export default {
   'title.churchState': 'Church State',
 
   'title.editChurch': 'Edit Church Information',
+
+  'title.addMemberHeaderDescription': 'You can add multiple members at once',
   /*-------------------title (popup title)-------------------*/
 
   /*-------------------header (side bar button)-------------------*/
@@ -436,6 +447,10 @@ export default {
   'button.today': 'Today',
   'button.my': 'My Schedule',
   'button.editChurch': 'Edit Church',
+
+  'button.deleteOfficer': 'Delete Officer',
+  'button.deleteGroup': 'Delete Group',
+  'button.deleteMinistryGroup': 'Delete Ministry Group',
   /*-------------------button-------------------*/
 
   /*-------------------placeholder-------------------*/
@@ -495,11 +510,6 @@ export default {
   'placeholder.denomination': 'Enter the Denomination.',
   'placeholder.pastor': 'Enter the Pastor.',
   /*-------------------placeholder-------------------*/
-
-  /*-------------------radiobutton-------------------*/
-  'radiobutton.new': 'New Member',
-  'radiobutton.transferred': 'Transferred Member',
-  /*-------------------radiobutton-------------------*/
 
   /*-------------------popup-------------------*/
   'popup.cancelRegisterTitle':
@@ -563,4 +573,13 @@ export default {
   'popup.deleteWorshipTitle': 'Do you want to delete this Worship?',
   'popup.deleteWorshipBody': 'Deleted Worship cannot be restored.',
   /*-------------------popup-------------------*/
+
+  /*-------------------warning-------------------*/
+  'warning.deleteOfficer':
+    'You cannot delete this position if there are members assigned to it. Deleted positions cannot be recovered.',
+  'warning.deleteGroup':
+    'You cannot delete this group if there are members or subgroups associated with it. Deleted groups cannot be recovered.',
+  'warning.deleteMinistryGroup':
+    'You cannot delete this ministry group if there are members or subgroups associated with it. Deleted ministry groups cannot be recovered.',
+  /*-------------------warning-------------------*/
 } as const;

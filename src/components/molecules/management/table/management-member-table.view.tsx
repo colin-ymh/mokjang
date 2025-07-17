@@ -3,7 +3,7 @@ import { usePathname } from 'next/navigation';
 import styled from 'styled-components';
 import { TABLE_HEADER_ITEM } from '@/redux/reducers/filter/member-filter-reducer';
 
-import { GRAY, WHITE } from '@/constants/styles/color';
+import { GRAY, MAIN, WHITE } from '@/constants/styles/color';
 import { MEMBER } from '@/constants/column/member-column';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { Member } from '@/models/member/member';
@@ -15,8 +15,9 @@ import {
   getLocaleDateFromDashDate,
 } from '@/utils/format';
 import { LOCALE } from '@/constants/state/locale';
-import GroupMemberTableHeader from '@/components/atoms/management/group/member/group-member-table-header';
+import ManagementMemberTableHeader from '@/components/atoms/management/table/management-member-table-header';
 import MemberProfilePopupButton from '@/components/molecules/common/button/member-profile-popup-button';
+import { ORDER_DIRECTION } from '@/constants/constant';
 
 const getColumnWidth = (id: string) => {
   switch (id) {
@@ -39,8 +40,9 @@ const getColumnWidth = (id: string) => {
 const TableContainer = styled.div<{ height: number }>`
   /* 항상 가로 100%를 채움 */
   width: 100%;
-  /* 세로 높이만큼 상하 스크롤 */
-  height: ${({ height }) => `${height - 270}px`};
+  background-color: ${WHITE};
+  // /* 세로 높이만큼 상하 스크롤 */
+  max-height: ${({ height }) => `${height - 300}px`};
 
   /* 오버플로 시 스크롤 */
   overflow-x: auto;
@@ -63,11 +65,11 @@ const MemberTable = styled.table`
 
 // 4. 헤더(TH)
 const TableHeader = styled.th<{ id: string; $isLast?: boolean }>`
-  padding: 3px 10px;
-  background-color: ${WHITE};
+  padding: 20px;
   position: sticky;
   top: 0;
   z-index: 5;
+  background-color: ${WHITE};
 
   /* 만약 마지막 컬럼이면 width: auto */
   width: ${({ id, $isLast }) => ($isLast ? 'auto' : `${getColumnWidth(id)}px`)};
@@ -83,8 +85,8 @@ const TableHeader = styled.th<{ id: string; $isLast?: boolean }>`
     bottom: 0;
     left: 0;
     right: 0;
-    height: 0.7px;
-    background: ${GRAY.SEMI_LIGHT};
+    height: 1px;
+    background: ${GRAY.LIGHT};
   }
 `;
 
@@ -92,12 +94,16 @@ const TableHeader = styled.th<{ id: string; $isLast?: boolean }>`
 const MemberTableRow = styled.tr`
   border-bottom: 1px solid ${GRAY.EXTRA_LIGHT};
   &:hover td {
-    background-color: ${GRAY.LIGHT};
+    background-color: ${MAIN.EXTRA_LIGHT};
+  }
+
+  &:last-child {
+    border-bottom: none;
   }
 `;
 
 const TableData = styled.td<{ id: string; $index: number; $isLast?: boolean }>`
-  padding: 10px;
+  padding: 20px;
 
   cursor: pointer;
 
@@ -123,59 +129,24 @@ const ContentWrapper = styled.div`
   white-space: nowrap;
 `;
 
-export const MANAGEMENT_MEMBER_TABLE_HEADER: TABLE_HEADER_ITEM[] = [
-  {
-    id: MEMBER.GROUP,
-    isShown: true,
-    isSortable: false,
-    isFilterable: false,
-    isFixed: true,
-    isDate: false,
-  },
-  {
-    id: MEMBER.OFFICER,
-    isShown: true,
-    isSortable: false,
-    isFilterable: false,
-    isFixed: false,
-    isDate: false,
-  },
-  {
-    id: MEMBER.NAME,
-    isShown: true,
-    isSortable: false,
-    isFilterable: false,
-    isFixed: true,
-    isDate: false,
-  },
-  {
-    id: MEMBER.AGE,
-    isShown: true,
-    isSortable: false,
-    isFilterable: false,
-    isFixed: false,
-    isDate: false,
-  },
-  {
-    id: MEMBER.MOBILE_PHONE,
-    isShown: true,
-    isSortable: false,
-    isFilterable: false,
-    isFixed: false,
-    isDate: false,
-  },
-];
-
 type MemberTableProps = {
   members: Member[];
   scrollRef: MutableRefObject<HTMLDivElement | null>;
   onScroll: () => void;
+  orderBy: MEMBER | null;
+  orderDirection: ORDER_DIRECTION | null;
+  onClickHeaderItem: (headerId: MEMBER) => void;
+  headerItems: TABLE_HEADER_ITEM[];
 };
 
 const ManagementMemberTableView = ({
   members,
   scrollRef,
   onScroll,
+  orderBy,
+  orderDirection,
+  onClickHeaderItem,
+  headerItems,
 }: MemberTableProps) => {
   const { height } = useWindowSize();
   const pathname = usePathname();
@@ -187,7 +158,9 @@ const ManagementMemberTableView = ({
         return <MainText>{member?.group?.name}</MainText>;
 
       case MEMBER.NAME:
-        return <MemberProfilePopupButton member={member} />;
+        return (
+          <MemberProfilePopupButton member={member} isOfficerShown={false} />
+        );
       case MEMBER.MOBILE_PHONE:
         return (
           <MainText>
@@ -222,32 +195,37 @@ const ManagementMemberTableView = ({
       <MemberTable>
         <thead>
           <tr>
-            {MANAGEMENT_MEMBER_TABLE_HEADER.filter((item) => item.isShown).map(
-              (item) => (
+            {headerItems
+              .filter((item) => item.isShown)
+              .map((item) => (
                 <TableHeader key={item.id} id={item.id}>
-                  <GroupMemberTableHeader item={item} onClick={() => {}} />
+                  <ManagementMemberTableHeader
+                    item={item}
+                    onClick={onClickHeaderItem}
+                    orderBy={orderBy}
+                    orderDirection={orderDirection}
+                  />
                 </TableHeader>
-              )
-            )}
+              ))}
           </tr>
         </thead>
         <tbody>
           {members.map((member, rowIndex) => (
             <MemberTableRow key={member.id}>
-              {MANAGEMENT_MEMBER_TABLE_HEADER.filter(
-                (item) => item.isShown
-              ).map((item, index) => (
-                <TableData
-                  key={item.id}
-                  id={item.id}
-                  $index={rowIndex}
-                  $isLast={index === MANAGEMENT_MEMBER_TABLE_HEADER.length - 1}
-                >
-                  <ContentWrapper>
-                    {getMemberTableContent(item.id, member)}
-                  </ContentWrapper>
-                </TableData>
-              ))}
+              {headerItems
+                .filter((item) => item.isShown)
+                .map((item, index) => (
+                  <TableData
+                    key={item.id}
+                    id={item.id}
+                    $index={rowIndex}
+                    $isLast={index === headerItems.length - 1}
+                  >
+                    <ContentWrapper>
+                      {getMemberTableContent(item.id, member)}
+                    </ContentWrapper>
+                  </TableData>
+                ))}
             </MemberTableRow>
           ))}
         </tbody>

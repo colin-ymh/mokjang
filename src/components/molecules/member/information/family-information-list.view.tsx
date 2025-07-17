@@ -1,4 +1,3 @@
-import { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
 
 import { FAMILY, MEDIA_MIN_WIDTH } from '@/constants/constant';
@@ -89,7 +88,6 @@ type FamilyInformationListViewProps = {
   onClickFamilyMember: (familyMemberId: string) => void;
   onClickEdit: (member: FamilyMember) => void;
   onClickConfirmDelete: (familyMemberId: string) => void;
-  setIsToastShown: Dispatch<SetStateAction<boolean>>;
 };
 
 const FamilyInformationListView = ({
@@ -103,7 +101,6 @@ const FamilyInformationListView = ({
   onClickFamilyMember,
   onClickConfirmDelete,
   onClickEdit,
-  setIsToastShown,
 }: FamilyInformationListViewProps) => {
   const t_header = useScopedI18n('header');
   return (
@@ -141,7 +138,6 @@ const FamilyInformationListView = ({
             onClickClose={onClickCloseModal}
             onClickCreateFamily={onClickCreateFamily}
             onClickEditFamily={onClickEditFamily}
-            setIsToastShown={setIsToastShown}
           />
         </FamilyModalContainer>
       )}

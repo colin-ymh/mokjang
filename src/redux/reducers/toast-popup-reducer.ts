@@ -23,11 +23,11 @@ const ToastPopupSlice = createSlice({
     setIsToastShown(state, action: PayloadAction<boolean>) {
       state.isToastShown = action.payload;
     },
-    setToastColor(state, action: PayloadAction<string>) {
-      state.toastColor = action.payload;
-    },
     setToastBackgroundColor(state, action: PayloadAction<string>) {
       state.toastBackgroundColor = action.payload;
+    },
+    setToastColor(state, action: PayloadAction<string>) {
+      state.toastColor = action.payload;
     },
     setToastText(state, action: PayloadAction<string>) {
       state.toastText = action.payload;
@@ -37,8 +37,8 @@ const ToastPopupSlice = createSlice({
 
 export const {
   setIsToastShown,
-  setToastColor,
   setToastBackgroundColor,
+  setToastColor,
   setToastText,
 } = ToastPopupSlice.actions;
 

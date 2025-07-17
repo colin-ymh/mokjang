@@ -1,11 +1,4 @@
-import React, {
-  ChangeEvent,
-  Dispatch,
-  SetStateAction,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 import { fetchGroups } from '@/redux/reducers/church-reducer';
@@ -19,17 +12,19 @@ import { getFormattedTitle } from '@/utils/format';
 import { getIsWellFormedTitle } from '@/utils/check';
 import { useScopedI18n } from '../../../../../../locales/client';
 import { BLACK, DESTRUCTIVE } from '@/constants/styles/color';
+import {
+  setIsToastShown,
+  setToastBackgroundColor,
+  setToastText,
+} from '@/redux/reducers/toast-popup-reducer';
 
 type ManagementGroupItemProps = {
   group: Group;
   level: number;
   selectedGroupId: string | null;
-  onClickGroup: (id: string) => void;
+  onClickGroup: (group: Group) => void;
   closedGroups: Set<number>;
   onClickToggle: (id: string) => void;
-  setIsToastShown: Dispatch<SetStateAction<boolean>>;
-  setToastText: Dispatch<SetStateAction<string>>;
-  setToastColor: Dispatch<SetStateAction<string>>;
 };
 
 const ManagementGroupItem = ({
@@ -39,9 +34,6 @@ const ManagementGroupItem = ({
   onClickGroup,
   closedGroups,
   onClickToggle,
-  setIsToastShown,
-  setToastText,
-  setToastColor,
 }: ManagementGroupItemProps) => {
   const t_popup = useScopedI18n('popup');
   const dispatch = useDispatch<AppDispatch>();
@@ -84,9 +76,9 @@ const ManagementGroupItem = ({
       await dispatch(fetchGroups());
       setIsAddShown(false);
       setNewGroupName(BLANK);
-      setToastText(t_popup('saveComplete'));
-      setIsToastShown(true);
-      setToastColor(BLACK);
+      dispatch(setToastText(t_popup('saveComplete')));
+      dispatch(setIsToastShown(true));
+      dispatch(setToastBackgroundColor(BLACK));
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));
     }
@@ -129,12 +121,10 @@ const ManagementGroupItem = ({
       }
     } catch (error) {
       if (error instanceof Error) {
-        setToastText(error.message);
-        setToastColor(DESTRUCTIVE.LIGHT);
-        setIsToastShown(true);
-      } else {
-        setThrownError(new Error(String(error)));
-      }
+        dispatch(setToastText(error.message));
+        dispatch(setToastBackgroundColor(DESTRUCTIVE.LIGHT));
+        dispatch(setIsToastShown(true));
+      } else setThrownError(new Error(String(error)));
     }
   };
 
@@ -202,9 +192,6 @@ const ManagementGroupItem = ({
             onClickGroup={onClickGroup}
             closedGroups={closedGroups}
             onClickToggle={onClickToggle}
-            setToastColor={setToastColor}
-            setIsToastShown={setIsToastShown}
-            setToastText={setToastText}
           />
         ))}
     </>

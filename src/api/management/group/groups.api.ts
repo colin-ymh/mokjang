@@ -58,6 +58,15 @@ type DeleteGroupParams = {
   groupId: string;
 };
 
+type EditGroupLeaderParams = {
+  groupId: string;
+  churchId: string;
+};
+
+type EditGroupLeaderBody = {
+  newLeaderMemberId: string;
+};
+
 export class GroupsApi {
   private _url: string;
 
@@ -256,6 +265,36 @@ export class GroupsApi {
 
     try {
       return await authorizeAxios.delete(url);
+    } catch (serverError: any) {
+      if (serverError.response) {
+        const { message, error, statusCode } = serverError.response.data;
+        throw new CustomError(message, error, statusCode);
+      } else {
+        throw new CustomError(
+          '알 수 없는 에러가 발생했습니다',
+          500,
+          'Unknown Error'
+        );
+      }
+    }
+  };
+
+  /**
+   * 그룹장 수정하기
+   * @param {EditGroupLeaderParams} params
+   * @param {EditGroupLeaderBody} body
+   * @returns {Promise<AxiosResponse>}
+   */
+  public editGroupLeader = async (
+    params: EditGroupLeaderParams,
+    body: EditGroupLeaderBody
+  ): Promise<AxiosResponse> => {
+    const { churchId, groupId } = params;
+
+    const url = `${this._url}/churches/${churchId}/management/groups/${groupId}/leader`;
+
+    try {
+      return await authorizeAxios.patch(url, body);
     } catch (serverError: any) {
       if (serverError.response) {
         const { message, error, statusCode } = serverError.response.data;

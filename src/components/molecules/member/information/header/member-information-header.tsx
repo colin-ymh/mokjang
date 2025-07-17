@@ -8,9 +8,8 @@ import { setMembers } from '@/redux/reducers/filter/member-filter-reducer';
 import { MembersApi } from '@/api/members/members.api';
 import MemberInformationHeaderView from '@/components/molecules/member/information/header/member-information-header.view';
 import { getEditMemberBody, getMemberFromServer } from '@/utils/member';
-import ToastPopup from '@/components/atoms/common/popup/toast-popup';
-import { useScopedI18n } from '../../../../../../locales/client';
 import { BLANK } from '@/constants/constant';
+import { setIsToastShown } from '@/redux/reducers/toast-popup-reducer';
 
 type MemberInformationHeaderProps = {
   memberContentId: string;
@@ -21,7 +20,6 @@ const MemberInformationHeader = ({
   memberContentId,
   onClickItem,
 }: MemberInformationHeaderProps) => {
-  const t_popup = useScopedI18n('popup');
   const dispatch = useDispatch<AppDispatch>();
   const { targetMember } = useSelector(
     (state: RootState) => state.targetMember
@@ -31,8 +29,6 @@ const MemberInformationHeader = ({
 
   const membersApi = new MembersApi(false);
 
-  // 저장 완료 토스트 팝업
-  const [isToastShown, setIsToastShown] = useState<boolean>(false);
   // 임시 프로필 이미지
   const [profileImage, setProfileImage] = useState<File | null | undefined>(
     undefined
@@ -97,7 +93,7 @@ const MemberInformationHeader = ({
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));
     } finally {
-      setIsToastShown(true);
+      dispatch(setIsToastShown(true));
     }
   };
 
@@ -114,12 +110,6 @@ const MemberInformationHeader = ({
   return (
     <>
       <MemberInformationHeaderView {...props} />
-      {isToastShown && (
-        <ToastPopup
-          setIsShow={setIsToastShown}
-          text={t_popup('saveComplete')}
-        />
-      )}
     </>
   );
 };

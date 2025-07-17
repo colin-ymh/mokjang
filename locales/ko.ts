@@ -13,6 +13,14 @@ export default {
   isNotDone: '미완료',
   customSelect: '직접선택',
 
+  groupLeader: '그룹장',
+  addMemberDescription: '현재 그룹에 이미 속한 교인은 표시되지 않습니다',
+  editGroupLeader: '그룹장 변경',
+  editGroupLeaderDescription: '새로운 그룹장을 선택하세요',
+
+  noGroup: '소속 없음',
+  warning: '경고',
+
   memberCount: '교인 수',
   groupCount: '그룹 수',
   ministryGroupCount: '사역그룹 수',
@@ -284,8 +292,9 @@ export default {
 
   'title.attendanceInformation': '보고서',
 
-  'title.editGroupName': '그룹명 수정',
-  'title.editOfficerName': '직분명 수정',
+  'title.editGroupInformation': '그룹정보 수정',
+  'title.editMinistryGroupInformation': '사역그룹정보 수정',
+  'title.editOfficerInformation': '직분정보 수정',
   'title.addWidget': '위젯 추가',
 
   'title.newMember': '신규 등록자 요약',
@@ -299,6 +308,8 @@ export default {
   'title.churchState': '교회현황',
 
   'title.editChurch': '교회정보 수정',
+  'title.addMemberHeaderDescription':
+    '여러명의 교인을 한 번에 추가할 수 있습니다',
   /*-------------------title (popup title)-------------------*/
 
   /*-------------------header (side bar button)-------------------*/
@@ -445,6 +456,10 @@ export default {
   'button.today': '오늘',
   'button.my': '내 일정',
   'button.editChurch': '정보 수정',
+
+  'button.deleteOfficer': '직분 삭제',
+  'button.deleteGroup': '그룹 삭제',
+  'button.deleteMinistryGroup': '사역그룹 삭제',
   /*-------------------button-------------------*/
 
   /*-------------------placeholder-------------------*/
@@ -504,11 +519,6 @@ export default {
   'placeholder.denomination': '교단명을 입력해주세요.',
   'placeholder.pastor': '담임목사를 입력해주세요.',
   /*-------------------placeholder-------------------*/
-
-  /*-------------------radiobutton-------------------*/
-  'radiobutton.new': '새신자',
-  'radiobutton.transferred': '기존 신자',
-  /*-------------------radiobutton-------------------*/
 
   /*-------------------popup-------------------*/
   'popup.cancelRegisterTitle': '교인 등록을 종료하시겠습니까?',
@@ -570,4 +580,13 @@ export default {
   'popup.deleteWorshipTitle': '해당 예배를 삭제하시겠습니까?',
   'popup.deleteWorshipBody': '삭제된 예배는 복구할 수 없습니다.',
   /*-------------------popup-------------------*/
+
+  /*-------------------warning-------------------*/
+  'warning.deleteOfficer':
+    '할당된 교인이 있으면 삭제가 불가능하며, 삭제된 직분은 복구할 수 없습니다.',
+  'warning.deleteGroup':
+    '소속된 교인이나 하위 그룹이 있으면 삭제가 불가능하며, 삭제된 그룹은 복구할 수 없습니다.',
+  'warning.deleteMinistryGroup':
+    '소속된 교인이나 하위 그룹 있으면 삭제가 불가능하며, 삭제된 사역그룹은 복구할 수 없습니다.',
+  /*-------------------warning-------------------*/
 } as const;

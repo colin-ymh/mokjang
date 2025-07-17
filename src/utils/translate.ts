@@ -1,9 +1,5 @@
 import { MEMBER } from '@/constants/column/member-column';
-import {
-  EDUCATION,
-  EDUCATION_ENROLLMENT,
-  EDUCATION_TERM,
-} from '@/constants/column/education-column';
+import { EDUCATION, EDUCATION_TERM } from '@/constants/column/education-column';
 import { VISITATION } from '@/constants/column/visitation-column';
 import { TASK } from '@/constants/column/task-column';
 import { USER } from '@/constants/column/user-column';
@@ -39,36 +35,6 @@ export const getTranslatedMemberColumn = (
       | MEMBER.BIRTH
       | MEMBER.REGISTERED_AT
       | MEMBER.UPDATED_AT
-  );
-};
-
-export const getTranslatedTermColumn = (
-  t: (key: string, ...args: any[]) => string,
-  id: EDUCATION_TERM
-): string => {
-  return t(
-    id as
-      | EDUCATION_TERM.TERM
-      | EDUCATION_TERM.EDUCATION
-      | EDUCATION_TERM.PERIOD
-      | EDUCATION_TERM.EDUCATION_ENROLLMENTS
-      | EDUCATION_TERM.IN_CHARGE
-  );
-};
-
-export const getTranslatedEnrollmentColumn = (
-  t: (key: string, ...args: any[]) => string,
-  id: EDUCATION_ENROLLMENT
-): string => {
-  return t(
-    id as
-      | EDUCATION_ENROLLMENT.MEMBER_NAME
-      | EDUCATION_ENROLLMENT.GROUP
-      | EDUCATION_ENROLLMENT.AGE
-      | EDUCATION_ENROLLMENT.ATTENDANCE
-      | EDUCATION_ENROLLMENT.NOTE
-      | EDUCATION_ENROLLMENT.MOBILE_PHONE
-      | EDUCATION_ENROLLMENT.STATUS
   );
 };
 
@@ -202,6 +168,21 @@ export const getTranslatedMemberCount = (
   }
 };
 
+export const getTranslatedSelectedMemberCount = (
+  basePath: LOCALE,
+  memberCount: number
+): string => {
+  if (basePath === LOCALE.EN) {
+    if (memberCount === 1) {
+      return '1 member selected';
+    } else {
+      return `${memberCount} members selected`;
+    }
+  } else {
+    return `${memberCount}명 선택됨`;
+  }
+};
+
 /**
  * Date Object => MM월 DD일 오후 HH:MM / 2 Feb. 5:30PM
  * @param date
@@ -218,4 +199,59 @@ export const getTranslatedScheduleDate = (locale: LOCALE, date: Date) => {
   }
 
   return `${day} ${getShortEnglishMonthName(parseInt(month) - 1)}. ${hour}:${minute}`;
+};
+
+/**
+ * age => 21세 / 21y
+ * @param locale
+ * @param age
+ */
+export const getTranslatedAge = (locale: LOCALE, age: number) => {
+  if (locale === LOCALE.KO) {
+    return `${age}세`;
+  }
+
+  return `${age}y`;
+};
+
+/**
+ *
+ * @param locale
+ * @param name
+ */
+export const getTranslatedAddMemberTitle = (locale: LOCALE, name: string) => {
+  if (locale === LOCALE.KO) {
+    return `${name} 에 교인 추가`;
+  }
+
+  return `Add Members to ${name}`;
+};
+
+/**
+ *
+ * @param locale
+ * @param name
+ */
+export const getTranslatedNewGroupLeader = (locale: LOCALE, name: string) => {
+  if (locale === LOCALE.KO) {
+    return `${name} 님이 새로운 그룹장이 됩니다`;
+  }
+
+  return `${name} will be the new group leader`;
+};
+
+/**
+ *
+ * @param locale
+ * @param name
+ */
+export const getTranslatedAlreadyGroupLeader = (
+  locale: LOCALE,
+  name: string
+) => {
+  if (locale === LOCALE.KO) {
+    return `${name} 님은 현재 그룹장입니다.`;
+  }
+
+  return `${name} is current group leader.`;
 };

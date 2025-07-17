@@ -2,38 +2,65 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { Member } from '@/models/member/member';
-import { GRAY } from '@/constants/styles/color';
-import { MainText } from '@/components/atoms/common/text/main-text';
-import { getAge, getDateFromInput } from '@/utils/date';
+import { GRAY, MAIN, WHITE } from '@/constants/styles/color';
 import CheckButton from '@/components/atoms/common/button/check-button';
+import { BLANK } from '@/constants/constant';
 import ProfileImage from '@/components/atoms/common/image/profile-image';
+import { MainText } from '../text/main-text';
+import { getFormattedPhone } from '@/utils/format';
+import { getTranslatedAge } from '@/utils/translate';
+import { usePathname } from 'next/navigation';
+import { LOCALE } from '@/constants/state/locale';
+import { getAge, getDateFromDateString } from '@/utils/date';
+import GroupTag from '@/components/atoms/common/tag/group-tag';
+import { DEFAULT_GROUP } from '@/models/management/management';
 
-const BackgroundContainer = styled.div`
+const ItemContainer = styled.div<{
+  $isEnable: boolean;
+  $isSelected: boolean;
+}>`
   display: flex;
-  position: relative;
-  padding: 5px 0;
-  border-bottom: 1px solid ${GRAY.SEMI_LIGHT};
-`;
-
-const ItemContainer = styled.div<{ $isEnable: boolean }>`
-  display: flex;
-  width: 100%;
-  padding: 5px;
-  border-radius: 5px;
-  justify-content: flex-start;
+  padding: 20px;
+  gap: 20px;
   align-items: center;
-  gap: 10px;
-  cursor: ${({ $isEnable }) => ($isEnable ? 'pointer' : 'auto')};
+  cursor: ${({ $isEnable }) => ($isEnable ? 'pointer' : 'not-allowed')};
   transition: background-color 0.2s;
+  border: 1px solid ${GRAY.EXTRA_LIGHT};
+  border-bottom: 0;
 
-  &:hover {
-    background-color: ${GRAY.SEMI_LIGHT};
+  background-color: ${({ $isSelected }) =>
+    $isSelected ? MAIN.EXTRA_LIGHT : WHITE};
+
+  &:first-child {
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+  }
+
+  &:last-child {
+    border-bottom: 1px solid ${GRAY.EXTRA_LIGHT};
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
   }
 `;
 
-const ButtonContainer = styled.div`
-  position: absolute;
-  right: 10px;
+const ProfileContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+`;
+
+const ProfileDetail = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+`;
+
+const RowContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
 `;
 
 type AddMemberItemProps = {
@@ -49,27 +76,43 @@ const AddMemberItem = ({
   isSelected,
   onClick,
 }: AddMemberItemProps) => {
-  return (
-    <BackgroundContainer>
-      <ItemContainer
-        $isEnable={isEnable}
-        onClick={() => {
-          isEnable && onClick(member);
-        }}
-      >
-        <ProfileImage value={member.profileImageUrl} />
-        <MainText>{member.name}</MainText>
-        <MainText color={GRAY.DARK}>
-          {member.birth && `(${getAge(getDateFromInput(member.birth))})`}
-        </MainText>
+  const pathname = usePathname();
+  const locale = pathname.split('/')[1] as LOCALE;
 
-        {isEnable && (
-          <ButtonContainer>
-            <CheckButton value={isSelected} isStopPropagation={false} />
-          </ButtonContainer>
-        )}
-      </ItemContainer>
-    </BackgroundContainer>
+  return (
+    <ItemContainer
+      $isEnable={isEnable}
+      $isSelected={isSelected}
+      onClick={() => {
+        isEnable && onClick(member);
+      }}
+    >
+      <CheckButton
+        value={isSelected}
+        isStopPropagation={false}
+        disabled={!isEnable}
+      />
+      <ProfileContainer>
+        <ProfileImage value={member?.profileImageUrl} />
+        <ProfileDetail>
+          <RowContainer>
+            <MainText>{`${member.name} ${member.officer?.name || BLANK}`}</MainText>
+            <MainText color={GRAY.DEFAULT}>
+              {`(${getTranslatedAge(
+                locale,
+                getAge(getDateFromDateString(member.birth))
+              )})`}
+            </MainText>
+          </RowContainer>
+          <RowContainer>
+            <GroupTag group={member.group || DEFAULT_GROUP} />
+            <MainText color={GRAY.SEMI_DARK}>
+              {getFormattedPhone(member.mobilePhone)}
+            </MainText>
+          </RowContainer>
+        </ProfileDetail>
+      </ProfileContainer>
+    </ItemContainer>
   );
 };
 

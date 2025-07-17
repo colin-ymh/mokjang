@@ -141,3 +141,9 @@ export enum SEARCH_RANGE {
   WEEKLY = 'weekly',
   MONTHLY = 'monthly',
 }
+
+export enum GROUP_ROLE {
+  NONE = 'none',
+  LEADER = 'leader',
+  MEMBER = 'member',
+}

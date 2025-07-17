@@ -17,9 +17,10 @@ import { setEducationTerms } from '@/redux/reducers/filter/education-term-filter
 import { useParams } from 'next/navigation';
 import { EDUCATION_CONTENT_ID } from '@/constants/layout/content';
 import { EducationEnrollmentsApi } from '@/api/education/education-enrollments.api';
-import ToastPopup from '@/components/atoms/common/popup/toast-popup';
-import { BLANK } from '@/constants/constant';
-import { DESTRUCTIVE } from '@/constants/styles/color';
+import {
+  setIsToastShown,
+  setToastText,
+} from '@/redux/reducers/toast-popup-reducer';
 
 type MainEducationHeaderProps = {};
 
@@ -58,9 +59,6 @@ const MainEducationHeader = ({}: MainEducationHeaderProps) => {
   const [isSaveEnabled, setIsSaveEnabled] = useState<boolean>(false);
 
   const [isTermSaveEnabled, setIsTermSaveEnabled] = useState<boolean>(false);
-
-  const [isToastShown, setIsToastShown] = useState<boolean>(false);
-  const [toastText, setToastText] = useState<string>(BLANK);
 
   const [thrownError, setThrownError] = useState<Error | null>(null);
   if (thrownError) {
@@ -109,7 +107,8 @@ const MainEducationHeader = ({}: MainEducationHeaderProps) => {
         });
     } catch (error) {
       if (error instanceof Error) {
-        setToastText(error.message);
+        dispatch(setToastText(error.message));
+        dispatch(setIsToastShown(true));
       } else {
         setThrownError(new Error(String(error)));
       }
@@ -191,7 +190,8 @@ const MainEducationHeader = ({}: MainEducationHeaderProps) => {
         });
     } catch (error) {
       if (error instanceof Error) {
-        setToastText(error.message);
+        dispatch(setToastText(error.message));
+        dispatch(setIsToastShown(true));
       } else {
         setThrownError(new Error(String(error)));
       }
@@ -236,12 +236,6 @@ const MainEducationHeader = ({}: MainEducationHeaderProps) => {
     }
   }, [targetEducation.id]);
 
-  useEffect(() => {
-    if (toastText) {
-      setIsToastShown(true);
-    }
-  }, [toastText]);
-
   const props = {
     isAddEducationOpened,
     isAddEducationTermOpened,
@@ -260,13 +254,6 @@ const MainEducationHeader = ({}: MainEducationHeaderProps) => {
   return (
     <>
       <MainEducationHeaderView {...props} />
-      {isToastShown && (
-        <ToastPopup
-          setIsShow={setIsToastShown}
-          text={toastText}
-          backgroundColor={DESTRUCTIVE.LIGHT}
-        />
-      )}
     </>
   );
 };

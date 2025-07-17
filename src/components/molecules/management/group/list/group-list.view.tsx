@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 import { Group } from '@/models/management/management';
@@ -14,27 +14,21 @@ const GroupListContainer = styled.div<{ height: number }>`
 `;
 
 type GroupListViewProps = {
-  list: {
-    groups: Group[];
-  };
-  toast: {
-    setIsToastShown: Dispatch<SetStateAction<boolean>>;
-    setToastText: Dispatch<SetStateAction<string>>;
-    setToastColor: Dispatch<SetStateAction<string>>;
-  };
-  item: {
-    closedGroups: Set<number>;
-    selectedGroupId: string | null;
-    onClickGroup: (id: string) => void;
-    onClickToggle: (id: string) => void;
-  };
+  groups: Group[];
+  closedGroups: Set<number>;
+  selectedGroupId: string | null;
+  onClickGroup: (group: Group) => void;
+  onClickToggle: (id: string) => void;
 };
 
-const GroupListView = (props: GroupListViewProps) => {
+const GroupListView = ({
+  groups,
+  closedGroups,
+  selectedGroupId,
+  onClickGroup,
+  onClickToggle,
+}: GroupListViewProps) => {
   const { height } = useWindowSize();
-  const { groups } = props.list;
-  const toastProps = props.toast;
-  const itemProps = props.item;
   return (
     <>
       <GroupListContainer height={height}>
@@ -43,8 +37,10 @@ const GroupListView = (props: GroupListViewProps) => {
             key={group.id}
             level={0}
             group={group}
-            {...itemProps}
-            {...toastProps}
+            closedGroups={closedGroups}
+            selectedGroupId={selectedGroupId}
+            onClickGroup={onClickGroup}
+            onClickToggle={onClickToggle}
           />
         ))}
       </GroupListContainer>

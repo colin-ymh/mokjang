@@ -9,8 +9,10 @@ import { DEFAULT_VISITATION } from '@/models/visitation/visitation';
 import { setVisitations } from '@/redux/reducers/filter/visitation-filter-reducer';
 import { getIsWellFormedTitle } from '@/utils/check';
 import { BLANK } from '@/constants/constant';
-import ToastPopup from '@/components/atoms/common/popup/toast-popup';
-import { DESTRUCTIVE } from '@/constants/styles/color';
+import {
+  setIsToastShown,
+  setToastText,
+} from '@/redux/reducers/toast-popup-reducer';
 
 type MainVisitationHeaderProps = {};
 
@@ -32,9 +34,6 @@ const MainVisitationHeader = ({}: MainVisitationHeaderProps) => {
 
   const [isAddVisitationOpened, setIsAddVisitationOpened] =
     useState<boolean>(false);
-
-  const [isToastShown, setIsToastShown] = useState<boolean>(false);
-  const [toastText, setToastText] = useState<string>(BLANK);
 
   const [thrownError, setThrownError] = useState<Error | null>(null);
   if (thrownError) {
@@ -90,7 +89,8 @@ const MainVisitationHeader = ({}: MainVisitationHeaderProps) => {
       dispatch(setTargetVisitation(DEFAULT_VISITATION));
     } catch (error) {
       if (error instanceof Error) {
-        setToastText(error.message);
+        dispatch(setToastText(error.message));
+        dispatch(setIsToastShown(true));
       } else {
         setThrownError(new Error(String(error)));
       }
@@ -127,22 +127,9 @@ const MainVisitationHeader = ({}: MainVisitationHeaderProps) => {
     onClickSaveVisitation,
   };
 
-  useEffect(() => {
-    if (toastText) {
-      setIsToastShown(true);
-    }
-  }, [toastText]);
-
   return (
     <>
       <MainVisitationHeaderView {...props} />
-      {isToastShown && (
-        <ToastPopup
-          setIsShow={setIsToastShown}
-          text={toastText}
-          backgroundColor={DESTRUCTIVE.LIGHT}
-        />
-      )}
     </>
   );
 };

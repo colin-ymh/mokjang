@@ -8,14 +8,17 @@ import Button from '@/components/atoms/common/button/button';
 import { MEDIA_MAX_WIDTH, MEDIA_MIN_WIDTH } from '@/constants/constant';
 
 /* ───────── 스타일 ───────── */
-const HeaderContainer = styled.header<{ $isHeaderBorderShown: boolean }>`
+const HeaderContainer = styled.header<{
+  $isHeaderBorderShown: boolean;
+  height: number;
+}>`
   position: relative;
   z-index: 10;
   overflow: visible;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 40px;
+  height: ${({ height }) => `${height}px`};
   flex-shrink: 0;
   background-color: ${WHITE};
   border-bottom: ${({ $isHeaderBorderShown }) =>
@@ -37,8 +40,8 @@ const HeaderLeft = styled.div`
 const HeaderTitle = styled.div`
   display: flex;
   flex: 1;
-  justify-content: center;
-  align-items: center;
+  flex-direction: column;
+  gap: 10px;
 
   @media (min-width: ${MEDIA_MIN_WIDTH.DESKTOP}) {
     padding-left: 20px;
@@ -64,25 +67,29 @@ const ButtonContainer = styled.div`
 /* ───────── 컴포넌트 ───────── */
 type PopupHeaderViewProps = {
   headerTitle?: string;
+  headerDescription?: string;
   headerRight?: React.ReactNode;
   onClickCancel: () => void;
   onClickDone?: () => void;
   cancelText: string;
   doneText: string;
   isHeaderBorderShown?: boolean;
+  height?: number;
 };
 
 const PopupHeaderView = ({
   headerTitle,
+  headerDescription,
   headerRight,
   onClickCancel,
   onClickDone,
   cancelText,
   doneText,
   isHeaderBorderShown = true,
+  height = 60,
 }: PopupHeaderViewProps) => {
   return (
-    <HeaderContainer $isHeaderBorderShown={isHeaderBorderShown}>
+    <HeaderContainer $isHeaderBorderShown={isHeaderBorderShown} height={height}>
       <HeaderLeft>
         <Button
           text={cancelText}
@@ -93,9 +100,10 @@ const PopupHeaderView = ({
       </HeaderLeft>
 
       <HeaderTitle>
-        <MainText size={SIZE.LARGE} fontWeight={600}>
-          {headerTitle}
-        </MainText>
+        <MainText size={SIZE.EXTRA_LARGE}>{headerTitle}</MainText>
+        {headerDescription && (
+          <MainText color={GRAY.SEMI_DARK}>{headerDescription}</MainText>
+        )}
       </HeaderTitle>
 
       <HeaderRight>

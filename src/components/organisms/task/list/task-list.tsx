@@ -12,8 +12,10 @@ import { DEFAULT_TASK, Task } from '@/models/task/task';
 import { setTargetTask } from '@/redux/reducers/target/target-task-reducer';
 import { getIsWellFormedTitle } from '@/utils/check';
 import { BLANK, HEADER_BAR } from '@/constants/constant';
-import ToastPopup from '@/components/atoms/common/popup/toast-popup';
-import { DESTRUCTIVE } from '@/constants/styles/color';
+import {
+  setIsToastShown,
+  setToastText,
+} from '@/redux/reducers/toast-popup-reducer';
 
 type TaskListProps = {
   headerType?: HEADER_BAR;
@@ -35,9 +37,6 @@ const TaskList = ({ headerType = HEADER_BAR.ALL }: TaskListProps) => {
   const [prevReceiverIds, setReceiverIds] = useState<string[]>([]);
 
   const [isSaveEnabled, setIsSaveEnabled] = useState<boolean>(false);
-
-  const [isToastShown, setIsToastShown] = useState<boolean>(false);
-  const [toastText, setToastText] = useState<string>(BLANK);
 
   const [thrownError, setThrownError] = useState<Error | null>(null);
   if (thrownError) {
@@ -206,7 +205,8 @@ const TaskList = ({ headerType = HEADER_BAR.ALL }: TaskListProps) => {
         });
     } catch (error) {
       if (error instanceof Error) {
-        setToastText(error.message);
+        dispatch(setToastText(error.message));
+        dispatch(setIsToastShown(true));
       } else {
         setThrownError(new Error(String(error)));
       }
@@ -258,7 +258,8 @@ const TaskList = ({ headerType = HEADER_BAR.ALL }: TaskListProps) => {
       }
     } catch (error) {
       if (error instanceof Error) {
-        setToastText(error.message);
+        dispatch(setToastText(error.message));
+        dispatch(setIsToastShown(true));
       } else {
         setThrownError(new Error(String(error)));
       }
@@ -309,12 +310,6 @@ const TaskList = ({ headerType = HEADER_BAR.ALL }: TaskListProps) => {
     setIsSaveEnabled(true);
   }, [targetTask]);
 
-  useEffect(() => {
-    if (toastText) {
-      setIsToastShown(true);
-    }
-  }, [toastText]);
-
   const props = {
     list: {
       onClickTaskItem,
@@ -339,13 +334,6 @@ const TaskList = ({ headerType = HEADER_BAR.ALL }: TaskListProps) => {
   return (
     <>
       <TaskListView {...props} />
-      {isToastShown && (
-        <ToastPopup
-          setIsShow={setIsToastShown}
-          text={toastText}
-          backgroundColor={DESTRUCTIVE.LIGHT}
-        />
-      )}
     </>
   );
 };

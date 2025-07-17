@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { RadioButtonValue } from '@/components/atoms/common/radio-button/radio-button';
+import { RadioButtonValue } from '@/components/atoms/common/radio-button/radio-button-list';
 import { GRAY, MAIN, WHITE } from '@/constants/styles/color';
 import { MainText } from '@/components/atoms/common/text/main-text';
 

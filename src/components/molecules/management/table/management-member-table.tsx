@@ -1,16 +1,27 @@
 import React, { useEffect, useRef } from 'react';
 import { Member } from '@/models/member/member';
 import ManagementMemberTableView from '@/components/molecules/management/table/management-member-table.view';
+import { MEMBER } from '@/constants/column/member-column';
+import { ORDER_DIRECTION } from '@/constants/constant';
+import { TABLE_HEADER_ITEM } from '@/redux/reducers/filter/member-filter-reducer';
 
-export type GroupMemberTableProps = {
+export type ManagementMemberTableProps = {
   members: Member[];
   loadMembers: () => void;
+  orderBy: MEMBER | null;
+  orderDirection: ORDER_DIRECTION | null;
+  onClickHeaderItem: (headerId: MEMBER) => void;
+  headerItems: TABLE_HEADER_ITEM[];
 };
 
 const ManagementMemberTable = ({
   members,
   loadMembers,
-}: GroupMemberTableProps) => {
+  orderBy,
+  orderDirection,
+  onClickHeaderItem,
+  headerItems,
+}: ManagementMemberTableProps) => {
   const scrollRef = useRef<HTMLDivElement | null>(null);
 
   const onScroll = () => {
@@ -34,6 +45,10 @@ const ManagementMemberTable = ({
     members,
     scrollRef,
     onScroll,
+    orderBy,
+    orderDirection,
+    onClickHeaderItem,
+    headerItems,
   };
 
   return (

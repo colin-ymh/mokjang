@@ -23,13 +23,13 @@ import { DEFAULT_MINISTRY, Ministry } from '@/models/management/management';
 import MinistryModal from '@/components/atoms/common/modal/ministry-modal';
 import BaptismModal from '@/components/atoms/common/modal/baptism-modal';
 import { MinistriesApi } from '@/api/management/ministry/ministries.api';
-import ToastPopup from '@/components/atoms/common/popup/toast-popup';
 import { useScopedI18n } from '../../../../../locales/client';
 import BottomSheet from '@/components/atoms/common/bottom-sheet/bottom-sheet';
 import SlidePopup from '@/components/atoms/common/popup/slide-popup';
 import { setTargetMember } from '@/redux/reducers/target/target-member-reducer';
 import { uploadFiles } from '@/utils/upload';
 import AddMember from '@/components/organisms/member/add/add-member';
+import { setIsToastShown } from '@/redux/reducers/toast-popup-reducer';
 
 type MemberInformationListProps = {};
 
@@ -55,9 +55,6 @@ const MemberInformationList = ({}: MemberInformationListProps) => {
   if (thrownError) {
     throw thrownError;
   }
-
-  // 저장 완료 토스트 팝업
-  const [isToastShown, setIsToastShown] = useState<boolean>(false);
 
   // 현재 활성화된 이력
   const [targetOfficerHistory, setTargetOfficerHistory] = useState<
@@ -178,7 +175,7 @@ const MemberInformationList = ({}: MemberInformationListProps) => {
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));
     } finally {
-      setIsToastShown(true);
+      dispatch(setIsToastShown(true));
     }
   };
 
@@ -220,7 +217,7 @@ const MemberInformationList = ({}: MemberInformationListProps) => {
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));
     } finally {
-      setIsToastShown(true);
+      dispatch(setIsToastShown(true));
     }
   };
 
@@ -303,7 +300,7 @@ const MemberInformationList = ({}: MemberInformationListProps) => {
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));
     } finally {
-      setIsToastShown(true);
+      dispatch(setIsToastShown(true));
     }
   };
 
@@ -399,7 +396,7 @@ const MemberInformationList = ({}: MemberInformationListProps) => {
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));
     } finally {
-      setIsToastShown(true);
+      dispatch(setIsToastShown(true));
     }
   };
 
@@ -495,7 +492,7 @@ const MemberInformationList = ({}: MemberInformationListProps) => {
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));
     } finally {
-      setIsToastShown(true);
+      dispatch(setIsToastShown(true));
     }
   };
 
@@ -588,12 +585,7 @@ const MemberInformationList = ({}: MemberInformationListProps) => {
   return (
     <>
       <MemberInformationListView {...props} />
-      {isToastShown && (
-        <ToastPopup
-          setIsShow={setIsToastShown}
-          text={t_popup('saveComplete')}
-        />
-      )}
+
       {/* 교인 정보 수정 */}
       <SlidePopup
         isShow={isEditShown}

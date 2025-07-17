@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 import { Officer } from '@/models/management/management';
@@ -15,25 +15,17 @@ const OfficerListContainer = styled.div<{ height: number }>`
 `;
 
 type OfficerListViewProps = {
-  list: {
-    officers: Officer[];
-  };
-  toast: {
-    setIsToastShown: Dispatch<SetStateAction<boolean>>;
-    setToastText: Dispatch<SetStateAction<string>>;
-    setToastColor: Dispatch<SetStateAction<string>>;
-  };
-  item: {
-    selectedOfficerId: string | null;
-    onClickOfficer: (id: string) => void;
-  };
+  officers: Officer[];
+  selectedOfficerId: string | null;
+  onClickOfficer: (officer: Officer) => void;
 };
 
-const OfficerListView = (props: OfficerListViewProps) => {
+const OfficerListView = ({
+  officers,
+  selectedOfficerId,
+  onClickOfficer,
+}: OfficerListViewProps) => {
   const { height } = useWindowSize();
-  const { officers } = props.list;
-  const toastProps = props.toast;
-  const itemProps = props.item;
   return (
     <>
       <OfficerListContainer height={height}>
@@ -42,8 +34,8 @@ const OfficerListView = (props: OfficerListViewProps) => {
             key={officer.id}
             level={0}
             officer={officer}
-            {...itemProps}
-            {...toastProps}
+            selectedOfficerId={selectedOfficerId}
+            onClickOfficer={onClickOfficer}
           />
         ))}
       </OfficerListContainer>

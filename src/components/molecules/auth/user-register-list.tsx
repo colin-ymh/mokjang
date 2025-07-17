@@ -7,15 +7,13 @@ import { setUser } from '@/redux/reducers/user-reducer';
 
 import { AuthApi, IS_TEST } from '@/api/auth/auth.api';
 import UserRegisterListView from '@/components/molecules/auth/user-register-list.view';
-import ToastPopup from '@/components/atoms/common/popup/toast-popup';
-import { DESTRUCTIVE } from '@/constants/styles/color';
-import { TOAST_DIRECTION } from '@/components/atoms/common/popup/toast-popup.view';
 import Loading from '@/components/atoms/common/etc/loading';
 import { getFormattedMobilePhone, getFormattedName } from '@/utils/format';
 import { usePageRouter } from '@/utils/router';
 
 import { useScopedI18n } from '../../../../locales/client';
 import { UserApi } from '@/api/user/user.api';
+import { setIsToastShown } from '@/redux/reducers/toast-popup-reducer';
 
 const UserRegisterList = () => {
   const t_popup = useScopedI18n('popup');
@@ -30,7 +28,6 @@ const UserRegisterList = () => {
     throw thrownError;
   }
 
-  const [isErrorShown, setIsErrorShown] = useState<boolean>(false);
   // 로딩 상태 추가
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -102,7 +99,7 @@ const UserRegisterList = () => {
       }
     } catch (error) {
       setIsVerified(false);
-      setIsErrorShown(true);
+      dispatch(setIsToastShown(true));
     }
   };
 
@@ -175,14 +172,6 @@ const UserRegisterList = () => {
   return (
     <>
       <UserRegisterListView {...props} />
-      {isErrorShown && (
-        <ToastPopup
-          text={t_popup('verifyFail')}
-          setIsShow={setIsErrorShown}
-          backgroundColor={DESTRUCTIVE.DEFAULT}
-          direction={TOAST_DIRECTION.BOTTOM}
-        />
-      )}
       <Loading isShow={isLoading} />
     </>
   );

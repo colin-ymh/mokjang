@@ -13,13 +13,14 @@ import {
   DEFAULT_WORSHIP_SESSION,
 } from '@/models/worship/worship';
 import { WorshipSessionsApi } from '@/api/worship/worship-sessions.api';
-import { BLANK } from '@/constants/constant';
-import ToastPopup from '@/components/atoms/common/popup/toast-popup';
-import { DESTRUCTIVE } from '@/constants/styles/color';
 import { setTargetWorship } from '@/redux/reducers/target/target-worship-reducer';
 import { setWorships } from '@/redux/reducers/filter/worship-filter-reducer';
 import { getIsWellFormedTitle } from '@/utils/check';
 import { WorshipsApi } from '@/api/worship/worships.api';
+import {
+  setIsToastShown,
+  setToastText,
+} from '@/redux/reducers/toast-popup-reducer';
 
 type MainAttendanceHeaderProps = {};
 
@@ -51,9 +52,6 @@ const MainAttendanceHeader = ({}: MainAttendanceHeaderProps) => {
   const [isEditOpened, setIsEditOpened] = useState<boolean>(false);
   const [isEditEnabled, setIsEditEnabled] = useState<boolean>(false);
 
-  const [isToastShown, setIsToastShown] = useState<boolean>(false);
-  const [toastText, setToastText] = useState<string>(BLANK);
-
   const [thrownError, setThrownError] = useState<Error | null>(null);
   if (thrownError) {
     throw thrownError;
@@ -78,7 +76,8 @@ const MainAttendanceHeader = ({}: MainAttendanceHeaderProps) => {
       setIsSessionShown(true);
     } catch (error) {
       if (error instanceof Error) {
-        setToastText(error.message);
+        dispatch(setToastText(error.message));
+        dispatch(setIsToastShown(true));
       } else {
         setThrownError(new Error(String(error)));
       }
@@ -188,7 +187,8 @@ const MainAttendanceHeader = ({}: MainAttendanceHeaderProps) => {
         });
     } catch (error) {
       if (error instanceof Error) {
-        setToastText(error.message);
+        dispatch(setToastText(error.message));
+        dispatch(setIsToastShown(true));
       } else {
         setThrownError(new Error(String(error)));
       }
@@ -216,12 +216,6 @@ const MainAttendanceHeader = ({}: MainAttendanceHeaderProps) => {
     setIsEditEnabled(true);
   }, [targetWorshipSession]);
 
-  useEffect(() => {
-    if (toastText) {
-      setIsToastShown(true);
-    }
-  }, [toastText]);
-
   const props = {
     isSessionShown,
     isAddWorshipOpened,
@@ -242,14 +236,6 @@ const MainAttendanceHeader = ({}: MainAttendanceHeaderProps) => {
   return (
     <>
       <MainAttendanceHeaderView {...props} />
-
-      {isToastShown && (
-        <ToastPopup
-          setIsShow={setIsToastShown}
-          text={toastText}
-          backgroundColor={DESTRUCTIVE.LIGHT}
-        />
-      )}
     </>
   );
 };

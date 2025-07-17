@@ -70,40 +70,42 @@ const MemberInformationHeaderView = ({
   const headerBarItems = useMemberInformationHeaderBarItems();
 
   return (
-    <InformationHeader>
-      <Information>
-        <ProfileImage
-          value={targetMember?.profileImageUrl}
-          width={80}
-          height={80}
-          onClick={onClickProfile}
+    <>
+      <InformationHeader>
+        <Information>
+          <ProfileImage
+            value={targetMember?.profileImageUrl}
+            width={80}
+            height={80}
+            onClick={onClickProfile}
+          />
+
+          <TextContainer>
+            <MainText size={SIZE.LARGE}>{targetMember.name}</MainText>
+            <ChurchMemberInfoContainer>
+              <MainText size={SIZE.MEDIUM} color={GRAY.DARK}>
+                {targetMember?.officer?.name}
+              </MainText>
+              <MainText size={SIZE.MEDIUM} color={GRAY.DARK}>
+                {targetMember.group &&
+                  targetMember.group?.name &&
+                  targetMember?.officer?.name &&
+                  'ㆍ'}
+              </MainText>
+              <MainText size={SIZE.MEDIUM} color={GRAY.DARK}>
+                {targetMember.group?.name}
+              </MainText>
+            </ChurchMemberInfoContainer>
+          </TextContainer>
+        </Information>
+
+        {/* 개인정보, 가족 등의 탭 바*/}
+        <HeaderBarView
+          value={memberContentId}
+          items={headerBarItems}
+          onClick={onClickItem}
         />
-
-        <TextContainer>
-          <MainText size={SIZE.LARGE}>{targetMember.name}</MainText>
-          <ChurchMemberInfoContainer>
-            <MainText size={SIZE.MEDIUM} color={GRAY.DARK}>
-              {targetMember?.officer?.name}
-            </MainText>
-            <MainText size={SIZE.MEDIUM} color={GRAY.DARK}>
-              {targetMember.group &&
-                targetMember.group?.name &&
-                targetMember?.officer?.name &&
-                'ㆍ'}
-            </MainText>
-            <MainText size={SIZE.MEDIUM} color={GRAY.DARK}>
-              {targetMember.group?.name}
-            </MainText>
-          </ChurchMemberInfoContainer>
-        </TextContainer>
-      </Information>
-
-      {/* 개인정보, 가족 등의 탭 바*/}
-      <HeaderBarView
-        value={memberContentId}
-        items={headerBarItems}
-        onClick={onClickItem}
-      />
+      </InformationHeader>
 
       {/* 교인 정보 수정 */}
       <SlidePopup
@@ -114,7 +116,7 @@ const MemberInformationHeaderView = ({
       >
         <AddMember onChangeProfileImage={onChangeProfileImage} />
       </SlidePopup>
-    </InformationHeader>
+    </>
   );
 };
 

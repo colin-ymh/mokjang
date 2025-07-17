@@ -3,16 +3,12 @@ import {
   BLANK,
   FAMILY,
   GENDER,
+  GROUP_ROLE,
   MARRIAGE,
   NONE,
   NULL,
 } from '@/constants/constant';
-import {
-  Group,
-  GroupRole,
-  Ministry,
-  Officer,
-} from '@/models/management/management';
+import { Group, Ministry, Officer } from '@/models/management/management';
 import { Education } from '@/models/education/education';
 
 export type ChurchInformation = {
@@ -33,7 +29,7 @@ export type Member = {
   groupId?: string;
   groupRoleId?: string;
   group?: Group;
-  groupRole?: GroupRole;
+  groupRole?: GROUP_ROLE;
   ministries?: Ministry[];
   educations?: Education[];
   officerId?: string;

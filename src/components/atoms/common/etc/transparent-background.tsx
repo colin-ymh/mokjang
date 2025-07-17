@@ -14,7 +14,7 @@ export type TransparentBackgroundProps = {
 const Overlay = styled.div<{ $blur: boolean; $zIndex: number }>`
   position: fixed;
   inset: 0;
-  background: ${({ $blur }) => ($blur ? 'rgba(0, 0, 0, 0.1)' : 'transparent')};
+  background: ${({ $blur }) => ($blur ? 'rgba(0, 0, 0, 0.3)' : 'transparent')};
   z-index: ${({ $zIndex }) => $zIndex};
   pointer-events: auto; /* 뒷면 터치 차단 */
   touch-action: none;
@@ -23,7 +23,7 @@ const Overlay = styled.div<{ $blur: boolean; $zIndex: number }>`
 const TransparentBackground = ({
   isOpened,
   onClick,
-  blur = false,
+  blur = true,
   zIndex = 50,
 }: TransparentBackgroundProps) => {
   const [mounted, setMounted] = useState(false);

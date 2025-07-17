@@ -9,10 +9,13 @@ import { FAMILY } from '@/constants/constant';
 import FamilyInformationListView from '@/components/molecules/member/information/family-information-list.view';
 import { DEFAULT_FAMILY_MEMBER, FamilyMember } from '@/models/member/member';
 import { MEMBER_INFORMATION_HEADER_ID } from '@/constants/layout/header';
-import ToastPopup from '@/components/atoms/common/popup/toast-popup';
 
 import { useScopedI18n } from '../../../../../locales/client';
 import { setTargetMember } from '@/redux/reducers/target/target-member-reducer';
+import {
+  setIsToastShown,
+  setToastText,
+} from '@/redux/reducers/toast-popup-reducer';
 
 type FamilyInformationListProps = {
   setMemberContentId: Dispatch<SetStateAction<string>>;
@@ -36,8 +39,6 @@ const FamilyInformationList = ({
   if (thrownError) {
     throw thrownError;
   }
-
-  const [isToastShown, setIsToastShown] = useState(false);
 
   // 가족 관계 설정 모달 활성화 여부
   const [isModalShown, setIsModalShown] = useState<boolean>(false);
@@ -82,11 +83,14 @@ const FamilyInformationList = ({
         const member = getMemberFromServer(response.data.data);
         dispatch(setTargetMember(member));
       } catch (error) {
-        setThrownError(
-          error instanceof Error ? error : new Error(String(error))
-        );
+        if (error instanceof Error) {
+          dispatch(setToastText(error.message));
+          dispatch(setIsToastShown(true));
+        } else {
+          setThrownError(new Error(String(error)));
+        }
       } finally {
-        setIsToastShown(true);
+        dispatch(setIsToastShown(true));
       }
     }
 
@@ -113,9 +117,12 @@ const FamilyInformationList = ({
         const member = getMemberFromServer(response.data.data);
         dispatch(setTargetMember(member));
       } catch (error) {
-        setThrownError(
-          error instanceof Error ? error : new Error(String(error))
-        );
+        if (error instanceof Error) {
+          dispatch(setToastText(error.message));
+          dispatch(setIsToastShown(true));
+        } else {
+          setThrownError(new Error(String(error)));
+        }
       }
     }
 
@@ -141,9 +148,12 @@ const FamilyInformationList = ({
         dispatch(setTargetMember(newMember));
         setMemberContentId(MEMBER_INFORMATION_HEADER_ID.PERSONAL_INFORMATION);
       } catch (error) {
-        setThrownError(
-          error instanceof Error ? error : new Error(String(error))
-        );
+        if (error instanceof Error) {
+          dispatch(setToastText(error.message));
+          dispatch(setIsToastShown(true));
+        } else {
+          setThrownError(new Error(String(error)));
+        }
       }
     }
   };
@@ -164,9 +174,12 @@ const FamilyInformationList = ({
         const member = getMemberFromServer(response.data.data);
         dispatch(setTargetMember(member));
       } catch (error) {
-        setThrownError(
-          error instanceof Error ? error : new Error(String(error))
-        );
+        if (error instanceof Error) {
+          dispatch(setToastText(error.message));
+          dispatch(setIsToastShown(true));
+        } else {
+          setThrownError(new Error(String(error)));
+        }
       }
     }
   };
@@ -198,9 +211,12 @@ const FamilyInformationList = ({
           setFamilyMembers(newFamilyMembers);
         }
       } catch (error) {
-        setThrownError(
-          error instanceof Error ? error : new Error(String(error))
-        );
+        if (error instanceof Error) {
+          dispatch(setToastText(error.message));
+          dispatch(setIsToastShown(true));
+        } else {
+          setThrownError(new Error(String(error)));
+        }
       }
     };
 
@@ -218,18 +234,11 @@ const FamilyInformationList = ({
     onClickFamilyMember,
     onClickEdit,
     onClickConfirmDelete,
-    setIsToastShown,
   };
 
   return (
     <>
       <FamilyInformationListView {...props} />
-      {isToastShown && (
-        <ToastPopup
-          setIsShow={setIsToastShown}
-          text={t_popup('saveComplete')}
-        />
-      )}
     </>
   );
 };

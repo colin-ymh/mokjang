@@ -14,6 +14,7 @@ export type PopupLayoutProps = {
   onClickCancel: () => void;
   onClickDone?: () => void;
   headerTitle?: string;
+  headerDescription?: string;
   headerRight?: React.ReactNode;
   cancelText?: string;
   doneText?: string;
@@ -23,11 +24,13 @@ export type PopupLayoutProps = {
   isHeaderShown?: boolean;
   doneDisabled?: boolean;
   isHeaderBorderShown?: boolean;
+  headerHeight?: number;
   children: React.ReactNode;
 };
 
 const PopupLayout = ({
   headerTitle,
+  headerDescription,
   headerRight,
   onClickCancel,
   onClickDone,
@@ -39,6 +42,7 @@ const PopupLayout = ({
   isFooterShown = true,
   doneDisabled = false,
   isHeaderBorderShown,
+  headerHeight,
   children,
 }: PopupLayoutProps): JSX.Element => {
   const t_button = useScopedI18n('button');
@@ -48,12 +52,14 @@ const PopupLayout = ({
         {isHeaderShown && (
           <PopupHeader
             headerTitle={headerTitle}
+            headerDescription={headerDescription}
             headerRight={headerRight}
             onClickCancel={onClickCancel}
             onClickDone={onClickDone}
             cancelText={cancelText || t_button('cancel')}
             doneText={doneText || t_button('save')}
             isHeaderBorderShown={isHeaderBorderShown}
+            height={headerHeight}
           />
         )}
         <PopupContent>{children}</PopupContent>

@@ -7,13 +7,8 @@ import { BLANK, NONE } from '@/constants/constant';
 import { GroupHistory } from '@/models/member/history';
 import { getFormattedDate } from '@/utils/format';
 import { getIsWellFormedDate } from '@/utils/check';
-import {
-  DEFAULT_GROUP,
-  Group,
-  GroupRole,
-} from '@/models/management/management';
+import { DEFAULT_GROUP, Group } from '@/models/management/management';
 import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-item';
-import { GroupRolesApi } from '@/api/management/group/group-roles.api';
 
 type GroupModalProps = {
   targetHistory?: GroupHistory;
@@ -30,7 +25,6 @@ const GroupModal = ({
   onClickSaveNewGroup,
   onClickSaveGroupHistory,
 }: GroupModalProps) => {
-  const groupRolesApi = new GroupRolesApi(false);
   const { groups, churchId } = useSelector((state: RootState) => state.church);
   const { targetMember } = useSelector(
     (state: RootState) => state.targetMember
@@ -167,20 +161,6 @@ const GroupModal = ({
   // 그룹 변경 시, 역할 드롭다운 내용 변경
   useEffect(() => {
     if (selectedGroup?.id) {
-      groupRolesApi
-        .getGroupRoles({ churchId, groupId: selectedGroup.id })
-        .then((response) => {
-          const newRoles: GroupRole[] = response.data.data;
-          const newRoleItems = newRoles.map((role) => {
-            return { value: role.id, title: role.role };
-          });
-          if (newRoleItems.length !== 0) {
-            setSelectedRoleId(newRoleItems[0].value);
-          } else {
-            setSelectedRoleId(BLANK);
-          }
-          setRoleItems(newRoleItems);
-        });
     }
   }, [selectedGroup]);
 

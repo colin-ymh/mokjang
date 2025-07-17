@@ -11,7 +11,6 @@ import { Officer } from '@/models/management/management';
 import { BLACK, GRAY, MAIN } from '@/constants/styles/color';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { SIZE } from '@/constants/styles/style';
-import { useI18n } from '../../../../../../locales/client';
 import { getEmptyImage } from 'react-dnd-html5-backend';
 import { DND_ITEM_TYPE, HOVER_POSITION } from '@/constants/constant';
 
@@ -72,7 +71,7 @@ type ManagementOfficerItemViewProps = {
     order: number,
     newParentOfficerId?: string | null
   ) => void;
-  onClickOfficer: (id: string) => void;
+  onClickOfficer: (officer: Officer) => void;
 };
 
 const ManagementOfficerItemView: React.FC<ManagementOfficerItemViewProps> = ({
@@ -82,7 +81,6 @@ const ManagementOfficerItemView: React.FC<ManagementOfficerItemViewProps> = ({
   onDropOfficer,
   onClickOfficer,
 }) => {
-  const t = useI18n();
   const ref = useRef<HTMLDivElement | null>(null);
 
   const [hoverPosition, setHoverPosition] = useState<HOVER_POSITION>(
@@ -159,7 +157,7 @@ const ManagementOfficerItemView: React.FC<ManagementOfficerItemViewProps> = ({
       )}
 
       <OfficerItem
-        onClick={() => onClickOfficer(officer.id!)}
+        onClick={() => onClickOfficer(officer)}
         $level={level}
         $isDragging={isDragging}
         $isSelected={selectedOfficerId === officer.id}

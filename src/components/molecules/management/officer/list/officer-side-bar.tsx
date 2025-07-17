@@ -15,6 +15,11 @@ import { getFormattedTitle } from '@/utils/format';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 import { OfficersApi } from '@/api/management/officer/officers.api';
+import {
+  setIsToastShown,
+  setToastBackgroundColor,
+  setToastText,
+} from '@/redux/reducers/toast-popup-reducer';
 
 const OfficerListContainer = styled.div`
   display: flex;
@@ -34,7 +39,7 @@ const AddContainer = styled.div`
 
 type OfficerSideBarProps = {
   selectedOfficer: Officer;
-  onClickOfficer: (id: string) => void;
+  onClickOfficer: (officer: Officer) => void;
 };
 
 const OfficerSideBar = ({
@@ -46,8 +51,15 @@ const OfficerSideBar = ({
   const dispatch = useDispatch<AppDispatch>();
   const officersApi = new OfficersApi(false);
   const { churchId } = useSelector((state: RootState) => state.church);
+
   // 새로 추가할 그룹명
   const [newOfficerName, setNewOfficerName] = useState<string>(BLANK);
+
+  const [thrownError, setThrownError] = useState<Error | null>(null);
+  // 렌더링 시점(컴포넌트 return)에서 조건부로 에러 발생
+  if (thrownError) {
+    throw thrownError;
+  }
 
   const onChangeNewOfficerName = (event: ChangeEvent<HTMLInputElement>) => {
     setNewOfficerName(getFormattedTitle(event.target.value));
@@ -60,14 +72,14 @@ const OfficerSideBar = ({
       await officersApi.createOfficer({ churchId }, { name: newOfficerName });
       await dispatch(fetchOfficers());
       setNewOfficerName(BLANK);
-      setToastText(t_popup('saveComplete'));
-      setIsToastShown(true);
-      setToastColor(BLACK);
+      dispatch(setToastText(t_popup('saveComplete')));
+      dispatch(setIsToastShown(true));
+      dispatch(setToastBackgroundColor(BLACK));
     } catch (error) {
       if (error instanceof Error) {
-        setToastText(error.message);
-        setToastColor(DESTRUCTIVE.LIGHT);
-        setIsToastShown(true);
+        dispatch(setToastText(error.message));
+        dispatch(setToastBackgroundColor(DESTRUCTIVE.LIGHT));
+        dispatch(setIsToastShown(true));
       } else {
         setThrownError(new Error(String(error)));
       }

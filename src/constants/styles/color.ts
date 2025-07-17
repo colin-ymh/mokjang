@@ -14,15 +14,17 @@ export enum GRAY {
 
 export enum MAIN {
   EXTRA_LIGHT = '#EFF6FF',
-  LIGHT = '#6BA9FF',
+  LIGHT = '#BFDBFE',
   DEFAULT = '#2563EB',
   DARK = '#1a51cd',
 }
 
 export enum DESTRUCTIVE {
-  LIGHT = '#fa7778',
-  DEFAULT = '#F83D3E',
-  DARK = '#ae2b2b',
+  EXTRA_LIGHT = '#FEF2F2',
+  LIGHT = '#FECACA',
+  DEFAULT = '#EF4444',
+  DARK = '#B91C1C',
+  EXTRA_DARK = '#991B1B',
 }
 
 export enum BLUE {

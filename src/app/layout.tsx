@@ -1,10 +1,10 @@
 'use client';
 
 import React from 'react';
-import { Provider, useSelector } from 'react-redux';
+import { Provider } from 'react-redux';
 import StyledComponentsRegistry from '@/hooks/registry';
 
-import store, { RootState } from '@/redux/store';
+import store from '@/redux/store';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
 
@@ -15,7 +15,7 @@ import InitializeStore from '@/components/atoms/layout/initialize-store';
 import GlobalStyle from '@/components/atoms/layout/global-style';
 import { CustomDragLayer } from '@/vendor/dnd/custom-drag-layer';
 import CustomWidgetDragLayer from '@/vendor/dnd/custom-widget-drag-layer';
-import ToastManager from '@/components/atoms/common/popup/toast-layout';
+import ToastLayout from '@/components/atoms/common/popup/toast-layout';
 
 type RootLayoutProps = {
   children?: React.ReactNode;
@@ -31,8 +31,6 @@ const RootLayout = (props: RootLayoutProps | RootLayoutPropsExtended) => {
     ...props,
   };
 
-  const { isToastShown, toastText, toastColor, toastBackgroundColor } =
-    useSelector((state: RootState) => state.toastPopup);
   return (
     <html lang="ko">
       <head>
@@ -62,7 +60,7 @@ const RootLayout = (props: RootLayoutProps | RootLayoutPropsExtended) => {
 
                 {children}
                 {/* 토스트 팝업 */}
-                <ToastManager />
+                <ToastLayout />
                 <CustomDragLayer />
                 <CustomWidgetDragLayer />
               </DndProvider>

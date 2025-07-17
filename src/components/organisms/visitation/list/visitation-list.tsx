@@ -16,8 +16,10 @@ import {
 import { setTargetVisitation } from '@/redux/reducers/target/target-visitation-reducer';
 import { getIsWellFormedTitle } from '@/utils/check';
 import { BLANK, HEADER_BAR } from '@/constants/constant';
-import ToastPopup from '@/components/atoms/common/popup/toast-popup';
-import { DESTRUCTIVE } from '@/constants/styles/color';
+import {
+  setIsToastShown,
+  setToastText,
+} from '@/redux/reducers/toast-popup-reducer';
 
 type VisitationListProps = {
   headerType?: HEADER_BAR;
@@ -54,9 +56,6 @@ const VisitationList = ({
       setReceiverIds(receiverIds);
     }
   }, [targetVisitation.id]);
-
-  const [isToastShown, setIsToastShown] = useState<boolean>(false);
-  const [toastText, setToastText] = useState<string>(BLANK);
 
   const [thrownError, setThrownError] = useState<Error | null>(null);
   if (thrownError) {
@@ -257,7 +256,8 @@ const VisitationList = ({
         });
     } catch (error) {
       if (error instanceof Error) {
-        setToastText(error.message);
+        dispatch(setToastText(error.message));
+        dispatch(setIsToastShown(true));
       } else {
         setThrownError(new Error(String(error)));
       }
@@ -313,7 +313,8 @@ const VisitationList = ({
       }
     } catch (error) {
       if (error instanceof Error) {
-        setToastText(error.message);
+        dispatch(setToastText(error.message));
+        dispatch(setIsToastShown(true));
       } else {
         setThrownError(new Error(String(error)));
       }
@@ -370,12 +371,6 @@ const VisitationList = ({
     setIsSaveEnabled(true);
   }, [targetVisitation]);
 
-  useEffect(() => {
-    if (toastText) {
-      setIsToastShown(true);
-    }
-  }, [toastText]);
-
   const props = {
     list: {
       onClickVisitationItem,
@@ -400,13 +395,6 @@ const VisitationList = ({
   return (
     <>
       <VisitationListView {...props} />
-      {isToastShown && (
-        <ToastPopup
-          setIsShow={setIsToastShown}
-          text={toastText}
-          backgroundColor={DESTRUCTIVE.LIGHT}
-        />
-      )}
     </>
   );
 };

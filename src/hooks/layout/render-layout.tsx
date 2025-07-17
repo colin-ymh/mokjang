@@ -16,7 +16,6 @@ import {
   MAIN_HEADER_ID,
   MANAGEMENT_HEADER_ID,
   MEMBER_INFORMATION_HEADER_ID,
-  MINISTRY_MANAGEMENT_HEADER_ID,
   SIDE_ID,
 } from '@/constants/layout/header';
 
@@ -26,12 +25,8 @@ import MemberInformationList from '@/components/molecules/member/information/mem
 import FamilyInformationList from '@/components/molecules/member/information/family-information-list';
 import MemberEducation from '@/components/molecules/member/information/member-education';
 import GroupManagement from '@/components/organisms/management/group/group-management';
-import { MinistryGroup } from '@/models/management/management';
 import MemberGroup from '@/components/molecules/member/information/member-group';
 import OfficerManagement from '@/components/organisms/management/officer/officer-management';
-import MinistryGroupInformation from '@/components/molecules/management/ministry/ministry-group-information';
-import MinistryGroupMember from '@/components/molecules/management/ministry/ministry-group-member';
-import MinistryGroupManagement from '@/components/organisms/management/ministry/ministry-group-management';
 import MemberMinistry from '@/components/molecules/member/information/member-ministry';
 import MemberOfficer from '@/components/molecules/member/information/member-officer';
 import MainSideButtonList from '@/components/molecules/layout/side/main-side/main-side-button-list';
@@ -193,7 +188,7 @@ export const getContent = (
     case CHURCH_CONTENT_ID.GROUP:
       return <GroupManagement />;
     case CHURCH_CONTENT_ID.MINISTRY:
-      return <MinistryGroupManagement />;
+      return <></>;
     case CHURCH_CONTENT_ID.OFFICER:
       return <OfficerManagement />;
 
@@ -233,18 +228,6 @@ export const getMemberInformationContent = (
       return <MemberMinistry />;
     case MEMBER_INFORMATION_HEADER_ID.OFFICER:
       return <MemberOfficer />;
-  }
-};
-
-export const getMinistryGroupManagementContent = (
-  contentId: string,
-  ministryGroup: MinistryGroup
-) => {
-  switch (contentId) {
-    case MINISTRY_MANAGEMENT_HEADER_ID.MINISTRY_GROUP_INFORMATION:
-      return <MinistryGroupInformation ministryGroup={ministryGroup} />;
-    case MINISTRY_MANAGEMENT_HEADER_ID.MINISTRY_MEMBER_LIST:
-      return <MinistryGroupMember ministryGroup={ministryGroup} />;
   }
 };
 

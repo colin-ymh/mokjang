@@ -1,23 +1,29 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-import { GRAY, MAIN, WHITE } from '@/constants/styles/color';
+import { GRAY, MAIN } from '@/constants/styles/color';
+
+import Check from '../../../../../public/svg/check.svg';
 
 const CheckButtonContainer = styled.div<{
   width: number;
   height: number;
   $isChecked: boolean;
   $disabled: boolean;
-  $borderColor?: string;
 }>`
   display: flex;
-  border: ${({ $borderColor }) => `1px solid ${$borderColor || GRAY.LIGHT};`}
-  border-radius: 30%;
+  border: ${({ $isChecked }) => `1px solid ${$isChecked ? MAIN.DEFAULT : GRAY.LIGHT};`}
   width: ${({ width }) => width}px;
   height: ${({ height }) => height}px;
-  background-color: ${({ $isChecked, $disabled }) =>
-    $isChecked ? ($disabled ? GRAY.DEFAULT : MAIN.DEFAULT) : WHITE};
   cursor: ${({ $disabled }) => ($disabled ? 'default' : 'pointer')};
+  border-radius: 2px;
+`;
+
+const CheckIcon = styled(Check)`
+  width: 12px;
+  height: 12px;
+  stroke: ${MAIN.DEFAULT};
+  stroke-width: 3px;
 `;
 
 type CheckButtonProps = {
@@ -26,7 +32,6 @@ type CheckButtonProps = {
   disabled?: boolean;
   width?: number;
   height?: number;
-  borderColor?: string;
   isStopPropagation?: boolean;
 };
 
@@ -34,9 +39,8 @@ const CheckButton = ({
   value,
   onChange,
   disabled = false,
-  width = 20,
-  height = 20,
-  borderColor,
+  width = 12,
+  height = 12,
   isStopPropagation = true,
 }: CheckButtonProps) => {
   // 로컬 상태 관리
@@ -68,8 +72,9 @@ const CheckButton = ({
       height={height}
       $isChecked={isChecked}
       $disabled={disabled}
-      $borderColor={borderColor}
-    />
+    >
+      {isChecked && <CheckIcon />}
+    </CheckButtonContainer>
   );
 };
 

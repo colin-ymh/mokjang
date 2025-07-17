@@ -15,9 +15,12 @@ import { setTargetMember } from '@/redux/reducers/target/target-member-reducer';
 import { uploadFiles } from '@/utils/upload';
 import { getCreateMemberBody, getMemberFromServer } from '@/utils/member';
 import { MembersApi } from '@/api/members/members.api';
-import ToastPopup from '@/components/atoms/common/popup/toast-popup';
 import { BLACK, DESTRUCTIVE } from '@/constants/styles/color';
-import { BLANK } from '@/constants/constant';
+import {
+  setIsToastShown,
+  setToastBackgroundColor,
+  setToastText,
+} from '@/redux/reducers/toast-popup-reducer';
 
 type MainMemberHeaderProps = {};
 
@@ -43,10 +46,6 @@ const MainMemberHeader = ({}: MainMemberHeaderProps) => {
 
   // 임시 프로필 이미지
   const [profileImage, setProfileImage] = useState<File | null>(null);
-
-  const [isToastShown, setIsToastShown] = useState<boolean>(false);
-  const [toastText, setToastText] = useState<string>(BLANK);
-  const [toastColor, setToastColor] = useState<string>(DESTRUCTIVE.LIGHT);
 
   const [thrownError, setThrownError] = useState<Error | null>(null);
   // 렌더링 시점(컴포넌트 return)에서 조건부로 에러 발생
@@ -140,13 +139,13 @@ const MainMemberHeader = ({}: MainMemberHeaderProps) => {
       dispatch(setTargetMember(DEFAULT_MEMBER));
       setIsRegisterShown(false);
 
-      setToastText(t('popup.registerSuccess'));
-      setIsToastShown(true);
-      setToastColor(BLACK);
+      dispatch(setToastText(t('popup.registerSuccess')));
+      dispatch(setIsToastShown(true));
+      dispatch(setToastBackgroundColor(BLACK));
     } catch (error) {
       if (error instanceof Error) {
-        setToastText(error.message);
-        setToastColor(DESTRUCTIVE.LIGHT);
+        dispatch(setToastText(error.message));
+        dispatch(setToastBackgroundColor(DESTRUCTIVE.LIGHT));
       } else {
         setThrownError(new Error(String(error)));
       }
@@ -172,13 +171,6 @@ const MainMemberHeader = ({}: MainMemberHeaderProps) => {
   return (
     <>
       <MainMemberHeaderView {...props} />
-      {isToastShown && (
-        <ToastPopup
-          setIsShow={setIsToastShown}
-          text={toastText}
-          backgroundColor={toastColor}
-        />
-      )}
     </>
   );
 };

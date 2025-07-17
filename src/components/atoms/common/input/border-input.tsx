@@ -22,6 +22,7 @@ const BorderInputContainer = styled.input<{
   $fontSize?: number;
   $fontWeight?: number;
   $isRight?: boolean;
+  $isIcon?: boolean;
 }>`
   width: ${({ width }) => (width ? `${width}px` : '100%')};
   box-sizing: border-box;
@@ -29,7 +30,12 @@ const BorderInputContainer = styled.input<{
   font-weight: ${({ $fontWeight }) => `${$fontWeight}px` || '400'};
   text-align: ${({ $isRight }) => ($isRight ? 'right' : 'left')};
   padding: 10px;
-  padding-left: ${({ $paddingLeft }) => `${$paddingLeft}px` || '30'};
+  padding-left: ${({ $paddingLeft, $isIcon }) =>
+    $paddingLeft !== undefined
+      ? `${$paddingLeft}px`
+      : $isIcon
+        ? '36px'
+        : '10px'};
   border: 1px solid ${({ $borderColor }) => $borderColor};
   color: ${BLACK};
   transition: border 0.3s ease;
@@ -53,6 +59,23 @@ const BorderInputContainer = styled.input<{
   }
 `;
 
+const InputWrapper = styled.div`
+  position: relative;
+  align-items: center;
+  width: 100%;
+`;
+
+const IconWrapper = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none; // 클릭 이벤트 방지
+`;
+
 export type BorderInputProps = InputProps & {
   borderColor?: string;
   height?: number;
@@ -66,6 +89,7 @@ export type BorderInputProps = InputProps & {
   fontSize?: number;
   fontWeight?: number;
   isRight?: boolean;
+  icon?: React.ReactNode;
 };
 
 const BorderInput = forwardRef<HTMLInputElement, BorderInputProps>(
@@ -87,33 +111,38 @@ const BorderInput = forwardRef<HTMLInputElement, BorderInputProps>(
       fontSize,
       fontWeight,
       isRight,
+      icon,
       ...props
     },
     ref
   ) => {
     return (
-      <BorderInputContainer
-        ref={ref}
-        value={value}
-        onKeyDown={onKeyDown}
-        readOnly={readOnly}
-        $isEditable={!readOnly}
-        $borderColor={borderColor}
-        $backgroundColor={backgroundColor}
-        height={height}
-        width={width}
-        disabled={disabled}
-        $disabled={disabled}
-        $paddingLeft={paddingLeft}
-        $borderTopLeftRadius={borderTopLeftRadius}
-        $borderTopRightRadius={borderTopRightRadius}
-        $borderBottomLeftRadius={borderBottomLeftRadius}
-        $borderBottomRightRadius={borderBottomRightRadius}
-        $fontSize={fontSize}
-        $fontWeight={fontWeight}
-        $isRight={isRight}
-        {...props}
-      />
+      <InputWrapper>
+        {icon && <IconWrapper>{icon}</IconWrapper>}
+        <BorderInputContainer
+          ref={ref}
+          value={value}
+          onKeyDown={onKeyDown}
+          readOnly={readOnly}
+          $isEditable={!readOnly}
+          $borderColor={borderColor}
+          $backgroundColor={backgroundColor}
+          height={height}
+          width={width}
+          disabled={disabled}
+          $disabled={disabled}
+          $paddingLeft={paddingLeft}
+          $borderTopLeftRadius={borderTopLeftRadius}
+          $borderTopRightRadius={borderTopRightRadius}
+          $borderBottomLeftRadius={borderBottomLeftRadius}
+          $borderBottomRightRadius={borderBottomRightRadius}
+          $fontSize={fontSize}
+          $fontWeight={fontWeight}
+          $isRight={isRight}
+          $isIcon={!!icon}
+          {...props}
+        />
+      </InputWrapper>
     );
   }
 );

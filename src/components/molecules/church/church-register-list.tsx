@@ -13,7 +13,7 @@ import { useScopedI18n } from '../../../../locales/client';
 import { AppDispatch } from '@/redux/store';
 import { useDispatch } from 'react-redux';
 import { setChurch, setChurchId } from '@/redux/reducers/church-reducer';
-import RadioButton from '@/components/atoms/common/radio-button/radio-button';
+import RadioButtonList from '@/components/atoms/common/radio-button/radio-button-list';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import Loading from '@/components/atoms/common/etc/loading';
 
@@ -175,7 +175,7 @@ const ChurchRegisterList = () => {
         {/*  onChange={onChangeMemberSize}*/}
         {/*/>*/}
         <MainText>{'교인 수'}</MainText>
-        <RadioButton
+        <RadioButtonList
           items={memberSizeItems}
           selectedValue={memberSize}
           onChange={(value) => setMemberSize(value)}

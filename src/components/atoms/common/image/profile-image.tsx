@@ -7,7 +7,7 @@ import { GRAY } from '@/constants/styles/color';
 import defaultImage from '../../../../../public/png/default-member-image.png';
 
 const Profile = styled(Image)<{ $isButton: boolean }>`
-  border-radius: 15%;
+  border-radius: 100%;
   object-fit: cover;
   background: ${GRAY.SEMI_LIGHT};
     cursor: ${({ $isButton }) => ($isButton ? 'pointer' : 'default')};}

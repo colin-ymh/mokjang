@@ -8,8 +8,8 @@ export type Group = {
   parentGroupId: string | null;
   childGroupIds: string[];
   childGroups?: Group[];
-  roles: GroupRole[];
   order: number;
+  leaderMemberId: string;
   // members: Member[];
 };
 
@@ -21,22 +21,8 @@ export const DEFAULT_GROUP = {
   parentGroupId: BLANK,
   childGroupIds: [],
   members: [],
-  roles: [],
   order: 0,
-};
-
-export type GroupRole = {
-  id: string;
-  churchId: string;
-  groupId: string;
-  role: string;
-};
-
-export const DEFAULT_GROUP_ROLE = {
-  id: BLANK,
-  churchId: BLANK,
-  groupId: BLANK,
-  role: BLANK,
+  leaderMemberId: BLANK,
 };
 
 export type MinistryGroup = {

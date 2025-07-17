@@ -1,63 +1,54 @@
-import { ComponentType } from 'react';
+'use client';
+
 import styled from 'styled-components';
+import { MainText } from '@/components/atoms/common/text/main-text';
+import { GRAY, MAIN, WHITE } from '@/constants/styles/color';
+import { SIZE } from '@/constants/styles/style';
 
-import DefaultRadioButton, {
-  RadioButtonItemProps,
-} from '@/components/atoms/common/radio-button/default-radio-button';
-
-export type RadioButtonValue = {
-  value: any; // 실제 사용될 값
-  title: string; // 라디오 버튼에서 표시될 title
+export type RadioButtonItemProps = {
+  title?: string;
+  isSelected: boolean;
+  onClick?: (event: any) => void;
+  isCheck?: boolean;
 };
 
-export type RadioButtonProps = {
-  items: RadioButtonValue[];
-  selectedValue: any;
-  onChange: (value: any) => void;
-  customButton?: ComponentType<RadioButtonItemProps>;
-};
-
-const RadioButtonContainer = styled.div`
+const LabelButtonContainer = styled.div`
   display: flex;
   flex-direction: row;
-  flex-wrap: wrap;
-  gap: 10px;
-  width: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
 `;
 
-/**
- * input 멤버 2개 이상인 객체 => 라디오버튼 상태 변경(체크, 해제) 중복 선택 불가
- * @param items // items 안의 value는 중복 허용 X
- * @param selectedValue // default값 입력 필수
- * @param onChange //
- * @param RadioButton
- * @returns
- */
-const RadioButton = ({
-  items,
-  selectedValue,
-  onChange,
-  customButton,
-}: RadioButtonProps) => {
-  const onClick = (index: number) => {
-    // items 중 해당 index에 해당하는 값의 전송
-    onChange(items[index].value);
-  };
+const Button = styled.div<{ $isSelected: boolean }>`
+  display: flex;
+  width: 10px;
+  height: 10px;
+  border-radius: 100%;
+  border: 1px solid
+    ${({ $isSelected }) => ($isSelected ? MAIN.DEFAULT : GRAY.LIGHT)};
+  background-color: ${WHITE};
+  cursor: pointer;
+  justify-content: center;
+  align-items: center;
+`;
 
+const Fill = styled.div`
+  display: flex;
+  width: 8px;
+  height: 8px;
+  border-radius: 100%;
+  background-color: ${MAIN.DEFAULT};
+`;
+
+const RadioButton = ({ title, isSelected, onClick }: RadioButtonItemProps) => {
   return (
-    <RadioButtonContainer>
-      {items.map((item, index) => {
-        const RadioButtonItem = customButton || DefaultRadioButton;
-        return (
-          <RadioButtonItem
-            key={item.value}
-            title={item.title}
-            isSelected={selectedValue === item.value}
-            onClick={() => onClick(index)}
-          />
-        );
-      })}
-    </RadioButtonContainer>
+    <LabelButtonContainer>
+      <Button $isSelected={isSelected} onClick={onClick}>
+        {isSelected && <Fill />}
+      </Button>
+      {title && <MainText size={SIZE.SMALL}>{title}</MainText>}
+    </LabelButtonContainer>
   );
 };
 

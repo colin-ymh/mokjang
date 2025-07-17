@@ -14,6 +14,8 @@ import {
 } from '@/constants/layout/header';
 
 import { useI18n, useScopedI18n } from '../../../locales/client';
+import { TABLE_HEADER_ITEM } from '@/redux/reducers/filter/member-filter-reducer';
+import { MEMBER } from '@/constants/column/member-column';
 
 export const useMainMemberHeaderBarItems = () => {
   const t_memberContent = useScopedI18n('member-content');
@@ -223,4 +225,82 @@ export const useAttendanceHeaderBarItems = () => {
   ];
 
   return items;
+};
+
+export const useManagementHeaderBarItems = (id: CHURCH_CONTENT_ID) => {
+  switch (id) {
+    case CHURCH_CONTENT_ID.OFFICER:
+      return [
+        {
+          id: MEMBER.NAME,
+          isShown: true,
+          isSortable: true,
+          isFilterable: false,
+          isFixed: true,
+          isDate: false,
+        },
+        {
+          id: MEMBER.GROUP,
+          isShown: true,
+          isSortable: true,
+          isFilterable: false,
+          isFixed: false,
+          isDate: false,
+        },
+        {
+          id: MEMBER.AGE,
+          isShown: true,
+          isSortable: true,
+          isFilterable: false,
+          isFixed: false,
+          isDate: false,
+        },
+        {
+          id: MEMBER.MOBILE_PHONE,
+          isShown: true,
+          isSortable: false,
+          isFilterable: false,
+          isFixed: false,
+          isDate: false,
+        },
+      ] as TABLE_HEADER_ITEM[];
+
+    case CHURCH_CONTENT_ID.GROUP:
+      return [
+        {
+          id: MEMBER.NAME,
+          isShown: true,
+          isSortable: true,
+          isFilterable: false,
+          isFixed: true,
+          isDate: false,
+        },
+        {
+          id: MEMBER.OFFICER,
+          isShown: true,
+          isSortable: true,
+          isFilterable: false,
+          isFixed: false,
+          isDate: false,
+        },
+        {
+          id: MEMBER.AGE,
+          isShown: true,
+          isSortable: true,
+          isFilterable: false,
+          isFixed: false,
+          isDate: false,
+        },
+        {
+          id: MEMBER.MOBILE_PHONE,
+          isShown: true,
+          isSortable: false,
+          isFilterable: false,
+          isFixed: false,
+          isDate: false,
+        },
+      ] as TABLE_HEADER_ITEM[];
+    default:
+      return [] as TABLE_HEADER_ITEM[];
+  }
 };

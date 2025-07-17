@@ -8,9 +8,10 @@ import { setWorships } from '@/redux/reducers/filter/worship-filter-reducer';
 import { getIsWellFormedTitle } from '@/utils/check';
 import { setTargetWorship } from '@/redux/reducers/target/target-worship-reducer';
 import { DEFAULT_WORSHIP } from '@/models/worship/worship';
-import ToastPopup from '@/components/atoms/common/popup/toast-popup';
-import { BLANK } from '@/constants/constant';
-import { DESTRUCTIVE } from '@/constants/styles/color';
+import {
+  setIsToastShown,
+  setToastText,
+} from '@/redux/reducers/toast-popup-reducer';
 
 type MainWorshipHeaderProps = {};
 
@@ -29,9 +30,6 @@ const MainWorshipHeader = ({}: MainWorshipHeaderProps) => {
   const [isAddWorshipOpened, setIsAddWorshipOpened] = useState<boolean>(false);
 
   const [isSaveEnabled, setIsSaveEnabled] = useState<boolean>(false);
-
-  const [isToastShown, setIsToastShown] = useState<boolean>(false);
-  const [toastText, setToastText] = useState<string>(BLANK);
 
   const [thrownError, setThrownError] = useState<Error | null>(null);
   if (thrownError) {
@@ -75,7 +73,8 @@ const MainWorshipHeader = ({}: MainWorshipHeaderProps) => {
         });
     } catch (error) {
       if (error instanceof Error) {
-        setToastText(error.message);
+        dispatch(setToastText(error.message));
+        dispatch(setIsToastShown(true));
       } else {
         setThrownError(new Error(String(error)));
       }
@@ -91,12 +90,6 @@ const MainWorshipHeader = ({}: MainWorshipHeaderProps) => {
     setIsSaveEnabled(true);
   }, [targetWorship]);
 
-  useEffect(() => {
-    if (toastText) {
-      setIsToastShown(true);
-    }
-  }, [toastText]);
-
   const props = {
     isAddWorshipOpened,
     isSaveEnabled,
@@ -109,13 +102,6 @@ const MainWorshipHeader = ({}: MainWorshipHeaderProps) => {
   return (
     <>
       <MainWorshipHeaderView {...props} />
-      {isToastShown && (
-        <ToastPopup
-          setIsShow={setIsToastShown}
-          text={toastText}
-          backgroundColor={DESTRUCTIVE.LIGHT}
-        />
-      )}
     </>
   );
 };

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
-import { BLANK, ORDER_DIRECTION } from '@/constants/constant';
+import { ORDER_DIRECTION } from '@/constants/constant';
 import { WORSHIP_ENROLLMENT } from '@/constants/column/worship-column';
 import {
   setWorshipEnrollmentOrderBy,
@@ -14,11 +14,10 @@ import {
   setTargetWorshipSessionWorship,
 } from '@/redux/reducers/target/target-worship-session-reducer';
 import { DEFAULT_WORSHIP_SESSION } from '@/models/worship/worship';
-import ToastPopup from '@/components/atoms/common/popup/toast-popup';
-import { DESTRUCTIVE } from '@/constants/styles/color';
 import { WorshipSessionsApi } from '@/api/worship/worship-sessions.api';
 import { getIsWellFormedTitle } from '@/utils/check';
 import { getDateFromDateString } from '@/utils/date';
+import { setToastText } from '@/redux/reducers/toast-popup-reducer';
 
 export type AttendanceTableProps = {
   loadWorshipEnrollments: () => Promise<void>;
@@ -44,9 +43,6 @@ const AttendanceTable = ({ loadWorshipEnrollments }: AttendanceTableProps) => {
     worshipEnrollmentOrderBy,
     worshipEnrollmentOrderDirection,
   } = useSelector((state: RootState) => state.worshipEnrollmentFilter);
-
-  const [isToastShown, setIsToastShown] = useState<boolean>(false);
-  const [toastText, setToastText] = useState<string>(BLANK);
 
   // 상세정보 팝업 On/Off
   const [isSessionShown, setIsSessionShown] = useState<boolean>(false);
@@ -162,7 +158,7 @@ const AttendanceTable = ({ loadWorshipEnrollments }: AttendanceTableProps) => {
       }, 500);
     } catch (error) {
       if (error instanceof Error) {
-        setToastText(error.message);
+        dispatch(setToastText(error.message));
       } else {
         setThrownError(new Error(String(error)));
       }
@@ -193,7 +189,7 @@ const AttendanceTable = ({ loadWorshipEnrollments }: AttendanceTableProps) => {
       }, 500);
     } catch (error) {
       if (error instanceof Error) {
-        setToastText(error.message);
+        dispatch(setToastText(error.message));
       } else {
         setThrownError(new Error(String(error)));
       }
@@ -229,14 +225,6 @@ const AttendanceTable = ({ loadWorshipEnrollments }: AttendanceTableProps) => {
   return (
     <>
       <AttendanceTableView {...props} />
-
-      {isToastShown && (
-        <ToastPopup
-          setIsShow={setIsToastShown}
-          text={toastText}
-          backgroundColor={DESTRUCTIVE.LIGHT}
-        />
-      )}
     </>
   );
 };

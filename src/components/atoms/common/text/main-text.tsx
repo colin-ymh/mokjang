@@ -7,6 +7,7 @@ export type MainTextProps = {
   color?: string;
   fontSize?: number;
   fontWeight?: number;
+  whiteSpace?: string;
 };
 
 const getFontSize = (size?: SIZE, fontSize?: number) => {
@@ -51,14 +52,17 @@ const getFontWeight = (size?: SIZE, fontWeight?: number) => {
   }
 };
 
-export const MainText = styled.span<MainTextProps>`
+// styled-components v5 이상이라면 shouldForwardProp 사용
+export const MainText = styled.span.withConfig({
+  shouldForwardProp: (prop) => prop !== 'whiteSpace',
+})<MainTextProps>`
   margin: 0;
   font-size: ${({ size, fontSize }) => getFontSize(size, fontSize)};
   color: ${({ color }) => color || BLACK};
   font-weight: ${({ size, fontWeight }) => getFontWeight(size, fontWeight)};
   transition: all 0.3s ease;
 
-  white-space: nowrap; /* 텍스트를 한 줄로 유지 */
-  max-width: 100%; /* 버튼 크기를 벗어나지 않도록 제한 */
+  white-space: ${({ whiteSpace }) => whiteSpace || 'nowrap'};
+  max-width: 100%;
   font-family: 'Roboto', sans-serif;
 `;

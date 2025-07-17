@@ -18,9 +18,16 @@ const ButtonText = styled(MainText)``;
 type MemberProfileProps = {
   member: Member;
   onClick?: () => void;
+  isOfficerShown?: boolean;
+  isGroupLeaderShown?: boolean;
 };
 
-const MemberProfile = ({ member, onClick }: MemberProfileProps) => {
+const MemberProfile = ({
+  member,
+  onClick,
+  isOfficerShown = true,
+  isGroupLeaderShown = false,
+}: MemberProfileProps) => {
   return (
     <ProfileContainer
       $isButton={!!onClick}
@@ -31,7 +38,7 @@ const MemberProfile = ({ member, onClick }: MemberProfileProps) => {
     >
       <ProfileImage value={member?.profileImageUrl} onClick={onClick} />
       <ButtonText>
-        {`${member.name} ${member.officer?.name || BLANK}`}
+        {`${member.name} ${isOfficerShown ? member.officer?.name || BLANK : BLANK}`}
       </ButtonText>
     </ProfileContainer>
   );

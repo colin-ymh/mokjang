@@ -11,10 +11,6 @@ import CancelIcon from '../../../../../public/svg/cancel.svg';
 import MemberProfile from '@/components/atoms/member/member-profile';
 import { MembersApi } from '@/api/members/members.api';
 
-type MemberProfileButtonProps = {
-  member: Member;
-};
-
 const ButtonContainer = styled.div`
   display: flex;
   cursor: pointer;
@@ -27,7 +23,17 @@ const Cancel = styled(CancelIcon)`
   stroke-width: 1px;
 `;
 
-const MemberProfilePopupButton = ({ member }: MemberProfileButtonProps) => {
+type MemberProfileButtonProps = {
+  member: Member;
+  isOfficerShown?: boolean;
+  isGroupLeaderShown?: boolean;
+};
+
+const MemberProfilePopupButton = ({
+  member,
+  isOfficerShown,
+  isGroupLeaderShown,
+}: MemberProfileButtonProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const { churchId } = useSelector((state: RootState) => state.church);
   const [isShow, setIsShow] = useState<boolean>(false);
@@ -59,7 +65,12 @@ const MemberProfilePopupButton = ({ member }: MemberProfileButtonProps) => {
 
   return (
     <>
-      <MemberProfile member={member} onClick={onClickMember} />
+      <MemberProfile
+        member={member}
+        onClick={onClickMember}
+        isOfficerShown={isOfficerShown}
+        isGroupLeaderShown={isGroupLeaderShown}
+      />
       <CustomPopup
         isShow={isShow}
         onClickCancel={onClickClose}

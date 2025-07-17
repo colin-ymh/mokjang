@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import ToastPopup from '@/components/atoms/common/popup/toast-popup';
 
-const ToastManager = () => {
+const ToastLayout = () => {
   const { isToastShown } = useSelector((state: RootState) => state.toastPopup);
 
   if (!isToastShown) return null;
@@ -12,4 +12,4 @@ const ToastManager = () => {
   return <ToastPopup />;
 };
 
-export default ToastManager;
+export default ToastLayout;

@@ -18,7 +18,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import MyScheduleList from '@/components/atoms/home/my-schedule-list';
 import RangeRadioButton from '@/components/atoms/common/radio-button/range-radio-button';
-import { RadioButtonValue } from '@/components/atoms/common/radio-button/radio-button';
+import { RadioButtonValue } from '@/components/atoms/common/radio-button/radio-button-list';
 
 const WidgetContainer = styled.div`
   display: flex;

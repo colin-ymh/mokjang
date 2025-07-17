@@ -3,12 +3,15 @@ import { Church, DEFAULT_CHURCH } from '@/models/church/church';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 import { ChurchesApi } from '@/api/churches/churches.api';
-import { BLANK } from '@/constants/constant';
 import { BLACK, DESTRUCTIVE } from '@/constants/styles/color';
 import { useScopedI18n } from '../../../../../locales/client';
 import { setChurch } from '@/redux/reducers/church-reducer';
-import ToastPopup from '@/components/atoms/common/popup/toast-popup';
 import ChurchManagementView from '@/components/organisms/management/church/church-management.view';
+import {
+  setIsToastShown,
+  setToastBackgroundColor,
+  setToastText,
+} from '@/redux/reducers/toast-popup-reducer';
 
 const ChurchManagement = () => {
   const t_popup = useScopedI18n('popup');
@@ -16,9 +19,6 @@ const ChurchManagement = () => {
 
   const churchesApi = new ChurchesApi(false);
 
-  const [isToastShown, setIsToastShown] = useState<boolean>(false);
-  const [toastText, setToastText] = useState<string>(BLANK);
-  const [toastColor, setToastColor] = useState<string>(BLACK);
   const [thrownError, setThrownError] = useState<Error | null>(null);
   if (thrownError) {
     throw thrownError;
@@ -57,14 +57,14 @@ const ChurchManagement = () => {
       dispatch(setChurch(editedChurch));
 
       setIsEditShown(false);
-      setToastText(t_popup('saveComplete'));
-      setIsToastShown(true);
-      setToastColor(BLACK);
+      dispatch(setToastText(t_popup('saveComplete')));
+      dispatch(setIsToastShown(true));
+      dispatch(setToastBackgroundColor(BLACK));
     } catch (error) {
       if (error instanceof Error) {
-        setToastText(error.message);
-        setToastColor(DESTRUCTIVE.LIGHT);
-        setIsToastShown(true);
+        dispatch(setToastText(error.message));
+        dispatch(setToastBackgroundColor(DESTRUCTIVE.LIGHT));
+        dispatch(setIsToastShown(true));
       } else {
         setThrownError(new Error(String(error)));
       }
@@ -87,13 +87,6 @@ const ChurchManagement = () => {
   return (
     <>
       <ChurchManagementView {...props} />
-      {isToastShown && (
-        <ToastPopup
-          setIsShow={setIsToastShown}
-          text={toastText}
-          backgroundColor={toastColor}
-        />
-      )}
     </>
   );
 };

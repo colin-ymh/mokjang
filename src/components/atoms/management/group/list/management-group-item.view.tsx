@@ -116,7 +116,7 @@ type ManagementGroupItemViewProps = {
     newParentGroupId?: string | null
   ) => void;
   onClickToggle: (id: string) => void;
-  onClickGroup: (id: string) => void;
+  onClickGroup: (group: Group) => void;
   onClickGroupAdd: () => void;
 };
 
@@ -278,7 +278,7 @@ const ManagementGroupItemView: React.FC<ManagementGroupItemViewProps> = ({
       )}
 
       <GroupItem
-        onClick={() => onClickGroup(group.id!)}
+        onClick={() => onClickGroup(group)}
         $level={level}
         $isDragging={isDragging}
         $isSelected={selectedGroupId === group.id}

@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 import { fetchOfficers } from '@/redux/reducers/church-reducer';
@@ -7,15 +7,17 @@ import { OfficersApi } from '@/api/management/officer/officers.api';
 import ManagementOfficerItemView from '@/components/atoms/management/officer/list/management-officer-item.view';
 import { Officer } from '@/models/management/management';
 import { DESTRUCTIVE } from '@/constants/styles/color';
+import {
+  setIsToastShown,
+  setToastBackgroundColor,
+  setToastText,
+} from '@/redux/reducers/toast-popup-reducer';
 
 type ManagementOfficerItemProps = {
   officer: Officer;
   level: number;
   selectedOfficerId: string | null;
-  onClickOfficer: (id: string) => void;
-  setIsToastShown: Dispatch<SetStateAction<boolean>>;
-  setToastText: Dispatch<SetStateAction<string>>;
-  setToastColor: Dispatch<SetStateAction<string>>;
+  onClickOfficer: (officer: Officer) => void;
 };
 
 const ManagementOfficerItem = ({
@@ -23,9 +25,6 @@ const ManagementOfficerItem = ({
   level,
   selectedOfficerId,
   onClickOfficer,
-  setIsToastShown,
-  setToastText,
-  setToastColor,
 }: ManagementOfficerItemProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const officersApi = new OfficersApi(false);
@@ -54,9 +53,9 @@ const ManagementOfficerItem = ({
       await dispatch(fetchOfficers());
     } catch (error) {
       if (error instanceof Error) {
-        setToastText(error.message);
-        setToastColor(DESTRUCTIVE.LIGHT);
-        setIsToastShown(true);
+        dispatch(setToastText(error.message));
+        dispatch(setToastBackgroundColor(DESTRUCTIVE.LIGHT));
+        dispatch(setIsToastShown(true));
       } else {
         setThrownError(new Error(String(error)));
       }

@@ -17,7 +17,7 @@ const SlidePanel = styled.div<{
   transition: transform 0.3s ease-in-out;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  box-shadow: ${({ $isShow }) => $isShow && `0 2px 10px rgba(0, 0, 0, 0.3)`};
 
   ${({ direction, $isShow, size, $isPercentage }) => {
     const sizeValue = $isPercentage
