@@ -191,7 +191,7 @@ const InformationListView = ({
               <MainText color={GRAY.DEFAULT}>{t('groupRole')}</MainText>
             </TitleContainer>
             <ContentContainer>
-              <MainText>{targetMember?.groupRole?.role}</MainText>
+              {/*<MainText>{targetMember?.groupRole?.role}</MainText>*/}
             </ContentContainer>
             <PencilButton />
           </InformationItem>

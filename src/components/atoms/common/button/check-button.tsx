@@ -10,9 +10,10 @@ const CheckButtonContainer = styled.div<{
   height: number;
   $isChecked: boolean;
   $disabled: boolean;
+  $borderColor?: string;
 }>`
   display: flex;
-  border: ${({ $isChecked }) => `1.5px solid ${$isChecked ? MAIN.DEFAULT : GRAY.DEFAULT};`}
+  border: ${({ $isChecked, $borderColor }) => `1.5px solid ${$borderColor || $isChecked ? MAIN.DEFAULT : GRAY.DEFAULT};`}
   width: ${({ width }) => width}px;
   height: ${({ height }) => height}px;
   cursor: ${({ $disabled }) => ($disabled ? 'default' : 'pointer')};
@@ -33,6 +34,7 @@ type CheckButtonProps = {
   width?: number;
   height?: number;
   isStopPropagation?: boolean;
+  borderColor?: string;
 };
 
 const CheckButton = ({
@@ -42,6 +44,7 @@ const CheckButton = ({
   width = 10,
   height = 10,
   isStopPropagation = true,
+  borderColor,
 }: CheckButtonProps) => {
   // 로컬 상태 관리
   const [isChecked, setIsChecked] = useState<boolean>(value);
@@ -72,6 +75,7 @@ const CheckButton = ({
       height={height}
       $isChecked={isChecked}
       $disabled={disabled}
+      $borderColor={borderColor}
     >
       {isChecked && <CheckIcon />}
     </CheckButtonContainer>

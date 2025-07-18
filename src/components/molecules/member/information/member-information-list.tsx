@@ -42,7 +42,6 @@ const MemberInformationList = ({}: MemberInformationListProps) => {
   const ministriesApi = new MinistriesApi(false);
 
   const t_title = useScopedI18n('title');
-  const t_popup = useScopedI18n('popup');
   const t_button = useScopedI18n('button');
 
   const { churchId } = useSelector((state: RootState) => state.church);
@@ -263,10 +262,7 @@ const MemberInformationList = ({}: MemberInformationListProps) => {
           .then((response) =>
             handleHistorySuccess(() => setIsGroupModalShown(false))
           );
-      } else if (
-        groupId === targetMember.group?.id &&
-        groupRoleId === targetMember.groupRole?.id
-      ) {
+      } else if (groupId === targetMember.group?.id) {
         // 그룹과 역할 동일 => 날짜 수정
         await groupHistoryApi
           .editGroupHistory(
