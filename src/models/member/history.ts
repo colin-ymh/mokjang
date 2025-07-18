@@ -53,7 +53,7 @@ export type MinistryHistory = {
   ministryGroupSnapShot: string;
   startDate: string;
   endDate: string;
-  // ministry:
+  // information:
 };
 
 export const DEFAULT_MINISTRY_HISTORY: MinistryHistory = {

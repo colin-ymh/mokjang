@@ -1,5 +1,5 @@
 import { useI18n } from '../../../locales/client';
-import { GENDER } from '@/constants/constant';
+import { GENDER, SEARCH_RANGE } from '@/constants/constant';
 
 export const useGenderRadioButtonItems = () => {
   const t = useI18n();
@@ -15,5 +15,21 @@ export const useGenderRadioButtonItems = () => {
     },
   ];
 
+  return items;
+};
+
+export const useRangeRadioButton = () => {
+  const t = useI18n();
+
+  const items = [
+    {
+      value: SEARCH_RANGE.WEEKLY,
+      title: t('thisWeek'),
+    },
+    {
+      value: SEARCH_RANGE.MONTHLY,
+      title: t('thisMonth'),
+    },
+  ];
   return items;
 };

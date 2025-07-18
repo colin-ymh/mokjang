@@ -1,11 +1,6 @@
 import MemberProfilePopupButton from '@/components/molecules/common/button/member-profile-popup-button';
 import { MainText } from '@/components/atoms/common/text/main-text';
-import {
-  GRAY,
-  MAIN,
-  TAG_BACKGROUND_COLOR,
-  TAG_FONT_COLOR,
-} from '@/constants/styles/color';
+import { GRAY, MAIN } from '@/constants/styles/color';
 import { getDateFromDateString, getDateStringFromDate } from '@/utils/date';
 import styled from 'styled-components';
 import { Member } from '@/models/member/member';
@@ -13,7 +8,7 @@ import { useI18n } from '../../../../locales/client';
 import { getTranslatedMemberCount } from '@/utils/translate';
 import { usePathname } from 'next/navigation';
 import { LOCALE } from '@/constants/state/locale';
-import { SIZE } from '@/constants/styles/style';
+import MainTag from '@/components/atoms/common/tag/main-tag';
 
 const DetailContainer = styled.div`
   display: flex;
@@ -63,15 +58,6 @@ const RightContainer = styled.div`
   gap: 5px;
 `;
 
-const GroupTag = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 3px 5px;
-  border-radius: 5px;
-  background-color: ${TAG_BACKGROUND_COLOR};
-`;
-
 type NewMemberDetailProps = {
   memberDetails: Member[];
 };
@@ -96,11 +82,7 @@ const NewMemberDetail = ({ memberDetails }: NewMemberDetailProps) => {
             <MemberProfilePopupButton member={member} />
             <RightContainer>
               {member.group ? (
-                <GroupTag>
-                  <MainText color={TAG_FONT_COLOR} size={SIZE.SMALL}>
-                    {member.group.name}
-                  </MainText>
-                </GroupTag>
+                <MainTag title={member.group.name || t('noGroup')} />
               ) : (
                 <div></div>
               )}

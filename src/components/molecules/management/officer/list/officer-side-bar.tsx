@@ -1,5 +1,4 @@
 import { MainText } from '@/components/atoms/common/text/main-text';
-import { SIZE } from '@/constants/styles/style';
 import BorderInput from '@/components/atoms/common/input/border-input';
 import { BLACK, DESTRUCTIVE, GRAY, WHITE } from '@/constants/styles/color';
 import Button from '@/components/atoms/common/button/button';
@@ -102,7 +101,7 @@ const OfficerSideBar = ({
   return (
     <OfficerListContainer>
       {/* 타이틀 */}
-      <MainText size={SIZE.LARGE} fontWeight={600}>
+      <MainText fontSize={18} fontWeight={600}>
         {t('officerList')}
       </MainText>
       {/* 새 그룹 추가 창*/}

@@ -214,19 +214,21 @@ const AddVisitation = () => {
   }, [targetVisitation.id]);
 
   /** content/pray 입력 핸들러 */
-  const onChangeContent = (memberId: string, content: string) =>
+  const onChangeContent = (memberId: string, content: string) => {
     setLocalDetails((prev) =>
       prev.map((d) =>
         d.memberId === memberId ? { ...d, visitationContent: content } : d
       )
     );
+  };
 
-  const onChangePray = (memberId: string, pray: string) =>
+  const onChangePray = (memberId: string, pray: string) => {
     setLocalDetails((prev) =>
       prev.map((d) =>
         d.memberId === memberId ? { ...d, visitationPray: pray } : d
       )
     );
+  };
 
   /** debounce: 500ms 동안 입력이 없을 때만 전역 상태 반영 */
   useEffect(() => {
@@ -268,7 +270,11 @@ const AddVisitation = () => {
         next[0] = {
           ...next[0],
           memberId: visitedMembers[0].value,
-          member: { ...DEFAULT_MEMBER, name: visitedMembers[0].title },
+          member: {
+            ...DEFAULT_MEMBER,
+            id: visitedMembers[0].value,
+            name: visitedMembers[0].title,
+          },
         };
       }
 

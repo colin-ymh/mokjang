@@ -124,7 +124,7 @@ const MainAttendanceHeaderView = ({
     <>
       <HeaderContainer>
         <HeaderTopContainer>
-          <MainText size={SIZE.EXTRA_LARGE}>
+          <MainText size={SIZE.EXTRA_LARGE} fontSize={24}>
             {`${t_header(MAIN_HEADER_ID.WORSHIP)} / ${t_header(MAIN_HEADER_ID.ATTENDANCE)}`}
           </MainText>
           {contentId === MAIN_HEADER_ID.ATTENDANCE ? (

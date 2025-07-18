@@ -1,6 +1,5 @@
 import React, { ChangeEvent, Dispatch, SetStateAction } from 'react';
 import { MainText } from '@/components/atoms/common/text/main-text';
-import { SIZE } from '@/constants/styles/style';
 import Button from '@/components/atoms/common/button/button';
 import { GRAY, WHITE } from '@/constants/styles/color';
 import styled from 'styled-components';
@@ -18,7 +17,6 @@ import { usePathname } from 'next/navigation';
 import { LOCALE } from '@/constants/state/locale';
 import { MEMBER } from '@/constants/column/member-column';
 import { ORDER_DIRECTION } from '@/constants/constant';
-import { useManagementHeaderBarItems } from '@/hooks/layout/header-bar-items';
 import { CHURCH_CONTENT_ID } from '@/constants/layout/content';
 
 const GroupInformationViewContainer = styled.div<{ $isGroup: boolean }>`
@@ -111,14 +109,12 @@ const GroupInformationView = ({
 
   const t = useI18n();
 
-  const headerItems = useManagementHeaderBarItems(CHURCH_CONTENT_ID.GROUP);
-
   return (
     <>
       <GroupInformationViewContainer $isGroup={!!selectedGroup.id}>
         {/* 헤더 */}
         <GroupInformationViewHeader>
-          <MainText size={SIZE.LARGE} fontWeight={600}>
+          <MainText fontSize={20} fontWeight={600}>
             {selectedGroup.name}
           </MainText>
           <ButtonContainer>
@@ -146,11 +142,11 @@ const GroupInformationView = ({
           <TableContainer>
             <ManagementMemberTable
               members={members}
-              headerItems={headerItems}
               loadMembers={loadMembers}
               orderBy={orderBy}
               orderDirection={orderDirection}
               onClickHeaderItem={onClickHeaderItem}
+              type={CHURCH_CONTENT_ID.GROUP}
             />
           </TableContainer>
         )}

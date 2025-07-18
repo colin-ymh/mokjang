@@ -160,8 +160,8 @@ const VisitationList = ({
 
   const onClickEditDone = async () => {
     try {
-      const newMemberIds = targetVisitation.visitationDetails.map((detail) => {
-        return detail.memberId;
+      const newMemberIds = targetVisitation.members.map((member) => {
+        return member.id;
       });
 
       // 1. 메인 심방 정보 수정
@@ -226,7 +226,7 @@ const VisitationList = ({
               {
                 churchId,
                 visitationId: targetVisitation.id,
-                detailId: detail.id as string,
+                memberId: detail.member?.id as string,
               },
               {
                 visitationContent: detail.visitationContent,

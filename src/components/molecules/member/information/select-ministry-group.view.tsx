@@ -1,4 +1,4 @@
-// components/molecules/member/information/select-ministry-group.view.tsx
+// components/molecules/member/information/select-information-group.view.tsx
 import styled from 'styled-components';
 import { MinistryGroup } from '@/models/management/management';
 import SelectMinistryGroupItem from '@/components/atoms/member/information/select-ministry-group-item';

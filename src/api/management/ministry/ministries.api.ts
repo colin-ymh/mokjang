@@ -68,7 +68,7 @@ export class MinistriesApi {
   ): Promise<AxiosResponse> => {
     const {
       churchId,
-      take = 5,
+      take = 50,
       page = 1,
       order,
       orderDirection,

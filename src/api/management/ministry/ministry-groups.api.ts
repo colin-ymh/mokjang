@@ -5,7 +5,7 @@ import { ORDER_DIRECTION } from '@/constants/constant';
 import qs from 'qs';
 import authorizeAxios from '@/api/authorize-axios';
 
-export enum MINISTRY_GROUP_ORDER {
+enum GROUP_ORDER {
   CREATED_AT = 'createdAt',
   UPDATED_AT = 'updatedAt',
   NAME = 'name',
@@ -15,9 +15,14 @@ type GetMinistryGroupsParams = {
   churchId: string;
   take?: number;
   page?: number;
-  order?: MINISTRY_GROUP_ORDER;
+  order?: GROUP_ORDER;
   orderDirection?: ORDER_DIRECTION;
   parentMinistryGroupId?: string;
+};
+
+type GetMinistryGroupParams = {
+  churchId: string;
+  ministryGroupId: string;
 };
 
 type CreateMinistryGroupParams = {
@@ -26,22 +31,26 @@ type CreateMinistryGroupParams = {
 
 type CreateMinistryGroupBody = {
   name: string;
-  parentMinistryGroupId: string | null;
-};
-
-type GetMinistryGroupParams = {
-  churchId: string;
-  ministryGroupId: string;
-};
-
-type EditMinistryGroupParams = {
-  churchId: string;
-  ministryGroupId: string;
-};
-
-type EditMinistryGroupBody = {
-  name?: string;
   parentMinistryGroupId?: string | null;
+};
+
+type EditMinistryGroupNameParams = {
+  churchId: string;
+  ministryGroupId: string;
+};
+
+type EditMinistryGroupNameBody = {
+  name?: string;
+};
+
+type EditMinistryGroupStructureParams = {
+  churchId: string;
+  ministryGroupId: string;
+};
+
+type EditMinistryGroupStructureBody = {
+  parentMinistryGroupId?: string | null;
+  order?: number;
 };
 
 type DeleteMinistryGroupParams = {
@@ -49,9 +58,13 @@ type DeleteMinistryGroupParams = {
   ministryGroupId: string;
 };
 
-type GetChildMinistryGroupsParams = {
-  churchId: string;
+type EditMinistryGroupLeaderParams = {
   ministryGroupId: string;
+  churchId: string;
+};
+
+type EditMinistryGroupLeaderBody = {
+  newLeaderMemberId: string;
 };
 
 export class MinistryGroupsApi {
@@ -64,14 +77,21 @@ export class MinistryGroupsApi {
   }
 
   /**
-   * 사역 그룹 불러오기
+   * 교회의 소그룹들 불러오기
    * @param {GetMinistryGroupsParams} params
    * @returns {Promise<AxiosResponse>}
    */
   public getMinistryGroups = async (
     params: GetMinistryGroupsParams
   ): Promise<AxiosResponse> => {
-    const { churchId, take = 5, page = 1, order, orderDirection } = params;
+    const {
+      churchId,
+      take = 30,
+      page = 1,
+      order,
+      orderDirection,
+      parentMinistryGroupId,
+    } = params;
 
     const queryParams: Record<string, any> = Object.fromEntries(
       Object.entries({
@@ -79,9 +99,12 @@ export class MinistryGroupsApi {
         page,
         order,
         orderDirection,
+        parentMinistryGroupId,
       }).filter(
         ([_, value]) =>
-          value !== undefined && !(Array.isArray(value) && value.length === 0)
+          value !== undefined &&
+          value !== '' &&
+          !(Array.isArray(value) && value.length === 0)
       )
     );
 
@@ -113,7 +136,35 @@ export class MinistryGroupsApi {
   };
 
   /**
-   * 사역 그룹 만들기
+   * 특정 소그룹 불러오기
+   * @param {GetMinistryGroupParams} params
+   * @returns {Promise<AxiosResponse>}
+   */
+  public getMinistryGroup = async (
+    params: GetMinistryGroupParams
+  ): Promise<AxiosResponse> => {
+    const { churchId, ministryGroupId } = params;
+
+    const url = `${this._url}/churches/${churchId}/management/ministry-groups/${ministryGroupId}`;
+
+    try {
+      return await authorizeAxios.get(url);
+    } catch (serverError: any) {
+      if (serverError.response) {
+        const { message, error, statusCode } = serverError.response.data;
+        throw new CustomError(message, error, statusCode);
+      } else {
+        throw new CustomError(
+          '알 수 없는 에러가 발생했습니다',
+          500,
+          'Unknown Error'
+        );
+      }
+    }
+  };
+
+  /**
+   * 소그룹 만들기
    * @param {CreateMinistryGroupParams} params
    * @param {CreateMinistryGroupBody} body
    * @returns {Promise<AxiosResponse>}
@@ -143,46 +194,18 @@ export class MinistryGroupsApi {
   };
 
   /**
-   * 특정 사역 그룹 불러오기
-   * @param {GetMinistryGroupParams} params
+   * 그룹 이름 수정하기
+   * @param {EditMinistryGroupNameParams} params
+   * @param {EditMinistryGroupNameBody} body
    * @returns {Promise<AxiosResponse>}
    */
-  public getMinistryGroup = async (
-    params: GetMinistryGroupParams
+  public editMinistryGroupName = async (
+    params: EditMinistryGroupNameParams,
+    body: EditMinistryGroupNameBody
   ): Promise<AxiosResponse> => {
     const { churchId, ministryGroupId } = params;
 
-    const url = `${this._url}/churches/${churchId}/management/ministry-groups/${ministryGroupId}`;
-
-    try {
-      return await authorizeAxios.get(url);
-    } catch (serverError: any) {
-      if (serverError.response) {
-        const { message, error, statusCode } = serverError.response.data;
-        throw new CustomError(message, error, statusCode);
-      } else {
-        throw new CustomError(
-          '알 수 없는 에러가 발생했습니다',
-          500,
-          'Unknown Error'
-        );
-      }
-    }
-  };
-
-  /**
-   * 사역 그룹 수정하기
-   * @param {EditMinistryGroupParams} params
-   * @param {EditMinistryGroupBody} body
-   * @returns {Promise<AxiosResponse>}
-   */
-  public editMinistryGroup = async (
-    params: EditMinistryGroupParams,
-    body: EditMinistryGroupBody
-  ): Promise<AxiosResponse> => {
-    const { churchId, ministryGroupId } = params;
-
-    const url = `${this._url}/churches/${churchId}/management/ministry-groups/${ministryGroupId}`;
+    const url = `${this._url}/churches/${churchId}/management/ministry-groups/${ministryGroupId}/name`;
 
     try {
       return await authorizeAxios.patch(url, body);
@@ -201,7 +224,37 @@ export class MinistryGroupsApi {
   };
 
   /**
-   * 사역 그룹 삭제하기
+   * 그룹 구조 수정하기
+   * @param {EditMinistryGroupStructureParams} params
+   * @param {EditMinistryGroupStructureBody} body
+   * @returns {Promise<AxiosResponse>}
+   */
+  public editMinistryGroupStructure = async (
+    params: EditMinistryGroupStructureParams,
+    body: EditMinistryGroupStructureBody
+  ): Promise<AxiosResponse> => {
+    const { churchId, ministryGroupId } = params;
+
+    const url = `${this._url}/churches/${churchId}/management/ministry-groups/${ministryGroupId}/structure`;
+
+    try {
+      return await authorizeAxios.patch(url, body);
+    } catch (serverError: any) {
+      if (serverError.response) {
+        const { message, error, statusCode } = serverError.response.data;
+        throw new CustomError(message, error, statusCode);
+      } else {
+        throw new CustomError(
+          '알 수 없는 에러가 발생했습니다',
+          500,
+          'Unknown Error'
+        );
+      }
+    }
+  };
+
+  /**
+   * 소그룹 삭제하기
    * @param {DeleteMinistryGroupParams} params
    * @returns {Promise<AxiosResponse>}
    */
@@ -229,19 +282,21 @@ export class MinistryGroupsApi {
   };
 
   /**
-   * 자식 사역 그룹 불러오기
-   * @param {GetChildMinistryGroupsParams} params
+   * 그룹장 수정하기
+   * @param {EditMinistryGroupLeaderParams} params
+   * @param {EditMinistryGroupLeaderBody} body
    * @returns {Promise<AxiosResponse>}
    */
-  public getChildMinistryGroups = async (
-    params: GetChildMinistryGroupsParams
+  public editMinistryGroupLeader = async (
+    params: EditMinistryGroupLeaderParams,
+    body: EditMinistryGroupLeaderBody
   ): Promise<AxiosResponse> => {
     const { churchId, ministryGroupId } = params;
 
-    const url = `${this._url}/churches/${churchId}/management/ministry-groups/${ministryGroupId}/childGroups`;
+    const url = `${this._url}/churches/${churchId}/management/ministry-groups/${ministryGroupId}/leader`;
 
     try {
-      return await authorizeAxios.get(url);
+      return await authorizeAxios.patch(url, body);
     } catch (serverError: any) {
       if (serverError.response) {
         const { message, error, statusCode } = serverError.response.data;

@@ -17,7 +17,7 @@ import { EducationAttendanceApi } from '@/api/education/education-attendance.api
 import { setTargetEducation } from '@/redux/reducers/target/target-education-reducer';
 import { setTargetEducationTerm } from '@/redux/reducers/target/target-education-term-reducer';
 import { setTargetEducationSession } from '@/redux/reducers/target/target-education-session-reducer';
-import { getHomeWidgetSchedule } from '@/utils/calendar';
+import { getMyWidgetSchedule } from '@/utils/calendar';
 import MyScheduleWidgetView from '@/components/molecules/home/widget/my-schedule-widget.view';
 import { TasksApi } from '@/api/tasks/tasks.api';
 import { VisitationsApi } from '@/api/visitations/visitations.api';
@@ -50,7 +50,7 @@ const MyScheduleWidget = () => {
 
       const newSchedules = response.data;
       const newMySchedules = newSchedules.map((schedule: ServerSchedule) => {
-        return getHomeWidgetSchedule(schedule);
+        return getMyWidgetSchedule(schedule);
       });
 
       setMySchedules(newMySchedules);

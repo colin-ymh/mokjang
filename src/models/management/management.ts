@@ -33,6 +33,9 @@ export type MinistryGroup = {
   childMinistryGroupIds: string[];
   childMinistryGroups?: MinistryGroup[];
   ministries?: Ministry[];
+  leaderMemberId: string;
+  membersCount: number;
+  order: number;
 };
 
 export const DEFAULT_MINISTRY_GROUP = {
@@ -41,6 +44,9 @@ export const DEFAULT_MINISTRY_GROUP = {
   parentMinistryGroupId: BLANK,
   id: BLANK,
   childMinistryGroupIds: [],
+  leaderMemberId: BLANK,
+  membersCount: 0,
+  order: 0,
 };
 
 export type Ministry = {

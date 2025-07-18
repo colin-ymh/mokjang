@@ -19,6 +19,7 @@ import { Member } from '@/models/member/member';
 import { MEMBER } from '@/constants/column/member-column';
 import GroupInformationView from './group-information.view';
 import { GroupHistoryApi } from '@/api/history/group-history.api';
+import { getDateStringFromDate } from '@/utils/date';
 
 type GroupInformationProps = {
   selectedGroup: Group;
@@ -206,17 +207,23 @@ const GroupInformation = ({
       if (selectedMembers.length === 0) return;
 
       for (const member of selectedMembers) {
+        // 다른 그룹이 존재
+        if (member.groupId) {
+          await groupHistoryApi.stopGroupHistory(
+            { churchId, memberId: member.id },
+            { endDate: getDateStringFromDate(new Date()) }
+          );
+        }
         // 새 그룹에 이력 생성
         await groupHistoryApi.createGroupHistory(
           { churchId, memberId: member.id },
           {
             groupId: selectedGroup.id as string,
+            startDate: getDateStringFromDate(new Date()),
           }
         );
       }
-
-      // 목록 갱신 후 모달 닫기
-      await fetchMembers();
+      dispatch(fetchGroups());
 
       dispatch(setToastText(t_popup('saveComplete')));
       dispatch(setToastBackgroundColor(BLACK));
@@ -230,8 +237,13 @@ const GroupInformation = ({
         setThrownError(new Error(String(error)));
       }
     } finally {
-      setSelectedMembers([]);
-      setIsAddModalShown(false);
+      setPage(1);
+      setTimeout(() => {
+        // 목록 갱신 후 모달 닫기
+        fetchMembers();
+        setSelectedMembers([]);
+        setIsAddModalShown(false);
+      });
     }
   };
 

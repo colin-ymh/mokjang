@@ -3,7 +3,7 @@ import { Member } from '@/models/member/member';
 import ManagementMemberTableView from '@/components/molecules/management/table/management-member-table.view';
 import { MEMBER } from '@/constants/column/member-column';
 import { ORDER_DIRECTION } from '@/constants/constant';
-import { TABLE_HEADER_ITEM } from '@/redux/reducers/filter/member-filter-reducer';
+import { CHURCH_CONTENT_ID } from '@/constants/layout/content';
 
 export type ManagementMemberTableProps = {
   members: Member[];
@@ -11,7 +11,7 @@ export type ManagementMemberTableProps = {
   orderBy: MEMBER | null;
   orderDirection: ORDER_DIRECTION | null;
   onClickHeaderItem: (headerId: MEMBER) => void;
-  headerItems: TABLE_HEADER_ITEM[];
+  type: CHURCH_CONTENT_ID;
 };
 
 const ManagementMemberTable = ({
@@ -20,7 +20,7 @@ const ManagementMemberTable = ({
   orderBy,
   orderDirection,
   onClickHeaderItem,
-  headerItems,
+  type,
 }: ManagementMemberTableProps) => {
   const scrollRef = useRef<HTMLDivElement | null>(null);
 
@@ -48,7 +48,7 @@ const ManagementMemberTable = ({
     orderBy,
     orderDirection,
     onClickHeaderItem,
-    headerItems,
+    type,
   };
 
   return (

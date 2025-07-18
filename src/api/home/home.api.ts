@@ -18,6 +18,12 @@ type GetMySchedulesParams = {
   churchId: string;
 };
 
+type GetReportedSchedulesParams = {
+  range: SEARCH_RANGE;
+  churchId: string;
+  page: number;
+};
+
 export class HomeApi {
   private _url: string;
 
@@ -94,6 +100,34 @@ export class HomeApi {
     const { churchId, range } = params;
 
     const url = `${this._url}/churches/${churchId}/home/schedules?range=${range}`;
+
+    try {
+      return await authorizeAxios.get(url);
+    } catch (serverError: any) {
+      if (serverError.response) {
+        const { message, error, statusCode } = serverError.response.data;
+        throw new CustomError(message, error, statusCode);
+      } else {
+        throw new CustomError(
+          '알 수 없는 에러가 발생했습니다',
+          500,
+          'Unknown Error'
+        );
+      }
+    }
+  };
+
+  /**
+   * 보고받은 일정 조회
+   * @param {GetReportedSchedulesParams} params
+   * @returns {Promise<AxiosResponse>}
+   */
+  public getReportedSchedules = async (
+    params: GetReportedSchedulesParams
+  ): Promise<AxiosResponse> => {
+    const { churchId, range, page } = params;
+
+    const url = `${this._url}/churches/${churchId}/home/reports?range=${range}&page=${page}`;
 
     try {
       return await authorizeAxios.get(url);

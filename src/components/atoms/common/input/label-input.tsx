@@ -5,6 +5,7 @@ import { MainText } from '@/components/atoms/common/text/main-text';
 import BorderInput from '@/components/atoms/common/input/border-input';
 import { InputProps } from '@/components/atoms/common/input/main-input';
 import RequiredMark from '@/components/atoms/common/text/required-mark';
+import { GRAY } from '@/constants/styles/color';
 
 const LabelInputContainer = styled.div<{ $zIndex?: number }>`
   display: flex;
@@ -28,7 +29,7 @@ const LabelInput = forwardRef<HTMLInputElement, LabelInputProps>(
   ({ label, zIndex, borderColor, isRequired, ...props }, ref) => {
     return (
       <LabelInputContainer $zIndex={zIndex}>
-        <MainText>
+        <MainText color={GRAY.DARK}>
           {isRequired && <RequiredMark />}
           {label}
         </MainText>

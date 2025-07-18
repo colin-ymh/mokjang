@@ -13,6 +13,8 @@ import Home from '../../../../../public/svg/home.svg';
 import LogoutButton from '@/components/atoms/common/button/logout-button';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { SIZE } from '@/constants/styles/style';
+import Button from '@/components/atoms/common/button/button';
+import { DummyApi } from '@/api/dummy.api';
 
 const TopContainer = styled.div`
   display: none;
@@ -105,12 +107,21 @@ type TopViewProps = {
 
 const TopView = ({ onClickButton }: TopViewProps) => {
   const { church } = useSelector((state: RootState) => state.church);
-
+  const dummyApi = new DummyApi(false);
   return (
     <TopContainer>
       <TopLeft>
         {/*<ChurchImage />*/}
         <LogoutButton width={100} />
+        <Button
+          text={'더미 교인 생성'}
+          width={100}
+          height={30}
+          color={WHITE}
+          onClick={() => {
+            dummyApi.createDummyMembers({ churchId: church.id });
+          }}
+        />
         <MainText size={SIZE.LARGE}>{`초대코드 ${church?.joinCode}`}</MainText>
       </TopLeft>
       <TopRight>

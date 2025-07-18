@@ -2,20 +2,22 @@ import { Schedule } from '@/models/calendar/calendar';
 import styled from 'styled-components';
 import { GRAY } from '@/constants/styles/color';
 import { MainText } from '@/components/atoms/common/text/main-text';
-import StatusTag from '@/components/atoms/common/tag/status-tag';
-import { STATUS } from '@/constants/status/status';
-import DomainTag from '@/components/atoms/common/tag/domain-tag';
-import { DOMAIN } from '@/models/permission/permission';
+import MainTag from '@/components/atoms/common/tag/main-tag';
 import { getDateFromDateString } from '@/utils/date';
 import { getTranslatedScheduleDate } from '@/utils/translate';
 import { usePathname } from 'next/navigation';
 import { LOCALE } from '@/constants/state/locale';
+import { useI18n } from '../../../../locales/client';
+import { DOMAIN } from '@/models/permission/permission';
+import { getStatusBackgroundColor, getStatusFontColor } from '@/utils/color';
+import { STATUS } from '@/constants/status/status';
 
 const ListContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
   overflow-y: auto;
+  height: 350px;
 `;
 
 const ScheduleItem = styled.div`
@@ -49,6 +51,8 @@ const MyScheduleList = ({
   const pathname = usePathname();
   const locale = pathname.split('/')[1] as LOCALE;
 
+  const t = useI18n();
+
   return (
     <ListContainer>
       {mySchedules.map((schedule) => {
@@ -65,10 +69,16 @@ const MyScheduleList = ({
           >
             <RowContainer>
               <MainText>{schedule.title}</MainText>
-              <StatusTag status={schedule.status as STATUS} />
+              <MainTag
+                title={t(schedule.status as STATUS)}
+                color={getStatusFontColor(schedule.status as STATUS)}
+                backgroundColor={getStatusBackgroundColor(
+                  schedule.status as STATUS
+                )}
+              />
             </RowContainer>
             <RowContainer>
-              <DomainTag domain={domain as DOMAIN} />
+              <MainTag title={t(domain as DOMAIN)} />
               <MainText>
                 {getTranslatedScheduleDate(
                   locale,

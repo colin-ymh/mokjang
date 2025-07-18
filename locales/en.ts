@@ -13,11 +13,20 @@ export default {
   isNotDone: 'Incomplete',
   customSelect: 'Custom Select',
 
-  groupLeader: 'Group Leader',
+  ministryName: 'Ministry Name',
+  currentMinistry: 'Current Ministry',
+  defaultMinistry: 'Bulk Ministry Assignment',
+  defaultMinistryDescription:
+    'The same ministry will be assigned to all members. You can modify it later individually.',
+
   addMemberDescription:
     'Members already belonging to the current group are not displayed',
+  groupLeader: 'Group Leader',
   editGroupLeader: 'Change Group Leader',
   editGroupLeaderDescription: 'Choose a new group leader',
+  ministryGroupLeader: 'Ministry Leader',
+  editMinistryGroupLeader: 'Change Ministry Leader',
+  editMinistryGroupLeaderDescription: 'Choose a new information leader',
 
   noGroup: 'N/A',
   warning: 'Warning',
@@ -307,6 +316,9 @@ export default {
   'title.editChurch': 'Edit Church Information',
 
   'title.addMemberHeaderDescription': 'You can add multiple members at once',
+
+  'title.addMinistry': 'Add Ministry',
+  'title.editMinistry': 'Edit Ministry',
   /*-------------------title (popup title)-------------------*/
 
   /*-------------------header (side bar button)-------------------*/
@@ -456,8 +468,8 @@ export default {
   /*-------------------placeholder-------------------*/
   'placeholder.name': 'Enter the name.',
   'placeholder.groupName': 'Enter the group name.',
-  'placeholder.ministryGroupName': 'Enter the ministry group name.',
-  'placeholder.ministryName': 'Enter the ministry name.',
+  'placeholder.ministryGroupName': 'Enter the information group name.',
+  'placeholder.ministryName': 'Enter the information name.',
   'placeholder.officerName': 'Enter the officer name.',
   'placeholder.educationName': 'Enter the education name.',
   'placeholder.educationDescription': 'Enter the education description.',
@@ -534,8 +546,9 @@ export default {
   'popup.deleteEducationTermBody': 'Deleted education term cannot be restored.',
 
   'popup.deleteMinistryGroupTitle':
-    'Do you want to delete this ministry group?',
-  'popup.deleteMinistryGroupBody': 'Deleted ministry group cannot be restored.',
+    'Do you want to delete this information group?',
+  'popup.deleteMinistryGroupBody':
+    'Deleted information group cannot be restored.',
 
   'popup.deleteEnrollmentTitle': 'Do you want to delete this enrollment(s)?',
   'popup.deleteEnrollmentBody': 'Deleted enrollment cannot be restored.',
@@ -554,7 +567,7 @@ export default {
 
   'popup.verifyFail': "You've entered wrong number.",
   'popup.duplicatedRole': 'That role is already duplicated.',
-  'popup.duplicatedMinistry': 'That ministry is already duplicated.',
+  'popup.duplicatedMinistry': 'That information is already duplicated.',
 
   'popup.deleteVisitationTitle': 'Do you want to delete this visitation?',
   'popup.deleteVisitationBody': 'Deleted visitation cannot be restored.',
@@ -580,6 +593,6 @@ export default {
   'warning.deleteGroup':
     'You cannot delete this group if there are members or subgroups associated with it. Deleted groups cannot be recovered.',
   'warning.deleteMinistryGroup':
-    'You cannot delete this ministry group if there are members or subgroups associated with it. Deleted ministry groups cannot be recovered.',
+    'You cannot delete this information group if there are members or subgroups associated with it. Deleted information groups cannot be recovered.',
   /*-------------------warning-------------------*/
 } as const;

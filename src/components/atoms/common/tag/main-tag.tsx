@@ -1,27 +1,32 @@
 import styled from 'styled-components';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { useI18n } from '../../../../../locales/client';
-import { DOMAIN } from '@/models/permission/permission';
 import { TAG_BACKGROUND_COLOR, TAG_FONT_COLOR } from '@/constants/styles/color';
 
 const TagContainer = styled.div<{ $backgroundColor: string }>`
   display: flex;
-  border-radius: 5px;
+  border-radius: 100px;
   background-color: ${({ $backgroundColor }) => $backgroundColor};
-  padding: 3px 5px;
+  padding: 2px 8px;
 `;
 
-type DomainTagProps = {
-  domain: DOMAIN;
+type MainTagProps = {
+  title: string;
+  backgroundColor?: string;
+  color?: string;
 };
 
-const DomainTag = ({ domain }: DomainTagProps) => {
+const MainTag = ({
+  title,
+  backgroundColor = TAG_BACKGROUND_COLOR,
+  color = TAG_FONT_COLOR,
+}: MainTagProps) => {
   const t = useI18n();
   return (
-    <TagContainer $backgroundColor={TAG_BACKGROUND_COLOR}>
-      <MainText color={TAG_FONT_COLOR}>{t(domain)}</MainText>
+    <TagContainer $backgroundColor={backgroundColor}>
+      <MainText color={color}>{title}</MainText>
     </TagContainer>
   );
 };
 
-export default DomainTag;
+export default MainTag;

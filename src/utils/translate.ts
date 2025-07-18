@@ -255,3 +255,35 @@ export const getTranslatedAlreadyGroupLeader = (
 
   return `${name} is current group leader.`;
 };
+
+/**
+ *
+ * @param locale
+ * @param name
+ */
+export const getTranslatedNewMinistryGroupLeader = (
+  locale: LOCALE,
+  name: string
+) => {
+  if (locale === LOCALE.KO) {
+    return `${name} 님이 새로운 사역리더가 됩니다`;
+  }
+
+  return `${name} will be the new ministry leader`;
+};
+
+/**
+ *
+ * @param locale
+ * @param name
+ */
+export const getTranslatedAlreadyMinistryGroupLeader = (
+  locale: LOCALE,
+  name: string
+) => {
+  if (locale === LOCALE.KO) {
+    return `${name} 님은 현재 사역리더입니다.`;
+  }
+
+  return `${name} is current ministry leader.`;
+};

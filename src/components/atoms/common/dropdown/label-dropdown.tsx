@@ -8,6 +8,7 @@ import Dropdown, {
   DropdownProps,
 } from '@/components/atoms/common/dropdown/dropdown';
 import { FLEX_DIRECTION } from '@/constants/styles/style';
+import { GRAY } from '@/constants/styles/color';
 
 const LabelDropdownContainer = styled.div<{
   $flexDirection: FLEX_DIRECTION;
@@ -40,7 +41,7 @@ const LabelDropdown = forwardRef<HTMLInputElement, LabelDropdownProps>(
   ) => {
     return (
       <LabelDropdownContainer $flexDirection={flexDirection}>
-        <MainText>{label}</MainText>
+        <MainText color={GRAY.SEMI_DARK}>{label}</MainText>
         <Dropdown
           ref={ref}
           value={value}

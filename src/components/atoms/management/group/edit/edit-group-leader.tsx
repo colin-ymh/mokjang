@@ -1,11 +1,15 @@
-import { GRAY, MAIN } from '@/constants/styles/color';
+import {
+  GRAY,
+  LEADER_BACKGROUND_COLOR,
+  LEADER_FONT_COLOR,
+  MAIN,
+} from '@/constants/styles/color';
 import { DEFAULT_MEMBER, Member } from '@/models/member/member';
 import styled from 'styled-components';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import ProfileImage from '@/components/atoms/common/image/profile-image';
 import { BLANK } from '@/constants/constant';
-import GroupTag from '@/components/atoms/common/tag/group-tag';
-import { DEFAULT_GROUP, Group } from '@/models/management/management';
+import { Group } from '@/models/management/management';
 import React, { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { LOCALE } from '@/constants/state/locale';
@@ -17,7 +21,7 @@ import {
 
 import ArrowUp from '../../../../../../public/svg/arror-up.svg';
 import RadioButton from '@/components/atoms/common/radio-button/radio-button';
-import GroupLeaderTag from '@/components/atoms/common/tag/group-leader-tag';
+import MainTag from '@/components/atoms/common/tag/main-tag';
 
 const EditGroupLeaderContainer = styled.div`
   display: flex;
@@ -142,9 +146,15 @@ const EditGroupLeader = ({
                 <ProfileImage value={member?.profileImageUrl} />
                 <ProfileDetail>
                   <MainText>{`${member.name} ${member.officer?.name || BLANK}`}</MainText>
-                  <GroupTag group={member.group || DEFAULT_GROUP} />
+                  <MainTag title={member.group?.name || t('noGroup')} />
                 </ProfileDetail>
-                {group.leaderMemberId === member.id && <GroupLeaderTag />}
+                {group.leaderMemberId === member.id && (
+                  <MainTag
+                    title={t('groupLeader')}
+                    backgroundColor={LEADER_BACKGROUND_COLOR}
+                    color={LEADER_FONT_COLOR}
+                  />
+                )}
               </ProfileContainer>
 
               <RadioButton isSelected={selectedMember.id === member.id} />

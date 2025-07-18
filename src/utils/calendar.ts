@@ -1,4 +1,8 @@
-import { Schedule, ServerSchedule } from '@/models/calendar/calendar';
+import {
+  Schedule,
+  ServerReportedSchedule,
+  ServerSchedule,
+} from '@/models/calendar/calendar';
 import { Task } from '@/models/task/task';
 import { Visitation } from '@/models/visitation/visitation';
 import { Member } from '@/models/member/member';
@@ -141,12 +145,23 @@ export const getScheduleFromHoliday = (event: Holiday): Schedule => {
   };
 };
 
-export const getHomeWidgetSchedule = (event: ServerSchedule) => {
+export const getMyWidgetSchedule = (event: ServerSchedule) => {
   return {
     id: `${event.type}-${event.id}`,
     title: event.title,
     start: event.startDate,
     end: event.endDate,
     status: event.status,
+  } as Schedule;
+};
+
+export const getReportedWidgetSchedule = (event: ServerReportedSchedule) => {
+  return {
+    id: `${event.type}-${event.id}`,
+    title: event.schedule.title,
+    start: event.schedule.startDate,
+    end: event.schedule.endDate,
+    status: event.schedule.status,
+    inCharge: event.inCharge,
   } as Schedule;
 };

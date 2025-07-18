@@ -1,7 +1,6 @@
 import React, { MutableRefObject } from 'react';
 import { usePathname } from 'next/navigation';
 import styled from 'styled-components';
-import { TABLE_HEADER_ITEM } from '@/redux/reducers/filter/member-filter-reducer';
 
 import { GRAY, MAIN, WHITE } from '@/constants/styles/color';
 import { MEMBER } from '@/constants/column/member-column';
@@ -18,6 +17,8 @@ import { LOCALE } from '@/constants/state/locale';
 import ManagementMemberTableHeader from '@/components/atoms/management/table/management-member-table-header';
 import MemberProfilePopupButton from '@/components/molecules/common/button/member-profile-popup-button';
 import { ORDER_DIRECTION } from '@/constants/constant';
+import { CHURCH_CONTENT_ID } from '@/constants/layout/content';
+import { useManagementHeaderBarItems } from '@/hooks/layout/header-bar-items';
 
 const getColumnWidth = (id: string) => {
   switch (id) {
@@ -35,6 +36,12 @@ const getColumnWidth = (id: string) => {
       return 50;
   }
 };
+
+const ProfileContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+`;
 
 // 2. 테이블 컨테이너 (100% 폭 + 스크롤)
 const TableContainer = styled.div<{ height: number }>`
@@ -136,7 +143,7 @@ type MemberTableProps = {
   orderBy: MEMBER | null;
   orderDirection: ORDER_DIRECTION | null;
   onClickHeaderItem: (headerId: MEMBER) => void;
-  headerItems: TABLE_HEADER_ITEM[];
+  type: CHURCH_CONTENT_ID;
 };
 
 const ManagementMemberTableView = ({
@@ -146,11 +153,13 @@ const ManagementMemberTableView = ({
   orderBy,
   orderDirection,
   onClickHeaderItem,
-  headerItems,
+  type,
 }: MemberTableProps) => {
   const { height } = useWindowSize();
   const pathname = usePathname();
   const basePath = pathname.split('/')[1] as LOCALE;
+
+  const headerItems = useManagementHeaderBarItems(type);
 
   const getMemberTableContent = (id: MEMBER, member: Member) => {
     switch (id) {
@@ -159,7 +168,9 @@ const ManagementMemberTableView = ({
 
       case MEMBER.NAME:
         return (
-          <MemberProfilePopupButton member={member} isOfficerShown={false} />
+          <ProfileContainer>
+            <MemberProfilePopupButton member={member} isOfficerShown={false} />
+          </ProfileContainer>
         );
       case MEMBER.MOBILE_PHONE:
         return (

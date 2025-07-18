@@ -83,7 +83,7 @@ export const fetchGroups = createAsyncThunk<
       membersCount: 0,
       churchId,
       childGroupIds: [],
-      roles: [],
+      leaderMemberId: BLANK,
     };
 
     return [allGroup];
@@ -111,12 +111,14 @@ export const fetchMinistryGroups = createAsyncThunk<
     const allGroup: MinistryGroup = {
       id: null, // 고유 ID (임의로 0으로 설정)
       name: BLANK,
-
       parentMinistryGroupId: null,
       childMinistryGroups: orderedMinistryGroups, // 모든 그룹을 하위 그룹으로 설정
       churchId,
       childMinistryGroupIds: [],
       ministries: [],
+      leaderMemberId: BLANK,
+      membersCount: 0,
+      order: 0,
     };
 
     return [allGroup];

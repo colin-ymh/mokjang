@@ -56,6 +56,8 @@ import ChurchManagement from '@/components/organisms/management/church/church-ma
 import Home from '@/components/organisms/home/home';
 import NewMemberWidget from '@/components/molecules/home/widget/new-member-widget';
 import MyScheduleWidget from '@/components/molecules/home/widget/my-schedule-widget';
+import MinistryGroupManagement from '@/components/organisms/management/ministry/ministry-group-management';
+import ReportedScheduleWidget from '@/components/molecules/home/widget/reported-schedule-widget';
 
 export const getSide = (id: string) => {
   switch (id) {
@@ -188,7 +190,7 @@ export const getContent = (
     case CHURCH_CONTENT_ID.GROUP:
       return <GroupManagement />;
     case CHURCH_CONTENT_ID.MINISTRY:
-      return <></>;
+      return <MinistryGroupManagement />;
     case CHURCH_CONTENT_ID.OFFICER:
       return <OfficerManagement />;
 
@@ -237,5 +239,7 @@ export const getWidgetById = (id: HOME_WIDGET) => {
       return <NewMemberWidget />;
     case HOME_WIDGET.MY_SCHEDULE:
       return <MyScheduleWidget />;
+    case HOME_WIDGET.REPORTED_SCHEDULE:
+      return <ReportedScheduleWidget />;
   }
 };

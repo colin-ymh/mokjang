@@ -1,6 +1,5 @@
 import React, { ChangeEvent, Dispatch, SetStateAction } from 'react';
 import { MainText } from '@/components/atoms/common/text/main-text';
-import { SIZE } from '@/constants/styles/style';
 import Button from '@/components/atoms/common/button/button';
 import { GRAY, WHITE } from '@/constants/styles/color';
 import styled from 'styled-components';
@@ -18,7 +17,6 @@ import { usePathname } from 'next/navigation';
 import { LOCALE } from '@/constants/state/locale';
 import { MEMBER } from '@/constants/column/member-column';
 import { ORDER_DIRECTION } from '@/constants/constant';
-import { useManagementHeaderBarItems } from '@/hooks/layout/header-bar-items';
 import { CHURCH_CONTENT_ID } from '@/constants/layout/content';
 
 const OfficerInformationViewContainer = styled.div<{ $isOfficer: boolean }>`
@@ -109,14 +107,12 @@ const OfficerInformationView = ({
 
   const t = useI18n();
 
-  const headerItems = useManagementHeaderBarItems(CHURCH_CONTENT_ID.OFFICER);
-
   return (
     <>
       <OfficerInformationViewContainer $isOfficer={!!selectedOfficer.id}>
         {/* 헤더 */}
         <OfficerInformationViewHeader>
-          <MainText size={SIZE.LARGE} fontWeight={600}>
+          <MainText fontSize={20} fontWeight={600}>
             {selectedOfficer.name}
           </MainText>
           <ButtonContainer>
@@ -145,7 +141,7 @@ const OfficerInformationView = ({
             <ManagementMemberTable
               members={members}
               loadMembers={loadMembers}
-              headerItems={headerItems}
+              type={CHURCH_CONTENT_ID.OFFICER}
               orderBy={orderBy}
               orderDirection={orderDirection}
               onClickHeaderItem={onClickHeaderItem}

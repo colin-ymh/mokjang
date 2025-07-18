@@ -63,7 +63,7 @@ const ManagementManagerHeaderView = ({
   return (
     <HeaderContainer>
       <HeaderTopContainer>
-        <MainText size={SIZE.EXTRA_LARGE}>
+        <MainText size={SIZE.EXTRA_LARGE} fontSize={24}>
           {t_header(MANAGEMENT_HEADER_ID.MANAGER)}
         </MainText>
         {/*<Button*/}

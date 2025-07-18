@@ -65,7 +65,7 @@ const ManagementChurchHeaderView = ({
   return (
     <HeaderContainer>
       <HeaderTopContainer>
-        <MainText size={SIZE.EXTRA_LARGE}>
+        <MainText size={SIZE.EXTRA_LARGE} fontSize={24}>
           {t_header(MANAGEMENT_HEADER_ID.CHURCH)}
         </MainText>
       </HeaderTopContainer>

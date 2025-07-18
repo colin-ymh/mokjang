@@ -13,10 +13,19 @@ export default {
   isNotDone: '미완료',
   customSelect: '직접선택',
 
-  groupLeader: '그룹장',
+  ministryName: '사역명',
+  currentMinistry: '현재 사역',
+  defaultMinistry: '일괄 사역 설정',
+  defaultMinistryDescription:
+    '모든 교인에게 동일한 사역이 부여됩니다. 추후 별도로 수정할 수 있습니다.',
+
   addMemberDescription: '현재 그룹에 이미 속한 교인은 표시되지 않습니다',
+  groupLeader: '그룹장',
   editGroupLeader: '그룹장 변경',
   editGroupLeaderDescription: '새로운 그룹장을 선택하세요',
+  ministryGroupLeader: '사역리더',
+  editMinistryGroupLeader: '사역리더 변경',
+  editMinistryGroupLeaderDescription: '새로운 사역리더를 선택하세요',
 
   noGroup: '소속 없음',
   warning: '경고',
@@ -151,7 +160,9 @@ export default {
   groupName: '그룹명',
   groupRole: '그룹역할',
 
-  ministryGroupList: '사역 그룹 목록',
+  ministryGroupList: '사역그룹 목록',
+  ministryGroupName: '사역그룹명',
+  ministryGroupRole: '사역그룹역할',
 
   educationList: '교육 목록',
   educationName: '교육명',
@@ -310,6 +321,9 @@ export default {
   'title.editChurch': '교회정보 수정',
   'title.addMemberHeaderDescription':
     '여러명의 교인을 한 번에 추가할 수 있습니다',
+
+  'title.addMinistry': '사역 추가',
+  'title.editMinistry': '사역 수정',
   /*-------------------title (popup title)-------------------*/
 
   /*-------------------header (side bar button)-------------------*/

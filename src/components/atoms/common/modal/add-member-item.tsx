@@ -12,8 +12,8 @@ import { getTranslatedAge } from '@/utils/translate';
 import { usePathname } from 'next/navigation';
 import { LOCALE } from '@/constants/state/locale';
 import { getAge, getDateFromDateString } from '@/utils/date';
-import GroupTag from '@/components/atoms/common/tag/group-tag';
-import { DEFAULT_GROUP } from '@/models/management/management';
+import { useI18n } from '../../../../../locales/client';
+import MainTag from '../tag/main-tag';
 
 const ItemContainer = styled.div<{
   $isEnable: boolean;
@@ -79,6 +79,8 @@ const AddMemberItem = ({
   const pathname = usePathname();
   const locale = pathname.split('/')[1] as LOCALE;
 
+  const t = useI18n();
+
   return (
     <ItemContainer
       $isEnable={isEnable}
@@ -105,7 +107,7 @@ const AddMemberItem = ({
             </MainText>
           </RowContainer>
           <RowContainer>
-            <GroupTag group={member.group || DEFAULT_GROUP} />
+            <MainTag title={member.group?.name || t('noGroup')} />
             <MainText color={GRAY.SEMI_DARK}>
               {getFormattedPhone(member.mobilePhone)}
             </MainText>

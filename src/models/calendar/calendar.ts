@@ -16,6 +16,8 @@ export type Schedule = {
 
   status?: STATUS;
 
+  inCharge?: Member;
+
   task?: Task;
   visitation?: Visitation;
   education?: EducationSession;
@@ -30,4 +32,11 @@ export type ServerSchedule = {
   startDate: string;
   endDate: string;
   status: STATUS;
+};
+
+export type ServerReportedSchedule = {
+  id: string;
+  type: DOMAIN;
+  inCharge: Member;
+  schedule: ServerSchedule;
 };

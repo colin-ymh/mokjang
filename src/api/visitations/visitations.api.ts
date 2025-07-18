@@ -72,7 +72,7 @@ type DeleteVisitationParams = {
 type EditVisitationDetailsParams = {
   churchId: string;
   visitationId: string;
-  detailId: string;
+  memberId: string;
 };
 
 type EditVisitationDetailsBody = {
@@ -273,9 +273,9 @@ export class VisitationsApi {
     params: EditVisitationDetailsParams,
     body: EditVisitationDetailsBody
   ) => {
-    const { churchId, visitationId, detailId } = params;
+    const { churchId, visitationId, memberId } = params;
 
-    const url = `${this._url}/churches/${churchId}/visitations/${visitationId}/details/${detailId}`;
+    const url = `${this._url}/churches/${churchId}/visitations/${visitationId}/details/${memberId}`;
 
     try {
       return await authorizeAxios.patch(url, body);

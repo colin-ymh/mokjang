@@ -137,7 +137,7 @@ const MainMemberHeaderView = ({
     <HeaderContainer>
       <HeaderTopContainer>
         <DesktopTitle>
-          <MainText size={SIZE.EXTRA_LARGE}>
+          <MainText size={SIZE.EXTRA_LARGE} fontSize={24}>
             {t_header(MAIN_HEADER_ID.MEMBER)}
           </MainText>
         </DesktopTitle>
