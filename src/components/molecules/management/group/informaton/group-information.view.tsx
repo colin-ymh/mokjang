@@ -147,6 +147,7 @@ const GroupInformationView = ({
               orderDirection={orderDirection}
               onClickHeaderItem={onClickHeaderItem}
               type={CHURCH_CONTENT_ID.GROUP}
+              leaderMemberId={selectedGroup.leaderMemberId}
             />
           </TableContainer>
         )}

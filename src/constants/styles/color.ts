@@ -38,7 +38,7 @@ export enum RED {
 export const TAG_BACKGROUND_COLOR = '#F3F4F7';
 export const TAG_FONT_COLOR = '#69717D';
 
-export const LEADER_BACKGROUND_COLOR = '#F7F7F7';
+export const LEADER_BACKGROUND_COLOR = '#FCF9C3';
 export const LEADER_FONT_COLOR = '#854D0F';
 
 export enum STATUS_COLOR {

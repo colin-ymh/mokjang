@@ -474,6 +474,7 @@ export default {
   'button.deleteOfficer': '직분 삭제',
   'button.deleteGroup': '그룹 삭제',
   'button.deleteMinistryGroup': '사역그룹 삭제',
+  'button.deleteMinistry': '사역 삭제',
   /*-------------------button-------------------*/
 
   /*-------------------placeholder-------------------*/
@@ -545,6 +546,9 @@ export default {
   'popup.deleteGroupTitle': '해당 그룹을 삭제하시겠습니까?',
   'popup.deleteGroupBody': '삭제된 그룹은 복구할 수 없습니다.',
 
+  'popup.deleteMinistryTitle': '해당 사역을 삭제하시겠습니까?',
+  'popup.deleteMinistryBody': '삭제된 사역은 복구할 수 없습니다.',
+
   'popup.deleteEducationTitle': '해당 교육을 삭제하시겠습니까?',
   'popup.deleteEducationBody': '삭제된 교육은 복구할 수 없습니다.',
 
@@ -602,5 +606,7 @@ export default {
     '소속된 교인이나 하위 그룹이 있으면 삭제가 불가능하며, 삭제된 그룹은 복구할 수 없습니다.',
   'warning.deleteMinistryGroup':
     '소속된 교인이나 하위 그룹 있으면 삭제가 불가능하며, 삭제된 사역그룹은 복구할 수 없습니다.',
+  'warning.deleteMinistry':
+    '할당된 교인이 있으면 삭제가 불가능하며, 삭제된 그룹은 복구할 수 없습니다.',
   /*-------------------warning-------------------*/
 } as const;

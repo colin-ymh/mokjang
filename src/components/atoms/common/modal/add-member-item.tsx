@@ -100,10 +100,11 @@ const AddMemberItem = ({
           <RowContainer>
             <MainText>{`${member.name} ${member.officer?.name || BLANK}`}</MainText>
             <MainText color={GRAY.DEFAULT}>
-              {`(${getTranslatedAge(
-                locale,
-                getAge(getDateFromDateString(member.birth))
-              )})`}
+              {member.birth &&
+                `(${getTranslatedAge(
+                  locale,
+                  getAge(getDateFromDateString(member.birth))
+                )})`}
             </MainText>
           </RowContainer>
           <RowContainer>

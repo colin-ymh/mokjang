@@ -300,6 +300,50 @@ export const useManagementHeaderBarItems = (id: CHURCH_CONTENT_ID) => {
           isDate: false,
         },
       ] as TABLE_HEADER_ITEM[];
+
+    case CHURCH_CONTENT_ID.MINISTRY:
+      return [
+        {
+          id: MEMBER.NAME,
+          isShown: true,
+          isSortable: true,
+          isFilterable: false,
+          isFixed: true,
+          isDate: false,
+        },
+        {
+          id: MEMBER.OFFICER,
+          isShown: true,
+          isSortable: true,
+          isFilterable: false,
+          isFixed: false,
+          isDate: false,
+        },
+        {
+          id: MEMBER.MINISTRIES,
+          isShown: true,
+          isSortable: true,
+          isFilterable: false,
+          isFixed: false,
+          isDate: false,
+        },
+        {
+          id: MEMBER.AGE,
+          isShown: true,
+          isSortable: true,
+          isFilterable: false,
+          isFixed: false,
+          isDate: false,
+        },
+        {
+          id: MEMBER.MOBILE_PHONE,
+          isShown: true,
+          isSortable: false,
+          isFilterable: false,
+          isFixed: false,
+          isDate: false,
+        },
+      ] as TABLE_HEADER_ITEM[];
     default:
       return [] as TABLE_HEADER_ITEM[];
   }

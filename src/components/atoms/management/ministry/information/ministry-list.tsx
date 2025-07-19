@@ -2,10 +2,14 @@ import styled from 'styled-components';
 import { DESTRUCTIVE, GRAY, WHITE } from '@/constants/styles/color';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { useI18n } from '../../../../../../locales/client';
-import { Ministry, MinistryGroup } from '@/models/management/management';
+import {
+  DEFAULT_MINISTRY,
+  Ministry,
+  MinistryGroup,
+} from '@/models/management/management';
 import MinistryCountTag from '@/components/atoms/common/tag/ministry-count-tag';
 import Button from '@/components/atoms/common/button/button';
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import Plus from '../../../../../../public/svg/plus.svg';
 import CustomPopup from '@/components/atoms/common/popup/custom-popup';
 import EditMinistry from '@/components/atoms/management/ministry/edit/edit-ministry';
@@ -70,6 +74,10 @@ const MinistryList = ({
 
   const [isAddShown, setIsAddShown] = useState<boolean>(false);
 
+  const [isEditShown, setIsEditShown] = useState<boolean>(false);
+  const [selectedMinistry, setSelectedMinistry] =
+    useState<Ministry>(DEFAULT_MINISTRY);
+
   const [editName, setEditName] = useState<string>(BLANK);
 
   // 에러 처리
@@ -113,6 +121,45 @@ const MinistryList = ({
     }
   };
 
+  const onClickMinistryItem = (ministry: Ministry) => {
+    setSelectedMinistry(ministry);
+    setIsEditShown(true);
+  };
+
+  const onClickEditModalClose = () => {
+    setIsEditShown(false);
+    setEditName(BLANK);
+    setSelectedMinistry(DEFAULT_MINISTRY);
+  };
+
+  const onClickSaveEditMinistry = async () => {
+    try {
+      await ministriesApi.editMinistry(
+        { churchId, ministryId: selectedMinistry.id as string },
+        { name: editName, ministryGroupId: selectedMinistryGroup.id as string }
+      );
+      fetchMinistries();
+    } catch (error) {
+      if (error instanceof Error) {
+        dispatch(setToastText(error.message));
+        dispatch(setToastBackgroundColor(DESTRUCTIVE.LIGHT));
+        dispatch(setIsToastShown(true));
+      } else {
+        setThrownError(new Error(String(error)));
+      }
+    } finally {
+      setIsEditShown(false);
+      setEditName(BLANK);
+      setSelectedMinistry(DEFAULT_MINISTRY);
+    }
+  };
+
+  useEffect(() => {
+    if (selectedMinistry.name) {
+      setEditName(selectedMinistry.name);
+    }
+  }, [selectedMinistry]);
+
   return (
     <>
       <MinistryListContainer>
@@ -132,11 +179,16 @@ const MinistryList = ({
         </HeaderContainer>
         <ListContainer>
           {ministries.map((ministry) => (
-            <MinistryCountTag key={ministry.id} ministry={ministry} />
+            <MinistryCountTag
+              key={ministry.id}
+              ministry={ministry}
+              onClick={() => onClickMinistryItem(ministry)}
+            />
           ))}
         </ListContainer>
       </MinistryListContainer>
 
+      {/* 사역 추가 */}
       <CustomPopup
         isShow={isAddShown}
         width={450}
@@ -149,6 +201,25 @@ const MinistryList = ({
           editName={editName}
           ministries={ministries}
           onChangeEditMinistryName={onChangeEditMinistryName}
+        />
+      </CustomPopup>
+
+      {/* 사역 수정 */}
+      <CustomPopup
+        isShow={isEditShown}
+        width={450}
+        height={500}
+        onClickCancel={onClickEditModalClose}
+        onClickDone={onClickSaveEditMinistry}
+        headerTitle={t('title.editMinistry')}
+      >
+        <EditMinistry
+          editName={editName}
+          ministries={ministries}
+          onChangeEditMinistryName={onChangeEditMinistryName}
+          selectedMinistry={selectedMinistry}
+          fetchMinistries={fetchMinistries}
+          onClickClose={onClickEditModalClose}
         />
       </CustomPopup>
     </>

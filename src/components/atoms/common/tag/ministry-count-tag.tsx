@@ -16,6 +16,7 @@ const TagContainer = styled.div<{
   justify-content: space-between;
   align-items: center;
   gap: 10px;
+  cursor: pointer;
 `;
 
 const CountContainer = styled.div`
@@ -30,11 +31,13 @@ const CountContainer = styled.div`
 
 type MinistryCountTagProps = {
   ministry: Ministry;
+  onClick: () => void;
 };
 
-const MinistryCountTag = ({ ministry }: MinistryCountTagProps) => {
+const MinistryCountTag = ({ ministry, onClick }: MinistryCountTagProps) => {
   return (
     <TagContainer
+      onClick={onClick}
       $backgroundColor={
         ministry.membersCount ? MAIN.EXTRA_LIGHT : GRAY.EXTRA_LIGHT
       }

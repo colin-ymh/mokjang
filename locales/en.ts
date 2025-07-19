@@ -463,6 +463,7 @@ export default {
   'button.deleteOfficer': 'Delete Officer',
   'button.deleteGroup': 'Delete Group',
   'button.deleteMinistryGroup': 'Delete Ministry Group',
+  'button.deleteMinistry': 'Delete Ministry',
   /*-------------------button-------------------*/
 
   /*-------------------placeholder-------------------*/
@@ -538,6 +539,9 @@ export default {
   'popup.deleteOfficerTitle': 'Do you want to delete this officer?',
   'popup.deleteOfficerBody': 'Deleted officer cannot be restored.',
 
+  'popup.deleteMinistryTitle': 'Do you want to delete this ministry?',
+  'popup.deleteMinistryBody': 'Deleted ministry cannot be restored.',
+
   'popup.deleteEducationTitle': 'Do you want to delete this education?',
   'popup.deleteEducationBody': 'Deleted education cannot be restored.',
 
@@ -589,10 +593,12 @@ export default {
 
   /*-------------------warning-------------------*/
   'warning.deleteOfficer':
-    'You cannot delete this position if there are members assigned to it. Deleted positions cannot be recovered.',
+    'You cannot delete this officer if there are members assigned to it. Deleted officer cannot be recovered.',
   'warning.deleteGroup':
-    'You cannot delete this group if there are members or subgroups associated with it. Deleted groups cannot be recovered.',
+    'You cannot delete this group if there are members or subgroups associated with it. Deleted group cannot be recovered.',
   'warning.deleteMinistryGroup':
-    'You cannot delete this information group if there are members or subgroups associated with it. Deleted information groups cannot be recovered.',
+    'You cannot delete this ministry group if there are members or subgroups associated with it. Deleted ministry group cannot be recovered.',
+  'warning.deleteMinistry':
+    'You cannot delete this ministry if there are members assigned to it. Deleted ministry cannot be recovered.',
   /*-------------------warning-------------------*/
 } as const;

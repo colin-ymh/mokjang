@@ -166,6 +166,8 @@ const MinistryGroupInformationView = ({
               orderBy={orderBy}
               orderDirection={orderDirection}
               onClickHeaderItem={onClickHeaderItem}
+              leaderMemberId={selectedMinistryGroup.leaderMemberId}
+              ministries={ministries}
             />
           </TableContainer>
         )}

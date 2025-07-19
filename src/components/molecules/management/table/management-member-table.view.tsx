@@ -2,7 +2,13 @@ import React, { MutableRefObject } from 'react';
 import { usePathname } from 'next/navigation';
 import styled from 'styled-components';
 
-import { GRAY, MAIN, WHITE } from '@/constants/styles/color';
+import {
+  GRAY,
+  LEADER_BACKGROUND_COLOR,
+  LEADER_FONT_COLOR,
+  MAIN,
+  WHITE,
+} from '@/constants/styles/color';
 import { MEMBER } from '@/constants/column/member-column';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { Member } from '@/models/member/member';
@@ -19,6 +25,11 @@ import MemberProfilePopupButton from '@/components/molecules/common/button/membe
 import { ORDER_DIRECTION } from '@/constants/constant';
 import { CHURCH_CONTENT_ID } from '@/constants/layout/content';
 import { useManagementHeaderBarItems } from '@/hooks/layout/header-bar-items';
+import MainTag from '@/components/atoms/common/tag/main-tag';
+import { useI18n } from '../../../../../locales/client';
+import { Ministry } from '@/models/management/management';
+import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-item';
+import Dropdown from '@/components/atoms/common/dropdown/dropdown';
 
 const getColumnWidth = (id: string) => {
   switch (id) {
@@ -28,6 +39,8 @@ const getColumnWidth = (id: string) => {
       return 20;
     case MEMBER.OFFICER:
       return 10;
+    case MEMBER.MINISTRIES:
+      return 20;
     case MEMBER.AGE:
       return 10;
     case MEMBER.MOBILE_PHONE:
@@ -40,7 +53,12 @@ const getColumnWidth = (id: string) => {
 const ProfileContainer = styled.div`
   display: flex;
   flex-direction: row;
+  align-items: center;
   gap: 10px;
+`;
+
+const MinistryContainer = styled.div`
+  display: flex;
 `;
 
 // 2. 테이블 컨테이너 (100% 폭 + 스크롤)
@@ -144,6 +162,8 @@ type MemberTableProps = {
   orderDirection: ORDER_DIRECTION | null;
   onClickHeaderItem: (headerId: MEMBER) => void;
   type: CHURCH_CONTENT_ID;
+  leaderMemberId?: string;
+  ministries?: Ministry[];
 };
 
 const ManagementMemberTableView = ({
@@ -154,12 +174,21 @@ const ManagementMemberTableView = ({
   orderDirection,
   onClickHeaderItem,
   type,
+  leaderMemberId,
+  ministries = [],
 }: MemberTableProps) => {
   const { height } = useWindowSize();
   const pathname = usePathname();
   const basePath = pathname.split('/')[1] as LOCALE;
-
+  const t = useI18n();
   const headerItems = useManagementHeaderBarItems(type);
+
+  const ministryDropdownItems: DropdownValueType[] = ministries.map(
+    (ministry) => ({
+      value: ministry.id,
+      title: ministry.name,
+    })
+  );
 
   const getMemberTableContent = (id: MEMBER, member: Member) => {
     switch (id) {
@@ -170,6 +199,17 @@ const ManagementMemberTableView = ({
         return (
           <ProfileContainer>
             <MemberProfilePopupButton member={member} isOfficerShown={false} />
+            {member.id === leaderMemberId && (
+              <MainTag
+                title={
+                  type === CHURCH_CONTENT_ID.GROUP
+                    ? t('groupLeader')
+                    : t('ministryGroupLeader')
+                }
+                color={LEADER_FONT_COLOR}
+                backgroundColor={LEADER_BACKGROUND_COLOR}
+              />
+            )}
           </ProfileContainer>
         );
       case MEMBER.MOBILE_PHONE:
@@ -177,6 +217,17 @@ const ManagementMemberTableView = ({
           <MainText>
             {member?.mobilePhone && getFormattedMobilePhone(member.mobilePhone)}
           </MainText>
+        );
+      case MEMBER.MINISTRIES:
+        return (
+          <MinistryContainer>
+            {
+              <Dropdown
+                value={member?.ministries && member.ministries[0]}
+                items={ministryDropdownItems}
+              />
+            }
+          </MinistryContainer>
         );
       case MEMBER.BIRTH:
         return (

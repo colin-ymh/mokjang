@@ -182,8 +182,13 @@ const MinistryGroupInformation = ({
     try {
       const response = await membersApi.getMembers({
         churchId,
-        ministries: [selectedMinistryGroup.id as string],
-        selectedColumns: [MEMBER.OFFICER, MEMBER.BIRTH, MEMBER.MOBILE_PHONE],
+        ministries: ministries.length > 0 ? ministries.map((m) => m.id) : [],
+        selectedColumns: [
+          MEMBER.OFFICER,
+          MEMBER.BIRTH,
+          MEMBER.MOBILE_PHONE,
+          MEMBER.MINISTRIES,
+        ],
         page,
         take: 30,
         order: orderBy
@@ -194,7 +199,7 @@ const MinistryGroupInformation = ({
         orderDirection: orderDirection || undefined,
       });
 
-      const newMembers: Member[] = response.data;
+      const newMembers: Member[] = response.data.data;
 
       if (newMembers.length > 0) {
         // 기존 데이터와 합치면서 중복 제거

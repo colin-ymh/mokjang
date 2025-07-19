@@ -4,6 +4,7 @@ import ManagementMemberTableView from '@/components/molecules/management/table/m
 import { MEMBER } from '@/constants/column/member-column';
 import { ORDER_DIRECTION } from '@/constants/constant';
 import { CHURCH_CONTENT_ID } from '@/constants/layout/content';
+import { Ministry } from '@/models/management/management';
 
 export type ManagementMemberTableProps = {
   members: Member[];
@@ -12,6 +13,8 @@ export type ManagementMemberTableProps = {
   orderDirection: ORDER_DIRECTION | null;
   onClickHeaderItem: (headerId: MEMBER) => void;
   type: CHURCH_CONTENT_ID;
+  leaderMemberId?: string;
+  ministries?: Ministry;
 };
 
 const ManagementMemberTable = ({
@@ -21,6 +24,8 @@ const ManagementMemberTable = ({
   orderDirection,
   onClickHeaderItem,
   type,
+  leaderMemberId,
+  ministries,
 }: ManagementMemberTableProps) => {
   const scrollRef = useRef<HTMLDivElement | null>(null);
 
@@ -49,6 +54,8 @@ const ManagementMemberTable = ({
     orderDirection,
     onClickHeaderItem,
     type,
+    leaderMemberId,
+    ministries,
   };
 
   return (
