@@ -618,7 +618,9 @@ export default {
   /*-------------------description-------------------*/
   'description.defaultMinistry':
     '모든 교인에게 동일한 사역이 부여됩니다. 추후 별도로 수정할 수 있습니다.',
-  'description.addMember': '현재 그룹에 이미 속한 교인은 표시되지 않습니다',
+  'description.addMember': '해당 그룹에 이미 속한 교인은 선택할 수 없습니다.',
+  'description.addMinistryMember':
+    '해당 사역 그룹에 이미 속한 교인은 선택할 수 없습니다.',
   'description.editGroupLeader': '새로운 그룹장을 선택하세요',
   'description.editMinistryGroupLeader': '새로운 사역리더를 선택하세요',
   'description.tableHeaderSetting': '드래그하여 순서를 변경하세요',

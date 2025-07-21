@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 
-import { GRAY, MAIN, WHITE } from '@/constants/styles/color';
+import { GRAY, WHITE } from '@/constants/styles/color';
 import { MEMBER } from '@/constants/column/member-column';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { BAPTISM, BLANK, GENDER } from '@/constants/constant';
@@ -123,7 +123,7 @@ const MemberTableRow = styled.tr`
   border-bottom: 1px solid ${GRAY.EXTRA_LIGHT};
   background-color: ${WHITE};
   &:hover td {
-    background-color: ${MAIN.EXTRA_LIGHT};
+    background-color: ${GRAY.SUPER_LIGHT};
   }
 `;
 

@@ -6,19 +6,13 @@ import {
   GRAY,
   LEADER_BACKGROUND_COLOR,
   LEADER_FONT_COLOR,
-  MAIN,
   WHITE,
 } from '@/constants/styles/color';
 import { MEMBER } from '@/constants/column/member-column';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { Member } from '@/models/member/member';
 import useWindowSize from '@/hooks/window/window';
-import { getAge, getDateFromInput } from '@/utils/date';
-import {
-  getFormattedDate,
-  getFormattedMobilePhone,
-  getLocaleDateFromDashDate,
-} from '@/utils/format';
+import { getFormattedMobilePhone } from '@/utils/format';
 import { LOCALE } from '@/constants/state/locale';
 import ManagementMemberTableHeader from '@/components/atoms/management/table/management-member-table-header';
 import MemberProfilePopupButton from '@/components/molecules/common/button/member-profile-popup-button';
@@ -30,6 +24,9 @@ import { useI18n } from '../../../../../locales/client';
 import { Ministry } from '@/models/management/management';
 import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-item';
 import Dropdown from '@/components/atoms/common/dropdown/dropdown';
+import MinistryDropdownButton from '@/components/atoms/common/dropdown/ministry-dropdown-button';
+import { getTranslatedAge } from '@/utils/translate';
+import { getAge, getDateFromDateString } from '@/utils/date';
 
 const getColumnWidth = (id: string) => {
   switch (id) {
@@ -123,7 +120,7 @@ const TableHeader = styled.th<{ id: string; $isLast?: boolean }>`
 const MemberTableRow = styled.tr`
   border-bottom: 1px solid ${GRAY.EXTRA_LIGHT};
   &:hover td {
-    background-color: ${MAIN.EXTRA_LIGHT};
+    background-color: ${GRAY.SUPER_LIGHT};
   }
 
   &:last-child {
@@ -191,12 +188,16 @@ const ManagementMemberTableView = ({
   const t = useI18n();
   const headerItems = useManagementHeaderBarItems(type);
 
-  const ministryDropdownItems: DropdownValueType[] = ministries.map(
-    (ministry) => ({
+  const ministryDropdownItems: DropdownValueType[] = [
+    {
+      value: undefined,
+      title: t('none'),
+    },
+    ...ministries.map((ministry) => ({
       value: ministry.id,
       title: ministry.name,
-    })
-  );
+    })),
+  ];
 
   const getMemberTableContent = (id: MEMBER, member: Member) => {
     switch (id) {
@@ -235,23 +236,18 @@ const ManagementMemberTableView = ({
               onChangeItem={(value) =>
                 onChangeMinistry && onChangeMinistry(value, member)
               }
+              CustomDropdownButton={MinistryDropdownButton}
             />
           </MinistryContainer>
-        );
-      case MEMBER.BIRTH:
-        return (
-          <MainText>
-            {member.birth &&
-              getLocaleDateFromDashDate(
-                basePath,
-                getFormattedDate(member.birth)
-              )}
-          </MainText>
         );
       case MEMBER.AGE:
         return (
           <MainText>
-            {member.birth && getAge(getDateFromInput(member.birth))}
+            {member.birth &&
+              getTranslatedAge(
+                basePath,
+                getAge(getDateFromDateString(member.birth))
+              )}
           </MainText>
         );
       case MEMBER.OFFICER:

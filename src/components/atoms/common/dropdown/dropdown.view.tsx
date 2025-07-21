@@ -3,15 +3,12 @@
 import React, { ChangeEvent, forwardRef, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-import { BLACK, WHITE } from '@/constants/styles/color';
+import { WHITE } from '@/constants/styles/color';
 import DropdownItem, {
   DropdownValueType,
 } from '@/components/atoms/common/dropdown/dropdown-item';
-import BorderInput, {
-  BorderInputProps,
-} from '@/components/atoms/common/input/border-input';
-
-import ChevronLeft from '../../../../../public/svg/chevron-down.svg';
+import { BorderInputProps } from '@/components/atoms/common/input/border-input';
+import DefaultDropdownButton from '@/components/atoms/common/dropdown/default-dropdown-button';
 
 const DropdownContainer = styled.div<{
   $isOpened: boolean;
@@ -22,15 +19,6 @@ const DropdownContainer = styled.div<{
   z-index: ${({ $isTransitionDone }) => ($isTransitionDone ? 50 : 'auto')};
   width: ${({ width }) => (width ? `${width}px` : `100%`)};
 `;
-
-const DropdownButton = styled.div`
-  display: flex;
-  width: 100%;
-  flex-direction: row;
-  cursor: pointer;
-  position: relative;
-`;
-
 const DropdownList = styled.div<{
   $isOpened: boolean;
   $reverseDirection?: boolean;
@@ -60,19 +48,6 @@ const DropdownList = styled.div<{
   pointer-events: ${({ $isOpened }) => ($isOpened ? 'auto' : 'none')};
 `;
 
-const Chevron = styled(ChevronLeft)<{ $isOpened: boolean }>`
-  width: 18px;
-  height: 18px;
-  stroke: ${BLACK};
-  stroke-width: 1px;
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%)
-    rotate(${({ $isOpened }) => ($isOpened ? '180deg' : '360deg')});
-  transition: transform 0.2s ease;
-`;
-
 type DropdownViewProps = {
   items: DropdownValueType[];
   innerValue: any;
@@ -95,6 +70,7 @@ type DropdownViewProps = {
   disabled?: boolean;
   isChevronShown: boolean;
   isRight?: boolean;
+  CustomDropdownButton?: React.ComponentType<any>;
 } & BorderInputProps;
 
 const DropdownView = forwardRef<HTMLInputElement, DropdownViewProps>(
@@ -123,6 +99,7 @@ const DropdownView = forwardRef<HTMLInputElement, DropdownViewProps>(
       fontSize,
       fontWeight,
       isRight,
+      CustomDropdownButton,
       ...inputProps
     },
     ref
@@ -140,38 +117,41 @@ const DropdownView = forwardRef<HTMLInputElement, DropdownViewProps>(
     const displayValue =
       items.find((item) => item.value === innerValue)?.title || innerValue;
 
+    const props = {
+      onClickDropdown,
+      ref,
+      isCustomMode,
+      customValue,
+      displayValue,
+      onChangeInput,
+      onFocusInput,
+      isOpened,
+      isChevronShown,
+      isEditable,
+      enterKeyHint,
+      borderColor,
+      backgroundColor,
+      height,
+      width,
+      fontSize,
+      fontWeight,
+      isRight,
+      onKeyDownHandler,
+      disabled,
+      ...inputProps,
+    };
+
     return (
       <DropdownContainer
         $isOpened={isOpened}
         $isTransitionDone={isTransitionDone}
         width={width}
       >
-        <DropdownButton onClick={onClickDropdown}>
-          <BorderInput
-            ref={ref}
-            value={isCustomMode ? customValue : displayValue}
-            onChange={onChangeInput}
-            onFocus={onFocusInput}
-            borderColor={borderColor}
-            backgroundColor={backgroundColor}
-            height={height}
-            width={width}
-            readOnly={!isEditable}
-            enterKeyHint={enterKeyHint}
-            disabled={disabled}
-            onKeyDown={(event) => {
-              inputProps.onKeyDown?.(event);
-              if (isOpened) {
-                onKeyDownHandler(event);
-              }
-            }}
-            fontSize={fontSize}
-            fontWeight={fontWeight}
-            isRight={isRight}
-            {...inputProps}
-          />
-          {isChevronShown && <Chevron $isOpened={isOpened} />}
-        </DropdownButton>
+        {CustomDropdownButton ? (
+          <CustomDropdownButton {...props} />
+        ) : (
+          <DefaultDropdownButton {...props} />
+        )}
 
         {!disabled && (
           <DropdownList

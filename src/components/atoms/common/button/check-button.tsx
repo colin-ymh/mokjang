@@ -13,8 +13,8 @@ const CheckButtonContainer = styled.div<{
   $borderColor?: string;
 }>`
   display: flex;
-  border: ${({ $isChecked, $borderColor }) => `1.5px solid ${$borderColor || $isChecked ? MAIN.DEFAULT : GRAY.DEFAULT};`}
-  background-color: ${({ $isChecked }) => ($isChecked ? MAIN.DEFAULT : WHITE)};
+  border: ${({ $isChecked, $borderColor, $disabled }) => `1.5px solid ${$borderColor || $isChecked ? ($disabled ? GRAY.DEFAULT : MAIN.DEFAULT) : GRAY.DEFAULT};`}
+  background-color: ${({ $isChecked, $disabled }) => ($isChecked ? ($disabled ? GRAY.DEFAULT : MAIN.DEFAULT) : WHITE)};
   width: ${({ width }) => width}px;
   height: ${({ height }) => height}px;
   cursor: ${({ $disabled }) => ($disabled ? 'default' : 'pointer')};

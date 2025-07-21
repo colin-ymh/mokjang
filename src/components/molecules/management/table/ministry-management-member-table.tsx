@@ -59,14 +59,25 @@ const MinistryManagementMemberTable = ({
 
   const onChangeMinistry = async (ministryId: string, member: Member) => {
     try {
-      await ministryMembersApi.editMemberMinistry(
-        {
-          churchId,
-          ministryGroupId: selectedMinistryGroup.id as string,
-          ministryId,
-        },
-        { memberId: member.id }
-      );
+      if (!ministryId && member.ministries) {
+        await ministryMembersApi.deleteMemberMinistry(
+          {
+            churchId,
+            ministryGroupId: selectedMinistryGroup.id as string,
+            ministryId: member.ministries[0].id as string,
+          },
+          { memberId: member.id }
+        );
+      } else {
+        await ministryMembersApi.editMemberMinistry(
+          {
+            churchId,
+            ministryGroupId: selectedMinistryGroup.id as string,
+            ministryId,
+          },
+          { memberId: member.id }
+        );
+      }
 
       fetchMembers();
       fetchMinistries();

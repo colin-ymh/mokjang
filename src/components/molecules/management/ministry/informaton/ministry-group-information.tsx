@@ -4,10 +4,7 @@ import { Ministry, MinistryGroup } from '@/models/management/management';
 import { useScopedI18n } from '../../../../../../locales/client';
 import { getFormattedTitle } from '@/utils/format';
 import { getIsWellFormedTitle } from '@/utils/check';
-import {
-  fetchGroups,
-  fetchMinistryGroups,
-} from '@/redux/reducers/church-reducer';
+import { fetchMinistryGroups } from '@/redux/reducers/church-reducer';
 import { BLANK, ORDER_DIRECTION } from '@/constants/constant';
 import {
   setIsToastShown,
@@ -20,7 +17,10 @@ import { Member } from '@/models/member/member';
 import { MEMBER } from '@/constants/column/member-column';
 import MinistryGroupInformationView from '@/components/molecules/management/ministry/informaton/ministry-group-information.view';
 import { MinistryGroupsApi } from '@/api/management/ministry/ministry-groups.api';
-import { MinistriesApi } from '@/api/management/ministry/ministries.api';
+import {
+  MinistriesApi,
+  MINISTRY_ORDER,
+} from '@/api/management/ministry/ministries.api';
 import { MinistryGroupMembersApi } from '@/api/management/ministry/ministry-group-members.api';
 
 type MinistryGroupInformationProps = {
@@ -219,12 +219,12 @@ const MinistryGroupInformation = ({
           members: selectedMembers.map((member) => {
             return {
               memberId: member.id as string,
-              ministryId: selectedMinistryId,
+              ministryId: selectedMinistryId || undefined,
             };
           }),
         }
       );
-      dispatch(fetchGroups());
+      dispatch(fetchMinistryGroups());
 
       // 목록 갱신 후 모달 닫기
       await fetchMembers();
@@ -259,6 +259,7 @@ const MinistryGroupInformation = ({
       const response = await ministriesApi.getMinistries({
         churchId,
         ministryGroupId: selectedMinistryGroup.id as string,
+        order: MINISTRY_ORDER.NAME,
       });
 
       const newMinistries = response.data.data;

@@ -8,7 +8,12 @@ import {
   NONE,
   NULL,
 } from '@/constants/constant';
-import { Group, Ministry, Officer } from '@/models/management/management';
+import {
+  Group,
+  Ministry,
+  MinistryGroup,
+  Officer,
+} from '@/models/management/management';
 import { Education } from '@/models/education/education';
 
 export type ChurchInformation = {
@@ -31,6 +36,7 @@ export type Member = {
   group?: Group;
   groupRole?: GROUP_ROLE;
   ministries?: Ministry[];
+  ministryGroups?: MinistryGroup[];
   educations?: Education[];
   officerId?: string;
   officer?: Officer;

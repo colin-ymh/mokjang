@@ -51,6 +51,8 @@ export type DropdownProps<
   onChangeCustomInput?: (event: ChangeEvent<HTMLInputElement>) => void;
   isChevronShown?: boolean;
   isRight?: boolean;
+
+  CustomDropdownButton?: React.ComponentType<any>;
 };
 
 export const CUSTOM_VALUE = 'custom';
@@ -79,6 +81,7 @@ const Dropdown = forwardRef<HTMLInputElement, DropdownProps>(
       fontSize,
       fontWeight,
       isRight,
+      CustomDropdownButton,
       ...inputProps
     },
     ref
@@ -268,6 +271,7 @@ const Dropdown = forwardRef<HTMLInputElement, DropdownProps>(
       fontSize,
       fontWeight,
       isRight,
+      CustomDropdownButton,
     };
 
     return (

@@ -113,7 +113,9 @@ const AddMinistryGroupMemberModalView = ({
         <MainText color={GRAY.SEMI_DARK}>
           {getTranslatedSelectedMemberCount(locale, selectedMembers.length)}
         </MainText>
-        <MainText color={GRAY.DEFAULT}>{t('description.addMember')}</MainText>
+        <MainText color={GRAY.DEFAULT}>
+          {t('description.addMinistryMember')}
+        </MainText>
       </RowContainer>
       {/* 교인 목록 */}
       <MemberListContainer ref={scrollRef} onScroll={onScroll}>
@@ -122,11 +124,16 @@ const AddMinistryGroupMemberModalView = ({
             <AddMemberItem
               key={member.id}
               member={member}
-              isEnable={true}
-              // isEnable={member.ministries?.includes(ministryGroup)}
-              isSelected={selectedMembers.some(
-                (selectedMember) => selectedMember.id === member.id
-              )}
+              isEnable={
+                !(member.ministryGroups && member.ministryGroups?.length > 0)
+              }
+              isSelected={
+                selectedMembers.some(
+                  (selectedMember) => selectedMember.id === member.id
+                ) ||
+                (member.ministryGroups && member.ministryGroups?.length > 0) ||
+                false
+              }
               onClick={onClickMember}
             />
           );

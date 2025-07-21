@@ -28,8 +28,8 @@ const ItemContainer = styled.div<{
   border: 1px solid ${GRAY.EXTRA_LIGHT};
   border-bottom: 0;
 
-  background-color: ${({ $isSelected }) =>
-    $isSelected ? MAIN.EXTRA_LIGHT : WHITE};
+  background-color: ${({ $isSelected, $isEnable }) =>
+    $isEnable ? ($isSelected ? MAIN.EXTRA_LIGHT : WHITE) : WHITE};
 
   &:first-child {
     border-top-left-radius: 5px;
