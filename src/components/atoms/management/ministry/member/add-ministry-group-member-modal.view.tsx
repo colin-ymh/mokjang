@@ -104,14 +104,14 @@ const AddMinistryGroupMemberModalView = ({
           height={40}
         />
         <MainText color={GRAY.DEFAULT} size={SIZE.SMALL}>
-          {t('defaultMinistryDescription')}
+          {t('description.defaultMinistry')}
         </MainText>
       </DropdownContainer>
       <RowContainer>
         <MainText color={GRAY.SEMI_DARK}>
           {getTranslatedSelectedMemberCount(locale, selectedMembers.length)}
         </MainText>
-        <MainText color={GRAY.DEFAULT}>{t('addMemberDescription')}</MainText>
+        <MainText color={GRAY.DEFAULT}>{t('description.addMember')}</MainText>
       </RowContainer>
       {/* 교인 목록 */}
       <MemberListContainer>

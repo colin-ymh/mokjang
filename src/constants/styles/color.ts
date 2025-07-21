@@ -4,7 +4,7 @@ export const WHITE = '#FFFFFF';
 export enum GRAY {
   SUPER_LIGHT = '#f9fAfB',
   EXTRA_LIGHT = '#efefef',
-  LIGHT = '#F3F4F6',
+  LIGHT = '#E5E7EB',
   SEMI_LIGHT = '#cfcfcf',
   DEFAULT = '#9f9f9f',
   SEMI_DARK = '#7f7f7f',
@@ -35,8 +35,8 @@ export enum RED {
   DEFAULT = '#fb3c3c',
 }
 
-export const TAG_BACKGROUND_COLOR = '#F3F4F7';
-export const TAG_FONT_COLOR = '#69717D';
+export const TAG_BACKGROUND_COLOR = '#E5E7EB';
+export const TAG_FONT_COLOR = '#6B7280';
 
 export const LEADER_BACKGROUND_COLOR = '#FCF9C3';
 export const LEADER_FONT_COLOR = '#854D0F';

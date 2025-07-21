@@ -17,11 +17,14 @@ import Button from '@/components/atoms/common/button/button';
 import BorderInput from '@/components/atoms/common/input/border-input';
 import _ from 'lodash';
 
+import Calendar from '../../../public/svg/calendar.svg';
+
 registerLocale('ko', ko);
 
 const CustomDatePickerWrapper = styled.div`
   display: flex;
   z-index: 10;
+  width: 100%;
 
   .react-datepicker-wrapper {
     width: 100%;
@@ -96,6 +99,13 @@ const CustomDatePickerWrapper = styled.div`
   }
 `;
 
+const CalendarIcon = styled(Calendar)`
+  width: 14px;
+  height: 16px;
+  stroke: ${BLACK};
+  stroke-width: 1.5px;
+`;
+
 const HeaderContainer = styled.div`
   margin: 10px 0;
   display: flex;
@@ -115,6 +125,7 @@ export type CustomDatePickerProps = DatePickerProps & {
   customInput?: React.ReactNode;
   /** 주 단위 선택 여부 */
   selectWeek?: boolean;
+  borderColor?: string;
 };
 
 export default function CustomDatePicker({
@@ -123,6 +134,7 @@ export default function CustomDatePicker({
   height,
   customInput,
   selectWeek = false,
+  borderColor,
   ...props
 }: CustomDatePickerProps) {
   const currentYear = getYear(new Date());
@@ -303,7 +315,14 @@ export default function CustomDatePicker({
         renderCustomHeader={customHeader}
         onSelect={handleSelect}
         customInput={
-          customInput || <BorderInput width={width} height={height} />
+          customInput || (
+            <BorderInput
+              width={width}
+              height={height}
+              borderColor={borderColor}
+              icon={<CalendarIcon />}
+            />
+          )
         }
         showTimeSelect={false}
         dateFormat="yyyy-MM-dd"

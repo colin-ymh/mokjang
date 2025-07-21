@@ -6,7 +6,6 @@ import { useParams } from 'next/navigation';
 
 import MainSideButton from '@/components/atoms/layout/side/main-side/main-side-button';
 import { MAIN_HEADER_ID } from '@/constants/layout/header';
-import GroupFilter from '@/components/atoms/layout/side/main-side/group-filter';
 
 import { useScopedI18n } from '../../../../../../locales/client';
 
@@ -18,18 +17,10 @@ const ButtonContainer = styled.div`
   padding: 20px 15px;
 `;
 
-const GroupFilterContainer = styled.div<{ $isOpened: boolean }>`
-  overflow-y: auto;
-  margin: 10px 0;
-  display: ${({ $isOpened }) => ($isOpened ? 'flex' : 'none')};
-`;
-
 type SideBarViewProps = {};
 
 const MainSideButtonList = ({}: SideBarViewProps) => {
   const slug = useParams().slug as string[] | undefined;
-  const headerId = slug?.[1] ?? null;
-
   const t_header = useScopedI18n('header');
 
   return (
@@ -42,9 +33,6 @@ const MainSideButtonList = ({}: SideBarViewProps) => {
         id={MAIN_HEADER_ID.MEMBER}
         title={t_header(MAIN_HEADER_ID.MEMBER)}
       />
-      <GroupFilterContainer $isOpened={headerId === MAIN_HEADER_ID.MEMBER}>
-        <GroupFilter />
-      </GroupFilterContainer>
       <MainSideButton
         id={MAIN_HEADER_ID.ATTENDANCE}
         title={`${t_header(MAIN_HEADER_ID.WORSHIP)} / ${t_header(MAIN_HEADER_ID.ATTENDANCE)}`}

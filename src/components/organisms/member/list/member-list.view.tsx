@@ -10,7 +10,7 @@ import SlidePopup from '@/components/atoms/common/popup/slide-popup';
 import MemberInformation from '@/components/organisms/member/information/member-information';
 import Loading from '@/components/atoms/common/etc/loading';
 import React from 'react';
-import { BLACK, DESTRUCTIVE } from '@/constants/styles/color';
+import { BLACK, DESTRUCTIVE, WHITE } from '@/constants/styles/color';
 import CancelIcon from '../../../../../public/svg/cancel.svg';
 import TrashIcon from '../../../../../public/svg/trash.svg';
 import ConfirmPopup from '@/components/atoms/common/popup/error-popup';
@@ -22,6 +22,7 @@ const MemberListContainer = styled.div`
   height: 100%;
   width: 100%;
   overflow-y: auto;
+  background-color: ${WHITE};
 `;
 
 const MobileView = styled.div`
@@ -39,6 +40,7 @@ const DesktopView = styled.div`
   @media (min-width: ${MEDIA_MIN_WIDTH.DESKTOP}) {
     display: flex;
     flex-direction: column;
+    padding: 0 20px;
   }
 `;
 

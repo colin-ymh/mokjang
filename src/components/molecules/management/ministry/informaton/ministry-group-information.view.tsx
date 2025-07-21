@@ -9,7 +9,6 @@ import { Ministry, MinistryGroup } from '@/models/management/management';
 import { useI18n } from '../../../../../../locales/client';
 import CustomPopup from '@/components/atoms/common/popup/custom-popup';
 import { Member } from '@/models/member/member';
-import ManagementMemberTable from '@/components/molecules/management/table/management-member-table';
 import { getTranslatedAddMemberTitle } from '@/utils/translate';
 import { usePathname } from 'next/navigation';
 import { LOCALE } from '@/constants/state/locale';
@@ -19,6 +18,7 @@ import { CHURCH_CONTENT_ID } from '@/constants/layout/content';
 import EditMinistryGroup from '@/components/molecules/management/ministry/edit/edit-ministry-group';
 import AddMinistryGroupMemberModal from '@/components/atoms/management/ministry/member/add-ministry-group-member-modal';
 import MinistryList from '@/components/atoms/management/ministry/information/ministry-list';
+import MinistryManagementMemberTable from '@/components/molecules/management/table/ministry-management-member-table';
 
 const MinistryGroupInformationViewContainer = styled.div<{
   $isMinistryGroup: boolean;
@@ -86,6 +86,7 @@ type MinistryGroupInformationViewProps = {
   onClickAddModalClose: () => void;
   onClickSaveNewMembers: (selectedMembers: Member[]) => void;
   fetchMinistries: () => void;
+  fetchMembers: () => void;
   onChangeMinistryItem: (id: string) => void;
 };
 
@@ -113,6 +114,7 @@ const MinistryGroupInformationView = ({
   onClickAddModalClose,
   onClickSaveNewMembers,
   fetchMinistries,
+  fetchMembers,
   onChangeMinistryItem,
 }: MinistryGroupInformationViewProps) => {
   const pathname = usePathname();
@@ -159,7 +161,7 @@ const MinistryGroupInformationView = ({
         {/* 교인 목록 */}
         {selectedMinistryGroup.id && (
           <TableContainer>
-            <ManagementMemberTable
+            <MinistryManagementMemberTable
               members={members}
               type={CHURCH_CONTENT_ID.MINISTRY}
               loadMembers={loadMembers}
@@ -168,6 +170,7 @@ const MinistryGroupInformationView = ({
               onClickHeaderItem={onClickHeaderItem}
               leaderMemberId={selectedMinistryGroup.leaderMemberId}
               ministries={ministries}
+              fetchMembers={fetchMembers}
             />
           </TableContainer>
         )}

@@ -4,6 +4,7 @@ import { MEMBER } from '@/constants/column/member-column';
 import { Member } from '@/models/member/member';
 import { RootState } from '@/redux/store';
 import { MembersApi } from '@/api/members/members.api';
+import { FilteredItemType } from '@/components/atoms/member/setting/filtered-item.view';
 
 type MEMBER_FILTER = {
   [MEMBER.NAME]: string;
@@ -37,10 +38,7 @@ type MemberFilterState = {
   memberOrderBy: MEMBER | typeof NULL;
   memberOrderDirection: ORDER_DIRECTION;
   memberTableHeaderItemList: TABLE_HEADER_ITEM[];
-  filterValue: MEMBER | typeof NULL;
-  filterItems: string[];
-  filterAfter: string;
-  filterBefore: string;
+  filteredItems: FilteredItemType[];
 };
 
 export const INITIAL_MEMBER_FILTER: MEMBER_FILTER = {
@@ -89,10 +87,18 @@ export const BLANK_HEADER = {
 };
 
 export const INITIAL_TABLE_HEADER_LIST: TABLE_HEADER_ITEM[] = [
+  // {
+  //   id: MEMBER.CHECK,
+  //   isShown: true,
+  //   isSortable: false,
+  //   isFilterable: false,
+  //   isFixed: true,
+  //   isDate: false,
+  // },
   {
-    id: MEMBER.CHECK,
+    id: MEMBER.NAME,
     isShown: true,
-    isSortable: false,
+    isSortable: true,
     isFilterable: false,
     isFixed: true,
     isDate: false,
@@ -102,15 +108,7 @@ export const INITIAL_TABLE_HEADER_LIST: TABLE_HEADER_ITEM[] = [
     isShown: true,
     isSortable: true,
     isFilterable: false,
-    isFixed: true,
-    isDate: false,
-  },
-  {
-    id: MEMBER.NAME,
-    isShown: true,
-    isSortable: true,
-    isFilterable: false,
-    isFixed: true,
+    isFixed: false,
     isDate: false,
   },
   {
@@ -210,7 +208,7 @@ export const INITIAL_TABLE_HEADER_LIST: TABLE_HEADER_ITEM[] = [
     isDate: false,
   },
   {
-    id: MEMBER.BIRTH,
+    id: MEMBER.AGE,
     isShown: false,
     isSortable: true,
     isFilterable: true,
@@ -241,10 +239,7 @@ const initialState: MemberFilterState = {
   memberOrderBy: NULL,
   memberOrderDirection: ORDER_DIRECTION.ASC,
   memberTableHeaderItemList: INITIAL_TABLE_HEADER_LIST,
-  filterValue: NULL,
-  filterItems: [],
-  filterAfter: BLANK,
-  filterBefore: BLANK,
+  filteredItems: [],
 };
 
 export const fetchMembers = createAsyncThunk<
@@ -324,17 +319,8 @@ const MemberFilterSlice = createSlice({
     ) {
       state.memberTableHeaderItemList = action.payload;
     },
-    setFilterValue(state, action: PayloadAction<MEMBER | typeof NULL>) {
-      state.filterValue = action.payload;
-    },
-    setFilterItems(state, action: PayloadAction<string[]>) {
-      state.filterItems = action.payload;
-    },
-    setFilterAfter(state, action: PayloadAction<string>) {
-      state.filterAfter = action.payload;
-    },
-    setFilterBefore(state, action: PayloadAction<string>) {
-      state.filterBefore = action.payload;
+    setFilteredItems: (state, action: PayloadAction<FilteredItemType[]>) => {
+      state.filteredItems = action.payload;
     },
   },
 });
@@ -345,9 +331,6 @@ export const {
   setMemberOrderBy,
   setMemberOrderDirection,
   setMemberTableHeaderItemList,
-  setFilterValue,
-  setFilterItems,
-  setFilterAfter,
-  setFilterBefore,
+  setFilteredItems,
 } = MemberFilterSlice.actions;
 export default MemberFilterSlice.reducer;

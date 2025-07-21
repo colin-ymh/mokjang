@@ -2,7 +2,7 @@ import React, { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'next/navigation';
 
-import { GRAY } from '@/constants/styles/color';
+import { GRAY, WHITE } from '@/constants/styles/color';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { useMainMemberHeaderBarItems } from '@/hooks/layout/header-bar-items';
 import { DIRECTION, SIZE } from '@/constants/styles/style';
@@ -12,8 +12,9 @@ import { MEDIA_MIN_WIDTH } from '@/constants/constant';
 import SlidePopup from '@/components/atoms/common/popup/slide-popup';
 import Button from '@/components/atoms/common/button/button';
 import { MAIN_HEADER_ID } from '@/constants/layout/header';
-import GroupFilter from '@/components/atoms/layout/side/main-side/group-filter';
+import GroupFilter from '@/components/molecules/member/setting/group-filter';
 import AddMember from '@/components/organisms/member/add/add-member';
+import Plus from '../../../../../../../public/svg/plus.svg';
 
 const HeaderContainer = styled.div`
   display: flex;
@@ -27,10 +28,10 @@ const HeaderContainer = styled.div`
   }
 
   @media (min-width: ${MEDIA_MIN_WIDTH.DESKTOP}) {
-    height: 120px;
+    height: 80px;
     padding: 0;
     justify-content: space-between;
-    border-bottom: 0.7px solid ${GRAY.SEMI_LIGHT};
+    //border-bottom: 0.7px solid ${GRAY.SEMI_LIGHT};
   }
 `;
 
@@ -74,12 +75,6 @@ const GroupButton = styled.div`
 //   }
 // `;
 
-const GroupFilterContainer = styled.div`
-  display: flex;
-  padding: 10px;
-  width: 100%;
-`;
-
 const DesktopRegister = styled.div`
   display: none;
   @media (min-width: ${MEDIA_MIN_WIDTH.DESKTOP}) {
@@ -92,6 +87,13 @@ const MobileRegister = styled.div`
   @media (min-width: ${MEDIA_MIN_WIDTH.DESKTOP}) {
     display: none;
   }
+`;
+
+const PlusIcon = styled(Plus)`
+  width: 18px;
+  height: 18px;
+  stroke: ${WHITE};
+  stroke-width: 2px;
 `;
 
 type MainMemberHeaderViewProps = {
@@ -146,18 +148,12 @@ const MainMemberHeaderView = ({
             <MainText size={SIZE.EXTRA_LARGE}>{selectedGroupName}</MainText>
           </GroupButton>
         </MobileTitle>
-        {/*<Button*/}
-        {/*  text={'테스트용 교인 생성하기'}*/}
-        {/*  width={200}*/}
-        {/*  height={30}*/}
-        {/*  onClick={onClickDummyMembers}*/}
-        {/*  backgroundColor={BLACK}*/}
-        {/*/>*/}
         <Button
-          text={t_button('memberRegister')}
+          text={t_button('addMember')}
           onClick={onClickRegisterMemberButton}
           width={100}
           height={30}
+          icon={<PlusIcon />}
         />
       </HeaderTopContainer>
       {/*<HeaderBottomContainer>*/}
@@ -174,9 +170,7 @@ const MainMemberHeaderView = ({
         direction={DIRECTION.BOTTOM}
         onClickClose={onDismissModal}
       >
-        <GroupFilterContainer>
-          <GroupFilter isDefaultOpen onChange={onClickNewGroup} />
-        </GroupFilterContainer>
+        <GroupFilter isDefaultOpen onChange={onClickNewGroup} />
       </SlidePopup>
       {/* 데스크톱 교인 추가 */}
       <DesktopRegister>

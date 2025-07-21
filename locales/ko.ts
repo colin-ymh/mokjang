@@ -13,19 +13,16 @@ export default {
   isNotDone: '미완료',
   customSelect: '직접선택',
 
+  fixed: '고정',
+  resetFilter: '전체 초기화',
+
   ministryName: '사역명',
   currentMinistry: '현재 사역',
   defaultMinistry: '일괄 사역 설정',
-  defaultMinistryDescription:
-    '모든 교인에게 동일한 사역이 부여됩니다. 추후 별도로 수정할 수 있습니다.',
-
-  addMemberDescription: '현재 그룹에 이미 속한 교인은 표시되지 않습니다',
   groupLeader: '그룹장',
   editGroupLeader: '그룹장 변경',
-  editGroupLeaderDescription: '새로운 그룹장을 선택하세요',
   ministryGroupLeader: '사역리더',
   editMinistryGroupLeader: '사역리더 변경',
-  editMinistryGroupLeaderDescription: '새로운 사역리더를 선택하세요',
 
   noGroup: '소속 없음',
   warning: '경고',
@@ -324,6 +321,11 @@ export default {
 
   'title.addMinistry': '사역 추가',
   'title.editMinistry': '사역 수정',
+
+  'title.tableHeaderSetting': '표시 항목 설정',
+
+  'title.groupFilter': '그룹 필터',
+  'title.memberFilter': '교인 필터',
   /*-------------------title (popup title)-------------------*/
 
   /*-------------------header (side bar button)-------------------*/
@@ -358,6 +360,7 @@ export default {
 
   'header.managerPermission': '권한',
   'header.account': '계정',
+
   /*-------------------header (side bar button)-------------------*/
 
   /*-------------------content (header bar button)-------------------*/
@@ -428,7 +431,6 @@ export default {
 
   /*-------------------button-------------------*/
   'button.register': '등록하기',
-  'button.memberRegister': '등록하기',
   'button.save': '저장하기',
   'button.edit': '수정하기',
   'button.delete': '삭제하기',
@@ -441,7 +443,7 @@ export default {
   'button.invite': '초대문자 전송하기',
   'button.cancel': '취소',
   'button.confirm': '확인',
-  'button.filterSetting': '목록 설정',
+  'button.tableHeaderSetting': '표시 항목 설정',
   'button.verify': '인증하기',
   'button.request': '요청하기',
   'button.add': '추가하기',
@@ -475,6 +477,9 @@ export default {
   'button.deleteGroup': '그룹 삭제',
   'button.deleteMinistryGroup': '사역그룹 삭제',
   'button.deleteMinistry': '사역 삭제',
+
+  'button.groupFilter': '그룹 필터',
+  'button.memberFilter': '교인 필터',
   /*-------------------button-------------------*/
 
   /*-------------------placeholder-------------------*/
@@ -609,4 +614,13 @@ export default {
   'warning.deleteMinistry':
     '할당된 교인이 있으면 삭제가 불가능하며, 삭제된 그룹은 복구할 수 없습니다.',
   /*-------------------warning-------------------*/
+
+  /*-------------------description-------------------*/
+  'description.defaultMinistry':
+    '모든 교인에게 동일한 사역이 부여됩니다. 추후 별도로 수정할 수 있습니다.',
+  'description.addMember': '현재 그룹에 이미 속한 교인은 표시되지 않습니다',
+  'description.editGroupLeader': '새로운 그룹장을 선택하세요',
+  'description.editMinistryGroupLeader': '새로운 사역리더를 선택하세요',
+  'description.tableHeaderSetting': '드래그하여 순서를 변경하세요',
+  /*-------------------description-------------------*/
 } as const;

@@ -266,6 +266,8 @@ const MinistryGroupInformation = ({
   };
 
   const fetchMinistries = async () => {
+    if (!selectedMinistryGroup.id) return;
+
     try {
       const response = await ministriesApi.getMinistries({
         churchId,
@@ -333,6 +335,7 @@ const MinistryGroupInformation = ({
     onClickAddModalClose,
     onClickSaveNewMembers,
     fetchMinistries,
+    fetchMembers,
     onChangeMinistryItem,
   };
   return (

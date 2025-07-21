@@ -103,8 +103,8 @@ const MinistryList = ({
   const onClickSaveNewMinistry = async () => {
     try {
       await ministriesApi.createMinistry(
-        { churchId },
-        { name: editName, ministryGroupId: selectedMinistryGroup.id as string }
+        { churchId, ministryGroupId: selectedMinistryGroup.id as string },
+        { name: editName }
       );
       fetchMinistries();
     } catch (error) {
@@ -135,8 +135,12 @@ const MinistryList = ({
   const onClickSaveEditMinistry = async () => {
     try {
       await ministriesApi.editMinistry(
-        { churchId, ministryId: selectedMinistry.id as string },
-        { name: editName, ministryGroupId: selectedMinistryGroup.id as string }
+        {
+          churchId,
+          ministryId: selectedMinistry.id as string,
+          ministryGroupId: selectedMinistryGroup.id as string,
+        },
+        { name: editName }
       );
       fetchMinistries();
     } catch (error) {

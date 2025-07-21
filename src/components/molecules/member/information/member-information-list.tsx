@@ -345,7 +345,7 @@ const MemberInformationList = ({}: MemberInformationListProps) => {
             {
               churchId,
               memberId: targetMember.id,
-              ministryId: targetMinistry.id,
+              ministryHistoryId: targetMinistry.id,
             },
             {}
           )
@@ -371,7 +371,7 @@ const MemberInformationList = ({}: MemberInformationListProps) => {
             {
               churchId,
               memberId: targetMember.id,
-              ministryId: targetMinistry.id,
+              ministryHistoryId: targetMinistry.id,
             },
             {}
           )
@@ -404,7 +404,7 @@ const MemberInformationList = ({}: MemberInformationListProps) => {
   ) => {
     try {
       ministriesApi
-        .createMinistry({ churchId }, { ministryGroupId, name: ministryName })
+        .createMinistry({ churchId, ministryGroupId }, { name: ministryName })
         .then((response) => {
           const newMinistry: Ministry = response.data;
 

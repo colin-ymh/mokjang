@@ -131,7 +131,7 @@ const EditGroupLeader = ({
       <MemberListHeader>
         <MainText>{t('editGroupLeader')}</MainText>
         <MainText color={GRAY.DEFAULT}>
-          {t('editGroupLeaderDescription')}
+          {t('description.editGroupLeader')}
         </MainText>
       </MemberListHeader>
       <MemberListContainer>

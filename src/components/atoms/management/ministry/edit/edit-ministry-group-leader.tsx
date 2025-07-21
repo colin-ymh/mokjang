@@ -131,7 +131,7 @@ const EditMinistryMinistryGroupLeader = ({
       <MemberListHeader>
         <MainText>{t('editMinistryGroupLeader')}</MainText>
         <MainText color={GRAY.DEFAULT}>
-          {t('editMinistryGroupLeaderDescription')}
+          {t('description.editMinistryGroupLeader')}
         </MainText>
       </MemberListHeader>
       <MemberListContainer>

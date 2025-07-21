@@ -129,6 +129,7 @@ export enum HOME_WIDGET {
 export enum DND_ITEM_TYPE {
   GROUP = 'group',
   HOME_WIDGET = 'homeWidget',
+  TABLE_HEADER = 'tableHeader',
 }
 
 export enum HOVER_POSITION {

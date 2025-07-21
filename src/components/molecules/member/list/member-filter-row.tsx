@@ -1,7 +1,10 @@
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
-import { setMemberFilter } from '@/redux/reducers/filter/member-filter-reducer';
+import {
+  setFilteredItems,
+  setMemberFilter,
+} from '@/redux/reducers/filter/member-filter-reducer';
 
 import {
   getFormattedHomePhone,
@@ -13,19 +16,52 @@ import MemberFilterRowView, {
 } from '@/components/molecules/member/list/member-filter-row.view';
 import { MEMBER } from '@/constants/column/member-column';
 import { BLANK } from '@/constants/constant';
-import { FilteredItemType } from '@/components/atoms/member/list/filtered-item';
+import { FilteredItemType } from '@/components/atoms/member/setting/filtered-item.view';
 
 const MemberFilterRow = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { memberFilter } = useSelector(
     (state: RootState) => state.memberFilter
   );
-  // 목록 설정  모달 on off
-  const [isAddFilterShown, setIsAddFilterShown] = useState<boolean>(false);
+  // 그룹 필터 설정 on off
+  const [isGroupFilterShown, setIsGroupFilterShown] = useState<boolean>(false);
 
-  // 목록 설정 모달 열기
-  const onClickTableSetting = () => {
-    setIsAddFilterShown(!isAddFilterShown);
+  // 교인 필터 설정 on off
+  const [isMemberFilterShown, setIsMemberFilterShown] =
+    useState<boolean>(false);
+
+  // 표시 항목 설정 on off
+  const [isHeaderFilterShown, setIsHeaderFilterShown] =
+    useState<boolean>(false);
+
+  // 그룹 필터 설정 열기
+  const onClickGroupFilterOpen = () => {
+    setIsGroupFilterShown(true);
+  };
+
+  // 그룹 필터 설정 닫기
+  const onClickGroupFilterClose = () => {
+    setIsGroupFilterShown(false);
+  };
+
+  // 교인 필터 설정 열기
+  const onClickMemberFilterOpen = () => {
+    setIsMemberFilterShown(true);
+  };
+
+  // 교인 필터 설정 닫기
+  const onClickMemberFilterClose = () => {
+    setIsMemberFilterShown(false);
+  };
+
+  // 표시 항목 설정 열기
+  const onClickHeaderFilterOpen = () => {
+    setIsHeaderFilterShown(true);
+  };
+
+  // 표시 항목 설정 닫기
+  const onClickHeaderFilterClose = () => {
+    setIsHeaderFilterShown(false);
   };
 
   // 검색 필터 주제
@@ -34,9 +70,6 @@ const MemberFilterRow = () => {
   const searchRef = useRef<HTMLInputElement>(null);
   // 검색 필터 내용
   const [searchValue, setSearchValue] = useState<string>(BLANK);
-
-  // 필터 내용 태그
-  const [filteredItems, setFilteredItems] = useState<FilteredItemType[]>([]);
 
   // 검색 주제 선택
   const onClickSearchFilterItem = (value: SEARCH_FILTER) => {
@@ -64,6 +97,14 @@ const MemberFilterRow = () => {
   // 필터된 내용들을 태그 형식으로 변환
   useEffect(() => {
     let newFilterItems: FilteredItemType[] = [];
+
+    // 그룹
+    if (memberFilter.group.length > 0) {
+      newFilterItems.push({
+        title: MEMBER.GROUP,
+        value: memberFilter.group,
+      });
+    }
 
     // 성별
     if (memberFilter.gender.length > 0) {
@@ -94,7 +135,7 @@ const MemberFilterRow = () => {
     // 생년월일
     if (memberFilter.birthAfter || memberFilter.birthBefore) {
       newFilterItems.push({
-        title: MEMBER.BIRTH,
+        title: MEMBER.AGE,
         value: [memberFilter.birthAfter, memberFilter.birthBefore],
       });
     }
@@ -167,17 +208,22 @@ const MemberFilterRow = () => {
       });
     }
 
-    setFilteredItems(newFilterItems);
+    dispatch(setFilteredItems(newFilterItems));
   }, [memberFilter]);
 
   const props = {
-    isAddFilterShown,
+    isGroupFilterShown,
+    isMemberFilterShown,
+    isHeaderFilterShown,
     searchFilter,
     searchValue,
     searchRef,
-    filteredItems,
-    setIsAddFilterShown,
-    onClickTableSetting,
+    onClickGroupFilterOpen,
+    onClickGroupFilterClose,
+    onClickMemberFilterOpen,
+    onClickMemberFilterClose,
+    onClickHeaderFilterOpen,
+    onClickHeaderFilterClose,
     onClickSearchFilterItem,
     onChangeSearchValue,
     onClickSearch,

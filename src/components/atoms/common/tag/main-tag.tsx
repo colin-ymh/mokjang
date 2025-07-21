@@ -5,8 +5,8 @@ import { TAG_BACKGROUND_COLOR, TAG_FONT_COLOR } from '@/constants/styles/color';
 
 const TagContainer = styled.div<{ $backgroundColor: string }>`
   display: inline-flex;
-  border-radius: 100px;
   background-color: ${({ $backgroundColor }) => $backgroundColor};
+  border-radius: 100px;
   padding: 2px 8px;
 `;
 

@@ -9,7 +9,6 @@ import {
   fetchOfficers,
   setChurch,
   setChurchId,
-  setMinistries,
 } from '@/redux/reducers/church-reducer';
 import { AuthApi } from '@/api/auth/auth.api';
 import { usePageRouter } from '@/utils/router';
@@ -47,12 +46,6 @@ export const useInitializeChurch = () => {
         dispatch(fetchOfficers()),
         dispatch(fetchPermissionUnits({})),
       ]);
-
-      const [ministries] = await Promise.all([
-        ministriesApi.getMinistries({ churchId }),
-      ]);
-
-      dispatch(setMinistries(ministries.data.data));
     } catch (err) {
       setThrownError(err instanceof Error ? err : new Error(String(err)));
     }

@@ -1,83 +1,28 @@
 import { useEffect, useState } from 'react';
-import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
-
-import { MainText } from '@/components/atoms/common/text/main-text';
 import { MEMBER } from '@/constants/column/member-column';
-import { BLANK, GENDER, MARRIAGE } from '@/constants/constant';
-import { MAIN, WHITE } from '@/constants/styles/color';
-import { SIZE } from '@/constants/styles/style';
+import { BAPTISM, BLANK, GENDER, MARRIAGE } from '@/constants/constant';
 
 import { useI18n } from '../../../../../locales/client';
-import Cancel from '../../../../../public/svg/cancel.svg';
-import {
-  setFilterAfter,
-  setFilterBefore,
-  setFilterItems,
-  setMemberFilter,
-} from '@/redux/reducers/filter/member-filter-reducer';
-
-const ItemContainer = styled.div`
-  display: flex;
-  border-radius: 5px;
-  height: 30px;
-  justify-content: center;
-  align-items: center;
-  padding: 0 5px;
-  background-color: ${MAIN.LIGHT};
-  gap: 5px;
-`;
-
-const TextContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 3px;
-  justify-content: center;
-  align-items: center;
-`;
-
-const ButtonContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-`;
-
-const CancelButton = styled(Cancel)`
-  width: 15px;
-  height: 15px;
-  stroke: ${WHITE};
-  stroke-width: 2px;
-`;
-
-export type FilteredItemType = {
-  title:
-    | MEMBER.GENDER
-    | MEMBER.GROUP
-    | MEMBER.MINISTRIES
-    | MEMBER.OFFICER
-    | MEMBER.EDUCATIONS
-    | MEMBER.MARRIAGE
-    | MEMBER.BAPTISM
-    | MEMBER.BIRTH
-    | MEMBER.REGISTERED_AT
-    | MEMBER.UPDATED_AT
-    | MEMBER.NAME
-    | MEMBER.VEHICLE_NUMBER
-    | MEMBER.SCHOOL
-    | MEMBER.OCCUPATION
-    | MEMBER.MOBILE_PHONE
-    | MEMBER.HOME_PHONE
-    | MEMBER.ADDRESS;
-  value: string[];
-};
+import { setMemberFilter } from '@/redux/reducers/filter/member-filter-reducer';
+import { getGroup } from '@/utils/group';
+import FilteredItemView, {
+  FilteredItemType,
+} from '@/components/atoms/member/setting/filtered-item.view';
+import { getAge, getDateFromDateString } from '@/utils/date';
+import { getTranslatedAge } from '@/utils/translate';
+import { usePathname } from 'next/navigation';
+import { LOCALE } from '@/constants/state/locale';
 
 type FilteredItemProps = {
   item: FilteredItemType;
 };
 
 const FilteredItem = ({ item }: FilteredItemProps) => {
+  const pathname = usePathname();
+  const locale = pathname.split('/')[1] as LOCALE;
+
   const t = useI18n();
   const { educations } = useSelector(
     (state: RootState) => state.educationFilter
@@ -86,13 +31,13 @@ const FilteredItem = ({ item }: FilteredItemProps) => {
     (state: RootState) => state.church
   );
   const dispatch = useDispatch<AppDispatch>();
-  const { memberFilter, filterValue } = useSelector(
+  const { memberFilter } = useSelector(
     (state: RootState) => state.memberFilter
   );
 
   // 해당 필터 내용 삭제
   const onClickCancel = () => {
-    if (item.title === MEMBER.BIRTH) {
+    if (item.title === MEMBER.AGE) {
       dispatch(
         setMemberFilter({
           ...memberFilter,
@@ -100,10 +45,6 @@ const FilteredItem = ({ item }: FilteredItemProps) => {
           birthBefore: BLANK,
         })
       );
-      if (filterValue === item.title) {
-        dispatch(setFilterAfter(BLANK));
-        dispatch(setFilterBefore(BLANK));
-      }
     } else if (item.title === MEMBER.REGISTERED_AT) {
       dispatch(
         setMemberFilter({
@@ -112,10 +53,6 @@ const FilteredItem = ({ item }: FilteredItemProps) => {
           registerBefore: BLANK,
         })
       );
-      if (filterValue === item.title) {
-        dispatch(setFilterAfter(BLANK));
-        dispatch(setFilterBefore(BLANK));
-      }
     } else if (item.title === MEMBER.UPDATED_AT) {
       dispatch(
         setMemberFilter({
@@ -124,10 +61,6 @@ const FilteredItem = ({ item }: FilteredItemProps) => {
           updateBefore: BLANK,
         })
       );
-      if (filterValue === item.title) {
-        dispatch(setFilterAfter(BLANK));
-        dispatch(setFilterBefore(BLANK));
-      }
     } else if (
       [
         MEMBER.NAME,
@@ -142,12 +75,6 @@ const FilteredItem = ({ item }: FilteredItemProps) => {
       dispatch(setMemberFilter({ ...memberFilter, [item.title]: BLANK }));
     } else {
       dispatch(setMemberFilter({ ...memberFilter, [item.title]: [] }));
-
-      // 현재 필터 설정 중이었다면
-      // 삭제된 내용을 적용
-      if (filterValue === item.title) {
-        dispatch(setFilterItems([]));
-      }
     }
   };
 
@@ -170,7 +97,7 @@ const FilteredItem = ({ item }: FilteredItemProps) => {
       case MEMBER.GROUP: {
         // 여러 그룹 ID가 배열로 넘어온 경우
         currentItem = item.value
-          .map((groupId) => groups.find((group) => group.id === groupId)?.name)
+          .map((groupId) => getGroup(groupId, groups)?.name)
           .filter(Boolean) // undefined/null 필터링
           .join(', ');
 
@@ -196,6 +123,13 @@ const FilteredItem = ({ item }: FilteredItemProps) => {
           .filter(Boolean) // undefined/null 필터링
           .join(', ');
         break;
+      case MEMBER.BAPTISM:
+        // 여러 그룹 ID가 배열로 넘어온 경우
+        currentItem = item.value
+          .map((baptismId) => t(baptismId as BAPTISM))
+          .filter(Boolean) // undefined/null 필터링
+          .join(', ');
+        break;
       // case MEMBER.EDUCATIONS:
       //   // 여러 그룹 ID가 배열로 넘어온 경우
       //   currentItem = item.value
@@ -206,8 +140,14 @@ const FilteredItem = ({ item }: FilteredItemProps) => {
       //     .filter(Boolean) // undefined/null 필터링
       //     .join(', ');
       //   break;
-      case MEMBER.BIRTH:
-        currentItem = item.value.filter(Boolean).join(' ~ ');
+      case MEMBER.AGE:
+        currentItem = item.value
+          .map((date) =>
+            getTranslatedAge(locale, getAge(getDateFromDateString(date)))
+          )
+          .reverse()
+          .filter(Boolean)
+          .join(' ~ ');
         break;
       case MEMBER.REGISTERED_AT:
         currentItem = item.value.filter(Boolean).join(' ~ ');
@@ -247,19 +187,16 @@ const FilteredItem = ({ item }: FilteredItemProps) => {
     }
   }, [item.title, item.value, groups, officers, ministries, educations]);
 
+  const props = {
+    valueText,
+    onClickCancel,
+    item,
+  };
+
   return (
-    <ItemContainer>
-      <TextContainer>
-        <MainText color={WHITE}>{t(item.title)}</MainText>
-        <MainText color={WHITE} size={SIZE.EXTRA_SMALL}>
-          {'>'}
-        </MainText>
-        <MainText color={WHITE}>{valueText}</MainText>
-      </TextContainer>
-      <ButtonContainer onClick={onClickCancel}>
-        <CancelButton />
-      </ButtonContainer>
-    </ItemContainer>
+    <>
+      <FilteredItemView {...props} />
+    </>
   );
 };
 

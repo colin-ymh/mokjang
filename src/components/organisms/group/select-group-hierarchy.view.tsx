@@ -138,6 +138,4 @@ const SelectGroupHierarchyView = memo(
   }
 );
 
-SelectGroupHierarchyView.displayName = 'SelectGroupHierarchyView';
-
 export default SelectGroupHierarchyView;

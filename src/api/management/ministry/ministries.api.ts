@@ -13,7 +13,7 @@ export enum MINISTRY_ORDER {
 
 type GetMinistriesParams = {
   churchId: string;
-  ministryGroupId?: string;
+  ministryGroupId: string;
   order?: MINISTRY_ORDER;
   orderDirection?: ORDER_DIRECTION;
   take?: number;
@@ -22,30 +22,26 @@ type GetMinistriesParams = {
 
 type CreateMinistryParams = {
   churchId: string;
+  ministryGroupId: string;
 };
 
 type CreateMinistryBody = {
   name: string;
-  ministryGroupId: string;
-};
-
-type GetMinistryParams = {
-  churchId: string;
-  ministryId: string;
 };
 
 type EditMinistryParams = {
   churchId: string;
+  ministryGroupId: string;
   ministryId: string;
 };
 
 type EditMinistryBody = {
   name?: string;
-  ministryGroupId?: string;
 };
 
 type DeleteMinistryParams = {
   churchId: string;
+  ministryGroupId: string;
   ministryId: string;
 };
 
@@ -81,16 +77,15 @@ export class MinistriesApi {
         page,
         order,
         orderDirection,
-        ministryGroupId,
       }).filter(
         ([_, value]) =>
           value !== undefined &&
-          value !== '' &&
+          // value !== '' &&
           !(Array.isArray(value) && value.length === 0)
       )
     );
 
-    const url = `${this._url}/churches/${churchId}/management/ministries`;
+    const url = `${this._url}/churches/${churchId}/management/ministry-groups/${ministryGroupId}/ministries`;
 
     try {
       return await authorizeAxios.get(url, {
@@ -127,40 +122,12 @@ export class MinistriesApi {
     params: CreateMinistryParams,
     body: CreateMinistryBody
   ): Promise<AxiosResponse> => {
-    const { churchId } = params;
+    const { churchId, ministryGroupId } = params;
 
-    const url = `${this._url}/churches/${churchId}/management/ministries`;
+    const url = `${this._url}/churches/${churchId}/management/ministry-groups/${ministryGroupId}/ministries`;
 
     try {
       return await authorizeAxios.post(url, body);
-    } catch (serverError: any) {
-      if (serverError.response) {
-        const { message, error, statusCode } = serverError.response.data;
-        throw new CustomError(message, error, statusCode);
-      } else {
-        throw new CustomError(
-          '알 수 없는 에러가 발생했습니다',
-          500,
-          'Unknown Error'
-        );
-      }
-    }
-  };
-
-  /**
-   * 특정 사역 불러오기
-   * @param {GetMinistryParams} params
-   * @returns {Promise<AxiosResponse>}
-   */
-  public getMinistry = async (
-    params: GetMinistryParams
-  ): Promise<AxiosResponse> => {
-    const { churchId, ministryId } = params;
-
-    const url = `${this._url}/churches/${churchId}/management/ministries/${ministryId}`;
-
-    try {
-      return await authorizeAxios.get(url);
     } catch (serverError: any) {
       if (serverError.response) {
         const { message, error, statusCode } = serverError.response.data;
@@ -185,9 +152,9 @@ export class MinistriesApi {
     params: EditMinistryParams,
     body: EditMinistryBody
   ): Promise<AxiosResponse> => {
-    const { churchId, ministryId } = params;
+    const { churchId, ministryGroupId, ministryId } = params;
 
-    const url = `${this._url}/churches/${churchId}/management/ministries/${ministryId}`;
+    const url = `${this._url}/churches/${churchId}/management/ministry-groups/${ministryGroupId}/ministries/${ministryId}`;
 
     try {
       return await authorizeAxios.patch(url, body);
@@ -213,9 +180,9 @@ export class MinistriesApi {
   public deleteMinistry = async (
     params: DeleteMinistryParams
   ): Promise<AxiosResponse> => {
-    const { churchId, ministryId } = params;
+    const { churchId, ministryGroupId, ministryId } = params;
 
-    const url = `${this._url}/churches/${churchId}/management/ministries/${ministryId}`;
+    const url = `${this._url}/churches/${churchId}/management/ministry-groups/${ministryGroupId}/ministries/${ministryId}`;
 
     try {
       return await authorizeAxios.delete(url);

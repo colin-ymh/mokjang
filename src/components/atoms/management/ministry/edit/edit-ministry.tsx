@@ -59,6 +59,7 @@ const EditMinistry = ({
     try {
       await ministriesApi.deleteMinistry({
         churchId,
+        ministryGroupId: selectedMinistry.ministryGroupId as string,
         ministryId: selectedMinistry.id as string,
       });
 

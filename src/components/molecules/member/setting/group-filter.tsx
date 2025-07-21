@@ -5,6 +5,15 @@ import SelectGroupHierarchy from '@/components/organisms/group/select-group-hier
 import { getGroup } from '@/utils/group';
 import { setTargetGroup } from '@/redux/reducers/target/target-group-reducer';
 import { DEFAULT_GROUP } from '@/models/management/management';
+import styled from 'styled-components';
+
+const GroupFilterContainer = styled.div`
+  display: flex;
+  padding: 20px;
+  width: 100%;
+  height: 100%;
+  margin-bottom: 20px;
+`;
 
 type GroupFilterProps = {
   isDefaultOpen?: boolean;
@@ -49,7 +58,9 @@ const GroupFilter = ({ isDefaultOpen = false, onChange }: GroupFilterProps) => {
 
   return (
     <>
-      <SelectGroupHierarchy {...props} />
+      <GroupFilterContainer>
+        <SelectGroupHierarchy {...props} />
+      </GroupFilterContainer>
     </>
   );
 };

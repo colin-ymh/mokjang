@@ -10,15 +10,17 @@ import { SIZE } from '@/constants/styles/style';
 import { getTranslatedMemberColumn } from '@/utils/translate';
 
 import { useI18n } from '../../../../../locales/client';
+import ArrowUpDown from '../../../../../public/svg/arrow-up-down.svg';
+import Arrow from '../../../../../public/svg/arror-up.svg';
+import { ORDER_DIRECTION } from '@/constants/constant';
 
-const HeaderContainer = styled.div`
+const HeaderContainer = styled.div<{ $isProfile: boolean }>`
   display: flex;
   align-items: center;
-  justify-content: flex-start;
-  overflow: hidden;
-  position: relative;
+  justify-content: ${({ $isProfile }) =>
+    $isProfile ? 'flex-start' : 'center'};
   cursor: pointer;
-  height: 30px;
+  gap: 10px;
 `;
 
 const TextContainer = styled.div`
@@ -31,10 +33,29 @@ const IconContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  position: absolute;
-  right: 5px;
-  margin-bottom: 3px;
   cursor: pointer;
+`;
+
+const ArrowUp = styled(Arrow)`
+  width: 14px;
+  height: 14px;
+  stroke-width: 2px;
+  stroke: ${MAIN.DEFAULT};
+`;
+
+const ArrowDown = styled(Arrow)`
+  width: 14px;
+  height: 14px;
+  stroke-width: 2px;
+  stroke: ${MAIN.DEFAULT};
+  transform: rotate(180deg);
+`;
+
+const ArrowUpDownIcon = styled(ArrowUpDown)`
+  width: 14px;
+  height: 14px;
+  stroke-width: 2px;
+  stroke: ${GRAY.DEFAULT};
 `;
 
 type MemberTableHeaderProps = {
@@ -47,41 +68,35 @@ type MemberTableHeaderProps = {
 
 // Component
 const MemberTableHeader = ({ item, onClick }: MemberTableHeaderProps) => {
-  const { memberOrderBy } = useSelector(
+  const { memberOrderBy, memberOrderDirection } = useSelector(
     (state: RootState) => state.memberFilter
   );
   const t = useI18n();
   const isActive = memberOrderBy === item.id;
 
   return (
-    <HeaderContainer onClick={() => item.isSortable && onClick(item.id)}>
-      {item.id === MEMBER.CHECK ? (
-        /* =========================
-           1) 체크박스 열인 경우
-           ========================= */
-        <div></div>
-      ) : (
-        /* =========================
-           2) 일반 열인 경우
-           ========================= */
-        <TextContainer>
-          <MainText
-            color={isActive ? BLACK : GRAY.DARK}
-            size={SIZE.SMALL}
-            fontWeight={600}
-          >
-            {getTranslatedMemberColumn(t, item.id)}
-          </MainText>
-        </TextContainer>
-      )}
+    <HeaderContainer
+      onClick={() => item.isSortable && onClick(item.id)}
+      $isProfile={item.id === MEMBER.NAME}
+    >
+      <TextContainer>
+        <MainText
+          color={isActive ? BLACK : BLACK}
+          size={SIZE.SMALL}
+          fontWeight={600}
+        >
+          {getTranslatedMemberColumn(t, item.id)}
+        </MainText>
+      </TextContainer>
       {item.isSortable && (
         <IconContainer>
-          <MainText
-            size={SIZE.EXTRA_SMALL}
-            color={isActive ? MAIN.DEFAULT : GRAY.DEFAULT}
-          >
-            {'⇅'}
-          </MainText>
+          {memberOrderBy !== item.id ? (
+            <ArrowUpDownIcon />
+          ) : memberOrderDirection === ORDER_DIRECTION.ASC ? (
+            <ArrowUp />
+          ) : (
+            <ArrowDown />
+          )}
         </IconContainer>
       )}
     </HeaderContainer>

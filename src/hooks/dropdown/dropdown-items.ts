@@ -19,10 +19,7 @@ import { VISITATION_METHOD } from '@/models/visitation/visitation';
 import { VISITATION } from '@/constants/column/visitation-column';
 import { STATUS_COLOR } from '@/constants/styles/color';
 import { TASK } from '@/constants/column/task-column';
-import {
-  EDUCATION,
-  EDUCATION_TERM,
-} from '@/constants/column/education-column';
+import { EDUCATION, EDUCATION_TERM } from '@/constants/column/education-column';
 import { STATUS } from '@/constants/status/status';
 import { USER } from '@/constants/column/user-column';
 import { JOIN_REQUEST } from '@/constants/column/join-request-column';
@@ -50,10 +47,6 @@ export const useBaptismDropdownItems = () => {
     {
       value: BAPTISM.CONFIRMATION,
       title: t(BAPTISM.CONFIRMATION),
-    },
-    {
-      value: BAPTISM.NONE,
-      title: t(BAPTISM.NONE),
     },
   ];
 
@@ -97,10 +90,6 @@ export const useMarriageDropdownItems = () => {
     {
       value: MARRIAGE.SINGLE,
       title: t(MARRIAGE.SINGLE),
-    },
-    {
-      value: NULL,
-      title: t(NONE),
     },
   ];
 

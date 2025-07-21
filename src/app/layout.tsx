@@ -16,6 +16,7 @@ import GlobalStyle from '@/components/atoms/layout/global-style';
 import { CustomDragLayer } from '@/vendor/dnd/custom-drag-layer';
 import CustomWidgetDragLayer from '@/vendor/dnd/custom-widget-drag-layer';
 import ToastLayout from '@/components/atoms/common/popup/toast-layout';
+import CustomTableHeaderDragLayer from '@/vendor/dnd/custom-table-header-drag-layer';
 
 type RootLayoutProps = {
   children?: React.ReactNode;
@@ -61,8 +62,11 @@ const RootLayout = (props: RootLayoutProps | RootLayoutPropsExtended) => {
                 {children}
                 {/* 토스트 팝업 */}
                 <ToastLayout />
+
+                {/* 드래그 레이어 */}
                 <CustomDragLayer />
                 <CustomWidgetDragLayer />
+                <CustomTableHeaderDragLayer />
               </DndProvider>
             </InitializeStore>
           </Provider>

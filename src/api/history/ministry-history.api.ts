@@ -23,7 +23,7 @@ type createMinistryHistoryBody = {
 type stopMinistryHistoryParams = {
   churchId: string;
   memberId: string;
-  ministryId: string;
+  ministryHistoryId: string;
 };
 
 type stopMinistryHistoryBody = {
@@ -128,9 +128,9 @@ export class MinistryHistoryApi {
     params: stopMinistryHistoryParams,
     body: stopMinistryHistoryBody
   ): Promise<AxiosResponse> => {
-    const { churchId, memberId, ministryId } = params;
+    const { churchId, memberId, ministryHistoryId } = params;
 
-    const url = `${this._url}/churches/${churchId}/members/${memberId}/ministries/${ministryId}/end`;
+    const url = `${this._url}/churches/${churchId}/members/${memberId}/ministries/${ministryHistoryId}/end`;
 
     try {
       return await authorizeAxios.patch(url, body);

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-import { GRAY, MAIN } from '@/constants/styles/color';
+import { GRAY, MAIN, WHITE } from '@/constants/styles/color';
 
 import Check from '../../../../../public/svg/check.svg';
 
@@ -14,6 +14,7 @@ const CheckButtonContainer = styled.div<{
 }>`
   display: flex;
   border: ${({ $isChecked, $borderColor }) => `1.5px solid ${$borderColor || $isChecked ? MAIN.DEFAULT : GRAY.DEFAULT};`}
+  background-color: ${({ $isChecked }) => ($isChecked ? MAIN.DEFAULT : WHITE)};
   width: ${({ width }) => width}px;
   height: ${({ height }) => height}px;
   cursor: ${({ $disabled }) => ($disabled ? 'default' : 'pointer')};
@@ -21,9 +22,9 @@ const CheckButtonContainer = styled.div<{
 `;
 
 const CheckIcon = styled(Check)`
-  width: 10px;
-  height: 10px;
-  stroke: ${MAIN.DEFAULT};
+  width: 12px;
+  height: 12px;
+  stroke: ${WHITE};
   stroke-width: 3px;
 `;
 
@@ -41,8 +42,8 @@ const CheckButton = ({
   value,
   onChange,
   disabled = false,
-  width = 10,
-  height = 10,
+  width = 12,
+  height = 12,
   isStopPropagation = true,
   borderColor,
 }: CheckButtonProps) => {

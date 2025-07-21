@@ -1,98 +1,87 @@
-import { ChangeEvent, Dispatch, Ref, SetStateAction } from 'react';
+import { ChangeEvent, Ref } from 'react';
 import styled from 'styled-components';
 
 import Button from '@/components/atoms/common/button/button';
-import { GRAY, MAIN, WHITE } from '@/constants/styles/color';
-import TableSetting from '@/components/molecules/member/list/table-setting';
+import { GRAY, WHITE } from '@/constants/styles/color';
+import MemberTableHeaderSetting from '@/components/molecules/member/setting/member-table-header-setting';
 import { MEMBER } from '@/constants/column/member-column';
-import TransparentBackground from '@/components/atoms/common/etc/transparent-background';
-import FilteredItem, {
-  FilteredItemType,
-} from '@/components/atoms/member/list/filtered-item';
+import FilteredItem from '@/components/atoms/member/setting/filtered-item';
 import { useSearchFilterDropdownItems } from '@/hooks/dropdown/dropdown-items';
-import useWindowSize from '@/hooks/window/window';
 
 import { useScopedI18n } from '../../../../../locales/client';
-import { MainText } from '@/components/atoms/common/text/main-text';
+import SearchInput from '@/components/atoms/common/input/search-input';
+import CustomPopup from '@/components/atoms/common/popup/custom-popup';
+
+import Setting from '../../../../../public/svg/setting.svg';
+import Group from '../../../../../public/svg/group.svg';
+import Filter from '../../../../../public/svg/filter.svg';
+import GroupFilter from '@/components/molecules/member/setting/group-filter';
+import ResetFilteredItem from '@/components/atoms/member/setting/reset-filtered-item';
+import MemberFilter from '@/components/molecules/member/setting/member-filter';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
-import SearchInput from '@/components/atoms/common/input/search-input';
 
 const MemberFilterContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  width: 100%;
-  height: 100px;
-  flex-shrink: 0;
-  position: relative;
+  background-color: ${WHITE};
 `;
 
 const RowTop = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  flex-shrink: 0;
+  margin-bottom: 20px;
 `;
 
 const RowBottom = styled.div`
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  flex-shrink: 0;
-  padding: 10px 20px;
-`;
-
-const MemberCount = styled.div`
-  display: flex;
-`;
-
-const FilterList = styled.div`
-  display: flex;
-  width: 100%;
+  margin-bottom: 15px;
+  gap: 10px;
 `;
 
 const ButtonContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 10px 10px 10px 20px;
-  position: relative;
 `;
 
-const FilteredItemList = styled.div<{ $width: number }>`
+const FilteredItemList = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
-  gap: 5px;
-  padding: 10px 0;
-  width: ${({ $width }) => $width}px;
+  gap: 10px;
   overflow-x: scroll;
 `;
 
-const SearchContainer = styled.div`
+const LeftContainer = styled.div`
   display: flex;
-  padding: 10px;
   flex-direction: row;
-  justify-content: flex-end;
   align-items: center;
   gap: 10px;
-  right: 20px;
-  position: absolute;
 `;
 
-const AddFilterContainer = styled.div<{ $isShown: boolean }>`
-  display: ${({ $isShown }) => ($isShown ? 'flex' : 'none')};
-  position: absolute;
+const SettingIcon = styled(Setting)`
+  width: 14px;
+  height: 14px;
+  stroke: ${GRAY.EXTRA_DARK};
+  stroke-width: 1.5px;
+`;
 
-  z-index: 60;
-  background-color: white;
-  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.3);
-  border-radius: 5px;
+const GroupIcon = styled(Group)`
+  width: 14px;
+  height: 14px;
+  stroke: ${GRAY.EXTRA_DARK};
+  stroke-width: 1.5px;
+`;
 
-  top: 50px;
-  left: 10px;
+const FilterIcon = styled(Filter)`
+  width: 14px;
+  height: 14px;
+  stroke: ${GRAY.EXTRA_DARK};
+  stroke-width: 1.5px;
 `;
 
 export type SEARCH_FILTER =
@@ -105,102 +94,151 @@ export type SEARCH_FILTER =
   | MEMBER.ADDRESS;
 
 type MemberFilterViewProps = {
-  isAddFilterShown: boolean;
+  isGroupFilterShown: boolean;
+  isMemberFilterShown: boolean;
+  isHeaderFilterShown: boolean;
   searchFilter: SEARCH_FILTER;
   searchValue: string;
   searchRef: Ref<HTMLInputElement>;
-  filteredItems: FilteredItemType[];
-  setIsAddFilterShown: Dispatch<SetStateAction<boolean>>;
+  onClickGroupFilterOpen: () => void;
+  onClickGroupFilterClose: () => void;
+  onClickMemberFilterOpen: () => void;
+  onClickMemberFilterClose: () => void;
+  onClickHeaderFilterOpen: () => void;
+  onClickHeaderFilterClose: () => void;
   onClickSearchFilterItem: (value: SEARCH_FILTER) => void;
   onChangeSearchValue: (event: ChangeEvent<HTMLInputElement>) => void;
-  onClickTableSetting: () => void;
   onClickSearch: () => void;
   onKeyDown: (event: React.KeyboardEvent<HTMLInputElement>) => void;
 };
 
 const MemberFilterRowView = ({
-  isAddFilterShown,
+  isGroupFilterShown,
+  isMemberFilterShown,
+  isHeaderFilterShown,
   searchFilter,
   searchValue,
   searchRef,
-  filteredItems,
-  setIsAddFilterShown,
-  onClickTableSetting,
+  onClickGroupFilterOpen,
+  onClickGroupFilterClose,
+  onClickMemberFilterOpen,
+  onClickMemberFilterClose,
+  onClickHeaderFilterOpen,
+  onClickHeaderFilterClose,
   onClickSearchFilterItem,
   onChangeSearchValue,
   onClickSearch,
   onKeyDown,
 }: MemberFilterViewProps) => {
+  const t_title = useScopedI18n('title');
   const t_button = useScopedI18n('button');
   const searchFilterDropdownItems = useSearchFilterDropdownItems();
 
-  const { width } = useWindowSize();
-
-  const church = useSelector((state: RootState) => state.church.church);
-  const targetGroup = useSelector(
-    (state: RootState) => state.targetGroup.targetGroup
+  const { filteredItems } = useSelector(
+    (state: RootState) => state.memberFilter
   );
 
   return (
-    <MemberFilterContainer>
-      <RowTop>
-        <FilterList>
-          <ButtonContainer>
-            {/* 설정 활성화 버튼 */}
-            <Button
-              text={t_button('filterSetting')}
-              height={30}
-              width={75}
-              onClick={onClickTableSetting}
-              backgroundColor={WHITE}
-              borderColor={GRAY.LIGHT}
-              color={GRAY.DARK}
+    <>
+      <MemberFilterContainer>
+        <RowTop>
+          {/* 검색 부분 */}
+          <LeftContainer>
+            <SearchInput
+              searchRef={searchRef}
+              searchFilter={searchFilter}
+              searchFilterDropdownItems={searchFilterDropdownItems}
+              onClickSearchFilterItem={onClickSearchFilterItem}
+              searchValue={searchValue}
+              onChangeSearchValue={onChangeSearchValue}
+              onKeyDown={onKeyDown}
+              onClickSearch={onClickSearch}
             />
-            {/* 설정 모달 */}
-            <AddFilterContainer $isShown={isAddFilterShown}>
-              <TransparentBackground
-                isOpened={isAddFilterShown}
-                onClick={() => setIsAddFilterShown(false)}
-                blur={false}
-              />
-              {isAddFilterShown && (
-                <TableSetting setIsShown={setIsAddFilterShown} />
-              )}
-            </AddFilterContainer>
+            {/* 그룹 필터 활성화 버튼 */}
+            <Button
+              text={t_button('groupFilter')}
+              height={30}
+              width={'auto'}
+              onClick={onClickGroupFilterOpen}
+              backgroundColor={WHITE}
+              borderColor={GRAY.SEMI_LIGHT}
+              color={GRAY.EXTRA_DARK}
+              icon={<GroupIcon />}
+            />
+            {/* 교인 필터 활성화 버튼 */}
+            <Button
+              text={t_button('memberFilter')}
+              height={30}
+              width={'auto'}
+              onClick={onClickMemberFilterOpen}
+              backgroundColor={WHITE}
+              borderColor={GRAY.SEMI_LIGHT}
+              color={GRAY.EXTRA_DARK}
+              icon={<FilterIcon />}
+            />
+          </LeftContainer>
+
+          <ButtonContainer>
+            {/* 표시 항목 설정 활성화 버튼 */}
+            <Button
+              text={t_button('tableHeaderSetting')}
+              height={30}
+              width={'auto'}
+              onClick={onClickHeaderFilterOpen}
+              backgroundColor={WHITE}
+              borderColor={GRAY.SEMI_LIGHT}
+              color={GRAY.EXTRA_DARK}
+              icon={<SettingIcon />}
+            />
           </ButtonContainer>
-          {/* 필터 설정된 값들 */}
-          <FilteredItemList $width={width - 650}>
-            {filteredItems.map((item) => (
-              <FilteredItem key={item.title} item={item} />
-            ))}
-          </FilteredItemList>
-        </FilterList>
-        {/* 검색 부분 */}
-        <SearchContainer>
-          <SearchInput
-            searchRef={searchRef}
-            searchFilter={searchFilter}
-            searchFilterDropdownItems={searchFilterDropdownItems}
-            onClickSearchFilterItem={onClickSearchFilterItem}
-            searchValue={searchValue}
-            onChangeSearchValue={onChangeSearchValue}
-            onKeyDown={onKeyDown}
-            onClickSearch={onClickSearch}
-          />
-        </SearchContainer>
-      </RowTop>
-      <RowBottom>
-        <MemberCount>
-          <MainText fontWeight={600}>
-            총
-            <MainText fontWeight={600} color={MAIN.DEFAULT}>
-              {targetGroup.id ? targetGroup.membersCount : church.memberCount}
-            </MainText>
-            명
-          </MainText>
-        </MemberCount>
-      </RowBottom>
-    </MemberFilterContainer>
+        </RowTop>
+
+        {/* 필터 설정된 값들 */}
+        {filteredItems.length > 0 && (
+          <RowBottom>
+            <FilteredItemList>
+              {filteredItems.map((item) => (
+                <FilteredItem key={item.title} item={item} />
+              ))}
+            </FilteredItemList>
+            <ResetFilteredItem />
+          </RowBottom>
+        )}
+      </MemberFilterContainer>
+
+      {/* 그룹 필터 설정 모달 */}
+      <CustomPopup
+        isShow={isGroupFilterShown}
+        headerTitle={t_title('groupFilter')}
+        onClickCancel={onClickGroupFilterClose}
+        width={400}
+        height={500}
+      >
+        <GroupFilter />
+      </CustomPopup>
+
+      {/* 교인 필터 설정 모달 */}
+      <CustomPopup
+        isShow={isMemberFilterShown}
+        headerTitle={t_title('memberFilter')}
+        onClickCancel={onClickMemberFilterClose}
+        width={500}
+        height={800}
+      >
+        <MemberFilter />
+      </CustomPopup>
+
+      {/* 표시 항목 설정 모달 */}
+      <CustomPopup
+        isShow={isHeaderFilterShown}
+        headerTitle={t_title('tableHeaderSetting')}
+        onClickCancel={onClickHeaderFilterClose}
+        width={500}
+        height={800}
+      >
+        <MemberTableHeaderSetting />
+      </CustomPopup>
+    </>
   );
 };
 

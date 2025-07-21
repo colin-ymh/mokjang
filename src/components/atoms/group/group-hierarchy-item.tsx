@@ -17,7 +17,7 @@ const GroupHierarchyItemContainer = styled.div<{ $level: number }>`
   cursor: pointer;
 
   &:hover {
-    background-color: ${GRAY.SEMI_LIGHT};
+    background-color: ${MAIN.EXTRA_LIGHT};
   }
 `;
 

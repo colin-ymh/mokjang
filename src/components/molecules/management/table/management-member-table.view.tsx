@@ -59,6 +59,7 @@ const ProfileContainer = styled.div`
 
 const MinistryContainer = styled.div`
   display: flex;
+  position: relative;
 `;
 
 // 2. 테이블 컨테이너 (100% 폭 + 스크롤)
@@ -93,7 +94,7 @@ const TableHeader = styled.th<{ id: string; $isLast?: boolean }>`
   padding: 20px;
   position: sticky;
   top: 0;
-  z-index: 5;
+  z-index: 100;
   background-color: ${WHITE};
 
   /* 만약 마지막 컬럼이면 width: auto */
@@ -136,8 +137,9 @@ const TableData = styled.td<{ id: string; $index: number; $isLast?: boolean }>`
   width: ${({ id, $isLast }) => ($isLast ? 'auto' : `${getColumnWidth(id)}px`)};
 
   white-space: nowrap;
-  overflow: hidden;
   text-overflow: ellipsis;
+
+  overflow: visible; // 드롭다운이 셀을 넘어서도 보이게
 
   &:first-child {
     border-left: none;
@@ -149,9 +151,11 @@ const ContentWrapper = styled.div`
   align-items: center;
   /* 그냥 늘어날 수 있게, 필요한 경우 ellipsis 처리 */
   max-width: 100%;
-  overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  position: relative;
+
+  overflow: visible; // 드롭다운이 셀을 넘어서도 보이게
 `;
 
 type MemberTableProps = {
@@ -164,6 +168,7 @@ type MemberTableProps = {
   type: CHURCH_CONTENT_ID;
   leaderMemberId?: string;
   ministries?: Ministry[];
+  onChangeMinistry?: (ministryId: string, member: Member) => void;
 };
 
 const ManagementMemberTableView = ({
@@ -176,6 +181,7 @@ const ManagementMemberTableView = ({
   type,
   leaderMemberId,
   ministries = [],
+  onChangeMinistry,
 }: MemberTableProps) => {
   const { height } = useWindowSize();
   const pathname = usePathname();
@@ -221,12 +227,13 @@ const ManagementMemberTableView = ({
       case MEMBER.MINISTRIES:
         return (
           <MinistryContainer>
-            {
-              <Dropdown
-                value={member?.ministries && member.ministries[0]}
-                items={ministryDropdownItems}
-              />
-            }
+            <Dropdown
+              value={member?.ministries && member.ministries[0]?.id}
+              items={ministryDropdownItems}
+              onChangeItem={(value) =>
+                onChangeMinistry && onChangeMinistry(value, member)
+              }
+            />
           </MinistryContainer>
         );
       case MEMBER.BIRTH:

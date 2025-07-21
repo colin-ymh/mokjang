@@ -13,20 +13,16 @@ export default {
   isNotDone: 'Incomplete',
   customSelect: 'Custom Select',
 
+  fixed: 'Fixed',
+  resetFilter: 'Reset All',
+
   ministryName: 'Ministry Name',
   currentMinistry: 'Current Ministry',
   defaultMinistry: 'Bulk Ministry Assignment',
-  defaultMinistryDescription:
-    'The same ministry will be assigned to all members. You can modify it later individually.',
-
-  addMemberDescription:
-    'Members already belonging to the current group are not displayed',
   groupLeader: 'Group Leader',
   editGroupLeader: 'Change Group Leader',
-  editGroupLeaderDescription: 'Choose a new group leader',
   ministryGroupLeader: 'Ministry Leader',
   editMinistryGroupLeader: 'Change Ministry Leader',
-  editMinistryGroupLeaderDescription: 'Choose a new information leader',
 
   noGroup: 'N/A',
   warning: 'Warning',
@@ -319,6 +315,11 @@ export default {
 
   'title.addMinistry': 'Add Ministry',
   'title.editMinistry': 'Edit Ministry',
+
+  'title.tableHeaderSetting': 'Table Header Setting',
+
+  'title.groupFilter': 'Group Filter',
+  'title.memberFilter': 'Member Filter',
   /*-------------------title (popup title)-------------------*/
 
   /*-------------------header (side bar button)-------------------*/
@@ -417,7 +418,6 @@ export default {
 
   /*-------------------button-------------------*/
   'button.register': 'Register',
-  'button.memberRegister': 'Member Register',
   'button.save': 'Save',
   'button.edit': 'Edit',
   'button.delete': 'Delete',
@@ -430,7 +430,7 @@ export default {
   'button.invite': 'Invite',
   'button.cancel': 'Cancel',
   'button.confirm': 'Confirm',
-  'button.filterSetting': 'Filter',
+  'button.tableHeaderSetting': 'Table Header Setting',
   'button.verify': 'Verify',
   'button.request': 'Request',
   'button.add': 'Add',
@@ -464,6 +464,9 @@ export default {
   'button.deleteGroup': 'Delete Group',
   'button.deleteMinistryGroup': 'Delete Ministry Group',
   'button.deleteMinistry': 'Delete Ministry',
+
+  'button.groupFilter': 'Group Filter',
+  'button.memberFilter': 'Member Filter',
   /*-------------------button-------------------*/
 
   /*-------------------placeholder-------------------*/
@@ -601,4 +604,14 @@ export default {
   'warning.deleteMinistry':
     'You cannot delete this ministry if there are members assigned to it. Deleted ministry cannot be recovered.',
   /*-------------------warning-------------------*/
+
+  /*-------------------description-------------------*/
+  'description.defaultMinistry':
+    'The same ministry will be assigned to all members. You can modify it later individually.',
+  'description.addMember':
+    'Members already belonging to the current group are not displayed',
+  'description.editGroupLeader': 'Choose a new group leader',
+  'description.editMinistryGroupLeader': 'Choose a new information leader',
+  'description.tableHeaderSetting': 'Drag and Change the order',
+  /*-------------------description-------------------*/
 } as const;
