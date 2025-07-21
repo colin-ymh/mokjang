@@ -1,7 +1,7 @@
-import React, { ChangeEvent } from 'react';
+import React, { ChangeEvent, MutableRefObject } from 'react';
 import styled from 'styled-components';
 import { Member } from '@/models/member/member';
-import { Ministry, MinistryGroup } from '@/models/management/management';
+import { Ministry } from '@/models/management/management';
 import BorderInput from '@/components/atoms/common/input/border-input';
 import AddMemberItem from '@/components/atoms/common/modal/add-member-item';
 import Search from '../../../../../../public/svg/search.svg';
@@ -48,7 +48,7 @@ const SearchIcon = styled(Search)`
 `;
 
 type AddMinistryGroupMemberModalViewProps = {
-  ministryGroup: MinistryGroup;
+  scrollRef: MutableRefObject<HTMLDivElement | null>;
   searchName: string;
   searchedMembers: Member[];
   selectedMembers: Member[];
@@ -57,10 +57,11 @@ type AddMinistryGroupMemberModalViewProps = {
   ministries: Ministry[];
   selectedMinistryId: string;
   onChangeMinistryItem: (id: string) => void;
+  onScroll: () => void;
 };
 
 const AddMinistryGroupMemberModalView = ({
-  ministryGroup,
+  scrollRef,
   searchName,
   searchedMembers,
   selectedMembers,
@@ -69,6 +70,7 @@ const AddMinistryGroupMemberModalView = ({
   ministries,
   selectedMinistryId,
   onChangeMinistryItem,
+  onScroll,
 }: AddMinistryGroupMemberModalViewProps) => {
   const pathname = usePathname();
   const locale = pathname.split('/')[1] as LOCALE;
@@ -114,7 +116,7 @@ const AddMinistryGroupMemberModalView = ({
         <MainText color={GRAY.DEFAULT}>{t('description.addMember')}</MainText>
       </RowContainer>
       {/* 교인 목록 */}
-      <MemberListContainer>
+      <MemberListContainer ref={scrollRef} onScroll={onScroll}>
         {searchedMembers.map((member) => {
           return (
             <AddMemberItem

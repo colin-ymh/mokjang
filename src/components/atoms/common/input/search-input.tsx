@@ -16,7 +16,7 @@ const SearchContainer = styled.div`
 
 const InputContainer = styled.input<{ $isLeft: boolean; $inputWidth?: string }>`
   width: ${({ $inputWidth }) => ($inputWidth ? `${$inputWidth}px` : '100%')};
-  height: 32px;
+  height: 30px;
   box-sizing: border-box;
   font-size: 14px;
   padding: 10px;
@@ -32,7 +32,7 @@ const InputContainer = styled.input<{ $isLeft: boolean; $inputWidth?: string }>`
 
 const SearchButton = styled.div`
   display: flex;
-  height: 30px;
+  height: 28px;
   width: 40px;
   justify-content: center;
   align-items: center;
@@ -84,7 +84,7 @@ const SearchInput = ({
           value={searchFilter}
           items={searchFilterDropdownItems}
           onChangeItem={onClickSearchFilterItem}
-          height={32}
+          height={30}
           width={100}
           borderColor={GRAY.LIGHT}
           backgroundBlur={false}

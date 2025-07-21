@@ -71,7 +71,7 @@ const EditMinistryView = ({
           <MainText color={GRAY.DARK}>{t('currentMinistry')}</MainText>
           <MinistryList>
             {ministries.map((ministry) => (
-              <MainTag title={ministry.name} />
+              <MainTag key={ministry.id} title={ministry.name} />
             ))}
           </MinistryList>
         </MinistryListContainer>

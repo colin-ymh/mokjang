@@ -4,11 +4,10 @@ import ManagementMemberTableView from '@/components/molecules/management/table/m
 import { MEMBER } from '@/constants/column/member-column';
 import { ORDER_DIRECTION } from '@/constants/constant';
 import { CHURCH_CONTENT_ID } from '@/constants/layout/content';
-import { Ministry } from '@/models/management/management';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '@/redux/store';
-import { MinistryHistoryApi } from '@/api/history/ministry-history.api';
-import { getDateStringFromDate } from '@/utils/date';
+import { Ministry, MinistryGroup } from '@/models/management/management';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
+import { MinistryMembersApi } from '@/api/management/ministry/ministry-mebers.api';
 
 export type MinistryManagementMemberTableProps = {
   members: Member[];
@@ -20,6 +19,8 @@ export type MinistryManagementMemberTableProps = {
   leaderMemberId?: string;
   ministries: Ministry[];
   fetchMembers: () => void;
+  fetchMinistries: () => void;
+  selectedMinistryGroup: MinistryGroup;
 };
 
 const MinistryManagementMemberTable = ({
@@ -32,10 +33,11 @@ const MinistryManagementMemberTable = ({
   leaderMemberId,
   ministries,
   fetchMembers,
+  fetchMinistries,
+  selectedMinistryGroup,
 }: MinistryManagementMemberTableProps) => {
-  const dispatch = useDispatch<AppDispatch>();
   const scrollRef = useRef<HTMLDivElement | null>(null);
-  const ministryHistoryApi = new MinistryHistoryApi(false);
+  const ministryMembersApi = new MinistryMembersApi(false);
   const { churchId } = useSelector((state: RootState) => state.church);
 
   // 에러 처리
@@ -57,24 +59,17 @@ const MinistryManagementMemberTable = ({
 
   const onChangeMinistry = async (ministryId: string, member: Member) => {
     try {
-      // 기존 사역이 있으면 종료
-      if (member.ministries && member.ministries.length > 0) {
-        await ministryHistoryApi.stopMinistryHistory(
-          {
-            churchId,
-            ministryHistoryId: member.ministries[0].id,
-            memberId: member.id,
-          },
-          { endDate: getDateStringFromDate(new Date()) }
-        );
-      }
-
-      await ministryHistoryApi.createMinistryHistory(
-        { churchId, memberId: member.id },
-        { ministryId }
+      await ministryMembersApi.editMemberMinistry(
+        {
+          churchId,
+          ministryGroupId: selectedMinistryGroup.id as string,
+          ministryId,
+        },
+        { memberId: member.id }
       );
 
       fetchMembers();
+      fetchMinistries();
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));
     }

@@ -34,17 +34,17 @@ import Dropdown from '@/components/atoms/common/dropdown/dropdown';
 const getColumnWidth = (id: string) => {
   switch (id) {
     case MEMBER.GROUP:
-      return 20;
+      return 100;
     case MEMBER.NAME:
-      return 20;
+      return 150;
     case MEMBER.OFFICER:
-      return 10;
+      return 100;
     case MEMBER.MINISTRIES:
-      return 20;
+      return 100;
     case MEMBER.AGE:
-      return 10;
+      return 100;
     case MEMBER.MOBILE_PHONE:
-      return 40;
+      return 150;
     default:
       return 50;
   }
@@ -54,7 +54,9 @@ const ProfileContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: flex-start;
   gap: 10px;
+  width: 100%;
 `;
 
 const MinistryContainer = styled.div`
@@ -68,6 +70,7 @@ const TableContainer = styled.div<{ height: number }>`
   width: 100%;
   background-color: ${WHITE};
   // /* 세로 높이만큼 상하 스크롤 */
+  min-height: 500px;
   max-height: ${({ height }) => `${height - 300}px`};
 
   /* 오버플로 시 스크롤 */
@@ -149,13 +152,12 @@ const TableData = styled.td<{ id: string; $index: number; $isLast?: boolean }>`
 const ContentWrapper = styled.div`
   display: flex;
   align-items: center;
+  justify-content: center;
   /* 그냥 늘어날 수 있게, 필요한 경우 ellipsis 처리 */
   max-width: 100%;
+  //overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  position: relative;
-
-  overflow: visible; // 드롭다운이 셀을 넘어서도 보이게
 `;
 
 type MemberTableProps = {
@@ -260,7 +262,11 @@ const ManagementMemberTableView = ({
   };
 
   return (
-    <TableContainer ref={scrollRef} onScroll={onScroll} height={height}>
+    <TableContainer
+      ref={scrollRef}
+      onScroll={onScroll}
+      height={onChangeMinistry ? height - 100 : height}
+    >
       <MemberTable>
         <thead>
           <tr>

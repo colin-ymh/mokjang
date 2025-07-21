@@ -4,16 +4,18 @@ import styled from 'styled-components';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { MEMBER } from '@/constants/column/member-column';
 import { GRAY, MAIN } from '@/constants/styles/color';
-import { SIZE } from '@/constants/styles/style';
 import { getTranslatedMemberColumn } from '@/utils/translate';
 import { ORDER_DIRECTION } from '@/constants/constant';
 
 import { useI18n } from '../../../../../locales/client';
 import Arrow from '../../../../../public/svg/arror-up.svg';
+import ArrowUpDown from '../../../../../public/svg/arrow-up-down.svg';
 
-const HeaderContainer = styled.div`
+const HeaderContainer = styled.div<{ $isProfile: boolean }>`
   display: flex;
   align-items: center;
+  justify-content: ${({ $isProfile }) =>
+    $isProfile ? 'flex-start' : 'center'};
   cursor: pointer;
   gap: 10px;
 `;
@@ -34,16 +36,23 @@ const IconContainer = styled.div`
 const ArrowUp = styled(Arrow)`
   width: 14px;
   height: 14px;
-  stroke-width: 3px;
+  stroke-width: 2px;
   stroke: ${MAIN.DEFAULT};
 `;
 
 const ArrowDown = styled(Arrow)`
   width: 14px;
   height: 14px;
-  stroke-width: 3px;
+  stroke-width: 2px;
   stroke: ${MAIN.DEFAULT};
   transform: rotate(180deg);
+`;
+
+const ArrowUpDownIcon = styled(ArrowUpDown)`
+  width: 14px;
+  height: 14px;
+  stroke-width: 2px;
+  stroke: ${GRAY.DEFAULT};
 `;
 
 type GroupMemberTableHeaderProps = {
@@ -65,7 +74,10 @@ const ManagementMemberTableHeader = ({
   const t = useI18n();
 
   return (
-    <HeaderContainer onClick={() => item.isSortable && onClick(item.id)}>
+    <HeaderContainer
+      onClick={() => item.isSortable && onClick(item.id)}
+      $isProfile={item.id === MEMBER.NAME}
+    >
       <TextContainer>
         <MainText color={GRAY.DARK}>
           {getTranslatedMemberColumn(t, item.id)}
@@ -74,9 +86,7 @@ const ManagementMemberTableHeader = ({
       {item.isSortable && (
         <IconContainer>
           {orderBy !== item.id ? (
-            <MainText size={SIZE.SMALL} color={GRAY.DEFAULT}>
-              {'⇅'}
-            </MainText>
+            <ArrowUpDownIcon />
           ) : orderDirection === ORDER_DIRECTION.ASC ? (
             <ArrowUp />
           ) : (

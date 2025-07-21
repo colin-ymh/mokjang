@@ -276,6 +276,7 @@ const Dropdown = forwardRef<HTMLInputElement, DropdownProps>(
           isOpened={isOpened}
           onClick={onClickBackground}
           blur={backgroundBlur}
+          zIndex={50}
         />
         <DropdownView {...propsForView} />
       </>

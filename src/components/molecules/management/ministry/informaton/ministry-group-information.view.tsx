@@ -171,6 +171,8 @@ const MinistryGroupInformationView = ({
               leaderMemberId={selectedMinistryGroup.leaderMemberId}
               ministries={ministries}
               fetchMembers={fetchMembers}
+              fetchMinistries={fetchMinistries}
+              selectedMinistryGroup={selectedMinistryGroup}
             />
           </TableContainer>
         )}

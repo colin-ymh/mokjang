@@ -161,7 +161,7 @@ const MemberFilterRowView = ({
               width={'auto'}
               onClick={onClickGroupFilterOpen}
               backgroundColor={WHITE}
-              borderColor={GRAY.SEMI_LIGHT}
+              borderColor={GRAY.LIGHT}
               color={GRAY.EXTRA_DARK}
               icon={<GroupIcon />}
             />
@@ -172,7 +172,7 @@ const MemberFilterRowView = ({
               width={'auto'}
               onClick={onClickMemberFilterOpen}
               backgroundColor={WHITE}
-              borderColor={GRAY.SEMI_LIGHT}
+              borderColor={GRAY.LIGHT}
               color={GRAY.EXTRA_DARK}
               icon={<FilterIcon />}
             />
@@ -186,7 +186,7 @@ const MemberFilterRowView = ({
               width={'auto'}
               onClick={onClickHeaderFilterOpen}
               backgroundColor={WHITE}
-              borderColor={GRAY.SEMI_LIGHT}
+              borderColor={GRAY.LIGHT}
               color={GRAY.EXTRA_DARK}
               icon={<SettingIcon />}
             />

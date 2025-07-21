@@ -16,14 +16,12 @@ import {
 } from '@/redux/reducers/toast-popup-reducer';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
-import { MembersApi } from '@/api/members/members.api';
 import { Member } from '@/models/member/member';
 import { MEMBER } from '@/constants/column/member-column';
-import { MinistryHistoryApi } from '@/api/history/ministry-history.api';
 import MinistryGroupInformationView from '@/components/molecules/management/ministry/informaton/ministry-group-information.view';
 import { MinistryGroupsApi } from '@/api/management/ministry/ministry-groups.api';
-import { getDateStringFromDate } from '@/utils/date';
 import { MinistriesApi } from '@/api/management/ministry/ministries.api';
+import { MinistryGroupMembersApi } from '@/api/management/ministry/ministry-group-members.api';
 
 type MinistryGroupInformationProps = {
   selectedMinistryGroup: MinistryGroup;
@@ -39,10 +37,9 @@ const MinistryGroupInformation = ({
   const dispatch = useDispatch<AppDispatch>();
   const { churchId } = useSelector((state: RootState) => state.church);
 
-  const membersApi = new MembersApi(false);
+  const ministryGroupMembersApi = new MinistryGroupMembersApi(false);
   const ministriesApi = new MinistriesApi(false);
   const ministryGroupsApi = new MinistryGroupsApi(false);
-  const ministryHistoryApi = new MinistryHistoryApi(false);
 
   // 에러 처리
   const [thrownError, setThrownError] = useState<Error | null>(null);
@@ -138,7 +135,7 @@ const MinistryGroupInformation = ({
             churchId,
             ministryGroupId: selectedMinistryGroup.id as string,
           },
-          { newLeaderMemberId: newMinistryGroupLeaderId }
+          { newMinistryGroupLeaderId }
         );
       }
       const response = await ministryGroupsApi.getMinistryGroup({
@@ -176,26 +173,15 @@ const MinistryGroupInformation = ({
   };
 
   const fetchMembers = async () => {
-    if (isLoading) return; // 로딩 중에는 추가 요청 방지
+    if (isLoading || !selectedMinistryGroup.id) return; // 로딩 중에는 추가 요청 방지
     setIsLoading(true);
 
     try {
-      const response = await membersApi.getMembers({
+      const response = await ministryGroupMembersApi.getMinistryGroupMembers({
         churchId,
-        ministries: ministries.length > 0 ? ministries.map((m) => m.id) : [],
-        selectedColumns: [
-          MEMBER.OFFICER,
-          MEMBER.BIRTH,
-          MEMBER.MOBILE_PHONE,
-          MEMBER.MINISTRIES,
-        ],
         page,
         take: 30,
-        order: orderBy
-          ? orderBy === MEMBER.AGE
-            ? MEMBER.BIRTH
-            : orderBy
-          : undefined,
+        ministryGroupId: selectedMinistryGroup.id as string,
         orderDirection: orderDirection || undefined,
       });
 
@@ -227,16 +213,17 @@ const MinistryGroupInformation = ({
     try {
       if (selectedMembers.length === 0) return;
 
-      for (const member of selectedMembers) {
-        // 새 그룹에 이력 생성
-        await ministryHistoryApi.createMinistryHistory(
-          { churchId, memberId: member.id },
-          {
-            ministryId: selectedMinistryId as string,
-            startDate: getDateStringFromDate(new Date()),
-          }
-        );
-      }
+      await ministryGroupMembersApi.createMemberMinistryGroup(
+        { churchId, ministryGroupId: selectedMinistryGroup.id as string },
+        {
+          members: selectedMembers.map((member) => {
+            return {
+              memberId: member.id as string,
+              ministryId: selectedMinistryId,
+            };
+          }),
+        }
+      );
       dispatch(fetchGroups());
 
       // 목록 갱신 후 모달 닫기
@@ -306,8 +293,10 @@ const MinistryGroupInformation = ({
   }, [selectedMinistryGroup]);
 
   useEffect(() => {
-    if (!selectedMinistryId && ministries.length > 0) {
+    if (ministries.length > 0) {
       setSelectedMinistryId(ministries[0].id);
+    } else {
+      setSelectedMinistryId(BLANK);
     }
   }, [ministries]);
 
@@ -338,6 +327,7 @@ const MinistryGroupInformation = ({
     fetchMembers,
     onChangeMinistryItem,
   };
+
   return (
     <>
       <MinistryGroupInformationView {...props} />

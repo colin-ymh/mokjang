@@ -67,7 +67,7 @@ const CustomPopup = ({
   width,
   height,
   isPercentage = false,
-  isPortal,
+  isPortal = true,
 
   onClickCancel,
   onClickDone,

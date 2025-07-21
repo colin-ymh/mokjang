@@ -20,6 +20,14 @@ type GetMinistryGroupsParams = {
   parentMinistryGroupId?: string;
 };
 
+type GetMinistryGroupUnassignedMembersParams = {
+  churchId: string;
+  take?: number;
+  page?: number;
+  order?: GROUP_ORDER;
+  orderDirection?: ORDER_DIRECTION;
+};
+
 type GetMinistryGroupParams = {
   churchId: string;
   ministryGroupId: string;
@@ -64,7 +72,7 @@ type EditMinistryGroupLeaderParams = {
 };
 
 type EditMinistryGroupLeaderBody = {
-  newLeaderMemberId: string;
+  newMinistryGroupLeaderId: string;
 };
 
 export class MinistryGroupsApi {
@@ -77,7 +85,7 @@ export class MinistryGroupsApi {
   }
 
   /**
-   * 교회의 소그룹들 불러오기
+   * 교회의 사역그룹들 불러오기
    * @param {GetMinistryGroupsParams} params
    * @returns {Promise<AxiosResponse>}
    */
@@ -136,7 +144,56 @@ export class MinistryGroupsApi {
   };
 
   /**
-   * 특정 소그룹 불러오기
+   * 교회의 소그룹들 불러오기
+   * @param {GetMinistryGroupUnassignedMembersParams} params
+   * @returns {Promise<AxiosResponse>}
+   */
+  public getMinistryGroupUnassignedMembers = async (
+    params: GetMinistryGroupUnassignedMembersParams
+  ): Promise<AxiosResponse> => {
+    const { churchId, take = 30, page = 1, order, orderDirection } = params;
+
+    const queryParams: Record<string, any> = Object.fromEntries(
+      Object.entries({
+        take,
+        page,
+        order,
+        orderDirection,
+      }).filter(
+        ([_, value]) =>
+          value !== undefined && !(Array.isArray(value) && value.length === 0)
+      )
+    );
+
+    const url = `${this._url}/churches/${churchId}/management/ministry-groups/unassigned-member`;
+
+    try {
+      return await authorizeAxios.get(url, {
+        params: queryParams,
+        paramsSerializer: (params) => {
+          return qs.stringify(params, {
+            arrayFormat: 'repeat',
+            skipNulls: true,
+            encodeValuesOnly: true,
+          });
+        },
+      });
+    } catch (serverError: any) {
+      if (serverError.response) {
+        const { message, error, statusCode } = serverError.response.data;
+        throw new CustomError(message, error, statusCode);
+      } else {
+        throw new CustomError(
+          '알 수 없는 에러가 발생했습니다',
+          500,
+          'Unknown Error'
+        );
+      }
+    }
+  };
+
+  /**
+   * 특정 사역그룹 불러오기
    * @param {GetMinistryGroupParams} params
    * @returns {Promise<AxiosResponse>}
    */
@@ -164,7 +221,7 @@ export class MinistryGroupsApi {
   };
 
   /**
-   * 소그룹 만들기
+   * 사역그룹 만들기
    * @param {CreateMinistryGroupParams} params
    * @param {CreateMinistryGroupBody} body
    * @returns {Promise<AxiosResponse>}
@@ -254,7 +311,7 @@ export class MinistryGroupsApi {
   };
 
   /**
-   * 소그룹 삭제하기
+   * 사역그룹 삭제하기
    * @param {DeleteMinistryGroupParams} params
    * @returns {Promise<AxiosResponse>}
    */

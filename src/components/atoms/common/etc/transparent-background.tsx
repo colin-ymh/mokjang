@@ -24,7 +24,7 @@ const TransparentBackground = ({
   isOpened,
   onClick,
   blur = true,
-  zIndex = 50,
+  zIndex = 200,
 }: TransparentBackgroundProps) => {
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
