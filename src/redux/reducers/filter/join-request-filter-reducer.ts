@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { BLANK, NULL, ORDER_DIRECTION } from '@/constants/constant';
+import { BLANK, ORDER_DIRECTION } from '@/constants/constant';
 import { RootState } from '@/redux/store';
 import { JOIN_REQUEST_STATUS } from '@/constants/status/status';
 import { JOIN_REQUEST } from '@/constants/column/join-request-column';
@@ -17,7 +17,7 @@ type JOIN_REQUEST_FILTER = {
 type JoinRequestFilterState = {
   joinRequests: JoinRequest[];
   joinRequestFilter: JOIN_REQUEST_FILTER;
-  joinRequestOrderBy: JOIN_REQUEST | USER | typeof NULL;
+  joinRequestOrderBy?: JOIN_REQUEST | USER;
   joinRequestOrderDirection: ORDER_DIRECTION;
   joinRequestTableHeaderItemList: JOIN_REQUEST_TABLE_HEADER_ITEM[];
 };
@@ -77,7 +77,6 @@ export const INITIAL_JOIN_REQUEST_TABLE_HEADER_LIST: JOIN_REQUEST_TABLE_HEADER_I
 const initialState: JoinRequestFilterState = {
   joinRequests: [],
   joinRequestFilter: INITIAL_JOIN_REQUEST_FILTER,
-  joinRequestOrderBy: NULL,
   joinRequestOrderDirection: ORDER_DIRECTION.ASC,
   joinRequestTableHeaderItemList: INITIAL_JOIN_REQUEST_TABLE_HEADER_LIST,
 };
@@ -103,7 +102,7 @@ export const fetchJoinRequests = createAsyncThunk<
         churchId,
         page: currentPage,
         take: 30, // 무한 스크롤 최적화
-        order: joinRequestOrderBy !== NULL ? joinRequestOrderBy : undefined,
+        order: joinRequestOrderBy || undefined,
         orderDirection: joinRequestOrderDirection,
         // 필터
         status,
@@ -132,10 +131,7 @@ const JoinRequestFilterSlice = createSlice({
     ) => {
       state.joinRequestFilter = action.payload;
     },
-    setJoinRequestOrderBy(
-      state,
-      action: PayloadAction<JOIN_REQUEST | USER | typeof NULL>
-    ) {
+    setJoinRequestOrderBy(state, action: PayloadAction<JOIN_REQUEST | USER>) {
       state.joinRequestOrderBy = action.payload;
     },
     setJoinRequestOrderDirection(

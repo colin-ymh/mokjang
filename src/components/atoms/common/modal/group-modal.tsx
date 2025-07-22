@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 
 import GroupModalView from '@/components/atoms/common/modal/group-modal.view';
-import { BLANK, NONE } from '@/constants/constant';
+import { BLANK } from '@/constants/constant';
 import { GroupHistory } from '@/models/member/history';
 import { getFormattedDate } from '@/utils/format';
 import { getIsWellFormedDate } from '@/utils/check';
@@ -37,7 +37,7 @@ const GroupModal = ({
   const [roleItems, setRoleItems] = useState<DropdownValueType[]>([]);
 
   // 선택된 그룹 역할
-  const [selectedRoleId, setSelectedRoleId] = useState<string>(NONE);
+  const [selectedRoleId, setSelectedRoleId] = useState<string>(BLANK);
 
   // 그룹 시작 날짜
   const [startDate, setStartDate] = useState<string>(BLANK);
@@ -101,7 +101,7 @@ const GroupModal = ({
     // 생성 시
     if (!targetHistory) {
       setIsButtonEnabled(
-        selectedRoleId !== NONE && getIsWellFormedDate(startDate)
+        selectedRoleId !== BLANK && getIsWellFormedDate(startDate)
       );
     }
     // 현재 이력 수정 시
@@ -152,7 +152,7 @@ const GroupModal = ({
     // 목표 이력이 존재 X
     else {
       setSelectedGroup(DEFAULT_GROUP);
-      setSelectedRoleId(NONE);
+      setSelectedRoleId(BLANK);
       setStartDate(BLANK);
       setEndDate(BLANK);
     }

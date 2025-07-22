@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { BLANK, NULL, ORDER_DIRECTION } from '@/constants/constant';
+import { BLANK, ORDER_DIRECTION } from '@/constants/constant';
 import {
   PermissionTemplate,
   PermissionUnit,
@@ -19,7 +19,7 @@ type PermissionTemplateFilterState = {
   permissionTemplates: PermissionTemplate[];
   permissionUnits: PermissionUnit[];
   permissionTemplateFilter: PERMISSION_TEMPLATE_FILTER;
-  permissionTemplateOrderBy: PERMISSION_TEMPLATE | typeof NULL;
+  permissionTemplateOrderBy?: PERMISSION_TEMPLATE;
   permissionTemplateOrderDirection: ORDER_DIRECTION;
   permissionTemplateTableHeaderItemList: PERMISSION_TEMPLATE_TABLE_HEADER_ITEM[];
 };
@@ -63,7 +63,6 @@ const initialState: PermissionTemplateFilterState = {
   permissionTemplates: [],
   permissionUnits: [],
   permissionTemplateFilter: INITIAL_PERMISSION_TEMPLATE_FILTER,
-  permissionTemplateOrderBy: NULL,
   permissionTemplateOrderDirection: ORDER_DIRECTION.ASC,
   permissionTemplateTableHeaderItemList:
     INITIAL_PERMISSION_TEMPLATE_TABLE_HEADER_LIST,
@@ -92,10 +91,7 @@ export const fetchPermissionTemplates = createAsyncThunk<
         churchId,
         page: currentPage,
         take: 30, // 무한 스크롤 최적화
-        order:
-          permissionTemplateOrderBy !== NULL
-            ? permissionTemplateOrderBy
-            : undefined,
+        order: permissionTemplateOrderBy || undefined,
         orderDirection: permissionTemplateOrderDirection,
       });
 
@@ -182,7 +178,7 @@ const PermissionTemplateFilterSlice = createSlice({
     },
     setPermissionTemplateOrderBy(
       state,
-      action: PayloadAction<PERMISSION_TEMPLATE | typeof NULL>
+      action: PayloadAction<PERMISSION_TEMPLATE>
     ) {
       state.permissionTemplateOrderBy = action.payload;
     },

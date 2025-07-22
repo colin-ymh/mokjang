@@ -7,8 +7,6 @@ import {
   FAMILY,
   GENDER,
   MARRIAGE,
-  NONE,
-  NULL,
   WORSHIP_PERIOD,
 } from '@/constants/constant';
 import { MEMBER } from '@/constants/column/member-column';
@@ -60,21 +58,6 @@ export const useOfficerDropdownItems = () => {
   const items = officers.map((officer) => {
     return { value: officer.id, title: officer.name };
   });
-
-  items.push({ value: NONE, title: t(NONE) });
-
-  return items;
-};
-
-export const useMinistryDropdownItems = () => {
-  const t = useI18n();
-  const ministries = useSelector((state: RootState) => state.church.ministries);
-
-  const items = ministries.map((ministry) => {
-    return { value: ministry.id, title: ministry.name };
-  });
-
-  items.push({ value: NULL, title: t(NULL) });
 
   return items;
 };

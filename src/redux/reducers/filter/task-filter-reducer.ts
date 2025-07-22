@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { BLANK, NULL, ORDER_DIRECTION } from '@/constants/constant';
+import { BLANK, ORDER_DIRECTION } from '@/constants/constant';
 import { Task } from '@/models/task/task';
 import { RootState } from '@/redux/store';
 import { TASK } from '@/constants/column/task-column';
@@ -21,7 +21,7 @@ type TASK_FILTER = {
 type TaskFilterState = {
   tasks: Task[];
   taskFilter: TASK_FILTER;
-  taskOrderBy: TASK | typeof NULL;
+  taskOrderBy?: TASK;
   taskOrderDirection: ORDER_DIRECTION;
   taskTableHeaderItemList: TASK_TABLE_HEADER_ITEM[];
 };
@@ -81,7 +81,6 @@ export const INITIAL_TASK_TABLE_HEADER_LIST: TASK_TABLE_HEADER_ITEM[] = [
 const initialState: TaskFilterState = {
   tasks: [],
   taskFilter: INITIAL_TASK_FILTER,
-  taskOrderBy: NULL,
   taskOrderDirection: ORDER_DIRECTION.ASC,
   taskTableHeaderItemList: INITIAL_TASK_TABLE_HEADER_LIST,
 };
@@ -113,7 +112,7 @@ export const fetchTasks = createAsyncThunk<
           memberId,
           page: currentPage,
           take: 30, // 무한 스크롤 최적화
-          order: taskOrderBy !== NULL ? taskOrderBy : undefined,
+          order: taskOrderBy || undefined,
           orderDirection: taskOrderDirection,
         });
 
@@ -129,7 +128,7 @@ export const fetchTasks = createAsyncThunk<
           churchId,
           page: currentPage,
           take: 30, // 무한 스크롤 최적화
-          order: taskOrderBy !== NULL ? taskOrderBy : undefined,
+          order: taskOrderBy || undefined,
           orderDirection: taskOrderDirection,
           // 필터
           status: taskFilter.status,
@@ -159,7 +158,7 @@ const TaskFilterSlice = createSlice({
     setTaskFilter: (state, action: PayloadAction<TASK_FILTER>) => {
       state.taskFilter = action.payload;
     },
-    setTaskOrderBy(state, action: PayloadAction<TASK | typeof NULL>) {
+    setTaskOrderBy(state, action: PayloadAction<TASK>) {
       state.taskOrderBy = action.payload;
     },
     setTaskOrderDirection(state, action: PayloadAction<ORDER_DIRECTION>) {

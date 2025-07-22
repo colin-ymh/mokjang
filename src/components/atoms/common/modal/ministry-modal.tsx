@@ -2,7 +2,7 @@ import { ChangeEvent, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 
-import { BLANK, NONE } from '@/constants/constant';
+import { BLANK } from '@/constants/constant';
 import { getFormattedDate, getFormattedTitle } from '@/utils/format';
 import { getIsWellFormedDate, getIsWellFormedTitle } from '@/utils/check';
 import {
@@ -134,7 +134,7 @@ const MinistryGroupModal = ({
     // 생성 시
     else if (!targetHistory) {
       setIsButtonEnabled(
-        selectedMinistryId !== NONE && getIsWellFormedDate(startDate)
+        selectedMinistryId !== BLANK && getIsWellFormedDate(startDate)
       );
     }
     // 현재 이력 수정 시
@@ -188,7 +188,7 @@ const MinistryGroupModal = ({
         if (targetEndDate) setEndDate(targetEndDate);
       }
     } else {
-      setSelectedMinistryId(NONE);
+      setSelectedMinistryId(BLANK);
       setSelectedMinistryGroup(DEFAULT_MINISTRY_GROUP);
       setStartDate(BLANK);
       setEndDate(BLANK);

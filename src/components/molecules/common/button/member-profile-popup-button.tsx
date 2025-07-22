@@ -69,7 +69,6 @@ const MemberProfilePopupButton = ({
         member={member}
         onClick={onClickMember}
         isOfficerShown={isOfficerShown}
-        isGroupLeaderShown={isGroupLeaderShown}
       />
       <CustomPopup
         isShow={isShow}

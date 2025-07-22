@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { BLANK, NULL, ORDER_DIRECTION } from '@/constants/constant';
+import { BLANK, ORDER_DIRECTION } from '@/constants/constant';
 import { Education } from '@/models/education/education';
 import { RootState } from '@/redux/store';
 import { EducationsApi } from '@/api/education/educations.api';
@@ -13,7 +13,7 @@ type EDUCATION_FILTER = {
 type EducationFilterState = {
   educations: Education[];
   educationFilter: EDUCATION_FILTER;
-  educationOrderBy: EDUCATION | typeof NULL;
+  educationOrderBy?: EDUCATION;
   educationOrderDirection: ORDER_DIRECTION;
   educationTableHeaderItemList: EDUCATION_TABLE_HEADER_ITEM[];
 };
@@ -46,7 +46,6 @@ export const INITIAL_EDUCATION_TABLE_HEADER_LIST: EDUCATION_TABLE_HEADER_ITEM[] 
 const initialState: EducationFilterState = {
   educations: [],
   educationFilter: INITIAL_EDUCATION_FILTER,
-  educationOrderBy: NULL,
   educationOrderDirection: ORDER_DIRECTION.ASC,
   educationTableHeaderItemList: INITIAL_EDUCATION_TABLE_HEADER_LIST,
 };
@@ -69,7 +68,7 @@ export const fetchEducations = createAsyncThunk<
         churchId,
         page: currentPage,
         take: 30, // 무한 스크롤 최적화
-        order: educationOrderBy !== NULL ? educationOrderBy : undefined,
+        order: educationOrderBy || undefined,
         orderDirection: educationOrderDirection,
         name: educationFilter.name,
       });
@@ -92,7 +91,7 @@ const EducationFilterSlice = createSlice({
     setEducationFilter: (state, action: PayloadAction<EDUCATION_FILTER>) => {
       state.educationFilter = action.payload;
     },
-    setEducationOrderBy(state, action: PayloadAction<EDUCATION | typeof NULL>) {
+    setEducationOrderBy(state, action: PayloadAction<EDUCATION>) {
       state.educationOrderBy = action.payload;
     },
     setEducationOrderDirection(state, action: PayloadAction<ORDER_DIRECTION>) {

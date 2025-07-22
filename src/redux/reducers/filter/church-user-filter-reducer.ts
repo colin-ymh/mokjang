@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { BLANK, NULL, ORDER_DIRECTION } from '@/constants/constant';
+import { BLANK, ORDER_DIRECTION } from '@/constants/constant';
 import { RootState } from '@/redux/store';
 import { CHURCH_USER } from '@/constants/column/church-user-column';
 import { ChurchUser } from '@/models/church-user/church-user';
@@ -13,7 +13,7 @@ type CHURCH_USER_FILTER = {
 type ChurchUserFilterState = {
   churchUsers: ChurchUser[];
   churchUserFilter: CHURCH_USER_FILTER;
-  churchUserOrderBy: CHURCH_USER | typeof NULL;
+  churchUserOrderBy?: CHURCH_USER;
   churchUserOrderDirection: ORDER_DIRECTION;
   churchUserTableHeaderItemList: CHURCH_USER_TABLE_HEADER_ITEM[];
 };
@@ -78,7 +78,6 @@ export const INITIAL_CHURCH_USER_TABLE_HEADER_LIST: CHURCH_USER_TABLE_HEADER_ITE
 const initialState: ChurchUserFilterState = {
   churchUsers: [],
   churchUserFilter: INITIAL_CHURCH_USER_FILTER,
-  churchUserOrderBy: NULL,
   churchUserOrderDirection: ORDER_DIRECTION.ASC,
   churchUserTableHeaderItemList: INITIAL_CHURCH_USER_TABLE_HEADER_LIST,
 };
@@ -104,7 +103,7 @@ export const fetchChurchUsers = createAsyncThunk<
           churchId,
           page: currentPage,
           take: 30, // 무한 스크롤 최적화
-          order: churchUserOrderBy !== NULL ? churchUserOrderBy : undefined,
+          order: churchUserOrderBy || undefined,
           orderDirection: churchUserOrderDirection,
           name: churchUserFilter.name,
         });
@@ -115,7 +114,7 @@ export const fetchChurchUsers = createAsyncThunk<
           churchId,
           page: currentPage,
           take: 30, // 무한 스크롤 최적화
-          order: churchUserOrderBy !== NULL ? churchUserOrderBy : undefined,
+          order: churchUserOrderBy || undefined,
           orderDirection: churchUserOrderDirection,
         });
 
@@ -138,10 +137,7 @@ const ChurchUserFilterSlice = createSlice({
     setChurchUserFilter: (state, action: PayloadAction<CHURCH_USER_FILTER>) => {
       state.churchUserFilter = action.payload;
     },
-    setChurchUserOrderBy(
-      state,
-      action: PayloadAction<CHURCH_USER | typeof NULL>
-    ) {
+    setChurchUserOrderBy(state, action: PayloadAction<CHURCH_USER>) {
       state.churchUserOrderBy = action.payload;
     },
     setChurchUserOrderDirection(state, action: PayloadAction<ORDER_DIRECTION>) {

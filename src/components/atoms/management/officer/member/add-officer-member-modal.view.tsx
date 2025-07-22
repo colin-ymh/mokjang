@@ -74,7 +74,7 @@ const AddOfficerMemberModalView = ({
         <MainText color={GRAY.SEMI_DARK}>
           {getTranslatedSelectedMemberCount(locale, selectedMembers.length)}
         </MainText>
-        <MainText color={GRAY.DEFAULT}>{t('addMemberDescription')}</MainText>
+        <MainText color={GRAY.DEFAULT}>{t('description.addMember')}</MainText>
       </RowContainer>
       {/* 교인 목록 */}
       <MemberListContainer>

@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { NULL, ORDER_DIRECTION } from '@/constants/constant';
+import { ORDER_DIRECTION } from '@/constants/constant';
 import { Worship } from '@/models/worship/worship';
 import { RootState } from '@/redux/store';
 import { WorshipsApi } from '@/api/worship/worships.api';
@@ -11,7 +11,7 @@ type WORSHIP_FILTER = {};
 type WorshipFilterState = {
   worships: Worship[];
   worshipFilter: WORSHIP_FILTER;
-  worshipOrderBy: WORSHIP | typeof NULL;
+  worshipOrderBy?: WORSHIP;
   worshipOrderDirection: ORDER_DIRECTION;
   worshipTableHeaderItemList: WORSHIP_TABLE_HEADER_ITEM[];
 };
@@ -41,7 +41,6 @@ export const INITIAL_WORSHIP_TABLE_HEADER_LIST: WORSHIP_TABLE_HEADER_ITEM[] = [
 const initialState: WorshipFilterState = {
   worships: [],
   worshipFilter: INITIAL_WORSHIP_FILTER,
-  worshipOrderBy: NULL,
   worshipOrderDirection: ORDER_DIRECTION.ASC,
   worshipTableHeaderItemList: INITIAL_WORSHIP_TABLE_HEADER_LIST,
 };
@@ -63,7 +62,7 @@ export const fetchWorships = createAsyncThunk<
         churchId,
         page: currentPage,
         take: 30, // 무한 스크롤 최적화
-        order: worshipOrderBy !== NULL ? worshipOrderBy : undefined,
+        order: worshipOrderBy || undefined,
         orderDirection: worshipOrderDirection,
       });
 
@@ -85,7 +84,7 @@ const WorshipFilterSlice = createSlice({
     setWorshipFilter: (state, action: PayloadAction<WORSHIP_FILTER>) => {
       state.worshipFilter = action.payload;
     },
-    setWorshipOrderBy(state, action: PayloadAction<WORSHIP | typeof NULL>) {
+    setWorshipOrderBy(state, action: PayloadAction<WORSHIP>) {
       state.worshipOrderBy = action.payload;
     },
     setWorshipOrderDirection(state, action: PayloadAction<ORDER_DIRECTION>) {

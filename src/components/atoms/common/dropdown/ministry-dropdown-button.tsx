@@ -29,7 +29,6 @@ const Chevron = styled(ChevronLeft)<{ $isOpened: boolean }>`
 
 const MinistryDropdownButton = ({
   onClickDropdown,
-  ref,
   isCustomMode,
   customValue,
   displayValue,
@@ -53,7 +52,6 @@ const MinistryDropdownButton = ({
   return (
     <DropdownButton
       onClick={onClickDropdown}
-      ref={ref}
       value={displayValue}
       {...inputProps}
     >

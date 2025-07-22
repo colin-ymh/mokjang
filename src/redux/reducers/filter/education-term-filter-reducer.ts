@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { BLANK, NULL, ORDER_DIRECTION } from '@/constants/constant';
+import { BLANK, ORDER_DIRECTION } from '@/constants/constant';
 import { EducationSession, EducationTerm } from '@/models/education/education';
 import { RootState } from '@/redux/store';
 
@@ -15,7 +15,7 @@ type EDUCATION_TERM_FILTER = {
 type EducationTermFilterState = {
   educationTerms: EducationTerm[];
   educationTermFilter: EDUCATION_TERM_FILTER;
-  educationTermOrderBy: EDUCATION_TERM | typeof NULL;
+  educationTermOrderBy?: EDUCATION_TERM;
   educationTermOrderDirection: ORDER_DIRECTION;
   educationTermTableHeaderItemList: EDUCATION_TABLE_HEADER_ITEM[];
 };
@@ -72,7 +72,6 @@ export const INITIAL_EDUCATION_TERM_TABLE_HEADER_LIST: EDUCATION_TABLE_HEADER_IT
 const initialState: EducationTermFilterState = {
   educationTerms: [],
   educationTermFilter: INITIAL_EDUCATION_TERM_FILTER,
-  educationTermOrderBy: NULL,
   educationTermOrderDirection: ORDER_DIRECTION.ASC,
   educationTermTableHeaderItemList: INITIAL_EDUCATION_TERM_TABLE_HEADER_LIST,
 };
@@ -108,8 +107,7 @@ export const fetchEducationTerms = createAsyncThunk<
           churchId,
           page: currentPage,
           take: 30, // 무한 스크롤 최적화
-          order:
-            educationTermOrderBy !== NULL ? educationTermOrderBy : undefined,
+          order: educationTermOrderBy || undefined,
           orderDirection: educationTermOrderDirection,
         });
 
@@ -120,8 +118,7 @@ export const fetchEducationTerms = createAsyncThunk<
           educationId: educationId || '1',
           page: currentPage,
           take: 30, // 무한 스크롤 최적화
-          order:
-            educationTermOrderBy !== NULL ? educationTermOrderBy : undefined,
+          order: educationTermOrderBy || undefined,
           orderDirection: educationTermOrderDirection,
         });
 
@@ -184,10 +181,7 @@ const EducationTermFilterSlice = createSlice({
     ) => {
       state.educationTermFilter = action.payload;
     },
-    setEducationTermOrderBy(
-      state,
-      action: PayloadAction<EDUCATION_TERM | typeof NULL>
-    ) {
+    setEducationTermOrderBy(state, action: PayloadAction<EDUCATION_TERM>) {
       state.educationTermOrderBy = action.payload;
     },
     setEducationTermOrderDirection(

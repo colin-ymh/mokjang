@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { BLANK, NULL, ORDER_DIRECTION } from '@/constants/constant';
+import { BLANK, ORDER_DIRECTION } from '@/constants/constant';
 import {
   Visitation,
   VISITATION_METHOD,
@@ -25,7 +25,7 @@ type VISITATION_FILTER = {
 type VisitationFilterState = {
   visitations: Visitation[];
   visitationFilter: VISITATION_FILTER;
-  visitationOrderBy: VISITATION | typeof NULL;
+  visitationOrderBy?: VISITATION;
   visitationOrderDirection: ORDER_DIRECTION;
   visitationTableHeaderItemList: VISITATION_TABLE_HEADER_ITEM[];
 };
@@ -96,7 +96,6 @@ export const INITIAL_VISITATION_TABLE_HEADER_LIST: VISITATION_TABLE_HEADER_ITEM[
 const initialState: VisitationFilterState = {
   visitations: [],
   visitationFilter: INITIAL_VISITATION_FILTER,
-  visitationOrderBy: NULL,
   visitationOrderDirection: ORDER_DIRECTION.ASC,
   visitationTableHeaderItemList: INITIAL_VISITATION_TABLE_HEADER_LIST,
 };
@@ -129,7 +128,7 @@ export const fetchVisitations = createAsyncThunk<
           memberId,
           page: currentPage,
           take: 30, // 무한 스크롤 최적화
-          order: visitationOrderBy !== NULL ? visitationOrderBy : undefined,
+          order: visitationOrderBy || undefined,
           orderDirection: visitationOrderDirection,
           // 필터
           // visitationStatus: visitationFilter.visitationStatus,
@@ -156,7 +155,7 @@ export const fetchVisitations = createAsyncThunk<
           churchId,
           page: currentPage,
           take: 30, // 무한 스크롤 최적화
-          order: visitationOrderBy !== NULL ? visitationOrderBy : undefined,
+          order: visitationOrderBy || undefined,
           orderDirection: visitationOrderDirection,
           // 필터
           status: visitationFilter.status,
@@ -188,10 +187,7 @@ const VisitationFilterSlice = createSlice({
     setVisitationFilter: (state, action: PayloadAction<VISITATION_FILTER>) => {
       state.visitationFilter = action.payload;
     },
-    setVisitationOrderBy(
-      state,
-      action: PayloadAction<VISITATION | typeof NULL>
-    ) {
+    setVisitationOrderBy(state, action: PayloadAction<VISITATION>) {
       state.visitationOrderBy = action.payload;
     },
     setVisitationOrderDirection(state, action: PayloadAction<ORDER_DIRECTION>) {
