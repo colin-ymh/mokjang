@@ -3,17 +3,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 
 import MainMemberHeaderView from '@/components/molecules/layout/header/main/member/main-member-header.view';
-import { DummyApi } from '@/api/dummy.api';
-import {
-  fetchMembers,
-  setMembers,
-} from '@/redux/reducers/filter/member-filter-reducer';
+import { fetchMembers } from '@/redux/reducers/filter/member-filter-reducer';
 import { usePageRouter } from '@/utils/router';
 import { useI18n } from '../../../../../../../locales/client';
-import { DEFAULT_MEMBER, Member } from '@/models/member/member';
+import { DEFAULT_MEMBER } from '@/models/member/member';
 import { setTargetMember } from '@/redux/reducers/target/target-member-reducer';
 import { uploadFiles } from '@/utils/upload';
-import { getCreateMemberBody, getMemberFromServer } from '@/utils/member';
 import { MembersApi } from '@/api/members/members.api';
 import { BLACK, DESTRUCTIVE } from '@/constants/styles/color';
 import {
@@ -29,14 +24,13 @@ const MainMemberHeader = ({}: MainMemberHeaderProps) => {
 
   const dispatch = useDispatch<AppDispatch>();
   const t = useI18n();
-  const dummyApi = new DummyApi(false);
   const membersApi = new MembersApi(false);
 
   const { churchId, groups } = useSelector((state: RootState) => state.church);
   const { targetMember } = useSelector(
     (state: RootState) => state.targetMember
   );
-  const { members } = useSelector((state: RootState) => state.memberFilter);
+  const { memberPage } = useSelector((state: RootState) => state.memberFilter);
 
   // 교인 등록하기 on/off
   const [isRegisterShown, setIsRegisterShown] = useState<boolean>(false);
@@ -83,17 +77,6 @@ const MainMemberHeader = ({}: MainMemberHeaderProps) => {
     router.push(`/main/member/${id}`);
   };
 
-  // 테스트 교인 생성
-  const onClickDummyMembers = async () => {
-    dummyApi.createDummyMembers({ churchId }).then(() => {
-      dispatch(fetchMembers({ currentPage: 1 })).then((result) => {
-        if (fetchMembers.fulfilled.match(result)) {
-          dispatch(setMembers(result.payload));
-        }
-      });
-    });
-  };
-
   // (모바일) 선택된 그룹 이름
   const [selectedGroupName, setSelectedGroupName] = useState<string>(t('all'));
 
@@ -123,17 +106,31 @@ const MainMemberHeader = ({}: MainMemberHeaderProps) => {
       }
 
       await membersApi
-        .createMember({ churchId }, getCreateMemberBody(updatedMember))
-        .then((response) => {
-          if (response.status === 200) {
-            setIsRegisterShown(false);
-            const newMember = getMemberFromServer(response.data.data);
-            dispatch(setTargetMember(newMember));
-            const newMembers = members.map((mem: Member) =>
-              mem.id === newMember.id ? newMember : mem
-            );
-            dispatch(setMembers(newMembers));
+        .createMember(
+          { churchId },
+          {
+            name: updatedMember.name,
+            mobilePhone: updatedMember.mobilePhone.replace(/\D/g, ''),
+            birth: updatedMember.birth || undefined,
+            isLunar: updatedMember.isLunar,
+            isLeafMonth: updatedMember.isLeafMonth,
+            gender: updatedMember.gender || undefined,
+            occupation: updatedMember.occupation || undefined,
+            school: updatedMember.school || undefined,
+            address: updatedMember.address || undefined,
+            detailAddress: updatedMember.detailAddress || undefined,
+            marriage: updatedMember.marriage || undefined,
+            // detailMarriage: updatedMember.detailMarriage || undefined,
+            vehicleNumber:
+              updatedMember.vehicleNumber.filter(
+                (number) => number.length > 0
+              ) || undefined,
+            registeredAt: updatedMember.registeredAt || undefined,
           }
+        )
+        .then((response) => {
+          dispatch(fetchMembers({ currentPage: memberPage }));
+          setIsRegisterShown(false);
         });
 
       dispatch(setTargetMember(DEFAULT_MEMBER));
@@ -155,11 +152,9 @@ const MainMemberHeader = ({}: MainMemberHeaderProps) => {
   const props = {
     isModalOpened,
     isRegisterShown,
-    setIsRegisterShown,
     onClickClose,
     onClickRegisterMemberButton,
     onClickHeaderBar,
-    onClickDummyMembers,
     onClickGroupButton,
     onDismissModal,
     selectedGroupName,

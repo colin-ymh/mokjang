@@ -1,10 +1,8 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import { useParams } from 'next/navigation';
 
 import { GRAY, WHITE } from '@/constants/styles/color';
 import { MainText } from '@/components/atoms/common/text/main-text';
-import { useMainMemberHeaderBarItems } from '@/hooks/layout/header-bar-items';
 import { DIRECTION, SIZE } from '@/constants/styles/style';
 
 import { useScopedI18n } from '../../../../../../../locales/client';
@@ -15,6 +13,10 @@ import { MAIN_HEADER_ID } from '@/constants/layout/header';
 import GroupFilter from '@/components/molecules/member/setting/group-filter';
 import AddMember from '@/components/organisms/member/add/add-member';
 import Plus from '../../../../../../../public/svg/plus.svg';
+import WrappedPagePopup from '@/components/atoms/common/popup/wrapped-page-popup';
+import { getIsWellFormedMobilePhone, getIsWellFormedName } from '@/utils/check';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
 
 const HeaderContainer = styled.div`
   display: flex;
@@ -99,11 +101,9 @@ const PlusIcon = styled(Plus)`
 type MainMemberHeaderViewProps = {
   isModalOpened: boolean;
   isRegisterShown: boolean;
-  setIsRegisterShown: Dispatch<SetStateAction<boolean>>;
   onClickClose: () => void;
   onClickRegisterMemberButton: () => void;
   onClickHeaderBar: (id: string) => void;
-  onClickDummyMembers: () => void;
   onClickGroupButton: () => void;
   onDismissModal: () => void;
   selectedGroupName: string;
@@ -115,11 +115,8 @@ type MainMemberHeaderViewProps = {
 const MainMemberHeaderView = ({
   isModalOpened,
   isRegisterShown,
-  setIsRegisterShown,
   onClickClose,
   onClickRegisterMemberButton,
-  onClickHeaderBar,
-  onClickDummyMembers,
   onClickGroupButton,
   onDismissModal,
   selectedGroupName,
@@ -127,13 +124,14 @@ const MainMemberHeaderView = ({
   onChangeProfileImage,
   onClickSave,
 }: MainMemberHeaderViewProps) => {
-  const slug = useParams().slug as string[];
-  const contentId = slug[2];
+  const { targetMember } = useSelector(
+    (state: RootState) => state.targetMember
+  );
 
   const t_button = useScopedI18n('button');
   const t_header = useScopedI18n('header');
+  const t_description = useScopedI18n('description');
   const t_title = useScopedI18n('title');
-  const headerBarItems = useMainMemberHeaderBarItems();
 
   return (
     <HeaderContainer>
@@ -156,14 +154,6 @@ const MainMemberHeaderView = ({
           icon={<PlusIcon />}
         />
       </HeaderTopContainer>
-      {/*<HeaderBottomContainer>*/}
-      {/*<HeaderBar*/}
-      {/*  value={contentId}*/}
-      {/*  items={headerBarItems}*/}
-      {/*  onClick={onClickHeaderBar}*/}
-      {/*/>*/}
-      {/*</HeaderBottomContainer>*/}
-      {/* 팝업 */}
       {/* 그룹 필터링 팝업 */}
       <SlidePopup
         isShow={isModalOpened}
@@ -174,14 +164,19 @@ const MainMemberHeaderView = ({
       </SlidePopup>
       {/* 데스크톱 교인 추가 */}
       <DesktopRegister>
-        <SlidePopup
+        <WrappedPagePopup
           isShow={isRegisterShown}
           onClickClose={onClickClose}
           onClickDone={onClickSave}
           headerTitle={t_title('memberRegister')}
+          headerDescription={t_description('memberRegisterHeader')}
+          doneDisabled={
+            !getIsWellFormedName(targetMember.name) ||
+            !getIsWellFormedMobilePhone(targetMember.mobilePhone)
+          }
         >
           <AddMember onChangeProfileImage={onChangeProfileImage} />
-        </SlidePopup>
+        </WrappedPagePopup>
       </DesktopRegister>
       {/* 모바일 교인 추가*/}
       <MobileRegister>

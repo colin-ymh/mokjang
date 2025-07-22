@@ -4,7 +4,6 @@ import { AppDispatch, RootState } from '@/redux/store';
 
 import { FamilyApi } from '@/api/members/family.api';
 import { MembersApi } from '@/api/members/members.api';
-import { getMemberFromServer } from '@/utils/member';
 import { FAMILY } from '@/constants/constant';
 import FamilyInformationListView from '@/components/molecules/member/information/family-information-list.view';
 import { DEFAULT_FAMILY_MEMBER, FamilyMember } from '@/models/member/member';
@@ -80,7 +79,7 @@ const FamilyInformationList = ({
           churchId,
           memberId: targetMember.id,
         });
-        const member = getMemberFromServer(response.data.data);
+        const member = response.data.data;
         dispatch(setTargetMember(member));
       } catch (error) {
         if (error instanceof Error) {
@@ -114,7 +113,7 @@ const FamilyInformationList = ({
           churchId,
           memberId: targetMember.id,
         });
-        const member = getMemberFromServer(response.data.data);
+        const member = response.data.data;
         dispatch(setTargetMember(member));
       } catch (error) {
         if (error instanceof Error) {
@@ -144,7 +143,7 @@ const FamilyInformationList = ({
           churchId,
           memberId: familyMemberId,
         });
-        const newMember = getMemberFromServer(response.data.data);
+        const newMember = response.data.data;
         dispatch(setTargetMember(newMember));
         setMemberContentId(MEMBER_INFORMATION_HEADER_ID.PERSONAL_INFORMATION);
       } catch (error) {
@@ -171,7 +170,7 @@ const FamilyInformationList = ({
           churchId,
           memberId: targetMember.id,
         });
-        const member = getMemberFromServer(response.data.data);
+        const member = response.data.data;
         dispatch(setTargetMember(member));
       } catch (error) {
         if (error instanceof Error) {
@@ -204,7 +203,7 @@ const FamilyInformationList = ({
           const newFamilyMembers = response.data.map(
             (member: FamilyMember) => ({
               ...member,
-              familyMember: getMemberFromServer(member.familyMember),
+              familyMember: member.familyMember,
             })
           );
 

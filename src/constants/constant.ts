@@ -1,6 +1,4 @@
-export const NONE = 'none'; // 없음 이라는 값
 export const BLANK = '';
-export const NULL = 'null'; // 진짜로 없는 값
 
 export enum DAY {
   SUNDAY = 'sunday',
@@ -16,12 +14,12 @@ export const DAYS = Object.values(DAY);
 
 // 신급
 export enum BAPTISM {
+  NONE = 'none',
   BAPTIZED = 'baptized',
   IMMERSION_BAPTISM = 'immersionBaptism',
   INFANT_BAPTISM = 'infantBaptism',
   CATECHUMENATE = 'catechumenate',
   CONFIRMATION = 'confirmation',
-  NONE = 'none',
 }
 
 // 성별
@@ -87,8 +85,8 @@ export enum MEDIA_MAX_WIDTH {
 
 // 오름차순/내림차순
 export enum ORDER_DIRECTION {
-  ASC = 'asc',
-  DESC = 'desc',
+  ASC = 'ASC',
+  DESC = 'DESC',
 }
 
 export enum HEADER_BAR {

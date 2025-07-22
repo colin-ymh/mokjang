@@ -11,12 +11,13 @@ const ModalContainer = styled.div<{
   width?: number;
   height?: number;
   $isPercentage?: boolean;
+  $zIndex?: number;
 }>`
   position: fixed; /* 화면에 고정 */
   top: 50%; /* 세로 중앙 */
   left: 50%; /* 가로 중앙 */
   transform: translate(-50%, -50%); /* 정확히 중앙으로 이동 */
-  z-index: 1000;
+  z-index: ${({ $zIndex }) => $zIndex};
 
   display: flex;
   flex-direction: column;
@@ -44,7 +45,7 @@ type CustomPopupProps = {
   height?: number;
   isPercentage?: boolean;
   isPortal?: boolean;
-
+  zIndex?: number;
   onClickCancel: () => void;
   onClickDone?: () => void;
   headerTitle?: string;
@@ -68,7 +69,7 @@ const CustomPopup = ({
   height,
   isPercentage = false,
   isPortal = true,
-
+  zIndex = 1000,
   onClickCancel,
   onClickDone,
   headerTitle,
@@ -106,11 +107,16 @@ const CustomPopup = ({
 
   const modalContent = (
     <>
-      <TransparentBackground isOpened={isShow} onClick={onClickCancel} />
+      <TransparentBackground
+        isOpened={isShow}
+        onClick={onClickCancel}
+        zIndex={zIndex - 100}
+      />
       <ModalContainer
         width={width}
         height={height}
         $isPercentage={isPercentage}
+        $zIndex={zIndex}
       >
         <PopupLayout
           onClickCancel={onClickCancel}

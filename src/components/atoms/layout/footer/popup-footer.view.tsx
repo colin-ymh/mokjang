@@ -10,7 +10,7 @@ const FooterContainer = styled.header`
   flex-shrink: 0;
   width: 100%;
   background-color: ${WHITE};
-  border-top: 1px solid ${GRAY.LIGHT};
+  border-top: 1px solid ${GRAY.EXTRA_LIGHT};
 `;
 
 const FooterLeft = styled.div`
@@ -67,7 +67,11 @@ const PopupFooterView = ({
           <Button
             text={doneText}
             onClick={onClickDone}
-            backgroundColor={doneBackgroundColor || MAIN.DEFAULT}
+            backgroundColor={
+              doneDisabled
+                ? GRAY.SEMI_LIGHT
+                : doneBackgroundColor || MAIN.DEFAULT
+            }
             width={80}
             height={35}
             disabled={doneDisabled}

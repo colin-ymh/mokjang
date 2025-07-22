@@ -9,9 +9,6 @@ import { GRAY } from '@/constants/styles/color';
 import { RootState } from '@/redux/store';
 import { useSelector } from 'react-redux';
 import ProfileImage from '@/components/atoms/common/image/profile-image';
-import SlidePopup from '@/components/atoms/common/popup/slide-popup';
-import { useScopedI18n } from '../../../../../../locales/client';
-import AddMember from '@/components/organisms/member/add/add-member';
 
 const InformationHeader = styled.div`
   display: flex;
@@ -44,25 +41,14 @@ const ChurchMemberInfoContainer = styled.div`
 `;
 
 type MemberInformationHeaderViewProps = {
-  isEditShown: boolean;
   memberContentId: string;
   onClickItem: (id: string) => void;
-  onChangeProfileImage: (image: File | null) => void;
-  onClickSave: () => void;
-  onClickProfile: () => void;
-  onClickClose: () => void;
 };
 
 const MemberInformationHeaderView = ({
-  isEditShown,
   memberContentId,
   onClickItem,
-  onChangeProfileImage,
-  onClickSave,
-  onClickProfile,
-  onClickClose,
 }: MemberInformationHeaderViewProps) => {
-  const t_button = useScopedI18n('button');
   const { targetMember } = useSelector(
     (state: RootState) => state.targetMember
   );
@@ -77,7 +63,6 @@ const MemberInformationHeaderView = ({
             value={targetMember?.profileImageUrl}
             width={80}
             height={80}
-            onClick={onClickProfile}
           />
 
           <TextContainer>
@@ -106,16 +91,6 @@ const MemberInformationHeaderView = ({
           onClick={onClickItem}
         />
       </InformationHeader>
-
-      {/* 교인 정보 수정 */}
-      <SlidePopup
-        isShow={isEditShown}
-        onClickClose={onClickClose}
-        doneText={t_button('save')}
-        onClickDone={onClickSave}
-      >
-        <AddMember onChangeProfileImage={onChangeProfileImage} />
-      </SlidePopup>
     </>
   );
 };

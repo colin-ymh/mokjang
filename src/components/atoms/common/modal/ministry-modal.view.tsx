@@ -13,7 +13,6 @@ import { useI18n } from '../../../../../locales/client';
 import Cancel from '../../../../../public/svg/cancel.svg';
 import { CUSTOM_VALUE } from '@/components/atoms/common/dropdown/dropdown';
 import { MainText } from '@/components/atoms/common/text/main-text';
-import SelectMinistryGroup from '@/components/molecules/member/information/select-ministry-group';
 
 const MinistryGroupModalViewContainer = styled.div`
   display: flex;
@@ -222,13 +221,6 @@ const MinistryGroupModalView = ({
           />
         </ButtonContainer>
       </ModalContainer>
-      <SelectContainer $isShown={isSelectOpened}>
-        <SelectMinistryGroup
-          value={selectedMinistryGroup.id}
-          onClickSave={onChangeMinistryGroup}
-          onClickClose={onClickClose}
-        />
-      </SelectContainer>
     </MinistryGroupModalViewContainer>
   );
 };

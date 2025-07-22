@@ -78,8 +78,8 @@ const WeekBar = styled.div`
   position: relative;
 `;
 
-const CountBar = styled.div<{ count: number; max: number }>`
-  width: ${({ count, max }) => (max ? (count / max) * 100 : 0)}%;
+const CountBar = styled.div<{ $count: number; max: number }>`
+  width: ${({ $count, max }) => (max ? ($count / max) * 100 : 0)}%;
   border-radius: 5px;
   height: 7px;
   background-color: ${MAIN.DEFAULT};
@@ -152,7 +152,7 @@ const NewMemberWidgetView = ({
                     </MainText>
                   </RowContainer>
                   <WeekBar>
-                    <CountBar count={summary.count} max={maxCount} />
+                    <CountBar $count={summary.count} max={maxCount} />
                   </WeekBar>
                 </WeekContainer>
               ))}

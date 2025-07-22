@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import LabelInput from '@/components/atoms/common/input/label-input';
 import Button from '@/components/atoms/common/button/button';
 import { MainText } from '@/components/atoms/common/text/main-text';
-import { BLACK, BLUE, GRAY, MAIN } from '@/constants/styles/color';
+import { BLACK, GRAY, MAIN } from '@/constants/styles/color';
 import { MEMBER } from '@/constants/column/member-column';
 import { getIsWellFormedMobilePhone, getIsWellFormedName } from '@/utils/check';
 import { getMinuteFromSecond } from '@/utils/date';
@@ -182,7 +182,7 @@ const UserRegisterListView = ({
           <MainText>{getMinuteFromSecond(second)}</MainText>
         </TimeContainer>
         <ConsentContainer>
-          <MainText fontSize={12} color={BLUE.DEFAULT}>
+          <MainText fontSize={12} color={MAIN.DEFAULT}>
             개인정보 수집 및 이용 동의
           </MainText>
           <CheckButton $isChecked={isConsent} onClick={onClickConsent} />

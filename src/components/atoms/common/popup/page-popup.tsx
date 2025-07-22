@@ -19,19 +19,54 @@ const PagePopupContainer = styled.div`
 
 interface PagePopupProps {
   isShow: boolean;
-  onClickCancel: () => void;
+  isFooterShown?: boolean;
+  onClickClose: () => void;
+  onClickDone?: () => void;
+  headerTitle?: string;
+  headerRight?: ReactNode;
+  cancelText?: string;
+  doneText?: string;
+  cancelBackgroundColor?: string;
+  doneBackgroundColor?: string;
+  doneDisabled?: boolean;
   children: ReactNode;
 }
 
 // 특정 컴포넌트를 전체화면 페이지인 것처럼 보아게 해주는 모달
-const PagePopup = ({ isShow, onClickCancel, children }: PagePopupProps) => {
+const PagePopup = ({
+  isShow,
+  isFooterShown,
+  onClickClose,
+  onClickDone,
+  headerTitle,
+  headerRight,
+  cancelText,
+  doneText,
+  cancelBackgroundColor,
+  doneBackgroundColor,
+  doneDisabled,
+  children,
+}: PagePopupProps) => {
   if (!isShow) {
     return <Hide />;
   }
 
   return (
     <PagePopupContainer>
-      <PopupLayout onClickCancel={onClickCancel}>{children}</PopupLayout>
+      <PopupLayout
+        onClickCancel={onClickClose}
+        onClickDone={onClickDone}
+        headerTitle={headerTitle}
+        headerRight={headerRight}
+        doneText={doneText}
+        cancelText={cancelText}
+        doneBackgroundColor={doneBackgroundColor}
+        cancelBackgroundColor={cancelBackgroundColor}
+        doneDisabled={doneDisabled}
+        isFooterShown={isFooterShown}
+      >
+        {children}
+      </PopupLayout>
     </PagePopupContainer>
   );
 };

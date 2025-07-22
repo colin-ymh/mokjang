@@ -10,9 +10,8 @@ const Profile = styled(Image)<{ $isButton: boolean }>`
   border-radius: 100%;
   object-fit: cover;
   background: ${GRAY.SEMI_LIGHT};
-    cursor: ${({ $isButton }) => ($isButton ? 'pointer' : 'default')};}
+  cursor: ${({ $isButton }) => ($isButton ? 'pointer' : 'default')};
 `;
-
 type ProfileImageProps = {
   value?: string;
   width?: number;

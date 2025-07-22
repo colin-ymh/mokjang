@@ -22,7 +22,7 @@ const HeaderContainer = styled.header<{
   flex-shrink: 0;
   background-color: ${WHITE};
   border-bottom: ${({ $isHeaderBorderShown }) =>
-    `1px solid ${$isHeaderBorderShown ? GRAY.LIGHT : 'transparent'}`};
+    `1px solid ${$isHeaderBorderShown ? GRAY.EXTRA_LIGHT : 'transparent'}`};
 `;
 
 const HeaderLeft = styled.div`
@@ -41,7 +41,7 @@ const HeaderTitle = styled.div`
   display: flex;
   flex: 1;
   flex-direction: column;
-  gap: 10px;
+  gap: 5px;
 
   @media (min-width: ${MEDIA_MIN_WIDTH.DESKTOP}) {
     padding-left: 20px;
@@ -86,21 +86,23 @@ const PopupHeaderView = ({
   cancelText,
   doneText,
   isHeaderBorderShown = true,
-  height = 60,
+  height = 80,
 }: PopupHeaderViewProps) => {
   return (
     <HeaderContainer $isHeaderBorderShown={isHeaderBorderShown} height={height}>
       <HeaderLeft>
-        <Button
-          text={cancelText}
-          onClick={onClickCancel}
-          backgroundColor={WHITE}
-          color={GRAY.DEFAULT}
-        />
+        {/*<Button*/}
+        {/*  text={cancelText}*/}
+        {/*  onClick={onClickCancel}*/}
+        {/*  backgroundColor={WHITE}*/}
+        {/*  color={GRAY.DEFAULT}*/}
+        {/*/>*/}
       </HeaderLeft>
 
       <HeaderTitle>
-        <MainText size={SIZE.EXTRA_LARGE}>{headerTitle}</MainText>
+        <MainText size={SIZE.EXTRA_LARGE} fontSize={22}>
+          {headerTitle}
+        </MainText>
         {headerDescription && (
           <MainText color={GRAY.SEMI_DARK}>{headerDescription}</MainText>
         )}

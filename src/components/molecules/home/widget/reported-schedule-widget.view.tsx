@@ -18,7 +18,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import ReportedScheduleList from '@/components/atoms/home/reported-schedule-list';
 import RangeRadioButton from '@/components/atoms/common/radio-button/range-radio-button';
-import { useRangeRadioButton } from '@/hooks/radio-button/radio-button-items';
+import { useRangeRadioButtonItems } from '@/hooks/radio-button/radio-button-items';
 
 const WidgetContainer = styled.div`
   display: flex;
@@ -84,7 +84,7 @@ const ReportedScheduleWidgetView = ({
     (state: RootState) => state.targetEducationSession
   );
 
-  const rangeRadioItems = useRangeRadioButton();
+  const rangeRadioItems = useRangeRadioButtonItems();
 
   return (
     <>

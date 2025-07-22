@@ -259,7 +259,7 @@ const MinistryGroupInformation = ({
       const response = await ministriesApi.getMinistries({
         churchId,
         ministryGroupId: selectedMinistryGroup.id as string,
-        order: MINISTRY_ORDER.NAME,
+        order: MINISTRY_ORDER.CREATED_AT,
       });
 
       const newMinistries = response.data.data;

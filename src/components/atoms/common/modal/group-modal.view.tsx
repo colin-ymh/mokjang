@@ -13,7 +13,6 @@ import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-i
 import { useI18n } from '../../../../../locales/client';
 import Cancel from '../../../../../public/svg/cancel.svg';
 import { MainText } from '@/components/atoms/common/text/main-text';
-import SelectGroup from '@/components/molecules/member/information/select-group';
 
 const GroupModalViewContainer = styled.div`
   display: flex;
@@ -198,14 +197,6 @@ const GroupModalView = ({
           />
         </ButtonContainer>
       </ModalContainer>
-      {/* 그룹 선택 모달 */}
-      <SelectContainer $isShown={isSelectOpened}>
-        <SelectGroup
-          value={selectedGroup.id}
-          onClickSave={onChangeGroup}
-          onClickClose={onClickClose}
-        />
-      </SelectContainer>
     </GroupModalViewContainer>
   );
 };

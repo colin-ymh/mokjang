@@ -1,15 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
-import {
-  fetchMembers,
-  setMembers,
-} from '@/redux/reducers/filter/member-filter-reducer';
+import { fetchMembers } from '@/redux/reducers/filter/member-filter-reducer';
 
 import { MembersApi } from '@/api/members/members.api';
 import MemberListView from '@/components/organisms/member/list/member-list.view';
-import { DEFAULT_MEMBER, Member } from '@/models/member/member';
-import { getMemberFromServer } from '@/utils/member';
+import { DEFAULT_MEMBER } from '@/models/member/member';
 import { setTargetMember } from '@/redux/reducers/target/target-member-reducer';
 
 type MemberListProps = {
@@ -22,8 +18,13 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
   const churchId: string = useSelector(
     (state: RootState) => state.church.churchId
   );
-  const { members, memberFilter, memberOrderBy, memberOrderDirection } =
-    useSelector((state: RootState) => state.memberFilter);
+  const {
+    memberPage,
+    members,
+    memberFilter,
+    memberOrderBy,
+    memberOrderDirection,
+  } = useSelector((state: RootState) => state.memberFilter);
   const { targetMember } = useSelector(
     (state: RootState) => state.targetMember
   );
@@ -56,23 +57,10 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
 
   // 무한 스크롤로 데이터 추가 로드
   const loadMembers = async () => {
-    if (isLoading) return; // 로딩 중에는 추가 요청 방지
+    if (isLoading) return;
     setIsLoading(true);
-
     try {
-      const result = await dispatch(fetchMembers({ currentPage: page + 1 }));
-      if (fetchMembers.fulfilled.match(result)) {
-        const newMembers: Member[] = result.payload;
-        if (newMembers.length > 0) {
-          // 기존 데이터와 합치면서 중복 제거
-          const existingIds = new Set(members.map((member) => member.id));
-          const filteredNewMembers = newMembers.filter(
-            (member) => !existingIds.has(member.id)
-          );
-          dispatch(setMembers([...members, ...filteredNewMembers]));
-          setPage((prev) => prev + 1); // 다음 페이지로 이동
-        }
-      }
+      await dispatch(fetchMembers({ currentPage: memberPage + 1 }));
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));
     } finally {
@@ -84,11 +72,7 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
   useEffect(() => {
     const fetchInitialMembers = async () => {
       try {
-        const result = await dispatch(fetchMembers({ currentPage: 1 }));
-        if (fetchMembers.fulfilled.match(result)) {
-          dispatch(setMembers(result.payload));
-          setPage(1);
-        }
+        await dispatch(fetchMembers({ currentPage: 1 }));
       } catch (error) {
         setThrownError(
           error instanceof Error ? error : new Error(String(error))
@@ -102,7 +86,7 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
   const onClickMemberItem = async (memberId: string) => {
     try {
       const response = await membersApi.getMember({ churchId, memberId });
-      const member = getMemberFromServer(response.data.data);
+      const member = response.data.data;
 
       dispatch(setTargetMember(member));
       dispatch(setTargetMember(member));
@@ -121,18 +105,15 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
   // 교인 삭제하기
   const onClickDelete = async () => {
     try {
-      const response = await membersApi.deleteMember({
+      await membersApi.deleteMember({
         churchId,
         memberId: targetMember.id,
       });
-      if (response.status === 200) {
-        // 초기화 후 다시 로드
-        setPage(1);
-        const result = await dispatch(fetchMembers({ currentPage: 1 }));
-        if (fetchMembers.fulfilled.match(result)) {
-          dispatch(setMembers(result.payload));
-        }
-      }
+
+      // 초기화 후 다시 로드
+      setPage(1);
+      // 삭제 후 재로딩
+      await dispatch(fetchMembers({ currentPage: 1 }));
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));
     } finally {

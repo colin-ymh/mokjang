@@ -34,7 +34,7 @@ export const getFormattedTitle = (value: string) => {
 };
 
 // 대표번호 string을 xxx-xx-xxxx-x 형식으로 포맷
-export const getFormattedIndentifyNumber = (identifyNumber: string) => {
+export const getFormattedIdentifyNumber = (identifyNumber: string) => {
   // 숫자만 남기기
   const cleaned = identifyNumber.replace(/\D/g, '');
 

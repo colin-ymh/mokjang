@@ -1,9 +1,4 @@
-import {
-  GRAY,
-  LEADER_BACKGROUND_COLOR,
-  LEADER_FONT_COLOR,
-  MAIN,
-} from '@/constants/styles/color';
+import { GRAY, MAIN, YELLOW } from '@/constants/styles/color';
 import { DEFAULT_MEMBER, Member } from '@/models/member/member';
 import styled from 'styled-components';
 import { MainText } from '@/components/atoms/common/text/main-text';
@@ -151,8 +146,8 @@ const EditGroupLeader = ({
                 {group.leaderMemberId === member.id && (
                   <MainTag
                     title={t('groupLeader')}
-                    backgroundColor={LEADER_BACKGROUND_COLOR}
-                    color={LEADER_FONT_COLOR}
+                    backgroundColor={YELLOW.LIGHT}
+                    color={YELLOW.DARK}
                   />
                 )}
               </ProfileContainer>

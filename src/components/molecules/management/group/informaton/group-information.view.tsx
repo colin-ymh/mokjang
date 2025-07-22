@@ -181,7 +181,7 @@ const GroupInformationView = ({
         height={700}
         headerHeight={100}
         headerTitle={getTranslatedAddMemberTitle(locale, selectedGroup.name)}
-        headerDescription={t('title.addMemberHeaderDescription')}
+        headerDescription={t('description.addMemberHeader')}
         doneText={t('button.add')}
         onClickDone={() => onClickSaveNewMembers(selectedMembers)}
       >

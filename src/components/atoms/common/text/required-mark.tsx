@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 const MarkContainer = styled.span`
   color: red;
-  margin-right: 4px;
+  margin-left: 4px;
 `;
 
 const RequiredMark = () => {

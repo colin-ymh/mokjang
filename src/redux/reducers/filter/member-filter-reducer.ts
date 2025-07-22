@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { BLANK, NULL, ORDER_DIRECTION } from '@/constants/constant';
+import { BLANK, ORDER_DIRECTION } from '@/constants/constant';
 import { MEMBER } from '@/constants/column/member-column';
 import { Member } from '@/models/member/member';
 import { RootState } from '@/redux/store';
@@ -37,10 +37,11 @@ type MEMBER_FILTER = {
 type MemberFilterState = {
   members: Member[];
   memberFilter: MEMBER_FILTER;
-  memberOrderBy: MEMBER | typeof NULL;
+  memberOrderBy?: MEMBER;
   memberOrderDirection: ORDER_DIRECTION;
   memberTableHeaderItemList: TABLE_HEADER_ITEM[];
   filteredItems: FilteredItemType[];
+  memberPage: number;
 };
 
 export const INITIAL_MEMBER_FILTER: MEMBER_FILTER = {
@@ -238,23 +239,24 @@ export const INITIAL_TABLE_HEADER_LIST: TABLE_HEADER_ITEM[] = [
 const initialState: MemberFilterState = {
   members: [],
   memberFilter: INITIAL_MEMBER_FILTER,
-  memberOrderBy: NULL,
   memberOrderDirection: ORDER_DIRECTION.ASC,
   memberTableHeaderItemList: INITIAL_TABLE_HEADER_LIST,
   filteredItems: [],
+  memberPage: 1,
 };
 
 export const fetchMembers = createAsyncThunk<
-  Member[],
+  void,
   { currentPage: number },
   { state: RootState }
 >(
   'members/fetchMembers',
-  async ({ currentPage }, { getState, rejectWithValue }) => {
+  async ({ currentPage }, { getState, dispatch, rejectWithValue }) => {
     const state = getState().memberFilter;
     const { groups, churchId } = getState().church;
 
-    const { memberOrderBy, memberOrderDirection, memberFilter } = state;
+    const { memberOrderBy, memberOrderDirection, memberFilter, members } =
+      state;
     const membersApi = new MembersApi(false);
 
     try {
@@ -264,14 +266,13 @@ export const fetchMembers = createAsyncThunk<
       const response = await membersApi.getMembers({
         churchId,
         page: currentPage,
-        take: 30, // 무한 스크롤 최적화
-        order: order !== NULL ? order : undefined,
+        take: 30,
+        order: order || undefined,
         orderDirection: memberOrderDirection,
         selectedColumns: memberFilter.selectedColumns,
-        // 필터
         group: getEveryChildGroups(groups, memberFilter.group),
         officer: memberFilter.officer,
-        gender: memberFilter.gender as string[],
+        gender: memberFilter.gender,
         educations: memberFilter.educations,
         ministries: memberFilter.ministries,
         baptism: memberFilter.baptism,
@@ -282,7 +283,6 @@ export const fetchMembers = createAsyncThunk<
         registerBefore: memberFilter.registerBefore,
         updateAfter: memberFilter.updateAfter,
         updateBefore: memberFilter.updateBefore,
-        // 검색
         name: memberFilter.name,
         school: memberFilter.school,
         vehicleNumber: memberFilter.vehicleNumber,
@@ -292,7 +292,17 @@ export const fetchMembers = createAsyncThunk<
         occupation: memberFilter.occupation,
       });
 
-      return response.data.data;
+      const newMembers: Member[] = response.data.data;
+      const existingIds = new Set(members.map((member) => member.id));
+      const filteredNewMembers = newMembers.filter(
+        (member) => !existingIds.has(member.id)
+      );
+
+      const updatedMembers =
+        currentPage === 1 ? newMembers : [...members, ...filteredNewMembers];
+
+      dispatch(setMembers(updatedMembers));
+      dispatch(setMemberPage(currentPage));
     } catch (error) {
       console.error('교인 목록 불러오기 실패', error);
       return rejectWithValue('교인 목록을 불러오는 중 오류가 발생했습니다.');
@@ -310,7 +320,7 @@ const MemberFilterSlice = createSlice({
     setMemberFilter: (state, action: PayloadAction<MEMBER_FILTER>) => {
       state.memberFilter = action.payload;
     },
-    setMemberOrderBy(state, action: PayloadAction<MEMBER | typeof NULL>) {
+    setMemberOrderBy(state, action: PayloadAction<MEMBER>) {
       state.memberOrderBy = action.payload;
     },
     setMemberOrderDirection(state, action: PayloadAction<ORDER_DIRECTION>) {
@@ -325,6 +335,9 @@ const MemberFilterSlice = createSlice({
     setFilteredItems: (state, action: PayloadAction<FilteredItemType[]>) => {
       state.filteredItems = action.payload;
     },
+    setMemberPage: (state, action: PayloadAction<number>) => {
+      state.memberPage = action.payload;
+    },
   },
 });
 
@@ -335,5 +348,6 @@ export const {
   setMemberOrderDirection,
   setMemberTableHeaderItemList,
   setFilteredItems,
+  setMemberPage,
 } = MemberFilterSlice.actions;
 export default MemberFilterSlice.reducer;

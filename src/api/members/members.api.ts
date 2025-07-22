@@ -55,20 +55,9 @@ type CreateMemberParams = {
 export type CreateMemberBody = {
   name: string;
   mobilePhone: string;
-  familyMemberId?: string;
-  guidedById?: string;
-  relation?: string;
-};
-
-type EditMemberParams = {
-  churchId: string;
-  memberId: string;
-};
-
-export type EditMemberBody = {
-  profileImageUrl?: string;
   birth?: string;
   isLunar?: boolean;
+  isLeafMonth?: boolean;
   gender?: string;
   address?: string;
   detailAddress?: string;
@@ -82,6 +71,34 @@ export type EditMemberBody = {
   guidedById?: string;
   previousChurch?: string;
   vehicleNumber?: string[];
+  registeredAt?: string;
+  profileImageUrl?: string;
+};
+
+type EditMemberParams = {
+  churchId: string;
+  memberId: string;
+};
+
+export type EditMemberBody = {
+  profileImageUrl?: string;
+  birth?: string;
+  isLunar?: boolean;
+  isLeafMonth?: boolean;
+  gender?: string;
+  address?: string;
+  detailAddress?: string;
+  homePhone?: string;
+  familyMemberId?: string;
+  occupation?: string;
+  school?: string;
+  marriage?: MARRIAGE;
+  detailMarriage?: string;
+  baptism?: BAPTISM;
+  guidedById?: string;
+  previousChurch?: string;
+  vehicleNumber?: string[];
+  registeredAt?: string;
 };
 
 type DeleteMemberParams = {

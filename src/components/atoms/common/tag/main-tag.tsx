@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { useI18n } from '../../../../../locales/client';
-import { TAG_BACKGROUND_COLOR, TAG_FONT_COLOR } from '@/constants/styles/color';
+import { GRAY } from '@/constants/styles/color';
 
 const TagContainer = styled.div<{ $backgroundColor: string }>`
   display: inline-flex;
@@ -18,8 +18,8 @@ type MainTagProps = {
 
 const MainTag = ({
   title,
-  backgroundColor = TAG_BACKGROUND_COLOR,
-  color = TAG_FONT_COLOR,
+  backgroundColor = GRAY.EXTRA_LIGHT,
+  color = GRAY.DEFAULT,
 }: MainTagProps) => {
   const t = useI18n();
   return (

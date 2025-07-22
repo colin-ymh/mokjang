@@ -2,11 +2,8 @@ import {
   BAPTISM,
   BLANK,
   FAMILY,
-  GENDER,
   GROUP_ROLE,
   MARRIAGE,
-  NONE,
-  NULL,
 } from '@/constants/constant';
 import {
   Group,
@@ -15,6 +12,7 @@ import {
   Officer,
 } from '@/models/management/management';
 import { Education } from '@/models/education/education';
+import { getDateStringFromDate } from '@/utils/date';
 
 export type ChurchInformation = {
   id: string;
@@ -30,7 +28,7 @@ export type Member = {
   isLeafMonth: boolean;
   birthdayMMDD: string;
   birth: string;
-  gender: string;
+  gender?: string;
   groupId?: string;
   groupRoleId?: string;
   group?: Group;
@@ -52,7 +50,7 @@ export type Member = {
   relation: FAMILY;
   occupation: string;
   school: string;
-  marriage: MARRIAGE | typeof NULL;
+  marriage?: MARRIAGE;
   detailMarriage: string;
   vehicleNumber: string[];
   guidedById: string;
@@ -69,7 +67,6 @@ export const DEFAULT_MEMBER: Member = {
   name: BLANK,
   mobilePhone: BLANK,
   homePhone: BLANK,
-  marriage: NULL,
   detailMarriage: BLANK,
   address: BLANK,
   detailAddress: BLANK,
@@ -77,18 +74,16 @@ export const DEFAULT_MEMBER: Member = {
   occupation: BLANK,
   birth: BLANK,
   isLunar: false,
-  baptism: BAPTISM.NONE,
-  gender: GENDER.MALE,
   guidedById: BLANK,
   vehicleNumber: [BLANK, BLANK, BLANK],
   familyMemberId: BLANK,
   family: [],
   relation: FAMILY.FAMILY,
   // 교회 정보
-  registeredAt: BLANK,
+  registeredAt: getDateStringFromDate(new Date()),
   updatedAt: BLANK,
-  officerId: NONE,
-
+  officerId: BLANK,
+  baptism: BAPTISM.NONE,
   isConcealed: false,
   isLeafMonth: false,
   birthdayMMDD: BLANK,

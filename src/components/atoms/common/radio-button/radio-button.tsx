@@ -3,7 +3,6 @@
 import styled from 'styled-components';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { GRAY, MAIN, WHITE } from '@/constants/styles/color';
-import { SIZE } from '@/constants/styles/style';
 
 export type RadioButtonItemProps = {
   title?: string;
@@ -17,37 +16,41 @@ const LabelButtonContainer = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  gap: 5px;
+  padding: 10px;
+  border: 1px solid ${GRAY.LIGHT};
+  border-radius: 10px;
+  gap: 10px;
+
+  cursor: pointer;
 `;
 
 const Button = styled.div<{ $isSelected: boolean }>`
   display: flex;
-  width: 10px;
-  height: 10px;
+  padding: 2px;
   border-radius: 100%;
   border: 1px solid
-    ${({ $isSelected }) => ($isSelected ? MAIN.DEFAULT : GRAY.LIGHT)};
+    ${({ $isSelected }) => ($isSelected ? MAIN.DEFAULT : GRAY.SEMI_LIGHT)};
   background-color: ${WHITE};
-  cursor: pointer;
   justify-content: center;
   align-items: center;
 `;
 
-const Fill = styled.div`
+const Fill = styled.div<{ $isSelected: boolean }>`
   display: flex;
   width: 8px;
   height: 8px;
   border-radius: 100%;
-  background-color: ${MAIN.DEFAULT};
+  background-color: ${({ $isSelected }) =>
+    $isSelected ? MAIN.DEFAULT : 'transparent'};
 `;
 
 const RadioButton = ({ title, isSelected, onClick }: RadioButtonItemProps) => {
   return (
-    <LabelButtonContainer>
+    <LabelButtonContainer onClick={onClick}>
       <Button $isSelected={isSelected} onClick={onClick}>
-        {isSelected && <Fill />}
+        <Fill $isSelected={isSelected} />
       </Button>
-      {title && <MainText size={SIZE.SMALL}>{title}</MainText>}
+      {title && <MainText>{title}</MainText>}
     </LabelButtonContainer>
   );
 };

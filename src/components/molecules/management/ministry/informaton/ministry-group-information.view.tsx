@@ -209,7 +209,7 @@ const MinistryGroupInformationView = ({
           locale,
           selectedMinistryGroup.name
         )}
-        headerDescription={t('title.addMemberHeaderDescription')}
+        headerDescription={t('description.addMemberHeader')}
         doneText={t('button.add')}
         onClickDone={() => onClickSaveNewMembers(selectedMembers)}
       >

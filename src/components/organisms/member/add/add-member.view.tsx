@@ -1,25 +1,19 @@
-import React, { ChangeEvent, useEffect, useRef } from 'react';
+import React, { ChangeEvent } from 'react';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
-import { BLANK, FAMILY, GENDER, MARRIAGE, NULL } from '@/constants/constant';
+import { BAPTISM, BLANK, GENDER, MARRIAGE } from '@/constants/constant';
 import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-item';
-import { VehicleNumberInputRef } from '@/components/atoms/register/vehicle-number-input.view';
-import { MEMBER } from '@/constants/column/member-column';
 import LabelInput from '@/components/atoms/common/input/label-input';
-import {
-  getIsWellFormedHomePhone,
-  getIsWellFormedMobilePhone,
-  getIsWellFormedName,
-} from '@/utils/check';
-import { BLACK, DESTRUCTIVE, GRAY } from '@/constants/styles/color';
-import { getTrimmedString } from '@/utils/format';
+import { GRAY, MAIN, ORANGE, PURPLE, VIOLET } from '@/constants/styles/color';
 import LabelDropdown from '@/components/atoms/common/dropdown/label-dropdown';
 import LabelRadioButton from '@/components/atoms/common/radio-button/label-radio-button';
-import { useGenderRadioButtonItems } from '@/hooks/radio-button/radio-button-items';
-import RegisterRadioButton from '@/components/atoms/register/register-radio-button';
+import {
+  useGenderRadioButtonItems,
+  useLunarSolarRadioButtonItems,
+} from '@/hooks/radio-button/radio-button-items';
 import { useMarriageDropdownItems } from '@/hooks/dropdown/dropdown-items';
 import ProfileImageInput from '@/components/atoms/common/image/profile-image-input';
 import VehicleNumberInput from '@/components/atoms/register/vehicle-number-input';
@@ -28,16 +22,46 @@ import { getDateFromDateString } from '@/utils/date';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import CheckButton from '@/components/atoms/common/button/check-button';
 import KoreanLunarCalendar, { CalendarData } from 'korean-lunar-calendar';
-import { MemberDropdownValueType } from '@/models/dropdown/dropdown';
-import MemberDropdown from '@/components/atoms/common/dropdown/member-dropdown';
+import { SIZE } from '@/constants/styles/style';
+
+import Photo from '../../../../../public/svg/image.svg';
+import User from '../../../../../public/svg/user.svg';
+import Briefcase from '../../../../../public/svg/briefcase.svg';
+import Heart from '../../../../../public/svg/heart.svg';
+import CustomPopup from '@/components/atoms/common/popup/custom-popup';
+import SelectGroupHierarchy from '@/components/organisms/group/select-group-hierarchy';
+import { getGroup } from '@/utils/group';
 
 const RequiredRegisterContainer = styled.div`
   display: flex;
   width: 100%;
   flex-direction: column;
-  gap: 20px;
-  padding: 20px;
+  gap: 40px;
+  padding: 20px 30px;
   overflow-y: auto;
+`;
+
+const SectionContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+`;
+
+const SectionTitle = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+`;
+
+const IconContainer = styled.div<{ $backgroundColor: string }>`
+  display: flex;
+  width: 30px;
+  height: 30px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  background-color: ${({ $backgroundColor }) => $backgroundColor};
 `;
 
 const InputContainer = styled.div`
@@ -47,8 +71,18 @@ const InputContainer = styled.div`
   gap: 10px;
 `;
 
+const LeafMonthContainer = styled.div`
+  display: flex;
+  width: 100px;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+`;
+
 const ButtonContainer = styled.div`
   display: flex;
+  width: 100%;
   flex-direction: row;
   gap: 20px;
 `;
@@ -71,7 +105,7 @@ const RowContainer = styled.div`
   display: flex;
   align-items: flex-start;
   flex-direction: row;
-  gap: 10px;
+  gap: 20px;
 `;
 
 const ImageContainer = styled.div`
@@ -79,28 +113,58 @@ const ImageContainer = styled.div`
   width: 100%;
 `;
 
-type EditListViewProps = {
-  focusItem?: MEMBER;
-  guideName: string;
-  guideItems: DropdownValueType[];
+const ImageIcon = styled(Photo)`
+  width: 16px;
+  height: 16px;
+  stroke: ${VIOLET.DARK};
+  stroke-width: 2px;
+`;
+
+const UserIcon = styled(User)`
+  width: 16px;
+  height: 16px;
+  stroke: ${MAIN.DARK};
+  stroke-width: 2px;
+`;
+
+const BriefcaseIcon = styled(Briefcase)`
+  width: 16px;
+  height: 16px;
+  stroke: ${PURPLE.DARK};
+  stroke-width: 2px;
+`;
+
+const HeartIcon = styled(Heart)`
+  width: 16px;
+  height: 16px;
+  stroke: ${ORANGE.DARK};
+  stroke-width: 2px;
+`;
+
+const GroupContainer = styled.div`
+  display: flex;
+  padding: 20px;
+`;
+
+const GroupButton = styled.div`
+  display: flex;
+  border: 1px solid ${GRAY.LIGHT};
+  border-radius: 10px;
+  height: 40px;
+  padding: 0 10px;
+  align-items: center;
+  justify-content: flex-start;
+  cursor: pointer;
+`;
+
+type AddMemberViewProps = {
   schoolItems: DropdownValueType[];
-  familyMemberItems: MemberDropdownValueType[];
-  familyMemberName: string;
-  familyMemberId: string;
-  familyRelation: FAMILY;
-  familyRelationItems: DropdownValueType[];
-  onChangeFamilyMemberId: (id: string) => void;
-  onChangeFamilyRelation: (value: FAMILY) => void;
-  onChangeFamilyMemberName: (event: ChangeEvent<HTMLInputElement>) => void;
   onChangeName: (event: ChangeEvent<HTMLInputElement>) => void;
   onChangeMobilePhone: (event: ChangeEvent<HTMLInputElement>) => void;
-  onChangeGuideName: (event: ChangeEvent<HTMLInputElement>) => void;
-  onChangeGuidedById: (value: string) => void;
   onChangeProfileImage: (image: File | null) => void;
   onChangeBirth: (date: Date | null) => void;
-  onClickIsLunar: (value: boolean) => void;
+  onChangeIsLunar: (value: boolean) => void;
   onClickIsLeafMonth: (value: boolean) => void;
-  onChangeHomePhone: (event: ChangeEvent<HTMLInputElement>) => void;
   onChangeOccupation: (event: ChangeEvent<HTMLInputElement>) => void;
   onChangeDetailAddress: (event: ChangeEvent<HTMLInputElement>) => void;
   onChangeSchool: (value: string) => void;
@@ -112,30 +176,23 @@ type EditListViewProps = {
   onChangeDetailMarriage: (event: ChangeEvent<HTMLInputElement>) => void;
   onChangeGender: (value: GENDER) => void;
   onClickAddress: () => void;
+  onChangeOfficer: (officerId: string) => void;
+  onChangeGroup: (groupId: string | null) => void;
+  onChangeBaptism: (baptism: BAPTISM) => void;
+  onChangeRegisteredAt: (date: Date | null) => void;
+  isSelectGroupShown: boolean;
+  onClickGroupOpen: () => void;
+  onClickGroupClose: () => void;
 };
 
 const AddMemberView = ({
-  focusItem,
-  guideName,
-  guideItems,
   schoolItems,
-  familyMemberItems,
-  familyMemberName,
-  familyMemberId,
-  familyRelation,
-  familyRelationItems,
   onChangeName,
   onChangeMobilePhone,
-  onChangeFamilyMemberId,
-  onChangeFamilyRelation,
-  onChangeFamilyMemberName,
-  onChangeGuideName,
-  onChangeGuidedById,
   onChangeProfileImage,
   onChangeBirth,
-  onClickIsLunar,
+  onChangeIsLunar,
   onClickIsLeafMonth,
-  onChangeHomePhone,
   onChangeOccupation,
   onChangeDetailAddress,
   onChangeSchool,
@@ -144,7 +201,14 @@ const AddMemberView = ({
   onChangeDetailMarriage,
   onChangeGender,
   onClickAddress,
-}: EditListViewProps) => {
+  onChangeOfficer,
+  onChangeGroup,
+  onChangeBaptism,
+  onChangeRegisteredAt,
+  isSelectGroupShown,
+  onClickGroupOpen,
+  onClickGroupClose,
+}: AddMemberViewProps) => {
   const LEAF_MONTH = new KoreanLunarCalendar();
   const NOT_LEAF_MONTH = new KoreanLunarCalendar();
 
@@ -174,358 +238,330 @@ const AddMemberView = ({
     );
   };
 
-  // ref 모음
-  const nameInputRef = useRef<HTMLInputElement>(null);
-  const mobilePhoneInputRef = useRef<HTMLInputElement>(null);
-  const guideInputRef = useRef<HTMLInputElement>(null);
-  const birthInputRef = useRef<HTMLInputElement>(null);
-  const schoolInputRef = useRef<HTMLInputElement>(null);
-  const occupationInputRef = useRef<HTMLInputElement>(null);
-  const marriageInputRef = useRef<HTMLInputElement>(null);
-  const detailMarriageInputRef = useRef<HTMLInputElement>(null);
-  const addressInputRef = useRef<HTMLInputElement>(null);
-  const detailAddressInputRef = useRef<HTMLInputElement>(null);
-  const homePhoneInputRef = useRef<HTMLInputElement>(null);
-  const vehicleInputRef = useRef<VehicleNumberInputRef>(null);
+  // ---------------------------------------------
+  const { officers, groups } = useSelector((state: RootState) => state.church);
 
-  // "포커스 & 스크롤"을 수행하는 유틸 함수
-  const scrollToFocus = (inputRef: React.RefObject<HTMLInputElement>) => {
-    // 스크롤 되기 전에 focus()를 먼저 실행
-    if (inputRef.current) {
-      inputRef.current.focus();
-      // 스크롤
-      inputRef.current.scrollIntoView({
-        behavior: 'smooth', // 부드러운 스크롤
-        block: 'center', // 화면 중앙쯤에 위치시키기
-      });
-    }
-  };
+  const officerDropdownItems: DropdownValueType[] = [
+    {
+      value: undefined,
+      title: t_placeholder('selectOfficer'),
+    },
+    ...officers.map((officer) => ({
+      value: officer.id,
+      title: officer.name,
+    })),
+  ];
 
-  useEffect(() => {
-    requestAnimationFrame(() => {
-      switch (focusItem) {
-        case MEMBER.NAME:
-          scrollToFocus(nameInputRef);
-          break;
-        case MEMBER.MOBILE_PHONE:
-          scrollToFocus(mobilePhoneInputRef);
-          break;
-        case MEMBER.GUIDED_BY_ID:
-          scrollToFocus(guideInputRef);
-          break;
-        case MEMBER.BIRTH:
-          scrollToFocus(birthInputRef);
-          break;
-        case MEMBER.SCHOOL:
-          scrollToFocus(schoolInputRef);
-          break;
-        case MEMBER.OCCUPATION:
-          scrollToFocus(occupationInputRef);
-          break;
-        case MEMBER.MARRIAGE:
-          scrollToFocus(marriageInputRef);
-          break;
-        case MEMBER.DETAIL_MARRIAGE:
-          scrollToFocus(detailMarriageInputRef);
-          break;
-        case MEMBER.ADDRESS:
-          scrollToFocus(addressInputRef);
-          break;
-        case MEMBER.DETAIL_ADDRESS:
-          scrollToFocus(detailAddressInputRef);
-          break;
-        case MEMBER.HOME_PHONE:
-          scrollToFocus(homePhoneInputRef);
-          break;
-        default:
-          break;
-      }
-    });
-  }, [focusItem]);
+  const baptismDropdownItems: DropdownValueType[] = Object.values(BAPTISM).map(
+    (value) => ({
+      value,
+      title: value === BAPTISM.NONE ? t_placeholder('selectBaptism') : t(value),
+    })
+  );
 
   return (
-    <RequiredRegisterContainer>
-      <ImageContainer>
-        <ProfileImageInput
-          value={targetMember.profileImageUrl}
-          onChange={onChangeProfileImage}
-        />
-      </ImageContainer>
-
-      <RowContainer>
-        {/* 이름 */}
-        <InputContainer>
-          <LabelInput
-            ref={nameInputRef}
-            label={t('name')}
-            value={targetMember.name}
-            onChange={onChangeName}
-            placeholder={t_placeholder('name')}
-            borderColor={
-              targetMember.name
-                ? getIsWellFormedName(targetMember.name)
-                  ? BLACK
-                  : DESTRUCTIVE.DEFAULT
-                : undefined
-            }
-            isRequired
-          />
-        </InputContainer>
-        {/* 성별 */}
-        <InputContainer>
-          <LabelRadioButton
-            label={t('gender')}
-            items={useGenderRadioButtonItems()}
-            selectedValue={targetMember.gender}
-            onChange={onChangeGender}
-            customButton={RegisterRadioButton}
-          />
-        </InputContainer>
-      </RowContainer>
-
-      {/* 휴대폰 번호 */}
-      <InputContainer>
-        <LabelInput
-          ref={mobilePhoneInputRef}
-          inputMode="numeric"
-          label={t('mobilePhone')}
-          value={targetMember.mobilePhone}
-          onChange={onChangeMobilePhone}
-          placeholder={t_placeholder('mobilePhone')}
-          borderColor={
-            targetMember.mobilePhone
-              ? getIsWellFormedMobilePhone(targetMember.mobilePhone)
-                ? BLACK
-                : DESTRUCTIVE.DEFAULT
-              : undefined
-          }
-          isRequired
-        />
-      </InputContainer>
-
-      <RowContainer>
-        {/* 인도자 */}
-        <InputContainer>
-          <MainText>{t('guide')}</MainText>
-          <MemberDropdown
-            ref={guideInputRef}
-            value={guideName}
-            items={guideItems}
-            onChange={onChangeGuideName}
-            onChangeItem={onChangeGuidedById}
-            placeholder={t_placeholder('guide')}
-            isEditable
-            backgroundBlur={false}
-          />
-        </InputContainer>
-        {/* 가족 */}
-        <InputContainer>
-          <MainText>{t('family')}</MainText>
-          <MemberDropdown
-            value={familyMemberName}
-            items={familyMemberItems}
-            onChange={onChangeFamilyMemberName}
-            onChangeItem={onChangeFamilyMemberId}
-            placeholder={t_placeholder('family')}
-            isEditable
-            backgroundBlur={false}
-          />
-        </InputContainer>
-        <InputContainer>
-          {/* 가족관계 */}
-          <LabelDropdown
-            label={t('relation')}
-            value={familyRelation}
-            items={familyRelationItems}
-            onChangeItem={onChangeFamilyRelation}
-          />
-        </InputContainer>
-      </RowContainer>
-
-      <RowContainer>
-        <InputContainer>
+    <>
+      <RequiredRegisterContainer>
+        {/* 프로필 사진 섹션 */}
+        <SectionContainer>
+          {/* 섹션명 */}
+          <SectionTitle>
+            <IconContainer $backgroundColor={VIOLET.LIGHT}>
+              <ImageIcon />
+            </IconContainer>
+            <MainText size={SIZE.EXTRA_LARGE}>{t('profileImage')}</MainText>
+          </SectionTitle>
+          {/* 프로필 사진 */}
           <LabelContainer>
-            <MainText>{t('birth')}</MainText>
-            {/* 생년월일 */}
-            <CustomDatePicker
-              selected={
-                targetMember.birth
-                  ? getDateFromDateString(targetMember.birth)
-                  : null
-              }
-              onChange={onChangeBirth}
-              placeholderText={t('placeholder.birth')}
-              yearRange={[1900, new Date().getFullYear()]}
-            />
+            <MainText color={GRAY.DARK} size={SIZE.SMALL}>
+              {t('profileImage')}
+            </MainText>
+            <ImageContainer>
+              <ProfileImageInput
+                width={120}
+                height={120}
+                value={targetMember.profileImageUrl}
+                onChange={onChangeProfileImage}
+              />
+            </ImageContainer>
           </LabelContainer>
-        </InputContainer>
-        <ButtonContainer>
-          {/* 음력 */}
-          <InputContainer>
-            <LabelContainer>
-              <MainText>{t('lunar')}</MainText>
-            </LabelContainer>
-            <CheckButtonContainer>
-              <CheckButton
-                value={targetMember.isLunar}
-                onChange={onClickIsLunar}
-                width={25}
-                height={25}
-                borderColor={GRAY.DEFAULT}
+        </SectionContainer>
+
+        {/* 기본 정보 섹션 */}
+        <SectionContainer>
+          {/* 섹션명 */}
+          <SectionTitle>
+            <IconContainer $backgroundColor={MAIN.LIGHT}>
+              <UserIcon />
+            </IconContainer>
+            <MainText size={SIZE.EXTRA_LARGE}>{t('basicInformation')}</MainText>
+          </SectionTitle>
+          <RowContainer>
+            {/* 이름 */}
+            <InputContainer>
+              <LabelInput
+                label={t('name')}
+                value={targetMember.name}
+                onChange={onChangeName}
+                placeholder={t_placeholder('name')}
+                isRequired
               />
-            </CheckButtonContainer>
-          </InputContainer>
-          {/* 윤달 */}
-          <InputContainer>
-            <LabelContainer>
-              <MainText color={targetMember.isLunar ? BLACK : GRAY.DEFAULT}>
-                {t('leafMonth')}
-              </MainText>
-            </LabelContainer>
-            <CheckButtonContainer>
-              <CheckButton
-                value={targetMember.isLeafMonth}
-                onChange={onClickIsLeafMonth}
-                width={25}
-                height={25}
-                disabled={
-                  !targetMember.isLunar ||
-                  !getIsLeafMonthEnable(LEAF_MONTH, NOT_LEAF_MONTH)
-                }
-                borderColor={
-                  targetMember.isLunar &&
-                  getIsLeafMonthEnable(LEAF_MONTH, NOT_LEAF_MONTH)
-                    ? GRAY.DEFAULT
-                    : GRAY.LIGHT
-                }
+            </InputContainer>
+
+            {/* 휴대폰 번호 */}
+            <InputContainer>
+              <LabelInput
+                inputMode="numeric"
+                label={t('mobilePhone')}
+                value={targetMember.mobilePhone}
+                onChange={onChangeMobilePhone}
+                placeholder={t_placeholder('mobilePhone')}
+                isRequired
               />
-            </CheckButtonContainer>
+            </InputContainer>
+          </RowContainer>
+
+          <RowContainer>
+            {/* 생년월일 */}
+            <InputContainer>
+              <LabelContainer>
+                <MainText color={GRAY.DARK} size={SIZE.SMALL}>
+                  {t('birth')}
+                </MainText>
+                <CustomDatePicker
+                  selected={
+                    targetMember.birth
+                      ? getDateFromDateString(targetMember.birth)
+                      : null
+                  }
+                  onChange={onChangeBirth}
+                  placeholderText={t('placeholder.birth')}
+                  yearRange={[1900, new Date().getFullYear()]}
+                />
+              </LabelContainer>
+            </InputContainer>
+            <ButtonContainer>
+              {/* 음력 */}
+              <InputContainer>
+                <LabelRadioButton
+                  label={t('lunar')}
+                  items={useLunarSolarRadioButtonItems()}
+                  selectedValue={targetMember.isLunar}
+                  onChange={onChangeIsLunar}
+                />
+              </InputContainer>
+              {/* 윤달 */}
+              {targetMember.isLunar &&
+                getIsLeafMonthEnable(LEAF_MONTH, NOT_LEAF_MONTH) && (
+                  <LeafMonthContainer>
+                    <MainText
+                      color={targetMember.isLunar ? GRAY.DARK : GRAY.DEFAULT}
+                      size={SIZE.SMALL}
+                    >
+                      {t('leafMonth')}
+                    </MainText>
+                    <CheckButtonContainer>
+                      <CheckButton
+                        value={targetMember.isLeafMonth}
+                        onChange={onClickIsLeafMonth}
+                        width={25}
+                        height={25}
+                        borderColor={
+                          targetMember.isLunar &&
+                          getIsLeafMonthEnable(LEAF_MONTH, NOT_LEAF_MONTH)
+                            ? GRAY.DEFAULT
+                            : GRAY.LIGHT
+                        }
+                      />
+                    </CheckButtonContainer>
+                  </LeafMonthContainer>
+                )}
+            </ButtonContainer>
+          </RowContainer>
+          <RowContainer>
+            {/* 성별 */}
+            <InputContainer>
+              <LabelRadioButton
+                label={t('gender')}
+                items={useGenderRadioButtonItems()}
+                selectedValue={targetMember.gender}
+                onChange={onChangeGender}
+              />
+            </InputContainer>
+            <InputContainer />
+          </RowContainer>
+        </SectionContainer>
+
+        {/* 개인 정보 섹션 */}
+        <SectionContainer>
+          {/* 섹션명 */}
+          <SectionTitle>
+            <IconContainer $backgroundColor={PURPLE.LIGHT}>
+              <BriefcaseIcon />
+            </IconContainer>
+            <MainText size={SIZE.EXTRA_LARGE}>
+              {t('personalInformation')}
+            </MainText>
+          </SectionTitle>
+
+          <RowContainer>
+            {/* 직업 */}
+            <InputContainer>
+              <LabelInput
+                label={t('occupation')}
+                value={targetMember.occupation || BLANK}
+                onChange={onChangeOccupation}
+                placeholder={t_placeholder('occupation')}
+              />
+            </InputContainer>
+            {/* 학교 */}
+            <InputContainer>
+              <LabelDropdown
+                label={t('school')}
+                items={schoolItems}
+                value={targetMember.school || BLANK}
+                onChangeItem={onChangeSchool}
+                placeholder={t_placeholder('school')}
+                isEditable
+                backgroundBlur={false}
+              />
+            </InputContainer>
+          </RowContainer>
+          <RowContainer>
+            {/* 도로명주소 */}
+            <InputContainer>
+              <LabelInput
+                label={t('address')}
+                value={targetMember.address || BLANK}
+                placeholder={t_placeholder('address')}
+                onClick={onClickAddress}
+                onChange={() => {}} // 필요하다면 구현
+              />
+            </InputContainer>
+            {/* 상세주소 */}
+            <InputContainer>
+              <LabelInput
+                label={t('detailAddress')}
+                value={targetMember.detailAddress || BLANK}
+                onChange={onChangeDetailAddress}
+                placeholder={t_placeholder('detailAddress')}
+              />
+            </InputContainer>
+          </RowContainer>
+
+          <RowContainer>
+            {/* 결혼 */}
+            <InputContainer>
+              <LabelRadioButton
+                label={t('marriage')}
+                items={useMarriageDropdownItems()}
+                selectedValue={targetMember.marriage}
+                onChange={onChangeMarriage}
+              />
+            </InputContainer>
+            {/* 결혼 상세 정보 */}
+            <InputContainer>
+              <LabelInput
+                label={t('detailMarriage')}
+                value={targetMember.detailMarriage || BLANK}
+                onChange={onChangeDetailMarriage}
+                placeholder={t_placeholder('detailMarriage')}
+              />
+            </InputContainer>
+          </RowContainer>
+
+          {/* 차량 번호 */}
+          <InputContainer>
+            <VehicleNumberInput
+              label={t('vehicleNumber')}
+              value={targetMember.vehicleNumber}
+              onChangeInput={onChangeVehicleNumber}
+              placeholder={t_placeholder('vehicleNumber')}
+            />
           </InputContainer>
-        </ButtonContainer>
-      </RowContainer>
-      {/* 학교 */}
-      <RowContainer>
-        <InputContainer>
-          <LabelDropdown
-            ref={schoolInputRef}
-            label={t('school')}
-            items={schoolItems}
-            value={targetMember.school || BLANK}
-            onChangeItem={onChangeSchool}
-            placeholder={t_placeholder('school')}
-            isEditable
-            borderColor={
-              getTrimmedString(targetMember.school) ? BLACK : undefined
-            }
-            backgroundBlur={false}
-          />
-        </InputContainer>
+        </SectionContainer>
 
-        {/* 직업 */}
-        <InputContainer>
-          <LabelInput
-            ref={occupationInputRef}
-            label={t('occupation')}
-            value={targetMember.occupation || BLANK}
-            onChange={onChangeOccupation}
-            placeholder={t_placeholder('occupation')}
-            borderColor={
-              getTrimmedString(targetMember.occupation) ? BLACK : undefined
-            }
-          />
-        </InputContainer>
-      </RowContainer>
-      <RowContainer>
-        {/* 결혼 */}
-        <InputContainer>
-          <LabelDropdown
-            ref={marriageInputRef}
-            label={t('marriage')}
-            value={targetMember.marriage}
-            items={useMarriageDropdownItems()}
-            onChangeItem={onChangeMarriage}
-            placeholder={t_placeholder('marriage')}
-            borderColor={
-              targetMember.marriage && targetMember.marriage !== NULL
-                ? BLACK
-                : undefined
-            }
-            backgroundBlur={false}
-          />
-        </InputContainer>
-
-        {/* 결혼 상세 정보 */}
-        <InputContainer>
-          <LabelInput
-            ref={detailMarriageInputRef}
-            label={t('detailMarriage')}
-            value={targetMember.detailMarriage || BLANK}
-            onChange={onChangeDetailMarriage}
-            placeholder={t_placeholder('detailMarriage')}
-            borderColor={
-              getTrimmedString(targetMember.detailMarriage) ? BLACK : undefined
-            }
-          />
-        </InputContainer>
-      </RowContainer>
-      {/* 도로명주소 */}
-      <InputContainer>
-        <LabelInput
-          ref={addressInputRef}
-          label={t('address')}
-          value={targetMember.address || BLANK}
-          placeholder={t_placeholder('address')}
-          onClick={onClickAddress}
-          onChange={() => {}} // 필요하다면 구현
-          borderColor={
-            getTrimmedString(targetMember.address) ? BLACK : undefined
-          }
-        />
-      </InputContainer>
-
-      {/* 상세주소 */}
-      <InputContainer>
-        <LabelInput
-          ref={detailAddressInputRef}
-          label={t('detailAddress')}
-          value={targetMember.detailAddress || BLANK}
-          onChange={onChangeDetailAddress}
-          placeholder={t_placeholder('detailAddress')}
-          borderColor={
-            getTrimmedString(targetMember.detailAddress) ? BLACK : undefined
-          }
-        />
-      </InputContainer>
-
-      {/* 전화 번호 */}
-      <InputContainer>
-        <LabelInput
-          ref={homePhoneInputRef}
-          inputMode="numeric"
-          label={t('homePhone')}
-          value={targetMember.homePhone || BLANK}
-          onChange={onChangeHomePhone}
-          placeholder={t_placeholder('homePhone')}
-          borderColor={
-            targetMember.homePhone
-              ? getIsWellFormedHomePhone(targetMember.homePhone)
-                ? BLACK
-                : DESTRUCTIVE.DEFAULT
-              : undefined
-          }
-        />
-      </InputContainer>
-      {/* 차량 번호 */}
-      <InputContainer>
-        <VehicleNumberInput
-          ref={vehicleInputRef}
-          label={t('vehicleNumber')}
-          value={targetMember.vehicleNumber}
-          onChangeInput={onChangeVehicleNumber}
-          placeholder={t_placeholder('vehicleNumber')}
-        />
-      </InputContainer>
-    </RequiredRegisterContainer>
+        {/* 교회 정보 섹션 */}
+        <SectionContainer>
+          {/* 섹션명 */}
+          <SectionTitle>
+            <IconContainer $backgroundColor={ORANGE.LIGHT}>
+              <HeartIcon />
+            </IconContainer>
+            <MainText size={SIZE.EXTRA_LARGE}>
+              {t('churchInformation')}
+            </MainText>
+          </SectionTitle>
+          <RowContainer>
+            {/* 직분 */}
+            <LabelDropdown
+              label={t('officer')}
+              items={officerDropdownItems}
+              value={targetMember.officerId || undefined}
+              onChangeItem={onChangeOfficer}
+              backgroundBlur={false}
+            />
+            {/* 신급 */}
+            <LabelDropdown
+              label={t('baptism')}
+              items={baptismDropdownItems}
+              value={targetMember.baptism || undefined}
+              onChangeItem={onChangeBaptism}
+              backgroundBlur={false}
+            />
+          </RowContainer>
+          <RowContainer>
+            <InputContainer>
+              {/* 그룹 */}
+              <LabelContainer>
+                <MainText color={GRAY.DARK} size={SIZE.SMALL}>
+                  {t('group')}
+                </MainText>
+                <GroupButton onClick={onClickGroupOpen}>
+                  <MainText>
+                    {targetMember.groupId
+                      ? getGroup(targetMember.groupId, groups)?.name
+                      : t_placeholder('selectGroup')}
+                  </MainText>
+                </GroupButton>
+              </LabelContainer>
+            </InputContainer>
+            {/* 등록일 */}
+            <InputContainer>
+              <LabelContainer>
+                <MainText color={GRAY.DARK} size={SIZE.SMALL}>
+                  {t('registeredAt')}
+                </MainText>
+                <CustomDatePicker
+                  selected={
+                    targetMember.registeredAt
+                      ? getDateFromDateString(targetMember.registeredAt)
+                      : null
+                  }
+                  onChange={onChangeRegisteredAt}
+                  placeholderText={t_placeholder('registeredAt')}
+                  yearRange={[1900, new Date().getFullYear()]}
+                />
+              </LabelContainer>
+            </InputContainer>
+          </RowContainer>
+        </SectionContainer>
+      </RequiredRegisterContainer>
+      {/* 그룹 선택 모달 */}
+      <CustomPopup
+        isShow={isSelectGroupShown}
+        onClickCancel={onClickGroupClose}
+        width={400}
+        height={400}
+        isHeaderShown={false}
+        zIndex={1500}
+        cancelText={t('button.close')}
+      >
+        <GroupContainer>
+          <SelectGroupHierarchy isDefaultOpen onChange={onChangeGroup} />
+        </GroupContainer>
+      </CustomPopup>
+    </>
   );
 };
 

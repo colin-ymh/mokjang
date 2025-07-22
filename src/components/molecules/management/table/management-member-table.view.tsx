@@ -2,12 +2,7 @@ import React, { MutableRefObject } from 'react';
 import { usePathname } from 'next/navigation';
 import styled from 'styled-components';
 
-import {
-  GRAY,
-  LEADER_BACKGROUND_COLOR,
-  LEADER_FONT_COLOR,
-  WHITE,
-} from '@/constants/styles/color';
+import { GRAY, WHITE, YELLOW } from '@/constants/styles/color';
 import { MEMBER } from '@/constants/column/member-column';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { Member } from '@/models/member/member';
@@ -215,8 +210,8 @@ const ManagementMemberTableView = ({
                     ? t('groupLeader')
                     : t('ministryGroupLeader')
                 }
-                color={LEADER_FONT_COLOR}
-                backgroundColor={LEADER_BACKGROUND_COLOR}
+                color={YELLOW.DARK}
+                backgroundColor={YELLOW.LIGHT}
               />
             )}
           </ProfileContainer>

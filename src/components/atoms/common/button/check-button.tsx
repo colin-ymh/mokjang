@@ -21,9 +21,9 @@ const CheckButtonContainer = styled.div<{
   border-radius: 2px;
 `;
 
-const CheckIcon = styled(Check)`
-  width: 12px;
-  height: 12px;
+const CheckIcon = styled(Check)<{ width: number; height: number }>`
+  width: ${({ $width }) => $width}px;
+  height: ${({ $height }) => $height}px;
   stroke: ${WHITE};
   stroke-width: 3px;
 `;
@@ -78,7 +78,7 @@ const CheckButton = ({
       $disabled={disabled}
       $borderColor={borderColor}
     >
-      {isChecked && <CheckIcon />}
+      {isChecked && <CheckIcon width={width} height={height} />}
     </CheckButtonContainer>
   );
 };

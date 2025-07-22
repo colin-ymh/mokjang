@@ -9,9 +9,10 @@ import React, {
 import BorderInput from '@/components/atoms/common/input/border-input';
 import { getFormattedVehicleNumber } from '@/utils/format';
 import { MainText } from '@/components/atoms/common/text/main-text';
-import { BLACK, DESTRUCTIVE } from '@/constants/styles/color';
+import { BLACK, DESTRUCTIVE, GRAY } from '@/constants/styles/color';
 import styled from 'styled-components';
 import { getIsWellFormedVehicleNumber } from '@/utils/check';
+import { SIZE } from '@/constants/styles/style';
 
 const VehicleNumberInputViewContainer = styled.div`
   display: flex;
@@ -60,7 +61,11 @@ const VehicleNumberInputView = forwardRef<
 
   return (
     <VehicleNumberInputViewContainer>
-      {label && <MainText>{label}</MainText>}
+      {label && (
+        <MainText color={GRAY.DARK} size={SIZE.SMALL}>
+          {label}
+        </MainText>
+      )}
       <InputList>
         <BorderInput
           ref={firstInputRef}

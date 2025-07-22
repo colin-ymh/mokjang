@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
-import { setMembers } from '@/redux/reducers/filter/member-filter-reducer';
+import {
+  fetchMembers,
+  setMembers,
+} from '@/redux/reducers/filter/member-filter-reducer';
 
 import { MembersApi } from '@/api/members/members.api';
 import { MinistryHistoryApi } from '@/api/history/ministry-history.api';
@@ -11,8 +14,7 @@ import MemberInformationListView from '@/components/molecules/member/information
 import { MEMBER } from '@/constants/column/member-column';
 import OfficerModal from '@/components/atoms/common/modal/officer-modal';
 import GroupModal from '@/components/atoms/common/modal/group-modal';
-import { BAPTISM, BLANK, NONE } from '@/constants/constant';
-import { getEditMemberBody, getMemberFromServer } from '@/utils/member';
+import { BAPTISM, BLANK } from '@/constants/constant';
 import {
   GroupHistory,
   MinistryHistory,
@@ -29,7 +31,10 @@ import SlidePopup from '@/components/atoms/common/popup/slide-popup';
 import { setTargetMember } from '@/redux/reducers/target/target-member-reducer';
 import { uploadFiles } from '@/utils/upload';
 import AddMember from '@/components/organisms/member/add/add-member';
-import { setIsToastShown } from '@/redux/reducers/toast-popup-reducer';
+import {
+  setIsToastShown,
+  setToastText,
+} from '@/redux/reducers/toast-popup-reducer';
 
 type MemberInformationListProps = {};
 
@@ -43,9 +48,12 @@ const MemberInformationList = ({}: MemberInformationListProps) => {
 
   const t_title = useScopedI18n('title');
   const t_button = useScopedI18n('button');
+  const t_popup = useScopedI18n('popup');
 
   const { churchId } = useSelector((state: RootState) => state.church);
-  const { members } = useSelector((state: RootState) => state.memberFilter);
+  const { members, memberPage } = useSelector(
+    (state: RootState) => state.memberFilter
+  );
   const { targetMember } = useSelector(
     (state: RootState) => state.targetMember
   );
@@ -72,7 +80,6 @@ const MemberInformationList = ({}: MemberInformationListProps) => {
 
   // 개인정보 수정 모달
   const [isEditShown, setIsEditShown] = useState<boolean>(false);
-  const [focusItem, setFocusItem] = useState<MEMBER>(MEMBER.NAME);
 
   // 임시 프로필 이미지
   const [profileImage, setProfileImage] = useState<File | null>(null);
@@ -128,7 +135,6 @@ const MemberInformationList = ({}: MemberInformationListProps) => {
   // ================================
   const onClickItem = (id: MEMBER) => {
     dispatch(setTargetMember(targetMember));
-    setFocusItem(id);
     setIsEditShown(true);
   };
 
@@ -139,7 +145,7 @@ const MemberInformationList = ({}: MemberInformationListProps) => {
       churchId,
       memberId: targetMember.id,
     });
-    const newMember = getMemberFromServer(response.data.data);
+    const newMember = response.data.data;
     dispatch(setTargetMember(newMember));
   };
 
@@ -153,28 +159,44 @@ const MemberInformationList = ({}: MemberInformationListProps) => {
           updatedMember = { ...targetMember, profileImageUrl: uploadedUrl };
           dispatch(setTargetMember(updatedMember));
         }
+      } else if (profileImage === null) {
+        updatedMember = { ...targetMember, profileImageUrl: BLANK };
+        dispatch(setTargetMember(updatedMember));
       }
 
       await membersApi
         .editMember(
           { churchId, memberId: targetMember.id },
-          getEditMemberBody(updatedMember)
+          {
+            profileImageUrl: updatedMember.profileImageUrl || undefined,
+            birth: updatedMember.birth || undefined,
+            isLunar: updatedMember.isLunar,
+            isLeafMonth: updatedMember.isLeafMonth,
+            gender: updatedMember.gender || undefined,
+            occupation: updatedMember.occupation || undefined,
+            school: updatedMember.school || undefined,
+            address: updatedMember.address || undefined,
+            detailAddress: updatedMember.detailAddress || undefined,
+            marriage: updatedMember.marriage || undefined,
+            // detailMarriage: updatedMember.detailMarriage || undefined,
+            vehicleNumber:
+              updatedMember.vehicleNumber.filter(
+                (number) => number.length > 0
+              ) || undefined,
+            registeredAt: updatedMember.registeredAt || undefined,
+          }
         )
         .then((response) => {
-          if (response.status === 200) {
-            setIsEditShown(false);
-            const newMember = getMemberFromServer(response.data.data);
-            dispatch(setTargetMember(newMember));
-            const newMembers = members.map((mem: Member) =>
-              mem.id === newMember.id ? newMember : mem
-            );
-            dispatch(setMembers(newMembers));
-          }
+          const newMember = response.data.data;
+          dispatch(setTargetMember(newMember));
+          dispatch(fetchMembers({ currentPage: memberPage }));
+          setIsEditShown(false);
         });
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));
     } finally {
       dispatch(setIsToastShown(true));
+      dispatch(setToastText(t_popup('saveComplete')));
     }
   };
 
@@ -199,7 +221,7 @@ const MemberInformationList = ({}: MemberInformationListProps) => {
           )
           .then((response) => {
             setIsBaptismModalShown(false);
-            const updatedMember = getMemberFromServer(response.data);
+            const updatedMember = response.data;
             dispatch(
               setTargetMember({
                 ...targetMember,
@@ -448,7 +470,7 @@ const MemberInformationList = ({}: MemberInformationListProps) => {
       }
 
       // 기존 이력이 있는 경우
-      if (officerId === NONE) {
+      if (officerId) {
         // 직분 중단
         await officerHistoryApi
           .stopOfficerHistory({ churchId, memberId: targetMember.id }, {})
@@ -590,10 +612,7 @@ const MemberInformationList = ({}: MemberInformationListProps) => {
         onClickDone={onClickSave}
         headerTitle={t_title('editMember')}
       >
-        <AddMember
-          focusItem={focusItem}
-          onChangeProfileImage={onChangeProfileImage}
-        />
+        <AddMember onChangeProfileImage={onChangeProfileImage} />
       </SlidePopup>
 
       {/* 신급 수정 */}

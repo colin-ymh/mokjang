@@ -12,7 +12,10 @@ import {
 } from '@/constants/constant';
 import { LOCALE } from '@/constants/state/locale';
 import { Ministry } from '@/models/management/management';
-import { getLocaleDateFromDashDate } from '@/utils/format';
+import {
+  getFormattedMobilePhone,
+  getLocaleDateFromDashDate,
+} from '@/utils/format';
 import { getThisYearBirth } from '@/utils/date';
 
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
@@ -333,7 +336,9 @@ const InformationListView = ({
               <MainText color={GRAY.DEFAULT}>{t(MEMBER.MOBILE_PHONE)}</MainText>
             </TitleContainer>
             <ContentContainer>
-              <MainText>{targetMember.mobilePhone}</MainText>
+              <MainText>
+                {getFormattedMobilePhone(targetMember.mobilePhone)}
+              </MainText>
             </ContentContainer>
             <PencilButton />
           </InformationItem>

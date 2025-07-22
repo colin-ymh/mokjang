@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 
 import OfficerModalView from '@/components/atoms/common/modal/officer-modal.view';
-import { BLANK, NONE } from '@/constants/constant';
+import { BLANK } from '@/constants/constant';
 import { OfficerHistory } from '@/models/member/history';
 import { getFormattedDate } from '@/utils/format';
 import { getIsWellFormedDate } from '@/utils/check';
@@ -21,7 +21,7 @@ const OfficerModal = ({
 }: OfficerModalProps) => {
   const officers = useSelector((state: RootState) => state.church.officers);
   // 선택된 역할
-  const [selectedOfficerId, setSelectedOfficerId] = useState<string>(NONE);
+  const [selectedOfficerId, setSelectedOfficerId] = useState<string>(BLANK);
 
   // 시작 날짜
   const [startDate, setStartDate] = useState<string>(BLANK);
@@ -40,7 +40,7 @@ const OfficerModal = ({
   };
 
   const onClickCancelOfficer = () => {
-    setSelectedOfficerId(NONE);
+    setSelectedOfficerId(BLANK);
   };
 
   // 시작 날짜 변경
@@ -57,13 +57,13 @@ const OfficerModal = ({
 
   // 저장 가능 여부 확인
   useEffect(() => {
-    if (targetHistory !== undefined && selectedOfficerId === NONE) {
+    if (targetHistory !== undefined && selectedOfficerId === BLANK) {
       setIsButtonEnabled(true);
     }
     //   생성 시
     else if (!targetHistory) {
       setIsButtonEnabled(
-        selectedOfficerId !== NONE && getIsWellFormedDate(startDate)
+        selectedOfficerId !== BLANK && getIsWellFormedDate(startDate)
       );
     }
     //   현재 이력 수정 시
@@ -104,7 +104,7 @@ const OfficerModal = ({
         if (targetEndDate) setEndDate(targetEndDate);
       }
     } else {
-      setSelectedOfficerId(NONE);
+      setSelectedOfficerId(BLANK);
       setStartDate(BLANK);
       setEndDate(BLANK);
     }

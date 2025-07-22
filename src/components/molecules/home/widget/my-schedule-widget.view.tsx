@@ -17,7 +17,7 @@ import CancelIcon from '../../../../../public/svg/cancel.svg';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import RangeRadioButton from '@/components/atoms/common/radio-button/range-radio-button';
-import { useRangeRadioButton } from '@/hooks/radio-button/radio-button-items';
+import { useRangeRadioButtonItems } from '@/hooks/radio-button/radio-button-items';
 import MyScheduleList from '@/components/atoms/home/my-schedule-list';
 
 const WidgetContainer = styled.div`
@@ -84,7 +84,7 @@ const MyScheduleWidgetView = ({
     (state: RootState) => state.targetEducationSession
   );
 
-  const rangeRadioItems = useRangeRadioButton();
+  const rangeRadioItems = useRangeRadioButtonItems();
 
   return (
     <>

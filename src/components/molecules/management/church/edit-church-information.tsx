@@ -2,7 +2,7 @@ import { Church } from '@/models/church/church';
 import EditChurchInformationView from '@/components/molecules/management/church/edit-church-information.view';
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import {
-  getFormattedIndentifyNumber,
+  getFormattedIdentifyNumber,
   getFormattedName,
   getFormattedPhone,
 } from '@/utils/format';
@@ -88,7 +88,7 @@ const EditChurchInformation = ({
   const onChangeIdentifyNumber = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    const newIdentifyNumber = getFormattedIndentifyNumber(event.target.value);
+    const newIdentifyNumber = getFormattedIdentifyNumber(event.target.value);
     setTargetChurch({
       ...targetChurch,
       identifyNumber: newIdentifyNumber,
@@ -121,7 +121,7 @@ const EditChurchInformation = ({
   return (
     <>
       <EditChurchInformationView {...props} />
-      <PagePopup isShow={isAddressOpen} onClickCancel={onClickAddressClose}>
+      <PagePopup isShow={isAddressOpen} onClickClose={onClickAddressClose}>
         <DaumPostcodeEmbed
           onComplete={onCompleteAddress}
           style={{ width: '100%', height: '100%' }}

@@ -14,7 +14,7 @@ export enum GRAY {
 
 export enum MAIN {
   EXTRA_LIGHT = '#EFF6FF',
-  LIGHT = '#BFDBFE',
+  LIGHT = '#DBEAFE',
   DEFAULT = '#2563EB',
   DARK = '#1a51cd',
 }
@@ -27,19 +27,35 @@ export enum DESTRUCTIVE {
   EXTRA_DARK = '#991B1B',
 }
 
-export enum BLUE {
-  DEFAULT = '#2b5bf3',
+export enum YELLOW {
+  LIGHT = '#FCF9C3',
+  DARK = '#854D0F',
+}
+
+export enum VIOLET {
+  LIGHT = '#E0E7FF',
+  DARK = '#4F46E5',
+}
+
+export enum PURPLE {
+  LIGHT = '#F3E8FF',
+  DARK = '#9333EA',
+}
+
+export enum ORANGE {
+  LIGHT = '#FFEDD5',
+  DARK = '#EA580C',
+}
+
+export enum GREEN {
+  LIGHT = '#DCFCE7',
+  DARK = '#1E6839',
 }
 
 export enum RED {
-  DEFAULT = '#fb3c3c',
+  LIGHT = '#FCE2E1',
+  DARK = '#991B1A',
 }
-
-export const TAG_BACKGROUND_COLOR = '#E5E7EB';
-export const TAG_FONT_COLOR = '#6B7280';
-
-export const LEADER_BACKGROUND_COLOR = '#FCF9C3';
-export const LEADER_FONT_COLOR = '#854D0F';
 
 export enum STATUS_COLOR {
   RESERVE = '#a69f9f',
@@ -60,39 +76,39 @@ export enum STATUS_COLOR {
 }
 
 export enum STATUS_FONT_COLOR {
-  RESERVE = '#69717D',
-  IN_PROGRESS = '#304FB6',
-  DONE = '#1E6839',
-  PENDING = '#854D0F',
+  RESERVE = GRAY.DARK,
+  IN_PROGRESS = MAIN.DARK,
+  DONE = GREEN.DARK,
+  PENDING = YELLOW.DARK,
 
-  COMPLETED = '#1E6839',
-  INCOMPLETE = '#991B1A',
+  COMPLETED = GREEN.DARK,
+  INCOMPLETE = RED.DARK,
 
-  PRESENT = '#1E6839',
-  ABSENT = '#991B1A',
+  PRESENT = GREEN.DARK,
+  ABSENT = RED.DARK,
   UNDEFINED = WHITE,
 
-  CANCELED = '#a69f9f',
-  APPROVED = '#1E6839',
-  REJECTED = '#991B1A',
+  CANCELED = GRAY.DARK,
+  APPROVED = GREEN.DARK,
+  REJECTED = RED.DARK,
 }
 
 export enum STATUS_BACKGROUND_COLOR {
-  RESERVE = '#F3F4F7',
-  IN_PROGRESS = '#dbe9fe',
-  DONE = '#DCFCE7',
-  PENDING = '#FCF9C3',
+  RESERVE = GRAY.LIGHT,
+  IN_PROGRESS = MAIN.LIGHT,
+  DONE = GREEN.LIGHT,
+  PENDING = YELLOW.LIGHT,
 
-  COMPLETED = '#DCFCE7',
-  INCOMPLETE = '#FCE2E1',
+  COMPLETED = GREEN.LIGHT,
+  INCOMPLETE = RED.LIGHT,
 
-  PRESENT = '#DCFCE7',
-  ABSENT = '#FCE2E1',
+  PRESENT = GREEN.LIGHT,
+  ABSENT = RED.LIGHT,
   UNDEFINED = WHITE,
 
-  CANCELED = '#a69f9f',
-  APPROVED = '#DCFCE7',
-  REJECTED = '#FCE2E1',
+  CANCELED = GRAY.LIGHT,
+  APPROVED = GREEN.LIGHT,
+  REJECTED = RED.LIGHT,
 }
 
 export enum CALENDAR_COLOR {

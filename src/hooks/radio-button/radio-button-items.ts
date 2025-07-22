@@ -18,7 +18,7 @@ export const useGenderRadioButtonItems = () => {
   return items;
 };
 
-export const useRangeRadioButton = () => {
+export const useRangeRadioButtonItems = () => {
   const t = useI18n();
 
   const items = [
@@ -29,6 +29,22 @@ export const useRangeRadioButton = () => {
     {
       value: SEARCH_RANGE.MONTHLY,
       title: t('thisMonth'),
+    },
+  ];
+  return items;
+};
+
+export const useLunarSolarRadioButtonItems = () => {
+  const t = useI18n();
+
+  const items = [
+    {
+      value: false,
+      title: t('solar'),
+    },
+    {
+      value: true,
+      title: t('lunar'),
     },
   ];
   return items;

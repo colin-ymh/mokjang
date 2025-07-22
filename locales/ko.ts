@@ -187,6 +187,7 @@ export default {
   updateBefore: '수정일 ~까지',
 
   // 필수
+  basicInformation: '기본정보',
   name: '이름',
   mobilePhone: '휴대전화',
   verifyNumber: '인증번호',
@@ -194,7 +195,8 @@ export default {
   family: '가족',
   relation: '가족관계',
   // 개인 정보
-  profileImage: '이미지',
+  personalInformation: '개인정보',
+  profileImage: '프로필 사진',
   birth: '생년월일',
   birthDay: '생일',
   age: '나이',
@@ -208,6 +210,7 @@ export default {
   homePhone: '전화번호',
   vehicleNumber: '차량 번호',
   // 교회 관련 정보
+  churchInformation: '교회정보',
   baptism: '신급',
   officer: '직분',
   officerStartDate: '임직일',
@@ -316,8 +319,6 @@ export default {
   'title.churchState': '교회현황',
 
   'title.editChurch': '교회정보 수정',
-  'title.addMemberHeaderDescription':
-    '여러명의 교인을 한 번에 추가할 수 있습니다',
 
   'title.addMinistry': '사역 추가',
   'title.editMinistry': '사역 수정',
@@ -480,6 +481,8 @@ export default {
 
   'button.groupFilter': '그룹 필터',
   'button.memberFilter': '교인 필터',
+
+  'button.backToList': '목록으로 돌아가기',
   /*-------------------button-------------------*/
 
   /*-------------------placeholder-------------------*/
@@ -492,6 +495,7 @@ export default {
   'placeholder.educationDescription': '내용을 입력해주세요.',
   'placeholder.mobilePhone': '휴대전화 번호를 입력해주세요.',
   'placeholder.birth': '생년월일을 선택해주세요.',
+  'placeholder.registeredAt': '등록일자를 선택해주세요.',
   'placeholder.homePhone': '집 전화번호를 입력해주세요.',
   'placeholder.occupation': '직업을 입력해주세요.',
   'placeholder.address': '도로명 주소를 입력해주세요.',
@@ -538,6 +542,10 @@ export default {
   'placeholder.churchIdentifyNumber': '사업자 고유번호를 입력해주세요.',
   'placeholder.denomination': '교단명을 입력해주세요.',
   'placeholder.pastor': '담임목사를 입력해주세요.',
+
+  'placeholder.selectGroup': '그룹을 선택해주세요',
+  'placeholder.selectOfficer': '직분을 선택해주세요',
+  'placeholder.selectBaptism': '신급을 선택해주세요',
   /*-------------------placeholder-------------------*/
 
   /*-------------------popup-------------------*/
@@ -616,6 +624,8 @@ export default {
   /*-------------------warning-------------------*/
 
   /*-------------------description-------------------*/
+
+  'description.addMemberHeader': '여러명의 교인을 한 번에 추가할 수 있습니다',
   'description.defaultMinistry':
     '모든 교인에게 동일한 사역이 부여됩니다. 추후 별도로 수정할 수 있습니다.',
   'description.addMember': '해당 그룹에 이미 속한 교인은 선택할 수 없습니다.',
@@ -624,5 +634,6 @@ export default {
   'description.editGroupLeader': '새로운 그룹장을 선택하세요',
   'description.editMinistryGroupLeader': '새로운 사역리더를 선택하세요',
   'description.tableHeaderSetting': '드래그하여 순서를 변경하세요',
+  'description.memberRegisterHeader': '새로운 교인의 정보를 입력해주세요',
   /*-------------------description-------------------*/
 } as const;

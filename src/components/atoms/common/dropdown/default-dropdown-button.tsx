@@ -1,4 +1,4 @@
-import React, { ForwardedRef } from 'react';
+import React, { forwardRef } from 'react';
 import styled from 'styled-components';
 import ChevronLeft from '../../../../../public/svg/chevron-down.svg';
 import { BLACK } from '@/constants/styles/color';
@@ -29,7 +29,6 @@ const Chevron = styled(ChevronLeft)<{ $isOpened: boolean }>`
 
 export type DropdownButtonProps = {
   onClickDropdown: () => void;
-  ref: ForwardedRef<HTMLInputElement>;
   isCustomMode: boolean;
   customValue?: string;
   displayValue?: string;
@@ -48,59 +47,65 @@ export type DropdownButtonProps = {
   isRight?: boolean;
   disabled?: boolean;
   onKeyDownHandler: (event: React.KeyboardEvent<HTMLInputElement>) => void;
-};
+} & BorderInputProps;
 
-const DefaultDropdownButton = ({
-  onClickDropdown,
-  ref,
-  isCustomMode,
-  customValue,
-  displayValue,
-  onChangeInput,
-  onFocusInput,
-  isOpened,
-  isChevronShown,
-  isEditable,
-  enterKeyHint,
-  borderColor,
-  backgroundColor,
-  height,
-  width,
-  fontSize,
-  fontWeight,
-  isRight,
-  onKeyDownHandler,
-  disabled,
-  ...inputProps
-}: DropdownButtonProps & BorderInputProps) => {
-  return (
-    <DropdownButton onClick={onClickDropdown}>
-      <BorderInput
-        ref={ref}
-        value={isCustomMode ? customValue : displayValue}
-        onChange={onChangeInput}
-        onFocus={onFocusInput}
-        borderColor={borderColor}
-        backgroundColor={backgroundColor}
-        height={height}
-        width={width}
-        readOnly={!isEditable}
-        enterKeyHint={enterKeyHint}
-        disabled={disabled}
-        onKeyDown={(event) => {
-          inputProps.onKeyDown?.(event);
-          if (isOpened) {
-            onKeyDownHandler(event);
-          }
-        }}
-        fontSize={fontSize}
-        fontWeight={fontWeight}
-        isRight={isRight}
-        {...inputProps}
-      />
-      {isChevronShown && <Chevron $isOpened={isOpened} />}
-    </DropdownButton>
-  );
-};
+const DefaultDropdownButton = forwardRef<HTMLInputElement, DropdownButtonProps>(
+  (
+    {
+      onClickDropdown,
+      isCustomMode,
+      customValue,
+      displayValue,
+      onChangeInput,
+      onFocusInput,
+      isOpened,
+      isChevronShown,
+      isEditable,
+      enterKeyHint,
+      borderColor,
+      backgroundColor,
+      height,
+      width,
+      fontSize,
+      fontWeight,
+      isRight,
+      onKeyDownHandler,
+      disabled,
+      ...inputProps
+    },
+    ref
+  ) => {
+    return (
+      <DropdownButton onClick={onClickDropdown}>
+        <BorderInput
+          ref={ref}
+          value={isCustomMode ? customValue : displayValue}
+          onChange={onChangeInput}
+          onFocus={onFocusInput}
+          borderColor={borderColor}
+          backgroundColor={backgroundColor}
+          height={height}
+          width={width}
+          readOnly={!isEditable}
+          enterKeyHint={enterKeyHint}
+          disabled={disabled}
+          onKeyDown={(event) => {
+            inputProps.onKeyDown?.(event);
+            if (isOpened) {
+              onKeyDownHandler(event);
+            }
+          }}
+          fontSize={fontSize}
+          fontWeight={fontWeight}
+          isRight={isRight}
+          {...inputProps}
+        />
+        {isChevronShown && <Chevron $isOpened={isOpened} />}
+      </DropdownButton>
+    );
+  }
+);
+
+DefaultDropdownButton.displayName = 'DefaultDropdownButton';
 
 export default DefaultDropdownButton;

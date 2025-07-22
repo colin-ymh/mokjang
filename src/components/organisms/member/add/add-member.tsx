@@ -1,120 +1,32 @@
 import React, { ChangeEvent, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
-import { AxiosResponse } from 'axios';
 import DaumPostcodeEmbed, { Address } from 'react-daum-postcode';
-
-import { GetMembersResponse, MembersApi } from '@/api/members/members.api';
-import { BLANK, FAMILY, GENDER, MARRIAGE } from '@/constants/constant';
+import { BAPTISM, GENDER, MARRIAGE } from '@/constants/constant';
 import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-item';
 import {
-  getFormattedHomePhone,
   getFormattedMobilePhone,
   getFormattedName,
   getFormattedVehicleNumber,
   getTrimmedString,
 } from '@/utils/format';
-import {
-  getIsWellFormedHomePhone,
-  getIsWellFormedMobilePhone,
-} from '@/utils/check';
+import { getIsWellFormedMobilePhone } from '@/utils/check';
 import { getSchool } from '@/api/school-api';
 import PagePopup from '@/components/atoms/common/popup/page-popup';
-import { MEMBER } from '@/constants/column/member-column';
 import { setTargetMember } from '@/redux/reducers/target/target-member-reducer';
 import AddMemberView from '@/components/organisms/member/add/add-member.view';
 import { getDateFromDateString, getDateStringFromDate } from '@/utils/date';
-import { MemberDropdownValueType } from '@/models/dropdown/dropdown';
-import { useFamilyRelationDropdownItems } from '@/hooks/dropdown/dropdown-items';
-import { Member } from '@/models/member/member';
 
 export type AddMemberProps = {
-  focusItem?: MEMBER;
   onChangeProfileImage: (image: File | null) => void;
 };
 
-const AddMember = ({ focusItem, onChangeProfileImage }: AddMemberProps) => {
-  const membersApi = new MembersApi(false);
+const AddMember = ({ onChangeProfileImage }: AddMemberProps) => {
   const dispatch = useDispatch<AppDispatch>();
-  const churchId: string = useSelector(
-    (state: RootState) => state.church.churchId
-  );
 
   const { targetMember } = useSelector(
     (state: RootState) => state.targetMember
   );
-
-  const [thrownError, setThrownError] = useState<Error | null>(null);
-  // 렌더링 시점(컴포넌트 return)에서 조건부로 에러 발생
-  if (thrownError) {
-    throw thrownError;
-  }
-
-  // 인도자 이름
-  const [guideName, setGuideName] = useState<string>(BLANK);
-  // 검색된 인도자 목록
-  const [guideItems, setGuideItems] = useState<DropdownValueType[]>([]);
-
-  // 검색된 가족 목록
-  const [familyMemberItems, setFamilyMemberItems] = useState<
-    MemberDropdownValueType[]
-  >([]);
-
-  // 가족 이름
-  const [familyMemberName, setFamilyMemberName] = useState<string>(BLANK);
-  // 선택된 가족의 성별
-  const [familyGender, setFamilyGender] = useState<GENDER | undefined>();
-  // 선택된 가족의 id
-  const [familyMemberId, setFamilyMemberId] = useState<string>(BLANK);
-
-  // 가족 관계
-  const [familyRelation, setFamilyRelation] = useState<FAMILY>(FAMILY.FAMILY);
-
-  // 가족 관계 드롭다운 아이템
-  const familyRelationItems = useFamilyRelationDropdownItems(familyGender);
-
-  // 가족 이름 변경 시 이벤트
-  const onChangeFamilyMemberName = (event: ChangeEvent<HTMLInputElement>) => {
-    const newFamilyMemberName = getTrimmedString(event.target.value);
-    setFamilyMemberName(newFamilyMemberName);
-
-    if (newFamilyMemberName) {
-      membersApi
-        .getMembers({
-          churchId,
-          name: newFamilyMemberName,
-          page: 1,
-          take: 5,
-        })
-        .then((response: AxiosResponse) => {
-          const members: GetMembersResponse[] = response.data.data;
-          const newFamilyMemberItems: MemberDropdownValueType[] = members.map(
-            (member) => {
-              return { value: member.id, title: member.name };
-            }
-          );
-
-          setFamilyMemberItems(newFamilyMemberItems);
-        });
-    }
-  };
-
-  // 가족 선택 시 이벤트
-  const onChangeFamilyMemberId = (value: string) => {
-    membersApi.getMember({ churchId, memberId: value }).then((response) => {
-      if (response.status === 200) {
-        const newMember: Member = response.data.data;
-        setFamilyGender(newMember.gender as GENDER);
-        setFamilyMemberId(newMember.id);
-        setFamilyMemberName(newMember.name);
-      }
-    });
-  };
-
-  // 가족 관계 변경 시 이벤트
-  const onChangeFamilyRelation = (value: FAMILY) => {
-    setFamilyRelation(value);
-  };
 
   // 이름 변경 시 이벤트
   const onChangeName = (event: ChangeEvent<HTMLInputElement>) => {
@@ -131,39 +43,6 @@ const AddMember = ({ focusItem, onChangeProfileImage }: AddMemberProps) => {
     if (getIsWellFormedMobilePhone(newMobilePhone)) {
       (event.target as HTMLInputElement).blur();
     }
-  };
-
-  // 인도자 input 변경 시 이벤트
-  const onChangeGuideName = async (event: ChangeEvent<HTMLInputElement>) => {
-    const newGuideName = getTrimmedString(event.target.value);
-    setGuideName(newGuideName);
-
-    if (newGuideName) {
-      try {
-        const response: AxiosResponse = await membersApi.getMembers({
-          churchId,
-          name: newGuideName,
-          page: 1,
-          take: 5,
-        });
-
-        const members: GetMembersResponse[] = response.data.data;
-        const newGuideItems: DropdownValueType[] = members.map((member) => {
-          return { value: member.id, title: member.name };
-        });
-
-        setGuideItems(newGuideItems);
-      } catch (error) {
-        setThrownError(
-          error instanceof Error ? error : new Error(String(error))
-        );
-      }
-    }
-  };
-
-  // 인도자 dropdown 선택 시 이벤트
-  const onChangeGuidedById = (value: string) => {
-    dispatch(setTargetMember({ ...targetMember, guidedById: value }));
   };
 
   const [schoolItems, setSchoolItems] = useState<DropdownValueType[]>([]);
@@ -194,23 +73,13 @@ const AddMember = ({ focusItem, onChangeProfileImage }: AddMemberProps) => {
   };
 
   // 양력 음력 변경 이벤트
-  const onClickIsLunar = (value: boolean) => {
-    if (!value) {
-      dispatch(
-        setTargetMember({
-          ...targetMember,
-          isLunar: value,
-          isLeafMonth: false,
-        })
-      );
-    } else {
-      dispatch(
-        setTargetMember({
-          ...targetMember,
-          isLunar: value,
-        })
-      );
-    }
+  const onChangeIsLunar = (isLunar: boolean) => {
+    dispatch(
+      setTargetMember({
+        ...targetMember,
+        isLunar,
+      })
+    );
   };
 
   // 윤달 변경 이벤트
@@ -289,16 +158,6 @@ const AddMember = ({ focusItem, onChangeProfileImage }: AddMemberProps) => {
     );
   };
 
-  // 전화번호 변경 시 이벤트
-  const onChangeHomePhone = (event: ChangeEvent<HTMLInputElement>) => {
-    const newHomePhone = getFormattedHomePhone(event.target.value);
-    dispatch(setTargetMember({ ...targetMember, homePhone: newHomePhone }));
-
-    if (getIsWellFormedHomePhone(newHomePhone)) {
-      (event.target as HTMLInputElement).blur();
-    }
-  };
-
   // 차량 번호 변경 시 이벤트
   const onChangeVehicleNumber = (
     event: ChangeEvent<HTMLInputElement>,
@@ -320,29 +179,45 @@ const AddMember = ({ focusItem, onChangeProfileImage }: AddMemberProps) => {
     );
   };
 
+  const onChangeOfficer = (officerId: string) => {
+    dispatch(setTargetMember({ ...targetMember, officerId }));
+  };
+
+  const onChangeGroup = (groupId: string | null) => {
+    if (groupId !== null) {
+      dispatch(setTargetMember({ ...targetMember, groupId }));
+    }
+  };
+
+  const onChangeBaptism = (baptism: BAPTISM) => {
+    dispatch(setTargetMember({ ...targetMember, baptism }));
+  };
+
+  // 교회등록일 변경 시 이벤트
+  const onChangeRegisteredAt = (date: Date | null) => {
+    if (date) {
+      dispatch(
+        setTargetMember({
+          ...targetMember,
+          registeredAt: getDateStringFromDate(date),
+        })
+      );
+    }
+  };
+
+  const [isSelectGroupShown, setIsSelectGroupShown] = useState<boolean>(false);
+
+  const onClickGroupOpen = () => setIsSelectGroupShown(true);
+  const onClickGroupClose = () => setIsSelectGroupShown(false);
+
   const props = {
-    focusItem,
-    guideName,
-    guideItems,
     schoolItems,
-    isAddressOpen,
-    familyMemberItems,
-    familyMemberName,
-    familyMemberId,
-    familyRelation,
-    familyRelationItems,
-    onChangeFamilyMemberId,
-    onChangeFamilyRelation,
-    onChangeFamilyMemberName,
     onChangeName,
     onChangeMobilePhone,
-    onChangeGuideName,
-    onChangeGuidedById,
     onChangeProfileImage,
     onChangeBirth,
-    onClickIsLunar,
+    onChangeIsLunar,
     onClickIsLeafMonth,
-    onChangeHomePhone,
     onChangeOccupation,
     onChangeDetailAddress,
     onChangeSchool,
@@ -351,12 +226,19 @@ const AddMember = ({ focusItem, onChangeProfileImage }: AddMemberProps) => {
     onChangeDetailMarriage,
     onChangeGender,
     onClickAddress,
+    onChangeOfficer,
+    onChangeGroup,
+    onChangeBaptism,
+    onChangeRegisteredAt,
+    isSelectGroupShown,
+    onClickGroupOpen,
+    onClickGroupClose,
   };
 
   return (
     <>
       <AddMemberView {...props} />
-      <PagePopup isShow={isAddressOpen} onClickCancel={onClickAddressClose}>
+      <PagePopup isShow={isAddressOpen} onClickClose={onClickAddressClose}>
         <DaumPostcodeEmbed
           onComplete={onCompleteAddress}
           style={{ width: '100%', height: '100%' }}

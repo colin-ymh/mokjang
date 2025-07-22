@@ -63,7 +63,7 @@ const SlidePanel = styled.div<{
     }
   }};
 
-  @media (max-width: ${MEDIA_MAX_WIDTH.MOBILE}) {
+  @media (max-width: ${MEDIA_MAX_WIDTH.TABLET}) {
     ${({ direction }) =>
       direction === DIRECTION.LEFT || direction === DIRECTION.RIGHT
         ? 'width: 100%;'

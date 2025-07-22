@@ -2,16 +2,16 @@
 
 import React, { ChangeEventHandler } from 'react';
 import styled from 'styled-components';
-import Image from 'next/image';
 import Cropper, { Area, Point } from 'react-easy-crop';
 import Button from '@/components/atoms/common/button/button';
 
-import { BLACK, GRAY, WHITE } from '@/constants/styles/color';
+import { BLACK, GRAY, MAIN, WHITE } from '@/constants/styles/color';
 
 import DeleteSvg from '../../../../../public/svg/cancel.svg';
 import { useScopedI18n } from '../../../../../locales/client';
 import TransparentBackground from '@/components/atoms/common/etc/transparent-background';
 import ProfileImage from '@/components/atoms/common/image/profile-image';
+import Camera from '../../../../../public/svg/camera.svg';
 
 /* --------------------------- styled --------------------------- */
 const Wrapper = styled.div`
@@ -24,13 +24,8 @@ const ThumbBox = styled.div`
   display: flex;
   align-items: center;
   gap: 10px;
-`;
-
-const Thumb = styled(Image)`
-  border-radius: 12px;
-  object-fit: cover;
+  position: relative;
   cursor: pointer;
-  background: ${GRAY.SEMI_LIGHT};
 `;
 
 const DeleteBtn = styled(DeleteSvg)<{ $visible: boolean }>`
@@ -92,6 +87,26 @@ const ButtonContainer = styled.div`
   gap: 20px;
 `;
 
+const CameraButton = styled.div`
+  position: absolute;
+  display: flex;
+  width: 40px;
+  height: 40px;
+  background-color: ${MAIN.DEFAULT};
+  justify-content: center;
+  align-items: center;
+  border-radius: 1000px;
+  right: 30px;
+  bottom: 5px;
+`;
+
+const CameraIcon = styled(Camera)`
+  width: 18px;
+  height: 18px;
+  stroke-width: 2px;
+  stroke: ${WHITE};
+`;
+
 type ProfileImageInputProps = {
   value: string;
   crop: Point;
@@ -138,7 +153,7 @@ const ProfileImageInputView = ({
   const t_button = useScopedI18n('button');
   return (
     <Wrapper>
-      <ThumbBox>
+      <ThumbBox onClick={onClickImage}>
         <ProfileImage
           value={croppedPreviewUrl || value}
           width={width}
@@ -156,6 +171,10 @@ const ProfileImageInputView = ({
           accept="image/*"
           onChange={onChangeFile}
         />
+
+        <CameraButton>
+          <CameraIcon />
+        </CameraButton>
       </ThumbBox>
 
       {/* 크롭 모달 */}

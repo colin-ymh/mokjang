@@ -183,6 +183,7 @@ export default {
   updatedAt: 'Updated Date',
 
   // 필수
+  basicInformation: 'Basic Information',
   name: 'Name',
   mobilePhone: 'Mobile Phone',
   verifyNumber: 'verifyNumber',
@@ -190,6 +191,7 @@ export default {
   family: 'Family',
   relation: 'Relation',
   // 개인 정보
+  personalInformation: 'Personal Information',
   profileImage: 'Profile Image',
   birth: 'Date of Birth',
   birthDay: 'Birth Day',
@@ -204,6 +206,7 @@ export default {
   homePhone: 'Home Phone',
   vehicleNumber: 'Vehicle Plate Number',
   // 교회 관련 정보
+  churchInformation: 'Church Information',
   baptism: 'Baptism',
   officer: 'Officer',
   officerStartDate: 'Officer Start Date',
@@ -310,8 +313,6 @@ export default {
   'title.churchState': 'Church State',
 
   'title.editChurch': 'Edit Church Information',
-
-  'title.addMemberHeaderDescription': 'You can add multiple members at once',
 
   'title.addMinistry': 'Add Ministry',
   'title.editMinistry': 'Edit Ministry',
@@ -467,6 +468,8 @@ export default {
 
   'button.groupFilter': 'Group Filter',
   'button.memberFilter': 'Member Filter',
+
+  'button.backToList': 'Back To List',
   /*-------------------button-------------------*/
 
   /*-------------------placeholder-------------------*/
@@ -478,7 +481,8 @@ export default {
   'placeholder.educationName': 'Enter the education name.',
   'placeholder.educationDescription': 'Enter the education description.',
   'placeholder.mobilePhone': 'Enter the mobile phone number.',
-  'placeholder.birth': 'Enter the date of birth.',
+  'placeholder.birth': 'Select the date of birth.',
+  'placeholder.registeredAt': 'Select the registered date.',
   'placeholder.homePhone': 'Enter the home phone number.',
   'placeholder.occupation': 'Enter the occupation.',
   'placeholder.address': 'Enter the address.',
@@ -525,6 +529,10 @@ export default {
   'placeholder.churchIdentifyNumber': 'Enter the Identify Number',
   'placeholder.denomination': 'Enter the Denomination.',
   'placeholder.pastor': 'Enter the Pastor.',
+
+  'placeholder.selectGroup': 'Select the group.',
+  'placeholder.selectOfficer': 'Select the officer.',
+  'placeholder.selectBaptism': 'Select the baptism.',
   /*-------------------placeholder-------------------*/
 
   /*-------------------popup-------------------*/
@@ -606,6 +614,7 @@ export default {
   /*-------------------warning-------------------*/
 
   /*-------------------description-------------------*/
+  'description.addMemberHeader': 'You can add multiple members at once',
   'description.defaultMinistry':
     'The same ministry will be assigned to all members. You can modify it later individually.',
   'description.addMember':
@@ -613,5 +622,6 @@ export default {
   'description.editGroupLeader': 'Choose a new group leader',
   'description.editMinistryGroupLeader': 'Choose a new information leader',
   'description.tableHeaderSetting': 'Drag and Change the order',
+  'description.memberRegisterHeader': "Enter the new member's information",
   /*-------------------description-------------------*/
 } as const;

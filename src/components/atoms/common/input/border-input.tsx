@@ -29,6 +29,7 @@ const BorderInputContainer = styled.input<{
   font-size: ${({ $fontSize }) => `${$fontSize}px` || '14px'};
   font-weight: ${({ $fontWeight }) => `${$fontWeight}px` || '400'};
   text-align: ${({ $isRight }) => ($isRight ? 'right' : 'left')};
+  font-family: 'Roboto', sans-serif;
   padding: 10px;
   padding-left: ${({ $paddingLeft, $isIcon }) =>
     $paddingLeft !== undefined
@@ -45,13 +46,39 @@ const BorderInputContainer = styled.input<{
     $disabled ? GRAY.SEMI_LIGHT : $backgroundColor || WHITE};
 
   border-top-left-radius: ${({ $borderTopLeftRadius }) =>
-    $borderTopLeftRadius ?? 5}px;
+    $borderTopLeftRadius ?? 10}px;
   border-top-right-radius: ${({ $borderTopRightRadius }) =>
-    $borderTopRightRadius ?? 5}px;
+    $borderTopRightRadius ?? 10}px;
   border-bottom-left-radius: ${({ $borderBottomLeftRadius }) =>
-    $borderBottomLeftRadius ?? 5}px;
+    $borderBottomLeftRadius ?? 10}px;
   border-bottom-right-radius: ${({ $borderBottomRightRadius }) =>
-    $borderBottomRightRadius ?? 5}px;
+    $borderBottomRightRadius ?? 10}px;
+
+  &::placeholder {
+    font-family: 'Roboto', sans-serif;
+    font-size: 13px;
+    color: ${GRAY.DEFAULT};
+  }
+  &::-webkit-input-placeholder {
+    font-family: 'Roboto', sans-serif;
+    font-size: 13px;
+    color: ${GRAY.DEFAULT};
+  }
+  &::-moz-placeholder {
+    font-family: 'Roboto', sans-serif;
+    font-size: 13px;
+    color: ${GRAY.DEFAULT};
+  }
+  &:-ms-input-placeholder {
+    font-family: 'Roboto', sans-serif;
+    font-size: 13px;
+    color: ${GRAY.DEFAULT};
+  }
+  &:-moz-placeholder {
+    font-family: 'Roboto', sans-serif;
+    font-size: 13px;
+    color: ${GRAY.DEFAULT};
+  }
 
   &:focus {
     outline: none;
@@ -97,9 +124,9 @@ const BorderInput = forwardRef<HTMLInputElement, BorderInputProps>(
     {
       onKeyDown,
       readOnly = false,
-      borderColor = GRAY.SEMI_LIGHT,
+      borderColor = GRAY.LIGHT,
       value = BLANK,
-      height,
+      height = 40,
       width,
       disabled = false,
       backgroundColor = WHITE,
