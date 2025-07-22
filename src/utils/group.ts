@@ -99,3 +99,46 @@ export const getGroup = (groupId: string | null, groups: Group[]) => {
 
   return DEFAULT_GROUP;
 };
+
+/**
+ * 특정 그룹 ID에 해당하는 그룹을 기준으로,
+ * 모든 자식 및 하위 자식 그룹 ID를 반환
+ * @param groups 전체 그룹 계층 구조
+ * @param group 기준 그룹 (childGroups는 없음)
+ */
+export const getEveryChildGroups = (
+  groups: Group[],
+  group: Group
+): string[] => {
+  const ids: string[] = [];
+
+  // 전체 계층에서 해당 group.id를 가진 그룹을 찾아 반환
+  const findGroupById = (list: Group[], id: string): Group | undefined => {
+    for (const g of list) {
+      if (g.id === id) return g;
+      if (g.childGroups) {
+        const found = findGroupById(g.childGroups, id);
+        if (found) return found;
+      }
+    }
+  };
+
+  // 재귀적으로 자식 ID들을 수집
+  const collectChildGroupIds = (group: Group) => {
+    if (group.childGroups && group.childGroups.length > 0) {
+      for (const child of group.childGroups) {
+        if (child.id != null) {
+          ids.push(child.id);
+          collectChildGroupIds(child);
+        }
+      }
+    }
+  };
+
+  const fullGroup = findGroupById(groups, group.id as string);
+  if (fullGroup) {
+    collectChildGroupIds(fullGroup);
+  }
+
+  return ids;
+};

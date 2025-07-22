@@ -17,7 +17,7 @@ const MemberTableHeaderSetting = ({}: AddFilterProps) => {
 
   // 칼럼들을 드래그하여 순서 변경
   const onDrop = (fromIndex: number, toIndex: number) => {
-    if (toIndex < 1) return;
+    if (toIndex < 2) return;
     if (fromIndex === toIndex) return;
 
     const updatedHeaders = [...memberTableHeaderItemList];

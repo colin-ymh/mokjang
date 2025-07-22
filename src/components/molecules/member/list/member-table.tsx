@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 import {
@@ -20,24 +20,6 @@ const MemberTable = ({ onClickMemberItem, loadMembers }: MemberTableProps) => {
 
   const { members, memberFilter, memberOrderBy, memberOrderDirection } =
     useSelector((state: RootState) => state.memberFilter);
-
-  // 선택된 교인 id 배열
-  const [checkedMemberIds, setCheckedMemberIds] = useState<string[]>([]);
-
-  // 특정 교인 선택 이벤트
-  const onClickCheckMember = (memberId: string) => {
-    // 이미 선택된 경우 => 제외
-    if (checkedMemberIds.includes(memberId)) {
-      const newCheckedMemberIds = checkedMemberIds.filter(
-        (id) => id !== memberId
-      );
-      setCheckedMemberIds(newCheckedMemberIds);
-    }
-    // 선택되지 않은 경우 => 추가
-    else {
-      setCheckedMemberIds([...checkedMemberIds, memberId]);
-    }
-  };
 
   // 열 헤더를 눌러 정렬
   const onClickHeader = (id: MEMBER) => {
@@ -79,12 +61,10 @@ const MemberTable = ({ onClickMemberItem, loadMembers }: MemberTableProps) => {
 
   const props = {
     members,
-    checkedMemberIds,
     onClickHeader,
     onClickMemberItem,
     scrollRef,
     onScroll,
-    onClickCheckMember,
   };
 
   return (

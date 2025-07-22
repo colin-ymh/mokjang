@@ -5,6 +5,8 @@ import { Member } from '@/models/member/member';
 import { RootState } from '@/redux/store';
 import { MembersApi } from '@/api/members/members.api';
 import { FilteredItemType } from '@/components/atoms/member/setting/filtered-item.view';
+import { getEveryChildGroups } from '@/utils/group';
+import { DEFAULT_GROUP, Group } from '@/models/management/management';
 
 type MEMBER_FILTER = {
   [MEMBER.NAME]: string;
@@ -12,7 +14,7 @@ type MEMBER_FILTER = {
   [MEMBER.OCCUPATION]: string;
   [MEMBER.VEHICLE_NUMBER]: string;
   [MEMBER.GENDER]: string[];
-  [MEMBER.GROUP]: string[];
+  [MEMBER.GROUP]: Group;
   [MEMBER.OFFICER]: string[];
   [MEMBER.MINISTRIES]: string[];
   [MEMBER.EDUCATIONS]: string[];
@@ -55,7 +57,7 @@ export const INITIAL_MEMBER_FILTER: MEMBER_FILTER = {
   ministries: [],
   educations: [],
   marriage: [],
-  group: [],
+  group: DEFAULT_GROUP,
   birthAfter: BLANK,
   birthBefore: BLANK,
   registerAfter: BLANK,
@@ -87,14 +89,14 @@ export const BLANK_HEADER = {
 };
 
 export const INITIAL_TABLE_HEADER_LIST: TABLE_HEADER_ITEM[] = [
-  // {
-  //   id: MEMBER.CHECK,
-  //   isShown: true,
-  //   isSortable: false,
-  //   isFilterable: false,
-  //   isFixed: true,
-  //   isDate: false,
-  // },
+  {
+    id: MEMBER.PROFILE_IMAGE,
+    isShown: true,
+    isSortable: false,
+    isFilterable: false,
+    isFixed: true,
+    isDate: false,
+  },
   {
     id: MEMBER.NAME,
     isShown: true,
@@ -250,7 +252,8 @@ export const fetchMembers = createAsyncThunk<
   'members/fetchMembers',
   async ({ currentPage }, { getState, rejectWithValue }) => {
     const state = getState().memberFilter;
-    const churchId = getState().church.churchId;
+    const { groups, churchId } = getState().church;
+
     const { memberOrderBy, memberOrderDirection, memberFilter } = state;
     const membersApi = new MembersApi(false);
 
@@ -266,7 +269,7 @@ export const fetchMembers = createAsyncThunk<
         orderDirection: memberOrderDirection,
         selectedColumns: memberFilter.selectedColumns,
         // 필터
-        group: memberFilter.group,
+        group: getEveryChildGroups(groups, memberFilter.group),
         officer: memberFilter.officer,
         gender: memberFilter.gender as string[],
         educations: memberFilter.educations,

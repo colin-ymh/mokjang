@@ -19,14 +19,14 @@ type MemberProfileProps = {
   member: Member;
   onClick?: () => void;
   isOfficerShown?: boolean;
-  isGroupLeaderShown?: boolean;
+  isProfileImageShown?: boolean;
 };
 
 const MemberProfile = ({
   member,
   onClick,
   isOfficerShown = true,
-  isGroupLeaderShown = false,
+  isProfileImageShown = true,
 }: MemberProfileProps) => {
   return (
     <ProfileContainer
@@ -36,7 +36,9 @@ const MemberProfile = ({
         onClick && onClick();
       }}
     >
-      <ProfileImage value={member?.profileImageUrl} onClick={onClick} />
+      {isProfileImageShown && (
+        <ProfileImage value={member?.profileImageUrl} onClick={onClick} />
+      )}
       <ButtonText>
         {`${member.name} ${isOfficerShown ? member.officer?.name || BLANK : BLANK}`}
       </ButtonText>

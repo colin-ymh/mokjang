@@ -99,10 +99,10 @@ const MemberFilterRow = () => {
     let newFilterItems: FilteredItemType[] = [];
 
     // 그룹
-    if (memberFilter.group.length > 0) {
+    if (memberFilter.group.id) {
       newFilterItems.push({
         title: MEMBER.GROUP,
-        value: memberFilter.group,
+        value: [memberFilter.group.id],
       });
     }
 

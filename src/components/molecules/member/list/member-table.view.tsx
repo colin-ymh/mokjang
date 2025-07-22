@@ -19,11 +19,11 @@ import { Member } from '@/models/member/member';
 import MemberTableHeader from '@/components/atoms/member/list/member-table-header';
 import useWindowSize from '@/hooks/window/window';
 import { LOCALE } from '@/constants/state/locale';
-import CheckButton from '@/components/atoms/common/button/check-button';
 
 import { useI18n } from '../../../../../locales/client';
 import { BLANK_HEADER } from '@/redux/reducers/filter/member-filter-reducer';
 import MemberProfile from '@/components/atoms/member/member-profile';
+import ProfileImage from '@/components/atoms/common/image/profile-image';
 
 // 1. 컬럼별 PX 폭 (마지막 REMARKS만 auto 할 예정)
 const getColumnWidth = (id: string) => {
@@ -92,8 +92,13 @@ const MemberTable = styled.table`
 `;
 
 // 4. 헤더(TH)
-const TableHeader = styled.th<{ id: string; $isLast?: boolean }>`
+const TableHeader = styled.th<{
+  id: string;
+  $isLast?: boolean;
+  $isProfile?: boolean;
+}>`
   padding: 20px;
+  padding-left: ${({ $isProfile }) => $isProfile && '10px'};
   background-color: ${GRAY.SUPER_LIGHT};
   position: sticky;
   top: 0;
@@ -163,20 +168,16 @@ const ProfileContainer = styled.div`
 // 이 예시에서는 실제 MEMBER + "비고" 컬럼(REMARKS)까지 표시
 type MemberTableProps = {
   members: Member[];
-  checkedMemberIds: string[];
   onClickHeader: (id: MEMBER) => void;
   onClickMemberItem: (memberId: string) => void;
-  onClickCheckMember: (memberId: string) => void;
   scrollRef: MutableRefObject<HTMLDivElement | null>;
   onScroll: () => void;
 };
 
 const MemberTableView = ({
   members,
-  checkedMemberIds,
   onClickHeader,
   onClickMemberItem,
-  onClickCheckMember,
   scrollRef,
   onScroll,
 }: MemberTableProps) => {
@@ -198,19 +199,14 @@ const MemberTableView = ({
   // 각 TD에 들어갈 content
   const getMemberTableContent = (id: string, member: Member) => {
     switch (id) {
-      case MEMBER.CHECK:
-        return (
-          <CheckButton
-            value={checkedMemberIds.includes(member.id)}
-            onChange={() => onClickCheckMember(member.id)}
-          />
-        );
+      case MEMBER.PROFILE_IMAGE:
+        return <ProfileImage value={member?.profileImageUrl} />;
       case MEMBER.GROUP:
         return <MainText>{member?.group?.name}</MainText>;
       case MEMBER.NAME:
         return (
           <ProfileContainer>
-            <MemberProfile member={member} />
+            <MemberProfile member={member} isProfileImageShown={false} />
           </ProfileContainer>
         );
       case MEMBER.MOBILE_PHONE:
@@ -302,6 +298,7 @@ const MemberTableView = ({
                   key={item.id}
                   id={item.id}
                   $isLast={index === visibleColumns.length - 1}
+                  $isProfile={item.id === MEMBER.NAME}
                 >
                   {item.id !== BLANK && (
                     <MemberTableHeader

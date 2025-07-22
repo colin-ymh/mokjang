@@ -40,9 +40,11 @@ const GroupFilter = ({ isDefaultOpen = false, onChange }: GroupFilterProps) => {
     }
 
     if (groupId === null) {
-      dispatch(setMemberFilter({ ...memberFilter, group: [] }));
+      dispatch(setMemberFilter({ ...memberFilter, group: DEFAULT_GROUP }));
     } else if (groupId) {
-      dispatch(setMemberFilter({ ...memberFilter, group: [groupId] }));
+      dispatch(
+        setMemberFilter({ ...memberFilter, group: getGroup(groupId, groups) })
+      );
     }
 
     if (onChange) {
@@ -53,7 +55,7 @@ const GroupFilter = ({ isDefaultOpen = false, onChange }: GroupFilterProps) => {
   const props = {
     isDefaultOpen,
     onChange: onChangeGroup,
-    prevSelectedGroupId: memberFilter?.group[0],
+    prevSelectedGroupId: memberFilter?.group.id,
   };
 
   return (
