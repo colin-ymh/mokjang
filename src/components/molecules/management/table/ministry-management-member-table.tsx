@@ -68,16 +68,16 @@ const MinistryManagementMemberTable = ({
           },
           { memberId: member.id }
         );
-      } else {
-        await ministryMembersApi.editMemberMinistry(
-          {
-            churchId,
-            ministryGroupId: selectedMinistryGroup.id as string,
-            ministryId,
-          },
-          { memberId: member.id }
-        );
       }
+
+      await ministryMembersApi.editMemberMinistry(
+        {
+          churchId,
+          ministryGroupId: selectedMinistryGroup.id as string,
+          ministryId,
+        },
+        { memberId: member.id }
+      );
 
       fetchMembers();
       fetchMinistries();

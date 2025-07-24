@@ -23,6 +23,13 @@ type CreateOfficerParams = {
   churchId: string;
 };
 
+type GetOfficerUnassignedMembersParams = {
+  churchId: string;
+  take?: number;
+  page?: number;
+  orderDirection?: ORDER_DIRECTION;
+};
+
 type CreateOfficerBody = {
   name: string;
 };
@@ -82,6 +89,54 @@ export class OfficersApi {
     );
 
     const url = `${this._url}/churches/${churchId}/management/officers`;
+
+    try {
+      return await authorizeAxios.get(url, {
+        params: queryParams,
+        paramsSerializer: (params) => {
+          return qs.stringify(params, {
+            arrayFormat: 'repeat',
+            skipNulls: true,
+            encodeValuesOnly: true,
+          });
+        },
+      });
+    } catch (serverError: any) {
+      if (serverError.response) {
+        const { message, error, statusCode } = serverError.response.data;
+        throw new CustomError(message, error, statusCode);
+      } else {
+        throw new CustomError(
+          '알 수 없는 에러가 발생했습니다',
+          500,
+          'Unknown Error'
+        );
+      }
+    }
+  };
+
+  /**
+   * 직분을 가지지 않은 교인 불러오기
+   * @param {GetOfficerUnassignedMembersParams} params
+   * @returns {Promise<AxiosResponse>}
+   */
+  public getOfficerUnassignedMembers = async (
+    params: GetOfficerUnassignedMembersParams
+  ): Promise<AxiosResponse> => {
+    const { churchId, take = 5, page = 1, orderDirection } = params;
+
+    const queryParams: Record<string, any> = Object.fromEntries(
+      Object.entries({
+        take,
+        page,
+        orderDirection,
+      }).filter(
+        ([_, value]) =>
+          value !== undefined && !(Array.isArray(value) && value.length === 0)
+      )
+    );
+
+    const url = `${this._url}/churches/${churchId}/management/officers/unassigned-member`;
 
     try {
       return await authorizeAxios.get(url, {

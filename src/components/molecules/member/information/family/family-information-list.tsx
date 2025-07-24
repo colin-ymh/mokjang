@@ -42,7 +42,6 @@ const FamilyInformationList = ({
 
   // 가족 관계 설정 모달 활성화 여부
   const [isModalShown, setIsModalShown] = useState<boolean>(false);
-
   const [selectedMembers, setSelectedMembers] = useState<Member[]>([]);
 
   // 가족 멤버들

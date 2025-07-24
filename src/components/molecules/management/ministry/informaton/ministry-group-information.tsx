@@ -213,7 +213,7 @@ const MinistryGroupInformation = ({
     try {
       if (selectedMembers.length === 0) return;
 
-      await ministryGroupMembersApi.createMemberMinistryGroup(
+      await ministryGroupMembersApi.createMinistryGroupMember(
         { churchId, ministryGroupId: selectedMinistryGroup.id as string },
         {
           members: selectedMembers.map((member) => {

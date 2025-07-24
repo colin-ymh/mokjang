@@ -93,13 +93,15 @@ const MinistryListView = ({
           />
         </HeaderContainer>
         <ListContainer>
-          {ministries.map((ministry) => (
-            <MinistryCountTag
-              key={ministry.id}
-              ministry={ministry}
-              onClick={() => onClickMinistryItem(ministry)}
-            />
-          ))}
+          {ministries
+            .sort((a, b) => parseInt(a.id) - parseInt(b.id))
+            .map((ministry) => (
+              <MinistryCountTag
+                key={ministry.id}
+                ministry={ministry}
+                onClick={() => onClickMinistryItem(ministry)}
+              />
+            ))}
         </ListContainer>
       </MinistryListViewContainer>
 

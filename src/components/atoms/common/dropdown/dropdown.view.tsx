@@ -28,6 +28,7 @@ const DropdownContainer = styled.div<{
 const DropdownList = styled.div<{
   $isOpened: boolean;
   $reverseDirection?: boolean;
+  $height: number;
 }>`
   position: absolute;
   margin-top: 5px;
@@ -41,8 +42,10 @@ const DropdownList = styled.div<{
   align-items: flex-start;
   overflow-y: auto;
   max-height: 200px;
-  bottom: ${({ $reverseDirection }) => ($reverseDirection ? '30px' : 'auto')};
-  top: ${({ $reverseDirection }) => ($reverseDirection ? 'auto' : '30px')};
+  bottom: ${({ $reverseDirection, $height }) =>
+    $reverseDirection ? `${$height}px` : 'auto'};
+  top: ${({ $reverseDirection, $height }) =>
+    $reverseDirection ? 'auto' : `${$height}px`};
 
   /* 애니메이션 */
   transform-origin: ${({ $reverseDirection }) =>
@@ -103,7 +106,7 @@ const DropdownView = forwardRef<HTMLInputElement, DropdownViewProps>(
       enterKeyHint,
       borderColor,
       width,
-      height,
+      height = 40,
       backgroundColor,
       disabled,
       isChevronShown,
@@ -168,6 +171,7 @@ const DropdownView = forwardRef<HTMLInputElement, DropdownViewProps>(
           <DropdownList
             ref={scrollRef}
             onScroll={onScrollList}
+            $height={height}
             $isOpened={isOpened}
             $reverseDirection={reverseDirection}
             onTransitionEnd={(e) => {

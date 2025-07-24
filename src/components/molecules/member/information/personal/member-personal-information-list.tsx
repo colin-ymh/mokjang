@@ -599,24 +599,24 @@ const MemberPersonalInformationList =
       }
     };
 
-    useEffect(() => {
-      fetchCurrentOfficerHistory();
-      fetchCurrentGroupHistory();
-    }, [targetMember]);
-
-    useEffect(() => {
-      fetchCurrentMinistryHistory();
-    }, [targetMinistry]);
+    // useEffect(() => {
+    //   fetchCurrentOfficerHistory();
+    //   fetchCurrentGroupHistory();
+    // }, [targetMember]);
+    //
+    // useEffect(() => {
+    //   fetchCurrentMinistryHistory();
+    // }, [targetMinistry]);
 
     // ================================
     // 렌더링
     // ================================
     const props = {
-      onClickItem,
-      onClickOpenBaptismModal,
-      onClickOpenGroupModal,
-      onClickOpenMinistryModal,
-      onClickOpenOfficerModal,
+      // onClickItem,
+      // onClickOpenBaptismModal,
+      // onClickOpenGroupModal,
+      // onClickOpenMinistryModal,
+      // onClickOpenOfficerModal,
     };
 
     return (

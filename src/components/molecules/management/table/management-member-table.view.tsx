@@ -232,6 +232,7 @@ const ManagementMemberTableView = ({
                 onChangeMinistry && onChangeMinistry(value, member)
               }
               CustomDropdownButton={TagDropdownButton}
+              height={30}
             />
           </MinistryContainer>
         );

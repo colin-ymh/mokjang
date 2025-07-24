@@ -11,6 +11,7 @@ import { getTranslatedSelectedMemberCount } from '@/utils/translate';
 import { usePathname } from 'next/navigation';
 import { LOCALE } from '@/constants/state/locale';
 import { GRAY } from '@/constants/styles/color';
+import CustomDatePicker from '@/vendor/date-picker/custom-date-picker';
 
 const ModalContainer = styled.div`
   display: flex;
@@ -45,6 +46,8 @@ type AddGroupMemberModalViewProps = {
   selectedMembers: Member[];
   onChangeSearch: (event: ChangeEvent<HTMLInputElement>) => void;
   onClickMember: (member: Member) => void;
+  startDate: Date | null;
+  onChangeStartDate: (date: Date | null) => void;
 };
 
 const AddGroupMemberModalView = ({
@@ -54,6 +57,8 @@ const AddGroupMemberModalView = ({
   selectedMembers,
   onChangeSearch,
   onClickMember,
+  startDate,
+  onChangeStartDate,
 }: AddGroupMemberModalViewProps) => {
   const pathname = usePathname();
   const locale = pathname.split('/')[1] as LOCALE;
@@ -69,6 +74,12 @@ const AddGroupMemberModalView = ({
         height={40}
         placeholder={t('placeholder.name')}
         icon={<SearchIcon />}
+      />
+      {/* 시작 날짜 */}
+      <CustomDatePicker
+        selected={startDate}
+        onChange={onChangeStartDate}
+        placeholderText={t('startDate')}
       />
       <RowContainer>
         <MainText color={GRAY.SEMI_DARK}>

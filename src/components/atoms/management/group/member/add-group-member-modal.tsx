@@ -19,12 +19,16 @@ type AddGroupMemberModalProps = {
   group: Group;
   selectedMembers: Member[];
   setSelectedMembers: Dispatch<SetStateAction<Member[]>>;
+  startDate: Date | null;
+  onChangeStartDate: (date: Date | null) => void;
 };
 
 const AddGroupMemberModal = ({
   group,
   selectedMembers,
   setSelectedMembers,
+  startDate,
+  onChangeStartDate,
 }: AddGroupMemberModalProps) => {
   const membersApi = new MembersApi(false);
   const churchId = useSelector((state: RootState) => state.church.churchId);
@@ -80,6 +84,8 @@ const AddGroupMemberModal = ({
         selectedMembers={selectedMembers}
         onChangeSearch={onChangeSearch}
         onClickMember={onClickMember}
+        startDate={startDate}
+        onChangeStartDate={onChangeStartDate}
       />
     </>
   );

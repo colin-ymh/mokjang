@@ -22,24 +22,24 @@ type GetMinistryGroupMembersParams = {
   ministryGroupId: string;
 };
 
-type CreateMemberMinistryGroupParams = {
+type CreateMinistryGroupMemberParams = {
   churchId: string;
   ministryGroupId: string;
 };
 
-type CreateMemberMinistryGroupBody = {
+type CreateMinistryGroupMemberBody = {
   members: {
     memberId: string;
     ministryId?: string;
   }[];
 };
 
-type DeleteMemberMinistryGroupParams = {
+type DeleteMinistryGroupMemberParams = {
   churchId: string;
   ministryGroupId: string;
 };
 
-type DeleteMemberMinistryGroupBody = {
+type DeleteMinistryGroupMemberBody = {
   memberIds: string[];
 };
 
@@ -166,13 +166,13 @@ export class MinistryGroupMembersApi {
 
   /**
    * 사역그룹에 교인 추가
-   * @param {CreateMemberMinistryGroupParams} params
-   * @param {CreateMemberMinistryGroupBody} body
+   * @param {CreateMinistryGroupMemberParams} params
+   * @param {CreateMinistryGroupMemberBody} body
    * @returns {Promise<AxiosResponse>}
    */
-  public createMemberMinistryGroup = async (
-    params: CreateMemberMinistryGroupParams,
-    body: CreateMemberMinistryGroupBody
+  public createMinistryGroupMember = async (
+    params: CreateMinistryGroupMemberParams,
+    body: CreateMinistryGroupMemberBody
   ): Promise<AxiosResponse> => {
     const { churchId, ministryGroupId } = params;
 
@@ -196,13 +196,13 @@ export class MinistryGroupMembersApi {
 
   /**
    * 사역그룹에 교인 삭제
-   * @param {DeleteMemberMinistryGroupParams} params
-   * @param {DeleteMemberMinistryGroupBody} body
+   * @param {DeleteMinistryGroupMemberParams} params
+   * @param {DeleteMinistryGroupMemberBody} body
    * @returns {Promise<AxiosResponse>}
    */
-  public deleteMemberMinistryGroup = async (
-    params: DeleteMemberMinistryGroupParams,
-    body: DeleteMemberMinistryGroupBody
+  public deleteMinistryGroupMember = async (
+    params: DeleteMinistryGroupMemberParams,
+    body: DeleteMinistryGroupMemberBody
   ): Promise<AxiosResponse> => {
     const { churchId, ministryGroupId } = params;
 

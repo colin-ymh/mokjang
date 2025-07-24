@@ -13,12 +13,11 @@ import {
 } from '@/redux/reducers/toast-popup-reducer';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
-import { OfficersApi } from '@/api/management/officer/officers.api';
-import { MembersApi } from '@/api/members/members.api';
 import { Member } from '@/models/member/member';
 import { MEMBER } from '@/constants/column/member-column';
-import OfficerInformationView from './officer-information.view';
-import { OfficerHistoryApi } from '@/api/history/officer-history.api';
+import { OfficerMembersApi } from '@/api/management/officer/officer-members.api';
+import { OfficersApi } from '@/api/management/officer/officers.api';
+import OfficerInformationView from '@/components/molecules/management/officer/informaton/officer-information.view';
 
 type OfficerInformationProps = {
   selectedOfficer: Officer;
@@ -34,9 +33,8 @@ const OfficerInformation = ({
   const dispatch = useDispatch<AppDispatch>();
   const { churchId } = useSelector((state: RootState) => state.church);
 
-  const membersApi = new MembersApi(false);
+  const officerMembersApi = new OfficerMembersApi(false);
   const officersApi = new OfficersApi(false);
-  const officerHistoryApi = new OfficerHistoryApi(false);
 
   // 에러 처리
   const [thrownError, setThrownError] = useState<Error | null>(null);
@@ -44,8 +42,8 @@ const OfficerInformation = ({
     throw thrownError;
   }
 
-  // 수정할 그룹명
   const [isEditShown, setIsEditShown] = useState<boolean>(false);
+  // 수정할 그룹명
   const [editName, setEditName] = useState<string>(BLANK);
 
   // 서버에서 불러오는 교인 목록 페이지
@@ -83,6 +81,7 @@ const OfficerInformation = ({
       setOrderBy(headerId);
     }
   };
+
   const onClickEditOpen = () => {
     setIsEditShown(true);
   };
@@ -101,12 +100,15 @@ const OfficerInformation = ({
     }
 
     try {
-      const response = await officersApi.editOfficerName(
-        { churchId, officerId: selectedOfficer.id as string },
-        { name: editName }
-      );
+      if (editName !== selectedOfficer.name) {
+        await officersApi.editOfficerName(
+          { churchId, officerId: selectedOfficer.id as string },
+          { name: editName }
+        );
+      }
+
       await dispatch(fetchOfficers());
-      onClickOfficer(response.data.data);
+      onClickOfficer({ ...selectedOfficer, name: editName });
       setIsEditShown(false);
       setEditName(BLANK);
       dispatch(setToastText(t_popup('saveComplete')));
@@ -135,21 +137,15 @@ const OfficerInformation = ({
   };
 
   const fetchMembers = async () => {
-    if (isLoading) return; // 로딩 중에는 추가 요청 방지
+    if (isLoading || !selectedOfficer.id) return; // 로딩 중에는 추가 요청 방지
     setIsLoading(true);
 
     try {
-      const response = await membersApi.getMembers({
+      const response = await officerMembersApi.getOfficerMembers({
         churchId,
-        officer: [selectedOfficer.id as string],
-        selectedColumns: [MEMBER.OFFICER, MEMBER.BIRTH, MEMBER.MOBILE_PHONE],
         page,
         take: 30,
-        order: orderBy
-          ? orderBy === MEMBER.AGE
-            ? MEMBER.BIRTH
-            : orderBy
-          : undefined,
+        officerId: selectedOfficer.id as string,
         orderDirection: orderDirection || undefined,
       });
 
@@ -181,15 +177,13 @@ const OfficerInformation = ({
     try {
       if (selectedMembers.length === 0) return;
 
-      for (const member of selectedMembers) {
-        // 새 그룹에 이력 생성
-        await officerHistoryApi.createOfficerHistory(
-          { churchId, memberId: member.id },
-          {
-            officerId: selectedOfficer.id as string,
-          }
-        );
-      }
+      await officerMembersApi.editMemberOfficer(
+        { churchId, officerId: selectedOfficer.id as string },
+        {
+          memberIds: selectedMembers.map((member) => member.id),
+        }
+      );
+      dispatch(fetchOfficers());
 
       // 목록 갱신 후 모달 닫기
       await fetchMembers();
@@ -206,8 +200,13 @@ const OfficerInformation = ({
         setThrownError(new Error(String(error)));
       }
     } finally {
-      setSelectedMembers([]);
-      setIsAddModalShown(false);
+      setPage(1);
+      setTimeout(() => {
+        // 목록 갱신 후 모달 닫기
+        fetchMembers();
+        setSelectedMembers([]);
+        setIsAddModalShown(false);
+      });
     }
   };
 
@@ -224,12 +223,14 @@ const OfficerInformation = ({
   useEffect(() => {
     setMembers([]);
     setPage(1);
-    fetchMembers();
+    setTimeout(() => {
+      fetchMembers();
+    });
   }, [selectedOfficer.id]);
 
   useEffect(() => {
     setEditName(selectedOfficer.name);
-  }, [selectedOfficer.name]);
+  }, [selectedOfficer]);
 
   const props = {
     selectedOfficer,
@@ -251,7 +252,9 @@ const OfficerInformation = ({
     onClickAddModalOpen,
     onClickAddModalClose,
     onClickSaveNewMembers,
+    fetchMembers,
   };
+
   return (
     <>
       <OfficerInformationView {...props} />

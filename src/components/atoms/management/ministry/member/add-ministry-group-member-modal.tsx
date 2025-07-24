@@ -116,24 +116,26 @@ const AddMinistryGroupMemberModal = ({
   };
 
   useEffect(() => {
-    const resetAndFetch = async () => {
-      setPage(1);
-      setMembers([]);
+    const timer = setTimeout(() => {
+      const resetAndFetch = async () => {
+        setPage(1);
+        setMembers([]);
 
-      try {
-        const firstPage = await fetchSearchedMembers(searchName, 1);
-        setMembers(firstPage);
-        setPage(2);
-      } catch (error) {
-        setThrownError(
-          error instanceof Error ? error : new Error(String(error))
-        );
-      }
-    };
+        try {
+          const firstPage = await fetchSearchedMembers(searchName, 1);
+          setMembers(firstPage);
+          setPage(2);
+        } catch (error) {
+          setThrownError(
+            error instanceof Error ? error : new Error(String(error))
+          );
+        }
+      };
 
-    resetAndFetch();
+      resetAndFetch();
+    }, 500);
+    return () => clearTimeout(timer);
   }, [searchName]);
-
   return (
     <>
       <AddMinistryGroupMemberModalView

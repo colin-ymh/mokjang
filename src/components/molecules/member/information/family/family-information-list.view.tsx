@@ -14,7 +14,7 @@ import { LOCALE } from '@/constants/state/locale';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import AddFamilyMemberModal from '@/components/atoms/member/information/family/add-family-member-modal';
-import FamilyMemberItem from '@/components/atoms/member/information/family-member-item';
+import FamilyMemberItem from '@/components/atoms/member/information/family/family-member-item';
 import { SIZE } from '@/constants/styles/style';
 import { FAMILY } from '@/constants/constant';
 
@@ -101,7 +101,7 @@ const FamilyInformationListView = ({
               key={familyMember.familyMemberId}
               familyMember={familyMember}
               onChangeRelation={onChangeRelation}
-              onClickDelete={onClickConfirmDelete}
+              onClickConfirmDelete={onClickConfirmDelete}
             />
           );
         })}

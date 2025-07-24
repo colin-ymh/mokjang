@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from 'react';
+import React, { ChangeEvent, MutableRefObject } from 'react';
 import styled from 'styled-components';
 import { Member } from '@/models/member/member';
 import { Officer } from '@/models/management/management';
@@ -45,6 +45,8 @@ type AddOfficerMemberModalViewProps = {
   selectedMembers: Member[];
   onChangeSearch: (event: ChangeEvent<HTMLInputElement>) => void;
   onClickMember: (member: Member) => void;
+  scrollRef: MutableRefObject<HTMLDivElement | null>;
+  onScroll: () => void;
 };
 
 const AddOfficerMemberModalView = ({
@@ -54,6 +56,8 @@ const AddOfficerMemberModalView = ({
   selectedMembers,
   onChangeSearch,
   onClickMember,
+  scrollRef,
+  onScroll,
 }: AddOfficerMemberModalViewProps) => {
   const pathname = usePathname();
   const locale = pathname.split('/')[1] as LOCALE;
@@ -77,7 +81,7 @@ const AddOfficerMemberModalView = ({
         <MainText color={GRAY.DEFAULT}>{t('description.addMember')}</MainText>
       </RowContainer>
       {/* 교인 목록 */}
-      <MemberListContainer>
+      <MemberListContainer ref={scrollRef} onScroll={onScroll}>
         {searchedMembers.map((member) => {
           return (
             <AddMemberItem

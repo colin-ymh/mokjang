@@ -13,12 +13,11 @@ import {
 } from '@/redux/reducers/toast-popup-reducer';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
-import { GroupsApi } from '@/api/management/group/groups.api';
-import { MembersApi } from '@/api/members/members.api';
 import { Member } from '@/models/member/member';
 import { MEMBER } from '@/constants/column/member-column';
-import GroupInformationView from './group-information.view';
-import { GroupHistoryApi } from '@/api/history/group-history.api';
+import { GroupMembersApi } from '@/api/management/group/group-membes.api';
+import { GroupsApi } from '@/api/management/group/groups.api';
+import GroupInformationView from '@/components/molecules/management/group/informaton/group-information.view';
 import { getDateStringFromDate } from '@/utils/date';
 
 type GroupInformationProps = {
@@ -35,9 +34,8 @@ const GroupInformation = ({
   const dispatch = useDispatch<AppDispatch>();
   const { churchId } = useSelector((state: RootState) => state.church);
 
-  const membersApi = new MembersApi(false);
+  const groupMembersApi = new GroupMembersApi(false);
   const groupsApi = new GroupsApi(false);
-  const groupHistoryApi = new GroupHistoryApi(false);
 
   // 에러 처리
   const [thrownError, setThrownError] = useState<Error | null>(null);
@@ -68,11 +66,19 @@ const GroupInformation = ({
   // 그룹에 속한 교인 목록
   const [members, setMembers] = useState<Member[]>([]);
 
+  // 시작 날짜
+  const [startDate, setStartDate] = useState<Date | null>(new Date());
+
   // 선택된 교인 목록
   const [selectedMembers, setSelectedMembers] = useState<Member[]>([]);
 
   // 그룹에 교인 다중 추가를 위한 모달 활성화 여부
   const [isAddModalShown, setIsAddModalShown] = useState<boolean>(false);
+
+  // 시작 날짜 변경
+  const onChangeStartDate = (date: Date | null) => {
+    setStartDate(date);
+  };
 
   const onClickHeaderItem = (headerId: MEMBER) => {
     if (orderBy === headerId) {
@@ -157,24 +163,19 @@ const GroupInformation = ({
   const onClickAddModalClose = () => {
     setIsAddModalShown(false);
     setSelectedMembers([]);
+    setStartDate(new Date());
   };
 
   const fetchMembers = async () => {
-    if (isLoading) return; // 로딩 중에는 추가 요청 방지
+    if (isLoading || !selectedGroup.id) return; // 로딩 중에는 추가 요청 방지
     setIsLoading(true);
 
     try {
-      const response = await membersApi.getMembers({
+      const response = await groupMembersApi.getGroupMembers({
         churchId,
-        group: [selectedGroup.id as string],
-        selectedColumns: [MEMBER.OFFICER, MEMBER.BIRTH, MEMBER.MOBILE_PHONE],
         page,
         take: 30,
-        order: orderBy
-          ? orderBy === MEMBER.AGE
-            ? MEMBER.BIRTH
-            : orderBy
-          : undefined,
+        groupId: selectedGroup.id as string,
         orderDirection: orderDirection || undefined,
       });
 
@@ -202,28 +203,24 @@ const GroupInformation = ({
   };
 
   // 새로운 그룹원들 추가
-  const onClickSaveNewMembers = async (selectedMembers: Member[]) => {
+  const onClickSaveNewMembers = async (
+    selectedMembers: Member[],
+    startDate: Date
+  ) => {
     try {
       if (selectedMembers.length === 0) return;
 
-      for (const member of selectedMembers) {
-        // 다른 그룹이 존재
-        if (member.groupId) {
-          await groupHistoryApi.stopGroupHistory(
-            { churchId, memberId: member.id },
-            { endDate: getDateStringFromDate(new Date()) }
-          );
+      await groupMembersApi.editGroupMember(
+        { churchId, groupId: selectedGroup.id as string },
+        {
+          memberIds: selectedMembers.map((member) => member.id),
+          startDate: getDateStringFromDate(startDate),
         }
-        // 새 그룹에 이력 생성
-        await groupHistoryApi.createGroupHistory(
-          { churchId, memberId: member.id },
-          {
-            groupId: selectedGroup.id as string,
-            startDate: getDateStringFromDate(new Date()),
-          }
-        );
-      }
+      );
       dispatch(fetchGroups());
+
+      // 목록 갱신 후 모달 닫기
+      await fetchMembers();
 
       dispatch(setToastText(t_popup('saveComplete')));
       dispatch(setToastBackgroundColor(BLACK));
@@ -242,6 +239,7 @@ const GroupInformation = ({
         // 목록 갱신 후 모달 닫기
         fetchMembers();
         setSelectedMembers([]);
+        setStartDate(new Date());
         setIsAddModalShown(false);
       });
     }
@@ -280,6 +278,8 @@ const GroupInformation = ({
     loadMembers,
     orderBy,
     orderDirection,
+    startDate,
+    onChangeStartDate,
     onClickHeaderItem,
     onClickGroup,
     onClickEditOpen,
@@ -290,7 +290,9 @@ const GroupInformation = ({
     onClickAddModalOpen,
     onClickAddModalClose,
     onClickSaveNewMembers,
+    fetchMembers,
   };
+
   return (
     <>
       <GroupInformationView {...props} />

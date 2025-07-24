@@ -70,6 +70,8 @@ type GroupInformationViewProps = {
   isEditShown: boolean;
   orderBy: MEMBER | null;
   orderDirection: ORDER_DIRECTION | null;
+  startDate: Date | null;
+  onChangeStartDate: (date: Date | null) => void;
   onClickHeaderItem: (headerId: MEMBER) => void;
   onClickGroup: (group: Group) => void;
   onClickEditOpen: () => void;
@@ -79,7 +81,7 @@ type GroupInformationViewProps = {
   onClickSaveEdit: () => void;
   onClickAddModalOpen: () => void;
   onClickAddModalClose: () => void;
-  onClickSaveNewMembers: (selectedMembers: Member[]) => void;
+  onClickSaveNewMembers: (selectedMembers: Member[], startDate: Date) => void;
 };
 
 const GroupInformationView = ({
@@ -93,6 +95,8 @@ const GroupInformationView = ({
   loadMembers,
   orderBy,
   orderDirection,
+  startDate,
+  onChangeStartDate,
   onClickHeaderItem,
   onClickGroup,
   onClickEditOpen,
@@ -183,12 +187,17 @@ const GroupInformationView = ({
         headerTitle={getTranslatedAddMemberTitle(locale, selectedGroup.name)}
         headerDescription={t('description.addMemberHeader')}
         doneText={t('button.add')}
-        onClickDone={() => onClickSaveNewMembers(selectedMembers)}
+        doneDisabled={!startDate}
+        onClickDone={() =>
+          onClickSaveNewMembers(selectedMembers, startDate as Date)
+        }
       >
         <AddGroupMemberModal
           group={selectedGroup}
           selectedMembers={selectedMembers}
           setSelectedMembers={setSelectedMembers}
+          startDate={startDate}
+          onChangeStartDate={onChangeStartDate}
         />
       </CustomPopup>
     </>

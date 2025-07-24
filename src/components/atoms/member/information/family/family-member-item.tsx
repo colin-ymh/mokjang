@@ -5,19 +5,25 @@ import { GRAY } from '@/constants/styles/color';
 import { MEMBER } from '@/constants/column/member-column';
 import { getFormattedMobilePhone } from '@/utils/format';
 import { FamilyMember } from '@/models/member/member';
-import { useI18n } from '../../../../../locales/client';
+import { useI18n, useScopedI18n } from '../../../../../../locales/client';
 import ProfileImage from '@/components/atoms/common/image/profile-image';
 import { SIZE } from '@/constants/styles/style';
-import Phone from '../../../../../public/svg/phone.svg';
+import Phone from '../../../../../../public/svg/phone.svg';
+import Calendar from '../../../../../../public/svg/calendar.svg';
+import Cancel from '../../../../../../public/svg/cancel.svg';
 import SvgIcon from '@/components/atoms/common/icon/svg-icon';
 import { BLANK, FAMILY } from '@/constants/constant';
 import { useFamilyRelationDropdownItems } from '@/hooks/dropdown/dropdown-items';
 import Dropdown from '@/components/atoms/common/dropdown/dropdown';
-import TagDropdownButton from '@/components/atoms/common/dropdown/tag-dropdown-button';
 import React, { useState } from 'react';
 import { setTargetMember } from '@/redux/reducers/target/target-member-reducer';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/redux/store';
+import { getTranslatedAge } from '@/utils/translate';
+import { getAge, getDateFromDateString } from '@/utils/date';
+import { usePathname } from 'next/navigation';
+import { LOCALE } from '@/constants/state/locale';
+import ConfirmPopup from '@/components/atoms/common/popup/error-popup';
 
 const ItemContainer = styled.div`
   display: flex;
@@ -29,6 +35,7 @@ const ItemContainer = styled.div`
   justify-content: space-between;
   gap: 10px;
   padding: 20px;
+  position: relative;
 `;
 
 const LeftContainer = styled.div`
@@ -50,19 +57,43 @@ const MemberInformationContainer = styled.div`
   gap: 10px;
 `;
 
+const CancelButton = styled.div`
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  cursor: pointer;
+`;
+
 type FamilyMemberItemProps = {
   familyMember: FamilyMember;
   onChangeRelation: (memberId: string, relation: FAMILY) => void;
-  onClickDelete: (familyMemberId: string) => void;
+  onClickConfirmDelete: (familyMemberId: string) => void;
 };
 
 const FamilyMemberItem = ({
   familyMember,
   onChangeRelation,
-  onClickDelete,
+  onClickConfirmDelete,
 }: FamilyMemberItemProps) => {
+  // 로케일 코드
+  const pathname = usePathname();
+  const locale = pathname.split('/')[1] as LOCALE;
+
   const t = useI18n();
   const dispatch = useDispatch<AppDispatch>();
+
+  const t_popup = useScopedI18n('popup');
+  const t_button = useScopedI18n('button');
+
+  const [isDeleteShown, setIsDeleteShown] = useState<boolean>(false);
+
+  const onClickDelete = () => {
+    setIsDeleteShown(true);
+  };
+
+  const onClickCancelDelete = () => {
+    setIsDeleteShown(false);
+  };
 
   const familyRelationItems = useFamilyRelationDropdownItems(
     familyMember.familyMember.gender
@@ -99,7 +130,17 @@ const FamilyMemberItem = ({
             </MemberInformationContainer>
             {/* 나이 */}
             <MemberInformationContainer>
-              {/* 연락처 */}
+              <SvgIcon svg={Calendar} color={GRAY.SEMI_DARK} />
+              <MainText color={GRAY.SEMI_DARK}>{t(MEMBER.AGE)}</MainText>
+              <MainText>
+                {getTranslatedAge(
+                  locale,
+                  getAge(getDateFromDateString(familyMember.familyMember.birth))
+                )}
+              </MainText>
+            </MemberInformationContainer>
+            {/* 연락처 */}
+            <MemberInformationContainer>
               <SvgIcon svg={Phone} color={GRAY.SEMI_DARK} />
               <MainText color={GRAY.SEMI_DARK}>
                 {t(MEMBER.MOBILE_PHONE)}
@@ -114,12 +155,36 @@ const FamilyMemberItem = ({
           value={familyMember.relation}
           items={familyRelationItems}
           width={100}
-          CustomDropdownButton={TagDropdownButton}
+          height={30}
           onChangeItem={(relation) =>
             onChangeRelation(familyMember.familyMemberId, relation as FAMILY)
           }
         />
+
+        {/* 삭제 */}
+        <CancelButton
+          onClick={(event) => {
+            event.stopPropagation();
+            onClickDelete();
+          }}
+        >
+          <SvgIcon svg={Cancel} size={18} />
+        </CancelButton>
       </ItemContainer>
+
+      {/* 가족 삭제 팝업 */}
+      <ConfirmPopup
+        title={t_popup('deleteFamilyTitle')}
+        body={t_popup('deleteFamilyBody')}
+        isShow={isDeleteShown}
+        onClickLeftButton={onClickCancelDelete}
+        onClickRightButton={() =>
+          onClickConfirmDelete(familyMember.familyMemberId)
+        }
+        leftButtonText={t_button('cancel')}
+        rightButtonText={t_button('confirm')}
+        buttonNum={2}
+      />
     </>
   );
 };

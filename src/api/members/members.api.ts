@@ -48,6 +48,16 @@ type GetMemberParams = {
   memberId: string;
 };
 
+type GetSimpleMembersParams = {
+  churchId: string;
+  take?: number;
+  page?: number;
+  order?: MEMBER;
+  orderDirection?: ORDER_DIRECTION;
+  name?: string;
+  mobilePhone?: string;
+};
+
 type CreateMemberParams = {
   churchId: string;
 };
@@ -202,6 +212,67 @@ export class MembersApi {
     );
 
     const url = `${this._url}/churches/${churchId}/members`;
+
+    try {
+      return await authorizeAxios.get(url, {
+        params: queryParams,
+        paramsSerializer: (params) => {
+          return qs.stringify(params, {
+            arrayFormat: 'repeat',
+            skipNulls: true,
+            encodeValuesOnly: true,
+          });
+        },
+      });
+    } catch (serverError: any) {
+      if (serverError.response) {
+        const { message, error, statusCode } = serverError.response.data;
+        throw new CustomError(message, error, statusCode);
+      } else {
+        throw new CustomError(
+          '알 수 없는 에러가 발생했습니다',
+          500,
+          'Unknown Error'
+        );
+      }
+    }
+  };
+
+  /**
+   * 교인들 불러오기
+   * @param {GetSimpleMembersParams} params
+   * @returns {Promise<AxiosResponse>}
+   */
+  public getSimpleMembers = async (
+    params: GetSimpleMembersParams
+  ): Promise<AxiosResponse> => {
+    const {
+      churchId,
+      take = 5,
+      page = 1,
+      order,
+      orderDirection,
+      name,
+      mobilePhone,
+    } = params;
+
+    const queryParams: Record<string, any> = Object.fromEntries(
+      Object.entries({
+        take,
+        page,
+        order,
+        orderDirection,
+        name,
+        mobilePhone,
+      }).filter(
+        ([_, value]) =>
+          value !== undefined &&
+          value !== '' &&
+          !(Array.isArray(value) && value.length === 0)
+      )
+    );
+
+    const url = `${this._url}/churches/${churchId}/members/simple`;
 
     try {
       return await authorizeAxios.get(url, {
