@@ -25,7 +25,7 @@ type GetWorshipSessionParams = {
 type GetWorshipSessionByDateParams = {
   churchId: string; // 교회 id
   worshipId: string;
-  sessionDate: Date;
+  sessionDate: string;
 };
 
 type CreateWorshipSessionParams = {

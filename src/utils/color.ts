@@ -1,10 +1,13 @@
 import {
   BLACK,
   CALENDAR_COLOR,
+  ORANGE,
+  RED,
   STATUS_BACKGROUND_COLOR,
   STATUS_COLOR,
   STATUS_FONT_COLOR,
   WHITE,
+  YELLOW,
 } from '@/constants/styles/color';
 import { STATUS } from '@/constants/status/status';
 import { DOMAIN } from '@/models/permission/permission';
@@ -105,4 +108,24 @@ export const getEventStyle = (event: Schedule) => {
       fontSize: '14px',
     },
   };
+};
+
+export const getAttendanceRateColor = (rate: number) => {
+  if (rate <= 40) {
+    return ORANGE.DARK;
+  } else if (rate <= 30) {
+    return RED.DARK;
+  } else {
+    return YELLOW.DARK;
+  }
+};
+
+export const getAttendanceRateBackgroundColor = (rate: number) => {
+  if (rate <= 40) {
+    return ORANGE.LIGHT;
+  } else if (rate <= 30) {
+    return RED.LIGHT;
+  } else {
+    return YELLOW.LIGHT;
+  }
 };

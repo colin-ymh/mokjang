@@ -1,6 +1,12 @@
 'use client';
 
-import React, { ChangeEvent, forwardRef, useEffect, useState } from 'react';
+import React, {
+  ChangeEvent,
+  forwardRef,
+  MutableRefObject,
+  useEffect,
+  useState,
+} from 'react';
 import styled from 'styled-components';
 
 import { WHITE } from '@/constants/styles/color';
@@ -35,7 +41,8 @@ const DropdownList = styled.div<{
   align-items: flex-start;
   overflow-y: auto;
   max-height: 200px;
-  bottom: ${({ $reverseDirection }) => ($reverseDirection ? '55px' : 'auto')};
+  bottom: ${({ $reverseDirection }) => ($reverseDirection ? '30px' : 'auto')};
+  top: ${({ $reverseDirection }) => ($reverseDirection ? 'auto' : '30px')};
 
   /* 애니메이션 */
   transform-origin: ${({ $reverseDirection }) =>
@@ -49,6 +56,8 @@ const DropdownList = styled.div<{
 `;
 
 type DropdownViewProps = {
+  scrollRef: MutableRefObject<HTMLDivElement | null>;
+  onScrollList: () => void;
   items: DropdownValueType[];
   innerValue: any;
   customValue?: string;
@@ -56,7 +65,7 @@ type DropdownViewProps = {
   focusedIndex: number;
   onFocusInput: () => void;
   isOpened: boolean;
-  onClickDropdown: () => void;
+  onClickDropdown: (event: React.MouseEvent<HTMLDivElement>) => void;
   onClickItem: (value: any) => void;
   onChangeInput: (event: ChangeEvent<HTMLInputElement>) => void;
   onKeyDownHandler: (event: React.KeyboardEvent<HTMLInputElement>) => void;
@@ -76,6 +85,8 @@ type DropdownViewProps = {
 const DropdownView = forwardRef<HTMLInputElement, DropdownViewProps>(
   (
     {
+      scrollRef,
+      onScrollList,
       items,
       innerValue,
       customValue,
@@ -155,6 +166,8 @@ const DropdownView = forwardRef<HTMLInputElement, DropdownViewProps>(
 
         {!disabled && (
           <DropdownList
+            ref={scrollRef}
+            onScroll={onScrollList}
             $isOpened={isOpened}
             $reverseDirection={reverseDirection}
             onTransitionEnd={(e) => {

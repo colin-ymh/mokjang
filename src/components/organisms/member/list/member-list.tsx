@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
-import { fetchMembers } from '@/redux/reducers/filter/member-filter-reducer';
+import {
+  fetchMembers,
+  setMemberPage,
+} from '@/redux/reducers/filter/member-filter-reducer';
 
 import { MembersApi } from '@/api/members/members.api';
 import MemberListView from '@/components/organisms/member/list/member-list.view';
@@ -38,9 +41,6 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
   const [isMemberInformationShown, setIsMemberInformationShown] =
     useState<boolean>(false);
 
-  // 서버에서 불러오는 교인 목록 페이지
-  const [page, setPage] = useState<number>(1);
-
   // 데이터 로딩 상태
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -60,7 +60,7 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
     if (isLoading) return;
     setIsLoading(true);
     try {
-      await dispatch(fetchMembers({ currentPage: memberPage + 1 }));
+      await dispatch(setMemberPage(memberPage + 1));
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));
     } finally {
@@ -72,7 +72,8 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
   useEffect(() => {
     const fetchInitialMembers = async () => {
       try {
-        await dispatch(fetchMembers({ currentPage: 1 }));
+        await dispatch(setMemberPage(1));
+        await dispatch(fetchMembers());
       } catch (error) {
         setThrownError(
           error instanceof Error ? error : new Error(String(error))
@@ -111,9 +112,9 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
       });
 
       // 초기화 후 다시 로드
-      setPage(1);
+      dispatch(setMemberPage(1));
       // 삭제 후 재로딩
-      await dispatch(fetchMembers({ currentPage: 1 }));
+      await dispatch(fetchMembers());
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));
     } finally {
@@ -125,6 +126,10 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
   useEffect(() => {
     setIsPopupShown(false);
   }, [targetMember]);
+
+  useEffect(() => {
+    dispatch(fetchMembers());
+  }, [memberPage]);
 
   const props = {
     list: {

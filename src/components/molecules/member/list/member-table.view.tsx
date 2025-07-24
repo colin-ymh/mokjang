@@ -13,7 +13,6 @@ import {
   getFormattedDate,
   getFormattedHomePhone,
   getFormattedMobilePhone,
-  getLocaleDateFromDashDate,
 } from '@/utils/format';
 import { Member } from '@/models/member/member';
 import MemberTableHeader from '@/components/atoms/member/list/member-table-header';
@@ -24,6 +23,7 @@ import { useI18n } from '../../../../../locales/client';
 import { BLANK_HEADER } from '@/redux/reducers/filter/member-filter-reducer';
 import MemberProfile from '@/components/atoms/member/member-profile';
 import ProfileImage from '@/components/atoms/common/image/profile-image';
+import { getTranslatedDateFromDateString } from '@/utils/translate';
 
 // 1. 컬럼별 PX 폭 (마지막 REMARKS만 auto 할 예정)
 const getColumnWidth = (id: string) => {
@@ -221,7 +221,7 @@ const MemberTableView = ({
         return (
           <MainText>
             {member.birth &&
-              getLocaleDateFromDashDate(
+              getTranslatedDateFromDateString(
                 basePath,
                 getFormattedDate(member.birth)
               )}
@@ -259,7 +259,7 @@ const MemberTableView = ({
         return (
           <MainText>
             {member.registeredAt &&
-              getLocaleDateFromDashDate(
+              getTranslatedDateFromDateString(
                 basePath,
                 getFormattedDate(member.registeredAt)
               )}
@@ -269,7 +269,7 @@ const MemberTableView = ({
         return (
           <MainText>
             {member.updatedAt &&
-              getLocaleDateFromDashDate(
+              getTranslatedDateFromDateString(
                 basePath,
                 getFormattedDate(member.updatedAt)
               )}

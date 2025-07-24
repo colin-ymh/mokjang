@@ -18,19 +18,21 @@ const BarItem = styled.div<{ $isSelected: boolean }>`
   cursor: pointer;
   align-items: center;
   padding: 5px 15px;
+  background-color: ${WHITE};
   border-bottom: ${({ $isSelected }) =>
-    `2px solid ${$isSelected ? MAIN.DEFAULT : WHITE}`};
+    `2px solid ${$isSelected ? MAIN.DEFAULT : 'transparent'}`};
   transition: all 0.3s ease;
 `;
 
-export type HeaderBarViewItem = {
+export type HeaderBarItem = {
   id: string;
   title: string;
+  icon?: any;
 };
 
 type HeaderBarViewProps = {
   value: string;
-  items: HeaderBarViewItem[];
+  items: HeaderBarItem[];
   onClick: (id: string) => void;
 };
 

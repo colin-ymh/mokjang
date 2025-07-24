@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { SIZE } from '@/constants/styles/style';
 import { BLACK } from '@/constants/styles/color';
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
-import { HOME_WIDGET, SEARCH_RANGE } from '@/constants/constant';
+import { HOME_WIDGET, RANGE } from '@/constants/constant';
 import SlidePopup from '@/components/atoms/common/popup/slide-popup';
 import { DOMAIN } from '@/models/permission/permission';
 import TaskInformation from '@/components/organisms/task/information/task-information';
@@ -18,7 +18,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import ReportedScheduleList from '@/components/atoms/home/reported-schedule-list';
 import RangeRadioButton from '@/components/atoms/common/radio-button/range-radio-button';
-import { useRangeRadioButtonItems } from '@/hooks/radio-button/radio-button-items';
+import { useWeekMonthRangeRadioButtonItems } from '@/hooks/radio-button/radio-button-items';
 
 const WidgetContainer = styled.div`
   display: flex;
@@ -58,11 +58,11 @@ const ButtonContainer = styled.div`
 
 type ReportedScheduleWidgetViewProps = {
   openedDomain: DOMAIN | null;
-  range: SEARCH_RANGE;
+  range: RANGE;
   mySchedules: Schedule[];
   onClickSchedule: (schedule: Schedule) => void;
   onClickClose: () => void;
-  onClickRange: (range: SEARCH_RANGE) => void;
+  onClickRange: (range: RANGE) => void;
 };
 
 const ReportedScheduleWidgetView = ({
@@ -84,7 +84,7 @@ const ReportedScheduleWidgetView = ({
     (state: RootState) => state.targetEducationSession
   );
 
-  const rangeRadioItems = useRangeRadioButtonItems();
+  const rangeRadioItems = useWeekMonthRangeRadioButtonItems();
 
   return (
     <>

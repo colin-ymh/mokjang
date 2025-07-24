@@ -26,7 +26,7 @@ const BorderInputContainer = styled.input<{
 }>`
   width: ${({ width }) => (width ? `${width}px` : '100%')};
   box-sizing: border-box;
-  font-size: ${({ $fontSize }) => `${$fontSize}px` || '14px'};
+  font-size: ${({ $fontSize }) => `${$fontSize}px`};
   font-weight: ${({ $fontWeight }) => `${$fontWeight}px` || '400'};
   text-align: ${({ $isRight }) => ($isRight ? 'right' : 'left')};
   font-family: 'Roboto', sans-serif;
@@ -46,37 +46,37 @@ const BorderInputContainer = styled.input<{
     $disabled ? GRAY.SEMI_LIGHT : $backgroundColor || WHITE};
 
   border-top-left-radius: ${({ $borderTopLeftRadius }) =>
-    $borderTopLeftRadius ?? 10}px;
+    $borderTopLeftRadius ?? 5}px;
   border-top-right-radius: ${({ $borderTopRightRadius }) =>
-    $borderTopRightRadius ?? 10}px;
+    $borderTopRightRadius ?? 5}px;
   border-bottom-left-radius: ${({ $borderBottomLeftRadius }) =>
-    $borderBottomLeftRadius ?? 10}px;
+    $borderBottomLeftRadius ?? 5}px;
   border-bottom-right-radius: ${({ $borderBottomRightRadius }) =>
-    $borderBottomRightRadius ?? 10}px;
+    $borderBottomRightRadius ?? 5}px;
 
   &::placeholder {
     font-family: 'Roboto', sans-serif;
-    font-size: 13px;
+    font-size: 14px;
     color: ${GRAY.DEFAULT};
   }
   &::-webkit-input-placeholder {
     font-family: 'Roboto', sans-serif;
-    font-size: 13px;
+    font-size: 14px;
     color: ${GRAY.DEFAULT};
   }
   &::-moz-placeholder {
     font-family: 'Roboto', sans-serif;
-    font-size: 13px;
+    font-size: 14px;
     color: ${GRAY.DEFAULT};
   }
   &:-ms-input-placeholder {
     font-family: 'Roboto', sans-serif;
-    font-size: 13px;
+    font-size: 14px;
     color: ${GRAY.DEFAULT};
   }
   &:-moz-placeholder {
     font-family: 'Roboto', sans-serif;
-    font-size: 13px;
+    font-size: 14px;
     color: ${GRAY.DEFAULT};
   }
 
@@ -135,7 +135,7 @@ const BorderInput = forwardRef<HTMLInputElement, BorderInputProps>(
       borderTopRightRadius,
       borderBottomLeftRadius,
       borderBottomRightRadius,
-      fontSize,
+      fontSize = 14,
       fontWeight,
       isRight,
       icon,

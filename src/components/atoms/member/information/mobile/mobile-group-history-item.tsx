@@ -4,13 +4,14 @@ import styled from 'styled-components';
 
 import { GroupHistory } from '@/models/member/history';
 import { MainText } from '@/components/atoms/common/text/main-text';
-import { getFormattedDate, getLocaleDateFromDashDate } from '@/utils/format';
+import { getFormattedDate } from '@/utils/format';
 import { GRAY, WHITE } from '@/constants/styles/color';
 import SlideButtonList from '@/components/atoms/common/button/slide-button-list';
 import { LOCALE } from '@/constants/state/locale';
 import ConfirmPopup from '@/components/atoms/common/popup/error-popup';
 import { useI18n, useScopedI18n } from '../../../../../../locales/client';
 import { SIZE } from '@/constants/styles/style';
+import { getTranslatedDateFromDateString } from '@/utils/translate';
 
 const BackgroundContainer = styled.div<{ $isCurrent?: boolean }>`
   display: flex;
@@ -92,7 +93,7 @@ const MobileGroupHistoryItem = ({
         <PeriodContainer>
           <DateContainer>
             <MainText>
-              {getLocaleDateFromDashDate(
+              {getTranslatedDateFromDateString(
                 basePath,
                 getFormattedDate(group.startDate)
               )}
@@ -100,7 +101,7 @@ const MobileGroupHistoryItem = ({
             <MainText>{'-'}</MainText>
             <MainText>
               {group?.endDate
-                ? getLocaleDateFromDashDate(
+                ? getTranslatedDateFromDateString(
                     basePath,
                     getFormattedDate(group?.endDate)
                   )

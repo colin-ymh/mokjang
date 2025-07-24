@@ -13,6 +13,13 @@ export default {
   isNotDone: '미완료',
   customSelect: '직접선택',
 
+  lastPresent: '최근 출석',
+  weekly: '이번주',
+  monthly: '이번달',
+  monthlySeason: '1개월',
+  quarter: '3개월',
+  half: '6개월',
+
   fixed: '고정',
   resetFilter: '전체 초기화',
 
@@ -86,7 +93,6 @@ export default {
 
   lastLogin: '마지막 로그인',
 
-  createdAt: '생성일자',
   title: '제목',
   owner: '소유자',
   range: '범위',
@@ -176,7 +182,9 @@ export default {
   officerName: '직분명',
 
   joinedAt: '등록일',
-  registeredAt: '등록일자',
+  registeredAt: '교회 등록일자',
+  createdAt: '시스템 등록일자',
+
   updatedAt: '수정일자',
 
   birthAfter: '생년월일 ~부터',
@@ -267,6 +275,7 @@ export default {
 
   /*-------------------title (popup title)-------------------*/
   'title.memberRegister': '교인 등록',
+  'title.memberInformation': '교인정보',
   'title.editMember': '교인정보 수정',
 
   'title.addVisitation': '심방 추가',
@@ -347,9 +356,10 @@ export default {
   'header.setting': '설정',
   'header.add': '추가',
 
-  'header.memberInformation': '교인 정보',
-  'header.personalInformation': '개인 정보',
-  'header.familyInformation': '가족 정보',
+  'header.memberInformation': '교인정보',
+  'header.personalInformation': '개인정보',
+  'header.familyInformation': '가족정보',
+  'header.history': '이력',
 
   'header.groupMembers': '그룹원',
 
@@ -437,7 +447,6 @@ export default {
   'button.delete': '삭제하기',
   'button.stop': '종료하기',
   'button.close': '닫기',
-  'button.fetchFamily': '가족 불러오기',
   'button.saveFamily': '해당 가족만 추가하기',
   'button.goBack': '이전으로',
   'button.extra': '더 입력하기',
@@ -451,6 +460,7 @@ export default {
   'button.signIn': '회원가입 완료하기',
   'button.logOut': '로그아웃',
   'button.addMember': '교인 추가',
+  'button.addFamily': '가족 추가',
   'button.saveTerm': '기수 추가하기',
   'button.addVisitation': '심방 입력하기',
   'button.addTask': '업무 입력하기',

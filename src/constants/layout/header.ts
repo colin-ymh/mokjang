@@ -28,10 +28,9 @@ export enum MANAGEMENT_HEADER_ID {
 export enum MEMBER_INFORMATION_HEADER_ID {
   PERSONAL_INFORMATION = 'personalInformation',
   FAMILY_INFORMATION = 'familyInformation',
-  OFFICER = 'officer',
-  GROUP = 'group',
-  MINISTRY = 'ministry',
-  EDUCATION = 'education',
+  VISITATION = 'visitation',
+  ATTENDANCE = 'attendance',
+  HISTORY = 'history',
 }
 
 export enum GROUP_MANAGEMENT_HEADER_ID {

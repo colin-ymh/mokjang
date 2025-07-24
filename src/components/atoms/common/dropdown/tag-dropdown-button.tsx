@@ -27,7 +27,7 @@ const Chevron = styled(ChevronLeft)<{ $isOpened: boolean }>`
   transition: transform 0.2s ease;
 `;
 
-const MinistryDropdownButton = ({
+const TagDropdownButton = ({
   onClickDropdown,
   isCustomMode,
   customValue,
@@ -51,7 +51,10 @@ const MinistryDropdownButton = ({
 }: DropdownButtonProps & BorderInputProps) => {
   return (
     <DropdownButton
-      onClick={onClickDropdown}
+      onClick={(event) => {
+        event.stopPropagation();
+        onClickDropdown(event);
+      }}
       value={displayValue}
       {...inputProps}
     >
@@ -61,4 +64,4 @@ const MinistryDropdownButton = ({
   );
 };
 
-export default MinistryDropdownButton;
+export default TagDropdownButton;

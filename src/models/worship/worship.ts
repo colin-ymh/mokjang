@@ -67,6 +67,7 @@ export type WorshipEnrollment = {
   absentCount: number;
   worshipAttendances: WorshipAttendance[];
   attendanceRate: number;
+  lastPresentDate: string;
 };
 
 export const DEFAULT_WORSHIP_ENROLLMENT: WorshipEnrollment = {
@@ -79,6 +80,7 @@ export const DEFAULT_WORSHIP_ENROLLMENT: WorshipEnrollment = {
   absentCount: 0,
   worshipAttendances: [],
   attendanceRate: 0,
+  lastPresentDate: BLANK,
 };
 
 export enum WORSHIP_ATTENDANCE_STATUS {

@@ -5,9 +5,10 @@ import { MainText } from '@/components/atoms/common/text/main-text';
 import { GRAY } from '@/constants/styles/color';
 
 import { useI18n } from '../../../../../locales/client';
-import { getFormattedDate, getLocaleDateFromDashDate } from '@/utils/format';
+import { getFormattedDate } from '@/utils/format';
 import { usePathname } from 'next/navigation';
 import { LOCALE } from '@/constants/state/locale';
+import { getTranslatedDateFromDateString } from '@/utils/translate';
 
 const BackgroundContainer = styled.div<{ $isCurrent?: boolean }>`
   display: flex;
@@ -90,7 +91,7 @@ const EducationHistoryItem = ({
           <MainText color={GRAY.DARK}>{t('period')}</MainText>
           <DateContainer>
             <MainText>
-              {getLocaleDateFromDashDate(
+              {getTranslatedDateFromDateString(
                 basePath,
                 getFormattedDate(education.educationTerm.startDate)
               )}
@@ -98,7 +99,7 @@ const EducationHistoryItem = ({
             <MainText>{'-'}</MainText>
             <MainText>
               {education.educationTerm?.endDate
-                ? getLocaleDateFromDashDate(
+                ? getTranslatedDateFromDateString(
                     basePath,
                     getFormattedDate(education.educationTerm?.endDate)
                   )

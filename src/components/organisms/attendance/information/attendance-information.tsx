@@ -18,7 +18,11 @@ import {
 } from '@/redux/reducers/filter/worship-attendance-filter-reducer';
 import Loading from '@/components/atoms/common/etc/loading';
 import { WorshipSessionsApi } from '@/api/worship/worship-sessions.api';
-import { getDateFromDateString, getDateInWeekByDayOfWeek } from '@/utils/date';
+import {
+  getDateFromDateString,
+  getDateInWeekByDayOfWeek,
+  getDateStringFromDate,
+} from '@/utils/date';
 import { ATTENDANCE_CONTENT_ID } from '@/constants/layout/content';
 
 type AttendanceInformationProps = {};
@@ -96,9 +100,11 @@ const AttendanceInformation = ({}: AttendanceInformationProps) => {
         churchId,
         worshipId: newWorship.id,
         // 이전에 확인 중이던 세션의 날짜와 새로운 예배의 day index 를 활용해, 새로운 sessionDate 생성
-        sessionDate: getDateInWeekByDayOfWeek(
-          getDateFromDateString(targetWorshipSession.sessionDate),
-          newWorship.worshipDay
+        sessionDate: getDateStringFromDate(
+          getDateInWeekByDayOfWeek(
+            getDateFromDateString(targetWorshipSession.sessionDate),
+            newWorship.worshipDay
+          )
         ),
       });
 
@@ -192,7 +198,7 @@ const AttendanceInformation = ({}: AttendanceInformationProps) => {
       const response = await worshipSessionsApi.getWorshipSessionByDate({
         churchId,
         worshipId: targetWorshipSessionWorship.id,
-        sessionDate: date,
+        sessionDate: getDateStringFromDate(date),
       });
 
       const newWorshipSession = response.data.data;

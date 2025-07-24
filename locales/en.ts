@@ -13,6 +13,14 @@ export default {
   isNotDone: 'Incomplete',
   customSelect: 'Custom Select',
 
+  lastPresent: 'Last Present',
+
+  weekly: 'weekly',
+  monthly: 'monthly',
+  monthlySeason: '1 month',
+  quarter: '3 months',
+  half: '6 months',
+
   fixed: 'Fixed',
   resetFilter: 'Reset All',
 
@@ -90,8 +98,6 @@ export default {
   inChargeId: 'In Charge',
   taskDate: 'Task Date',
   content: 'Content',
-
-  createdAt: 'Created At',
 
   title: 'title',
 
@@ -179,7 +185,8 @@ export default {
   updateBefore: 'Updated Before',
 
   joinedAt: 'Joined Date',
-  registeredAt: 'Registered Date',
+  registeredAt: 'Church Registered Date',
+  createdAt: 'System Registered At',
   updatedAt: 'Updated Date',
 
   // 필수
@@ -262,6 +269,7 @@ export default {
 
   /*-------------------title (popup title)-------------------*/
   'title.memberRegister': 'Member Register',
+  'title.memberInformation': 'Member Information',
   'title.editMember': 'Edit Member',
 
   'title.addVisitation': 'Add Visitation',
@@ -344,6 +352,7 @@ export default {
   'header.memberInformation': 'Member Information',
   'header.personalInformation': 'Personal Information',
   'header.familyInformation': 'Family Information',
+  'header.history': 'History',
 
   'header.groupMembers': 'Group Members',
 
@@ -424,7 +433,6 @@ export default {
   'button.delete': 'Delete',
   'button.stop': 'Stop',
   'button.close': 'Close',
-  'button.fetchFamily': 'Save Every Family',
   'button.saveFamily': 'Save',
   'button.goBack': 'Go Back',
   'button.extra': 'Enter Extra',
@@ -439,6 +447,7 @@ export default {
   'button.logOut': 'Log Out',
   'button.saveTerm': 'Save New Term',
   'button.addMember': 'Add Member',
+  'button.addFamily': 'Add Family',
   'button.addVisitation': 'Add Visitation',
   'button.addEducation': 'Add Education',
   'button.addEducationTerm': 'Add Education Term',

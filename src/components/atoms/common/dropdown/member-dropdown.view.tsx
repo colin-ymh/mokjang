@@ -1,62 +1,84 @@
 'use client';
 
-import React, { ChangeEvent, forwardRef } from 'react';
+import React, { forwardRef } from 'react';
 import styled from 'styled-components';
-
-import { BLACK, WHITE } from '@/constants/styles/color';
-import BorderInput from '@/components/atoms/common/input/border-input';
-import { InputProps } from '@/components/atoms/common/input/main-input';
-import MemberDropdownItem from '@/components/atoms/common/dropdown/member-dropdown-item';
-
+import { BLACK, GRAY, MAIN, WHITE } from '@/constants/styles/color';
+import MemberDropdownItem, {
+  MemberDropdownType,
+} from '@/components/atoms/common/dropdown/member-dropdown-item';
 import ChevronLeft from '../../../../../public/svg/chevron-down.svg';
-import { MemberDropdownValueType } from '@/models/dropdown/dropdown';
+import MainInput from '@/components/atoms/common/input/main-input';
+import { MainText } from '@/components/atoms/common/text/main-text';
 
-const DropdownContainer = styled.div<{ $isOpened: boolean; width?: number }>`
+/* --------------------------- styled --------------------------- */
+const Wrapper = styled.div<{ $isOpened: boolean; width?: number }>`
   position: relative;
-  z-index: ${({ $isOpened }) => ($isOpened ? 50 : 'auto')};
-  width: ${({ width }) => (width ? `${width}px` : `100%`)};
+  width: ${({ width }) => (width ? `${width}px` : '100%')};
+  z-index: ${({ $isOpened }) => ($isOpened ? 100 : 'auto')};
 `;
 
-const DropdownButton = styled.div`
+const ButtonArea = styled.div`
   display: flex;
   width: 100%;
-  flex-direction: row;
+  position: relative;
   cursor: pointer;
-  position: relative;
 `;
 
-const DropdownList = styled.div<{
-  $isOpened: boolean;
-  $reverseDirection?: boolean;
+const InputContainer = styled.div<{
+  $borderColor?: string;
+  $backgroundColor?: string;
+  height?: number;
+  width?: number;
+  $disabled?: boolean;
 }>`
-  position: absolute;
-  margin-top: 10px;
-  border-radius: 5px;
-  background-color: ${WHITE};
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
   display: flex;
-  flex-direction: column;
-  width: 100%;
-  justify-content: flex-start;
-  align-items: flex-start;
-  overflow-y: auto;
-  max-height: 200px;
-  bottom: ${({ $reverseDirection }) => ($reverseDirection ? '55px' : 'auto')};
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  width: ${({ width }) => (width ? `${width}px` : '100%')};
+  border: 1px solid ${({ $borderColor }) => $borderColor ?? GRAY.SEMI_LIGHT};
+  border-radius: 5px;
+  background-color: ${({ $disabled, $backgroundColor }) =>
+    $disabled ? GRAY.SEMI_LIGHT : ($backgroundColor ?? WHITE)};
+  transition: border 0.3s ease;
+  height: ${({ height }) => (height ? `${height}px` : 'auto')};
+  overflow: hidden;
 
-  /* 애니메이션 */
-  transform-origin: ${({ $reverseDirection }) =>
-    $reverseDirection ? 'bottom' : 'top'};
-  transform: scaleY(${({ $isOpened }) => ($isOpened ? 1 : 0)});
-  opacity: ${({ $isOpened }) => ($isOpened ? 1 : 0)};
-  transition:
-    transform 0.2s ease,
-    opacity 0.2s ease;
-  pointer-events: ${({ $isOpened }) => ($isOpened ? 'auto' : 'none')};
+  &:focus-within {
+    border-color: ${MAIN.DEFAULT};
+  }
 `;
 
-const Chevron = styled(ChevronLeft)<{ $isOpened: boolean }>`
-  width: 20px;
-  height: 20px;
+const TagContainer = styled.div<{ $isShown: boolean }>`
+  display: ${({ $isShown }) => ($isShown ? 'flex' : 'none')};
+  flex-direction: row;
+  align-items: center;
+  padding: 0 10px;
+  gap: 5px;
+`;
+
+const Tag = styled.button<{ $isEditable: boolean }>`
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: ${({ $isEditable }) => ($isEditable ? WHITE : 'transparent')};
+  border: 1px solid ${GRAY.SEMI_LIGHT};
+  border-radius: 4px;
+  padding: 5px;
+  font-size: 12px;
+  cursor: ${({ $isEditable }) => ($isEditable ? 'pointer' : 'default')};
+`;
+
+const Close = styled.span`
+  font-size: 12px;
+  line-height: 1;
+  color: ${GRAY.SEMI_DARK};
+`;
+
+const Chevron = styled(ChevronLeft)<{ $isOpened: boolean; $isShown: boolean }>`
+  display: ${({ $isShown }) => ($isShown ? 'block' : 'none')};
+  width: 18px;
+  height: 18px;
   stroke: ${BLACK};
   stroke-width: 1px;
   position: absolute;
@@ -67,101 +89,138 @@ const Chevron = styled(ChevronLeft)<{ $isOpened: boolean }>`
   transition: transform 0.2s ease;
 `;
 
-type DropdownViewProps = {
-  items: MemberDropdownValueType[];
-  innerValue: any;
-  customValue?: string;
-  focusedIndex: number;
-  onFocusInput: () => void;
+const List = styled.div<{ $open: boolean; $reverse?: boolean }>`
+  position: absolute;
+  margin-top: 8px;
+  width: 100%;
+  border-radius: 5px;
+  background: ${WHITE};
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  display: ${({ $open }) => ($open ? 'flex' : 'none')};
+  flex-direction: column;
+  overflow-y: auto;
+  max-height: 200px;
+  bottom: ${({ $reverse }) => ($reverse ? '55px' : 'auto')};
+`;
+
+/* --------------------------- component --------------------------- */
+export type MultiMemberDropdownViewProps = {
+  items: MemberDropdownType[];
+  values: MemberDropdownType[];
+  searchText: string;
   isOpened: boolean;
-  onClickDropdown: () => void;
-  onClickItem: (value: any) => void;
-  onChangeInput: (event: ChangeEvent<HTMLInputElement>) => void;
-  onKeyDownHandler: (event: React.KeyboardEvent<HTMLInputElement>) => void;
+  setIsOpened: (b: boolean) => void;
+  focusedIndex: number;
+  isEditable: boolean;
   reverseDirection?: boolean;
-  isEditable?: boolean;
-  enterKeyHint: string;
+  enterKeyHint?: string;
+  placeholder?: string;
   borderColor?: string;
   width?: number;
   height?: number;
   backgroundColor?: string;
   disabled?: boolean;
-} & InputProps;
+  addValue: (v: MemberDropdownType) => void;
+  removeValue: (v: MemberDropdownType) => void;
+  onChangeInput: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onKeyDownHandler: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+} & React.InputHTMLAttributes<HTMLInputElement>;
 
-const DropdownView = forwardRef<HTMLInputElement, DropdownViewProps>(
+const MemberDropdownView = forwardRef<
+  HTMLInputElement,
+  MultiMemberDropdownViewProps
+>(
   (
     {
       items,
-      innerValue,
-      customValue,
-      focusedIndex,
-      onFocusInput,
+      values,
+      searchText,
       isOpened,
-      onClickDropdown,
-      onClickItem,
-      onChangeInput,
-      onKeyDownHandler,
-      reverseDirection,
+      setIsOpened,
+      focusedIndex,
       isEditable,
-      enterKeyHint,
+      reverseDirection,
+      enterKeyHint = 'enter',
+      placeholder,
       borderColor,
       width,
       height,
       backgroundColor,
       disabled,
-      ...inputProps
+      addValue,
+      removeValue,
+      onChangeInput,
+      onKeyDownHandler,
+      ...rest
     },
     ref
-  ) => {
-    const displayValue =
-      items.find((item) => item.value === innerValue)?.title || innerValue;
-
-    return (
-      <DropdownContainer $isOpened={isOpened} width={width}>
-        <DropdownButton onClick={onClickDropdown}>
-          <BorderInput
+  ) => (
+    <Wrapper $isOpened={isOpened} width={width}>
+      {/* 입력 영역 (Tag + 검색 input) */}
+      <ButtonArea
+        onClick={() => {
+          if (disabled) return;
+          if (items.length > 0) {
+            setIsOpened(true);
+          } else {
+            setIsOpened(false);
+          }
+        }}
+      >
+        <InputContainer
+          $borderColor={borderColor}
+          $backgroundColor={backgroundColor}
+          height={height}
+          width={width}
+          $disabled={disabled}
+        >
+          <TagContainer $isShown={values.length > 0}>
+            {values.map((v) => (
+              <Tag
+                key={v.value}
+                $isEditable={isEditable}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (isEditable) removeValue(v);
+                }}
+              >
+                <MainText color={GRAY.SEMI_DARK}>{v.title}</MainText>
+                {isEditable && <Close>&times;</Close>}
+              </Tag>
+            ))}
+          </TagContainer>
+          <MainInput
             ref={ref}
-            value={displayValue}
+            value={searchText}
             onChange={onChangeInput}
-            onFocus={onFocusInput}
-            borderColor={borderColor}
-            backgroundColor={backgroundColor}
-            height={height}
-            width={width}
-            readOnly={!isEditable}
+            onKeyDown={onKeyDownHandler}
+            placeholder={placeholder}
             enterKeyHint={enterKeyHint}
             disabled={disabled}
-            onKeyDown={(event) => {
-              inputProps.onKeyDown?.(event);
-              if (isOpened) {
-                onKeyDownHandler(event);
-              }
-            }}
-            {...inputProps}
+            backgroundColor={'transparent'}
+            borderBottomColor={'transparent'}
+            {...rest}
           />
-          <Chevron $isOpened={isOpened} />
-        </DropdownButton>
+        </InputContainer>
 
-        {!disabled && (
-          <DropdownList
-            $isOpened={isOpened}
-            $reverseDirection={reverseDirection}
-          >
-            {items.map((item, index) => (
-              <MemberDropdownItem
-                key={index}
-                item={item}
-                onClick={onClickItem}
-                isSelected={item.value === innerValue}
-                isFocused={focusedIndex === index}
-              />
-            ))}
-          </DropdownList>
-        )}
-      </DropdownContainer>
-    );
-  }
+        <Chevron $isOpened={isOpened} $isShown={isEditable} />
+      </ButtonArea>
+
+      {/* 옵션 리스트 */}
+      <List $open={items.length > 0 && isOpened} $reverse={reverseDirection}>
+        {items.map((item, idx) => (
+          <MemberDropdownItem
+            key={item.value}
+            item={item}
+            onClick={addValue}
+            isFocused={focusedIndex === idx}
+            isSelected={values.includes(item)}
+          />
+        ))}
+      </List>
+    </Wrapper>
+  )
 );
 
-DropdownView.displayName = 'DropdownView';
-export default DropdownView;
+MemberDropdownView.displayName = 'MemberDropdownView';
+export default MemberDropdownView;

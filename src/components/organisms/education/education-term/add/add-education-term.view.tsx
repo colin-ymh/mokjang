@@ -7,7 +7,7 @@ import { MainText } from '@/components/atoms/common/text/main-text';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import Quill from '@/components/atoms/common/input/quill';
-import MultiMemberDropdown from '@/components/atoms/common/dropdown/multi-member-dropdown';
+import MemberDropdown from '@/components/atoms/common/dropdown/member-dropdown';
 import { MemberDropdownValueType } from '@/models/dropdown/dropdown';
 import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-item';
 import { EducationEnrollment } from '@/models/education/education';
@@ -228,7 +228,7 @@ const AddEducationTermView = ({
             <RequiredMark />
             {t('inCharge')}
           </MainText>
-          <MultiMemberDropdown
+          <MemberDropdown
             values={inCharge}
             onChangeValues={onChangeInCharge}
             height={40}
@@ -243,7 +243,7 @@ const AddEducationTermView = ({
       <InputContainer>
         <LabelContainer>
           <MainText>{t('educationEnrollment')}</MainText>
-          <MultiMemberDropdown
+          <MemberDropdown
             values={[]}
             onChangeValues={onClickNewEnrollment}
             placeholder={t_placeholder('name')}

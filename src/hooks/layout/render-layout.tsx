@@ -21,8 +21,8 @@ import {
 
 import MainMemberHeader from '@/components/molecules/layout/header/main/member/main-member-header';
 import MemberList from '@/components/organisms/member/list/member-list';
-import MemberInformationList from '@/components/molecules/member/information/member-information-list';
-import FamilyInformationList from '@/components/molecules/member/information/family-information-list';
+import MemberPersonalInformationList from '@/components/molecules/member/information/personal/member-personal-information-list';
+import FamilyInformationList from '@/components/molecules/member/information/family/family-information-list';
 import MemberEducation from '@/components/molecules/member/information/member-education';
 import GroupManagement from '@/components/organisms/management/group/group-management';
 import MemberGroup from '@/components/molecules/member/information/member-group';
@@ -44,7 +44,7 @@ import ManagementJoinRequestHeader from '@/components/molecules/layout/header/ma
 import ManagementPermissionHeader from '@/components/molecules/layout/header/management/permission/management-permission-header';
 import ManagementUserHeader from '@/components/molecules/layout/header/management/user/management-user-header';
 import ChurchUserList from '@/components/organisms/church-user/list/church-user-list';
-import MemberInformationListView from '@/components/molecules/member/information/member-information-list.view';
+import MemberInformationListView from '@/components/molecules/member/information/personal/member-personal-information-list.view';
 import PermissionTemplateList from '@/components/organisms/permission/list/permission-template-list';
 import EducationTermList from '@/components/organisms/education/education-term/list/education-term-list';
 import JoinRequestList from '@/components/organisms/join-request/list/join-request-list';
@@ -58,6 +58,7 @@ import NewMemberWidget from '@/components/molecules/home/widget/new-member-widge
 import MyScheduleWidget from '@/components/molecules/home/widget/my-schedule-widget';
 import MinistryGroupManagement from '@/components/organisms/management/ministry/ministry-group-management';
 import ReportedScheduleWidget from '@/components/molecules/home/widget/reported-schedule-widget';
+import WorshipAttendanceWidget from '@/components/molecules/home/widget/worship-attendance-widget';
 
 export const getSide = (id: string) => {
   switch (id) {
@@ -218,7 +219,7 @@ export const getMemberInformationContent = (
       if (isPopup) {
         return <MemberInformationListView />;
       } else {
-        return <MemberInformationList />;
+        return <MemberPersonalInformationList />;
       }
     case MEMBER_INFORMATION_HEADER_ID.FAMILY_INFORMATION:
       return <FamilyInformationList setMemberContentId={setMemberContentId} />;
@@ -241,5 +242,7 @@ export const getWidgetById = (id: HOME_WIDGET) => {
       return <MyScheduleWidget />;
     case HOME_WIDGET.REPORTED_SCHEDULE:
       return <ReportedScheduleWidget />;
+    case HOME_WIDGET.WORSHIP_ATTENDANCE:
+      return <WorshipAttendanceWidget />;
   }
 };

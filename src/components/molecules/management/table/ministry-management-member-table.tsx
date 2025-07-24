@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Member } from '@/models/member/member';
-import ManagementMemberTableView from '@/components/molecules/management/table/management-member-table.view';
 import { MEMBER } from '@/constants/column/member-column';
 import { ORDER_DIRECTION } from '@/constants/constant';
 import { CHURCH_CONTENT_ID } from '@/constants/layout/content';
@@ -8,6 +7,7 @@ import { Ministry, MinistryGroup } from '@/models/management/management';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { MinistryMembersApi } from '@/api/management/ministry/ministry-mebers.api';
+import ManagementMemberTableView from '@/components/molecules/management/table/management-member-table.view';
 
 export type MinistryManagementMemberTableProps = {
   members: Member[];

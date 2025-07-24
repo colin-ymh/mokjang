@@ -6,7 +6,7 @@ import { MainText } from '@/components/atoms/common/text/main-text';
 const RangeRadioButtonContainer = styled.div`
   display: flex;
   flex-direction: row;
-  flex-wrap: wrap;
+  flex-wrap: inherit;
   gap: 2px;
   background-color: ${GRAY.EXTRA_LIGHT};
   border-radius: 10px;

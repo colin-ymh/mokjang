@@ -28,7 +28,7 @@ const Chevron = styled(ChevronLeft)<{ $isOpened: boolean }>`
 `;
 
 export type DropdownButtonProps = {
-  onClickDropdown: () => void;
+  onClickDropdown: (event: React.MouseEvent<HTMLDivElement>) => void;
   isCustomMode: boolean;
   customValue?: string;
   displayValue?: string;
@@ -76,7 +76,12 @@ const DefaultDropdownButton = forwardRef<HTMLInputElement, DropdownButtonProps>(
     ref
   ) => {
     return (
-      <DropdownButton onClick={onClickDropdown}>
+      <DropdownButton
+        onClick={(event) => {
+          event.stopPropagation();
+          onClickDropdown(event);
+        }}
+      >
         <BorderInput
           ref={ref}
           value={isCustomMode ? customValue : displayValue}

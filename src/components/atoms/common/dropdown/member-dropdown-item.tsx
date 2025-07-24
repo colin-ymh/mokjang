@@ -3,9 +3,15 @@ import styled from 'styled-components';
 
 import { BLACK, MAIN } from '@/constants/styles/color';
 import { MainText } from '@/components/atoms/common/text/main-text';
-import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-item';
-import { BLANK, GENDER } from '@/constants/constant';
 import ProfileImage from '@/components/atoms/common/image/profile-image';
+import { BLANK, GENDER } from '@/constants/constant';
+import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-item';
+
+export type MemberDropdownType = DropdownValueType & {
+  profileImage?: string;
+  age?: number;
+  gender?: GENDER;
+};
 
 const DropdownContainer = styled.div`
   display: flex;
@@ -27,16 +33,10 @@ const ItemContainer = styled.div<{ $isFocused: boolean }>`
   }
 `;
 
-export type MemberDropdownType = DropdownValueType & {
-  profileImage?: string;
-  age?: number;
-  gender?: GENDER;
-};
-
-type MemberDropdownItemProps = {
+type MultiMemberDropdownItemProps = {
   isSelected: boolean;
   item: MemberDropdownType;
-  onClick: (index: number) => void;
+  onClick: (item: MemberDropdownType) => void;
   isFocused: boolean;
 };
 
@@ -45,10 +45,10 @@ const MemberDropdownItem = ({
   onClick,
   isSelected,
   isFocused,
-}: MemberDropdownItemProps) => {
+}: MultiMemberDropdownItemProps) => {
   return (
     <DropdownContainer>
-      <ItemContainer onClick={() => onClick(item.value)} $isFocused={isFocused}>
+      <ItemContainer onClick={() => onClick(item)} $isFocused={isFocused}>
         <ProfileImage value={item.profileImage || BLANK} />
         <MainText color={isSelected ? MAIN.DEFAULT : BLACK}>
           {item.title}

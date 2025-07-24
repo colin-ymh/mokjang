@@ -8,7 +8,7 @@ import {
   useTaskStatusDropdownItems,
   useTimeDropdownItems,
 } from '@/hooks/dropdown/dropdown-items';
-import MultiMemberDropdown from '@/components/atoms/common/dropdown/multi-member-dropdown';
+import MemberDropdown from '@/components/atoms/common/dropdown/member-dropdown';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
@@ -202,7 +202,7 @@ const AddTaskView = ({
             <RequiredMark />
             {t('inCharge')}
           </MainText>
-          <MultiMemberDropdown
+          <MemberDropdown
             values={inCharge}
             onChangeValues={onChangeInCharge}
             height={40}
@@ -230,7 +230,7 @@ const AddTaskView = ({
       <InputContainer>
         <LabelContainer>
           <MainText>{t('receiver')}</MainText>
-          <MultiMemberDropdown
+          <MemberDropdown
             values={receivers}
             onChangeValues={onChangeReceivers}
             height={40}

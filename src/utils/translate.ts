@@ -12,7 +12,7 @@ import {
   WORSHIP_ENROLLMENT,
 } from '@/constants/column/worship-column';
 import { LOCALE } from '@/constants/state/locale';
-import { getShortEnglishMonthName } from '@/utils/format';
+import { getEnglishMonthName, getShortEnglishMonthName } from '@/utils/format';
 
 export const getTranslatedMemberColumn = (
   t: (key: string, ...args: any[]) => string,
@@ -232,6 +232,22 @@ export const getTranslatedAddMemberTitle = (locale: LOCALE, name: string) => {
  * @param locale
  * @param name
  */
+export const getTranslatedFamilyAddMemberTitle = (
+  locale: LOCALE,
+  name: string
+) => {
+  if (locale === LOCALE.KO) {
+    return `${name} 님의 가족 추가`;
+  }
+
+  return `Add ${name}'s Family Members`;
+};
+
+/**
+ *
+ * @param locale
+ * @param name
+ */
 export const getTranslatedNewGroupLeader = (locale: LOCALE, name: string) => {
   if (locale === LOCALE.KO) {
     return `${name} 님이 새로운 그룹장이 됩니다`;
@@ -286,4 +302,56 @@ export const getTranslatedAlreadyMinistryGroupLeader = (
   }
 
   return `${name} is current ministry leader.`;
+};
+
+/**
+ *
+ * @param locale
+ * @param rangeTitle
+ */
+export const getTranslateWorshipAttendanceWidgetDescription = (
+  locale: LOCALE,
+  rangeTitle: string
+) => {
+  if (locale === LOCALE.KO) {
+    return `${rangeTitle} 출석률 50% 미만`;
+  }
+
+  return `Under 50% attendance rate in ${rangeTitle}`;
+};
+
+// YYYY-MM-DD 을 YYYY년 MM월 DD일 형식으로 포맷
+export const getTranslatedDateFromDateString = (
+  basePath: LOCALE,
+  date: string
+): string => {
+  if (!date) return ''; // 빈 입력 처리
+
+  // YYYY-MM-DD에서 숫자만 남기기
+  const cleaned = date.replace(/[^0-9]/g, '').slice(0, 8); // 숫자 외 제거
+
+  if (basePath === LOCALE.KO) {
+    // 입력된 문자열 길이 확인 후 포맷 적용
+    switch (cleaned.length) {
+      case 4: // YYYY
+        return `${cleaned}년`;
+      case 6: // YYYY MM
+        return `${cleaned.slice(0, 4)}년 ${parseInt(cleaned.slice(4, 6), 10)}월`;
+      case 8: // YYYY MM DD
+        return `${cleaned.slice(0, 4)}년 ${parseInt(cleaned.slice(4, 6), 10)}월 ${parseInt(cleaned.slice(6), 10)}일`;
+      default: // 유효하지 않은 경우
+        return '';
+    }
+  } else {
+    switch (cleaned.length) {
+      case 4: // YYYY
+        return cleaned; // 연도만 반환
+      case 6: // YYYY MM
+        return `${getEnglishMonthName(parseInt(cleaned.slice(4, 6), 10))} ${cleaned.slice(0, 4)}`;
+      case 8: // YYYY MM DD
+        return `${getEnglishMonthName(parseInt(cleaned.slice(4, 6), 10))} ${parseInt(cleaned.slice(6), 10)}, ${cleaned.slice(0, 4)}`;
+      default: // 유효하지 않은 경우
+        return '';
+    }
+  }
 };

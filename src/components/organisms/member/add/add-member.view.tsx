@@ -7,7 +7,7 @@ import { useI18n, useScopedI18n } from '../../../../../locales/client';
 import { BAPTISM, BLANK, GENDER, MARRIAGE } from '@/constants/constant';
 import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-item';
 import LabelInput from '@/components/atoms/common/input/label-input';
-import { GRAY, MAIN, ORANGE, PURPLE, VIOLET } from '@/constants/styles/color';
+import { GRAY, MAIN, ORANGE, PURPLE } from '@/constants/styles/color';
 import LabelDropdown from '@/components/atoms/common/dropdown/label-dropdown';
 import LabelRadioButton from '@/components/atoms/common/radio-button/label-radio-button';
 import {
@@ -23,8 +23,6 @@ import { MainText } from '@/components/atoms/common/text/main-text';
 import CheckButton from '@/components/atoms/common/button/check-button';
 import KoreanLunarCalendar, { CalendarData } from 'korean-lunar-calendar';
 import { SIZE } from '@/constants/styles/style';
-
-import Photo from '../../../../../public/svg/image.svg';
 import User from '../../../../../public/svg/user.svg';
 import Briefcase from '../../../../../public/svg/briefcase.svg';
 import Heart from '../../../../../public/svg/heart.svg';
@@ -111,13 +109,6 @@ const RowContainer = styled.div`
 const ImageContainer = styled.div`
   display: flex;
   width: 100%;
-`;
-
-const ImageIcon = styled(Photo)`
-  width: 16px;
-  height: 16px;
-  stroke: ${VIOLET.DARK};
-  stroke-width: 2px;
 `;
 
 const UserIcon = styled(User)`
@@ -262,15 +253,16 @@ const AddMemberView = ({
   return (
     <>
       <RequiredRegisterContainer>
-        {/* 프로필 사진 섹션 */}
+        {/* 기본 정보 섹션 */}
         <SectionContainer>
           {/* 섹션명 */}
           <SectionTitle>
-            <IconContainer $backgroundColor={VIOLET.LIGHT}>
-              <ImageIcon />
+            <IconContainer $backgroundColor={MAIN.LIGHT}>
+              <UserIcon />
             </IconContainer>
-            <MainText size={SIZE.EXTRA_LARGE}>{t('profileImage')}</MainText>
+            <MainText size={SIZE.EXTRA_LARGE}>{t('basicInformation')}</MainText>
           </SectionTitle>
+
           {/* 프로필 사진 */}
           <LabelContainer>
             <MainText color={GRAY.DARK} size={SIZE.SMALL}>
@@ -285,17 +277,7 @@ const AddMemberView = ({
               />
             </ImageContainer>
           </LabelContainer>
-        </SectionContainer>
 
-        {/* 기본 정보 섹션 */}
-        <SectionContainer>
-          {/* 섹션명 */}
-          <SectionTitle>
-            <IconContainer $backgroundColor={MAIN.LIGHT}>
-              <UserIcon />
-            </IconContainer>
-            <MainText size={SIZE.EXTRA_LARGE}>{t('basicInformation')}</MainText>
-          </SectionTitle>
           <RowContainer>
             {/* 이름 */}
             <InputContainer>
@@ -565,4 +547,5 @@ const AddMemberView = ({
   );
 };
 
+// @ts-ignore
 export default AddMemberView;

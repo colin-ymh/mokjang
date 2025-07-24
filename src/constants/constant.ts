@@ -136,9 +136,11 @@ export enum HOVER_POSITION {
   BOTTOM = 'bottom',
 }
 
-export enum SEARCH_RANGE {
+export enum RANGE {
   WEEKLY = 'weekly',
   MONTHLY = 'monthly',
+  QUARTER = 'quarter',
+  HALF = 'half',
 }
 
 export enum GROUP_ROLE {

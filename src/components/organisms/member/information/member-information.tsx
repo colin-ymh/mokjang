@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import { MEMBER_INFORMATION_HEADER_ID } from '@/constants/layout/header';
 import MemberInformationHeader from '@/components/molecules/member/information/header/member-information-header';
 import { getMemberInformationContent } from '@/hooks/layout/render-layout';
+import PopupHeaderBar from '@/components/atoms/layout/header/popup-header-bar';
+import { useMemberInformationHeaderBarItems } from '@/hooks/layout/header-bar-items';
 
 const InformationContainer = styled.div`
   display: flex;
@@ -24,6 +26,8 @@ type MemberInformationProps = {
 };
 
 const MemberInformation = ({ isPopup }: MemberInformationProps) => {
+  const headerBarItems = useMemberInformationHeaderBarItems();
+
   const [memberContentId, setMemberContentId] = useState<string>(
     MEMBER_INFORMATION_HEADER_ID.PERSONAL_INFORMATION
   );
@@ -34,10 +38,17 @@ const MemberInformation = ({ isPopup }: MemberInformationProps) => {
 
   return (
     <InformationContainer>
-      <MemberInformationHeader
-        memberContentId={memberContentId}
-        onClickItem={onClickHeaderBarItem}
+      {/* 기본 정보 */}
+      <MemberInformationHeader />
+
+      {/* 개인정보, 가족 등의 탭 바*/}
+      <PopupHeaderBar
+        value={memberContentId}
+        items={headerBarItems}
+        onClick={onClickHeaderBarItem}
       />
+
+      {/* 콘텐츠 */}
       <ContentContainer>
         {getMemberInformationContent(
           memberContentId,

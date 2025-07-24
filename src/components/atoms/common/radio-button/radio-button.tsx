@@ -18,7 +18,7 @@ const LabelButtonContainer = styled.div`
   justify-content: center;
   padding: 10px;
   border: 1px solid ${GRAY.LIGHT};
-  border-radius: 10px;
+  border-radius: 5px;
   gap: 10px;
 
   cursor: pointer;

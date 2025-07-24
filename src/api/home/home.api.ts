@@ -2,7 +2,7 @@ import { AxiosResponse } from 'axios';
 import { SERVER_URL, TEST_SERVER_URL } from '@/constants/state/url';
 import { CustomError } from '@/api/error/error';
 import authorizeAxios from '@/api/authorize-axios';
-import { SEARCH_RANGE } from '@/constants/constant';
+import { RANGE } from '@/constants/constant';
 
 type GetNewMemberSummaryParams = {
   churchId: string;
@@ -14,13 +14,21 @@ type GetNewMemberDetailsParams = {
 };
 
 type GetMySchedulesParams = {
-  range: SEARCH_RANGE;
+  range: RANGE;
   churchId: string;
 };
 
 type GetReportedSchedulesParams = {
-  range: SEARCH_RANGE;
+  range: RANGE;
   churchId: string;
+  page: number;
+};
+
+type GetWorshipAttendancesParams = {
+  churchId: string;
+  worshipId: string;
+  range: RANGE;
+  take: number;
   page: number;
 };
 
@@ -128,6 +136,34 @@ export class HomeApi {
     const { churchId, range, page } = params;
 
     const url = `${this._url}/churches/${churchId}/home/reports?range=${range}&page=${page}`;
+
+    try {
+      return await authorizeAxios.get(url);
+    } catch (serverError: any) {
+      if (serverError.response) {
+        const { message, error, statusCode } = serverError.response.data;
+        throw new CustomError(message, error, statusCode);
+      } else {
+        throw new CustomError(
+          '알 수 없는 에러가 발생했습니다',
+          500,
+          'Unknown Error'
+        );
+      }
+    }
+  };
+
+  /**
+   * 보고받은 일정 조회
+   * @param {GetWorshipAttendancesParams} params
+   * @returns {Promise<AxiosResponse>}
+   */
+  public getWorshipAttendances = async (
+    params: GetWorshipAttendancesParams
+  ): Promise<AxiosResponse> => {
+    const { churchId, range, worshipId, page, take } = params;
+
+    const url = `${this._url}/churches/${churchId}/home/worship-attendances?worshipId=${worshipId}&range=${range}&page=${page}&take=${take}`;
 
     try {
       return await authorizeAxios.get(url);

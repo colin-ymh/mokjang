@@ -16,7 +16,7 @@ import {
 import { DEFAULT_WORSHIP_SESSION } from '@/models/worship/worship';
 import { WorshipSessionsApi } from '@/api/worship/worship-sessions.api';
 import { getIsWellFormedTitle } from '@/utils/check';
-import { getDateFromDateString } from '@/utils/date';
+import { getDateStringFromDate } from '@/utils/date';
 import { setToastText } from '@/redux/reducers/toast-popup-reducer';
 
 export type AttendanceTableProps = {
@@ -91,7 +91,7 @@ const AttendanceTable = ({ loadWorshipEnrollments }: AttendanceTableProps) => {
         const response = await worshipSessionsApi.getWorshipSessionByDate({
           churchId,
           worshipId: targetWorship.id,
-          sessionDate,
+          sessionDate: getDateStringFromDate(sessionDate),
         });
 
         const newWorshipSession = response.data.data;
@@ -177,7 +177,7 @@ const AttendanceTable = ({ loadWorshipEnrollments }: AttendanceTableProps) => {
       const response = await worshipSessionsApi.getWorshipSessionByDate({
         churchId,
         worshipId: targetWorshipSessionWorship.id,
-        sessionDate: getDateFromDateString(targetWorshipSession.sessionDate),
+        sessionDate: targetWorshipSession.sessionDate,
       });
 
       const prevSession = response.data.data;

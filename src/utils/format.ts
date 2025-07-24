@@ -1,5 +1,4 @@
 import { BLANK } from '@/constants/constant';
-import { LOCALE } from '@/constants/state/locale';
 
 export const getTrimmedString = (value: string) => {
   if (!value) return BLANK;
@@ -202,42 +201,6 @@ export const getShortEnglishMonthName = (month: number): string => {
     'Dec.',
   ];
   return months[month - 1];
-};
-
-// YYYY-MM-DD 을 YYYY년 MM월 DD일 형식으로 포맷
-export const getLocaleDateFromDashDate = (
-  basePath: LOCALE,
-  date: string
-): string => {
-  if (!date) return ''; // 빈 입력 처리
-
-  // YYYY-MM-DD에서 숫자만 남기기
-  const cleaned = date.replace(/[^0-9]/g, ''); // 숫자 외 제거
-
-  if (basePath === LOCALE.KO) {
-    // 입력된 문자열 길이 확인 후 포맷 적용
-    switch (cleaned.length) {
-      case 4: // YYYY
-        return `${cleaned}년`;
-      case 6: // YYYY MM
-        return `${cleaned.slice(0, 4)}년 ${parseInt(cleaned.slice(4, 6), 10)}월`;
-      case 8: // YYYY MM DD
-        return `${cleaned.slice(0, 4)}년 ${parseInt(cleaned.slice(4, 6), 10)}월 ${parseInt(cleaned.slice(6), 10)}일`;
-      default: // 유효하지 않은 경우
-        return '';
-    }
-  } else {
-    switch (cleaned.length) {
-      case 4: // YYYY
-        return cleaned; // 연도만 반환
-      case 6: // YYYY MM
-        return `${getEnglishMonthName(parseInt(cleaned.slice(4, 6), 10))} ${cleaned.slice(0, 4)}`;
-      case 8: // YYYY MM DD
-        return `${getEnglishMonthName(parseInt(cleaned.slice(4, 6), 10))} ${parseInt(cleaned.slice(6), 10)}, ${cleaned.slice(0, 4)}`;
-      default: // 유효하지 않은 경우
-        return '';
-    }
-  }
 };
 
 // 차량번호 입력창 포맷

@@ -86,6 +86,7 @@ type MemberListViewProps = {
 
 const MemberListView = (props: MemberListViewProps) => {
   const t_button = useScopedI18n('button');
+  const t_title = useScopedI18n('title');
   const t_popup = useScopedI18n('popup');
   const {
     isMemberInformationShown,
@@ -112,17 +113,7 @@ const MemberListView = (props: MemberListViewProps) => {
       <SlidePopup
         isShow={isMemberInformationShown}
         onClickClose={onClickClose}
-        headerRight={
-          <ButtonRow>
-            <ButtonContainer onClick={onClickConfirmOpen}>
-              <Trash />
-            </ButtonContainer>
-            <ButtonContainer onClick={onClickClose}>
-              <Cancel />
-            </ButtonContainer>
-          </ButtonRow>
-        }
-        isFooterShown={false}
+        headerTitle={t_title('memberInformation')}
       >
         <>
           {/* 삭제 확인 팝업 */}

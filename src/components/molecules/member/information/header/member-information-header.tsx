@@ -1,19 +1,10 @@
 import React from 'react';
 import MemberInformationHeaderView from '@/components/molecules/member/information/header/member-information-header.view';
 
-type MemberInformationHeaderProps = {
-  memberContentId: string;
-  onClickItem: (id: string) => void;
-};
+type MemberInformationHeaderProps = {};
 
-const MemberInformationHeader = ({
-  memberContentId,
-  onClickItem,
-}: MemberInformationHeaderProps) => {
-  const props = {
-    memberContentId,
-    onClickItem,
-  };
+const MemberInformationHeader = ({}: MemberInformationHeaderProps) => {
+  const props = {};
 
   return (
     <>

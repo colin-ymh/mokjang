@@ -19,8 +19,6 @@ type MEMBER_FILTER = {
   [MEMBER.MINISTRIES]: string[];
   [MEMBER.EDUCATIONS]: string[];
   [MEMBER.BAPTISM]: string[];
-  [MEMBER.GENDER]: string[];
-  [MEMBER.BAPTISM]: string[];
   [MEMBER.MARRIAGE]: string[];
   [MEMBER.MOBILE_PHONE]: string;
   [MEMBER.HOME_PHONE]: string;
@@ -246,69 +244,69 @@ const initialState: MemberFilterState = {
 };
 
 export const fetchMembers = createAsyncThunk<
+  Member[],
   void,
-  { currentPage: number },
   { state: RootState }
->(
-  'members/fetchMembers',
-  async ({ currentPage }, { getState, dispatch, rejectWithValue }) => {
-    const state = getState().memberFilter;
-    const { groups, churchId } = getState().church;
+>('members/fetchMembers', async (_, { getState, rejectWithValue }) => {
+  const state = getState().memberFilter;
+  const { groups, churchId } = getState().church;
+  const {
+    memberPage,
+    memberOrderBy,
+    memberOrderDirection,
+    memberFilter,
+    members,
+  } = state;
+  const membersApi = new MembersApi(false);
 
-    const { memberOrderBy, memberOrderDirection, memberFilter, members } =
-      state;
-    const membersApi = new MembersApi(false);
+  try {
+    let order = memberOrderBy;
+    if (order === MEMBER.AGE) order = MEMBER.BIRTH;
 
-    try {
-      let order = memberOrderBy;
-      if (order === MEMBER.AGE) order = MEMBER.BIRTH;
+    const response = await membersApi.getMembers({
+      churchId,
+      page: memberPage,
+      take: 30,
+      order: order || undefined,
+      orderDirection: memberOrderDirection,
+      selectedColumns: memberFilter.selectedColumns,
+      group: getEveryChildGroups(groups, memberFilter.group),
+      officer: memberFilter.officer,
+      gender: memberFilter.gender,
+      educations: memberFilter.educations,
+      ministries: memberFilter.ministries,
+      baptism: memberFilter.baptism,
+      marriage: memberFilter.marriage,
+      birthAfter: memberFilter.birthAfter,
+      birthBefore: memberFilter.birthBefore,
+      registerAfter: memberFilter.registerAfter,
+      registerBefore: memberFilter.registerBefore,
+      updateAfter: memberFilter.updateAfter,
+      updateBefore: memberFilter.updateBefore,
+      name: memberFilter.name,
+      school: memberFilter.school,
+      vehicleNumber: memberFilter.vehicleNumber,
+      address: memberFilter.address,
+      mobilePhone: memberFilter.mobilePhone,
+      homePhone: memberFilter.homePhone,
+      occupation: memberFilter.occupation,
+    });
 
-      const response = await membersApi.getMembers({
-        churchId,
-        page: currentPage,
-        take: 30,
-        order: order || undefined,
-        orderDirection: memberOrderDirection,
-        selectedColumns: memberFilter.selectedColumns,
-        group: getEveryChildGroups(groups, memberFilter.group),
-        officer: memberFilter.officer,
-        gender: memberFilter.gender,
-        educations: memberFilter.educations,
-        ministries: memberFilter.ministries,
-        baptism: memberFilter.baptism,
-        marriage: memberFilter.marriage,
-        birthAfter: memberFilter.birthAfter,
-        birthBefore: memberFilter.birthBefore,
-        registerAfter: memberFilter.registerAfter,
-        registerBefore: memberFilter.registerBefore,
-        updateAfter: memberFilter.updateAfter,
-        updateBefore: memberFilter.updateBefore,
-        name: memberFilter.name,
-        school: memberFilter.school,
-        vehicleNumber: memberFilter.vehicleNumber,
-        address: memberFilter.address,
-        mobilePhone: memberFilter.mobilePhone,
-        homePhone: memberFilter.homePhone,
-        occupation: memberFilter.occupation,
-      });
+    const newMembers: Member[] = response.data.data;
+    const existingIds = new Set(members.map((member) => member.id));
+    const filteredNewMembers = newMembers.filter(
+      (member) => !existingIds.has(member.id)
+    );
 
-      const newMembers: Member[] = response.data.data;
-      const existingIds = new Set(members.map((member) => member.id));
-      const filteredNewMembers = newMembers.filter(
-        (member) => !existingIds.has(member.id)
-      );
+    const updatedMembers =
+      memberPage === 1 ? newMembers : [...members, ...filteredNewMembers];
 
-      const updatedMembers =
-        currentPage === 1 ? newMembers : [...members, ...filteredNewMembers];
-
-      dispatch(setMembers(updatedMembers));
-      dispatch(setMemberPage(currentPage));
-    } catch (error) {
-      console.error('교인 목록 불러오기 실패', error);
-      return rejectWithValue('교인 목록을 불러오는 중 오류가 발생했습니다.');
-    }
+    return updatedMembers;
+  } catch (error) {
+    console.error('교인 목록 불러오기 실패', error);
+    return rejectWithValue('교인 목록을 불러오는 중 오류가 발생했습니다.');
   }
-);
+});
 
 const MemberFilterSlice = createSlice({
   name: 'register',
@@ -338,6 +336,11 @@ const MemberFilterSlice = createSlice({
     setMemberPage: (state, action: PayloadAction<number>) => {
       state.memberPage = action.payload;
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(fetchMembers.fulfilled, (state, action) => {
+      state.members = action.payload;
+    });
   },
 });
 

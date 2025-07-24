@@ -13,10 +13,10 @@ import { MAIN_HEADER_ID } from '@/constants/layout/header';
 import GroupFilter from '@/components/molecules/member/setting/group-filter';
 import AddMember from '@/components/organisms/member/add/add-member';
 import Plus from '../../../../../../../public/svg/plus.svg';
-import WrappedPagePopup from '@/components/atoms/common/popup/wrapped-page-popup';
 import { getIsWellFormedMobilePhone, getIsWellFormedName } from '@/utils/check';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
+import CustomPopup from '@/components/atoms/common/popup/custom-popup';
 
 const HeaderContainer = styled.div`
   display: flex;
@@ -164,9 +164,11 @@ const MainMemberHeaderView = ({
       </SlidePopup>
       {/* 데스크톱 교인 추가 */}
       <DesktopRegister>
-        <WrappedPagePopup
+        <CustomPopup
+          width={600}
+          height={1000}
           isShow={isRegisterShown}
-          onClickClose={onClickClose}
+          onClickCancel={onClickClose}
           onClickDone={onClickSave}
           headerTitle={t_title('memberRegister')}
           headerDescription={t_description('memberRegisterHeader')}
@@ -176,7 +178,7 @@ const MainMemberHeaderView = ({
           }
         >
           <AddMember onChangeProfileImage={onChangeProfileImage} />
-        </WrappedPagePopup>
+        </CustomPopup>
       </DesktopRegister>
       {/* 모바일 교인 추가*/}
       <MobileRegister>

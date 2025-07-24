@@ -17,6 +17,12 @@ import { useI18n, useScopedI18n } from '../../../locales/client';
 import { TABLE_HEADER_ITEM } from '@/redux/reducers/filter/member-filter-reducer';
 import { MEMBER } from '@/constants/column/member-column';
 
+import User from '../../../public/svg/user.svg';
+import Users from '../../../public/svg/users.svg';
+import Heart from '../../../public/svg/heart.svg';
+import Calendar from '../../../public/svg/calendar.svg';
+import Clock from '../../../public/svg/clock.svg';
+
 export const useMainMemberHeaderBarItems = () => {
   const t_memberContent = useScopedI18n('member-content');
 
@@ -105,26 +111,27 @@ export const useMemberInformationHeaderBarItems = () => {
     {
       id: MEMBER_INFORMATION_HEADER_ID.PERSONAL_INFORMATION,
       title: t_header(MEMBER_INFORMATION_HEADER_ID.PERSONAL_INFORMATION),
+      icon: User,
     },
     {
       id: MEMBER_INFORMATION_HEADER_ID.FAMILY_INFORMATION,
       title: t_header(MEMBER_INFORMATION_HEADER_ID.FAMILY_INFORMATION),
+      icon: Users,
     },
     {
-      id: MEMBER_INFORMATION_HEADER_ID.OFFICER,
-      title: t(MEMBER_INFORMATION_HEADER_ID.OFFICER),
+      id: MEMBER_INFORMATION_HEADER_ID.VISITATION,
+      title: t_header(MEMBER_INFORMATION_HEADER_ID.VISITATION),
+      icon: Heart,
     },
     {
-      id: MEMBER_INFORMATION_HEADER_ID.GROUP,
-      title: t(MEMBER_INFORMATION_HEADER_ID.GROUP),
+      id: MEMBER_INFORMATION_HEADER_ID.ATTENDANCE,
+      title: t_header(MEMBER_INFORMATION_HEADER_ID.ATTENDANCE),
+      icon: Calendar,
     },
     {
-      id: MEMBER_INFORMATION_HEADER_ID.MINISTRY,
-      title: t(MEMBER_INFORMATION_HEADER_ID.MINISTRY),
-    },
-    {
-      id: MEMBER_INFORMATION_HEADER_ID.EDUCATION,
-      title: t(MEMBER_INFORMATION_HEADER_ID.EDUCATION),
+      id: MEMBER_INFORMATION_HEADER_ID.HISTORY,
+      title: t_header(MEMBER_INFORMATION_HEADER_ID.HISTORY),
+      icon: Clock,
     },
   ];
 

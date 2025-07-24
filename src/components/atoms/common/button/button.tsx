@@ -74,7 +74,7 @@ const Button = ({
   height,
   backgroundColor = MAIN.DEFAULT,
   isShadow = false,
-  borderRadius = 10,
+  borderRadius = 5,
   color = WHITE,
   fontWeight,
   fontSize,

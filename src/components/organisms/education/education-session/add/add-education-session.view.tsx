@@ -7,7 +7,7 @@ import { MainText } from '@/components/atoms/common/text/main-text';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import Quill from '@/components/atoms/common/input/quill';
-import MultiMemberDropdown from '@/components/atoms/common/dropdown/multi-member-dropdown';
+import MemberDropdown from '@/components/atoms/common/dropdown/member-dropdown';
 import { MemberDropdownValueType } from '@/models/dropdown/dropdown';
 import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-item';
 import StatusDropdown from '@/components/atoms/common/dropdown/status-dropdown';
@@ -225,7 +225,7 @@ const AddEducationSessionView = ({
             <RequiredMark />
             {t('inCharge')}
           </MainText>
-          <MultiMemberDropdown
+          <MemberDropdown
             values={inCharge}
             onChangeValues={onChangeInCharge}
             height={40}
@@ -239,7 +239,7 @@ const AddEducationSessionView = ({
       <InputContainer>
         <LabelContainer>
           <MainText>{t('receiver')}</MainText>
-          <MultiMemberDropdown
+          <MemberDropdown
             values={receivers}
             onChangeValues={onChangeReceivers}
             height={40}

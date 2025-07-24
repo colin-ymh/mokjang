@@ -1,5 +1,5 @@
 import { useI18n } from '../../../locales/client';
-import { GENDER, SEARCH_RANGE } from '@/constants/constant';
+import { GENDER, RANGE } from '@/constants/constant';
 
 export const useGenderRadioButtonItems = () => {
   const t = useI18n();
@@ -18,17 +18,37 @@ export const useGenderRadioButtonItems = () => {
   return items;
 };
 
-export const useRangeRadioButtonItems = () => {
+export const useWeekMonthRangeRadioButtonItems = () => {
   const t = useI18n();
 
   const items = [
     {
-      value: SEARCH_RANGE.WEEKLY,
-      title: t('thisWeek'),
+      value: RANGE.WEEKLY,
+      title: t(RANGE.WEEKLY),
     },
     {
-      value: SEARCH_RANGE.MONTHLY,
-      title: t('thisMonth'),
+      value: RANGE.MONTHLY,
+      title: t(RANGE.MONTHLY),
+    },
+  ];
+  return items;
+};
+
+export const useMonthQuarterHalfRangeRadioButtonItems = () => {
+  const t = useI18n();
+
+  const items = [
+    {
+      value: RANGE.MONTHLY,
+      title: t('monthlySeason'),
+    },
+    {
+      value: RANGE.QUARTER,
+      title: t(RANGE.QUARTER),
+    },
+    {
+      value: RANGE.HALF,
+      title: t(RANGE.HALF),
     },
   ];
   return items;

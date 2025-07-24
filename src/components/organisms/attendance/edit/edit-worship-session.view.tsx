@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
 import { MainText } from '@/components/atoms/common/text/main-text';
-import MultiMemberDropdown from '@/components/atoms/common/dropdown/multi-member-dropdown';
+import MemberDropdown from '@/components/atoms/common/dropdown/member-dropdown';
 import Quill from '@/components/atoms/common/input/quill';
 import { BLANK } from '@/constants/constant';
 
@@ -86,7 +86,7 @@ const EditWorshipSessionView = ({
           <LabelContainer>
             <MainText>{t('worshipSessionInCharge')}</MainText>
           </LabelContainer>
-          <MultiMemberDropdown
+          <MemberDropdown
             values={inCharge}
             onChangeValues={onChangeInCharge}
             isSingle={true}

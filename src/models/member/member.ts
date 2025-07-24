@@ -2,6 +2,7 @@ import {
   BAPTISM,
   BLANK,
   FAMILY,
+  GENDER,
   GROUP_ROLE,
   MARRIAGE,
 } from '@/constants/constant';
@@ -28,7 +29,7 @@ export type Member = {
   isLeafMonth: boolean;
   birthdayMMDD: string;
   birth: string;
-  gender?: string;
+  gender?: GENDER;
   groupId?: string;
   groupRoleId?: string;
   group?: Group;
@@ -55,6 +56,7 @@ export type Member = {
   vehicleNumber: string[];
   guidedById: string;
   baptism: BAPTISM;
+  createdAt: string;
   registeredAt: string;
   updatedAt: string;
 
@@ -81,6 +83,7 @@ export const DEFAULT_MEMBER: Member = {
   relation: FAMILY.FAMILY,
   // 교회 정보
   registeredAt: getDateStringFromDate(new Date()),
+  createdAt: BLANK,
   updatedAt: BLANK,
   officerId: BLANK,
   baptism: BAPTISM.NONE,

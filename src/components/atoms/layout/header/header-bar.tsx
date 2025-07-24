@@ -1,11 +1,8 @@
 import React from 'react';
 
-import HeaderBarView from '@/components/atoms/layout/header/header-bar.view';
-
-export type HeaderBarItem = {
-  id: string;
-  title: string;
-};
+import HeaderBarView, {
+  HeaderBarItem,
+} from '@/components/atoms/layout/header/header-bar.view';
 
 type HeaderBarProps = {
   value: string;

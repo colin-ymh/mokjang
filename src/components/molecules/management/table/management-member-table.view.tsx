@@ -19,7 +19,7 @@ import { useI18n } from '../../../../../locales/client';
 import { Ministry } from '@/models/management/management';
 import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-item';
 import Dropdown from '@/components/atoms/common/dropdown/dropdown';
-import MinistryDropdownButton from '@/components/atoms/common/dropdown/ministry-dropdown-button';
+import TagDropdownButton from '@/components/atoms/common/dropdown/tag-dropdown-button';
 import { getTranslatedAge } from '@/utils/translate';
 import { getAge, getDateFromDateString } from '@/utils/date';
 
@@ -231,7 +231,7 @@ const ManagementMemberTableView = ({
               onChangeItem={(value) =>
                 onChangeMinistry && onChangeMinistry(value, member)
               }
-              CustomDropdownButton={MinistryDropdownButton}
+              CustomDropdownButton={TagDropdownButton}
             />
           </MinistryContainer>
         );

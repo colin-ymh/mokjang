@@ -26,7 +26,7 @@ const InputList = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 10px;
+  gap: 20px;
   transition: all 0.3s ease;
 `;
 

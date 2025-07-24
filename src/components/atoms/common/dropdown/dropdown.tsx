@@ -13,6 +13,7 @@ import TransparentBackground from '@/components/atoms/common/etc/transparent-bac
 import DropdownView from '@/components/atoms/common/dropdown/dropdown.view';
 import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-item';
 import { BorderInputProps } from '@/components/atoms/common/input/border-input';
+import useWindowSize from '@/hooks/window/window';
 
 export type DropdownProps<
   ItemType extends DropdownValueType = DropdownValueType,
@@ -25,7 +26,6 @@ export type DropdownProps<
   // 동작 관련 옵션
   isShowTitle?: boolean;
   isEditable?: boolean;
-  reverseDirection?: boolean;
   backgroundBlur?: boolean; // 드롭다운 클릭 배경 흐려짐
 
   // 입력/키보드 관련
@@ -51,7 +51,7 @@ export type DropdownProps<
   onChangeCustomInput?: (event: ChangeEvent<HTMLInputElement>) => void;
   isChevronShown?: boolean;
   isRight?: boolean;
-
+  onScrollBottom?: () => void;
   CustomDropdownButton?: React.ComponentType<any>;
 };
 
@@ -64,7 +64,6 @@ const Dropdown = forwardRef<HTMLInputElement, DropdownProps>(
       value,
       onChangeItem,
       backgroundBlur = false,
-      reverseDirection = false,
       isEditable = false,
       enterKeyHint = 'enter',
       onClickItemExtra,
@@ -81,11 +80,14 @@ const Dropdown = forwardRef<HTMLInputElement, DropdownProps>(
       fontSize,
       fontWeight,
       isRight,
+      onScrollBottom,
       CustomDropdownButton,
       ...inputProps
     },
     ref
   ) => {
+    const windowSize = useWindowSize();
+
     // 드롭다운 열림 여부
     const [isOpened, setIsOpened] = useState(false);
     // 내부적으로 관리하는 선택값
@@ -95,6 +97,9 @@ const Dropdown = forwardRef<HTMLInputElement, DropdownProps>(
     // 최신 focusedIndex를 저장하는 ref (항상 최신값 사용)
     const focusedIndexRef = useRef<number>(focusedIndex);
 
+    const scrollRef = useRef<HTMLDivElement | null>(null);
+
+    const [reverseDirection, setReverseDirection] = useState<boolean>(false);
     // '직접 입력' 모드 여부
     const [isCustomMode, setIsCustomMode] = useState(false);
 
@@ -125,11 +130,26 @@ const Dropdown = forwardRef<HTMLInputElement, DropdownProps>(
       }
     }, [value, combinedItems, onChange]);
 
+    const onScrollList = () => {
+      if (scrollRef.current) {
+        const { scrollTop, scrollHeight, clientHeight } = scrollRef.current;
+
+        // 스크롤이 최하단에 도달했는지 확인
+        if (scrollTop + clientHeight >= scrollHeight) {
+          onScrollBottom && onScrollBottom();
+        }
+      }
+    };
+
     /** 드롭다운 열고 닫기 */
-    const toggleDropdown = useCallback(() => {
-      if (!isOpened && combinedItems.length === 0) return;
-      if (!disabled) setIsOpened((prev) => !prev);
-    }, [isOpened, combinedItems, disabled]);
+    const toggleDropdown = useCallback(
+      (event: React.MouseEvent<HTMLDivElement>) => {
+        setReverseDirection(windowSize.height - event.screenY < 250);
+        if (!isOpened && combinedItems.length === 0) return;
+        if (!disabled) setIsOpened((prev) => !prev);
+      },
+      [isOpened, combinedItems, disabled]
+    );
 
     /** 배경 클릭 시 닫기 */
     const onClickBackground = useCallback(() => {
@@ -247,6 +267,8 @@ const Dropdown = forwardRef<HTMLInputElement, DropdownProps>(
 
     const propsForView = {
       ref,
+      scrollRef,
+      onScrollList,
       items: combinedItems,
       innerValue,
       customValue,

@@ -4,7 +4,7 @@ import { HomeApi } from '@/api/home/home.api';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 import { useEffect, useState } from 'react';
-import { SEARCH_RANGE } from '@/constants/constant';
+import { RANGE } from '@/constants/constant';
 import { DOMAIN } from '@/models/permission/permission';
 import { Schedule, ServerReportedSchedule } from '@/models/calendar/calendar';
 import { setTargetTask } from '@/redux/reducers/target/target-task-reducer';
@@ -29,7 +29,7 @@ const ReportedScheduleWidget = () => {
 
   const [page, setPage] = useState<number>(1);
 
-  const [range, setRange] = useState<SEARCH_RANGE>(SEARCH_RANGE.WEEKLY);
+  const [range, setRange] = useState<RANGE>(RANGE.WEEKLY);
   // 상세보기 중인 도메인
   const [openedDomain, setOpenedDomain] = useState<DOMAIN | null>(null);
 
@@ -162,7 +162,7 @@ const ReportedScheduleWidget = () => {
     setOpenedDomain(null);
   };
 
-  const onClickRange = (value: SEARCH_RANGE) => {
+  const onClickRange = (value: RANGE) => {
     setRange(value);
   };
 

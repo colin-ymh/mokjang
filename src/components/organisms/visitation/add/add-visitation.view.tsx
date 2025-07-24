@@ -14,7 +14,7 @@ import {
   useVisitationStatusDropdownItems,
 } from '@/hooks/dropdown/dropdown-items';
 import LabelDropdown from '@/components/atoms/common/dropdown/label-dropdown';
-import MultiMemberDropdown from '@/components/atoms/common/dropdown/multi-member-dropdown';
+import MemberDropdown from '@/components/atoms/common/dropdown/member-dropdown';
 import { MemberDropdownType } from '@/components/atoms/common/dropdown/member-dropdown-item';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import Quill from '@/components/atoms/common/input/quill';
@@ -226,7 +226,7 @@ const AddVisitationView = ({
             <RequiredMark />
             {t('visitedMember')}
           </MainText>
-          <MultiMemberDropdown
+          <MemberDropdown
             values={visitedMembers}
             onChangeValues={onChangeVisitedMembers}
             height={40}
@@ -253,7 +253,7 @@ const AddVisitationView = ({
             <RequiredMark />
             {t('inCharge')}
           </MainText>
-          <MultiMemberDropdown
+          <MemberDropdown
             values={inCharge}
             onChangeValues={onChangeInCharge}
             height={40}
@@ -301,7 +301,7 @@ const AddVisitationView = ({
       <InputContainer>
         <LabelContainer>
           <MainText>{t('receiver')}</MainText>
-          <MultiMemberDropdown
+          <MemberDropdown
             values={receivers}
             onChangeValues={onChangeReceivers}
             height={40}
