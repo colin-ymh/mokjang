@@ -33,9 +33,10 @@ export enum MEMBER_INFORMATION_HEADER_ID {
   HISTORY = 'history',
 }
 
-export enum GROUP_MANAGEMENT_HEADER_ID {
-  GROUP_INFORMATION = 'groupInformation',
-  MEMBER_LIST = 'groupMembers',
+export enum EDIT_MEMBER_HEADER_ID {
+  BASIC_INFORMATION = 'basicInformation',
+  PERSONAL_INFORMATION = 'personalInformation',
+  CHURCH_INFORMATION = 'churchInformation',
 }
 
 export enum MINISTRY_MANAGEMENT_HEADER_ID {

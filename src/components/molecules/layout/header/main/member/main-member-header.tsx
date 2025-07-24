@@ -129,7 +129,7 @@ const MainMemberHeader = ({}: MainMemberHeaderProps) => {
           }
         )
         .then((response) => {
-          dispatch(fetchMembers({ currentPage: memberPage }));
+          dispatch(fetchMembers());
           setIsRegisterShown(false);
         });
 

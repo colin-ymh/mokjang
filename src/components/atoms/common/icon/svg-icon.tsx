@@ -18,6 +18,7 @@ type IconProps = {
   size?: number;
   color?: string;
   width?: number;
+  onClick?: () => void;
 };
 
 const SvgIcon = ({
@@ -25,9 +26,16 @@ const SvgIcon = ({
   size = 14,
   color,
   width = 1.5,
+  onClick,
 }: IconProps) => {
   return (
-    <StyledIcon as={SvgComponent} $size={size} $color={color} width={width} />
+    <StyledIcon
+      as={SvgComponent}
+      $size={size}
+      $color={color}
+      width={width}
+      onClick={onClick}
+    />
   );
 };
 

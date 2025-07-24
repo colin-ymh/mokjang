@@ -1,5 +1,4 @@
 import React, { MutableRefObject } from 'react';
-import Image from 'next/image';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
@@ -14,8 +13,10 @@ import VisitationTableHeader from '@/components/atoms/visitation/visitation-tabl
 import { BLANK_HEADER } from '@/redux/reducers/filter/member-filter-reducer';
 import { useI18n } from '../../../../locales/client';
 import { getFormattedDate } from '@/utils/format';
-import { getStatusColor } from '@/utils/color';
+import { getStatusBackgroundColor, getStatusFontColor } from '@/utils/color';
 import MemberProfile from '@/components/atoms/member/member-profile';
+import MainTag from '@/components/atoms/common/tag/main-tag';
+import { STATUS } from '@/constants/status/status';
 
 // 1. 컬럼별 PX 폭
 const getColumnWidth = (id: string) => {
@@ -63,15 +64,19 @@ const VisitationTable = styled.table`
 `;
 
 // 4. 헤더(TH)
-const TableHeader = styled.th<{ id: string; $isLast?: boolean }>`
-  padding: 3px 10px;
+const TableHeader = styled.th<{
+  id: string;
+  $isLast?: boolean;
+}>`
+  padding: 20px 10px;
+  background-color: ${WHITE};
   position: sticky;
   top: 0;
   z-index: 5;
-  background-color: ${WHITE};
 
   /* 만약 마지막 컬럼이면 width: auto */
   width: ${({ id, $isLast }) => ($isLast ? 'auto' : `${getColumnWidth(id)}px`)};
+
   /* 텍스트 넘침 처리 */
   overflow: hidden;
   text-overflow: ellipsis;
@@ -84,13 +89,13 @@ const TableHeader = styled.th<{ id: string; $isLast?: boolean }>`
     left: 0;
     right: 0;
     height: 0.7px;
-    background: ${GRAY.SEMI_LIGHT};
+    background: ${GRAY.LIGHT};
   }
 `;
 
 // 5. 본문(TR/TD)
 const VisitationTableRow = styled.tr`
-  border-bottom: 1px solid ${GRAY.EXTRA_LIGHT};
+  border-bottom: 1px solid ${GRAY.LIGHT};
   &:hover td {
     background-color: ${GRAY.LIGHT};
   }
@@ -145,13 +150,6 @@ const ColoredDot = styled.div<{ color: string }>`
   background-color: ${({ color }) => color};
 `;
 
-const ProfileImage = styled(Image)`
-  width: 30px;
-  height: 30px;
-  border-radius: 20%;
-  overflow: hidden;
-`;
-
 // 이 예시에서는 실제 VISITATION + "비고" 컬럼(REMARKS)까지 표시
 type VisitationTableProps = {
   visitations: Visitation[];
@@ -196,10 +194,13 @@ const VisitationTableView = ({
         );
       case VISITATION.STATUS:
         return (
-          <StatusContainer>
-            <ColoredDot color={getStatusColor(visitation.status)} />
-            <MainText>{t(visitation?.status)}</MainText>
-          </StatusContainer>
+          <MainTag
+            title={t(visitation.status as STATUS)}
+            color={getStatusFontColor(visitation.status as STATUS)}
+            backgroundColor={getStatusBackgroundColor(
+              visitation.status as STATUS
+            )}
+          />
         );
       case VISITATION.DATE:
         return (

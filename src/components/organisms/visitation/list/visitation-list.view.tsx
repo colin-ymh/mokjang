@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import SlidePopup from '@/components/atoms/common/popup/slide-popup';
 import Loading from '@/components/atoms/common/etc/loading';
 import React from 'react';
-import { BLACK, DESTRUCTIVE, MAIN } from '@/constants/styles/color';
+import { BLACK, DESTRUCTIVE, MAIN, WHITE } from '@/constants/styles/color';
 import CancelIcon from '../../../../../public/svg/cancel.svg';
 import TrashIcon from '../../../../../public/svg/trash.svg';
 import ConfirmPopup from '@/components/atoms/common/popup/error-popup';
@@ -25,6 +25,7 @@ const VisitationListContainer = styled.div`
   height: 100%;
   width: 100%;
   overflow-y: auto;
+  background-color: ${WHITE};
 `;
 
 const MobileView = styled.div`

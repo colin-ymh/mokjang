@@ -112,6 +112,9 @@ type SlidePopupProps = {
   cancelBackgroundColor?: string;
   doneBackgroundColor?: string;
   doneDisabled?: boolean;
+  doneIcon?: ReactNode;
+  cancelIcon?: ReactNode;
+  disabledKeyboard?: boolean;
   children: ReactNode;
 };
 
@@ -131,9 +134,12 @@ const SlidePopup = ({
   cancelBackgroundColor,
   doneBackgroundColor,
   doneDisabled,
+  disabledKeyboard = false,
   children,
 }: SlidePopupProps) => {
   useEffect(() => {
+    if (disabledKeyboard) return;
+
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         onClickClose();

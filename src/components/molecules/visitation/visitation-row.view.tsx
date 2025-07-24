@@ -2,7 +2,7 @@ import { ChangeEvent, Ref } from 'react';
 import styled from 'styled-components';
 
 import Button from '@/components/atoms/common/button/button';
-import { GRAY, WHITE } from '@/constants/styles/color';
+import { BLACK, GRAY, WHITE } from '@/constants/styles/color';
 import { VISITATION } from '@/constants/column/visitation-column';
 
 import {
@@ -21,14 +21,18 @@ import StatusDropdown from '@/components/atoms/common/dropdown/status-dropdown';
 import SearchInput from '@/components/atoms/common/input/search-input';
 import { VISITATION_STATUS } from '@/constants/status/status';
 
+import Calendar from '../../../../public/svg/calendar.svg';
+import SvgIcon from '@/components/atoms/common/icon/svg-icon';
+
 const VisitationContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   width: 100%;
-  height: 100px;
+  border-bottom: 1px solid ${GRAY.LIGHT};
   flex-shrink: 0;
   position: relative;
+  background-color: ${WHITE};
 `;
 
 const RowTop = styled.div`
@@ -49,6 +53,7 @@ const ButtonContainer = styled.div`
   align-items: center;
   padding: 10px 10px 10px 20px;
   position: relative;
+  gap: 10px;
 `;
 
 const FilteredItemList = styled.div<{ $width: number }>`
@@ -127,11 +132,22 @@ const VisitationRowView = ({
             <Button
               text={t_button('filterVisitationDate')}
               height={30}
-              width={60}
+              width={'auto'}
               onClick={onClickPeriodModal}
               backgroundColor={WHITE}
               borderColor={GRAY.LIGHT}
-              color={GRAY.DARK}
+              color={BLACK}
+              icon={<SvgIcon svg={Calendar} />}
+            />
+
+            <StatusDropdown
+              value={statusFilter}
+              items={statusFilterDropdownItems}
+              onChangeItem={onClickStatusFilterItem}
+              height={30}
+              width={130}
+              borderColor={GRAY.LIGHT}
+              backgroundBlur={false}
             />
             {/* 설정 모달 */}
             <PeriodModal
@@ -154,15 +170,6 @@ const VisitationRowView = ({
         </FilterList>
         {/* 검색 부분 */}
         <SearchContainer>
-          <StatusDropdown
-            value={statusFilter}
-            items={statusFilterDropdownItems}
-            onChangeItem={onClickStatusFilterItem}
-            height={30}
-            width={130}
-            borderColor={GRAY.SEMI_LIGHT}
-            backgroundBlur={false}
-          />
           <SearchInput
             searchRef={searchRef}
             searchFilter={searchFilter}

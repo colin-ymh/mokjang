@@ -23,12 +23,8 @@ import MainMemberHeader from '@/components/molecules/layout/header/main/member/m
 import MemberList from '@/components/organisms/member/list/member-list';
 import MemberPersonalInformationList from '@/components/molecules/member/information/personal/member-personal-information-list';
 import FamilyInformationList from '@/components/molecules/member/information/family/family-information-list';
-import MemberEducation from '@/components/molecules/member/information/member-education';
 import GroupManagement from '@/components/organisms/management/group/group-management';
-import MemberGroup from '@/components/molecules/member/information/member-group';
 import OfficerManagement from '@/components/organisms/management/officer/officer-management';
-import MemberMinistry from '@/components/molecules/member/information/member-ministry';
-import MemberOfficer from '@/components/molecules/member/information/member-officer';
 import MainSideButtonList from '@/components/molecules/layout/side/main-side/main-side-button-list';
 import ManagementSideButtonList from '@/components/molecules/layout/side/management-side/management-side-button-list';
 import ManagementChurchHeader from '@/components/molecules/layout/header/management/church/management-church-header';
@@ -223,14 +219,6 @@ export const getMemberInformationContent = (
       }
     case MEMBER_INFORMATION_HEADER_ID.FAMILY_INFORMATION:
       return <FamilyInformationList setMemberContentId={setMemberContentId} />;
-    case MEMBER_INFORMATION_HEADER_ID.GROUP:
-      return <MemberGroup />;
-    case MEMBER_INFORMATION_HEADER_ID.EDUCATION:
-      return <MemberEducation />;
-    case MEMBER_INFORMATION_HEADER_ID.MINISTRY:
-      return <MemberMinistry />;
-    case MEMBER_INFORMATION_HEADER_ID.OFFICER:
-      return <MemberOfficer />;
   }
 };
 

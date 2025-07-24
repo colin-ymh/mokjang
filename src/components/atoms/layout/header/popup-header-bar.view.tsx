@@ -8,7 +8,6 @@ import SvgIcon from '@/components/atoms/common/icon/svg-icon';
 
 const PopupHeaderBarContainer = styled.div`
   display: flex;
-  border-top: 1px solid ${GRAY.EXTRA_LIGHT};
   border-bottom: 1px solid ${GRAY.EXTRA_LIGHT};
   background-color: ${WHITE};
   width: 100%;

@@ -10,6 +10,13 @@ import { MembersApi } from '@/api/members/members.api';
 import MemberListView from '@/components/organisms/member/list/member-list.view';
 import { DEFAULT_MEMBER } from '@/models/member/member';
 import { setTargetMember } from '@/redux/reducers/target/target-member-reducer';
+import { uploadFiles } from '@/utils/upload';
+import { BLANK } from '@/constants/constant';
+import {
+  setIsToastShown,
+  setToastText,
+} from '@/redux/reducers/toast-popup-reducer';
+import { useScopedI18n } from '../../../../../locales/client';
 
 type MemberListProps = {
   isNewMember?: boolean;
@@ -32,6 +39,8 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
     (state: RootState) => state.targetMember
   );
 
+  const t_popup = useScopedI18n('popup');
+
   const [thrownError, setThrownError] = useState<Error | null>(null);
   if (thrownError) {
     throw thrownError;
@@ -46,6 +55,16 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
 
   // 삭제 확인 팝업
   const [isPopupShown, setIsPopupShown] = useState<boolean>(false);
+
+  // 개인정보 수정 모달
+  const [isEditShown, setIsEditShown] = useState<boolean>(false);
+
+  // 임시 프로필 이미지
+  const [profileImage, setProfileImage] = useState<File | null>(null);
+
+  const onChangeProfileImage = (image: File | null) => {
+    setProfileImage(image);
+  };
 
   const onClickConfirmOpen = () => {
     setIsPopupShown(true);
@@ -123,6 +142,73 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
     }
   };
 
+  const onClickEditOpen = () => {
+    dispatch(setTargetMember(targetMember));
+    setIsEditShown(true);
+  };
+
+  const onClickEditClose = async () => {
+    const membersApi = new MembersApi(false);
+    setIsEditShown(false);
+    const response = await membersApi.getMember({
+      churchId,
+      memberId: targetMember.id,
+    });
+    const newMember = response.data.data;
+    dispatch(setTargetMember(newMember));
+  };
+
+  const onClickEditDone = async () => {
+    try {
+      let updatedMember = { ...targetMember };
+      if (profileImage) {
+        const uploadedUrls = await uploadFiles([profileImage]);
+        const uploadedUrl = uploadedUrls[0];
+        if (uploadedUrl) {
+          updatedMember = { ...targetMember, profileImageUrl: uploadedUrl };
+          dispatch(setTargetMember(updatedMember));
+        }
+      } else if (profileImage === null) {
+        updatedMember = { ...targetMember, profileImageUrl: BLANK };
+        dispatch(setTargetMember(updatedMember));
+      }
+
+      await membersApi
+        .editMember(
+          { churchId, memberId: targetMember.id },
+          {
+            profileImageUrl: updatedMember.profileImageUrl || undefined,
+            birth: updatedMember.birth || undefined,
+            isLunar: updatedMember.isLunar,
+            isLeafMonth: updatedMember.isLeafMonth,
+            gender: updatedMember.gender || undefined,
+            occupation: updatedMember.occupation || undefined,
+            school: updatedMember.school || undefined,
+            address: updatedMember.address || undefined,
+            detailAddress: updatedMember.detailAddress || undefined,
+            marriage: updatedMember.marriage || undefined,
+            // detailMarriage: updatedMember.detailMarriage || undefined,
+            vehicleNumber:
+              updatedMember.vehicleNumber.filter(
+                (number) => number.length > 0
+              ) || undefined,
+            registeredAt: updatedMember.registeredAt || undefined,
+          }
+        )
+        .then((response) => {
+          const newMember = response.data.data;
+          dispatch(setTargetMember(newMember));
+          dispatch(fetchMembers());
+          setIsEditShown(false);
+        });
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
+    } finally {
+      dispatch(setIsToastShown(true));
+      dispatch(setToastText(t_popup('saveComplete')));
+    }
+  };
+
   useEffect(() => {
     setIsPopupShown(false);
   }, [targetMember]);
@@ -141,10 +227,15 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
       isMemberInformationShown,
       isLoading,
       isPopupShown,
+      isEditShown,
+      onClickEditOpen,
+      onClickEditClose,
+      onClickEditDone,
       onClickClose,
       onClickDelete,
       onClickConfirmOpen,
       onClickConfirmClose,
+      onChangeProfileImage,
     },
   };
 

@@ -84,6 +84,7 @@ const FamilyInformationList = ({
       }
     } finally {
       setIsModalShown(false);
+      setSelectedMembers([]);
     }
   };
 

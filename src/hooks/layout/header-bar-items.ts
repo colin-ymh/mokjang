@@ -8,6 +8,7 @@ import {
 } from '@/constants/layout/content';
 import {
   CHURCH_USER_HEADER_ID,
+  EDIT_MEMBER_HEADER_ID,
   MEMBER_INFORMATION_HEADER_ID,
   MINISTRY_MANAGEMENT_HEADER_ID,
   PERMISSION_TEMPLATE_HEADER_ID,
@@ -132,6 +133,30 @@ export const useMemberInformationHeaderBarItems = () => {
       id: MEMBER_INFORMATION_HEADER_ID.HISTORY,
       title: t_header(MEMBER_INFORMATION_HEADER_ID.HISTORY),
       icon: Clock,
+    },
+  ];
+
+  return items;
+};
+
+export const useEditMemberHeaderBarItems = () => {
+  const t = useI18n();
+
+  const items = [
+    {
+      id: EDIT_MEMBER_HEADER_ID.BASIC_INFORMATION,
+      title: t(EDIT_MEMBER_HEADER_ID.BASIC_INFORMATION),
+      icon: User,
+    },
+    {
+      id: EDIT_MEMBER_HEADER_ID.PERSONAL_INFORMATION,
+      title: t(EDIT_MEMBER_HEADER_ID.PERSONAL_INFORMATION),
+      icon: Users,
+    },
+    {
+      id: EDIT_MEMBER_HEADER_ID.CHURCH_INFORMATION,
+      title: t(EDIT_MEMBER_HEADER_ID.CHURCH_INFORMATION),
+      icon: Heart,
     },
   ];
 

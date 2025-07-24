@@ -140,7 +140,7 @@ const GroupContainer = styled.div`
 const GroupButton = styled.div`
   display: flex;
   border: 1px solid ${GRAY.LIGHT};
-  border-radius: 10px;
+  border-radius: 5px;
   height: 40px;
   padding: 0 10px;
   align-items: center;

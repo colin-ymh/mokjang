@@ -9,12 +9,17 @@ import MemberItemList from '@/components/molecules/member/list/member-item-list'
 import SlidePopup from '@/components/atoms/common/popup/slide-popup';
 import MemberInformation from '@/components/organisms/member/information/member-information';
 import Loading from '@/components/atoms/common/etc/loading';
-import React from 'react';
-import { BLACK, DESTRUCTIVE, WHITE } from '@/constants/styles/color';
-import CancelIcon from '../../../../../public/svg/cancel.svg';
-import TrashIcon from '../../../../../public/svg/trash.svg';
+import React, { useEffect } from 'react';
+import { GRAY, WHITE } from '@/constants/styles/color';
 import ConfirmPopup from '@/components/atoms/common/popup/error-popup';
 import { useScopedI18n } from '../../../../../locales/client';
+
+import Pencil from '../../../../../public/svg/pencil.svg';
+import Cancel from '../../../../../public/svg/cancel.svg';
+import Trash from '../../../../../public/svg/trash.svg';
+import SvgIcon from '@/components/atoms/common/icon/svg-icon';
+import CustomPopup from '@/components/atoms/common/popup/custom-popup';
+import EditMember from '@/components/organisms/member/edit/edit-member';
 
 const MemberListContainer = styled.div`
   display: flex;
@@ -44,31 +49,9 @@ const DesktopView = styled.div`
   }
 `;
 
-const ButtonRow = styled.div`
+const CancelContainer = styled.div`
   display: flex;
-  flex-direction: row;
-  gap: 5px;
-  justify-content: center;
-  align-items: center;
-`;
-
-const ButtonContainer = styled.div`
-  display: flex;
-  cursor: pointer;
-`;
-
-const Trash = styled(TrashIcon)`
-  width: 25px;
-  height: 25px;
-  stroke: ${DESTRUCTIVE.LIGHT};
-  stroke-width: 1px;
-`;
-
-const Cancel = styled(CancelIcon)`
-  width: 30px;
-  height: 30px;
-  stroke: ${BLACK};
-  stroke-width: 1px;
+  margin-right: 10px;
 `;
 
 type MemberListViewProps = {
@@ -77,10 +60,15 @@ type MemberListViewProps = {
     isMemberInformationShown: boolean;
     isLoading: boolean;
     isPopupShown: boolean;
+    isEditShown: boolean;
+    onClickEditOpen: () => void;
+    onClickEditClose: () => void;
+    onClickEditDone: () => void;
     onClickClose: () => void;
     onClickDelete: () => void;
     onClickConfirmOpen: () => void;
     onClickConfirmClose: () => void;
+    onChangeProfileImage: (file: File | null) => void;
   };
 };
 
@@ -92,11 +80,30 @@ const MemberListView = (props: MemberListViewProps) => {
     isMemberInformationShown,
     isLoading,
     isPopupShown,
+    isEditShown,
     onClickClose,
     onClickDelete,
     onClickConfirmOpen,
     onClickConfirmClose,
+    onClickEditOpen,
+    onClickEditClose,
+    onClickEditDone,
+    onChangeProfileImage,
   } = props.information;
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        onClickClose();
+      }
+    };
+    if (isMemberInformationShown) {
+      window.addEventListener('keydown', handleKeyDown);
+    }
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isMemberInformationShown, onClickClose]);
 
   return (
     <MemberListContainer>
@@ -109,11 +116,23 @@ const MemberListView = (props: MemberListViewProps) => {
         <MemberFilterRow />
         <MemberTable {...props.list} />
       </DesktopView>
+
       {/* 교인 상세정보 팝업*/}
       <SlidePopup
         isShow={isMemberInformationShown}
-        onClickClose={onClickClose}
+        onClickClose={onClickConfirmOpen}
         headerTitle={t_title('memberInformation')}
+        onClickDone={onClickEditOpen}
+        doneText={t_button('edit')}
+        cancelText={t_button('delete')}
+        doneIcon={<SvgIcon svg={Pencil} color={WHITE} width={2} />}
+        cancelIcon={<SvgIcon svg={Trash} color={GRAY.DEFAULT} width={2} />}
+        headerRight={
+          <CancelContainer>
+            <SvgIcon svg={Cancel} onClick={onClickClose} size={18} />
+          </CancelContainer>
+        }
+        disabledKeyboard={true}
       >
         <>
           {/* 삭제 확인 팝업 */}
@@ -134,6 +153,19 @@ const MemberListView = (props: MemberListViewProps) => {
         </>
       </SlidePopup>
       <Loading isShow={isLoading} />
+
+      {/* 교인 수정 팝업 */}
+      <CustomPopup
+        isShow={isEditShown}
+        onClickCancel={onClickEditClose}
+        doneText={t_button('save')}
+        onClickDone={onClickEditDone}
+        headerTitle={t_title('editMember')}
+        width={700}
+        height={700}
+      >
+        <EditMember onChangeProfileImage={onChangeProfileImage} />
+      </CustomPopup>
     </MemberListContainer>
   );
 };

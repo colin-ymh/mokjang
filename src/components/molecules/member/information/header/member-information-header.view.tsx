@@ -15,6 +15,7 @@ const InformationHeader = styled.div`
   padding: 20px;
   gap: 10px;
   background-color: ${GRAY.SUPER_LIGHT};
+  border-bottom: 1px solid ${GRAY.EXTRA_LIGHT};
 `;
 
 const Information = styled.div`
