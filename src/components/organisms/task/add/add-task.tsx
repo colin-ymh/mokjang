@@ -195,6 +195,17 @@ const AddTask = ({}: AddTaskProps) => {
     dispatch(setTargetTask({ ...targetTask, receiverIds: receiverIds }));
   };
 
+  const onClickDeleteReceiver = (receiverId: string) => {
+    const newReceivers = receivers.filter((r) => r.value !== receiverId);
+    setReceivers(newReceivers);
+    dispatch(
+      setTargetTask({
+        ...targetTask,
+        receiverIds: newReceivers.map((r) => r.value),
+      })
+    );
+  };
+
   // ===== receiver =====
 
   const props = {
@@ -210,6 +221,7 @@ const AddTask = ({}: AddTaskProps) => {
     onChangeInCharge,
     onChangeContent,
     onChangeReceivers,
+    onClickDeleteReceiver,
   };
 
   return (

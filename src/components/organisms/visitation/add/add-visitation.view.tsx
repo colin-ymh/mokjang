@@ -1,27 +1,22 @@
 import styled from 'styled-components';
-import LabelInput from '@/components/atoms/common/input/label-input';
 import React, { ChangeEvent } from 'react';
-import { BLANK } from '@/constants/constant';
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
-import { GRAY } from '@/constants/styles/color';
-import {
-  VISITATION_METHOD,
-  VisitationDetail,
-} from '@/models/visitation/visitation';
+import { GRAY, WHITE } from '@/constants/styles/color';
+import { VISITATION_METHOD } from '@/models/visitation/visitation';
 import {
   useTimeDropdownItems,
   useVisitationMethodDropdownItems,
   useVisitationStatusDropdownItems,
 } from '@/hooks/dropdown/dropdown-items';
-import LabelDropdown from '@/components/atoms/common/dropdown/label-dropdown';
-import MemberDropdown from '@/components/atoms/common/dropdown/member-dropdown';
 import { MemberDropdownType } from '@/components/atoms/common/dropdown/member-dropdown-item';
 import { MainText } from '@/components/atoms/common/text/main-text';
-import Quill from '@/components/atoms/common/input/quill';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import StatusDropdown from '@/components/atoms/common/dropdown/status-dropdown';
-import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-item';
+import { VISITATION_STATUS } from '@/constants/status/status';
+import RequiredMark from '@/components/atoms/common/text/required-mark';
+import BorderInput from '@/components/atoms/common/input/border-input';
+import { SIZE } from '@/constants/styles/style';
 import CustomDatePicker from '@/vendor/date-picker/custom-date-picker';
 import {
   getDateFromDateString,
@@ -30,51 +25,60 @@ import {
   getTotalMinuteFromDate,
 } from '@/utils/date';
 import Dropdown from '@/components/atoms/common/dropdown/dropdown';
-import { VISITATION_STATUS } from '@/constants/status/status';
-import RequiredMark from '@/components/atoms/common/text/required-mark';
+import MemberDropdown from '@/components/atoms/common/dropdown/member-dropdown';
+import { BLANK } from '@/constants/constant';
+import Quill from '@/components/atoms/common/input/quill';
+import MemberTag from '@/components/atoms/common/tag/member-tag';
+import BigMemberTag from '@/components/atoms/common/tag/big-member-tag';
 
 /* ──────────────────────────────── Styled Components ─────────────────────────────── */
 const AddVisitationViewContainer = styled.div`
   display: flex;
-  flex: 1;
   flex-direction: column;
-  padding: 25px 20px 50px 20px;
   gap: 20px;
-  overflow-y: auto;
-`;
-const LabelContainer = styled.div`
-  display: flex;
-  width: 100%;
-  flex-direction: column;
-  gap: 10px;
-`;
-const InputContainer = styled.div`
-  display: flex;
-  width: 100%;
-  flex-direction: column;
-  gap: 10px;
-`;
-const PeriodContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 10px;
-  justify-content: flex-start;
-  align-items: center;
 `;
 
-const DetailContainer = styled.div`
+const CardContainer = styled.div`
   display: flex;
-  width: 100%;
   flex-direction: column;
   gap: 10px;
-  padding: 10px 0;
+  border: 1px solid ${GRAY.LIGHT};
+  border-radius: 10px;
+  background-color: ${WHITE};
+  width: 100%;
+`;
+
+const ContentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+`;
+
+const MemberTagList = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  flex-direction: row;
+`;
+
+const RowContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  gap: 20px;
+`;
+
+const PeriodContainer = styled.div`
+  display: flex;
+  gap: 10px;
 `;
 
 type AddVisitationViewProps = {
-  visitedMembers: DropdownValueType[];
-  inCharge: DropdownValueType[];
-  receivers: DropdownValueType[];
-  localDetails: VisitationDetail[];
+  visitedMembers: MemberDropdownType[];
+  inCharge: MemberDropdownType[];
+  receivers: MemberDropdownType[];
   onChangeStatus: (status: VISITATION_STATUS) => void;
   onChangeTitle: (event: ChangeEvent<HTMLInputElement>) => void;
   onChangeStartDate: (event: Date | null) => void;
@@ -85,15 +89,16 @@ type AddVisitationViewProps = {
   onChangeMethod: (method: VISITATION_METHOD) => void;
   onChangeInCharge: (inCharge: MemberDropdownType[]) => void;
   onChangeReceivers: (receiver: MemberDropdownType[]) => void;
-  onChangeContent: (memberId: string, content: string) => void;
-  onChangePray: (memberId: string, content: string) => void;
+  onChangeContent: (content: string) => void;
+  onChangePray: (content: string) => void;
+  onClickDeleteVisitedMember: (memberId: string) => void;
+  onClickDeleteReceiver: (memberId: string) => void;
 };
 
 const AddVisitationView = ({
   visitedMembers,
   inCharge,
   receivers,
-  localDetails,
   onChangeStatus,
   onChangeTitle,
   onChangeStartDate,
@@ -106,6 +111,8 @@ const AddVisitationView = ({
   onChangeReceivers,
   onChangeContent,
   onChangePray,
+  onClickDeleteVisitedMember,
+  onClickDeleteReceiver,
 }: AddVisitationViewProps) => {
   const { targetVisitation } = useSelector(
     (state: RootState) => state.targetVisitation
@@ -119,38 +126,39 @@ const AddVisitationView = ({
 
   return (
     <AddVisitationViewContainer>
-      {/* 상태 */}
-      <InputContainer>
-        <MainText>{t('status')}</MainText>
-        <StatusDropdown
-          value={targetVisitation.status}
-          items={statusDropdownItems}
-          onChangeItem={onChangeStatus}
-          width={100}
-          height={40}
-        />
-      </InputContainer>
-
       {/* 제목 */}
-      <InputContainer>
-        <LabelInput
-          label={t('title')}
-          value={targetVisitation.title}
-          onChange={onChangeTitle}
-          placeholder={t_placeholder('title')}
-          borderColor={GRAY.LIGHT}
-          height={40}
-          isRequired={true}
-        />
-      </InputContainer>
-
-      {/* 기간 */}
-      <InputContainer>
-        <LabelContainer>
-          <MainText>
+      <CardContainer>
+        <ContentContainer>
+          <MainText size={SIZE.EXTRA_LARGE}>
+            {t('title')}
             <RequiredMark />
-            {t('period')}
           </MainText>
+          <BorderInput
+            value={targetVisitation.title}
+            onChange={onChangeTitle}
+            placeholder={t_placeholder('title')}
+            borderColor={GRAY.LIGHT}
+          />
+        </ContentContainer>
+      </CardContainer>
+
+      {/* 일정 */}
+      <CardContainer>
+        <ContentContainer>
+          <RowContainer>
+            <MainText size={SIZE.EXTRA_LARGE}>
+              {t('schedule')}
+              <RequiredMark />
+            </MainText>
+            <StatusDropdown
+              value={targetVisitation.status}
+              items={statusDropdownItems}
+              onChangeItem={onChangeStatus}
+              width={100}
+              height={40}
+            />
+          </RowContainer>
+          {/* 기간 */}
           <PeriodContainer>
             {/* 시작 날짜 */}
             <CustomDatePicker
@@ -168,7 +176,6 @@ const AddVisitationView = ({
               }
               onChange={onChangeStartDate}
               placeholderText={t('startDate')}
-              width={100}
             />
             {/* 시작 시간 */}
             <Dropdown
@@ -181,9 +188,7 @@ const AddVisitationView = ({
               }
               items={timeDropdownItems}
               onChangeItem={onChangeStartTime}
-              width={100}
             />
-            <MainText>-</MainText>
             {/* 종료 날짜 */}
             <CustomDatePicker
               value={
@@ -200,7 +205,6 @@ const AddVisitationView = ({
               }
               onChange={onChangeEndDate}
               placeholderText={t('endDate')}
-              width={100}
             />
             {/* 종료 시간 */}
             <Dropdown
@@ -213,103 +217,116 @@ const AddVisitationView = ({
               }
               items={timeDropdownItems}
               onChangeItem={onChangeEndTime}
-              width={100}
             />
           </PeriodContainer>
-        </LabelContainer>
-      </InputContainer>
+        </ContentContainer>
+      </CardContainer>
 
-      {/* 대상자 */}
-      <InputContainer>
-        <LabelContainer>
-          <MainText>
-            <RequiredMark />
-            {t('visitedMember')}
-          </MainText>
-          <MemberDropdown
-            values={visitedMembers}
-            onChangeValues={onChangeVisitedMembers}
-            height={40}
-            placeholder={
-              visitedMembers.length === 0 ? t_placeholder('name') : BLANK
-            }
-          />
-        </LabelContainer>
-      </InputContainer>
-
-      {/* 방식 */}
-      <LabelDropdown
-        label={t('method')}
-        value={targetVisitation.visitationMethod}
-        items={methodItems}
-        onChangeItem={onChangeMethod}
-        height={40}
-      />
-
-      {/* 담당자 */}
-      <InputContainer>
-        <LabelContainer>
-          <MainText>
-            <RequiredMark />
-            {t('inCharge')}
-          </MainText>
-          <MemberDropdown
-            values={inCharge}
-            onChangeValues={onChangeInCharge}
-            height={40}
-            isSingle
-            placeholder={inCharge.length === 0 ? t_placeholder('name') : BLANK}
-            isManager={true}
-          />
-        </LabelContainer>
-      </InputContainer>
+      {/* 대상자 / 담당자 */}
+      <RowContainer>
+        {/* 대상자 */}
+        <CardContainer>
+          <ContentContainer>
+            <MainText size={SIZE.EXTRA_LARGE}>
+              {t('visitedMember')}
+              <RequiredMark />
+            </MainText>
+            <MemberDropdown
+              values={visitedMembers}
+              onChangeValues={onChangeVisitedMembers}
+              placeholder={t_placeholder('name')}
+            />
+            {/* 대상자 목록 */}
+            <MemberTagList>
+              {visitedMembers.map((member) => (
+                <MemberTag
+                  key={member.value}
+                  profileImage={member.profileImage}
+                  name={member.title}
+                  officer={member.officer}
+                  onClick={() => onClickDeleteVisitedMember(member.value)}
+                />
+              ))}
+            </MemberTagList>
+          </ContentContainer>
+        </CardContainer>
+        {/* 담당자 */}
+        <CardContainer>
+          <ContentContainer>
+            <MainText size={SIZE.EXTRA_LARGE}>
+              {t('inCharge')}
+              <RequiredMark />
+            </MainText>
+            {inCharge.length === 0 ? (
+              <MemberDropdown
+                values={inCharge}
+                onChangeValues={onChangeInCharge}
+                isSingle
+                placeholder={t_placeholder('name')}
+                isManager={true}
+              />
+            ) : (
+              <BigMemberTag
+                officer={inCharge[0].officer}
+                profileImage={inCharge[0].profileImage}
+                name={inCharge[0].title}
+                onClick={() => onChangeInCharge([])}
+              />
+            )}
+          </ContentContainer>
+        </CardContainer>
+      </RowContainer>
 
       {/* 세부 내용 */}
-      {localDetails.map((detail) => (
-        <DetailContainer key={detail.memberId}>
-          {detail.member?.name && localDetails.length !== 1 && (
-            <MainText fontWeight={600}>{detail.member.name}</MainText>
-          )}
-          {/* 내용 */}
-          <InputContainer>
-            <LabelContainer>
-              <MainText>{t('visitationContent')}</MainText>
-              <Quill
-                value={detail.visitationContent}
-                onChange={(html) => onChangeContent(detail.memberId, html)}
-                minHeight={120}
-                placeholder={t_placeholder('visitationContent')}
-              />
-            </LabelContainer>
-          </InputContainer>
-          {/* 기도제목 */}
-          <InputContainer>
-            <LabelContainer>
-              <MainText>{t('visitationPray')}</MainText>
-              <Quill
-                value={detail.visitationPray}
-                onChange={(html) => onChangePray(detail.memberId, html)}
-                minHeight={120}
-                placeholder={t_placeholder('visitationPray')}
-              />
-            </LabelContainer>
-          </InputContainer>
-        </DetailContainer>
-      ))}
+      <CardContainer>
+        <ContentContainer>
+          <MainText size={SIZE.EXTRA_LARGE}>{t('visitationContent')}</MainText>
+          <Quill
+            value={targetVisitation.visitationDetails[0].visitationContent}
+            onChange={(html) => onChangeContent(html)}
+            minHeight={150}
+            placeholder={t_placeholder('visitationContent')}
+          />
+        </ContentContainer>
+      </CardContainer>
 
-      {/* 보고대상자 */}
-      <InputContainer>
-        <LabelContainer>
-          <MainText>{t('receiver')}</MainText>
+      {/* 기도제목 */}
+      <CardContainer>
+        <ContentContainer>
+          <MainText size={SIZE.EXTRA_LARGE}>{t('visitationPray')}</MainText>
+          <Quill
+            value={targetVisitation.visitationDetails[0].visitationPray}
+            onChange={(html) => onChangePray(html)}
+            minHeight={150}
+            placeholder={t_placeholder('visitationPray')}
+          />
+        </ContentContainer>
+      </CardContainer>
+
+      <CardContainer>
+        <ContentContainer>
+          {/* 보고대상자 */}
+          <MainText size={SIZE.EXTRA_LARGE}>{t('receiver')}</MainText>
           <MemberDropdown
             values={receivers}
             onChangeValues={onChangeReceivers}
-            height={40}
             placeholder={receivers.length === 0 ? t_placeholder('name') : BLANK}
             isManager={true}
           />
-        </LabelContainer>
-      </InputContainer>
+          {/* 보고대상자 목록 */}
+          <MemberTagList>
+            {receivers.map((member) => (
+              <MemberTag
+                key={member.value}
+                profileImage={member.profileImage}
+                name={member.title}
+                officer={member.officer}
+                onClick={() => onClickDeleteReceiver(member.value)}
+              />
+            ))}
+          </MemberTagList>
+        </ContentContainer>
+      </CardContainer>
     </AddVisitationViewContainer>
   );
 };

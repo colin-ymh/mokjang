@@ -4,148 +4,132 @@ import { RootState } from '@/redux/store';
 import { useTaskStatusDropdownItems } from '@/hooks/dropdown/dropdown-items';
 import { useI18n } from '../../../../../locales/client';
 import { MainText } from '@/components/atoms/common/text/main-text';
+import { getFormattedDate } from '@/utils/format';
+import { GRAY, WHITE } from '@/constants/styles/color';
 import React from 'react';
 import StatusDropdown from '@/components/atoms/common/dropdown/status-dropdown';
-import { GRAY } from '@/constants/styles/color';
-import { TASK_STATUS } from '@/constants/status/status';
+import { VISITATION_STATUS } from '@/constants/status/status';
+import { SIZE } from '@/constants/styles/style';
 import MemberProfilePopupButton from '@/components/molecules/common/button/member-profile-popup-button';
-import { getDateFromDateString, getDateStringFromDate } from '@/utils/date';
 
 const InformationContainer = styled.div`
   display: flex;
-  flex: 1;
   flex-direction: column;
-  overflow-y: auto;
+  gap: 20px;
+  width: 100%;
 `;
 
-const MetaContainer = styled.div`
+const CardContainer = styled.div<{ $minHeight?: number }>`
   display: flex;
   flex-direction: column;
-  padding: 25px 20px 50px 20px;
-  gap: 30px;
+  gap: 10px;
+  border: 1px solid ${GRAY.LIGHT};
+  border-radius: 10px;
+  background-color: ${WHITE};
+  width: 100%;
+  min-height: ${({ $minHeight }) => $minHeight && $minHeight}px;
+`;
+
+const ContentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+`;
+
+const MemberTagList = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  flex-direction: row;
 `;
 
 const RowContainer = styled.div`
   display: flex;
   flex-direction: row;
-  align-items: center;
-`;
-
-const TitleContainer = styled.div`
-  display: flex;
-  width: 100px;
-  flex-shrink: 0;
-`;
-
-const ContentContainer = styled.div`
-  display: flex;
-  flex-grow: 1;
-  justify-content: flex-start;
-  align-items: center;
-  gap: 10px;
-`;
-
-const ColumnContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-`;
-
-const DivideLine = styled.div`
+  justify-content: space-between;
   width: 100%;
-  height: 10px;
-  background-color: ${GRAY.DEFAULT};
-  flex-shrink: 0;
+  gap: 20px;
 `;
 
-const CommentContainer = styled.div`
+const PeriodContainer = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   gap: 10px;
-  padding: 20px;
-`;
-
-const CommentContentContainer = styled.div`
-  display: flex;
-  padding: 10px;
-  min-height: 50px;
 `;
 
 type TaskInformationViewProps = {
-  onChangeStatus: (status: TASK_STATUS) => void;
+  onChangeStatus: (status: VISITATION_STATUS) => void;
 };
 
 const TaskInformationView = ({ onChangeStatus }: TaskInformationViewProps) => {
   const t = useI18n();
-
   const { targetTask } = useSelector((state: RootState) => state.targetTask);
-
   const statusDropdownItems = useTaskStatusDropdownItems();
 
   return (
     <InformationContainer>
-      <MetaContainer>
-        {/* 진행 상태 */}
-        <ColumnContainer>
-          <MainText>{t('status')}</MainText>
-          <StatusDropdown
-            value={targetTask.status}
-            items={statusDropdownItems}
-            onChangeItem={onChangeStatus}
-            width={150}
-            height={40}
-          />
-        </ColumnContainer>
-        {/* 진행자 */}
-        <RowContainer>
-          <TitleContainer>
-            <MainText>{t('inCharge')}</MainText>
-          </TitleContainer>
+      <RowContainer>
+        <CardContainer>
           <ContentContainer>
+            <RowContainer>
+              <MainText size={SIZE.EXTRA_LARGE}>{t('schedule')}</MainText>
+              <StatusDropdown
+                value={targetTask.status}
+                items={statusDropdownItems}
+                onChangeItem={onChangeStatus}
+                width={100}
+                height={40}
+              />
+            </RowContainer>
+
+            {/* 일자 */}
+            <PeriodContainer>
+              <MainText>
+                {targetTask.startDate && getFormattedDate(targetTask.startDate)}
+              </MainText>
+              <MainText>{'-'}</MainText>
+              <MainText>
+                {targetTask.endDate && getFormattedDate(targetTask.endDate)}
+              </MainText>
+            </PeriodContainer>
+          </ContentContainer>
+        </CardContainer>
+        {/* 담당자 */}
+        <CardContainer $minHeight={150}>
+          <ContentContainer>
+            <MainText size={SIZE.EXTRA_LARGE}>{t('inCharge')}</MainText>
             <MemberProfilePopupButton
               key={targetTask.inCharge.id}
               member={targetTask.inCharge}
             />
           </ContentContainer>
-        </RowContainer>
-        {/* 일자 */}
-        <RowContainer>
-          <TitleContainer>
-            <MainText>{t('taskDate')}</MainText>
-          </TitleContainer>
-          <ContentContainer>
-            <MainText>
-              {targetTask.startDate &&
-                getDateStringFromDate(
-                  getDateFromDateString(targetTask.startDate)
-                )}
-            </MainText>
-            <MainText>{'-'}</MainText>
-            <MainText>
-              {targetTask.endDate &&
-                getDateStringFromDate(
-                  getDateFromDateString(targetTask.endDate)
-                )}
-            </MainText>
-          </ContentContainer>
-        </RowContainer>
-      </MetaContainer>
-      <DivideLine />
-      <CommentContainer>
-        {/* 내용 */}
-        <ColumnContainer>
-          <TitleContainer>
-            <MainText>{t('content')}</MainText>
-          </TitleContainer>
-          <CommentContentContainer>
-            <MainText
-              dangerouslySetInnerHTML={{
-                __html: targetTask.content,
-              }}
+        </CardContainer>
+      </RowContainer>
+
+      {/* 업무내용 */}
+      <CardContainer $minHeight={200}>
+        <ContentContainer>
+          <MainText size={SIZE.EXTRA_LARGE}>{t('content')}</MainText>
+          <MainText
+            dangerouslySetInnerHTML={{
+              __html: targetTask.content,
+            }}
+          />
+        </ContentContainer>
+      </CardContainer>
+      {/* 보고대상자 */}
+      <CardContainer $minHeight={150}>
+        <ContentContainer>
+          <MainText size={SIZE.EXTRA_LARGE}>{t('receiver')}</MainText>
+          {targetTask.reports.map((report) => (
+            <MemberProfilePopupButton
+              key={report.id}
+              member={report.receiver}
             />
-          </CommentContentContainer>
-        </ColumnContainer>
-      </CommentContainer>
+          ))}
+        </ContentContainer>
+      </CardContainer>
     </InformationContainer>
   );
 };

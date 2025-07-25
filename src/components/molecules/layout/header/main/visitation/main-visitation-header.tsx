@@ -3,22 +3,23 @@ import { usePageRouter } from '@/utils/router';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
-import { VisitationsApi } from '@/api/visitations/visitations.api';
 import { setTargetVisitation } from '@/redux/reducers/target/target-visitation-reducer';
 import { DEFAULT_VISITATION } from '@/models/visitation/visitation';
 import { setVisitations } from '@/redux/reducers/filter/visitation-filter-reducer';
-import { getIsWellFormedTitle } from '@/utils/check';
-import { BLANK } from '@/constants/constant';
 import {
   setIsToastShown,
   setToastText,
 } from '@/redux/reducers/toast-popup-reducer';
+import { getIsWellFormedTitle } from '@/utils/check';
+import { BLANK } from '@/constants/constant';
+import { VisitationsApi } from '@/api/visitations/visitations.api';
 
 type MainVisitationHeaderProps = {};
 
 const MainVisitationHeader = ({}: MainVisitationHeaderProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const router = usePageRouter();
+
   const { visitations } = useSelector(
     (state: RootState) => state.visitationFilter
   );
@@ -30,15 +31,15 @@ const MainVisitationHeader = ({}: MainVisitationHeaderProps) => {
 
   const visitationsApi = new VisitationsApi(false);
 
-  const [isSaveEnabled, setIsSaveEnabled] = useState<boolean>(false);
-
-  const [isAddVisitationOpened, setIsAddVisitationOpened] =
-    useState<boolean>(false);
-
   const [thrownError, setThrownError] = useState<Error | null>(null);
   if (thrownError) {
     throw thrownError;
   }
+
+  const [isAddVisitationOpened, setIsAddVisitationOpened] =
+    useState<boolean>(false);
+
+  const [isSaveEnabled, setIsSaveEnabled] = useState<boolean>(false);
 
   // 헤더 탭바 이벤트
   const onClickHeaderBar = (id: string) => {

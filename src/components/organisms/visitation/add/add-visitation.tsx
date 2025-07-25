@@ -1,10 +1,7 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import { BLANK } from '@/constants/constant';
 import { getFormattedTitle } from '@/utils/format';
-import {
-  VISITATION_METHOD,
-  VisitationDetail,
-} from '@/models/visitation/visitation';
+import { VISITATION_METHOD } from '@/models/visitation/visitation';
 import { MemberDropdownType } from '@/components/atoms/common/dropdown/member-dropdown-item';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
@@ -17,13 +14,15 @@ import {
 } from '@/utils/date';
 import AddVisitationView from '@/components/organisms/visitation/add/add-visitation.view';
 import { VISITATION_STATUS } from '@/constants/status/status';
-import { DEFAULT_MEMBER } from '@/models/member/member';
 
-const AddVisitation = () => {
+type AddVisitationProps = {};
+
+const AddVisitation = ({}: AddVisitationProps) => {
+  const dispatch = useDispatch<AppDispatch>();
+
   const { targetVisitation } = useSelector(
     (state: RootState) => state.targetVisitation
   );
-  const dispatch = useDispatch<AppDispatch>();
 
   /* ── Status ── */
   const onChangeStatus = (status: VISITATION_STATUS) =>
@@ -130,8 +129,16 @@ const AddVisitation = () => {
     }
   }, [targetVisitation.id]);
 
-  const onChangeVisitedMembers = (values: MemberDropdownType[]) =>
+  const onChangeVisitedMembers = (values: MemberDropdownType[]) => {
     setVisitedMembers(values);
+  };
+
+  const onClickDeleteVisitedMember = (memberId: string) => {
+    const newVisitedMembers = visitedMembers.filter(
+      (m) => m.value !== memberId
+    );
+    setVisitedMembers(newVisitedMembers);
+  };
 
   /* ── Method ── */
   const onChangeMethod = (m: VISITATION_METHOD) =>
@@ -189,120 +196,50 @@ const AddVisitation = () => {
     );
   };
 
-  /* ───────────────────────────── Local details (content / pray) ───────────────────────────── */
-  const createPlaceholderDetail = (): VisitationDetail => ({
-    id: BLANK,
-    memberId: BLANK,
-    visitationContent: BLANK,
-    visitationPray: BLANK,
-    member: DEFAULT_MEMBER,
-  });
-
-  const [localDetails, setLocalDetails] = useState<VisitationDetail[]>(
-    targetVisitation.visitationDetails?.length > 0
-      ? targetVisitation.visitationDetails
-      : [createPlaceholderDetail()]
-  );
-
-  /* Redux 에서 새로운 visitation 을 불러오면 로컬 detail 초기화 */
-  useEffect(() => {
-    setLocalDetails((prev) =>
-      targetVisitation.visitationDetails.length > 0
-        ? targetVisitation.visitationDetails
-        : prev
+  const onClickDeleteReceiver = (receiverId: string) => {
+    const newReceivers = receivers.filter((r) => r.value !== receiverId);
+    setReceivers(newReceivers);
+    dispatch(
+      setTargetVisitation({
+        ...targetVisitation,
+        receiverIds: newReceivers.map((r) => r.value),
+      })
     );
-  }, [targetVisitation.id]);
+  };
 
   /** content/pray 입력 핸들러 */
-  const onChangeContent = (memberId: string, content: string) => {
-    setLocalDetails((prev) =>
-      prev.map((d) =>
-        d.memberId === memberId ? { ...d, visitationContent: content } : d
-      )
-    );
-  };
-
-  const onChangePray = (memberId: string, pray: string) => {
-    setLocalDetails((prev) =>
-      prev.map((d) =>
-        d.memberId === memberId ? { ...d, visitationPray: pray } : d
-      )
-    );
-  };
-
-  /** debounce: 500ms 동안 입력이 없을 때만 전역 상태 반영 */
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      dispatch(
-        setTargetVisitation({
-          ...targetVisitation,
-          visitationDetails: localDetails,
-        })
-      );
-    }, 500);
-    return () => clearTimeout(timer);
-  }, [localDetails]);
-
-  /* ── visitedMembers ↔ localDetails 동기화 ── */
-  useEffect(() => {
-    const newMembers = visitedMembers.map((vm) => ({
-      ...DEFAULT_MEMBER,
-      id: vm.value,
-      name: vm.title,
-    }));
-
-    setLocalDetails((prev) => {
-      let next = [...prev];
-
-      // 1) 대상자 없음 (placeholder 유지)
-      if (visitedMembers.length === 0) {
-        if (next.length === 0) next.push(createPlaceholderDetail());
-        if (next.length > 1) next = [next[0]]; // 여전히 첫 번째 항목만 사용
-        return next;
-      }
-
-      // 2) 대상자 1명 & placeholder 변환
-      if (
-        visitedMembers.length === 1 &&
-        next.length === 1 &&
-        next[0].memberId === BLANK
-      ) {
-        next[0] = {
-          ...next[0],
-          memberId: visitedMembers[0].value,
-          member: {
-            ...DEFAULT_MEMBER,
-            id: visitedMembers[0].value,
-            name: visitedMembers[0].title,
+  const onChangeContent = (content: string) => {
+    dispatch(
+      setTargetVisitation({
+        ...targetVisitation,
+        visitationDetails: [
+          {
+            ...targetVisitation.visitationDetails[0],
+            visitationContent: content,
           },
-        };
-      }
+        ],
+      })
+    );
+  };
 
-      // 3) 추가/삭제 반영
-      const added = visitedMembers
-        .filter((vm) => !next.some((d) => d.memberId === vm.value))
-        .map((vm) => ({
-          id: BLANK,
-          memberId: vm.value,
-          visitationContent: BLANK,
-          visitationPray: BLANK,
-          member: { ...DEFAULT_MEMBER, name: vm.title },
-        }));
-      const updated = next.filter((d) =>
-        visitedMembers.some((vm) => vm.value === d.memberId)
-      );
-      return [...updated, ...added];
-    });
-
-    // 전역 상태(멤버 목록)는 즉시 반영 (세부내용은 debounce)
-    dispatch(setTargetVisitation({ ...targetVisitation, members: newMembers }));
-  }, [visitedMembers]);
+  const onChangePray = (pray: string) => {
+    dispatch(
+      setTargetVisitation({
+        ...targetVisitation,
+        visitationDetails: [
+          {
+            ...targetVisitation.visitationDetails[0],
+            visitationPray: pray,
+          },
+        ],
+      })
+    );
+  };
 
   const props = {
     visitedMembers,
     inCharge,
     receivers,
-    localDetails,
     onChangeStatus,
     onChangeTitle,
     onChangeStartDate,
@@ -315,6 +252,8 @@ const AddVisitation = () => {
     onChangeReceivers,
     onChangeContent,
     onChangePray,
+    onClickDeleteVisitedMember,
+    onClickDeleteReceiver,
   };
   return (
     <>

@@ -13,6 +13,7 @@ export default {
   isNotDone: 'Incomplete',
   customSelect: 'Custom Select',
 
+  schedule: 'Schedule',
   lastPresent: 'Last Present',
 
   weekly: 'weekly',

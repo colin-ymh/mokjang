@@ -1,6 +1,4 @@
 import styled from 'styled-components';
-
-import SlidePopup from '@/components/atoms/common/popup/slide-popup';
 import Loading from '@/components/atoms/common/etc/loading';
 import React from 'react';
 import { BLACK, DESTRUCTIVE, MAIN, WHITE } from '@/constants/styles/color';
@@ -17,7 +15,7 @@ import AddVisitation from '@/components/organisms/visitation/add/add-visitation'
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import VisitationInformation from '@/components/organisms/visitation/information/visitation-information';
-import KebabDropdown from '@/components/atoms/common/dropdown/kebab-dropdown';
+import WrappedPagePopup from '@/components/atoms/common/popup/wrapped-page-popup';
 
 const VisitationListContainer = styled.div`
   display: flex;
@@ -115,44 +113,28 @@ const VisitationListView = (props: VisitationListViewProps) => {
   );
 
   return (
-    <VisitationListContainer>
-      {/* 모바일에서 보일 목록형 UI */}
-      {/*<MobileView>*/}
-      {/*  <VisitationItemList {...props.list} />*/}
-      {/*</MobileView>*/}
-      {/* 데스크탑에서 보일 테이블형 UI */}
-      <DesktopView>
-        <VisitationRow />
-        <VisitationTable {...props.list} />
-      </DesktopView>
+    <>
+      <VisitationListContainer>
+        {/* 모바일에서 보일 목록형 UI */}
+        {/*<MobileView>*/}
+        {/*  <VisitationItemList {...props.list} />*/}
+        {/*</MobileView>*/}
+        {/* 데스크탑에서 보일 테이블형 UI */}
+        <DesktopView>
+          <VisitationRow />
+          <VisitationTable {...props.list} />
+        </DesktopView>
+      </VisitationListContainer>
+
       {/* 심방 상세정보 팝업*/}
-      <SlidePopup
+      <WrappedPagePopup
         isShow={isVisitationInformationShown}
         onClickClose={onClickClose}
-        isFooterShown={false}
         headerTitle={targetVisitation?.title}
-        headerRight={
-          <ButtonRow>
-            <KebabDropdown
-              items={[
-                {
-                  value: 'delete',
-                  title: t_button('delete'),
-                  onClick: onClickConfirmOpen,
-                },
-                {
-                  value: 'edit',
-                  title: t_button('edit'),
-                  onClick: onClickEditOpen,
-                },
-              ]}
-              width={150}
-            />
-            <ButtonContainer onClick={onClickClose}>
-              <Cancel />
-            </ButtonContainer>
-          </ButtonRow>
-        }
+        doneText={t_button('edit')}
+        cancelText={t_button('delete')}
+        onClickDone={onClickEditOpen}
+        onClickCancel={onClickConfirmOpen}
       >
         <>
           {/* 삭제 확인 팝업 */}
@@ -171,21 +153,22 @@ const VisitationListView = (props: VisitationListViewProps) => {
           />
           <VisitationInformation />
         </>
-      </SlidePopup>
+      </WrappedPagePopup>
+
       {/* 심방 수정 팝업*/}
-      <SlidePopup
+      <WrappedPagePopup
         isShow={isEditShown}
         onClickClose={onClickEditClose}
+        onClickCancel={onClickEditClose}
         onClickDone={onClickEditDone}
-        doneText={t_button('edit')}
         headerTitle={t_title('editVisitation')}
         doneBackgroundColor={isSaveEnabled ? MAIN.DEFAULT : MAIN.LIGHT}
         doneDisabled={!isSaveEnabled}
       >
         <AddVisitation />
-      </SlidePopup>
+      </WrappedPagePopup>
       <Loading isShow={isLoading} />
-    </VisitationListContainer>
+    </>
   );
 };
 

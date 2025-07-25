@@ -9,7 +9,6 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import TransparentBackground from '@/components/atoms/common/etc/transparent-background';
 import { InputProps } from '@/components/atoms/common/input/main-input';
 import MemberDropdownView from '@/components/atoms/common/dropdown/member-dropdown.view';
 import { getTrimmedString } from '@/utils/format';
@@ -31,7 +30,6 @@ export type MultiMemberDropdownProps = InputProps & {
 
   /** UI 옵션 */
   isEditable?: boolean;
-  reverseDirection?: boolean;
   backgroundBlur?: boolean;
   enterKeyHint?: string;
   placeholder?: string;
@@ -52,7 +50,6 @@ const MemberDropdown = forwardRef<HTMLInputElement, MultiMemberDropdownProps>(
       values,
       onChangeValues,
       backgroundBlur = false,
-      reverseDirection = false,
       isEditable = true,
       enterKeyHint = 'enter',
       placeholder,
@@ -76,6 +73,7 @@ const MemberDropdown = forwardRef<HTMLInputElement, MultiMemberDropdownProps>(
     const [searchText, setSearchText] = useState('');
     const [focusedIndex, setFocusedIndex] = useState(0);
     const [items, setItems] = useState<MemberDropdownType[]>([]);
+
     const focusedIndexRef = useRef(0);
 
     /* 선택 변경 ---------------------------------------------------- */
@@ -149,54 +147,64 @@ const MemberDropdown = forwardRef<HTMLInputElement, MultiMemberDropdownProps>(
     }, [items]);
 
     useEffect(() => {
-      if (searchText) {
-        if (isManager) {
-          managersApi
-            .getManagers({
-              churchId,
-              name: searchText,
-              page: 1,
-              take: 5,
-            })
-            .then((response: AxiosResponse) => {
-              const managers = response.data.data;
-              const newMemberItems: MemberDropdownType[] = managers.map(
-                (manager: ChurchUser) => {
-                  return {
-                    value: manager.memberId,
-                    title: manager.member.name,
-                  };
-                }
-              );
+      const timer = setTimeout(() => {
+        if (searchText) {
+          if (isManager) {
+            managersApi
+              .getManagers({
+                churchId,
+                name: searchText,
+                page: 1,
+                take: 5,
+              })
+              .then((response: AxiosResponse) => {
+                const managers = response.data.data;
+                const newMemberItems: MemberDropdownType[] = managers.map(
+                  (manager: ChurchUser) => {
+                    return {
+                      value: manager.member.id,
+                      title: manager.member.name,
+                      profileImage: manager.member.profileImageUrl,
+                      officer: manager.member.officer?.name,
+                    };
+                  }
+                );
 
-              setItems(newMemberItems);
-              setFocusedIndex(0);
-              focusedIndexRef.current = 0;
-            });
+                setItems(newMemberItems);
+                setFocusedIndex(0);
+                focusedIndexRef.current = 0;
+              });
+          } else {
+            membersApi
+              .getSimpleMembers({
+                churchId,
+                name: searchText,
+                page: 1,
+                take: 10,
+              })
+              .then((response: AxiosResponse) => {
+                const members: GetMembersResponse[] = response.data.data;
+                const newMemberItems: MemberDropdownType[] = members.map(
+                  (member) => {
+                    return {
+                      value: member.id,
+                      title: member.name,
+                      profileImage: member.profileImageUrl,
+                      officer: member.officer?.name,
+                    };
+                  }
+                );
+
+                setItems(newMemberItems);
+                setFocusedIndex(0);
+                focusedIndexRef.current = 0;
+              });
+          }
         } else {
-          membersApi
-            .getMembers({
-              churchId,
-              name: searchText,
-              page: 1,
-              take: 5,
-            })
-            .then((response: AxiosResponse) => {
-              const members: GetMembersResponse[] = response.data.data;
-              const newMemberItems: MemberDropdownType[] = members.map(
-                (member) => {
-                  return { value: member.id, title: member.name };
-                }
-              );
-
-              setItems(newMemberItems);
-              setFocusedIndex(0);
-              focusedIndexRef.current = 0;
-            });
+          setItems([]);
         }
-      } else {
-        setItems([]);
-      }
+      }, 300);
+      return () => clearTimeout(timer);
     }, [searchText]);
 
     useEffect(() => {
@@ -215,7 +223,6 @@ const MemberDropdown = forwardRef<HTMLInputElement, MultiMemberDropdownProps>(
       isOpened,
       focusedIndex,
       isEditable,
-      reverseDirection,
       enterKeyHint,
       placeholder,
       borderColor,
@@ -229,15 +236,12 @@ const MemberDropdown = forwardRef<HTMLInputElement, MultiMemberDropdownProps>(
       removeValue,
       onChangeInput,
       onKeyDownHandler,
+      backgroundBlur,
+      onClickBackground,
     };
 
     return (
       <>
-        <TransparentBackground
-          isOpened={isOpened}
-          blur={backgroundBlur}
-          onClick={onClickBackground}
-        />
         <MemberDropdownView {...viewProps} {...inputProps} />
       </>
     );

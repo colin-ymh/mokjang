@@ -1,10 +1,7 @@
 import styled from 'styled-components';
-
-import SlidePopup from '@/components/atoms/common/popup/slide-popup';
 import Loading from '@/components/atoms/common/etc/loading';
 import React from 'react';
-import { BLACK, MAIN } from '@/constants/styles/color';
-import CancelIcon from '../../../../../public/svg/cancel.svg';
+import { MAIN, WHITE } from '@/constants/styles/color';
 import ConfirmPopup from '@/components/atoms/common/popup/error-popup';
 import { useScopedI18n } from '../../../../../locales/client';
 import { MEDIA_MIN_WIDTH } from '@/constants/constant';
@@ -16,7 +13,7 @@ import AddTask from '@/components/organisms/task/add/add-task';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import TaskInformation from '@/components/organisms/task/information/task-information';
-import KebabDropdown from '@/components/atoms/common/dropdown/kebab-dropdown';
+import WrappedPagePopup from '@/components/atoms/common/popup/wrapped-page-popup';
 
 const TaskListContainer = styled.div`
   display: flex;
@@ -24,6 +21,7 @@ const TaskListContainer = styled.div`
   height: 100%;
   width: 100%;
   overflow-y: auto;
+  background-color: ${WHITE};
 `;
 
 const MobileView = styled.div`
@@ -42,26 +40,6 @@ const DesktopView = styled.div`
     display: flex;
     flex-direction: column;
   }
-`;
-
-const ButtonRow = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 5px;
-  justify-content: center;
-  align-items: center;
-`;
-
-const ButtonContainer = styled.div`
-  display: flex;
-  cursor: pointer;
-`;
-
-const Cancel = styled(CancelIcon)`
-  width: 30px;
-  height: 30px;
-  stroke: ${BLACK};
-  stroke-width: 1px;
 `;
 
 type TaskListViewProps = {
@@ -104,44 +82,28 @@ const TaskListView = (props: TaskListViewProps) => {
   const { targetTask } = useSelector((state: RootState) => state.targetTask);
 
   return (
-    <TaskListContainer>
-      {/* 모바일에서 보일 목록형 UI */}
-      {/*<MobileView>*/}
-      {/*  <TaskItemList {...props.list} />*/}
-      {/*</MobileView>*/}
-      {/* 데스크탑에서 보일 테이블형 UI */}
-      <DesktopView>
-        <TaskRow />
-        <TaskTable {...props.list} />
-      </DesktopView>
+    <>
+      <TaskListContainer>
+        {/* 모바일에서 보일 목록형 UI */}
+        {/*<MobileView>*/}
+        {/*  <TaskItemList {...props.list} />*/}
+        {/*</MobileView>*/}
+        {/* 데스크탑에서 보일 테이블형 UI */}
+        <DesktopView>
+          <TaskRow />
+          <TaskTable {...props.list} />
+        </DesktopView>
+      </TaskListContainer>
+
       {/* 심방 상세정보 팝업*/}
-      <SlidePopup
+      <WrappedPagePopup
         isShow={isTaskInformationShown}
         onClickClose={onClickClose}
-        isFooterShown={false}
         headerTitle={targetTask?.title}
-        headerRight={
-          <ButtonRow>
-            <KebabDropdown
-              items={[
-                {
-                  value: 'delete',
-                  title: t_button('delete'),
-                  onClick: onClickConfirmOpen,
-                },
-                {
-                  value: 'edit',
-                  title: t_button('edit'),
-                  onClick: onClickEditOpen,
-                },
-              ]}
-              width={150}
-            />
-            <ButtonContainer onClick={onClickClose}>
-              <Cancel />
-            </ButtonContainer>
-          </ButtonRow>
-        }
+        doneText={t_button('edit')}
+        cancelText={t_button('delete')}
+        onClickDone={onClickEditOpen}
+        onClickCancel={onClickConfirmOpen}
       >
         <>
           {/* 삭제 확인 팝업 */}
@@ -160,21 +122,22 @@ const TaskListView = (props: TaskListViewProps) => {
           />
           <TaskInformation />
         </>
-      </SlidePopup>
+      </WrappedPagePopup>
+
       {/* 심방 수정 팝업*/}
-      <SlidePopup
+      <WrappedPagePopup
         isShow={isEditShown}
         onClickClose={onClickEditClose}
+        onClickCancel={onClickEditClose}
         onClickDone={onClickEditDone}
-        doneText={t_button('edit')}
         headerTitle={t_title('editTask')}
         doneBackgroundColor={isSaveEnabled ? MAIN.DEFAULT : MAIN.LIGHT}
         doneDisabled={!isSaveEnabled}
       >
         <AddTask />
-      </SlidePopup>
+      </WrappedPagePopup>
       <Loading isShow={isLoading} />
-    </TaskListContainer>
+    </>
   );
 };
 

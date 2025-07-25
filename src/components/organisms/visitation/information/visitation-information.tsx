@@ -36,7 +36,7 @@ const VisitationInformation = ({}: VisitationInformationProps) => {
           { status }
         )
         .then((response) => {
-          const newVisitation = response.data;
+          const newVisitation = response.data.data;
 
           dispatch(
             setTargetVisitation({

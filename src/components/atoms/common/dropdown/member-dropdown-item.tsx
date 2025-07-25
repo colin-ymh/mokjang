@@ -11,21 +11,23 @@ export type MemberDropdownType = DropdownValueType & {
   profileImage?: string;
   age?: number;
   gender?: GENDER;
+  officer?: string;
 };
 
 const DropdownContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
+  cursor: pointer;
 `;
 
 const ItemContainer = styled.div<{ $isFocused: boolean }>`
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 5px;
+  padding: 10px;
   transition: background-color 0.3s ease;
-  cursor: pointer;
+
   background-color: ${({ $isFocused }) => $isFocused && MAIN.EXTRA_LIGHT};
 
   &:hover {
@@ -47,14 +49,15 @@ const MemberDropdownItem = ({
   isFocused,
 }: MultiMemberDropdownItemProps) => {
   return (
-    <DropdownContainer>
-      <ItemContainer onClick={() => onClick(item)} $isFocused={isFocused}>
-        <ProfileImage value={item.profileImage || BLANK} />
+    <DropdownContainer onClick={() => onClick(item)}>
+      <ItemContainer $isFocused={isFocused}>
+        <ProfileImage
+          value={item.profileImage || BLANK}
+          width={30}
+          height={30}
+        />
         <MainText color={isSelected ? MAIN.DEFAULT : BLACK}>
-          {item.title}
-        </MainText>
-        <MainText color={isSelected ? MAIN.DEFAULT : BLACK}>
-          {item.age !== undefined && `(${item.age})`}
+          {`${item.title} ${item.officer || BLANK}`}
         </MainText>
       </ItemContainer>
     </DropdownContainer>

@@ -39,7 +39,7 @@ export const getStatusFontColor = (status: STATUS) => {
     case STATUS.PENDING:
       return STATUS_FONT_COLOR.PENDING;
     default:
-      return WHITE;
+      return BLACK;
   }
 };
 

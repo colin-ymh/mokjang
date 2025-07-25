@@ -16,8 +16,8 @@ const WidgetContainer = styled.div`
 
 const ListContainer = styled.div`
   display: grid;
-  width: 100%;
   grid-template-columns: repeat(2, 1fr);
+  width: 100%;
   gap: 10px;
 `;
 

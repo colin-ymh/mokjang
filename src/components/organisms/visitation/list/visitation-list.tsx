@@ -333,17 +333,17 @@ const VisitationList = ({
       dispatch(setTargetVisitation(prevVisitation));
     }
     setIsEditShown(false);
-    setTimeout(() => {
-      setIsVisitationInformationShown(true);
-    }, 500);
+    // setTimeout(() => {
+    //   setIsVisitationInformationShown(true);
+    // }, 500);
   };
 
   // 수정 페이지 열기
   const onClickEditOpen = () => {
-    setIsVisitationInformationShown(false);
-    setTimeout(() => {
-      setIsEditShown(true);
-    }, 500);
+    // setIsVisitationInformationShown(false);
+    // setTimeout(() => {
+    setIsEditShown(true);
+    // }, 500);
   };
 
   useEffect(() => {

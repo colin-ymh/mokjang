@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-import ChevronLeft from '../../../../../public/svg/chevron-down.svg';
 import { MAIN } from '@/constants/styles/color';
 import { BorderInputProps } from '@/components/atoms/common/input/border-input';
 import { DropdownButtonProps } from '@/components/atoms/common/dropdown/default-dropdown-button';
 import { MainText } from '@/components/atoms/common/text/main-text';
+import { Chevron } from '@/components/atoms/common/dropdown/dropdown-chevron';
 
 const DropdownButton = styled.div`
   display: flex;
@@ -16,15 +16,6 @@ const DropdownButton = styled.div`
   background-color: ${MAIN.EXTRA_LIGHT};
   border-radius: 1000px;
   padding: 5px 13px;
-`;
-
-const Chevron = styled(ChevronLeft)<{ $isOpened: boolean }>`
-  width: 10px;
-  height: 15px;
-  stroke: ${MAIN.DEFAULT};
-  stroke-width: 3px;
-  transform: rotate(${({ $isOpened }) => ($isOpened ? '180deg' : '360deg')});
-  transition: transform 0.2s ease;
 `;
 
 const TagDropdownButton = ({

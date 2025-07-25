@@ -276,17 +276,11 @@ const TaskList = ({ headerType = HEADER_BAR.ALL }: TaskListProps) => {
       dispatch(setTargetTask(prevTask));
     }
     setIsEditShown(false);
-    setTimeout(() => {
-      setIsTaskInformationShown(true);
-    }, 500);
   };
 
   // 수정 페이지 열기
   const onClickEditOpen = () => {
-    setIsTaskInformationShown(false);
-    setTimeout(() => {
-      setIsEditShown(true);
-    }, 500);
+    setIsEditShown(true);
   };
 
   useEffect(() => {

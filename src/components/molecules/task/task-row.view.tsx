@@ -2,7 +2,7 @@ import { ChangeEvent, Ref } from 'react';
 import styled from 'styled-components';
 
 import Button from '@/components/atoms/common/button/button';
-import { GRAY, WHITE } from '@/constants/styles/color';
+import { BLACK, GRAY, WHITE } from '@/constants/styles/color';
 import { TASK } from '@/constants/column/task-column';
 
 import {
@@ -15,20 +15,24 @@ import TaskFilteredItem, {
   TaskFilteredItemType,
 } from '@/components/atoms/task/task-filtered-item';
 import PeriodModal from '@/components/atoms/common/modal/period-modal';
-import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
-import SearchInput from '@/components/atoms/common/input/search-input';
+import { useSelector } from 'react-redux';
 import StatusDropdown from '@/components/atoms/common/dropdown/status-dropdown';
+import SearchInput from '@/components/atoms/common/input/search-input';
 import { TASK_STATUS } from '@/constants/status/status';
+
+import Calendar from '../../../../public/svg/calendar.svg';
+import SvgIcon from '@/components/atoms/common/icon/svg-icon';
 
 const TaskContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   width: 100%;
-  height: 100px;
+  border-bottom: 1px solid ${GRAY.LIGHT};
   flex-shrink: 0;
   position: relative;
+  background-color: ${WHITE};
 `;
 
 const RowTop = styled.div`
@@ -49,6 +53,7 @@ const ButtonContainer = styled.div`
   align-items: center;
   padding: 10px 10px 10px 20px;
   position: relative;
+  gap: 10px;
 `;
 
 const FilteredItemList = styled.div<{ $width: number }>`
@@ -77,35 +82,35 @@ export type TASK_SEARCH_FILTER = TASK.TITLE | TASK.IN_CHARGE;
 
 type TaskViewProps = {
   isModalShown: boolean;
+  statusFilter: TASK_STATUS | undefined;
   searchFilter: TASK_SEARCH_FILTER;
   searchValue: string;
   searchRef: Ref<HTMLInputElement>;
-  statusFilter: TASK_STATUS | undefined;
   filteredItems: TaskFilteredItemType[];
   onClickStatusFilterItem: (value: TASK_STATUS) => void;
-  onClickClosePeriodModal: () => void;
   onClickSearchFilterItem: (value: TASK_SEARCH_FILTER) => void;
   onChangeSearchValue: (event: ChangeEvent<HTMLInputElement>) => void;
   onClickPeriodModal: () => void;
   onClickSearch: () => void;
   onKeyDown: (event: React.KeyboardEvent<HTMLInputElement>) => void;
+  onClickClosePeriodModal: () => void;
   onClickSavePeriod: (startDate: string, endDate: string) => void;
 };
 
 const TaskRowView = ({
   isModalShown,
+  statusFilter,
   searchFilter,
   searchValue,
   searchRef,
-  statusFilter,
   filteredItems,
   onClickStatusFilterItem,
-  onClickClosePeriodModal,
   onClickPeriodModal,
   onClickSearchFilterItem,
   onChangeSearchValue,
   onClickSearch,
   onKeyDown,
+  onClickClosePeriodModal,
   onClickSavePeriod,
 }: TaskViewProps) => {
   const t_button = useScopedI18n('button');
@@ -125,11 +130,22 @@ const TaskRowView = ({
             <Button
               text={t_button('filterTaskDate')}
               height={30}
-              width={60}
+              width={'auto'}
               onClick={onClickPeriodModal}
               backgroundColor={WHITE}
               borderColor={GRAY.LIGHT}
-              color={GRAY.DARK}
+              color={BLACK}
+              icon={<SvgIcon svg={Calendar} />}
+            />
+
+            <StatusDropdown
+              value={statusFilter}
+              items={statusFilterDropdownItems}
+              onChangeItem={onClickStatusFilterItem}
+              height={30}
+              width={130}
+              borderColor={GRAY.LIGHT}
+              backgroundBlur={false}
             />
             {/* 설정 모달 */}
             <PeriodModal
@@ -152,15 +168,6 @@ const TaskRowView = ({
         </FilterList>
         {/* 검색 부분 */}
         <SearchContainer>
-          <StatusDropdown
-            value={statusFilter}
-            items={statusFilterDropdownItems}
-            onChangeItem={onClickStatusFilterItem}
-            height={30}
-            width={130}
-            borderColor={GRAY.SEMI_LIGHT}
-            backgroundBlur={false}
-          />
           <SearchInput
             searchRef={searchRef}
             searchFilter={searchFilter}

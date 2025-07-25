@@ -1,13 +1,15 @@
-import { ReactNode } from 'react';
+'use client';
+
+import { ReactNode, useEffect } from 'react';
 import styled from 'styled-components';
 
 import { GRAY, MAIN, WHITE } from '@/constants/styles/color';
 import Hide from '@/components/atoms/common/etc/hide';
-import PopupLayout from '@/components/organisms/layout/popup-layout';
 import { MainText } from '@/components/atoms/common/text/main-text';
-import { useI18n } from '../../../../../locales/client';
+import { useScopedI18n } from '../../../../../locales/client';
 
 import ArrowUp from '../../../../../public/svg/arror-up.svg';
+import Button from '@/components/atoms/common/button/button';
 
 const WrappedPagePopupContainer = styled.div`
   display: flex;
@@ -19,14 +21,36 @@ const WrappedPagePopupContainer = styled.div`
   height: 100%;
   background-color: ${GRAY.SUPER_LIGHT};
   z-index: 1000;
-  justify-content: center;
   align-items: center;
-  gap: 10px;
+  justify-content: center;
 `;
 
 const HeaderContainer = styled.div`
   display: flex;
-  width: 600px;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 800px;
+  padding: 20px;
+`;
+
+const TitleContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+`;
+
+const TextContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
 `;
 
 const GoBackContainer = styled.div`
@@ -48,78 +72,104 @@ const ArrowLeft = styled(ArrowUp)`
 
 const ContentWrapper = styled.div`
   display: flex;
-  width: 600px;
-  height: 90%;
-  background-color: ${WHITE};
-  border-radius: 10px;
-  border: 1px solid ${GRAY.EXTRA_LIGHT};
-  overflow: hidden;
-  box-shadow: 0px 1px 2px 0px #0000000d;
+  width: 800px;
+  overflow-y: auto;
+  margin-bottom: 20px;
 `;
 
 interface WrappedPagePopupProps {
   isShow: boolean;
-  isFooterShown?: boolean;
   onClickClose: () => void;
-  onClickDone?: () => void;
+  children: ReactNode;
   headerTitle?: string;
   headerDescription?: string;
-  headerRight?: ReactNode;
-  cancelText?: string;
+  onClickDone?: () => void;
+  onClickCancel?: () => void;
   doneText?: string;
-  cancelBackgroundColor?: string;
+  cancelText?: string;
   doneBackgroundColor?: string;
   doneDisabled?: boolean;
-  children: ReactNode;
 }
 
 // 특정 컴포넌트를 전체화면 페이지인 것처럼 보아게 해주는 모달
 const WrappedPagePopup = ({
   isShow,
-  isFooterShown,
   onClickClose,
-  onClickDone,
+  children,
   headerTitle,
   headerDescription,
-  headerRight,
-  cancelText,
+  onClickDone,
+  onClickCancel,
+  doneBackgroundColor = MAIN.DEFAULT,
+  doneDisabled = false,
   doneText,
-  cancelBackgroundColor,
-  doneBackgroundColor,
-  doneDisabled,
-  children,
+  cancelText,
 }: WrappedPagePopupProps) => {
   if (!isShow) {
     return <Hide />;
   }
 
-  const t = useI18n();
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        onClickClose();
+      }
+    };
+    if (isShow) {
+      window.addEventListener('keydown', handleKeyDown);
+    }
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isShow, onClickClose]);
+
+  const t_button = useScopedI18n('button');
 
   return (
     <WrappedPagePopupContainer>
       <HeaderContainer>
+        {/* 돌아가기 */}
         <GoBackContainer onClick={onClickClose}>
           <ArrowLeft />
-          <MainText color={MAIN.DEFAULT}>{t('button.backToList')}</MainText>
+          <MainText color={MAIN.DEFAULT}>{t_button('backToList')}</MainText>
         </GoBackContainer>
+        {/* 제목 + 버튼 */}
+        <TitleContainer>
+          {/* 제목 */}
+          <TextContainer>
+            <MainText fontSize={30} fontWeight={700}>
+              {headerTitle}
+            </MainText>
+            {headerDescription && (
+              <MainText fontSize={16} fontWeight={400} color={GRAY.DEFAULT}>
+                {headerDescription}
+              </MainText>
+            )}
+          </TextContainer>
+          {/* 버튼 */}
+          <ButtonContainer>
+            <Button
+              width={80}
+              height={30}
+              color={WHITE}
+              backgroundColor={doneBackgroundColor}
+              onClick={onClickDone}
+              text={doneText || t_button('save')}
+              disabled={doneDisabled}
+            />
+            <Button
+              width={80}
+              height={30}
+              color={GRAY.DEFAULT}
+              backgroundColor={WHITE}
+              onClick={onClickCancel}
+              borderColor={GRAY.SEMI_LIGHT}
+              text={cancelText || t_button('cancel')}
+            />
+          </ButtonContainer>
+        </TitleContainer>
       </HeaderContainer>
-      <ContentWrapper>
-        <PopupLayout
-          onClickCancel={onClickClose}
-          onClickDone={onClickDone}
-          headerTitle={headerTitle}
-          headerDescription={headerDescription}
-          headerRight={headerRight}
-          doneText={doneText}
-          cancelText={cancelText}
-          doneBackgroundColor={doneBackgroundColor}
-          cancelBackgroundColor={cancelBackgroundColor}
-          doneDisabled={doneDisabled}
-          isFooterShown={isFooterShown}
-        >
-          {children}
-        </PopupLayout>
-      </ContentWrapper>
+      <ContentWrapper>{children}</ContentWrapper>
     </WrappedPagePopupContainer>
   );
 };

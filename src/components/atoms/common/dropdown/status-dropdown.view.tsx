@@ -3,14 +3,15 @@
 import React, { ChangeEvent, forwardRef, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-import { BLACK, WHITE } from '@/constants/styles/color';
+import { WHITE } from '@/constants/styles/color';
 import BorderInput from '@/components/atoms/common/input/border-input';
 import { InputProps } from '@/components/atoms/common/input/main-input';
-
-import ChevronLeft from '../../../../../public/svg/chevron-down.svg';
 import StatusDropdownItem, {
   StatusDropdownValueType,
 } from '@/components/atoms/common/dropdown/status-dropdown-item';
+import SvgIcon from '@/components/atoms/common/icon/svg-icon';
+import { getStatusBackgroundColor, getStatusFontColor } from '@/utils/color';
+import { Chevron } from '@/components/atoms/common/dropdown/dropdown-chevron';
 
 const DropdownContainer = styled.div<{
   $isOpened: boolean;
@@ -70,19 +71,6 @@ const DropdownList = styled.div<{
     transform 0.2s ease,
     opacity 0.2s ease;
   pointer-events: ${({ $isOpened }) => ($isOpened ? 'auto' : 'none')};
-`;
-
-const Chevron = styled(ChevronLeft)<{ $isOpened: boolean }>`
-  width: 18px;
-  height: 18px;
-  stroke: ${BLACK};
-  stroke-width: 1px;
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%)
-    rotate(${({ $isOpened }) => ($isOpened ? '180deg' : '360deg')});
-  transition: transform 0.2s ease;
 `;
 
 type DropdownViewProps = {
@@ -146,6 +134,8 @@ const StatusDropdownView = forwardRef<HTMLInputElement, DropdownViewProps>(
     const displayValue =
       items.find((item) => item.value === innerValue)?.title || innerValue;
 
+    const icon = items.find((item) => item.value === innerValue)?.icon;
+
     return (
       <DropdownContainer
         $isOpened={isOpened}
@@ -153,16 +143,13 @@ const StatusDropdownView = forwardRef<HTMLInputElement, DropdownViewProps>(
         width={width}
       >
         <DropdownButton onClick={onClickDropdown}>
-          <ColoredDot
-            color={items.find((item) => item.value === innerValue)?.color}
-          />
           <BorderInput
             ref={ref}
             value={isCustomMode ? customValue : displayValue}
             onChange={onChangeInput}
             onFocus={onFocusInput}
             borderColor={borderColor}
-            backgroundColor={backgroundColor}
+            backgroundColor={getStatusBackgroundColor(innerValue)}
             height={height}
             width={width}
             readOnly={!isEditable}
@@ -174,10 +161,22 @@ const StatusDropdownView = forwardRef<HTMLInputElement, DropdownViewProps>(
                 onKeyDownHandler(event);
               }
             }}
-            paddingLeft={innerValue !== undefined ? 25 : 10}
+            color={getStatusFontColor(innerValue)}
+            icon={
+              icon && (
+                <SvgIcon
+                  svg={icon}
+                  color={getStatusFontColor(innerValue)}
+                  size={14}
+                />
+              )
+            }
             {...inputProps}
           />
-          <Chevron $isOpened={isOpened} />
+          <Chevron
+            $isOpened={isOpened}
+            color={getStatusFontColor(innerValue)}
+          />
         </DropdownButton>
 
         {!disabled && (

@@ -12,6 +12,7 @@ const BorderInputContainer = styled.input<{
   $borderColor: string;
   height?: number;
   width?: number;
+  color?: string;
   $disabled?: boolean;
   $backgroundColor?: string;
   $paddingLeft?: number;
@@ -29,6 +30,7 @@ const BorderInputContainer = styled.input<{
   font-size: ${({ $fontSize }) => `${$fontSize}px`};
   font-weight: ${({ $fontWeight }) => `${$fontWeight}px` || '400'};
   text-align: ${({ $isRight }) => ($isRight ? 'right' : 'left')};
+
   font-family: 'Roboto', sans-serif;
   padding: 10px;
   padding-left: ${({ $paddingLeft, $isIcon }) =>
@@ -38,7 +40,7 @@ const BorderInputContainer = styled.input<{
         ? '36px'
         : '10px'};
   border: 1px solid ${({ $borderColor }) => $borderColor};
-  color: ${BLACK};
+  color: ${({ color }) => color || BLACK};
   transition: border 0.3s ease;
   height: ${({ height }) => (height ? `${height}px` : 'auto')};
   pointer-events: ${({ $isEditable }) => ($isEditable ? 'auto' : 'none')};
@@ -90,6 +92,7 @@ const InputWrapper = styled.div`
   position: relative;
   align-items: center;
   width: 100%;
+  gap: 10px;
 `;
 
 const IconWrapper = styled.div`
@@ -117,6 +120,7 @@ export type BorderInputProps = InputProps & {
   fontWeight?: number;
   isRight?: boolean;
   icon?: React.ReactNode;
+  color?: string;
 };
 
 const BorderInput = forwardRef<HTMLInputElement, BorderInputProps>(
@@ -139,6 +143,7 @@ const BorderInput = forwardRef<HTMLInputElement, BorderInputProps>(
       fontWeight,
       isRight,
       icon,
+      color,
       ...props
     },
     ref
@@ -157,6 +162,7 @@ const BorderInput = forwardRef<HTMLInputElement, BorderInputProps>(
           height={height}
           width={width}
           disabled={disabled}
+          color={color}
           $disabled={disabled}
           $paddingLeft={paddingLeft}
           $borderTopLeftRadius={borderTopLeftRadius}

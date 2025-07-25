@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 import { BLACK, MAIN } from '@/constants/styles/color';
 import { MainText } from '@/components/atoms/common/text/main-text';
+import SvgIcon from '@/components/atoms/common/icon/svg-icon';
 
 const DropdownContainer = styled.div`
   display: flex;
@@ -36,6 +37,7 @@ export type StatusDropdownValueType = {
   value: any;
   title: string;
   color?: string;
+  icon?: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
 };
 
 type StatusDropdownItemProps = {
@@ -54,7 +56,9 @@ const StatusDropdownItem = ({
   return (
     <DropdownContainer>
       <ItemContainer onClick={() => onClick(item.value)} $isFocused={isFocused}>
-        <ColoredDot color={item.color} />
+        {item.icon && (
+          <SvgIcon svg={item.icon} color={isSelected ? MAIN.DEFAULT : BLACK} />
+        )}
         <MainText color={isSelected ? MAIN.DEFAULT : BLACK}>
           {item.title}
         </MainText>

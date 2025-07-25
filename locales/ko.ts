@@ -13,6 +13,7 @@ export default {
   isNotDone: '미완료',
   customSelect: '직접선택',
 
+  schedule: '일정',
   lastPresent: '최근 출석',
   weekly: '이번주',
   monthly: '이번달',

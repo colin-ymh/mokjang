@@ -9,7 +9,7 @@ const StyledQuill = styled(ReactQuill)<{
   $minHeight?: number;
 }>`
   /* 전체를 세로 flex 박스로 */
-  border: 1px solid ${GRAY.DEFAULT};
+  border: 1px solid ${GRAY.LIGHT};
   border-radius: 5px;
   overflow: hidden;
   display: flex;
@@ -28,7 +28,7 @@ const StyledQuill = styled(ReactQuill)<{
   .ql-toolbar {
     border: none;
     border-top: ${({ $isEditable }) =>
-      $isEditable ? ` 1px solid ${GRAY.DEFAULT}` : `0 solid ${WHITE}`};
+      $isEditable ? ` 1px solid ${GRAY.LIGHT}` : `0 solid ${WHITE}`};
     border-radius: 0 0 5px 5px;
     height: ${({ $isEditable }) => ($isEditable ? '40px' : '0')};
     padding: ${({ $isEditable }) => ($isEditable ? '8px' : '0')};
