@@ -1,6 +1,6 @@
 'use client';
 
-import { ReactNode } from 'react';
+import { ReactNode, useState } from 'react';
 
 import Wrap from '@/components/atoms/layout/wrap';
 import Container from '@/components/atoms/layout/container/container';
@@ -21,11 +21,17 @@ const MainLayout = ({
   header,
   content,
 }: MainLayoutProps): JSX.Element => {
+  const [isSideShown, setIsSideShown] = useState<boolean>(true);
+
+  const handleSideShow = () => {
+    setIsSideShown(!isSideShown);
+  };
+
   return (
     <Wrap>
-      <Top />
+      <Top handleSideShow={handleSideShow} />
       <Container>
-        <Side sideButtonList={side} />
+        <Side sideButtonList={side} isSideShown={isSideShown} />
         <Main>
           <Header>{header}</Header>
           <Content>{content}</Content>

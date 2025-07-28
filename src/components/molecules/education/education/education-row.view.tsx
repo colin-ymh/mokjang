@@ -1,23 +1,24 @@
 import { ChangeEvent, Ref } from 'react';
 import styled from 'styled-components';
+import { GRAY, WHITE } from '@/constants/styles/color';
+import { EDUCATION } from '@/constants/column/education-column';
 
 import { useEducationSearchFilterDropdownItems } from '@/hooks/dropdown/dropdown-items';
 import useWindowSize from '@/hooks/window/window';
+import SearchInput from '@/components/atoms/common/input/search-input';
 import EducationFilteredItem, {
   EducationFilteredItemType,
 } from '@/components/atoms/education/education/education-filtered-item';
-
-import { EDUCATION } from '@/constants/column/education-column';
-import SearchInput from '@/components/atoms/common/input/search-input';
 
 const EducationContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   width: 100%;
-  height: 100px;
+  border-bottom: 1px solid ${GRAY.LIGHT};
   flex-shrink: 0;
   position: relative;
+  background-color: ${WHITE};
 `;
 
 const RowTop = styled.div`
@@ -38,6 +39,7 @@ const ButtonContainer = styled.div`
   align-items: center;
   padding: 10px 10px 10px 20px;
   position: relative;
+  gap: 10px;
 `;
 
 const FilteredItemList = styled.div<{ $width: number }>`
@@ -53,13 +55,10 @@ const FilteredItemList = styled.div<{ $width: number }>`
 
 const SearchContainer = styled.div`
   display: flex;
-  padding: 10px;
   flex-direction: row;
   justify-content: flex-end;
   align-items: center;
-  gap: 10px;
-  right: 20px;
-  position: absolute;
+  padding: 10px 20px;
 `;
 
 export type EDUCATION_SEARCH_FILTER = EDUCATION.NAME;
@@ -97,7 +96,10 @@ const EducationRowView = ({
           {/* 필터 설정된 값들 */}
           <FilteredItemList $width={width - 650}>
             {filteredItems.map((item) => (
-              <EducationFilteredItem key={item.title} item={item} />
+              <EducationFilteredItem
+                key={`${item.title}-${item.value?.join?.('-') ?? ''}`}
+                item={item}
+              />
             ))}
           </FilteredItemList>
         </FilterList>

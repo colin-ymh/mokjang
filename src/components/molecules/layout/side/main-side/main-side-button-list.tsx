@@ -2,12 +2,8 @@
 
 import React from 'react';
 import styled from 'styled-components';
-import { useParams } from 'next/navigation';
-
-import MainSideButton from '@/components/atoms/layout/side/main-side/main-side-button';
-import { MAIN_HEADER_ID } from '@/constants/layout/header';
-
-import { useScopedI18n } from '../../../../../../locales/client';
+import { useMainSideBarItems } from '@/hooks/layout/side-bar-items';
+import SideButton from '@/components/atoms/layout/side/side-button';
 
 const ButtonContainer = styled.div`
   display: flex;
@@ -15,44 +11,19 @@ const ButtonContainer = styled.div`
   flex-grow: 1;
   justify-content: flex-start;
   padding: 20px 15px;
+  gap: 10px;
 `;
 
 type SideBarViewProps = {};
 
 const MainSideButtonList = ({}: SideBarViewProps) => {
-  const slug = useParams().slug as string[] | undefined;
-  const t_header = useScopedI18n('header');
+  const buttonList = useMainSideBarItems();
 
   return (
     <ButtonContainer>
-      <MainSideButton
-        id={MAIN_HEADER_ID.HOME}
-        title={t_header(MAIN_HEADER_ID.HOME)}
-      />
-      <MainSideButton
-        id={MAIN_HEADER_ID.MEMBER}
-        title={t_header(MAIN_HEADER_ID.MEMBER)}
-      />
-      <MainSideButton
-        id={MAIN_HEADER_ID.ATTENDANCE}
-        title={`${t_header(MAIN_HEADER_ID.WORSHIP)} / ${t_header(MAIN_HEADER_ID.ATTENDANCE)}`}
-      />
-      <MainSideButton
-        id={MAIN_HEADER_ID.VISITATION}
-        title={t_header(MAIN_HEADER_ID.VISITATION)}
-      />
-      <MainSideButton
-        id={MAIN_HEADER_ID.EDUCATION}
-        title={t_header(MAIN_HEADER_ID.EDUCATION)}
-      />
-      <MainSideButton
-        id={MAIN_HEADER_ID.TASK}
-        title={t_header(MAIN_HEADER_ID.TASK)}
-      />
-      <MainSideButton
-        id={MAIN_HEADER_ID.CALENDAR}
-        title={t_header(MAIN_HEADER_ID.CALENDAR)}
-      />
+      {buttonList.map((button) => (
+        <SideButton key={button.id} {...button} />
+      ))}
     </ButtonContainer>
   );
 };

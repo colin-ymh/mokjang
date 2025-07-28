@@ -3,29 +3,35 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 
-import { GRAY, MAIN, WHITE } from '@/constants/styles/color';
+import { GRAY, WHITE } from '@/constants/styles/color';
 import { MainText } from '@/components/atoms/common/text/main-text';
-import { Education } from '@/models/education/education';
+import { BLANK } from '@/constants/constant';
+
 import useWindowSize from '@/hooks/window/window';
+
+import { BLANK_HEADER } from '@/redux/reducers/filter/member-filter-reducer';
 import EducationTableHeader from '@/components/atoms/education/education/education-table-header';
-import { useScopedI18n } from '../../../../../locales/client';
-import KebabDropdown from '@/components/atoms/common/dropdown/kebab-dropdown';
-import ConfirmPopup from '@/components/atoms/common/popup/confirm-popup';
-import AddEducation from '@/components/organisms/education/education/add/add-education';
-import CustomPopup from '@/components/atoms/common/popup/custom-popup';
+import {
+  Education,
+  EducationSession,
+  EducationTerm,
+} from '@/models/education/education';
+import { EDUCATION, EDUCATION_TERM } from '@/constants/column/education-column';
+import { useI18n } from '../../../../../locales/client';
+import { getFormattedDate } from '@/utils/format';
+import MemberProfile from '@/components/atoms/member/member-profile';
+import { Chevron } from '@/components/atoms/common/dropdown/dropdown-chevron';
 
-import { EDUCATION } from '@/constants/column/education-column';
-
-// 1. 컬럼별 PX 폭
-// const getColumnWidth = (id: string) => {
-//   switch (id) {
-//     case EDUCATION.NAME:
-//       return 200;
-//     default:
-//       // 비고(REMARKS) 컬럼 등
-//       return 80;
-//   }
-// };
+// 1. 컬럼별 PX 폭 (마지막 REMARKS만 auto 할 예정)
+const getColumnWidth = (id: string) => {
+  switch (id) {
+    case EDUCATION.NAME:
+      return 300;
+    default:
+      // 비고(REMARKS) 컬럼 등
+      return 80;
+  }
+};
 
 // 2. 테이블 컨테이너 (100% 폭 + 스크롤)
 const TableContainer = styled.div<{ height: number }>`
@@ -55,14 +61,14 @@ const EducationTable = styled.table`
 
 // 4. 헤더(TH)
 const TableHeader = styled.th<{ id: string; $isLast?: boolean }>`
-  padding: 3px 10px;
+  padding: 20px 10px;
   position: sticky;
   top: 0;
   z-index: 5;
   background-color: ${WHITE};
 
-  width: 100%;
-
+  /* 만약 마지막 컬럼이면 width: auto */
+  width: ${({ id, $isLast }) => ($isLast ? 'auto' : `${getColumnWidth(id)}px`)};
   /* 텍스트 넘침 처리 */
   overflow: hidden;
   text-overflow: ellipsis;
@@ -75,14 +81,13 @@ const TableHeader = styled.th<{ id: string; $isLast?: boolean }>`
     left: 0;
     right: 0;
     height: 0.7px;
-    background: ${GRAY.SEMI_LIGHT};
+    background: ${GRAY.LIGHT};
   }
 `;
 
 // 5. 본문(TR/TD)
 const EducationTableRow = styled.tr`
   border-bottom: 1px solid ${GRAY.EXTRA_LIGHT};
-
   &:hover td {
     background-color: ${GRAY.LIGHT};
   }
@@ -93,10 +98,11 @@ const TableData = styled.td<{ id: string; $index: number; $isLast?: boolean }>`
 
   cursor: pointer;
 
-  width: 100%;
+  /* 마지막 컬럼이면 auto, 아니면 px 고정 */
+  width: ${({ id, $isLast }) => ($isLast ? 'auto' : `${getColumnWidth(id)}px`)};
 
   white-space: nowrap;
-  overflow: visible;
+  overflow: hidden;
   text-overflow: ellipsis;
 
   &:first-child {
@@ -104,69 +110,51 @@ const TableData = styled.td<{ id: string; $index: number; $isLast?: boolean }>`
   }
 `;
 
-const NameContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-`;
-
 const ContentWrapper = styled.div`
   display: flex;
   align-items: center;
   /* 그냥 늘어날 수 있게, 필요한 경우 ellipsis 처리 */
-  width: 100%;
-  //overflow: hidden;
+  max-width: 100%;
+  overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 `;
 
+const EducationNameContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  padding-left: 40px;
+`;
+
 type EducationTableProps = {
-  isEditModalOpened: boolean;
-  isDeleteModalOpened: boolean;
-  isEditEnabled: boolean;
-  educations: Education[];
-  onClickHeader: (id: EDUCATION) => void;
+  openedEducationIds: string[];
+  openedTermIds: string[];
+  onClickEducationChevron: (id: string) => void;
+  onClickTermChevron: (termId: string) => void;
   scrollRef: MutableRefObject<HTMLDivElement | null>;
   onScroll: () => void;
-  onClickDeleteEducation: () => void;
-  onClickEditEducation: (education: Education) => void;
-  onClickCancelDelete: () => void;
-  onClickConfirmDelete: (educationId: string) => void;
-  onClickEditDone: () => void;
-  onClickEditClose: () => void;
-  onClickEducationItem: (education: Education) => void;
 };
 
 const EducationTableView = ({
-  isEditModalOpened,
-  isDeleteModalOpened,
-  isEditEnabled,
-  educations,
-  onClickHeader,
+  openedEducationIds,
+  openedTermIds,
+  onClickEducationChevron,
+  onClickTermChevron,
   scrollRef,
   onScroll,
-  onClickDeleteEducation,
-  onClickEditEducation,
-  onClickCancelDelete,
-  onClickConfirmDelete,
-  onClickEditDone,
-  onClickEditClose,
-  onClickEducationItem,
 }: EducationTableProps) => {
-  const t_popup = useScopedI18n('popup');
-  const t_button = useScopedI18n('button');
-  const t_title = useScopedI18n('title');
-
+  const t = useI18n();
   const { height } = useWindowSize();
 
-  const educationTableHeaderItemList = useSelector(
-    (state: RootState) => state.educationFilter.educationTableHeaderItemList
+  const { educations, educationTableHeaderItemList } = useSelector(
+    (state: RootState) => state.educationFilter
   );
 
   // 실제 표시할 컬럼 ID 배열 + 마지막에 비고란 추가
   const visibleColumns = [
     ...educationTableHeaderItemList.filter((item) => item.isShown),
-    // BLANK_HEADER,
+    BLANK_HEADER,
   ];
 
   // 각 TD에 들어갈 content
@@ -174,36 +162,21 @@ const EducationTableView = ({
     switch (id) {
       case EDUCATION.NAME:
         return (
-          <>
-            <NameContainer>
-              <MainText>{education?.name}</MainText>
-              <KebabDropdown
-                items={[
-                  {
-                    value: 'delete',
-                    title: t_button('delete'),
-                    onClick: () => onClickDeleteEducation(),
-                  },
-                  {
-                    value: 'edit',
-                    title: t_button('edit'),
-                    onClick: () => onClickEditEducation(education),
-                  },
-                ]}
-                width={150}
-              />
-            </NameContainer>
-            <ConfirmPopup
-              title={t_popup('deleteEducationTitle')}
-              body={t_popup('deleteEducationBody')}
-              isShow={isDeleteModalOpened}
-              onClickLeftButton={onClickCancelDelete}
-              onClickRightButton={() => onClickConfirmDelete(education.id)}
-              leftButtonText={t_button('cancel')}
-              rightButtonText={t_button('confirm')}
-              buttonNum={2}
+          <EducationNameContainer>
+            <Chevron
+              $isOpened={openedEducationIds.includes(education.id)}
+              onClick={(event: React.MouseEvent) => {
+                event.stopPropagation();
+                onClickEducationChevron(education.id);
+              }}
+              $reverseDirection
             />
-          </>
+            <MainText>{`${education.name}`}</MainText>
+            {/*<StatusContainer>*/}
+            {/*  <ColoredDot color={getStatusColor(education.status)} />*/}
+            {/*  <MainText>{t(education?.status)}</MainText>*/}
+            {/*</StatusContainer>*/}
+          </EducationNameContainer>
         );
 
       default:
@@ -211,8 +184,76 @@ const EducationTableView = ({
     }
   };
 
+  // 각 TD에 들어갈 content
+  const getEducationTermTableContent = (
+    id: string,
+    educationTerm: EducationTerm
+  ) => {
+    switch (id) {
+      case EDUCATION_TERM.TERM:
+        return (
+          <EducationNameContainer>
+            <Chevron
+              $isOpened={openedTermIds.includes(educationTerm.id)}
+              onClick={(event: React.MouseEvent) => {
+                event.stopPropagation();
+                onClickTermChevron(educationTerm.id);
+              }}
+            />
+            <MainText>{`${educationTerm.educationName} ${educationTerm?.term}기`}</MainText>
+          </EducationNameContainer>
+        );
+
+      case EDUCATION_TERM.PERIOD:
+        return (
+          <MainText>
+            {`${
+              educationTerm.startDate &&
+              getFormattedDate(educationTerm.startDate)
+            } - ${
+              educationTerm.endDate && getFormattedDate(educationTerm.endDate)
+            }`}
+          </MainText>
+        );
+      case EDUCATION_TERM.IN_CHARGE:
+        return <MemberProfile member={educationTerm.inCharge} />;
+      default:
+        return null;
+    }
+  };
+
+  /* educationSession 행에 들어갈 content */
+  const getEducationSessionTableContent = (
+    id: string,
+    session: EducationSession
+  ) => {
+    // term 컬럼에 맞춰서 작성해야함
+    switch (id) {
+      case EDUCATION_TERM.TERM:
+        return (
+          <EducationNameContainer>
+            <MainText>{`${session.session}${t('session')}`}</MainText>
+            <MainText>{session.title}</MainText>
+          </EducationNameContainer>
+        );
+      case EDUCATION_TERM.PERIOD:
+        return (
+          <MainText>
+            {`${session.startDate && getFormattedDate(session.startDate)} - ${
+              session.endDate && getFormattedDate(session.endDate)
+            }`}
+          </MainText>
+        );
+      case EDUCATION_TERM.IN_CHARGE:
+        return <MemberProfile member={session.inCharge} />;
+      default:
+        return null;
+    }
+  };
+
   return (
     <>
+      {/* 컨테이너: 항상 가로 100%, 필요하면 스크롤 */}
       <TableContainer ref={scrollRef} onScroll={onScroll} height={height}>
         <EducationTable>
           <thead>
@@ -223,53 +264,83 @@ const EducationTableView = ({
                   id={item.id}
                   $isLast={index === visibleColumns.length - 1}
                 >
-                  {
+                  {item.id !== BLANK && (
                     <EducationTableHeader
                       item={{
                         ...item,
                         id: item.id as EDUCATION,
                       }}
-                      onClick={onClickHeader}
+                      onClick={() => {}}
                     />
-                  }
+                  )}
                 </TableHeader>
               ))}
             </tr>
           </thead>
           <tbody>
             {educations.map((education, rowIndex) => (
-              <EducationTableRow
-                key={education.id}
-                onClick={() => onClickEducationItem(education)}
-              >
-                {visibleColumns.map((item, index) => (
-                  <TableData
-                    key={item.id}
-                    id={item.id}
-                    $index={rowIndex}
-                    $isLast={index === visibleColumns.length - 1}
-                  >
-                    <ContentWrapper>
-                      {getEducationTableContent(item.id, education)}
-                    </ContentWrapper>
-                  </TableData>
+              <React.Fragment key={education.id}>
+                {/* ① Term Row */}
+                <EducationTableRow>
+                  {visibleColumns.map((item, index) => (
+                    <TableData
+                      key={`${education.id}-${item.id}`}
+                      id={item.id}
+                      $index={rowIndex}
+                      $isLast={index === visibleColumns.length - 1}
+                    >
+                      <ContentWrapper>
+                        {getEducationTableContent(item.id, education)}
+                      </ContentWrapper>
+                    </TableData>
+                  ))}
+                </EducationTableRow>
+                {education.educationTerms?.map((educationTerm) => (
+                  <React.Fragment key={educationTerm.id}>
+                    {/* ① Term Row */}
+                    <EducationTableRow>
+                      {visibleColumns.map((item, index) => (
+                        <TableData
+                          key={`${educationTerm.id}-${item.id}`}
+                          id={item.id}
+                          $index={rowIndex}
+                          $isLast={index === visibleColumns.length - 1}
+                        >
+                          <ContentWrapper>
+                            {getEducationTermTableContent(
+                              item.id,
+                              educationTerm
+                            )}
+                          </ContentWrapper>
+                        </TableData>
+                      ))}
+                    </EducationTableRow>
+
+                    {/* ② 세션 Row (열린 상태일 때만) */}
+                    {openedTermIds.includes(educationTerm.id) &&
+                      educationTerm.educationSessions?.map((session) => (
+                        <EducationTableRow key={session.id}>
+                          {visibleColumns.map((item, index) => (
+                            <TableData
+                              key={`${session.id}-${item.id}`}
+                              id={item.id}
+                              $index={rowIndex}
+                              $isLast={index === visibleColumns.length - 1}
+                            >
+                              {getEducationSessionTableContent(
+                                item.id,
+                                session
+                              )}
+                            </TableData>
+                          ))}
+                        </EducationTableRow>
+                      ))}
+                  </React.Fragment>
                 ))}
-              </EducationTableRow>
+              </React.Fragment>
             ))}
           </tbody>
         </EducationTable>
-        <CustomPopup
-          isShow={isEditModalOpened}
-          onClickCancel={onClickEditClose}
-          headerTitle={t_title('editEducation')}
-          width={500}
-          height={300}
-          onClickDone={onClickEditDone}
-          doneBackgroundColor={isEditEnabled ? MAIN.DEFAULT : MAIN.LIGHT}
-          doneDisabled={!isEditEnabled}
-        >
-          <AddEducation />
-        </CustomPopup>
       </TableContainer>
     </>
   );

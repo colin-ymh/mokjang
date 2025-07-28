@@ -3,6 +3,7 @@ import SideView from '@/components/molecules/layout/side/side.view';
 
 type SideProps = {
   sideButtonList: ReactNode;
+  isSideShown: boolean;
 };
 
 const DEFAULT_WIDTH = 180;
@@ -10,7 +11,7 @@ const MIN_WIDTH = 100;
 const MAX_WIDTH = 300;
 const STORAGE_KEY = 'sidebar-width';
 
-const Side = memo(({ sideButtonList }: SideProps) => {
+const Side = memo(({ sideButtonList, isSideShown }: SideProps) => {
   const [sideBarWidth, setSideBarWidth] = useState<number>(() => {
     if (typeof window !== 'undefined') {
       const saved = localStorage.getItem(STORAGE_KEY);
@@ -70,6 +71,7 @@ const Side = memo(({ sideButtonList }: SideProps) => {
     onMouseDown,
     isResizing,
     onClickOpen,
+    isSideShown,
   };
 
   return <SideView {...props} />;

@@ -120,21 +120,21 @@ const VisitationRow = () => {
     } else {
       setStatusFilter(undefined);
     }
-
-    // 방식
-    if (visitationFilter.visitationMethod.length > 0) {
-      newFilterItems.push({
-        title: VISITATION.METHOD,
-        value: visitationFilter.visitationMethod,
-      });
-    }
-    // 종류
-    if (visitationFilter.visitationType.length > 0) {
-      newFilterItems.push({
-        title: VISITATION.TYPE,
-        value: visitationFilter.visitationType,
-      });
-    }
+    //
+    // // 방식
+    // if (visitationFilter.visitationMethod.length > 0) {
+    //   newFilterItems.push({
+    //     title: VISITATION.METHOD,
+    //     value: visitationFilter.visitationMethod,
+    //   });
+    // }
+    // // 종류
+    // if (visitationFilter.visitationType.length > 0) {
+    //   newFilterItems.push({
+    //     title: VISITATION.TYPE,
+    //     value: visitationFilter.visitationType,
+    //   });
+    // }
 
     // 일자
     if (visitationFilter.fromStartDate || visitationFilter.toStartDate) {

@@ -122,13 +122,6 @@ const ContentWrapper = styled.div`
   white-space: nowrap;
 `;
 
-const MembersContainer = styled.div`
-  display: flex;
-  gap: 10px;
-  justify-content: flex-start;
-  align-items: center;
-`;
-
 type TaskTableProps = {
   tasks: Task[];
   onClickHeader: (id: TASK) => void;

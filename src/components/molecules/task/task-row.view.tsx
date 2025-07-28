@@ -69,13 +69,10 @@ const FilteredItemList = styled.div<{ $width: number }>`
 
 const SearchContainer = styled.div`
   display: flex;
-  padding: 10px;
   flex-direction: row;
   justify-content: flex-end;
   align-items: center;
-  gap: 10px;
-  right: 20px;
-  position: absolute;
+  padding: 10px 20px;
 `;
 
 export type TASK_SEARCH_FILTER = TASK.TITLE | TASK.IN_CHARGE;

@@ -70,6 +70,7 @@ interface SideBarViewProps {
   onMouseDown: (event: React.MouseEvent<HTMLDivElement>) => void;
   isResizing: boolean;
   onClickOpen: () => void;
+  isSideShown: boolean;
 }
 
 const SideView = ({
@@ -78,12 +79,13 @@ const SideView = ({
   onMouseDown,
   isResizing,
   onClickOpen,
+  isSideShown,
 }: SideBarViewProps) => {
   return (
-    <SideBarContainer width={sideBarWidth}>
+    <SideBarContainer width={isSideShown ? sideBarWidth : 0}>
       <ButtonContainer>{sideButtonList}</ButtonContainer>
-      <ResizeHandle onMouseDown={onMouseDown} $isResizing={isResizing} />
-      <OpenButton $isShown={sideBarWidth === 0} onClick={onClickOpen} />
+      {/*<ResizeHandle onMouseDown={onMouseDown} $isResizing={isResizing} />*/}
+      {/*<OpenButton $isShown={sideBarWidth === 0} onClick={onClickOpen} />*/}
     </SideBarContainer>
   );
 };

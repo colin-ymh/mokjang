@@ -2,9 +2,9 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { BLANK, ORDER_DIRECTION } from '@/constants/constant';
 import { Education } from '@/models/education/education';
 import { RootState } from '@/redux/store';
-import { EducationsApi } from '@/api/education/educations.api';
 
 import { EDUCATION } from '@/constants/column/education-column';
+import { EducationsApi } from '@/api/education/educations.api';
 
 type EDUCATION_FILTER = {
   [EDUCATION.NAME]: string;
@@ -16,6 +16,7 @@ type EducationFilterState = {
   educationOrderBy?: EDUCATION;
   educationOrderDirection: ORDER_DIRECTION;
   educationTableHeaderItemList: EDUCATION_TABLE_HEADER_ITEM[];
+  educationPage: number;
 };
 
 export const INITIAL_EDUCATION_FILTER: EDUCATION_FILTER = {
@@ -36,7 +37,7 @@ export const INITIAL_EDUCATION_TABLE_HEADER_LIST: EDUCATION_TABLE_HEADER_ITEM[] 
     {
       id: EDUCATION.NAME,
       isShown: true,
-      isSortable: false,
+      isSortable: true,
       isFilterable: true,
       isFixed: true,
       isDate: false,
@@ -48,41 +49,55 @@ const initialState: EducationFilterState = {
   educationFilter: INITIAL_EDUCATION_FILTER,
   educationOrderDirection: ORDER_DIRECTION.ASC,
   educationTableHeaderItemList: INITIAL_EDUCATION_TABLE_HEADER_LIST,
+  educationPage: 1,
 };
 
 export const fetchEducations = createAsyncThunk<
   Education[],
-  { currentPage: number },
+  void,
   { state: RootState }
->(
-  'educations/fetchEducations',
-  async ({ currentPage }, { getState, rejectWithValue }) => {
-    const state = getState().educationFilter;
-    const { educationOrderBy, educationOrderDirection, educationFilter } =
-      state;
-    const churchId = getState().church.churchId;
-    const educationsApi = new EducationsApi(false);
+>('educations/fetchEducations', async (_, { getState, rejectWithValue }) => {
+  const state = getState().educationFilter;
+  const {
+    educationPage,
+    educationOrderBy,
+    educationOrderDirection,
+    educations,
+    educationFilter,
+  } = state;
+  const churchId = getState().church.churchId;
+  const educationsApi = new EducationsApi(false);
 
-    try {
-      const response = await educationsApi.getEducations({
-        churchId,
-        page: currentPage,
-        take: 30, // 무한 스크롤 최적화
-        order: educationOrderBy || undefined,
-        orderDirection: educationOrderDirection,
-        name: educationFilter.name,
-      });
+  try {
+    const response = await educationsApi.getEducations({
+      churchId,
+      page: educationPage,
+      take: 30, // 무한 스크롤 최적화
+      order: educationOrderBy || undefined,
+      orderDirection: educationOrderDirection,
+      name: educationFilter[EDUCATION.NAME],
+    });
 
-      return response.data.data;
-    } catch (error) {
-      console.error('교육 목록 불러오기 실패', error);
-      return rejectWithValue('교육 목록을 불러오는 중 오류가 발생했습니다.');
-    }
+    const newEducations: Education[] = response.data.data;
+    const existingIds = new Set(educations.map((education) => education.id));
+    const filteredNewEducations = newEducations.filter(
+      (education) => !existingIds.has(education.id)
+    );
+
+    const updatedEducations =
+      educationPage === 1
+        ? newEducations
+        : [...educations, ...filteredNewEducations];
+
+    return updatedEducations;
+  } catch (error) {
+    console.error('교육 목록 불러오기 실패', error);
+    return rejectWithValue('교육 목록을 불러오는 중 오류가 발생했습니다.');
   }
-);
+});
 
 const EducationFilterSlice = createSlice({
-  name: 'register',
+  name: 'educationFilter',
   initialState,
   reducers: {
     setEducations: (state, action: PayloadAction<Education[]>) => {
@@ -103,6 +118,14 @@ const EducationFilterSlice = createSlice({
     ) {
       state.educationTableHeaderItemList = action.payload;
     },
+    setEducationPage: (state, action: PayloadAction<number>) => {
+      state.educationPage = action.payload;
+    },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(fetchEducations.fulfilled, (state, action) => {
+      state.educations = action.payload;
+    });
   },
 });
 
@@ -112,5 +135,6 @@ export const {
   setEducationOrderBy,
   setEducationOrderDirection,
   setEducationTableHeaderItemList,
+  setEducationPage,
 } = EducationFilterSlice.actions;
 export default EducationFilterSlice.reducer;

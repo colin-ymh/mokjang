@@ -4,10 +4,7 @@ import { CustomError } from '@/api/error/error';
 import { ORDER_DIRECTION } from '@/constants/constant';
 import authorizeAxios from '@/api/authorize-axios';
 
-import {
-  EDUCATION,
-  EDUCATION_TERM,
-} from '@/constants/column/education-column';
+import { EDUCATION, EDUCATION_TERM } from '@/constants/column/education-column';
 import qs from 'qs';
 
 type GetEducationsParams = {
@@ -48,7 +45,7 @@ type EditEducationParams = {
 };
 
 type EditEducationBody = {
-  name: string;
+  name?: string;
   description?: string;
 };
 

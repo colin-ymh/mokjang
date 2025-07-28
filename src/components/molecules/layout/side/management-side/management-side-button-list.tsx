@@ -2,11 +2,8 @@
 
 import React from 'react';
 import styled from 'styled-components';
-
-import { MANAGEMENT_HEADER_ID } from '@/constants/layout/header';
-import ManagementSideButton from '@/components/atoms/layout/side/management-side/management-side-button';
-
-import { useScopedI18n } from '../../../../../../locales/client';
+import { useManagementSideBarItems } from '@/hooks/layout/side-bar-items';
+import SideButton from '@/components/atoms/layout/side/side-button';
 
 const ButtonContainer = styled.div`
   display: flex;
@@ -14,39 +11,19 @@ const ButtonContainer = styled.div`
   flex-grow: 1;
   justify-content: flex-start;
   padding: 20px 15px;
+  gap: 10px;
 `;
 
 type SideBarViewProps = {};
 
 const ManagementSideButtonList = ({}: SideBarViewProps) => {
-  const t_header = useScopedI18n('header');
+  const buttonList = useManagementSideBarItems();
 
   return (
     <ButtonContainer>
-      <ManagementSideButton
-        id={MANAGEMENT_HEADER_ID.CHURCH}
-        title={t_header(MANAGEMENT_HEADER_ID.CHURCH)}
-      />
-      <ManagementSideButton
-        id={MANAGEMENT_HEADER_ID.MANAGER}
-        title={t_header(MANAGEMENT_HEADER_ID.MANAGER)}
-      />
-      <ManagementSideButton
-        id={MANAGEMENT_HEADER_ID.PERMISSION}
-        title={t_header(MANAGEMENT_HEADER_ID.PERMISSION)}
-      />
-      <ManagementSideButton
-        id={MANAGEMENT_HEADER_ID.JOIN}
-        title={t_header(MANAGEMENT_HEADER_ID.JOIN)}
-      />
-      {/*<ManagementSideButton*/}
-      {/*  id={MANAGEMENT_HEADER_ID.USER}*/}
-      {/*  title={t_header(MANAGEMENT_HEADER_ID.USER)}*/}
-      {/*/>*/}
-      <ManagementSideButton
-        id={MANAGEMENT_HEADER_ID.SETTING}
-        title={t_header(MANAGEMENT_HEADER_ID.SETTING)}
-      />
+      {buttonList.map((button) => (
+        <SideButton key={button.id} {...button} />
+      ))}
     </ButtonContainer>
   );
 };

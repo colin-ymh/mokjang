@@ -53,7 +53,7 @@ type EditTaskBody = {
   startDate?: string;
   endDate?: string;
   parentTaskId?: string;
-  receiverId?: string;
+  receiverIds?: string[];
   content?: string;
 };
 

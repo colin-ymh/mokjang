@@ -62,6 +62,7 @@ type EditVisitationBody = {
   startDate?: string;
   endDate?: string;
   memberIds?: string[];
+  receiverIds?: string[];
 };
 
 type DeleteVisitationParams = {
