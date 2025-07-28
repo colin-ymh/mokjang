@@ -21,7 +21,6 @@ import { LOCALE } from '@/constants/state/locale';
 
 import { useI18n } from '../../../../../locales/client';
 import { BLANK_HEADER } from '@/redux/reducers/filter/member-filter-reducer';
-import MemberProfile from '@/components/atoms/member/member-profile';
 import ProfileImage from '@/components/atoms/common/image/profile-image';
 import { getTranslatedDateFromDateString } from '@/utils/translate';
 
@@ -206,7 +205,8 @@ const MemberTableView = ({
       case MEMBER.NAME:
         return (
           <ProfileContainer>
-            <MemberProfile member={member} isProfileImageShown={false} />
+            {/*<MemberProfile member={member} isProfileImageShown={false} /> */}
+            <MainText>{member?.name}</MainText>
           </ProfileContainer>
         );
       case MEMBER.MOBILE_PHONE:

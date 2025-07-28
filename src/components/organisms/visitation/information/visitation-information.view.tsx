@@ -4,13 +4,15 @@ import { RootState } from '@/redux/store';
 import { useVisitationStatusDropdownItems } from '@/hooks/dropdown/dropdown-items';
 import { useI18n } from '../../../../../locales/client';
 import { MainText } from '@/components/atoms/common/text/main-text';
-import { getFormattedDate } from '@/utils/format';
 import { GRAY, WHITE } from '@/constants/styles/color';
 import React from 'react';
 import StatusDropdown from '@/components/atoms/common/dropdown/status-dropdown';
 import { VISITATION_STATUS } from '@/constants/status/status';
 import { SIZE } from '@/constants/styles/style';
 import MemberProfilePopupButton from '@/components/molecules/common/button/member-profile-popup-button';
+import { usePathname } from 'next/navigation';
+import { LOCALE } from '@/constants/state/locale';
+import { getTranslatedDateFromDateString } from '@/utils/translate';
 
 const InformationContainer = styled.div`
   display: flex;
@@ -71,6 +73,9 @@ const VisitationInformationView = ({
   );
   const statusDropdownItems = useVisitationStatusDropdownItems();
 
+  const pathname = usePathname();
+  const locale = pathname.split('/')[1] as LOCALE;
+
   return (
     <InformationContainer>
       <CardContainer>
@@ -90,12 +95,18 @@ const VisitationInformationView = ({
           <PeriodContainer>
             <MainText>
               {targetVisitation.startDate &&
-                getFormattedDate(targetVisitation.startDate)}
+                getTranslatedDateFromDateString(
+                  locale,
+                  targetVisitation.startDate
+                )}
             </MainText>
             <MainText>{'-'}</MainText>
             <MainText>
               {targetVisitation.endDate &&
-                getFormattedDate(targetVisitation.endDate)}
+                getTranslatedDateFromDateString(
+                  locale,
+                  targetVisitation.endDate
+                )}
             </MainText>
           </PeriodContainer>
         </ContentContainer>

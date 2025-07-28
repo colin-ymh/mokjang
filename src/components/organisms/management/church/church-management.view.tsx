@@ -11,6 +11,7 @@ import { MainText } from '@/components/atoms/common/text/main-text';
 import { SIZE } from '@/constants/styles/style';
 import Pencil from '../../../../../public/svg/pencil.svg';
 import ChurchState from '@/components/molecules/management/church/church-state';
+import SvgIcon from '@/components/atoms/common/icon/svg-icon';
 
 const InformationContainer = styled.div`
   display: flex;
@@ -35,13 +36,6 @@ const CardContainer = styled.div`
 const HeaderContainer = styled.div`
   display: flex;
   justify-content: space-between;
-`;
-
-const PencilIcon = styled(Pencil)`
-  width: 18px;
-  height: 18px;
-  stroke: ${WHITE};
-  stroke-width: 0.1px;
 `;
 
 type ChurchManagementViewProps = {
@@ -76,7 +70,7 @@ const ChurchManagementView = ({
               height={30}
               onClick={onClickEditOpen}
               backgroundColor={MAIN.DEFAULT}
-              icon={<PencilIcon />}
+              icon={<SvgIcon svg={Pencil} color={WHITE} width={2} />}
               color={WHITE}
               text={t('button.editChurch')}
             />

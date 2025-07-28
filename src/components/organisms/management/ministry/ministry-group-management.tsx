@@ -38,12 +38,18 @@ const MinistryGroupManagement = ({}: MinistryGroupManagementProps) => {
   };
 
   useEffect(() => {
-    if (
-      ministryGroups &&
-      selectedMinistryGroup.id !== BLANK &&
-      selectedMinistryGroup.id !== null
-    ) {
-      fetchMinistryGroup();
+    if (ministryGroups) {
+      if (
+        selectedMinistryGroup.id !== BLANK &&
+        selectedMinistryGroup.id !== null
+      ) {
+        fetchMinistryGroup();
+      } else if (
+        ministryGroups.length > 0 &&
+        ministryGroups[0]?.childMinistryGroups
+      ) {
+        setSelectedMinistryGroup(ministryGroups[0].childMinistryGroups[0]);
+      }
     }
   }, [ministryGroups]);
 

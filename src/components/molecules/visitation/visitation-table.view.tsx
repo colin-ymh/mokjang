@@ -135,21 +135,6 @@ const MembersContainer = styled.div`
   align-items: center;
 `;
 
-const StatusContainer = styled.div`
-  display: flex;
-  gap: 10px;
-  justify-content: flex-start;
-  align-items: center;
-`;
-
-const ColoredDot = styled.div<{ color: string }>`
-  display: flex;
-  width: 10px;
-  height: 10px;
-  border-radius: 100%;
-  background-color: ${({ color }) => color};
-`;
-
 // 이 예시에서는 실제 VISITATION + "비고" 컬럼(REMARKS)까지 표시
 type VisitationTableProps = {
   visitations: Visitation[];

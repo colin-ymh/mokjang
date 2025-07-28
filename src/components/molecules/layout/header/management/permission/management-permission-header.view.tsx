@@ -28,7 +28,7 @@ const HeaderContainer = styled.div`
     height: 120px;
     justify-content: space-between;
     padding: 0;
-    border-bottom: 0.7px solid ${GRAY.SEMI_LIGHT};
+    border-bottom: 0.7px solid ${GRAY.LIGHT};
   }
 `;
 

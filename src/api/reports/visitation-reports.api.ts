@@ -8,8 +8,6 @@ import { ORDER_DIRECTION } from '@/constants/constant';
 import { VISITATION } from '@/constants/column/visitation-column';
 
 type GetVisitationReportsParams = {
-  churchId: string;
-  memberId: string;
   take?: number;
   page?: number;
   order?: VISITATION;
@@ -25,14 +23,10 @@ type GetVisitationReportsParams = {
 };
 
 type GetVisitationReportParams = {
-  churchId: string;
-  memberId: string;
   visitationReportId: string;
 };
 
 type EditVisitationParams = {
-  churchId: string;
-  memberId: string;
   visitationReportId: string;
 };
 
@@ -42,8 +36,6 @@ type EditVisitationBody = {
 };
 
 type DeleteVisitationParams = {
-  churchId: string;
-  memberId: string;
   visitationReportId: string;
 };
 
@@ -64,8 +56,6 @@ export class VisitationReportsApi {
     params: GetVisitationReportsParams
   ): Promise<AxiosResponse> => {
     const {
-      churchId,
-      memberId,
       take = 5,
       page = 1,
       order,
@@ -104,7 +94,7 @@ export class VisitationReportsApi {
     );
 
     /* ②요청 URL ------------------------------------------------------- */
-    const url = `${this._url}/churches/${churchId}/members/${memberId}/reports/visitations`;
+    const url = `${this._url}/me/reports/visitations`;
 
     try {
       /* ③axios 호출 + qs 직렬화 --------------------------------------- */
@@ -132,9 +122,9 @@ export class VisitationReportsApi {
   };
 
   public getVisitationReport = async (params: GetVisitationReportParams) => {
-    const { churchId, visitationReportId, memberId } = params;
+    const { visitationReportId } = params;
 
-    const url = `${this._url}/churches/${churchId}/members/${memberId}/reports/visitations/${visitationReportId}`;
+    const url = `${this._url}/me/reports/visitations/${visitationReportId}`;
 
     try {
       return await authorizeAxios.get(url);
@@ -156,9 +146,9 @@ export class VisitationReportsApi {
     params: EditVisitationParams,
     body: EditVisitationBody
   ) => {
-    const { churchId, visitationReportId, memberId } = params;
+    const { visitationReportId } = params;
 
-    const url = `${this._url}/churches/${churchId}/members/${memberId}/reports/visitations/${visitationReportId}`;
+    const url = `${this._url}/me/reports/visitations/${visitationReportId}`;
 
     try {
       return await authorizeAxios.patch(url, body);
@@ -177,9 +167,9 @@ export class VisitationReportsApi {
   };
 
   public deleteVisitation = async (params: DeleteVisitationParams) => {
-    const { churchId, visitationReportId, memberId } = params;
+    const { visitationReportId } = params;
 
-    const url = `${this._url}/churches/${churchId}/members/${memberId}/reports/visitations/${visitationReportId}`;
+    const url = `${this._url}/me/reports/visitations/${visitationReportId}`;
 
     try {
       return await authorizeAxios.delete(url);

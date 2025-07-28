@@ -16,6 +16,7 @@ const DropdownButton = styled.div`
   background-color: ${MAIN.EXTRA_LIGHT};
   border-radius: 1000px;
   padding: 5px 13px;
+  padding-right: 30px;
 `;
 
 const TagDropdownButton = ({
@@ -50,7 +51,7 @@ const TagDropdownButton = ({
       {...inputProps}
     >
       <MainText color={MAIN.DEFAULT}>{displayValue}</MainText>
-      {isChevronShown && <Chevron $isOpened={isOpened} />}
+      {isChevronShown && <Chevron $isOpened={isOpened} color={MAIN.DEFAULT} />}
     </DropdownButton>
   );
 };

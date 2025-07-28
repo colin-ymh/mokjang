@@ -4,13 +4,15 @@ import { RootState } from '@/redux/store';
 import { useTaskStatusDropdownItems } from '@/hooks/dropdown/dropdown-items';
 import { useI18n } from '../../../../../locales/client';
 import { MainText } from '@/components/atoms/common/text/main-text';
-import { getFormattedDate } from '@/utils/format';
 import { GRAY, WHITE } from '@/constants/styles/color';
 import React from 'react';
 import StatusDropdown from '@/components/atoms/common/dropdown/status-dropdown';
 import { VISITATION_STATUS } from '@/constants/status/status';
 import { SIZE } from '@/constants/styles/style';
 import MemberProfilePopupButton from '@/components/molecules/common/button/member-profile-popup-button';
+import { getTranslatedDateFromDateString } from '@/utils/translate';
+import { usePathname } from 'next/navigation';
+import { LOCALE } from '@/constants/state/locale';
 
 const InformationContainer = styled.div`
   display: flex;
@@ -55,6 +57,7 @@ const RowContainer = styled.div`
 const PeriodContainer = styled.div`
   display: flex;
   flex-direction: row;
+  align-items: center;
   gap: 10px;
 `;
 
@@ -66,10 +69,24 @@ const TaskInformationView = ({ onChangeStatus }: TaskInformationViewProps) => {
   const t = useI18n();
   const { targetTask } = useSelector((state: RootState) => state.targetTask);
   const statusDropdownItems = useTaskStatusDropdownItems();
+  const pathname = usePathname();
+  const locale = pathname.split('/')[1] as LOCALE;
 
   return (
     <InformationContainer>
       <RowContainer>
+        {/* 담당자 */}
+        <CardContainer $minHeight={150}>
+          <ContentContainer>
+            <MainText size={SIZE.EXTRA_LARGE}>{t('inCharge')}</MainText>
+            <MemberProfilePopupButton
+              key={targetTask.inCharge.id}
+              member={targetTask.inCharge}
+            />
+          </ContentContainer>
+        </CardContainer>
+
+        {/* 일정 */}
         <CardContainer>
           <ContentContainer>
             <RowContainer>
@@ -86,23 +103,15 @@ const TaskInformationView = ({ onChangeStatus }: TaskInformationViewProps) => {
             {/* 일자 */}
             <PeriodContainer>
               <MainText>
-                {targetTask.startDate && getFormattedDate(targetTask.startDate)}
+                {targetTask.startDate &&
+                  getTranslatedDateFromDateString(locale, targetTask.startDate)}
               </MainText>
               <MainText>{'-'}</MainText>
               <MainText>
-                {targetTask.endDate && getFormattedDate(targetTask.endDate)}
+                {targetTask.endDate &&
+                  getTranslatedDateFromDateString(locale, targetTask.endDate)}
               </MainText>
             </PeriodContainer>
-          </ContentContainer>
-        </CardContainer>
-        {/* 담당자 */}
-        <CardContainer $minHeight={150}>
-          <ContentContainer>
-            <MainText size={SIZE.EXTRA_LARGE}>{t('inCharge')}</MainText>
-            <MemberProfilePopupButton
-              key={targetTask.inCharge.id}
-              member={targetTask.inCharge}
-            />
           </ContentContainer>
         </CardContainer>
       </RowContainer>

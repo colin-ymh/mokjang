@@ -95,7 +95,7 @@ const TaskListView = (props: TaskListViewProps) => {
         </DesktopView>
       </TaskListContainer>
 
-      {/* 심방 상세정보 팝업*/}
+      {/* 업무 상세정보 팝업*/}
       <WrappedPagePopup
         isShow={isTaskInformationShown}
         onClickClose={onClickClose}

@@ -12,9 +12,11 @@ import useWindowSize from '@/hooks/window/window';
 import TaskTableHeader from '@/components/atoms/task/task-table-header';
 import { BLANK_HEADER } from '@/redux/reducers/filter/member-filter-reducer';
 import { useI18n } from '../../../../locales/client';
-import { getStatusColor } from '@/utils/color';
+import { getStatusBackgroundColor, getStatusFontColor } from '@/utils/color';
 import MemberProfile from '@/components/atoms/member/member-profile';
-import { getDateFromDateString, getDateStringFromDate } from '@/utils/date';
+import MainTag from '@/components/atoms/common/tag/main-tag';
+import { STATUS } from '@/constants/status/status';
+import { getFormattedDate } from '@/utils/format';
 
 // 1. 컬럼별 PX 폭 (마지막 REMARKS만 auto 할 예정)
 const getColumnWidth = (id: string) => {
@@ -61,7 +63,7 @@ const TaskTable = styled.table`
 
 // 4. 헤더(TH)
 const TableHeader = styled.th<{ id: string; $isLast?: boolean }>`
-  padding: 3px 10px;
+  padding: 20px 10px;
   position: sticky;
   top: 0;
   z-index: 5;
@@ -81,7 +83,7 @@ const TableHeader = styled.th<{ id: string; $isLast?: boolean }>`
     left: 0;
     right: 0;
     height: 0.7px;
-    background: ${GRAY.SEMI_LIGHT};
+    background: ${GRAY.LIGHT};
   }
 `;
 
@@ -120,19 +122,11 @@ const ContentWrapper = styled.div`
   white-space: nowrap;
 `;
 
-const StatusContainer = styled.div`
+const MembersContainer = styled.div`
   display: flex;
   gap: 10px;
   justify-content: flex-start;
   align-items: center;
-`;
-
-const ColoredDot = styled.div<{ color: string }>`
-  display: flex;
-  width: 10px;
-  height: 10px;
-  border-radius: 100%;
-  background-color: ${({ color }) => color};
 `;
 
 type TaskTableProps = {
@@ -170,18 +164,18 @@ const TaskTableView = ({
         return <MainText>{task?.title}</MainText>;
       case TASK.STATUS:
         return (
-          <StatusContainer>
-            <ColoredDot color={getStatusColor(task.status)} />
-            <MainText>{t(task?.status)}</MainText>
-          </StatusContainer>
+          <MainTag
+            title={t(task.status as STATUS)}
+            color={getStatusFontColor(task.status as STATUS)}
+            backgroundColor={getStatusBackgroundColor(task.status as STATUS)}
+          />
         );
       case TASK.DATE:
         return (
           <MainText>
             {`${
-              task.startDate &&
-              getDateStringFromDate(getDateFromDateString(task.startDate))
-            } - ${task.endDate && getDateStringFromDate(getDateFromDateString(task.endDate))}`}
+              task.startDate && getFormattedDate(task.startDate)
+            } - ${task.endDate && getFormattedDate(task.endDate)}`}
           </MainText>
         );
       case TASK.IN_CHARGE:

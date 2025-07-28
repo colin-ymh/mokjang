@@ -25,7 +25,7 @@ const SideBarContainer = styled.div<{ width: number }>`
   @media (min-width: ${MEDIA_MIN_WIDTH.DESKTOP}) {
     display: flex;
     background-color: ${WHITE};
-    border-right: 0.7px solid ${GRAY.SEMI_LIGHT};
+    border-right: 0.7px solid ${GRAY.LIGHT};
   }
 `;
 

@@ -9,8 +9,6 @@ import { TASK } from '@/constants/column/task-column';
 import { TASK_STATUS } from '@/constants/status/status';
 
 type GetTaskReportsParams = {
-  churchId: string;
-  memberId: string;
   take?: number;
   page?: number;
   order?: TASK;
@@ -24,14 +22,10 @@ type GetTaskReportsParams = {
 };
 
 type GetTaskReportParams = {
-  churchId: string;
-  memberId: string;
   taskReportId: string;
 };
 
 type EditTaskParams = {
-  churchId: string;
-  memberId: string;
   taskReportId: string;
 };
 
@@ -41,8 +35,6 @@ type EditTaskBody = {
 };
 
 type DeleteTaskParams = {
-  churchId: string;
-  memberId: string;
   taskReportId: string;
 };
 
@@ -63,8 +55,6 @@ export class TaskReportsApi {
     params: GetTaskReportsParams
   ): Promise<AxiosResponse> => {
     const {
-      churchId,
-      memberId,
       take = 5,
       page = 1,
       order,
@@ -101,7 +91,7 @@ export class TaskReportsApi {
     );
 
     /* ②요청 URL ------------------------------------------------------- */
-    const url = `${this._url}/churches/${churchId}/members/${memberId}/reports/tasks`;
+    const url = `${this._url}/me/reports/tasks`;
 
     try {
       /* ③axios 호출 + qs 직렬화 --------------------------------------- */
@@ -129,9 +119,9 @@ export class TaskReportsApi {
   };
 
   public getTaskReport = async (params: GetTaskReportParams) => {
-    const { churchId, taskReportId, memberId } = params;
+    const { taskReportId } = params;
 
-    const url = `${this._url}/churches/${churchId}/members/${memberId}/reports/tasks/${taskReportId}`;
+    const url = `${this._url}/me/reports/tasks/${taskReportId}`;
 
     try {
       return await authorizeAxios.get(url);
@@ -150,9 +140,9 @@ export class TaskReportsApi {
   };
 
   public editTask = async (params: EditTaskParams, body: EditTaskBody) => {
-    const { churchId, taskReportId, memberId } = params;
+    const { taskReportId } = params;
 
-    const url = `${this._url}/churches/${churchId}/members/${memberId}/reports/tasks/${taskReportId}`;
+    const url = `${this._url}/me/reports/tasks/${taskReportId}`;
 
     try {
       return await authorizeAxios.patch(url, body);
@@ -171,9 +161,9 @@ export class TaskReportsApi {
   };
 
   public deleteTask = async (params: DeleteTaskParams) => {
-    const { churchId, taskReportId, memberId } = params;
+    const { taskReportId } = params;
 
-    const url = `${this._url}/churches/${churchId}/members/${memberId}/reports/tasks/${taskReportId}`;
+    const url = `${this._url}/me/reports/tasks/${taskReportId}`;
 
     try {
       return await authorizeAxios.delete(url);

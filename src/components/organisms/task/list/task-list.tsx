@@ -270,12 +270,23 @@ const TaskList = ({ headerType = HEADER_BAR.ALL }: TaskListProps) => {
   };
 
   // 수정 페이지 종료
-  const onClickEditClose = () => {
-    const prevTask = tasks.find((task) => task.id === targetTask.id);
-    if (prevTask) {
+  const onClickEditClose = async () => {
+    try {
+      const response = await tasksApi.getTask({
+        churchId,
+        taskId: targetTask.id,
+      });
+      const prevTask = response.data.data;
       dispatch(setTargetTask(prevTask));
+      setIsEditShown(false);
+    } catch (error) {
+      if (error instanceof Error) {
+        dispatch(setToastText(error.message));
+        dispatch(setIsToastShown(true));
+      } else {
+        setThrownError(new Error(String(error)));
+      }
     }
-    setIsEditShown(false);
   };
 
   // 수정 페이지 열기

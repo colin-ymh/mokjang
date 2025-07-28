@@ -34,12 +34,12 @@ const OfficerManagement = ({}: OfficerManagementProps) => {
   };
 
   useEffect(() => {
-    if (
-      officers &&
-      selectedOfficer.id !== BLANK &&
-      selectedOfficer.id !== null
-    ) {
-      fetchOfficer();
+    if (officers) {
+      if (selectedOfficer.id !== BLANK && selectedOfficer.id !== null) {
+        fetchOfficer();
+      } else if (officers.length > 0) {
+        setSelectedOfficer(officers[0]);
+      }
     }
   }, [officers]);
 

@@ -31,8 +31,12 @@ const GroupManagement = ({}: GroupManagementProps) => {
   };
 
   useEffect(() => {
-    if (groups && selectedGroup.id !== BLANK && selectedGroup.id !== null) {
-      fetchGroup();
+    if (groups) {
+      if (selectedGroup.id !== BLANK && selectedGroup.id !== null) {
+        fetchGroup();
+      } else if (groups.length > 0 && groups[0]?.childGroups) {
+        setSelectedGroup(groups[0].childGroups[0]);
+      }
     }
   }, [groups]);
 

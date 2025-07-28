@@ -9,15 +9,16 @@ import { BLACK, GRAY, MAIN } from '@/constants/styles/color';
 import { SIZE } from '@/constants/styles/style';
 import { getTranslatedTaskColumn } from '@/utils/translate';
 import { useI18n } from '../../../../locales/client';
+import Arrow from '../../../../public/svg/arror-up.svg';
+import ArrowUpDown from '../../../../public/svg/arrow-up-down.svg';
+import { ORDER_DIRECTION } from '@/constants/constant';
 
 const HeaderContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  overflow: hidden;
-  position: relative;
   cursor: pointer;
-  height: 30px;
+  gap: 10px;
 `;
 
 const TextContainer = styled.div`
@@ -30,10 +31,29 @@ const IconContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  position: absolute;
-  right: 5px;
-  margin-bottom: 3px;
   cursor: pointer;
+`;
+
+const ArrowUp = styled(Arrow)`
+  width: 14px;
+  height: 14px;
+  stroke-width: 2px;
+  stroke: ${MAIN.DEFAULT};
+`;
+
+const ArrowDown = styled(Arrow)`
+  width: 14px;
+  height: 14px;
+  stroke-width: 2px;
+  stroke: ${MAIN.DEFAULT};
+  transform: rotate(180deg);
+`;
+
+const ArrowUpDownIcon = styled(ArrowUpDown)`
+  width: 14px;
+  height: 14px;
+  stroke-width: 2px;
+  stroke: ${GRAY.DEFAULT};
 `;
 
 type TaskTableHeaderProps = {
@@ -46,7 +66,9 @@ type TaskTableHeaderProps = {
 
 // Component
 const TaskTableHeader = ({ item, onClick }: TaskTableHeaderProps) => {
-  const { taskOrderBy } = useSelector((state: RootState) => state.taskFilter);
+  const { taskOrderBy, taskOrderDirection } = useSelector(
+    (state: RootState) => state.taskFilter
+  );
   const t = useI18n();
   const isActive = taskOrderBy === item.id;
 
@@ -63,12 +85,13 @@ const TaskTableHeader = ({ item, onClick }: TaskTableHeaderProps) => {
       </TextContainer>
       {item.isSortable && (
         <IconContainer>
-          <MainText
-            size={SIZE.EXTRA_SMALL}
-            color={isActive ? MAIN.DEFAULT : GRAY.DEFAULT}
-          >
-            {'⇅'}
-          </MainText>
+          {taskOrderBy !== item.id ? (
+            <ArrowUpDownIcon />
+          ) : taskOrderDirection === ORDER_DIRECTION.ASC ? (
+            <ArrowUp />
+          ) : (
+            <ArrowDown />
+          )}
         </IconContainer>
       )}
     </HeaderContainer>

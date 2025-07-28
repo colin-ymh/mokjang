@@ -28,7 +28,7 @@ const TopContainer = styled.div`
     flex-shrink: 0;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 0.7px solid ${GRAY.SEMI_LIGHT};
+    border-bottom: 0.7px solid ${GRAY.LIGHT};
     background-color: ${WHITE};
   }
 `;

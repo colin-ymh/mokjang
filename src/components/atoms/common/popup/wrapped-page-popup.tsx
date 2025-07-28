@@ -105,10 +105,6 @@ const WrappedPagePopup = ({
   doneText,
   cancelText,
 }: WrappedPagePopupProps) => {
-  if (!isShow) {
-    return <Hide />;
-  }
-
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
@@ -124,6 +120,10 @@ const WrappedPagePopup = ({
   }, [isShow, onClickClose]);
 
   const t_button = useScopedI18n('button');
+
+  if (!isShow) {
+    return <Hide />;
+  }
 
   return (
     <WrappedPagePopupContainer>

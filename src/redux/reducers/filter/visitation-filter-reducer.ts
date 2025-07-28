@@ -124,8 +124,6 @@ export const fetchVisitations = createAsyncThunk<
     try {
       if (memberId) {
         const response = await visitationReportsApi.getVisitationReports({
-          churchId,
-          memberId,
           page: currentPage,
           take: 30, // 무한 스크롤 최적화
           order: visitationOrderBy || undefined,
@@ -146,9 +144,6 @@ export const fetchVisitations = createAsyncThunk<
         const newVisitations = visitationReports.map((report) => {
           return report.visitation;
         });
-
-        console.log(newVisitations);
-
         return newVisitations;
       } else {
         const response = await visitationsApi.getVisitations({
