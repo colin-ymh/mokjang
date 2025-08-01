@@ -3,16 +3,16 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 import {
+  MEMBER_TABLE_HEADER_ITEM,
   setMemberFilter,
   setMemberTableHeaderItemList,
-  TABLE_HEADER_ITEM,
 } from '@/redux/reducers/filter/member-filter-reducer';
 
 import { MEMBER } from '@/constants/column/member-column';
 import TableHeaderSettingItemView from '@/components/atoms/member/setting/table-header-setting-item.view';
 
 type TableHeaderSettingItemProps = {
-  item: TABLE_HEADER_ITEM;
+  item: MEMBER_TABLE_HEADER_ITEM;
   index: number;
   onDrop: (fromIndex: number, toIndex: number) => void;
 };

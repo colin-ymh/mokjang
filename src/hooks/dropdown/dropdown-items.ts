@@ -510,21 +510,25 @@ export const useEducationTermStatusDropdownItems = () => {
       value: STATUS.RESERVE,
       title: t(STATUS.RESERVE),
       color: STATUS_COLOR.RESERVE,
+      icon: Calendar,
     },
     {
       value: STATUS.IN_PROGRESS,
       title: t(STATUS.IN_PROGRESS),
       color: STATUS_COLOR.IN_PROGRESS,
+      icon: Play,
     },
     {
       value: STATUS.DONE,
       title: t(STATUS.DONE),
       color: STATUS_COLOR.DONE,
+      icon: Check,
     },
     {
       value: STATUS.PENDING,
       title: t(STATUS.PENDING),
       color: STATUS_COLOR.PENDING,
+      icon: Danger,
     },
   ];
 

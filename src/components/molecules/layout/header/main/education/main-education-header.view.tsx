@@ -12,16 +12,14 @@ import { useScopedI18n } from '../../../../../../../locales/client';
 
 import { MEDIA_MIN_WIDTH } from '@/constants/constant';
 import Button from '@/components/atoms/common/button/button';
-import CustomPopup from '@/components/atoms/common/popup/custom-popup';
 import AddEducation from '@/components/organisms/education/education/add/add-education';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { EDUCATION_CONTENT_ID } from '@/constants/layout/content';
 
 import ChevronLeft from '../../../../../../../public/svg/chevron-left.svg';
-import AddEducationTerm from '@/components/organisms/education/education-term/add/add-education-term';
-import SlidePopup from '@/components/atoms/common/popup/slide-popup';
 import { MAIN_HEADER_ID } from '@/constants/layout/header';
+import WrappedPagePopup from '@/components/atoms/common/popup/wrapped-page-popup';
 
 const HeaderContainer = styled.div`
   display: flex;
@@ -143,30 +141,18 @@ const MainEducationHeaderView = ({
           />
         )}
       </HeaderBottomContainer>
-      {/* 교육 추가 */}
-      <CustomPopup
+      {/* 심방 수정 팝업*/}
+      <WrappedPagePopup
         isShow={isAddEducationOpened}
+        onClickClose={onClickCloseModal}
         onClickCancel={onClickCloseModal}
-        headerTitle={t_title('addEducation')}
-        width={500}
-        height={300}
         onClickDone={onClickSaveEducation}
+        headerTitle={t_title('addEducation')}
         doneBackgroundColor={isSaveEnabled ? MAIN.DEFAULT : MAIN.LIGHT}
         doneDisabled={!isSaveEnabled}
       >
         <AddEducation />
-      </CustomPopup>
-      {/* 기수 추가 */}
-      <SlidePopup
-        headerTitle={t_title('addEducationTerm')}
-        isShow={isAddEducationTermOpened}
-        onClickClose={onClickCloseTermModal}
-        onClickDone={onClickSaveEducationTerm}
-        doneBackgroundColor={isTermSaveEnabled ? MAIN.DEFAULT : MAIN.LIGHT}
-        doneDisabled={!isTermSaveEnabled}
-      >
-        <AddEducationTerm />
-      </SlidePopup>
+      </WrappedPagePopup>
     </HeaderContainer>
   );
 };

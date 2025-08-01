@@ -3,7 +3,11 @@ import { BLANK, ORDER_DIRECTION } from '@/constants/constant';
 import { Education } from '@/models/education/education';
 import { RootState } from '@/redux/store';
 
-import { EDUCATION } from '@/constants/column/education-column';
+import {
+  EDUCATION,
+  EDUCATION_ATTENDANCE,
+  EDUCATION_ENROLLMENT,
+} from '@/constants/column/education-column';
 import { EducationsApi } from '@/api/education/educations.api';
 
 type EDUCATION_FILTER = {
@@ -32,12 +36,126 @@ export type EDUCATION_TABLE_HEADER_ITEM = {
   isDate?: boolean;
 };
 
+export type EDUCATION_ENROLLMENT_TABLE_HEADER_ITEM = {
+  id: EDUCATION_ENROLLMENT;
+  isShown: boolean;
+  isSortable: boolean;
+  isFilterable: boolean;
+  isFixed?: boolean;
+  isDate?: boolean;
+};
+
+export type EDUCATION_ATTENDANCE_TABLE_HEADER_ITEM = {
+  id: EDUCATION_ATTENDANCE;
+  isShown: boolean;
+  isSortable: boolean;
+  isFilterable: boolean;
+  isFixed?: boolean;
+  isDate?: boolean;
+};
+
 export const INITIAL_EDUCATION_TABLE_HEADER_LIST: EDUCATION_TABLE_HEADER_ITEM[] =
   [
     {
       id: EDUCATION.NAME,
       isShown: true,
-      isSortable: true,
+      isSortable: false,
+      isFilterable: true,
+      isFixed: true,
+      isDate: false,
+    },
+  ];
+
+export const EDUCATION_ENROLLMENT_TABLE_HEADER_LIST: EDUCATION_ENROLLMENT_TABLE_HEADER_ITEM[] =
+  [
+    {
+      id: EDUCATION_ENROLLMENT.MEMBER_NAME,
+      isShown: true,
+      isSortable: false,
+      isFilterable: true,
+      isFixed: true,
+      isDate: false,
+    },
+    {
+      id: EDUCATION_ENROLLMENT.GROUP,
+      isShown: true,
+      isSortable: false,
+      isFilterable: true,
+      isFixed: true,
+      isDate: false,
+    },
+    {
+      id: EDUCATION_ENROLLMENT.MOBILE_PHONE,
+      isShown: true,
+      isSortable: false,
+      isFilterable: true,
+      isFixed: true,
+      isDate: false,
+    },
+    {
+      id: EDUCATION_ENROLLMENT.ATTENDANCE,
+      isShown: true,
+      isSortable: false,
+      isFilterable: true,
+      isFixed: true,
+      isDate: false,
+    },
+    {
+      id: EDUCATION_ENROLLMENT.STATUS,
+      isShown: true,
+      isSortable: false,
+      isFilterable: true,
+      isFixed: true,
+      isDate: false,
+    },
+  ];
+
+export const EDUCATION_ATTENDANCE_TABLE_HEADER_LIST: EDUCATION_ATTENDANCE_TABLE_HEADER_ITEM[] =
+  [
+    {
+      id: EDUCATION_ATTENDANCE.MEMBER_NAME,
+      isShown: true,
+      isSortable: false,
+      isFilterable: true,
+      isFixed: true,
+      isDate: false,
+    },
+    {
+      id: EDUCATION_ATTENDANCE.AGE,
+      isShown: true,
+      isSortable: false,
+      isFilterable: true,
+      isFixed: true,
+      isDate: false,
+    },
+    {
+      id: EDUCATION_ATTENDANCE.GENDER,
+      isShown: true,
+      isSortable: false,
+      isFilterable: true,
+      isFixed: true,
+      isDate: false,
+    },
+    {
+      id: EDUCATION_ATTENDANCE.MOBILE_PHONE,
+      isShown: true,
+      isSortable: false,
+      isFilterable: true,
+      isFixed: true,
+      isDate: false,
+    },
+    {
+      id: EDUCATION_ATTENDANCE.STATUS,
+      isShown: true,
+      isSortable: false,
+      isFilterable: true,
+      isFixed: true,
+      isDate: false,
+    },
+    {
+      id: EDUCATION_ATTENDANCE.NOTE,
+      isShown: true,
+      isSortable: false,
       isFilterable: true,
       isFixed: true,
       isDate: false,

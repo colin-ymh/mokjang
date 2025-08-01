@@ -1,21 +1,15 @@
+'use client';
+
 import styled from 'styled-components';
-import LabelInput from '@/components/atoms/common/input/label-input';
 import React, { ChangeEvent } from 'react';
 import { useI18n, useScopedI18n } from '../../../../../../locales/client';
-import { GRAY } from '@/constants/styles/color';
+import { GRAY, WHITE } from '@/constants/styles/color';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
-import Quill from '@/components/atoms/common/input/quill';
-import MemberDropdown from '@/components/atoms/common/dropdown/member-dropdown';
-import { MemberDropdownValueType } from '@/models/dropdown/dropdown';
-import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-item';
-import StatusDropdown from '@/components/atoms/common/dropdown/status-dropdown';
-import {
-  useEducationSessionStatusDropdownItems,
-  useTimeDropdownItems,
-} from '@/hooks/dropdown/dropdown-items';
-import { BLANK } from '@/constants/constant';
+import RequiredMark from '@/components/atoms/common/text/required-mark';
+import BorderInput from '@/components/atoms/common/input/border-input';
+import { SIZE } from '@/constants/styles/style';
 import CustomDatePicker from '@/vendor/date-picker/custom-date-picker';
 import {
   getDateFromDateString,
@@ -24,59 +18,76 @@ import {
   getTotalMinuteFromDate,
 } from '@/utils/date';
 import Dropdown from '@/components/atoms/common/dropdown/dropdown';
-
+import { useTimeDropdownItems } from '@/hooks/dropdown/dropdown-items';
 import { EDUCATION_SESSION_STATUS } from '@/constants/status/status';
+import MemberDropdown from '@/components/atoms/common/dropdown/member-dropdown';
+import BigMemberTag from '@/components/atoms/common/tag/big-member-tag';
+import { MemberDropdownType } from '@/components/atoms/common/dropdown/member-dropdown-item';
 import { EducationAttendance } from '@/models/education/education';
-import RequiredMark from '@/components/atoms/common/text/required-mark';
+import Quill from '@/components/atoms/common/input/quill';
 
+/* ──────────────────────────────── Styled Components ─────────────────────────────── */
 const AddEducationSessionViewContainer = styled.div`
   display: flex;
-  flex: 1;
   flex-direction: column;
-  padding: 25px 20px 50px 20px;
   gap: 20px;
-  overflow-y: auto;
+  width: 100%;
 `;
 
-const LabelContainer = styled.div`
+const CardContainer = styled.div`
   display: flex;
-  width: 100%;
   flex-direction: column;
   gap: 10px;
+  border: 1px solid ${GRAY.LIGHT};
+  border-radius: 10px;
+  background-color: ${WHITE};
 `;
 
-const InputContainer = styled.div`
+const ContentContainer = styled.div`
   display: flex;
-  width: 100%;
   flex-direction: column;
-  gap: 10px;
+  gap: 20px;
+  padding: 20px;
 `;
 
 const PeriodContainer = styled.div`
   display: flex;
-  flex-direction: row;
   gap: 10px;
-  justify-content: flex-start;
-  align-items: center;
+`;
+
+const RowContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  gap: 20px;
+`;
+
+const MemberTagList = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  flex-direction: row;
 `;
 
 type AddEducationSessionViewProps = {
-  inCharge: DropdownValueType[];
   content: string;
-  receivers: MemberDropdownValueType[];
+  inCharge: MemberDropdownType[];
   onChangeStatus: (value: EDUCATION_SESSION_STATUS) => void;
   onChangeTitle: (event: ChangeEvent<HTMLInputElement>) => void;
   onChangeStartDate: (date: Date | null) => void;
   onChangeStartTime: (value: number) => void;
   onChangeEndDate: (date: Date | null) => void;
   onChangeEndTime: (value: number) => void;
-  onChangeInCharge: (values: DropdownValueType[]) => void;
+  onChangeInCharge: (values: MemberDropdownType[]) => void;
   onChangeContent: (content: string) => void;
+  receivers: MemberDropdownType[];
+  onChangeReceivers: (values: MemberDropdownType[]) => void;
+  // onClickDeleteReceiver: (value: string) => void;
   onChangeAttendanceStatus: (
     value: boolean,
-    educationAttendance: EducationAttendance
+    targetAttendance: EducationAttendance
   ) => void;
-  onChangeReceivers: (values: MemberDropdownValueType[]) => void;
 };
 
 const AddEducationSessionView = ({
@@ -97,46 +108,39 @@ const AddEducationSessionView = ({
   const { targetEducationSession } = useSelector(
     (state: RootState) => state.targetEducationSession
   );
-
   const t = useI18n();
   const t_placeholder = useScopedI18n('placeholder');
 
-  const statusDropdownItems = useEducationSessionStatusDropdownItems();
   const timeDropdownItems = useTimeDropdownItems();
 
   return (
     <AddEducationSessionViewContainer>
-      {/* 상태 */}
-      <InputContainer>
-        <MainText>{t('status')}</MainText>
-        <StatusDropdown
-          value={targetEducationSession.status}
-          items={statusDropdownItems}
-          onChangeItem={onChangeStatus}
-          width={100}
-          height={40}
-        />
-      </InputContainer>
-      {/* 제목 */}
-      <InputContainer>
-        <LabelInput
-          label={t('title')}
-          value={targetEducationSession.title}
-          onChange={onChangeTitle}
-          placeholder={t_placeholder('title')}
-          borderColor={GRAY.LIGHT}
-          height={40}
-          isRequired={true}
-        />
-      </InputContainer>
-
-      {/* 기간 */}
-      <InputContainer>
-        <LabelContainer>
-          <MainText>
+      {/* 기수 */}
+      <CardContainer>
+        <ContentContainer>
+          <MainText size={SIZE.EXTRA_LARGE}>
+            {t('title')}
             <RequiredMark />
-            {t('period')}
           </MainText>
+          <BorderInput
+            value={targetEducationSession.title}
+            onChange={onChangeTitle}
+            placeholder={t_placeholder('title')}
+            borderColor={GRAY.LIGHT}
+          />
+        </ContentContainer>
+      </CardContainer>
+
+      {/* 업무 일정 */}
+      <CardContainer>
+        <ContentContainer>
+          <RowContainer>
+            <MainText size={SIZE.EXTRA_LARGE}>
+              {t('schedule')}
+              <RequiredMark />
+            </MainText>
+          </RowContainer>
+          {/* 기간 */}
           <PeriodContainer>
             {/* 시작 날짜 */}
             <CustomDatePicker
@@ -154,7 +158,6 @@ const AddEducationSessionView = ({
               }
               onChange={onChangeStartDate}
               placeholderText={t('startDate')}
-              width={100}
             />
             {/* 시작 시간 */}
             <Dropdown
@@ -167,9 +170,7 @@ const AddEducationSessionView = ({
               }
               items={timeDropdownItems}
               onChangeItem={onChangeStartTime}
-              width={100}
             />
-            <MainText>-</MainText>
             {/* 종료 날짜 */}
             <CustomDatePicker
               value={
@@ -186,7 +187,6 @@ const AddEducationSessionView = ({
               }
               onChange={onChangeEndDate}
               placeholderText={t('endDate')}
-              width={100}
             />
             {/* 종료 시간 */}
             <Dropdown
@@ -199,55 +199,81 @@ const AddEducationSessionView = ({
               }
               items={timeDropdownItems}
               onChangeItem={onChangeEndTime}
-              width={100}
             />
           </PeriodContainer>
-        </LabelContainer>
-      </InputContainer>
+        </ContentContainer>
+      </CardContainer>
 
-      {/* 내용 */}
-      <InputContainer>
-        <LabelContainer>
-          <MainText>{t('content')}</MainText>
-          <Quill
-            value={content}
-            onChange={(event) => onChangeContent(event)}
-            minHeight={120}
-            placeholder={t_placeholder('content')}
-          />
-        </LabelContainer>
-      </InputContainer>
+      {/* 상태 */}
+      <CardContainer>
+        <ContentContainer>
+          <MainText size={SIZE.EXTRA_LARGE}>{t('educationStatus')}</MainText>
+        </ContentContainer>
+      </CardContainer>
 
       {/* 담당자 */}
-      <InputContainer>
-        <LabelContainer>
-          <MainText>
-            <RequiredMark />
+      <CardContainer>
+        <ContentContainer>
+          <MainText size={SIZE.EXTRA_LARGE}>
             {t('inCharge')}
+            <RequiredMark />
           </MainText>
-          <MemberDropdown
-            values={inCharge}
-            onChangeValues={onChangeInCharge}
-            height={40}
-            isSingle={true}
-            placeholder={inCharge.length === 0 ? t_placeholder('name') : BLANK}
-            isManager={true}
+          {inCharge.length === 0 ? (
+            <MemberDropdown
+              values={inCharge}
+              onChangeValues={onChangeInCharge}
+              isSingle
+              placeholder={t_placeholder('name')}
+              isManager={true}
+            />
+          ) : (
+            <BigMemberTag
+              officer={inCharge[0].officer}
+              profileImage={inCharge[0].profileImage}
+              name={inCharge[0].title}
+              onClick={() => onChangeInCharge([])}
+            />
+          )}
+        </ContentContainer>
+      </CardContainer>
+
+      {/* 내용 */}
+      <CardContainer>
+        <ContentContainer>
+          <MainText size={SIZE.EXTRA_LARGE}>{t('content')}</MainText>
+          <Quill
+            value={targetEducationSession.content}
+            onChange={(html) => onChangeContent(html)}
+            minHeight={150}
+            placeholder={t_placeholder('content')}
           />
-        </LabelContainer>
-      </InputContainer>
-      {/* 보고대상자 */}
-      <InputContainer>
-        <LabelContainer>
-          <MainText>{t('receiver')}</MainText>
-          <MemberDropdown
-            values={receivers}
-            onChangeValues={onChangeReceivers}
-            height={40}
-            placeholder={receivers.length === 0 ? t_placeholder('name') : BLANK}
-            isManager={true}
-          />
-        </LabelContainer>
-      </InputContainer>
+        </ContentContainer>
+      </CardContainer>
+
+      <CardContainer>
+        {/*<ContentContainer>*/}
+        {/*  /!* 보고대상자 *!/*/}
+        {/*  <MainText size={SIZE.EXTRA_LARGE}>{t('receiver')}</MainText>*/}
+        {/*  <MemberDropdown*/}
+        {/*    values={receivers}*/}
+        {/*    onChangeValues={onChangeReceivers}*/}
+        {/*    placeholder={receivers.length === 0 ? t_placeholder('name') : BLANK}*/}
+        {/*    isManager={true}*/}
+        {/*  />*/}
+        {/*  /!* 보고대상자 목록 *!/*/}
+        {/*  <MemberTagList>*/}
+        {/*    {receivers.map((member) => (*/}
+        {/*      <MemberTag*/}
+        {/*        key={member.value}*/}
+        {/*        profileImage={member.profileImage}*/}
+        {/*        name={member.title}*/}
+        {/*        officer={member.officer}*/}
+        {/*        onClick={() => onClickDeleteReceiver(member.value)}*/}
+        {/*      />*/}
+        {/*    ))}*/}
+        {/*  </MemberTagList>*/}
+        {/*</ContentContainer>*/}
+      </CardContainer>
     </AddEducationSessionViewContainer>
   );
 };

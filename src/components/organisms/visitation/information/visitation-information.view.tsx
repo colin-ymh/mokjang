@@ -54,6 +54,17 @@ const RowContainer = styled.div`
   gap: 20px;
 `;
 
+const RowCardContainer = styled.div<{ $minHeight?: number }>`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  border: 1px solid ${GRAY.LIGHT};
+  border-radius: 10px;
+  background-color: ${WHITE};
+  min-height: ${({ $minHeight }) => $minHeight && $minHeight}px;
+`;
+
 const PeriodContainer = styled.div`
   display: flex;
   flex-direction: row;
@@ -113,7 +124,7 @@ const VisitationInformationView = ({
       </CardContainer>
       <RowContainer>
         {/* 대상자 */}
-        <CardContainer $minHeight={150}>
+        <RowCardContainer $minHeight={150}>
           <ContentContainer>
             <MainText
               size={SIZE.EXTRA_LARGE}
@@ -122,9 +133,9 @@ const VisitationInformationView = ({
               <MemberProfilePopupButton key={member.id} member={member} />
             ))}
           </ContentContainer>
-        </CardContainer>
+        </RowCardContainer>
         {/* 담당자 */}
-        <CardContainer $minHeight={150}>
+        <RowCardContainer $minHeight={150}>
           <ContentContainer>
             <MainText size={SIZE.EXTRA_LARGE}>{t('inCharge')}</MainText>
             <MemberProfilePopupButton
@@ -132,7 +143,7 @@ const VisitationInformationView = ({
               member={targetVisitation.inCharge}
             />
           </ContentContainer>
-        </CardContainer>
+        </RowCardContainer>
       </RowContainer>
       {/* 심방내용 */}
       <CardContainer $minHeight={200}>

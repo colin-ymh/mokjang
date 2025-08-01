@@ -3,6 +3,7 @@ import { DEFAULT_MEMBER, Member } from '@/models/member/member';
 import {
   EDUCATION_ENROLLMENT_STATUS,
   EDUCATION_SESSION_STATUS,
+  EDUCATION_STATUS,
   EDUCATION_TERM_STATUS,
   STATUS,
 } from '@/constants/status/status';
@@ -14,6 +15,10 @@ export type Education = {
   description: string;
   name: string;
   educationTerms: EducationTerm[];
+  status: EDUCATION_STATUS;
+  educationGoals: string[];
+  creator: Member;
+  createdAt: string;
 };
 
 export const DEFAULT_EDUCATION: Education = {
@@ -22,6 +27,10 @@ export const DEFAULT_EDUCATION: Education = {
   description: BLANK,
   name: BLANK,
   educationTerms: [],
+  status: STATUS.RESERVE,
+  educationGoals: [],
+  creator: DEFAULT_MEMBER,
+  createdAt: BLANK,
 };
 
 export type EducationEnrollment = {

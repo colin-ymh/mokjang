@@ -2,10 +2,10 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { MainText } from '@/components/atoms/common/text/main-text';
-import { EDUCATION_TERM } from '@/constants/column/education-column';
-import { GRAY, MAIN } from '@/constants/styles/color';
+import { EDUCATION_ATTENDANCE } from '@/constants/column/education-column';
+import { BLACK, GRAY, MAIN } from '@/constants/styles/color';
 import { SIZE } from '@/constants/styles/style';
-import { getTranslatedEducationTermColumn } from '@/utils/translate';
+import { getTranslatedEducationAttendanceColumn } from '@/utils/translate';
 import Arrow from '../../../../../public/svg/arror-up.svg';
 import ArrowUpDown from '../../../../../public/svg/arrow-up-down.svg';
 import { useI18n } from '../../../../../locales/client';
@@ -53,26 +53,26 @@ const ArrowUpDownIcon = styled(ArrowUpDown)`
   stroke: ${GRAY.DEFAULT};
 `;
 
-type EducationTermTableHeaderProps = {
+type EducationAttendanceTableHeaderProps = {
   item: {
-    id: EDUCATION_TERM;
+    id: EDUCATION_ATTENDANCE;
     isSortable: boolean;
   };
-  onClick: (id: EDUCATION_TERM) => void;
+  onClick: (id: EDUCATION_ATTENDANCE) => void;
 };
 
 // Component
-const EducationTermTableHeader = ({
+const EducationAttendanceTableHeader = ({
   item,
   onClick,
-}: EducationTermTableHeaderProps) => {
+}: EducationAttendanceTableHeaderProps) => {
   const t = useI18n();
 
   return (
     <HeaderContainer onClick={() => item.isSortable && onClick(item.id)}>
       <TextContainer>
-        <MainText color={GRAY.DARK} size={SIZE.SMALL} fontWeight={600}>
-          {getTranslatedEducationTermColumn(t, item.id)}
+        <MainText color={BLACK} size={SIZE.SMALL} fontWeight={600}>
+          {getTranslatedEducationAttendanceColumn(t, item.id)}
         </MainText>
       </TextContainer>
       {/*{item.isSortable && (*/}
@@ -90,4 +90,4 @@ const EducationTermTableHeader = ({
   );
 };
 
-export default EducationTermTableHeader;
+export default EducationAttendanceTableHeader;

@@ -6,7 +6,7 @@ import {
   useDrop,
 } from 'react-dnd';
 import styled from 'styled-components';
-import { TABLE_HEADER_ITEM } from '@/redux/reducers/filter/member-filter-reducer';
+import { MEMBER_TABLE_HEADER_ITEM } from '@/redux/reducers/filter/member-filter-reducer';
 
 import { MEMBER } from '@/constants/column/member-column';
 import { MainText } from '@/components/atoms/common/text/main-text';
@@ -90,7 +90,7 @@ const PositionIcon = styled(Position)`
 `;
 
 type TableHeaderSettingItemViewProps = {
-  item: TABLE_HEADER_ITEM;
+  item: MEMBER_TABLE_HEADER_ITEM;
   index: number;
   onDrop: (fromIndex: number, toIndex: number) => void;
   onClickHeaderItem: (id: MEMBER) => void;

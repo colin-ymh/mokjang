@@ -15,7 +15,7 @@ const EducationContainer = styled.div`
   flex-direction: column;
   justify-content: space-between;
   width: 100%;
-  border-bottom: 1px solid ${GRAY.LIGHT};
+  border-bottom: 0.7px solid ${GRAY.LIGHT};
   flex-shrink: 0;
   position: relative;
   background-color: ${WHITE};

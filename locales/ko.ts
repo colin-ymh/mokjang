@@ -13,6 +13,8 @@ export default {
   isNotDone: '미완료',
   customSelect: '직접선택',
 
+  memberName: '교인명',
+
   schedule: '일정',
   lastPresent: '최근 출석',
   weekly: '이번주',
@@ -170,7 +172,12 @@ export default {
 
   educationList: '교육 목록',
   educationName: '교육명',
-  educationDescription: '내용',
+  educationDescription: '교육 요약',
+  educationGoal: '교육 목표',
+  educationTermCount: '총 기수 수',
+  educationEnrollmentCount: '총 이수자 수',
+  educationTerm: '교육 기수',
+  location: '장소',
   educationStatus: '상태',
   educationInformation: '교육 정보',
   educationProcess: '진행사항',
@@ -349,7 +356,7 @@ export default {
   'header.task': '업무',
   'header.calendar': '일정표',
 
-  'header.church': '교회설정',
+  'header.church': '교회관리',
   'header.manager': '관리자',
   'header.join': '등록대기',
   'header.permission': '권한유형',
@@ -372,6 +379,9 @@ export default {
 
   'header.managerPermission': '권한',
   'header.account': '계정',
+
+  'header.educationSessions': '회차 목록',
+  'header.educationEnrollments': '수강 교인',
 
   /*-------------------header (side bar button)-------------------*/
 
@@ -466,7 +476,8 @@ export default {
   'button.addVisitation': '심방 입력하기',
   'button.addTask': '업무 입력하기',
   'button.addEducation': '교육 추가하기',
-  'button.addEducationTerm': '기수 추가하기',
+  'button.addEducationTerm': '기수 추가',
+  'button.addEducationGoal': '목표 추가',
   'button.addPermissionTemplate': '권한유형 추가하기',
   'button.filterVisitationDate': '기간',
   'button.filterTaskDate': '기간',
@@ -503,7 +514,8 @@ export default {
   'placeholder.ministryName': '사역명을 입력해주세요.',
   'placeholder.officerName': '직분명을 입력해주세요.',
   'placeholder.educationName': '교육명을 입력해주세요.',
-  'placeholder.educationDescription': '내용을 입력해주세요.',
+  'placeholder.educationDescription': '교육 요약을 입력해주세요.',
+  'placeholder.educationGoal': '교육 목표를 입력해주세요.',
   'placeholder.mobilePhone': '휴대전화 번호를 입력해주세요.',
   'placeholder.birth': '생년월일을 선택해주세요.',
   'placeholder.registeredAt': '등록일자를 선택해주세요.',
@@ -557,6 +569,8 @@ export default {
   'placeholder.selectGroup': '그룹을 선택해주세요',
   'placeholder.selectOfficer': '직분을 선택해주세요',
   'placeholder.selectBaptism': '신급을 선택해주세요',
+
+  'placeholder.note': '비고 입력하기',
   /*-------------------placeholder-------------------*/
 
   /*-------------------popup-------------------*/

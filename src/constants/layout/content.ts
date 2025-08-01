@@ -59,3 +59,8 @@ export enum EDUCATION_CONTENT_ID {
   IN_PROGRESS = 'inProgress',
   TERM = 'term',
 }
+
+export enum EDUCATION_TERM_CONTENT_ID {
+  SESSIONS = 'educationSessions',
+  ENROLLMENTS = 'educationEnrollments',
+}

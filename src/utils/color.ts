@@ -23,6 +23,10 @@ export const getStatusBackgroundColor = (status: STATUS) => {
       return STATUS_BACKGROUND_COLOR.RESERVE;
     case STATUS.PENDING:
       return STATUS_BACKGROUND_COLOR.PENDING;
+    case STATUS.COMPLETED:
+      return STATUS_BACKGROUND_COLOR.COMPLETED;
+    case STATUS.INCOMPLETE:
+      return STATUS_BACKGROUND_COLOR.INCOMPLETE;
     default:
       return WHITE;
   }
@@ -38,6 +42,10 @@ export const getStatusFontColor = (status: STATUS) => {
       return STATUS_FONT_COLOR.RESERVE;
     case STATUS.PENDING:
       return STATUS_FONT_COLOR.PENDING;
+    case STATUS.COMPLETED:
+      return STATUS_FONT_COLOR.COMPLETED;
+    case STATUS.INCOMPLETE:
+      return STATUS_FONT_COLOR.INCOMPLETE;
     default:
       return BLACK;
   }

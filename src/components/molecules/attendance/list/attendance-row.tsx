@@ -284,7 +284,7 @@ const AttendanceRow = () => {
   useEffect(() => {
     const fetchInitialWorships = async () => {
       try {
-        const result = await dispatch(fetchWorships({ currentPage: 1 }));
+        const result = await dispatch(fetchWorships());
         if (fetchWorships.fulfilled.match(result)) {
           dispatch(setWorships(result.payload));
         }

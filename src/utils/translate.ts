@@ -1,5 +1,10 @@
 import { MEMBER } from '@/constants/column/member-column';
-import { EDUCATION, EDUCATION_TERM } from '@/constants/column/education-column';
+import {
+  EDUCATION,
+  EDUCATION_ATTENDANCE,
+  EDUCATION_ENROLLMENT,
+  EDUCATION_TERM,
+} from '@/constants/column/education-column';
 import { VISITATION } from '@/constants/column/visitation-column';
 import { TASK } from '@/constants/column/task-column';
 import { USER } from '@/constants/column/user-column';
@@ -129,6 +134,35 @@ export const getTranslatedAttendanceInformationColumn = (
       | WORSHIP_ATTENDANCE.ABSENT
       | WORSHIP_ATTENDANCE.PRESENT
       | WORSHIP_ATTENDANCE.NOTE
+  );
+};
+
+export const getTranslatedEducationEnrollmentColumn = (
+  t: (key: string, ...args: any[]) => string,
+  id: EDUCATION_ENROLLMENT
+): string => {
+  return t(
+    id as
+      | EDUCATION_ENROLLMENT.MEMBER_NAME
+      | EDUCATION_ENROLLMENT.GROUP
+      | EDUCATION_ENROLLMENT.MOBILE_PHONE
+      | EDUCATION_ENROLLMENT.ATTENDANCE
+      | EDUCATION_ENROLLMENT.STATUS
+  );
+};
+
+export const getTranslatedEducationAttendanceColumn = (
+  t: (key: string, ...args: any[]) => string,
+  id: EDUCATION_ATTENDANCE
+): string => {
+  return t(
+    id as
+      | EDUCATION_ATTENDANCE.MEMBER_NAME
+      | EDUCATION_ATTENDANCE.AGE
+      | EDUCATION_ATTENDANCE.GENDER
+      | EDUCATION_ATTENDANCE.MOBILE_PHONE
+      | EDUCATION_ATTENDANCE.NOTE
+      | EDUCATION_ATTENDANCE.STATUS
   );
 };
 
@@ -353,5 +387,21 @@ export const getTranslatedDateFromDateString = (
       default: // 유효하지 않은 경우
         return '';
     }
+  }
+};
+
+/**
+ *
+ * @param locale
+ * @param term
+ */
+export const getTranslatedTerm = (locale: LOCALE, term: string) => {
+  if (locale === LOCALE.KO) {
+    return `${term}기`;
+  } else {
+    if (term === '1') return `1st`;
+    if (term === '2') return `2nd`;
+    if (term === '3') return `3rd`;
+    return `${term}th`;
   }
 };

@@ -6,14 +6,15 @@ import { DropdownButtonProps } from '@/components/atoms/common/dropdown/default-
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { Chevron } from '@/components/atoms/common/dropdown/dropdown-chevron';
 
-const DropdownButton = styled.div`
+const DropdownButton = styled.div<{ $backgroundColor?: string }>`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
   gap: 5px;
   cursor: pointer;
-  background-color: ${MAIN.EXTRA_LIGHT};
+  background-color: ${({ $backgroundColor }) =>
+    $backgroundColor || MAIN.EXTRA_LIGHT};
   border-radius: 1000px;
   padding: 5px 13px;
   padding-right: 30px;
@@ -39,6 +40,7 @@ const TagDropdownButton = ({
   isRight,
   onKeyDownHandler,
   disabled,
+  color,
   ...inputProps
 }: DropdownButtonProps & BorderInputProps) => {
   return (
@@ -48,10 +50,13 @@ const TagDropdownButton = ({
         onClickDropdown(event);
       }}
       value={displayValue}
+      $backgroundColor={backgroundColor}
       {...inputProps}
     >
-      <MainText color={MAIN.DEFAULT}>{displayValue}</MainText>
-      {isChevronShown && <Chevron $isOpened={isOpened} color={MAIN.DEFAULT} />}
+      <MainText color={color}>{displayValue}</MainText>
+      {isChevronShown && (
+        <Chevron $isOpened={isOpened} color={color || MAIN.DEFAULT} />
+      )}
     </DropdownButton>
   );
 };

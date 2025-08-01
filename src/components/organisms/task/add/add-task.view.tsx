@@ -71,6 +71,17 @@ const RowContainer = styled.div`
   gap: 20px;
 `;
 
+const RowCardContainer = styled.div<{ $minHeight?: number }>`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  border: 1px solid ${GRAY.LIGHT};
+  border-radius: 10px;
+  background-color: ${WHITE};
+  min-height: ${({ $minHeight }) => $minHeight && $minHeight}px;
+`;
+
 const PeriodContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -136,7 +147,7 @@ const AddTaskView = ({
 
       <RowContainer>
         {/* 담당자 */}
-        <CardContainer>
+        <RowCardContainer>
           <ContentContainer>
             <MainText size={SIZE.EXTRA_LARGE}>
               {t('inCharge')}
@@ -159,9 +170,9 @@ const AddTaskView = ({
               />
             )}
           </ContentContainer>
-        </CardContainer>
+        </RowCardContainer>
         {/* 일정 */}
-        <CardContainer>
+        <RowCardContainer>
           <ContentContainer>
             <RowContainer>
               <MainText size={SIZE.EXTRA_LARGE}>
@@ -238,7 +249,7 @@ const AddTaskView = ({
               />
             </PeriodContainer>
           </ContentContainer>
-        </CardContainer>
+        </RowCardContainer>
       </RowContainer>
 
       {/* 세부 내용 */}

@@ -110,7 +110,7 @@ const AddMemberItem = ({
           <RowContainer>
             <MainTag title={member.group?.name || t('noGroup')} />
             <MainText color={GRAY.SEMI_DARK}>
-              {getFormattedPhone(member.mobilePhone)}
+              {member.mobilePhone && getFormattedPhone(member.mobilePhone)}
             </MainText>
           </RowContainer>
         </ProfileDetail>

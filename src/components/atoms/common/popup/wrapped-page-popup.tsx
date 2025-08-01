@@ -25,11 +25,11 @@ const WrappedPagePopupContainer = styled.div`
   justify-content: center;
 `;
 
-const HeaderContainer = styled.div`
+const HeaderContainer = styled.div<{ width: number }>`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  width: 800px;
+  width: ${({ width }) => width}px;
   padding: 20px;
 `;
 
@@ -70,9 +70,9 @@ const ArrowLeft = styled(ArrowUp)`
   transform: rotate(270deg);
 `;
 
-const ContentWrapper = styled.div`
+const ContentWrapper = styled.div<{ width: number }>`
   display: flex;
-  width: 800px;
+  width: ${({ width }) => width}px;
   overflow-y: auto;
   margin-bottom: 20px;
 `;
@@ -89,6 +89,8 @@ interface WrappedPagePopupProps {
   cancelText?: string;
   doneBackgroundColor?: string;
   doneDisabled?: boolean;
+  keyboardDisabled?: boolean;
+  width?: number;
 }
 
 // 특정 컴포넌트를 전체화면 페이지인 것처럼 보아게 해주는 모달
@@ -104,8 +106,12 @@ const WrappedPagePopup = ({
   doneDisabled = false,
   doneText,
   cancelText,
+  keyboardDisabled = false,
+  width = 800,
 }: WrappedPagePopupProps) => {
   useEffect(() => {
+    if (keyboardDisabled) return;
+
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         onClickClose();
@@ -127,7 +133,7 @@ const WrappedPagePopup = ({
 
   return (
     <WrappedPagePopupContainer>
-      <HeaderContainer>
+      <HeaderContainer width={width}>
         {/* 돌아가기 */}
         <GoBackContainer onClick={onClickClose}>
           <ArrowLeft />
@@ -169,7 +175,7 @@ const WrappedPagePopup = ({
           </ButtonContainer>
         </TitleContainer>
       </HeaderContainer>
-      <ContentWrapper>{children}</ContentWrapper>
+      <ContentWrapper width={width}>{children}</ContentWrapper>
     </WrappedPagePopupContainer>
   );
 };

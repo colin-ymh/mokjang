@@ -3,8 +3,7 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 
-import { GRAY, WHITE } from '@/constants/styles/color';
-import { MainText } from '@/components/atoms/common/text/main-text';
+import { GRAY, MAIN, WHITE } from '@/constants/styles/color';
 import { BLANK } from '@/constants/constant';
 
 import useWindowSize from '@/hooks/window/window';
@@ -16,11 +15,13 @@ import {
   EducationSession,
   EducationTerm,
 } from '@/models/education/education';
-import { EDUCATION, EDUCATION_TERM } from '@/constants/column/education-column';
+import { EDUCATION } from '@/constants/column/education-column';
+import ChevronLeft from '../../../../../public/svg/chevron-down.svg';
+import { MainText } from '@/components/atoms/common/text/main-text';
 import { useI18n } from '../../../../../locales/client';
-import { getFormattedDate } from '@/utils/format';
-import MemberProfile from '@/components/atoms/member/member-profile';
-import { Chevron } from '@/components/atoms/common/dropdown/dropdown-chevron';
+import { getTranslatedTerm } from '@/utils/translate';
+import { usePathname } from 'next/navigation';
+import { LOCALE } from '@/constants/state/locale';
 
 // 1. 컬럼별 PX 폭 (마지막 REMARKS만 auto 할 예정)
 const getColumnWidth = (id: string) => {
@@ -80,21 +81,20 @@ const TableHeader = styled.th<{ id: string; $isLast?: boolean }>`
     bottom: 0;
     left: 0;
     right: 0;
-    height: 0.7px;
+    height: 0.6px;
     background: ${GRAY.LIGHT};
   }
 `;
 
-// 5. 본문(TR/TD)
 const EducationTableRow = styled.tr`
   border-bottom: 1px solid ${GRAY.EXTRA_LIGHT};
   &:hover td {
-    background-color: ${GRAY.LIGHT};
+    background-color: ${MAIN.EXTRA_LIGHT};
   }
 `;
 
-const TableData = styled.td<{ id: string; $index: number; $isLast?: boolean }>`
-  padding: 10px;
+const TableData = styled.td<{ id: string; $isLast?: boolean }>`
+  padding: 20px;
 
   cursor: pointer;
 
@@ -120,32 +120,59 @@ const ContentWrapper = styled.div`
   white-space: nowrap;
 `;
 
-const EducationNameContainer = styled.div`
+const EducationNameContainer = styled.div<{ $level: number }>`
   display: flex;
   flex-direction: row;
-  position: relative;
-  padding-left: 40px;
+  padding-left: ${({ $level }) => `${$level * 20}px`};
+  align-items: center;
+  gap: 10px;
+`;
+
+const Chevron = styled(ChevronLeft)<{
+  $isOpened: boolean;
+  color?: string;
+  $reverseDirection?: boolean;
+}>`
+  width: 12px;
+  height: 14px;
+  stroke: ${({ color }) => color || GRAY.DEFAULT};
+  stroke-width: 3px;
+  transform: rotate(${({ $isOpened }) => ($isOpened ? '360deg' : '270deg')});
+  transition: transform 0.2s ease;
 `;
 
 type EducationTableProps = {
-  openedEducationIds: string[];
-  openedTermIds: string[];
-  onClickEducationChevron: (id: string) => void;
-  onClickTermChevron: (termId: string) => void;
   scrollRef: MutableRefObject<HTMLDivElement | null>;
   onScroll: () => void;
+  openedEducationIds: string[];
+  openedTermIds: string[];
+  onClickEducationChevron: (value: Education) => void;
+  onClickTermChevron: (value: EducationTerm) => void;
+  onClickEducationItem: (education: Education) => void;
+  onClickEducationTermItem: (education: Education, term: EducationTerm) => void;
+  onClickEducationSessionItem: (
+    education: Education,
+    term: EducationTerm,
+    session: EducationSession
+  ) => void;
 };
 
 const EducationTableView = ({
+  scrollRef,
+  onScroll,
   openedEducationIds,
   openedTermIds,
   onClickEducationChevron,
   onClickTermChevron,
-  scrollRef,
-  onScroll,
+  onClickEducationItem,
+  onClickEducationTermItem,
+  onClickEducationSessionItem,
 }: EducationTableProps) => {
   const t = useI18n();
   const { height } = useWindowSize();
+
+  const pathname = usePathname();
+  const locale = pathname.split('/')[1] as LOCALE;
 
   const { educations, educationTableHeaderItemList } = useSelector(
     (state: RootState) => state.educationFilter
@@ -162,20 +189,16 @@ const EducationTableView = ({
     switch (id) {
       case EDUCATION.NAME:
         return (
-          <EducationNameContainer>
+          <EducationNameContainer $level={0}>
             <Chevron
               $isOpened={openedEducationIds.includes(education.id)}
               onClick={(event: React.MouseEvent) => {
                 event.stopPropagation();
-                onClickEducationChevron(education.id);
+                onClickEducationChevron(education);
               }}
               $reverseDirection
             />
             <MainText>{`${education.name}`}</MainText>
-            {/*<StatusContainer>*/}
-            {/*  <ColoredDot color={getStatusColor(education.status)} />*/}
-            {/*  <MainText>{t(education?.status)}</MainText>*/}
-            {/*</StatusContainer>*/}
           </EducationNameContainer>
         );
 
@@ -190,33 +213,21 @@ const EducationTableView = ({
     educationTerm: EducationTerm
   ) => {
     switch (id) {
-      case EDUCATION_TERM.TERM:
+      case EDUCATION.NAME:
         return (
-          <EducationNameContainer>
+          <EducationNameContainer $level={1}>
             <Chevron
               $isOpened={openedTermIds.includes(educationTerm.id)}
               onClick={(event: React.MouseEvent) => {
                 event.stopPropagation();
-                onClickTermChevron(educationTerm.id);
+                onClickTermChevron(educationTerm);
               }}
+              $reverseDirection
             />
-            <MainText>{`${educationTerm.educationName} ${educationTerm?.term}기`}</MainText>
+            <MainText>{`${getTranslatedTerm(locale, educationTerm.term)}`}</MainText>
           </EducationNameContainer>
         );
 
-      case EDUCATION_TERM.PERIOD:
-        return (
-          <MainText>
-            {`${
-              educationTerm.startDate &&
-              getFormattedDate(educationTerm.startDate)
-            } - ${
-              educationTerm.endDate && getFormattedDate(educationTerm.endDate)
-            }`}
-          </MainText>
-        );
-      case EDUCATION_TERM.IN_CHARGE:
-        return <MemberProfile member={educationTerm.inCharge} />;
       default:
         return null;
     }
@@ -229,23 +240,13 @@ const EducationTableView = ({
   ) => {
     // term 컬럼에 맞춰서 작성해야함
     switch (id) {
-      case EDUCATION_TERM.TERM:
+      case EDUCATION.NAME:
         return (
-          <EducationNameContainer>
+          <EducationNameContainer $level={2}>
             <MainText>{`${session.session}${t('session')}`}</MainText>
             <MainText>{session.title}</MainText>
           </EducationNameContainer>
         );
-      case EDUCATION_TERM.PERIOD:
-        return (
-          <MainText>
-            {`${session.startDate && getFormattedDate(session.startDate)} - ${
-              session.endDate && getFormattedDate(session.endDate)
-            }`}
-          </MainText>
-        );
-      case EDUCATION_TERM.IN_CHARGE:
-        return <MemberProfile member={session.inCharge} />;
       default:
         return null;
     }
@@ -278,15 +279,16 @@ const EducationTableView = ({
             </tr>
           </thead>
           <tbody>
+            {/* 교육 */}
             {educations.map((education, rowIndex) => (
               <React.Fragment key={education.id}>
-                {/* ① Term Row */}
-                <EducationTableRow>
+                <EducationTableRow
+                  onClick={() => onClickEducationItem(education)}
+                >
                   {visibleColumns.map((item, index) => (
                     <TableData
                       key={`${education.id}-${item.id}`}
                       id={item.id}
-                      $index={rowIndex}
                       $isLast={index === visibleColumns.length - 1}
                     >
                       <ContentWrapper>
@@ -295,48 +297,65 @@ const EducationTableView = ({
                     </TableData>
                   ))}
                 </EducationTableRow>
-                {education.educationTerms?.map((educationTerm) => (
-                  <React.Fragment key={educationTerm.id}>
-                    {/* ① Term Row */}
-                    <EducationTableRow>
-                      {visibleColumns.map((item, index) => (
-                        <TableData
-                          key={`${educationTerm.id}-${item.id}`}
-                          id={item.id}
-                          $index={rowIndex}
-                          $isLast={index === visibleColumns.length - 1}
-                        >
-                          <ContentWrapper>
-                            {getEducationTermTableContent(
-                              item.id,
-                              educationTerm
-                            )}
-                          </ContentWrapper>
-                        </TableData>
-                      ))}
-                    </EducationTableRow>
-
-                    {/* ② 세션 Row (열린 상태일 때만) */}
-                    {openedTermIds.includes(educationTerm.id) &&
-                      educationTerm.educationSessions?.map((session) => (
-                        <EducationTableRow key={session.id}>
-                          {visibleColumns.map((item, index) => (
-                            <TableData
-                              key={`${session.id}-${item.id}`}
-                              id={item.id}
-                              $index={rowIndex}
-                              $isLast={index === visibleColumns.length - 1}
-                            >
-                              {getEducationSessionTableContent(
+                {/* 교육 기수 */}
+                {openedEducationIds.includes(education.id) &&
+                  education.educationTerms?.map((educationTerm) => (
+                    <React.Fragment key={educationTerm.id}>
+                      <EducationTableRow
+                        onClick={() =>
+                          onClickEducationTermItem(education, educationTerm)
+                        }
+                      >
+                        {visibleColumns.map((item, index) => (
+                          <TableData
+                            key={`${educationTerm.id}-${item.id}`}
+                            id={item.id}
+                            $isLast={index === visibleColumns.length - 1}
+                          >
+                            <ContentWrapper>
+                              {getEducationTermTableContent(
                                 item.id,
-                                session
+                                educationTerm
                               )}
-                            </TableData>
-                          ))}
-                        </EducationTableRow>
-                      ))}
-                  </React.Fragment>
-                ))}
+                            </ContentWrapper>
+                          </TableData>
+                        ))}
+                      </EducationTableRow>
+
+                      {/* 교육 회차 */}
+                      {openedTermIds.includes(educationTerm.id) &&
+                        educationTerm.educationSessions?.map(
+                          (educationSession) => (
+                            <React.Fragment key={educationSession.id}>
+                              <EducationTableRow
+                                onClick={() =>
+                                  onClickEducationSessionItem(
+                                    education,
+                                    educationTerm,
+                                    educationSession
+                                  )
+                                }
+                              >
+                                {visibleColumns.map((item, index) => (
+                                  <TableData
+                                    key={`${educationSession.id}-${item.id}`}
+                                    id={item.id}
+                                    $isLast={
+                                      index === visibleColumns.length - 1
+                                    }
+                                  >
+                                    {getEducationSessionTableContent(
+                                      item.id,
+                                      educationSession
+                                    )}
+                                  </TableData>
+                                ))}
+                              </EducationTableRow>
+                            </React.Fragment>
+                          )
+                        )}
+                    </React.Fragment>
+                  ))}
               </React.Fragment>
             ))}
           </tbody>

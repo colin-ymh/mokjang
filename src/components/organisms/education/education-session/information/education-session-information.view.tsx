@@ -1,165 +1,133 @@
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
-import { useEducationSessionStatusDropdownItems } from '@/hooks/dropdown/dropdown-items';
-import { MainText } from '@/components/atoms/common/text/main-text';
-import { getFormattedDate } from '@/utils/format';
-import { GRAY } from '@/constants/styles/color';
-import React from 'react';
-import StatusDropdown from '@/components/atoms/common/dropdown/status-dropdown';
-import { EducationAttendance } from '@/models/education/education';
 import { useI18n } from '../../../../../../locales/client';
-
+import { MainText } from '@/components/atoms/common/text/main-text';
+import { GRAY, WHITE } from '@/constants/styles/color';
+import React from 'react';
+import { SIZE } from '@/constants/styles/style';
+import { usePathname } from 'next/navigation';
+import { LOCALE } from '@/constants/state/locale';
 import { EDUCATION_SESSION_STATUS } from '@/constants/status/status';
-import EducationAttendanceList from '@/components/atoms/education/education-attendance/education-attendance-list';
 import MemberProfilePopupButton from '@/components/molecules/common/button/member-profile-popup-button';
+import { getTranslatedDateFromDateString } from '@/utils/translate';
+import Button from '@/components/atoms/common/button/button';
+import EducationAttendanceTable from '@/components/molecules/education/education-attendance/education-attendance-table';
 
 const InformationContainer = styled.div`
   display: flex;
-  flex: 1;
   flex-direction: column;
-  overflow-y: auto;
+  gap: 20px;
+  width: 100%;
 `;
 
-const MetaContainer = styled.div`
+const CardContainer = styled.div<{ $minHeight?: number }>`
   display: flex;
   flex-direction: column;
-  padding: 25px 20px;
-  gap: 30px;
+  gap: 10px;
+  width: 100%;
+  border: 1px solid ${GRAY.LIGHT};
+  border-radius: 10px;
+  background-color: ${WHITE};
+  min-height: ${({ $minHeight }) => $minHeight && $minHeight}px;
+`;
+
+const ContentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
 `;
 
 const RowContainer = styled.div`
   display: flex;
   flex-direction: row;
-  align-items: center;
-`;
-
-const TitleContainer = styled.div`
-  display: flex;
-  width: 100px;
-  flex-shrink: 0;
-`;
-
-const ContentContainer = styled.div`
-  display: flex;
-  flex-grow: 1;
-  justify-content: flex-start;
-  align-items: center;
-  gap: 10px;
-`;
-
-const DivideLine = styled.div`
+  justify-content: space-between;
   width: 100%;
-  height: 10px;
-  background-color: ${GRAY.DEFAULT};
+  gap: 20px;
 `;
 
-const ColumnContainer = styled.div`
+const TableContainer = styled.div`
   display: flex;
-  flex-direction: column;
-  gap: 10px;
-`;
-
-const AttendanceContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding: 20px;
-`;
-
-const LabelContainer = styled.div`
-  display: flex;
-  width: 100%;
-  flex-direction: column;
-  gap: 10px;
+  border: 1px solid ${GRAY.LIGHT};
+  border-radius: 10px;
+  overflow: hidden;
 `;
 
 type EducationSessionInformationViewProps = {
   onChangeStatus: (status: EDUCATION_SESSION_STATUS) => void;
-  onChangeAttendanceStatus: (
-    value: boolean,
-    attendance: EducationAttendance
-  ) => void;
 };
 
 const EducationSessionInformationView = ({
   onChangeStatus,
-  onChangeAttendanceStatus,
 }: EducationSessionInformationViewProps) => {
   const t = useI18n();
   const { targetEducationSession } = useSelector(
     (state: RootState) => state.targetEducationSession
   );
-  const statusDropdownItems = useEducationSessionStatusDropdownItems();
+  const pathname = usePathname();
+  const locale = pathname.split('/')[1] as LOCALE;
 
   return (
     <InformationContainer>
-      <MetaContainer>
-        {/* 진행 상태 */}
-        <ColumnContainer>
-          <MainText>{t('status')}</MainText>
-          <StatusDropdown
-            value={targetEducationSession.status}
-            items={statusDropdownItems}
-            onChangeItem={onChangeStatus}
-            width={150}
-            height={40}
-          />
-        </ColumnContainer>
-
-        {/* 진행자 */}
-        <RowContainer>
-          <TitleContainer>
-            <MainText>{t('inCharge')}</MainText>
-          </TitleContainer>
+      <RowContainer>
+        {/* 담당자 */}
+        <CardContainer $minHeight={100}>
           <ContentContainer>
+            <MainText size={SIZE.EXTRA_LARGE}>{t('inCharge')}</MainText>
             <MemberProfilePopupButton
-              key={targetEducationSession.inCharge.id}
               member={targetEducationSession.inCharge}
             />
           </ContentContainer>
-        </RowContainer>
-        {/* 일자 */}
-        <RowContainer>
-          <TitleContainer>
-            <MainText>{t('period')}</MainText>
-          </TitleContainer>
+        </CardContainer>
+        {/* 장소 */}
+        <CardContainer $minHeight={100}>
           <ContentContainer>
+            <MainText size={SIZE.EXTRA_LARGE}>{t('location')}</MainText>
+            <MainText>{'본당'}</MainText>
+          </ContentContainer>
+        </CardContainer>
+        {/* 기간 */}
+        <CardContainer $minHeight={100}>
+          <ContentContainer>
+            <MainText size={SIZE.EXTRA_LARGE}>{t('period')}</MainText>
             <MainText>
-              {targetEducationSession.startDate &&
-                getFormattedDate(targetEducationSession.startDate)}
-            </MainText>
-            <MainText>{'-'}</MainText>
-            <MainText>
-              {targetEducationSession.endDate &&
-                getFormattedDate(targetEducationSession.endDate)}
+              {`${getTranslatedDateFromDateString(locale, targetEducationSession.startDate)} - ${getTranslatedDateFromDateString(locale, targetEducationSession.endDate)}`}
             </MainText>
           </ContentContainer>
-        </RowContainer>
-        {/* 내용 */}
-        <RowContainer>
-          <TitleContainer>
-            <MainText>{t('content')}</MainText>
-          </TitleContainer>
+        </CardContainer>
+        {/* 상태 */}
+        <CardContainer $minHeight={100}>
           <ContentContainer>
-            <MainText
-              dangerouslySetInnerHTML={{
-                __html: targetEducationSession.content,
-              }}
+            <MainText size={SIZE.EXTRA_LARGE}>{t('status')}</MainText>
+          </ContentContainer>
+        </CardContainer>
+      </RowContainer>
+      {/* 수업 내용 */}
+      <CardContainer $minHeight={200}>
+        <ContentContainer>
+          <MainText size={SIZE.EXTRA_LARGE}>{t('content')}</MainText>
+        </ContentContainer>
+      </CardContainer>
+      {/* 수강교인 */}
+      <CardContainer $minHeight={200}>
+        <ContentContainer>
+          <RowContainer>
+            <MainText size={SIZE.EXTRA_LARGE}>
+              {t('educationEnrollment')}
+            </MainText>
+            <Button
+              text={t('button.addMember')}
+              height={30}
+              width={'auto'}
+              // onClick={onClickAddEnrollmentsOpen}
             />
-          </ContentContainer>
-        </RowContainer>
-      </MetaContainer>
-      <DivideLine />
-      <AttendanceContainer>
-        <LabelContainer>
-          <MainText>{`${t('attendance')}`}</MainText>
-          <EducationAttendanceList
-            attendances={targetEducationSession.educationAttendances}
-            onChangeStatus={onChangeAttendanceStatus}
-          />
-        </LabelContainer>
-      </AttendanceContainer>
+          </RowContainer>
+          <TableContainer>
+            <EducationAttendanceTable />
+          </TableContainer>
+        </ContentContainer>
+      </CardContainer>
     </InformationContainer>
   );
 };

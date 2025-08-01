@@ -236,6 +236,43 @@ const AddEducationTerm = ({}: AddEducationTermProps) => {
   };
   // ===== 수강 교인 =====
 
+  /* ── Receivers ── */
+  const [receivers, setReceivers] = useState<MemberDropdownType[]>([]);
+
+  useEffect(() => {
+    if (targetEducationTerm.reports) {
+      setReceivers(
+        targetEducationTerm.reports.map((r) => ({
+          value: r.receiver.id,
+          title: r.receiver.name,
+        }))
+      );
+    } else {
+      setReceivers([]);
+    }
+  }, [targetEducationTerm.reports]);
+
+  const onChangeReceivers = (values: MemberDropdownType[]) => {
+    setReceivers(values);
+    dispatch(
+      setTargetEducationTerm({
+        ...targetEducationTerm,
+        receiverIds: values.map((v) => v.value),
+      })
+    );
+  };
+
+  const onClickDeleteReceiver = (receiverId: string) => {
+    const newReceivers = receivers.filter((r) => r.value !== receiverId);
+    setReceivers(newReceivers);
+    dispatch(
+      setTargetEducationTerm({
+        ...targetEducationTerm,
+        receiverIds: newReceivers.map((r) => r.value),
+      })
+    );
+  };
+
   const props = {
     content,
     inCharge,
@@ -249,6 +286,9 @@ const AddEducationTerm = ({}: AddEducationTermProps) => {
     onChangeContent,
     onClickNewEnrollment,
     onChangeEnrollmentStatus,
+    receivers,
+    onChangeReceivers,
+    onClickDeleteReceiver,
   };
 
   return (

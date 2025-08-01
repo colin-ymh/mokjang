@@ -4,7 +4,6 @@ import {
   ATTENDANCE_CONTENT_ID,
   CALENDAR_CONTENT_ID,
   CHURCH_CONTENT_ID,
-  EDUCATION_CONTENT_ID,
   HOME_CONTENT_ID,
   JOIN_REQUEST_CONTENT_ID,
   MANAGER_CONTENT_ID,
@@ -42,7 +41,6 @@ import ManagementUserHeader from '@/components/molecules/layout/header/managemen
 import ChurchUserList from '@/components/organisms/church-user/list/church-user-list';
 import MemberInformationListView from '@/components/molecules/member/information/personal/member-personal-information-list.view';
 import PermissionTemplateList from '@/components/organisms/permission/list/permission-template-list';
-import EducationTermList from '@/components/organisms/education/education-term/list/education-term-list';
 import JoinRequestList from '@/components/organisms/join-request/list/join-request-list';
 import MainAttendanceHeader from '@/components/molecules/layout/header/main/attendance/main-attendance-header';
 import AttendanceList from '@/components/organisms/attendance/list/attendance-list';
@@ -193,12 +191,6 @@ export const getContent = (
 
     case MEMBER_CONTENT_ID.NEW:
       return <MemberList isNewMember={true} />;
-
-    // 교육
-    case EDUCATION_CONTENT_ID.IN_PROGRESS:
-      return <EducationTermList isInProgress={true} />;
-    case EDUCATION_CONTENT_ID.TERM:
-      return <EducationTermList />;
 
     default:
       return null;

@@ -165,8 +165,9 @@ const MainMemberHeaderView = ({
       {/* 데스크톱 교인 추가 */}
       <DesktopRegister>
         <CustomPopup
-          width={600}
-          height={1000}
+          width={60}
+          height={80}
+          isPercentage={true}
           isShow={isRegisterShown}
           onClickCancel={onClickClose}
           onClickDone={onClickSave}

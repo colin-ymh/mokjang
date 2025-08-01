@@ -1,60 +1,98 @@
-import styled from 'styled-components';
+import React, { ChangeEvent, useState } from 'react';
 import { getFormattedTitle } from '@/utils/format';
-import { ChangeEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
+import AddEducationView from '@/components/organisms/education/education/add/add-education.view';
 import { setTargetEducation } from '@/redux/reducers/target/target-education-reducer';
-import LabelInput from '@/components/atoms/common/input/label-input';
-import { useI18n, useScopedI18n } from '../../../../../../locales/client';
-import LabelTextarea from '@/components/atoms/common/input/label-textarea';
-
-const AddEducationContainer = styled.div`
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  padding: 20px;
-  gap: 10px;
-`;
 
 type AddEducationProps = {};
 
 const AddEducation = ({}: AddEducationProps) => {
-  const t = useI18n();
-  const t_placeholder = useScopedI18n('placeholder');
-  const dispatch = useDispatch<AppDispatch>();
-
   const { targetEducation } = useSelector(
     (state: RootState) => state.targetEducation
   );
+  const dispatch = useDispatch<AppDispatch>();
 
-  const onChangeName = (event: ChangeEvent<HTMLInputElement>) => {
-    const newName = getFormattedTitle(event.target.value);
-    dispatch(setTargetEducation({ ...targetEducation, name: newName }));
+  const [educationGoals, setEducationGoals] = useState<string[]>(['']);
+
+  // ===== name =====
+  const onChangeName = (event: ChangeEvent<HTMLInputElement>): void => {
+    dispatch(
+      setTargetEducation({
+        ...targetEducation,
+        name: getFormattedTitle(event.target.value),
+      })
+    );
+  };
+  // ===== name =====
+
+  // ===== description =====
+  const onChangeDescription = (event: ChangeEvent<HTMLInputElement>): void => {
+    dispatch(
+      setTargetEducation({
+        ...targetEducation,
+        description: event.target.value,
+      })
+    );
+  };
+  // ===== description =====
+
+  // ===== goal =====
+  const onChangeEducationGoal = (
+    index: number,
+    event: ChangeEvent<HTMLInputElement>
+  ): void => {
+    setEducationGoals(
+      educationGoals.map((goal, i) => {
+        if (i === index) {
+          return event.target.value;
+        } else {
+          return goal;
+        }
+      })
+    );
+    // dispatch(
+    //   setTargetEducation({
+    //     ...targetEducation,
+    //     educationGoals: targetEducation.educationGoals.map((goal, i) => {
+    //       if (i === index) {
+    //         return event.target.value;
+    //       } else {
+    //         return goal;
+    //       }
+    //     }),
+    //   })
+    // );
   };
 
-  const onChangeDescription = (event: ChangeEvent<HTMLTextAreaElement>) => {
-    const newDescription = event.target.value;
-    dispatch(
-      setTargetEducation({ ...targetEducation, description: newDescription })
-    );
+  const onClickAddGoal = () => {
+    if (educationGoals.length < 6) {
+      setEducationGoals([...educationGoals, '']);
+    }
+    // if (targetEducation.educationGoals.length < 6) {
+    //   dispatch(
+    //     setTargetEducation({
+    //       ...targetEducation,
+    //       educationGoals: [...targetEducation.educationGoals, ''],
+    //     })
+    //   );
+    // }
+  };
+  // ===== goal =====
+
+  const props = {
+    onChangeName,
+    onChangeDescription,
+    onChangeEducationGoal,
+    onClickAddGoal,
+
+    educationGoals,
   };
 
   return (
-    <AddEducationContainer>
-      <LabelInput
-        label={t('educationName')}
-        placeholder={t_placeholder('educationName')}
-        value={targetEducation.name}
-        onChange={onChangeName}
-        isRequired={true}
-      />
-      <LabelTextarea
-        label={t('educationDescription')}
-        placeholder={t_placeholder('educationDescription')}
-        value={targetEducation.description}
-        onChange={onChangeDescription}
-      />
-    </AddEducationContainer>
+    <>
+      <AddEducationView {...props} />
+    </>
   );
 };
 

@@ -12,19 +12,20 @@ import {
   EDUCATION_ENROLLMENT_STATUS,
   EDUCATION_TERM_STATUS,
 } from '@/constants/status/status';
+import { EDUCATION_TERM_CONTENT_ID } from '@/constants/layout/content';
+import { Member } from '@/models/member/member';
+import {
+  setIsToastShown,
+  setToastBackgroundColor,
+  setToastText,
+} from '@/redux/reducers/toast-popup-reducer';
+import { BLACK, DESTRUCTIVE } from '@/constants/styles/color';
+import { useScopedI18n } from '../../../../../../locales/client';
 
-type EducationTermInformationProps = {
-  onClickAddSession: () => void;
-  onClickEducationSessionItem: (
-    educationTermId: string,
-    educationSessionId: string
-  ) => void;
-};
+type EducationTermInformationProps = {};
 
-const EducationTermInformation = ({
-  onClickAddSession,
-  onClickEducationSessionItem,
-}: EducationTermInformationProps) => {
+const EducationTermInformation = ({}: EducationTermInformationProps) => {
+  const t_popup = useScopedI18n('popup');
   const { educationTerms } = useSelector(
     (state: RootState) => state.educationTermFilter
   );
@@ -39,6 +40,16 @@ const EducationTermInformation = ({
   const dispatch = useDispatch<AppDispatch>();
   const educationTermsApi = new EducationTermsApi(false);
   const educationEnrollmentsApi = new EducationEnrollmentsApi(false);
+
+  const [headerBar, setHeaderBar] = useState<EDUCATION_TERM_CONTENT_ID>(
+    EDUCATION_TERM_CONTENT_ID.SESSIONS
+  );
+
+  // 선택된 교인 목록
+  const [selectedMembers, setSelectedMembers] = useState<Member[]>([]);
+
+  // 그룹에 교인 다중 추가를 위한 모달 활성화 여부
+  const [isAddModalShown, setIsAddModalShown] = useState<boolean>(false);
 
   const [thrownError, setThrownError] = useState<Error | null>(null);
   if (thrownError) {
@@ -97,7 +108,7 @@ const EducationTermInformation = ({
           { status: value }
         )
         .then((response) => {
-          const newEducationEnrollment = response.data;
+          const newEducationEnrollment = response.data.data;
 
           const newEducationEnrollments =
             targetEducationTerm.educationEnrollments.map((enrollment) => {
@@ -126,11 +137,82 @@ const EducationTermInformation = ({
     }
   };
 
+  const onChangeHeaderBar = (headerBar: EDUCATION_TERM_CONTENT_ID) => {
+    setHeaderBar(headerBar);
+  };
+
+  const onClickAddEnrollmentsOpen = () => setIsAddModalShown(true);
+
+  const onClickAddEnrollmentsClose = () => {
+    setIsAddModalShown(false);
+    setSelectedMembers([]);
+  };
+
+  // 새로운 그룹원들 추가
+  const onClickSaveNewEnrollments = async () => {
+    try {
+      if (selectedMembers.length === 0) return;
+
+      await Promise.all(
+        selectedMembers.map(async (m) => {
+          await educationEnrollmentsApi.createEducationEnrollments(
+            {
+              churchId,
+              educationId: targetEducationTerm.educationId,
+              educationTermId: targetEducationTerm.id,
+            },
+            {
+              memberId: m.id,
+            }
+          );
+        })
+      );
+
+      const response = await educationEnrollmentsApi.getEducationEnrollments({
+        churchId,
+        educationId: targetEducationTerm.educationId,
+        educationTermId: targetEducationTerm.id,
+      });
+
+      const newEducationEnrollments = response.data.data;
+
+      dispatch(
+        setTargetEducationTerm({
+          ...targetEducationTerm,
+          educationEnrollments: newEducationEnrollments,
+        })
+      );
+
+      dispatch(setToastText(t_popup('saveComplete')));
+      dispatch(setToastBackgroundColor(BLACK));
+      dispatch(setIsToastShown(true));
+    } catch (error) {
+      if (error instanceof Error) {
+        dispatch(setToastText(error.message));
+        dispatch(setToastBackgroundColor(DESTRUCTIVE.LIGHT));
+        dispatch(setIsToastShown(true));
+      } else {
+        setThrownError(new Error(String(error)));
+      }
+    } finally {
+      setTimeout(() => {
+        setSelectedMembers([]);
+        setIsAddModalShown(false);
+      });
+    }
+  };
+
   const props = {
+    isAddModalShown,
+    headerBar,
     onChangeStatus,
     onChangeEnrollmentStatus,
-    onClickAddSession,
-    onClickEducationSessionItem,
+    onChangeHeaderBar,
+    onClickAddEnrollmentsOpen,
+    onClickAddEnrollmentsClose,
+    onClickSaveNewEnrollments,
+    selectedMembers,
+    setSelectedMembers,
   };
   return (
     <>

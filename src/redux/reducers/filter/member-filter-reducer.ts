@@ -37,7 +37,7 @@ type MemberFilterState = {
   memberFilter: MEMBER_FILTER;
   memberOrderBy?: MEMBER;
   memberOrderDirection: ORDER_DIRECTION;
-  memberTableHeaderItemList: TABLE_HEADER_ITEM[];
+  memberTableHeaderItemList: MEMBER_TABLE_HEADER_ITEM[];
   filteredItems: FilteredItemType[];
   memberPage: number;
 };
@@ -71,7 +71,7 @@ export const INITIAL_MEMBER_FILTER: MEMBER_FILTER = {
   ],
 };
 
-export type TABLE_HEADER_ITEM = {
+export type MEMBER_TABLE_HEADER_ITEM = {
   id: MEMBER;
   isShown: boolean;
   isSortable: boolean;
@@ -87,7 +87,7 @@ export const BLANK_HEADER = {
   isFilterable: false,
 };
 
-export const INITIAL_TABLE_HEADER_LIST: TABLE_HEADER_ITEM[] = [
+export const INITIAL_TABLE_HEADER_LIST: MEMBER_TABLE_HEADER_ITEM[] = [
   {
     id: MEMBER.PROFILE_IMAGE,
     isShown: true,
@@ -326,7 +326,7 @@ const MemberFilterSlice = createSlice({
     },
     setMemberTableHeaderItemList(
       state,
-      action: PayloadAction<TABLE_HEADER_ITEM[]>
+      action: PayloadAction<MEMBER_TABLE_HEADER_ITEM[]>
     ) {
       state.memberTableHeaderItemList = action.payload;
     },

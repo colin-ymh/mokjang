@@ -2,6 +2,7 @@ import {
   ATTENDANCE_CONTENT_ID,
   CHURCH_CONTENT_ID,
   EDUCATION_CONTENT_ID,
+  EDUCATION_TERM_CONTENT_ID,
   MEMBER_CONTENT_ID,
   TASK_CONTENT_ID,
   VISITATION_CONTENT_ID,
@@ -15,7 +16,7 @@ import {
 } from '@/constants/layout/header';
 
 import { useI18n, useScopedI18n } from '../../../locales/client';
-import { TABLE_HEADER_ITEM } from '@/redux/reducers/filter/member-filter-reducer';
+import { MEMBER_TABLE_HEADER_ITEM } from '@/redux/reducers/filter/member-filter-reducer';
 import { MEMBER } from '@/constants/column/member-column';
 
 import User from '../../../public/svg/user.svg';
@@ -259,6 +260,23 @@ export const useAttendanceHeaderBarItems = () => {
   return items;
 };
 
+export const useEducationTermHeaderBarItems = () => {
+  const t_header = useScopedI18n('header');
+
+  const items = [
+    {
+      id: EDUCATION_TERM_CONTENT_ID.SESSIONS,
+      title: t_header(EDUCATION_TERM_CONTENT_ID.SESSIONS),
+    },
+    {
+      id: EDUCATION_TERM_CONTENT_ID.ENROLLMENTS,
+      title: t_header(EDUCATION_TERM_CONTENT_ID.ENROLLMENTS),
+    },
+  ];
+
+  return items;
+};
+
 export const useManagementHeaderBarItems = (id: CHURCH_CONTENT_ID) => {
   switch (id) {
     case CHURCH_CONTENT_ID.OFFICER:
@@ -295,7 +313,7 @@ export const useManagementHeaderBarItems = (id: CHURCH_CONTENT_ID) => {
           isFixed: false,
           isDate: false,
         },
-      ] as TABLE_HEADER_ITEM[];
+      ] as MEMBER_TABLE_HEADER_ITEM[];
 
     case CHURCH_CONTENT_ID.GROUP:
       return [
@@ -331,7 +349,7 @@ export const useManagementHeaderBarItems = (id: CHURCH_CONTENT_ID) => {
           isFixed: false,
           isDate: false,
         },
-      ] as TABLE_HEADER_ITEM[];
+      ] as MEMBER_TABLE_HEADER_ITEM[];
 
     case CHURCH_CONTENT_ID.MINISTRY:
       return [
@@ -375,8 +393,8 @@ export const useManagementHeaderBarItems = (id: CHURCH_CONTENT_ID) => {
           isFixed: false,
           isDate: false,
         },
-      ] as TABLE_HEADER_ITEM[];
+      ] as MEMBER_TABLE_HEADER_ITEM[];
     default:
-      return [] as TABLE_HEADER_ITEM[];
+      return [] as MEMBER_TABLE_HEADER_ITEM[];
   }
 };

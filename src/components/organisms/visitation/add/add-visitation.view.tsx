@@ -5,7 +5,6 @@ import { GRAY, WHITE } from '@/constants/styles/color';
 import { VISITATION_METHOD } from '@/models/visitation/visitation';
 import {
   useTimeDropdownItems,
-  useVisitationMethodDropdownItems,
   useVisitationStatusDropdownItems,
 } from '@/hooks/dropdown/dropdown-items';
 import { MemberDropdownType } from '@/components/atoms/common/dropdown/member-dropdown-item';
@@ -70,6 +69,17 @@ const RowContainer = styled.div`
   gap: 20px;
 `;
 
+const RowCardContainer = styled.div<{ $minHeight?: number }>`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  border: 1px solid ${GRAY.LIGHT};
+  border-radius: 10px;
+  background-color: ${WHITE};
+  min-height: ${({ $minHeight }) => $minHeight && $minHeight}px;
+`;
+
 const PeriodContainer = styled.div`
   display: flex;
   gap: 10px;
@@ -121,7 +131,6 @@ const AddVisitationView = ({
   const t_placeholder = useScopedI18n('placeholder');
 
   const statusDropdownItems = useVisitationStatusDropdownItems();
-  const methodItems = useVisitationMethodDropdownItems();
   const timeDropdownItems = useTimeDropdownItems();
 
   return (
@@ -225,7 +234,7 @@ const AddVisitationView = ({
       {/* 대상자 / 담당자 */}
       <RowContainer>
         {/* 대상자 */}
-        <CardContainer>
+        <RowCardContainer>
           <ContentContainer>
             <MainText size={SIZE.EXTRA_LARGE}>
               {t('visitedMember')}
@@ -249,9 +258,9 @@ const AddVisitationView = ({
               ))}
             </MemberTagList>
           </ContentContainer>
-        </CardContainer>
+        </RowCardContainer>
         {/* 담당자 */}
-        <CardContainer>
+        <RowCardContainer>
           <ContentContainer>
             <MainText size={SIZE.EXTRA_LARGE}>
               {t('inCharge')}
@@ -274,7 +283,7 @@ const AddVisitationView = ({
               />
             )}
           </ContentContainer>
-        </CardContainer>
+        </RowCardContainer>
       </RowContainer>
 
       {/* 세부 내용 */}

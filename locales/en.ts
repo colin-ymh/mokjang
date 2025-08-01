@@ -13,6 +13,8 @@ export default {
   isNotDone: 'Incomplete',
   customSelect: 'Custom Select',
 
+  memberName: 'Member',
+
   schedule: 'Schedule',
   lastPresent: 'Last Present',
 
@@ -165,6 +167,11 @@ export default {
 
   educationList: 'Education List',
   educationName: 'Education Name',
+  educationGoal: 'Educational Goal',
+  educationTermCount: 'Total Term Count',
+  educationEnrollmentCount: 'Total Enrollment Count',
+  educationTerm: 'Education Term',
+  location: 'Location',
   educationStatus: 'Status',
   educationDescription: 'Description',
   educationInformation: 'Education Information',
@@ -362,6 +369,9 @@ export default {
   'header.ministryGroupMembers': 'Ministry Members',
 
   'header.permissionUnit': 'Permission',
+
+  'header.educationSessions': 'Session List',
+  'header.educationEnrollments': 'Enrollment List',
   /*-------------------header (side bar button)-------------------*/
 
   /*-------------------member content (member header bar button)-------------------*/
@@ -452,6 +462,7 @@ export default {
   'button.addVisitation': 'Add Visitation',
   'button.addEducation': 'Add Education',
   'button.addEducationTerm': 'Add Education Term',
+  'button.addEducationGoal': 'Add Goal',
   'button.addTask': 'Add Task',
   'button.addPermissionTemplate': 'Add Permission Template',
   'button.filterVisitationDate': 'Date',
@@ -490,6 +501,7 @@ export default {
   'placeholder.officerName': 'Enter the officer name.',
   'placeholder.educationName': 'Enter the education name.',
   'placeholder.educationDescription': 'Enter the education description.',
+  'placeholder.educationGoal': 'Enter the educational goal.',
   'placeholder.mobilePhone': 'Enter the mobile phone number.',
   'placeholder.birth': 'Select the date of birth.',
   'placeholder.registeredAt': 'Select the registered date.',
@@ -543,6 +555,8 @@ export default {
   'placeholder.selectGroup': 'Select the group.',
   'placeholder.selectOfficer': 'Select the officer.',
   'placeholder.selectBaptism': 'Select the baptism.',
+
+  'placeholder.note': 'Enter the note.',
   /*-------------------placeholder-------------------*/
 
   /*-------------------popup-------------------*/

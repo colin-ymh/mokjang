@@ -1,100 +1,88 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
-
-import { BLANK, ORDER_DIRECTION } from '@/constants/constant';
-import { EDUCATION_TERM } from '@/constants/column/education-column';
-import {
-  setEducationTermOrderBy,
-  setEducationTermOrderDirection,
-} from '@/redux/reducers/filter/education-term-filter-reducer';
-import EducationTermTableView from '@/components/molecules/education/education-term/education-term-table.view';
 import { EducationTerm } from '@/models/education/education';
+import {
+  setIsToastShown,
+  setToastBackgroundColor,
+  setToastText,
+} from '@/redux/reducers/toast-popup-reducer';
+import { DESTRUCTIVE } from '@/constants/styles/color';
+import { EducationSessionsApi } from '@/api/education/education-sessions.api';
+import { EducationsApi } from '@/api/education/educations.api';
+import EducationTermTableView from '@/components/molecules/education/education-term/education-term-table.view';
+import { setTargetEducation } from '@/redux/reducers/target/target-education-reducer';
 
-export type EducationTermTableProps = {
-  onClickEducationTermItem: (
-    educationId: string,
-    educationTermId: string
-  ) => void;
-  loadEducationTerms: () => Promise<void>;
-  onClickEducationSessionItem: (
-    educationTermId: string,
-    educationSessionId: string
-  ) => void;
-  onClickOpenAddEducationSession?: (educationTerm?: EducationTerm) => void;
-};
+export type EducationTermTableProps = {};
 
-const EducationTermTable = ({
-  onClickEducationTermItem,
-  loadEducationTerms,
-  onClickEducationSessionItem,
-  onClickOpenAddEducationSession,
-}: EducationTermTableProps) => {
+const EducationTermTable = ({}: EducationTermTableProps) => {
+  const educationApi = new EducationsApi(false);
+  const { churchId } = useSelector((state: RootState) => state.church);
+  const { educations } = useSelector(
+    (state: RootState) => state.educationFilter
+  );
+  const { targetEducation } = useSelector(
+    (state: RootState) => state.targetEducation
+  );
   const dispatch = useDispatch<AppDispatch>();
-  const [openedTermId, setOpenedTermId] = useState<string>(BLANK);
-  const {
-    educationTerms,
-    educationTermFilter,
-    educationTermOrderBy,
-    educationTermOrderDirection,
-  } = useSelector((state: RootState) => state.educationTermFilter);
 
-  const onClickTermChevron = (termId: string) => {
-    if (openedTermId === termId) {
-      setOpenedTermId(BLANK);
-    } else {
-      setOpenedTermId(termId);
-    }
-  };
+  const educationSessionsApi = new EducationSessionsApi(false);
 
-  // 열 헤더를 눌러 정렬
-  const onClickHeader = (id: EDUCATION_TERM) => {
-    let newOrderBy = id;
+  const [thrownError, setThrownError] = useState<Error | null>(null);
 
-    if (newOrderBy !== educationTermOrderBy) {
-      dispatch(setEducationTermOrderBy(newOrderBy));
-      dispatch(setEducationTermOrderDirection(ORDER_DIRECTION.ASC));
-    } else {
-      dispatch(
-        setEducationTermOrderDirection(
-          educationTermOrderDirection === ORDER_DIRECTION.ASC
-            ? ORDER_DIRECTION.DESC
-            : ORDER_DIRECTION.ASC
-        )
-      );
-    }
-  };
+  // 렌더링 시점(컴포넌트 return)에서 조건부로 에러 발생
+  if (thrownError) {
+    throw thrownError;
+  }
 
-  const scrollRef = useRef<HTMLDivElement | null>(null);
+  // 열려있는 교육 기수 목록
+  const [openedTermIds, setOpenedTermIds] = useState<string[]>([]);
 
-  const onScroll = () => {
-    if (scrollRef.current) {
-      const { scrollTop, scrollHeight, clientHeight } = scrollRef.current;
+  // 교육 기수 열고 닫기
+  const onClickTermChevron = async (value: EducationTerm) => {
+    try {
+      if (openedTermIds.includes(value.id)) {
+        setOpenedTermIds(openedTermIds.filter((id) => id !== value.id));
+      } else {
+        if (!value.educationSessions) {
+          const response = await educationSessionsApi.getEducationSessions({
+            churchId,
+            educationId: value.educationId,
+            educationTermId: value.id,
+          });
 
-      // 스크롤이 최하단에 도달했는지 확인
-      if (scrollTop + clientHeight >= scrollHeight) {
-        loadEducationTerms(); // 데이터를 추가로 로드
+          const newEducationSessions = response.data.data;
+
+          const newEducation = {
+            ...targetEducation,
+            educationTerms: targetEducation.educationTerms?.map((term) => {
+              if (term.id === value.id) {
+                return {
+                  ...term,
+                  educationSessions: newEducationSessions,
+                };
+              } else {
+                return term;
+              }
+            }),
+          };
+
+          dispatch(setTargetEducation(newEducation));
+        }
+        setOpenedTermIds([...openedTermIds, value.id]);
       }
+    } catch (error) {
+      if (error instanceof Error) {
+        dispatch(setToastText(error.message));
+        dispatch(setToastBackgroundColor(DESTRUCTIVE.LIGHT));
+        dispatch(setIsToastShown(true));
+      } else setThrownError(new Error(String(error)));
     }
   };
-
-  // 정렬 변경 시 스크롤을 최상단으로 이동
-  useEffect(() => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollTop = 0;
-    }
-  }, [educationTermOrderBy, educationTermOrderDirection, educationTermFilter]);
 
   const props = {
-    openedTermId,
-    educationTerms,
+    openedTermIds,
     onClickTermChevron,
-    onClickHeader,
-    onClickEducationTermItem,
-    onClickEducationSessionItem,
-    scrollRef,
-    onScroll,
-    onClickOpenAddEducationSession,
   };
 
   return (
