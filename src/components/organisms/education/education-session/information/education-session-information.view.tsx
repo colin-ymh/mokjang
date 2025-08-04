@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { useI18n } from '../../../../../../locales/client';
 import { MainText } from '@/components/atoms/common/text/main-text';
-import { GRAY, WHITE } from '@/constants/styles/color';
+import { GRAY, GREEN, WHITE } from '@/constants/styles/color';
 import React from 'react';
 import { SIZE } from '@/constants/styles/style';
 import { usePathname } from 'next/navigation';
@@ -11,6 +11,8 @@ import { LOCALE } from '@/constants/state/locale';
 import { EDUCATION_SESSION_STATUS } from '@/constants/status/status';
 import MemberProfilePopupButton from '@/components/molecules/common/button/member-profile-popup-button';
 import { getTranslatedDateFromDateString } from '@/utils/translate';
+import StatusDropdown from '@/components/atoms/common/dropdown/status-dropdown';
+import { useEducationSessionStatusDropdownItems } from '@/hooks/dropdown/dropdown-items';
 import Button from '@/components/atoms/common/button/button';
 import EducationAttendanceTable from '@/components/molecules/education/education-attendance/education-attendance-table';
 
@@ -22,6 +24,16 @@ const InformationContainer = styled.div`
 `;
 
 const CardContainer = styled.div<{ $minHeight?: number }>`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border: 1px solid ${GRAY.LIGHT};
+  border-radius: 10px;
+  background-color: ${WHITE};
+  min-height: ${({ $minHeight }) => $minHeight && $minHeight}px;
+`;
+
+const RowCardContainer = styled.div<{ $minHeight?: number }>`
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -51,7 +63,14 @@ const TableContainer = styled.div`
   display: flex;
   border: 1px solid ${GRAY.LIGHT};
   border-radius: 10px;
+  height: 100%;
   overflow: hidden;
+`;
+
+const StatusContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
 `;
 
 type EducationSessionInformationViewProps = {
@@ -68,47 +87,60 @@ const EducationSessionInformationView = ({
   const pathname = usePathname();
   const locale = pathname.split('/')[1] as LOCALE;
 
+  const statusDropdownItems = useEducationSessionStatusDropdownItems();
+
   return (
     <InformationContainer>
       <RowContainer>
         {/* 담당자 */}
-        <CardContainer $minHeight={100}>
+        <RowCardContainer $minHeight={100}>
           <ContentContainer>
             <MainText size={SIZE.EXTRA_LARGE}>{t('inCharge')}</MainText>
             <MemberProfilePopupButton
               member={targetEducationSession.inCharge}
             />
           </ContentContainer>
-        </CardContainer>
+        </RowCardContainer>
         {/* 장소 */}
-        <CardContainer $minHeight={100}>
+        <RowCardContainer $minHeight={100}>
           <ContentContainer>
             <MainText size={SIZE.EXTRA_LARGE}>{t('location')}</MainText>
             <MainText>{'본당'}</MainText>
           </ContentContainer>
-        </CardContainer>
+        </RowCardContainer>
         {/* 기간 */}
-        <CardContainer $minHeight={100}>
+        <RowCardContainer $minHeight={100}>
           <ContentContainer>
             <MainText size={SIZE.EXTRA_LARGE}>{t('period')}</MainText>
             <MainText>
               {`${getTranslatedDateFromDateString(locale, targetEducationSession.startDate)} - ${getTranslatedDateFromDateString(locale, targetEducationSession.endDate)}`}
             </MainText>
           </ContentContainer>
-        </CardContainer>
+        </RowCardContainer>
         {/* 상태 */}
-        <CardContainer $minHeight={100}>
+        <RowCardContainer $minHeight={100}>
           <ContentContainer>
             <MainText size={SIZE.EXTRA_LARGE}>{t('status')}</MainText>
+            <StatusContainer>
+              <MainText whiteSpace={'pre-wrap'}></MainText>
+              <StatusDropdown
+                value={targetEducationSession.status}
+                items={statusDropdownItems}
+                onChangeItem={onChangeStatus}
+                width={100}
+              />
+            </StatusContainer>
           </ContentContainer>
-        </CardContainer>
+        </RowCardContainer>
       </RowContainer>
+
       {/* 수업 내용 */}
-      <CardContainer $minHeight={200}>
+      <CardContainer $minHeight={100}>
         <ContentContainer>
           <MainText size={SIZE.EXTRA_LARGE}>{t('content')}</MainText>
         </ContentContainer>
       </CardContainer>
+
       {/* 수강교인 */}
       <CardContainer $minHeight={200}>
         <ContentContainer>
@@ -117,9 +149,10 @@ const EducationSessionInformationView = ({
               {t('educationEnrollment')}
             </MainText>
             <Button
-              text={t('button.addMember')}
+              text={t('button.allAttended')}
               height={30}
               width={'auto'}
+              backgroundColor={GREEN.DEFAULT}
               // onClick={onClickAddEnrollmentsOpen}
             />
           </RowContainer>

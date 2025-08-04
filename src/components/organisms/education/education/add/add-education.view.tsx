@@ -60,7 +60,6 @@ type AddEducationViewProps = {
     event: ChangeEvent<HTMLInputElement>
   ) => void;
   onClickAddGoal: () => void;
-  educationGoals: string[];
 };
 
 const AddEducationView = ({
@@ -68,7 +67,6 @@ const AddEducationView = ({
   onChangeDescription,
   onChangeEducationGoal,
   onClickAddGoal,
-  educationGoals,
 }: AddEducationViewProps) => {
   const { targetEducation } = useSelector(
     (state: RootState) => state.targetEducation
@@ -125,7 +123,7 @@ const AddEducationView = ({
             />
           </RowContainer>
           <GoalList>
-            {educationGoals.map((goal, index) => (
+            {targetEducation.goals.map((goal, index) => (
               <BorderInput
                 key={index}
                 value={goal}

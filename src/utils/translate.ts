@@ -18,6 +18,7 @@ import {
 } from '@/constants/column/worship-column';
 import { LOCALE } from '@/constants/state/locale';
 import { getEnglishMonthName, getShortEnglishMonthName } from '@/utils/format';
+import { BLANK } from '@/constants/constant';
 
 export const getTranslatedMemberColumn = (
   t: (key: string, ...args: any[]) => string,
@@ -61,7 +62,8 @@ export const getTranslatedEducationColumn = (
   t: (key: string, ...args: any[]) => string,
   id: EDUCATION
 ): string => {
-  return t('educationName');
+  if (id === EDUCATION.STATUS) return BLANK;
+  else return t(id as EDUCATION);
 };
 
 export const getTranslatedEducationTermColumn = (
@@ -403,5 +405,55 @@ export const getTranslatedTerm = (locale: LOCALE, term: string) => {
     if (term === '2') return `2nd`;
     if (term === '3') return `3rd`;
     return `${term}th`;
+  }
+};
+
+/**
+ *
+ * @param locale
+ * @param term
+ */
+export const getTranslatedTermCount = (locale: LOCALE, term: number) => {
+  if (locale === LOCALE.KO) {
+    return `${term}개 기수`;
+  } else {
+    if (term === 1) return `1 term`;
+    return `${term} terms`;
+  }
+};
+
+/**
+ *
+ * @param locale
+ * @param sessionsCount
+ * @param completedSessionsCount
+ */
+export const getTranslatedSessionProgressStatus = (
+  locale: LOCALE,
+  sessionsCount: number,
+  completedSessionsCount: number
+) => {
+  if (locale === LOCALE.KO) {
+    return `${sessionsCount}회차 중 ${completedSessionsCount}회차 진행됨`;
+  } else {
+    return `${sessionsCount} out of ${completedSessionsCount} sessions completed`;
+  }
+};
+
+/**
+ *
+ * @param locale
+ * @param completedCount
+ * @param enrollmentCount
+ */
+export const getTranslatedCompletedEnrollmentStatus = (
+  locale: LOCALE,
+  completedCount: number,
+  enrollmentCount: number
+) => {
+  if (locale === LOCALE.KO) {
+    return `${completedCount}/${enrollmentCount}명 수료`;
+  } else {
+    return `$${completedCount}/${enrollmentCount} completed`;
   }
 };

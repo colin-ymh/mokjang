@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 
-import { GRAY, WHITE } from '@/constants/styles/color';
+import { GRAY, GREEN, RED, WHITE } from '@/constants/styles/color';
 import { BLANK } from '@/constants/constant';
 import { EDUCATION_ENROLLMENT } from '@/constants/column/education-column';
 import { EDUCATION_ENROLLMENT_STATUS } from '@/constants/status/status';
@@ -18,12 +18,13 @@ import TagDropdownButton from '@/components/atoms/common/dropdown/tag-dropdown-b
 import Dropdown from '@/components/atoms/common/dropdown/dropdown';
 import { useEducationEnrollmentStatusDropdownItems } from '@/hooks/dropdown/dropdown-items';
 import { getStatusBackgroundColor, getStatusFontColor } from '@/utils/color';
+import { SIZE } from '@/constants/styles/style';
 
 // 1. 컬럼별 PX 폭 (마지막 REMARKS만 auto 할 예정)
 const getColumnWidth = (id: string) => {
   switch (id) {
     case EDUCATION_ENROLLMENT.MEMBER_NAME:
-      return 30;
+      return 20;
     case EDUCATION_ENROLLMENT.GROUP:
       return 10;
     case EDUCATION_ENROLLMENT.MOBILE_PHONE:
@@ -34,7 +35,7 @@ const getColumnWidth = (id: string) => {
       return 20;
     default:
       // 비고(REMARKS) 컬럼 등
-      return 80;
+      return 0;
   }
 };
 
@@ -121,7 +122,7 @@ const TableData = styled.td<{ id: string; $isLast?: boolean }>`
   cursor: pointer;
 
   /* 마지막 컬럼이면 auto, 아니면 px 고정 */
-  width: ${({ id, $isLast }) => ($isLast ? 'auto' : `${getColumnWidth(id)}px`)};
+  width: ${({ id, $isLast }) => ($isLast ? 'auto' : `${getColumnWidth(id)}%`)};
 
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -136,7 +137,7 @@ const TableData = styled.td<{ id: string; $isLast?: boolean }>`
 const ContentWrapper = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   /* 그냥 늘어날 수 있게, 필요한 경우 ellipsis 처리 */
   max-width: 100%;
   //overflow: hidden;
@@ -149,6 +150,30 @@ const StatusContainer = styled.div`
   position: relative;
 `;
 
+const AttendanceContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  align-items: center;
+`;
+
+const TotalBar = styled.div`
+  display: flex;
+  width: 80px;
+  border-radius: 5px;
+  height: 7px;
+  background-color: ${GRAY.LIGHT};
+  position: relative;
+`;
+
+const CountBar = styled.div<{ $count: number; max: number; color: string }>`
+  width: ${({ $count, max }) => (max ? ($count / max) * 100 : 0)}%;
+  border-radius: 5px;
+  height: 7px;
+  background-color: ${({ color }) => color};
+  position: absolute;
+  left: 0;
+`;
 type EducationEnrollmentTableProps = {
   onChangeStatus: (
     enrollmentId: string,
@@ -192,7 +217,26 @@ const EducationEnrollmentTableView = ({
           </MainText>
         );
       case EDUCATION_ENROLLMENT.ATTENDANCE:
-        return <MainText></MainText>;
+        return (
+          <AttendanceContainer>
+            <MainText
+              size={SIZE.SMALL}
+              color={GRAY.SEMI_DARK}
+            >{`${enrollment.attendanceCount}/${targetEducationTerm.educationSessions.length}`}</MainText>
+            <TotalBar>
+              <CountBar
+                $count={enrollment.attendanceCount}
+                max={targetEducationTerm.educationSessions.length}
+                color={
+                  enrollment.attendanceCount ===
+                  targetEducationTerm.educationSessions.length
+                    ? GREEN.DEFAULT
+                    : RED.DEFAULT
+                }
+              />
+            </TotalBar>
+          </AttendanceContainer>
+        );
       case EDUCATION_ENROLLMENT.STATUS:
         return (
           <StatusContainer>

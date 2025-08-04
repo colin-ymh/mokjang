@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from 'react';
+import React, { ChangeEvent, MutableRefObject } from 'react';
 import styled from 'styled-components';
 import { Member } from '@/models/member/member';
 import { Group } from '@/models/management/management';
@@ -46,6 +46,9 @@ type AddGroupMemberModalViewProps = {
   selectedMembers: Member[];
   onChangeSearch: (event: ChangeEvent<HTMLInputElement>) => void;
   onClickMember: (member: Member) => void;
+
+  scrollRef: MutableRefObject<HTMLDivElement | null>;
+  onScroll: () => void;
   startDate: Date | null;
   onChangeStartDate: (date: Date | null) => void;
 };
@@ -57,6 +60,9 @@ const AddGroupMemberModalView = ({
   selectedMembers,
   onChangeSearch,
   onClickMember,
+
+  scrollRef,
+  onScroll,
   startDate,
   onChangeStartDate,
 }: AddGroupMemberModalViewProps) => {
@@ -88,16 +94,19 @@ const AddGroupMemberModalView = ({
         <MainText color={GRAY.DEFAULT}>{t('description.addMember')}</MainText>
       </RowContainer>
       {/* 교인 목록 */}
-      <MemberListContainer>
+      <MemberListContainer ref={scrollRef} onScroll={onScroll}>
         {searchedMembers.map((member) => {
           return (
             <AddMemberItem
               key={member.id}
               member={member}
               isEnable={group.id !== member.group?.id}
-              isSelected={selectedMembers.some(
-                (selectedMember) => selectedMember.id === member.id
-              )}
+              isSelected={
+                group.id === member.group?.id ||
+                selectedMembers.some(
+                  (selectedMember) => selectedMember.id === member.id
+                )
+              }
               onClick={onClickMember}
             />
           );

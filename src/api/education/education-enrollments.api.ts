@@ -5,6 +5,7 @@ import { CustomError } from '@/api/error/error';
 import { EDUCATION_ENROLLMENT } from '@/constants/column/education-column';
 import authorizeAxios from '@/api/authorize-axios';
 import { EDUCATION_ENROLLMENT_STATUS } from '@/constants/status/status';
+import qs from 'qs';
 
 type GetEducationEnrollmentsParams = {
   churchId: string;
@@ -16,6 +17,17 @@ type GetEducationEnrollmentsParams = {
   orderDirection?: ORDER_DIRECTION;
 };
 
+type GetNotEnrolledMembersParams = {
+  churchId: string;
+  educationId: string;
+  educationTermId: string;
+  take?: number;
+  page?: number;
+  order?: EDUCATION_ENROLLMENT;
+  orderDirection?: ORDER_DIRECTION;
+  name?: string;
+};
+
 type CreateEducationEnrollmentsParams = {
   churchId: string;
   educationId: string;
@@ -23,9 +35,7 @@ type CreateEducationEnrollmentsParams = {
 };
 
 type CreateEducationEnrollmentsBody = {
-  memberId: string;
-  status?: EDUCATION_ENROLLMENT_STATUS;
-  note?: string;
+  memberIds: string[];
 };
 
 type EditEducationEnrollmentParams = {
@@ -66,10 +76,69 @@ export class EducationEnrollmentsApi {
   ): Promise<AxiosResponse> => {
     const { churchId, educationId, educationTermId } = params;
 
-    const url = `${this._url}/churches/${churchId}/management/educations/${educationId}/terms/${educationTermId}/enrollments`;
+    const url = `${this._url}/churches/${churchId}/educations/${educationId}/terms/${educationTermId}/enrollments`;
 
     try {
       return await authorizeAxios.get(url);
+    } catch (serverError: any) {
+      if (serverError.response) {
+        const { message, error, statusCode } = serverError.response.data;
+        throw new CustomError(message, error, statusCode);
+      } else {
+        throw new CustomError(
+          '알 수 없는 에러가 발생했습니다',
+          500,
+          'Unknown Error'
+        );
+      }
+    }
+  };
+
+  /**
+   * 교육 대상자 상태 불러오기
+   * @param {GetNotEnrolledMembersParams} params
+   * @returns {Promise<AxiosResponse>}
+   */
+  public getNotEnrolledMembers = async (
+    params: GetNotEnrolledMembersParams
+  ): Promise<AxiosResponse> => {
+    const {
+      churchId,
+      educationId,
+      educationTermId,
+      name,
+      take,
+      page,
+      orderDirection,
+    } = params;
+
+    /* ①queryParams 구성 ─────────────────────────────────────────────── */
+    const queryParams: Record<string, any> = Object.fromEntries(
+      Object.entries({
+        take,
+        page,
+        orderDirection,
+        name,
+      }).filter(
+        ([_, value]) =>
+          value !== undefined &&
+          value !== '' &&
+          !(Array.isArray(value) && value.length === 0)
+      )
+    );
+
+    const url = `${this._url}/churches/${churchId}/educations/${educationId}/terms/${educationTermId}/enrollments/not-enrolled-members`;
+
+    try {
+      return await authorizeAxios.get(url, {
+        params: queryParams,
+        paramsSerializer: (params) =>
+          qs.stringify(params, {
+            arrayFormat: 'repeat',
+            skipNulls: true,
+            encodeValuesOnly: true,
+          }),
+      });
     } catch (serverError: any) {
       if (serverError.response) {
         const { message, error, statusCode } = serverError.response.data;
@@ -96,7 +165,7 @@ export class EducationEnrollmentsApi {
   ): Promise<AxiosResponse> => {
     const { churchId, educationId, educationTermId } = params;
 
-    const url = `${this._url}/churches/${churchId}/management/educations/${educationId}/terms/${educationTermId}/enrollments`;
+    const url = `${this._url}/churches/${churchId}/educations/${educationId}/terms/${educationTermId}/enrollments`;
 
     try {
       return await authorizeAxios.post(url, body);
@@ -127,7 +196,7 @@ export class EducationEnrollmentsApi {
     const { churchId, educationId, educationTermId, educationEnrollmentId } =
       params;
 
-    const url = `${this._url}/churches/${churchId}/management/educations/${educationId}/terms/${educationTermId}/enrollments/${educationEnrollmentId}`;
+    const url = `${this._url}/churches/${churchId}/educations/${educationId}/terms/${educationTermId}/enrollments/${educationEnrollmentId}`;
 
     try {
       return await authorizeAxios.patch(url, body);
@@ -156,7 +225,7 @@ export class EducationEnrollmentsApi {
     const { churchId, educationId, educationTermId, educationEnrollmentId } =
       params;
 
-    const url = `${this._url}/churches/${churchId}/management/educations/${educationId}/terms/${educationTermId}/enrollments/${educationEnrollmentId}`;
+    const url = `${this._url}/churches/${churchId}/educations/${educationId}/terms/${educationTermId}/enrollments/${educationEnrollmentId}`;
 
     try {
       return await authorizeAxios.delete(url);

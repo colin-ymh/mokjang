@@ -13,7 +13,7 @@ import { BLANK } from '@/constants/constant';
 import { Member } from '@/models/member/member';
 import { getFormattedName } from '@/utils/format';
 import AddEnrollmentMemberModalView from '@/components/atoms/education/education-term/add-enrollment-member-modal.view';
-import { MembersApi } from '@/api/members/members.api';
+import { EducationEnrollmentsApi } from '@/api/education/education-enrollments.api';
 
 type AddMinistryGroupMemberModalProps = {
   selectedMembers: Member[];
@@ -25,7 +25,11 @@ const AddEnrollmentMemberModal = ({
   setSelectedMembers,
 }: AddMinistryGroupMemberModalProps) => {
   const churchId = useSelector((state: RootState) => state.church.churchId);
-  const membersApi = new MembersApi(false);
+  const educationEnrollmentsApi = new EducationEnrollmentsApi(false);
+
+  const { targetEducationTerm } = useSelector(
+    (state: RootState) => state.targetEducationTerm
+  );
 
   const [searchName, setSearchName] = useState<string>(BLANK);
   const [members, setMembers] = useState<Member[]>([]);
@@ -39,22 +43,15 @@ const AddEnrollmentMemberModal = ({
   const scrollRef = useRef<HTMLDivElement | null>(null);
 
   const fetchSearchedMembers = async (name: string, page: number) => {
-    if (name === BLANK) {
-      const response = await membersApi.getMembers({
-        churchId,
-        page,
-        take: 50,
-      });
-      return response.data.data;
-    } else {
-      const response = await membersApi.getSimpleMembers({
-        churchId,
-        page,
-        take: 50,
-        name,
-      });
-      return response.data.data;
-    }
+    const response = await educationEnrollmentsApi.getNotEnrolledMembers({
+      churchId,
+      educationId: targetEducationTerm.educationId,
+      educationTermId: targetEducationTerm.id,
+      page,
+      take: 50,
+      name: name.length > 0 ? name : undefined,
+    });
+    return response.data.data;
   };
 
   const onChangeSearch = (event: ChangeEvent<HTMLInputElement>) => {
@@ -122,6 +119,7 @@ const AddEnrollmentMemberModal = ({
     }, 500);
     return () => clearTimeout(timer);
   }, [searchName]);
+
   return (
     <>
       <AddEnrollmentMemberModalView

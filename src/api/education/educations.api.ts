@@ -37,6 +37,7 @@ type CreateEducationParams = {
 type CreateEducationBody = {
   name: string;
   description?: string;
+  goals: string[];
 };
 
 type EditEducationParams = {
@@ -87,7 +88,7 @@ export class EducationsApi {
       )
     );
 
-    const url = `${this._url}/churches/${churchId}/management/educations`;
+    const url = `${this._url}/churches/${churchId}/educations`;
 
     try {
       return await authorizeAxios.get(url, {
@@ -123,7 +124,7 @@ export class EducationsApi {
   ): Promise<AxiosResponse> => {
     const { churchId } = params;
 
-    const url = `${this._url}/churches/${churchId}/management/educations/in-progress`;
+    const url = `${this._url}/churches/${churchId}/educations/in-progress`;
 
     try {
       return await authorizeAxios.get(url);
@@ -151,7 +152,7 @@ export class EducationsApi {
   ): Promise<AxiosResponse> => {
     const { churchId, educationId } = params;
 
-    const url = `${this._url}/churches/${churchId}/management/educations/${educationId}`;
+    const url = `${this._url}/churches/${churchId}/educations/${educationId}`;
 
     try {
       return await authorizeAxios.get(url);
@@ -181,7 +182,7 @@ export class EducationsApi {
   ): Promise<AxiosResponse> => {
     const { churchId } = params;
 
-    const url = `${this._url}/churches/${churchId}/management/educations`;
+    const url = `${this._url}/churches/${churchId}/educations`;
 
     try {
       return await authorizeAxios.post(url, body);
@@ -211,7 +212,7 @@ export class EducationsApi {
   ): Promise<AxiosResponse> => {
     const { churchId, educationId } = params;
 
-    const url = `${this._url}/churches/${churchId}/management/educations/${educationId}`;
+    const url = `${this._url}/churches/${churchId}/educations/${educationId}`;
 
     try {
       return await authorizeAxios.patch(url, body);
@@ -239,7 +240,7 @@ export class EducationsApi {
   ): Promise<AxiosResponse> => {
     const { churchId, educationId } = params;
 
-    const url = `${this._url}/churches/${churchId}/management/educations/${educationId}`;
+    const url = `${this._url}/churches/${churchId}/educations/${educationId}`;
 
     try {
       return await authorizeAxios.delete(url);

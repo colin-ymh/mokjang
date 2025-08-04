@@ -68,6 +68,8 @@ type OfficerInformationViewProps = {
   editName: string;
   isAddModalShown: boolean;
   isEditShown: boolean;
+  startDate: Date;
+  onChangeStartDate: (date: Date | null) => void;
   orderBy: MEMBER | null;
   orderDirection: ORDER_DIRECTION | null;
   onClickHeaderItem: (headerId: MEMBER) => void;
@@ -78,7 +80,7 @@ type OfficerInformationViewProps = {
   onClickSaveEdit: () => void;
   onClickAddModalOpen: () => void;
   onClickAddModalClose: () => void;
-  onClickSaveNewMembers: (selectedMembers: Member[]) => void;
+  onClickSaveNewMembers: (selectedMembers: Member[], startDate: Date) => void;
 };
 
 const OfficerInformationView = ({
@@ -92,6 +94,8 @@ const OfficerInformationView = ({
   loadMembers,
   orderBy,
   orderDirection,
+  startDate,
+  onChangeStartDate,
   onClickHeaderItem,
   onClickOfficer,
   onClickEditOpen,
@@ -178,12 +182,16 @@ const OfficerInformationView = ({
         headerTitle={getTranslatedAddMemberTitle(locale, selectedOfficer.name)}
         headerDescription={t('description.addMemberHeader')}
         doneText={t('button.add')}
-        onClickDone={() => onClickSaveNewMembers(selectedMembers)}
+        onClickDone={() =>
+          onClickSaveNewMembers(selectedMembers, startDate as Date)
+        }
       >
         <AddOfficerMemberModal
           officer={selectedOfficer}
           selectedMembers={selectedMembers}
           setSelectedMembers={setSelectedMembers}
+          startDate={startDate}
+          onChangeStartDate={onChangeStartDate}
         />
       </CustomPopup>
     </>

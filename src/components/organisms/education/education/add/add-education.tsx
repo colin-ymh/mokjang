@@ -1,9 +1,10 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useEffect } from 'react';
 import { getFormattedTitle } from '@/utils/format';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 import AddEducationView from '@/components/organisms/education/education/add/add-education.view';
 import { setTargetEducation } from '@/redux/reducers/target/target-education-reducer';
+import { BLANK } from '@/constants/constant';
 
 type AddEducationProps = {};
 
@@ -12,8 +13,6 @@ const AddEducation = ({}: AddEducationProps) => {
     (state: RootState) => state.targetEducation
   );
   const dispatch = useDispatch<AppDispatch>();
-
-  const [educationGoals, setEducationGoals] = useState<string[]>(['']);
 
   // ===== name =====
   const onChangeName = (event: ChangeEvent<HTMLInputElement>): void => {
@@ -42,51 +41,48 @@ const AddEducation = ({}: AddEducationProps) => {
     index: number,
     event: ChangeEvent<HTMLInputElement>
   ): void => {
-    setEducationGoals(
-      educationGoals.map((goal, i) => {
-        if (i === index) {
-          return event.target.value;
-        } else {
-          return goal;
-        }
+    dispatch(
+      setTargetEducation({
+        ...targetEducation,
+        goals: targetEducation.goals.map((goal, i) => {
+          if (i === index) {
+            return event.target.value;
+          } else {
+            return goal;
+          }
+        }),
       })
     );
-    // dispatch(
-    //   setTargetEducation({
-    //     ...targetEducation,
-    //     educationGoals: targetEducation.educationGoals.map((goal, i) => {
-    //       if (i === index) {
-    //         return event.target.value;
-    //       } else {
-    //         return goal;
-    //       }
-    //     }),
-    //   })
-    // );
   };
 
   const onClickAddGoal = () => {
-    if (educationGoals.length < 6) {
-      setEducationGoals([...educationGoals, '']);
+    if (targetEducation.goals.length < 6) {
+      dispatch(
+        setTargetEducation({
+          ...targetEducation,
+          goals: [...targetEducation.goals, BLANK],
+        })
+      );
     }
-    // if (targetEducation.educationGoals.length < 6) {
-    //   dispatch(
-    //     setTargetEducation({
-    //       ...targetEducation,
-    //       educationGoals: [...targetEducation.educationGoals, ''],
-    //     })
-    //   );
-    // }
   };
   // ===== goal =====
+
+  useEffect(() => {
+    if (targetEducation.goals.length === 0) {
+      dispatch(
+        setTargetEducation({
+          ...targetEducation,
+          goals: [BLANK],
+        })
+      );
+    }
+  }, [targetEducation.id]);
 
   const props = {
     onChangeName,
     onChangeDescription,
     onChangeEducationGoal,
     onClickAddGoal,
-
-    educationGoals,
   };
 
   return (

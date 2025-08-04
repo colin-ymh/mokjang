@@ -16,9 +16,12 @@ export type Education = {
   name: string;
   educationTerms: EducationTerm[];
   status: EDUCATION_STATUS;
-  educationGoals: string[];
+  goals: string[];
   creator: Member;
   createdAt: string;
+  descriptionSummary: string;
+  termsCount: number;
+  completionMembersCount: number;
 };
 
 export const DEFAULT_EDUCATION: Education = {
@@ -28,9 +31,12 @@ export const DEFAULT_EDUCATION: Education = {
   name: BLANK,
   educationTerms: [],
   status: STATUS.RESERVE,
-  educationGoals: [],
+  goals: [BLANK],
   creator: DEFAULT_MEMBER,
   createdAt: BLANK,
+  descriptionSummary: BLANK,
+  termsCount: 0,
+  completionMembersCount: 0,
 };
 
 export type EducationEnrollment = {
@@ -40,6 +46,7 @@ export type EducationEnrollment = {
   status: EDUCATION_ENROLLMENT_STATUS;
   note: string;
   member: Member;
+  attendanceCount: number;
 };
 
 export const DEFAULT_EDUCATION_ENROLLMENT: EducationEnrollment = {
@@ -49,6 +56,7 @@ export const DEFAULT_EDUCATION_ENROLLMENT: EducationEnrollment = {
   status: STATUS.INCOMPLETE,
   note: BLANK,
   member: DEFAULT_MEMBER,
+  attendanceCount: 0,
 };
 
 export type EducationTerm = {
@@ -59,11 +67,12 @@ export type EducationTerm = {
   startDate: string;
   endDate: string;
   inChargeId: string;
-  content: string;
+  location: string;
   status: EDUCATION_TERM_STATUS;
-  enrollmentCount?: number;
+  enrollmentCount: number;
   inProgressCount: number;
   completedCount: number;
+  completeSessionsCount: number;
   incompleteCount: number;
   inCharge: Member;
   educationSessions: EducationSession[];
@@ -77,7 +86,7 @@ export const DEFAULT_EDUCATION_TERM: EducationTerm = {
   id: BLANK,
   educationId: BLANK,
   term: BLANK,
-  content: BLANK,
+  location: BLANK,
   status: STATUS.IN_PROGRESS,
   startDate: BLANK,
   endDate: BLANK,
@@ -88,6 +97,7 @@ export const DEFAULT_EDUCATION_TERM: EducationTerm = {
   educationSessions: [],
   educationEnrollments: [],
   educationName: BLANK,
+  completeSessionsCount: 0,
   enrollmentCount: 0,
   inCharge: DEFAULT_MEMBER,
   isDoneCount: 0,

@@ -21,6 +21,7 @@ import {
   setIsToastShown,
   setToastText,
 } from '@/redux/reducers/toast-popup-reducer';
+import { getDateFromDateString, getDateStringFromDate } from '@/utils/date';
 
 type MainEducationHeaderProps = {};
 
@@ -96,10 +97,11 @@ const MainEducationHeader = ({}: MainEducationHeaderProps) => {
           {
             name: targetEducation.name,
             description: targetEducation.description,
+            goals: targetEducation.goals,
           }
         )
         .then((response) => {
-          const newEducation = response.data;
+          const newEducation = response.data.data;
 
           dispatch(setEducations([...educations, newEducation]));
           dispatch(setTargetEducation(DEFAULT_EDUCATION));
@@ -156,10 +158,14 @@ const MainEducationHeader = ({}: MainEducationHeaderProps) => {
           { churchId, educationId: targetEducation.id },
           {
             term: targetEducationTerm.term,
-            startDate: targetEducationTerm.startDate,
-            endDate: targetEducationTerm.endDate,
+            startDate: getDateStringFromDate(
+              getDateFromDateString(targetEducationTerm.startDate)
+            ),
+            endDate: getDateStringFromDate(
+              getDateFromDateString(targetEducationTerm.endDate)
+            ),
             inChargeId: targetEducationTerm.inChargeId,
-            content: targetEducationTerm.content,
+            location: targetEducationTerm.location,
           }
         )
         .then((response) => {
@@ -175,8 +181,9 @@ const MainEducationHeader = ({}: MainEducationHeaderProps) => {
                   educationTermId: newEducationTerm.id,
                 },
                 {
-                  memberId: enrollment.memberId,
-                  status: enrollment.status,
+                  memberIds: targetEducationTerm.educationEnrollments.map(
+                    (enrollment) => enrollment.memberId
+                  ),
                 }
               );
             });

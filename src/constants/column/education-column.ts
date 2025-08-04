@@ -1,7 +1,8 @@
 import { MEMBER } from '@/constants/column/member-column';
 
 export enum EDUCATION {
-  NAME = 'name',
+  NAME = 'educationName',
+  STATUS = 'status',
 }
 
 export enum EDUCATION_TERM {

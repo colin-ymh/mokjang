@@ -38,6 +38,7 @@ import { EducationAttendanceApi } from '@/api/education/education-attendance.api
 import { getTranslatedTerm } from '@/utils/translate';
 import { usePathname } from 'next/navigation';
 import { LOCALE } from '@/constants/state/locale';
+import { getDateFromDateString, getDateStringFromDate } from '@/utils/date';
 
 export type EducationTableProps = {
   loadEducations: () => void;
@@ -293,13 +294,22 @@ const EducationTable = ({ loadEducations }: EducationTableProps) => {
           }
         )
         .then((response) => {
-          const newEducation = response.data;
+          const newEducation = response.data.data;
           dispatch(
             setTargetEducation({
               ...newEducation,
               educationTerms: targetEducation?.educationTerms,
+              creator: targetEducation.creator,
             })
           );
+          const newEducations = educations.map((education) => {
+            if (education.id === targetEducation.id) {
+              return newEducation;
+            } else {
+              return education;
+            }
+          });
+          dispatch(setEducations(newEducations));
           setIsEducationEditShown(false);
         });
     } catch (error) {
@@ -466,10 +476,14 @@ const EducationTable = ({ loadEducations }: EducationTableProps) => {
             prev?.term !== targetEducationTerm.term
               ? targetEducationTerm.term
               : undefined,
-          startDate: targetEducationTerm.startDate || undefined,
-          endDate: targetEducationTerm.endDate || undefined,
+          startDate: getDateStringFromDate(
+            getDateFromDateString(targetEducationTerm.startDate)
+          ),
+          endDate: getDateStringFromDate(
+            getDateFromDateString(targetEducationTerm.endDate)
+          ),
           inChargeId: targetEducationTerm.inChargeId || undefined,
-          content: targetEducationTerm.content || undefined,
+          location: targetEducationTerm.location || undefined,
         }
       );
 
@@ -753,7 +767,7 @@ const EducationTable = ({ loadEducations }: EducationTableProps) => {
 
       {/* 교육 상세정보 팝업*/}
       <WrappedPagePopup
-        width={1000}
+        width={1300}
         keyboardDisabled={true}
         isShow={isEducationInformationShown}
         onClickClose={onClickEducationInformationClose}
@@ -785,7 +799,7 @@ const EducationTable = ({ loadEducations }: EducationTableProps) => {
 
       {/* 교육 수정 팝업*/}
       <WrappedPagePopup
-        width={1000}
+        width={1300}
         keyboardDisabled={true}
         isShow={isEducationEditShown}
         onClickClose={onClickEditEducationClose}
@@ -800,7 +814,7 @@ const EducationTable = ({ loadEducations }: EducationTableProps) => {
 
       {/* 교육기수 상세정보 팝업*/}
       <WrappedPagePopup
-        width={1000}
+        width={1300}
         keyboardDisabled={true}
         isShow={isEducationTermInformationShown}
         onClickClose={onClickEducationTermInformationClose}
@@ -832,7 +846,7 @@ const EducationTable = ({ loadEducations }: EducationTableProps) => {
 
       {/* 교육기수 수정 팝업*/}
       <WrappedPagePopup
-        width={1000}
+        width={1300}
         keyboardDisabled={true}
         isShow={isEducationTermEditShown}
         onClickClose={onClickEditEducationTermClose}
@@ -849,12 +863,12 @@ const EducationTable = ({ loadEducations }: EducationTableProps) => {
 
       {/* 교육회차 상세정보 팝업*/}
       <WrappedPagePopup
-        width={1000}
+        width={1300}
         keyboardDisabled={true}
         isShow={isEducationSessionInformationShown}
         onClickClose={onClickEducationSessionInformationClose}
         headerTitle={`${targetEducationTerm.educationName} - ${getTranslatedTerm(locale, targetEducationTerm.term)} - ${targetEducationSession.session}${t('session')}`}
-        // headerDescription={targetEducationSession?.description}
+        headerDescription={targetEducationSession.title}
         doneText={t_button('edit')}
         cancelText={t_button('delete')}
         onClickDone={onClickEditEducationSessionOpen}
@@ -881,7 +895,7 @@ const EducationTable = ({ loadEducations }: EducationTableProps) => {
 
       {/* 교육회차 수정 팝업*/}
       <WrappedPagePopup
-        width={1000}
+        width={1300}
         keyboardDisabled={true}
         isShow={isEducationSessionEditShown}
         onClickClose={onClickEditEducationSessionClose}

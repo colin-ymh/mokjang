@@ -20,12 +20,16 @@ type AddOfficerMemberModalProps = {
   officer: Officer;
   selectedMembers: Member[];
   setSelectedMembers: Dispatch<SetStateAction<Member[]>>;
+  startDate: Date;
+  onChangeStartDate: (date: Date | null) => void;
 };
 
 const AddOfficerMemberModal = ({
   officer,
   selectedMembers,
   setSelectedMembers,
+  startDate,
+  onChangeStartDate,
 }: AddOfficerMemberModalProps) => {
   const membersApi = new MembersApi(false);
   const officersApi = new OfficersApi(false);
@@ -43,22 +47,42 @@ const AddOfficerMemberModal = ({
   const scrollRef = useRef<HTMLDivElement | null>(null);
 
   // 교인 목록 검색
-  const fetchSearchedMembers = async (name: string, page: number) => {
-    if (name === BLANK) {
-      const response = await officersApi.getOfficerUnassignedMembers({
-        churchId,
-        page,
-        take: 30,
-      });
-      return response.data.data;
-    } else {
-      const response = await membersApi.getSimpleMembers({
-        churchId,
-        page,
-        take: 30,
-        name,
-      });
-      return response.data.data;
+  const fetchSearchedMembers = async () => {
+    try {
+      if (isLoading) return;
+      setIsLoading(true);
+
+      let response;
+
+      if (searchName === BLANK) {
+        response = await officersApi.getOfficerUnassignedMembers({
+          churchId,
+          page,
+          take: 30,
+        });
+      } else {
+        response = await membersApi.getSimpleMembers({
+          churchId,
+          page,
+          take: 30,
+          name: searchName,
+        });
+      }
+
+      const newMembers: Member[] = response.data.data;
+      const existingIds = new Set(members.map((member) => member.id));
+      const filteredNewMembers = newMembers.filter(
+        (member) => !existingIds.has(member.id)
+      );
+
+      const updatedMembers =
+        page === 1 ? newMembers : [...members, ...filteredNewMembers];
+
+      setMembers(updatedMembers);
+    } catch (error) {
+      setThrownError(error as Error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -75,26 +99,8 @@ const AddOfficerMemberModal = ({
     });
   };
 
-  const loadMembers = async () => {
-    if (isLoading) return;
-    setIsLoading(true);
-
-    try {
-      const newMembers: Member[] = await fetchSearchedMembers(searchName, page);
-      if (newMembers.length > 0) {
-        // 기존 데이터와 합치면서 중복 제거
-        const existingIds = new Set(members.map((member) => member.id));
-        const filteredNewMembers = newMembers.filter(
-          (member) => !existingIds.has(member.id)
-        );
-        setMembers([...members, ...filteredNewMembers]);
-        setPage((prev) => prev + 1); // 다음 페이지로 이동
-      }
-    } catch (error) {
-      setThrownError(error instanceof Error ? error : new Error(String(error)));
-    } finally {
-      setIsLoading(false);
-    }
+  const loadMembers = () => {
+    setPage(page + 1);
   };
 
   const onScroll = () => {
@@ -108,25 +114,16 @@ const AddOfficerMemberModal = ({
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      const resetAndFetch = async () => {
-        setPage(1);
-        setMembers([]);
-
-        try {
-          const firstPage = await fetchSearchedMembers(searchName, 1);
-          setMembers(firstPage);
-          setPage(2);
-        } catch (error) {
-          setThrownError(
-            error instanceof Error ? error : new Error(String(error))
-          );
-        }
-      };
-
-      resetAndFetch();
+      setPage(1);
+      fetchSearchedMembers();
     }, 500);
     return () => clearTimeout(timer);
   }, [searchName]);
+
+  useEffect(() => {
+    fetchSearchedMembers();
+  }, [page]);
+
   return (
     <>
       <AddOfficerMemberModalView
@@ -138,6 +135,8 @@ const AddOfficerMemberModal = ({
         onChangeSearch={onChangeSearch}
         onClickMember={onClickMember}
         onScroll={onScroll}
+        startDate={startDate}
+        onChangeStartDate={onChangeStartDate}
       />
     </>
   );

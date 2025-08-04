@@ -18,6 +18,7 @@ import { MEMBER } from '@/constants/column/member-column';
 import { OfficerMembersApi } from '@/api/management/officer/officer-members.api';
 import { OfficersApi } from '@/api/management/officer/officers.api';
 import OfficerInformationView from '@/components/molecules/management/officer/informaton/officer-information.view';
+import { getDateStringFromDate } from '@/utils/date';
 
 type OfficerInformationProps = {
   selectedOfficer: Officer;
@@ -61,11 +62,19 @@ const OfficerInformation = ({
   // 그룹에 속한 교인 목록
   const [members, setMembers] = useState<Member[]>([]);
 
+  // 시작 날짜
+  const [startDate, setStartDate] = useState<Date | null>(new Date());
+
   // 선택된 교인 목록
   const [selectedMembers, setSelectedMembers] = useState<Member[]>([]);
 
   // 그룹에 교인 다중 추가를 위한 모달 활성화 여부
   const [isAddModalShown, setIsAddModalShown] = useState<boolean>(false);
+
+  // 시작 날짜 변경
+  const onChangeStartDate = (date: Date | null) => {
+    setStartDate(date);
+  };
 
   const onClickHeaderItem = (headerId: MEMBER) => {
     if (orderBy === headerId) {
@@ -134,6 +143,7 @@ const OfficerInformation = ({
   const onClickAddModalClose = () => {
     setIsAddModalShown(false);
     setSelectedMembers([]);
+    setStartDate(new Date());
   };
 
   const fetchMembers = async () => {
@@ -173,7 +183,10 @@ const OfficerInformation = ({
   };
 
   // 새로운 그룹원들 추가
-  const onClickSaveNewMembers = async (selectedMembers: Member[]) => {
+  const onClickSaveNewMembers = async (
+    selectedMembers: Member[],
+    startDate: Date
+  ) => {
     try {
       if (selectedMembers.length === 0) return;
 
@@ -181,6 +194,7 @@ const OfficerInformation = ({
         { churchId, officerId: selectedOfficer.id as string },
         {
           memberIds: selectedMembers.map((member) => member.id),
+          startDate: getDateStringFromDate(startDate),
         }
       );
       dispatch(fetchOfficers());
@@ -205,6 +219,7 @@ const OfficerInformation = ({
         // 목록 갱신 후 모달 닫기
         fetchMembers();
         setSelectedMembers([]);
+        setStartDate(new Date());
         setIsAddModalShown(false);
       });
     }
@@ -243,6 +258,8 @@ const OfficerInformation = ({
     loadMembers,
     orderBy,
     orderDirection,
+    startDate,
+    onChangeStartDate,
     onClickHeaderItem,
     onClickOfficer,
     onClickEditOpen,

@@ -49,7 +49,7 @@ export class EducationAttendanceApi {
   ): Promise<AxiosResponse> => {
     const { churchId, educationId, educationTermId, sessionId } = params;
 
-    const url = `${this._url}/churches/${churchId}/management/educations/${educationId}/terms/${educationTermId}/sessions/${sessionId}/attendance`;
+    const url = `${this._url}/churches/${churchId}/educations/${educationId}/terms/${educationTermId}/sessions/${sessionId}/attendance`;
 
     try {
       return await authorizeAxios.get(url);
@@ -80,7 +80,7 @@ export class EducationAttendanceApi {
     const { churchId, educationId, educationTermId, sessionId, attendanceId } =
       params;
 
-    const url = `${this._url}/churches/${churchId}/management/educations/${educationId}/terms/${educationTermId}/sessions/${sessionId}/attendance/${attendanceId}`;
+    const url = `${this._url}/churches/${churchId}/educations/${educationId}/terms/${educationTermId}/sessions/${sessionId}/attendance/${attendanceId}`;
 
     try {
       return await authorizeAxios.patch(url, body);

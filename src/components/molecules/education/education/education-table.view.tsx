@@ -3,12 +3,9 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 
-import { GRAY, MAIN, WHITE } from '@/constants/styles/color';
-import { BLANK } from '@/constants/constant';
+import { GRAY, GREEN, MAIN, ORANGE, WHITE } from '@/constants/styles/color';
 
 import useWindowSize from '@/hooks/window/window';
-
-import { BLANK_HEADER } from '@/redux/reducers/filter/member-filter-reducer';
 import EducationTableHeader from '@/components/atoms/education/education/education-table-header';
 import {
   Education,
@@ -16,18 +13,34 @@ import {
   EducationTerm,
 } from '@/models/education/education';
 import { EDUCATION } from '@/constants/column/education-column';
-import ChevronLeft from '../../../../../public/svg/chevron-down.svg';
+
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { useI18n } from '../../../../../locales/client';
-import { getTranslatedTerm } from '@/utils/translate';
+import {
+  getTranslatedCompletedEnrollmentStatus,
+  getTranslatedTerm,
+  getTranslatedTermCount,
+} from '@/utils/translate';
 import { usePathname } from 'next/navigation';
 import { LOCALE } from '@/constants/state/locale';
+import { SIZE } from '@/constants/styles/style';
+
+import ChevronLeft from '../../../../../public/svg/chevron-left.svg';
+import Book from '../../../../../public/svg/book.svg';
+import Calendar from '../../../../../public/svg/calendar.svg';
+import Clock from '../../../../../public/svg/clock.svg';
+import SvgIcon from '@/components/atoms/common/icon/svg-icon';
+import { getDateFromDateString, getDateStringFromDate } from '@/utils/date';
+import MainTag from '@/components/atoms/common/tag/main-tag';
+import { getStatusBackgroundColor, getStatusFontColor } from '@/utils/color';
 
 // 1. 컬럼별 PX 폭 (마지막 REMARKS만 auto 할 예정)
 const getColumnWidth = (id: string) => {
   switch (id) {
     case EDUCATION.NAME:
-      return 300;
+      return 80;
+    case EDUCATION.STATUS:
+      return 20;
     default:
       // 비고(REMARKS) 컬럼 등
       return 80;
@@ -69,7 +82,7 @@ const TableHeader = styled.th<{ id: string; $isLast?: boolean }>`
   background-color: ${WHITE};
 
   /* 만약 마지막 컬럼이면 width: auto */
-  width: ${({ id, $isLast }) => ($isLast ? 'auto' : `${getColumnWidth(id)}px`)};
+  width: ${({ id, $isLast }) => ($isLast ? 'auto' : `${getColumnWidth(id)}%`)};
   /* 텍스트 넘침 처리 */
   overflow: hidden;
   text-overflow: ellipsis;
@@ -94,8 +107,8 @@ const EducationTableRow = styled.tr`
 `;
 
 const TableData = styled.td<{ id: string; $isLast?: boolean }>`
-  padding: 20px;
-
+  padding: 10px 15px;
+  height: 30px;
   cursor: pointer;
 
   /* 마지막 컬럼이면 auto, 아니면 px 고정 */
@@ -125,7 +138,9 @@ const EducationNameContainer = styled.div<{ $level: number }>`
   flex-direction: row;
   padding-left: ${({ $level }) => `${$level * 20}px`};
   align-items: center;
-  gap: 10px;
+  gap: 20px;
+  height: 40px;
+  flex-shrink: 0;
 `;
 
 const Chevron = styled(ChevronLeft)<{
@@ -137,8 +152,23 @@ const Chevron = styled(ChevronLeft)<{
   height: 14px;
   stroke: ${({ color }) => color || GRAY.DEFAULT};
   stroke-width: 3px;
-  transform: rotate(${({ $isOpened }) => ($isOpened ? '360deg' : '270deg')});
+  transform: rotate(${({ $isOpened }) => ($isOpened ? '180deg' : '270deg')});
   transition: transform 0.2s ease;
+`;
+
+const TitleContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+`;
+
+const StatusContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
 `;
 
 type EducationTableProps = {
@@ -181,7 +211,6 @@ const EducationTableView = ({
   // 실제 표시할 컬럼 ID 배열 + 마지막에 비고란 추가
   const visibleColumns = [
     ...educationTableHeaderItemList.filter((item) => item.isShown),
-    BLANK_HEADER,
   ];
 
   // 각 TD에 들어갈 content
@@ -198,10 +227,25 @@ const EducationTableView = ({
               }}
               $reverseDirection
             />
-            <MainText>{`${education.name}`}</MainText>
+            <SvgIcon svg={Book} size={16} color={MAIN.DEFAULT} width={2} />
+            <TitleContainer>
+              <MainText>{education.name}</MainText>
+              {education.descriptionSummary && (
+                <MainText size={SIZE.SMALL} color={GRAY.SEMI_DARK}>
+                  {education.descriptionSummary}
+                </MainText>
+              )}
+            </TitleContainer>
           </EducationNameContainer>
         );
-
+      case EDUCATION.STATUS:
+        return (
+          <StatusContainer>
+            <MainText size={SIZE.SMALL} color={GRAY.SEMI_DARK}>
+              {getTranslatedTermCount(locale, education.termsCount)}
+            </MainText>
+          </StatusContainer>
+        );
       default:
         return null;
     }
@@ -224,10 +268,33 @@ const EducationTableView = ({
               }}
               $reverseDirection
             />
-            <MainText>{`${getTranslatedTerm(locale, educationTerm.term)}`}</MainText>
+
+            <SvgIcon svg={Calendar} size={16} color={GREEN.DEFAULT} width={2} />
+            <TitleContainer>
+              <MainText>{`${getTranslatedTerm(locale, educationTerm.term)}`}</MainText>
+              <MainText size={SIZE.SMALL} color={GRAY.SEMI_DARK}>
+                {`${getDateStringFromDate(getDateFromDateString(educationTerm.startDate))} - ${getDateStringFromDate(getDateFromDateString(educationTerm.endDate))}`}
+              </MainText>
+            </TitleContainer>
           </EducationNameContainer>
         );
-
+      case EDUCATION.STATUS:
+        return (
+          <StatusContainer>
+            <MainTag
+              title={t(educationTerm.status)}
+              color={getStatusFontColor(educationTerm.status)}
+              backgroundColor={getStatusBackgroundColor(educationTerm.status)}
+            />
+            <MainText size={SIZE.SMALL} color={GRAY.SEMI_DARK}>
+              {getTranslatedCompletedEnrollmentStatus(
+                locale,
+                educationTerm.completedCount,
+                educationTerm.enrollmentCount
+              )}
+            </MainText>
+          </StatusContainer>
+        );
       default:
         return null;
     }
@@ -242,10 +309,26 @@ const EducationTableView = ({
     switch (id) {
       case EDUCATION.NAME:
         return (
-          <EducationNameContainer $level={2}>
-            <MainText>{`${session.session}${t('session')}`}</MainText>
-            <MainText>{session.title}</MainText>
+          <EducationNameContainer $level={3}>
+            <SvgIcon svg={Clock} size={16} color={ORANGE.DARK} width={2} />
+            <TitleContainer>
+              <MainText>{`${session.session}${t('session')} ${session.title}`}</MainText>
+              <MainText size={SIZE.SMALL} color={GRAY.SEMI_DARK}>
+                {`${getDateStringFromDate(getDateFromDateString(session.startDate))} - ${getDateStringFromDate(getDateFromDateString(session.endDate))}`}
+              </MainText>
+            </TitleContainer>
           </EducationNameContainer>
+        );
+      case EDUCATION.STATUS:
+        return (
+          <StatusContainer>
+            <MainTag
+              title={t(session.status)}
+              color={getStatusFontColor(session.status)}
+              backgroundColor={getStatusBackgroundColor(session.status)}
+            />
+            <MainText size={SIZE.SMALL} color={GRAY.SEMI_DARK}></MainText>
+          </StatusContainer>
         );
       default:
         return null;
@@ -265,15 +348,13 @@ const EducationTableView = ({
                   id={item.id}
                   $isLast={index === visibleColumns.length - 1}
                 >
-                  {item.id !== BLANK && (
-                    <EducationTableHeader
-                      item={{
-                        ...item,
-                        id: item.id as EDUCATION,
-                      }}
-                      onClick={() => {}}
-                    />
-                  )}
+                  <EducationTableHeader
+                    item={{
+                      ...item,
+                      id: item.id as EDUCATION,
+                    }}
+                    onClick={() => {}}
+                  />
                 </TableHeader>
               ))}
             </tr>
@@ -344,10 +425,12 @@ const EducationTableView = ({
                                       index === visibleColumns.length - 1
                                     }
                                   >
-                                    {getEducationSessionTableContent(
-                                      item.id,
-                                      educationSession
-                                    )}
+                                    <ContentWrapper>
+                                      {getEducationSessionTableContent(
+                                        item.id,
+                                        educationSession
+                                      )}
+                                    </ContentWrapper>
                                   </TableData>
                                 ))}
                               </EducationTableRow>

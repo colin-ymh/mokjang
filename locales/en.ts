@@ -13,6 +13,9 @@ export default {
   isNotDone: 'Incomplete',
   customSelect: 'Custom Select',
 
+  creator: 'Creator',
+  createdDate: 'Created Date',
+
   memberName: 'Member',
 
   schedule: 'Schedule',
@@ -171,6 +174,7 @@ export default {
   educationTermCount: 'Total Term Count',
   educationEnrollmentCount: 'Total Enrollment Count',
   educationTerm: 'Education Term',
+  createdInformation: 'Created Information',
   location: 'Location',
   educationStatus: 'Status',
   educationDescription: 'Description',
@@ -491,6 +495,7 @@ export default {
   'button.memberFilter': 'Member Filter',
 
   'button.backToList': 'Back To List',
+  'button.allAttended': 'Mark All as Attended',
   /*-------------------button-------------------*/
 
   /*-------------------placeholder-------------------*/
@@ -557,6 +562,7 @@ export default {
   'placeholder.selectBaptism': 'Select the baptism.',
 
   'placeholder.note': 'Enter the note.',
+  'placeholder.location': 'Enter the location',
   /*-------------------placeholder-------------------*/
 
   /*-------------------popup-------------------*/

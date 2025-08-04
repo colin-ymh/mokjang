@@ -27,6 +27,7 @@ type EditMemberOfficerParams = {
 
 type EditMemberOfficerBody = {
   memberIds: string[];
+  startDate: string;
 };
 
 type DeleteMemberOfficerParams = {

@@ -1,6 +1,5 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import { BLANK } from '@/constants/constant';
-import { getFormattedTitle } from '@/utils/format';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 
@@ -12,16 +11,7 @@ import {
 } from '@/utils/date';
 import { setTargetEducationTerm } from '@/redux/reducers/target/target-education-term-reducer';
 import AddEducationTermView from '@/components/organisms/education/education-term/add/add-education-term.view';
-import { MemberDropdownValueType } from '@/models/dropdown/dropdown';
-import { EducationEnrollment } from '@/models/education/education';
 import { MemberDropdownType } from '@/components/atoms/common/dropdown/member-dropdown-item';
-
-import {
-  EDUCATION_ENROLLMENT_STATUS,
-  EDUCATION_TERM_STATUS,
-  STATUS,
-} from '@/constants/status/status';
-import { DEFAULT_MEMBER } from '@/models/member/member';
 
 type AddEducationTermProps = {};
 
@@ -31,20 +21,12 @@ const AddEducationTerm = ({}: AddEducationTermProps) => {
   );
   const dispatch = useDispatch<AppDispatch>();
 
-  // ===== status =====
-  const onChangeStatus = (status: EDUCATION_TERM_STATUS) => {
-    dispatch(
-      setTargetEducationTerm({ ...targetEducationTerm, status: status })
-    );
-  };
-  // ===== status =====
-
   // ===== term =====
   const onChangeTerm = (event: ChangeEvent<HTMLInputElement>): void => {
     dispatch(
       setTargetEducationTerm({
         ...targetEducationTerm,
-        term: getFormattedTitle(event.target.value),
+        term: event.target.value.replace(/\D/g, ''),
       })
     );
   };
@@ -160,81 +142,18 @@ const AddEducationTerm = ({}: AddEducationTermProps) => {
 
   // ===== inCharge =====
 
-  // ===== content =====
-  const [content, setContent] = useState<string>(BLANK);
+  // ===== location =====
 
-  const onChangeContent = (newContent: string) => {
-    setContent(newContent);
-  };
-
-  useEffect(() => {
+  const onChangeLocation = (event: ChangeEvent<HTMLInputElement>) => {
+    const newLocation = event.target.value;
     dispatch(
       setTargetEducationTerm({
         ...targetEducationTerm,
-        content,
-      })
-    );
-  }, [content]);
-
-  useEffect(() => {
-    setContent(targetEducationTerm.content);
-  }, [targetEducationTerm.id]);
-  // ===== content =====
-
-  // ===== 수강 교인 =====
-  const onClickNewEnrollment = (values: MemberDropdownValueType[]) => {
-    const newEnrollment = values[0];
-
-    if (
-      newEnrollment.value &&
-      targetEducationTerm.educationEnrollments.every(
-        (enrollment) => enrollment.memberId !== newEnrollment.value
-      )
-    ) {
-      const newEnrollments = [
-        ...targetEducationTerm.educationEnrollments,
-        {
-          id: new Date().toString(),
-          memberId: newEnrollment.value,
-          educationTermId: targetEducationTerm.id,
-          status: STATUS.INCOMPLETE as EDUCATION_ENROLLMENT_STATUS,
-          note: BLANK,
-          member: { ...DEFAULT_MEMBER, name: newEnrollment.title },
-        },
-      ];
-
-      dispatch(
-        setTargetEducationTerm({
-          ...targetEducationTerm,
-          educationEnrollments: newEnrollments,
-        })
-      );
-    }
-  };
-
-  // 수강 교인 상태 변경
-  const onChangeEnrollmentStatus = (
-    value: EDUCATION_ENROLLMENT_STATUS,
-    targetEnrollment: EducationEnrollment
-  ) => {
-    const newEnrollments = targetEducationTerm.educationEnrollments.map(
-      (enrollment) => {
-        if (enrollment.memberId === targetEnrollment.memberId) {
-          return { ...enrollment, status: value };
-        } else {
-          return enrollment;
-        }
-      }
-    );
-
-    dispatch(
-      setTargetEducationTerm({
-        ...targetEducationTerm,
-        educationEnrollments: newEnrollments,
+        location: newLocation,
       })
     );
   };
-  // ===== 수강 교인 =====
+  // ===== location =====
 
   /* ── Receivers ── */
   const [receivers, setReceivers] = useState<MemberDropdownType[]>([]);
@@ -274,18 +193,14 @@ const AddEducationTerm = ({}: AddEducationTermProps) => {
   };
 
   const props = {
-    content,
     inCharge,
-    onChangeStatus,
     onChangeTerm,
     onChangeStartDate,
     onChangeStartTime,
     onChangeEndDate,
     onChangeEndTime,
     onChangeInCharge,
-    onChangeContent,
-    onClickNewEnrollment,
-    onChangeEnrollmentStatus,
+    onChangeLocation,
     receivers,
     onChangeReceivers,
     onClickDeleteReceiver,

@@ -3,6 +3,7 @@ import {
   Dispatch,
   SetStateAction,
   useEffect,
+  useRef,
   useState,
 } from 'react';
 import { useSelector } from 'react-redux';
@@ -13,13 +14,14 @@ import { BLANK } from '@/constants/constant';
 import { Member } from '@/models/member/member';
 import { Group } from '@/models/management/management';
 import { getFormattedName } from '@/utils/format';
+import { GroupsApi } from '@/api/management/group/groups.api';
 import { MEMBER } from '@/constants/column/member-column';
 
 type AddGroupMemberModalProps = {
   group: Group;
   selectedMembers: Member[];
   setSelectedMembers: Dispatch<SetStateAction<Member[]>>;
-  startDate: Date | null;
+  startDate: Date;
   onChangeStartDate: (date: Date | null) => void;
 };
 
@@ -31,59 +33,103 @@ const AddGroupMemberModal = ({
   onChangeStartDate,
 }: AddGroupMemberModalProps) => {
   const membersApi = new MembersApi(false);
+  const groupsApi = new GroupsApi(false);
   const churchId = useSelector((state: RootState) => state.church.churchId);
 
-  // 검색어
   const [searchName, setSearchName] = useState<string>(BLANK);
+  const [members, setMembers] = useState<Member[]>([]);
+  const [page, setPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
+  const [thrownError, setThrownError] = useState<Error | null>(null);
+  if (thrownError) {
+    throw thrownError;
+  }
 
-  // 검색된 교인 목록
-  const [searchedMembers, setSearchedMembers] = useState<Member[]>([]);
+  const scrollRef = useRef<HTMLDivElement | null>(null);
 
   // 교인 목록 검색
-  const fetchSearchedMembers = async (name: string) => {
-    const response = await membersApi.getMembers({
-      churchId,
-      page: 1,
-      take: 1000,
-      name,
-      selectedColumns: [
-        MEMBER.OFFICER,
-        MEMBER.MOBILE_PHONE,
-        MEMBER.BIRTH,
-        MEMBER.GROUP,
-      ],
-    });
-    setSearchedMembers(response.data.data);
+  const fetchSearchedMembers = async () => {
+    try {
+      if (isLoading) return;
+      setIsLoading(true);
+      const response = await membersApi.getMembers({
+        churchId,
+        page: 1,
+        take: 50,
+        name: searchName,
+        selectedColumns: [
+          MEMBER.OFFICER,
+          MEMBER.MOBILE_PHONE,
+          MEMBER.BIRTH,
+          MEMBER.GROUP,
+        ],
+      });
+      const newMembers: Member[] = response.data.data;
+      const existingIds = new Set(members.map((member) => member.id));
+      const filteredNewMembers = newMembers.filter(
+        (member) => !existingIds.has(member.id)
+      );
+
+      const updatedMembers =
+        page === 1 ? newMembers : [...members, ...filteredNewMembers];
+
+      setMembers(updatedMembers);
+    } catch (error) {
+      setThrownError(error as Error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const onChangeSearch = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchName(getFormattedName(event.target.value));
   };
 
-  // 교인 목록에서 선택/해제
   const onClickMember = (targetMember: Member) => {
     setSelectedMembers((prev) => {
-      const isMemberSelected = prev.some((m) => m.id === targetMember.id);
-      return isMemberSelected
+      const isSelected = prev.some((m) => m.id === targetMember.id);
+      return isSelected
         ? prev.filter((m) => m.id !== targetMember.id)
         : [...prev, targetMember];
     });
   };
 
-  // 검색어/모달 열림 상태가 바뀌면 교인 목록 다시 가져오기
+  const loadMembers = () => {
+    setPage(page + 1);
+  };
+
+  const onScroll = () => {
+    if (scrollRef.current) {
+      const { scrollTop, scrollHeight, clientHeight } = scrollRef.current;
+      if (scrollTop + clientHeight >= scrollHeight - 10) {
+        loadMembers();
+      }
+    }
+  };
+
   useEffect(() => {
-    fetchSearchedMembers(searchName);
+    const timer = setTimeout(() => {
+      setPage(1);
+      fetchSearchedMembers();
+    }, 500);
+    return () => clearTimeout(timer);
   }, [searchName]);
+
+  useEffect(() => {
+    fetchSearchedMembers();
+  }, [page]);
 
   return (
     <>
       <AddGroupMemberModalView
+        scrollRef={scrollRef}
         group={group}
         searchName={searchName}
-        searchedMembers={searchedMembers}
+        searchedMembers={members}
         selectedMembers={selectedMembers}
         onChangeSearch={onChangeSearch}
         onClickMember={onClickMember}
+        onScroll={onScroll}
         startDate={startDate}
         onChangeStartDate={onChangeStartDate}
       />

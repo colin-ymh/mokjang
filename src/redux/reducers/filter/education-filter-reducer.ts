@@ -64,6 +64,14 @@ export const INITIAL_EDUCATION_TABLE_HEADER_LIST: EDUCATION_TABLE_HEADER_ITEM[] 
       isFixed: true,
       isDate: false,
     },
+    {
+      id: EDUCATION.STATUS,
+      isShown: true,
+      isSortable: false,
+      isFilterable: true,
+      isFixed: true,
+      isDate: false,
+    },
   ];
 
 export const EDUCATION_ENROLLMENT_TABLE_HEADER_LIST: EDUCATION_ENROLLMENT_TABLE_HEADER_ITEM[] =

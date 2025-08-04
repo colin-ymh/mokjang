@@ -336,30 +336,6 @@ export const useEducationEnrollmentStatusDropdownItems = () => {
   return items;
 };
 
-export const useEducationSessionStatusDropdownItems = () => {
-  const t = useI18n();
-
-  const items = [
-    {
-      value: STATUS.RESERVE,
-      title: t(STATUS.RESERVE),
-      color: STATUS_COLOR.RESERVE,
-    },
-    {
-      value: STATUS.DONE,
-      title: t(STATUS.DONE),
-      color: STATUS_COLOR.DONE,
-    },
-    {
-      value: STATUS.PENDING,
-      title: t(STATUS.PENDING),
-      color: STATUS_COLOR.PENDING,
-    },
-  ];
-
-  return items;
-};
-
 export const useVisitationStatusDropdownItems = () => {
   const t = useI18n();
 
@@ -518,6 +494,39 @@ export const useEducationTermStatusDropdownItems = () => {
       color: STATUS_COLOR.IN_PROGRESS,
       icon: Play,
     },
+    {
+      value: STATUS.DONE,
+      title: t(STATUS.DONE),
+      color: STATUS_COLOR.DONE,
+      icon: Check,
+    },
+    {
+      value: STATUS.PENDING,
+      title: t(STATUS.PENDING),
+      color: STATUS_COLOR.PENDING,
+      icon: Danger,
+    },
+  ];
+
+  return items;
+};
+
+export const useEducationSessionStatusDropdownItems = () => {
+  const t = useI18n();
+
+  const items = [
+    {
+      value: STATUS.RESERVE,
+      title: t(STATUS.RESERVE),
+      color: STATUS_COLOR.RESERVE,
+      icon: Calendar,
+    },
+    // {
+    //   value: STATUS.IN_PROGRESS,
+    //   title: t(STATUS.IN_PROGRESS),
+    //   color: STATUS_COLOR.IN_PROGRESS,
+    //   icon: Play,
+    // },
     {
       value: STATUS.DONE,
       title: t(STATUS.DONE),

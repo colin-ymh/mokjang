@@ -13,6 +13,9 @@ export default {
   isNotDone: '미완료',
   customSelect: '직접선택',
 
+  creator: '생성자',
+  createdDate: '생성일자',
+
   memberName: '교인명',
 
   schedule: '일정',
@@ -177,6 +180,7 @@ export default {
   educationTermCount: '총 기수 수',
   educationEnrollmentCount: '총 이수자 수',
   educationTerm: '교육 기수',
+  createdInformation: '생성 정보',
   location: '장소',
   educationStatus: '상태',
   educationInformation: '교육 정보',
@@ -505,6 +509,7 @@ export default {
   'button.memberFilter': '교인 필터',
 
   'button.backToList': '목록으로 돌아가기',
+  'button.allAttended': '일괄 출석',
   /*-------------------button-------------------*/
 
   /*-------------------placeholder-------------------*/
@@ -571,6 +576,7 @@ export default {
   'placeholder.selectBaptism': '신급을 선택해주세요',
 
   'placeholder.note': '비고 입력하기',
+  'placeholder.location': '장소를 입력해주세요',
   /*-------------------placeholder-------------------*/
 
   /*-------------------popup-------------------*/

@@ -19,7 +19,6 @@ import {
 } from '@/utils/date';
 import Dropdown from '@/components/atoms/common/dropdown/dropdown';
 import { useTimeDropdownItems } from '@/hooks/dropdown/dropdown-items';
-import { EDUCATION_TERM_STATUS } from '@/constants/status/status';
 import MemberDropdown from '@/components/atoms/common/dropdown/member-dropdown';
 import BigMemberTag from '@/components/atoms/common/tag/big-member-tag';
 import { MemberDropdownType } from '@/components/atoms/common/dropdown/member-dropdown-item';
@@ -51,8 +50,10 @@ const ContentContainer = styled.div`
 `;
 
 const PeriodContainer = styled.div`
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
   gap: 10px;
+  width: 100%;
 `;
 
 const RowContainer = styled.div`
@@ -63,6 +64,17 @@ const RowContainer = styled.div`
   gap: 20px;
 `;
 
+const RowCardContainer = styled.div<{ $minHeight?: number }>`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  border: 1px solid ${GRAY.LIGHT};
+  border-radius: 10px;
+  background-color: ${WHITE};
+  min-height: ${({ $minHeight }) => $minHeight && $minHeight}px;
+`;
+
 const MemberTagList = styled.div`
   display: flex;
   flex-wrap: wrap;
@@ -71,32 +83,28 @@ const MemberTagList = styled.div`
 `;
 
 type AddEducationTermViewProps = {
-  content: string;
   inCharge: MemberDropdownType[];
-  onChangeStatus: (value: EDUCATION_TERM_STATUS) => void;
   onChangeTerm: (event: ChangeEvent<HTMLInputElement>) => void;
   onChangeStartDate: (date: Date | null) => void;
   onChangeStartTime: (value: number) => void;
   onChangeEndDate: (date: Date | null) => void;
   onChangeEndTime: (value: number) => void;
   onChangeInCharge: (values: MemberDropdownType[]) => void;
-  onChangeContent: (content: string) => void;
+  onChangeLocation: (event: ChangeEvent<HTMLInputElement>) => void;
   receivers: MemberDropdownType[];
   onChangeReceivers: (values: MemberDropdownType[]) => void;
   onClickDeleteReceiver: (value: string) => void;
 };
 
 const AddEducationTermView = ({
-  content,
   inCharge,
-  onChangeStatus,
   onChangeTerm,
   onChangeStartDate,
   onChangeStartTime,
   onChangeEndDate,
   onChangeEndTime,
   onChangeInCharge,
-  onChangeContent,
+  onChangeLocation,
   receivers,
   onChangeReceivers,
   onClickDeleteReceiver,
@@ -127,102 +135,115 @@ const AddEducationTermView = ({
         </ContentContainer>
       </CardContainer>
 
-      {/* 업무 일정 */}
-      <CardContainer>
-        <ContentContainer>
-          <RowContainer>
+      <RowContainer>
+        {/* 담당자 */}
+        <RowCardContainer>
+          <ContentContainer>
             <MainText size={SIZE.EXTRA_LARGE}>
-              {t('schedule')}
+              {t('inCharge')}
               <RequiredMark />
             </MainText>
-          </RowContainer>
-          {/* 기간 */}
-          <PeriodContainer>
-            {/* 시작 날짜 */}
-            <CustomDatePicker
-              value={
-                targetEducationTerm.startDate
-                  ? getDateStringFromDate(
-                      getDateFromInput(targetEducationTerm.startDate)
-                    )
-                  : undefined
-              }
-              selected={
-                targetEducationTerm.startDate
-                  ? getDateFromDateString(targetEducationTerm.startDate)
-                  : null
-              }
-              onChange={onChangeStartDate}
-              placeholderText={t('startDate')}
-            />
-            {/* 시작 시간 */}
-            <Dropdown
-              value={
-                targetEducationTerm.startDate
-                  ? getTotalMinuteFromDate(
-                      getDateFromDateString(targetEducationTerm.startDate)
-                    )
-                  : 0
-              }
-              items={timeDropdownItems}
-              onChangeItem={onChangeStartTime}
-            />
-            {/* 종료 날짜 */}
-            <CustomDatePicker
-              value={
-                targetEducationTerm.endDate
-                  ? getDateStringFromDate(
-                      getDateFromInput(targetEducationTerm.endDate)
-                    )
-                  : undefined
-              }
-              selected={
-                targetEducationTerm.endDate
-                  ? getDateFromDateString(targetEducationTerm.endDate)
-                  : null
-              }
-              onChange={onChangeEndDate}
-              placeholderText={t('endDate')}
-            />
-            {/* 종료 시간 */}
-            <Dropdown
-              value={
-                targetEducationTerm.endDate
-                  ? getTotalMinuteFromDate(
-                      getDateFromDateString(targetEducationTerm.endDate)
-                    )
-                  : 0
-              }
-              items={timeDropdownItems}
-              onChangeItem={onChangeEndTime}
-            />
-          </PeriodContainer>
-        </ContentContainer>
-      </CardContainer>
-
-      {/* 담당자 */}
+            {inCharge.length === 0 ? (
+              <MemberDropdown
+                values={inCharge}
+                onChangeValues={onChangeInCharge}
+                isSingle
+                placeholder={t_placeholder('name')}
+                isManager={true}
+              />
+            ) : (
+              <BigMemberTag
+                officer={inCharge[0].officer}
+                profileImage={inCharge[0].profileImage}
+                name={inCharge[0].title}
+                onClick={() => onChangeInCharge([])}
+              />
+            )}
+          </ContentContainer>
+        </RowCardContainer>
+        {/* 업무 일정 */}
+        <RowCardContainer>
+          <ContentContainer>
+            <RowContainer>
+              <MainText size={SIZE.EXTRA_LARGE}>
+                {t('schedule')}
+                <RequiredMark />
+              </MainText>
+            </RowContainer>
+            {/* 기간 */}
+            <PeriodContainer>
+              {/* 시작 날짜 */}
+              <CustomDatePicker
+                value={
+                  targetEducationTerm.startDate
+                    ? getDateStringFromDate(
+                        getDateFromInput(targetEducationTerm.startDate)
+                      )
+                    : undefined
+                }
+                selected={
+                  targetEducationTerm.startDate
+                    ? getDateFromDateString(targetEducationTerm.startDate)
+                    : null
+                }
+                onChange={onChangeStartDate}
+                placeholderText={t('startDate')}
+              />
+              {/* 시작 시간 */}
+              <Dropdown
+                value={
+                  targetEducationTerm.startDate
+                    ? getTotalMinuteFromDate(
+                        getDateFromDateString(targetEducationTerm.startDate)
+                      )
+                    : 0
+                }
+                items={timeDropdownItems}
+                onChangeItem={onChangeStartTime}
+              />
+              {/* 종료 날짜 */}
+              <CustomDatePicker
+                value={
+                  targetEducationTerm.endDate
+                    ? getDateStringFromDate(
+                        getDateFromInput(targetEducationTerm.endDate)
+                      )
+                    : undefined
+                }
+                selected={
+                  targetEducationTerm.endDate
+                    ? getDateFromDateString(targetEducationTerm.endDate)
+                    : null
+                }
+                onChange={onChangeEndDate}
+                placeholderText={t('endDate')}
+              />
+              {/* 종료 시간 */}
+              <Dropdown
+                value={
+                  targetEducationTerm.endDate
+                    ? getTotalMinuteFromDate(
+                        getDateFromDateString(targetEducationTerm.endDate)
+                      )
+                    : 0
+                }
+                items={timeDropdownItems}
+                onChangeItem={onChangeEndTime}
+              />
+            </PeriodContainer>
+          </ContentContainer>
+        </RowCardContainer>
+      </RowContainer>
+      {/* 장소 */}
       <CardContainer>
         <ContentContainer>
-          <MainText size={SIZE.EXTRA_LARGE}>
-            {t('inCharge')}
-            <RequiredMark />
-          </MainText>
-          {inCharge.length === 0 ? (
-            <MemberDropdown
-              values={inCharge}
-              onChangeValues={onChangeInCharge}
-              isSingle
-              placeholder={t_placeholder('name')}
-              isManager={true}
-            />
-          ) : (
-            <BigMemberTag
-              officer={inCharge[0].officer}
-              profileImage={inCharge[0].profileImage}
-              name={inCharge[0].title}
-              onClick={() => onChangeInCharge([])}
-            />
-          )}
+          <MainText size={SIZE.EXTRA_LARGE}>{t('location')}</MainText>
+          <BorderInput
+            value={targetEducationTerm.location}
+            onChange={onChangeLocation}
+            placeholder={t_placeholder('location')}
+            borderColor={GRAY.LIGHT}
+          />
         </ContentContainer>
       </CardContainer>
 

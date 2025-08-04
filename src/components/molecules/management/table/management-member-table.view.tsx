@@ -62,7 +62,7 @@ const TableContainer = styled.div<{ height: number }>`
   width: 100%;
   background-color: ${WHITE};
   // /* 세로 높이만큼 상하 스크롤 */
-  min-height: 500px;
+  //min-height: 500px;
   max-height: ${({ height }) => `${height - 300}px`};
 
   /* 오버플로 시 스크롤 */

@@ -31,7 +31,7 @@ type CreateEducationTermsBody = {
   term: string;
   startDate: string;
   endDate: string;
-  content?: string;
+  location?: string;
   inChargeId?: string;
 };
 
@@ -45,7 +45,7 @@ type EditEducationTermBody = {
   term?: string;
   startDate?: string;
   endDate?: string;
-  content?: string;
+  location?: string;
   status?: EDUCATION_TERM_STATUS;
   inChargeId?: string;
 };
@@ -79,7 +79,7 @@ export class EducationTermsApi {
       orderDirection = ORDER_DIRECTION.DESC,
     } = params;
 
-    const url = `${this._url}/churches/${churchId}/management/educations/${educationId}/terms`;
+    const url = `${this._url}/churches/${churchId}/educations/${educationId}/terms`;
 
     try {
       return await authorizeAxios.get(url, {
@@ -112,7 +112,7 @@ export class EducationTermsApi {
   ): Promise<AxiosResponse> => {
     const { churchId, educationId, educationTermId } = params;
 
-    const url = `${this._url}/churches/${churchId}/management/educations/${educationId}/terms/${educationTermId}`;
+    const url = `${this._url}/churches/${churchId}/educations/${educationId}/terms/${educationTermId}`;
 
     try {
       return await authorizeAxios.get(url);
@@ -142,7 +142,7 @@ export class EducationTermsApi {
   ): Promise<AxiosResponse> => {
     const { churchId, educationId } = params;
 
-    const url = `${this._url}/churches/${churchId}/management/educations/${educationId}/terms`;
+    const url = `${this._url}/churches/${churchId}/educations/${educationId}/terms`;
 
     try {
       return await authorizeAxios.post(url, body);
@@ -172,7 +172,7 @@ export class EducationTermsApi {
   ): Promise<AxiosResponse> => {
     const { churchId, educationId, educationTermId } = params;
 
-    const url = `${this._url}/churches/${churchId}/management/educations/${educationId}/terms/${educationTermId}`;
+    const url = `${this._url}/churches/${churchId}/educations/${educationId}/terms/${educationTermId}`;
 
     try {
       return await authorizeAxios.patch(url, body);
@@ -200,7 +200,7 @@ export class EducationTermsApi {
   ): Promise<AxiosResponse> => {
     const { churchId, educationId, educationTermId } = params;
 
-    const url = `${this._url}/churches/${churchId}/management/educations/${educationId}/terms/${educationTermId}`;
+    const url = `${this._url}/churches/${churchId}/educations/${educationId}/terms/${educationTermId}`;
 
     try {
       return await authorizeAxios.delete(url);
@@ -228,7 +228,7 @@ export class EducationTermsApi {
   ): Promise<AxiosResponse> => {
     const { churchId, educationId, educationTermId } = params;
 
-    const url = `${this._url}/churches/${churchId}/management/educations/${educationId}/terms/${educationTermId}/sync-attendance`;
+    const url = `${this._url}/churches/${churchId}/educations/${educationId}/terms/${educationTermId}/sync-attendance`;
 
     try {
       return await authorizeAxios.post(url);

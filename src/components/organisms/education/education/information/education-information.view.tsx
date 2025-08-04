@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { useI18n } from '../../../../../../locales/client';
 import { MainText } from '@/components/atoms/common/text/main-text';
-import { GRAY, WHITE } from '@/constants/styles/color';
+import { GRAY, GREEN, WHITE } from '@/constants/styles/color';
 import React from 'react';
 import { SIZE } from '@/constants/styles/style';
 import { usePathname } from 'next/navigation';
@@ -13,7 +13,10 @@ import EducationTermTable from '@/components/molecules/education/education-term/
 import {
   getTranslatedDateFromDateString,
   getTranslatedMemberCount,
+  getTranslatedTermCount,
 } from '@/utils/translate';
+import Check from '../../../../../../public/svg/check.svg';
+import SvgIcon from '@/components/atoms/common/icon/svg-icon';
 
 const InformationContainer = styled.div`
   display: flex;
@@ -50,6 +53,12 @@ const ContentContainer = styled.div`
   padding: 20px;
 `;
 
+const ColumnContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+`;
+
 const RowContainer = styled.div`
   display: flex;
   flex-direction: row;
@@ -63,6 +72,21 @@ const TableContainer = styled.div`
   border: 1px solid ${GRAY.LIGHT};
   border-radius: 10px;
   overflow: hidden;
+`;
+
+const GoalList = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+`;
+
+const GoalItem = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  background-color: ${GRAY.SUPER_LIGHT};
+  border-radius: 5px;
+  padding: 10px;
 `;
 
 type EducationInformationViewProps = {};
@@ -81,48 +105,67 @@ const EducationInformationView = ({}: EducationInformationViewProps) => {
       <CardContainer $minHeight={100}>
         <ContentContainer>
           <MainText size={SIZE.EXTRA_LARGE}>{t('educationGoal')}</MainText>
+          <GoalList>
+            {targetEducation.goals.map((goal, index) => {
+              if (goal.length !== 0)
+                return (
+                  <GoalItem key={index}>
+                    <SvgIcon svg={Check} color={GREEN.DEFAULT} width={2} />
+                    <MainText color={GRAY.SEMI_DARK}>{goal}</MainText>
+                  </GoalItem>
+                );
+            })}
+          </GoalList>
         </ContentContainer>
       </CardContainer>
 
       <RowContainer>
         {/* 기수 수 */}
-        <RowCardContainer $minHeight={100}>
+        <RowCardContainer $minHeight={80}>
           <ContentContainer>
             <MainText size={SIZE.EXTRA_LARGE}>
               {t('educationTermCount')}
             </MainText>
-            <MainText size={SIZE.EXTRA_LARGE}>
-              {targetEducation.educationTerms.length}
+            <MainText>
+              {getTranslatedTermCount(locale, targetEducation.termsCount)}
             </MainText>
           </ContentContainer>
         </RowCardContainer>
         {/* 교인 수 */}
-        <RowCardContainer $minHeight={100}>
+        <RowCardContainer $minHeight={80}>
           <ContentContainer>
             <MainText size={SIZE.EXTRA_LARGE}>
               {t('educationEnrollmentCount')}
             </MainText>
-            <MainText size={SIZE.EXTRA_LARGE}>
-              {getTranslatedMemberCount(locale, 25)}
-            </MainText>
-          </ContentContainer>
-        </RowCardContainer>
-        {/* 상세정보 */}
-        <RowCardContainer $minHeight={100}>
-          <ContentContainer>
-            <MainText size={SIZE.EXTRA_LARGE}>
-              {t('educationInformation')}
-            </MainText>
-            <MainText>{targetEducation.creator.name}</MainText>
             <MainText>
-              {getTranslatedDateFromDateString(
+              {getTranslatedMemberCount(
                 locale,
-                targetEducation.createdAt
+                targetEducation.completionMembersCount
               )}
             </MainText>
           </ContentContainer>
         </RowCardContainer>
+        {/* 상세정보 */}
+        <RowCardContainer $minHeight={80}>
+          <ContentContainer>
+            <MainText size={SIZE.EXTRA_LARGE}>
+              {t('createdInformation')}
+            </MainText>
+            <ColumnContainer>
+              <MainText
+                color={GRAY.SEMI_DARK}
+              >{`${t('creator')}: ${targetEducation.creator.name}`}</MainText>
+              <MainText color={GRAY.SEMI_DARK}>
+                {`${t('createdDate')}: ${getTranslatedDateFromDateString(
+                  locale,
+                  targetEducation.createdAt
+                )}`}
+              </MainText>
+            </ColumnContainer>
+          </ContentContainer>
+        </RowCardContainer>
       </RowContainer>
+
       {/* 교육 기수 */}
       <CardContainer $minHeight={200}>
         <ContentContainer>

@@ -13,6 +13,8 @@ import MemberProfilePopupButton from '@/components/molecules/common/button/membe
 import {
   getTranslatedAddMemberTitle,
   getTranslatedDateFromDateString,
+  getTranslatedSessionProgressStatus,
+  getTranslatedTerm,
 } from '@/utils/translate';
 import { useEducationTermStatusDropdownItems } from '@/hooks/dropdown/dropdown-items';
 import StatusDropdown from '@/components/atoms/common/dropdown/status-dropdown';
@@ -36,12 +38,21 @@ const CardContainer = styled.div<{ $minHeight?: number }>`
   display: flex;
   flex-direction: column;
   gap: 10px;
+  border: 1px solid ${GRAY.LIGHT};
+  border-radius: 10px;
+  background-color: ${WHITE};
+  min-height: ${({ $minHeight }) => $minHeight && $minHeight}px;
+`;
+
+const RowCardContainer = styled.div<{ $minHeight?: number }>`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
   width: 100%;
   border: 1px solid ${GRAY.LIGHT};
   border-radius: 10px;
   background-color: ${WHITE};
   min-height: ${({ $minHeight }) => $minHeight && $minHeight}px;
-  overflow: hidden;
 `;
 
 const ContentContainer = styled.div`
@@ -64,12 +75,19 @@ const TableContainer = styled.div`
   border: 1px solid ${GRAY.LIGHT};
   border-radius: 10px;
   overflow: hidden;
+  height: 100%;
 `;
 
 const HeaderBarContainer = styled.div`
   display: flex;
   padding: 5px 10px 0 10px;
   border-bottom: 1px solid ${GRAY.LIGHT};
+`;
+
+const StatusContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
 `;
 
 type EducationTermInformationViewProps = {
@@ -111,39 +129,49 @@ const EducationTermInformationView = ({
       <InformationContainer>
         <RowContainer>
           {/* 담당자 */}
-          <CardContainer $minHeight={100}>
+          <RowCardContainer $minHeight={100}>
             <ContentContainer>
               <MainText size={SIZE.EXTRA_LARGE}>{t('inCharge')}</MainText>
               <MemberProfilePopupButton member={targetEducationTerm.inCharge} />
             </ContentContainer>
-          </CardContainer>
+          </RowCardContainer>
           {/* 장소 */}
-          <CardContainer $minHeight={100}>
+          <RowCardContainer $minHeight={100}>
             <ContentContainer>
               <MainText size={SIZE.EXTRA_LARGE}>{t('location')}</MainText>
-              <MainText>{'본당'}</MainText>
+              <MainText>{targetEducationTerm.location}</MainText>
             </ContentContainer>
-          </CardContainer>
+          </RowCardContainer>
           {/* 기간 */}
-          <CardContainer $minHeight={100}>
+          <RowCardContainer $minHeight={100}>
             <ContentContainer>
               <MainText size={SIZE.EXTRA_LARGE}>{t('period')}</MainText>
               <MainText>
                 {`${getTranslatedDateFromDateString(locale, targetEducationTerm.startDate)} - ${getTranslatedDateFromDateString(locale, targetEducationTerm.endDate)}`}
               </MainText>
             </ContentContainer>
-          </CardContainer>
+          </RowCardContainer>
           {/* 상태 */}
-          <CardContainer $minHeight={100}>
+          <RowCardContainer $minHeight={100}>
             <ContentContainer>
               <MainText size={SIZE.EXTRA_LARGE}>{t('status')}</MainText>
-              <StatusDropdown
-                value={targetEducationTerm.status}
-                items={statusDropdownItems}
-                onChangeItem={onChangeStatus}
-              />
+              <StatusContainer>
+                <MainText whiteSpace={'pre-wrap'}>
+                  {getTranslatedSessionProgressStatus(
+                    locale,
+                    targetEducationTerm.completedCount,
+                    targetEducationTerm.incompleteCount
+                  )}
+                </MainText>
+                <StatusDropdown
+                  value={targetEducationTerm.status}
+                  items={statusDropdownItems}
+                  onChangeItem={onChangeStatus}
+                  width={100}
+                />
+              </StatusContainer>
             </ContentContainer>
-          </CardContainer>
+          </RowCardContainer>
         </RowContainer>
         {/* 회차목록 / 수강교인 */}
         <CardContainer $minHeight={200}>
@@ -154,24 +182,24 @@ const EducationTermInformationView = ({
               onClick={onChangeHeaderBar}
             />
           </HeaderBarContainer>
-          <ContentContainer>
-            <RowContainer>
-              <MainText size={SIZE.EXTRA_LARGE}>
-                {t('educationEnrollment')}
-              </MainText>
-              <Button
-                text={t('button.addMember')}
-                height={30}
-                width={'auto'}
-                onClick={onClickAddEnrollmentsOpen}
-              />
-            </RowContainer>
-            <TableContainer>
-              {headerBar === EDUCATION_TERM_CONTENT_ID.ENROLLMENTS && (
+          {headerBar === EDUCATION_TERM_CONTENT_ID.ENROLLMENTS && (
+            <ContentContainer>
+              <RowContainer>
+                <MainText size={SIZE.EXTRA_LARGE}>
+                  {t('educationEnrollment')}
+                </MainText>
+                <Button
+                  text={t('button.addMember')}
+                  height={30}
+                  width={'auto'}
+                  onClick={onClickAddEnrollmentsOpen}
+                />
+              </RowContainer>
+              <TableContainer>
                 <EducationEnrollmentTable />
-              )}
-            </TableContainer>
-          </ContentContainer>
+              </TableContainer>
+            </ContentContainer>
+          )}
         </CardContainer>
       </InformationContainer>
 
@@ -184,7 +212,7 @@ const EducationTermInformationView = ({
         headerHeight={100}
         headerTitle={getTranslatedAddMemberTitle(
           locale,
-          targetEducationTerm.term
+          `${targetEducationTerm.educationName} - ${getTranslatedTerm(locale, targetEducationTerm.term)}`
         )}
         headerDescription={t('description.addMemberHeader')}
         doneText={t('button.add')}

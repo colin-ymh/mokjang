@@ -11,17 +11,17 @@ import EducationSessionInformationView from '@/components/organisms/education/ed
 import { setTargetEducationTerm } from '@/redux/reducers/target/target-education-term-reducer';
 
 import { EDUCATION_SESSION_STATUS } from '@/constants/status/status';
-import { setEducationTerms } from '@/redux/reducers/filter/education-term-filter-reducer';
 import { EducationAttendanceApi } from '@/api/education/education-attendance.api';
+import { setEducations } from '@/redux/reducers/filter/education-filter-reducer';
 
 type EducationSessionInformationProps = {};
 
 const EducationSessionInformation = ({}: EducationSessionInformationProps) => {
+  const { educations } = useSelector(
+    (state: RootState) => state.educationFilter
+  );
   const { targetEducation } = useSelector(
     (state: RootState) => state.targetEducation
-  );
-  const { educationTerms } = useSelector(
-    (state: RootState) => state.educationTermFilter
   );
   const { targetEducationTerm } = useSelector(
     (state: RootState) => state.targetEducationTerm
@@ -79,12 +79,24 @@ const EducationSessionInformation = ({}: EducationSessionInformationProps) => {
           };
           dispatch(setTargetEducationTerm(newTargetEducationTerm));
 
-          const newEducationTerms = educationTerms.map((term) =>
-            term.id === newTargetEducationTerm.id
-              ? newTargetEducationTerm
-              : term
+          const newEducationTerms = targetEducation.educationTerms.map(
+            (term) =>
+              term.id === newTargetEducationTerm.id
+                ? newTargetEducationTerm
+                : term
           );
-          dispatch(setEducationTerms(newEducationTerms));
+
+          const newEducations = educations.map((education) => {
+            if (education.id === targetEducation.id) {
+              return {
+                ...education,
+                educationTerms: newEducationTerms,
+              };
+            } else {
+              return education;
+            }
+          });
+          dispatch(setEducations(newEducations));
         });
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));

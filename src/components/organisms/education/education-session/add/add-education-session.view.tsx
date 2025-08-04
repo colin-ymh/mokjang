@@ -20,8 +20,6 @@ import {
 import Dropdown from '@/components/atoms/common/dropdown/dropdown';
 import { useTimeDropdownItems } from '@/hooks/dropdown/dropdown-items';
 import { EDUCATION_SESSION_STATUS } from '@/constants/status/status';
-import MemberDropdown from '@/components/atoms/common/dropdown/member-dropdown';
-import BigMemberTag from '@/components/atoms/common/tag/big-member-tag';
 import { MemberDropdownType } from '@/components/atoms/common/dropdown/member-dropdown-item';
 import { EducationAttendance } from '@/models/education/education';
 import Quill from '@/components/atoms/common/input/quill';
@@ -50,11 +48,6 @@ const ContentContainer = styled.div`
   padding: 20px;
 `;
 
-const PeriodContainer = styled.div`
-  display: flex;
-  gap: 10px;
-`;
-
 const RowContainer = styled.div`
   display: flex;
   flex-direction: row;
@@ -63,11 +56,22 @@ const RowContainer = styled.div`
   gap: 20px;
 `;
 
-const MemberTagList = styled.div`
+const RowCardContainer = styled.div<{ $minHeight?: number }>`
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   gap: 10px;
-  flex-direction: row;
+  width: 100%;
+  border: 1px solid ${GRAY.LIGHT};
+  border-radius: 10px;
+  background-color: ${WHITE};
+  min-height: ${({ $minHeight }) => $minHeight && $minHeight}px;
+`;
+
+const PeriodContainer = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  width: 100%;
 `;
 
 type AddEducationSessionViewProps = {
@@ -204,39 +208,6 @@ const AddEducationSessionView = ({
         </ContentContainer>
       </CardContainer>
 
-      {/* 상태 */}
-      <CardContainer>
-        <ContentContainer>
-          <MainText size={SIZE.EXTRA_LARGE}>{t('educationStatus')}</MainText>
-        </ContentContainer>
-      </CardContainer>
-
-      {/* 담당자 */}
-      <CardContainer>
-        <ContentContainer>
-          <MainText size={SIZE.EXTRA_LARGE}>
-            {t('inCharge')}
-            <RequiredMark />
-          </MainText>
-          {inCharge.length === 0 ? (
-            <MemberDropdown
-              values={inCharge}
-              onChangeValues={onChangeInCharge}
-              isSingle
-              placeholder={t_placeholder('name')}
-              isManager={true}
-            />
-          ) : (
-            <BigMemberTag
-              officer={inCharge[0].officer}
-              profileImage={inCharge[0].profileImage}
-              name={inCharge[0].title}
-              onClick={() => onChangeInCharge([])}
-            />
-          )}
-        </ContentContainer>
-      </CardContainer>
-
       {/* 내용 */}
       <CardContainer>
         <ContentContainer>
@@ -248,31 +219,6 @@ const AddEducationSessionView = ({
             placeholder={t_placeholder('content')}
           />
         </ContentContainer>
-      </CardContainer>
-
-      <CardContainer>
-        {/*<ContentContainer>*/}
-        {/*  /!* 보고대상자 *!/*/}
-        {/*  <MainText size={SIZE.EXTRA_LARGE}>{t('receiver')}</MainText>*/}
-        {/*  <MemberDropdown*/}
-        {/*    values={receivers}*/}
-        {/*    onChangeValues={onChangeReceivers}*/}
-        {/*    placeholder={receivers.length === 0 ? t_placeholder('name') : BLANK}*/}
-        {/*    isManager={true}*/}
-        {/*  />*/}
-        {/*  /!* 보고대상자 목록 *!/*/}
-        {/*  <MemberTagList>*/}
-        {/*    {receivers.map((member) => (*/}
-        {/*      <MemberTag*/}
-        {/*        key={member.value}*/}
-        {/*        profileImage={member.profileImage}*/}
-        {/*        name={member.title}*/}
-        {/*        officer={member.officer}*/}
-        {/*        onClick={() => onClickDeleteReceiver(member.value)}*/}
-        {/*      />*/}
-        {/*    ))}*/}
-        {/*  </MemberTagList>*/}
-        {/*</ContentContainer>*/}
       </CardContainer>
     </AddEducationSessionViewContainer>
   );

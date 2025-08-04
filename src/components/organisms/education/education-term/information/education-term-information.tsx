@@ -21,13 +21,14 @@ import {
 } from '@/redux/reducers/toast-popup-reducer';
 import { BLACK, DESTRUCTIVE } from '@/constants/styles/color';
 import { useScopedI18n } from '../../../../../../locales/client';
+import { setEducations } from '@/redux/reducers/filter/education-filter-reducer';
 
 type EducationTermInformationProps = {};
 
 const EducationTermInformation = ({}: EducationTermInformationProps) => {
   const t_popup = useScopedI18n('popup');
-  const { educationTerms } = useSelector(
-    (state: RootState) => state.educationTermFilter
+  const { educations } = useSelector(
+    (state: RootState) => state.educationFilter
   );
   const { targetEducation } = useSelector(
     (state: RootState) => state.targetEducation
@@ -79,11 +80,28 @@ const EducationTermInformation = ({}: EducationTermInformationProps) => {
             })
           );
 
-          const newEducationTerms = educationTerms.map((v) => {
-            return v.id !== newEducationTerm.id ? v : { ...v, status: status };
-          });
+          const newEducationTerms = targetEducation.educationTerms.map(
+            (term) => {
+              return term.id !== newEducationTerm.id
+                ? term
+                : { ...term, status: status };
+            }
+          );
 
           dispatch(setEducationTerms(newEducationTerms));
+
+          const newEducations = educations.map((education) => {
+            if (education.id === targetEducationTerm.educationId) {
+              return {
+                ...education,
+                educationTerms: newEducationTerms,
+              };
+            } else {
+              return education;
+            }
+          });
+
+          dispatch(setEducations(newEducations));
         });
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));
@@ -126,7 +144,7 @@ const EducationTermInformation = ({}: EducationTermInformationProps) => {
 
           dispatch(setTargetEducationTerm(newEducationTerm));
 
-          const newEducationTerms = educationTerms.map((v) => {
+          const newEducationTerms = targetEducation.educationTerms.map((v) => {
             return v.id !== targetEducationTerm.id ? v : newEducationTerm;
           });
 
@@ -153,19 +171,15 @@ const EducationTermInformation = ({}: EducationTermInformationProps) => {
     try {
       if (selectedMembers.length === 0) return;
 
-      await Promise.all(
-        selectedMembers.map(async (m) => {
-          await educationEnrollmentsApi.createEducationEnrollments(
-            {
-              churchId,
-              educationId: targetEducationTerm.educationId,
-              educationTermId: targetEducationTerm.id,
-            },
-            {
-              memberId: m.id,
-            }
-          );
-        })
+      await educationEnrollmentsApi.createEducationEnrollments(
+        {
+          churchId,
+          educationId: targetEducationTerm.educationId,
+          educationTermId: targetEducationTerm.id,
+        },
+        {
+          memberIds: selectedMembers.map((member) => member.id),
+        }
       );
 
       const response = await educationEnrollmentsApi.getEducationEnrollments({

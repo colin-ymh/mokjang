@@ -11,6 +11,7 @@ import { getTranslatedSelectedMemberCount } from '@/utils/translate';
 import { usePathname } from 'next/navigation';
 import { LOCALE } from '@/constants/state/locale';
 import { GRAY } from '@/constants/styles/color';
+import CustomDatePicker from '@/vendor/date-picker/custom-date-picker';
 
 const ModalContainer = styled.div`
   display: flex;
@@ -47,6 +48,8 @@ type AddOfficerMemberModalViewProps = {
   onClickMember: (member: Member) => void;
   scrollRef: MutableRefObject<HTMLDivElement | null>;
   onScroll: () => void;
+  startDate: Date;
+  onChangeStartDate: (date: Date | null) => void;
 };
 
 const AddOfficerMemberModalView = ({
@@ -58,6 +61,8 @@ const AddOfficerMemberModalView = ({
   onClickMember,
   scrollRef,
   onScroll,
+  startDate,
+  onChangeStartDate,
 }: AddOfficerMemberModalViewProps) => {
   const pathname = usePathname();
   const locale = pathname.split('/')[1] as LOCALE;
@@ -73,6 +78,12 @@ const AddOfficerMemberModalView = ({
         height={40}
         placeholder={t('placeholder.name')}
         icon={<SearchIcon />}
+      />
+      {/* 시작 날짜 */}
+      <CustomDatePicker
+        selected={startDate}
+        onChange={onChangeStartDate}
+        placeholderText={t('startDate')}
       />
       <RowContainer>
         <MainText color={GRAY.SEMI_DARK}>
