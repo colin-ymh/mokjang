@@ -14,6 +14,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import VisitationInformation from '@/components/organisms/visitation/information/visitation-information';
 import WrappedPagePopup from '@/components/atoms/common/popup/wrapped-page-popup';
+import { TASK_STATUS } from '@/constants/status/status';
 
 const VisitationListContainer = styled.div`
   display: flex;
@@ -57,6 +58,7 @@ type VisitationListViewProps = {
     onClickEditDone: () => void;
     onClickEditOpen: () => void;
     onClickEditClose: () => void;
+    onChangeStatus: (status: TASK_STATUS) => void;
   };
 };
 
@@ -77,6 +79,7 @@ const VisitationListView = (props: VisitationListViewProps) => {
     onClickEditDone,
     onClickEditOpen,
     onClickEditClose,
+    onChangeStatus,
   } = props.information;
 
   const { targetVisitation } = useSelector(
@@ -106,6 +109,13 @@ const VisitationListView = (props: VisitationListViewProps) => {
         cancelText={t_button('delete')}
         onClickDone={onClickEditOpen}
         onClickCancel={onClickConfirmOpen}
+        stageThreeTop={250}
+        stageTwoTop={40}
+        inCharge={targetVisitation.inCharge}
+        startDate={targetVisitation.startDate}
+        endDate={targetVisitation.endDate}
+        status={targetVisitation.status}
+        onChangeStatus={onChangeStatus}
       >
         <>
           {/* 삭제 확인 팝업 */}

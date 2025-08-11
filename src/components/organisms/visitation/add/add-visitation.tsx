@@ -1,7 +1,10 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import { BLANK } from '@/constants/constant';
 import { getFormattedTitle } from '@/utils/format';
-import { VISITATION_METHOD } from '@/models/visitation/visitation';
+import {
+  DEFAULT_VISITATION_DETAIL,
+  VISITATION_METHOD,
+} from '@/models/visitation/visitation';
 import { MemberDropdownType } from '@/components/atoms/common/dropdown/member-dropdown-item';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
@@ -13,7 +16,7 @@ import {
   getTimeStringFromDate,
 } from '@/utils/date';
 import AddVisitationView from '@/components/organisms/visitation/add/add-visitation.view';
-import { VISITATION_STATUS } from '@/constants/status/status';
+import { TASK_STATUS } from '@/constants/status/status';
 
 type AddVisitationProps = {};
 
@@ -25,7 +28,7 @@ const AddVisitation = ({}: AddVisitationProps) => {
   );
 
   /* ── Status ── */
-  const onChangeStatus = (status: VISITATION_STATUS) =>
+  const onChangeStatus = (status: TASK_STATUS) =>
     dispatch(setTargetVisitation({ ...targetVisitation, status: status }));
 
   /* ── Title ── */
@@ -209,12 +212,20 @@ const AddVisitation = ({}: AddVisitationProps) => {
 
   /** content/pray 입력 핸들러 */
   const onChangeContent = (content: string) => {
+    const prevContent =
+      targetVisitation.visitationDetails?.[0]?.visitationContent || BLANK;
+
+    if (prevContent === content) return; // 값이 같으면 dispatch 안 함
+
+    const originalDetail =
+      targetVisitation.visitationDetails?.[0] || DEFAULT_VISITATION_DETAIL;
+
     dispatch(
       setTargetVisitation({
         ...targetVisitation,
         visitationDetails: [
           {
-            ...targetVisitation.visitationDetails[0],
+            ...originalDetail,
             visitationContent: content,
           },
         ],
@@ -223,12 +234,20 @@ const AddVisitation = ({}: AddVisitationProps) => {
   };
 
   const onChangePray = (pray: string) => {
+    const prevPray =
+      targetVisitation.visitationDetails?.[0]?.visitationPray || BLANK;
+
+    if (prevPray === pray) return; // 값이 같으면 dispatch 안 함
+
+    const originalDetail =
+      targetVisitation.visitationDetails?.[0] || DEFAULT_VISITATION_DETAIL;
+
     dispatch(
       setTargetVisitation({
         ...targetVisitation,
         visitationDetails: [
           {
-            ...targetVisitation.visitationDetails[0],
+            ...originalDetail,
             visitationPray: pray,
           },
         ],

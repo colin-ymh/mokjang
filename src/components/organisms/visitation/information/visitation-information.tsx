@@ -5,7 +5,7 @@ import { VisitationsApi } from '@/api/visitations/visitations.api';
 import React, { useState } from 'react';
 import { setVisitations } from '@/redux/reducers/filter/visitation-filter-reducer';
 import VisitationInformationView from '@/components/organisms/visitation/information/visitation-information.view';
-import { VISITATION_STATUS } from '@/constants/status/status';
+import { TASK_STATUS } from '@/constants/status/status';
 
 type VisitationInformationProps = {};
 
@@ -28,7 +28,7 @@ const VisitationInformation = ({}: VisitationInformationProps) => {
 
   // ===== status =====
 
-  const onChangeStatus = (status: VISITATION_STATUS) => {
+  const onChangeStatus = (status: TASK_STATUS) => {
     try {
       visitationsApi
         .editVisitation(

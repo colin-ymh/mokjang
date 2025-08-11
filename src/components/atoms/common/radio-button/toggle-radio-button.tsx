@@ -3,7 +3,7 @@ import { RadioButtonValue } from '@/components/atoms/common/radio-button/radio-b
 import { GRAY, MAIN, WHITE } from '@/constants/styles/color';
 import { MainText } from '@/components/atoms/common/text/main-text';
 
-const RangeRadioButtonContainer = styled.div`
+const ToggleRadioButtonContainer = styled.div`
   display: flex;
   flex-direction: row;
   flex-wrap: inherit;
@@ -13,7 +13,7 @@ const RangeRadioButtonContainer = styled.div`
   padding: 3px;
 `;
 
-const RangeRadioButtonItem = styled.div<{
+const ToggleRadioButtonItem = styled.div<{
   $isSelected: boolean;
 }>`
   display: flex;
@@ -27,27 +27,27 @@ const RangeRadioButtonItem = styled.div<{
   cursor: pointer;
 `;
 
-type RangeRadioButtonProps = {
+type ToggleRadioButtonProps = {
   items: RadioButtonValue[];
   selectedValue: any;
   onChange: (value: any) => void;
 };
 
-const RangeRadioButton = ({
+const ToggleRadioButton = ({
   items,
   selectedValue,
   onChange,
-}: RangeRadioButtonProps) => {
+}: ToggleRadioButtonProps) => {
   const onClick = (index: number) => {
     // items 중 해당 index에 해당하는 값의 전송
     onChange(items[index].value);
   };
 
   return (
-    <RangeRadioButtonContainer>
+    <ToggleRadioButtonContainer>
       {items.map((item, index) => {
         return (
-          <RangeRadioButtonItem
+          <ToggleRadioButtonItem
             key={item.value}
             $isSelected={selectedValue === item.value}
             onClick={() => onClick(index)}
@@ -57,11 +57,11 @@ const RangeRadioButton = ({
             >
               {item.title}
             </MainText>
-          </RangeRadioButtonItem>
+          </ToggleRadioButtonItem>
         );
       })}
-    </RangeRadioButtonContainer>
+    </ToggleRadioButtonContainer>
   );
 };
 
-export default RangeRadioButton;
+export default ToggleRadioButton;

@@ -4,6 +4,7 @@ import { AppDispatch, RootState } from '@/redux/store';
 import {
   fetchTasks,
   setTaskPage,
+  setTasks,
 } from '@/redux/reducers/filter/task-filter-reducer';
 
 import TaskListView from '@/components/organisms/task/list/task-list.view';
@@ -17,13 +18,14 @@ import { useScopedI18n } from '../../../../../locales/client';
 import { TasksApi } from '@/api/tasks/tasks.api';
 import { getIsWellFormedTitle } from '@/utils/check';
 import { BLANK, HEADER_BAR } from '@/constants/constant';
+import { TASK_STATUS } from '@/constants/status/status';
 
 type TaskListProps = {
   headerType?: HEADER_BAR;
 };
 
 const TaskList = ({ headerType }: TaskListProps) => {
-  const taskApi = new TasksApi(false);
+  const tasksApi = new TasksApi(false);
   const dispatch = useDispatch<AppDispatch>();
   const churchId: string = useSelector(
     (state: RootState) => state.church.churchId
@@ -93,7 +95,7 @@ const TaskList = ({ headerType }: TaskListProps) => {
   // 목록에서 교인을 선택하여 상세 페이지로 이동
   const onClickTaskItem = async (taskId: string) => {
     try {
-      const response = await taskApi.getTask({ churchId, taskId });
+      const response = await tasksApi.getTask({ churchId, taskId });
       const task = response.data.data;
 
       dispatch(setTargetTask(task));
@@ -113,7 +115,7 @@ const TaskList = ({ headerType }: TaskListProps) => {
   // 업무 삭제하기
   const onClickDelete = async () => {
     try {
-      await taskApi.deleteTask({
+      await tasksApi.deleteTask({
         churchId,
         taskId: targetTask.id,
       });
@@ -136,9 +138,9 @@ const TaskList = ({ headerType }: TaskListProps) => {
   };
 
   const onClickEditClose = async () => {
-    const taskApi = new TasksApi(false);
+    const tasksApi = new TasksApi(false);
     setIsEditShown(false);
-    const response = await taskApi.getTask({
+    const response = await tasksApi.getTask({
       churchId,
       taskId: targetTask.id,
     });
@@ -148,7 +150,7 @@ const TaskList = ({ headerType }: TaskListProps) => {
 
   const onClickEditDone = async () => {
     try {
-      await taskApi
+      await tasksApi
         .editTask(
           { churchId, taskId: targetTask.id },
           {
@@ -175,6 +177,28 @@ const TaskList = ({ headerType }: TaskListProps) => {
       dispatch(setToastText(t_popup('saveComplete')));
     }
   };
+
+  // ===== status =====
+  const onChangeStatus = (status: TASK_STATUS) => {
+    try {
+      tasksApi
+        .editTask({ churchId, taskId: targetTask.id }, { status })
+        .then((response) => {
+          const newTask = response.data.data;
+
+          dispatch(setTargetTask({ ...targetTask, status }));
+
+          const newTasks = tasks.map((v) => {
+            return v.id !== newTask.id ? v : { ...v, status };
+          });
+
+          dispatch(setTasks(newTasks));
+        });
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
+    }
+  };
+  // ===== status =====
 
   useEffect(() => {
     setIsPopupShown(false);
@@ -220,6 +244,7 @@ const TaskList = ({ headerType }: TaskListProps) => {
       onClickDelete,
       onClickConfirmOpen,
       onClickConfirmClose,
+      onChangeStatus,
     },
   };
 

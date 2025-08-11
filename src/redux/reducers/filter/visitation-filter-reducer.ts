@@ -5,12 +5,12 @@ import { RootState } from '@/redux/store';
 
 import { VISITATION } from '@/constants/column/visitation-column';
 import { VisitationsApi } from '@/api/visitations/visitations.api';
-import { VISITATION_STATUS } from '@/constants/status/status';
+import { TASK_STATUS } from '@/constants/status/status';
 import { DEFAULT_MEMBER, Member } from '@/models/member/member';
 import { VisitationReportsApi } from '@/api/reports/visitation-reports.api';
 
 type VISITATION_FILTER = {
-  [VISITATION.STATUS]: VISITATION_STATUS[];
+  [VISITATION.STATUS]: TASK_STATUS[];
   [VISITATION.DATE]: string;
   [VISITATION.TITLE]: string;
   [VISITATION.IN_CHARGE]: Member;

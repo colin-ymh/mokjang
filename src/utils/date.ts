@@ -66,10 +66,10 @@ export const getTimeStringFromDate = (date: Date) => {
 };
 
 /**
- * Date Object => YYYY-MM-dd T HH:mm
+ * Date Object => YYYY-MM-ddTHH:mm:ss
  * @param date
  */
-export const getStringFromDate = (date: Date) => {
+export const getFullStringFromDate = (date: Date) => {
   if (!date) return BLANK;
 
   const year = date.getFullYear();
@@ -79,7 +79,7 @@ export const getStringFromDate = (date: Date) => {
   const hour = String(date.getHours()).padStart(2, '0');
   const minute = String(date.getMinutes()).padStart(2, '0');
 
-  return `${year}-${month}-${day} ${hour}:${minute}`;
+  return `${year}-${month}-${day}T${hour}:${minute}:00`;
 };
 
 /**

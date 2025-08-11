@@ -16,7 +16,7 @@ import { Schedule } from '@/models/calendar/calendar';
 import CancelIcon from '../../../../../public/svg/cancel.svg';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
-import RangeRadioButton from '@/components/atoms/common/radio-button/range-radio-button';
+import ToggleRadioButton from '@/components/atoms/common/radio-button/toggle-radio-button';
 import { useWeekMonthRangeRadioButtonItems } from '@/hooks/radio-button/radio-button-items';
 import MyScheduleList from '@/components/atoms/home/my-schedule-list';
 
@@ -94,7 +94,7 @@ const MyScheduleWidgetView = ({
           <MainText size={SIZE.EXTRA_LARGE}>
             {t_title(HOME_WIDGET.MY_SCHEDULE)}
           </MainText>
-          <RangeRadioButton
+          <ToggleRadioButton
             selectedValue={range}
             onChange={onClickRange}
             items={rangeRadioItems}

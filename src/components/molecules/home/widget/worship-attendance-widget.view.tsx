@@ -6,7 +6,7 @@ import { SIZE } from '@/constants/styles/style';
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
 import { HOME_WIDGET, RANGE } from '@/constants/constant';
 import React from 'react';
-import RangeRadioButton from '@/components/atoms/common/radio-button/range-radio-button';
+import ToggleRadioButton from '@/components/atoms/common/radio-button/toggle-radio-button';
 import { useMonthQuarterHalfRangeRadioButtonItems } from '@/hooks/radio-button/radio-button-items';
 import { WorshipEnrollment } from '@/models/worship/worship';
 import WorshipEnrollmentList from '@/components/atoms/home/worship-enrollment-list';
@@ -106,7 +106,7 @@ const WorshipAttendanceWidgetView = ({
 
         <RowContainer>
           {/* 범위 설정 */}
-          <RangeRadioButton
+          <ToggleRadioButton
             selectedValue={range}
             onChange={onClickRange}
             items={rangeRadioItems}

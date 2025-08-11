@@ -20,7 +20,7 @@ type AddOfficerMemberModalProps = {
   officer: Officer;
   selectedMembers: Member[];
   setSelectedMembers: Dispatch<SetStateAction<Member[]>>;
-  startDate: Date;
+  startDate: Date | null;
   onChangeStartDate: (date: Date | null) => void;
 };
 

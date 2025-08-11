@@ -14,6 +14,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import TaskInformation from '@/components/organisms/task/information/task-information';
 import WrappedPagePopup from '@/components/atoms/common/popup/wrapped-page-popup';
+import { TASK_STATUS } from '@/constants/status/status';
 
 const TaskListContainer = styled.div`
   display: flex;
@@ -57,6 +58,7 @@ type TaskListViewProps = {
     onClickEditDone: () => void;
     onClickEditOpen: () => void;
     onClickEditClose: () => void;
+    onChangeStatus: (status: TASK_STATUS) => void;
   };
 };
 
@@ -77,6 +79,7 @@ const TaskListView = (props: TaskListViewProps) => {
     onClickEditDone,
     onClickEditOpen,
     onClickEditClose,
+    onChangeStatus,
   } = props.information;
 
   const { targetTask } = useSelector((state: RootState) => state.targetTask);
@@ -104,6 +107,14 @@ const TaskListView = (props: TaskListViewProps) => {
         cancelText={t_button('delete')}
         onClickDone={onClickEditOpen}
         onClickCancel={onClickConfirmOpen}
+        status={targetTask?.status}
+        onChangeStatus={onChangeStatus}
+        widthPercentage={50}
+        stageThreeTop={190}
+        stageTwoTop={40}
+        inCharge={targetTask?.inCharge}
+        startDate={targetTask?.startDate}
+        endDate={targetTask?.endDate}
       >
         <>
           {/* 삭제 확인 팝업 */}

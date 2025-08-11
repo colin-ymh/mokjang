@@ -425,18 +425,18 @@ export const getTranslatedTermCount = (locale: LOCALE, term: number) => {
 /**
  *
  * @param locale
- * @param sessionsCount
- * @param completedSessionsCount
+ * @param completed
+ * @param incomplete
  */
 export const getTranslatedSessionProgressStatus = (
   locale: LOCALE,
-  sessionsCount: number,
-  completedSessionsCount: number
+  completed: number,
+  incomplete: number
 ) => {
   if (locale === LOCALE.KO) {
-    return `${sessionsCount}회차 중 ${completedSessionsCount}회차 진행됨`;
+    return `${completed}/${completed + incomplete}회차 완료`;
   } else {
-    return `${sessionsCount} out of ${completedSessionsCount} sessions completed`;
+    return `${completed}/${completed + incomplete} sessions completed`;
   }
 };
 

@@ -1,6 +1,6 @@
 import { BLANK } from '@/constants/constant';
 import { DEFAULT_MEMBER, Member } from '@/models/member/member';
-import { STATUS, VISITATION_STATUS } from '@/constants/status/status';
+import { STATUS, TASK_STATUS } from '@/constants/status/status';
 import { VisitationReport } from '@/models/report/report';
 
 export enum VISITATION_METHOD {
@@ -24,13 +24,13 @@ export type VisitationDetail = {
 export type Visitation = {
   id: string;
   churchId: string;
-  status: VISITATION_STATUS;
+  status: TASK_STATUS;
   visitationMethod: VISITATION_METHOD;
   title: string;
   inChargeId: string;
   startDate: string;
   endDate: string;
-  visitationDetails: VisitationDetail[];
+  visitationDetails: [VisitationDetail];
   receiverIds: string[];
   creatorId: string;
   members: Member[];

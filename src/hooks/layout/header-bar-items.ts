@@ -265,11 +265,11 @@ export const useEducationTermHeaderBarItems = () => {
 
   const items = [
     {
-      id: EDUCATION_TERM_CONTENT_ID.SESSIONS,
+      value: EDUCATION_TERM_CONTENT_ID.SESSIONS,
       title: t_header(EDUCATION_TERM_CONTENT_ID.SESSIONS),
     },
     {
-      id: EDUCATION_TERM_CONTENT_ID.ENROLLMENTS,
+      value: EDUCATION_TERM_CONTENT_ID.ENROLLMENTS,
       title: t_header(EDUCATION_TERM_CONTENT_ID.ENROLLMENTS),
     },
   ];

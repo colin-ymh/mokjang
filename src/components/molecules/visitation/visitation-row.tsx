@@ -11,7 +11,7 @@ import VisitationRowView, {
 import { VisitationFilteredItemType } from '@/components/atoms/visitation/visitation-filtered-item';
 import { setVisitationFilter } from '@/redux/reducers/filter/visitation-filter-reducer';
 
-import { VISITATION_STATUS } from '@/constants/status/status';
+import { TASK_STATUS } from '@/constants/status/status';
 
 const VisitationRow = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -44,12 +44,12 @@ const VisitationRow = () => {
   };
 
   // 상태 필터
-  const [statusFilter, setStatusFilter] = useState<
-    VISITATION_STATUS | undefined
-  >(undefined);
+  const [statusFilter, setStatusFilter] = useState<TASK_STATUS | undefined>(
+    undefined
+  );
 
   // 검색 주제 선택
-  const onClickStatusFilterItem = (value: VISITATION_STATUS) => {
+  const onClickStatusFilterItem = (value: TASK_STATUS) => {
     setStatusFilter(value);
     if (value) {
       dispatch(

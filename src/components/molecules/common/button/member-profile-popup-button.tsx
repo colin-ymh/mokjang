@@ -27,12 +27,16 @@ type MemberProfileButtonProps = {
   member: Member;
   isOfficerShown?: boolean;
   isGroupLeaderShown?: boolean;
+  width?: number;
+  height?: number;
 };
 
 const MemberProfilePopupButton = ({
   member,
   isOfficerShown,
   isGroupLeaderShown,
+  width,
+  height,
 }: MemberProfileButtonProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const { churchId } = useSelector((state: RootState) => state.church);
@@ -69,6 +73,8 @@ const MemberProfilePopupButton = ({
         member={member}
         onClick={onClickMember}
         isOfficerShown={isOfficerShown}
+        width={width}
+        height={height}
       />
       <CustomPopup
         isShow={isShow}

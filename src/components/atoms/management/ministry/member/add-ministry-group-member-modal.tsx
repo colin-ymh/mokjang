@@ -19,20 +19,20 @@ import { MinistryGroupsApi } from '@/api/management/ministry/ministry-groups.api
 
 type AddMinistryGroupMemberModalProps = {
   ministryGroup: MinistryGroup;
-  selectedMinistryId: string;
+  startDate: Date | null;
   selectedMembers: Member[];
   setSelectedMembers: Dispatch<SetStateAction<Member[]>>;
   ministries: Ministry[];
-  onChangeMinistryItem: (id: string) => void;
+  onChangeStartDate: (date: Date | null) => void;
 };
 
 const AddMinistryGroupMemberModal = ({
   ministryGroup,
-  selectedMinistryId,
+  startDate,
   selectedMembers,
   setSelectedMembers,
   ministries,
-  onChangeMinistryItem,
+  onChangeStartDate,
 }: AddMinistryGroupMemberModalProps) => {
   const ministryGroupMembersApi = new MinistryGroupMembersApi(false);
   const ministryGroupsApi = new MinistryGroupsApi(false);
@@ -145,8 +145,8 @@ const AddMinistryGroupMemberModal = ({
         onChangeSearch={onChangeSearch}
         onClickMember={onClickMember}
         ministries={ministries}
-        selectedMinistryId={selectedMinistryId}
-        onChangeMinistryItem={onChangeMinistryItem}
+        startDate={startDate}
+        onChangeStartDate={onChangeStartDate}
         scrollRef={scrollRef}
         onScroll={onScroll}
       />

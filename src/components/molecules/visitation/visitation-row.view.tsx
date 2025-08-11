@@ -6,8 +6,8 @@ import { BLACK, GRAY, WHITE } from '@/constants/styles/color';
 import { VISITATION } from '@/constants/column/visitation-column';
 
 import {
+  useTaskStatusFilterDropdownItems,
   useVisitationSearchFilterDropdownItems,
-  useVisitationStatusFilterDropdownItems,
 } from '@/hooks/dropdown/dropdown-items';
 import useWindowSize from '@/hooks/window/window';
 import { useScopedI18n } from '../../../../locales/client';
@@ -19,7 +19,7 @@ import { RootState } from '@/redux/store';
 import { useSelector } from 'react-redux';
 import StatusDropdown from '@/components/atoms/common/dropdown/status-dropdown';
 import SearchInput from '@/components/atoms/common/input/search-input';
-import { VISITATION_STATUS } from '@/constants/status/status';
+import { TASK_STATUS } from '@/constants/status/status';
 
 import Calendar from '../../../../public/svg/calendar.svg';
 import SvgIcon from '@/components/atoms/common/icon/svg-icon';
@@ -82,12 +82,12 @@ export type VISITATION_SEARCH_FILTER = VISITATION.TITLE | VISITATION.IN_CHARGE;
 
 type VisitationViewProps = {
   isModalShown: boolean;
-  statusFilter: VISITATION_STATUS | undefined;
+  statusFilter: TASK_STATUS | undefined;
   searchFilter: VISITATION_SEARCH_FILTER;
   searchValue: string;
   searchRef: Ref<HTMLInputElement>;
   filteredItems: VisitationFilteredItemType[];
-  onClickStatusFilterItem: (value: VISITATION_STATUS) => void;
+  onClickStatusFilterItem: (value: TASK_STATUS) => void;
   onClickSearchFilterItem: (value: VISITATION_SEARCH_FILTER) => void;
   onChangeSearchValue: (event: ChangeEvent<HTMLInputElement>) => void;
   onClickPeriodModal: () => void;
@@ -115,7 +115,7 @@ const VisitationRowView = ({
 }: VisitationViewProps) => {
   const t_button = useScopedI18n('button');
   const searchFilterDropdownItems = useVisitationSearchFilterDropdownItems();
-  const statusFilterDropdownItems = useVisitationStatusFilterDropdownItems();
+  const statusFilterDropdownItems = useTaskStatusFilterDropdownItems();
 
   const { visitationFilter } = useSelector(
     (state: RootState) => state.visitationFilter

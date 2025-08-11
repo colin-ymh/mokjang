@@ -16,7 +16,7 @@ import {
 import { AppDispatch, RootState } from '@/redux/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { setVisitationFilter } from '@/redux/reducers/filter/visitation-filter-reducer';
-import { VISITATION_STATUS } from '@/constants/status/status';
+import { TASK_STATUS } from '@/constants/status/status';
 
 const ItemContainer = styled.div`
   display: flex;
@@ -100,7 +100,7 @@ const VisitationFilteredItem = ({ item }: VisitationFilteredItemProps) => {
     switch (item.title) {
       case VISITATION.STATUS:
         currentItem = item.value
-          .map((status) => t(status as VISITATION_STATUS))
+          .map((status) => t(status as TASK_STATUS))
           .join(', ');
         break;
       case VISITATION.METHOD:

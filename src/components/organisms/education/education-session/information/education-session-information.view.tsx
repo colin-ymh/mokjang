@@ -3,164 +3,226 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { useI18n } from '../../../../../../locales/client';
 import { MainText } from '@/components/atoms/common/text/main-text';
-import { GRAY, GREEN, WHITE } from '@/constants/styles/color';
+import { GRAY, GREEN, MAIN } from '@/constants/styles/color';
 import React from 'react';
 import { SIZE } from '@/constants/styles/style';
 import { usePathname } from 'next/navigation';
 import { LOCALE } from '@/constants/state/locale';
-import { EDUCATION_SESSION_STATUS } from '@/constants/status/status';
+import { TASK_STATUS } from '@/constants/status/status';
 import MemberProfilePopupButton from '@/components/molecules/common/button/member-profile-popup-button';
-import { getTranslatedDateFromDateString } from '@/utils/translate';
+import {
+  getTranslatedDateFromDateString,
+  getTranslatedTerm,
+} from '@/utils/translate';
 import StatusDropdown from '@/components/atoms/common/dropdown/status-dropdown';
-import { useEducationSessionStatusDropdownItems } from '@/hooks/dropdown/dropdown-items';
+import { useTaskStatusDropdownItems } from '@/hooks/dropdown/dropdown-items';
 import Button from '@/components/atoms/common/button/button';
 import EducationAttendanceTable from '@/components/molecules/education/education-attendance/education-attendance-table';
+import User from '../../../../../../public/svg/user.svg';
+import Users from '../../../../../../public/svg/users.svg';
+import Book from '../../../../../../public/svg/book.svg';
+import Pin from '../../../../../../public/svg/pin.svg';
+import Calendar from '../../../../../../public/svg/calendar.svg';
+import SvgIcon from '@/components/atoms/common/icon/svg-icon';
 
 const InformationContainer = styled.div`
   display: flex;
-  flex-direction: column;
-  gap: 20px;
   width: 100%;
+  flex-direction: column;
 `;
 
-const CardContainer = styled.div<{ $minHeight?: number }>`
+const HeaderContainer = styled.div`
   display: flex;
-  flex-direction: column;
-  gap: 10px;
-  border: 1px solid ${GRAY.LIGHT};
-  border-radius: 10px;
-  background-color: ${WHITE};
-  min-height: ${({ $minHeight }) => $minHeight && $minHeight}px;
-`;
-
-const RowCardContainer = styled.div<{ $minHeight?: number }>`
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  width: 100%;
-  border: 1px solid ${GRAY.LIGHT};
-  border-radius: 10px;
-  background-color: ${WHITE};
-  min-height: ${({ $minHeight }) => $minHeight && $minHeight}px;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 30px;
+  height: 40px;
 `;
 
 const ContentContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  padding: 20px;
+  gap: 30px;
+  padding: 30px;
 `;
 
 const RowContainer = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  align-items: center;
   width: 100%;
-  gap: 20px;
+  gap: 30px;
+`;
+
+const TitleContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+`;
+
+const TableHeader = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 const TableContainer = styled.div`
   display: flex;
   border: 1px solid ${GRAY.LIGHT};
   border-radius: 10px;
-  height: 100%;
   overflow: hidden;
+`;
+
+const RowLine = styled.div`
+  display: flex;
+  width: 100%;
+  height: 0.6px;
+  background-color: ${GRAY.LIGHT};
+`;
+
+const MemberList = styled.div`
+  display: flex;
+  gap: 10px;
+  flex-direction: row;
 `;
 
 const StatusContainer = styled.div`
   display: flex;
   flex-direction: row;
+  align-items: center;
   gap: 5px;
 `;
 
+const ColumnContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 20px;
+`;
+
+const TotalBar = styled.div`
+  display: flex;
+  width: 80px;
+  border-radius: 5px;
+  height: 7px;
+  background-color: ${GRAY.LIGHT};
+  position: relative;
+`;
+
+const CountBar = styled.div<{ $count: number; max: number }>`
+  width: ${({ $count, max }) => (max ? ($count / max) * 100 : 0)}%;
+  border-radius: 5px;
+  height: 7px;
+  background-color: ${MAIN.DEFAULT};
+  position: absolute;
+  left: 0;
+`;
+
 type EducationSessionInformationViewProps = {
-  onChangeStatus: (status: EDUCATION_SESSION_STATUS) => void;
+  onChangeStatus: (status: TASK_STATUS) => void;
 };
 
 const EducationSessionInformationView = ({
   onChangeStatus,
 }: EducationSessionInformationViewProps) => {
   const t = useI18n();
+  const { targetEducationTerm } = useSelector(
+    (state: RootState) => state.targetEducationTerm
+  );
   const { targetEducationSession } = useSelector(
     (state: RootState) => state.targetEducationSession
   );
   const pathname = usePathname();
   const locale = pathname.split('/')[1] as LOCALE;
 
-  const statusDropdownItems = useEducationSessionStatusDropdownItems();
+  const statusDropdownItems = useTaskStatusDropdownItems();
 
   return (
     <InformationContainer>
-      <RowContainer>
+      {/* 제목 */}
+      <HeaderContainer>
+        <MainText size={SIZE.EXTRA_LARGE} fontSize={22}>
+          {`${targetEducationTerm.educationName} - ${getTranslatedTerm(locale, targetEducationTerm.term)} - ${targetEducationSession.session}${t('session')} ${targetEducationSession.title}`}
+        </MainText>
+        <StatusDropdown
+          value={targetEducationSession.status}
+          items={statusDropdownItems}
+          onChangeItem={onChangeStatus}
+          width={100}
+          height={30}
+        />
+      </HeaderContainer>
+      <ContentContainer>
         {/* 담당자 */}
-        <RowCardContainer $minHeight={100}>
-          <ContentContainer>
-            <MainText size={SIZE.EXTRA_LARGE}>{t('inCharge')}</MainText>
-            <MemberProfilePopupButton
-              member={targetEducationSession.inCharge}
-            />
-          </ContentContainer>
-        </RowCardContainer>
+        <RowContainer>
+          <TitleContainer>
+            <SvgIcon svg={User} color={GRAY.SEMI_DARK} />
+            <MainText color={GRAY.SEMI_DARK}>{t('inCharge')}</MainText>
+          </TitleContainer>
+          <MemberProfilePopupButton member={targetEducationSession.inCharge} />
+        </RowContainer>
         {/* 장소 */}
-        <RowCardContainer $minHeight={100}>
-          <ContentContainer>
-            <MainText size={SIZE.EXTRA_LARGE}>{t('location')}</MainText>
-            <MainText>{'본당'}</MainText>
-          </ContentContainer>
-        </RowCardContainer>
+        <RowContainer>
+          <TitleContainer>
+            <SvgIcon svg={Pin} color={GRAY.SEMI_DARK} />
+            <MainText color={GRAY.SEMI_DARK}>{t('location')}</MainText>
+          </TitleContainer>
+          <MainText>{'본당'}</MainText>
+        </RowContainer>
         {/* 기간 */}
-        <RowCardContainer $minHeight={100}>
-          <ContentContainer>
-            <MainText size={SIZE.EXTRA_LARGE}>{t('period')}</MainText>
-            <MainText>
-              {`${getTranslatedDateFromDateString(locale, targetEducationSession.startDate)} - ${getTranslatedDateFromDateString(locale, targetEducationSession.endDate)}`}
-            </MainText>
-          </ContentContainer>
-        </RowCardContainer>
+        <RowContainer>
+          <TitleContainer>
+            <SvgIcon svg={Calendar} color={GRAY.SEMI_DARK} />
+            <MainText color={GRAY.SEMI_DARK}>{t('period')}</MainText>
+          </TitleContainer>
+          <MainText>
+            {`${getTranslatedDateFromDateString(locale, targetEducationSession.startDate)} - ${getTranslatedDateFromDateString(locale, targetEducationSession.endDate)}`}
+          </MainText>
+        </RowContainer>
         {/* 상태 */}
-        <RowCardContainer $minHeight={100}>
-          <ContentContainer>
-            <MainText size={SIZE.EXTRA_LARGE}>{t('status')}</MainText>
-            <StatusContainer>
-              <MainText whiteSpace={'pre-wrap'}></MainText>
-              <StatusDropdown
-                value={targetEducationSession.status}
-                items={statusDropdownItems}
-                onChangeItem={onChangeStatus}
-                width={100}
-              />
-            </StatusContainer>
-          </ContentContainer>
-        </RowCardContainer>
-      </RowContainer>
-
-      {/* 수업 내용 */}
-      <CardContainer $minHeight={100}>
-        <ContentContainer>
-          <MainText size={SIZE.EXTRA_LARGE}>{t('content')}</MainText>
-        </ContentContainer>
-      </CardContainer>
-
-      {/* 수강교인 */}
-      <CardContainer $minHeight={200}>
-        <ContentContainer>
-          <RowContainer>
-            <MainText size={SIZE.EXTRA_LARGE}>
-              {t('educationEnrollment')}
-            </MainText>
-            <Button
-              text={t('button.allAttended')}
-              height={30}
-              width={'auto'}
-              backgroundColor={GREEN.DEFAULT}
-              // onClick={onClickAddEnrollmentsOpen}
-            />
-          </RowContainer>
-          <TableContainer>
-            <EducationAttendanceTable />
-          </TableContainer>
-        </ContentContainer>
-      </CardContainer>
+        <RowContainer>
+          <TitleContainer>
+            <SvgIcon svg={User} color={GRAY.SEMI_DARK} />
+            <MainText color={GRAY.SEMI_DARK}>{t('status')}</MainText>
+          </TitleContainer>
+          <StatusContainer></StatusContainer>
+        </RowContainer>
+        {/* 보고대상자 */}
+        <ColumnContainer>
+          <TitleContainer>
+            <SvgIcon svg={Users} color={GRAY.DARK} />
+            <MainText color={GRAY.DARK}>{t('receiver')}</MainText>
+          </TitleContainer>
+          <MemberList></MemberList>
+        </ColumnContainer>
+        <RowLine />
+        {/* 수업 내용 */}
+        <ColumnContainer>
+          <TitleContainer>
+            <SvgIcon svg={Book} color={GRAY.SEMI_DARK} />
+            <MainText color={GRAY.SEMI_DARK}>{t('content')}</MainText>
+          </TitleContainer>
+        </ColumnContainer>
+        <RowLine />
+        {/* 수강교인 */}
+        <TableHeader>
+          <MainText color={GRAY.SEMI_DARK}>{t('educationEnrollment')}</MainText>
+          <Button
+            text={t('button.allAttended')}
+            height={30}
+            width={'auto'}
+            backgroundColor={GREEN.DEFAULT}
+            // onClick={onClickAddEnrollmentsOpen}
+          />
+        </TableHeader>
+        <TableContainer>
+          <EducationAttendanceTable />
+        </TableContainer>
+      </ContentContainer>
     </InformationContainer>
   );
 };

@@ -3,7 +3,7 @@ import { SERVER_URL, TEST_SERVER_URL } from '@/constants/state/url';
 import { CustomError } from '@/api/error/error';
 import authorizeAxios from '@/api/authorize-axios';
 
-import { EDUCATION_SESSION_STATUS } from '@/constants/status/status';
+import { TASK_STATUS } from '@/constants/status/status';
 
 type GetEducationSessionsParams = {
   churchId: string;
@@ -30,7 +30,7 @@ type CreateEducationSessionBody = {
   endDate: string;
   inChargeId?: string;
   content: string;
-  status: EDUCATION_SESSION_STATUS;
+  status: TASK_STATUS;
   receiverIds: string[];
 };
 
@@ -47,7 +47,7 @@ type EditEducationSessionBody = {
   endDate?: string;
   inChargeId?: string;
   content?: string;
-  status?: EDUCATION_SESSION_STATUS;
+  status?: TASK_STATUS;
 };
 
 type DeleteEducationSessionParams = {

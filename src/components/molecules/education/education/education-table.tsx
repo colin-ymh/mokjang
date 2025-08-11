@@ -39,6 +39,8 @@ import { getTranslatedTerm } from '@/utils/translate';
 import { usePathname } from 'next/navigation';
 import { LOCALE } from '@/constants/state/locale';
 import { getDateFromDateString, getDateStringFromDate } from '@/utils/date';
+import { TASK_STATUS } from '@/constants/status/status';
+import { setEducationTerms } from '@/redux/reducers/filter/education-term-filter-reducer';
 
 export type EducationTableProps = {
   loadEducations: () => void;
@@ -376,23 +378,23 @@ const EducationTable = ({ loadEducations }: EducationTableProps) => {
         educationId: educationTerm.educationId,
         educationTermId: educationTerm.id,
       });
-      const enrollmentResponse =
-        await educationEnrollmentsApi.getEducationEnrollments({
-          churchId,
-          educationId: educationTerm.educationId,
-          educationTermId: educationTerm.id,
-        });
+      // const enrollmentResponse =
+      //   await educationEnrollmentsApi.getEducationEnrollments({
+      //     churchId,
+      //     educationId: educationTerm.educationId,
+      //     educationTermId: educationTerm.id,
+      //   });
 
       const newEducationTerm = response.data.data;
       const educationSessions = sessionResponse.data.data;
-      const educationEnrollments = enrollmentResponse.data.data;
+      // const educationEnrollments = enrollmentResponse.data.data;
 
       dispatch(setTargetEducation(education));
       dispatch(
         setTargetEducationTerm({
           ...newEducationTerm,
           educationSessions,
-          educationEnrollments,
+          // educationEnrollments,
         })
       );
       setIsEducationTermInformationShown(true);
@@ -537,6 +539,56 @@ const EducationTable = ({ loadEducations }: EducationTableProps) => {
 
     setIsEducationTermSaveEnabled(true);
   }, [targetEducationTerm]);
+
+  const onChangeTermStatus = (status: TASK_STATUS) => {
+    try {
+      educationTermsApi
+        .editEducationTerm(
+          {
+            churchId,
+            educationId: targetEducation.id,
+            educationTermId: targetEducationTerm.id,
+          },
+          { status: status }
+        )
+        .then((response) => {
+          const newEducationTerm = response.data.data;
+
+          dispatch(
+            setTargetEducationTerm({
+              ...targetEducationTerm,
+              status: status,
+            })
+          );
+
+          const newEducationTerms = targetEducation.educationTerms.map(
+            (term) => {
+              return term.id !== newEducationTerm.id
+                ? term
+                : { ...term, status: status };
+            }
+          );
+
+          dispatch(setEducationTerms(newEducationTerms));
+
+          const newEducations = educations.map((education) => {
+            if (education.id === targetEducationTerm.educationId) {
+              return {
+                ...education,
+                educationTerms: newEducationTerms,
+              };
+            } else {
+              return education;
+            }
+          });
+
+          dispatch(setEducations(newEducations));
+        });
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
+    }
+  };
+  // ===== status =====
   // ------------------------- 교육 기수 ---------------------------
 
   // ------------------------- 교육 회차 ---------------------------
@@ -747,6 +799,67 @@ const EducationTable = ({ loadEducations }: EducationTableProps) => {
 
     setIsEducationSessionSaveEnabled(true);
   }, [targetEducationSession]);
+
+  const onChangeSessionStatus = (status: TASK_STATUS) => {
+    try {
+      educationSessionsApi
+        .editEducationSession(
+          {
+            churchId,
+            educationId: targetEducation.id,
+            educationTermId: targetEducationTerm.id,
+            educationSessionId: targetEducationSession.id,
+          },
+          { status: status }
+        )
+        .then((response) => {
+          const newEducationSession: EducationSession = response.data.data;
+
+          dispatch(
+            setTargetEducationSession({
+              ...targetEducationSession,
+              status: status,
+            })
+          );
+
+          const newEducationSessions: EducationSession[] =
+            targetEducationTerm.educationSessions.map((session) => {
+              if (session.id === newEducationSession.id) {
+                return newEducationSession;
+              } else {
+                return session;
+              }
+            });
+
+          const newTargetEducationTerm = {
+            ...targetEducationTerm,
+            educationSessions: newEducationSessions,
+          };
+          dispatch(setTargetEducationTerm(newTargetEducationTerm));
+
+          const newEducationTerms = targetEducation.educationTerms.map(
+            (term) =>
+              term.id === newTargetEducationTerm.id
+                ? newTargetEducationTerm
+                : term
+          );
+
+          const newEducations = educations.map((education) => {
+            if (education.id === targetEducation.id) {
+              return {
+                ...education,
+                educationTerms: newEducationTerms,
+              };
+            } else {
+              return education;
+            }
+          });
+          dispatch(setEducations(newEducations));
+        });
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
+    }
+  };
   // ------------------------- 교육 회차 ---------------------------
 
   const props = {
@@ -767,12 +880,10 @@ const EducationTable = ({ loadEducations }: EducationTableProps) => {
 
       {/* 교육 상세정보 팝업*/}
       <WrappedPagePopup
-        width={1300}
         keyboardDisabled={true}
         isShow={isEducationInformationShown}
         onClickClose={onClickEducationInformationClose}
         headerTitle={targetEducation?.name}
-        headerDescription={targetEducation?.description}
         doneText={t_button('edit')}
         cancelText={t_button('delete')}
         onClickDone={onClickEditEducationOpen}
@@ -799,7 +910,6 @@ const EducationTable = ({ loadEducations }: EducationTableProps) => {
 
       {/* 교육 수정 팝업*/}
       <WrappedPagePopup
-        width={1300}
         keyboardDisabled={true}
         isShow={isEducationEditShown}
         onClickClose={onClickEditEducationClose}
@@ -814,39 +924,45 @@ const EducationTable = ({ loadEducations }: EducationTableProps) => {
 
       {/* 교육기수 상세정보 팝업*/}
       <WrappedPagePopup
-        width={1300}
         keyboardDisabled={true}
         isShow={isEducationTermInformationShown}
         onClickClose={onClickEducationTermInformationClose}
         headerTitle={`${targetEducationTerm.educationName} - ${getTranslatedTerm(locale, targetEducationTerm.term)}`}
-        // headerDescription={targetEducationTerm?.description}
         doneText={t_button('edit')}
         cancelText={t_button('delete')}
         onClickDone={onClickEditEducationTermOpen}
         onClickCancel={onClickDeleteEducationTermConfirmOpen}
+        stageTwoTop={40}
+        stageThreeTop={250}
+        status={targetEducationTerm.status}
+        onChangeStatus={onChangeTermStatus}
+        inCharge={targetEducationTerm.inCharge}
+        startDate={targetEducationTerm.startDate}
+        endDate={targetEducationTerm.endDate}
       >
-        <>
-          {/* 삭제 확인 팝업 */}
-          <ConfirmPopup
-            title={t_popup('deleteEducationTermTitle')}
-            body={t_popup('deleteEducationTermBody')}
-            buttonNum={2}
-            isShow={isEducationTermDeletePopupShown}
-            onClickLeftButton={onClickDeleteEducationTermConfirmClose}
-            onClickRightButton={() => {
-              onClickDeleteEducationTerm();
-              onClickDeleteEducationTermConfirmClose();
-            }}
-            leftButtonText={t_button('cancel')}
-            rightButtonText={t_button('delete')}
-          />
-          <EducationTermInformation />
-        </>
+        {(scrollRef) => (
+          <>
+            {/* 삭제 확인 팝업 */}
+            <ConfirmPopup
+              title={t_popup('deleteEducationTermTitle')}
+              body={t_popup('deleteEducationTermBody')}
+              buttonNum={2}
+              isShow={isEducationTermDeletePopupShown}
+              onClickLeftButton={onClickDeleteEducationTermConfirmClose}
+              onClickRightButton={() => {
+                onClickDeleteEducationTerm();
+                onClickDeleteEducationTermConfirmClose();
+              }}
+              leftButtonText={t_button('cancel')}
+              rightButtonText={t_button('delete')}
+            />
+            <EducationTermInformation scrollRef={scrollRef} />
+          </>
+        )}
       </WrappedPagePopup>
 
       {/* 교육기수 수정 팝업*/}
       <WrappedPagePopup
-        width={1300}
         keyboardDisabled={true}
         isShow={isEducationTermEditShown}
         onClickClose={onClickEditEducationTermClose}
@@ -863,16 +979,21 @@ const EducationTable = ({ loadEducations }: EducationTableProps) => {
 
       {/* 교육회차 상세정보 팝업*/}
       <WrappedPagePopup
-        width={1300}
         keyboardDisabled={true}
         isShow={isEducationSessionInformationShown}
         onClickClose={onClickEducationSessionInformationClose}
-        headerTitle={`${targetEducationTerm.educationName} - ${getTranslatedTerm(locale, targetEducationTerm.term)} - ${targetEducationSession.session}${t('session')}`}
-        headerDescription={targetEducationSession.title}
+        headerTitle={`${targetEducationTerm.educationName} - ${getTranslatedTerm(locale, targetEducationTerm.term)} - ${targetEducationSession.session}${t('session')} ${targetEducationSession.title}`}
         doneText={t_button('edit')}
         cancelText={t_button('delete')}
         onClickDone={onClickEditEducationSessionOpen}
         onClickCancel={onClickDeleteEducationSessionConfirmOpen}
+        stageTwoTop={40}
+        stageThreeTop={250}
+        status={targetEducationSession.status}
+        onChangeStatus={onChangeSessionStatus}
+        inCharge={targetEducationSession.inCharge}
+        startDate={targetEducationSession.startDate}
+        endDate={targetEducationSession.endDate}
       >
         <>
           {/* 삭제 확인 팝업 */}
@@ -895,7 +1016,6 @@ const EducationTable = ({ loadEducations }: EducationTableProps) => {
 
       {/* 교육회차 수정 팝업*/}
       <WrappedPagePopup
-        width={1300}
         keyboardDisabled={true}
         isShow={isEducationSessionEditShown}
         onClickClose={onClickEditEducationSessionClose}

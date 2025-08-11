@@ -3,12 +3,11 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { useI18n } from '../../../../../../locales/client';
 import { MainText } from '@/components/atoms/common/text/main-text';
-import { GRAY, WHITE } from '@/constants/styles/color';
+import { GRAY, MAIN } from '@/constants/styles/color';
 import React, { Dispatch, SetStateAction } from 'react';
-import { SIZE } from '@/constants/styles/style';
 import { usePathname } from 'next/navigation';
 import { LOCALE } from '@/constants/state/locale';
-import { EDUCATION_TERM_STATUS } from '@/constants/status/status';
+import { TASK_STATUS } from '@/constants/status/status';
 import MemberProfilePopupButton from '@/components/molecules/common/button/member-profile-popup-button';
 import {
   getTranslatedAddMemberTitle,
@@ -16,58 +15,68 @@ import {
   getTranslatedSessionProgressStatus,
   getTranslatedTerm,
 } from '@/utils/translate';
-import { useEducationTermStatusDropdownItems } from '@/hooks/dropdown/dropdown-items';
-import StatusDropdown from '@/components/atoms/common/dropdown/status-dropdown';
+import { useTaskStatusDropdownItems } from '@/hooks/dropdown/dropdown-items';
 import { useEducationTermHeaderBarItems } from '@/hooks/layout/header-bar-items';
-import HeaderBar from '@/components/atoms/layout/header/header-bar';
 import { EDUCATION_TERM_CONTENT_ID } from '@/constants/layout/content';
-import EducationEnrollmentTable from '@/components/molecules/education/education-enrollment/education-enrollment-table';
-import Button from '@/components/atoms/common/button/button';
 import CustomPopup from '@/components/atoms/common/popup/custom-popup';
 import AddEnrollmentMemberModal from '@/components/atoms/education/education-term/add-enrollment-member-modal';
 import { Member } from '@/models/member/member';
+import Button from '@/components/atoms/common/button/button';
+import EducationEnrollmentTable from '@/components/molecules/education/education-enrollment/education-enrollment-table';
+
+import User from '../../../../../../public/svg/user.svg';
+import Users from '../../../../../../public/svg/users.svg';
+import Pin from '../../../../../../public/svg/pin.svg';
+import Calendar from '../../../../../../public/svg/calendar.svg';
+import SvgIcon from '@/components/atoms/common/icon/svg-icon';
+import { SIZE } from '@/constants/styles/style';
+import StatusDropdown from '@/components/atoms/common/dropdown/status-dropdown';
+import ToggleRadioButton from '@/components/atoms/common/radio-button/toggle-radio-button';
+import { RadioButtonValue } from '@/components/atoms/common/radio-button/radio-button-list';
 
 const InformationContainer = styled.div`
   display: flex;
-  flex-direction: column;
-  gap: 20px;
   width: 100%;
+  flex-direction: column;
 `;
 
-const CardContainer = styled.div<{ $minHeight?: number }>`
+const HeaderContainer = styled.div`
   display: flex;
-  flex-direction: column;
-  gap: 10px;
-  border: 1px solid ${GRAY.LIGHT};
-  border-radius: 10px;
-  background-color: ${WHITE};
-  min-height: ${({ $minHeight }) => $minHeight && $minHeight}px;
-`;
-
-const RowCardContainer = styled.div<{ $minHeight?: number }>`
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  width: 100%;
-  border: 1px solid ${GRAY.LIGHT};
-  border-radius: 10px;
-  background-color: ${WHITE};
-  min-height: ${({ $minHeight }) => $minHeight && $minHeight}px;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 30px;
+  height: 40px;
 `;
 
 const ContentContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  padding: 20px;
+  gap: 30px;
+  padding: 30px;
 `;
 
 const RowContainer = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  align-items: center;
   width: 100%;
-  gap: 20px;
+  gap: 30px;
+`;
+
+const TitleContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+`;
+
+const TableHeader = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 const TableContainer = styled.div`
@@ -75,25 +84,57 @@ const TableContainer = styled.div`
   border: 1px solid ${GRAY.LIGHT};
   border-radius: 10px;
   overflow: hidden;
-  height: 100%;
 `;
 
-const HeaderBarContainer = styled.div`
+const RowLine = styled.div`
   display: flex;
-  padding: 5px 10px 0 10px;
-  border-bottom: 1px solid ${GRAY.LIGHT};
+  width: 100%;
+  height: 0.6px;
+  background-color: ${GRAY.LIGHT};
+`;
+
+const MemberList = styled.div`
+  display: flex;
+  gap: 10px;
+  flex-direction: row;
 `;
 
 const StatusContainer = styled.div`
   display: flex;
   flex-direction: row;
+  align-items: center;
   gap: 5px;
+`;
+
+const ColumnContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 20px;
+`;
+
+const TotalBar = styled.div`
+  display: flex;
+  width: 80px;
+  border-radius: 5px;
+  height: 7px;
+  background-color: ${GRAY.LIGHT};
+  position: relative;
+`;
+
+const CountBar = styled.div<{ $count: number; max: number }>`
+  width: ${({ $count, max }) => (max ? ($count / max) * 100 : 0)}%;
+  border-radius: 5px;
+  height: 7px;
+  background-color: ${MAIN.DEFAULT};
+  position: absolute;
+  left: 0;
 `;
 
 type EducationTermInformationViewProps = {
   isAddModalShown: boolean;
   headerBar: EDUCATION_TERM_CONTENT_ID;
-  onChangeStatus: (status: EDUCATION_TERM_STATUS) => void;
+  onChangeStatus: (status: TASK_STATUS) => void;
   onChangeHeaderBar: (headerBar: EDUCATION_TERM_CONTENT_ID) => void;
   onClickAddEnrollmentsOpen: () => void;
   onClickAddEnrollmentsClose: () => void;
@@ -120,87 +161,114 @@ const EducationTermInformationView = ({
   const pathname = usePathname();
   const locale = pathname.split('/')[1] as LOCALE;
 
-  const statusDropdownItems = useEducationTermStatusDropdownItems();
+  const statusDropdownItems = useTaskStatusDropdownItems();
 
-  const headerBarItems = useEducationTermHeaderBarItems();
+  const headerBarItems: RadioButtonValue[] = useEducationTermHeaderBarItems();
 
   return (
     <>
       <InformationContainer>
-        <RowContainer>
+        {/* 제목 */}
+        <HeaderContainer>
+          <MainText size={SIZE.EXTRA_LARGE} fontSize={22}>
+            {`${targetEducationTerm.educationName} - ${getTranslatedTerm(locale, targetEducationTerm.term)}`}
+          </MainText>
+          <StatusDropdown
+            value={targetEducationTerm.status}
+            items={statusDropdownItems}
+            onChangeItem={onChangeStatus}
+            width={100}
+            height={30}
+          />
+        </HeaderContainer>
+
+        <ContentContainer>
           {/* 담당자 */}
-          <RowCardContainer $minHeight={100}>
-            <ContentContainer>
-              <MainText size={SIZE.EXTRA_LARGE}>{t('inCharge')}</MainText>
-              <MemberProfilePopupButton member={targetEducationTerm.inCharge} />
-            </ContentContainer>
-          </RowCardContainer>
+          <RowContainer>
+            <TitleContainer>
+              <SvgIcon svg={User} color={GRAY.DARK} />
+              <MainText color={GRAY.DARK}>{t('inCharge')}</MainText>
+            </TitleContainer>
+            <MemberProfilePopupButton member={targetEducationTerm.inCharge} />
+          </RowContainer>
           {/* 장소 */}
-          <RowCardContainer $minHeight={100}>
-            <ContentContainer>
-              <MainText size={SIZE.EXTRA_LARGE}>{t('location')}</MainText>
-              <MainText>{targetEducationTerm.location}</MainText>
-            </ContentContainer>
-          </RowCardContainer>
+          <RowContainer>
+            <TitleContainer>
+              <SvgIcon svg={Pin} color={GRAY.DARK} />
+              <MainText color={GRAY.DARK}>{t('location')}</MainText>
+            </TitleContainer>
+            <MainText>{targetEducationTerm.location}</MainText>
+          </RowContainer>
           {/* 기간 */}
-          <RowCardContainer $minHeight={100}>
-            <ContentContainer>
-              <MainText size={SIZE.EXTRA_LARGE}>{t('period')}</MainText>
-              <MainText>
-                {`${getTranslatedDateFromDateString(locale, targetEducationTerm.startDate)} - ${getTranslatedDateFromDateString(locale, targetEducationTerm.endDate)}`}
-              </MainText>
-            </ContentContainer>
-          </RowCardContainer>
+          <RowContainer>
+            <TitleContainer>
+              <SvgIcon svg={Calendar} color={GRAY.DARK} />
+              <MainText color={GRAY.DARK}>{t('period')}</MainText>
+            </TitleContainer>
+            <MainText>
+              {`${getTranslatedDateFromDateString(locale, targetEducationTerm.startDate)} - ${getTranslatedDateFromDateString(locale, targetEducationTerm.endDate)}`}
+            </MainText>
+          </RowContainer>
           {/* 상태 */}
-          <RowCardContainer $minHeight={100}>
-            <ContentContainer>
-              <MainText size={SIZE.EXTRA_LARGE}>{t('status')}</MainText>
-              <StatusContainer>
-                <MainText whiteSpace={'pre-wrap'}>
-                  {getTranslatedSessionProgressStatus(
-                    locale,
-                    targetEducationTerm.completedCount,
+          <RowContainer>
+            <TitleContainer>
+              <SvgIcon svg={User} color={GRAY.DARK} />
+              <MainText color={GRAY.DARK}>{t('status')}</MainText>
+            </TitleContainer>
+            <StatusContainer>
+              <MainText whiteSpace={'pre-wrap'} color={GRAY.SEMI_DARK}>
+                {`${getTranslatedSessionProgressStatus(
+                  locale,
+                  targetEducationTerm.completedCount,
+                  targetEducationTerm.incompleteCount
+                )} (${Math.round(
+                  (targetEducationTerm.completedCount /
+                    (targetEducationTerm.completedCount +
+                      targetEducationTerm.incompleteCount)) *
+                    100
+                )}%)`}
+              </MainText>
+              <TotalBar>
+                <CountBar
+                  $count={targetEducationTerm.completedCount}
+                  max={
+                    targetEducationTerm.completedCount +
                     targetEducationTerm.incompleteCount
-                  )}
-                </MainText>
-                <StatusDropdown
-                  value={targetEducationTerm.status}
-                  items={statusDropdownItems}
-                  onChangeItem={onChangeStatus}
-                  width={100}
+                  }
                 />
-              </StatusContainer>
-            </ContentContainer>
-          </RowCardContainer>
-        </RowContainer>
-        {/* 회차목록 / 수강교인 */}
-        <CardContainer $minHeight={200}>
-          <HeaderBarContainer>
-            <HeaderBar
-              value={headerBar}
+              </TotalBar>
+            </StatusContainer>
+          </RowContainer>
+          {/* 보고대상자 */}
+          <ColumnContainer>
+            <TitleContainer>
+              <SvgIcon svg={Users} color={GRAY.DARK} />
+              <MainText color={GRAY.DARK}>{t('receiver')}</MainText>
+            </TitleContainer>
+            <MemberList></MemberList>
+          </ColumnContainer>
+          <RowLine />
+
+          {/* 회차목록 / 수강교인 */}
+          <TableHeader>
+            <ToggleRadioButton
+              selectedValue={headerBar}
+              onChange={onChangeHeaderBar}
               items={headerBarItems}
-              onClick={onChangeHeaderBar}
             />
-          </HeaderBarContainer>
-          {headerBar === EDUCATION_TERM_CONTENT_ID.ENROLLMENTS && (
-            <ContentContainer>
-              <RowContainer>
-                <MainText size={SIZE.EXTRA_LARGE}>
-                  {t('educationEnrollment')}
-                </MainText>
-                <Button
-                  text={t('button.addMember')}
-                  height={30}
-                  width={'auto'}
-                  onClick={onClickAddEnrollmentsOpen}
-                />
-              </RowContainer>
-              <TableContainer>
-                <EducationEnrollmentTable />
-              </TableContainer>
-            </ContentContainer>
-          )}
-        </CardContainer>
+            <Button
+              text={t('button.addMember')}
+              height={30}
+              width={'auto'}
+              onClick={onClickAddEnrollmentsOpen}
+            />
+          </TableHeader>
+          <TableContainer>
+            {headerBar === EDUCATION_TERM_CONTENT_ID.ENROLLMENTS && (
+              <EducationEnrollmentTable />
+            )}
+          </TableContainer>
+        </ContentContainer>
       </InformationContainer>
 
       {/* 교인 추가 팝업 */}

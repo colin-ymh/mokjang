@@ -32,6 +32,7 @@ type CreateMinistryGroupMemberBody = {
     memberId: string;
     ministryId?: string;
   }[];
+  startDate?: string;
 };
 
 type DeleteMinistryGroupMemberParams = {

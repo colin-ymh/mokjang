@@ -63,7 +63,7 @@ const TableContainer = styled.div<{ height: number }>`
   background-color: ${WHITE};
   // /* 세로 높이만큼 상하 스크롤 */
   //min-height: 500px;
-  max-height: ${({ height }) => `${height - 300}px`};
+  max-height: ${({ height }) => `${height - 280}px`};
 
   /* 오버플로 시 스크롤 */
   overflow-x: auto;
@@ -226,7 +226,7 @@ const ManagementMemberTableView = ({
         return (
           <MinistryContainer>
             <Dropdown
-              value={member?.ministries && member.ministries[0]?.id}
+              value={member?.ministries ? member.ministries[0]?.id : undefined}
               items={ministryDropdownItems}
               onChangeItem={(value) =>
                 onChangeMinistry && onChangeMinistry(value, member)
@@ -257,7 +257,7 @@ const ManagementMemberTableView = ({
     <TableContainer
       ref={scrollRef}
       onScroll={onScroll}
-      height={onChangeMinistry ? height - 100 : height}
+      height={onChangeMinistry ? height - 150 : height}
     >
       <MemberTable>
         <thead>

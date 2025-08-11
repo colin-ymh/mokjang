@@ -48,7 +48,7 @@ type AddOfficerMemberModalViewProps = {
   onClickMember: (member: Member) => void;
   scrollRef: MutableRefObject<HTMLDivElement | null>;
   onScroll: () => void;
-  startDate: Date;
+  startDate: Date | null;
   onChangeStartDate: (date: Date | null) => void;
 };
 

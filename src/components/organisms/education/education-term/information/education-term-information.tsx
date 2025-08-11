@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 import { EducationTermsApi } from '@/api/education/education-terms.api';
-import { useState } from 'react';
+import { RefObject, useEffect, useState } from 'react';
 import { EducationEnrollment } from '@/models/education/education';
 import { setTargetEducationTerm } from '@/redux/reducers/target/target-education-term-reducer';
 import { setEducationTerms } from '@/redux/reducers/filter/education-term-filter-reducer';
@@ -10,7 +10,7 @@ import { EducationEnrollmentsApi } from '@/api/education/education-enrollments.a
 
 import {
   EDUCATION_ENROLLMENT_STATUS,
-  EDUCATION_TERM_STATUS,
+  TASK_STATUS,
 } from '@/constants/status/status';
 import { EDUCATION_TERM_CONTENT_ID } from '@/constants/layout/content';
 import { Member } from '@/models/member/member';
@@ -23,9 +23,13 @@ import { BLACK, DESTRUCTIVE } from '@/constants/styles/color';
 import { useScopedI18n } from '../../../../../../locales/client';
 import { setEducations } from '@/redux/reducers/filter/education-filter-reducer';
 
-type EducationTermInformationProps = {};
+type EducationTermInformationProps = {
+  scrollRef: RefObject<HTMLDivElement>;
+};
 
-const EducationTermInformation = ({}: EducationTermInformationProps) => {
+const EducationTermInformation = ({
+  scrollRef,
+}: EducationTermInformationProps) => {
   const t_popup = useScopedI18n('popup');
   const { educations } = useSelector(
     (state: RootState) => state.educationFilter
@@ -46,6 +50,8 @@ const EducationTermInformation = ({}: EducationTermInformationProps) => {
     EDUCATION_TERM_CONTENT_ID.SESSIONS
   );
 
+  const [page, setPage] = useState<number>(1);
+
   // 선택된 교인 목록
   const [selectedMembers, setSelectedMembers] = useState<Member[]>([]);
 
@@ -57,9 +63,66 @@ const EducationTermInformation = ({}: EducationTermInformationProps) => {
     throw thrownError;
   }
 
+  // -------- enrollment ---------
+  const fetchEnrollments = async () => {
+    try {
+      const response = await educationEnrollmentsApi.getEducationEnrollments({
+        churchId,
+        educationId: targetEducationTerm.educationId,
+        educationTermId: targetEducationTerm.id,
+        page,
+        take: 10,
+      });
+
+      const newEnrollments: EducationEnrollment[] = response.data.data;
+
+      if (!newEnrollments || newEnrollments.length === 0) return;
+
+      const existingEnrollments =
+        targetEducationTerm.educationEnrollments || [];
+
+      // 중복 ID 제거
+      const existingIds = new Set(existingEnrollments.map((e) => e.id));
+      const filteredNewEnrollments = newEnrollments.filter(
+        (e) => !existingIds.has(e.id)
+      );
+
+      if (filteredNewEnrollments.length === 0) return;
+
+      dispatch(
+        setTargetEducationTerm({
+          ...targetEducationTerm,
+          educationEnrollments: [
+            ...existingEnrollments,
+            ...filteredNewEnrollments,
+          ],
+        })
+      );
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
+    }
+  };
+
+  useEffect(() => {
+    if (scrollRef.current) {
+      const { scrollTop, scrollHeight, clientHeight } = scrollRef.current;
+
+      // 스크롤이 최하단에 도달했는지 확인
+      if (scrollTop + clientHeight >= scrollHeight) {
+        console.log('!');
+        // setPage(page + 1);
+      }
+    }
+  }, [scrollRef.current]);
+
+  useEffect(() => {
+    fetchEnrollments();
+  }, [page]);
+  // -------- enrollment ---------
+
   // ===== status =====
 
-  const onChangeStatus = (status: EDUCATION_TERM_STATUS) => {
+  const onChangeStatus = (status: TASK_STATUS) => {
     try {
       educationTermsApi
         .editEducationTerm(

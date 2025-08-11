@@ -67,15 +67,8 @@ const MainVisitationHeader = ({}: MainVisitationHeaderProps) => {
             inChargeId: targetVisitation.inChargeId,
             startDate: targetVisitation.startDate,
             endDate: targetVisitation.endDate,
-            visitationDetails: targetVisitation.visitationDetails.map(
-              (detail) => {
-                return {
-                  visitationContent: detail.visitationContent,
-                  visitationPray: detail.visitationPray,
-                  memberId: detail.memberId,
-                };
-              }
-            ),
+            visitationDetails: targetVisitation.visitationDetails,
+            memberIds: targetVisitation.members.map((member) => member.id),
             title: targetVisitation.title,
             receiverIds: targetVisitation.receiverIds,
           }

@@ -312,101 +312,6 @@ export const useFamilyRelationDropdownItems = (gender?: GENDER | undefined) => {
   return items;
 };
 
-export const useEducationEnrollmentStatusDropdownItems = () => {
-  const t = useI18n();
-
-  const items = [
-    {
-      value: STATUS.COMPLETED,
-      title: t(STATUS.COMPLETED),
-      color: STATUS_COLOR.COMPLETED,
-    },
-    {
-      value: STATUS.INCOMPLETE,
-      title: t(STATUS.INCOMPLETE),
-      color: STATUS_COLOR.INCOMPLETE,
-    },
-    {
-      value: STATUS.IN_PROGRESS,
-      title: t(STATUS.IN_PROGRESS),
-      color: STATUS_COLOR.IN_PROGRESS,
-    },
-  ];
-
-  return items;
-};
-
-export const useVisitationStatusDropdownItems = () => {
-  const t = useI18n();
-
-  const items = [
-    {
-      value: STATUS.RESERVE,
-      title: t(STATUS.RESERVE),
-      color: STATUS_COLOR.RESERVE,
-      icon: Calendar,
-    },
-    {
-      value: STATUS.IN_PROGRESS,
-      title: t(STATUS.IN_PROGRESS),
-      color: STATUS_COLOR.IN_PROGRESS,
-      icon: Play,
-    },
-    {
-      value: STATUS.DONE,
-      title: t(STATUS.DONE),
-      color: STATUS_COLOR.DONE,
-      icon: Check,
-    },
-    {
-      value: STATUS.PENDING,
-      title: t(STATUS.PENDING),
-      color: STATUS_COLOR.PENDING,
-      icon: Danger,
-    },
-  ];
-
-  return items;
-};
-
-export const useVisitationStatusFilterDropdownItems = () => {
-  const t = useI18n();
-
-  const items = [
-    {
-      value: undefined,
-      title: t('placeholder.selectStatus'),
-      color: undefined,
-    },
-    {
-      value: STATUS.RESERVE,
-      title: t(STATUS.RESERVE),
-      color: STATUS_COLOR.RESERVE,
-      icon: Calendar,
-    },
-    {
-      value: STATUS.IN_PROGRESS,
-      title: t(STATUS.IN_PROGRESS),
-      color: STATUS_COLOR.IN_PROGRESS,
-      icon: Play,
-    },
-    {
-      value: STATUS.DONE,
-      title: t(STATUS.DONE),
-      color: STATUS_COLOR.DONE,
-      icon: Check,
-    },
-    {
-      value: STATUS.PENDING,
-      title: t(STATUS.PENDING),
-      color: STATUS_COLOR.PENDING,
-      icon: Danger,
-    },
-  ];
-
-  return items;
-};
-
 export const useTaskStatusDropdownItems = () => {
   const t = useI18n();
 
@@ -478,66 +383,24 @@ export const useTaskStatusFilterDropdownItems = () => {
   return items;
 };
 
-export const useEducationTermStatusDropdownItems = () => {
+export const useEducationEnrollmentStatusDropdownItems = () => {
   const t = useI18n();
 
   const items = [
     {
-      value: STATUS.RESERVE,
-      title: t(STATUS.RESERVE),
-      color: STATUS_COLOR.RESERVE,
-      icon: Calendar,
+      value: STATUS.COMPLETED,
+      title: t(STATUS.COMPLETED),
+      color: STATUS_COLOR.COMPLETED,
+    },
+    {
+      value: STATUS.INCOMPLETE,
+      title: t(STATUS.INCOMPLETE),
+      color: STATUS_COLOR.INCOMPLETE,
     },
     {
       value: STATUS.IN_PROGRESS,
       title: t(STATUS.IN_PROGRESS),
       color: STATUS_COLOR.IN_PROGRESS,
-      icon: Play,
-    },
-    {
-      value: STATUS.DONE,
-      title: t(STATUS.DONE),
-      color: STATUS_COLOR.DONE,
-      icon: Check,
-    },
-    {
-      value: STATUS.PENDING,
-      title: t(STATUS.PENDING),
-      color: STATUS_COLOR.PENDING,
-      icon: Danger,
-    },
-  ];
-
-  return items;
-};
-
-export const useEducationSessionStatusDropdownItems = () => {
-  const t = useI18n();
-
-  const items = [
-    {
-      value: STATUS.RESERVE,
-      title: t(STATUS.RESERVE),
-      color: STATUS_COLOR.RESERVE,
-      icon: Calendar,
-    },
-    // {
-    //   value: STATUS.IN_PROGRESS,
-    //   title: t(STATUS.IN_PROGRESS),
-    //   color: STATUS_COLOR.IN_PROGRESS,
-    //   icon: Play,
-    // },
-    {
-      value: STATUS.DONE,
-      title: t(STATUS.DONE),
-      color: STATUS_COLOR.DONE,
-      icon: Check,
-    },
-    {
-      value: STATUS.PENDING,
-      title: t(STATUS.PENDING),
-      color: STATUS_COLOR.PENDING,
-      icon: Danger,
     },
   ];
 

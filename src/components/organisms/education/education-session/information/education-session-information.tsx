@@ -10,7 +10,7 @@ import { setTargetEducationSession } from '@/redux/reducers/target/target-educat
 import EducationSessionInformationView from '@/components/organisms/education/education-session/information/education-session-information.view';
 import { setTargetEducationTerm } from '@/redux/reducers/target/target-education-term-reducer';
 
-import { EDUCATION_SESSION_STATUS } from '@/constants/status/status';
+import { TASK_STATUS } from '@/constants/status/status';
 import { EducationAttendanceApi } from '@/api/education/education-attendance.api';
 import { setEducations } from '@/redux/reducers/filter/education-filter-reducer';
 
@@ -42,7 +42,7 @@ const EducationSessionInformation = ({}: EducationSessionInformationProps) => {
 
   // ===== status =====
 
-  const onChangeStatus = (status: EDUCATION_SESSION_STATUS) => {
+  const onChangeStatus = (status: TASK_STATUS) => {
     try {
       educationSessionsApi
         .editEducationSession(

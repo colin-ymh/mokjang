@@ -2,10 +2,8 @@ import { BLANK } from '@/constants/constant';
 import { DEFAULT_MEMBER, Member } from '@/models/member/member';
 import {
   EDUCATION_ENROLLMENT_STATUS,
-  EDUCATION_SESSION_STATUS,
-  EDUCATION_STATUS,
-  EDUCATION_TERM_STATUS,
   STATUS,
+  TASK_STATUS,
 } from '@/constants/status/status';
 import { VisitationReport } from '@/models/report/report';
 
@@ -15,7 +13,7 @@ export type Education = {
   description: string;
   name: string;
   educationTerms: EducationTerm[];
-  status: EDUCATION_STATUS;
+  status: TASK_STATUS;
   goals: string[];
   creator: Member;
   createdAt: string;
@@ -68,7 +66,7 @@ export type EducationTerm = {
   endDate: string;
   inChargeId: string;
   location: string;
-  status: EDUCATION_TERM_STATUS;
+  status: TASK_STATUS;
   enrollmentCount: number;
   inProgressCount: number;
   completedCount: number;
@@ -107,7 +105,7 @@ export const DEFAULT_EDUCATION_TERM: EducationTerm = {
 
 export type EducationSession = {
   id: string;
-  status: EDUCATION_SESSION_STATUS;
+  status: TASK_STATUS;
   title: string;
   inChargeId: string;
   inCharge: Member;

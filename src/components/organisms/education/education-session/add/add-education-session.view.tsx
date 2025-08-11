@@ -19,7 +19,7 @@ import {
 } from '@/utils/date';
 import Dropdown from '@/components/atoms/common/dropdown/dropdown';
 import { useTimeDropdownItems } from '@/hooks/dropdown/dropdown-items';
-import { EDUCATION_SESSION_STATUS } from '@/constants/status/status';
+import { TASK_STATUS } from '@/constants/status/status';
 import { MemberDropdownType } from '@/components/atoms/common/dropdown/member-dropdown-item';
 import { EducationAttendance } from '@/models/education/education';
 import Quill from '@/components/atoms/common/input/quill';
@@ -77,7 +77,7 @@ const PeriodContainer = styled.div`
 type AddEducationSessionViewProps = {
   content: string;
   inCharge: MemberDropdownType[];
-  onChangeStatus: (value: EDUCATION_SESSION_STATUS) => void;
+  onChangeStatus: (value: TASK_STATUS) => void;
   onChangeTitle: (event: ChangeEvent<HTMLInputElement>) => void;
   onChangeStartDate: (date: Date | null) => void;
   onChangeStartTime: (value: number) => void;

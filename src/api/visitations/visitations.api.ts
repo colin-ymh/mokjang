@@ -11,7 +11,7 @@ import {
   VisitationDetail,
 } from '@/models/visitation/visitation';
 import { VISITATION } from '@/constants/column/visitation-column';
-import { VISITATION_STATUS } from '@/constants/status/status';
+import { TASK_STATUS } from '@/constants/status/status';
 
 type GetVisitationsParams = {
   churchId: string;
@@ -22,7 +22,7 @@ type GetVisitationsParams = {
 
   fromStartDate?: string;
   toStartDate?: string;
-  status?: VISITATION_STATUS[];
+  status?: TASK_STATUS[];
   visitationMethod?: VISITATION_METHOD[];
   visitationType?: VISITATION_TYPE[];
   title?: string;
@@ -34,13 +34,14 @@ type CreateVisitationParams = {
 };
 
 type CreateVisitationBody = {
-  status: VISITATION_STATUS;
+  status: TASK_STATUS;
   visitationMethod: VISITATION_METHOD;
   title: string;
   inChargeId: string;
   startDate: string;
   endDate: string;
-  visitationDetails: VisitationDetail[];
+  visitationDetails: [VisitationDetail];
+  memberIds: string[];
   receiverIds?: string[];
 };
 
@@ -55,14 +56,13 @@ type EditVisitationParams = {
 };
 
 type EditVisitationBody = {
-  status?: VISITATION_STATUS;
+  status?: TASK_STATUS;
   visitationMethod?: VISITATION_METHOD;
   title?: string;
   inChargeId?: string;
   startDate?: string;
   endDate?: string;
   memberIds?: string[];
-  receiverIds?: string[];
 };
 
 type DeleteVisitationParams = {
@@ -73,7 +73,6 @@ type DeleteVisitationParams = {
 type EditVisitationDetailsParams = {
   churchId: string;
   visitationId: string;
-  memberId: string;
 };
 
 type EditVisitationDetailsBody = {
@@ -274,9 +273,9 @@ export class VisitationsApi {
     params: EditVisitationDetailsParams,
     body: EditVisitationDetailsBody
   ) => {
-    const { churchId, visitationId, memberId } = params;
+    const { churchId, visitationId } = params;
 
-    const url = `${this._url}/churches/${churchId}/visitations/${visitationId}/details/${memberId}`;
+    const url = `${this._url}/churches/${churchId}/visitations/${visitationId}/details`;
 
     try {
       return await authorizeAxios.patch(url, body);

@@ -74,12 +74,39 @@ export class EducationEnrollmentsApi {
   public getEducationEnrollments = async (
     params: GetEducationEnrollmentsParams
   ): Promise<AxiosResponse> => {
-    const { churchId, educationId, educationTermId } = params;
+    const {
+      churchId,
+      educationId,
+      educationTermId,
+      take,
+      page,
+      orderDirection,
+    } = params;
 
     const url = `${this._url}/churches/${churchId}/educations/${educationId}/terms/${educationTermId}/enrollments`;
 
+    /* ①queryParams 구성 ─────────────────────────────────────────────── */
+    const queryParams: Record<string, any> = Object.fromEntries(
+      Object.entries({
+        take,
+        page,
+        orderDirection,
+      }).filter(
+        ([_, value]) =>
+          value !== undefined && !(Array.isArray(value) && value.length === 0)
+      )
+    );
+
     try {
-      return await authorizeAxios.get(url);
+      return await authorizeAxios.get(url, {
+        params: queryParams,
+        paramsSerializer: (params) =>
+          qs.stringify(params, {
+            arrayFormat: 'repeat',
+            skipNulls: true,
+            encodeValuesOnly: true,
+          }),
+      });
     } catch (serverError: any) {
       if (serverError.response) {
         const { message, error, statusCode } = serverError.response.data;

@@ -12,8 +12,7 @@ import { usePathname } from 'next/navigation';
 import { LOCALE } from '@/constants/state/locale';
 import { GRAY } from '@/constants/styles/color';
 import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-item';
-import Dropdown from '@/components/atoms/common/dropdown/dropdown';
-import { SIZE } from '@/constants/styles/style';
+import CustomDatePicker from '@/vendor/date-picker/custom-date-picker';
 
 const ModalContainer = styled.div`
   display: flex;
@@ -55,8 +54,8 @@ type AddMinistryGroupMemberModalViewProps = {
   onChangeSearch: (event: ChangeEvent<HTMLInputElement>) => void;
   onClickMember: (member: Member) => void;
   ministries: Ministry[];
-  selectedMinistryId: string;
-  onChangeMinistryItem: (id: string) => void;
+  startDate: Date | null;
+  onChangeStartDate: (date: Date | null) => void;
   onScroll: () => void;
 };
 
@@ -68,8 +67,8 @@ const AddMinistryGroupMemberModalView = ({
   onChangeSearch,
   onClickMember,
   ministries,
-  selectedMinistryId,
-  onChangeMinistryItem,
+  startDate,
+  onChangeStartDate,
   onScroll,
 }: AddMinistryGroupMemberModalViewProps) => {
   const pathname = usePathname();
@@ -96,19 +95,12 @@ const AddMinistryGroupMemberModalView = ({
         placeholder={t('placeholder.name')}
         icon={<SearchIcon />}
       />
-      {/* 사역 드롭다운 */}
-      <DropdownContainer>
-        <MainText color={GRAY.SEMI_DARK}>{t('defaultMinistry')}</MainText>
-        <Dropdown
-          value={selectedMinistryId}
-          items={ministryDropdownItems}
-          onChangeItem={onChangeMinistryItem}
-          height={40}
-        />
-        <MainText color={GRAY.DEFAULT} size={SIZE.SMALL}>
-          {t('description.defaultMinistry')}
-        </MainText>
-      </DropdownContainer>
+      {/* 시작 날짜 */}
+      <CustomDatePicker
+        selected={startDate}
+        onChange={onChangeStartDate}
+        placeholderText={t('startDate')}
+      />
       <RowContainer>
         <MainText color={GRAY.SEMI_DARK}>
           {getTranslatedSelectedMemberCount(locale, selectedMembers.length)}

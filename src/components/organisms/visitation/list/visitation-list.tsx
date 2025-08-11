@@ -4,6 +4,7 @@ import { AppDispatch, RootState } from '@/redux/store';
 import {
   fetchVisitations,
   setVisitationPage,
+  setVisitations,
 } from '@/redux/reducers/filter/visitation-filter-reducer';
 
 import VisitationListView from '@/components/organisms/visitation/list/visitation-list.view';
@@ -17,6 +18,8 @@ import { useScopedI18n } from '../../../../../locales/client';
 import { VisitationsApi } from '@/api/visitations/visitations.api';
 import { getIsWellFormedTitle } from '@/utils/check';
 import { BLANK, HEADER_BAR } from '@/constants/constant';
+import { getDateFromDateString, getFullStringFromDate } from '@/utils/date';
+import { TASK_STATUS } from '@/constants/status/status';
 
 type VisitationListProps = {
   headerType?: HEADER_BAR;
@@ -163,24 +166,71 @@ const VisitationList = ({ headerType }: VisitationListProps) => {
 
   const onClickEditDone = async () => {
     try {
-      await visitationApi
-        .editVisitation(
-          { churchId, visitationId: targetVisitation.id },
-          {
-            status: targetVisitation.status || undefined,
-            title: targetVisitation.title || undefined,
-            inChargeId: targetVisitation.inChargeId || undefined,
-            startDate: targetVisitation.startDate || undefined,
-            endDate: targetVisitation.endDate || undefined,
-            receiverIds: targetVisitation.receiverIds || undefined,
-          }
-        )
-        .then((response) => {
-          const newVisitation = response.data.data;
-          dispatch(setTargetVisitation(newVisitation));
-          dispatch(fetchVisitations({ headerType }));
-          setIsEditShown(false);
-        });
+      await visitationApi.editVisitation(
+        { churchId, visitationId: targetVisitation.id },
+        {
+          status: targetVisitation.status || undefined,
+          title: targetVisitation.title || undefined,
+          inChargeId: targetVisitation.inChargeId || undefined,
+          startDate:
+            getFullStringFromDate(
+              getDateFromDateString(targetVisitation.startDate)
+            ) || undefined,
+          endDate:
+            getFullStringFromDate(
+              getDateFromDateString(targetVisitation.endDate)
+            ) || undefined,
+        }
+      );
+
+      await visitationApi.editVisitationDetails(
+        { churchId, visitationId: targetVisitation.id },
+        {
+          visitationContent:
+            targetVisitation.visitationDetails[0].visitationContent,
+          visitationPray: targetVisitation.visitationDetails[0].visitationPray,
+        }
+      );
+
+      const reports = visitations.find(
+        (visitation) => visitation.id === targetVisitation.id
+      )?.reports;
+
+      if (reports) {
+        const receiverIds = reports.map((report) => report.receiver.id);
+
+        const addReceiverIds = targetVisitation.receiverIds?.filter(
+          (receiverId) => !receiverIds.includes(receiverId)
+        );
+        const deleteReceiverIds =
+          receiverIds?.filter(
+            (receiverId) => !targetVisitation.receiverIds?.includes(receiverId)
+          ) || [];
+
+        if (addReceiverIds?.length > 0) {
+          await visitationApi.addReceivers(
+            { churchId, visitationId: targetVisitation.id },
+            { receiverIds: addReceiverIds }
+          );
+        }
+
+        if (deleteReceiverIds?.length > 0) {
+          await visitationApi.deleteReceivers(
+            { churchId, visitationId: targetVisitation.id },
+            { receiverIds: deleteReceiverIds }
+          );
+        }
+      }
+
+      const response = await visitationApi.getVisitation({
+        churchId,
+        visitationId: targetVisitation.id,
+      });
+
+      const newVisitation = response.data.data;
+      dispatch(setTargetVisitation(newVisitation));
+      dispatch(fetchVisitations({ headerType }));
+      setIsEditShown(false);
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));
     } finally {
@@ -188,6 +238,37 @@ const VisitationList = ({ headerType }: VisitationListProps) => {
       dispatch(setToastText(t_popup('saveComplete')));
     }
   };
+
+  // ===== status =====
+
+  const onChangeStatus = (status: TASK_STATUS) => {
+    try {
+      visitationApi
+        .editVisitation(
+          { churchId, visitationId: targetVisitation.id },
+          { status }
+        )
+        .then((response) => {
+          const newVisitation = response.data.data;
+
+          dispatch(
+            setTargetVisitation({
+              ...targetVisitation,
+              status,
+            })
+          );
+
+          const newVisitations = visitations.map((v) => {
+            return v.id !== newVisitation.id ? v : { ...v, status };
+          });
+
+          dispatch(setVisitations(newVisitations));
+        });
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
+    }
+  };
+  // ===== status =====
 
   useEffect(() => {
     setIsPopupShown(false);
@@ -233,6 +314,7 @@ const VisitationList = ({ headerType }: VisitationListProps) => {
       onClickDelete,
       onClickConfirmOpen,
       onClickConfirmClose,
+      onChangeStatus,
     },
   };
 

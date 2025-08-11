@@ -5,7 +5,7 @@ import LabelDropdown from '@/components/atoms/common/dropdown/label-dropdown';
 import Button from '@/components/atoms/common/button/button';
 import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-item';
 import LabelInput from '@/components/atoms/common/input/label-input';
-import { useEducationEnrollmentStatusDropdownItems } from '@/hooks/dropdown/dropdown-items';
+import { useTaskStatusDropdownItems } from '@/hooks/dropdown/dropdown-items';
 
 import { useI18n } from '../../../../../locales/client';
 import Cancel from '../../../../../public/svg/cancel.svg';
@@ -92,7 +92,7 @@ const EducationModalView = ({
   onClickSaveEditEducation,
 }: EducationModalViewProps) => {
   const t = useI18n();
-  const statusItems = useEducationEnrollmentStatusDropdownItems();
+  const statusItems = useTaskStatusDropdownItems();
 
   return (
     <EducationModalViewContainer>

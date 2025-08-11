@@ -68,7 +68,7 @@ type OfficerInformationViewProps = {
   editName: string;
   isAddModalShown: boolean;
   isEditShown: boolean;
-  startDate: Date;
+  startDate: Date | null;
   onChangeStartDate: (date: Date | null) => void;
   orderBy: MEMBER | null;
   orderDirection: ORDER_DIRECTION | null;

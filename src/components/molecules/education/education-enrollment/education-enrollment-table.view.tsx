@@ -53,10 +53,6 @@ const TableContainer = styled.div`
   /* 항상 가로 100%를 채움 */
   width: 100%;
   background-color: ${WHITE};
-  // /* 세로 높이만큼 상하 스크롤 */
-  //min-height: 200px;
-  //max-height: 300px;
-  height: 600px;
 
   /* 오버플로 시 스크롤 */
   overflow-x: auto;

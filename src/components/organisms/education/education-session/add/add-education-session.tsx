@@ -14,7 +14,7 @@ import { setTargetEducationSession } from '@/redux/reducers/target/target-educat
 import AddEducationSessionView from '@/components/organisms/education/education-session/add/add-education-session.view';
 import { MemberDropdownType } from '@/components/atoms/common/dropdown/member-dropdown-item';
 
-import { EDUCATION_SESSION_STATUS } from '@/constants/status/status';
+import { TASK_STATUS } from '@/constants/status/status';
 import { EducationAttendance } from '@/models/education/education';
 
 type AddEducationSessionProps = {};
@@ -26,7 +26,7 @@ const AddEducationSession = ({}: AddEducationSessionProps) => {
   const dispatch = useDispatch<AppDispatch>();
 
   // ===== status =====
-  const onChangeStatus = (status: EDUCATION_SESSION_STATUS) => {
+  const onChangeStatus = (status: TASK_STATUS) => {
     dispatch(
       setTargetEducationSession({ ...targetEducationSession, status: status })
     );

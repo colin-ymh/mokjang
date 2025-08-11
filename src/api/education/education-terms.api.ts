@@ -5,7 +5,7 @@ import { ORDER_DIRECTION } from '@/constants/constant';
 import { CustomError } from '@/api/error/error';
 import authorizeAxios from '@/api/authorize-axios';
 
-import { EDUCATION_TERM_STATUS } from '@/constants/status/status';
+import { TASK_STATUS } from '@/constants/status/status';
 
 type GetEducationTermsParams = {
   churchId: string;
@@ -46,7 +46,7 @@ type EditEducationTermBody = {
   startDate?: string;
   endDate?: string;
   location?: string;
-  status?: EDUCATION_TERM_STATUS;
+  status?: TASK_STATUS;
   inChargeId?: string;
 };
 

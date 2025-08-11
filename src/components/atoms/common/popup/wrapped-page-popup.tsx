@@ -1,6 +1,6 @@
 'use client';
 
-import { ReactNode, useEffect } from 'react';
+import React, { ReactNode, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 
 import { GRAY, MAIN, WHITE } from '@/constants/styles/color';
@@ -10,40 +10,53 @@ import { useScopedI18n } from '../../../../../locales/client';
 
 import ArrowUp from '../../../../../public/svg/arror-up.svg';
 import Button from '@/components/atoms/common/button/button';
+import TransparentBackground from '@/components/atoms/common/etc/transparent-background';
+import { TASK_STATUS } from '@/constants/status/status';
+import { useTaskStatusDropdownItems } from '@/hooks/dropdown/dropdown-items';
+import { SIZE } from '@/constants/styles/style';
+import { Member } from '@/models/member/member';
+import KebabDropdown from '@/components/atoms/common/dropdown/kebab-dropdown';
+import MemberProfilePopupButton from '@/components/molecules/common/button/member-profile-popup-button';
+import { getDateFromDateString, getDateStringFromDate } from '@/utils/date';
+import StatusDropdown from '@/components/atoms/common/dropdown/status-dropdown';
 
-const WrappedPagePopupContainer = styled.div`
+const WrappedPagePopupContainer = styled.div<{ $widthPercentage: number }>`
   display: flex;
   flex-direction: column;
   position: fixed;
   top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: ${GRAY.SUPER_LIGHT};
+  bottom: 0;
+  left: ${({ $widthPercentage }) => `${(100 - $widthPercentage) / 2}%`};
+  right: ${({ $widthPercentage }) => `${(100 - $widthPercentage) / 2}%`};
+
+  background-color: ${WHITE};
   z-index: 1000;
-  align-items: center;
-  justify-content: center;
 `;
 
-const HeaderContainer = styled.div<{ width: number }>`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  width: ${({ width }) => width}px;
-  padding: 20px;
-`;
-
-const TitleContainer = styled.div`
+const HeaderContainer = styled.div<{ $isShadowShown?: boolean }>`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  width: 100%;
+  height: 60px;
+  flex-shrink: 0;
+  padding: 0 30px;
+  box-shadow: ${({ $isShadowShown }) =>
+    $isShadowShown ? '0px 2px 4px rgba(0, 0, 0, 0.1)' : 'none'};
+  z-index: 10000;
 `;
 
-const TextContainer = styled.div`
+const HeaderLeftContainer = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  align-items: center;
+  gap: 20px;
+`;
+
+const HeaderRightContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
   gap: 10px;
 `;
 
@@ -70,45 +83,103 @@ const ArrowLeft = styled(ArrowUp)`
   transform: rotate(270deg);
 `;
 
-const ContentWrapper = styled.div<{ width: number }>`
+const ContentWrapper = styled.div`
   display: flex;
-  width: ${({ width }) => width}px;
+  flex-direction: column;
+  width: 100%;
   overflow-y: auto;
-  margin-bottom: 20px;
 `;
 
 interface WrappedPagePopupProps {
   isShow: boolean;
   onClickClose: () => void;
-  children: ReactNode;
-  headerTitle?: string;
-  headerDescription?: string;
-  onClickDone?: () => void;
-  onClickCancel?: () => void;
+  onClickDone: () => void;
+  onClickCancel: () => void;
   doneText?: string;
   cancelText?: string;
   doneBackgroundColor?: string;
   doneDisabled?: boolean;
+
+  stageTwoTop?: number;
+  stageThreeTop?: number;
+  headerTitle?: string;
+  status?: TASK_STATUS;
+  onChangeStatus?: (status: TASK_STATUS) => void;
+  inCharge?: Member;
+  startDate?: string;
+  endDate?: string;
   keyboardDisabled?: boolean;
-  width?: number;
+  widthPercentage?: number;
+  children:
+    | ReactNode
+    | ((scrollRef: React.RefObject<HTMLDivElement>) => ReactNode);
+}
+
+enum INTEGRATE_STAGE {
+  ONE = 'one',
+  TWO = 'two',
+  THREE = 'three',
 }
 
 // 특정 컴포넌트를 전체화면 페이지인 것처럼 보아게 해주는 모달
 const WrappedPagePopup = ({
   isShow,
   onClickClose,
-  children,
-  headerTitle,
-  headerDescription,
   onClickDone,
   onClickCancel,
+
   doneBackgroundColor = MAIN.DEFAULT,
   doneDisabled = false,
   doneText,
   cancelText,
   keyboardDisabled = false,
-  width = 800,
+  widthPercentage = 70,
+
+  stageTwoTop,
+  stageThreeTop,
+  headerTitle,
+  status,
+  onChangeStatus,
+  inCharge,
+  startDate,
+  endDate,
+  children,
 }: WrappedPagePopupProps) => {
+  const t_button = useScopedI18n('button');
+  const statusDropdownItems = useTaskStatusDropdownItems();
+
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const [integrateStage, setIntegrateStage] = useState<INTEGRATE_STAGE>(
+    INTEGRATE_STAGE.ONE
+  );
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!scrollRef.current) return;
+      const scrollTop = scrollRef.current.scrollTop;
+
+      if (stageThreeTop && scrollTop >= stageThreeTop) {
+        setIntegrateStage(INTEGRATE_STAGE.THREE);
+      } else if (stageTwoTop && scrollTop >= stageTwoTop) {
+        setIntegrateStage(INTEGRATE_STAGE.TWO);
+      } else {
+        setIntegrateStage(INTEGRATE_STAGE.ONE);
+      }
+    };
+
+    const ref = scrollRef.current;
+    if (ref) {
+      ref.addEventListener('scroll', handleScroll);
+    }
+
+    return () => {
+      if (ref) {
+        ref.removeEventListener('scroll', handleScroll);
+      }
+    };
+  }, [children]);
+
   useEffect(() => {
     if (keyboardDisabled) return;
 
@@ -125,58 +196,105 @@ const WrappedPagePopup = ({
     };
   }, [isShow, onClickClose]);
 
-  const t_button = useScopedI18n('button');
+  useEffect(() => {
+    if (isShow) setIntegrateStage(INTEGRATE_STAGE.ONE);
+  }, [isShow]);
 
   if (!isShow) {
     return <Hide />;
   }
 
   return (
-    <WrappedPagePopupContainer>
-      <HeaderContainer width={width}>
-        {/* 돌아가기 */}
-        <GoBackContainer onClick={onClickClose}>
-          <ArrowLeft />
-          <MainText color={MAIN.DEFAULT}>{t_button('backToList')}</MainText>
-        </GoBackContainer>
-        {/* 제목 + 버튼 */}
-        <TitleContainer>
-          {/* 제목 */}
-          <TextContainer>
-            <MainText fontSize={30} fontWeight={700}>
-              {headerTitle}
-            </MainText>
-            {headerDescription && (
-              <MainText fontSize={16} fontWeight={400} color={GRAY.DEFAULT}>
-                {headerDescription}
+    <>
+      <TransparentBackground isOpened={isShow} onClick={onClickClose} />
+      <WrappedPagePopupContainer $widthPercentage={widthPercentage}>
+        <HeaderContainer
+          $isShadowShown={integrateStage !== INTEGRATE_STAGE.ONE}
+        >
+          <HeaderLeftContainer>
+            <GoBackContainer onClick={onClickClose}>
+              <ArrowLeft />
+              <MainText color={MAIN.DEFAULT}>
+                {integrateStage === INTEGRATE_STAGE.ONE
+                  ? t_button('backToList')
+                  : headerTitle}
               </MainText>
+            </GoBackContainer>
+
+            {integrateStage === INTEGRATE_STAGE.THREE && inCharge && (
+              <MemberProfilePopupButton
+                member={inCharge}
+                width={20}
+                height={20}
+              />
             )}
-          </TextContainer>
-          {/* 버튼 */}
-          <ButtonContainer>
-            <Button
-              width={80}
-              height={30}
-              color={WHITE}
-              backgroundColor={doneBackgroundColor}
-              onClick={onClickDone}
-              text={doneText || t_button('save')}
-              disabled={doneDisabled}
-            />
-            <Button
-              width={80}
-              height={30}
-              color={GRAY.DEFAULT}
-              backgroundColor={WHITE}
-              onClick={onClickCancel}
-              borderColor={GRAY.SEMI_LIGHT}
-              text={cancelText || t_button('cancel')}
-            />
-          </ButtonContainer>
-        </TitleContainer>
-      </HeaderContainer>
-      <ContentWrapper width={width}>{children}</ContentWrapper>
-    </WrappedPagePopupContainer>
+            {integrateStage === INTEGRATE_STAGE.THREE &&
+              startDate &&
+              endDate && (
+                <MainText size={SIZE.SMALL}>
+                  {`${getDateStringFromDate(getDateFromDateString(startDate))} - ${getDateStringFromDate(getDateFromDateString(endDate))}`}
+                </MainText>
+              )}
+          </HeaderLeftContainer>
+          <HeaderRightContainer>
+            {integrateStage !== INTEGRATE_STAGE.ONE &&
+              status &&
+              onChangeStatus && (
+                <StatusDropdown
+                  value={status}
+                  items={statusDropdownItems}
+                  onChangeItem={onChangeStatus}
+                  width={100}
+                  height={30}
+                />
+              )}
+            {/* 버튼 */}
+            {integrateStage === INTEGRATE_STAGE.ONE ? (
+              <ButtonContainer>
+                <Button
+                  width={80}
+                  height={30}
+                  color={WHITE}
+                  backgroundColor={doneBackgroundColor}
+                  onClick={onClickDone}
+                  text={doneText || t_button('save')}
+                  disabled={doneDisabled}
+                />
+                <Button
+                  width={80}
+                  height={30}
+                  color={GRAY.DEFAULT}
+                  backgroundColor={WHITE}
+                  onClick={onClickCancel}
+                  borderColor={GRAY.SEMI_LIGHT}
+                  text={cancelText || t_button('cancel')}
+                />
+              </ButtonContainer>
+            ) : (
+              <KebabDropdown
+                items={[
+                  {
+                    value: 'done',
+                    title: doneText || t_button('save'),
+                    onClick: onClickDone,
+                  },
+                  {
+                    value: 'cancel',
+                    title: cancelText || t_button('cancel'),
+                    onClick: onClickCancel,
+                  },
+                ]}
+                width={100}
+              />
+            )}
+          </HeaderRightContainer>
+        </HeaderContainer>
+
+        <ContentWrapper ref={scrollRef}>
+          {typeof children === 'function' ? children(scrollRef) : children}
+        </ContentWrapper>
+      </WrappedPagePopupContainer>
+    </>
   );
 };
 

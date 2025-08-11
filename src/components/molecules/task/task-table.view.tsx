@@ -22,13 +22,13 @@ import { getFormattedDate } from '@/utils/format';
 const getColumnWidth = (id: string) => {
   switch (id) {
     case TASK.TITLE:
-      return 300;
+      return 25;
     case TASK.STATUS:
-      return 150;
+      return 25;
     case TASK.DATE:
-      return 200;
+      return 25;
     case TASK.IN_CHARGE:
-      return 150;
+      return 25;
     default:
       // 비고(REMARKS) 컬럼 등
       return 80;
@@ -70,7 +70,7 @@ const TableHeader = styled.th<{ id: string; $isLast?: boolean }>`
   background-color: ${WHITE};
 
   /* 만약 마지막 컬럼이면 width: auto */
-  width: ${({ id, $isLast }) => ($isLast ? 'auto' : `${getColumnWidth(id)}px`)};
+  width: ${({ id, $isLast }) => ($isLast ? 'auto' : `${getColumnWidth(id)}%`)};
   /* 텍스트 넘침 처리 */
   overflow: hidden;
   text-overflow: ellipsis;
@@ -101,7 +101,7 @@ const TableData = styled.td<{ id: string; $index: number; $isLast?: boolean }>`
   cursor: pointer;
 
   /* 마지막 컬럼이면 auto, 아니면 px 고정 */
-  width: ${({ id, $isLast }) => ($isLast ? 'auto' : `${getColumnWidth(id)}px`)};
+  width: ${({ id, $isLast }) => ($isLast ? 'auto' : `${getColumnWidth(id)}%`)};
 
   white-space: nowrap;
   overflow: hidden;

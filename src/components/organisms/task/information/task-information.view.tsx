@@ -4,54 +4,70 @@ import { RootState } from '@/redux/store';
 import { useTaskStatusDropdownItems } from '@/hooks/dropdown/dropdown-items';
 import { useI18n } from '../../../../../locales/client';
 import { MainText } from '@/components/atoms/common/text/main-text';
-import { GRAY, WHITE } from '@/constants/styles/color';
+import { GRAY } from '@/constants/styles/color';
 import React from 'react';
-import StatusDropdown from '@/components/atoms/common/dropdown/status-dropdown';
-import { VISITATION_STATUS } from '@/constants/status/status';
-import { SIZE } from '@/constants/styles/style';
+import { TASK_STATUS } from '@/constants/status/status';
 import MemberProfilePopupButton from '@/components/molecules/common/button/member-profile-popup-button';
 import { getTranslatedDateFromDateString } from '@/utils/translate';
 import { usePathname } from 'next/navigation';
 import { LOCALE } from '@/constants/state/locale';
+import SvgIcon from '@/components/atoms/common/icon/svg-icon';
+
+import User from '../../../../../public/svg/user.svg';
+import Calendar from '../../../../../public/svg/calendar.svg';
+import Users from '../../../../../public/svg/users.svg';
+import Book from '../../../../../public/svg/book.svg';
+import { SIZE } from '@/constants/styles/style';
+import StatusDropdown from '@/components/atoms/common/dropdown/status-dropdown';
 
 const InformationContainer = styled.div`
   display: flex;
-  flex-direction: column;
-  gap: 20px;
   width: 100%;
+  flex-direction: column;
 `;
 
-const CardContainer = styled.div<{ $minHeight?: number }>`
+const HeaderContainer = styled.div`
   display: flex;
-  flex-direction: column;
-  gap: 10px;
-  border: 1px solid ${GRAY.LIGHT};
-  border-radius: 10px;
-  background-color: ${WHITE};
-  width: 100%;
-  min-height: ${({ $minHeight }) => $minHeight && $minHeight}px;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 30px;
+  height: 40px;
 `;
 
 const ContentContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  padding: 20px;
+  gap: 30px;
+  padding: 30px;
 `;
 
-const MemberTagList = styled.div`
+const TitleContainer = styled.div`
   display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
   flex-direction: row;
+  gap: 10px;
+  align-items: center;
 `;
 
 const RowContainer = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  gap: 30px;
+`;
+
+const ColumnContainer = styled.div`
+  display: flex;
+  flex-direction: column;
   width: 100%;
   gap: 20px;
+`;
+
+const MemberList = styled.div`
+  display: flex;
+  gap: 10px;
+  flex-direction: row;
 `;
 
 const PeriodContainer = styled.div`
@@ -61,8 +77,15 @@ const PeriodContainer = styled.div`
   gap: 10px;
 `;
 
+const RowLine = styled.div`
+  display: flex;
+  width: 100%;
+  height: 0.6px;
+  background-color: ${GRAY.LIGHT};
+`;
+
 type TaskInformationViewProps = {
-  onChangeStatus: (status: VISITATION_STATUS) => void;
+  onChangeStatus: (status: TASK_STATUS) => void;
 };
 
 const TaskInformationView = ({ onChangeStatus }: TaskInformationViewProps) => {
@@ -74,71 +97,82 @@ const TaskInformationView = ({ onChangeStatus }: TaskInformationViewProps) => {
 
   return (
     <InformationContainer>
-      <RowContainer>
+      {/* 제목 */}
+      <HeaderContainer>
+        <MainText size={SIZE.EXTRA_LARGE} fontSize={22}>
+          {targetTask.title}
+        </MainText>
+        <StatusDropdown
+          value={targetTask.status}
+          items={statusDropdownItems}
+          onChangeItem={onChangeStatus}
+          width={100}
+          height={30}
+        />
+      </HeaderContainer>
+      <ContentContainer>
         {/* 담당자 */}
-        <CardContainer $minHeight={150}>
-          <ContentContainer>
-            <MainText size={SIZE.EXTRA_LARGE}>{t('inCharge')}</MainText>
-            <MemberProfilePopupButton
-              key={targetTask.inCharge.id}
-              member={targetTask.inCharge}
-            />
-          </ContentContainer>
-        </CardContainer>
+        <RowContainer>
+          <TitleContainer>
+            <SvgIcon svg={User} color={GRAY.DARK} />
+            <MainText color={GRAY.DARK}>{t('inCharge')}</MainText>
+          </TitleContainer>
+          <MemberProfilePopupButton
+            key={targetTask.inCharge.id}
+            member={targetTask.inCharge}
+          />
+        </RowContainer>
 
         {/* 일정 */}
-        <CardContainer>
-          <ContentContainer>
-            <RowContainer>
-              <MainText size={SIZE.EXTRA_LARGE}>{t('schedule')}</MainText>
-              <StatusDropdown
-                value={targetTask.status}
-                items={statusDropdownItems}
-                onChangeItem={onChangeStatus}
-                width={100}
-                height={40}
+        <RowContainer>
+          <TitleContainer>
+            <SvgIcon svg={Calendar} color={GRAY.DARK} />
+            <MainText color={GRAY.DARK}>{t('schedule')}</MainText>
+          </TitleContainer>
+          {/* 일자 */}
+          <PeriodContainer>
+            <MainText>
+              {targetTask.startDate &&
+                getTranslatedDateFromDateString(locale, targetTask.startDate)}
+            </MainText>
+            <MainText>{'-'}</MainText>
+            <MainText>
+              {targetTask.endDate &&
+                getTranslatedDateFromDateString(locale, targetTask.endDate)}
+            </MainText>
+          </PeriodContainer>
+        </RowContainer>
+
+        {/* 보고대상자 */}
+        <ColumnContainer>
+          <TitleContainer>
+            <SvgIcon svg={Users} color={GRAY.DARK} />
+            <MainText color={GRAY.DARK}>{t('receiver')}</MainText>
+          </TitleContainer>
+          <MemberList>
+            {targetTask.reports.map((report) => (
+              <MemberProfilePopupButton
+                key={report.id}
+                member={report.receiver}
               />
-            </RowContainer>
+            ))}
+          </MemberList>
+        </ColumnContainer>
 
-            {/* 일자 */}
-            <PeriodContainer>
-              <MainText>
-                {targetTask.startDate &&
-                  getTranslatedDateFromDateString(locale, targetTask.startDate)}
-              </MainText>
-              <MainText>{'-'}</MainText>
-              <MainText>
-                {targetTask.endDate &&
-                  getTranslatedDateFromDateString(locale, targetTask.endDate)}
-              </MainText>
-            </PeriodContainer>
-          </ContentContainer>
-        </CardContainer>
-      </RowContainer>
-
-      {/* 업무내용 */}
-      <CardContainer $minHeight={200}>
-        <ContentContainer>
-          <MainText size={SIZE.EXTRA_LARGE}>{t('content')}</MainText>
+        <RowLine />
+        {/* 업무내용 */}
+        <ColumnContainer>
+          <TitleContainer>
+            <SvgIcon svg={Book} color={GRAY.DARK} />
+            <MainText color={GRAY.DARK}>{t('content')}</MainText>
+          </TitleContainer>
           <MainText
             dangerouslySetInnerHTML={{
               __html: targetTask.content,
             }}
           />
-        </ContentContainer>
-      </CardContainer>
-      {/* 보고대상자 */}
-      <CardContainer $minHeight={150}>
-        <ContentContainer>
-          <MainText size={SIZE.EXTRA_LARGE}>{t('receiver')}</MainText>
-          {targetTask.reports.map((report) => (
-            <MemberProfilePopupButton
-              key={report.id}
-              member={report.receiver}
-            />
-          ))}
-        </ContentContainer>
-      </CardContainer>
+        </ColumnContainer>
+      </ContentContainer>
     </InformationContainer>
   );
 };

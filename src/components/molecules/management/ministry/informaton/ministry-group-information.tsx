@@ -22,6 +22,7 @@ import {
   MINISTRY_ORDER,
 } from '@/api/management/ministry/ministries.api';
 import { MinistryGroupMembersApi } from '@/api/management/ministry/ministry-group-members.api';
+import { getDateStringFromDate } from '@/utils/date';
 
 type MinistryGroupInformationProps = {
   selectedMinistryGroup: MinistryGroup;
@@ -71,8 +72,9 @@ const MinistryGroupInformation = ({
 
   // 사역 목록
   const [ministries, setMinistries] = useState<Ministry[]>([]);
-  // 교인 추가 용으로 선택된 사역
-  const [selectedMinistryId, setSelectedMinistryId] = useState<string>(BLANK);
+
+  // 시작 날짜
+  const [startDate, setStartDate] = useState<Date | null>(new Date());
 
   // 선택된 교인 목록
   const [selectedMembers, setSelectedMembers] = useState<Member[]>([]);
@@ -80,9 +82,9 @@ const MinistryGroupInformation = ({
   // 그룹에 교인 다중 추가를 위한 모달 활성화 여부
   const [isAddModalShown, setIsAddModalShown] = useState<boolean>(false);
 
-  // (교인 추가 팝업 이벤트) 사역 드롭다운 변경
-  const onChangeMinistryItem = (id: string) => {
-    setSelectedMinistryId(id);
+  // 시작 날짜 변경
+  const onChangeStartDate = (date: Date | null) => {
+    setStartDate(date);
   };
 
   const onClickHeaderItem = (headerId: MEMBER) => {
@@ -209,7 +211,10 @@ const MinistryGroupInformation = ({
   };
 
   // 새로운 그룹원들 추가
-  const onClickSaveNewMembers = async (selectedMembers: Member[]) => {
+  const onClickSaveNewMembers = async (
+    selectedMembers: Member[],
+    startDate: Date
+  ) => {
     try {
       if (selectedMembers.length === 0) return;
 
@@ -219,9 +224,9 @@ const MinistryGroupInformation = ({
           members: selectedMembers.map((member) => {
             return {
               memberId: member.id as string,
-              ministryId: selectedMinistryId || undefined,
             };
           }),
+          startDate: getDateStringFromDate(startDate),
         }
       );
       dispatch(fetchMinistryGroups());
@@ -293,14 +298,6 @@ const MinistryGroupInformation = ({
     setEditName(selectedMinistryGroup.name);
   }, [selectedMinistryGroup]);
 
-  useEffect(() => {
-    if (ministries.length > 0) {
-      setSelectedMinistryId(ministries[0].id);
-    } else {
-      setSelectedMinistryId(BLANK);
-    }
-  }, [ministries]);
-
   const props = {
     selectedMinistryGroup,
     isAddModalShown,
@@ -313,7 +310,7 @@ const MinistryGroupInformation = ({
     orderBy,
     orderDirection,
     ministries,
-    selectedMinistryId,
+    startDate,
     onClickHeaderItem,
     onClickMinistryGroup,
     onClickEditOpen,
@@ -326,7 +323,7 @@ const MinistryGroupInformation = ({
     onClickSaveNewMembers,
     fetchMinistries,
     fetchMembers,
-    onChangeMinistryItem,
+    onChangeStartDate,
   };
 
   return (

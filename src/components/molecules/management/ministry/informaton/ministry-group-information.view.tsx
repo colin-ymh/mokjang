@@ -74,7 +74,7 @@ type MinistryGroupInformationViewProps = {
   orderBy: MEMBER | null;
   orderDirection: ORDER_DIRECTION | null;
   ministries: Ministry[];
-  selectedMinistryId: string;
+  startDate: Date | null;
   onClickHeaderItem: (headerId: MEMBER) => void;
   onClickMinistryGroup: (ministryGroup: MinistryGroup) => void;
   onClickEditOpen: () => void;
@@ -84,10 +84,10 @@ type MinistryGroupInformationViewProps = {
   onClickSaveEdit: () => void;
   onClickAddModalOpen: () => void;
   onClickAddModalClose: () => void;
-  onClickSaveNewMembers: (selectedMembers: Member[]) => void;
+  onClickSaveNewMembers: (selectedMembers: Member[], startDate: Date) => void;
   fetchMinistries: () => void;
   fetchMembers: () => void;
-  onChangeMinistryItem: (id: string) => void;
+  onChangeStartDate: (date: Date | null) => void;
 };
 
 const MinistryGroupInformationView = ({
@@ -102,7 +102,7 @@ const MinistryGroupInformationView = ({
   orderBy,
   orderDirection,
   ministries,
-  selectedMinistryId,
+  startDate,
   onClickHeaderItem,
   onClickMinistryGroup,
   onClickEditOpen,
@@ -115,7 +115,7 @@ const MinistryGroupInformationView = ({
   onClickSaveNewMembers,
   fetchMinistries,
   fetchMembers,
-  onChangeMinistryItem,
+  onChangeStartDate,
 }: MinistryGroupInformationViewProps) => {
   const pathname = usePathname();
   const locale = pathname.split('/')[1] as LOCALE;
@@ -211,15 +211,17 @@ const MinistryGroupInformationView = ({
         )}
         headerDescription={t('description.addMemberHeader')}
         doneText={t('button.add')}
-        onClickDone={() => onClickSaveNewMembers(selectedMembers)}
+        onClickDone={() =>
+          onClickSaveNewMembers(selectedMembers, startDate as Date)
+        }
       >
         <AddMinistryGroupMemberModal
           ministryGroup={selectedMinistryGroup}
-          selectedMinistryId={selectedMinistryId}
+          startDate={startDate}
           selectedMembers={selectedMembers}
           setSelectedMembers={setSelectedMembers}
           ministries={ministries}
-          onChangeMinistryItem={onChangeMinistryItem}
+          onChangeStartDate={onChangeStartDate}
         />
       </CustomPopup>
     </>

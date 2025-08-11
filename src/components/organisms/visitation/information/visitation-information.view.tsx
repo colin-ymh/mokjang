@@ -1,78 +1,90 @@
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
-import { useVisitationStatusDropdownItems } from '@/hooks/dropdown/dropdown-items';
+import { useTaskStatusDropdownItems } from '@/hooks/dropdown/dropdown-items';
 import { useI18n } from '../../../../../locales/client';
 import { MainText } from '@/components/atoms/common/text/main-text';
-import { GRAY, WHITE } from '@/constants/styles/color';
+import { GRAY } from '@/constants/styles/color';
 import React from 'react';
 import StatusDropdown from '@/components/atoms/common/dropdown/status-dropdown';
-import { VISITATION_STATUS } from '@/constants/status/status';
+import { TASK_STATUS } from '@/constants/status/status';
 import { SIZE } from '@/constants/styles/style';
 import MemberProfilePopupButton from '@/components/molecules/common/button/member-profile-popup-button';
 import { usePathname } from 'next/navigation';
 import { LOCALE } from '@/constants/state/locale';
 import { getTranslatedDateFromDateString } from '@/utils/translate';
+import SvgIcon from '@/components/atoms/common/icon/svg-icon';
+import User from '../../../../../public/svg/user.svg';
+import Calendar from '../../../../../public/svg/calendar.svg';
+import Users from '../../../../../public/svg/users.svg';
+import Book from '../../../../../public/svg/book.svg';
 
 const InformationContainer = styled.div`
   display: flex;
-  flex-direction: column;
-  gap: 20px;
   width: 100%;
+  flex-direction: column;
 `;
 
-const CardContainer = styled.div<{ $minHeight?: number }>`
+const HeaderContainer = styled.div`
   display: flex;
-  flex-direction: column;
-  gap: 10px;
-  border: 1px solid ${GRAY.LIGHT};
-  border-radius: 10px;
-  background-color: ${WHITE};
-  width: 100%;
-  min-height: ${({ $minHeight }) => $minHeight && $minHeight}px;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 30px;
+  height: 40px;
 `;
 
 const ContentContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  padding: 20px;
+  gap: 30px;
+  padding: 30px;
 `;
 
-const MemberTagList = styled.div`
+const TitleContainer = styled.div`
   display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
   flex-direction: row;
+  gap: 10px;
+  align-items: center;
 `;
 
 const RowContainer = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  gap: 30px;
+`;
+
+const ColumnContainer = styled.div`
+  display: flex;
+  flex-direction: column;
   width: 100%;
   gap: 20px;
 `;
 
-const RowCardContainer = styled.div<{ $minHeight?: number }>`
+const MemberList = styled.div`
   display: flex;
-  flex-direction: column;
   gap: 10px;
-  width: 100%;
-  border: 1px solid ${GRAY.LIGHT};
-  border-radius: 10px;
-  background-color: ${WHITE};
-  min-height: ${({ $minHeight }) => $minHeight && $minHeight}px;
+  flex-direction: row;
 `;
 
 const PeriodContainer = styled.div`
   display: flex;
   flex-direction: row;
+  align-items: center;
   gap: 10px;
 `;
 
+const RowLine = styled.div`
+  display: flex;
+  width: 100%;
+  height: 0.6px;
+  background-color: ${GRAY.LIGHT};
+`;
+
 type VisitationInformationViewProps = {
-  onChangeStatus: (status: VISITATION_STATUS) => void;
+  onChangeStatus: (status: TASK_STATUS) => void;
 };
 
 const VisitationInformationView = ({
@@ -82,26 +94,45 @@ const VisitationInformationView = ({
   const { targetVisitation } = useSelector(
     (state: RootState) => state.targetVisitation
   );
-  const statusDropdownItems = useVisitationStatusDropdownItems();
+  const statusDropdownItems = useTaskStatusDropdownItems();
 
   const pathname = usePathname();
   const locale = pathname.split('/')[1] as LOCALE;
 
   return (
     <InformationContainer>
-      <CardContainer>
-        <ContentContainer>
-          <RowContainer>
-            <MainText size={SIZE.EXTRA_LARGE}>{t('schedule')}</MainText>
-            <StatusDropdown
-              value={targetVisitation.status}
-              items={statusDropdownItems}
-              onChangeItem={onChangeStatus}
-              width={100}
-              height={40}
-            />
-          </RowContainer>
+      {/* 제목 */}
+      <HeaderContainer>
+        <MainText size={SIZE.EXTRA_LARGE} fontSize={22}>
+          {targetVisitation.title}
+        </MainText>
+        <StatusDropdown
+          value={targetVisitation.status}
+          items={statusDropdownItems}
+          onChangeItem={onChangeStatus}
+          width={100}
+          height={30}
+        />
+      </HeaderContainer>
+      <ContentContainer>
+        {/* 담당자 */}
+        <RowContainer>
+          <TitleContainer>
+            <SvgIcon svg={User} color={GRAY.DARK} />
+            <MainText color={GRAY.DARK}>{t('inCharge')}</MainText>
+          </TitleContainer>
+          <MemberProfilePopupButton
+            key={targetVisitation.inCharge.id}
+            member={targetVisitation.inCharge}
+          />
+        </RowContainer>
 
+        {/* 일정 */}
+        <RowContainer>
+          <TitleContainer>
+            <SvgIcon svg={Calendar} color={GRAY.DARK} />
+            <MainText color={GRAY.DARK}>{t('schedule')}</MainText>
+          </TitleContainer>
           {/* 일자 */}
           <PeriodContainer>
             <MainText>
@@ -120,65 +151,64 @@ const VisitationInformationView = ({
                 )}
             </MainText>
           </PeriodContainer>
-        </ContentContainer>
-      </CardContainer>
-      <RowContainer>
-        {/* 대상자 */}
-        <RowCardContainer $minHeight={150}>
-          <ContentContainer>
-            <MainText
-              size={SIZE.EXTRA_LARGE}
-            >{`${t('visitedMember')} (${targetVisitation.visitationDetails.length})`}</MainText>
+        </RowContainer>
+
+        {/* 심방대상자 */}
+        <ColumnContainer>
+          <TitleContainer>
+            <SvgIcon svg={Users} color={GRAY.DARK} />
+            <MainText color={GRAY.DARK}>{t('visitedMember')}</MainText>
+          </TitleContainer>
+          <MemberList>
             {targetVisitation.members.map((member) => (
               <MemberProfilePopupButton key={member.id} member={member} />
             ))}
-          </ContentContainer>
-        </RowCardContainer>
-        {/* 담당자 */}
-        <RowCardContainer $minHeight={150}>
-          <ContentContainer>
-            <MainText size={SIZE.EXTRA_LARGE}>{t('inCharge')}</MainText>
-            <MemberProfilePopupButton
-              key={targetVisitation.inCharge.id}
-              member={targetVisitation.inCharge}
-            />
-          </ContentContainer>
-        </RowCardContainer>
-      </RowContainer>
-      {/* 심방내용 */}
-      <CardContainer $minHeight={200}>
-        <ContentContainer>
-          <MainText size={SIZE.EXTRA_LARGE}>{t('visitationContent')}</MainText>
+          </MemberList>
+        </ColumnContainer>
+
+        {/* 보고대상자 */}
+        <ColumnContainer>
+          <TitleContainer>
+            <SvgIcon svg={Users} color={GRAY.DARK} />
+            <MainText color={GRAY.DARK}>{t('receiver')}</MainText>
+          </TitleContainer>
+          <MemberList>
+            {targetVisitation.reports.map((report) => (
+              <MemberProfilePopupButton
+                key={report.id}
+                member={report.receiver}
+              />
+            ))}
+          </MemberList>
+        </ColumnContainer>
+
+        <RowLine />
+        {/* 업무내용 */}
+        <ColumnContainer>
+          <TitleContainer>
+            <SvgIcon svg={Book} color={GRAY.DARK} />
+            <MainText color={GRAY.DARK}>{t('visitationContent')}</MainText>
+          </TitleContainer>
           <MainText
             dangerouslySetInnerHTML={{
               __html: targetVisitation.visitationDetails[0].visitationContent,
             }}
           />
-        </ContentContainer>
-      </CardContainer>
-      {/* 기도제목 */}
-      <CardContainer $minHeight={150}>
-        <ContentContainer>
-          <MainText size={SIZE.EXTRA_LARGE}>{t('visitationPray')}</MainText>
+        </ColumnContainer>
+        <RowLine />
+        {/* 기도제목 */}
+        <ColumnContainer>
+          <TitleContainer>
+            <SvgIcon svg={Book} color={GRAY.DARK} />
+            <MainText color={GRAY.DARK}>{t('visitationPray')}</MainText>
+          </TitleContainer>
           <MainText
             dangerouslySetInnerHTML={{
               __html: targetVisitation.visitationDetails[0].visitationPray,
             }}
           />
-        </ContentContainer>
-      </CardContainer>
-      {/* 보고대상자 */}
-      <CardContainer $minHeight={150}>
-        <ContentContainer>
-          <MainText size={SIZE.EXTRA_LARGE}>{t('receiver')}</MainText>
-          {targetVisitation.reports.map((report) => (
-            <MemberProfilePopupButton
-              key={report.id}
-              member={report.receiver}
-            />
-          ))}
-        </ContentContainer>
-      </CardContainer>
+        </ColumnContainer>
+      </ContentContainer>
     </InformationContainer>
   );
 };

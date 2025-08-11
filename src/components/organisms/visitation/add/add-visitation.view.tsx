@@ -4,15 +4,15 @@ import { useI18n, useScopedI18n } from '../../../../../locales/client';
 import { GRAY, WHITE } from '@/constants/styles/color';
 import { VISITATION_METHOD } from '@/models/visitation/visitation';
 import {
+  useTaskStatusDropdownItems,
   useTimeDropdownItems,
-  useVisitationStatusDropdownItems,
 } from '@/hooks/dropdown/dropdown-items';
 import { MemberDropdownType } from '@/components/atoms/common/dropdown/member-dropdown-item';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import StatusDropdown from '@/components/atoms/common/dropdown/status-dropdown';
-import { VISITATION_STATUS } from '@/constants/status/status';
+import { TASK_STATUS } from '@/constants/status/status';
 import RequiredMark from '@/components/atoms/common/text/required-mark';
 import BorderInput from '@/components/atoms/common/input/border-input';
 import { SIZE } from '@/constants/styles/style';
@@ -89,7 +89,7 @@ type AddVisitationViewProps = {
   visitedMembers: MemberDropdownType[];
   inCharge: MemberDropdownType[];
   receivers: MemberDropdownType[];
-  onChangeStatus: (status: VISITATION_STATUS) => void;
+  onChangeStatus: (status: TASK_STATUS) => void;
   onChangeTitle: (event: ChangeEvent<HTMLInputElement>) => void;
   onChangeStartDate: (event: Date | null) => void;
   onChangeStartTime: (value: number) => void;
@@ -130,7 +130,7 @@ const AddVisitationView = ({
   const t = useI18n();
   const t_placeholder = useScopedI18n('placeholder');
 
-  const statusDropdownItems = useVisitationStatusDropdownItems();
+  const statusDropdownItems = useTaskStatusDropdownItems();
   const timeDropdownItems = useTimeDropdownItems();
 
   return (

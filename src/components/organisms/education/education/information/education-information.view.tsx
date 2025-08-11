@@ -5,7 +5,6 @@ import { useI18n } from '../../../../../../locales/client';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { GRAY, GREEN, WHITE } from '@/constants/styles/color';
 import React from 'react';
-import { SIZE } from '@/constants/styles/style';
 import { usePathname } from 'next/navigation';
 import { LOCALE } from '@/constants/state/locale';
 import Button from '@/components/atoms/common/button/button';
@@ -17,61 +16,68 @@ import {
 } from '@/utils/translate';
 import Check from '../../../../../../public/svg/check.svg';
 import SvgIcon from '@/components/atoms/common/icon/svg-icon';
+import { SIZE } from '@/constants/styles/style';
 
 const InformationContainer = styled.div`
   display: flex;
-  flex-direction: column;
-  gap: 20px;
   width: 100%;
+  flex-direction: column;
 `;
 
-const CardContainer = styled.div<{ $minHeight?: number }>`
+const HeaderContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  border: 1px solid ${GRAY.LIGHT};
-  border-radius: 10px;
-  background-color: ${WHITE};
-  min-height: ${({ $minHeight }) => $minHeight && $minHeight}px;
-`;
-
-const RowCardContainer = styled.div<{ $minHeight?: number }>`
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  width: 100%;
-  border: 1px solid ${GRAY.LIGHT};
-  border-radius: 10px;
-  background-color: ${WHITE};
-  min-height: ${({ $minHeight }) => $minHeight && $minHeight}px;
+  justify-content: center;
+  padding: 0 30px;
+  gap: 5px;
 `;
 
 const ContentContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  padding: 20px;
-`;
-
-const ColumnContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
+  gap: 30px;
+  padding: 30px;
 `;
 
 const RowContainer = styled.div`
   display: flex;
   flex-direction: row;
+  align-items: center;
   justify-content: space-between;
-  width: 100%;
-  gap: 20px;
+  gap: 30px;
 `;
 
-const TableContainer = styled.div`
+const TitleContainer = styled.div`
   display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+`;
+
+const RowLine = styled.div`
+  display: flex;
+  width: 100%;
+  height: 0.6px;
+  background-color: ${GRAY.LIGHT};
+`;
+
+const ColumnContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 10px;
+`;
+
+const CardContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
   border: 1px solid ${GRAY.LIGHT};
   border-radius: 10px;
-  overflow: hidden;
+  background-color: ${WHITE};
+  padding: 20px;
+  flex: 1;
+  min-height: 80px;
 `;
 
 const GoalList = styled.div`
@@ -89,6 +95,21 @@ const GoalItem = styled.div`
   padding: 10px;
 `;
 
+const TableHeader = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const TableContainer = styled.div`
+  display: flex;
+  border: 1px solid ${GRAY.LIGHT};
+  border-radius: 10px;
+  overflow: hidden;
+`;
+
 type EducationInformationViewProps = {};
 
 const EducationInformationView = ({}: EducationInformationViewProps) => {
@@ -101,10 +122,19 @@ const EducationInformationView = ({}: EducationInformationViewProps) => {
 
   return (
     <InformationContainer>
-      {/* 교육 목표 */}
-      <CardContainer $minHeight={100}>
-        <ContentContainer>
-          <MainText size={SIZE.EXTRA_LARGE}>{t('educationGoal')}</MainText>
+      <HeaderContainer>
+        <MainText size={SIZE.EXTRA_LARGE} fontSize={22}>
+          {`${targetEducation.name}`}
+        </MainText>
+        <MainText color={GRAY.DEFAULT}>
+          {`${targetEducation.description}`}
+        </MainText>
+      </HeaderContainer>
+      {/* 제목 */}
+      <ContentContainer>
+        {/* 교육 목표 */}
+        <CardContainer>
+          <MainText color={GRAY.SEMI_DARK}>{t('educationGoal')}</MainText>
           <GoalList>
             {targetEducation.goals.map((goal, index) => {
               if (goal.length !== 0)
@@ -116,72 +146,65 @@ const EducationInformationView = ({}: EducationInformationViewProps) => {
                 );
             })}
           </GoalList>
-        </ContentContainer>
-      </CardContainer>
-
-      <RowContainer>
-        {/* 기수 수 */}
-        <RowCardContainer $minHeight={80}>
-          <ContentContainer>
+        </CardContainer>
+        <RowContainer>
+          {/* 기수 수 */}
+          <CardContainer>
+            <TitleContainer>
+              <MainText color={GRAY.SEMI_DARK}>
+                {t('educationTermCount')}
+              </MainText>
+            </TitleContainer>
             <MainText size={SIZE.EXTRA_LARGE}>
-              {t('educationTermCount')}
-            </MainText>
-            <MainText>
               {getTranslatedTermCount(locale, targetEducation.termsCount)}
             </MainText>
-          </ContentContainer>
-        </RowCardContainer>
-        {/* 교인 수 */}
-        <RowCardContainer $minHeight={80}>
-          <ContentContainer>
+          </CardContainer>
+          {/* 교인 수 */}
+          <CardContainer>
+            <TitleContainer>
+              <MainText color={GRAY.SEMI_DARK}>
+                {t('educationEnrollmentCount')}
+              </MainText>
+            </TitleContainer>
             <MainText size={SIZE.EXTRA_LARGE}>
-              {t('educationEnrollmentCount')}
-            </MainText>
-            <MainText>
               {getTranslatedMemberCount(
                 locale,
                 targetEducation.completionMembersCount
               )}
             </MainText>
-          </ContentContainer>
-        </RowCardContainer>
-        {/* 상세정보 */}
-        <RowCardContainer $minHeight={80}>
-          <ContentContainer>
-            <MainText size={SIZE.EXTRA_LARGE}>
-              {t('createdInformation')}
-            </MainText>
-            <ColumnContainer>
-              <MainText
-                color={GRAY.SEMI_DARK}
-              >{`${t('creator')}: ${targetEducation.creator.name}`}</MainText>
+          </CardContainer>
+          {/* 상세정보 */}
+          <CardContainer>
+            <TitleContainer>
               <MainText color={GRAY.SEMI_DARK}>
+                {t('createdInformation')}
+              </MainText>
+            </TitleContainer>
+            <ColumnContainer>
+              <MainText>{`${t('creator')}: ${targetEducation.creator.name}`}</MainText>
+              <MainText>
                 {`${t('createdDate')}: ${getTranslatedDateFromDateString(
                   locale,
                   targetEducation.createdAt
                 )}`}
               </MainText>
             </ColumnContainer>
-          </ContentContainer>
-        </RowCardContainer>
-      </RowContainer>
-
-      {/* 교육 기수 */}
-      <CardContainer $minHeight={200}>
-        <ContentContainer>
-          <RowContainer>
-            <MainText size={SIZE.EXTRA_LARGE}>{t('educationTerm')}</MainText>
-            <Button
-              text={t('button.addEducationTerm')}
-              height={30}
-              width={'auto'}
-            />
-          </RowContainer>
-          <TableContainer>
-            <EducationTermTable />
-          </TableContainer>
-        </ContentContainer>
-      </CardContainer>
+          </CardContainer>
+        </RowContainer>
+        <RowLine />
+        {/* 교육 기수 */}
+        <TableHeader>
+          <MainText color={GRAY.SEMI_DARK}>{t('educationTerm')}</MainText>
+          <Button
+            text={t('button.addEducationTerm')}
+            height={30}
+            width={'auto'}
+          />
+        </TableHeader>
+        <TableContainer>
+          <EducationTermTable />
+        </TableContainer>
+      </ContentContainer>
     </InformationContainer>
   );
 };
