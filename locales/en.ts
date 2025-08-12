@@ -509,6 +509,8 @@ export default {
   'button.backToEducationTerm': 'Back To Education Term',
   'button.backToEducationSession': 'Back To Education Session',
 
+  'button.showMoreEducationTerm': '교육 기수 더보기',
+
   /*-------------------button-------------------*/
 
   /*-------------------placeholder-------------------*/

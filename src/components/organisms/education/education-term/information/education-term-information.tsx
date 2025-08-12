@@ -1,10 +1,11 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 import { EducationTermsApi } from '@/api/education/education-terms.api';
-import React, { useEffect, useState } from 'react';
+import React, { RefObject, useEffect, useRef, useState } from 'react';
 import {
   DEFAULT_EDUCATION_SESSION,
   EducationEnrollment,
+  EducationSession,
 } from '@/models/education/education';
 import { setTargetEducationTerm } from '@/redux/reducers/target/target-education-term-reducer';
 import { setEducationTerms } from '@/redux/reducers/filter/education-term-filter-reducer';
@@ -32,9 +33,13 @@ import { EducationSessionsApi } from '@/api/education/education-sessions.api';
 import WrappedPagePopup from '@/components/atoms/common/popup/wrapped-page-popup';
 import AddEducationSession from '@/components/organisms/education/education-session/add/add-education-session';
 
-type EducationTermInformationProps = {};
+type EducationTermInformationProps = {
+  scrollRef: RefObject<HTMLDivElement>;
+};
 
-const EducationTermInformation = ({}: EducationTermInformationProps) => {
+const EducationTermInformation = ({
+  scrollRef,
+}: EducationTermInformationProps) => {
   const t_popup = useScopedI18n('popup');
   const t_title = useScopedI18n('title');
   const t_button = useScopedI18n('button');
@@ -52,6 +57,12 @@ const EducationTermInformation = ({}: EducationTermInformationProps) => {
   );
   const { churchId } = useSelector((state: RootState) => state.church);
 
+  // 최신 targetEducationTerm을 보관해 비동기 클로저에서의 상태 유실 방지
+  const termRef = useRef(targetEducationTerm);
+  useEffect(() => {
+    termRef.current = targetEducationTerm;
+  }, [targetEducationTerm]);
+
   const dispatch = useDispatch<AppDispatch>();
   const educationTermsApi = new EducationTermsApi(false);
   const educationEnrollmentsApi = new EducationEnrollmentsApi(false);
@@ -61,7 +72,19 @@ const EducationTermInformation = ({}: EducationTermInformationProps) => {
     EDUCATION_TERM_CONTENT_ID.SESSIONS
   );
 
-  const [page, setPage] = useState<number>(1);
+  const [sessionPage, setSessionPage] = useState<number>(1);
+  const [enrollmentPage, setEnrollmentPage] = useState<number>(1);
+
+  const TAKE = 10; // 한번에 가져올 개수(무한스크롤 페이지 사이즈)
+
+  // 무한스크롤 제어용 상태
+  const [isSessionLoading, setIsSessionLoading] = useState<boolean>(false);
+  const [hasMoreSession, setHasMoreSession] = useState<boolean>(true);
+
+  // 무한스크롤 제어용 상태
+  const [isEnrollmentLoading, setIsEnrollmentLoading] =
+    useState<boolean>(false);
+  const [hasMoreEnrollment, setHasMoreEnrollment] = useState<boolean>(true);
 
   // 선택된 교인 목록
   const [selectedMembers, setSelectedMembers] = useState<Member[]>([]);
@@ -83,21 +106,27 @@ const EducationTermInformation = ({}: EducationTermInformationProps) => {
 
   // -------- enrollment ---------
   const fetchEnrollments = async () => {
+    // 이미 로딩 중이거나 더 불러올 데이터가 없다면 중단
+    if (isEnrollmentLoading || !hasMoreEnrollment) return;
+    setIsEnrollmentLoading(true);
     try {
       const response = await educationEnrollmentsApi.getEducationEnrollments({
         churchId,
         educationId: targetEducationTerm.educationId,
         educationTermId: targetEducationTerm.id,
-        page,
-        take: 10,
+        page: enrollmentPage,
+        take: TAKE,
       });
 
       const newEnrollments: EducationEnrollment[] = response.data.data;
 
-      if (!newEnrollments || newEnrollments.length === 0) return;
+      // 불러온 데이터가 없으면 더 이상 페이지가 없다고 판단
+      if (!newEnrollments || newEnrollments.length === 0) {
+        setHasMoreEnrollment(false);
+        return;
+      }
 
-      const existingEnrollments =
-        targetEducationTerm.educationEnrollments || [];
+      const existingEnrollments = termRef.current?.educationEnrollments || [];
 
       // 중복 ID 제거
       const existingIds = new Set(existingEnrollments.map((e) => e.id));
@@ -105,37 +134,141 @@ const EducationTermInformation = ({}: EducationTermInformationProps) => {
         (e) => !existingIds.has(e.id)
       );
 
-      if (filteredNewEnrollments.length === 0) return;
+      if (filteredNewEnrollments.length === 0) {
+        // 가져온 데이터가 모두 중복이면, 더 이상 가져올 게 없다고 판단
+        setHasMoreEnrollment(false);
+        return;
+      }
 
       dispatch(
         setTargetEducationTerm({
-          ...targetEducationTerm,
+          ...termRef.current,
           educationEnrollments: [
             ...existingEnrollments,
             ...filteredNewEnrollments,
           ],
         })
       );
+
+      // 이번 페이지에서 TAKE보다 적게 가져왔으면 다음 페이지는 없음
+      if (filteredNewEnrollments.length < TAKE) {
+        setHasMoreEnrollment(false);
+      }
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));
+    } finally {
+      setIsEnrollmentLoading(false);
     }
   };
 
-  // useEffect(() => {
-  //   if (scrollRef.current) {
-  //     const { scrollTop, scrollHeight, clientHeight } = scrollRef.current;
-  //
-  //     // 스크롤이 최하단에 도달했는지 확인
-  //     if (scrollTop + clientHeight >= scrollHeight) {
-  //       console.log('!');
-  //       // setPage(page + 1);
-  //     }
-  //   }
-  // }, [scrollRef.current]);
+  // 공용 스크롤 이벤트: headerBar에 따라 enrollment/session 페이징을 분기
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+
+    const threshold = 16; // px
+
+    const onScroll = () => {
+      // 스크롤 가능한 상태(내용 높이가 컨테이너보다 큰가)
+      const isScrollable = el.scrollHeight > el.clientHeight + 1;
+      if (!isScrollable) return;
+
+      // 최하단 근접 체크
+      const isNearBottom =
+        el.scrollTop + el.clientHeight >= el.scrollHeight - threshold;
+      if (!isNearBottom) return;
+
+      // headerBar 에 따라 어떤 리스트를 불러올지 결정
+      if (headerBar === EDUCATION_TERM_CONTENT_ID.SESSIONS) {
+        // 이미 로딩 중이거나 더 불러올 데이터가 없다면 중단
+        if (!isSessionLoading && hasMoreSession) {
+          setSessionPage((prev) => prev + 1);
+        }
+      } else if (headerBar === EDUCATION_TERM_CONTENT_ID.ENROLLMENTS) {
+        // 이미 로딩 중이거나 더 불러올 데이터가 없다면 중단
+        if (!isEnrollmentLoading && hasMoreEnrollment) {
+          setEnrollmentPage((prev) => prev + 1);
+        }
+      }
+    };
+
+    el.addEventListener('scroll', onScroll);
+    return () => {
+      el.removeEventListener('scroll', onScroll);
+    };
+  }, [
+    scrollRef,
+    headerBar,
+    isSessionLoading,
+    hasMoreSession,
+    isEnrollmentLoading,
+    hasMoreEnrollment,
+  ]);
 
   useEffect(() => {
     fetchEnrollments();
-  }, [page]);
+  }, [enrollmentPage]);
+  // -------- enrollment ---------
+
+  // -------- session ---------
+  const fetchSessions = async () => {
+    // 이미 로딩 중이거나 더 불러올 데이터가 없다면 중단
+    if (isSessionLoading || !hasMoreSession) return;
+    setIsSessionLoading(true);
+    try {
+      const response = await educationSessionsApi.getEducationSessions({
+        churchId,
+        educationId: targetEducationTerm.educationId,
+        educationTermId: targetEducationTerm.id,
+        page: sessionPage,
+        take: TAKE,
+      });
+
+      const newSessions: EducationSession[] = response.data.data;
+
+      // 불러온 데이터가 없으면 더 이상 페이지가 없다고 판단
+      if (!newSessions || newSessions.length === 0) {
+        setHasMoreSession(false);
+        return;
+      }
+
+      const existingSessions = termRef.current?.educationSessions || [];
+
+      // 중복 ID 제거
+      const existingIds = new Set(existingSessions.map((e) => e.id));
+      const filteredNewSessions = newSessions.filter(
+        (e) => !existingIds.has(e.id)
+      );
+
+      if (filteredNewSessions.length === 0) {
+        // 가져온 데이터가 모두 중복이면, 더 이상 가져올 게 없다고 판단
+        setHasMoreSession(false);
+        return;
+      }
+
+      dispatch(
+        setTargetEducationTerm({
+          ...termRef.current,
+          educationSessions: [...existingSessions, ...filteredNewSessions],
+        })
+      );
+
+      // 이번 페이지에서 TAKE보다 적게 가져왔으면 다음 페이지는 없음
+      if (filteredNewSessions.length < TAKE) {
+        setHasMoreSession(false);
+      }
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
+    } finally {
+      setIsSessionLoading(false);
+    }
+  };
+
+  // (공용 스크롤 이벤트로 대체됨)
+
+  useEffect(() => {
+    fetchSessions();
+  }, [sessionPage]);
   // -------- enrollment ---------
 
   // ===== status =====

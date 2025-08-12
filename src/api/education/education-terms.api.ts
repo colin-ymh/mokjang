@@ -98,6 +98,8 @@ export class EducationTermsApi {
       educationId,
       order,
       orderDirection = ORDER_DIRECTION.DESC,
+      take,
+      page,
     } = params;
 
     const url = `${this._url}/churches/${churchId}/educations/${educationId}/terms`;
@@ -107,6 +109,8 @@ export class EducationTermsApi {
         params: {
           order,
           orderDirection,
+          take,
+          page,
         },
       });
     } catch (serverError: any) {

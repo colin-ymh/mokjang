@@ -13,7 +13,6 @@ import {
   EDUCATION,
   EDUCATION_SESSION,
 } from '@/constants/column/education-column';
-import ChevronLeft from '../../../../../public/svg/chevron-left.svg';
 import Clock from '../../../../../public/svg/clock.svg';
 import SvgIcon from '@/components/atoms/common/icon/svg-icon';
 import { getDateFromDateString, getDateStringFromDate } from '@/utils/date';
@@ -135,19 +134,6 @@ const EducationNameContainer = styled.div<{ $level: number }>`
   flex-shrink: 0;
 `;
 
-const Chevron = styled(ChevronLeft)<{
-  $isOpened: boolean;
-  color?: string;
-  $reverseDirection?: boolean;
-}>`
-  width: 12px;
-  height: 14px;
-  stroke: ${({ color }) => color || GRAY.DEFAULT};
-  stroke-width: 3px;
-  transform: rotate(${({ $isOpened }) => ($isOpened ? '180deg' : '270deg')});
-  transition: transform 0.2s ease;
-`;
-
 const TitleContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -256,39 +242,33 @@ const EducationSessionTableView = ({
             </tr>
           </thead>
           <tbody>
-            {targetEducation.educationTerms?.map((educationTerm) => (
-              <React.Fragment key={educationTerm.id}>
-                {/* 교육 회차 */}
-                {targetEducationTerm.educationSessions?.map(
-                  (educationSession) => (
-                    <React.Fragment key={educationSession.id}>
-                      <EducationTableRow
-                        onClick={() =>
-                          onClickEducationSessionItem(
-                            targetEducation,
-                            educationTerm,
-                            educationSession
-                          )
-                        }
-                      >
-                        {visibleColumns.map((item, index) => (
-                          <TableData
-                            key={`${educationSession.id}-${item.id}`}
-                            id={item.id}
-                            $isLast={index === visibleColumns.length - 1}
-                          >
-                            <ContentWrapper>
-                              {getEducationSessionTableContent(
-                                item.id,
-                                educationSession
-                              )}
-                            </ContentWrapper>
-                          </TableData>
-                        ))}
-                      </EducationTableRow>
-                    </React.Fragment>
-                  )
-                )}
+            {/* 교육 회차 */}
+            {targetEducationTerm.educationSessions?.map((educationSession) => (
+              <React.Fragment key={educationSession.id}>
+                <EducationTableRow
+                  onClick={() =>
+                    onClickEducationSessionItem(
+                      targetEducation,
+                      targetEducationTerm,
+                      educationSession
+                    )
+                  }
+                >
+                  {visibleColumns.map((item, index) => (
+                    <TableData
+                      key={`${educationSession.id}-${item.id}`}
+                      id={item.id}
+                      $isLast={index === visibleColumns.length - 1}
+                    >
+                      <ContentWrapper>
+                        {getEducationSessionTableContent(
+                          item.id,
+                          educationSession
+                        )}
+                      </ContentWrapper>
+                    </TableData>
+                  ))}
+                </EducationTableRow>
               </React.Fragment>
             ))}
           </tbody>

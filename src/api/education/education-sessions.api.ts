@@ -9,6 +9,8 @@ type GetEducationSessionsParams = {
   churchId: string;
   educationId: string;
   educationTermId: string;
+  take?: number;
+  page?: number;
 };
 
 type GetEducationSessionParams = {
@@ -95,12 +97,17 @@ export class EducationSessionsApi {
   public getEducationSessions = async (
     params: GetEducationSessionsParams
   ): Promise<AxiosResponse> => {
-    const { churchId, educationId, educationTermId } = params;
+    const { churchId, educationId, educationTermId, take, page } = params;
 
     const url = `${this._url}/churches/${churchId}/educations/${educationId}/terms/${educationTermId}/sessions`;
 
     try {
-      return await authorizeAxios.get(url);
+      return await authorizeAxios.get(url, {
+        params: {
+          take,
+          page,
+        },
+      });
     } catch (serverError: any) {
       if (serverError.response) {
         const { message, error, statusCode } = serverError.response.data;

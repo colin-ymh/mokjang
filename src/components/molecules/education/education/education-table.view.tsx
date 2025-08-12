@@ -29,10 +29,11 @@ import ChevronLeft from '../../../../../public/svg/chevron-left.svg';
 import Book from '../../../../../public/svg/book.svg';
 import Calendar from '../../../../../public/svg/calendar.svg';
 import Clock from '../../../../../public/svg/clock.svg';
+import Plus from '../../../../../public/svg/plus.svg';
 import SvgIcon from '@/components/atoms/common/icon/svg-icon';
 import { getDateFromDateString, getDateStringFromDate } from '@/utils/date';
 import MainTag from '@/components/atoms/common/tag/main-tag';
-import { getStatusBackgroundColor, getStatusFontColor } from '@/utils/color';
+import { getStatusBackgroundColor, getStatusFontColor } from '@/utils/color'; // 1. 컬럼별 PX 폭 (마지막 REMARKS만 auto 할 예정)
 
 // 1. 컬럼별 PX 폭 (마지막 REMARKS만 auto 할 예정)
 const getColumnWidth = (id: string) => {
@@ -154,6 +155,11 @@ const Chevron = styled(ChevronLeft)<{
   stroke-width: 3px;
   transform: rotate(${({ $isOpened }) => ($isOpened ? '180deg' : '270deg')});
   transition: transform 0.2s ease;
+  border-radius: 5px;
+  padding: 5px;
+  &:hover {
+    background-color: ${GRAY.LIGHT};
+  }
 `;
 
 const TitleContainer = styled.div`
@@ -169,6 +175,31 @@ const StatusContainer = styled.div`
   align-items: center;
   gap: 10px;
   width: 100%;
+`;
+
+// 변경
+const ShowMoreTableRow = styled.tr`
+  border-bottom: 1px solid ${GRAY.EXTRA_LIGHT};
+  background-color: ${GRAY.SUPER_LIGHT};
+  //box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.1);
+  &:hover td {
+    background-color: ${MAIN.EXTRA_LIGHT};
+  }
+`;
+
+const ShowMoreCell = styled.td`
+  padding: 0;
+  width: 100%;
+`;
+
+const ShowMoreTerm = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 15px 10px;
+  cursor: pointer;
 `;
 
 type EducationTableProps = {
@@ -259,7 +290,7 @@ const EducationTableView = ({
     switch (id) {
       case EDUCATION.NAME:
         return (
-          <EducationNameContainer $level={2}>
+          <EducationNameContainer $level={3}>
             {/*<Chevron*/}
             {/*  $isOpened={openedTermIds.includes(educationTerm.id)}*/}
             {/*  onClick={(event: React.MouseEvent) => {*/}
@@ -281,11 +312,6 @@ const EducationTableView = ({
       case EDUCATION.STATUS:
         return (
           <StatusContainer>
-            <MainTag
-              title={t(educationTerm.status)}
-              color={getStatusFontColor(educationTerm.status)}
-              backgroundColor={getStatusBackgroundColor(educationTerm.status)}
-            />
             <MainText size={SIZE.SMALL} color={GRAY.SEMI_DARK}>
               {getTranslatedCompletedEnrollmentStatus(
                 locale,
@@ -293,6 +319,11 @@ const EducationTableView = ({
                 educationTerm.enrollmentsCount
               )}
             </MainText>
+            <MainTag
+              title={t(educationTerm.status)}
+              color={getStatusFontColor(educationTerm.status)}
+              backgroundColor={getStatusBackgroundColor(educationTerm.status)}
+            />
           </StatusContainer>
         );
       default:
@@ -439,6 +470,22 @@ const EducationTableView = ({
                         )}
                     </React.Fragment>
                   ))}
+                {/* 더보기 */}
+                {openedEducationIds.includes(education.id) &&
+                  education.termsCount >= 4 && (
+                    <ShowMoreTableRow>
+                      <ShowMoreCell colSpan={visibleColumns.length}>
+                        <ShowMoreTerm
+                          onClick={() => onClickEducationItem(education)}
+                        >
+                          <SvgIcon svg={Plus} color={MAIN.DEFAULT} width={3} />
+                          <MainText color={MAIN.DEFAULT} fontWeight={500}>
+                            {t('button.showMoreEducationTerm')}
+                          </MainText>
+                        </ShowMoreTerm>
+                      </ShowMoreCell>
+                    </ShowMoreTableRow>
+                  )}
               </React.Fragment>
             ))}
           </tbody>

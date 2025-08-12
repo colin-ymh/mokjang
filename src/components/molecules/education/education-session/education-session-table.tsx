@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 import {
@@ -13,16 +13,12 @@ import {
 } from '@/redux/reducers/toast-popup-reducer';
 import { MAIN } from '@/constants/styles/color';
 import { EducationSessionsApi } from '@/api/education/education-sessions.api';
-import { EducationsApi } from '@/api/education/educations.api';
 import { setTargetEducation } from '@/redux/reducers/target/target-education-reducer';
 import { setTargetEducationTerm } from '@/redux/reducers/target/target-education-term-reducer';
 import { setEducations } from '@/redux/reducers/filter/education-filter-reducer';
 import { getIsWellFormedTitle } from '@/utils/check';
 import { TASK_STATUS } from '@/constants/status/status';
 import { setTargetEducationSession } from '@/redux/reducers/target/target-education-session-reducer';
-import { EducationTermsApi } from '@/api/education/education-terms.api';
-import { EducationEnrollmentsApi } from '@/api/education/education-enrollments.api';
-import { EducationAttendanceApi } from '@/api/education/education-attendance.api';
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
 import WrappedPagePopup from '@/components/atoms/common/popup/wrapped-page-popup';
 import { getTranslatedTerm } from '@/utils/translate';
@@ -45,7 +41,6 @@ const EducationSessionTable = ({}: EducationTermTableProps) => {
   const t_popup = useScopedI18n('popup');
   const t_title = useScopedI18n('title');
 
-  const scrollRef = useRef<HTMLDivElement | null>(null);
   const dispatch = useDispatch<AppDispatch>();
 
   const { churchId } = useSelector((state: RootState) => state.church);
@@ -63,12 +58,7 @@ const EducationSessionTable = ({}: EducationTermTableProps) => {
     (state: RootState) => state.targetEducationSession
   );
 
-  const educationApi = new EducationsApi(false);
-  const educationTermsApi = new EducationTermsApi(false);
   const educationSessionsApi = new EducationSessionsApi(false);
-  const educationEnrollmentsApi = new EducationEnrollmentsApi(false);
-  const educationAttendanceApi = new EducationAttendanceApi(false);
-
   const [thrownError, setThrownError] = useState<Error | null>(null);
 
   // 렌더링 시점(컴포넌트 return)에서 조건부로 에러 발생
@@ -118,24 +108,11 @@ const EducationSessionTable = ({}: EducationTermTableProps) => {
         educationTermId: educationTerm.id,
         educationSessionId: educationSession.id,
       });
-
-      const attendanceResponse =
-        await educationAttendanceApi.getEducationAttendances({
-          churchId,
-          educationId: educationTerm.educationId,
-          educationTermId: educationTerm.id,
-          sessionId: educationSession.id,
-        });
-
       const newEducationSession = response.data.data;
-      const educationAttendances = attendanceResponse.data.data;
-
       dispatch(setTargetEducation(education));
-      // dispatch(setTargetEducationTerm(educationTerm));
       dispatch(
         setTargetEducationSession({
           ...newEducationSession,
-          educationAttendances,
         })
       );
       setIsEducationSessionInformationShown(true);
@@ -439,23 +416,25 @@ const EducationSessionTable = ({}: EducationTermTableProps) => {
         endDate={targetEducationSession.endDate}
         closeText={t_button('backToEducationTerm')}
       >
-        <>
-          {/* 삭제 확인 팝업 */}
-          <ConfirmPopup
-            title={t_popup('deleteEducationSessionTitle')}
-            body={t_popup('deleteEducationSessionBody')}
-            buttonNum={2}
-            isShow={isEducationSessionDeletePopupShown}
-            onClickLeftButton={onClickDeleteEducationSessionConfirmClose}
-            onClickRightButton={() => {
-              onClickDeleteEducationSession();
-              onClickDeleteEducationSessionConfirmClose();
-            }}
-            leftButtonText={t_button('cancel')}
-            rightButtonText={t_button('delete')}
-          />
-          <EducationSessionInformation />
-        </>
+        {(scrollRef) => (
+          <>
+            {/* 삭제 확인 팝업 */}
+            <ConfirmPopup
+              title={t_popup('deleteEducationSessionTitle')}
+              body={t_popup('deleteEducationSessionBody')}
+              buttonNum={2}
+              isShow={isEducationSessionDeletePopupShown}
+              onClickLeftButton={onClickDeleteEducationSessionConfirmClose}
+              onClickRightButton={() => {
+                onClickDeleteEducationSession();
+                onClickDeleteEducationSessionConfirmClose();
+              }}
+              leftButtonText={t_button('cancel')}
+              rightButtonText={t_button('delete')}
+            />
+            <EducationSessionInformation scrollRef={scrollRef} />
+          </>
+        )}
       </WrappedPagePopup>
 
       {/* 교육회차 수정 팝업*/}

@@ -148,6 +148,11 @@ const Chevron = styled(ChevronLeft)<{
   stroke-width: 3px;
   transform: rotate(${({ $isOpened }) => ($isOpened ? '180deg' : '270deg')});
   transition: transform 0.2s ease;
+  border-radius: 5px;
+  padding: 5px;
+  &:hover {
+    background-color: ${GRAY.LIGHT};
+  }
 `;
 
 const TitleContainer = styled.div`

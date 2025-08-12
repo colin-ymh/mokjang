@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 import {
@@ -8,31 +8,34 @@ import {
   EducationSession,
   EducationTerm,
 } from '@/models/education/education';
-import { setIsToastShown, setToastBackgroundColor, setToastText, } from '@/redux/reducers/toast-popup-reducer';
+import {
+  setIsToastShown,
+  setToastBackgroundColor,
+  setToastText,
+} from '@/redux/reducers/toast-popup-reducer';
 import { DESTRUCTIVE, MAIN } from '@/constants/styles/color';
 import { EducationSessionsApi } from '@/api/education/education-sessions.api';
-import { EducationsApi } from '@/api/education/educations.api';
 import EducationTermTableView from '@/components/molecules/education/education-term/education-term-table.view';
 import { setTargetEducation } from '@/redux/reducers/target/target-education-reducer';
 import { setTargetEducationTerm } from '@/redux/reducers/target/target-education-term-reducer';
 import { setEducations } from '@/redux/reducers/filter/education-filter-reducer';
-import { getDateFromDateString, getDateStringFromDate, getFullStringFromDate, } from '@/utils/date';
+import {
+  getDateFromDateString,
+  getDateStringFromDate,
+  getFullStringFromDate,
+} from '@/utils/date';
 import { getIsWellFormedTitle } from '@/utils/check';
 import { TASK_STATUS } from '@/constants/status/status';
 import { setEducationTerms } from '@/redux/reducers/filter/education-term-filter-reducer';
 import { setTargetEducationSession } from '@/redux/reducers/target/target-education-session-reducer';
 import { EducationTermsApi } from '@/api/education/education-terms.api';
-import { EducationEnrollmentsApi } from '@/api/education/education-enrollments.api';
-import { EducationAttendanceApi } from '@/api/education/education-attendance.api';
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
 import WrappedPagePopup from '@/components/atoms/common/popup/wrapped-page-popup';
 import { getTranslatedTerm } from '@/utils/translate';
 import ConfirmPopup from '@/components/atoms/common/popup/error-popup';
-import EducationTermInformation
-  from '@/components/organisms/education/education-term/information/education-term-information';
+import EducationTermInformation from '@/components/organisms/education/education-term/information/education-term-information';
 import AddEducationTerm from '@/components/organisms/education/education-term/add/add-education-term';
-import EducationSessionInformation
-  from '@/components/organisms/education/education-session/information/education-session-information';
+import EducationSessionInformation from '@/components/organisms/education/education-session/information/education-session-information';
 import AddEducationSession from '@/components/organisms/education/education-session/add/add-education-session';
 import { usePathname } from 'next/navigation';
 import { LOCALE } from '@/constants/state/locale';
@@ -48,7 +51,6 @@ const EducationTermTable = ({}: EducationTermTableProps) => {
   const t_popup = useScopedI18n('popup');
   const t_title = useScopedI18n('title');
 
-  const scrollRef = useRef<HTMLDivElement | null>(null);
   const dispatch = useDispatch<AppDispatch>();
 
   const { churchId } = useSelector((state: RootState) => state.church);
@@ -66,11 +68,8 @@ const EducationTermTable = ({}: EducationTermTableProps) => {
     (state: RootState) => state.targetEducationSession
   );
 
-  const educationApi = new EducationsApi(false);
   const educationTermsApi = new EducationTermsApi(false);
   const educationSessionsApi = new EducationSessionsApi(false);
-  const educationEnrollmentsApi = new EducationEnrollmentsApi(false);
-  const educationAttendanceApi = new EducationAttendanceApi(false);
 
   const [thrownError, setThrownError] = useState<Error | null>(null);
 
@@ -161,28 +160,12 @@ const EducationTermTable = ({}: EducationTermTableProps) => {
         educationTermId: educationTerm.id,
       });
 
-      const sessionResponse = await educationSessionsApi.getEducationSessions({
-        churchId,
-        educationId: educationTerm.educationId,
-        educationTermId: educationTerm.id,
-      });
-      // const enrollmentResponse =
-      //   await educationEnrollmentsApi.getEducationEnrollments({
-      //     churchId,
-      //     educationId: educationTerm.educationId,
-      //     educationTermId: educationTerm.id,
-      //   });
-
       const newEducationTerm = response.data.data;
-      const educationSessions = sessionResponse.data.data;
-      // const educationEnrollments = enrollmentResponse.data.data;
 
       dispatch(setTargetEducation(education));
       dispatch(
         setTargetEducationTerm({
           ...newEducationTerm,
-          educationSessions,
-          // educationEnrollments,
         })
       );
       setIsEducationTermInformationShown(true);
@@ -463,24 +446,13 @@ const EducationTermTable = ({}: EducationTermTableProps) => {
         educationTermId: educationTerm.id,
         educationSessionId: educationSession.id,
       });
-
-      const attendanceResponse =
-        await educationAttendanceApi.getEducationAttendances({
-          churchId,
-          educationId: educationTerm.educationId,
-          educationTermId: educationTerm.id,
-          sessionId: educationSession.id,
-        });
-
       const newEducationSession = response.data.data;
-      const educationAttendances = attendanceResponse.data.data;
 
       dispatch(setTargetEducation(education));
       dispatch(setTargetEducationTerm(educationTerm));
       dispatch(
         setTargetEducationSession({
           ...newEducationSession,
-          educationAttendances,
         })
       );
       setIsEducationSessionInformationShown(true);
@@ -787,23 +759,25 @@ const EducationTermTable = ({}: EducationTermTableProps) => {
         endDate={targetEducationTerm.endDate}
         closeText={t_button('backToEducation')}
       >
-        <>
-          {/* 삭제 확인 팝업 */}
-          <ConfirmPopup
-            title={t_popup('deleteEducationTermTitle')}
-            body={t_popup('deleteEducationTermBody')}
-            buttonNum={2}
-            isShow={isEducationTermDeletePopupShown}
-            onClickLeftButton={onClickDeleteEducationTermConfirmClose}
-            onClickRightButton={() => {
-              onClickDeleteEducationTerm();
-              onClickDeleteEducationTermConfirmClose();
-            }}
-            leftButtonText={t_button('cancel')}
-            rightButtonText={t_button('delete')}
-          />
-          <EducationTermInformation />
-        </>
+        {(scrollRef) => (
+          <>
+            {/* 삭제 확인 팝업 */}
+            <ConfirmPopup
+              title={t_popup('deleteEducationTermTitle')}
+              body={t_popup('deleteEducationTermBody')}
+              buttonNum={2}
+              isShow={isEducationTermDeletePopupShown}
+              onClickLeftButton={onClickDeleteEducationTermConfirmClose}
+              onClickRightButton={() => {
+                onClickDeleteEducationTerm();
+                onClickDeleteEducationTermConfirmClose();
+              }}
+              leftButtonText={t_button('cancel')}
+              rightButtonText={t_button('delete')}
+            />
+            <EducationTermInformation scrollRef={scrollRef} />
+          </>
+        )}
       </WrappedPagePopup>
 
       {/* 교육기수 수정 팝업*/}
@@ -842,23 +816,25 @@ const EducationTermTable = ({}: EducationTermTableProps) => {
         endDate={targetEducationSession.endDate}
         closeText={t_button('backToEducation')}
       >
-        <>
-          {/* 삭제 확인 팝업 */}
-          <ConfirmPopup
-            title={t_popup('deleteEducationSessionTitle')}
-            body={t_popup('deleteEducationSessionBody')}
-            buttonNum={2}
-            isShow={isEducationSessionDeletePopupShown}
-            onClickLeftButton={onClickDeleteEducationSessionConfirmClose}
-            onClickRightButton={() => {
-              onClickDeleteEducationSession();
-              onClickDeleteEducationSessionConfirmClose();
-            }}
-            leftButtonText={t_button('cancel')}
-            rightButtonText={t_button('delete')}
-          />
-          <EducationSessionInformation />
-        </>
+        {(scrollRef) => (
+          <>
+            {/* 삭제 확인 팝업 */}
+            <ConfirmPopup
+              title={t_popup('deleteEducationSessionTitle')}
+              body={t_popup('deleteEducationSessionBody')}
+              buttonNum={2}
+              isShow={isEducationSessionDeletePopupShown}
+              onClickLeftButton={onClickDeleteEducationSessionConfirmClose}
+              onClickRightButton={() => {
+                onClickDeleteEducationSession();
+                onClickDeleteEducationSessionConfirmClose();
+              }}
+              leftButtonText={t_button('cancel')}
+              rightButtonText={t_button('delete')}
+            />
+            <EducationSessionInformation scrollRef={scrollRef} />
+          </>
+        )}
       </WrappedPagePopup>
 
       {/* 교육회차 수정 팝업*/}

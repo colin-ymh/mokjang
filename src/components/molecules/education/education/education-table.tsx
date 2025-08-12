@@ -115,6 +115,7 @@ const EducationTable = ({ loadEducations }: EducationTableProps) => {
           const response = await educationTermsApi.getEducationTerms({
             churchId,
             educationId: value.id,
+            take: 4,
           });
 
           const newEducationTerms = response.data.data;
@@ -224,14 +225,9 @@ const EducationTable = ({ loadEducations }: EducationTableProps) => {
         educationId: education.id,
       });
 
-      const termResponse = await educationTermsApi.getEducationTerms({
-        churchId,
-        educationId: education.id,
-      });
       const newEducation = response.data;
-      const educationTerms = termResponse.data.data;
 
-      dispatch(setTargetEducation({ ...newEducation, educationTerms }));
+      dispatch(setTargetEducation(newEducation));
       setIsEducationInformationShown(true);
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));
@@ -373,28 +369,12 @@ const EducationTable = ({ loadEducations }: EducationTableProps) => {
         educationTermId: educationTerm.id,
       });
 
-      const sessionResponse = await educationSessionsApi.getEducationSessions({
-        churchId,
-        educationId: educationTerm.educationId,
-        educationTermId: educationTerm.id,
-      });
-      // const enrollmentResponse =
-      //   await educationEnrollmentsApi.getEducationEnrollments({
-      //     churchId,
-      //     educationId: educationTerm.educationId,
-      //     educationTermId: educationTerm.id,
-      //   });
-
       const newEducationTerm = response.data.data;
-      const educationSessions = sessionResponse.data.data;
-      // const educationEnrollments = enrollmentResponse.data.data;
 
       dispatch(setTargetEducation(education));
       dispatch(
         setTargetEducationTerm({
           ...newEducationTerm,
-          educationSessions,
-          // educationEnrollments,
         })
       );
       setIsEducationTermInformationShown(true);
@@ -675,26 +655,11 @@ const EducationTable = ({ loadEducations }: EducationTableProps) => {
         educationTermId: educationTerm.id,
         educationSessionId: educationSession.id,
       });
-
-      const attendanceResponse =
-        await educationAttendanceApi.getEducationAttendances({
-          churchId,
-          educationId: educationTerm.educationId,
-          educationTermId: educationTerm.id,
-          sessionId: educationSession.id,
-        });
-
       const newEducationSession = response.data.data;
-      const educationAttendances = attendanceResponse.data.data;
 
       dispatch(setTargetEducation(education));
       dispatch(setTargetEducationTerm(educationTerm));
-      dispatch(
-        setTargetEducationSession({
-          ...newEducationSession,
-          educationAttendances,
-        })
-      );
+      dispatch(setTargetEducationSession(newEducationSession));
       setIsEducationSessionInformationShown(true);
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));
@@ -931,23 +896,25 @@ const EducationTable = ({ loadEducations }: EducationTableProps) => {
         onClickDone={onClickEditEducationOpen}
         onClickCancel={onClickDeleteEducationConfirmOpen}
       >
-        <>
-          {/* 삭제 확인 팝업 */}
-          <ConfirmPopup
-            title={t_popup('deleteEducationTitle')}
-            body={t_popup('deleteEducationBody')}
-            buttonNum={2}
-            isShow={isEducationDeletePopupShown}
-            onClickLeftButton={onClickDeleteEducationConfirmClose}
-            onClickRightButton={() => {
-              onClickDeleteEducation();
-              onClickDeleteEducationConfirmClose();
-            }}
-            leftButtonText={t_button('cancel')}
-            rightButtonText={t_button('delete')}
-          />
-          <EducationInformation />
-        </>
+        {(scrollRef) => (
+          <>
+            {/* 삭제 확인 팝업 */}
+            <ConfirmPopup
+              title={t_popup('deleteEducationTitle')}
+              body={t_popup('deleteEducationBody')}
+              buttonNum={2}
+              isShow={isEducationDeletePopupShown}
+              onClickLeftButton={onClickDeleteEducationConfirmClose}
+              onClickRightButton={() => {
+                onClickDeleteEducation();
+                onClickDeleteEducationConfirmClose();
+              }}
+              leftButtonText={t_button('cancel')}
+              rightButtonText={t_button('delete')}
+            />
+            <EducationInformation scrollRef={scrollRef} />
+          </>
+        )}
       </WrappedPagePopup>
 
       {/* 교육 수정 팝업*/}
@@ -984,23 +951,25 @@ const EducationTable = ({ loadEducations }: EducationTableProps) => {
         startDate={targetEducationTerm.startDate}
         endDate={targetEducationTerm.endDate}
       >
-        <>
-          {/* 삭제 확인 팝업 */}
-          <ConfirmPopup
-            title={t_popup('deleteEducationTermTitle')}
-            body={t_popup('deleteEducationTermBody')}
-            buttonNum={2}
-            isShow={isEducationTermDeletePopupShown}
-            onClickLeftButton={onClickDeleteEducationTermConfirmClose}
-            onClickRightButton={() => {
-              onClickDeleteEducationTerm();
-              onClickDeleteEducationTermConfirmClose();
-            }}
-            leftButtonText={t_button('cancel')}
-            rightButtonText={t_button('delete')}
-          />
-          <EducationTermInformation />
-        </>
+        {(scrollRef) => (
+          <>
+            {/* 삭제 확인 팝업 */}
+            <ConfirmPopup
+              title={t_popup('deleteEducationTermTitle')}
+              body={t_popup('deleteEducationTermBody')}
+              buttonNum={2}
+              isShow={isEducationTermDeletePopupShown}
+              onClickLeftButton={onClickDeleteEducationTermConfirmClose}
+              onClickRightButton={() => {
+                onClickDeleteEducationTerm();
+                onClickDeleteEducationTermConfirmClose();
+              }}
+              leftButtonText={t_button('cancel')}
+              rightButtonText={t_button('delete')}
+            />
+            <EducationTermInformation scrollRef={scrollRef} />
+          </>
+        )}
       </WrappedPagePopup>
 
       {/* 교육기수 수정 팝업*/}
@@ -1038,23 +1007,25 @@ const EducationTable = ({ loadEducations }: EducationTableProps) => {
         startDate={targetEducationSession.startDate}
         endDate={targetEducationSession.endDate}
       >
-        <>
-          {/* 삭제 확인 팝업 */}
-          <ConfirmPopup
-            title={t_popup('deleteEducationSessionTitle')}
-            body={t_popup('deleteEducationSessionBody')}
-            buttonNum={2}
-            isShow={isEducationSessionDeletePopupShown}
-            onClickLeftButton={onClickDeleteEducationSessionConfirmClose}
-            onClickRightButton={() => {
-              onClickDeleteEducationSession();
-              onClickDeleteEducationSessionConfirmClose();
-            }}
-            leftButtonText={t_button('cancel')}
-            rightButtonText={t_button('delete')}
-          />
-          <EducationSessionInformation />
-        </>
+        {(scrollRef) => (
+          <>
+            {/* 삭제 확인 팝업 */}
+            <ConfirmPopup
+              title={t_popup('deleteEducationSessionTitle')}
+              body={t_popup('deleteEducationSessionBody')}
+              buttonNum={2}
+              isShow={isEducationSessionDeletePopupShown}
+              onClickLeftButton={onClickDeleteEducationSessionConfirmClose}
+              onClickRightButton={() => {
+                onClickDeleteEducationSession();
+                onClickDeleteEducationSessionConfirmClose();
+              }}
+              leftButtonText={t_button('cancel')}
+              rightButtonText={t_button('delete')}
+            />
+            <EducationSessionInformation scrollRef={scrollRef} />
+          </>
+        )}
       </WrappedPagePopup>
 
       {/* 교육회차 수정 팝업*/}

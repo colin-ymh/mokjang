@@ -522,6 +522,8 @@ export default {
   'button.backToEducationTerm': '기수 상세로 돌아가기',
   'button.backToEducationSession': '회차 상세로 돌아가기',
 
+  'button.showMoreEducationTerm': '교육 기수 더보기',
+
   /*-------------------button-------------------*/
 
   /*-------------------placeholder-------------------*/
