@@ -1,14 +1,16 @@
 import React, { ChangeEvent, useEffect } from 'react';
-import { getFormattedTitle } from '@/utils/format';
+import { getFormattedContent, getFormattedTitle } from '@/utils/format';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 import AddEducationView from '@/components/organisms/education/education/add/add-education.view';
 import { setTargetEducation } from '@/redux/reducers/target/target-education-reducer';
 import { BLANK } from '@/constants/constant';
 
-type AddEducationProps = {};
+type AddEducationProps = {
+  isEdit?: boolean;
+};
 
-const AddEducation = ({}: AddEducationProps) => {
+const AddEducation = ({ isEdit = false }: AddEducationProps) => {
   const { targetEducation } = useSelector(
     (state: RootState) => state.targetEducation
   );
@@ -19,18 +21,20 @@ const AddEducation = ({}: AddEducationProps) => {
     dispatch(
       setTargetEducation({
         ...targetEducation,
-        name: getFormattedTitle(event.target.value),
+        name: getFormattedTitle(event.target.value, 50),
       })
     );
   };
   // ===== name =====
 
   // ===== description =====
-  const onChangeDescription = (event: ChangeEvent<HTMLInputElement>): void => {
+  const onChangeDescription = (
+    event: ChangeEvent<HTMLTextAreaElement>
+  ): void => {
     dispatch(
       setTargetEducation({
         ...targetEducation,
-        description: event.target.value,
+        description: getFormattedContent(event.target.value, 300),
       })
     );
   };
@@ -79,6 +83,7 @@ const AddEducation = ({}: AddEducationProps) => {
   }, [targetEducation.id]);
 
   const props = {
+    isEdit,
     onChangeName,
     onChangeDescription,
     onChangeEducationGoal,

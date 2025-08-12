@@ -8,6 +8,7 @@ export enum EDUCATION {
 export enum EDUCATION_TERM {
   ID = 'id',
   EDUCATION_ID = 'educationId',
+  NAME = 'termName',
   TERM = 'term',
   EDUCATION = 'education',
   IN_CHARGE = 'inCharge',
@@ -16,6 +17,11 @@ export enum EDUCATION_TERM {
 
   // 임의추가
   PERIOD = 'period',
+}
+
+export enum EDUCATION_SESSION {
+  NAME = 'sessionName',
+  STATUS = 'status',
 }
 
 export enum EDUCATION_ENROLLMENT {

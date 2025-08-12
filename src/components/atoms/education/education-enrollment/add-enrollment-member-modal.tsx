@@ -12,7 +12,7 @@ import { RootState } from '@/redux/store';
 import { BLANK } from '@/constants/constant';
 import { Member } from '@/models/member/member';
 import { getFormattedName } from '@/utils/format';
-import AddEnrollmentMemberModalView from '@/components/atoms/education/education-term/add-enrollment-member-modal.view';
+import AddEnrollmentMemberModalView from '@/components/atoms/education/education-enrollment/add-enrollment-member-modal.view';
 import { EducationEnrollmentsApi } from '@/api/education/education-enrollments.api';
 
 type AddMinistryGroupMemberModalProps = {

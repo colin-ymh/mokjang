@@ -19,7 +19,7 @@ export const getFormattedName = (value: string) => {
   return trimmedValue;
 };
 
-export const getFormattedTitle = (value: string) => {
+export const getFormattedTitle = (value: string, maxLength?: number) => {
   // 처음 공백 제거
   let trimmedValue = value.trimStart();
 
@@ -29,7 +29,21 @@ export const getFormattedTitle = (value: string) => {
   // 특수문자 제거 (한글, 영문, 숫자 허용)
   trimmedValue = trimmedValue.replace(/[^a-zA-Z가-힣ㄱ-ㅎ0-9\s]/g, '');
 
+  // maxLength 적용
+  if (typeof maxLength === 'number' && maxLength > 0) {
+    trimmedValue = trimmedValue.slice(0, maxLength);
+  }
+
   return trimmedValue;
+};
+
+export const getFormattedContent = (value: string, maxLength?: number) => {
+  // maxLength 적용
+  if (typeof maxLength === 'number' && maxLength > 0) {
+    value = value.slice(0, maxLength);
+  }
+
+  return value;
 };
 
 // 대표번호 string을 xxx-xx-xxxx-x 형식으로 포맷

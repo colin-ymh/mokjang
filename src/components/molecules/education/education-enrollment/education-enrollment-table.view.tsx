@@ -12,7 +12,7 @@ import { getFormattedMobilePhone } from '@/utils/format';
 import { EducationEnrollment } from '@/models/education/education';
 import { EDUCATION_ENROLLMENT_TABLE_HEADER_LIST } from '@/redux/reducers/filter/education-filter-reducer';
 import { useI18n } from '../../../../../locales/client';
-import EducationEnrollmentTableHeader from '@/components/atoms/education/education-term/education-enrollment-table-header';
+import EducationEnrollmentTableHeader from '@/components/atoms/education/education-enrollment/education-enrollment-table-header';
 import MemberProfile from '@/components/atoms/member/member-profile';
 import TagDropdownButton from '@/components/atoms/common/dropdown/tag-dropdown-button';
 import Dropdown from '@/components/atoms/common/dropdown/dropdown';
@@ -218,14 +218,14 @@ const EducationEnrollmentTableView = ({
             <MainText
               size={SIZE.SMALL}
               color={GRAY.SEMI_DARK}
-            >{`${enrollment.attendanceCount}/${targetEducationTerm.educationSessions.length}`}</MainText>
+            >{`${enrollment.attendancesCount}/${targetEducationTerm.sessionsCount}`}</MainText>
             <TotalBar>
               <CountBar
-                $count={enrollment.attendanceCount}
-                max={targetEducationTerm.educationSessions.length}
+                $count={enrollment.attendancesCount}
+                max={targetEducationTerm.sessionsCount}
                 color={
-                  enrollment.attendanceCount ===
-                  targetEducationTerm.educationSessions.length
+                  enrollment.attendancesCount ===
+                  targetEducationTerm.sessionsCount
                     ? GREEN.DEFAULT
                     : RED.DEFAULT
                 }

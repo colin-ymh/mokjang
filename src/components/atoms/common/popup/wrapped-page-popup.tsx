@@ -20,7 +20,10 @@ import MemberProfilePopupButton from '@/components/molecules/common/button/membe
 import { getDateFromDateString, getDateStringFromDate } from '@/utils/date';
 import StatusDropdown from '@/components/atoms/common/dropdown/status-dropdown';
 
-const WrappedPagePopupContainer = styled.div<{ $widthPercentage: number }>`
+const WrappedPagePopupContainer = styled.div<{
+  $widthPercentage: number;
+  $zIndex?: number;
+}>`
   display: flex;
   flex-direction: column;
   position: fixed;
@@ -30,7 +33,7 @@ const WrappedPagePopupContainer = styled.div<{ $widthPercentage: number }>`
   right: ${({ $widthPercentage }) => `${(100 - $widthPercentage) / 2}%`};
 
   background-color: ${WHITE};
-  z-index: 1000;
+  z-index: ${({ $zIndex }) => $zIndex || 1000};
 `;
 
 const HeaderContainer = styled.div<{ $isShadowShown?: boolean }>`
@@ -43,7 +46,7 @@ const HeaderContainer = styled.div<{ $isShadowShown?: boolean }>`
   padding: 0 30px;
   box-shadow: ${({ $isShadowShown }) =>
     $isShadowShown ? '0px 2px 4px rgba(0, 0, 0, 0.1)' : 'none'};
-  z-index: 10000;
+  z-index: 1000;
 `;
 
 const HeaderLeftContainer = styled.div`
@@ -110,6 +113,8 @@ interface WrappedPagePopupProps {
   endDate?: string;
   keyboardDisabled?: boolean;
   widthPercentage?: number;
+  zIndex?: number;
+  closeText?: string;
   children:
     | ReactNode
     | ((scrollRef: React.RefObject<HTMLDivElement>) => ReactNode);
@@ -127,7 +132,7 @@ const WrappedPagePopup = ({
   onClickClose,
   onClickDone,
   onClickCancel,
-
+  closeText,
   doneBackgroundColor = MAIN.DEFAULT,
   doneDisabled = false,
   doneText,
@@ -144,6 +149,7 @@ const WrappedPagePopup = ({
   startDate,
   endDate,
   children,
+  zIndex,
 }: WrappedPagePopupProps) => {
   const t_button = useScopedI18n('button');
   const statusDropdownItems = useTaskStatusDropdownItems();
@@ -206,8 +212,15 @@ const WrappedPagePopup = ({
 
   return (
     <>
-      <TransparentBackground isOpened={isShow} onClick={onClickClose} />
-      <WrappedPagePopupContainer $widthPercentage={widthPercentage}>
+      <TransparentBackground
+        isOpened={isShow}
+        onClick={onClickClose}
+        zIndex={zIndex}
+      />
+      <WrappedPagePopupContainer
+        $widthPercentage={widthPercentage}
+        $zIndex={zIndex}
+      >
         <HeaderContainer
           $isShadowShown={integrateStage !== INTEGRATE_STAGE.ONE}
         >
@@ -216,7 +229,7 @@ const WrappedPagePopup = ({
               <ArrowLeft />
               <MainText color={MAIN.DEFAULT}>
                 {integrateStage === INTEGRATE_STAGE.ONE
-                  ? t_button('backToList')
+                  ? closeText || t_button('backToList')
                   : headerTitle}
               </MainText>
             </GoBackContainer>

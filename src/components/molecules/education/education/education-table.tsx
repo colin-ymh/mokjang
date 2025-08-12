@@ -489,8 +489,50 @@ const EducationTable = ({ loadEducations }: EducationTableProps) => {
         }
       );
 
+      const reports = targetEducation.educationTerms.find(
+        (term) => term.id === targetEducationTerm.id
+      )?.reports;
+
+      const receiverIds = reports?.map((report) => report.receiver.id) || [];
+
+      const addReceiverIds = targetEducationTerm.receiverIds?.filter(
+        (receiverId) => !receiverIds.includes(receiverId)
+      );
+      const deleteReceiverIds =
+        receiverIds?.filter(
+          (receiverId) => !targetEducationTerm.receiverIds?.includes(receiverId)
+        ) || [];
+
+      if (addReceiverIds?.length > 0) {
+        await educationTermsApi.addReceivers(
+          {
+            churchId,
+            educationId: targetEducation.id,
+            educationTermId: targetEducationTerm.id,
+          },
+          { receiverIds: addReceiverIds }
+        );
+      }
+
+      if (deleteReceiverIds?.length > 0) {
+        await educationTermsApi.deleteReceivers(
+          {
+            churchId,
+            educationId: targetEducation.id,
+            educationTermId: targetEducationTerm.id,
+          },
+          { receiverIds: deleteReceiverIds }
+        );
+      }
+
+      const termResponse = await educationTermsApi.getEducationTerm({
+        churchId,
+        educationId: targetEducation.id,
+        educationTermId: targetEducationTerm.id,
+      });
+
       const newEducationTerm = {
-        ...response.data.data,
+        ...termResponse.data.data,
         educationSessions: targetEducationTerm.educationSessions,
         educationEnrollments: targetEducationTerm.educationEnrollments,
       };
@@ -915,11 +957,13 @@ const EducationTable = ({ loadEducations }: EducationTableProps) => {
         onClickClose={onClickEditEducationClose}
         onClickCancel={onClickEditEducationClose}
         onClickDone={onClickEditEducationDone}
-        headerTitle={t_title('editEducation')}
         doneBackgroundColor={isEducationSaveEnabled ? MAIN.DEFAULT : MAIN.LIGHT}
         doneDisabled={!isEducationSaveEnabled}
+        // widthPercentage={60}
+        zIndex={1100}
+        closeText={t_button('backToEducation')}
       >
-        <AddEducation />
+        <AddEducation isEdit />
       </WrappedPagePopup>
 
       {/* 교육기수 상세정보 팝업*/}
@@ -940,25 +984,23 @@ const EducationTable = ({ loadEducations }: EducationTableProps) => {
         startDate={targetEducationTerm.startDate}
         endDate={targetEducationTerm.endDate}
       >
-        {(scrollRef) => (
-          <>
-            {/* 삭제 확인 팝업 */}
-            <ConfirmPopup
-              title={t_popup('deleteEducationTermTitle')}
-              body={t_popup('deleteEducationTermBody')}
-              buttonNum={2}
-              isShow={isEducationTermDeletePopupShown}
-              onClickLeftButton={onClickDeleteEducationTermConfirmClose}
-              onClickRightButton={() => {
-                onClickDeleteEducationTerm();
-                onClickDeleteEducationTermConfirmClose();
-              }}
-              leftButtonText={t_button('cancel')}
-              rightButtonText={t_button('delete')}
-            />
-            <EducationTermInformation scrollRef={scrollRef} />
-          </>
-        )}
+        <>
+          {/* 삭제 확인 팝업 */}
+          <ConfirmPopup
+            title={t_popup('deleteEducationTermTitle')}
+            body={t_popup('deleteEducationTermBody')}
+            buttonNum={2}
+            isShow={isEducationTermDeletePopupShown}
+            onClickLeftButton={onClickDeleteEducationTermConfirmClose}
+            onClickRightButton={() => {
+              onClickDeleteEducationTerm();
+              onClickDeleteEducationTermConfirmClose();
+            }}
+            leftButtonText={t_button('cancel')}
+            rightButtonText={t_button('delete')}
+          />
+          <EducationTermInformation />
+        </>
       </WrappedPagePopup>
 
       {/* 교육기수 수정 팝업*/}
@@ -973,8 +1015,9 @@ const EducationTable = ({ loadEducations }: EducationTableProps) => {
           isEducationTermSaveEnabled ? MAIN.DEFAULT : MAIN.LIGHT
         }
         doneDisabled={!isEducationTermSaveEnabled}
+        closeText={t_button('backToEducationTerm')}
       >
-        <AddEducationTerm />
+        <AddEducationTerm isEdit />
       </WrappedPagePopup>
 
       {/* 교육회차 상세정보 팝업*/}
@@ -1026,6 +1069,7 @@ const EducationTable = ({ loadEducations }: EducationTableProps) => {
           isEducationSessionSaveEnabled ? MAIN.DEFAULT : MAIN.LIGHT
         }
         doneDisabled={!isEducationSessionSaveEnabled}
+        closeText={t_button('backToEducationSession')}
       >
         <AddEducationSession />
       </WrappedPagePopup>

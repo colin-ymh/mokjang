@@ -22,7 +22,7 @@ const PopupContainer = styled.div<{
 }>`
   display: flex;
   position: fixed;
-  z-index: 100;
+  z-index: 9999;
   justify-content: flex-start;
   align-items: center;
   padding-left: 20px;

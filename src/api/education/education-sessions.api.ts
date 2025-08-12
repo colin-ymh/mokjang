@@ -30,7 +30,7 @@ type CreateEducationSessionBody = {
   endDate: string;
   inChargeId?: string;
   content: string;
-  status: TASK_STATUS;
+  status?: TASK_STATUS;
   receiverIds: string[];
 };
 
@@ -59,7 +59,9 @@ type DeleteEducationSessionParams = {
 
 type AddReceiversParams = {
   churchId: string;
-  visitationId: string;
+  educationId: string;
+  educationTermId: string;
+  educationSessionId: string;
 };
 
 type AddReceiversBody = {
@@ -68,7 +70,9 @@ type AddReceiversBody = {
 
 type DeleteReceiversParams = {
   churchId: string;
-  visitationId: string;
+  educationId: string;
+  educationTermId: string;
+  educationSessionId: string;
 };
 
 type DeleteReceiversBody = {
@@ -234,9 +238,10 @@ export class EducationSessionsApi {
     params: AddReceiversParams,
     body: AddReceiversBody
   ) => {
-    const { churchId, visitationId } = params;
+    const { churchId, educationId, educationTermId, educationSessionId } =
+      params;
 
-    const url = `${this._url}/churches/${churchId}/visitations/${visitationId}/add-receivers`;
+    const url = `${this._url}/churches/${churchId}/educations/${educationId}/terms/${educationTermId}/sessions/${educationSessionId}/add-receivers`;
 
     try {
       return await authorizeAxios.patch(url, body);
@@ -258,9 +263,10 @@ export class EducationSessionsApi {
     params: DeleteReceiversParams,
     body: DeleteReceiversBody
   ) => {
-    const { churchId, visitationId } = params;
+    const { churchId, educationId, educationTermId, educationSessionId } =
+      params;
 
-    const url = `${this._url}/churches/${churchId}/visitations/${visitationId}/delete-receivers`;
+    const url = `${this._url}/churches/${churchId}/educations/${educationId}/terms/${educationTermId}/sessions/${educationSessionId}/delete-receivers`;
 
     try {
       return await authorizeAxios.patch(url, body);

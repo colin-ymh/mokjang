@@ -33,6 +33,7 @@ type CreateEducationTermsBody = {
   endDate: string;
   location?: string;
   inChargeId?: string;
+  receiverIds: string[];
 };
 
 type EditEducationTermParams = {
@@ -54,6 +55,26 @@ type DeleteEducationTermsParams = {
   churchId: string;
   educationId: string;
   educationTermId: string;
+};
+
+type AddReceiversParams = {
+  churchId: string;
+  educationId: string;
+  educationTermId: string;
+};
+
+type AddReceiversBody = {
+  receiverIds: string[];
+};
+
+type DeleteReceiversParams = {
+  churchId: string;
+  educationId: string;
+  educationTermId: string;
+};
+
+type DeleteReceiversBody = {
+  receiverIds: string[];
 };
 
 export class EducationTermsApi {
@@ -232,6 +253,66 @@ export class EducationTermsApi {
 
     try {
       return await authorizeAxios.post(url);
+    } catch (serverError: any) {
+      if (serverError.response) {
+        const { message, error, statusCode } = serverError.response.data;
+        throw new CustomError(message, error, statusCode);
+      } else {
+        throw new CustomError(
+          '알 수 없는 에러가 발생했습니다',
+          500,
+          'Unknown Error'
+        );
+      }
+    }
+  };
+
+  /**
+   * 교육 기수 보고자 추가
+   * @param {AddReceiversParams} params
+   * @param {AddReceiversBody} body
+   * @returns {Promise<AxiosResponse>}
+   */
+  public addReceivers = async (
+    params: AddReceiversParams,
+    body: AddReceiversBody
+  ): Promise<AxiosResponse> => {
+    const { churchId, educationId, educationTermId } = params;
+
+    const url = `${this._url}/churches/${churchId}/educations/${educationId}/terms/${educationTermId}/add-receivers`;
+
+    try {
+      return await authorizeAxios.patch(url, body);
+    } catch (serverError: any) {
+      if (serverError.response) {
+        const { message, error, statusCode } = serverError.response.data;
+        throw new CustomError(message, error, statusCode);
+      } else {
+        throw new CustomError(
+          '알 수 없는 에러가 발생했습니다',
+          500,
+          'Unknown Error'
+        );
+      }
+    }
+  };
+
+  /**
+   * 교육 기수 보고자 삭제
+   * @param {DeleteReceiversParams} params
+   * @param {DeleteReceiversBody} body
+   * @returns {Promise<AxiosResponse>}
+   */
+  public deleteReceivers = async (
+    params: DeleteReceiversParams,
+    body: DeleteReceiversBody
+  ): Promise<AxiosResponse> => {
+    const { churchId, educationId, educationTermId } = params;
+
+    const url = `${this._url}/churches/${churchId}/educations/${educationId}/terms/${educationTermId}/delete-receivers`;
+
+    try {
+      return await authorizeAxios.patch(url, body);
     } catch (serverError: any) {
       if (serverError.response) {
         const { message, error, statusCode } = serverError.response.data;

@@ -3,6 +3,7 @@ import {
   EDUCATION,
   EDUCATION_ATTENDANCE,
   EDUCATION_ENROLLMENT,
+  EDUCATION_SESSION,
   EDUCATION_TERM,
 } from '@/constants/column/education-column';
 import { VISITATION } from '@/constants/column/visitation-column';
@@ -70,7 +71,16 @@ export const getTranslatedEducationTermColumn = (
   t: (key: string, ...args: any[]) => string,
   id: EDUCATION_TERM
 ): string => {
+  if (id === EDUCATION_TERM.STATUS) return BLANK;
   return t(id as 'educationName' | 'status' | EDUCATION_TERM.PERIOD);
+};
+
+export const getTranslatedEducationSessionColumn = (
+  t: (key: string, ...args: any[]) => string,
+  id: EDUCATION_SESSION
+): string => {
+  if (id === EDUCATION_SESSION.STATUS) return BLANK;
+  return t(id as 'educationName' | 'status');
 };
 
 export const getTranslatedTaskColumn = (
@@ -426,17 +436,17 @@ export const getTranslatedTermCount = (locale: LOCALE, term: number) => {
  *
  * @param locale
  * @param completed
- * @param incomplete
+ * @param sessionsCount
  */
 export const getTranslatedSessionProgressStatus = (
   locale: LOCALE,
   completed: number,
-  incomplete: number
+  sessionsCount: number
 ) => {
   if (locale === LOCALE.KO) {
-    return `${completed}/${completed + incomplete}회차 완료`;
+    return `${completed}/${sessionsCount}회차 완료`;
   } else {
-    return `${completed}/${completed + incomplete} sessions completed`;
+    return `${completed}/${sessionsCount} sessions completed`;
   }
 };
 

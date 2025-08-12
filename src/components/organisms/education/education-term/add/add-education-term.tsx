@@ -12,10 +12,14 @@ import {
 import { setTargetEducationTerm } from '@/redux/reducers/target/target-education-term-reducer';
 import AddEducationTermView from '@/components/organisms/education/education-term/add/add-education-term.view';
 import { MemberDropdownType } from '@/components/atoms/common/dropdown/member-dropdown-item';
+import { getFormattedContent } from '@/utils/format';
 
-type AddEducationTermProps = {};
+type AddEducationTermProps = { isEdit?: boolean };
 
-const AddEducationTerm = ({}: AddEducationTermProps) => {
+const AddEducationTerm = ({ isEdit = false }: AddEducationTermProps) => {
+  const { targetEducation } = useSelector(
+    (state: RootState) => state.targetEducation
+  );
   const { targetEducationTerm } = useSelector(
     (state: RootState) => state.targetEducationTerm
   );
@@ -30,6 +34,26 @@ const AddEducationTerm = ({}: AddEducationTermProps) => {
       })
     );
   };
+
+  useEffect(() => {
+    if (targetEducationTerm.term === BLANK) {
+      if (targetEducation.educationTerms.length > 0) {
+        dispatch(
+          setTargetEducationTerm({
+            ...targetEducationTerm,
+            term: targetEducation.educationTerms[0].term + 1,
+          })
+        );
+      } else {
+        dispatch(
+          setTargetEducationTerm({
+            ...targetEducationTerm,
+            term: '1',
+          })
+        );
+      }
+    }
+  }, [targetEducation.educationTerms]);
   // ===== term =====
 
   // ===== period =====
@@ -116,7 +140,7 @@ const AddEducationTerm = ({}: AddEducationTermProps) => {
   const [inCharge, setInCharge] = useState<MemberDropdownType[]>([]);
 
   useEffect(() => {
-    if (targetEducationTerm.inChargeId) {
+    if (targetEducationTerm.inCharge?.id) {
       const newInCharge = {
         value: targetEducationTerm.inCharge.id,
         title: targetEducationTerm.inCharge.name,
@@ -145,7 +169,7 @@ const AddEducationTerm = ({}: AddEducationTermProps) => {
   // ===== location =====
 
   const onChangeLocation = (event: ChangeEvent<HTMLInputElement>) => {
-    const newLocation = event.target.value;
+    const newLocation = getFormattedContent(event.target.value, 30);
     dispatch(
       setTargetEducationTerm({
         ...targetEducationTerm,
@@ -193,6 +217,7 @@ const AddEducationTerm = ({}: AddEducationTermProps) => {
   };
 
   const props = {
+    isEdit,
     inCharge,
     onChangeTerm,
     onChangeStartDate,

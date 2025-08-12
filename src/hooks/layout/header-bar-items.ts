@@ -2,6 +2,7 @@ import {
   ATTENDANCE_CONTENT_ID,
   CHURCH_CONTENT_ID,
   EDUCATION_CONTENT_ID,
+  EDUCATION_SESSION_CONTENT_ID,
   EDUCATION_TERM_CONTENT_ID,
   MEMBER_CONTENT_ID,
   TASK_CONTENT_ID,
@@ -271,6 +272,23 @@ export const useEducationTermHeaderBarItems = () => {
     {
       value: EDUCATION_TERM_CONTENT_ID.ENROLLMENTS,
       title: t_header(EDUCATION_TERM_CONTENT_ID.ENROLLMENTS),
+    },
+  ];
+
+  return items;
+};
+
+export const useEducationSessionHeaderBarItems = () => {
+  const t_header = useScopedI18n('header');
+
+  const items = [
+    {
+      value: EDUCATION_SESSION_CONTENT_ID.CONTENT,
+      title: t_header(EDUCATION_SESSION_CONTENT_ID.CONTENT),
+    },
+    {
+      value: EDUCATION_SESSION_CONTENT_ID.ATTENDANCE,
+      title: t_header(EDUCATION_SESSION_CONTENT_ID.ATTENDANCE),
     },
   ];
 

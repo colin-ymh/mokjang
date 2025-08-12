@@ -12,10 +12,11 @@ import { EducationAttendance } from '@/models/education/education';
 import { EDUCATION_ATTENDANCE_TABLE_HEADER_LIST } from '@/redux/reducers/filter/education-filter-reducer';
 import { useI18n } from '../../../../../locales/client';
 import MemberProfile from '@/components/atoms/member/member-profile';
-import EducationAttendanceTableHeader from '@/components/atoms/education/education-session/education-attendance-table-header';
+import EducationAttendanceTableHeader from '@/components/atoms/education/education-attendance/education-attendance-table-header';
 import { getAge, getDateFromDateString } from '@/utils/date';
 import Button from '@/components/atoms/common/button/button';
 import BorderInput from '@/components/atoms/common/input/border-input';
+import { EDUCATION_ATTENDANCE_STATUS, STATUS } from '@/constants/status/status';
 
 // 1. 컬럼별 PX 폭 (마지막 REMARKS만 auto 할 예정)
 const getColumnWidth = (id: string) => {
@@ -146,7 +147,10 @@ const StatusContainer = styled.div`
 `;
 
 type EducationEnrollmentTableProps = {
-  onChangeStatus: (attendanceId: string, isPresent: boolean) => void;
+  onChangeStatus: (
+    attendanceId: string,
+    status: EDUCATION_ATTENDANCE_STATUS
+  ) => void;
   onChangeNote: (
     attendanceId: string,
     note: ChangeEvent<HTMLInputElement>
@@ -202,23 +206,33 @@ const EducationAttendanceTableView = ({
           </MainText>
         );
       case EDUCATION_ATTENDANCE.STATUS:
-        const isPresent = attendance.isPresent;
-
         return (
           <StatusContainer>
             <Button
               text={t('present')}
-              color={isPresent ? WHITE : GRAY.DARK}
-              backgroundColor={isPresent ? GREEN.DEFAULT : GRAY.LIGHT}
+              color={attendance.status === STATUS.PRESENT ? WHITE : GRAY.DARK}
+              backgroundColor={
+                attendance.status === STATUS.PRESENT
+                  ? GREEN.DEFAULT
+                  : GRAY.LIGHT
+              }
               width={'auto'}
-              onClick={() => onChangeStatus(attendance.id, true)}
+              onClick={() =>
+                attendance.status !== STATUS.PRESENT &&
+                onChangeStatus(attendance.id, STATUS.PRESENT)
+              }
             />
             <Button
               text={t('absent')}
-              color={!isPresent ? WHITE : GRAY.DARK}
-              backgroundColor={!isPresent ? RED.DEFAULT : GRAY.LIGHT}
+              color={attendance.status === STATUS.ABSENT ? WHITE : GRAY.DARK}
+              backgroundColor={
+                attendance.status === STATUS.ABSENT ? RED.DEFAULT : GRAY.LIGHT
+              }
               width={'auto'}
-              onClick={() => onChangeStatus(attendance.id, false)}
+              onClick={() =>
+                attendance.status !== STATUS.ABSENT &&
+                onChangeStatus(attendance.id, STATUS.ABSENT)
+              }
             />
           </StatusContainer>
         );
@@ -226,7 +240,7 @@ const EducationAttendanceTableView = ({
       case EDUCATION_ATTENDANCE.NOTE:
         return (
           <BorderInput
-            value={attendance.educationEnrollment.note}
+            value={attendance.note || BLANK}
             onChange={(event) => onChangeNote(attendance.id, event)}
             placeholder={t('placeholder.note')}
             height={30}

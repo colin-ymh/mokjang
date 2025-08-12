@@ -6,6 +6,8 @@ import styled from 'styled-components';
 import { BLACK, GRAY, MAIN, WHITE } from '@/constants/styles/color';
 import { InputProps } from '@/components/atoms/common/input/main-input';
 import { BLANK } from '@/constants/constant';
+import { MainText } from '@/components/atoms/common/text/main-text';
+import { SIZE } from '@/constants/styles/style';
 
 const BorderInputContainer = styled.input<{
   $isEditable: boolean;
@@ -28,7 +30,7 @@ const BorderInputContainer = styled.input<{
   width: ${({ width }) => (width ? `${width}px` : '100%')};
   box-sizing: border-box;
   font-size: ${({ $fontSize }) => `${$fontSize}px`};
-  font-weight: ${({ $fontWeight }) => `${$fontWeight}px` || '400'};
+  font-weight: ${({ $fontWeight }) => `${$fontWeight}` || '400'};
   text-align: ${({ $isRight }) => ($isRight ? 'right' : 'left')};
 
   font-family: 'Roboto', sans-serif;
@@ -106,6 +108,15 @@ const IconWrapper = styled.div`
   pointer-events: none; // 클릭 이벤트 방지
 `;
 
+const CharCounter = styled.div<{ $disabled?: boolean }>`
+  position: absolute;
+  right: 0;
+  bottom: -18px;
+  color: ${({ $disabled }) => ($disabled ? GRAY.DEFAULT : GRAY.DARK)};
+  background: transparent;
+  pointer-events: none;
+`;
+
 export type BorderInputProps = InputProps & {
   borderColor?: string;
   height?: number;
@@ -119,6 +130,7 @@ export type BorderInputProps = InputProps & {
   fontSize?: number;
   fontWeight?: number;
   isRight?: boolean;
+  maxLength?: number;
   icon?: React.ReactNode;
   color?: string;
 };
@@ -144,6 +156,7 @@ const BorderInput = forwardRef<HTMLInputElement, BorderInputProps>(
       isRight,
       icon,
       color,
+      maxLength,
       ...props
     },
     ref
@@ -175,6 +188,13 @@ const BorderInput = forwardRef<HTMLInputElement, BorderInputProps>(
           $isIcon={!!icon}
           {...props}
         />
+        {typeof maxLength === 'number' && (
+          <CharCounter $disabled={disabled}>
+            <MainText color={GRAY.DEFAULT} size={SIZE.SMALL}>
+              {value.toString().length}/{maxLength}
+            </MainText>
+          </CharCounter>
+        )}
       </InputWrapper>
     );
   }

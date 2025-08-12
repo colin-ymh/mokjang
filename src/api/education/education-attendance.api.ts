@@ -2,15 +2,9 @@ import { AxiosResponse } from 'axios';
 import { SERVER_URL, TEST_SERVER_URL } from '@/constants/state/url';
 import { CustomError } from '@/api/error/error';
 import authorizeAxios from '@/api/authorize-axios';
+import { EDUCATION_ATTENDANCE_STATUS } from '@/constants/status/status';
 
 type GetEducationAttendancesParams = {
-  churchId: string;
-  educationId: string;
-  educationTermId: string;
-  sessionId: string;
-};
-
-type CreateEducationAttendancesParams = {
   churchId: string;
   educationId: string;
   educationTermId: string;
@@ -26,9 +20,26 @@ type EditEducationAttendanceParams = {
 };
 
 type EditEducationAttendanceBody = {
-  isPresent?: boolean;
-  note?: string;
-  isDeleteNode?: boolean;
+  status?: EDUCATION_ATTENDANCE_STATUS;
+};
+
+type EditEducationAttendanceNoteParams = {
+  churchId: string;
+  educationId: string;
+  educationTermId: string;
+  sessionId: string;
+  attendanceId: string;
+};
+
+type EditEducationAttendanceNoteBody = {
+  note: string;
+};
+
+type PatchAllAttendedParams = {
+  churchId: string;
+  educationId: string;
+  educationTermId: string;
+  sessionId: string;
 };
 
 export class EducationAttendanceApi {
@@ -68,7 +79,35 @@ export class EducationAttendanceApi {
   };
 
   /**
-   * 교육 기수 수정하기
+   * 교육 출석 여부 개별 수정하기
+   * @param {PatchAllAttendedParams} params
+   * @returns {Promise<AxiosResponse>}
+   */
+  public patchAllAttended = async (
+    params: PatchAllAttendedParams
+  ): Promise<AxiosResponse> => {
+    const { churchId, educationId, educationTermId, sessionId } = params;
+
+    const url = `${this._url}/churches/${churchId}/educations/${educationId}/terms/${educationTermId}/sessions/${sessionId}/attendance/all-attended`;
+
+    try {
+      return await authorizeAxios.patch(url);
+    } catch (serverError: any) {
+      if (serverError.response) {
+        const { message, error, statusCode } = serverError.response.data;
+        throw new CustomError(message, error, statusCode);
+      } else {
+        throw new CustomError(
+          '알 수 없는 에러가 발생했습니다',
+          500,
+          'Unknown Error'
+        );
+      }
+    }
+  };
+
+  /**
+   * 교육 출석 여부 개별 수정하기
    * @param {EditEducationAttendanceParams} params
    * @param {EditEducationAttendanceBody} body
    * @returns {Promise<AxiosResponse>}
@@ -80,7 +119,38 @@ export class EducationAttendanceApi {
     const { churchId, educationId, educationTermId, sessionId, attendanceId } =
       params;
 
-    const url = `${this._url}/churches/${churchId}/educations/${educationId}/terms/${educationTermId}/sessions/${sessionId}/attendance/${attendanceId}`;
+    const url = `${this._url}/churches/${churchId}/educations/${educationId}/terms/${educationTermId}/sessions/${sessionId}/attendance/${attendanceId}/attendance`;
+
+    try {
+      return await authorizeAxios.patch(url, body);
+    } catch (serverError: any) {
+      if (serverError.response) {
+        const { message, error, statusCode } = serverError.response.data;
+        throw new CustomError(message, error, statusCode);
+      } else {
+        throw new CustomError(
+          '알 수 없는 에러가 발생했습니다',
+          500,
+          'Unknown Error'
+        );
+      }
+    }
+  };
+
+  /**
+   * 교육 출석 특이사항 수정하기
+   * @param {EditEducationAttendanceNoteParams} params
+   * @param {EditEducationAttendanceNoteBody} body
+   * @returns {Promise<AxiosResponse>}
+   */
+  public editEducationAttendanceNote = async (
+    params: EditEducationAttendanceNoteParams,
+    body: EditEducationAttendanceNoteBody
+  ): Promise<AxiosResponse> => {
+    const { churchId, educationId, educationTermId, sessionId, attendanceId } =
+      params;
+
+    const url = `${this._url}/churches/${churchId}/educations/${educationId}/terms/${educationTermId}/sessions/${sessionId}/attendance/${attendanceId}/note`;
 
     try {
       return await authorizeAxios.patch(url, body);

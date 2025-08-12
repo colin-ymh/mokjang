@@ -30,7 +30,22 @@ const EducationEnrollmentTable = ({}: EducationEnrollmentTableProps) => {
     status: EDUCATION_ENROLLMENT_STATUS
   ) => {
     try {
-      const response = await educationEnrollmentsApi.editEducationEnrollment(
+      const newEducationTerm = {
+        ...targetEducationTerm,
+        educationEnrollments: targetEducationTerm.educationEnrollments.map(
+          (enrollment) => {
+            if (enrollment.id === enrollmentId) {
+              return { ...enrollment, status };
+            } else {
+              return enrollment;
+            }
+          }
+        ),
+      };
+
+      dispatch(setTargetEducationTerm(newEducationTerm));
+
+      educationEnrollmentsApi.editEducationEnrollment(
         {
           churchId,
           educationId: targetEducationTerm.educationId,
@@ -41,23 +56,6 @@ const EducationEnrollmentTable = ({}: EducationEnrollmentTableProps) => {
           status,
         }
       );
-
-      const newEnrollment = response.data;
-
-      const newEducationTerm = {
-        ...targetEducationTerm,
-        educationEnrollments: targetEducationTerm.educationEnrollments.map(
-          (enrollment) => {
-            if (enrollment.id === enrollmentId) {
-              return newEnrollment;
-            } else {
-              return enrollment;
-            }
-          }
-        ),
-      };
-
-      dispatch(setTargetEducationTerm(newEducationTerm));
     } catch (error) {
       setThrownError(error as CustomError);
     }

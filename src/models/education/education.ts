@@ -1,6 +1,7 @@
 import { BLANK } from '@/constants/constant';
 import { DEFAULT_MEMBER, Member } from '@/models/member/member';
 import {
+  EDUCATION_ATTENDANCE_STATUS,
   EDUCATION_ENROLLMENT_STATUS,
   STATUS,
   TASK_STATUS,
@@ -42,9 +43,8 @@ export type EducationEnrollment = {
   memberId: string;
   educationTermId: string;
   status: EDUCATION_ENROLLMENT_STATUS;
-  note: string;
   member: Member;
-  attendanceCount: number;
+  attendancesCount: number;
 };
 
 export const DEFAULT_EDUCATION_ENROLLMENT: EducationEnrollment = {
@@ -52,9 +52,8 @@ export const DEFAULT_EDUCATION_ENROLLMENT: EducationEnrollment = {
   memberId: BLANK,
   educationTermId: BLANK,
   status: STATUS.INCOMPLETE,
-  note: BLANK,
   member: DEFAULT_MEMBER,
-  attendanceCount: 0,
+  attendancesCount: 0,
 };
 
 export type EducationTerm = {
@@ -67,11 +66,11 @@ export type EducationTerm = {
   inChargeId: string;
   location: string;
   status: TASK_STATUS;
-  enrollmentCount: number;
+  enrollmentsCount: number;
   inProgressCount: number;
-  completedCount: number;
-  completeSessionsCount: number;
-  incompleteCount: number;
+  completedMembersCount: number;
+  completedSessionsCount: number;
+  sessionsCount: number;
   inCharge: Member;
   educationSessions: EducationSession[];
   educationEnrollments: EducationEnrollment[];
@@ -90,13 +89,13 @@ export const DEFAULT_EDUCATION_TERM: EducationTerm = {
   endDate: BLANK,
   inChargeId: BLANK,
   inProgressCount: 0,
-  completedCount: 0,
-  incompleteCount: 0,
+  completedMembersCount: 0,
+  sessionsCount: 0,
   educationSessions: [],
   educationEnrollments: [],
   educationName: BLANK,
-  completeSessionsCount: 0,
-  enrollmentCount: 0,
+  completedSessionsCount: 0,
+  enrollmentsCount: 0,
   inCharge: DEFAULT_MEMBER,
   isDoneCount: 0,
   reports: [],
@@ -141,7 +140,7 @@ export type EducationAttendance = {
   id: string;
   educationSessionId: string;
   educationEnrollmentId: string;
-  isPresent: boolean;
+  status: EDUCATION_ATTENDANCE_STATUS;
   note: string;
   educationEnrollment: EducationEnrollment;
 };
@@ -150,7 +149,7 @@ export const DEFAULT_EDUCATION_ATTENDANCE = {
   id: BLANK,
   educationSessionId: BLANK,
   educationEnrollmentId: BLANK,
-  isPresent: false,
+  status: STATUS.NONE,
   note: BLANK,
   educationEnrollment: DEFAULT_EDUCATION_ENROLLMENT,
 };

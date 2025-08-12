@@ -19,7 +19,7 @@ import { useTaskStatusDropdownItems } from '@/hooks/dropdown/dropdown-items';
 import { useEducationTermHeaderBarItems } from '@/hooks/layout/header-bar-items';
 import { EDUCATION_TERM_CONTENT_ID } from '@/constants/layout/content';
 import CustomPopup from '@/components/atoms/common/popup/custom-popup';
-import AddEnrollmentMemberModal from '@/components/atoms/education/education-term/add-enrollment-member-modal';
+import AddEnrollmentMemberModal from '@/components/atoms/education/education-enrollment/add-enrollment-member-modal';
 import { Member } from '@/models/member/member';
 import Button from '@/components/atoms/common/button/button';
 import EducationEnrollmentTable from '@/components/molecules/education/education-enrollment/education-enrollment-table';
@@ -33,6 +33,7 @@ import { SIZE } from '@/constants/styles/style';
 import StatusDropdown from '@/components/atoms/common/dropdown/status-dropdown';
 import ToggleRadioButton from '@/components/atoms/common/radio-button/toggle-radio-button';
 import { RadioButtonValue } from '@/components/atoms/common/radio-button/radio-button-list';
+import EducationSessionTable from '@/components/molecules/education/education-session/education-session-table';
 
 const InformationContainer = styled.div`
   display: flex;
@@ -101,8 +102,8 @@ const MemberList = styled.div`
 
 const StatusContainer = styled.div`
   display: flex;
-  flex-direction: row;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
   gap: 5px;
 `;
 
@@ -115,7 +116,7 @@ const ColumnContainer = styled.div`
 
 const TotalBar = styled.div`
   display: flex;
-  width: 80px;
+  width: 200px;
   border-radius: 5px;
   height: 7px;
   background-color: ${GRAY.LIGHT};
@@ -139,6 +140,7 @@ type EducationTermInformationViewProps = {
   onClickAddEnrollmentsOpen: () => void;
   onClickAddEnrollmentsClose: () => void;
   onClickSaveNewEnrollments: () => void;
+  onClickAddEducationSessionOpen: () => void;
   selectedMembers: Member[];
   setSelectedMembers: Dispatch<SetStateAction<Member[]>>;
 };
@@ -151,6 +153,7 @@ const EducationTermInformationView = ({
   onClickAddEnrollmentsOpen,
   onClickAddEnrollmentsClose,
   onClickSaveNewEnrollments,
+  onClickAddEducationSessionOpen,
   selectedMembers,
   setSelectedMembers,
 }: EducationTermInformationViewProps) => {
@@ -219,22 +222,20 @@ const EducationTermInformationView = ({
               <MainText whiteSpace={'pre-wrap'} color={GRAY.SEMI_DARK}>
                 {`${getTranslatedSessionProgressStatus(
                   locale,
-                  targetEducationTerm.completedCount,
-                  targetEducationTerm.incompleteCount
-                )} (${Math.round(
-                  (targetEducationTerm.completedCount /
-                    (targetEducationTerm.completedCount +
-                      targetEducationTerm.incompleteCount)) *
-                    100
-                )}%)`}
+                  targetEducationTerm.completedSessionsCount,
+                  targetEducationTerm.sessionsCount
+                )} (${
+                  Math.round(
+                    (targetEducationTerm.completedSessionsCount /
+                      targetEducationTerm.sessionsCount) *
+                      100
+                  ) || 0
+                }%)`}
               </MainText>
               <TotalBar>
                 <CountBar
-                  $count={targetEducationTerm.completedCount}
-                  max={
-                    targetEducationTerm.completedCount +
-                    targetEducationTerm.incompleteCount
-                  }
+                  $count={targetEducationTerm.completedSessionsCount}
+                  max={targetEducationTerm.sessionsCount}
                 />
               </TotalBar>
             </StatusContainer>
@@ -245,7 +246,14 @@ const EducationTermInformationView = ({
               <SvgIcon svg={Users} color={GRAY.DARK} />
               <MainText color={GRAY.DARK}>{t('receiver')}</MainText>
             </TitleContainer>
-            <MemberList></MemberList>
+            <MemberList>
+              {targetEducationTerm.reports.map((report) => (
+                <MemberProfilePopupButton
+                  key={report.id}
+                  member={report.receiver}
+                />
+              ))}
+            </MemberList>
           </ColumnContainer>
           <RowLine />
 
@@ -256,16 +264,29 @@ const EducationTermInformationView = ({
               onChange={onChangeHeaderBar}
               items={headerBarItems}
             />
-            <Button
-              text={t('button.addMember')}
-              height={30}
-              width={'auto'}
-              onClick={onClickAddEnrollmentsOpen}
-            />
+            {headerBar === EDUCATION_TERM_CONTENT_ID.ENROLLMENTS && (
+              <Button
+                text={t('button.addMember')}
+                height={30}
+                width={'auto'}
+                onClick={onClickAddEnrollmentsOpen}
+              />
+            )}
+            {headerBar === EDUCATION_TERM_CONTENT_ID.SESSIONS && (
+              <Button
+                text={t('button.addEducationSession')}
+                height={30}
+                width={'auto'}
+                onClick={onClickAddEducationSessionOpen}
+              />
+            )}
           </TableHeader>
           <TableContainer>
             {headerBar === EDUCATION_TERM_CONTENT_ID.ENROLLMENTS && (
               <EducationEnrollmentTable />
+            )}
+            {headerBar === EDUCATION_TERM_CONTENT_ID.SESSIONS && (
+              <EducationSessionTable />
             )}
           </TableContainer>
         </ContentContainer>

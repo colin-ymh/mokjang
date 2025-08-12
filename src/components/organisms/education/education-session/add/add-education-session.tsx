@@ -14,31 +14,22 @@ import { setTargetEducationSession } from '@/redux/reducers/target/target-educat
 import AddEducationSessionView from '@/components/organisms/education/education-session/add/add-education-session.view';
 import { MemberDropdownType } from '@/components/atoms/common/dropdown/member-dropdown-item';
 
-import { TASK_STATUS } from '@/constants/status/status';
-import { EducationAttendance } from '@/models/education/education';
+type AddEducationSessionProps = {
+  isEdit?: boolean;
+};
 
-type AddEducationSessionProps = {};
-
-const AddEducationSession = ({}: AddEducationSessionProps) => {
+const AddEducationSession = ({ isEdit = false }: AddEducationSessionProps) => {
   const { targetEducationSession } = useSelector(
     (state: RootState) => state.targetEducationSession
   );
   const dispatch = useDispatch<AppDispatch>();
-
-  // ===== status =====
-  const onChangeStatus = (status: TASK_STATUS) => {
-    dispatch(
-      setTargetEducationSession({ ...targetEducationSession, status: status })
-    );
-  };
-  // ===== status =====
 
   // ===== title =====
   const onChangeTitle = (event: ChangeEvent<HTMLInputElement>): void => {
     dispatch(
       setTargetEducationSession({
         ...targetEducationSession,
-        title: getFormattedTitle(event.target.value),
+        title: getFormattedTitle(event.target.value, 50),
       })
     );
   };
@@ -174,30 +165,6 @@ const AddEducationSession = ({}: AddEducationSessionProps) => {
   }, [targetEducationSession.id]);
   // ===== content =====
 
-  // 출석 내용 변경
-  const onChangeAttendanceStatus = (
-    value: boolean,
-    targetAttendance: EducationAttendance
-  ) => {
-    const newAttendances = targetEducationSession.educationAttendances.map(
-      (attendance) => {
-        if (attendance.id === targetAttendance.id) {
-          return { ...attendance, status: value };
-        } else {
-          return attendance;
-        }
-      }
-    );
-
-    dispatch(
-      setTargetEducationSession({
-        ...targetEducationSession,
-        educationAttendances: newAttendances,
-      })
-    );
-  };
-  // ===== 수강 교인 =====
-
   // ===== receiver =====
   // 선택된 보고대상자들
   const [receivers, setReceivers] = useState<MemberDropdownType[]>([]);
@@ -231,13 +198,23 @@ const AddEducationSession = ({}: AddEducationSessionProps) => {
     );
   };
 
+  const onClickDeleteReceiver = (receiverId: string) => {
+    const newReceivers = receivers.filter((r) => r.value !== receiverId);
+    setReceivers(newReceivers);
+    dispatch(
+      setTargetEducationSession({
+        ...targetEducationSession,
+        receiverIds: newReceivers.map((r) => r.value),
+      })
+    );
+  };
   // ===== receiver =====
 
   const props = {
-    content,
+    isEdit,
     inCharge,
     receivers,
-    onChangeStatus,
+    content,
     onChangeTitle,
     onChangeStartDate,
     onChangeStartTime,
@@ -246,7 +223,7 @@ const AddEducationSession = ({}: AddEducationSessionProps) => {
     onChangeInCharge,
     onChangeContent,
     onChangeReceivers,
-    onChangeAttendanceStatus,
+    onClickDeleteReceiver,
   };
 
   return (

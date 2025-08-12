@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { useI18n } from '../../../../../../locales/client';
 import { MainText } from '@/components/atoms/common/text/main-text';
-import { GRAY, GREEN, MAIN } from '@/constants/styles/color';
+import { GRAY, GREEN } from '@/constants/styles/color';
 import React from 'react';
 import { SIZE } from '@/constants/styles/style';
 import { usePathname } from 'next/navigation';
@@ -20,10 +20,13 @@ import Button from '@/components/atoms/common/button/button';
 import EducationAttendanceTable from '@/components/molecules/education/education-attendance/education-attendance-table';
 import User from '../../../../../../public/svg/user.svg';
 import Users from '../../../../../../public/svg/users.svg';
-import Book from '../../../../../../public/svg/book.svg';
 import Pin from '../../../../../../public/svg/pin.svg';
 import Calendar from '../../../../../../public/svg/calendar.svg';
 import SvgIcon from '@/components/atoms/common/icon/svg-icon';
+import ToggleRadioButton from '@/components/atoms/common/radio-button/toggle-radio-button';
+import { RadioButtonValue } from '@/components/atoms/common/radio-button/radio-button-list';
+import { useEducationSessionHeaderBarItems } from '@/hooks/layout/header-bar-items';
+import { EDUCATION_SESSION_CONTENT_ID } from '@/constants/layout/content';
 
 const InformationContainer = styled.div`
   display: flex;
@@ -77,6 +80,11 @@ const TableContainer = styled.div`
   overflow: hidden;
 `;
 
+const ContentWrapper = styled.div`
+  display: flex;
+  padding: 0 5px;
+`;
+
 const RowLine = styled.div`
   display: flex;
   width: 100%;
@@ -90,13 +98,6 @@ const MemberList = styled.div`
   flex-direction: row;
 `;
 
-const StatusContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 5px;
-`;
-
 const ColumnContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -104,30 +105,18 @@ const ColumnContainer = styled.div`
   gap: 20px;
 `;
 
-const TotalBar = styled.div`
-  display: flex;
-  width: 80px;
-  border-radius: 5px;
-  height: 7px;
-  background-color: ${GRAY.LIGHT};
-  position: relative;
-`;
-
-const CountBar = styled.div<{ $count: number; max: number }>`
-  width: ${({ $count, max }) => (max ? ($count / max) * 100 : 0)}%;
-  border-radius: 5px;
-  height: 7px;
-  background-color: ${MAIN.DEFAULT};
-  position: absolute;
-  left: 0;
-`;
-
 type EducationSessionInformationViewProps = {
+  headerBar: EDUCATION_SESSION_CONTENT_ID;
+  onChangeHeaderBar: (headerBar: EDUCATION_SESSION_CONTENT_ID) => void;
   onChangeStatus: (status: TASK_STATUS) => void;
+  onClickAllAttended: () => void;
 };
 
 const EducationSessionInformationView = ({
+  headerBar,
+  onChangeHeaderBar,
   onChangeStatus,
+  onClickAllAttended,
 }: EducationSessionInformationViewProps) => {
   const t = useI18n();
   const { targetEducationTerm } = useSelector(
@@ -140,6 +129,9 @@ const EducationSessionInformationView = ({
   const locale = pathname.split('/')[1] as LOCALE;
 
   const statusDropdownItems = useTaskStatusDropdownItems();
+
+  const headerBarItems: RadioButtonValue[] =
+    useEducationSessionHeaderBarItems();
 
   return (
     <InformationContainer>
@@ -183,45 +175,56 @@ const EducationSessionInformationView = ({
             {`${getTranslatedDateFromDateString(locale, targetEducationSession.startDate)} - ${getTranslatedDateFromDateString(locale, targetEducationSession.endDate)}`}
           </MainText>
         </RowContainer>
-        {/* 상태 */}
-        <RowContainer>
-          <TitleContainer>
-            <SvgIcon svg={User} color={GRAY.SEMI_DARK} />
-            <MainText color={GRAY.SEMI_DARK}>{t('status')}</MainText>
-          </TitleContainer>
-          <StatusContainer></StatusContainer>
-        </RowContainer>
         {/* 보고대상자 */}
         <ColumnContainer>
           <TitleContainer>
             <SvgIcon svg={Users} color={GRAY.DARK} />
             <MainText color={GRAY.DARK}>{t('receiver')}</MainText>
           </TitleContainer>
-          <MemberList></MemberList>
+          <MemberList>
+            {targetEducationSession.reports.map((report) => (
+              <MemberProfilePopupButton
+                key={report.id}
+                member={report.receiver}
+              />
+            ))}
+          </MemberList>
         </ColumnContainer>
-        <RowLine />
-        {/* 수업 내용 */}
-        <ColumnContainer>
-          <TitleContainer>
-            <SvgIcon svg={Book} color={GRAY.SEMI_DARK} />
-            <MainText color={GRAY.SEMI_DARK}>{t('content')}</MainText>
-          </TitleContainer>
-        </ColumnContainer>
+
         <RowLine />
         {/* 수강교인 */}
         <TableHeader>
-          <MainText color={GRAY.SEMI_DARK}>{t('educationEnrollment')}</MainText>
-          <Button
-            text={t('button.allAttended')}
-            height={30}
-            width={'auto'}
-            backgroundColor={GREEN.DEFAULT}
-            // onClick={onClickAddEnrollmentsOpen}
+          <ToggleRadioButton
+            selectedValue={headerBar}
+            onChange={onChangeHeaderBar}
+            items={headerBarItems}
           />
+          {headerBar === EDUCATION_SESSION_CONTENT_ID.ATTENDANCE ? (
+            <Button
+              text={t('button.allAttended')}
+              height={30}
+              width={'auto'}
+              backgroundColor={GREEN.DEFAULT}
+              onClick={onClickAllAttended}
+            />
+          ) : (
+            <div></div>
+          )}
         </TableHeader>
-        <TableContainer>
-          <EducationAttendanceTable />
-        </TableContainer>
+        {headerBar === EDUCATION_SESSION_CONTENT_ID.CONTENT && (
+          <ContentWrapper>
+            <MainText
+              dangerouslySetInnerHTML={{
+                __html: targetEducationSession.content,
+              }}
+            />
+          </ContentWrapper>
+        )}
+        {headerBar === EDUCATION_SESSION_CONTENT_ID.ATTENDANCE && (
+          <TableContainer>
+            <EducationAttendanceTable />
+          </TableContainer>
+        )}
       </ContentContainer>
     </InformationContainer>
   );

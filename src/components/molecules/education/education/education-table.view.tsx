@@ -259,15 +259,15 @@ const EducationTableView = ({
     switch (id) {
       case EDUCATION.NAME:
         return (
-          <EducationNameContainer $level={1}>
-            <Chevron
-              $isOpened={openedTermIds.includes(educationTerm.id)}
-              onClick={(event: React.MouseEvent) => {
-                event.stopPropagation();
-                onClickTermChevron(educationTerm);
-              }}
-              $reverseDirection
-            />
+          <EducationNameContainer $level={2}>
+            {/*<Chevron*/}
+            {/*  $isOpened={openedTermIds.includes(educationTerm.id)}*/}
+            {/*  onClick={(event: React.MouseEvent) => {*/}
+            {/*    event.stopPropagation();*/}
+            {/*    onClickTermChevron(educationTerm);*/}
+            {/*  }}*/}
+            {/*  $reverseDirection*/}
+            {/*/>*/}
 
             <SvgIcon svg={Calendar} size={16} color={GREEN.DEFAULT} width={2} />
             <TitleContainer>
@@ -289,8 +289,8 @@ const EducationTableView = ({
             <MainText size={SIZE.SMALL} color={GRAY.SEMI_DARK}>
               {getTranslatedCompletedEnrollmentStatus(
                 locale,
-                educationTerm.completedCount,
-                educationTerm.enrollmentCount
+                educationTerm.completedMembersCount,
+                educationTerm.enrollmentsCount
               )}
             </MainText>
           </StatusContainer>

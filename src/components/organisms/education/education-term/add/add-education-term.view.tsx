@@ -3,13 +3,12 @@
 import styled from 'styled-components';
 import React, { ChangeEvent } from 'react';
 import { useI18n, useScopedI18n } from '../../../../../../locales/client';
-import { GRAY, WHITE } from '@/constants/styles/color';
+import { GRAY } from '@/constants/styles/color';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import RequiredMark from '@/components/atoms/common/text/required-mark';
 import BorderInput from '@/components/atoms/common/input/border-input';
-import { SIZE } from '@/constants/styles/style';
 import CustomDatePicker from '@/vendor/date-picker/custom-date-picker';
 import {
   getDateFromDateString,
@@ -24,29 +23,37 @@ import BigMemberTag from '@/components/atoms/common/tag/big-member-tag';
 import { MemberDropdownType } from '@/components/atoms/common/dropdown/member-dropdown-item';
 import { BLANK } from '@/constants/constant';
 import MemberTag from '@/components/atoms/common/tag/member-tag';
+import { SIZE } from '@/constants/styles/style';
 
 /* ──────────────────────────────── Styled Components ─────────────────────────────── */
 const AddEducationTermViewContainer = styled.div`
   display: flex;
-  flex-direction: column;
-  gap: 20px;
   width: 100%;
+  flex-direction: column;
 `;
 
-const CardContainer = styled.div`
+const HeaderContainer = styled.div`
   display: flex;
-  flex-direction: column;
-  gap: 10px;
-  border: 1px solid ${GRAY.LIGHT};
-  border-radius: 10px;
-  background-color: ${WHITE};
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 30px;
+  height: 40px;
 `;
 
 const ContentContainer = styled.div`
   display: flex;
   flex-direction: column;
+  gap: 30px;
+  padding: 30px;
+  min-height: 800px;
+`;
+
+const ColumnContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
   gap: 20px;
-  padding: 20px;
 `;
 
 const PeriodContainer = styled.div`
@@ -64,17 +71,6 @@ const RowContainer = styled.div`
   gap: 20px;
 `;
 
-const RowCardContainer = styled.div<{ $minHeight?: number }>`
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  width: 100%;
-  border: 1px solid ${GRAY.LIGHT};
-  border-radius: 10px;
-  background-color: ${WHITE};
-  min-height: ${({ $minHeight }) => $minHeight && $minHeight}px;
-`;
-
 const MemberTagList = styled.div`
   display: flex;
   flex-wrap: wrap;
@@ -83,6 +79,7 @@ const MemberTagList = styled.div`
 `;
 
 type AddEducationTermViewProps = {
+  isEdit: boolean;
   inCharge: MemberDropdownType[];
   onChangeTerm: (event: ChangeEvent<HTMLInputElement>) => void;
   onChangeStartDate: (date: Date | null) => void;
@@ -97,6 +94,7 @@ type AddEducationTermViewProps = {
 };
 
 const AddEducationTermView = ({
+  isEdit,
   inCharge,
   onChangeTerm,
   onChangeStartDate,
@@ -119,10 +117,15 @@ const AddEducationTermView = ({
 
   return (
     <AddEducationTermViewContainer>
-      {/* 기수 */}
-      <CardContainer>
-        <ContentContainer>
-          <MainText size={SIZE.EXTRA_LARGE}>
+      <HeaderContainer>
+        <MainText size={SIZE.EXTRA_LARGE} fontSize={22}>
+          {t(isEdit ? 'title.editEducationTerm' : 'title.addEducationTerm')}
+        </MainText>
+      </HeaderContainer>
+      <ContentContainer>
+        {/* 기수 */}
+        <ColumnContainer>
+          <MainText>
             {t('educationTerm')}
             <RequiredMark />
           </MainText>
@@ -132,14 +135,12 @@ const AddEducationTermView = ({
             placeholder={t_placeholder('term')}
             borderColor={GRAY.LIGHT}
           />
-        </ContentContainer>
-      </CardContainer>
+        </ColumnContainer>
 
-      <RowContainer>
-        {/* 담당자 */}
-        <RowCardContainer>
-          <ContentContainer>
-            <MainText size={SIZE.EXTRA_LARGE}>
+        <RowContainer>
+          {/* 담당자 */}
+          <ColumnContainer>
+            <MainText>
               {t('inCharge')}
               <RequiredMark />
             </MainText>
@@ -159,13 +160,13 @@ const AddEducationTermView = ({
                 onClick={() => onChangeInCharge([])}
               />
             )}
-          </ContentContainer>
-        </RowCardContainer>
-        {/* 업무 일정 */}
-        <RowCardContainer>
-          <ContentContainer>
+          </ColumnContainer>
+
+          {/* 업무 일정 */}
+
+          <ColumnContainer>
             <RowContainer>
-              <MainText size={SIZE.EXTRA_LARGE}>
+              <MainText>
                 {t('schedule')}
                 <RequiredMark />
               </MainText>
@@ -231,30 +232,28 @@ const AddEducationTermView = ({
                 onChangeItem={onChangeEndTime}
               />
             </PeriodContainer>
-          </ContentContainer>
-        </RowCardContainer>
-      </RowContainer>
-      {/* 장소 */}
-      <CardContainer>
-        <ContentContainer>
-          <MainText size={SIZE.EXTRA_LARGE}>{t('location')}</MainText>
+          </ColumnContainer>
+        </RowContainer>
+        {/* 장소 */}
+
+        <ColumnContainer>
+          <MainText>{t('location')}</MainText>
           <BorderInput
-            value={targetEducationTerm.location}
+            value={targetEducationTerm.location || BLANK}
             onChange={onChangeLocation}
             placeholder={t_placeholder('location')}
             borderColor={GRAY.LIGHT}
+            maxLength={30}
           />
-        </ContentContainer>
-      </CardContainer>
+        </ColumnContainer>
 
-      <CardContainer>
-        <ContentContainer>
+        <ColumnContainer>
           {/* 보고대상자 */}
-          <MainText size={SIZE.EXTRA_LARGE}>{t('receiver')}</MainText>
+          <MainText>{t('receiver')}</MainText>
           <MemberDropdown
             values={receivers}
             onChangeValues={onChangeReceivers}
-            placeholder={receivers.length === 0 ? t_placeholder('name') : BLANK}
+            placeholder={t_placeholder('name')}
             isManager={true}
           />
           {/* 보고대상자 목록 */}
@@ -269,8 +268,8 @@ const AddEducationTermView = ({
               />
             ))}
           </MemberTagList>
-        </ContentContainer>
-      </CardContainer>
+        </ColumnContainer>
+      </ContentContainer>
     </AddEducationTermViewContainer>
   );
 };

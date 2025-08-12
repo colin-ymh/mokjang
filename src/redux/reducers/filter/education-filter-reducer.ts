@@ -7,6 +7,8 @@ import {
   EDUCATION,
   EDUCATION_ATTENDANCE,
   EDUCATION_ENROLLMENT,
+  EDUCATION_SESSION,
+  EDUCATION_TERM,
 } from '@/constants/column/education-column';
 import { EducationsApi } from '@/api/education/educations.api';
 
@@ -20,6 +22,8 @@ type EducationFilterState = {
   educationOrderBy?: EDUCATION;
   educationOrderDirection: ORDER_DIRECTION;
   educationTableHeaderItemList: EDUCATION_TABLE_HEADER_ITEM[];
+  educationTermTableHeaderItemList: EDUCATION_TERM_TABLE_HEADER_ITEM[];
+  educationSessionTableHeaderItemList: EDUCATION_SESSION_TABLE_HEADER_ITEM[];
   educationPage: number;
 };
 
@@ -29,6 +33,24 @@ export const INITIAL_EDUCATION_FILTER: EDUCATION_FILTER = {
 
 export type EDUCATION_TABLE_HEADER_ITEM = {
   id: EDUCATION;
+  isShown: boolean;
+  isSortable: boolean;
+  isFilterable: boolean;
+  isFixed?: boolean;
+  isDate?: boolean;
+};
+
+export type EDUCATION_TERM_TABLE_HEADER_ITEM = {
+  id: EDUCATION_TERM;
+  isShown: boolean;
+  isSortable: boolean;
+  isFilterable: boolean;
+  isFixed?: boolean;
+  isDate?: boolean;
+};
+
+export type EDUCATION_SESSION_TABLE_HEADER_ITEM = {
+  id: EDUCATION_SESSION;
   isShown: boolean;
   isSortable: boolean;
   isFilterable: boolean;
@@ -66,6 +88,46 @@ export const INITIAL_EDUCATION_TABLE_HEADER_LIST: EDUCATION_TABLE_HEADER_ITEM[] 
     },
     {
       id: EDUCATION.STATUS,
+      isShown: true,
+      isSortable: false,
+      isFilterable: true,
+      isFixed: true,
+      isDate: false,
+    },
+  ];
+
+export const INITIAL_EDUCATION_TERM_TABLE_HEADER_LIST: EDUCATION_TERM_TABLE_HEADER_ITEM[] =
+  [
+    {
+      id: EDUCATION_TERM.NAME,
+      isShown: true,
+      isSortable: false,
+      isFilterable: true,
+      isFixed: true,
+      isDate: false,
+    },
+    {
+      id: EDUCATION_TERM.STATUS,
+      isShown: true,
+      isSortable: false,
+      isFilterable: true,
+      isFixed: true,
+      isDate: false,
+    },
+  ];
+
+export const INITIAL_EDUCATION_SESSION_TABLE_HEADER_LIST: EDUCATION_SESSION_TABLE_HEADER_ITEM[] =
+  [
+    {
+      id: EDUCATION_SESSION.NAME,
+      isShown: true,
+      isSortable: false,
+      isFilterable: true,
+      isFixed: true,
+      isDate: false,
+    },
+    {
+      id: EDUCATION_SESSION.STATUS,
       isShown: true,
       isSortable: false,
       isFilterable: true,
@@ -175,6 +237,9 @@ const initialState: EducationFilterState = {
   educationFilter: INITIAL_EDUCATION_FILTER,
   educationOrderDirection: ORDER_DIRECTION.ASC,
   educationTableHeaderItemList: INITIAL_EDUCATION_TABLE_HEADER_LIST,
+  educationTermTableHeaderItemList: INITIAL_EDUCATION_TERM_TABLE_HEADER_LIST,
+  educationSessionTableHeaderItemList:
+    INITIAL_EDUCATION_SESSION_TABLE_HEADER_LIST,
   educationPage: 1,
 };
 

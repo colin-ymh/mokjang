@@ -3,7 +3,7 @@
 import styled from 'styled-components';
 import React, { ChangeEvent } from 'react';
 import { useI18n, useScopedI18n } from '../../../../../../locales/client';
-import { GRAY, WHITE } from '@/constants/styles/color';
+import { GRAY } from '@/constants/styles/color';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
@@ -19,33 +19,48 @@ import {
 } from '@/utils/date';
 import Dropdown from '@/components/atoms/common/dropdown/dropdown';
 import { useTimeDropdownItems } from '@/hooks/dropdown/dropdown-items';
-import { TASK_STATUS } from '@/constants/status/status';
 import { MemberDropdownType } from '@/components/atoms/common/dropdown/member-dropdown-item';
-import { EducationAttendance } from '@/models/education/education';
 import Quill from '@/components/atoms/common/input/quill';
+import MemberDropdown from '@/components/atoms/common/dropdown/member-dropdown';
+import MemberTag from '@/components/atoms/common/tag/member-tag';
+import BigMemberTag from '@/components/atoms/common/tag/big-member-tag';
 
 /* ──────────────────────────────── Styled Components ─────────────────────────────── */
 const AddEducationSessionViewContainer = styled.div`
   display: flex;
-  flex-direction: column;
-  gap: 20px;
   width: 100%;
+  flex-direction: column;
 `;
 
-const CardContainer = styled.div`
+const HeaderContainer = styled.div`
   display: flex;
-  flex-direction: column;
-  gap: 10px;
-  border: 1px solid ${GRAY.LIGHT};
-  border-radius: 10px;
-  background-color: ${WHITE};
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 30px;
+  height: 40px;
 `;
 
 const ContentContainer = styled.div`
   display: flex;
   flex-direction: column;
+  gap: 30px;
+  padding: 30px;
+  min-height: 800px;
+`;
+
+const ColumnContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
   gap: 20px;
-  padding: 20px;
+`;
+
+const PeriodContainer = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  width: 100%;
 `;
 
 const RowContainer = styled.div`
@@ -56,28 +71,17 @@ const RowContainer = styled.div`
   gap: 20px;
 `;
 
-const RowCardContainer = styled.div<{ $minHeight?: number }>`
+const MemberTagList = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
   gap: 10px;
-  width: 100%;
-  border: 1px solid ${GRAY.LIGHT};
-  border-radius: 10px;
-  background-color: ${WHITE};
-  min-height: ${({ $minHeight }) => $minHeight && $minHeight}px;
-`;
-
-const PeriodContainer = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
-  width: 100%;
+  flex-direction: row;
 `;
 
 type AddEducationSessionViewProps = {
-  content: string;
+  isEdit: boolean;
   inCharge: MemberDropdownType[];
-  onChangeStatus: (value: TASK_STATUS) => void;
+  content: string;
   onChangeTitle: (event: ChangeEvent<HTMLInputElement>) => void;
   onChangeStartDate: (date: Date | null) => void;
   onChangeStartTime: (value: number) => void;
@@ -87,18 +91,14 @@ type AddEducationSessionViewProps = {
   onChangeContent: (content: string) => void;
   receivers: MemberDropdownType[];
   onChangeReceivers: (values: MemberDropdownType[]) => void;
-  // onClickDeleteReceiver: (value: string) => void;
-  onChangeAttendanceStatus: (
-    value: boolean,
-    targetAttendance: EducationAttendance
-  ) => void;
+  onClickDeleteReceiver: (value: string) => void;
 };
 
 const AddEducationSessionView = ({
-  content,
+  isEdit,
   inCharge,
   receivers,
-  onChangeStatus,
+  content,
   onChangeTitle,
   onChangeStartDate,
   onChangeStartTime,
@@ -107,7 +107,7 @@ const AddEducationSessionView = ({
   onChangeInCharge,
   onChangeContent,
   onChangeReceivers,
-  onChangeAttendanceStatus,
+  onClickDeleteReceiver,
 }: AddEducationSessionViewProps) => {
   const { targetEducationSession } = useSelector(
     (state: RootState) => state.targetEducationSession
@@ -119,10 +119,17 @@ const AddEducationSessionView = ({
 
   return (
     <AddEducationSessionViewContainer>
-      {/* 기수 */}
-      <CardContainer>
-        <ContentContainer>
-          <MainText size={SIZE.EXTRA_LARGE}>
+      <HeaderContainer>
+        <MainText size={SIZE.EXTRA_LARGE} fontSize={22}>
+          {t(
+            isEdit ? 'title.editEducationSession' : 'title.addEducationSession'
+          )}
+        </MainText>
+      </HeaderContainer>
+      <ContentContainer>
+        {/* 회차명 */}
+        <ColumnContainer>
+          <MainText>
             {t('title')}
             <RequiredMark />
           </MainText>
@@ -131,95 +138,142 @@ const AddEducationSessionView = ({
             onChange={onChangeTitle}
             placeholder={t_placeholder('title')}
             borderColor={GRAY.LIGHT}
+            maxLength={50}
           />
-        </ContentContainer>
-      </CardContainer>
+        </ColumnContainer>
 
-      {/* 업무 일정 */}
-      <CardContainer>
-        <ContentContainer>
-          <RowContainer>
-            <MainText size={SIZE.EXTRA_LARGE}>
-              {t('schedule')}
+        <RowContainer>
+          {/* 담당자 */}
+          <ColumnContainer>
+            <MainText>
+              {t('inCharge')}
               <RequiredMark />
             </MainText>
-          </RowContainer>
-          {/* 기간 */}
-          <PeriodContainer>
-            {/* 시작 날짜 */}
-            <CustomDatePicker
-              value={
-                targetEducationSession.startDate
-                  ? getDateStringFromDate(
-                      getDateFromInput(targetEducationSession.startDate)
-                    )
-                  : undefined
-              }
-              selected={
-                targetEducationSession.startDate
-                  ? getDateFromDateString(targetEducationSession.startDate)
-                  : null
-              }
-              onChange={onChangeStartDate}
-              placeholderText={t('startDate')}
-            />
-            {/* 시작 시간 */}
-            <Dropdown
-              value={
-                targetEducationSession.startDate
-                  ? getTotalMinuteFromDate(
-                      getDateFromDateString(targetEducationSession.startDate)
-                    )
-                  : 0
-              }
-              items={timeDropdownItems}
-              onChangeItem={onChangeStartTime}
-            />
-            {/* 종료 날짜 */}
-            <CustomDatePicker
-              value={
-                targetEducationSession.endDate
-                  ? getDateStringFromDate(
-                      getDateFromInput(targetEducationSession.endDate)
-                    )
-                  : undefined
-              }
-              selected={
-                targetEducationSession.endDate
-                  ? getDateFromDateString(targetEducationSession.endDate)
-                  : null
-              }
-              onChange={onChangeEndDate}
-              placeholderText={t('endDate')}
-            />
-            {/* 종료 시간 */}
-            <Dropdown
-              value={
-                targetEducationSession.endDate
-                  ? getTotalMinuteFromDate(
-                      getDateFromDateString(targetEducationSession.endDate)
-                    )
-                  : 0
-              }
-              items={timeDropdownItems}
-              onChangeItem={onChangeEndTime}
-            />
-          </PeriodContainer>
-        </ContentContainer>
-      </CardContainer>
+            {inCharge.length === 0 ? (
+              <MemberDropdown
+                values={inCharge}
+                onChangeValues={onChangeInCharge}
+                isSingle
+                placeholder={t_placeholder('name')}
+                isManager={true}
+              />
+            ) : (
+              <BigMemberTag
+                officer={inCharge[0].officer}
+                profileImage={inCharge[0].profileImage}
+                name={inCharge[0].title}
+                onClick={() => onChangeInCharge([])}
+              />
+            )}
+          </ColumnContainer>
 
-      {/* 내용 */}
-      <CardContainer>
-        <ContentContainer>
-          <MainText size={SIZE.EXTRA_LARGE}>{t('content')}</MainText>
+          {/* 업무 일정 */}
+          <ColumnContainer>
+            <RowContainer>
+              <MainText>
+                {t('schedule')}
+                <RequiredMark />
+              </MainText>
+            </RowContainer>
+            {/* 기간 */}
+            <PeriodContainer>
+              {/* 시작 날짜 */}
+              <CustomDatePicker
+                value={
+                  targetEducationSession.startDate
+                    ? getDateStringFromDate(
+                        getDateFromInput(targetEducationSession.startDate)
+                      )
+                    : undefined
+                }
+                selected={
+                  targetEducationSession.startDate
+                    ? getDateFromDateString(targetEducationSession.startDate)
+                    : null
+                }
+                onChange={onChangeStartDate}
+                placeholderText={t('startDate')}
+              />
+              {/* 시작 시간 */}
+              <Dropdown
+                value={
+                  targetEducationSession.startDate
+                    ? getTotalMinuteFromDate(
+                        getDateFromDateString(targetEducationSession.startDate)
+                      )
+                    : 0
+                }
+                items={timeDropdownItems}
+                onChangeItem={onChangeStartTime}
+              />
+              {/* 종료 날짜 */}
+              <CustomDatePicker
+                value={
+                  targetEducationSession.endDate
+                    ? getDateStringFromDate(
+                        getDateFromInput(targetEducationSession.endDate)
+                      )
+                    : undefined
+                }
+                selected={
+                  targetEducationSession.endDate
+                    ? getDateFromDateString(targetEducationSession.endDate)
+                    : null
+                }
+                onChange={onChangeEndDate}
+                placeholderText={t('endDate')}
+              />
+              {/* 종료 시간 */}
+              <Dropdown
+                value={
+                  targetEducationSession.endDate
+                    ? getTotalMinuteFromDate(
+                        getDateFromDateString(targetEducationSession.endDate)
+                      )
+                    : 0
+                }
+                items={timeDropdownItems}
+                onChangeItem={onChangeEndTime}
+              />
+            </PeriodContainer>
+          </ColumnContainer>
+        </RowContainer>
+
+        {/* 내용 */}
+        <ColumnContainer>
+          <MainText>{t('content')}</MainText>
           <Quill
-            value={targetEducationSession.content}
+            value={content}
             onChange={(html) => onChangeContent(html)}
             minHeight={150}
             placeholder={t_placeholder('content')}
+            maxLength={1000}
           />
-        </ContentContainer>
-      </CardContainer>
+        </ColumnContainer>
+
+        {/* 보고대상자 */}
+        <ColumnContainer>
+          <MainText>{t('receiver')}</MainText>
+          <MemberDropdown
+            values={receivers}
+            onChangeValues={onChangeReceivers}
+            placeholder={t_placeholder('name')}
+            isManager={true}
+          />
+          {/* 보고대상자 목록 */}
+          <MemberTagList>
+            {receivers.map((member) => (
+              <MemberTag
+                key={member.value}
+                profileImage={member.profileImage}
+                name={member.title}
+                officer={member.officer}
+                onClick={() => onClickDeleteReceiver(member.value)}
+              />
+            ))}
+          </MemberTagList>
+        </ColumnContainer>
+      </ContentContainer>
     </AddEducationSessionViewContainer>
   );
 };

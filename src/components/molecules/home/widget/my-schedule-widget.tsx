@@ -6,7 +6,7 @@ import { AppDispatch, RootState } from '@/redux/store';
 import { useEffect, useState } from 'react';
 import { RANGE } from '@/constants/constant';
 import { DOMAIN } from '@/models/permission/permission';
-import { Schedule, ServerSchedule } from '@/models/calendar/calendar';
+import { Schedule } from '@/models/calendar/calendar';
 import { setTargetTask } from '@/redux/reducers/target/target-task-reducer';
 import { setTargetVisitation } from '@/redux/reducers/target/target-visitation-reducer';
 import { CalendarApi } from '@/api/calendar/calendar.api';
@@ -17,7 +17,6 @@ import { EducationAttendanceApi } from '@/api/education/education-attendance.api
 import { setTargetEducation } from '@/redux/reducers/target/target-education-reducer';
 import { setTargetEducationTerm } from '@/redux/reducers/target/target-education-term-reducer';
 import { setTargetEducationSession } from '@/redux/reducers/target/target-education-session-reducer';
-import { getMyWidgetSchedule } from '@/utils/calendar';
 import MyScheduleWidgetView from '@/components/molecules/home/widget/my-schedule-widget.view';
 import { TasksApi } from '@/api/tasks/tasks.api';
 import { VisitationsApi } from '@/api/visitations/visitations.api';
@@ -45,18 +44,18 @@ const MyScheduleWidget = () => {
   const educationAttendanceApi = new EducationAttendanceApi(false);
 
   const fetchMySchedules = async () => {
-    try {
-      const response = await homeApi.getMySchedules({ churchId, range });
-
-      const newSchedules = response.data;
-      const newMySchedules = newSchedules.map((schedule: ServerSchedule) => {
-        return getMyWidgetSchedule(schedule);
-      });
-
-      setMySchedules(newMySchedules);
-    } catch (error) {
-      setThrownError(error instanceof Error ? error : new Error(String(error)));
-    }
+    // try {
+    //   const response = await homeApi.getMySchedules({ churchId, range });
+    //
+    //   const newSchedules = response.data;
+    //   const newMySchedules = newSchedules.map((schedule: ServerSchedule) => {
+    //     return getMyWidgetSchedule(schedule);
+    //   });
+    //
+    //   setMySchedules(newMySchedules);
+    // } catch (error) {
+    //   setThrownError(error instanceof Error ? error : new Error(String(error)));
+    // }
   };
 
   // 이벤트 선택

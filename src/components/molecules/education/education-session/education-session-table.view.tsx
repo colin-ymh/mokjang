@@ -3,30 +3,28 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 
-import { GRAY, GREEN, MAIN, ORANGE, WHITE } from '@/constants/styles/color';
+import { GRAY, MAIN, ORANGE, WHITE } from '@/constants/styles/color';
 import {
   Education,
   EducationSession,
   EducationTerm,
 } from '@/models/education/education';
-import { EDUCATION, EDUCATION_TERM } from '@/constants/column/education-column';
-import EducationTermTableHeader from '@/components/atoms/education/education-term/education-term-table-header';
+import {
+  EDUCATION,
+  EDUCATION_SESSION,
+} from '@/constants/column/education-column';
 import ChevronLeft from '../../../../../public/svg/chevron-left.svg';
-import Calendar from '../../../../../public/svg/calendar.svg';
 import Clock from '../../../../../public/svg/clock.svg';
 import SvgIcon from '@/components/atoms/common/icon/svg-icon';
 import { getDateFromDateString, getDateStringFromDate } from '@/utils/date';
 import MainTag from '@/components/atoms/common/tag/main-tag';
 import { getStatusBackgroundColor, getStatusFontColor } from '@/utils/color';
 import { MainText } from '@/components/atoms/common/text/main-text';
-import {
-  getTranslatedCompletedEnrollmentStatus,
-  getTranslatedTerm,
-} from '@/utils/translate';
 import { usePathname } from 'next/navigation';
 import { LOCALE } from '@/constants/state/locale';
 import { SIZE } from '@/constants/styles/style';
 import { useI18n } from '../../../../../locales/client';
+import EducationSessionTableHeader from '@/components/atoms/education/education-session/education-session-table-header';
 
 // 1. 컬럼별 PX 폭 (마지막 REMARKS만 auto 할 예정)
 const getColumnWidth = (id: string) => {
@@ -166,9 +164,6 @@ const StatusContainer = styled.div`
 `;
 
 type EducationTermTableProps = {
-  openedTermIds: string[];
-  onClickTermChevron: (value: EducationTerm) => void;
-  onClickEducationTermItem: (education: Education, term: EducationTerm) => void;
   onClickEducationSessionItem: (
     education: Education,
     term: EducationTerm,
@@ -176,10 +171,7 @@ type EducationTermTableProps = {
   ) => void;
 };
 
-const EducationTermTableView = ({
-  openedTermIds,
-  onClickTermChevron,
-  onClickEducationTermItem,
+const EducationSessionTableView = ({
   onClickEducationSessionItem,
 }: EducationTermTableProps) => {
   const pathname = usePathname();
@@ -191,63 +183,18 @@ const EducationTermTableView = ({
     (state: RootState) => state.targetEducation
   );
 
-  const { educationTermTableHeaderItemList } = useSelector(
+  const { targetEducationTerm } = useSelector(
+    (state: RootState) => state.targetEducationTerm
+  );
+
+  const { educationSessionTableHeaderItemList } = useSelector(
     (state: RootState) => state.educationFilter
   );
 
   // 실제 표시할 컬럼 ID 배열 + 마지막에 비고란 추가
   const visibleColumns = [
-    ...educationTermTableHeaderItemList.filter((item) => item.isShown),
+    ...educationSessionTableHeaderItemList.filter((item) => item.isShown),
   ];
-
-  // 각 TD에 들어갈 content
-  const getEducationTermTableContent = (
-    id: string,
-    educationTerm: EducationTerm
-  ) => {
-    switch (id) {
-      case EDUCATION_TERM.NAME:
-        return (
-          <EducationNameContainer $level={0}>
-            <Chevron
-              $isOpened={openedTermIds.includes(educationTerm.id)}
-              onClick={(event: React.MouseEvent) => {
-                event.stopPropagation();
-                onClickTermChevron(educationTerm);
-              }}
-              $reverseDirection
-            />
-
-            <SvgIcon svg={Calendar} size={16} color={GREEN.DEFAULT} width={2} />
-            <TitleContainer>
-              <MainText>{`${getTranslatedTerm(locale, educationTerm.term)}`}</MainText>
-              <MainText size={SIZE.SMALL} color={GRAY.SEMI_DARK}>
-                {`${getDateStringFromDate(getDateFromDateString(educationTerm.startDate))} - ${getDateStringFromDate(getDateFromDateString(educationTerm.endDate))}`}
-              </MainText>
-            </TitleContainer>
-          </EducationNameContainer>
-        );
-      case EDUCATION_TERM.STATUS:
-        return (
-          <StatusContainer>
-            <MainText size={SIZE.SMALL} color={GRAY.SEMI_DARK}>
-              {getTranslatedCompletedEnrollmentStatus(
-                locale,
-                educationTerm.completedMembersCount,
-                educationTerm.enrollmentsCount
-              )}
-            </MainText>
-            <MainTag
-              title={t(educationTerm.status)}
-              color={getStatusFontColor(educationTerm.status)}
-              backgroundColor={getStatusBackgroundColor(educationTerm.status)}
-            />
-          </StatusContainer>
-        );
-      default:
-        return null;
-    }
-  };
 
   /* educationSession 행에 들어갈 content */
   const getEducationSessionTableContent = (
@@ -256,9 +203,9 @@ const EducationTermTableView = ({
   ) => {
     // term 컬럼에 맞춰서 작성해야함
     switch (id) {
-      case EDUCATION_TERM.NAME:
+      case EDUCATION_SESSION.NAME:
         return (
-          <EducationNameContainer $level={2}>
+          <EducationNameContainer $level={0}>
             <SvgIcon svg={Clock} size={16} color={ORANGE.DARK} width={2} />
             <TitleContainer>
               <MainText>{`${session.session}${t('session')} ${session.title}`}</MainText>
@@ -268,7 +215,7 @@ const EducationTermTableView = ({
             </TitleContainer>
           </EducationNameContainer>
         );
-      case EDUCATION_TERM.STATUS:
+      case EDUCATION_SESSION.STATUS:
         return (
           <StatusContainer>
             <MainText size={SIZE.SMALL} color={GRAY.SEMI_DARK}></MainText>
@@ -297,10 +244,10 @@ const EducationTermTableView = ({
                   id={item.id}
                   $isLast={index === visibleColumns.length - 1}
                 >
-                  <EducationTermTableHeader
+                  <EducationSessionTableHeader
                     item={{
                       ...item,
-                      id: item.id as EDUCATION_TERM,
+                      id: item.id as EDUCATION_SESSION,
                     }}
                     onClick={() => {}}
                   />
@@ -311,27 +258,9 @@ const EducationTermTableView = ({
           <tbody>
             {targetEducation.educationTerms?.map((educationTerm) => (
               <React.Fragment key={educationTerm.id}>
-                <EducationTableRow
-                  onClick={() =>
-                    onClickEducationTermItem(targetEducation, educationTerm)
-                  }
-                >
-                  {visibleColumns.map((item, index) => (
-                    <TableData
-                      key={`${educationTerm.id}-${item.id}`}
-                      id={item.id}
-                      $isLast={index === visibleColumns.length - 1}
-                    >
-                      <ContentWrapper>
-                        {getEducationTermTableContent(item.id, educationTerm)}
-                      </ContentWrapper>
-                    </TableData>
-                  ))}
-                </EducationTableRow>
-
                 {/* 교육 회차 */}
-                {openedTermIds.includes(educationTerm.id) &&
-                  educationTerm.educationSessions?.map((educationSession) => (
+                {targetEducationTerm.educationSessions?.map(
+                  (educationSession) => (
                     <React.Fragment key={educationSession.id}>
                       <EducationTableRow
                         onClick={() =>
@@ -358,7 +287,8 @@ const EducationTermTableView = ({
                         ))}
                       </EducationTableRow>
                     </React.Fragment>
-                  ))}
+                  )
+                )}
               </React.Fragment>
             ))}
           </tbody>
@@ -368,4 +298,4 @@ const EducationTermTableView = ({
   );
 };
 
-export default EducationTermTableView;
+export default EducationSessionTableView;

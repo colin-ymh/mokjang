@@ -175,6 +175,8 @@ export default {
 
   educationList: '교육 목록',
   educationName: '교육명',
+  termName: '기수명',
+  sessionName: '회차명',
   educationDescription: '교육 요약',
   educationGoal: '교육 목표',
   educationTermCount: '총 기수 수',
@@ -387,6 +389,9 @@ export default {
   'header.educationSessions': '회차 목록',
   'header.educationEnrollments': '수강 교인',
 
+  'header.content': '내용',
+  'header.educationAttendance': '출석',
+
   /*-------------------header (side bar button)-------------------*/
 
   /*-------------------content (header bar button)-------------------*/
@@ -510,6 +515,13 @@ export default {
 
   'button.backToList': '목록으로 돌아가기',
   'button.allAttended': '일괄 출석',
+
+  'button.addEducationSession': '회차 추가',
+
+  'button.backToEducation': '교육 상세로 돌아가기',
+  'button.backToEducationTerm': '기수 상세로 돌아가기',
+  'button.backToEducationSession': '회차 상세로 돌아가기',
+
   /*-------------------button-------------------*/
 
   /*-------------------placeholder-------------------*/

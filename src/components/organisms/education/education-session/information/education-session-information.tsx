@@ -10,9 +10,11 @@ import { setTargetEducationSession } from '@/redux/reducers/target/target-educat
 import EducationSessionInformationView from '@/components/organisms/education/education-session/information/education-session-information.view';
 import { setTargetEducationTerm } from '@/redux/reducers/target/target-education-term-reducer';
 
-import { TASK_STATUS } from '@/constants/status/status';
+import { STATUS, TASK_STATUS } from '@/constants/status/status';
 import { EducationAttendanceApi } from '@/api/education/education-attendance.api';
 import { setEducations } from '@/redux/reducers/filter/education-filter-reducer';
+import { EDUCATION_SESSION_CONTENT_ID } from '@/constants/layout/content';
+import { CustomError } from '@/api/error/error';
 
 type EducationSessionInformationProps = {};
 
@@ -35,10 +37,18 @@ const EducationSessionInformation = ({}: EducationSessionInformationProps) => {
   const educationSessionsApi = new EducationSessionsApi(false);
   const educationAttendanceApi = new EducationAttendanceApi(false);
 
+  const [headerBar, setHeaderBar] = useState<EDUCATION_SESSION_CONTENT_ID>(
+    EDUCATION_SESSION_CONTENT_ID.CONTENT
+  );
+
   const [thrownError, setThrownError] = useState<Error | null>(null);
   if (thrownError) {
     throw thrownError;
   }
+
+  const onChangeHeaderBar = (headerBar: EDUCATION_SESSION_CONTENT_ID) => {
+    setHeaderBar(headerBar);
+  };
 
   // ===== status =====
 
@@ -104,56 +114,38 @@ const EducationSessionInformation = ({}: EducationSessionInformationProps) => {
   };
   // ===== status =====
 
-  // 출석 상태 변경
-  const onChangeAttendanceStatus = (
-    value: boolean,
-    attendance: EducationAttendance
-  ) => {
+  const onClickAllAttended = () => {
     try {
-      educationAttendanceApi
-        .editEducationAttendance(
-          {
-            churchId,
-            educationId: targetEducation.id,
-            educationTermId: targetEducationTerm.id,
-            sessionId: targetEducationSession.id,
-            attendanceId: attendance.id,
-          },
-          { isPresent: value }
-        )
-        .then((response) => {
-          const newEducationAttendance = response.data;
+      const newEducationSession = {
+        ...targetEducationSession,
+        educationAttendances: targetEducationSession.educationAttendances.map(
+          (attendance) => {
+            return {
+              ...attendance,
+              status: STATUS.PRESENT,
+            } as EducationAttendance;
+          }
+        ),
+      };
 
-          const newEducationAttendances =
-            targetEducationSession.educationAttendances.map((attendance) => {
-              if (attendance.id === newEducationAttendance.id) {
-                return newEducationAttendance;
-              } else {
-                return attendance;
-              }
-            });
+      dispatch(setTargetEducationSession(newEducationSession));
 
-          const newEducationSession = {
-            ...targetEducationSession,
-            educationEnrollments: newEducationAttendances,
-          };
-
-          dispatch(setTargetEducationSession(newEducationSession));
-
-          // const newEducationSessions = educationSessions.map((v) => {
-          //   return v.id !== targetEducationSession.id ? v : newEducationSession;
-          // });
-          //
-          // dispatch(setEducationSessions(newEducationSessions));
-        });
+      educationAttendanceApi.patchAllAttended({
+        churchId,
+        educationId: targetEducationTerm.educationId,
+        educationTermId: targetEducationTerm.id,
+        sessionId: targetEducationSession.id,
+      });
     } catch (error) {
-      setThrownError(error instanceof Error ? error : new Error(String(error)));
+      setThrownError(error as CustomError);
     }
   };
 
   const props = {
+    headerBar,
+    onChangeHeaderBar,
     onChangeStatus,
-    onChangeAttendanceStatus,
+    onClickAllAttended,
   };
   return (
     <>

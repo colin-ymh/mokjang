@@ -110,9 +110,13 @@ const TableContainer = styled.div`
   overflow: hidden;
 `;
 
-type EducationInformationViewProps = {};
+type EducationInformationViewProps = {
+  onClickAddEducationTermOpen: () => void;
+};
 
-const EducationInformationView = ({}: EducationInformationViewProps) => {
+const EducationInformationView = ({
+  onClickAddEducationTermOpen,
+}: EducationInformationViewProps) => {
   const t = useI18n();
   const { targetEducation } = useSelector(
     (state: RootState) => state.targetEducation
@@ -199,6 +203,7 @@ const EducationInformationView = ({}: EducationInformationViewProps) => {
             text={t('button.addEducationTerm')}
             height={30}
             width={'auto'}
+            onClick={onClickAddEducationTermOpen}
           />
         </TableHeader>
         <TableContainer>

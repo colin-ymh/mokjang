@@ -170,6 +170,8 @@ export default {
 
   educationList: 'Education List',
   educationName: 'Education Name',
+  termName: 'Term Name',
+  sessionName: 'Session Name',
   educationGoal: 'Educational Goal',
   educationTermCount: 'Total Term Count',
   educationEnrollmentCount: 'Total Enrollment Count',
@@ -376,6 +378,10 @@ export default {
 
   'header.educationSessions': 'Session List',
   'header.educationEnrollments': 'Enrollment List',
+
+  'header.content': 'Content',
+  'header.educationAttendance': 'Attendance',
+
   /*-------------------header (side bar button)-------------------*/
 
   /*-------------------member content (member header bar button)-------------------*/
@@ -496,6 +502,13 @@ export default {
 
   'button.backToList': 'Back To List',
   'button.allAttended': 'Mark All as Attended',
+
+  'button.addEducationSession': '회차 추가',
+
+  'button.backToEducation': 'Back To Education',
+  'button.backToEducationTerm': 'Back To Education Term',
+  'button.backToEducationSession': 'Back To Education Session',
+
   /*-------------------button-------------------*/
 
   /*-------------------placeholder-------------------*/
