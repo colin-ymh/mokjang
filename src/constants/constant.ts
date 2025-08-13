@@ -148,3 +148,10 @@ export enum GROUP_ROLE {
   LEADER = 'leader',
   MEMBER = 'member',
 }
+
+export enum HISTORY {
+  GROUP = 'group',
+  MINISTRY = 'ministry',
+  EDUCATION = 'education',
+  OFFICER = 'officer',
+}

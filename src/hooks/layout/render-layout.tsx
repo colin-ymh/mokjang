@@ -53,6 +53,7 @@ import MyScheduleWidget from '@/components/molecules/home/widget/my-schedule-wid
 import MinistryGroupManagement from '@/components/organisms/management/ministry/ministry-group-management';
 import ReportedScheduleWidget from '@/components/molecules/home/widget/reported-schedule-widget';
 import WorshipAttendanceWidget from '@/components/molecules/home/widget/worship-attendance-widget';
+import MemberHistoryList from '@/components/molecules/member/information/history/member-history-list';
 
 export const getSide = (id: string) => {
   switch (id) {
@@ -211,6 +212,8 @@ export const getMemberInformationContent = (
       }
     case MEMBER_INFORMATION_HEADER_ID.FAMILY_INFORMATION:
       return <FamilyInformationList setMemberContentId={setMemberContentId} />;
+    case MEMBER_INFORMATION_HEADER_ID.HISTORY:
+      return <MemberHistoryList />;
   }
 };
 

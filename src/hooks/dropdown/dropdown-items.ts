@@ -6,6 +6,7 @@ import {
   DAYS,
   FAMILY,
   GENDER,
+  HISTORY,
   MARRIAGE,
   WORSHIP_PERIOD,
 } from '@/constants/constant';
@@ -575,6 +576,31 @@ export const useWorshipPeriodDropdownItems = () => {
     {
       value: WORSHIP_PERIOD.LAST_THREE_MONTH,
       title: t(WORSHIP_PERIOD.LAST_THREE_MONTH),
+    },
+  ];
+
+  return items;
+};
+
+export const useHistoryDomainDropdownItems = () => {
+  const t = useI18n();
+
+  const items = [
+    {
+      value: HISTORY.GROUP,
+      title: t(HISTORY.GROUP),
+    },
+    {
+      value: HISTORY.MINISTRY,
+      title: t(HISTORY.MINISTRY),
+    },
+    {
+      value: HISTORY.EDUCATION,
+      title: t(HISTORY.EDUCATION),
+    },
+    {
+      value: HISTORY.OFFICER,
+      title: t(HISTORY.OFFICER),
     },
   ];
 

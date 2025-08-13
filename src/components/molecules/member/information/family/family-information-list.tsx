@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 
@@ -17,13 +17,9 @@ import {
 import { BLACK, DESTRUCTIVE } from '@/constants/styles/color';
 import { FAMILY } from '@/constants/constant';
 
-type FamilyInformationListProps = {
-  setMemberContentId: Dispatch<SetStateAction<string>>;
-};
+type FamilyInformationListProps = {};
 
-const FamilyInformationList = ({
-  setMemberContentId,
-}: FamilyInformationListProps) => {
+const FamilyInformationList = ({}: FamilyInformationListProps) => {
   const t_popup = useScopedI18n('popup');
   const dispatch = useDispatch<AppDispatch>();
   const { churchId } = useSelector((state: RootState) => state.church);
