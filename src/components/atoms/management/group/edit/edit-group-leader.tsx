@@ -117,7 +117,9 @@ const EditGroupLeader = ({
     if (prevGroupLeader) {
       setSelectedMember(prevGroupLeader);
     } else {
-      setSelectedMember(members[0]);
+      if (members.length > 0) {
+        setSelectedMember(members[0]);
+      }
     }
   }, [group, members]);
 

@@ -74,7 +74,7 @@ const GroupSideBar = ({ selectedGroup, onClickGroup }: GroupSideBarProps) => {
     } catch (error) {
       if (error instanceof Error) {
         dispatch(setToastText(error.message));
-        dispatch(setToastBackgroundColor(DESTRUCTIVE.LIGHT));
+        dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
         dispatch(setIsToastShown(true));
       } else {
         setThrownError(new Error(String(error)));

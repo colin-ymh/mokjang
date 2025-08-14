@@ -11,7 +11,6 @@ const GroupFilterContainer = styled.div`
   display: flex;
   padding: 20px;
   width: 100%;
-  height: 100%;
   margin-bottom: 20px;
 `;
 
@@ -53,6 +52,7 @@ const GroupFilter = ({ isDefaultOpen = false, onChange }: GroupFilterProps) => {
   };
 
   const props = {
+    isNullable: true,
     isDefaultOpen,
     onChange: onChangeGroup,
     prevSelectedGroupId: memberFilter?.group.id,

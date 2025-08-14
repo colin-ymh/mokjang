@@ -1,5 +1,10 @@
 import { BLANK } from '@/constants/constant';
-import { DEFAULT_OFFICER, Officer } from '@/models/management/management';
+import {
+  DEFAULT_GROUP,
+  DEFAULT_OFFICER,
+  Group,
+  Officer,
+} from '@/models/management/management';
 import {
   DEFAULT_EDUCATION_TERM,
   EducationTerm,
@@ -9,21 +14,28 @@ import { EDUCATION_ENROLLMENT_STATUS, STATUS } from '@/constants/status/status';
 export type GroupHistory = {
   id: string;
   groupId: string;
-  groupRoleId: string;
   groupSnapShot: string;
-  groupRoleSnapShot: string;
   startDate: string;
   endDate: string;
+  group: Group
 };
 
 export const DEFAULT_GROUP_HISTORY: GroupHistory = {
   id: BLANK,
   groupId: BLANK,
   groupSnapShot: BLANK,
-  groupRoleId: BLANK,
-  groupRoleSnapShot: BLANK,
   startDate: BLANK,
   endDate: BLANK,
+  group: DEFAULT_GROUP
+};
+
+export type GroupDetailHistory = {
+  id: string;
+  memberId: string;
+  groupHistoryId: string;
+  role: 'leader';
+  startDate: string;
+  endDate: string;
 };
 
 export type EducationHistory = {

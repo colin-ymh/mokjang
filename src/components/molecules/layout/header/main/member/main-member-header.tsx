@@ -142,7 +142,7 @@ const MainMemberHeader = ({}: MainMemberHeaderProps) => {
     } catch (error) {
       if (error instanceof Error) {
         dispatch(setToastText(error.message));
-        dispatch(setToastBackgroundColor(DESTRUCTIVE.LIGHT));
+        dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
       } else {
         setThrownError(new Error(String(error)));
       }

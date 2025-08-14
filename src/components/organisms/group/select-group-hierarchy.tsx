@@ -3,6 +3,8 @@ import { useState } from 'react';
 import SelectGroupHierarchyView from '@/components/organisms/group/select-group-hierarchy.view';
 
 type GroupFilterProps = {
+  isAllSelectable?: boolean;
+  isNullable?: boolean;
   isDefaultOpen?: boolean;
   topLevelGroupId?: string | null;
   prevSelectedGroupId?: string | null;
@@ -10,6 +12,8 @@ type GroupFilterProps = {
 };
 
 const SelectGroupHierarchy = ({
+  isAllSelectable = true,
+  isNullable = false,
   isDefaultOpen = false,
   topLevelGroupId = null,
   prevSelectedGroupId,
@@ -28,6 +32,8 @@ const SelectGroupHierarchy = ({
   };
 
   const props = {
+    isAllSelectable,
+    isNullable,
     isDefaultOpen,
     topLevelGroupId,
     selectedGroupId,

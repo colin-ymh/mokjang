@@ -13,6 +13,8 @@ export default {
   isNotDone: 'Incomplete',
   customSelect: 'Custom Select',
 
+  current: 'Current',
+
   creator: 'Creator',
   createdDate: 'Created Date',
 
@@ -37,6 +39,9 @@ export default {
   editGroupLeader: 'Change Group Leader',
   ministryGroupLeader: 'Ministry Leader',
   editMinistryGroupLeader: 'Change Ministry Leader',
+  editMinistry: 'Change Ministry',
+  groupDetailHistory: 'Group Detail History',
+  ministryDetailHistory: 'Ministry Detail History',
 
   noGroup: 'N/A',
   warning: 'Warning',
@@ -511,6 +516,8 @@ export default {
 
   'button.showMoreEducationTerm': '교육 기수 더보기',
 
+  'button.stopGroupHistory': 'Stop Group History',
+
   /*-------------------button-------------------*/
 
   /*-------------------placeholder-------------------*/
@@ -656,6 +663,8 @@ export default {
     'You cannot delete this ministry group if there are members or subgroups associated with it. Deleted ministry group cannot be recovered.',
   'warning.deleteMinistry':
     'You cannot delete this ministry if there are members assigned to it. Deleted ministry cannot be recovered.',
+  'warning.stopGroupHistory':
+    "Stopped Group will be saved in member's group history.",
   /*-------------------warning-------------------*/
 
   /*-------------------description-------------------*/

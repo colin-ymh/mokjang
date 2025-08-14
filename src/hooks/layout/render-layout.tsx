@@ -211,7 +211,7 @@ export const getMemberInformationContent = (
         return <MemberPersonalInformationList />;
       }
     case MEMBER_INFORMATION_HEADER_ID.FAMILY_INFORMATION:
-      return <FamilyInformationList setMemberContentId={setMemberContentId} />;
+      return <FamilyInformationList />;
     case MEMBER_INFORMATION_HEADER_ID.HISTORY:
       return <MemberHistoryList />;
   }

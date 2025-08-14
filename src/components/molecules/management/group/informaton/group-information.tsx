@@ -122,13 +122,19 @@ const GroupInformation = ({
           { name: editName }
         );
       }
-      if (newGroupLeaderId !== selectedGroup.leaderMemberId) {
+      if (
+        newGroupLeaderId &&
+        newGroupLeaderId !== selectedGroup.leaderMemberId
+      ) {
         await groupsApi.editGroupLeader(
           {
             churchId,
             groupId: selectedGroup.id as string,
           },
-          { newLeaderMemberId: newGroupLeaderId }
+          {
+            newLeaderMemberId: newGroupLeaderId,
+            startDate: getDateStringFromDate(new Date()),
+          }
         );
       }
       const response = await groupsApi.getGroup({
@@ -146,7 +152,7 @@ const GroupInformation = ({
     } catch (error) {
       if (error instanceof Error) {
         dispatch(setToastText(error.message));
-        dispatch(setToastBackgroundColor(DESTRUCTIVE.LIGHT));
+        dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
         dispatch(setIsToastShown(true));
       } else {
         setThrownError(new Error(String(error)));
@@ -210,7 +216,7 @@ const GroupInformation = ({
     try {
       if (selectedMembers.length === 0) return;
 
-      await groupMembersApi.editGroupMember(
+      await groupMembersApi.addGroupMember(
         { churchId, groupId: selectedGroup.id as string },
         {
           memberIds: selectedMembers.map((member) => member.id),
@@ -228,7 +234,7 @@ const GroupInformation = ({
     } catch (error) {
       if (error instanceof Error) {
         dispatch(setToastText(error.message));
-        dispatch(setToastBackgroundColor(DESTRUCTIVE.LIGHT));
+        dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
         dispatch(setIsToastShown(true));
       } else {
         setThrownError(new Error(String(error)));

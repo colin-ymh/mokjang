@@ -192,7 +192,7 @@ const EducationSessionTableView = ({
       case EDUCATION_SESSION.NAME:
         return (
           <EducationNameContainer $level={0}>
-            <SvgIcon svg={Clock} size={16} color={ORANGE.DARK} width={2} />
+            <SvgIcon svg={Clock} size={16} color={ORANGE.DEFAULT} width={2} />
             <TitleContainer>
               <MainText>{`${session.session}${t('session')} ${session.title}`}</MainText>
               <MainText size={SIZE.SMALL} color={GRAY.SEMI_DARK}>

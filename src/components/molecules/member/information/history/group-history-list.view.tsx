@@ -1,19 +1,12 @@
 import { RefObject } from 'react';
 import { GroupHistory } from '@/models/member/history';
 import styled from 'styled-components';
-import { GRAY } from '@/constants/styles/color';
+import GroupHistoryItem from '@/components/atoms/member/history/group-history-item';
 
 const HistoryList = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
-`;
-
-const HistoryItem = styled.div`
-  display: flex;
-  padding: 10px;
-  border-radius: 10px;
-  border: 1px solid ${GRAY.LIGHT};
 `;
 
 type GroupHistoryListViewProps = {
@@ -28,7 +21,7 @@ const GroupHistoryListView = ({
   return (
     <HistoryList ref={scrollRef}>
       {histories.map((history) => (
-        <HistoryItem key={history.id} />
+        <GroupHistoryItem key={history.id} history={history} />
       ))}
     </HistoryList>
   );

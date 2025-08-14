@@ -1,5 +1,7 @@
 export const BLANK = '';
 
+export const ALL = 'all';
+
 export enum DAY {
   SUNDAY = 'sunday',
   MONDAY = 'monday',
@@ -146,7 +148,11 @@ export enum RANGE {
 export enum GROUP_ROLE {
   NONE = 'none',
   LEADER = 'leader',
-  MEMBER = 'member',
+}
+
+export enum MINISTRY_GROUP_ROLE {
+  NONE = 'none',
+  LEADER = 'leader',
 }
 
 export enum HISTORY {

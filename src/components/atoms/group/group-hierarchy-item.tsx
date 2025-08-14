@@ -5,7 +5,7 @@ import { MainText } from '@/components/atoms/common/text/main-text';
 import { GRAY, MAIN } from '@/constants/styles/color';
 import { SIZE } from '@/constants/styles/style';
 import styled from 'styled-components';
-import { MEDIA_MIN_WIDTH } from '@/constants/constant';
+import { ALL, MEDIA_MIN_WIDTH } from '@/constants/constant';
 
 const GroupHierarchyItemContainer = styled.div<{ $level: number }>`
   display: flex;
@@ -60,6 +60,7 @@ const MobileToggleButton = styled.div`
 `;
 
 type GroupHierarchyItemProps = {
+  isAllSelectable: boolean;
   group: Group;
   level: number;
   isOpen: boolean;
@@ -71,6 +72,7 @@ type GroupHierarchyItemProps = {
 
 const GroupHierarchyItem = memo(
   ({
+    isAllSelectable,
     group,
     level,
     isOpen,
@@ -91,6 +93,7 @@ const GroupHierarchyItem = memo(
     );
 
     const handleGroupClick = useCallback(() => {
+      if (!isAllSelectable && group.id === ALL) return;
       onClickGroup(group.id);
     }, [onClickGroup, group.id]);
 
@@ -103,7 +106,11 @@ const GroupHierarchyItem = memo(
             </MainText>
           </DesktopToggleButton>
           <MainText color={isSelected ? MAIN.DEFAULT : GRAY.DARK}>
-            {group.name || t('all')}
+            {group.id === null
+              ? t('none')
+              : group.id === ALL
+                ? t(ALL)
+                : group.name}
           </MainText>
         </LeftContainer>
         <RightContainer>

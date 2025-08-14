@@ -2,11 +2,13 @@ import React from 'react';
 import styled from 'styled-components';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { SIZE } from '@/constants/styles/style';
-import { GRAY } from '@/constants/styles/color';
+import { GRAY, MAIN, PURPLE } from '@/constants/styles/color';
 import { RootState } from '@/redux/store';
 import { useSelector } from 'react-redux';
 import ProfileImage from '@/components/atoms/common/image/profile-image';
 import { useI18n } from '../../../../../../locales/client';
+import MainTag from '@/components/atoms/common/tag/main-tag';
+import { GROUP_ROLE, MINISTRY_GROUP_ROLE } from '@/constants/constant';
 
 const InformationHeader = styled.div`
   display: flex;
@@ -14,7 +16,6 @@ const InformationHeader = styled.div`
   justify-content: space-between;
   padding: 20px;
   gap: 10px;
-  //background-color: ${GRAY.SUPER_LIGHT};
   border-bottom: 1px solid ${GRAY.EXTRA_LIGHT};
 `;
 
@@ -72,6 +73,23 @@ const MemberInformationHeaderView = ({}: MemberInformationHeaderViewProps) => {
               <MainText color={GRAY.DARK}>
                 {targetMember.group?.name || t('noGroup')}
               </MainText>
+            </RowContainer>
+            <RowContainer>
+              {targetMember.groupRole === GROUP_ROLE.LEADER && (
+                <MainTag
+                  title={t('groupLeader')}
+                  color={MAIN.DARK}
+                  backgroundColor={MAIN.LIGHT}
+                />
+              )}
+              {targetMember.ministryGroupRole ===
+                MINISTRY_GROUP_ROLE.LEADER && (
+                <MainTag
+                  title={t('ministryGroupLeader')}
+                  color={PURPLE.DARK}
+                  backgroundColor={PURPLE.LIGHT}
+                />
+              )}
             </RowContainer>
           </TextContainer>
         </Information>

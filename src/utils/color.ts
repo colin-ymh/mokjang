@@ -120,7 +120,7 @@ export const getEventStyle = (event: Schedule) => {
 
 export const getAttendanceRateColor = (rate: number) => {
   if (rate <= 40) {
-    return ORANGE.DARK;
+    return ORANGE.DEFAULT;
   } else if (rate <= 30) {
     return RED.DARK;
   } else {
@@ -130,7 +130,7 @@ export const getAttendanceRateColor = (rate: number) => {
 
 export const getAttendanceRateBackgroundColor = (rate: number) => {
   if (rate <= 40) {
-    return ORANGE.LIGHT;
+    return ORANGE.EXTRA_LIGHT;
   } else if (rate <= 30) {
     return RED.LIGHT;
   } else {

@@ -3,8 +3,13 @@ import { usePathname } from 'next/navigation';
 
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { MEMBER } from '@/constants/column/member-column';
-import { GRAY } from '@/constants/styles/color';
-import { CALENDAR_MODE, GENDER, MARRIAGE } from '@/constants/constant';
+import { GRAY, MAIN } from '@/constants/styles/color';
+import {
+  CALENDAR_MODE,
+  GENDER,
+  GROUP_ROLE,
+  MARRIAGE,
+} from '@/constants/constant';
 import { LOCALE } from '@/constants/state/locale';
 import { getFormattedMobilePhone } from '@/utils/format';
 import { getAge, getDateFromDateString } from '@/utils/date';
@@ -37,6 +42,7 @@ import Sparkle from '../../../../../../public/svg/sparkle.svg';
 import Calendar from '../../../../../../public/svg/calendar.svg';
 import Setting from '../../../../../../public/svg/setting.svg';
 import Pencil from '../../../../../../public/svg/pencil.svg';
+import React from 'react';
 
 const InformationContainer = styled.div`
   display: flex;
@@ -49,7 +55,6 @@ const InformationItem = styled.div<{ $disabled?: boolean }>`
   display: flex;
   flex-direction: row;
   align-items: center;
-  width: 100%;
   border-bottom: 1px solid ${GRAY.EXTRA_LIGHT};
   padding: 10px;
   gap: 20px;
@@ -63,6 +68,7 @@ const TextContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  width: 100%;
   gap: 10px;
   min-height: 60px;
 `;
@@ -82,9 +88,23 @@ const AddressTextWrapper = styled.div`
   gap: 5px;
 `;
 
-type PersonalInformationListViewProps = {};
+const EditButtonContainer = styled.div`
+  display: flex;
+  cursor: pointer;
+  border-radius: 5px;
+  padding: 5px;
+  &:hover {
+    background-color: ${GRAY.LIGHT};
+  }
+`;
 
-const PersonalInformationListView = ({}: PersonalInformationListViewProps) => {
+type PersonalInformationListViewProps = {
+  onClickGroupOpen: () => void;
+};
+
+const PersonalInformationListView = ({
+  onClickGroupOpen,
+}: PersonalInformationListViewProps) => {
   const { targetMember } = useSelector(
     (state: RootState) => state.targetMember
   );
@@ -245,10 +265,27 @@ const PersonalInformationListView = ({}: PersonalInformationListViewProps) => {
           <MainText color={GRAY.DARK}>{t(MEMBER.GROUP)}</MainText>
           <InformationTextWrapper>
             <MainText size={SIZE.LARGE} fontWeight={400}>
-              {targetMember?.group?.name}
+              {targetMember?.groupHistory &&
+                targetMember?.groupHistory[0]?.group?.name}
             </MainText>
+            {targetMember.groupRole === GROUP_ROLE.LEADER && (
+              <MainTag
+                title={t('groupLeader')}
+                color={MAIN.DARK}
+                backgroundColor={MAIN.LIGHT}
+              />
+            )}
           </InformationTextWrapper>
         </TextContainer>
+        <EditButtonContainer>
+          <SvgIcon
+            svg={Pencil}
+            size={18}
+            width={2}
+            color={GRAY.DARK}
+            onClick={onClickGroupOpen}
+          />
+        </EditButtonContainer>
       </InformationItem>
 
       {/* 직분 */}
@@ -262,6 +299,31 @@ const PersonalInformationListView = ({}: PersonalInformationListViewProps) => {
             </MainText>
           </InformationTextWrapper>
         </TextContainer>
+      </InformationItem>
+
+      {/* 사역 */}
+      <InformationItem>
+        <SvgIcon svg={Users} size={18} width={2} color={GRAY.DARK} />
+        <TextContainer>
+          <MainText color={GRAY.DARK}>{t(MEMBER.MINISTRIES)}</MainText>
+          {/*{targetMember.ministries.map((ministry) => (*/}
+          {/*  <InformationTextWrapper>*/}
+          {/*    <MainText size={SIZE.LARGE} fontWeight={400}>*/}
+          {/*      {targetMember?.ministry?.name}*/}
+          {/*    </MainText>*/}
+          {/*    {targetMember.ministryRole === MINISTRY_GROUP_ROLE.LEADER && (*/}
+          {/*      <MainTag*/}
+          {/*        title={t('ministryLeader')}*/}
+          {/*        color={MAIN.DARK}*/}
+          {/*        backgroundColor={MAIN.LIGHT}*/}
+          {/*      />*/}
+          {/*    )}*/}
+          {/*  </InformationTextWrapper>)*/}
+          {/*)}*/}
+        </TextContainer>
+        <EditButtonContainer>
+          <SvgIcon svg={Pencil} size={18} width={2} color={GRAY.DARK} />
+        </EditButtonContainer>
       </InformationItem>
 
       {/* 신급 */}

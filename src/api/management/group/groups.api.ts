@@ -65,6 +65,7 @@ type EditGroupLeaderParams = {
 
 type EditGroupLeaderBody = {
   newLeaderMemberId: string;
+  startDate: string;
 };
 
 export class GroupsApi {

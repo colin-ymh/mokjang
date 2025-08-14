@@ -43,8 +43,11 @@ export enum PURPLE {
 }
 
 export enum ORANGE {
-  LIGHT = '#FFEDD5',
-  DARK = '#EA580C',
+  EXTRA_LIGHT = '#FFEDD5',
+  LIGHT = '#FED7AA',
+  DEFAULT = '#EA580C',
+  DARK = '#C2410C',
+  EXTRA_DARK = '#7C2D12',
 }
 
 export enum GREEN {

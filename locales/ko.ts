@@ -13,6 +13,8 @@ export default {
   isNotDone: '미완료',
   customSelect: '직접선택',
 
+  current: '현재',
+
   creator: '생성자',
   createdDate: '생성일자',
 
@@ -36,6 +38,9 @@ export default {
   editGroupLeader: '그룹장 변경',
   ministryGroupLeader: '사역리더',
   editMinistryGroupLeader: '사역리더 변경',
+  editMinistry: '사역 변경',
+  groupDetailHistory: '그룹 세부 이력',
+  ministryDetailHistory: '사역 세부 이력',
 
   noGroup: '소속 없음',
   warning: '경고',
@@ -524,6 +529,8 @@ export default {
 
   'button.showMoreEducationTerm': '교육 기수 더보기',
 
+  'button.stopGroupHistory': '그룹 이력 종료',
+
   /*-------------------button-------------------*/
 
   /*-------------------placeholder-------------------*/
@@ -666,6 +673,9 @@ export default {
     '소속된 교인이나 하위 그룹 있으면 삭제가 불가능하며, 삭제된 사역그룹은 복구할 수 없습니다.',
   'warning.deleteMinistry':
     '할당된 교인이 있으면 삭제가 불가능하며, 삭제된 그룹은 복구할 수 없습니다.',
+
+  'warning.stopGroupHistory':
+    '종료된 교인의 그룹은 교인의 그룹 이력에 저장됩니다.',
   /*-------------------warning-------------------*/
 
   /*-------------------description-------------------*/

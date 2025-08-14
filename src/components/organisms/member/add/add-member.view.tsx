@@ -128,7 +128,7 @@ const BriefcaseIcon = styled(Briefcase)`
 const HeartIcon = styled(Heart)`
   width: 16px;
   height: 16px;
-  stroke: ${ORANGE.DARK};
+  stroke: ${ORANGE.DEFAULT};
   stroke-width: 2px;
 `;
 
@@ -467,7 +467,7 @@ const AddMemberView = ({
         <SectionContainer>
           {/* 섹션명 */}
           <SectionTitle>
-            <IconContainer $backgroundColor={ORANGE.LIGHT}>
+            <IconContainer $backgroundColor={ORANGE.EXTRA_LIGHT}>
               <HeartIcon />
             </IconContainer>
             <MainText size={SIZE.EXTRA_LARGE}>

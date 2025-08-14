@@ -34,7 +34,12 @@ const GroupManagement = ({}: GroupManagementProps) => {
     if (groups) {
       if (selectedGroup.id !== BLANK && selectedGroup.id !== null) {
         fetchGroup();
-      } else if (groups.length > 0 && groups[0]?.childGroups) {
+      } else if (
+        groups.length > 0 &&
+        groups[0]?.childGroups &&
+        groups[0]?.childGroups.length > 0
+      ) {
+        // console.log(groups);
         setSelectedGroup(groups[0].childGroups[0]);
       }
     }

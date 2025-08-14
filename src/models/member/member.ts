@@ -5,6 +5,7 @@ import {
   GENDER,
   GROUP_ROLE,
   MARRIAGE,
+  MINISTRY_GROUP_ROLE,
 } from '@/constants/constant';
 import {
   Group,
@@ -14,6 +15,11 @@ import {
 } from '@/models/management/management';
 import { Education } from '@/models/education/education';
 import { getDateStringFromDate } from '@/utils/date';
+import {
+  GroupHistory,
+  MinistryHistory,
+  OfficerHistory,
+} from '@/models/member/history';
 
 export type ChurchInformation = {
   id: string;
@@ -36,6 +42,7 @@ export type Member = {
   groupRole?: GROUP_ROLE;
   ministries?: Ministry[];
   ministryGroups?: MinistryGroup[];
+  ministryGroupRole?: MINISTRY_GROUP_ROLE;
   educations?: Education[];
   officerId?: string;
   officer?: Officer;
@@ -61,6 +68,10 @@ export type Member = {
   updatedAt: string;
 
   isConcealed: boolean;
+
+  officerHistory?: OfficerHistory[];
+  groupHistory?: GroupHistory[];
+  ministryGroupHistory?: MinistryHistory[];
 };
 
 export const DEFAULT_MEMBER: Member = {
@@ -90,6 +101,10 @@ export const DEFAULT_MEMBER: Member = {
   isConcealed: false,
   isLeafMonth: false,
   birthdayMMDD: BLANK,
+
+  groupHistory: [],
+  officerHistory: [],
+  ministryGroupHistory: [],
 };
 
 export type FamilyMember = {

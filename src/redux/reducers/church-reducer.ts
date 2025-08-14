@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { BLANK, ORDER_DIRECTION } from '@/constants/constant';
+import { ALL, BLANK, ORDER_DIRECTION } from '@/constants/constant';
 import {
   Group,
   Ministry,
@@ -75,8 +75,8 @@ export const fetchGroups = createAsyncThunk<
     const orderedGroups = await getOrderedGroups(churchId);
 
     const allGroup: Group = {
-      id: null, // 고유 ID (임의로 0으로 설정)
-      name: BLANK,
+      id: ALL, // 고유 ID (임의로 0으로 설정)
+      name: ALL,
       order: 0,
       parentGroupId: null,
       childGroups: orderedGroups, // 모든 그룹을 하위 그룹으로 설정
@@ -107,6 +107,19 @@ export const fetchMinistryGroups = createAsyncThunk<
 
   try {
     const orderedMinistryGroups = await getOrderedMinistryGroups(churchId);
+    //
+    // const allGroup: MinistryGroup = {
+    //   id:, // 고유 ID (임의로 0으로 설정)
+    //   name: BLANK,
+    //   parentMinistryGroupId: null,
+    //   childMinistryGroups: orderedMinistryGroups, // 모든 그룹을 하위 그룹으로 설정
+    //   churchId,
+    //   childMinistryGroupIds: [],
+    //   ministries: [],
+    //   leaderMemberId: BLANK,
+    //   membersCount: 0,
+    //   order: 0,
+    // };
 
     const allGroup: MinistryGroup = {
       id: null, // 고유 ID (임의로 0으로 설정)

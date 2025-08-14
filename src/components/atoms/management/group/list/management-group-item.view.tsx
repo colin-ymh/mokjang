@@ -14,7 +14,7 @@ import Plus from '../../../../../../public/svg/plus.svg';
 import { SIZE } from '@/constants/styles/style';
 import { useI18n } from '../../../../../../locales/client';
 import { getEmptyImage } from 'react-dnd-html5-backend';
-import { DND_ITEM_TYPE, HOVER_POSITION } from '@/constants/constant';
+import { ALL, DND_ITEM_TYPE, HOVER_POSITION } from '@/constants/constant';
 
 const GroupItemContainer = styled.div`
   display: flex;
@@ -299,7 +299,11 @@ const ManagementGroupItemView: React.FC<ManagementGroupItemViewProps> = ({
             <MainText
               color={selectedGroupId === group.id ? MAIN.DEFAULT : BLACK}
             >
-              {group.name || t('all')}
+              {group.id === null
+                ? t('none')
+                : group.id === ALL
+                  ? t(ALL)
+                  : group.name}
             </MainText>
             <MainText size={SIZE.EXTRA_SMALL} color={GRAY.DEFAULT}>
               {group.membersCount}

@@ -15,6 +15,8 @@ const FilterContainer = styled.div`
 `;
 
 type GroupFilterViewProps = {
+  isAllSelectable: boolean;
+  isNullable: boolean;
   isDefaultOpen: boolean;
   topLevelGroupId?: string | null;
   selectedGroupId: string | null;
@@ -83,6 +85,8 @@ const getInitialOpenGroups = (
 
 const SelectGroupHierarchyView = memo(
   ({
+    isAllSelectable,
+    isNullable,
     isDefaultOpen,
     topLevelGroupId,
     selectedGroupId,
@@ -125,6 +129,8 @@ const SelectGroupHierarchyView = memo(
     return (
       <FilterContainer>
         <GroupHierarchyList
+          isAllSelectable={isAllSelectable}
+          isNullable={isNullable}
           groups={groupsToRender}
           level={0}
           openGroups={openGroups}

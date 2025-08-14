@@ -22,12 +22,12 @@ type GetGroupMemberParams = {
   orderDirection?: ORDER_DIRECTION;
 };
 
-type EditMemberGroupParams = {
+type AddMemberGroupParams = {
   churchId: string;
   groupId: string;
 };
 
-type EditMemberGroupBody = {
+type AddMemberGroupBody = {
   memberIds: string[];
   startDate: string;
 };
@@ -38,8 +38,8 @@ type DeleteGroupMemberParams = {
 };
 
 type DeleteGroupMemberBody = {
-  memberIds: [];
-  startDate: string;
+  memberIds: string[];
+  endDate: string;
 };
 
 export class GroupMembersApi {
@@ -102,13 +102,13 @@ export class GroupMembersApi {
 
   /**
    * 그룹에 교인 추가
-   * @param {EditMemberGroupParams} params
-   * @param {EditMemberGroupBody} body
+   * @param {AddMemberGroupParams} params
+   * @param {AddMemberGroupBody} body
    * @returns {Promise<AxiosResponse>}
    */
-  public editGroupMember = async (
-    params: EditMemberGroupParams,
-    body: EditMemberGroupBody
+  public addGroupMember = async (
+    params: AddMemberGroupParams,
+    body: AddMemberGroupBody
   ): Promise<AxiosResponse> => {
     const { churchId, groupId } = params;
 

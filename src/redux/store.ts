@@ -30,6 +30,7 @@ import CalendarFilterReducer from '@/redux/reducers/filter/calendar-filter-reduc
 import TargetChurchEventReducer from '@/redux/reducers/target/target-church-event-reducer';
 import HomeWidgetFilterReducer from '@/redux/reducers/filter/home-widget-filter-reducer';
 import ToastPopupReducer from '@/redux/reducers/toast-popup-reducer';
+import TargetHistoryReducer from '@/redux/reducers/target/target-history-reducer';
 
 const store = configureStore({
   reducer: {
@@ -65,6 +66,7 @@ const store = configureStore({
     targetWorship: TargetWorshipReducer,
     targetWorshipSession: TargetWorshipSessionReducer,
     targetChurchEvent: TargetChurchEventReducer,
+    targetHistory: TargetHistoryReducer,
   },
 });
 

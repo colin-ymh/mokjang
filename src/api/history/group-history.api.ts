@@ -170,7 +170,7 @@ export class GroupHistoryApi {
     const { churchId, memberId, groupHistoryId, orderDirection, take, page } =
       params;
 
-    const url = `${this._url}/churches/${churchId}/members/${memberId}/histories/groups/${groupHistoryId}`;
+    const url = `${this._url}/churches/${churchId}/members/${memberId}/histories/groups${groupHistoryId}/details`;
 
     try {
       return await authorizeAxios.get(url, {
@@ -206,7 +206,7 @@ export class GroupHistoryApi {
   ): Promise<AxiosResponse> => {
     const { churchId, memberId, groupHistoryId, detailHistoryId } = params;
 
-    const url = `${this._url}/churches/${churchId}/members/${memberId}/histories/groups/${groupHistoryId}/details/${detailHistoryId}`;
+    const url = `${this._url}/churches/${churchId}/members/${memberId}/histories/groups${groupHistoryId}/details/${detailHistoryId}`;
 
     try {
       return await authorizeAxios.patch(url, body);
@@ -234,7 +234,7 @@ export class GroupHistoryApi {
   ): Promise<AxiosResponse> => {
     const { churchId, memberId, groupHistoryId, detailHistoryId } = params;
 
-    const url = `${this._url}/churches/${churchId}/members/${memberId}/histories/groups/${groupHistoryId}/details/${detailHistoryId}`;
+    const url = `${this._url}/churches/${churchId}/members/${memberId}/histories/groups${groupHistoryId}/details/${detailHistoryId}`;
 
     try {
       return await authorizeAxios.delete(url);
