@@ -84,6 +84,7 @@ const MemberProfilePopupButton = ({
         isPercentage={true}
         isPortal={true}
         isFooterShown={false}
+        headerHeight={50}
         headerRight={
           <ButtonContainer onClick={onClickClose}>
             <Cancel />

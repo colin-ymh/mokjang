@@ -20,23 +20,24 @@ type GetOfficerMembersParams = {
   orderDirection?: ORDER_DIRECTION;
 };
 
-type EditMemberOfficerParams = {
+type AddOfficerMemberParams = {
   churchId: string;
   officerId: string;
 };
 
-type EditMemberOfficerBody = {
+type AddOfficerMemberBody = {
   memberIds: string[];
   startDate: string;
 };
 
-type DeleteMemberOfficerParams = {
+type DeleteOfficerMemberParams = {
   churchId: string;
   officerId: string;
 };
 
-type DeleteMemberOfficerBody = {
+type DeleteOfficerMemberBody = {
   memberIds: string[];
+  endDate: string;
 };
 
 export class OfficerMembersApi {
@@ -106,13 +107,13 @@ export class OfficerMembersApi {
 
   /**
    * 교인에 직분 부여
-   * @param {EditMemberOfficerParams} params
-   * @param {EditMemberOfficerBody} body
+   * @param {AddOfficerMemberParams} params
+   * @param {AddOfficerMemberBody} body
    * @returns {Promise<AxiosResponse>}
    */
-  public editMemberOfficer = async (
-    params: EditMemberOfficerParams,
-    body: EditMemberOfficerBody
+  public addOfficerMember = async (
+    params: AddOfficerMemberParams,
+    body: AddOfficerMemberBody
   ): Promise<AxiosResponse> => {
     const { churchId, officerId } = params;
 
@@ -136,13 +137,13 @@ export class OfficerMembersApi {
 
   /**
    * 직분 삭제하기
-   * @param {DeleteMemberOfficerParams} params
-   * @param {DeleteMemberOfficerBody} body
+   * @param {DeleteOfficerMemberParams} params
+   * @param {DeleteOfficerMemberBody} body
    * @returns {Promise<AxiosResponse>}
    */
-  public deleteMemberOfficer = async (
-    params: DeleteMemberOfficerParams,
-    body: DeleteMemberOfficerBody
+  public deleteOfficerMember = async (
+    params: DeleteOfficerMemberParams,
+    body: DeleteOfficerMemberBody
   ): Promise<AxiosResponse> => {
     const { churchId, officerId } = params;
 

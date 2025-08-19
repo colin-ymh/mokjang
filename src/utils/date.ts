@@ -2,13 +2,14 @@ import { getSolar } from '@/utils/lunar/lunar-solar';
 import { BLANK } from '@/constants/constant';
 
 /**
- * YYYY-MM-dd => Date Object
+ * YYYY-MM-DD => Date Object (UTC기준)
  * @param dateString
  */
 export const getDateFromInput = (dateString: string) => {
   const lengthLimit = 10;
   const limited = dateString.slice(0, lengthLimit);
 
+  // UTC 자정으로 맞추기
   return new Date(limited);
 };
 

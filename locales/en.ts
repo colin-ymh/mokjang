@@ -173,6 +173,11 @@ export default {
   groupName: 'Group Name',
   groupRole: 'Group Roles',
 
+  ministryGroup: 'Ministry Group',
+  ministryGroupList: 'Ministry Group List',
+  ministryGroupName: 'Ministry Group Name',
+  ministryGroupRole: 'Ministry Group Role',
+
   educationList: 'Education List',
   educationName: 'Education Name',
   termName: 'Term Name',
@@ -348,6 +353,8 @@ export default {
 
   'title.groupFilter': 'Group Filter',
   'title.memberFilter': 'Member Filter',
+
+  'title.ministryList': 'Ministry List',
   /*-------------------title (popup title)-------------------*/
 
   /*-------------------header (side bar button)-------------------*/
@@ -508,16 +515,19 @@ export default {
   'button.backToList': 'Back To List',
   'button.allAttended': 'Mark All as Attended',
 
-  'button.addEducationSession': '회차 추가',
+  'button.addEducationSession': 'Add Education Session',
 
   'button.backToEducation': 'Back To Education',
   'button.backToEducationTerm': 'Back To Education Term',
   'button.backToEducationSession': 'Back To Education Session',
 
-  'button.showMoreEducationTerm': '교육 기수 더보기',
+  'button.showMoreEducationTerm': 'Show More Education Terms',
 
   'button.stopGroupHistory': 'Stop Group History',
+  'button.stopOfficerHistory': 'Stop Officer History',
+  'button.stopMinistryHistory': 'Stop Ministry History',
 
+  'button.addMinistry': 'Add Ministry',
   /*-------------------button-------------------*/
 
   /*-------------------placeholder-------------------*/
@@ -665,6 +675,10 @@ export default {
     'You cannot delete this ministry if there are members assigned to it. Deleted ministry cannot be recovered.',
   'warning.stopGroupHistory':
     "Stopped Group will be saved in member's group history.",
+  'warning.stopOfficerHistory':
+    "Stopped Officer will be saved in member's officer history.",
+  'warning.stopMinistryHistory':
+    "Stopped Ministry will be saved in member's ministry history.",
   /*-------------------warning-------------------*/
 
   /*-------------------description-------------------*/

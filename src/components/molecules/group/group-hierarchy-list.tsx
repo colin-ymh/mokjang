@@ -55,13 +55,14 @@ const GroupHierarchyList = memo(
     return (
       <>
         {shownGroups.map((group) => {
-          const groupIdNum = parseInt(group.id as string);
+          const groupIdNum = group.id ? parseInt(group.id as string) : -1;
           const isOpen = openGroups[groupIdNum] ?? false;
           const isSelected = (group.id as string) === selectedGroupId;
 
           return (
             <ChildGroupsContainer key={groupIdNum}>
               <GroupHierarchyItem
+                isAllSelectable={isAllSelectable}
                 group={group}
                 level={level}
                 isOpen={isOpen}

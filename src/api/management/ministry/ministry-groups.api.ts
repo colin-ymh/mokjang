@@ -73,6 +73,7 @@ type EditMinistryGroupLeaderParams = {
 
 type EditMinistryGroupLeaderBody = {
   newMinistryGroupLeaderId: string;
+  startDate: string;
 };
 
 export class MinistryGroupsApi {

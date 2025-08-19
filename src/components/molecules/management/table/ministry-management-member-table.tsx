@@ -59,6 +59,7 @@ const MinistryManagementMemberTable = ({
 
   const onChangeMinistry = async (ministryId: string, member: Member) => {
     try {
+      // 새로운 사역이 들어오고 기존 사역이 존재 => 기존 사역 삭제
       if (!ministryId && member.ministries) {
         await ministryMembersApi.deleteMemberMinistry(
           {
@@ -70,14 +71,16 @@ const MinistryManagementMemberTable = ({
         );
       }
 
-      await ministryMembersApi.editMemberMinistry(
-        {
-          churchId,
-          ministryGroupId: selectedMinistryGroup.id as string,
-          ministryId,
-        },
-        { memberId: member.id }
-      );
+      if (ministryId) {
+        await ministryMembersApi.editMemberMinistry(
+          {
+            churchId,
+            ministryGroupId: selectedMinistryGroup.id as string,
+            ministryId,
+          },
+          { memberId: member.id }
+        );
+      }
 
       fetchMembers();
       fetchMinistries();

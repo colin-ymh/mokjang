@@ -3,18 +3,17 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 
 import { MembersApi } from '@/api/members/members.api';
-import { MinistryHistoryApi } from '@/api/history/ministry-history.api';
-import { OfficerHistoryApi } from '@/api/history/officer-history.api';
-import { GroupHistoryApi } from '@/api/history/group-history.api';
 import MemberInformationListView from '@/components/molecules/member/information/personal/member-personal-information-list.view';
-import { MinistriesApi } from '@/api/management/ministry/ministries.api';
 import { GroupMembersApi } from '@/api/management/group/group-membes.api';
-import { getDateStringFromDate } from '@/utils/date';
+import { getDateFromDateString, getDateStringFromDate } from '@/utils/date';
 import { useI18n, useScopedI18n } from '../../../../../../locales/client';
 import EditMemberGroup from '@/components/molecules/member/information/personal/edit-member-group';
 import CustomPopup from '@/components/atoms/common/popup/custom-popup';
 import { setTargetMember } from '@/redux/reducers/target/target-member-reducer';
-import { DEFAULT_GROUP_HISTORY } from '@/models/member/history';
+import {
+  DEFAULT_GROUP_HISTORY,
+  DEFAULT_OFFICER_HISTORY,
+} from '@/models/member/history';
 import {
   setIsToastShown,
   setToastBackgroundColor,
@@ -22,6 +21,15 @@ import {
 } from '@/redux/reducers/toast-popup-reducer';
 import { BLACK, DESTRUCTIVE } from '@/constants/styles/color';
 import { setMembers } from '@/redux/reducers/filter/member-filter-reducer';
+import { OfficerMembersApi } from '@/api/management/officer/officer-members.api';
+import EditMemberOfficer from '@/components/molecules/member/information/personal/edit-member-officer';
+import {
+  setTargetGroupHistory,
+  setTargetOfficerHistory,
+} from '@/redux/reducers/target/target-history-reducer';
+import { GroupHistoryApi } from '@/api/history/group-history.api';
+import { OfficerHistoryApi } from '@/api/history/officer-history.api';
+import MemberMinistryList from '@/components/molecules/member/information/personal/member-ministry-list';
 
 type MemberPersonalInformationListProps = {};
 
@@ -31,21 +39,18 @@ const MemberPersonalInformationList =
     const t_popup = useScopedI18n('popup');
 
     const dispatch = useDispatch<AppDispatch>();
-    const ministryHistoryApi = new MinistryHistoryApi(false);
-    const officerHistoryApi = new OfficerHistoryApi(false);
-    const groupHistoryApi = new GroupHistoryApi(false);
     const membersApi = new MembersApi(false);
-    const ministriesApi = new MinistriesApi(false);
     const groupMembersApi = new GroupMembersApi(false);
+    const groupHistoryApi = new GroupHistoryApi(false);
+    const officerMembersApi = new OfficerMembersApi(false);
+    const officerHistoryApi = new OfficerHistoryApi(false);
 
     const { churchId } = useSelector((state: RootState) => state.church);
-    const { members, memberPage } = useSelector(
-      (state: RootState) => state.memberFilter
-    );
+    const { members } = useSelector((state: RootState) => state.memberFilter);
     const { targetMember } = useSelector(
       (state: RootState) => state.targetMember
     );
-    const { targetGroupHistory } = useSelector(
+    const { targetGroupHistory, targetOfficerHistory } = useSelector(
       (state: RootState) => state.targetHistory
     );
 
@@ -55,8 +60,6 @@ const MemberPersonalInformationList =
 
     const [isGroupSaveEnabled, setIsGroupSaveEnabled] =
       useState<boolean>(false);
-    const [isMinistrySaveEnabled, setIsMinistrySaveEnabled] =
-      useState<boolean>(false);
     const [isOfficerSaveEnabled, setIsOfficerSaveEnabled] =
       useState<boolean>(false);
 
@@ -65,27 +68,92 @@ const MemberPersonalInformationList =
       throw thrownError;
     }
 
-    const onClickGroupOpen = () => setIsGroupOpened(true);
-    const onClickGroupClose = () => setIsGroupOpened(false);
+    const onClickGroupOpen = () => {
+      setIsGroupOpened(true);
 
-    const onClickMinistryOpen = () => setIsMinistryOpened(true);
-    const onClickMinistryClose = () => setIsMinistryOpened(false);
+      if (targetMember.groupHistory && targetMember.groupHistory.length > 0) {
+        dispatch(
+          setTargetGroupHistory({
+            ...targetMember.groupHistory[0],
+            startDate: getDateStringFromDate(
+              getDateFromDateString(targetMember.groupHistory[0].startDate)
+            ),
+          })
+        );
+      } else {
+        setTargetGroupHistory(DEFAULT_GROUP_HISTORY);
+      }
+    };
+    const onClickGroupClose = () => {
+      setIsGroupOpened(false);
+      dispatch(setTargetGroupHistory(DEFAULT_GROUP_HISTORY));
+    };
 
-    const onClickOfficerOpen = () => setIsOfficerOpened(true);
-    const onClickOfficerClose = () => setIsOfficerOpened(false);
+    const onClickMinistryOpen = () => {
+      setIsMinistryOpened(true);
+    };
+    const onClickMinistryClose = () => {
+      setIsMinistryOpened(false);
+    };
 
+    const onClickOfficerOpen = () => {
+      setIsOfficerOpened(true);
+
+      if (
+        targetMember.officerHistory &&
+        targetMember.officerHistory.length > 0
+      ) {
+        dispatch(
+          setTargetOfficerHistory({
+            ...targetMember.officerHistory[0],
+            startDate: getDateStringFromDate(
+              getDateFromDateString(targetMember.officerHistory[0].startDate)
+            ),
+          })
+        );
+      } else {
+        dispatch(setTargetOfficerHistory(DEFAULT_OFFICER_HISTORY));
+      }
+    };
+
+    const onClickOfficerClose = () => {
+      setIsOfficerOpened(false);
+      dispatch(setTargetOfficerHistory(DEFAULT_OFFICER_HISTORY));
+    };
+
+    // ===================== 그룹 ===================== //
     const onClickSaveGroup = async () => {
       try {
-        await groupMembersApi.addGroupMember(
-          {
-            churchId,
-            groupId: targetGroupHistory.groupId,
-          },
-          {
-            memberIds: [targetMember.id],
-            startDate: targetGroupHistory.startDate,
-          }
-        );
+        // 날짜만 수정하는 경우
+        if (
+          targetMember.groupHistory &&
+          targetMember.groupHistory.length > 0 &&
+          targetMember.groupHistory[0].groupId === targetGroupHistory.groupId &&
+          targetMember.groupHistory[0].startDate !==
+            targetGroupHistory.startDate
+        ) {
+          await groupHistoryApi.editGroupHistory(
+            {
+              churchId,
+              memberId: targetMember.id,
+              groupHistoryId: targetGroupHistory.id,
+            },
+            {
+              startDate: targetGroupHistory.startDate,
+            }
+          );
+        } else {
+          await groupMembersApi.addGroupMember(
+            {
+              churchId,
+              groupId: targetGroupHistory.groupId,
+            },
+            {
+              memberIds: [targetMember.id],
+              startDate: targetGroupHistory.startDate,
+            }
+          );
+        }
 
         const response = await membersApi.getMember({
           churchId,
@@ -104,6 +172,7 @@ const MemberPersonalInformationList =
 
         dispatch(setTargetMember(newTargetMember));
         dispatch(setMembers(newMembers));
+        dispatch(setTargetGroupHistory(DEFAULT_GROUP_HISTORY));
 
         setIsGroupOpened(false);
         dispatch(setToastText(t_popup('saveComplete')));
@@ -181,8 +250,144 @@ const MemberPersonalInformationList =
       setIsGroupSaveEnabled(true);
     }, [targetGroupHistory]);
 
+    // ===================== 그룹 ===================== //
+
+    // ===================== 직분 ===================== //
+    const onClickSaveOfficer = async () => {
+      try {
+        // 날짜만 수정하는 경우
+        if (
+          targetMember.officerHistory &&
+          targetMember.officerHistory.length > 0 &&
+          targetMember.officerHistory[0].officer.id ===
+            targetOfficerHistory.officer.id &&
+          targetMember.officerHistory[0].startDate !==
+            targetOfficerHistory.startDate
+        ) {
+          await officerHistoryApi.editOfficerHistory(
+            {
+              churchId,
+              memberId: targetMember.id,
+              officerHistoryId: targetOfficerHistory.id,
+            },
+            {
+              startDate: targetOfficerHistory.startDate,
+            }
+          );
+        } else {
+          await officerMembersApi.addOfficerMember(
+            {
+              churchId,
+              officerId: targetOfficerHistory.officer.id,
+            },
+            {
+              memberIds: [targetMember.id],
+              startDate: targetOfficerHistory.startDate,
+            }
+          );
+        }
+
+        const response = await membersApi.getMember({
+          churchId,
+          memberId: targetMember.id,
+        });
+
+        const newTargetMember = response.data.data;
+
+        const newMembers = members.map((member) => {
+          if (member.id === targetMember.id) {
+            return newTargetMember;
+          } else {
+            return member;
+          }
+        });
+
+        dispatch(setTargetMember(newTargetMember));
+        dispatch(setMembers(newMembers));
+        dispatch(setTargetOfficerHistory(DEFAULT_OFFICER_HISTORY));
+
+        setIsOfficerOpened(false);
+        dispatch(setToastText(t_popup('saveComplete')));
+        dispatch(setIsToastShown(true));
+        dispatch(setToastBackgroundColor(BLACK));
+      } catch (error) {
+        if (error instanceof Error) {
+          dispatch(setToastText(error.message));
+          dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
+          dispatch(setIsToastShown(true));
+        } else {
+          setThrownError(new Error(String(error)));
+        }
+      }
+    };
+
+    const onClickDeleteOfficer = () => {
+      if (!targetMember.officerId) return;
+
+      try {
+        officerMembersApi.deleteOfficerMember(
+          {
+            churchId,
+            officerId: targetMember.officerId,
+          },
+          {
+            memberIds: [targetMember.id],
+            endDate: getDateStringFromDate(new Date()),
+          }
+        );
+
+        const newTargetMember = {
+          ...targetMember,
+          officerHistory: [DEFAULT_OFFICER_HISTORY],
+          officerRole: undefined,
+        };
+
+        const newMembers = members.map((member) => {
+          if (member.id === targetMember.id) {
+            return newTargetMember;
+          } else {
+            return member;
+          }
+        });
+
+        dispatch(setTargetMember(newTargetMember));
+        dispatch(setMembers(newMembers));
+
+        setIsOfficerOpened(false);
+        dispatch(setToastText(t_popup('saveComplete')));
+        dispatch(setIsToastShown(true));
+        dispatch(setToastBackgroundColor(BLACK));
+      } catch (error) {
+        if (error instanceof Error) {
+          dispatch(setToastText(error.message));
+          dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
+          dispatch(setIsToastShown(true));
+        } else {
+          setThrownError(new Error(String(error)));
+        }
+      }
+    };
+
+    useEffect(() => {
+      if (!targetOfficerHistory.officer.id) {
+        setIsOfficerSaveEnabled(false);
+        return;
+      }
+
+      if (!targetOfficerHistory.startDate) {
+        setIsOfficerSaveEnabled(false);
+        return;
+      }
+
+      setIsOfficerSaveEnabled(true);
+    }, [targetOfficerHistory]);
+
+    // ===================== 직분 ===================== //
+
     const props = {
       onClickGroupOpen,
+      onClickOfficerOpen,
+      onClickMinistryOpen,
     };
 
     return (
@@ -200,6 +405,30 @@ const MemberPersonalInformationList =
           doneDisabled={!isGroupSaveEnabled}
         >
           <EditMemberGroup onClickDeleteGroup={onClickDeleteGroup} />
+        </CustomPopup>
+
+        {/* 직분 수정 */}
+        <CustomPopup
+          isShow={isOfficerOpened}
+          onClickCancel={onClickOfficerClose}
+          onClickDone={onClickSaveOfficer}
+          headerTitle={t('title.editOfficerInformation')}
+          width={500}
+          height={500}
+          doneDisabled={!isOfficerSaveEnabled}
+        >
+          <EditMemberOfficer onClickDeleteOfficer={onClickDeleteOfficer} />
+        </CustomPopup>
+
+        {/* 사역 목록 */}
+        <CustomPopup
+          isShow={isMinistryOpened}
+          onClickCancel={onClickMinistryClose}
+          headerTitle={t('title.ministryList')}
+          width={600}
+          height={600}
+        >
+          <MemberMinistryList />
         </CustomPopup>
       </>
     );

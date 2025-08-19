@@ -3,9 +3,9 @@ import { ORANGE, WHITE } from '@/constants/styles/color';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import Button from '@/components/atoms/common/button/button';
 
-import Warning from '../../../../../../public/svg/warning.svg';
-import Stop from '../../../../../../public/svg/stop.svg';
-import { useI18n } from '../../../../../../locales/client';
+import Warning from '../../../../../public/svg/warning.svg';
+import Stop from '../../../../../public/svg/stop.svg';
+import { useI18n } from '../../../../../locales/client';
 
 const WarningContainer = styled.div`
   display: flex;

@@ -247,7 +247,7 @@ const EducationTermInformationView = ({
               <MainText color={GRAY.DARK}>{t('receiver')}</MainText>
             </TitleContainer>
             <MemberList>
-              {targetEducationTerm.reports.map((report) => (
+              {targetEducationTerm?.reports?.map((report) => (
                 <MemberProfilePopupButton
                   key={report.id}
                   member={report.receiver}

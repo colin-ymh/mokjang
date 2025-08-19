@@ -1,5 +1,7 @@
-import { DEFAULT_GROUP, MinistryGroup } from '@/models/management/management';
-import { BLANK } from '@/constants/constant';
+import {
+  DEFAULT_MINISTRY_GROUP,
+  MinistryGroup,
+} from '@/models/management/management';
 import { MinistryGroupsApi } from '@/api/management/ministry/ministry-groups.api';
 
 const getMinistryGroupById = (
@@ -88,10 +90,7 @@ export const getMinistryGroup = (
   ministryGroups: MinistryGroup[]
 ) => {
   if (ministryGroupId === null) {
-    return {
-      id: null,
-      name: BLANK,
-    } as MinistryGroup;
+    return DEFAULT_MINISTRY_GROUP;
   }
 
   const q = [...ministryGroups];
@@ -109,5 +108,5 @@ export const getMinistryGroup = (
     }
   }
 
-  return DEFAULT_GROUP;
+  return DEFAULT_MINISTRY_GROUP;
 };

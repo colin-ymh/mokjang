@@ -32,7 +32,7 @@ type CreateMinistryGroupMemberBody = {
     memberId: string;
     ministryId?: string;
   }[];
-  startDate?: string;
+  startDate: string;
 };
 
 type DeleteMinistryGroupMemberParams = {
@@ -42,6 +42,7 @@ type DeleteMinistryGroupMemberParams = {
 
 type DeleteMinistryGroupMemberBody = {
   memberIds: string[];
+  endDate?: string;
 };
 
 export class MinistryGroupMembersApi {

@@ -190,7 +190,7 @@ const OfficerInformation = ({
     try {
       if (selectedMembers.length === 0) return;
 
-      await officerMembersApi.editMemberOfficer(
+      await officerMembersApi.addOfficerMember(
         { churchId, officerId: selectedOfficer.id as string },
         {
           memberIds: selectedMembers.map((member) => member.id),

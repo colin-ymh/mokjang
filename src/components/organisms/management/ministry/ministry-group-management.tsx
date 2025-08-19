@@ -46,7 +46,8 @@ const MinistryGroupManagement = ({}: MinistryGroupManagementProps) => {
         fetchMinistryGroup();
       } else if (
         ministryGroups.length > 0 &&
-        ministryGroups[0]?.childMinistryGroups
+        ministryGroups[0]?.childMinistryGroups &&
+        ministryGroups[0]?.childMinistryGroups.length > 0
       ) {
         setSelectedMinistryGroup(ministryGroups[0].childMinistryGroups[0]);
       }

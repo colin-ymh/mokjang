@@ -2,7 +2,7 @@ import React, { MutableRefObject } from 'react';
 import { usePathname } from 'next/navigation';
 import styled from 'styled-components';
 
-import { GRAY, WHITE, YELLOW } from '@/constants/styles/color';
+import { GRAY, MAIN, WHITE, YELLOW } from '@/constants/styles/color';
 import { MEMBER } from '@/constants/column/member-column';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { Member } from '@/models/member/member';
@@ -231,7 +231,9 @@ const ManagementMemberTableView = ({
               onChangeItem={(value) =>
                 onChangeMinistry && onChangeMinistry(value, member)
               }
-              CustomDropdownButton={TagDropdownButton}
+              CustomDropdownButton={(props) => (
+                <TagDropdownButton {...props} color={MAIN.DEFAULT} />
+              )}
               height={30}
             />
           </MinistryContainer>

@@ -131,13 +131,19 @@ const MinistryGroupInformation = ({
           { name: editName }
         );
       }
-      if (newMinistryGroupLeaderId !== selectedMinistryGroup.leaderMemberId) {
+      if (
+        newMinistryGroupLeaderId &&
+        newMinistryGroupLeaderId !== selectedMinistryGroup.leaderMemberId
+      ) {
         await ministryGroupsApi.editMinistryGroupLeader(
           {
             churchId,
             ministryGroupId: selectedMinistryGroup.id as string,
           },
-          { newMinistryGroupLeaderId }
+          {
+            newMinistryGroupLeaderId,
+            startDate: getDateStringFromDate(new Date()),
+          }
         );
       }
       const response = await ministryGroupsApi.getMinistryGroup({

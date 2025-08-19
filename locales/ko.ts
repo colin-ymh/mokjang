@@ -174,6 +174,7 @@ export default {
   groupName: '그룹명',
   groupRole: '그룹역할',
 
+  ministryGroup: '사역 그룹',
   ministryGroupList: '사역그룹 목록',
   ministryGroupName: '사역그룹명',
   ministryGroupRole: '사역그룹역할',
@@ -355,6 +356,8 @@ export default {
 
   'title.groupFilter': '그룹 필터',
   'title.memberFilter': '교인 필터',
+
+  'title.ministryList': '사역 목록',
   /*-------------------title (popup title)-------------------*/
 
   /*-------------------header (side bar button)-------------------*/
@@ -530,6 +533,10 @@ export default {
   'button.showMoreEducationTerm': '교육 기수 더보기',
 
   'button.stopGroupHistory': '그룹 이력 종료',
+  'button.stopOfficerHistory': '직분 이력 종료',
+  'button.stopMinistryHistory': '사역 이력 종료',
+
+  'button.addMinistry': '사역 추가',
 
   /*-------------------button-------------------*/
 
@@ -676,6 +683,10 @@ export default {
 
   'warning.stopGroupHistory':
     '종료된 교인의 그룹은 교인의 그룹 이력에 저장됩니다.',
+  'warning.stopOfficerHistory':
+    '종료된 교인의 직분은 교인의 직분 이력에 저장됩니다.',
+  'warning.stopMinistryHistory':
+    '종료된 교인의 사역은 교인의 사역 이력에 저장됩니다.',
   /*-------------------warning-------------------*/
 
   /*-------------------description-------------------*/

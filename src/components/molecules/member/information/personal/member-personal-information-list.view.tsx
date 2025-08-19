@@ -3,7 +3,7 @@ import { usePathname } from 'next/navigation';
 
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { MEMBER } from '@/constants/column/member-column';
-import { GRAY, MAIN } from '@/constants/styles/color';
+import { GRAY, MAIN, PURPLE } from '@/constants/styles/color';
 import {
   CALENDAR_MODE,
   GENDER,
@@ -12,7 +12,11 @@ import {
 } from '@/constants/constant';
 import { LOCALE } from '@/constants/state/locale';
 import { getFormattedMobilePhone } from '@/utils/format';
-import { getAge, getDateFromDateString } from '@/utils/date';
+import {
+  getAge,
+  getDateFromDateString,
+  getDateStringFromDate,
+} from '@/utils/date';
 
 import { useI18n } from '../../../../../../locales/client';
 import { useSelector } from 'react-redux';
@@ -81,7 +85,7 @@ const InformationTextWrapper = styled.div`
   gap: 10px;
 `;
 
-const AddressTextWrapper = styled.div`
+const ColumnTextWrapper = styled.div`
   display: flex;
   flex-direction: column;
   height: 40px;
@@ -100,10 +104,14 @@ const EditButtonContainer = styled.div`
 
 type PersonalInformationListViewProps = {
   onClickGroupOpen: () => void;
+  onClickOfficerOpen: () => void;
+  onClickMinistryOpen: () => void;
 };
 
 const PersonalInformationListView = ({
   onClickGroupOpen,
+  onClickOfficerOpen,
+  onClickMinistryOpen,
 }: PersonalInformationListViewProps) => {
   const { targetMember } = useSelector(
     (state: RootState) => state.targetMember
@@ -210,12 +218,12 @@ const PersonalInformationListView = ({
         <SvgIcon svg={Pin} size={18} width={2} color={GRAY.DARK} />
         <TextContainer>
           <MainText color={GRAY.DARK}>{t(MEMBER.ADDRESS)}</MainText>
-          <AddressTextWrapper>
+          <ColumnTextWrapper>
             <MainText size={SIZE.LARGE} fontWeight={400}>
               {targetMember.address}
             </MainText>
             <MainText color={GRAY.DARK}>{targetMember.detailAddress}</MainText>
-          </AddressTextWrapper>
+          </ColumnTextWrapper>
         </TextContainer>
       </InformationItem>
 
@@ -263,21 +271,36 @@ const PersonalInformationListView = ({
         <SvgIcon svg={Users} size={18} width={2} color={GRAY.DARK} />
         <TextContainer>
           <MainText color={GRAY.DARK}>{t(MEMBER.GROUP)}</MainText>
-          <InformationTextWrapper>
-            <MainText size={SIZE.LARGE} fontWeight={400}>
-              {targetMember?.groupHistory &&
-                targetMember?.groupHistory[0]?.group?.name}
-            </MainText>
-            {targetMember.groupRole === GROUP_ROLE.LEADER && (
-              <MainTag
-                title={t('groupLeader')}
-                color={MAIN.DARK}
-                backgroundColor={MAIN.LIGHT}
-              />
-            )}
-          </InformationTextWrapper>
+          <ColumnTextWrapper>
+            <InformationTextWrapper>
+              <MainText size={SIZE.LARGE} fontWeight={400}>
+                {targetMember?.groupHistory &&
+                  targetMember?.groupHistory[0]?.group?.name}
+              </MainText>
+              {targetMember.groupRole === GROUP_ROLE.LEADER && (
+                <MainTag
+                  title={t('groupLeader')}
+                  color={MAIN.DARK}
+                  backgroundColor={MAIN.LIGHT}
+                />
+              )}
+            </InformationTextWrapper>
+            {targetMember?.groupHistory &&
+              targetMember.groupHistory.length > 0 && (
+                <MainText color={GRAY.DARK}>
+                  {getTranslatedDateFromDateString(
+                    basePath,
+                    getDateStringFromDate(
+                      getDateFromDateString(
+                        targetMember?.groupHistory[0]?.startDate
+                      )
+                    )
+                  )}
+                </MainText>
+              )}
+          </ColumnTextWrapper>
         </TextContainer>
-        <EditButtonContainer>
+        <EditButtonContainer onClick={onClickGroupOpen}>
           <SvgIcon
             svg={Pencil}
             size={18}
@@ -293,12 +316,35 @@ const PersonalInformationListView = ({
         <SvgIcon svg={Star} size={18} width={2} color={GRAY.DARK} />
         <TextContainer>
           <MainText color={GRAY.DARK}>{t(MEMBER.OFFICER)}</MainText>
-          <InformationTextWrapper>
+          <ColumnTextWrapper>
             <MainText size={SIZE.LARGE} fontWeight={400}>
-              {targetMember?.officer?.name}
+              {targetMember?.officerHistory &&
+                targetMember?.officerHistory[0]?.officer?.name}
             </MainText>
-          </InformationTextWrapper>
+            {targetMember?.officerHistory &&
+              targetMember.officerHistory.length > 0 && (
+                <MainText color={GRAY.DARK}>
+                  {getTranslatedDateFromDateString(
+                    basePath,
+                    getDateStringFromDate(
+                      getDateFromDateString(
+                        targetMember?.officerHistory[0]?.startDate
+                      )
+                    )
+                  )}
+                </MainText>
+              )}
+          </ColumnTextWrapper>
         </TextContainer>
+        <EditButtonContainer onClick={onClickOfficerOpen}>
+          <SvgIcon
+            svg={Pencil}
+            size={18}
+            width={2}
+            color={GRAY.DARK}
+            onClick={onClickOfficerOpen}
+          />
+        </EditButtonContainer>
       </InformationItem>
 
       {/* 사역 */}
@@ -306,23 +352,53 @@ const PersonalInformationListView = ({
         <SvgIcon svg={Users} size={18} width={2} color={GRAY.DARK} />
         <TextContainer>
           <MainText color={GRAY.DARK}>{t(MEMBER.MINISTRIES)}</MainText>
-          {/*{targetMember.ministries.map((ministry) => (*/}
-          {/*  <InformationTextWrapper>*/}
-          {/*    <MainText size={SIZE.LARGE} fontWeight={400}>*/}
-          {/*      {targetMember?.ministry?.name}*/}
-          {/*    </MainText>*/}
-          {/*    {targetMember.ministryRole === MINISTRY_GROUP_ROLE.LEADER && (*/}
-          {/*      <MainTag*/}
-          {/*        title={t('ministryLeader')}*/}
-          {/*        color={MAIN.DARK}*/}
-          {/*        backgroundColor={MAIN.LIGHT}*/}
-          {/*      />*/}
-          {/*    )}*/}
-          {/*  </InformationTextWrapper>)*/}
-          {/*)}*/}
+          <ColumnTextWrapper>
+            {targetMember.ministryGroupHistory
+              ?.slice(0, 3)
+              .map((ministryHistory) => (
+                <InformationTextWrapper key={ministryHistory.id}>
+                  <MainText size={SIZE.LARGE} fontWeight={400}>
+                    {ministryHistory.ministryGroup?.name}
+                  </MainText>
+                  {ministryHistory.ministryGroupDetailHistory &&
+                    ministryHistory.ministryGroupDetailHistory.length > 1 && (
+                      <MainTag
+                        title={t('ministryGroupLeader')}
+                        color={PURPLE.DARK}
+                        backgroundColor={PURPLE.LIGHT}
+                      />
+                    )}
+                  {ministryHistory.ministryGroupDetailHistory &&
+                    ministryHistory.ministryGroupDetailHistory.length > 0 && (
+                      <MainTag
+                        title={
+                          ministryHistory.ministryGroupDetailHistory[0].ministry
+                            .name
+                        }
+                        color={MAIN.DARK}
+                        backgroundColor={MAIN.LIGHT}
+                      />
+                    )}
+                  <MainText color={GRAY.DARK}>
+                    {getTranslatedDateFromDateString(
+                      basePath,
+                      getDateStringFromDate(
+                        getDateFromDateString(ministryHistory.startDate)
+                      )
+                    )}
+                  </MainText>
+                </InformationTextWrapper>
+              ))}
+          </ColumnTextWrapper>
         </TextContainer>
-        <EditButtonContainer>
-          <SvgIcon svg={Pencil} size={18} width={2} color={GRAY.DARK} />
+        <EditButtonContainer onClick={onClickMinistryOpen}>
+          <SvgIcon
+            svg={Pencil}
+            size={18}
+            width={2}
+            color={GRAY.DARK}
+            onClick={onClickMinistryOpen}
+          />
         </EditButtonContainer>
       </InformationItem>
 

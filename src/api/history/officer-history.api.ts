@@ -10,26 +10,6 @@ type getOfficerHistoryParams = {
   orderDirection?: ORDER_DIRECTION;
 };
 
-type createOfficerHistoryParams = {
-  churchId: string;
-  memberId: string;
-};
-
-type createOfficerHistoryBody = {
-  officerId: string;
-  officerStartChurch?: string;
-  startDate?: string;
-};
-
-type stopOfficerHistoryParams = {
-  churchId: string;
-  memberId: string;
-};
-
-type stopOfficerHistoryBody = {
-  endDate?: string;
-};
-
 type editOfficerHistoryParams = {
   churchId: string;
   memberId: string;
@@ -66,7 +46,7 @@ export class OfficerHistoryApi {
   ): Promise<AxiosResponse> => {
     const { churchId, memberId, orderDirection } = params;
 
-    const url = `${this._url}/churches/${churchId}/members/${memberId}/officers`;
+    const url = `${this._url}/churches/${churchId}/members/${memberId}/histories/officers`;
 
     try {
       return await authorizeAxios.get(url, {
@@ -74,66 +54,6 @@ export class OfficerHistoryApi {
           orderDirection,
         },
       });
-    } catch (serverError: any) {
-      if (serverError.response) {
-        const { message, error, statusCode } = serverError.response.data;
-        throw new CustomError(message, error, statusCode);
-      } else {
-        throw new CustomError(
-          '알 수 없는 에러가 발생했습니다',
-          500,
-          'Unknown Error'
-        );
-      }
-    }
-  };
-
-  /**
-   * 직분 이력 생성
-   * @param {createOfficerHistoryParams} params
-   * @param {createOfficerHistoryBody} body
-   * @returns {Promise<AxiosResponse>}
-   */
-  public createOfficerHistory = async (
-    params: createOfficerHistoryParams,
-    body: createOfficerHistoryBody
-  ): Promise<AxiosResponse> => {
-    const { churchId, memberId } = params;
-
-    const url = `${this._url}/churches/${churchId}/members/${memberId}/officers`;
-
-    try {
-      return await authorizeAxios.post(url, body);
-    } catch (serverError: any) {
-      if (serverError.response) {
-        const { message, error, statusCode } = serverError.response.data;
-        throw new CustomError(message, error, statusCode);
-      } else {
-        throw new CustomError(
-          '알 수 없는 에러가 발생했습니다',
-          500,
-          'Unknown Error'
-        );
-      }
-    }
-  };
-
-  /**
-   * 직분 종료
-   * @param {stopOfficerHistoryParams} params
-   * @param {stopOfficerHistoryBody} body
-   * @returns {Promise<AxiosResponse>}
-   */
-  public stopOfficerHistory = async (
-    params: stopOfficerHistoryParams,
-    body: stopOfficerHistoryBody
-  ): Promise<AxiosResponse> => {
-    const { churchId, memberId } = params;
-
-    const url = `${this._url}/churches/${churchId}/members/${memberId}/officers/end`;
-
-    try {
-      return await authorizeAxios.patch(url, body);
     } catch (serverError: any) {
       if (serverError.response) {
         const { message, error, statusCode } = serverError.response.data;
@@ -160,7 +80,7 @@ export class OfficerHistoryApi {
   ): Promise<AxiosResponse> => {
     const { churchId, memberId, officerHistoryId } = params;
 
-    const url = `${this._url}/churches/${churchId}/members/${memberId}/officers/${officerHistoryId}`;
+    const url = `${this._url}/churches/${churchId}/members/${memberId}/histories/officers/${officerHistoryId}`;
 
     try {
       return await authorizeAxios.patch(url, body);
@@ -188,7 +108,7 @@ export class OfficerHistoryApi {
   ): Promise<AxiosResponse> => {
     const { churchId, memberId, officerHistoryId } = params;
 
-    const url = `${this._url}/churches/${churchId}/members/${memberId}/officers/${officerHistoryId}`;
+    const url = `${this._url}/churches/${churchId}/members/${memberId}/histories/officers/${officerHistoryId}`;
 
     try {
       return await authorizeAxios.delete(url);

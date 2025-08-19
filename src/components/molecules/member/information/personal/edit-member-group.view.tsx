@@ -15,7 +15,7 @@ import {
 import { GRAY } from '@/constants/styles/color';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { SIZE } from '@/constants/styles/style';
-import StopWarningButton from '@/components/molecules/member/information/personal/stop-warning-button';
+import StopWarningButton from '@/components/atoms/common/button/stop-warning-button';
 
 const EditMemberGroupViewContainer = styled.div`
   display: flex;
@@ -63,7 +63,9 @@ const EditMemberGroupView = ({
       <EditMemberGroupViewContainer>
         <LabelInput
           label={t('group')}
-          value={targetGroupHistory.groupSnapShot}
+          value={
+            targetGroupHistory.groupSnapShot || targetGroupHistory.group?.name
+          }
           onClick={onClickGroupOpen}
           onChange={() => {}} // 필요하다면 구현
         />

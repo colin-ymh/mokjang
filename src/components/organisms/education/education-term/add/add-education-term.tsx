@@ -37,7 +37,7 @@ const AddEducationTerm = ({ isEdit = false }: AddEducationTermProps) => {
 
   useEffect(() => {
     if (targetEducationTerm.term === BLANK) {
-      if (targetEducation.educationTerms.length > 0) {
+      if (targetEducation.educationTerms?.length > 0) {
         dispatch(
           setTargetEducationTerm({
             ...targetEducationTerm,
