@@ -136,6 +136,9 @@ export default {
   visitedMember: 'target',
   receiver: 'Receiver',
 
+  visitationTypeSingle: 'Single',
+  visitationTypeGroup: 'Group',
+
   visitationContent: 'Content',
   visitationPray: 'Pray',
   visitationDate: 'Visit Date',

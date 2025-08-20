@@ -11,10 +11,11 @@ import SvgIcon from '@/components/atoms/common/icon/svg-icon';
 import React from 'react';
 import { usePathname } from 'next/navigation';
 import { LOCALE } from '@/constants/state/locale';
-import { Visitation } from '@/models/visitation/visitation';
+import { Visitation, VISITATION_TYPE } from '@/models/visitation/visitation';
 import { getTranslatedDateFromDateString } from '@/utils/translate';
 import MemberProfilePopupButton from '@/components/molecules/common/button/member-profile-popup-button';
 import MainTag from '@/components/atoms/common/tag/main-tag';
+import { getStatusBackgroundColor, getStatusFontColor } from '@/utils/color';
 
 const ItemContainer = styled.div`
   display: flex;
@@ -69,7 +70,11 @@ const MemberVisitationItem = ({
         <TitleContainer>
           {/* 제목 */}
           <MainText size={SIZE.EXTRA_LARGE}>{visitation.title}</MainText>
-          <MainTag title={t(visitation.status)} />
+          <MainTag
+            title={t(visitation.status)}
+            color={getStatusFontColor(visitation.status)}
+            backgroundColor={getStatusBackgroundColor(visitation.status)}
+          />
         </TitleContainer>
         {/* 날짜 */}
         <ContentContainer>
@@ -86,7 +91,11 @@ const MemberVisitationItem = ({
           <ContentContainer>
             <SvgIcon svg={Star} color={GRAY.SEMI_DARK} />
             <MainText color={GRAY.SEMI_DARK}>{t('type')}</MainText>
-            <MainText>{t(visitation.visitationType)}</MainText>
+            <MainText>
+              {visitation.visitationType === VISITATION_TYPE.SINGLE
+                ? t('visitationTypeSingle')
+                : t('visitationTypeGroup')}
+            </MainText>
           </ContentContainer>
           {/* 담당자 */}
           <ContentContainer>

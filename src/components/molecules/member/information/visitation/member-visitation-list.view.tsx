@@ -158,7 +158,7 @@ const MemberVisitationListView = ({
             leftButtonText={t_button('cancel')}
             rightButtonText={t_button('delete')}
           />
-          <VisitationInformation />
+          <VisitationInformation onChangeStatus={onChangeStatus} />
         </>
       </WrappedPagePopup>
 

@@ -42,7 +42,7 @@ const MemberHistoryListView = ({
 
   return (
     <MemberHistoryContainer>
-      {/* 가족정보 헤더 */}
+      {/* 이력 헤더 */}
       <HeaderContainer>
         <MainText size={SIZE.EXTRA_LARGE}>{t_header('history')}</MainText>
         <Dropdown
@@ -53,6 +53,7 @@ const MemberHistoryListView = ({
           width={100}
         />
       </HeaderContainer>
+      {/* 이력 목록 */}
       <HistoryList>
         {historyDomain === HISTORY.GROUP && <GroupHistoryList />}
       </HistoryList>

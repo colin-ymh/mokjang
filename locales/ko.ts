@@ -133,6 +133,9 @@ export default {
   visitedMember: '대상자',
   receiver: '보고대상자',
 
+  visitationTypeSingle: '개인심방',
+  visitationTypeGroup: '그룹심방',
+
   visitationContent: '심방내용',
   visitationPray: '기도제목',
   visitationDate: '심방일자',
