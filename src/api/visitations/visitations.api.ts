@@ -27,6 +27,7 @@ type GetVisitationsParams = {
   visitationType?: VISITATION_TYPE[];
   title?: string;
   inChargeId?: string;
+  memberId?: string;
 };
 
 type CreateVisitationParams = {
@@ -127,6 +128,7 @@ export class VisitationsApi {
       visitationType,
       title,
       inChargeId,
+      memberId,
       // 필요하다면 선택 컬럼 등 추가
     } = params;
 
@@ -143,6 +145,7 @@ export class VisitationsApi {
         visitationType,
         title,
         inChargeId,
+        memberId,
       }).filter(
         ([_, value]) =>
           value !== undefined &&

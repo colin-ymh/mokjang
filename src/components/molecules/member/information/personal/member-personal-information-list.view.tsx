@@ -47,12 +47,15 @@ import Calendar from '../../../../../../public/svg/calendar.svg';
 import Setting from '../../../../../../public/svg/setting.svg';
 import Pencil from '../../../../../../public/svg/pencil.svg';
 import React from 'react';
+import useWindowSize from '@/hooks/window/window';
 
-const InformationContainer = styled.div`
+const InformationContainer = styled.div<{ height: number }>`
   display: flex;
   flex-direction: column;
   padding: 20px;
   overflow-x: hidden;
+  overflow-y: auto;
+  height: ${({ height }) => height}px;
 `;
 
 const InformationItem = styled.div<{ $disabled?: boolean }>`
@@ -103,9 +106,9 @@ const EditButtonContainer = styled.div`
 `;
 
 type PersonalInformationListViewProps = {
-  onClickGroupOpen: () => void;
-  onClickOfficerOpen: () => void;
-  onClickMinistryOpen: () => void;
+  onClickGroupOpen?: () => void;
+  onClickOfficerOpen?: () => void;
+  onClickMinistryOpen?: () => void;
 };
 
 const PersonalInformationListView = ({
@@ -113,6 +116,7 @@ const PersonalInformationListView = ({
   onClickOfficerOpen,
   onClickMinistryOpen,
 }: PersonalInformationListViewProps) => {
+  const { height } = useWindowSize();
   const { targetMember } = useSelector(
     (state: RootState) => state.targetMember
   );
@@ -123,7 +127,7 @@ const PersonalInformationListView = ({
   const basePath = pathname.split('/')[1] as LOCALE;
 
   return (
-    <InformationContainer>
+    <InformationContainer height={height - 350}>
       {/* 이름 */}
       <InformationItem>
         <SvgIcon svg={User} size={18} width={2} color={GRAY.DARK} />

@@ -173,7 +173,7 @@ const VisitationInformationView = ({
             <MainText color={GRAY.DARK}>{t('receiver')}</MainText>
           </TitleContainer>
           <MemberList>
-            {targetVisitation.reports.map((report) => (
+            {targetVisitation?.reports?.map((report) => (
               <MemberProfilePopupButton
                 key={report.id}
                 member={report.receiver}

@@ -1,6 +1,6 @@
 import React, { ChangeEvent } from 'react';
 import styled from 'styled-components';
-import { Member } from '@/models/member/member';
+import { FamilyMember, Member } from '@/models/member/member';
 import BorderInput from '@/components/atoms/common/input/border-input';
 import AddMemberItem from '@/components/atoms/common/modal/add-member-item';
 import Search from '../../../../../../public/svg/search.svg';
@@ -10,6 +10,8 @@ import { getTranslatedSelectedMemberCount } from '@/utils/translate';
 import { usePathname } from 'next/navigation';
 import { LOCALE } from '@/constants/state/locale';
 import { GRAY } from '@/constants/styles/color';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
 
 const ModalContainer = styled.div`
   display: flex;
@@ -38,7 +40,7 @@ const SearchIcon = styled(Search)`
 `;
 
 type AddFamilyMemberModalViewProps = {
-  member: Member;
+  familyMembers: FamilyMember[];
   searchName: string;
   searchedMembers: Member[];
   selectedMembers: Member[];
@@ -47,7 +49,7 @@ type AddFamilyMemberModalViewProps = {
 };
 
 const AddFamilyMemberModalView = ({
-  member,
+  familyMembers,
   searchName,
   searchedMembers,
   selectedMembers,
@@ -58,6 +60,10 @@ const AddFamilyMemberModalView = ({
   const locale = pathname.split('/')[1] as LOCALE;
 
   const t = useI18n();
+
+  const { targetMember } = useSelector(
+    (state: RootState) => state.targetMember
+  );
 
   return (
     <ModalContainer>
@@ -82,10 +88,20 @@ const AddFamilyMemberModalView = ({
             <AddMemberItem
               key={member.id}
               member={member}
-              isEnable={member.id !== member.group?.id}
-              isSelected={selectedMembers.some(
-                (selectedMember) => selectedMember.id === member.id
-              )}
+              isEnable={
+                familyMembers.every(
+                  (familyMember) => familyMember.familyMemberId !== member.id
+                ) && member.id !== targetMember.id
+              }
+              isSelected={
+                member.id === targetMember.id ||
+                familyMembers.some(
+                  (familyMember) => familyMember.familyMemberId === member.id
+                ) ||
+                selectedMembers.some(
+                  (selectedMember) => selectedMember.id === member.id
+                )
+              }
               onClick={onClickMember}
             />
           );

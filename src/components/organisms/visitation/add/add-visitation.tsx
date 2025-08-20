@@ -17,6 +17,7 @@ import {
 } from '@/utils/date';
 import AddVisitationView from '@/components/organisms/visitation/add/add-visitation.view';
 import { TASK_STATUS } from '@/constants/status/status';
+import { Member } from '@/models/member/member';
 
 type AddVisitationProps = {};
 
@@ -131,6 +132,18 @@ const AddVisitation = ({}: AddVisitationProps) => {
       setVisitedMembers([]);
     }
   }, [targetVisitation.id]);
+
+  useEffect(() => {
+    const newMembers = visitedMembers.map((member) => {
+      return { id: member.value, name: member.title } as Member;
+    });
+    dispatch(
+      setTargetVisitation({
+        ...targetVisitation,
+        members: newMembers,
+      })
+    );
+  }, [visitedMembers]);
 
   const onChangeVisitedMembers = (values: MemberDropdownType[]) => {
     setVisitedMembers(values);

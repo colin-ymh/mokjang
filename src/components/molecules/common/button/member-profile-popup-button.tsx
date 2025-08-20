@@ -26,7 +26,7 @@ const Cancel = styled(CancelIcon)`
 type MemberProfileButtonProps = {
   member: Member;
   isOfficerShown?: boolean;
-  isGroupLeaderShown?: boolean;
+  isProfileImageShown?: boolean;
   width?: number;
   height?: number;
 };
@@ -34,7 +34,7 @@ type MemberProfileButtonProps = {
 const MemberProfilePopupButton = ({
   member,
   isOfficerShown,
-  isGroupLeaderShown,
+  isProfileImageShown = true,
   width,
   height,
 }: MemberProfileButtonProps) => {
@@ -73,6 +73,7 @@ const MemberProfilePopupButton = ({
         member={member}
         onClick={onClickMember}
         isOfficerShown={isOfficerShown}
+        isProfileImageShown={isProfileImageShown}
         width={width}
         height={height}
       />

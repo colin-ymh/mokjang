@@ -16,14 +16,15 @@ import { BLANK, FAMILY } from '@/constants/constant';
 import { useFamilyRelationDropdownItems } from '@/hooks/dropdown/dropdown-items';
 import Dropdown from '@/components/atoms/common/dropdown/dropdown';
 import React, { useState } from 'react';
-import { setTargetMember } from '@/redux/reducers/target/target-member-reducer';
-import { useDispatch } from 'react-redux';
-import { AppDispatch } from '@/redux/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '@/redux/store';
 import { getTranslatedAge } from '@/utils/translate';
 import { getAge, getDateFromDateString } from '@/utils/date';
 import { usePathname } from 'next/navigation';
 import { LOCALE } from '@/constants/state/locale';
 import ConfirmPopup from '@/components/atoms/common/popup/error-popup';
+import { MembersApi } from '@/api/members/members.api';
+import { setTargetMember } from '@/redux/reducers/target/target-member-reducer';
 
 const ItemContainer = styled.div`
   display: flex;
@@ -85,7 +86,16 @@ const FamilyMemberItem = ({
   const t_popup = useScopedI18n('popup');
   const t_button = useScopedI18n('button');
 
+  const { churchId } = useSelector((state: RootState) => state.church);
+
+  const membersApi = new MembersApi(false);
+
   const [isDeleteShown, setIsDeleteShown] = useState<boolean>(false);
+
+  const [thrownError, setThrownError] = useState<Error | null>(null);
+  if (thrownError) {
+    throw thrownError;
+  }
 
   const onClickDelete = () => {
     setIsDeleteShown(true);
@@ -99,14 +109,14 @@ const FamilyMemberItem = ({
     familyMember.familyMember.gender
   );
 
-  const [thrownError, setThrownError] = useState<Error | null>(null);
-  if (thrownError) {
-    throw thrownError;
-  }
-
   const onClickMember = async () => {
     try {
-      dispatch(setTargetMember(familyMember.familyMember));
+      const response = await membersApi.getMember({
+        churchId,
+        memberId: familyMember.familyMemberId,
+      });
+      const newMember = response.data.data;
+      dispatch(setTargetMember(newMember));
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));
     }

@@ -8,7 +8,7 @@ import Plus from '../../../../../../public/svg/plus.svg';
 import Button from '@/components/atoms/common/button/button';
 import CustomPopup from '@/components/atoms/common/popup/custom-popup';
 import { getTranslatedFamilyAddMemberTitle } from '@/utils/translate';
-import React, { Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, RefObject, SetStateAction } from 'react';
 import { usePathname } from 'next/navigation';
 import { LOCALE } from '@/constants/state/locale';
 import { useSelector } from 'react-redux';
@@ -17,6 +17,7 @@ import AddFamilyMemberModal from '@/components/atoms/member/information/family/a
 import FamilyMemberItem from '@/components/atoms/member/information/family/family-member-item';
 import { SIZE } from '@/constants/styles/style';
 import { FAMILY } from '@/constants/constant';
+import useWindowSize from '@/hooks/window/window';
 
 const ListContainer = styled.div`
   display: flex;
@@ -38,13 +39,16 @@ const PlusIcon = styled(Plus)`
   stroke-width: 2px;
 `;
 
-const FamilyList = styled.div`
+const FamilyList = styled.div<{ height: number }>`
   display: flex;
   gap: 10px;
   flex-direction: column;
+  height: ${({ height }) => height}px;
+  overflow-y: auto;
 `;
 
 type FamilyInformationListViewProps = {
+  scrollRef: RefObject<HTMLDivElement>;
   isModalShown: boolean;
   selectedMembers: Member[];
   setSelectedMembers: Dispatch<SetStateAction<Member[]>>;
@@ -54,9 +58,11 @@ type FamilyInformationListViewProps = {
   onClickAddDone: () => void;
   onClickConfirmDelete: (familyMemberId: string) => void;
   onChangeRelation: (memberId: string, relation: FAMILY) => void;
+  onScroll: (e: React.UIEvent<HTMLDivElement>) => void;
 };
 
 const FamilyInformationListView = ({
+  scrollRef,
   isModalShown,
   familyMembers,
   selectedMembers,
@@ -66,7 +72,10 @@ const FamilyInformationListView = ({
   onClickAddDone,
   onClickConfirmDelete,
   onChangeRelation,
+  onScroll,
 }: FamilyInformationListViewProps) => {
+  const { height } = useWindowSize();
+
   const pathname = usePathname();
   const locale = pathname.split('/')[1] as LOCALE;
 
@@ -94,7 +103,7 @@ const FamilyInformationListView = ({
           height={30}
         />
       </FamilyListHeader>
-      <FamilyList>
+      <FamilyList ref={scrollRef} onScroll={onScroll} height={height - 400}>
         {familyMembers.map((familyMember) => {
           return (
             <FamilyMemberItem
@@ -123,7 +132,7 @@ const FamilyInformationListView = ({
         onClickDone={onClickAddDone}
       >
         <AddFamilyMemberModal
-          member={targetMember}
+          familyMembers={familyMembers}
           selectedMembers={selectedMembers}
           setSelectedMembers={setSelectedMembers}
         />

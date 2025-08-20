@@ -115,7 +115,6 @@ const VisitationList = ({ headerType }: VisitationListProps) => {
       const visitation = response.data.data;
 
       dispatch(setTargetVisitation(visitation));
-      dispatch(setTargetVisitation(visitation));
       setIsVisitationInformationShown(true);
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));

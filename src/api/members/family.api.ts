@@ -1,5 +1,5 @@
 import { AxiosResponse } from 'axios';
-import { FAMILY } from '@/constants/constant';
+import { FAMILY, ORDER_DIRECTION } from '@/constants/constant';
 import { SERVER_URL, TEST_SERVER_URL } from '@/constants/state/url';
 import { CustomError } from '@/api/error/error';
 import authorizeAxios from '@/api/authorize-axios';
@@ -7,6 +7,9 @@ import authorizeAxios from '@/api/authorize-axios';
 type GetFamilyParams = {
   churchId: string;
   memberId: string;
+  limit?: number;
+  cursor?: string;
+  sortDirection?: ORDER_DIRECTION;
 };
 
 type CreateFamilyParams = {
@@ -52,12 +55,17 @@ export class FamilyApi {
   public getFamily = async (
     params: GetFamilyParams
   ): Promise<AxiosResponse> => {
-    const { churchId, memberId } = params;
+    const { churchId, memberId, cursor, limit } = params;
 
     const url = `${this._url}/churches/${churchId}/members/${memberId}/family`;
 
     try {
-      return await authorizeAxios.get(url);
+      return await authorizeAxios.get(url, {
+        params: {
+          cursor,
+          limit,
+        },
+      });
     } catch (serverError: any) {
       if (serverError.response) {
         const { message, error, statusCode } = serverError.response.data;

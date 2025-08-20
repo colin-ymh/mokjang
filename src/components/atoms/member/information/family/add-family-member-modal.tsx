@@ -9,19 +9,19 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { MembersApi } from '@/api/members/members.api';
 import { BLANK } from '@/constants/constant';
-import { Member } from '@/models/member/member';
+import { FamilyMember, Member } from '@/models/member/member';
 import { getFormattedName } from '@/utils/format';
 import { MEMBER } from '@/constants/column/member-column';
 import AddFamilyMemberModalView from '@/components/atoms/member/information/family/add-family-member-modal.view';
 
 type AddFamilyMemberModalProps = {
-  member: Member;
+  familyMembers: FamilyMember[];
   selectedMembers: Member[];
   setSelectedMembers: Dispatch<SetStateAction<Member[]>>;
 };
 
 const AddFamilyMemberModal = ({
-  member,
+  familyMembers,
   selectedMembers,
   setSelectedMembers,
 }: AddFamilyMemberModalProps) => {
@@ -73,7 +73,7 @@ const AddFamilyMemberModal = ({
   return (
     <>
       <AddFamilyMemberModalView
-        member={member}
+        familyMembers={familyMembers}
         searchName={searchName}
         searchedMembers={searchedMembers}
         selectedMembers={selectedMembers}

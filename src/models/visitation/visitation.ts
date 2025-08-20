@@ -14,7 +14,6 @@ export enum VISITATION_TYPE {
 }
 
 export type VisitationDetail = {
-  memberId: string;
   visitationContent: string;
   visitationPray: string;
   member?: Member;
@@ -37,10 +36,10 @@ export type Visitation = {
   inCharge: Member;
   creator: Member;
   reports: VisitationReport[];
+  visitationType: VISITATION_TYPE;
 };
 
 export const DEFAULT_VISITATION_DETAIL: VisitationDetail = {
-  memberId: BLANK,
   visitationContent: BLANK,
   visitationPray: BLANK,
 };
@@ -61,4 +60,5 @@ export const DEFAULT_VISITATION: Visitation = {
   inCharge: DEFAULT_MEMBER,
   creator: DEFAULT_MEMBER,
   reports: [],
+  visitationType: VISITATION_TYPE.SINGLE,
 };

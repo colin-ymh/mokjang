@@ -2,6 +2,7 @@
 
 import React, { ReactNode, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
+import { createPortal } from 'react-dom';
 
 import { GRAY, MAIN, WHITE } from '@/constants/styles/color';
 import Hide from '@/components/atoms/common/etc/hide';
@@ -26,9 +27,10 @@ const WrappedPagePopupContainer = styled.div<{
 }>`
   display: flex;
   flex-direction: column;
-  position: fixed;
-  top: 0;
-  bottom: 0;
+  position: fixed; /* 포털과 함께 항상 뷰포트 고정 */
+  /* iOS Safari 등 브라우저 간 일관성을 위해 inset 사용 */
+  inset: 0;
+  /* 가운데 정렬을 위해 좌우 여백 재설정 */
   left: ${({ $widthPercentage }) => `${(100 - $widthPercentage) / 2}%`};
   right: ${({ $widthPercentage }) => `${(100 - $widthPercentage) / 2}%`};
 
@@ -155,10 +157,13 @@ const WrappedPagePopup = ({
   const statusDropdownItems = useTaskStatusDropdownItems();
 
   const scrollRef = useRef<HTMLDivElement>(null);
-
   const [integrateStage, setIntegrateStage] = useState<INTEGRATE_STAGE>(
     INTEGRATE_STAGE.ONE
   );
+
+  // ---- Portal 마운트 플래그 (SSR 안전)
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -184,7 +189,7 @@ const WrappedPagePopup = ({
         ref.removeEventListener('scroll', handleScroll);
       }
     };
-  }, [children]);
+  }, [children, stageTwoTop, stageThreeTop]);
 
   useEffect(() => {
     if (keyboardDisabled) return;
@@ -200,17 +205,23 @@ const WrappedPagePopup = ({
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [isShow, onClickClose]);
+  }, [isShow, onClickClose, keyboardDisabled]);
 
   useEffect(() => {
-    if (isShow) setIntegrateStage(INTEGRATE_STAGE.ONE);
+    if (isShow) {
+      setIntegrateStage(INTEGRATE_STAGE.ONE);
+      // 열릴 때 컨텐츠 스크롤 최상단으로
+      if (scrollRef.current) {
+        scrollRef.current.scrollTop = 0;
+      }
+    }
   }, [isShow]);
 
-  if (!isShow) {
+  if (!isShow || !mounted) {
     return <Hide />;
   }
 
-  return (
+  const modal = (
     <>
       <TransparentBackground
         isOpened={isShow}
@@ -309,6 +320,9 @@ const WrappedPagePopup = ({
       </WrappedPagePopupContainer>
     </>
   );
+
+  // ---- 핵심: Portal로 body에 렌더링하여 부모 컨텍스트(스크롤/transform/z-index) 영향 제거
+  return createPortal(modal, document.body);
 };
 
 export default WrappedPagePopup;

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 
@@ -15,7 +15,7 @@ import {
   setToastText,
 } from '@/redux/reducers/toast-popup-reducer';
 import { BLACK, DESTRUCTIVE } from '@/constants/styles/color';
-import { FAMILY } from '@/constants/constant';
+import { BLANK, FAMILY } from '@/constants/constant';
 
 type FamilyInformationListProps = {};
 
@@ -27,8 +27,13 @@ const FamilyInformationList = ({}: FamilyInformationListProps) => {
     (state: RootState) => state.targetMember
   );
 
+  const scrollRef = useRef<HTMLDivElement>(null);
+
   const familyApi = new FamilyApi(false);
   const membersApi = new MembersApi(false);
+
+  const [cursor, setCursor] = useState<string>(BLANK);
+  const [hasMore, setHasMore] = useState<boolean>(true);
 
   const [thrownError, setThrownError] = useState<Error | null>(null);
   // 렌더링 시점(컴포넌트 return)에서 조건부로 에러 발생
@@ -145,38 +150,75 @@ const FamilyInformationList = ({}: FamilyInformationListProps) => {
     }
   };
 
-  useEffect(() => {
-    const fetchFamilyMembers = async () => {
-      try {
-        if (targetMember.id) {
-          const response = await familyApi.getFamily({
-            churchId,
-            memberId: targetMember.id,
-          });
+  const LIMIT = 20;
+  const fetchFamilyMembers = async () => {
+    try {
+      if (targetMember.id && hasMore) {
+        const response = await familyApi.getFamily({
+          churchId,
+          memberId: targetMember.id,
+          limit: LIMIT,
+          cursor,
+        });
 
-          const newFamilyMembers = response.data.map(
-            (member: FamilyMember) => ({
-              ...member,
-              familyMember: member.familyMember,
-            })
-          );
+        const newFamilyMembers = response.data.data.map(
+          (member: FamilyMember) => ({
+            ...member,
+            familyMember: member.familyMember,
+          })
+        );
 
-          setFamilyMembers(newFamilyMembers);
-        }
-      } catch (error) {
-        if (error instanceof Error) {
-          dispatch(setToastText(error.message));
-          dispatch(setIsToastShown(true));
-        } else {
-          setThrownError(new Error(String(error)));
-        }
+        // 항상 기존 배열에 추가 (중복 방지)
+        setFamilyMembers((prev) => {
+          if (!prev || prev.length === 0) {
+            return newFamilyMembers;
+          }
+          const existingIds = new Set(prev.map((m) => m.familyMemberId));
+          const merged = [...prev];
+          for (const m of newFamilyMembers) {
+            if (!existingIds.has(m.familyMemberId)) merged.push(m);
+          }
+          return merged;
+        });
+
+        setHasMore(response.data.hasMore);
+        setCursor(response.data.nextCursor);
       }
-    };
+    } catch (error) {
+      if (error instanceof Error) {
+        dispatch(setToastText(error.message));
+        dispatch(setIsToastShown(true));
+      } else {
+        setThrownError(new Error(String(error)));
+      }
+    }
+  };
 
+  useEffect(() => {
     fetchFamilyMembers();
   }, [targetMember]);
 
+  // Reset list and cursor when targetMember changes
+  useEffect(() => {
+    setFamilyMembers([]);
+    setCursor(BLANK);
+    setHasMore(true);
+  }, [targetMember]);
+
+  // Infinite scroll: use onScroll handler instead of event listener
+  const onScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    if (!hasMore) return;
+    const div = e.currentTarget;
+    if (!div) return;
+
+    // 바닥 근처이면 다음 페이지 로드
+    if (div.scrollHeight - div.scrollTop <= div.clientHeight + 10) {
+      fetchFamilyMembers();
+    }
+  };
+
   const props = {
+    scrollRef,
     isModalShown,
     familyMembers,
     selectedMembers,
@@ -186,6 +228,8 @@ const FamilyInformationList = ({}: FamilyInformationListProps) => {
     onClickAddDone,
     onClickConfirmDelete,
     onChangeRelation,
+    hasMore,
+    onScroll,
   };
 
   return (
