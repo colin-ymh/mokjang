@@ -97,7 +97,7 @@ const TableData = styled.td<{ id: string; $isCheck?: boolean }>`
 
   width: ${({ id }) => `${getColumnWidth(id)}%`};
 
-  border-left: 1px solid ${GRAY.LIGHT};
+  // border-left: 1px solid ${GRAY.LIGHT};
 
   &:first-child {
     border-left: none;

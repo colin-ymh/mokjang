@@ -47,7 +47,7 @@ type GetMembersV2Params = {
   limit?: number; // 요청 개수
   sortBy?: MEMBER; // 정렬 기준
   sortDirection?: ORDER_DIRECTION; // 오름차순 내림차순
-  displayColumns?: MEMBER[];
+  displayColumns?: (MEMBER | '')[];
 
   groupIds?: (string | null)[];
   officerIds?: (string | null)[];
@@ -135,6 +135,13 @@ type DeleteMemberParams = {
   churchId: string;
   memberId: string;
 };
+
+type GetMemberWorshipAvailable = {
+  churchId: string;
+  memberId: string;
+};
+
+type GetMemberWorshipStatistics = {};
 
 export class MembersApi {
   private _url: string;

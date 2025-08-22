@@ -38,6 +38,7 @@ import AttendanceInformation from '@/components/organisms/attendance/information
 import { useScopedI18n } from '../../../../../locales/client';
 import { getWorshipAttendanceRateColor } from '@/utils/color';
 import WrappedPagePopup from '@/components/atoms/common/popup/wrapped-page-popup';
+import CustomTooltip from '@/components/atoms/common/tooltip/custom-tooltip';
 
 // 1. 컬럼별 PX 폭 (마지막 REMARKS만 auto 할 예정)
 const getColumnWidth = (id: string) => {
@@ -336,13 +337,15 @@ const AttendanceTableView = ({
                     id={item.id}
                     $isSession={item.isSession}
                   >
-                    <ContentWrapper>
-                      {getAttendanceTableContent(
-                        item.id,
-                        enrollment,
-                        item?.date
-                      )}
-                    </ContentWrapper>
+                    <CustomTooltip text={'특이사항'}>
+                      <ContentWrapper>
+                        {getAttendanceTableContent(
+                          item.id,
+                          enrollment,
+                          item?.date
+                        )}
+                      </ContentWrapper>
+                    </CustomTooltip>
                   </TableData>
                 ))}
               </AttendanceTableRow>

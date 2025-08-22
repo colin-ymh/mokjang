@@ -96,23 +96,10 @@ const MemberItemList = ({
   };
 
   const getNewMemberList = () => {
-    if (getIsNameSearch(searchValue)) {
-      dispatch(
-        setMemberFilter({
-          ...memberFilter,
-          name: searchValue,
-          mobilePhone: BLANK,
-        })
-      );
-    } else if (getIsMobilePhoneSearch(searchValue)) {
-      dispatch(
-        setMemberFilter({
-          ...memberFilter,
-          mobilePhone: searchValue.replace(/\D/g, ''),
-          name: BLANK,
-        })
-      );
-    }
+    setMemberFilter({
+      ...memberFilter,
+      search: searchValue,
+    });
   };
 
   // 초기 실행 방지

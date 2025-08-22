@@ -5,7 +5,7 @@ import { MainText } from '@/components/atoms/common/text/main-text';
 import { MEMBER } from '@/constants/column/member-column';
 import { GRAY, MAIN } from '@/constants/styles/color';
 import { getTranslatedMemberColumn } from '@/utils/translate';
-import { ORDER_DIRECTION } from '@/constants/constant';
+import { BLANK, ORDER_DIRECTION } from '@/constants/constant';
 
 import { useI18n } from '../../../../../locales/client';
 import Arrow from '../../../../../public/svg/arror-up.svg';
@@ -57,7 +57,7 @@ const ArrowUpDownIcon = styled(ArrowUpDown)`
 
 type GroupMemberTableHeaderProps = {
   item: {
-    id: MEMBER;
+    id: MEMBER | typeof BLANK;
     isSortable: boolean;
   };
   onClick: (id: MEMBER) => void;
@@ -75,12 +75,12 @@ const ManagementMemberTableHeader = ({
 
   return (
     <HeaderContainer
-      onClick={() => item.isSortable && onClick(item.id)}
+      onClick={() => item.isSortable && onClick(item.id as MEMBER)}
       $isProfile={item.id === MEMBER.NAME}
     >
       <TextContainer>
         <MainText color={GRAY.DARK}>
-          {getTranslatedMemberColumn(t, item.id)}
+          {getTranslatedMemberColumn(t, item.id as MEMBER)}
         </MainText>
       </TextContainer>
       {item.isSortable && (

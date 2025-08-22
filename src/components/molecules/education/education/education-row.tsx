@@ -62,13 +62,13 @@ const EducationRow = () => {
   useEffect(() => {
     let newFilterItems: EducationFilteredItemType[] = [];
 
-    // 이름
-    if (educationFilter.name) {
-      newFilterItems.push({
-        title: EDUCATION.NAME,
-        value: [educationFilter.name],
-      });
-    }
+    // // 이름
+    // if (educationFilter) {
+    //   newFilterItems.push({
+    //     title: EDUCATION.NAME,
+    //     value: [educationFilter],
+    //   });
+    // }
 
     setFilteredItems(newFilterItems);
   }, [educationFilter]);

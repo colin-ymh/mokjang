@@ -84,7 +84,7 @@ const RowLine = styled.div`
 `;
 
 type VisitationInformationViewProps = {
-  onChangeStatus: (status: TASK_STATUS) => void;
+  onChangeStatus?: (status: TASK_STATUS) => void;
 };
 
 const VisitationInformationView = ({

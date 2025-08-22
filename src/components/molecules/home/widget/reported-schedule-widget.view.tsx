@@ -6,11 +6,7 @@ import { SIZE } from '@/constants/styles/style';
 import { BLACK } from '@/constants/styles/color';
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
 import { HOME_WIDGET, RANGE } from '@/constants/constant';
-import SlidePopup from '@/components/atoms/common/popup/slide-popup';
 import { DOMAIN } from '@/models/permission/permission';
-import TaskInformation from '@/components/organisms/task/information/task-information';
-import VisitationInformation from '@/components/organisms/visitation/information/visitation-information';
-import EducationSessionInformation from '@/components/organisms/education/education-session/information/education-session-information';
 import React from 'react';
 import { Schedule } from '@/models/calendar/calendar';
 import CancelIcon from '../../../../../public/svg/cancel.svg';
@@ -108,56 +104,56 @@ const ReportedScheduleWidgetView = ({
         />
       </WidgetContainer>
 
-      {/* 업무 상세정보 팝업*/}
-      <SlidePopup
-        isShow={openedDomain === DOMAIN.TASK}
-        onClickClose={onClickClose}
-        isFooterShown={false}
-        headerTitle={targetTask?.title}
-        headerRight={
-          <ButtonRow>
-            <ButtonContainer onClick={onClickClose}>
-              <Cancel />
-            </ButtonContainer>
-          </ButtonRow>
-        }
-      >
-        {openedDomain === DOMAIN.TASK && <TaskInformation />}
-      </SlidePopup>
+      {/*/!* 업무 상세정보 팝업*!/*/}
+      {/*<SlidePopup*/}
+      {/*  isShow={openedDomain === DOMAIN.TASK}*/}
+      {/*  onClickClose={onClickClose}*/}
+      {/*  isFooterShown={false}*/}
+      {/*  headerTitle={targetTask?.title}*/}
+      {/*  headerRight={*/}
+      {/*    <ButtonRow>*/}
+      {/*      <ButtonContainer onClick={onClickClose}>*/}
+      {/*        <Cancel />*/}
+      {/*      </ButtonContainer>*/}
+      {/*    </ButtonRow>*/}
+      {/*  }*/}
+      {/*>*/}
+      {/*  {openedDomain === DOMAIN.TASK && <TaskInformation />}*/}
+      {/*</SlidePopup>*/}
 
-      {/* 심방 상세정보 팝업*/}
-      <SlidePopup
-        isShow={openedDomain === DOMAIN.VISITATION}
-        onClickClose={onClickClose}
-        isFooterShown={false}
-        headerTitle={targetVisitation?.title}
-        headerRight={
-          <ButtonRow>
-            <ButtonContainer onClick={onClickClose}>
-              <Cancel />
-            </ButtonContainer>
-          </ButtonRow>
-        }
-      >
-        {openedDomain === DOMAIN.VISITATION && <VisitationInformation />}
-      </SlidePopup>
+      {/*/!* 심방 상세정보 팝업*!/*/}
+      {/*<SlidePopup*/}
+      {/*  isShow={openedDomain === DOMAIN.VISITATION}*/}
+      {/*  onClickClose={onClickClose}*/}
+      {/*  isFooterShown={false}*/}
+      {/*  headerTitle={targetVisitation?.title}*/}
+      {/*  headerRight={*/}
+      {/*    <ButtonRow>*/}
+      {/*      <ButtonContainer onClick={onClickClose}>*/}
+      {/*        <Cancel />*/}
+      {/*      </ButtonContainer>*/}
+      {/*    </ButtonRow>*/}
+      {/*  }*/}
+      {/*>*/}
+      {/*  {openedDomain === DOMAIN.VISITATION && <VisitationInformation />}*/}
+      {/*</SlidePopup>*/}
 
-      {/* 교육 상세정보 팝업*/}
-      <SlidePopup
-        isShow={openedDomain === DOMAIN.EDUCATION}
-        onClickClose={onClickClose}
-        isFooterShown={false}
-        headerTitle={`${targetEducationSession.session}${t('session')} ${targetEducationSession.title}`}
-        headerRight={
-          <ButtonRow>
-            <ButtonContainer onClick={onClickClose}>
-              <Cancel />
-            </ButtonContainer>
-          </ButtonRow>
-        }
-      >
-        {openedDomain === DOMAIN.EDUCATION && <EducationSessionInformation />}
-      </SlidePopup>
+      {/*/!* 교육 상세정보 팝업*!/*/}
+      {/*<SlidePopup*/}
+      {/*  isShow={openedDomain === DOMAIN.EDUCATION}*/}
+      {/*  onClickClose={onClickClose}*/}
+      {/*  isFooterShown={false}*/}
+      {/*  headerTitle={`${targetEducationSession.session}${t('session')} ${targetEducationSession.title}`}*/}
+      {/*  headerRight={*/}
+      {/*    <ButtonRow>*/}
+      {/*      <ButtonContainer onClick={onClickClose}>*/}
+      {/*        <Cancel />*/}
+      {/*      </ButtonContainer>*/}
+      {/*    </ButtonRow>*/}
+      {/*  }*/}
+      {/*>*/}
+      {/*  {openedDomain === DOMAIN.EDUCATION && <EducationSessionInformation />}*/}
+      {/*</SlidePopup>*/}
     </>
   );
 };

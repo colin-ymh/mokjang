@@ -10,7 +10,6 @@ import SlidePopup from '@/components/atoms/common/popup/slide-popup';
 import { DOMAIN } from '@/models/permission/permission';
 import TaskInformation from '@/components/organisms/task/information/task-information';
 import VisitationInformation from '@/components/organisms/visitation/information/visitation-information';
-import EducationSessionInformation from '@/components/organisms/education/education-session/information/education-session-information';
 import React from 'react';
 import { Schedule } from '@/models/calendar/calendar';
 import CancelIcon from '../../../../../public/svg/cancel.svg';
@@ -142,22 +141,22 @@ const MyScheduleWidgetView = ({
         {openedDomain === DOMAIN.VISITATION && <VisitationInformation />}
       </SlidePopup>
 
-      {/* 교육 상세정보 팝업*/}
-      <SlidePopup
-        isShow={openedDomain === DOMAIN.EDUCATION}
-        onClickClose={onClickClose}
-        isFooterShown={false}
-        headerTitle={`${targetEducationSession.session}${t('session')} ${targetEducationSession.title}`}
-        headerRight={
-          <ButtonRow>
-            <ButtonContainer onClick={onClickClose}>
-              <Cancel />
-            </ButtonContainer>
-          </ButtonRow>
-        }
-      >
-        {openedDomain === DOMAIN.EDUCATION && <EducationSessionInformation />}
-      </SlidePopup>
+      {/*  /!* 교육 상세정보 팝업*!/*/}
+      {/*  <SlidePopup*/}
+      {/*    isShow={openedDomain === DOMAIN.EDUCATION}*/}
+      {/*    onClickClose={onClickClose}*/}
+      {/*    isFooterShown={false}*/}
+      {/*    headerTitle={`${targetEducationSession.session}${t('session')} ${targetEducationSession.title}`}*/}
+      {/*    headerRight={*/}
+      {/*      <ButtonRow>*/}
+      {/*        <ButtonContainer onClick={onClickClose}>*/}
+      {/*          <Cancel />*/}
+      {/*        </ButtonContainer>*/}
+      {/*      </ButtonRow>*/}
+      {/*    }*/}
+      {/*  >*/}
+      {/*    {openedDomain === DOMAIN.EDUCATION && <EducationSessionInformation />}*/}
+      {/*  </SlidePopup>*/}
     </>
   );
 };

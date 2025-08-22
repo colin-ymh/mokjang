@@ -28,14 +28,14 @@ const MemberTableHeaderSetting = ({}: AddFilterProps) => {
     dispatch(setMemberTableHeaderItemList(updatedHeaders));
 
     // selectedColumns 재정렬 반영
-    const selectedColumns = updatedHeaders
+    const displayColumns = updatedHeaders
       .filter((item) => item.isShown)
       .map((item) => item.id);
 
     dispatch(
       setMemberFilter({
         ...memberFilter,
-        selectedColumns,
+        displayColumns,
       })
     );
   };

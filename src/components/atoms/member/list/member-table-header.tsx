@@ -68,11 +68,11 @@ type MemberTableHeaderProps = {
 
 // Component
 const MemberTableHeader = ({ item, onClick }: MemberTableHeaderProps) => {
-  const { memberOrderBy, memberOrderDirection } = useSelector(
+  const { memberSortBy, memberSortDirection } = useSelector(
     (state: RootState) => state.memberFilter
   );
   const t = useI18n();
-  const isActive = memberOrderBy === item.id;
+  const isActive = memberSortBy === item.id;
 
   return (
     <HeaderContainer
@@ -90,9 +90,9 @@ const MemberTableHeader = ({ item, onClick }: MemberTableHeaderProps) => {
       </TextContainer>
       {item.isSortable && (
         <IconContainer>
-          {memberOrderBy !== item.id ? (
+          {memberSortBy !== item.id ? (
             <ArrowUpDownIcon />
-          ) : memberOrderDirection === ORDER_DIRECTION.ASC ? (
+          ) : memberSortDirection === ORDER_DIRECTION.ASC ? (
             <ArrowUp />
           ) : (
             <ArrowDown />

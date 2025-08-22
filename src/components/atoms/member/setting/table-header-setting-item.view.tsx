@@ -141,7 +141,11 @@ const TableHeaderSettingItemView = ({
 
   const [{ isDragging }, dragRef, preview] = useDrag({
     type: DND_ITEM_TYPE.TABLE_HEADER,
-    item: { index, id: item.id, title: getTranslatedMemberColumn(t, item.id) },
+    item: {
+      index,
+      id: item.id,
+      title: getTranslatedMemberColumn(t, item.id as MEMBER),
+    },
     canDrag: () => item.id !== MEMBER.NAME,
     collect: (monitor: DragSourceMonitor) => ({
       isDragging: monitor.isDragging(),
@@ -157,7 +161,7 @@ const TableHeaderSettingItemView = ({
   return (
     <OrderItemContainer
       ref={ref}
-      onClick={() => !item.isFixed && onClickHeaderItem(item.id)}
+      onClick={() => !item.isFixed && onClickHeaderItem(item.id as MEMBER)}
     >
       <ItemContainer $isFixed={item.isFixed} $isDragging={isDragging}>
         {hoverPosition === HOVER_POSITION.TOP && isOver && <InsertLineTop />}
@@ -167,14 +171,14 @@ const TableHeaderSettingItemView = ({
         <LeftContainer>
           {item.isFixed ? <LockIcon /> : <PositionIcon />}
           <MainText color={item.isShown ? GRAY.EXTRA_DARK : GRAY.DEFAULT}>
-            {getTranslatedMemberColumn(t, item.id)}
+            {getTranslatedMemberColumn(t, item.id as MEMBER)}
           </MainText>
           {item.isFixed && <MainTag title={t('fixed')} />}
         </LeftContainer>
         <RightContainer>
           <CheckButton
             value={item.isShown}
-            onChange={() => onClickHeaderItem(item.id)}
+            onChange={() => onClickHeaderItem(item.id as MEMBER)}
             disabled={item.isFixed}
           />
         </RightContainer>

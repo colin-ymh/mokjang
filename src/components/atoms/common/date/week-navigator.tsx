@@ -14,6 +14,12 @@ import Button from '@/components/atoms/common/button/button';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { SIZE } from '@/constants/styles/style';
 
+const startOfDay = (d: Date) => {
+  const x = new Date(d);
+  x.setHours(0, 0, 0, 0);
+  return x;
+};
+
 const WeekNavigatorContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -72,6 +78,9 @@ const WeekNavigator = ({
       const newDate = new Date(
         innerValue.getTime() + weekPeriod * 7 * 24 * 60 * 60 * 1000
       );
+      // 미래 회차로 넘어갈 수 없도록 차단
+      if (startOfDay(newDate).getTime() > startOfDay(new Date()).getTime())
+        return;
       setInnerValue(newDate);
       onChange(newDate); // 직접 호출
     }
@@ -88,6 +97,13 @@ const WeekNavigator = ({
   if (!innerValue || isNaN(innerValue.getTime())) {
     return null;
   }
+
+  const MS_PER_DAY = 24 * 60 * 60 * 1000;
+  const todaySOD = startOfDay(new Date());
+  const nextPeriodDate = new Date(
+    innerValue.getTime() + weekPeriod * 7 * MS_PER_DAY
+  );
+  const canGoRight = startOfDay(nextPeriodDate).getTime() <= todaySOD.getTime();
 
   return (
     <WeekNavigatorContainer>
@@ -122,6 +138,7 @@ const WeekNavigator = ({
           height={30}
           backgroundColor={WHITE}
           borderColor={GRAY.LIGHT}
+          disabled={!canGoRight}
         />
       </ButtonContainer>
     </WeekNavigatorContainer>

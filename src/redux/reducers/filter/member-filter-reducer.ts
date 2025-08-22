@@ -21,7 +21,7 @@ type MEMBER_FILTER = {
   birthTo: string;
   registeredFrom: string;
   registeredTo: string;
-  displayColumns: MEMBER[];
+  displayColumns: (MEMBER | '')[];
   search: string;
 };
 

@@ -3,7 +3,7 @@ import VisitationInformationView from '@/components/organisms/visitation/informa
 import { TASK_STATUS } from '@/constants/status/status';
 
 type VisitationInformationProps = {
-  onChangeStatus: (status: TASK_STATUS) => void;
+  onChangeStatus?: (status: TASK_STATUS) => void;
 };
 
 const VisitationInformation = ({

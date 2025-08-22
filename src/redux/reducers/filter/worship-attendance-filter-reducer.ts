@@ -48,13 +48,13 @@ export const INITIAL_WORSHIP_INFORMATION_HEADER_LIST: ATTENDANCE_INFORMATION_TAB
     },
     {
       id: WORSHIP_ATTENDANCE.PRESENT,
-      isSortable: true,
+      isSortable: false,
       isFilterable: false,
       isCheck: true,
     },
     {
       id: WORSHIP_ATTENDANCE.ABSENT,
-      isSortable: true,
+      isSortable: false,
       isFilterable: false,
       isCheck: true,
     },

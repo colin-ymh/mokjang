@@ -69,7 +69,7 @@ const KebabDropdown = ({
         // 최신 focusedIndex 값을 ref에서 사용
         const index = focusedIndexRef.current;
 
-        items[index].onClick();
+        items[index]?.onClick && items[index].onClick();
 
         setIsOpened(false);
       } else if (event.key === 'Escape') {

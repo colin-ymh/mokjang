@@ -11,7 +11,6 @@ import TaskInformation from '@/components/organisms/task/information/task-inform
 import React from 'react';
 import VisitationInformation from '@/components/organisms/visitation/information/visitation-information';
 import { useI18n } from '../../../../locales/client';
-import EducationSessionInformation from '@/components/organisms/education/education-session/information/education-session-information';
 import MemberInformation from '@/components/organisms/member/information/member-information';
 import ChurchEventInformation from '@/components/organisms/church-event/information/church-event-information';
 import CustomPopup from '@/components/atoms/common/popup/custom-popup';
@@ -114,22 +113,22 @@ const MainCalendarView = ({
         {openedDomain === DOMAIN.VISITATION && <VisitationInformation />}
       </SlidePopup>
 
-      {/* 교육 상세정보 팝업*/}
-      <SlidePopup
-        isShow={openedDomain === DOMAIN.EDUCATION}
-        onClickClose={onClickClose}
-        isFooterShown={false}
-        headerTitle={`${targetEducationSession.session}${t('session')} ${targetEducationSession.title}`}
-        headerRight={
-          <ButtonRow>
-            <ButtonContainer onClick={onClickClose}>
-              <Cancel />
-            </ButtonContainer>
-          </ButtonRow>
-        }
-      >
-        {openedDomain === DOMAIN.EDUCATION && <EducationSessionInformation />}
-      </SlidePopup>
+      {/*/!* 교육 상세정보 팝업*!/*/}
+      {/*<SlidePopup*/}
+      {/*  isShow={openedDomain === DOMAIN.EDUCATION}*/}
+      {/*  onClickClose={onClickClose}*/}
+      {/*  isFooterShown={false}*/}
+      {/*  headerTitle={`${targetEducationSession.session}${t('session')} ${targetEducationSession.title}`}*/}
+      {/*  headerRight={*/}
+      {/*    <ButtonRow>*/}
+      {/*      <ButtonContainer onClick={onClickClose}>*/}
+      {/*        <Cancel />*/}
+      {/*      </ButtonContainer>*/}
+      {/*    </ButtonRow>*/}
+      {/*  }*/}
+      {/*>*/}
+      {/*  {openedDomain === DOMAIN.EDUCATION && <EducationSessionInformation />}*/}
+      {/*</SlidePopup>*/}
 
       {/* 교인 상세정보 팝업*/}
       <SlidePopup

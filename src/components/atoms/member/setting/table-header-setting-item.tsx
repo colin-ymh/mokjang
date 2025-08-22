@@ -38,7 +38,7 @@ const TableHeaderSettingItem = ({
     dispatch(
       setMemberFilter({
         ...memberFilter,
-        selectedColumns: newHeaderItemList
+        displayColumns: newHeaderItemList
           .filter((item) => item.isShown)
           .map((item) => item.id),
       })

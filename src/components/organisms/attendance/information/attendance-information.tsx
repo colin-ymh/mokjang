@@ -4,7 +4,11 @@ import { AppDispatch, RootState } from '@/redux/store';
 import { WorshipsApi } from '@/api/worship/worships.api';
 import { DEFAULT_GROUP, Group } from '@/models/management/management';
 import { getGroup } from '@/utils/group';
-import { Worship, WORSHIP_ATTENDANCE_STATUS, WorshipAttendance, } from '@/models/worship/worship';
+import {
+  Worship,
+  WORSHIP_ATTENDANCE_STATUS,
+  WorshipAttendance,
+} from '@/models/worship/worship';
 import {
   setTargetWorshipSession,
   setTargetWorshipSessionGroup,
@@ -18,7 +22,11 @@ import {
   setWorshipAttendances,
 } from '@/redux/reducers/filter/worship-attendance-filter-reducer';
 import { WorshipSessionsApi } from '@/api/worship/worship-sessions.api';
-import { getDateFromDateString, getDateInWeekByDayOfWeek, getDateStringFromDate, } from '@/utils/date';
+import {
+  getDateFromDateString,
+  getDateInWeekByDayOfWeek,
+  getDateStringFromDate,
+} from '@/utils/date';
 import { ALL, BLANK } from '@/constants/constant';
 import { CustomError } from '@/api/error/error';
 import { WorshipAttendancesApi } from '@/api/worship/worship-attendances.api';

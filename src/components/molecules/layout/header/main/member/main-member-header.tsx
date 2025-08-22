@@ -30,7 +30,6 @@ const MainMemberHeader = ({}: MainMemberHeaderProps) => {
   const { targetMember } = useSelector(
     (state: RootState) => state.targetMember
   );
-  const { memberPage } = useSelector((state: RootState) => state.memberFilter);
 
   // 교인 등록하기 on/off
   const [isRegisterShown, setIsRegisterShown] = useState<boolean>(false);

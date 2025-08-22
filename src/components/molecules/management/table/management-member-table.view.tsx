@@ -291,7 +291,7 @@ const ManagementMemberTableView = ({
                     $isLast={index === headerItems.length - 1}
                   >
                     <ContentWrapper>
-                      {getMemberTableContent(item.id, member)}
+                      {getMemberTableContent(item.id as MEMBER, member)}
                     </ContentWrapper>
                   </TableData>
                 ))}
