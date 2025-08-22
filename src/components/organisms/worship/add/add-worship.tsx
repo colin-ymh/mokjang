@@ -2,7 +2,7 @@ import { ChangeEvent, useEffect, useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
-import { getFormattedTitle } from '@/utils/format';
+import { getFormattedContent, getFormattedTitle } from '@/utils/format';
 import { setTargetWorship } from '@/redux/reducers/target/target-worship-reducer';
 import { DEFAULT_GROUP, Group } from '@/models/management/management';
 import { getGroup } from '@/utils/group';
@@ -23,7 +23,7 @@ const AddWorship = ({}: AddWorshipProps) => {
   const [isGroupModalShown, setIsGroupModalShown] = useState<boolean>(false);
 
   const onChangeTitle = (event: ChangeEvent<HTMLInputElement>) => {
-    const newTitle = getFormattedTitle(event.target.value);
+    const newTitle = getFormattedTitle(event.target.value, 50);
     dispatch(setTargetWorship({ ...targetWorship, title: newTitle }));
   };
 
@@ -45,7 +45,7 @@ const AddWorship = ({}: AddWorshipProps) => {
   };
 
   const onChangeDescription = (event: ChangeEvent<HTMLTextAreaElement>) => {
-    const newDescription = event.target.value;
+    const newDescription = getFormattedContent(event.target.value, 500);
     dispatch(
       setTargetWorship({ ...targetWorship, description: newDescription })
     );

@@ -3,6 +3,8 @@ export enum WORSHIP {
   DESCRIPTION = 'description',
   WORSHIP_DAY = 'worshipDay',
   REPEAT_PERIOD = 'repeaterPeriod',
+  GROUP = 'group',
+  ATTENDANCE = 'attendance',
 }
 
 export enum WORSHIP_ENROLLMENT {

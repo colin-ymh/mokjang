@@ -5,13 +5,15 @@ import AttendanceTable, {
   AttendanceTableProps,
 } from '@/components/molecules/attendance/list/attendance-table';
 import AttendanceRow from '@/components/molecules/attendance/list/attendance-row';
+import { GRAY, WHITE } from '@/constants/styles/color';
 
 const AttendanceListContainer = styled.div`
   display: flex;
   flex-direction: column;
   height: 100%;
-  width: 100%;
   overflow-y: auto;
+  background-color: ${WHITE};
+  padding: 20px;
 `;
 
 const MobileView = styled.div`
@@ -26,12 +28,19 @@ const DesktopView = styled.div`
   display: none;
   justify-content: flex-start;
   overflow: hidden;
-  width: 100%;
 
   @media (min-width: ${MEDIA_MIN_WIDTH.DESKTOP}) {
     display: flex;
     flex-direction: column;
+    gap: 20px;
   }
+`;
+
+const TableContainer = styled.div`
+  display: flex;
+  border: 1px solid ${GRAY.LIGHT};
+  border-radius: 10px;
+  overflow: hidden;
 `;
 
 type AttendanceListViewProps = {
@@ -48,8 +57,10 @@ const AttendanceListView = (props: AttendanceListViewProps) => {
       {/*</MobileView>*/}
       {/* 데스크탑에서 보일 테이블형 UI */}
       <DesktopView>
-        <AttendanceRow />
-        <AttendanceTable {...props.list} />
+        <AttendanceRow {...props.list} />
+        <TableContainer>
+          <AttendanceTable {...props.list} />
+        </TableContainer>
       </DesktopView>
     </AttendanceListContainer>
   );

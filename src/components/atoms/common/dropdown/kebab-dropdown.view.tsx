@@ -65,7 +65,7 @@ const KebabButton = styled(Kebab)`
 `;
 
 export type KebabDropdownValueType = DropdownValueType & {
-  onClick: () => void;
+  onClick?: () => void;
 };
 
 type KebabDropdownViewProps = {
@@ -123,7 +123,7 @@ const KebabDropdownView = ({
             key={index}
             item={item}
             onClick={() => {
-              item.onClick();
+              item.onClick && item.onClick();
               onClickKebab();
             }}
             isSelected={false}

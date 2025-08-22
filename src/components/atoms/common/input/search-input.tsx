@@ -1,9 +1,6 @@
 import { ChangeEvent, KeyboardEventHandler, Ref } from 'react';
 import styled from 'styled-components';
-
-import Dropdown from '@/components/atoms/common/dropdown/dropdown';
 import { BLACK, GRAY } from '@/constants/styles/color';
-import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-item';
 
 import { useScopedI18n } from '../../../../../locales/client';
 import Search from '../../../../../public/svg/search.svg';
@@ -52,9 +49,6 @@ const SearchIcon = styled(Search)`
 
 type SearchInputProps = {
   searchRef: Ref<HTMLInputElement>;
-  searchFilter?: any;
-  searchFilterDropdownItems?: DropdownValueType[];
-  onClickSearchFilterItem?: (value: any) => void;
   searchValue: string;
   onChangeSearchValue: (event: ChangeEvent<HTMLInputElement>) => void;
   onKeyDown: KeyboardEventHandler<HTMLInputElement>;
@@ -65,9 +59,6 @@ type SearchInputProps = {
 
 const SearchInput = ({
   searchRef,
-  searchFilter,
-  searchFilterDropdownItems,
-  onClickSearchFilterItem,
   searchValue,
   onChangeSearchValue,
   onKeyDown,
@@ -79,27 +70,14 @@ const SearchInput = ({
 
   return (
     <SearchContainer>
-      {searchFilterDropdownItems && (
-        <Dropdown
-          value={searchFilter}
-          items={searchFilterDropdownItems}
-          onChangeItem={onClickSearchFilterItem}
-          height={30}
-          width={100}
-          borderColor={GRAY.LIGHT}
-          backgroundBlur={false}
-          borderTopRightRadius={0}
-          borderBottomRightRadius={0}
-        />
-      )}
       <InputContainer
         ref={searchRef}
         value={searchValue}
         onChange={onChangeSearchValue}
         onKeyDown={onKeyDown}
         placeholder={placeholder || t_placeholder('search')}
-        $isLeft={!searchFilterDropdownItems}
         $inputWidth={inputWidth}
+        $isLeft={true}
       />
       <SearchButton onClick={onClickSearch}>
         <SearchIcon />

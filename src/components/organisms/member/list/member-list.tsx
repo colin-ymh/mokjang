@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 import {
+  advanceToNextCursor,
   fetchMembers,
-  setMemberPage,
+  setMemberCursor,
 } from '@/redux/reducers/filter/member-filter-reducer';
 
 import { MembersApi } from '@/api/members/members.api';
@@ -28,13 +29,16 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
   const churchId: string = useSelector(
     (state: RootState) => state.church.churchId
   );
+
   const {
-    memberPage,
     members,
     memberFilter,
-    memberOrderBy,
-    memberOrderDirection,
+    memberSortBy,
+    memberSortDirection,
+    nextCursor,
+    hasMore,
   } = useSelector((state: RootState) => state.memberFilter);
+
   const { targetMember } = useSelector(
     (state: RootState) => state.targetMember
   );
@@ -74,12 +78,16 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
     setIsPopupShown(false);
   };
 
-  // 무한 스크롤로 데이터 추가 로드
+  // 무한 스크롤: hasMore/nextCursor 기반
   const loadMembers = async () => {
     if (isLoading) return;
+    if (!hasMore) return; // 더 불러올 데이터 없음
     setIsLoading(true);
     try {
-      await dispatch(setMemberPage(memberPage + 1));
+      if (nextCursor) {
+        dispatch(advanceToNextCursor()); // memberCursor = nextCursor
+      }
+      await dispatch(fetchMembers());
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));
     } finally {
@@ -87,11 +95,11 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
     }
   };
 
-  // 필터 정보가 변경될 때, 교인들을 다시 불러오는 부분
+  // 필터/정렬/신규등록 플래그 변경 시: 커서 초기화 후 재조회
   useEffect(() => {
     const fetchInitialMembers = async () => {
       try {
-        await dispatch(setMemberPage(1));
+        await dispatch(setMemberCursor(BLANK)); // 처음부터
         await dispatch(fetchMembers());
       } catch (error) {
         setThrownError(
@@ -100,7 +108,7 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
       }
     };
     fetchInitialMembers();
-  }, [memberFilter, memberOrderBy, memberOrderDirection, isNewMember]);
+  }, [memberFilter, memberSortBy, memberSortDirection, isNewMember]);
 
   // 목록에서 교인을 선택하여 상세 페이지로 이동
   const onClickMemberItem = async (memberId: string) => {
@@ -108,8 +116,7 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
       const response = await membersApi.getMember({ churchId, memberId });
       const member = response.data.data;
 
-      dispatch(setTargetMember(member));
-      dispatch(setTargetMember(member));
+      dispatch(setTargetMember(member)); // (중복 제거)
       setIsMemberInformationShown(true);
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));
@@ -130,9 +137,8 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
         memberId: targetMember.id,
       });
 
-      // 초기화 후 다시 로드
-      dispatch(setMemberPage(1));
-      // 삭제 후 재로딩
+      // 커서 초기화 후 다시 로드
+      await dispatch(setMemberCursor(BLANK));
       await dispatch(fetchMembers());
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));
@@ -187,7 +193,6 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
             address: updatedMember.address || undefined,
             detailAddress: updatedMember.detailAddress || undefined,
             marriage: updatedMember.marriage || undefined,
-            // detailMarriage: updatedMember.detailMarriage || undefined,
             vehicleNumber:
               updatedMember.vehicleNumber.filter(
                 (number) => number.length > 0
@@ -213,9 +218,7 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
     setIsPopupShown(false);
   }, [targetMember]);
 
-  useEffect(() => {
-    dispatch(fetchMembers());
-  }, [memberPage]);
+  // (삭제) memberPage 의존 이펙트 — 커서 방식으로 대체했으므로 필요 없음
 
   const props = {
     list: {

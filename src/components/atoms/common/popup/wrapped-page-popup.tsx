@@ -58,8 +58,8 @@ const HeaderLeftContainer = styled.div`
   gap: 20px;
 `;
 
-const HeaderRightContainer = styled.div`
-  display: flex;
+const HeaderRightContainer = styled.div<{ $isShown: boolean }>`
+  display: ${({ $isShown }) => ($isShown ? 'flex' : 'none')};
   flex-direction: row;
   align-items: center;
   gap: 10px;
@@ -98,13 +98,13 @@ const ContentWrapper = styled.div`
 interface WrappedPagePopupProps {
   isShow: boolean;
   onClickClose: () => void;
-  onClickDone: () => void;
-  onClickCancel: () => void;
+  onClickDone?: () => void;
+  onClickCancel?: () => void;
   doneText?: string;
   cancelText?: string;
   doneBackgroundColor?: string;
   doneDisabled?: boolean;
-
+  rightButtonShown?: boolean;
   stageTwoTop?: number;
   stageThreeTop?: number;
   headerTitle?: string;
@@ -141,7 +141,7 @@ const WrappedPagePopup = ({
   cancelText,
   keyboardDisabled = false,
   widthPercentage = 70,
-
+  rightButtonShown = true,
   stageTwoTop,
   stageThreeTop,
   headerTitle,
@@ -260,7 +260,7 @@ const WrappedPagePopup = ({
                 </MainText>
               )}
           </HeaderLeftContainer>
-          <HeaderRightContainer>
+          <HeaderRightContainer $isShown={rightButtonShown}>
             {integrateStage !== INTEGRATE_STAGE.ONE &&
               status &&
               onChangeStatus && (

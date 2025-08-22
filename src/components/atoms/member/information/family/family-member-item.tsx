@@ -55,6 +55,7 @@ const InformationList = styled.div`
 const MemberInformationContainer = styled.div`
   display: flex;
   flex-direction: row;
+  align-items: center;
   gap: 10px;
 `;
 

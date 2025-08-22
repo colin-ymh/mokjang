@@ -1,11 +1,10 @@
-import React, { ChangeEvent, MutableRefObject } from 'react';
+import React, { ChangeEvent } from 'react';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 
-import { GRAY, WHITE } from '@/constants/styles/color';
+import { GRAY, GREEN, RED, WHITE } from '@/constants/styles/color';
 import { BLANK } from '@/constants/constant';
-import useWindowSize from '@/hooks/window/window';
 import {
   WORSHIP_ATTENDANCE_STATUS,
   WorshipAttendance,
@@ -15,29 +14,31 @@ import AttendanceInformationTableHeader from '@/components/atoms/attendance/info
 import BorderTextarea from '@/components/atoms/common/input/border-textarea';
 import CheckButton from '@/components/atoms/common/button/check-button';
 import MemberProfilePopupButton from '@/components/molecules/common/button/member-profile-popup-button';
+import { MainText } from '@/components/atoms/common/text/main-text';
+import { useScopedI18n } from '../../../../../locales/client';
 
 // 1. 컬럼별 PX 폭 (마지막 REMARKS만 auto 할 예정)
 const getColumnWidth = (id: string) => {
   switch (id) {
     case WORSHIP_ATTENDANCE.NAME:
-      return 150;
+      return 15;
+    case WORSHIP_ATTENDANCE.GROUP_NAME:
+      return 15;
     case WORSHIP_ATTENDANCE.PRESENT:
-      return 50;
+      return 10;
     case WORSHIP_ATTENDANCE.ABSENT:
-      return 50;
+      return 10;
     case WORSHIP_ATTENDANCE.NOTE:
-      return 200;
+      return 20;
     default:
       return 10;
   }
 };
 
 // 2. 테이블 컨테이너 (100% 폭 + 스크롤)
-const TableContainer = styled.div<{ height: number }>`
+const TableContainer = styled.div`
   /* 항상 가로 100%를 채움 */
   width: 100%;
-  /* 세로 높이만큼 상하 스크롤 */
-  height: ${({ height }) => `${height - 100}px`};
 
   /* 오버플로 시 스크롤 */
   overflow-x: hidden;
@@ -57,14 +58,19 @@ const AttendanceTable = styled.table`
 `;
 
 // 4. 헤더(TH)
-const TableHeader = styled.th<{ id: string; $isLast?: boolean }>`
-  padding: 3px 10px;
+const TableHeader = styled.th<{
+  id: string;
+  $isLast?: boolean;
+}>`
+  padding: 10px;
+  background-color: ${WHITE};
   position: sticky;
   top: 0;
   z-index: 5;
-  background-color: ${WHITE};
+
   /* 만약 마지막 컬럼이면 width: auto */
-  width: ${({ id, $isLast }) => ($isLast ? 'auto' : `${getColumnWidth(id)}px`)};
+  width: ${({ id, $isLast }) => ($isLast ? 'auto' : `${getColumnWidth(id)}%`)};
+
   /* 텍스트 넘침 처리 */
   overflow: hidden;
   text-overflow: ellipsis;
@@ -77,7 +83,7 @@ const TableHeader = styled.th<{ id: string; $isLast?: boolean }>`
     left: 0;
     right: 0;
     height: 0.7px;
-    background: ${GRAY.SEMI_LIGHT};
+    background: ${GRAY.LIGHT};
   }
 `;
 
@@ -89,7 +95,7 @@ const AttendanceTableRow = styled.tr`
 const TableData = styled.td<{ id: string; $isCheck?: boolean }>`
   padding: ${({ $isCheck }) => ($isCheck ? 0 : 10)}px;
 
-  width: ${({ id }) => `${getColumnWidth(id)}px`};
+  width: ${({ id }) => `${getColumnWidth(id)}%`};
 
   border-left: 1px solid ${GRAY.LIGHT};
 
@@ -117,8 +123,7 @@ const CheckButtonContainer = styled.div`
 
 type AttendanceTableProps = {
   worshipAttendances: WorshipAttendance[];
-  scrollRef: MutableRefObject<HTMLDivElement | null>;
-  onScroll: () => void;
+  onClickHeader: (id: WORSHIP_ATTENDANCE) => void;
   onChangePresent: (value: boolean, attendance: WorshipAttendance) => void;
   onChangeAbsent: (value: boolean, attendance: WorshipAttendance) => void;
   onChangeNote: (
@@ -129,14 +134,12 @@ type AttendanceTableProps = {
 
 const AttendanceInformationTableView = ({
   worshipAttendances,
-  scrollRef,
-  onScroll,
+  onClickHeader,
   onChangePresent,
   onChangeAbsent,
   onChangeNote,
 }: AttendanceTableProps) => {
-  const { height } = useWindowSize();
-
+  const t_placeholder = useScopedI18n('placeholder');
   const worshipAttendanceTableHeaderItemList = useSelector(
     (state: RootState) =>
       state.worshipAttendanceFilter.worshipAttendanceTableHeaderItemList
@@ -153,6 +156,10 @@ const AttendanceInformationTableView = ({
           <MemberProfilePopupButton
             member={attendance.worshipEnrollment.member}
           />
+        );
+      case WORSHIP_ATTENDANCE.GROUP_NAME:
+        return (
+          <MainText>{attendance.worshipEnrollment.member.group?.name}</MainText>
         );
       case WORSHIP_ATTENDANCE.PRESENT:
         return (
@@ -171,6 +178,8 @@ const AttendanceInformationTableView = ({
                 WORSHIP_ATTENDANCE_STATUS.PRESENT
               }
               onChange={(value) => onChangePresent(value, attendance)}
+              backgroundColor={GREEN.DEFAULT}
+              borderColor={GREEN.DEFAULT}
             />
           </CheckButtonContainer>
         );
@@ -190,6 +199,8 @@ const AttendanceInformationTableView = ({
                 attendance.attendanceStatus === WORSHIP_ATTENDANCE_STATUS.ABSENT
               }
               onChange={(value) => onChangeAbsent(value, attendance)}
+              backgroundColor={RED.DEFAULT}
+              borderColor={RED.DEFAULT}
             />
           </CheckButtonContainer>
         );
@@ -199,6 +210,7 @@ const AttendanceInformationTableView = ({
             value={attendance.note}
             borderColor={GRAY.LIGHT}
             onChange={(event) => onChangeNote(event, attendance)}
+            placeholder={t_placeholder('attendanceNote')}
           />
         );
       case BLANK:
@@ -210,8 +222,7 @@ const AttendanceInformationTableView = ({
 
   return (
     <>
-      {/* 컨테이너: 항상 가로 100%, 필요하면 스크롤 */}
-      <TableContainer ref={scrollRef} onScroll={onScroll} height={height}>
+      <TableContainer>
         <AttendanceTable>
           <thead>
             <tr>
@@ -228,6 +239,7 @@ const AttendanceInformationTableView = ({
                       ...item,
                       id: item.id,
                     }}
+                    onClick={onClickHeader}
                   />
                 </TableHeader>
               ))}

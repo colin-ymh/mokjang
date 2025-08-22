@@ -6,7 +6,7 @@ import MemberFilterView from '@/components/molecules/member/setting/member-filte
 import { setMemberFilter } from '@/redux/reducers/filter/member-filter-reducer';
 import { getDateStringFromDate } from '@/utils/date';
 import { useEffect, useState } from 'react';
-import { BLANK } from '@/constants/constant';
+import { BAPTISM, BLANK, MARRIAGE } from '@/constants/constant';
 
 type MemberFilterProps = {};
 
@@ -19,54 +19,54 @@ const MemberFilter = ({}: MemberFilterProps) => {
 
   const [ageRange, setAgeRange] = useState<[number, number]>([1, 100]);
 
-  const onChangeOfficerItems = (value: string[]) => {
+  const onChangeOfficerItems = (value: (string | null)[]) => {
     dispatch(
       setMemberFilter({
         ...memberFilter,
-        officer: value,
+        officerIds: value,
       })
     );
   };
 
-  const onChangeMarriageItems = (value: string[]) => {
+  const onChangeMarriageItems = (value: (MARRIAGE | null)[]) => {
     dispatch(
       setMemberFilter({
         ...memberFilter,
-        marriage: value,
+        marriageStatuses: value,
       })
     );
   };
 
-  const onChangeBaptismItems = (value: string[]) => {
+  const onChangeBaptismItems = (value: BAPTISM[]) => {
     dispatch(
       setMemberFilter({
         ...memberFilter,
-        baptism: value,
+        baptismStatuses: value,
       })
     );
   };
 
-  const onChangeRegisterAfter = (date: Date | null) => {
+  const onChangeRegisteredFrom = (date: Date | null) => {
     if (date) {
       const newDate = getDateStringFromDate(date);
 
       dispatch(
         setMemberFilter({
           ...memberFilter,
-          registerAfter: newDate,
+          registeredFrom: newDate,
         })
       );
     }
   };
 
-  const onChangeRegisterBefore = (date: Date | null) => {
+  const onChangeRegisteredTo = (date: Date | null) => {
     if (date) {
       const newDate = getDateStringFromDate(date);
 
       dispatch(
         setMemberFilter({
           ...memberFilter,
-          registerBefore: newDate,
+          registeredTo: newDate,
         })
       );
     }
@@ -77,40 +77,45 @@ const MemberFilter = ({}: MemberFilterProps) => {
   };
 
   useEffect(() => {
-    if (ageRange[0] === 1 && ageRange[1] === 100) {
+    const handler = setTimeout(() => {
+      if (ageRange[0] === 1 && ageRange[1] === 100) {
+        dispatch(
+          setMemberFilter({
+            ...memberFilter,
+            birthFrom: BLANK,
+            birthTo: BLANK,
+          })
+        );
+        return;
+      }
+
+      const newBirthAfter = new Date();
+      newBirthAfter.setFullYear(newBirthAfter.getFullYear() - ageRange[1]);
+
+      const newBirthBefore = new Date();
+      newBirthBefore.setFullYear(newBirthBefore.getFullYear() - ageRange[0]);
+
       dispatch(
         setMemberFilter({
           ...memberFilter,
-          birthAfter: BLANK,
-          birthBefore: BLANK,
+          birthFrom: getDateStringFromDate(newBirthAfter),
+          birthTo: getDateStringFromDate(newBirthBefore),
         })
       );
+    }, 300); // 300ms 딜레이
 
-      return;
-    }
-
-    const newBirthAfter = new Date();
-    newBirthAfter.setFullYear(newBirthAfter.getFullYear() - ageRange[1]);
-
-    const newBirthBefore = new Date();
-    newBirthBefore.setFullYear(newBirthBefore.getFullYear() - ageRange[0]);
-
-    dispatch(
-      setMemberFilter({
-        ...memberFilter,
-        birthAfter: getDateStringFromDate(newBirthAfter),
-        birthBefore: getDateStringFromDate(newBirthBefore),
-      })
-    );
-  }, [ageRange]);
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [ageRange, dispatch, memberFilter]);
 
   const props = {
     ageRange,
     onChangeOfficerItems,
     onChangeMarriageItems,
     onChangeBaptismItems,
-    onChangeRegisterAfter,
-    onChangeRegisterBefore,
+    onChangeRegisteredFrom,
+    onChangeRegisteredTo,
     onChangeAgeRange,
   };
 

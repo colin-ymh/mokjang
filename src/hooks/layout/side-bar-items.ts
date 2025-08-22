@@ -12,6 +12,7 @@ import Heart from '../../../public/svg/heart.svg';
 import Briefcase from '../../../public/svg/briefcase.svg';
 import AcademicCap from '../../../public/svg/academic-cap.svg';
 import Calendar from '../../../public/svg/calendar.svg';
+import Cross from '../../../public/svg/cross.svg';
 import { usePageRouter } from '@/utils/router';
 
 export const useMainSideBarItems = () => {
@@ -32,9 +33,15 @@ export const useMainSideBarItems = () => {
       icon: Users,
     },
     {
+      id: MAIN_HEADER_ID.WORSHIP,
+      title: `${t_header(MAIN_HEADER_ID.WORSHIP)}`,
+      onClick: () => router.push(`/main/worship`),
+      icon: Cross,
+    },
+    {
       id: MAIN_HEADER_ID.ATTENDANCE,
-      title: `${t_header(MAIN_HEADER_ID.WORSHIP)} / ${t_header(MAIN_HEADER_ID.ATTENDANCE)}`,
-      onClick: () => router.push(`/main/attendance/attendance`),
+      title: `${t_header(MAIN_HEADER_ID.ATTENDANCE)}`,
+      onClick: () => router.push(`/main/attendance`),
       icon: Book,
     },
     {

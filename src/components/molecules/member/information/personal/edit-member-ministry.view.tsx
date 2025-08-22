@@ -114,19 +114,18 @@ const EditMemberMinistryView = ({
             maxDate={new Date()}
           />
         </LabelContainer>
-        {targetMember.ministryGroupHistory &&
-          targetMember.ministryGroupHistory.length > 0 && (
-            <StopWarningButton
-              description={t_warning('stopMinistryHistory')}
-              buttonText={t_button('stopMinistryHistory')}
-              onClick={() =>
-                onClickDeleteMinistry(
-                  targetMinistryHistory.ministryGroup.id as string
-                )
-              }
-              // disabled={!!selectedMinistry?.membersCount || false}
-            />
-          )}
+        {targetMinistryHistory.ministryGroup?.id && (
+          <StopWarningButton
+            description={t_warning('stopMinistryHistory')}
+            buttonText={t_button('stopMinistryHistory')}
+            onClick={() =>
+              onClickDeleteMinistry(
+                targetMinistryHistory.ministryGroup.id as string
+              )
+            }
+            // disabled={!!selectedMinistry?.membersCount || false}
+          />
+        )}
       </EditMemberMinistryViewContainer>
 
       <CustomPopup

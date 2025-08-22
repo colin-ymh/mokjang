@@ -7,7 +7,7 @@ import {
   BLACK,
   DESTRUCTIVE,
   GRAY,
-  MAIN,
+  GREEN,
   WHITE,
 } from '@/constants/styles/color';
 import { MainText } from '@/components/atoms/common/text/main-text';
@@ -16,12 +16,14 @@ import useWindowSize from '@/hooks/window/window';
 import {
   WORSHIP_ATTENDANCE_STATUS,
   WorshipEnrollment,
+  WorshipSessionCheckStatus,
 } from '@/models/worship/worship';
 import { WORSHIP_ENROLLMENT } from '@/constants/column/worship-column';
 import AttendanceTableHeader from '@/components/atoms/attendance/list/attendance-table-header';
 import {
   getDateFromDateString,
   getDateFromInput,
+  getDateStringFromDate,
   getIsSameDate,
   getMonthDateFromDate,
   getWorshipSessionDates,
@@ -32,11 +34,10 @@ import Present from '../../../../../public/svg/circle.svg';
 import Absent from '../../../../../public/svg/cancel.svg';
 import CancelIcon from '../../../../../public/svg/cancel.svg';
 import MemberProfilePopupButton from '@/components/molecules/common/button/member-profile-popup-button';
-import SlidePopup from '@/components/atoms/common/popup/slide-popup';
-import KebabDropdown from '@/components/atoms/common/dropdown/kebab-dropdown';
 import AttendanceInformation from '@/components/organisms/attendance/information/attendance-information';
-import EditWorshipSession from '@/components/organisms/attendance/edit/edit-worship-session';
 import { useScopedI18n } from '../../../../../locales/client';
+import { getWorshipAttendanceRateColor } from '@/utils/color';
+import WrappedPagePopup from '@/components/atoms/common/popup/wrapped-page-popup';
 
 // 1. 컬럼별 PX 폭 (마지막 REMARKS만 auto 할 예정)
 const getColumnWidth = (id: string) => {
@@ -57,7 +58,7 @@ const TableContainer = styled.div<{ height: number }>`
   /* 항상 가로 100%를 채움 */
   width: 100%;
   /* 세로 높이만큼 상하 스크롤 */
-  height: ${({ height }) => `${height - 220}px`};
+  height: ${({ height }) => `${height}px`};
 
   /* 오버플로 시 스크롤 */
   overflow-x: hidden;
@@ -78,7 +79,7 @@ const AttendanceTable = styled.table`
 
 // 4. 헤더(TH)
 const TableHeader = styled.th<{ id: string; $isSession?: boolean }>`
-  padding: 3px 10px;
+  padding: 10px;
   position: sticky;
   top: 0;
   z-index: 5;
@@ -99,7 +100,11 @@ const TableHeader = styled.th<{ id: string; $isSession?: boolean }>`
     left: 0;
     right: 0;
     height: 0.7px;
-    background: ${GRAY.SEMI_LIGHT};
+    background: ${GRAY.LIGHT};
+  }
+
+  &:last-child {
+    border-right: none;
   }
 `;
 
@@ -140,28 +145,23 @@ const IconContainer = styled.div`
 `;
 
 const PresentIcon = styled(Present)`
-  width: 30px;
-  height: 30px;
-  stroke: ${MAIN.DEFAULT};
+  width: 20px;
+  height: 20px;
+  stroke: ${GREEN.DEFAULT};
+  stroke-width: 3px;
 `;
 
 const AbsentIcon = styled(Absent)`
-  width: 30px;
-  height: 30px;
+  width: 20px;
+  height: 20px;
   stroke: ${DESTRUCTIVE.DEFAULT};
-`;
-
-const ButtonRow = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 5px;
-  justify-content: center;
-  align-items: center;
+  stroke-width: 3px;
 `;
 
 const ButtonContainer = styled.div`
   display: flex;
   cursor: pointer;
+  padding-right: 10px;
 `;
 
 const Cancel = styled(CancelIcon)`
@@ -173,30 +173,24 @@ const Cancel = styled(CancelIcon)`
 
 type AttendanceTableProps = {
   isSessionShown: boolean;
-  isEditOpened: boolean;
-  isEditEnabled: boolean;
+  isStatisticOpened: boolean;
   onClickSessionClose: () => void;
-  onClickSessionSave: () => void;
-  onClickEditOpen: () => void;
-  onClickCloseEditModal: () => void;
   worshipEnrollments: WorshipEnrollment[];
   scrollRef: MutableRefObject<HTMLDivElement | null>;
   onScroll: () => void;
   onClickHeader: (id: WORSHIP_ENROLLMENT | string, isSession: boolean) => void;
+  checkStatuses: WorshipSessionCheckStatus[];
 };
 
 const AttendanceTableView = ({
   isSessionShown,
-  isEditOpened,
-  isEditEnabled,
-  onClickCloseEditModal,
+  isStatisticOpened,
   onClickSessionClose,
-  onClickEditOpen,
-  onClickSessionSave,
   worshipEnrollments,
   scrollRef,
   onScroll,
   onClickHeader,
+  checkStatuses,
 }: AttendanceTableProps) => {
   const t_button = useScopedI18n('button');
   const t_title = useScopedI18n('title');
@@ -206,6 +200,9 @@ const AttendanceTableView = ({
   );
   const { targetWorship } = useSelector(
     (state: RootState) => state.targetWorship
+  );
+  const { targetWorshipSessionWorship, targetWorshipSession } = useSelector(
+    (state: RootState) => state.targetWorshipSession
   );
   const { height } = useWindowSize();
 
@@ -258,23 +255,14 @@ const AttendanceTableView = ({
           getDateFromDateString(attendance.sessionDate)
         )
       );
-      if (attendance?.attendanceStatus === WORSHIP_ATTENDANCE_STATUS.ABSENT) {
-        return (
-          <IconContainer>
-            <AbsentIcon />
-          </IconContainer>
-        );
-      } else if (
-        attendance?.attendanceStatus === WORSHIP_ATTENDANCE_STATUS.PRESENT
-      ) {
-        return (
-          <IconContainer>
-            <PresentIcon />
-          </IconContainer>
-        );
-      } else {
-        return <div></div>;
-      }
+      return (
+        <IconContainer>
+          {attendance?.attendanceStatus ===
+            WORSHIP_ATTENDANCE_STATUS.ABSENT && <AbsentIcon />}
+          {attendance?.attendanceStatus ===
+            WORSHIP_ATTENDANCE_STATUS.PRESENT && <PresentIcon />}
+        </IconContainer>
+      );
     } else {
       switch (id) {
         case WORSHIP_ENROLLMENT.NAME:
@@ -282,10 +270,14 @@ const AttendanceTableView = ({
         case WORSHIP_ENROLLMENT.GROUP_NAME:
           return <MainText>{enrollment.member.group?.name}</MainText>;
         case WORSHIP_ENROLLMENT.ATTENDANCE_RATE:
+          const percentage = Math.round(enrollment.attendanceRate * 100);
+
           return (
-            <MainText>
-              {`${Math.round(enrollment.attendanceRate * 100)}%`}
-            </MainText>
+            <IconContainer>
+              <MainText color={getWorshipAttendanceRateColor(percentage)}>
+                {`${percentage}%`}
+              </MainText>
+            </IconContainer>
           );
         case BLANK:
           return <div></div>;
@@ -298,7 +290,11 @@ const AttendanceTableView = ({
   return (
     <>
       {/* 컨테이너: 항상 가로 100%, 필요하면 스크롤 */}
-      <TableContainer ref={scrollRef} onScroll={onScroll} height={height}>
+      <TableContainer
+        ref={scrollRef}
+        onScroll={onScroll}
+        height={isStatisticOpened ? height - 400 : height - 290}
+      >
         <AttendanceTable>
           <thead>
             <tr>
@@ -315,6 +311,16 @@ const AttendanceTableView = ({
                         id: item.id as WORSHIP_ENROLLMENT,
                       }}
                       onClick={onClickHeader}
+                      isCheckDone={
+                        item.date &&
+                        checkStatuses.find(
+                          (checkStatus) =>
+                            getDateStringFromDate(item.date as Date) ===
+                            getDateStringFromDate(
+                              getDateFromDateString(checkStatus.sessionDate)
+                            )
+                        )?.completeAttendanceCheck
+                      }
                     />
                   )}
                 </TableHeader>
@@ -346,42 +352,15 @@ const AttendanceTableView = ({
       </TableContainer>
 
       {/* 회차 상세정보 팝업*/}
-      <SlidePopup
+      <WrappedPagePopup
         isShow={isSessionShown}
-        isFooterShown={false}
         onClickClose={onClickSessionClose}
-        headerRight={
-          <ButtonRow>
-            <KebabDropdown
-              items={[
-                {
-                  value: 'edit',
-                  title: t_button('edit'),
-                  onClick: onClickEditOpen,
-                },
-              ]}
-              width={150}
-            />
-            <ButtonContainer onClick={onClickSessionClose}>
-              <Cancel />
-            </ButtonContainer>
-          </ButtonRow>
-        }
+        headerTitle={`${targetWorshipSessionWorship.title} ${t_title('attendanceInformation')} (${getDateStringFromDate(getDateFromDateString(targetWorshipSession.sessionDate))})`}
+        rightButtonShown={false}
+        stageTwoTop={40}
       >
-        <AttendanceInformation />
-      </SlidePopup>
-
-      {/* 회차 상세 수정 팝업 */}
-      <SlidePopup
-        isShow={isEditOpened}
-        headerTitle={t_title('editWorshipInformation')}
-        onClickDone={onClickSessionSave}
-        doneBackgroundColor={isEditEnabled ? MAIN.DEFAULT : MAIN.LIGHT}
-        doneDisabled={!isEditEnabled}
-        onClickClose={onClickCloseEditModal}
-      >
-        <EditWorshipSession />
-      </SlidePopup>
+        {(scrollRef) => <AttendanceInformation scrollRef={scrollRef} />}
+      </WrappedPagePopup>
     </>
   );
 };

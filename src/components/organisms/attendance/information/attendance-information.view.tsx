@@ -1,68 +1,64 @@
 import styled from 'styled-components';
 import React from 'react';
 import FakeDropdownButton from '@/components/atoms/common/button/fake-dropdown-button';
-import Dropdown from '@/components/atoms/common/dropdown/dropdown';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
-import { BLANK } from '@/constants/constant';
 import { Group } from '@/models/management/management';
 import CustomPopup from '@/components/atoms/common/popup/custom-popup';
 import SelectGroupHierarchy from '@/components/organisms/group/select-group-hierarchy';
 import WeekNavigator from '@/components/atoms/common/date/week-navigator';
 import { getDateFromDateString, getDateStringFromDate } from '@/utils/date';
-import HeaderBar from '@/components/atoms/layout/header/header-bar';
-import { useAttendanceHeaderBarItems } from '@/hooks/layout/header-bar-items';
-import { ATTENDANCE_CONTENT_ID } from '@/constants/layout/content';
-import { GRAY } from '@/constants/styles/color';
+import { GRAY, GREEN, RED } from '@/constants/styles/color';
 import AttendanceInformationTable from '@/components/molecules/attendance/information/attendance-information-table';
-import { MainText } from '@/components/atoms/common/text/main-text';
-import { SIZE } from '@/constants/styles/style';
 import WorshipSessionInformation from '@/components/molecules/attendance/information/worship-session-information';
+import LabelDropdown from '@/components/atoms/common/dropdown/label-dropdown';
+import { SIZE } from '@/constants/styles/style';
+import { MainText } from '@/components/atoms/common/text/main-text';
+import { getWorshipAttendanceRateColor } from '@/utils/color';
+import Button from '@/components/atoms/common/button/button';
 
 const AttendanceInformationContainer = styled.div`
   display: flex;
-  flex: 1;
   flex-direction: column;
-  padding: 10px 0;
-  overflow-y: auto;
-  gap: 10px;
+  gap: 20px;
 `;
 
 const TitleContainer = styled.div`
   display: flex;
-  flex-direction: row;
-  padding: 0 20px 20px 20px;
-`;
-
-const RowContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  padding: 10px 20px;
-`;
-
-const LeftContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 10px;
-`;
-
-const RightContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 10px;
-`;
-
-const BarContainer = styled.div`
-  display: flex;
-  border-bottom: 1px solid ${GRAY.LIGHT};
   padding: 0 20px;
 `;
 
 const ContentContainer = styled.div`
   display: flex;
+  flex: 1;
+  flex-direction: column;
   padding: 0 20px;
+  gap: 20px;
+`;
+
+const RowContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-between;
+`;
+
+const LabelContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 8px;
+`;
+
+const BoxContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 20px;
+  border-radius: 10px;
+  border: 1px solid ${GRAY.LIGHT};
 `;
 
 const GroupContainer = styled.div`
@@ -71,8 +67,29 @@ const GroupContainer = styled.div`
   width: 100%;
 `;
 
+const StatisticsContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+`;
+
+const StatisticItem = styled.div`
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+`;
+
+const TableContainer = styled.div`
+  display: flex;
+  border-radius: 10px;
+  border: 1px solid ${GRAY.LIGHT};
+  overflow: hidden;
+`;
+
 type AttendanceInformationProps = {
-  contentId: ATTENDANCE_CONTENT_ID;
   isGroupModalShown: boolean;
   topLevelGroup: Group;
   onClickGroupItem: (id: string | null) => void;
@@ -80,12 +97,10 @@ type AttendanceInformationProps = {
   onClickOpenGroupModal: () => void;
   onClickCloseGroupModal: () => void;
   onChangeDate: (date: Date) => void;
-  loadWorshipAttendances: () => Promise<void>;
-  onClickHeaderBar: (id: ATTENDANCE_CONTENT_ID) => void;
+  onClickAllAttended: () => void;
 };
 
 const AttendanceInformation = ({
-  contentId,
   isGroupModalShown,
   topLevelGroup,
   onClickGroupItem,
@@ -93,93 +108,136 @@ const AttendanceInformation = ({
   onClickOpenGroupModal,
   onClickCloseGroupModal,
   onChangeDate,
-  loadWorshipAttendances,
-  onClickHeaderBar,
+  onClickAllAttended,
 }: AttendanceInformationProps) => {
-  const headerBarItems = useAttendanceHeaderBarItems();
-
   const t = useI18n();
   const t_title = useScopedI18n('title');
   const {
     targetWorshipSession,
     targetWorshipSessionGroup,
     targetWorshipSessionWorship,
+    targetWorshipSessionStatistic,
   } = useSelector((state: RootState) => state.targetWorshipSession);
   const { worships } = useSelector((state: RootState) => state.worshipFilter);
 
-  const worshipDropdownItems = [
-    {
-      value: BLANK,
-      title: t('none'),
-    },
-    ...worships.map((worship) => {
-      return {
-        value: worship.id,
-        title: worship.title,
-      };
-    }),
-  ];
+  const worshipDropdownItems = worships.map((worship) => {
+    return {
+      value: worship.id,
+      title: worship.title,
+    };
+  });
 
   return (
-    <AttendanceInformationContainer>
-      {/* 제목 */}
-      <TitleContainer>
-        <MainText
-          size={SIZE.EXTRA_LARGE}
-        >{`${targetWorshipSessionWorship.title} ${t_title('attendanceInformation')} (${getDateStringFromDate(getDateFromDateString(targetWorshipSession.sessionDate))})`}</MainText>
-      </TitleContainer>
-      {/* 헤더 바 */}
-      <BarContainer>
-        <HeaderBar
-          value={contentId}
-          items={headerBarItems}
-          onClick={onClickHeaderBar}
-        />
-      </BarContainer>
-      {/* 필터 행 */}
-      <RowContainer>
-        <LeftContainer>
-          {/* 그룹 범위 설정*/}
-          {contentId === ATTENDANCE_CONTENT_ID.ATTENDANCE && (
-            <FakeDropdownButton
-              title={targetWorshipSessionGroup.name || t('all')}
-              isOpened={isGroupModalShown}
-              onClick={onClickOpenGroupModal}
-              width={120}
+    <>
+      <AttendanceInformationContainer>
+        <TitleContainer>
+          <MainText size={SIZE.EXTRA_LARGE} fontSize={22}>
+            {`${targetWorshipSessionWorship.title} ${t_title('attendanceInformation')} (${getDateStringFromDate(getDateFromDateString(targetWorshipSession.sessionDate))})`}
+          </MainText>
+        </TitleContainer>
+        <ContentContainer>
+          {/* 필터 행 */}
+          <BoxContainer>
+            <LabelContainer>
+              <MainText color={GRAY.DARK} size={SIZE.SMALL}>
+                {t('group')}
+              </MainText>
+              <FakeDropdownButton
+                title={targetWorshipSessionGroup.name || t('all')}
+                isOpened={isGroupModalShown}
+                onClick={onClickOpenGroupModal}
+                height={40}
+              />
+            </LabelContainer>
+            {/* 예배 설정 */}
+            <LabelDropdown
+              label={t('worship')}
+              value={targetWorshipSessionWorship.id}
+              items={worshipDropdownItems}
+              onChangeItem={onClickWorshipItem}
               height={40}
             />
-          )}
-        </LeftContainer>
-        <RightContainer>
-          {/* 예배 설정 */}
-          <Dropdown
-            value={targetWorshipSessionWorship.id}
-            items={worshipDropdownItems}
-            onChangeItem={onClickWorshipItem}
-            width={120}
-            height={40}
-          />
-          <WeekNavigator
-            value={getDateFromDateString(targetWorshipSession.sessionDate)}
-            dayOfWeek={targetWorshipSessionWorship.worshipDay}
-            weekPeriod={targetWorshipSessionWorship.repeatPeriod}
-            onChange={onChangeDate}
-          />
-        </RightContainer>
-      </RowContainer>
-
-      <ContentContainer>
-        {contentId === ATTENDANCE_CONTENT_ID.ATTENDANCE && (
-          // 출석부 목록
-          <AttendanceInformationTable
-            loadWorshipAttendances={loadWorshipAttendances}
-          />
-        )}
-        {contentId === ATTENDANCE_CONTENT_ID.WORSHIP && (
-          // 출석부 목록
-          <WorshipSessionInformation />
-        )}
-      </ContentContainer>
+            <WeekNavigator
+              value={getDateFromDateString(targetWorshipSession.sessionDate)}
+              dayOfWeek={targetWorshipSessionWorship.worshipDay}
+              weekPeriod={targetWorshipSessionWorship.repeatPeriod}
+              onChange={onChangeDate}
+            />
+          </BoxContainer>
+          {/* 예배 내용 */}
+          <BoxContainer>
+            <WorshipSessionInformation />
+          </BoxContainer>
+          {/* 회차 통계 */}
+          <BoxContainer>
+            <StatisticsContainer>
+              <StatisticItem>
+                <MainText size={SIZE.EXTRA_LARGE}>
+                  {targetWorshipSessionStatistic.totalCount}
+                </MainText>
+                <MainText size={SIZE.SMALL} color={GRAY.DARK}>
+                  {t('worshipSessionAttendanceCount')}
+                </MainText>
+              </StatisticItem>
+              <StatisticItem>
+                <MainText size={SIZE.EXTRA_LARGE} color={GREEN.DEFAULT}>
+                  {targetWorshipSessionStatistic.presentCount}
+                </MainText>
+                <MainText size={SIZE.SMALL} color={GRAY.DARK}>
+                  {t('present')}
+                </MainText>
+              </StatisticItem>
+              <StatisticItem>
+                <MainText size={SIZE.EXTRA_LARGE} color={RED.DEFAULT}>
+                  {targetWorshipSessionStatistic.absentCount}
+                </MainText>
+                <MainText size={SIZE.SMALL} color={GRAY.DARK}>
+                  {t('absent')}
+                </MainText>
+              </StatisticItem>
+              <StatisticItem>
+                <MainText
+                  size={SIZE.EXTRA_LARGE}
+                  color={getWorshipAttendanceRateColor(
+                    (targetWorshipSessionStatistic.presentCount /
+                      (targetWorshipSessionStatistic.totalCount -
+                        targetWorshipSessionStatistic.unknownCount)) *
+                      100 || 0
+                  )}
+                >
+                  {`${
+                    Math.round(
+                      (targetWorshipSessionStatistic.presentCount /
+                        (targetWorshipSessionStatistic.totalCount -
+                          targetWorshipSessionStatistic.unknownCount)) *
+                        100
+                    ) || 0
+                  }%`}
+                </MainText>
+                <MainText size={SIZE.SMALL} color={GRAY.DARK}>
+                  {t('worshipSessionAttendanceRate')}
+                </MainText>
+              </StatisticItem>
+            </StatisticsContainer>
+          </BoxContainer>
+          {/* 검색창 */}
+          <RowContainer>
+            <div />
+            {/*<BorderInput value={searchText} onChange={onChangeSearchText} />*/}
+            <Button
+              text={t('button.allAttended')}
+              height={30}
+              width={'auto'}
+              backgroundColor={GREEN.DEFAULT}
+              onClick={onClickAllAttended}
+            />
+          </RowContainer>
+          {/* 출석 목록 */}
+          <TableContainer>
+            <AttendanceInformationTable />
+          </TableContainer>
+        </ContentContainer>
+      </AttendanceInformationContainer>
 
       {/* 그룹 선택 모달 */}
       <CustomPopup
@@ -196,7 +254,7 @@ const AttendanceInformation = ({
           />
         </GroupContainer>
       </CustomPopup>
-    </AttendanceInformationContainer>
+    </>
   );
 };
 

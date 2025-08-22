@@ -42,24 +42,14 @@ const CancelButton = styled(Cancel)`
 
 export type FilteredItemType = {
   title:
-    | MEMBER.GENDER
     | MEMBER.GROUP
-    | MEMBER.MINISTRIES
     | MEMBER.OFFICER
-    | MEMBER.EDUCATIONS
     | MEMBER.MARRIAGE
     | MEMBER.BAPTISM
-    | MEMBER.AGE
+    | MEMBER.BIRTH
     | MEMBER.REGISTERED_AT
-    | MEMBER.UPDATED_AT
-    | MEMBER.NAME
-    | MEMBER.VEHICLE_NUMBER
-    | MEMBER.SCHOOL
-    | MEMBER.OCCUPATION
-    | MEMBER.MOBILE_PHONE
-    | MEMBER.HOME_PHONE
-    | MEMBER.ADDRESS;
-  value: string[];
+    | MEMBER.SEARCH;
+  value: (string | null)[];
 };
 
 type FilteredItemViewProps = {

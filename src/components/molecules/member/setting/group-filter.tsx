@@ -6,6 +6,7 @@ import { getGroup } from '@/utils/group';
 import { setTargetGroup } from '@/redux/reducers/target/target-group-reducer';
 import { DEFAULT_GROUP } from '@/models/management/management';
 import styled from 'styled-components';
+import { ALL } from '@/constants/constant';
 
 const GroupFilterContainer = styled.div`
   display: flex;
@@ -38,11 +39,16 @@ const GroupFilter = ({ isDefaultOpen = false, onChange }: GroupFilterProps) => {
       dispatch(setTargetGroup(DEFAULT_GROUP));
     }
 
-    if (groupId === null) {
-      dispatch(setMemberFilter({ ...memberFilter, group: DEFAULT_GROUP }));
+    if (groupId === ALL) {
+      dispatch(setMemberFilter({ ...memberFilter, groupIds: [] }));
+    } else if (groupId === null) {
+      dispatch(setMemberFilter({ ...memberFilter, groupIds: [null] }));
     } else if (groupId) {
       dispatch(
-        setMemberFilter({ ...memberFilter, group: getGroup(groupId, groups) })
+        setMemberFilter({
+          ...memberFilter,
+          groupIds: [getGroup(groupId, groups).id],
+        })
       );
     }
 
@@ -55,7 +61,7 @@ const GroupFilter = ({ isDefaultOpen = false, onChange }: GroupFilterProps) => {
     isNullable: true,
     isDefaultOpen,
     onChange: onChangeGroup,
-    prevSelectedGroupId: memberFilter?.group.id,
+    prevSelectedGroupId: memberFilter?.groupIds[0],
   };
 
   return (

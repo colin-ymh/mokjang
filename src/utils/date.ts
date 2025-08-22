@@ -1,5 +1,5 @@
 import { getSolar } from '@/utils/lunar/lunar-solar';
-import { BLANK } from '@/constants/constant';
+import { BLANK, DAY, REPEAT_PERIOD } from '@/constants/constant';
 
 /**
  * YYYY-MM-DD => Date Object (UTC기준)
@@ -271,4 +271,32 @@ export const getLastSunday = (): Date => {
   lastSunday.setDate(today.getDate() - diff);
   lastSunday.setHours(0, 0, 0, 0); // 시간 초기화
   return lastSunday;
+};
+
+export const getDayConstantByIndex = (dayIndex: number) => {
+  switch (dayIndex) {
+    case 0:
+      return DAY.SUNDAY;
+    case 1:
+      return DAY.MONDAY;
+    case 2:
+      return DAY.TUESDAY;
+    case 3:
+      return DAY.WEDNESDAY;
+    case 4:
+      return DAY.THURSDAY;
+    case 5:
+      return DAY.FRIDAY;
+    case 6:
+      return DAY.SATURDAY;
+  }
+};
+
+export const getWeekRepeatConstant = (number: number) => {
+  switch (number) {
+    case 1:
+      return REPEAT_PERIOD.EVERY_WEEK;
+    case 2:
+      return REPEAT_PERIOD.EVERY_OTHER_WEEK;
+  }
 };

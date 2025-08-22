@@ -1,6 +1,7 @@
 import {
   BLACK,
   CALENDAR_COLOR,
+  GREEN,
   ORANGE,
   RED,
   STATUS_BACKGROUND_COLOR,
@@ -118,7 +119,7 @@ export const getEventStyle = (event: Schedule) => {
   };
 };
 
-export const getAttendanceRateColor = (rate: number) => {
+export const getEducationAttendanceRateColor = (rate: number) => {
   if (rate <= 40) {
     return ORANGE.DEFAULT;
   } else if (rate <= 30) {
@@ -128,12 +129,22 @@ export const getAttendanceRateColor = (rate: number) => {
   }
 };
 
-export const getAttendanceRateBackgroundColor = (rate: number) => {
+export const getEducationAttendanceRateBackgroundColor = (rate: number) => {
   if (rate <= 40) {
     return ORANGE.EXTRA_LIGHT;
   } else if (rate <= 30) {
     return RED.LIGHT;
   } else {
     return YELLOW.LIGHT;
+  }
+};
+
+export const getWorshipAttendanceRateColor = (rate: number) => {
+  if (rate <= 50) {
+    return RED.DEFAULT;
+  } else if (rate <= 80) {
+    return ORANGE.DEFAULT;
+  } else {
+    return GREEN.DEFAULT;
   }
 };

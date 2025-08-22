@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ORDER_DIRECTION } from '@/constants/constant';
+import { BLANK, ORDER_DIRECTION } from '@/constants/constant';
 import { RootState } from '@/redux/store';
 import { WORSHIP_ATTENDANCE } from '@/constants/column/worship-column';
 import { WorshipAttendance } from '@/models/worship/worship';
@@ -11,9 +11,18 @@ type WorshipAttendanceFilterState = {
   prevWorshipAttendances: WorshipAttendance[];
   worshipAttendances: WorshipAttendance[];
   worshipAttendanceFilter: WORSHIP_ATTENDANCE_FILTER;
-  worshipAttendanceOrderBy?: WORSHIP_ATTENDANCE;
-  worshipAttendanceOrderDirection: ORDER_DIRECTION;
+  worshipAttendanceSortBy?: WORSHIP_ATTENDANCE;
+  worshipAttendanceSortDirection: ORDER_DIRECTION;
   worshipAttendanceTableHeaderItemList: ATTENDANCE_INFORMATION_TABLE_HEADER_ITEM[];
+  worshipAttendanceCursor: string;
+
+  // 페이지네이션 메타
+  nextCursor?: string | null;
+  hasMore: boolean;
+
+  // UI 상태
+  loading: boolean;
+  error: string | null;
 };
 
 export const INITIAL_WORSHIP_ATTENDANCE_FILTER: WORSHIP_ATTENDANCE_FILTER = {};
@@ -33,14 +42,19 @@ export const INITIAL_WORSHIP_INFORMATION_HEADER_LIST: ATTENDANCE_INFORMATION_TAB
       isFilterable: false,
     },
     {
+      id: WORSHIP_ATTENDANCE.GROUP_NAME,
+      isSortable: true,
+      isFilterable: false,
+    },
+    {
       id: WORSHIP_ATTENDANCE.PRESENT,
-      isSortable: false,
+      isSortable: true,
       isFilterable: false,
       isCheck: true,
     },
     {
       id: WORSHIP_ATTENDANCE.ABSENT,
-      isSortable: false,
+      isSortable: true,
       isFilterable: false,
       isCheck: true,
     },
@@ -55,48 +69,58 @@ const initialState: WorshipAttendanceFilterState = {
   prevWorshipAttendances: [],
   worshipAttendances: [],
   worshipAttendanceFilter: INITIAL_WORSHIP_ATTENDANCE_FILTER,
-  worshipAttendanceOrderBy: WORSHIP_ATTENDANCE.GROUP_NAME,
-  worshipAttendanceOrderDirection: ORDER_DIRECTION.ASC,
+  worshipAttendanceSortBy: WORSHIP_ATTENDANCE.GROUP_NAME,
+  worshipAttendanceSortDirection: ORDER_DIRECTION.ASC,
   worshipAttendanceTableHeaderItemList: INITIAL_WORSHIP_INFORMATION_HEADER_LIST,
+  worshipAttendanceCursor: BLANK,
+
+  nextCursor: null,
+  hasMore: false,
+  loading: false,
+  error: null,
+};
+
+// thunk 반환 타입 정의
+type FetchAttendancesResult = {
+  data: WorshipAttendance[];
+  nextCursor: string | null;
+  hasMore: boolean;
 };
 
 export const fetchWorshipAttendances = createAsyncThunk<
-  WorshipAttendance[],
-  {
-    churchId: string;
-    currentPage: number;
-    worshipId: string;
-    sessionId: string;
-    groupId?: string;
-  },
+  FetchAttendancesResult,
+  void,
   { state: RootState }
 >(
-  'educations/fetchWorshipAttendances',
-  async (
-    { churchId, worshipId, sessionId, currentPage, groupId },
-    { getState, rejectWithValue }
-  ) => {
+  'worship/fetchWorshipAttendances',
+  async (_, { getState, rejectWithValue }) => {
+    const { churchId } = getState().church;
+    const {
+      targetWorshipSessionWorship,
+      targetWorshipSession,
+      targetWorshipSessionGroup,
+    } = getState().targetWorshipSession;
     const state = getState().worshipAttendanceFilter;
     const {
-      worshipAttendanceOrderBy,
-      worshipAttendanceOrderDirection,
-      worshipAttendanceFilter,
+      worshipAttendanceSortBy,
+      worshipAttendanceSortDirection,
+      worshipAttendanceCursor,
     } = state;
     const worshipAttendancesApi = new WorshipAttendancesApi(false);
 
     try {
       const response = await worshipAttendancesApi.getWorshipAttendances({
         churchId,
-        worshipId,
-        sessionId,
-        page: currentPage,
-        take: 30, // 무한 스크롤 최적화
-        order: worshipAttendanceOrderBy,
-        orderDirection: worshipAttendanceOrderDirection,
-        groupId: groupId,
+        worshipId: targetWorshipSessionWorship.id,
+        sessionId: targetWorshipSession.id,
+        cursor: worshipAttendanceCursor,
+        limit: 30, // 무한 스크롤 최적화
+        sortBy: worshipAttendanceSortBy,
+        sortDirection: worshipAttendanceSortDirection,
+        groupId: targetWorshipSessionGroup.id || undefined,
       });
 
-      return response.data.data;
+      return response.data;
     } catch (error) {
       console.error('출석 목록 불러오기 실패', error);
       return rejectWithValue('출석 목록을 불러오는 중 오류가 발생했습니다.');
@@ -126,17 +150,17 @@ const WorshipAttendanceFilterSlice = createSlice({
     ) => {
       state.worshipAttendanceFilter = action.payload;
     },
-    setWorshipAttendanceOrderBy(
+    setWorshipAttendanceSortBy(
       state,
       action: PayloadAction<WORSHIP_ATTENDANCE>
     ) {
-      state.worshipAttendanceOrderBy = action.payload;
+      state.worshipAttendanceSortBy = action.payload;
     },
-    setWorshipAttendanceOrderDirection(
+    setWorshipAttendanceSortDirection(
       state,
       action: PayloadAction<ORDER_DIRECTION>
     ) {
-      state.worshipAttendanceOrderDirection = action.payload;
+      state.worshipAttendanceSortDirection = action.payload;
     },
     setWorshipAttendanceTableHeaderItemList(
       state,
@@ -144,6 +168,35 @@ const WorshipAttendanceFilterSlice = createSlice({
     ) {
       state.worshipAttendanceTableHeaderItemList = action.payload;
     },
+    setWorshipAttendanceCursor: (state, action: PayloadAction<string>) => {
+      state.worshipAttendanceCursor = action.payload;
+    },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchWorshipAttendances.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchWorshipAttendances.fulfilled, (state, action) => {
+        const newAttendances = action.payload.data;
+        // Merge with existing worshipAttendances, deduplicating by id
+        const existingMap = new Map(
+          state.worshipAttendances.map((a) => [a.id, a])
+        );
+        newAttendances.forEach((attendance) => {
+          existingMap.set(attendance.id, attendance);
+        });
+        state.worshipAttendances = Array.from(existingMap.values());
+        state.nextCursor = action.payload.nextCursor;
+        state.hasMore = action.payload.hasMore;
+        state.worshipAttendanceCursor = action.payload.nextCursor ?? BLANK;
+        state.loading = false;
+      })
+      .addCase(fetchWorshipAttendances.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      });
   },
 });
 
@@ -151,8 +204,9 @@ export const {
   setPrevWorshipAttendances,
   setWorshipAttendances,
   setWorshipAttendanceFilter,
-  setWorshipAttendanceOrderBy,
-  setWorshipAttendanceOrderDirection,
+  setWorshipAttendanceSortBy,
+  setWorshipAttendanceSortDirection,
   setWorshipAttendanceTableHeaderItemList,
+  setWorshipAttendanceCursor,
 } = WorshipAttendanceFilterSlice.actions;
 export default WorshipAttendanceFilterSlice.reducer;

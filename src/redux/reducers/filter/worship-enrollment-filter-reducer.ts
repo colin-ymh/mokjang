@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { BLANK, ORDER_DIRECTION } from '@/constants/constant';
+import { ALL, BLANK, ORDER_DIRECTION } from '@/constants/constant';
 import { RootState } from '@/redux/store';
 import { WORSHIP_ENROLLMENT } from '@/constants/column/worship-column';
 import { WorshipEnrollment } from '@/models/worship/worship';
@@ -18,6 +18,7 @@ type WorshipEnrollmentFilterState = {
   worshipEnrollmentOrderBy?: WORSHIP_ENROLLMENT;
   worshipEnrollmentOrderDirection: ORDER_DIRECTION;
   worshipEnrollmentTableHeaderItemList: EDUCATION_TABLE_HEADER_ITEM[];
+  worshipEnrollmentTotalCount: number;
 };
 
 export const INITIAL_WORSHIP_ENROLLMENT_FILTER: WORSHIP_ENROLLMENT_FILTER = {
@@ -69,10 +70,11 @@ const initialState: WorshipEnrollmentFilterState = {
   worshipEnrollmentOrderDirection: ORDER_DIRECTION.ASC,
   worshipEnrollmentTableHeaderItemList:
     INITIAL_WORSHIP_ENROLLMENT_TABLE_HEADER_LIST,
+  worshipEnrollmentTotalCount: 0,
 };
 
 export const fetchWorshipEnrollments = createAsyncThunk<
-  WorshipEnrollment[],
+  { data: WorshipEnrollment[]; totalCount: number },
   {
     churchId: string;
     currentPage: number;
@@ -101,12 +103,15 @@ export const fetchWorshipEnrollments = createAsyncThunk<
         take: 30, // 무한 스크롤 최적화
         order: worshipEnrollmentOrderBy,
         orderDirection: worshipEnrollmentOrderDirection,
-        groupId: worshipEnrollmentFilter.group,
+        groupId:
+          worshipEnrollmentFilter.group === ALL
+            ? undefined
+            : worshipEnrollmentFilter.group,
         fromSessionDate: worshipEnrollmentFilter.fromSessionDate,
         toSessionDate: worshipEnrollmentFilter.toSessionDate,
       });
 
-      return response.data.data;
+      return response.data;
     } catch (error) {
       console.error('출석 목록 불러오기 실패', error);
       return rejectWithValue('출석 목록을 불러오는 중 오류가 발생했습니다.');
@@ -148,6 +153,9 @@ const WorshipEnrollmentFilterSlice = createSlice({
     ) {
       state.worshipEnrollmentTableHeaderItemList = action.payload;
     },
+    setWorshipEnrollmentTotalCount(state, action: PayloadAction<number>) {
+      state.worshipEnrollmentTotalCount = action.payload;
+    },
   },
 });
 
@@ -157,5 +165,6 @@ export const {
   setWorshipEnrollmentOrderBy,
   setWorshipEnrollmentOrderDirection,
   setWorshipEnrollmentTableHeaderItemList,
+  setWorshipEnrollmentTotalCount,
 } = WorshipEnrollmentFilterSlice.actions;
 export default WorshipEnrollmentFilterSlice.reducer;

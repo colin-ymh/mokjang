@@ -96,7 +96,7 @@ const MainVisitationHeader = ({}: MainVisitationHeaderProps) => {
       setIsSaveEnabled(false);
       return;
     }
-    if (targetVisitation.members.length === 0) {
+    if (targetVisitation.members?.length === 0) {
       setIsSaveEnabled(false);
       return;
     }

@@ -9,11 +9,9 @@ import {
   useDayDropdownItems,
   useRepeatPeriodDropdownItems,
 } from '@/hooks/dropdown/dropdown-items';
-import FakeDropdownButton from '@/components/atoms/common/button/fake-dropdown-button';
 import { Group } from '@/models/management/management';
 import CustomPopup from '@/components/atoms/common/popup/custom-popup';
 import SelectGroupHierarchy from '@/components/organisms/group/select-group-hierarchy';
-import { MainText } from '@/components/atoms/common/text/main-text';
 
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
 
@@ -84,13 +82,14 @@ const AddWorshipView = ({
         value={targetWorship.title}
         onChange={onChangeTitle}
         isRequired={true}
+        maxLength={50}
       />
       <LabelInputContainer>
-        <MainText>{t('worshipGroup')}</MainText>
-        <FakeDropdownButton
-          title={selectedGroup.name || t('all')}
-          isOpened={isGroupModalShown}
+        <LabelInput
+          label={t('worshipGroup')}
+          value={selectedGroup.name || t('all')}
           onClick={onClickGroupModalOpen}
+          onChange={() => {}}
         />
       </LabelInputContainer>
       <RowContainer>
@@ -112,6 +111,7 @@ const AddWorshipView = ({
         placeholder={t_placeholder('worshipDescription')}
         value={targetWorship.description}
         onChange={onChangeDescription}
+        maxLength={500}
       />
 
       <CustomPopup

@@ -22,6 +22,24 @@ export const DEFAULT_WORSHIP: Worship = {
   worshipTargetGroups: [],
 };
 
+export type WorshipStatistic = {
+  worshipId: string;
+  attendanceCheckRate: number;
+  attendanceRate: {
+    overall: number;
+    period: number;
+  };
+};
+
+export const DEFAULT_WORSHIP_STATISTIC: WorshipStatistic = {
+  worshipId: BLANK,
+  attendanceCheckRate: 0,
+  attendanceRate: {
+    overall: 0,
+    period: 0,
+  },
+};
+
 export type WorshipTargetGroup = {
   id: string;
   group: Group;
@@ -55,6 +73,32 @@ export const DEFAULT_WORSHIP_SESSION: WorshipSession = {
   inChargeId: BLANK,
   sessionDate: BLANK,
   worshipAttendances: [],
+};
+
+export type WorshipSessionStatistic = {
+  totalCount: number;
+  presentCount: number;
+  absentCount: number;
+  unknownCount: number;
+};
+
+export const DEFAULT_WORSHIP_SESSION_STATISTIC = {
+  totalCount: 0,
+  presentCount: 0,
+  absentCount: 0,
+  unknownCount: 0,
+};
+
+export type WorshipSessionCheckStatus = {
+  id: string;
+  sessionDate: string;
+  completeAttendanceCheck: boolean;
+};
+
+export const DEFAULT_WORSHIP_SESSION_CHECK_STATUS = {
+  id: BLANK,
+  sessionDate: BLANK,
+  completeAttendanceCheck: false,
 };
 
 export type WorshipEnrollment = {

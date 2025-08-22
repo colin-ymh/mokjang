@@ -2,9 +2,6 @@ import React, { memo } from 'react';
 import styled from 'styled-components';
 import { Group } from '@/models/management/management';
 import GroupHierarchyItem from '@/components/atoms/group/group-hierarchy-item';
-import { BLANK } from '@/constants/constant';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/redux/store';
 
 const ChildGroupsContainer = styled.div`
   display: flex;
@@ -36,25 +33,9 @@ const GroupHierarchyList = memo(
     onClickGroup,
     t,
   }: GroupHierarchyListProps) => {
-    const churchId = useSelector((state: RootState) => state.church.churchId);
-
-    const nullGroup: Group = {
-      id: null, // 고유 ID (임의로 0으로 설정)
-      name: BLANK,
-      order: 0,
-      parentGroupId: null,
-      childGroups: [], // 모든 그룹을 하위 그룹으로 설정
-      membersCount: 0,
-      churchId,
-      childGroupIds: [],
-      leaderMemberId: BLANK,
-    };
-
-    const shownGroups = isNullable ? [nullGroup, ...groups] : groups;
-
     return (
       <>
-        {shownGroups.map((group) => {
+        {groups.map((group) => {
           const groupIdNum = group.id ? parseInt(group.id as string) : -1;
           const isOpen = openGroups[groupIdNum] ?? false;
           const isSelected = (group.id as string) === selectedGroupId;

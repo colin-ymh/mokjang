@@ -6,14 +6,8 @@ import {
   setMemberFilter,
 } from '@/redux/reducers/filter/member-filter-reducer';
 
-import {
-  getFormattedHomePhone,
-  getFormattedMobilePhone,
-  getTrimmedString,
-} from '@/utils/format';
-import MemberFilterRowView, {
-  SEARCH_FILTER,
-} from '@/components/molecules/member/list/member-filter-row.view';
+import { getTrimmedString } from '@/utils/format';
+import MemberFilterRowView from '@/components/molecules/member/list/member-filter-row.view';
 import { MEMBER } from '@/constants/column/member-column';
 import { BLANK } from '@/constants/constant';
 import { FilteredItemType } from '@/components/atoms/member/setting/filtered-item.view';
@@ -64,17 +58,10 @@ const MemberFilterRow = () => {
     setIsHeaderFilterShown(false);
   };
 
-  // 검색 필터 주제
-  const [searchFilter, setSearchFilter] = useState<SEARCH_FILTER>(MEMBER.NAME);
   // 검색 내용 ref
   const searchRef = useRef<HTMLInputElement>(null);
   // 검색 필터 내용
   const [searchValue, setSearchValue] = useState<string>(BLANK);
-
-  // 검색 주제 선택
-  const onClickSearchFilterItem = (value: SEARCH_FILTER) => {
-    setSearchFilter(value);
-  };
 
   // 검색 내용 변경
   const onChangeSearchValue = (event: ChangeEvent<HTMLInputElement>) => {
@@ -84,7 +71,7 @@ const MemberFilterRow = () => {
 
   // 검색 버튼
   const onClickSearch = () => {
-    dispatch(setMemberFilter({ ...memberFilter, [searchFilter]: searchValue }));
+    dispatch(setMemberFilter({ ...memberFilter, search: searchValue }));
   };
 
   // 검색 중 엔터
@@ -99,112 +86,56 @@ const MemberFilterRow = () => {
     let newFilterItems: FilteredItemType[] = [];
 
     // 그룹
-    if (memberFilter.group.id) {
+    if (memberFilter.groupIds.length > 0) {
       newFilterItems.push({
         title: MEMBER.GROUP,
-        value: [memberFilter.group.id],
+        value: memberFilter.groupIds,
       });
     }
 
-    // 성별
-    if (memberFilter.gender.length > 0) {
-      newFilterItems.push({ title: MEMBER.GENDER, value: memberFilter.gender });
-    }
     // 직분
-    if (memberFilter.officer.length > 0) {
+    if (memberFilter.officerIds.length > 0) {
       newFilterItems.push({
         title: MEMBER.OFFICER,
-        value: memberFilter.officer,
+        value: memberFilter.officerIds,
       });
     }
     // 결혼
-    if (memberFilter.marriage.length > 0) {
+    if (memberFilter.marriageStatuses.length > 0) {
       newFilterItems.push({
         title: MEMBER.MARRIAGE,
-        value: memberFilter.marriage,
+        value: memberFilter.marriageStatuses,
       });
     }
     // 신급
-    if (memberFilter.baptism.length > 0) {
+    if (memberFilter.baptismStatuses.length > 0) {
       newFilterItems.push({
         title: MEMBER.BAPTISM,
-        value: memberFilter.baptism,
+        value: memberFilter.baptismStatuses,
       });
     }
 
     // 생년월일
-    if (memberFilter.birthAfter || memberFilter.birthBefore) {
+    if (memberFilter.birthFrom || memberFilter.birthTo) {
       newFilterItems.push({
-        title: MEMBER.AGE,
-        value: [memberFilter.birthAfter, memberFilter.birthBefore],
+        title: MEMBER.BIRTH,
+        value: [memberFilter.birthFrom, memberFilter.birthTo],
       });
     }
 
     // 등록일
-    if (memberFilter.registerAfter || memberFilter.registerBefore) {
+    if (memberFilter.registeredFrom || memberFilter.registeredTo) {
       newFilterItems.push({
         title: MEMBER.REGISTERED_AT,
-        value: [memberFilter.registerAfter, memberFilter.registerBefore],
-      });
-    }
-
-    // 수정일
-    if (memberFilter.updateAfter || memberFilter.updateBefore) {
-      newFilterItems.push({
-        title: MEMBER.UPDATED_AT,
-        value: [memberFilter.updateAfter, memberFilter.updateBefore],
+        value: [memberFilter.registeredFrom, memberFilter.registeredTo],
       });
     }
 
     // 이름
-    if (memberFilter.name) {
+    if (memberFilter.search) {
       newFilterItems.push({
-        title: MEMBER.NAME,
-        value: [memberFilter.name],
-      });
-    }
-
-    // 직업
-    if (memberFilter.occupation) {
-      newFilterItems.push({
-        title: MEMBER.OCCUPATION,
-        value: [memberFilter.occupation],
-      });
-    }
-    // 학교
-    if (memberFilter.school) {
-      newFilterItems.push({
-        title: MEMBER.SCHOOL,
-        value: [memberFilter.school],
-      });
-    }
-    // 차량 번호
-    if (memberFilter.vehicleNumber) {
-      newFilterItems.push({
-        title: MEMBER.VEHICLE_NUMBER,
-        value: [memberFilter.vehicleNumber],
-      });
-    }
-
-    // 주소
-    if (memberFilter.address) {
-      newFilterItems.push({
-        title: MEMBER.ADDRESS,
-        value: [memberFilter.address],
-      });
-    }
-    // 휴대전화
-    if (memberFilter.mobilePhone) {
-      newFilterItems.push({
-        title: MEMBER.MOBILE_PHONE,
-        value: [getFormattedMobilePhone(memberFilter.mobilePhone)],
-      });
-    }
-    // 집전화
-    if (memberFilter.homePhone) {
-      newFilterItems.push({
-        title: MEMBER.HOME_PHONE,
-        value: [getFormattedHomePhone(memberFilter.homePhone)],
+        title: MEMBER.SEARCH,
+        value: [memberFilter.search],
       });
     }
 
@@ -215,7 +146,6 @@ const MemberFilterRow = () => {
     isGroupFilterShown,
     isMemberFilterShown,
     isHeaderFilterShown,
-    searchFilter,
     searchValue,
     searchRef,
     onClickGroupFilterOpen,
@@ -224,7 +154,6 @@ const MemberFilterRow = () => {
     onClickMemberFilterClose,
     onClickHeaderFilterOpen,
     onClickHeaderFilterClose,
-    onClickSearchFilterItem,
     onChangeSearchValue,
     onClickSearch,
     onKeyDown,

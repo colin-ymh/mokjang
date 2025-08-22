@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 import { MEMBER } from '@/constants/column/member-column';
-import { BAPTISM, BLANK, GENDER, MARRIAGE } from '@/constants/constant';
+import { BAPTISM, BLANK, MARRIAGE } from '@/constants/constant';
 
 import { useI18n } from '../../../../../locales/client';
 import { setMemberFilter } from '@/redux/reducers/filter/member-filter-reducer';
@@ -10,8 +10,6 @@ import { getGroup } from '@/utils/group';
 import FilteredItemView, {
   FilteredItemType,
 } from '@/components/atoms/member/setting/filtered-item.view';
-import { getAge, getDateFromDateString } from '@/utils/date';
-import { getTranslatedAge } from '@/utils/translate';
 import { usePathname } from 'next/navigation';
 import { LOCALE } from '@/constants/state/locale';
 
@@ -37,44 +35,29 @@ const FilteredItem = ({ item }: FilteredItemProps) => {
 
   // 해당 필터 내용 삭제
   const onClickCancel = () => {
-    if (item.title === MEMBER.AGE) {
+    if (item.title === MEMBER.BIRTH) {
       dispatch(
         setMemberFilter({
           ...memberFilter,
-          birthAfter: BLANK,
-          birthBefore: BLANK,
+          birthFrom: BLANK,
+          birthTo: BLANK,
         })
       );
     } else if (item.title === MEMBER.REGISTERED_AT) {
       dispatch(
         setMemberFilter({
           ...memberFilter,
-          registerAfter: BLANK,
-          registerBefore: BLANK,
+          registeredFrom: BLANK,
+          registeredTo: BLANK,
         })
       );
-    } else if (item.title === MEMBER.UPDATED_AT) {
+    } else if (item.title === MEMBER.SEARCH) {
       dispatch(
         setMemberFilter({
           ...memberFilter,
-          updateAfter: BLANK,
-          updateBefore: BLANK,
+          search: BLANK,
         })
       );
-    } else if (
-      [
-        MEMBER.NAME,
-        MEMBER.SCHOOL,
-        MEMBER.OCCUPATION,
-        MEMBER.VEHICLE_NUMBER,
-        MEMBER.ADDRESS,
-        MEMBER.MOBILE_PHONE,
-        MEMBER.HOME_PHONE,
-      ].includes(item.title)
-    ) {
-      dispatch(setMemberFilter({ ...memberFilter, [item.title]: BLANK }));
-    } else {
-      dispatch(setMemberFilter({ ...memberFilter, [item.title]: [] }));
     }
   };
 
@@ -84,20 +67,19 @@ const FilteredItem = ({ item }: FilteredItemProps) => {
     let currentItem;
 
     switch (item.title) {
-      case MEMBER.GENDER:
-        currentItem = item.value
-          .map((gender) => t(gender as GENDER))
-          .join(', ');
-        break;
       case MEMBER.MARRIAGE:
         currentItem = item.value
-          .map((marriage) => t(marriage as MARRIAGE))
+          .map((marriage) => {
+            return marriage ? t(marriage as MARRIAGE) : t('none');
+          })
           .join(', ');
         break;
       case MEMBER.GROUP: {
         // 여러 그룹 ID가 배열로 넘어온 경우
         currentItem = item.value
-          .map((groupId) => getGroup(groupId, groups)?.name)
+          .map((groupId) => {
+            return groupId ? getGroup(groupId, groups)?.name : t('none');
+          })
           .filter(Boolean) // undefined/null 필터링
           .join(', ');
 
@@ -106,21 +88,12 @@ const FilteredItem = ({ item }: FilteredItemProps) => {
       case MEMBER.OFFICER:
         // 여러 그룹 ID가 배열로 넘어온 경우
         currentItem = item.value
-          .map(
-            (officerId) =>
-              officers.find((officer) => officer.id === officerId)?.name
-          )
+          .map((officerId) => {
+            return officerId
+              ? officers.find((officer) => officer.id === officerId)?.name
+              : t('none');
+          })
           .filter(Boolean)
-          .join(', ');
-        break;
-      case MEMBER.MINISTRIES:
-        // 여러 그룹 ID가 배열로 넘어온 경우
-        currentItem = item.value
-          .map(
-            (ministryId) =>
-              ministries.find((ministry) => ministry.id === ministryId)?.name
-          )
-          .filter(Boolean) // undefined/null 필터링
           .join(', ');
         break;
       case MEMBER.BAPTISM:
@@ -130,50 +103,16 @@ const FilteredItem = ({ item }: FilteredItemProps) => {
           .filter(Boolean) // undefined/null 필터링
           .join(', ');
         break;
-      // case MEMBER.EDUCATIONS:
-      //   // 여러 그룹 ID가 배열로 넘어온 경우
-      //   currentItem = item.value
-      //     .map(
-      //       (educationId) =>
-      //         educations.find((education) => education.id === educationId)?.name
-      //     )
-      //     .filter(Boolean) // undefined/null 필터링
-      //     .join(', ');
-      //   break;
-      case MEMBER.AGE:
-        currentItem = item.value
-          .map((date) =>
-            getTranslatedAge(locale, getAge(getDateFromDateString(date)))
-          )
-          .reverse()
-          .filter(Boolean)
-          .join(' ~ ');
-        break;
+
       case MEMBER.REGISTERED_AT:
         currentItem = item.value.filter(Boolean).join(' ~ ');
         break;
-      case MEMBER.UPDATED_AT:
+
+      case MEMBER.BIRTH:
         currentItem = item.value.filter(Boolean).join(' ~ ');
         break;
-      case MEMBER.NAME:
-        currentItem = item.value[0];
-        break;
-      case MEMBER.SCHOOL:
-        currentItem = item.value[0];
-        break;
-      case MEMBER.OCCUPATION:
-        currentItem = item.value[0];
-        break;
-      case MEMBER.VEHICLE_NUMBER:
-        currentItem = item.value[0];
-        break;
-      case MEMBER.MOBILE_PHONE:
-        currentItem = item.value[0];
-        break;
-      case MEMBER.HOME_PHONE:
-        currentItem = item.value[0];
-        break;
-      case MEMBER.ADDRESS:
+
+      case MEMBER.SEARCH:
         currentItem = item.value[0];
         break;
 

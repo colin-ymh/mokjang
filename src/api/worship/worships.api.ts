@@ -50,6 +50,14 @@ type DeleteWorshipParams = {
   worshipId: string;
 };
 
+type GetWorshipStatisticsParams = {
+  churchId: string;
+  worshipId: string;
+  groupId?: string;
+  from: string;
+  to: string;
+};
+
 export class WorshipsApi {
   private _url: string;
 
@@ -210,6 +218,40 @@ export class WorshipsApi {
 
     try {
       return await authorizeAxios.delete(url);
+    } catch (serverError: any) {
+      if (serverError.response) {
+        const { message, error, statusCode } = serverError.response.data;
+        throw new CustomError(message, error, statusCode);
+      } else {
+        throw new CustomError(
+          '알 수 없는 에러가 발생했습니다',
+          500,
+          'Unknown Error'
+        );
+      }
+    }
+  };
+
+  /**
+   * 예배 조회
+   * @param {GetWorshipStatisticsParams} params
+   * @returns {Promise<AxiosResponse>}
+   */
+  public getWorshipStatistics = async (
+    params: GetWorshipStatisticsParams
+  ): Promise<AxiosResponse> => {
+    const { churchId, worshipId, groupId, from, to } = params;
+
+    const url = `${this._url}/churches/${churchId}/worships/${worshipId}/statistics`;
+
+    try {
+      return await authorizeAxios.get(url, {
+        params: {
+          groupId,
+          from,
+          to,
+        },
+      });
     } catch (serverError: any) {
       if (serverError.response) {
         const { message, error, statusCode } = serverError.response.data;

@@ -41,6 +41,26 @@ type GetMembersParams = {
   selectedColumns?: MEMBER[];
 };
 
+type GetMembersV2Params = {
+  churchId: string; // 교회 id
+  cursor?: string; // 페이지 번호
+  limit?: number; // 요청 개수
+  sortBy?: MEMBER; // 정렬 기준
+  sortDirection?: ORDER_DIRECTION; // 오름차순 내림차순
+  displayColumns?: MEMBER[];
+
+  groupIds?: (string | null)[];
+  officerIds?: (string | null)[];
+  marriageStatuses: (MARRIAGE | null)[];
+  baptismStatuses: BAPTISM[];
+  birthFrom?: string;
+  birthTo?: string;
+  registeredFrom?: string;
+  registeredTo?: string;
+
+  search?: string;
+};
+
 export type GetMembersResponse = Member;
 
 type GetMemberParams = {
@@ -220,6 +240,90 @@ export class MembersApi {
           return qs.stringify(params, {
             arrayFormat: 'repeat',
             skipNulls: true,
+            encodeValuesOnly: true,
+          });
+        },
+      });
+    } catch (serverError: any) {
+      if (serverError.response) {
+        const { message, error, statusCode } = serverError.response.data;
+        throw new CustomError(message, error, statusCode);
+      } else {
+        throw new CustomError(
+          '알 수 없는 에러가 발생했습니다',
+          500,
+          'Unknown Error'
+        );
+      }
+    }
+  };
+
+  /**
+   * 교인들 불러오기
+   * @param {GetMembersParams} params
+   * @returns {Promise<AxiosResponse>}
+   */
+  public getMembersV2 = async (
+    params: GetMembersV2Params
+  ): Promise<AxiosResponse> => {
+    const {
+      churchId,
+      limit,
+      cursor,
+      sortBy,
+      sortDirection,
+      displayColumns,
+      groupIds,
+      officerIds,
+      marriageStatuses,
+      baptismStatuses,
+      birthFrom,
+      birthTo,
+      registeredFrom,
+      registeredTo,
+      search,
+    } = params;
+
+    // groupIds가 [null]인 경우 서버에 null로 전달
+    const groupIdsParam =
+      Array.isArray(groupIds) && groupIds.length === 1 && groupIds[0] === null
+        ? 'null' // 서버가 문자열 'null'을 기대하므로 문자열로 직렬화
+        : groupIds;
+
+    const queryParams: Record<string, any> = Object.fromEntries(
+      Object.entries({
+        limit,
+        cursor,
+        sortBy,
+        sortDirection,
+        displayColumns,
+        groupIds: groupIdsParam,
+        officerIds,
+        marriageStatuses,
+        baptismStatuses,
+        birthFrom,
+        birthTo,
+        registeredFrom,
+        registeredTo,
+        search,
+      }).filter(
+        ([_, value]) =>
+          value !== undefined &&
+          value !== '' &&
+          !(Array.isArray(value) && value.length === 0)
+      )
+    );
+
+    const url = `${this._url}/churches/${churchId}/members/v2`;
+
+    try {
+      return await authorizeAxios.get(url, {
+        params: queryParams,
+        paramsSerializer: (params) => {
+          return qs.stringify(params, {
+            arrayFormat: 'repeat',
+            // skipNulls: true,
+            strictNullHandling: true,
             encodeValuesOnly: true,
           });
         },

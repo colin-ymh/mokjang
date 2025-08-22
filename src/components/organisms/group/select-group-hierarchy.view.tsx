@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { useI18n } from '../../../../locales/client';
 import GroupHierarchyList from '@/components/molecules/group/group-hierarchy-list';
+import { BLANK } from '@/constants/constant';
 
 const FilterContainer = styled.div`
   display: flex;
@@ -93,12 +94,26 @@ const SelectGroupHierarchyView = memo(
     onClickGroup,
   }: GroupFilterViewProps) => {
     const t = useI18n();
-    const { groups } = useSelector((state: RootState) => state.church);
+    const { groups, churchId } = useSelector(
+      (state: RootState) => state.church
+    );
 
     // 초기 상태를 useState의 lazy initialization으로 설정
     const [openGroups, setOpenGroups] = useState<Record<number, boolean>>(() =>
       getInitialOpenGroups(groups, isDefaultOpen, topLevelGroupId)
     );
+
+    const nullGroup: Group = {
+      id: null, // 고유 ID (임의로 0으로 설정)
+      name: BLANK,
+      order: 0,
+      parentGroupId: null,
+      childGroups: [], // 모든 그룹을 하위 그룹으로 설정
+      membersCount: 0,
+      churchId,
+      childGroupIds: [],
+      leaderMemberId: BLANK,
+    };
 
     // props나 groups가 변경될 때만 상태 업데이트
     useEffect(() => {
@@ -119,12 +134,15 @@ const SelectGroupHierarchyView = memo(
 
     const groupsToRender = useMemo(() => {
       if (!topLevelGroupId) {
-        return groups;
+        return isNullable ? [nullGroup, ...groups] : [...groups];
       }
 
       const topLevelGroup = findGroupById(groups, topLevelGroupId);
-      return topLevelGroup ? [topLevelGroup] : groups;
-    }, [groups, topLevelGroupId]);
+      if (topLevelGroup) {
+        return isNullable ? [nullGroup, topLevelGroup] : [topLevelGroup];
+      }
+      return isNullable ? [nullGroup, ...groups] : [...groups];
+    }, [groups, topLevelGroupId, isNullable]);
 
     return (
       <FilterContainer>

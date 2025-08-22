@@ -8,6 +8,11 @@ export type MainTextProps = {
   fontSize?: number;
   fontWeight?: number;
   whiteSpace?: string;
+  maxWidth?: number | string;
+  overflow?: string;
+  textOverflow?: string;
+  textDecoration?: string;
+  cursor?: string;
 };
 
 const getFontSize = (size?: SIZE, fontSize?: number) => {
@@ -54,7 +59,19 @@ const getFontWeight = (size?: SIZE, fontWeight?: number) => {
 
 // styled-components v5 이상이라면 shouldForwardProp 사용
 export const MainText = styled.span.withConfig({
-  shouldForwardProp: (prop) => prop !== 'whiteSpace',
+  shouldForwardProp: (prop) =>
+    ![
+      'size',
+      'color',
+      'fontSize',
+      'fontWeight',
+      'whiteSpace',
+      'maxWidth',
+      'overflow',
+      'textOverflow',
+      'textDecoration',
+      'cursor',
+    ].includes(prop),
 })<MainTextProps>`
   margin: 0;
   font-size: ${({ size, fontSize }) => getFontSize(size, fontSize)};
@@ -63,6 +80,11 @@ export const MainText = styled.span.withConfig({
   transition: all 0.3s ease;
 
   white-space: ${({ whiteSpace }) => whiteSpace || 'nowrap'};
-  max-width: 100%;
+  max-width: ${({ maxWidth }) =>
+    typeof maxWidth === 'number' ? `${maxWidth}px` : maxWidth || '100%'};
+  overflow: ${({ overflow }) => overflow || 'visible'};
+  text-overflow: ${({ textOverflow }) => textOverflow || 'clip'};
+  text-decoration: ${({ textDecoration }) => textDecoration || 'none'};
+  cursor: ${({ cursor }) => cursor || 'default'};
   font-family: 'Roboto', sans-serif;
 `;

@@ -161,3 +161,8 @@ export enum HISTORY {
   EDUCATION = 'education',
   OFFICER = 'officer',
 }
+
+export enum REPEAT_PERIOD {
+  EVERY_WEEK = 'everyWeek',
+  EVERY_OTHER_WEEK = 'everyOtherWeek',
+}

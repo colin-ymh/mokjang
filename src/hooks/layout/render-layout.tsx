@@ -10,6 +10,7 @@ import {
   MEMBER_CONTENT_ID,
   PERMISSION_CONTENT_ID,
   USER_CONTENT_ID,
+  WORSHIP_CONTENT_ID,
 } from '@/constants/layout/content';
 import {
   MAIN_HEADER_ID,
@@ -55,6 +56,7 @@ import ReportedScheduleWidget from '@/components/molecules/home/widget/reported-
 import WorshipAttendanceWidget from '@/components/molecules/home/widget/worship-attendance-widget';
 import MemberHistoryList from '@/components/molecules/member/information/history/member-history-list';
 import MemberVisitationList from '@/components/molecules/member/information/visitation/member-visitation-list';
+import MainWorshipHeader from '@/components/molecules/layout/header/main/worship/main-worship-header';
 
 export const getSide = (id: string) => {
   switch (id) {
@@ -80,6 +82,8 @@ export const getHeader = (id: string, contentId?: string) => {
       return <MainMemberHeader />;
     case MAIN_HEADER_ID.ATTENDANCE:
       return <MainAttendanceHeader />;
+    case MAIN_HEADER_ID.WORSHIP:
+      return <MainWorshipHeader />;
     case MAIN_HEADER_ID.VISITATION:
       return <MainVisitationHeader />;
     case MAIN_HEADER_ID.EDUCATION:
@@ -136,6 +140,13 @@ export const getContent = (
         case CALENDAR_CONTENT_ID.CALENDAR:
           return <MainCalendar />;
 
+        // 출석
+        case ATTENDANCE_CONTENT_ID.ATTENDANCE:
+          return <AttendanceList />;
+        // 예배
+        case WORSHIP_CONTENT_ID.WORSHIP:
+          return <WorshipList />;
+
         default:
           return null;
       }
@@ -173,13 +184,6 @@ export const getContent = (
       } else {
         return null;
       }
-
-    // 출석
-    case ATTENDANCE_CONTENT_ID.ATTENDANCE:
-      return <AttendanceList />;
-    // 예배
-    case ATTENDANCE_CONTENT_ID.WORSHIP:
-      return <WorshipList />;
 
     // 교회 설정
     case CHURCH_CONTENT_ID.CHURCH:

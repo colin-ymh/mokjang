@@ -10,7 +10,6 @@ import {
   MARRIAGE,
   WORSHIP_PERIOD,
 } from '@/constants/constant';
-import { MEMBER } from '@/constants/column/member-column';
 
 import { useI18n } from '../../../locales/client';
 import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-item';
@@ -79,43 +78,6 @@ export const useMarriageDropdownItems = () => {
     {
       value: MARRIAGE.SINGLE,
       title: t(MARRIAGE.SINGLE),
-    },
-  ];
-
-  return items;
-};
-
-export const useSearchFilterDropdownItems = () => {
-  const t = useI18n();
-
-  const items = [
-    {
-      value: MEMBER.NAME,
-      title: t(MEMBER.NAME),
-    },
-    {
-      value: MEMBER.SCHOOL,
-      title: t(MEMBER.SCHOOL),
-    },
-    {
-      value: MEMBER.VEHICLE_NUMBER,
-      title: t(MEMBER.VEHICLE_NUMBER),
-    },
-    {
-      value: MEMBER.MOBILE_PHONE,
-      title: t(MEMBER.MOBILE_PHONE),
-    },
-    {
-      value: MEMBER.ADDRESS,
-      title: t(MEMBER.ADDRESS),
-    },
-    {
-      value: MEMBER.HOME_PHONE,
-      title: t(MEMBER.HOME_PHONE),
-    },
-    {
-      value: MEMBER.OCCUPATION,
-      title: t(MEMBER.OCCUPATION),
     },
   ];
 

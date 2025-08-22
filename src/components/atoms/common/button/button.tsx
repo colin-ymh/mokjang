@@ -102,9 +102,11 @@ const Button = ({
       ) : (
         <ContentWrapper>
           {icon}
-          <MainText color={color} fontWeight={fontWeight} fontSize={fontSize}>
-            {text}
-          </MainText>
+          {text && (
+            <MainText color={color} fontWeight={fontWeight} fontSize={fontSize}>
+              {text}
+            </MainText>
+          )}
         </ContentWrapper>
       )}
     </ButtonContainer>

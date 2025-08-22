@@ -182,6 +182,7 @@ export const getTranslatedWorshipColumn = (
   t: (key: string, ...args: any[]) => string,
   id: WORSHIP
 ): string => {
+  if (id === WORSHIP.ATTENDANCE) return BLANK;
   return t(id as WORSHIP.TITLE);
 };
 

@@ -13,6 +13,8 @@ export default {
   isNotDone: '미완료',
   customSelect: '직접선택',
 
+  prevNextWeek: '이전 / 다음 주',
+
   current: '현재',
 
   creator: '생성자',
@@ -67,11 +69,19 @@ export default {
   churchEvent: '이벤트',
   holiday: '공휴일',
 
+  worshipInformation: '예배 정보',
+  worshipSelectedGroup: '선택 그룹',
+  worshipAverageAttendanceRate: '평균 출석률',
+  worshipLastDate: '최근 예배일',
+
   worshipSessionTitle: '설교제목',
   worshipSessionBibleTitle: '성경본문',
   worshipSessionInCharge: '설교자',
   worshipSessionVideoUrl: '예배영상 URL',
   worshipSessionDescription: '특이사항',
+
+  worshipSessionAttendanceCount: '총 인원',
+  worshipSessionAttendanceRate: '출석률',
 
   worshipGroup: '대상그룹',
   worshipDay: '예배요일',
@@ -210,12 +220,10 @@ export default {
 
   updatedAt: '수정일자',
 
-  birthAfter: '생년월일 ~부터',
-  birthBefore: '생년월일 ~까지',
-  registerAfter: '등록일 ~부터 ',
-  registerBefore: '등록일 ~까지',
-  updateAfter: '수정일 ~부터',
-  updateBefore: '수정일 ~까지',
+  birthFrom: '생년월일 ~부터',
+  birthTo: '생년월일 ~까지',
+  registerFrom: '등록일 ~부터 ',
+  registerTo: '등록일 ~까지',
 
   // 필수
   basicInformation: '기본정보',
@@ -366,8 +374,8 @@ export default {
   /*-------------------header (side bar button)-------------------*/
   'header.home': '홈',
   'header.member': '교인목록',
-  'header.attendance': '출석',
-  'header.worship': '예배',
+  'header.attendance': '예배출석',
+  'header.worship': '예배목록',
   'header.visitation': '심방',
   'header.education': '교육',
   'header.task': '업무',
@@ -510,6 +518,7 @@ export default {
   'button.unlinkMemberInformation': '교인정보 연결끊기',
   'button.addWorshipSession': '출석내용 입력하기',
   'button.addWorship': '예배 추가하기',
+  'button.addWorshipInformation': '예배내용 입력하기',
   'button.check': '조회',
   'button.addChurchEvent': '이벤트 추가하기',
   'button.today': '오늘',
@@ -540,6 +549,8 @@ export default {
   'button.stopMinistryHistory': '사역 이력 종료',
 
   'button.addMinistry': '사역 추가',
+
+  'button.goToAttendance': '출석내용보기',
 
   /*-------------------button-------------------*/
 
@@ -608,6 +619,8 @@ export default {
 
   'placeholder.note': '비고 입력하기',
   'placeholder.location': '장소를 입력해주세요',
+
+  'placeholder.attendanceNote': '특이사항 입력하기',
   /*-------------------placeholder-------------------*/
 
   /*-------------------popup-------------------*/
@@ -705,4 +718,8 @@ export default {
   'description.tableHeaderSetting': '드래그하여 순서를 변경하세요',
   'description.memberRegisterHeader': '새로운 교인의 정보를 입력해주세요',
   /*-------------------description-------------------*/
+
+  /*-------------------tooltip-------------------*/
+  'tooltip.worshipAttendanceHeader': '출석 확인이 필요한 교인이 있습니다.',
+  /*-------------------tooltip-------------------*/
 } as const;

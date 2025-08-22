@@ -4,6 +4,7 @@ import { AppDispatch, RootState } from '@/redux/store';
 import {
   fetchWorshipEnrollments,
   setWorshipEnrollments,
+  setWorshipEnrollmentTotalCount,
 } from '@/redux/reducers/filter/worship-enrollment-filter-reducer';
 import { WorshipEnrollment } from '@/models/worship/worship';
 import AttendanceListView from '@/components/organisms/attendance/list/attendance-list.view';
@@ -33,11 +34,17 @@ const AttendanceList = ({}: AttendanceListProps) => {
     throw thrownError;
   }
 
+  const [isStatisticOpened, setIsStatisticOpened] = useState<boolean>(false);
+
   // 서버에서 불러오는 교인 목록 페이지
   const [page, setPage] = useState<number>(1);
 
   // 데이터 로딩 상태
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const onClickStatisticChevron = () => {
+    setIsStatisticOpened(!isStatisticOpened);
+  };
 
   // 무한 스크롤로 데이터 추가 로드
   const loadWorshipEnrollments = async () => {
@@ -54,7 +61,9 @@ const AttendanceList = ({}: AttendanceListProps) => {
         })
       );
       if (fetchWorshipEnrollments.fulfilled.match(result)) {
-        const newWorshipEnrollments: WorshipEnrollment[] = result.payload;
+        const newWorshipEnrollments: WorshipEnrollment[] = result.payload.data;
+        const totalCount = result.payload.totalCount;
+        dispatch(setWorshipEnrollmentTotalCount(totalCount));
         if (newWorshipEnrollments.length > 0) {
           // 기존 데이터와 합치면서 중복 제거
           const existingIds = new Set(
@@ -92,7 +101,9 @@ const AttendanceList = ({}: AttendanceListProps) => {
             })
           );
           if (fetchWorshipEnrollments.fulfilled.match(result)) {
-            dispatch(setWorshipEnrollments(result.payload));
+            dispatch(setWorshipEnrollments(result.payload.data));
+            const totalCount = result.payload.totalCount;
+            dispatch(setWorshipEnrollmentTotalCount(totalCount));
             setPage(1);
           }
         } catch (error) {
@@ -117,6 +128,8 @@ const AttendanceList = ({}: AttendanceListProps) => {
   const props = {
     list: {
       loadWorshipEnrollments,
+      isStatisticOpened,
+      onClickStatisticChevron,
     },
     information: {},
   };

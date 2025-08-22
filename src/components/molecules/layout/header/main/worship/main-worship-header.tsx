@@ -1,5 +1,4 @@
 import MainWorshipHeaderView from '@/components/molecules/layout/header/main/worship/main-worship-header.view';
-import { usePageRouter } from '@/utils/router';
 import { useEffect, useState } from 'react';
 import { WorshipsApi } from '@/api/worship/worships.api';
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,13 +9,16 @@ import { setTargetWorship } from '@/redux/reducers/target/target-worship-reducer
 import { DEFAULT_WORSHIP } from '@/models/worship/worship';
 import {
   setIsToastShown,
+  setToastBackgroundColor,
   setToastText,
 } from '@/redux/reducers/toast-popup-reducer';
+import { BLACK, DESTRUCTIVE } from '@/constants/styles/color';
+import { useI18n } from '../../../../../../../locales/client';
 
 type MainWorshipHeaderProps = {};
 
 const MainWorshipHeader = ({}: MainWorshipHeaderProps) => {
-  const router = usePageRouter();
+  const t = useI18n();
   const dispatch = useDispatch<AppDispatch>();
 
   const { churchId } = useSelector((state: RootState) => state.church);
@@ -35,11 +37,6 @@ const MainWorshipHeader = ({}: MainWorshipHeaderProps) => {
   if (thrownError) {
     throw thrownError;
   }
-
-  // 헤더 탭바 이벤트
-  const onClickHeaderBar = (id: string) => {
-    router.push(`/main/worship/${id}`);
-  };
 
   const onClickAddWorship = () => {
     setIsAddWorshipOpened(true);
@@ -70,10 +67,15 @@ const MainWorshipHeader = ({}: MainWorshipHeaderProps) => {
           dispatch(setWorships([...worships, newWorship]));
           dispatch(setTargetWorship(DEFAULT_WORSHIP));
           setIsAddWorshipOpened(false);
+
+          dispatch(setToastText(t('popup.saveComplete')));
+          dispatch(setToastBackgroundColor(BLACK));
+          dispatch(setIsToastShown(true));
         });
     } catch (error) {
       if (error instanceof Error) {
         dispatch(setToastText(error.message));
+        dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
         dispatch(setIsToastShown(true));
       } else {
         setThrownError(new Error(String(error)));
@@ -93,7 +95,6 @@ const MainWorshipHeader = ({}: MainWorshipHeaderProps) => {
   const props = {
     isAddWorshipOpened,
     isSaveEnabled,
-    onClickHeaderBar,
     onClickAddWorship,
     onClickCloseModal,
     onClickSaveWorship,

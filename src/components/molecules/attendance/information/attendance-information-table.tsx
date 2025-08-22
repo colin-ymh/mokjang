@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
+import React, { ChangeEvent, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 import AttendanceInformationTableView from '@/components/molecules/attendance/information/attendance-information-table.view';
@@ -7,21 +7,23 @@ import {
   WorshipAttendance,
   WorshipEnrollment,
 } from '@/models/worship/worship';
-import { setWorshipAttendances } from '@/redux/reducers/filter/worship-attendance-filter-reducer';
+import {
+  setWorshipAttendances,
+  setWorshipAttendanceSortBy,
+  setWorshipAttendanceSortDirection,
+} from '@/redux/reducers/filter/worship-attendance-filter-reducer';
 import { WorshipAttendancesApi } from '@/api/worship/worship-attendances.api';
 import { setWorshipEnrollments } from '@/redux/reducers/filter/worship-enrollment-filter-reducer';
 import {
   setIsToastShown,
   setToastText,
 } from '@/redux/reducers/toast-popup-reducer';
+import { ORDER_DIRECTION } from '@/constants/constant';
+import { WORSHIP_ATTENDANCE } from '@/constants/column/worship-column';
 
-export type AttendanceInformationTableProps = {
-  loadWorshipAttendances: () => Promise<void>;
-};
+export type AttendanceInformationTableProps = {};
 
-const AttendanceInformationTable = ({
-  loadWorshipAttendances,
-}: AttendanceInformationTableProps) => {
+const AttendanceInformationTable = ({}: AttendanceInformationTableProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const { churchId } = useSelector((state: RootState) => state.church);
   const { targetWorship } = useSelector(
@@ -32,17 +34,14 @@ const AttendanceInformationTable = ({
   );
   const {
     worshipAttendances,
-    worshipAttendanceFilter,
-    worshipAttendanceOrderBy,
-    worshipAttendanceOrderDirection,
+    worshipAttendanceSortBy,
+    worshipAttendanceSortDirection,
   } = useSelector((state: RootState) => state.worshipAttendanceFilter);
   const { worshipEnrollments } = useSelector(
     (state: RootState) => state.worshipEnrollmentFilter
   );
 
   const worshipAttendancesApi = new WorshipAttendancesApi(false);
-
-  const scrollRef = useRef<HTMLDivElement | null>(null);
 
   // 컴포넌트 내부 최상단에 선언
   const debounceTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -52,14 +51,24 @@ const AttendanceInformationTable = ({
     throw thrownError;
   }
 
-  const onScroll = () => {
-    if (scrollRef.current) {
-      const { scrollTop, scrollHeight, clientHeight } = scrollRef.current;
+  // 열 헤더를 눌러 정렬
+  const onClickHeader = (id: WORSHIP_ATTENDANCE) => {
+    let newOrderBy =
+      id === WORSHIP_ATTENDANCE.PRESENT || id === WORSHIP_ATTENDANCE.ABSENT
+        ? WORSHIP_ATTENDANCE.ATTENDANCE_STATUS
+        : id;
 
-      // 스크롤이 최하단에 도달했는지 확인
-      if (scrollTop + clientHeight >= scrollHeight) {
-        loadWorshipAttendances(); // 데이터를 추가로 로드
-      }
+    if (newOrderBy !== worshipAttendanceSortBy) {
+      dispatch(setWorshipAttendanceSortBy(newOrderBy));
+      dispatch(setWorshipAttendanceSortDirection(ORDER_DIRECTION.ASC));
+    } else {
+      dispatch(
+        setWorshipAttendanceSortDirection(
+          worshipAttendanceSortDirection === ORDER_DIRECTION.ASC
+            ? ORDER_DIRECTION.DESC
+            : ORDER_DIRECTION.ASC
+        )
+      );
     }
   };
 
@@ -296,21 +305,9 @@ const AttendanceInformationTable = ({
     }, 300);
   };
 
-  // 정렬 변경 시 스크롤을 최상단으로 이동
-  useEffect(() => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollTop = 0;
-    }
-  }, [
-    worshipAttendanceFilter,
-    worshipAttendanceOrderBy,
-    worshipAttendanceOrderDirection,
-  ]);
-
   const props = {
     worshipAttendances,
-    scrollRef,
-    onScroll,
+    onClickHeader,
     onChangePresent,
     onChangeAbsent,
     onChangeNote,

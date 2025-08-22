@@ -4,6 +4,7 @@ import { MEDIA_MIN_WIDTH } from '@/constants/constant';
 import WorshipTable, {
   WorshipTableProps,
 } from '@/components/molecules/worship/worship-table';
+import { WHITE } from '@/constants/styles/color';
 
 const WorshipListContainer = styled.div`
   display: flex;
@@ -11,6 +12,7 @@ const WorshipListContainer = styled.div`
   height: 100%;
   width: 100%;
   overflow-y: auto;
+  background-color: ${WHITE};
 `;
 
 const MobileView = styled.div`

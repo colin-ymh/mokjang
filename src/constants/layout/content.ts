@@ -15,6 +15,11 @@ export enum ATTENDANCE_CONTENT_ID {
   ATTENDANCE = 'attendance',
 }
 
+export enum WORSHIP_CONTENT_ID {
+  WORSHIP = 'worship',
+  // ATTENDANCE = 'attendance',
+}
+
 export enum CALENDAR_CONTENT_ID {
   CALENDAR = 'calendar',
 }

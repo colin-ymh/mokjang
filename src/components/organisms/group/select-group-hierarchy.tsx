@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import SelectGroupHierarchyView from '@/components/organisms/group/select-group-hierarchy.view';
+import { ALL } from '@/constants/constant';
 
 type GroupFilterProps = {
   isAllSelectable?: boolean;
@@ -21,7 +22,7 @@ const SelectGroupHierarchy = ({
 }: GroupFilterProps) => {
   // 선택된 그룹 id
   const [selectedGroupId, setSelectedGroupId] = useState<string | null>(
-    prevSelectedGroupId || null
+    prevSelectedGroupId || ALL
   );
 
   // 새로운 그룹을 설정

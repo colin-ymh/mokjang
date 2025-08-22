@@ -4,10 +4,16 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 
-import { GRAY, WHITE } from '@/constants/styles/color';
+import { GRAY, MAIN, PURPLE, WHITE } from '@/constants/styles/color';
 import { MEMBER } from '@/constants/column/member-column';
 import { MainText } from '@/components/atoms/common/text/main-text';
-import { BAPTISM, BLANK, GENDER } from '@/constants/constant';
+import {
+  BAPTISM,
+  BLANK,
+  GENDER,
+  GROUP_ROLE,
+  MINISTRY_GROUP_ROLE,
+} from '@/constants/constant';
 import { getAge, getDateFromInput } from '@/utils/date';
 import {
   getFormattedDate,
@@ -23,6 +29,7 @@ import { useI18n } from '../../../../../locales/client';
 import { BLANK_HEADER } from '@/redux/reducers/filter/member-filter-reducer';
 import ProfileImage from '@/components/atoms/common/image/profile-image';
 import { getTranslatedDateFromDateString } from '@/utils/translate';
+import MainTag from '@/components/atoms/common/tag/main-tag';
 
 // 1. 컬럼별 PX 폭 (마지막 REMARKS만 auto 할 예정)
 const getColumnWidth = (id: string) => {
@@ -32,7 +39,7 @@ const getColumnWidth = (id: string) => {
     case MEMBER.GROUP:
       return 100;
     case MEMBER.NAME:
-      return 200;
+      return 150;
     case MEMBER.GENDER:
       return 100;
     case MEMBER.OFFICER:
@@ -161,6 +168,8 @@ const ContentWrapper = styled.div`
 
 const ProfileContainer = styled.div`
   display: flex;
+  gap: 10px;
+  align-items: center;
   width: 100%;
 `;
 
@@ -207,6 +216,20 @@ const MemberTableView = ({
           <ProfileContainer>
             {/*<MemberProfile member={member} isProfileImageShown={false} /> */}
             <MainText>{member?.name}</MainText>
+            {member.groupRole === GROUP_ROLE.LEADER && (
+              <MainTag
+                title={t('groupLeader')}
+                color={MAIN.DARK}
+                backgroundColor={MAIN.LIGHT}
+              />
+            )}
+            {member.ministryGroupRole === MINISTRY_GROUP_ROLE.LEADER && (
+              <MainTag
+                title={t('ministryGroupLeader')}
+                color={PURPLE.DARK}
+                backgroundColor={PURPLE.LIGHT}
+              />
+            )}
           </ProfileContainer>
         );
       case MEMBER.MOBILE_PHONE:

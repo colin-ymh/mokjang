@@ -23,6 +23,7 @@ type LabelInputProps = InputProps & {
   borderColor?: string;
   // labelColor?: string;
   isRequired?: boolean;
+  icon?: React.ReactNode;
 };
 
 // forwardRef 를 사용하여 ref 를 props 로 전달받을 수 있게

@@ -4,9 +4,7 @@ import styled from 'styled-components';
 import Button from '@/components/atoms/common/button/button';
 import { GRAY, WHITE } from '@/constants/styles/color';
 import MemberTableHeaderSetting from '@/components/molecules/member/setting/member-table-header-setting';
-import { MEMBER } from '@/constants/column/member-column';
 import FilteredItem from '@/components/atoms/member/setting/filtered-item';
-import { useSearchFilterDropdownItems } from '@/hooks/dropdown/dropdown-items';
 
 import { useScopedI18n } from '../../../../../locales/client';
 import SearchInput from '@/components/atoms/common/input/search-input';
@@ -84,20 +82,10 @@ const FilterIcon = styled(Filter)`
   stroke-width: 1.5px;
 `;
 
-export type SEARCH_FILTER =
-  | MEMBER.NAME
-  | MEMBER.SCHOOL
-  | MEMBER.VEHICLE_NUMBER
-  | MEMBER.HOME_PHONE
-  | MEMBER.MOBILE_PHONE
-  | MEMBER.OCCUPATION
-  | MEMBER.ADDRESS;
-
 type MemberFilterViewProps = {
   isGroupFilterShown: boolean;
   isMemberFilterShown: boolean;
   isHeaderFilterShown: boolean;
-  searchFilter: SEARCH_FILTER;
   searchValue: string;
   searchRef: Ref<HTMLInputElement>;
   onClickGroupFilterOpen: () => void;
@@ -106,7 +94,6 @@ type MemberFilterViewProps = {
   onClickMemberFilterClose: () => void;
   onClickHeaderFilterOpen: () => void;
   onClickHeaderFilterClose: () => void;
-  onClickSearchFilterItem: (value: SEARCH_FILTER) => void;
   onChangeSearchValue: (event: ChangeEvent<HTMLInputElement>) => void;
   onClickSearch: () => void;
   onKeyDown: (event: React.KeyboardEvent<HTMLInputElement>) => void;
@@ -116,7 +103,6 @@ const MemberFilterRowView = ({
   isGroupFilterShown,
   isMemberFilterShown,
   isHeaderFilterShown,
-  searchFilter,
   searchValue,
   searchRef,
   onClickGroupFilterOpen,
@@ -125,14 +111,12 @@ const MemberFilterRowView = ({
   onClickMemberFilterClose,
   onClickHeaderFilterOpen,
   onClickHeaderFilterClose,
-  onClickSearchFilterItem,
   onChangeSearchValue,
   onClickSearch,
   onKeyDown,
 }: MemberFilterViewProps) => {
   const t_title = useScopedI18n('title');
   const t_button = useScopedI18n('button');
-  const searchFilterDropdownItems = useSearchFilterDropdownItems();
 
   const { filteredItems } = useSelector(
     (state: RootState) => state.memberFilter
@@ -146,9 +130,6 @@ const MemberFilterRowView = ({
           <LeftContainer>
             <SearchInput
               searchRef={searchRef}
-              searchFilter={searchFilter}
-              searchFilterDropdownItems={searchFilterDropdownItems}
-              onClickSearchFilterItem={onClickSearchFilterItem}
               searchValue={searchValue}
               onChangeSearchValue={onChangeSearchValue}
               onKeyDown={onKeyDown}
@@ -224,6 +205,7 @@ const MemberFilterRowView = ({
         onClickCancel={onClickMemberFilterClose}
         width={500}
         height={800}
+        cancelText={t_button('close')}
       >
         <MemberFilter />
       </CustomPopup>

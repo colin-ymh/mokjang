@@ -23,6 +23,7 @@ import CustomSlider from '@/components/atoms/common/slider/custom-slider';
 import { getTranslatedAge } from '@/utils/translate';
 import { usePathname } from 'next/navigation';
 import { LOCALE } from '@/constants/state/locale';
+import { BAPTISM, MARRIAGE } from '@/constants/constant';
 
 const TableSettingContainer = styled.div`
   display: flex;
@@ -63,11 +64,11 @@ const AgeRangeTitle = styled.div`
 
 type TableSettingViewProps = {
   ageRange: [number, number];
-  onChangeOfficerItems: (values: string[]) => void;
-  onChangeMarriageItems: (values: string[]) => void;
-  onChangeBaptismItems: (values: string[]) => void;
-  onChangeRegisterAfter: (date: Date | null) => void;
-  onChangeRegisterBefore: (date: Date | null) => void;
+  onChangeOfficerItems: (values: (string | null)[]) => void;
+  onChangeMarriageItems: (values: (MARRIAGE | null)[]) => void;
+  onChangeBaptismItems: (values: BAPTISM[]) => void;
+  onChangeRegisteredFrom: (date: Date | null) => void;
+  onChangeRegisteredTo: (date: Date | null) => void;
   onChangeAgeRange: (values: [number, number]) => void;
 };
 
@@ -76,8 +77,8 @@ const MemberTableHeaderSettingView = ({
   onChangeOfficerItems,
   onChangeMarriageItems,
   onChangeBaptismItems,
-  onChangeRegisterAfter,
-  onChangeRegisterBefore,
+  onChangeRegisteredFrom,
+  onChangeRegisteredTo,
   onChangeAgeRange,
 }: TableSettingViewProps) => {
   const pathname = usePathname();
@@ -89,20 +90,34 @@ const MemberTableHeaderSettingView = ({
   );
   const { officers } = useSelector((state: RootState) => state.church);
 
-  const officerCheckListItems: CheckButtonValue[] = officers.map((officer) => ({
-    value: officer.id,
-    title: officer.name,
-  }));
+  const NULL_ITEM = {
+    value: null,
+    title: t('none'),
+  };
 
-  const marriageCheckListItems: CheckButtonValue[] = useMarriageDropdownItems();
-  const baptismCheckListItems: CheckButtonValue[] = useBaptismDropdownItems();
+  const officerCheckListItems: CheckButtonValue[] = [
+    ...officers.map((officer) => ({
+      value: officer.id,
+      title: officer.name,
+    })),
+    NULL_ITEM,
+  ];
+
+  const marriageCheckListItems: CheckButtonValue[] = [
+    ...useMarriageDropdownItems(),
+    NULL_ITEM,
+  ];
+  const baptismCheckListItems: CheckButtonValue[] = [
+    ...useBaptismDropdownItems(),
+    NULL_ITEM,
+  ];
 
   return (
     <TableSettingContainer>
       <LabelContainer>
         <MainText fontWeight={600}>{t('officer')}</MainText>
         <CheckButtonList
-          values={memberFilter.officer}
+          values={memberFilter.officerIds}
           onChange={onChangeOfficerItems}
           items={officerCheckListItems}
         />
@@ -110,7 +125,7 @@ const MemberTableHeaderSettingView = ({
       <LabelContainer>
         <MainText fontWeight={600}>{t('marriage')}</MainText>
         <CheckButtonList
-          values={memberFilter.marriage}
+          values={memberFilter.marriageStatuses}
           onChange={onChangeMarriageItems}
           items={marriageCheckListItems}
         />
@@ -118,7 +133,7 @@ const MemberTableHeaderSettingView = ({
       <LabelContainer>
         <MainText fontWeight={600}>{t('baptism')}</MainText>
         <CheckButtonList
-          values={memberFilter.baptism}
+          values={memberFilter.baptismStatuses}
           onChange={onChangeBaptismItems}
           items={baptismCheckListItems}
         />
@@ -144,35 +159,35 @@ const MemberTableHeaderSettingView = ({
         <RowContainer>
           <CustomDatePicker
             value={
-              memberFilter.registerAfter
+              memberFilter.registeredFrom
                 ? getDateStringFromDate(
-                    getDateFromInput(memberFilter.registerAfter)
+                    getDateFromInput(memberFilter.registeredFrom)
                   )
                 : undefined
             }
             selected={
-              memberFilter.registerAfter
-                ? getDateFromDateString(memberFilter.registerAfter)
+              memberFilter.registeredFrom
+                ? getDateFromDateString(memberFilter.registeredFrom)
                 : null
             }
-            onChange={onChangeRegisterAfter}
+            onChange={onChangeRegisteredFrom}
             placeholderText={t('startDate')}
             borderColor={GRAY.LIGHT}
           />
           <CustomDatePicker
             value={
-              memberFilter.registerBefore
+              memberFilter.registeredTo
                 ? getDateStringFromDate(
-                    getDateFromInput(memberFilter.registerBefore)
+                    getDateFromInput(memberFilter.registeredTo)
                   )
                 : undefined
             }
             selected={
-              memberFilter.registerBefore
-                ? getDateFromDateString(memberFilter.registerBefore)
+              memberFilter.registeredTo
+                ? getDateFromDateString(memberFilter.registeredTo)
                 : null
             }
-            onChange={onChangeRegisterBefore}
+            onChange={onChangeRegisteredTo}
             placeholderText={t('endDate')}
             borderColor={GRAY.LIGHT}
           />

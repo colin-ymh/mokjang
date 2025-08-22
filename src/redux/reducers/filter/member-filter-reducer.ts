@@ -1,78 +1,32 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { BLANK, ORDER_DIRECTION } from '@/constants/constant';
+import {
+  ALL,
+  BAPTISM,
+  BLANK,
+  MARRIAGE,
+  ORDER_DIRECTION,
+} from '@/constants/constant';
 import { MEMBER } from '@/constants/column/member-column';
 import { Member } from '@/models/member/member';
 import { RootState } from '@/redux/store';
 import { MembersApi } from '@/api/members/members.api';
 import { FilteredItemType } from '@/components/atoms/member/setting/filtered-item.view';
-import { getEveryChildGroups } from '@/utils/group';
-import { DEFAULT_GROUP, Group } from '@/models/management/management';
 
 type MEMBER_FILTER = {
-  [MEMBER.NAME]: string;
-  [MEMBER.SCHOOL]: string;
-  [MEMBER.OCCUPATION]: string;
-  [MEMBER.VEHICLE_NUMBER]: string;
-  [MEMBER.GENDER]: string[];
-  [MEMBER.GROUP]: Group;
-  [MEMBER.OFFICER]: string[];
-  [MEMBER.MINISTRIES]: string[];
-  [MEMBER.EDUCATIONS]: string[];
-  [MEMBER.BAPTISM]: string[];
-  [MEMBER.MARRIAGE]: string[];
-  [MEMBER.MOBILE_PHONE]: string;
-  [MEMBER.HOME_PHONE]: string;
-  [MEMBER.ADDRESS]: string;
-  birthAfter: string;
-  birthBefore: string;
-  registerAfter: string;
-  registerBefore: string;
-  updateAfter: string;
-  updateBefore: string;
-  selectedColumns: MEMBER[];
-};
-
-type MemberFilterState = {
-  members: Member[];
-  memberFilter: MEMBER_FILTER;
-  memberOrderBy?: MEMBER;
-  memberOrderDirection: ORDER_DIRECTION;
-  memberTableHeaderItemList: MEMBER_TABLE_HEADER_ITEM[];
-  filteredItems: FilteredItemType[];
-  memberPage: number;
-};
-
-export const INITIAL_MEMBER_FILTER: MEMBER_FILTER = {
-  name: BLANK,
-  school: BLANK,
-  occupation: BLANK,
-  vehicleNumber: BLANK,
-  mobilePhone: BLANK,
-  homePhone: BLANK,
-  address: BLANK,
-  gender: [],
-  baptism: [],
-  officer: [],
-  ministries: [],
-  educations: [],
-  marriage: [],
-  group: DEFAULT_GROUP,
-  birthAfter: BLANK,
-  birthBefore: BLANK,
-  registerAfter: BLANK,
-  registerBefore: BLANK,
-  updateAfter: BLANK,
-  updateBefore: BLANK,
-  selectedColumns: [
-    MEMBER.GENDER,
-    MEMBER.OFFICER,
-    MEMBER.AGE,
-    MEMBER.MOBILE_PHONE,
-  ],
+  groupIds: (string | null)[];
+  officerIds: (string | null)[];
+  marriageStatuses: (MARRIAGE | null)[];
+  baptismStatuses: BAPTISM[];
+  birthFrom: string;
+  birthTo: string;
+  registeredFrom: string;
+  registeredTo: string;
+  displayColumns: MEMBER[];
+  search: string;
 };
 
 export type MEMBER_TABLE_HEADER_ITEM = {
-  id: MEMBER;
+  id: MEMBER | typeof BLANK;
   isShown: boolean;
   isSortable: boolean;
   isFilterable: boolean;
@@ -80,7 +34,44 @@ export type MEMBER_TABLE_HEADER_ITEM = {
   isDate?: boolean;
 };
 
-export const BLANK_HEADER = {
+type MemberFilterState = {
+  members: Member[];
+  memberFilter: MEMBER_FILTER;
+  memberSortBy?: MEMBER;
+  memberSortDirection: ORDER_DIRECTION;
+  memberTableHeaderItemList: MEMBER_TABLE_HEADER_ITEM[];
+  filteredItems: FilteredItemType[];
+  memberCursor: string;
+
+  // 페이지네이션 메타
+  nextCursor?: string | null;
+  hasMore: boolean;
+
+  // UI 상태
+  loading: boolean;
+  error: string | null;
+};
+
+export const INITIAL_MEMBER_FILTER: MEMBER_FILTER = {
+  groupIds: [],
+  officerIds: [],
+  baptismStatuses: [],
+  marriageStatuses: [],
+  birthFrom: BLANK,
+  birthTo: BLANK,
+  registeredFrom: BLANK,
+  registeredTo: BLANK,
+  search: BLANK,
+  displayColumns: [
+    MEMBER.GROUP,
+    MEMBER.GENDER,
+    MEMBER.OFFICER,
+    MEMBER.BIRTH,
+    MEMBER.MOBILE_PHONE,
+  ],
+};
+
+export const BLANK_HEADER: MEMBER_TABLE_HEADER_ITEM = {
   id: BLANK,
   isShown: true,
   isSortable: false,
@@ -209,7 +200,7 @@ export const INITIAL_TABLE_HEADER_LIST: MEMBER_TABLE_HEADER_ITEM[] = [
     isDate: false,
   },
   {
-    id: MEMBER.AGE,
+    id: MEMBER.BIRTH,
     isShown: false,
     isSortable: true,
     isFilterable: true,
@@ -237,59 +228,73 @@ export const INITIAL_TABLE_HEADER_LIST: MEMBER_TABLE_HEADER_ITEM[] = [
 const initialState: MemberFilterState = {
   members: [],
   memberFilter: INITIAL_MEMBER_FILTER,
-  memberOrderDirection: ORDER_DIRECTION.ASC,
+  memberSortDirection: ORDER_DIRECTION.ASC,
   memberTableHeaderItemList: INITIAL_TABLE_HEADER_LIST,
   filteredItems: [],
-  memberPage: 1,
+  memberCursor: BLANK,
+  nextCursor: null,
+  hasMore: false,
+  loading: false,
+  error: null,
 };
 
+// thunk 반환 타입 정의: members + nextCursor + hasMore
+type FetchMembersResult = {
+  members: Member[];
+  nextCursor: string | null;
+  hasMore: boolean;
+};
+
+// rejectValue를 string으로 명시
 export const fetchMembers = createAsyncThunk<
-  Member[],
+  FetchMembersResult,
   void,
-  { state: RootState }
+  { state: RootState; rejectValue: string }
 >('members/fetchMembers', async (_, { getState, rejectWithValue }) => {
   const state = getState().memberFilter;
-  const { groups, churchId } = getState().church;
+  const { churchId } = getState().church;
   const {
-    memberPage,
-    memberOrderBy,
-    memberOrderDirection,
+    memberCursor,
+    memberSortBy,
+    memberSortDirection,
     memberFilter,
     members,
   } = state;
   const membersApi = new MembersApi(false);
 
-  try {
-    let order = memberOrderBy;
-    if (order === MEMBER.AGE) order = MEMBER.BIRTH;
+  const {
+    groupIds,
+    officerIds,
+    marriageStatuses,
+    baptismStatuses,
+    birthFrom,
+    birthTo,
+    registeredFrom,
+    registeredTo,
+    displayColumns,
+    search,
+  } = memberFilter;
 
-    const response = await membersApi.getMembers({
+  try {
+    let sort = memberSortBy;
+    // AGE로 정렬 요청 시 실데이터는 BIRTH 기준으로 정렬
+    if (sort === MEMBER.AGE) sort = MEMBER.BIRTH;
+
+    const response = await membersApi.getMembersV2({
       churchId,
-      page: memberPage,
-      take: 30,
-      order: order || undefined,
-      orderDirection: memberOrderDirection,
-      selectedColumns: memberFilter.selectedColumns,
-      group: getEveryChildGroups(groups, memberFilter.group),
-      officer: memberFilter.officer,
-      gender: memberFilter.gender,
-      educations: memberFilter.educations,
-      ministries: memberFilter.ministries,
-      baptism: memberFilter.baptism,
-      marriage: memberFilter.marriage,
-      birthAfter: memberFilter.birthAfter,
-      birthBefore: memberFilter.birthBefore,
-      registerAfter: memberFilter.registerAfter,
-      registerBefore: memberFilter.registerBefore,
-      updateAfter: memberFilter.updateAfter,
-      updateBefore: memberFilter.updateBefore,
-      name: memberFilter.name,
-      school: memberFilter.school,
-      vehicleNumber: memberFilter.vehicleNumber,
-      address: memberFilter.address,
-      mobilePhone: memberFilter.mobilePhone,
-      homePhone: memberFilter.homePhone,
-      occupation: memberFilter.occupation,
+      cursor: memberCursor,
+      sortBy: sort,
+      sortDirection: memberSortDirection,
+      groupIds: groupIds.filter((id) => id !== ALL),
+      officerIds,
+      marriageStatuses,
+      baptismStatuses,
+      birthFrom,
+      birthTo,
+      registeredFrom,
+      registeredTo,
+      displayColumns,
+      search,
     });
 
     const newMembers: Member[] = response.data.data;
@@ -299,9 +304,12 @@ export const fetchMembers = createAsyncThunk<
     );
 
     const updatedMembers =
-      memberPage === 1 ? newMembers : [...members, ...filteredNewMembers];
+      memberCursor === BLANK ? newMembers : [...members, ...filteredNewMembers];
 
-    return updatedMembers;
+    const nextCursor: string | null = response.data.nextCursor ?? null;
+    const hasMore: boolean = Boolean(response.data.hasMore);
+
+    return { members: updatedMembers, nextCursor, hasMore };
   } catch (error) {
     console.error('교인 목록 불러오기 실패', error);
     return rejectWithValue('교인 목록을 불러오는 중 오류가 발생했습니다.');
@@ -309,7 +317,7 @@ export const fetchMembers = createAsyncThunk<
 });
 
 const MemberFilterSlice = createSlice({
-  name: 'register',
+  name: 'memberFilter',
   initialState,
   reducers: {
     setMembers: (state, action: PayloadAction<Member[]>) => {
@@ -318,11 +326,11 @@ const MemberFilterSlice = createSlice({
     setMemberFilter: (state, action: PayloadAction<MEMBER_FILTER>) => {
       state.memberFilter = action.payload;
     },
-    setMemberOrderBy(state, action: PayloadAction<MEMBER>) {
-      state.memberOrderBy = action.payload;
+    setMemberSortBy(state, action: PayloadAction<MEMBER>) {
+      state.memberSortBy = action.payload;
     },
-    setMemberOrderDirection(state, action: PayloadAction<ORDER_DIRECTION>) {
-      state.memberOrderDirection = action.payload;
+    setMemberSortDirection(state, action: PayloadAction<ORDER_DIRECTION>) {
+      state.memberSortDirection = action.payload;
     },
     setMemberTableHeaderItemList(
       state,
@@ -333,24 +341,44 @@ const MemberFilterSlice = createSlice({
     setFilteredItems: (state, action: PayloadAction<FilteredItemType[]>) => {
       state.filteredItems = action.payload;
     },
-    setMemberPage: (state, action: PayloadAction<number>) => {
-      state.memberPage = action.payload;
+    setMemberCursor: (state, action: PayloadAction<string>) => {
+      state.memberCursor = action.payload;
+    },
+    // 선택: nextCursor로 커서 전진 (무한스크롤에서 바로 쓰기 편함)
+    advanceToNextCursor: (state) => {
+      if (state.nextCursor) {
+        state.memberCursor = state.nextCursor;
+      }
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchMembers.fulfilled, (state, action) => {
-      state.members = action.payload;
-    });
+    builder
+      .addCase(fetchMembers.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchMembers.fulfilled, (state, action) => {
+        state.loading = false;
+        state.members = action.payload.members;
+        state.nextCursor = action.payload.nextCursor;
+        state.hasMore = action.payload.hasMore;
+      })
+      .addCase(fetchMembers.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload ?? '알 수 없는 오류가 발생했습니다.';
+      });
   },
 });
 
 export const {
   setMembers,
   setMemberFilter,
-  setMemberOrderBy,
-  setMemberOrderDirection,
+  setMemberSortBy,
+  setMemberSortDirection,
   setMemberTableHeaderItemList,
   setFilteredItems,
-  setMemberPage,
+  setMemberCursor,
+  advanceToNextCursor,
 } = MemberFilterSlice.actions;
+
 export default MemberFilterSlice.reducer;

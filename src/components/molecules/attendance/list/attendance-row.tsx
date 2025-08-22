@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 import { setWorshipEnrollmentFilter } from '@/redux/reducers/filter/worship-enrollment-filter-reducer';
 import { WORSHIP_ENROLLMENT } from '@/constants/column/worship-column';
-import { BLANK, WORSHIP_PERIOD } from '@/constants/constant';
+import { ALL, BLANK, WORSHIP_PERIOD } from '@/constants/constant';
 import AttendanceRowView from '@/components/molecules/attendance/list/attendance-row.view';
 import { DEFAULT_GROUP, Group } from '@/models/management/management';
 import { getGroup } from '@/utils/group';
@@ -13,10 +13,10 @@ import {
   setWorships,
 } from '@/redux/reducers/filter/worship-filter-reducer';
 import { WorshipsApi } from '@/api/worship/worships.api';
-import { Worship } from '@/models/worship/worship';
 import {
   setTargetWorship,
   setTargetWorshipGroup,
+  setTargetWorshipStatistic,
 } from '@/redux/reducers/target/target-worship-reducer';
 import {
   getDateFromDateString,
@@ -24,8 +24,13 @@ import {
   getMonthsAfterDate,
   getMonthsBeforeDate,
 } from '@/utils/date';
+import { Worship, WorshipStatistic } from '@/models/worship/worship';
+import { AttendanceTableProps } from '@/components/molecules/attendance/list/attendance-table';
 
-const AttendanceRow = () => {
+const AttendanceRow = ({
+  isStatisticOpened,
+  onClickStatisticChevron,
+}: AttendanceTableProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const churchId: string = useSelector(
     (state: RootState) => state.church.churchId
@@ -33,7 +38,7 @@ const AttendanceRow = () => {
   const { worshipEnrollmentFilter } = useSelector(
     (state: RootState) => state.worshipEnrollmentFilter
   );
-  const { targetWorship } = useSelector(
+  const { targetWorship, targetWorshipGroup } = useSelector(
     (state: RootState) => state.targetWorship
   );
   const { worships } = useSelector((state: RootState) => state.worshipFilter);
@@ -68,7 +73,7 @@ const AttendanceRow = () => {
 
   // 그룹 선택
   const onClickGroupItem = (id: string | null) => {
-    const newGroup = getGroup(id, groups);
+    const newGroup = id === ALL ? DEFAULT_GROUP : getGroup(id, groups);
     dispatch(setTargetWorshipGroup(newGroup));
 
     dispatch(
@@ -327,10 +332,38 @@ const AttendanceRow = () => {
     onChangeWorshipPeriod(worshipPeriod);
   }, [worshipPeriod]);
 
+  const fetchWorshipStatistic = async () => {
+    if (targetWorship.id === BLANK) return;
+    if (!targetWorshipGroup.id) return;
+
+    try {
+      const response = await worshipsApi.getWorshipStatistics({
+        churchId,
+        worshipId: targetWorship.id,
+        groupId:
+          targetWorshipGroup.id === ALL ? undefined : targetWorshipGroup.id,
+        from: worshipEnrollmentFilter.fromSessionDate,
+        to: worshipEnrollmentFilter.toSessionDate,
+      });
+
+      const worshipStatistic: WorshipStatistic = response.data;
+
+      dispatch(setTargetWorshipStatistic(worshipStatistic));
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
+    }
+  };
+
+  useEffect(() => {
+    fetchWorshipStatistic();
+  }, [targetWorshipGroup.id, targetWorship.id]);
+
   const props = {
     isGroupModalShown,
+    isStatisticOpened,
     topLevelGroup,
     worshipPeriod,
+    onClickStatisticChevron,
     onClickGroupItem,
     onClickWorshipItem,
     onClickOpenGroupModal,

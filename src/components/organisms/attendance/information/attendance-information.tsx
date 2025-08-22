@@ -1,42 +1,45 @@
-import React, { useEffect, useState } from 'react';
+import React, { RefObject, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 import { WorshipsApi } from '@/api/worship/worships.api';
 import { DEFAULT_GROUP, Group } from '@/models/management/management';
 import { getGroup } from '@/utils/group';
-import { Worship, WorshipAttendance } from '@/models/worship/worship';
+import { Worship, WORSHIP_ATTENDANCE_STATUS, WorshipAttendance, } from '@/models/worship/worship';
 import {
   setTargetWorshipSession,
   setTargetWorshipSessionGroup,
+  setTargetWorshipSessionStatistic,
   setTargetWorshipSessionWorship,
 } from '@/redux/reducers/target/target-worship-session-reducer';
 import AttendanceInformationView from '@/components/organisms/attendance/information/attendance-information.view';
 import {
   fetchWorshipAttendances,
-  setPrevWorshipAttendances,
+  setWorshipAttendanceCursor,
   setWorshipAttendances,
 } from '@/redux/reducers/filter/worship-attendance-filter-reducer';
-import Loading from '@/components/atoms/common/etc/loading';
 import { WorshipSessionsApi } from '@/api/worship/worship-sessions.api';
-import {
-  getDateFromDateString,
-  getDateInWeekByDayOfWeek,
-  getDateStringFromDate,
-} from '@/utils/date';
-import { ATTENDANCE_CONTENT_ID } from '@/constants/layout/content';
+import { getDateFromDateString, getDateInWeekByDayOfWeek, getDateStringFromDate, } from '@/utils/date';
+import { ALL, BLANK } from '@/constants/constant';
+import { CustomError } from '@/api/error/error';
+import { WorshipAttendancesApi } from '@/api/worship/worship-attendances.api';
+import { setWorshipEnrollments } from '@/redux/reducers/filter/worship-enrollment-filter-reducer';
 
-type AttendanceInformationProps = {};
+type AttendanceInformationProps = { scrollRef: RefObject<HTMLDivElement> };
 
-const AttendanceInformation = ({}: AttendanceInformationProps) => {
+const AttendanceInformation = ({ scrollRef }: AttendanceInformationProps) => {
   const dispatch = useDispatch<AppDispatch>();
 
   const worshipsApi = new WorshipsApi(false);
   const worshipSessionsApi = new WorshipSessionsApi(false);
+  const worshipAttendancesApi = new WorshipAttendancesApi(false);
 
   const churchId: string = useSelector(
     (state: RootState) => state.church.churchId
   );
   const { groups } = useSelector((state: RootState) => state.church);
+  const { targetWorship } = useSelector(
+    (state: RootState) => state.targetWorship
+  );
   const {
     targetWorshipSession,
     targetWorshipSessionWorship,
@@ -45,13 +48,33 @@ const AttendanceInformation = ({}: AttendanceInformationProps) => {
   const {
     worshipAttendances,
     worshipAttendanceFilter,
-    worshipAttendanceOrderBy,
-    worshipAttendanceOrderDirection,
+    worshipAttendanceSortBy,
+    worshipAttendanceSortDirection,
+    loading,
+    hasMore,
   } = useSelector((state: RootState) => state.worshipAttendanceFilter);
-
-  const [contentId, setContentId] = useState<ATTENDANCE_CONTENT_ID>(
-    ATTENDANCE_CONTENT_ID.ATTENDANCE
+  const { worshipEnrollments } = useSelector(
+    (state: RootState) => state.worshipEnrollmentFilter
   );
+
+  useEffect(() => {
+    const ref = scrollRef?.current;
+    if (!ref) return;
+    const handleScroll = () => {
+      if (
+        ref.scrollTop + ref.clientHeight >= ref.scrollHeight - 10 &&
+        !loading &&
+        hasMore
+      ) {
+        dispatch(fetchWorshipAttendances());
+      }
+    };
+    ref.addEventListener('scroll', handleScroll);
+    return () => {
+      ref.removeEventListener('scroll', handleScroll);
+    };
+  }, [scrollRef, loading, hasMore, dispatch]);
+
   // 그룹 모달 on off
   const [isGroupModalShown, setIsGroupModalShown] = useState<boolean>(false);
 
@@ -60,8 +83,53 @@ const AttendanceInformation = ({}: AttendanceInformationProps) => {
     throw thrownError;
   }
 
-  const onClickHeaderBar = (id: ATTENDANCE_CONTENT_ID) => {
-    setContentId(id);
+  const onClickAllAttended = () => {
+    try {
+      const newWorshipAttendances = worshipAttendances.map((attendance) => {
+        return {
+          ...attendance,
+          attendanceStatus: WORSHIP_ATTENDANCE_STATUS.PRESENT,
+        } as WorshipAttendance;
+      });
+
+      dispatch(setWorshipAttendances(newWorshipAttendances));
+
+      const newWorshipEnrollments = worshipEnrollments.map((enrollment) => {
+        return {
+          ...enrollment,
+          worshipAttendances: enrollment.worshipAttendances.map(
+            (worshipAttendance) => {
+              if (
+                worshipAttendance.sessionDate ===
+                targetWorshipSession.sessionDate
+              ) {
+                return {
+                  ...worshipAttendance,
+                  attendanceStatus: WORSHIP_ATTENDANCE_STATUS.PRESENT,
+                };
+              } else {
+                return worshipAttendance;
+              }
+            }
+          ),
+        };
+      });
+
+      dispatch(setWorshipEnrollments(newWorshipEnrollments));
+
+      worshipAttendancesApi.patchAllAttended(
+        {
+          churchId,
+          worshipId: targetWorshipSessionWorship.id,
+          sessionId: targetWorshipSession.id,
+        },
+        {
+          groupId: targetWorshipSessionGroup.id || undefined,
+        }
+      );
+    } catch (error) {
+      setThrownError(error as CustomError);
+    }
   };
 
   // 목록 설정 모달 열기
@@ -79,7 +147,7 @@ const AttendanceInformation = ({}: AttendanceInformationProps) => {
 
   // 그룹 선택
   const onClickGroupItem = (id: string | null) => {
-    const newGroup = getGroup(id, groups);
+    const newGroup = id === ALL ? DEFAULT_GROUP : getGroup(id, groups);
     dispatch(setTargetWorshipSessionGroup(newGroup));
     setIsGroupModalShown(false);
   };
@@ -128,69 +196,6 @@ const AttendanceInformation = ({}: AttendanceInformationProps) => {
     }
   };
 
-  // const onChangeWorship = (newWorship: Worship) => {
-  // // 그룹 선택 초기화
-  // if (newWorship.worshipTargetGroups.length > 0) {
-  //   const newGroup = getGroup(
-  //     newWorship.worshipTargetGroups[0].group.id,
-  //     groups
-  //   );
-  //   dispatch(setTargetWorshipSessionGroup(newGroup));
-  //   setTopLevelGroup(newGroup);
-  // } else {
-  //   dispatch(setTargetWorshipSessionGroup(DEFAULT_GROUP));
-  //   setTopLevelGroup(DEFAULT_GROUP);
-  // }
-  // };
-
-  // 서버에서 불러오는 교인 목록 페이지
-  const [page, setPage] = useState<number>(1);
-
-  // 데이터 로딩 상태
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  // 무한 스크롤로 데이터 추가 로드
-  const loadWorshipAttendances = async () => {
-    if (!targetWorshipSessionWorship.id || !targetWorshipSession.id) return;
-    if (isLoading) return; // 로딩 중에는 추가 요청 방지
-    setIsLoading(true);
-
-    try {
-      const result = await dispatch(
-        fetchWorshipAttendances({
-          churchId,
-          currentPage: page + 1,
-          worshipId: targetWorshipSessionWorship.id,
-          sessionId: targetWorshipSession.id,
-          groupId: targetWorshipSessionGroup.id || undefined,
-        })
-      );
-      if (fetchWorshipAttendances.fulfilled.match(result)) {
-        const newWorshipAttendances: WorshipAttendance[] = result.payload;
-        if (newWorshipAttendances.length > 0) {
-          // 기존 데이터와 합치면서 중복 제거
-          const existingIds = new Set(
-            worshipAttendances.map((worshipAttendance) => worshipAttendance.id)
-          );
-          const filteredNewAttendances = newWorshipAttendances.filter(
-            (enrollment) => !existingIds.has(enrollment.id)
-          );
-          dispatch(
-            setWorshipAttendances([
-              ...worshipAttendances,
-              ...filteredNewAttendances,
-            ])
-          );
-          setPage((prev) => prev + 1); // 다음 페이지로 이동
-        }
-      }
-    } catch (error) {
-      setThrownError(error instanceof Error ? error : new Error(String(error)));
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   const onChangeDate = async (date: Date) => {
     if (!targetWorshipSessionWorship.id) return;
 
@@ -211,30 +216,9 @@ const AttendanceInformation = ({}: AttendanceInformationProps) => {
   // 필터 정보가 변경될 때, 출석부를 다시 불러오는 부분
   useEffect(() => {
     if (targetWorshipSessionWorship.id && targetWorshipSession.id) {
-      const fetchInitialAttendances = async () => {
-        try {
-          const result = await dispatch(
-            fetchWorshipAttendances({
-              churchId,
-              currentPage: 1,
-              worshipId: targetWorshipSessionWorship.id,
-              sessionId: targetWorshipSession.id,
-              groupId: targetWorshipSessionGroup.id || undefined,
-            })
-          );
-          if (fetchWorshipAttendances.fulfilled.match(result)) {
-            dispatch(setWorshipAttendances(result.payload));
-            dispatch(setPrevWorshipAttendances(result.payload));
-            setPage(1);
-          }
-        } catch (error) {
-          setThrownError(
-            error instanceof Error ? error : new Error(String(error))
-          );
-        }
-      };
-
-      fetchInitialAttendances();
+      dispatch(setWorshipAttendanceCursor(BLANK));
+      dispatch(setWorshipAttendances([])); // 초기화 필요시 유지
+      dispatch(fetchWorshipAttendances());
     } else {
       dispatch(setWorshipAttendances([]));
     }
@@ -244,16 +228,49 @@ const AttendanceInformation = ({}: AttendanceInformationProps) => {
     targetWorshipSessionGroup.id,
     targetWorshipSession.id,
     worshipAttendanceFilter,
-    worshipAttendanceOrderBy,
-    worshipAttendanceOrderDirection,
+    worshipAttendanceSortBy,
+    worshipAttendanceSortDirection,
   ]);
 
-  // useEffect(() => {
-  //   onChangeWorship(targetWorshipSessionWorship);
-  // }, [targetWorshipSessionWorship]);
+  // 정렬 변경 시 스크롤을 최상단으로 이동
+  useEffect(() => {
+    if (scrollRef?.current) {
+      scrollRef.current.scrollTop = 0;
+    }
+  }, [
+    worshipAttendanceFilter,
+    worshipAttendanceSortBy,
+    worshipAttendanceSortDirection,
+  ]);
+
+  const fetchSessionStatistic = async () => {
+    if (targetWorshipSession.id) {
+      try {
+        const statisticResponse =
+          await worshipSessionsApi.getWorshipSessionStatistics({
+            churchId,
+            worshipId: targetWorshipSession.worshipId,
+            sessionId: targetWorshipSession.id,
+            groupId:
+              targetWorshipSessionGroup.id === ALL
+                ? undefined
+                : (targetWorshipSessionGroup.id as string),
+          });
+        const newStatistic = statisticResponse.data;
+        dispatch(setTargetWorshipSessionStatistic(newStatistic));
+      } catch (error) {
+        setThrownError(
+          error instanceof Error ? error : new Error(String(error))
+        );
+      }
+    }
+  };
+
+  useEffect(() => {
+    fetchSessionStatistic();
+  }, [targetWorshipSession.id, targetWorshipSessionGroup.id]);
 
   const props = {
-    contentId,
     isGroupModalShown,
     topLevelGroup,
     onClickGroupItem,
@@ -261,14 +278,12 @@ const AttendanceInformation = ({}: AttendanceInformationProps) => {
     onClickOpenGroupModal,
     onClickCloseGroupModal,
     onChangeDate,
-    loadWorshipAttendances,
-    onClickHeaderBar,
+    onClickAllAttended,
   };
 
   return (
     <>
       <AttendanceInformationView {...props} />
-      <Loading isShow={isLoading} />
     </>
   );
 };

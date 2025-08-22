@@ -13,6 +13,8 @@ export default {
   isNotDone: 'Incomplete',
   customSelect: 'Custom Select',
 
+  prevNextWeek: 'Prev / Next Week',
+
   current: 'Current',
 
   creator: 'Creator',
@@ -67,11 +69,19 @@ export default {
   churchEvent: 'Event',
   holiday: 'Holiday',
 
+  worshipInformation: 'Worship Information',
+  worshipSelectedGroup: 'Selected Group',
+  worshipAverageAttendanceRate: 'Average Attendance Rate',
+  worshipLastDate: 'Last Worship Date',
+
   worshipSessionTitle: 'Sermon Title',
   worshipSessionBibleTitle: 'Bible',
   worshipSessionInCharge: 'Preacher',
   worshipSessionVideoUrl: 'Worship Video URL',
   worshipSessionDescription: 'Note',
+
+  worshipSessionAttendanceCount: 'Total Members',
+  worshipSessionAttendanceRate: 'Attendance Rate',
 
   worshipGroup: 'Worship Group',
   worshipDay: 'Worship Day',
@@ -204,12 +214,10 @@ export default {
   officerList: 'Officer List',
   officerName: 'Officer Name',
 
-  birthAfter: 'Born After',
-  birthBefore: 'Born Before',
-  registerAfter: 'Registered After',
-  registerBefore: 'Registered Before',
-  updateAfter: 'Updated After',
-  updateBefore: 'Updated Before',
+  birthFrom: 'Born After',
+  birthTo: 'Born Before',
+  registerFrom: 'Registered After',
+  registerTo: 'Registered Before',
 
   joinedAt: 'Joined Date',
   registeredAt: 'Church Registered Date',
@@ -500,6 +508,7 @@ export default {
   'button.linkMemberInformation': 'Link Member',
   'button.unlinkMemberInformation': 'Unlink Member',
   'button.addWorshipSession': 'Make Attendance',
+  'button.addWorshipInformation': 'Enter Details',
   'button.addWorship': 'Add Worship',
   'button.check': 'Check',
 
@@ -531,6 +540,8 @@ export default {
   'button.stopMinistryHistory': 'Stop Ministry History',
 
   'button.addMinistry': 'Add Ministry',
+
+  'button.goToAttendance': 'See Attendance',
   /*-------------------button-------------------*/
 
   /*-------------------placeholder-------------------*/
@@ -598,6 +609,8 @@ export default {
 
   'placeholder.note': 'Enter the note.',
   'placeholder.location': 'Enter the location',
+
+  'placeholder.attendanceNote': 'Enter the note.',
   /*-------------------placeholder-------------------*/
 
   /*-------------------popup-------------------*/
@@ -695,4 +708,8 @@ export default {
   'description.tableHeaderSetting': 'Drag and Change the order',
   'description.memberRegisterHeader': "Enter the new member's information",
   /*-------------------description-------------------*/
+
+  /*-------------------tooltip-------------------*/
+  'tooltip.worshipAttendanceHeader': 'There are unchecked members',
+  /*-------------------tooltip-------------------*/
 } as const;

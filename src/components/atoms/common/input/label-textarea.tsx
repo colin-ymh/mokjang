@@ -3,6 +3,8 @@ import styled from 'styled-components';
 
 import { MainText } from '@/components/atoms/common/text/main-text';
 import BorderTextarea from '@/components/atoms/common/input/border-textarea';
+import { GRAY } from '@/constants/styles/color';
+import { SIZE } from '@/constants/styles/style';
 
 const LabelTextareaContainer = styled.div<{ $zIndex?: number }>`
   display: flex;
@@ -26,6 +28,7 @@ type LabelTextareaProps = {
   disabled?: boolean;
   placeholder?: string;
   readOnly?: boolean;
+  maxLength?: number;
 };
 
 // forwardRef 를 사용하여 ref 를 props 로 전달받을 수 있게
@@ -33,7 +36,9 @@ const LabelTextarea = forwardRef<HTMLTextAreaElement, LabelTextareaProps>(
   ({ label, zIndex, borderColor, ...props }, ref) => {
     return (
       <LabelTextareaContainer $zIndex={zIndex}>
-        <MainText>{label}</MainText>
+        <MainText color={GRAY.DARK} size={SIZE.SMALL}>
+          {label}
+        </MainText>
         <BorderTextarea ref={ref} borderColor={borderColor} {...props} />
       </LabelTextareaContainer>
     );

@@ -5,25 +5,41 @@ import { useI18n } from '../../../../../locales/client';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import React from 'react';
 import MemberProfilePopupButton from '@/components/molecules/common/button/member-profile-popup-button';
+import { SIZE } from '@/constants/styles/style';
+import Button from '@/components/atoms/common/button/button';
+import { GRAY, MAIN } from '@/constants/styles/color';
 
 const InformationContainer = styled.div`
   display: flex;
-  flex: 1;
   flex-direction: column;
-  overflow-y: auto;
+  width: 100%;
+  gap: 20px;
+`;
+
+const HeaderContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
 `;
 
 const MetaContainer = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 25px 20px 50px 20px;
   gap: 30px;
+`;
+
+const LabelContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
 `;
 
 const RowContainer = styled.div`
   display: flex;
   flex-direction: row;
-  align-items: center;
 `;
 
 const TitleContainer = styled.div`
@@ -34,102 +50,126 @@ const TitleContainer = styled.div`
 
 const ContentContainer = styled.div`
   display: flex;
-  flex-grow: 1;
   justify-content: flex-start;
   align-items: center;
   gap: 10px;
 `;
 
-const ColumnContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-`;
-
-const CommentContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding: 20px;
-`;
-
 const CommentContentContainer = styled.div`
   display: flex;
-  padding: 10px;
-  min-height: 50px;
 `;
 
-type WorshipSessionInformationViewProps = {};
+type WorshipSessionInformationViewProps = {
+  onClickEditOpen: () => void;
+};
 
-const WorshipSessionInformationView =
-  ({}: WorshipSessionInformationViewProps) => {
-    const t = useI18n();
+const WorshipSessionInformationView = ({
+  onClickEditOpen,
+}: WorshipSessionInformationViewProps) => {
+  const t = useI18n();
 
-    const { targetWorshipSession } = useSelector(
-      (state: RootState) => state.targetWorshipSession
-    );
-    return (
-      <InformationContainer>
-        <MetaContainer>
+  const { targetWorshipSession } = useSelector(
+    (state: RootState) => state.targetWorshipSession
+  );
+  return (
+    <InformationContainer>
+      <HeaderContainer>
+        <MainText size={SIZE.EXTRA_LARGE}>{t('worshipInformation')}</MainText>
+        <Button
+          text={t('button.addWorshipInformation')}
+          width={'auto'}
+          height={30}
+          onClick={onClickEditOpen}
+        />
+      </HeaderContainer>
+      <MetaContainer>
+        <RowContainer>
           {/* 제목 */}
-          <RowContainer>
+          <LabelContainer>
             <TitleContainer>
-              <MainText>{t('worshipSessionTitle')}</MainText>
+              <MainText size={SIZE.SMALL} color={GRAY.DARK}>
+                {t('worshipSessionTitle')}
+              </MainText>
             </TitleContainer>
             <ContentContainer>
               <MainText>{targetWorshipSession.title}</MainText>
             </ContentContainer>
-          </RowContainer>
-          {/* 성경 본문 */}
-          <RowContainer>
-            <TitleContainer>
-              <MainText>{t('worshipSessionBibleTitle')}</MainText>
-            </TitleContainer>
-            <ContentContainer>
-              <MainText>{targetWorshipSession.bibleTitle}</MainText>
-            </ContentContainer>
-          </RowContainer>
-          {/* 예배 영상 url */}
-          <RowContainer>
-            <TitleContainer>
-              <MainText>{t('worshipSessionVideoUrl')}</MainText>
-            </TitleContainer>
-            <ContentContainer>
-              <MainText>{targetWorshipSession.videoUrl}</MainText>
-            </ContentContainer>
-          </RowContainer>
+          </LabelContainer>
           {/* 진행자 */}
-          <RowContainer>
+          <LabelContainer>
             <TitleContainer>
-              <MainText>{t('worshipSessionInCharge')}</MainText>
+              <MainText size={SIZE.SMALL} color={GRAY.DARK}>
+                {t('worshipSessionInCharge')}
+              </MainText>
             </TitleContainer>
             <ContentContainer>
               {targetWorshipSession.inCharge && (
                 <MemberProfilePopupButton
                   key={targetWorshipSession.inCharge?.id}
                   member={targetWorshipSession.inCharge}
+                  isProfileImageShown={false}
                 />
               )}
             </ContentContainer>
-          </RowContainer>
-        </MetaContainer>
-        <CommentContainer>
-          {/* 특이사항 */}
-          <ColumnContainer>
+          </LabelContainer>
+        </RowContainer>
+        <RowContainer>
+          {/* 성경 본문 */}
+          <LabelContainer>
             <TitleContainer>
-              <MainText>{t('worshipSessionDescription')}</MainText>
+              <MainText size={SIZE.SMALL} color={GRAY.DARK}>
+                {t('worshipSessionBibleTitle')}
+              </MainText>
             </TitleContainer>
-            <CommentContentContainer>
+            <ContentContainer>
+              <MainText>{targetWorshipSession.bibleTitle}</MainText>
+            </ContentContainer>
+          </LabelContainer>
+          {/* 예배 영상 url */}
+          <LabelContainer>
+            <TitleContainer>
+              <MainText size={SIZE.SMALL} color={GRAY.DARK}>
+                {t('worshipSessionVideoUrl')}
+              </MainText>
+            </TitleContainer>
+            <ContentContainer>
               <MainText
-                dangerouslySetInnerHTML={{
-                  __html: targetWorshipSession.description,
-                }}
-              />
-            </CommentContentContainer>
-          </ColumnContainer>
-        </CommentContainer>
-      </InformationContainer>
-    );
-  };
+                as="a"
+                href={targetWorshipSession.videoUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                overflow="hidden"
+                maxWidth={300}
+                textOverflow="ellipsis"
+                whiteSpace="nowrap"
+                textDecoration="underline"
+                cursor="pointer"
+                color={MAIN.DEFAULT}
+              >
+                {targetWorshipSession.videoUrl}
+              </MainText>
+            </ContentContainer>
+          </LabelContainer>
+        </RowContainer>
+
+        {/* 특이사항 */}
+        <LabelContainer>
+          <TitleContainer>
+            <MainText size={SIZE.SMALL} color={GRAY.DARK}>
+              {t('worshipSessionDescription')}
+            </MainText>
+          </TitleContainer>
+          <ContentContainer>
+            <MainText
+              dangerouslySetInnerHTML={{
+                __html: targetWorshipSession.description,
+              }}
+            />
+          </ContentContainer>
+        </LabelContainer>
+      </MetaContainer>
+    </InformationContainer>
+  );
+};
 
 export default WorshipSessionInformationView;

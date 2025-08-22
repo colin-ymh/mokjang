@@ -12,10 +12,10 @@ type GetWorshipAttendancesParams = {
   churchId: string; // 교회 id
   worshipId: string;
   sessionId: string;
-  page?: number; // 페이지 번호
-  take?: number; // 요청 개수
-  order?: WORSHIP_ATTENDANCE; // 정렬 기준
-  orderDirection?: ORDER_DIRECTION; // 오름차순 내림차순
+  limit?: number;
+  cursor?: string;
+  sortBy?: WORSHIP_ATTENDANCE; // 정렬 기준
+  sortDirection?: ORDER_DIRECTION; // 오름차순 내림차순
   groupId?: string;
 };
 
@@ -35,6 +35,16 @@ type EditWorshipAttendanceParams = {
 type EditWorshipAttendanceBody = {
   attendanceStatus?: WORSHIP_ATTENDANCE_STATUS;
   note?: string;
+};
+
+type PatchAllAttendedParam = {
+  churchId: string;
+  worshipId: string;
+  sessionId: string;
+};
+
+type PatchAllAttendedBody = {
+  groupId?: string;
 };
 
 export class WorshipAttendancesApi {
@@ -58,19 +68,19 @@ export class WorshipAttendancesApi {
       churchId,
       worshipId,
       sessionId,
-      take = 5,
-      page = 1,
-      order,
-      orderDirection,
+      limit,
+      cursor,
+      sortBy,
+      sortDirection,
       groupId,
     } = params;
 
     const queryParams: Record<string, any> = Object.fromEntries(
       Object.entries({
-        take,
-        page,
-        order,
-        orderDirection,
+        limit,
+        cursor,
+        sortBy,
+        sortDirection,
         groupId,
       }).filter(
         ([_, value]) =>
@@ -80,7 +90,7 @@ export class WorshipAttendancesApi {
       )
     );
 
-    const url = `${this._url}/churches/${churchId}/worships/${worshipId}/sessions/${sessionId}/attendances`;
+    const url = `${this._url}/churches/${churchId}/worships/${worshipId}/sessions/${sessionId}/attendances/v2`;
 
     try {
       return await authorizeAxios.get(url, {
@@ -148,6 +158,36 @@ export class WorshipAttendancesApi {
     const { churchId, worshipId, sessionId, attendanceId } = params;
 
     const url = `${this._url}/churches/${churchId}/worships/${worshipId}/sessions/${sessionId}/attendances/${attendanceId}`;
+
+    try {
+      return await authorizeAxios.patch(url, body);
+    } catch (serverError: any) {
+      if (serverError.response) {
+        const { message, error, statusCode } = serverError.response.data;
+        throw new CustomError(message, error, statusCode);
+      } else {
+        throw new CustomError(
+          '알 수 없는 에러가 발생했습니다',
+          500,
+          'Unknown Error'
+        );
+      }
+    }
+  };
+
+  /**
+   * 일괄 출석
+   * @param  {PatchAllAttendedParam} params
+   * @param  {PatchAllAttendedBody} body
+   * @returns
+   */
+  public patchAllAttended = async (
+    params: PatchAllAttendedParam,
+    body: PatchAllAttendedBody
+  ): Promise<AxiosResponse> => {
+    const { churchId, worshipId, sessionId } = params;
+
+    const url = `${this._url}/churches/${churchId}/worships/${worshipId}/sessions/${sessionId}/attendances/all-attended`;
 
     try {
       return await authorizeAxios.patch(url, body);

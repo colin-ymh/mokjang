@@ -132,7 +132,7 @@ const VisitationListView = (props: VisitationListViewProps) => {
             leftButtonText={t_button('cancel')}
             rightButtonText={t_button('delete')}
           />
-          <VisitationInformation />
+          <VisitationInformation onChangeStatus={onChangeStatus} />
         </>
       </WrappedPagePopup>
 

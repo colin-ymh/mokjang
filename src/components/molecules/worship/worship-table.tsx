@@ -15,6 +15,14 @@ import { getIsWellFormedTitle } from '@/utils/check';
 
 import { WORSHIP } from '@/constants/column/worship-column';
 import WorshipTableView from '@/components/molecules/worship/worship-table.view';
+import {
+  setIsToastShown,
+  setToastBackgroundColor,
+  setToastText,
+} from '@/redux/reducers/toast-popup-reducer';
+import { useI18n } from '../../../../locales/client';
+import { BLACK, DESTRUCTIVE } from '@/constants/styles/color';
+import { usePageRouter } from '@/utils/router';
 
 export type WorshipTableProps = {
   loadWorships: () => Promise<void>;
@@ -22,6 +30,8 @@ export type WorshipTableProps = {
 
 const WorshipTable = ({ loadWorships }: WorshipTableProps) => {
   const dispatch = useDispatch<AppDispatch>();
+  const t = useI18n();
+  const router = usePageRouter();
 
   const { churchId } = useSelector((state: RootState) => state.church);
   const { worships, worshipFilter, worshipOrderBy, worshipOrderDirection } =
@@ -43,8 +53,29 @@ const WorshipTable = ({ loadWorships }: WorshipTableProps) => {
     throw thrownError;
   }
 
-  const onClickWorshipItem = (worship: Worship) => {
-    // dispatch(setTargetWorship(worship));
+  const onClickWorshipItem = async (worship: Worship) => {
+    try {
+      const worshipsApi = new WorshipsApi(false);
+
+      const response = await worshipsApi.getWorship({
+        churchId,
+        worshipId: worship.id,
+      });
+
+      const newWorship = response.data.data;
+
+      dispatch(setTargetWorship(newWorship));
+
+      router.push(`main/attendance`);
+    } catch (error) {
+      if (error instanceof Error) {
+        dispatch(setToastText(error.message));
+        dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
+        dispatch(setIsToastShown(true));
+      } else {
+        setThrownError(new Error(String(error)));
+      }
+    }
   };
 
   // 열 헤더를 눌러 정렬
@@ -142,10 +173,20 @@ const WorshipTable = ({ loadWorships }: WorshipTableProps) => {
             dispatch(setWorships(newWorships));
             dispatch(setTargetWorship(DEFAULT_WORSHIP));
             setIsEditModalOpened(false);
+
+            dispatch(setToastText(t('popup.saveComplete')));
+            dispatch(setToastBackgroundColor(BLACK));
+            dispatch(setIsToastShown(true));
           });
       }
     } catch (error) {
-      setThrownError(error instanceof Error ? error : new Error(String(error)));
+      if (error instanceof Error) {
+        dispatch(setToastText(error.message));
+        dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
+        dispatch(setIsToastShown(true));
+      } else {
+        setThrownError(new Error(String(error)));
+      }
     }
   };
 

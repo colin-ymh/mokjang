@@ -7,25 +7,20 @@ import { GRAY, MAIN, WHITE } from '@/constants/styles/color';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { Worship } from '@/models/worship/worship';
 import useWindowSize from '@/hooks/window/window';
-import { useScopedI18n } from '../../../../locales/client';
-import KebabDropdown from '@/components/atoms/common/dropdown/kebab-dropdown';
-import ConfirmPopup from '@/components/atoms/common/popup/confirm-popup';
+import { useI18n, useScopedI18n } from '../../../../locales/client';
 import AddWorship from '@/components/organisms/worship/add/add-worship';
 import CustomPopup from '@/components/atoms/common/popup/custom-popup';
 
 import { WORSHIP } from '@/constants/column/worship-column';
 import WorshipTableHeader from '@/components/atoms/worship/worship-table-header';
+import { getDayConstantByIndex, getWeekRepeatConstant } from '@/utils/date';
+import { DAY, REPEAT_PERIOD } from '@/constants/constant';
+import SvgIcon from '@/components/atoms/common/icon/svg-icon';
 
-// 1. 컬럼별 PX 폭
-// const getColumnWidth = (id: string) => {
-//   switch (id) {
-//     case WORSHIP.TITLE:
-//       return 200;
-//     default:
-//       // 비고(REMARKS) 컬럼 등
-//       return 80;
-//   }
-// };
+import Calendar from '../../../../public/svg/calendar.svg';
+import Users from '../../../../public/svg/users.svg';
+import { SIZE } from '@/constants/styles/style';
+import Button from '@/components/atoms/common/button/button';
 
 // 2. 테이블 컨테이너 (100% 폭 + 스크롤)
 const TableContainer = styled.div<{ height: number }>`
@@ -54,14 +49,18 @@ const WorshipTable = styled.table`
 `;
 
 // 4. 헤더(TH)
-const TableHeader = styled.th<{ id: string; $isLast?: boolean }>`
-  padding: 3px 10px;
+const TableHeader = styled.th<{
+  id: string;
+  $isLast?: boolean;
+}>`
+  padding: 20px 10px;
+  background-color: ${WHITE};
   position: sticky;
   top: 0;
   z-index: 5;
-  background-color: ${WHITE};
 
-  width: 100%;
+  /* 만약 마지막 컬럼이면 width: auto */
+  width: ${({ id, $isLast }) => ($isLast ? '200px' : `auto`)};
 
   /* 텍스트 넘침 처리 */
   overflow: hidden;
@@ -75,25 +74,28 @@ const TableHeader = styled.th<{ id: string; $isLast?: boolean }>`
     left: 0;
     right: 0;
     height: 0.7px;
-    background: ${GRAY.SEMI_LIGHT};
+    background: ${GRAY.LIGHT};
   }
 `;
 
 // 5. 본문(TR/TD)
 const WorshipTableRow = styled.tr`
-  border-bottom: 1px solid ${GRAY.EXTRA_LIGHT};
-
+  border-bottom: 1px solid ${GRAY.LIGHT};
   &:hover td {
     background-color: ${GRAY.LIGHT};
   }
 `;
 
-const TableData = styled.td<{ id: string; $index: number; $isLast?: boolean }>`
-  padding: 10px;
-  width: 100%;
+const TableData = styled.td<{ id: string; $isLast?: boolean }>`
+  padding: 10px 15px;
+  height: 30px;
+  cursor: pointer;
+
+  /* 마지막 컬럼이면 auto, 아니면 px 고정 */
+  width: ${({ id, $isLast }) => ($isLast ? '200px' : `auto`)};
 
   white-space: nowrap;
-  overflow: visible;
+  overflow: hidden;
   text-overflow: ellipsis;
 
   &:first-child {
@@ -101,20 +103,34 @@ const TableData = styled.td<{ id: string; $index: number; $isLast?: boolean }>`
   }
 `;
 
-const NameContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-`;
-
 const ContentWrapper = styled.div`
   display: flex;
   align-items: center;
   /* 그냥 늘어날 수 있게, 필요한 경우 ellipsis 처리 */
-  width: 100%;
-  //overflow: hidden;
+  max-width: 100%;
+  overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+`;
+
+const TitleContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+`;
+
+const DataContainer = styled.div`
+  display: flex;
+  align-items: center;
+  height: 40px;
+  gap: 10px;
+`;
+
+const AttendanceContainer = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+  align-items: center;
 `;
 
 type WorshipTableProps = {
@@ -150,9 +166,12 @@ const WorshipTableView = ({
   onClickEditClose,
   onClickWorshipItem,
 }: WorshipTableProps) => {
+  const t = useI18n();
   const t_popup = useScopedI18n('popup');
   const t_button = useScopedI18n('button');
   const t_title = useScopedI18n('title');
+
+  const groups = useSelector((state: RootState) => state.church.groups);
 
   const { height } = useWindowSize();
 
@@ -172,37 +191,53 @@ const WorshipTableView = ({
       case WORSHIP.TITLE:
         return (
           <>
-            <NameContainer>
-              <MainText>{worship?.title}</MainText>
-              <KebabDropdown
-                items={[
-                  {
-                    value: 'delete',
-                    title: t_button('delete'),
-                    onClick: () => onClickDeleteWorship(),
-                  },
-                  {
-                    value: 'edit',
-                    title: t_button('edit'),
-                    onClick: () => onClickEditWorship(worship),
-                  },
-                ]}
-                width={150}
-              />
-            </NameContainer>
-            <ConfirmPopup
-              title={t_popup('deleteWorshipTitle')}
-              body={t_popup('deleteWorshipBody')}
-              isShow={isDeleteModalOpened}
-              onClickLeftButton={onClickCancelDelete}
-              onClickRightButton={() => onClickConfirmDelete(worship.id)}
-              leftButtonText={t_button('cancel')}
-              rightButtonText={t_button('confirm')}
-              buttonNum={2}
-            />
+            <DataContainer>
+              <TitleContainer>
+                <MainText>{worship?.title}</MainText>
+                {worship?.description && (
+                  <MainText size={SIZE.SMALL} color={GRAY.DEFAULT}>
+                    {worship?.description}
+                  </MainText>
+                )}
+              </TitleContainer>
+            </DataContainer>
           </>
         );
 
+      case WORSHIP.WORSHIP_DAY:
+        return (
+          <DataContainer>
+            <SvgIcon svg={Calendar} />
+            <MainText>
+              {`${t(getWeekRepeatConstant(worship.repeatPeriod) as REPEAT_PERIOD)} ${t(getDayConstantByIndex(worship.worshipDay) as DAY)}`}
+            </MainText>
+          </DataContainer>
+        );
+
+      case WORSHIP.GROUP:
+        return (
+          <DataContainer>
+            {/*<MainTag*/}
+            {/*  title={getGroup(worship.worshipTargetGroups[0].id, groups)?.name}*/}
+            {/*/>*/}
+          </DataContainer>
+        );
+
+      case WORSHIP.ATTENDANCE:
+        return (
+          <AttendanceContainer>
+            <Button
+              text={t('button.goToAttendance')}
+              width={'auto'}
+              height={30}
+              icon={<SvgIcon svg={Users} color={WHITE} width={2} />}
+              onClick={(event) => {
+                event?.stopPropagation();
+                onClickWorshipItem(worship);
+              }}
+            />
+          </AttendanceContainer>
+        );
       default:
         return null;
     }
@@ -237,13 +272,12 @@ const WorshipTableView = ({
             {worships.map((worship, rowIndex) => (
               <WorshipTableRow
                 key={worship.id}
-                onClick={() => onClickWorshipItem(worship)}
+                onClick={() => onClickEditWorship(worship)}
               >
                 {visibleColumns.map((item, index) => (
                   <TableData
                     key={item.id}
                     id={item.id}
-                    $index={rowIndex}
                     $isLast={index === visibleColumns.length - 1}
                   >
                     <ContentWrapper>
@@ -255,6 +289,7 @@ const WorshipTableView = ({
             ))}
           </tbody>
         </WorshipTable>
+
         <CustomPopup
           isShow={isEditModalOpened}
           onClickCancel={onClickEditClose}

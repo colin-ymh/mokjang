@@ -2,8 +2,8 @@ import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 import {
-  setMemberOrderBy,
-  setMemberOrderDirection,
+  setMemberSortBy,
+  setMemberSortDirection,
 } from '@/redux/reducers/filter/member-filter-reducer';
 
 import MemberTableView from '@/components/molecules/member/list/member-table.view';
@@ -18,20 +18,20 @@ export type MemberTableProps = {
 const MemberTable = ({ onClickMemberItem, loadMembers }: MemberTableProps) => {
   const dispatch = useDispatch<AppDispatch>();
 
-  const { members, memberFilter, memberOrderBy, memberOrderDirection } =
+  const { members, memberFilter, memberSortBy, memberSortDirection } =
     useSelector((state: RootState) => state.memberFilter);
 
   // 열 헤더를 눌러 정렬
   const onClickHeader = (id: MEMBER) => {
-    let newOrderBy = id;
+    let newSortBy = id;
 
-    if (newOrderBy !== memberOrderBy) {
-      dispatch(setMemberOrderBy(newOrderBy));
-      dispatch(setMemberOrderDirection(ORDER_DIRECTION.ASC));
+    if (newSortBy !== memberSortBy) {
+      dispatch(setMemberSortBy(newSortBy));
+      dispatch(setMemberSortDirection(ORDER_DIRECTION.ASC));
     } else {
       dispatch(
-        setMemberOrderDirection(
-          memberOrderDirection === ORDER_DIRECTION.ASC
+        setMemberSortDirection(
+          memberSortDirection === ORDER_DIRECTION.ASC
             ? ORDER_DIRECTION.DESC
             : ORDER_DIRECTION.ASC
         )
@@ -57,7 +57,7 @@ const MemberTable = ({ onClickMemberItem, loadMembers }: MemberTableProps) => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = 0;
     }
-  }, [memberOrderBy, memberOrderDirection, memberFilter]);
+  }, [memberSortBy, memberSortDirection, memberFilter]);
 
   const props = {
     members,

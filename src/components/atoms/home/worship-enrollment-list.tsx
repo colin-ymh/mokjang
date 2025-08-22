@@ -7,8 +7,8 @@ import { WorshipEnrollment } from '@/models/worship/worship';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import MainTag from '../common/tag/main-tag';
 import {
-  getAttendanceRateBackgroundColor,
-  getAttendanceRateColor,
+  getEducationAttendanceRateBackgroundColor,
+  getEducationAttendanceRateColor,
 } from '@/utils/color';
 import { getDateFromDateString, getDateStringFromDate } from '@/utils/date';
 import { getTranslatedDateFromDateString } from '@/utils/translate';
@@ -61,10 +61,10 @@ const WorshipEnrollmentList = ({
               <MainText>{item.member.name}</MainText>
               <MainTag
                 title={`${Math.round(item.attendanceRate * 100).toString()}%`}
-                backgroundColor={getAttendanceRateBackgroundColor(
+                backgroundColor={getEducationAttendanceRateBackgroundColor(
                   Math.round(item.attendanceRate * 100)
                 )}
-                color={getAttendanceRateColor(
+                color={getEducationAttendanceRateColor(
                   Math.round(item.attendanceRate * 100)
                 )}
               />

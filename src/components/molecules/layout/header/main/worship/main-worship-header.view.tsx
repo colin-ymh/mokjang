@@ -59,7 +59,6 @@ const HeaderBottomContainer = styled.div`
 type MainWorshipHeaderViewProps = {
   isAddWorshipOpened: boolean;
   isSaveEnabled: boolean;
-  onClickHeaderBar: (id: string) => void;
   onClickAddWorship: () => void;
   onClickCloseModal: () => void;
   onClickSaveWorship: () => void;
@@ -68,7 +67,6 @@ type MainWorshipHeaderViewProps = {
 const MainWorshipHeaderView = ({
   isAddWorshipOpened,
   isSaveEnabled,
-  onClickHeaderBar,
   onClickAddWorship,
   onClickCloseModal,
   onClickSaveWorship,

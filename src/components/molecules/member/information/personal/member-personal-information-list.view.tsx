@@ -364,25 +364,33 @@ const PersonalInformationListView = ({
                   <MainText size={SIZE.LARGE} fontWeight={400}>
                     {ministryHistory.ministryGroup?.name}
                   </MainText>
-                  {ministryHistory.ministryGroupDetailHistory &&
-                    ministryHistory.ministryGroupDetailHistory.length > 1 && (
-                      <MainTag
-                        title={t('ministryGroupLeader')}
-                        color={PURPLE.DARK}
-                        backgroundColor={PURPLE.LIGHT}
-                      />
-                    )}
-                  {ministryHistory.ministryGroupDetailHistory &&
-                    ministryHistory.ministryGroupDetailHistory.length > 0 && (
-                      <MainTag
-                        title={
-                          ministryHistory.ministryGroupDetailHistory[0].ministry
-                            .name
-                        }
-                        color={MAIN.DARK}
-                        backgroundColor={MAIN.LIGHT}
-                      />
-                    )}
+                  {ministryHistory.ministryGroupDetailHistory.map(
+                    (detailHistory) => {
+                      if (detailHistory?.role) {
+                        return (
+                          <MainTag
+                            key={detailHistory.id}
+                            title={t('ministryGroupLeader')}
+                            color={PURPLE.DARK}
+                            backgroundColor={PURPLE.LIGHT}
+                          />
+                        );
+                      } else if (detailHistory?.ministry) {
+                        return (
+                          <MainTag
+                            key={detailHistory.id}
+                            title={
+                              ministryHistory.ministryGroupDetailHistory[0]
+                                .ministry?.name
+                            }
+                            color={MAIN.DARK}
+                            backgroundColor={MAIN.LIGHT}
+                          />
+                        );
+                      }
+                    }
+                  )}
+
                   <MainText color={GRAY.DARK}>
                     {getTranslatedDateFromDateString(
                       basePath,
