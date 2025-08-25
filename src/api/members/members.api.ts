@@ -141,7 +141,24 @@ type GetMemberWorshipAvailable = {
   memberId: string;
 };
 
-type GetMemberWorshipStatistics = {};
+type GetMemberWorshipStatistics = {
+  churchId: string;
+  memberId: string;
+  worshipId: string;
+  from?: string;
+  to?: string;
+};
+
+type GetMemberWorshipAttendances = {
+  churchId: string;
+  memberId: string;
+  worshipId: string;
+  limit?: number;
+  cursor?: string;
+  sortDirection?: ORDER_DIRECTION;
+  from?: string;
+  to?: string;
+};
 
 export class MembersApi {
   private _url: string;
@@ -512,6 +529,100 @@ export class MembersApi {
 
     try {
       return await authorizeAxios.delete(url);
+    } catch (serverError: any) {
+      if (serverError.response) {
+        const { message, error, statusCode } = serverError.response.data;
+        throw new CustomError(message, error, statusCode);
+      } else {
+        throw new CustomError(
+          '알 수 없는 에러가 발생했습니다',
+          500,
+          'Unknown Error'
+        );
+      }
+    }
+  };
+
+  /**
+   * 교인의 예배 조회
+   * @param {GetMemberWorshipAvailable} params
+   * @returns
+   */
+  public getMemberWorshipAvailable = async (
+    params: GetMemberWorshipAvailable
+  ): Promise<AxiosResponse> => {
+    const { churchId, memberId } = params;
+
+    const url = `${this._url}/churches/${churchId}/members/${memberId}/worship/available`;
+
+    try {
+      return await authorizeAxios.get(url);
+    } catch (serverError: any) {
+      if (serverError.response) {
+        const { message, error, statusCode } = serverError.response.data;
+        throw new CustomError(message, error, statusCode);
+      } else {
+        throw new CustomError(
+          '알 수 없는 에러가 발생했습니다',
+          500,
+          'Unknown Error'
+        );
+      }
+    }
+  };
+
+  /**
+   * 교인의 예배 출석률 조회
+   * @param {GetMemberWorshipStatistics} params
+   * @returns
+   */
+  public getMemberWorshipStatistics = async (
+    params: GetMemberWorshipStatistics
+  ): Promise<AxiosResponse> => {
+    const { churchId, memberId, worshipId } = params;
+
+    const url = `${this._url}/churches/${churchId}/members/${memberId}/worship/statistics`;
+
+    try {
+      return await authorizeAxios.get(url, { params: { worshipId } });
+    } catch (serverError: any) {
+      if (serverError.response) {
+        const { message, error, statusCode } = serverError.response.data;
+        throw new CustomError(message, error, statusCode);
+      } else {
+        throw new CustomError(
+          '알 수 없는 에러가 발생했습니다',
+          500,
+          'Unknown Error'
+        );
+      }
+    }
+  };
+  /**
+   * 교인의 출석 정보 조회
+   * @param {GetMemberWorshipAttendances} params
+   * @returns
+   */
+  public getMemberWorshipAttendances = async (
+    params: GetMemberWorshipAttendances
+  ): Promise<AxiosResponse> => {
+    const {
+      churchId,
+      memberId,
+      worshipId,
+      limit,
+      cursor,
+      sortDirection,
+      to,
+      from,
+    } = params;
+
+    const url = `${this._url}/churches/${churchId}/members/${memberId}/worship/attendances`;
+
+    try {
+      return await authorizeAxios.get(url, {
+        params: { worshipId, limit, cursor, sortDirection, to, from },
+      });
     } catch (serverError: any) {
       if (serverError.response) {
         const { message, error, statusCode } = serverError.response.data;

@@ -217,7 +217,7 @@ export class MinistryHistoryApi {
       ministryGroupHistoryId,
     } = params;
 
-    const url = `${this._url}/churches/${churchId}/members/${memberId}/histories/ministry-groups/${ministryGroupHistoryId}/detail`;
+    const url = `${this._url}/churches/${churchId}/members/${memberId}/histories/ministry-groups/${ministryGroupHistoryId}/details`;
 
     try {
       return await authorizeAxios.get(url, {
@@ -254,7 +254,7 @@ export class MinistryHistoryApi {
     const { churchId, memberId, ministryGroupHistoryId, detailHistoryId } =
       params;
 
-    const url = `${this._url}/churches/${churchId}/members/${memberId}/histories/ministry-groups/${ministryGroupHistoryId}/detail/${detailHistoryId}`;
+    const url = `${this._url}/churches/${churchId}/members/${memberId}/histories/ministry-groups/${ministryGroupHistoryId}/details/${detailHistoryId}`;
 
     try {
       return await authorizeAxios.patch(url, body);
@@ -277,13 +277,13 @@ export class MinistryHistoryApi {
    * @param {DeleteMinistryDetailHistoryParams} params
    * @returns {Promise<AxiosResponse>}
    */
-  public deleteMinistryHistory = async (
+  public deleteMinistryDetailHistory = async (
     params: DeleteMinistryDetailHistoryParams
   ): Promise<AxiosResponse> => {
     const { churchId, memberId, ministryGroupHistoryId, detailHistoryId } =
       params;
 
-    const url = `${this._url}/churches/${churchId}/members/${memberId}/histories/ministry-groups/${ministryGroupHistoryId}/detail/${detailHistoryId}`;
+    const url = `${this._url}/churches/${churchId}/members/${memberId}/histories/ministry-groups/${ministryGroupHistoryId}/details/${detailHistoryId}`;
 
     try {
       return await authorizeAxios.delete(url);

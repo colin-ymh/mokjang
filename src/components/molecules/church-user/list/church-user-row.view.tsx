@@ -131,6 +131,7 @@ const ChurchUserRowView = ({
             // searchFilter={searchFilter}
             // searchFilterDropdownItems={searchFilterDropdownItems}
             // onClickSearchFilterItem={onClickSearchFilterItem}
+
             searchValue={searchValue}
             onChangeSearchValue={onChangeSearchValue}
             onKeyDown={onKeyDown}

@@ -57,6 +57,7 @@ import WorshipAttendanceWidget from '@/components/molecules/home/widget/worship-
 import MemberHistoryList from '@/components/molecules/member/information/history/member-history-list';
 import MemberVisitationList from '@/components/molecules/member/information/visitation/member-visitation-list';
 import MainWorshipHeader from '@/components/molecules/layout/header/main/worship/main-worship-header';
+import MemberAttendanceList from '@/components/molecules/member/information/attendance/member-attendance-list';
 
 export const getSide = (id: string) => {
   switch (id) {
@@ -217,6 +218,8 @@ export const getMemberInformationContent = (
       }
     case MEMBER_INFORMATION_HEADER_ID.FAMILY_INFORMATION:
       return <FamilyInformationList />;
+    case MEMBER_INFORMATION_HEADER_ID.ATTENDANCE:
+      return <MemberAttendanceList />;
     case MEMBER_INFORMATION_HEADER_ID.VISITATION:
       return <MemberVisitationList />;
     case MEMBER_INFORMATION_HEADER_ID.HISTORY:

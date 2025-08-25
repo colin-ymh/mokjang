@@ -1,17 +1,16 @@
 import {
-  DEFAULT_GROUP_DETAIL_HISTORY,
-  DEFAULT_GROUP_HISTORY,
-  GroupDetailHistory,
-  GroupHistory,
+  DEFAULT_MINISTRY_DETAIL_HISTORY,
+  DEFAULT_MINISTRY_HISTORY,
+  MinistryDetailHistory,
+  MinistryHistory,
 } from '@/models/member/history';
 import React, { useEffect, useState } from 'react';
-import { GroupHistoryApi } from '@/api/history/group-history.api';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
-import GroupHistoryItemView from '@/components/atoms/member/history/group-history-item.view';
+import MinistryHistoryItemView from '@/components/atoms/member/history/ministry-history-item.view';
 import {
-  setTargetGroupDetailHistory,
-  setTargetGroupHistory,
+  setTargetMinistryDetailHistory,
+  setTargetMinistryHistory,
 } from '@/redux/reducers/target/target-history-reducer';
 import { getDateFromDateString, getDateStringFromDate } from '@/utils/date';
 import {
@@ -23,29 +22,30 @@ import { BLACK, DESTRUCTIVE } from '@/constants/styles/color';
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
 import CustomPopup from '@/components/atoms/common/popup/custom-popup';
 import ConfirmPopup from '@/components/atoms/common/popup/error-popup';
-import EditGroupDetailHistory from '@/components/molecules/member/information/history/group/edit-group-detail-history';
+import EditMinistryDetailHistory from '@/components/molecules/member/information/history/ministry/edit-ministry-detail-history';
+import { MinistryHistoryApi } from '@/api/history/ministry-history.api';
 
-type GroupHistoryItemProps = {
-  history: GroupHistory;
-  onClickGroupOpen: (history: GroupHistory) => void;
+type MinistryHistoryItemProps = {
+  history: MinistryHistory;
+  onClickMinistryOpen: (history: MinistryHistory) => void;
 };
 
-const GroupHistoryItem = ({
+const MinistryHistoryItem = ({
   history,
-  onClickGroupOpen,
-}: GroupHistoryItemProps) => {
+  onClickMinistryOpen,
+}: MinistryHistoryItemProps) => {
   const t = useI18n();
   const t_button = useScopedI18n('button');
   const t_popup = useScopedI18n('popup');
 
   const dispatch = useDispatch<AppDispatch>();
-  const groupHistoryApi = new GroupHistoryApi(false);
+  const ministryHistoryApi = new MinistryHistoryApi(false);
 
   const { churchId } = useSelector((state: RootState) => state.church);
   const { targetMember } = useSelector(
     (state: RootState) => state.targetMember
   );
-  const { targetGroupDetailHistory } = useSelector(
+  const { targetMinistryDetailHistory, targetMinistryHistory } = useSelector(
     (state: RootState) => state.targetHistory
   );
 
@@ -56,7 +56,7 @@ const GroupHistoryItem = ({
 
   const [isDeleteOpened, setIsDeleteOpened] = useState<boolean>(false);
 
-  const [details, setDetails] = useState<GroupDetailHistory[] | undefined>(
+  const [details, setDetails] = useState<MinistryDetailHistory[] | undefined>(
     undefined
   );
 
@@ -77,10 +77,10 @@ const GroupHistoryItem = ({
       setIsOpened(true);
 
       if (!details) {
-        const response = await groupHistoryApi.getGroupDetailHistory({
+        const response = await ministryHistoryApi.getMinistryDetailHistory({
           churchId,
           memberId: targetMember.id,
-          groupHistoryId: history.id,
+          ministryGroupHistoryId: history.id,
         });
 
         const newDetails = response.data.data;
@@ -94,37 +94,42 @@ const GroupHistoryItem = ({
 
   // ===================== 세부 ===================== //
 
-  const onClickDetailOpen = (history: GroupDetailHistory) => {
+  const onClickDetailOpen = (
+    history: MinistryDetailHistory,
+    group: MinistryHistory
+  ) => {
     setIsDetailOpened(true);
     dispatch(
-      setTargetGroupDetailHistory({
+      setTargetMinistryDetailHistory({
         ...history,
         startDate: getDateStringFromDate(
           getDateFromDateString(history.startDate)
         ),
       })
     );
+    dispatch(setTargetMinistryHistory(group));
   };
   const onClickDetailClose = () => {
     setIsDetailOpened(false);
-    dispatch(setTargetGroupDetailHistory(DEFAULT_GROUP_DETAIL_HISTORY));
+    dispatch(setTargetMinistryDetailHistory(DEFAULT_MINISTRY_DETAIL_HISTORY));
+    dispatch(setTargetMinistryHistory(DEFAULT_MINISTRY_HISTORY));
   };
 
   const onClickSaveDetail = async () => {
     try {
-      const response = await groupHistoryApi.editGroupDetailHistory(
+      const response = await ministryHistoryApi.editMinistryDetailHistory(
         {
           churchId,
           memberId: targetMember.id,
-          groupHistoryId: targetGroupDetailHistory.groupHistoryId,
-          detailHistoryId: targetGroupDetailHistory.id,
+          ministryGroupHistoryId: targetMinistryHistory.id,
+          detailHistoryId: targetMinistryDetailHistory.id,
         },
         {
           startDate: getDateStringFromDate(
-            getDateFromDateString(targetGroupDetailHistory.startDate)
+            getDateFromDateString(targetMinistryDetailHistory.startDate)
           ),
           endDate: getDateStringFromDate(
-            getDateFromDateString(targetGroupDetailHistory.endDate)
+            getDateFromDateString(targetMinistryDetailHistory.endDate)
           ),
         }
       );
@@ -141,7 +146,8 @@ const GroupHistoryItem = ({
 
       setDetails(newDetails);
 
-      dispatch(setTargetGroupHistory(DEFAULT_GROUP_HISTORY));
+      dispatch(setTargetMinistryHistory(DEFAULT_MINISTRY_HISTORY));
+      dispatch(setTargetMinistryDetailHistory(DEFAULT_MINISTRY_DETAIL_HISTORY));
 
       setIsDetailOpened(false);
       dispatch(setToastText(t_popup('saveComplete')));
@@ -158,27 +164,28 @@ const GroupHistoryItem = ({
     }
   };
 
-  const onClickDeleteGroup = () => {
+  const onClickDeleteMinistry = () => {
     setIsDeleteOpened(true);
   };
 
   const onClickDeleteConfirm = async () => {
     try {
-      groupHistoryApi.deleteGroupDetailHistory({
+      ministryHistoryApi.deleteMinistryDetailHistory({
         churchId,
         memberId: targetMember.id,
-        groupHistoryId: targetGroupDetailHistory.groupHistoryId,
-        detailHistoryId: targetGroupDetailHistory.id,
+        ministryGroupHistoryId: targetMinistryHistory.id,
+        detailHistoryId: targetMinistryDetailHistory.id,
       });
 
       const newDetails = details?.filter(
-        (d) => d.id !== targetGroupDetailHistory.id
+        (d) => d.id !== targetMinistryDetailHistory.id
       );
 
       setDetails(newDetails);
       setIsDeleteOpened(false);
 
-      dispatch(setTargetGroupDetailHistory(DEFAULT_GROUP_DETAIL_HISTORY));
+      dispatch(setTargetMinistryHistory(DEFAULT_MINISTRY_HISTORY));
+      dispatch(setTargetMinistryDetailHistory(DEFAULT_MINISTRY_DETAIL_HISTORY));
 
       setIsDetailOpened(false);
       dispatch(setToastText(t_popup('deleteComplete')));
@@ -200,18 +207,18 @@ const GroupHistoryItem = ({
   };
 
   useEffect(() => {
-    if (!targetGroupDetailHistory.startDate) {
+    if (!targetMinistryDetailHistory.startDate) {
       setIsDetailSaveEnabled(false);
       return;
     }
 
-    if (!targetGroupDetailHistory.endDate) {
+    if (!targetMinistryDetailHistory.endDate) {
       setIsDetailSaveEnabled(false);
       return;
     }
 
     setIsDetailSaveEnabled(true);
-  }, [targetGroupDetailHistory]);
+  }, [targetMinistryDetailHistory]);
 
   // ===================== 세부 ===================== //
 
@@ -220,13 +227,13 @@ const GroupHistoryItem = ({
     isOpened,
     onClickDetail,
     details,
-    onClickGroupOpen,
+    onClickMinistryOpen,
     onClickDetailOpen,
   };
 
   return (
     <>
-      <GroupHistoryItemView {...props} />
+      <MinistryHistoryItemView {...props} />
 
       {/* 그룹 수정 */}
       <CustomPopup
@@ -250,11 +257,13 @@ const GroupHistoryItem = ({
             leftButtonText={t_button('cancel')}
             rightButtonText={t_button('delete')}
           />
-          <EditGroupDetailHistory onClickDeleteGroup={onClickDeleteGroup} />
+          <EditMinistryDetailHistory
+            onClickDeleteMinistry={onClickDeleteMinistry}
+          />
         </>
       </CustomPopup>
     </>
   );
 };
 
-export default GroupHistoryItem;
+export default MinistryHistoryItem;

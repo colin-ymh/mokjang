@@ -1,27 +1,25 @@
-import GroupHistoryListView from '@/components/molecules/member/information/history/group-history-list.view';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
-import { useEffect, useRef, useState } from 'react';
-import { GroupHistory } from '@/models/member/history';
-import { GroupHistoryApi } from '@/api/history/group-history.api';
+import React, { useEffect, useRef, useState } from 'react';
+import { EducationHistory } from '@/models/member/history';
+import { EducationHistoryApi } from '@/api/history/education-history.api';
+import EducationHistoryListView from '@/components/molecules/member/information/history/education/education-history-list.view';
 
 const TAKE = 10;
 
-const GroupHistoryList = () => {
+const EducationHistoryList = () => {
   const scrollRef = useRef<HTMLDivElement | null>(null);
-
-  const groupHistoryApi = new GroupHistoryApi(false);
+  const educationHistoryApi = new EducationHistoryApi(false);
 
   const { churchId } = useSelector((state: RootState) => state.church);
   const { targetMember } = useSelector(
     (state: RootState) => state.targetMember
   );
-
   const [page, setPage] = useState<number>(1);
   const [isLoading, setIsLoading] = useState<boolean>(false); // 초기 false로 첫 로딩 허용
   const [hasMore, setHasMore] = useState<boolean>(true);
 
-  const [histories, setHistories] = useState<GroupHistory[]>([]);
+  const [histories, setHistories] = useState<EducationHistory[]>([]);
 
   const [thrownError, setThrownError] = useState<Error | null>(null);
   if (thrownError) {
@@ -37,14 +35,14 @@ const GroupHistoryList = () => {
 
     setIsLoading(true);
     try {
-      const response = await groupHistoryApi.getGroupHistory({
+      const response = await educationHistoryApi.getEducationHistory({
         churchId,
         memberId: targetMember.id,
         take: TAKE,
         page,
       });
 
-      const newHistories = (response?.data?.data ?? []) as GroupHistory[];
+      const newHistories = (response?.data?.data ?? []) as EducationHistory[];
 
       if (page === 1) {
         // 첫 페이지는 교체
@@ -123,7 +121,11 @@ const GroupHistoryList = () => {
     histories,
   };
 
-  return <GroupHistoryListView {...props} />;
+  return (
+    <>
+      <EducationHistoryListView {...props} />
+    </>
+  );
 };
 
-export default GroupHistoryList;
+export default EducationHistoryList;

@@ -85,7 +85,8 @@ const EditMemberMinistryView = ({
           value={
             targetMinistryHistory.ministryGroupDetailHistory &&
             targetMinistryHistory.ministryGroupDetailHistory.length > 0
-              ? targetMinistryHistory.ministryGroupDetailHistory[0]?.ministry.id
+              ? targetMinistryHistory.ministryGroupDetailHistory[0]?.ministry
+                  ?.id
               : BLANK
           }
           items={dropdownItems}

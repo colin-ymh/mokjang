@@ -150,3 +150,21 @@ export const DEFAULT_WORSHIP_ATTENDANCE: WorshipAttendance = {
   sessionDate: BLANK,
   worshipEnrollment: DEFAULT_WORSHIP_ENROLLMENT,
 };
+
+export type MemberAttendanceStatistic = {
+  absentCount: number;
+  attendanceRate: number;
+  checkRate: number;
+  presentCount: number;
+  unknownCount: number;
+  totalSessions: number;
+};
+
+export const DEFAULT_MEMBER_ATTENDANCE_STATISTIC: MemberAttendanceStatistic = {
+  absentCount: 0,
+  attendanceRate: 0,
+  checkRate: 0,
+  presentCount: 0,
+  unknownCount: 0,
+  totalSessions: 0,
+};

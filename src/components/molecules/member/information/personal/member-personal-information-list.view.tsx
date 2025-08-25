@@ -91,7 +91,7 @@ const InformationTextWrapper = styled.div`
 const ColumnTextWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  height: 40px;
+  min-height: 40px;
   gap: 5px;
 `;
 
@@ -381,7 +381,7 @@ const PersonalInformationListView = ({
                             key={detailHistory.id}
                             title={
                               ministryHistory.ministryGroupDetailHistory[0]
-                                .ministry?.name
+                                .ministry?.name as string
                             }
                             color={MAIN.DARK}
                             backgroundColor={MAIN.LIGHT}

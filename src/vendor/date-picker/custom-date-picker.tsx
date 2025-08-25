@@ -1,101 +1,238 @@
 'use client';
 
-import React, { useRef } from 'react';
-import DatePicker, {
-  DatePickerProps,
-  ReactDatePickerCustomHeaderProps,
-  registerLocale,
-} from 'react-datepicker';
+import React, { useEffect, useRef, useState } from 'react';
+import DatePicker, { DatePickerProps, ReactDatePickerCustomHeaderProps, registerLocale, } from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
-import styled from 'styled-components';
+import styled, { createGlobalStyle, StyleSheetManager, } from 'styled-components';
 import { ko } from 'date-fns/locale';
 
-import { BLACK, GRAY, MAIN, WHITE } from '@/constants/styles/color';
+import { BLACK, GRAY, MAIN, RED, WHITE } from '@/constants/styles/color';
 import { getMonth, getYear } from 'date-fns';
 import Button from '@/components/atoms/common/button/button';
 import BorderInput from '@/components/atoms/common/input/border-input';
 import _ from 'lodash';
 
 import Calendar from '../../../public/svg/calendar.svg';
+import ChevronLeft from '../../../public/svg/chevron-left.svg';
+import ChevronRight from '../../../public/svg/chevron-right.svg';
+import Cancel from '../../../public/svg/cancel.svg';
+import SvgIcon from '@/components/atoms/common/icon/svg-icon';
+
+import { Chevron } from '@/components/atoms/common/dropdown/dropdown-chevron';
 
 registerLocale('ko', ko);
 
 const CustomDatePickerWrapper = styled.div`
-  display: flex;
+  display: block;
   z-index: 10;
   width: 100%;
 
   .react-datepicker-wrapper {
     width: 100%;
+    display: block;
   }
 
-  // 달력 팝업 영역
-  .react-datepicker-popper {
-    // 팝업 위 삼각형
-    .react-datepicker__triangle {
-      display: none;
-    }
+  .react-datepicker__input-container {
+    width: 100%;
+    display: block;
+    position: relative;
+    box-sizing: border-box;
   }
 
-  // 헤더
-  .react-datepicker__header {
+  .react-datepicker__input-container > * {
+    width: 100%;
+    display: block;
+    box-sizing: border-box;
+  }
+`;
+
+const DatePickerPortalStyles = createGlobalStyle`
+  /* 포탈 전용 팝업 스타일: 포탈 DOM(#date-picker-portal)에만 주입됨 */
+  .date-picker-popper {
+    z-index: 2000; /* 모달/드로어 위로 */
+  }
+
+  /* 포탈 오버레이 배경 밝기 조정 */
+  .react-datepicker__portal {
+    background-color: rgba(0, 0, 0, 0.1) !important; /* 덜 어둡게 */
+  }
+
+  /* 달력 본체 */
+  .date-picker-calendar {
+    box-sizing: border-box;
+    border-radius: 10px;
+    border: none;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    padding: 20px;
+  }
+
+  /* 달력 상단 헤더 (타이틀 / 닫기) */
+  .date-picker-calendar .mj-top-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative; /* full-width divider 기준 */
+  }
+  .date-picker-calendar .react-datepicker__month-container {
+    padding: 0; /* 달력 본문 패딩 제거 */
+  }
+  .date-picker-calendar .mj-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: ${BLACK};
+  }
+  .date-picker-calendar .mj-close-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border: none;
+    border-radius: 6px;
+    background: transparent;
+    color: ${GRAY.DARK};
+    cursor: pointer;
+  }
+  .date-picker-calendar .mj-close-btn:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px ${MAIN.LIGHT};
+  }
+
+  /* 팝업 위 삼각형 제거 (react-datepicker 기본) */
+  .date-picker-popper .react-datepicker__triangle {
+    display: none;
+  }
+
+  /* ===== 달력 전반 스타일 (포탈 스코프) ===== */
+  .date-picker-calendar { font-size: 14px; }
+
+  /* 헤더 */
+  .date-picker-calendar .react-datepicker__header {
     background-color: ${WHITE};
-
-    .button {
-      background-color: orange;
-    }
+    border-bottom: none !important; /* remove default divider */
+    box-shadow: none !important;    /* guard against theme shadows */
+    padding: 0 !important;          /* 좌우 패딩 제거 → 내부 헤더(border)가 전체 width 차지 */
+    margin-bottom: 0 !important;    /* 일부 테마에서 헤더 하단 마진 제거 */
   }
 
+  /* 헤더 드롭다운(연/월) 공통 스타일 */
+  .date-picker-calendar .mj-select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    font-size: 14px;
+    line-height: 1.2;
+    padding: 8px 40px 8px 12px; /* 좌우 여백 + 아이콘 자리 */
+    border: 1px solid ${GRAY.LIGHT};
+    border-radius: 8px;
+    background-color: ${WHITE};
+    color: ${BLACK};
+    outline: none;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    position: relative;
+    background-image: none !important;
+    cursor: pointer;
+  }
+
+  /* 포커스/호버 상태 */
+  .date-picker-calendar .mj-select:focus,
+  .date-picker-calendar .mj-select:hover {
+    border-color: ${GRAY.LIGHT}; /* 강조 제거 */
+    box-shadow: none;            /* 강조 제거 */
+  }
+
+  /* 비활성화 상태 */
+  .date-picker-calendar .mj-select:disabled {
+    background-color: ${GRAY.SEMI_LIGHT};
+    color: ${GRAY.DARK};
+    cursor: not-allowed;
+  }
+
+  /* IE 전용 기본 화살표 제거 */
+  .date-picker-calendar .mj-select::-ms-expand { display: none; }
+
+  .date-picker-calendar .mj-select-wrapper { position: relative; display: inline-block; padding: 20px 0;}
+  .date-picker-calendar .mj-select-chevron {
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    transform: translateY(-50%);
+    pointer-events: none; /* 클릭 방해 방지 */
+  }
+
+  /* 요일 셀 (월, 화, 수, ...) */
+  .date-picker-calendar .react-datepicker__day-names {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    column-gap: 0;
+    gap: 5px !important;
+    padding: 0 !important;
+    justify-content: stretch;
+    width: 100%;
+  }
+  .date-picker-calendar .react-datepicker__day-names {
+    margin-bottom: 0 !important;   /* 요일행과 날짜 그리드 간격 축소 */
+    background: transparent;
+  }
+  .date-picker-calendar .react-datepicker__month {
+    margin-top: 0.166rem !important; /* day 마진과 균형 맞춤 */
+  }
+  .date-picker-calendar .react-datepicker__day-name {
+    /* day 셀(0.166rem margin, 정사각)과 동일한 공간감 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 2.4rem;           /* react-datepicker 기본 day 높이와 유사 */
+    line-height: 2.4rem;
+    margin: 0;         /* day와 동일 margin */
+    color: ${GRAY.DARK};
+  }
+  /* Remove border under weekday row */
+  .date-picker-calendar .react-datepicker__day-names {
+    border-bottom: none;
+  }
+  /* Sunday weekday name and Sunday dates (not outside-month) */
+  .date-picker-calendar .react-datepicker__day-name:nth-child(1),
+  .date-picker-calendar .react-datepicker__day:nth-child(7n+1):not(.react-datepicker__day--outside-month) {
+    color: ${RED.DEFAULT};
+  }
+  /* Saturday weekday name and Saturday dates (not outside-month) */
+  .date-picker-calendar .react-datepicker__day-name:nth-child(7),
+  .date-picker-calendar .react-datepicker__day:nth-child(7n):not(.react-datepicker__day--outside-month) {
+    color: ${MAIN.DEFAULT};
+  }
+  
   /* 보여지는 달력에서, 해당 월이 아닌 다른 달 날짜는 회색 + 클릭 막기 */
-  .react-datepicker__day--outside-month {
-    color: ${GRAY.DEFAULT} !important;
+  .date-picker-calendar .react-datepicker__day--outside-month {
+    color: ${GRAY.LIGHT} !important;
     pointer-events: none;
   }
 
-  /* 달력 요일 셀 (예: 월, 화, 수, ...) */
-  .react-datepicker__day-name {
-    width: 28px;
-    color: ${BLACK};
+
+  /* 날짜 셀 */
+  .date-picker-calendar .react-datepicker__day { cursor: pointer; }
+  .date-picker-calendar .react-datepicker__day:not([aria-disabled='true']):hover {
+    border-radius: 10px;
+    background-color: ${GRAY.LIGHT};
+  }
+  .date-picker-calendar .react-datepicker__day--in-selecting-range,
+  .date-picker-calendar .react-datepicker__day--in-range {
+    border-radius: 10px;
+    background-color: ${MAIN.DEFAULT} !important;
+    color: ${WHITE} !important;
   }
 
-  /* 달력 전체 글자 크기 */
-  .react-datepicker {
-    font-size: 14px;
+  .date-picker-calendar .react-datepicker__day--today { font-weight: bold; }
+  .date-picker-calendar .react-datepicker__day--selected {
+    border-radius: 10px;
+    background-color: ${MAIN.DEFAULT};
+    color: ${WHITE} !important;
   }
-
-  .react-datepicker__day {
-    cursor: pointer;
-
-    &:not([aria-disabled='true']):hover {
-      border-radius: 100%;
-      background-color: ${GRAY.SEMI_LIGHT};
-    }
-
-    &--today {
-      font-weight: bold;
-    }
-
-    &--selected {
-      border-radius: 100%;
-      background-color: ${MAIN.DEFAULT};
-    }
-
-    /* 주 선택 시 해당 주의 모든 날짜 스타일 */
-    &--in-selecting-range {
-      background-color: ${MAIN.LIGHT} !important;
-      color: ${WHITE} !important;
-    }
-
-    &--in-range {
-      background-color: ${MAIN.LIGHT} !important;
-      color: ${WHITE} !important;
-    }
-
-    &--keyboard-selected {
-      background-color: rgba(0, 0, 0, 0);
-      color: rgb(0, 0, 0);
-    }
+  
+  .date-picker-calendar .react-datepicker__day--keyboard-selected {
+    background-color: rgba(0, 0, 0, 0);
+    color: rgb(0, 0, 0);
   }
 `;
 
@@ -107,9 +244,9 @@ const CalendarIcon = styled(Calendar)`
 `;
 
 const HeaderContainer = styled.div`
-  margin: 10px 0;
   display: flex;
-  justify-content: space-evenly;
+  padding: 0; /* 헤더 패딩 제거 */
+  justify-content: space-between;
   align-items: center;
   gap: 5px;
 `;
@@ -126,6 +263,8 @@ export type CustomDatePickerProps = DatePickerProps & {
   /** 주 단위 선택 여부 */
   selectWeek?: boolean;
   borderColor?: string;
+  /** 달력 상단 헤더 타이틀 */
+  headerTitle?: React.ReactNode;
 };
 
 export default function CustomDatePicker({
@@ -135,11 +274,27 @@ export default function CustomDatePicker({
   customInput,
   selectWeek = false,
   borderColor,
+  headerTitle,
   ...props
 }: CustomDatePickerProps) {
   const currentYear = getYear(new Date());
   const [startYear, endYear] = yearRange ?? [currentYear - 5, currentYear + 5];
   const datePickerRef = useRef<any>(null);
+
+  useEffect(() => {
+    const id = 'date-picker-portal';
+    let el = document.getElementById(id);
+    if (!el) {
+      el = document.createElement('div');
+      el.id = id;
+      document.body.appendChild(el);
+    }
+  }, []);
+
+  const [portalEl, setPortalEl] = useState<HTMLElement | null>(null);
+  useEffect(() => {
+    setPortalEl(document.getElementById('date-picker-portal'));
+  }, []);
 
   // 주의 시작일(일요일)과 끝일(토요일) 계산
   const getWeekRange = (date: Date) => {
@@ -219,45 +374,68 @@ export default function CustomDatePicker({
     prevMonthButtonDisabled,
     nextMonthButtonDisabled,
   }: ReactDatePickerCustomHeaderProps) => (
-    <HeaderContainer>
-      <Button
-        text={`<`}
-        onClick={decreaseMonth}
-        disabled={prevMonthButtonDisabled}
-        width={50}
-        backgroundColor={WHITE}
-        color={GRAY.DARK}
-      />
-      <select
-        value={getYear(date)}
-        onChange={({ target: { value } }) => changeYear(Number(value))}
-      >
-        {years.map((y) => (
-          <option key={y} value={y}>
-            {y}년
-          </option>
-        ))}
-      </select>
+    <>
+      <div className="mj-top-header">
+        <div className="mj-title">{headerTitle}</div>
+        <button
+          type="button"
+          className="mj-close-btn"
+          aria-label="달력 닫기"
+          onClick={() => datePickerRef.current?.setOpen?.(false)}
+        >
+          <SvgIcon svg={Cancel} />
+        </button>
+      </div>
+      <HeaderContainer>
+        <Button
+          icon={<SvgIcon svg={ChevronLeft} />}
+          onClick={decreaseMonth}
+          disabled={prevMonthButtonDisabled}
+          width={50}
+          backgroundColor={WHITE}
+          color={GRAY.DARK}
+        />
+        <div className="mj-select-wrapper">
+          <select
+            className="mj-select"
+            value={getYear(date)}
+            onChange={({ target: { value } }) => changeYear(Number(value))}
+          >
+            {years.map((y) => (
+              <option key={y} value={y}>
+                {y}년
+              </option>
+            ))}
+          </select>
+          <Chevron className="mj-select-chevron" $isOpened={false} />
+        </div>
 
-      <select
-        value={months[getMonth(date)]}
-        onChange={({ target: { value } }) => changeMonth(months.indexOf(value))}
-      >
-        {months.map((m) => (
-          <option key={m} value={m}>
-            {m}월
-          </option>
-        ))}
-      </select>
-      <Button
-        text={`>`}
-        onClick={increaseMonth}
-        disabled={nextMonthButtonDisabled}
-        width={50}
-        backgroundColor={WHITE}
-        color={GRAY.DARK}
-      />
-    </HeaderContainer>
+        <div className="mj-select-wrapper">
+          <select
+            className="mj-select"
+            value={months[getMonth(date)]}
+            onChange={({ target: { value } }) =>
+              changeMonth(months.indexOf(value))
+            }
+          >
+            {months.map((m) => (
+              <option key={m} value={m}>
+                {m}월
+              </option>
+            ))}
+          </select>
+          <Chevron className="mj-select-chevron" $isOpened={false} />
+        </div>
+        <Button
+          icon={<SvgIcon svg={ChevronRight} />}
+          onClick={increaseMonth}
+          disabled={nextMonthButtonDisabled}
+          width={50}
+          backgroundColor={WHITE}
+          color={GRAY.DARK}
+        />
+      </HeaderContainer>
+    </>
   );
 
   // 주 선택 모드일 때 추가 props
@@ -307,6 +485,11 @@ export default function CustomDatePicker({
 
   return (
     <CustomDatePickerWrapper>
+      {portalEl && (
+        <StyleSheetManager target={portalEl}>
+          <DatePickerPortalStyles />
+        </StyleSheetManager>
+      )}
       <DatePicker
         {...props}
         {...weekSelectProps}
@@ -317,10 +500,11 @@ export default function CustomDatePicker({
         customInput={
           customInput || (
             <BorderInput
-              width={width}
+              width={width ?? undefined}
               height={height}
               borderColor={borderColor}
               icon={<CalendarIcon />}
+              style={{ width: '100%' }}
             />
           )
         }
@@ -329,6 +513,10 @@ export default function CustomDatePicker({
         showYearDropdown
         scrollableYearDropdown
         yearDropdownItemNumber={50}
+        withPortal
+        portalId="date-picker-portal"
+        popperClassName="date-picker-popper"
+        calendarClassName="date-picker-calendar"
         popperPlacement={'bottom-start'}
       />
     </CustomDatePickerWrapper>

@@ -7,7 +7,10 @@ import { SIZE } from '@/constants/styles/style';
 import { HISTORY } from '@/constants/constant';
 import { useHistoryDomainDropdownItems } from '@/hooks/dropdown/dropdown-items';
 import Dropdown from '@/components/atoms/common/dropdown/dropdown';
-import GroupHistoryList from '@/components/molecules/member/information/history/group-history-list';
+import GroupHistoryList from '@/components/molecules/member/information/history/group/group-history-list';
+import MinistryHistoryList from '@/components/molecules/member/information/history/ministry/ministry-history-list';
+import OfficerHistoryList from '@/components/molecules/member/information/history/officer/officer-history-list';
+import EducationHistoryList from '@/components/molecules/member/information/history/education/education-history-list';
 
 const MemberHistoryContainer = styled.div`
   display: flex;
@@ -56,6 +59,9 @@ const MemberHistoryListView = ({
       {/* 이력 목록 */}
       <HistoryList>
         {historyDomain === HISTORY.GROUP && <GroupHistoryList />}
+        {historyDomain === HISTORY.MINISTRY && <MinistryHistoryList />}
+        {historyDomain === HISTORY.OFFICER && <OfficerHistoryList />}
+        {historyDomain === HISTORY.EDUCATION && <EducationHistoryList />}
       </HistoryList>
     </MemberHistoryContainer>
   );

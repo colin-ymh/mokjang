@@ -8,6 +8,8 @@ type getOfficerHistoryParams = {
   churchId: string;
   memberId: string;
   orderDirection?: ORDER_DIRECTION;
+  take?: number;
+  page?: number;
 };
 
 type editOfficerHistoryParams = {
@@ -44,7 +46,7 @@ export class OfficerHistoryApi {
   public getOfficerHistory = async (
     params: getOfficerHistoryParams
   ): Promise<AxiosResponse> => {
-    const { churchId, memberId, orderDirection } = params;
+    const { churchId, memberId, orderDirection, take, page } = params;
 
     const url = `${this._url}/churches/${churchId}/members/${memberId}/histories/officers`;
 
@@ -52,6 +54,8 @@ export class OfficerHistoryApi {
       return await authorizeAxios.get(url, {
         params: {
           orderDirection,
+          take,
+          page,
         },
       });
     } catch (serverError: any) {

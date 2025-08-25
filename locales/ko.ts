@@ -369,6 +369,8 @@ export default {
   'title.memberFilter': '교인 필터',
 
   'title.ministryList': '사역 목록',
+
+  'title.editHistory': '이력 수정',
   /*-------------------title (popup title)-------------------*/
 
   /*-------------------header (side bar button)-------------------*/
@@ -410,6 +412,8 @@ export default {
 
   'header.content': '내용',
   'header.educationAttendance': '출석',
+
+  'header.memberAttendance': '출석 정보',
 
   /*-------------------header (side bar button)-------------------*/
 
@@ -460,6 +464,8 @@ export default {
   'tableHeader.permissionScope': '권한범위',
 
   'tableHeader.range': '활성',
+
+  'tableHeader.memberAttendance': '최근 출석 기록',
   /*-------------------table header-------------------*/
 
   /*------------------- register-------------------*/
@@ -547,6 +553,8 @@ export default {
   'button.stopGroupHistory': '그룹 이력 종료',
   'button.stopOfficerHistory': '직분 이력 종료',
   'button.stopMinistryHistory': '사역 이력 종료',
+
+  'button.deleteHistory': '이력 삭제',
 
   'button.addMinistry': '사역 추가',
 
@@ -685,6 +693,7 @@ export default {
 
   'popup.deleteWorshipTitle': '해당 예배를 삭제하시겠습니까?',
   'popup.deleteWorshipBody': '삭제된 예배는 복구할 수 없습니다.',
+
   /*-------------------popup-------------------*/
 
   /*-------------------warning-------------------*/
@@ -703,6 +712,10 @@ export default {
     '종료된 교인의 직분은 교인의 직분 이력에 저장됩니다.',
   'warning.stopMinistryHistory':
     '종료된 교인의 사역은 교인의 사역 이력에 저장됩니다.',
+
+  'warning.deleteGroupHistory': '삭제된 이력은 복구할 수 없습니다.',
+  'warning.deleteOfficerHistory': '삭제된 이력은 복구할 수 없습니다.',
+  'warning.deleteMinistryHistory': '삭제된 이력은 복구할 수 없습니다.',
   /*-------------------warning-------------------*/
 
   /*-------------------description-------------------*/
@@ -717,6 +730,7 @@ export default {
   'description.editMinistryGroupLeader': '새로운 사역리더를 선택하세요',
   'description.tableHeaderSetting': '드래그하여 순서를 변경하세요',
   'description.memberRegisterHeader': '새로운 교인의 정보를 입력해주세요',
+
   /*-------------------description-------------------*/
 
   /*-------------------tooltip-------------------*/

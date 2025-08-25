@@ -2,10 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 import { MinistryGroupMembersApi } from '@/api/management/ministry/ministry-group-members.api';
-import {
-  DEFAULT_MINISTRY_HISTORY,
-  MinistryHistory,
-} from '@/models/member/history';
+import { DEFAULT_MINISTRY_HISTORY, MinistryHistory, } from '@/models/member/history';
 import { setTargetMinistryHistory } from '@/redux/reducers/target/target-history-reducer';
 import { setTargetMember } from '@/redux/reducers/target/target-member-reducer';
 import MemberMinistryListView from '@/components/molecules/member/information/personal/member-ministry-list.view';
@@ -16,11 +13,7 @@ import { useI18n, useScopedI18n } from '../../../../../../locales/client';
 import EditMemberMinistry from '@/components/molecules/member/information/personal/edit-member-ministry';
 import { getDateFromDateString, getDateStringFromDate } from '@/utils/date';
 import { setMembers } from '@/redux/reducers/filter/member-filter-reducer';
-import {
-  setIsToastShown,
-  setToastBackgroundColor,
-  setToastText,
-} from '@/redux/reducers/toast-popup-reducer';
+import { setIsToastShown, setToastBackgroundColor, setToastText, } from '@/redux/reducers/toast-popup-reducer';
 import { BLACK, DESTRUCTIVE } from '@/constants/styles/color';
 import { MinistryMembersApi } from '@/api/management/ministry/ministry-mebers.api';
 
@@ -177,8 +170,8 @@ const MemberMinistryList = () => {
           {
             churchId,
             ministryGroupId: targetMinistryHistory.id,
-            ministryId:
-              targetMinistryHistory.ministryGroupDetailHistory[0].ministry.id,
+            ministryId: targetMinistryHistory.ministryGroupDetailHistory[0]
+              .ministry?.id as string,
           },
           {
             memberId: targetMember.id,

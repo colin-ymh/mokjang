@@ -1,90 +1,100 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
 import { AppDispatch, RootState } from '@/redux/store';
+
+import { useScopedI18n } from '../../../../../../locales/client';
+import MemberAttendanceListView from '@/components/molecules/member/information/attendance/member-attendance-list.view';
+import { WORSHIP_PERIOD } from '@/constants/constant';
+import {
+  DEFAULT_MEMBER_ATTENDANCE_STATISTIC,
+  MemberAttendanceStatistic,
+  Worship,
+} from '@/models/worship/worship';
+import { setTargetWorship } from '@/redux/reducers/target/target-worship-reducer';
 import { setWorshipEnrollmentFilter } from '@/redux/reducers/filter/worship-enrollment-filter-reducer';
 import { WORSHIP_ENROLLMENT } from '@/constants/column/worship-column';
-import { ALL, BLANK, WORSHIP_PERIOD } from '@/constants/constant';
-import AttendanceRowView from '@/components/molecules/attendance/list/attendance-row.view';
-import { DEFAULT_GROUP, Group } from '@/models/management/management';
-import { getGroup } from '@/utils/group';
-import {
-  fetchWorships,
-  setWorships,
-} from '@/redux/reducers/filter/worship-filter-reducer';
-import { WorshipsApi } from '@/api/worship/worships.api';
-import {
-  setTargetWorship,
-  setTargetWorshipGroup,
-  setTargetWorshipStatistic,
-} from '@/redux/reducers/target/target-worship-reducer';
 import {
   getDateFromDateString,
   getDateStringFromDate,
   getMonthsAfterDate,
   getMonthsBeforeDate,
 } from '@/utils/date';
-import { Worship, WorshipStatistic } from '@/models/worship/worship';
-import { AttendanceTableProps } from '@/components/molecules/attendance/list/attendance-table';
+import { WorshipsApi } from '@/api/worship/worships.api';
+import { MembersApi } from '@/api/members/members.api';
 
-const AttendanceRow = ({
-  isStatisticOpened,
-  onClickStatisticChevron,
-}: AttendanceTableProps) => {
+type MemberAttendanceListProps = {};
+
+const MemberAttendanceList = ({}: MemberAttendanceListProps) => {
+  const membersApi = new MembersApi(false);
+  const worshipsApi = new WorshipsApi(false);
+
+  const t_popup = useScopedI18n('popup');
   const dispatch = useDispatch<AppDispatch>();
-  const churchId: string = useSelector(
-    (state: RootState) => state.church.churchId
-  );
+  const { churchId } = useSelector((state: RootState) => state.church);
   const { worshipEnrollmentFilter } = useSelector(
     (state: RootState) => state.worshipEnrollmentFilter
   );
-  const { targetWorship, targetWorshipGroup } = useSelector(
+  const { targetMember } = useSelector(
+    (state: RootState) => state.targetMember
+  );
+  const { targetWorship } = useSelector(
     (state: RootState) => state.targetWorship
   );
-  const { worships } = useSelector((state: RootState) => state.worshipFilter);
-  const { groups } = useSelector((state: RootState) => state.church);
 
-  const worshipsApi = new WorshipsApi(false);
+  const [worships, setWorships] = useState<Worship[]>([]);
 
-  // 그룹 모달 on off
-  const [isGroupModalShown, setIsGroupModalShown] = useState<boolean>(false);
+  const [statistic, setStatistic] = useState<MemberAttendanceStatistic>(
+    DEFAULT_MEMBER_ATTENDANCE_STATISTIC
+  );
 
   const [worshipPeriod, setWorshipPeriod] = useState<WORSHIP_PERIOD>(
     WORSHIP_PERIOD.LAST_THREE_MONTH
   );
 
   const [thrownError, setThrownError] = useState<Error | null>(null);
+  // 렌더링 시점(컴포넌트 return)에서 조건부로 에러 발생
   if (thrownError) {
     throw thrownError;
   }
 
-  // 목록 설정 모달 열기
-  const onClickOpenGroupModal = () => {
-    setIsGroupModalShown(true);
+  const fetchWorships = async () => {
+    try {
+      const response = await membersApi.getMemberWorshipAvailable({
+        churchId,
+        memberId: targetMember.id,
+      });
+
+      const newWorships = response.data.data;
+      setWorships(newWorships);
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
+    }
   };
 
-  // 목록 설정 닫기
-  const onClickCloseGroupModal = () => {
-    setIsGroupModalShown(false);
+  const fetchStatistics = async () => {
+    if (!targetWorship.id) return;
+
+    try {
+      const response = await membersApi.getMemberWorshipStatistics({
+        churchId,
+        memberId: targetMember.id,
+        worshipId: targetWorship.id,
+      });
+
+      const newStatistic = response.data.data;
+      setStatistic(newStatistic);
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
+    }
   };
 
-  // 최상위 그룹
-  const [topLevelGroup, setTopLevelGroup] = useState<Group>(DEFAULT_GROUP);
+  useEffect(() => {
+    fetchWorships();
+  }, [targetMember.id]);
 
-  // 그룹 선택
-  const onClickGroupItem = (id: string | null) => {
-    const newGroup = id === ALL ? DEFAULT_GROUP : getGroup(id, groups);
-    dispatch(setTargetWorshipGroup(newGroup));
-
-    dispatch(
-      setWorshipEnrollmentFilter({
-        ...worshipEnrollmentFilter,
-        [WORSHIP_ENROLLMENT.GROUP]: id || BLANK,
-      })
-    );
-
-    setIsGroupModalShown(false);
-  };
+  useEffect(() => {
+    fetchStatistics();
+  }, [targetMember.id, targetWorship.id]);
 
   // 예배 변경 이벤트
   const onClickWorshipItem = async (id: string) => {
@@ -98,31 +108,6 @@ const AttendanceRow = ({
       const newWorship: Worship = response.data.data;
 
       dispatch(setTargetWorship(newWorship));
-
-      if (newWorship.worshipTargetGroups.length > 0) {
-        const newGroup = getGroup(
-          newWorship.worshipTargetGroups[0].group.id,
-          groups
-        );
-        dispatch(setTargetWorshipGroup(newGroup));
-        setTopLevelGroup(newGroup);
-
-        dispatch(
-          setWorshipEnrollmentFilter({
-            ...worshipEnrollmentFilter,
-            [WORSHIP_ENROLLMENT.GROUP]: newGroup.id || BLANK,
-          })
-        );
-      } else {
-        dispatch(setTargetWorshipGroup(DEFAULT_GROUP));
-        setTopLevelGroup(DEFAULT_GROUP);
-        dispatch(
-          setWorshipEnrollmentFilter({
-            ...worshipEnrollmentFilter,
-            [WORSHIP_ENROLLMENT.GROUP]: BLANK,
-          })
-        );
-      }
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));
     }
@@ -285,23 +270,9 @@ const AttendanceRow = ({
     }
   };
 
-  // 필터 정보가 변경될 때, 예배 목록들을 다시 불러오는 부분
   useEffect(() => {
-    const fetchInitialWorships = async () => {
-      try {
-        const result = await dispatch(fetchWorships());
-        if (fetchWorships.fulfilled.match(result)) {
-          dispatch(setWorships(result.payload));
-        }
-      } catch (error) {
-        setThrownError(
-          error instanceof Error ? error : new Error(String(error))
-        );
-      }
-    };
-
-    fetchInitialWorships();
-  }, []);
+    onChangeWorshipPeriod(worshipPeriod);
+  }, [worshipPeriod]);
 
   // 출석 필터 Initialize
   useEffect(() => {
@@ -322,57 +293,11 @@ const AttendanceRow = ({
     // 날짜 선택
   }, [worships]);
 
-  useEffect(() => {
-    if (targetWorship.worshipTargetGroups.length > 0) {
-      setTopLevelGroup(targetWorship.worshipTargetGroups[0].group);
-    }
-  }, [targetWorship]);
-
-  useEffect(() => {
-    onChangeWorshipPeriod(worshipPeriod);
-  }, [worshipPeriod]);
-
-  const fetchWorshipStatistic = async () => {
-    if (targetWorship.id === BLANK) return;
-    if (!targetWorshipGroup?.id || targetWorshipGroup?.id === BLANK) return;
-    if (
-      worshipEnrollmentFilter.fromSessionDate === BLANK ||
-      worshipEnrollmentFilter.toSessionDate === BLANK
-    )
-      return;
-
-    try {
-      const response = await worshipsApi.getWorshipStatistics({
-        churchId,
-        worshipId: targetWorship.id,
-        groupId:
-          targetWorshipGroup.id === ALL ? undefined : targetWorshipGroup.id,
-        from: worshipEnrollmentFilter.fromSessionDate,
-        to: worshipEnrollmentFilter.toSessionDate,
-      });
-
-      const worshipStatistic: WorshipStatistic = response.data;
-
-      dispatch(setTargetWorshipStatistic(worshipStatistic));
-    } catch (error) {
-      setThrownError(error instanceof Error ? error : new Error(String(error)));
-    }
-  };
-
-  useEffect(() => {
-    fetchWorshipStatistic();
-  }, [targetWorshipGroup.id, targetWorship.id]);
-
   const props = {
-    isGroupModalShown,
-    isStatisticOpened,
-    topLevelGroup,
+    worships,
+    statistic,
     worshipPeriod,
-    onClickStatisticChevron,
-    onClickGroupItem,
     onClickWorshipItem,
-    onClickOpenGroupModal,
-    onClickCloseGroupModal,
     onChangeFromDate,
     onChangeToDate,
     onChangeWorshipPeriodDropdown,
@@ -380,9 +305,9 @@ const AttendanceRow = ({
 
   return (
     <>
-      <AttendanceRowView {...props} />
+      <MemberAttendanceListView {...props} />
     </>
   );
 };
 
-export default AttendanceRow;
+export default MemberAttendanceList;

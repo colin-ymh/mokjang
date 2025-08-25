@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
-import { ALL, ORDER_DIRECTION } from '@/constants/constant';
+import { ALL, BLANK, ORDER_DIRECTION } from '@/constants/constant';
 import { WORSHIP_ENROLLMENT } from '@/constants/column/worship-column';
 import {
   setWorshipEnrollmentOrderBy,
@@ -137,6 +137,11 @@ const AttendanceTable = ({
 
   const fetchWorshipSessionCheckStatus = async () => {
     if (!targetWorship.id) return;
+    if (
+      worshipEnrollmentFilter.fromSessionDate === BLANK ||
+      worshipEnrollmentFilter.toSessionDate === BLANK
+    )
+      return;
 
     try {
       const response = await worshipSessionsApi.getWorshipSessionCheckStatus({

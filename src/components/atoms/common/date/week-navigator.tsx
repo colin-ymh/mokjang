@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import { GRAY, WHITE } from '@/constants/styles/color';
 import CustomDatePicker from '@/vendor/date-picker/custom-date-picker';
 import { getDateInWeekByDayOfWeek, getDateStringFromDate } from '@/utils/date';
-import LabelInput from '@/components/atoms/common/input/label-input';
 import { useI18n } from '../../../../../locales/client';
 
 import ChevronLeft from '../../../../../public/svg/chevron-left.svg';
@@ -13,6 +12,7 @@ import SvgIcon from '@/components/atoms/common/icon/svg-icon';
 import Button from '@/components/atoms/common/button/button';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import { SIZE } from '@/constants/styles/style';
+import BorderInput from '@/components/atoms/common/input/border-input';
 
 const startOfDay = (d: Date) => {
   const x = new Date(d);
@@ -26,7 +26,13 @@ const WeekNavigatorContainer = styled.div`
   gap: 8px;
   width: 100%;
   align-items: center;
-  margin-top: -6px;
+`;
+
+const LabelContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
 `;
 
 const ButtonContainer = styled.div`
@@ -107,18 +113,22 @@ const WeekNavigator = ({
 
   return (
     <WeekNavigatorContainer>
-      <CustomDatePicker
-        selected={innerValue}
-        onChange={onChangeDate}
-        customInput={
-          <LabelInput
-            icon={<SvgIcon svg={Calendar} />}
-            label={t('date')}
-            value={getDateStringFromDate(innerValue)}
-          />
-        }
-        selectWeek={true}
-      />
+      <LabelContainer>
+        <MainText color={GRAY.SEMI_DARK} size={SIZE.SMALL}>
+          {t('date')}
+        </MainText>
+        <CustomDatePicker
+          selected={innerValue}
+          onChange={onChangeDate}
+          customInput={
+            <BorderInput
+              icon={<SvgIcon svg={Calendar} />}
+              value={getDateStringFromDate(innerValue)}
+            />
+          }
+          selectWeek={true}
+        />
+      </LabelContainer>
       <ButtonContainer>
         <Button
           icon={<SvgIcon svg={ChevronLeft} />}

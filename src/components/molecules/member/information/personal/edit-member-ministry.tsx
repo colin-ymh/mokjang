@@ -6,14 +6,11 @@ import { getDateStringFromDate } from '@/utils/date';
 import EditMemberMinistryView from '@/components/molecules/member/information/personal/edit-member-ministry.view';
 import { getMinistryGroup } from '@/utils/ministry';
 import { MinistriesApi } from '@/api/management/ministry/ministries.api';
-import {
-  DEFAULT_MINISTRY,
-  Ministry,
-  MinistryGroup,
-} from '@/models/management/management';
-import { BLANK, MINISTRY_GROUP_ROLE } from '@/constants/constant';
+import { DEFAULT_MINISTRY, Ministry, MinistryGroup, } from '@/models/management/management';
+import { BLANK } from '@/constants/constant';
 import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-item';
 import { useI18n } from '../../../../../../locales/client';
+import { DEFAULT_MINISTRY_DETAIL_HISTORY } from '@/models/member/history';
 
 type EditMemberMinistryProps = {
   onClickDeleteMinistry: (ministryGroupId: string) => void;
@@ -64,14 +61,7 @@ const EditMemberMinistry = ({
         ...targetMinistryHistory,
         ministryGroup: newMinistryGroup,
         ministryGroupSnapShot: newMinistryGroup.name,
-        ministryGroupDetailHistory: [
-          {
-            id: BLANK,
-            ministry: { ...DEFAULT_MINISTRY, id: BLANK },
-            startDate: '',
-            role: MINISTRY_GROUP_ROLE.NONE,
-          },
-        ],
+        ministryGroupDetailHistory: [DEFAULT_MINISTRY_DETAIL_HISTORY],
       })
     );
   };
@@ -82,10 +72,8 @@ const EditMemberMinistry = ({
         ...targetMinistryHistory,
         ministryGroupDetailHistory: [
           {
-            id: BLANK,
+            ...DEFAULT_MINISTRY_DETAIL_HISTORY,
             ministry: { ...DEFAULT_MINISTRY, id: ministryId },
-            startDate: '',
-            role: MINISTRY_GROUP_ROLE.NONE,
           },
         ],
       })

@@ -10,6 +10,8 @@ type GetEducationHistoryParams = {
   churchId: string; // 교회 id
   memberId: string;
   orderDirection?: ORDER_DIRECTION;
+  take?: number;
+  page?: number;
 };
 
 type createEducationHistoryParams = {
@@ -60,104 +62,18 @@ export class EducationHistoryApi {
   public getEducationHistory = async (
     params: GetEducationHistoryParams
   ): Promise<AxiosResponse> => {
-    const { churchId, memberId, orderDirection } = params;
+    const { churchId, memberId, orderDirection, take, page } = params;
 
-    const url = `${this._url}/churches/${churchId}/members/${memberId}/educations`;
+    const url = `${this._url}/churches/${churchId}/members/${memberId}/histories/educations`;
 
     try {
       return await authorizeAxios.get(url, {
         params: {
           orderDirection,
+          take,
+          page,
         },
       });
-    } catch (serverError: any) {
-      if (serverError.response) {
-        const { message, error, statusCode } = serverError.response.data;
-        throw new CustomError(message, error, statusCode);
-      } else {
-        throw new CustomError(
-          '알 수 없는 에러가 발생했습니다',
-          500,
-          'Unknown Error'
-        );
-      }
-    }
-  };
-
-  /**
-   * 교육 이력 생성
-   * @param {createEducationHistoryParams} params
-   * @param {createEducationHistoryBody} body
-   * @returns {Promise<AxiosResponse>}
-   */
-  public createEducationHistory = async (
-    params: createEducationHistoryParams,
-    body: createEducationHistoryBody
-  ): Promise<AxiosResponse> => {
-    const { churchId, memberId } = params;
-
-    const url = `${this._url}/churches/${churchId}/members/${memberId}/educations`;
-
-    try {
-      return await authorizeAxios.post(url, body);
-    } catch (serverError: any) {
-      if (serverError.response) {
-        const { message, error, statusCode } = serverError.response.data;
-        throw new CustomError(message, error, statusCode);
-      } else {
-        throw new CustomError(
-          '알 수 없는 에러가 발생했습니다',
-          500,
-          'Unknown Error'
-        );
-      }
-    }
-  };
-
-  /**
-   * 교육 이력 수정
-   * @param {editEducationHistoryParams} params
-   * @param {editEducationHistoryBody} body
-   * @returns {Promise<AxiosResponse>}
-   */
-  public editEducationHistory = async (
-    params: editEducationHistoryParams,
-    body: editEducationHistoryBody
-  ): Promise<AxiosResponse> => {
-    const { churchId, memberId, educationHistoryId } = params;
-
-    const url = `${this._url}/churches/${churchId}/members/${memberId}/educations/${educationHistoryId}`;
-
-    try {
-      return await authorizeAxios.patch(url, body);
-    } catch (serverError: any) {
-      if (serverError.response) {
-        const { message, error, statusCode } = serverError.response.data;
-        throw new CustomError(message, error, statusCode);
-      } else {
-        throw new CustomError(
-          '알 수 없는 에러가 발생했습니다',
-          500,
-          'Unknown Error'
-        );
-      }
-    }
-  };
-
-  /**
-   * 교육 이력 삭제
-   * @param {deleteEducationHistoryParams} params
-   * @returns {Promise<AxiosResponse>}
-   */
-  public deleteEducationHistory = async (
-    params: deleteEducationHistoryParams
-  ): Promise<AxiosResponse> => {
-    const { churchId, memberId, educationHistoryId } = params;
-
-    const url = `${this._url}/churches/${churchId}/members/${memberId}/educations/${educationHistoryId}`;
-
-    try {
-      return await authorizeAxios.delete(url);
     } catch (serverError: any) {
       if (serverError.response) {
         const { message, error, statusCode } = serverError.response.data;

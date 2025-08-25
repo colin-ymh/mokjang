@@ -41,6 +41,15 @@ export type GroupDetailHistory = {
   endDate: string;
 };
 
+export const DEFAULT_GROUP_DETAIL_HISTORY: GroupDetailHistory = {
+  id: BLANK,
+  memberId: BLANK,
+  groupHistoryId: BLANK,
+  role: 'leader',
+  startDate: BLANK,
+  endDate: BLANK,
+};
+
 export type EducationHistory = {
   id: string;
   educationTerm: EducationTerm;
@@ -69,7 +78,7 @@ export type MinistryHistory = {
   ministryGroupSnapShot: string;
   startDate: string;
   endDate: string;
-  ministryGroupDetailHistory: MinistryGroupDetailHistory[];
+  ministryGroupDetailHistory: MinistryDetailHistory[];
 };
 
 export const DEFAULT_MINISTRY_HISTORY: MinistryHistory = {
@@ -83,11 +92,29 @@ export const DEFAULT_MINISTRY_HISTORY: MinistryHistory = {
   ministryGroupDetailHistory: [],
 };
 
-export type MinistryGroupDetailHistory = {
+export enum MINISTRY_DETAIL_TYPE {
+  MINISTRY = 'ministry',
+  ROLE = 'role',
+}
+export type MinistryDetailHistory = {
   id: string;
   startDate: string;
-  ministry: Ministry;
-  role: MINISTRY_GROUP_ROLE
+  endDate: string;
+  type?: MINISTRY_DETAIL_TYPE;
+  detail?: {
+    ministryId?: string;
+    ministryName?: string;
+    role?: MINISTRY_GROUP_ROLE;
+  };
+
+  role?: MINISTRY_GROUP_ROLE;
+  ministry?: Ministry;
+};
+
+export const DEFAULT_MINISTRY_DETAIL_HISTORY: MinistryDetailHistory = {
+  id: BLANK,
+  startDate: BLANK,
+  endDate: BLANK,
 };
 
 export type OfficerHistory = {

@@ -366,6 +366,8 @@ export default {
   'title.memberFilter': 'Member Filter',
 
   'title.ministryList': 'Ministry List',
+
+  'title.editHistory': 'Edit History',
   /*-------------------title (popup title)-------------------*/
 
   /*-------------------header (side bar button)-------------------*/
@@ -404,6 +406,8 @@ export default {
 
   'header.content': 'Content',
   'header.educationAttendance': 'Attendance',
+
+  'header.memberAttendance': 'Member Attendance',
 
   /*-------------------header (side bar button)-------------------*/
 
@@ -452,6 +456,8 @@ export default {
   'tableHeader.permissionTemplate': 'Template',
   'tableHeader.permissionActive': 'Active',
   'tableHeader.permissionScope': 'Scope',
+
+  'tableHeader.memberAttendance': 'Last Attendances',
   /*-------------------table header-------------------*/
 
   /*------------------- register-------------------*/
@@ -538,6 +544,8 @@ export default {
   'button.stopGroupHistory': 'Stop Group History',
   'button.stopOfficerHistory': 'Stop Officer History',
   'button.stopMinistryHistory': 'Stop Ministry History',
+
+  'button.deleteHistory': 'Delete History',
 
   'button.addMinistry': 'Add Ministry',
 
@@ -689,12 +697,17 @@ export default {
     'You cannot delete this ministry group if there are members or subgroups associated with it. Deleted ministry group cannot be recovered.',
   'warning.deleteMinistry':
     'You cannot delete this ministry if there are members assigned to it. Deleted ministry cannot be recovered.',
+
   'warning.stopGroupHistory':
     "Stopped Group will be saved in member's group history.",
   'warning.stopOfficerHistory':
     "Stopped Officer will be saved in member's officer history.",
   'warning.stopMinistryHistory':
     "Stopped Ministry will be saved in member's ministry history.",
+
+  'warning.deleteGroupHistory': 'Deleted history cannot be recovered.',
+  'warning.deleteOfficerHistory': 'Deleted history cannot be recovered.',
+  'warning.deleteMinistryHistory': 'Deleted history cannot be recovered.',
   /*-------------------warning-------------------*/
 
   /*-------------------description-------------------*/

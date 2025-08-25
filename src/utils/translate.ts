@@ -468,3 +468,21 @@ export const getTranslatedCompletedEnrollmentStatus = (
     return `$${completedCount}/${enrollmentCount} completed`;
   }
 };
+
+/**
+ *
+ * @param locale
+ * @param presentCount
+ * @param totalSessions
+ */
+export const getTranslatedMemberAttendanceCount = (
+  locale: LOCALE,
+  presentCount: number,
+  totalSessions: number
+) => {
+  if (locale === LOCALE.KO) {
+    return `전체 ${totalSessions}회 중 ${presentCount}회 출석`;
+  } else {
+    return `attended ${presentCount} times per ${totalSessions} times`;
+  }
+};
