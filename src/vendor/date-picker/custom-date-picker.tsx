@@ -1,10 +1,17 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
-import DatePicker, { DatePickerProps, ReactDatePickerCustomHeaderProps, registerLocale, } from 'react-datepicker';
+import DatePicker, {
+  DatePickerProps,
+  ReactDatePickerCustomHeaderProps,
+  registerLocale,
+} from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
-import styled, { createGlobalStyle, StyleSheetManager, } from 'styled-components';
+import styled, {
+  createGlobalStyle,
+  StyleSheetManager,
+} from 'styled-components';
 import { ko } from 'date-fns/locale';
 
 import { BLACK, GRAY, MAIN, RED, WHITE } from '@/constants/styles/color';

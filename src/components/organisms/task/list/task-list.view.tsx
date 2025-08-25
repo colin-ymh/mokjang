@@ -145,7 +145,7 @@ const TaskListView = (props: TaskListViewProps) => {
         doneBackgroundColor={isSaveEnabled ? MAIN.DEFAULT : MAIN.LIGHT}
         doneDisabled={!isSaveEnabled}
       >
-        <AddTask />
+        <AddTask isEdit={true} />
       </WrappedPagePopup>
       <Loading isShow={isLoading} />
     </>

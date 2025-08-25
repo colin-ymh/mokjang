@@ -12,19 +12,14 @@ import {
 } from '@/utils/date';
 import AddTaskView from '@/components/organisms/task/add/add-task.view';
 import { setTargetTask } from '@/redux/reducers/target/target-task-reducer';
-import { TASK_STATUS } from '@/constants/status/status';
 
-type AddTaskProps = {};
+type AddTaskProps = {
+  isEdit?: boolean;
+};
 
-const AddTask = ({}: AddTaskProps) => {
+const AddTask = ({ isEdit = false }: AddTaskProps) => {
   const { targetTask } = useSelector((state: RootState) => state.targetTask);
   const dispatch = useDispatch<AppDispatch>();
-
-  // ===== status =====
-  const onChangeStatus = (status: TASK_STATUS) => {
-    dispatch(setTargetTask({ ...targetTask, status: status }));
-  };
-  // ===== status =====
 
   // ===== title =====
   const onChangeTitle = (event: ChangeEvent<HTMLInputElement>): void => {
@@ -209,10 +204,10 @@ const AddTask = ({}: AddTaskProps) => {
   // ===== receiver =====
 
   const props = {
+    isEdit,
     inCharge,
     receivers,
     content,
-    onChangeStatus,
     onChangeTitle,
     onChangeStartDate,
     onChangeStartTime,

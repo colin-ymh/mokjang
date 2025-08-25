@@ -3,7 +3,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 
 import { useScopedI18n } from '../../../../../../locales/client';
-import { setIsToastShown, setToastBackgroundColor, setToastText, } from '@/redux/reducers/toast-popup-reducer';
+import {
+  setIsToastShown,
+  setToastBackgroundColor,
+  setToastText,
+} from '@/redux/reducers/toast-popup-reducer';
 import { BLACK, DESTRUCTIVE } from '@/constants/styles/color';
 import { DEFAULT_VISITATION, Visitation } from '@/models/visitation/visitation';
 import { VisitationsApi } from '@/api/visitations/visitations.api';
@@ -72,9 +76,22 @@ const MemberVisitationList = ({}: MemberVisitationListProps) => {
   };
 
   // 심방 추가 닫기
-  const onClickCloseModal = () => {
+  const onClickCloseModal = async () => {
     setIsModalShown(false);
-    dispatch(setTargetVisitation(DEFAULT_VISITATION));
+    if (!targetVisitation.id) {
+      dispatch(setTargetVisitation(DEFAULT_VISITATION));
+    } else {
+      try {
+        const response = await visitationsApi.getVisitation({
+          churchId,
+          visitationId: targetVisitation.id,
+        });
+        const prevVisitation = response.data.data;
+        dispatch(setTargetVisitation(prevVisitation));
+      } catch (error) {
+        setThrownError(new Error(String(error)));
+      }
+    }
   };
 
   // 가족 추가 완료 버튼

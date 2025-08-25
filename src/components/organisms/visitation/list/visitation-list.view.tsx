@@ -146,7 +146,7 @@ const VisitationListView = (props: VisitationListViewProps) => {
         doneBackgroundColor={isSaveEnabled ? MAIN.DEFAULT : MAIN.LIGHT}
         doneDisabled={!isSaveEnabled}
       >
-        <AddVisitation />
+        <AddVisitation isEdit={true} />
       </WrappedPagePopup>
       <Loading isShow={isLoading} />
     </>

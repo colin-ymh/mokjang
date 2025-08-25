@@ -1,10 +1,7 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import { BLANK } from '@/constants/constant';
 import { getFormattedTitle } from '@/utils/format';
-import {
-  DEFAULT_VISITATION_DETAIL,
-  VISITATION_METHOD,
-} from '@/models/visitation/visitation';
+import { DEFAULT_VISITATION_DETAIL } from '@/models/visitation/visitation';
 import { MemberDropdownType } from '@/components/atoms/common/dropdown/member-dropdown-item';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
@@ -16,22 +13,18 @@ import {
   getTimeStringFromDate,
 } from '@/utils/date';
 import AddVisitationView from '@/components/organisms/visitation/add/add-visitation.view';
-import { TASK_STATUS } from '@/constants/status/status';
 import { Member } from '@/models/member/member';
 
-type AddVisitationProps = {};
+type AddVisitationProps = {
+  isEdit?: boolean;
+};
 
-const AddVisitation = ({}: AddVisitationProps) => {
+const AddVisitation = ({ isEdit = false }: AddVisitationProps) => {
   const dispatch = useDispatch<AppDispatch>();
 
   const { targetVisitation } = useSelector(
     (state: RootState) => state.targetVisitation
   );
-
-  /* ── Status ── */
-  const onChangeStatus = (status: TASK_STATUS) =>
-    dispatch(setTargetVisitation({ ...targetVisitation, status: status }));
-
   /* ── Title ── */
   const onChangeTitle = (e: ChangeEvent<HTMLInputElement>) =>
     dispatch(
@@ -156,10 +149,6 @@ const AddVisitation = ({}: AddVisitationProps) => {
     setVisitedMembers(newVisitedMembers);
   };
 
-  /* ── Method ── */
-  const onChangeMethod = (m: VISITATION_METHOD) =>
-    dispatch(setTargetVisitation({ ...targetVisitation, visitationMethod: m }));
-
   /* ── Instructor ── */
   const [inCharge, setInCharge] = useState<MemberDropdownType[]>([]);
 
@@ -269,17 +258,16 @@ const AddVisitation = ({}: AddVisitationProps) => {
   };
 
   const props = {
+    isEdit,
     visitedMembers,
     inCharge,
     receivers,
-    onChangeStatus,
     onChangeTitle,
     onChangeStartDate,
     onChangeStartTime,
     onChangeEndDate,
     onChangeEndTime,
     onChangeVisitedMembers,
-    onChangeMethod,
     onChangeInCharge,
     onChangeReceivers,
     onChangeContent,
