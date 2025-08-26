@@ -21,11 +21,21 @@ import ReportedScheduleWidgetView from '@/components/molecules/home/widget/repor
 import { TasksApi } from '@/api/tasks/tasks.api';
 import { VisitationsApi } from '@/api/visitations/visitations.api';
 import { getReportedWidgetSchedule } from '@/utils/calendar';
-import { setIsToastShown, setToastBackgroundColor, setToastText, } from '@/redux/reducers/toast-popup-reducer';
+import {
+  setIsToastShown,
+  setToastBackgroundColor,
+  setToastText,
+} from '@/redux/reducers/toast-popup-reducer';
 import { DESTRUCTIVE } from '@/constants/styles/color';
 import { TASK_STATUS } from '@/constants/status/status';
-import { DEFAULT_EDUCATION, DEFAULT_EDUCATION_TERM, } from '@/models/education/education';
-import { fetchChurchScheduleSummary, fetchMyScheduleSummary, } from '@/redux/reducers/schedule-summary-reducer';
+import {
+  DEFAULT_EDUCATION,
+  DEFAULT_EDUCATION_TERM,
+} from '@/models/education/education';
+import {
+  fetchChurchScheduleSummary,
+  fetchMyScheduleSummary,
+} from '@/redux/reducers/schedule-summary-reducer';
 
 const ReportedScheduleWidget = () => {
   const scrollRef = useRef(null);

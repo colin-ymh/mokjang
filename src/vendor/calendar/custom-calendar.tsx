@@ -4,7 +4,7 @@ import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { Schedule } from '@/models/calendar/calendar';
 import styled from 'styled-components';
-import { MAIN, WHITE } from '@/constants/styles/color';
+import { GRAY, MAIN, RED, WHITE } from '@/constants/styles/color';
 import CustomCalendarHeader from '@/vendor/calendar/custom-calendar-header';
 
 import 'moment/locale/ko';
@@ -18,10 +18,28 @@ import { DOMAIN } from '@/models/permission/permission';
 const CustomCalendarContainer = styled.div`
   display: flex;
   width: 100%;
-  padding: 20px;
+  /* 달력 전체 컨테이너에 ‘가짜 MonthContainer’ 역할을 시킴 */
+  .rbc-calendar {
+    padding: 0; /* 헤더에 패딩이 들어가지 않도록 부모 패딩 제거 */
+    display: flex;
+    flex-direction: column;
+  }
+
+  .rbc-toolbar {
+    margin: 0; /* 부모 패딩을 더 이상 상쇄할 필요 없음 */
+    padding: 0;
+  }
 
   .rbc-month-view {
+    /* 모서리 안쪽 여백 없이, 바깥 여백만 부여 */
+    margin: 20px;
+    width: calc(100% - 40px); /* 좌우 마진 만큼 줄여 overflow 방지 */
     border-radius: 10px;
+    overflow: hidden;
+    padding: 0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* 테두리 대신 그림자 */
+    border: none;
+    background-color: ${WHITE};
   }
 
   // 요일 헤더
@@ -30,11 +48,39 @@ const CustomCalendarContainer = styled.div`
     flex: 1;
     align-items: center;
     justify-content: center;
-    border-right: 1px solid #ddd;
+    height: 50px;
+    font-size: 14px;
+    font-weight: 400;
+    font-family: 'Roboto', sans-serif;
+    color: ${GRAY.DARK};
+    border-color: ${GRAY.LIGHT};
+  }
 
-    &:last-child {
-      border-right: 1px solid transparent};
-    }
+  .rbc-month-view .rbc-date-cell {
+    border-color: ${GRAY.LIGHT};
+  }
+  .rbc-month-row,
+  .rbc-day-bg {
+    border-color: ${GRAY.LIGHT};
+  }
+
+  /* 다른 달(오프 레인지) 날짜 배경/텍스트 스타일 */
+  .rbc-off-range-bg {
+    background-color: ${GRAY.SUPER_LIGHT};
+  }
+  /* 오늘 날짜 강조 배경 제거 */
+  .rbc-today {
+    background-color: transparent;
+  }
+
+  /* Sunday */
+  .rbc-month-view .rbc-header:first-child {
+    color: ${RED.DEFAULT};
+  }
+
+  /* Saturday */
+  .rbc-month-view .rbc-header:last-child {
+    color: ${MAIN.DEFAULT};
   }
 
   .rbc-header + .rbc-header {
@@ -120,7 +166,7 @@ const CustomCalendar = ({
                   return true;
                 }
                 break;
-              case DOMAIN.EDUCATION:
+              case DOMAIN.EDUCATION_SESSION:
                 if (
                   event.education?.inChargeId === user.churchUser[0].memberId
                 ) {

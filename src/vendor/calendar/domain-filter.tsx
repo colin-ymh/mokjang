@@ -7,6 +7,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 import { useI18n } from '../../../locales/client';
 import { DOMAIN } from '@/models/permission/permission';
+import { getCalenderBackgroundColor } from '@/utils/color';
+import { CURSOR } from '@/constants/styles/style';
 
 const DomainFilterContainer = styled.div`
   display: flex;
@@ -20,8 +22,17 @@ const DomainFilterContainer = styled.div`
 const FilterItemContainer = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
   cursor: pointer;
+`;
+
+const Dot = styled.div<{ color: string }>`
+  display: flex;
+  width: 10px;
+  height: 10px;
+  border-radius: 100%;
+  background: ${({ color }) => color};
 `;
 
 const DomainFilter = () => {
@@ -31,7 +42,14 @@ const DomainFilter = () => {
     (state: RootState) => state.calendarFilter
   );
 
-  const domainFilterItems: DropdownValueType[] = Object.values(DOMAIN)
+  const domainFilterItems: DropdownValueType[] = [
+    DOMAIN.TASK,
+    DOMAIN.VISITATION,
+    DOMAIN.EDUCATION_SESSION,
+    DOMAIN.MEMBER,
+    DOMAIN.HOLIDAY,
+    DOMAIN.CHURCH_EVENT,
+  ]
     .filter((domain) => domain !== DOMAIN.MANAGEMENT)
     .map((domain) => {
       if (domain === DOMAIN.MEMBER) {
@@ -74,11 +92,15 @@ const DomainFilter = () => {
             )
           }
         >
-          <MainText>{item.title}</MainText>
           <CheckButton
             value={calendarFilter.selectedDomains.includes(item.value)}
             onChange={(value) => onClickCheck(value, item.value)}
+            isStopPropagation={true}
+            width={15}
+            height={15}
           />
+          <Dot color={getCalenderBackgroundColor(item.value)} />
+          <MainText cursor={CURSOR.POINTER}>{item.title}</MainText>
         </FilterItemContainer>
       ))}
     </DomainFilterContainer>

@@ -6,6 +6,7 @@ import {
   MainTextProps,
 } from '@/components/atoms/common/text/main-text';
 import { MAIN, WHITE } from '@/constants/styles/color';
+import { CURSOR } from '@/constants/styles/style';
 
 export type ButtonProps = MainTextProps & {
   text?: string;
@@ -103,7 +104,12 @@ const Button = ({
         <ContentWrapper>
           {icon}
           {text && (
-            <MainText color={color} fontWeight={fontWeight} fontSize={fontSize}>
+            <MainText
+              color={color}
+              fontWeight={fontWeight}
+              fontSize={fontSize}
+              cursor={CURSOR.POINTER}
+            >
               {text}
             </MainText>
           )}

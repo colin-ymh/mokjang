@@ -26,6 +26,8 @@ const CheckButtonContainer = styled.div<{
   height: ${({ height }) => height}px;
   cursor: ${({ $disabled }) => ($disabled ? 'default' : 'pointer')};
   border-radius: 2px;
+  justify-content: center;
+  align-items: center;
 `;
 
 const CheckIcon = styled(Check)<{ width: number; height: number }>`

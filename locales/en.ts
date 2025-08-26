@@ -13,6 +13,8 @@ export default {
   isNotDone: 'Incomplete',
   customSelect: 'Custom Select',
 
+  filter: 'Filter',
+
   doneRate: 'Completed Rate',
 
   prevNextWeek: 'Prev / Next Week',
@@ -522,7 +524,7 @@ export default {
   'button.check': 'Check',
 
   'button.today': 'Today',
-  'button.my': 'My Schedule',
+  'button.mySchedule': 'My Schedule',
   'button.editChurch': 'Edit Church',
 
   'button.deleteOfficer': 'Delete Officer',

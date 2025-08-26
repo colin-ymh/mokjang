@@ -2,7 +2,7 @@ import { ToolbarProps } from 'react-big-calendar';
 import Button from '@/components/atoms/common/button/button';
 import styled from 'styled-components';
 import { GRAY, MAIN, WHITE } from '@/constants/styles/color';
-import { useScopedI18n } from '../../../locales/client';
+import { useI18n, useScopedI18n } from '../../../locales/client';
 import { useParams } from 'next/navigation';
 import Dropdown from '@/components/atoms/common/dropdown/dropdown';
 import { LOCALE } from '@/constants/state/locale';
@@ -16,19 +16,27 @@ import CustomPopup from '@/components/atoms/common/popup/custom-popup';
 import React from 'react';
 import AddChurchEvent from '@/components/organisms/church-event/add/add-church-event';
 
+import ChevronLeft from '../../../public/svg/chevron-left.svg';
+import ChevronRight from '../../../public/svg/chevron-right.svg';
+import FilterOutline from '../../../public/svg/filter-outline.svg';
+import SvgIcon from '@/components/atoms/common/icon/svg-icon';
+import { CURSOR } from '@/constants/styles/style';
+import ToggleButton from '@/components/atoms/common/button/toggle-button';
+
 const HeaderContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 5px;
-  margin-bottom: 10px;
+  padding: 20px;
+  border-bottom: 1px solid ${GRAY.LIGHT};
+  background-color: ${WHITE};
 `;
 
 const LeftContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 20px;
+  gap: 10px;
 `;
 
 const RightContainer = styled.div`
@@ -40,7 +48,6 @@ const RightContainer = styled.div`
 
 const TitleContainer = styled.div<{ $isKO: boolean }>`
   display: flex;
-  gap: 10px;
   flex-direction: ${({ $isKO }) => ($isKO ? 'row-reverse' : 'row')};
 `;
 
@@ -54,9 +61,17 @@ const DropdownContainer = styled.div`
 
 const ButtonContainer = styled.div`
   display: flex;
+  gap: 10px;
+  flex-direction: row;
+  align-items: center;
+  position: relative;
+`;
+
+const ToggleContainer = styled.div`
+  display: flex;
   gap: 5px;
   flex-direction: row;
-  position: relative;
+  align-items: center;
 `;
 
 const FilterContainer = styled.div<{ $isShown: boolean }>`
@@ -112,6 +127,8 @@ const CustomCalendarHeaderView = ({
 }: CustomCalendarHeaderViewProps) => {
   const params = useParams();
   const locale = params.locale as string;
+
+  const t = useI18n();
   const t_button = useScopedI18n('button');
   const t_title = useScopedI18n('title');
 
@@ -140,6 +157,16 @@ const CustomCalendarHeaderView = ({
   return (
     <HeaderContainer>
       <LeftContainer>
+        {/* 지난달 */}
+        <Button
+          icon={<SvgIcon svg={ChevronLeft} width={2} cursor={CURSOR.POINTER} />}
+          width={30}
+          height={30}
+          borderColor={WHITE}
+          backgroundColor={WHITE}
+          onClick={() => onNavigate(NAVIGATE_ACTION.PREV)}
+        />
+
         {/* 날짜 타이틀*/}
         <TitleContainer $isKO={locale === LOCALE.KO}>
           {/* 월 */}
@@ -148,15 +175,15 @@ const CustomCalendarHeaderView = ({
               value={date.getMonth()}
               items={monthDropdownItems}
               onChangeItem={onChangeMonthItem}
-              width={locale === LOCALE.KO ? 70 : 100}
+              width={locale === LOCALE.KO ? 50 : 90}
               borderColor={WHITE}
               isChevronShown={false}
-              fontSize={30}
+              fontSize={24}
               fontWeight={600}
               isRight={locale === LOCALE.KO}
             />
             {locale === LOCALE.KO && (
-              <MainText fontSize={20} fontWeight={600}>
+              <MainText fontSize={22} fontWeight={700}>
                 {'월'}
               </MainText>
             )}
@@ -167,84 +194,72 @@ const CustomCalendarHeaderView = ({
               value={date.getFullYear()}
               items={yearDropdownItems}
               onChangeItem={onChangeYearItem}
-              width={100}
+              width={80}
               borderColor={WHITE}
               isChevronShown={false}
-              fontSize={30}
+              fontSize={24}
               fontWeight={600}
               isRight={locale === LOCALE.KO}
             />
             {locale === LOCALE.KO && (
-              <MainText fontSize={20} fontWeight={600}>
+              <MainText fontSize={22} fontWeight={700}>
                 {'년'}
               </MainText>
             )}
           </DropdownContainer>
         </TitleContainer>
-        {/* 타이틀 옆 버튼 (날짜 이동) */}
-        <ButtonContainer>
-          {/* 오늘 */}
-          <Button
-            text={t_button('today')}
-            width={60}
-            height={30}
-            color={GRAY.DARK}
-            borderColor={GRAY.SEMI_LIGHT}
-            backgroundColor={WHITE}
-            onClick={() => onNavigate(NAVIGATE_ACTION.TODAY)}
-          />
-          {/* 지난달 */}
-          <Button
-            text={'<'}
-            width={30}
-            height={30}
-            color={GRAY.DARK}
-            borderColor={GRAY.SEMI_LIGHT}
-            backgroundColor={WHITE}
-            onClick={() => onNavigate(NAVIGATE_ACTION.PREV)}
-          />
-          {/* 다음달 */}
-          <Button
-            text={'>'}
-            width={30}
-            height={30}
-            color={GRAY.DARK}
-            borderColor={GRAY.SEMI_LIGHT}
-            backgroundColor={WHITE}
-            onClick={() => onNavigate(NAVIGATE_ACTION.NEXT)}
-          />
-        </ButtonContainer>
+        {/* 다음달 */}
+        <Button
+          icon={
+            <SvgIcon svg={ChevronRight} width={2} cursor={CURSOR.POINTER} />
+          }
+          width={30}
+          height={30}
+          borderColor={WHITE}
+          backgroundColor={WHITE}
+          onClick={() => onNavigate(NAVIGATE_ACTION.NEXT)}
+        />
+        {/* 오늘 */}
+        <Button
+          text={t_button('today')}
+          width={60}
+          height={30}
+          color={GRAY.DARK}
+          borderColor={GRAY.LIGHT}
+          backgroundColor={WHITE}
+          onClick={() => onNavigate(NAVIGATE_ACTION.TODAY)}
+        />
       </LeftContainer>
       <RightContainer>
         <ButtonContainer>
+          {/* 나의 일정만 보기 */}
+          <ToggleContainer>
+            <MainText color={GRAY.DARK}>{t_button('mySchedule')}</MainText>
+            <ToggleButton
+              value={calendarFilter.isMy}
+              onClick={() => onChangeIsMy(!calendarFilter.isMy)}
+            />
+          </ToggleContainer>
+          {/* 도메인 필터 버튼 */}
+          <Button
+            text={t('filter')}
+            icon={<SvgIcon svg={FilterOutline} />}
+            width={'auto'}
+            height={30}
+            color={GRAY.DARK}
+            borderColor={GRAY.LIGHT}
+            backgroundColor={WHITE}
+            onClick={onClickFilter}
+          />
           {/* 이벤트 추가 버튼 */}
           <Button
             text={t_button('addChurchEvent')}
-            width={120}
-            height={30}
-            color={WHITE}
-            backgroundColor={MAIN.DEFAULT}
-            onClick={onClickAddEvent}
-          />
-          {/* 나의 일정만 보기 */}
-          <Button
-            text={t_button('my')}
-            width={100}
-            height={30}
-            color={calendarFilter.isMy ? WHITE : GRAY.DARK}
-            borderColor={GRAY.SEMI_LIGHT}
-            backgroundColor={calendarFilter.isMy ? MAIN.DEFAULT : WHITE}
-            onClick={() => onChangeIsMy(!calendarFilter.isMy)}
-          />
-          {/* 도메인 필터 버튼 */}
-          <Button
-            text={'필터'}
-            width={50}
+            width={'auto'}
             height={30}
             color={GRAY.DARK}
-            borderColor={GRAY.SEMI_LIGHT}
+            borderColor={GRAY.LIGHT}
             backgroundColor={WHITE}
-            onClick={onClickFilter}
+            onClick={onClickAddEvent}
           />
           {/* 도메인 필터 팝업 */}
           <FilterContainer $isShown={isFilterShown}>
@@ -252,8 +267,9 @@ const CustomCalendarHeaderView = ({
               isOpened={isFilterShown}
               onClick={onClickFilterClose}
               blur={false}
+              zIndex={49}
             />
-            {isFilterShown && <DomainFilter />}
+            <DomainFilter />
           </FilterContainer>
           {/* 일정 추가 팝업 */}
           <CustomPopup

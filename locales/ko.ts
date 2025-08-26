@@ -13,6 +13,8 @@ export default {
   isNotDone: '미완료',
   customSelect: '직접선택',
 
+  filter: '필터',
+
   doneRate: '완료율',
 
   prevNextWeek: '이전 / 다음 주',
@@ -531,7 +533,7 @@ export default {
   'button.check': '조회',
   'button.addChurchEvent': '이벤트 추가하기',
   'button.today': '오늘',
-  'button.my': '내 일정',
+  'button.mySchedule': '내 일정만',
   'button.editChurch': '정보 수정',
 
   'button.deleteOfficer': '직분 삭제',

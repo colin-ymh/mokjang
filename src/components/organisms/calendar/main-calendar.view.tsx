@@ -14,6 +14,12 @@ import { useI18n } from '../../../../locales/client';
 import MemberInformation from '@/components/organisms/member/information/member-information';
 import ChurchEventInformation from '@/components/organisms/church-event/information/church-event-information';
 import CustomPopup from '@/components/atoms/common/popup/custom-popup';
+import { TASK_STATUS } from '@/constants/status/status';
+import WrappedPagePopup from '@/components/atoms/common/popup/wrapped-page-popup';
+import { getTranslatedTerm } from '@/utils/translate';
+import EducationSessionInformation from '@/components/organisms/education/education-session/information/education-session-information';
+import { usePathname } from 'next/navigation';
+import { LOCALE } from '@/constants/state/locale';
 
 const CalendarContainer = styled.div`
   display: flex;
@@ -47,6 +53,9 @@ type MainCalendarViewProps = {
   onClickClose: () => void;
   onChangeDate: (date: Date) => void;
   onSelectSchedule: (event: Schedule) => void;
+  onChangeTaskStatus: (status: TASK_STATUS) => void;
+  onChangeVisitationStatus: (status: TASK_STATUS) => void;
+  onChangeEducationSessionStatus: (status: TASK_STATUS) => void;
 };
 
 const MainCalendarView = ({
@@ -55,15 +64,24 @@ const MainCalendarView = ({
   onClickClose,
   onChangeDate,
   onSelectSchedule,
+  onChangeTaskStatus,
+  onChangeVisitationStatus,
+  onChangeEducationSessionStatus,
 }: MainCalendarViewProps) => {
-  const t = useI18n();
   const { calendarSchedules } = useSelector(
     (state: RootState) => state.calendarFilter
   );
+  const pathname = usePathname();
+  const locale = pathname.split('/')[1] as LOCALE;
+
+  const t = useI18n();
 
   const { targetTask } = useSelector((state: RootState) => state.targetTask);
   const { targetVisitation } = useSelector(
     (state: RootState) => state.targetVisitation
+  );
+  const { targetEducationTerm } = useSelector(
+    (state: RootState) => state.targetEducationTerm
   );
   const { targetEducationSession } = useSelector(
     (state: RootState) => state.targetEducationSession
@@ -80,55 +98,67 @@ const MainCalendarView = ({
       />
 
       {/* 업무 상세정보 팝업*/}
-      <SlidePopup
+      <WrappedPagePopup
         isShow={openedDomain === DOMAIN.TASK}
         onClickClose={onClickClose}
-        isFooterShown={false}
         headerTitle={targetTask?.title}
-        headerRight={
-          <ButtonRow>
-            <ButtonContainer onClick={onClickClose}>
-              <Cancel />
-            </ButtonContainer>
-          </ButtonRow>
-        }
+        hideCancel={true}
+        hideDone={true}
+        widthPercentage={50}
+        stageThreeTop={190}
+        stageTwoTop={40}
+        inCharge={targetTask?.inCharge}
+        startDate={targetTask?.startDate}
+        endDate={targetTask?.endDate}
+        status={targetTask.status}
+        onChangeStatus={onChangeTaskStatus}
       >
-        {openedDomain === DOMAIN.TASK && <TaskInformation />}
-      </SlidePopup>
+        <TaskInformation onChangeStatus={onChangeTaskStatus} />
+      </WrappedPagePopup>
 
       {/* 심방 상세정보 팝업*/}
-      <SlidePopup
+      <WrappedPagePopup
         isShow={openedDomain === DOMAIN.VISITATION}
         onClickClose={onClickClose}
-        isFooterShown={false}
         headerTitle={targetVisitation?.title}
-        headerRight={
-          <ButtonRow>
-            <ButtonContainer onClick={onClickClose}>
-              <Cancel />
-            </ButtonContainer>
-          </ButtonRow>
-        }
+        hideCancel={true}
+        hideDone={true}
+        stageThreeTop={250}
+        stageTwoTop={40}
+        inCharge={targetVisitation.inCharge}
+        startDate={targetVisitation.startDate}
+        endDate={targetVisitation.endDate}
+        status={targetVisitation.status}
+        onChangeStatus={onChangeVisitationStatus}
       >
-        {openedDomain === DOMAIN.VISITATION && <VisitationInformation />}
-      </SlidePopup>
+        <VisitationInformation onChangeStatus={onChangeVisitationStatus} />
+      </WrappedPagePopup>
 
-      {/*/!* 교육 상세정보 팝업*!/*/}
-      {/*<SlidePopup*/}
-      {/*  isShow={openedDomain === DOMAIN.EDUCATION}*/}
-      {/*  onClickClose={onClickClose}*/}
-      {/*  isFooterShown={false}*/}
-      {/*  headerTitle={`${targetEducationSession.session}${t('session')} ${targetEducationSession.title}`}*/}
-      {/*  headerRight={*/}
-      {/*    <ButtonRow>*/}
-      {/*      <ButtonContainer onClick={onClickClose}>*/}
-      {/*        <Cancel />*/}
-      {/*      </ButtonContainer>*/}
-      {/*    </ButtonRow>*/}
-      {/*  }*/}
-      {/*>*/}
-      {/*  {openedDomain === DOMAIN.EDUCATION && <EducationSessionInformation />}*/}
-      {/*</SlidePopup>*/}
+      {/* 교육회차 상세정보 팝업*/}
+      <WrappedPagePopup
+        keyboardDisabled={true}
+        isShow={openedDomain === DOMAIN.EDUCATION_SESSION}
+        onClickClose={onClickClose}
+        headerTitle={`${targetEducationTerm.educationName} - ${getTranslatedTerm(locale, targetEducationTerm.term)} - ${targetEducationSession.session}${t('session')} ${targetEducationSession.title}`}
+        hideCancel={true}
+        hideDone={true}
+        stageTwoTop={40}
+        stageThreeTop={250}
+        status={targetEducationSession.status}
+        inCharge={targetEducationSession.inCharge}
+        startDate={targetEducationSession.startDate}
+        endDate={targetEducationSession.endDate}
+        onChangeStatus={onChangeEducationSessionStatus}
+      >
+        {(scrollRef) => (
+          <>
+            <EducationSessionInformation
+              scrollRef={scrollRef}
+              onChangeStatus={onChangeEducationSessionStatus}
+            />
+          </>
+        )}
+      </WrappedPagePopup>
 
       {/* 교인 상세정보 팝업*/}
       <SlidePopup

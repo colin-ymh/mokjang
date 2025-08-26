@@ -79,8 +79,8 @@ export const getCalenderBackgroundColor = (domain: DOMAIN) => {
       return CALENDAR_COLOR.EVENT;
     case DOMAIN.HOLIDAY:
       return CALENDAR_COLOR.HOLIDAY;
-    case DOMAIN.EDUCATION:
-      return CALENDAR_COLOR.EDUCATION;
+    case DOMAIN.EDUCATION_SESSION:
+      return CALENDAR_COLOR.EDUCATION_SESSION;
     default:
       return WHITE;
   }
@@ -98,7 +98,7 @@ export const getCalenderColor = (domain: DOMAIN) => {
       return WHITE;
     case DOMAIN.HOLIDAY:
       return BLACK;
-    case DOMAIN.EDUCATION:
+    case DOMAIN.EDUCATION_SESSION:
       return WHITE;
     default:
       return WHITE;
@@ -111,10 +111,11 @@ export const getEventStyle = (event: Schedule) => {
       backgroundColor: getCalenderBackgroundColor(
         event.id?.split('-')[0] as DOMAIN
       ),
-      borderRadius: '4px',
+      borderRadius: '5px',
       color: getCalenderColor(event.id?.split('-')[0] as DOMAIN),
       padding: '2px 5px',
       fontSize: '14px',
+      fontFamily: "'Roboto', sans-serif",
     },
   };
 };

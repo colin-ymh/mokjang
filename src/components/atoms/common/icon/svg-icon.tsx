@@ -1,19 +1,22 @@
 import React from 'react';
 import styled from 'styled-components';
 import { GRAY } from '@/constants/styles/color';
+import { CURSOR } from '@/constants/styles/style';
 
 const StyledIcon = styled.svg<{
   $color?: string;
   $size?: number;
   width?: number;
   $isButton?: boolean;
+  cursor?: CURSOR;
 }>`
   width: ${({ $size }) => $size}px;
   height: ${({ $size }) => $size}px;
   stroke: ${({ $color }) => $color || 'currentColor'};
   stroke-width: ${({ width }) => width}px;
   color: ${({ $color }) => $color || 'currentColor'};
-  cursor: ${({ $isButton }) => ($isButton ? 'pointer' : 'default')};
+  cursor: ${({ $isButton, cursor }) =>
+    cursor || $isButton ? 'pointer' : 'default'};
 
   &:hover {
     background-color: ${({ $isButton }) => $isButton && GRAY.LIGHT};
@@ -27,6 +30,7 @@ type IconProps = {
   color?: string;
   width?: number;
   onClick?: () => void;
+  cursor?: CURSOR;
 };
 
 const SvgIcon = ({
@@ -35,6 +39,7 @@ const SvgIcon = ({
   color,
   width = 1.5,
   onClick,
+  cursor,
 }: IconProps) => {
   return (
     <StyledIcon
@@ -43,6 +48,7 @@ const SvgIcon = ({
       $color={color}
       width={width}
       onClick={onClick}
+      cursor={cursor}
       $isButton={!!onClick}
     />
   );

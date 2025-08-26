@@ -5,6 +5,7 @@ export enum DOMAIN {
   MEMBER = 'member',
   VISITATION = 'visitation',
   TASK = 'task',
+  EDUCATION = 'education',
   EDUCATION_TERM = 'educationTerm',
   EDUCATION_SESSION = 'educationSession',
   MANAGEMENT = 'management',

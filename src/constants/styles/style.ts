@@ -17,3 +17,7 @@ export enum DIRECTION {
   LEFT = 'left',
   RIGHT = 'right',
 }
+
+export enum CURSOR {
+  POINTER = 'pointer',
+}

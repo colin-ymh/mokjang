@@ -36,7 +36,14 @@ const initialState: CalendarFilterState = {
   calendarSchedules: [],
   calendarFilter: {
     isMy: false,
-    selectedDomains: Object.values(DOMAIN) as DOMAIN[],
+    selectedDomains: [
+      DOMAIN.TASK,
+      DOMAIN.VISITATION,
+      DOMAIN.EDUCATION_SESSION,
+      DOMAIN.MEMBER,
+      DOMAIN.HOLIDAY,
+      DOMAIN.CHURCH_EVENT,
+    ],
   },
 };
 
