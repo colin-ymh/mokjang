@@ -14,7 +14,6 @@ import {
 } from '@/redux/reducers/toast-popup-reducer';
 import { BLACK, DESTRUCTIVE } from '@/constants/styles/color';
 import { useI18n } from '../../../../../../../locales/client';
-import { REPEAT_PERIOD } from '@/constants/constant';
 
 type MainWorshipHeaderProps = {};
 
@@ -58,7 +57,7 @@ const MainWorshipHeader = ({}: MainWorshipHeaderProps) => {
             title: targetWorship.title,
             description: targetWorship.description,
             worshipDay: targetWorship.worshipDay,
-            repeatPeriod: REPEAT_PERIOD.EVERY_WEEK,
+            repeatPeriod: 1,
             worshipTargetGroupIds: targetWorship.worshipTargetGroupIds,
           }
         )
