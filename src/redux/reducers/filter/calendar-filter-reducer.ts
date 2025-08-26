@@ -6,7 +6,7 @@ import { TasksApi } from '@/api/tasks/tasks.api';
 import {
   getScheduleFromBirthday,
   getScheduleFromChurchEvent,
-  getScheduleFromEducation,
+  getScheduleFromEducationSession,
   getScheduleFromHoliday,
   getScheduleFromTask,
   getScheduleFromVisitation,
@@ -135,7 +135,7 @@ const getCalendarEducations = async (
 
     const newEducations = response.data;
     const newEvents = newEducations.map((education: EducationSession) => {
-      return getScheduleFromEducation(education);
+      return getScheduleFromEducationSession(education);
     });
 
     return newEvents;

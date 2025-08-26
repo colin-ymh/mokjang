@@ -182,7 +182,7 @@ const EducationSessionInformationView = ({
             <MainText color={GRAY.DARK}>{t('receiver')}</MainText>
           </TitleContainer>
           <MemberList>
-            {targetEducationSession.reports.map((report) => (
+            {targetEducationSession?.reports?.map((report) => (
               <MemberProfilePopupButton
                 key={report.id}
                 member={report.receiver}

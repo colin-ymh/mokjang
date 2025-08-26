@@ -99,12 +99,12 @@ const AddWorshipView = ({
           onChangeItem={onChangeWorshipDay}
           items={worshipDayDropdownItems}
         />
-        <LabelDropdown
-          label={t('repeatPeriod')}
-          value={targetWorship.repeatPeriod}
-          onChangeItem={onChangeRepeatPeriod}
-          items={repeatPeriodDropdownItems}
-        />
+        {/*<LabelDropdown*/}
+        {/*  label={t('repeatPeriod')}*/}
+        {/*  value={targetWorship.repeatPeriod}*/}
+        {/*  onChangeItem={onChangeRepeatPeriod}*/}
+        {/*  items={repeatPeriodDropdownItems}*/}
+        {/*/>*/}
       </RowContainer>
       <LabelTextarea
         label={t('description')}

@@ -169,6 +169,7 @@ const CountBar = styled.div<{ $count: number; max: number; color: string }>`
   background-color: ${({ color }) => color};
   position: absolute;
   left: 0;
+  transition: width 0.2s ease-in-out;
 `;
 type EducationEnrollmentTableProps = {
   onChangeStatus: (

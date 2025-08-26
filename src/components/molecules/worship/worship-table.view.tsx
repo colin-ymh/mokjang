@@ -135,16 +135,12 @@ const AttendanceContainer = styled.div`
 
 type WorshipTableProps = {
   isEditModalOpened: boolean;
-  isDeleteModalOpened: boolean;
   isEditEnabled: boolean;
   worships: Worship[];
   onClickHeader: (id: WORSHIP) => void;
   scrollRef: MutableRefObject<HTMLDivElement | null>;
   onScroll: () => void;
-  onClickDeleteWorship: () => void;
   onClickEditWorship: (worship: Worship) => void;
-  onClickCancelDelete: () => void;
-  onClickConfirmDelete: (worshipId: string) => void;
   onClickEditDone: () => void;
   onClickEditClose: () => void;
   onClickWorshipItem: (worship: Worship) => void;
@@ -152,26 +148,18 @@ type WorshipTableProps = {
 
 const WorshipTableView = ({
   isEditModalOpened,
-  isDeleteModalOpened,
   isEditEnabled,
   worships,
   onClickHeader,
   scrollRef,
   onScroll,
-  onClickDeleteWorship,
   onClickEditWorship,
-  onClickCancelDelete,
-  onClickConfirmDelete,
   onClickEditDone,
   onClickEditClose,
   onClickWorshipItem,
 }: WorshipTableProps) => {
   const t = useI18n();
-  const t_popup = useScopedI18n('popup');
-  const t_button = useScopedI18n('button');
   const t_title = useScopedI18n('title');
-
-  const groups = useSelector((state: RootState) => state.church.groups);
 
   const { height } = useWindowSize();
 
@@ -180,10 +168,9 @@ const WorshipTableView = ({
   );
 
   // 실제 표시할 컬럼 ID 배열 + 마지막에 비고란 추가
-  const visibleColumns = [
-    ...worshipTableHeaderItemList.filter((item) => item.isShown),
-    // BLANK_HEADER,
-  ];
+  const visibleColumns = worshipTableHeaderItemList.filter(
+    (item) => item.isShown
+  );
 
   // 각 TD에 들어갈 content
   const getWorshipTableContent = (id: string, worship: Worship) => {

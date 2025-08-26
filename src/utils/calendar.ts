@@ -37,9 +37,11 @@ export const getScheduleFromVisitation = (event: Visitation): Schedule => {
   };
 };
 
-export const getScheduleFromEducation = (event: EducationSession): Schedule => {
+export const getScheduleFromEducationSession = (
+  event: EducationSession
+): Schedule => {
   return {
-    id: `${DOMAIN.EDUCATION}-${event.id}`,
+    id: `${DOMAIN.EDUCATION_SESSION}-${event.id}`,
     title: event.title,
     allDay: false,
     start: event.startDate,
@@ -152,16 +154,24 @@ export const getMyWidgetSchedule = (event: ServerSchedule) => {
     start: event.startDate,
     end: event.endDate,
     status: event.status,
+    educationId: event.educationId || undefined,
+    educationName: event.educationName || undefined,
+    educationTermId: event.educationTermId || undefined,
+    educationTerm: event.educationTerm || undefined,
   } as Schedule;
 };
 
 export const getReportedWidgetSchedule = (event: ServerReportedSchedule) => {
   return {
-    id: `${event.type}-${event.id}`,
+    id: `${event.type}-${event.schedule.id}`,
     title: event.schedule.title,
     start: event.schedule.startDate,
     end: event.schedule.endDate,
     status: event.schedule.status,
     inCharge: event.inCharge,
+    educationId: event.educationId || undefined,
+    educationName: event.educationName || undefined,
+    educationTermId: event.educationTermId || undefined,
+    educationTerm: event.educationTerm || undefined,
   } as Schedule;
 };

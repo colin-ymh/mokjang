@@ -4,7 +4,10 @@ import { GRAY } from '@/constants/styles/color';
 import { MainText } from '@/components/atoms/common/text/main-text';
 import MainTag from '@/components/atoms/common/tag/main-tag';
 import { getDateFromDateString } from '@/utils/date';
-import { getTranslatedScheduleDate } from '@/utils/translate';
+import {
+  getTranslatedScheduleDate,
+  getTranslatedTerm,
+} from '@/utils/translate';
 import { usePathname } from 'next/navigation';
 import { LOCALE } from '@/constants/state/locale';
 import { useI18n } from '../../../../locales/client';
@@ -61,14 +64,16 @@ const MyScheduleList = ({
         }
 
         const [domain, id] = schedule.id?.split('-');
-
         return (
           <ScheduleItem
             key={schedule.id}
             onClick={() => onClickSchedule(schedule)}
           >
             <RowContainer>
-              <MainText>{schedule.title}</MainText>
+              <MainText>
+                {schedule.title ||
+                  `${schedule.educationName} ${getTranslatedTerm(locale, schedule.educationTerm as string)}`}
+              </MainText>
               <MainTag
                 title={t(schedule.status as STATUS)}
                 color={getStatusFontColor(schedule.status as STATUS)}

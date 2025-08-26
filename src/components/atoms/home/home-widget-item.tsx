@@ -29,6 +29,7 @@ const WidgetItem = styled.div<{ $isDragging: boolean }>`
   border: ${({ $isDragging }) => `1px solid ${$isDragging ? MAIN.LIGHT : GRAY.EXTRA_LIGHT};`}
   background: ${WHITE};
   padding: 20px;
+  padding-top: 30px;
 `;
 
 const DeleteContainer = styled.div`

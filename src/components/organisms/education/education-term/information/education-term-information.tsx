@@ -35,10 +35,12 @@ import AddEducationSession from '@/components/organisms/education/education-sess
 
 type EducationTermInformationProps = {
   scrollRef: RefObject<HTMLDivElement>;
+  onChangeStatus: (status: TASK_STATUS) => void;
 };
 
 const EducationTermInformation = ({
   scrollRef,
+  onChangeStatus,
 }: EducationTermInformationProps) => {
   const t_popup = useScopedI18n('popup');
   const t_title = useScopedI18n('title');
@@ -270,58 +272,6 @@ const EducationTermInformation = ({
     fetchSessions();
   }, [sessionPage]);
   // -------- enrollment ---------
-
-  // ===== status =====
-
-  const onChangeStatus = (status: TASK_STATUS) => {
-    try {
-      educationTermsApi
-        .editEducationTerm(
-          {
-            churchId,
-            educationId: targetEducation.id,
-            educationTermId: targetEducationTerm.id,
-          },
-          { status: status }
-        )
-        .then((response) => {
-          const newEducationTerm = response.data.data;
-
-          dispatch(
-            setTargetEducationTerm({
-              ...targetEducationTerm,
-              status: status,
-            })
-          );
-
-          const newEducationTerms = targetEducation.educationTerms.map(
-            (term) => {
-              return term.id !== newEducationTerm.id
-                ? term
-                : { ...term, status: status };
-            }
-          );
-
-          dispatch(setEducationTerms(newEducationTerms));
-
-          const newEducations = educations.map((education) => {
-            if (education.id === targetEducationTerm.educationId) {
-              return {
-                ...education,
-                educationTerms: newEducationTerms,
-              };
-            } else {
-              return education;
-            }
-          });
-
-          dispatch(setEducations(newEducations));
-        });
-    } catch (error) {
-      setThrownError(error instanceof Error ? error : new Error(String(error)));
-    }
-  };
-  // ===== status =====
 
   // 수강 교인 상태 변경
   const onChangeEnrollmentStatus = (

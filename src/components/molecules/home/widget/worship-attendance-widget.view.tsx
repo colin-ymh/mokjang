@@ -33,7 +33,6 @@ const WidgetContainer = styled.div`
 
 const WidgetHeader = styled.div`
   display: flex;
-  height: 50px;
   align-items: center;
   justify-content: flex-start;
   gap: 20px;

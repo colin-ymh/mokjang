@@ -13,6 +13,8 @@ export default {
   isNotDone: '미완료',
   customSelect: '직접선택',
 
+  doneRate: '완료율',
+
   prevNextWeek: '이전 / 다음 주',
 
   current: '현재',
@@ -201,6 +203,7 @@ export default {
   educationTermCount: '총 기수 수',
   educationEnrollmentCount: '총 이수자 수',
   educationTerm: '교육 기수',
+  educationSession: '교육 회차',
   createdInformation: '생성 정보',
   location: '장소',
   educationStatus: '상태',

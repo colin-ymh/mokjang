@@ -131,7 +131,7 @@ const TaskListView = (props: TaskListViewProps) => {
             leftButtonText={t_button('cancel')}
             rightButtonText={t_button('delete')}
           />
-          <TaskInformation />
+          <TaskInformation onChangeStatus={onChangeStatus} />
         </>
       </WrappedPagePopup>
 

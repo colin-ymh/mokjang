@@ -19,6 +19,7 @@ import { TasksApi } from '@/api/tasks/tasks.api';
 import { getIsWellFormedTitle } from '@/utils/check';
 import { BLANK, HEADER_BAR } from '@/constants/constant';
 import { TASK_STATUS } from '@/constants/status/status';
+import { getDateFromDateString, getFullStringFromDate } from '@/utils/date';
 
 type TaskListProps = {
   headerType?: HEADER_BAR;
@@ -157,8 +158,12 @@ const TaskList = ({ headerType }: TaskListProps) => {
             status: targetTask.status || undefined,
             title: targetTask.title || undefined,
             inChargeId: targetTask.inChargeId || undefined,
-            startDate: targetTask.startDate || undefined,
-            endDate: targetTask.endDate || undefined,
+            startDate: getFullStringFromDate(
+              getDateFromDateString(targetTask.startDate)
+            ),
+            endDate: getFullStringFromDate(
+              getDateFromDateString(targetTask.endDate)
+            ),
             parentTaskId: targetTask.parentTaskId || undefined,
             receiverIds: targetTask.receiverIds || undefined,
             content: targetTask.content || undefined,

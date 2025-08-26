@@ -104,6 +104,8 @@ interface WrappedPagePopupProps {
   cancelText?: string;
   doneBackgroundColor?: string;
   doneDisabled?: boolean;
+  hideDone?: boolean;
+  hideCancel?: boolean;
   rightButtonShown?: boolean;
   stageTwoTop?: number;
   stageThreeTop?: number;
@@ -138,6 +140,8 @@ const WrappedPagePopup = ({
   doneBackgroundColor = MAIN.DEFAULT,
   doneDisabled = false,
   doneText,
+  hideDone = false,
+  hideCancel = false,
   cancelText,
   keyboardDisabled = false,
   widthPercentage = 70,
@@ -275,24 +279,28 @@ const WrappedPagePopup = ({
             {/* 버튼 */}
             {integrateStage === INTEGRATE_STAGE.ONE ? (
               <ButtonContainer>
-                <Button
-                  width={80}
-                  height={30}
-                  color={WHITE}
-                  backgroundColor={doneBackgroundColor}
-                  onClick={onClickDone}
-                  text={doneText || t_button('save')}
-                  disabled={doneDisabled}
-                />
-                <Button
-                  width={80}
-                  height={30}
-                  color={GRAY.DEFAULT}
-                  backgroundColor={WHITE}
-                  onClick={onClickCancel}
-                  borderColor={GRAY.SEMI_LIGHT}
-                  text={cancelText || t_button('cancel')}
-                />
+                {!hideDone && (
+                  <Button
+                    width={80}
+                    height={30}
+                    color={WHITE}
+                    backgroundColor={doneBackgroundColor}
+                    onClick={onClickDone}
+                    text={doneText || t_button('save')}
+                    disabled={doneDisabled}
+                  />
+                )}
+                {!hideCancel && (
+                  <Button
+                    width={80}
+                    height={30}
+                    color={GRAY.DEFAULT}
+                    backgroundColor={WHITE}
+                    onClick={onClickCancel}
+                    borderColor={GRAY.SEMI_LIGHT}
+                    text={cancelText || t_button('cancel')}
+                  />
+                )}
               </ButtonContainer>
             ) : (
               <KebabDropdown

@@ -3,21 +3,25 @@
 import { MainText } from '@/components/atoms/common/text/main-text';
 import styled from 'styled-components';
 import { SIZE } from '@/constants/styles/style';
-import { BLACK } from '@/constants/styles/color';
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
 import { HOME_WIDGET, RANGE } from '@/constants/constant';
-import SlidePopup from '@/components/atoms/common/popup/slide-popup';
 import { DOMAIN } from '@/models/permission/permission';
 import TaskInformation from '@/components/organisms/task/information/task-information';
 import VisitationInformation from '@/components/organisms/visitation/information/visitation-information';
 import React from 'react';
 import { Schedule } from '@/models/calendar/calendar';
-import CancelIcon from '../../../../../public/svg/cancel.svg';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import ToggleRadioButton from '@/components/atoms/common/radio-button/toggle-radio-button';
 import { useWeekMonthRangeRadioButtonItems } from '@/hooks/radio-button/radio-button-items';
 import MyScheduleList from '@/components/atoms/home/my-schedule-list';
+import EducationSessionInformation from '@/components/organisms/education/education-session/information/education-session-information';
+import WrappedPagePopup from '@/components/atoms/common/popup/wrapped-page-popup';
+import { getTranslatedTerm } from '@/utils/translate';
+import { usePathname } from 'next/navigation';
+import { LOCALE } from '@/constants/state/locale';
+import { TASK_STATUS } from '@/constants/status/status';
+import EducationTermInformation from '@/components/organisms/education/education-term/information/education-term-information';
 
 const WidgetContainer = styled.div`
   display: flex;
@@ -29,30 +33,9 @@ const WidgetContainer = styled.div`
 
 const WidgetHeader = styled.div`
   display: flex;
-  height: 50px;
   align-items: center;
   justify-content: flex-start;
   gap: 20px;
-`;
-
-const Cancel = styled(CancelIcon)`
-  width: 30px;
-  height: 30px;
-  stroke: ${BLACK};
-  stroke-width: 1px;
-`;
-
-const ButtonRow = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 5px;
-  justify-content: center;
-  align-items: center;
-`;
-
-const ButtonContainer = styled.div`
-  display: flex;
-  cursor: pointer;
 `;
 
 type MyScheduleWidgetViewProps = {
@@ -62,6 +45,10 @@ type MyScheduleWidgetViewProps = {
   onClickSchedule: (schedule: Schedule) => void;
   onClickClose: () => void;
   onClickRange: (range: RANGE) => void;
+  onChangeTaskStatus: (status: TASK_STATUS) => void;
+  onChangeVisitationStatus: (status: TASK_STATUS) => void;
+  onChangeEducationSessionStatus: (status: TASK_STATUS) => void;
+  onChangeEducationTermStatus: (status: TASK_STATUS) => void;
 };
 
 const MyScheduleWidgetView = ({
@@ -71,13 +58,23 @@ const MyScheduleWidgetView = ({
   onClickSchedule,
   onClickClose,
   onClickRange,
+  onChangeTaskStatus,
+  onChangeVisitationStatus,
+  onChangeEducationSessionStatus,
+  onChangeEducationTermStatus,
 }: MyScheduleWidgetViewProps) => {
+  const pathname = usePathname();
+  const locale = pathname.split('/')[1] as LOCALE;
+
   const t = useI18n();
   const t_title = useScopedI18n('title');
 
   const { targetTask } = useSelector((state: RootState) => state.targetTask);
   const { targetVisitation } = useSelector(
     (state: RootState) => state.targetVisitation
+  );
+  const { targetEducationTerm } = useSelector(
+    (state: RootState) => state.targetEducationTerm
   );
   const { targetEducationSession } = useSelector(
     (state: RootState) => state.targetEducationSession
@@ -108,55 +105,93 @@ const MyScheduleWidgetView = ({
       </WidgetContainer>
 
       {/* 업무 상세정보 팝업*/}
-      <SlidePopup
+      <WrappedPagePopup
         isShow={openedDomain === DOMAIN.TASK}
         onClickClose={onClickClose}
-        isFooterShown={false}
         headerTitle={targetTask?.title}
-        headerRight={
-          <ButtonRow>
-            <ButtonContainer onClick={onClickClose}>
-              <Cancel />
-            </ButtonContainer>
-          </ButtonRow>
-        }
+        hideCancel={true}
+        hideDone={true}
+        widthPercentage={50}
+        stageThreeTop={190}
+        stageTwoTop={40}
+        inCharge={targetTask?.inCharge}
+        startDate={targetTask?.startDate}
+        endDate={targetTask?.endDate}
+        status={targetTask.status}
+        onChangeStatus={onChangeTaskStatus}
       >
-        {openedDomain === DOMAIN.TASK && <TaskInformation />}
-      </SlidePopup>
+        <TaskInformation onChangeStatus={onChangeTaskStatus} />
+      </WrappedPagePopup>
 
       {/* 심방 상세정보 팝업*/}
-      <SlidePopup
+      <WrappedPagePopup
         isShow={openedDomain === DOMAIN.VISITATION}
         onClickClose={onClickClose}
-        isFooterShown={false}
         headerTitle={targetVisitation?.title}
-        headerRight={
-          <ButtonRow>
-            <ButtonContainer onClick={onClickClose}>
-              <Cancel />
-            </ButtonContainer>
-          </ButtonRow>
-        }
+        hideCancel={true}
+        hideDone={true}
+        stageThreeTop={250}
+        stageTwoTop={40}
+        inCharge={targetVisitation.inCharge}
+        startDate={targetVisitation.startDate}
+        endDate={targetVisitation.endDate}
+        status={targetVisitation.status}
+        onChangeStatus={onChangeVisitationStatus}
       >
-        {openedDomain === DOMAIN.VISITATION && <VisitationInformation />}
-      </SlidePopup>
+        <VisitationInformation onChangeStatus={onChangeVisitationStatus} />
+      </WrappedPagePopup>
 
-      {/*  /!* 교육 상세정보 팝업*!/*/}
-      {/*  <SlidePopup*/}
-      {/*    isShow={openedDomain === DOMAIN.EDUCATION}*/}
-      {/*    onClickClose={onClickClose}*/}
-      {/*    isFooterShown={false}*/}
-      {/*    headerTitle={`${targetEducationSession.session}${t('session')} ${targetEducationSession.title}`}*/}
-      {/*    headerRight={*/}
-      {/*      <ButtonRow>*/}
-      {/*        <ButtonContainer onClick={onClickClose}>*/}
-      {/*          <Cancel />*/}
-      {/*        </ButtonContainer>*/}
-      {/*      </ButtonRow>*/}
-      {/*    }*/}
-      {/*  >*/}
-      {/*    {openedDomain === DOMAIN.EDUCATION && <EducationSessionInformation />}*/}
-      {/*  </SlidePopup>*/}
+      {/* 교육회차 상세정보 팝업*/}
+      <WrappedPagePopup
+        keyboardDisabled={true}
+        isShow={openedDomain === DOMAIN.EDUCATION_SESSION}
+        onClickClose={onClickClose}
+        headerTitle={`${targetEducationTerm.educationName} - ${getTranslatedTerm(locale, targetEducationTerm.term)} - ${targetEducationSession.session}${t('session')} ${targetEducationSession.title}`}
+        hideCancel={true}
+        hideDone={true}
+        stageTwoTop={40}
+        stageThreeTop={250}
+        status={targetEducationSession.status}
+        inCharge={targetEducationSession.inCharge}
+        startDate={targetEducationSession.startDate}
+        endDate={targetEducationSession.endDate}
+        onChangeStatus={onChangeEducationSessionStatus}
+      >
+        {(scrollRef) => (
+          <>
+            <EducationSessionInformation
+              scrollRef={scrollRef}
+              onChangeStatus={onChangeEducationSessionStatus}
+            />
+          </>
+        )}
+      </WrappedPagePopup>
+
+      {/* 교육기수 상세정보 팝업*/}
+      <WrappedPagePopup
+        keyboardDisabled={true}
+        isShow={openedDomain === DOMAIN.EDUCATION_TERM}
+        onClickClose={onClickClose}
+        headerTitle={`${targetEducationTerm.educationName} - ${getTranslatedTerm(locale, targetEducationTerm.term)}`}
+        hideCancel={true}
+        hideDone={true}
+        stageTwoTop={40}
+        stageThreeTop={250}
+        status={targetEducationTerm.status}
+        onChangeStatus={onChangeEducationTermStatus}
+        inCharge={targetEducationTerm.inCharge}
+        startDate={targetEducationTerm.startDate}
+        endDate={targetEducationTerm.endDate}
+      >
+        {(scrollRef) => (
+          <>
+            <EducationTermInformation
+              scrollRef={scrollRef}
+              onChangeStatus={onChangeEducationTermStatus}
+            />
+          </>
+        )}
+      </WrappedPagePopup>
     </>
   );
 };

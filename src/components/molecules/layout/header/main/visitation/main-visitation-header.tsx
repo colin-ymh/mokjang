@@ -13,6 +13,7 @@ import {
 import { getIsWellFormedTitle } from '@/utils/check';
 import { BLANK } from '@/constants/constant';
 import { VisitationsApi } from '@/api/visitations/visitations.api';
+import { getDateFromDateString, getFullStringFromDate } from '@/utils/date';
 
 type MainVisitationHeaderProps = {};
 
@@ -65,8 +66,12 @@ const MainVisitationHeader = ({}: MainVisitationHeaderProps) => {
             status: targetVisitation.status,
             visitationMethod: targetVisitation.visitationMethod,
             inChargeId: targetVisitation.inChargeId,
-            startDate: targetVisitation.startDate,
-            endDate: targetVisitation.endDate,
+            startDate: getFullStringFromDate(
+              getDateFromDateString(targetVisitation.startDate)
+            ),
+            endDate: getFullStringFromDate(
+              getDateFromDateString(targetVisitation.endDate)
+            ),
             visitationDetails: targetVisitation.visitationDetails,
             memberIds: targetVisitation.members.map((member) => member.id),
             title: targetVisitation.title,

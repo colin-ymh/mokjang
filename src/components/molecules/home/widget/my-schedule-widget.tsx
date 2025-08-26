@@ -4,9 +4,9 @@ import { HomeApi } from '@/api/home/home.api';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 import { useEffect, useState } from 'react';
-import { RANGE } from '@/constants/constant';
+import { BLANK, RANGE } from '@/constants/constant';
 import { DOMAIN } from '@/models/permission/permission';
-import { Schedule } from '@/models/calendar/calendar';
+import { Schedule, ServerSchedule } from '@/models/calendar/calendar';
 import { setTargetTask } from '@/redux/reducers/target/target-task-reducer';
 import { setTargetVisitation } from '@/redux/reducers/target/target-visitation-reducer';
 import { CalendarApi } from '@/api/calendar/calendar.api';
@@ -14,16 +14,44 @@ import { EducationsApi } from '@/api/education/educations.api';
 import { EducationTermsApi } from '@/api/education/education-terms.api';
 import { EducationSessionsApi } from '@/api/education/education-sessions.api';
 import { EducationAttendanceApi } from '@/api/education/education-attendance.api';
-import { setTargetEducation } from '@/redux/reducers/target/target-education-reducer';
-import { setTargetEducationTerm } from '@/redux/reducers/target/target-education-term-reducer';
 import { setTargetEducationSession } from '@/redux/reducers/target/target-education-session-reducer';
 import MyScheduleWidgetView from '@/components/molecules/home/widget/my-schedule-widget.view';
 import { TasksApi } from '@/api/tasks/tasks.api';
 import { VisitationsApi } from '@/api/visitations/visitations.api';
+import { getMyWidgetSchedule } from '@/utils/calendar';
+import {
+  setIsToastShown,
+  setToastBackgroundColor,
+  setToastText,
+} from '@/redux/reducers/toast-popup-reducer';
+import { DESTRUCTIVE } from '@/constants/styles/color';
+import { TASK_STATUS } from '@/constants/status/status';
+import { setTargetEducation } from '@/redux/reducers/target/target-education-reducer';
+import {
+  DEFAULT_EDUCATION,
+  DEFAULT_EDUCATION_TERM,
+} from '@/models/education/education';
+import { setTargetEducationTerm } from '@/redux/reducers/target/target-education-term-reducer';
+import {
+  fetchChurchScheduleSummary,
+  fetchMyScheduleSummary,
+} from '@/redux/reducers/schedule-summary-reducer';
 
 const MyScheduleWidget = () => {
   const dispatch = useDispatch<AppDispatch>();
   const churchId = useSelector((state: RootState) => state.church.churchId);
+
+  const { targetTask } = useSelector((state: RootState) => state.targetTask);
+  const { targetVisitation } = useSelector(
+    (state: RootState) => state.targetVisitation
+  );
+  const { targetEducationTerm } = useSelector(
+    (state: RootState) => state.targetEducationTerm
+  );
+  const { targetEducationSession } = useSelector(
+    (state: RootState) => state.targetEducationSession
+  );
+
   const [mySchedules, setMySchedules] = useState<Schedule[]>([]);
 
   const [range, setRange] = useState<RANGE>(RANGE.WEEKLY);
@@ -44,109 +72,126 @@ const MyScheduleWidget = () => {
   const educationAttendanceApi = new EducationAttendanceApi(false);
 
   const fetchMySchedules = async () => {
-    // try {
-    //   const response = await homeApi.getMySchedules({ churchId, range });
-    //
-    //   const newSchedules = response.data;
-    //   const newMySchedules = newSchedules.map((schedule: ServerSchedule) => {
-    //     return getMyWidgetSchedule(schedule);
-    //   });
-    //
-    //   setMySchedules(newMySchedules);
-    // } catch (error) {
-    //   setThrownError(error instanceof Error ? error : new Error(String(error)));
-    // }
+    try {
+      const response = await homeApi.getMySchedules({ churchId, range });
+
+      const newSchedules = response.data.data;
+      const newMySchedules = newSchedules.map((schedule: ServerSchedule) => {
+        return getMyWidgetSchedule(schedule);
+      });
+
+      setMySchedules(newMySchedules);
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
+    }
   };
 
   // 이벤트 선택
-  const onClickSchedule = (event: Schedule) => {
+  const onClickSchedule = async (event: Schedule) => {
     setOpenedDomain(null);
-    setTimeout(
-      async () => {
-        try {
-          if (event.id) {
-            const [domain, id] = event.id.split('-');
+    try {
+      if (event.id) {
+        const [domain, id] = event.id.split('-');
 
-            switch (domain) {
-              case DOMAIN.TASK:
-                const taskResponse = await tasksApi.getTask({
-                  churchId,
-                  taskId: id,
-                });
-                const newTask = taskResponse.data.data;
-                dispatch(setTargetTask(newTask));
-                setOpenedDomain(DOMAIN.TASK);
-                return;
-              case DOMAIN.VISITATION:
-                const visitationResponse = await visitationsApi.getVisitation({
-                  churchId,
-                  visitationId: id,
-                });
-                const newVisitation = visitationResponse.data.data;
-                dispatch(setTargetVisitation(newVisitation));
-                setOpenedDomain(DOMAIN.VISITATION);
-                return;
-              case DOMAIN.EDUCATION:
-                const sessionResponse = await calendarApi.getEducationDetail({
-                  churchId,
-                  educationSessionId: id,
-                });
-                const newEducationSession = sessionResponse.data;
+        switch (domain) {
+          case DOMAIN.TASK:
+            const taskResponse = await tasksApi.getTask({
+              churchId,
+              taskId: id,
+            });
+            const newTask = taskResponse.data.data;
+            dispatch(setTargetTask(newTask));
+            setOpenedDomain(DOMAIN.TASK);
+            return;
+          case DOMAIN.VISITATION:
+            const visitationResponse = await visitationsApi.getVisitation({
+              churchId,
+              visitationId: id,
+            });
+            const newVisitation = visitationResponse.data.data;
+            dispatch(setTargetVisitation(newVisitation));
+            setOpenedDomain(DOMAIN.VISITATION);
+            return;
+          case DOMAIN.EDUCATION_SESSION:
+            const tempResponse = await calendarApi.getEducationDetail({
+              churchId,
+              educationSessionId: id,
+            });
+            const tempSession = tempResponse.data;
 
-                const termResponse = await educationTermsApi.getEducationTerm({
-                  churchId,
-                  educationId: newEducationSession.educationTerm.education.id,
-                  educationTermId: newEducationSession.educationTerm.id,
-                });
-                const newEducationTerm = termResponse.data.data;
+            const attendanceResponse =
+              await educationAttendanceApi.getEducationAttendances({
+                churchId,
+                educationId: event.educationId as string,
+                educationTermId: event.educationTermId as string,
+                sessionId: tempSession.id,
+              });
+            const newEducationAttendances = attendanceResponse.data.data;
 
-                const educationResponse = await educationsApi.getEducation({
-                  churchId,
-                  educationId: newEducationSession.educationTerm.education.id,
-                });
-                const newEducation = educationResponse.data;
+            const sessionResponse =
+              await educationSessionsApi.getEducationSession({
+                churchId,
+                educationId: event.educationId as string,
+                educationTermId: event.educationTermId as string,
+                educationSessionId: tempSession.id,
+              });
 
-                const sessionsResponse =
-                  await educationSessionsApi.getEducationSessions({
-                    churchId,
-                    educationId: newEducation.id,
-                    educationTermId: newEducationTerm.id,
-                  });
+            const newEducationSession = sessionResponse.data.data;
 
-                const newEducationSessions = sessionsResponse.data.data;
+            dispatch(
+              setTargetEducation({
+                ...DEFAULT_EDUCATION,
+                name: event.educationName || BLANK,
+                id: event.educationId || BLANK,
+              })
+            );
 
-                const attendanceResponse =
-                  await educationAttendanceApi.getEducationAttendances({
-                    churchId,
-                    educationId: newEducationTerm.educationId,
-                    educationTermId: newEducationTerm.id,
-                    sessionId: newEducationSession.id,
-                  });
-                const newEducationAttendances = attendanceResponse.data.data;
+            dispatch(
+              setTargetEducationTerm({
+                ...DEFAULT_EDUCATION_TERM,
+                id: event.educationTermId || BLANK,
+                educationId: event.educationId || BLANK,
+                educationName: event.educationName || BLANK,
+                term: event.educationTerm || BLANK,
+              })
+            );
+            dispatch(
+              setTargetEducationSession({
+                ...newEducationSession,
+                educationAttendances: newEducationAttendances,
+              })
+            );
+            setOpenedDomain(DOMAIN.EDUCATION_SESSION);
+            return;
+          case DOMAIN.EDUCATION_TERM:
+            const termResponse = await educationTermsApi.getEducationTerm({
+              churchId,
+              educationId: event.educationId as string,
+              educationTermId: event.educationTermId as string,
+            });
 
-                dispatch(setTargetEducation(newEducation));
-                dispatch(
-                  setTargetEducationTerm({
-                    ...newEducationTerm,
-                    educationSessions: newEducationSessions,
-                  })
-                );
-                dispatch(
-                  setTargetEducationSession({
-                    ...newEducationSession,
-                    educationAttendances: newEducationAttendances,
-                  })
-                );
-                setOpenedDomain(DOMAIN.EDUCATION);
-                return;
-            }
-          }
-        } catch (error) {
-          console.log(error);
+            const newEducationTerm = termResponse.data.data;
+
+            dispatch(
+              setTargetEducation({
+                ...DEFAULT_EDUCATION,
+                name: event.educationName || BLANK,
+                id: event.educationId || BLANK,
+              })
+            );
+
+            dispatch(setTargetEducationTerm(newEducationTerm));
+            setOpenedDomain(DOMAIN.EDUCATION_TERM);
+            return;
         }
-      },
-      openedDomain ? 500 : 0
-    );
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        dispatch(setToastText(error.message));
+        dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
+        dispatch(setIsToastShown(true));
+      } else setThrownError(new Error(String(error)));
+    }
   };
 
   const onClickClose = () => {
@@ -161,6 +206,146 @@ const MyScheduleWidget = () => {
     fetchMySchedules();
   }, [range]);
 
+  // ===== status =====
+  const onChangeTaskStatus = (status: TASK_STATUS) => {
+    try {
+      tasksApi.editTask({ churchId, taskId: targetTask.id }, { status });
+      dispatch(setTargetTask({ ...targetTask, status }));
+
+      const newSchedules = mySchedules.map((schedule) => {
+        if (schedule.id) {
+          const [domain, id] = schedule.id.split('-');
+          if (domain === DOMAIN.TASK && id == targetTask.id) {
+            return { ...schedule, status };
+          } else {
+            return schedule;
+          }
+        } else {
+          return schedule;
+        }
+      });
+      setMySchedules(newSchedules);
+      dispatch(fetchMyScheduleSummary());
+      dispatch(fetchChurchScheduleSummary());
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
+    }
+  };
+
+  const onChangeVisitationStatus = (status: TASK_STATUS) => {
+    try {
+      visitationsApi.editVisitation(
+        { churchId, visitationId: targetVisitation.id },
+        { status }
+      );
+      dispatch(setTargetVisitation({ ...targetVisitation, status }));
+
+      const newSchedules = mySchedules.map((schedule) => {
+        if (schedule.id) {
+          const [domain, id] = schedule.id.split('-');
+          if (domain === DOMAIN.VISITATION && id == targetVisitation.id) {
+            return { ...schedule, status };
+          } else {
+            return schedule;
+          }
+        } else {
+          return schedule;
+        }
+      });
+      setMySchedules(newSchedules);
+      dispatch(fetchMyScheduleSummary());
+      dispatch(fetchChurchScheduleSummary());
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
+    }
+  };
+
+  const onChangeEducationSessionStatus = (status: TASK_STATUS) => {
+    try {
+      educationSessionsApi.editEducationSession(
+        {
+          churchId,
+          educationId: targetEducationTerm.educationId,
+          educationTermId: targetEducationTerm.id,
+          educationSessionId: targetEducationSession.id,
+        },
+        { status }
+      );
+      dispatch(
+        setTargetEducationSession({ ...targetEducationSession, status })
+      );
+
+      const newSchedules = mySchedules.map((schedule) => {
+        if (schedule.id) {
+          const [domain, id] = schedule.id.split('-');
+          if (
+            domain === DOMAIN.EDUCATION_SESSION &&
+            id == targetEducationSession.id
+          ) {
+            return { ...schedule, status };
+          } else {
+            return schedule;
+          }
+        } else {
+          return schedule;
+        }
+      });
+      setMySchedules(newSchedules);
+      dispatch(fetchMyScheduleSummary());
+      dispatch(fetchChurchScheduleSummary());
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
+    }
+  };
+  // ===== status =====
+
+  // ===== status =====
+
+  const onChangeEducationTermStatus = async (status: TASK_STATUS) => {
+    try {
+      const response = await educationTermsApi.editEducationTerm(
+        {
+          churchId,
+          educationId: targetEducationTerm.educationId,
+          educationTermId: targetEducationTerm.id,
+        },
+        { status }
+      );
+
+      const newEducationTerm = response.data.data;
+
+      dispatch(
+        setTargetEducationTerm({
+          ...targetEducationTerm,
+          status,
+        })
+      );
+
+      const newSchedules = mySchedules.map((schedule) => {
+        if (schedule.id) {
+          const [domain, id] = schedule.id.split('-');
+          if (
+            domain === DOMAIN.EDUCATION_TERM &&
+            id == targetEducationTerm.id
+          ) {
+            return { ...schedule, status };
+          } else {
+            return schedule;
+          }
+        } else {
+          return schedule;
+        }
+      });
+
+      setMySchedules(newSchedules);
+      dispatch(fetchMyScheduleSummary());
+      dispatch(fetchChurchScheduleSummary());
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
+    }
+  };
+  // ===== status =====
+
   const props = {
     openedDomain,
     range,
@@ -168,6 +353,10 @@ const MyScheduleWidget = () => {
     onClickSchedule,
     onClickClose,
     onClickRange,
+    onChangeTaskStatus,
+    onChangeVisitationStatus,
+    onChangeEducationSessionStatus,
+    onChangeEducationTermStatus,
   };
   return (
     <>

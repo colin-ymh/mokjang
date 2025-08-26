@@ -43,9 +43,6 @@ const WorshipTable = ({ loadWorships }: WorshipTableProps) => {
   const worshipsApi = new WorshipsApi(false);
 
   const [isEditModalOpened, setIsEditModalOpened] = useState<boolean>(false);
-  const [isDeleteModalOpened, setIsDeleteModalOpened] =
-    useState<boolean>(false);
-
   const [isEditEnabled, setIsEditEnabled] = useState<boolean>(false);
 
   const [thrownError, setThrownError] = useState<Error | null>(null);
@@ -109,33 +106,9 @@ const WorshipTable = ({ loadWorships }: WorshipTableProps) => {
     }
   };
 
-  const onClickDeleteWorship = () => {
-    setIsDeleteModalOpened(true);
-  };
-
   const onClickEditWorship = (worship: Worship) => {
     setIsEditModalOpened(true);
     dispatch(setTargetWorship(worship));
-  };
-
-  const onClickCancelDelete = () => {
-    setIsDeleteModalOpened(false);
-  };
-
-  const onClickConfirmDelete = (worshipId: string) => {
-    try {
-      worshipsApi.deleteWorship({ churchId, worshipId });
-
-      const newWorships = worships.filter(
-        (worship) => worship.id !== worshipId
-      );
-
-      dispatch(setWorships(newWorships));
-    } catch (error) {
-      setThrownError(error instanceof Error ? error : new Error(String(error)));
-    } finally {
-      setIsDeleteModalOpened(false);
-    }
   };
 
   const onClickEditDone = async () => {
@@ -214,16 +187,12 @@ const WorshipTable = ({ loadWorships }: WorshipTableProps) => {
 
   const props = {
     isEditModalOpened,
-    isDeleteModalOpened,
     isEditEnabled,
     worships,
-    scrollRef,
     onClickHeader,
+    scrollRef,
     onScroll,
-    onClickDeleteWorship,
     onClickEditWorship,
-    onClickCancelDelete,
-    onClickConfirmDelete,
     onClickEditDone,
     onClickEditClose,
     onClickWorshipItem,

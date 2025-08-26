@@ -13,6 +13,8 @@ export default {
   isNotDone: 'Incomplete',
   customSelect: 'Custom Select',
 
+  doneRate: 'Completed Rate',
+
   prevNextWeek: 'Prev / Next Week',
 
   current: 'Current',
@@ -199,6 +201,7 @@ export default {
   educationTermCount: 'Total Term Count',
   educationEnrollmentCount: 'Total Enrollment Count',
   educationTerm: 'Education Term',
+  educationSession: 'Education Session',
   createdInformation: 'Created Information',
   location: 'Location',
   educationStatus: 'Status',

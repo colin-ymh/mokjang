@@ -23,6 +23,11 @@ export type Schedule = {
   education?: EducationSession;
   member?: Member;
   churchEvent?: ChurchEvent;
+
+  educationId?: string;
+  educationName?: string;
+  educationTermId?: string;
+  educationTerm?: string;
 };
 
 export type ServerSchedule = {
@@ -32,6 +37,11 @@ export type ServerSchedule = {
   startDate: string;
   endDate: string;
   status: STATUS;
+
+  educationId?: string;
+  educationName?: string;
+  educationTermId?: string;
+  educationTerm?: string;
 };
 
 export type ServerReportedSchedule = {
@@ -39,4 +49,9 @@ export type ServerReportedSchedule = {
   type: DOMAIN;
   inCharge: Member;
   schedule: ServerSchedule;
+
+  educationId?: string;
+  educationName?: string;
+  educationTermId?: string;
+  educationTerm?: string;
 };

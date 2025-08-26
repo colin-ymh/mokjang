@@ -13,6 +13,7 @@ import {
   setIsToastShown,
   setToastText,
 } from '@/redux/reducers/toast-popup-reducer';
+import { getDateFromDateString, getFullStringFromDate } from '@/utils/date';
 
 type MainTaskHeaderProps = {};
 
@@ -58,8 +59,12 @@ const MainTaskHeader = ({}: MainTaskHeaderProps) => {
           {
             status: targetTask.status,
             inChargeId: targetTask.inChargeId,
-            startDate: targetTask.startDate,
-            endDate: targetTask.endDate,
+            startDate: getFullStringFromDate(
+              getDateFromDateString(targetTask.startDate)
+            ),
+            endDate: getFullStringFromDate(
+              getDateFromDateString(targetTask.endDate)
+            ),
             title: targetTask.title,
             content: targetTask.content,
             receiverIds: targetTask.receiverIds,

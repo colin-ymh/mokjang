@@ -32,6 +32,12 @@ type GetWorshipAttendancesParams = {
   page: number;
 };
 
+type GetScheduleStatusParams = {
+  churchId: string;
+  range: RANGE;
+  option: 'church' | 'member';
+};
+
 export class HomeApi {
   private _url: string;
 
@@ -167,6 +173,39 @@ export class HomeApi {
 
     try {
       return await authorizeAxios.get(url);
+    } catch (serverError: any) {
+      if (serverError.response) {
+        const { message, error, statusCode } = serverError.response.data;
+        throw new CustomError(message, error, statusCode);
+      } else {
+        throw new CustomError(
+          '알 수 없는 에러가 발생했습니다',
+          500,
+          'Unknown Error'
+        );
+      }
+    }
+  };
+
+  /**
+   * 일정 상태값 조회
+   * @param {GetScheduleStatusParams} params
+   * @returns {Promise<AxiosResponse>}
+   */
+  public getScheduleStatus = async (
+    params: GetScheduleStatusParams
+  ): Promise<AxiosResponse> => {
+    const { churchId, range, option } = params;
+
+    const url = `${this._url}/churches/${churchId}/home/schedules/status`;
+
+    try {
+      return await authorizeAxios.get(url, {
+        params: {
+          range,
+          option,
+        },
+      });
     } catch (serverError: any) {
       if (serverError.response) {
         const { message, error, statusCode } = serverError.response.data;

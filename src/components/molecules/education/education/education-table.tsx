@@ -30,11 +30,9 @@ import { setTargetEducation } from '@/redux/reducers/target/target-education-red
 import { setTargetEducationTerm } from '@/redux/reducers/target/target-education-term-reducer';
 import EducationTermInformation from '@/components/organisms/education/education-term/information/education-term-information';
 import AddEducationTerm from '@/components/organisms/education/education-term/add/add-education-term';
-import { EducationEnrollmentsApi } from '@/api/education/education-enrollments.api';
 import { setTargetEducationSession } from '@/redux/reducers/target/target-education-session-reducer';
 import EducationSessionInformation from '@/components/organisms/education/education-session/information/education-session-information';
 import AddEducationSession from '@/components/organisms/education/education-session/add/add-education-session';
-import { EducationAttendanceApi } from '@/api/education/education-attendance.api';
 import { getTranslatedTerm } from '@/utils/translate';
 import { usePathname } from 'next/navigation';
 import { LOCALE } from '@/constants/state/locale';
@@ -76,8 +74,6 @@ const EducationTable = ({ loadEducations }: EducationTableProps) => {
   const educationApi = new EducationsApi(false);
   const educationTermsApi = new EducationTermsApi(false);
   const educationSessionsApi = new EducationSessionsApi(false);
-  const educationEnrollmentsApi = new EducationEnrollmentsApi(false);
-  const educationAttendanceApi = new EducationAttendanceApi(false);
 
   const [thrownError, setThrownError] = useState<Error | null>(null);
 
@@ -967,7 +963,10 @@ const EducationTable = ({ loadEducations }: EducationTableProps) => {
               leftButtonText={t_button('cancel')}
               rightButtonText={t_button('delete')}
             />
-            <EducationTermInformation scrollRef={scrollRef} />
+            <EducationTermInformation
+              scrollRef={scrollRef}
+              onChangeStatus={onChangeTermStatus}
+            />
           </>
         )}
       </WrappedPagePopup>
@@ -1023,7 +1022,10 @@ const EducationTable = ({ loadEducations }: EducationTableProps) => {
               leftButtonText={t_button('cancel')}
               rightButtonText={t_button('delete')}
             />
-            <EducationSessionInformation scrollRef={scrollRef} />
+            <EducationSessionInformation
+              scrollRef={scrollRef}
+              onChangeStatus={onChangeSessionStatus}
+            />
           </>
         )}
       </WrappedPagePopup>

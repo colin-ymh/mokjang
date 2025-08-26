@@ -486,3 +486,18 @@ export const getTranslatedMemberAttendanceCount = (
     return `attended ${presentCount} times per ${totalSessions} times`;
   }
 };
+
+export const getTranslatedSummaryCount = (
+  basePath: LOCALE,
+  summary: number
+): string => {
+  if (basePath === LOCALE.EN) {
+    if (summary === 1) {
+      return '1';
+    } else {
+      return `${summary}`;
+    }
+  } else {
+    return `${summary}건`;
+  }
+};

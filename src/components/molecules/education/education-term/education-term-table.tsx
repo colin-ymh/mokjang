@@ -775,7 +775,10 @@ const EducationTermTable = ({}: EducationTermTableProps) => {
               leftButtonText={t_button('cancel')}
               rightButtonText={t_button('delete')}
             />
-            <EducationTermInformation scrollRef={scrollRef} />
+            <EducationTermInformation
+              scrollRef={scrollRef}
+              onChangeStatus={onChangeTermStatus}
+            />
           </>
         )}
       </WrappedPagePopup>
@@ -832,7 +835,10 @@ const EducationTermTable = ({}: EducationTermTableProps) => {
               leftButtonText={t_button('cancel')}
               rightButtonText={t_button('delete')}
             />
-            <EducationSessionInformation scrollRef={scrollRef} />
+            <EducationSessionInformation
+              scrollRef={scrollRef}
+              onChangeStatus={onChangeSessionStatus}
+            />
           </>
         )}
       </WrappedPagePopup>

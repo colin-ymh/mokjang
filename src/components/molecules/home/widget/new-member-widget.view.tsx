@@ -28,14 +28,15 @@ const WidgetContainer = styled.div`
 
 const WidgetHeader = styled.div`
   display: flex;
-  height: 50px;
   align-items: center;
+  justify-content: flex-start;
+  gap: 20px;
 `;
 
 const BodyContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 10px;
   height: 100%;
 `;
 
@@ -50,7 +51,7 @@ const StateContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
-  height: 300px;
+  flex-grow: 1;
 `;
 
 const WeekList = styled.div`
@@ -85,6 +86,7 @@ const CountBar = styled.div<{ $count: number; max: number }>`
   background-color: ${MAIN.DEFAULT};
   position: absolute;
   left: 0;
+  transition: width 0.2s ease-in-out;
 `;
 
 type NewMemberWidgetViewProps = {

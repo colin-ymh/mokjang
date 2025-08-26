@@ -58,6 +58,8 @@ import MemberHistoryList from '@/components/molecules/member/information/history
 import MemberVisitationList from '@/components/molecules/member/information/visitation/member-visitation-list';
 import MainWorshipHeader from '@/components/molecules/layout/header/main/worship/main-worship-header';
 import MemberAttendanceList from '@/components/molecules/member/information/attendance/member-attendance-list';
+import ScheduleSummaryWidget from '@/components/molecules/home/widget/schedule-summary-widget';
+import MyScheduleSummaryWidget from '@/components/molecules/home/widget/my-schedule-summary-widget';
 
 export const getSide = (id: string) => {
   switch (id) {
@@ -237,5 +239,9 @@ export const getWidgetById = (id: HOME_WIDGET) => {
       return <ReportedScheduleWidget />;
     case HOME_WIDGET.WORSHIP_ATTENDANCE:
       return <WorshipAttendanceWidget />;
+    case HOME_WIDGET.CHURCH_SCHEDULE_SUMMARY:
+      return <ScheduleSummaryWidget />;
+    case HOME_WIDGET.MY_SCHEDULE_SUMMARY:
+      return <MyScheduleSummaryWidget />;
   }
 };

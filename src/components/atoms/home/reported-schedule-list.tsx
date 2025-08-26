@@ -11,6 +11,7 @@ import { usePathname } from 'next/navigation';
 import { LOCALE } from '@/constants/state/locale';
 import { useI18n } from '../../../../locales/client';
 import { getStatusBackgroundColor, getStatusFontColor } from '@/utils/color';
+import { RefObject } from 'react';
 
 const ListContainer = styled.div`
   display: flex;
@@ -40,11 +41,13 @@ const RowContainer = styled.div`
 `;
 
 type ReportedScheduleListProps = {
+  scrollRef: RefObject<HTMLDivElement>;
   mySchedules: Schedule[];
   onClickSchedule: (schedule: Schedule) => void;
 };
 
 const ReportedScheduleList = ({
+  scrollRef,
   mySchedules,
   onClickSchedule,
 }: ReportedScheduleListProps) => {
@@ -53,7 +56,7 @@ const ReportedScheduleList = ({
   const locale = pathname.split('/')[1] as LOCALE;
 
   return (
-    <ListContainer>
+    <ListContainer ref={scrollRef}>
       {mySchedules.map((schedule) => {
         if (!schedule.id) {
           return;
@@ -77,7 +80,7 @@ const ReportedScheduleList = ({
               />
             </RowContainer>
             <RowContainer>
-              <MainTag title={domain as DOMAIN} />
+              <MainTag title={t(domain as DOMAIN)} />
               <MainText>
                 {getTranslatedScheduleDate(
                   locale,
