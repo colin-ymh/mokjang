@@ -1,0 +1,189 @@
+import { ChangeEvent, Ref } from 'react';
+import styled from 'styled-components';
+
+import Button from '../../atoms/common/button/button';
+import { BLACK, GRAY, WHITE } from '../../../constants/styles/color';
+import { VISITATION } from '../../../constants/column/visitation-column';
+
+import {
+  useTaskStatusFilterDropdownItems,
+  useVisitationSearchFilterDropdownItems,
+} from '../../../hooks/dropdown/dropdown-items';
+import useWindowSize from '../../../hooks/window/window';
+import { useScopedI18n } from '../../../../locales/client';
+import VisitationFilteredItem, {
+  VisitationFilteredItemType,
+} from '../../atoms/visitation/visitation-filtered-item';
+import PeriodModal from '../../atoms/common/modal/period-modal';
+import { RootState } from '../../../redux/store';
+import { useSelector } from 'react-redux';
+import StatusDropdown from '../../atoms/common/dropdown/status-dropdown';
+import SearchInput from '../../atoms/common/input/search-input';
+import { TASK_STATUS } from '../../../constants/status/status';
+
+import Calendar from '../../../../public/svg/calendar.svg';
+import SvgIcon from '../../atoms/common/icon/svg-icon';
+
+const VisitationContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  border-bottom: 1px solid ${GRAY.LIGHT};
+  flex-shrink: 0;
+  position: relative;
+  background-color: ${WHITE};
+`;
+
+const RowTop = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-shrink: 0;
+`;
+
+const FilterList = styled.div`
+  display: flex;
+  width: 100%;
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 10px 10px 20px;
+  position: relative;
+  gap: 10px;
+`;
+
+const FilteredItemList = styled.div<{ $width: number }>`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 5px;
+  padding: 10px 0;
+  width: ${({ $width }) => $width}px;
+  overflow-x: scroll;
+`;
+
+const SearchContainer = styled.div`
+  display: flex;
+  padding: 10px;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+  right: 20px;
+  position: absolute;
+`;
+
+export type VISITATION_SEARCH_FILTER = VISITATION.TITLE | VISITATION.IN_CHARGE;
+
+type VisitationViewProps = {
+  isModalShown: boolean;
+  statusFilter: TASK_STATUS | undefined;
+  searchFilter: VISITATION_SEARCH_FILTER;
+  searchValue: string;
+  searchRef: Ref<HTMLInputElement>;
+  filteredItems: VisitationFilteredItemType[];
+  onClickStatusFilterItem: (value: TASK_STATUS) => void;
+  onClickSearchFilterItem: (value: VISITATION_SEARCH_FILTER) => void;
+  onChangeSearchValue: (event: ChangeEvent<HTMLInputElement>) => void;
+  onClickPeriodModal: () => void;
+  onClickSearch: () => void;
+  onKeyDown: (event: React.KeyboardEvent<HTMLInputElement>) => void;
+  onClickClosePeriodModal: () => void;
+  onClickSavePeriod: (startDate: string, endDate: string) => void;
+};
+
+const VisitationRowView = ({
+  isModalShown,
+  statusFilter,
+  searchFilter,
+  searchValue,
+  searchRef,
+  filteredItems,
+  onClickStatusFilterItem,
+  onClickPeriodModal,
+  onClickSearchFilterItem,
+  onChangeSearchValue,
+  onClickSearch,
+  onKeyDown,
+  onClickClosePeriodModal,
+  onClickSavePeriod,
+}: VisitationViewProps) => {
+  const t_button = useScopedI18n('button');
+  const searchFilterDropdownItems = useVisitationSearchFilterDropdownItems();
+  const statusFilterDropdownItems = useTaskStatusFilterDropdownItems();
+
+  const { visitationFilter } = useSelector(
+    (state: RootState) => state.visitationFilter
+  );
+
+  const { width } = useWindowSize();
+
+  return (
+    <VisitationContainer>
+      <RowTop>
+        <FilterList>
+          <ButtonContainer>
+            {/* 설정 활성화 버튼 */}
+            <Button
+              text={t_button('filterVisitationDate')}
+              height={30}
+              width={'auto'}
+              onClick={onClickPeriodModal}
+              backgroundColor={WHITE}
+              borderColor={GRAY.LIGHT}
+              color={BLACK}
+              icon={<SvgIcon svg={Calendar} />}
+            />
+
+            <StatusDropdown
+              value={statusFilter}
+              items={statusFilterDropdownItems}
+              onChangeItem={onClickStatusFilterItem}
+              height={30}
+              width={130}
+              borderColor={GRAY.LIGHT}
+              backgroundBlur={false}
+            />
+            {/* 설정 모달 */}
+            <PeriodModal
+              isShown={isModalShown}
+              onClickClose={onClickClosePeriodModal}
+              startDate={visitationFilter.fromStartDate}
+              endDate={visitationFilter.toStartDate}
+              onClickSave={onClickSavePeriod}
+            />
+          </ButtonContainer>
+          {/* 필터 설정된 값들 */}
+          <FilteredItemList $width={width - 650}>
+            {filteredItems.map((item) => (
+              <VisitationFilteredItem
+                key={`${item.title}-${item.value?.join?.('-') ?? ''}`}
+                item={item}
+              />
+            ))}
+          </FilteredItemList>
+        </FilterList>
+        {/* 검색 부분 */}
+        <SearchContainer>
+          <SearchInput
+            searchRef={searchRef}
+            // searchFilter={searchFilter}
+            // searchFilterDropdownItems={searchFilterDropdownItems}
+            // onClickSearchFilterItem={onClickSearchFilterItem}
+            searchValue={searchValue}
+            onChangeSearchValue={onChangeSearchValue}
+            onKeyDown={onKeyDown}
+            onClickSearch={onClickSearch}
+          />
+        </SearchContainer>
+      </RowTop>
+    </VisitationContainer>
+  );
+};
+
+export default VisitationRowView;

@@ -1,0 +1,7 @@
+{
+  "/[locale]/page": "app/[locale]/page.js",
+  "/[locale]/subscription/complete/page": "app/[locale]/subscription/complete/page.js",
+  "/[locale]/subscription/page": "app/[locale]/subscription/page.js",
+  "/[locale]/contact/page": "app/[locale]/contact/page.js",
+  "/[locale]/subscription/fail/page": "app/[locale]/subscription/fail/page.js"
+}

@@ -1,0 +1,247 @@
+import React, { Dispatch, ReactNode, SetStateAction } from 'react';
+
+import {
+  ATTENDANCE_CONTENT_ID,
+  CALENDAR_CONTENT_ID,
+  CHURCH_CONTENT_ID,
+  HOME_CONTENT_ID,
+  JOIN_REQUEST_CONTENT_ID,
+  MANAGER_CONTENT_ID,
+  MEMBER_CONTENT_ID,
+  PERMISSION_CONTENT_ID,
+  USER_CONTENT_ID,
+  WORSHIP_CONTENT_ID,
+} from '../../constants/layout/content';
+import {
+  MAIN_HEADER_ID,
+  MANAGEMENT_HEADER_ID,
+  MEMBER_INFORMATION_HEADER_ID,
+  SIDE_ID,
+} from '../../constants/layout/header';
+
+import MainMemberHeader from '../../components/molecules/layout/header/main/member/main-member-header';
+import MemberList from '../../components/organisms/member/list/member-list';
+import MemberPersonalInformationList from '../../components/molecules/member/information/personal/member-personal-information-list';
+import FamilyInformationList from '../../components/molecules/member/information/family/family-information-list';
+import GroupManagement from '../../components/organisms/management/group/group-management';
+import OfficerManagement from '../../components/organisms/management/officer/officer-management';
+import MainSideButtonList from '../../components/molecules/layout/side/main-side/main-side-button-list';
+import ManagementSideButtonList from '../../components/molecules/layout/side/management-side/management-side-button-list';
+import ManagementChurchHeader from '../../components/molecules/layout/header/management/church/management-church-header';
+import ManagementManagerHeader from '../../components/molecules/layout/header/management/manager/management-manager-header';
+import MainVisitationHeader from '../../components/molecules/layout/header/main/visitation/main-visitation-header';
+import MainEducationHeader from '../../components/molecules/layout/header/main/education/main-education-header';
+import VisitationList from '../../components/organisms/visitation/list/visitation-list';
+import TaskList from '../../components/organisms/task/list/task-list';
+import MainTaskHeader from '../../components/molecules/layout/header/main/task/main-task-header';
+import EducationList from '../../components/organisms/education/education/list/education-list';
+import { HEADER_BAR, HOME_WIDGET } from '../../constants/constant';
+import ManagementJoinRequestHeader from '../../components/molecules/layout/header/management/join-request/management-join-request-header';
+import ManagementPermissionHeader from '../../components/molecules/layout/header/management/permission/management-permission-header';
+import ManagementUserHeader from '../../components/molecules/layout/header/management/user/management-user-header';
+import ChurchUserList from '../../components/organisms/church-user/list/church-user-list';
+import MemberInformationListView from '../../components/molecules/member/information/personal/member-personal-information-list.view';
+import PermissionTemplateList from '../../components/organisms/permission/list/permission-template-list';
+import JoinRequestList from '../../components/organisms/join-request/list/join-request-list';
+import MainAttendanceHeader from '../../components/molecules/layout/header/main/attendance/main-attendance-header';
+import AttendanceList from '../../components/organisms/attendance/list/attendance-list';
+import WorshipList from '../../components/organisms/worship/list/worship-list';
+import MainCalendar from '../../components/organisms/calendar/main-calendar';
+import ChurchManagement from '../../components/organisms/management/church/church-management';
+import Home from '../../components/organisms/home/home';
+import NewMemberWidget from '../../components/molecules/home/widget/new-member-widget';
+import MyScheduleWidget from '../../components/molecules/home/widget/my-schedule-widget';
+import MinistryGroupManagement from '../../components/organisms/management/ministry/ministry-group-management';
+import ReportedScheduleWidget from '../../components/molecules/home/widget/reported-schedule-widget';
+import WorshipAttendanceWidget from '../../components/molecules/home/widget/worship-attendance-widget';
+import MemberHistoryList from '../../components/molecules/member/information/history/member-history-list';
+import MemberVisitationList from '../../components/molecules/member/information/visitation/member-visitation-list';
+import MainWorshipHeader from '../../components/molecules/layout/header/main/worship/main-worship-header';
+import MemberAttendanceList from '../../components/molecules/member/information/attendance/member-attendance-list';
+import ScheduleSummaryWidget from '../../components/molecules/home/widget/schedule-summary-widget';
+import MyScheduleSummaryWidget from '../../components/molecules/home/widget/my-schedule-summary-widget';
+
+export const getSide = (id: string) => {
+  switch (id) {
+    case SIDE_ID.MAIN:
+      return <MainSideButtonList />;
+    case SIDE_ID.NOTIFICATION:
+      return null;
+    case SIDE_ID.MANAGEMENT:
+      return <ManagementSideButtonList />;
+    case SIDE_ID.GUIDE:
+      return null;
+    default:
+      return null;
+  }
+};
+
+export const getHeader = (id: string, contentId?: string) => {
+  switch (id) {
+    // 메인
+    case MAIN_HEADER_ID.HOME:
+      return null;
+    case MAIN_HEADER_ID.MEMBER:
+      return <MainMemberHeader />;
+    case MAIN_HEADER_ID.ATTENDANCE:
+      return <MainAttendanceHeader />;
+    case MAIN_HEADER_ID.WORSHIP:
+      return <MainWorshipHeader />;
+    case MAIN_HEADER_ID.VISITATION:
+      return <MainVisitationHeader />;
+    case MAIN_HEADER_ID.EDUCATION:
+      return <MainEducationHeader />;
+    case MAIN_HEADER_ID.TASK:
+      return <MainTaskHeader />;
+    case MAIN_HEADER_ID.CALENDAR:
+      return null;
+    // 관리
+    case MANAGEMENT_HEADER_ID.CHURCH:
+      return <ManagementChurchHeader />;
+    case MANAGEMENT_HEADER_ID.MANAGER:
+      return <ManagementManagerHeader />;
+    case MANAGEMENT_HEADER_ID.JOIN:
+      return <ManagementJoinRequestHeader />;
+    case MANAGEMENT_HEADER_ID.PERMISSION:
+      return <ManagementPermissionHeader />;
+    case MANAGEMENT_HEADER_ID.USER:
+      return <ManagementUserHeader />;
+    default:
+      return null;
+  }
+};
+
+export const getContent = (
+  id: string | null,
+  headerId: string | null
+): ReactNode => {
+  switch (id) {
+    // 세부 컨텐츠 없음
+    case null:
+      switch (headerId) {
+        // 홈
+        case HOME_CONTENT_ID.HOME:
+          return <Home />;
+
+        // 회원
+        case USER_CONTENT_ID.USER:
+          return <ChurchUserList />;
+
+        // 권한 유형
+        case PERMISSION_CONTENT_ID.PERMISSION:
+          return <PermissionTemplateList />;
+
+        // 관리자
+        case MANAGER_CONTENT_ID.MANAGER:
+          return <ChurchUserList isManager />;
+
+        // 등록 요청
+        case JOIN_REQUEST_CONTENT_ID.JOIN_REQUEST:
+          return <JoinRequestList />;
+
+        // 달력
+        case CALENDAR_CONTENT_ID.CALENDAR:
+          return <MainCalendar />;
+
+        // 출석
+        case ATTENDANCE_CONTENT_ID.ATTENDANCE:
+          return <AttendanceList />;
+        // 예배
+        case WORSHIP_CONTENT_ID.WORSHIP:
+          return <WorshipList />;
+
+        default:
+          return null;
+      }
+
+    // 전체
+    case HEADER_BAR.ALL:
+      if (headerId === MAIN_HEADER_ID.MEMBER) {
+        return <MemberList />;
+      } else if (headerId === MAIN_HEADER_ID.VISITATION) {
+        return <VisitationList />;
+      } else if (headerId === MAIN_HEADER_ID.EDUCATION) {
+        return <EducationList />;
+      } else if (headerId === MAIN_HEADER_ID.TASK) {
+        return <TaskList />;
+      } else {
+        return null;
+      }
+
+    // 내 ~~
+    case HEADER_BAR.MY:
+      if (headerId === MAIN_HEADER_ID.VISITATION) {
+        return <VisitationList headerType={HEADER_BAR.MY} />;
+      } else if (headerId === MAIN_HEADER_ID.TASK) {
+        return <TaskList headerType={HEADER_BAR.MY} />;
+      } else {
+        return null;
+      }
+
+    // 보고받은 ~~
+    case HEADER_BAR.REPORTED:
+      if (headerId === MAIN_HEADER_ID.VISITATION) {
+        return <VisitationList headerType={HEADER_BAR.REPORTED} />;
+      } else if (headerId === MAIN_HEADER_ID.TASK) {
+        return <TaskList headerType={HEADER_BAR.REPORTED} />;
+      } else {
+        return null;
+      }
+
+    // 교회 설정
+    case CHURCH_CONTENT_ID.CHURCH:
+      return <ChurchManagement />;
+    case CHURCH_CONTENT_ID.GROUP:
+      return <GroupManagement />;
+    case CHURCH_CONTENT_ID.MINISTRY:
+      return <MinistryGroupManagement />;
+    case CHURCH_CONTENT_ID.OFFICER:
+      return <OfficerManagement />;
+
+    case MEMBER_CONTENT_ID.NEW:
+      return <MemberList isNewMember={true} />;
+
+    default:
+      return null;
+  }
+};
+
+export const getMemberInformationContent = (
+  memberContentId: string,
+  setMemberContentId: Dispatch<SetStateAction<string>>,
+  isPopup?: boolean
+) => {
+  switch (memberContentId) {
+    case MEMBER_INFORMATION_HEADER_ID.PERSONAL_INFORMATION:
+      if (isPopup) {
+        return <MemberInformationListView />;
+      } else {
+        return <MemberPersonalInformationList />;
+      }
+    case MEMBER_INFORMATION_HEADER_ID.FAMILY_INFORMATION:
+      return <FamilyInformationList />;
+    case MEMBER_INFORMATION_HEADER_ID.ATTENDANCE:
+      return <MemberAttendanceList />;
+    case MEMBER_INFORMATION_HEADER_ID.VISITATION:
+      return <MemberVisitationList />;
+    case MEMBER_INFORMATION_HEADER_ID.HISTORY:
+      return <MemberHistoryList />;
+  }
+};
+
+export const getWidgetById = (id: HOME_WIDGET) => {
+  switch (id) {
+    case HOME_WIDGET.NEW_MEMBER:
+      return <NewMemberWidget />;
+    case HOME_WIDGET.MY_SCHEDULE:
+      return <MyScheduleWidget />;
+    case HOME_WIDGET.REPORTED_SCHEDULE:
+      return <ReportedScheduleWidget />;
+    case HOME_WIDGET.WORSHIP_ATTENDANCE:
+      return <WorshipAttendanceWidget />;
+    case HOME_WIDGET.CHURCH_SCHEDULE_SUMMARY:
+      return <ScheduleSummaryWidget />;
+    case HOME_WIDGET.MY_SCHEDULE_SUMMARY:
+      return <MyScheduleSummaryWidget />;
+  }
+};

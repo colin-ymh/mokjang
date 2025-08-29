@@ -1,0 +1,44 @@
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { BLACK, BLANK, WHITE } from '@mokjang/constants';
+
+type ToastPopupState = {
+  isToastShown: boolean;
+  toastColor: string;
+  toastBackgroundColor: string;
+  toastText: string;
+};
+
+const initialState: ToastPopupState = {
+  isToastShown: false,
+  toastColor: WHITE,
+  toastBackgroundColor: BLACK,
+  toastText: BLANK,
+};
+
+const ToastPopupSlice = createSlice({
+  name: 'toastPopup',
+  initialState,
+  reducers: {
+    setIsToastShown(state, action: PayloadAction<boolean>) {
+      state.isToastShown = action.payload;
+    },
+    setToastBackgroundColor(state, action: PayloadAction<string>) {
+      state.toastBackgroundColor = action.payload;
+    },
+    setToastColor(state, action: PayloadAction<string>) {
+      state.toastColor = action.payload;
+    },
+    setToastText(state, action: PayloadAction<string>) {
+      state.toastText = action.payload;
+    },
+  },
+});
+
+export const {
+  setIsToastShown,
+  setToastBackgroundColor,
+  setToastColor,
+  setToastText,
+} = ToastPopupSlice.actions;
+
+export default ToastPopupSlice.reducer;

@@ -1,0 +1,136 @@
+import HeaderView, { HeaderViewProps } from './header.view';
+import { useEffect, useState } from 'react';
+import { MAIN_CONTENT_ID } from '@/constants/constant';
+import { usePageRouter } from '@mokjang/app/src/utils/router';
+import { usePathname } from 'next/navigation';
+import { AuthApi } from '@/api/auth/auth.api';
+
+type HeaderProps = {};
+
+const MAIN_Y_OFFSET = {
+  [MAIN_CONTENT_ID.FUNCTION]: 700,
+  [MAIN_CONTENT_ID.PRICE]: 700 + 850,
+  [MAIN_CONTENT_ID.FAQ]: 700 + 850 + 900,
+};
+
+const Header = ({}: HeaderProps) => {
+  const pathname = usePathname();
+  const content = pathname.split('/')[2];
+
+  const router = usePageRouter();
+
+  const [focusedContent, setFocusedContent] = useState<
+    MAIN_CONTENT_ID | undefined
+  >(undefined);
+
+  const [isAutoScrolling, setIsAutoScrolling] = useState(false);
+  const [targetY, setTargetY] = useState<number | null>(null);
+
+  const onClickLogo = () => {
+    router.push('/');
+  };
+
+  const onClickMenu = (
+    id: MAIN_CONTENT_ID.FUNCTION | MAIN_CONTENT_ID.PRICE | MAIN_CONTENT_ID.FAQ
+  ) => {
+    if (content) {
+      router.push('/');
+
+      setTimeout(() => {
+        const yOffset = MAIN_Y_OFFSET[id];
+        // 미리 포커스를 고정 (중간 섹션을 지나가도 포커스가 흔들리지 않도록)
+        setFocusedContent(id);
+        setIsAutoScrolling(true);
+        setTargetY(yOffset);
+
+        window.scrollTo({
+          top: yOffset,
+          behavior: 'smooth',
+        });
+      }, 300);
+    } else {
+      const yOffset = MAIN_Y_OFFSET[id];
+      // 미리 포커스를 고정 (중간 섹션을 지나가도 포커스가 흔들리지 않도록)
+      setFocusedContent(id);
+      setIsAutoScrolling(true);
+      setTargetY(yOffset);
+
+      window.scrollTo({
+        top: yOffset,
+        behavior: 'smooth',
+      });
+    }
+  };
+
+  // 로그아웃 버튼
+  const onClickLogout = () => {
+    const authApi = new AuthApi(false);
+    authApi.getLogOut().then(() => {
+      window.location.href = '/';
+    });
+  };
+
+  useEffect(() => {
+    const EPS = 3; // 스크롤 도달 허용 오차(px)
+    const onScroll = () => {
+      const currentY = window.pageYOffset;
+
+      // 프로그램적 스크롤 중에는 중간 섹션에 의한 포커스 변경을 막는다
+      if (isAutoScrolling) {
+        if (targetY !== null && Math.abs(currentY - targetY) <= EPS) {
+          // 목적지에 거의 도달하면 잠금 해제
+          setIsAutoScrolling(false);
+          setTargetY(null);
+        }
+        return; // 잠금 중에는 아래 포커스 판정 로직을 건너뜀
+      }
+
+      if (currentY >= MAIN_Y_OFFSET[MAIN_CONTENT_ID.FAQ]) {
+        setFocusedContent(MAIN_CONTENT_ID.FAQ);
+      } else if (currentY >= MAIN_Y_OFFSET[MAIN_CONTENT_ID.PRICE]) {
+        setFocusedContent(MAIN_CONTENT_ID.PRICE);
+      } else if (currentY >= MAIN_Y_OFFSET[MAIN_CONTENT_ID.FUNCTION]) {
+        setFocusedContent(MAIN_CONTENT_ID.FUNCTION);
+      } else {
+        setFocusedContent(undefined);
+      }
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, [isAutoScrolling, targetY]);
+
+  useEffect(() => {
+    if (!isAutoScrolling) return;
+    const cancel = () => setIsAutoScrolling(false);
+    window.addEventListener('wheel', cancel, { passive: true });
+    window.addEventListener('touchstart', cancel, { passive: true });
+    return () => {
+      window.removeEventListener('wheel', cancel);
+      window.removeEventListener('touchstart', cancel);
+    };
+  }, [isAutoScrolling]);
+
+  const onClickLogin = () => {
+    router.push('/login');
+  };
+  const onClickContact = () => {
+    router.push('/contact');
+  };
+  const props = {
+    focusedContent,
+    onClickLogo,
+    onClickMenu,
+    onClickLogin,
+    onClickContact,
+    onClickLogout,
+  } as HeaderViewProps;
+
+  return (
+    <>
+      <HeaderView {...props} />
+    </>
+  );
+};
+
+export default Header;

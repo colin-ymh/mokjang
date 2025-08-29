@@ -1,0 +1,145 @@
+import {
+  ChangeEvent,
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../../../redux/store';
+import { MembersApi } from '../../../../../api/members/members.api';
+import AddOfficerMemberModalView from './add-officer-member-modal.view';
+import { BLANK } from '../../../../../constants/constant';
+import { Member } from '../../../../../models/member/member';
+import { Officer } from '../../../../../models/management/management';
+import { getFormattedName } from '../../../../../utils/format';
+import { OfficersApi } from '../../../../../api/management/officer/officers.api';
+
+type AddOfficerMemberModalProps = {
+  officer: Officer;
+  selectedMembers: Member[];
+  setSelectedMembers: Dispatch<SetStateAction<Member[]>>;
+  startDate: Date | null;
+  onChangeStartDate: (date: Date | null) => void;
+};
+
+const AddOfficerMemberModal = ({
+  officer,
+  selectedMembers,
+  setSelectedMembers,
+  startDate,
+  onChangeStartDate,
+}: AddOfficerMemberModalProps) => {
+  const membersApi = new MembersApi(false);
+  const officersApi = new OfficersApi(false);
+  const churchId = useSelector((state: RootState) => state.church.churchId);
+
+  const [searchName, setSearchName] = useState<string>(BLANK);
+  const [members, setMembers] = useState<Member[]>([]);
+  const [page, setPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
+  const [thrownError, setThrownError] = useState<Error | null>(null);
+  if (thrownError) {
+    throw thrownError;
+  }
+
+  const scrollRef = useRef<HTMLDivElement | null>(null);
+
+  // 교인 목록 검색
+  const fetchSearchedMembers = async () => {
+    try {
+      if (isLoading) return;
+      setIsLoading(true);
+
+      let response;
+
+      if (searchName === BLANK) {
+        response = await officersApi.getOfficerUnassignedMembers({
+          churchId,
+          page,
+          take: 30,
+        });
+      } else {
+        response = await membersApi.getSimpleMembers({
+          churchId,
+          page,
+          take: 30,
+          name: searchName,
+        });
+      }
+
+      const newMembers: Member[] = response.data.data;
+      const existingIds = new Set(members.map((member) => member.id));
+      const filteredNewMembers = newMembers.filter(
+        (member) => !existingIds.has(member.id)
+      );
+
+      const updatedMembers =
+        page === 1 ? newMembers : [...members, ...filteredNewMembers];
+
+      setMembers(updatedMembers);
+    } catch (error) {
+      setThrownError(error as Error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const onChangeSearch = (event: ChangeEvent<HTMLInputElement>) => {
+    setSearchName(getFormattedName(event.target.value));
+  };
+
+  const onClickMember = (targetMember: Member) => {
+    setSelectedMembers((prev) => {
+      const isSelected = prev.some((m) => m.id === targetMember.id);
+      return isSelected
+        ? prev.filter((m) => m.id !== targetMember.id)
+        : [...prev, targetMember];
+    });
+  };
+
+  const loadMembers = () => {
+    setPage(page + 1);
+  };
+
+  const onScroll = () => {
+    if (scrollRef.current) {
+      const { scrollTop, scrollHeight, clientHeight } = scrollRef.current;
+      if (scrollTop + clientHeight >= scrollHeight - 10) {
+        loadMembers();
+      }
+    }
+  };
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setPage(1);
+      fetchSearchedMembers();
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [searchName]);
+
+  useEffect(() => {
+    fetchSearchedMembers();
+  }, [page]);
+
+  return (
+    <>
+      <AddOfficerMemberModalView
+        scrollRef={scrollRef}
+        officer={officer}
+        searchName={searchName}
+        searchedMembers={members}
+        selectedMembers={selectedMembers}
+        onChangeSearch={onChangeSearch}
+        onClickMember={onClickMember}
+        onScroll={onScroll}
+        startDate={startDate}
+        onChangeStartDate={onChangeStartDate}
+      />
+    </>
+  );
+};
+
+export default AddOfficerMemberModal;
