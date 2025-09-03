@@ -1,0 +1,217 @@
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { BLANK, ORDER_DIRECTION } from '../../../constants/constant';
+import {
+  EducationSession,
+  EducationTerm,
+} from '../../../models/education/education';
+import { RootState } from '../../store';
+
+import { EDUCATION_TERM } from '../../../constants/column/education-column';
+import { EducationTermsApi } from '../../../api/education/education-terms.api';
+import { EducationSessionsApi } from '../../../api/education/education-sessions.api';
+import { EducationsApi } from '../../../api/education/educations.api';
+
+type EDUCATION_TERM_FILTER = {
+  [EDUCATION_TERM.EDUCATION]: string;
+};
+
+type EducationTermFilterState = {
+  educationTerms: EducationTerm[];
+  educationTermFilter: EDUCATION_TERM_FILTER;
+  educationTermOrderBy?: EDUCATION_TERM;
+  educationTermOrderDirection: ORDER_DIRECTION;
+  educationTermTableHeaderItemList: EDUCATION_TABLE_HEADER_ITEM[];
+};
+
+export const INITIAL_EDUCATION_TERM_FILTER: EDUCATION_TERM_FILTER = {
+  [EDUCATION_TERM.EDUCATION]: BLANK,
+};
+
+export type EDUCATION_TABLE_HEADER_ITEM = {
+  id: EDUCATION_TERM;
+  isShown: boolean;
+  isSortable: boolean;
+  isFilterable: boolean;
+  isFixed?: boolean;
+  isDate?: boolean;
+};
+
+export const INITIAL_EDUCATION_TERM_TABLE_HEADER_LIST: EDUCATION_TABLE_HEADER_ITEM[] =
+  [
+    {
+      id: EDUCATION_TERM.TERM,
+      isShown: true,
+      isSortable: false,
+      isFilterable: true,
+      isFixed: true,
+      isDate: false,
+    },
+    {
+      id: EDUCATION_TERM.STATUS,
+      isShown: true,
+      isSortable: false,
+      isFilterable: true,
+      isFixed: true,
+      isDate: false,
+    },
+    {
+      id: EDUCATION_TERM.IN_CHARGE,
+      isShown: true,
+      isSortable: false,
+      isFilterable: true,
+      isFixed: true,
+      isDate: false,
+    },
+    {
+      id: EDUCATION_TERM.PERIOD,
+      isShown: true,
+      isSortable: false,
+      isFilterable: true,
+      isFixed: true,
+      isDate: false,
+    },
+  ];
+
+const initialState: EducationTermFilterState = {
+  educationTerms: [],
+  educationTermFilter: INITIAL_EDUCATION_TERM_FILTER,
+  educationTermOrderDirection: ORDER_DIRECTION.ASC,
+  educationTermTableHeaderItemList: INITIAL_EDUCATION_TERM_TABLE_HEADER_LIST,
+};
+
+export const fetchEducationTerms = createAsyncThunk<
+  EducationTerm[],
+  {
+    currentPage: number;
+    educationId?: string;
+    isInProgress?: boolean;
+  },
+  { state: RootState }
+>(
+  'educations/fetchEducationTerms',
+  async (
+    { currentPage, educationId, isInProgress },
+    { getState, rejectWithValue }
+  ) => {
+    const state = getState().educationTermFilter;
+    const churchId = getState().church.churchId;
+    const {
+      educationTermOrderBy,
+      educationTermOrderDirection,
+      educationTermFilter,
+    } = state;
+
+    const educationsApi = new EducationsApi(false);
+    const educationTermsApi = new EducationTermsApi(false);
+
+    try {
+      if (isInProgress) {
+        const response = await educationsApi.getInProgressEducations({
+          churchId,
+          page: currentPage,
+          take: 30, // 무한 스크롤 최적화
+          order: educationTermOrderBy || undefined,
+          orderDirection: educationTermOrderDirection,
+        });
+
+        return response.data.data;
+      } else {
+        const response = await educationTermsApi.getEducationTerms({
+          churchId,
+          educationId: educationId || '1',
+          page: currentPage,
+          take: 30, // 무한 스크롤 최적화
+          order: educationTermOrderBy || undefined,
+          orderDirection: educationTermOrderDirection,
+        });
+
+        return response.data.data;
+      }
+    } catch (error) {
+      console.error('교육 목록 불러오기 실패', error);
+      return rejectWithValue('교육 목록을 불러오는 중 오류가 발생했습니다.');
+    }
+  }
+);
+
+export const fetchEducationSessions = createAsyncThunk<
+  EducationTerm[],
+  {},
+  { state: RootState }
+>(
+  'educations/fetchEducationSessions',
+  async ({}, { getState, rejectWithValue }) => {
+    const state = getState().educationTermFilter;
+    const churchId = getState().church.churchId;
+    const { educationTerms } = state;
+    const educationSessionsApi = new EducationSessionsApi(false);
+
+    try {
+      const newEducationTerms = await Promise.all(
+        educationTerms.map(async (educationTerm) => {
+          const response = await educationSessionsApi.getEducationSessions({
+            churchId,
+            educationId: educationTerm.educationId,
+            educationTermId: educationTerm.id,
+          });
+
+          const newEducationSessions: EducationSession[] = response.data.data;
+
+          return { ...educationTerm, educationSessions: newEducationSessions };
+        })
+      );
+
+      return newEducationTerms;
+    } catch (error) {
+      console.error('교육 세션 목록 불러오기 실패', error);
+      return rejectWithValue(
+        '교육 세션 목록을 불러오는 중 오류가 발생했습니다.'
+      );
+    }
+  }
+);
+
+const EducationTermFilterSlice = createSlice({
+  name: 'register',
+  initialState,
+  reducers: {
+    setEducationTerms: (state, action: PayloadAction<EducationTerm[]>) => {
+      state.educationTerms = action.payload;
+    },
+    setEducationTermFilter: (
+      state,
+      action: PayloadAction<EDUCATION_TERM_FILTER>
+    ) => {
+      state.educationTermFilter = action.payload;
+    },
+    setEducationTermOrderBy(state, action: PayloadAction<EDUCATION_TERM>) {
+      state.educationTermOrderBy = action.payload;
+    },
+    setEducationTermOrderDirection(
+      state,
+      action: PayloadAction<ORDER_DIRECTION>
+    ) {
+      state.educationTermOrderDirection = action.payload;
+    },
+    setEducationTermTableHeaderItemList(
+      state,
+      action: PayloadAction<EDUCATION_TABLE_HEADER_ITEM[]>
+    ) {
+      state.educationTermTableHeaderItemList = action.payload;
+    },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(fetchEducationSessions.fulfilled, (state, action) => {
+      state.educationTerms = action.payload;
+    });
+  },
+});
+
+export const {
+  setEducationTerms,
+  setEducationTermFilter,
+  setEducationTermOrderBy,
+  setEducationTermOrderDirection,
+  setEducationTermTableHeaderItemList,
+} = EducationTermFilterSlice.actions;
+export default EducationTermFilterSlice.reducer;

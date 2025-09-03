@@ -1,0 +1,34 @@
+{
+  "name": "@mokjang/utils",
+  "version": "0.1.0",
+  "private": true,
+  "sideEffects": false,
+
+  "main": "src/index.ts",
+  "module": "src/index.ts",
+
+  "types": "dist/index.d.ts",
+
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./src/index.ts"
+    }
+  },
+
+  "files": ["src", "dist"],
+
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "barrels": "node ../../scripts/make-barrels.mjs <패키지키>",
+    "lint": "eslint .. --ext .ts,.tsx",
+    "format": "prettier -w .."
+  },
+
+  "peerDependencies": {
+    "react": "^18",
+    "react-dom": "^18",
+    "styled-components": "^6"
+  }
+}
