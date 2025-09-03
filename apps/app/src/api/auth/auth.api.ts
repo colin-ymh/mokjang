@@ -92,7 +92,7 @@ export class AuthApi {
     url.searchParams.set('providerId', providerId);
 
     try {
-      return await authorizeAxios.get(url.toString());
+      return await authorizeAxios.post(url.toString());
     } catch (serverError: any) {
       if (serverError.response) {
         const { message, error, statusCode } = serverError.response.data;

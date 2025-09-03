@@ -10,6 +10,17 @@ export default {
   paymentDay: 'Payment Date',
   nextPaymentDay: 'Next Payment Date',
 
+  'card.title': 'Register Card',
+  'card.cardNo.title': 'Card Number',
+  'card.cardNo.placeholder': '0000',
+  'card.exp.title': 'Expiration Date',
+  'card.exp.placeholder': 'MM/YY',
+  'card.idNo.title': 'Date of Birth',
+  'card.idNo.placeholder': 'YYMMDD (6 digits)',
+  'card.cardPw.title': 'Card Password',
+  'card.cardPw.placeholder': 'First 2 digits of password',
+  'card.consent': 'I agree to provide my information to the payment company.',
+
   'main.function.title': 'A New Standard for Church Management',
   'main.function.description':
     'Mokjang integrates all church management tasks into one system to maximize efficiency.',
@@ -22,6 +33,7 @@ export default {
     'We’ve gathered answers to common questions about Mokjang.',
   'main.faq.extra': 'Do you have more questions?',
 
+  'button.cancel': 'Cancel',
   'button.function': 'Function',
   'button.price': 'Price',
   'button.faq': 'FAQ',

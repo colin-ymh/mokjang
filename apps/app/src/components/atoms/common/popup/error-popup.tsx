@@ -1,4 +1,7 @@
-import React from 'react';
+'use client';
+
+import React, { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import styled from 'styled-components';
 import { MainText } from '../text/main-text';
 import { DESTRUCTIVE, MAIN, WHITE } from '@/constants/styles/color';
@@ -21,22 +24,20 @@ interface ConfirmPopupProps {
 
 const ModalOverlay = styled.div`
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  inset: 0;
   background-color: rgba(0, 0, 0, 0.1);
   display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 100;
+  align-items: center; /* ✅ 중앙 정렬 */
+  justify-content: center; /* ✅ 중앙 정렬 */
+  z-index: 10000; /* ✅ 최상단 레이어 */
 `;
 
 const ModalContainer = styled.div`
   background-color: #fff;
   min-width: 254px;
-  border-radius: 5px;
-  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.3);
+  max-width: calc(100vw - 40px);
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -76,7 +77,7 @@ const Button = styled.button`
   font-size: 15px;
   font-weight: 400;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background-color 0.2s;
 `;
 
 const LeftButton = styled(Button)`
@@ -97,8 +98,8 @@ const RightButton = styled(Button)`
 
 const SingleButton = styled(Button)`
   width: 254px;
-  border-bottom-left-radius: 15px;
-  border-bottom-right-radius: 15px;
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
   color: blue;
 `;
 
@@ -110,6 +111,36 @@ const ThreeButtonContainer = styled.div`
   align-items: center;
   justify-content: center;
 `;
+
+/** Portal root를 준비하는 훅 (SSR-safe) */
+function usePortalRoot(id = 'modal-root') {
+  const [el, setEl] = useState<HTMLElement | null>(null);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    let root = document.getElementById(id) as HTMLElement | null;
+    let created = false;
+
+    if (!root) {
+      root = document.createElement('div');
+      root.id = id;
+      document.body.appendChild(root);
+      created = true;
+    }
+
+    setEl(root);
+
+    return () => {
+      // root를 항상 제거하진 말고, 우리가 생성했을 때만 정리
+      if (created && root?.parentNode) {
+        root.parentNode.removeChild(root);
+      }
+    };
+  }, [id]);
+
+  return el;
+}
 
 const ConfirmPopup = ({
   title,
@@ -125,7 +156,19 @@ const ConfirmPopup = ({
   middleButtonText,
   onClickMiddleButton,
 }: ConfirmPopupProps) => {
-  if (!isShow) return null;
+  const portalRoot = usePortalRoot(); // 기본: #modal-root
+
+  // 모달이 켜졌을 때 body 스크롤 잠금 (선택)
+  useEffect(() => {
+    if (!isShow) return;
+    const original = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = original;
+    };
+  }, [isShow]);
+
+  if (!isShow || !portalRoot) return null;
 
   const handleClick = (event: React.MouseEvent) => {
     event.stopPropagation();
@@ -214,8 +257,9 @@ const ConfirmPopup = ({
     }
   };
 
-  return (
-    <ModalOverlay onClick={handleClick}>
+  // ✅ Portal로 body(#modal-root) 아래에 렌더
+  return createPortal(
+    <ModalOverlay role="dialog" aria-modal="true" onClick={handleClick}>
       <ModalContainer onClick={handleClick}>
         <TextContainer>
           <MainText fontWeight={500}>{title}</MainText>
@@ -223,7 +267,8 @@ const ConfirmPopup = ({
         </TextContainer>
         {getButtons()}
       </ModalContainer>
-    </ModalOverlay>
+    </ModalOverlay>,
+    portalRoot
   );
 };
 

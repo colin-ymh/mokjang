@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import { GRAY, MAIN, WHITE } from '@/constants/styles/color';
 
-import Check from '../../../../../public/svg/check.svg';
+import { Svg } from '@mokjang/assets';
 
 const CheckButtonContainer = styled.div<{
   width: number;
@@ -30,7 +30,7 @@ const CheckButtonContainer = styled.div<{
   align-items: center;
 `;
 
-const CheckIcon = styled(Check)<{ width: number; height: number }>`
+const CheckIcon = styled(Svg.Check)<{ width: number; height: number }>`
   width: ${({ $width }) => $width}px;
   height: ${({ $height }) => $height}px;
   stroke: ${WHITE};

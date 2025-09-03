@@ -3,7 +3,7 @@
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../redux/store';
 
-import { usePageRouter } from '@mokjang/utils';
+import { usePageRouter } from '../../../../../../packages/utils/src';
 import PageLayout from '@/components/organisms/layout/page-layout';
 import Login from '@/components/organisms/login/login';
 import { useEffect } from 'react';

@@ -87,7 +87,7 @@ export const useManagementSideBarItems = () => {
     {
       id: MANAGEMENT_HEADER_ID.MANAGER,
       title: t_header(MANAGEMENT_HEADER_ID.MANAGER),
-      onClick: () => router.push(`/management/manager/`),
+      onClick: () => router.push(`/management/manager/manager`),
       icon: Book,
     },
     {
@@ -96,18 +96,18 @@ export const useManagementSideBarItems = () => {
       onClick: () => router.push(`/management/permission`),
       icon: Heart,
     },
-    {
-      id: MANAGEMENT_HEADER_ID.JOIN,
-      title: t_header(MANAGEMENT_HEADER_ID.JOIN),
-      onClick: () => router.push(`/management/join`),
-      icon: Briefcase,
-    },
-    {
-      id: MANAGEMENT_HEADER_ID.USER,
-      title: t_header(MANAGEMENT_HEADER_ID.USER),
-      onClick: () => router.push(`/management/user`),
-      icon: AcademicCap,
-    },
+    // {
+    //   id: MANAGEMENT_HEADER_ID.JOIN,
+    //   title: t_header(MANAGEMENT_HEADER_ID.JOIN),
+    //   onClick: () => router.push(`/management/join`),
+    //   icon: Briefcase,
+    // },
+    // {
+    //   id: MANAGEMENT_HEADER_ID.USER,
+    //   title: t_header(MANAGEMENT_HEADER_ID.USER),
+    //   onClick: () => router.push(`/management/user`),
+    //   icon: AcademicCap,
+    // },
     {
       id: MANAGEMENT_HEADER_ID.SETTING,
       title: t_header(MANAGEMENT_HEADER_ID.SETTING),

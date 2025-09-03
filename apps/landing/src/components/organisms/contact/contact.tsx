@@ -8,7 +8,7 @@ import {
   getIsWellFormedName,
   getIsWellFormedTitle,
   usePageRouter,
-} from '@mokjang/utils';
+} from '../../../../../../packages/utils/src';
 import {
   getFormattedContent,
   getFormattedMobilePhone,

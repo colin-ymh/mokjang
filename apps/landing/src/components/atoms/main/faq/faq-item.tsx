@@ -1,11 +1,14 @@
 import { FAQ } from '@/constants/constant';
 import styled from 'styled-components';
 import { useScopedI18n } from '../../../../../locales/client';
-import { GRAY, MAIN, WHITE } from '@mokjang/constants';
+import { GRAY, MAIN, WHITE } from '../../../../../../../packages/constants/src';
 
 import Plus from '../../../../../public/svg/plus.svg';
 import Minus from '../../../../../public/svg/minus.svg';
-import { MainText, SvgIcon } from '@mokjang/components';
+import {
+  MainText,
+  SvgIcon,
+} from '../../../../../../../packages/components/src';
 
 const ItemContainer = styled.div`
   display: flex;

@@ -37,6 +37,7 @@ export enum USER_CONTENT_ID {
 
 export enum MANAGER_CONTENT_ID {
   MANAGER = 'manager',
+  JOIN = 'join',
 }
 
 export enum PERMISSION_CONTENT_ID {

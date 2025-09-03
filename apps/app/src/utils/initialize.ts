@@ -11,12 +11,15 @@ import {
   setChurchId,
 } from '../redux/reducers/church-reducer';
 import { AuthApi } from '../api/auth/auth.api';
-import { usePageRouter } from './router';
+import { routeLandingPage, usePageRouter } from './router';
 import { setUser } from '../redux/reducers/user-reducer';
 import { UserApi } from '../api/user/user.api';
-import { User } from '../models/user/user';
 import { fetchPermissionUnits } from '../redux/reducers/filter/permission-template-filter-reducer';
 import { ChurchesApi } from '../api/churches/churches.api';
+import { User } from '@/models/user/user';
+import { SubscriptionApi } from '@/api/subscription/subscription.api';
+import { SubscriptionPlan } from '@mokjang/landing/src/models/subscription/subscription';
+import { setCurrentSubscription } from '@/redux/reducers/subscription-reducer';
 
 export const useInitializeChurch = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -65,6 +68,7 @@ export const useInitializeUser = () => {
   const router = usePageRouter();
   const authApi = new AuthApi(false);
   const userApi = new UserApi(false);
+  const subscriptionApi = new SubscriptionApi(false);
   const churchesApi = new ChurchesApi(false);
 
   // /** ➜ 이 ref 가 true 면 두 번 다시 실행하지 않음 */
@@ -84,21 +88,14 @@ export const useInitializeUser = () => {
     if (didRunRef.current) return;
     didRunRef.current = true;
 
-    /* 1) 임시 토큰 체크 */
     try {
-      const { data: isTemp } = await authApi.getIsTemporalToken();
-      if (isTemp) {
-        setRedirectPath('/login/register');
-        return;
-      }
-    } catch {
-      /* 토큰 없음 → 정상 흐름 */
-    }
+      const subResponse = await subscriptionApi.getCurrentSubscription();
+      const currentPlan: SubscriptionPlan = subResponse.data;
 
-    /* 2) 사용자 정보 조회 */
-    try {
       const response = await userApi.getUser();
       const user: User = response.data;
+
+      dispatch(setCurrentSubscription(currentPlan));
       dispatch(setUser(user));
       if (user.churchUser.length) {
         const churchId = user.churchUser[0].churchId;
@@ -108,11 +105,29 @@ export const useInitializeUser = () => {
           const newChurch = res.data;
           dispatch(setChurch(newChurch));
         });
+        setRedirectPath('/main');
+      } else if (currentPlan.isCurrent) {
+        setRedirectPath('/church/register');
       } else {
-        setRedirectPath('/');
+        routeLandingPage('/');
       }
     } catch {
-      setRedirectPath('/login');
+      const response = await userApi.getUser();
+      const user: User = response.data;
+
+      if (user.churchUser.length) {
+        const churchId = user.churchUser[0].churchId;
+        dispatch(setChurchId(churchId));
+
+        await churchesApi.getChurch({ churchId }).then((res) => {
+          const newChurch = res.data;
+          dispatch(setChurch(newChurch));
+        });
+
+        setRedirectPath('/main');
+      } else {
+        routeLandingPage('/');
+      }
     }
   }, [authApi, userApi, dispatch]);
 };

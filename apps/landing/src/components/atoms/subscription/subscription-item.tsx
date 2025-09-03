@@ -1,17 +1,14 @@
 import React from 'react';
-import {
-  PAYMENT_CYCLE,
-  SubscriptionPlan,
-} from '@/models/subscription/subscription';
+import { BILLING_CYCLE, Plan } from '@/models/subscription/subscription';
 import SubscriptionItemView, {
   SubscriptionItemViewProps,
 } from '@/components/atoms/subscription/subscription-item.view';
 
 type SubscriptionItemProps = {
-  item: SubscriptionPlan;
+  item: Plan;
   isSelected: boolean;
-  onClick: (plan: SubscriptionPlan) => void;
-  cycle: PAYMENT_CYCLE;
+  onClick: (plan: Plan) => void;
+  cycle: BILLING_CYCLE;
 };
 
 const SubscriptionItem = ({

@@ -9,10 +9,11 @@ import {
   ChurchUser,
   DEFAULT_CHURCH_USER,
 } from '../../../../models/church-user/church-user';
-import ChurchUserListView from './church-user-list.view';
+import ChurchUserListView, { UserListViewProps } from './church-user-list.view';
 import { ChurchUsersApi } from '../../../../api/church-users/church-users.api';
 import { setTargetChurchUser } from '../../../../redux/reducers/target/target-church-user-reducer';
 import { ManagersApi } from '../../../../api/managers/managers.api';
+import { PERMISSION_ACTIVE } from '@/constants/status/status';
 
 type UserListProps = {
   isManager?: boolean;
@@ -48,19 +49,17 @@ const ChurchUserList = ({ isManager = false }: UserListProps) => {
   // 데이터 로딩 상태
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
+  // 관리자 활성화 상태
+  const [permissionActive, setPermissionActive] = useState<
+    PERMISSION_ACTIVE | undefined
+  >(undefined);
+
   // 상세 정보 on off
   const [isChurchUserInformationShown, setIsChurchUserInformationShown] =
     useState<boolean>(false);
 
-  // 삭제 확인 팝업
-  const [isPopupShown, setIsPopupShown] = useState<boolean>(false);
-
-  const onClickConfirmOpen = () => {
-    setIsPopupShown(true);
-  };
-
-  const onClickConfirmClose = () => {
-    setIsPopupShown(false);
+  const onChangePermissionActive = (value: PERMISSION_ACTIVE | undefined) => {
+    setPermissionActive(value);
   };
 
   // 무한 스크롤로 데이터 추가 로드
@@ -118,7 +117,13 @@ const ChurchUserList = ({ isManager = false }: UserListProps) => {
     };
 
     fetchInitialUsers();
-  }, [churchId, churchUserFilter, churchUserOrderBy, churchUserOrderDirection]);
+  }, [
+    churchId,
+    churchUserFilter,
+    churchUserOrderBy,
+    churchUserOrderDirection,
+    permissionActive,
+  ]);
 
   // 목록에서 교인을 선택하여 상세 페이지로 이동
   const onClickUserItem = async (user: ChurchUser) => {
@@ -174,6 +179,10 @@ const ChurchUserList = ({ isManager = false }: UserListProps) => {
   };
 
   const props = {
+    row: {
+      permissionActive,
+      onChangePermissionActive,
+    },
     list: {
       loadUsers,
       onClickUserItem,
@@ -182,13 +191,10 @@ const ChurchUserList = ({ isManager = false }: UserListProps) => {
       isManager,
       isLoading,
       isChurchUserInformationShown,
-      isPopupShown,
       onClickCloseInformation,
-      onClickConfirmOpen,
-      onClickConfirmClose,
       onClickDelete,
     },
-  };
+  } as UserListViewProps;
 
   return (
     <>

@@ -1,18 +1,19 @@
 import styled from 'styled-components';
 import { GRAY, GREEN, LOCALE, MAIN, WHITE } from '@mokjang/constants';
 import React from 'react';
-import { MainText, RadioButton, SvgIcon } from '@mokjang/components';
 import {
-  PAYMENT_CYCLE,
-  SubscriptionPlan,
-} from '@/models/subscription/subscription';
+  MainText,
+  RadioButton,
+  SvgIcon,
+} from '../../../../../../packages/components/src';
+import { BILLING_CYCLE, Plan } from '@/models/subscription/subscription';
 import { useScopedI18n } from '../../../../locales/client';
 import { usePathname } from 'next/navigation';
 
-import { getTranslatedMemberCount } from '@mokjang/utils';
+import { getTranslatedMemberCount } from '../../../../../../packages/utils/src';
 import { getTranslatedMaxRegisterMember } from '@/utils/translate';
 
-import Check from '../../../../public/svg/check.svg';
+import { Svg } from '@mokjang/assets';
 import {
   getTranslatedMonthlySubscriptionPriceComponent,
   getTranslatedYearlySubscriptionPriceComponent,
@@ -61,10 +62,10 @@ const FunctionItem = styled.div`
 `;
 
 export type SubscriptionItemViewProps = {
-  item: SubscriptionPlan;
+  item: Plan;
   isSelected: boolean;
-  onClick: (plan: SubscriptionPlan) => void;
-  cycle: PAYMENT_CYCLE;
+  onClick: (plan: Plan) => void;
+  cycle: BILLING_CYCLE;
 };
 
 const SubscriptionItemView = ({
@@ -91,7 +92,7 @@ const SubscriptionItemView = ({
           {`${getTranslatedMemberCount(locale, min)} - ${getTranslatedMemberCount(locale, max)}`}
         </MainText>
         <MainText fontSize={24} fontWeight={700}>
-          {cycle === PAYMENT_CYCLE.MONTHLY
+          {cycle === BILLING_CYCLE.MONTHLY
             ? getTranslatedMonthlySubscriptionPriceComponent(locale, price)
             : getTranslatedYearlySubscriptionPriceComponent(
                 locale,
@@ -105,7 +106,12 @@ const SubscriptionItemView = ({
       <FunctionList>
         {functions.map((item) => (
           <FunctionItem key={item}>
-            <SvgIcon svg={Check} color={GREEN.DEFAULT} size={16} width={2} />
+            <SvgIcon
+              svg={Svg.Check}
+              color={GREEN.DEFAULT}
+              size={16}
+              width={2}
+            />
             <MainText color={GRAY.DARK}>{t_function(item)}</MainText>
           </FunctionItem>
         ))}

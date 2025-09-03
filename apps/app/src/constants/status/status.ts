@@ -11,6 +11,8 @@ export enum STATUS {
   PRESENT = 'present',
   ABSENT = 'absent',
   NONE = 'none',
+  ACTIVE = 'active',
+  INACTIVE = 'inactive',
 }
 
 export type TASK_STATUS =
@@ -35,3 +37,5 @@ export type EDUCATION_ATTENDANCE_STATUS =
   | STATUS.PRESENT
   | STATUS.ABSENT
   | STATUS.NONE;
+
+export type PERMISSION_ACTIVE = STATUS.ACTIVE | STATUS.INACTIVE;

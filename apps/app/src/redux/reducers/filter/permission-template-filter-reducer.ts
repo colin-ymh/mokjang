@@ -48,14 +48,6 @@ export const INITIAL_PERMISSION_TEMPLATE_TABLE_HEADER_LIST: PERMISSION_TEMPLATE_
       isFixed: true,
       isDate: false,
     },
-    {
-      id: PERMISSION_TEMPLATE.RANGE,
-      isShown: true,
-      isSortable: false,
-      isFilterable: false,
-      isFixed: true,
-      isDate: false,
-    },
   ];
 
 const initialState: PermissionTemplateFilterState = {

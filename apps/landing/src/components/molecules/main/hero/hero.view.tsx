@@ -2,8 +2,8 @@
 
 import styled from 'styled-components';
 import { useScopedI18n } from '../../../../../locales/client';
-import { Button, MainText } from '@mokjang/components';
-import { GRAY, GREEN, MAIN } from '@mokjang/constants';
+import { Button, MainText } from '../../../../../../../packages/components/src';
+import { GRAY, GREEN, MAIN } from '../../../../../../../packages/constants/src';
 
 import BackgroundImage from '../../../../../public/png/hero-background.png';
 import { useSelector } from 'react-redux';

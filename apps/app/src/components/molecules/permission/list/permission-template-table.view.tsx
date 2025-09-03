@@ -6,7 +6,7 @@ import { RootState } from '../../../../redux/store';
 import { GRAY, WHITE } from '../../../../constants/styles/color';
 import { PERMISSION_TEMPLATE } from '../../../../constants/column/permission-column';
 import { MainText } from '../../../atoms/common/text/main-text';
-import { BLANK, CHURCH_USER_ROLE } from '../../../../constants/constant';
+import { BLANK } from '../../../../constants/constant';
 import { PermissionTemplate } from '../../../../models/permission/permission';
 import useWindowSize from '../../../../hooks/window/window';
 import PermissionTemplateTableHeader from '../../../atoms/permission/list/permission-template-table-header';
@@ -18,9 +18,9 @@ import { getOwnerPermissionTemplate } from '../../../../utils/permission';
 const getColumnWidth = (id: string) => {
   switch (id) {
     case PERMISSION_TEMPLATE.TITLE:
-      return 500;
-    case PERMISSION_TEMPLATE.RANGE:
       return 300;
+    case PERMISSION_TEMPLATE.DESCRIPTION:
+      return 500;
     default:
       // 비고(REMARKS) 컬럼 등
       return 80;
@@ -32,7 +32,7 @@ const TableContainer = styled.div<{ height: number }>`
   /* 항상 가로 100%를 채움 */
   width: 100%;
   /* 세로 높이만큼 상하 스크롤 */
-  height: ${({ height }) => `${height - 260}px`};
+  height: ${({ height }) => `${height - 230}px`};
 
   /* 오버플로 시 스크롤 */
   overflow-x: auto;
@@ -40,6 +40,8 @@ const TableContainer = styled.div<{ height: number }>`
 
   display: flex;
   flex-direction: column;
+
+  background-color: ${WHITE};
 `;
 
 // 3. 테이블은 width: 100% + table-layout: fixed
@@ -75,7 +77,7 @@ const TableHeader = styled.th<{ id: string; $isLast?: boolean }>`
     left: 0;
     right: 0;
     height: 0.7px;
-    background: ${GRAY.SEMI_LIGHT};
+    background: ${GRAY.LIGHT};
   }
 `;
 
@@ -83,7 +85,7 @@ const TableHeader = styled.th<{ id: string; $isLast?: boolean }>`
 const PermissionTemplateTableRow = styled.tr`
   border-bottom: 1px solid ${GRAY.EXTRA_LIGHT};
   &:hover td {
-    background-color: ${GRAY.LIGHT};
+    background-color: ${GRAY.SUPER_LIGHT};
   }
 `;
 
@@ -112,21 +114,6 @@ const ContentWrapper = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-`;
-
-const StatusContainer = styled.div`
-  display: flex;
-  gap: 10px;
-  justify-content: flex-start;
-  align-items: center;
-`;
-
-const ColoredDot = styled.div<{ color: string }>`
-  display: flex;
-  width: 10px;
-  height: 10px;
-  border-radius: 100%;
-  background-color: ${({ color }) => color};
 `;
 
 type PermissionTemplateTableProps = {
@@ -170,12 +157,8 @@ const PermissionTemplateTableView = ({
     switch (id) {
       case PERMISSION_TEMPLATE.TITLE:
         return <MainText>{permissionTemplate?.title}</MainText>;
-      case PERMISSION_TEMPLATE.RANGE:
-        if (permissionTemplate.id === CHURCH_USER_ROLE.OWNER) {
-          return <MainText>{t('all')}</MainText>;
-        } else {
-          return <MainText>{'관리자 별 설정'}</MainText>;
-        }
+      case PERMISSION_TEMPLATE.DESCRIPTION:
+        return <MainText>{permissionTemplate?.title}</MainText>;
       case BLANK:
         return <div></div>;
       default:

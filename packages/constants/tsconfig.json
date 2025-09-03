@@ -1,9 +1,21 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "outDir": "dist",
+    "noEmit": false,
+
     "declaration": true,
-    "emitDeclarationOnly": false
+    "emitDeclarationOnly": true,
+
+    "rootDir": "src",
+    "outDir": "dist",
+
+    "typeRoots": ["../../types", "../../node_modules/@types"],
+
+    "jsx": "react-jsx"
   },
-  "include": ["src"]
+  "include": [
+    "src/**/*",
+    "../../types/**/*.d.ts"
+  ],
+  "exclude": ["dist", "node_modules"]
 }

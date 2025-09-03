@@ -24,3 +24,7 @@ export const usePageRouter = () => {
 
   return { push, replace };
 };
+
+export const routeLandingPage = (page: string) => {
+  window.location.href = `${process.env.NEXT_PUBLIC_LANDING_CLIENT_PROTOCOL}://${process.env.NEXT_PUBLIC_LANDING_CLIENT_HOST}:${process.env.NEXT_PUBLIC_LANDING_CLIENT_PORT}${page}`;
+};

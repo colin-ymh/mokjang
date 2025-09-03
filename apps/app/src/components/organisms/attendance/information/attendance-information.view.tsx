@@ -29,14 +29,14 @@ const AttendanceInformationContainer = styled.div`
 
 const TitleContainer = styled.div`
   display: flex;
-  padding: 0 20px;
+  padding: 0 40px;
 `;
 
 const ContentContainer = styled.div`
   display: flex;
   flex: 1;
   flex-direction: column;
-  padding: 0 20px;
+  padding: 0 40px;
   gap: 20px;
 `;
 

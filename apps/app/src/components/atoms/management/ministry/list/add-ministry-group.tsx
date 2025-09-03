@@ -1,16 +1,10 @@
 import React, { ChangeEvent, forwardRef } from 'react';
 import styled from 'styled-components';
 import MainInput from '../../../common/input/main-input';
-import {
-  BLACK,
-  GRAY,
-  MAIN,
-  WHITE,
-} from '../../../../../constants/styles/color';
+import { BLACK, GRAY, MAIN, WHITE } from '@mokjang/constants';
 import { getIsWellFormedTitle } from '../../../../../utils/check';
 
-import Check from '../../../../../../public/svg/check.svg';
-import Plus from '../../../../../../public/svg/plus.svg';
+import { Svg } from '@mokjang/assets';
 import { useScopedI18n } from '../../../../../../locales/client';
 
 const BackgroundContainer = styled.div<{ $isShown: boolean }>`
@@ -29,7 +23,7 @@ const AddMinistryGroupContainer = styled.div<{ $level: number }>`
   width: 100%;
 `;
 
-const PlusButton = styled(Plus)`
+const PlusButton = styled(Svg.Plus)`
   display: flex;
   width: 25px;
   height: 25px;
@@ -37,7 +31,7 @@ const PlusButton = styled(Plus)`
   stroke-width: 2px;
 `;
 
-const CheckButton = styled(Check)<{ $isEnabled: boolean }>`
+const CheckButton = styled(Svg.Check)<{ $isEnabled: boolean }>`
   display: block;
   width: 20px;
   height: 20px;

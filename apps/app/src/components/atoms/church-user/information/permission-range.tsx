@@ -7,9 +7,9 @@ import { Group } from '../../../../models/management/management';
 const PermissionRangeContainer = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 20px;
+  padding: 30px;
   width: 100%;
-  gap: 10px;
+  gap: 20px;
 `;
 
 const GroupContainer = styled.div`

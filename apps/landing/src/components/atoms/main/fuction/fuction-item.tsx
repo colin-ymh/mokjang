@@ -1,9 +1,12 @@
 import type { StaticImageData } from 'next/image';
 import Image from 'next/image';
 import styled from 'styled-components';
-import { GRAY, MAIN, WHITE } from '@mokjang/constants';
+import { GRAY, MAIN, WHITE } from '../../../../../../../packages/constants/src';
 import React from 'react';
-import { MainText, SvgIcon } from '@mokjang/components';
+import {
+  MainText,
+  SvgIcon,
+} from '../../../../../../../packages/components/src';
 
 const ItemContainer = styled.div`
   display: flex;

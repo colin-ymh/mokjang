@@ -5,22 +5,26 @@ import { MEDIA_MIN_WIDTH } from '../../../../constants/constant';
 import ChurchUserTable, {
   UserTableProps,
 } from '../../../molecules/church-user/list/church-user-table';
-import ChurchUserRow from '../../../molecules/church-user/list/church-user-row';
+import ChurchUserRow, {
+  ChurchUserRowProps,
+} from '../../../molecules/church-user/list/church-user-row';
 import SlidePopup from '../../../atoms/common/popup/slide-popup';
-import KebabDropdown from '../../../atoms/common/dropdown/kebab-dropdown';
-import ConfirmPopup from '../../../atoms/common/popup/error-popup';
-import TrashIcon from '../../../../../public/svg/trash.svg';
-import { BLACK, DESTRUCTIVE } from '../../../../constants/styles/color';
+import { BLACK, GRAY } from '../../../../constants/styles/color';
 import CancelIcon from '../../../../../public/svg/cancel.svg';
 import { useScopedI18n } from '../../../../../locales/client';
 import ChurchUserInformation from '../information/church-user-information';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
+import { MainText } from '@/components/atoms/common/text/main-text';
+import ProfileImage from '@/components/atoms/common/image/profile-image';
+import { getFormattedMobilePhone } from '@/utils/format';
 
 const UserListContainer = styled.div`
   display: flex;
   flex-direction: column;
   height: 100%;
-  width: 100%;
   overflow-y: auto;
+  padding: 20px;
 `;
 
 const MobileView = styled.div`
@@ -34,6 +38,7 @@ const MobileView = styled.div`
 const DesktopView = styled.div`
   display: none;
   justify-content: flex-start;
+  gap: 20px;
 
   @media (min-width: ${MEDIA_MIN_WIDTH.DESKTOP}) {
     display: flex;
@@ -41,24 +46,24 @@ const DesktopView = styled.div`
   }
 `;
 
-const ButtonRow = styled.div`
+const ProfileContainer = styled.div`
   display: flex;
   flex-direction: row;
-  gap: 5px;
-  justify-content: center;
+  gap: 20px;
+  padding: 20px;
   align-items: center;
+`;
+
+const TextContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 `;
 
 const ButtonContainer = styled.div`
   display: flex;
   cursor: pointer;
-`;
-
-const Trash = styled(TrashIcon)`
-  width: 25px;
-  height: 25px;
-  stroke: ${DESTRUCTIVE.LIGHT};
-  stroke-width: 1px;
+  padding-right: 20px;
 `;
 
 const Cancel = styled(CancelIcon)`
@@ -68,16 +73,21 @@ const Cancel = styled(CancelIcon)`
   stroke-width: 1px;
 `;
 
-type UserListViewProps = {
+const TableContainer = styled.div`
+  display: flex;
+  border: 1px solid ${GRAY.LIGHT};
+  border-radius: 10px;
+  overflow: hidden;
+`;
+
+export type UserListViewProps = {
+  row: ChurchUserRowProps;
   list: UserTableProps;
   information: {
     isManager: boolean;
     isLoading: boolean;
     isChurchUserInformationShown: boolean;
-    isPopupShown: boolean;
     onClickCloseInformation: () => void;
-    onClickConfirmOpen: () => void;
-    onClickConfirmClose: () => void;
     onClickDelete: () => void;
   };
 };
@@ -87,15 +97,16 @@ const ChurchUserListView = (props: UserListViewProps) => {
     isManager,
     isLoading,
     isChurchUserInformationShown,
-    isPopupShown,
     onClickCloseInformation,
-    onClickConfirmOpen,
-    onClickConfirmClose,
     onClickDelete,
   } = props.information;
 
   const t_popup = useScopedI18n('popup');
   const t_button = useScopedI18n('button');
+
+  const { targetChurchUser } = useSelector(
+    (state: RootState) => state.targetChurchUser
+  );
 
   return (
     <UserListContainer>
@@ -105,49 +116,43 @@ const ChurchUserListView = (props: UserListViewProps) => {
       {/*</MobileView>*/}
       {/* 데스크탑에서 보일 테이블형 UI */}
       <DesktopView>
-        <ChurchUserRow />
-        <ChurchUserTable {...props.list} />
+        <ChurchUserRow {...props.row} />
+        <TableContainer>
+          <ChurchUserTable {...props.list} />
+        </TableContainer>
       </DesktopView>
       {/* 회원 상세정보 팝업*/}
       <SlidePopup
         isShow={isChurchUserInformationShown}
-        onClickClose={onClickCloseInformation}
-        isFooterShown={false}
-        headerRight={
-          <ButtonRow>
-            <KebabDropdown
-              items={[
-                {
-                  value: 'delete',
-                  title: t_button('delete'),
-                  onClick: onClickConfirmOpen,
-                },
-              ]}
-              width={150}
+        headerLeft={
+          <ProfileContainer>
+            <ProfileImage
+              value={targetChurchUser.member.profileImageUrl}
+              width={60}
+              height={60}
             />
-            <ButtonContainer onClick={onClickCloseInformation}>
-              <Cancel />
-            </ButtonContainer>
-          </ButtonRow>
+            <TextContainer>
+              <MainText fontWeight={700} fontSize={20}>
+                {targetChurchUser.user.name}
+              </MainText>
+              <MainText fontWeight={400} fontSize={14} color={GRAY.DARK}>
+                {getFormattedMobilePhone(targetChurchUser.user.mobilePhone)}
+              </MainText>
+            </TextContainer>
+          </ProfileContainer>
         }
+        headerRight={
+          <ButtonContainer onClick={onClickCloseInformation}>
+            <Cancel />
+          </ButtonContainer>
+        }
+        headerHeight={150}
+        onClickClose={onClickCloseInformation}
       >
-        <>
-          {/* 삭제 확인 팝업 */}
-          <ConfirmPopup
-            title={t_popup('deleteChurchUserTitle')}
-            body={t_popup('deleteChurchUserBody')}
-            buttonNum={2}
-            isShow={isPopupShown}
-            onClickLeftButton={onClickConfirmClose}
-            onClickRightButton={() => {
-              onClickDelete();
-              onClickConfirmClose();
-            }}
-            leftButtonText={t_button('cancel')}
-            rightButtonText={t_button('delete')}
-          />
-          <ChurchUserInformation isManager={isManager} />
-        </>
+        <ChurchUserInformation
+          isManager={isManager}
+          onClickDelete={onClickDelete}
+        />
       </SlidePopup>
       <Loading isShow={isLoading} />
     </UserListContainer>

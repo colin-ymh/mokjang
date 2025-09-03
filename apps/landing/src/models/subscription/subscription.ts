@@ -1,3 +1,5 @@
+import { BLANK } from '@mokjang/app/src/constants/constant';
+
 export enum PLAN {
   FREE_TRIAL = 'freeTrial',
   BASIC = 'basic',
@@ -7,7 +9,15 @@ export enum PLAN {
   ENTERPRISE = 'enterprise',
 }
 
-export enum PAYMENT_CYCLE {
+export enum PLAN_STATUS {
+  FREE_TRIAL = 'freeTrial',
+  PENDING = 'pending',
+  ACTIVE = 'active',
+  CANCELLED = 'cancelled',
+  EXPIRED = 'expired',
+}
+
+export enum BILLING_CYCLE {
   MONTHLY = 'monthly',
   YEARLY = 'yearly',
 }
@@ -20,7 +30,7 @@ export enum PLAN_FUNCTION {
   TASK = 'task',
 }
 
-export type SubscriptionPlan = {
+export type Plan = {
   id: PLAN;
   min: number;
   max: number;
@@ -28,7 +38,7 @@ export type SubscriptionPlan = {
   functions: PLAN_FUNCTION[];
 };
 
-export const PlanList: SubscriptionPlan[] = [
+export const PlanList: Plan[] = [
   {
     id: PLAN.BASIC,
     min: 100,
@@ -58,3 +68,43 @@ export const PlanList: SubscriptionPlan[] = [
     functions: Object.values(PLAN_FUNCTION),
   },
 ];
+
+export type encData = {
+  cardNo: string;
+  expYear: string;
+  expMonth: string;
+  idNo: string;
+  cardPw: string;
+};
+
+export const DEFAULT_ENC_DATA = {
+  cardNo: BLANK,
+  expYear: BLANK,
+  expMonth: BLANK,
+  idNo: BLANK,
+  cardPw: BLANK,
+};
+
+export type SubscriptionPlan = {
+  id: string;
+  isCurrent: boolean;
+  userId: string;
+  currentPlan?: PLAN;
+  status?: PLAN_STATUS;
+  currentPeriodStart?: string;
+  currentPeriodEnd?: string;
+  billingCycle?: BILLING_CYCLE;
+  nextBillingDate?: string;
+  amount?: number;
+  autoRenew?: boolean;
+  isFreeTrial?: boolean;
+  trialEndsAt?: string;
+  maxMembers?: number;
+  bid?: string;
+};
+
+export const DEFAULT_SUBSCRIPTION_PLAN: SubscriptionPlan = {
+  id: BLANK,
+  isCurrent: false,
+  userId: BLANK,
+};

@@ -1,5 +1,5 @@
-import { GRAY, LOCALE, MAIN } from '@mokjang/constants';
-import { MainText } from '@mokjang/components';
+import { GRAY, LOCALE, MAIN } from '../../../../../packages/constants/src';
+import { MainText } from '../../../../../packages/components/src';
 import styled from 'styled-components';
 
 const PriceContainer = styled.div`

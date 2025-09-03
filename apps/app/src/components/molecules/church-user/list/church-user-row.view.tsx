@@ -1,22 +1,14 @@
-import { ChangeEvent, Ref } from 'react';
 import styled from 'styled-components';
-import { USER } from '../../../../constants/column/user-column';
 
-import { useUserSearchFilterDropdownItems } from '../../../../hooks/dropdown/dropdown-items';
-import useWindowSize from '../../../../hooks/window/window';
-import ChurchUserFilteredItem, {
-  UserFilteredItemType,
-} from '../../../atoms/church-user/list/church-user-filtered-item';
-import SearchInput from '../../../atoms/common/input/search-input';
+import { usePermissionActiveDropdownItems } from '../../../../hooks/dropdown/dropdown-items';
+import { PERMISSION_ACTIVE } from '@/constants/status/status';
+import Dropdown from '@/components/atoms/common/dropdown/dropdown';
 
 const UserContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   width: 100%;
-  height: 100px;
-  flex-shrink: 0;
-  position: relative;
 `;
 
 const RowTop = styled.div`
@@ -26,118 +18,26 @@ const RowTop = styled.div`
   flex-shrink: 0;
 `;
 
-const RowBottom = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  flex-shrink: 0;
-  padding: 10px 20px;
-`;
-
-const FilterList = styled.div`
-  display: flex;
-  width: 100%;
-`;
-
-const ButtonContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 10px 10px 10px 20px;
-  position: relative;
-`;
-
-const FilteredItemList = styled.div<{ $width: number }>`
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: center;
-  gap: 5px;
-  padding: 10px 0;
-  width: ${({ $width }) => $width}px;
-  overflow-x: scroll;
-`;
-
-const SearchContainer = styled.div`
-  display: flex;
-  padding: 10px;
-  flex-direction: row;
-  justify-content: flex-end;
-  align-items: center;
-  gap: 10px;
-  right: 20px;
-  position: absolute;
-`;
-
-const AddFilterContainer = styled.div<{ $isShown: boolean }>`
-  display: ${({ $isShown }) => ($isShown ? 'flex' : 'none')};
-  position: absolute;
-
-  z-index: 60;
-  background-color: white;
-  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.3);
-  border-radius: 5px;
-
-  top: 50px;
-  left: 10px;
-`;
-
-export type USER_SEARCH_FILTER = USER.NAME;
-
-type UserViewProps = {
-  searchFilter: USER_SEARCH_FILTER;
-  searchValue: string;
-  searchRef: Ref<HTMLInputElement>;
-  filteredItems: UserFilteredItemType[];
-  onClickSearchFilterItem: (value: USER_SEARCH_FILTER) => void;
-  onChangeSearchValue: (event: ChangeEvent<HTMLInputElement>) => void;
-  onClickSearch: () => void;
-  onKeyDown: (event: React.KeyboardEvent<HTMLInputElement>) => void;
+export type ChurchUserRowViewProps = {
+  permissionActive: PERMISSION_ACTIVE | undefined;
+  onChangePermissionActive: (value: PERMISSION_ACTIVE | undefined) => void;
 };
 
 const ChurchUserRowView = ({
-  searchFilter,
-  searchValue,
-  searchRef,
-  filteredItems,
-  onClickSearchFilterItem,
-  onChangeSearchValue,
-  onClickSearch,
-  onKeyDown,
-}: UserViewProps) => {
-  const { width } = useWindowSize();
-
-  const searchFilterDropdownItems = useUserSearchFilterDropdownItems();
+  permissionActive,
+  onChangePermissionActive,
+}: ChurchUserRowViewProps) => {
+  const dropdownItems = usePermissionActiveDropdownItems();
 
   return (
     <UserContainer>
       <RowTop>
-        <FilterList>
-          <ButtonContainer></ButtonContainer>
-          {/* 필터 설정된 값들 */}
-          <FilteredItemList $width={width - 650}>
-            {filteredItems.map((item) => (
-              <ChurchUserFilteredItem
-                key={`${item.title}-${item.value?.join?.('-') ?? ''}`}
-                item={item}
-              />
-            ))}
-          </FilteredItemList>
-        </FilterList>
-        {/* 검색 부분 */}
-        <SearchContainer>
-          <SearchInput
-            searchRef={searchRef}
-            // searchFilter={searchFilter}
-            // searchFilterDropdownItems={searchFilterDropdownItems}
-            // onClickSearchFilterItem={onClickSearchFilterItem}
-
-            searchValue={searchValue}
-            onChangeSearchValue={onChangeSearchValue}
-            onKeyDown={onKeyDown}
-            onClickSearch={onClickSearch}
-          />
-        </SearchContainer>
+        <Dropdown
+          value={permissionActive}
+          items={dropdownItems}
+          onChangeItem={onChangePermissionActive}
+          width={100}
+        />
       </RowTop>
     </UserContainer>
   );

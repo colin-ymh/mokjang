@@ -1,8 +1,14 @@
 import styled from 'styled-components';
 
-import { Check } from '@mokjang/assets';
-import { MainText, SvgIcon } from '@mokjang/components';
-import { BLACK, GRAY, GREEN, MAIN, WHITE } from '@mokjang/constants';
+import { Svg } from '@mokjang/assets';
+import { MainText, SvgIcon } from '../../../../../../packages/components/src';
+import {
+  BLACK,
+  GRAY,
+  GREEN,
+  MAIN,
+  WHITE,
+} from '../../../../../../packages/constants/src';
 import { useScopedI18n } from '../../../../locales/client';
 import ArrowRight from '../../../../public/svg/arrow-right.svg';
 
@@ -77,7 +83,12 @@ const RegisterCompleteView = ({
       <Container>
         <HeaderContainer>
           <IconContainer>
-            <SvgIcon svg={Check} color={GREEN.DEFAULT} width={3} size={25} />
+            <SvgIcon
+              svg={Svg.Check}
+              color={GREEN.DEFAULT}
+              width={3}
+              size={25}
+            />
           </IconContainer>
           <MainText fontSize={24} fontWeight={700}>
             {t_register('title')}

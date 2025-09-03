@@ -15,6 +15,7 @@ const WarningContainer = styled.div`
   background-color: ${DESTRUCTIVE.EXTRA_LIGHT};
   border: 1px solid ${DESTRUCTIVE.LIGHT};
   flex-direction: row;
+  width: 100%;
 `;
 
 const IconContainer = styled.div`

@@ -34,7 +34,7 @@ import {
 import { MainText } from '../../../atoms/common/text/main-text';
 import { SIZE } from '../../../../constants/styles/style';
 import { getTranslatedDateFromDateString } from '../../../../utils/translate';
-import { getTranslatedMemberCount } from '@mokjang/utils';
+import { getTranslatedMemberCount } from '../../../../../../../packages/utils/src';
 import { usePathname } from 'next/navigation';
 import { LOCALE } from '../../../../constants/state/locale';
 import ChevronLeft from '../../../../../public/svg/chevron-down.svg';

@@ -1,25 +1,23 @@
 import React, { MutableRefObject } from 'react';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../../redux/store';
+import { RootState } from '@/redux/store';
 
-import { GRAY, WHITE } from '../../../constants/styles/color';
-import { VISITATION } from '../../../constants/column/visitation-column';
+import { BLANK, GRAY, WHITE } from '../../../../../../packages/constants/src';
+import { VISITATION } from '@/constants/column/visitation-column';
 import { MainText } from '../../atoms/common/text/main-text';
-import { BLANK } from '../../../constants/constant';
-import { Visitation } from '../../../models/visitation/visitation';
+import { Visitation } from '@/models/visitation/visitation';
 import useWindowSize from '../../../hooks/window/window';
 import VisitationTableHeader from '../../atoms/visitation/visitation-table-header';
-import { BLANK_HEADER } from '../../../redux/reducers/filter/member-filter-reducer';
+import { BLANK_HEADER } from '@/redux/reducers/filter/member-filter-reducer';
 import { useI18n } from '../../../../locales/client';
-import { getFormattedDate } from '../../../utils/format';
-import {
-  getStatusBackgroundColor,
-  getStatusFontColor,
-} from '../../../utils/color';
+import { getStatusBackgroundColor, getStatusFontColor } from '@/utils/color';
 import MemberProfile from '../../atoms/member/member-profile';
-import MainTag from '../../atoms/common/tag/main-tag';
-import { STATUS } from '../../../constants/status/status';
+import { MainTag } from '../../../../../../packages/components/src';
+import { STATUS } from '@/constants/status/status';
+import { usePathname } from 'next/navigation';
+import { LOCALE } from '@/constants/state/locale';
+import { getTranslatedDateFromDateString } from '@/utils/translate';
 
 // 1. 컬럼별 PX 폭
 const getColumnWidth = (id: string) => {
@@ -27,11 +25,11 @@ const getColumnWidth = (id: string) => {
     case VISITATION.TITLE:
       return 200;
     case VISITATION.VISITED:
-      return 200;
+      return 250;
     case VISITATION.STATUS:
       return 150;
     case VISITATION.DATE:
-      return 200;
+      return 250;
     case VISITATION.IN_CHARGE:
       return 150;
     default:
@@ -71,7 +69,9 @@ const TableHeader = styled.th<{
   id: string;
   $isLast?: boolean;
 }>`
-  padding: 20px 10px;
+  padding: 0 25px;
+  height: 50px;
+  flex-shrink: 0;
   background-color: ${WHITE};
   position: sticky;
   top: 0;
@@ -100,12 +100,14 @@ const TableHeader = styled.th<{
 const VisitationTableRow = styled.tr`
   border-bottom: 1px solid ${GRAY.LIGHT};
   &:hover td {
-    background-color: ${GRAY.LIGHT};
+    background-color: ${GRAY.SUPER_LIGHT};
   }
 `;
 
 const TableData = styled.td<{ id: string; $index: number; $isLast?: boolean }>`
-  padding: 10px;
+  padding: 0 25px;
+  height: 60px;
+  flex-shrink: 0;
 
   cursor: pointer;
 
@@ -157,6 +159,9 @@ const VisitationTableView = ({
   const t = useI18n();
   const { height } = useWindowSize();
 
+  const pathname = usePathname();
+  const locale = pathname.split('/')[1] as LOCALE;
+
   const visitationTableHeaderItemList = useSelector(
     (state: RootState) => state.visitationFilter.visitationTableHeaderItemList
   );
@@ -171,12 +176,17 @@ const VisitationTableView = ({
   const getVisitationTableContent = (id: string, visitation: Visitation) => {
     switch (id) {
       case VISITATION.TITLE:
-        return <MainText>{visitation?.title}</MainText>;
+        return <MainText fontWeight={500}>{visitation?.title}</MainText>;
       case VISITATION.VISITED:
         return (
           <MembersContainer>
             {visitation.members?.map((member) => (
-              <MemberProfile key={member.id} member={member} />
+              <MemberProfile
+                key={member.id}
+                member={member}
+                width={30}
+                height={30}
+              />
             ))}
           </MembersContainer>
         );
@@ -194,12 +204,20 @@ const VisitationTableView = ({
         return (
           <MainText>
             {`${
-              visitation.startDate && getFormattedDate(visitation.startDate)
-            } - ${visitation.endDate && getFormattedDate(visitation.endDate)}`}
+              visitation.startDate &&
+              getTranslatedDateFromDateString(locale, visitation.startDate)
+            } - ${visitation.endDate && getTranslatedDateFromDateString(locale, visitation.endDate)}`}
           </MainText>
         );
       case VISITATION.IN_CHARGE:
-        return <MemberProfile member={visitation.inCharge} />;
+        return (
+          <MemberProfile
+            member={visitation.inCharge}
+            width={30}
+            height={30}
+            isProfileImageShown={false}
+          />
+        );
       case BLANK:
         return <div></div>;
       default:

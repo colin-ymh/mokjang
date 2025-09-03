@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { useParams } from 'next/navigation';
 
-import { GRAY, MAIN } from '../../../../../../constants/styles/color';
+import { GRAY, MAIN, WHITE } from '../../../../../../constants/styles/color';
 import { MainText } from '../../../../../atoms/common/text/main-text';
 import HeaderBar from '../../../../../atoms/layout/header/header-bar';
 import { SIZE } from '../../../../../../constants/styles/style';
@@ -11,9 +11,13 @@ import { useMainVisitationHeaderBarItems } from '../../../../../../hooks/layout/
 import { useScopedI18n } from '../../../../../../../locales/client';
 import AddVisitation from '../../../../../organisms/visitation/add/add-visitation';
 import { MEDIA_MIN_WIDTH } from '../../../../../../constants/constant';
-import Button from '../../../../../atoms/common/button/button';
+import {
+  Button,
+  SvgIcon,
+} from '../../../../../../../../../packages/components/src';
 import { MAIN_HEADER_ID } from '../../../../../../constants/layout/header';
 import WrappedPagePopup from '../../../../../atoms/common/popup/wrapped-page-popup';
+import { Svg } from '@mokjang/assets';
 
 const HeaderContainer = styled.div`
   display: flex;
@@ -88,8 +92,11 @@ const MainVisitationHeaderView = ({
           <Button
             text={t_button('addVisitation')}
             onClick={onClickAddVisitation}
-            width={100}
-            height={30}
+            width={'auto'}
+            fontWeight={500}
+            fontSize={16}
+            height={35}
+            icon={<SvgIcon svg={Svg.Plus} color={WHITE} width={2} size={18} />}
           />
         </HeaderTopContainer>
         <HeaderBottomContainer>

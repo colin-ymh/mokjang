@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { TEST_SERVER_URL } from '@mokjang/constants';
+import { TEST_SERVER_URL } from '../../../../packages/constants/src';
 
 const authorizeAxios = axios.create({
   baseURL: TEST_SERVER_URL,

@@ -1,17 +1,22 @@
 import styled from 'styled-components';
-import { GRAY, LOCALE, MAIN, WHITE } from '@mokjang/constants';
+import {
+  GRAY,
+  LOCALE,
+  MAIN,
+  WHITE,
+} from '../../../../../../packages/constants/src';
 import {
   Button,
   MainText,
   SvgIcon,
   ToggleRadioButton,
-} from '@mokjang/components';
+} from '../../../../../../packages/components/src';
 import { useI18n, useScopedI18n } from '../../../../locales/client';
 import { usePathname } from 'next/navigation';
 import {
-  PAYMENT_CYCLE,
+  BILLING_CYCLE,
+  Plan,
   PlanList,
-  SubscriptionPlan,
 } from '@/models/subscription/subscription';
 import SubscriptionItem from '@/components/atoms/subscription/subscription-item';
 import { getYearlyPrice } from '@/utils/price';
@@ -98,10 +103,10 @@ const RowContainer = styled.div`
 `;
 
 export type SubscriptionViewProps = {
-  selectedCycle: PAYMENT_CYCLE;
-  selectedPlan: SubscriptionPlan;
-  onClickCycle: (cycle: PAYMENT_CYCLE) => void;
-  onClickPlan: (plan: SubscriptionPlan) => void;
+  selectedCycle: BILLING_CYCLE;
+  selectedPlan: Plan;
+  onClickCycle: (cycle: BILLING_CYCLE) => void;
+  onClickPlan: (plan: Plan) => void;
   onClickProceed: () => void;
 };
 
@@ -113,6 +118,7 @@ const SubscriptionView = ({
   onClickProceed,
 }: SubscriptionViewProps) => {
   const pathname = usePathname();
+
   const locale = pathname.split('/')[1] as LOCALE;
 
   const t = useI18n();
@@ -120,7 +126,7 @@ const SubscriptionView = ({
   const t_cycle = useScopedI18n('subscription.cycle');
   const t_payment = useScopedI18n('payment');
 
-  const cycleItems = Object.values(PAYMENT_CYCLE).map((item) => {
+  const cycleItems = Object.values(BILLING_CYCLE).map((item) => {
     return {
       value: item,
       title: t_cycle(item),
@@ -178,7 +184,7 @@ const SubscriptionView = ({
                     {t_subscription(selectedPlan.id)}
                   </MainText>
                   <MainText fontSize={30} fontWeight={700} color={MAIN.DEFAULT}>
-                    {selectedCycle === PAYMENT_CYCLE.MONTHLY
+                    {selectedCycle === BILLING_CYCLE.MONTHLY
                       ? getTranslatedMonthlySubscriptionPrice(
                           locale,
                           selectedPlan.price

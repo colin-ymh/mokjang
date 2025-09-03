@@ -4,6 +4,20 @@ import { MAIN_CONTENT_ID } from '@/constants/constant';
 import { usePageRouter } from '@mokjang/app/src/utils/router';
 import { usePathname } from 'next/navigation';
 import { AuthApi } from '@/api/auth/auth.api';
+import {
+  setIsToastShown,
+  setToastBackgroundColor,
+  setToastText,
+} from '@mokjang/app/src/redux/reducers/toast-popup-reducer';
+import { DESTRUCTIVE } from '@mokjang/app/src/constants/styles/color';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '@/redux/store';
+import { SubscriptionApi } from '@/api/subscription/subscription.api';
+import {
+  DEFAULT_SUBSCRIPTION_PLAN,
+  SubscriptionPlan,
+} from '@/models/subscription/subscription';
+import { setCurrentSubscription } from '@/redux/reducers/subscription-reducer';
 
 type HeaderProps = {};
 
@@ -14,10 +28,14 @@ const MAIN_Y_OFFSET = {
 };
 
 const Header = ({}: HeaderProps) => {
+  const dispatch = useDispatch<AppDispatch>();
+
   const pathname = usePathname();
   const content = pathname.split('/')[2];
 
   const router = usePageRouter();
+
+  const subscriptionApi = new SubscriptionApi(false);
 
   const [focusedContent, setFocusedContent] = useState<
     MAIN_CONTENT_ID | undefined
@@ -25,6 +43,12 @@ const Header = ({}: HeaderProps) => {
 
   const [isAutoScrolling, setIsAutoScrolling] = useState(false);
   const [targetY, setTargetY] = useState<number | null>(null);
+
+  const [thrownError, setThrownError] = useState<Error | null>(null);
+  // 렌더링 시점(컴포넌트 return)에서 조건부로 에러 발생
+  if (thrownError) {
+    throw thrownError;
+  }
 
   const onClickLogo = () => {
     router.push('/');
@@ -117,6 +141,38 @@ const Header = ({}: HeaderProps) => {
   const onClickContact = () => {
     router.push('/contact');
   };
+
+  const onClickFreeTrial = async () => {
+    try {
+      await subscriptionApi.getFreeTrial();
+    } catch (error) {
+      if (error instanceof Error) {
+        dispatch(setToastText(error.message));
+        dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
+        dispatch(setIsToastShown(true));
+      } else {
+        setThrownError(new Error(String(error)));
+      }
+    }
+  };
+
+  const fetchCurrentSubscription = async () => {
+    // 구독 정보 있음
+    try {
+      const response = await subscriptionApi.getCurrentSubscription();
+      const currentSubscription: SubscriptionPlan = response.data;
+
+      dispatch(setCurrentSubscription(currentSubscription));
+    } catch (error) {
+      // 현재 구독 정보 없음
+      dispatch(setCurrentSubscription(DEFAULT_SUBSCRIPTION_PLAN));
+    }
+  };
+
+  useEffect(() => {
+    fetchCurrentSubscription();
+  }, []);
+
   const props = {
     focusedContent,
     onClickLogo,
@@ -124,6 +180,7 @@ const Header = ({}: HeaderProps) => {
     onClickLogin,
     onClickContact,
     onClickLogout,
+    onClickFreeTrial,
   } as HeaderViewProps;
 
   return (

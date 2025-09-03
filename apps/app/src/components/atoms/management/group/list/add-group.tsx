@@ -1,15 +1,10 @@
 import React, { ChangeEvent, forwardRef } from 'react';
 import styled from 'styled-components';
 import MainInput from '../../../common/input/main-input';
-import {
-  BLACK,
-  GRAY,
-  MAIN,
-  WHITE,
-} from '../../../../../constants/styles/color';
+import { BLACK, GRAY, MAIN, WHITE, } from '../../../../../constants/styles/color';
 import { getIsWellFormedTitle } from '../../../../../utils/check';
 
-import Check from '../../../../../../public/svg/check.svg';
+import { Svg } from '@mokjang/assets';
 import Plus from '../../../../../../public/svg/plus.svg';
 import { useScopedI18n } from '../../../../../../locales/client';
 
@@ -37,7 +32,7 @@ const PlusButton = styled(Plus)`
   stroke-width: 2px;
 `;
 
-const CheckButton = styled(Check)<{ $isEnabled: boolean }>`
+const CheckButton = styled(Svg.Check)<{ $isEnabled: boolean }>`
   display: block;
   width: 20px;
   height: 20px;

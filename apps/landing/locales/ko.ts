@@ -13,6 +13,17 @@ export default {
   paymentDay: '결제일',
   nextPaymentDay: '다음 결제일',
 
+  'card.title': '카드 등록',
+  'card.cardNo.title': '카드 번호',
+  'card.cardNo.placeholder': '0000',
+  'card.exp.title': '유효 기간',
+  'card.exp.placeholder': 'MM/YY',
+  'card.idNo.title': '생년월일',
+  'card.idNo.placeholder': 'YYMMDD(6자리)',
+  'card.cardPw.title': '카드 비밀번호',
+  'card.cardPw.placeholder': '비밀번호 앞 2자리',
+  'card.consent': '결제사 정보 제공에 동의합니다.',
+
   'main.function.title': '교회 관리의 새로운 기준',
   'main.function.description':
     '목장은 교회의 모든 관리 업무를 하나의 시스템으로 통합하여 효율성을 극대화합니다.',
@@ -24,6 +35,7 @@ export default {
   'main.faq.description': '목장 서비스에 대해 궁금한 점들을 모았습니다.',
   'main.faq.extra': '더 궁금한 점이 있으신가요?',
 
+  'button.cancel': '취소',
   'button.function': '기능',
   'button.price': '가격정책',
   'button.faq': 'FAQ',

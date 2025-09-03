@@ -8,7 +8,6 @@ import { PermissionsApi } from '../../../../../../api/permissions/permissions.ap
 import { DEFAULT_PERMISSION_TEMPLATE } from '../../../../../../models/permission/permission';
 import { getIsWellFormedTitle } from '../../../../../../utils/check';
 import { setTargetPermissionTemplate } from '../../../../../../redux/reducers/target/target-permission-template-reducer';
-import { setPermissionTemplates } from '../../../../../../redux/reducers/filter/permission-template-filter-reducer';
 
 type ManagementPermissionHeaderProps = {};
 
@@ -46,7 +45,7 @@ const ManagementPermissionHeader = ({}: ManagementPermissionHeaderProps) => {
     dispatch(
       setTargetPermissionTemplate({
         ...DEFAULT_PERMISSION_TEMPLATE,
-        id: 'TEMP',
+        // id: 'TEMP',
       })
     );
   };
@@ -58,32 +57,31 @@ const ManagementPermissionHeader = ({}: ManagementPermissionHeaderProps) => {
 
   const onClickSavePermissionTemplate = async () => {
     try {
-      await permissionsApi
-        .createPermissionTemplate(
-          { churchId },
-          {
-            title: targetPermissionTemplate.title,
-            unitIds: targetPermissionTemplate.unitIds,
-          }
-        )
-        .then((response) => {
-          const tempPermissionTemplate = response.data.data;
-
-          permissionsApi
-            .getPermissionTemplate({
-              churchId,
-              templateId: tempPermissionTemplate.id,
-            })
-            .then((response) => {
-              const newPermissionTemplate = response.data.data;
-
-              const newPermissionTemplates = [
-                ...permissionTemplates,
-                newPermissionTemplate,
-              ];
-              dispatch(setPermissionTemplates(newPermissionTemplates));
-            });
-        });
+      await permissionsApi.createPermissionTemplate(
+        { churchId },
+        {
+          title: targetPermissionTemplate.title,
+          unitIds: targetPermissionTemplate.unitIds,
+        }
+      );
+      // .then((response) => {
+      //   const tempPermissionTemplate = response.data.data;
+      //
+      //   permissionsApi
+      //     .getPermissionTemplate({
+      //       churchId,
+      //       templateId: tempPermissionTemplate.id,
+      //     })
+      //     .then((response) => {
+      //       const newPermissionTemplate = response.data.data;
+      //
+      //       const newPermissionTemplates = [
+      //         ...permissionTemplates,
+      //         newPermissionTemplate,
+      //       ];
+      //       dispatch(setPermissionTemplates(newPermissionTemplates));
+      //     });
+      // });
       setIsAddPermissionTemplateOpened(false);
       dispatch(setTargetPermissionTemplate(DEFAULT_PERMISSION_TEMPLATE));
     } catch (error) {

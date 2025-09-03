@@ -46,6 +46,7 @@ const TitleContainer = styled.div`
   flex-direction: row;
   gap: 10px;
   align-items: center;
+  width: 100px;
 `;
 
 const RowContainer = styled.div`
@@ -118,8 +119,8 @@ const VisitationInformationView = ({
         {/* 담당자 */}
         <RowContainer>
           <TitleContainer>
-            <SvgIcon svg={User} color={GRAY.DARK} />
-            <MainText color={GRAY.DARK}>{t('inCharge')}</MainText>
+            <SvgIcon svg={User} color={GRAY.EXTRA_DARK} />
+            <MainText color={GRAY.EXTRA_DARK}>{t('inCharge')}</MainText>
           </TitleContainer>
           <MemberProfilePopupButton
             key={targetVisitation.inCharge.id}
@@ -130,8 +131,8 @@ const VisitationInformationView = ({
         {/* 일정 */}
         <RowContainer>
           <TitleContainer>
-            <SvgIcon svg={Calendar} color={GRAY.DARK} />
-            <MainText color={GRAY.DARK}>{t('schedule')}</MainText>
+            <SvgIcon svg={Calendar} color={GRAY.EXTRA_DARK} />
+            <MainText color={GRAY.EXTRA_DARK}>{t('schedule')}</MainText>
           </TitleContainer>
           {/* 일자 */}
           <PeriodContainer>
@@ -154,23 +155,23 @@ const VisitationInformationView = ({
         </RowContainer>
 
         {/* 심방대상자 */}
-        <ColumnContainer>
+        <RowContainer>
           <TitleContainer>
-            <SvgIcon svg={Users} color={GRAY.DARK} />
-            <MainText color={GRAY.DARK}>{t('visitedMember')}</MainText>
+            <SvgIcon svg={Users} color={GRAY.EXTRA_DARK} />
+            <MainText color={GRAY.EXTRA_DARK}>{t('visitedMember')}</MainText>
           </TitleContainer>
           <MemberList>
             {targetVisitation.members.map((member) => (
               <MemberProfilePopupButton key={member.id} member={member} />
             ))}
           </MemberList>
-        </ColumnContainer>
+        </RowContainer>
 
         {/* 보고대상자 */}
         <ColumnContainer>
           <TitleContainer>
-            <SvgIcon svg={Users} color={GRAY.DARK} />
-            <MainText color={GRAY.DARK}>{t('receiver')}</MainText>
+            <SvgIcon svg={Users} color={GRAY.EXTRA_DARK} />
+            <MainText color={GRAY.EXTRA_DARK}>{t('receiver')}</MainText>
           </TitleContainer>
           <MemberList>
             {targetVisitation?.reports?.map((report) => (
@@ -186,26 +187,32 @@ const VisitationInformationView = ({
         {/* 업무내용 */}
         <ColumnContainer>
           <TitleContainer>
-            <SvgIcon svg={Book} color={GRAY.DARK} />
-            <MainText color={GRAY.DARK}>{t('visitationContent')}</MainText>
+            <SvgIcon svg={Book} color={GRAY.EXTRA_DARK} size={16} />
+            <MainText color={GRAY.EXTRA_DARK} fontSize={16}>
+              {t('visitationContent')}
+            </MainText>
           </TitleContainer>
           <MainText
             dangerouslySetInnerHTML={{
               __html: targetVisitation.visitationDetails[0].visitationContent,
             }}
+            whiteSpace={'normal'}
           />
         </ColumnContainer>
         <RowLine />
         {/* 기도제목 */}
         <ColumnContainer>
           <TitleContainer>
-            <SvgIcon svg={Book} color={GRAY.DARK} />
-            <MainText color={GRAY.DARK}>{t('visitationPray')}</MainText>
+            <SvgIcon svg={Book} color={GRAY.EXTRA_DARK} size={16} />
+            <MainText color={GRAY.EXTRA_DARK} fontSize={16}>
+              {t('visitationPray')}
+            </MainText>
           </TitleContainer>
           <MainText
             dangerouslySetInnerHTML={{
               __html: targetVisitation.visitationDetails[0].visitationPray,
             }}
+            whiteSpace={'normal'}
           />
         </ColumnContainer>
       </ContentContainer>

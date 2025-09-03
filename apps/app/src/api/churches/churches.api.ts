@@ -11,7 +11,7 @@ type createChurchBody = {
   denomination: string;
   address: string;
   detailAddress: string;
-  memberSize: string;
+  pastor: string;
 };
 
 type getChurchParams = {

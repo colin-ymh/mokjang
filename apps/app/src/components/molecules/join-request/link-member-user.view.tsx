@@ -1,42 +1,50 @@
 import styled from 'styled-components';
-import React, { ChangeEvent, Ref } from 'react';
+import React, { ChangeEvent, Ref, RefObject } from 'react';
 import { Member } from '../../../models/member/member';
-import { useI18n, useScopedI18n } from '../../../../locales/client';
-import LinkMemberItem from '../../atoms/join-request/link-member-item';
-import SearchInput from '../../atoms/common/input/search-input';
-import Button from '../../atoms/common/button/button';
-import { MainText } from '../../atoms/common/text/main-text';
-import { GRAY, WHITE } from '../../../constants/styles/color';
-import { BLANK } from '../../../constants/constant';
+import { useI18n } from '../../../../locales/client';
+import {
+  BorderInput,
+  MainText,
+  SvgIcon,
+} from '../../../../../../packages/components/src';
+import { GRAY, MAIN } from '../../../../../../packages/constants/src';
+import MemberProfile from '@/components/atoms/member/member-profile';
+import AddMemberItem from '@/components/atoms/common/modal/add-member-item';
+import { Svg } from '@mokjang/assets';
 
 const LinkMemberUserViewContainer = styled.div`
   display: flex;
   flex-direction: column;
-
   width: 100%;
-  padding: 10px;
+  padding: 20px;
   overflow: hidden;
+  gap: 10px;
 `;
 
-const SearchContainer = styled.div`
+const MemberContainer = styled.div`
   display: flex;
+  flex-direction: column;
+  gap: 10px;
+`;
+
+const ProfileContainer = styled.div`
+  display: flex;
+  border: 1px solid ${MAIN.LIGHT};
+  background-color: ${MAIN.EXTRA_LIGHT};
+  border-radius: 10px;
+  padding: 10px;
 `;
 
 const MemberListContainer = styled.div`
   display: flex;
   flex-direction: column;
-  flex-grow: 1;
   overflow-y: auto;
 `;
 
-const BottomContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-`;
-
 type LinkMemberUserViewProps = {
+  prevMember?: Member;
   searchRef: Ref<HTMLInputElement>;
+  scrollRef: RefObject<HTMLDivElement>; // ✅ 스크롤 div에 연결
   selectedMember: Member;
   searchName: string;
   searchedMembers: Member[];
@@ -44,10 +52,13 @@ type LinkMemberUserViewProps = {
   onClickMember: (member: Member) => void;
   onClickSearch: () => void;
   onKeyDown: (event: React.KeyboardEvent<HTMLInputElement>) => void;
+  onScroll: (e: React.UIEvent<HTMLDivElement>) => void; // ✅ 스크롤 핸들러
 };
 
 const LinkMemberUserView = ({
   searchRef,
+  scrollRef,
+  prevMember,
   selectedMember,
   searchName,
   searchedMembers,
@@ -55,53 +66,54 @@ const LinkMemberUserView = ({
   onClickMember,
   onClickSearch,
   onKeyDown,
+  onScroll,
 }: LinkMemberUserViewProps) => {
   const t = useI18n();
-  const t_button = useScopedI18n('button');
+
+  const showMemberHeader = Boolean(selectedMember?.id || prevMember);
 
   return (
     <LinkMemberUserViewContainer>
+      {showMemberHeader && (
+        <MemberContainer>
+          <MainText fontSize={14} fontWeight={500} color={GRAY.DARK}>
+            {selectedMember?.id
+              ? t('selectedLinkedMember')
+              : t('currentLinkedMember')}
+          </MainText>
+          <ProfileContainer>
+            {selectedMember?.id ? (
+              <MemberProfile member={selectedMember} />
+            ) : (
+              prevMember && <MemberProfile member={prevMember} />
+            )}
+          </ProfileContainer>
+        </MemberContainer>
+      )}
+
       {/* 검색창 */}
-      <SearchContainer>
-        <SearchInput
-          searchRef={searchRef}
-          searchValue={searchName}
-          onChangeSearchValue={onChangeSearch}
-          placeholder={
-            selectedMember
-              ? `${selectedMember.name} ${selectedMember.officer?.name || BLANK}`
-              : t('placeholder.name')
-          }
-          onClickSearch={onClickSearch}
-          onKeyDown={onKeyDown}
-        />
-      </SearchContainer>
+      <BorderInput
+        ref={searchRef}
+        value={searchName}
+        onChange={onChangeSearch}
+        onKeyDown={onKeyDown}
+        height={40}
+        placeholder={t('placeholder.name')}
+        icon={<SvgIcon svg={Svg.Search} size={18} color={GRAY.DEFAULT} />}
+      />
+
       {/* 교인 목록 */}
-      <MemberListContainer>
-        {searchedMembers.map((member) => {
-          return (
-            <LinkMemberItem
-              key={member.id}
-              member={member}
-              onClick={onClickMember}
-              isSelected={selectedMember.id === member.id}
-            />
-          );
-        })}
+      <MemberListContainer ref={scrollRef} onScroll={onScroll}>
+        {searchedMembers.map((member) => (
+          <AddMemberItem
+            key={member.id}
+            member={member}
+            isEnable={prevMember?.id !== member.id}
+            isSelected={selectedMember.id === member.id}
+            onClick={onClickMember}
+          />
+        ))}
       </MemberListContainer>
-      <BottomContainer>
-        <MainText color={GRAY.DEFAULT}>
-          {'*해당 관리자와 연결할 교인정보가 없으시다면'}
-        </MainText>
-        <Button
-          text={t_button('makeMemberInformation')}
-          backgroundColor={WHITE}
-          color={GRAY.SEMI_DARK}
-          borderColor={GRAY.SEMI_LIGHT}
-          height={30}
-          width={150}
-        />
-      </BottomContainer>
     </LinkMemberUserViewContainer>
   );
 };

@@ -1,6 +1,6 @@
 import { Church } from '../../../../models/church/church';
 import EditChurchInformationView from './edit-church-information.view';
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import {
   getFormattedIdentifyNumber,
   getFormattedName,
@@ -12,11 +12,13 @@ import PagePopup from '../../../atoms/common/popup/page-popup';
 type EditChurchInformationProps = {
   targetChurch: Church;
   setTargetChurch: Dispatch<SetStateAction<Church>>;
+  onClickSave?: () => void;
 };
 
 const EditChurchInformation = ({
   targetChurch,
   setTargetChurch,
+  onClickSave,
 }: EditChurchInformationProps) => {
   const [isAddressOpen, setIsAddressOpen] = useState<boolean>(false);
 
@@ -102,10 +104,10 @@ const EditChurchInformation = ({
     });
   };
 
-  useEffect(() => {
-    if (targetChurch.mainAdminId) {
-    }
-  }, [targetChurch.mainAdminId]);
+  // useEffect(() => {
+  //   if (targetChurch.mainAdminId) {
+  //   }
+  // }, [targetChurch.mainAdminId]);
 
   const props = {
     targetChurch,
@@ -116,6 +118,7 @@ const EditChurchInformation = ({
     onChangeDetailAddress,
     onChangeIdentifyNumber,
     onChangeDenomination,
+    onClickSave,
   };
 
   return (

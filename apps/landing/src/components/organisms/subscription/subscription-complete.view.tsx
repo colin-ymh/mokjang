@@ -1,8 +1,18 @@
 import styled from 'styled-components';
 
-import { Check } from '@mokjang/assets';
-import { Button, MainText, SvgIcon } from '@mokjang/components';
-import { BLACK, GRAY, GREEN, LOCALE, WHITE } from '@mokjang/constants';
+import { Svg } from '@mokjang/assets';
+import {
+  Button,
+  MainText,
+  SvgIcon,
+} from '../../../../../../packages/components/src';
+import {
+  BLACK,
+  GRAY,
+  GREEN,
+  LOCALE,
+  WHITE,
+} from '../../../../../../packages/constants/src';
 import { useI18n, useScopedI18n } from '../../../../locales/client';
 import { getTranslatedMonthlySubscriptionPrice } from '@/utils/translate';
 import { usePathname } from 'next/navigation';
@@ -78,7 +88,12 @@ const SubscriptionCompleteView = ({
       <Container>
         <HeaderContainer>
           <IconContainer>
-            <SvgIcon svg={Check} color={GREEN.DEFAULT} width={3} size={25} />
+            <SvgIcon
+              svg={Svg.Check}
+              color={GREEN.DEFAULT}
+              width={3}
+              size={25}
+            />
           </IconContainer>
           <MainText fontSize={24} fontWeight={700}>
             {t_payment('title')}

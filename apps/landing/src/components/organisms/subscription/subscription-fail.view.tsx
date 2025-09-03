@@ -1,8 +1,18 @@
 import styled from 'styled-components';
 
-import { Cancel } from '@mokjang/assets';
-import { Button, MainText, SvgIcon } from '@mokjang/components';
-import { BLACK, GRAY, LOCALE, RED, WHITE } from '@mokjang/constants';
+import { Svg } from '@mokjang/assets';
+import {
+  Button,
+  MainText,
+  SvgIcon,
+} from '../../../../../../packages/components/src';
+import {
+  BLACK,
+  GRAY,
+  LOCALE,
+  RED,
+  WHITE,
+} from '../../../../../../packages/constants/src';
 import { useI18n, useScopedI18n } from '../../../../locales/client';
 import { getTranslatedMonthlySubscriptionPrice } from '@/utils/translate';
 import { usePathname } from 'next/navigation';
@@ -77,7 +87,7 @@ const SubscriptionFailView = ({ onClickRetry }: SubscriptionFailViewProps) => {
       <Container>
         <HeaderContainer>
           <IconContainer>
-            <SvgIcon svg={Cancel} color={RED.DEFAULT} width={3} size={25} />
+            <SvgIcon svg={Svg.Cancel} color={RED.DEFAULT} width={3} size={25} />
           </IconContainer>
           <MainText fontSize={24} fontWeight={700}>
             {t_payment('title')}

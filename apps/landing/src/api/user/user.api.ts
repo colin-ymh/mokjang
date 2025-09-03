@@ -1,5 +1,8 @@
 import { AxiosResponse } from 'axios';
-import { SERVER_URL, TEST_SERVER_URL } from '@mokjang/constants';
+import {
+  SERVER_URL,
+  TEST_SERVER_URL,
+} from '../../../../../packages/constants/src';
 import authorizeAxios from '../authorize-axios';
 import { CustomError } from '../error/error';
 

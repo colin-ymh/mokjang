@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { MAIN } from '../../../../constants/styles/color';
+import { WHITE } from '@mokjang/constants';
 
 const BackgroundContainer = styled.div`
   flex: 1;
@@ -9,7 +9,7 @@ const BackgroundContainer = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-  background-color: ${MAIN.DARK};
+  background-color: ${WHITE};
 `;
 
 export default BackgroundContainer;

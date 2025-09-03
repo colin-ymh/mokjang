@@ -6,17 +6,23 @@ import {
   BLACK,
   CURSOR,
   GRAY,
+  LOCALE,
   MAIN,
   MEDIA_MIN_WIDTH,
+  ORANGE,
   SIZE,
   WHITE,
 } from '@mokjang/constants';
-import { Button, MainText } from '@mokjang/components';
+import { Button, MainTag, MainText } from '@mokjang/components';
 import { useScopedI18n } from '../../../../../locales/client';
 import { CONTENT_ID, MAIN_CONTENT_ID } from '@/constants/constant';
 import { usePathname } from 'next/navigation';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
+import { PLAN } from '@/models/subscription/subscription';
+import { Svg } from '@mokjang/assets';
+import { getDateFromDateString } from '@mokjang/app/src/utils/date';
+import { getDateGap, getTranslatedRestTrialDate } from '@mokjang/utils';
 
 const HeaderContainer = styled.div`
   display: none;
@@ -87,6 +93,7 @@ export type HeaderViewProps = {
   onClickContact: () => void;
   onClickLogout: () => void;
   onClickLogo: () => void;
+  onClickFreeTrial: () => void;
 };
 
 const HeaderView = ({
@@ -96,11 +103,16 @@ const HeaderView = ({
   onClickContact,
   onClickLogout,
   onClickLogo,
+  onClickFreeTrial,
 }: HeaderViewProps) => {
   const pathname = usePathname();
+  const locale = pathname.split('/')[1] as LOCALE;
   const content = pathname.split('/')[2] as CONTENT_ID;
 
   const { user } = useSelector((state: RootState) => state.user);
+  const { currentSubscription } = useSelector(
+    (state: RootState) => state.subscription
+  );
 
   const t_button = useScopedI18n('button');
 
@@ -116,7 +128,7 @@ const HeaderView = ({
           fontWeight={800}
           cursor={CURSOR.POINTER}
         >
-          {'TEVA'}
+          {'TEBAH'}
         </MainText>
       </LogoContainer>
       <MenuContainer>
@@ -150,7 +162,24 @@ const HeaderView = ({
       </MenuContainer>
       {content !== CONTENT_ID.LOGIN && (
         <ButtonContainer>
-          {user?.id && (
+          {user?.id && currentSubscription?.currentPlan === PLAN.FREE_TRIAL ? (
+            <MainTag
+              svg={Svg.Clock}
+              color={ORANGE.DARK}
+              backgroundColor={ORANGE.EXTRA_LIGHT}
+              title={getTranslatedRestTrialDate(
+                locale,
+                getDateGap(
+                  new Date(),
+                  getDateFromDateString(
+                    currentSubscription.trialEndsAt as string
+                  )
+                )
+              )}
+              rowPadding={15}
+              columnPadding={8}
+            />
+          ) : (
             <Button
               text={t_button('free')}
               fontSize={16}
@@ -159,6 +188,7 @@ const HeaderView = ({
               backgroundColor={WHITE}
               borderColor={MAIN.DEFAULT}
               color={MAIN.DEFAULT}
+              onClick={onClickFreeTrial}
             />
           )}
           {user?.id ? (

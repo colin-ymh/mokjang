@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useInitializeUser } from '@/utils/initialize';
 import { setIsWebview } from '@/redux/reducers/webview-reducer';
-import { getIsWebview } from '@mokjang/utils';
+import { getIsWebview } from '../../../../../../packages/utils/src';
 
 const InitializeStore = ({ children }: { children: React.ReactNode }) => {
   const dispatch = useDispatch();

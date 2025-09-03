@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { SubscriptionPlan } from '@/models/subscription/subscription';
+import { Plan } from '@/models/subscription/subscription';
 import PriceItemView, {
   PriceItemViewProps,
 } from '@/components/atoms/main/price/price-item.view';
 
 type PriceItemProps = {
-  item: SubscriptionPlan;
+  item: Plan;
 };
 
 const PriceItem = ({ item }: PriceItemProps) => {

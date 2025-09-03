@@ -1,4 +1,4 @@
-import { BLANK } from '@mokjang/constants';
+import { BLANK } from '../../../../packages/constants/src';
 
 export const getTrimmedString = (value: string) => {
   if (!value) return BLANK;

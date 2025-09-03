@@ -11,6 +11,7 @@ export type User = {
   privacyPolicyAgreed: boolean;
   role: USER_ROLE;
   churchUser: ChurchUser[];
+  hasUsedFreeTrial: boolean;
 };
 
 export const DEFAULT_USER: User = {
@@ -23,4 +24,5 @@ export const DEFAULT_USER: User = {
   privacyPolicyAgreed: false,
   role: USER_ROLE.NONE,
   churchUser: [],
+  hasUsedFreeTrial: false,
 };

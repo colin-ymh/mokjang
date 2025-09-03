@@ -4,16 +4,14 @@ import {
   EDUCATION_CONTENT_ID,
   EDUCATION_SESSION_CONTENT_ID,
   EDUCATION_TERM_CONTENT_ID,
+  MANAGER_CONTENT_ID,
   MEMBER_CONTENT_ID,
   TASK_CONTENT_ID,
   VISITATION_CONTENT_ID,
 } from '../../constants/layout/content';
 import {
-  CHURCH_USER_HEADER_ID,
   EDIT_MEMBER_HEADER_ID,
   MEMBER_INFORMATION_HEADER_ID,
-  MINISTRY_MANAGEMENT_HEADER_ID,
-  PERMISSION_TEMPLATE_HEADER_ID,
 } from '../../constants/layout/header';
 
 import { useI18n, useScopedI18n } from '../../../locales/client';
@@ -190,56 +188,19 @@ export const useManagementChurchHeaderBarItems = () => {
   return items;
 };
 
-export const useMinistryManagementHeaderBarItems = () => {
-  const t_header = useScopedI18n('header');
-
-  const items = [
-    // {
-    //   id: MINISTRY_MANAGEMENT_HEADER_ID.MINISTRY_GROUP_INFORMATION,
-    //   title: t_header(MINISTRY_MANAGEMENT_HEADER_ID.MINISTRY_GROUP_INFORMATION),
-    // },
-    {
-      id: MINISTRY_MANAGEMENT_HEADER_ID.MINISTRY_MEMBER_LIST,
-      title: t_header(MINISTRY_MANAGEMENT_HEADER_ID.MINISTRY_MEMBER_LIST),
-    },
-  ];
-
-  return items;
-};
-
-export const usePermissionTemplateHeaderBarItems = () => {
+export const useManagerHeaderBarItems = () => {
   const t_header = useScopedI18n('header');
 
   const items = [
     {
-      id: PERMISSION_TEMPLATE_HEADER_ID.PERMISSION_UNIT,
-      title: t_header(PERMISSION_TEMPLATE_HEADER_ID.PERMISSION_UNIT),
+      id: MANAGER_CONTENT_ID.MANAGER,
+      title: t_header(MANAGER_CONTENT_ID.MANAGER),
     },
     {
-      id: PERMISSION_TEMPLATE_HEADER_ID.MANAGER,
-      title: t_header(PERMISSION_TEMPLATE_HEADER_ID.MANAGER),
+      id: MANAGER_CONTENT_ID.JOIN,
+      title: t_header(MANAGER_CONTENT_ID.JOIN),
     },
   ];
-
-  return items;
-};
-
-export const useChurchUserHeaderBarItems = (isManager: boolean) => {
-  const t_header = useScopedI18n('header');
-
-  const items = [
-    {
-      id: CHURCH_USER_HEADER_ID.ACCOUNT,
-      title: t_header(CHURCH_USER_HEADER_ID.ACCOUNT),
-    },
-  ];
-
-  if (isManager) {
-    items.push({
-      id: CHURCH_USER_HEADER_ID.PERMISSION,
-      title: t_header(CHURCH_USER_HEADER_ID.PERMISSION),
-    });
-  }
 
   return items;
 };

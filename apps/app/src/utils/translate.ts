@@ -96,7 +96,7 @@ export const getTranslatedChurchUserColumn = (
 ): string => {
   return t(
     id as
-      | CHURCH_USER.ACCOUNT
+      | CHURCH_USER.JOINED_AT
       | CHURCH_USER.MEMBER
       | CHURCH_USER.PERMISSION_TEMPLATE
       | CHURCH_USER.PERMISSION_ACTIVE

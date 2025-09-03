@@ -48,10 +48,6 @@ export enum EDUCATION_MANAGEMENT_HEADER_ID {
   TERM = 'term',
 }
 
-export enum PERMISSION_TEMPLATE_HEADER_ID {
-  PERMISSION_UNIT = 'permissionUnit',
-  MANAGER = 'manager',
-}
 
 export enum CHURCH_USER_HEADER_ID {
   ACCOUNT = 'account',

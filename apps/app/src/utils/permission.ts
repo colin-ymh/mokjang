@@ -4,6 +4,7 @@ import {
   PermissionUnit,
 } from '../models/permission/permission';
 import { CHURCH_USER_ROLE } from '../constants/constant';
+import { BLANK } from '@mokjang/constants';
 
 /**
  * 소유자 권한 유형 생성하기
@@ -23,6 +24,7 @@ export const getOwnerPermissionTemplate = (
     unitIds: permissionUnits.map((u) => u.id),
     memberCount: 1,
     permissionUnits,
+    description: BLANK,
   };
   return ownerPermissionTemplate;
 };

@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
 import { MainText } from '../../../atoms/common/text/main-text';
 import PermissionUnitList from '../../../molecules/permission/information/permission-unit-list';
+import { SIZE } from '@/constants/styles/style';
 
 const AddPermissionTemplateViewContainer = styled.div`
   display: flex;
@@ -15,13 +16,6 @@ const AddPermissionTemplateViewContainer = styled.div`
   padding: 25px 20px 50px 20px;
   gap: 20px;
   overflow-y: auto;
-`;
-
-const LabelContainer = styled.div`
-  display: flex;
-  width: 100%;
-  flex-direction: column;
-  gap: 10px;
 `;
 
 const InputContainer = styled.div`
@@ -33,18 +27,17 @@ const InputContainer = styled.div`
 
 type AddPermissionTemplateViewProps = {
   onChangeName: (event: ChangeEvent<HTMLInputElement>) => void;
+  onChangeDescription: (event: ChangeEvent<HTMLInputElement>) => void;
   onChangeUnitIds: (unitIds: string[]) => void;
 };
 
 const AddPermissionTemplateView = ({
   onChangeName,
+  onChangeDescription,
   onChangeUnitIds,
 }: AddPermissionTemplateViewProps) => {
   const { targetPermissionTemplate } = useSelector(
     (state: RootState) => state.targetPermissionTemplate
-  );
-  const { permissionUnits } = useSelector(
-    (state: RootState) => state.permissionTemplateFilter
   );
 
   const t = useI18n();
@@ -64,16 +57,26 @@ const AddPermissionTemplateView = ({
           isRequired={true}
         />
       </InputContainer>
+      {/* 설명 */}
+      <InputContainer>
+        <LabelInput
+          label={t('description')}
+          value={targetPermissionTemplate.description}
+          onChange={onChangeDescription}
+          placeholder={t_placeholder('description')}
+          borderColor={GRAY.LIGHT}
+          height={40}
+        />
+      </InputContainer>
       {/* 권한 */}
       <InputContainer>
-        <LabelContainer>
-          <MainText>{t('permission')}</MainText>
-          <PermissionUnitList
-            units={permissionUnits}
-            unitIds={targetPermissionTemplate.unitIds}
-            onChangeUnitIds={onChangeUnitIds}
-          />
-        </LabelContainer>
+        <MainText color={GRAY.DARK} size={SIZE.SMALL}>
+          {t('permission')}
+        </MainText>
+        <PermissionUnitList
+          selectedUnitIds={targetPermissionTemplate?.unitIds || []}
+          onChangeUnitIds={onChangeUnitIds}
+        />
       </InputContainer>
     </AddPermissionTemplateViewContainer>
   );

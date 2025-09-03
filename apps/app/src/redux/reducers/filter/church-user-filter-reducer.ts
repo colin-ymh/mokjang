@@ -34,14 +34,6 @@ export type CHURCH_USER_TABLE_HEADER_ITEM = {
 export const INITIAL_CHURCH_USER_TABLE_HEADER_LIST: CHURCH_USER_TABLE_HEADER_ITEM[] =
   [
     {
-      id: CHURCH_USER.ACCOUNT,
-      isShown: true,
-      isSortable: false,
-      isFilterable: true,
-      isFixed: true,
-      isDate: false,
-    },
-    {
       id: CHURCH_USER.MEMBER,
       isShown: true,
       isSortable: false,
@@ -59,6 +51,14 @@ export const INITIAL_CHURCH_USER_TABLE_HEADER_LIST: CHURCH_USER_TABLE_HEADER_ITE
     },
     {
       id: CHURCH_USER.PERMISSION_SCOPE,
+      isShown: true,
+      isSortable: false,
+      isFilterable: true,
+      isFixed: true,
+      isDate: false,
+    },
+    {
+      id: CHURCH_USER.JOINED_AT,
       isShown: true,
       isSortable: false,
       isFilterable: true,

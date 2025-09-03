@@ -12,6 +12,14 @@ export default {
   isDone: '완료',
   isNotDone: '미완료',
   customSelect: '직접선택',
+  email: '이메일',
+
+  manager: '관리자',
+
+  linkedMember: '연결된 교인',
+  currentLinkedMember: '현재 연결된 교인',
+  searchNewLinkedMember: '새로 연결할 교인 검색',
+  selectedLinkedMember: '새로 선택된 교인',
 
   filter: '필터',
 
@@ -116,8 +124,6 @@ export default {
 
   management: '교회 설정',
 
-  lastLogin: '마지막 로그인',
-
   title: '제목',
   owner: '소유자',
   range: '범위',
@@ -130,8 +136,8 @@ export default {
   visitation: '심방',
   task: '업무',
 
-  read: '읽기',
-  write: '쓰기',
+  read: '열람',
+  write: '작성',
 
   permission: '권한',
   permissionTemplate: '권한유형',
@@ -309,6 +315,40 @@ export default {
   granddaughter: '손녀',
   relative: '친인척',
 
+  'unit.member.title': '교인정보',
+  'unit.visitation.title': '심방',
+  'unit.education.title': '교육',
+  'unit.task.title': '업무',
+  'unit.church.title': '교회관리',
+  'unit.manager.title': '관리자 설정',
+
+  'unit.member.write.title': '교인정보 작성',
+  'unit.member.write.description':
+    '교인을 추가하고 개인·가족·이력 정보를 수정·삭제할 수 있습니다.',
+  'unit.member.read.title': '교인정보 열람',
+  'unit.member.read.description':
+    '교인의 개인·가족·이력 정보를 열람할 수 있습니다.',
+  'unit.visitation.write.title': '심방 작성',
+  'unit.visitation.write.description':
+    '심방 게시물을 작성·수정·삭제할 수 있습니다.',
+  'unit.visitation.read.title': '심방 열람',
+  'unit.visitation.read.description': '심방 게시물을 열람할 수 있습니다.',
+  'unit.education.write.title': '교육 작성',
+  'unit.education.write.description':
+    '교육 게시물을 작성·수정·삭제할 수 있습니다.',
+  'unit.education.read.title': '교육 열람',
+  'unit.education.read.description': '교육 게시물을 열람할 수 있습니다.',
+  'unit.task.write.title': '업무 작성',
+  'unit.task.write.description': '업무 게시물을 작성·수정·삭제할 수 있습니다.',
+  'unit.task.read.title': '업무 열람',
+  'unit.task.read.description': '업무 게시물을 열람할 수 있습니다.',
+  'unit.church.write.title': '교회정보 설정',
+  'unit.church.write.description':
+    '교회 기본정보를 수정하고, 직분·사역·그룹 구조를 수정·삭제할 수 있습니다.',
+  'unit.manager.write.title': '관리자 설정',
+  'unit.manager.write.description':
+    '관리자 등록 신청을 승인/거절하고 관리자를 삭제할 수 있으며, 권한그룹을 추가·수정·삭제할 수 있습니다. 또한 관리자 정보를 수정·삭제하고, 권한 범위 및 상태값을 변경할 수 있습니다.',
+
   /*-------------------title (popup title)-------------------*/
   'title.memberRegister': '교인 등록',
   'title.memberInformation': '교인정보',
@@ -463,6 +503,7 @@ export default {
   'tableHeader.isDoneCount': '진행 상황',
 
   'tableHeader.account': '계정정보',
+  'tableHeader.joinedAt': '등록일',
   'tableHeader.member': '교인정보',
   'tableHeader.permissionTemplate': '권한유형',
   'tableHeader.permissionActive': '활성',
@@ -474,7 +515,22 @@ export default {
   /*-------------------table header-------------------*/
 
   /*------------------- register-------------------*/
-  'register.churchHeaderPhrase': '교회 정보를 입력해주세요',
+  'register.churchRegisterTitle': '교회 정보 등록',
+  'register.churchRegisterDescription':
+    '교회 관리 시스템 이용을 위한 기본 정보를 입력해주세요',
+  'register.churchInformation': '교회 기본 정보',
+  'register.inChargeInformation': '담당자 정보',
+
+  'register.churchInit.title': '교회 초기 설정',
+  'register.churchInit.description':
+    '교회 운영에 필요한 기본 설정을 완료해주세요',
+  'register.churchInit.group.title': '그룹 설정',
+  'register.churchInit.group.description': '교회의 그룹 구조를 설정해주세요',
+  'register.churchInit.ministry.title': '사역그룹 설정',
+  'register.churchInit.ministry.description':
+    '교회의 사역그룹 구조를 설정해주세요',
+  'register.churchInit.officer.title': '직분 설정',
+  'register.churchInit.officer.description': '교회의 직분을 설정해주세요',
 
   'register.defaultHeaderPhrase': '교인 정보를 입력해주세요',
   'register.extraHeaderPhrase': '상세 정보를 입력해주세요',
@@ -493,8 +549,8 @@ export default {
   /*-------------------button-------------------*/
   'button.register': '등록하기',
   'button.save': '저장하기',
-  'button.edit': '수정하기',
-  'button.delete': '삭제하기',
+  'button.edit': '수정',
+  'button.delete': '삭제',
   'button.stop': '종료하기',
   'button.close': '닫기',
   'button.saveFamily': '해당 가족만 추가하기',
@@ -511,10 +567,10 @@ export default {
   'button.logOut': '로그아웃',
   'button.addMember': '교인 추가',
   'button.addFamily': '가족 추가',
-  'button.saveTerm': '기수 추가하기',
-  'button.addVisitation': '심방 입력하기',
+  'button.saveTerm': '기수 추가',
+  'button.addVisitation': '심방 입력',
   'button.addTask': '업무 입력하기',
-  'button.addEducation': '교육 추가하기',
+  'button.addEducation': '교육 추가',
   'button.addEducationTerm': '기수 추가',
   'button.addEducationGoal': '목표 추가',
   'button.addPermissionTemplate': '권한유형 추가하기',
@@ -527,6 +583,7 @@ export default {
   'button.makeMemberInformation': '교인정보 생성하기',
   'button.linkMemberInformation': '교인정보 연결하기',
   'button.unlinkMemberInformation': '교인정보 연결끊기',
+  'button.changeLinkedMember': '연결 교인 변경',
   'button.addWorshipSession': '출석내용 입력하기',
   'button.addWorship': '예배 추가하기',
   'button.addWorshipInformation': '예배내용 입력하기',
@@ -564,6 +621,13 @@ export default {
   'button.addMinistry': '사역 추가',
 
   'button.goToAttendance': '출석내용보기',
+
+  'button.nextStage': '다음 단계',
+  'button.prevStage': '이전 단계',
+  'button.start': '시작하기',
+
+  'button.deleteManager': '관리자 삭제하기',
+  'button.leaveManager': '관리자 탈퇴하기',
 
   /*-------------------button-------------------*/
 
@@ -605,7 +669,7 @@ export default {
   'placeholder.visitationContent': '심방 내용을 입력해주세요.',
   'placeholder.visitationPray': '기도 제목을 입력해주세요.',
   'placeholder.content': '내용을 입력해주세요.',
-  'placeholder.selectStatus': '진행 상태 선택',
+  'placeholder.selectStatus': '진행 상태',
   'placeholder.worshipTitle': '예배명을 입력해주세요.',
   'placeholder.worshipDescription': '예배 내용을 입력해주세요.',
 
@@ -634,6 +698,8 @@ export default {
   'placeholder.location': '장소를 입력해주세요',
 
   'placeholder.attendanceNote': '특이사항 입력하기',
+
+  'placeholder.email': '이메일을 입력해주세요.',
   /*-------------------placeholder-------------------*/
 
   /*-------------------popup-------------------*/
@@ -721,6 +787,14 @@ export default {
   'warning.deleteGroupHistory': '삭제된 이력은 복구할 수 없습니다.',
   'warning.deleteOfficerHistory': '삭제된 이력은 복구할 수 없습니다.',
   'warning.deleteMinistryHistory': '삭제된 이력은 복구할 수 없습니다.',
+
+  'warning.deleteManager':
+    '관리자 권한을 삭제하고 일반 교인으로 전환합니다. 기존 작업 내용은 유지됩니다.',
+  'warning.leaveManager':
+    '관리자 권한을 포기하고 일반 교인으로 전환됩니다. 기존 작업 내용은 유지됩니다.',
+
+  'warning.deletePermissionTemplate':
+    '소속된 관리자가 있으면 삭제가 불가능하며, 삭제된 권한 유형은 복구할 수 없습니다.',
   /*-------------------warning-------------------*/
 
   /*-------------------description-------------------*/
@@ -735,7 +809,8 @@ export default {
   'description.editMinistryGroupLeader': '새로운 사역리더를 선택하세요',
   'description.tableHeaderSetting': '드래그하여 순서를 변경하세요',
   'description.memberRegisterHeader': '새로운 교인의 정보를 입력해주세요',
-
+  'description.editPermissionTemplate':
+    '선택된 유형이 없으면 권한유형이 해제됩니다.',
   /*-------------------description-------------------*/
 
   /*-------------------tooltip-------------------*/

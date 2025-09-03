@@ -71,6 +71,7 @@ const ButtonContainer = styled.div`
 type PopupHeaderViewProps = {
   headerTitle?: string;
   headerDescription?: string;
+  headerLeft?: React.ReactNode;
   headerRight?: React.ReactNode;
   onClickCancel: () => void;
   onClickDone?: () => void;
@@ -83,6 +84,7 @@ type PopupHeaderViewProps = {
 const PopupHeaderView = ({
   headerTitle,
   headerDescription,
+  headerLeft,
   headerRight,
   onClickCancel,
   onClickDone,
@@ -93,30 +95,18 @@ const PopupHeaderView = ({
 }: PopupHeaderViewProps) => {
   return (
     <HeaderContainer $isHeaderBorderShown={isHeaderBorderShown} height={height}>
-      <HeaderLeft>
-        {/*<Button*/}
-        {/*  text={cancelText}*/}
-        {/*  onClick={onClickCancel}*/}
-        {/*  backgroundColor={WHITE}*/}
-        {/*  color={GRAY.DEFAULT}*/}
-        {/*/>*/}
-      </HeaderLeft>
-
-      <HeaderTitle>
-        <MainText size={SIZE.EXTRA_LARGE} fontSize={22}>
-          {headerTitle}
-        </MainText>
-        {headerDescription && (
-          <MainText color={GRAY.SEMI_DARK}>{headerDescription}</MainText>
-        )}
-      </HeaderTitle>
+      {headerLeft || (
+        <HeaderTitle>
+          <MainText size={SIZE.EXTRA_LARGE} fontSize={22}>
+            {headerTitle}
+          </MainText>
+          {headerDescription && (
+            <MainText color={GRAY.SEMI_DARK}>{headerDescription}</MainText>
+          )}
+        </HeaderTitle>
+      )}
 
       <HeaderRight>
-        {/*
-          1) headerRight prop이 있으면 무조건 렌더링
-          2) 없고 onClickDone이 있으면 모바일 전용 버튼
-          3) 데스크탑(onClickDone 있어도)에서는 숨김
-        */}
         {headerRight
           ? headerRight
           : onClickDone && (

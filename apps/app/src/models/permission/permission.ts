@@ -11,7 +11,17 @@ export enum DOMAIN {
   MANAGEMENT = 'management',
   HOLIDAY = 'holiday',
   CHURCH_EVENT = 'churchEvent',
+  CHURCH = 'church',
+  MANAGER = 'manager',
 }
+
+export type PERMISSION_DOMAIN =
+  | DOMAIN.MEMBER
+  | DOMAIN.VISITATION
+  | DOMAIN.EDUCATION
+  | DOMAIN.TASK
+  | DOMAIN.CHURCH
+  | DOMAIN.MANAGER;
 
 export enum ACTION {
   READ = 'read',
@@ -20,20 +30,15 @@ export enum ACTION {
 
 export type PermissionUnit = {
   id: string;
-  domain: DOMAIN;
+  domain: PERMISSION_DOMAIN;
   action: ACTION;
-};
-
-export const DEFAULT_PERMISSION_UNIT: PermissionUnit = {
-  id: BLANK,
-  domain: DOMAIN.MEMBER,
-  action: ACTION.READ,
 };
 
 export type PermissionTemplate = {
   id: string;
   churchId: string;
   title: string;
+  description: string;
   memberCount: number;
   unitIds: string[];
   permissionUnits: PermissionUnit[];
@@ -43,6 +48,7 @@ export const DEFAULT_PERMISSION_TEMPLATE: PermissionTemplate = {
   id: BLANK,
   churchId: BLANK,
   title: BLANK,
+  description: BLANK,
   unitIds: [],
   memberCount: 0,
   permissionUnits: [],

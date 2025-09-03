@@ -33,8 +33,8 @@ type ProfileImageProps = {
 
 const ProfileImage = ({
   value,
-  width = 40,
-  height = 40,
+  width = 30,
+  height = 30,
   quality = 100,
   onClick,
 }: ProfileImageProps) => {

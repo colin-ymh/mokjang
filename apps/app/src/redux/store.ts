@@ -32,6 +32,7 @@ import HomeWidgetFilterReducer from './reducers/filter/home-widget-filter-reduce
 import ToastPopupReducer from './reducers/toast-popup-reducer';
 import TargetHistoryReducer from './reducers/target/target-history-reducer';
 import ScheduleSummaryReducer from './reducers/schedule-summary-reducer';
+import SubscriptionReducer from '@/redux/reducers/subscription-reducer';
 
 const store = configureStore({
   reducer: {
@@ -40,6 +41,7 @@ const store = configureStore({
     church: ChurchReducer,
     toastPopup: ToastPopupReducer,
     scheduleSummary: ScheduleSummaryReducer,
+    subscription: SubscriptionReducer,
     // filter
     memberFilter: MemberFilterReducer,
     visitationFilter: VisitationFilterReducer,

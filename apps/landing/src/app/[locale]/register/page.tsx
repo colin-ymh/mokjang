@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 
-import { usePageRouter } from '@mokjang/utils';
+import { usePageRouter } from '../../../../../../packages/utils/src';
 import PageLayout from '@/components/organisms/layout/page-layout';
 import Register from '@/components/organisms/register/register';
 import { AuthApi } from '@/api/auth/auth.api';

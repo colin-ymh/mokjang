@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { MainText } from '../../common/text/main-text';
 import { GRAY, MAIN } from '../../../../constants/styles/color';
 import { DropdownValueType } from '../../common/dropdown/dropdown-item';
-import Check from '../../../../../public/svg/check.svg';
+import { Svg } from '@mokjang/assets';
 
 const FilterContainer = styled.div`
   display: flex;
@@ -38,7 +38,7 @@ const ItemDivideLine = styled.div`
   background-color: ${GRAY.SEMI_LIGHT};
 `;
 
-const CheckButton = styled(Check)<{ $isSelected: boolean }>`
+const CheckButton = styled(Svg.Check)<{ $isSelected: boolean }>`
   display: flex;
   stroke: ${({ $isSelected }) => ($isSelected ? MAIN.DEFAULT : GRAY.DEFAULT)};
   transition: stroke 0.2s ease-in-out;

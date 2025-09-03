@@ -7,8 +7,8 @@ import StyledComponentsRegistry from '../hooks/registry';
 import store from '../redux/store';
 
 import GlobalStyle from '../components/atoms/layout/global-style';
-import { ToastLayout } from '@mokjang/components/popup';
 import InitializeStore from '@/components/atoms/layout/initialize-store';
+import { ToastLayout } from '@/components/atoms/popup/toast-layout';
 
 type RootLayoutProps = {
   children?: React.ReactNode;

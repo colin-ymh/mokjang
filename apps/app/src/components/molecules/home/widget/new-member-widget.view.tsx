@@ -17,7 +17,7 @@ import {
 import { Member } from '../../../../models/member/member';
 import CustomPopup from '../../../atoms/common/popup/custom-popup';
 import NewMemberDetail from '../../../atoms/home/new-member-detail';
-import { getTranslatedMemberCount } from '@mokjang/utils';
+import { getTranslatedMemberCount } from '../../../../../../../packages/utils/src';
 
 const WidgetContainer = styled.div`
   display: flex;

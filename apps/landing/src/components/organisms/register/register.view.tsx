@@ -7,13 +7,19 @@ import {
   CheckButton,
   LabelInput,
   MainText,
-} from '@mokjang/components';
-import { GRAY, GREEN, LOCALE, MAIN, WHITE } from '@mokjang/constants';
+} from '../../../../../../packages/components/src';
+import {
+  GRAY,
+  GREEN,
+  LOCALE,
+  MAIN,
+  WHITE,
+} from '../../../../../../packages/constants/src';
 import {
   getIsWellFormedMobilePhone,
   getIsWellFormedName,
   getMinuteFromSecond,
-} from '@mokjang/utils';
+} from '../../../../../../packages/utils/src';
 
 import { useI18n, useScopedI18n } from '../../../../locales/client';
 import { getTranslatedVerifyNumber } from '@/utils/translate';

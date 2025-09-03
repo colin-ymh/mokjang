@@ -2,8 +2,13 @@ import styled from 'styled-components';
 
 import { AUTH } from '@/api/auth/auth.api';
 
-import { MainText } from '@mokjang/components';
-import { BLACK, GRAY, LOCALE, WHITE } from '@mokjang/constants';
+import { MainText } from '../../../../../../packages/components/src';
+import {
+  BLACK,
+  GRAY,
+  LOCALE,
+  WHITE,
+} from '../../../../../../packages/constants/src';
 import { useScopedI18n } from '../../../../locales/client';
 import {
   getGoogleLoginText,

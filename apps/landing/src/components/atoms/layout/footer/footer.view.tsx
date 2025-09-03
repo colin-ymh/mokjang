@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import { BLACK, WHITE } from '@mokjang/constants';
-import { MainText } from '@mokjang/components';
+import { BLACK, WHITE } from '../../../../../../../packages/constants/src';
+import { MainText } from '../../../../../../../packages/components/src';
 
 const FooterContainer = styled.footer`
   display: flex;

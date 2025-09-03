@@ -1,12 +1,24 @@
 import { ChangeEvent } from 'react';
 import { Church } from '@/models/church/church';
 import styled from 'styled-components';
-import { GRAY, GREEN, LOCALE, MAIN, WHITE, YELLOW } from '@mokjang/constants';
-import { BorderInput, Button, MainText, SvgIcon } from '@mokjang/components';
+import {
+  GRAY,
+  GREEN,
+  LOCALE,
+  MAIN,
+  WHITE,
+  YELLOW,
+} from '../../../../../../packages/constants/src';
+import {
+  BorderInput,
+  Button,
+  MainText,
+  SvgIcon,
+} from '../../../../../../packages/components/src';
 import { useI18n, useScopedI18n } from '../../../../locales/client';
 
-import { Check } from '@mokjang/assets';
-import { getTranslatedMemberCount } from '@mokjang/utils';
+import { Svg } from '@mokjang/assets';
+import { getTranslatedMemberCount } from '../../../../../../packages/utils/src';
 import Warning from '../../../../public/svg/warning.svg';
 import { usePathname } from 'next/navigation';
 
@@ -165,7 +177,7 @@ const JoinView = ({
               <TitleContainer>
                 <IconContainer>
                   <SvgIcon
-                    svg={Check}
+                    svg={Svg.Check}
                     width={2}
                     size={18}
                     color={GREEN.DEFAULT}
@@ -248,7 +260,12 @@ const JoinView = ({
                   fontSize={16}
                   fontWeight={600}
                   icon={
-                    <SvgIcon svg={Check} width={2} size={18} color={WHITE} />
+                    <SvgIcon
+                      svg={Svg.Check}
+                      width={2}
+                      size={18}
+                      color={WHITE}
+                    />
                   }
                   onClick={onClickChurchChecked}
                 />
@@ -261,7 +278,7 @@ const JoinView = ({
                   $flexDirection={'row'}
                 >
                   <SvgIcon
-                    svg={Check}
+                    svg={Svg.Check}
                     width={2}
                     size={18}
                     color={MAIN.DEFAULT}

@@ -1,4 +1,4 @@
-import { BLANK, CHURCH_USER_ROLE } from '../../constants/constant';
+import { BLANK, CHURCH_USER_ROLE } from '@mokjang/constants';
 import { DEFAULT_MEMBER, Member } from '../member/member';
 import {
   DEFAULT_PERMISSION_TEMPLATE,

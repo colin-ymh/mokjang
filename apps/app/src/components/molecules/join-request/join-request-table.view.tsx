@@ -3,12 +3,7 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../redux/store';
 
-import {
-  DESTRUCTIVE,
-  GRAY,
-  MAIN,
-  WHITE,
-} from '../../../constants/styles/color';
+import { GRAY, GREEN, RED, WHITE } from '../../../constants/styles/color';
 
 import { MainText } from '../../atoms/common/text/main-text';
 import { BLANK } from '../../../constants/constant';
@@ -16,10 +11,7 @@ import { BLANK } from '../../../constants/constant';
 import useWindowSize from '../../../hooks/window/window';
 import { BLANK_HEADER } from '../../../redux/reducers/filter/member-filter-reducer';
 import { useI18n, useScopedI18n } from '../../../../locales/client';
-import {
-  getFormattedDate,
-  getFormattedMobilePhone,
-} from '../../../utils/format';
+import { getFormattedMobilePhone } from '../../../utils/format';
 import { getStatusColor } from '../../../utils/color';
 import { JOIN_REQUEST } from '../../../constants/column/join-request-column';
 import { JoinRequest } from '../../../models/join-request/join-request';
@@ -28,6 +20,9 @@ import { USER } from '../../../constants/column/user-column';
 import Button from '../../atoms/common/button/button';
 import CustomPopup from '../../atoms/common/popup/custom-popup';
 import LinkMemberUser from './link-member-user';
+import { usePathname } from 'next/navigation';
+import { LOCALE } from '@/constants/state/locale';
+import { getTranslatedDateFromDateString } from '@/utils/translate';
 
 // 1. 컬럼별 PX 폭 (마지막 REMARKS만 auto 할 예정)
 const getColumnWidth = (id: string) => {
@@ -51,7 +46,7 @@ const TableContainer = styled.div<{ height: number }>`
   /* 항상 가로 100%를 채움 */
   width: 100%;
   /* 세로 높이만큼 상하 스크롤 */
-  height: ${({ height }) => `${height - 260}px`};
+  height: ${({ height }) => `${height - 230}px`};
 
   /* 오버플로 시 스크롤 */
   overflow-x: auto;
@@ -59,6 +54,8 @@ const TableContainer = styled.div<{ height: number }>`
 
   display: flex;
   flex-direction: column;
+
+  background-color: ${WHITE};
 `;
 
 // 3. 테이블은 width: 100% + table-layout: fixed
@@ -74,7 +71,7 @@ const JoinRequestTable = styled.table`
 
 // 4. 헤더(TH)
 const TableHeader = styled.th<{ id: string; $isLast?: boolean }>`
-  padding: 3px 10px;
+  padding: 10px;
   position: sticky;
   top: 0;
   z-index: 5;
@@ -94,7 +91,7 @@ const TableHeader = styled.th<{ id: string; $isLast?: boolean }>`
     left: 0;
     right: 0;
     height: 0.7px;
-    background: ${GRAY.SEMI_LIGHT};
+    background: ${GRAY.LIGHT};
   }
 `;
 
@@ -103,17 +100,18 @@ const JoinRequestTableRow = styled.tr`
   position: relative;
   border-bottom: 1px solid ${GRAY.EXTRA_LIGHT};
   &:hover td {
-    background-color: ${GRAY.LIGHT};
+    background-color: ${GRAY.SUPER_LIGHT};
   }
 `;
 
 const TableData = styled.td<{ id: string; $index: number; $isLast?: boolean }>`
   padding: 10px;
+  height: 40px;
 
   cursor: pointer;
 
   /* 마지막 컬럼이면 auto, 아니면 px 고정 */
-  width: ${({ id, $isLast }) => ($isLast ? 'auto' : `${getColumnWidth(id)}px`)};
+  width: ${({ id, $isLast }) => ($isLast ? 'auto' : `${getColumnWidth(id)}%`)};
 
   white-space: nowrap;
   overflow: hidden;
@@ -154,7 +152,7 @@ const ButtonContainer = styled.div`
   flex-direction: row;
   gap: 5px;
   position: absolute;
-  right: 10px;
+  right: 20px;
 `;
 
 type JoinRequestTableProps = {
@@ -182,6 +180,9 @@ const JoinRequestTableView = ({
   onClickReject,
   onChangeLinkMember,
 }: JoinRequestTableProps) => {
+  const pathname = usePathname();
+  const locale = pathname.split('/')[1] as LOCALE;
+
   const t = useI18n();
   const t_title = useScopedI18n('title');
   const t_button = useScopedI18n('button');
@@ -218,7 +219,7 @@ const JoinRequestTableView = ({
       case JOIN_REQUEST.CREATED_AT:
         return (
           <MainText>
-            {joinRequest.createdAt && getFormattedDate(joinRequest.createdAt)}
+            {getTranslatedDateFromDateString(locale, joinRequest.createdAt)}
           </MainText>
         );
       case BLANK:
@@ -228,14 +229,18 @@ const JoinRequestTableView = ({
               text={t('button.approve')}
               width={50}
               height={30}
-              backgroundColor={MAIN.DEFAULT}
+              backgroundColor={WHITE}
+              borderColor={GREEN.LIGHT}
+              color={GREEN.DEFAULT}
               onClick={() => onClickOpenLink(joinRequest)}
             />
             <Button
               text={t('button.reject')}
               width={50}
               height={30}
-              backgroundColor={DESTRUCTIVE.DEFAULT}
+              backgroundColor={WHITE}
+              borderColor={RED.LIGHT}
+              color={RED.DEFAULT}
               onClick={() => onClickReject(joinRequest.id)}
             />
           </ButtonContainer>
@@ -294,8 +299,8 @@ const JoinRequestTableView = ({
         <CustomPopup
           isShow={isLinkPopupShown}
           onClickCancel={onClickCancelLink}
-          width={400}
-          height={600}
+          width={500}
+          height={850}
           headerTitle={t_title('linkMemberUser')}
           doneText={t_button('link')}
           onClickDone={onClickApprove}

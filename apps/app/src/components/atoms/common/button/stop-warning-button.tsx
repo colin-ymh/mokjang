@@ -3,9 +3,10 @@ import { ORANGE, WHITE } from '@/constants/styles/color';
 import { MainText } from '../text/main-text';
 import Button from './button';
 
-import Warning from '../../../../../public/svg/warning.svg';
-import Stop from '../../../../../public/svg/stop.svg';
 import { useI18n } from '../../../../../locales/client';
+import { SvgIcon } from '../../../../../../../packages/components/src';
+import { Svg } from '@mokjang/assets';
+import React from 'react';
 
 const WarningContainer = styled.div`
   display: flex;
@@ -15,24 +16,12 @@ const WarningContainer = styled.div`
   background-color: ${ORANGE.EXTRA_LIGHT};
   border: 1px solid ${ORANGE.EXTRA_LIGHT};
   flex-direction: row;
+  width: 100%;
 `;
 
 const IconContainer = styled.div`
   display: flex;
   width: 30px;
-`;
-
-const WarningIcon = styled(Warning)`
-  width: 20px;
-  height: 20px;
-  stroke: ${ORANGE.DEFAULT};
-  stroke-width: 2px;
-`;
-
-const StopIcon = styled(Stop)`
-  width: 16px;
-  height: 16px;
-  stroke: ${ORANGE.DEFAULT};
 `;
 
 const ContentContainer = styled.div`
@@ -51,6 +40,7 @@ type StopWarningButtonProps = {
   buttonText?: string;
   onClick?: () => void;
   disabled?: boolean;
+  buttonIcon?: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
 };
 
 const StopWarningButton = ({
@@ -59,12 +49,13 @@ const StopWarningButton = ({
   buttonText,
   onClick,
   disabled = false,
+  buttonIcon,
 }: StopWarningButtonProps) => {
   const t = useI18n();
   return (
     <WarningContainer>
       <IconContainer>
-        <WarningIcon />
+        <SvgIcon svg={Svg.Warning} size={20} width={2} color={ORANGE.DEFAULT} />
       </IconContainer>
       <ContentContainer>
         <MainText color={ORANGE.EXTRA_DARK}>{title || t('warning')}</MainText>
@@ -79,7 +70,13 @@ const StopWarningButton = ({
             borderColor={ORANGE.EXTRA_LIGHT}
             color={ORANGE.EXTRA_DARK}
             backgroundColor={WHITE}
-            icon={<StopIcon />}
+            icon={
+              <SvgIcon
+                svg={buttonIcon || Svg.Stop}
+                size={16}
+                color={ORANGE.DEFAULT}
+              />
+            }
             onClick={onClick}
             disabled={disabled}
           />

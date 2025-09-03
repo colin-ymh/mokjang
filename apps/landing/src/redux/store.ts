@@ -4,6 +4,7 @@ import WebviewReducer from './reducers/webview-reducer';
 import ChurchReducer from './reducers/church-reducer';
 import UserReducer from './reducers/user-reducer';
 import ToastPopupReducer from './reducers/toast-popup-reducer';
+import SubscriptionReducer from '@/redux/reducers/subscription-reducer';
 
 const store = configureStore({
   reducer: {
@@ -11,6 +12,7 @@ const store = configureStore({
     user: UserReducer,
     church: ChurchReducer,
     toastPopup: ToastPopupReducer,
+    subscription: SubscriptionReducer,
   },
 });
 

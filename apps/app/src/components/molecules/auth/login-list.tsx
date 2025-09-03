@@ -46,7 +46,7 @@ const LoginList = () => {
         })
         .then((response) => {
           // 로그인 성공 이후, 페이지 새로고침
-          window.location.href = '/login';
+          // window.location.href = '/login';
         });
     } catch (error) {
       // setThrownError(error instanceof Error ? error : new Error(String(error)));

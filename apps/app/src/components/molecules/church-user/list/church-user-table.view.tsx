@@ -3,9 +3,18 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
 
-import { GRAY, WHITE } from '../../../../constants/styles/color';
-import { MainText } from '../../../atoms/common/text/main-text';
-import { BLANK, CHURCH_USER_ROLE } from '../../../../constants/constant';
+import {
+  BLANK,
+  CHURCH_USER_ROLE,
+  GRAY,
+  GREEN,
+  RED,
+  WHITE,
+} from '../../../../../../../packages/constants/src';
+import {
+  MainTag,
+  MainText,
+} from '../../../../../../../packages/components/src';
 import useWindowSize from '../../../../hooks/window/window';
 import ChurchUserTableHeader from '../../../atoms/church-user/list/church-user-table-header';
 import { BLANK_HEADER } from '../../../../redux/reducers/filter/member-filter-reducer';
@@ -13,22 +22,24 @@ import { ChurchUser } from '../../../../models/church-user/church-user';
 import { CHURCH_USER } from '../../../../constants/column/church-user-column';
 import MemberProfile from '../../../atoms/member/member-profile';
 import { useI18n } from '../../../../../locales/client';
-import { getFormattedMobilePhone } from '../../../../utils/format';
 import { getPermissionScopeTitle } from '../../../../utils/permission';
+import { getTranslatedDateFromDateString } from '@/utils/translate';
+import { usePathname } from 'next/navigation';
+import { LOCALE } from '@/constants/state/locale';
 
 // 1. 컬럼별 PX 폭
 const getColumnWidth = (id: string) => {
   switch (id) {
-    case CHURCH_USER.ACCOUNT:
-      return 300;
     case CHURCH_USER.MEMBER:
-      return 300;
+      return 20;
     case CHURCH_USER.PERMISSION_TEMPLATE:
-      return 300;
+      return 20;
     case CHURCH_USER.PERMISSION_SCOPE:
-      return 300;
+      return 20;
+    case CHURCH_USER.JOINED_AT:
+      return 20;
     case CHURCH_USER.PERMISSION_ACTIVE:
-      return 200;
+      return 10;
     default:
       // 비고(REMARKS) 컬럼 등
       return 80;
@@ -40,7 +51,7 @@ const TableContainer = styled.div<{ height: number }>`
   /* 항상 가로 100%를 채움 */
   width: 100%;
   /* 세로 높이만큼 상하 스크롤 */
-  height: ${({ height }) => `${height - 260}px`};
+  height: ${({ height }) => `${height - 290}px`};
 
   /* 오버플로 시 스크롤 */
   overflow-x: auto;
@@ -48,6 +59,7 @@ const TableContainer = styled.div<{ height: number }>`
 
   display: flex;
   flex-direction: column;
+  background-color: ${WHITE};
 `;
 
 // 3. 테이블은 width: 100% + table-layout: fixed
@@ -63,14 +75,14 @@ const UserTable = styled.table`
 
 // 4. 헤더(TH)
 const TableHeader = styled.th<{ id: string; $isLast?: boolean }>`
-  padding: 3px 10px;
+  padding: 10px;
   position: sticky;
   top: 0;
   z-index: 5;
   background-color: ${WHITE};
 
   /* 만약 마지막 컬럼이면 width: auto */
-  width: ${({ id, $isLast }) => ($isLast ? 'auto' : `${getColumnWidth(id)}px`)};
+  width: ${({ id, $isLast }) => ($isLast ? 'auto' : `${getColumnWidth(id)}%`)};
   /* 텍스트 넘침 처리 */
   overflow: hidden;
   text-overflow: ellipsis;
@@ -83,7 +95,7 @@ const TableHeader = styled.th<{ id: string; $isLast?: boolean }>`
     left: 0;
     right: 0;
     height: 0.7px;
-    background: ${GRAY.SEMI_LIGHT};
+    background: ${GRAY.LIGHT};
   }
 `;
 
@@ -101,7 +113,7 @@ const TableData = styled.td<{ id: string; $index: number; $isLast?: boolean }>`
   cursor: pointer;
 
   /* 마지막 컬럼이면 auto, 아니면 px 고정 */
-  width: ${({ id, $isLast }) => ($isLast ? 'auto' : `${getColumnWidth(id)}px`)};
+  width: ${({ id, $isLast }) => ($isLast ? 'auto' : `${getColumnWidth(id)}%`)};
 
   white-space: nowrap;
   overflow: hidden;
@@ -139,6 +151,9 @@ const ChurchUserTableView = ({
   const t = useI18n();
   const { height } = useWindowSize();
 
+  const pathname = usePathname();
+  const locale = pathname.split('/')[1] as LOCALE;
+
   const { churchUsers } = useSelector(
     (state: RootState) => state.churchUserFilter
   );
@@ -155,10 +170,6 @@ const ChurchUserTableView = ({
   // 각 TD에 들어갈 content
   const getUserTableContent = (id: string, churchUser: ChurchUser) => {
     switch (id) {
-      case CHURCH_USER.ACCOUNT:
-        return (
-          <MainText>{`${churchUser.user?.name}(${getFormattedMobilePhone(churchUser.user?.mobilePhone)})`}</MainText>
-        );
       case CHURCH_USER.MEMBER:
         return churchUser?.member ? (
           <MemberProfile member={churchUser?.member} />
@@ -181,11 +192,20 @@ const ChurchUserTableView = ({
               : getPermissionScopeTitle(t, churchUser.permissionScopes)}
           </MainText>
         );
-      case CHURCH_USER.PERMISSION_ACTIVE:
+      case CHURCH_USER.JOINED_AT:
         return (
           <MainText>
-            {churchUser?.isPermissionActive ? t('active') : t('inactive')}
+            {getTranslatedDateFromDateString(locale, churchUser.joinedAt)}
           </MainText>
+        );
+      case CHURCH_USER.PERMISSION_ACTIVE:
+        const isActive = churchUser?.isPermissionActive;
+        return (
+          <MainTag
+            title={isActive ? t('active') : t('inactive')}
+            backgroundColor={isActive ? GREEN.LIGHT : RED.LIGHT}
+            color={isActive ? GREEN.DARK : RED.DARK}
+          />
         );
       case BLANK:
         return <div></div>;

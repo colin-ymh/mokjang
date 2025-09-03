@@ -1,5 +1,8 @@
 import React, { ChangeEvent } from 'react';
-import { getFormattedTitle } from '../../../../utils/format';
+import {
+  getFormattedContent,
+  getFormattedTitle,
+} from '../../../../utils/format';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../../redux/store';
 import { setTargetPermissionTemplate } from '../../../../redux/reducers/target/target-permission-template-reducer';
@@ -24,6 +27,17 @@ const AddPermissionTemplate = ({}: AddPermissionTemplateProps) => {
   };
   // ===== name =====
 
+  // ===== description =====
+  const onChangeDescription = (event: ChangeEvent<HTMLInputElement>): void => {
+    dispatch(
+      setTargetPermissionTemplate({
+        ...targetPermissionTemplate,
+        description: getFormattedContent(event.target.value, 50),
+      })
+    );
+  };
+  // ===== description =====
+
   // ===== unit =====
   const onChangeUnitIds = (unitIds: string[]): void => {
     dispatch(
@@ -37,6 +51,7 @@ const AddPermissionTemplate = ({}: AddPermissionTemplateProps) => {
 
   const props = {
     onChangeName,
+    onChangeDescription,
     onChangeUnitIds,
   };
 

@@ -8,7 +8,9 @@ const StyledIcon = styled.svg<{
   width?: number;
   $isButton?: boolean;
   cursor?: CURSOR;
+  bottom?: number;
 }>`
+  position: relative;
   width: ${({ $size }) => $size}px;
   height: ${({ $size }) => $size}px;
   stroke: ${({ $color }) => $color || 'currentColor'};
@@ -16,6 +18,7 @@ const StyledIcon = styled.svg<{
   color: ${({ $color }) => $color || 'currentColor'};
   cursor: ${({ $isButton, cursor }) =>
     cursor || $isButton ? 'pointer' : 'default'};
+  bottom: ${({ bottom }) => bottom}px;
 
   &:hover {
     background-color: ${({ $isButton }) => $isButton && GRAY.LIGHT};
@@ -30,6 +33,7 @@ type IconProps = {
   width?: number;
   onClick?: () => void;
   cursor?: CURSOR;
+  bottom?: number;
 };
 
 const SvgIcon = ({
@@ -39,6 +43,7 @@ const SvgIcon = ({
   width = 1.5,
   onClick,
   cursor,
+  bottom,
 }: IconProps) => {
   return (
     <StyledIcon
@@ -49,6 +54,7 @@ const SvgIcon = ({
       onClick={onClick}
       cursor={cursor}
       $isButton={!!onClick}
+      bottom={bottom}
     />
   );
 };

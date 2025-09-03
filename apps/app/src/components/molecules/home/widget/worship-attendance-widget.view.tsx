@@ -2,9 +2,8 @@
 
 import { MainText } from '../../../atoms/common/text/main-text';
 import styled from 'styled-components';
-import { SIZE } from '../../../../constants/styles/style';
+import { HOME_WIDGET, LOCALE, MAIN, RANGE, SIZE } from '@mokjang/constants';
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
-import { HOME_WIDGET, RANGE } from '../../../../constants/constant';
 import React from 'react';
 import ToggleRadioButton from '../../../atoms/common/radio-button/toggle-radio-button';
 import { useMonthQuarterHalfRangeRadioButtonItems } from '../../../../hooks/radio-button/radio-button-items';
@@ -17,8 +16,6 @@ import Dropdown from '../../../atoms/common/dropdown/dropdown';
 import { getTranslateWorshipAttendanceWidgetDescription } from '../../../../utils/translate';
 import { getTranslatedMemberCount } from '@mokjang/utils';
 import { usePathname } from 'next/navigation';
-import { LOCALE } from '../../../../constants/state/locale';
-import { MAIN } from '../../../../constants/styles/color';
 import Warning from '../../../../../public/svg/warning.svg';
 
 const WidgetContainer = styled.div`

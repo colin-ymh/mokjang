@@ -1,4 +1,4 @@
-import { BLANK } from '@mokjang/constants';
+import { BLANK } from '../../../../../packages/constants/src';
 
 export type Church = {
   id: string;

@@ -1,11 +1,11 @@
-import { BLANK, CHURCH_USER_ROLE } from '../../constants/constant';
-import { DEFAULT_MEMBER, Member } from '../member/member';
+import { BLANK, CHURCH_USER_ROLE } from '@mokjang/constants';
+import { DEFAULT_USER, User } from '../user/user';
+import { DEFAULT_MEMBER, Member } from '@mokjang/app/src/models/member/member';
 import {
   DEFAULT_PERMISSION_TEMPLATE,
   PermissionScope,
   PermissionTemplate,
-} from '../permission/permission';
-import { DEFAULT_USER, User } from '../user/user';
+} from '@mokjang/app/src/models/permission/permission';
 
 export type ChurchUser = {
   id: string;

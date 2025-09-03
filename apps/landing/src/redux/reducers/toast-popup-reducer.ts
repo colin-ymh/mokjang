@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { BLACK, BLANK, WHITE } from '@mokjang/constants';
+import { BLACK, BLANK, WHITE } from '../../../../../packages/constants/src';
 
 type ToastPopupState = {
   isToastShown: boolean;

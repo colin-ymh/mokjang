@@ -15,6 +15,7 @@ export type PopupLayoutProps = {
   onClickDone?: () => void;
   headerTitle?: string;
   headerDescription?: string;
+  headerLeft?: React.ReactNode;
   headerRight?: React.ReactNode;
   cancelText?: string;
   doneText?: string;
@@ -31,6 +32,7 @@ export type PopupLayoutProps = {
 const PopupLayout = ({
   headerTitle,
   headerDescription,
+  headerLeft,
   headerRight,
   onClickCancel,
   onClickDone,
@@ -53,6 +55,7 @@ const PopupLayout = ({
           <PopupHeader
             headerTitle={headerTitle}
             headerDescription={headerDescription}
+            headerLeft={headerLeft}
             headerRight={headerRight}
             onClickCancel={onClickCancel}
             onClickDone={onClickDone}

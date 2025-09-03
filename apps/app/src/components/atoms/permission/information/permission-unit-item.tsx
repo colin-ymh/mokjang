@@ -1,61 +1,71 @@
 import styled from 'styled-components';
-import { PermissionUnit } from '../../../../models/permission/permission';
-import { MainText } from '../../common/text/main-text';
-import CheckButton from '../../common/button/check-button';
-import { useI18n } from '../../../../../locales/client';
-import { GRAY } from '../../../../constants/styles/color';
-import { SIZE } from '../../../../constants/styles/style';
+import {
+  CheckButton,
+  MainText,
+} from '../../../../../../../packages/components/src';
+import { CURSOR, GRAY } from '../../../../../../../packages/constants/src';
 
 const ItemContainer = styled.div<{ $disabled: boolean }>`
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px;
+  padding: 20px;
   cursor: ${({ $disabled }) => ($disabled ? 'default' : 'pointer')};
+  gap: 10px;
 
-  border-bottom: 1px solid ${GRAY.SEMI_LIGHT};
-
-  &:last-child {
-    border-bottom: none;
-  }
+  border: 1px solid ${GRAY.LIGHT};
+  border-radius: 10px;
 `;
 
 const ContentContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 10px;
 `;
 
 type PermissionUnitItemProps = {
-  unit: PermissionUnit;
+  id: string;
   isSelected: boolean;
   onClick: (id: string) => void;
+  title: string;
+  description: string;
   isEditable: boolean;
 };
 
 const PermissionUnitItem = ({
-  unit,
-  isSelected,
+  id,
+  title,
+  description,
   onClick,
+  isSelected,
   isEditable,
 }: PermissionUnitItemProps) => {
-  const t = useI18n();
-
   return (
-    <ItemContainer onClick={() => onClick(unit.id)} $disabled={!isEditable}>
-      <ContentContainer>
-        <MainText>{`${t(unit.domain)} ${t(unit.action)}`}</MainText>
-        <MainText color={GRAY.DEFAULT} size={SIZE.SMALL}>
-          {'내용'}
-        </MainText>
-      </ContentContainer>
+    <ItemContainer onClick={() => onClick(id)} $disabled={!isEditable}>
       <CheckButton
         value={isSelected}
-        width={20}
-        height={20}
+        width={18}
+        height={18}
         disabled={!isEditable}
+        isStopPropagation={false}
       />
+      <ContentContainer>
+        <MainText
+          fontSize={16}
+          fontWeight={500}
+          cursor={isEditable ? CURSOR.POINTER : undefined}
+        >
+          {title}
+        </MainText>
+        <MainText
+          fontSize={14}
+          fontWeight={400}
+          color={GRAY.DARK}
+          whiteSpace={'normal'}
+          cursor={isEditable ? CURSOR.POINTER : undefined}
+        >
+          {description}
+        </MainText>
+      </ContentContainer>
     </ItemContainer>
   );
 };

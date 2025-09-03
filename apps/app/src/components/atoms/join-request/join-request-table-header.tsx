@@ -3,8 +3,8 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../redux/store';
 
-import { MainText } from '../common/text/main-text';
-import { BLACK, GRAY, MAIN } from '../../../constants/styles/color';
+import { MainText } from '../../../../../../packages/components/src';
+import { BLACK, GRAY, MAIN } from '../../../../../../packages/constants/src';
 import { SIZE } from '../../../constants/styles/style';
 import { getTranslatedJoinRequestColumn } from '../../../utils/translate';
 import { useI18n } from '../../../../locales/client';
@@ -18,7 +18,6 @@ const HeaderContainer = styled.div`
   overflow: hidden;
   position: relative;
   cursor: pointer;
-  height: 30px;
 `;
 
 const TextContainer = styled.div`

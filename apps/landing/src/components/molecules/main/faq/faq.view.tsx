@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import { Button, MainText } from '@mokjang/components';
-import { GRAY, WHITE } from '@mokjang/constants';
+import { Button, MainText } from '../../../../../../../packages/components/src';
+import { GRAY, WHITE } from '../../../../../../../packages/constants/src';
 import { FAQ } from '@/constants/constant';
 
 import { useScopedI18n } from '../../../../../locales/client';

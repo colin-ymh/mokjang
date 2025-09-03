@@ -11,8 +11,7 @@ import {
 } from '../../../../../models/worship/worship';
 import SvgIcon from '../../../../atoms/common/icon/svg-icon';
 
-import Check from '../../../../../../public/svg/check.svg';
-import Cancel from '../../../../../../public/svg/cancel.svg';
+import { Svg } from '@mokjang/assets';
 import { getTranslatedDateFromDateString } from '../../../../../utils/translate';
 import {
   getDateFromDateString,
@@ -181,7 +180,7 @@ const MemberAttendanceTableView = ({
               $backgroundColor={isPresent ? GREEN.LIGHT : RED.LIGHT}
             >
               <SvgIcon
-                svg={isPresent ? Check : Cancel}
+                svg={isPresent ? Svg.Check : Svg.Cancel}
                 color={isPresent ? GREEN.DEFAULT : RED.DEFAULT}
                 width={2}
               />

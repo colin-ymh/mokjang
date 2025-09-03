@@ -1,5 +1,5 @@
 import { createGlobalStyle } from 'styled-components';
-import { GRAY } from '@mokjang/constants';
+import { GRAY } from '../../../../../../packages/constants/src';
 
 const GlobalStyle = createGlobalStyle`
     html,

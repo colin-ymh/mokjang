@@ -5,8 +5,8 @@ import {
   LabelInput,
   LabelTextarea,
   MainText,
-} from '@mokjang/components';
-import { GRAY, LOCALE, WHITE } from '@mokjang/constants';
+} from '../../../../../../packages/components/src';
+import { GRAY, LOCALE, WHITE } from '../../../../../../packages/constants/src';
 import { useI18n, useScopedI18n } from '../../../../locales/client';
 import { usePathname } from 'next/navigation';
 import { ChangeEvent } from 'react';

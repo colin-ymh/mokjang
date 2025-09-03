@@ -1,4 +1,4 @@
-import { LOCALE } from '@mokjang/constants';
+import { LOCALE } from '../../../../packages/constants/src';
 
 export const getTranslatedMaxRegisterMember = (
   basePath: LOCALE,

@@ -9,6 +9,9 @@ import { useScopedI18n } from '../../../../../../../locales/client';
 import { useParams } from 'next/navigation';
 import { MEDIA_MIN_WIDTH } from '../../../../../../constants/constant';
 import { MANAGEMENT_HEADER_ID } from '../../../../../../constants/layout/header';
+import { useManagerHeaderBarItems } from '@/hooks/layout/header-bar-items';
+import { MANAGER_CONTENT_ID } from '@/constants/layout/content';
+import HeaderBar from '@/components/atoms/layout/header/header-bar';
 
 const HeaderContainer = styled.div`
   display: flex;
@@ -49,7 +52,7 @@ const HeaderBottomContainer = styled.div`
 `;
 
 type ManagementManagerHeaderViewProps = {
-  onClickHeaderBar: (id: string) => void;
+  onClickHeaderBar: (id: MANAGER_CONTENT_ID) => void;
 };
 
 const ManagementManagerHeaderView = ({
@@ -59,6 +62,7 @@ const ManagementManagerHeaderView = ({
   const contentId = slug[2];
 
   const t_header = useScopedI18n('header');
+  const headerBarItems = useManagerHeaderBarItems();
 
   return (
     <HeaderContainer>
@@ -66,14 +70,14 @@ const ManagementManagerHeaderView = ({
         <MainText size={SIZE.EXTRA_LARGE} fontSize={24}>
           {t_header(MANAGEMENT_HEADER_ID.MANAGER)}
         </MainText>
-        {/*<Button*/}
-        {/*  text={t_button('addVisitation')}*/}
-        {/*  onClick={onClickAddVisitation}*/}
-        {/*  width={100}*/}
-        {/*  height={30}*/}
-        {/*/>*/}
       </HeaderTopContainer>
-      <HeaderBottomContainer></HeaderBottomContainer>
+      <HeaderBottomContainer>
+        <HeaderBar
+          value={contentId}
+          items={headerBarItems}
+          onClick={onClickHeaderBar}
+        />
+      </HeaderBottomContainer>
     </HeaderContainer>
   );
 };

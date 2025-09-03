@@ -1,5 +1,10 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
+const base = require('../../next.config.base.js');
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  ...base, // ✅ 공통 env 불러오기
+
   transpilePackages: [
     '@mokjang/components',
     '@mokjang/utils',
@@ -18,8 +23,6 @@ const nextConfig = {
   },
 
   compiler: { styledComponents: true },
-  // images: { remotePatterns: [...] }, // 필요 시만
-  // output: 'standalone',
 };
 
 module.exports = nextConfig;

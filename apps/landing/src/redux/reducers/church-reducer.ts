@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { BLANK } from '@mokjang/constants';
+import { BLANK } from '../../../../../packages/constants/src';
 import { Church, DEFAULT_CHURCH } from '@/models/church/church';
 
 type ChurchState = {

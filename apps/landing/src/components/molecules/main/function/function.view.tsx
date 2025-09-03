@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import { MainText } from '@mokjang/components';
-import { GRAY } from '@mokjang/constants';
+import { MainText } from '../../../../../../../packages/components/src';
+import { GRAY } from '../../../../../../../packages/constants/src';
 import FunctionItem, {
   FunctionItemType,
 } from '@/components/atoms/main/fuction/fuction-item';

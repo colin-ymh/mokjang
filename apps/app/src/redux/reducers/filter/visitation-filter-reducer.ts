@@ -54,7 +54,7 @@ export const INITIAL_VISITATION_TABLE_HEADER_LIST: VISITATION_TABLE_HEADER_ITEM[
     {
       id: VISITATION.TITLE,
       isShown: true,
-      isSortable: true,
+      isSortable: false,
       isFilterable: true,
       isFixed: true,
       isDate: false,
@@ -62,7 +62,7 @@ export const INITIAL_VISITATION_TABLE_HEADER_LIST: VISITATION_TABLE_HEADER_ITEM[
     {
       id: VISITATION.VISITED,
       isShown: true,
-      isSortable: true,
+      isSortable: false,
       isFilterable: true,
       isFixed: true,
       isDate: false,
@@ -70,7 +70,7 @@ export const INITIAL_VISITATION_TABLE_HEADER_LIST: VISITATION_TABLE_HEADER_ITEM[
     {
       id: VISITATION.STATUS,
       isShown: true,
-      isSortable: true,
+      isSortable: false,
       isFilterable: true,
       isFixed: true,
       isDate: false,

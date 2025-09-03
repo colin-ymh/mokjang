@@ -13,11 +13,11 @@ import {
   getTranslatedDateFromDateString,
   getTranslatedTermCount,
 } from '../../../../../utils/translate';
-import Check from '../../../../../../public/svg/check.svg';
+import { Svg } from '@mokjang/assets';
 import SvgIcon from '../../../../atoms/common/icon/svg-icon';
 import { SIZE } from '../../../../../constants/styles/style';
 
-import { getTranslatedMemberCount } from '@mokjang/utils';
+import { getTranslatedMemberCount } from '../../../../../../../../packages/utils/src';
 
 const InformationContainer = styled.div`
   display: flex;
@@ -145,7 +145,7 @@ const EducationInformationView = ({
               if (goal.length !== 0)
                 return (
                   <GoalItem key={index}>
-                    <SvgIcon svg={Check} color={GREEN.DEFAULT} width={2} />
+                    <SvgIcon svg={Svg.Check} color={GREEN.DEFAULT} width={2} />
                     <MainText color={GRAY.SEMI_DARK}>{goal}</MainText>
                   </GoalItem>
                 );

@@ -1,5 +1,5 @@
 import { ChangeEvent, useEffect, useState } from 'react';
-import { BLACK, BLANK } from '@mokjang/constants';
+import { BLACK, BLANK } from '../../../../../../packages/constants/src';
 import { JoinApi } from '@/api/join/join.api';
 import {
   setIsToastShown,

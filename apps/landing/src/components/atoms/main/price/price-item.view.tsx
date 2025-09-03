@@ -1,16 +1,27 @@
 import styled from 'styled-components';
-import { BLACK, GRAY, GREEN, LOCALE, MAIN, WHITE } from '@mokjang/constants';
+import {
+  BLACK,
+  GRAY,
+  GREEN,
+  LOCALE,
+  MAIN,
+  WHITE,
+} from '../../../../../../../packages/constants/src';
 import React from 'react';
-import { Button, MainText, SvgIcon } from '@mokjang/components';
-import { SubscriptionPlan } from '@/models/subscription/subscription';
+import {
+  Button,
+  MainText,
+  SvgIcon,
+} from '../../../../../../../packages/components/src';
+import { Plan } from '@/models/subscription/subscription';
 import { useScopedI18n } from '../../../../../locales/client';
 import { usePathname } from 'next/navigation';
 
-import { getTranslatedMemberCount } from '@mokjang/utils';
+import { getTranslatedMemberCount } from '../../../../../../../packages/utils/src';
 import { getTranslatedMonthlySubscriptionPriceComponent } from '@/hooks/translate/translate';
 import { getTranslatedMaxRegisterMember } from '@/utils/translate';
 
-import Check from '../../../../../public/svg/check.svg';
+import { Svg } from '@mokjang/assets';
 
 const ItemContainer = styled.div<{ $isHover?: boolean }>`
   display: flex;
@@ -62,7 +73,7 @@ const FunctionItem = styled.div`
 `;
 
 export type PriceItemViewProps = {
-  item: SubscriptionPlan;
+  item: Plan;
   isHover: boolean;
   onMouseEnter: () => void;
   onMouseLeave: () => void;
@@ -99,7 +110,12 @@ const PriceItemView = ({
       <FunctionList>
         {functions.map((item) => (
           <FunctionItem key={item}>
-            <SvgIcon svg={Check} color={GREEN.DEFAULT} size={16} width={2} />
+            <SvgIcon
+              svg={Svg.Check}
+              color={GREEN.DEFAULT}
+              size={16}
+              width={2}
+            />
             <MainText color={GRAY.DARK}>{t_function(item)}</MainText>
           </FunctionItem>
         ))}

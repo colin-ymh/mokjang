@@ -2,6 +2,7 @@ import React, { forwardRef } from 'react';
 import styled from 'styled-components';
 import BorderInput, { BorderInputProps } from '../input/border-input';
 import { Chevron } from './dropdown-chevron';
+import { MAIN } from '@/constants/styles/color';
 
 const DropdownButton = styled.div`
   display: flex;
@@ -31,6 +32,7 @@ export type DropdownButtonProps = {
   isRight?: boolean;
   disabled?: boolean;
   onKeyDownHandler: (event: React.KeyboardEvent<HTMLInputElement>) => void;
+  color?: string;
 } & BorderInputProps;
 
 const DefaultDropdownButton = forwardRef<HTMLInputElement, DropdownButtonProps>(
@@ -55,6 +57,7 @@ const DefaultDropdownButton = forwardRef<HTMLInputElement, DropdownButtonProps>(
       isRight,
       onKeyDownHandler,
       disabled,
+      color,
       ...inputProps
     },
     ref
@@ -71,13 +74,14 @@ const DefaultDropdownButton = forwardRef<HTMLInputElement, DropdownButtonProps>(
           value={isCustomMode ? customValue : displayValue}
           onChange={onChangeInput}
           onFocus={onFocusInput}
-          borderColor={borderColor}
+          borderColor={isOpened ? MAIN.DEFAULT : borderColor}
           backgroundColor={backgroundColor}
           height={height}
           width={width}
           readOnly={!isEditable}
           enterKeyHint={enterKeyHint}
           disabled={disabled}
+          color={color}
           onKeyDown={(event) => {
             inputProps.onKeyDown?.(event);
             if (isOpened) {
@@ -89,7 +93,7 @@ const DefaultDropdownButton = forwardRef<HTMLInputElement, DropdownButtonProps>(
           isRight={isRight}
           {...inputProps}
         />
-        {isChevronShown && <Chevron $isOpened={isOpened} />}
+        {isChevronShown && <Chevron $isOpened={isOpened} color={color} />}
       </DropdownButton>
     );
   }

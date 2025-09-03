@@ -571,3 +571,24 @@ export const useHistoryDomainDropdownItems = () => {
 
   return items;
 };
+
+export const usePermissionActiveDropdownItems = () => {
+  const t = useI18n();
+
+  const items = [
+    {
+      value: undefined,
+      title: t('all'),
+    },
+    {
+      value: STATUS.ACTIVE,
+      title: t(STATUS.ACTIVE),
+    },
+    {
+      value: STATUS.INACTIVE,
+      title: t(STATUS.INACTIVE),
+    },
+  ];
+
+  return items;
+};

@@ -27,6 +27,7 @@
     "barrels:assets": "node scripts/make-barrels.mjs assets"
   },
   "devDependencies": {
+    "dotenv": "^17.2.1",
     "turbo": "^2.0.0",
     "typescript": "^5.6.0"
   },

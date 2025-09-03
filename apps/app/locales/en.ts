@@ -12,6 +12,14 @@ export default {
   isDone: 'Completed',
   isNotDone: 'Incomplete',
   customSelect: 'Custom Select',
+  email: 'Email',
+
+  manager: 'Manager',
+
+  linkedMember: 'Linked Member',
+  currentLinkedMember: 'Current Linked Member',
+  searchNewLinkedMember: 'Search for New Member to Link',
+  selectedLinkedMember: 'Newly Selected Member',
 
   filter: 'Filter',
 
@@ -116,8 +124,6 @@ export default {
   concealed: 'No Permission',
 
   management: 'Management',
-
-  lastLogin: 'Last Login',
 
   inCharge: 'In Charge',
   inChargeId: 'In Charge',
@@ -307,6 +313,40 @@ export default {
   granddaughter: 'Granddaughter',
   relative: 'Relative',
 
+  'unit.title.member': 'Member Information',
+  'unit.title.visitation': 'Visitation',
+  'unit.title.education': 'Education',
+  'unit.title.task': 'Task',
+  'unit.title.church': 'Church',
+  'unit.title.manager': 'Manager',
+
+  'unit.member.write.title': 'Create Member Info',
+  'unit.member.write.description':
+    'Add members and edit or delete personal, family, and history information.',
+  'unit.member.read.title': 'View Member Info',
+  'unit.member.read.description':
+    'View a member’s personal, family, and history information.',
+  'unit.visitation.write.title': 'Create Visitation',
+  'unit.visitation.write.description':
+    'Create, edit, and delete visitation posts.',
+  'unit.visitation.read.title': 'View Visitation',
+  'unit.visitation.read.description': 'View visitation posts.',
+  'unit.education.write.title': 'Create Education',
+  'unit.education.write.description':
+    'Create, edit, and delete education posts.',
+  'unit.education.read.title': 'View Education',
+  'unit.education.read.description': 'View education posts.',
+  'unit.task.write.title': 'Create Task',
+  'unit.task.write.description': 'Create, edit, and delete task posts.',
+  'unit.task.read.title': 'View Task',
+  'unit.task.read.description': 'View task posts.',
+  'unit.church.write.title': 'Church Settings',
+  'unit.church.write.description':
+    'Edit basic church information and edit or delete roles, ministries, and group structures.',
+  'unit.manager.write.title': 'Admin Settings',
+  'unit.manager.write.description':
+    'Approve or reject admin registration requests, remove admins, and add, edit, or delete permission groups. You can also edit or delete admin information and change permission scopes and status values.',
+
   /*-------------------title (popup title)-------------------*/
   'title.memberRegister': 'Member Register',
   'title.memberInformation': 'Member Information',
@@ -457,6 +497,7 @@ export default {
   'tableHeader.isDoneCount': 'Progressed',
 
   'tableHeader.account': 'Account',
+  'tableHeader.joinedAt': 'Registered Date',
   'tableHeader.member': 'Member',
   'tableHeader.permissionTemplate': 'Template',
   'tableHeader.permissionActive': 'Active',
@@ -466,6 +507,24 @@ export default {
   /*-------------------table header-------------------*/
 
   /*------------------- register-------------------*/
+  'register.churchRegisterTitle': 'Church Information Registration',
+  'register.churchRegisterDescription':
+    'Please enter the basic information to use the church management system',
+  'register.churchInformation': 'Church Information',
+  'register.inChargeInformation': 'InCharge Information',
+
+  'register.churchInit.title': 'Church Initial Setup',
+  'register.churchInit.description':
+    'Please complete the basic settings required for church operation',
+  'register.churchInit.group.title': 'Group Settings',
+  'register.churchInit.group.description':
+    'Set up the group structure of your church',
+  'register.churchInit.ministry.title': 'Ministry Group Settings',
+  'register.churchInit.ministry.description':
+    'Set up the ministry group structure of your church',
+  'register.churchInit.officer.title': 'Officer Settings',
+  'register.churchInit.officer.description': 'Set up the church officer roles',
+
   'register.defaultHeaderPhrase': 'Please enter the member information',
   'register.extraHeaderPhrase': 'Please enter the extra information',
 
@@ -518,6 +577,7 @@ export default {
   'button.makeMemberInformation': 'Make the Member Information',
   'button.linkMemberInformation': 'Link Member',
   'button.unlinkMemberInformation': 'Unlink Member',
+  'button.changeLinkedMember': 'Change Linked Member',
   'button.addWorshipSession': 'Make Attendance',
   'button.addWorshipInformation': 'Enter Details',
   'button.addWorship': 'Add Worship',
@@ -555,6 +615,14 @@ export default {
   'button.addMinistry': 'Add Ministry',
 
   'button.goToAttendance': 'See Attendance',
+
+  'button.nextStage': 'Next Stage',
+  'button.prevStage': 'Prev Stage',
+  'button.start': 'Start',
+
+  'button.deleteManager': 'Remove Admin',
+  'button.leaveManager': 'Leave as Admin',
+
   /*-------------------button-------------------*/
 
   /*-------------------placeholder-------------------*/
@@ -596,7 +664,7 @@ export default {
   'placeholder.visitationContent': 'Enter the content.',
   'placeholder.visitationPray': 'Enter the pray.',
   'placeholder.content': 'Enter the content.',
-  'placeholder.selectStatus': 'Select the status',
+  'placeholder.selectStatus': 'Status',
   'placeholder.worshipTitle': 'Enter the worship title.',
   'placeholder.worshipDescription': 'Enter the worship description.',
 
@@ -624,6 +692,8 @@ export default {
   'placeholder.location': 'Enter the location',
 
   'placeholder.attendanceNote': 'Enter the note.',
+
+  'placeholder.email': 'Enter the email',
   /*-------------------placeholder-------------------*/
 
   /*-------------------popup-------------------*/
@@ -713,6 +783,14 @@ export default {
   'warning.deleteGroupHistory': 'Deleted history cannot be recovered.',
   'warning.deleteOfficerHistory': 'Deleted history cannot be recovered.',
   'warning.deleteMinistryHistory': 'Deleted history cannot be recovered.',
+
+  'warning.deleteManager':
+    'The admin rights will be removed and converted to a regular member. Existing work will be retained.',
+  'warning.leaveManager':
+    'You will give up admin rights and be converted to a regular member. Existing work will be retained.',
+
+  'warning.deletePermissionTemplate':
+    'If there are associated administrators, deletion is not possible, and once a permission type is deleted, it cannot be restored.',
   /*-------------------warning-------------------*/
 
   /*-------------------description-------------------*/
@@ -725,6 +803,8 @@ export default {
   'description.editMinistryGroupLeader': 'Choose a new information leader',
   'description.tableHeaderSetting': 'Drag and Change the order',
   'description.memberRegisterHeader': "Enter the new member's information",
+  'description.editPermissionTemplate':
+    'If no template is selected, the permission type will be cleared.',
   /*-------------------description-------------------*/
 
   /*-------------------tooltip-------------------*/

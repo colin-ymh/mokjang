@@ -1,49 +1,38 @@
-import styled from 'styled-components';
-import { PermissionUnit } from '../../../../models/permission/permission';
-import PermissionUnitItem from '../../../atoms/permission/information/permission-unit-item';
-
-const ListContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  overflow-y: auto;
-`;
+import PermissionUnitListView, {
+  PermissionUnitListViewProps,
+} from '@/components/molecules/permission/information/permission-unit-list.view';
 
 type PermissionUnitListProps = {
-  units: PermissionUnit[];
-  unitIds: string[];
+  selectedUnitIds: string[];
   onChangeUnitIds?: (value: string[]) => void;
   isEditable?: boolean;
 };
 
 const PermissionUnitList = ({
-  units,
-  unitIds,
+  selectedUnitIds,
   onChangeUnitIds,
   isEditable = true,
 }: PermissionUnitListProps) => {
   const onClick = (unitId: string) => {
     if (isEditable && onChangeUnitIds) {
-      const newUnitIds = unitIds.includes(unitId)
-        ? unitIds.filter((id) => id !== unitId)
-        : [...unitIds, unitId];
+      const newUnitIds = selectedUnitIds.includes(unitId)
+        ? selectedUnitIds.filter((id) => id !== unitId)
+        : [...selectedUnitIds, unitId];
 
       onChangeUnitIds(newUnitIds);
     }
   };
 
+  const props = {
+    selectedUnitIds,
+    onClick,
+    isEditable,
+  } as PermissionUnitListViewProps;
+
   return (
-    <ListContainer>
-      {units.map((unit) => (
-        <PermissionUnitItem
-          key={unit.id}
-          unit={unit}
-          isSelected={unitIds?.includes(unit.id)}
-          onClick={onClick}
-          isEditable={isEditable}
-        />
-      ))}
-    </ListContainer>
+    <>
+      <PermissionUnitListView {...props} />
+    </>
   );
 };
 

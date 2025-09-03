@@ -15,6 +15,7 @@ import { SIZE } from '../../../../../constants/styles/style';
 import { useI18n } from '../../../../../../locales/client';
 import { getEmptyImage } from 'react-dnd-html5-backend';
 import {
+  ALL,
   DND_ITEM_TYPE,
   HOVER_POSITION,
 } from '../../../../../constants/constant';
@@ -338,7 +339,7 @@ const ManagementMinistryGroupItemView: React.FC<
                   : BLACK
               }
             >
-              {ministryGroup.name || t('all')}
+              {ministryGroup.name === ALL ? t('all') : ministryGroup.name}
             </MainText>
             <MainText size={SIZE.EXTRA_SMALL} color={GRAY.DEFAULT}>
               {ministryGroup.membersCount}

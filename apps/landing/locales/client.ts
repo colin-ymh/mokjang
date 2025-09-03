@@ -1,5 +1,5 @@
 import { createI18nClient } from 'next-international/client';
-import { LOCALE } from '@mokjang/constants';
+import { LOCALE } from '../../../packages/constants/src';
 
 export const {
   useI18n,

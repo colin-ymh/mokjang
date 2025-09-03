@@ -1,8 +1,12 @@
 import styled from 'styled-components';
 
-import { Check } from '@mokjang/assets';
-import { Button, MainText, SvgIcon } from '@mokjang/components';
-import { GRAY, GREEN, WHITE } from '@mokjang/constants';
+import { Svg } from '@mokjang/assets';
+import {
+  Button,
+  MainText,
+  SvgIcon,
+} from '../../../../../../packages/components/src';
+import { GRAY, GREEN, WHITE } from '../../../../../../packages/constants/src';
 import { useScopedI18n } from '../../../../locales/client';
 
 const Container = styled.div`
@@ -46,7 +50,12 @@ const ContactCompleteView = ({
       <Container>
         <HeaderContainer>
           <IconContainer>
-            <SvgIcon svg={Check} color={GREEN.DEFAULT} width={3} size={25} />
+            <SvgIcon
+              svg={Svg.Check}
+              color={GREEN.DEFAULT}
+              width={3}
+              size={25}
+            />
           </IconContainer>
           <MainText fontSize={24} fontWeight={700}>
             {t_contact('title')}

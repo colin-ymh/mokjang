@@ -5,11 +5,9 @@ import {
   CALENDAR_CONTENT_ID,
   CHURCH_CONTENT_ID,
   HOME_CONTENT_ID,
-  JOIN_REQUEST_CONTENT_ID,
   MANAGER_CONTENT_ID,
   MEMBER_CONTENT_ID,
   PERMISSION_CONTENT_ID,
-  USER_CONTENT_ID,
   WORSHIP_CONTENT_ID,
 } from '../../constants/layout/content';
 import {
@@ -122,22 +120,22 @@ export const getContent = (
         // 홈
         case HOME_CONTENT_ID.HOME:
           return <Home />;
-
-        // 회원
-        case USER_CONTENT_ID.USER:
-          return <ChurchUserList />;
-
+        //
+        // // 회원
+        // case USER_CONTENT_ID.USER:
+        //   return <ChurchUserList />;
+        //
         // 권한 유형
         case PERMISSION_CONTENT_ID.PERMISSION:
           return <PermissionTemplateList />;
 
-        // 관리자
-        case MANAGER_CONTENT_ID.MANAGER:
-          return <ChurchUserList isManager />;
+        // // 관리자
+        // case MANAGER_CONTENT_ID.MANAGER:
+        //   return <ChurchUserList isManager />;
 
-        // 등록 요청
-        case JOIN_REQUEST_CONTENT_ID.JOIN_REQUEST:
-          return <JoinRequestList />;
+        // // 등록 요청
+        // case JOIN_REQUEST_CONTENT_ID.JOIN_REQUEST:
+        //   return <JoinRequestList />;
 
         // 달력
         case CALENDAR_CONTENT_ID.CALENDAR:
@@ -197,6 +195,11 @@ export const getContent = (
       return <MinistryGroupManagement />;
     case CHURCH_CONTENT_ID.OFFICER:
       return <OfficerManagement />;
+
+    case MANAGER_CONTENT_ID.MANAGER:
+      return <ChurchUserList isManager />;
+    case MANAGER_CONTENT_ID.JOIN:
+      return <JoinRequestList />;
 
     case MEMBER_CONTENT_ID.NEW:
       return <MemberList isNewMember={true} />;

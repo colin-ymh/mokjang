@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { MainText } from '../../common/text/main-text';
-import { GRAY, MAIN, WHITE } from '../../../../constants/styles/color';
+import { MainText } from '@mokjang/components';
+import { GRAY, MAIN, WHITE } from '@mokjang/constants';
 
 const HeaderBarContainer = styled.div`
   display: flex;

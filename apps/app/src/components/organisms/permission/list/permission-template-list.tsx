@@ -12,7 +12,6 @@ import {
   PermissionTemplate,
 } from '../../../../models/permission/permission';
 import { setTargetPermissionTemplate } from '../../../../redux/reducers/target/target-permission-template-reducer';
-import { getIsWellFormedTitle } from '../../../../utils/check';
 import { PermissionsApi } from '../../../../api/permissions/permissions.api';
 import { CHURCH_USER_ROLE } from '../../../../constants/constant';
 import { getOwnerPermissionTemplate } from '../../../../utils/permission';
@@ -39,8 +38,6 @@ const PermissionTemplateList = ({}: PermissionTemplateListProps) => {
     (state: RootState) => state.targetPermissionTemplate
   );
 
-  const [isSaveEnabled, setIsSaveEnabled] = useState<boolean>(false);
-
   const [thrownError, setThrownError] = useState<Error | null>(null);
   if (thrownError) {
     throw thrownError;
@@ -52,25 +49,11 @@ const PermissionTemplateList = ({}: PermissionTemplateListProps) => {
     setIsPermissionTemplateInformationShown,
   ] = useState<boolean>(false);
 
-  // 수정 팝업 On/Off
-  const [isEditShown, setIsEditShown] = useState<boolean>(false);
-
   // 서버에서 불러오는 교인 목록 페이지
   const [page, setPage] = useState<number>(1);
 
   // 데이터 로딩 상태
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  // 삭제 확인 팝업
-  const [isPopupShown, setIsPopupShown] = useState<boolean>(false);
-
-  const onClickConfirmOpen = () => {
-    setIsPopupShown(true);
-  };
-
-  const onClickConfirmClose = () => {
-    setIsPopupShown(false);
-  };
 
   // 무한 스크롤로 데이터 추가 로드
   const loadPermissionTemplates = async () => {
@@ -139,51 +122,6 @@ const PermissionTemplateList = ({}: PermissionTemplateListProps) => {
     permissionTemplateOrderDirection,
   ]);
 
-  const onClickEditDone = async () => {
-    try {
-      // 1. 메인 심방 정보 수정
-      await permissionsApi.editPermissionTemplate(
-        {
-          churchId,
-          templateId: targetPermissionTemplate.id,
-        },
-        {
-          title: permissionTemplates
-            .map((template) => template.title)
-            .includes(targetPermissionTemplate.title)
-            ? undefined
-            : targetPermissionTemplate.title,
-          unitIds: targetPermissionTemplate.unitIds || undefined,
-        }
-      );
-
-      await permissionsApi
-        .getPermissionTemplate({
-          churchId,
-          templateId: targetPermissionTemplate.id,
-        })
-        .then(async (response) => {
-          const newPermissionTemplate: PermissionTemplate = response.data.data;
-
-          const newPermissionTemplates = permissionTemplates.map((v) => {
-            return v.id !== newPermissionTemplate.id
-              ? v
-              : newPermissionTemplate;
-          });
-
-          dispatch(setPermissionTemplates(newPermissionTemplates));
-          dispatch(setTargetPermissionTemplate(newPermissionTemplate));
-
-          setIsEditShown(false);
-          setTimeout(() => {
-            setIsPermissionTemplateInformationShown(true);
-          }, 500);
-        });
-    } catch (error) {
-      setThrownError(error instanceof Error ? error : new Error(String(error)));
-    }
-  };
-
   // 목록에서 업무을 선택하여 상세 페이지로 이동
   const onClickPermissionTemplateItem = async (templateId: string) => {
     try {
@@ -247,64 +185,16 @@ const PermissionTemplateList = ({}: PermissionTemplateListProps) => {
     }
   };
 
-  // 수정 페이지 종료
-  const onClickEditClose = () => {
-    const prevPermissionTemplate = permissionTemplates.find(
-      (template) => template.id === targetPermissionTemplate.id
-    );
-    if (prevPermissionTemplate) {
-      dispatch(
-        setTargetPermissionTemplate({
-          ...prevPermissionTemplate,
-          permissionUnits: targetPermissionTemplate.permissionUnits,
-        })
-      );
-    }
-    setIsEditShown(false);
-    setTimeout(() => {
-      setIsPermissionTemplateInformationShown(true);
-    }, 500);
-  };
-
-  // 수정 페이지 열기
-  const onClickEditOpen = () => {
-    setIsPermissionTemplateInformationShown(false);
-    setTimeout(() => {
-      setIsEditShown(true);
-    }, 500);
-  };
-
-  useEffect(() => {
-    setIsPopupShown(false);
-  }, [targetPermissionTemplate]);
-
-  useEffect(() => {
-    if (!getIsWellFormedTitle(targetPermissionTemplate.title)) {
-      setIsSaveEnabled(false);
-      return;
-    }
-
-    setIsSaveEnabled(true);
-  }, [targetPermissionTemplate]);
-
   const props = {
     list: {
       onClickPermissionTemplateItem,
       loadPermissionTemplates,
     },
     information: {
-      isSaveEnabled,
       isPermissionTemplateInformationShown,
-      isEditShown,
       isLoading,
-      isPopupShown,
       onClickClose,
       onClickDelete,
-      onClickConfirmOpen,
-      onClickConfirmClose,
-      onClickEditDone,
-      onClickEditOpen,
-      onClickEditClose,
     },
   };
 

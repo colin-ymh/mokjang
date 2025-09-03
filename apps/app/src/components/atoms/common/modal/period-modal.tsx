@@ -80,6 +80,7 @@ const PeriodModal = ({
         isOpened={isShown}
         onClick={onClickClose}
         blur={false}
+        zIndex={50}
       />
       <PeriodContainer>
         <MainText>{t('period')}</MainText>

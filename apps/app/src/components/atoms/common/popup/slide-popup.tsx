@@ -106,6 +106,8 @@ type SlidePopupProps = {
   onClickClose: () => void;
   onClickDone?: () => void;
   headerTitle?: string;
+  headerLeft?: ReactNode;
+  headerHeight?: number;
   headerRight?: ReactNode;
   cancelText?: string;
   doneText?: string;
@@ -128,6 +130,8 @@ const SlidePopup = ({
   onClickClose,
   onClickDone,
   headerTitle,
+  headerLeft,
+  headerHeight,
   headerRight,
   cancelText,
   doneText,
@@ -165,7 +169,9 @@ const SlidePopup = ({
         onClickCancel={onClickClose}
         onClickDone={onClickDone}
         headerTitle={headerTitle}
+        headerLeft={headerLeft}
         headerRight={headerRight}
+        headerHeight={headerHeight}
         doneText={doneText}
         cancelText={cancelText}
         doneBackgroundColor={doneBackgroundColor}

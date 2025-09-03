@@ -9,8 +9,8 @@ import { AuthApi, IS_TEST } from '@/api/auth/auth.api';
 import { getFormattedMobilePhone, getFormattedName } from '@/utils/format';
 import { UserApi } from '@/api/user/user.api';
 import { setIsToastShown } from '@/redux/reducers/toast-popup-reducer';
-import { usePageRouter } from '@mokjang/utils';
-import { Loading } from '@mokjang/components';
+import { usePageRouter } from '../../../../../../packages/utils/src';
+import { Loading } from '../../../../../../packages/components/src';
 import RegisterView from '@/components/organisms/register/register.view';
 
 const Register = () => {

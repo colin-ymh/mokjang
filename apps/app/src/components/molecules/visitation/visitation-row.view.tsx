@@ -1,35 +1,34 @@
 import { ChangeEvent, Ref } from 'react';
 import styled from 'styled-components';
 
-import Button from '../../atoms/common/button/button';
-import { BLACK, GRAY, WHITE } from '../../../constants/styles/color';
-import { VISITATION } from '../../../constants/column/visitation-column';
+import { Button, SvgIcon } from '../../../../../../packages/components/src';
+import { GRAY, MAIN, WHITE } from '../../../../../../packages/constants/src';
+import { VISITATION } from '@/constants/column/visitation-column';
 
 import {
   useTaskStatusFilterDropdownItems,
   useVisitationSearchFilterDropdownItems,
-} from '../../../hooks/dropdown/dropdown-items';
+} from '@/hooks/dropdown/dropdown-items';
 import useWindowSize from '../../../hooks/window/window';
 import { useScopedI18n } from '../../../../locales/client';
 import VisitationFilteredItem, {
   VisitationFilteredItemType,
 } from '../../atoms/visitation/visitation-filtered-item';
 import PeriodModal from '../../atoms/common/modal/period-modal';
-import { RootState } from '../../../redux/store';
+import { RootState } from '@/redux/store';
 import { useSelector } from 'react-redux';
-import StatusDropdown from '../../atoms/common/dropdown/status-dropdown';
 import SearchInput from '../../atoms/common/input/search-input';
-import { TASK_STATUS } from '../../../constants/status/status';
+import { TASK_STATUS } from '@/constants/status/status';
 
 import Calendar from '../../../../public/svg/calendar.svg';
-import SvgIcon from '../../atoms/common/icon/svg-icon';
+import Dropdown from '@/components/atoms/common/dropdown/dropdown';
 
 const VisitationContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   width: 100%;
-  border-bottom: 1px solid ${GRAY.LIGHT};
+  // border-bottom: 1px solid ${GRAY.LIGHT};
   flex-shrink: 0;
   position: relative;
   background-color: ${WHITE};
@@ -40,6 +39,7 @@ const RowTop = styled.div`
   flex-direction: row;
   justify-content: space-between;
   flex-shrink: 0;
+  padding: 10px 20px;
 `;
 
 const FilterList = styled.div`
@@ -51,7 +51,6 @@ const ButtonContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 10px 10px 10px 20px;
   position: relative;
   gap: 10px;
 `;
@@ -69,13 +68,10 @@ const FilteredItemList = styled.div<{ $width: number }>`
 
 const SearchContainer = styled.div`
   display: flex;
-  padding: 10px;
   flex-direction: row;
   justify-content: flex-end;
   align-items: center;
   gap: 10px;
-  right: 20px;
-  position: absolute;
 `;
 
 export type VISITATION_SEARCH_FILTER = VISITATION.TITLE | VISITATION.IN_CHARGE;
@@ -135,19 +131,22 @@ const VisitationRowView = ({
               width={'auto'}
               onClick={onClickPeriodModal}
               backgroundColor={WHITE}
-              borderColor={GRAY.LIGHT}
-              color={BLACK}
-              icon={<SvgIcon svg={Calendar} />}
+              borderColor={isModalShown ? MAIN.DEFAULT : GRAY.LIGHT}
+              color={GRAY.SEMI_DARK}
+              icon={
+                <SvgIcon svg={Calendar} color={GRAY.SEMI_DARK} bottom={0.5} />
+              }
             />
 
-            <StatusDropdown
+            <Dropdown
               value={statusFilter}
               items={statusFilterDropdownItems}
               onChangeItem={onClickStatusFilterItem}
               height={30}
-              width={130}
+              width={100}
               borderColor={GRAY.LIGHT}
               backgroundBlur={false}
+              color={GRAY.SEMI_DARK}
             />
             {/* 설정 모달 */}
             <PeriodModal
@@ -179,6 +178,7 @@ const VisitationRowView = ({
             onChangeSearchValue={onChangeSearchValue}
             onKeyDown={onKeyDown}
             onClickSearch={onClickSearch}
+            color={GRAY.SEMI_DARK}
           />
         </SearchContainer>
       </RowTop>

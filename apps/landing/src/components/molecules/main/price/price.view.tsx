@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import { MainText } from '@mokjang/components';
-import { GRAY } from '@mokjang/constants';
+import { MainText } from '../../../../../../../packages/components/src';
+import { GRAY } from '../../../../../../../packages/constants/src';
 import { PlanList } from '@/models/subscription/subscription';
 import PriceItem from '@/components/atoms/main/price/price-item';
 import { useScopedI18n } from '../../../../../locales/client';
