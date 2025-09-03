@@ -1,0 +1,23 @@
+import { ReactNode } from 'react';
+import { MainTextProps } from '../text';
+export type ButtonProps = MainTextProps & {
+    text?: string;
+    disabled?: boolean;
+    onClick?: (event: any) => void;
+    width?: number | 'auto';
+    height?: number;
+    backgroundColor?: string;
+    color?: string;
+    isShadow?: boolean;
+    borderRadius?: number;
+    children?: ReactNode;
+    icon?: ReactNode;
+    borderColor?: string;
+    onMouseUp?: (event: any) => void;
+    onMouseDown?: (event: any) => void;
+    columnPadding?: number;
+    rowPadding?: number;
+    baselineOffsetPx?: number;
+    gap?: number;
+};
+export declare const Button: ({ text, disabled, onClick, width, height, backgroundColor, isShadow, borderRadius, color, fontWeight, fontSize, children, icon, borderColor, onMouseDown, onMouseUp, columnPadding, rowPadding, baselineOffsetPx, gap, }: ButtonProps) => import("react/jsx-runtime").JSX.Element;
