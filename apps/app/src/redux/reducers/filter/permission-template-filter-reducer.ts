@@ -1,13 +1,9 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { BLANK, ORDER_DIRECTION } from '../../../constants/constant';
-import {
-  PermissionTemplate,
-  PermissionUnit,
-} from '../../../models/permission/permission';
-import { PERMISSION_TEMPLATE } from '../../../constants/column/permission-column';
+
 import { RootState } from '../../store';
 import { PermissionsApi } from '../../../api/permissions/permissions.api';
-import { Member } from '../../../models/member/member';
+import { Member, PermissionTemplate, PermissionUnit } from '@mokjang/models';
+import { BLANK, ORDER_DIRECTION, PERMISSION_TEMPLATE } from '@mokjang/constants';
 
 type PERMISSION_TEMPLATE_FILTER = {
   [PERMISSION_TEMPLATE.TITLE]: string;

@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import styled from 'styled-components';
-import { MinistryGroup } from '../../../models/management/management';
-import { BLANK } from '../../../constants/constant';
+import { MinistryGroup } from '@mokjang/models';
+import { BLANK } from '@mokjang/constants';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../redux/store';
 import MinistryGroupHierarchyItem from '../../atoms/ministry/ministry-hierarchy-item';

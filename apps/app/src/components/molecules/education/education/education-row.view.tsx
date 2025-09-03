@@ -1,7 +1,7 @@
 import { ChangeEvent, Ref } from 'react';
 import styled from 'styled-components';
-import { GRAY, WHITE } from '../../../../constants/styles/color';
-import { EDUCATION } from '../../../../constants/column/education-column';
+import { GRAY, WHITE } from '@mokjang/constants';
+import { EDUCATION } from '@mokjang/constants';
 
 import { useEducationSearchFilterDropdownItems } from '../../../../hooks/dropdown/dropdown-items';
 import useWindowSize from '../../../../hooks/window/window';

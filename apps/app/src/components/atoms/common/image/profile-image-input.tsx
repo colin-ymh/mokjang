@@ -10,7 +10,7 @@ import {
   getResizedImageFile,
   revokePreviewUrl,
 } from '@/utils/image';
-import { BLANK } from '@/constants/constant';
+import { BLANK } from '@mokjang/constants';
 import ProfileImageInputView from './profile-image-input.view';
 
 type ProfileImageInputProps = {

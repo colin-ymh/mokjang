@@ -1,22 +1,22 @@
-import { GRAY, MAIN, YELLOW } from '../../../../../constants/styles/color';
-import { DEFAULT_MEMBER, Member } from '../../../../../models/member/member';
+import { GRAY, MAIN, YELLOW } from '@mokjang/constants';
+import { DEFAULT_MEMBER, Member } from '@mokjang/models';
 import styled from 'styled-components';
-import { MainText } from '../../../common/text/main-text';
+import { MainText } from '@mokjang/components';
 import ProfileImage from '../../../common/image/profile-image';
-import { BLANK } from '../../../../../constants/constant';
-import { MinistryGroup } from '../../../../../models/management/management';
+import { BLANK } from '@mokjang/constants';
+import { MinistryGroup } from '@mokjang/models';
 import React, { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
-import { LOCALE } from '../../../../../constants/state/locale';
+import { LOCALE } from '@mokjang/constants';
 import { useI18n } from '../../../../../../locales/client';
 import {
   getTranslatedAlreadyMinistryGroupLeader,
   getTranslatedNewMinistryGroupLeader,
-} from '../../../../../utils/translate';
+} from '@mokjang/utils';
 
-import ArrowUp from '../../../../../../public/svg/arror-up.svg';
-import RadioButton from '../../../common/radio-button/radio-button';
-import MainTag from '../../../common/tag/main-tag';
+import { Svg } from '@mokjang/assets';
+import { RadioButton } from '@mokjang/components';
+import { MainTag } from '@mokjang/components';
 
 const EditMinistryGroupLeaderContainer = styled.div`
   display: flex;
@@ -76,7 +76,7 @@ const ResultContainer = styled.div`
   gap: 10px;
 `;
 
-const ArrowIcon = styled(ArrowUp)`
+const ArrowIcon = styled(Svg.ArrorUp)`
   width: 14px;
   height: 14px;
   stroke: ${MAIN.DEFAULT};

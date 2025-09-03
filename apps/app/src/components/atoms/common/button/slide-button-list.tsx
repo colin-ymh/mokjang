@@ -1,10 +1,7 @@
 import styled from 'styled-components';
 import React, { useState } from 'react';
-import { DESTRUCTIVE, GRAY } from '@/constants/styles/color';
-import Kebab from '../../../../../public/svg/kebab.svg';
-import Trash from '../../../../../public/svg/trash.svg';
-import Pencil from '../../../../../public/svg/pencil.svg';
-import Plus from '../../../../../public/svg/plus.svg';
+import { DESTRUCTIVE, GRAY } from '@mokjang/constants';
+import { Svg } from '@mokjang/assets';
 
 const ListContainer = styled.div<{ $position: string; $right: number }>`
   display: flex;
@@ -14,7 +11,10 @@ const ListContainer = styled.div<{ $position: string; $right: number }>`
 `;
 
 // Kebab 버튼
-const KebabButton = styled(Kebab)<{ $isOpened: boolean; $buttonSize: number }>`
+const KebabButton = styled(Svg.Kebab)<{
+  $isOpened: boolean;
+  $buttonSize: number;
+}>`
   display: flex;
   width: ${({ $isOpened, $buttonSize }) => ($isOpened ? '0' : $buttonSize)}px;
   height: ${({ $buttonSize }) => $buttonSize}px;
@@ -48,7 +48,7 @@ const ButtonContainer = styled.div<{
 `;
 
 // 개별 버튼들
-const EditButton = styled(Pencil)<{ $buttonSize: number }>`
+const EditButton = styled(Svg.Pencil)<{ $buttonSize: number }>`
   display: flex;
   width: ${({ $buttonSize }) => $buttonSize}px;
   height: ${({ $buttonSize }) => $buttonSize}px;
@@ -62,7 +62,7 @@ const EditButton = styled(Pencil)<{ $buttonSize: number }>`
   }
 `;
 
-const DeleteButton = styled(Trash)<{ $buttonSize: number }>`
+const DeleteButton = styled(Svg.Trash)<{ $buttonSize: number }>`
   display: flex;
   width: ${({ $buttonSize }) => $buttonSize}px;
   height: ${({ $buttonSize }) => $buttonSize}px;
@@ -76,7 +76,7 @@ const DeleteButton = styled(Trash)<{ $buttonSize: number }>`
   }
 `;
 
-const PlusButton = styled(Plus)<{ $buttonSize: number }>`
+const PlusButton = styled(Svg.Plus)<{ $buttonSize: number }>`
   display: flex;
   width: ${({ $buttonSize }) => $buttonSize}px;
   height: ${({ $buttonSize }) => $buttonSize}px;

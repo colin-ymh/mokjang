@@ -1,5 +1,5 @@
 import { RefObject } from 'react';
-import { GroupHistory } from '../../../../../../models/member/history';
+import { GroupHistory } from '@mokjang/models';
 import styled from 'styled-components';
 import GroupHistoryItem from '../../../../../atoms/member/history/group-history-item';
 import useWindowSize from '../../../../../../hooks/window/window';

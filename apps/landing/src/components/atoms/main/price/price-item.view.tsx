@@ -13,7 +13,7 @@ import {
   MainText,
   SvgIcon,
 } from '../../../../../../../packages/components/src';
-import { Plan } from '@/models/subscription/subscription';
+import { Plan } from '@mokjang/models';
 import { useScopedI18n } from '../../../../../locales/client';
 import { usePathname } from 'next/navigation';
 

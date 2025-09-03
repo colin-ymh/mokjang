@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { DEFAULT_MEMBER, Member } from '../../../models/member/member';
+import { DEFAULT_MEMBER, Member } from '@mokjang/models';
 
 type TargetMemberState = {
   targetMember: Member;

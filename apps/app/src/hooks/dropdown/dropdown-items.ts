@@ -4,31 +4,25 @@ import { RootState } from '../../redux/store';
 import {
   BAPTISM,
   DAYS,
+  EDUCATION,
+  EDUCATION_TERM,
   FAMILY,
   GENDER,
   HISTORY,
+  JOIN_REQUEST,
   MARRIAGE,
+  STATUS,
+  STATUS_COLOR,
+  TASK,
+  USER,
+  VISITATION,
   WORSHIP_PERIOD,
-} from '../../constants/constant';
+} from '@mokjang/constants';
 
 import { useI18n } from '../../../locales/client';
-import { DropdownValueType } from '../../components/atoms/common/dropdown/dropdown-item';
-import { VISITATION_METHOD } from '../../models/visitation/visitation';
-import { VISITATION } from '../../constants/column/visitation-column';
-import { STATUS_COLOR } from '../../constants/styles/color';
-import { TASK } from '../../constants/column/task-column';
-import {
-  EDUCATION,
-  EDUCATION_TERM,
-} from '../../constants/column/education-column';
-import { STATUS } from '../../constants/status/status';
-import { USER } from '../../constants/column/user-column';
-import { JOIN_REQUEST } from '../../constants/column/join-request-column';
-
-import Calendar from '../../../public/svg/calendar.svg';
-import Danger from '../../../public/svg/danger.svg';
-import Play from '../../../public/svg/play.svg';
-import Check from '../../../public/svg/check.svg';
+import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-item';
+import { VISITATION_METHOD } from '@mokjang/models';
+import { Svg } from '@mokjang/assets';
 
 export const useBaptismDropdownItems = () => {
   const t = useI18n();
@@ -286,25 +280,25 @@ export const useTaskStatusDropdownItems = () => {
       value: STATUS.RESERVE,
       title: t(STATUS.RESERVE),
       color: STATUS_COLOR.RESERVE,
-      icon: Calendar,
+      icon: Svg.Calendar,
     },
     {
       value: STATUS.IN_PROGRESS,
       title: t(STATUS.IN_PROGRESS),
       color: STATUS_COLOR.IN_PROGRESS,
-      icon: Play,
+      icon: Svg.Play,
     },
     {
       value: STATUS.DONE,
       title: t(STATUS.DONE),
       color: STATUS_COLOR.DONE,
-      icon: Check,
+      icon: Svg.Check,
     },
     {
       value: STATUS.PENDING,
       title: t(STATUS.PENDING),
       color: STATUS_COLOR.PENDING,
-      icon: Danger,
+      icon: Svg.Danger,
     },
   ];
 
@@ -324,25 +318,25 @@ export const useTaskStatusFilterDropdownItems = () => {
       value: STATUS.RESERVE,
       title: t(STATUS.RESERVE),
       color: STATUS_COLOR.RESERVE,
-      icon: Calendar,
+      icon: Svg.Calendar,
     },
     {
       value: STATUS.IN_PROGRESS,
       title: t(STATUS.IN_PROGRESS),
       color: STATUS_COLOR.IN_PROGRESS,
-      icon: Play,
+      icon: Svg.Play,
     },
     {
       value: STATUS.DONE,
       title: t(STATUS.DONE),
       color: STATUS_COLOR.DONE,
-      icon: Check,
+      icon: Svg.Check,
     },
     {
       value: STATUS.PENDING,
       title: t(STATUS.PENDING),
       color: STATUS_COLOR.PENDING,
-      icon: Danger,
+      icon: Svg.Danger,
     },
   ];
 

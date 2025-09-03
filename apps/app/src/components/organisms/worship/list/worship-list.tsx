@@ -7,7 +7,7 @@ import {
 } from '../../../../redux/reducers/filter/worship-filter-reducer';
 
 import WorshipListView from './worship-list.view';
-import { DEFAULT_WORSHIP } from '../../../../models/worship/worship';
+import { DEFAULT_WORSHIP } from '@mokjang/models';
 import { setTargetWorship } from '../../../../redux/reducers/target/target-worship-reducer';
 import {
   setIsToastShown,

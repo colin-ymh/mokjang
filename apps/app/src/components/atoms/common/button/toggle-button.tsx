@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import { ButtonProps } from './button';
-import { GRAY, MAIN, WHITE } from '@/constants/styles/color';
+import { ButtonProps } from '@mokjang/components';
+import { GRAY, MAIN, WHITE } from '@mokjang/constants';
 
 const ToggleContainer = styled.div<{ $value: boolean }>`
   position: relative;

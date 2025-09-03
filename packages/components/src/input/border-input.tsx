@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 import { BLACK, BLANK, GRAY, MAIN, SIZE, WHITE } from '@mokjang/constants';
 import { InputProps } from './main-input';
-import { MainText } from '../text/main-text';
+import { MainText } from '@mokjang/components';
 
 const BorderInputContainer = styled.input<{
   $isEditable: boolean;

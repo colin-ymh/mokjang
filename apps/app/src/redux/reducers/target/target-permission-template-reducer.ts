@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import {
   DEFAULT_PERMISSION_TEMPLATE,
   PermissionTemplate,
-} from '../../../models/permission/permission';
+} from '@mokjang/models';
 
 type TargetPermissionTemplateState = {
   targetPermissionTemplate: PermissionTemplate;

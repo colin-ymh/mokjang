@@ -1,10 +1,10 @@
 import { AxiosResponse } from 'axios';
-import { SERVER_URL, TEST_SERVER_URL } from '../../constants/state/url';
-import { ORDER_DIRECTION } from '../../constants/constant';
+import { SERVER_URL, TEST_SERVER_URL } from '@mokjang/constants';
+import { ORDER_DIRECTION } from '@mokjang/constants';
 import { CustomError } from '../error/error';
-import { EDUCATION_ENROLLMENT } from '../../constants/column/education-column';
+import { EDUCATION_ENROLLMENT } from '@mokjang/constants';
 import authorizeAxios from '../authorize-axios';
-import { EDUCATION_ENROLLMENT_STATUS } from '../../constants/status/status';
+import { EDUCATION_ENROLLMENT_STATUS } from '@mokjang/constants';
 import qs from 'qs';
 
 type GetEducationEnrollmentsParams = {

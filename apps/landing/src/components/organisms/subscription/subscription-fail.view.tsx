@@ -14,10 +14,13 @@ import {
   WHITE,
 } from '../../../../../../packages/constants/src';
 import { useI18n, useScopedI18n } from '../../../../locales/client';
-import { getTranslatedMonthlySubscriptionPrice } from '@/utils/translate';
+
 import { usePathname } from 'next/navigation';
-import { getTranslatedDateFromDateString } from '@mokjang/app/src/utils/translate';
-import { getTimeStringFromDate } from '@mokjang/app/src/utils/date';
+import {
+  getTimeStringFromDate,
+  getTranslatedDateFromDateString,
+  getTranslatedMonthlySubscriptionPrice,
+} from '@mokjang/utils';
 
 const Container = styled.div`
   display: flex;

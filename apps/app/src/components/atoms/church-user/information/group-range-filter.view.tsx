@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-import { Group } from '../../../../models/management/management';
-import { GRAY, MAIN } from '../../../../constants/styles/color';
-import { MainText } from '../../common/text/main-text';
-import { SIZE } from '../../../../constants/styles/style';
-import { MEDIA_MIN_WIDTH } from '../../../../constants/constant';
+import { Group } from '@mokjang/models';
+import { GRAY, MAIN } from '@mokjang/constants';
+import { MainText } from '@mokjang/components';
+import { SIZE } from '@mokjang/constants';
+import { MEDIA_MIN_WIDTH } from '@mokjang/constants';
 
 const FilterContainer = styled.div`
   display: flex;

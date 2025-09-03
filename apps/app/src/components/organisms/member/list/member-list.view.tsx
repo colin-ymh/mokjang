@@ -4,21 +4,19 @@ import MemberTable, {
   MemberTableProps,
 } from '../../../molecules/member/list/member-table';
 import MemberFilterRow from '../../../molecules/member/list/member-filter-row';
-import { MEDIA_MIN_WIDTH } from '../../../../constants/constant';
+import { MEDIA_MIN_WIDTH } from '@mokjang/constants';
 import MemberItemList from '../../../molecules/member/list/member-item-list';
 import SlidePopup from '../../../atoms/common/popup/slide-popup';
 import MemberInformation from '../information/member-information';
-import Loading from '../../../atoms/common/etc/loading';
+import { Loading } from '@mokjang/components';
 import React, { useEffect } from 'react';
-import { GRAY, WHITE } from '../../../../constants/styles/color';
+import { GRAY, WHITE } from '@mokjang/constants';
 import ConfirmPopup from '../../../atoms/common/popup/error-popup';
 import { useScopedI18n } from '../../../../../locales/client';
 
-import Pencil from '../../../../../public/svg/pencil.svg';
-import Cancel from '../../../../../public/svg/cancel.svg';
-import Trash from '../../../../../public/svg/trash.svg';
-import SvgIcon from '../../../atoms/common/icon/svg-icon';
-import CustomPopup from '../../../atoms/common/popup/custom-popup';
+import { Svg } from '@mokjang/assets';
+import { SvgIcon } from '@mokjang/components';
+import { CustomPopup } from '@mokjang/components';
 import EditMember from '../edit/edit-member';
 
 const MemberListContainer = styled.div`
@@ -125,11 +123,11 @@ const MemberListView = (props: MemberListViewProps) => {
         onClickDone={onClickEditOpen}
         doneText={t_button('edit')}
         cancelText={t_button('delete')}
-        doneIcon={<SvgIcon svg={Pencil} color={WHITE} width={2} />}
-        cancelIcon={<SvgIcon svg={Trash} color={GRAY.DEFAULT} width={2} />}
+        doneIcon={<SvgIcon svg={Svg.Pencil} color={WHITE} width={2} />}
+        cancelIcon={<SvgIcon svg={Svg.Trash} color={GRAY.DEFAULT} width={2} />}
         headerRight={
           <CancelContainer>
-            <SvgIcon svg={Cancel} onClick={onClickClose} size={18} />
+            <SvgIcon svg={Svg.Cancel} onClick={onClickClose} size={18} />
           </CancelContainer>
         }
         disabledKeyboard={true}

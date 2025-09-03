@@ -1,9 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { DEFAULT_GROUP, Group } from '../../../models/management/management';
-import {
-  ChurchEvent,
-  DEFAULT_CHURCH_EVENT,
-} from '../../../models/church-event/church-event';
+import { DEFAULT_GROUP, Group } from '@mokjang/models';
+import { ChurchEvent, DEFAULT_CHURCH_EVENT } from '@mokjang/models';
 
 type TargetChurchEventState = {
   targetChurchEvent: ChurchEvent;

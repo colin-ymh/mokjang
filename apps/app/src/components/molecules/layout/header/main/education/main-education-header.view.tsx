@@ -1,18 +1,18 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { BLACK, GRAY, MAIN } from '../../../../../../constants/styles/color';
-import { MainText } from '../../../../../atoms/common/text/main-text';
-import { SIZE } from '../../../../../../constants/styles/style';
+import { BLACK, GRAY, MAIN } from '@mokjang/constants';
+import { MainText } from '@mokjang/components';
+import { SIZE } from '@mokjang/constants';
 
 import { useScopedI18n } from '../../../../../../../locales/client';
 
-import { MEDIA_MIN_WIDTH } from '../../../../../../constants/constant';
-import Button from '../../../../../atoms/common/button/button';
+import { MEDIA_MIN_WIDTH } from '@mokjang/constants';
+import { Button } from '@mokjang/components';
 import AddEducation from '../../../../../organisms/education/education/add/add-education';
 
-import ChevronLeft from '../../../../../../../public/svg/chevron-left.svg';
-import { MAIN_HEADER_ID } from '../../../../../../constants/layout/header';
+import { Svg } from '@mokjang/assets';
+import { MAIN_HEADER_ID } from '@/constants/layout/header';
 import WrappedPagePopup from '../../../../../atoms/common/popup/wrapped-page-popup';
 
 const HeaderContainer = styled.div`
@@ -47,7 +47,7 @@ const TitleContainer = styled.div`
   flex-direction: row;
 `;
 
-const GoBackButton = styled(ChevronLeft)`
+const GoBackButton = styled(Svg.ChevronLeft)`
   width: 30px;
   height: 30px;
   stroke: ${BLACK};

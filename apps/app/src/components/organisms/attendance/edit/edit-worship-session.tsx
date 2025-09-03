@@ -2,10 +2,10 @@ import EditWorshipSessionView from './edit-worship-session.view';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../../redux/store';
 import { ChangeEvent, useEffect, useState } from 'react';
-import { getFormattedTitle } from '../../../../utils/format';
+import { getFormattedTitle } from '@mokjang/utils';
 import { setTargetWorshipSession } from '../../../../redux/reducers/target/target-worship-session-reducer';
 import { MemberDropdownType } from '../../../atoms/common/dropdown/member-dropdown-item';
-import { BLANK } from '../../../../constants/constant';
+import { BLANK } from '@mokjang/constants';
 
 const EditWorshipSession = () => {
   const dispatch = useDispatch<AppDispatch>();

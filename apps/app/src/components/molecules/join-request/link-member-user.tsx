@@ -3,10 +3,10 @@ import LinkMemberUserView from './link-member-user.view';
 import { MembersApi } from '../../../api/members/members.api';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../redux/store';
-import { BLANK } from '../../../../../../packages/constants/src';
-import { DEFAULT_MEMBER, Member } from '../../../models/member/member';
-import { getFormattedName } from '../../../utils/format';
-import { MEMBER } from '@/constants/column/member-column';
+import { BLANK } from '@mokjang/constants';
+import { DEFAULT_MEMBER, Member } from '@mokjang/models';
+import { getFormattedName } from '@mokjang/utils';
+import { MEMBER } from '@mokjang/constants';
 
 type LinkMemberUserProps = {
   prevMember?: Member;

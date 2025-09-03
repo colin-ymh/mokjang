@@ -1,7 +1,7 @@
 import styled from 'styled-components';
-import { MainText } from '../text/main-text';
-import { GRAY, MAIN, WHITE } from '@/constants/styles/color';
-import { Ministry } from '@/models/management/management';
+import { MainText } from '@mokjang/components';
+import { GRAY, MAIN, WHITE } from '@mokjang/constants';
+import { Ministry } from '@mokjang/models';
 
 const TagContainer = styled.div<{
   $backgroundColor: string;

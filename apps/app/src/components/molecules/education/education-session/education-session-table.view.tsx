@@ -3,31 +3,21 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
 
-import { GRAY, MAIN, ORANGE, WHITE } from '../../../../constants/styles/color';
-import {
-  Education,
-  EducationSession,
-  EducationTerm,
-} from '../../../../models/education/education';
-import {
-  EDUCATION,
-  EDUCATION_SESSION,
-} from '../../../../constants/column/education-column';
-import Clock from '../../../../../public/svg/clock.svg';
-import SvgIcon from '../../../atoms/common/icon/svg-icon';
-import {
-  getDateFromDateString,
-  getDateStringFromDate,
-} from '../../../../utils/date';
-import MainTag from '../../../atoms/common/tag/main-tag';
+import { GRAY, MAIN, ORANGE, WHITE } from '@mokjang/constants';
+import { Education, EducationSession, EducationTerm } from '@mokjang/models';
+import { EDUCATION, EDUCATION_SESSION } from '@mokjang/constants';
+import { Svg } from '@mokjang/assets';
+import { SvgIcon } from '@mokjang/components';
+import { getDateFromDateString, getDateStringFromDate } from '@mokjang/utils';
+import { MainTag } from '@mokjang/components';
 import {
   getStatusBackgroundColor,
   getStatusFontColor,
 } from '../../../../utils/color';
-import { MainText } from '../../../atoms/common/text/main-text';
+import { MainText } from '@mokjang/components';
 import { usePathname } from 'next/navigation';
-import { LOCALE } from '../../../../constants/state/locale';
-import { SIZE } from '../../../../constants/styles/style';
+import { LOCALE } from '@mokjang/constants';
+import { SIZE } from '@mokjang/constants';
 import { useI18n } from '../../../../../locales/client';
 import EducationSessionTableHeader from '../../../atoms/education/education-session/education-session-table-header';
 
@@ -198,7 +188,12 @@ const EducationSessionTableView = ({
       case EDUCATION_SESSION.NAME:
         return (
           <EducationNameContainer $level={0}>
-            <SvgIcon svg={Clock} size={16} color={ORANGE.DEFAULT} width={2} />
+            <SvgIcon
+              svg={Svg.Clock}
+              size={16}
+              color={ORANGE.DEFAULT}
+              width={2}
+            />
             <TitleContainer>
               <MainText>{`${session.session}${t('session')} ${session.title}`}</MainText>
               <MainText size={SIZE.SMALL} color={GRAY.SEMI_DARK}>

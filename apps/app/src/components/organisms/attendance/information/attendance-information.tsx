@@ -2,13 +2,13 @@ import React, { RefObject, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../../redux/store';
 import { WorshipsApi } from '../../../../api/worship/worships.api';
-import { DEFAULT_GROUP, Group } from '../../../../models/management/management';
+import { DEFAULT_GROUP, Group } from '@mokjang/models';
 import { getGroup } from '../../../../utils/group';
 import {
   Worship,
   WORSHIP_ATTENDANCE_STATUS,
   WorshipAttendance,
-} from '../../../../models/worship/worship';
+} from '@mokjang/models';
 import {
   setTargetWorshipSession,
   setTargetWorshipSessionGroup,
@@ -26,8 +26,8 @@ import {
   getDateFromDateString,
   getDateInWeekByDayOfWeek,
   getDateStringFromDate,
-} from '../../../../utils/date';
-import { ALL, BLANK } from '../../../../constants/constant';
+} from '@mokjang/utils';
+import { ALL, BLANK } from '@mokjang/constants';
 import { CustomError } from '../../../../api/error/error';
 import { WorshipAttendancesApi } from '../../../../api/worship/worship-attendances.api';
 import { setWorshipEnrollments } from '../../../../redux/reducers/filter/worship-enrollment-filter-reducer';

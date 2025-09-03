@@ -1,14 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { GRAY } from '../../../../../../constants/styles/color';
-import { MainText } from '../../../../../atoms/common/text/main-text';
-import { SIZE } from '../../../../../../constants/styles/style';
+import { GRAY } from '@mokjang/constants';
+import { MainText } from '@mokjang/components';
+import { SIZE } from '@mokjang/constants';
 
 import { useScopedI18n } from '../../../../../../../locales/client';
 import { useParams } from 'next/navigation';
-import { MEDIA_MIN_WIDTH } from '../../../../../../constants/constant';
-import { MANAGEMENT_HEADER_ID } from '../../../../../../constants/layout/header';
+import { MEDIA_MIN_WIDTH } from '@mokjang/constants';
+import { MANAGEMENT_HEADER_ID } from '@/constants/layout/header';
 import { useManagerHeaderBarItems } from '@/hooks/layout/header-bar-items';
 import { MANAGER_CONTENT_ID } from '@/constants/layout/content';
 import HeaderBar from '@/components/atoms/layout/header/header-bar';

@@ -6,36 +6,26 @@ import {
   DEFAULT_EDUCATION_SESSION,
   EducationEnrollment,
   EducationSession,
-} from '../../../../../models/education/education';
+} from '@mokjang/models';
 import { setTargetEducationTerm } from '../../../../../redux/reducers/target/target-education-term-reducer';
 import { setEducationTerms } from '../../../../../redux/reducers/filter/education-term-filter-reducer';
 import EducationTermInformationView from './education-term-information.view';
 import { EducationEnrollmentsApi } from '../../../../../api/education/education-enrollments.api';
 
-import {
-  EDUCATION_ENROLLMENT_STATUS,
-  TASK_STATUS,
-} from '../../../../../constants/status/status';
+import { EDUCATION_ENROLLMENT_STATUS, TASK_STATUS } from '@mokjang/constants';
 import { EDUCATION_TERM_CONTENT_ID } from '../../../../../constants/layout/content';
-import { Member } from '../../../../../models/member/member';
+import { Member } from '@mokjang/models';
 import {
   setIsToastShown,
   setToastBackgroundColor,
   setToastText,
 } from '../../../../../redux/reducers/toast-popup-reducer';
-import {
-  BLACK,
-  DESTRUCTIVE,
-  MAIN,
-} from '../../../../../constants/styles/color';
+import { BLACK, DESTRUCTIVE, MAIN } from '@mokjang/constants';
 import { useScopedI18n } from '../../../../../../locales/client';
 import { setEducations } from '../../../../../redux/reducers/filter/education-filter-reducer';
-import {
-  getDateFromDateString,
-  getFullStringFromDate,
-} from '../../../../../utils/date';
+import { getDateFromDateString, getFullStringFromDate } from '@mokjang/utils';
 import { setTargetEducationSession } from '../../../../../redux/reducers/target/target-education-session-reducer';
-import { getIsWellFormedTitle } from '../../../../../utils/check';
+import { getIsWellFormedTitle } from '@mokjang/utils';
 import { EducationSessionsApi } from '../../../../../api/education/education-sessions.api';
 import WrappedPagePopup from '../../../../atoms/common/popup/wrapped-page-popup';
 import AddEducationSession from '../../education-session/add/add-education-session';

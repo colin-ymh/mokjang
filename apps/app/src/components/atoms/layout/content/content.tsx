@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { GRAY } from '../../../../constants/styles/color';
+import { GRAY } from '@mokjang/constants';
 
 export const Content = styled.div`
   flex: 1;

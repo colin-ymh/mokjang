@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-import { MainText } from '../common/text/main-text';
-import { BLANK } from '../../../constants/constant';
-import { MAIN, WHITE } from '../../../constants/styles/color';
-import { SIZE } from '../../../constants/styles/style';
+import { MainText } from '@mokjang/components';
+import { BLANK } from '@mokjang/constants';
+import { MAIN, WHITE } from '@mokjang/constants';
+import { SIZE } from '@mokjang/constants';
 
 import { useI18n } from '../../../../locales/client';
 import Cancel from '../../../../public/svg/cancel.svg';
@@ -12,8 +12,8 @@ import { AppDispatch, RootState } from '../../../redux/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { setJoinRequestFilter } from '../../../redux/reducers/filter/join-request-filter-reducer';
 
-import { JOIN_REQUEST_STATUS } from '../../../constants/status/status';
-import { JOIN_REQUEST } from '../../../constants/column/join-request-column';
+import { JOIN_REQUEST_STATUS } from '@mokjang/constants';
+import { JOIN_REQUEST } from '@mokjang/constants';
 
 const ItemContainer = styled.div`
   display: flex;

@@ -1,9 +1,9 @@
 import { ReactNode } from 'react';
 import styled from 'styled-components';
 
-import { WHITE } from '@/constants/styles/color';
-import Hide from '../etc/hide';
-import PopupLayout from '@/components/organisms/layout/popup-layout';
+import { WHITE } from '@mokjang/constants';
+import { Hide } from '@mokjang/components';
+import { PopupLayout } from '@mokjang/components';
 
 const PagePopupContainer = styled.div`
   display: flex;

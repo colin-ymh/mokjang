@@ -3,9 +3,7 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
-      "@/*": [
-        "./src/*"
-      ]
+      "@/*": ["./src/*"]
     },
     "allowJs": true,
     "jsx": "preserve",
@@ -19,9 +17,9 @@
     "next-env.d.ts",
     "src",
     "next.config.js",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts",
+    "../../packages/components/src/layout/popup-header-bar.tsx",
+    "../../packages/components/src/layout/popup-header-bar.view.tsx"
   ],
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules"]
 }

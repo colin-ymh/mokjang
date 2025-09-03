@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
 import GroupManagementView from './group-management.view';
-import { DEFAULT_GROUP, Group } from '../../../../models/management/management';
-import { BLANK } from '../../../../constants/constant';
+import { DEFAULT_GROUP, Group } from '@mokjang/models';
+import { BLANK } from '@mokjang/constants';
 
 type GroupManagementProps = {};
 

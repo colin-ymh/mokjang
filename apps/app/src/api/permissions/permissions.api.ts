@@ -1,12 +1,15 @@
 import { AxiosResponse } from 'axios';
 import qs from 'qs';
 
-import { SERVER_URL, TEST_SERVER_URL } from '../../constants/state/url';
+import {
+  ORDER_DIRECTION,
+  PERMISSION_TEMPLATE,
+  SERVER_URL,
+  TEST_SERVER_URL,
+} from '@mokjang/constants';
 import authorizeAxios from '../authorize-axios';
 import { CustomError } from '../error/error';
-import { ORDER_DIRECTION } from '../../constants/constant';
-import { PERMISSION_TEMPLATE } from '../../constants/column/permission-column';
-import { DOMAIN } from '../../models/permission/permission';
+import { DOMAIN } from '@mokjang/models';
 
 type GetPermissionUnitsParams = {
   churchId: string;

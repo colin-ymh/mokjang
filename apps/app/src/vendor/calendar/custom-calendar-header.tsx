@@ -9,11 +9,11 @@ import { useEffect, useState } from 'react';
 import CustomCalendarHeaderView, {
   NAVIGATE_ACTION,
 } from './custom-calendar-header.view';
-import { DEFAULT_CHURCH_EVENT } from '../../models/church-event/church-event';
+import { DEFAULT_CHURCH_EVENT } from '@mokjang/models';
 import { setTargetChurchEvent } from '../../redux/reducers/target/target-church-event-reducer';
 import { ChurchEventsApi } from '../../api/church-event/church-events.api';
 import { getScheduleFromChurchEvent } from '../../utils/calendar';
-import { getIsWellFormedTitle } from '../../utils/check';
+import { getIsWellFormedTitle } from '@mokjang/utils';
 
 const CustomCalendarHeader = (toolbarProps: ToolbarProps) => {
   const { date, onNavigate } = toolbarProps;

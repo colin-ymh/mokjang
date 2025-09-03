@@ -1,22 +1,20 @@
-import { GRAY, MAIN, YELLOW } from '../../../../../constants/styles/color';
-import { DEFAULT_MEMBER, Member } from '../../../../../models/member/member';
+import { DEFAULT_MEMBER, Member } from '@mokjang/models';
 import styled from 'styled-components';
-import { MainText } from '../../../common/text/main-text';
+import { MainText } from '@mokjang/components';
 import ProfileImage from '../../../common/image/profile-image';
-import { BLANK } from '../../../../../constants/constant';
-import { Group } from '../../../../../models/management/management';
+import { BLANK, LOCALE, GRAY, MAIN, YELLOW } from '@mokjang/constants';
+import { Group } from '@mokjang/models';
 import React, { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
-import { LOCALE } from '../../../../../constants/state/locale';
 import { useI18n } from '../../../../../../locales/client';
 import {
   getTranslatedAlreadyGroupLeader,
   getTranslatedNewGroupLeader,
-} from '../../../../../utils/translate';
+} from '@mokjang/utils';
 
-import ArrowUp from '../../../../../../public/svg/arror-up.svg';
-import RadioButton from '../../../common/radio-button/radio-button';
-import MainTag from '../../../common/tag/main-tag';
+import { Svg } from '@mokjang/assets';
+import { RadioButton } from '@mokjang/components';
+import { MainTag } from '@mokjang/components';
 
 const EditGroupLeaderContainer = styled.div`
   display: flex;
@@ -76,7 +74,7 @@ const ResultContainer = styled.div`
   gap: 10px;
 `;
 
-const ArrowIcon = styled(ArrowUp)`
+const ArrowIcon = styled(Svg.ArrorUp)`
   width: 14px;
   height: 14px;
   stroke: ${MAIN.DEFAULT};

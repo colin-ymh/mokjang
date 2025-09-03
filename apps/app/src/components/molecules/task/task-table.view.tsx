@@ -3,11 +3,11 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../redux/store';
 
-import { GRAY, WHITE } from '../../../constants/styles/color';
-import { TASK } from '../../../constants/column/task-column';
-import { MainText } from '../../atoms/common/text/main-text';
-import { BLANK } from '../../../constants/constant';
-import { Task } from '../../../models/task/task';
+import { GRAY, WHITE } from '@mokjang/constants';
+import { TASK } from '@mokjang/constants';
+import { MainText } from '@mokjang/components';
+import { BLANK } from '@mokjang/constants';
+import { Task } from '@mokjang/models';
 import useWindowSize from '../../../hooks/window/window';
 import TaskTableHeader from '../../atoms/task/task-table-header';
 import { BLANK_HEADER } from '../../../redux/reducers/filter/member-filter-reducer';
@@ -17,9 +17,9 @@ import {
   getStatusFontColor,
 } from '../../../utils/color';
 import MemberProfile from '../../atoms/member/member-profile';
-import MainTag from '../../atoms/common/tag/main-tag';
-import { STATUS } from '../../../constants/status/status';
-import { getFormattedDate } from '../../../utils/format';
+import { MainTag } from '@mokjang/components';
+import { STATUS } from '@mokjang/constants';
+import { getFormattedDate } from '@mokjang/utils';
 
 // 1. 컬럼별 PX 폭 (마지막 REMARKS만 auto 할 예정)
 const getColumnWidth = (id: string) => {

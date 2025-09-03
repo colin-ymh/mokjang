@@ -1,19 +1,16 @@
 import styled from 'styled-components';
-import { MainText } from '../../../../../../../packages/components/src';
-import { GRAY } from '../../../../../../../packages/constants/src';
+import { MainText } from '@mokjang/components';
+import { GRAY } from '@mokjang/constants';
 import FunctionItem, {
   FunctionItemType,
 } from '@/components/atoms/main/fuction/fuction-item';
-import { FUNCTION } from '@/constants/constant';
 import { useScopedI18n } from '../../../../../locales/client';
 
-import Users from '../../../../../public/svg/users.svg';
-import Calendar from '../../../../../public/svg/calendar.svg';
-import ChartBar from '../../../../../public/svg/chart-bar.svg';
-
+import { Svg } from '@mokjang/assets';
 import FunctionMemberImage from '../../../../../public/png/function-member.png';
 import FunctionScheduleImage from '../../../../../public/png/function-schedule.png';
 import FunctionStatisticImage from '../../../../../public/png/function-statistic.png';
+import { FUNCTION } from '@/constants/constant';
 
 const FunctionContainer = styled.div`
   display: flex;
@@ -55,21 +52,21 @@ const FunctionView = ({}: FunctionViewProps) => {
       title: t_function('member.title'),
       description: t_function('member.description'),
       image: FunctionMemberImage,
-      icon: Users,
+      icon: Svg.Users,
     },
     {
       id: FUNCTION.SCHEDULE,
       title: t_function('schedule.title'),
       description: t_function('schedule.description'),
       image: FunctionScheduleImage,
-      icon: Calendar,
+      icon: Svg.Calendar,
     },
     {
       id: FUNCTION.STATISTIC,
       title: t_function('statistic.title'),
       description: t_function('statistic.description'),
       image: FunctionStatisticImage,
-      icon: ChartBar,
+      icon: Svg.ChartBar,
     },
   ];
 

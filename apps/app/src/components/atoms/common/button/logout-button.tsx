@@ -1,6 +1,6 @@
-import Button from './button';
+import { Button } from '@mokjang/components';
 import { AuthApi } from '@/api/auth/auth.api';
-import { BLACK } from '@/constants/styles/color';
+import { BLACK } from '@mokjang/constants';
 
 const LogoutButton = ({ width }: { width?: number }) => {
   const authApi = new AuthApi(false);

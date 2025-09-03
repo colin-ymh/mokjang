@@ -14,17 +14,13 @@ import styled, {
 } from 'styled-components';
 import { ko } from 'date-fns/locale';
 
-import { BLACK, GRAY, MAIN, RED, WHITE } from '../../constants/styles/color';
+import { BLACK, GRAY, MAIN, RED, WHITE } from '@mokjang/constants';
 import { getMonth, getYear } from 'date-fns';
-import Button from '../../components/atoms/common/button/button';
-import BorderInput from '../../components/atoms/common/input/border-input';
+import { Button } from '@mokjang/components';
+import { BorderInput } from '@mokjang/components';
 import _ from 'lodash';
-
-import Calendar from '../../../public/svg/calendar.svg';
-import ChevronLeft from '../../../public/svg/chevron-left.svg';
-import ChevronRight from '../../../public/svg/chevron-right.svg';
-import Cancel from '../../../public/svg/cancel.svg';
-import SvgIcon from '../../components/atoms/common/icon/svg-icon';
+import { Svg } from '@mokjang/assets';
+import { SvgIcon } from '@mokjang/components';
 
 import { Chevron } from '../../components/atoms/common/dropdown/dropdown-chevron';
 
@@ -243,7 +239,7 @@ const DatePickerPortalStyles = createGlobalStyle`
   }
 `;
 
-const CalendarIcon = styled(Calendar)`
+const CalendarIcon = styled(Svg.Calendar)`
   width: 14px;
   height: 16px;
   stroke: ${BLACK};
@@ -390,12 +386,12 @@ export default function CustomDatePicker({
           aria-label="달력 닫기"
           onClick={() => datePickerRef.current?.setOpen?.(false)}
         >
-          <SvgIcon svg={Cancel} />
+          <SvgIcon svg={Svg.Cancel} />
         </button>
       </div>
       <HeaderContainer>
         <Button
-          icon={<SvgIcon svg={ChevronLeft} />}
+          icon={<SvgIcon svg={Svg.ChevronLeft} />}
           onClick={decreaseMonth}
           disabled={prevMonthButtonDisabled}
           width={50}
@@ -434,7 +430,7 @@ export default function CustomDatePicker({
           <Chevron className="mj-select-chevron" $isOpened={false} />
         </div>
         <Button
-          icon={<SvgIcon svg={ChevronRight} />}
+          icon={<SvgIcon svg={Svg.ChevronRight} />}
           onClick={increaseMonth}
           disabled={nextMonthButtonDisabled}
           width={50}

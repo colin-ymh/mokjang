@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { createPortal } from 'react-dom';
-import { GRAY, WHITE } from '@/constants/styles/color';
-import { MainText } from '../text/main-text';
-import { SIZE } from '@/constants/styles/style';
+import { GRAY, WHITE } from '@mokjang/constants';
+import { MainText } from '@mokjang/components';
+import { SIZE } from '@mokjang/constants';
 
 const TooltipBox = styled.div.attrs<{ $style: React.CSSProperties }>(
   (props) => ({

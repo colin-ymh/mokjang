@@ -1,21 +1,16 @@
-import { MainText } from '../../../../atoms/common/text/main-text';
-import BorderInput from '../../../../atoms/common/input/border-input';
-import {
-  BLACK,
-  DESTRUCTIVE,
-  GRAY,
-  WHITE,
-} from '../../../../../constants/styles/color';
-import Button from '../../../../atoms/common/button/button';
+import { MainText } from '@mokjang/components';
+import { BorderInput } from '@mokjang/components';
+import { BLACK, DESTRUCTIVE, GRAY, WHITE } from '@mokjang/constants';
+import { Button } from '@mokjang/components';
 import OfficerList from './officer-list';
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useI18n, useScopedI18n } from '../../../../../../locales/client';
-import { Officer } from '../../../../../models/management/management';
-import { BLANK } from '../../../../../constants/constant';
-import { getIsWellFormedTitle } from '../../../../../utils/check';
+import { Officer } from '@mokjang/models';
+import { BLANK } from '@mokjang/constants';
+import { getIsWellFormedTitle } from '@mokjang/utils';
 import { fetchOfficers } from '../../../../../redux/reducers/church-reducer';
-import { getFormattedTitle } from '../../../../../utils/format';
+import { getFormattedTitle } from '@mokjang/utils';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../../../redux/store';
 import { OfficersApi } from '../../../../../api/management/officer/officers.api';

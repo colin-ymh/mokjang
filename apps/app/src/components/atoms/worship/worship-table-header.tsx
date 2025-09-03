@@ -3,15 +3,14 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../redux/store';
 
-import { MainText } from '../common/text/main-text';
-import { BLACK, GRAY, MAIN } from '../../../constants/styles/color';
-import { SIZE } from '../../../constants/styles/style';
+import { MainText } from '@mokjang/components';
+import { BLACK, GRAY, MAIN } from '@mokjang/constants';
+import { SIZE } from '@mokjang/constants';
 import { getTranslatedWorshipColumn } from '../../../utils/translate';
-import { WORSHIP } from '../../../constants/column/worship-column';
+import { WORSHIP } from '@mokjang/constants';
 import { useI18n } from '../../../../locales/client';
-import Arrow from '../../../../public/svg/arror-up.svg';
-import ArrowUpDown from '../../../../public/svg/arrow-up-down.svg';
-import { ORDER_DIRECTION } from '../../../constants/constant';
+import { Svg } from '@mokjang/assets';
+import { ORDER_DIRECTION } from '@mokjang/constants';
 
 const HeaderContainer = styled.div`
   display: flex;
@@ -34,14 +33,14 @@ const IconContainer = styled.div`
   cursor: pointer;
 `;
 
-const ArrowUp = styled(Arrow)`
+const ArrowUp = styled(Svg.ArrorUp)`
   width: 14px;
   height: 14px;
   stroke-width: 2px;
   stroke: ${MAIN.DEFAULT};
 `;
 
-const ArrowDown = styled(Arrow)`
+const ArrowDown = styled(Svg.ArrorUp)`
   width: 14px;
   height: 14px;
   stroke-width: 2px;
@@ -49,7 +48,7 @@ const ArrowDown = styled(Arrow)`
   transform: rotate(180deg);
 `;
 
-const ArrowUpDownIcon = styled(ArrowUpDown)`
+const ArrowUpDownIcon = styled(Svg.ArrowUpDown)`
   width: 14px;
   height: 14px;
   stroke-width: 2px;

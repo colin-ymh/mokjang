@@ -6,8 +6,8 @@ import {
   useInitializeChurch,
   useInitializeUser,
 } from '../../../utils/initialize';
-import Loading from '../common/etc/loading';
-import { getIsWebview } from '../../../utils/webview';
+import { Loading } from '@mokjang/components';
+import { getIsWebview } from '@mokjang/utils';
 import { setIsWebview } from '../../../redux/reducers/webview-reducer';
 
 const InitializeStore = ({ children }: { children: React.ReactNode }) => {

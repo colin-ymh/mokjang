@@ -1,11 +1,8 @@
 import styled from 'styled-components';
-import { MAIN, WHITE } from '../../../constants/styles/color';
+import { MAIN, SIZE, WHITE } from '@mokjang/constants';
 
-import { MainText } from '../../atoms/common/text/main-text';
-import { SIZE } from '../../../constants/styles/style';
+import { MainText } from '@mokjang/components';
 import LoginList from '../../molecules/auth/login-list';
-
-import Sheep from '../../../../public/svg/sheep.svg';
 
 const LoginContainer = styled.div`
   display: flex;
@@ -26,19 +23,6 @@ const LogoContainer = styled.div`
   padding: 10px;
   width: 100px;
   height: 100px;
-`;
-
-const Logo = styled(Sheep)`
-  width: 80px;
-  height: 80px;
-
-  path {
-    fill: ${WHITE};
-  }
-
-  circle {
-    fill: ${WHITE};
-  }
 `;
 
 const Login = () => {

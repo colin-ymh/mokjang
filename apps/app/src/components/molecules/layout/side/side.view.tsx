@@ -3,8 +3,8 @@
 import React, { ReactNode } from 'react';
 import styled from 'styled-components';
 
-import { GRAY, MAIN, WHITE } from '../../../../constants/styles/color';
-import { MEDIA_MIN_WIDTH } from '../../../../constants/constant';
+import { GRAY, MAIN, WHITE } from '@mokjang/constants';
+import { MEDIA_MIN_WIDTH } from '@mokjang/constants';
 
 const SideBarContainer = styled.div<{ width: number }>`
   display: flex;

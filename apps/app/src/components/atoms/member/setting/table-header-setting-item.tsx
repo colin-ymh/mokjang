@@ -8,7 +8,7 @@ import {
   setMemberTableHeaderItemList,
 } from '../../../../redux/reducers/filter/member-filter-reducer';
 
-import { MEMBER } from '../../../../constants/column/member-column';
+import { MEMBER } from '@mokjang/constants';
 import TableHeaderSettingItemView from './table-header-setting-item.view';
 
 type TableHeaderSettingItemProps = {

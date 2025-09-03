@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../redux/store';
 
-import { MinistryGroup } from '../../../../../models/management/management';
+import { MinistryGroup } from '@mokjang/models';
 import MinistryGroupListView from './ministry-group-list.view';
 
 type MinistryGroupListProps = {

@@ -1,8 +1,5 @@
-import {
-  ChurchScheduleSummary,
-  ScheduleSummary,
-} from '../models/schedule-summary/schedule-summary';
-import { STATUS } from '../constants/status/status';
+import { ChurchScheduleSummary, ScheduleSummary } from '@mokjang/models';
+import { STATUS } from '@mokjang/constants';
 
 export const getTotalScheduleSummary = (summary: ChurchScheduleSummary) => {
   const total: ScheduleSummary = {

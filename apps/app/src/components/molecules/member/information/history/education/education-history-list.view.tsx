@@ -1,5 +1,5 @@
 import { RefObject } from 'react';
-import { EducationHistory } from '../../../../../../models/member/history';
+import { EducationHistory } from '@mokjang/models';
 import styled from 'styled-components';
 import EducationHistoryItem from '../../../../../atoms/member/history/education-history-item';
 import useWindowSize from '../../../../../../hooks/window/window';

@@ -9,13 +9,10 @@ import {
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../redux/store';
 
-import { BLANK } from '../../../../../constants/constant';
-import { Member } from '../../../../../models/member/member';
-import {
-  Ministry,
-  MinistryGroup,
-} from '../../../../../models/management/management';
-import { getFormattedName } from '../../../../../utils/format';
+import { BLANK } from '@mokjang/constants';
+import { Member } from '@mokjang/models';
+import { Ministry, MinistryGroup } from '@mokjang/models';
+import { getFormattedName } from '@mokjang/utils';
 import AddMinistryGroupMemberModalView from './add-ministry-group-member-modal.view';
 import { MinistryGroupMembersApi } from '../../../../../api/management/ministry/ministry-group-members.api';
 import { MinistryGroupsApi } from '../../../../../api/management/ministry/ministry-groups.api';

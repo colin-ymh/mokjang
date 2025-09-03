@@ -7,13 +7,13 @@ import {
   setWorships,
 } from '../../../redux/reducers/filter/worship-filter-reducer';
 
-import { ORDER_DIRECTION } from '../../../constants/constant';
+import { ORDER_DIRECTION } from '@mokjang/constants';
 import { WorshipsApi } from '../../../api/worship/worships.api';
-import { DEFAULT_WORSHIP, Worship } from '../../../models/worship/worship';
+import { DEFAULT_WORSHIP, Worship } from '@mokjang/models';
 import { setTargetWorship } from '../../../redux/reducers/target/target-worship-reducer';
-import { getIsWellFormedTitle } from '../../../utils/check';
+import { getIsWellFormedTitle } from '@mokjang/utils';
 
-import { WORSHIP } from '../../../constants/column/worship-column';
+import { WORSHIP } from '@mokjang/constants';
 import WorshipTableView from './worship-table.view';
 import {
   setIsToastShown,
@@ -21,8 +21,8 @@ import {
   setToastText,
 } from '../../../redux/reducers/toast-popup-reducer';
 import { useI18n } from '../../../../locales/client';
-import { BLACK, DESTRUCTIVE } from '../../../constants/styles/color';
-import { usePageRouter } from '../../../utils/router';
+import { BLACK, DESTRUCTIVE } from '@mokjang/constants';
+import { usePageRouter } from '@mokjang/utils';
 
 export type WorshipTableProps = {
   loadWorships: () => Promise<void>;

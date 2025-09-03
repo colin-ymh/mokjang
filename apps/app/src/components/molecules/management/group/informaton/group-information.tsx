@@ -1,11 +1,11 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
-import { BLACK, DESTRUCTIVE } from '../../../../../constants/styles/color';
-import { Group } from '../../../../../models/management/management';
+import { BLACK, DESTRUCTIVE } from '@mokjang/constants';
+import { Group } from '@mokjang/models';
 import { useScopedI18n } from '../../../../../../locales/client';
-import { getFormattedTitle } from '../../../../../utils/format';
-import { getIsWellFormedTitle } from '../../../../../utils/check';
+import { getFormattedTitle } from '@mokjang/utils';
+import { getIsWellFormedTitle } from '@mokjang/utils';
 import { fetchGroups } from '../../../../../redux/reducers/church-reducer';
-import { BLANK, ORDER_DIRECTION } from '../../../../../constants/constant';
+import { BLANK, ORDER_DIRECTION } from '@mokjang/constants';
 import {
   setIsToastShown,
   setToastBackgroundColor,
@@ -13,12 +13,12 @@ import {
 } from '../../../../../redux/reducers/toast-popup-reducer';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../../../redux/store';
-import { Member } from '../../../../../models/member/member';
-import { MEMBER } from '../../../../../constants/column/member-column';
+import { Member } from '@mokjang/models';
+import { MEMBER } from '@mokjang/constants';
 import { GroupMembersApi } from '../../../../../api/management/group/group-membes.api';
 import { GroupsApi } from '../../../../../api/management/group/groups.api';
 import GroupInformationView from './group-information.view';
-import { getDateStringFromDate } from '../../../../../utils/date';
+import { getDateStringFromDate } from '@mokjang/utils';
 
 type GroupInformationProps = {
   selectedGroup: Group;

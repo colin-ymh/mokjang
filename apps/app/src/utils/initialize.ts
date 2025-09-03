@@ -11,14 +11,14 @@ import {
   setChurchId,
 } from '../redux/reducers/church-reducer';
 import { AuthApi } from '../api/auth/auth.api';
-import { routeLandingPage, usePageRouter } from './router';
+import { usePageRouter } from '@mokjang/utils';
 import { setUser } from '../redux/reducers/user-reducer';
 import { UserApi } from '../api/user/user.api';
 import { fetchPermissionUnits } from '../redux/reducers/filter/permission-template-filter-reducer';
 import { ChurchesApi } from '../api/churches/churches.api';
-import { User } from '@/models/user/user';
+import { User } from '@mokjang/models';
 import { SubscriptionApi } from '@/api/subscription/subscription.api';
-import { SubscriptionPlan } from '@mokjang/landing/src/models/subscription/subscription';
+import { SubscriptionPlan } from '@mokjang/models';
 import { setCurrentSubscription } from '@/redux/reducers/subscription-reducer';
 
 export const useInitializeChurch = () => {
@@ -109,7 +109,7 @@ export const useInitializeUser = () => {
       } else if (currentPlan.isCurrent) {
         setRedirectPath('/church/register');
       } else {
-        routeLandingPage('/');
+        // routeLandingPage('/');
       }
     } catch {
       const response = await userApi.getUser();
@@ -126,7 +126,7 @@ export const useInitializeUser = () => {
 
         setRedirectPath('/main');
       } else {
-        routeLandingPage('/');
+        // routeLandingPage('/');
       }
     }
   }, [authApi, userApi, dispatch]);

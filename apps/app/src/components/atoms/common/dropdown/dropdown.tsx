@@ -9,10 +9,10 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import TransparentBackground from '../etc/transparent-background';
+import { TransparentBackground } from '@mokjang/components';
 import DropdownView from './dropdown.view';
 import { DropdownValueType } from './dropdown-item';
-import { BorderInputProps } from '../input/border-input';
+import { BorderInputProps } from '@mokjang/components';
 import useWindowSize from '@/hooks/window/window';
 
 export type DropdownProps<

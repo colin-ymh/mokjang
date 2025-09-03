@@ -3,10 +3,7 @@ import { useRouter } from 'next/navigation';
 
 import { AUTH, AuthApi } from '../../../api/auth/auth.api';
 import LoginListView from './login-list.view';
-import {
-  getFormattedMobilePhone,
-  getFormattedName,
-} from '../../../utils/format';
+import { getFormattedMobilePhone, getFormattedName } from '@mokjang/utils';
 
 const LoginList = () => {
   const nextRouter = useRouter();

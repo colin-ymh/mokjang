@@ -3,15 +3,14 @@
 import React, { ChangeEventHandler } from 'react';
 import styled from 'styled-components';
 import Cropper, { Area, Point } from 'react-easy-crop';
-import Button from '../button/button';
+import { Button } from '@mokjang/components';
 
-import { BLACK, GRAY, MAIN, WHITE } from '@/constants/styles/color';
+import { BLACK, GRAY, MAIN, WHITE } from '@mokjang/constants';
 
-import DeleteSvg from '../../../../../public/svg/cancel.svg';
+import { Svg } from '@mokjang/assets';
 import { useScopedI18n } from '../../../../../locales/client';
-import TransparentBackground from '../etc/transparent-background';
+import { TransparentBackground } from '@mokjang/components';
 import ProfileImage from './profile-image';
-import Camera from '../../../../../public/svg/camera.svg';
 
 /* --------------------------- styled --------------------------- */
 const Wrapper = styled.div`
@@ -28,7 +27,7 @@ const ThumbBox = styled.div`
   cursor: pointer;
 `;
 
-const DeleteBtn = styled(DeleteSvg)<{ $visible: boolean }>`
+const DeleteBtn = styled(Svg.Cancel)<{ $visible: boolean }>`
   width: 20px;
   height: 20px;
   stroke: ${WHITE};
@@ -100,7 +99,7 @@ const CameraButton = styled.div`
   bottom: 5px;
 `;
 
-const CameraIcon = styled(Camera)`
+const CameraIcon = styled(Svg.Camera)`
   width: 18px;
   height: 18px;
   stroke-width: 2px;

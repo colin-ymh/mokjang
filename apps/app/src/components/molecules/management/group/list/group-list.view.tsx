@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { Group } from '../../../../../models/management/management';
+import { Group } from '@mokjang/models';
 import ManagementGroupItem from '../../../../atoms/management/group/list/management-group-item';
 import useWindowSize from '../../../../../hooks/window/window';
 

@@ -5,11 +5,11 @@ import { RootState } from '../../../redux/store';
 
 import { MainText } from '../../../../../../packages/components/src';
 import { BLACK, GRAY, MAIN } from '../../../../../../packages/constants/src';
-import { SIZE } from '../../../constants/styles/style';
+import { SIZE } from '@mokjang/constants';
 import { getTranslatedJoinRequestColumn } from '../../../utils/translate';
 import { useI18n } from '../../../../locales/client';
-import { JOIN_REQUEST } from '../../../constants/column/join-request-column';
-import { USER } from '../../../constants/column/user-column';
+import { JOIN_REQUEST } from '@mokjang/constants';
+import { USER } from '@mokjang/constants';
 
 const HeaderContainer = styled.div`
   display: flex;

@@ -1,8 +1,8 @@
 import React, { ChangeEvent, forwardRef } from 'react';
 import styled from 'styled-components';
-import MainInput from '../../../common/input/main-input';
+import { MainInput } from '@mokjang/components';
 import { BLACK, GRAY, MAIN, WHITE } from '@mokjang/constants';
-import { getIsWellFormedTitle } from '../../../../../utils/check';
+import { getIsWellFormedTitle } from '@mokjang/utils';
 
 import { Svg } from '@mokjang/assets';
 import { useScopedI18n } from '../../../../../../locales/client';

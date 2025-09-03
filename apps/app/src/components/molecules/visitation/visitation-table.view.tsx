@@ -3,20 +3,23 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 
-import { BLANK, GRAY, WHITE } from '../../../../../../packages/constants/src';
-import { VISITATION } from '@/constants/column/visitation-column';
-import { MainText } from '../../atoms/common/text/main-text';
-import { Visitation } from '@/models/visitation/visitation';
+import {
+  BLANK,
+  GRAY,
+  LOCALE,
+  STATUS,
+  VISITATION,
+  WHITE,
+} from '@mokjang/constants';
+import { MainTag, MainText } from '@mokjang/components';
+import { Visitation } from '@mokjang/models';
 import useWindowSize from '../../../hooks/window/window';
 import VisitationTableHeader from '../../atoms/visitation/visitation-table-header';
 import { BLANK_HEADER } from '@/redux/reducers/filter/member-filter-reducer';
 import { useI18n } from '../../../../locales/client';
 import { getStatusBackgroundColor, getStatusFontColor } from '@/utils/color';
 import MemberProfile from '../../atoms/member/member-profile';
-import { MainTag } from '../../../../../../packages/components/src';
-import { STATUS } from '@/constants/status/status';
 import { usePathname } from 'next/navigation';
-import { LOCALE } from '@/constants/state/locale';
 import { getTranslatedDateFromDateString } from '@/utils/translate';
 
 // 1. 컬럼별 PX 폭

@@ -1,16 +1,12 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import {
-  BLANK,
-  HEADER_BAR,
-  ORDER_DIRECTION,
-} from '../../../constants/constant';
-import { Task } from '../../../models/task/task';
+import { BLANK, HEADER_BAR, ORDER_DIRECTION } from '@mokjang/constants';
+import { Task } from '@mokjang/models';
 import { RootState } from '../../store';
 
-import { TASK } from '../../../constants/column/task-column';
+import { TASK } from '@mokjang/constants';
 import { TasksApi } from '../../../api/tasks/tasks.api';
-import { TASK_STATUS } from '../../../constants/status/status';
-import { DEFAULT_MEMBER, Member } from '../../../models/member/member';
+import { TASK_STATUS } from '@mokjang/constants';
+import { DEFAULT_MEMBER, Member } from '@mokjang/models';
 import { TaskReportsApi } from '../../../api/reports/task-reports.api';
 
 type TASK_FILTER = {

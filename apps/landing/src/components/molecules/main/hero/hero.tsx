@@ -6,7 +6,7 @@ import HeroView, {
 import { usePageRouter } from '../../../../../../../packages/utils/src';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
-import { routeAppPage } from '@/utils/router';
+import { routeAppPage } from '@mokjang/utils';
 
 const Hero = () => {
   const router = usePageRouter();

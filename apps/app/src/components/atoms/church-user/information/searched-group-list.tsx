@@ -1,7 +1,7 @@
-import { Group } from '../../../../models/management/management';
-import { MainText } from '../../common/text/main-text';
+import { Group } from '@mokjang/models';
+import { MainText } from '@mokjang/components';
 import styled from 'styled-components';
-import { GRAY, MAIN } from '../../../../constants/styles/color';
+import { GRAY, MAIN } from '@mokjang/constants';
 
 const GroupContainer = styled.div`
   display: flex;

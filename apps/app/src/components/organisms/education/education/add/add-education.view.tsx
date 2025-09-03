@@ -3,17 +3,17 @@
 import styled from 'styled-components';
 import React, { ChangeEvent } from 'react';
 import { useI18n, useScopedI18n } from '../../../../../../locales/client';
-import { GRAY, MAIN } from '../../../../../constants/styles/color';
-import { MainText } from '../../../../atoms/common/text/main-text';
+import { GRAY, MAIN } from '@mokjang/constants';
+import { MainText } from '@mokjang/components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../redux/store';
-import RequiredMark from '../../../../atoms/common/text/required-mark';
-import BorderInput from '../../../../atoms/common/input/border-input';
-import Button from '../../../../atoms/common/button/button';
-import Plus from '../../../../../../public/svg/plus.svg';
-import SvgIcon from '../../../../atoms/common/icon/svg-icon';
-import BorderTextarea from '../../../../atoms/common/input/border-textarea';
-import { SIZE } from '../../../../../constants/styles/style';
+import { RequiredMark } from '@mokjang/components';
+import { BorderInput } from '@mokjang/components';
+import { Button } from '@mokjang/components';
+import { Svg } from '@mokjang/assets';
+import { SvgIcon } from '@mokjang/components';
+import { BorderTextarea } from '@mokjang/components';
+import { SIZE } from '@mokjang/constants';
 
 /* ──────────────────────────────── Styled Components ─────────────────────────────── */
 const AddEducationViewContainer = styled.div`
@@ -142,7 +142,7 @@ const AddEducationView = ({
               width={'auto'}
               backgroundColor={'transparent'}
               color={MAIN.DEFAULT}
-              icon={<SvgIcon svg={Plus} color={MAIN.DEFAULT} />}
+              icon={<SvgIcon svg={Svg.Plus} color={MAIN.DEFAULT} />}
             />
           </RowContainer>
           <GoalList>

@@ -1,13 +1,13 @@
 import { AxiosResponse } from 'axios';
 import qs from 'qs';
 
-import { SERVER_URL, TEST_SERVER_URL } from '../../constants/state/url';
+import { SERVER_URL, TEST_SERVER_URL } from '@mokjang/constants';
 import authorizeAxios from '../authorize-axios';
 import { CustomError } from '../error/error';
-import { CHURCH_USER_ROLE, ORDER_DIRECTION } from '../../constants/constant';
-import { JOIN_REQUEST } from '../../constants/column/join-request-column';
-import { JOIN_REQUEST_STATUS } from '../../constants/status/status';
-import { USER } from '../../constants/column/user-column';
+import { CHURCH_USER_ROLE, ORDER_DIRECTION } from '@mokjang/constants';
+import { JOIN_REQUEST } from '@mokjang/constants';
+import { JOIN_REQUEST_STATUS } from '@mokjang/constants';
+import { USER } from '@mokjang/constants';
 
 type CreateJoinRequestBody = {
   joinCode: string;

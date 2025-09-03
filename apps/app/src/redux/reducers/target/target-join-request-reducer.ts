@@ -1,8 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import {
-  DEFAULT_JOIN_REQUEST,
-  JoinRequest,
-} from '../../../models/join-request/join-request';
+import { DEFAULT_JOIN_REQUEST, JoinRequest } from '@mokjang/models';
 
 type JoinRequestState = {
   targetJoinRequest: JoinRequest;

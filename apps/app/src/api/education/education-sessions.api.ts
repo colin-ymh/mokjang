@@ -1,9 +1,9 @@
 import { AxiosResponse } from 'axios';
-import { SERVER_URL, TEST_SERVER_URL } from '../../constants/state/url';
+import { SERVER_URL, TEST_SERVER_URL } from '@mokjang/constants';
 import { CustomError } from '../error/error';
 import authorizeAxios from '../authorize-axios';
 
-import { TASK_STATUS } from '../../constants/status/status';
+import { TASK_STATUS } from '@mokjang/constants';
 
 type GetEducationSessionsParams = {
   churchId: string;

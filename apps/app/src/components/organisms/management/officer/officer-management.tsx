@@ -2,11 +2,8 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
 import OfficerManagementView from './officer-management.view';
-import {
-  DEFAULT_OFFICER,
-  Officer,
-} from '../../../../models/management/management';
-import { BLANK } from '../../../../constants/constant';
+import { DEFAULT_OFFICER, Officer } from '@mokjang/models';
+import { BLANK } from '@mokjang/constants';
 
 type OfficerManagementProps = {};
 

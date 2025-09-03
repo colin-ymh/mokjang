@@ -1,8 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import {
-  ChurchUser,
-  DEFAULT_CHURCH_USER,
-} from '../../../models/church-user/church-user';
+import { ChurchUser, DEFAULT_CHURCH_USER } from '@mokjang/models';
 
 type TargetChurchUserState = {
   targetChurchUser: ChurchUser;

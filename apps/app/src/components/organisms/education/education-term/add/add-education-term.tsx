@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
-import { BLANK } from '../../../../../constants/constant';
+import { BLANK } from '@mokjang/constants';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../../../redux/store';
 
@@ -8,11 +8,11 @@ import {
   getDateStringFromDate,
   getHourFromMinute,
   getTimeStringFromDate,
-} from '../../../../../utils/date';
+} from '@mokjang/utils';
 import { setTargetEducationTerm } from '../../../../../redux/reducers/target/target-education-term-reducer';
 import AddEducationTermView from './add-education-term.view';
 import { MemberDropdownType } from '../../../../atoms/common/dropdown/member-dropdown-item';
-import { getFormattedContent } from '../../../../../utils/format';
+import { getFormattedContent } from '@mokjang/utils';
 
 type AddEducationTermProps = { isEdit?: boolean };
 

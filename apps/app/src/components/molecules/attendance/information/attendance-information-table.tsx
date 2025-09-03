@@ -6,7 +6,7 @@ import {
   WORSHIP_ATTENDANCE_STATUS,
   WorshipAttendance,
   WorshipEnrollment,
-} from '../../../../models/worship/worship';
+} from '@mokjang/models';
 import {
   setWorshipAttendances,
   setWorshipAttendanceSortBy,
@@ -18,8 +18,8 @@ import {
   setIsToastShown,
   setToastText,
 } from '../../../../redux/reducers/toast-popup-reducer';
-import { ORDER_DIRECTION } from '../../../../constants/constant';
-import { WORSHIP_ATTENDANCE } from '../../../../constants/column/worship-column';
+import { ORDER_DIRECTION } from '@mokjang/constants';
+import { WORSHIP_ATTENDANCE } from '@mokjang/constants';
 
 export type AttendanceInformationTableProps = {};
 

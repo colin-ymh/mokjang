@@ -1,8 +1,8 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ALL, BLANK, ORDER_DIRECTION } from '../../../constants/constant';
+import { ALL, BLANK, ORDER_DIRECTION } from '@mokjang/constants';
 import { RootState } from '../../store';
-import { WORSHIP_ENROLLMENT } from '../../../constants/column/worship-column';
-import { WorshipEnrollment } from '../../../models/worship/worship';
+import { WORSHIP_ENROLLMENT } from '@mokjang/constants';
+import { WorshipEnrollment } from '@mokjang/models';
 import { WorshipEnrollmentsApi } from '../../../api/worship/worship-enrollments.api';
 
 type WORSHIP_ENROLLMENT_FILTER = {

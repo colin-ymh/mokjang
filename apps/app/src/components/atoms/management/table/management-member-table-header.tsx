@@ -1,15 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { MainText } from '../../common/text/main-text';
-import { MEMBER } from '../../../../constants/column/member-column';
-import { GRAY, MAIN } from '../../../../constants/styles/color';
-import { getTranslatedMemberColumn } from '../../../../utils/translate';
-import { BLANK, ORDER_DIRECTION } from '../../../../constants/constant';
+import { MainText } from '@mokjang/components';
+import { MEMBER } from '@mokjang/constants';
+import { GRAY, MAIN } from '@mokjang/constants';
+import { getTranslatedMemberColumn } from '@mokjang/utils';
+import { BLANK, ORDER_DIRECTION } from '@mokjang/constants';
 
 import { useI18n } from '../../../../../locales/client';
-import Arrow from '../../../../../public/svg/arror-up.svg';
-import ArrowUpDown from '../../../../../public/svg/arrow-up-down.svg';
+import { Svg } from '@mokjang/assets';
 
 const HeaderContainer = styled.div<{ $isProfile: boolean }>`
   display: flex;
@@ -33,14 +32,14 @@ const IconContainer = styled.div`
   cursor: pointer;
 `;
 
-const ArrowUp = styled(Arrow)`
+const ArrowUp = styled(Svg.ArrorUp)`
   width: 14px;
   height: 14px;
   stroke-width: 2px;
   stroke: ${MAIN.DEFAULT};
 `;
 
-const ArrowDown = styled(Arrow)`
+const ArrowDown = styled(Svg.ArrorUp)`
   width: 14px;
   height: 14px;
   stroke-width: 2px;
@@ -48,7 +47,7 @@ const ArrowDown = styled(Arrow)`
   transform: rotate(180deg);
 `;
 
-const ArrowUpDownIcon = styled(ArrowUpDown)`
+const ArrowUpDownIcon = styled(Svg.ArrowUpDown)`
   width: 14px;
   height: 14px;
   stroke-width: 2px;

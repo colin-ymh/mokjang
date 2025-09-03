@@ -1,8 +1,8 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { BLANK, ORDER_DIRECTION } from '../../../constants/constant';
+import { BLANK, ORDER_DIRECTION } from '@mokjang/constants';
 import { RootState } from '../../store';
-import { CHURCH_USER } from '../../../constants/column/church-user-column';
-import { ChurchUser } from '../../../models/church-user/church-user';
+import { CHURCH_USER } from '@mokjang/constants';
+import { ChurchUser } from '@mokjang/models';
 import { ChurchUsersApi } from '../../../api/church-users/church-users.api';
 import { ManagersApi } from '../../../api/managers/managers.api';
 

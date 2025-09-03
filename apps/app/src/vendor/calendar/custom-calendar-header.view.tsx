@@ -1,27 +1,26 @@
 import { ToolbarProps } from 'react-big-calendar';
-import Button from '../../components/atoms/common/button/button';
+import { Button } from '@mokjang/components';
 import styled from 'styled-components';
-import { GRAY, MAIN, WHITE } from '../../constants/styles/color';
+import { GRAY, MAIN, WHITE } from '@mokjang/constants';
 import { useI18n, useScopedI18n } from '../../../locales/client';
 import { useParams } from 'next/navigation';
 import Dropdown from '../../components/atoms/common/dropdown/dropdown';
-import { LOCALE } from '../../constants/state/locale';
-import { MainText } from '../../components/atoms/common/text/main-text';
-import { getShortEnglishMonthName } from '../../utils/format';
+import { LOCALE } from '@mokjang/constants';
+import { MainText } from '@mokjang/components';
+import { getShortEnglishMonthName } from '@mokjang/utils';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
-import TransparentBackground from '../../components/atoms/common/etc/transparent-background';
+import { TransparentBackground } from '@mokjang/components';
 import DomainFilter from './domain-filter';
-import CustomPopup from '../../components/atoms/common/popup/custom-popup';
+import { CustomPopup } from '@mokjang/components';
 import React from 'react';
 import AddChurchEvent from '../../components/organisms/church-event/add/add-church-event';
 
-import ChevronLeft from '../../../public/svg/chevron-left.svg';
-import ChevronRight from '../../../public/svg/chevron-right.svg';
-import FilterOutline from '../../../public/svg/filter-outline.svg';
-import SvgIcon from '../../components/atoms/common/icon/svg-icon';
-import { CURSOR } from '../../constants/styles/style';
+import { SvgIcon } from '@mokjang/components';
+import { CURSOR } from '@mokjang/constants';
 import ToggleButton from '../../components/atoms/common/button/toggle-button';
+
+import { Svg } from '@mokjang/assets';
 
 const HeaderContainer = styled.div`
   display: flex;
@@ -159,7 +158,9 @@ const CustomCalendarHeaderView = ({
       <LeftContainer>
         {/* 지난달 */}
         <Button
-          icon={<SvgIcon svg={ChevronLeft} width={2} cursor={CURSOR.POINTER} />}
+          icon={
+            <SvgIcon svg={Svg.ChevronLeft} width={2} cursor={CURSOR.POINTER} />
+          }
           width={30}
           height={30}
           borderColor={WHITE}
@@ -211,7 +212,7 @@ const CustomCalendarHeaderView = ({
         {/* 다음달 */}
         <Button
           icon={
-            <SvgIcon svg={ChevronRight} width={2} cursor={CURSOR.POINTER} />
+            <SvgIcon svg={Svg.ChevronRight} width={2} cursor={CURSOR.POINTER} />
           }
           width={30}
           height={30}
@@ -243,7 +244,7 @@ const CustomCalendarHeaderView = ({
           {/* 도메인 필터 버튼 */}
           <Button
             text={t('filter')}
-            icon={<SvgIcon svg={FilterOutline} />}
+            icon={<SvgIcon svg={Svg.FilterOutline} />}
             width={'auto'}
             height={30}
             color={GRAY.DARK}

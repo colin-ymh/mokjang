@@ -1,18 +1,18 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-import { MainText } from '../../common/text/main-text';
-import { BLANK } from '../../../../constants/constant';
-import { MAIN, WHITE } from '../../../../constants/styles/color';
-import { SIZE } from '../../../../constants/styles/style';
+import { MainText } from '@mokjang/components';
+import { BLANK } from '@mokjang/constants';
+import { MAIN, WHITE } from '@mokjang/constants';
+import { SIZE } from '@mokjang/constants';
 
 import { useI18n } from '../../../../../locales/client';
-import Cancel from '../../../../../public/svg/cancel.svg';
+import { Svg } from '@mokjang/assets';
 import { AppDispatch, RootState } from '../../../../redux/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { setEducationFilter } from '../../../../redux/reducers/filter/education-filter-reducer';
 
-import { EDUCATION } from '../../../../constants/column/education-column';
+import { EDUCATION } from '@mokjang/constants';
 
 const ItemContainer = styled.div`
   display: flex;
@@ -40,7 +40,7 @@ const ButtonContainer = styled.div`
   cursor: pointer;
 `;
 
-const CancelButton = styled(Cancel)`
+const CancelButton = styled(Svg.Cancel)`
   width: 15px;
   height: 15px;
   stroke: ${WHITE};

@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-import { Schedule } from '../../models/calendar/calendar';
+import { Schedule } from '@mokjang/models';
 import styled from 'styled-components';
-import { GRAY, MAIN, RED, WHITE } from '../../constants/styles/color';
+import { GRAY, MAIN, RED, WHITE } from '@mokjang/constants';
 import CustomCalendarHeader from './custom-calendar-header';
 
 import 'moment/locale/ko';
@@ -13,7 +13,7 @@ import CustomDateHeader from './custom-date-header';
 import { getEventStyle } from '../../utils/color';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
-import { DOMAIN } from '../../models/permission/permission';
+import { DOMAIN } from '@mokjang/models';
 
 const CustomCalendarContainer = styled.div`
   display: flex;

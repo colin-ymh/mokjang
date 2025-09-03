@@ -9,10 +9,10 @@ import {
   STATUS_FONT_COLOR,
   WHITE,
   YELLOW,
-} from '../constants/styles/color';
-import { STATUS } from '../constants/status/status';
-import { DOMAIN } from '../models/permission/permission';
-import { Schedule } from '../models/calendar/calendar';
+} from '@mokjang/constants';
+import { STATUS } from '@mokjang/constants';
+import { DOMAIN } from '@mokjang/models';
+import { Schedule } from '@mokjang/models';
 
 export const getStatusBackgroundColor = (status: STATUS) => {
   switch (status) {

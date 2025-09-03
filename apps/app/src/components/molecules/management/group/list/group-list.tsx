@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../redux/store';
 
-import { Group } from '../../../../../models/management/management';
+import { Group } from '@mokjang/models';
 import GroupListView from './group-list.view';
 
 type GroupListProps = {

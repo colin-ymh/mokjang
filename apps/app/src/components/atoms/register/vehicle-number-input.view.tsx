@@ -6,13 +6,13 @@ import React, {
   useImperativeHandle,
   useRef,
 } from 'react';
-import BorderInput from '../common/input/border-input';
-import { getFormattedVehicleNumber } from '../../../utils/format';
-import { MainText } from '../common/text/main-text';
-import { BLACK, DESTRUCTIVE, GRAY } from '../../../constants/styles/color';
+import { BorderInput } from '@mokjang/components';
+import { getFormattedVehicleNumber } from '@mokjang/utils';
+import { MainText } from '@mokjang/components';
+import { BLACK, DESTRUCTIVE, GRAY } from '@mokjang/constants';
 import styled from 'styled-components';
-import { getIsWellFormedVehicleNumber } from '../../../utils/check';
-import { SIZE } from '../../../constants/styles/style';
+import { getIsWellFormedVehicleNumber } from '@mokjang/utils';
+import { SIZE } from '@mokjang/constants';
 
 const VehicleNumberInputViewContainer = styled.div`
   display: flex;

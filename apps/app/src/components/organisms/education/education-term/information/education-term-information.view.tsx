@@ -2,36 +2,32 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../redux/store';
 import { useI18n } from '../../../../../../locales/client';
-import { MainText } from '../../../../atoms/common/text/main-text';
-import { GRAY, MAIN } from '../../../../../constants/styles/color';
+import { MainText } from '@mokjang/components';
+import { GRAY, MAIN } from '@mokjang/constants';
 import React, { Dispatch, SetStateAction } from 'react';
 import { usePathname } from 'next/navigation';
-import { LOCALE } from '../../../../../constants/state/locale';
-import { TASK_STATUS } from '../../../../../constants/status/status';
+import { LOCALE } from '@mokjang/constants';
+import { TASK_STATUS } from '@mokjang/constants';
 import MemberProfilePopupButton from '../../../../molecules/common/button/member-profile-popup-button';
 import {
   getTranslatedAddMemberTitle,
   getTranslatedDateFromDateString,
   getTranslatedSessionProgressStatus,
   getTranslatedTerm,
-} from '../../../../../utils/translate';
+} from '@mokjang/utils';
 import { useTaskStatusDropdownItems } from '../../../../../hooks/dropdown/dropdown-items';
 import { useEducationTermHeaderBarItems } from '../../../../../hooks/layout/header-bar-items';
 import { EDUCATION_TERM_CONTENT_ID } from '../../../../../constants/layout/content';
-import CustomPopup from '../../../../atoms/common/popup/custom-popup';
+import { CustomPopup } from '@mokjang/components';
 import AddEnrollmentMemberModal from '../../../../atoms/education/education-enrollment/add-enrollment-member-modal';
-import { Member } from '../../../../../models/member/member';
-import Button from '../../../../atoms/common/button/button';
+import { Member } from '@mokjang/models';
+import { Button } from '@mokjang/components';
 import EducationEnrollmentTable from '../../../../molecules/education/education-enrollment/education-enrollment-table';
-
-import User from '../../../../../../public/svg/user.svg';
-import Users from '../../../../../../public/svg/users.svg';
-import Pin from '../../../../../../public/svg/pin.svg';
-import Calendar from '../../../../../../public/svg/calendar.svg';
-import SvgIcon from '../../../../atoms/common/icon/svg-icon';
-import { SIZE } from '../../../../../constants/styles/style';
+import { Svg } from '@mokjang/assets';
+import { SvgIcon } from '@mokjang/components';
+import { SIZE } from '@mokjang/constants';
 import StatusDropdown from '../../../../atoms/common/dropdown/status-dropdown';
-import ToggleRadioButton from '../../../../atoms/common/radio-button/toggle-radio-button';
+import { ToggleRadioButton } from '@mokjang/components';
 import { RadioButtonValue } from '../../../../atoms/common/radio-button/radio-button-list';
 import EducationSessionTable from '../../../../molecules/education/education-session/education-session-table';
 
@@ -190,7 +186,7 @@ const EducationTermInformationView = ({
           {/* 담당자 */}
           <RowContainer>
             <TitleContainer>
-              <SvgIcon svg={User} color={GRAY.DARK} />
+              <SvgIcon svg={Svg.User} color={GRAY.DARK} />
               <MainText color={GRAY.DARK}>{t('inCharge')}</MainText>
             </TitleContainer>
             <MemberProfilePopupButton member={targetEducationTerm.inCharge} />
@@ -198,7 +194,7 @@ const EducationTermInformationView = ({
           {/* 장소 */}
           <RowContainer>
             <TitleContainer>
-              <SvgIcon svg={Pin} color={GRAY.DARK} />
+              <SvgIcon svg={Svg.Pin} color={GRAY.DARK} />
               <MainText color={GRAY.DARK}>{t('location')}</MainText>
             </TitleContainer>
             <MainText>{targetEducationTerm.location}</MainText>
@@ -206,7 +202,7 @@ const EducationTermInformationView = ({
           {/* 기간 */}
           <RowContainer>
             <TitleContainer>
-              <SvgIcon svg={Calendar} color={GRAY.DARK} />
+              <SvgIcon svg={Svg.Calendar} color={GRAY.DARK} />
               <MainText color={GRAY.DARK}>{t('period')}</MainText>
             </TitleContainer>
             <MainText>
@@ -216,7 +212,7 @@ const EducationTermInformationView = ({
           {/* 상태 */}
           <RowContainer>
             <TitleContainer>
-              <SvgIcon svg={User} color={GRAY.DARK} />
+              <SvgIcon svg={Svg.User} color={GRAY.DARK} />
               <MainText color={GRAY.DARK}>{t('status')}</MainText>
             </TitleContainer>
             <StatusContainer>
@@ -244,7 +240,7 @@ const EducationTermInformationView = ({
           {/* 보고대상자 */}
           <ColumnContainer>
             <TitleContainer>
-              <SvgIcon svg={Users} color={GRAY.DARK} />
+              <SvgIcon svg={Svg.Users} color={GRAY.DARK} />
               <MainText color={GRAY.DARK}>{t('receiver')}</MainText>
             </TitleContainer>
             <MemberList>

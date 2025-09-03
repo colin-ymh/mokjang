@@ -3,11 +3,11 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
 
-import { MainText } from '../../common/text/main-text';
-import { PERMISSION_TEMPLATE } from '../../../../constants/column/permission-column';
-import { BLACK, GRAY, MAIN } from '../../../../constants/styles/color';
-import { SIZE } from '../../../../constants/styles/style';
-import { getTranslatedPermissionTemplateColumn } from '../../../../utils/translate';
+import { MainText } from '@mokjang/components';
+import { PERMISSION_TEMPLATE } from '@mokjang/constants';
+import { BLACK, GRAY, MAIN } from '@mokjang/constants';
+import { SIZE } from '@mokjang/constants';
+import { getTranslatedPermissionTemplateColumn } from '@mokjang/utils';
 import { useScopedI18n } from '../../../../../locales/client';
 
 const HeaderContainer = styled.div`

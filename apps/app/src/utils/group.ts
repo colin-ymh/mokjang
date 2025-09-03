@@ -1,7 +1,6 @@
-import { DEFAULT_GROUP, Group } from '../models/management/management';
+import { DEFAULT_GROUP, Group } from '@mokjang/models';
 import { GroupsApi } from '../api/management/group/groups.api';
-import { BLANK } from '../constants/constant';
-
+import { BLANK } from '@mokjang/constants';
 const getGroupById = (list: Group[], id: string): Group | undefined => {
   for (const g of list) {
     if (g.id === id) return g;

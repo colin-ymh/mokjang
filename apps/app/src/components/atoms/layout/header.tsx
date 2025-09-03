@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { MEDIA_MIN_WIDTH } from '../../../constants/constant';
+import { MEDIA_MIN_WIDTH } from '@mokjang/constants';
 
 const Header = styled.div`
   // 모바일

@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Officer } from '../../../../models/management/management';
+import { Officer } from '@mokjang/models';
 import OfficerSideBar from '../../../molecules/management/officer/list/officer-side-bar';
 import OfficerInformation from '../../../molecules/management/officer/informaton/officer-information';
 

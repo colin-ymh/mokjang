@@ -3,21 +3,18 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
 import { useTaskStatusDropdownItems } from '../../../../hooks/dropdown/dropdown-items';
 import { useI18n } from '../../../../../locales/client';
-import { MainText } from '../../../atoms/common/text/main-text';
-import { GRAY } from '../../../../constants/styles/color';
+import { MainText } from '@mokjang/components';
+import { GRAY } from '@mokjang/constants';
 import React from 'react';
 import StatusDropdown from '../../../atoms/common/dropdown/status-dropdown';
-import { TASK_STATUS } from '../../../../constants/status/status';
-import { SIZE } from '../../../../constants/styles/style';
+import { TASK_STATUS } from '@mokjang/constants';
+import { SIZE } from '@mokjang/constants';
 import MemberProfilePopupButton from '../../../molecules/common/button/member-profile-popup-button';
 import { usePathname } from 'next/navigation';
-import { LOCALE } from '../../../../constants/state/locale';
-import { getTranslatedDateFromDateString } from '../../../../utils/translate';
-import SvgIcon from '../../../atoms/common/icon/svg-icon';
-import User from '../../../../../public/svg/user.svg';
-import Calendar from '../../../../../public/svg/calendar.svg';
-import Users from '../../../../../public/svg/users.svg';
-import Book from '../../../../../public/svg/book.svg';
+import { LOCALE } from '@mokjang/constants';
+import { getTranslatedDateFromDateString } from '@mokjang/utils';
+import { SvgIcon } from '@mokjang/components';
+import { Svg } from '@mokjang/assets';
 
 const InformationContainer = styled.div`
   display: flex;
@@ -119,7 +116,7 @@ const VisitationInformationView = ({
         {/* 담당자 */}
         <RowContainer>
           <TitleContainer>
-            <SvgIcon svg={User} color={GRAY.EXTRA_DARK} />
+            <SvgIcon svg={Svg.User} color={GRAY.EXTRA_DARK} />
             <MainText color={GRAY.EXTRA_DARK}>{t('inCharge')}</MainText>
           </TitleContainer>
           <MemberProfilePopupButton
@@ -131,7 +128,7 @@ const VisitationInformationView = ({
         {/* 일정 */}
         <RowContainer>
           <TitleContainer>
-            <SvgIcon svg={Calendar} color={GRAY.EXTRA_DARK} />
+            <SvgIcon svg={Svg.Calendar} color={GRAY.EXTRA_DARK} />
             <MainText color={GRAY.EXTRA_DARK}>{t('schedule')}</MainText>
           </TitleContainer>
           {/* 일자 */}
@@ -157,7 +154,7 @@ const VisitationInformationView = ({
         {/* 심방대상자 */}
         <RowContainer>
           <TitleContainer>
-            <SvgIcon svg={Users} color={GRAY.EXTRA_DARK} />
+            <SvgIcon svg={Svg.Users} color={GRAY.EXTRA_DARK} />
             <MainText color={GRAY.EXTRA_DARK}>{t('visitedMember')}</MainText>
           </TitleContainer>
           <MemberList>
@@ -170,7 +167,7 @@ const VisitationInformationView = ({
         {/* 보고대상자 */}
         <ColumnContainer>
           <TitleContainer>
-            <SvgIcon svg={Users} color={GRAY.EXTRA_DARK} />
+            <SvgIcon svg={Svg.Users} color={GRAY.EXTRA_DARK} />
             <MainText color={GRAY.EXTRA_DARK}>{t('receiver')}</MainText>
           </TitleContainer>
           <MemberList>
@@ -187,7 +184,7 @@ const VisitationInformationView = ({
         {/* 업무내용 */}
         <ColumnContainer>
           <TitleContainer>
-            <SvgIcon svg={Book} color={GRAY.EXTRA_DARK} size={16} />
+            <SvgIcon svg={Svg.Book} color={GRAY.EXTRA_DARK} size={16} />
             <MainText color={GRAY.EXTRA_DARK} fontSize={16}>
               {t('visitationContent')}
             </MainText>
@@ -203,7 +200,7 @@ const VisitationInformationView = ({
         {/* 기도제목 */}
         <ColumnContainer>
           <TitleContainer>
-            <SvgIcon svg={Book} color={GRAY.EXTRA_DARK} size={16} />
+            <SvgIcon svg={Svg.Book} color={GRAY.EXTRA_DARK} size={16} />
             <MainText color={GRAY.EXTRA_DARK} fontSize={16}>
               {t('visitationPray')}
             </MainText>

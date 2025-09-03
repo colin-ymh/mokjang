@@ -1,25 +1,19 @@
 import React, { MutableRefObject } from 'react';
 import styled from 'styled-components';
 
-import { GRAY, GREEN, RED } from '../../../../../constants/styles/color';
-import { MainText } from '../../../../atoms/common/text/main-text';
-import { BLANK } from '../../../../../constants/constant';
+import { GRAY, GREEN, RED } from '@mokjang/constants';
+import { MainText } from '@mokjang/components';
+import { BLANK } from '@mokjang/constants';
 import useWindowSize from '../../../../../hooks/window/window';
-import {
-  WORSHIP_ATTENDANCE_STATUS,
-  WorshipAttendance,
-} from '../../../../../models/worship/worship';
-import SvgIcon from '../../../../atoms/common/icon/svg-icon';
+import { WORSHIP_ATTENDANCE_STATUS, WorshipAttendance } from '@mokjang/models';
+import { SvgIcon } from '@mokjang/components';
 
 import { Svg } from '@mokjang/assets';
-import { getTranslatedDateFromDateString } from '../../../../../utils/translate';
-import {
-  getDateFromDateString,
-  getDateStringFromDate,
-} from '../../../../../utils/date';
+import { getTranslatedDateFromDateString } from '@mokjang/utils';
+import { getDateFromDateString, getDateStringFromDate } from '@mokjang/utils';
 import { usePathname } from 'next/navigation';
-import { LOCALE } from '../../../../../constants/state/locale';
-import { SIZE } from '../../../../../constants/styles/style';
+import { LOCALE } from '@mokjang/constants';
+import { SIZE } from '@mokjang/constants';
 import { useScopedI18n } from '../../../../../../locales/client';
 
 // 2. 테이블 컨테이너 (100% 폭 + 스크롤)

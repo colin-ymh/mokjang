@@ -10,10 +10,10 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../redux/store';
 import { MembersApi } from '../../../../../api/members/members.api';
 import AddOfficerMemberModalView from './add-officer-member-modal.view';
-import { BLANK } from '../../../../../constants/constant';
-import { Member } from '../../../../../models/member/member';
-import { Officer } from '../../../../../models/management/management';
-import { getFormattedName } from '../../../../../utils/format';
+import { BLANK } from '@mokjang/constants';
+import { Member } from '@mokjang/models';
+import { Officer } from '@mokjang/models';
+import { getFormattedName } from '@mokjang/utils';
 import { OfficersApi } from '../../../../../api/management/officer/officers.api';
 
 type AddOfficerMemberModalProps = {

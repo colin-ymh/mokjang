@@ -1,4 +1,4 @@
-import { Church } from '../../../../models/church/church';
+import { Church } from '@mokjang/models';
 import React, { ChangeEvent } from 'react';
 import styled from 'styled-components';
 import { useI18n, useScopedI18n } from '../../../../../locales/client';

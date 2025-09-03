@@ -1,8 +1,8 @@
 import styled from 'styled-components';
-import ChevronLeft from '../../../../../public/svg/chevron-down.svg';
-import { BLACK } from '@/constants/styles/color';
+import { BLACK } from '@mokjang/constants';
+import { Svg } from '@mokjang/assets';
 
-export const Chevron = styled(ChevronLeft)<{
+export const Chevron = styled(Svg.ChevronDown)<{
   $isOpened: boolean;
   color?: string;
   $reverseDirection?: boolean;

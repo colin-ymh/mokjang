@@ -9,17 +9,17 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { InputProps } from '../input/main-input';
+import { InputProps } from '@mokjang/components';
 import MemberDropdownView from './member-dropdown.view';
-import { getTrimmedString } from '@/utils/format';
+import { getTrimmedString } from '@mokjang/utils';
 import { AxiosResponse } from 'axios';
 import { GetMembersResponse, MembersApi } from '@/api/members/members.api';
-import { BLANK } from '@/constants/constant';
+import { BLANK } from '@mokjang/constants';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { MemberDropdownType } from './member-dropdown-item';
 import { ManagersApi } from '@/api/managers/managers.api';
-import { ChurchUser } from '@/models/church-user/church-user';
+import { ChurchUser } from '@mokjang/models';
 
 export type MultiMemberDropdownProps = InputProps & {
   ref?: RefObject<HTMLInputElement>;

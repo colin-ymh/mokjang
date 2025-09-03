@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import { Button, SvgIcon } from '../../../../../../packages/components/src';
 import { GRAY, MAIN, WHITE } from '../../../../../../packages/constants/src';
-import { VISITATION } from '@/constants/column/visitation-column';
+import { VISITATION } from '@mokjang/constants';
 
 import {
   useTaskStatusFilterDropdownItems,
@@ -18,9 +18,9 @@ import PeriodModal from '../../atoms/common/modal/period-modal';
 import { RootState } from '@/redux/store';
 import { useSelector } from 'react-redux';
 import SearchInput from '../../atoms/common/input/search-input';
-import { TASK_STATUS } from '@/constants/status/status';
+import { TASK_STATUS } from '@mokjang/constants';
 
-import Calendar from '../../../../public/svg/calendar.svg';
+import { Svg } from '@mokjang/assets';
 import Dropdown from '@/components/atoms/common/dropdown/dropdown';
 
 const VisitationContainer = styled.div`
@@ -134,7 +134,11 @@ const VisitationRowView = ({
               borderColor={isModalShown ? MAIN.DEFAULT : GRAY.LIGHT}
               color={GRAY.SEMI_DARK}
               icon={
-                <SvgIcon svg={Calendar} color={GRAY.SEMI_DARK} bottom={0.5} />
+                <SvgIcon
+                  svg={Svg.Calendar}
+                  color={GRAY.SEMI_DARK}
+                  bottom={0.5}
+                />
               }
             />
 

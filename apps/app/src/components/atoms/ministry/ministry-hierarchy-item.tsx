@@ -1,11 +1,11 @@
 // 개별 그룹 아이템 컴포넌트
 import React, { memo, useCallback } from 'react';
-import { MinistryGroup } from '../../../models/management/management';
-import { MainText } from '../common/text/main-text';
-import { GRAY, MAIN } from '../../../constants/styles/color';
-import { SIZE } from '../../../constants/styles/style';
+import { MinistryGroup } from '@mokjang/models';
+import { MainText } from '@mokjang/components';
+import { GRAY, MAIN } from '@mokjang/constants';
+import { SIZE } from '@mokjang/constants';
 import styled from 'styled-components';
-import { ALL, MEDIA_MIN_WIDTH } from '../../../constants/constant';
+import { ALL, MEDIA_MIN_WIDTH } from '@mokjang/constants';
 
 const MinistryGroupHierarchyItemContainer = styled.div<{ $level: number }>`
   display: flex;

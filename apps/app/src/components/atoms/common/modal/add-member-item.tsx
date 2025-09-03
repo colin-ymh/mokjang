@@ -1,19 +1,19 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { Member } from '@/models/member/member';
-import { GRAY, MAIN, WHITE } from '@/constants/styles/color';
-import CheckButton from '../button/check-button';
-import { BLANK } from '@/constants/constant';
+import { Member } from '@mokjang/models';
+import { GRAY, MAIN, WHITE } from '@mokjang/constants';
+import { CheckButton } from '@mokjang/components';
+import { BLANK } from '@mokjang/constants';
 import ProfileImage from '../image/profile-image';
-import { MainText } from '../text/main-text';
-import { getFormattedPhone } from '@/utils/format';
+import { MainText } from '@mokjang/components';
+import { getFormattedPhone } from '@mokjang/utils';
 import { getTranslatedAge } from '@/utils/translate';
 import { usePathname } from 'next/navigation';
-import { LOCALE } from '@/constants/state/locale';
-import { getAge, getDateFromDateString } from '@/utils/date';
+import { LOCALE } from '@mokjang/constants';
+import { getAge, getDateFromDateString } from '@mokjang/utils';
 import { useI18n } from '../../../../../locales/client';
-import MainTag from '../tag/main-tag';
+import { MainTag } from '@mokjang/components';
 
 const ItemContainer = styled.div<{
   $isEnable: boolean;

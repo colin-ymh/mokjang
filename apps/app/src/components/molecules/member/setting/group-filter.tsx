@@ -4,9 +4,9 @@ import { setMemberFilter } from '../../../../redux/reducers/filter/member-filter
 import SelectGroupHierarchy from '../../../organisms/group/select-group-hierarchy';
 import { getGroup } from '../../../../utils/group';
 import { setTargetGroup } from '../../../../redux/reducers/target/target-group-reducer';
-import { DEFAULT_GROUP } from '../../../../models/management/management';
+import { DEFAULT_GROUP } from '@mokjang/models';
 import styled from 'styled-components';
-import { ALL } from '../../../../constants/constant';
+import { ALL } from '@mokjang/constants';
 
 const GroupFilterContainer = styled.div`
   display: flex;

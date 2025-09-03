@@ -2,12 +2,12 @@ import React from 'react';
 import Image from 'next/image';
 import styled from 'styled-components';
 
-import { Member } from '../../../models/member/member';
-import { GRAY } from '../../../constants/styles/color';
-import CheckButton from '../common/button/check-button';
+import { Member } from '@mokjang/models';
+import { GRAY } from '@mokjang/constants';
+import { CheckButton } from '@mokjang/components';
 import MemberProfile from '../member/member-profile';
-import { MainText } from '../common/text/main-text';
-import { getFormattedMobilePhone } from '../../../utils/format';
+import { MainText } from '@mokjang/components';
+import { getFormattedMobilePhone } from '@mokjang/utils';
 
 const BackgroundContainer = styled.div`
   display: flex;

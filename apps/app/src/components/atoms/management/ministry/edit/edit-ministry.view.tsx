@@ -1,11 +1,11 @@
 import styled from 'styled-components';
 import React from 'react';
 import { useI18n, useScopedI18n } from '../../../../../../locales/client';
-import { Ministry } from '../../../../../models/management/management';
-import LabelInput from '../../../common/input/label-input';
-import { MainText } from '../../../common/text/main-text';
-import MainTag from '../../../common/tag/main-tag';
-import { GRAY } from '../../../../../constants/styles/color';
+import { Ministry } from '@mokjang/models';
+import { LabelInput } from '@mokjang/components';
+import { MainText } from '@mokjang/components';
+import { MainTag } from '@mokjang/components';
+import { GRAY } from '@mokjang/constants';
 import DeleteWarningButton from '../../../common/button/delete-warning-button';
 import ConfirmPopup from '../../../common/popup/confirm-popup';
 

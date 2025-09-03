@@ -11,6 +11,7 @@ const nextConfig = {
     '@mokjang/constants',
     '@mokjang/types',
     '@mokjang/assets',
+    '@mokjang/models',
   ],
 
   webpack: (config) => {

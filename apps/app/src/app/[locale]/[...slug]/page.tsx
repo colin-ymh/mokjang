@@ -23,7 +23,7 @@ import {
   TASK_CONTENT_ID,
   VISITATION_CONTENT_ID,
 } from '../../../constants/layout/content';
-import { usePageRouter } from '../../../utils/router';
+import { usePageRouter } from '@mokjang/utils';
 
 const App = () => {
   const router = usePageRouter();

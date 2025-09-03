@@ -1,17 +1,14 @@
 import styled from 'styled-components';
 import React, { useState } from 'react';
 import { useI18n, useScopedI18n } from '../../../../../../locales/client';
-import {
-  DEFAULT_GROUP,
-  Officer,
-} from '../../../../../models/management/management';
+import { DEFAULT_GROUP, Officer } from '@mokjang/models';
 import { fetchOfficers } from '../../../../../redux/reducers/church-reducer';
 import {
   setIsToastShown,
   setToastBackgroundColor,
   setToastText,
 } from '../../../../../redux/reducers/toast-popup-reducer';
-import { BLACK, DESTRUCTIVE } from '../../../../../constants/styles/color';
+import { BLACK, DESTRUCTIVE } from '@mokjang/constants';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../../../redux/store';
 import { OfficersApi } from '../../../../../api/management/officer/officers.api';

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Plan } from '@/models/subscription/subscription';
+import { Plan } from '@mokjang/models';
 import PriceItemView, {
   PriceItemViewProps,
 } from '@/components/atoms/main/price/price-item.view';

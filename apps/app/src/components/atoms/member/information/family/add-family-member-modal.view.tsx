@@ -1,15 +1,15 @@
 import React, { ChangeEvent } from 'react';
 import styled from 'styled-components';
-import { FamilyMember, Member } from '../../../../../models/member/member';
-import BorderInput from '../../../common/input/border-input';
+import { FamilyMember, Member } from '@mokjang/models';
+import { BorderInput } from '@mokjang/components';
+import { Svg } from '@mokjang/assets';
 import AddMemberItem from '../../../common/modal/add-member-item';
-import Search from '../../../../../../public/svg/search.svg';
 import { useI18n } from '../../../../../../locales/client';
-import { MainText } from '../../../common/text/main-text';
-import { getTranslatedSelectedMemberCount } from '../../../../../utils/translate';
+import { MainText } from '@mokjang/components';
+import { getTranslatedSelectedMemberCount } from '@mokjang/utils';
 import { usePathname } from 'next/navigation';
-import { LOCALE } from '../../../../../constants/state/locale';
-import { GRAY } from '../../../../../constants/styles/color';
+import { LOCALE } from '@mokjang/constants';
+import { GRAY } from '@mokjang/constants';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../redux/store';
 
@@ -34,7 +34,7 @@ const MemberListContainer = styled.div`
   overflow-y: auto;
 `;
 
-const SearchIcon = styled(Search)`
+const SearchIcon = styled(Svg.Search)`
   width: 14px;
   height: 14px;
 `;

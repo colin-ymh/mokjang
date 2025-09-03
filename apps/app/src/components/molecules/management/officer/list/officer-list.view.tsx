@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { Officer } from '../../../../../models/management/management';
+import { Officer } from '@mokjang/models';
 import ManagementOfficerItem from '../../../../atoms/management/officer/list/management-officer-item';
 import useWindowSize from '../../../../../hooks/window/window';
 

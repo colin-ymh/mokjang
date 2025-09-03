@@ -7,8 +7,8 @@ import {
 } from '../../../../redux/reducers/filter/member-filter-reducer';
 
 import MemberTableView from './member-table.view';
-import { MEMBER } from '../../../../constants/column/member-column';
-import { ORDER_DIRECTION } from '../../../../constants/constant';
+import { MEMBER } from '@mokjang/constants';
+import { ORDER_DIRECTION } from '@mokjang/constants';
 
 export type MemberTableProps = {
   onClickMemberItem: (memberId: string) => void;

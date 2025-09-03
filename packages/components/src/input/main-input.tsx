@@ -48,7 +48,7 @@ export type InputProps = InputHTMLAttributes<HTMLInputElement> & {
 };
 
 // forwardRef 를 사용하여 ref 를 전달받을 수 있도록
-const MainInput = forwardRef<HTMLInputElement, InputProps>(
+export const MainInput = forwardRef<HTMLInputElement, InputProps>(
   (
     {
       onKeyDown,
@@ -88,5 +88,3 @@ const MainInput = forwardRef<HTMLInputElement, InputProps>(
     );
   }
 );
-
-export default MainInput;

@@ -1,6 +1,6 @@
 // locale 태그를 유지한 채로 페이지 이동하는 함수
 import { usePathname, useRouter } from 'next/navigation';
-import { LOCALE } from '@mokjang/app/src/constants/state/locale';
+import { LOCALE } from '@mokjang/constants';
 
 export const usePageRouter = () => {
   const router = useRouter();
@@ -23,4 +23,12 @@ export const usePageRouter = () => {
   };
 
   return { push, replace };
+};
+
+export const routeLandingPage = (page: string) => {
+  window.location.href = `${process.env.NEXT_PUBLIC_LANDING_CLIENT_PROTOCOL}://${process.env.NEXT_PUBLIC_LANDING_CLIENT_HOST}:${process.env.NEXT_PUBLIC_LANDING_CLIENT_PORT}${page}`;
+};
+
+export const routeAppPage = (page: string) => {
+  window.location.href = `${process.env.NEXT_PUBLIC_APP_CLIENT_PROTOCOL}://${process.env.NEXT_PUBLIC_APP_CLIENT_HOST}:${process.env.NEXT_PUBLIC_APP_CLIENT_PORT}${page}`;
 };

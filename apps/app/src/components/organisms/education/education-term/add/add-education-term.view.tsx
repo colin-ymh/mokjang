@@ -3,27 +3,27 @@
 import styled from 'styled-components';
 import React, { ChangeEvent } from 'react';
 import { useI18n, useScopedI18n } from '../../../../../../locales/client';
-import { GRAY } from '../../../../../constants/styles/color';
-import { MainText } from '../../../../atoms/common/text/main-text';
+import { GRAY } from '@mokjang/constants';
+import { MainText } from '@mokjang/components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../redux/store';
-import RequiredMark from '../../../../atoms/common/text/required-mark';
-import BorderInput from '../../../../atoms/common/input/border-input';
+import { RequiredMark } from '@mokjang/components';
+import { BorderInput } from '@mokjang/components';
 import CustomDatePicker from '../../../../../vendor/date-picker/custom-date-picker';
 import {
   getDateFromDateString,
   getDateFromInput,
   getDateStringFromDate,
   getTotalMinuteFromDate,
-} from '../../../../../utils/date';
+} from '@mokjang/utils';
 import Dropdown from '../../../../atoms/common/dropdown/dropdown';
 import { useTimeDropdownItems } from '../../../../../hooks/dropdown/dropdown-items';
 import MemberDropdown from '../../../../atoms/common/dropdown/member-dropdown';
 import BigMemberTag from '../../../../atoms/common/tag/big-member-tag';
 import { MemberDropdownType } from '../../../../atoms/common/dropdown/member-dropdown-item';
-import { BLANK } from '../../../../../constants/constant';
+import { BLANK } from '@mokjang/constants';
 import MemberTag from '../../../../atoms/common/tag/member-tag';
-import { SIZE } from '../../../../../constants/styles/style';
+import { SIZE } from '@mokjang/constants';
 
 /* ──────────────────────────────── Styled Components ─────────────────────────────── */
 const AddEducationTermViewContainer = styled.div`

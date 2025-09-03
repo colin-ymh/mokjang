@@ -1,15 +1,14 @@
 import styled from 'styled-components';
-import LabelInput from '../../../atoms/common/input/label-input';
+import { LabelInput, MainText } from '@mokjang/components';
 import { MemberDropdownType } from '../../../atoms/common/dropdown/member-dropdown-item';
-import { MemberDropdownValueType } from '../../../../models/dropdown/dropdown';
 import React, { ChangeEvent } from 'react';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../../../redux/store';
+import { RootState } from '@/redux/store';
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
-import { MainText } from '../../../atoms/common/text/main-text';
 import MemberDropdown from '../../../atoms/common/dropdown/member-dropdown';
 import Quill from '../../../atoms/common/input/quill';
-import { BLANK } from '../../../../constants/constant';
+import { BLANK } from '@mokjang/constants';
+import { MemberDropdownValueType } from '@mokjang/models';
 
 const SessionInformationContainer = styled.div`
   flex: 1;

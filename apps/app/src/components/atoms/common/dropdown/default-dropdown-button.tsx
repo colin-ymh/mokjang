@@ -1,8 +1,8 @@
 import React, { forwardRef } from 'react';
 import styled from 'styled-components';
-import BorderInput, { BorderInputProps } from '../input/border-input';
+import { BorderInput, BorderInputProps } from '@mokjang/components';
 import { Chevron } from './dropdown-chevron';
-import { MAIN } from '@/constants/styles/color';
+import { MAIN } from '@mokjang/constants';
 
 const DropdownButton = styled.div`
   display: flex;

@@ -18,14 +18,14 @@ import {
 import useWindowSize from '../../../../hooks/window/window';
 import ChurchUserTableHeader from '../../../atoms/church-user/list/church-user-table-header';
 import { BLANK_HEADER } from '../../../../redux/reducers/filter/member-filter-reducer';
-import { ChurchUser } from '../../../../models/church-user/church-user';
-import { CHURCH_USER } from '../../../../constants/column/church-user-column';
+import { ChurchUser } from '@mokjang/models';
+import { CHURCH_USER } from '@mokjang/constants';
 import MemberProfile from '../../../atoms/member/member-profile';
 import { useI18n } from '../../../../../locales/client';
 import { getPermissionScopeTitle } from '../../../../utils/permission';
 import { getTranslatedDateFromDateString } from '@/utils/translate';
 import { usePathname } from 'next/navigation';
-import { LOCALE } from '@/constants/state/locale';
+import { LOCALE } from '@mokjang/constants';
 
 // 1. 컬럼별 PX 폭
 const getColumnWidth = (id: string) => {

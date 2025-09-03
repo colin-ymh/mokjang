@@ -1,6 +1,6 @@
 // src/middleware.ts
 import { NextRequest, NextResponse } from 'next/server';
-import { LOCALE } from './constants/state/locale';
+import { LOCALE } from '@mokjang/constants';
 
 const DEFAULT_LOCALE = LOCALE.KO;
 

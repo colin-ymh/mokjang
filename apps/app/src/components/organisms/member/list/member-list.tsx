@@ -9,10 +9,10 @@ import {
 
 import { MembersApi } from '../../../../api/members/members.api';
 import MemberListView from './member-list.view';
-import { DEFAULT_MEMBER } from '../../../../models/member/member';
+import { DEFAULT_MEMBER } from '@mokjang/models';
 import { setTargetMember } from '../../../../redux/reducers/target/target-member-reducer';
 import { uploadFiles } from '../../../../utils/upload';
-import { BLANK } from '../../../../constants/constant';
+import { BLANK } from '@mokjang/constants';
 import {
   setIsToastShown,
   setToastText,

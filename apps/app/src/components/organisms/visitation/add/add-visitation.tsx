@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
-import { BLANK } from '../../../../constants/constant';
-import { getFormattedTitle } from '../../../../utils/format';
-import { DEFAULT_VISITATION_DETAIL } from '../../../../models/visitation/visitation';
+import { BLANK } from '@mokjang/constants';
+import { getFormattedTitle } from '@mokjang/utils';
+import { DEFAULT_VISITATION_DETAIL } from '@mokjang/models';
 import { MemberDropdownType } from '../../../atoms/common/dropdown/member-dropdown-item';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../../redux/store';
@@ -11,9 +11,9 @@ import {
   getDateStringFromDate,
   getHourFromMinute,
   getTimeStringFromDate,
-} from '../../../../utils/date';
+} from '@mokjang/utils';
 import AddVisitationView from './add-visitation.view';
-import { Member } from '../../../../models/member/member';
+import { Member } from '@mokjang/models';
 
 type AddVisitationProps = {
   isEdit?: boolean;

@@ -3,22 +3,16 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
 
-import {
-  BLACK,
-  DESTRUCTIVE,
-  GRAY,
-  GREEN,
-  WHITE,
-} from '../../../../constants/styles/color';
-import { MainText } from '../../../atoms/common/text/main-text';
-import { BLANK } from '../../../../constants/constant';
+import { BLACK, DESTRUCTIVE, GRAY, GREEN, WHITE } from '@mokjang/constants';
+import { MainText } from '@mokjang/components';
+import { BLANK } from '@mokjang/constants';
 import useWindowSize from '../../../../hooks/window/window';
 import {
   WORSHIP_ATTENDANCE_STATUS,
   WorshipEnrollment,
   WorshipSessionCheckStatus,
-} from '../../../../models/worship/worship';
-import { WORSHIP_ENROLLMENT } from '../../../../constants/column/worship-column';
+} from '@mokjang/models';
+import { WORSHIP_ENROLLMENT } from '@mokjang/constants';
 import AttendanceTableHeader from '../../../atoms/attendance/list/attendance-table-header';
 import {
   getDateFromDateString,
@@ -27,12 +21,10 @@ import {
   getIsSameDate,
   getMonthDateFromDate,
   getWorshipSessionDates,
-} from '../../../../utils/date';
+} from '@mokjang/utils';
 import { EDUCATION_TABLE_HEADER_ITEM } from '../../../../redux/reducers/filter/worship-enrollment-filter-reducer';
 
-import Present from '../../../../../public/svg/circle.svg';
-import Absent from '../../../../../public/svg/cancel.svg';
-import CancelIcon from '../../../../../public/svg/cancel.svg';
+import { Svg } from '@mokjang/assets';
 import MemberProfilePopupButton from '../../common/button/member-profile-popup-button';
 import AttendanceInformation from '../../../organisms/attendance/information/attendance-information';
 import { useScopedI18n } from '../../../../../locales/client';
@@ -145,14 +137,14 @@ const IconContainer = styled.div`
   align-items: center;
 `;
 
-const PresentIcon = styled(Present)`
+const PresentIcon = styled(Svg.Circle)`
   width: 20px;
   height: 20px;
   stroke: ${GREEN.DEFAULT};
   stroke-width: 3px;
 `;
 
-const AbsentIcon = styled(Absent)`
+const AbsentIcon = styled(Svg.Cancel)`
   width: 20px;
   height: 20px;
   stroke: ${DESTRUCTIVE.DEFAULT};
@@ -165,7 +157,7 @@ const ButtonContainer = styled.div`
   padding-right: 10px;
 `;
 
-const Cancel = styled(CancelIcon)`
+const Cancel = styled(Svg.Cancel)`
   width: 30px;
   height: 30px;
   stroke: ${BLACK};

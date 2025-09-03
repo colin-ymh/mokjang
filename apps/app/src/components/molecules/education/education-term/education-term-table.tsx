@@ -7,13 +7,13 @@ import {
   Education,
   EducationSession,
   EducationTerm,
-} from '../../../../models/education/education';
+} from '@mokjang/models';
 import {
   setIsToastShown,
   setToastBackgroundColor,
   setToastText,
 } from '../../../../redux/reducers/toast-popup-reducer';
-import { DESTRUCTIVE, MAIN } from '../../../../constants/styles/color';
+import { DESTRUCTIVE, MAIN } from '@mokjang/constants';
 import { EducationSessionsApi } from '../../../../api/education/education-sessions.api';
 import EducationTermTableView from './education-term-table.view';
 import { setTargetEducation } from '../../../../redux/reducers/target/target-education-reducer';
@@ -23,22 +23,22 @@ import {
   getDateFromDateString,
   getDateStringFromDate,
   getFullStringFromDate,
-} from '../../../../utils/date';
-import { getIsWellFormedTitle } from '../../../../utils/check';
-import { TASK_STATUS } from '../../../../constants/status/status';
+} from '@mokjang/utils';
+import { getIsWellFormedTitle } from '@mokjang/utils';
+import { TASK_STATUS } from '@mokjang/constants';
 import { setEducationTerms } from '../../../../redux/reducers/filter/education-term-filter-reducer';
 import { setTargetEducationSession } from '../../../../redux/reducers/target/target-education-session-reducer';
 import { EducationTermsApi } from '../../../../api/education/education-terms.api';
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
 import WrappedPagePopup from '../../../atoms/common/popup/wrapped-page-popup';
-import { getTranslatedTerm } from '../../../../utils/translate';
+import { getTranslatedTerm } from '@mokjang/utils';
 import ConfirmPopup from '../../../atoms/common/popup/error-popup';
 import EducationTermInformation from '../../../organisms/education/education-term/information/education-term-information';
 import AddEducationTerm from '../../../organisms/education/education-term/add/add-education-term';
 import EducationSessionInformation from '../../../organisms/education/education-session/information/education-session-information';
 import AddEducationSession from '../../../organisms/education/education-session/add/add-education-session';
 import { usePathname } from 'next/navigation';
-import { LOCALE } from '../../../../constants/state/locale';
+import { LOCALE } from '@mokjang/constants';
 
 export type EducationTermTableProps = {};
 

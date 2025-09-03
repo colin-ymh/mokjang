@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { MinistryGroup } from '../../../../models/management/management';
+import { MinistryGroup } from '@mokjang/models';
 import MinistryGroupSideBar from '../../../molecules/management/ministry/list/ministry-group-side-bar';
 import MinistryGroupInformation from '../../../molecules/management/ministry/informaton/ministry-group-information';
 

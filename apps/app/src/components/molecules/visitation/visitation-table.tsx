@@ -7,8 +7,8 @@ import {
 } from '../../../redux/reducers/filter/visitation-filter-reducer';
 
 import VisitationTableView from './visitation-table.view';
-import { VISITATION } from '../../../constants/column/visitation-column';
-import { ORDER_DIRECTION } from '../../../constants/constant';
+import { VISITATION } from '@mokjang/constants';
+import { ORDER_DIRECTION } from '@mokjang/constants';
 
 export type VisitationTableProps = {
   onClickVisitationItem: (visitationId: string) => void;

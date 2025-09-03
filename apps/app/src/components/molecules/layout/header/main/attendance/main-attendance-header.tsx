@@ -7,7 +7,7 @@ import {
   setTargetWorshipSessionGroup,
   setTargetWorshipSessionWorship,
 } from '../../../../../../redux/reducers/target/target-worship-session-reducer';
-import { DEFAULT_WORSHIP_SESSION } from '../../../../../../models/worship/worship';
+import { DEFAULT_WORSHIP_SESSION } from '@mokjang/models';
 import { WorshipSessionsApi } from '../../../../../../api/worship/worship-sessions.api';
 import {
   setIsToastShown,

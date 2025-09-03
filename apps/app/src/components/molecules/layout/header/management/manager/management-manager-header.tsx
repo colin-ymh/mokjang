@@ -1,4 +1,4 @@
-import { usePageRouter } from '../../../../../../utils/router';
+import { usePageRouter } from '@mokjang/utils';
 import ManagementManagerHeaderView from './management-manager-header.view';
 import { MANAGER_CONTENT_ID } from '@/constants/layout/content';
 

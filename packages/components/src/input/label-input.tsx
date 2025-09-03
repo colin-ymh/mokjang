@@ -1,11 +1,11 @@
 import { forwardRef } from 'react';
 import styled from 'styled-components';
 
-import { MainText } from '../text/main-text';
+import { MainText } from '@mokjang/components';
 import { InputProps } from './main-input';
-import RequiredMark from '../text/required-mark';
 import { GRAY, SIZE } from '@mokjang/constants';
 import { BorderInput } from './border-input';
+import { RequiredMark } from '../text';
 
 const LabelInputContainer = styled.div<{ $zIndex?: number }>`
   display: flex;

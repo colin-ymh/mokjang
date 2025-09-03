@@ -2,6 +2,8 @@ export * from "./popup-container";
 export * from "./popup-content";
 export * from "./popup-footer";
 export * from "./popup-footer.view";
+export * from "./popup-header-bar";
+export * from "./popup-header-bar.view";
 export * from "./popup-header";
 export * from "./popup-header.view";
 export * from "./popup-layout";

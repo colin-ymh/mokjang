@@ -3,13 +3,13 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { AppDispatch, RootState } from '../../../redux/store';
 import { setTaskFilter } from '../../../redux/reducers/filter/task-filter-reducer';
-import { getTrimmedString } from '../../../utils/format';
-import { TASK } from '../../../constants/column/task-column';
-import { BLANK } from '../../../constants/constant';
+import { getTrimmedString } from '@mokjang/utils';
+import { TASK } from '@mokjang/constants';
+import { BLANK } from '@mokjang/constants';
 import TaskRowView, { TASK_SEARCH_FILTER } from './task-row.view';
 import { TaskFilteredItemType } from '../../atoms/task/task-filtered-item';
 
-import { TASK_STATUS } from '../../../constants/status/status';
+import { TASK_STATUS } from '@mokjang/constants';
 
 const TaskRow = () => {
   const dispatch = useDispatch<AppDispatch>();

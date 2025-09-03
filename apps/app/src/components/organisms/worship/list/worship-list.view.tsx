@@ -1,10 +1,10 @@
 import styled from 'styled-components';
 import React from 'react';
-import { MEDIA_MIN_WIDTH } from '../../../../constants/constant';
+import { MEDIA_MIN_WIDTH } from '@mokjang/constants';
 import WorshipTable, {
   WorshipTableProps,
 } from '../../../molecules/worship/worship-table';
-import { WHITE } from '../../../../constants/styles/color';
+import { WHITE } from '@mokjang/constants';
 
 const WorshipListContainer = styled.div`
   display: flex;

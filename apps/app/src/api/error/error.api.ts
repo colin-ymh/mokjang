@@ -1,4 +1,4 @@
-import { SERVER_URL, TEST_SERVER_URL } from '../../constants/state/url';
+import { SERVER_URL, TEST_SERVER_URL } from '@mokjang/constants';
 import axios, { AxiosResponse } from 'axios';
 import { CustomError } from './error';
 

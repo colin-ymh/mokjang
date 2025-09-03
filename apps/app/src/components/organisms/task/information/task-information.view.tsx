@@ -3,21 +3,17 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
 import { useTaskStatusDropdownItems } from '../../../../hooks/dropdown/dropdown-items';
 import { useI18n } from '../../../../../locales/client';
-import { MainText } from '../../../atoms/common/text/main-text';
-import { GRAY } from '../../../../constants/styles/color';
+import { MainText } from '@mokjang/components';
+import { GRAY } from '@mokjang/constants';
 import React from 'react';
-import { TASK_STATUS } from '../../../../constants/status/status';
+import { TASK_STATUS } from '@mokjang/constants';
 import MemberProfilePopupButton from '../../../molecules/common/button/member-profile-popup-button';
-import { getTranslatedDateFromDateString } from '../../../../utils/translate';
+import { getTranslatedDateFromDateString } from '@mokjang/utils';
 import { usePathname } from 'next/navigation';
-import { LOCALE } from '../../../../constants/state/locale';
-import SvgIcon from '../../../atoms/common/icon/svg-icon';
-
-import User from '../../../../../public/svg/user.svg';
-import Calendar from '../../../../../public/svg/calendar.svg';
-import Users from '../../../../../public/svg/users.svg';
-import Book from '../../../../../public/svg/book.svg';
-import { SIZE } from '../../../../constants/styles/style';
+import { LOCALE } from '@mokjang/constants';
+import { SvgIcon } from '@mokjang/components';
+import { Svg } from '@mokjang/assets';
+import { SIZE } from '@mokjang/constants';
 import StatusDropdown from '../../../atoms/common/dropdown/status-dropdown';
 
 const InformationContainer = styled.div`
@@ -114,7 +110,7 @@ const TaskInformationView = ({ onChangeStatus }: TaskInformationViewProps) => {
         {/* 담당자 */}
         <RowContainer>
           <TitleContainer>
-            <SvgIcon svg={User} color={GRAY.DARK} />
+            <SvgIcon svg={Svg.User} color={GRAY.DARK} />
             <MainText color={GRAY.DARK}>{t('inCharge')}</MainText>
           </TitleContainer>
           <MemberProfilePopupButton
@@ -126,7 +122,7 @@ const TaskInformationView = ({ onChangeStatus }: TaskInformationViewProps) => {
         {/* 일정 */}
         <RowContainer>
           <TitleContainer>
-            <SvgIcon svg={Calendar} color={GRAY.DARK} />
+            <SvgIcon svg={Svg.Calendar} color={GRAY.DARK} />
             <MainText color={GRAY.DARK}>{t('schedule')}</MainText>
           </TitleContainer>
           {/* 일자 */}
@@ -146,7 +142,7 @@ const TaskInformationView = ({ onChangeStatus }: TaskInformationViewProps) => {
         {/* 보고대상자 */}
         <ColumnContainer>
           <TitleContainer>
-            <SvgIcon svg={Users} color={GRAY.DARK} />
+            <SvgIcon svg={Svg.Users} color={GRAY.DARK} />
             <MainText color={GRAY.DARK}>{t('receiver')}</MainText>
           </TitleContainer>
           <MemberList>
@@ -163,7 +159,7 @@ const TaskInformationView = ({ onChangeStatus }: TaskInformationViewProps) => {
         {/* 업무내용 */}
         <ColumnContainer>
           <TitleContainer>
-            <SvgIcon svg={Book} color={GRAY.DARK} />
+            <SvgIcon svg={Svg.Book} color={GRAY.DARK} />
             <MainText color={GRAY.DARK}>{t('content')}</MainText>
           </TitleContainer>
           <MainText

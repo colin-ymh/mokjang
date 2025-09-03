@@ -2,15 +2,15 @@ import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../../redux/store';
 
-import { getTrimmedString } from '../../../../utils/format';
-import { BLANK } from '../../../../constants/constant';
+import { getTrimmedString } from '@mokjang/utils';
+import { BLANK } from '@mokjang/constants';
 import EducationRowView, {
   EDUCATION_SEARCH_FILTER,
 } from './education-row.view';
 import { EducationFilteredItemType } from '../../../atoms/education/education/education-filtered-item';
 import { setEducationFilter } from '../../../../redux/reducers/filter/education-filter-reducer';
 
-import { EDUCATION } from '../../../../constants/column/education-column';
+import { EDUCATION } from '@mokjang/constants';
 
 const EducationRow = () => {
   const dispatch = useDispatch<AppDispatch>();

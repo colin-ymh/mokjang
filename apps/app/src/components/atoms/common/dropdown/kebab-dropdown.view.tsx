@@ -3,10 +3,10 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-import { BLACK, WHITE } from '@/constants/styles/color';
+import { BLACK, WHITE } from '@mokjang/constants';
 import DropdownItem, { DropdownValueType } from './dropdown-item';
 
-import Kebab from '../../../../../public/svg/kebab.svg';
+import { Svg } from '@mokjang/assets';
 
 const DropdownContainer = styled.div<{
   $isOpened: boolean;
@@ -55,7 +55,7 @@ const DropdownList = styled.div<{
   pointer-events: ${({ $isOpened }) => ($isOpened ? 'auto' : 'none')};
 `;
 
-const KebabButton = styled(Kebab)`
+const KebabButton = styled(Svg.Kebab)`
   width: 25px;
   height: 25px;
   stroke: ${BLACK};

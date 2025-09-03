@@ -2,11 +2,11 @@ import styled from 'styled-components';
 import React from 'react';
 import { useI18n, useScopedI18n } from '../../../../../../locales/client';
 import ConfirmPopup from '../../../../atoms/common/popup/confirm-popup';
-import { Group } from '../../../../../models/management/management';
-import LabelInput from '../../../../atoms/common/input/label-input';
+import { Group } from '@mokjang/models';
+import { LabelInput } from '@mokjang/components';
 import DeleteWarningButton from '../../../../atoms/common/button/delete-warning-button';
 import EditGroupLeader from '../../../../atoms/management/group/edit/edit-group-leader';
-import { Member } from '../../../../../models/member/member';
+import { Member } from '@mokjang/models';
 
 const EditContainer = styled.div`
   display: flex;

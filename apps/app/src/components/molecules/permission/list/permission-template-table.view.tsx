@@ -3,11 +3,11 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
 
-import { GRAY, WHITE } from '../../../../constants/styles/color';
-import { PERMISSION_TEMPLATE } from '../../../../constants/column/permission-column';
-import { MainText } from '../../../atoms/common/text/main-text';
-import { BLANK } from '../../../../constants/constant';
-import { PermissionTemplate } from '../../../../models/permission/permission';
+import { GRAY, WHITE } from '@mokjang/constants';
+import { PERMISSION_TEMPLATE } from '@mokjang/constants';
+import { MainText } from '@mokjang/components';
+import { BLANK } from '@mokjang/constants';
+import { PermissionTemplate } from '@mokjang/models';
 import useWindowSize from '../../../../hooks/window/window';
 import PermissionTemplateTableHeader from '../../../atoms/permission/list/permission-template-table-header';
 import { BLANK_HEADER } from '../../../../redux/reducers/filter/member-filter-reducer';

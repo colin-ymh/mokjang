@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../store';
-import { Schedule } from '../../../models/calendar/calendar';
+import { Schedule } from '@mokjang/models';
 import { VisitationsApi } from '../../../api/visitations/visitations.api';
 import { TasksApi } from '../../../api/tasks/tasks.api';
 import {
@@ -11,14 +11,14 @@ import {
   getScheduleFromTask,
   getScheduleFromVisitation,
 } from '../../../utils/calendar';
-import { Visitation } from '../../../models/visitation/visitation';
-import { Task } from '../../../models/task/task';
+import { Visitation } from '@mokjang/models';
+import { Task } from '@mokjang/models';
 import { CalendarApi } from '../../../api/calendar/calendar.api';
-import { Member } from '../../../models/member/member';
-import { DOMAIN } from '../../../models/permission/permission';
+import { Member } from '@mokjang/models';
+import { DOMAIN } from '@mokjang/models';
 import { ChurchEventsApi } from '../../../api/church-event/church-events.api';
-import { ChurchEvent } from '../../../models/church-event/church-event';
-import { EducationSession } from '../../../models/education/education';
+import { ChurchEvent } from '@mokjang/models';
+import { EducationSession } from '@mokjang/models';
 import dayjs from 'dayjs';
 import { getHolidays, Holiday } from '../../../api/holiday-api';
 

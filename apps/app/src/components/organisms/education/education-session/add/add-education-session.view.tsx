@@ -3,20 +3,20 @@
 import styled from 'styled-components';
 import React, { ChangeEvent } from 'react';
 import { useI18n, useScopedI18n } from '../../../../../../locales/client';
-import { GRAY } from '../../../../../constants/styles/color';
-import { MainText } from '../../../../atoms/common/text/main-text';
+import { GRAY } from '@mokjang/constants';
+import { MainText } from '@mokjang/components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../redux/store';
-import RequiredMark from '../../../../atoms/common/text/required-mark';
-import BorderInput from '../../../../atoms/common/input/border-input';
-import { SIZE } from '../../../../../constants/styles/style';
+import { RequiredMark } from '@mokjang/components';
+import { BorderInput } from '@mokjang/components';
+import { SIZE } from '@mokjang/constants';
 import CustomDatePicker from '../../../../../vendor/date-picker/custom-date-picker';
 import {
   getDateFromDateString,
   getDateFromInput,
   getDateStringFromDate,
   getTotalMinuteFromDate,
-} from '../../../../../utils/date';
+} from '@mokjang/utils';
 import Dropdown from '../../../../atoms/common/dropdown/dropdown';
 import { useTimeDropdownItems } from '../../../../../hooks/dropdown/dropdown-items';
 import { MemberDropdownType } from '../../../../atoms/common/dropdown/member-dropdown-item';

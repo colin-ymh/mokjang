@@ -19,6 +19,10 @@ const CONFIGS = {
     root: path.resolve('packages/assets/src'),
     includeExts: ['.svg', '.png', '.jpg', '.jpeg', '.gif', '.webp'],
   },
+  models: {
+    root: path.resolve('packages/models/src'),
+    includeExts: ['.ts'],
+  },
 };
 
 const EXCLUDE_FILES = new RegExp(

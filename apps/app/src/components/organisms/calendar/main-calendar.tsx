@@ -5,10 +5,10 @@ import {
   fetchCalendarSchedules,
   setCalendarSchedules,
 } from '../../../redux/reducers/filter/calendar-filter-reducer';
-import { getDateStringFromDate } from '../../../utils/date';
+import { getDateStringFromDate } from '@mokjang/utils';
 import MainCalendarView from './main-calendar.view';
-import { Schedule } from '../../../models/calendar/calendar';
-import { DOMAIN } from '../../../models/permission/permission';
+import { Schedule } from '@mokjang/models';
+import { DOMAIN } from '@mokjang/models';
 import { setTargetTask } from '../../../redux/reducers/target/target-task-reducer';
 import { setTargetVisitation } from '../../../redux/reducers/target/target-visitation-reducer';
 import { setTargetEducationSession } from '../../../redux/reducers/target/target-education-session-reducer';
@@ -17,22 +17,19 @@ import { setTargetEducationTerm } from '../../../redux/reducers/target/target-ed
 import { EducationAttendanceApi } from '../../../api/education/education-attendance.api';
 import { setTargetEducation } from '../../../redux/reducers/target/target-education-reducer';
 import { EducationSessionsApi } from '../../../api/education/education-sessions.api';
-import { TASK_STATUS } from '../../../constants/status/status';
+import { TASK_STATUS } from '@mokjang/constants';
 import { TasksApi } from '../../../api/tasks/tasks.api';
 import { VisitationsApi } from '../../../api/visitations/visitations.api';
-import {
-  DEFAULT_EDUCATION,
-  DEFAULT_EDUCATION_TERM,
-} from '../../../models/education/education';
-import { BLANK } from '../../../constants/constant';
+import { DEFAULT_EDUCATION, DEFAULT_EDUCATION_TERM } from '@mokjang/models';
+import { BLANK } from '@mokjang/constants';
 import {
   setIsToastShown,
   setToastBackgroundColor,
   setToastText,
 } from '../../../redux/reducers/toast-popup-reducer';
-import { DESTRUCTIVE } from '../../../constants/styles/color';
+import { DESTRUCTIVE } from '@mokjang/constants';
 import { setTargetChurchEvent } from '../../../redux/reducers/target/target-church-event-reducer';
-import { ChurchEvent } from '../../../models/church-event/church-event';
+import { ChurchEvent } from '@mokjang/models';
 import { setTargetMember } from '../../../redux/reducers/target/target-member-reducer';
 import { MembersApi } from '../../../api/members/members.api';
 

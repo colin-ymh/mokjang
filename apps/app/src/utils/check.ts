@@ -1,5 +1,5 @@
-import { BLANK } from '../constants/constant';
-import { EducationTerm } from '../models/education/education';
+import { BLANK } from '@mokjang/constants';
+import { EducationTerm } from '@mokjang/models';
 
 export const getIsWellFormedMobilePhone = (mobilePhone: string) => {
   if (mobilePhone.slice(0, 3) !== '010') return false;

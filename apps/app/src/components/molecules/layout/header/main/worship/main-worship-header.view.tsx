@@ -1,15 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { GRAY, MAIN } from '../../../../../../constants/styles/color';
-import { MainText } from '../../../../../atoms/common/text/main-text';
-import { SIZE } from '../../../../../../constants/styles/style';
+import { GRAY, MAIN } from '@mokjang/constants';
+import { MainText } from '@mokjang/components';
+import { SIZE } from '@mokjang/constants';
 import { useScopedI18n } from '../../../../../../../locales/client';
 
-import { MEDIA_MIN_WIDTH } from '../../../../../../constants/constant';
-import Button from '../../../../../atoms/common/button/button';
-import CustomPopup from '../../../../../atoms/common/popup/custom-popup';
-import { MAIN_HEADER_ID } from '../../../../../../constants/layout/header';
+import { MEDIA_MIN_WIDTH } from '@mokjang/constants';
+import { Button } from '@mokjang/components';
+import { CustomPopup } from '@mokjang/components';
+import { MAIN_HEADER_ID } from '@/constants/layout/header';
 import AddWorship from '../../../../../organisms/worship/add/add-worship';
 
 const HeaderContainer = styled.div`

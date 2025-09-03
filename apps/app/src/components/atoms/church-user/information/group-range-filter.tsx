@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
 import GroupRangeFilterView from './group-range-filter.view';
-import { Group } from '../../../../models/management/management';
+import { Group } from '@mokjang/models';
 
 type GroupRangeFilterProps = {
   isDefaultOpen?: boolean;

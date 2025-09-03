@@ -5,7 +5,7 @@ import { AppDispatch, RootState } from '../../../../../redux/store';
 import { FamilyApi } from '../../../../../api/members/family.api';
 import { MembersApi } from '../../../../../api/members/members.api';
 import FamilyInformationListView from './family-information-list.view';
-import { FamilyMember, Member } from '../../../../../models/member/member';
+import { FamilyMember, Member } from '@mokjang/models';
 
 import { useScopedI18n } from '../../../../../../locales/client';
 import { setTargetMember } from '../../../../../redux/reducers/target/target-member-reducer';
@@ -14,8 +14,8 @@ import {
   setToastBackgroundColor,
   setToastText,
 } from '../../../../../redux/reducers/toast-popup-reducer';
-import { BLACK, DESTRUCTIVE } from '../../../../../constants/styles/color';
-import { BLANK, FAMILY } from '../../../../../constants/constant';
+import { BLACK, DESTRUCTIVE } from '@mokjang/constants';
+import { BLANK, FAMILY } from '@mokjang/constants';
 
 type FamilyInformationListProps = {};
 

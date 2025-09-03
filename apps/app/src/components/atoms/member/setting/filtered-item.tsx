@@ -1,15 +1,15 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../../redux/store';
-import { MEMBER } from '../../../../constants/column/member-column';
-import { BAPTISM, BLANK, MARRIAGE } from '../../../../constants/constant';
+import { MEMBER } from '@mokjang/constants';
+import { BAPTISM, BLANK, MARRIAGE } from '@mokjang/constants';
 
 import { useI18n } from '../../../../../locales/client';
 import { setMemberFilter } from '../../../../redux/reducers/filter/member-filter-reducer';
 import { getGroup } from '../../../../utils/group';
 import FilteredItemView, { FilteredItemType } from './filtered-item.view';
 import { usePathname } from 'next/navigation';
-import { LOCALE } from '../../../../constants/state/locale';
+import { LOCALE } from '@mokjang/constants';
 
 type FilteredItemProps = {
   item: FilteredItemType;

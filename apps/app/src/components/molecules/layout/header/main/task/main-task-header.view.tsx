@@ -2,18 +2,15 @@ import React from 'react';
 import styled from 'styled-components';
 import { useParams } from 'next/navigation';
 
-import { GRAY, MAIN } from '../../../../../../constants/styles/color';
-import { MainText } from '../../../../../atoms/common/text/main-text';
+import { GRAY, MAIN, MEDIA_MIN_WIDTH, SIZE } from '@mokjang/constants';
+import { Button, MainText } from '@mokjang/components';
 import HeaderBar from '../../../../../atoms/layout/header/header-bar';
-import { SIZE } from '../../../../../../constants/styles/style';
-import { useMainTaskHeaderBarItems } from '../../../../../../hooks/layout/header-bar-items';
+import { useMainTaskHeaderBarItems } from '@/hooks/layout/header-bar-items';
 
 import { useScopedI18n } from '../../../../../../../locales/client';
 import AddTask from '../../../../../organisms/task/add/add-task';
-import { MEDIA_MIN_WIDTH } from '../../../../../../constants/constant';
-import Button from '../../../../../atoms/common/button/button';
-import { MAIN_HEADER_ID } from '../../../../../../constants/layout/header';
 import WrappedPagePopup from '../../../../../atoms/common/popup/wrapped-page-popup';
+import { MAIN_HEADER_ID } from '@/constants/layout/header';
 
 const HeaderContainer = styled.div`
   display: flex;

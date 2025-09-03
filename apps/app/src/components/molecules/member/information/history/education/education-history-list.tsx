@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../../redux/store';
 import React, { useEffect, useRef, useState } from 'react';
-import { EducationHistory } from '../../../../../../models/member/history';
+import { EducationHistory } from '@mokjang/models';
 import { EducationHistoryApi } from '../../../../../../api/history/education-history.api';
 import EducationHistoryListView from './education-history-list.view';
 

@@ -3,13 +3,13 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
 
-import { GRAY, GREEN, RED, WHITE } from '../../../../constants/styles/color';
-import { BLANK } from '../../../../constants/constant';
-import { EDUCATION_ENROLLMENT } from '../../../../constants/column/education-column';
-import { EDUCATION_ENROLLMENT_STATUS } from '../../../../constants/status/status';
-import { MainText } from '../../../atoms/common/text/main-text';
-import { getFormattedMobilePhone } from '../../../../utils/format';
-import { EducationEnrollment } from '../../../../models/education/education';
+import { GRAY, GREEN, RED, WHITE } from '@mokjang/constants';
+import { BLANK } from '@mokjang/constants';
+import { EDUCATION_ENROLLMENT } from '@mokjang/constants';
+import { EDUCATION_ENROLLMENT_STATUS } from '@mokjang/constants';
+import { MainText } from '@mokjang/components';
+import { getFormattedMobilePhone } from '@mokjang/utils';
+import { EducationEnrollment } from '@mokjang/models';
 import { EDUCATION_ENROLLMENT_TABLE_HEADER_LIST } from '../../../../redux/reducers/filter/education-filter-reducer';
 import { useI18n } from '../../../../../locales/client';
 import EducationEnrollmentTableHeader from '../../../atoms/education/education-enrollment/education-enrollment-table-header';
@@ -21,7 +21,7 @@ import {
   getStatusBackgroundColor,
   getStatusFontColor,
 } from '../../../../utils/color';
-import { SIZE } from '../../../../constants/styles/style';
+import { SIZE } from '@mokjang/constants';
 
 // 1. 컬럼별 PX 폭 (마지막 REMARKS만 auto 할 예정)
 const getColumnWidth = (id: string) => {

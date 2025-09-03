@@ -3,27 +3,23 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../redux/store';
 
-import { GRAY, MAIN, WHITE } from '../../../constants/styles/color';
-import { MainText } from '../../atoms/common/text/main-text';
-import { Worship } from '../../../models/worship/worship';
+import { GRAY, MAIN, WHITE } from '@mokjang/constants';
+import { MainText } from '@mokjang/components';
+import { Worship } from '@mokjang/models';
 import useWindowSize from '../../../hooks/window/window';
 import { useI18n, useScopedI18n } from '../../../../locales/client';
 import AddWorship from '../../organisms/worship/add/add-worship';
-import CustomPopup from '../../atoms/common/popup/custom-popup';
+import { CustomPopup } from '@mokjang/components';
 
-import { WORSHIP } from '../../../constants/column/worship-column';
+import { WORSHIP } from '@mokjang/constants';
 import WorshipTableHeader from '../../atoms/worship/worship-table-header';
-import {
-  getDayConstantByIndex,
-  getWeekRepeatConstant,
-} from '../../../utils/date';
-import { DAY, REPEAT_PERIOD } from '../../../constants/constant';
-import SvgIcon from '../../atoms/common/icon/svg-icon';
+import { getDayConstantByIndex, getWeekRepeatConstant } from '@mokjang/utils';
+import { DAY, REPEAT_PERIOD } from '@mokjang/constants';
+import { SvgIcon } from '@mokjang/components';
 
-import Calendar from '../../../../public/svg/calendar.svg';
-import Users from '../../../../public/svg/users.svg';
-import { SIZE } from '../../../constants/styles/style';
-import Button from '../../atoms/common/button/button';
+import { Svg } from '@mokjang/assets';
+import { SIZE } from '@mokjang/constants';
+import { Button } from '@mokjang/components';
 
 // 2. 테이블 컨테이너 (100% 폭 + 스크롤)
 const TableContainer = styled.div<{ height: number }>`
@@ -197,7 +193,7 @@ const WorshipTableView = ({
       case WORSHIP.WORSHIP_DAY:
         return (
           <DataContainer>
-            <SvgIcon svg={Calendar} />
+            <SvgIcon svg={Svg.Calendar} />
             <MainText>
               {`${t(getWeekRepeatConstant(worship.repeatPeriod) as REPEAT_PERIOD)} ${t(getDayConstantByIndex(worship.worshipDay) as DAY)}`}
             </MainText>
@@ -220,7 +216,7 @@ const WorshipTableView = ({
               text={t('button.goToAttendance')}
               width={'auto'}
               height={30}
-              icon={<SvgIcon svg={Users} color={WHITE} width={2} />}
+              icon={<SvgIcon svg={Svg.Users} color={WHITE} width={2} />}
               onClick={(event) => {
                 event?.stopPropagation();
                 onClickWorshipItem(worship);

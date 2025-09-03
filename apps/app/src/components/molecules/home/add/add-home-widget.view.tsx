@@ -1,20 +1,15 @@
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
 import styled from 'styled-components';
-import { HOME_WIDGET } from '../../../../constants/constant';
-import { MainText } from '../../../atoms/common/text/main-text';
-import Button from '../../../atoms/common/button/button';
-import { GRAY, MAIN } from '../../../../constants/styles/color';
+import { HOME_WIDGET } from '@mokjang/constants';
+import { MainText } from '@mokjang/components';
+import { Button } from '@mokjang/components';
+import { GRAY, MAIN } from '@mokjang/constants';
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
-import SvgIcon from '../../../atoms/common/icon/svg-icon';
+import { SvgIcon } from '@mokjang/components';
 
-import Calendar from '../../../../../public/svg/calendar.svg';
-import DocumentCheck from '../../../../../public/svg/document-check.svg';
-import ChartBar from '../../../../../public/svg/chart-bar.svg';
-import ChartPie from '../../../../../public/svg/chart-pie.svg';
-import UserPlus from '../../../../../public/svg/user-plus.svg';
-import Heart from '../../../../../public/svg/heart.svg';
-import { SIZE } from '../../../../constants/styles/style';
+import { Svg } from '@mokjang/assets';
+import { SIZE } from '@mokjang/constants';
 
 const WidgetContainer = styled.div`
   display: flex;
@@ -70,17 +65,17 @@ const AddHomeWidgetView = ({ onClickAdd }: AddHomeWidgetViewProps) => {
   const getWidgetIcon = (widget: HOME_WIDGET) => {
     switch (widget) {
       case HOME_WIDGET.REPORTED_SCHEDULE:
-        return DocumentCheck;
+        return Svg.DocumentCheck;
       case HOME_WIDGET.MY_SCHEDULE:
-        return Calendar;
+        return Svg.Calendar;
       case HOME_WIDGET.WORSHIP_ATTENDANCE:
-        return Heart;
+        return Svg.Heart;
       case HOME_WIDGET.CHURCH_SCHEDULE_SUMMARY:
-        return ChartBar;
+        return Svg.ChartBar;
       case HOME_WIDGET.MY_SCHEDULE_SUMMARY:
-        return ChartPie;
+        return Svg.ChartPie;
       case HOME_WIDGET.NEW_MEMBER:
-        return UserPlus;
+        return Svg.UserPlus;
     }
   };
 

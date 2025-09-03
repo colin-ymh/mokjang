@@ -7,14 +7,11 @@ import { useEffect, useState } from 'react';
 import {
   getInitialNewMemberSummaries,
   NewMemberSummary,
-} from '../../../../models/home/widget';
-import {
-  getDateFromDateString,
-  getDateStringFromDate,
-} from '../../../../utils/date';
-import { Member } from '../../../../models/member/member';
+} from '@mokjang/models';
+import { getDateFromDateString, getDateStringFromDate } from '@mokjang/utils';
+import { Member } from '@mokjang/models';
 import NewMemberWidgetView from './new-member-widget.view';
-import { BLANK } from '../../../../constants/constant';
+import { BLANK } from '@mokjang/constants';
 import { useI18n } from '../../../../../locales/client';
 
 const NewMemberWidget = () => {

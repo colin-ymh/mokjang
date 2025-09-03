@@ -7,8 +7,8 @@ import {
 } from '../../../../redux/reducers/filter/permission-template-filter-reducer';
 
 import PermissionTemplateTableView from './permission-template-table.view';
-import { PERMISSION_TEMPLATE } from '../../../../constants/column/permission-column';
-import { ORDER_DIRECTION } from '../../../../constants/constant';
+import { PERMISSION_TEMPLATE } from '@mokjang/constants';
+import { ORDER_DIRECTION } from '@mokjang/constants';
 
 export type PermissionTemplateTableProps = {
   onClickPermissionTemplateItem: (permissionTemplateId: string) => void;

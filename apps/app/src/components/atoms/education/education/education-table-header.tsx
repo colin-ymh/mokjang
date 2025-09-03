@@ -3,14 +3,13 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
 
-import { MainText } from '../../common/text/main-text';
-import { EDUCATION } from '../../../../constants/column/education-column';
-import { BLACK, GRAY, MAIN } from '../../../../constants/styles/color';
-import { SIZE } from '../../../../constants/styles/style';
-import { getTranslatedEducationColumn } from '../../../../utils/translate';
-import Arrow from '../../../../../public/svg/arror-up.svg';
-import ArrowUpDown from '../../../../../public/svg/arrow-up-down.svg';
-import { ORDER_DIRECTION } from '../../../../constants/constant';
+import { MainText } from '@mokjang/components';
+import { EDUCATION } from '@mokjang/constants';
+import { BLACK, GRAY, MAIN } from '@mokjang/constants';
+import { SIZE } from '@mokjang/constants';
+import { getTranslatedEducationColumn } from '@mokjang/utils';
+import { Svg } from '@mokjang/assets';
+import { ORDER_DIRECTION } from '@mokjang/constants';
 import { useI18n } from '../../../../../locales/client';
 
 const HeaderContainer = styled.div`
@@ -34,14 +33,14 @@ const IconContainer = styled.div`
   cursor: pointer;
 `;
 
-const ArrowUp = styled(Arrow)`
+const ArrowUp = styled(Svg.ArrorUp)`
   width: 14px;
   height: 14px;
   stroke-width: 2px;
   stroke: ${MAIN.DEFAULT};
 `;
 
-const ArrowDown = styled(Arrow)`
+const ArrowDown = styled(Svg.ArrorUp)`
   width: 14px;
   height: 14px;
   stroke-width: 2px;
@@ -49,7 +48,7 @@ const ArrowDown = styled(Arrow)`
   transform: rotate(180deg);
 `;
 
-const ArrowUpDownIcon = styled(ArrowUpDown)`
+const ArrowUpDownIcon = styled(Svg.ArrowUpDown)`
   width: 14px;
   height: 14px;
   stroke-width: 2px;

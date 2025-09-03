@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { DEFAULT_TASK, Task } from '../../../models/task/task';
+import { DEFAULT_TASK, Task } from '@mokjang/models';
 
 type TargetTaskState = {
   targetTask: Task;

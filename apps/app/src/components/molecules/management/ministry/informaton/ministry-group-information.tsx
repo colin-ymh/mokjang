@@ -1,14 +1,11 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
-import { BLACK, DESTRUCTIVE } from '../../../../../constants/styles/color';
-import {
-  Ministry,
-  MinistryGroup,
-} from '../../../../../models/management/management';
+import { BLACK, DESTRUCTIVE } from '@mokjang/constants';
+import { Ministry, MinistryGroup } from '@mokjang/models';
 import { useScopedI18n } from '../../../../../../locales/client';
-import { getFormattedTitle } from '../../../../../utils/format';
-import { getIsWellFormedTitle } from '../../../../../utils/check';
+import { getFormattedTitle } from '@mokjang/utils';
+import { getIsWellFormedTitle } from '@mokjang/utils';
 import { fetchMinistryGroups } from '../../../../../redux/reducers/church-reducer';
-import { BLANK, ORDER_DIRECTION } from '../../../../../constants/constant';
+import { BLANK, ORDER_DIRECTION } from '@mokjang/constants';
 import {
   setIsToastShown,
   setToastBackgroundColor,
@@ -16,8 +13,8 @@ import {
 } from '../../../../../redux/reducers/toast-popup-reducer';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../../../redux/store';
-import { Member } from '../../../../../models/member/member';
-import { MEMBER } from '../../../../../constants/column/member-column';
+import { Member } from '@mokjang/models';
+import { MEMBER } from '@mokjang/constants';
 import MinistryGroupInformationView from './ministry-group-information.view';
 import { MinistryGroupsApi } from '../../../../../api/management/ministry/ministry-groups.api';
 import {
@@ -25,7 +22,7 @@ import {
   MINISTRY_ORDER,
 } from '../../../../../api/management/ministry/ministries.api';
 import { MinistryGroupMembersApi } from '../../../../../api/management/ministry/ministry-group-members.api';
-import { getDateStringFromDate } from '../../../../../utils/date';
+import { getDateStringFromDate } from '@mokjang/utils';
 
 type MinistryGroupInformationProps = {
   selectedMinistryGroup: MinistryGroup;

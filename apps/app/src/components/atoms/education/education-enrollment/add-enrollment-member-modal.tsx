@@ -9,9 +9,9 @@ import {
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
 
-import { BLANK } from '../../../../constants/constant';
-import { Member } from '../../../../models/member/member';
-import { getFormattedName } from '../../../../utils/format';
+import { BLANK } from '@mokjang/constants';
+import { Member } from '@mokjang/models';
+import { getFormattedName } from '@mokjang/utils';
 import AddEnrollmentMemberModalView from './add-enrollment-member-modal.view';
 import { EducationEnrollmentsApi } from '../../../../api/education/education-enrollments.api';
 

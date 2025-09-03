@@ -1,13 +1,10 @@
 import { AxiosResponse } from 'axios';
-import { SERVER_URL, TEST_SERVER_URL } from '../../constants/state/url';
+import { SERVER_URL, TEST_SERVER_URL } from '@mokjang/constants';
 import { CustomError } from '../error/error';
-import { ORDER_DIRECTION } from '../../constants/constant';
+import { ORDER_DIRECTION } from '@mokjang/constants';
 import authorizeAxios from '../authorize-axios';
 
-import {
-  EDUCATION,
-  EDUCATION_TERM,
-} from '../../constants/column/education-column';
+import { EDUCATION, EDUCATION_TERM } from '@mokjang/constants';
 import qs from 'qs';
 
 type GetEducationsParams = {

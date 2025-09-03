@@ -1,18 +1,16 @@
 import { ChangeEvent, Ref } from 'react';
 import styled from 'styled-components';
 
-import Button from '../../../atoms/common/button/button';
-import { GRAY, WHITE } from '../../../../constants/styles/color';
+import { Button } from '@mokjang/components';
+import { GRAY, WHITE } from '@mokjang/constants';
 import MemberTableHeaderSetting from '../setting/member-table-header-setting';
 import FilteredItem from '../../../atoms/member/setting/filtered-item';
 
 import { useScopedI18n } from '../../../../../locales/client';
 import SearchInput from '../../../atoms/common/input/search-input';
-import CustomPopup from '../../../atoms/common/popup/custom-popup';
+import { CustomPopup } from '@mokjang/components';
 
-import Setting from '../../../../../public/svg/setting.svg';
-import Group from '../../../../../public/svg/group.svg';
-import Filter from '../../../../../public/svg/filter.svg';
+import { Svg } from '@mokjang/assets';
 import GroupFilter from '../setting/group-filter';
 import ResetFilteredItem from '../../../atoms/member/setting/reset-filtered-item';
 import MemberFilter from '../setting/member-filter';
@@ -61,21 +59,21 @@ const LeftContainer = styled.div`
   gap: 10px;
 `;
 
-const SettingIcon = styled(Setting)`
+const SettingIcon = styled(Svg.Setting)`
   width: 14px;
   height: 14px;
   stroke: ${GRAY.EXTRA_DARK};
   stroke-width: 1.5px;
 `;
 
-const GroupIcon = styled(Group)`
+const GroupIcon = styled(Svg.Group)`
   width: 14px;
   height: 14px;
   stroke: ${GRAY.EXTRA_DARK};
   stroke-width: 1.5px;
 `;
 
-const FilterIcon = styled(Filter)`
+const FilterIcon = styled(Svg.Filter)`
   width: 14px;
   height: 14px;
   stroke: ${GRAY.EXTRA_DARK};

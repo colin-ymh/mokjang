@@ -1,19 +1,16 @@
 import styled from 'styled-components';
-import { GRAY } from '../../../constants/styles/color';
+import { GRAY } from '@mokjang/constants';
 import { usePathname } from 'next/navigation';
-import { LOCALE } from '../../../constants/state/locale';
+import { LOCALE } from '@mokjang/constants';
 import { useI18n } from '../../../../locales/client';
-import { WorshipEnrollment } from '../../../models/worship/worship';
-import { MainText } from '../common/text/main-text';
-import MainTag from '../common/tag/main-tag';
+import { WorshipEnrollment } from '@mokjang/models';
+import { MainText } from '@mokjang/components';
+import { MainTag } from '@mokjang/components';
 import {
   getEducationAttendanceRateBackgroundColor,
   getEducationAttendanceRateColor,
 } from '../../../utils/color';
-import {
-  getDateFromDateString,
-  getDateStringFromDate,
-} from '../../../utils/date';
+import { getDateFromDateString, getDateStringFromDate } from '@mokjang/utils';
 import { getTranslatedDateFromDateString } from '../../../utils/translate';
 
 const ListContainer = styled.div`

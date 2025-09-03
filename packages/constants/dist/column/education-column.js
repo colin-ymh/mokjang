@@ -1,0 +1,42 @@
+import { MEMBER } from './member-column';
+export var EDUCATION;
+(function (EDUCATION) {
+    EDUCATION["NAME"] = "educationName";
+    EDUCATION["STATUS"] = "status";
+})(EDUCATION || (EDUCATION = {}));
+export var EDUCATION_TERM;
+(function (EDUCATION_TERM) {
+    EDUCATION_TERM["ID"] = "id";
+    EDUCATION_TERM["EDUCATION_ID"] = "educationId";
+    EDUCATION_TERM["NAME"] = "termName";
+    EDUCATION_TERM["TERM"] = "term";
+    EDUCATION_TERM["EDUCATION"] = "education";
+    EDUCATION_TERM["IN_CHARGE"] = "inCharge";
+    EDUCATION_TERM["EDUCATION_ENROLLMENTS"] = "educationEnrollments";
+    EDUCATION_TERM["STATUS"] = "status";
+    // 임의추가
+    EDUCATION_TERM["PERIOD"] = "period";
+})(EDUCATION_TERM || (EDUCATION_TERM = {}));
+export var EDUCATION_SESSION;
+(function (EDUCATION_SESSION) {
+    EDUCATION_SESSION["NAME"] = "sessionName";
+    EDUCATION_SESSION["STATUS"] = "status";
+})(EDUCATION_SESSION || (EDUCATION_SESSION = {}));
+export var EDUCATION_ENROLLMENT;
+(function (EDUCATION_ENROLLMENT) {
+    EDUCATION_ENROLLMENT["MEMBER_NAME"] = "memberName";
+    EDUCATION_ENROLLMENT["AGE"] = "age";
+    EDUCATION_ENROLLMENT["GROUP"] = "group";
+    EDUCATION_ENROLLMENT["ATTENDANCE"] = "attendance";
+    EDUCATION_ENROLLMENT["MOBILE_PHONE"] = "mobilePhone";
+    EDUCATION_ENROLLMENT["STATUS"] = "status";
+})(EDUCATION_ENROLLMENT || (EDUCATION_ENROLLMENT = {}));
+export var EDUCATION_ATTENDANCE;
+(function (EDUCATION_ATTENDANCE) {
+    EDUCATION_ATTENDANCE["MEMBER_NAME"] = "memberName";
+    EDUCATION_ATTENDANCE["AGE"] = "age";
+    EDUCATION_ATTENDANCE["GENDER"] = "gender";
+    EDUCATION_ATTENDANCE["MOBILE_PHONE"] = "mobilePhone";
+    EDUCATION_ATTENDANCE["STATUS"] = "status";
+    EDUCATION_ATTENDANCE["NOTE"] = "note";
+})(EDUCATION_ATTENDANCE || (EDUCATION_ATTENDANCE = {}));

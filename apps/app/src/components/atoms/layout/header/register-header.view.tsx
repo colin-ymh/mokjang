@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { WHITE } from '../../../../constants/styles/color';
-import { MEDIA_MIN_WIDTH } from '../../../../constants/constant';
+import { WHITE } from '@mokjang/constants';
+import { MEDIA_MIN_WIDTH } from '@mokjang/constants';
 
 import ExitButton from '../../../../../public/svg/cancel.svg';
 

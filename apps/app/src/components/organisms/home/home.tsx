@@ -1,6 +1,6 @@
 import HomeView from './home.view';
 import { useState } from 'react';
-import CustomPopup from '../../atoms/common/popup/custom-popup';
+import { CustomPopup } from '@mokjang/components';
 import AddHomeWidget from '../../molecules/home/add/add-home-widget';
 import { useScopedI18n } from '../../../../locales/client';
 

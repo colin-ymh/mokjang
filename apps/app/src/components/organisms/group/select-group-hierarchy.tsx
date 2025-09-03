@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import SelectGroupHierarchyView from './select-group-hierarchy.view';
-import { ALL } from '../../../constants/constant';
+import { ALL } from '@mokjang/constants';
 
 type GroupFilterProps = {
   isAllSelectable?: boolean;

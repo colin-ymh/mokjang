@@ -1,13 +1,13 @@
-import { DEFAULT_MEMBER, Member } from '../../../../models/member/member';
+import { DEFAULT_MEMBER, Member } from '@mokjang/models';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../../redux/store';
 import { setTargetMember } from '../../../../redux/reducers/target/target-member-reducer';
 import styled from 'styled-components';
-import CustomPopup from '../../../atoms/common/popup/custom-popup';
+import { CustomPopup } from '@mokjang/components';
 import MemberInformation from '../../../organisms/member/information/member-information';
-import { BLACK } from '../../../../constants/styles/color';
-import CancelIcon from '../../../../../public/svg/cancel.svg';
+import { BLACK } from '@mokjang/constants';
+import { Svg } from '@mokjang/assets';
 import MemberProfile from '../../../atoms/member/member-profile';
 import { MembersApi } from '../../../../api/members/members.api';
 
@@ -16,7 +16,7 @@ const ButtonContainer = styled.div`
   cursor: pointer;
 `;
 
-const Cancel = styled(CancelIcon)`
+const Cancel = styled(Svg.Cancel)`
   width: 30px;
   height: 30px;
   stroke: ${BLACK};

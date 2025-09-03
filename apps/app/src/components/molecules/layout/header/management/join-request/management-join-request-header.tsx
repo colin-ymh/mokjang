@@ -1,4 +1,4 @@
-import { usePageRouter } from '../../../../../../utils/router';
+import { usePageRouter } from '@mokjang/utils';
 import ManagementJoinRequestHeaderView from './management-join-request-header.view';
 
 type ManagementTabHeaderProps = {};

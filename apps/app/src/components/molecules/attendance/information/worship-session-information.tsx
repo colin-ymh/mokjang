@@ -5,15 +5,12 @@ import { WorshipSessionsApi } from '../../../../api/worship/worship-sessions.api
 import React, { useEffect, useState } from 'react';
 import { setTargetWorshipSession } from '../../../../redux/reducers/target/target-worship-session-reducer';
 import { setToastText } from '../../../../redux/reducers/toast-popup-reducer';
-import { getIsWellFormedTitle } from '../../../../utils/check';
-import { MAIN } from '../../../../constants/styles/color';
+import { getIsWellFormedTitle } from '@mokjang/utils';
+import { MAIN } from '@mokjang/constants';
 import EditWorshipSession from '../../../organisms/attendance/edit/edit-worship-session';
 import { useScopedI18n } from '../../../../../locales/client';
-import CustomPopup from '../../../atoms/common/popup/custom-popup';
-import {
-  getDateFromDateString,
-  getDateStringFromDate,
-} from '../../../../utils/date';
+import { CustomPopup } from '@mokjang/components';
+import { getDateFromDateString, getDateStringFromDate } from '@mokjang/utils';
 
 const WorshipSessionInformation = () => {
   const t_title = useScopedI18n('title');

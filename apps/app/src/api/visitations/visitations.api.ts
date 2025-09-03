@@ -1,17 +1,17 @@
 import { AxiosResponse } from 'axios';
 import qs from 'qs';
 
-import { SERVER_URL, TEST_SERVER_URL } from '../../constants/state/url';
+import { SERVER_URL, TEST_SERVER_URL } from '@mokjang/constants';
 import authorizeAxios from '../authorize-axios';
 import { CustomError } from '../error/error';
-import { ORDER_DIRECTION } from '../../constants/constant';
+import { ORDER_DIRECTION } from '@mokjang/constants';
 import {
   VISITATION_METHOD,
   VISITATION_TYPE,
   VisitationDetail,
-} from '../../models/visitation/visitation';
-import { VISITATION } from '../../constants/column/visitation-column';
-import { TASK_STATUS } from '../../constants/status/status';
+} from '@mokjang/models';
+import { VISITATION } from '@mokjang/constants';
+import { TASK_STATUS } from '@mokjang/constants';
 
 type GetVisitationsParams = {
   churchId: string;

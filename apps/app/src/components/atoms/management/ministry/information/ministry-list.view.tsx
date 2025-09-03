@@ -1,13 +1,13 @@
 import styled from 'styled-components';
-import { GRAY, WHITE } from '../../../../../constants/styles/color';
-import { MainText } from '../../../common/text/main-text';
+import { GRAY, WHITE } from '@mokjang/constants';
+import { MainText } from '@mokjang/components';
 import { useI18n } from '../../../../../../locales/client';
-import { Ministry } from '../../../../../models/management/management';
+import { Ministry } from '@mokjang/models';
 import MinistryCountTag from '../../../common/tag/ministry-count-tag';
-import Button from '../../../common/button/button';
+import { Button } from '@mokjang/components';
 import React, { ChangeEvent } from 'react';
-import Plus from '../../../../../../public/svg/plus.svg';
-import CustomPopup from '../../../common/popup/custom-popup';
+import { Svg } from '@mokjang/assets';
+import { CustomPopup } from '@mokjang/components';
 import EditMinistry from '../edit/edit-ministry';
 
 const MinistryListViewContainer = styled.div`
@@ -28,7 +28,7 @@ const HeaderContainer = styled.div`
   width: 100%;
 `;
 
-const PlusIcon = styled(Plus)`
+const PlusIcon = styled(Svg.Plus)`
   width: 18px;
   height: 18px;
   stroke: ${GRAY.SEMI_DARK};

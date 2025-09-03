@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { MEMBER_INFORMATION_HEADER_ID } from '../../../../constants/layout/header';
 import MemberInformationHeader from '../../../molecules/member/information/header/member-information-header';
 import { getMemberInformationContent } from '../../../../hooks/layout/render-layout';
-import PopupHeaderBar from '../../../atoms/layout/header/popup-header-bar';
+import { PopupHeaderBar } from '@mokjang/components';
 import { useMemberInformationHeaderBarItems } from '../../../../hooks/layout/header-bar-items';
 
 const InformationContainer = styled.div`

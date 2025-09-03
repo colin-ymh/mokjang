@@ -1,12 +1,12 @@
 import React, { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 
-import { Group } from '../../../models/management/management';
+import { Group } from '@mokjang/models';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../redux/store';
 import { useI18n } from '../../../../locales/client';
 import GroupHierarchyList from '../../molecules/group/group-hierarchy-list';
-import { BLANK } from '../../../constants/constant';
+import { BLANK } from '@mokjang/constants';
 
 const FilterContainer = styled.div`
   display: flex;

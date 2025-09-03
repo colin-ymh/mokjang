@@ -1,11 +1,14 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { BLANK, ORDER_DIRECTION } from '../../../constants/constant';
+import {
+  BLANK,
+  JOIN_REQUEST,
+  JOIN_REQUEST_STATUS,
+  ORDER_DIRECTION,
+  USER,
+} from '@mokjang/constants';
 import { RootState } from '../../store';
-import { JOIN_REQUEST_STATUS } from '../../../constants/status/status';
-import { JOIN_REQUEST } from '../../../constants/column/join-request-column';
-import { JoinRequest } from '../../../models/join-request/join-request';
-import { JoinRequestsApi } from '../../../api/join-request/join-request.api';
-import { USER } from '../../../constants/column/user-column';
+import { JoinRequest } from '@mokjang/models';
+import { JoinRequestsApi } from '@/api/join-request/join-request.api';
 
 type JOIN_REQUEST_FILTER = {
   [JOIN_REQUEST.NAME]: string;

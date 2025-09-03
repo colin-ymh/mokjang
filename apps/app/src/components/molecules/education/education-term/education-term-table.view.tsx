@@ -3,44 +3,27 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
 
-import {
-  GRAY,
-  GREEN,
-  MAIN,
-  ORANGE,
-  WHITE,
-} from '../../../../constants/styles/color';
-import {
-  Education,
-  EducationSession,
-  EducationTerm,
-} from '../../../../models/education/education';
-import {
-  EDUCATION,
-  EDUCATION_TERM,
-} from '../../../../constants/column/education-column';
+import { Svg } from '@mokjang/assets';
+import { GRAY, GREEN, MAIN, ORANGE, WHITE } from '@mokjang/constants';
+import { Education, EducationSession, EducationTerm } from '@mokjang/models';
+import { EDUCATION, EDUCATION_TERM } from '@mokjang/constants';
 import EducationTermTableHeader from '../../../atoms/education/education-term/education-term-table-header';
-import ChevronLeft from '../../../../../public/svg/chevron-left.svg';
-import Calendar from '../../../../../public/svg/calendar.svg';
-import Clock from '../../../../../public/svg/clock.svg';
-import SvgIcon from '../../../atoms/common/icon/svg-icon';
-import {
-  getDateFromDateString,
-  getDateStringFromDate,
-} from '../../../../utils/date';
-import MainTag from '../../../atoms/common/tag/main-tag';
+
+import { SvgIcon } from '@mokjang/components';
+import { getDateFromDateString, getDateStringFromDate } from '@mokjang/utils';
+import { MainTag } from '@mokjang/components';
 import {
   getStatusBackgroundColor,
   getStatusFontColor,
 } from '../../../../utils/color';
-import { MainText } from '../../../atoms/common/text/main-text';
+import { MainText } from '@mokjang/components';
 import {
   getTranslatedCompletedEnrollmentStatus,
   getTranslatedTerm,
-} from '../../../../utils/translate';
+} from '@mokjang/utils';
 import { usePathname } from 'next/navigation';
-import { LOCALE } from '../../../../constants/state/locale';
-import { SIZE } from '../../../../constants/styles/style';
+import { LOCALE } from '@mokjang/constants';
+import { SIZE } from '@mokjang/constants';
 import { useI18n } from '../../../../../locales/client';
 
 // 1. 컬럼별 PX 폭 (마지막 REMARKS만 auto 할 예정)
@@ -152,7 +135,7 @@ const EducationNameContainer = styled.div<{ $level: number }>`
   flex-shrink: 0;
 `;
 
-const Chevron = styled(ChevronLeft)<{
+const Chevron = styled(Svg.ChevronLeft)<{
   $isOpened: boolean;
   color?: string;
   $reverseDirection?: boolean;
@@ -238,7 +221,12 @@ const EducationTermTableView = ({
               $reverseDirection
             />
 
-            <SvgIcon svg={Calendar} size={16} color={GREEN.DEFAULT} width={2} />
+            <SvgIcon
+              svg={Svg.Calendar}
+              size={16}
+              color={GREEN.DEFAULT}
+              width={2}
+            />
             <TitleContainer>
               <MainText>{`${getTranslatedTerm(locale, educationTerm.term)}`}</MainText>
               <MainText size={SIZE.SMALL} color={GRAY.SEMI_DARK}>
@@ -279,7 +267,12 @@ const EducationTermTableView = ({
       case EDUCATION_TERM.NAME:
         return (
           <EducationNameContainer $level={2}>
-            <SvgIcon svg={Clock} size={16} color={ORANGE.DEFAULT} width={2} />
+            <SvgIcon
+              svg={Svg.Clock}
+              size={16}
+              color={ORANGE.DEFAULT}
+              width={2}
+            />
             <TitleContainer>
               <MainText>{`${session.session}${t('session')} ${session.title}`}</MainText>
               <MainText size={SIZE.SMALL} color={GRAY.SEMI_DARK}>

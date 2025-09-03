@@ -8,10 +8,10 @@ import {
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../redux/store';
 import { MembersApi } from '../../../../../api/members/members.api';
-import { BLANK } from '../../../../../constants/constant';
-import { FamilyMember, Member } from '../../../../../models/member/member';
-import { getFormattedName } from '../../../../../utils/format';
-import { MEMBER } from '../../../../../constants/column/member-column';
+import { BLANK } from '@mokjang/constants';
+import { FamilyMember, Member } from '@mokjang/models';
+import { getFormattedName } from '@mokjang/utils';
+import { MEMBER } from '@mokjang/constants';
 import AddFamilyMemberModalView from './add-family-member-modal.view';
 
 type AddFamilyMemberModalProps = {

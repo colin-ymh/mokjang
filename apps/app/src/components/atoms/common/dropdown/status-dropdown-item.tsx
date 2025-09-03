@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { BLACK, MAIN } from '@/constants/styles/color';
-import { MainText } from '../text/main-text';
-import SvgIcon from '../icon/svg-icon';
+import { BLACK, MAIN } from '@mokjang/constants';
+import { MainText } from '@mokjang/components';
+import { SvgIcon } from '@mokjang/components';
 
 const DropdownContainer = styled.div`
   display: flex;

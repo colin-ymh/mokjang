@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import BorderInput, { BorderInputProps } from '../input/border-input';
-import { WHITE } from '@/constants/styles/color';
+import { BorderInput, BorderInputProps } from '@mokjang/components';
+import { WHITE } from '@mokjang/constants';
 import { Chevron } from '../dropdown/dropdown-chevron';
 
 const DropdownButton = styled.div<{ width?: number }>`

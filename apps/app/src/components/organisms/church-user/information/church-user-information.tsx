@@ -6,21 +6,18 @@ import { setTargetChurchUser } from '@/redux/reducers/target/target-church-user-
 import { ChurchUsersApi } from '@/api/church-users/church-users.api';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
-import { BLANK } from '@/constants/constant';
-import CustomPopup from '@/components/atoms/common/popup/custom-popup';
+import { BLANK } from '@mokjang/constants';
+import { CustomPopup } from '@mokjang/components';
 import LinkMemberUser from '@/components/molecules/join-request/link-member-user';
 import { useScopedI18n } from '../../../../../locales/client';
-import {
-  PermissionTemplate,
-  PermissionUnit,
-} from '@/models/permission/permission';
+import { PermissionTemplate, PermissionUnit } from '@mokjang/models';
 import {
   fetchPermissionTemplates,
   setPermissionTemplates,
 } from '@/redux/reducers/filter/permission-template-filter-reducer';
-import { ChurchUser } from '@/models/church-user/church-user';
+import { ChurchUser } from '@mokjang/models';
 import { setChurchUsers } from '@/redux/reducers/filter/church-user-filter-reducer';
-import { Group } from '@/models/management/management';
+import { Group } from '@mokjang/models';
 import { PermissionsApi } from '@/api/permissions/permissions.api';
 import { ManagersApi } from '@/api/managers/managers.api';
 import PermissionRange from '@/components/atoms/church-user/information/permission-range';

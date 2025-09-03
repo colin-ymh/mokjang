@@ -3,9 +3,9 @@
 import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import styled from 'styled-components';
-import { MainText } from '../text/main-text';
-import { DESTRUCTIVE, MAIN, WHITE } from '@/constants/styles/color';
-import { SIZE } from '@/constants/styles/style';
+import { MainText } from '@mokjang/components';
+import { DESTRUCTIVE, MAIN, WHITE } from '@mokjang/constants';
+import { SIZE } from '@mokjang/constants';
 
 interface ConfirmPopupProps {
   title: string;

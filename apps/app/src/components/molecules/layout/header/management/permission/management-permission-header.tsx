@@ -1,12 +1,12 @@
 import ManagementPermissionHeaderView from './management-permission-header.view';
-import { usePageRouter } from '../../../../../../utils/router';
+import { usePageRouter } from '@mokjang/utils';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../../../../redux/store';
 import { PermissionsApi } from '../../../../../../api/permissions/permissions.api';
 
-import { DEFAULT_PERMISSION_TEMPLATE } from '../../../../../../models/permission/permission';
-import { getIsWellFormedTitle } from '../../../../../../utils/check';
+import { DEFAULT_PERMISSION_TEMPLATE } from '@mokjang/models';
+import { getIsWellFormedTitle } from '@mokjang/utils';
 import { setTargetPermissionTemplate } from '../../../../../../redux/reducers/target/target-permission-template-reducer';
 
 type ManagementPermissionHeaderProps = {};

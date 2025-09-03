@@ -1,24 +1,17 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../redux/store';
-import {
-  BLANK,
-  CHURCH_USER_ROLE,
-  ORDER_DIRECTION,
-} from '../../../constants/constant';
+import { BLANK, CHURCH_USER_ROLE, ORDER_DIRECTION } from '@mokjang/constants';
 import {
   setJoinRequestOrderBy,
   setJoinRequestOrderDirection,
   setJoinRequests,
 } from '../../../redux/reducers/filter/join-request-filter-reducer';
 import JoinRequestTableView from './join-request-table.view';
-import { JOIN_REQUEST } from '../../../constants/column/join-request-column';
-import { USER } from '../../../constants/column/user-column';
+import { JOIN_REQUEST } from '@mokjang/constants';
+import { USER } from '@mokjang/constants';
 import { JoinRequestsApi } from '../../../api/join-request/join-request.api';
-import {
-  DEFAULT_JOIN_REQUEST,
-  JoinRequest,
-} from '../../../models/join-request/join-request';
+import { DEFAULT_JOIN_REQUEST, JoinRequest } from '@mokjang/models';
 import { setTargetJoinRequest } from '../../../redux/reducers/target/target-join-request-reducer';
 
 export type JoinRequestTableProps = {

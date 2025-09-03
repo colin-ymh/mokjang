@@ -2,15 +2,15 @@ import styled from 'styled-components';
 
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
-import LabelInput from '../../../atoms/common/input/label-input';
-import LabelTextarea from '../../../atoms/common/input/label-textarea';
+import { LabelInput } from '@mokjang/components';
+import { LabelTextarea } from '@mokjang/components';
 import LabelDropdown from '../../../atoms/common/dropdown/label-dropdown';
 import {
   useDayDropdownItems,
   useRepeatPeriodDropdownItems,
 } from '../../../../hooks/dropdown/dropdown-items';
-import { Group } from '../../../../models/management/management';
-import CustomPopup from '../../../atoms/common/popup/custom-popup';
+import { Group } from '@mokjang/models';
+import { CustomPopup } from '@mokjang/components';
 import SelectGroupHierarchy from '../../group/select-group-hierarchy';
 
 import { useI18n, useScopedI18n } from '../../../../../locales/client';

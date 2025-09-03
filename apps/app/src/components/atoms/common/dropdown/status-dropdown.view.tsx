@@ -3,13 +3,13 @@
 import React, { ChangeEvent, forwardRef, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-import { WHITE } from '@/constants/styles/color';
-import BorderInput from '../input/border-input';
-import { InputProps } from '../input/main-input';
+import { WHITE } from '@mokjang/constants';
+import { BorderInput } from '@mokjang/components';
+import { InputProps } from '@mokjang/components';
 import StatusDropdownItem, {
   StatusDropdownValueType,
 } from './status-dropdown-item';
-import SvgIcon from '../icon/svg-icon';
+import { SvgIcon } from '@mokjang/components';
 import { getStatusBackgroundColor, getStatusFontColor } from '@/utils/color';
 import { Chevron } from './dropdown-chevron';
 

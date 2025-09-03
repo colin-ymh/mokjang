@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import SubscriptionView, {
   SubscriptionViewProps,
 } from '@/components/organisms/subscription/subscription.view';
-import { BILLING_CYCLE, Plan } from '@/models/subscription/subscription';
-import { usePageRouter } from '@mokjang/app/src/utils/router';
+import { BILLING_CYCLE, Plan } from '@mokjang/models';
+import { usePageRouter } from '@mokjang/utils';
 import { CustomPopup, SvgIcon } from '@mokjang/components';
 import { useScopedI18n } from '../../../../locales/client';
 import CardRegister from '@/components/molecules/subscription/card-register';

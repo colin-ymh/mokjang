@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 import { useI18n } from '../../../../../locales/client';
-import { GRAY } from '../../../../constants/styles/color';
+import { GRAY } from '@mokjang/constants';
 import MemberProfile from '../../member/member-profile';
-import { Member } from '../../../../models/member/member';
+import { Member } from '@mokjang/models';
 
 const ItemContainer = styled.div`
   display: flex;

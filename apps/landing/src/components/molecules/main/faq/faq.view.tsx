@@ -1,10 +1,10 @@
 import styled from 'styled-components';
-import { Button, MainText } from '../../../../../../../packages/components/src';
-import { GRAY, WHITE } from '../../../../../../../packages/constants/src';
-import { FAQ } from '@/constants/constant';
+import { Button, MainText } from '@mokjang/components';
+import { GRAY, WHITE } from '@mokjang/constants';
 
 import { useScopedI18n } from '../../../../../locales/client';
 import FaqItem from '@/components/atoms/main/faq/faq-item';
+import { FAQ } from '@/constants/constant';
 
 const FAQContainer = styled.div`
   display: flex;

@@ -5,13 +5,13 @@ import { fetchGroups } from '../../../../../redux/reducers/church-reducer';
 
 import { GroupsApi } from '../../../../../api/management/group/groups.api';
 import AddGroup from './add-group';
-import { BLANK } from '../../../../../constants/constant';
+import { BLANK } from '@mokjang/constants';
 import ManagementGroupItemView from './management-group-item.view';
-import { Group } from '../../../../../models/management/management';
-import { getFormattedTitle } from '../../../../../utils/format';
-import { getIsWellFormedTitle } from '../../../../../utils/check';
+import { Group } from '@mokjang/models';
+import { getFormattedTitle } from '@mokjang/utils';
+import { getIsWellFormedTitle } from '@mokjang/utils';
 import { useScopedI18n } from '../../../../../../locales/client';
-import { BLACK, DESTRUCTIVE } from '../../../../../constants/styles/color';
+import { BLACK, DESTRUCTIVE } from '@mokjang/constants';
 import {
   setIsToastShown,
   setToastBackgroundColor,

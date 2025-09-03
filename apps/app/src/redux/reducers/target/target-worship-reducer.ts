@@ -4,8 +4,8 @@ import {
   DEFAULT_WORSHIP_STATISTIC,
   Worship,
   WorshipStatistic,
-} from '../../../models/worship/worship';
-import { DEFAULT_GROUP, Group } from '../../../models/management/management';
+} from '@mokjang/models';
+import { DEFAULT_GROUP, Group } from '@mokjang/models';
 
 type TargetWorshipState = {
   targetWorship: Worship;

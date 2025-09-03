@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../redux/store';
 import OfficerListView from './officer-list.view';
-import { Officer } from '../../../../../models/management/management';
+import { Officer } from '@mokjang/models';
 
 type OfficerListProps = {
   selectedOfficerId: string;

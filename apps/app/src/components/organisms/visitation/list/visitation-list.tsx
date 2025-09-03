@@ -8,7 +8,7 @@ import {
 } from '../../../../redux/reducers/filter/visitation-filter-reducer';
 
 import VisitationListView from './visitation-list.view';
-import { DEFAULT_VISITATION } from '../../../../models/visitation/visitation';
+import { DEFAULT_VISITATION } from '@mokjang/models';
 import { setTargetVisitation } from '../../../../redux/reducers/target/target-visitation-reducer';
 import {
   setIsToastShown,
@@ -16,13 +16,10 @@ import {
 } from '../../../../redux/reducers/toast-popup-reducer';
 import { useScopedI18n } from '../../../../../locales/client';
 import { VisitationsApi } from '../../../../api/visitations/visitations.api';
-import { getIsWellFormedTitle } from '../../../../utils/check';
-import { BLANK, HEADER_BAR } from '../../../../constants/constant';
-import {
-  getDateFromDateString,
-  getFullStringFromDate,
-} from '../../../../utils/date';
-import { TASK_STATUS } from '../../../../constants/status/status';
+import { getIsWellFormedTitle } from '@mokjang/utils';
+import { BLANK, HEADER_BAR } from '@mokjang/constants';
+import { getDateFromDateString, getFullStringFromDate } from '@mokjang/utils';
+import { TASK_STATUS } from '@mokjang/constants';
 
 type VisitationListProps = {
   headerType?: HEADER_BAR;

@@ -1,16 +1,8 @@
 import styled from 'styled-components';
-
-import { Svg } from '@mokjang/assets';
-import { MainText, SvgIcon } from '../../../../../../packages/components/src';
-import {
-  BLACK,
-  GRAY,
-  GREEN,
-  MAIN,
-  WHITE,
-} from '../../../../../../packages/constants/src';
+import { MainText, SvgIcon } from '@mokjang/components';
+import { BLACK, GRAY, GREEN, MAIN, WHITE } from '@mokjang/constants';
 import { useScopedI18n } from '../../../../locales/client';
-import ArrowRight from '../../../../public/svg/arrow-right.svg';
+import { Svg } from '@mokjang/assets';
 
 const Container = styled.div`
   display: flex;
@@ -110,7 +102,7 @@ const RegisterCompleteView = ({
                 {t_register('freeTrial.description')}
               </MainText>
             </ButtonContent>
-            <SvgIcon svg={ArrowRight} color={WHITE} width={2} size={18} />
+            <SvgIcon svg={Svg.ArrowRight} color={WHITE} width={2} size={18} />
           </ButtonItem>
           <ButtonItem
             $backgroundColor={WHITE}
@@ -125,7 +117,7 @@ const RegisterCompleteView = ({
                 {t_register('createChurch.description')}
               </MainText>
             </ButtonContent>
-            <SvgIcon svg={ArrowRight} color={BLACK} width={2} size={18} />
+            <SvgIcon svg={Svg.ArrowRight} color={BLACK} width={2} size={18} />
           </ButtonItem>
           <ButtonItem
             $backgroundColor={WHITE}
@@ -140,7 +132,7 @@ const RegisterCompleteView = ({
                 {t_register('registerAdmin.description')}
               </MainText>
             </ButtonContent>
-            <SvgIcon svg={ArrowRight} color={BLACK} width={2} size={18} />
+            <SvgIcon svg={Svg.ArrowRight} color={BLACK} width={2} size={18} />
           </ButtonItem>
         </ButtonList>
       </Container>

@@ -4,21 +4,21 @@ import { AppDispatch, RootState } from '../../../../../redux/store';
 
 import { useScopedI18n } from '../../../../../../locales/client';
 import MemberAttendanceListView from './member-attendance-list.view';
-import { WORSHIP_PERIOD } from '../../../../../constants/constant';
+import { WORSHIP_PERIOD } from '@mokjang/constants';
 import {
   DEFAULT_MEMBER_ATTENDANCE_STATISTIC,
   MemberAttendanceStatistic,
   Worship,
-} from '../../../../../models/worship/worship';
+} from '@mokjang/models';
 import { setTargetWorship } from '../../../../../redux/reducers/target/target-worship-reducer';
 import { setWorshipEnrollmentFilter } from '../../../../../redux/reducers/filter/worship-enrollment-filter-reducer';
-import { WORSHIP_ENROLLMENT } from '../../../../../constants/column/worship-column';
+import { WORSHIP_ENROLLMENT } from '@mokjang/constants';
 import {
   getDateFromDateString,
   getDateStringFromDate,
   getMonthsAfterDate,
   getMonthsBeforeDate,
-} from '../../../../../utils/date';
+} from '@mokjang/utils';
 import { WorshipsApi } from '../../../../../api/worship/worships.api';
 import { MembersApi } from '../../../../../api/members/members.api';
 

@@ -2,8 +2,8 @@ import FaqView, {
   FaqViewProps,
 } from '@/components/molecules/main/faq/faq.view';
 import { useState } from 'react';
+import { usePageRouter } from '@mokjang/utils';
 import { FAQ } from '@/constants/constant';
-import { usePageRouter } from '@mokjang/app/src/utils/router';
 
 const Faq = () => {
   const router = usePageRouter();

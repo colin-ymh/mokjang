@@ -1,4 +1,4 @@
-import { HEADER_BAR } from '../constant';
+import { HEADER_BAR } from '@mokjang/constants';
 
 export enum HOME_CONTENT_ID {
   HOME = 'home',

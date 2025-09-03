@@ -5,7 +5,7 @@ import { CustomError } from '../../../../api/error/error';
 import { EducationAttendanceApi } from '../../../../api/education/education-attendance.api';
 import { setTargetEducationSession } from '../../../../redux/reducers/target/target-education-session-reducer';
 import EducationAttendanceTableView from './education-attendance-table.view';
-import { EDUCATION_ATTENDANCE_STATUS } from '../../../../constants/status/status';
+import { EDUCATION_ATTENDANCE_STATUS } from '@mokjang/constants';
 
 export type EducationEnrollmentTableProps = {};
 

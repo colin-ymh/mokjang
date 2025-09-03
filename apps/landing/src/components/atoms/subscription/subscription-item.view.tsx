@@ -6,7 +6,7 @@ import {
   RadioButton,
   SvgIcon,
 } from '../../../../../../packages/components/src';
-import { BILLING_CYCLE, Plan } from '@/models/subscription/subscription';
+import { BILLING_CYCLE, Plan } from '@mokjang/models';
 import { useScopedI18n } from '../../../../locales/client';
 import { usePathname } from 'next/navigation';
 

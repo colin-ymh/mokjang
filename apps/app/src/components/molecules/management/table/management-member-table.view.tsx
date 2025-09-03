@@ -2,26 +2,26 @@ import React, { MutableRefObject } from 'react';
 import { usePathname } from 'next/navigation';
 import styled from 'styled-components';
 
-import { GRAY, MAIN, WHITE, YELLOW } from '../../../../constants/styles/color';
-import { MEMBER } from '../../../../constants/column/member-column';
-import { MainText } from '../../../atoms/common/text/main-text';
-import { Member } from '../../../../models/member/member';
+import { GRAY, MAIN, WHITE, YELLOW } from '@mokjang/constants';
+import { MEMBER } from '@mokjang/constants';
+import { MainText } from '@mokjang/components';
+import { Member } from '@mokjang/models';
 import useWindowSize from '../../../../hooks/window/window';
-import { getFormattedMobilePhone } from '../../../../utils/format';
-import { LOCALE } from '../../../../constants/state/locale';
+import { getFormattedMobilePhone } from '@mokjang/utils';
+import { LOCALE } from '@mokjang/constants';
 import ManagementMemberTableHeader from '../../../atoms/management/table/management-member-table-header';
 import MemberProfilePopupButton from '../../common/button/member-profile-popup-button';
-import { ORDER_DIRECTION } from '../../../../constants/constant';
+import { ORDER_DIRECTION } from '@mokjang/constants';
 import { CHURCH_CONTENT_ID } from '../../../../constants/layout/content';
 import { useManagementHeaderBarItems } from '../../../../hooks/layout/header-bar-items';
-import MainTag from '../../../atoms/common/tag/main-tag';
+import { MainTag } from '@mokjang/components';
 import { useI18n } from '../../../../../locales/client';
-import { Ministry } from '../../../../models/management/management';
+import { Ministry } from '@mokjang/models';
 import { DropdownValueType } from '../../../atoms/common/dropdown/dropdown-item';
 import Dropdown from '../../../atoms/common/dropdown/dropdown';
 import TagDropdownButton from '../../../atoms/common/dropdown/tag-dropdown-button';
-import { getTranslatedAge } from '../../../../utils/translate';
-import { getAge, getDateFromDateString } from '../../../../utils/date';
+import { getTranslatedAge } from '@mokjang/utils';
+import { getAge, getDateFromDateString } from '@mokjang/utils';
 
 const getColumnWidth = (id: string) => {
   switch (id) {
