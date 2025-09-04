@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { DEFAULT_USER, User } from '@/models/user/user';
+import { DEFAULT_USER, User } from '@mokjang/models';
 
 type UserState = {
   user: User;

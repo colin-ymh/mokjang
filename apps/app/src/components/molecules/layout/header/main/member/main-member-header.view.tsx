@@ -1,25 +1,26 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { GRAY, WHITE } from '../../../../../../constants/styles/color';
-import { MainText } from '../../../../../atoms/common/text/main-text';
-import { DIRECTION, SIZE } from '../../../../../../constants/styles/style';
+import { GRAY, WHITE } from '@mokjang/constants';
+import { MainText } from '@mokjang/components';
+import { DIRECTION, SIZE } from '@mokjang/constants';
 
 import { useScopedI18n } from '../../../../../../../locales/client';
-import { MEDIA_MIN_WIDTH } from '../../../../../../constants/constant';
+import { MEDIA_MIN_WIDTH } from '@mokjang/constants';
 import SlidePopup from '../../../../../atoms/common/popup/slide-popup';
-import Button from '../../../../../atoms/common/button/button';
-import { MAIN_HEADER_ID } from '../../../../../../constants/layout/header';
+import { Button } from '@mokjang/components';
+import { MAIN_HEADER_ID } from '@/constants/layout/header';
 import GroupFilter from '../../../../member/setting/group-filter';
 import AddMember from '../../../../../organisms/member/add/add-member';
-import Plus from '../../../../../../../public/svg/plus.svg';
+
+import { Svg } from '@mokjang/assets';
 import {
   getIsWellFormedMobilePhone,
   getIsWellFormedName,
-} from '../../../../../../utils/check';
+} from '@mokjang/utils';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../../redux/store';
-import CustomPopup from '../../../../../atoms/common/popup/custom-popup';
+import { CustomPopup } from '@mokjang/components';
 
 const HeaderContainer = styled.div`
   display: flex;
@@ -94,7 +95,7 @@ const MobileRegister = styled.div`
   }
 `;
 
-const PlusIcon = styled(Plus)`
+const PlusIcon = styled(Svg.Plus)`
   width: 18px;
   height: 18px;
   stroke: ${WHITE};

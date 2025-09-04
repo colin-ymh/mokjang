@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { MainText } from '../../common/text/main-text';
-import { GRAY, MAIN } from '../../../../constants/styles/color';
+import { MainText } from '@mokjang/components';
+import { GRAY, MAIN } from '@mokjang/constants';
 import { DropdownValueType } from '../../common/dropdown/dropdown-item';
 import { Svg } from '@mokjang/assets';
 

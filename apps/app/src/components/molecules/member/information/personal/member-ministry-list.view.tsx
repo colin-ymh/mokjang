@@ -2,29 +2,19 @@ import React, { RefObject } from 'react';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../redux/store';
-import {
-  GRAY,
-  MAIN,
-  PURPLE,
-  WHITE,
-} from '../../../../../constants/styles/color';
-import { MainText } from '../../../../atoms/common/text/main-text';
-import { SIZE } from '../../../../../constants/styles/style';
-import MainTag from '../../../../atoms/common/tag/main-tag';
+import { GRAY, MAIN, PURPLE, WHITE } from '@mokjang/constants';
+import { MainText } from '@mokjang/components';
+import { SIZE } from '@mokjang/constants';
+import { MainTag } from '@mokjang/components';
 import { useI18n } from '../../../../../../locales/client';
-import Calendar from '../../../../../../public/svg/calendar.svg';
-import Plus from '../../../../../../public/svg/plus.svg';
-import SvgIcon from '../../../../atoms/common/icon/svg-icon';
-import { getTranslatedDateFromDateString } from '../../../../../utils/translate';
+import { Svg } from '@mokjang/assets';
+import { SvgIcon } from '@mokjang/components';
+import { getTranslatedDateFromDateString } from '@mokjang/utils';
 import { usePathname } from 'next/navigation';
-import { LOCALE } from '../../../../../constants/state/locale';
-import Button from '../../../../atoms/common/button/button';
-import Pencil from '../../../../../../public/svg/pencil.svg';
-import { MinistryHistory } from '../../../../../models/member/history';
-import {
-  getDateFromDateString,
-  getDateStringFromDate,
-} from '../../../../../utils/date';
+import { LOCALE } from '@mokjang/constants';
+import { Button } from '@mokjang/components';
+import { MinistryHistory } from '@mokjang/models';
+import { getDateFromDateString, getDateStringFromDate } from '@mokjang/utils';
 
 const ListContainer = styled.div`
   display: flex;
@@ -100,7 +90,7 @@ const MemberMinistryListView = ({
         <div />
         <Button
           text={t('button.addMinistry')}
-          icon={<SvgIcon svg={Plus} color={MAIN.DEFAULT} />}
+          icon={<SvgIcon svg={Svg.Plus} color={MAIN.DEFAULT} />}
           backgroundColor={WHITE}
           color={MAIN.DEFAULT}
           width={'auto'}
@@ -128,7 +118,7 @@ const MemberMinistryListView = ({
                 onClick={() => onClickAddOpen(ministryHistory)}
               >
                 <SvgIcon
-                  svg={Pencil}
+                  svg={Svg.Pencil}
                   size={18}
                   width={2}
                   color={GRAY.DARK}
@@ -138,7 +128,7 @@ const MemberMinistryListView = ({
             </RowContainer>
             <RowContainer>
               <ContentContainer>
-                <SvgIcon svg={Calendar} color={GRAY.DEFAULT} />
+                <SvgIcon svg={Svg.Calendar} color={GRAY.DEFAULT} />
                 <MainText color={GRAY.DEFAULT}>{`${t('startDate')}:`}</MainText>
                 <MainText color={GRAY.DEFAULT}>
                   {getTranslatedDateFromDateString(

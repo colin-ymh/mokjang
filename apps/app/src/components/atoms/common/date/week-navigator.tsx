@@ -1,18 +1,19 @@
 import styled from 'styled-components';
 import { useEffect, useState } from 'react';
-import { GRAY, WHITE } from '@/constants/styles/color';
+import { GRAY, WHITE } from '@mokjang/constants';
 import CustomDatePicker from '@/vendor/date-picker/custom-date-picker';
-import { getDateInWeekByDayOfWeek, getDateStringFromDate } from '@/utils/date';
+import {
+  getDateInWeekByDayOfWeek,
+  getDateStringFromDate,
+} from '@mokjang/utils';
 import { useI18n } from '../../../../../locales/client';
 
-import ChevronLeft from '../../../../../public/svg/chevron-left.svg';
-import ChevronRight from '../../../../../public/svg/chevron-right.svg';
-import Calendar from '../../../../../public/svg/calendar.svg';
-import SvgIcon from '../icon/svg-icon';
-import Button from '../button/button';
-import { MainText } from '../text/main-text';
-import { SIZE } from '@/constants/styles/style';
-import BorderInput from '../input/border-input';
+import { Svg } from '@mokjang/assets';
+import { SvgIcon } from '@mokjang/components';
+import { Button } from '@mokjang/components';
+import { MainText } from '@mokjang/components';
+import { SIZE } from '@mokjang/constants';
+import { BorderInput } from '@mokjang/components';
 
 const startOfDay = (d: Date) => {
   const x = new Date(d);
@@ -122,7 +123,7 @@ const WeekNavigator = ({
           onChange={onChangeDate}
           customInput={
             <BorderInput
-              icon={<SvgIcon svg={Calendar} />}
+              icon={<SvgIcon svg={Svg.Calendar} />}
               value={getDateStringFromDate(innerValue)}
             />
           }
@@ -131,7 +132,7 @@ const WeekNavigator = ({
       </LabelContainer>
       <ButtonContainer>
         <Button
-          icon={<SvgIcon svg={ChevronLeft} />}
+          icon={<SvgIcon svg={Svg.ChevronLeft} />}
           onClick={onClickLeft}
           width={30}
           height={30}
@@ -142,7 +143,7 @@ const WeekNavigator = ({
           {t('prevNextWeek')}
         </MainText>
         <Button
-          icon={<SvgIcon svg={ChevronRight} />}
+          icon={<SvgIcon svg={Svg.ChevronRight} />}
           onClick={onClickRight}
           width={30}
           height={30}

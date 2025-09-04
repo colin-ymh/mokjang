@@ -1,17 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
-import { MainText } from '../../../../atoms/common/text/main-text';
-import { SIZE } from '../../../../../constants/styles/style';
-import { GRAY, MAIN, PURPLE } from '../../../../../constants/styles/color';
+import { MainText } from '@mokjang/components';
+import { SIZE } from '@mokjang/constants';
+import { GRAY, MAIN, PURPLE } from '@mokjang/constants';
 import { RootState } from '../../../../../redux/store';
 import { useSelector } from 'react-redux';
 import ProfileImage from '../../../../atoms/common/image/profile-image';
 import { useI18n } from '../../../../../../locales/client';
-import MainTag from '../../../../atoms/common/tag/main-tag';
-import {
-  GROUP_ROLE,
-  MINISTRY_GROUP_ROLE,
-} from '../../../../../constants/constant';
+import { MainTag } from '@mokjang/components';
+import { GROUP_ROLE, MINISTRY_GROUP_ROLE } from '@mokjang/constants';
 
 const InformationHeader = styled.div`
   display: flex;

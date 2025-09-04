@@ -1,10 +1,10 @@
 import styled from 'styled-components';
-import { MainText } from '../../../atoms/common/text/main-text';
+import { MainText } from '@mokjang/components';
 import { useI18n } from '../../../../../locales/client';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
-import { GRAY } from '../../../../constants/styles/color';
-import { SIZE } from '../../../../constants/styles/style';
+import { GRAY } from '@mokjang/constants';
+import { SIZE } from '@mokjang/constants';
 
 const InformationContainer = styled.div`
   display: flex;

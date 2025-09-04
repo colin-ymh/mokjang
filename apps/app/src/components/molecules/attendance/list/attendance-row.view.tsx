@@ -1,18 +1,13 @@
 import styled from 'styled-components';
 import FakeDropdownButton from '../../../atoms/common/button/fake-dropdown-button';
-import { Group } from '../../../../models/management/management';
+import { Group } from '@mokjang/models';
 import { useI18n } from '../../../../../locales/client';
-import CustomPopup from '../../../atoms/common/popup/custom-popup';
+import { CustomPopup } from '@mokjang/components';
 import SelectGroupHierarchy from '../../../organisms/group/select-group-hierarchy';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
 import Dropdown from '../../../atoms/common/dropdown/dropdown';
-import {
-  ALL,
-  DAY,
-  REPEAT_PERIOD,
-  WORSHIP_PERIOD,
-} from '../../../../constants/constant';
+import { ALL, DAY, REPEAT_PERIOD, WORSHIP_PERIOD } from '@mokjang/constants';
 import CustomDatePicker from '../../../../vendor/date-picker/custom-date-picker';
 import {
   getDateFromDateString,
@@ -21,24 +16,23 @@ import {
   getDayConstantByIndex,
   getWeekRepeatConstant,
   getWorshipSessionDates,
-} from '../../../../utils/date';
+} from '@mokjang/utils';
 import React from 'react';
 import { useWorshipPeriodDropdownItems } from '../../../../hooks/dropdown/dropdown-items';
+import { GRAY, GREEN, MAIN, PURPLE, WHITE } from '@mokjang/constants';
+import { MainText } from '@mokjang/components';
+import { SIZE } from '@mokjang/constants';
 import {
-  GRAY,
-  GREEN,
-  MAIN,
-  PURPLE,
-  WHITE,
-} from '../../../../constants/styles/color';
-import { MainText } from '../../../atoms/common/text/main-text';
-import { SIZE } from '../../../../constants/styles/style';
-import { getTranslatedDateFromDateString } from '../../../../utils/translate';
-import { getTranslatedMemberCount } from '../../../../../../../packages/utils/src';
+  getTranslatedDateFromDateString,
+  getTranslatedMemberCount,
+} from '@mokjang/utils';
+
 import { usePathname } from 'next/navigation';
-import { LOCALE } from '../../../../constants/state/locale';
-import ChevronLeft from '../../../../../public/svg/chevron-down.svg';
-import Button from '../../../atoms/common/button/button';
+import { LOCALE } from '@mokjang/constants';
+
+import { Button } from '@mokjang/components';
+
+import { Svg } from '@mokjang/assets';
 
 const AttendanceContainer = styled.div`
   display: flex;
@@ -89,7 +83,7 @@ const GroupContainer = styled.div`
   width: 100%;
 `;
 
-const Chevron = styled(ChevronLeft)<{
+const Chevron = styled(Svg.ChevronLeft)<{
   $isOpened: boolean;
 }>`
   cursor: pointer;

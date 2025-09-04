@@ -1,7 +1,7 @@
 'use client';
 
 import styled from 'styled-components';
-import { MainText } from '../text/main-text';
+import { MainText } from '@mokjang/components';
 import { GRAY, MAIN, WHITE } from '@mokjang/constants';
 
 export type RadioButtonItemProps = {

@@ -3,10 +3,10 @@
 import React, { forwardRef } from 'react';
 import styled from 'styled-components';
 
-import { MainText } from '../text/main-text';
+import { MainText } from '@mokjang/components';
 import Dropdown, { DropdownProps } from './dropdown';
-import { FLEX_DIRECTION, SIZE } from '@/constants/styles/style';
-import { GRAY } from '@/constants/styles/color';
+import { FLEX_DIRECTION, SIZE } from '@mokjang/constants';
+import { GRAY } from '@mokjang/constants';
 
 const LabelDropdownContainer = styled.div<{
   $flexDirection: FLEX_DIRECTION;

@@ -10,12 +10,12 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../redux/store';
 import { MembersApi } from '../../../../../api/members/members.api';
 import AddGroupMemberModalView from './add-group-member-modal.view';
-import { BLANK } from '../../../../../constants/constant';
-import { Member } from '../../../../../models/member/member';
-import { Group } from '../../../../../models/management/management';
-import { getFormattedName } from '../../../../../utils/format';
+import { BLANK } from '@mokjang/constants';
+import { Member } from '@mokjang/models';
+import { Group } from '@mokjang/models';
+import { getFormattedName } from '@mokjang/utils';
 import { GroupsApi } from '../../../../../api/management/group/groups.api';
-import { MEMBER } from '../../../../../constants/column/member-column';
+import { MEMBER } from '@mokjang/constants';
 
 type AddGroupMemberModalProps = {
   group: Group;

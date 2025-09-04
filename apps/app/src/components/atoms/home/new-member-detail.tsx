@@ -1,16 +1,13 @@
 import MemberProfilePopupButton from '../../molecules/common/button/member-profile-popup-button';
-import { MainText } from '../common/text/main-text';
+import { MainText } from '@mokjang/components';
 import { GRAY, LOCALE, MAIN } from '@mokjang/constants';
-import {
-  getDateFromDateString,
-  getDateStringFromDate,
-} from '../../../utils/date';
+import { getDateFromDateString, getDateStringFromDate } from '@mokjang/utils';
 import styled from 'styled-components';
-import { Member } from '../../../models/member/member';
+import { Member } from '@mokjang/models';
 import { useI18n } from '../../../../locales/client';
 import { getTranslatedMemberCount } from '../../../../../../packages/utils/src';
 import { usePathname } from 'next/navigation';
-import MainTag from '../common/tag/main-tag';
+import { MainTag } from '@mokjang/components';
 
 const DetailContainer = styled.div`
   display: flex;

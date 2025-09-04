@@ -1,8 +1,8 @@
-import { Member } from '../../../models/member/member';
+import { Member } from '@mokjang/models';
 import React from 'react';
 import styled from 'styled-components';
-import { MainText } from '../common/text/main-text';
-import { BLANK } from '../../../constants/constant';
+import { MainText } from '@mokjang/components';
+import { BLANK } from '@mokjang/constants';
 import ProfileImage from '../common/image/profile-image';
 
 const ProfileContainer = styled.div<{ $isButton: boolean }>`

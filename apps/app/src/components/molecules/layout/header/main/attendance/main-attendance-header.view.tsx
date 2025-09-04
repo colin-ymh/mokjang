@@ -1,22 +1,16 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { GRAY } from '../../../../../../constants/styles/color';
-import { MainText } from '../../../../../atoms/common/text/main-text';
-import { SIZE } from '../../../../../../constants/styles/style';
+import { GRAY, MEDIA_MIN_WIDTH, SIZE } from '@mokjang/constants';
+import { Button, MainText } from '@mokjang/components';
 
 import { useScopedI18n } from '../../../../../../../locales/client';
-import { MEDIA_MIN_WIDTH } from '../../../../../../constants/constant';
-import { MAIN_HEADER_ID } from '../../../../../../constants/layout/header';
-import Button from '../../../../../atoms/common/button/button';
+import { MAIN_HEADER_ID } from '@/constants/layout/header';
 import AttendanceInformation from '../../../../../organisms/attendance/information/attendance-information';
 import WrappedPagePopup from '../../../../../atoms/common/popup/wrapped-page-popup';
-import {
-  getDateFromDateString,
-  getDateStringFromDate,
-} from '../../../../../../utils/date';
+import { getDateFromDateString, getDateStringFromDate } from '@mokjang/utils';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../../../../../redux/store';
+import { RootState } from '@/redux/store';
 
 const HeaderContainer = styled.div`
   display: flex;

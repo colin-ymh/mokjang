@@ -1,6 +1,6 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
-import { BLANK } from '../../../../constants/constant';
-import { getFormattedTitle } from '../../../../utils/format';
+import { BLANK } from '@mokjang/constants';
+import { getFormattedTitle } from '@mokjang/utils';
 import { MemberDropdownType } from '../../../atoms/common/dropdown/member-dropdown-item';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../../redux/store';
@@ -9,7 +9,7 @@ import {
   getDateStringFromDate,
   getHourFromMinute,
   getTimeStringFromDate,
-} from '../../../../utils/date';
+} from '@mokjang/utils';
 import AddTaskView from './add-task.view';
 import { setTargetTask } from '../../../../redux/reducers/target/target-task-reducer';
 

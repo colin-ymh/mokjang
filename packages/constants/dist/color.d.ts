@@ -106,3 +106,4 @@ export declare enum CALENDAR_COLOR {
     EVENT = "#27AE60",
     HOLIDAY = "#BDBDBD"
 }
+//# sourceMappingURL=color.d.ts.map

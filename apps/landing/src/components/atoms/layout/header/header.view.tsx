@@ -15,14 +15,17 @@ import {
 } from '@mokjang/constants';
 import { Button, MainTag, MainText } from '@mokjang/components';
 import { useScopedI18n } from '../../../../../locales/client';
-import { CONTENT_ID, MAIN_CONTENT_ID } from '@/constants/constant';
 import { usePathname } from 'next/navigation';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
-import { PLAN } from '@/models/subscription/subscription';
+import {
+  getDateFromDateString,
+  getDateGap,
+  getTranslatedRestTrialDate,
+} from '@mokjang/utils';
+import { CONTENT_ID, MAIN_CONTENT_ID } from '@/constants/constant';
+import { PLAN } from '@mokjang/models';
 import { Svg } from '@mokjang/assets';
-import { getDateFromDateString } from '@mokjang/app/src/utils/date';
-import { getDateGap, getTranslatedRestTrialDate } from '@mokjang/utils';
 
 const HeaderContainer = styled.div`
   display: none;

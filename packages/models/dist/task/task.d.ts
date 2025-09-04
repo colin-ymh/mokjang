@@ -1,0 +1,21 @@
+import { Member } from '../member/member';
+import { TASK_STATUS } from '@mokjang/constants';
+import { TaskReport } from '../report/report';
+export type Task = {
+    id: string;
+    churchId: string;
+    status: TASK_STATUS;
+    title: string;
+    startDate: string;
+    endDate: string;
+    content: string;
+    parentTaskId: string;
+    inChargeId: string;
+    creatorId: string;
+    inCharge: Member;
+    creator: Member;
+    subTasks: Task[];
+    reports: TaskReport[];
+    receiverIds: string[];
+};
+export declare const DEFAULT_TASK: Task;

@@ -2,16 +2,16 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import {
   ChurchScheduleSummary,
   DEFAULT_CHURCH_SCHEDULE_SUMMARY,
-} from '../../models/schedule-summary/schedule-summary';
+} from '@mokjang/models';
 import { RootState } from '../store';
-import { RANGE } from '../../constants/constant';
+import { RANGE } from '@mokjang/constants';
 import { HomeApi } from '../../api/home/home.api';
 import {
   setIsToastShown,
   setToastBackgroundColor,
   setToastText,
 } from './toast-popup-reducer';
-import { DESTRUCTIVE } from '../../constants/styles/color';
+import { DESTRUCTIVE } from '@mokjang/constants';
 
 type ScheduleSummaryState = {
   churchScheduleSummary: ChurchScheduleSummary;

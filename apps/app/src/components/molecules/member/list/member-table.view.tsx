@@ -4,32 +4,32 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
 
-import { GRAY, MAIN, PURPLE, WHITE } from '../../../../constants/styles/color';
-import { MEMBER } from '../../../../constants/column/member-column';
-import { MainText } from '../../../atoms/common/text/main-text';
+import { GRAY, MAIN, PURPLE, WHITE } from '@mokjang/constants';
+import { MEMBER } from '@mokjang/constants';
+import { MainText } from '@mokjang/components';
 import {
   BAPTISM,
   BLANK,
   GENDER,
   GROUP_ROLE,
   MINISTRY_GROUP_ROLE,
-} from '../../../../constants/constant';
-import { getAge, getDateFromInput } from '../../../../utils/date';
+} from '@mokjang/constants';
+import { getAge, getDateFromInput } from '@mokjang/utils';
 import {
   getFormattedDate,
   getFormattedHomePhone,
   getFormattedMobilePhone,
-} from '../../../../utils/format';
-import { Member } from '../../../../models/member/member';
+} from '@mokjang/utils';
+import { Member } from '@mokjang/models';
 import MemberTableHeader from '../../../atoms/member/list/member-table-header';
 import useWindowSize from '../../../../hooks/window/window';
-import { LOCALE } from '../../../../constants/state/locale';
+import { LOCALE } from '@mokjang/constants';
 
 import { useI18n } from '../../../../../locales/client';
 import { BLANK_HEADER } from '../../../../redux/reducers/filter/member-filter-reducer';
 import ProfileImage from '../../../atoms/common/image/profile-image';
-import { getTranslatedDateFromDateString } from '../../../../utils/translate';
-import MainTag from '../../../atoms/common/tag/main-tag';
+import { getTranslatedDateFromDateString } from '@mokjang/utils';
+import { MainTag } from '@mokjang/components';
 
 // 1. 컬럼별 PX 폭 (마지막 REMARKS만 auto 할 예정)
 const getColumnWidth = (id: string) => {

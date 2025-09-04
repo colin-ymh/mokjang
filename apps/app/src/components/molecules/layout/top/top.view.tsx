@@ -2,17 +2,13 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
 
-import { MEDIA_MIN_WIDTH } from '../../../../constants/constant';
-import { GRAY, WHITE } from '../../../../constants/styles/color';
+import { MEDIA_MIN_WIDTH } from '@mokjang/constants';
+import { GRAY, WHITE } from '@mokjang/constants';
 import { SIDE_ID } from '../../../../constants/layout/header';
 
-import Bell from '../../../../../public/svg/bell.svg';
-import Setting from '../../../../../public/svg/setting.svg';
-import Question from '../../../../../public/svg/question.svg';
-import Home from '../../../../../public/svg/home.svg';
-import Burger from '../../../../../public/svg/burger.svg';
+import { Svg } from '@mokjang/assets';
 import { DummyApi } from '../../../../api/dummy.api';
-import SvgIcon from '../../../atoms/common/icon/svg-icon';
+import { SvgIcon } from '@mokjang/components';
 import { useParams } from 'next/navigation';
 
 const TopContainer = styled.div`
@@ -71,7 +67,7 @@ const TopView = ({ onClickButton, handleSideShow }: TopViewProps) => {
         {/*/>*/}
         {/*<MainText size={SIZE.LARGE}>{`초대코드 ${church?.joinCode}`}</MainText>*/}
         <SvgIcon
-          svg={Burger}
+          svg={Svg.Burger}
           onClick={handleSideShow}
           size={24}
           width={1.5}
@@ -81,7 +77,7 @@ const TopView = ({ onClickButton, handleSideShow }: TopViewProps) => {
       <TopRight>
         {sideId !== SIDE_ID.MAIN && (
           <SvgIcon
-            svg={Home}
+            svg={Svg.Home}
             onClick={() => onClickButton(SIDE_ID.MAIN)}
             size={22}
             width={1.5}
@@ -90,7 +86,7 @@ const TopView = ({ onClickButton, handleSideShow }: TopViewProps) => {
         )}
         {sideId !== SIDE_ID.NOTIFICATION && (
           <SvgIcon
-            svg={Bell}
+            svg={Svg.Bell}
             onClick={() => onClickButton(SIDE_ID.NOTIFICATION)}
             size={22}
             width={1.5}
@@ -99,7 +95,7 @@ const TopView = ({ onClickButton, handleSideShow }: TopViewProps) => {
         )}
         {sideId !== SIDE_ID.MANAGEMENT && (
           <SvgIcon
-            svg={Setting}
+            svg={Svg.Setting}
             onClick={() => onClickButton(SIDE_ID.MANAGEMENT)}
             size={22}
             width={1.5}
@@ -108,7 +104,7 @@ const TopView = ({ onClickButton, handleSideShow }: TopViewProps) => {
         )}
         {sideId !== SIDE_ID.GUIDE && (
           <SvgIcon
-            svg={Question}
+            svg={Svg.Question}
             onClick={() => onClickButton(SIDE_ID.GUIDE)}
             size={22}
             width={1.5}

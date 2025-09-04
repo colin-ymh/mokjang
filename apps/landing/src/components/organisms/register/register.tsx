@@ -6,7 +6,7 @@ import { AppDispatch } from '@/redux/store';
 import { setUser } from '@/redux/reducers/user-reducer';
 
 import { AuthApi, IS_TEST } from '@/api/auth/auth.api';
-import { getFormattedMobilePhone, getFormattedName } from '@/utils/format';
+import { getFormattedMobilePhone, getFormattedName } from '@mokjang/utils';
 import { UserApi } from '@/api/user/user.api';
 import { setIsToastShown } from '@/redux/reducers/toast-popup-reducer';
 import { usePageRouter } from '../../../../../../packages/utils/src';

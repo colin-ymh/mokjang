@@ -2,9 +2,9 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../../../redux/store';
 import { setTargetOfficerHistory } from '../../../../../redux/reducers/target/target-history-reducer';
-import { getDateStringFromDate } from '../../../../../utils/date';
+import { getDateStringFromDate } from '@mokjang/utils';
 import EditMemberOfficerView from './edit-member-officer.view';
-import { Officer } from '../../../../../models/management/management';
+import { Officer } from '@mokjang/models';
 
 type EditMemberOfficerProps = {
   onClickDeleteOfficer: () => void;

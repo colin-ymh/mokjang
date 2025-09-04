@@ -7,18 +7,14 @@ import {
 } from 'react-dnd';
 import styled from 'styled-components';
 
-import { Group } from '../../../../../models/management/management';
-import { BLACK, GRAY, MAIN } from '../../../../../constants/styles/color';
-import { MainText } from '../../../common/text/main-text';
-import Plus from '../../../../../../public/svg/plus.svg';
-import { SIZE } from '../../../../../constants/styles/style';
+import { Group } from '@mokjang/models';
+import { BLACK, GRAY, MAIN } from '@mokjang/constants';
+import { MainText } from '@mokjang/components';
+import { Svg } from '@mokjang/assets';
+import { SIZE } from '@mokjang/constants';
 import { useI18n } from '../../../../../../locales/client';
 import { getEmptyImage } from 'react-dnd-html5-backend';
-import {
-  ALL,
-  DND_ITEM_TYPE,
-  HOVER_POSITION,
-} from '../../../../../constants/constant';
+import { ALL, DND_ITEM_TYPE, HOVER_POSITION } from '@mokjang/constants';
 
 const GroupItemContainer = styled.div`
   display: flex;
@@ -95,7 +91,7 @@ const NameContainer = styled.div`
   align-items: center;
   gap: 10px;
 `;
-const PlusButton = styled(Plus)`
+const PlusButton = styled(Svg.Plus)`
   width: 18px;
   height: 18px;
   stroke: ${GRAY.DARK};

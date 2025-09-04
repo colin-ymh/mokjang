@@ -1,7 +1,4 @@
-import {
-  DEFAULT_MINISTRY_GROUP,
-  MinistryGroup,
-} from '../models/management/management';
+import { DEFAULT_MINISTRY_GROUP, MinistryGroup } from '@mokjang/models';
 import { MinistryGroupsApi } from '../api/management/ministry/ministry-groups.api';
 
 const getMinistryGroupById = (

@@ -1,26 +1,17 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../../../../redux/store';
 import React, { useEffect, useRef, useState } from 'react';
-import {
-  DEFAULT_MINISTRY_HISTORY,
-  MinistryHistory,
-} from '../../../../../../models/member/history';
+import { DEFAULT_MINISTRY_HISTORY, MinistryHistory } from '@mokjang/models';
 import { setTargetMinistryHistory } from '../../../../../../redux/reducers/target/target-history-reducer';
 import {
   setIsToastShown,
   setToastBackgroundColor,
   setToastText,
 } from '../../../../../../redux/reducers/toast-popup-reducer';
-import { BLACK, DESTRUCTIVE } from '../../../../../../constants/styles/color';
-import {
-  getDateFromDateString,
-  getDateStringFromDate,
-} from '../../../../../../utils/date';
-import CustomPopup from '../../../../../atoms/common/popup/custom-popup';
-import {
-  useI18n,
-  useScopedI18n,
-} from '../../../../../../../locales/client';
+import { BLACK, DESTRUCTIVE } from '@mokjang/constants';
+import { getDateFromDateString, getDateStringFromDate } from '@mokjang/utils';
+import { CustomPopup } from '@mokjang/components';
+import { useI18n, useScopedI18n } from '../../../../../../../locales/client';
 import ConfirmPopup from '../../../../../atoms/common/popup/error-popup';
 import { MinistryHistoryApi } from '../../../../../../api/history/ministry-history.api';
 import MinistryHistoryListView from './ministry-history-list.view';

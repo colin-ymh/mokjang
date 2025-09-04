@@ -4,15 +4,10 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
 
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
-import {
-  BAPTISM,
-  BLANK,
-  GENDER,
-  MARRIAGE,
-} from '../../../../constants/constant';
+import { BAPTISM, BLANK, GENDER, MARRIAGE } from '@mokjang/constants';
 import { DropdownValueType } from '../../../atoms/common/dropdown/dropdown-item';
-import LabelInput from '../../../atoms/common/input/label-input';
-import { GRAY, MAIN, ORANGE, PURPLE } from '../../../../constants/styles/color';
+import { LabelInput } from '@mokjang/components';
+import { GRAY, MAIN, ORANGE, PURPLE } from '@mokjang/constants';
 import LabelDropdown from '../../../atoms/common/dropdown/label-dropdown';
 import LabelRadioButton from '../../../atoms/common/radio-button/label-radio-button';
 import {
@@ -23,15 +18,13 @@ import { useMarriageDropdownItems } from '../../../../hooks/dropdown/dropdown-it
 import ProfileImageInput from '../../../atoms/common/image/profile-image-input';
 import VehicleNumberInput from '../../../atoms/register/vehicle-number-input';
 import CustomDatePicker from '../../../../vendor/date-picker/custom-date-picker';
-import { getDateFromDateString } from '../../../../utils/date';
-import { MainText } from '../../../atoms/common/text/main-text';
-import CheckButton from '../../../atoms/common/button/check-button';
+import { getDateFromDateString } from '@mokjang/utils';
+import { MainText } from '@mokjang/components';
+import { CheckButton } from '@mokjang/components';
 import KoreanLunarCalendar, { CalendarData } from 'korean-lunar-calendar';
-import { SIZE } from '../../../../constants/styles/style';
-import User from '../../../../../public/svg/user.svg';
-import Briefcase from '../../../../../public/svg/briefcase.svg';
-import Heart from '../../../../../public/svg/heart.svg';
-import CustomPopup from '../../../atoms/common/popup/custom-popup';
+import { SIZE } from '@mokjang/constants';
+import { Svg } from '@mokjang/assets';
+import { CustomPopup } from '@mokjang/components';
 import SelectGroupHierarchy from '../../group/select-group-hierarchy';
 import { getGroup } from '../../../../utils/group';
 
@@ -116,21 +109,21 @@ const ImageContainer = styled.div`
   width: 100%;
 `;
 
-const UserIcon = styled(User)`
+const UserIcon = styled(Svg.User)`
   width: 16px;
   height: 16px;
   stroke: ${MAIN.DARK};
   stroke-width: 2px;
 `;
 
-const BriefcaseIcon = styled(Briefcase)`
+const BriefcaseIcon = styled(Svg.Briefcase)`
   width: 16px;
   height: 16px;
   stroke: ${PURPLE.DARK};
   stroke-width: 2px;
 `;
 
-const HeartIcon = styled(Heart)`
+const HeartIcon = styled(Svg.Heart)`
   width: 16px;
   height: 16px;
   stroke: ${ORANGE.DEFAULT};

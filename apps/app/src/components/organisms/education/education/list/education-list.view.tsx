@@ -1,8 +1,8 @@
 import styled from 'styled-components';
-import Loading from '../../../../atoms/common/etc/loading';
+import { Loading } from '@mokjang/components';
 import React from 'react';
-import { WHITE } from '../../../../../constants/styles/color';
-import { MEDIA_MIN_WIDTH } from '../../../../../constants/constant';
+import { WHITE } from '@mokjang/constants';
+import { MEDIA_MIN_WIDTH } from '@mokjang/constants';
 import EducationTable from '../../../../molecules/education/education/education-table';
 import EducationRow from '../../../../molecules/education/education/education-row';
 

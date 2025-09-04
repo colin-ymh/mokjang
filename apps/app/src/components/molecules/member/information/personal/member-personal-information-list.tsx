@@ -5,24 +5,21 @@ import { AppDispatch, RootState } from '../../../../../redux/store';
 import { MembersApi } from '../../../../../api/members/members.api';
 import MemberInformationListView from './member-personal-information-list.view';
 import { GroupMembersApi } from '../../../../../api/management/group/group-membes.api';
-import {
-  getDateFromDateString,
-  getDateStringFromDate,
-} from '../../../../../utils/date';
+import { getDateFromDateString, getDateStringFromDate } from '@mokjang/utils';
 import { useI18n, useScopedI18n } from '../../../../../../locales/client';
 import EditMemberGroup from './edit-member-group';
-import CustomPopup from '../../../../atoms/common/popup/custom-popup';
+import { CustomPopup } from '@mokjang/components';
 import { setTargetMember } from '../../../../../redux/reducers/target/target-member-reducer';
 import {
   DEFAULT_GROUP_HISTORY,
   DEFAULT_OFFICER_HISTORY,
-} from '../../../../../models/member/history';
+} from '@mokjang/models';
 import {
   setIsToastShown,
   setToastBackgroundColor,
   setToastText,
 } from '../../../../../redux/reducers/toast-popup-reducer';
-import { BLACK, DESTRUCTIVE } from '../../../../../constants/styles/color';
+import { BLACK, DESTRUCTIVE } from '@mokjang/constants';
 import { setMembers } from '../../../../../redux/reducers/filter/member-filter-reducer';
 import { OfficerMembersApi } from '../../../../../api/management/officer/officer-members.api';
 import EditMemberOfficer from './edit-member-officer';

@@ -1,10 +1,10 @@
 import styled from 'styled-components';
-import Loading from '../../../atoms/common/etc/loading';
+import { Loading } from '@mokjang/components';
 import React from 'react';
-import { MAIN, WHITE } from '../../../../constants/styles/color';
+import { MAIN, WHITE } from '@mokjang/constants';
 import ConfirmPopup from '../../../atoms/common/popup/error-popup';
 import { useScopedI18n } from '../../../../../locales/client';
-import { MEDIA_MIN_WIDTH } from '../../../../constants/constant';
+import { MEDIA_MIN_WIDTH } from '@mokjang/constants';
 import TaskTable, { TaskTableProps } from '../../../molecules/task/task-table';
 import TaskRow from '../../../molecules/task/task-row';
 import AddTask from '../add/add-task';
@@ -12,7 +12,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
 import TaskInformation from '../information/task-information';
 import WrappedPagePopup from '../../../atoms/common/popup/wrapped-page-popup';
-import { TASK_STATUS } from '../../../../constants/status/status';
+import { TASK_STATUS } from '@mokjang/constants';
 
 const TaskListContainer = styled.div`
   display: flex;

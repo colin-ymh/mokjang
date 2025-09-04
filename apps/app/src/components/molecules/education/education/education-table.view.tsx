@@ -3,45 +3,28 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
 
-import {
-  GRAY,
-  GREEN,
-  MAIN,
-  ORANGE,
-  WHITE,
-} from '../../../../constants/styles/color';
+import { GRAY, GREEN, MAIN, ORANGE, WHITE } from '@mokjang/constants';
 
 import useWindowSize from '../../../../hooks/window/window';
 import EducationTableHeader from '../../../atoms/education/education/education-table-header';
-import {
-  Education,
-  EducationSession,
-  EducationTerm,
-} from '../../../../models/education/education';
-import { EDUCATION } from '../../../../constants/column/education-column';
+import { Education, EducationSession, EducationTerm } from '@mokjang/models';
+import { EDUCATION } from '@mokjang/constants';
 
-import { MainText } from '../../../atoms/common/text/main-text';
+import { MainText } from '@mokjang/components';
 import { useI18n } from '../../../../../locales/client';
 import {
   getTranslatedCompletedEnrollmentStatus,
   getTranslatedTerm,
   getTranslatedTermCount,
-} from '../../../../utils/translate';
+} from '@mokjang/utils';
 import { usePathname } from 'next/navigation';
-import { LOCALE } from '../../../../constants/state/locale';
-import { SIZE } from '../../../../constants/styles/style';
+import { LOCALE } from '@mokjang/constants';
+import { SIZE } from '@mokjang/constants';
 
-import ChevronLeft from '../../../../../public/svg/chevron-left.svg';
-import Book from '../../../../../public/svg/book.svg';
-import Calendar from '../../../../../public/svg/calendar.svg';
-import Clock from '../../../../../public/svg/clock.svg';
-import Plus from '../../../../../public/svg/plus.svg';
-import SvgIcon from '../../../atoms/common/icon/svg-icon';
-import {
-  getDateFromDateString,
-  getDateStringFromDate,
-} from '../../../../utils/date';
-import MainTag from '../../../atoms/common/tag/main-tag';
+import { Svg } from '@mokjang/assets';
+import { SvgIcon } from '@mokjang/components';
+import { getDateFromDateString, getDateStringFromDate } from '@mokjang/utils';
+import { MainTag } from '@mokjang/components';
 import {
   getStatusBackgroundColor,
   getStatusFontColor,
@@ -156,7 +139,7 @@ const EducationNameContainer = styled.div<{ $level: number }>`
   flex-shrink: 0;
 `;
 
-const Chevron = styled(ChevronLeft)<{
+const Chevron = styled(Svg.ChevronLeft)<{
   $isOpened: boolean;
   color?: string;
   $reverseDirection?: boolean;
@@ -270,7 +253,7 @@ const EducationTableView = ({
               }}
               $reverseDirection
             />
-            <SvgIcon svg={Book} size={16} color={MAIN.DEFAULT} width={2} />
+            <SvgIcon svg={Svg.Book} size={16} color={MAIN.DEFAULT} width={2} />
             <TitleContainer>
               <MainText>{education.name}</MainText>
               {education.descriptionSummary && (
@@ -312,7 +295,12 @@ const EducationTableView = ({
             {/*  $reverseDirection*/}
             {/*/>*/}
 
-            <SvgIcon svg={Calendar} size={16} color={GREEN.DEFAULT} width={2} />
+            <SvgIcon
+              svg={Svg.Calendar}
+              size={16}
+              color={GREEN.DEFAULT}
+              width={2}
+            />
             <TitleContainer>
               <MainText>{`${getTranslatedTerm(locale, educationTerm.term)}`}</MainText>
               <MainText size={SIZE.SMALL} color={GRAY.SEMI_DARK}>
@@ -353,7 +341,12 @@ const EducationTableView = ({
       case EDUCATION.NAME:
         return (
           <EducationNameContainer $level={3}>
-            <SvgIcon svg={Clock} size={16} color={ORANGE.DEFAULT} width={2} />
+            <SvgIcon
+              svg={Svg.Clock}
+              size={16}
+              color={ORANGE.DEFAULT}
+              width={2}
+            />
             <TitleContainer>
               <MainText>{`${session.session}${t('session')} ${session.title}`}</MainText>
               <MainText size={SIZE.SMALL} color={GRAY.SEMI_DARK}>
@@ -490,7 +483,11 @@ const EducationTableView = ({
                         <ShowMoreTerm
                           onClick={() => onClickEducationItem(education)}
                         >
-                          <SvgIcon svg={Plus} color={MAIN.DEFAULT} width={3} />
+                          <SvgIcon
+                            svg={Svg.Plus}
+                            color={MAIN.DEFAULT}
+                            width={3}
+                          />
                           <MainText color={MAIN.DEFAULT} fontWeight={500}>
                             {t('button.showMoreEducationTerm')}
                           </MainText>

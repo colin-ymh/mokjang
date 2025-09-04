@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { AppDispatch } from '../redux/store';
-import { usePageRouter } from '@mokjang/app/src/utils/router';
+import { AppDispatch } from '@/redux/store';
+import { usePageRouter } from '@mokjang/utils';
 import { AuthApi } from '@/api/auth/auth.api';
 import { UserApi } from '@/api/user/user.api';
 import { ChurchesApi } from '@/api/churches/churches.api';
-import { User } from '@/models/user/user';
+import { User } from '@mokjang/models';
 import { setUser } from '@/redux/reducers/user-reducer';
 import { setChurch, setChurchId } from '@/redux/reducers/church-reducer';
 

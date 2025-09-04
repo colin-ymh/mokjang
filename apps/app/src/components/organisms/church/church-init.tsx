@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 
 import { useScopedI18n } from '../../../../locales/client';
-import { Button, MainText } from '../../../../../../packages/components/src';
-import { GRAY } from '../../../../../../packages/constants/src';
+import { Button, MainText } from '@mokjang/components';
+import { GRAY } from '@mokjang/constants';
 import ChurchInitBar, {
   INIT_STEP,
 } from '@/components/molecules/church/church-init-bar';
@@ -10,7 +10,7 @@ import GroupInit from '@/components/molecules/church/group-init';
 import { useCallback, useMemo, useState } from 'react';
 import MinistryInit from '@/components/molecules/church/ministry-init';
 import OfficerInit from '@/components/molecules/church/officer-init';
-import { usePageRouter } from '@/utils/router'; // ✅ 추가
+import { usePageRouter } from '@mokjang/utils';
 
 const ChurchInitContainer = styled.div`
   display: flex;

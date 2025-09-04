@@ -5,8 +5,6 @@ const MarkContainer = styled.span`
   margin-left: 4px;
 `;
 
-const RequiredMark = () => {
+export const RequiredMark = () => {
   return <MarkContainer>*</MarkContainer>;
 };
-
-export default RequiredMark;

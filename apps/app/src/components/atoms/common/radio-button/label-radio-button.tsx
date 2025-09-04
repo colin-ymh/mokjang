@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { MainText } from '../text/main-text';
+import { MainText } from '@mokjang/components';
 import RadioButtonList, { RadioButtonProps } from './radio-button-list';
-import { GRAY } from '@/constants/styles/color';
-import { SIZE } from '@/constants/styles/style';
+import { GRAY } from '@mokjang/constants';
+import { SIZE } from '@mokjang/constants';
 
 const RadioButtonContainer = styled.div`
   display: flex;

@@ -1,23 +1,15 @@
 import styled from 'styled-components';
-import { BLACK, GRAY, GREEN, MAIN } from '../../../../constants/styles/color';
-import {
-  GroupDetailHistory,
-  GroupHistory,
-} from '../../../../models/member/history';
-import Clock from '../../../../../public/svg/clock.svg';
-import Calendar from '../../../../../public/svg/calendar.svg';
-import SvgIcon from '../../common/icon/svg-icon';
-import { MainText } from '../../common/text/main-text';
+import { BLACK, GRAY, GREEN, MAIN } from '@mokjang/constants';
+import { GroupDetailHistory, GroupHistory } from '@mokjang/models';
+import { SvgIcon } from '@mokjang/components';
+import { Svg } from '@mokjang/assets';
+import { MainText } from '@mokjang/components';
 import { useI18n } from '../../../../../locales/client';
-import { SIZE } from '../../../../constants/styles/style';
-import {
-  getDateFromDateString,
-  getDateStringFromDate,
-} from '../../../../utils/date';
+import { SIZE } from '@mokjang/constants';
+import { getDateFromDateString, getDateStringFromDate } from '@mokjang/utils';
 import React from 'react';
 import { Chevron } from '../../common/dropdown/dropdown-chevron';
-import MainTag from '../../common/tag/main-tag';
-import Pencil from '../../../../../public/svg/pencil.svg';
+import { MainTag } from '@mokjang/components';
 
 const HistoryItemContainer = styled.div`
   display: flex;
@@ -117,7 +109,7 @@ const GroupHistoryItem = ({
       <RowContainer>
         <IconContainer $isCurrent={!history.endDate}>
           <SvgIcon
-            svg={Clock}
+            svg={Svg.Clock}
             color={history.endDate ? MAIN.DARK : GREEN.DARK}
             size={18}
           />
@@ -129,7 +121,7 @@ const GroupHistoryItem = ({
         {history.endDate && (
           <EditButtonContainer onClick={() => onClickGroupOpen(history)}>
             <SvgIcon
-              svg={Pencil}
+              svg={Svg.Pencil}
               size={15}
               width={1}
               color={BLACK}
@@ -140,7 +132,7 @@ const GroupHistoryItem = ({
         <Chevron $isOpened={isOpened} onClick={onClickDetail} />
       </RowContainer>
       <RowContainer>
-        <SvgIcon svg={Calendar} color={GRAY.SEMI_DARK} />
+        <SvgIcon svg={Svg.Calendar} color={GRAY.SEMI_DARK} />
         <MainText color={GRAY.SEMI_DARK}>{t('period')}</MainText>
         <MainText color={GRAY.SEMI_DARK}>
           {getDateStringFromDate(getDateFromDateString(history.startDate))}
@@ -185,7 +177,7 @@ const GroupHistoryItem = ({
 
               <EditButtonContainer onClick={() => onClickDetailOpen(detail)}>
                 <SvgIcon
-                  svg={Pencil}
+                  svg={Svg.Pencil}
                   size={15}
                   width={1}
                   color={BLACK}

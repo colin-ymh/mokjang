@@ -1,51 +1,35 @@
 import styled from 'styled-components';
 import { usePathname } from 'next/navigation';
 
-import { MainText } from '../../../../atoms/common/text/main-text';
-import { MEMBER } from '../../../../../constants/column/member-column';
-import { GRAY, MAIN, PURPLE } from '../../../../../constants/styles/color';
+import { MainText } from '@mokjang/components';
+import { MEMBER } from '@mokjang/constants';
+import { GRAY, MAIN, PURPLE } from '@mokjang/constants';
 import {
   CALENDAR_MODE,
   GENDER,
   GROUP_ROLE,
   MARRIAGE,
-} from '../../../../../constants/constant';
-import { LOCALE } from '../../../../../constants/state/locale';
-import { getFormattedMobilePhone } from '../../../../../utils/format';
+} from '@mokjang/constants';
+import { LOCALE } from '@mokjang/constants';
+import { getFormattedMobilePhone } from '@mokjang/utils';
 import {
   getAge,
   getDateFromDateString,
   getDateStringFromDate,
-} from '../../../../../utils/date';
+} from '@mokjang/utils';
 
 import { useI18n } from '../../../../../../locales/client';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../redux/store';
-import SvgIcon from '../../../../atoms/common/icon/svg-icon';
+import { SvgIcon } from '@mokjang/components';
 import {
   getTranslatedAge,
   getTranslatedDateFromDateString,
-} from '../../../../../utils/translate';
-import { SIZE } from '../../../../../constants/styles/style';
-import MainTag from '../../../../atoms/common/tag/main-tag';
+} from '@mokjang/utils';
+import { SIZE } from '@mokjang/constants';
+import { MainTag } from '@mokjang/components';
 
-import User from '../../../../../../public/svg/user.svg';
-import Male from '../../../../../../public/svg/male.svg';
-import Female from '../../../../../../public/svg/female.svg';
-import Cake from '../../../../../../public/svg/cake.svg';
-import Heart from '../../../../../../public/svg/heart.svg';
-import Briefcase from '../../../../../../public/svg/briefcase.svg';
-import Academic from '../../../../../../public/svg/academic-cap.svg';
-import MobilePhone from '../../../../../../public/svg/mobile-phone.svg';
-import Phone from '../../../../../../public/svg/phone.svg';
-import Pin from '../../../../../../public/svg/pin.svg';
-import Car from '../../../../../../public/svg/car.svg';
-import Users from '../../../../../../public/svg/users.svg';
-import Star from '../../../../../../public/svg/star.svg';
-import Sparkle from '../../../../../../public/svg/sparkle.svg';
-import Calendar from '../../../../../../public/svg/calendar.svg';
-import Setting from '../../../../../../public/svg/setting.svg';
-import Pencil from '../../../../../../public/svg/pencil.svg';
+import { Svg } from '@mokjang/assets';
 import React from 'react';
 import useWindowSize from '../../../../../hooks/window/window';
 
@@ -130,7 +114,7 @@ const PersonalInformationListView = ({
     <InformationContainer height={height - 350}>
       {/* 이름 */}
       <InformationItem>
-        <SvgIcon svg={User} size={18} width={2} color={GRAY.DARK} />
+        <SvgIcon svg={Svg.User} size={18} width={2} color={GRAY.DARK} />
         <TextContainer>
           <MainText color={GRAY.DARK}>{t(MEMBER.NAME)}</MainText>
           <InformationTextWrapper>
@@ -144,7 +128,7 @@ const PersonalInformationListView = ({
       {/* 성별 */}
       <InformationItem>
         <SvgIcon
-          svg={targetMember.gender === GENDER.FEMALE ? Female : Male}
+          svg={targetMember.gender === GENDER.FEMALE ? Svg.Female : Svg.Male}
           size={18}
           color={GRAY.DARK}
         />
@@ -160,7 +144,7 @@ const PersonalInformationListView = ({
 
       {/* 생년월일 */}
       <InformationItem>
-        <SvgIcon svg={Cake} size={18} width={2} color={GRAY.DARK} />
+        <SvgIcon svg={Svg.Cake} size={18} width={2} color={GRAY.DARK} />
         <TextContainer>
           <MainText
             color={GRAY.DARK}
@@ -180,7 +164,7 @@ const PersonalInformationListView = ({
 
       {/* 결혼 */}
       <InformationItem>
-        <SvgIcon svg={Heart} size={18} width={2} color={GRAY.DARK} />
+        <SvgIcon svg={Svg.Heart} size={18} width={2} color={GRAY.DARK} />
         <TextContainer>
           <MainText color={GRAY.DARK}>{t(MEMBER.MARRIAGE)}</MainText>
           <InformationTextWrapper>
@@ -193,7 +177,7 @@ const PersonalInformationListView = ({
 
       {/* 직업 */}
       <InformationItem>
-        <SvgIcon svg={Briefcase} size={18} width={2} color={GRAY.DARK} />
+        <SvgIcon svg={Svg.Briefcase} size={18} width={2} color={GRAY.DARK} />
         <TextContainer>
           <MainText color={GRAY.DARK}>{t(MEMBER.OCCUPATION)}</MainText>
           <InformationTextWrapper>
@@ -206,7 +190,7 @@ const PersonalInformationListView = ({
 
       {/* 학교 */}
       <InformationItem>
-        <SvgIcon svg={Academic} size={18} width={2} color={GRAY.DARK} />
+        <SvgIcon svg={Svg.AcademicCap} size={18} width={2} color={GRAY.DARK} />
         <TextContainer>
           <MainText color={GRAY.DARK}>{t(MEMBER.SCHOOL)}</MainText>
           <InformationTextWrapper>
@@ -219,7 +203,7 @@ const PersonalInformationListView = ({
 
       {/* 도로명 주소 */}
       <InformationItem>
-        <SvgIcon svg={Pin} size={18} width={2} color={GRAY.DARK} />
+        <SvgIcon svg={Svg.Pin} size={18} width={2} color={GRAY.DARK} />
         <TextContainer>
           <MainText color={GRAY.DARK}>{t(MEMBER.ADDRESS)}</MainText>
           <ColumnTextWrapper>
@@ -233,7 +217,7 @@ const PersonalInformationListView = ({
 
       {/* 휴대전화번호 */}
       <InformationItem>
-        <SvgIcon svg={MobilePhone} size={18} width={2} color={GRAY.DARK} />
+        <SvgIcon svg={Svg.MobilePhone} size={18} width={2} color={GRAY.DARK} />
         <TextContainer>
           <MainText color={GRAY.DARK}>{t(MEMBER.MOBILE_PHONE)}</MainText>
           <InformationTextWrapper>
@@ -246,7 +230,7 @@ const PersonalInformationListView = ({
 
       {/* 집전화번호 */}
       <InformationItem>
-        <SvgIcon svg={Phone} size={18} width={2} color={GRAY.DARK} />
+        <SvgIcon svg={Svg.Phone} size={18} width={2} color={GRAY.DARK} />
         <TextContainer>
           <MainText color={GRAY.DARK}>{t(MEMBER.HOME_PHONE)}</MainText>
           <InformationTextWrapper>
@@ -259,7 +243,7 @@ const PersonalInformationListView = ({
 
       {/* 차량 번호 */}
       <InformationItem>
-        <SvgIcon svg={Car} size={18} width={1} color={GRAY.DARK} />
+        <SvgIcon svg={Svg.Car} size={18} width={1} color={GRAY.DARK} />
         <TextContainer>
           <MainText color={GRAY.DARK}>{t(MEMBER.VEHICLE_NUMBER)}</MainText>
           <InformationTextWrapper>
@@ -272,7 +256,7 @@ const PersonalInformationListView = ({
 
       {/* 그룹 */}
       <InformationItem>
-        <SvgIcon svg={Users} size={18} width={2} color={GRAY.DARK} />
+        <SvgIcon svg={Svg.Users} size={18} width={2} color={GRAY.DARK} />
         <TextContainer>
           <MainText color={GRAY.DARK}>{t(MEMBER.GROUP)}</MainText>
           <ColumnTextWrapper>
@@ -306,7 +290,7 @@ const PersonalInformationListView = ({
         </TextContainer>
         <EditButtonContainer onClick={onClickGroupOpen}>
           <SvgIcon
-            svg={Pencil}
+            svg={Svg.Pencil}
             size={18}
             width={2}
             color={GRAY.DARK}
@@ -317,7 +301,7 @@ const PersonalInformationListView = ({
 
       {/* 직분 */}
       <InformationItem>
-        <SvgIcon svg={Star} size={18} width={2} color={GRAY.DARK} />
+        <SvgIcon svg={Svg.Star} size={18} width={2} color={GRAY.DARK} />
         <TextContainer>
           <MainText color={GRAY.DARK}>{t(MEMBER.OFFICER)}</MainText>
           <ColumnTextWrapper>
@@ -342,7 +326,7 @@ const PersonalInformationListView = ({
         </TextContainer>
         <EditButtonContainer onClick={onClickOfficerOpen}>
           <SvgIcon
-            svg={Pencil}
+            svg={Svg.Pencil}
             size={18}
             width={2}
             color={GRAY.DARK}
@@ -353,7 +337,7 @@ const PersonalInformationListView = ({
 
       {/* 사역 */}
       <InformationItem>
-        <SvgIcon svg={Users} size={18} width={2} color={GRAY.DARK} />
+        <SvgIcon svg={Svg.Users} size={18} width={2} color={GRAY.DARK} />
         <TextContainer>
           <MainText color={GRAY.DARK}>{t(MEMBER.MINISTRIES)}</MainText>
           <ColumnTextWrapper>
@@ -405,7 +389,7 @@ const PersonalInformationListView = ({
         </TextContainer>
         <EditButtonContainer onClick={onClickMinistryOpen}>
           <SvgIcon
-            svg={Pencil}
+            svg={Svg.Pencil}
             size={18}
             width={2}
             color={GRAY.DARK}
@@ -416,7 +400,7 @@ const PersonalInformationListView = ({
 
       {/* 신급 */}
       <InformationItem>
-        <SvgIcon svg={Sparkle} size={18} width={2} color={GRAY.DARK} />
+        <SvgIcon svg={Svg.Sparkle} size={18} width={2} color={GRAY.DARK} />
         <TextContainer>
           <MainText color={GRAY.DARK}>{t('baptism')}</MainText>
           <InformationTextWrapper>
@@ -429,7 +413,7 @@ const PersonalInformationListView = ({
 
       {/* 교회등록일 */}
       <InformationItem>
-        <SvgIcon svg={Calendar} size={18} width={2} color={GRAY.DARK} />
+        <SvgIcon svg={Svg.Calendar} size={18} width={2} color={GRAY.DARK} />
         <TextContainer>
           <MainText color={GRAY.DARK}>{t('registeredAt')}</MainText>
           <InformationTextWrapper>
@@ -445,7 +429,7 @@ const PersonalInformationListView = ({
 
       {/* 시스템등록일 */}
       <InformationItem>
-        <SvgIcon svg={Setting} size={18} width={2} color={GRAY.DARK} />
+        <SvgIcon svg={Svg.Setting} size={18} width={2} color={GRAY.DARK} />
         <TextContainer>
           <MainText color={GRAY.DARK}>{t('createdAt')}</MainText>
           <InformationTextWrapper>
@@ -461,7 +445,7 @@ const PersonalInformationListView = ({
 
       {/* 최종수정일 */}
       <InformationItem>
-        <SvgIcon svg={Pencil} size={18} width={2} color={GRAY.DARK} />
+        <SvgIcon svg={Svg.Pencil} size={18} width={2} color={GRAY.DARK} />
         <TextContainer>
           <MainText color={GRAY.DARK}>{t('updatedAt')}</MainText>
           <InformationTextWrapper>

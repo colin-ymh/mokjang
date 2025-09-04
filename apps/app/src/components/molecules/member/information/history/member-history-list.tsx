@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { HISTORY } from '../../../../../constants/constant';
+import { HISTORY } from '@mokjang/constants';
 import MemberHistoryListView from './member-history-list.view';
 
 type MemberHistoryListProps = {};

@@ -2,15 +2,15 @@ import styled from 'styled-components';
 
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
-import LabelInput from '../../../atoms/common/input/label-input';
-import LabelTextarea from '../../../atoms/common/input/label-textarea';
+import { LabelInput } from '@mokjang/components';
+import { LabelTextarea } from '@mokjang/components';
 
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
-import { getDateFromInput } from '../../../../utils/date';
+import { getDateFromInput } from '@mokjang/utils';
 import CustomDatePicker from '../../../../vendor/date-picker/custom-date-picker';
 import React from 'react';
-import { MainText } from '../../../atoms/common/text/main-text';
-import RequiredMark from '../../../atoms/common/text/required-mark';
+import { MainText } from '@mokjang/components';
+import { RequiredMark } from '@mokjang/components';
 
 const AddChurchEventViewContainer = styled.div`
   flex: 1;

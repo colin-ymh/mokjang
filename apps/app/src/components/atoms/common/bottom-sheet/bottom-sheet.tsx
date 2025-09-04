@@ -8,7 +8,7 @@ import {
 } from 'react';
 
 import BottomSheetView from './bottom-sheet.view';
-import TransparentBackground from '../etc/transparent-background';
+import { TransparentBackground } from '@mokjang/components';
 
 type BottomSheetProps = {
   isOpened: boolean;

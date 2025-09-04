@@ -1,9 +1,9 @@
 import { forwardRef } from 'react';
 import styled from 'styled-components';
 
-import { MainText } from '../text/main-text';
-import BorderTextarea from './border-textarea';
+import { MainText } from '@mokjang/components';
 import { GRAY, SIZE } from '@mokjang/constants';
+import { BorderTextarea } from './border-textarea';
 
 const LabelTextareaContainer = styled.div<{ $zIndex?: number }>`
   display: flex;

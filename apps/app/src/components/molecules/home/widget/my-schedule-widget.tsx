@@ -4,9 +4,9 @@ import { HomeApi } from '../../../../api/home/home.api';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../../redux/store';
 import { useEffect, useState } from 'react';
-import { BLANK, RANGE } from '../../../../constants/constant';
-import { DOMAIN } from '../../../../models/permission/permission';
-import { Schedule, ServerSchedule } from '../../../../models/calendar/calendar';
+import { BLANK, RANGE } from '@mokjang/constants';
+import { DOMAIN } from '@mokjang/models';
+import { Schedule, ServerSchedule } from '@mokjang/models';
 import { setTargetTask } from '../../../../redux/reducers/target/target-task-reducer';
 import { setTargetVisitation } from '../../../../redux/reducers/target/target-visitation-reducer';
 import { CalendarApi } from '../../../../api/calendar/calendar.api';
@@ -24,13 +24,10 @@ import {
   setToastBackgroundColor,
   setToastText,
 } from '../../../../redux/reducers/toast-popup-reducer';
-import { DESTRUCTIVE } from '../../../../constants/styles/color';
-import { TASK_STATUS } from '../../../../constants/status/status';
+import { DESTRUCTIVE } from '@mokjang/constants';
+import { TASK_STATUS } from '@mokjang/constants';
 import { setTargetEducation } from '../../../../redux/reducers/target/target-education-reducer';
-import {
-  DEFAULT_EDUCATION,
-  DEFAULT_EDUCATION_TERM,
-} from '../../../../models/education/education';
+import { DEFAULT_EDUCATION, DEFAULT_EDUCATION_TERM } from '@mokjang/models';
 import { setTargetEducationTerm } from '../../../../redux/reducers/target/target-education-term-reducer';
 import {
   fetchChurchScheduleSummary,

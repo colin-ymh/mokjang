@@ -2,29 +2,23 @@ import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../../../redux/store';
 import { MinistryGroupMembersApi } from '../../../../../api/management/ministry/ministry-group-members.api';
-import {
-  DEFAULT_MINISTRY_HISTORY,
-  MinistryHistory,
-} from '../../../../../models/member/history';
+import { DEFAULT_MINISTRY_HISTORY, MinistryHistory } from '@mokjang/models';
 import { setTargetMinistryHistory } from '../../../../../redux/reducers/target/target-history-reducer';
 import { setTargetMember } from '../../../../../redux/reducers/target/target-member-reducer';
 import MemberMinistryListView from './member-ministry-list.view';
 import { MinistryHistoryApi } from '../../../../../api/history/ministry-history.api';
-import { BLANK } from '../../../../../constants/constant';
-import CustomPopup from '../../../../atoms/common/popup/custom-popup';
+import { BLANK } from '@mokjang/constants';
+import { CustomPopup } from '@mokjang/components';
 import { useI18n, useScopedI18n } from '../../../../../../locales/client';
 import EditMemberMinistry from './edit-member-ministry';
-import {
-  getDateFromDateString,
-  getDateStringFromDate,
-} from '../../../../../utils/date';
+import { getDateFromDateString, getDateStringFromDate } from '@mokjang/utils';
 import { setMembers } from '../../../../../redux/reducers/filter/member-filter-reducer';
 import {
   setIsToastShown,
   setToastBackgroundColor,
   setToastText,
 } from '../../../../../redux/reducers/toast-popup-reducer';
-import { BLACK, DESTRUCTIVE } from '../../../../../constants/styles/color';
+import { BLACK, DESTRUCTIVE } from '@mokjang/constants';
 import { MinistryMembersApi } from '../../../../../api/management/ministry/ministry-mebers.api';
 
 const MemberMinistryList = () => {

@@ -1,10 +1,10 @@
 import styled from 'styled-components';
-import Loading from '../../../atoms/common/etc/loading';
+import { Loading } from '@mokjang/components';
 import React from 'react';
-import { MAIN, WHITE } from '../../../../constants/styles/color';
+import { MAIN, WHITE } from '@mokjang/constants';
 import ConfirmPopup from '../../../atoms/common/popup/error-popup';
 import { useScopedI18n } from '../../../../../locales/client';
-import { MEDIA_MIN_WIDTH } from '../../../../constants/constant';
+import { MEDIA_MIN_WIDTH } from '@mokjang/constants';
 import VisitationTable, {
   VisitationTableProps,
 } from '../../../molecules/visitation/visitation-table';
@@ -14,7 +14,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
 import VisitationInformation from '../information/visitation-information';
 import WrappedPagePopup from '../../../atoms/common/popup/wrapped-page-popup';
-import { TASK_STATUS } from '../../../../constants/status/status';
+import { TASK_STATUS } from '@mokjang/constants';
 
 const VisitationListContainer = styled.div`
   display: flex;

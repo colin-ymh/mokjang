@@ -1,26 +1,26 @@
 'use client';
 
-import { MainText } from '../../../atoms/common/text/main-text';
+import { MainText } from '@mokjang/components';
 import styled from 'styled-components';
-import { SIZE } from '../../../../constants/styles/style';
+import { SIZE } from '@mokjang/constants';
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
-import { HOME_WIDGET, RANGE } from '../../../../constants/constant';
-import { DOMAIN } from '../../../../models/permission/permission';
+import { HOME_WIDGET, RANGE } from '@mokjang/constants';
+import { DOMAIN } from '@mokjang/models';
 import React, { RefObject } from 'react';
-import { Schedule } from '../../../../models/calendar/calendar';
+import { Schedule } from '@mokjang/models';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
 import ReportedScheduleList from '../../../atoms/home/reported-schedule-list';
-import ToggleRadioButton from '../../../atoms/common/radio-button/toggle-radio-button';
+import { ToggleRadioButton } from '@mokjang/components';
 import { useWeekMonthRangeRadioButtonItems } from '../../../../hooks/radio-button/radio-button-items';
-import { TASK_STATUS } from '../../../../constants/status/status';
+import { TASK_STATUS } from '@mokjang/constants';
 import WrappedPagePopup from '../../../atoms/common/popup/wrapped-page-popup';
 import TaskInformation from '../../../organisms/task/information/task-information';
 import VisitationInformation from '../../../organisms/visitation/information/visitation-information';
-import { getTranslatedTerm } from '../../../../utils/translate';
+import { getTranslatedTerm } from '@mokjang/utils';
 import EducationSessionInformation from '../../../organisms/education/education-session/information/education-session-information';
 import { usePathname } from 'next/navigation';
-import { LOCALE } from '../../../../constants/state/locale';
+import { LOCALE } from '@mokjang/constants';
 import EducationTermInformation from '../../../organisms/education/education-term/information/education-term-information';
 
 const WidgetContainer = styled.div`

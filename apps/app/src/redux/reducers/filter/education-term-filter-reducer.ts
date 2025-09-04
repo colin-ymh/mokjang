@@ -1,12 +1,9 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { BLANK, ORDER_DIRECTION } from '../../../constants/constant';
-import {
-  EducationSession,
-  EducationTerm,
-} from '../../../models/education/education';
+import { BLANK, ORDER_DIRECTION } from '@mokjang/constants';
+import { EducationSession, EducationTerm } from '@mokjang/models';
 import { RootState } from '../../store';
 
-import { EDUCATION_TERM } from '../../../constants/column/education-column';
+import { EDUCATION_TERM } from '@mokjang/constants';
 import { EducationTermsApi } from '../../../api/education/education-terms.api';
 import { EducationSessionsApi } from '../../../api/education/education-sessions.api';
 import { EducationsApi } from '../../../api/education/educations.api';

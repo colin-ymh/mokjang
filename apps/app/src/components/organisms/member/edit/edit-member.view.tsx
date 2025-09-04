@@ -4,15 +4,10 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
 
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
-import {
-  BAPTISM,
-  BLANK,
-  GENDER,
-  MARRIAGE,
-} from '../../../../constants/constant';
+import { BAPTISM, BLANK, GENDER, MARRIAGE } from '@mokjang/constants';
 import { DropdownValueType } from '../../../atoms/common/dropdown/dropdown-item';
-import LabelInput from '../../../atoms/common/input/label-input';
-import { GRAY } from '../../../../constants/styles/color';
+import { LabelInput, PopupHeaderBar } from '@mokjang/components';
+import { GRAY } from '@mokjang/constants';
 import LabelDropdown from '../../../atoms/common/dropdown/label-dropdown';
 import LabelRadioButton from '../../../atoms/common/radio-button/label-radio-button';
 import {
@@ -23,15 +18,14 @@ import { useMarriageDropdownItems } from '../../../../hooks/dropdown/dropdown-it
 import ProfileImageInput from '../../../atoms/common/image/profile-image-input';
 import VehicleNumberInput from '../../../atoms/register/vehicle-number-input';
 import CustomDatePicker from '../../../../vendor/date-picker/custom-date-picker';
-import { getDateFromDateString } from '../../../../utils/date';
-import { MainText } from '../../../atoms/common/text/main-text';
-import CheckButton from '../../../atoms/common/button/check-button';
+import { getDateFromDateString } from '@mokjang/utils';
+import { MainText } from '@mokjang/components';
+import { CheckButton } from '@mokjang/components';
 import KoreanLunarCalendar, { CalendarData } from 'korean-lunar-calendar';
-import { SIZE } from '../../../../constants/styles/style';
-import PopupHeaderBar from '../../../atoms/layout/header/popup-header-bar';
+import { SIZE } from '@mokjang/constants';
 import { useEditMemberHeaderBarItems } from '../../../../hooks/layout/header-bar-items';
 import { EDIT_MEMBER_HEADER_ID } from '../../../../constants/layout/header';
-import { getFormattedMobilePhone } from '../../../../utils/format';
+import { getFormattedMobilePhone } from '@mokjang/utils';
 
 const EditMemberContainer = styled.div`
   display: flex;

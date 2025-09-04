@@ -2,11 +2,11 @@
 
 import React, { forwardRef, useState } from 'react';
 import styled from 'styled-components';
-import { WHITE } from '@/constants/styles/color';
+import { WHITE } from '@mokjang/constants';
 import MemberDropdownItem, { MemberDropdownType } from './member-dropdown-item';
-import BorderInput from '../input/border-input';
+import { BorderInput } from '@mokjang/components';
 import useWindowSize from '@/hooks/window/window';
-import TransparentBackground from '../etc/transparent-background';
+import { TransparentBackground } from '@mokjang/components';
 import { Chevron } from './dropdown-chevron';
 
 /* --------------------------- styled --------------------------- */

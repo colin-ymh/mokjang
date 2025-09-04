@@ -1,7 +1,6 @@
 import HeaderView, { HeaderViewProps } from './header.view';
 import { useEffect, useState } from 'react';
-import { MAIN_CONTENT_ID } from '@/constants/constant';
-import { usePageRouter } from '@mokjang/app/src/utils/router';
+import { usePageRouter } from '@mokjang/utils';
 import { usePathname } from 'next/navigation';
 import { AuthApi } from '@/api/auth/auth.api';
 import {
@@ -9,15 +8,13 @@ import {
   setToastBackgroundColor,
   setToastText,
 } from '@mokjang/app/src/redux/reducers/toast-popup-reducer';
-import { DESTRUCTIVE } from '@mokjang/app/src/constants/styles/color';
+import { DESTRUCTIVE } from '@mokjang/constants';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/redux/store';
 import { SubscriptionApi } from '@/api/subscription/subscription.api';
-import {
-  DEFAULT_SUBSCRIPTION_PLAN,
-  SubscriptionPlan,
-} from '@/models/subscription/subscription';
+import { DEFAULT_SUBSCRIPTION_PLAN, SubscriptionPlan } from '@mokjang/models';
 import { setCurrentSubscription } from '@/redux/reducers/subscription-reducer';
+import { MAIN_CONTENT_ID } from '@/constants/constant';
 
 type HeaderProps = {};
 

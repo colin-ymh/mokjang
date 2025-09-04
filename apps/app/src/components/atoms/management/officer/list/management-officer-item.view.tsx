@@ -7,15 +7,12 @@ import {
 } from 'react-dnd';
 import styled from 'styled-components';
 
-import { Officer } from '../../../../../models/management/management';
-import { BLACK, GRAY, MAIN } from '../../../../../constants/styles/color';
-import { MainText } from '../../../common/text/main-text';
-import { SIZE } from '../../../../../constants/styles/style';
+import { Officer } from '@mokjang/models';
+import { BLACK, GRAY, MAIN } from '@mokjang/constants';
+import { MainText } from '@mokjang/components';
+import { SIZE } from '@mokjang/constants';
 import { getEmptyImage } from 'react-dnd-html5-backend';
-import {
-  DND_ITEM_TYPE,
-  HOVER_POSITION,
-} from '../../../../../constants/constant';
+import { DND_ITEM_TYPE, HOVER_POSITION } from '@mokjang/constants';
 
 const OfficerItemContainer = styled.div`
   display: flex;

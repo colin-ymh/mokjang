@@ -4,22 +4,19 @@ import FakeDropdownButton from '../../../atoms/common/button/fake-dropdown-butto
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
-import { Group } from '../../../../models/management/management';
-import CustomPopup from '../../../atoms/common/popup/custom-popup';
+import { Group } from '@mokjang/models';
+import { CustomPopup } from '@mokjang/components';
 import SelectGroupHierarchy from '../../group/select-group-hierarchy';
 import WeekNavigator from '../../../atoms/common/date/week-navigator';
-import {
-  getDateFromDateString,
-  getDateStringFromDate,
-} from '../../../../utils/date';
-import { GRAY, GREEN, RED } from '../../../../constants/styles/color';
+import { getDateFromDateString, getDateStringFromDate } from '@mokjang/utils';
+import { GRAY, GREEN, RED } from '@mokjang/constants';
 import AttendanceInformationTable from '../../../molecules/attendance/information/attendance-information-table';
 import WorshipSessionInformation from '../../../molecules/attendance/information/worship-session-information';
 import LabelDropdown from '../../../atoms/common/dropdown/label-dropdown';
-import { SIZE } from '../../../../constants/styles/style';
-import { MainText } from '../../../atoms/common/text/main-text';
+import { SIZE } from '@mokjang/constants';
+import { MainText } from '@mokjang/components';
 import { getWorshipAttendanceRateColor } from '../../../../utils/color';
-import Button from '../../../atoms/common/button/button';
+import { Button } from '@mokjang/components';
 
 const AttendanceInformationContainer = styled.div`
   display: flex;

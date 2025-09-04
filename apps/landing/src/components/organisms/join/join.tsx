@@ -1,19 +1,18 @@
 import { ChangeEvent, useEffect, useState } from 'react';
-import { BLACK, BLANK } from '../../../../../../packages/constants/src';
+import { BLACK, BLANK, STATUS } from '@mokjang/constants';
 import { JoinApi } from '@/api/join/join.api';
 import {
   setIsToastShown,
   setToastBackgroundColor,
   setToastText,
 } from '@mokjang/app/src/redux/reducers/toast-popup-reducer';
-import { DESTRUCTIVE } from '@mokjang/app/src/constants/styles/color';
+import { DESTRUCTIVE } from '@mokjang/constants';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/redux/store';
 import JoinView, { JoinViewProps } from '@/components/organisms/join/join.view';
-import { Church, DEFAULT_CHURCH } from '@/models/church/church';
-import { STATUS } from '@mokjang/app/src/constants/status/status';
+import { Church, DEFAULT_CHURCH } from '@mokjang/models';
 import JoinPendingView from '@/components/organisms/join/join-pending.view';
-import { usePageRouter } from '@mokjang/app/src/utils/router';
+import { usePageRouter } from '@mokjang/utils';
 import { useScopedI18n } from '../../../../locales/client';
 
 const Join = () => {

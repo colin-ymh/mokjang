@@ -6,7 +6,7 @@ import { RootState } from '../../../redux/store';
 
 import ModalLayout from '../../../components/organisms/layout/modal-layout';
 import Login from '../../../components/organisms/auth/login';
-import { usePageRouter } from '../../../utils/router';
+import { usePageRouter } from '@mokjang/utils';
 
 export default function LoginPage() {
   const { user } = useSelector((state: RootState) => state.user);

@@ -4,31 +4,24 @@
   "private": true,
   "sideEffects": false,
 
-  "main": "src/index.ts",
-  "module": "src/index.ts",
-
+  "main": "dist/index.js",
+  "module": "dist/index.js",
   "types": "dist/index.d.ts",
 
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "default": "./src/index.ts"
+      "default": "./dist/index.js"
     }
   },
 
-  "files": ["src", "dist"],
+  "files": ["dist"],
 
   "scripts": {
-    "build": "tsc -p tsconfig.json",
+    "barrels": "node ../../scripts/make-barrels.mjs constants",
+    "build": "npm run barrels && tsc -p tsconfig.json",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "barrels": "node ../../scripts/make-barrels.mjs <패키지키>",
     "lint": "eslint .. --ext .ts,.tsx",
     "format": "prettier -w .."
-  },
-
-  "peerDependencies": {
-    "react": "^18",
-    "react-dom": "^18",
-    "styled-components": "^6"
   }
 }

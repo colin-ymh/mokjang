@@ -1,14 +1,14 @@
 import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../../redux/store';
-import { CHURCH_USER } from '../../../../constants/column/church-user-column';
-import { ORDER_DIRECTION } from '../../../../constants/constant';
+import { CHURCH_USER } from '@mokjang/constants';
+import { ORDER_DIRECTION } from '@mokjang/constants';
 import {
   setChurchUserOrderBy,
   setChurchUserOrderDirection,
 } from '../../../../redux/reducers/filter/church-user-filter-reducer';
 import ChurchUserTableView from './church-user-table.view';
-import { ChurchUser } from '../../../../models/church-user/church-user';
+import { ChurchUser } from '@mokjang/models';
 
 export type UserTableProps = {
   onClickUserItem: (user: ChurchUser) => void;

@@ -1,11 +1,11 @@
-import { Church } from '../../../../models/church/church';
+import { Church } from '@mokjang/models';
 import EditChurchInformationView from './edit-church-information.view';
 import React, { Dispatch, SetStateAction, useState } from 'react';
 import {
   getFormattedIdentifyNumber,
   getFormattedName,
   getFormattedPhone,
-} from '../../../../utils/format';
+} from '@mokjang/utils';
 import DaumPostcodeEmbed, { Address } from 'react-daum-postcode';
 import PagePopup from '../../../atoms/common/popup/page-popup';
 

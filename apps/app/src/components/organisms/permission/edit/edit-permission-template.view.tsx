@@ -1,8 +1,8 @@
 import styled from 'styled-components';
-import LabelInput from '../../../atoms/common/input/label-input';
+import { LabelInput } from '@mokjang/components';
 import React, { ChangeEvent } from 'react';
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
-import { GRAY } from '../../../../constants/styles/color';
+import { GRAY } from '@mokjang/constants';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
 

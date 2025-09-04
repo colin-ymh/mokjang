@@ -1,0 +1,36 @@
+export type Church = {
+    id: string;
+    name: string;
+    identifyNumber: string;
+    phone: string;
+    denomination: string;
+    address: string;
+    detailAddress: string;
+    memberSize: string;
+    mainAdminId: string;
+    dailyRequestAttempts: number;
+    lastRequestDate: string;
+    memberCount: number;
+    groupCount: number;
+    ministryGroupCount: number;
+    pastor: string;
+    joinCode: string;
+};
+export declare const DEFAULT_CHURCH: {
+    id: string;
+    name: string;
+    identifyNumber: string;
+    phone: string;
+    denomination: string;
+    address: string;
+    detailAddress: string;
+    memberSize: string;
+    mainAdminId: string;
+    dailyRequestAttempts: number;
+    lastRequestDate: string;
+    memberCount: number;
+    groupCount: number;
+    ministryGroupCount: number;
+    joinCode: string;
+    pastor: string;
+};

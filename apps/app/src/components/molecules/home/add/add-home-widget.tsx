@@ -1,14 +1,14 @@
 import AddHomeWidgetView from './add-home-widget.view';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../../redux/store';
-import { HOME_WIDGET } from '../../../../constants/constant';
+import { HOME_WIDGET } from '@mokjang/constants';
 import { setHomeWidgets } from '../../../../redux/reducers/filter/home-widget-filter-reducer';
 import {
   setIsToastShown,
   setToastBackgroundColor,
   setToastText,
 } from '../../../../redux/reducers/toast-popup-reducer';
-import { DESTRUCTIVE } from '../../../../constants/styles/color';
+import { DESTRUCTIVE } from '@mokjang/constants';
 import { useState } from 'react';
 
 const AddHomeWidget = () => {

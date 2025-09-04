@@ -1,10 +1,10 @@
 import { ReactNode, useEffect } from 'react';
 import styled from 'styled-components';
 
-import { TransparentBackground } from '@mokjang/components';
 import { createPortal } from 'react-dom';
 import { PopupLayout } from '../layout';
 import { MEDIA_MIN_WIDTH, WHITE } from '@mokjang/constants';
+import { TransparentBackground } from '../etc';
 
 const ModalContainer = styled.div<{
   width?: number;

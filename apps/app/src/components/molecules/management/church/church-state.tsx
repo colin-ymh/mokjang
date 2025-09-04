@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { useI18n } from '../../../../../locales/client';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
-import { MainText } from '../../../atoms/common/text/main-text';
+import { MainText } from '@mokjang/components';
 
 const InformationContainer = styled.div`
   display: flex;

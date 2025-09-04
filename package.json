@@ -24,7 +24,8 @@
     "barrels:constants": "node scripts/make-barrels.mjs constants",
     "barrels:components": "node scripts/make-barrels.mjs components",
     "barrels:utils": "node scripts/make-barrels.mjs utils",
-    "barrels:assets": "node scripts/make-barrels.mjs assets"
+    "barrels:assets": "node scripts/make-barrels.mjs assets",
+    "barrels:models": "node scripts/make-barrels.mjs models"
   },
   "devDependencies": {
     "dotenv": "^17.2.1",

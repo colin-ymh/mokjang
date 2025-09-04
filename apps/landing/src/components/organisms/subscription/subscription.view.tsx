@@ -1,23 +1,14 @@
 import styled from 'styled-components';
-import {
-  GRAY,
-  LOCALE,
-  MAIN,
-  WHITE,
-} from '../../../../../../packages/constants/src';
+import { GRAY, LOCALE, MAIN, WHITE } from '@mokjang/constants';
 import {
   Button,
   MainText,
   SvgIcon,
   ToggleRadioButton,
-} from '../../../../../../packages/components/src';
+} from '@mokjang/components';
 import { useI18n, useScopedI18n } from '../../../../locales/client';
 import { usePathname } from 'next/navigation';
-import {
-  BILLING_CYCLE,
-  Plan,
-  PlanList,
-} from '@/models/subscription/subscription';
+import { BILLING_CYCLE, Plan, PlanList } from '@mokjang/models';
 import SubscriptionItem from '@/components/atoms/subscription/subscription-item';
 import { getYearlyPrice } from '@/utils/price';
 import {
@@ -26,8 +17,7 @@ import {
   getTranslatedYearlySubscriptionPrice,
 } from '@/utils/translate';
 
-import CreditCard from '../../../../public/svg/credit-card.svg';
-import ShieldCheck from '../../../../public/svg/shield-check.svg';
+import { Svg } from '@mokjang/assets';
 
 const JoinContainer = styled.div`
   display: flex;
@@ -212,7 +202,7 @@ const SubscriptionView = ({
                   onClick={onClickProceed}
                   icon={
                     <SvgIcon
-                      svg={CreditCard}
+                      svg={Svg.CreditCard}
                       color={WHITE}
                       width={2}
                       size={20}
@@ -221,7 +211,7 @@ const SubscriptionView = ({
                 />
                 <RowContainer>
                   <SvgIcon
-                    svg={ShieldCheck}
+                    svg={Svg.ShieldCheck}
                     color={GRAY.SEMI_DARK}
                     width={2}
                     size={20}

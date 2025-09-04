@@ -3,12 +3,12 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
 
-import { MainText } from '../../common/text/main-text';
-import { BLACK, GRAY, MAIN } from '../../../../constants/styles/color';
-import { SIZE } from '../../../../constants/styles/style';
-import { getTranslatedChurchUserColumn } from '../../../../utils/translate';
+import { MainText } from '@mokjang/components';
+import { BLACK, GRAY, MAIN } from '@mokjang/constants';
+import { SIZE } from '@mokjang/constants';
+import { getTranslatedChurchUserColumn } from '@mokjang/utils';
 import { useScopedI18n } from '../../../../../locales/client';
-import { CHURCH_USER } from '../../../../constants/column/church-user-column';
+import { CHURCH_USER } from '@mokjang/constants';
 
 const HeaderContainer = styled.div`
   display: flex;

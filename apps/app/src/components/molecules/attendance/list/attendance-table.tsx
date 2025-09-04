@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../../redux/store';
-import { ALL, BLANK, ORDER_DIRECTION } from '../../../../constants/constant';
-import { WORSHIP_ENROLLMENT } from '../../../../constants/column/worship-column';
+import { ALL, BLANK, ORDER_DIRECTION } from '@mokjang/constants';
+import { WORSHIP_ENROLLMENT } from '@mokjang/constants';
 import {
   setWorshipEnrollmentOrderBy,
   setWorshipEnrollmentOrderDirection,
@@ -16,9 +16,9 @@ import {
 import {
   DEFAULT_WORSHIP_SESSION,
   WorshipSessionCheckStatus,
-} from '../../../../models/worship/worship';
+} from '@mokjang/models';
 import { WorshipSessionsApi } from '../../../../api/worship/worship-sessions.api';
-import { getDateStringFromDate } from '../../../../utils/date';
+import { getDateStringFromDate } from '@mokjang/utils';
 
 export type AttendanceTableProps = {
   loadWorshipEnrollments: () => Promise<void>;

@@ -4,26 +4,24 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
 import { useI18n } from '../../../../../locales/client';
-import CheckButtonList, {
-  CheckButtonValue,
-} from '../../../atoms/common/button/check-button-list';
+import { CheckButtonList, CheckButtonValue } from '@mokjang/components';
 import {
   useBaptismDropdownItems,
   useMarriageDropdownItems,
 } from '../../../../hooks/dropdown/dropdown-items';
-import { MainText } from '../../../atoms/common/text/main-text';
+import { MainText } from '@mokjang/components';
 import CustomDatePicker from '../../../../vendor/date-picker/custom-date-picker';
 import {
   getDateFromDateString,
   getDateFromInput,
   getDateStringFromDate,
-} from '../../../../utils/date';
-import { GRAY, MAIN } from '../../../../constants/styles/color';
+} from '@mokjang/utils';
+import { GRAY, MAIN } from '@mokjang/constants';
 import CustomSlider from '../../../atoms/common/slider/custom-slider';
-import { getTranslatedAge } from '../../../../utils/translate';
+import { getTranslatedAge } from '@mokjang/utils';
 import { usePathname } from 'next/navigation';
-import { LOCALE } from '../../../../constants/state/locale';
-import { BAPTISM, MARRIAGE } from '../../../../constants/constant';
+import { LOCALE } from '@mokjang/constants';
+import { BAPTISM, MARRIAGE } from '@mokjang/constants';
 
 const TableSettingContainer = styled.div`
   display: flex;

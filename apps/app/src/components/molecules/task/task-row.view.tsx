@@ -1,9 +1,9 @@
 import { ChangeEvent, Ref } from 'react';
 import styled from 'styled-components';
 
-import Button from '../../atoms/common/button/button';
-import { BLACK, GRAY, WHITE } from '../../../constants/styles/color';
-import { TASK } from '../../../constants/column/task-column';
+import { Button } from '@mokjang/components';
+import { BLACK, GRAY, WHITE } from '@mokjang/constants';
+import { TASK } from '@mokjang/constants';
 
 import {
   useTaskSearchFilterDropdownItems,
@@ -19,10 +19,10 @@ import { RootState } from '../../../redux/store';
 import { useSelector } from 'react-redux';
 import StatusDropdown from '../../atoms/common/dropdown/status-dropdown';
 import SearchInput from '../../atoms/common/input/search-input';
-import { TASK_STATUS } from '../../../constants/status/status';
+import { TASK_STATUS } from '@mokjang/constants';
 
-import Calendar from '../../../../public/svg/calendar.svg';
-import SvgIcon from '../../atoms/common/icon/svg-icon';
+import { Svg } from '@mokjang/assets';
+import { SvgIcon } from '@mokjang/components';
 
 const TaskContainer = styled.div`
   display: flex;
@@ -132,7 +132,7 @@ const TaskRowView = ({
               backgroundColor={WHITE}
               borderColor={GRAY.LIGHT}
               color={BLACK}
-              icon={<SvgIcon svg={Calendar} />}
+              icon={<SvgIcon svg={Svg.Calendar} />}
             />
 
             <StatusDropdown

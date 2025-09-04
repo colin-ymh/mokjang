@@ -1,8 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import {
-  DEFAULT_VISITATION,
-  Visitation,
-} from '../../../models/visitation/visitation';
+import { DEFAULT_VISITATION, Visitation } from '@mokjang/models';
 
 type TargetVisitationState = {
   targetVisitation: Visitation;

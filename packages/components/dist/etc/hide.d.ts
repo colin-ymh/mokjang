@@ -1,2 +1,1 @@
-declare const Hide: () => import("react/jsx-runtime").JSX.Element;
-export default Hide;
+export declare const Hide: () => import("react/jsx-runtime").JSX.Element;

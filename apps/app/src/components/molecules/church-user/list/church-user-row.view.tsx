@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 import { usePermissionActiveDropdownItems } from '../../../../hooks/dropdown/dropdown-items';
-import { PERMISSION_ACTIVE } from '@/constants/status/status';
+import { PERMISSION_ACTIVE } from '@mokjang/constants';
 import Dropdown from '@/components/atoms/common/dropdown/dropdown';
 
 const UserContainer = styled.div`

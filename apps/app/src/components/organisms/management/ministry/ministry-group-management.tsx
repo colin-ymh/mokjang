@@ -2,11 +2,8 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
 
-import {
-  DEFAULT_MINISTRY_GROUP,
-  MinistryGroup,
-} from '../../../../models/management/management';
-import { BLANK } from '../../../../constants/constant';
+import { DEFAULT_MINISTRY_GROUP, MinistryGroup } from '@mokjang/models';
+import { BLANK } from '@mokjang/constants';
 import MinistryGroupManagementView from './ministry-group-management.view';
 
 type MinistryGroupManagementProps = {};

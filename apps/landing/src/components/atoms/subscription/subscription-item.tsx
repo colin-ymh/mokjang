@@ -1,5 +1,5 @@
 import React from 'react';
-import { BILLING_CYCLE, Plan } from '@/models/subscription/subscription';
+import { BILLING_CYCLE, Plan } from '@mokjang/models';
 import SubscriptionItemView, {
   SubscriptionItemViewProps,
 } from '@/components/atoms/subscription/subscription-item.view';

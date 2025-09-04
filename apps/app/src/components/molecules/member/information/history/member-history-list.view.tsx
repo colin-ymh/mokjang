@@ -1,10 +1,10 @@
 import styled from 'styled-components';
-import { MainText } from '../../../../atoms/common/text/main-text';
+import { MainText } from '@mokjang/components';
 
 import { useScopedI18n } from '../../../../../../locales/client';
 import React from 'react';
-import { SIZE } from '../../../../../constants/styles/style';
-import { HISTORY } from '../../../../../constants/constant';
+import { SIZE } from '@mokjang/constants';
+import { HISTORY } from '@mokjang/constants';
 import { useHistoryDomainDropdownItems } from '../../../../../hooks/dropdown/dropdown-items';
 import Dropdown from '../../../../atoms/common/dropdown/dropdown';
 import GroupHistoryList from './group/group-history-list';

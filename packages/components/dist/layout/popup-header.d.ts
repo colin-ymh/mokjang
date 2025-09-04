@@ -3,6 +3,7 @@ type PopupHeaderProps = {
     headerTitle?: string;
     headerDescription?: string;
     headerRight?: React.ReactNode;
+    headerLeft?: React.ReactNode;
     onClickCancel: () => void;
     onClickDone?: () => void;
     cancelText: string;

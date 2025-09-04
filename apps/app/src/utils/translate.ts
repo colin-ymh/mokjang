@@ -1,25 +1,25 @@
-import { MEMBER } from '../constants/column/member-column';
+import { MEMBER } from '@mokjang/constants';
 import {
   EDUCATION,
   EDUCATION_ATTENDANCE,
   EDUCATION_ENROLLMENT,
   EDUCATION_SESSION,
   EDUCATION_TERM,
-} from '../constants/column/education-column';
-import { VISITATION } from '../constants/column/visitation-column';
-import { TASK } from '../constants/column/task-column';
-import { USER } from '../constants/column/user-column';
-import { PERMISSION_TEMPLATE } from '../constants/column/permission-column';
-import { JOIN_REQUEST } from '../constants/column/join-request-column';
-import { CHURCH_USER } from '../constants/column/church-user-column';
+} from '@mokjang/constants';
+import { VISITATION } from '@mokjang/constants';
+import { TASK } from '@mokjang/constants';
+import { USER } from '@mokjang/constants';
+import { PERMISSION_TEMPLATE } from '@mokjang/constants';
+import { JOIN_REQUEST } from '@mokjang/constants';
+import { CHURCH_USER } from '@mokjang/constants';
 import {
   WORSHIP,
   WORSHIP_ATTENDANCE,
   WORSHIP_ENROLLMENT,
-} from '../constants/column/worship-column';
-import { LOCALE } from '../constants/state/locale';
-import { getEnglishMonthName, getShortEnglishMonthName } from './format';
-import { BLANK } from '../constants/constant';
+} from '@mokjang/constants';
+import { LOCALE } from '@mokjang/constants';
+import { getEnglishMonthName, getShortEnglishMonthName } from '@mokjang/utils';
+import { BLANK } from '@mokjang/constants';
 
 export const getTranslatedMemberColumn = (
   t: (key: string, ...args: any[]) => string,

@@ -1,7 +1,7 @@
 import React, { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 
-import { MinistryGroup } from '../../../models/management/management';
+import { MinistryGroup } from '@mokjang/models';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../redux/store';
 import { useI18n } from '../../../../locales/client';

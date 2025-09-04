@@ -9,9 +9,9 @@ import React, {
 } from 'react';
 import styled from 'styled-components';
 
-import { WHITE } from '@/constants/styles/color';
+import { WHITE } from '@mokjang/constants';
 import DropdownItem, { DropdownValueType } from './dropdown-item';
-import { BorderInputProps } from '../input/border-input';
+import { BorderInputProps } from '@mokjang/components';
 import DefaultDropdownButton from './default-dropdown-button';
 
 const DropdownContainer = styled.div<{

@@ -1,7 +1,7 @@
 import { forwardRef, useEffect, useLayoutEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { BLACK, BLANK, GRAY, MAIN, SIZE, WHITE } from '@mokjang/constants';
-import { MainText } from '../text/main-text';
+import { MainText } from '@mokjang/components';
 
 const StyledTextarea = styled.textarea<{
   $borderColor: string;
@@ -102,7 +102,10 @@ type BorderTextareaProps = {
 };
 
 // forwardRef 를 사용하여 ref 를 전달받을 수 있도록
-const BorderTextarea = forwardRef<HTMLTextAreaElement, BorderTextareaProps>(
+export const BorderTextarea = forwardRef<
+  HTMLTextAreaElement,
+  BorderTextareaProps
+>(
   (
     {
       borderColor = GRAY.LIGHT,
@@ -206,5 +209,3 @@ const BorderTextarea = forwardRef<HTMLTextAreaElement, BorderTextareaProps>(
     );
   }
 );
-
-export default BorderTextarea;

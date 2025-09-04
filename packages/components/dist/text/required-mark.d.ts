@@ -1,2 +1,1 @@
-declare const RequiredMark: () => import("react/jsx-runtime").JSX.Element;
-export default RequiredMark;
+export declare const RequiredMark: () => import("react/jsx-runtime").JSX.Element;

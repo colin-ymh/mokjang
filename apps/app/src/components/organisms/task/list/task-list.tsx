@@ -8,7 +8,7 @@ import {
 } from '../../../../redux/reducers/filter/task-filter-reducer';
 
 import TaskListView from './task-list.view';
-import { DEFAULT_TASK } from '../../../../models/task/task';
+import { DEFAULT_TASK } from '@mokjang/models';
 import { setTargetTask } from '../../../../redux/reducers/target/target-task-reducer';
 import {
   setIsToastShown,
@@ -16,13 +16,10 @@ import {
 } from '../../../../redux/reducers/toast-popup-reducer';
 import { useScopedI18n } from '../../../../../locales/client';
 import { TasksApi } from '../../../../api/tasks/tasks.api';
-import { getIsWellFormedTitle } from '../../../../utils/check';
-import { BLANK, HEADER_BAR } from '../../../../constants/constant';
-import { TASK_STATUS } from '../../../../constants/status/status';
-import {
-  getDateFromDateString,
-  getFullStringFromDate,
-} from '../../../../utils/date';
+import { getIsWellFormedTitle } from '@mokjang/utils';
+import { BLANK, HEADER_BAR } from '@mokjang/constants';
+import { TASK_STATUS } from '@mokjang/constants';
+import { getDateFromDateString, getFullStringFromDate } from '@mokjang/utils';
 
 type TaskListProps = {
   headerType?: HEADER_BAR;

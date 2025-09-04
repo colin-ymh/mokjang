@@ -14,7 +14,7 @@ import {
   WHITE,
 } from '../../../../../../packages/constants/src';
 import { useScopedI18n } from '../../../../locales/client';
-import { Church } from '@/models/church/church';
+import { Church } from '@mokjang/models';
 import { usePathname } from 'next/navigation';
 import { getTranslatedCompleteRequest } from '@/utils/translate';
 

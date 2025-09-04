@@ -2,26 +2,20 @@ import React, { RefObject, useEffect, useState } from 'react';
 import EducationInformationView from './education-information.view';
 import { setTargetEducationTerm } from '../../../../../redux/reducers/target/target-education-term-reducer';
 import { setEducations } from '../../../../../redux/reducers/filter/education-filter-reducer';
-import {
-  getDateFromDateString,
-  getDateStringFromDate,
-} from '../../../../../utils/date';
+import { getDateFromDateString, getDateStringFromDate } from '@mokjang/utils';
 import {
   setIsToastShown,
   setToastText,
 } from '../../../../../redux/reducers/toast-popup-reducer';
-import { getIsWellFormedTitle } from '../../../../../utils/check';
+import { getIsWellFormedTitle } from '@mokjang/utils';
 import { useI18n, useScopedI18n } from '../../../../../../locales/client';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../../../redux/store';
 import { EducationTermsApi } from '../../../../../api/education/education-terms.api';
 import WrappedPagePopup from '../../../../atoms/common/popup/wrapped-page-popup';
-import { MAIN } from '../../../../../constants/styles/color';
+import { MAIN } from '@mokjang/constants';
 import AddEducationTerm from '../../education-term/add/add-education-term';
-import {
-  DEFAULT_EDUCATION_TERM,
-  EducationTerm,
-} from '../../../../../models/education/education';
+import { DEFAULT_EDUCATION_TERM, EducationTerm } from '@mokjang/models';
 import { setTargetEducation } from '../../../../../redux/reducers/target/target-education-reducer';
 
 type EducationInformationProps = {

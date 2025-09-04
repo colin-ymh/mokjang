@@ -1,9 +1,9 @@
 import styled from 'styled-components';
-import { MainText } from '../text/main-text';
-import { MAIN } from '@/constants/styles/color';
+import { MainText } from '@mokjang/components';
+import { MAIN } from '@mokjang/constants';
 import ProfileImage from '../image/profile-image';
-import Cancel from '../../../../../public/svg/cancel.svg';
-import SvgIcon from '../icon/svg-icon';
+import { Svg } from '@mokjang/assets';
+import { SvgIcon } from '@mokjang/components';
 
 const TagContainer = styled.div<{ $backgroundColor: string }>`
   display: inline-flex;
@@ -38,7 +38,7 @@ const MemberTag = ({
       <ProfileImage value={profileImage} width={20} height={20} />
       <MainText color={color}>{name}</MainText>
       <MainText color={color}>{officer}</MainText>
-      <SvgIcon color={color} svg={Cancel} size={12} />
+      <SvgIcon color={color} svg={Svg.Cancel} size={12} />
     </TagContainer>
   );
 };

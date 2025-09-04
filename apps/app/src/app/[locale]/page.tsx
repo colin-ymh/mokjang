@@ -1,11 +1,11 @@
 'use client';
 
 import ModalLayout from '../../components/organisms/layout/modal-layout';
-import Button from '../../components/atoms/common/button/button';
+import { Button } from '@mokjang/components';
 import styled from 'styled-components';
-import BorderInput from '../../components/atoms/common/input/border-input';
+import { BorderInput } from '@mokjang/components';
 import { useState } from 'react';
-import { usePageRouter } from '../../utils/router';
+import { usePageRouter } from '@mokjang/utils';
 import { JoinRequestsApi } from '../../api/join-request/join-request.api';
 import LogoutButton from '../../components/atoms/common/button/logout-button';
 

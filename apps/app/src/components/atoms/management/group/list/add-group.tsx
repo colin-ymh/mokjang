@@ -1,11 +1,10 @@
 import React, { ChangeEvent, forwardRef } from 'react';
 import styled from 'styled-components';
-import MainInput from '../../../common/input/main-input';
-import { BLACK, GRAY, MAIN, WHITE, } from '../../../../../constants/styles/color';
-import { getIsWellFormedTitle } from '../../../../../utils/check';
+import { MainInput } from '@mokjang/components';
+import { BLACK, GRAY, MAIN, WHITE } from '@mokjang/constants';
+import { getIsWellFormedTitle } from '@mokjang/utils';
 
 import { Svg } from '@mokjang/assets';
-import Plus from '../../../../../../public/svg/plus.svg';
 import { useScopedI18n } from '../../../../../../locales/client';
 
 const BackgroundContainer = styled.div<{ $isShown: boolean }>`
@@ -24,7 +23,7 @@ const AddGroupContainer = styled.div<{ $level: number }>`
   width: 100%;
 `;
 
-const PlusButton = styled(Plus)`
+const PlusButton = styled(Svg.Plus)`
   display: flex;
   width: 25px;
   height: 25px;

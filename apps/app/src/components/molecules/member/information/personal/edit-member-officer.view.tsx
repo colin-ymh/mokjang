@@ -8,10 +8,10 @@ import {
   getDateFromDateString,
   getDateFromInput,
   getDateStringFromDate,
-} from '../../../../../utils/date';
-import { GRAY } from '../../../../../constants/styles/color';
-import { MainText } from '../../../../atoms/common/text/main-text';
-import { SIZE } from '../../../../../constants/styles/style';
+} from '@mokjang/utils';
+import { GRAY } from '@mokjang/constants';
+import { MainText } from '@mokjang/components';
+import { SIZE } from '@mokjang/constants';
 import StopWarningButton from '../../../../atoms/common/button/stop-warning-button';
 import LabelDropdown from '../../../../atoms/common/dropdown/label-dropdown';
 

@@ -2,8 +2,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../redux/store';
 
-import { BLANK } from '../../../../../constants/constant';
-import { WorshipAttendance } from '../../../../../models/worship/worship';
+import { BLANK } from '@mokjang/constants';
+import { WorshipAttendance } from '@mokjang/models';
 import { MembersApi } from '../../../../../api/members/members.api';
 import MemberAttendanceTableView from './member-attendance-table.view';
 

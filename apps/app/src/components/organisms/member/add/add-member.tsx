@@ -2,23 +2,20 @@ import React, { ChangeEvent, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../../redux/store';
 import DaumPostcodeEmbed, { Address } from 'react-daum-postcode';
-import { BAPTISM, GENDER, MARRIAGE } from '../../../../constants/constant';
+import { BAPTISM, GENDER, MARRIAGE } from '@mokjang/constants';
 import { DropdownValueType } from '../../../atoms/common/dropdown/dropdown-item';
 import {
   getFormattedMobilePhone,
   getFormattedName,
   getFormattedVehicleNumber,
   getTrimmedString,
-} from '../../../../utils/format';
-import { getIsWellFormedMobilePhone } from '../../../../utils/check';
+} from '@mokjang/utils';
+import { getIsWellFormedMobilePhone } from '@mokjang/utils';
 import { getSchool } from '../../../../api/school-api';
 import PagePopup from '../../../atoms/common/popup/page-popup';
 import { setTargetMember } from '../../../../redux/reducers/target/target-member-reducer';
 import AddMemberView from './add-member.view';
-import {
-  getDateFromDateString,
-  getDateStringFromDate,
-} from '../../../../utils/date';
+import { getDateFromDateString, getDateStringFromDate } from '@mokjang/utils';
 
 export type AddMemberProps = {
   onChangeProfileImage: (image: File | null) => void;

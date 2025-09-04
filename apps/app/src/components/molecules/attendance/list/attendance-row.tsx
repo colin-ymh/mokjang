@@ -3,10 +3,10 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { AppDispatch, RootState } from '../../../../redux/store';
 import { setWorshipEnrollmentFilter } from '../../../../redux/reducers/filter/worship-enrollment-filter-reducer';
-import { WORSHIP_ENROLLMENT } from '../../../../constants/column/worship-column';
-import { ALL, BLANK, WORSHIP_PERIOD } from '../../../../constants/constant';
+import { WORSHIP_ENROLLMENT } from '@mokjang/constants';
+import { ALL, BLANK, WORSHIP_PERIOD } from '@mokjang/constants';
 import AttendanceRowView from './attendance-row.view';
-import { DEFAULT_GROUP, Group } from '../../../../models/management/management';
+import { DEFAULT_GROUP, Group } from '@mokjang/models';
 import { getGroup } from '../../../../utils/group';
 import {
   fetchWorships,
@@ -23,8 +23,8 @@ import {
   getDateStringFromDate,
   getMonthsAfterDate,
   getMonthsBeforeDate,
-} from '../../../../utils/date';
-import { Worship, WorshipStatistic } from '../../../../models/worship/worship';
+} from '@mokjang/utils';
+import { Worship, WorshipStatistic } from '@mokjang/models';
 import { AttendanceTableProps } from './attendance-table';
 
 const AttendanceRow = ({

@@ -18,3 +18,4 @@ export declare enum DIRECTION {
 export declare enum CURSOR {
     POINTER = "pointer"
 }
+//# sourceMappingURL=style.d.ts.map

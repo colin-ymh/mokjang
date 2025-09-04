@@ -1,22 +1,19 @@
 import MainVisitationHeaderView from './main-visitation-header.view';
-import { usePageRouter } from '../../../../../../utils/router';
+import { usePageRouter } from '@mokjang/utils';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../../../../redux/store';
 import { setTargetVisitation } from '../../../../../../redux/reducers/target/target-visitation-reducer';
-import { DEFAULT_VISITATION } from '../../../../../../models/visitation/visitation';
+import { DEFAULT_VISITATION } from '@mokjang/models';
 import { setVisitations } from '../../../../../../redux/reducers/filter/visitation-filter-reducer';
 import {
   setIsToastShown,
   setToastText,
 } from '../../../../../../redux/reducers/toast-popup-reducer';
-import { getIsWellFormedTitle } from '../../../../../../utils/check';
-import { BLANK } from '../../../../../../constants/constant';
+import { getIsWellFormedTitle } from '@mokjang/utils';
+import { BLANK } from '@mokjang/constants';
 import { VisitationsApi } from '../../../../../../api/visitations/visitations.api';
-import {
-  getDateFromDateString,
-  getFullStringFromDate,
-} from '../../../../../../utils/date';
+import { getDateFromDateString, getFullStringFromDate } from '@mokjang/utils';
 
 type MainVisitationHeaderProps = {};
 

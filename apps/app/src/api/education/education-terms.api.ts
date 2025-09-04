@@ -1,11 +1,11 @@
 import { AxiosResponse } from 'axios';
-import { SERVER_URL, TEST_SERVER_URL } from '../../constants/state/url';
-import { EDUCATION_TERM } from '../../constants/column/education-column';
-import { ORDER_DIRECTION } from '../../constants/constant';
+import { SERVER_URL, TEST_SERVER_URL } from '@mokjang/constants';
+import { EDUCATION_TERM } from '@mokjang/constants';
+import { ORDER_DIRECTION } from '@mokjang/constants';
 import { CustomError } from '../error/error';
 import authorizeAxios from '../authorize-axios';
 
-import { TASK_STATUS } from '../../constants/status/status';
+import { TASK_STATUS } from '@mokjang/constants';
 
 type GetEducationTermsParams = {
   churchId: string;

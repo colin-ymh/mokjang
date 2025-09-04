@@ -1,10 +1,9 @@
 import styled from 'styled-components';
-import Loading from '../../../atoms/common/etc/loading';
+import { Loading } from '@mokjang/components';
 import React from 'react';
-import { BLACK, DESTRUCTIVE, GRAY } from '../../../../constants/styles/color';
-import CancelIcon from '../../../../../public/svg/cancel.svg';
-import TrashIcon from '../../../../../public/svg/trash.svg';
-import { MEDIA_MIN_WIDTH } from '../../../../constants/constant';
+import { Svg } from '@mokjang/assets';
+import { BLACK, DESTRUCTIVE, GRAY } from '@mokjang/constants';
+import { MEDIA_MIN_WIDTH } from '@mokjang/constants';
 import PermissionTemplateTable, {
   PermissionTemplateTableProps,
 } from '../../../molecules/permission/list/permission-template-table';
@@ -52,14 +51,14 @@ const ButtonContainer = styled.div`
   cursor: pointer;
 `;
 
-const Trash = styled(TrashIcon)`
+const Trash = styled(Svg.Trash)`
   width: 25px;
   height: 25px;
   stroke: ${DESTRUCTIVE.LIGHT};
   stroke-width: 1px;
 `;
 
-const Cancel = styled(CancelIcon)`
+const Cancel = styled(Svg.Cancel)`
   width: 30px;
   height: 30px;
   stroke: ${BLACK};

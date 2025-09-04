@@ -3,11 +3,11 @@ import styled from 'styled-components';
 
 import { AUTH } from '../../../api/auth/auth.api';
 
-import { MainText } from '../../atoms/common/text/main-text';
-import { BLACK, GRAY } from '../../../constants/styles/color';
-import { SIZE } from '../../../constants/styles/style';
-import LabelInput from '../../atoms/common/input/label-input';
-import Button from '../../atoms/common/button/button';
+import { MainText } from '@mokjang/components';
+import { BLACK, GRAY } from '@mokjang/constants';
+import { SIZE } from '@mokjang/constants';
+import { LabelInput } from '@mokjang/components';
+import { Button } from '@mokjang/components';
 
 const ListContainer = styled.div`
   display: flex;

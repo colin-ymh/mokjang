@@ -1,7 +1,7 @@
 import SubscriptionFailView, {
   SubscriptionFailViewProps,
 } from '@/components/organisms/subscription/subscription-fail.view';
-import { usePageRouter } from '@mokjang/app/src/utils/router';
+import { usePageRouter } from '@mokjang/utils';
 
 const SubscriptionFail = () => {
   const router = usePageRouter();

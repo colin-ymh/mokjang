@@ -1,8 +1,8 @@
 import React, { useEffect, useRef } from 'react';
-import { Member } from '../../../../models/member/member';
+import { Member } from '@mokjang/models';
 import ManagementMemberTableView from './management-member-table.view';
-import { MEMBER } from '../../../../constants/column/member-column';
-import { ORDER_DIRECTION } from '../../../../constants/constant';
+import { MEMBER } from '@mokjang/constants';
+import { ORDER_DIRECTION } from '@mokjang/constants';
 import { CHURCH_CONTENT_ID } from '../../../../constants/layout/content';
 
 export type ManagementMemberTableProps = {

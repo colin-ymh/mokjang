@@ -2,24 +2,24 @@ import CustomCalendar from '../../../vendor/calendar/custom-calendar';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../redux/store';
-import { Schedule } from '../../../models/calendar/calendar';
-import CancelIcon from '../../../../public/svg/cancel.svg';
-import { BLACK } from '../../../constants/styles/color';
+import { Schedule } from '@mokjang/models';
+import { Svg } from '@mokjang/assets';
+import { BLACK } from '@mokjang/constants';
 import SlidePopup from '../../atoms/common/popup/slide-popup';
-import { DOMAIN } from '../../../models/permission/permission';
+import { DOMAIN } from '@mokjang/models';
 import TaskInformation from '../task/information/task-information';
 import React from 'react';
 import VisitationInformation from '../visitation/information/visitation-information';
 import { useI18n } from '../../../../locales/client';
 import MemberInformation from '../member/information/member-information';
 import ChurchEventInformation from '../church-event/information/church-event-information';
-import CustomPopup from '../../atoms/common/popup/custom-popup';
-import { TASK_STATUS } from '../../../constants/status/status';
+import { CustomPopup } from '@mokjang/components';
+import { TASK_STATUS } from '@mokjang/constants';
 import WrappedPagePopup from '../../atoms/common/popup/wrapped-page-popup';
 import { getTranslatedTerm } from '../../../utils/translate';
 import EducationSessionInformation from '../education/education-session/information/education-session-information';
 import { usePathname } from 'next/navigation';
-import { LOCALE } from '../../../constants/state/locale';
+import { LOCALE } from '@mokjang/constants';
 
 const CalendarContainer = styled.div`
   display: flex;
@@ -40,7 +40,7 @@ const ButtonContainer = styled.div`
   cursor: pointer;
 `;
 
-const Cancel = styled(CancelIcon)`
+const Cancel = styled(Svg.Cancel)`
   width: 30px;
   height: 30px;
   stroke: ${BLACK};

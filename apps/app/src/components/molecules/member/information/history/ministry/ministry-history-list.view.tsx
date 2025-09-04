@@ -1,5 +1,5 @@
 import { RefObject } from 'react';
-import { MinistryHistory } from '../../../../../../models/member/history';
+import { MinistryHistory } from '@mokjang/models';
 import styled from 'styled-components';
 import MinistryHistoryItem from '../../../../../atoms/member/history/ministry-history-item';
 import useWindowSize from '../../../../../../hooks/window/window';

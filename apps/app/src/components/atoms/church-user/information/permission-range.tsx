@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 import GroupRangeFilter from './group-range-filter';
-import { MainText } from '../../common/text/main-text';
-import { GRAY } from '../../../../constants/styles/color';
-import { Group } from '../../../../models/management/management';
+import { MainText } from '@mokjang/components';
+import { GRAY } from '@mokjang/constants';
+import { Group } from '@mokjang/models';
 
 const PermissionRangeContainer = styled.div`
   display: flex;

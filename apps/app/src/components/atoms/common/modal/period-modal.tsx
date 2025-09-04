@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
-import TransparentBackground from '../etc/transparent-background';
-import Button from '../button/button';
-import { BLACK, GRAY, WHITE } from '@/constants/styles/color';
-import { getDateFromInput, getDateStringFromDate } from '@/utils/date';
+import { Button, TransparentBackground } from '@mokjang/components';
+import { BLACK, GRAY, WHITE } from '@mokjang/constants';
+import { getDateFromInput, getDateStringFromDate } from '@mokjang/utils';
 
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
-import { MainText } from '../text/main-text';
+import { MainText } from '@mokjang/components';
 import CustomDatePicker from '@/vendor/date-picker/custom-date-picker';
 
 const ModalContainer = styled.div<{ $isShown: boolean }>`

@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { MinistryGroup } from '../../../../../models/management/management';
+import { MinistryGroup } from '@mokjang/models';
 import useWindowSize from '../../../../../hooks/window/window';
 import ManagementMinistryGroupItem from '../../../../atoms/management/ministry/list/management-ministry-group-item';
 

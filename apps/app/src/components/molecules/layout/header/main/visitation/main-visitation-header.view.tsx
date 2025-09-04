@@ -2,22 +2,16 @@ import React from 'react';
 import styled from 'styled-components';
 import { useParams } from 'next/navigation';
 
-import { GRAY, MAIN, WHITE } from '../../../../../../constants/styles/color';
-import { MainText } from '../../../../../atoms/common/text/main-text';
+import { GRAY, MAIN, MEDIA_MIN_WIDTH, SIZE, WHITE } from '@mokjang/constants';
+import { Button, MainText, SvgIcon } from '@mokjang/components';
 import HeaderBar from '../../../../../atoms/layout/header/header-bar';
-import { SIZE } from '../../../../../../constants/styles/style';
-import { useMainVisitationHeaderBarItems } from '../../../../../../hooks/layout/header-bar-items';
+import { useMainVisitationHeaderBarItems } from '@/hooks/layout/header-bar-items';
 
 import { useScopedI18n } from '../../../../../../../locales/client';
 import AddVisitation from '../../../../../organisms/visitation/add/add-visitation';
-import { MEDIA_MIN_WIDTH } from '../../../../../../constants/constant';
-import {
-  Button,
-  SvgIcon,
-} from '../../../../../../../../../packages/components/src';
-import { MAIN_HEADER_ID } from '../../../../../../constants/layout/header';
 import WrappedPagePopup from '../../../../../atoms/common/popup/wrapped-page-popup';
 import { Svg } from '@mokjang/assets';
+import { MAIN_HEADER_ID } from '@/constants/layout/header';
 
 const HeaderContainer = styled.div`
   display: flex;

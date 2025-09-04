@@ -16,5 +16,5 @@ type BorderTextareaProps = {
     /** 내용 최대 높이 제한(px). 넘치면 스크롤 대신 늘리지 않음 */
     maxAutoHeight?: number;
 };
-declare const BorderTextarea: import("react").ForwardRefExoticComponent<BorderTextareaProps & import("react").RefAttributes<HTMLTextAreaElement>>;
-export default BorderTextarea;
+export declare const BorderTextarea: import("react").ForwardRefExoticComponent<BorderTextareaProps & import("react").RefAttributes<HTMLTextAreaElement>>;
+export {};

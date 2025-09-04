@@ -2,8 +2,8 @@ import {
   PermissionScope,
   PermissionTemplate,
   PermissionUnit,
-} from '../models/permission/permission';
-import { CHURCH_USER_ROLE } from '../constants/constant';
+} from '@mokjang/models';
+import { CHURCH_USER_ROLE } from '@mokjang/constants';
 import { BLANK } from '@mokjang/constants';
 
 /**

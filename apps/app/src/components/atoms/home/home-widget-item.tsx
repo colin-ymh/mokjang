@@ -6,11 +6,11 @@ import {
   useDrop,
 } from 'react-dnd';
 import styled from 'styled-components';
-import { GRAY, MAIN, WHITE } from '../../../constants/styles/color';
+import { GRAY, MAIN, WHITE } from '@mokjang/constants';
 import { getEmptyImage } from 'react-dnd-html5-backend';
-import { DND_ITEM_TYPE, HOME_WIDGET } from '../../../constants/constant';
+import { DND_ITEM_TYPE, HOME_WIDGET } from '@mokjang/constants';
 
-import Cancel from '../../../../public/svg/cancel.svg';
+import { Svg } from '@mokjang/assets';
 import { useScopedI18n } from '../../../../locales/client';
 
 // 드래그 타입 상수
@@ -26,8 +26,9 @@ const WidgetItem = styled.div<{ $isDragging: boolean }>`
   height: 400px;
   box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
-  border: ${({ $isDragging }) => `1px solid ${$isDragging ? MAIN.LIGHT : GRAY.EXTRA_LIGHT};`}
-  background: ${WHITE};
+  border: ${({ $isDragging }) =>
+    `1px solid ${$isDragging ? MAIN.LIGHT : GRAY.EXTRA_LIGHT};`};
+  background-color: ${WHITE};
   padding: 20px;
   padding-top: 30px;
 `;
@@ -39,7 +40,7 @@ const DeleteContainer = styled.div`
   top: 10px;
 `;
 
-const DeleteButton = styled(Cancel)`
+const DeleteButton = styled(Svg.Cancel)`
   width: 20px;
   height: 20px;
   cursor: pointer;

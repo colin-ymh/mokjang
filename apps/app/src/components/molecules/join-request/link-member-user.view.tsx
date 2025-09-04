@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import React, { ChangeEvent, Ref, RefObject } from 'react';
-import { Member } from '../../../models/member/member';
+import { Member } from '@mokjang/models';
 import { useI18n } from '../../../../locales/client';
 import {
   BorderInput,

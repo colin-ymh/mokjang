@@ -2,16 +2,16 @@ import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../redux/store';
 
-import { getTrimmedString } from '../../../utils/format';
-import { VISITATION } from '../../../constants/column/visitation-column';
-import { BLANK } from '../../../constants/constant';
+import { getTrimmedString } from '@mokjang/utils';
+import { VISITATION } from '@mokjang/constants';
+import { BLANK } from '@mokjang/constants';
 import VisitationRowView, {
   VISITATION_SEARCH_FILTER,
 } from './visitation-row.view';
 import { VisitationFilteredItemType } from '../../atoms/visitation/visitation-filtered-item';
 import { setVisitationFilter } from '../../../redux/reducers/filter/visitation-filter-reducer';
 
-import { TASK_STATUS } from '../../../constants/status/status';
+import { TASK_STATUS } from '@mokjang/constants';
 
 const VisitationRow = () => {
   const dispatch = useDispatch<AppDispatch>();

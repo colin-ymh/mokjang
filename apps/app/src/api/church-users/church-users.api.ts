@@ -1,10 +1,10 @@
 import { AxiosResponse } from 'axios';
 import qs from 'qs';
 
-import { CHURCH_USER_ROLE, ORDER_DIRECTION } from '../../constants/constant';
-import { SERVER_URL, TEST_SERVER_URL } from '../../constants/state/url';
+import { CHURCH_USER_ROLE, ORDER_DIRECTION } from '@mokjang/constants';
+import { SERVER_URL, TEST_SERVER_URL } from '@mokjang/constants';
 import { CustomError } from '../error/error';
-import { CHURCH_USER } from '../../constants/column/church-user-column';
+import { CHURCH_USER } from '@mokjang/constants';
 import authorizeAxios from '../authorize-axios';
 
 type GetChurchUsersParams = {

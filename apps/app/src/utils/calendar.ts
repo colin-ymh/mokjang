@@ -2,18 +2,18 @@ import {
   Schedule,
   ServerReportedSchedule,
   ServerSchedule,
-} from '../models/calendar/calendar';
-import { Task } from '../models/task/task';
-import { Visitation } from '../models/visitation/visitation';
-import { Member } from '../models/member/member';
-import { DOMAIN } from '../models/permission/permission';
+} from '@mokjang/models';
+import { Task } from '@mokjang/models';
+import { Visitation } from '@mokjang/models';
+import { Member } from '@mokjang/models';
+import { DOMAIN } from '@mokjang/models';
 import KoreanLunarCalendar from 'korean-lunar-calendar';
-import { getDateFromDateString, getDateStringFromDate } from './date';
+import { getDateFromDateString, getDateStringFromDate } from '@mokjang/utils';
 import dayjs from 'dayjs';
-import { ChurchEvent } from '../models/church-event/church-event';
-import { EducationSession } from '../models/education/education';
+import { ChurchEvent } from '@mokjang/models';
+import { EducationSession } from '@mokjang/models';
 import { Holiday } from '../api/holiday-api';
-import { getFormattedDate } from './format';
+import { getFormattedDate } from '@mokjang/utils';
 
 export const getScheduleFromTask = (event: Task): Schedule => {
   return {

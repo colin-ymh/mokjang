@@ -16,7 +16,7 @@ import { getIsWellFormedTitle } from '../../../../../../packages/utils/src';
 import { useDispatch, useSelector } from 'react-redux';
 import { useI18n, useScopedI18n } from '../../../../locales/client';
 import { AppDispatch, RootState } from '@/redux/store';
-import { getFormattedTitle } from '@/utils/format';
+import { getFormattedTitle } from '@mokjang/utils';
 import { fetchMinistryGroups } from '@/redux/reducers/church-reducer';
 import {
   setIsToastShown,
@@ -24,7 +24,7 @@ import {
   setToastText,
 } from '@/redux/reducers/toast-popup-reducer';
 import MinistryGroupList from '@/components/molecules/management/ministry/list/ministry-group-list';
-import { MinistryGroup } from '@/models/management/management';
+import { MinistryGroup } from '@mokjang/models';
 import { MinistryGroupsApi } from '@/api/management/ministry/ministry-groups.api';
 
 const MinistryGroupListContainer = styled.div`

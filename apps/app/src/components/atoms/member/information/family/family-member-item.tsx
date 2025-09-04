@@ -1,27 +1,25 @@
 import styled from 'styled-components';
 
-import { MainText } from '../../../common/text/main-text';
-import { GRAY } from '../../../../../constants/styles/color';
-import { MEMBER } from '../../../../../constants/column/member-column';
-import { getFormattedMobilePhone } from '../../../../../utils/format';
-import { FamilyMember } from '../../../../../models/member/member';
+import { Svg } from '@mokjang/assets';
+import { MainText } from '@mokjang/components';
+import { GRAY } from '@mokjang/constants';
+import { MEMBER } from '@mokjang/constants';
+import { getFormattedMobilePhone } from '@mokjang/utils';
+import { FamilyMember } from '@mokjang/models';
 import { useI18n, useScopedI18n } from '../../../../../../locales/client';
 import ProfileImage from '../../../common/image/profile-image';
-import { SIZE } from '../../../../../constants/styles/style';
-import Phone from '../../../../../../public/svg/phone.svg';
-import Calendar from '../../../../../../public/svg/calendar.svg';
-import Cancel from '../../../../../../public/svg/cancel.svg';
-import SvgIcon from '../../../common/icon/svg-icon';
-import { BLANK, FAMILY } from '../../../../../constants/constant';
+import { SIZE } from '@mokjang/constants';
+import { SvgIcon } from '@mokjang/components';
+import { BLANK, FAMILY } from '@mokjang/constants';
 import { useFamilyRelationDropdownItems } from '../../../../../hooks/dropdown/dropdown-items';
 import Dropdown from '../../../common/dropdown/dropdown';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../../../redux/store';
-import { getTranslatedAge } from '../../../../../utils/translate';
-import { getAge, getDateFromDateString } from '../../../../../utils/date';
+import { getTranslatedAge } from '@mokjang/utils';
+import { getAge, getDateFromDateString } from '@mokjang/utils';
 import { usePathname } from 'next/navigation';
-import { LOCALE } from '../../../../../constants/state/locale';
+import { LOCALE } from '@mokjang/constants';
 import ConfirmPopup from '../../../common/popup/error-popup';
 import { MembersApi } from '../../../../../api/members/members.api';
 import { setTargetMember } from '../../../../../redux/reducers/target/target-member-reducer';
@@ -141,7 +139,7 @@ const FamilyMemberItem = ({
             </MemberInformationContainer>
             {/* 나이 */}
             <MemberInformationContainer>
-              <SvgIcon svg={Calendar} color={GRAY.SEMI_DARK} />
+              <SvgIcon svg={Svg.Calendar} color={GRAY.SEMI_DARK} />
               <MainText color={GRAY.SEMI_DARK}>{t(MEMBER.AGE)}</MainText>
               <MainText>
                 {getTranslatedAge(
@@ -152,7 +150,7 @@ const FamilyMemberItem = ({
             </MemberInformationContainer>
             {/* 연락처 */}
             <MemberInformationContainer>
-              <SvgIcon svg={Phone} color={GRAY.SEMI_DARK} />
+              <SvgIcon svg={Svg.Phone} color={GRAY.SEMI_DARK} />
               <MainText color={GRAY.SEMI_DARK}>
                 {t(MEMBER.MOBILE_PHONE)}
               </MainText>
@@ -167,7 +165,7 @@ const FamilyMemberItem = ({
           items={familyRelationItems}
           width={100}
           height={30}
-          onChangeItem={(relation) =>
+          onChangeItem={(relation: FAMILY) =>
             onChangeRelation(familyMember.familyMemberId, relation as FAMILY)
           }
         />
@@ -179,7 +177,7 @@ const FamilyMemberItem = ({
             onClickDelete();
           }}
         >
-          <SvgIcon svg={Cancel} size={18} />
+          <SvgIcon svg={Svg.Cancel} size={18} />
         </CancelButton>
       </ItemContainer>
 

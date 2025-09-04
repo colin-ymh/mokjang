@@ -6,7 +6,7 @@ import { RootState } from '@/redux/store';
 
 import ModalLayout from '../../../../components/organisms/layout/modal-layout';
 
-import { usePageRouter } from '@/utils/router';
+import { usePageRouter } from '@mokjang/utils';
 import ChurchRegister from '@/components/organisms/church/church-register';
 
 export default function ChurchRegisterPage() {

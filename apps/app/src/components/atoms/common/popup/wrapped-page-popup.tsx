@@ -4,21 +4,21 @@ import React, { ReactNode, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { createPortal } from 'react-dom';
 
-import { GRAY, MAIN, WHITE } from '@/constants/styles/color';
-import Hide from '../etc/hide';
-import { MainText } from '../text/main-text';
+import { GRAY, MAIN, SIZE, TASK_STATUS, WHITE } from '@mokjang/constants';
+import {
+  Button,
+  Hide,
+  MainText,
+  TransparentBackground,
+} from '@mokjang/components';
 import { useScopedI18n } from '../../../../../locales/client';
 
-import ArrowUp from '../../../../../public/svg/arror-up.svg';
-import Button from '../button/button';
-import TransparentBackground from '../etc/transparent-background';
-import { TASK_STATUS } from '@/constants/status/status';
+import { Svg } from '@mokjang/assets';
 import { useTaskStatusDropdownItems } from '@/hooks/dropdown/dropdown-items';
-import { SIZE } from '@/constants/styles/style';
-import { Member } from '@/models/member/member';
+import { Member } from '@mokjang/models';
 import KebabDropdown from '../dropdown/kebab-dropdown';
 import MemberProfilePopupButton from '@/components/molecules/common/button/member-profile-popup-button';
-import { getDateFromDateString, getDateStringFromDate } from '@/utils/date';
+import { getDateFromDateString, getDateStringFromDate } from '@mokjang/utils';
 import StatusDropdown from '../dropdown/status-dropdown';
 
 const WrappedPagePopupContainer = styled.div<{
@@ -80,7 +80,7 @@ const GoBackContainer = styled.div`
   cursor: pointer;
 `;
 
-const ArrowLeft = styled(ArrowUp)`
+const ArrowLeft = styled(Svg.ArrorUp)`
   width: 14px;
   height: 14px;
   stroke-width: 2px;

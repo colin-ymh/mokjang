@@ -1,22 +1,18 @@
 import React, { ChangeEvent, Dispatch, SetStateAction } from 'react';
-import { MainText } from '../../../../atoms/common/text/main-text';
-import Button from '../../../../atoms/common/button/button';
-import { GRAY, WHITE } from '../../../../../constants/styles/color';
+import { MainText } from '@mokjang/components';
+import { Button } from '@mokjang/components';
+import { GRAY, WHITE } from '@mokjang/constants';
 import styled from 'styled-components';
-import Plus from '../../../../../../public/svg/plus.svg';
-import Setting from '../../../../../../public/svg/setting.svg';
-import {
-  Ministry,
-  MinistryGroup,
-} from '../../../../../models/management/management';
+import { Svg } from '@mokjang/assets';
+import { Ministry, MinistryGroup } from '@mokjang/models';
 import { useI18n } from '../../../../../../locales/client';
-import CustomPopup from '../../../../atoms/common/popup/custom-popup';
-import { Member } from '../../../../../models/member/member';
-import { getTranslatedAddMemberTitle } from '../../../../../utils/translate';
+import { CustomPopup } from '@mokjang/components';
+import { Member } from '@mokjang/models';
+import { getTranslatedAddMemberTitle } from '@mokjang/utils';
 import { usePathname } from 'next/navigation';
-import { LOCALE } from '../../../../../constants/state/locale';
-import { MEMBER } from '../../../../../constants/column/member-column';
-import { ORDER_DIRECTION } from '../../../../../constants/constant';
+import { LOCALE } from '@mokjang/constants';
+import { MEMBER } from '@mokjang/constants';
+import { ORDER_DIRECTION } from '@mokjang/constants';
 import { CHURCH_CONTENT_ID } from '../../../../../constants/layout/content';
 import EditMinistryGroup from '../edit/edit-ministry-group';
 import AddMinistryGroupMemberModal from '../../../../atoms/management/ministry/member/add-ministry-group-member-modal';
@@ -44,14 +40,14 @@ const ButtonContainer = styled.div`
   gap: 10px;
 `;
 
-const PlusIcon = styled(Plus)`
+const PlusIcon = styled(Svg.Plus)`
   width: 18px;
   height: 18px;
   stroke: ${WHITE};
   stroke-width: 2px;
 `;
 
-const SettingIcon = styled(Setting)`
+const SettingIcon = styled(Svg.Setting)`
   width: 18px;
   height: 18px;
   stroke: ${GRAY.DEFAULT};

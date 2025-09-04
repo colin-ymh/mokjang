@@ -1,13 +1,17 @@
 import { useState } from 'react';
-import { Church, DEFAULT_CHURCH } from '../../../models/church/church';
 import EditChurchInformation from '@/components/molecules/management/church/edit-church-information';
 import { setChurch } from '@/redux/reducers/church-reducer';
-import { setIsToastShown, setToastBackgroundColor, setToastText, } from '@/redux/reducers/toast-popup-reducer';
-import { DESTRUCTIVE } from '@/constants/styles/color';
+import {
+  setIsToastShown,
+  setToastBackgroundColor,
+  setToastText,
+} from '@/redux/reducers/toast-popup-reducer';
+import { DESTRUCTIVE } from '@mokjang/constants';
 import { useScopedI18n } from '../../../../locales/client';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 import { ChurchesApi } from '@/api/churches/churches.api';
+import { Church, DEFAULT_CHURCH } from '@mokjang/models';
 
 const ChurchRegisterList = () => {
   const { churchId } = useSelector((state: RootState) => state.church);

@@ -1,9 +1,9 @@
 import styled from 'styled-components';
-import { MainText } from '../../../../atoms/common/text/main-text';
+import { MainText } from '@mokjang/components';
 
 import { useI18n, useScopedI18n } from '../../../../../../locales/client';
 import React from 'react';
-import { SIZE } from '../../../../../constants/styles/style';
+import { SIZE } from '@mokjang/constants';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../redux/store';
 import Dropdown from '../../../../atoms/common/dropdown/dropdown';
@@ -12,21 +12,14 @@ import {
   getDateFromDateString,
   getDayConstantByIndex,
   getWeekRepeatConstant,
-} from '../../../../../utils/date';
+} from '@mokjang/utils';
 import { useWorshipPeriodDropdownItems } from '../../../../../hooks/dropdown/dropdown-items';
-import {
-  DAY,
-  REPEAT_PERIOD,
-  WORSHIP_PERIOD,
-} from '../../../../../constants/constant';
-import {
-  MemberAttendanceStatistic,
-  Worship,
-} from '../../../../../models/worship/worship';
-import { GRAY, MAIN } from '../../../../../constants/styles/color';
-import { getTranslatedMemberAttendanceCount } from '../../../../../utils/translate';
+import { DAY, REPEAT_PERIOD, WORSHIP_PERIOD } from '@mokjang/constants';
+import { MemberAttendanceStatistic, Worship } from '@mokjang/models';
+import { GRAY, MAIN } from '@mokjang/constants';
+import { getTranslatedMemberAttendanceCount } from '@mokjang/utils';
 import { usePathname } from 'next/navigation';
-import { LOCALE } from '../../../../../constants/state/locale';
+import { LOCALE } from '@mokjang/constants';
 import MemberAttendanceTable from './member-attendance-table';
 
 const ListContainer = styled.div`

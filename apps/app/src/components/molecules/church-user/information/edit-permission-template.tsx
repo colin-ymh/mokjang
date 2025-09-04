@@ -1,14 +1,14 @@
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import styled from 'styled-components';
-import { GRAY, MAIN, WHITE } from '@/constants/styles/color';
-import { PermissionTemplate } from '@/models/permission/permission';
+import { GRAY, MAIN, WHITE } from '@mokjang/constants';
+import { PermissionTemplate } from '@mokjang/models';
 import {
   MainText,
   RadioButton,
   SvgIcon,
 } from '../../../../../../../packages/components/src';
-import { CURSOR } from '@/constants/styles/style';
+import { CURSOR } from '@mokjang/constants';
 import { useScopedI18n } from '../../../../../locales/client';
 import { Svg } from '@mokjang/assets';
 

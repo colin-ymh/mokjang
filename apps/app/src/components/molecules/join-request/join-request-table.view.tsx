@@ -3,25 +3,25 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../redux/store';
 
-import { GRAY, GREEN, RED, WHITE } from '../../../constants/styles/color';
+import { GRAY, GREEN, RED, WHITE } from '@mokjang/constants';
 
-import { MainText } from '../../atoms/common/text/main-text';
-import { BLANK } from '../../../constants/constant';
+import { MainText } from '@mokjang/components';
+import { BLANK } from '@mokjang/constants';
 
 import useWindowSize from '../../../hooks/window/window';
 import { BLANK_HEADER } from '../../../redux/reducers/filter/member-filter-reducer';
 import { useI18n, useScopedI18n } from '../../../../locales/client';
-import { getFormattedMobilePhone } from '../../../utils/format';
+import { getFormattedMobilePhone } from '@mokjang/utils';
 import { getStatusColor } from '../../../utils/color';
-import { JOIN_REQUEST } from '../../../constants/column/join-request-column';
-import { JoinRequest } from '../../../models/join-request/join-request';
+import { JOIN_REQUEST } from '@mokjang/constants';
+import { JoinRequest } from '@mokjang/models';
 import JoinRequestTableHeader from '../../atoms/join-request/join-request-table-header';
-import { USER } from '../../../constants/column/user-column';
-import Button from '../../atoms/common/button/button';
-import CustomPopup from '../../atoms/common/popup/custom-popup';
+import { USER } from '@mokjang/constants';
+import { Button } from '@mokjang/components';
+import { CustomPopup } from '@mokjang/components';
 import LinkMemberUser from './link-member-user';
 import { usePathname } from 'next/navigation';
-import { LOCALE } from '@/constants/state/locale';
+import { LOCALE } from '@mokjang/constants';
 import { getTranslatedDateFromDateString } from '@/utils/translate';
 
 // 1. 컬럼별 PX 폭 (마지막 REMARKS만 auto 할 예정)

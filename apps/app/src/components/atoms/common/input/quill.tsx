@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactQuill from 'react-quill';
 import styled from 'styled-components';
-import { GRAY, WHITE } from '@/constants/styles/color';
-import { MainText } from '../text/main-text';
-import { SIZE } from '@/constants/styles/style';
+import { GRAY, WHITE } from '@mokjang/constants';
+import { MainText } from '@mokjang/components';
+import { SIZE } from '@mokjang/constants';
 
 /* ───────── 스타일 ───────── */
 const StyledQuill = styled(ReactQuill)<{

@@ -3,19 +3,15 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
 
-import { GRAY, GREEN, RED, WHITE } from '../../../../constants/styles/color';
-import { BLANK } from '../../../../constants/constant';
-import {
-  WORSHIP_ATTENDANCE_STATUS,
-  WorshipAttendance,
-} from '../../../../models/worship/worship';
-import { WORSHIP_ATTENDANCE } from '../../../../constants/column/worship-column';
+import { GRAY, GREEN, RED, WHITE } from '@mokjang/constants';
+import { BLANK } from '@mokjang/constants';
+import { WORSHIP_ATTENDANCE_STATUS, WorshipAttendance } from '@mokjang/models';
+import { WORSHIP_ATTENDANCE } from '@mokjang/constants';
 import AttendanceInformationTableHeader from '../../../atoms/attendance/information/attendance-information-table-header';
-import BorderTextarea from '../../../atoms/common/input/border-textarea';
-import CheckButton from '../../../atoms/common/button/check-button';
 import MemberProfilePopupButton from '../../common/button/member-profile-popup-button';
-import { MainText } from '../../../atoms/common/text/main-text';
+
 import { useScopedI18n } from '../../../../../locales/client';
+import { CheckButton, MainText, BorderTextarea } from '@mokjang/components';
 
 // 1. 컬럼별 PX 폭 (마지막 REMARKS만 auto 할 예정)
 const getColumnWidth = (id: string) => {

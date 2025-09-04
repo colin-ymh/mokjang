@@ -4,13 +4,13 @@ import { AppDispatch, RootState } from '../../../../../../redux/store';
 
 import MainMemberHeaderView from './main-member-header.view';
 import { fetchMembers } from '../../../../../../redux/reducers/filter/member-filter-reducer';
-import { usePageRouter } from '../../../../../../utils/router';
+import { usePageRouter } from '@mokjang/utils';
 import { useI18n } from '../../../../../../../locales/client';
-import { DEFAULT_MEMBER } from '../../../../../../models/member/member';
+import { DEFAULT_MEMBER } from '@mokjang/models';
 import { setTargetMember } from '../../../../../../redux/reducers/target/target-member-reducer';
 import { uploadFiles } from '../../../../../../utils/upload';
 import { MembersApi } from '../../../../../../api/members/members.api';
-import { BLACK, DESTRUCTIVE } from '../../../../../../constants/styles/color';
+import { BLACK, DESTRUCTIVE } from '@mokjang/constants';
 import {
   setIsToastShown,
   setToastBackgroundColor,

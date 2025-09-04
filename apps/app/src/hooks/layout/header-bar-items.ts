@@ -16,13 +16,9 @@ import {
 
 import { useI18n, useScopedI18n } from '../../../locales/client';
 import { MEMBER_TABLE_HEADER_ITEM } from '../../redux/reducers/filter/member-filter-reducer';
-import { MEMBER } from '../../constants/column/member-column';
+import { MEMBER } from '@mokjang/constants';
 
-import User from '../../../public/svg/user.svg';
-import Users from '../../../public/svg/users.svg';
-import Heart from '../../../public/svg/heart.svg';
-import Calendar from '../../../public/svg/calendar.svg';
-import Clock from '../../../public/svg/clock.svg';
+import { Svg } from '@mokjang/assets';
 
 export const useMainMemberHeaderBarItems = () => {
   const t_memberContent = useScopedI18n('member-content');
@@ -112,27 +108,27 @@ export const useMemberInformationHeaderBarItems = () => {
     {
       id: MEMBER_INFORMATION_HEADER_ID.PERSONAL_INFORMATION,
       title: t_header(MEMBER_INFORMATION_HEADER_ID.PERSONAL_INFORMATION),
-      icon: User,
+      icon: Svg.User,
     },
     {
       id: MEMBER_INFORMATION_HEADER_ID.FAMILY_INFORMATION,
       title: t_header(MEMBER_INFORMATION_HEADER_ID.FAMILY_INFORMATION),
-      icon: Users,
+      icon: Svg.Users,
     },
     {
       id: MEMBER_INFORMATION_HEADER_ID.VISITATION,
       title: t_header(MEMBER_INFORMATION_HEADER_ID.VISITATION),
-      icon: Heart,
+      icon: Svg.Heart,
     },
     {
       id: MEMBER_INFORMATION_HEADER_ID.ATTENDANCE,
       title: t_header(MEMBER_INFORMATION_HEADER_ID.ATTENDANCE),
-      icon: Calendar,
+      icon: Svg.Calendar,
     },
     {
       id: MEMBER_INFORMATION_HEADER_ID.HISTORY,
       title: t_header(MEMBER_INFORMATION_HEADER_ID.HISTORY),
-      icon: Clock,
+      icon: Svg.Clock,
     },
   ];
 
@@ -146,17 +142,17 @@ export const useEditMemberHeaderBarItems = () => {
     {
       id: EDIT_MEMBER_HEADER_ID.BASIC_INFORMATION,
       title: t(EDIT_MEMBER_HEADER_ID.BASIC_INFORMATION),
-      icon: User,
+      icon: Svg.User,
     },
     {
       id: EDIT_MEMBER_HEADER_ID.PERSONAL_INFORMATION,
       title: t(EDIT_MEMBER_HEADER_ID.PERSONAL_INFORMATION),
-      icon: Users,
+      icon: Svg.Users,
     },
     {
       id: EDIT_MEMBER_HEADER_ID.CHURCH_INFORMATION,
       title: t(EDIT_MEMBER_HEADER_ID.CHURCH_INFORMATION),
-      icon: Heart,
+      icon: Svg.Heart,
     },
   ];
 

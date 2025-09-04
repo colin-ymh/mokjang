@@ -1,11 +1,9 @@
 import styled from 'styled-components';
-import { DESTRUCTIVE, WHITE } from '@/constants/styles/color';
-import { MainText } from '../text/main-text';
-import Button from './button';
-
-import Warning from '../../../../../public/svg/warning.svg';
-import Trash from '../../../../../public/svg/trash.svg';
+import { DESTRUCTIVE, WHITE } from '@mokjang/constants';
+import { MainText } from '@mokjang/components';
+import { Button } from '@mokjang/components';
 import { useI18n } from '../../../../../locales/client';
+import { Svg } from '@mokjang/assets';
 
 const WarningContainer = styled.div`
   display: flex;
@@ -23,14 +21,14 @@ const IconContainer = styled.div`
   width: 30px;
 `;
 
-const WarningIcon = styled(Warning)`
+const WarningIcon = styled(Svg.Warning)`
   width: 20px;
   height: 20px;
   stroke: ${DESTRUCTIVE.DEFAULT};
   stroke-width: 2px;
 `;
 
-const TrashIcon = styled(Trash)`
+const TrashIcon = styled(Svg.Trash)`
   width: 16px;
   height: 16px;
   stroke: ${DESTRUCTIVE.DARK};

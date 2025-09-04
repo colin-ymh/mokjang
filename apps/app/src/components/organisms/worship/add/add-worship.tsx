@@ -2,12 +2,9 @@ import { ChangeEvent, useEffect, useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../../redux/store';
-import {
-  getFormattedContent,
-  getFormattedTitle,
-} from '../../../../utils/format';
+import { getFormattedContent, getFormattedTitle } from '@mokjang/utils';
 import { setTargetWorship } from '../../../../redux/reducers/target/target-worship-reducer';
-import { DEFAULT_GROUP, Group } from '../../../../models/management/management';
+import { DEFAULT_GROUP, Group } from '@mokjang/models';
 import { getGroup } from '../../../../utils/group';
 import AddWorshipView from './add-worship.view';
 

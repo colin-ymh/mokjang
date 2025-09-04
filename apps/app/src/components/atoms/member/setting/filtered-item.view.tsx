@@ -1,11 +1,11 @@
 import styled from 'styled-components';
 
-import { MainText } from '../../common/text/main-text';
-import { MEMBER } from '../../../../constants/column/member-column';
-import { MAIN } from '../../../../constants/styles/color';
+import { MainText } from '@mokjang/components';
+import { MEMBER } from '@mokjang/constants';
+import { MAIN } from '@mokjang/constants';
 
 import { useI18n } from '../../../../../locales/client';
-import Cancel from '../../../../../public/svg/cancel.svg';
+import { Svg } from '@mokjang/assets';
 
 const ItemContainer = styled.div`
   display: flex;
@@ -33,7 +33,7 @@ const ButtonContainer = styled.div`
   cursor: pointer;
 `;
 
-const CancelButton = styled(Cancel)`
+const CancelButton = styled(Svg.Cancel)`
   width: 12px;
   height: 12px;
   stroke: ${MAIN.DEFAULT};

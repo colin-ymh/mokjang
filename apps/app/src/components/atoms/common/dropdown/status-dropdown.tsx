@@ -9,11 +9,11 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import TransparentBackground from '../etc/transparent-background';
-import { InputProps } from '../input/main-input';
+import { TransparentBackground } from '@mokjang/components';
+import { InputProps } from '@mokjang/components';
 import { StatusDropdownValueType } from './status-dropdown-item';
 import StatusDropdownView from './status-dropdown.view';
-import { WHITE } from '@/constants/styles/color';
+import { WHITE } from '@mokjang/constants';
 
 export type DropdownProps<
   ItemType extends StatusDropdownValueType = StatusDropdownValueType,

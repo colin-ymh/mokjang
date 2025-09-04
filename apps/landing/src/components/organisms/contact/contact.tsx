@@ -14,8 +14,8 @@ import {
   getFormattedMobilePhone,
   getFormattedName,
   getFormattedTitle,
-} from '@/utils/format';
-import { BLANK } from '@mokjang/app/src/constants/constant';
+} from '@mokjang/utils';
+import { BLANK } from '@mokjang/constants';
 import ContactCompleteView from '@/components/organisms/contact/contact-complete.view';
 
 const Contact = () => {

@@ -6,10 +6,10 @@ import {
   setMemberFilter,
 } from '../../../../redux/reducers/filter/member-filter-reducer';
 
-import { getTrimmedString } from '../../../../utils/format';
+import { getTrimmedString } from '@mokjang/utils';
 import MemberFilterRowView from './member-filter-row.view';
-import { MEMBER } from '../../../../constants/column/member-column';
-import { BLANK } from '../../../../constants/constant';
+import { MEMBER } from '@mokjang/constants';
+import { BLANK } from '@mokjang/constants';
 import { FilteredItemType } from '../../../atoms/member/setting/filtered-item.view';
 
 const MemberFilterRow = () => {

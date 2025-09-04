@@ -5,15 +5,12 @@ import {
   fetchChurchUsers,
   setChurchUsers,
 } from '../../../../redux/reducers/filter/church-user-filter-reducer';
-import {
-  ChurchUser,
-  DEFAULT_CHURCH_USER,
-} from '../../../../models/church-user/church-user';
+import { ChurchUser, DEFAULT_CHURCH_USER } from '@mokjang/models';
 import ChurchUserListView, { UserListViewProps } from './church-user-list.view';
 import { ChurchUsersApi } from '../../../../api/church-users/church-users.api';
 import { setTargetChurchUser } from '../../../../redux/reducers/target/target-church-user-reducer';
 import { ManagersApi } from '../../../../api/managers/managers.api';
-import { PERMISSION_ACTIVE } from '@/constants/status/status';
+import { PERMISSION_ACTIVE } from '@mokjang/constants';
 
 type UserListProps = {
   isManager?: boolean;

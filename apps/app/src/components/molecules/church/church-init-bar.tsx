@@ -2,7 +2,7 @@
 
 import React from 'react';
 import styled from 'styled-components';
-import { BLACK, GRAY, MAIN } from '@/constants/styles/color';
+import { BLACK, GRAY, MAIN } from '@mokjang/constants';
 import { useScopedI18n } from '../../../../locales/client';
 
 const CIRCLE = 40; // 원 크기

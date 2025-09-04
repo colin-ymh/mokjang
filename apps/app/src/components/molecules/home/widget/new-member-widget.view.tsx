@@ -1,23 +1,19 @@
 'use client';
 
-import { MainText } from '../../../atoms/common/text/main-text';
+import { MainText } from '@mokjang/components';
 import styled from 'styled-components';
-import { SIZE } from '../../../../constants/styles/style';
-import { GRAY, MAIN } from '../../../../constants/styles/color';
+import { SIZE } from '@mokjang/constants';
+import { GRAY, MAIN } from '@mokjang/constants';
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
-import { HOME_WIDGET } from '../../../../constants/constant';
+import { HOME_WIDGET } from '@mokjang/constants';
 import { usePathname } from 'next/navigation';
-import { LOCALE } from '../../../../constants/state/locale';
-import { getTranslatedBeforeSomeWeek } from '../../../../utils/translate';
-import { NewMemberSummary } from '../../../../models/home/widget';
-import {
-  getDateFromDateString,
-  getMonthDateFromDate,
-} from '../../../../utils/date';
-import { Member } from '../../../../models/member/member';
-import CustomPopup from '../../../atoms/common/popup/custom-popup';
+import { LOCALE } from '@mokjang/constants';
+import { getTranslatedBeforeSomeWeek } from '@mokjang/utils';
+import { getDateFromDateString, getMonthDateFromDate } from '@mokjang/utils';
+import { Member, NewMemberSummary } from '@mokjang/models';
+import { CustomPopup } from '@mokjang/components';
 import NewMemberDetail from '../../../atoms/home/new-member-detail';
-import { getTranslatedMemberCount } from '../../../../../../../packages/utils/src';
+import { getTranslatedMemberCount } from '@mokjang/utils';
 
 const WidgetContainer = styled.div`
   display: flex;

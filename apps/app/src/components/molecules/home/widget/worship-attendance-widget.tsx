@@ -4,8 +4,8 @@ import { HomeApi } from '../../../../api/home/home.api';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../../redux/store';
 import { useEffect, useState } from 'react';
-import { BLANK, RANGE } from '../../../../constants/constant';
-import { WorshipEnrollment } from '../../../../models/worship/worship';
+import { BLANK, RANGE } from '@mokjang/constants';
+import { WorshipEnrollment } from '@mokjang/models';
 import WorshipAttendanceWidgetView from './worship-attendance-widget.view';
 import {
   fetchWorships,

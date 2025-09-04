@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
-import { MAIN, WHITE } from '../../../constants/styles/color';
+import { MAIN, WHITE } from '@mokjang/constants';
 import HomeWidgetList from '../../molecules/home/list/home-widget-list';
 
-import Plus from '../../../../public/svg/plus.svg';
+import { Svg } from '@mokjang/assets';
 
 const HomeContainer = styled.div`
   display: flex;
@@ -28,7 +28,7 @@ const FABContainer = styled.div`
   }
 `;
 
-const PlusButton = styled(Plus)`
+const PlusButton = styled(Svg.Plus)`
   width: 30px;
   height: 30px;
   cursor: pointer;

@@ -1,5 +1,5 @@
 import { RefObject } from 'react';
-import { OfficerHistory } from '../../../../../../models/member/history';
+import { OfficerHistory } from '@mokjang/models';
 import styled from 'styled-components';
 import OfficerHistoryItem from '../../../../../atoms/member/history/officer-history-item';
 import useWindowSize from '../../../../../../hooks/window/window';

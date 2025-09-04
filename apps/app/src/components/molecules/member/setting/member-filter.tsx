@@ -4,9 +4,9 @@ import { AppDispatch, RootState } from '../../../../redux/store';
 import { useI18n } from '../../../../../locales/client';
 import MemberFilterView from './member-filter.view';
 import { setMemberFilter } from '../../../../redux/reducers/filter/member-filter-reducer';
-import { getDateStringFromDate } from '../../../../utils/date';
+import { getDateStringFromDate } from '@mokjang/utils';
 import { useEffect, useState } from 'react';
-import { BAPTISM, BLANK, MARRIAGE } from '../../../../constants/constant';
+import { BAPTISM, BLANK, MARRIAGE } from '@mokjang/constants';
 
 type MemberFilterProps = {};
 

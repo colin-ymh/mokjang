@@ -1,22 +1,19 @@
 import MainTaskHeaderView from './main-task-header.view';
-import { usePageRouter } from '../../../../../../utils/router';
+import { usePageRouter } from '@mokjang/utils';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../../../../redux/store';
 import { TasksApi } from '../../../../../../api/tasks/tasks.api';
 import { setTargetTask } from '../../../../../../redux/reducers/target/target-task-reducer';
-import { DEFAULT_TASK } from '../../../../../../models/task/task';
+import { DEFAULT_TASK } from '@mokjang/models';
 import { setTasks } from '../../../../../../redux/reducers/filter/task-filter-reducer';
-import { getIsWellFormedTitle } from '../../../../../../utils/check';
-import { BLANK } from '../../../../../../constants/constant';
+import { getIsWellFormedTitle } from '@mokjang/utils';
+import { BLANK } from '@mokjang/constants';
 import {
   setIsToastShown,
   setToastText,
 } from '../../../../../../redux/reducers/toast-popup-reducer';
-import {
-  getDateFromDateString,
-  getFullStringFromDate,
-} from '../../../../../../utils/date';
+import { getDateFromDateString, getFullStringFromDate } from '@mokjang/utils';
 
 type MainTaskHeaderProps = {};
 

@@ -1,14 +1,7 @@
-import {
-  SERVER_URL,
-  TEST_SERVER_URL,
-} from '../../../../../packages/constants/src';
+import { SERVER_URL, TEST_SERVER_URL } from '@mokjang/constants';
 import authorizeAxios from '../authorize-axios';
 import { CustomError } from '../error/error';
-import {
-  BILLING_CYCLE,
-  encData,
-  PLAN,
-} from '@/models/subscription/subscription';
+import { BILLING_CYCLE, encData, PLAN } from '@mokjang/models';
 
 type SubscribeBody = {
   isTest: boolean;

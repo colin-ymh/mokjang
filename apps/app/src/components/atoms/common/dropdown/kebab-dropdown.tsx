@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import TransparentBackground from '../etc/transparent-background';
+import { TransparentBackground } from '@mokjang/components';
 import KebabDropdownView, {
   KebabDropdownValueType,
 } from './kebab-dropdown.view';

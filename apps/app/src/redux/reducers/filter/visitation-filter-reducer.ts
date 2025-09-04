@@ -1,16 +1,12 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import {
-  BLANK,
-  HEADER_BAR,
-  ORDER_DIRECTION,
-} from '../../../constants/constant';
-import { Visitation } from '../../../models/visitation/visitation';
+import { BLANK, HEADER_BAR, ORDER_DIRECTION } from '@mokjang/constants';
+import { Visitation } from '@mokjang/models';
 import { RootState } from '../../store';
 
-import { VISITATION } from '../../../constants/column/visitation-column';
+import { VISITATION } from '@mokjang/constants';
 import { VisitationsApi } from '../../../api/visitations/visitations.api';
-import { TASK_STATUS } from '../../../constants/status/status';
-import { DEFAULT_MEMBER, Member } from '../../../models/member/member';
+import { TASK_STATUS } from '@mokjang/constants';
+import { DEFAULT_MEMBER, Member } from '@mokjang/models';
 import { VisitationReportsApi } from '../../../api/reports/visitation-reports.api';
 
 type VISITATION_FILTER = {

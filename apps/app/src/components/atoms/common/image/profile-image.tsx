@@ -3,7 +3,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import Image from 'next/image';
-import { GRAY } from '@/constants/styles/color';
+import { GRAY } from '@mokjang/constants';
 // import defaultImage from '../../../../../public/png/default-member-image.png';
 // import profile1 from '../../../../../public/png/profile1.jpeg';
 // import profile2 from '../../../../../public/png/profile2.jpeg';

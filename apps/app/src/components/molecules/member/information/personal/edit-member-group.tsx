@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../../../redux/store';
 import { setTargetGroupHistory } from '../../../../../redux/reducers/target/target-history-reducer';
 import { getGroup } from '../../../../../utils/group';
-import { getDateStringFromDate } from '../../../../../utils/date';
+import { getDateStringFromDate } from '@mokjang/utils';
 import EditMemberGroupView from './edit-member-group.view';
 
 type EditMemberGroupProps = {

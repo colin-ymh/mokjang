@@ -1,5 +1,5 @@
 import { useI18n } from '../../../locales/client';
-import { GENDER, RANGE } from '../../constants/constant';
+import { GENDER, RANGE } from '@mokjang/constants';
 
 export const useGenderRadioButtonItems = () => {
   const t = useI18n();

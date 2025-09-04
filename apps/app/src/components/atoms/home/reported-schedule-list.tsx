@@ -1,14 +1,14 @@
-import { Schedule } from '../../../models/calendar/calendar';
+import { Schedule } from '@mokjang/models';
 import styled from 'styled-components';
-import { GRAY, MAIN } from '../../../constants/styles/color';
-import { MainText } from '../common/text/main-text';
-import { STATUS } from '../../../constants/status/status';
-import MainTag from '../common/tag/main-tag';
-import { DOMAIN } from '../../../models/permission/permission';
-import { getDateFromDateString } from '../../../utils/date';
+import { GRAY, MAIN } from '@mokjang/constants';
+import { MainText } from '@mokjang/components';
+import { STATUS } from '@mokjang/constants';
+import { MainTag } from '@mokjang/components';
+import { DOMAIN } from '@mokjang/models';
+import { getDateFromDateString } from '@mokjang/utils';
 import { getTranslatedScheduleDate } from '../../../utils/translate';
 import { usePathname } from 'next/navigation';
-import { LOCALE } from '../../../constants/state/locale';
+import { LOCALE } from '@mokjang/constants';
 import { useI18n } from '../../../../locales/client';
 import {
   getStatusBackgroundColor,

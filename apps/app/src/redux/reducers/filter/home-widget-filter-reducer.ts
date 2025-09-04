@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { HOME_WIDGET } from '../../../constants/constant';
+import { HOME_WIDGET } from '@mokjang/constants';
 
 type HomeWidgetsFilterState = {
   homeWidgets: HOME_WIDGET[];

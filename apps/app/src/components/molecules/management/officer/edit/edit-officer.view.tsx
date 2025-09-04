@@ -2,8 +2,8 @@ import styled from 'styled-components';
 import React from 'react';
 import { useI18n, useScopedI18n } from '../../../../../../locales/client';
 import ConfirmPopup from '../../../../atoms/common/popup/confirm-popup';
-import { Officer } from '../../../../../models/management/management';
-import LabelInput from '../../../../atoms/common/input/label-input';
+import { Officer } from '@mokjang/models';
+import { LabelInput } from '@mokjang/components';
 import DeleteWarningButton from '../../../../atoms/common/button/delete-warning-button';
 
 const EditContainer = styled.div`

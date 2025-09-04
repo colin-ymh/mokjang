@@ -1,10 +1,10 @@
 import styled from 'styled-components';
 
-import { MainText } from '../../common/text/main-text';
-import { DESTRUCTIVE } from '../../../../constants/styles/color';
+import { MainText } from '@mokjang/components';
+import { DESTRUCTIVE } from '@mokjang/constants';
 
 import { useI18n } from '../../../../../locales/client';
-import Reset from '../../../../../public/svg/arrow-path.svg';
+import { Svg } from '@mokjang/assets';
 
 const ItemContainer = styled.div`
   display: flex;
@@ -32,7 +32,7 @@ const ButtonContainer = styled.div`
   align-items: center;
 `;
 
-const ResetButton = styled(Reset)`
+const ResetButton = styled(Svg.ArrowPath)`
   width: 12px;
   height: 12px;
   stroke: ${DESTRUCTIVE.DARK};

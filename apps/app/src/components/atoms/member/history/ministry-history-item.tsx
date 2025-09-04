@@ -3,7 +3,7 @@ import {
   DEFAULT_MINISTRY_HISTORY,
   MinistryDetailHistory,
   MinistryHistory,
-} from '../../../../models/member/history';
+} from '@mokjang/models';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../../redux/store';
@@ -12,18 +12,15 @@ import {
   setTargetMinistryDetailHistory,
   setTargetMinistryHistory,
 } from '../../../../redux/reducers/target/target-history-reducer';
-import {
-  getDateFromDateString,
-  getDateStringFromDate,
-} from '../../../../utils/date';
+import { getDateFromDateString, getDateStringFromDate } from '@mokjang/utils';
 import {
   setIsToastShown,
   setToastBackgroundColor,
   setToastText,
 } from '../../../../redux/reducers/toast-popup-reducer';
-import { BLACK, DESTRUCTIVE } from '../../../../constants/styles/color';
+import { BLACK, DESTRUCTIVE } from '@mokjang/constants';
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
-import CustomPopup from '../../common/popup/custom-popup';
+import { CustomPopup } from '@mokjang/components';
 import ConfirmPopup from '../../common/popup/error-popup';
 import EditMinistryDetailHistory from '../../../molecules/member/information/history/ministry/edit-ministry-detail-history';
 import { MinistryHistoryApi } from '../../../../api/history/ministry-history.api';

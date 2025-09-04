@@ -1,17 +1,17 @@
 import React, { Dispatch, SetStateAction } from 'react';
-import { Church } from '../../../../models/church/church';
+import { Church } from '@mokjang/models';
 import ChurchInformation from '../../../molecules/management/church/church-information';
 import styled from 'styled-components';
-import Button from '../../../atoms/common/button/button';
-import { GRAY, MAIN, WHITE } from '../../../../constants/styles/color';
+import { Button } from '@mokjang/components';
+import { GRAY, MAIN, WHITE } from '@mokjang/constants';
 import { useI18n } from '../../../../../locales/client';
-import CustomPopup from '../../../atoms/common/popup/custom-popup';
+import { CustomPopup } from '@mokjang/components';
 import EditChurchInformation from '../../../molecules/management/church/edit-church-information';
-import { MainText } from '../../../atoms/common/text/main-text';
-import { SIZE } from '../../../../constants/styles/style';
-import Pencil from '../../../../../public/svg/pencil.svg';
+import { MainText } from '@mokjang/components';
+import { SIZE } from '@mokjang/constants';
+import { Svg } from '@mokjang/assets';
 import ChurchState from '../../../molecules/management/church/church-state';
-import SvgIcon from '../../../atoms/common/icon/svg-icon';
+import { SvgIcon } from '@mokjang/components';
 
 const InformationContainer = styled.div`
   display: flex;
@@ -70,7 +70,7 @@ const ChurchManagementView = ({
               height={30}
               onClick={onClickEditOpen}
               backgroundColor={MAIN.DEFAULT}
-              icon={<SvgIcon svg={Pencil} color={WHITE} width={2} />}
+              icon={<SvgIcon svg={Svg.Pencil} color={WHITE} width={2} />}
               color={WHITE}
               text={t('button.editChurch')}
             />

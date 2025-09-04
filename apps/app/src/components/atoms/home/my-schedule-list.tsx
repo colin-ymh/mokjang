@@ -1,22 +1,22 @@
-import { Schedule } from '../../../models/calendar/calendar';
+import { Schedule } from '@mokjang/models';
 import styled from 'styled-components';
-import { GRAY } from '../../../constants/styles/color';
-import { MainText } from '../common/text/main-text';
-import MainTag from '../common/tag/main-tag';
-import { getDateFromDateString } from '../../../utils/date';
+import { GRAY } from '@mokjang/constants';
+import { MainText } from '@mokjang/components';
+import { MainTag } from '@mokjang/components';
+import { getDateFromDateString } from '@mokjang/utils';
 import {
   getTranslatedScheduleDate,
   getTranslatedTerm,
 } from '../../../utils/translate';
 import { usePathname } from 'next/navigation';
-import { LOCALE } from '../../../constants/state/locale';
+import { LOCALE } from '@mokjang/constants';
 import { useI18n } from '../../../../locales/client';
-import { DOMAIN } from '../../../models/permission/permission';
+import { DOMAIN } from '@mokjang/models';
 import {
   getStatusBackgroundColor,
   getStatusFontColor,
 } from '../../../utils/color';
-import { STATUS } from '../../../constants/status/status';
+import { STATUS } from '@mokjang/constants';
 
 const ListContainer = styled.div`
   display: flex;

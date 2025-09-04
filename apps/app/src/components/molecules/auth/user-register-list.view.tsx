@@ -1,19 +1,16 @@
 import { ChangeEvent } from 'react';
 import styled from 'styled-components';
 
-import LabelInput from '../../atoms/common/input/label-input';
-import Button from '../../atoms/common/button/button';
-import { MainText } from '../../atoms/common/text/main-text';
-import { BLACK, GRAY, MAIN } from '../../../constants/styles/color';
-import { MEMBER } from '../../../constants/column/member-column';
+import { Button, LabelInput, MainText } from '@mokjang/components';
+import { BLACK, GRAY, MAIN, MEMBER } from '@mokjang/constants';
 import {
   getIsWellFormedMobilePhone,
   getIsWellFormedName,
-} from '../../../utils/check';
-import { getMinuteFromSecond } from '../../../utils/date';
+  getMinuteFromSecond,
+} from '@mokjang/utils';
 
 import { useI18n, useScopedI18n } from '../../../../locales/client';
-import Check from '../../../../public/svg/check.svg';
+import { Svg } from '@mokjang/assets';
 
 const ListContainer = styled.div`
   display: flex;
@@ -65,7 +62,7 @@ const ConsentContainer = styled.div`
   margin-top: 10px;
 `;
 
-const CheckButton = styled(Check)<{ $isChecked: boolean }>`
+const CheckButton = styled(Svg.Check)<{ $isChecked: boolean }>`
   cursor: pointer;
   width: 25px;
   height: 25px;

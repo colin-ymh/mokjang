@@ -3,23 +3,20 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
 
-import { GRAY, GREEN, RED, WHITE } from '../../../../constants/styles/color';
-import { BLANK, GENDER } from '../../../../constants/constant';
-import { EDUCATION_ATTENDANCE } from '../../../../constants/column/education-column';
-import { MainText } from '../../../atoms/common/text/main-text';
-import { getFormattedMobilePhone } from '../../../../utils/format';
-import { EducationAttendance } from '../../../../models/education/education';
+import { GRAY, GREEN, RED, WHITE } from '@mokjang/constants';
+import { BLANK, GENDER } from '@mokjang/constants';
+import { EDUCATION_ATTENDANCE } from '@mokjang/constants';
+import { MainText } from '@mokjang/components';
+import { getFormattedMobilePhone } from '@mokjang/utils';
+import { EducationAttendance } from '@mokjang/models';
 import { EDUCATION_ATTENDANCE_TABLE_HEADER_LIST } from '../../../../redux/reducers/filter/education-filter-reducer';
 import { useI18n } from '../../../../../locales/client';
 import MemberProfile from '../../../atoms/member/member-profile';
 import EducationAttendanceTableHeader from '../../../atoms/education/education-attendance/education-attendance-table-header';
-import { getAge, getDateFromDateString } from '../../../../utils/date';
-import Button from '../../../atoms/common/button/button';
-import BorderInput from '../../../atoms/common/input/border-input';
-import {
-  EDUCATION_ATTENDANCE_STATUS,
-  STATUS,
-} from '../../../../constants/status/status';
+import { getAge, getDateFromDateString } from '@mokjang/utils';
+import { Button } from '@mokjang/components';
+import { BorderInput } from '@mokjang/components';
+import { EDUCATION_ATTENDANCE_STATUS, STATUS } from '@mokjang/constants';
 
 // 1. 컬럼별 PX 폭 (마지막 REMARKS만 auto 할 예정)
 const getColumnWidth = (id: string) => {

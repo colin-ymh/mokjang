@@ -1,23 +1,18 @@
 import styled from 'styled-components';
 
-import { MainText } from '../../../common/text/main-text';
-import { GRAY } from '../../../../../constants/styles/color';
+import { Svg } from '@mokjang/assets';
+import { MainText } from '@mokjang/components';
+import { GRAY } from '@mokjang/constants';
 import { useI18n } from '../../../../../../locales/client';
-import { SIZE } from '../../../../../constants/styles/style';
-import Star from '../../../../../../public/svg/star.svg';
-import Calendar from '../../../../../../public/svg/calendar.svg';
-import User from '../../../../../../public/svg/user.svg';
-import SvgIcon from '../../../common/icon/svg-icon';
+import { SIZE } from '@mokjang/constants';
+import { SvgIcon } from '@mokjang/components';
 import React from 'react';
 import { usePathname } from 'next/navigation';
-import { LOCALE } from '../../../../../constants/state/locale';
-import {
-  Visitation,
-  VISITATION_TYPE,
-} from '../../../../../models/visitation/visitation';
-import { getTranslatedDateFromDateString } from '../../../../../utils/translate';
+import { LOCALE } from '@mokjang/constants';
+import { Visitation, VISITATION_TYPE } from '@mokjang/models';
+import { getTranslatedDateFromDateString } from '@mokjang/utils';
 import MemberProfilePopupButton from '../../../../molecules/common/button/member-profile-popup-button';
-import MainTag from '../../../common/tag/main-tag';
+import { MainTag } from '@mokjang/components';
 import {
   getStatusBackgroundColor,
   getStatusFontColor,
@@ -84,7 +79,7 @@ const MemberVisitationItem = ({
         </TitleContainer>
         {/* 날짜 */}
         <ContentContainer>
-          <SvgIcon svg={Calendar} color={GRAY.SEMI_DARK} />
+          <SvgIcon svg={Svg.Calendar} color={GRAY.SEMI_DARK} />
           <MainText color={GRAY.SEMI_DARK}>{t('period')}</MainText>
           <MainText>
             {`${getTranslatedDateFromDateString(locale, visitation.startDate)}
@@ -95,7 +90,7 @@ const MemberVisitationItem = ({
         <RowContainer>
           {/* 유형 */}
           <ContentContainer>
-            <SvgIcon svg={Star} color={GRAY.SEMI_DARK} />
+            <SvgIcon svg={Svg.Star} color={GRAY.SEMI_DARK} />
             <MainText color={GRAY.SEMI_DARK}>{t('type')}</MainText>
             <MainText>
               {visitation.visitationType === VISITATION_TYPE.SINGLE
@@ -105,7 +100,7 @@ const MemberVisitationItem = ({
           </ContentContainer>
           {/* 담당자 */}
           <ContentContainer>
-            <SvgIcon svg={User} color={GRAY.SEMI_DARK} />
+            <SvgIcon svg={Svg.User} color={GRAY.SEMI_DARK} />
             <MainText color={GRAY.SEMI_DARK}>{t('inCharge')}</MainText>
             <MemberProfilePopupButton
               member={visitation.inCharge}

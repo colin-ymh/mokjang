@@ -6,10 +6,9 @@ import {
   setWorshipEnrollments,
   setWorshipEnrollmentTotalCount,
 } from '../../../../redux/reducers/filter/worship-enrollment-filter-reducer';
-import { WorshipEnrollment } from '../../../../models/worship/worship';
+import { WorshipEnrollment } from '@mokjang/models';
 import AttendanceListView from './attendance-list.view';
-import Loading from '../../../atoms/common/etc/loading';
-
+import { Loading } from '@mokjang/components';
 type AttendanceListProps = {};
 
 const AttendanceList = ({}: AttendanceListProps) => {

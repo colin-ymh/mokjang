@@ -1,9 +1,7 @@
 import styled from 'styled-components';
 import { ReactNode, useEffect } from 'react';
-import { DIRECTION } from '@/constants/styles/style';
-import { GRAY, WHITE } from '@/constants/styles/color';
-import { MEDIA_MAX_WIDTH } from '@/constants/constant';
-import PopupLayout from '@/components/organisms/layout/popup-layout';
+import { DIRECTION, GRAY, MEDIA_MAX_WIDTH, WHITE } from '@mokjang/constants';
+import { PopupLayout } from '@mokjang/components';
 
 const SlidePanel = styled.div<{
   $isShow: boolean;
@@ -169,8 +167,8 @@ const SlidePopup = ({
         onClickCancel={onClickClose}
         onClickDone={onClickDone}
         headerTitle={headerTitle}
-        headerLeft={headerLeft}
         headerRight={headerRight}
+        headerLeft={headerLeft}
         headerHeight={headerHeight}
         doneText={doneText}
         cancelText={cancelText}

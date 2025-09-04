@@ -6,8 +6,6 @@ const HideContainer = styled.div`
 `;
 
 // 조건에 따라 특정 컴포넌트를 아예 가리기 위해 사용되는 컴포넌트
-const Hide = () => {
+export const Hide = () => {
   return <HideContainer />;
 };
-
-export default Hide;

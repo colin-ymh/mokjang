@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { GRAY, MAIN, WHITE } from '@mokjang/constants';
-import { MainText } from '../text/main-text';
+import { MainText } from '@mokjang/components';
 
 const ToggleRadioButtonContainer = styled.div<{ $backgroundColor: string }>`
   display: flex;

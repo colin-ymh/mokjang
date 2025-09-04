@@ -1,22 +1,22 @@
 import styled from 'styled-components';
-import { MainText } from '../../../../atoms/common/text/main-text';
-import { FamilyMember, Member } from '../../../../../models/member/member';
-import { WHITE } from '../../../../../constants/styles/color';
+import { MainText } from '@mokjang/components';
+import { FamilyMember, Member } from '@mokjang/models';
+import { WHITE } from '@mokjang/constants';
 
 import { useI18n, useScopedI18n } from '../../../../../../locales/client';
-import Plus from '../../../../../../public/svg/plus.svg';
-import Button from '../../../../atoms/common/button/button';
-import CustomPopup from '../../../../atoms/common/popup/custom-popup';
-import { getTranslatedFamilyAddMemberTitle } from '../../../../../utils/translate';
+import { Svg } from '@mokjang/assets';
+import { Button } from '@mokjang/components';
+import { CustomPopup } from '@mokjang/components';
+import { getTranslatedFamilyAddMemberTitle } from '@mokjang/utils';
 import React, { Dispatch, RefObject, SetStateAction } from 'react';
 import { usePathname } from 'next/navigation';
-import { LOCALE } from '../../../../../constants/state/locale';
+import { LOCALE } from '@mokjang/constants';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../redux/store';
 import AddFamilyMemberModal from '../../../../atoms/member/information/family/add-family-member-modal';
 import FamilyMemberItem from '../../../../atoms/member/information/family/family-member-item';
-import { SIZE } from '../../../../../constants/styles/style';
-import { FAMILY } from '../../../../../constants/constant';
+import { SIZE } from '@mokjang/constants';
+import { FAMILY } from '@mokjang/constants';
 import useWindowSize from '../../../../../hooks/window/window';
 
 const ListContainer = styled.div`
@@ -32,7 +32,7 @@ const FamilyListHeader = styled.div`
   justify-content: space-between;
 `;
 
-const PlusIcon = styled(Plus)`
+const PlusIcon = styled(Svg.Plus)`
   width: 18px;
   height: 18px;
   stroke: ${WHITE};

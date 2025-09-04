@@ -3,10 +3,7 @@ import { useRouter } from 'next/navigation';
 
 import { AUTH, AuthApi } from '../../../api/auth/auth.api';
 import LoginListView from './login-list.view';
-import {
-  getFormattedMobilePhone,
-  getFormattedName,
-} from '../../../utils/format';
+import { getFormattedMobilePhone, getFormattedName } from '@mokjang/utils';
 
 const LoginList = () => {
   const nextRouter = useRouter();
@@ -46,7 +43,7 @@ const LoginList = () => {
         })
         .then((response) => {
           // 로그인 성공 이후, 페이지 새로고침
-          // window.location.href = '/login';
+          window.location.href = '/login';
         });
     } catch (error) {
       // setThrownError(error instanceof Error ? error : new Error(String(error)));

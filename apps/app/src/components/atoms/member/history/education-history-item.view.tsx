@@ -1,17 +1,13 @@
 import styled from 'styled-components';
-import { GRAY, GREEN, MAIN } from '../../../../constants/styles/color';
-import { EducationHistory } from '../../../../models/member/history';
-import Clock from '../../../../../public/svg/clock.svg';
-import Calendar from '../../../../../public/svg/calendar.svg';
-import SvgIcon from '../../common/icon/svg-icon';
-import { MainText } from '../../common/text/main-text';
+import { GRAY, GREEN, MAIN } from '@mokjang/constants';
+import { EducationHistory } from '@mokjang/models';
+import { SvgIcon } from '@mokjang/components';
+import { MainText } from '@mokjang/components';
 import { useI18n } from '../../../../../locales/client';
-import { SIZE } from '../../../../constants/styles/style';
-import {
-  getDateFromDateString,
-  getDateStringFromDate,
-} from '../../../../utils/date';
+import { SIZE } from '@mokjang/constants';
+import { getDateFromDateString, getDateStringFromDate } from '@mokjang/utils';
 import React from 'react';
+import { Svg } from '@mokjang/assets';
 
 const HistoryItemContainer = styled.div`
   display: flex;
@@ -49,14 +45,14 @@ const EducationHistoryItem = ({ history }: EducationHistoryItemProps) => {
     <HistoryItemContainer>
       <RowContainer>
         <IconContainer>
-          <SvgIcon svg={Clock} color={MAIN.DARK} size={18} />
+          <SvgIcon svg={Svg.Clock} color={MAIN.DARK} size={18} />
         </IconContainer>
         <MainText size={SIZE.LARGE} fontWeight={600}>
           {history.educationTerm.educationName}
         </MainText>
       </RowContainer>
       <RowContainer>
-        <SvgIcon svg={Calendar} color={GRAY.SEMI_DARK} />
+        <SvgIcon svg={Svg.Calendar} color={GRAY.SEMI_DARK} />
         <MainText color={GRAY.SEMI_DARK}>{t('period')}</MainText>
         <MainText color={GRAY.SEMI_DARK}>
           {getDateStringFromDate(

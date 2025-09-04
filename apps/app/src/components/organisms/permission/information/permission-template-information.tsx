@@ -7,15 +7,11 @@ import {
   setPermissionManagers,
   setPermissionTemplates,
 } from '../../../../redux/reducers/filter/permission-template-filter-reducer';
-import { BLANK, CHURCH_USER_ROLE } from '../../../../constants/constant';
+import { BLANK, CHURCH_USER_ROLE } from '@mokjang/constants';
 import ConfirmPopup from '@/components/atoms/common/popup/error-popup';
 import { useScopedI18n } from '../../../../../locales/client';
 import { setTargetPermissionTemplate } from '@/redux/reducers/target/target-permission-template-reducer';
-import {
-  ACTION,
-  DOMAIN,
-  PermissionTemplate,
-} from '@/models/permission/permission';
+import { ACTION, DOMAIN, PermissionTemplate } from '@mokjang/models';
 import { getIsWellFormedTitle } from '@/utils/check';
 import { PermissionsApi } from '@/api/permissions/permissions.api';
 import { CustomPopup } from '@mokjang/components';

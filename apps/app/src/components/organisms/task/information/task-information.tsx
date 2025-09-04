@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import TaskInformationView from './task-information.view';
-import { TASK_STATUS } from '../../../../constants/status/status';
+import { TASK_STATUS } from '@mokjang/constants';
 
 type TaskInformationProps = {
   onChangeStatus: (status: TASK_STATUS) => void;

@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { BLANK } from '../../../../../packages/constants/src';
-import { Church, DEFAULT_CHURCH } from '@/models/church/church';
+import { BLANK } from '@mokjang/constants';
+import { Church, DEFAULT_CHURCH } from '@mokjang/models';
 
 type ChurchState = {
   churchId: string;

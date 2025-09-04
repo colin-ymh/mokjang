@@ -2,13 +2,13 @@
 
 import { useEffect, useState } from 'react';
 import ScheduleSummaryWidgetView from './schedule-summary-widget.view';
-import { RANGE } from '../../../../constants/constant';
-import { DOMAIN } from '../../../../models/permission/permission';
+import { RANGE } from '@mokjang/constants';
+import { DOMAIN } from '@mokjang/models';
 import {
   ChurchScheduleSummary,
   DEFAULT_SCHEDULE_SUMMARY,
   ScheduleSummary,
-} from '../../../../models/schedule-summary/schedule-summary';
+} from '@mokjang/models';
 import { getTotalScheduleSummary } from '../../../../utils/summary';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../../redux/store';

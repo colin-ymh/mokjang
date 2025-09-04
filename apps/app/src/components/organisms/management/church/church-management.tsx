@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Church, DEFAULT_CHURCH } from '../../../../models/church/church';
+import { Church, DEFAULT_CHURCH } from '@mokjang/models';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../../redux/store';
 import { ChurchesApi } from '../../../../api/churches/churches.api';
-import { BLACK, DESTRUCTIVE } from '../../../../constants/styles/color';
+import { BLACK, DESTRUCTIVE } from '@mokjang/constants';
 import { useScopedI18n } from '../../../../../locales/client';
 import { setChurch } from '../../../../redux/reducers/church-reducer';
 import ChurchManagementView from './church-management.view';

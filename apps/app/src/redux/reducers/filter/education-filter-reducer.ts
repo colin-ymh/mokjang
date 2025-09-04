@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { BLANK, ORDER_DIRECTION } from '../../../constants/constant';
-import { Education } from '../../../models/education/education';
+import { BLANK, ORDER_DIRECTION } from '@mokjang/constants';
+import { Education } from '@mokjang/models';
 import { RootState } from '../../store';
 
 import {
@@ -9,7 +9,7 @@ import {
   EDUCATION_ENROLLMENT,
   EDUCATION_SESSION,
   EDUCATION_TERM,
-} from '../../../constants/column/education-column';
+} from '@mokjang/constants';
 import { EducationsApi } from '../../../api/education/educations.api';
 
 type EDUCATION_FILTER = {

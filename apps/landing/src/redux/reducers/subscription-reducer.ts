@@ -1,8 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import {
-  DEFAULT_SUBSCRIPTION_PLAN,
-  SubscriptionPlan,
-} from '@/models/subscription/subscription';
+import { DEFAULT_SUBSCRIPTION_PLAN, SubscriptionPlan } from '@mokjang/models';
 
 type SubscriptionState = {
   currentSubscription: SubscriptionPlan;

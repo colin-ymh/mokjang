@@ -1,10 +1,10 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ORDER_DIRECTION } from '../../../constants/constant';
-import { Worship } from '../../../models/worship/worship';
+import { ORDER_DIRECTION } from '@mokjang/constants';
+import { Worship } from '@mokjang/models';
 import { RootState } from '../../store';
 import { WorshipsApi } from '../../../api/worship/worships.api';
 
-import { WORSHIP } from '../../../constants/column/worship-column';
+import { WORSHIP } from '@mokjang/constants';
 
 type WORSHIP_FILTER = {};
 

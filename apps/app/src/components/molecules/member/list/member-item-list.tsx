@@ -6,17 +6,17 @@ import { AppDispatch, RootState } from '../../../../redux/store';
 import { setMemberFilter } from '../../../../redux/reducers/filter/member-filter-reducer';
 
 import { MemberTableProps } from './member-table';
-import { MainText } from '../../../atoms/common/text/main-text';
-import BorderInput from '../../../atoms/common/input/border-input';
-import { BLANK } from '../../../../constants/constant';
-import { SIZE } from '../../../../constants/styles/style';
-import { GRAY } from '../../../../constants/styles/color';
+import { MainText } from '@mokjang/components';
+import { BorderInput } from '@mokjang/components';
+import { BLANK } from '@mokjang/constants';
+import { SIZE } from '@mokjang/constants';
+import { GRAY } from '@mokjang/constants';
 
 import {
   getFormattedMobilePhone,
   getFormattedName,
   getTrimmedString,
-} from '../../../../utils/format';
+} from '@mokjang/utils';
 
 import useWindowSize from '../../../../hooks/window/window';
 import { useI18n } from '../../../../../locales/client';

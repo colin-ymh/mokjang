@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import { HOME_WIDGET } from '../../../../constants/constant';
+import { HOME_WIDGET } from '@mokjang/constants';
 import useWindowSize from '../../../../hooks/window/window';
 import HomeWidgetItem from '../../../atoms/home/home-widget-item';
 import { useSelector } from 'react-redux';

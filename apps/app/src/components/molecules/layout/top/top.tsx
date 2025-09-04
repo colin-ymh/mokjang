@@ -1,5 +1,5 @@
 import TopView from './top.view';
-import { usePageRouter } from '../../../../utils/router';
+import { usePageRouter } from '@mokjang/utils';
 import { SIDE_ID } from '../../../../constants/layout/header';
 
 type TopProps = {

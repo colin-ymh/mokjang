@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 
 import ToastPopupView, { TOAST_DIRECTION } from './toast-popup.view';
-import { MainTextProps } from '../text/main-text';
+import { MainTextProps } from '@mokjang/components';
 import { setIsToastShown } from '@/redux/reducers/toast-popup-reducer';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/redux/store';

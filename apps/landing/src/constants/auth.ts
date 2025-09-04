@@ -1,4 +1,4 @@
-import { LOCALE } from '@mokjang/app/src/constants/state/locale';
+import { LOCALE } from '@mokjang/constants';
 
 export const KAKAO_BACKGROUND_COLOR = '#FEE500';
 export const KAKAO_BORDER_COLOR = '#000000';

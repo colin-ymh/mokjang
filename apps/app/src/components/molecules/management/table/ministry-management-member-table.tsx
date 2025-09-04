@@ -1,12 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Member } from '../../../../models/member/member';
-import { MEMBER } from '../../../../constants/column/member-column';
-import { ORDER_DIRECTION } from '../../../../constants/constant';
+import { Member } from '@mokjang/models';
+import { MEMBER } from '@mokjang/constants';
+import { ORDER_DIRECTION } from '@mokjang/constants';
 import { CHURCH_CONTENT_ID } from '../../../../constants/layout/content';
-import {
-  Ministry,
-  MinistryGroup,
-} from '../../../../models/management/management';
+import { Ministry, MinistryGroup } from '@mokjang/models';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
 import { MinistryMembersApi } from '../../../../api/management/ministry/ministry-mebers.api';

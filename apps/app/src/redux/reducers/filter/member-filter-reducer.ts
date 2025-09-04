@@ -5,9 +5,9 @@ import {
   BLANK,
   MARRIAGE,
   ORDER_DIRECTION,
-} from '../../../constants/constant';
-import { MEMBER } from '../../../constants/column/member-column';
-import { Member } from '../../../models/member/member';
+} from '@mokjang/constants';
+import { MEMBER } from '@mokjang/constants';
+import { Member } from '@mokjang/models';
 import { RootState } from '../../store';
 import { MembersApi } from '../../../api/members/members.api';
 import { FilteredItemType } from '../../../components/atoms/member/setting/filtered-item.view';

@@ -1,8 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import {
-  DEFAULT_EDUCATION,
-  Education,
-} from '../../../models/education/education';
+import { DEFAULT_EDUCATION, Education } from '@mokjang/models';
 
 type TargetEducationState = {
   targetEducation: Education;

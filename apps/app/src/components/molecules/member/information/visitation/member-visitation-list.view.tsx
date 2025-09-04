@@ -1,14 +1,14 @@
 import styled from 'styled-components';
-import { MainText } from '../../../../atoms/common/text/main-text';
-import { GRAY, MAIN, WHITE } from '../../../../../constants/styles/color';
+import { MainText } from '@mokjang/components';
+import { GRAY, MAIN, WHITE } from '@mokjang/constants';
 
 import { useScopedI18n } from '../../../../../../locales/client';
-import Plus from '../../../../../../public/svg/plus.svg';
-import Button from '../../../../atoms/common/button/button';
+import { Svg } from '@mokjang/assets';
+import { Button } from '@mokjang/components';
 import React, { RefObject } from 'react';
-import { SIZE } from '../../../../../constants/styles/style';
+import { SIZE } from '@mokjang/constants';
 import useWindowSize from '../../../../../hooks/window/window';
-import { Visitation } from '../../../../../models/visitation/visitation';
+import { Visitation } from '@mokjang/models';
 import WrappedPagePopup from '../../../../atoms/common/popup/wrapped-page-popup';
 import AddVisitation from '../../../../organisms/visitation/add/add-visitation';
 import MemberVisitationItem from '../../../../atoms/member/information/visitation/member-visitation-item';
@@ -16,7 +16,7 @@ import ConfirmPopup from '../../../../atoms/common/popup/error-popup';
 import VisitationInformation from '../../../../organisms/visitation/information/visitation-information';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../redux/store';
-import { TASK_STATUS } from '../../../../../constants/status/status';
+import { TASK_STATUS } from '@mokjang/constants';
 
 const ListContainer = styled.div`
   display: flex;
@@ -31,7 +31,7 @@ const VisitationListHeader = styled.div`
   justify-content: space-between;
 `;
 
-const PlusIcon = styled(Plus)`
+const PlusIcon = styled(Svg.Plus)`
   width: 18px;
   height: 18px;
   stroke: ${WHITE};

@@ -7,8 +7,8 @@ import {
 } from '../../../redux/reducers/filter/task-filter-reducer';
 
 import TaskTableView from './task-table.view';
-import { TASK } from '../../../constants/column/task-column';
-import { ORDER_DIRECTION } from '../../../constants/constant';
+import { TASK } from '@mokjang/constants';
+import { ORDER_DIRECTION } from '@mokjang/constants';
 
 export type TaskTableProps = {
   onClickTaskItem: (taskId: string) => void;
