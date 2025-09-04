@@ -49,7 +49,7 @@ export const INITIAL_TASK_TABLE_HEADER_LIST: TASK_TABLE_HEADER_ITEM[] = [
   {
     id: TASK.TITLE,
     isShown: true,
-    isSortable: true,
+    isSortable: false,
     isFilterable: true,
     isFixed: true,
     isDate: false,
@@ -57,7 +57,7 @@ export const INITIAL_TASK_TABLE_HEADER_LIST: TASK_TABLE_HEADER_ITEM[] = [
   {
     id: TASK.STATUS,
     isShown: true,
-    isSortable: true,
+    isSortable: false,
     isFilterable: true,
     isFixed: true,
     isDate: false,

@@ -569,7 +569,7 @@ export default {
   'button.addFamily': '가족 추가',
   'button.saveTerm': '기수 추가',
   'button.addVisitation': '심방 입력',
-  'button.addTask': '업무 입력하기',
+  'button.addTask': '업무 입력',
   'button.addEducation': '교육 추가',
   'button.addEducationTerm': '기수 추가',
   'button.addEducationGoal': '목표 추가',

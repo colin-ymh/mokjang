@@ -1,14 +1,14 @@
 {
   "../locales/client.ts -> ./en": {
-    "id": 9771,
+    "id": "../locales/client.ts -> ./en",
     "files": [
-      "static/chunks/771.6d5ffaf3be8e4572.js"
+      "static/chunks/_app-pages-browser_locales_en_ts.js"
     ]
   },
   "../locales/client.ts -> ./ko": {
-    "id": 6623,
+    "id": "../locales/client.ts -> ./ko",
     "files": [
-      "static/chunks/623.569df0925763d824.js"
+      "static/chunks/_app-pages-browser_locales_ko_ts.js"
     ]
   }
 }

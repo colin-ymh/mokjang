@@ -90,7 +90,7 @@ const MainVisitationHeaderView = ({
             fontWeight={500}
             fontSize={16}
             height={35}
-            icon={<SvgIcon svg={Svg.Plus} color={WHITE} width={2} size={18} />}
+            icon={<SvgIcon svg={Svg.Plus} color={WHITE} width={3} size={20} />}
           />
         </HeaderTopContainer>
         <HeaderBottomContainer>

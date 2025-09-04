@@ -31,7 +31,7 @@ const AddTaskViewContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
-  padding: 0 20px;
+  padding: 20px;
 `;
 
 const HeaderContainer = styled.div`
@@ -110,12 +110,12 @@ const AddTaskView = ({
 
   return (
     <AddTaskViewContainer>
-      {/* 제목 */}
-      <HeaderContainer>
-        <MainText size={SIZE.EXTRA_LARGE} fontSize={22}>
-          {t(isEdit ? 'title.editTask' : 'title.addTask')}
-        </MainText>
-      </HeaderContainer>
+      {/*/!* 제목 *!/*/}
+      {/*<HeaderContainer>*/}
+      {/*  <MainText size={SIZE.EXTRA_LARGE} fontSize={22}>*/}
+      {/*    {t(isEdit ? 'title.editTask' : 'title.addTask')}*/}
+      {/*  </MainText>*/}
+      {/*</HeaderContainer>*/}
       <ContentContainer>
         <MainText size={SIZE.EXTRA_LARGE}>
           {t('title')}

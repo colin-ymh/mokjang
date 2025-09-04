@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { BLACK, GRAY, MAIN } from '@mokjang/constants';
-import { MainText } from '@mokjang/components';
+import { BLACK, GRAY, MAIN, WHITE } from '@mokjang/constants';
+import { MainText, SvgIcon } from '@mokjang/components';
 import { SIZE } from '@mokjang/constants';
 
 import { useScopedI18n } from '../../../../../../../locales/client';
@@ -100,8 +100,11 @@ const MainEducationHeaderView = ({
         <Button
           text={t_button('addEducation')}
           onClick={onClickAddEducation}
-          width={100}
-          height={30}
+          width={'auto'}
+          fontWeight={500}
+          fontSize={16}
+          height={35}
+          icon={<SvgIcon svg={Svg.Plus} color={WHITE} width={3} size={20} />}
         />
       </HeaderTopContainer>
       <HeaderBottomContainer></HeaderBottomContainer>

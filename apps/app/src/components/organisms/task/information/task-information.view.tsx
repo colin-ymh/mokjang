@@ -43,6 +43,7 @@ const TitleContainer = styled.div`
   flex-direction: row;
   gap: 10px;
   align-items: center;
+  width: 100px;
 `;
 
 const RowContainer = styled.div`
@@ -94,24 +95,24 @@ const TaskInformationView = ({ onChangeStatus }: TaskInformationViewProps) => {
   return (
     <InformationContainer>
       {/* 제목 */}
-      <HeaderContainer>
-        <MainText size={SIZE.EXTRA_LARGE} fontSize={22}>
-          {targetTask.title}
-        </MainText>
-        <StatusDropdown
-          value={targetTask.status}
-          items={statusDropdownItems}
-          onChangeItem={onChangeStatus}
-          width={100}
-          height={30}
-        />
-      </HeaderContainer>
+      {/*<HeaderContainer>*/}
+      {/*  <MainText size={SIZE.EXTRA_LARGE} fontSize={22}>*/}
+      {/*    {targetTask.title}*/}
+      {/*  </MainText>*/}
+      {/*  <StatusDropdown*/}
+      {/*    value={targetTask.status}*/}
+      {/*    items={statusDropdownItems}*/}
+      {/*    onChangeItem={onChangeStatus}*/}
+      {/*    width={100}*/}
+      {/*    height={30}*/}
+      {/*  />*/}
+      {/*</HeaderContainer>*/}
       <ContentContainer>
         {/* 담당자 */}
         <RowContainer>
           <TitleContainer>
-            <SvgIcon svg={Svg.User} color={GRAY.DARK} />
-            <MainText color={GRAY.DARK}>{t('inCharge')}</MainText>
+            <SvgIcon svg={Svg.User} color={GRAY.EXTRA_DARK} />
+            <MainText color={GRAY.EXTRA_DARK}>{t('inCharge')}</MainText>
           </TitleContainer>
           <MemberProfilePopupButton
             key={targetTask.inCharge.id}
@@ -122,8 +123,8 @@ const TaskInformationView = ({ onChangeStatus }: TaskInformationViewProps) => {
         {/* 일정 */}
         <RowContainer>
           <TitleContainer>
-            <SvgIcon svg={Svg.Calendar} color={GRAY.DARK} />
-            <MainText color={GRAY.DARK}>{t('schedule')}</MainText>
+            <SvgIcon svg={Svg.Calendar} color={GRAY.EXTRA_DARK} />
+            <MainText color={GRAY.EXTRA_DARK}>{t('schedule')}</MainText>
           </TitleContainer>
           {/* 일자 */}
           <PeriodContainer>
@@ -142,8 +143,8 @@ const TaskInformationView = ({ onChangeStatus }: TaskInformationViewProps) => {
         {/* 보고대상자 */}
         <ColumnContainer>
           <TitleContainer>
-            <SvgIcon svg={Svg.Users} color={GRAY.DARK} />
-            <MainText color={GRAY.DARK}>{t('receiver')}</MainText>
+            <SvgIcon svg={Svg.Users} color={GRAY.EXTRA_DARK} />
+            <MainText color={GRAY.EXTRA_DARK}>{t('receiver')}</MainText>
           </TitleContainer>
           <MemberList>
             {targetTask.reports.map((report) => (
@@ -159,13 +160,16 @@ const TaskInformationView = ({ onChangeStatus }: TaskInformationViewProps) => {
         {/* 업무내용 */}
         <ColumnContainer>
           <TitleContainer>
-            <SvgIcon svg={Svg.Book} color={GRAY.DARK} />
-            <MainText color={GRAY.DARK}>{t('content')}</MainText>
+            <SvgIcon svg={Svg.Book} color={GRAY.EXTRA_DARK} size={16} />
+            <MainText color={GRAY.EXTRA_DARK} fontSize={16}>
+              {t('content')}
+            </MainText>
           </TitleContainer>
           <MainText
             dangerouslySetInnerHTML={{
               __html: targetTask.content,
             }}
+            whiteSpace={'normal'}
           />
         </ColumnContainer>
       </ContentContainer>

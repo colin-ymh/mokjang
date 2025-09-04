@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Loading } from '@mokjang/components';
+import { Loading, SvgIcon } from '@mokjang/components';
 import React from 'react';
 import { MAIN, WHITE } from '@mokjang/constants';
 import ConfirmPopup from '../../../atoms/common/popup/error-popup';
@@ -13,6 +13,8 @@ import { RootState } from '../../../../redux/store';
 import TaskInformation from '../information/task-information';
 import WrappedPagePopup from '../../../atoms/common/popup/wrapped-page-popup';
 import { TASK_STATUS } from '@mokjang/constants';
+import ScrollSlidePopup from '@/components/atoms/common/popup/scroll-slide-popup';
+import { Svg } from '@mokjang/assets';
 
 const TaskListContainer = styled.div`
   display: flex;
@@ -97,19 +99,17 @@ const TaskListView = (props: TaskListViewProps) => {
       </TaskListContainer>
 
       {/* 업무 상세정보 팝업*/}
-      <WrappedPagePopup
+      <ScrollSlidePopup
         isShow={isTaskInformationShown}
-        onClickClose={onClickClose}
         headerTitle={targetTask?.title}
         doneText={t_button('edit')}
         cancelText={t_button('delete')}
+        onClickClose={onClickClose}
         onClickDone={onClickEditOpen}
         onClickCancel={onClickConfirmOpen}
         status={targetTask?.status}
         onChangeStatus={onChangeStatus}
-        widthPercentage={50}
-        stageThreeTop={190}
-        stageTwoTop={40}
+        stageTwoTop={150}
         inCharge={targetTask?.inCharge}
         startDate={targetTask?.startDate}
         endDate={targetTask?.endDate}
@@ -131,10 +131,10 @@ const TaskListView = (props: TaskListViewProps) => {
           />
           <TaskInformation onChangeStatus={onChangeStatus} />
         </>
-      </WrappedPagePopup>
+      </ScrollSlidePopup>
 
       {/* 심방 수정 팝업*/}
-      <WrappedPagePopup
+      <ScrollSlidePopup
         isShow={isEditShown}
         onClickClose={onClickEditClose}
         onClickCancel={onClickEditClose}
@@ -142,9 +142,10 @@ const TaskListView = (props: TaskListViewProps) => {
         headerTitle={t_title('editTask')}
         doneBackgroundColor={isSaveEnabled ? MAIN.DEFAULT : MAIN.LIGHT}
         doneDisabled={!isSaveEnabled}
+        isAnimation={false}
       >
         <AddTask isEdit={true} />
-      </WrappedPagePopup>
+      </ScrollSlidePopup>
       <Loading isShow={isLoading} />
     </>
   );

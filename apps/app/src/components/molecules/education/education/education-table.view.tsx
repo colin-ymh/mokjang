@@ -71,7 +71,9 @@ const EducationTable = styled.table`
 
 // 4. 헤더(TH)
 const TableHeader = styled.th<{ id: string; $isLast?: boolean }>`
-  padding: 20px 10px;
+  padding: 0 25px;
+  height: 50px;
+  flex-shrink: 0;
   position: sticky;
   top: 0;
   z-index: 5;
@@ -98,13 +100,14 @@ const TableHeader = styled.th<{ id: string; $isLast?: boolean }>`
 const EducationTableRow = styled.tr`
   border-bottom: 1px solid ${GRAY.EXTRA_LIGHT};
   &:hover td {
-    background-color: ${MAIN.EXTRA_LIGHT};
+    background-color: ${GRAY.SUPER_LIGHT};
   }
 `;
 
 const TableData = styled.td<{ id: string; $isLast?: boolean }>`
-  padding: 10px 15px;
-  height: 30px;
+  padding: 0 25px;
+  height: 60px;
+  flex-shrink: 0;
   cursor: pointer;
 
   /* 마지막 컬럼이면 auto, 아니면 px 고정 */

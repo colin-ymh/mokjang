@@ -100,18 +100,18 @@ const VisitationInformationView = ({
   return (
     <InformationContainer>
       {/* 제목 */}
-      <HeaderContainer>
-        <MainText size={SIZE.EXTRA_LARGE} fontSize={22}>
-          {targetVisitation.title}
-        </MainText>
-        <StatusDropdown
-          value={targetVisitation.status}
-          items={statusDropdownItems}
-          onChangeItem={onChangeStatus}
-          width={100}
-          height={30}
-        />
-      </HeaderContainer>
+      {/*<HeaderContainer>*/}
+      {/*  <MainText size={SIZE.EXTRA_LARGE} fontSize={22}>*/}
+      {/*    {targetVisitation.title}*/}
+      {/*  </MainText>*/}
+      {/*  <StatusDropdown*/}
+      {/*    value={targetVisitation.status}*/}
+      {/*    items={statusDropdownItems}*/}
+      {/*    onChangeItem={onChangeStatus}*/}
+      {/*    width={100}*/}
+      {/*    height={30}*/}
+      {/*  />*/}
+      {/*</HeaderContainer>*/}
       <ContentContainer>
         {/* 담당자 */}
         <RowContainer>

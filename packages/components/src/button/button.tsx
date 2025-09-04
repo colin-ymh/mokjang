@@ -118,7 +118,7 @@ export const Button = ({
               fontWeight={fontWeight}
               fontSize={fontSize}
               cursor={CURSOR.POINTER}
-              baselineOffsetPx={baselineOffsetPx}
+              $baselineOffsetPx={baselineOffsetPx}
             >
               {text}
             </MainText>

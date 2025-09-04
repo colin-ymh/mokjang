@@ -15,6 +15,7 @@ import { RootState } from '../../../../redux/store';
 import VisitationInformation from '../information/visitation-information';
 import WrappedPagePopup from '../../../atoms/common/popup/wrapped-page-popup';
 import { TASK_STATUS } from '@mokjang/constants';
+import ScrollSlidePopup from '@/components/atoms/common/popup/scroll-slide-popup';
 
 const VisitationListContainer = styled.div`
   display: flex;
@@ -101,21 +102,20 @@ const VisitationListView = (props: VisitationListViewProps) => {
       </VisitationListContainer>
 
       {/* 심방 상세정보 팝업*/}
-      <WrappedPagePopup
+      <ScrollSlidePopup
         isShow={isVisitationInformationShown}
-        onClickClose={onClickClose}
         headerTitle={targetVisitation?.title}
         doneText={t_button('edit')}
         cancelText={t_button('delete')}
+        onClickClose={onClickClose}
         onClickDone={onClickEditOpen}
         onClickCancel={onClickConfirmOpen}
-        stageThreeTop={250}
-        stageTwoTop={40}
-        inCharge={targetVisitation.inCharge}
-        startDate={targetVisitation.startDate}
-        endDate={targetVisitation.endDate}
-        status={targetVisitation.status}
+        status={targetVisitation?.status}
         onChangeStatus={onChangeStatus}
+        stageTwoTop={150}
+        inCharge={targetVisitation?.inCharge}
+        startDate={targetVisitation?.startDate}
+        endDate={targetVisitation?.endDate}
       >
         <>
           {/* 삭제 확인 팝업 */}
@@ -134,10 +134,10 @@ const VisitationListView = (props: VisitationListViewProps) => {
           />
           <VisitationInformation onChangeStatus={onChangeStatus} />
         </>
-      </WrappedPagePopup>
+      </ScrollSlidePopup>
 
       {/* 심방 수정 팝업*/}
-      <WrappedPagePopup
+      <ScrollSlidePopup
         isShow={isEditShown}
         onClickClose={onClickEditClose}
         onClickCancel={onClickEditClose}
@@ -145,9 +145,10 @@ const VisitationListView = (props: VisitationListViewProps) => {
         headerTitle={t_title('editVisitation')}
         doneBackgroundColor={isSaveEnabled ? MAIN.DEFAULT : MAIN.LIGHT}
         doneDisabled={!isSaveEnabled}
+        isAnimation={false}
       >
         <AddVisitation isEdit={true} />
-      </WrappedPagePopup>
+      </ScrollSlidePopup>
       <Loading isShow={isLoading} />
     </>
   );

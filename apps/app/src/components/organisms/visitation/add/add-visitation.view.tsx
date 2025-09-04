@@ -29,7 +29,7 @@ const AddVisitationViewContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
-  padding: 0 20px;
+  padding: 20px;
 `;
 
 const HeaderContainer = styled.div`
@@ -114,11 +114,11 @@ const AddVisitationView = ({
 
   return (
     <AddVisitationViewContainer>
-      <HeaderContainer>
-        <MainText size={SIZE.EXTRA_LARGE} fontSize={22}>
-          {t(isEdit ? 'title.editVisitation' : 'title.addVisitation')}
-        </MainText>
-      </HeaderContainer>
+      {/*<HeaderContainer>*/}
+      {/*  <MainText size={SIZE.EXTRA_LARGE} fontSize={22}>*/}
+      {/*    {t(isEdit ? 'title.editVisitation' : 'title.addVisitation')}*/}
+      {/*  </MainText>*/}
+      {/*</HeaderContainer>*/}
 
       {/* 제목 */}
 

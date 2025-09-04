@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../redux/store';
 
-import { GRAY, WHITE } from '@mokjang/constants';
+import { GRAY, LOCALE, WHITE } from '@mokjang/constants';
 import { TASK } from '@mokjang/constants';
 import { MainText } from '@mokjang/components';
 import { BLANK } from '@mokjang/constants';
@@ -20,6 +20,8 @@ import MemberProfile from '../../atoms/member/member-profile';
 import { MainTag } from '@mokjang/components';
 import { STATUS } from '@mokjang/constants';
 import { getFormattedDate } from '@mokjang/utils';
+import { getTranslatedDateFromDateString } from '@/utils/translate';
+import { usePathname } from 'next/navigation';
 
 // 1. 컬럼별 PX 폭 (마지막 REMARKS만 auto 할 예정)
 const getColumnWidth = (id: string) => {
@@ -65,15 +67,21 @@ const TaskTable = styled.table`
 `;
 
 // 4. 헤더(TH)
-const TableHeader = styled.th<{ id: string; $isLast?: boolean }>`
-  padding: 20px 10px;
+const TableHeader = styled.th<{
+  id: string;
+  $isLast?: boolean;
+}>`
+  padding: 0 25px;
+  height: 50px;
+  flex-shrink: 0;
+  background-color: ${WHITE};
   position: sticky;
   top: 0;
   z-index: 5;
-  background-color: ${WHITE};
 
   /* 만약 마지막 컬럼이면 width: auto */
   width: ${({ id, $isLast }) => ($isLast ? 'auto' : `${getColumnWidth(id)}%`)};
+
   /* 텍스트 넘침 처리 */
   overflow: hidden;
   text-overflow: ellipsis;
@@ -92,14 +100,16 @@ const TableHeader = styled.th<{ id: string; $isLast?: boolean }>`
 
 // 5. 본문(TR/TD)
 const TaskTableRow = styled.tr`
-  border-bottom: 1px solid ${GRAY.EXTRA_LIGHT};
+  border-bottom: 1px solid ${GRAY.LIGHT};
   &:hover td {
-    background-color: ${GRAY.LIGHT};
+    background-color: ${GRAY.SUPER_LIGHT};
   }
 `;
 
 const TableData = styled.td<{ id: string; $index: number; $isLast?: boolean }>`
-  padding: 10px;
+  padding: 0 25px;
+  height: 60px;
+  flex-shrink: 0;
 
   cursor: pointer;
 
@@ -143,6 +153,9 @@ const TaskTableView = ({
   const t = useI18n();
   const { height } = useWindowSize();
 
+  const pathname = usePathname();
+  const locale = pathname.split('/')[1] as LOCALE;
+
   const taskTableHeaderItemList = useSelector(
     (state: RootState) => state.taskFilter.taskTableHeaderItemList
   );
@@ -170,8 +183,9 @@ const TaskTableView = ({
         return (
           <MainText>
             {`${
-              task.startDate && getFormattedDate(task.startDate)
-            } - ${task.endDate && getFormattedDate(task.endDate)}`}
+              task.startDate &&
+              getTranslatedDateFromDateString(locale, task.startDate)
+            } - ${task.endDate && getTranslatedDateFromDateString(locale, task.endDate)}`}
           </MainText>
         );
       case TASK.IN_CHARGE:
