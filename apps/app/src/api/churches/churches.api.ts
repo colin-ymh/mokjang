@@ -1,8 +1,8 @@
 import { AxiosResponse } from 'axios';
 
-import { SERVER_URL, TEST_SERVER_URL } from '@mokjang/constants';
 import authorizeAxios from '../authorize-axios';
 import { CustomError } from '../error/error';
+import { IS_PRODUCTION, SERVER_URL, TEST_SERVER_URL } from '@mokjang/utils';
 
 type createChurchBody = {
   name: string;
@@ -40,7 +40,7 @@ export class ChurchesApi {
   private _url: string;
 
   constructor(useBaseURL: boolean) {
-    this._url = useBaseURL
+    this._url = IS_PRODUCTION
       ? SERVER_URL // 실제 사용할 url
       : TEST_SERVER_URL; // 개발용 url
   }

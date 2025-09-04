@@ -2,13 +2,10 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import {
-  useInitializeChurch,
-  useInitializeUser,
-} from '../../../utils/initialize';
+import { useInitializeChurch, useInitializeUser } from '@/utils/initialize';
 import { Loading } from '@mokjang/components';
 import { getIsWebview } from '@mokjang/utils';
-import { setIsWebview } from '../../../redux/reducers/webview-reducer';
+import { setIsWebview } from '@/redux/reducers/webview-reducer';
 
 const InitializeStore = ({ children }: { children: React.ReactNode }) => {
   const dispatch = useDispatch();

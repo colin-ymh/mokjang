@@ -2,10 +2,10 @@ import { AxiosResponse } from 'axios';
 import qs from 'qs';
 
 import { CHURCH_USER_ROLE, ORDER_DIRECTION } from '@mokjang/constants';
-import { SERVER_URL, TEST_SERVER_URL } from '@mokjang/constants';
 import { CustomError } from '../error/error';
 import { CHURCH_USER } from '@mokjang/constants';
 import authorizeAxios from '../authorize-axios';
+import { IS_PRODUCTION, SERVER_URL, TEST_SERVER_URL } from '@mokjang/utils';
 
 type GetChurchUsersParams = {
   churchId: string; // 교회 id
@@ -45,7 +45,7 @@ export class ChurchUsersApi {
   private _url: string;
 
   constructor(useBaseURL: boolean) {
-    this._url = useBaseURL
+    this._url = IS_PRODUCTION
       ? SERVER_URL // 실제 사용할 url
       : TEST_SERVER_URL; // 개발용 url
   }

@@ -1,9 +1,9 @@
-import { AxiosResponse } from 'axios';
-import { SERVER_URL, TEST_SERVER_URL } from '@mokjang/constants';
+import { AxiosResponse } from 'axios'
 import { CustomError } from '../../error/error';
 import { ORDER_DIRECTION } from '@mokjang/constants';
 import authorizeAxios from '../../authorize-axios';
 import qs from 'qs';
+import { IS_PRODUCTION, SERVER_URL, TEST_SERVER_URL } from '@mokjang/utils';
 
 export enum GROUP_MEMBER_ORDER {
   OFFICER_NAME = 'officerName',
@@ -46,7 +46,7 @@ export class GroupMembersApi {
   private _url: string;
 
   constructor(useBaseURL: boolean) {
-    this._url = useBaseURL
+    this._url = IS_PRODUCTION
       ? SERVER_URL // 실제 사용할 url
       : TEST_SERVER_URL; // 개발용 url
   }
