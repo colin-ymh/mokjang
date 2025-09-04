@@ -1,1 +1,1 @@
-self.__REACT_LOADABLE_MANIFEST="{}"
+self.__REACT_LOADABLE_MANIFEST='{"../locales/client.ts -> ./en":{"id":9771,"files":["static/chunks/771.6d5ffaf3be8e4572.js"]},"../locales/client.ts -> ./ko":{"id":6623,"files":["static/chunks/623.569df0925763d824.js"]}}';
