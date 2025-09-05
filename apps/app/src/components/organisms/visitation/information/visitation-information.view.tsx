@@ -3,17 +3,12 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
 import { useTaskStatusDropdownItems } from '../../../../hooks/dropdown/dropdown-items';
 import { useI18n } from '../../../../../locales/client';
-import { MainText } from '@mokjang/components';
-import { GRAY } from '@mokjang/constants';
+import { MainText, SvgIcon } from '@mokjang/components';
+import { GRAY, LOCALE, TASK_STATUS } from '@mokjang/constants';
 import React from 'react';
-import StatusDropdown from '../../../atoms/common/dropdown/status-dropdown';
-import { TASK_STATUS } from '@mokjang/constants';
-import { SIZE } from '@mokjang/constants';
 import MemberProfilePopupButton from '../../../molecules/common/button/member-profile-popup-button';
 import { usePathname } from 'next/navigation';
-import { LOCALE } from '@mokjang/constants';
 import { getTranslatedDateFromDateString } from '@mokjang/utils';
-import { SvgIcon } from '@mokjang/components';
 import { Svg } from '@mokjang/assets';
 
 const InformationContainer = styled.div`

@@ -63,6 +63,7 @@ const LabelContainer = styled.div`
 `;
 
 export type ChurchUserInformationViewProps = {
+  isMy?: boolean;
   isManager: boolean;
   onClickEditTemplateOpen: () => void;
   onClickLink: () => void;
@@ -71,6 +72,7 @@ export type ChurchUserInformationViewProps = {
 };
 
 const ChurchUserInformationView = ({
+  isMy,
   isManager,
   onClickEditTemplateOpen,
   onClickLink,
@@ -84,7 +86,7 @@ const ChurchUserInformationView = ({
     (state: RootState) => state.targetChurchUser
   );
 
-  const isOwner = targetChurchUser.role === CHURCH_USER_ROLE.OWNER;
+  const isOwner = isMy || targetChurchUser.role === CHURCH_USER_ROLE.OWNER;
 
   const { permissionUnits, permissionTemplates } = useSelector(
     (state: RootState) => state.permissionTemplateFilter
@@ -190,7 +192,7 @@ const ChurchUserInformationView = ({
           </MainText>
         </TitleContainer>
         <PermissionUnitList
-          selectedUnitIds={permissionUnits.map((unit) => unit.id.toString())}
+          selectedUnitIds={permissionUnits.map((unit) => unit.id)}
           isEditable={false}
         />
       </LabelContainer>
@@ -221,8 +223,8 @@ const ChurchUserInformationView = ({
       {/* 관리자 삭제  */}
       <BoxContainer>
         <DeleteWarningButton
-          description={t_warning('deleteManager')}
-          buttonText={t_button('deleteManager')}
+          description={t_warning(isMy ? 'leaveManager' : 'deleteManager')}
+          buttonText={t_button(isMy ? 'leaveManager' : 'deleteManager')}
           onClick={onClickConfirmOpen}
         />
       </BoxContainer>

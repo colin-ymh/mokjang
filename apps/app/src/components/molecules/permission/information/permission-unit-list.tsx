@@ -3,8 +3,8 @@ import PermissionUnitListView, {
 } from '@/components/molecules/permission/information/permission-unit-list.view';
 
 type PermissionUnitListProps = {
-  selectedUnitIds: string[];
-  onChangeUnitIds?: (value: string[]) => void;
+  selectedUnitIds: number[];
+  onChangeUnitIds?: (value: number[]) => void;
   isEditable?: boolean;
 };
 
@@ -13,7 +13,7 @@ const PermissionUnitList = ({
   onChangeUnitIds,
   isEditable = true,
 }: PermissionUnitListProps) => {
-  const onClick = (unitId: string) => {
+  const onClick = (unitId: number) => {
     if (isEditable && onChangeUnitIds) {
       const newUnitIds = selectedUnitIds.includes(unitId)
         ? selectedUnitIds.filter((id) => id !== unitId)

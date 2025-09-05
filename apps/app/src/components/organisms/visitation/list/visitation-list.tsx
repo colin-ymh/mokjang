@@ -1,25 +1,34 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../../../redux/store';
+import { AppDispatch, RootState } from '@/redux/store';
 import {
   fetchVisitations,
   setVisitationPage,
   setVisitations,
-} from '../../../../redux/reducers/filter/visitation-filter-reducer';
+} from '@/redux/reducers/filter/visitation-filter-reducer';
 
 import VisitationListView from './visitation-list.view';
-import { DEFAULT_VISITATION } from '@mokjang/models';
-import { setTargetVisitation } from '../../../../redux/reducers/target/target-visitation-reducer';
+import { DEFAULT_VISITATION, Visitation } from '@mokjang/models';
+import { setTargetVisitation } from '@/redux/reducers/target/target-visitation-reducer';
 import {
   setIsToastShown,
+  setToastBackgroundColor,
   setToastText,
-} from '../../../../redux/reducers/toast-popup-reducer';
+} from '@/redux/reducers/toast-popup-reducer';
 import { useScopedI18n } from '../../../../../locales/client';
-import { VisitationsApi } from '../../../../api/visitations/visitations.api';
-import { getIsWellFormedTitle } from '@mokjang/utils';
-import { BLANK, HEADER_BAR } from '@mokjang/constants';
-import { getDateFromDateString, getFullStringFromDate } from '@mokjang/utils';
-import { TASK_STATUS } from '@mokjang/constants';
+import { VisitationsApi } from '@/api/visitations/visitations.api';
+import {
+  getDateFromDateString,
+  getFullStringFromDate,
+  getIsWellFormedTitle,
+} from '@mokjang/utils';
+import {
+  BLACK,
+  BLANK,
+  DESTRUCTIVE,
+  HEADER_BAR,
+  TASK_STATUS,
+} from '@mokjang/constants';
 
 type VisitationListProps = {
   headerType?: HEADER_BAR;
@@ -114,7 +123,7 @@ const VisitationList = ({ headerType }: VisitationListProps) => {
       });
       const visitation = response.data.data;
 
-      dispatch(setTargetVisitation(visitation));
+      dispatch(setTargetVisitation({ ...visitation }));
       setIsVisitationInformationShown(true);
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));
@@ -170,6 +179,7 @@ const VisitationList = ({ headerType }: VisitationListProps) => {
         {
           status: targetVisitation.status || undefined,
           title: targetVisitation.title || undefined,
+
           inChargeId: targetVisitation.inChargeId || undefined,
           startDate:
             getFullStringFromDate(
@@ -179,6 +189,7 @@ const VisitationList = ({ headerType }: VisitationListProps) => {
             getFullStringFromDate(
               getDateFromDateString(targetVisitation.endDate)
             ) || undefined,
+          memberIds: targetVisitation.members.map((member) => member.id),
         }
       );
 
@@ -191,34 +202,43 @@ const VisitationList = ({ headerType }: VisitationListProps) => {
         }
       );
 
-      const reports = visitations.find(
-        (visitation) => visitation.id === targetVisitation.id
-      )?.reports;
+      const prevResponse = await visitationApi.getVisitation({
+        churchId,
+        visitationId: targetVisitation.id,
+      });
 
-      if (reports) {
-        const receiverIds = reports.map((report) => report.receiver.id);
+      const prev: Visitation = prevResponse.data.data;
 
-        const addReceiverIds = targetVisitation.receiverIds?.filter(
-          (receiverId) => !receiverIds.includes(receiverId)
+      const reports = prev?.reports;
+
+      const receiverIds = reports?.map((report) => report.receiver.id) || [];
+
+      const addReceiverIds = targetVisitation.receiverIds?.filter(
+        (receiverId) => !receiverIds.includes(receiverId)
+      );
+      const deleteReceiverIds =
+        receiverIds?.filter(
+          (receiverId) => !targetVisitation.receiverIds?.includes(receiverId)
+        ) || [];
+
+      if (addReceiverIds?.length > 0) {
+        await visitationApi.addReceivers(
+          {
+            churchId,
+            visitationId: targetVisitation.id,
+          },
+          { receiverIds: addReceiverIds }
         );
-        const deleteReceiverIds =
-          receiverIds?.filter(
-            (receiverId) => !targetVisitation.receiverIds?.includes(receiverId)
-          ) || [];
+      }
 
-        if (addReceiverIds?.length > 0) {
-          await visitationApi.addReceivers(
-            { churchId, visitationId: targetVisitation.id },
-            { receiverIds: addReceiverIds }
-          );
-        }
-
-        if (deleteReceiverIds?.length > 0) {
-          await visitationApi.deleteReceivers(
-            { churchId, visitationId: targetVisitation.id },
-            { receiverIds: deleteReceiverIds }
-          );
-        }
+      if (deleteReceiverIds?.length > 0) {
+        await visitationApi.deleteReceivers(
+          {
+            churchId,
+            visitationId: targetVisitation.id,
+          },
+          { receiverIds: deleteReceiverIds }
+        );
       }
 
       const response = await visitationApi.getVisitation({
@@ -230,11 +250,18 @@ const VisitationList = ({ headerType }: VisitationListProps) => {
       dispatch(setTargetVisitation(newVisitation));
       dispatch(fetchVisitations({ headerType }));
       setIsEditShown(false);
-    } catch (error) {
-      setThrownError(error instanceof Error ? error : new Error(String(error)));
-    } finally {
+
       dispatch(setIsToastShown(true));
       dispatch(setToastText(t_popup('saveComplete')));
+      dispatch(setToastBackgroundColor(BLACK));
+    } catch (error) {
+      if (error instanceof Error) {
+        dispatch(setToastText(error.message));
+        dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
+        dispatch(setIsToastShown(true));
+      } else {
+        setThrownError(new Error(String(error)));
+      }
     }
   };
 

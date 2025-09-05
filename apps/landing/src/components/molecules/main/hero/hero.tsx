@@ -11,12 +11,12 @@ import { routeAppPage } from '@mokjang/utils';
 const Hero = () => {
   const router = usePageRouter();
 
-  const { currentSubscription } = useSelector(
+  const { subscription } = useSelector(
     (state: RootState) => state.subscription
   );
 
   const onClickCreateChurch = () => {
-    if (currentSubscription?.currentPlan) {
+    if (subscription?.currentPlan) {
       routeAppPage('/church/register');
     } else {
       router.push('/subscription');
@@ -27,9 +27,19 @@ const Hero = () => {
     router.push('/join');
   };
 
+  const onClickStart = () => {
+    router.push('/login');
+  };
+
+  const onClickDonate = () => {
+    router.push('/donate');
+  };
+
   const props = {
     onClickCreateChurch,
     onClickJoin,
+    onClickStart,
+    onClickDonate,
   } as HeroViewProps;
 
   return (

@@ -13,7 +13,7 @@ export type MainTextProps = {
   textDecoration?: string;
   cursor?: string;
   lineHeight?: number | string;
-  $baselineOffsetPx?: number;
+  baselineOffsetPx?: number;
 };
 
 const getFontSize = (size?: SIZE, fontSize?: number) => {
@@ -73,6 +73,7 @@ export const MainText = styled.span.withConfig({
       'textDecoration',
       'cursor',
       'lineHeight',
+      'baselineOffsetPx',
     ].includes(prop),
 })<MainTextProps>`
   margin: 0;
@@ -80,8 +81,8 @@ export const MainText = styled.span.withConfig({
   color: ${({ color }) => color || BLACK};
   font-weight: ${({ size, fontWeight }) => getFontWeight(size, fontWeight)};
   transition: all 0.2s ease;
-  transform: ${({ $baselineOffsetPx = 0 }) =>
-    $baselineOffsetPx ? `translateY(${$baselineOffsetPx}px)` : 'none'};
+  transform: ${({ baselineOffsetPx = 0 }) =>
+    baselineOffsetPx ? `translateY(${baselineOffsetPx}px)` : 'none'};
 
   white-space: ${({ whiteSpace }) => whiteSpace || 'nowrap'};
   max-width: ${({ maxWidth }) =>

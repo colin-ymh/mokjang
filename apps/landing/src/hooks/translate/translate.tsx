@@ -1,4 +1,10 @@
-import { GRAY, LOCALE, MAIN } from '../../../../../packages/constants/src';
+import {
+  GRAY,
+  GREEN,
+  LOCALE,
+  MAIN,
+  WHITE,
+} from '../../../../../packages/constants/src';
 import { MainText } from '../../../../../packages/components/src';
 import styled from 'styled-components';
 
@@ -79,6 +85,42 @@ export const getTranslatedYearlySubscriptionPriceComponent = (
           {'원'}
         </MainText>
       </PriceContainer>
+    );
+  }
+};
+
+export const getTranslatedHeroTitle = (basePath: LOCALE) => {
+  if (basePath === LOCALE.EN) {
+    return (
+      <MainText fontSize={60} fontWeight={700} color={WHITE}>
+        {'A New Beginning for Church Management'}
+      </MainText>
+    );
+  } else {
+    return (
+      <MainText fontSize={60} fontWeight={700} color={WHITE}>
+        {'교회 관리의 새로운 시작'}
+      </MainText>
+    );
+  }
+};
+
+export const getTranslatedHeroDescription = (basePath: LOCALE) => {
+  if (basePath === LOCALE.EN) {
+    return (
+      <MainText fontSize={60} fontWeight={700} color={WHITE}>
+        {'A New Beginning for Church Management'}
+      </MainText>
+    );
+  } else {
+    return (
+      <MainText fontSize={20} color={GRAY.LIGHT}>
+        교적부부터 출석관리까지 모든 교회 업무를 하나의 플랫폼에서{' '}
+        <MainText fontSize={22} fontWeight={600} color={GREEN.DEFAULT}>
+          완전 무료로
+        </MainText>{' '}
+        관리하세요
+      </MainText>
     );
   }
 };

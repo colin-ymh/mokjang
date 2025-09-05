@@ -4,19 +4,16 @@ import MemberTable, {
   MemberTableProps,
 } from '../../../molecules/member/list/member-table';
 import MemberFilterRow from '../../../molecules/member/list/member-filter-row';
-import { MEDIA_MIN_WIDTH } from '@mokjang/constants';
+import { GRAY, MEDIA_MIN_WIDTH, WHITE } from '@mokjang/constants';
 import MemberItemList from '../../../molecules/member/list/member-item-list';
 import SlidePopup from '../../../atoms/common/popup/slide-popup';
 import MemberInformation from '../information/member-information';
-import { Loading } from '@mokjang/components';
+import { CustomPopup, Loading, SvgIcon } from '@mokjang/components';
 import React, { useEffect } from 'react';
-import { GRAY, WHITE } from '@mokjang/constants';
 import ConfirmPopup from '../../../atoms/common/popup/error-popup';
 import { useScopedI18n } from '../../../../../locales/client';
 
 import { Svg } from '@mokjang/assets';
-import { SvgIcon } from '@mokjang/components';
-import { CustomPopup } from '@mokjang/components';
 import EditMember from '../edit/edit-member';
 
 const MemberListContainer = styled.div`
@@ -156,6 +153,7 @@ const MemberListView = (props: MemberListViewProps) => {
       <CustomPopup
         isShow={isEditShown}
         onClickCancel={onClickEditClose}
+        cancelText={t_button('cancel')}
         doneText={t_button('save')}
         onClickDone={onClickEditDone}
         headerTitle={t_title('editMember')}

@@ -1,10 +1,7 @@
 import { AxiosResponse } from 'axios';
 import qs from 'qs';
 
-import {
-  ORDER_DIRECTION,
-  PERMISSION_TEMPLATE,
-} from '@mokjang/constants';
+import { ORDER_DIRECTION, PERMISSION_TEMPLATE } from '@mokjang/constants';
 import authorizeAxios from '../authorize-axios';
 import { CustomError } from '../error/error';
 import { DOMAIN } from '@mokjang/models';
@@ -29,7 +26,7 @@ type CreatePermissionTemplateParams = {
 
 type CreatePermissionTemplateBody = {
   title: string;
-  unitIds: string[];
+  unitIds: number[];
 };
 
 type GetPermissionTemplateParams = {
@@ -44,7 +41,7 @@ type EditPermissionTemplateParams = {
 
 type EditPermissionTemplateBody = {
   title?: string;
-  unitIds?: string[];
+  unitIds?: number[];
 };
 
 type DeletePermissionTemplateParams = {

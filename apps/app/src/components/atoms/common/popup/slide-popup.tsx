@@ -121,7 +121,7 @@ type SlidePopupProps = {
 const SlidePopup = ({
   isShow,
   direction = DIRECTION.RIGHT,
-  size = 700,
+  size = 650,
   isPercentage = false,
 
   isFooterShown,

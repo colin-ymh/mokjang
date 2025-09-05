@@ -14,6 +14,8 @@ export default {
   customSelect: 'Custom Select',
   email: 'Email',
 
+  currentPlan: 'Current Plan',
+
   manager: 'Manager',
 
   linkedMember: 'Linked Member',
@@ -313,6 +315,16 @@ export default {
   granddaughter: 'Granddaughter',
   relative: 'Relative',
 
+  'notification.recents': 'Recent Notifications',
+  'notification.unread': 'Unread',
+
+  'subscription.freeTrial': 'Free Trail',
+  'subscription.basic': 'Basic',
+  'subscription.standard': 'Standard',
+  'subscription.plus': 'Plus',
+  'subscription.premium': 'Premium',
+  'subscription.enterprise': 'Enterprise',
+
   'unit.title.member': 'Member Information',
   'unit.title.visitation': 'Visitation',
   'unit.title.education': 'Education',
@@ -413,6 +425,7 @@ export default {
   'title.ministryList': 'Ministry List',
 
   'title.editHistory': 'Edit History',
+
   /*-------------------title (popup title)-------------------*/
 
   /*-------------------header (side bar button)-------------------*/
@@ -622,6 +635,16 @@ export default {
 
   'button.deleteManager': 'Remove Admin',
   'button.leaveManager': 'Leave as Admin',
+
+  'button.openChurch': 'Go to Church',
+  'button.donate': 'Support This Service',
+  'button.myInformation': 'My Information',
+
+  'button.readAll': 'Mark All as Read',
+  'button.zoomIn': 'Zoom In',
+  'button.zoomOut': 'Zoom Out',
+
+  'button.selectAll': 'Select All',
 
   /*-------------------button-------------------*/
 

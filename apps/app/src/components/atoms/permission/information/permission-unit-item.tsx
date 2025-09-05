@@ -23,9 +23,9 @@ const ContentContainer = styled.div`
 `;
 
 type PermissionUnitItemProps = {
-  id: string;
+  id: number;
   isSelected: boolean;
-  onClick: (id: string) => void;
+  onClick: (id: number) => void;
   title: string;
   description: string;
   isEditable: boolean;

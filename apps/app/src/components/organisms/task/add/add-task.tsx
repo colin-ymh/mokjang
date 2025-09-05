@@ -1,15 +1,15 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import { BLANK } from '@mokjang/constants';
-import { getFormattedTitle } from '@mokjang/utils';
-import { MemberDropdownType } from '../../../atoms/common/dropdown/member-dropdown-item';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../../../redux/store';
 import {
   getDateFromDateString,
   getDateStringFromDate,
+  getFormattedTitle,
   getHourFromMinute,
   getTimeStringFromDate,
 } from '@mokjang/utils';
+import { MemberDropdownType } from '../../../atoms/common/dropdown/member-dropdown-item';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../../../redux/store';
 import AddTaskView from './add-task.view';
 import { setTargetTask } from '../../../../redux/reducers/target/target-task-reducer';
 
@@ -175,6 +175,12 @@ const AddTask = ({ isEdit = false }: AddTaskProps) => {
         };
       });
       setReceivers(newReceivers);
+
+      const receiverIds = targetTask.reports.map((report) => {
+        return report.receiver.id;
+      });
+
+      dispatch(setTargetTask({ ...targetTask, receiverIds: receiverIds }));
     } else {
       setReceivers([]);
     }

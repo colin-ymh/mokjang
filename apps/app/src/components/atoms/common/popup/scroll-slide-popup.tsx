@@ -188,7 +188,7 @@ type ScrollSlidePopupProps = {
 const ScrollSlidePopup = ({
   isShow,
   direction = DIRECTION.RIGHT,
-  size = 700,
+  size = 650,
   isPercentage = false,
   isAnimation = true,
 

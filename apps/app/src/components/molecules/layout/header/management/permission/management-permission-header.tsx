@@ -1,17 +1,25 @@
 import ManagementPermissionHeaderView from './management-permission-header.view';
-import { usePageRouter } from '@mokjang/utils';
+import { getIsWellFormedTitle, usePageRouter } from '@mokjang/utils';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../../../../../redux/store';
-import { PermissionsApi } from '../../../../../../api/permissions/permissions.api';
+import { AppDispatch, RootState } from '@/redux/store';
+import { PermissionsApi } from '@/api/permissions/permissions.api';
 
 import { DEFAULT_PERMISSION_TEMPLATE } from '@mokjang/models';
-import { getIsWellFormedTitle } from '@mokjang/utils';
-import { setTargetPermissionTemplate } from '../../../../../../redux/reducers/target/target-permission-template-reducer';
+import { setTargetPermissionTemplate } from '@/redux/reducers/target/target-permission-template-reducer';
+import { setPermissionTemplates } from '@/redux/reducers/filter/permission-template-filter-reducer';
+import {
+  setIsToastShown,
+  setToastBackgroundColor,
+  setToastText,
+} from '@/redux/reducers/toast-popup-reducer';
+import { BLACK, DESTRUCTIVE } from '@mokjang/constants';
+import { useScopedI18n } from '../../../../../../../locales/client';
 
 type ManagementPermissionHeaderProps = {};
 
 const ManagementPermissionHeader = ({}: ManagementPermissionHeaderProps) => {
+  const t_popup = useScopedI18n('popup');
   const dispatch = useDispatch<AppDispatch>();
   const router = usePageRouter();
   const { permissionTemplates } = useSelector(
@@ -57,35 +65,46 @@ const ManagementPermissionHeader = ({}: ManagementPermissionHeaderProps) => {
 
   const onClickSavePermissionTemplate = async () => {
     try {
-      await permissionsApi.createPermissionTemplate(
-        { churchId },
-        {
-          title: targetPermissionTemplate.title,
-          unitIds: targetPermissionTemplate.unitIds,
-        }
-      );
-      // .then((response) => {
-      //   const tempPermissionTemplate = response.data.data;
-      //
-      //   permissionsApi
-      //     .getPermissionTemplate({
-      //       churchId,
-      //       templateId: tempPermissionTemplate.id,
-      //     })
-      //     .then((response) => {
-      //       const newPermissionTemplate = response.data.data;
-      //
-      //       const newPermissionTemplates = [
-      //         ...permissionTemplates,
-      //         newPermissionTemplate,
-      //       ];
-      //       dispatch(setPermissionTemplates(newPermissionTemplates));
-      //     });
-      // });
+      await permissionsApi
+        .createPermissionTemplate(
+          { churchId },
+          {
+            title: targetPermissionTemplate.title,
+            unitIds: targetPermissionTemplate.unitIds,
+          }
+        )
+        .then((response) => {
+          const tempPermissionTemplate = response.data.data;
+
+          permissionsApi
+            .getPermissionTemplate({
+              churchId,
+              templateId: tempPermissionTemplate.id,
+            })
+            .then((response) => {
+              const newPermissionTemplate = response.data.data;
+
+              const newPermissionTemplates = [
+                ...permissionTemplates,
+                newPermissionTemplate,
+              ];
+              dispatch(setPermissionTemplates(newPermissionTemplates));
+
+              dispatch(setIsToastShown(true));
+              dispatch(setToastText(t_popup('saveComplete')));
+              dispatch(setToastBackgroundColor(BLACK));
+            });
+        });
       setIsAddPermissionTemplateOpened(false);
       dispatch(setTargetPermissionTemplate(DEFAULT_PERMISSION_TEMPLATE));
     } catch (error) {
-      setThrownError(error instanceof Error ? error : new Error(String(error)));
+      if (error instanceof Error) {
+        dispatch(setToastText(error.message));
+        dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
+        dispatch(setIsToastShown(true));
+      } else {
+        setThrownError(new Error(String(error)));
+      }
     }
   };
 

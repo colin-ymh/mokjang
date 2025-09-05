@@ -94,24 +94,15 @@ export const getIsChild = (date: Date): boolean => {
   return CURRENT_YEAR - TARGET_YEAR <= 18;
 };
 
-export const getAge = (date: Date): number => {
-  if (date === null) return 0;
+// 세는 나이 (한국식 나이) 계산
+export const getAge = (date: Date | null): number => {
+  if (!date) return 0;
 
   const today = new Date();
-  const birthDate = new Date(date); // 입력된 날짜를 Date 객체로 변환
+  const birthDate = new Date(date);
 
-  let age = today.getFullYear() - birthDate.getFullYear();
-  const monthDifference = today.getMonth() - birthDate.getMonth();
-
-  // 생일이 지나지 않았으면 나이를 1살 줄임
-  if (
-    monthDifference < 0 ||
-    (monthDifference === 0 && today.getDate() < birthDate.getDate())
-  ) {
-    age--;
-  }
-
-  return age;
+  // 세는 나이: 태어난 해를 1살로 하고, 해가 바뀔 때마다 1살씩 증가
+  return today.getFullYear() - birthDate.getFullYear() + 1;
 };
 
 /**

@@ -9,10 +9,10 @@ import { useMainTaskHeaderBarItems } from '@/hooks/layout/header-bar-items';
 
 import { useScopedI18n } from '../../../../../../../locales/client';
 import AddTask from '../../../../../organisms/task/add/add-task';
-import WrappedPagePopup from '../../../../../atoms/common/popup/wrapped-page-popup';
 import { MAIN_HEADER_ID } from '@/constants/layout/header';
 
 import { Svg } from '@mokjang/assets';
+import ScrollSlidePopup from '@/components/atoms/common/popup/scroll-slide-popup';
 
 const HeaderContainer = styled.div`
   display: flex;
@@ -91,7 +91,7 @@ const MainTaskHeaderView = ({
             fontWeight={500}
             fontSize={16}
             height={35}
-            icon={<SvgIcon svg={Svg.Plus} color={WHITE} width={3} size={20} />}
+            icon={<SvgIcon svg={Svg.Plus} color={WHITE} width={2} size={20} />}
           />
         </HeaderTopContainer>
         <HeaderBottomContainer>
@@ -104,17 +104,18 @@ const MainTaskHeaderView = ({
       </HeaderContainer>
 
       {/* 심방 추가 팝업*/}
-      <WrappedPagePopup
+      <ScrollSlidePopup
         isShow={isAddTaskOpened}
         onClickClose={onClickCloseModal}
         onClickCancel={onClickCloseModal}
-        headerTitle={t_title('addTask')}
         onClickDone={onClickSaveTask}
+        headerTitle={t_title('addTask')}
+        doneBackgroundColor={isSaveEnabled ? MAIN.DEFAULT : MAIN.LIGHT}
         doneDisabled={!isSaveEnabled}
-        doneBackgroundColor={isSaveEnabled ? MAIN.DEFAULT : GRAY.LIGHT}
+        isAnimation={false}
       >
         <AddTask />
-      </WrappedPagePopup>
+      </ScrollSlidePopup>
     </>
   );
 };

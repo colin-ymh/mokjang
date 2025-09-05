@@ -32,8 +32,8 @@ const ItemContainer = styled.div`
 `;
 
 export type PermissionUnitListViewProps = {
-  selectedUnitIds: string[];
-  onClick: (id: string) => void;
+  selectedUnitIds: number[];
+  onClick: (id: number) => void;
   isEditable: boolean;
 };
 
@@ -55,19 +55,19 @@ const PermissionUnitListView = ({
           </TitleContainer>
           <ItemContainer>
             <PermissionUnitItem
-              id={'1'}
+              id={1}
               title={t_unit('member.write.title')}
               description={t_unit('member.write.description')}
               onClick={onClick}
-              isSelected={selectedUnitIds?.includes('1')}
+              isSelected={selectedUnitIds?.includes(1)}
               isEditable={isEditable}
             />
             <PermissionUnitItem
-              id={'2'}
+              id={2}
               title={t_unit('member.read.title')}
               description={t_unit('member.read.description')}
               onClick={onClick}
-              isSelected={selectedUnitIds?.includes('2')}
+              isSelected={selectedUnitIds?.includes(2)}
               isEditable={isEditable}
             />
           </ItemContainer>
@@ -80,19 +80,19 @@ const PermissionUnitListView = ({
           </TitleContainer>
           <ItemContainer>
             <PermissionUnitItem
-              id={'3'}
+              id={3}
               title={t_unit('visitation.write.title')}
               description={t_unit('visitation.write.description')}
               onClick={onClick}
-              isSelected={selectedUnitIds?.includes('3')}
+              isSelected={selectedUnitIds?.includes(3)}
               isEditable={isEditable}
             />
             <PermissionUnitItem
-              id={'4'}
+              id={4}
               title={t_unit('visitation.read.title')}
               description={t_unit('member.read.description')}
               onClick={onClick}
-              isSelected={selectedUnitIds?.includes('4')}
+              isSelected={selectedUnitIds?.includes(4)}
               isEditable={isEditable}
             />
           </ItemContainer>
@@ -105,19 +105,19 @@ const PermissionUnitListView = ({
           </TitleContainer>
           <ItemContainer>
             <PermissionUnitItem
-              id={'5'}
+              id={5}
               title={t_unit('education.write.title')}
               description={t_unit('education.write.description')}
               onClick={onClick}
-              isSelected={selectedUnitIds?.includes('5')}
+              isSelected={selectedUnitIds?.includes(5)}
               isEditable={isEditable}
             />
             <PermissionUnitItem
-              id={'6'}
+              id={6}
               title={t_unit('education.read.title')}
               description={t_unit('education.read.description')}
               onClick={onClick}
-              isSelected={selectedUnitIds?.includes('6')}
+              isSelected={selectedUnitIds?.includes(6)}
               isEditable={isEditable}
             />
           </ItemContainer>
@@ -130,11 +130,11 @@ const PermissionUnitListView = ({
           </TitleContainer>
           <ItemContainer>
             <PermissionUnitItem
-              id={'7'}
+              id={7}
               title={t_unit('church.write.title')}
               description={t_unit('church.write.description')}
               onClick={onClick}
-              isSelected={selectedUnitIds?.includes('7')}
+              isSelected={selectedUnitIds?.includes(7)}
               isEditable={isEditable}
             />
           </ItemContainer>
@@ -147,11 +147,11 @@ const PermissionUnitListView = ({
           </TitleContainer>
           <ItemContainer>
             <PermissionUnitItem
-              id={'8'}
+              id={8}
               title={t_unit('manager.write.title')}
               description={t_unit('manager.write.description')}
               onClick={onClick}
-              isSelected={selectedUnitIds?.includes('8')}
+              isSelected={selectedUnitIds?.includes(8)}
               isEditable={isEditable}
             />
           </ItemContainer>

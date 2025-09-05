@@ -3,15 +3,12 @@
 import styled from 'styled-components';
 import React, { ChangeEvent } from 'react';
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
-import { GRAY } from '@mokjang/constants';
+import { BLANK, GRAY, SIZE } from '@mokjang/constants';
 import { useTimeDropdownItems } from '../../../../hooks/dropdown/dropdown-items';
 import { MemberDropdownType } from '../../../atoms/common/dropdown/member-dropdown-item';
-import { MainText } from '@mokjang/components';
+import { BorderInput, MainText, RequiredMark } from '@mokjang/components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
-import { RequiredMark } from '@mokjang/components';
-import { BorderInput } from '@mokjang/components';
-import { SIZE } from '@mokjang/constants';
 import CustomDatePicker from '../../../../vendor/date-picker/custom-date-picker';
 import {
   getDateFromDateString,
@@ -21,7 +18,6 @@ import {
 } from '@mokjang/utils';
 import Dropdown from '../../../atoms/common/dropdown/dropdown';
 import MemberDropdown from '../../../atoms/common/dropdown/member-dropdown';
-import { BLANK } from '@mokjang/constants';
 import Quill from '../../../atoms/common/input/quill';
 import MemberTag from '../../../atoms/common/tag/member-tag';
 import BigMemberTag from '../../../atoms/common/tag/big-member-tag';
@@ -179,6 +175,7 @@ const AddTaskView = ({
               }
               onChange={onChangeStartDate}
               placeholderText={t('startDate')}
+              maxDate={getDateFromDateString(targetTask.endDate)}
             />
             {/* 시작 시간 */}
             <Dropdown
@@ -206,6 +203,7 @@ const AddTaskView = ({
               }
               onChange={onChangeEndDate}
               placeholderText={t('endDate')}
+              minDate={getDateFromDateString(targetTask.startDate)}
             />
             {/* 종료 시간 */}
             <Dropdown

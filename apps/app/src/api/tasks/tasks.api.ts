@@ -3,9 +3,7 @@ import qs from 'qs';
 
 import authorizeAxios from '../authorize-axios';
 import { CustomError } from '../error/error';
-import { ORDER_DIRECTION } from '@mokjang/constants';
-import { TASK } from '@mokjang/constants';
-import { TASK_STATUS } from '@mokjang/constants';
+import { ORDER_DIRECTION, TASK, TASK_STATUS } from '@mokjang/constants';
 import { IS_PRODUCTION, SERVER_URL, TEST_SERVER_URL } from '@mokjang/utils';
 
 type GetTasksParams = {
@@ -53,7 +51,6 @@ type EditTaskBody = {
   startDate?: string;
   endDate?: string;
   parentTaskId?: string;
-  receiverIds?: string[];
   content?: string;
 };
 

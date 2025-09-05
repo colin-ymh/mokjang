@@ -1,20 +1,16 @@
 import styled from 'styled-components';
-import { Loading, SvgIcon } from '@mokjang/components';
+import { Loading } from '@mokjang/components';
 import React from 'react';
-import { MAIN, WHITE } from '@mokjang/constants';
+import { MAIN, MEDIA_MIN_WIDTH, TASK_STATUS, WHITE } from '@mokjang/constants';
 import ConfirmPopup from '../../../atoms/common/popup/error-popup';
 import { useScopedI18n } from '../../../../../locales/client';
-import { MEDIA_MIN_WIDTH } from '@mokjang/constants';
 import TaskTable, { TaskTableProps } from '../../../molecules/task/task-table';
 import TaskRow from '../../../molecules/task/task-row';
 import AddTask from '../add/add-task';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
 import TaskInformation from '../information/task-information';
-import WrappedPagePopup from '../../../atoms/common/popup/wrapped-page-popup';
-import { TASK_STATUS } from '@mokjang/constants';
 import ScrollSlidePopup from '@/components/atoms/common/popup/scroll-slide-popup';
-import { Svg } from '@mokjang/assets';
 
 const TaskListContainer = styled.div`
   display: flex;
@@ -113,6 +109,7 @@ const TaskListView = (props: TaskListViewProps) => {
         inCharge={targetTask?.inCharge}
         startDate={targetTask?.startDate}
         endDate={targetTask?.endDate}
+        disabledKeyboard={true}
       >
         <>
           {/* 삭제 확인 팝업 */}

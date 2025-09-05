@@ -1,9 +1,8 @@
 import { AxiosResponse } from 'axios';
 import qs from 'qs';
 
-import { BAPTISM, MARRIAGE, ORDER_DIRECTION } from '@mokjang/constants';
+import { BAPTISM, MARRIAGE, MEMBER, ORDER_DIRECTION } from '@mokjang/constants';
 import { Member } from '@mokjang/models';
-import { MEMBER } from '@mokjang/constants';
 import { CustomError } from '../error/error';
 import authorizeAxios from '../authorize-axios';
 import { IS_PRODUCTION, SERVER_URL, TEST_SERVER_URL } from '@mokjang/utils';
@@ -128,7 +127,6 @@ export type EditMemberBody = {
   guidedById?: string;
   previousChurch?: string;
   vehicleNumber?: string[];
-  registeredAt?: string;
 };
 
 type DeleteMemberParams = {

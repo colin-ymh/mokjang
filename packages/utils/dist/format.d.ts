@@ -1,5 +1,5 @@
 export declare const getTrimmedString: (value: string) => string;
-export declare const getFormattedName: (value: string) => string;
+export declare const getFormattedName: (value: string, maxLength?: number) => string;
 export declare const getFormattedTitle: (value: string, maxLength?: number) => string;
 export declare const getFormattedContent: (value: string, maxLength?: number) => string;
 export declare const getFormattedIdentifyNumber: (identifyNumber: string) => string;

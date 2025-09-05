@@ -2,8 +2,7 @@ import styled from 'styled-components';
 import { Loading } from '@mokjang/components';
 import React from 'react';
 import { Svg } from '@mokjang/assets';
-import { BLACK, DESTRUCTIVE, GRAY } from '@mokjang/constants';
-import { MEDIA_MIN_WIDTH } from '@mokjang/constants';
+import { BLACK, DESTRUCTIVE, GRAY, MEDIA_MIN_WIDTH } from '@mokjang/constants';
 import PermissionTemplateTable, {
   PermissionTemplateTableProps,
 } from '../../../molecules/permission/list/permission-template-table';
@@ -11,6 +10,7 @@ import SlidePopup from '../../../atoms/common/popup/slide-popup';
 import PermissionTemplateInformation from '../information/permission-template-information';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
+import { useScopedI18n } from '../../../../../locales/client';
 
 const PermissionTemplateListContainer = styled.div`
   display: flex;
@@ -83,6 +83,7 @@ type PermissionTemplateListViewProps = {
 };
 
 const PermissionTemplateListView = (props: PermissionTemplateListViewProps) => {
+  const t_button = useScopedI18n('button');
   const { targetPermissionTemplate } = useSelector(
     (state: RootState) => state.targetPermissionTemplate
   );
@@ -115,6 +116,7 @@ const PermissionTemplateListView = (props: PermissionTemplateListViewProps) => {
           </ButtonContainer>
         }
         onClickClose={onClickClose}
+        cancelText={t_button('close')}
       >
         <PermissionTemplateInformation onClickDelete={onClickDelete} />
       </SlidePopup>

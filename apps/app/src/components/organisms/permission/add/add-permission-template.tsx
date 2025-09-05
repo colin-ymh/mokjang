@@ -1,8 +1,8 @@
 import React, { ChangeEvent } from 'react';
 import { getFormattedContent, getFormattedTitle } from '@mokjang/utils';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../../../redux/store';
-import { setTargetPermissionTemplate } from '../../../../redux/reducers/target/target-permission-template-reducer';
+import { AppDispatch, RootState } from '@/redux/store';
+import { setTargetPermissionTemplate } from '@/redux/reducers/target/target-permission-template-reducer';
 import AddPermissionTemplateView from './add-permission-template.view';
 
 type AddPermissionTemplateProps = {};
@@ -36,7 +36,7 @@ const AddPermissionTemplate = ({}: AddPermissionTemplateProps) => {
   // ===== description =====
 
   // ===== unit =====
-  const onChangeUnitIds = (unitIds: string[]): void => {
+  const onChangeUnitIds = (unitIds: number[]): void => {
     dispatch(
       setTargetPermissionTemplate({
         ...targetPermissionTemplate,
@@ -46,10 +46,20 @@ const AddPermissionTemplate = ({}: AddPermissionTemplateProps) => {
   };
   // ===== unit =====
 
+  const onClickSelectAll = () => {
+    dispatch(
+      setTargetPermissionTemplate({
+        ...targetPermissionTemplate,
+        unitIds: [1, 2, 3, 4, 5, 6, 7, 8],
+      })
+    );
+  };
+
   const props = {
     onChangeName,
     onChangeDescription,
     onChangeUnitIds,
+    onClickSelectAll,
   };
 
   return (

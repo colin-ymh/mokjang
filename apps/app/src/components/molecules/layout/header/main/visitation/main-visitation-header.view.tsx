@@ -9,9 +9,9 @@ import { useMainVisitationHeaderBarItems } from '@/hooks/layout/header-bar-items
 
 import { useScopedI18n } from '../../../../../../../locales/client';
 import AddVisitation from '../../../../../organisms/visitation/add/add-visitation';
-import WrappedPagePopup from '../../../../../atoms/common/popup/wrapped-page-popup';
 import { Svg } from '@mokjang/assets';
 import { MAIN_HEADER_ID } from '@/constants/layout/header';
+import ScrollSlidePopup from '@/components/atoms/common/popup/scroll-slide-popup';
 
 const HeaderContainer = styled.div`
   display: flex;
@@ -90,7 +90,7 @@ const MainVisitationHeaderView = ({
             fontWeight={500}
             fontSize={16}
             height={35}
-            icon={<SvgIcon svg={Svg.Plus} color={WHITE} width={3} size={20} />}
+            icon={<SvgIcon svg={Svg.Plus} color={WHITE} width={2} size={20} />}
           />
         </HeaderTopContainer>
         <HeaderBottomContainer>
@@ -103,17 +103,18 @@ const MainVisitationHeaderView = ({
       </HeaderContainer>
 
       {/* 심방 추가 팝업*/}
-      <WrappedPagePopup
+      <ScrollSlidePopup
         isShow={isAddVisitationOpened}
         onClickClose={onClickCloseModal}
         onClickCancel={onClickCloseModal}
-        headerTitle={t_title('addVisitation')}
         onClickDone={onClickSaveVisitation}
+        headerTitle={t_title('addVisitation')}
+        doneBackgroundColor={isSaveEnabled ? MAIN.DEFAULT : MAIN.LIGHT}
         doneDisabled={!isSaveEnabled}
-        doneBackgroundColor={isSaveEnabled ? MAIN.DEFAULT : GRAY.LIGHT}
+        isAnimation={true}
       >
         <AddVisitation />
-      </WrappedPagePopup>
+      </ScrollSlidePopup>
     </>
   );
 };

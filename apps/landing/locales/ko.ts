@@ -12,6 +12,10 @@ export default {
   price: '금액',
   paymentDay: '결제일',
   nextPaymentDay: '다음 결제일',
+  currentPlan: '현재 플랜',
+
+  'setting.title': '설정',
+  'setting.description': '계정 정보를 관리하세요',
 
   'card.title': '카드 등록',
   'card.cardNo.title': '카드 번호',
@@ -33,8 +37,9 @@ export default {
   'main.price.extra': '14일간 무료 체험 • 부가세 포함 • 언제든 변경 가능',
   'main.faq.title': '자주 묻는 질문',
   'main.faq.description': '목장 서비스에 대해 궁금한 점들을 모았습니다.',
-  'main.faq.extra': '더 궁금한 점이 있으신가요?',
+  'main.faq.extra': '더 궁금한 점이 있으시다면 언제든 문의해주세요',
 
+  'button.home': '홈',
   'button.cancel': '취소',
   'button.function': '기능',
   'button.price': '가격정책',
@@ -53,6 +58,14 @@ export default {
   'button.createChurch': '새 교회 생성하기',
   'button.start': '시작하기',
   'button.retry': '다시 시도하기',
+  'button.openChurch': '교회로 이동하기',
+  'button.donate': '서비스 후원하기',
+  'button.setting': '설정',
+  'button.logOut': '로그아웃',
+  'button.edit': '수정',
+  'button.save': '저장',
+  'button.withdraw': '탈퇴하기',
+  'button.startForFree': '무료로 시작하기',
 
   'function.member.title': '교인관리(교적부)',
   'function.member.description':

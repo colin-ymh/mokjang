@@ -14,6 +14,8 @@ export default {
   customSelect: '직접선택',
   email: '이메일',
 
+  currentPlan: '현재 플랜',
+
   manager: '관리자',
 
   linkedMember: '연결된 교인',
@@ -315,6 +317,16 @@ export default {
   granddaughter: '손녀',
   relative: '친인척',
 
+  'notification.recents': '최근 알림',
+  'notification.unread': '읽지 않음',
+
+  'subscription.freeTrial': '무료체험',
+  'subscription.basic': '베이직',
+  'subscription.standard': '스탠다드',
+  'subscription.plus': '플러스',
+  'subscription.premium': '프리미엄',
+  'subscription.enterprise': '엔터프라이즈',
+
   'unit.member.title': '교인정보',
   'unit.visitation.title': '심방',
   'unit.education.title': '교육',
@@ -547,11 +559,11 @@ export default {
   /*------------------- register-------------------*/
 
   /*-------------------button-------------------*/
-  'button.register': '등록하기',
-  'button.save': '저장하기',
+  'button.register': '등록',
+  'button.save': '저장',
   'button.edit': '수정',
   'button.delete': '삭제',
-  'button.stop': '종료하기',
+  'button.stop': '종료',
   'button.close': '닫기',
   'button.saveFamily': '해당 가족만 추가하기',
   'button.goBack': '이전으로',
@@ -628,6 +640,16 @@ export default {
 
   'button.deleteManager': '관리자 삭제하기',
   'button.leaveManager': '관리자 탈퇴하기',
+
+  'button.openChurch': '교회로 이동하기',
+  'button.donate': '서비스 후원하기',
+  'button.myInformation': '내 정보',
+
+  'button.readAll': '모두 읽음',
+  'button.zoomIn': '크게 보기',
+  'button.zoomOut': '작게 보기',
+
+  'button.selectAll': '전체 선택',
 
   /*-------------------button-------------------*/
 

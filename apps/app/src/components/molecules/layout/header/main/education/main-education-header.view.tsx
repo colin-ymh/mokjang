@@ -1,14 +1,17 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { BLACK, GRAY, MAIN, WHITE } from '@mokjang/constants';
-import { MainText, SvgIcon } from '@mokjang/components';
-import { SIZE } from '@mokjang/constants';
+import {
+  BLACK,
+  GRAY,
+  MAIN,
+  MEDIA_MIN_WIDTH,
+  SIZE,
+  WHITE,
+} from '@mokjang/constants';
+import { Button, MainText, SvgIcon } from '@mokjang/components';
 
 import { useScopedI18n } from '../../../../../../../locales/client';
-
-import { MEDIA_MIN_WIDTH } from '@mokjang/constants';
-import { Button } from '@mokjang/components';
 import AddEducation from '../../../../../organisms/education/education/add/add-education';
 
 import { Svg } from '@mokjang/assets';
@@ -104,7 +107,7 @@ const MainEducationHeaderView = ({
           fontWeight={500}
           fontSize={16}
           height={35}
-          icon={<SvgIcon svg={Svg.Plus} color={WHITE} width={3} size={20} />}
+          icon={<SvgIcon svg={Svg.Plus} color={WHITE} width={2} size={20} />}
         />
       </HeaderTopContainer>
       <HeaderBottomContainer></HeaderBottomContainer>

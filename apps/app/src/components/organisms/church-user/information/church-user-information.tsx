@@ -25,11 +25,13 @@ import EditPermissionTemplate from '@/components/molecules/church-user/informati
 import ConfirmPopup from '@/components/atoms/common/popup/error-popup';
 
 type ChurchUserInformationProps = {
+  isMy?: boolean;
   isManager: boolean;
   onClickDelete: () => void;
 };
 
 const ChurchUserInformation = ({
+  isMy,
   isManager,
   onClickDelete,
 }: ChurchUserInformationProps) => {
@@ -316,6 +318,7 @@ const ChurchUserInformation = ({
   }, [targetChurchUser.id]);
 
   const props = {
+    isMy,
     isManager,
     onClickEditTemplateOpen,
     onClickLink,

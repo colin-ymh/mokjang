@@ -15,7 +15,7 @@ const Main = () => {
     <MainWrapper>
       <Hero />
       <Function />
-      <Price />
+      {/*<Price />*/}
       <Faq />
     </MainWrapper>
   );

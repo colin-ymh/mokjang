@@ -1,10 +1,9 @@
 import styled from 'styled-components';
 import { Loading } from '@mokjang/components';
 import React from 'react';
-import { MAIN, WHITE } from '@mokjang/constants';
+import { MAIN, MEDIA_MIN_WIDTH, TASK_STATUS, WHITE } from '@mokjang/constants';
 import ConfirmPopup from '../../../atoms/common/popup/error-popup';
 import { useScopedI18n } from '../../../../../locales/client';
-import { MEDIA_MIN_WIDTH } from '@mokjang/constants';
 import VisitationTable, {
   VisitationTableProps,
 } from '../../../molecules/visitation/visitation-table';
@@ -13,8 +12,6 @@ import AddVisitation from '../add/add-visitation';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
 import VisitationInformation from '../information/visitation-information';
-import WrappedPagePopup from '../../../atoms/common/popup/wrapped-page-popup';
-import { TASK_STATUS } from '@mokjang/constants';
 import ScrollSlidePopup from '@/components/atoms/common/popup/scroll-slide-popup';
 
 const VisitationListContainer = styled.div`
@@ -116,6 +113,7 @@ const VisitationListView = (props: VisitationListViewProps) => {
         inCharge={targetVisitation?.inCharge}
         startDate={targetVisitation?.startDate}
         endDate={targetVisitation?.endDate}
+        disabledKeyboard={true}
       >
         <>
           {/* 삭제 확인 팝업 */}

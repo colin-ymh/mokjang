@@ -5,5 +5,6 @@ export * from "./etc";
 export * from "./input";
 export * from "./layout";
 export * from "./popup";
+export * from "./profile";
 export * from "./tag";
 export * from "./text";

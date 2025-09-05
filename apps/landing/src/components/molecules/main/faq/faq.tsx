@@ -22,10 +22,15 @@ const Faq = () => {
     router.push('/contact');
   };
 
+  const onClickDonate = () => {
+    router.push('/donate');
+  };
+
   const props = {
     openedQuestion,
     onClickQuestion,
     onClickContact,
+    onClickDonate,
   } as FaqViewProps;
 
   return (

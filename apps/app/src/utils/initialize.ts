@@ -19,7 +19,7 @@ import { ChurchesApi } from '../api/churches/churches.api';
 import { User } from '@mokjang/models';
 import { SubscriptionApi } from '@/api/subscription/subscription.api';
 import { SubscriptionPlan } from '@mokjang/models';
-import { setCurrentSubscription } from '@/redux/reducers/subscription-reducer';
+import { setSubscription } from '@/redux/reducers/subscription-reducer';
 
 export const useInitializeChurch = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -95,7 +95,7 @@ export const useInitializeUser = () => {
       const response = await userApi.getUser();
       const user: User = response.data;
 
-      dispatch(setCurrentSubscription(currentPlan));
+      dispatch(setSubscription(currentPlan));
       dispatch(setUser(user));
       if (user.churchUser.length) {
         const churchId = user.churchUser[0].churchId;

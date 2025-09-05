@@ -2,14 +2,10 @@ import React from 'react';
 import styled from 'styled-components';
 import { useParams } from 'next/navigation';
 
-import { GRAY, MAIN } from '@mokjang/constants';
-import { MainText } from '@mokjang/components';
-import { SIZE } from '@mokjang/constants';
+import { GRAY, MAIN, MEDIA_MIN_WIDTH, SIZE } from '@mokjang/constants';
+import { Button, MainText } from '@mokjang/components';
 
 import { useScopedI18n } from '../../../../../../../locales/client';
-
-import { MEDIA_MIN_WIDTH } from '@mokjang/constants';
-import { Button } from '@mokjang/components';
 import { MANAGEMENT_HEADER_ID } from '@/constants/layout/header';
 import SlidePopup from '../../../../../atoms/common/popup/slide-popup';
 import AddPermissionTemplate from '../../../../../organisms/permission/add/add-permission-template';
@@ -98,6 +94,8 @@ const ManagementPermissionHeaderView = ({
         onClickDone={onClickSavePermissionTemplate}
         doneBackgroundColor={isSaveEnabled ? MAIN.DEFAULT : MAIN.LIGHT}
         doneDisabled={!isSaveEnabled}
+        doneText={t_button('save')}
+        cancelText={t_button('cancel')}
       >
         <AddPermissionTemplate />
       </SlidePopup>

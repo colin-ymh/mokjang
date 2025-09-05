@@ -9,6 +9,10 @@ export default {
   memberCount: 'Member Count',
   paymentDay: 'Payment Date',
   nextPaymentDay: 'Next Payment Date',
+  currentPlan: 'Current Plan',
+
+  'setting.title': 'Settings',
+  'setting.description': 'Manage your account information',
 
   'card.title': 'Register Card',
   'card.cardNo.title': 'Card Number',
@@ -31,8 +35,10 @@ export default {
   'main.faq.title': 'Frequently Asked Questions',
   'main.faq.description':
     'We’ve gathered answers to common questions about Mokjang.',
-  'main.faq.extra': 'Do you have more questions?',
+  'main.faq.extra':
+    'If you have any further questions, please feel free to contact us anytime.',
 
+  'button.home': 'Home',
   'button.cancel': 'Cancel',
   'button.function': 'Function',
   'button.price': 'Price',
@@ -51,6 +57,14 @@ export default {
   'button.createChurch': 'Create a new Church',
   'button.start': 'Start',
   'button.retry': 'Retry',
+  'button.openChurch': 'Go to Church',
+  'button.donate': 'Support for Service',
+  'button.setting': 'Setting',
+  'button.logOut': 'Logout',
+  'button.edit': 'Edit',
+  'button.save': 'Save',
+  'button.withdraw': 'Withdraw',
+  'button.startForFree': 'Start For Free',
 
   'function.member.title': 'Member Management',
   'function.member.description':

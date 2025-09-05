@@ -1,33 +1,31 @@
 import styled from 'styled-components';
 import { usePathname } from 'next/navigation';
 
-import { MainText } from '@mokjang/components';
-import { MEMBER } from '@mokjang/constants';
-import { GRAY, MAIN, PURPLE } from '@mokjang/constants';
+import { MainTag, MainText, SvgIcon } from '@mokjang/components';
 import {
   CALENDAR_MODE,
   GENDER,
+  GRAY,
   GROUP_ROLE,
+  LOCALE,
+  MAIN,
   MARRIAGE,
+  MEMBER,
+  PURPLE,
+  SIZE,
 } from '@mokjang/constants';
-import { LOCALE } from '@mokjang/constants';
-import { getFormattedMobilePhone } from '@mokjang/utils';
 import {
   getAge,
   getDateFromDateString,
   getDateStringFromDate,
+  getFormattedMobilePhone,
+  getTranslatedAge,
+  getTranslatedDateFromDateString,
 } from '@mokjang/utils';
 
 import { useI18n } from '../../../../../../locales/client';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../redux/store';
-import { SvgIcon } from '@mokjang/components';
-import {
-  getTranslatedAge,
-  getTranslatedDateFromDateString,
-} from '@mokjang/utils';
-import { SIZE } from '@mokjang/constants';
-import { MainTag } from '@mokjang/components';
 
 import { Svg } from '@mokjang/assets';
 import React from 'react';
@@ -149,15 +147,22 @@ const PersonalInformationListView = ({
           <MainText
             color={GRAY.DARK}
           >{`${t(MEMBER.BIRTH)} / ${t(MEMBER.AGE)}`}</MainText>
+
           <InformationTextWrapper>
-            <MainText size={SIZE.LARGE} fontWeight={400}>
-              {`${getTranslatedDateFromDateString(basePath, targetMember.birth)} / ${getTranslatedAge(basePath, getAge(getDateFromDateString(targetMember.birth)))}`}
-            </MainText>
-            <MainTag
-              title={t(
-                targetMember.isLunar ? CALENDAR_MODE.LUNAR : CALENDAR_MODE.SOLAR
-              )}
-            />
+            {targetMember.birth && (
+              <MainText size={SIZE.LARGE} fontWeight={400}>
+                {`${getTranslatedDateFromDateString(basePath, targetMember.birth)} / ${getTranslatedAge(basePath, getAge(getDateFromDateString(targetMember.birth)))}`}
+              </MainText>
+            )}
+            {targetMember.birth && (
+              <MainTag
+                title={t(
+                  targetMember.isLunar
+                    ? CALENDAR_MODE.LUNAR
+                    : CALENDAR_MODE.SOLAR
+                )}
+              />
+            )}
           </InformationTextWrapper>
         </TextContainer>
       </InformationItem>
@@ -169,7 +174,8 @@ const PersonalInformationListView = ({
           <MainText color={GRAY.DARK}>{t(MEMBER.MARRIAGE)}</MainText>
           <InformationTextWrapper>
             <MainText size={SIZE.LARGE} fontWeight={400}>
-              {`${t(targetMember.marriage as MARRIAGE)} ${targetMember.detailMarriage ? `(${targetMember.detailMarriage})` : ''}`}
+              {targetMember.marriage &&
+                `${t(targetMember.marriage as MARRIAGE)} ${targetMember.detailMarriage ? `(${targetMember.detailMarriage})` : ''}`}
             </MainText>
           </InformationTextWrapper>
         </TextContainer>

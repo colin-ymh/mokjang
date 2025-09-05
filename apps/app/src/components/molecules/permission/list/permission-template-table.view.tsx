@@ -3,10 +3,8 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
 
-import { GRAY, WHITE } from '@mokjang/constants';
-import { PERMISSION_TEMPLATE } from '@mokjang/constants';
+import { BLANK, GRAY, PERMISSION_TEMPLATE, WHITE } from '@mokjang/constants';
 import { MainText } from '@mokjang/components';
-import { BLANK } from '@mokjang/constants';
 import { PermissionTemplate } from '@mokjang/models';
 import useWindowSize from '../../../../hooks/window/window';
 import PermissionTemplateTableHeader from '../../../atoms/permission/list/permission-template-table-header';
@@ -76,7 +74,7 @@ const TableHeader = styled.th<{ id: string; $isLast?: boolean }>`
     bottom: 0;
     left: 0;
     right: 0;
-    height: 0.7px;
+    height: 0.5px;
     background: ${GRAY.LIGHT};
   }
 `;

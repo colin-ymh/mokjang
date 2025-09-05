@@ -16,11 +16,9 @@ import { ko } from 'date-fns/locale';
 
 import { BLACK, GRAY, MAIN, RED, WHITE } from '@mokjang/constants';
 import { getMonth, getYear } from 'date-fns';
-import { Button } from '@mokjang/components';
-import { BorderInput } from '@mokjang/components';
+import { BorderInput, Button, SvgIcon } from '@mokjang/components';
 import _ from 'lodash';
 import { Svg } from '@mokjang/assets';
-import { SvgIcon } from '@mokjang/components';
 
 import { Chevron } from '../../components/atoms/common/dropdown/dropdown-chevron';
 
@@ -148,7 +146,7 @@ const DatePickerPortalStyles = createGlobalStyle`
   /* 비활성화 상태 */
   .date-picker-calendar .mj-select:disabled {
     background-color: ${GRAY.SEMI_LIGHT};
-    color: ${GRAY.DARK};
+    color: ${GRAY.DARK} !important;
     cursor: not-allowed;
   }
 
@@ -195,15 +193,23 @@ const DatePickerPortalStyles = createGlobalStyle`
   .date-picker-calendar .react-datepicker__day-names {
     border-bottom: none;
   }
-  /* Sunday weekday name and Sunday dates (not outside-month) */
+  /* Sunday weekday name and Sunday dates (not outside-month, not disabled) */
   .date-picker-calendar .react-datepicker__day-name:nth-child(1),
-  .date-picker-calendar .react-datepicker__day:nth-child(7n+1):not(.react-datepicker__day--outside-month) {
+  .date-picker-calendar .react-datepicker__day:nth-child(7n+1):not(.react-datepicker__day--outside-month):not([aria-disabled='true']) {
     color: ${RED.DEFAULT};
   }
-  /* Saturday weekday name and Saturday dates (not outside-month) */
+
+  /* Saturday weekday name and Saturday dates (not outside-month, not disabled) */
   .date-picker-calendar .react-datepicker__day-name:nth-child(7),
-  .date-picker-calendar .react-datepicker__day:nth-child(7n):not(.react-datepicker__day--outside-month) {
+  .date-picker-calendar .react-datepicker__day:nth-child(7n):not(.react-datepicker__day--outside-month):not([aria-disabled='true']) {
     color: ${MAIN.DEFAULT};
+  }
+
+  /* Disabled 날짜 → 항상 회색 */
+  .date-picker-calendar .react-datepicker__day[aria-disabled='true'],
+  .date-picker-calendar .react-datepicker__day--disabled {
+    color: ${GRAY.LIGHT} !important;
+    pointer-events: none;
   }
   
   /* 보여지는 달력에서, 해당 월이 아닌 다른 달 날짜는 회색 + 클릭 막기 */

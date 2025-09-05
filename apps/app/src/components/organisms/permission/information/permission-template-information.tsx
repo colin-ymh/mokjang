@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import PermissionTemplateInformationView from './permission-template-information.view';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../../../redux/store';
+import { AppDispatch, RootState } from '@/redux/store';
 import {
   fetchPermissionManagers,
   setPermissionManagers,
   setPermissionTemplates,
-} from '../../../../redux/reducers/filter/permission-template-filter-reducer';
-import { BLANK, CHURCH_USER_ROLE } from '@mokjang/constants';
+} from '@/redux/reducers/filter/permission-template-filter-reducer';
+import { BLACK, BLANK, CHURCH_USER_ROLE, DESTRUCTIVE, } from '@mokjang/constants';
 import ConfirmPopup from '@/components/atoms/common/popup/error-popup';
 import { useScopedI18n } from '../../../../../locales/client';
 import { setTargetPermissionTemplate } from '@/redux/reducers/target/target-permission-template-reducer';
@@ -16,6 +16,7 @@ import { getIsWellFormedTitle } from '@/utils/check';
 import { PermissionsApi } from '@/api/permissions/permissions.api';
 import { CustomPopup } from '@mokjang/components';
 import EditPermissionTemplate from '@/components/organisms/permission/edit/edit-permission-template';
+import { setIsToastShown, setToastBackgroundColor, setToastText, } from '@/redux/reducers/toast-popup-reducer';
 
 type PermissionTemplateInformationProps = {
   onClickDelete: () => void;
@@ -63,7 +64,7 @@ const PermissionTemplateInformation = ({
     setIsEditUnit(false);
   };
 
-  const onChangeUnits = (unitIds: string[]) => {
+  const onChangeUnits = (unitIds: number[]) => {
     dispatch(
       setTargetPermissionTemplate({
         ...targetPermissionTemplate,
@@ -72,6 +73,10 @@ const PermissionTemplateInformation = ({
         }),
       })
     );
+  };
+
+  const onClickSelectAll = () => {
+    onChangeUnits([1, 2, 3, 4, 5, 6, 7, 8]);
   };
 
   const onClickUnitSave = async () => {
@@ -83,8 +88,8 @@ const PermissionTemplateInformation = ({
             templateId: targetPermissionTemplate.id,
           },
           {
-            unitIds: targetPermissionTemplate.permissionUnits.map((unit) =>
-              unit.id.toString()
+            unitIds: targetPermissionTemplate.permissionUnits.map(
+              (unit) => unit.id
             ),
           }
         )
@@ -100,10 +105,20 @@ const PermissionTemplateInformation = ({
           dispatch(setPermissionTemplates(newPermissionTemplates));
           dispatch(setTargetPermissionTemplate(newPermissionTemplate));
 
+          dispatch(setIsToastShown(true));
+          dispatch(setToastText(t_popup('saveComplete')));
+          dispatch(setToastBackgroundColor(BLACK));
+
           setIsEditUnit(false);
         });
     } catch (error) {
-      setThrownError(error instanceof Error ? error : new Error(String(error)));
+      if (error instanceof Error) {
+        dispatch(setToastText(error.message));
+        dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
+        dispatch(setIsToastShown(true));
+      } else {
+        setThrownError(new Error(String(error)));
+      }
     }
   };
 
@@ -167,7 +182,6 @@ const PermissionTemplateInformation = ({
               .includes(targetPermissionTemplate.title)
               ? undefined
               : targetPermissionTemplate.title,
-            unitIds: targetPermissionTemplate.unitIds || undefined,
           }
         )
         .then(async (response) => {
@@ -182,10 +196,20 @@ const PermissionTemplateInformation = ({
           dispatch(setPermissionTemplates(newPermissionTemplates));
           dispatch(setTargetPermissionTemplate(newPermissionTemplate));
 
+          dispatch(setIsToastShown(true));
+          dispatch(setToastText(t_popup('saveComplete')));
+          dispatch(setToastBackgroundColor(BLACK));
+
           setIsEditShown(false);
         });
     } catch (error) {
-      setThrownError(error instanceof Error ? error : new Error(String(error)));
+      if (error instanceof Error) {
+        dispatch(setToastText(error.message));
+        dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
+        dispatch(setIsToastShown(true));
+      } else {
+        setThrownError(new Error(String(error)));
+      }
     }
   };
 
@@ -222,6 +246,7 @@ const PermissionTemplateInformation = ({
     onChangeUnits,
     onClickUnitSave,
     onClickConfirmOpen,
+    onClickSelectAll,
   };
 
   return (

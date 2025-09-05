@@ -8,15 +8,12 @@ import {
   setToastBackgroundColor,
   setToastText,
 } from '../../../../../redux/reducers/toast-popup-reducer';
-import { BLACK, DESTRUCTIVE } from '@mokjang/constants';
+import { BLACK, BLANK, DESTRUCTIVE, TASK_STATUS } from '@mokjang/constants';
 import { DEFAULT_VISITATION, Visitation } from '@mokjang/models';
 import { VisitationsApi } from '../../../../../api/visitations/visitations.api';
 import MemberVisitationListView from './member-visitation-list.view';
-import { getIsWellFormedTitle } from '@mokjang/utils';
-import { BLANK } from '@mokjang/constants';
-import { getDateFromDateString, getFullStringFromDate } from '@mokjang/utils';
+import { getDateFromDateString, getFullStringFromDate, getIsWellFormedTitle, } from '@mokjang/utils';
 import { setTargetVisitation } from '../../../../../redux/reducers/target/target-visitation-reducer';
-import { TASK_STATUS } from '@mokjang/constants';
 
 type MemberVisitationListProps = {};
 

@@ -18,7 +18,7 @@ export declare enum ACTION {
     WRITE = "write"
 }
 export type PermissionUnit = {
-    id: string;
+    id: number;
     domain: PERMISSION_DOMAIN;
     action: ACTION;
 };
@@ -28,7 +28,7 @@ export type PermissionTemplate = {
     title: string;
     description: string;
     memberCount: number;
-    unitIds: string[];
+    unitIds: number[];
     permissionUnits: PermissionUnit[];
 };
 export declare const DEFAULT_PERMISSION_TEMPLATE: PermissionTemplate;

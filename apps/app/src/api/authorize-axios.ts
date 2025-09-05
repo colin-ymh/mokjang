@@ -16,7 +16,6 @@ authorizeAxios.interceptors.response.use(
   (response) => response,
   async (error) => {
     const { config, response } = error;
-    console.log(response);
 
     // ① 재귀 방지: 이미 재시도했거나 /auth/token/rotate 요청이면 패스
     const isRotateCall = config.url?.includes('/auth/token/rotate');

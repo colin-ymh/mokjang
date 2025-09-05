@@ -40,7 +40,7 @@ export declare const getFullStringFromDate: (date: Date) => string;
  * @return {boolean}
  */
 export declare const getIsChild: (date: Date) => boolean;
-export declare const getAge: (date: Date) => number;
+export declare const getAge: (date: Date | null) => number;
 /**
  * 한 달 전의 날짜를 "YYYY-MM-DD" 문자열로 반환
  */

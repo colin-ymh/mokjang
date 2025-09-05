@@ -29,6 +29,7 @@ const TitleContainer = styled.div`
 const ButtonContainer = styled.div`
   display: flex;
   flex-direction: row;
+  align-items: center;
   gap: 10px;
 `;
 
@@ -62,9 +63,10 @@ type PermissionTemplateInformationViewProps = {
   onClickEditOpen: () => void;
   onClickEditUnitOpen: () => void;
   onClickEditUnitClose: () => void;
-  onChangeUnits: (ids: string[]) => void;
+  onChangeUnits: (ids: number[]) => void;
   onClickUnitSave: () => void;
   onClickConfirmOpen: () => void;
+  onClickSelectAll: () => void;
 };
 
 const PermissionTemplateInformationView = ({
@@ -76,6 +78,7 @@ const PermissionTemplateInformationView = ({
   onChangeUnits,
   onClickUnitSave,
   onClickConfirmOpen,
+  onClickSelectAll,
 }: PermissionTemplateInformationViewProps) => {
   const t = useI18n();
   const t_button = useScopedI18n('button');
@@ -133,6 +136,15 @@ const PermissionTemplateInformationView = ({
             (isEditUnit ? (
               <ButtonContainer>
                 <Button
+                  text={t_button('selectAll')}
+                  color={MAIN.DEFAULT}
+                  onClick={onClickSelectAll}
+                  backgroundColor={WHITE}
+                  fontSize={14}
+                  fontWeight={400}
+                  width={'auto'}
+                />
+                <Button
                   width={'auto'}
                   text={t_button('save')}
                   height={30}
@@ -162,7 +174,7 @@ const PermissionTemplateInformationView = ({
         </TitleContainer>
         <PermissionUnitList
           selectedUnitIds={targetPermissionTemplate.permissionUnits.map(
-            (unit) => unit.id.toString()
+            (unit) => unit.id
           )}
           isEditable={isEditUnit}
           onChangeUnitIds={onChangeUnits}

@@ -29,7 +29,7 @@ export enum ACTION {
 }
 
 export type PermissionUnit = {
-  id: string;
+  id: number;
   domain: PERMISSION_DOMAIN;
   action: ACTION;
 };
@@ -40,7 +40,7 @@ export type PermissionTemplate = {
   title: string;
   description: string;
   memberCount: number;
-  unitIds: string[];
+  unitIds: number[];
   permissionUnits: PermissionUnit[];
 };
 

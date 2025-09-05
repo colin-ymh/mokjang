@@ -8,18 +8,27 @@ import {
 } from '../../../../redux/reducers/filter/task-filter-reducer';
 
 import TaskListView from './task-list.view';
-import { DEFAULT_TASK } from '@mokjang/models';
+import { DEFAULT_TASK, Task } from '@mokjang/models';
 import { setTargetTask } from '../../../../redux/reducers/target/target-task-reducer';
 import {
   setIsToastShown,
+  setToastBackgroundColor,
   setToastText,
 } from '../../../../redux/reducers/toast-popup-reducer';
 import { useScopedI18n } from '../../../../../locales/client';
 import { TasksApi } from '../../../../api/tasks/tasks.api';
-import { getIsWellFormedTitle } from '@mokjang/utils';
-import { BLANK, HEADER_BAR } from '@mokjang/constants';
-import { TASK_STATUS } from '@mokjang/constants';
-import { getDateFromDateString, getFullStringFromDate } from '@mokjang/utils';
+import {
+  getDateFromDateString,
+  getFullStringFromDate,
+  getIsWellFormedTitle,
+} from '@mokjang/utils';
+import {
+  BLACK,
+  BLANK,
+  DESTRUCTIVE,
+  HEADER_BAR,
+  TASK_STATUS,
+} from '@mokjang/constants';
 
 type TaskListProps = {
   headerType?: HEADER_BAR;
@@ -151,6 +160,13 @@ const TaskList = ({ headerType }: TaskListProps) => {
 
   const onClickEditDone = async () => {
     try {
+      const prevResponse = await tasksApi.getTask({
+        churchId,
+        taskId: targetTask.id,
+      });
+
+      const prev: Task = prevResponse.data.data;
+
       await tasksApi
         .editTask(
           { churchId, taskId: targetTask.id },
@@ -165,21 +181,65 @@ const TaskList = ({ headerType }: TaskListProps) => {
               getDateFromDateString(targetTask.endDate)
             ),
             parentTaskId: targetTask.parentTaskId || undefined,
-            receiverIds: targetTask.receiverIds || undefined,
             content: targetTask.content || undefined,
           }
         )
-        .then((response) => {
+        .then(async () => {
+          const reports = prev?.reports;
+
+          const receiverIds =
+            reports?.map((report) => report.receiver.id) || [];
+
+          const addReceiverIds = targetTask.receiverIds?.filter(
+            (receiverId) => !receiverIds.includes(receiverId)
+          );
+          const deleteReceiverIds =
+            receiverIds?.filter(
+              (receiverId) => !targetTask.receiverIds?.includes(receiverId)
+            ) || [];
+
+          if (addReceiverIds?.length > 0) {
+            await tasksApi.addReceivers(
+              {
+                churchId,
+                taskId: targetTask.id,
+              },
+              { receiverIds: addReceiverIds }
+            );
+          }
+
+          if (deleteReceiverIds?.length > 0) {
+            await tasksApi.deleteReceivers(
+              {
+                churchId,
+                taskId: targetTask.id,
+              },
+              { receiverIds: deleteReceiverIds }
+            );
+          }
+
+          const response = await tasksApi.getTask({
+            churchId,
+            taskId: targetTask.id,
+          });
           const newTask = response.data.data;
+
           dispatch(setTargetTask(newTask));
           dispatch(fetchTasks({ headerType }));
           setIsEditShown(false);
         });
-    } catch (error) {
-      setThrownError(error instanceof Error ? error : new Error(String(error)));
-    } finally {
+
       dispatch(setIsToastShown(true));
       dispatch(setToastText(t_popup('saveComplete')));
+      dispatch(setToastBackgroundColor(BLACK));
+    } catch (error) {
+      if (error instanceof Error) {
+        dispatch(setToastText(error.message));
+        dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
+        dispatch(setIsToastShown(true));
+      } else {
+        setThrownError(new Error(String(error)));
+      }
     }
   };
 

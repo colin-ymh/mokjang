@@ -1,19 +1,18 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import { BLANK } from '@mokjang/constants';
-import { getFormattedTitle } from '@mokjang/utils';
-import { DEFAULT_VISITATION_DETAIL } from '@mokjang/models';
+import {
+  getDateFromDateString,
+  getDateStringFromDate,
+  getFormattedTitle,
+  getHourFromMinute,
+  getTimeStringFromDate,
+} from '@mokjang/utils';
+import { DEFAULT_VISITATION_DETAIL, Member } from '@mokjang/models';
 import { MemberDropdownType } from '../../../atoms/common/dropdown/member-dropdown-item';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../../redux/store';
 import { setTargetVisitation } from '../../../../redux/reducers/target/target-visitation-reducer';
-import {
-  getDateFromDateString,
-  getDateStringFromDate,
-  getHourFromMinute,
-  getTimeStringFromDate,
-} from '@mokjang/utils';
 import AddVisitationView from './add-visitation.view';
-import { Member } from '@mokjang/models';
 
 type AddVisitationProps = {
   isEdit?: boolean;
@@ -121,6 +120,14 @@ const AddVisitation = ({ isEdit = false }: AddVisitationProps) => {
       setVisitedMembers(
         targetVisitation.members.map((m) => ({ value: m.id, title: m.name }))
       );
+
+      // const memberIds = targetVisitation.members.map((member) => {
+      //   return member.id;
+      // });
+      //
+      // dispatch(
+      //   setTargetVisitation({ ...targetVisitation, memberIds: memberIds })
+      // );
     } else {
       setVisitedMembers([]);
     }
@@ -180,11 +187,20 @@ const AddVisitation = ({ isEdit = false }: AddVisitationProps) => {
 
   useEffect(() => {
     if (targetVisitation.reports) {
-      setReceivers(
-        targetVisitation.reports.map((r) => ({
-          value: r.receiver.id,
-          title: r.receiver.name,
-        }))
+      const newReceivers = targetVisitation.reports.map((report) => {
+        return {
+          value: report.receiver.id,
+          title: report.receiver.name,
+        };
+      });
+      setReceivers(newReceivers);
+
+      const receiverIds = targetVisitation.reports.map((report) => {
+        return report.receiver.id;
+      });
+
+      dispatch(
+        setTargetVisitation({ ...targetVisitation, receiverIds: receiverIds })
       );
     } else {
       setReceivers([]);
