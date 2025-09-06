@@ -20,4 +20,5 @@ export enum DIRECTION {
 
 export enum CURSOR {
   POINTER = 'pointer',
+  NOT_ALLOWED = 'not-allowed',
 }

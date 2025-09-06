@@ -1,18 +1,12 @@
 import { ChangeEvent } from 'react';
 import styled from 'styled-components';
 
-import {
-  BorderInput,
-  Button,
-  LabelInput,
-  MainText,
-  ProfileImage,
-} from '@mokjang/components';
+import { BorderInput, Button, MainText, ProfileImage, } from '@mokjang/components';
 import { useI18n, useScopedI18n } from '../../../../locales/client';
-import { GRAY, WHITE } from '@mokjang/constants';
+import { GRAY, MAIN, WHITE } from '@mokjang/constants';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
-import { getFormattedMobilePhone } from '@mokjang/utils';
+import { getFormattedMobilePhone, getIsWellFormedMobilePhone, } from '@mokjang/utils';
 
 const SettingContainer = styled.div`
   display: flex;
@@ -79,12 +73,16 @@ const WithdrawContainer = styled.div`
 export type SettingViewProp = {
   isEditName: boolean;
   isEditMobilePhone: boolean;
+  isRequested: boolean;
   name: string;
   mobilePhone: string;
+  inputCode: string;
   onChangeName: (event: ChangeEvent<HTMLInputElement>) => void;
   onChangeMobilePhone: (event: ChangeEvent<HTMLInputElement>) => void;
+  onChangeInputCode: (event: ChangeEvent<HTMLInputElement>) => void;
   onClickEditName: () => void;
   onClickEditMobilePhone: () => void;
+  onClickRequest: () => void;
   onClickCancelName: () => void;
   onClickCancelMobilePhone: () => void;
   onClickSaveName: () => void;
@@ -94,12 +92,16 @@ export type SettingViewProp = {
 const SettingView = ({
   isEditName,
   isEditMobilePhone,
+  isRequested,
   name,
   mobilePhone,
+  inputCode,
   onChangeName,
   onChangeMobilePhone,
+  onChangeInputCode,
   onClickEditName,
   onClickEditMobilePhone,
+  onClickRequest,
   onClickCancelName,
   onClickCancelMobilePhone,
   onClickSaveName,
@@ -110,6 +112,8 @@ const SettingView = ({
   const t = useI18n();
   const t_setting = useScopedI18n('setting');
   const t_button = useScopedI18n('button');
+
+  const isRequestEnable = getIsWellFormedMobilePhone(mobilePhone);
 
   return (
     <>
@@ -145,12 +149,7 @@ const SettingView = ({
             </MainText>
             <RowContainer>
               {isEditName ? (
-                <BorderInput
-                  label={t('name')}
-                  value={name}
-                  onChange={onChangeName}
-                  height={40}
-                />
+                <BorderInput value={name} onChange={onChangeName} height={40} />
               ) : (
                 <MainText fontSize={16}>{name}</MainText>
               )}
@@ -192,7 +191,6 @@ const SettingView = ({
             <RowContainer>
               {isEditMobilePhone ? (
                 <BorderInput
-                  label={t('mobilePhone')}
                   value={mobilePhone}
                   onChange={onChangeMobilePhone}
                   height={40}
@@ -222,13 +220,36 @@ const SettingView = ({
               )}
               {isEditMobilePhone && (
                 <Button
-                  text={t_button('save')}
+                  text={t_button('mobilePhone.request')}
                   width={60}
                   height={40}
-                  onClick={onClickSaveMobilePhone}
+                  onClick={onClickRequest}
+                  disabled={!isRequestEnable}
+                  backgroundColor={
+                    isRequestEnable ? MAIN.DEFAULT : GRAY.DEFAULT
+                  }
                 />
               )}
             </RowContainer>
+            {isRequested && (
+              <RowContainer>
+                <BorderInput
+                  value={inputCode}
+                  onChange={onChangeInputCode}
+                  height={40}
+                />
+                <Button
+                  text={t_button('mobilePhone.verify')}
+                  width={60}
+                  height={40}
+                  onClick={onClickSaveMobilePhone}
+                  disabled={inputCode.length === 0}
+                  backgroundColor={
+                    inputCode.length !== 0 ? MAIN.DEFAULT : GRAY.DEFAULT
+                  }
+                />
+              </RowContainer>
+            )}
           </ColumnContainer>
         </CardContainer>
         <WithdrawContainer>

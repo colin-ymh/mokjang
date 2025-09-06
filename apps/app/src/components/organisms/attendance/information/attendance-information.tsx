@@ -24,11 +24,19 @@ import {
   setWorshipAttendances,
 } from '@/redux/reducers/filter/worship-attendance-filter-reducer';
 import { WorshipSessionsApi } from '@/api/worship/worship-sessions.api';
-import { getDateFromDateString, getDateInWeekByDayOfWeek, getDateStringFromDate, } from '@mokjang/utils';
+import {
+  getDateFromDateString,
+  getDateInWeekByDayOfWeek,
+  getDateStringFromDate,
+} from '@mokjang/utils';
 import { ALL, BLACK, BLANK, DESTRUCTIVE } from '@mokjang/constants';
 import { WorshipAttendancesApi } from '@/api/worship/worship-attendances.api';
 import { setWorshipEnrollments } from '@/redux/reducers/filter/worship-enrollment-filter-reducer';
-import { setIsToastShown, setToastBackgroundColor, setToastText, } from '@/redux/reducers/toast-popup-reducer';
+import {
+  setIsToastShown,
+  setToastBackgroundColor,
+  setToastText,
+} from '@/redux/reducers/toast-popup-reducer';
 import { useScopedI18n } from '../../../../../locales/client';
 
 type AttendanceInformationProps = {

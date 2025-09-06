@@ -117,7 +117,7 @@ export const Button = ({
               color={color}
               fontWeight={fontWeight}
               fontSize={fontSize}
-              cursor={CURSOR.POINTER}
+              cursor={disabled ? CURSOR.NOT_ALLOWED : CURSOR.POINTER}
               baselineOffsetPx={baselineOffsetPx}
             >
               {text}

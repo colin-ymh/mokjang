@@ -23,8 +23,8 @@ const ProfileModal = ({ onClickClose }: ProfileModalProps) => {
     router.push('/setting');
   };
 
-  const onClickLogout = () => {
-    authApi.getLogOut();
+  const onClickLogout = async () => {
+    await authApi.getLogOut();
     window.location.href = '/';
   };
 

@@ -21,4 +21,5 @@ export var DIRECTION;
 export var CURSOR;
 (function (CURSOR) {
     CURSOR["POINTER"] = "pointer";
+    CURSOR["NOT_ALLOWED"] = "not-allowed";
 })(CURSOR || (CURSOR = {}));

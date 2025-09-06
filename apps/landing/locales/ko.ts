@@ -66,6 +66,8 @@ export default {
   'button.save': '저장',
   'button.withdraw': '탈퇴하기',
   'button.startForFree': '무료로 시작하기',
+  'button.mobilePhone.request': '요청',
+  'button.mobilePhone.verify': '인증',
 
   'function.member.title': '교인관리(교적부)',
   'function.member.description':
@@ -194,4 +196,5 @@ export default {
     '목장 서비스에 대해 궁금한 점이나 요구사항을 자유롭게 적어주세요',
 
   'popup.cancelComplete': '취소가 완료되었습니다.',
+  'popup.saveComplete': '저장이 완료되었습니다.',
 } as const;

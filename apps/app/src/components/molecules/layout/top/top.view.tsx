@@ -122,6 +122,16 @@ const TopView = ({
             color={GRAY.DARK}
           />
         )}
+
+        {sideId !== SIDE_ID.MANAGEMENT && (
+          <SvgIcon
+            svg={Svg.Setting}
+            onClick={() => onClickButton(SIDE_ID.MANAGEMENT)}
+            size={22}
+            width={1.5}
+            color={GRAY.DARK}
+          />
+        )}
         {sideId !== SIDE_ID.NOTIFICATION && (
           <NotificationWrapper>
             <SvgIcon
@@ -140,15 +150,6 @@ const TopView = ({
               <NotificationModal onClickClose={onClickNotificationClose} />
             )}
           </NotificationWrapper>
-        )}
-        {sideId !== SIDE_ID.MANAGEMENT && (
-          <SvgIcon
-            svg={Svg.Setting}
-            onClick={() => onClickButton(SIDE_ID.MANAGEMENT)}
-            size={22}
-            width={1.5}
-            color={GRAY.DARK}
-          />
         )}
         {/*{sideId !== SIDE_ID.GUIDE && (*/}
         {/*  <SvgIcon*/}

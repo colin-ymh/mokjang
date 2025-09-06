@@ -65,6 +65,8 @@ export default {
   'button.save': 'Save',
   'button.withdraw': 'Withdraw',
   'button.startForFree': 'Start For Free',
+  'button.mobilePhone.request': 'Request',
+  'button.mobilePhone.verify': 'Verify',
 
   'function.member.title': 'Member Management',
   'function.member.description':
@@ -198,4 +200,5 @@ export default {
     'Please feel free to write down any questions or requirements you have about the Mokjang service',
 
   'popup.cancelComplete': 'Cancel Completed.',
+  'popup.saveComplete': 'Save Completed.',
 } as const;
