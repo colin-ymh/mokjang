@@ -18,12 +18,15 @@ import {
   setIsToastShown,
   setToastText,
 } from '../../../../redux/reducers/toast-popup-reducer';
-import { ORDER_DIRECTION } from '@mokjang/constants';
-import { WORSHIP_ATTENDANCE } from '@mokjang/constants';
+import { ORDER_DIRECTION, WORSHIP_ATTENDANCE } from '@mokjang/constants';
 
-export type AttendanceInformationTableProps = {};
+export type AttendanceInformationTableProps = {
+  fetchSessionStatistic: () => void;
+};
 
-const AttendanceInformationTable = ({}: AttendanceInformationTableProps) => {
+const AttendanceInformationTable = ({
+  fetchSessionStatistic,
+}: AttendanceInformationTableProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const { churchId } = useSelector((state: RootState) => state.church);
   const { targetWorship } = useSelector(
@@ -143,6 +146,8 @@ const AttendanceInformationTable = ({}: AttendanceInformationTableProps) => {
             : WORSHIP_ATTENDANCE_STATUS.UNKNOWN,
         }
       );
+
+      fetchSessionStatistic();
     } catch (error) {
       if (error instanceof Error) {
         dispatch(setToastText(error.message));
@@ -224,6 +229,8 @@ const AttendanceInformationTable = ({}: AttendanceInformationTableProps) => {
             : WORSHIP_ATTENDANCE_STATUS.UNKNOWN,
         }
       );
+
+      fetchSessionStatistic();
     } catch (error) {
       if (error instanceof Error) {
         dispatch(setToastText(error.message));

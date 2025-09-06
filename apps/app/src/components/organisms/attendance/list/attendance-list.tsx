@@ -9,6 +9,7 @@ import {
 import { WorshipEnrollment } from '@mokjang/models';
 import AttendanceListView from './attendance-list.view';
 import { Loading } from '@mokjang/components';
+
 type AttendanceListProps = {};
 
 const AttendanceList = ({}: AttendanceListProps) => {
@@ -33,7 +34,7 @@ const AttendanceList = ({}: AttendanceListProps) => {
     throw thrownError;
   }
 
-  const [isStatisticOpened, setIsStatisticOpened] = useState<boolean>(false);
+  const [isStatisticOpened, setIsStatisticOpened] = useState<boolean>(true);
 
   // 서버에서 불러오는 교인 목록 페이지
   const [page, setPage] = useState<number>(1);

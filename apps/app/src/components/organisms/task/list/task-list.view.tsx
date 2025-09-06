@@ -109,7 +109,6 @@ const TaskListView = (props: TaskListViewProps) => {
         inCharge={targetTask?.inCharge}
         startDate={targetTask?.startDate}
         endDate={targetTask?.endDate}
-        disabledKeyboard={true}
       >
         <>
           {/* 삭제 확인 팝업 */}
@@ -127,21 +126,21 @@ const TaskListView = (props: TaskListViewProps) => {
             rightButtonText={t_button('delete')}
           />
           <TaskInformation onChangeStatus={onChangeStatus} />
-        </>
-      </ScrollSlidePopup>
 
-      {/* 심방 수정 팝업*/}
-      <ScrollSlidePopup
-        isShow={isEditShown}
-        onClickClose={onClickEditClose}
-        onClickCancel={onClickEditClose}
-        onClickDone={onClickEditDone}
-        headerTitle={t_title('editTask')}
-        doneBackgroundColor={isSaveEnabled ? MAIN.DEFAULT : MAIN.LIGHT}
-        doneDisabled={!isSaveEnabled}
-        isAnimation={false}
-      >
-        <AddTask isEdit={true} />
+          {/* 심방 수정 팝업*/}
+          <ScrollSlidePopup
+            isShow={isEditShown}
+            onClickClose={onClickEditClose}
+            onClickCancel={onClickEditClose}
+            onClickDone={onClickEditDone}
+            headerTitle={t_title('editTask')}
+            doneBackgroundColor={isSaveEnabled ? MAIN.DEFAULT : MAIN.LIGHT}
+            doneDisabled={!isSaveEnabled}
+            isAnimation={false}
+          >
+            <AddTask isEdit={true} />
+          </ScrollSlidePopup>
+        </>
       </ScrollSlidePopup>
       <Loading isShow={isLoading} />
     </>

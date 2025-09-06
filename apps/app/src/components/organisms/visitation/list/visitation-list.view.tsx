@@ -113,7 +113,6 @@ const VisitationListView = (props: VisitationListViewProps) => {
         inCharge={targetVisitation?.inCharge}
         startDate={targetVisitation?.startDate}
         endDate={targetVisitation?.endDate}
-        disabledKeyboard={true}
       >
         <>
           {/* 삭제 확인 팝업 */}
@@ -131,23 +130,23 @@ const VisitationListView = (props: VisitationListViewProps) => {
             rightButtonText={t_button('delete')}
           />
           <VisitationInformation onChangeStatus={onChangeStatus} />
+
+          {/* 심방 수정 팝업*/}
+          <ScrollSlidePopup
+            isShow={isEditShown}
+            onClickClose={onClickEditClose}
+            onClickCancel={onClickEditClose}
+            onClickDone={onClickEditDone}
+            headerTitle={t_title('editVisitation')}
+            doneBackgroundColor={isSaveEnabled ? MAIN.DEFAULT : MAIN.LIGHT}
+            doneDisabled={!isSaveEnabled}
+            isAnimation={false}
+          >
+            <AddVisitation isEdit={true} />
+          </ScrollSlidePopup>
+          <Loading isShow={isLoading} />
         </>
       </ScrollSlidePopup>
-
-      {/* 심방 수정 팝업*/}
-      <ScrollSlidePopup
-        isShow={isEditShown}
-        onClickClose={onClickEditClose}
-        onClickCancel={onClickEditClose}
-        onClickDone={onClickEditDone}
-        headerTitle={t_title('editVisitation')}
-        doneBackgroundColor={isSaveEnabled ? MAIN.DEFAULT : MAIN.LIGHT}
-        doneDisabled={!isSaveEnabled}
-        isAnimation={false}
-      >
-        <AddVisitation isEdit={true} />
-      </ScrollSlidePopup>
-      <Loading isShow={isLoading} />
     </>
   );
 };

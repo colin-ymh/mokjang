@@ -5,18 +5,15 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
 import { Group } from '@mokjang/models';
-import { CustomPopup } from '@mokjang/components';
+import { Button, CustomPopup, MainText } from '@mokjang/components';
 import SelectGroupHierarchy from '../../group/select-group-hierarchy';
 import WeekNavigator from '../../../atoms/common/date/week-navigator';
 import { getDateFromDateString, getDateStringFromDate } from '@mokjang/utils';
-import { GRAY, GREEN, RED } from '@mokjang/constants';
+import { GRAY, GREEN, RED, SIZE } from '@mokjang/constants';
 import AttendanceInformationTable from '../../../molecules/attendance/information/attendance-information-table';
 import WorshipSessionInformation from '../../../molecules/attendance/information/worship-session-information';
 import LabelDropdown from '../../../atoms/common/dropdown/label-dropdown';
-import { SIZE } from '@mokjang/constants';
-import { MainText } from '@mokjang/components';
 import { getWorshipAttendanceRateColor } from '../../../../utils/color';
-import { Button } from '@mokjang/components';
 
 const AttendanceInformationContainer = styled.div`
   display: flex;
@@ -98,6 +95,7 @@ type AttendanceInformationProps = {
   onClickCloseGroupModal: () => void;
   onChangeDate: (date: Date) => void;
   onClickAllAttended: () => void;
+  fetchSessionStatistic: () => void;
 };
 
 const AttendanceInformation = ({
@@ -109,6 +107,7 @@ const AttendanceInformation = ({
   onClickCloseGroupModal,
   onChangeDate,
   onClickAllAttended,
+  fetchSessionStatistic,
 }: AttendanceInformationProps) => {
   const t = useI18n();
   const t_title = useScopedI18n('title');
@@ -234,7 +233,9 @@ const AttendanceInformation = ({
           </RowContainer>
           {/* 출석 목록 */}
           <TableContainer>
-            <AttendanceInformationTable />
+            <AttendanceInformationTable
+              fetchSessionStatistic={fetchSessionStatistic}
+            />
           </TableContainer>
         </ContentContainer>
       </AttendanceInformationContainer>

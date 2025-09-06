@@ -2,35 +2,39 @@ import styled from 'styled-components';
 import FakeDropdownButton from '../../../atoms/common/button/fake-dropdown-button';
 import { Group } from '@mokjang/models';
 import { useI18n } from '../../../../../locales/client';
-import { CustomPopup } from '@mokjang/components';
+import { Button, CustomPopup, MainText } from '@mokjang/components';
 import SelectGroupHierarchy from '../../../organisms/group/select-group-hierarchy';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
 import Dropdown from '../../../atoms/common/dropdown/dropdown';
-import { ALL, DAY, REPEAT_PERIOD, WORSHIP_PERIOD } from '@mokjang/constants';
+import {
+  ALL,
+  DAY,
+  GRAY,
+  GREEN,
+  LOCALE,
+  MAIN,
+  PURPLE,
+  REPEAT_PERIOD,
+  SIZE,
+  WHITE,
+  WORSHIP_PERIOD,
+} from '@mokjang/constants';
 import CustomDatePicker from '../../../../vendor/date-picker/custom-date-picker';
 import {
   getDateFromDateString,
   getDateFromInput,
   getDateStringFromDate,
   getDayConstantByIndex,
+  getTranslatedDateFromDateString,
+  getTranslatedMemberCount,
   getWeekRepeatConstant,
   getWorshipSessionDates,
 } from '@mokjang/utils';
 import React from 'react';
 import { useWorshipPeriodDropdownItems } from '../../../../hooks/dropdown/dropdown-items';
-import { GRAY, GREEN, MAIN, PURPLE, WHITE } from '@mokjang/constants';
-import { MainText } from '@mokjang/components';
-import { SIZE } from '@mokjang/constants';
-import {
-  getTranslatedDateFromDateString,
-  getTranslatedMemberCount,
-} from '@mokjang/utils';
 
 import { usePathname } from 'next/navigation';
-import { LOCALE } from '@mokjang/constants';
-
-import { Button } from '@mokjang/components';
 
 import { Svg } from '@mokjang/assets';
 
@@ -83,7 +87,7 @@ const GroupContainer = styled.div`
   width: 100%;
 `;
 
-const Chevron = styled(Svg.ChevronLeft)<{
+const Chevron = styled(Svg.ChevronDown)<{
   $isOpened: boolean;
 }>`
   cursor: pointer;

@@ -3,16 +3,22 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
 
-import { BLACK, DESTRUCTIVE, GRAY, GREEN, WHITE } from '@mokjang/constants';
+import {
+  BLACK,
+  BLANK,
+  DESTRUCTIVE,
+  GRAY,
+  GREEN,
+  WHITE,
+  WORSHIP_ENROLLMENT,
+} from '@mokjang/constants';
 import { MainText } from '@mokjang/components';
-import { BLANK } from '@mokjang/constants';
 import useWindowSize from '../../../../hooks/window/window';
 import {
   WORSHIP_ATTENDANCE_STATUS,
   WorshipEnrollment,
   WorshipSessionCheckStatus,
 } from '@mokjang/models';
-import { WORSHIP_ENROLLMENT } from '@mokjang/constants';
 import AttendanceTableHeader from '../../../atoms/attendance/list/attendance-table-header';
 import {
   getDateFromDateString,
@@ -173,6 +179,7 @@ type AttendanceTableProps = {
   onScroll: () => void;
   onClickHeader: (id: WORSHIP_ENROLLMENT | string, isSession: boolean) => void;
   checkStatuses: WorshipSessionCheckStatus[];
+  fetchWorshipSessionCheckStatus: () => void;
 };
 
 const AttendanceTableView = ({
@@ -184,6 +191,7 @@ const AttendanceTableView = ({
   onScroll,
   onClickHeader,
   checkStatuses,
+  fetchWorshipSessionCheckStatus,
 }: AttendanceTableProps) => {
   const t_button = useScopedI18n('button');
   const t_title = useScopedI18n('title');
@@ -354,7 +362,12 @@ const AttendanceTableView = ({
         rightButtonShown={false}
         stageTwoTop={40}
       >
-        {(scrollRef) => <AttendanceInformation scrollRef={scrollRef} />}
+        {(scrollRef) => (
+          <AttendanceInformation
+            scrollRef={scrollRef}
+            fetchWorshipSessionCheckStatus={fetchWorshipSessionCheckStatus}
+          />
+        )}
       </WrappedPagePopup>
     </>
   );

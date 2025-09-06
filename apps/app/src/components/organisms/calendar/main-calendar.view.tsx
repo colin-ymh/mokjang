@@ -1,12 +1,11 @@
 import CustomCalendar from '../../../vendor/calendar/custom-calendar';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../../redux/store';
-import { Schedule } from '@mokjang/models';
+import { RootState } from '@/redux/store';
+import { DOMAIN, Schedule } from '@mokjang/models';
 import { Svg } from '@mokjang/assets';
-import { BLACK } from '@mokjang/constants';
+import { BLACK, LOCALE, TASK_STATUS } from '@mokjang/constants';
 import SlidePopup from '../../atoms/common/popup/slide-popup';
-import { DOMAIN } from '@mokjang/models';
 import TaskInformation from '../task/information/task-information';
 import React from 'react';
 import VisitationInformation from '../visitation/information/visitation-information';
@@ -14,12 +13,11 @@ import { useI18n } from '../../../../locales/client';
 import MemberInformation from '../member/information/member-information';
 import ChurchEventInformation from '../church-event/information/church-event-information';
 import { CustomPopup } from '@mokjang/components';
-import { TASK_STATUS } from '@mokjang/constants';
 import WrappedPagePopup from '../../atoms/common/popup/wrapped-page-popup';
-import { getTranslatedTerm } from '../../../utils/translate';
+import { getTranslatedTerm } from '@/utils/translate';
 import EducationSessionInformation from '../education/education-session/information/education-session-information';
 import { usePathname } from 'next/navigation';
-import { LOCALE } from '@mokjang/constants';
+import ScrollSlidePopup from '@/components/atoms/common/popup/scroll-slide-popup';
 
 const CalendarContainer = styled.div`
   display: flex;
@@ -98,14 +96,11 @@ const MainCalendarView = ({
       />
 
       {/* 업무 상세정보 팝업*/}
-      <WrappedPagePopup
+      <ScrollSlidePopup
         isShow={openedDomain === DOMAIN.TASK}
         onClickClose={onClickClose}
+        onClickCancel={onClickClose}
         headerTitle={targetTask?.title}
-        hideCancel={true}
-        hideDone={true}
-        widthPercentage={50}
-        stageThreeTop={190}
         stageTwoTop={40}
         inCharge={targetTask?.inCharge}
         startDate={targetTask?.startDate}
@@ -114,16 +109,14 @@ const MainCalendarView = ({
         onChangeStatus={onChangeTaskStatus}
       >
         <TaskInformation onChangeStatus={onChangeTaskStatus} />
-      </WrappedPagePopup>
+      </ScrollSlidePopup>
 
       {/* 심방 상세정보 팝업*/}
-      <WrappedPagePopup
+      <ScrollSlidePopup
         isShow={openedDomain === DOMAIN.VISITATION}
         onClickClose={onClickClose}
+        onClickCancel={onClickClose}
         headerTitle={targetVisitation?.title}
-        hideCancel={true}
-        hideDone={true}
-        stageThreeTop={250}
         stageTwoTop={40}
         inCharge={targetVisitation.inCharge}
         startDate={targetVisitation.startDate}
@@ -132,7 +125,7 @@ const MainCalendarView = ({
         onChangeStatus={onChangeVisitationStatus}
       >
         <VisitationInformation onChangeStatus={onChangeVisitationStatus} />
-      </WrappedPagePopup>
+      </ScrollSlidePopup>
 
       {/* 교육회차 상세정보 팝업*/}
       <WrappedPagePopup

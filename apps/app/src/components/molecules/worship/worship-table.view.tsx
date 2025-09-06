@@ -3,23 +3,24 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../redux/store';
 
-import { GRAY, MAIN, WHITE } from '@mokjang/constants';
-import { MainText } from '@mokjang/components';
+import {
+  DAY,
+  GRAY,
+  MAIN,
+  REPEAT_PERIOD,
+  SIZE,
+  WHITE,
+  WORSHIP,
+} from '@mokjang/constants';
+import { Button, CustomPopup, MainText, SvgIcon } from '@mokjang/components';
 import { Worship } from '@mokjang/models';
 import useWindowSize from '../../../hooks/window/window';
 import { useI18n, useScopedI18n } from '../../../../locales/client';
 import AddWorship from '../../organisms/worship/add/add-worship';
-import { CustomPopup } from '@mokjang/components';
-
-import { WORSHIP } from '@mokjang/constants';
 import WorshipTableHeader from '../../atoms/worship/worship-table-header';
 import { getDayConstantByIndex, getWeekRepeatConstant } from '@mokjang/utils';
-import { DAY, REPEAT_PERIOD } from '@mokjang/constants';
-import { SvgIcon } from '@mokjang/components';
 
 import { Svg } from '@mokjang/assets';
-import { SIZE } from '@mokjang/constants';
-import { Button } from '@mokjang/components';
 
 // 2. 테이블 컨테이너 (100% 폭 + 스크롤)
 const TableContainer = styled.div<{ height: number }>`
@@ -159,6 +160,7 @@ const WorshipTableView = ({
 }: WorshipTableProps) => {
   const t = useI18n();
   const t_title = useScopedI18n('title');
+  const t_button = useScopedI18n('button');
 
   const { height } = useWindowSize();
 
@@ -285,6 +287,8 @@ const WorshipTableView = ({
           onClickDone={onClickEditDone}
           doneBackgroundColor={isEditEnabled ? MAIN.DEFAULT : MAIN.LIGHT}
           doneDisabled={!isEditEnabled}
+          cancelText={t_button('cancel')}
+          doneText={t_button('save')}
         >
           <AddWorship />
         </CustomPopup>

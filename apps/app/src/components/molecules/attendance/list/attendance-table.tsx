@@ -1,23 +1,27 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../../../redux/store';
-import { ALL, BLANK, ORDER_DIRECTION } from '@mokjang/constants';
-import { WORSHIP_ENROLLMENT } from '@mokjang/constants';
+import { AppDispatch, RootState } from '@/redux/store';
+import {
+  ALL,
+  BLANK,
+  ORDER_DIRECTION,
+  WORSHIP_ENROLLMENT,
+} from '@mokjang/constants';
 import {
   setWorshipEnrollmentOrderBy,
   setWorshipEnrollmentOrderDirection,
-} from '../../../../redux/reducers/filter/worship-enrollment-filter-reducer';
+} from '@/redux/reducers/filter/worship-enrollment-filter-reducer';
 import AttendanceTableView from './attendance-table.view';
 import {
   setTargetWorshipSession,
   setTargetWorshipSessionGroup,
   setTargetWorshipSessionWorship,
-} from '../../../../redux/reducers/target/target-worship-session-reducer';
+} from '@/redux/reducers/target/target-worship-session-reducer';
 import {
   DEFAULT_WORSHIP_SESSION,
   WorshipSessionCheckStatus,
 } from '@mokjang/models';
-import { WorshipSessionsApi } from '../../../../api/worship/worship-sessions.api';
+import { WorshipSessionsApi } from '@/api/worship/worship-sessions.api';
 import { getDateStringFromDate } from '@mokjang/utils';
 
 export type AttendanceTableProps = {
@@ -180,6 +184,7 @@ const AttendanceTable = ({
     onScroll,
     onClickHeader,
     checkStatuses,
+    fetchWorshipSessionCheckStatus,
   };
 
   return (

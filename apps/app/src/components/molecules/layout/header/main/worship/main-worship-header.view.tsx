@@ -1,14 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { GRAY, MAIN } from '@mokjang/constants';
-import { MainText } from '@mokjang/components';
-import { SIZE } from '@mokjang/constants';
+import { GRAY, MAIN, MEDIA_MIN_WIDTH, SIZE } from '@mokjang/constants';
+import { Button, CustomPopup, MainText } from '@mokjang/components';
 import { useScopedI18n } from '../../../../../../../locales/client';
-
-import { MEDIA_MIN_WIDTH } from '@mokjang/constants';
-import { Button } from '@mokjang/components';
-import { CustomPopup } from '@mokjang/components';
 import { MAIN_HEADER_ID } from '@/constants/layout/header';
 import AddWorship from '../../../../../organisms/worship/add/add-worship';
 
@@ -101,6 +96,8 @@ const MainWorshipHeaderView = ({
         onClickDone={onClickSaveWorship}
         doneBackgroundColor={isSaveEnabled ? MAIN.DEFAULT : MAIN.LIGHT}
         doneDisabled={!isSaveEnabled}
+        cancelText={t_button('cancel')}
+        doneText={t_button('save')}
       >
         <AddWorship />
       </CustomPopup>
