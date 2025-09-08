@@ -1,23 +1,22 @@
 import { ToolbarProps } from 'react-big-calendar';
-import { Button } from '@mokjang/components';
+import {
+  Button,
+  CustomPopup,
+  MainText,
+  SvgIcon,
+  TransparentBackground,
+} from '@mokjang/components';
 import styled from 'styled-components';
-import { GRAY, MAIN, WHITE } from '@mokjang/constants';
+import { CURSOR, GRAY, LOCALE, MAIN, WHITE } from '@mokjang/constants';
 import { useI18n, useScopedI18n } from '../../../locales/client';
 import { useParams } from 'next/navigation';
 import Dropdown from '../../components/atoms/common/dropdown/dropdown';
-import { LOCALE } from '@mokjang/constants';
-import { MainText } from '@mokjang/components';
 import { getShortEnglishMonthName } from '@mokjang/utils';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
-import { TransparentBackground } from '@mokjang/components';
 import DomainFilter from './domain-filter';
-import { CustomPopup } from '@mokjang/components';
 import React from 'react';
 import AddChurchEvent from '../../components/organisms/church-event/add/add-church-event';
-
-import { SvgIcon } from '@mokjang/components';
-import { CURSOR } from '@mokjang/constants';
 import ToggleButton from '../../components/atoms/common/button/toggle-button';
 
 import { Svg } from '@mokjang/assets';
@@ -282,6 +281,8 @@ const CustomCalendarHeaderView = ({
             onClickDone={onClickSaveEvent}
             doneBackgroundColor={isSaveEventEnabled ? MAIN.DEFAULT : MAIN.LIGHT}
             doneDisabled={!isSaveEventEnabled}
+            cancelText={t_button('cancel')}
+            doneText={t_button('save')}
           >
             <AddChurchEvent />
           </CustomPopup>

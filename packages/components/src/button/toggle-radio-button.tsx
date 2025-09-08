@@ -56,7 +56,7 @@ export const ToggleRadioButton = ({
   items,
   selectedValue,
   onChange,
-  rowPadding = 5,
+  rowPadding = 10,
   columnPadding = 8,
   backgroundColor = GRAY.EXTRA_LIGHT,
   toggleBackgroundColor = WHITE,

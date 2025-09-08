@@ -1,9 +1,7 @@
 import { AxiosResponse } from 'axios';
 import { CustomError } from '../error/error';
-import { ORDER_DIRECTION } from '@mokjang/constants';
+import { EDUCATION, EDUCATION_TERM, ORDER_DIRECTION } from '@mokjang/constants';
 import authorizeAxios from '../authorize-axios';
-
-import { EDUCATION, EDUCATION_TERM } from '@mokjang/constants';
 import qs from 'qs';
 import { IS_PRODUCTION, SERVER_URL, TEST_SERVER_URL } from '@mokjang/utils';
 
@@ -37,7 +35,7 @@ type CreateEducationParams = {
 type CreateEducationBody = {
   name: string;
   description?: string;
-  goals: string[];
+  goals?: string[];
 };
 
 type EditEducationParams = {
@@ -48,6 +46,7 @@ type EditEducationParams = {
 type EditEducationBody = {
   name?: string;
   description?: string;
+  goals?: string[];
 };
 
 type DeleteEducationParams = {

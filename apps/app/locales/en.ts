@@ -784,6 +784,10 @@ export default {
 
   'popup.deleteWorshipTitle': 'Do you want to delete this Worship?',
   'popup.deleteWorshipBody': 'Deleted Worship cannot be restored.',
+
+  'popup.deleteChurchEventTitle': 'Do you want to delete this event?',
+  'popup.deleteChurchEventBody': 'Deleted event cannot be restored.',
+
   /*-------------------popup-------------------*/
 
   /*-------------------warning-------------------*/

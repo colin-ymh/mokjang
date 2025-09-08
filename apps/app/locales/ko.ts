@@ -787,6 +787,9 @@ export default {
   'popup.deleteWorshipTitle': '해당 예배를 삭제하시겠습니까?',
   'popup.deleteWorshipBody': '삭제된 예배는 복구할 수 없습니다.',
 
+  'popup.deleteChurchEventTitle': '해당 이벤트를 삭제하시겠습니까?',
+  'popup.deleteChurchEventBody': '삭제된 이벤트는 복구할 수 없습니다.',
+
   /*-------------------popup-------------------*/
 
   /*-------------------warning-------------------*/

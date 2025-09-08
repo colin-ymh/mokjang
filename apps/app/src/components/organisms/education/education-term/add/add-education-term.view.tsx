@@ -184,6 +184,7 @@ const AddEducationTermView = ({
                 }
                 onChange={onChangeStartDate}
                 placeholderText={t('startDate')}
+                maxDate={getDateFromDateString(targetEducationTerm.endDate)}
               />
               {/* 시작 시간 */}
               <Dropdown
@@ -213,6 +214,7 @@ const AddEducationTermView = ({
                 }
                 onChange={onChangeEndDate}
                 placeholderText={t('endDate')}
+                minDate={getDateFromDateString(targetEducationTerm.startDate)}
               />
               {/* 종료 시간 */}
               <Dropdown

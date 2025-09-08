@@ -4,12 +4,12 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { DOMAIN, Schedule } from '@mokjang/models';
 import { Svg } from '@mokjang/assets';
-import { BLACK, LOCALE, TASK_STATUS } from '@mokjang/constants';
+import { BLACK, LOCALE, MAIN, TASK_STATUS } from '@mokjang/constants';
 import SlidePopup from '../../atoms/common/popup/slide-popup';
 import TaskInformation from '../task/information/task-information';
 import React from 'react';
 import VisitationInformation from '../visitation/information/visitation-information';
-import { useI18n } from '../../../../locales/client';
+import { useI18n, useScopedI18n } from '../../../../locales/client';
 import MemberInformation from '../member/information/member-information';
 import ChurchEventInformation from '../church-event/information/church-event-information';
 import { CustomPopup } from '@mokjang/components';
@@ -18,6 +18,8 @@ import { getTranslatedTerm } from '@mokjang/utils';
 import EducationSessionInformation from '../education/education-session/information/education-session-information';
 import { usePathname } from 'next/navigation';
 import ScrollSlidePopup from '@/components/atoms/common/popup/scroll-slide-popup';
+import AddChurchEvent from '@/components/organisms/church-event/add/add-church-event';
+import ConfirmPopup from '@/components/atoms/common/popup/error-popup';
 
 const CalendarContainer = styled.div`
   display: flex;
@@ -48,23 +50,41 @@ const Cancel = styled(Svg.Cancel)`
 type MainCalendarViewProps = {
   date: Date;
   openedDomain: DOMAIN | null;
+  isEventEditShown: boolean;
+  isEventSaveEnable: boolean;
+  isEventDeleteShown: boolean;
   onClickClose: () => void;
   onChangeDate: (date: Date) => void;
   onSelectSchedule: (event: Schedule) => void;
   onChangeTaskStatus: (status: TASK_STATUS) => void;
   onChangeVisitationStatus: (status: TASK_STATUS) => void;
   onChangeEducationSessionStatus: (status: TASK_STATUS) => void;
+  onClickEventEditOpen: () => void;
+  onClickEventEditClose: () => void;
+  onClickEventEditDone: () => void;
+  onClickEventDelete: () => void;
+  onClickEventDeleteOpen: () => void;
+  onClickEventDeleteClose: () => void;
 };
 
 const MainCalendarView = ({
   date,
   openedDomain,
+  isEventEditShown,
+  isEventSaveEnable,
+  isEventDeleteShown,
   onClickClose,
   onChangeDate,
   onSelectSchedule,
   onChangeTaskStatus,
   onChangeVisitationStatus,
   onChangeEducationSessionStatus,
+  onClickEventEditOpen,
+  onClickEventEditClose,
+  onClickEventEditDone,
+  onClickEventDelete,
+  onClickEventDeleteOpen,
+  onClickEventDeleteClose,
 }: MainCalendarViewProps) => {
   const { calendarSchedules } = useSelector(
     (state: RootState) => state.calendarFilter
@@ -73,6 +93,9 @@ const MainCalendarView = ({
   const locale = pathname.split('/')[1] as LOCALE;
 
   const t = useI18n();
+  const t_button = useScopedI18n('button');
+  const t_title = useScopedI18n('title');
+  const t_popup = useScopedI18n('popup');
 
   const { targetTask } = useSelector((state: RootState) => state.targetTask);
   const { targetVisitation } = useSelector(
@@ -175,9 +198,12 @@ const MainCalendarView = ({
         isShow={openedDomain === DOMAIN.CHURCH_EVENT}
         width={500}
         height={300}
-        onClickCancel={onClickClose}
-        isFooterShown={false}
+        onClickCancel={onClickEventDeleteOpen}
+        onClickDone={onClickEventEditOpen}
+        cancelText={t_button('delete')}
+        doneText={t_button('edit')}
         headerTitle={t('title.churchEventInformation')}
+        keyboardDisabled={true}
         headerRight={
           <ButtonRow>
             <ButtonContainer onClick={onClickClose}>
@@ -186,7 +212,35 @@ const MainCalendarView = ({
           </ButtonRow>
         }
       >
-        <ChurchEventInformation />
+        <>
+          <ConfirmPopup
+            title={t_popup('deleteChurchEventTitle')}
+            body={t_popup('deleteChurchEventBody')}
+            buttonNum={2}
+            isShow={isEventDeleteShown}
+            onClickLeftButton={onClickEventDeleteClose}
+            onClickRightButton={onClickEventDelete}
+            leftButtonText={t_button('cancel')}
+            rightButtonText={t_button('delete')}
+          />
+          <ChurchEventInformation />
+        </>
+      </CustomPopup>
+
+      {/* 이벤트 수정 팝업 */}
+      <CustomPopup
+        isShow={isEventEditShown}
+        onClickCancel={onClickEventEditClose}
+        headerTitle={t_title('editChurchEvent')}
+        width={500}
+        height={500}
+        onClickDone={onClickEventEditDone}
+        doneBackgroundColor={isEventSaveEnable ? MAIN.DEFAULT : MAIN.LIGHT}
+        doneDisabled={!isEventSaveEnable}
+        cancelText={t_button('cancel')}
+        doneText={t_button('save')}
+      >
+        <AddChurchEvent />
       </CustomPopup>
     </CalendarContainer>
   );

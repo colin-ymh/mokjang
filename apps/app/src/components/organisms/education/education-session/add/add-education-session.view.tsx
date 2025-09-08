@@ -189,6 +189,7 @@ const AddEducationSessionView = ({
                 }
                 onChange={onChangeStartDate}
                 placeholderText={t('startDate')}
+                maxDate={getDateFromDateString(targetEducationSession.endDate)}
               />
               {/* 시작 시간 */}
               <Dropdown
@@ -218,6 +219,9 @@ const AddEducationSessionView = ({
                 }
                 onChange={onChangeEndDate}
                 placeholderText={t('endDate')}
+                minDate={getDateFromDateString(
+                  targetEducationSession.startDate
+                )}
               />
               {/* 종료 시간 */}
               <Dropdown

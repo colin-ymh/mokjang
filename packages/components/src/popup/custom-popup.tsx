@@ -59,6 +59,7 @@ type CustomPopupProps = {
   isHeaderShown?: boolean;
   isHeaderBorderShown?: boolean;
   headerHeight?: number;
+  keyboardDisabled?: boolean;
   children: ReactNode;
 };
 
@@ -83,9 +84,11 @@ export const CustomPopup = ({
   isHeaderShown,
   isHeaderBorderShown,
   headerHeight,
+  keyboardDisabled,
   children,
 }: CustomPopupProps) => {
   useEffect(() => {
+    if (keyboardDisabled) return;
     // ESC 누르면 닫기
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {

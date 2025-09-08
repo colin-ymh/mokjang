@@ -17,7 +17,7 @@ import {
   setToastBackgroundColor,
   setToastText,
 } from '../../../../redux/reducers/toast-popup-reducer';
-import { DESTRUCTIVE, MAIN } from '@mokjang/constants';
+import { DESTRUCTIVE, LOCALE, MAIN, TASK_STATUS } from '@mokjang/constants';
 import { EducationSessionsApi } from '../../../../api/education/education-sessions.api';
 import { EducationsApi } from '../../../../api/education/educations.api';
 import WrappedPagePopup from '../../../atoms/common/popup/wrapped-page-popup';
@@ -25,7 +25,12 @@ import ConfirmPopup from '../../../atoms/common/popup/error-popup';
 import EducationInformation from '../../../organisms/education/education/information/education-information';
 import AddEducation from '../../../organisms/education/education/add/add-education';
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
-import { getIsWellFormedTitle } from '@mokjang/utils';
+import {
+  getDateFromDateString,
+  getDateStringFromDate,
+  getIsWellFormedTitle,
+  getTranslatedTerm,
+} from '@mokjang/utils';
 import { setTargetEducation } from '../../../../redux/reducers/target/target-education-reducer';
 import { setTargetEducationTerm } from '../../../../redux/reducers/target/target-education-term-reducer';
 import EducationTermInformation from '../../../organisms/education/education-term/information/education-term-information';
@@ -33,11 +38,7 @@ import AddEducationTerm from '../../../organisms/education/education-term/add/ad
 import { setTargetEducationSession } from '../../../../redux/reducers/target/target-education-session-reducer';
 import EducationSessionInformation from '../../../organisms/education/education-session/information/education-session-information';
 import AddEducationSession from '../../../organisms/education/education-session/add/add-education-session';
-import { getTranslatedTerm } from '@mokjang/utils';
 import { usePathname } from 'next/navigation';
-import { LOCALE } from '@mokjang/constants';
-import { getDateFromDateString, getDateStringFromDate } from '@mokjang/utils';
-import { TASK_STATUS } from '@mokjang/constants';
 import { setEducationTerms } from '../../../../redux/reducers/filter/education-term-filter-reducer';
 
 export type EducationTableProps = {
@@ -285,6 +286,7 @@ const EducationTable = ({ loadEducations }: EducationTableProps) => {
                 ? targetEducation.name
                 : undefined,
             description: targetEducation.description || undefined,
+            goals: targetEducation.goals || [],
           }
         )
         .then((response) => {
