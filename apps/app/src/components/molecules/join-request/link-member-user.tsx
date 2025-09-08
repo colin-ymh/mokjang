@@ -3,14 +3,13 @@ import LinkMemberUserView from './link-member-user.view';
 import { MembersApi } from '../../../api/members/members.api';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../redux/store';
-import { BLANK } from '@mokjang/constants';
+import { BLANK, MEMBER } from '@mokjang/constants';
 import { DEFAULT_MEMBER, Member } from '@mokjang/models';
 import { getFormattedName } from '@mokjang/utils';
-import { MEMBER } from '@mokjang/constants';
 
 type LinkMemberUserProps = {
   prevMember?: Member;
-  onChangeLinkMember: (memberId: string) => void;
+  onChangeLinkMember: (member: Member) => void;
 };
 
 const LinkMemberUser = ({
@@ -64,7 +63,7 @@ const LinkMemberUser = ({
 
   // 선택 변경 시 상위에 알림
   useEffect(() => {
-    onChangeLinkMember(selectedMember.id);
+    onChangeLinkMember(selectedMember);
   }, [selectedMember, onChangeLinkMember]);
 
   // 교인 목록 검색 (페이지/이름 인자 없으면 현재 state 사용)

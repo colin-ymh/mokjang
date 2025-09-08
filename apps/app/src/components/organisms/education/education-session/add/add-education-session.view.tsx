@@ -3,17 +3,13 @@
 import styled from 'styled-components';
 import React, { ChangeEvent } from 'react';
 import { useI18n, useScopedI18n } from '../../../../../../locales/client';
-import { GRAY } from '@mokjang/constants';
-import { MainText } from '@mokjang/components';
+import { GRAY, SIZE } from '@mokjang/constants';
+import { BorderInput, MainText, RequiredMark } from '@mokjang/components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../redux/store';
-import { RequiredMark } from '@mokjang/components';
-import { BorderInput } from '@mokjang/components';
-import { SIZE } from '@mokjang/constants';
 import CustomDatePicker from '../../../../../vendor/date-picker/custom-date-picker';
 import {
   getDateFromDateString,
-  getDateFromInput,
   getDateStringFromDate,
   getTotalMinuteFromDate,
 } from '@mokjang/utils';
@@ -182,7 +178,7 @@ const AddEducationSessionView = ({
                 value={
                   targetEducationSession.startDate
                     ? getDateStringFromDate(
-                        getDateFromInput(targetEducationSession.startDate)
+                        getDateFromDateString(targetEducationSession.startDate)
                       )
                     : undefined
                 }
@@ -211,7 +207,7 @@ const AddEducationSessionView = ({
                 value={
                   targetEducationSession.endDate
                     ? getDateStringFromDate(
-                        getDateFromInput(targetEducationSession.endDate)
+                        getDateFromDateString(targetEducationSession.endDate)
                       )
                     : undefined
                 }

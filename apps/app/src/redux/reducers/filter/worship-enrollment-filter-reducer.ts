@@ -1,31 +1,20 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ALL, BLANK, ORDER_DIRECTION } from '@mokjang/constants';
+import {
+  ALL,
+  BLANK,
+  ORDER_DIRECTION,
+  WORSHIP_ENROLLMENT,
+} from '@mokjang/constants';
 import { RootState } from '../../store';
-import { WORSHIP_ENROLLMENT } from '@mokjang/constants';
-import { WorshipEnrollment } from '@mokjang/models';
-import { WorshipEnrollmentsApi } from '../../../api/worship/worship-enrollments.api';
+import { WorshipEnrollment, WorshipSessionCheckStatus } from '@mokjang/models';
+import { WorshipEnrollmentsApi } from '@/api/worship/worship-enrollments.api';
+import { WorshipSessionsApi } from '@/api/worship/worship-sessions.api';
 
 type WORSHIP_ENROLLMENT_FILTER = {
   [WORSHIP_ENROLLMENT.GROUP_NAME]: string;
   [WORSHIP_ENROLLMENT.GROUP]: string;
   [WORSHIP_ENROLLMENT.FROM_DATE]: string;
   [WORSHIP_ENROLLMENT.TO_DATE]: string;
-};
-
-type WorshipEnrollmentFilterState = {
-  worshipEnrollments: WorshipEnrollment[];
-  worshipEnrollmentFilter: WORSHIP_ENROLLMENT_FILTER;
-  worshipEnrollmentOrderBy?: WORSHIP_ENROLLMENT;
-  worshipEnrollmentOrderDirection: ORDER_DIRECTION;
-  worshipEnrollmentTableHeaderItemList: EDUCATION_TABLE_HEADER_ITEM[];
-  worshipEnrollmentTotalCount: number;
-};
-
-export const INITIAL_WORSHIP_ENROLLMENT_FILTER: WORSHIP_ENROLLMENT_FILTER = {
-  [WORSHIP_ENROLLMENT.GROUP_NAME]: BLANK,
-  [WORSHIP_ENROLLMENT.GROUP]: BLANK,
-  [WORSHIP_ENROLLMENT.FROM_DATE]: BLANK,
-  [WORSHIP_ENROLLMENT.TO_DATE]: BLANK,
 };
 
 export type EDUCATION_TABLE_HEADER_ITEM = {
@@ -36,6 +25,27 @@ export type EDUCATION_TABLE_HEADER_ITEM = {
   isDate?: boolean;
   title?: string;
   date?: Date;
+};
+
+type WorshipEnrollmentFilterState = {
+  worshipEnrollments: WorshipEnrollment[];
+  worshipEnrollmentFilter: WORSHIP_ENROLLMENT_FILTER;
+  worshipEnrollmentOrderBy?: WORSHIP_ENROLLMENT;
+  worshipEnrollmentOrderDirection: ORDER_DIRECTION;
+  worshipEnrollmentTableHeaderItemList: EDUCATION_TABLE_HEADER_ITEM[];
+  worshipEnrollmentTotalCount: number;
+
+  // ✅ 새로 추가
+  checkStatuses: WorshipSessionCheckStatus[];
+  isCheckStatusesLoading: boolean;
+  checkStatusesError?: string | null;
+};
+
+export const INITIAL_WORSHIP_ENROLLMENT_FILTER: WORSHIP_ENROLLMENT_FILTER = {
+  [WORSHIP_ENROLLMENT.GROUP_NAME]: BLANK,
+  [WORSHIP_ENROLLMENT.GROUP]: BLANK,
+  [WORSHIP_ENROLLMENT.FROM_DATE]: BLANK,
+  [WORSHIP_ENROLLMENT.TO_DATE]: BLANK,
 };
 
 export const INITIAL_WORSHIP_ENROLLMENT_TABLE_HEADER_LIST: EDUCATION_TABLE_HEADER_ITEM[] =
@@ -71,15 +81,17 @@ const initialState: WorshipEnrollmentFilterState = {
   worshipEnrollmentTableHeaderItemList:
     INITIAL_WORSHIP_ENROLLMENT_TABLE_HEADER_LIST,
   worshipEnrollmentTotalCount: 0,
+
+  // ✅ 초기값
+  checkStatuses: [],
+  isCheckStatusesLoading: false,
+  checkStatusesError: null,
 };
 
+// ===== 예배 출석 목록 =====
 export const fetchWorshipEnrollments = createAsyncThunk<
   { data: WorshipEnrollment[]; totalCount: number },
-  {
-    churchId: string;
-    currentPage: number;
-    worshipId: string;
-  },
+  { churchId: string; currentPage: number; worshipId: string },
   { state: RootState }
 >(
   'educations/fetchWorshipEnrollments',
@@ -93,14 +105,14 @@ export const fetchWorshipEnrollments = createAsyncThunk<
       worshipEnrollmentOrderDirection,
       worshipEnrollmentFilter,
     } = state;
-    const worshipEnrollmentsApi = new WorshipEnrollmentsApi(false);
+    const api = new WorshipEnrollmentsApi(false);
 
     try {
-      const response = await worshipEnrollmentsApi.getWorshipEnrollments({
+      const response = await api.getWorshipEnrollments({
         churchId,
         worshipId,
         page: currentPage,
-        take: 30, // 무한 스크롤 최적화
+        take: 30,
         order: worshipEnrollmentOrderBy,
         orderDirection: worshipEnrollmentOrderDirection,
         groupId:
@@ -119,8 +131,50 @@ export const fetchWorshipEnrollments = createAsyncThunk<
   }
 );
 
+// ===== 예배 체크 현황 =====
+export const fetchWorshipSessionCheckStatus = createAsyncThunk<
+  WorshipSessionCheckStatus[],
+  void,
+  { state: RootState }
+>(
+  'educations/fetchWorshipSessionCheckStatus',
+  async (_: void, { getState, rejectWithValue, fulfillWithValue }) => {
+    const api = new WorshipSessionsApi(false);
+    const { churchId } = getState().church;
+    const { targetWorship, targetWorshipGroup } = getState().targetWorship;
+    const { worshipEnrollmentFilter } = getState().worshipEnrollmentFilter;
+
+    if (
+      !churchId ||
+      !targetWorship?.id ||
+      worshipEnrollmentFilter.fromSessionDate === BLANK ||
+      worshipEnrollmentFilter.toSessionDate === BLANK
+    ) {
+      return fulfillWithValue([]); // 값 없으면 빈 배열 반환
+    }
+
+    try {
+      const response = await api.getWorshipSessionCheckStatus({
+        churchId,
+        worshipId: targetWorship.id,
+        groupId:
+          targetWorshipGroup.id === ALL
+            ? undefined
+            : (targetWorshipGroup.id as string),
+        from: worshipEnrollmentFilter.fromSessionDate,
+        to: worshipEnrollmentFilter.toSessionDate,
+      });
+
+      return response.data.data as WorshipSessionCheckStatus[];
+    } catch (error) {
+      console.error('checkStatus 불러오기 실패', error);
+      return rejectWithValue('출석 현황을 불러오는 중 오류가 발생했습니다.');
+    }
+  }
+);
+
 const WorshipEnrollmentFilterSlice = createSlice({
-  name: 'register',
+  name: 'worshipEnrollmentFilter',
   initialState,
   reducers: {
     setWorshipEnrollments: (
@@ -157,6 +211,30 @@ const WorshipEnrollmentFilterSlice = createSlice({
       state.worshipEnrollmentTotalCount = action.payload;
     },
   },
+  extraReducers: (builder) => {
+    builder
+      // worshipEnrollments
+      .addCase(fetchWorshipEnrollments.fulfilled, (state, action) => {
+        state.worshipEnrollments = action.payload.data;
+        state.worshipEnrollmentTotalCount = action.payload.totalCount;
+      })
+
+      // checkStatuses
+      .addCase(fetchWorshipSessionCheckStatus.pending, (state) => {
+        state.isCheckStatusesLoading = true;
+        state.checkStatusesError = null;
+      })
+      .addCase(fetchWorshipSessionCheckStatus.fulfilled, (state, action) => {
+        state.isCheckStatusesLoading = false;
+        state.checkStatuses = action.payload;
+      })
+      .addCase(fetchWorshipSessionCheckStatus.rejected, (state, action) => {
+        state.isCheckStatusesLoading = false;
+        state.checkStatusesError =
+          (action.payload as string) || '알 수 없는 오류';
+        state.checkStatuses = [];
+      });
+  },
 });
 
 export const {
@@ -167,4 +245,5 @@ export const {
   setWorshipEnrollmentTableHeaderItemList,
   setWorshipEnrollmentTotalCount,
 } = WorshipEnrollmentFilterSlice.actions;
+
 export default WorshipEnrollmentFilterSlice.reducer;

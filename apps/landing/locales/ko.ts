@@ -67,6 +67,7 @@ export default {
   'button.withdraw': '탈퇴하기',
   'button.startForFree': '무료로 시작하기',
   'button.mobilePhone.request': '요청',
+  'button.mobilePhone.reRequest': '요청',
   'button.mobilePhone.verify': '인증',
 
   'function.member.title': '교인관리(교적부)',
@@ -197,4 +198,6 @@ export default {
 
   'popup.cancelComplete': '취소가 완료되었습니다.',
   'popup.saveComplete': '저장이 완료되었습니다.',
+  'popup.withdraw.title': '계정을 탈퇴하시겠습니까?',
+  'popup.withdraw.description': '삭제된 계정은 복구할 수 없습니다.',
 } as const;

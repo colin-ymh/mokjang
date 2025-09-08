@@ -14,9 +14,11 @@ import {
   WHITE,
 } from '../../../../../../packages/constants/src';
 import { useI18n, useScopedI18n } from '../../../../locales/client';
-import { getTranslatedMonthlySubscriptionPrice } from '@/utils/translate';
+import {
+  getTranslatedDateFromDateString,
+  getTranslatedMonthlySubscriptionPrice,
+} from '@mokjang/utils';
 import { usePathname } from 'next/navigation';
-import { getTranslatedDateFromDateString } from '@mokjang/app/src/utils/translate';
 
 const Container = styled.div`
   display: flex;

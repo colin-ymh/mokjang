@@ -1,17 +1,15 @@
 import styled from 'styled-components';
 import { GRAY, GREEN, LOCALE, MAIN, WHITE } from '@mokjang/constants';
 import React from 'react';
-import {
-  MainText,
-  RadioButton,
-  SvgIcon,
-} from '../../../../../../packages/components/src';
+import { MainText, RadioButton, SvgIcon } from '@mokjang/components';
 import { BILLING_CYCLE, Plan } from '@mokjang/models';
 import { useScopedI18n } from '../../../../locales/client';
 import { usePathname } from 'next/navigation';
 
-import { getTranslatedMemberCount } from '../../../../../../packages/utils/src';
-import { getTranslatedMaxRegisterMember } from '@/utils/translate';
+import {
+  getTranslatedMaxRegisterMember,
+  getTranslatedMemberCount,
+} from '@mokjang/utils';
 
 import { Svg } from '@mokjang/assets';
 import {

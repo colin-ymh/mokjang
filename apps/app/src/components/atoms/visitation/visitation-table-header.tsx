@@ -4,10 +4,15 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../redux/store';
 
 import { MainText } from '@mokjang/components';
-import { ORDER_DIRECTION, VISITATION } from '@mokjang/constants';
-import { BLACK, GRAY, MAIN } from '@mokjang/constants';
-import { SIZE } from '@mokjang/constants';
-import { getTranslatedVisitationColumn } from '../../../utils/translate';
+import {
+  BLACK,
+  GRAY,
+  MAIN,
+  ORDER_DIRECTION,
+  SIZE,
+  VISITATION,
+} from '@mokjang/constants';
+import { getTranslatedVisitationColumn } from '@mokjang/utils';
 import { useI18n } from '../../../../locales/client';
 
 import { Svg } from '@mokjang/assets';

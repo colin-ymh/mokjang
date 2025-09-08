@@ -441,39 +441,23 @@ export const getTranslateWorshipAttendanceWidgetDescription = (
   return `Under 50% attendance rate in ${rangeTitle}`;
 };
 
-// YYYY-MM-DD 을 YYYY년 MM월 DD일 형식으로 포맷
 export const getTranslatedDateFromDateString = (
   basePath: LOCALE,
   date: string
 ): string => {
-  if (!date) return ''; // 빈 입력 처리
+  if (!date) return '';
 
-  // YYYY-MM-DD에서 숫자만 남기기
-  const cleaned = date.replace(/[^0-9]/g, '').slice(0, 8); // 숫자 외 제거
+  // 문자열을 Date 객체로 변환
+  const d = new Date(date);
+
+  const year = d.getFullYear();
+  const month = d.getMonth() + 1; // getMonth()는 0부터 시작
+  const day = d.getDate();
 
   if (basePath === LOCALE.KO) {
-    // 입력된 문자열 길이 확인 후 포맷 적용
-    switch (cleaned.length) {
-      case 4: // YYYY
-        return `${cleaned}년`;
-      case 6: // YYYY MM
-        return `${cleaned.slice(0, 4)}년 ${parseInt(cleaned.slice(4, 6), 10)}월`;
-      case 8: // YYYY MM DD
-        return `${cleaned.slice(0, 4)}년 ${parseInt(cleaned.slice(4, 6), 10)}월 ${parseInt(cleaned.slice(6), 10)}일`;
-      default: // 유효하지 않은 경우
-        return '';
-    }
+    return `${year}년 ${month}월 ${day}일`;
   } else {
-    switch (cleaned.length) {
-      case 4: // YYYY
-        return cleaned; // 연도만 반환
-      case 6: // YYYY MM
-        return `${getEnglishMonthName(parseInt(cleaned.slice(4, 6), 10))} ${cleaned.slice(0, 4)}`;
-      case 8: // YYYY MM DD
-        return `${getEnglishMonthName(parseInt(cleaned.slice(4, 6), 10))} ${parseInt(cleaned.slice(6), 10)}, ${cleaned.slice(0, 4)}`;
-      default: // 유효하지 않은 경우
-        return '';
-    }
+    return `${getEnglishMonthName(month)} ${day}, ${year}`;
   }
 };
 

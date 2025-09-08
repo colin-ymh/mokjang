@@ -121,4 +121,27 @@ export class UserApi {
       }
     }
   };
+
+  /**
+   * 계정 탈퇴
+   * @returns {Promise<AxiosResponse>}
+   */
+  public withdraw = async (): Promise<AxiosResponse> => {
+    const url = `${this._url}/users`;
+
+    try {
+      return await authorizeAxios.delete(url.toString());
+    } catch (serverError: any) {
+      if (serverError.response) {
+        const { message, error, statusCode } = serverError.response.data;
+        throw new CustomError(message, error, statusCode);
+      } else {
+        throw new CustomError(
+          '알 수 없는 에러가 발생했습니다',
+          500,
+          'Unknown Error'
+        );
+      }
+    }
+  };
 }

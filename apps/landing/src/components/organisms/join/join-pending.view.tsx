@@ -1,22 +1,12 @@
 import styled from 'styled-components';
 
 import { Svg } from '@mokjang/assets';
-import {
-  Button,
-  MainText,
-  SvgIcon,
-} from '../../../../../../packages/components/src';
-import {
-  GRAY,
-  GREEN,
-  LOCALE,
-  RED,
-  WHITE,
-} from '../../../../../../packages/constants/src';
+import { Button, MainText, SvgIcon } from '@mokjang/components';
+import { GRAY, GREEN, LOCALE, RED, WHITE } from '@mokjang/constants';
 import { useScopedI18n } from '../../../../locales/client';
 import { Church } from '@mokjang/models';
 import { usePathname } from 'next/navigation';
-import { getTranslatedCompleteRequest } from '@/utils/translate';
+import { getTranslatedCompleteRequest } from '@mokjang/utils';
 
 const Container = styled.div`
   display: flex;

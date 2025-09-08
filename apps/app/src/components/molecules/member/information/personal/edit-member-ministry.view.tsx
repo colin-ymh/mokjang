@@ -1,23 +1,15 @@
 import styled from 'styled-components';
-import { LabelInput } from '@mokjang/components';
+import { CustomPopup, LabelInput, MainText } from '@mokjang/components';
 import React from 'react';
 import { useI18n, useScopedI18n } from '../../../../../../locales/client';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../redux/store';
-import { CustomPopup } from '@mokjang/components';
 import CustomDatePicker from '../../../../../vendor/date-picker/custom-date-picker';
-import {
-  getDateFromDateString,
-  getDateFromInput,
-  getDateStringFromDate,
-} from '@mokjang/utils';
-import { GRAY } from '@mokjang/constants';
-import { MainText } from '@mokjang/components';
-import { SIZE } from '@mokjang/constants';
+import { getDateFromDateString, getDateStringFromDate } from '@mokjang/utils';
+import { BLANK, GRAY, SIZE } from '@mokjang/constants';
 import StopWarningButton from '../../../../atoms/common/button/stop-warning-button';
 import SelectMinistryHierarchy from '../../../../organisms/ministry/select-ministry-hierarchy';
 import LabelDropdown from '../../../../atoms/common/dropdown/label-dropdown';
-import { BLANK } from '@mokjang/constants';
 import { DropdownValueType } from '../../../../atoms/common/dropdown/dropdown-item';
 
 const EditMemberMinistryViewContainer = styled.div`
@@ -101,7 +93,7 @@ const EditMemberMinistryView = ({
             value={
               targetMinistryHistory.startDate
                 ? getDateStringFromDate(
-                    getDateFromInput(targetMinistryHistory.startDate)
+                    getDateFromDateString(targetMinistryHistory.startDate)
                   )
                 : undefined
             }

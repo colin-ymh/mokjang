@@ -14,15 +14,10 @@ import {
 } from '@mokjang/constants';
 import { MainText } from '@mokjang/components';
 import useWindowSize from '../../../../hooks/window/window';
-import {
-  WORSHIP_ATTENDANCE_STATUS,
-  WorshipEnrollment,
-  WorshipSessionCheckStatus,
-} from '@mokjang/models';
+import { WORSHIP_ATTENDANCE_STATUS, WorshipEnrollment } from '@mokjang/models';
 import AttendanceTableHeader from '../../../atoms/attendance/list/attendance-table-header';
 import {
   getDateFromDateString,
-  getDateFromInput,
   getDateStringFromDate,
   getIsSameDate,
   getMonthDateFromDate,
@@ -178,8 +173,6 @@ type AttendanceTableProps = {
   scrollRef: MutableRefObject<HTMLDivElement | null>;
   onScroll: () => void;
   onClickHeader: (id: WORSHIP_ENROLLMENT | string, isSession: boolean) => void;
-  checkStatuses: WorshipSessionCheckStatus[];
-  fetchWorshipSessionCheckStatus: () => void;
 };
 
 const AttendanceTableView = ({
@@ -190,13 +183,10 @@ const AttendanceTableView = ({
   scrollRef,
   onScroll,
   onClickHeader,
-  checkStatuses,
-  fetchWorshipSessionCheckStatus,
 }: AttendanceTableProps) => {
-  const t_button = useScopedI18n('button');
   const t_title = useScopedI18n('title');
 
-  const { worshipEnrollmentFilter } = useSelector(
+  const { worshipEnrollmentFilter, checkStatuses } = useSelector(
     (state: RootState) => state.worshipEnrollmentFilter
   );
   const { targetWorship } = useSelector(
@@ -213,8 +203,8 @@ const AttendanceTableView = ({
   );
 
   const sessionDates = getWorshipSessionDates(
-    getDateFromInput(worshipEnrollmentFilter.fromSessionDate),
-    getDateFromInput(worshipEnrollmentFilter.toSessionDate),
+    getDateFromDateString(worshipEnrollmentFilter.fromSessionDate),
+    getDateFromDateString(worshipEnrollmentFilter.toSessionDate),
     targetWorship.worshipDay,
     targetWorship.repeatPeriod
   );
@@ -362,12 +352,7 @@ const AttendanceTableView = ({
         rightButtonShown={false}
         stageTwoTop={40}
       >
-        {(scrollRef) => (
-          <AttendanceInformation
-            scrollRef={scrollRef}
-            fetchWorshipSessionCheckStatus={fetchWorshipSessionCheckStatus}
-          />
-        )}
+        {(scrollRef) => <AttendanceInformation scrollRef={scrollRef} />}
       </WrappedPagePopup>
     </>
   );

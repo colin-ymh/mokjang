@@ -1,20 +1,13 @@
 import styled from 'styled-components';
-import { LabelInput } from '@mokjang/components';
+import { CustomPopup, LabelInput, MainText } from '@mokjang/components';
 import React from 'react';
 import { useI18n, useScopedI18n } from '../../../../../../locales/client';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../redux/store';
-import { CustomPopup } from '@mokjang/components';
 import SelectGroupHierarchy from '../../../../organisms/group/select-group-hierarchy';
 import CustomDatePicker from '../../../../../vendor/date-picker/custom-date-picker';
-import {
-  getDateFromDateString,
-  getDateFromInput,
-  getDateStringFromDate,
-} from '@mokjang/utils';
-import { GRAY } from '@mokjang/constants';
-import { MainText } from '@mokjang/components';
-import { SIZE } from '@mokjang/constants';
+import { getDateFromDateString, getDateStringFromDate } from '@mokjang/utils';
+import { GRAY, SIZE } from '@mokjang/constants';
 import StopWarningButton from '../../../../atoms/common/button/stop-warning-button';
 
 const EditMemberGroupViewContainer = styled.div`
@@ -78,7 +71,7 @@ const EditMemberGroupView = ({
             value={
               targetGroupHistory.startDate
                 ? getDateStringFromDate(
-                    getDateFromInput(targetGroupHistory.startDate)
+                    getDateFromDateString(targetGroupHistory.startDate)
                   )
                 : undefined
             }

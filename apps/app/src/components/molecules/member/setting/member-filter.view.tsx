@@ -4,24 +4,24 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
 import { useI18n } from '../../../../../locales/client';
-import { CheckButtonList, CheckButtonValue } from '@mokjang/components';
+import {
+  CheckButtonList,
+  CheckButtonValue,
+  MainText,
+} from '@mokjang/components';
 import {
   useBaptismDropdownItems,
   useMarriageDropdownItems,
 } from '../../../../hooks/dropdown/dropdown-items';
-import { MainText } from '@mokjang/components';
 import CustomDatePicker from '../../../../vendor/date-picker/custom-date-picker';
 import {
   getDateFromDateString,
-  getDateFromInput,
   getDateStringFromDate,
+  getTranslatedAge,
 } from '@mokjang/utils';
-import { GRAY, MAIN } from '@mokjang/constants';
+import { BAPTISM, GRAY, LOCALE, MAIN, MARRIAGE } from '@mokjang/constants';
 import CustomSlider from '../../../atoms/common/slider/custom-slider';
-import { getTranslatedAge } from '@mokjang/utils';
 import { usePathname } from 'next/navigation';
-import { LOCALE } from '@mokjang/constants';
-import { BAPTISM, MARRIAGE } from '@mokjang/constants';
 
 const TableSettingContainer = styled.div`
   display: flex;
@@ -159,7 +159,7 @@ const MemberTableHeaderSettingView = ({
             value={
               memberFilter.registeredFrom
                 ? getDateStringFromDate(
-                    getDateFromInput(memberFilter.registeredFrom)
+                    getDateFromDateString(memberFilter.registeredFrom)
                   )
                 : undefined
             }
@@ -176,7 +176,7 @@ const MemberTableHeaderSettingView = ({
             value={
               memberFilter.registeredTo
                 ? getDateStringFromDate(
-                    getDateFromInput(memberFilter.registeredTo)
+                    getDateFromDateString(memberFilter.registeredTo)
                   )
                 : undefined
             }

@@ -3,7 +3,7 @@ import SettingView, {
 } from '@/components/organisms/setting/setting.view';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
-import { ChangeEvent, useEffect, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import { BLACK, BLANK, DESTRUCTIVE } from '@mokjang/constants';
 import {
   getFormattedContent,
@@ -19,6 +19,7 @@ import {
 } from '@mokjang/app/src/redux/reducers/toast-popup-reducer';
 import { useScopedI18n } from '../../../../locales/client';
 import { setUser } from '@/redux/reducers/user-reducer';
+import ConfirmPopup from '@mokjang/app/src/components/atoms/common/popup/error-popup';
 
 const Setting = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -27,6 +28,7 @@ const Setting = () => {
   const { user } = useSelector((state: RootState) => state.user);
 
   const t_popup = useScopedI18n('popup');
+  const t_button = useScopedI18n('button');
 
   const [isEditName, setIsEditName] = useState<boolean>(false);
   const [isEditMobilePhone, setIsEditMobilePhone] = useState<boolean>(false);
@@ -38,6 +40,8 @@ const Setting = () => {
 
   const [second, setSecond] = useState<number>(0);
   const [isRequested, setIsRequested] = useState<boolean>(false);
+
+  const [isWithdrawOpened, setIsWithdrawOpened] = useState<boolean>(false);
 
   const [thrownError, setThrownError] = useState<Error | null>(null);
   // 렌더링 시점(컴포넌트 return)에서 조건부로 에러 발생
@@ -103,7 +107,7 @@ const Setting = () => {
         .then((response) => console.log(response));
 
       setIsRequested(true);
-      setSecond(1800);
+      setSecond(300);
     } catch (error) {
       if (error instanceof Error) {
         dispatch(setToastText(error.message));
@@ -152,6 +156,28 @@ const Setting = () => {
     setInputCode(BLANK);
   };
 
+  const onClickWithdraw = async () => {
+    try {
+      await userApi.withdraw();
+    } catch (error) {
+      if (error instanceof Error) {
+        dispatch(setToastText(error.message));
+        dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
+        dispatch(setIsToastShown(true));
+      } else {
+        setThrownError(new Error(String(error)));
+      }
+    }
+  };
+
+  const onClickWithdrawOpen = () => {
+    setIsWithdrawOpened(true);
+  };
+
+  const onClickWithdrawClose = () => {
+    setIsWithdrawOpened(false);
+  };
+
   useEffect(() => {
     setName(user.name);
     setMobilePhone(getFormattedMobilePhone(user.mobilePhone));
@@ -175,6 +201,7 @@ const Setting = () => {
     isEditName,
     isEditMobilePhone,
     isRequested,
+    second,
     name,
     mobilePhone,
     inputCode,
@@ -188,11 +215,26 @@ const Setting = () => {
     onClickCancelMobilePhone,
     onClickSaveName,
     onClickSaveMobilePhone,
+    onClickWithdrawOpen,
   } as SettingViewProp;
 
   return (
     <>
       <SettingView {...props} />
+
+      <ConfirmPopup
+        title={t_popup('withdraw.title')}
+        body={t_popup('withdraw.description')}
+        buttonNum={2}
+        isShow={isWithdrawOpened}
+        onClickLeftButton={onClickWithdrawClose}
+        onClickRightButton={() => {
+          onClickWithdraw();
+          onClickWithdrawClose();
+        }}
+        leftButtonText={t_button('cancel')}
+        rightButtonText={t_button('confirm')}
+      />
     </>
   );
 };

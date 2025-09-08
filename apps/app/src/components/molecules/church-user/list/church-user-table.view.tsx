@@ -3,29 +3,18 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
 
-import {
-  BLANK,
-  CHURCH_USER_ROLE,
-  GRAY,
-  GREEN,
-  RED,
-  WHITE,
-} from '../../../../../../../packages/constants/src';
-import {
-  MainTag,
-  MainText,
-} from '../../../../../../../packages/components/src';
+import { BLANK, CHURCH_USER_ROLE, GRAY, GREEN, RED, WHITE, } from '../../../../../../../packages/constants/src';
+import { MainTag, MainText, } from '../../../../../../../packages/components/src';
 import useWindowSize from '../../../../hooks/window/window';
 import ChurchUserTableHeader from '../../../atoms/church-user/list/church-user-table-header';
 import { BLANK_HEADER } from '../../../../redux/reducers/filter/member-filter-reducer';
 import { ChurchUser } from '@mokjang/models';
-import { CHURCH_USER } from '@mokjang/constants';
+import { CHURCH_USER, LOCALE } from '@mokjang/constants';
 import MemberProfile from '../../../atoms/member/member-profile';
 import { useI18n } from '../../../../../locales/client';
-import { getPermissionScopeTitle } from '../../../../utils/permission';
-import { getTranslatedDateFromDateString } from '@/utils/translate';
+import { getTranslatedDateFromDateString } from '@mokjang/utils';
 import { usePathname } from 'next/navigation';
-import { LOCALE } from '@mokjang/constants';
+import { getPermissionScopeTitle } from '@/utils/permission'; // 1. 컬럼별 PX 폭
 
 // 1. 컬럼별 PX 폭
 const getColumnWidth = (id: string) => {

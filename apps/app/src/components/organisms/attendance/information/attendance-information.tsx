@@ -31,23 +31,23 @@ import {
 } from '@mokjang/utils';
 import { ALL, BLACK, BLANK, DESTRUCTIVE } from '@mokjang/constants';
 import { WorshipAttendancesApi } from '@/api/worship/worship-attendances.api';
-import { setWorshipEnrollments } from '@/redux/reducers/filter/worship-enrollment-filter-reducer';
+import {
+  fetchWorshipSessionCheckStatus,
+  setWorshipEnrollments,
+} from '@/redux/reducers/filter/worship-enrollment-filter-reducer';
 import {
   setIsToastShown,
   setToastBackgroundColor,
   setToastText,
 } from '@/redux/reducers/toast-popup-reducer';
 import { useScopedI18n } from '../../../../../locales/client';
+import { fetchWorshipStatistic } from '@/redux/reducers/target/target-worship-reducer';
 
 type AttendanceInformationProps = {
   scrollRef: RefObject<HTMLDivElement>;
-  fetchWorshipSessionCheckStatus: () => void;
 };
 
-const AttendanceInformation = ({
-  scrollRef,
-  fetchWorshipSessionCheckStatus,
-}: AttendanceInformationProps) => {
+const AttendanceInformation = ({ scrollRef }: AttendanceInformationProps) => {
   const t_popup = useScopedI18n('popup');
   const dispatch = useDispatch<AppDispatch>();
 
@@ -59,9 +59,6 @@ const AttendanceInformation = ({
     (state: RootState) => state.church.churchId
   );
   const { groups } = useSelector((state: RootState) => state.church);
-  const { targetWorship } = useSelector(
-    (state: RootState) => state.targetWorship
-  );
   const {
     targetWorshipSession,
     targetWorshipSessionWorship,
@@ -166,8 +163,9 @@ const AttendanceInformation = ({
           }
         )
         .then(() => {
-          fetchWorshipSessionCheckStatus();
+          dispatch(fetchWorshipSessionCheckStatus());
           fetchSessionStatistic();
+          dispatch(fetchWorshipStatistic());
         });
     } catch (error) {
       if (error instanceof Error) {

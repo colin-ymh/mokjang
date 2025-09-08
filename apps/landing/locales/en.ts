@@ -66,6 +66,7 @@ export default {
   'button.withdraw': 'Withdraw',
   'button.startForFree': 'Start For Free',
   'button.mobilePhone.request': 'Request',
+  'button.mobilePhone.reRequest': 'Retry',
   'button.mobilePhone.verify': 'Verify',
 
   'function.member.title': 'Member Management',
@@ -201,4 +202,6 @@ export default {
 
   'popup.cancelComplete': 'Cancel Completed.',
   'popup.saveComplete': 'Save Completed.',
+  'popup.withdraw.title': 'Do you want to withdraw your account?',
+  'popup.withdraw.description': 'Deleted accounts cannot be recovered.',
 } as const;

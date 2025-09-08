@@ -1,12 +1,21 @@
 import { ChangeEvent } from 'react';
 import styled from 'styled-components';
 
-import { BorderInput, Button, MainText, ProfileImage, } from '@mokjang/components';
+import {
+  BorderInput,
+  Button,
+  MainText,
+  ProfileImage,
+} from '@mokjang/components';
 import { useI18n, useScopedI18n } from '../../../../locales/client';
 import { GRAY, MAIN, WHITE } from '@mokjang/constants';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
-import { getFormattedMobilePhone, getIsWellFormedMobilePhone, } from '@mokjang/utils';
+import {
+  getFormattedMobilePhone,
+  getIsWellFormedMobilePhone,
+  getMinuteFromSecond,
+} from '@mokjang/utils';
 
 const SettingContainer = styled.div`
   display: flex;
@@ -74,6 +83,7 @@ export type SettingViewProp = {
   isEditName: boolean;
   isEditMobilePhone: boolean;
   isRequested: boolean;
+  second: number;
   name: string;
   mobilePhone: string;
   inputCode: string;
@@ -87,12 +97,14 @@ export type SettingViewProp = {
   onClickCancelMobilePhone: () => void;
   onClickSaveName: () => void;
   onClickSaveMobilePhone: () => void;
+  onClickWithdrawOpen: () => void;
 };
 
 const SettingView = ({
   isEditName,
   isEditMobilePhone,
   isRequested,
+  second,
   name,
   mobilePhone,
   inputCode,
@@ -106,6 +118,7 @@ const SettingView = ({
   onClickCancelMobilePhone,
   onClickSaveName,
   onClickSaveMobilePhone,
+  onClickWithdrawOpen,
 }: SettingViewProp) => {
   const { user } = useSelector((state: RootState) => state.user);
 
@@ -220,7 +233,11 @@ const SettingView = ({
               )}
               {isEditMobilePhone && (
                 <Button
-                  text={t_button('mobilePhone.request')}
+                  text={t_button(
+                    isRequested
+                      ? 'mobilePhone.reRequest'
+                      : 'mobilePhone.request'
+                  )}
                   width={60}
                   height={40}
                   onClick={onClickRequest}
@@ -250,6 +267,13 @@ const SettingView = ({
                 />
               </RowContainer>
             )}
+            {isRequested && (
+              <RowContainer>
+                <MainText color={MAIN.DEFAULT} fontSize={12}>
+                  {getMinuteFromSecond(second)}
+                </MainText>
+              </RowContainer>
+            )}
           </ColumnContainer>
         </CardContainer>
         <WithdrawContainer>
@@ -258,6 +282,7 @@ const SettingView = ({
             fontSize={14}
             fontWeight={400}
             textDecoration={'underline'}
+            onClick={onClickWithdrawOpen}
           >
             {t_button('withdraw')}
           </MainText>

@@ -6,23 +6,33 @@ import { setTargetChurchUser } from '@/redux/reducers/target/target-church-user-
 import { ChurchUsersApi } from '@/api/church-users/church-users.api';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
-import { BLANK } from '@mokjang/constants';
+import { BLACK, DESTRUCTIVE } from '@mokjang/constants';
 import { CustomPopup } from '@mokjang/components';
 import LinkMemberUser from '@/components/molecules/join-request/link-member-user';
 import { useScopedI18n } from '../../../../../locales/client';
-import { PermissionTemplate, PermissionUnit } from '@mokjang/models';
+import {
+  ChurchUser,
+  DEFAULT_MEMBER,
+  Group,
+  Member,
+  PermissionTemplate,
+  PermissionUnit,
+} from '@mokjang/models';
 import {
   fetchPermissionTemplates,
   setPermissionTemplates,
 } from '@/redux/reducers/filter/permission-template-filter-reducer';
-import { ChurchUser } from '@mokjang/models';
 import { setChurchUsers } from '@/redux/reducers/filter/church-user-filter-reducer';
-import { Group } from '@mokjang/models';
 import { PermissionsApi } from '@/api/permissions/permissions.api';
 import { ManagersApi } from '@/api/managers/managers.api';
 import PermissionRange from '@/components/atoms/church-user/information/permission-range';
 import EditPermissionTemplate from '@/components/molecules/church-user/information/edit-permission-template';
 import ConfirmPopup from '@/components/atoms/common/popup/error-popup';
+import {
+  setIsToastShown,
+  setToastBackgroundColor,
+  setToastText,
+} from '@/redux/reducers/toast-popup-reducer';
 
 type ChurchUserInformationProps = {
   isMy?: boolean;
@@ -55,9 +65,9 @@ const ChurchUserInformation = ({
   const [isEditTemplateShown, setIsEditTemplateShown] =
     useState<boolean>(false);
 
-  const [isLinkPopupShown, setLinkPopupShown] = useState<boolean>(false);
+  const [isLinkPopupShown, setIsLinkPopupShown] = useState<boolean>(false);
 
-  const [selectedMemberId, setSelectedMemberId] = useState<string>(BLANK);
+  const [selectedMember, setSelectedMember] = useState<Member>(DEFAULT_MEMBER);
 
   const [isGroupPopupShown, setIsGroupPopupShown] = useState<boolean>(false);
 
@@ -105,33 +115,54 @@ const ChurchUserInformation = ({
   };
 
   const onClickLink = () => {
-    setLinkPopupShown(true);
+    setIsLinkPopupShown(true);
   };
 
   const onClickCancelLink = () => {
-    setLinkPopupShown(false);
+    setIsLinkPopupShown(false);
   };
 
   const onClickLinkDone = async () => {
     try {
-      await churchUsersApi.unlinkMember({
-        churchId,
-        churchUserId: targetChurchUser.id,
+      await churchUsersApi.changeMember(
+        { churchId, churchUserId: targetChurchUser.id },
+        { memberId: selectedMember.id }
+      );
+      setIsLinkPopupShown(false);
+
+      const newTargetChurchUser = {
+        ...targetChurchUser,
+        member: selectedMember,
+      };
+
+      dispatch(setTargetChurchUser(newTargetChurchUser));
+
+      const newChurchUsers = churchUsers.map((churchUser) => {
+        if (churchUser.id === targetChurchUser.id) {
+          return newTargetChurchUser;
+        } else {
+          return churchUser;
+        }
       });
 
-      await churchUsersApi
-        .linkMember(
-          { churchId, churchUserId: targetChurchUser.id },
-          { linkMemberId: selectedMemberId }
-        )
-        .then((response) => {});
+      dispatch(setChurchUsers(newChurchUsers));
+
+      dispatch(setIsToastShown(true));
+      dispatch(setToastText(t_popup('saveComplete')));
+      dispatch(setToastBackgroundColor(BLACK));
     } catch (error) {
-      setThrownError(error instanceof Error ? error : new Error(String(error)));
+      if (error instanceof Error) {
+        dispatch(setToastText(error.message));
+        dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
+        dispatch(setIsToastShown(true));
+      } else {
+        setThrownError(new Error(String(error)));
+      }
     }
   };
 
-  const onChangeLinkMember = (memberId: string) => {
-    setSelectedMemberId(memberId);
+  const onChangeLinkMember = (member: Member) => {
+    setSelectedMember(member);
   };
 
   // 교회 내의 권한 유형들 불러오기
@@ -212,8 +243,17 @@ const ChurchUserInformation = ({
             setSelectedPermissionTemplateId(id);
           });
       }
+      dispatch(setIsToastShown(true));
+      dispatch(setToastText(t_popup('saveComplete')));
+      dispatch(setToastBackgroundColor(BLACK));
     } catch (error) {
-      setThrownError(error instanceof Error ? error : new Error(String(error)));
+      if (error instanceof Error) {
+        dispatch(setToastText(error.message));
+        dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
+        dispatch(setIsToastShown(true));
+      } else {
+        setThrownError(new Error(String(error)));
+      }
     }
   };
 
@@ -272,8 +312,17 @@ const ChurchUserInformation = ({
           (scope) => scope.group?.id || null
         )
       );
+      dispatch(setIsToastShown(true));
+      dispatch(setToastText(t_popup('saveComplete')));
+      dispatch(setToastBackgroundColor(BLACK));
     } catch (error) {
-      setThrownError(error instanceof Error ? error : new Error(String(error)));
+      if (error instanceof Error) {
+        dispatch(setToastText(error.message));
+        dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
+        dispatch(setIsToastShown(true));
+      } else {
+        setThrownError(new Error(String(error)));
+      }
     }
   };
 

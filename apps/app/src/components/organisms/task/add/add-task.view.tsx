@@ -12,7 +12,6 @@ import { RootState } from '../../../../redux/store';
 import CustomDatePicker from '../../../../vendor/date-picker/custom-date-picker';
 import {
   getDateFromDateString,
-  getDateFromInput,
   getDateStringFromDate,
   getTotalMinuteFromDate,
 } from '@mokjang/utils';
@@ -164,7 +163,7 @@ const AddTaskView = ({
               value={
                 targetTask.startDate
                   ? getDateStringFromDate(
-                      getDateFromInput(targetTask.startDate)
+                      getDateFromDateString(targetTask.startDate)
                     )
                   : undefined
               }
@@ -193,7 +192,9 @@ const AddTaskView = ({
             <CustomDatePicker
               value={
                 targetTask.endDate
-                  ? getDateStringFromDate(getDateFromInput(targetTask.endDate))
+                  ? getDateStringFromDate(
+                      getDateFromDateString(targetTask.endDate)
+                    )
                   : undefined
               }
               selected={

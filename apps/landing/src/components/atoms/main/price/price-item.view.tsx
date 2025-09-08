@@ -19,7 +19,7 @@ import { usePathname } from 'next/navigation';
 
 import { getTranslatedMemberCount } from '../../../../../../../packages/utils/src';
 import { getTranslatedMonthlySubscriptionPriceComponent } from '@/hooks/translate/translate';
-import { getTranslatedMaxRegisterMember } from '@/utils/translate';
+import { getTranslatedMaxRegisterMember } from '@mokjang/utils';
 
 import { Svg } from '@mokjang/assets';
 

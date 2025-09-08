@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { BLANK, ORDER_DIRECTION } from '@mokjang/constants';
+import { BLANK, CHURCH_USER, ORDER_DIRECTION } from '@mokjang/constants';
 import { RootState } from '../../store';
-import { CHURCH_USER } from '@mokjang/constants';
 import { ChurchUser } from '@mokjang/models';
 import { ChurchUsersApi } from '../../../api/church-users/church-users.api';
 import { ManagersApi } from '../../../api/managers/managers.api';
@@ -128,7 +127,7 @@ export const fetchChurchUsers = createAsyncThunk<
 );
 
 const ChurchUserFilterSlice = createSlice({
-  name: 'register',
+  name: 'churchUser',
   initialState,
   reducers: {
     setChurchUsers: (state, action: PayloadAction<ChurchUser[]>) => {

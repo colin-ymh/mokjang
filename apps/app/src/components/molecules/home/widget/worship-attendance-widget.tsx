@@ -1,8 +1,8 @@
 'use client';
 
-import { HomeApi } from '../../../../api/home/home.api';
+import { HomeApi } from '@/api/home/home.api';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../../../redux/store';
+import { AppDispatch, RootState } from '@/redux/store';
 import { useEffect, useState } from 'react';
 import { BLANK, RANGE } from '@mokjang/constants';
 import { WorshipEnrollment } from '@mokjang/models';
@@ -10,7 +10,7 @@ import WorshipAttendanceWidgetView from './worship-attendance-widget.view';
 import {
   fetchWorships,
   setWorshipPage,
-} from '../../../../redux/reducers/filter/worship-filter-reducer';
+} from '@/redux/reducers/filter/worship-filter-reducer';
 
 const WorshipAttendanceWidget = () => {
   const dispatch = useDispatch<AppDispatch>();

@@ -4,32 +4,35 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
 
-import { GRAY, MAIN, PURPLE, WHITE } from '@mokjang/constants';
-import { MEMBER } from '@mokjang/constants';
-import { MainText } from '@mokjang/components';
 import {
   BAPTISM,
   BLANK,
   GENDER,
+  GRAY,
   GROUP_ROLE,
+  LOCALE,
+  MAIN,
+  MEMBER,
   MINISTRY_GROUP_ROLE,
+  PURPLE,
+  WHITE,
 } from '@mokjang/constants';
-import { getAge, getDateFromInput } from '@mokjang/utils';
+import { MainTag, MainText } from '@mokjang/components';
 import {
+  getAge,
+  getDateFromDateString,
   getFormattedDate,
   getFormattedHomePhone,
   getFormattedMobilePhone,
+  getTranslatedDateFromDateString,
 } from '@mokjang/utils';
 import { Member } from '@mokjang/models';
 import MemberTableHeader from '../../../atoms/member/list/member-table-header';
 import useWindowSize from '../../../../hooks/window/window';
-import { LOCALE } from '@mokjang/constants';
 
 import { useI18n } from '../../../../../locales/client';
 import { BLANK_HEADER } from '../../../../redux/reducers/filter/member-filter-reducer';
 import ProfileImage from '../../../atoms/common/image/profile-image';
-import { getTranslatedDateFromDateString } from '@mokjang/utils';
-import { MainTag } from '@mokjang/components';
 
 // 1. 컬럼별 PX 폭 (마지막 REMARKS만 auto 할 예정)
 const getColumnWidth = (id: string) => {
@@ -253,7 +256,7 @@ const MemberTableView = ({
       case MEMBER.AGE:
         return (
           <MainText>
-            {member.birth && getAge(getDateFromInput(member.birth))}
+            {member.birth && getAge(getDateFromDateString(member.birth))}
           </MainText>
         );
       case MEMBER.BAPTISM:

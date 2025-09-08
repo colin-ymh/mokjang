@@ -14,7 +14,7 @@ import MemberInformation from '../member/information/member-information';
 import ChurchEventInformation from '../church-event/information/church-event-information';
 import { CustomPopup } from '@mokjang/components';
 import WrappedPagePopup from '../../atoms/common/popup/wrapped-page-popup';
-import { getTranslatedTerm } from '@/utils/translate';
+import { getTranslatedTerm } from '@mokjang/utils';
 import EducationSessionInformation from '../education/education-session/information/education-session-information';
 import { usePathname } from 'next/navigation';
 import ScrollSlidePopup from '@/components/atoms/common/popup/scroll-slide-popup';

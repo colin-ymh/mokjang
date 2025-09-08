@@ -23,7 +23,6 @@ import {
 import CustomDatePicker from '../../../../vendor/date-picker/custom-date-picker';
 import {
   getDateFromDateString,
-  getDateFromInput,
   getDateStringFromDate,
   getDayConstantByIndex,
   getTranslatedDateFromDateString,
@@ -153,12 +152,11 @@ const AttendanceRow = ({
   const worshipPeriodDropdownItems = useWorshipPeriodDropdownItems();
 
   const sessionDates = getWorshipSessionDates(
-    getDateFromInput(worshipEnrollmentFilter.fromSessionDate),
-    getDateFromInput(worshipEnrollmentFilter.toSessionDate),
+    getDateFromDateString(worshipEnrollmentFilter.fromSessionDate),
+    getDateFromDateString(worshipEnrollmentFilter.toSessionDate),
     targetWorship.worshipDay,
     targetWorship.repeatPeriod
   );
-
   return (
     <>
       <AttendanceContainer>

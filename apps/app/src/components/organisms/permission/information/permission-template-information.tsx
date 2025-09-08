@@ -7,16 +7,25 @@ import {
   setPermissionManagers,
   setPermissionTemplates,
 } from '@/redux/reducers/filter/permission-template-filter-reducer';
-import { BLACK, BLANK, CHURCH_USER_ROLE, DESTRUCTIVE, } from '@mokjang/constants';
+import {
+  BLACK,
+  BLANK,
+  CHURCH_USER_ROLE,
+  DESTRUCTIVE,
+} from '@mokjang/constants';
 import ConfirmPopup from '@/components/atoms/common/popup/error-popup';
 import { useScopedI18n } from '../../../../../locales/client';
 import { setTargetPermissionTemplate } from '@/redux/reducers/target/target-permission-template-reducer';
 import { ACTION, DOMAIN, PermissionTemplate } from '@mokjang/models';
-import { getIsWellFormedTitle } from '@/utils/check';
+import { getIsWellFormedTitle } from '@mokjang/utils';
 import { PermissionsApi } from '@/api/permissions/permissions.api';
 import { CustomPopup } from '@mokjang/components';
 import EditPermissionTemplate from '@/components/organisms/permission/edit/edit-permission-template';
-import { setIsToastShown, setToastBackgroundColor, setToastText, } from '@/redux/reducers/toast-popup-reducer';
+import {
+  setIsToastShown,
+  setToastBackgroundColor,
+  setToastText,
+} from '@/redux/reducers/toast-popup-reducer';
 
 type PermissionTemplateInformationProps = {
   onClickDelete: () => void;

@@ -81,7 +81,7 @@ const Register = () => {
       if (response.status === 201) {
         setIsRequested(true);
         console.log(response.data);
-        setSecond(1800);
+        setSecond(300);
       }
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));

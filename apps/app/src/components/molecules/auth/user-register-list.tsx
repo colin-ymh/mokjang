@@ -8,8 +8,7 @@ import { setUser } from '../../../redux/reducers/user-reducer';
 import { AuthApi, IS_TEST } from '../../../api/auth/auth.api';
 import UserRegisterListView from './user-register-list.view';
 import { Loading } from '@mokjang/components';
-import { getFormattedMobilePhone, getFormattedName } from '@mokjang/utils';
-import { usePageRouter } from '@mokjang/utils';
+import { getFormattedMobilePhone, getFormattedName, usePageRouter, } from '@mokjang/utils';
 
 import { useScopedI18n } from '../../../../locales/client';
 import { UserApi } from '../../../api/user/user.api';
@@ -81,7 +80,7 @@ const UserRegisterList = () => {
       if (response.status === 201) {
         setIsRequested(true);
         console.log(response.data);
-        setSecond(1800);
+        setSecond(300);
       }
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));

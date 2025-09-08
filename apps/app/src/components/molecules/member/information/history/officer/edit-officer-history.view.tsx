@@ -1,18 +1,12 @@
 import styled from 'styled-components';
-import { LabelInput } from '@mokjang/components';
+import { LabelInput, MainText } from '@mokjang/components';
 import React from 'react';
 import { useI18n, useScopedI18n } from '../../../../../../../locales/client';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../../redux/store';
 import CustomDatePicker from '../../../../../../vendor/date-picker/custom-date-picker';
-import {
-  getDateFromDateString,
-  getDateFromInput,
-  getDateStringFromDate,
-} from '@mokjang/utils';
-import { GRAY } from '@mokjang/constants';
-import { MainText } from '@mokjang/components';
-import { SIZE } from '@mokjang/constants';
+import { getDateFromDateString, getDateStringFromDate } from '@mokjang/utils';
+import { GRAY, SIZE } from '@mokjang/constants';
 import DeleteWarningButton from '../../../../../atoms/common/button/delete-warning-button';
 
 const EditMemberOfficerViewContainer = styled.div`
@@ -76,7 +70,7 @@ const EditOfficerHistoryView = ({
               value={
                 targetOfficerHistory.startDate
                   ? getDateStringFromDate(
-                      getDateFromInput(targetOfficerHistory.startDate)
+                      getDateFromDateString(targetOfficerHistory.startDate)
                     )
                   : undefined
               }
@@ -100,7 +94,7 @@ const EditOfficerHistoryView = ({
               value={
                 targetOfficerHistory.endDate
                   ? getDateStringFromDate(
-                      getDateFromInput(targetOfficerHistory.endDate)
+                      getDateFromDateString(targetOfficerHistory.endDate)
                     )
                   : undefined
               }

@@ -8,7 +8,7 @@ import TaskTable, { TaskTableProps } from '../../../molecules/task/task-table';
 import TaskRow from '../../../molecules/task/task-row';
 import AddTask from '../add/add-task';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../../../redux/store';
+import { RootState } from '@/redux/store';
 import TaskInformation from '../information/task-information';
 import ScrollSlidePopup from '@/components/atoms/common/popup/scroll-slide-popup';
 

@@ -1,30 +1,33 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { AppDispatch, RootState } from '../../../../redux/store';
-import { setWorshipEnrollmentFilter } from '../../../../redux/reducers/filter/worship-enrollment-filter-reducer';
-import { WORSHIP_ENROLLMENT } from '@mokjang/constants';
-import { ALL, BLANK, WORSHIP_PERIOD } from '@mokjang/constants';
+import { AppDispatch, RootState } from '@/redux/store';
+import { setWorshipEnrollmentFilter } from '@/redux/reducers/filter/worship-enrollment-filter-reducer';
+import {
+  ALL,
+  BLANK,
+  WORSHIP_ENROLLMENT,
+  WORSHIP_PERIOD,
+} from '@mokjang/constants';
 import AttendanceRowView from './attendance-row.view';
-import { DEFAULT_GROUP, Group } from '@mokjang/models';
-import { getGroup } from '../../../../utils/group';
+import { DEFAULT_GROUP, Group, Worship } from '@mokjang/models';
+import { getGroup } from '@/utils/group';
 import {
   fetchWorships,
   setWorships,
-} from '../../../../redux/reducers/filter/worship-filter-reducer';
-import { WorshipsApi } from '../../../../api/worship/worships.api';
+} from '@/redux/reducers/filter/worship-filter-reducer';
+import { WorshipsApi } from '@/api/worship/worships.api';
 import {
+  fetchWorshipStatistic,
   setTargetWorship,
   setTargetWorshipGroup,
-  setTargetWorshipStatistic,
-} from '../../../../redux/reducers/target/target-worship-reducer';
+} from '@/redux/reducers/target/target-worship-reducer';
 import {
   getDateFromDateString,
   getDateStringFromDate,
   getMonthsAfterDate,
   getMonthsBeforeDate,
 } from '@mokjang/utils';
-import { Worship, WorshipStatistic } from '@mokjang/models';
 import { AttendanceTableProps } from './attendance-table';
 
 const AttendanceRow = ({
@@ -313,7 +316,7 @@ const AttendanceRow = ({
     }
     // 기간 선택
     if (
-      !worshipEnrollmentFilter.toSessionDate &&
+      !worshipEnrollmentFilter.toSessionDate ||
       !worshipEnrollmentFilter.fromSessionDate
     ) {
       setWorshipPeriod(WORSHIP_PERIOD.LAST_THREE_MONTH);
@@ -332,36 +335,43 @@ const AttendanceRow = ({
     onChangeWorshipPeriod(worshipPeriod);
   }, [worshipPeriod]);
 
-  const fetchWorshipStatistic = async () => {
-    if (targetWorship.id === BLANK) return;
-    if (!targetWorshipGroup?.id || targetWorshipGroup?.id === BLANK) return;
-    if (
-      worshipEnrollmentFilter.fromSessionDate === BLANK ||
-      worshipEnrollmentFilter.toSessionDate === BLANK
-    )
-      return;
-
-    try {
-      const response = await worshipsApi.getWorshipStatistics({
-        churchId,
-        worshipId: targetWorship.id,
-        groupId:
-          targetWorshipGroup.id === ALL ? undefined : targetWorshipGroup.id,
-        from: worshipEnrollmentFilter.fromSessionDate,
-        to: worshipEnrollmentFilter.toSessionDate,
-      });
-
-      const worshipStatistic: WorshipStatistic = response.data;
-
-      dispatch(setTargetWorshipStatistic(worshipStatistic));
-    } catch (error) {
-      setThrownError(error instanceof Error ? error : new Error(String(error)));
-    }
-  };
+  // const fetchWorshipStatistic = async () => {
+  //   if (targetWorship.id === BLANK) return;
+  //   if (
+  //     worshipEnrollmentFilter.fromSessionDate === BLANK ||
+  //     worshipEnrollmentFilter.toSessionDate === BLANK
+  //   )
+  //     return;
+  //
+  //   try {
+  //     const response = await worshipsApi.getWorshipStatistics({
+  //       churchId,
+  //       worshipId: targetWorship.id,
+  //       groupId: !targetWorshipGroup?.id
+  //         ? undefined
+  //         : targetWorshipGroup.id === ALL
+  //           ? undefined
+  //           : targetWorshipGroup.id,
+  //       from: worshipEnrollmentFilter.fromSessionDate,
+  //       to: worshipEnrollmentFilter.toSessionDate,
+  //     });
+  //
+  //     const worshipStatistic: WorshipStatistic = response.data;
+  //
+  //     dispatch(setTargetWorshipStatistic(worshipStatistic));
+  //   } catch (error) {
+  //     setThrownError(error instanceof Error ? error : new Error(String(error)));
+  //   }
+  // };
 
   useEffect(() => {
-    fetchWorshipStatistic();
-  }, [targetWorshipGroup.id, targetWorship.id]);
+    dispatch(fetchWorshipStatistic());
+  }, [
+    targetWorshipGroup.id,
+    targetWorship.id,
+    worshipEnrollmentFilter.fromSessionDate,
+    worshipEnrollmentFilter.toSessionDate,
+  ]);
 
   const props = {
     isGroupModalShown,

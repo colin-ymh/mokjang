@@ -12,6 +12,7 @@ import { Svg } from '@mokjang/assets';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { useScopedI18n } from '../../../../../locales/client';
+import { UserApi } from '@/api/user/user.api';
 
 const ProfileContainer = styled.div`
   display: flex;
@@ -48,6 +49,7 @@ const ProfileModal = ({ onClickClose }: ProfileModalProps) => {
   const t_button = useScopedI18n('button');
 
   const authApi = new AuthApi(false);
+  const userApi = new UserApi(false);
 
   const { user } = useSelector((state: RootState) => state.user);
 
@@ -69,8 +71,13 @@ const ProfileModal = ({ onClickClose }: ProfileModalProps) => {
     routeLandingPage('/setting');
   };
 
-  const onClickLogout = () => {
-    authApi.getLogOut();
+  const onClickLogout = async () => {
+    await authApi.getLogOut();
+    routeLandingPage('/');
+  };
+
+  const onClickLeave = async () => {
+    await userApi.leaveChurch();
     routeLandingPage('/');
   };
 
@@ -122,7 +129,7 @@ const ProfileModal = ({ onClickClose }: ProfileModalProps) => {
         <ChurchUserInformation
           isMy={true}
           isManager={true}
-          onClickDelete={() => {}}
+          onClickDelete={onClickLeave}
         />
       </SlidePopup>
     </>

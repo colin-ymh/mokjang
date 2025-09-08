@@ -10,7 +10,6 @@ import { RootState } from '../../../../redux/store';
 import CustomDatePicker from '../../../../vendor/date-picker/custom-date-picker';
 import {
   getDateFromDateString,
-  getDateFromInput,
   getDateStringFromDate,
   getTotalMinuteFromDate,
 } from '@mokjang/utils';
@@ -145,7 +144,7 @@ const AddVisitationView = ({
             value={
               targetVisitation.startDate
                 ? getDateStringFromDate(
-                    getDateFromInput(targetVisitation.startDate)
+                    getDateFromDateString(targetVisitation.startDate)
                   )
                 : undefined
             }
@@ -175,7 +174,7 @@ const AddVisitationView = ({
             value={
               targetVisitation.endDate
                 ? getDateStringFromDate(
-                    getDateFromInput(targetVisitation.endDate)
+                    getDateFromDateString(targetVisitation.endDate)
                   )
                 : undefined
             }

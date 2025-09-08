@@ -3,25 +3,17 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../redux/store';
 
-import { GRAY, LOCALE, WHITE } from '@mokjang/constants';
-import { TASK } from '@mokjang/constants';
-import { MainText } from '@mokjang/components';
-import { BLANK } from '@mokjang/constants';
+import { BLANK, GRAY, LOCALE, STATUS, TASK, WHITE } from '@mokjang/constants';
+import { MainTag, MainText } from '@mokjang/components';
 import { Task } from '@mokjang/models';
 import useWindowSize from '../../../hooks/window/window';
 import TaskTableHeader from '../../atoms/task/task-table-header';
 import { BLANK_HEADER } from '../../../redux/reducers/filter/member-filter-reducer';
 import { useI18n } from '../../../../locales/client';
-import {
-  getStatusBackgroundColor,
-  getStatusFontColor,
-} from '../../../utils/color';
+import { getStatusBackgroundColor, getStatusFontColor, } from '../../../utils/color';
 import MemberProfile from '../../atoms/member/member-profile';
-import { MainTag } from '@mokjang/components';
-import { STATUS } from '@mokjang/constants';
-import { getFormattedDate } from '@mokjang/utils';
-import { getTranslatedDateFromDateString } from '@/utils/translate';
-import { usePathname } from 'next/navigation';
+import { getTranslatedDateFromDateString } from '@mokjang/utils';
+import { usePathname } from 'next/navigation'; // 1. 컬럼별 PX 폭 (마지막 REMARKS만 auto 할 예정)
 
 // 1. 컬럼별 PX 폭 (마지막 REMARKS만 auto 할 예정)
 const getColumnWidth = (id: string) => {

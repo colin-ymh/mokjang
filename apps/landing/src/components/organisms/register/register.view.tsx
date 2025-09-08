@@ -7,22 +7,16 @@ import {
   CheckButton,
   LabelInput,
   MainText,
-} from '../../../../../../packages/components/src';
-import {
-  GRAY,
-  GREEN,
-  LOCALE,
-  MAIN,
-  WHITE,
-} from '../../../../../../packages/constants/src';
+} from '@mokjang/components';
+import { GRAY, GREEN, LOCALE, MAIN, WHITE } from '@mokjang/constants';
 import {
   getIsWellFormedMobilePhone,
   getIsWellFormedName,
   getMinuteFromSecond,
-} from '../../../../../../packages/utils/src';
+  getTranslatedVerifyNumber,
+} from '@mokjang/utils';
 
 import { useI18n, useScopedI18n } from '../../../../locales/client';
-import { getTranslatedVerifyNumber } from '@/utils/translate';
 import { usePathname } from 'next/navigation';
 
 const ListContainer = styled.div`

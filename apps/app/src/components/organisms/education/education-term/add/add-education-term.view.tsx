@@ -3,16 +3,13 @@
 import styled from 'styled-components';
 import React, { ChangeEvent } from 'react';
 import { useI18n, useScopedI18n } from '../../../../../../locales/client';
-import { GRAY } from '@mokjang/constants';
-import { MainText } from '@mokjang/components';
+import { BLANK, GRAY, SIZE } from '@mokjang/constants';
+import { BorderInput, MainText, RequiredMark } from '@mokjang/components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../redux/store';
-import { RequiredMark } from '@mokjang/components';
-import { BorderInput } from '@mokjang/components';
 import CustomDatePicker from '../../../../../vendor/date-picker/custom-date-picker';
 import {
   getDateFromDateString,
-  getDateFromInput,
   getDateStringFromDate,
   getTotalMinuteFromDate,
 } from '@mokjang/utils';
@@ -21,9 +18,7 @@ import { useTimeDropdownItems } from '../../../../../hooks/dropdown/dropdown-ite
 import MemberDropdown from '../../../../atoms/common/dropdown/member-dropdown';
 import BigMemberTag from '../../../../atoms/common/tag/big-member-tag';
 import { MemberDropdownType } from '../../../../atoms/common/dropdown/member-dropdown-item';
-import { BLANK } from '@mokjang/constants';
 import MemberTag from '../../../../atoms/common/tag/member-tag';
-import { SIZE } from '@mokjang/constants';
 
 /* ──────────────────────────────── Styled Components ─────────────────────────────── */
 const AddEducationTermViewContainer = styled.div`
@@ -178,7 +173,7 @@ const AddEducationTermView = ({
                 value={
                   targetEducationTerm.startDate
                     ? getDateStringFromDate(
-                        getDateFromInput(targetEducationTerm.startDate)
+                        getDateFromDateString(targetEducationTerm.startDate)
                       )
                     : undefined
                 }
@@ -207,7 +202,7 @@ const AddEducationTermView = ({
                 value={
                   targetEducationTerm.endDate
                     ? getDateStringFromDate(
-                        getDateFromInput(targetEducationTerm.endDate)
+                        getDateFromDateString(targetEducationTerm.endDate)
                       )
                     : undefined
                 }

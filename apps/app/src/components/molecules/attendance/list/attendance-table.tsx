@@ -1,13 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
+import { ORDER_DIRECTION, WORSHIP_ENROLLMENT } from '@mokjang/constants';
 import {
-  ALL,
-  BLANK,
-  ORDER_DIRECTION,
-  WORSHIP_ENROLLMENT,
-} from '@mokjang/constants';
-import {
+  fetchWorshipSessionCheckStatus,
   setWorshipEnrollmentOrderBy,
   setWorshipEnrollmentOrderDirection,
 } from '@/redux/reducers/filter/worship-enrollment-filter-reducer';
@@ -17,10 +13,7 @@ import {
   setTargetWorshipSessionGroup,
   setTargetWorshipSessionWorship,
 } from '@/redux/reducers/target/target-worship-session-reducer';
-import {
-  DEFAULT_WORSHIP_SESSION,
-  WorshipSessionCheckStatus,
-} from '@mokjang/models';
+import { DEFAULT_WORSHIP_SESSION } from '@mokjang/models';
 import { WorshipSessionsApi } from '@/api/worship/worship-sessions.api';
 import { getDateStringFromDate } from '@mokjang/utils';
 
@@ -53,10 +46,6 @@ const AttendanceTable = ({
 
   // 상세정보 팝업 On/Off
   const [isSessionShown, setIsSessionShown] = useState<boolean>(false);
-
-  const [checkStatuses, setCheckStatuses] = useState<
-    WorshipSessionCheckStatus[]
-  >([]);
 
   const [thrownError, setThrownError] = useState<Error | null>(null);
   if (thrownError) {
@@ -139,35 +128,35 @@ const AttendanceTable = ({
     dispatch(setTargetWorshipSession(DEFAULT_WORSHIP_SESSION));
   };
 
-  const fetchWorshipSessionCheckStatus = async () => {
-    if (!targetWorship.id) return;
-    if (
-      worshipEnrollmentFilter.fromSessionDate === BLANK ||
-      worshipEnrollmentFilter.toSessionDate === BLANK
-    )
-      return;
-
-    try {
-      const response = await worshipSessionsApi.getWorshipSessionCheckStatus({
-        churchId,
-        worshipId: targetWorship.id,
-        groupId:
-          targetWorshipGroup.id === ALL
-            ? undefined
-            : (targetWorshipGroup.id as string),
-        from: worshipEnrollmentFilter.fromSessionDate,
-        to: worshipEnrollmentFilter.toSessionDate,
-      });
-
-      const newCheckStatuses = response.data.data;
-      setCheckStatuses(newCheckStatuses);
-    } catch (error) {
-      setThrownError(error instanceof Error ? error : new Error(String(error)));
-    }
-  };
+  // const fetchWorshipSessionCheckStatus = async () => {
+  //   if (!targetWorship.id) return;
+  //   if (
+  //     worshipEnrollmentFilter.fromSessionDate === BLANK ||
+  //     worshipEnrollmentFilter.toSessionDate === BLANK
+  //   )
+  //     return;
+  //
+  //   try {
+  //     const response = await worshipSessionsApi.getWorshipSessionCheckStatus({
+  //       churchId,
+  //       worshipId: targetWorship.id,
+  //       groupId:
+  //         targetWorshipGroup.id === ALL
+  //           ? undefined
+  //           : (targetWorshipGroup.id as string),
+  //       from: worshipEnrollmentFilter.fromSessionDate,
+  //       to: worshipEnrollmentFilter.toSessionDate,
+  //     });
+  //
+  //     const newCheckStatuses = response.data.data;
+  //     setCheckStatuses(newCheckStatuses);
+  //   } catch (error) {
+  //     setThrownError(error instanceof Error ? error : new Error(String(error)));
+  //   }
+  // };
 
   useEffect(() => {
-    fetchWorshipSessionCheckStatus();
+    dispatch(fetchWorshipSessionCheckStatus());
   }, [
     targetWorship.id,
     worshipEnrollmentFilter.fromSessionDate,
@@ -183,8 +172,6 @@ const AttendanceTable = ({
     scrollRef,
     onScroll,
     onClickHeader,
-    checkStatuses,
-    fetchWorshipSessionCheckStatus,
   };
 
   return (

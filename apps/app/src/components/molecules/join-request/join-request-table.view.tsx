@@ -3,26 +3,31 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../redux/store';
 
-import { GRAY, GREEN, RED, WHITE } from '@mokjang/constants';
+import {
+  BLANK,
+  GRAY,
+  GREEN,
+  JOIN_REQUEST,
+  LOCALE,
+  RED,
+  USER,
+  WHITE,
+} from '@mokjang/constants';
 
-import { MainText } from '@mokjang/components';
-import { BLANK } from '@mokjang/constants';
+import { Button, CustomPopup, MainText } from '@mokjang/components';
 
 import useWindowSize from '../../../hooks/window/window';
 import { BLANK_HEADER } from '../../../redux/reducers/filter/member-filter-reducer';
 import { useI18n, useScopedI18n } from '../../../../locales/client';
-import { getFormattedMobilePhone } from '@mokjang/utils';
+import {
+  getFormattedMobilePhone,
+  getTranslatedDateFromDateString,
+} from '@mokjang/utils';
 import { getStatusColor } from '../../../utils/color';
-import { JOIN_REQUEST } from '@mokjang/constants';
-import { JoinRequest } from '@mokjang/models';
+import { JoinRequest, Member } from '@mokjang/models';
 import JoinRequestTableHeader from '../../atoms/join-request/join-request-table-header';
-import { USER } from '@mokjang/constants';
-import { Button } from '@mokjang/components';
-import { CustomPopup } from '@mokjang/components';
 import LinkMemberUser from './link-member-user';
 import { usePathname } from 'next/navigation';
-import { LOCALE } from '@mokjang/constants';
-import { getTranslatedDateFromDateString } from '@/utils/translate';
 
 // 1. 컬럼별 PX 폭 (마지막 REMARKS만 auto 할 예정)
 const getColumnWidth = (id: string) => {
@@ -165,7 +170,7 @@ type JoinRequestTableProps = {
   onClickApprove: () => void;
   onClickCancelLink: () => void;
   onClickReject: (joinId: string) => void;
-  onChangeLinkMember: (memberId: string) => void;
+  onChangeLinkMember: (member: Member) => void;
 };
 
 const JoinRequestTableView = ({

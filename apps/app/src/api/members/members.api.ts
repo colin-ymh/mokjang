@@ -110,6 +110,8 @@ type EditMemberParams = {
 };
 
 export type EditMemberBody = {
+  name?: string;
+  mobilePhone?: string;
   profileImageUrl?: string;
   birth?: string;
   isLunar?: boolean;

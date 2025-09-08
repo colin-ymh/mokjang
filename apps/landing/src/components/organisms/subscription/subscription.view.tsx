@@ -15,7 +15,7 @@ import {
   getTranslatedMaxRegisterMember,
   getTranslatedMonthlySubscriptionPrice,
   getTranslatedYearlySubscriptionPrice,
-} from '@/utils/translate';
+} from '@mokjang/utils';
 
 import { Svg } from '@mokjang/assets';
 

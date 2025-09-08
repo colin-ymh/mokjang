@@ -18,7 +18,6 @@ import {
   setToastText,
 } from '../../../../redux/reducers/toast-popup-reducer';
 import { useScopedI18n } from '../../../../../locales/client';
-import { getDateFromDateString, getDateStringFromDate } from '@mokjang/utils';
 
 type MemberListProps = {
   isNewMember?: boolean;
@@ -184,8 +183,14 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
         .editMember(
           { churchId, memberId: targetMember.id },
           {
+            name: updatedMember.name || undefined,
+            mobilePhone:
+              updatedMember.mobilePhone?.replace(/\D/g, '') || undefined,
             profileImageUrl: updatedMember.profileImageUrl || undefined,
-            birth: getDateStringFromDate(getDateFromDateString(updatedMember.birth)) || undefined,
+            // birth:
+            //   getDateStringFromDate(
+            //     getDateFromDateString(updatedMember.birth)
+            //   ) || undefined,
             isLunar: updatedMember.isLunar,
             isLeafMonth: updatedMember.isLeafMonth,
             gender: updatedMember.gender || undefined,

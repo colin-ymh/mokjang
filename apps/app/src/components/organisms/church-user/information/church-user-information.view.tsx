@@ -100,17 +100,15 @@ const ChurchUserInformationView = ({
           <MainText fontSize={16} fontWeight={600}>
             {t('linkedMember')}
           </MainText>
-          {!isOwner && (
-            <Button
-              width={'auto'}
-              text={t_button('edit')}
-              borderColor={MAIN.LIGHT}
-              backgroundColor={WHITE}
-              color={MAIN.DEFAULT}
-              height={30}
-              onClick={onClickLink}
-            />
-          )}
+          <Button
+            width={'auto'}
+            text={t_button('edit')}
+            borderColor={MAIN.LIGHT}
+            backgroundColor={WHITE}
+            color={MAIN.DEFAULT}
+            height={30}
+            onClick={onClickLink}
+          />
         </TitleContainer>
         <MemberContainer>
           <MemberProfilePopupButton
