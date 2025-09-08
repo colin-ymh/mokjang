@@ -1,13 +1,22 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { BLANK, HEADER_BAR, ORDER_DIRECTION } from '@mokjang/constants';
-import { Visitation } from '@mokjang/models';
+import {
+  BLANK,
+  DESTRUCTIVE,
+  HEADER_BAR,
+  ORDER_DIRECTION,
+  TASK_STATUS,
+  VISITATION,
+} from '@mokjang/constants';
+import { DEFAULT_MEMBER, Member, Visitation } from '@mokjang/models';
 import { RootState } from '../../store';
-
-import { VISITATION } from '@mokjang/constants';
 import { VisitationsApi } from '../../../api/visitations/visitations.api';
-import { TASK_STATUS } from '@mokjang/constants';
-import { DEFAULT_MEMBER, Member } from '@mokjang/models';
 import { VisitationReportsApi } from '../../../api/reports/visitation-reports.api';
+import {
+  setIsToastShown,
+  setToastBackgroundColor,
+  setToastText,
+} from '@/redux/reducers/toast-popup-reducer';
+import axios from 'axios';
 
 type VISITATION_FILTER = {
   [VISITATION.STATUS]: TASK_STATUS[];
@@ -103,7 +112,7 @@ export const fetchVisitations = createAsyncThunk<
   { state: RootState }
 >(
   'visitations/fetchVisitations',
-  async ({ headerType }, { getState, rejectWithValue }) => {
+  async ({ headerType }, { getState, dispatch, rejectWithValue }) => {
     const state = getState().visitationFilter;
     const {
       visitationPage,
@@ -168,8 +177,28 @@ export const fetchVisitations = createAsyncThunk<
         return updatedVisitations;
       }
     } catch (error) {
-      console.error('업무 목록 불러오기 실패', error);
-      return rejectWithValue('업무 목록을 불러오는 중 오류가 발생했습니다.');
+      if (axios.isAxiosError(error)) {
+        const data = error.response?.data as any;
+        const status = data?.statusCode ?? error.response?.status;
+        const message = data.message;
+
+        dispatch(setToastText(message));
+        dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
+        dispatch(setIsToastShown(true));
+
+        return rejectWithValue(message);
+      }
+
+      if (error instanceof Error) {
+        dispatch(setToastText(error.message));
+        dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
+        dispatch(setIsToastShown(true));
+        return rejectWithValue(error.message);
+      }
+
+      return rejectWithValue(
+        '심방 목록을 불러오는 중 알 수 없는 오류가 발생했습니다.'
+      );
     }
   }
 );

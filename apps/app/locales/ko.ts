@@ -574,7 +574,7 @@ export default {
   'button.tableHeaderSetting': '표시 항목 설정',
   'button.verify': '인증하기',
   'button.request': '요청하기',
-  'button.add': '추가하기',
+  'button.add': '추가',
   'button.signIn': '회원가입 완료하기',
   'button.logOut': '로그아웃',
   'button.addMember': '교인 추가',

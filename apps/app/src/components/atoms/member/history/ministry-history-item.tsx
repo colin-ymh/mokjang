@@ -22,8 +22,7 @@ import { BLACK, DESTRUCTIVE } from '@mokjang/constants';
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
 import { CustomPopup } from '@mokjang/components';
 import ConfirmPopup from '../../common/popup/error-popup';
-import EditMinistryDetailHistory
-  from '../../../molecules/member/information/history/ministry/edit-ministry-detail-history';
+import EditMinistryDetailHistory from '../../../molecules/member/information/history/ministry/edit-ministry-detail-history';
 import { MinistryHistoryApi } from '../../../../api/history/ministry-history.api';
 
 type MinistryHistoryItemProps = {

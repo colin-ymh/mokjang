@@ -2,18 +2,20 @@ import styled from 'styled-components';
 import React from 'react';
 import { useI18n, useScopedI18n } from '../../../../../../locales/client';
 import ConfirmPopup from '../../../../atoms/common/popup/confirm-popup';
-import { MinistryGroup } from '@mokjang/models';
+import { Member, MinistryGroup } from '@mokjang/models';
 import { LabelInput } from '@mokjang/components';
 import DeleteWarningButton from '../../../../atoms/common/button/delete-warning-button';
-import { Member } from '@mokjang/models';
 import EditMinistryGroupLeader from '../../../../atoms/management/ministry/edit/edit-ministry-group-leader';
 
 const EditContainer = styled.div`
   display: flex;
   flex-direction: column;
-  width: 100%;
   padding: 20px;
   gap: 20px;
+`;
+
+const BoxContainer = styled.div`
+  display: flex;
 `;
 
 type EditMinistryGroupViewProps = {
@@ -64,12 +66,14 @@ const EditMinistryGroupView = ({
         />
 
         {/* 삭제 */}
-        <DeleteWarningButton
-          description={t_warning('deleteMinistryGroup')}
-          buttonText={t_button('deleteMinistryGroup')}
-          onClick={onClickDeleteOpen}
-          disabled={!!selectedMinistryGroup?.membersCount || false}
-        />
+        <BoxContainer>
+          <DeleteWarningButton
+            description={t_warning('deleteMinistryGroup')}
+            buttonText={t_button('deleteMinistryGroup')}
+            onClick={onClickDeleteOpen}
+            disabled={!!selectedMinistryGroup?.membersCount || false}
+          />
+        </BoxContainer>
       </EditContainer>
 
       {/* 그룹 삭제 팝업 */}

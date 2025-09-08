@@ -6,6 +6,7 @@ import { setWorshipEnrollmentFilter } from '@/redux/reducers/filter/worship-enro
 import {
   ALL,
   BLANK,
+  DESTRUCTIVE,
   WORSHIP_ENROLLMENT,
   WORSHIP_PERIOD,
 } from '@mokjang/constants';
@@ -27,13 +28,22 @@ import {
   getDateStringFromDate,
   getMonthsAfterDate,
   getMonthsBeforeDate,
+  usePageRouter,
 } from '@mokjang/utils';
 import { AttendanceTableProps } from './attendance-table';
+import {
+  setIsToastShown,
+  setToastBackgroundColor,
+  setToastText,
+} from '@/redux/reducers/toast-popup-reducer';
+import axios from 'axios';
 
 const AttendanceRow = ({
   isStatisticOpened,
   onClickStatisticChevron,
 }: AttendanceTableProps) => {
+  const router = usePageRouter();
+
   const dispatch = useDispatch<AppDispatch>();
   const churchId: string = useSelector(
     (state: RootState) => state.church.churchId
@@ -127,7 +137,27 @@ const AttendanceRow = ({
         );
       }
     } catch (error) {
-      setThrownError(error instanceof Error ? error : new Error(String(error)));
+      if (axios.isAxiosError(error)) {
+        const data = error.response?.data as any;
+        const status = data?.statusCode ?? error.response?.status;
+        const message = data.message;
+
+        if (status === 403) {
+          router.push('/main/worship');
+        }
+
+        dispatch(setToastText(message));
+        dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
+        dispatch(setIsToastShown(true));
+      }
+
+      if (error instanceof Error) {
+        dispatch(setToastText(error.message));
+        dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
+        dispatch(setIsToastShown(true));
+      } else {
+        setThrownError(new Error(String(error)));
+      }
     }
   };
 

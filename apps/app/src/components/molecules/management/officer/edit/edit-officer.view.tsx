@@ -14,6 +14,10 @@ const EditContainer = styled.div`
   gap: 20px;
 `;
 
+const BoxContainer = styled.div`
+  display: flex;
+`;
+
 type EditOfficerViewProps = {
   editName: string;
   onChangeEditOfficerName: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -47,12 +51,14 @@ const EditOfficerView = ({
           onChange={onChangeEditOfficerName}
           placeholder={t('placeholder.officerName')}
         />
-        <DeleteWarningButton
-          description={t_warning('deleteOfficer')}
-          buttonText={t_button('deleteOfficer')}
-          onClick={onClickDeleteOpen}
-          disabled={!!selectedOfficer?.membersCount || false}
-        />
+        <BoxContainer>
+          <DeleteWarningButton
+            description={t_warning('deleteOfficer')}
+            buttonText={t_button('deleteOfficer')}
+            onClick={onClickDeleteOpen}
+            disabled={!!selectedOfficer?.membersCount || false}
+          />
+        </BoxContainer>
       </EditContainer>
 
       {/* 그룹 삭제 팝업 */}

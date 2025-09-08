@@ -2,11 +2,7 @@ import { Church } from '@mokjang/models';
 import React, { ChangeEvent } from 'react';
 import styled from 'styled-components';
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
-import {
-  Button,
-  LabelInput,
-  MainText,
-} from '../../../../../../../packages/components/src';
+import { Button, LabelInput, MainText, } from '../../../../../../../packages/components/src';
 import { BLANK } from '../../../../../../../packages/constants/src';
 
 const InformationContainer = styled.div`
@@ -15,6 +11,7 @@ const InformationContainer = styled.div`
   align-items: flex-start;
   gap: 40px;
   width: 100%;
+  padding: 20px;
 `;
 
 const ListContainer = styled.div`

@@ -1,18 +1,18 @@
 import React, { ChangeEvent, Dispatch, SetStateAction } from 'react';
-import { MainText } from '@mokjang/components';
-import { Button } from '@mokjang/components';
-import { GRAY, WHITE } from '@mokjang/constants';
+import { Button, CustomPopup, MainText } from '@mokjang/components';
+import {
+  GRAY,
+  LOCALE,
+  MEMBER,
+  ORDER_DIRECTION,
+  WHITE,
+} from '@mokjang/constants';
 import styled from 'styled-components';
 import { Svg } from '@mokjang/assets';
-import { Ministry, MinistryGroup } from '@mokjang/models';
-import { useI18n } from '../../../../../../locales/client';
-import { CustomPopup } from '@mokjang/components';
-import { Member } from '@mokjang/models';
+import { Member, Ministry, MinistryGroup } from '@mokjang/models';
+import { useI18n, useScopedI18n } from '../../../../../../locales/client';
 import { getTranslatedAddMemberTitle } from '@mokjang/utils';
 import { usePathname } from 'next/navigation';
-import { LOCALE } from '@mokjang/constants';
-import { MEMBER } from '@mokjang/constants';
-import { ORDER_DIRECTION } from '@mokjang/constants';
 import { CHURCH_CONTENT_ID } from '../../../../../constants/layout/content';
 import EditMinistryGroup from '../edit/edit-ministry-group';
 import AddMinistryGroupMemberModal from '../../../../atoms/management/ministry/member/add-ministry-group-member-modal';
@@ -120,6 +120,7 @@ const MinistryGroupInformationView = ({
   const locale = pathname.split('/')[1] as LOCALE;
 
   const t = useI18n();
+  const t_button = useScopedI18n('button');
 
   return (
     <>
@@ -185,6 +186,8 @@ const MinistryGroupInformationView = ({
         headerTitle={t('title.editMinistryGroupInformation')}
         width={450}
         height={800}
+        cancelText={t_button('cancel')}
+        doneText={t_button('save')}
       >
         <EditMinistryGroup
           members={members}
@@ -210,6 +213,7 @@ const MinistryGroupInformationView = ({
         )}
         headerDescription={t('description.addMemberHeader')}
         doneText={t('button.add')}
+        cancelText={t_button('cancel')}
         onClickDone={() =>
           onClickSaveNewMembers(selectedMembers, startDate as Date)
         }

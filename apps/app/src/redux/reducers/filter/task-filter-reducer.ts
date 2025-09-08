@@ -1,13 +1,22 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { BLANK, HEADER_BAR, ORDER_DIRECTION } from '@mokjang/constants';
-import { Task } from '@mokjang/models';
+import {
+  BLANK,
+  DESTRUCTIVE,
+  HEADER_BAR,
+  ORDER_DIRECTION,
+  TASK,
+  TASK_STATUS,
+} from '@mokjang/constants';
+import { DEFAULT_MEMBER, Member, Task } from '@mokjang/models';
 import { RootState } from '../../store';
-
-import { TASK } from '@mokjang/constants';
 import { TasksApi } from '../../../api/tasks/tasks.api';
-import { TASK_STATUS } from '@mokjang/constants';
-import { DEFAULT_MEMBER, Member } from '@mokjang/models';
 import { TaskReportsApi } from '../../../api/reports/task-reports.api';
+import {
+  setIsToastShown,
+  setToastBackgroundColor,
+  setToastText,
+} from '@/redux/reducers/toast-popup-reducer';
+import axios from 'axios';
 
 type TASK_FILTER = {
   [TASK.STATUS]: TASK_STATUS[];
@@ -92,62 +101,82 @@ export const fetchTasks = createAsyncThunk<
   Task[],
   { headerType?: HEADER_BAR },
   { state: RootState }
->('tasks/fetchTasks', async ({ headerType }, { getState, rejectWithValue }) => {
-  const state = getState().taskFilter;
-  const { taskPage, taskOrderBy, taskOrderDirection, tasks, taskFilter } =
-    state;
-  const churchId = getState().church.churchId;
-  const user = getState().user.user;
-  const tasksApi = new TasksApi(false);
-  const taskReportsApi = new TaskReportsApi(false);
+>(
+  'tasks/fetchTasks',
+  async ({ headerType }, { getState, dispatch, rejectWithValue }) => {
+    const state = getState().taskFilter;
+    const { taskPage, taskOrderBy, taskOrderDirection, tasks, taskFilter } =
+      state;
+    const churchId = getState().church.churchId;
+    const user = getState().user.user;
+    const tasksApi = new TasksApi(false);
+    const taskReportsApi = new TaskReportsApi(false);
 
-  try {
-    if (headerType === HEADER_BAR.REPORTED) {
-      const response = await taskReportsApi.getTaskReports({});
+    try {
+      if (headerType === HEADER_BAR.REPORTED) {
+        const response = await taskReportsApi.getTaskReports({});
 
-      const newTasks: Task[] = response.data.data;
-      const existingIds = new Set(tasks.map((task) => task.id));
-      const filteredNewTasks = newTasks.filter(
-        (task) => !existingIds.has(task.id)
-      );
+        const newTasks: Task[] = response.data.data;
+        const existingIds = new Set(tasks.map((task) => task.id));
+        const filteredNewTasks = newTasks.filter(
+          (task) => !existingIds.has(task.id)
+        );
 
-      const updatedTasks =
-        taskPage === 1 ? newTasks : [...tasks, ...filteredNewTasks];
+        const updatedTasks =
+          taskPage === 1 ? newTasks : [...tasks, ...filteredNewTasks];
 
-      return updatedTasks;
-    } else {
-      const response = await tasksApi.getTasks({
-        churchId,
-        page: taskPage,
-        take: 30, // 무한 스크롤 최적화
-        order: taskOrderBy || undefined,
-        orderDirection: taskOrderDirection,
-        fromStartDate: taskFilter[TASK.FROM_DATE],
-        toStartDate: taskFilter[TASK.TO_DATE],
-        inChargeId:
-          headerType === HEADER_BAR.MY
-            ? user.churchUser[0].memberId
-            : taskFilter[TASK.IN_CHARGE].id,
-        title: taskFilter[TASK.TITLE],
-        status: taskFilter[TASK.STATUS],
-      });
+        return updatedTasks;
+      } else {
+        const response = await tasksApi.getTasks({
+          churchId,
+          page: taskPage,
+          take: 30, // 무한 스크롤 최적화
+          order: taskOrderBy || undefined,
+          orderDirection: taskOrderDirection,
+          fromStartDate: taskFilter[TASK.FROM_DATE],
+          toStartDate: taskFilter[TASK.TO_DATE],
+          inChargeId:
+            headerType === HEADER_BAR.MY
+              ? user.churchUser[0].memberId
+              : taskFilter[TASK.IN_CHARGE].id,
+          title: taskFilter[TASK.TITLE],
+          status: taskFilter[TASK.STATUS],
+        });
 
-      const newTasks: Task[] = response.data.data;
-      const existingIds = new Set(tasks.map((task) => task.id));
-      const filteredNewTasks = newTasks.filter(
-        (task) => !existingIds.has(task.id)
-      );
+        const newTasks: Task[] = response.data.data;
+        const existingIds = new Set(tasks.map((task) => task.id));
+        const filteredNewTasks = newTasks.filter(
+          (task) => !existingIds.has(task.id)
+        );
 
-      const updatedTasks =
-        taskPage === 1 ? newTasks : [...tasks, ...filteredNewTasks];
+        const updatedTasks =
+          taskPage === 1 ? newTasks : [...tasks, ...filteredNewTasks];
 
-      return updatedTasks;
+        return updatedTasks;
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const data = error.response?.data as any;
+        const status = data?.statusCode ?? error.response?.status;
+        const message = data.message;
+
+        dispatch(setToastText(message));
+        dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
+        dispatch(setIsToastShown(true));
+
+        return rejectWithValue(message);
+      }
+
+      if (error instanceof Error) {
+        dispatch(setToastText(error.message));
+        dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
+        dispatch(setIsToastShown(true));
+        return rejectWithValue(error.message);
+      }
+      return rejectWithValue('업무 목록을 불러오는 중 오류가 발생했습니다.');
     }
-  } catch (error) {
-    console.error('업무 목록 불러오기 실패', error);
-    return rejectWithValue('업무 목록을 불러오는 중 오류가 발생했습니다.');
   }
-});
+);
 
 const TaskFilterSlice = createSlice({
   name: 'taskFilter',
