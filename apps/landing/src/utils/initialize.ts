@@ -59,10 +59,10 @@ export const useInitializeUser = () => {
           dispatch(setChurch(newChurch));
         });
       } else {
-        setRedirectPath('/');
+        // setRedirectPath('/');
       }
     } catch {
-      setRedirectPath('/');
+      // setRedirectPath('/');
     }
   }, [authApi, userApi, dispatch]);
 };

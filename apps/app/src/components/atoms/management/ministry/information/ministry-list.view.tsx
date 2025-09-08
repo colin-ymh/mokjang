@@ -1,13 +1,11 @@
 import styled from 'styled-components';
 import { GRAY, WHITE } from '@mokjang/constants';
-import { MainText } from '@mokjang/components';
-import { useI18n } from '../../../../../../locales/client';
+import { Button, CustomPopup, MainText } from '@mokjang/components';
+import { useI18n, useScopedI18n } from '../../../../../../locales/client';
 import { Ministry } from '@mokjang/models';
 import MinistryCountTag from '../../../common/tag/ministry-count-tag';
-import { Button } from '@mokjang/components';
 import React, { ChangeEvent } from 'react';
 import { Svg } from '@mokjang/assets';
-import { CustomPopup } from '@mokjang/components';
 import EditMinistry from '../edit/edit-ministry';
 
 const MinistryListViewContainer = styled.div`
@@ -74,6 +72,7 @@ const MinistryListView = ({
   selectedMinistry,
 }: MinistryListViewProps) => {
   const t = useI18n();
+  const t_button = useScopedI18n('button');
 
   return (
     <>
@@ -113,6 +112,8 @@ const MinistryListView = ({
         onClickCancel={onClickAddModalClose}
         onClickDone={onClickSaveNewMinistry}
         headerTitle={t('title.addMinistry')}
+        cancelText={t_button('cancel')}
+        doneText={t_button('save')}
       >
         <EditMinistry
           editName={editName}
@@ -129,6 +130,8 @@ const MinistryListView = ({
         onClickCancel={onClickEditModalClose}
         onClickDone={onClickSaveEditMinistry}
         headerTitle={t('title.editMinistry')}
+        cancelText={t_button('cancel')}
+        doneText={t_button('save')}
       >
         <EditMinistry
           editName={editName}

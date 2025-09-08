@@ -18,8 +18,6 @@ import { fetchPermissionUnits } from '../redux/reducers/filter/permission-templa
 import { ChurchesApi } from '../api/churches/churches.api';
 import { User } from '@mokjang/models';
 import { SubscriptionApi } from '@/api/subscription/subscription.api';
-import { SubscriptionPlan } from '@mokjang/models';
-import { setSubscription } from '@/redux/reducers/subscription-reducer';
 
 export const useInitializeChurch = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -89,14 +87,14 @@ export const useInitializeUser = () => {
     didRunRef.current = true;
 
     try {
-      const subResponse = await subscriptionApi.getCurrentSubscription();
-      const currentPlan: SubscriptionPlan = subResponse.data;
-
       const response = await userApi.getUser();
       const user: User = response.data;
 
-      dispatch(setSubscription(currentPlan));
+      // dispatch(setSubscription(currentPlan));
       dispatch(setUser(user));
+
+      // const subResponse = await subscriptionApi.getCurrentSubscription();
+      // const currentPlan: SubscriptionPlan = subResponse.data;
       if (user.churchUser.length) {
         const churchId = user.churchUser[0].churchId;
         dispatch(setChurchId(churchId));
@@ -105,10 +103,10 @@ export const useInitializeUser = () => {
           const newChurch = res.data;
           dispatch(setChurch(newChurch));
         });
-        setRedirectPath('/main');
-      } else if (currentPlan.isCurrent) {
-        setRedirectPath('/church/register');
-      } else {
+        // setRedirectPath('/main');
+        // } else if (currentPlan.isCurrent) {
+        //   setRedirectPath('/church/register');
+        // } else {
         // routeLandingPage('/');
       }
     } catch {
@@ -124,7 +122,7 @@ export const useInitializeUser = () => {
           dispatch(setChurch(newChurch));
         });
 
-        setRedirectPath('/main');
+        // setRedirectPath('/main');
       } else {
         // routeLandingPage('/');
       }

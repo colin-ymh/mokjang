@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import FakeDropdownButton from '../../../atoms/common/button/fake-dropdown-button';
 import { Group } from '@mokjang/models';
-import { useI18n } from '../../../../../locales/client';
+import { useI18n, useScopedI18n } from '../../../../../locales/client';
 import { Button, CustomPopup, MainText } from '@mokjang/components';
 import SelectGroupHierarchy from '../../../organisms/group/select-group-hierarchy';
 import { useSelector } from 'react-redux';
@@ -131,6 +131,7 @@ const AttendanceRow = ({
   onChangeWorshipPeriodDropdown,
 }: AttendanceViewProps) => {
   const t = useI18n();
+  const t_button = useScopedI18n('button');
   const pathname = usePathname();
   const basePath = pathname.split('/')[1] as LOCALE;
 
@@ -282,6 +283,8 @@ const AttendanceRow = ({
         width={400}
         height={600}
         isHeaderShown={false}
+        cancelText={t_button('cancel')}
+        doneText={t_button("confirm")}
       >
         <GroupContainer>
           <SelectGroupHierarchy

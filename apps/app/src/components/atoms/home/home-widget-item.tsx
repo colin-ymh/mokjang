@@ -6,9 +6,14 @@ import {
   useDrop,
 } from 'react-dnd';
 import styled from 'styled-components';
-import { GRAY, MAIN, WHITE } from '@mokjang/constants';
+import {
+  DND_ITEM_TYPE,
+  GRAY,
+  HOME_WIDGET,
+  MAIN,
+  WHITE,
+} from '@mokjang/constants';
 import { getEmptyImage } from 'react-dnd-html5-backend';
-import { DND_ITEM_TYPE, HOME_WIDGET } from '@mokjang/constants';
 
 import { Svg } from '@mokjang/assets';
 import { useScopedI18n } from '../../../../locales/client';

@@ -10,6 +10,7 @@ import { BLACK } from '@mokjang/constants';
 import { Svg } from '@mokjang/assets';
 import MemberProfile from '../../../atoms/member/member-profile';
 import { MembersApi } from '../../../../api/members/members.api';
+import { useScopedI18n } from '../../../../../locales/client';
 
 const ButtonContainer = styled.div`
   display: flex;
@@ -38,6 +39,8 @@ const MemberProfilePopupButton = ({
   width,
   height,
 }: MemberProfileButtonProps) => {
+  const t_button = useScopedI18n('button');
+
   const dispatch = useDispatch<AppDispatch>();
   const { churchId } = useSelector((state: RootState) => state.church);
   const [isShow, setIsShow] = useState<boolean>(false);
@@ -91,6 +94,7 @@ const MemberProfilePopupButton = ({
             <Cancel />
           </ButtonContainer>
         }
+        cancelText={t_button('close')}
       >
         <MemberInformation isPopup={true} />
       </CustomPopup>

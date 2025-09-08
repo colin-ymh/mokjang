@@ -1,14 +1,17 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { GRAY, WHITE } from '@mokjang/constants';
-import { MainText } from '@mokjang/components';
-import { DIRECTION, SIZE } from '@mokjang/constants';
+import {
+  DIRECTION,
+  GRAY,
+  MEDIA_MIN_WIDTH,
+  SIZE,
+  WHITE,
+} from '@mokjang/constants';
+import { Button, CustomPopup, MainText } from '@mokjang/components';
 
 import { useScopedI18n } from '../../../../../../../locales/client';
-import { MEDIA_MIN_WIDTH } from '@mokjang/constants';
 import SlidePopup from '../../../../../atoms/common/popup/slide-popup';
-import { Button } from '@mokjang/components';
 import { MAIN_HEADER_ID } from '@/constants/layout/header';
 import GroupFilter from '../../../../member/setting/group-filter';
 import AddMember from '../../../../../organisms/member/add/add-member';
@@ -20,7 +23,6 @@ import {
 } from '@mokjang/utils';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../../redux/store';
-import { CustomPopup } from '@mokjang/components';
 
 const HeaderContainer = styled.div`
   display: flex;
@@ -181,6 +183,8 @@ const MainMemberHeaderView = ({
             !getIsWellFormedName(targetMember.name) ||
             !getIsWellFormedMobilePhone(targetMember.mobilePhone)
           }
+          cancelText={t_button('close')}
+          doneText={t_button('save')}
         >
           <AddMember onChangeProfileImage={onChangeProfileImage} />
         </CustomPopup>

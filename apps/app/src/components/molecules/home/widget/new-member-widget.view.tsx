@@ -1,19 +1,18 @@
 'use client';
 
-import { MainText } from '@mokjang/components';
+import { CustomPopup, MainText } from '@mokjang/components';
 import styled from 'styled-components';
-import { SIZE } from '@mokjang/constants';
-import { GRAY, MAIN } from '@mokjang/constants';
+import { GRAY, HOME_WIDGET, LOCALE, MAIN, SIZE } from '@mokjang/constants';
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
-import { HOME_WIDGET } from '@mokjang/constants';
 import { usePathname } from 'next/navigation';
-import { LOCALE } from '@mokjang/constants';
-import { getTranslatedBeforeSomeWeek } from '@mokjang/utils';
-import { getDateFromDateString, getMonthDateFromDate } from '@mokjang/utils';
+import {
+  getDateFromDateString,
+  getMonthDateFromDate,
+  getTranslatedBeforeSomeWeek,
+  getTranslatedMemberCount,
+} from '@mokjang/utils';
 import { Member, NewMemberSummary } from '@mokjang/models';
-import { CustomPopup } from '@mokjang/components';
 import NewMemberDetail from '../../../atoms/home/new-member-detail';
-import { getTranslatedMemberCount } from '@mokjang/utils';
 
 const WidgetContainer = styled.div`
   display: flex;
@@ -105,6 +104,7 @@ const NewMemberWidgetView = ({
 }: NewMemberWidgetViewProps) => {
   const t = useI18n();
   const t_title = useScopedI18n('title');
+  const t_button = useScopedI18n('button');
   const pathname = usePathname();
   const locale = pathname.split('/')[1] as LOCALE;
 
@@ -168,6 +168,7 @@ const NewMemberWidgetView = ({
         height={500}
         headerTitle={detailTitle}
         isHeaderBorderShown={false}
+        cancelText={t_button('close')}
       >
         <NewMemberDetail memberDetails={memberDetails} />
       </CustomPopup>

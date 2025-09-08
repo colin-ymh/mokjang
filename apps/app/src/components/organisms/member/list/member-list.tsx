@@ -12,9 +12,9 @@ import MemberListView from './member-list.view';
 import { DEFAULT_MEMBER } from '@mokjang/models';
 import { setTargetMember } from '../../../../redux/reducers/target/target-member-reducer';
 import { uploadFiles } from '../../../../utils/upload';
-import { BLANK } from '@mokjang/constants';
+import { BLANK, DESTRUCTIVE } from '@mokjang/constants';
 import {
-  setIsToastShown,
+  setIsToastShown, setToastBackgroundColor,
   setToastText,
 } from '../../../../redux/reducers/toast-popup-reducer';
 import { useScopedI18n } from '../../../../../locales/client';
@@ -119,7 +119,13 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
       dispatch(setTargetMember(member)); // (중복 제거)
       setIsMemberInformationShown(true);
     } catch (error) {
-      setThrownError(error instanceof Error ? error : new Error(String(error)));
+      if (error instanceof Error) {
+        dispatch(setToastText(error.message));
+        dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
+        dispatch(setIsToastShown(true));
+      } else {
+        setThrownError(new Error(String(error)));
+      }
     }
   };
 

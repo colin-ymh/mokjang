@@ -1,21 +1,21 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../../../../../redux/store';
+import { AppDispatch, RootState } from '@/redux/store';
 
 import MainMemberHeaderView from './main-member-header.view';
-import { fetchMembers } from '../../../../../../redux/reducers/filter/member-filter-reducer';
+import { fetchMembers } from '@/redux/reducers/filter/member-filter-reducer';
 import { usePageRouter } from '@mokjang/utils';
 import { useI18n } from '../../../../../../../locales/client';
 import { DEFAULT_MEMBER } from '@mokjang/models';
-import { setTargetMember } from '../../../../../../redux/reducers/target/target-member-reducer';
-import { uploadFiles } from '../../../../../../utils/upload';
-import { MembersApi } from '../../../../../../api/members/members.api';
+import { setTargetMember } from '@/redux/reducers/target/target-member-reducer';
+import { uploadFiles } from '@/utils/upload';
+import { MembersApi } from '@/api/members/members.api';
 import { BLACK, DESTRUCTIVE } from '@mokjang/constants';
 import {
   setIsToastShown,
   setToastBackgroundColor,
   setToastText,
-} from '../../../../../../redux/reducers/toast-popup-reducer';
+} from '@/redux/reducers/toast-popup-reducer';
 
 type MainMemberHeaderProps = {};
 
@@ -119,7 +119,6 @@ const MainMemberHeader = ({}: MainMemberHeaderProps) => {
             address: updatedMember.address || undefined,
             detailAddress: updatedMember.detailAddress || undefined,
             marriage: updatedMember.marriage || undefined,
-            // detailMarriage: updatedMember.detailMarriage || undefined,
             vehicleNumber:
               updatedMember.vehicleNumber.filter(
                 (number) => number.length > 0
@@ -142,6 +141,7 @@ const MainMemberHeader = ({}: MainMemberHeaderProps) => {
       if (error instanceof Error) {
         dispatch(setToastText(error.message));
         dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
+        dispatch(setIsToastShown(true));
       } else {
         setThrownError(new Error(String(error)));
       }

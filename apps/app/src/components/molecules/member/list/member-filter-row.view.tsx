@@ -1,14 +1,13 @@
 import { ChangeEvent, Ref } from 'react';
 import styled from 'styled-components';
 
-import { Button } from '@mokjang/components';
+import { Button, CustomPopup } from '@mokjang/components';
 import { GRAY, WHITE } from '@mokjang/constants';
 import MemberTableHeaderSetting from '../setting/member-table-header-setting';
 import FilteredItem from '../../../atoms/member/setting/filtered-item';
 
 import { useScopedI18n } from '../../../../../locales/client';
 import SearchInput from '../../../atoms/common/input/search-input';
-import { CustomPopup } from '@mokjang/components';
 
 import { Svg } from '@mokjang/assets';
 import GroupFilter from '../setting/group-filter';
@@ -192,6 +191,7 @@ const MemberFilterRowView = ({
         onClickCancel={onClickGroupFilterClose}
         width={400}
         height={500}
+        cancelText={t_button('close')}
       >
         <GroupFilter />
       </CustomPopup>
@@ -215,6 +215,7 @@ const MemberFilterRowView = ({
         onClickCancel={onClickHeaderFilterClose}
         width={500}
         height={800}
+        cancelText={t_button('close')}
       >
         <MemberTableHeaderSetting />
       </CustomPopup>

@@ -5,20 +5,20 @@ import {
   GroupHistory,
 } from '@mokjang/models';
 import React, { useEffect, useState } from 'react';
-import { GroupHistoryApi } from '../../../../api/history/group-history.api';
+import { GroupHistoryApi } from '@/api/history/group-history.api';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../../../redux/store';
+import { AppDispatch, RootState } from '@/redux/store';
 import GroupHistoryItemView from './group-history-item.view';
 import {
   setTargetGroupDetailHistory,
   setTargetGroupHistory,
-} from '../../../../redux/reducers/target/target-history-reducer';
+} from '@/redux/reducers/target/target-history-reducer';
 import { getDateFromDateString, getDateStringFromDate } from '@mokjang/utils';
 import {
   setIsToastShown,
   setToastBackgroundColor,
   setToastText,
-} from '../../../../redux/reducers/toast-popup-reducer';
+} from '@/redux/reducers/toast-popup-reducer';
 import { BLACK, DESTRUCTIVE } from '@mokjang/constants';
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
 import { CustomPopup } from '@mokjang/components';
@@ -237,6 +237,8 @@ const GroupHistoryItem = ({
         width={500}
         height={500}
         doneDisabled={!isDetailSaveEnabled}
+        cancelText={t_button('cancel')}
+        doneText={t_button('confirm')}
       >
         <>
           {/* 삭제 확인 팝업 */}

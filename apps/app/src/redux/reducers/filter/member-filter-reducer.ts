@@ -4,9 +4,9 @@ import {
   BAPTISM,
   BLANK,
   MARRIAGE,
+  MEMBER,
   ORDER_DIRECTION,
 } from '@mokjang/constants';
-import { MEMBER } from '@mokjang/constants';
 import { Member } from '@mokjang/models';
 import { RootState } from '../../store';
 import { MembersApi } from '../../../api/members/members.api';
@@ -135,14 +135,14 @@ export const INITIAL_TABLE_HEADER_LIST: MEMBER_TABLE_HEADER_ITEM[] = [
     isFixed: false,
     isDate: false,
   },
-  {
-    id: MEMBER.HOME_PHONE,
-    isShown: false,
-    isSortable: false,
-    isFilterable: false,
-    isFixed: false,
-    isDate: false,
-  },
+  // {
+  //   id: MEMBER.HOME_PHONE,
+  //   isShown: false,
+  //   isSortable: false,
+  //   isFilterable: false,
+  //   isFixed: false,
+  //   isDate: false,
+  // },
   {
     id: MEMBER.ADDRESS,
     isShown: false,
@@ -183,22 +183,22 @@ export const INITIAL_TABLE_HEADER_LIST: MEMBER_TABLE_HEADER_ITEM[] = [
     isFixed: false,
     isDate: false,
   },
-  {
-    id: MEMBER.EDUCATIONS,
-    isShown: false,
-    isSortable: false,
-    isFilterable: true,
-    isFixed: false,
-    isDate: false,
-  },
-  {
-    id: MEMBER.MINISTRIES,
-    isShown: false,
-    isSortable: false,
-    isFilterable: true,
-    isFixed: false,
-    isDate: false,
-  },
+  // {
+  //   id: MEMBER.EDUCATIONS,
+  //   isShown: false,
+  //   isSortable: false,
+  //   isFilterable: true,
+  //   isFixed: false,
+  //   isDate: false,
+  // },
+  // {
+  //   id: MEMBER.MINISTRIES,
+  //   isShown: false,
+  //   isSortable: false,
+  //   isFilterable: true,
+  //   isFixed: false,
+  //   isDate: false,
+  // },
   {
     id: MEMBER.BIRTH,
     isShown: false,
@@ -276,9 +276,23 @@ export const fetchMembers = createAsyncThunk<
   } = memberFilter;
 
   try {
-    let sort = memberSortBy;
     // AGE로 정렬 요청 시 실데이터는 BIRTH 기준으로 정렬
+    let sort = memberSortBy;
     if (sort === MEMBER.AGE) sort = MEMBER.BIRTH;
+
+    // ---- displayColumns sanitize ----
+    const sanitizedDisplayColumns = Array.from(
+      new Set(
+        displayColumns
+          // 1) 서버가 허용하지 않는 컬럼 제거
+          .filter((col) => col !== 'profileImage' && col !== 'name')
+          // 2) age -> birth 치환
+          .map((col) =>
+            // @ts-ignore
+            col === 'age' || col === MEMBER.AGE ? MEMBER.BIRTH : col
+          )
+      )
+    );
 
     const response = await membersApi.getMembersV2({
       churchId,
@@ -293,7 +307,8 @@ export const fetchMembers = createAsyncThunk<
       birthTo,
       registeredFrom,
       registeredTo,
-      displayColumns,
+      // 정리된 컬럼만 전송
+      displayColumns: sanitizedDisplayColumns,
       search,
     });
 
