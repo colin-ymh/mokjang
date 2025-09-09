@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../../../redux/store';
+import { RootState } from '@/redux/store';
 
 import { CURSOR, GRAY, MEDIA_MIN_WIDTH, RED, WHITE } from '@mokjang/constants';
-import { SIDE_ID } from '../../../../constants/layout/header';
+import { SIDE_ID } from '@/constants/layout/header';
 
 import { Svg } from '@mokjang/assets';
 import { MainText, SvgIcon } from '@mokjang/components';
@@ -100,6 +100,9 @@ const TopView = ({
   const slug = useParams().slug as string[] | undefined;
   const sideId = slug?.[0] ?? null;
   const { user } = useSelector((state: RootState) => state.user);
+  const { notificationUnreadCount } = useSelector(
+    (state: RootState) => state.notification
+  );
 
   return (
     <TopContainer>
@@ -113,6 +116,28 @@ const TopView = ({
         />
       </TopLeft>
       <TopRight>
+        {sideId !== SIDE_ID.NOTIFICATION && (
+          <NotificationWrapper>
+            <SvgIcon
+              svg={Svg.Bell}
+              onClick={onClickNotification}
+              size={22}
+              width={1.5}
+              color={GRAY.DARK}
+            />
+            {notificationUnreadCount > 0 && (
+              <NotificationCount>
+                <MainText color={WHITE} fontSize={12} fontWeight={700}>
+                  {notificationUnreadCount}
+                </MainText>
+              </NotificationCount>
+            )}
+            {isNotificationOpened && (
+              <NotificationModal onClickClose={onClickNotificationClose} />
+            )}
+          </NotificationWrapper>
+        )}
+
         {sideId !== SIDE_ID.MAIN && (
           <SvgIcon
             svg={Svg.Home}
@@ -131,25 +156,6 @@ const TopView = ({
             width={1.5}
             color={GRAY.DARK}
           />
-        )}
-        {sideId !== SIDE_ID.NOTIFICATION && (
-          <NotificationWrapper>
-            <SvgIcon
-              svg={Svg.Bell}
-              onClick={onClickNotification}
-              size={22}
-              width={1.5}
-              color={GRAY.DARK}
-            />
-            <NotificationCount>
-              <MainText color={WHITE} fontSize={12} fontWeight={700}>
-                2
-              </MainText>
-            </NotificationCount>
-            {isNotificationOpened && (
-              <NotificationModal onClickClose={onClickNotificationClose} />
-            )}
-          </NotificationWrapper>
         )}
         {/*{sideId !== SIDE_ID.GUIDE && (*/}
         {/*  <SvgIcon*/}

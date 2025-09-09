@@ -4,13 +4,19 @@ import { RootState } from '../../../../redux/store';
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
 import React from 'react';
 import { Button, MainText } from '../../../../../../../packages/components/src';
-import { getFormattedDate } from '@mokjang/utils';
-import { GRAY, MAIN, WHITE } from '../../../../../../../packages/constants/src';
+import { getTranslatedDateFromDateString } from '@mokjang/utils';
+import {
+  GRAY,
+  LOCALE,
+  MAIN,
+  WHITE,
+} from '../../../../../../../packages/constants/src';
 import { getPermissionScopeTitle } from '@/utils/permission';
 import { CHURCH_USER_ROLE } from '@mokjang/constants';
 import PermissionUnitList from '@/components/molecules/permission/information/permission-unit-list';
 import DeleteWarningButton from '@/components/atoms/common/button/delete-warning-button';
 import MemberProfilePopupButton from '@/components/molecules/common/button/member-profile-popup-button';
+import { usePathname } from 'next/navigation';
 
 const InformationContainer = styled.div`
   display: flex;
@@ -79,16 +85,20 @@ const ChurchUserInformationView = ({
   onClickGroupPopupOpen,
   onClickConfirmOpen,
 }: ChurchUserInformationViewProps) => {
+  const pathname = usePathname();
+  const locale = pathname.split('/')[1] as LOCALE;
+
   const t = useI18n();
   const t_button = useScopedI18n('button');
   const t_warning = useScopedI18n('warning');
   const { targetChurchUser } = useSelector(
     (state: RootState) => state.targetChurchUser
   );
+  const { user } = useSelector((state: RootState) => state.user);
 
-  const isOwner = isMy || targetChurchUser.role === CHURCH_USER_ROLE.OWNER;
+  const isOwner = targetChurchUser.role === CHURCH_USER_ROLE.OWNER;
 
-  const { permissionUnits, permissionTemplates } = useSelector(
+  const { permissionUnits } = useSelector(
     (state: RootState) => state.permissionTemplateFilter
   );
 
@@ -100,15 +110,17 @@ const ChurchUserInformationView = ({
           <MainText fontSize={16} fontWeight={600}>
             {t('linkedMember')}
           </MainText>
-          <Button
-            width={'auto'}
-            text={t_button('edit')}
-            borderColor={MAIN.LIGHT}
-            backgroundColor={WHITE}
-            color={MAIN.DEFAULT}
-            height={30}
-            onClick={onClickLink}
-          />
+          {!isMy && (
+            <Button
+              width={'auto'}
+              text={t_button('edit')}
+              borderColor={MAIN.LIGHT}
+              backgroundColor={WHITE}
+              color={MAIN.DEFAULT}
+              height={30}
+              onClick={onClickLink}
+            />
+          )}
         </TitleContainer>
         <MemberContainer>
           <MemberProfilePopupButton
@@ -124,7 +136,7 @@ const ChurchUserInformationView = ({
           <MainText fontSize={16} fontWeight={600}>
             {t('permissionTemplate')}
           </MainText>
-          {!isOwner && (
+          {!isMy && !isOwner && (
             <Button
               width={'auto'}
               text={t_button('edit')}
@@ -143,7 +155,7 @@ const ChurchUserInformationView = ({
           <MainText fontSize={14} fontWeight={500}>
             {isOwner
               ? t(CHURCH_USER_ROLE.OWNER)
-              : targetChurchUser?.permissionTemplate?.title}
+              : targetChurchUser?.permissionTemplate?.title || t('none')}
           </MainText>
         </LineContainer>
         <LineContainer>
@@ -159,7 +171,7 @@ const ChurchUserInformationView = ({
           <MainText fontSize={16} fontWeight={600}>
             {t('permissionScope')}
           </MainText>
-          {!isOwner && (
+          {!isMy && !isOwner && (
             <Button
               width={'auto'}
               text={t_button('edit')}
@@ -190,7 +202,13 @@ const ChurchUserInformationView = ({
           </MainText>
         </TitleContainer>
         <PermissionUnitList
-          selectedUnitIds={permissionUnits.map((unit) => unit.id)}
+          selectedUnitIds={
+            isOwner
+              ? permissionUnits.map((unit) => unit.id)
+              : targetChurchUser?.permissionTemplate?.permissionUnits?.map(
+                  (unit) => unit.id
+                )
+          }
           isEditable={false}
         />
       </LabelContainer>
@@ -207,7 +225,10 @@ const ChurchUserInformationView = ({
             {t('joinedAt')}
           </MainText>
           <MainText fontSize={14} fontWeight={500}>
-            {getFormattedDate(targetChurchUser.joinedAt)}
+            {getTranslatedDateFromDateString(
+              locale,
+              isMy ? user.churchUser[0]?.joinedAt : targetChurchUser.joinedAt
+            )}
           </MainText>
         </LineContainer>
         <LineContainer>

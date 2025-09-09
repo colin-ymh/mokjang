@@ -17,7 +17,7 @@ export class UserApi {
    * @returns {Promise<AxiosResponse>}
    */
   public getUser = async (): Promise<AxiosResponse> => {
-    const url = new URL('/users', this._url);
+    const url = new URL('/me', this._url);
 
     try {
       return await authorizeAxios.get(url.toString());

@@ -1,16 +1,22 @@
 import TopView, { TopViewProps } from './top.view';
 import { usePageRouter } from '@mokjang/utils';
-import { SIDE_ID } from '../../../../constants/layout/header';
-import { useState } from 'react';
+import { SIDE_ID } from '@/constants/layout/header';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '@/redux/store';
+import { fetchNotificationCount } from '@/redux/reducers/notification-reducer';
 
 type TopProps = {
   handleSideShow: () => void;
 };
 
 const Top = ({ handleSideShow }: TopProps) => {
+  const { user } = useSelector((state: RootState) => state.user);
+  const dispatch = useDispatch<AppDispatch>();
   const router = usePageRouter();
 
-  const [isNotificationOpened, setIsNotificationOpened] = useState<boolean>(false);
+  const [isNotificationOpened, setIsNotificationOpened] =
+    useState<boolean>(false);
 
   const [isProfileOpened, setIsProfileOpened] = useState<boolean>(false);
 
@@ -33,6 +39,10 @@ const Top = ({ handleSideShow }: TopProps) => {
   const onClickProfileClose = () => {
     setIsProfileOpened(false);
   };
+
+  useEffect(() => {
+    dispatch(fetchNotificationCount());
+  }, [user.id]);
 
   const props = {
     isNotificationOpened,

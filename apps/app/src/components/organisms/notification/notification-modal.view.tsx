@@ -4,6 +4,8 @@ import { useI18n, useScopedI18n } from '../../../../locales/client';
 import { Button, MainText, SvgIcon } from '@mokjang/components';
 import { Svg } from '@mokjang/assets';
 import useWindowSize from '@/hooks/window/window';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
 
 const ModalContainer = styled.div<{ height: number }>`
   display: flex;
@@ -85,6 +87,10 @@ const NotificationModalView = ({
   const t_button = useScopedI18n('button');
   const t_notification = useScopedI18n('notification');
 
+  const { notificationUnreadCount } = useSelector(
+    (state: RootState) => state.notification
+  );
+
   const { height } = useWindowSize();
 
   return (
@@ -95,11 +101,13 @@ const NotificationModalView = ({
             <MainText fontSize={16} fontWeight={600}>
               {t_notification('recents')}
             </MainText>
-            <NotificationCount>
-              <MainText color={WHITE} fontSize={12} fontWeight={700}>
-                2
-              </MainText>
-            </NotificationCount>
+            {notificationUnreadCount > 0 && (
+              <NotificationCount>
+                <MainText color={WHITE} fontSize={12} fontWeight={700}>
+                  {notificationUnreadCount}
+                </MainText>
+              </NotificationCount>
+            )}
           </RowContainer>
           <RowContainer>
             <Button

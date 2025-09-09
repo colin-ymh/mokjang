@@ -9,10 +9,12 @@ import ChurchUserInformation from '@/components/organisms/church-user/informatio
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Svg } from '@mokjang/assets';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/redux/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '@/redux/store';
 import { useScopedI18n } from '../../../../../locales/client';
 import { UserApi } from '@/api/user/user.api';
+import { setTargetChurchUser } from '@/redux/reducers/target/target-church-user-reducer';
+import { ManagersApi } from '@/api/managers/managers.api';
 
 const ProfileContainer = styled.div`
   display: flex;
@@ -46,17 +48,29 @@ type ProfileModalProps = {
 };
 
 const ProfileModal = ({ onClickClose }: ProfileModalProps) => {
+  const { user } = useSelector((state: RootState) => state.user);
+  const { churchId } = useSelector((state: RootState) => state.church);
+  const managersApi = new ManagersApi(false);
+  const dispatch = useDispatch<AppDispatch>();
   const t_button = useScopedI18n('button');
 
   const authApi = new AuthApi(false);
   const userApi = new UserApi(false);
 
-  const { user } = useSelector((state: RootState) => state.user);
-
   const [isMyOpened, setIsMyOpened] = useState(false);
 
-  const onClickMy = () => {
-    setIsMyOpened(true);
+  const onClickMy = async () => {
+    try {
+      const response = await managersApi.getManager({
+        churchId,
+        churchUserId: user.churchUser[0].id,
+      });
+      dispatch(setTargetChurchUser(response.data.data));
+    } catch (e) {
+      dispatch(setTargetChurchUser(user.churchUser[0]));
+    } finally {
+      setIsMyOpened(true);
+    }
   };
 
   const onClickMyClose = () => {

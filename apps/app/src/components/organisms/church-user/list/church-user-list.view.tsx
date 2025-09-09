@@ -1,7 +1,7 @@
 import styled from 'styled-components';
-import { Loading } from '@mokjang/components';
+import { Loading, MainText } from '@mokjang/components';
 import React from 'react';
-import { MEDIA_MIN_WIDTH } from '@mokjang/constants';
+import { BLACK, GRAY, MEDIA_MIN_WIDTH } from '@mokjang/constants';
 import ChurchUserTable, {
   UserTableProps,
 } from '../../../molecules/church-user/list/church-user-table';
@@ -9,14 +9,12 @@ import ChurchUserRow, {
   ChurchUserRowProps,
 } from '../../../molecules/church-user/list/church-user-row';
 import SlidePopup from '../../../atoms/common/popup/slide-popup';
-import { BLACK, GRAY } from '@mokjang/constants';
 
 import { Svg } from '@mokjang/assets';
 import { useScopedI18n } from '../../../../../locales/client';
 import ChurchUserInformation from '../information/church-user-information';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
-import { MainText } from '@mokjang/components';
 import ProfileImage from '@/components/atoms/common/image/profile-image';
 import { getFormattedMobilePhone } from '@mokjang/utils';
 
@@ -149,6 +147,7 @@ const ChurchUserListView = (props: UserListViewProps) => {
         }
         headerHeight={150}
         onClickClose={onClickCloseInformation}
+        cancelText={t_button('close')}
       >
         <ChurchUserInformation
           isManager={isManager}

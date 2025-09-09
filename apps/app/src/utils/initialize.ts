@@ -88,7 +88,7 @@ export const useInitializeUser = () => {
 
     try {
       const response = await userApi.getUser();
-      const user: User = response.data;
+      const user: User = response.data.data;
 
       // dispatch(setSubscription(currentPlan));
       dispatch(setUser(user));

@@ -4,6 +4,7 @@ import { usePathname } from 'next/navigation';
 import { MainTag, MainText, SvgIcon } from '@mokjang/components';
 import {
   CALENDAR_MODE,
+  CONCEALED,
   GENDER,
   GRAY,
   GROUP_ROLE,
@@ -347,50 +348,54 @@ const PersonalInformationListView = ({
         <TextContainer>
           <MainText color={GRAY.DARK}>{t(MEMBER.MINISTRIES)}</MainText>
           <ColumnTextWrapper>
-            {targetMember.ministryGroupHistory
-              ?.slice(0, 3)
-              .map((ministryHistory) => (
-                <InformationTextWrapper key={ministryHistory.id}>
-                  <MainText size={SIZE.LARGE} fontWeight={400}>
-                    {ministryHistory.ministryGroup?.name}
-                  </MainText>
-                  {ministryHistory.ministryGroupDetailHistory.map(
-                    (detailHistory) => {
-                      if (detailHistory?.role) {
-                        return (
-                          <MainTag
-                            key={detailHistory.id}
-                            title={t('ministryGroupLeader')}
-                            color={PURPLE.DARK}
-                            backgroundColor={PURPLE.LIGHT}
-                          />
-                        );
-                      } else if (detailHistory?.ministry) {
-                        return (
-                          <MainTag
-                            key={detailHistory.id}
-                            title={
-                              ministryHistory.ministryGroupDetailHistory[0]
-                                .ministry?.name as string
-                            }
-                            color={MAIN.DARK}
-                            backgroundColor={MAIN.LIGHT}
-                          />
-                        );
+            {targetMember.ministryGroupHistory === CONCEALED ? (
+              <MainText color={GRAY.DARK}>{t('concealed')}</MainText>
+            ) : (
+              targetMember.ministryGroupHistory
+                ?.slice(0, 3)
+                ?.map((ministryHistory) => (
+                  <InformationTextWrapper key={ministryHistory.id}>
+                    <MainText size={SIZE.LARGE} fontWeight={400}>
+                      {ministryHistory.ministryGroup?.name}
+                    </MainText>
+                    {ministryHistory.ministryGroupDetailHistory.map(
+                      (detailHistory) => {
+                        if (detailHistory?.role) {
+                          return (
+                            <MainTag
+                              key={detailHistory.id}
+                              title={t('ministryGroupLeader')}
+                              color={PURPLE.DARK}
+                              backgroundColor={PURPLE.LIGHT}
+                            />
+                          );
+                        } else if (detailHistory?.ministry) {
+                          return (
+                            <MainTag
+                              key={detailHistory.id}
+                              title={
+                                ministryHistory.ministryGroupDetailHistory[0]
+                                  .ministry?.name as string
+                              }
+                              color={MAIN.DARK}
+                              backgroundColor={MAIN.LIGHT}
+                            />
+                          );
+                        }
                       }
-                    }
-                  )}
-
-                  <MainText color={GRAY.DARK}>
-                    {getTranslatedDateFromDateString(
-                      basePath,
-                      getDateStringFromDate(
-                        getDateFromDateString(ministryHistory.startDate)
-                      )
                     )}
-                  </MainText>
-                </InformationTextWrapper>
-              ))}
+
+                    <MainText color={GRAY.DARK}>
+                      {getTranslatedDateFromDateString(
+                        basePath,
+                        getDateStringFromDate(
+                          getDateFromDateString(ministryHistory.startDate)
+                        )
+                      )}
+                    </MainText>
+                  </InformationTextWrapper>
+                ))
+            )}
           </ColumnTextWrapper>
         </TextContainer>
         <EditButtonContainer onClick={onClickMinistryOpen}>

@@ -1,8 +1,8 @@
 import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
 import LinkMemberUserView from './link-member-user.view';
-import { MembersApi } from '../../../api/members/members.api';
+import { MembersApi } from '@/api/members/members.api';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../../redux/store';
+import { RootState } from '@/redux/store';
 import { BLANK, MEMBER } from '@mokjang/constants';
 import { DEFAULT_MEMBER, Member } from '@mokjang/models';
 import { getFormattedName } from '@mokjang/utils';

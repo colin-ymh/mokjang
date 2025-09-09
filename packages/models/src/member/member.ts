@@ -1,19 +1,15 @@
 import {
   BAPTISM,
   BLANK,
+  CONCEALED,
   FAMILY,
   GENDER,
   GROUP_ROLE,
   MARRIAGE,
   MINISTRY_GROUP_ROLE,
 } from '@mokjang/constants';
-import {
-  Group,
-  Ministry,
-  MinistryGroup,
-  Officer,
-} from '../management/management';
-import { Education } from '../education/education';
+import { Group, Ministry, MinistryGroup, Officer } from '../management';
+import { Education } from '../education';
 import { getDateStringFromDate } from '@mokjang/utils';
 import { GroupHistory, MinistryHistory, OfficerHistory } from './history';
 
@@ -65,9 +61,9 @@ export type Member = {
 
   isConcealed: boolean;
 
-  officerHistory?: OfficerHistory[];
-  groupHistory?: GroupHistory[];
-  ministryGroupHistory?: MinistryHistory[];
+  officerHistory?: OfficerHistory[] | CONCEALED;
+  groupHistory?: GroupHistory[] | CONCEALED;
+  ministryGroupHistory?: MinistryHistory[] | CONCEALED;
 };
 
 export const DEFAULT_MEMBER: Member = {
