@@ -87,7 +87,7 @@ const NotificationModalView = ({
   const t_button = useScopedI18n('button');
   const t_notification = useScopedI18n('notification');
 
-  const { notificationUnreadCount } = useSelector(
+  const { notificationUnreadCount, notifications } = useSelector(
     (state: RootState) => state.notification
   );
 
