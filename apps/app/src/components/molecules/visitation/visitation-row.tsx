@@ -3,15 +3,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../redux/store';
 
 import { getTrimmedString } from '@mokjang/utils';
-import { VISITATION } from '@mokjang/constants';
-import { BLANK } from '@mokjang/constants';
+import { BLANK, TASK_STATUS, VISITATION } from '@mokjang/constants';
 import VisitationRowView, {
   VISITATION_SEARCH_FILTER,
 } from './visitation-row.view';
 import { VisitationFilteredItemType } from '../../atoms/visitation/visitation-filtered-item';
 import { setVisitationFilter } from '../../../redux/reducers/filter/visitation-filter-reducer';
-
-import { TASK_STATUS } from '@mokjang/constants';
 
 const VisitationRow = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -111,15 +108,15 @@ const VisitationRow = () => {
   useEffect(() => {
     let newFilterItems: VisitationFilteredItemType[] = [];
 
-    // 상태
-    if (visitationFilter.status.length > 0) {
-      newFilterItems.push({
-        title: VISITATION.STATUS,
-        value: visitationFilter.status,
-      });
-    } else {
-      setStatusFilter(undefined);
-    }
+    // // 상태
+    // if (visitationFilter.status.length > 0) {
+    //   newFilterItems.push({
+    //     title: VISITATION.STATUS,
+    //     value: visitationFilter.status,
+    //   });
+    // } else {
+    //   setStatusFilter(undefined);
+    // }
     //
     // // 방식
     // if (visitationFilter.visitationMethod.length > 0) {

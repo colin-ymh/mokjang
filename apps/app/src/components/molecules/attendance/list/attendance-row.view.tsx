@@ -241,19 +241,19 @@ const AttendanceRow = ({
           </BoxContainer>
           {/* 선택 그룹 */}
           <BoxContainer>
-            <MainText color={PURPLE.DARK} size={SIZE.SMALL}>
+            <MainText color={GRAY.SEMI_DARK} size={SIZE.SMALL}>
               {t('worshipSelectedGroup')}
             </MainText>
             <MainText color={PURPLE.DARK} size={SIZE.LARGE} fontWeight={600}>
               {targetWorshipGroup.name || t('all')}
             </MainText>
-            <MainText color={PURPLE.DARK} size={SIZE.SMALL}>
+            <MainText color={GRAY.SEMI_DARK} size={SIZE.SMALL}>
               {getTranslatedMemberCount(basePath, worshipEnrollmentTotalCount)}
             </MainText>
           </BoxContainer>
           {/* 평균 출석률 */}
           <BoxContainer>
-            <MainText color={MAIN.DEFAULT} size={SIZE.SMALL}>
+            <MainText color={GRAY.SEMI_DARK} size={SIZE.SMALL}>
               {t('worshipAverageAttendanceRate')}
             </MainText>
             <MainText color={MAIN.DEFAULT} size={SIZE.LARGE} fontWeight={600}>
@@ -262,7 +262,7 @@ const AttendanceRow = ({
           </BoxContainer>
           {/* 최근 예배일 */}
           <BoxContainer>
-            <MainText color={GREEN.DEFAULT} size={SIZE.SMALL}>
+            <MainText color={GRAY.SEMI_DARK} size={SIZE.SMALL}>
               {t('worshipLastDate')}
             </MainText>
             <MainText color={GREEN.DEFAULT} size={SIZE.LARGE} fontWeight={600}>
@@ -283,8 +283,7 @@ const AttendanceRow = ({
         width={400}
         height={600}
         isHeaderShown={false}
-        cancelText={t_button('cancel')}
-        doneText={t_button("confirm")}
+        cancelText={t_button('close')}
       >
         <GroupContainer>
           <SelectGroupHierarchy

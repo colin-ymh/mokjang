@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import { Button, SvgIcon } from '../../../../../../packages/components/src';
 import { GRAY, MAIN, WHITE } from '../../../../../../packages/constants/src';
-import { VISITATION } from '@mokjang/constants';
+import { TASK_STATUS, VISITATION } from '@mokjang/constants';
 
 import {
   useTaskStatusFilterDropdownItems,
@@ -18,7 +18,6 @@ import PeriodModal from '../../atoms/common/modal/period-modal';
 import { RootState } from '@/redux/store';
 import { useSelector } from 'react-redux';
 import SearchInput from '../../atoms/common/input/search-input';
-import { TASK_STATUS } from '@mokjang/constants';
 
 import { Svg } from '@mokjang/assets';
 import Dropdown from '@/components/atoms/common/dropdown/dropdown';
@@ -45,6 +44,7 @@ const RowTop = styled.div`
 const FilterList = styled.div`
   display: flex;
   width: 100%;
+  gap: 10px;
 `;
 
 const ButtonContainer = styled.div`
@@ -61,7 +61,6 @@ const FilteredItemList = styled.div<{ $width: number }>`
   justify-content: flex-start;
   align-items: center;
   gap: 5px;
-  padding: 10px 0;
   width: ${({ $width }) => $width}px;
   overflow-x: scroll;
 `;

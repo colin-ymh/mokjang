@@ -1,5 +1,6 @@
 export declare const BLANK = "";
 export declare const ALL = "all";
+export declare const CONCEALED = "CONCEALED";
 export declare enum DAY {
     SUNDAY = "sunday",
     MONDAY = "monday",

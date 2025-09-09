@@ -14,7 +14,7 @@ import styled, {
 } from 'styled-components';
 import { ko } from 'date-fns/locale';
 
-import { BLACK, GRAY, MAIN, RED, WHITE } from '@mokjang/constants';
+import { BLACK, CURSOR, GRAY, MAIN, RED, WHITE } from '@mokjang/constants';
 import { getMonth, getYear } from 'date-fns';
 import { BorderInput, Button, SvgIcon } from '@mokjang/components';
 import _ from 'lodash';
@@ -392,12 +392,17 @@ export default function CustomDatePicker({
           aria-label="달력 닫기"
           onClick={() => datePickerRef.current?.setOpen?.(false)}
         >
-          <SvgIcon svg={Svg.Cancel} />
+          <SvgIcon
+            svg={Svg.Cancel}
+            cursor={CURSOR.POINTER}
+            size={16}
+            width={2}
+          />
         </button>
       </div>
       <HeaderContainer>
         <Button
-          icon={<SvgIcon svg={Svg.ChevronLeft} />}
+          icon={<SvgIcon svg={Svg.ChevronLeft} cursor={CURSOR.POINTER} />}
           onClick={decreaseMonth}
           disabled={prevMonthButtonDisabled}
           width={50}
@@ -436,7 +441,7 @@ export default function CustomDatePicker({
           <Chevron className="mj-select-chevron" $isOpened={false} />
         </div>
         <Button
-          icon={<SvgIcon svg={Svg.ChevronRight} />}
+          icon={<SvgIcon svg={Svg.ChevronRight} cursor={CURSOR.POINTER} />}
           onClick={increaseMonth}
           disabled={nextMonthButtonDisabled}
           width={50}

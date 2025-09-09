@@ -11,7 +11,7 @@ const OfficerListContainer = styled.div<{ height: number }>`
   width: 100%;
   overflow-y: auto;
   gap: 5px;
-  height: ${({ height }) => `${height - 250}px`};
+  height: ${({ height }) => `${height - 330}px`};
 `;
 
 type OfficerListViewProps = {

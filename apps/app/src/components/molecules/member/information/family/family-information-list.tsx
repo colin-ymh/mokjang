@@ -1,21 +1,19 @@
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../../../../redux/store';
+import { AppDispatch, RootState } from '@/redux/store';
 
-import { FamilyApi } from '../../../../../api/members/family.api';
-import { MembersApi } from '../../../../../api/members/members.api';
+import { FamilyApi } from '@/api/members/family.api';
+import { MembersApi } from '@/api/members/members.api';
 import FamilyInformationListView from './family-information-list.view';
 import { FamilyMember, Member } from '@mokjang/models';
 
 import { useScopedI18n } from '../../../../../../locales/client';
-import { setTargetMember } from '../../../../../redux/reducers/target/target-member-reducer';
 import {
   setIsToastShown,
   setToastBackgroundColor,
   setToastText,
-} from '../../../../../redux/reducers/toast-popup-reducer';
-import { BLACK, DESTRUCTIVE } from '@mokjang/constants';
-import { BLANK, FAMILY } from '@mokjang/constants';
+} from '@/redux/reducers/toast-popup-reducer';
+import { BLACK, BLANK, DESTRUCTIVE, FAMILY } from '@mokjang/constants';
 
 type FamilyInformationListProps = {};
 
@@ -63,14 +61,18 @@ const FamilyInformationList = ({}: FamilyInformationListProps) => {
         );
       }
 
-      const response = await membersApi.getMember({
-        churchId,
-        memberId: targetMember.id,
-      });
-
-      const newTargetMember = response.data.data;
-
-      dispatch(setTargetMember(newTargetMember));
+      const newFamilyMembers = [
+        ...selectedMembers.map((member): FamilyMember => {
+          return {
+            meId: targetMember.id,
+            familyMemberId: member.id,
+            relation: FAMILY.FAMILY,
+            familyMember: member,
+          };
+        }),
+        ...familyMembers,
+      ];
+      setFamilyMembers(newFamilyMembers);
 
       dispatch(setIsToastShown(true));
       dispatch(setToastText(t_popup('saveComplete')));
@@ -79,7 +81,7 @@ const FamilyInformationList = ({}: FamilyInformationListProps) => {
       if (error instanceof Error) {
         dispatch(setToastText(error.message));
         dispatch(setIsToastShown(true));
-        dispatch(setToastBackgroundColor(DESTRUCTIVE.DARK));
+        dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
       } else {
         setThrownError(new Error(String(error)));
       }
@@ -108,9 +110,14 @@ const FamilyInformationList = ({}: FamilyInformationListProps) => {
           (familyMember) => familyMember.familyMemberId !== familyMemberId
         );
         setFamilyMembers(newFamilyMembers);
+
+        dispatch(setIsToastShown(true));
+        dispatch(setToastText(t_popup('deleteComplete')));
+        dispatch(setToastBackgroundColor(BLACK));
       } catch (error) {
         if (error instanceof Error) {
           dispatch(setToastText(error.message));
+          dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
           dispatch(setIsToastShown(true));
         } else {
           setThrownError(new Error(String(error)));

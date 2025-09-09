@@ -31,6 +31,10 @@ const RowContainer = styled.div`
   width: 100%;
 `;
 
+const BoxContainer = styled.div`
+  display: flex;
+`;
+
 type EditMemberOfficerViewProps = {
   onChangeStartDate: (date: Date | null) => void;
   onChangeEndDate: (date: Date | null) => void;
@@ -109,11 +113,13 @@ const EditOfficerHistoryView = ({
             />
           </LabelContainer>
         </RowContainer>
-        <DeleteWarningButton
-          description={t_warning('deleteOfficerHistory')}
-          buttonText={t_button('deleteHistory')}
-          onClick={onClickDeleteOfficer}
-        />
+        <BoxContainer>
+          <DeleteWarningButton
+            description={t_warning('deleteOfficerHistory')}
+            buttonText={t_button('deleteHistory')}
+            onClick={onClickDeleteOfficer}
+          />
+        </BoxContainer>
       </EditMemberOfficerViewContainer>
     </>
   );

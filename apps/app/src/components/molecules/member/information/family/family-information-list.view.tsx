@@ -1,22 +1,17 @@
 import styled from 'styled-components';
-import { MainText } from '@mokjang/components';
+import { Button, CustomPopup, MainText } from '@mokjang/components';
 import { FamilyMember, Member } from '@mokjang/models';
-import { WHITE } from '@mokjang/constants';
+import { FAMILY, LOCALE, SIZE, WHITE } from '@mokjang/constants';
 
 import { useI18n, useScopedI18n } from '../../../../../../locales/client';
 import { Svg } from '@mokjang/assets';
-import { Button } from '@mokjang/components';
-import { CustomPopup } from '@mokjang/components';
 import { getTranslatedFamilyAddMemberTitle } from '@mokjang/utils';
 import React, { Dispatch, RefObject, SetStateAction } from 'react';
 import { usePathname } from 'next/navigation';
-import { LOCALE } from '@mokjang/constants';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../redux/store';
 import AddFamilyMemberModal from '../../../../atoms/member/information/family/add-family-member-modal';
 import FamilyMemberItem from '../../../../atoms/member/information/family/family-member-item';
-import { SIZE } from '@mokjang/constants';
-import { FAMILY } from '@mokjang/constants';
 import useWindowSize from '../../../../../hooks/window/window';
 
 const ListContainer = styled.div`
@@ -129,6 +124,7 @@ const FamilyInformationListView = ({
         )}
         headerDescription={t('description.addMemberHeader')}
         doneText={t('button.add')}
+        cancelText={t('button.cancel')}
         onClickDone={onClickAddDone}
       >
         <AddFamilyMemberModal

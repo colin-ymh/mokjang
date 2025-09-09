@@ -286,6 +286,8 @@ const OfficerHistoryList = () => {
         width={500}
         height={500}
         doneDisabled={!isOfficerSaveEnabled}
+        doneText={t_button('save')}
+        cancelText={t_button('cancel')}
       >
         <>
           {/* 삭제 확인 팝업 */}

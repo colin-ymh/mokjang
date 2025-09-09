@@ -12,7 +12,11 @@ import { BLACK, BLANK, DESTRUCTIVE, TASK_STATUS } from '@mokjang/constants';
 import { DEFAULT_VISITATION, Visitation } from '@mokjang/models';
 import { VisitationsApi } from '../../../../../api/visitations/visitations.api';
 import MemberVisitationListView from './member-visitation-list.view';
-import { getDateFromDateString, getFullStringFromDate, getIsWellFormedTitle, } from '@mokjang/utils';
+import {
+  getDateFromDateString,
+  getFullStringFromDate,
+  getIsWellFormedTitle,
+} from '@mokjang/utils';
 import { setTargetVisitation } from '../../../../../redux/reducers/target/target-visitation-reducer';
 
 type MemberVisitationListProps = {};
@@ -207,7 +211,7 @@ const MemberVisitationList = ({}: MemberVisitationListProps) => {
       if (error instanceof Error) {
         dispatch(setToastText(error.message));
         dispatch(setIsToastShown(true));
-        dispatch(setToastBackgroundColor(DESTRUCTIVE.DARK));
+        dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
       } else {
         setThrownError(new Error(String(error)));
       }
@@ -289,6 +293,7 @@ const MemberVisitationList = ({}: MemberVisitationListProps) => {
     } catch (error) {
       if (error instanceof Error) {
         dispatch(setToastText(error.message));
+        dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
         dispatch(setIsToastShown(true));
       } else {
         setThrownError(new Error(String(error)));

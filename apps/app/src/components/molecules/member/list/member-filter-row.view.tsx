@@ -131,6 +131,7 @@ const MemberFilterRowView = ({
               onChangeSearchValue={onChangeSearchValue}
               onKeyDown={onKeyDown}
               onClickSearch={onClickSearch}
+              color={GRAY.SEMI_DARK}
             />
             {/* 그룹 필터 활성화 버튼 */}
             <Button

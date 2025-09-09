@@ -285,6 +285,8 @@ const MinistryHistoryList = () => {
         width={500}
         height={500}
         doneDisabled={!isMinistrySaveEnabled}
+        doneText={t_button('save')}
+        cancelText={t_button('cancel')}
       >
         <>
           {/* 삭제 확인 팝업 */}

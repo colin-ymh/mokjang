@@ -1,15 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../../redux/store';
-import { MEMBER } from '@mokjang/constants';
-import { BAPTISM, BLANK, MARRIAGE } from '@mokjang/constants';
+import { BAPTISM, BLANK, LOCALE, MARRIAGE, MEMBER } from '@mokjang/constants';
 
 import { useI18n } from '../../../../../locales/client';
 import { setMemberFilter } from '../../../../redux/reducers/filter/member-filter-reducer';
 import { getGroup } from '../../../../utils/group';
 import FilteredItemView, { FilteredItemType } from './filtered-item.view';
 import { usePathname } from 'next/navigation';
-import { LOCALE } from '@mokjang/constants';
 
 type FilteredItemProps = {
   item: FilteredItemType;
@@ -54,6 +52,34 @@ const FilteredItem = ({ item }: FilteredItemProps) => {
         setMemberFilter({
           ...memberFilter,
           search: BLANK,
+        })
+      );
+    } else if (item.title === MEMBER.GROUP) {
+      dispatch(
+        setMemberFilter({
+          ...memberFilter,
+          groupIds: [],
+        })
+      );
+    } else if (item.title === MEMBER.OFFICER) {
+      dispatch(
+        setMemberFilter({
+          ...memberFilter,
+          officerIds: [],
+        })
+      );
+    } else if (item.title === MEMBER.MARRIAGE) {
+      dispatch(
+        setMemberFilter({
+          ...memberFilter,
+          marriageStatuses: [],
+        })
+      );
+    } else if (item.title === MEMBER.BAPTISM) {
+      dispatch(
+        setMemberFilter({
+          ...memberFilter,
+          baptismStatuses: [],
         })
       );
     }

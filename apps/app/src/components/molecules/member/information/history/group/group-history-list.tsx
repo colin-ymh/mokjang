@@ -284,6 +284,8 @@ const GroupHistoryList = () => {
         width={500}
         height={500}
         doneDisabled={!isGroupSaveEnabled}
+        doneText={t_button('save')}
+        cancelText={t_button('cancel')}
       >
         <>
           {/* 삭제 확인 팝업 */}

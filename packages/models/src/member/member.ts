@@ -50,7 +50,7 @@ export type Member = {
   relation: FAMILY;
   occupation: string;
   school: string;
-  marriage?: MARRIAGE;
+  marriage?: MARRIAGE | typeof CONCEALED;
   detailMarriage: string;
   vehicleNumber: string[];
   guidedById: string;
@@ -61,9 +61,9 @@ export type Member = {
 
   isConcealed: boolean;
 
-  officerHistory?: OfficerHistory[] | CONCEALED;
-  groupHistory?: GroupHistory[] | CONCEALED;
-  ministryGroupHistory?: MinistryHistory[] | CONCEALED;
+  officerHistory?: OfficerHistory[] | typeof CONCEALED;
+  groupHistory?: GroupHistory[] | typeof CONCEALED;
+  ministryGroupHistory?: MinistryHistory[] | typeof CONCEALED;
 };
 
 export const DEFAULT_MEMBER: Member = {

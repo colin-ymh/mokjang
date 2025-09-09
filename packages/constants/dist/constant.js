@@ -1,5 +1,6 @@
 export const BLANK = '';
 export const ALL = 'all';
+export const CONCEALED = 'CONCEALED';
 export var DAY;
 (function (DAY) {
     DAY["SUNDAY"] = "sunday";

@@ -10,7 +10,7 @@ const GroupListContainer = styled.div<{ height: number }>`
   flex-direction: column;
   width: 100%;
   overflow-y: auto;
-  height: ${({ height }) => `${height - 250}px`};
+  height: ${({ height }) => `${height - 330}px`};
 `;
 
 type GroupListViewProps = {

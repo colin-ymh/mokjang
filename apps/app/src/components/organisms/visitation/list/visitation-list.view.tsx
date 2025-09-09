@@ -10,7 +10,7 @@ import VisitationTable, {
 import VisitationRow from '../../../molecules/visitation/visitation-row';
 import AddVisitation from '../add/add-visitation';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../../../redux/store';
+import { RootState } from '@/redux/store';
 import VisitationInformation from '../information/visitation-information';
 import ScrollSlidePopup from '@/components/atoms/common/popup/scroll-slide-popup';
 

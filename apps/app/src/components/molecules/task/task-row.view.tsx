@@ -1,9 +1,8 @@
 import { ChangeEvent, Ref } from 'react';
 import styled from 'styled-components';
 
-import { Button } from '@mokjang/components';
-import { GRAY, MAIN, WHITE } from '@mokjang/constants';
-import { TASK } from '@mokjang/constants';
+import { Button, SvgIcon } from '@mokjang/components';
+import { GRAY, MAIN, TASK, TASK_STATUS, WHITE } from '@mokjang/constants';
 
 import {
   useTaskSearchFilterDropdownItems,
@@ -18,10 +17,8 @@ import PeriodModal from '../../atoms/common/modal/period-modal';
 import { RootState } from '@/redux/store';
 import { useSelector } from 'react-redux';
 import SearchInput from '../../atoms/common/input/search-input';
-import { TASK_STATUS } from '@mokjang/constants';
 
 import { Svg } from '@mokjang/assets';
-import { SvgIcon } from '@mokjang/components';
 import Dropdown from '@/components/atoms/common/dropdown/dropdown';
 
 const TaskContainer = styled.div`
@@ -46,6 +43,7 @@ const RowTop = styled.div`
 const FilterList = styled.div`
   display: flex;
   width: 100%;
+  gap: 10px;
 `;
 
 const ButtonContainer = styled.div`

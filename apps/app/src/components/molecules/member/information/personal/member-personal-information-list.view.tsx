@@ -31,6 +31,7 @@ import { RootState } from '../../../../../redux/store';
 import { Svg } from '@mokjang/assets';
 import React from 'react';
 import useWindowSize from '../../../../../hooks/window/window';
+import { MinistryDetailHistory, MinistryHistory } from '@mokjang/models';
 
 const InformationContainer = styled.div<{ height: number }>`
   display: flex;
@@ -175,8 +176,13 @@ const PersonalInformationListView = ({
           <MainText color={GRAY.DARK}>{t(MEMBER.MARRIAGE)}</MainText>
           <InformationTextWrapper>
             <MainText size={SIZE.LARGE} fontWeight={400}>
-              {targetMember.marriage &&
-                `${t(targetMember.marriage as MARRIAGE)} ${targetMember.detailMarriage ? `(${targetMember.detailMarriage})` : ''}`}
+              {targetMember.marriage === CONCEALED ? (
+                <MainText size={SIZE.LARGE} fontWeight={400}>
+                  {t('concealed')}
+                </MainText>
+              ) : (
+                `${t(targetMember.marriage as MARRIAGE)} ${targetMember.detailMarriage ? `(${targetMember.detailMarriage})` : ''}`
+              )}
             </MainText>
           </InformationTextWrapper>
         </TextContainer>
@@ -189,7 +195,13 @@ const PersonalInformationListView = ({
           <MainText color={GRAY.DARK}>{t(MEMBER.OCCUPATION)}</MainText>
           <InformationTextWrapper>
             <MainText size={SIZE.LARGE} fontWeight={400}>
-              {targetMember.occupation}
+              {targetMember.occupation === CONCEALED ? (
+                <MainText size={SIZE.LARGE} fontWeight={400}>
+                  {t('concealed')}
+                </MainText>
+              ) : (
+                targetMember.occupation
+              )}
             </MainText>
           </InformationTextWrapper>
         </TextContainer>
@@ -202,7 +214,13 @@ const PersonalInformationListView = ({
           <MainText color={GRAY.DARK}>{t(MEMBER.SCHOOL)}</MainText>
           <InformationTextWrapper>
             <MainText size={SIZE.LARGE} fontWeight={400}>
-              {targetMember.school}
+              {targetMember.school === CONCEALED ? (
+                <MainText size={SIZE.LARGE} fontWeight={400}>
+                  {t('concealed')}
+                </MainText>
+              ) : (
+                targetMember.school
+              )}
             </MainText>
           </InformationTextWrapper>
         </TextContainer>
@@ -214,10 +232,20 @@ const PersonalInformationListView = ({
         <TextContainer>
           <MainText color={GRAY.DARK}>{t(MEMBER.ADDRESS)}</MainText>
           <ColumnTextWrapper>
-            <MainText size={SIZE.LARGE} fontWeight={400}>
-              {targetMember.address}
-            </MainText>
-            <MainText color={GRAY.DARK}>{targetMember.detailAddress}</MainText>
+            {targetMember.address === CONCEALED ? (
+              <MainText size={SIZE.LARGE} fontWeight={400}>
+                {t('concealed')}
+              </MainText>
+            ) : (
+              <>
+                <MainText size={SIZE.LARGE} fontWeight={400}>
+                  targetMember.address
+                </MainText>
+                <MainText color={GRAY.DARK}>
+                  {targetMember.detailAddress}
+                </MainText>
+              </>
+            )}
           </ColumnTextWrapper>
         </TextContainer>
       </InformationItem>
@@ -229,7 +257,13 @@ const PersonalInformationListView = ({
           <MainText color={GRAY.DARK}>{t(MEMBER.MOBILE_PHONE)}</MainText>
           <InformationTextWrapper>
             <MainText size={SIZE.LARGE} fontWeight={400}>
-              {getFormattedMobilePhone(targetMember.mobilePhone)}
+              {targetMember.mobilePhone === CONCEALED ? (
+                <MainText size={SIZE.LARGE} fontWeight={400}>
+                  {t('concealed')}
+                </MainText>
+              ) : (
+                getFormattedMobilePhone(targetMember.mobilePhone)
+              )}
             </MainText>
           </InformationTextWrapper>
         </TextContainer>
@@ -242,7 +276,13 @@ const PersonalInformationListView = ({
           <MainText color={GRAY.DARK}>{t(MEMBER.HOME_PHONE)}</MainText>
           <InformationTextWrapper>
             <MainText size={SIZE.LARGE} fontWeight={400}>
-              {targetMember.homePhone}
+              {targetMember.homePhone === CONCEALED ? (
+                <MainText size={SIZE.LARGE} fontWeight={400}>
+                  {t('concealed')}
+                </MainText>
+              ) : (
+                targetMember.homePhone
+              )}
             </MainText>
           </InformationTextWrapper>
         </TextContainer>
@@ -268,19 +308,27 @@ const PersonalInformationListView = ({
           <MainText color={GRAY.DARK}>{t(MEMBER.GROUP)}</MainText>
           <ColumnTextWrapper>
             <InformationTextWrapper>
-              <MainText size={SIZE.LARGE} fontWeight={400}>
-                {targetMember?.groupHistory &&
-                  targetMember?.groupHistory[0]?.group?.name}
-              </MainText>
-              {targetMember.groupRole === GROUP_ROLE.LEADER && (
-                <MainTag
-                  title={t('groupLeader')}
-                  color={MAIN.DARK}
-                  backgroundColor={MAIN.LIGHT}
-                />
+              {targetMember.officerHistory === CONCEALED ? (
+                <MainText size={SIZE.LARGE} fontWeight={400}>
+                  {t('concealed')}
+                </MainText>
+              ) : (
+                <>
+                  <MainText size={SIZE.LARGE} fontWeight={400}>
+                    {targetMember?.groupHistory &&
+                      targetMember?.groupHistory[0]?.group?.name}
+                  </MainText>
+                  {targetMember.groupRole === GROUP_ROLE.LEADER && (
+                    <MainTag
+                      title={t('groupLeader')}
+                      color={MAIN.DARK}
+                      backgroundColor={MAIN.LIGHT}
+                    />
+                  )}
+                </>
               )}
             </InformationTextWrapper>
-            {targetMember?.groupHistory &&
+            {targetMember.groupHistory !== CONCEALED &&
               targetMember.groupHistory.length > 0 && (
                 <MainText color={GRAY.DARK}>
                   {getTranslatedDateFromDateString(
@@ -316,7 +364,11 @@ const PersonalInformationListView = ({
               {targetMember?.officerHistory &&
                 targetMember?.officerHistory[0]?.officer?.name}
             </MainText>
-            {targetMember?.officerHistory &&
+            {targetMember.officerHistory === CONCEALED ? (
+              <MainText size={SIZE.LARGE} fontWeight={400}>
+                {t('concealed')}
+              </MainText>
+            ) : (
               targetMember.officerHistory.length > 0 && (
                 <MainText color={GRAY.DARK}>
                   {getTranslatedDateFromDateString(
@@ -328,7 +380,8 @@ const PersonalInformationListView = ({
                     )
                   )}
                 </MainText>
-              )}
+              )
+            )}
           </ColumnTextWrapper>
         </TextContainer>
         <EditButtonContainer onClick={onClickOfficerOpen}>
@@ -349,17 +402,19 @@ const PersonalInformationListView = ({
           <MainText color={GRAY.DARK}>{t(MEMBER.MINISTRIES)}</MainText>
           <ColumnTextWrapper>
             {targetMember.ministryGroupHistory === CONCEALED ? (
-              <MainText color={GRAY.DARK}>{t('concealed')}</MainText>
+              <MainText size={SIZE.LARGE} fontWeight={400}>
+                {t('concealed')}
+              </MainText>
             ) : (
               targetMember.ministryGroupHistory
-                ?.slice(0, 3)
-                ?.map((ministryHistory) => (
+                .slice(0, 3)
+                .map((ministryHistory: MinistryHistory) => (
                   <InformationTextWrapper key={ministryHistory.id}>
                     <MainText size={SIZE.LARGE} fontWeight={400}>
                       {ministryHistory.ministryGroup?.name}
                     </MainText>
                     {ministryHistory.ministryGroupDetailHistory.map(
-                      (detailHistory) => {
+                      (detailHistory: MinistryDetailHistory) => {
                         if (detailHistory?.role) {
                           return (
                             <MainTag

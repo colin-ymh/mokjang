@@ -31,6 +31,10 @@ const RowContainer = styled.div`
   width: 100%;
 `;
 
+const BoxContainer = styled.div`
+  display: flex;
+`;
+
 type EditMemberMinistryViewProps = {
   onChangeStartDate: (date: Date | null) => void;
   onChangeEndDate: (date: Date | null) => void;
@@ -109,11 +113,13 @@ const EditMinistryHistoryView = ({
             />
           </LabelContainer>
         </RowContainer>
-        <DeleteWarningButton
-          description={t_warning('deleteMinistryHistory')}
-          buttonText={t_button('deleteHistory')}
-          onClick={onClickDeleteMinistry}
-        />
+        <BoxContainer>
+          <DeleteWarningButton
+            description={t_warning('deleteMinistryHistory')}
+            buttonText={t_button('deleteHistory')}
+            onClick={onClickDeleteMinistry}
+          />
+        </BoxContainer>
       </EditMemberMinistryViewContainer>
     </>
   );
