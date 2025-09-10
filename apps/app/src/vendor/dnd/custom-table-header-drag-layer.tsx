@@ -2,14 +2,13 @@ import React from 'react';
 import { useDragLayer, XYCoord } from 'react-dnd';
 import styled from 'styled-components';
 import { MainText } from '@mokjang/components';
-import { GRAY } from '@mokjang/constants';
-import { DND_ITEM_TYPE } from '@mokjang/constants';
+import { DND_ITEM_TYPE, GRAY } from '@mokjang/constants';
 
 // attrs로 style 프로퍼티만 동적으로 처리
 const LayerContainer = styled.div.attrs<{ x: number; y: number }>((props) => ({
   style: {
     transform: `translate(${props.x}px, ${props.y}px)`,
-    opacity: 0.1,
+    opacity: 0.7,
     pointerEvents: 'none',
   },
 }))<{ x: number; y: number }>`

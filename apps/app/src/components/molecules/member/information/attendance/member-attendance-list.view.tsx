@@ -123,12 +123,12 @@ const MemberAttendanceListView = ({
   return (
     <>
       <ListContainer>
-        {/* 심방 목록 헤더 */}
-        <AttendanceListHeader>
-          <MainText size={SIZE.EXTRA_LARGE}>
-            {t_header('memberAttendance')}
-          </MainText>
-        </AttendanceListHeader>
+        {/*/!* 심방 목록 헤더 *!/*/}
+        {/*<AttendanceListHeader>*/}
+        {/*  <MainText size={SIZE.EXTRA_LARGE}>*/}
+        {/*    {t_header('memberAttendance')}*/}
+        {/*  </MainText>*/}
+        {/*</AttendanceListHeader>*/}
         <DropdownContainer>
           {/* 예배 설정 */}
           <Dropdown

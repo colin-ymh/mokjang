@@ -10,7 +10,10 @@ import useWindowSize from '../../../hooks/window/window';
 import TaskTableHeader from '../../atoms/task/task-table-header';
 import { BLANK_HEADER } from '../../../redux/reducers/filter/member-filter-reducer';
 import { useI18n } from '../../../../locales/client';
-import { getStatusBackgroundColor, getStatusFontColor, } from '../../../utils/color';
+import {
+  getStatusBackgroundColor,
+  getStatusFontColor,
+} from '../../../utils/color';
 import MemberProfile from '../../atoms/member/member-profile';
 import { getTranslatedDateFromDateString } from '@mokjang/utils';
 import { usePathname } from 'next/navigation'; // 1. 컬럼별 PX 폭 (마지막 REMARKS만 auto 할 예정)
@@ -19,13 +22,13 @@ import { usePathname } from 'next/navigation'; // 1. 컬럼별 PX 폭 (마지막
 const getColumnWidth = (id: string) => {
   switch (id) {
     case TASK.TITLE:
-      return 25;
+      return 20;
     case TASK.STATUS:
-      return 25;
+      return 10;
     case TASK.DATE:
-      return 25;
+      return 30;
     case TASK.IN_CHARGE:
-      return 25;
+      return 13;
     default:
       // 비고(REMARKS) 컬럼 등
       return 80;

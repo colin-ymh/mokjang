@@ -3,7 +3,7 @@
 import styled from 'styled-components';
 import React, { ChangeEvent } from 'react';
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
-import { BLANK, GRAY, SIZE } from '@mokjang/constants';
+import { GRAY } from '@mokjang/constants';
 import { useTimeDropdownItems } from '../../../../hooks/dropdown/dropdown-items';
 import { MemberDropdownType } from '../../../atoms/common/dropdown/member-dropdown-item';
 import { BorderInput, MainText, RequiredMark } from '@mokjang/components';
@@ -27,6 +27,7 @@ const AddTaskViewContainer = styled.div`
   flex-direction: column;
   gap: 20px;
   padding: 20px;
+  padding-bottom: 150px;
 `;
 
 const HeaderContainer = styled.div`
@@ -44,11 +45,13 @@ const ContentContainer = styled.div`
   width: 100%;
 `;
 
-const MemberTagList = styled.div`
+const ReceiverTagList = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
   flex-direction: row;
+  height: 30px;
+  flex-shrink: 0;
 `;
 
 const RowContainer = styled.div`
@@ -60,8 +63,10 @@ const RowContainer = styled.div`
 `;
 
 const PeriodContainer = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  //display: grid;
+  //grid-template-columns: repeat(2, 1fr);
+  display: flex;
+  flex-direction: row;
   gap: 10px;
   width: 100%;
 `;
@@ -78,7 +83,7 @@ type AddTaskViewProps = {
   onChangeEndTime: (value: number) => void;
   onChangeInCharge: (inCharge: MemberDropdownType[]) => void;
   onChangeReceivers: (receiver: MemberDropdownType[]) => void;
-  onChangeContent: (content: string) => void;
+  onChangeContent: (content: string, delta: any, source: string) => void;
   onClickDeleteReceiver: (memberId: string) => void;
 };
 
@@ -107,12 +112,12 @@ const AddTaskView = ({
     <AddTaskViewContainer>
       {/*/!* 제목 *!/*/}
       {/*<HeaderContainer>*/}
-      {/*  <MainText size={SIZE.EXTRA_LARGE} fontSize={22}>*/}
+      {/*  <MainText fontWeight=600} fontSize={22}>*/}
       {/*    {t(isEdit ? 'title.editTask' : 'title.addTask')}*/}
       {/*  </MainText>*/}
       {/*</HeaderContainer>*/}
       <ContentContainer>
-        <MainText size={SIZE.EXTRA_LARGE}>
+        <MainText fontWeight={600}>
           {t('title')}
           <RequiredMark />
         </MainText>
@@ -124,110 +129,110 @@ const AddTaskView = ({
         />
       </ContentContainer>
 
-      <RowContainer>
-        {/* 담당자 */}
-        <ContentContainer>
-          <MainText size={SIZE.EXTRA_LARGE}>
-            {t('inCharge')}
+      {/* 담당자 */}
+      <ContentContainer>
+        <MainText fontWeight={600}>
+          {t('inCharge')}
+          <RequiredMark />
+        </MainText>
+        {inCharge.length === 0 ? (
+          <MemberDropdown
+            values={inCharge}
+            onChangeValues={onChangeInCharge}
+            isSingle
+            placeholder={t_placeholder('name')}
+            isManager={true}
+          />
+        ) : (
+          <BigMemberTag
+            officer={inCharge[0].officer}
+            profileImage={inCharge[0].profileImage}
+            name={inCharge[0].title}
+            onClick={() => onChangeInCharge([])}
+          />
+        )}
+      </ContentContainer>
+      {/* 일정 */}
+      <ContentContainer>
+        <RowContainer>
+          <MainText fontWeight={600}>
+            {t('period')}
             <RequiredMark />
           </MainText>
-          {inCharge.length === 0 ? (
-            <MemberDropdown
-              values={inCharge}
-              onChangeValues={onChangeInCharge}
-              isSingle
-              placeholder={t_placeholder('name')}
-              isManager={true}
-            />
-          ) : (
-            <BigMemberTag
-              officer={inCharge[0].officer}
-              profileImage={inCharge[0].profileImage}
-              name={inCharge[0].title}
-              onClick={() => onChangeInCharge([])}
-            />
-          )}
-        </ContentContainer>
-        {/* 일정 */}
-        <ContentContainer>
-          <RowContainer>
-            <MainText size={SIZE.EXTRA_LARGE}>
-              {t('schedule')}
-              <RequiredMark />
-            </MainText>
-          </RowContainer>
-          {/* 기간 */}
-          <PeriodContainer>
-            {/* 시작 날짜 */}
-            <CustomDatePicker
-              value={
-                targetTask.startDate
-                  ? getDateStringFromDate(
-                      getDateFromDateString(targetTask.startDate)
-                    )
-                  : undefined
-              }
-              selected={
-                targetTask.startDate
-                  ? getDateFromDateString(targetTask.startDate)
-                  : null
-              }
-              onChange={onChangeStartDate}
-              placeholderText={t('startDate')}
-              maxDate={getDateFromDateString(targetTask.endDate)}
-            />
-            {/* 시작 시간 */}
-            <Dropdown
-              value={
-                targetTask.startDate
-                  ? getTotalMinuteFromDate(
-                      getDateFromDateString(targetTask.startDate)
-                    )
-                  : 0
-              }
-              items={timeDropdownItems}
-              onChangeItem={onChangeStartTime}
-            />
-            {/* 종료 날짜 */}
-            <CustomDatePicker
-              value={
-                targetTask.endDate
-                  ? getDateStringFromDate(
-                      getDateFromDateString(targetTask.endDate)
-                    )
-                  : undefined
-              }
-              selected={
-                targetTask.endDate
-                  ? getDateFromDateString(targetTask.endDate)
-                  : null
-              }
-              onChange={onChangeEndDate}
-              placeholderText={t('endDate')}
-              minDate={getDateFromDateString(targetTask.startDate)}
-            />
-            {/* 종료 시간 */}
-            <Dropdown
-              value={
-                targetTask.endDate
-                  ? getTotalMinuteFromDate(
-                      getDateFromDateString(targetTask.endDate)
-                    )
-                  : 0
-              }
-              items={timeDropdownItems}
-              onChangeItem={onChangeEndTime}
-            />
-          </PeriodContainer>
-        </ContentContainer>
-      </RowContainer>
+        </RowContainer>
+        {/* 기간 */}
+        <PeriodContainer>
+          {/* 시작 날짜 */}
+          <CustomDatePicker
+            value={
+              targetTask.startDate
+                ? getDateStringFromDate(
+                    getDateFromDateString(targetTask.startDate)
+                  )
+                : undefined
+            }
+            selected={
+              targetTask.startDate
+                ? getDateFromDateString(targetTask.startDate)
+                : null
+            }
+            onChange={onChangeStartDate}
+            placeholderText={t('startDate')}
+          />
+          {/* 시작 시간 */}
+          <Dropdown
+            value={
+              targetTask.startDate
+                ? getTotalMinuteFromDate(
+                    getDateFromDateString(targetTask.startDate)
+                  )
+                : 0
+            }
+            items={timeDropdownItems}
+            onChangeItem={onChangeStartTime}
+            chevronColor={GRAY.DEFAULT}
+          />
+          {/* 종료 날짜 */}
+          <CustomDatePicker
+            value={
+              targetTask.endDate
+                ? getDateStringFromDate(
+                    getDateFromDateString(targetTask.endDate)
+                  )
+                : undefined
+            }
+            selected={
+              targetTask.endDate
+                ? getDateFromDateString(targetTask.endDate)
+                : null
+            }
+            onChange={onChangeEndDate}
+            placeholderText={t('endDate')}
+          />
+          {/* 종료 시간 */}
+          <Dropdown
+            value={
+              targetTask.endDate
+                ? getTotalMinuteFromDate(
+                    getDateFromDateString(targetTask.endDate)
+                  )
+                : 0
+            }
+            items={timeDropdownItems}
+            onChangeItem={onChangeEndTime}
+            chevronColor={GRAY.DEFAULT}
+          />
+        </PeriodContainer>
+      </ContentContainer>
 
       {/* 세부 내용 */}
       <ContentContainer>
-        <MainText size={SIZE.EXTRA_LARGE}>{t('content')}</MainText>
+        <MainText fontWeight={600}>{t('content')}</MainText>
         <Quill
           value={content}
-          onChange={(html) => onChangeContent(html)}
+          onChange={(content, delta, source) =>
+            onChangeContent(content, delta, source)
+          }
           minHeight={150}
           placeholder={t_placeholder('content')}
         />
@@ -235,15 +240,15 @@ const AddTaskView = ({
 
       <ContentContainer>
         {/* 보고대상자 */}
-        <MainText size={SIZE.EXTRA_LARGE}>{t('receiver')}</MainText>
+        <MainText fontWeight={600}>{t('receiver')}</MainText>
         <MemberDropdown
           values={receivers}
           onChangeValues={onChangeReceivers}
-          placeholder={receivers.length === 0 ? t_placeholder('name') : BLANK}
+          placeholder={t_placeholder('name')}
           isManager={true}
         />
         {/* 보고대상자 목록 */}
-        <MemberTagList>
+        <ReceiverTagList>
           {receivers.map((member) => (
             <MemberTag
               key={member.value}
@@ -253,7 +258,7 @@ const AddTaskView = ({
               onClick={() => onClickDeleteReceiver(member.value)}
             />
           ))}
-        </MemberTagList>
+        </ReceiverTagList>
       </ContentContainer>
     </AddTaskViewContainer>
   );

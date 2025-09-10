@@ -110,3 +110,7 @@ export declare const getTranslatedCompletedEnrollmentStatus: (locale: LOCALE, co
  */
 export declare const getTranslatedMemberAttendanceCount: (locale: LOCALE, presentCount: number, totalSessions: number) => string;
 export declare const getTranslatedSummaryCount: (basePath: LOCALE, summary: number) => string;
+/**
+ * ISO 문자열과 현재 시간의 차이를 간단한 "n분 전" / "n hours ago" 형태로 반환.
+ */
+export declare function getTranslatedTimeAgo(locale: LOCALE, date: string): string;

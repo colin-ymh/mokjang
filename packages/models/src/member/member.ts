@@ -12,6 +12,7 @@ import { Group, Ministry, MinistryGroup, Officer } from '../management';
 import { Education } from '../education';
 import { getDateStringFromDate } from '@mokjang/utils';
 import { GroupHistory, MinistryHistory, OfficerHistory } from './history';
+import { ChurchUser } from '../church-user';
 
 export type ChurchInformation = {
   id: string;
@@ -60,6 +61,8 @@ export type Member = {
   updatedAt: string;
 
   isConcealed: boolean;
+
+  churchUser?: ChurchUser;
 
   officerHistory?: OfficerHistory[] | typeof CONCEALED;
   groupHistory?: GroupHistory[] | typeof CONCEALED;

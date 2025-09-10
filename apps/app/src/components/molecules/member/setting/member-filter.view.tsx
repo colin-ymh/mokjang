@@ -60,6 +60,11 @@ const AgeRangeTitle = styled.div`
   padding: 5px 13px;
 `;
 
+const BOTTOM = styled.div`
+  display: flex;
+  height: 100px;
+`;
+
 type TableSettingViewProps = {
   ageRange: [number, number];
   onChangeOfficerItems: (values: (string | null)[]) => void;
@@ -88,9 +93,9 @@ const MemberTableHeaderSettingView = ({
   );
   const { officers } = useSelector((state: RootState) => state.church);
 
-  const NULL_ITEM = {
-    value: null,
-    title: t('none'),
+  const OFFICER_NONE_ITEM = {
+    value: 'null',
+    title: t('officerNone'),
   };
 
   const officerCheckListItems: CheckButtonValue[] = [
@@ -98,17 +103,12 @@ const MemberTableHeaderSettingView = ({
       value: officer.id,
       title: officer.name,
     })),
-    NULL_ITEM,
+    OFFICER_NONE_ITEM,
   ];
 
-  const marriageCheckListItems: CheckButtonValue[] = [
-    ...useMarriageDropdownItems(),
-    NULL_ITEM,
-  ];
-  const baptismCheckListItems: CheckButtonValue[] = [
-    ...useBaptismDropdownItems(),
-    NULL_ITEM,
-  ];
+  const marriageCheckListItems: CheckButtonValue[] = useMarriageDropdownItems();
+
+  const baptismCheckListItems: CheckButtonValue[] = useBaptismDropdownItems();
 
   return (
     <TableSettingContainer>
@@ -190,6 +190,7 @@ const MemberTableHeaderSettingView = ({
             borderColor={GRAY.LIGHT}
           />
         </RowContainer>
+        <BOTTOM />
       </LabelContainer>
     </TableSettingContainer>
   );

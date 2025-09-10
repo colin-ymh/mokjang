@@ -7,7 +7,7 @@ import {
   TASK,
   TASK_STATUS,
 } from '@mokjang/constants';
-import { DEFAULT_MEMBER, Member, Task } from '@mokjang/models';
+import { DEFAULT_MEMBER, Member, Task, TaskReport } from '@mokjang/models';
 import { RootState } from '../../store';
 import { TasksApi } from '../../../api/tasks/tasks.api';
 import { TaskReportsApi } from '../../../api/reports/task-reports.api';
@@ -72,17 +72,17 @@ export const INITIAL_TASK_TABLE_HEADER_LIST: TASK_TABLE_HEADER_ITEM[] = [
     isDate: false,
   },
   {
-    id: TASK.DATE,
+    id: TASK.IN_CHARGE,
     isShown: true,
-    isSortable: true,
+    isSortable: false,
     isFilterable: true,
     isFixed: true,
     isDate: false,
   },
   {
-    id: TASK.IN_CHARGE,
+    id: TASK.DATE,
     isShown: true,
-    isSortable: false,
+    isSortable: true,
     isFilterable: true,
     isFixed: true,
     isDate: false,
@@ -116,7 +116,9 @@ export const fetchTasks = createAsyncThunk<
       if (headerType === HEADER_BAR.REPORTED) {
         const response = await taskReportsApi.getTaskReports({});
 
-        const newTasks: Task[] = response.data.data;
+        const reports: TaskReport[] = response.data.data;
+        const newTasks = reports.map((report: TaskReport) => report.task);
+
         const existingIds = new Set(tasks.map((task) => task.id));
         const filteredNewTasks = newTasks.filter(
           (task) => !existingIds.has(task.id)

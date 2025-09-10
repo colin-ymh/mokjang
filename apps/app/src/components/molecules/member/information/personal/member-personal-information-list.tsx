@@ -19,7 +19,7 @@ import {
   setToastBackgroundColor,
   setToastText,
 } from '../../../../../redux/reducers/toast-popup-reducer';
-import { BLACK, DESTRUCTIVE } from '@mokjang/constants';
+import { BLACK, CONCEALED, DESTRUCTIVE } from '@mokjang/constants';
 import { setMembers } from '../../../../../redux/reducers/filter/member-filter-reducer';
 import { OfficerMembersApi } from '../../../../../api/management/officer/officer-members.api';
 import EditMemberOfficer from './edit-member-officer';
@@ -37,6 +37,7 @@ const MemberPersonalInformationList =
   ({}: MemberPersonalInformationListProps) => {
     const t = useI18n();
     const t_popup = useScopedI18n('popup');
+    const t_button = useScopedI18n('button');
 
     const dispatch = useDispatch<AppDispatch>();
     const membersApi = new MembersApi(false);
@@ -71,7 +72,11 @@ const MemberPersonalInformationList =
     const onClickGroupOpen = () => {
       setIsGroupOpened(true);
 
-      if (targetMember.groupHistory && targetMember.groupHistory.length > 0) {
+      if (
+        targetMember.groupHistory &&
+        targetMember.groupHistory.length > 0 &&
+        targetMember.groupHistory !== CONCEALED
+      ) {
         dispatch(
           setTargetGroupHistory({
             ...targetMember.groupHistory[0],
@@ -101,6 +106,7 @@ const MemberPersonalInformationList =
 
       if (
         targetMember.officerHistory &&
+        targetMember.officerHistory !== CONCEALED &&
         targetMember.officerHistory.length > 0
       ) {
         dispatch(
@@ -128,6 +134,7 @@ const MemberPersonalInformationList =
         if (
           targetMember.groupHistory &&
           targetMember.groupHistory.length > 0 &&
+          targetMember.groupHistory !== CONCEALED &&
           targetMember.groupHistory[0].groupId === targetGroupHistory.groupId &&
           targetMember.groupHistory[0].startDate !==
             targetGroupHistory.startDate
@@ -259,6 +266,7 @@ const MemberPersonalInformationList =
         if (
           targetMember.officerHistory &&
           targetMember.officerHistory.length > 0 &&
+          targetMember.officerHistory !== CONCEALED &&
           targetMember.officerHistory[0].officer.id ===
             targetOfficerHistory.officer.id &&
           targetMember.officerHistory[0].startDate !==
@@ -397,12 +405,15 @@ const MemberPersonalInformationList =
         {/* 그룹 수정 */}
         <CustomPopup
           isShow={isGroupOpened}
+          onClickClose={onClickGroupClose}
           onClickCancel={onClickGroupClose}
           onClickDone={onClickSaveGroup}
           headerTitle={t('title.editGroupInformation')}
           width={500}
           height={500}
           doneDisabled={!isGroupSaveEnabled}
+          cancelText={t_button('cancel')}
+          doneText={t_button('save')}
         >
           <EditMemberGroup onClickDeleteGroup={onClickDeleteGroup} />
         </CustomPopup>
@@ -410,12 +421,15 @@ const MemberPersonalInformationList =
         {/* 직분 수정 */}
         <CustomPopup
           isShow={isOfficerOpened}
+          onClickClose={onClickOfficerClose}
           onClickCancel={onClickOfficerClose}
           onClickDone={onClickSaveOfficer}
           headerTitle={t('title.editOfficerInformation')}
           width={500}
           height={500}
           doneDisabled={!isOfficerSaveEnabled}
+          cancelText={t_button('cancel')}
+          doneText={t_button('save')}
         >
           <EditMemberOfficer onClickDeleteOfficer={onClickDeleteOfficer} />
         </CustomPopup>
@@ -423,10 +437,12 @@ const MemberPersonalInformationList =
         {/* 사역 목록 */}
         <CustomPopup
           isShow={isMinistryOpened}
+          onClickClose={onClickMinistryClose}
           onClickCancel={onClickMinistryClose}
           headerTitle={t('title.ministryList')}
           width={600}
           height={600}
+          cancelText={t_button('cancel')}
         >
           <MemberMinistryList />
         </CustomPopup>

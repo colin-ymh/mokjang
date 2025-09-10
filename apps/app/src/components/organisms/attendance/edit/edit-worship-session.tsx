@@ -78,7 +78,11 @@ const EditWorshipSession = () => {
   // ===== description =====
   const [description, setDescription] = useState<string>(BLANK);
 
-  const onChangeDescription = (newContent: string) => {
+  const onChangeDescription = (
+    newContent: string,
+    delta: any,
+    source: string
+  ) => {
     setDescription(newContent);
   };
 

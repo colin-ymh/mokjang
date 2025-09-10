@@ -320,6 +320,7 @@ const ScrollSlidePopup = ({
       onClick={(e) => e.stopPropagation()}
     >
       <PopupLayout
+        onClickClose={onClickClose}
         onClickCancel={onClickCancel}
         onClickDone={onClickDone}
         headerTitle={headerTitle}

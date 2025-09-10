@@ -280,6 +280,7 @@ const PermissionTemplateInformation = ({
       {/* 수정 팝업 */}
       <CustomPopup
         isShow={isEditShown}
+        onClickClose={onClickEditClose}
         onClickCancel={onClickEditClose}
         width={500}
         height={400}

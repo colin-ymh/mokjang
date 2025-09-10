@@ -280,6 +280,7 @@ const OfficerHistoryList = () => {
       {/* 그룹 수정 */}
       <CustomPopup
         isShow={isOfficerOpened}
+        onClickClose={onClickOfficerClose}
         onClickCancel={onClickOfficerClose}
         onClickDone={onClickSaveOfficer}
         headerTitle={t('title.editHistory')}

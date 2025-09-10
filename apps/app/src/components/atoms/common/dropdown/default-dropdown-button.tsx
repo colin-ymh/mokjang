@@ -25,6 +25,7 @@ export type DropdownButtonProps = {
   enterKeyHint: string;
   borderColor?: string;
   backgroundColor?: string;
+  chevronColor?: string;
   height?: number;
   width?: number;
   fontSize?: number;
@@ -50,6 +51,7 @@ const DefaultDropdownButton = forwardRef<HTMLInputElement, DropdownButtonProps>(
       enterKeyHint,
       borderColor,
       backgroundColor,
+      chevronColor,
       height,
       width,
       fontSize,
@@ -93,7 +95,9 @@ const DefaultDropdownButton = forwardRef<HTMLInputElement, DropdownButtonProps>(
           isRight={isRight}
           {...inputProps}
         />
-        {isChevronShown && <Chevron $isOpened={isOpened} color={color} />}
+        {isChevronShown && (
+          <Chevron $isOpened={isOpened} color={chevronColor || color} />
+        )}
       </DropdownButton>
     );
   }

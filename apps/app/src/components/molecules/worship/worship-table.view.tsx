@@ -280,6 +280,7 @@ const WorshipTableView = ({
 
         <CustomPopup
           isShow={isEditModalOpened}
+          onClickClose={onClickEditClose}
           onClickCancel={onClickEditClose}
           headerTitle={t_title('editWorship')}
           width={500}

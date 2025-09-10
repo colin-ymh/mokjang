@@ -47,6 +47,7 @@ const RowContainer = styled.div`
   align-items: center;
   width: 100%;
   gap: 30px;
+  height: 30px;
 `;
 
 const ColumnContainer = styled.div`
@@ -160,7 +161,7 @@ const VisitationInformationView = ({
         </RowContainer>
 
         {/* 보고대상자 */}
-        <ColumnContainer>
+        <RowContainer>
           <TitleContainer>
             <SvgIcon svg={Svg.Users} color={GRAY.EXTRA_DARK} />
             <MainText color={GRAY.EXTRA_DARK}>{t('receiver')}</MainText>
@@ -173,7 +174,7 @@ const VisitationInformationView = ({
               />
             ))}
           </MemberList>
-        </ColumnContainer>
+        </RowContainer>
 
         <RowLine />
         {/* 업무내용 */}

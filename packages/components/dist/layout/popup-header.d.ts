@@ -4,10 +4,7 @@ type PopupHeaderProps = {
     headerDescription?: string;
     headerRight?: React.ReactNode;
     headerLeft?: React.ReactNode;
-    onClickCancel: () => void;
-    onClickDone?: () => void;
-    cancelText: string;
-    doneText: string;
+    onClickClose: () => void;
     isHeaderBorderShown?: boolean;
     height?: number;
 };

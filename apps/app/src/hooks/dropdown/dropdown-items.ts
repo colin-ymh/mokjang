@@ -48,6 +48,10 @@ export const useBaptismDropdownItems = () => {
       value: BAPTISM.CONFIRMATION,
       title: t(BAPTISM.CONFIRMATION),
     },
+    {
+      value: 'none',
+      title: t(BAPTISM.NONE),
+    },
   ];
 
   return items;
@@ -75,6 +79,10 @@ export const useMarriageDropdownItems = () => {
     {
       value: MARRIAGE.SINGLE,
       title: t(MARRIAGE.SINGLE),
+    },
+    {
+      value: 'null',
+      title: t(MARRIAGE.NONE),
     },
   ];
 
@@ -421,7 +429,7 @@ export const useVisitationMethodDropdownItems = () => {
 export const useTimeDropdownItems = () => {
   const items = [];
 
-  for (let totalMinutes = 0; totalMinutes < 24 * 60; totalMinutes += 15) {
+  for (let totalMinutes = 0; totalMinutes < 24 * 60; totalMinutes += 30) {
     const hour24 = Math.floor(totalMinutes / 60);
     const minute = totalMinutes % 60;
 

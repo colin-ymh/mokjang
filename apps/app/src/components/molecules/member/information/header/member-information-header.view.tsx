@@ -2,12 +2,14 @@ import React from 'react';
 import styled from 'styled-components';
 import { MainTag, MainText } from '@mokjang/components';
 import {
+  CONCEALED,
   GRAY,
   GROUP_ROLE,
   MAIN,
   MINISTRY_GROUP_ROLE,
   PURPLE,
   SIZE,
+  YELLOW,
 } from '@mokjang/constants';
 import { RootState } from '../../../../../redux/store';
 import { useSelector } from 'react-redux';
@@ -20,7 +22,8 @@ const InformationHeader = styled.div`
   justify-content: space-between;
   padding: 20px;
   gap: 10px;
-  border-bottom: 1px solid ${GRAY.EXTRA_LIGHT};
+  position: relative;
+  //border-bottom: 1px solid ${GRAY.EXTRA_LIGHT};
 `;
 
 const Information = styled.div`
@@ -44,6 +47,14 @@ const RowContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+  gap: 5px;
+`;
+
+const TagContainer = styled.div`
+  display: flex;
+  position: absolute;
+  top: 20px;
+  right: 20px;
   gap: 10px;
 `;
 
@@ -55,48 +66,59 @@ const MemberInformationHeaderView = ({}: MemberInformationHeaderViewProps) => {
   const { targetMember } = useSelector(
     (state: RootState) => state.targetMember
   );
-
   return (
     <>
       <InformationHeader>
         <Information>
           <ProfileImage
             value={targetMember?.profileImageUrl}
-            width={80}
-            height={80}
+            width={75}
+            height={75}
           />
 
           <TextContainer>
             <RowContainer>
               <MainText size={SIZE.EXTRA_LARGE}>{targetMember.name}</MainText>
               <MainText color={GRAY.DEFAULT}>
-                {targetMember.officer?.name}
+                {targetMember?.officerHistory &&
+                  targetMember?.officerHistory !== CONCEALED &&
+                  targetMember?.officerHistory[0]?.officer?.name}
               </MainText>
             </RowContainer>
             <RowContainer>
               <MainText color={GRAY.DARK}>
-                {targetMember.group?.name || t('noGroup')}
+                {(targetMember?.groupHistory &&
+                  targetMember?.groupHistory !== CONCEALED &&
+                  targetMember?.groupHistory[0]?.group?.name) ||
+                  t('noGroup')}
               </MainText>
-            </RowContainer>
-            <RowContainer>
-              {targetMember.groupRole === GROUP_ROLE.LEADER && (
-                <MainTag
-                  title={t('groupLeader')}
-                  color={MAIN.DARK}
-                  backgroundColor={MAIN.LIGHT}
-                />
-              )}
-              {targetMember.ministryGroupRole ===
-                MINISTRY_GROUP_ROLE.LEADER && (
-                <MainTag
-                  title={t('ministryGroupLeader')}
-                  color={PURPLE.DARK}
-                  backgroundColor={PURPLE.LIGHT}
-                />
-              )}
             </RowContainer>
           </TextContainer>
         </Information>
+
+        <TagContainer>
+          {targetMember.groupRole === GROUP_ROLE.LEADER && (
+            <MainTag
+              title={t('groupLeader')}
+              color={YELLOW.DARK}
+              backgroundColor={YELLOW.LIGHT}
+            />
+          )}
+          {targetMember.ministryGroupRole === MINISTRY_GROUP_ROLE.LEADER && (
+            <MainTag
+              title={t('ministryGroupLeader')}
+              color={MAIN.DARK}
+              backgroundColor={MAIN.LIGHT}
+            />
+          )}
+          {targetMember.churchUser && (
+            <MainTag
+              title={t('manager')}
+              color={PURPLE.DARK}
+              backgroundColor={PURPLE.LIGHT}
+            />
+          )}
+        </TagContainer>
       </InformationHeader>
     </>
   );

@@ -274,6 +274,7 @@ const CustomCalendarHeaderView = ({
           {/* 일정 추가 팝업 */}
           <CustomPopup
             isShow={isAddEventModalOpened}
+            onClickClose={onClickCancelAddEvent}
             onClickCancel={onClickCancelAddEvent}
             headerTitle={t_title('addChurchEvent')}
             width={500}

@@ -119,10 +119,11 @@ const WorshipSessionInformation = () => {
       <CustomPopup
         isShow={isEditOpened}
         headerTitle={t_title('editWorshipInformation')}
+        onClickClose={onClickCloseEditModal}
         onClickDone={onClickSessionSave}
+        onClickCancel={onClickCloseEditModal}
         doneBackgroundColor={isEditEnabled ? MAIN.DEFAULT : MAIN.LIGHT}
         doneDisabled={!isEditEnabled}
-        onClickCancel={onClickCloseEditModal}
         width={600}
         height={600}
         cancelText={t_button('cancel')}

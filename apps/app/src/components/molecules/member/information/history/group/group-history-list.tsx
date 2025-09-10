@@ -278,6 +278,7 @@ const GroupHistoryList = () => {
       {/* 그룹 수정 */}
       <CustomPopup
         isShow={isGroupOpened}
+        onClickClose={onClickGroupClose}
         onClickCancel={onClickGroupClose}
         onClickDone={onClickSaveGroup}
         headerTitle={t('title.editHistory')}

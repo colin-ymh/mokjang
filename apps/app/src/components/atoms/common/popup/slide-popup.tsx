@@ -102,6 +102,7 @@ type SlidePopupProps = {
 
   isFooterShown?: boolean;
   onClickClose: () => void;
+  onClickCancel?: () => void;
   onClickDone?: () => void;
   headerTitle?: string;
   headerLeft?: ReactNode;
@@ -112,8 +113,6 @@ type SlidePopupProps = {
   cancelBackgroundColor?: string;
   doneBackgroundColor?: string;
   doneDisabled?: boolean;
-  doneIcon?: ReactNode;
-  cancelIcon?: ReactNode;
   disabledKeyboard?: boolean;
   children: ReactNode;
 };
@@ -126,6 +125,7 @@ const SlidePopup = ({
 
   isFooterShown,
   onClickClose,
+  onClickCancel,
   onClickDone,
   headerTitle,
   headerLeft,
@@ -164,7 +164,8 @@ const SlidePopup = ({
       $isPercentage={isPercentage}
     >
       <PopupLayout
-        onClickCancel={onClickClose}
+        onClickClose={onClickClose}
+        onClickCancel={onClickCancel}
         onClickDone={onClickDone}
         headerTitle={headerTitle}
         headerRight={headerRight}

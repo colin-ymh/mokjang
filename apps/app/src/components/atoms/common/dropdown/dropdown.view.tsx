@@ -74,6 +74,7 @@ type DropdownViewProps = {
   isEditable?: boolean;
   enterKeyHint: string;
   borderColor?: string;
+  chevronColor?: string;
   width?: number;
   height?: number;
   backgroundColor?: string;
@@ -103,6 +104,7 @@ const DropdownView = forwardRef<HTMLInputElement, DropdownViewProps>(
       isEditable,
       enterKeyHint,
       borderColor,
+      chevronColor,
       width,
       height = 40,
       backgroundColor,
@@ -143,6 +145,7 @@ const DropdownView = forwardRef<HTMLInputElement, DropdownViewProps>(
       enterKeyHint,
       borderColor,
       backgroundColor,
+      chevronColor,
       height,
       width,
       fontSize,

@@ -1,7 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../../redux/store';
-
-import { useI18n } from '../../../../../locales/client';
 import MemberFilterView from './member-filter.view';
 import { setMemberFilter } from '../../../../redux/reducers/filter/member-filter-reducer';
 import { getDateStringFromDate } from '@mokjang/utils';
@@ -15,7 +13,6 @@ const MemberFilter = ({}: MemberFilterProps) => {
     (state: RootState) => state.memberFilter
   );
   const dispatch = useDispatch<AppDispatch>();
-  const t = useI18n();
 
   const [ageRange, setAgeRange] = useState<[number, number]>([1, 100]);
 
@@ -107,7 +104,7 @@ const MemberFilter = ({}: MemberFilterProps) => {
     return () => {
       clearTimeout(handler);
     };
-  }, [ageRange, dispatch, memberFilter]);
+  }, [ageRange]);
 
   const props = {
     ageRange,

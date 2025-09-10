@@ -245,13 +245,6 @@ const DatePickerPortalStyles = createGlobalStyle`
   }
 `;
 
-const CalendarIcon = styled(Svg.Calendar)`
-  width: 14px;
-  height: 16px;
-  stroke: ${BLACK};
-  stroke-width: 1.5px;
-`;
-
 const HeaderContainer = styled.div`
   display: flex;
   padding: 0; /* 헤더 패딩 제거 */
@@ -517,7 +510,14 @@ export default function CustomDatePicker({
               width={width ?? undefined}
               height={height}
               borderColor={borderColor}
-              icon={<CalendarIcon />}
+              icon={
+                <SvgIcon
+                  svg={Svg.Calendar}
+                  color={GRAY.DEFAULT}
+                  width={1.5}
+                  size={16}
+                />
+              }
               style={{ width: '100%' }}
             />
           )

@@ -7,7 +7,7 @@ import { setTargetMinistryHistory } from '../../../../../redux/reducers/target/t
 import { setTargetMember } from '../../../../../redux/reducers/target/target-member-reducer';
 import MemberMinistryListView from './member-ministry-list.view';
 import { MinistryHistoryApi } from '../../../../../api/history/ministry-history.api';
-import { BLANK } from '@mokjang/constants';
+import { BLACK, BLANK, CONCEALED, DESTRUCTIVE } from '@mokjang/constants';
 import { CustomPopup } from '@mokjang/components';
 import { useI18n, useScopedI18n } from '../../../../../../locales/client';
 import EditMemberMinistry from './edit-member-ministry';
@@ -18,12 +18,13 @@ import {
   setToastBackgroundColor,
   setToastText,
 } from '../../../../../redux/reducers/toast-popup-reducer';
-import { BLACK, DESTRUCTIVE } from '@mokjang/constants';
 import { MinistryMembersApi } from '../../../../../api/management/ministry/ministry-mebers.api';
 
 const MemberMinistryList = () => {
   const t = useI18n();
   const t_popup = useScopedI18n('popup');
+  const t_button = useScopedI18n('button');
+
   const scrollRef = useRef<HTMLDivElement>(null);
   const dispatch = useDispatch<AppDispatch>();
   const { churchId } = useSelector((state: RootState) => state.church);
@@ -74,7 +75,9 @@ const MemberMinistryList = () => {
         response?.data?.nextCursor ?? response?.data?.meta?.nextCursor ?? BLANK;
 
       const prevMinistries: MinistryHistory[] =
-        targetMember.ministryGroupHistory || [];
+        targetMember.ministryGroupHistory !== CONCEALED
+          ? (targetMember.ministryGroupHistory as MinistryHistory[])
+          : [];
 
       // 중복 제거하며 병합 (id 기준)
       const merged = [...prevMinistries, ...newMinistries].reduce<
@@ -204,7 +207,10 @@ const MemberMinistryList = () => {
       }
 
       // 수정인 경우
-      if (prevHistory.ministryGroup?.id) {
+      if (
+        prevHistory.ministryGroup?.id &&
+        targetMember.ministryGroupHistory !== CONCEALED
+      ) {
         dispatch(
           setTargetMember({
             ...targetMember,
@@ -225,9 +231,11 @@ const MemberMinistryList = () => {
         dispatch(
           setTargetMember({
             ...targetMember,
-            ministryGroupHistory: targetMember.ministryGroupHistory
-              ? [...targetMember.ministryGroupHistory, targetMinistryHistory]
-              : [targetMinistryHistory],
+            ministryGroupHistory:
+              targetMember.ministryGroupHistory &&
+              targetMember.ministryGroupHistory !== CONCEALED
+                ? [...targetMember.ministryGroupHistory, targetMinistryHistory]
+                : [targetMinistryHistory],
           })
         );
       }
@@ -253,9 +261,12 @@ const MemberMinistryList = () => {
 
       const newTargetMember = {
         ...targetMember,
-        ministryGroupHistory: targetMember.ministryGroupHistory?.filter(
-          (history) => history.ministryGroup.id !== ministryGroupId
-        ),
+        ministryGroupHistory:
+          targetMember.ministryGroupHistory !== CONCEALED
+            ? targetMember.ministryGroupHistory?.filter(
+                (history) => history.ministryGroup.id !== ministryGroupId
+              )
+            : [],
       };
 
       const newMembers = members.map((member) => {
@@ -313,12 +324,15 @@ const MemberMinistryList = () => {
       {/* 사역 추가 */}
       <CustomPopup
         isShow={isAddOpened}
+        onClickClose={onClickAddClose}
         onClickCancel={onClickAddClose}
         onClickDone={onClickDone}
         headerTitle={t('title.editMinistry')}
         width={600}
         height={600}
         doneDisabled={!isSaveEnabled}
+        cancelText={t_button('cancel')}
+        doneText={t_button('save')}
       >
         <EditMemberMinistry onClickDeleteMinistry={onClickDeleteMinistry} />
       </CustomPopup>

@@ -3,7 +3,6 @@ import styled from 'styled-components';
 
 import { MainText } from '@mokjang/components';
 import { GRAY, MAIN, WHITE } from '@mokjang/constants';
-import { SvgIcon } from '@mokjang/components';
 
 export type HeaderBarItem = {
   id: string;
@@ -16,6 +15,8 @@ const PopupHeaderBarContainer = styled.div`
   border-bottom: 1px solid ${GRAY.EXTRA_LIGHT};
   background-color: ${WHITE};
   width: 100%;
+
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 `;
 
 const BarItem = styled.div<{ $isSelected: boolean }>`
@@ -29,10 +30,10 @@ const BarItem = styled.div<{ $isSelected: boolean }>`
   transition: all 0.3s ease;
 
   border-bottom: ${({ $isSelected }) =>
-    `2px solid ${$isSelected ? MAIN.DEFAULT : 'transparent'}`};
+    `2.5px solid ${$isSelected ? MAIN.DEFAULT : 'transparent'}`};
   &:hover {
     border-bottom: ${({ $isSelected }) =>
-      `2px solid ${$isSelected ? MAIN.DEFAULT : GRAY.LIGHT}`};
+      `2.5px solid ${$isSelected ? MAIN.DEFAULT : GRAY.LIGHT}`};
   }
 `;
 
@@ -56,12 +57,16 @@ export const PopupHeaderBarView = ({
             onClick={() => onClick(id)}
             $isSelected={id === value}
           >
-            <SvgIcon
-              svg={icon}
+            {/*<SvgIcon*/}
+            {/*  svg={icon}*/}
+            {/*  color={id === value ? MAIN.DEFAULT : GRAY.DARK}*/}
+            {/*  width={2}*/}
+            {/*/>*/}
+            <MainText
               color={id === value ? MAIN.DEFAULT : GRAY.DARK}
-              width={2}
-            />
-            <MainText color={id === value ? MAIN.DEFAULT : GRAY.DARK}>
+              fontWeight={600}
+              fontSize={16}
+            >
               {title}
             </MainText>
           </BarItem>

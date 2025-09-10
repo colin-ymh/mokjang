@@ -14,6 +14,13 @@ export default {
   customSelect: 'Custom Select',
   email: 'Email',
 
+  officerNone: 'No Officer',
+  marriageNone: 'No Marital Status',
+  baptismNone: 'No Baptism',
+
+  churchInfo: 'Church Information',
+  worshipAttendance: 'Worship Attendance',
+
   currentPlan: 'Current Plan',
 
   manager: 'Manager',

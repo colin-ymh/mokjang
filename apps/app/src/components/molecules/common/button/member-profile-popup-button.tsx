@@ -1,15 +1,15 @@
 import { DEFAULT_MEMBER, Member } from '@mokjang/models';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../../../redux/store';
-import { setTargetMember } from '../../../../redux/reducers/target/target-member-reducer';
+import { AppDispatch, RootState } from '@/redux/store';
+import { setTargetMember } from '@/redux/reducers/target/target-member-reducer';
 import styled from 'styled-components';
 import { CustomPopup } from '@mokjang/components';
 import MemberInformation from '../../../organisms/member/information/member-information';
 import { BLACK } from '@mokjang/constants';
 import { Svg } from '@mokjang/assets';
 import MemberProfile from '../../../atoms/member/member-profile';
-import { MembersApi } from '../../../../api/members/members.api';
+import { MembersApi } from '@/api/members/members.api';
 import { useScopedI18n } from '../../../../../locales/client';
 
 const ButtonContainer = styled.div`
@@ -82,6 +82,7 @@ const MemberProfilePopupButton = ({
       />
       <CustomPopup
         isShow={isShow}
+        onClickClose={onClickClose}
         onClickCancel={onClickClose}
         width={80}
         height={80}

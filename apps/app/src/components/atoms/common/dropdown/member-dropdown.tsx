@@ -10,7 +10,6 @@ import React, {
   useState,
 } from 'react';
 import { InputProps } from '@mokjang/components';
-import MemberDropdownView from './member-dropdown.view';
 import { getTrimmedString } from '@mokjang/utils';
 import { AxiosResponse } from 'axios';
 import { GetMembersResponse, MembersApi } from '@/api/members/members.api';
@@ -20,6 +19,7 @@ import { RootState } from '@/redux/store';
 import { MemberDropdownType } from './member-dropdown-item';
 import { ManagersApi } from '@/api/managers/managers.api';
 import { ChurchUser } from '@mokjang/models';
+import MemberDropdownView from '@/components/atoms/common/dropdown/member-dropdown.view';
 
 export type MultiMemberDropdownProps = InputProps & {
   ref?: RefObject<HTMLInputElement>;
@@ -106,15 +106,6 @@ const MemberDropdown = forwardRef<HTMLInputElement, MultiMemberDropdownProps>(
       (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.keyCode === 229) return;
 
-        if (
-          e.key === 'Backspace' &&
-          searchText === '' &&
-          values.length &&
-          isEditable
-        ) {
-          e.preventDefault();
-          removeValue(values[values.length - 1]); // 마지막 chip 제거
-        }
         if (!isOpened) return;
         if (e.key === 'ArrowDown') {
           e.preventDefault();

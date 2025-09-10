@@ -84,7 +84,7 @@ type AddEducationSessionViewProps = {
   onChangeEndDate: (date: Date | null) => void;
   onChangeEndTime: (value: number) => void;
   onChangeInCharge: (values: MemberDropdownType[]) => void;
-  onChangeContent: (content: string) => void;
+  onChangeContent: (content: string, delta: any, source: string) => void;
   receivers: MemberDropdownType[];
   onChangeReceivers: (values: MemberDropdownType[]) => void;
   onClickDeleteReceiver: (value: string) => void;
@@ -189,7 +189,6 @@ const AddEducationSessionView = ({
                 }
                 onChange={onChangeStartDate}
                 placeholderText={t('startDate')}
-                maxDate={getDateFromDateString(targetEducationSession.endDate)}
               />
               {/* 시작 시간 */}
               <Dropdown
@@ -219,9 +218,6 @@ const AddEducationSessionView = ({
                 }
                 onChange={onChangeEndDate}
                 placeholderText={t('endDate')}
-                minDate={getDateFromDateString(
-                  targetEducationSession.startDate
-                )}
               />
               {/* 종료 시간 */}
               <Dropdown
@@ -244,7 +240,9 @@ const AddEducationSessionView = ({
           <MainText>{t('content')}</MainText>
           <Quill
             value={content}
-            onChange={(html) => onChangeContent(html)}
+            onChange={(content, delta, source) =>
+              onChangeContent(content, delta, source)
+            }
             minHeight={150}
             placeholder={t_placeholder('content')}
             maxLength={1000}

@@ -1,25 +1,23 @@
 import styled from 'styled-components';
 
 import { Svg } from '@mokjang/assets';
-import { MainText } from '@mokjang/components';
-import { GRAY } from '@mokjang/constants';
-import { MEMBER } from '@mokjang/constants';
-import { getFormattedMobilePhone } from '@mokjang/utils';
+import { MainText, SvgIcon } from '@mokjang/components';
+import { BLANK, FAMILY, GRAY, LOCALE, MEMBER, SIZE } from '@mokjang/constants';
+import {
+  getAge,
+  getDateFromDateString,
+  getFormattedMobilePhone,
+  getTranslatedAge,
+} from '@mokjang/utils';
 import { FamilyMember } from '@mokjang/models';
 import { useI18n, useScopedI18n } from '../../../../../../locales/client';
 import ProfileImage from '../../../common/image/profile-image';
-import { SIZE } from '@mokjang/constants';
-import { SvgIcon } from '@mokjang/components';
-import { BLANK, FAMILY } from '@mokjang/constants';
 import { useFamilyRelationDropdownItems } from '../../../../../hooks/dropdown/dropdown-items';
 import Dropdown from '../../../common/dropdown/dropdown';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../../../redux/store';
-import { getTranslatedAge } from '@mokjang/utils';
-import { getAge, getDateFromDateString } from '@mokjang/utils';
 import { usePathname } from 'next/navigation';
-import { LOCALE } from '@mokjang/constants';
 import ConfirmPopup from '../../../common/popup/error-popup';
 import { MembersApi } from '../../../../../api/members/members.api';
 import { setTargetMember } from '../../../../../redux/reducers/target/target-member-reducer';
@@ -44,17 +42,36 @@ const LeftContainer = styled.div`
   gap: 20px;
 `;
 
+const NameContainer = styled.div`
+  display: flex;
+  gap: 5px;
+  flex-direction: row;
+  align-items: center;
+`;
+
+const TitleContainer = styled.div`
+  display: flex;
+  width: 80px;
+  gap: 13px;
+`;
+
 const InformationList = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 20px;
+`;
+
+const DetailContainer = styled.div`
+  display: flex;
+  gap: 12px;
+  flex-direction: column;
 `;
 
 const MemberInformationContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 10px;
+  gap: 13px;
 `;
 
 const CancelButton = styled.div`
@@ -126,38 +143,51 @@ const FamilyMemberItem = ({
       <ItemContainer onClick={onClickMember}>
         <LeftContainer>
           {/* 이미지 */}
-          <ProfileImage value={familyMember.familyMember.profileImageUrl} />
+
           <InformationList>
             {/* 이름 */}
             <MemberInformationContainer>
-              <MainText size={SIZE.LARGE}>
-                {familyMember.familyMember?.name}
-              </MainText>
-              <MainText
-                color={GRAY.SEMI_DARK}
-              >{`${familyMember.familyMember?.officer?.name || BLANK}`}</MainText>
+              <ProfileImage value={familyMember.familyMember.profileImageUrl} />
+              <NameContainer>
+                <MainText size={SIZE.LARGE}>
+                  {`${familyMember.familyMember?.name}`}
+                </MainText>
+                <MainText color={GRAY.DEFAULT}>
+                  {`${familyMember.familyMember?.officer?.name || BLANK}`}
+                </MainText>
+              </NameContainer>
             </MemberInformationContainer>
-            {/* 나이 */}
-            <MemberInformationContainer>
-              <SvgIcon svg={Svg.Calendar} color={GRAY.SEMI_DARK} />
-              <MainText color={GRAY.SEMI_DARK}>{t(MEMBER.AGE)}</MainText>
-              <MainText>
-                {getTranslatedAge(
-                  locale,
-                  getAge(getDateFromDateString(familyMember.familyMember.birth))
-                )}
-              </MainText>
-            </MemberInformationContainer>
-            {/* 연락처 */}
-            <MemberInformationContainer>
-              <SvgIcon svg={Svg.Phone} color={GRAY.SEMI_DARK} />
-              <MainText color={GRAY.SEMI_DARK}>
-                {t(MEMBER.MOBILE_PHONE)}
-              </MainText>
-              <MainText>
-                {getFormattedMobilePhone(familyMember.familyMember.mobilePhone)}
-              </MainText>
-            </MemberInformationContainer>
+            <DetailContainer>
+              {/* 나이 */}
+              <MemberInformationContainer>
+                <TitleContainer>
+                  <SvgIcon svg={Svg.Calendar} color={GRAY.DARK} />
+                  <MainText color={GRAY.DARK}>{t(MEMBER.AGE)}</MainText>
+                </TitleContainer>
+                <MainText>
+                  {getTranslatedAge(
+                    locale,
+                    getAge(
+                      getDateFromDateString(familyMember.familyMember.birth)
+                    )
+                  )}
+                </MainText>
+              </MemberInformationContainer>
+              {/* 연락처 */}
+              <MemberInformationContainer>
+                <TitleContainer>
+                  <SvgIcon svg={Svg.Phone} color={GRAY.DARK} />
+                  <MainText color={GRAY.DARK}>
+                    {t(MEMBER.MOBILE_PHONE)}
+                  </MainText>
+                </TitleContainer>
+                <MainText>
+                  {getFormattedMobilePhone(
+                    familyMember.familyMember.mobilePhone
+                  )}
+                </MainText>
+              </MemberInformationContainer>
+            </DetailContainer>
           </InformationList>
         </LeftContainer>
         <Dropdown

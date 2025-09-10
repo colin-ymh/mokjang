@@ -2,15 +2,13 @@ import styled from 'styled-components';
 
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
-import { LabelInput } from '@mokjang/components';
-import { LabelTextarea } from '@mokjang/components';
+import { CustomPopup, LabelInput, LabelTextarea } from '@mokjang/components';
 import LabelDropdown from '../../../atoms/common/dropdown/label-dropdown';
 import {
   useDayDropdownItems,
   useRepeatPeriodDropdownItems,
 } from '../../../../hooks/dropdown/dropdown-items';
 import { Group } from '@mokjang/models';
-import { CustomPopup } from '@mokjang/components';
 import SelectGroupHierarchy from '../../group/select-group-hierarchy';
 
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
@@ -68,6 +66,7 @@ const AddWorshipView = ({
 }: AddWorshipViewProps) => {
   const t = useI18n();
   const t_placeholder = useScopedI18n('placeholder');
+  const t_button = useScopedI18n('button');
   const { targetWorship } = useSelector(
     (state: RootState) => state.targetWorship
   );
@@ -116,7 +115,9 @@ const AddWorshipView = ({
 
       <CustomPopup
         isShow={isGroupModalShown}
+        onClickClose={onClickGroupModalClose}
         onClickCancel={onClickGroupModalClose}
+        cancelText={t_button('close')}
         width={400}
         height={400}
         isHeaderShown={false}

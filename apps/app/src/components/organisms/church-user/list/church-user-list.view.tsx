@@ -140,13 +140,9 @@ const ChurchUserListView = (props: UserListViewProps) => {
             </TextContainer>
           </ProfileContainer>
         }
-        headerRight={
-          <ButtonContainer onClick={onClickCloseInformation}>
-            <Cancel />
-          </ButtonContainer>
-        }
         headerHeight={150}
         onClickClose={onClickCloseInformation}
+        onClickCancel={onClickCloseInformation}
         cancelText={t_button('close')}
       >
         <ChurchUserInformation

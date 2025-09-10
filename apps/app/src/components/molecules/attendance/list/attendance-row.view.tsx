@@ -279,6 +279,7 @@ const AttendanceRow = ({
       {/* 그룹 선택 모달 */}
       <CustomPopup
         isShow={isGroupModalShown}
+        onClickClose={onClickCloseGroupModal}
         onClickCancel={onClickCloseGroupModal}
         width={400}
         height={600}

@@ -8,7 +8,7 @@ import {
   SIZE,
   WHITE,
 } from '@mokjang/constants';
-import { Button, CustomPopup, MainText } from '@mokjang/components';
+import { Button, CustomPopup, MainText, SvgIcon } from '@mokjang/components';
 
 import { useScopedI18n } from '../../../../../../../locales/client';
 import SlidePopup from '../../../../../atoms/common/popup/slide-popup';
@@ -22,7 +22,7 @@ import {
   getIsWellFormedName,
 } from '@mokjang/utils';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../../../../../redux/store';
+import { RootState } from '@/redux/store';
 
 const HeaderContainer = styled.div`
   display: flex;
@@ -155,9 +155,11 @@ const MainMemberHeaderView = ({
         <Button
           text={t_button('addMember')}
           onClick={onClickRegisterMemberButton}
-          width={100}
-          height={30}
-          icon={<PlusIcon />}
+          width={'auto'}
+          fontWeight={500}
+          fontSize={16}
+          height={35}
+          icon={<SvgIcon svg={Svg.Plus} color={WHITE} width={2} size={20} />}
         />
       </HeaderTopContainer>
       {/* 그룹 필터링 팝업 */}
@@ -171,10 +173,13 @@ const MainMemberHeaderView = ({
       {/* 데스크톱 교인 추가 */}
       <DesktopRegister>
         <CustomPopup
-          width={60}
+          width={35}
           height={80}
           isPercentage={true}
+          // width={700}
+          // height={1000}
           isShow={isRegisterShown}
+          onClickClose={onClickClose}
           onClickCancel={onClickClose}
           onClickDone={onClickSave}
           headerTitle={t_title('memberRegister')}
@@ -183,7 +188,7 @@ const MainMemberHeaderView = ({
             !getIsWellFormedName(targetMember.name) ||
             !getIsWellFormedMobilePhone(targetMember.mobilePhone)
           }
-          cancelText={t_button('close')}
+          cancelText={t_button('cancel')}
           doneText={t_button('save')}
         >
           <AddMember onChangeProfileImage={onChangeProfileImage} />

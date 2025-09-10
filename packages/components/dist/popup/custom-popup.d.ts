@@ -6,7 +6,8 @@ type CustomPopupProps = {
     isPercentage?: boolean;
     isPortal?: boolean;
     zIndex?: number;
-    onClickCancel: () => void;
+    onClickClose: () => void;
+    onClickCancel?: () => void;
     onClickDone?: () => void;
     headerTitle?: string;
     headerDescription?: string;
@@ -23,5 +24,5 @@ type CustomPopupProps = {
     keyboardDisabled?: boolean;
     children: ReactNode;
 };
-export declare const CustomPopup: ({ isShow, width, height, isPercentage, isPortal, zIndex, onClickCancel, onClickDone, headerTitle, headerDescription, headerRight, cancelText, doneText, cancelBackgroundColor, doneBackgroundColor, doneDisabled, isFooterShown, isHeaderShown, isHeaderBorderShown, headerHeight, keyboardDisabled, children, }: CustomPopupProps) => import("react/jsx-runtime").JSX.Element | null;
+export declare const CustomPopup: ({ isShow, width, height, isPercentage, isPortal, zIndex, onClickClose, onClickCancel, onClickDone, headerTitle, headerDescription, headerRight, cancelText, doneText, cancelBackgroundColor, doneBackgroundColor, doneDisabled, isFooterShown, isHeaderShown, isHeaderBorderShown, headerHeight, keyboardDisabled, children, }: CustomPopupProps) => import("react/jsx-runtime").JSX.Element | null;
 export {};

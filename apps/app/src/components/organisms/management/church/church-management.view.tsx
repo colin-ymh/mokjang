@@ -87,6 +87,7 @@ const ChurchManagementView = ({
 
       <CustomPopup
         isShow={isEditShown}
+        onClickClose={onClickEditClose}
         onClickCancel={onClickEditClose}
         onClickDone={onClickEditSave}
         width={500}

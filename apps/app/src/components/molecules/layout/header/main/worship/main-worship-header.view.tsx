@@ -89,6 +89,7 @@ const MainWorshipHeaderView = ({
       {/* 예배 추가 */}
       <CustomPopup
         isShow={isAddWorshipOpened}
+        onClickClose={onClickCloseModal}
         onClickCancel={onClickCloseModal}
         headerTitle={t_title('addWorship')}
         width={500}

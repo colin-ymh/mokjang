@@ -163,6 +163,7 @@ const NewMemberWidgetView = ({
       {/* 상세 팝업 */}
       <CustomPopup
         isShow={isDetailShown}
+        onClickClose={onClickDetailClose}
         onClickCancel={onClickDetailClose}
         width={400}
         height={500}

@@ -1,14 +1,8 @@
 import styled from 'styled-components';
-import {
-  GRAY,
-  MAIN,
-  MEDIA_MAX_WIDTH,
-  MEDIA_MIN_WIDTH,
-  SIZE,
-  WHITE,
-} from '@mokjang/constants';
+import { CURSOR, GRAY, MEDIA_MIN_WIDTH, SIZE, WHITE } from '@mokjang/constants';
 import { MainText } from '../text';
-import { Button } from '../button';
+import { SvgIcon } from '../svg-icon';
+import { Svg } from '@mokjang/assets';
 
 /* ───────── 스타일 ───────── */
 const HeaderContainer = styled.header<{
@@ -26,18 +20,6 @@ const HeaderContainer = styled.header<{
   background-color: ${WHITE};
   border-bottom: ${({ $isHeaderBorderShown }) =>
     `1px solid ${$isHeaderBorderShown ? GRAY.EXTRA_LIGHT : 'transparent'}`};
-`;
-
-const HeaderLeft = styled.div`
-  display: flex;
-  flex: 1;
-  padding-left: 10px;
-  justify-content: flex-start;
-  align-items: center;
-
-  @media (min-width: ${MEDIA_MIN_WIDTH.DESKTOP}) {
-    display: none;
-  }
 `;
 
 const HeaderTitle = styled.div`
@@ -61,9 +43,15 @@ const HeaderRight = styled.div`
   align-items: center;
 `;
 
-const ButtonContainer = styled.div`
-  @media (max-width: ${MEDIA_MAX_WIDTH.DESKTOP}) {
-    display: none;
+const CancelContainer = styled.div`
+  display: flex;
+  margin-right: 10px;
+  cursor: pointer;
+
+  border-radius: 5px;
+  transition: background-color 0.1s;
+  &:hover {
+    background-color: ${GRAY.EXTRA_LIGHT};
   }
 `;
 
@@ -73,10 +61,7 @@ type PopupHeaderViewProps = {
   headerDescription?: string;
   headerLeft?: React.ReactNode;
   headerRight?: React.ReactNode;
-  onClickCancel: () => void;
-  onClickDone?: () => void;
-  cancelText: string;
-  doneText: string;
+  onClickClose: () => void;
   isHeaderBorderShown?: boolean;
   height?: number;
 };
@@ -86,18 +71,18 @@ export const PopupHeaderView = ({
   headerDescription,
   headerLeft,
   headerRight,
-  onClickCancel,
-  onClickDone,
-  cancelText,
-  doneText,
+  onClickClose,
   isHeaderBorderShown = true,
-  height = 80,
+  height,
 }: PopupHeaderViewProps) => {
   return (
-    <HeaderContainer $isHeaderBorderShown={isHeaderBorderShown} height={height}>
+    <HeaderContainer
+      $isHeaderBorderShown={isHeaderBorderShown}
+      height={height || headerDescription ? 80 : 65}
+    >
       {headerLeft || (
         <HeaderTitle>
-          <MainText size={SIZE.EXTRA_LARGE} fontSize={22}>
+          <MainText size={SIZE.EXTRA_LARGE} fontSize={20}>
             {headerTitle}
           </MainText>
           {headerDescription && (
@@ -107,19 +92,11 @@ export const PopupHeaderView = ({
       )}
 
       <HeaderRight>
-        {headerRight
-          ? headerRight
-          : onClickDone && (
-              <ButtonContainer>
-                <Button
-                  text={doneText}
-                  onClick={onClickDone}
-                  backgroundColor={WHITE}
-                  color={MAIN.DEFAULT}
-                  width={40}
-                />
-              </ButtonContainer>
-            )}
+        {headerRight || (
+          <CancelContainer onClick={onClickClose}>
+            <SvgIcon svg={Svg.Cancel} size={22} cursor={CURSOR.POINTER} />
+          </CancelContainer>
+        )}
       </HeaderRight>
     </HeaderContainer>
   );

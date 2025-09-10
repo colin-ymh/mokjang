@@ -181,6 +181,7 @@ const MinistryGroupInformationView = ({
       {/* 그룹 수정 팝업 */}
       <CustomPopup
         isShow={isEditShown}
+        onClickClose={onClickEditClose}
         onClickCancel={onClickEditClose}
         onClickDone={onClickSaveEdit}
         headerTitle={t('title.editMinistryGroupInformation')}
@@ -203,6 +204,7 @@ const MinistryGroupInformationView = ({
       {/* 교인 추가 팝업 */}
       <CustomPopup
         isShow={isAddModalShown}
+        onClickClose={onClickAddModalClose}
         onClickCancel={onClickAddModalClose}
         width={800}
         height={700}
@@ -212,7 +214,7 @@ const MinistryGroupInformationView = ({
           selectedMinistryGroup.name
         )}
         headerDescription={t('description.addMemberHeader')}
-        doneText={t('button.add')}
+        doneText={t_button('add')}
         cancelText={t_button('cancel')}
         onClickDone={() =>
           onClickSaveNewMembers(selectedMembers, startDate as Date)

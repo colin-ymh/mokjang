@@ -7,11 +7,7 @@ import useWindowSize from '../../../../../hooks/window/window';
 import { WORSHIP_ATTENDANCE_STATUS, WorshipAttendance } from '@mokjang/models';
 
 import { Svg } from '@mokjang/assets';
-import {
-  getDateFromDateString,
-  getDateStringFromDate,
-  getTranslatedDateFromDateString,
-} from '@mokjang/utils';
+import { getDateFromDateString, getDateStringFromDate, getTranslatedDateFromDateString, } from '@mokjang/utils';
 import { usePathname } from 'next/navigation';
 import { useScopedI18n } from '../../../../../../locales/client';
 
@@ -20,7 +16,7 @@ const TableContainer = styled.div<{ height: number }>`
   /* 항상 가로 100%를 채움 */
   width: 100%;
   /* 세로 높이만큼 상하 스크롤 */
-  height: ${({ height }) => `${height - 590}px`};
+  height: ${({ height }) => `${height - 520}px`};
 
   /* 오버플로 시 스크롤 */
   overflow-x: auto;

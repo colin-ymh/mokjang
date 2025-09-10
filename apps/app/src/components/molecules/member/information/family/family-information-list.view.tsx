@@ -1,7 +1,7 @@
 import styled from 'styled-components';
-import { Button, CustomPopup, MainText } from '@mokjang/components';
+import { Button, CustomPopup, SvgIcon } from '@mokjang/components';
 import { FamilyMember, Member } from '@mokjang/models';
-import { FAMILY, LOCALE, SIZE, WHITE } from '@mokjang/constants';
+import { FAMILY, LOCALE, MAIN, WHITE } from '@mokjang/constants';
 
 import { useI18n, useScopedI18n } from '../../../../../../locales/client';
 import { Svg } from '@mokjang/assets';
@@ -18,20 +18,13 @@ const ListContainer = styled.div`
   display: flex;
   flex-direction: column;
   padding: 20px;
-  gap: 20px;
+  gap: 10px;
 `;
 
 const FamilyListHeader = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-`;
-
-const PlusIcon = styled(Svg.Plus)`
-  width: 18px;
-  height: 18px;
-  stroke: ${WHITE};
-  stroke-width: 2px;
 `;
 
 const FamilyList = styled.div<{ height: number }>`
@@ -86,16 +79,18 @@ const FamilyInformationListView = ({
     <ListContainer>
       {/* 가족정보 헤더 */}
       <FamilyListHeader>
-        <MainText size={SIZE.EXTRA_LARGE}>
-          {t_header('familyInformation')}
-        </MainText>
+        <div />
         {/* 가족 추가 버튼*/}
         <Button
           width={'auto'}
           text={t_button('addFamily')}
           onClick={onClickOpenModal}
-          icon={<PlusIcon />}
+          icon={
+            <SvgIcon svg={Svg.Plus} color={MAIN.DEFAULT} width={2} size={18} />
+          }
           height={30}
+          backgroundColor={WHITE}
+          color={MAIN.DEFAULT}
         />
       </FamilyListHeader>
       <FamilyList ref={scrollRef} onScroll={onScroll} height={height - 400}>
@@ -114,6 +109,7 @@ const FamilyInformationListView = ({
       {/* 교인 추가 팝업 */}
       <CustomPopup
         isShow={isModalShown}
+        onClickClose={onClickCloseModal}
         onClickCancel={onClickCloseModal}
         width={800}
         height={700}

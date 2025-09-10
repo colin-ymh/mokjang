@@ -112,7 +112,6 @@ const MainTaskHeaderView = ({
         headerTitle={t_title('addTask')}
         doneBackgroundColor={isSaveEnabled ? MAIN.DEFAULT : MAIN.LIGHT}
         doneDisabled={!isSaveEnabled}
-        isAnimation={false}
       >
         <AddTask />
       </ScrollSlidePopup>

@@ -111,7 +111,6 @@ const MainVisitationHeaderView = ({
         headerTitle={t_title('addVisitation')}
         doneBackgroundColor={isSaveEnabled ? MAIN.DEFAULT : MAIN.LIGHT}
         doneDisabled={!isSaveEnabled}
-        isAnimation={true}
       >
         <AddVisitation />
       </ScrollSlidePopup>

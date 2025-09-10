@@ -1,7 +1,7 @@
 import { Member } from '../member/member';
 import { Visitation } from '../visitation/visitation';
-import { Task } from '@react-dnd/asap';
 import { EducationSession } from '../education/education';
+import { Task } from '../task';
 export type Report = {
     id: string;
     isConfirmed: boolean;

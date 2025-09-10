@@ -559,3 +559,40 @@ export const getTranslatedSummaryCount = (
     return `${summary}건`;
   }
 };
+
+/**
+ * ISO 문자열과 현재 시간의 차이를 간단한 "n분 전" / "n hours ago" 형태로 반환.
+ */
+export function getTranslatedTimeAgo(
+  locale: LOCALE,
+  date: string,
+): string {
+  const now = new Date();
+  const target = new Date(date);
+  const nowMs = now.getTime();
+  const targetMs = isNaN(target.getTime()) ? nowMs : target.getTime();
+
+  // 미래값은 0으로 클램프
+  let diffMs = Math.max(0, nowMs - targetMs);
+
+  const minute = 60 * 1000;
+  const hour = 60 * minute;
+  const day = 24 * hour;
+
+  if (diffMs < minute) {
+    return locale === LOCALE.KO ? '방금' : 'just now';
+  }
+
+  if (diffMs < hour) {
+    const m = Math.floor(diffMs / minute);
+    return locale === LOCALE.KO ? `${m}분 전` : `${m} minute${m === 1 ? '' : 's'} ago`;
+  }
+
+  if (diffMs < day) {
+    const h = Math.floor(diffMs / hour);
+    return locale === LOCALE.KO ? `${h}시간 전` : `${h} hour${h === 1 ? '' : 's'} ago`;
+  }
+
+  const d = Math.floor(diffMs / day);
+  return locale === LOCALE.KO ? `${d}일 전` : `${d} day${d === 1 ? '' : 's'} ago`;
+}

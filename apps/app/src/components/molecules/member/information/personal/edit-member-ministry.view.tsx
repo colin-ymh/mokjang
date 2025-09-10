@@ -26,6 +26,10 @@ const LabelContainer = styled.div`
   gap: 10px;
 `;
 
+const BoxContainer = styled.div`
+  display: flex;
+`;
+
 type EditMemberMinistryViewProps = {
   isMinistryOpen: boolean;
   dropdownItems: DropdownValueType[];
@@ -108,21 +112,24 @@ const EditMemberMinistryView = ({
           />
         </LabelContainer>
         {targetMinistryHistory.ministryGroup?.id && (
-          <StopWarningButton
-            description={t_warning('stopMinistryHistory')}
-            buttonText={t_button('stopMinistryHistory')}
-            onClick={() =>
-              onClickDeleteMinistry(
-                targetMinistryHistory.ministryGroup.id as string
-              )
-            }
-            // disabled={!!selectedMinistry?.membersCount || false}
-          />
+          <BoxContainer>
+            <StopWarningButton
+              description={t_warning('stopMinistryHistory')}
+              buttonText={t_button('stopMinistryHistory')}
+              onClick={() =>
+                onClickDeleteMinistry(
+                  targetMinistryHistory.ministryGroup.id as string
+                )
+              }
+              // disabled={!!selectedMinistry?.membersCount || false}
+            />
+          </BoxContainer>
         )}
       </EditMemberMinistryViewContainer>
 
       <CustomPopup
         isShow={isMinistryOpen}
+        onClickClose={onClickMinistryClose}
         onClickCancel={onClickMinistryClose}
         cancelText={t('button.close')}
         width={450}

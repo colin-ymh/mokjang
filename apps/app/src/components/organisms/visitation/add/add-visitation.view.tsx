@@ -1,12 +1,12 @@
 import styled from 'styled-components';
 import React, { ChangeEvent } from 'react';
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
-import { BLANK, GRAY, SIZE } from '@mokjang/constants';
-import { useTimeDropdownItems } from '../../../../hooks/dropdown/dropdown-items';
+import { GRAY } from '@mokjang/constants';
+import { useTimeDropdownItems } from '@/hooks/dropdown/dropdown-items';
 import { MemberDropdownType } from '../../../atoms/common/dropdown/member-dropdown-item';
 import { BorderInput, MainText, RequiredMark } from '@mokjang/components';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../../../redux/store';
+import { RootState } from '@/redux/store';
 import CustomDatePicker from '../../../../vendor/date-picker/custom-date-picker';
 import {
   getDateFromDateString,
@@ -23,8 +23,9 @@ import BigMemberTag from '../../../atoms/common/tag/big-member-tag';
 const AddVisitationViewContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 30px;
   padding: 20px;
+  padding-bottom: 150px;
 `;
 
 const HeaderContainer = styled.div`
@@ -38,7 +39,7 @@ const HeaderContainer = styled.div`
 const ContentContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 15px;
   width: 100%;
 `;
 
@@ -47,6 +48,15 @@ const MemberTagList = styled.div`
   flex-wrap: wrap;
   gap: 10px;
   flex-direction: row;
+`;
+
+const ReceiverTagList = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  flex-direction: row;
+  height: 30px;
+  flex-shrink: 0;
 `;
 
 const RowContainer = styled.div`
@@ -75,8 +85,8 @@ type AddVisitationViewProps = {
   onChangeVisitedMembers: (members: MemberDropdownType[]) => void;
   onChangeInCharge: (inCharge: MemberDropdownType[]) => void;
   onChangeReceivers: (receiver: MemberDropdownType[]) => void;
-  onChangeContent: (content: string) => void;
-  onChangePray: (content: string) => void;
+  onChangeContent: (content: string, delta: any, source: string) => void;
+  onChangePray: (content: string, delta: any, source: string) => void;
   onClickDeleteVisitedMember: (memberId: string) => void;
   onClickDeleteReceiver: (memberId: string) => void;
 };
@@ -110,7 +120,7 @@ const AddVisitationView = ({
   return (
     <AddVisitationViewContainer>
       {/*<HeaderContainer>*/}
-      {/*  <MainText size={SIZE.EXTRA_LARGE} fontSize={22}>*/}
+      {/*  <MainText  fontSize={22}>*/}
       {/*    {t(isEdit ? 'title.editVisitation' : 'title.addVisitation')}*/}
       {/*  </MainText>*/}
       {/*</HeaderContainer>*/}
@@ -118,7 +128,7 @@ const AddVisitationView = ({
       {/* 제목 */}
 
       <ContentContainer>
-        <MainText size={SIZE.EXTRA_LARGE}>
+        <MainText fontWeight={600}>
           {t('title')}
           <RequiredMark />
         </MainText>
@@ -131,10 +141,9 @@ const AddVisitationView = ({
       </ContentContainer>
 
       {/* 일정 */}
-
       <ContentContainer>
-        <MainText size={SIZE.EXTRA_LARGE}>
-          {t('schedule')}
+        <MainText fontWeight={600}>
+          {t('period')}
           <RequiredMark />
         </MainText>
         {/* 기간 */}
@@ -155,7 +164,6 @@ const AddVisitationView = ({
             }
             onChange={onChangeStartDate}
             placeholderText={t('startDate')}
-            maxDate={getDateFromDateString(targetVisitation.endDate)}
           />
           {/* 시작 시간 */}
           <Dropdown
@@ -168,6 +176,7 @@ const AddVisitationView = ({
             }
             items={timeDropdownItems}
             onChangeItem={onChangeStartTime}
+            chevronColor={GRAY.DEFAULT}
           />
           {/* 종료 날짜 */}
           <CustomDatePicker
@@ -185,7 +194,6 @@ const AddVisitationView = ({
             }
             onChange={onChangeEndDate}
             placeholderText={t('endDate')}
-            minDate={getDateFromDateString(targetVisitation.startDate)}
           />
           {/* 종료 시간 */}
           <Dropdown
@@ -198,6 +206,7 @@ const AddVisitationView = ({
             }
             items={timeDropdownItems}
             onChangeItem={onChangeEndTime}
+            chevronColor={GRAY.DEFAULT}
           />
         </PeriodContainer>
       </ContentContainer>
@@ -206,7 +215,7 @@ const AddVisitationView = ({
       <RowContainer>
         {/* 대상자 */}
         <ContentContainer>
-          <MainText size={SIZE.EXTRA_LARGE}>
+          <MainText fontWeight={600}>
             {t('visitedMember')}
             <RequiredMark />
           </MainText>
@@ -232,7 +241,7 @@ const AddVisitationView = ({
         {/* 담당자 */}
 
         <ContentContainer>
-          <MainText size={SIZE.EXTRA_LARGE}>
+          <MainText fontWeight={600}>
             {t('inCharge')}
             <RequiredMark />
           </MainText>
@@ -258,10 +267,12 @@ const AddVisitationView = ({
       {/* 세부 내용 */}
 
       <ContentContainer>
-        <MainText size={SIZE.EXTRA_LARGE}>{t('visitationContent')}</MainText>
+        <MainText fontWeight={600}>{t('visitationContent')}</MainText>
         <Quill
           value={targetVisitation.visitationDetails[0].visitationContent}
-          onChange={(html) => onChangeContent(html)}
+          onChange={(content, delta, source) =>
+            onChangeContent(content, delta, source)
+          }
           minHeight={150}
           placeholder={t_placeholder('visitationContent')}
         />
@@ -270,10 +281,12 @@ const AddVisitationView = ({
       {/* 기도제목 */}
 
       <ContentContainer>
-        <MainText size={SIZE.EXTRA_LARGE}>{t('visitationPray')}</MainText>
+        <MainText fontWeight={600}>{t('visitationPray')}</MainText>
         <Quill
           value={targetVisitation.visitationDetails[0].visitationPray}
-          onChange={(html) => onChangePray(html)}
+          onChange={(content, delta, source) =>
+            onChangePray(content, delta, source)
+          }
           minHeight={150}
           placeholder={t_placeholder('visitationPray')}
         />
@@ -281,15 +294,15 @@ const AddVisitationView = ({
 
       <ContentContainer>
         {/* 보고대상자 */}
-        <MainText size={SIZE.EXTRA_LARGE}>{t('receiver')}</MainText>
+        <MainText fontWeight={600}>{t('receiver')}</MainText>
         <MemberDropdown
           values={receivers}
           onChangeValues={onChangeReceivers}
-          placeholder={receivers.length === 0 ? t_placeholder('name') : BLANK}
+          placeholder={t_placeholder('name')}
           isManager={true}
         />
         {/* 보고대상자 목록 */}
-        <MemberTagList>
+        <ReceiverTagList>
           {receivers.map((member) => (
             <MemberTag
               key={member.value}
@@ -299,7 +312,7 @@ const AddVisitationView = ({
               onClick={() => onClickDeleteReceiver(member.value)}
             />
           ))}
-        </MemberTagList>
+        </ReceiverTagList>
       </ContentContainer>
     </AddVisitationViewContainer>
   );

@@ -2,19 +2,25 @@ import React, { RefObject } from 'react';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../redux/store';
-import { GRAY, MAIN, PURPLE, WHITE } from '@mokjang/constants';
-import { MainText } from '@mokjang/components';
-import { SIZE } from '@mokjang/constants';
-import { MainTag } from '@mokjang/components';
+import {
+  CONCEALED,
+  GRAY,
+  LOCALE,
+  MAIN,
+  PURPLE,
+  SIZE,
+  WHITE,
+} from '@mokjang/constants';
+import { Button, MainTag, MainText, SvgIcon } from '@mokjang/components';
 import { useI18n } from '../../../../../../locales/client';
 import { Svg } from '@mokjang/assets';
-import { SvgIcon } from '@mokjang/components';
-import { getTranslatedDateFromDateString } from '@mokjang/utils';
+import {
+  getDateFromDateString,
+  getDateStringFromDate,
+  getTranslatedDateFromDateString,
+} from '@mokjang/utils';
 import { usePathname } from 'next/navigation';
-import { LOCALE } from '@mokjang/constants';
-import { Button } from '@mokjang/components';
 import { MinistryHistory } from '@mokjang/models';
-import { getDateFromDateString, getDateStringFromDate } from '@mokjang/utils';
 
 const ListContainer = styled.div`
   display: flex;
@@ -98,50 +104,53 @@ const MemberMinistryListView = ({
         />
       </RowContainer>
       <ScrollWrapper ref={scrollRef} onScroll={onScroll}>
-        {targetMember.ministryGroupHistory?.map((ministryHistory) => (
-          <MinistryGroupItem key={ministryHistory.id}>
-            <RowContainer>
-              <ContentContainer>
-                <MainText size={SIZE.EXTRA_LARGE}>
-                  {ministryHistory.ministryGroup.name}
-                </MainText>
-                {ministryHistory.ministryGroupDetailHistory &&
-                  ministryHistory.ministryGroupDetailHistory.length > 1 && (
-                    <MainTag
-                      title={t('ministryGroupLeader')}
-                      color={PURPLE.DARK}
-                      backgroundColor={PURPLE.LIGHT}
-                    />
-                  )}
-              </ContentContainer>
-              <EditButtonContainer
-                onClick={() => onClickAddOpen(ministryHistory)}
-              >
-                <SvgIcon
-                  svg={Svg.Pencil}
-                  size={18}
-                  width={2}
-                  color={GRAY.DARK}
+        {targetMember.ministryGroupHistory !== CONCEALED &&
+          targetMember.ministryGroupHistory?.map((ministryHistory) => (
+            <MinistryGroupItem key={ministryHistory.id}>
+              <RowContainer>
+                <ContentContainer>
+                  <MainText size={SIZE.EXTRA_LARGE}>
+                    {ministryHistory.ministryGroup.name}
+                  </MainText>
+                  {ministryHistory.ministryGroupDetailHistory &&
+                    ministryHistory.ministryGroupDetailHistory.length > 1 && (
+                      <MainTag
+                        title={t('ministryGroupLeader')}
+                        color={PURPLE.DARK}
+                        backgroundColor={PURPLE.LIGHT}
+                      />
+                    )}
+                </ContentContainer>
+                <EditButtonContainer
                   onClick={() => onClickAddOpen(ministryHistory)}
-                />
-              </EditButtonContainer>
-            </RowContainer>
-            <RowContainer>
-              <ContentContainer>
-                <SvgIcon svg={Svg.Calendar} color={GRAY.DEFAULT} />
-                <MainText color={GRAY.DEFAULT}>{`${t('startDate')}:`}</MainText>
-                <MainText color={GRAY.DEFAULT}>
-                  {getTranslatedDateFromDateString(
-                    basePath,
-                    getDateStringFromDate(
-                      getDateFromDateString(ministryHistory.startDate)
-                    )
-                  )}
-                </MainText>
-              </ContentContainer>
-            </RowContainer>
-          </MinistryGroupItem>
-        ))}
+                >
+                  <SvgIcon
+                    svg={Svg.Pencil}
+                    size={18}
+                    width={2}
+                    color={GRAY.DARK}
+                    onClick={() => onClickAddOpen(ministryHistory)}
+                  />
+                </EditButtonContainer>
+              </RowContainer>
+              <RowContainer>
+                <ContentContainer>
+                  <SvgIcon svg={Svg.Calendar} color={GRAY.DEFAULT} />
+                  <MainText
+                    color={GRAY.DEFAULT}
+                  >{`${t('startDate')}:`}</MainText>
+                  <MainText color={GRAY.DEFAULT}>
+                    {getTranslatedDateFromDateString(
+                      basePath,
+                      getDateStringFromDate(
+                        getDateFromDateString(ministryHistory.startDate)
+                      )
+                    )}
+                  </MainText>
+                </ContentContainer>
+              </RowContainer>
+            </MinistryGroupItem>
+          ))}
       </ScrollWrapper>
     </ListContainer>
   );

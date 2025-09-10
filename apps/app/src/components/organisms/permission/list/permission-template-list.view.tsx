@@ -110,11 +110,6 @@ const PermissionTemplateListView = (props: PermissionTemplateListViewProps) => {
       <SlidePopup
         isShow={isPermissionTemplateInformationShown}
         headerTitle={targetPermissionTemplate.title}
-        headerRight={
-          <ButtonContainer onClick={onClickClose}>
-            <Cancel />
-          </ButtonContainer>
-        }
         onClickClose={onClickClose}
         cancelText={t_button('close')}
       >

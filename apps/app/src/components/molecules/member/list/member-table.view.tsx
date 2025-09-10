@@ -16,6 +16,7 @@ import {
   MINISTRY_GROUP_ROLE,
   PURPLE,
   WHITE,
+  YELLOW,
 } from '@mokjang/constants';
 import { MainTag, MainText } from '@mokjang/components';
 import {
@@ -219,18 +220,31 @@ const MemberTableView = ({
           <ProfileContainer>
             {/*<MemberProfile member={member} isProfileImageShown={false} /> */}
             <MainText>{member?.name}</MainText>
+            {member.churchUser && (
+              <MainTag
+                title={t('manager')}
+                color={PURPLE.DARK}
+                backgroundColor={PURPLE.LIGHT}
+                fontSize={12}
+                rowPadding={6}
+              />
+            )}
             {member.groupRole === GROUP_ROLE.LEADER && (
               <MainTag
                 title={t('groupLeader')}
-                color={MAIN.DARK}
-                backgroundColor={MAIN.LIGHT}
+                color={YELLOW.DARK}
+                backgroundColor={YELLOW.LIGHT}
+                fontSize={12}
+                rowPadding={6}
               />
             )}
             {member.ministryGroupRole === MINISTRY_GROUP_ROLE.LEADER && (
               <MainTag
                 title={t('ministryGroupLeader')}
-                color={PURPLE.DARK}
-                backgroundColor={PURPLE.LIGHT}
+                color={MAIN.DARK}
+                backgroundColor={MAIN.LIGHT}
+                fontSize={12}
+                rowPadding={6}
               />
             )}
           </ProfileContainer>

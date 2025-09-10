@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import ChurchUserInformationView, { ChurchUserInformationViewProps, } from './church-user-information.view';
+import ChurchUserInformationView, {
+  ChurchUserInformationViewProps,
+} from './church-user-information.view';
 import { setTargetChurchUser } from '@/redux/reducers/target/target-church-user-reducer';
 import { ChurchUsersApi } from '@/api/church-users/church-users.api';
 import { useDispatch, useSelector } from 'react-redux';
@@ -14,7 +16,11 @@ import { ManagersApi } from '@/api/managers/managers.api';
 import PermissionRange from '@/components/atoms/church-user/information/permission-range';
 import EditPermissionTemplate from '@/components/molecules/church-user/information/edit-permission-template';
 import ConfirmPopup from '@/components/atoms/common/popup/error-popup';
-import { setIsToastShown, setToastBackgroundColor, setToastText, } from '@/redux/reducers/toast-popup-reducer';
+import {
+  setIsToastShown,
+  setToastBackgroundColor,
+  setToastText,
+} from '@/redux/reducers/toast-popup-reducer';
 
 type ChurchUserInformationProps = {
   isMy?: boolean;
@@ -332,6 +338,7 @@ const ChurchUserInformation = ({
       {/* 교인 연결 팝업 */}
       <CustomPopup
         isShow={isLinkPopupShown}
+        onClickClose={onClickCancelLink}
         onClickCancel={onClickCancelLink}
         width={500}
         height={850}
@@ -351,6 +358,7 @@ const ChurchUserInformation = ({
       {/* 그룹 선택 팝업 */}
       <CustomPopup
         isShow={isGroupPopupShown}
+        onClickClose={onClickGroupPopupClose}
         onClickCancel={onClickGroupPopupClose}
         width={500}
         height={600}
@@ -368,6 +376,7 @@ const ChurchUserInformation = ({
       {/* 권한그룹 선택 팝업 */}
       <CustomPopup
         isShow={isEditTemplateShown}
+        onClickClose={onClickEditTemplateClose}
         onClickCancel={onClickEditTemplateClose}
         width={500}
         height={600}

@@ -7,6 +7,8 @@ type MainTagProps = {
     rowPadding?: number;
     columnPadding?: number;
     gap?: number;
+    fontSize?: number;
+    fontWeight?: number;
 };
-export declare const MainTag: ({ title, backgroundColor, color, svg, rowPadding, columnPadding, gap, }: MainTagProps) => import("react/jsx-runtime").JSX.Element;
+export declare const MainTag: ({ title, backgroundColor, color, svg, rowPadding, columnPadding, gap, fontSize, fontWeight, }: MainTagProps) => import("react/jsx-runtime").JSX.Element;
 export {};

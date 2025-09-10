@@ -279,6 +279,7 @@ const MinistryHistoryList = () => {
       {/* 그룹 수정 */}
       <CustomPopup
         isShow={isMinistryOpened}
+        onClickClose={onClickMinistryClose}
         onClickCancel={onClickMinistryClose}
         onClickDone={onClickSaveMinistry}
         headerTitle={t('title.editHistory')}

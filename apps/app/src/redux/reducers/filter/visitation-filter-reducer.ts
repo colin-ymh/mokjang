@@ -7,7 +7,12 @@ import {
   TASK_STATUS,
   VISITATION,
 } from '@mokjang/constants';
-import { DEFAULT_MEMBER, Member, Visitation } from '@mokjang/models';
+import {
+  DEFAULT_MEMBER,
+  Member,
+  Visitation,
+  VisitationReport,
+} from '@mokjang/models';
 import { RootState } from '../../store';
 import { VisitationsApi } from '../../../api/visitations/visitations.api';
 import { VisitationReportsApi } from '../../../api/reports/visitation-reports.api';
@@ -81,17 +86,17 @@ export const INITIAL_VISITATION_TABLE_HEADER_LIST: VISITATION_TABLE_HEADER_ITEM[
       isDate: false,
     },
     {
-      id: VISITATION.DATE,
+      id: VISITATION.IN_CHARGE,
       isShown: true,
-      isSortable: true,
+      isSortable: false,
       isFilterable: true,
       isFixed: true,
       isDate: false,
     },
     {
-      id: VISITATION.IN_CHARGE,
+      id: VISITATION.DATE,
       isShown: true,
-      isSortable: false,
+      isSortable: true,
       isFilterable: true,
       isFixed: true,
       isDate: false,
@@ -130,10 +135,12 @@ export const fetchVisitations = createAsyncThunk<
       if (headerType === HEADER_BAR.REPORTED) {
         const response = await visitationReportsApi.getVisitationReports({});
 
-        const newVisitations: Visitation[] = response.data.data;
+        const reports: VisitationReport[] = response.data.data;
+        const newVisitations = reports.map((report) => report.visitation);
         const existingIds = new Set(
           visitations.map((visitation) => visitation.id)
         );
+
         const filteredNewVisitations = newVisitations.filter(
           (visitation) => !existingIds.has(visitation.id)
         );

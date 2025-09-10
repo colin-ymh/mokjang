@@ -45,7 +45,7 @@ type EditWorshipSessionViewProps = {
   onChangeBibleTitle: (event: ChangeEvent<HTMLInputElement>) => void;
   onChangeVideoUrl: (event: ChangeEvent<HTMLInputElement>) => void;
   onChangeInCharge: (inCharge: MemberDropdownValueType[]) => void;
-  onChangeDescription: (description: string) => void;
+  onChangeDescription: (content: string, delta: any, source: string) => void;
 };
 
 const EditWorshipSessionView = ({
@@ -113,7 +113,9 @@ const EditWorshipSessionView = ({
         </LabelContainer>
         <Quill
           value={description}
-          onChange={(event) => onChangeDescription(event)}
+          onChange={(content, delta, source) =>
+            onChangeDescription(content, delta, source)
+          }
           minHeight={150}
           placeholder={t_placeholder('worshipSessionDescription')}
         />

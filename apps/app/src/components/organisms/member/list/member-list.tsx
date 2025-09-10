@@ -12,9 +12,11 @@ import MemberListView from './member-list.view';
 import { DEFAULT_MEMBER } from '@mokjang/models';
 import { setTargetMember } from '../../../../redux/reducers/target/target-member-reducer';
 import { uploadFiles } from '../../../../utils/upload';
-import { BLANK, DESTRUCTIVE } from '@mokjang/constants';
+import { BLANK, CONCEALED, DESTRUCTIVE } from '@mokjang/constants';
+import { getDateFromDateString, getDateStringFromDate } from '@mokjang/utils';
 import {
-  setIsToastShown, setToastBackgroundColor,
+  setIsToastShown,
+  setToastBackgroundColor,
   setToastText,
 } from '../../../../redux/reducers/toast-popup-reducer';
 import { useScopedI18n } from '../../../../../locales/client';
@@ -193,10 +195,10 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
             mobilePhone:
               updatedMember.mobilePhone?.replace(/\D/g, '') || undefined,
             profileImageUrl: updatedMember.profileImageUrl || undefined,
-            // birth:
-            //   getDateStringFromDate(
-            //     getDateFromDateString(updatedMember.birth)
-            //   ) || undefined,
+            birth:
+              getDateStringFromDate(
+                getDateFromDateString(updatedMember.birth)
+              ) || undefined,
             isLunar: updatedMember.isLunar,
             isLeafMonth: updatedMember.isLeafMonth,
             gender: updatedMember.gender || undefined,
@@ -204,7 +206,10 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
             school: updatedMember.school || undefined,
             address: updatedMember.address || undefined,
             detailAddress: updatedMember.detailAddress || undefined,
-            marriage: updatedMember.marriage || undefined,
+            marriage:
+              updatedMember.marriage !== CONCEALED
+                ? updatedMember.marriage
+                : undefined,
             vehicleNumber:
               updatedMember.vehicleNumber.filter(
                 (number) => number.length > 0

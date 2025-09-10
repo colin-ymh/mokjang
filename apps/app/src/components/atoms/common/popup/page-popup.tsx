@@ -2,8 +2,7 @@ import { ReactNode } from 'react';
 import styled from 'styled-components';
 
 import { WHITE } from '@mokjang/constants';
-import { Hide } from '@mokjang/components';
-import { PopupLayout } from '@mokjang/components';
+import { Hide, PopupLayout } from '@mokjang/components';
 
 const PagePopupContainer = styled.div`
   display: flex;
@@ -21,6 +20,7 @@ interface PagePopupProps {
   isShow: boolean;
   isFooterShown?: boolean;
   onClickClose: () => void;
+  onClickCancel?: () => void;
   onClickDone?: () => void;
   headerTitle?: string;
   headerRight?: ReactNode;
@@ -37,6 +37,7 @@ const PagePopup = ({
   isShow,
   isFooterShown,
   onClickClose,
+  onClickCancel,
   onClickDone,
   headerTitle,
   headerRight,
@@ -54,7 +55,8 @@ const PagePopup = ({
   return (
     <PagePopupContainer>
       <PopupLayout
-        onClickCancel={onClickClose}
+        onClickClose={onClickClose}
+        onClickCancel={onClickCancel}
         onClickDone={onClickDone}
         headerTitle={headerTitle}
         headerRight={headerRight}

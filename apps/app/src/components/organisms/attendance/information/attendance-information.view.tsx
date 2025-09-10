@@ -111,6 +111,8 @@ const AttendanceInformation = ({
 }: AttendanceInformationProps) => {
   const t = useI18n();
   const t_title = useScopedI18n('title');
+  const t_button = useScopedI18n('button');
+
   const {
     targetWorshipSession,
     targetWorshipSessionGroup,
@@ -243,7 +245,9 @@ const AttendanceInformation = ({
       {/* 그룹 선택 모달 */}
       <CustomPopup
         isShow={isGroupModalShown}
+        onClickClose={onClickCloseGroupModal}
         onClickCancel={onClickCloseGroupModal}
+        cancelText={t_button('cancel')}
         width={400}
         height={600}
         isHeaderShown={false}

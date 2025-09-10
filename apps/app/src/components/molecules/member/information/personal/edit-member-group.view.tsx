@@ -24,6 +24,10 @@ const LabelContainer = styled.div`
   gap: 10px;
 `;
 
+const BoxContainer = styled.div`
+  display: flex;
+`;
+
 type EditMemberGroupViewProps = {
   isGroupOpen: boolean;
   onClickGroupOpen: () => void;
@@ -86,17 +90,20 @@ const EditMemberGroupView = ({
           />
         </LabelContainer>
         {targetMember.groupHistory && targetMember.groupHistory.length > 0 && (
-          <StopWarningButton
-            description={t_warning('stopGroupHistory')}
-            buttonText={t_button('stopGroupHistory')}
-            onClick={onClickDeleteGroup}
-            // disabled={!!selectedGroup?.membersCount || false}
-          />
+          <BoxContainer>
+            <StopWarningButton
+              description={t_warning('stopGroupHistory')}
+              buttonText={t_button('stopGroupHistory')}
+              onClick={onClickDeleteGroup}
+              // disabled={!!selectedGroup?.membersCount || false}
+            />
+          </BoxContainer>
         )}
       </EditMemberGroupViewContainer>
 
       <CustomPopup
         isShow={isGroupOpen}
+        onClickClose={onClickGroupClose}
         onClickCancel={onClickGroupClose}
         cancelText={t('button.close')}
         width={450}

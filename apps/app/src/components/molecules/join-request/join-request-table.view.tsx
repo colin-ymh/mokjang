@@ -303,10 +303,12 @@ const JoinRequestTableView = ({
 
         <CustomPopup
           isShow={isLinkPopupShown}
+          onClickClose={onClickCancelLink}
           onClickCancel={onClickCancelLink}
           width={500}
           height={850}
           headerTitle={t_title('linkMemberUser')}
+          cancelText={t_button('cancel')}
           doneText={t_button('link')}
           onClickDone={onClickApprove}
         >

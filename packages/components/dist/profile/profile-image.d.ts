@@ -1,5 +1,5 @@
 import React from 'react';
-export declare const Profile: import("styled-components/dist/types").IStyledComponentBase<"web", import("styled-components/dist/types").Substitute<Omit<Omit<React.DetailedHTMLProps<React.ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement>, "width" | "height" | "ref" | "alt" | "src" | "loading" | "srcSet"> & {
+export declare const Profile: import("styled-components/dist/types").IStyledComponentBase<"web", import("styled-components/dist/types").Substitute<Omit<Omit<React.DetailedHTMLProps<React.ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement>, "ref" | "height" | "width" | "alt" | "src" | "loading" | "srcSet"> & {
     src: string | import("next/dist/shared/lib/get-img-props").StaticImport;
     alt: string;
     width?: number | `${number}` | undefined;
@@ -23,7 +23,7 @@ export declare const Profile: import("styled-components/dist/types").IStyledComp
     ref?: ((instance: HTMLImageElement | null) => void | React.DO_NOT_USE_OR_YOU_WILL_BE_FIRED_CALLBACK_REF_RETURN_VALUES[keyof React.DO_NOT_USE_OR_YOU_WILL_BE_FIRED_CALLBACK_REF_RETURN_VALUES]) | React.RefObject<HTMLImageElement | null> | null | undefined;
 }, {
     $isButton: boolean;
-}>> & string & Omit<React.ForwardRefExoticComponent<Omit<React.DetailedHTMLProps<React.ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement>, "width" | "height" | "ref" | "alt" | "src" | "loading" | "srcSet"> & {
+}>> & string & Omit<React.ForwardRefExoticComponent<Omit<React.DetailedHTMLProps<React.ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement>, "ref" | "height" | "width" | "alt" | "src" | "loading" | "srcSet"> & {
     src: string | import("next/dist/shared/lib/get-img-props").StaticImport;
     alt: string;
     width?: number | `${number}` | undefined;

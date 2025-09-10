@@ -4,10 +4,24 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
 
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
-import { BAPTISM, BLANK, GENDER, MARRIAGE } from '@mokjang/constants';
+import {
+  BAPTISM,
+  BLANK,
+  GENDER,
+  GRAY,
+  MAIN,
+  MARRIAGE,
+  ORANGE,
+  PURPLE,
+  SIZE,
+} from '@mokjang/constants';
 import { DropdownValueType } from '../../../atoms/common/dropdown/dropdown-item';
-import { LabelInput } from '@mokjang/components';
-import { GRAY, MAIN, ORANGE, PURPLE } from '@mokjang/constants';
+import {
+  CheckButton,
+  CustomPopup,
+  LabelInput,
+  MainText,
+} from '@mokjang/components';
 import LabelDropdown from '../../../atoms/common/dropdown/label-dropdown';
 import LabelRadioButton from '../../../atoms/common/radio-button/label-radio-button';
 import {
@@ -19,12 +33,8 @@ import ProfileImageInput from '../../../atoms/common/image/profile-image-input';
 import VehicleNumberInput from '../../../atoms/register/vehicle-number-input';
 import CustomDatePicker from '../../../../vendor/date-picker/custom-date-picker';
 import { getDateFromDateString } from '@mokjang/utils';
-import { MainText } from '@mokjang/components';
-import { CheckButton } from '@mokjang/components';
 import KoreanLunarCalendar, { CalendarData } from 'korean-lunar-calendar';
-import { SIZE } from '@mokjang/constants';
 import { Svg } from '@mokjang/assets';
-import { CustomPopup } from '@mokjang/components';
 import SelectGroupHierarchy from '../../group/select-group-hierarchy';
 import { getGroup } from '../../../../utils/group';
 
@@ -34,6 +44,7 @@ const RequiredRegisterContainer = styled.div`
   flex-direction: column;
   gap: 40px;
   padding: 20px 30px;
+  padding-bottom: 150px;
   overflow-y: auto;
 `;
 
@@ -530,6 +541,7 @@ const AddMemberView = ({
       {/* 그룹 선택 모달 */}
       <CustomPopup
         isShow={isSelectGroupShown}
+        onClickClose={onClickGroupClose}
         onClickCancel={onClickGroupClose}
         width={400}
         height={400}

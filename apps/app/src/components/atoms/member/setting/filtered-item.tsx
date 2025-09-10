@@ -94,7 +94,9 @@ const FilteredItem = ({ item }: FilteredItemProps) => {
       case MEMBER.MARRIAGE:
         currentItem = item.value
           .map((marriage) => {
-            return marriage ? t(marriage as MARRIAGE) : t('none');
+            return marriage !== 'null'
+              ? t(marriage as MARRIAGE)
+              : t(MARRIAGE.NONE);
           })
           .join(', ');
         break;
@@ -113,9 +115,9 @@ const FilteredItem = ({ item }: FilteredItemProps) => {
         // 여러 그룹 ID가 배열로 넘어온 경우
         currentItem = item.value
           .map((officerId) => {
-            return officerId
+            return officerId !== 'null'
               ? officers.find((officer) => officer.id === officerId)?.name
-              : t('none');
+              : t('officerNone');
           })
           .filter(Boolean)
           .join(', ');
@@ -123,7 +125,9 @@ const FilteredItem = ({ item }: FilteredItemProps) => {
       case MEMBER.BAPTISM:
         // 여러 그룹 ID가 배열로 넘어온 경우
         currentItem = item.value
-          .map((baptismId) => t(baptismId as BAPTISM))
+          .map((baptismId) =>
+            baptismId !== 'none' ? t(baptismId as BAPTISM) : t('baptismNone')
+          )
           .filter(Boolean) // undefined/null 필터링
           .join(', ');
         break;

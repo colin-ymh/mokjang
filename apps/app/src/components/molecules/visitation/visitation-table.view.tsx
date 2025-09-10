@@ -138,7 +138,7 @@ const ContentWrapper = styled.div`
 
 const MembersContainer = styled.div`
   display: flex;
-  gap: 10px;
+  gap: 3px;
   justify-content: flex-start;
   align-items: center;
 `;
@@ -183,14 +183,19 @@ const VisitationTableView = ({
       case VISITATION.VISITED:
         return (
           <MembersContainer>
-            {visitation.members?.map((member) => (
+            {/*{visitation.members.map((member) => (*/}
+            {visitation.members && visitation.members.length > 0 && (
               <MemberProfile
-                key={member.id}
-                member={member}
+                // key={member.id}
+                member={visitation.members[0]}
                 width={30}
                 height={30}
               />
-            ))}
+            )}
+            {visitation.members?.length > 1 && (
+              <MainText>{`외 ${visitation.members.length - 1}명`}</MainText>
+            )}
+            {/*))}*/}
           </MembersContainer>
         );
       case VISITATION.STATUS:

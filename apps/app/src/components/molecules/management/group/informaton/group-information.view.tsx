@@ -160,6 +160,7 @@ const GroupInformationView = ({
       {/* 그룹 수정 팝업 */}
       <CustomPopup
         isShow={isEditShown}
+        onClickClose={onClickEditClose}
         onClickCancel={onClickEditClose}
         onClickDone={onClickSaveEdit}
         headerTitle={t('title.editGroupInformation')}
@@ -182,6 +183,7 @@ const GroupInformationView = ({
       {/* 교인 추가 팝업 */}
       <CustomPopup
         isShow={isAddModalShown}
+        onClickClose={onClickAddModalClose}
         onClickCancel={onClickAddModalClose}
         width={800}
         height={700}

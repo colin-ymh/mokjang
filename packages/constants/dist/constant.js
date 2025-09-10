@@ -15,7 +15,7 @@ export const DAYS = Object.values(DAY);
 // 신급
 export var BAPTISM;
 (function (BAPTISM) {
-    BAPTISM["NONE"] = "none";
+    BAPTISM["NONE"] = "baptismNone";
     BAPTISM["BAPTIZED"] = "baptized";
     BAPTISM["IMMERSION_BAPTISM"] = "immersionBaptism";
     BAPTISM["INFANT_BAPTISM"] = "infantBaptism";
@@ -33,6 +33,7 @@ export var MARRIAGE;
 (function (MARRIAGE) {
     MARRIAGE["MARRIED"] = "married";
     MARRIAGE["SINGLE"] = "single";
+    MARRIAGE["NONE"] = "marriageNone";
 })(MARRIAGE || (MARRIAGE = {}));
 // 가족 관계
 export var FAMILY;

@@ -45,7 +45,8 @@ type CustomPopupProps = {
   isPercentage?: boolean;
   isPortal?: boolean;
   zIndex?: number;
-  onClickCancel: () => void;
+  onClickClose: () => void;
+  onClickCancel?: () => void;
   onClickDone?: () => void;
   headerTitle?: string;
   headerDescription?: string;
@@ -70,6 +71,7 @@ export const CustomPopup = ({
   isPercentage = false,
   isPortal = true,
   zIndex = 1000,
+  onClickClose,
   onClickCancel,
   onClickDone,
   headerTitle,
@@ -92,7 +94,7 @@ export const CustomPopup = ({
     // ESC 누르면 닫기
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
-        onClickCancel();
+        onClickClose();
       }
     };
 
@@ -103,7 +105,7 @@ export const CustomPopup = ({
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [isShow, onClickCancel]);
+  }, [isShow, onClickClose]);
 
   if (!isShow) return null;
 
@@ -111,7 +113,7 @@ export const CustomPopup = ({
     <>
       <TransparentBackground
         isOpened={isShow}
-        onClick={onClickCancel}
+        onClick={onClickClose}
         zIndex={zIndex - 100}
       />
       <ModalContainer
@@ -121,6 +123,7 @@ export const CustomPopup = ({
         $zIndex={zIndex}
       >
         <PopupLayout
+          onClickClose={onClickClose}
           onClickCancel={onClickCancel}
           onClickDone={onClickDone}
           headerTitle={headerTitle}

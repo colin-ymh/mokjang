@@ -14,6 +14,13 @@ export default {
   customSelect: '직접선택',
   email: '이메일',
 
+  officerNone: '직분 없음',
+  marriageNone: '결혼상태 없음',
+  baptismNone: '신급 없음',
+
+  churchInfo: '교회 정보',
+  worshipAttendance: '예배 출석',
+
   currentPlan: '현재 플랜',
 
   manager: '관리자',
@@ -52,8 +59,8 @@ export default {
   defaultMinistry: '일괄 사역 설정',
   groupLeader: '그룹장',
   editGroupLeader: '그룹장 변경',
-  ministryGroupLeader: '사역리더',
-  editMinistryGroupLeader: '사역리더 변경',
+  ministryGroupLeader: '사역팀장',
+  editMinistryGroupLeader: '사역팀장 변경',
   editMinistry: '사역 변경',
   groupDetailHistory: '그룹 세부 이력',
   ministryDetailHistory: '사역 세부 이력',
@@ -63,7 +70,7 @@ export default {
 
   memberCount: '교인 수',
   groupCount: '그룹 수',
-  ministryGroupCount: '사역그룹 수',
+  ministryGroupCount: '사역팀 수',
 
   newMember: '신규 등록자',
   weekNewMemberState: '최근 4주간 등록 현황',
@@ -199,10 +206,10 @@ export default {
   groupName: '그룹명',
   groupRole: '그룹역할',
 
-  ministryGroup: '사역 그룹',
-  ministryGroupList: '사역그룹 목록',
-  ministryGroupName: '사역그룹명',
-  ministryGroupRole: '사역그룹역할',
+  ministryGroup: '사역팀',
+  ministryGroupList: '사역팀 목록',
+  ministryGroupName: '사역명',
+  ministryGroupRole: '사역역할',
 
   educationList: '교육 목록',
   educationName: '교육명',
@@ -248,7 +255,7 @@ export default {
   relation: '가족관계',
   // 개인 정보
   personalInformation: '개인정보',
-  profileImage: '프로필 사진',
+  profileImage: '프로필',
   birth: '생년월일',
   birthDay: '생일',
   age: '나이',
@@ -401,7 +408,7 @@ export default {
   'title.attendanceInformation': '보고서',
 
   'title.editGroupInformation': '그룹정보 수정',
-  'title.editMinistryGroupInformation': '사역그룹정보 수정',
+  'title.editMinistryGroupInformation': '사역정보 수정',
   'title.editOfficerInformation': '직분정보 수정',
   'title.addWidget': '위젯 추가',
 
@@ -538,9 +545,8 @@ export default {
     '교회 운영에 필요한 기본 설정을 완료해주세요',
   'register.churchInit.group.title': '그룹 설정',
   'register.churchInit.group.description': '교회의 그룹 구조를 설정해주세요',
-  'register.churchInit.ministry.title': '사역그룹 설정',
-  'register.churchInit.ministry.description':
-    '교회의 사역그룹 구조를 설정해주세요',
+  'register.churchInit.ministry.title': '사역 설정',
+  'register.churchInit.ministry.description': '교회의 사역 구조를 설정해주세요',
   'register.churchInit.officer.title': '직분 설정',
   'register.churchInit.officer.description': '교회의 직분을 설정해주세요',
 
@@ -607,7 +613,7 @@ export default {
 
   'button.deleteOfficer': '직분 삭제',
   'button.deleteGroup': '그룹 삭제',
-  'button.deleteMinistryGroup': '사역그룹 삭제',
+  'button.deleteMinistryGroup': '사역 삭제',
   'button.deleteMinistry': '사역 삭제',
 
   'button.groupFilter': '그룹 필터',
@@ -656,7 +662,7 @@ export default {
   /*-------------------placeholder-------------------*/
   'placeholder.name': '이름을 입력해주세요.',
   'placeholder.groupName': '그룹명을 입력해주세요.',
-  'placeholder.ministryGroupName': '사역그룹명을 입력해주세요.',
+  'placeholder.ministryGroupName': '사역명을 입력해주세요.',
   'placeholder.ministryName': '사역명을 입력해주세요.',
   'placeholder.officerName': '직분명을 입력해주세요.',
   'placeholder.educationName': '교육명을 입력해주세요.',
@@ -722,6 +728,7 @@ export default {
   'placeholder.attendanceNote': '특이사항 입력하기',
 
   'placeholder.email': '이메일을 입력해주세요.',
+
   /*-------------------placeholder-------------------*/
 
   /*-------------------popup-------------------*/
@@ -750,8 +757,8 @@ export default {
   'popup.deleteOfficerTitle': '해당 직분을 삭제하시겠습니까?',
   'popup.deleteOfficerBody': '삭제된 직분은 복구할 수 없습니다.',
 
-  'popup.deleteMinistryGroupTitle': '해당 사역 그룹을 삭제하시겠습니까?',
-  'popup.deleteMinistryGroupBody': '삭제된 사역 그룹은 복구할 수 없습니다.',
+  'popup.deleteMinistryGroupTitle': '해당 사역을 삭제하시겠습니까?',
+  'popup.deleteMinistryGroupBody': '삭제된 사역은 복구할 수 없습니다.',
 
   'popup.deleteEnrollmentTitle': '선택된 교인(들)을 교육에서 삭제하시겠습니까?',
   'popup.deleteEnrollmentBody': '삭제된 등록 내역은 복구할 수 없습니다.',
@@ -798,7 +805,7 @@ export default {
   'warning.deleteGroup':
     '소속된 교인이나 하위 그룹이 있으면 삭제가 불가능하며, 삭제된 그룹은 복구할 수 없습니다.',
   'warning.deleteMinistryGroup':
-    '소속된 교인이나 하위 그룹 있으면 삭제가 불가능하며, 삭제된 사역그룹은 복구할 수 없습니다.',
+    '소속된 교인이나 하위 그룹 있으면 삭제가 불가능하며, 삭제된 사역은 복구할 수 없습니다.',
   'warning.deleteMinistry':
     '할당된 교인이 있으면 삭제가 불가능하며, 삭제된 그룹은 복구할 수 없습니다.',
 
@@ -829,9 +836,9 @@ export default {
     '모든 교인에게 동일한 사역이 부여됩니다. 추후 별도로 수정할 수 있습니다.',
   'description.addMember': '해당 그룹에 이미 속한 교인은 선택할 수 없습니다.',
   'description.addMinistryMember':
-    '해당 사역 그룹에 이미 속한 교인은 선택할 수 없습니다.',
+    '해당 사역에 이미 속한 교인은 선택할 수 없습니다.',
   'description.editGroupLeader': '새로운 그룹장을 선택하세요',
-  'description.editMinistryGroupLeader': '새로운 사역리더를 선택하세요',
+  'description.editMinistryGroupLeader': '새로운 사역팀장를 선택하세요',
   'description.tableHeaderSetting': '드래그하여 순서를 변경하세요',
   'description.memberRegisterHeader': '새로운 교인의 정보를 입력해주세요',
   'description.editPermissionTemplate':

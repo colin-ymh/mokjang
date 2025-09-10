@@ -18,7 +18,7 @@ export const DAYS = Object.values(DAY);
 
 // 신급
 export enum BAPTISM {
-  NONE = 'none',
+  NONE = 'baptismNone',
   BAPTIZED = 'baptized',
   IMMERSION_BAPTISM = 'immersionBaptism',
   INFANT_BAPTISM = 'infantBaptism',
@@ -36,6 +36,7 @@ export enum GENDER {
 export enum MARRIAGE {
   MARRIED = 'married', // 기혼
   SINGLE = 'single', // 미혼
+  NONE = 'marriageNone', // 결혼 상태 없음
 }
 
 // 가족 관계

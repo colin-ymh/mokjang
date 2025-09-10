@@ -6,6 +6,8 @@ import { Svg } from '@mokjang/assets';
 import useWindowSize from '@/hooks/window/window';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
+import NotificationItem from '@/components/molecules/notification/notification-item';
+import { MutableRefObject } from 'react';
 
 const ModalContainer = styled.div<{ height: number }>`
   display: flex;
@@ -16,7 +18,6 @@ const ModalContainer = styled.div<{ height: number }>`
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   top: 40px;
   right: 0;
-  gap: 20px;
   z-index: 10;
 
   width: 400px;
@@ -32,6 +33,7 @@ const HeaderContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 0 20px;
+  flex-shrink: 0;
 `;
 
 const RowContainer = styled.div`
@@ -54,6 +56,8 @@ const NotificationCount = styled.div`
 const ContentContainer = styled.div`
   display: flex;
   flex-grow: 1;
+  flex-direction: column;
+  overflow-y: auto;
 `;
 
 const FooterContainer = styled.div`
@@ -64,9 +68,11 @@ const FooterContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 0 20px;
+  flex-shrink: 0;
 `;
 
 export type NotificationModalViewProps = {
+  scrollRef: MutableRefObject<HTMLDivElement | null>;
   isZoomIn: boolean;
   onClickClose: () => void;
   onClickReadAll: () => void;
@@ -76,6 +82,7 @@ export type NotificationModalViewProps = {
 };
 
 const NotificationModalView = ({
+  scrollRef,
   isZoomIn,
   onClickClose,
   onClickReadAll,
@@ -126,7 +133,14 @@ const NotificationModalView = ({
             />
           </RowContainer>
         </HeaderContainer>
-        <ContentContainer></ContentContainer>
+        <ContentContainer ref={scrollRef}>
+          {notifications.map((notification) => (
+            <NotificationItem
+              key={notification.id}
+              notification={notification}
+            />
+          ))}
+        </ContentContainer>
         <FooterContainer>
           <Button
             text={t_notification('unread')}

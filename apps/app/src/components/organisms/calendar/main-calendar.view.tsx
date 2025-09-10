@@ -182,13 +182,8 @@ const MainCalendarView = ({
         onClickClose={onClickClose}
         isFooterShown={false}
         headerTitle={t('header.memberInformation')}
-        headerRight={
-          <ButtonRow>
-            <ButtonContainer onClick={onClickClose}>
-              <Cancel />
-            </ButtonContainer>
-          </ButtonRow>
-        }
+        onClickCancel={onClickClose}
+        cancelText={t_button('close')}
       >
         <MemberInformation />
       </SlidePopup>
@@ -199,18 +194,12 @@ const MainCalendarView = ({
         width={500}
         height={300}
         onClickCancel={onClickEventDeleteOpen}
+        onClickClose={onClickClose}
         onClickDone={onClickEventEditOpen}
         cancelText={t_button('delete')}
         doneText={t_button('edit')}
         headerTitle={t('title.churchEventInformation')}
         keyboardDisabled={true}
-        headerRight={
-          <ButtonRow>
-            <ButtonContainer onClick={onClickClose}>
-              <Cancel />
-            </ButtonContainer>
-          </ButtonRow>
-        }
       >
         <>
           <ConfirmPopup
@@ -230,6 +219,7 @@ const MainCalendarView = ({
       {/* 이벤트 수정 팝업 */}
       <CustomPopup
         isShow={isEventEditShown}
+        onClickClose={onClickEventEditClose}
         onClickCancel={onClickEventEditClose}
         headerTitle={t_title('editChurchEvent')}
         width={500}

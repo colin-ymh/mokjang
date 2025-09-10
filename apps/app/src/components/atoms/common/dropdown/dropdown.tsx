@@ -9,10 +9,9 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { TransparentBackground } from '@mokjang/components';
+import { BorderInputProps, TransparentBackground } from '@mokjang/components';
 import DropdownView from './dropdown.view';
 import { DropdownValueType } from './dropdown-item';
-import { BorderInputProps } from '@mokjang/components';
 import useWindowSize from '@/hooks/window/window';
 
 export type DropdownProps<
@@ -40,6 +39,7 @@ export type DropdownProps<
   width?: number;
   height?: number;
   backgroundColor?: string;
+  chevronColor?: string;
 
   // ===============================
   // 새로 추가된 부분
@@ -82,6 +82,7 @@ const Dropdown = forwardRef<HTMLInputElement, DropdownProps>(
       isRight,
       onScrollBottom,
       CustomDropdownButton,
+      chevronColor,
       ...inputProps
     },
     ref
@@ -282,6 +283,7 @@ const Dropdown = forwardRef<HTMLInputElement, DropdownProps>(
       width,
       height,
       backgroundColor,
+      chevronColor,
       disabled,
       enterKeyHint,
       isChevronShown,
