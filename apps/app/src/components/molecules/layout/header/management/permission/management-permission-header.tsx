@@ -8,11 +8,7 @@ import { PermissionsApi } from '@/api/permissions/permissions.api';
 import { DEFAULT_PERMISSION_TEMPLATE } from '@mokjang/models';
 import { setTargetPermissionTemplate } from '@/redux/reducers/target/target-permission-template-reducer';
 import { setPermissionTemplates } from '@/redux/reducers/filter/permission-template-filter-reducer';
-import {
-  setIsToastShown,
-  setToastBackgroundColor,
-  setToastText,
-} from '@/redux/reducers/toast-popup-reducer';
+import { setIsToastShown, setToastBackgroundColor, setToastText, } from '@/redux/reducers/toast-popup-reducer';
 import { BLACK, DESTRUCTIVE } from '@mokjang/constants';
 import { useScopedI18n } from '../../../../../../../locales/client';
 
@@ -70,6 +66,7 @@ const ManagementPermissionHeader = ({}: ManagementPermissionHeaderProps) => {
           { churchId },
           {
             title: targetPermissionTemplate.title,
+            description: targetPermissionTemplate.description,
             unitIds: targetPermissionTemplate.unitIds,
           }
         )

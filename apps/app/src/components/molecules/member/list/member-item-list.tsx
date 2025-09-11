@@ -2,25 +2,21 @@ import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../../../redux/store';
-import { setMemberFilter } from '../../../../redux/reducers/filter/member-filter-reducer';
+import { AppDispatch, RootState } from '@/redux/store';
+import { setMemberFilter } from '@/redux/reducers/filter/member-filter-reducer';
 
 import { MemberTableProps } from './member-table';
-import { MainText } from '@mokjang/components';
-import { BorderInput } from '@mokjang/components';
-import { BLANK } from '@mokjang/constants';
-import { SIZE } from '@mokjang/constants';
-import { GRAY } from '@mokjang/constants';
+import { BorderInput, MainText, ProfileImage } from '@mokjang/components';
+import { BLANK, GRAY, SIZE } from '@mokjang/constants';
 
 import {
-  getFormattedMobilePhone,
   getFormattedName,
+  getFormattedPhone,
   getTrimmedString,
 } from '@mokjang/utils';
 
 import useWindowSize from '../../../../hooks/window/window';
 import { useI18n } from '../../../../../locales/client';
-import ProfileImage from '../../../atoms/common/image/profile-image';
 
 const MemberItemListContainer = styled.div`
   padding: 10px 20px;
@@ -91,7 +87,7 @@ const MemberItemList = ({
     if (isNameMode && getIsNameSearch(input)) {
       setSearchValue(getFormattedName(input));
     } else if (isPhoneMode && getIsMobilePhoneSearch(input)) {
-      setSearchValue(getFormattedMobilePhone(input));
+      setSearchValue(getFormattedPhone(input));
     }
   };
 
@@ -149,8 +145,7 @@ const MemberItemList = ({
                 color={GRAY.DARK}
               >{`${member.name} ${member.officer?.name || t('churchMember')}`}</MainText>
               <MainText size={SIZE.SMALL} color={GRAY.DEFAULT}>
-                {member?.mobilePhone &&
-                  getFormattedMobilePhone(member.mobilePhone)}
+                {member?.mobilePhone && getFormattedPhone(member.mobilePhone)}
               </MainText>
               {/*<MainText color={GRAY.DARK}>{member.group?.name}</MainText>*/}
             </MemberDetails>

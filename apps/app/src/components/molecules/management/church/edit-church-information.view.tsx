@@ -2,8 +2,11 @@ import { Church } from '@mokjang/models';
 import React, { ChangeEvent } from 'react';
 import styled from 'styled-components';
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
-import { Button, LabelInput, MainText, } from '../../../../../../../packages/components/src';
-import { BLANK } from '../../../../../../../packages/constants/src';
+import { Button, LabelInput, MainText } from '@mokjang/components';
+import { BLANK, LOCALE } from '@mokjang/constants';
+import { usePathname } from 'next/navigation';
+import LabelDropdown from '@/components/atoms/common/dropdown/label-dropdown';
+import { useDenominationDropdownItems } from '@/hooks/dropdown/dropdown-items';
 
 const InformationContainer = styled.div`
   display: flex;
@@ -31,6 +34,7 @@ type EditChurchInformationViewProps = {
   onChangeDetailAddress: (event: ChangeEvent<HTMLInputElement>) => void;
   onChangeIdentifyNumber: (event: ChangeEvent<HTMLInputElement>) => void;
   onChangeDenomination: (event: ChangeEvent<HTMLInputElement>) => void;
+  onChangeDenominationItem: (value: string) => void;
   onClickSave?: () => void;
 };
 
@@ -43,12 +47,18 @@ const EditChurchInformationView = ({
   onChangeDetailAddress,
   onChangeIdentifyNumber,
   onChangeDenomination,
+  onChangeDenominationItem,
   onClickSave,
 }: EditChurchInformationViewProps) => {
+  const pathname = usePathname();
+  const locale = pathname.split('/')[1] as LOCALE;
+
   const t = useI18n();
   const t_placeholder = useScopedI18n('placeholder');
   const t_register = useScopedI18n('register');
   const t_button = useScopedI18n('button');
+
+  const denominationDropdownItems = useDenominationDropdownItems(locale);
 
   return (
     <InformationContainer>
@@ -93,10 +103,15 @@ const EditChurchInformationView = ({
           onChange={onChangeIdentifyNumber}
           placeholder={t_placeholder('churchIdentifyNumber')}
         />
-        <LabelInput
+        <LabelDropdown
           label={t('denomination')}
           value={targetChurch.denomination}
-          onChange={onChangeDenomination}
+          customValue={targetChurch.denomination}
+          items={denominationDropdownItems}
+          onChangeItem={onChangeDenominationItem}
+          onChangeCustomInput={onChangeDenomination}
+          height={40}
+          isCustom={true}
           placeholder={t_placeholder('denomination')}
         />
       </ListContainer>

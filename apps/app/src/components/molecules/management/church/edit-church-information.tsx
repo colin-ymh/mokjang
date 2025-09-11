@@ -1,7 +1,8 @@
 import { Church } from '@mokjang/models';
 import EditChurchInformationView from './edit-church-information.view';
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React, { ChangeEvent, Dispatch, SetStateAction, useState } from 'react';
 import {
+  getFormattedContent,
   getFormattedIdentifyNumber,
   getFormattedName,
   getFormattedPhone,
@@ -97,10 +98,17 @@ const EditChurchInformation = ({
     });
   };
 
-  const onChangeDenomination = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const onChangeDenomination = (event: ChangeEvent<HTMLInputElement>) => {
+    const newDenomination = getFormattedContent(event.target.value);
     setTargetChurch({
       ...targetChurch,
-      denomination: event.target.value,
+      denomination: newDenomination,
+    });
+  };
+  const onChangeDenominationItem = (value: string) => {
+    setTargetChurch({
+      ...targetChurch,
+      denomination: value,
     });
   };
 
@@ -118,6 +126,7 @@ const EditChurchInformation = ({
     onChangeDetailAddress,
     onChangeIdentifyNumber,
     onChangeDenomination,
+    onChangeDenominationItem,
     onClickSave,
   };
 

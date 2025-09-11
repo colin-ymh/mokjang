@@ -1,7 +1,6 @@
 import styled from 'styled-components';
-import { MainText, SvgIcon } from '@mokjang/components';
+import { MainText, ProfileImage, SvgIcon } from '@mokjang/components';
 import { BLACK, GRAY, WHITE } from '@mokjang/constants';
-import ProfileImage from '../image/profile-image';
 import { Svg } from '@mokjang/assets';
 
 const TagContainer = styled.div<{ $backgroundColor: string }>`

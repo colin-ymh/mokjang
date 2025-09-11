@@ -3,15 +3,7 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
 
-import {
-  BLACK,
-  BLANK,
-  DESTRUCTIVE,
-  GRAY,
-  GREEN,
-  WHITE,
-  WORSHIP_ENROLLMENT,
-} from '@mokjang/constants';
+import { BLACK, BLANK, DESTRUCTIVE, GRAY, GREEN, WHITE, WORSHIP_ENROLLMENT, } from '@mokjang/constants';
 import { MainText } from '@mokjang/components';
 import useWindowSize from '../../../../hooks/window/window';
 import { WORSHIP_ATTENDANCE_STATUS, WorshipEnrollment } from '@mokjang/models';
@@ -254,7 +246,7 @@ const AttendanceTableView = ({
             WORSHIP_ATTENDANCE_STATUS.PRESENT && <PresentIcon />}
         </IconContainer>
       );
-    } else {
+    } else if (enrollment?.member) {
       switch (id) {
         case WORSHIP_ENROLLMENT.NAME:
           return <MemberProfilePopupButton member={enrollment.member} />;

@@ -24,6 +24,10 @@ const LabelContainer = styled.div`
   gap: 10px;
 `;
 
+const BoxContainer = styled.div`
+  display: flex;
+`;
+
 type EditMemberOfficerViewProps = {
   onClickDeleteOfficer: () => void;
   onChangeOfficer: (officerId: string) => void;
@@ -88,12 +92,14 @@ const EditMemberOfficerView = ({
         </LabelContainer>
         {targetMember.officerHistory &&
           targetMember.officerHistory.length > 0 && (
-            <StopWarningButton
-              description={t_warning('stopOfficerHistory')}
-              buttonText={t_button('stopOfficerHistory')}
-              onClick={onClickDeleteOfficer}
-              // disabled={!!selectedOfficer?.membersCount || false}
-            />
+            <BoxContainer>
+              <StopWarningButton
+                description={t_warning('stopOfficerHistory')}
+                buttonText={t_button('stopOfficerHistory')}
+                onClick={onClickDeleteOfficer}
+                // disabled={!!selectedOfficer?.membersCount || false}
+              />
+            </BoxContainer>
           )}
       </EditMemberOfficerViewContainer>
     </>

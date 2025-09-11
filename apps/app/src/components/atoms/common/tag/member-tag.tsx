@@ -1,9 +1,7 @@
 import styled from 'styled-components';
-import { MainText } from '@mokjang/components';
+import { MainText, ProfileImage, SvgIcon } from '@mokjang/components';
 import { MAIN } from '@mokjang/constants';
-import ProfileImage from '../image/profile-image';
 import { Svg } from '@mokjang/assets';
-import { SvgIcon } from '@mokjang/components';
 
 const TagContainer = styled.div<{ $backgroundColor: string }>`
   display: inline-flex;

@@ -32,6 +32,10 @@ export const getIsWellFormedHomePhone = (mobilePhone: string) => {
   return FIRST_TWO !== '02' && LENGTH === 12;
 };
 
+export const getIsWellFormedPhone = (phone: string) => {
+  return getIsWellFormedMobilePhone(phone) || getIsWellFormedHomePhone(phone);
+};
+
 const THIRTY_ONE_MONTHS = new Set(['1', '3', '5', '7', '8', '10', '12']);
 const THIRTY_MONTHS = new Set(['4', '6', '9', '11']);
 

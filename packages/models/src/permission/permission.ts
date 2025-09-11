@@ -49,7 +49,7 @@ export const DEFAULT_PERMISSION_TEMPLATE: PermissionTemplate = {
   churchId: BLANK,
   title: BLANK,
   description: BLANK,
-  unitIds: [],
+  unitIds: [11],
   memberCount: 0,
   permissionUnits: [],
 };

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Loading, MainText } from '@mokjang/components';
+import { Loading, MainText, ProfileImage } from '@mokjang/components';
 import React from 'react';
 import { BLACK, GRAY, MEDIA_MIN_WIDTH } from '@mokjang/constants';
 import ChurchUserTable, {
@@ -15,8 +15,7 @@ import { useScopedI18n } from '../../../../../locales/client';
 import ChurchUserInformation from '../information/church-user-information';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
-import ProfileImage from '@/components/atoms/common/image/profile-image';
-import { getFormattedMobilePhone } from '@mokjang/utils';
+import { getFormattedPhone } from '@mokjang/utils';
 
 const UserListContainer = styled.div`
   display: flex;
@@ -135,7 +134,7 @@ const ChurchUserListView = (props: UserListViewProps) => {
                 {targetChurchUser.user.name}
               </MainText>
               <MainText fontWeight={400} fontSize={14} color={GRAY.DARK}>
-                {getFormattedMobilePhone(targetChurchUser.user.mobilePhone)}
+                {getFormattedPhone(targetChurchUser.user.mobilePhone)}
               </MainText>
             </TextContainer>
           </ProfileContainer>

@@ -563,10 +563,7 @@ export const getTranslatedSummaryCount = (
 /**
  * ISO 문자열과 현재 시간의 차이를 간단한 "n분 전" / "n hours ago" 형태로 반환.
  */
-export function getTranslatedTimeAgo(
-  locale: LOCALE,
-  date: string,
-): string {
+export function getTranslatedTimeAgo(locale: LOCALE, date: string): string {
   const now = new Date();
   const target = new Date(date);
   const nowMs = now.getTime();
@@ -585,14 +582,33 @@ export function getTranslatedTimeAgo(
 
   if (diffMs < hour) {
     const m = Math.floor(diffMs / minute);
-    return locale === LOCALE.KO ? `${m}분 전` : `${m} minute${m === 1 ? '' : 's'} ago`;
+    return locale === LOCALE.KO
+      ? `${m}분 전`
+      : `${m} minute${m === 1 ? '' : 's'} ago`;
   }
 
   if (diffMs < day) {
     const h = Math.floor(diffMs / hour);
-    return locale === LOCALE.KO ? `${h}시간 전` : `${h} hour${h === 1 ? '' : 's'} ago`;
+    return locale === LOCALE.KO
+      ? `${h}시간 전`
+      : `${h} hour${h === 1 ? '' : 's'} ago`;
   }
 
   const d = Math.floor(diffMs / day);
-  return locale === LOCALE.KO ? `${d}일 전` : `${d} day${d === 1 ? '' : 's'} ago`;
+  return locale === LOCALE.KO
+    ? `${d}일 전`
+    : `${d} day${d === 1 ? '' : 's'} ago`;
 }
+
+export const getTranslatedAndOthers = (
+  basePath: LOCALE,
+  count: number
+): string => {
+  if (count < 1) return BLANK;
+
+  if (basePath === LOCALE.EN) {
+    return `and ${count} others`;
+  } else {
+    return `외 ${count}명`;
+  }
+};

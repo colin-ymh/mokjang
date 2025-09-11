@@ -19,7 +19,7 @@ import {
 import {
   getAge,
   getDateFromDateString,
-  getFormattedMobilePhone,
+  getFormattedPhone,
   getTranslatedAge,
   getTranslatedDateFromDateString,
 } from '@mokjang/utils';
@@ -293,7 +293,7 @@ const PersonalInformationListView = ({
                   {t('concealed')}
                 </MainText>
               ) : (
-                getFormattedMobilePhone(targetMember.mobilePhone)
+                getFormattedPhone(targetMember.mobilePhone)
               )}
             </MainText>
           </InformationTextWrapper>

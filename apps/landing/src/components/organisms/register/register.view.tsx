@@ -10,8 +10,8 @@ import {
 } from '@mokjang/components';
 import { GRAY, GREEN, LOCALE, MAIN, WHITE } from '@mokjang/constants';
 import {
-  getIsWellFormedMobilePhone,
   getIsWellFormedName,
+  getIsWellFormedPhone,
   getMinuteFromSecond,
   getTranslatedVerifyNumber,
 } from '@mokjang/utils';
@@ -205,7 +205,7 @@ const RegisterView = ({
                 backgroundColor={
                   !isVerified &&
                   getIsWellFormedName(name) &&
-                  getIsWellFormedMobilePhone(mobilePhone)
+                  getIsWellFormedPhone(mobilePhone)
                     ? MAIN.DEFAULT
                     : GRAY.SEMI_LIGHT
                 }
@@ -213,7 +213,7 @@ const RegisterView = ({
                   !(
                     !isVerified &&
                     getIsWellFormedName(name) &&
-                    getIsWellFormedMobilePhone(mobilePhone)
+                    getIsWellFormedPhone(mobilePhone)
                   )
                 }
               />

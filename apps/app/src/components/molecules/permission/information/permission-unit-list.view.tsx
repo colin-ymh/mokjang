@@ -56,16 +56,16 @@ const PermissionUnitListView = ({
           <ItemContainer>
             <PermissionUnitItem
               id={1}
-              title={t_unit('member.write.title')}
-              description={t_unit('member.write.description')}
+              title={t_unit('member.read.title')}
+              description={t_unit('member.read.description')}
               onClick={onClick}
               isSelected={selectedUnitIds?.includes(1)}
               isEditable={isEditable}
             />
             <PermissionUnitItem
               id={2}
-              title={t_unit('member.read.title')}
-              description={t_unit('member.read.description')}
+              title={t_unit('member.write.title')}
+              description={t_unit('member.write.description')}
               onClick={onClick}
               isSelected={selectedUnitIds?.includes(2)}
               isEditable={isEditable}
@@ -81,16 +81,16 @@ const PermissionUnitListView = ({
           <ItemContainer>
             <PermissionUnitItem
               id={3}
-              title={t_unit('visitation.write.title')}
-              description={t_unit('visitation.write.description')}
+              title={t_unit('visitation.read.title')}
+              description={t_unit('member.read.description')}
               onClick={onClick}
               isSelected={selectedUnitIds?.includes(3)}
               isEditable={isEditable}
             />
             <PermissionUnitItem
               id={4}
-              title={t_unit('visitation.read.title')}
-              description={t_unit('member.read.description')}
+              title={t_unit('visitation.write.title')}
+              description={t_unit('visitation.write.description')}
               onClick={onClick}
               isSelected={selectedUnitIds?.includes(4)}
               isEditable={isEditable}
@@ -106,16 +106,16 @@ const PermissionUnitListView = ({
           <ItemContainer>
             <PermissionUnitItem
               id={5}
-              title={t_unit('education.write.title')}
-              description={t_unit('education.write.description')}
+              title={t_unit('education.read.title')}
+              description={t_unit('education.read.description')}
               onClick={onClick}
               isSelected={selectedUnitIds?.includes(5)}
               isEditable={isEditable}
             />
             <PermissionUnitItem
               id={6}
-              title={t_unit('education.read.title')}
-              description={t_unit('education.read.description')}
+              title={t_unit('education.write.title')}
+              description={t_unit('education.write.description')}
               onClick={onClick}
               isSelected={selectedUnitIds?.includes(6)}
               isEditable={isEditable}
@@ -125,16 +125,24 @@ const PermissionUnitListView = ({
         <LabelContainer>
           <TitleContainer>
             <MainText fontSize={14} fontWeight={600}>
-              {t_unit('church.title')}
+              {t_unit('task.title')}
             </MainText>
           </TitleContainer>
           <ItemContainer>
             <PermissionUnitItem
               id={7}
-              title={t_unit('church.write.title')}
-              description={t_unit('church.write.description')}
+              title={t_unit('task.read.title')}
+              description={t_unit('task.read.description')}
               onClick={onClick}
               isSelected={selectedUnitIds?.includes(7)}
+              isEditable={isEditable}
+            />
+            <PermissionUnitItem
+              id={8}
+              title={t_unit('task.write.title')}
+              description={t_unit('task.write.description')}
+              onClick={onClick}
+              isSelected={selectedUnitIds?.includes(8)}
               isEditable={isEditable}
             />
           </ItemContainer>
@@ -142,16 +150,75 @@ const PermissionUnitListView = ({
         <LabelContainer>
           <TitleContainer>
             <MainText fontSize={14} fontWeight={600}>
-              {t_unit('manager.title')}
+              {t_unit('worship.title')}
             </MainText>
           </TitleContainer>
           <ItemContainer>
             <PermissionUnitItem
-              id={8}
-              title={t_unit('manager.write.title')}
-              description={t_unit('manager.write.description')}
+              id={9}
+              title={t_unit('worship.read.title')}
+              description={t_unit('worship.read.description')}
               onClick={onClick}
-              isSelected={selectedUnitIds?.includes(8)}
+              isSelected={selectedUnitIds?.includes(9)}
+              isEditable={isEditable}
+            />
+            <PermissionUnitItem
+              id={10}
+              title={t_unit('worship.write.title')}
+              description={t_unit('worship.write.description')}
+              onClick={onClick}
+              isSelected={selectedUnitIds?.includes(10)}
+              isEditable={isEditable}
+            />
+          </ItemContainer>
+        </LabelContainer>
+        <LabelContainer>
+          <TitleContainer>
+            <MainText fontSize={14} fontWeight={600}>
+              {t_unit('management.title')}
+            </MainText>
+          </TitleContainer>
+          <ItemContainer>
+            <PermissionUnitItem
+              id={11}
+              title={t_unit('management.read.title')}
+              description={t_unit('management.read.description')}
+              onClick={onClick}
+              // isSelected={selectedUnitIds?.includes(11)}
+              isSelected={true}
+              isEditable={false}
+            />
+            <PermissionUnitItem
+              id={12}
+              title={t_unit('management.write.title')}
+              description={t_unit('management.write.description')}
+              onClick={onClick}
+              isSelected={selectedUnitIds?.includes(12)}
+              isEditable={isEditable}
+            />
+          </ItemContainer>
+        </LabelContainer>
+        <LabelContainer>
+          <TitleContainer>
+            <MainText fontSize={14} fontWeight={600}>
+              {t_unit('permission.title')}
+            </MainText>
+          </TitleContainer>
+          <ItemContainer>
+            <PermissionUnitItem
+              id={13}
+              title={t_unit('permission.read.title')}
+              description={t_unit('permission.read.description')}
+              onClick={onClick}
+              isSelected={selectedUnitIds?.includes(13)}
+              isEditable={isEditable}
+            />
+            <PermissionUnitItem
+              id={14}
+              title={t_unit('permission.write.title')}
+              description={t_unit('permission.write.description')}
+              onClick={onClick}
+              isSelected={selectedUnitIds?.includes(14)}
               isEditable={isEditable}
             />
           </ItemContainer>

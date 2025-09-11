@@ -2,7 +2,7 @@ import React, { MutableRefObject } from 'react';
 import { usePathname } from 'next/navigation';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../../../redux/store';
+import { RootState } from '@/redux/store';
 
 import {
   BAPTISM,
@@ -18,13 +18,12 @@ import {
   WHITE,
   YELLOW,
 } from '@mokjang/constants';
-import { MainTag, MainText } from '@mokjang/components';
+import { MainTag, MainText, ProfileImage } from '@mokjang/components';
 import {
   getAge,
   getDateFromDateString,
   getFormattedDate,
-  getFormattedHomePhone,
-  getFormattedMobilePhone,
+  getFormattedPhone,
   getTranslatedDateFromDateString,
 } from '@mokjang/utils';
 import { Member } from '@mokjang/models';
@@ -32,8 +31,7 @@ import MemberTableHeader from '../../../atoms/member/list/member-table-header';
 import useWindowSize from '../../../../hooks/window/window';
 
 import { useI18n } from '../../../../../locales/client';
-import { BLANK_HEADER } from '../../../../redux/reducers/filter/member-filter-reducer';
-import ProfileImage from '../../../atoms/common/image/profile-image';
+import { BLANK_HEADER } from '@/redux/reducers/filter/member-filter-reducer';
 
 // 1. 컬럼별 PX 폭 (마지막 REMARKS만 auto 할 예정)
 const getColumnWidth = (id: string) => {
@@ -252,7 +250,7 @@ const MemberTableView = ({
       case MEMBER.MOBILE_PHONE:
         return (
           <MainText>
-            {member?.mobilePhone && getFormattedMobilePhone(member.mobilePhone)}
+            {member?.mobilePhone && getFormattedPhone(member.mobilePhone)}
           </MainText>
         );
       case MEMBER.GENDER:
@@ -283,12 +281,12 @@ const MemberTableView = ({
             {member.ministries?.map((item) => item.name).join(', ')}
           </MainText>
         );
-      case MEMBER.HOME_PHONE:
-        return (
-          <MainText>
-            {member.homePhone && getFormattedHomePhone(member.homePhone)}
-          </MainText>
-        );
+      // case MEMBER.HOME_PHONE:
+      //   return (
+      //     <MainText>
+      //       {member.homePhone && getFormattedHomePhone(member.homePhone)}
+      //     </MainText>
+      //   );
       case MEMBER.ADDRESS:
         return <MainText>{member.address}</MainText>;
       case MEMBER.OCCUPATION:

@@ -3,26 +3,14 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../redux/store';
 
-import {
-  BLANK,
-  GRAY,
-  GREEN,
-  JOIN_REQUEST,
-  LOCALE,
-  RED,
-  USER,
-  WHITE,
-} from '@mokjang/constants';
+import { BLANK, GRAY, GREEN, JOIN_REQUEST, LOCALE, RED, USER, WHITE, } from '@mokjang/constants';
 
 import { Button, CustomPopup, MainText } from '@mokjang/components';
 
 import useWindowSize from '../../../hooks/window/window';
 import { BLANK_HEADER } from '../../../redux/reducers/filter/member-filter-reducer';
 import { useI18n, useScopedI18n } from '../../../../locales/client';
-import {
-  getFormattedMobilePhone,
-  getTranslatedDateFromDateString,
-} from '@mokjang/utils';
+import { getFormattedPhone, getTranslatedDateFromDateString, } from '@mokjang/utils';
 import { getStatusColor } from '../../../utils/color';
 import { JoinRequest, Member } from '@mokjang/models';
 import JoinRequestTableHeader from '../../atoms/join-request/join-request-table-header';
@@ -211,7 +199,7 @@ const JoinRequestTableView = ({
       case JOIN_REQUEST.MOBILE_PHONE:
         return (
           <MainText>
-            {getFormattedMobilePhone(joinRequest?.user.mobilePhone)}
+            {getFormattedPhone(joinRequest?.user.mobilePhone)}
           </MainText>
         );
       case JOIN_REQUEST.STATUS:

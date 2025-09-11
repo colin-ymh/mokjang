@@ -85,7 +85,7 @@ const PermissionTemplateInformation = ({
   };
 
   const onClickSelectAll = () => {
-    onChangeUnits([1, 2, 3, 4, 5, 6, 7, 8]);
+    onChangeUnits([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]);
   };
 
   const onClickUnitSave = async () => {
@@ -191,6 +191,7 @@ const PermissionTemplateInformation = ({
               .includes(targetPermissionTemplate.title)
               ? undefined
               : targetPermissionTemplate.title,
+            description: targetPermissionTemplate.description,
           }
         )
         .then(async (response) => {

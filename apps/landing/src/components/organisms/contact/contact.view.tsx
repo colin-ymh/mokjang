@@ -5,11 +5,13 @@ import {
   LabelInput,
   LabelTextarea,
   MainText,
-} from '../../../../../../packages/components/src';
-import { GRAY, LOCALE, WHITE } from '../../../../../../packages/constants/src';
+} from '@mokjang/components';
+import { GRAY, LOCALE, WHITE } from '@mokjang/constants';
 import { useI18n, useScopedI18n } from '../../../../locales/client';
 import { usePathname } from 'next/navigation';
 import { ChangeEvent } from 'react';
+import { useDenominationDropdownItems } from '@/hooks/dropdown/dropdown-items';
+import LabelDropdown from '@/components/atoms/dropdown/label-dropdown';
 
 const ListContainer = styled.div`
   display: flex;
@@ -55,6 +57,7 @@ export type ContactViewProps = {
   description: string;
   onChangeChurchName: (event: ChangeEvent<HTMLInputElement>) => void;
   onChangeDenomination: (event: ChangeEvent<HTMLInputElement>) => void;
+  onChangeDenominationItem: (value: string) => void;
   onChangeMobilePhone: (event: ChangeEvent<HTMLInputElement>) => void;
   onChangeName: (event: ChangeEvent<HTMLInputElement>) => void;
   onChangeEmail: (event: ChangeEvent<HTMLInputElement>) => void;
@@ -72,6 +75,7 @@ const ContactView = ({
   description,
   onChangeChurchName,
   onChangeDenomination,
+  onChangeDenominationItem,
   onChangeName,
   onChangeEmail,
   onChangeMobilePhone,
@@ -85,6 +89,8 @@ const ContactView = ({
   const t_contact = useScopedI18n('contact');
   const t_button = useScopedI18n('button');
   const t_placeholder = useScopedI18n('placeholder');
+
+  const denominationDropdownItems = useDenominationDropdownItems(locale);
 
   return (
     <ListContainer>
@@ -109,11 +115,15 @@ const ContactView = ({
             placeholder={t_placeholder('churchName')}
             isRequired
           />
-          <LabelInput
-            height={40}
+          <LabelDropdown
             label={t('denomination')}
             value={denomination}
-            onChange={onChangeDenomination}
+            customValue={denomination}
+            items={denominationDropdownItems}
+            onChangeItem={onChangeDenominationItem}
+            onChangeCustomInput={onChangeDenomination}
+            height={40}
+            isCustom={true}
             placeholder={t_placeholder('denomination')}
           />
         </RowContainer>

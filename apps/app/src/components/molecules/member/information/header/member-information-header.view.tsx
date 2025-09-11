@@ -1,19 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
-import { MainTag, MainText } from '@mokjang/components';
-import {
-  CONCEALED,
-  GRAY,
-  GROUP_ROLE,
-  MAIN,
-  MINISTRY_GROUP_ROLE,
-  PURPLE,
-  SIZE,
-  YELLOW,
-} from '@mokjang/constants';
-import { RootState } from '../../../../../redux/store';
+import { MainTag, MainText, ProfileImage } from '@mokjang/components';
+import { CONCEALED, GRAY, GROUP_ROLE, MAIN, MINISTRY_GROUP_ROLE, PURPLE, SIZE, YELLOW, } from '@mokjang/constants';
+import { RootState } from '@/redux/store';
 import { useSelector } from 'react-redux';
-import ProfileImage from '../../../../atoms/common/image/profile-image';
 import { useI18n } from '../../../../../../locales/client';
 
 const InformationHeader = styled.div`

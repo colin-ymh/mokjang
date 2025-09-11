@@ -13,6 +13,7 @@ export default {
   paymentDay: '결제일',
   nextPaymentDay: '다음 결제일',
   currentPlan: '현재 플랜',
+  custom: '직접입력',
 
   'setting.title': '설정',
   'setting.description': '계정 정보를 관리하세요',

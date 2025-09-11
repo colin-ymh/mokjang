@@ -1,9 +1,6 @@
 import styled from 'styled-components';
-import {
-  CheckButton,
-  MainText,
-} from '../../../../../../../packages/components/src';
-import { CURSOR, GRAY } from '../../../../../../../packages/constants/src';
+import { CheckButton, MainText } from '@mokjang/components';
+import { CURSOR, GRAY } from '@mokjang/constants';
 
 const ItemContainer = styled.div<{ $disabled: boolean }>`
   display: flex;
@@ -40,7 +37,10 @@ const PermissionUnitItem = ({
   isEditable,
 }: PermissionUnitItemProps) => {
   return (
-    <ItemContainer onClick={() => onClick(id)} $disabled={!isEditable}>
+    <ItemContainer
+      onClick={() => isEditable && onClick(id)}
+      $disabled={!isEditable}
+    >
       <CheckButton
         value={isSelected}
         width={18}

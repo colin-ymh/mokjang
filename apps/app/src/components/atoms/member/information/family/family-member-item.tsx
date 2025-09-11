@@ -1,26 +1,25 @@
 import styled from 'styled-components';
 
 import { Svg } from '@mokjang/assets';
-import { MainText, SvgIcon } from '@mokjang/components';
+import { MainText, ProfileImage, SvgIcon } from '@mokjang/components';
 import { BLANK, FAMILY, GRAY, LOCALE, MEMBER, SIZE } from '@mokjang/constants';
 import {
   getAge,
   getDateFromDateString,
-  getFormattedMobilePhone,
+  getFormattedPhone,
   getTranslatedAge,
 } from '@mokjang/utils';
 import { FamilyMember } from '@mokjang/models';
 import { useI18n, useScopedI18n } from '../../../../../../locales/client';
-import ProfileImage from '../../../common/image/profile-image';
-import { useFamilyRelationDropdownItems } from '../../../../../hooks/dropdown/dropdown-items';
+import { useFamilyRelationDropdownItems } from '@/hooks/dropdown/dropdown-items';
 import Dropdown from '../../../common/dropdown/dropdown';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../../../../redux/store';
+import { AppDispatch, RootState } from '@/redux/store';
 import { usePathname } from 'next/navigation';
 import ConfirmPopup from '../../../common/popup/error-popup';
-import { MembersApi } from '../../../../../api/members/members.api';
-import { setTargetMember } from '../../../../../redux/reducers/target/target-member-reducer';
+import { MembersApi } from '@/api/members/members.api';
+import { setTargetMember } from '@/redux/reducers/target/target-member-reducer';
 
 const ItemContainer = styled.div`
   display: flex;
@@ -182,9 +181,7 @@ const FamilyMemberItem = ({
                   </MainText>
                 </TitleContainer>
                 <MainText>
-                  {getFormattedMobilePhone(
-                    familyMember.familyMember.mobilePhone
-                  )}
+                  {getFormattedPhone(familyMember.familyMember.mobilePhone)}
                 </MainText>
               </MemberInformationContainer>
             </DetailContainer>

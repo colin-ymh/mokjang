@@ -3,17 +3,15 @@ import ContactView, {
   ContactViewProps,
 } from '@/components/organisms/contact/contact.view';
 import {
+  getFormattedContent,
+  getFormattedName,
+  getFormattedPhone,
+  getFormattedTitle,
   getIsWellFormedEmail,
-  getIsWellFormedMobilePhone,
   getIsWellFormedName,
+  getIsWellFormedPhone,
   getIsWellFormedTitle,
   usePageRouter,
-} from '../../../../../../packages/utils/src';
-import {
-  getFormattedContent,
-  getFormattedMobilePhone,
-  getFormattedName,
-  getFormattedTitle,
 } from '@mokjang/utils';
 import { BLANK } from '@mokjang/constants';
 import ContactCompleteView from '@/components/organisms/contact/contact-complete.view';
@@ -43,8 +41,11 @@ const Contact = () => {
   };
 
   const onChangeDenomination = (event: ChangeEvent<HTMLInputElement>) => {
-    const newDenomination = getFormattedName(event.target.value);
+    const newDenomination = getFormattedContent(event.target.value);
     setDenomination(newDenomination);
+  };
+  const onChangeDenominationItem = (value: string) => {
+    setDenomination(value);
   };
 
   const onChangeName = (event: ChangeEvent<HTMLInputElement>) => {
@@ -53,7 +54,7 @@ const Contact = () => {
   };
 
   const onChangeMobilePhone = (event: ChangeEvent<HTMLInputElement>) => {
-    const newMobilePhone = getFormattedMobilePhone(event.target.value);
+    const newMobilePhone = getFormattedPhone(event.target.value);
     setMobilePhone(newMobilePhone);
   };
 
@@ -78,7 +79,7 @@ const Contact = () => {
       return;
     }
 
-    if (!getIsWellFormedMobilePhone(mobilePhone)) {
+    if (!getIsWellFormedPhone(mobilePhone)) {
       setIsEnabled(false);
       return;
     }
@@ -109,6 +110,7 @@ const Contact = () => {
     description,
     onChangeChurchName,
     onChangeDenomination,
+    onChangeDenominationItem,
     onChangeName,
     onChangeEmail,
     onChangeMobilePhone,

@@ -26,6 +26,7 @@ type CreatePermissionTemplateParams = {
 
 type CreatePermissionTemplateBody = {
   title: string;
+  description: string;
   unitIds: number[];
 };
 
@@ -41,6 +42,7 @@ type EditPermissionTemplateParams = {
 
 type EditPermissionTemplateBody = {
   title?: string;
+  description?: string;
   unitIds?: number[];
 };
 

@@ -20,11 +20,20 @@ import { usePathname } from 'next/navigation';
 import ScrollSlidePopup from '@/components/atoms/common/popup/scroll-slide-popup';
 import AddChurchEvent from '@/components/organisms/church-event/add/add-church-event';
 import ConfirmPopup from '@/components/atoms/common/popup/error-popup';
+import useWindowSize from '@/hooks/window/window';
 
 const CalendarContainer = styled.div`
   display: flex;
-  height: 100%;
+  padding: 20px;
+`;
+
+const CalendarWrapper = styled.div<{ height: number }>`
+  display: flex;
+  width: 100%;
+  height: ${({ height }) => height}px;
   overflow-y: auto;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* 테두리 대신 그림자 */
 `;
 
 const ButtonRow = styled.div`
@@ -92,6 +101,8 @@ const MainCalendarView = ({
   const pathname = usePathname();
   const locale = pathname.split('/')[1] as LOCALE;
 
+  const { height } = useWindowSize();
+
   const t = useI18n();
   const t_button = useScopedI18n('button');
   const t_title = useScopedI18n('title');
@@ -111,12 +122,14 @@ const MainCalendarView = ({
   return (
     <CalendarContainer>
       {/* 달력 */}
-      <CustomCalendar
-        date={date}
-        onChangeDate={onChangeDate}
-        schedules={calendarSchedules}
-        onSelectSchedule={onSelectSchedule}
-      />
+      <CalendarWrapper height={height - 110}>
+        <CustomCalendar
+          date={date}
+          onChangeDate={onChangeDate}
+          schedules={calendarSchedules}
+          onSelectSchedule={onSelectSchedule}
+        />
+      </CalendarWrapper>
 
       {/* 업무 상세정보 팝업*/}
       <ScrollSlidePopup

@@ -2,13 +2,13 @@
   "../locales/client.ts -> ./en": {
     "id": 9771,
     "files": [
-      "static/chunks/771.c04d02564e1cc7ad.js"
+      "static/chunks/771.9722e7306ec107c6.js"
     ]
   },
   "../locales/client.ts -> ./ko": {
     "id": 6623,
     "files": [
-      "static/chunks/623.8c8e7fc0c07243c8.js"
+      "static/chunks/623.6b98a4eb0804371d.js"
     ]
   }
 }

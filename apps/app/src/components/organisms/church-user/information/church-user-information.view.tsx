@@ -3,12 +3,18 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
 import React from 'react';
-import { Button, MainText } from '../../../../../../../packages/components/src';
+import {
+  Button,
+  MainTag,
+  MainText,
+} from '../../../../../../../packages/components/src';
 import { getTranslatedDateFromDateString } from '@mokjang/utils';
 import {
   GRAY,
+  GREEN,
   LOCALE,
   MAIN,
+  RED,
   WHITE,
 } from '../../../../../../../packages/constants/src';
 import { getPermissionScopeTitle } from '@/utils/permission';
@@ -233,9 +239,35 @@ const ChurchUserInformationView = ({
         </LineContainer>
         <LineContainer>
           <MainText fontSize={14} fontWeight={400} color={GRAY.SEMI_DARK}>
+            {t('status')}
+          </MainText>
+          <MainTag
+            title={
+              isMy || targetChurchUser.isPermissionActive
+                ? t('active')
+                : t('inactive')
+            }
+            backgroundColor={
+              isMy || targetChurchUser.isPermissionActive
+                ? GREEN.LIGHT
+                : RED.LIGHT
+            }
+            color={
+              isMy || targetChurchUser.isPermissionActive
+                ? GREEN.DARK
+                : RED.DARK
+            }
+          />
+        </LineContainer>
+        <LineContainer>
+          <MainText fontSize={14} fontWeight={400} color={GRAY.SEMI_DARK}>
             {t('description')}
           </MainText>
-          <MainText fontSize={14} fontWeight={400} color={GRAY.DARK}></MainText>
+          <MainText fontSize={14} fontWeight={400} color={GRAY.DARK}>
+            {isMy || targetChurchUser.isPermissionActive
+              ? t('activeDescription')
+              : t('inactiveDescription')}
+          </MainText>
         </LineContainer>
       </LabelContainer>
 

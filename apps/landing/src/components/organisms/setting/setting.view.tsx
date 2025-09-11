@@ -12,7 +12,7 @@ import { GRAY, MAIN, WHITE } from '@mokjang/constants';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import {
-  getFormattedMobilePhone,
+  getFormattedPhone,
   getIsWellFormedMobilePhone,
   getMinuteFromSecond,
 } from '@mokjang/utils';
@@ -151,7 +151,7 @@ const SettingView = ({
                 {user.name}
               </MainText>
               <MainText fontSize={16} fontWeight={400} color={GRAY.DARK}>
-                {getFormattedMobilePhone(user.mobilePhone)}
+                {getFormattedPhone(user.mobilePhone)}
               </MainText>
             </ProfileDetail>
           </ProfileContainer>

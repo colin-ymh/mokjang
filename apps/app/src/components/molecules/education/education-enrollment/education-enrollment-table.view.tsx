@@ -3,12 +3,18 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
 
-import { GRAY, GREEN, RED, WHITE } from '@mokjang/constants';
-import { BLANK } from '@mokjang/constants';
-import { EDUCATION_ENROLLMENT } from '@mokjang/constants';
-import { EDUCATION_ENROLLMENT_STATUS } from '@mokjang/constants';
+import {
+  BLANK,
+  EDUCATION_ENROLLMENT,
+  EDUCATION_ENROLLMENT_STATUS,
+  GRAY,
+  GREEN,
+  RED,
+  SIZE,
+  WHITE,
+} from '@mokjang/constants';
 import { MainText } from '@mokjang/components';
-import { getFormattedMobilePhone } from '@mokjang/utils';
+import { getFormattedPhone } from '@mokjang/utils';
 import { EducationEnrollment } from '@mokjang/models';
 import { EDUCATION_ENROLLMENT_TABLE_HEADER_LIST } from '../../../../redux/reducers/filter/education-filter-reducer';
 import { useI18n } from '../../../../../locales/client';
@@ -21,7 +27,6 @@ import {
   getStatusBackgroundColor,
   getStatusFontColor,
 } from '../../../../utils/color';
-import { SIZE } from '@mokjang/constants';
 
 // 1. 컬럼별 PX 폭 (마지막 REMARKS만 auto 할 예정)
 const getColumnWidth = (id: string) => {
@@ -213,7 +218,7 @@ const EducationEnrollmentTableView = ({
         return (
           <MainText>
             {enrollment.member?.mobilePhone &&
-              getFormattedMobilePhone(enrollment.member.mobilePhone)}
+              getFormattedPhone(enrollment.member.mobilePhone)}
           </MainText>
         );
       case EDUCATION_ENROLLMENT.ATTENDANCE:

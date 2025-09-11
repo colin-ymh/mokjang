@@ -12,6 +12,7 @@ export default {
   isDone: 'Completed',
   isNotDone: 'Incomplete',
   customSelect: 'Custom Select',
+  custom: 'Custom',
   email: 'Email',
 
   officerNone: 'No Officer',
@@ -147,7 +148,9 @@ export default {
   visitation: 'Visitation',
   task: 'Task',
   active: 'Active',
+  activeDescription: 'Service is available normally',
   inactive: 'Inactive',
+  inactiveDescription: 'Service is unavailable',
 
   linkedMemberUndefined: 'Linked Member is undefined',
 
@@ -332,12 +335,13 @@ export default {
   'subscription.premium': 'Premium',
   'subscription.enterprise': 'Enterprise',
 
-  'unit.title.member': 'Member Information',
-  'unit.title.visitation': 'Visitation',
-  'unit.title.education': 'Education',
-  'unit.title.task': 'Task',
-  'unit.title.church': 'Church',
-  'unit.title.manager': 'Manager',
+  'unit.member.title': 'Member Information',
+  'unit.visitation.title': 'Visitation',
+  'unit.education.title': 'Education',
+  'unit.task.title': 'Task',
+  'unit.worship.title': 'Worship',
+  'unit.management.title': 'Church Management',
+  'unit.permission.title': 'Admin Settings',
 
   'unit.member.write.title': 'Create Member Info',
   'unit.member.write.description':
@@ -359,12 +363,22 @@ export default {
   'unit.task.write.description': 'Create, edit, and delete task posts.',
   'unit.task.read.title': 'View Task',
   'unit.task.read.description': 'View task posts.',
-  'unit.church.write.title': 'Church Settings',
-  'unit.church.write.description':
+  'unit.worship.write.title': 'Create Worship',
+  'unit.worship.write.description': 'Add, edit, and delete worship services.',
+  'unit.worship.read.title': 'View Worship',
+  'unit.worship.read.description': 'View worship services.',
+  'unit.management.write.title': 'Church Information Settings',
+  'unit.management.write.description':
     'Edit basic church information and edit or delete roles, ministries, and group structures.',
-  'unit.manager.write.title': 'Admin Settings',
-  'unit.manager.write.description':
-    'Approve or reject admin registration requests, remove admins, and add, edit, or delete permission groups. You can also edit or delete admin information and change permission scopes and status values.',
+  'unit.management.read.title': 'View Church Information',
+  'unit.management.read.description':
+    'View basic church information and roles, ministries, and group structures.',
+  'unit.permission.write.title': 'Admin Settings',
+  'unit.permission.write.description':
+    'View and edit administrator information.',
+  'unit.permission.read.title': 'View Administrators',
+  'unit.permission.read.description':
+    'Approve or reject admin registration requests, remove administrators, add, edit, or delete permission groups, and edit or delete administrator information including permission scopes and status values.',
 
   /*-------------------title (popup title)-------------------*/
   'title.memberRegister': 'Member Register',

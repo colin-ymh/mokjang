@@ -3,7 +3,7 @@ import { CURSOR, GRAY, RED, WHITE } from '@mokjang/constants';
 import { MainText, ProfileImage, SvgIcon } from '@mokjang/components';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
-import { getFormattedMobilePhone } from '@mokjang/utils';
+import { getFormattedPhone } from '@mokjang/utils';
 import { Svg } from '@mokjang/assets';
 import { useI18n, useScopedI18n } from '../../../../locales/client';
 
@@ -95,7 +95,7 @@ const ProfileModalView = ({
               {user.name}
             </MainText>
             <MainText fontWeight={400} fontSize={14} color={GRAY.DARK}>
-              {getFormattedMobilePhone(user.mobilePhone)}
+              {getFormattedPhone(user.mobilePhone)}
             </MainText>
           </ProfileDetail>
         </ProfileItem>

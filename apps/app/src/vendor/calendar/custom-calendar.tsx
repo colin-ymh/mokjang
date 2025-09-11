@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-import { Schedule } from '@mokjang/models';
+import { DOMAIN, Schedule } from '@mokjang/models';
 import styled from 'styled-components';
 import { GRAY, MAIN, RED, WHITE } from '@mokjang/constants';
 import CustomCalendarHeader from './custom-calendar-header';
@@ -13,7 +13,6 @@ import CustomDateHeader from './custom-date-header';
 import { getEventStyle } from '../../utils/color';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
-import { DOMAIN } from '@mokjang/models';
 
 const CustomCalendarContainer = styled.div`
   display: flex;
@@ -32,12 +31,12 @@ const CustomCalendarContainer = styled.div`
 
   .rbc-month-view {
     /* 모서리 안쪽 여백 없이, 바깥 여백만 부여 */
-    margin: 20px;
-    width: calc(100% - 40px); /* 좌우 마진 만큼 줄여 overflow 방지 */
-    border-radius: 10px;
-    overflow: hidden;
-    padding: 0;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* 테두리 대신 그림자 */
+    //margin: 20px;
+    //width: calc(100% - 40px); /* 좌우 마진 만큼 줄여 overflow 방지 */
+    //border-radius: 10px;
+    //overflow: hidden;
+    //padding: 0;
+    //box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* 테두리 대신 그림자 */
     border: none;
     background-color: ${WHITE};
   }

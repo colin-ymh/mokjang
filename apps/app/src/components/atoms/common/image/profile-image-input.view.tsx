@@ -3,14 +3,16 @@
 import React, { ChangeEventHandler } from 'react';
 import styled from 'styled-components';
 import Cropper, { Area, Point } from 'react-easy-crop';
-import { Button } from '@mokjang/components';
+import {
+  Button,
+  ProfileImage,
+  TransparentBackground,
+} from '@mokjang/components';
 
 import { BLACK, GRAY, MAIN, WHITE } from '@mokjang/constants';
 
 import { Svg } from '@mokjang/assets';
 import { useScopedI18n } from '../../../../../locales/client';
-import { TransparentBackground } from '@mokjang/components';
-import ProfileImage from './profile-image';
 
 /* --------------------------- styled --------------------------- */
 const Wrapper = styled.div`

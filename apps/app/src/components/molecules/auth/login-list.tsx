@@ -3,7 +3,7 @@ import { useRouter } from 'next/navigation';
 
 import { AUTH, AuthApi } from '../../../api/auth/auth.api';
 import LoginListView from './login-list.view';
-import { getFormattedMobilePhone, getFormattedName } from '@mokjang/utils';
+import { getFormattedName, getFormattedPhone } from '@mokjang/utils';
 
 const LoginList = () => {
   const nextRouter = useRouter();
@@ -23,7 +23,7 @@ const LoginList = () => {
   };
 
   const onChangePhone = (event: ChangeEvent<HTMLInputElement>) => {
-    const newPhone = getFormattedMobilePhone(event.target.value);
+    const newPhone = getFormattedPhone(event.target.value);
     setPhone(newPhone);
   };
 

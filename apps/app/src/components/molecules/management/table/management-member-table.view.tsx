@@ -7,7 +7,7 @@ import { MEMBER } from '@mokjang/constants';
 import { MainText } from '@mokjang/components';
 import { Member } from '@mokjang/models';
 import useWindowSize from '../../../../hooks/window/window';
-import { getFormattedMobilePhone } from '@mokjang/utils';
+import { getFormattedPhone } from '@mokjang/utils';
 import { LOCALE } from '@mokjang/constants';
 import ManagementMemberTableHeader from '../../../atoms/management/table/management-member-table-header';
 import MemberProfilePopupButton from '../../common/button/member-profile-popup-button';
@@ -219,7 +219,7 @@ const ManagementMemberTableView = ({
       case MEMBER.MOBILE_PHONE:
         return (
           <MainText>
-            {member?.mobilePhone && getFormattedMobilePhone(member.mobilePhone)}
+            {member?.mobilePhone && getFormattedPhone(member.mobilePhone)}
           </MainText>
         );
       case MEMBER.MINISTRIES:

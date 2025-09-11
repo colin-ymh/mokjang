@@ -114,3 +114,4 @@ export declare const getTranslatedSummaryCount: (basePath: LOCALE, summary: numb
  * ISO 문자열과 현재 시간의 차이를 간단한 "n분 전" / "n hours ago" 형태로 반환.
  */
 export declare function getTranslatedTimeAgo(locale: LOCALE, date: string): string;
+export declare const getTranslatedAndOthers: (basePath: LOCALE, count: number) => string;

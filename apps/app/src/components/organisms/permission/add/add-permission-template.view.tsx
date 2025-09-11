@@ -4,7 +4,7 @@ import React, { ChangeEvent } from 'react';
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
 import { GRAY, MAIN, SIZE, WHITE } from '@mokjang/constants';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../../../redux/store';
+import { RootState } from '@/redux/store';
 import PermissionUnitList from '../../../molecules/permission/information/permission-unit-list';
 
 const AddPermissionTemplateViewContainer = styled.div`
@@ -12,7 +12,7 @@ const AddPermissionTemplateViewContainer = styled.div`
   flex: 1;
   flex-direction: column;
   padding: 25px 20px 50px 20px;
-  gap: 20px;
+  gap: 30px;
   overflow-y: auto;
 `;
 
@@ -75,6 +75,7 @@ const AddPermissionTemplateView = ({
           placeholder={t_placeholder('description')}
           borderColor={GRAY.LIGHT}
           height={40}
+          maxLength={50}
         />
       </InputContainer>
       {/* 권한 */}

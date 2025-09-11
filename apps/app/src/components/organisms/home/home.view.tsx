@@ -4,10 +4,13 @@ import { MAIN, WHITE } from '@mokjang/constants';
 import HomeWidgetList from '../../molecules/home/list/home-widget-list';
 
 import { Svg } from '@mokjang/assets';
+import useWindowSize from '@/hooks/window/window';
 
-const HomeContainer = styled.div`
+const HomeContainer = styled.div<{ height: number }>`
   display: flex;
+  height: 100%;
   justify-content: center;
+  overflow: auto;
 `;
 
 const FABContainer = styled.div`
@@ -40,8 +43,9 @@ type HomeViewProps = {
 };
 
 const HomeView = ({ onClickAdd }: HomeViewProps) => {
+  const { height } = useWindowSize();
   return (
-    <HomeContainer>
+    <HomeContainer height={500}>
       {/* 위젯 목록 */}
       <HomeWidgetList />
       {/* 위젯 추가 버튼 */}

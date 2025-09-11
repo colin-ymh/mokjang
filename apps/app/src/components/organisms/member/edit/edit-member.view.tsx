@@ -4,10 +4,9 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
 
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
-import { BAPTISM, BLANK, GENDER, MARRIAGE } from '@mokjang/constants';
+import { BAPTISM, BLANK, GENDER, GRAY, MARRIAGE, SIZE, } from '@mokjang/constants';
 import { DropdownValueType } from '../../../atoms/common/dropdown/dropdown-item';
-import { LabelInput, PopupHeaderBar } from '@mokjang/components';
-import { GRAY } from '@mokjang/constants';
+import { CheckButton, LabelInput, MainText, PopupHeaderBar, } from '@mokjang/components';
 import LabelDropdown from '../../../atoms/common/dropdown/label-dropdown';
 import LabelRadioButton from '../../../atoms/common/radio-button/label-radio-button';
 import {
@@ -18,14 +17,10 @@ import { useMarriageDropdownItems } from '../../../../hooks/dropdown/dropdown-it
 import ProfileImageInput from '../../../atoms/common/image/profile-image-input';
 import VehicleNumberInput from '../../../atoms/register/vehicle-number-input';
 import CustomDatePicker from '../../../../vendor/date-picker/custom-date-picker';
-import { getDateFromDateString } from '@mokjang/utils';
-import { MainText } from '@mokjang/components';
-import { CheckButton } from '@mokjang/components';
+import { getDateFromDateString, getFormattedPhone } from '@mokjang/utils';
 import KoreanLunarCalendar, { CalendarData } from 'korean-lunar-calendar';
-import { SIZE } from '@mokjang/constants';
 import { useEditMemberHeaderBarItems } from '../../../../hooks/layout/header-bar-items';
 import { EDIT_MEMBER_HEADER_ID } from '../../../../constants/layout/header';
-import { getFormattedMobilePhone } from '@mokjang/utils';
 
 const EditMemberContainer = styled.div`
   display: flex;
@@ -115,7 +110,6 @@ const GroupButton = styled.div`
 type AddMemberViewProps = {
   headerBarId: EDIT_MEMBER_HEADER_ID;
   onChangeHeader: (id: EDIT_MEMBER_HEADER_ID) => void;
-  schoolItems: DropdownValueType[];
   onChangeName: (event: ChangeEvent<HTMLInputElement>) => void;
   onChangeMobilePhone: (event: ChangeEvent<HTMLInputElement>) => void;
   onChangeProfileImage: (image: File | null) => void;
@@ -124,7 +118,7 @@ type AddMemberViewProps = {
   onClickIsLeafMonth: (value: boolean) => void;
   onChangeOccupation: (event: ChangeEvent<HTMLInputElement>) => void;
   onChangeDetailAddress: (event: ChangeEvent<HTMLInputElement>) => void;
-  onChangeSchool: (value: string) => void;
+  onChangeSchool: (event: ChangeEvent<HTMLInputElement>) => void;
   onChangeVehicleNumber: (
     event: ChangeEvent<HTMLInputElement>,
     index: number
@@ -140,7 +134,6 @@ type AddMemberViewProps = {
 const EditMemberView = ({
   headerBarId,
   onChangeHeader,
-  schoolItems,
   onChangeName,
   onChangeMobilePhone,
   onChangeProfileImage,
@@ -256,7 +249,7 @@ const EditMemberView = ({
                 <LabelInput
                   inputMode="numeric"
                   label={t('mobilePhone')}
-                  value={getFormattedMobilePhone(targetMember.mobilePhone)}
+                  value={getFormattedPhone(targetMember.mobilePhone)}
                   onChange={onChangeMobilePhone}
                   placeholder={t_placeholder('mobilePhone')}
                   isRequired
@@ -355,14 +348,11 @@ const EditMemberView = ({
               </InputContainer>
               {/* 학교 */}
               <InputContainer>
-                <LabelDropdown
+                <LabelInput
                   label={t('school')}
-                  items={schoolItems}
                   value={targetMember.school || BLANK}
-                  onChangeItem={onChangeSchool}
+                  onChange={onChangeSchool}
                   placeholder={t_placeholder('school')}
-                  isEditable
-                  backgroundBlur={false}
                 />
               </InputContainer>
             </RowContainer>

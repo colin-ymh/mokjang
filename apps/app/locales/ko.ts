@@ -12,6 +12,7 @@ export default {
   isDone: '완료',
   isNotDone: '미완료',
   customSelect: '직접선택',
+  custom: '직접입력',
   email: '이메일',
 
   officerNone: '직분 없음',
@@ -137,7 +138,9 @@ export default {
   owner: '소유자',
   range: '범위',
   active: '활성',
+  activeDescription: '정상적으로 서비스 이용 가능',
   inactive: '비활성',
+  inactiveDescription: '서비스 이용 불가능',
 
   linkedMemberUndefined: '연결된 교인정보 없음',
 
@@ -248,7 +251,7 @@ export default {
   // 필수
   basicInformation: '기본정보',
   name: '이름',
-  mobilePhone: '휴대전화',
+  mobilePhone: '전화번호',
   verifyNumber: '인증번호',
   guide: '인도자',
   family: '가족',
@@ -338,8 +341,9 @@ export default {
   'unit.visitation.title': '심방',
   'unit.education.title': '교육',
   'unit.task.title': '업무',
-  'unit.church.title': '교회관리',
-  'unit.manager.title': '관리자 설정',
+  'unit.worship.title': '예배',
+  'unit.management.title': '교회관리',
+  'unit.permission.title': '관리자 설정',
 
   'unit.member.write.title': '교인정보 작성',
   'unit.member.write.description':
@@ -361,11 +365,20 @@ export default {
   'unit.task.write.description': '업무 게시물을 작성·수정·삭제할 수 있습니다.',
   'unit.task.read.title': '업무 열람',
   'unit.task.read.description': '업무 게시물을 열람할 수 있습니다.',
-  'unit.church.write.title': '교회정보 설정',
-  'unit.church.write.description':
+  'unit.worship.write.title': '예배 작성',
+  'unit.worship.write.description': '예배를 추가, 수정, 삭제 할 수 있습니다.',
+  'unit.worship.read.title': '예배 열람',
+  'unit.worship.read.description': '예배를 열람할 수 있습니다.',
+  'unit.management.write.title': '교회정보 설정',
+  'unit.management.write.description':
     '교회 기본정보를 수정하고, 직분·사역·그룹 구조를 수정·삭제할 수 있습니다.',
-  'unit.manager.write.title': '관리자 설정',
-  'unit.manager.write.description':
+  'unit.management.read.title': '교회정보 열람',
+  'unit.management.read.description':
+    '교회 기본정보와 직분·사역·그룹 구조를 열람할 수 있습니다.',
+  'unit.permission.write.title': '관리자 설정',
+  'unit.permission.write.description': '관리자 정보를 열람할 수 있습니다.',
+  'unit.permission.read.title': '관리자 열람',
+  'unit.permission.read.description':
     '관리자 등록 신청을 승인/거절하고 관리자를 삭제할 수 있으며, 권한그룹을 추가·수정·삭제할 수 있습니다. 또한 관리자 정보를 수정·삭제하고, 권한 범위 및 상태값을 변경할 수 있습니다.',
 
   /*-------------------title (popup title)-------------------*/
@@ -517,7 +530,7 @@ export default {
   'tableHeader.age': '나이',
   'tableHeader.attendance': '출석',
   'tableHeader.note': '비고',
-  'tableHeader.mobilePhone': '휴대전화',
+  'tableHeader.mobilePhone': '전화번호',
   'tableHeader.status': '수료',
   'tableHeader.isDoneCount': '진행 상황',
 
@@ -668,7 +681,7 @@ export default {
   'placeholder.educationName': '교육명을 입력해주세요.',
   'placeholder.educationDescription': '교육 요약을 입력해주세요.',
   'placeholder.educationGoal': '교육 목표를 입력해주세요.',
-  'placeholder.mobilePhone': '휴대전화 번호를 입력해주세요.',
+  'placeholder.mobilePhone': '전화번호를 입력해주세요.',
   'placeholder.birth': '생년월일을 선택해주세요.',
   'placeholder.registeredAt': '등록일자를 선택해주세요.',
   'placeholder.homePhone': '집 전화번호를 입력해주세요.',

@@ -122,7 +122,7 @@ const PermissionTemplateInformationView = ({
             {t('description')}
           </MainText>
           <MainText fontSize={14} fontWeight={500}>
-            {}
+            {targetPermissionTemplate.description}
           </MainText>
         </LineContainer>
       </LabelContainer>

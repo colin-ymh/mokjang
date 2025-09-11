@@ -18,7 +18,7 @@ import AddMember from '../../../../../organisms/member/add/add-member';
 
 import { Svg } from '@mokjang/assets';
 import {
-  getIsWellFormedMobilePhone,
+  getIsWellFormedPhone,
   getIsWellFormedName,
 } from '@mokjang/utils';
 import { useSelector } from 'react-redux';
@@ -186,7 +186,7 @@ const MainMemberHeaderView = ({
           headerDescription={t_description('memberRegisterHeader')}
           doneDisabled={
             !getIsWellFormedName(targetMember.name) ||
-            !getIsWellFormedMobilePhone(targetMember.mobilePhone)
+            !getIsWellFormedPhone(targetMember.mobilePhone)
           }
           cancelText={t_button('cancel')}
           doneText={t_button('save')}

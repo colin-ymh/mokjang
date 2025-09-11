@@ -6,9 +6,8 @@ import { CURSOR, GRAY, MEDIA_MIN_WIDTH, RED, WHITE } from '@mokjang/constants';
 import { SIDE_ID } from '@/constants/layout/header';
 
 import { Svg } from '@mokjang/assets';
-import { MainText, SvgIcon } from '@mokjang/components';
+import { MainText, ProfileImage, SvgIcon } from '@mokjang/components';
 import { useParams } from 'next/navigation';
-import ProfileImage from '@/components/atoms/common/image/profile-image';
 import ProfileModal from '@/components/atoms/common/modal/profile-modal';
 import { Chevron } from '@/components/atoms/common/dropdown/dropdown-chevron';
 import NotificationModal from '@/components/organisms/notification/notification-modal';
@@ -65,6 +64,7 @@ const NotificationCount = styled.div`
 const ProfileWrapper = styled.div`
   display: flex;
   position: relative;
+  z-index: 50;
 `;
 
 const ProfileItem = styled.div`

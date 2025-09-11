@@ -10,6 +10,7 @@ export default {
   paymentDay: 'Payment Date',
   nextPaymentDay: 'Next Payment Date',
   currentPlan: 'Current Plan',
+  custom: 'Custom',
 
   'setting.title': 'Settings',
   'setting.description': 'Manage your account information',

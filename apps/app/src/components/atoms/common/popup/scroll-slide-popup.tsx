@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { ReactNode, useEffect, useRef, useState } from 'react';
+import React, { ReactNode, useEffect, useRef, useState } from 'react';
 import {
   CURSOR,
   DIRECTION,
@@ -11,7 +11,12 @@ import {
   TASK_STATUS,
   WHITE,
 } from '@mokjang/constants';
-import { MainText, PopupLayout, SvgIcon } from '@mokjang/components';
+import {
+  MainText,
+  PopupLayout,
+  SvgIcon,
+  TransparentBackground,
+} from '@mokjang/components';
 import { Member } from '@mokjang/models';
 import { getTranslatedDateFromDateString } from '@mokjang/utils';
 import MemberProfilePopupButton from '@/components/molecules/common/button/member-profile-popup-button';
@@ -311,32 +316,40 @@ const ScrollSlidePopup = ({
   );
 
   return (
-    <SlidePanel
-      $isShow={isShow}
-      direction={direction}
-      size={size}
-      $isPercentage={isPercentage}
-      $isAnimation={isAnimation}
-      onClick={(e) => e.stopPropagation()}
-    >
-      <PopupLayout
-        onClickClose={onClickClose}
-        onClickCancel={onClickCancel}
-        onClickDone={onClickDone}
-        headerTitle={headerTitle}
-        headerLeft={headerLeft || leftActions}
-        headerRight={rightActions}
-        headerHeight={headerHeight}
-        doneText={doneText || t_button('save')}
-        cancelText={cancelText || t_button('cancel')}
-        doneBackgroundColor={doneBackgroundColor || MAIN.DEFAULT}
-        cancelBackgroundColor={cancelBackgroundColor}
-        doneDisabled={doneDisabled}
-        isFooterShown={isFooterShown}
+    <>
+      <TransparentBackground
+        isOpened={isShow}
+        onClick={onClickClose}
+        blur={false}
+        zIndex={49}
+      />
+      <SlidePanel
+        $isShow={isShow}
+        direction={direction}
+        size={size}
+        $isPercentage={isPercentage}
+        $isAnimation={isAnimation}
+        onClick={(e) => e.stopPropagation()}
       >
-        <ContentWrapper ref={scrollRef}>{children}</ContentWrapper>
-      </PopupLayout>
-    </SlidePanel>
+        <PopupLayout
+          onClickClose={onClickClose}
+          onClickCancel={onClickCancel}
+          onClickDone={onClickDone}
+          headerTitle={headerTitle}
+          headerLeft={headerLeft || leftActions}
+          headerRight={rightActions}
+          headerHeight={headerHeight}
+          doneText={doneText || t_button('save')}
+          cancelText={cancelText || t_button('cancel')}
+          doneBackgroundColor={doneBackgroundColor || MAIN.DEFAULT}
+          cancelBackgroundColor={cancelBackgroundColor}
+          doneDisabled={doneDisabled}
+          isFooterShown={isFooterShown}
+        >
+          <ContentWrapper ref={scrollRef}>{children}</ContentWrapper>
+        </PopupLayout>
+      </SlidePanel>
+    </>
   );
 };
 

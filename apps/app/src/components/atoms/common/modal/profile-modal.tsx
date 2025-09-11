@@ -1,9 +1,12 @@
-import { MainText, TransparentBackground } from '@mokjang/components';
-import { getFormattedMobilePhone, routeLandingPage } from '@mokjang/utils';
+import {
+  MainText,
+  TransparentBackground,
+  ProfileImage,
+} from '@mokjang/components';
+import { getFormattedPhone, routeLandingPage } from '@mokjang/utils';
 import { AuthApi } from '@/api/auth/auth.api';
 import ProfileModalView, { ProfileModalViewProps } from './profile-modal.view';
 import SlidePopup from '@/components/atoms/common/popup/slide-popup';
-import ProfileImage from '@/components/atoms/common/image/profile-image';
 import { BLACK, GRAY } from '@mokjang/constants';
 import ChurchUserInformation from '@/components/organisms/church-user/information/church-user-information';
 import React, { useState } from 'react';
@@ -126,7 +129,7 @@ const ProfileModal = ({ onClickClose }: ProfileModalProps) => {
                 {user.name}
               </MainText>
               <MainText fontWeight={400} fontSize={14} color={GRAY.DARK}>
-                {getFormattedMobilePhone(user.mobilePhone)}
+                {getFormattedPhone(user.mobilePhone)}
               </MainText>
             </TextContainer>
           </ProfileContainer>

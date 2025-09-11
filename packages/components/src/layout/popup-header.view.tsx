@@ -78,7 +78,7 @@ export const PopupHeaderView = ({
   return (
     <HeaderContainer
       $isHeaderBorderShown={isHeaderBorderShown}
-      height={height || headerDescription ? 80 : 65}
+      height={height ? height : headerDescription ? 80 : 65}
     >
       {headerLeft || (
         <HeaderTitle>

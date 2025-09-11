@@ -158,7 +158,6 @@ const GroupButton = styled.div`
 `;
 
 type AddMemberViewProps = {
-  schoolItems: DropdownValueType[];
   onChangeName: (event: ChangeEvent<HTMLInputElement>) => void;
   onChangeMobilePhone: (event: ChangeEvent<HTMLInputElement>) => void;
   onChangeProfileImage: (image: File | null) => void;
@@ -167,7 +166,7 @@ type AddMemberViewProps = {
   onClickIsLeafMonth: (value: boolean) => void;
   onChangeOccupation: (event: ChangeEvent<HTMLInputElement>) => void;
   onChangeDetailAddress: (event: ChangeEvent<HTMLInputElement>) => void;
-  onChangeSchool: (value: string) => void;
+  onChangeSchool: (event: ChangeEvent<HTMLInputElement>) => void;
   onChangeVehicleNumber: (
     event: ChangeEvent<HTMLInputElement>,
     index: number
@@ -186,7 +185,6 @@ type AddMemberViewProps = {
 };
 
 const AddMemberView = ({
-  schoolItems,
   onChangeName,
   onChangeMobilePhone,
   onChangeProfileImage,
@@ -407,14 +405,11 @@ const AddMemberView = ({
             </InputContainer>
             {/* 학교 */}
             <InputContainer>
-              <LabelDropdown
+              <LabelInput
                 label={t('school')}
-                items={schoolItems}
                 value={targetMember.school || BLANK}
-                onChangeItem={onChangeSchool}
+                onChange={onChangeSchool}
                 placeholder={t_placeholder('school')}
-                isEditable
-                backgroundBlur={false}
               />
             </InputContainer>
           </RowContainer>

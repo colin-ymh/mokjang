@@ -20,7 +20,10 @@ import { useI18n } from '../../../../locales/client';
 import { getStatusBackgroundColor, getStatusFontColor } from '@/utils/color';
 import MemberProfile from '../../atoms/member/member-profile';
 import { usePathname } from 'next/navigation';
-import { getTranslatedDateFromDateString } from '@mokjang/utils';
+import {
+  getTranslatedAndOthers,
+  getTranslatedDateFromDateString,
+} from '@mokjang/utils';
 
 // 1. 컬럼별 PX 폭
 const getColumnWidth = (id: string) => {
@@ -193,7 +196,9 @@ const VisitationTableView = ({
               />
             )}
             {visitation.members?.length > 1 && (
-              <MainText>{`외 ${visitation.members.length - 1}명`}</MainText>
+              <MainText>
+                {getTranslatedAndOthers(locale, visitation.members.length - 1)}
+              </MainText>
             )}
             {/*))}*/}
           </MembersContainer>

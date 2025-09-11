@@ -1,13 +1,14 @@
-import { GRAY, MAIN, YELLOW } from '@mokjang/constants';
-import { DEFAULT_MEMBER, Member } from '@mokjang/models';
+import { BLANK, GRAY, LOCALE, MAIN, YELLOW } from '@mokjang/constants';
+import { DEFAULT_MEMBER, Member, MinistryGroup } from '@mokjang/models';
 import styled from 'styled-components';
-import { MainText } from '@mokjang/components';
-import ProfileImage from '../../../common/image/profile-image';
-import { BLANK } from '@mokjang/constants';
-import { MinistryGroup } from '@mokjang/models';
+import {
+  MainTag,
+  MainText,
+  ProfileImage,
+  RadioButton,
+} from '@mokjang/components';
 import React, { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
-import { LOCALE } from '@mokjang/constants';
 import { useI18n } from '../../../../../../locales/client';
 import {
   getTranslatedAlreadyMinistryGroupLeader,
@@ -15,8 +16,6 @@ import {
 } from '@mokjang/utils';
 
 import { Svg } from '@mokjang/assets';
-import { RadioButton } from '@mokjang/components';
-import { MainTag } from '@mokjang/components';
 
 const EditMinistryGroupLeaderContainer = styled.div`
   display: flex;
