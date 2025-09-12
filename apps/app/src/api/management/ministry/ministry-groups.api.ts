@@ -76,6 +76,10 @@ type EditMinistryGroupLeaderBody = {
   startDate: string;
 };
 
+type RefreshMinistryGroupCountParams = {
+  churchId: string;
+};
+
 export class MinistryGroupsApi {
   private _url: string;
 
@@ -355,6 +359,34 @@ export class MinistryGroupsApi {
 
     try {
       return await authorizeAxios.patch(url, body);
+    } catch (serverError: any) {
+      if (serverError.response) {
+        const { message, error, statusCode } = serverError.response.data;
+        throw new CustomError(message, error, statusCode);
+      } else {
+        throw new CustomError(
+          '알 수 없는 에러가 발생했습니다',
+          500,
+          'Unknown Error'
+        );
+      }
+    }
+  };
+
+  /**
+   * 사역그룹 개수 새로고침
+   * @param {RefreshMinistryGroupCountParams} params
+   * @returns {Promise<AxiosResponse>}
+   */
+  public refreshMinistryGroupCount = async (
+    params: RefreshMinistryGroupCountParams
+  ): Promise<AxiosResponse> => {
+    const { churchId } = params;
+
+    const url = `${this._url}/churches/${churchId}/management/ministry-groups/refresh-count`;
+
+    try {
+      return await authorizeAxios.patch(url);
     } catch (serverError: any) {
       if (serverError.response) {
         const { message, error, statusCode } = serverError.response.data;

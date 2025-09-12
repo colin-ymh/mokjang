@@ -56,6 +56,10 @@ const ButtonContainer = styled.button<{
   overflow: hidden;
   flex-shrink: 0;
 
+  transform-origin: center;
+  will-change: transform;
+  backface-visibility: hidden;
+
   &:active {
     transform: scale(0.98);
     box-shadow: none;

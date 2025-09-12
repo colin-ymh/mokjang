@@ -151,7 +151,7 @@ const EditPermissionTemplate = ({
     const onScroll = () => {
       if (isLoading) return;
       const { scrollTop, clientHeight, scrollHeight } = el;
-      if (scrollTop + clientHeight >= scrollHeight - 8) {
+      if (scrollTop + clientHeight >= scrollHeight - 10) {
         // 하단 근처에서 추가 로드
         loadMore();
       }

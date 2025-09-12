@@ -21,6 +21,7 @@ export type AttendanceTableProps = {
   loadWorshipEnrollments: () => Promise<void>;
   isStatisticOpened: boolean;
   onClickStatisticChevron: () => void;
+  onClickRefreshEnrollments: () => void;
 };
 
 const AttendanceTable = ({
@@ -59,7 +60,7 @@ const AttendanceTable = ({
       const { scrollTop, scrollHeight, clientHeight } = scrollRef.current;
 
       // 스크롤이 최하단에 도달했는지 확인
-      if (scrollTop + clientHeight >= scrollHeight) {
+      if (scrollTop + clientHeight >= scrollHeight - 10) {
         loadWorshipEnrollments(); // 데이터를 추가로 로드
       }
     }

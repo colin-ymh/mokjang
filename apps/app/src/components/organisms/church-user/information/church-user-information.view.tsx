@@ -1,24 +1,20 @@
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../../../redux/store';
+import { RootState } from '@/redux/store';
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
 import React from 'react';
-import {
-  Button,
-  MainTag,
-  MainText,
-} from '../../../../../../../packages/components/src';
+import { Button, MainTag, MainText } from '@mokjang/components';
 import { getTranslatedDateFromDateString } from '@mokjang/utils';
 import {
+  CHURCH_USER_ROLE,
   GRAY,
   GREEN,
   LOCALE,
   MAIN,
   RED,
   WHITE,
-} from '../../../../../../../packages/constants/src';
+} from '@mokjang/constants';
 import { getPermissionScopeTitle } from '@/utils/permission';
-import { CHURCH_USER_ROLE } from '@mokjang/constants';
 import PermissionUnitList from '@/components/molecules/permission/information/permission-unit-list';
 import DeleteWarningButton from '@/components/atoms/common/button/delete-warning-button';
 import MemberProfilePopupButton from '@/components/molecules/common/button/member-profile-popup-button';

@@ -49,7 +49,7 @@ const MemberAttendanceTable = ({}: MemberAttendanceTableProps) => {
       const clientHeight = el.clientHeight ?? 0;
       const scrollHeight = el.scrollHeight ?? 0;
 
-      const isAtBottom = scrollTop + clientHeight >= scrollHeight - 2; // 약간의 여유를 두고 하단 감지
+      const isAtBottom = scrollTop + clientHeight >= scrollHeight - 10; // 약간의 여유를 두고 하단 감지
 
       if (isAtBottom) {
         void fetchAttendances();

@@ -1,24 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../../../redux/store';
+import { AppDispatch, RootState } from '@/redux/store';
 import {
   advanceToNextCursor,
   fetchMembers,
   setMemberCursor,
-} from '../../../../redux/reducers/filter/member-filter-reducer';
+} from '@/redux/reducers/filter/member-filter-reducer';
 
-import { MembersApi } from '../../../../api/members/members.api';
+import { MembersApi } from '@/api/members/members.api';
 import MemberListView from './member-list.view';
 import { DEFAULT_MEMBER } from '@mokjang/models';
-import { setTargetMember } from '../../../../redux/reducers/target/target-member-reducer';
-import { uploadFiles } from '../../../../utils/upload';
+import { setTargetMember } from '@/redux/reducers/target/target-member-reducer';
+import { uploadFiles } from '@/utils/upload';
 import { BLANK, CONCEALED, DESTRUCTIVE } from '@mokjang/constants';
 import { getDateFromDateString, getDateStringFromDate } from '@mokjang/utils';
 import {
   setIsToastShown,
   setToastBackgroundColor,
   setToastText,
-} from '../../../../redux/reducers/toast-popup-reducer';
+} from '@/redux/reducers/toast-popup-reducer';
 import { useScopedI18n } from '../../../../../locales/client';
 
 type MemberListProps = {

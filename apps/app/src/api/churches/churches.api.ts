@@ -36,6 +36,10 @@ type deleteChurchParams = {
   churchId: string;
 };
 
+type RefreshMemberCountParams = {
+  churchId: string;
+};
+
 export class ChurchesApi {
   private _url: string;
 
@@ -139,6 +143,32 @@ export class ChurchesApi {
 
     try {
       return await authorizeAxios.delete(url.toString());
+    } catch (serverError: any) {
+      if (serverError.response) {
+        const { message, error, statusCode } = serverError.response.data;
+        throw new CustomError(message, error, statusCode);
+      } else {
+        throw new CustomError(
+          '알 수 없는 에러가 발생했습니다',
+          500,
+          'Unknown Error'
+        );
+      }
+    }
+  };
+
+  /**
+   * 교인 수 새로고침
+   * @param {RefreshMemberCountParams} params
+   */
+  public refreshMemberCount = async (
+    params: RefreshMemberCountParams
+  ): Promise<AxiosResponse> => {
+    const { churchId } = params;
+    const url = `${this._url}/churches/${churchId}/refresh-member-count`;
+
+    try {
+      return await authorizeAxios.patch(url);
     } catch (serverError: any) {
       if (serverError.response) {
         const { message, error, statusCode } = serverError.response.data;

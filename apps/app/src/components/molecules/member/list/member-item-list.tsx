@@ -9,11 +9,7 @@ import { MemberTableProps } from './member-table';
 import { BorderInput, MainText, ProfileImage } from '@mokjang/components';
 import { BLANK, GRAY, SIZE } from '@mokjang/constants';
 
-import {
-  getFormattedName,
-  getFormattedPhone,
-  getTrimmedString,
-} from '@mokjang/utils';
+import { getFormattedName, getFormattedPhone, getTrimmedString, } from '@mokjang/utils';
 
 import useWindowSize from '../../../../hooks/window/window';
 import { useI18n } from '../../../../../locales/client';
@@ -119,7 +115,7 @@ const MemberItemList = ({
     if (scrollRef.current) {
       const { scrollTop, scrollHeight, clientHeight } = scrollRef.current;
       // 스크롤이 최하단에 도달했는지 확인
-      if (scrollTop + clientHeight >= scrollHeight) {
+      if (scrollTop + clientHeight >= scrollHeight - 10) {
         loadMembers(); // 데이터를 추가로 로드
       }
     }

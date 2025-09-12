@@ -1,19 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../../../redux/store';
+import { AppDispatch, RootState } from '@/redux/store';
 import {
   fetchWorshipEnrollments,
   setWorshipEnrollments,
   setWorshipEnrollmentTotalCount,
-} from '../../../../redux/reducers/filter/worship-enrollment-filter-reducer';
+} from '@/redux/reducers/filter/worship-enrollment-filter-reducer';
 import { WorshipEnrollment } from '@mokjang/models';
 import AttendanceListView from './attendance-list.view';
 import { Loading } from '@mokjang/components';
+import { WorshipEnrollmentsApi } from '@/api/worship/worship-enrollments.api';
 
 type AttendanceListProps = {};
 
 const AttendanceList = ({}: AttendanceListProps) => {
   const dispatch = useDispatch<AppDispatch>();
+  const worshipEnrollmentsApi = new WorshipEnrollmentsApi(false);
 
   const churchId: string = useSelector(
     (state: RootState) => state.church.churchId
@@ -88,31 +90,39 @@ const AttendanceList = ({}: AttendanceListProps) => {
     }
   };
 
+  const fetchInitialEnrollments = async () => {
+    try {
+      const result = await dispatch(
+        fetchWorshipEnrollments({
+          churchId,
+          currentPage: 1,
+          worshipId: targetWorship.id,
+        })
+      );
+      if (fetchWorshipEnrollments.fulfilled.match(result)) {
+        dispatch(setWorshipEnrollments(result.payload.data));
+        const totalCount = result.payload.totalCount;
+        dispatch(setWorshipEnrollmentTotalCount(totalCount));
+        setPage(1);
+      }
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
+    }
+  };
+
+  const onClickRefreshEnrollments = () => {
+    if (!targetWorship.id) return;
+
+    worshipEnrollmentsApi
+      .refreshWorshipEnrollments({ churchId, worshipId: targetWorship.id })
+      .then((response) => {
+        fetchInitialEnrollments();
+      });
+  };
+
   // 필터 정보가 변경될 때, 출석부를 다시 불러오는 부분
   useEffect(() => {
     if (targetWorship.id) {
-      const fetchInitialEnrollments = async () => {
-        try {
-          const result = await dispatch(
-            fetchWorshipEnrollments({
-              churchId,
-              currentPage: 1,
-              worshipId: targetWorship.id,
-            })
-          );
-          if (fetchWorshipEnrollments.fulfilled.match(result)) {
-            dispatch(setWorshipEnrollments(result.payload.data));
-            const totalCount = result.payload.totalCount;
-            dispatch(setWorshipEnrollmentTotalCount(totalCount));
-            setPage(1);
-          }
-        } catch (error) {
-          setThrownError(
-            error instanceof Error ? error : new Error(String(error))
-          );
-        }
-      };
-
       fetchInitialEnrollments();
     } else {
       dispatch(setWorshipEnrollments([]));
@@ -130,6 +140,7 @@ const AttendanceList = ({}: AttendanceListProps) => {
       loadWorshipEnrollments,
       isStatisticOpened,
       onClickStatisticChevron,
+      onClickRefreshEnrollments,
     },
     information: {},
   };

@@ -90,7 +90,7 @@ const EducationTable = ({ loadEducations }: EducationTableProps) => {
       const { scrollTop, scrollHeight, clientHeight } = scrollRef.current;
 
       // 스크롤이 최하단에 도달했는지 확인
-      if (scrollTop + clientHeight >= scrollHeight) {
+      if (scrollTop + clientHeight >= scrollHeight - 10) {
         loadEducations(); // 데이터를 추가로 로드
       }
     }

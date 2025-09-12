@@ -332,6 +332,24 @@ const AttendanceInformation = ({ scrollRef }: AttendanceInformationProps) => {
     }
   };
 
+  const onClickRefreshAttendances = () => {
+    worshipAttendancesApi
+      .refreshWorshipAttendances({
+        churchId,
+        worshipId: targetWorshipSessionWorship.id,
+        sessionId: targetWorshipSession.id,
+      })
+      .then((response) => {
+        if (targetWorshipSessionWorship.id && targetWorshipSession.id) {
+          dispatch(setWorshipAttendanceCursor(BLANK));
+          dispatch(setWorshipAttendances([])); // 초기화 필요시 유지
+          dispatch(fetchWorshipAttendances());
+        } else {
+          dispatch(setWorshipAttendances([]));
+        }
+      });
+  };
+
   useEffect(() => {
     fetchSessionStatistic();
   }, [targetWorshipSession.id, targetWorshipSessionGroup.id]);
@@ -346,6 +364,7 @@ const AttendanceInformation = ({ scrollRef }: AttendanceInformationProps) => {
     onChangeDate,
     onClickAllAttended,
     fetchSessionStatistic,
+    onClickRefreshAttendances,
   };
 
   return (

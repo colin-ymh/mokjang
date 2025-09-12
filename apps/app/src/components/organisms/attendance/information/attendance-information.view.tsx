@@ -5,15 +5,16 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
 import { Group } from '@mokjang/models';
-import { Button, CustomPopup, MainText } from '@mokjang/components';
+import { Button, CustomPopup, MainText, SvgIcon } from '@mokjang/components';
 import SelectGroupHierarchy from '../../group/select-group-hierarchy';
 import WeekNavigator from '../../../atoms/common/date/week-navigator';
 import { getDateFromDateString, getDateStringFromDate } from '@mokjang/utils';
-import { GRAY, GREEN, RED, SIZE } from '@mokjang/constants';
+import { CURSOR, GRAY, GREEN, RED, SIZE, WHITE } from '@mokjang/constants';
 import AttendanceInformationTable from '../../../molecules/attendance/information/attendance-information-table';
 import WorshipSessionInformation from '../../../molecules/attendance/information/worship-session-information';
 import LabelDropdown from '../../../atoms/common/dropdown/label-dropdown';
 import { getWorshipAttendanceRateColor } from '../../../../utils/color';
+import { Svg } from '@mokjang/assets';
 
 const AttendanceInformationContainer = styled.div`
   display: flex;
@@ -96,6 +97,7 @@ type AttendanceInformationProps = {
   onChangeDate: (date: Date) => void;
   onClickAllAttended: () => void;
   fetchSessionStatistic: () => void;
+  onClickRefreshAttendances: () => void;
 };
 
 const AttendanceInformation = ({
@@ -108,6 +110,7 @@ const AttendanceInformation = ({
   onChangeDate,
   onClickAllAttended,
   fetchSessionStatistic,
+  onClickRefreshAttendances,
 }: AttendanceInformationProps) => {
   const t = useI18n();
   const t_title = useScopedI18n('title');
@@ -223,8 +226,23 @@ const AttendanceInformation = ({
           </BoxContainer>
           {/* 검색창 */}
           <RowContainer>
-            <div />
-            {/*<BorderInput value={searchText} onChange={onChangeSearchText} />*/}
+            <Button
+              onClick={onClickRefreshAttendances}
+              icon={
+                <SvgIcon
+                  cursor={CURSOR.POINTER}
+                  svg={Svg.ArrowPath}
+                  width={2}
+                  size={20}
+                  color={GRAY.DARK}
+                  bottom={0.1}
+                />
+              }
+              width={30}
+              height={30}
+              borderColor={GRAY.LIGHT}
+              backgroundColor={WHITE}
+            />
             <Button
               text={t('button.allAttended')}
               height={30}

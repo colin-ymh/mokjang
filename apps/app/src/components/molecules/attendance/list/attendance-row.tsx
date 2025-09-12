@@ -41,6 +41,7 @@ import axios from 'axios';
 const AttendanceRow = ({
   isStatisticOpened,
   onClickStatisticChevron,
+  onClickRefreshEnrollments,
 }: AttendanceTableProps) => {
   const router = usePageRouter();
 
@@ -416,6 +417,7 @@ const AttendanceRow = ({
     onChangeFromDate,
     onChangeToDate,
     onChangeWorshipPeriodDropdown,
+    onClickRefreshEnrollments,
   };
 
   return (

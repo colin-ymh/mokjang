@@ -7,13 +7,16 @@ import {
   setWorships,
 } from '../../../redux/reducers/filter/worship-filter-reducer';
 
-import { ORDER_DIRECTION } from '@mokjang/constants';
+import {
+  BLACK,
+  DESTRUCTIVE,
+  ORDER_DIRECTION,
+  WORSHIP,
+} from '@mokjang/constants';
 import { WorshipsApi } from '../../../api/worship/worships.api';
 import { DEFAULT_WORSHIP, Worship } from '@mokjang/models';
 import { setTargetWorship } from '../../../redux/reducers/target/target-worship-reducer';
-import { getIsWellFormedTitle } from '@mokjang/utils';
-
-import { WORSHIP } from '@mokjang/constants';
+import { getIsWellFormedTitle, usePageRouter } from '@mokjang/utils';
 import WorshipTableView from './worship-table.view';
 import {
   setIsToastShown,
@@ -21,8 +24,6 @@ import {
   setToastText,
 } from '../../../redux/reducers/toast-popup-reducer';
 import { useI18n } from '../../../../locales/client';
-import { BLACK, DESTRUCTIVE } from '@mokjang/constants';
-import { usePageRouter } from '@mokjang/utils';
 
 export type WorshipTableProps = {
   loadWorships: () => Promise<void>;
@@ -100,7 +101,7 @@ const WorshipTable = ({ loadWorships }: WorshipTableProps) => {
       const { scrollTop, scrollHeight, clientHeight } = scrollRef.current;
 
       // 스크롤이 최하단에 도달했는지 확인
-      if (scrollTop + clientHeight >= scrollHeight) {
+      if (scrollTop + clientHeight >= scrollHeight - 10) {
         loadWorships(); // 데이터를 추가로 로드
       }
     }

@@ -68,6 +68,10 @@ type EditGroupLeaderBody = {
   startDate: string;
 };
 
+type RefreshGroupCountParams = {
+  churchId: string;
+};
+
 export class GroupsApi {
   private _url: string;
 
@@ -296,6 +300,34 @@ export class GroupsApi {
 
     try {
       return await authorizeAxios.patch(url, body);
+    } catch (serverError: any) {
+      if (serverError.response) {
+        const { message, error, statusCode } = serverError.response.data;
+        throw new CustomError(message, error, statusCode);
+      } else {
+        throw new CustomError(
+          '알 수 없는 에러가 발생했습니다',
+          500,
+          'Unknown Error'
+        );
+      }
+    }
+  };
+
+  /**
+   * 그룹 개수 새로고침
+   * @param {RefreshGroupCountParams} params
+   * @returns {Promise<AxiosResponse>}
+   */
+  public refreshGroupCount = async (
+    params: RefreshGroupCountParams
+  ): Promise<AxiosResponse> => {
+    const { churchId } = params;
+
+    const url = `${this._url}/churches/${churchId}/management/groups/refresh-count`;
+
+    try {
+      return await authorizeAxios.patch(url);
     } catch (serverError: any) {
       if (serverError.response) {
         const { message, error, statusCode } = serverError.response.data;

@@ -6,7 +6,6 @@ import { CustomError } from '../error/error';
 import authorizeAxios from '../authorize-axios';
 import { IS_PRODUCTION, SERVER_URL, TEST_SERVER_URL } from '@mokjang/utils';
 
-
 type GetWorshipEnrollmentsParams = {
   churchId: string; // 교회 id
   worshipId: string;
@@ -107,7 +106,7 @@ export class WorshipEnrollmentsApi {
   ): Promise<AxiosResponse> => {
     const { churchId, worshipId } = params;
 
-    const url = `${this._url}/churches/${churchId}/worships/${worshipId}/refresh`;
+    const url = `${this._url}/churches/${churchId}/worships/${worshipId}/enrollments/refresh`;
 
     try {
       return await authorizeAxios.post(url);

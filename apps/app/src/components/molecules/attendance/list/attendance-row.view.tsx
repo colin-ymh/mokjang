@@ -2,13 +2,14 @@ import styled from 'styled-components';
 import FakeDropdownButton from '../../../atoms/common/button/fake-dropdown-button';
 import { Group } from '@mokjang/models';
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
-import { Button, CustomPopup, MainText } from '@mokjang/components';
+import { Button, CustomPopup, MainText, SvgIcon } from '@mokjang/components';
 import SelectGroupHierarchy from '../../../organisms/group/select-group-hierarchy';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
 import Dropdown from '../../../atoms/common/dropdown/dropdown';
 import {
   ALL,
+  CURSOR,
   DAY,
   GRAY,
   GREEN,
@@ -114,6 +115,7 @@ type AttendanceViewProps = {
   onChangeFromDate: (date: Date | null) => void;
   onChangeToDate: (date: Date | null) => void;
   onChangeWorshipPeriodDropdown: (value: WORSHIP_PERIOD) => void;
+  onClickRefreshEnrollments: () => void;
 };
 
 const AttendanceRow = ({
@@ -129,6 +131,7 @@ const AttendanceRow = ({
   onChangeFromDate,
   onChangeToDate,
   onChangeWorshipPeriodDropdown,
+  onClickRefreshEnrollments,
 }: AttendanceViewProps) => {
   const t = useI18n();
   const t_button = useScopedI18n('button');
@@ -163,6 +166,23 @@ const AttendanceRow = ({
       <AttendanceContainer>
         <HeaderContainer>
           <LeftContainer>
+            <Button
+              onClick={onClickRefreshEnrollments}
+              icon={
+                <SvgIcon
+                  cursor={CURSOR.POINTER}
+                  svg={Svg.ArrowPath}
+                  width={2}
+                  size={20}
+                  color={GRAY.DARK}
+                  bottom={0.1}
+                />
+              }
+              width={40}
+              height={40}
+              borderColor={GRAY.LIGHT}
+              backgroundColor={WHITE}
+            />
             {/* 예배 설정 */}
             <Dropdown
               value={targetWorship.id}
@@ -217,7 +237,7 @@ const AttendanceRow = ({
               width={100}
             />
             <Button
-              icon={<Chevron $isOpened={isStatisticOpened} />}
+              icon={<Chevron $isOpened={isStatisticOpened} color={GRAY.DARK} />}
               onClick={onClickStatisticChevron}
               width={40}
               backgroundColor={WHITE}
