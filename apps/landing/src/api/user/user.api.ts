@@ -30,7 +30,7 @@ export class UserApi {
    * @returns {Promise<AxiosResponse>}
    */
   public getUser = async (): Promise<AxiosResponse> => {
-    const url = `${this._url}/users`;
+    const url = `${this._url}/me`;
 
     try {
       return await authorizeAxios.get(url.toString());

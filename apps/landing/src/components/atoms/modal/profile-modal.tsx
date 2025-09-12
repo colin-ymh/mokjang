@@ -16,7 +16,7 @@ const ProfileModal = ({ onClickClose }: ProfileModalProps) => {
   };
 
   const onClickChurch = () => {
-    routeAppPage('/');
+    routeAppPage('/main');
   };
 
   const onClickSetting = () => {
