@@ -156,6 +156,7 @@ export default {
   permissionScope: '권한범위',
 
   educationEnrollment: '수강 교인',
+  enrollments: '수강 교인',
 
   inCharge: '담당자',
   inChargeId: '담당자',
@@ -173,6 +174,7 @@ export default {
   visitationDate: '심방일자',
   visitationMethod: '심방방식',
   visitationType: '심방 종류',
+  members: '대상자',
   fromStartDate: '날짜 ~부터',
   toStartDate: '날짜 ~까지',
 

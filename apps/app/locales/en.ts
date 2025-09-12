@@ -162,6 +162,7 @@ export default {
   permissionScope: 'Permission Scope',
 
   educationEnrollment: 'Enrollment',
+  enrollments: 'Enrollment',
 
   method: 'Method',
 
@@ -176,6 +177,7 @@ export default {
   visitationDate: 'Visit Date',
   visitationMethod: 'Method',
   visitationType: 'Type',
+  members: 'Members',
   fromStartDate: 'Start After',
   toStartDate: 'Start Before',
 

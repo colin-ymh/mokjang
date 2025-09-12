@@ -10,6 +10,7 @@ import {
   Education,
   EducationSession,
   EducationTerm,
+  NOTIFICATION_DOMAIN,
 } from '@mokjang/models';
 import { setEducations } from '../../../../redux/reducers/filter/education-filter-reducer';
 import {
@@ -40,6 +41,7 @@ import EducationSessionInformation from '../../../organisms/education/education-
 import AddEducationSession from '../../../organisms/education/education-session/add/add-education-session';
 import { usePathname } from 'next/navigation';
 import { setEducationTerms } from '../../../../redux/reducers/filter/education-term-filter-reducer';
+import { closeModal } from '@/redux/reducers/modal-reducer';
 
 export type EducationTableProps = {
   loadEducations: () => void;
@@ -55,7 +57,7 @@ const EducationTable = ({ loadEducations }: EducationTableProps) => {
   const dispatch = useDispatch<AppDispatch>();
 
   const { churchId } = useSelector((state: RootState) => state.church);
-
+  const modal = useSelector((state: RootState) => state.modal);
   const { educations } = useSelector(
     (state: RootState) => state.educationFilter
   );
@@ -437,6 +439,7 @@ const EducationTable = ({ loadEducations }: EducationTableProps) => {
         educationEnrollments: targetEducationTerm.educationEnrollments,
       })
     );
+    dispatch(closeModal());
   };
 
   const onClickEditEducationTermDone = async () => {
@@ -730,6 +733,7 @@ const EducationTable = ({ loadEducations }: EducationTableProps) => {
         educationAttendances: targetEducationSession.educationAttendances,
       })
     );
+    dispatch(closeModal());
   };
 
   const onClickEditEducationSessionDone = async () => {
@@ -866,6 +870,111 @@ const EducationTable = ({ loadEducations }: EducationTableProps) => {
     }
   };
   // ------------------------- 교육 회차 ---------------------------
+
+  useEffect(() => {
+    if (
+      !modal.open ||
+      modal.type !== NOTIFICATION_DOMAIN.EDUCATION_TERM ||
+      !modal.id ||
+      !modal.educationId
+    )
+      return;
+
+    (async () => {
+      try {
+        const res = await educationApi.getEducation({
+          churchId,
+          educationId: modal.educationId as string,
+        });
+        const education = res.data;
+
+        const termRes = await educationTermsApi.getEducationTerm({
+          churchId,
+          educationId: modal.educationId as string,
+          educationTermId: modal.id as string,
+        });
+        const educationTerm = termRes.data.data;
+
+        // 상세에 필요한 데이터 저장 + 상세 패널 오픈
+        dispatch(setTargetEducation(education));
+        dispatch(setTargetEducationTerm(educationTerm));
+        setIsEducationTermInformationShown(true);
+
+        // (선택) 한 번 열었으면 modal 상태 정리해서 중복 오픈 방지
+        dispatch(closeModal());
+      } catch (error) {
+        dispatch(closeModal());
+        if (error instanceof Error) {
+          dispatch(setToastText(error.message));
+          dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
+          dispatch(setIsToastShown(true));
+        } else {
+          setThrownError(new Error(String(error)));
+        }
+      }
+    })();
+  }, [modal.open, modal.type, modal.id, modal.educationId, churchId]);
+
+  useEffect(() => {
+    if (
+      !modal.open ||
+      modal.type !== NOTIFICATION_DOMAIN.EDUCATION_SESSION ||
+      !modal.id ||
+      !modal.educationId ||
+      !modal.educationTermId
+    )
+      return;
+
+    (async () => {
+      try {
+        const res = await educationApi.getEducation({
+          churchId,
+          educationId: modal.educationId as string,
+        });
+        const education = res.data;
+
+        const termRes = await educationTermsApi.getEducationTerm({
+          churchId,
+          educationId: modal.educationId as string,
+          educationTermId: modal.educationTermId as string,
+        });
+        const educationTerm = termRes.data.data;
+
+        const sessionRes = await educationSessionsApi.getEducationSession({
+          churchId,
+          educationId: modal.educationId as string,
+          educationTermId: modal.educationTermId as string,
+          educationSessionId: modal.id as string,
+        });
+        const educationSession = sessionRes.data.data;
+
+        // 상세에 필요한 데이터 저장 + 상세 패널 오픈
+        dispatch(setTargetEducation(education));
+        dispatch(setTargetEducationTerm(educationTerm));
+        dispatch(setTargetEducationSession(educationSession));
+        setIsEducationSessionInformationShown(true);
+
+        // (선택) 한 번 열었으면 modal 상태 정리해서 중복 오픈 방지
+        dispatch(closeModal());
+      } catch (error) {
+        dispatch(closeModal());
+        if (error instanceof Error) {
+          dispatch(setToastText(error.message));
+          dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
+          dispatch(setIsToastShown(true));
+        } else {
+          setThrownError(new Error(String(error)));
+        }
+      }
+    })();
+  }, [
+    modal.open,
+    modal.type,
+    modal.id,
+    modal.educationId,
+    modal.educationTermId,
+    churchId,
+  ]);
 
   const props = {
     scrollRef,

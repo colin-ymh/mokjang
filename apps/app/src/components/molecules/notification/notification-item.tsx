@@ -1,114 +1,139 @@
 import { Notification, NOTIFICATION_DOMAIN } from '@mokjang/models';
-import { useI18n } from '../../../../locales/client';
-import { MainText } from '@mokjang/components';
-import styled from 'styled-components';
-import { CURSOR, GRAY, LOCALE, MAIN, WHITE } from '@mokjang/constants';
-import { getTranslatedTimeAgo } from '@mokjang/utils';
-import { usePathname } from 'next/navigation';
+import { usePageRouter } from '@mokjang/utils';
 import { NotificationApi } from '@/api/notification/notification.api';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '@/redux/store';
-
-const ItemContainer = styled.div<{ $backgroundColor?: string }>`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  padding: 20px;
-  flex-shrink: 0;
-  background-color: ${({ $backgroundColor }) => $backgroundColor};
-  position: relative;
-  cursor: pointer;
-`;
-
-const NotificationContent = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-`;
-
-const RowContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-`;
-
-const Dot = styled.div`
-  display: flex;
-  position: absolute;
-  width: 8px;
-  height: 8px;
-  border-radius: 100%;
-  top: 20px;
-  right: 20px;
-  background-color: ${MAIN.DEFAULT};
-`;
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '@/redux/store';
+import {
+  fetchNotificationCount,
+  fetchNotifications,
+  resetNotifications,
+} from '@/redux/reducers/notification-reducer';
+import {
+  openEducationSession,
+  openEducationTerm,
+  openManager,
+  openMyInformation,
+  openTaskModal,
+  openVisitationModal,
+} from '@/redux/reducers/modal-reducer';
+import NotificationItemView, {
+  NotificationItemViewProps,
+} from '@/components/molecules/notification/notification-item.view';
+import {
+  setIsToastShown,
+  setToastBackgroundColor,
+  setToastText,
+} from '@/redux/reducers/toast-popup-reducer';
+import { BLANK, DESTRUCTIVE } from '@mokjang/constants';
 
 type NotificationItemProps = {
   notification: Notification;
+  onClickClose: () => void;
 };
 
-const NotificationItem = ({ notification }: NotificationItemProps) => {
+const NotificationItem = ({
+  notification,
+  onClickClose,
+}: NotificationItemProps) => {
+  const router = usePageRouter();
+
   const dispatch = useDispatch<AppDispatch>();
-
-  const pathname = usePathname();
-  const locale = pathname.split('/')[1] as LOCALE;
-  const t = useI18n();
-
-  const { notifications } = useSelector(
-    (state: RootState) => state.notification
-  );
 
   const notificationsApi = new NotificationApi();
 
-  const onClickItem = async () => {};
+  const onClickItem = async () => {
+    try {
+      if (!notification.isRead) {
+        // 1) 읽음 처리 (fire-and-forget 가능)
+        await notificationsApi.readNotification({
+          notificationId: notification.id,
+        });
+        // 읽음 카운트/목록 갱신
+        dispatch(resetNotifications());
+        dispatch(fetchNotifications());
+        dispatch(fetchNotificationCount());
+      }
+
+      // 2) 도메인별 이동/모달 열기
+      const src = notification?.sourceInfo;
+      const domain = notification.domain;
+      const id = String(src?.id ?? '');
+
+      switch (domain) {
+        case NOTIFICATION_DOMAIN.CHURCH_INFO: {
+          // 모달 열기 먼저
+          router.push('/management/church/church');
+          return;
+        }
+        case NOTIFICATION_DOMAIN.TASK: {
+          // 모달 열기 먼저
+          dispatch(openTaskModal({ id }));
+          // 목록 라우팅
+          router.push('/main/task/all');
+          return;
+        }
+        case NOTIFICATION_DOMAIN.VISITATION: {
+          // 모달 열기 먼저
+          dispatch(openVisitationModal({ id }));
+          // 목록 라우팅
+          router.push('/main/visitation/all');
+          return;
+        }
+
+        case NOTIFICATION_DOMAIN.PERMISSION: {
+          dispatch(openMyInformation());
+          return;
+        }
+
+        case NOTIFICATION_DOMAIN.MANAGER: {
+          if (notification.domainTitle === BLANK) {
+            dispatch(openMyInformation());
+          } else {
+            dispatch(openManager({ id }));
+            router.push('/main/manager/manager');
+          }
+          return;
+        }
+
+        case NOTIFICATION_DOMAIN.EDUCATION_TERM: {
+          const educationId = notification.sourceInfo?.educationId as string;
+          dispatch(openEducationTerm({ id, educationId }));
+          router.push('/main/education/all');
+          return;
+        }
+
+        case NOTIFICATION_DOMAIN.EDUCATION_SESSION: {
+          const educationId = notification.sourceInfo?.educationId as string;
+          const educationTermId = notification.sourceInfo
+            ?.educationTermId as string;
+          dispatch(openEducationSession({ id, educationId, educationTermId }));
+          router.push('/main/education/all');
+          return;
+        }
+
+        default:
+          // 목적지 미정이면 그냥 종료
+          return;
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        dispatch(setToastText(error.message));
+        dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
+        dispatch(setIsToastShown(true));
+      }
+    } finally {
+      onClickClose();
+    }
+  };
+
+  const props = {
+    notification,
+    onClickItem,
+  } as NotificationItemViewProps;
 
   return (
     <>
-      <ItemContainer
-        onClick={onClickItem}
-        $backgroundColor={notification.isRead ? WHITE : MAIN.EXTRA_LIGHT}
-      >
-        <Dot />
-        <NotificationContent>
-          <MainText
-            cursor={CURSOR.POINTER}
-          >{`[${t(notification.domain as NOTIFICATION_DOMAIN)}] ${notification.domainTitle}`}</MainText>
-          <MainText
-            cursor={CURSOR.POINTER}
-            color={GRAY.DARK}
-            fontWeight={400}
-            fontSize={12}
-          >
-            {'김민수 집사님이 일정 상태를 변경했습니다.'}
-          </MainText>
-          <MainText
-            cursor={CURSOR.POINTER}
-            color={GRAY.DARK}
-            fontWeight={400}
-            fontSize={12}
-          >
-            {'김민수 집사님이 일정 상태를 변경했습니다.'}
-          </MainText>
-          <RowContainer>
-            <MainText
-              cursor={CURSOR.POINTER}
-              color={GRAY.DARK}
-              fontWeight={400}
-              fontSize={12}
-            >
-              {getTranslatedTimeAgo(locale, notification.createdAt)}
-            </MainText>
-            <MainText
-              cursor={CURSOR.POINTER}
-              color={GRAY.DARK}
-              fontWeight={400}
-              fontSize={12}
-            >
-              {notification.actorName}
-            </MainText>
-          </RowContainer>
-        </NotificationContent>
-      </ItemContainer>
+      <NotificationItemView {...props} />
     </>
   );
 };

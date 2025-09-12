@@ -1,5 +1,4 @@
 import { TransparentBackground } from '@mokjang/components';
-import { routeLandingPage } from '@mokjang/utils';
 
 import NotificationModalView, {
   NotificationModalViewProps,
@@ -8,9 +7,11 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 import {
+  fetchNotificationCount,
   fetchNotifications,
   resetNotifications,
 } from '@/redux/reducers/notification-reducer';
+import { NotificationApi } from '@/api/notification/notification.api';
 
 type ProfileModalProps = {
   onClickClose: () => void;
@@ -19,16 +20,22 @@ type ProfileModalProps = {
 const NotificationModal = ({ onClickClose }: ProfileModalProps) => {
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const dispatch = useDispatch<AppDispatch>();
+
+  const notificationApi = new NotificationApi();
+
   const [isZoomIn, setIsZoomIn] = useState(false);
 
-  // ✅ redux 상태 읽기
   const { loading, hasMore } = useSelector((s: RootState) => s.notification);
 
-  const onClickReadAll = () => {};
-
-  const onClickUnread = () => {
-    routeLandingPage('/donate');
+  const onClickReadAll = () => {
+    notificationApi.readAll().then(() => {
+      dispatch(resetNotifications());
+      dispatch(fetchNotifications());
+      dispatch(fetchNotificationCount());
+    });
   };
+
+  const onClickUnread = () => {};
 
   const onClickZoomIn = () => setIsZoomIn(true);
   const onClickZoomOut = () => setIsZoomIn(false);

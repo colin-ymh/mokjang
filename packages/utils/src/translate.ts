@@ -470,10 +470,7 @@ export const getTranslatedTerm = (locale: LOCALE, term: string) => {
   if (locale === LOCALE.KO) {
     return `${term}기`;
   } else {
-    if (term === '1') return `1st`;
-    if (term === '2') return `2nd`;
-    if (term === '3') return `3rd`;
-    return `${term}th`;
+    return `Batch ${term}`;
   }
 };
 

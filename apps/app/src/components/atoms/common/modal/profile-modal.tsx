@@ -1,7 +1,7 @@
 import {
   MainText,
-  TransparentBackground,
   ProfileImage,
+  TransparentBackground,
 } from '@mokjang/components';
 import { getFormattedPhone, routeLandingPage } from '@mokjang/utils';
 import { AuthApi } from '@/api/auth/auth.api';
@@ -9,7 +9,7 @@ import ProfileModalView, { ProfileModalViewProps } from './profile-modal.view';
 import SlidePopup from '@/components/atoms/common/popup/slide-popup';
 import { BLACK, GRAY } from '@mokjang/constants';
 import ChurchUserInformation from '@/components/organisms/church-user/information/church-user-information';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Svg } from '@mokjang/assets';
 import { useDispatch, useSelector } from 'react-redux';
@@ -18,6 +18,8 @@ import { useScopedI18n } from '../../../../../locales/client';
 import { UserApi } from '@/api/user/user.api';
 import { setTargetChurchUser } from '@/redux/reducers/target/target-church-user-reducer';
 import { ManagersApi } from '@/api/managers/managers.api';
+import { closeModal } from '@/redux/reducers/modal-reducer';
+import { NOTIFICATION_DOMAIN } from '@mokjang/models';
 
 const ProfileContainer = styled.div`
   display: flex;
@@ -57,6 +59,8 @@ const ProfileModal = ({ onClickClose }: ProfileModalProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const t_button = useScopedI18n('button');
 
+  const modal = useSelector((state: RootState) => state.modal);
+
   const authApi = new AuthApi(false);
   const userApi = new UserApi(false);
 
@@ -78,6 +82,7 @@ const ProfileModal = ({ onClickClose }: ProfileModalProps) => {
 
   const onClickMyClose = () => {
     setIsMyOpened(false);
+    dispatch(closeModal());
   };
 
   const onClickDonate = () => {
@@ -97,6 +102,14 @@ const ProfileModal = ({ onClickClose }: ProfileModalProps) => {
     await userApi.leaveChurch();
     routeLandingPage('/');
   };
+
+  useEffect(() => {
+    if (!modal.open || modal.type !== NOTIFICATION_DOMAIN.PERMISSION) return;
+
+    (async () => {
+      onClickMy();
+    })();
+  }, [modal.open, modal.type]);
 
   const props = {
     onClickMy,

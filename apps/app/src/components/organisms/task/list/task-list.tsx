@@ -1,22 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../../../redux/store';
+import { AppDispatch, RootState } from '@/redux/store';
 import {
   fetchTasks,
   setTaskPage,
   setTasks,
-} from '../../../../redux/reducers/filter/task-filter-reducer';
+} from '@/redux/reducers/filter/task-filter-reducer';
 
 import TaskListView from './task-list.view';
-import { DEFAULT_TASK, Task } from '@mokjang/models';
-import { setTargetTask } from '../../../../redux/reducers/target/target-task-reducer';
+import { DEFAULT_TASK, NOTIFICATION_DOMAIN, Task } from '@mokjang/models';
+import { setTargetTask } from '@/redux/reducers/target/target-task-reducer';
 import {
   setIsToastShown,
   setToastBackgroundColor,
   setToastText,
-} from '../../../../redux/reducers/toast-popup-reducer';
+} from '@/redux/reducers/toast-popup-reducer';
 import { useScopedI18n } from '../../../../../locales/client';
-import { TasksApi } from '../../../../api/tasks/tasks.api';
+import { TasksApi } from '@/api/tasks/tasks.api';
 import {
   getDateFromDateString,
   getFullStringFromDate,
@@ -29,6 +29,7 @@ import {
   HEADER_BAR,
   TASK_STATUS,
 } from '@mokjang/constants';
+import { closeModal } from '@/redux/reducers/modal-reducer';
 
 type TaskListProps = {
   headerType?: HEADER_BAR;
@@ -50,6 +51,8 @@ const TaskList = ({ headerType }: TaskListProps) => {
   if (thrownError) {
     throw thrownError;
   }
+
+  const modal = useSelector((state: RootState) => state.modal);
 
   // 교인 상세정보 팝업 On/Off
   const [isTaskInformationShown, setIsTaskInformationShown] =
@@ -156,6 +159,7 @@ const TaskList = ({ headerType }: TaskListProps) => {
     });
     const newTask = response.data.data;
     dispatch(setTargetTask(newTask));
+    dispatch(closeModal());
   };
 
   const onClickEditDone = async () => {
@@ -171,17 +175,38 @@ const TaskList = ({ headerType }: TaskListProps) => {
         .editTask(
           { churchId, taskId: targetTask.id },
           {
-            status: targetTask.status || undefined,
-            title: targetTask.title || undefined,
-            inChargeId: targetTask.inChargeId || undefined,
-            startDate: getFullStringFromDate(
-              getDateFromDateString(targetTask.startDate)
-            ),
-            endDate: getFullStringFromDate(
-              getDateFromDateString(targetTask.endDate)
-            ),
-            parentTaskId: targetTask.parentTaskId || undefined,
-            content: targetTask.content || undefined,
+            status:
+              targetTask.status !== prev.status ? targetTask.status : undefined,
+            title:
+              targetTask.title !== prev.title ? targetTask.title : undefined,
+            inChargeId:
+              targetTask.inChargeId !== prev.inChargeId
+                ? targetTask.inChargeId
+                : undefined,
+            startDate:
+              getFullStringFromDate(
+                getDateFromDateString(targetTask.startDate)
+              ) !== getFullStringFromDate(getDateFromDateString(prev.startDate))
+                ? getFullStringFromDate(
+                    getDateFromDateString(targetTask.startDate)
+                  )
+                : undefined,
+            endDate:
+              getFullStringFromDate(
+                getDateFromDateString(targetTask.endDate)
+              ) !== getFullStringFromDate(getDateFromDateString(prev.endDate))
+                ? getFullStringFromDate(
+                    getDateFromDateString(targetTask.endDate)
+                  )
+                : undefined,
+            parentTaskId:
+              targetTask.parentTaskId !== prev.parentTaskId
+                ? targetTask.parentTaskId
+                : undefined,
+            content:
+              targetTask.content !== prev.content
+                ? targetTask.content
+                : undefined,
           }
         )
         .then(async () => {
@@ -289,6 +314,37 @@ const TaskList = ({ headerType }: TaskListProps) => {
 
     setIsSaveEnabled(true);
   }, [targetTask]);
+
+  useEffect(() => {
+    if (!modal.open || modal.type !== NOTIFICATION_DOMAIN.TASK || !modal.id)
+      return;
+
+    (async () => {
+      try {
+        const res = await tasksApi.getTask({
+          churchId,
+          taskId: modal.id as string,
+        });
+        const task = res.data.data;
+
+        // 상세에 필요한 데이터 저장 + 상세 패널 오픈
+        dispatch(setTargetTask(task));
+        setIsTaskInformationShown(true);
+
+        // (선택) 한 번 열었으면 modal 상태 정리해서 중복 오픈 방지
+        dispatch(closeModal());
+      } catch (error) {
+        dispatch(closeModal());
+        if (error instanceof Error) {
+          dispatch(setToastText(error.message));
+          dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
+          dispatch(setIsToastShown(true));
+        } else {
+          setThrownError(new Error(String(error)));
+        }
+      }
+    })();
+  }, [modal.open, modal.type, modal.id, churchId]);
 
   const props = {
     list: {

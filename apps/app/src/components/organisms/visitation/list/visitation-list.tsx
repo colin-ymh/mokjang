@@ -8,7 +8,11 @@ import {
 } from '@/redux/reducers/filter/visitation-filter-reducer';
 
 import VisitationListView from './visitation-list.view';
-import { DEFAULT_VISITATION, Visitation } from '@mokjang/models';
+import {
+  DEFAULT_VISITATION,
+  NOTIFICATION_DOMAIN,
+  Visitation,
+} from '@mokjang/models';
 import { setTargetVisitation } from '@/redux/reducers/target/target-visitation-reducer';
 import {
   setIsToastShown,
@@ -29,6 +33,7 @@ import {
   HEADER_BAR,
   TASK_STATUS,
 } from '@mokjang/constants';
+import { closeModal } from '@/redux/reducers/modal-reducer';
 
 type VisitationListProps = {
   headerType?: HEADER_BAR;
@@ -52,6 +57,8 @@ const VisitationList = ({ headerType }: VisitationListProps) => {
   );
 
   const t_popup = useScopedI18n('popup');
+
+  const modal = useSelector((state: RootState) => state.modal);
 
   const [thrownError, setThrownError] = useState<Error | null>(null);
   if (thrownError) {
@@ -134,6 +141,7 @@ const VisitationList = ({ headerType }: VisitationListProps) => {
   const onClickClose = () => {
     setIsVisitationInformationShown(false);
     dispatch(setTargetVisitation(DEFAULT_VISITATION));
+    dispatch(closeModal());
   };
 
   // 업무 삭제하기
@@ -173,24 +181,48 @@ const VisitationList = ({ headerType }: VisitationListProps) => {
   };
 
   const onClickEditDone = async () => {
+    const prevVisitation = visitations.find(
+      (v) => v.id === targetVisitation.id
+    );
+    if (!prevVisitation) return;
+
     try {
+      const diffPayload = {
+        status:
+          targetVisitation.status !== prevVisitation.status
+            ? targetVisitation.status
+            : undefined,
+        title:
+          targetVisitation.title !== prevVisitation.title
+            ? targetVisitation.title
+            : undefined,
+        inChargeId:
+          targetVisitation.inChargeId !== prevVisitation.inChargeId
+            ? targetVisitation.inChargeId
+            : undefined,
+        startDate:
+          targetVisitation.startDate !== prevVisitation.startDate
+            ? getFullStringFromDate(
+                getDateFromDateString(targetVisitation.startDate)
+              )
+            : undefined,
+        endDate:
+          targetVisitation.endDate !== prevVisitation.endDate
+            ? getFullStringFromDate(
+                getDateFromDateString(targetVisitation.endDate)
+              )
+            : undefined,
+        memberIds:
+          JSON.stringify(targetVisitation.members.map((m) => m.id).sort()) !==
+          JSON.stringify(prevVisitation.members.map((m) => m.id).sort())
+            ? targetVisitation.members.map((m) => m.id)
+            : undefined,
+      };
+
+      // 변경된 필드만 전송
       await visitationApi.editVisitation(
         { churchId, visitationId: targetVisitation.id },
-        {
-          status: targetVisitation.status || undefined,
-          title: targetVisitation.title || undefined,
-
-          inChargeId: targetVisitation.inChargeId || undefined,
-          startDate:
-            getFullStringFromDate(
-              getDateFromDateString(targetVisitation.startDate)
-            ) || undefined,
-          endDate:
-            getFullStringFromDate(
-              getDateFromDateString(targetVisitation.endDate)
-            ) || undefined,
-          memberIds: targetVisitation.members.map((member) => member.id),
-        }
+        diffPayload
       );
 
       await visitationApi.editVisitationDetails(
@@ -320,6 +352,40 @@ const VisitationList = ({ headerType }: VisitationListProps) => {
 
     setIsSaveEnabled(true);
   }, [targetVisitation]);
+
+  useEffect(() => {
+    if (
+      !modal.open ||
+      modal.type !== NOTIFICATION_DOMAIN.VISITATION ||
+      !modal.id
+    )
+      return;
+
+    (async () => {
+      try {
+        const res = await visitationApi.getVisitation({
+          churchId,
+          visitationId: modal.id as string,
+        });
+        const visitation = res.data.data;
+
+        // 상세에 필요한 데이터 저장 + 상세 패널 오픈
+        dispatch(setTargetVisitation(visitation));
+        setIsVisitationInformationShown(true);
+
+        dispatch(closeModal());
+      } catch (error) {
+        dispatch(closeModal());
+        if (error instanceof Error) {
+          dispatch(setToastText(error.message));
+          dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
+          dispatch(setIsToastShown(true));
+        } else {
+          setThrownError(new Error(String(error)));
+        }
+      }
+    })();
+  }, [modal.open, modal.type, modal.id, churchId]);
 
   const props = {
     list: {

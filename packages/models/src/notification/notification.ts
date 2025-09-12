@@ -5,9 +5,10 @@ export enum NOTIFICATION_DOMAIN {
   VISITATION = 'visitation',
   EDUCATION_TERM = 'educationTerm',
   EDUCATION_SESSION = 'educationSession',
-  WORSHIP_ATTENDANCE = 'worshipAttendance',
+  MANAGER = 'manager',
   PERMISSION = 'permission',
   CHURCH_INFO = 'churchInfo',
+  WORSHIP = 'worship',
 }
 
 export enum NOTIFICATION_ACTION {
@@ -22,9 +23,21 @@ export enum NOTIFICATION_ACTION {
 
   REPORT_ADDED = 'reportAdded',
   REPORT_REMOVED = 'reportRemoved',
+}
 
-  MANAGER_UPDATED = 'managerUpdated',
-  CHURCH_INFO_UPDATED = 'churchInfoUpdated',
+export enum PAYLOAD_FIELD {
+  TITLE = 'title',
+  CONTENT = 'content',
+  START_DATE = 'startDate',
+  END_DATE = 'endDate',
+  STATUS = 'status',
+  VISITATION_METHOD = 'visitationMethod',
+  MEMBERS = 'members',
+  LOCATION = 'location',
+  IN_CHARGE = 'inCharge',
+  ENROLLMENTS = 'enrollments',
+  ADDRESS = 'address',
+  DETAIL_ADDRESS = 'detailAddress',
 }
 
 export type Notification = {
@@ -33,13 +46,13 @@ export type Notification = {
   updatedAt: string;
   expiresAt: string;
   churchUserId: string;
-  actorName?: string;
-  domain?: NOTIFICATION_DOMAIN;
-  action?: NOTIFICATION_ACTION;
-  domainTitle?: string;
+  actorName: string;
+  domain: NOTIFICATION_DOMAIN;
+  action: NOTIFICATION_ACTION;
+  domainTitle: string;
   isRead: boolean;
   payload: Payload[];
-  sourceInfo?: any;
+  sourceInfo?: SourceInfo;
 };
 
 export const DEFAULT_NOTIFICATION: Notification = {
@@ -50,10 +63,21 @@ export const DEFAULT_NOTIFICATION: Notification = {
   churchUserId: BLANK,
   isRead: false,
   payload: [],
+  domain: NOTIFICATION_DOMAIN.TASK,
+  action: NOTIFICATION_ACTION.CREATED,
+  actorName: BLANK,
+  domainTitle: BLANK,
 };
 
 export type Payload = {
-  fields: any;
-  previous: any;
-  current: any;
+  fields: PAYLOAD_FIELD;
+  current?: string;
+  previous?: string;
+};
+
+export type SourceInfo = {
+  id: string;
+  domain: NOTIFICATION_DOMAIN;
+  educationId?: string;
+  educationTermId?: string;
 };

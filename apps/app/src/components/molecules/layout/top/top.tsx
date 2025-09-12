@@ -5,6 +5,8 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 import { fetchNotificationCount } from '@/redux/reducers/notification-reducer';
+import { NOTIFICATION_DOMAIN } from '@mokjang/models';
+import { closeModal } from '@/redux/reducers/modal-reducer';
 
 type TopProps = {
   handleSideShow: () => void;
@@ -14,6 +16,8 @@ const Top = ({ handleSideShow }: TopProps) => {
   const { user } = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch<AppDispatch>();
   const router = usePageRouter();
+
+  const modal = useSelector((state: RootState) => state.modal);
 
   const [isNotificationOpened, setIsNotificationOpened] =
     useState<boolean>(false);
@@ -38,11 +42,20 @@ const Top = ({ handleSideShow }: TopProps) => {
 
   const onClickProfileClose = () => {
     setIsProfileOpened(false);
+    dispatch(closeModal());
   };
 
   useEffect(() => {
     dispatch(fetchNotificationCount());
   }, [user.id]);
+
+  useEffect(() => {
+    if (!modal.open || modal.type !== NOTIFICATION_DOMAIN.PERMISSION) return;
+
+    (async () => {
+      setIsProfileOpened(true);
+    })();
+  }, [modal.open, modal.type]);
 
   const props = {
     isNotificationOpened,

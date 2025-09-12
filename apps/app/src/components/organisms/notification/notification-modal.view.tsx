@@ -138,6 +138,7 @@ const NotificationModalView = ({
             <NotificationItem
               key={notification.id}
               notification={notification}
+              onClickClose={onClickClose}
             />
           ))}
         </ContentContainer>
