@@ -7,7 +7,7 @@ import { setTargetMinistryHistory } from '../../../../../redux/reducers/target/t
 import { setTargetMember } from '../../../../../redux/reducers/target/target-member-reducer';
 import MemberMinistryListView from './member-ministry-list.view';
 import { MinistryHistoryApi } from '../../../../../api/history/ministry-history.api';
-import { BLACK, BLANK, CONCEALED, DESTRUCTIVE } from '@mokjang/constants';
+import { BLACK, BLANK, DESTRUCTIVE } from '@mokjang/constants';
 import { CustomPopup } from '@mokjang/components';
 import { useI18n, useScopedI18n } from '../../../../../../locales/client';
 import EditMemberMinistry from './edit-member-ministry';
@@ -75,9 +75,7 @@ const MemberMinistryList = () => {
         response?.data?.nextCursor ?? response?.data?.meta?.nextCursor ?? BLANK;
 
       const prevMinistries: MinistryHistory[] =
-        targetMember.ministryGroupHistory !== CONCEALED
-          ? (targetMember.ministryGroupHistory as MinistryHistory[])
-          : [];
+        targetMember.ministryGroupHistory as MinistryHistory[];
 
       // 중복 제거하며 병합 (id 기준)
       const merged = [...prevMinistries, ...newMinistries].reduce<
@@ -207,10 +205,7 @@ const MemberMinistryList = () => {
       }
 
       // 수정인 경우
-      if (
-        prevHistory.ministryGroup?.id &&
-        targetMember.ministryGroupHistory !== CONCEALED
-      ) {
+      if (prevHistory.ministryGroup?.id) {
         dispatch(
           setTargetMember({
             ...targetMember,
@@ -231,11 +226,9 @@ const MemberMinistryList = () => {
         dispatch(
           setTargetMember({
             ...targetMember,
-            ministryGroupHistory:
-              targetMember.ministryGroupHistory &&
-              targetMember.ministryGroupHistory !== CONCEALED
-                ? [...targetMember.ministryGroupHistory, targetMinistryHistory]
-                : [targetMinistryHistory],
+            ministryGroupHistory: targetMember.ministryGroupHistory
+              ? [...targetMember.ministryGroupHistory, targetMinistryHistory]
+              : [targetMinistryHistory],
           })
         );
       }
@@ -261,12 +254,9 @@ const MemberMinistryList = () => {
 
       const newTargetMember = {
         ...targetMember,
-        ministryGroupHistory:
-          targetMember.ministryGroupHistory !== CONCEALED
-            ? targetMember.ministryGroupHistory?.filter(
-                (history) => history.ministryGroup.id !== ministryGroupId
-              )
-            : [],
+        ministryGroupHistory: targetMember.ministryGroupHistory?.filter(
+          (history) => history.ministryGroup.id !== ministryGroupId
+        ),
       };
 
       const newMembers = members.map((member) => {

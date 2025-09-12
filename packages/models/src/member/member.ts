@@ -64,9 +64,9 @@ export type Member = {
 
   churchUser?: ChurchUser;
 
-  officerHistory?: OfficerHistory[] | typeof CONCEALED;
-  groupHistory?: GroupHistory[] | typeof CONCEALED;
-  ministryGroupHistory?: MinistryHistory[] | typeof CONCEALED;
+  officerHistory?: OfficerHistory[];
+  groupHistory?: GroupHistory[];
+  ministryGroupHistory?: MinistryHistory[];
 };
 
 export const DEFAULT_MEMBER: Member = {

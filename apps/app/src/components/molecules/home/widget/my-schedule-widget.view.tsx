@@ -96,6 +96,7 @@ const MyScheduleWidgetView = ({
             selectedValue={range}
             onChange={onClickRange}
             items={rangeRadioItems}
+            columnPadding={6}
           />
         </WidgetHeader>
 

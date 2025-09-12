@@ -113,7 +113,9 @@ const PermissionTemplateListView = (props: PermissionTemplateListViewProps) => {
         onClickClose={onClickClose}
         cancelText={t_button('close')}
       >
-        <PermissionTemplateInformation onClickDelete={onClickDelete} />
+        {isPermissionTemplateInformationShown && (
+          <PermissionTemplateInformation onClickDelete={onClickDelete} />
+        )}
       </SlidePopup>
       <Loading isShow={isLoading} />
     </PermissionTemplateListContainer>

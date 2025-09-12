@@ -19,7 +19,7 @@ import {
   setToastBackgroundColor,
   setToastText,
 } from '../../../../../redux/reducers/toast-popup-reducer';
-import { BLACK, CONCEALED, DESTRUCTIVE } from '@mokjang/constants';
+import { BLACK, DESTRUCTIVE } from '@mokjang/constants';
 import { setMembers } from '../../../../../redux/reducers/filter/member-filter-reducer';
 import { OfficerMembersApi } from '../../../../../api/management/officer/officer-members.api';
 import EditMemberOfficer from './edit-member-officer';
@@ -72,11 +72,7 @@ const MemberPersonalInformationList =
     const onClickGroupOpen = () => {
       setIsGroupOpened(true);
 
-      if (
-        targetMember.groupHistory &&
-        targetMember.groupHistory.length > 0 &&
-        targetMember.groupHistory !== CONCEALED
-      ) {
+      if (targetMember.groupHistory && targetMember.groupHistory.length > 0) {
         dispatch(
           setTargetGroupHistory({
             ...targetMember.groupHistory[0],
@@ -106,7 +102,6 @@ const MemberPersonalInformationList =
 
       if (
         targetMember.officerHistory &&
-        targetMember.officerHistory !== CONCEALED &&
         targetMember.officerHistory.length > 0
       ) {
         dispatch(
@@ -134,7 +129,6 @@ const MemberPersonalInformationList =
         if (
           targetMember.groupHistory &&
           targetMember.groupHistory.length > 0 &&
-          targetMember.groupHistory !== CONCEALED &&
           targetMember.groupHistory[0].groupId === targetGroupHistory.groupId &&
           targetMember.groupHistory[0].startDate !==
             targetGroupHistory.startDate
@@ -266,7 +260,6 @@ const MemberPersonalInformationList =
         if (
           targetMember.officerHistory &&
           targetMember.officerHistory.length > 0 &&
-          targetMember.officerHistory !== CONCEALED &&
           targetMember.officerHistory[0].officer.id ===
             targetOfficerHistory.officer.id &&
           targetMember.officerHistory[0].startDate !==

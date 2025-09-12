@@ -98,6 +98,7 @@ const ReportedScheduleWidgetView = ({
             selectedValue={range}
             onChange={onClickRange}
             items={rangeRadioItems}
+            columnPadding={6}
           />
         </WidgetHeader>
 

@@ -187,6 +187,7 @@ const PermissionTemplateInformationView = ({
             description={t_warning('deletePermissionTemplate')}
             buttonText={t_button('delete')}
             onClick={onClickConfirmOpen}
+            disabled={targetPermissionTemplate.memberCount > 0}
           />
         </BoxContainer>
       )}

@@ -48,9 +48,9 @@ export type Member = {
     updatedAt: string;
     isConcealed: boolean;
     churchUser?: ChurchUser;
-    officerHistory?: OfficerHistory[] | typeof CONCEALED;
-    groupHistory?: GroupHistory[] | typeof CONCEALED;
-    ministryGroupHistory?: MinistryHistory[] | typeof CONCEALED;
+    officerHistory?: OfficerHistory[];
+    groupHistory?: GroupHistory[];
+    ministryGroupHistory?: MinistryHistory[];
 };
 export declare const DEFAULT_MEMBER: Member;
 export type FamilyMember = {

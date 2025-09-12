@@ -5,12 +5,15 @@ import { RootState } from '../../../../redux/store';
 
 import { BLANK, GRAY, PERMISSION_TEMPLATE, WHITE } from '@mokjang/constants';
 import { MainText } from '@mokjang/components';
-import { PermissionTemplate } from '@mokjang/models';
+import { ACTION, DOMAIN, PermissionTemplate } from '@mokjang/models';
 import useWindowSize from '../../../../hooks/window/window';
 import PermissionTemplateTableHeader from '../../../atoms/permission/list/permission-template-table-header';
 import { BLANK_HEADER } from '../../../../redux/reducers/filter/member-filter-reducer';
 import { useI18n } from '../../../../../locales/client';
-import { getOwnerPermissionTemplate } from '../../../../utils/permission';
+import {
+  getIsAccessed,
+  getOwnerPermissionTemplate,
+} from '../../../../utils/permission';
 
 // 1. 컬럼별 PX 폭 (마지막 REMARKS만 auto 할 예정)
 const getColumnWidth = (id: string) => {
@@ -132,6 +135,7 @@ const PermissionTemplateTableView = ({
   const t = useI18n();
   const { height } = useWindowSize();
   const { churchId } = useSelector((state: RootState) => state.church);
+  const { user } = useSelector((state: RootState) => state.user);
   const { permissionUnits } = useSelector(
     (state: RootState) => state.permissionTemplateFilter
   );
@@ -192,7 +196,9 @@ const PermissionTemplateTableView = ({
           </thead>
           <tbody>
             {[
-              getOwnerPermissionTemplate(t, churchId, permissionUnits),
+              ...(getIsAccessed(DOMAIN.PERMISSION, ACTION.READ)
+                ? [getOwnerPermissionTemplate(t, churchId, permissionUnits)]
+                : []),
               ...permissionTemplates,
             ].map((permissionTemplate, rowIndex) => (
               <PermissionTemplateTableRow

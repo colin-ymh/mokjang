@@ -2,15 +2,7 @@ import React, { RefObject } from 'react';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../redux/store';
-import {
-  CONCEALED,
-  GRAY,
-  LOCALE,
-  MAIN,
-  PURPLE,
-  SIZE,
-  WHITE,
-} from '@mokjang/constants';
+import { GRAY, LOCALE, MAIN, PURPLE, SIZE, WHITE } from '@mokjang/constants';
 import { Button, MainTag, MainText, SvgIcon } from '@mokjang/components';
 import { useI18n } from '../../../../../../locales/client';
 import { Svg } from '@mokjang/assets';
@@ -104,53 +96,50 @@ const MemberMinistryListView = ({
         />
       </RowContainer>
       <ScrollWrapper ref={scrollRef} onScroll={onScroll}>
-        {targetMember.ministryGroupHistory !== CONCEALED &&
-          targetMember.ministryGroupHistory?.map((ministryHistory) => (
-            <MinistryGroupItem key={ministryHistory.id}>
-              <RowContainer>
-                <ContentContainer>
-                  <MainText size={SIZE.EXTRA_LARGE}>
-                    {ministryHistory.ministryGroup.name}
-                  </MainText>
-                  {ministryHistory.ministryGroupDetailHistory &&
-                    ministryHistory.ministryGroupDetailHistory.length > 1 && (
-                      <MainTag
-                        title={t('ministryGroupLeader')}
-                        color={PURPLE.DARK}
-                        backgroundColor={PURPLE.LIGHT}
-                      />
-                    )}
-                </ContentContainer>
-                <EditButtonContainer
+        {targetMember.ministryGroupHistory?.map((ministryHistory) => (
+          <MinistryGroupItem key={ministryHistory.id}>
+            <RowContainer>
+              <ContentContainer>
+                <MainText size={SIZE.EXTRA_LARGE}>
+                  {ministryHistory.ministryGroup.name}
+                </MainText>
+                {ministryHistory.ministryGroupDetailHistory &&
+                  ministryHistory.ministryGroupDetailHistory.length > 1 && (
+                    <MainTag
+                      title={t('ministryGroupLeader')}
+                      color={PURPLE.DARK}
+                      backgroundColor={PURPLE.LIGHT}
+                    />
+                  )}
+              </ContentContainer>
+              <EditButtonContainer
+                onClick={() => onClickAddOpen(ministryHistory)}
+              >
+                <SvgIcon
+                  svg={Svg.Pencil}
+                  size={18}
+                  width={2}
+                  color={GRAY.DARK}
                   onClick={() => onClickAddOpen(ministryHistory)}
-                >
-                  <SvgIcon
-                    svg={Svg.Pencil}
-                    size={18}
-                    width={2}
-                    color={GRAY.DARK}
-                    onClick={() => onClickAddOpen(ministryHistory)}
-                  />
-                </EditButtonContainer>
-              </RowContainer>
-              <RowContainer>
-                <ContentContainer>
-                  <SvgIcon svg={Svg.Calendar} color={GRAY.DEFAULT} />
-                  <MainText
-                    color={GRAY.DEFAULT}
-                  >{`${t('startDate')}:`}</MainText>
-                  <MainText color={GRAY.DEFAULT}>
-                    {getTranslatedDateFromDateString(
-                      basePath,
-                      getDateStringFromDate(
-                        getDateFromDateString(ministryHistory.startDate)
-                      )
-                    )}
-                  </MainText>
-                </ContentContainer>
-              </RowContainer>
-            </MinistryGroupItem>
-          ))}
+                />
+              </EditButtonContainer>
+            </RowContainer>
+            <RowContainer>
+              <ContentContainer>
+                <SvgIcon svg={Svg.Calendar} color={GRAY.DEFAULT} />
+                <MainText color={GRAY.DEFAULT}>{`${t('startDate')}:`}</MainText>
+                <MainText color={GRAY.DEFAULT}>
+                  {getTranslatedDateFromDateString(
+                    basePath,
+                    getDateStringFromDate(
+                      getDateFromDateString(ministryHistory.startDate)
+                    )
+                  )}
+                </MainText>
+              </ContentContainer>
+            </RowContainer>
+          </MinistryGroupItem>
+        ))}
       </ScrollWrapper>
     </ListContainer>
   );

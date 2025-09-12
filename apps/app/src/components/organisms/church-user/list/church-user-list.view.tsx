@@ -2,12 +2,8 @@ import styled from 'styled-components';
 import { Loading, MainText, ProfileImage } from '@mokjang/components';
 import React from 'react';
 import { BLACK, GRAY, MEDIA_MIN_WIDTH } from '@mokjang/constants';
-import ChurchUserTable, {
-  UserTableProps,
-} from '../../../molecules/church-user/list/church-user-table';
-import ChurchUserRow, {
-  ChurchUserRowProps,
-} from '../../../molecules/church-user/list/church-user-row';
+import ChurchUserTable, { UserTableProps, } from '../../../molecules/church-user/list/church-user-table';
+import ChurchUserRow, { ChurchUserRowProps, } from '../../../molecules/church-user/list/church-user-row';
 import SlidePopup from '../../../atoms/common/popup/slide-popup';
 
 import { Svg } from '@mokjang/assets';
@@ -131,10 +127,11 @@ const ChurchUserListView = (props: UserListViewProps) => {
             />
             <TextContainer>
               <MainText fontWeight={700} fontSize={20}>
-                {targetChurchUser.user.name}
+                {targetChurchUser.user?.name}
               </MainText>
               <MainText fontWeight={400} fontSize={14} color={GRAY.DARK}>
-                {getFormattedPhone(targetChurchUser.user.mobilePhone)}
+                {targetChurchUser.user?.mobilePhone &&
+                  getFormattedPhone(targetChurchUser.user?.mobilePhone)}
               </MainText>
             </TextContainer>
           </ProfileContainer>
@@ -144,10 +141,12 @@ const ChurchUserListView = (props: UserListViewProps) => {
         onClickCancel={onClickCloseInformation}
         cancelText={t_button('close')}
       >
-        <ChurchUserInformation
-          isManager={isManager}
-          onClickDelete={onClickDelete}
-        />
+        {isChurchUserInformationShown && (
+          <ChurchUserInformation
+            isManager={isManager}
+            onClickDelete={onClickDelete}
+          />
+        )}
       </SlidePopup>
       <Loading isShow={isLoading} />
     </UserListContainer>

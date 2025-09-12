@@ -106,7 +106,13 @@ const MemberTableHeaderSettingView = ({
     OFFICER_NONE_ITEM,
   ];
 
-  const marriageCheckListItems: CheckButtonValue[] = useMarriageDropdownItems();
+  const marriageCheckListItems: CheckButtonValue[] = [
+    ...useMarriageDropdownItems(),
+    {
+      value: 'null',
+      title: t(MARRIAGE.NONE),
+    },
+  ];
 
   const baptismCheckListItems: CheckButtonValue[] = useBaptismDropdownItems();
 

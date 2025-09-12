@@ -1,4 +1,4 @@
-import { DOMAIN, Schedule } from '@mokjang/models';
+import { CALENDAR_DOMAIN, DOMAIN, Schedule } from '@mokjang/models';
 import styled from 'styled-components';
 import { GRAY, LOCALE, MAIN, STATUS } from '@mokjang/constants';
 import { MainTag, MainText } from '@mokjang/components';
@@ -81,7 +81,7 @@ const ReportedScheduleList = ({
               />
             </RowContainer>
             <RowContainer>
-              <MainTag title={t(domain as DOMAIN)} />
+              <MainTag title={t(domain as CALENDAR_DOMAIN)} />
               <MainText>
                 {getTranslatedScheduleDate(
                   locale,

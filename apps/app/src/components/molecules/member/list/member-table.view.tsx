@@ -326,7 +326,7 @@ const MemberTableView = ({
       <TableContainer
         ref={scrollRef}
         onScroll={onScroll}
-        height={filteredItems.length > 0 ? height - 45 : height}
+        height={filteredItems.length > 0 ? height - 75 : height - 30}
       >
         <MemberTable>
           <thead>

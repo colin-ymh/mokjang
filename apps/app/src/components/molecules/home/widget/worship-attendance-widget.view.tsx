@@ -1,11 +1,10 @@
 'use client';
 
-import { MainText } from '@mokjang/components';
+import { MainText, ToggleRadioButton } from '@mokjang/components';
 import styled from 'styled-components';
 import { HOME_WIDGET, LOCALE, MAIN, RANGE, SIZE } from '@mokjang/constants';
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
 import React from 'react';
-import { ToggleRadioButton } from '@mokjang/components';
 import { useMonthQuarterHalfRangeRadioButtonItems } from '../../../../hooks/radio-button/radio-button-items';
 import { WorshipEnrollment } from '@mokjang/models';
 import WorshipEnrollmentList from '../../../atoms/home/worship-enrollment-list';
@@ -13,8 +12,10 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
 import { DropdownValueType } from '../../../atoms/common/dropdown/dropdown-item';
 import Dropdown from '../../../atoms/common/dropdown/dropdown';
-import { getTranslateWorshipAttendanceWidgetDescription } from '@mokjang/utils';
-import { getTranslatedMemberCount } from '@mokjang/utils';
+import {
+  getTranslatedMemberCount,
+  getTranslateWorshipAttendanceWidgetDescription,
+} from '@mokjang/utils';
 import { usePathname } from 'next/navigation';
 import { Svg } from '@mokjang/assets';
 
@@ -104,6 +105,7 @@ const WorshipAttendanceWidgetView = ({
             selectedValue={range}
             onChange={onClickRange}
             items={rangeRadioItems}
+            columnPadding={6}
           />
           {/* 예배 선택 */}
           <Dropdown

@@ -1,13 +1,12 @@
 import MemberProfilePopupButton from '../../molecules/common/button/member-profile-popup-button';
-import { MainText } from '@mokjang/components';
+import { MainTag, MainText } from '@mokjang/components';
 import { GRAY, LOCALE, MAIN } from '@mokjang/constants';
-import { getDateFromDateString, getDateStringFromDate } from '@mokjang/utils';
+import { getTranslatedDateFromDateString } from '@mokjang/utils';
 import styled from 'styled-components';
 import { Member } from '@mokjang/models';
 import { useI18n } from '../../../../locales/client';
 import { getTranslatedMemberCount } from '../../../../../../packages/utils/src';
 import { usePathname } from 'next/navigation';
-import { MainTag } from '@mokjang/components';
 
 const DetailContainer = styled.div`
   display: flex;
@@ -86,7 +85,7 @@ const NewMemberDetail = ({ memberDetails }: NewMemberDetailProps) => {
                 <div></div>
               )}
               <MainText color={GRAY.SEMI_LIGHT}>
-                {`${t('registeredAt')}: ${getDateStringFromDate(getDateFromDateString(member.registeredAt))}`}
+                {`${t('registeredAt')}: ${getTranslatedDateFromDateString(locale, member.registeredAt)}`}
               </MainText>
             </RightContainer>
           </DetailItem>

@@ -1,7 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
 import { MainTag, MainText, ProfileImage } from '@mokjang/components';
-import { CONCEALED, GRAY, GROUP_ROLE, MAIN, MINISTRY_GROUP_ROLE, PURPLE, SIZE, YELLOW, } from '@mokjang/constants';
+import {
+  GRAY,
+  GROUP_ROLE,
+  MAIN,
+  MINISTRY_GROUP_ROLE,
+  PURPLE,
+  SIZE,
+  YELLOW,
+} from '@mokjang/constants';
 import { RootState } from '@/redux/store';
 import { useSelector } from 'react-redux';
 import { useI18n } from '../../../../../../locales/client';
@@ -71,14 +79,12 @@ const MemberInformationHeaderView = ({}: MemberInformationHeaderViewProps) => {
               <MainText size={SIZE.EXTRA_LARGE}>{targetMember.name}</MainText>
               <MainText color={GRAY.DEFAULT}>
                 {targetMember?.officerHistory &&
-                  targetMember?.officerHistory !== CONCEALED &&
                   targetMember?.officerHistory[0]?.officer?.name}
               </MainText>
             </RowContainer>
             <RowContainer>
               <MainText color={GRAY.DARK}>
                 {(targetMember?.groupHistory &&
-                  targetMember?.groupHistory !== CONCEALED &&
                   targetMember?.groupHistory[0]?.group?.name) ||
                   t('noGroup')}
               </MainText>

@@ -29,7 +29,6 @@ const ProfileItem = styled.div`
   align-items: center;
   gap: 10px;
   padding-right: 30px;
-  cursor: pointer;
 `;
 
 const ProfileDetail = styled.div`

@@ -81,10 +81,6 @@ export const useMarriageDropdownItems = () => {
       value: MARRIAGE.SINGLE,
       title: t(MARRIAGE.SINGLE),
     },
-    {
-      value: 'null',
-      title: t(MARRIAGE.NONE),
-    },
   ];
 
   return items;

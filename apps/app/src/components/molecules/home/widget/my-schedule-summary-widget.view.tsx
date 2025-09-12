@@ -1,21 +1,23 @@
 'use client';
 
-import { MainText } from '@mokjang/components';
+import { MainText, ToggleRadioButton } from '@mokjang/components';
 import styled from 'styled-components';
-import { SIZE } from '@mokjang/constants';
+import {
+  GRAY,
+  HOME_WIDGET,
+  LOCALE,
+  MAIN,
+  RANGE,
+  SIZE,
+  STATUS,
+} from '@mokjang/constants';
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
-import { HOME_WIDGET, RANGE } from '@mokjang/constants';
-import { DOMAIN } from '@mokjang/models';
+import { DOMAIN, ScheduleSummary } from '@mokjang/models';
 import React from 'react';
-import { ToggleRadioButton } from '@mokjang/components';
 import { useWeekMonthRangeRadioButtonItems } from '../../../../hooks/radio-button/radio-button-items';
 import { usePathname } from 'next/navigation';
-import { LOCALE } from '@mokjang/constants';
 import Dropdown from '../../../atoms/common/dropdown/dropdown';
-import { GRAY, MAIN } from '@mokjang/constants';
 import { getTranslatedSummaryCount } from '@mokjang/utils';
-import { ScheduleSummary } from '@mokjang/models';
-import { STATUS } from '@mokjang/constants';
 import { getTotalScheduleCount } from '../../../../utils/summary';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
@@ -141,6 +143,7 @@ const MyReportedScheduleWidgetView = ({
             selectedValue={myRange}
             onChange={onClickRange}
             items={rangeRadioItems}
+            columnPadding={6}
           />
           <Dropdown
             value={domain}

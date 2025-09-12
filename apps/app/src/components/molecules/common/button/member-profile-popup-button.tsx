@@ -6,11 +6,16 @@ import { setTargetMember } from '@/redux/reducers/target/target-member-reducer';
 import styled from 'styled-components';
 import { CustomPopup } from '@mokjang/components';
 import MemberInformation from '../../../organisms/member/information/member-information';
-import { BLACK } from '@mokjang/constants';
+import { BLACK, DESTRUCTIVE } from '@mokjang/constants';
 import { Svg } from '@mokjang/assets';
 import MemberProfile from '../../../atoms/member/member-profile';
 import { MembersApi } from '@/api/members/members.api';
 import { useScopedI18n } from '../../../../../locales/client';
+import {
+  setIsToastShown,
+  setToastBackgroundColor,
+  setToastText,
+} from '@/redux/reducers/toast-popup-reducer';
 
 const ButtonContainer = styled.div`
   display: flex;
@@ -61,7 +66,13 @@ const MemberProfilePopupButton = ({
       dispatch(setTargetMember(newMember));
       setIsShow(true);
     } catch (error) {
-      setThrownError(error instanceof Error ? error : new Error(String(error)));
+      if (error instanceof Error) {
+        dispatch(setToastText(error.message));
+        dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
+        dispatch(setIsToastShown(true));
+      } else {
+        setThrownError(new Error(String(error)));
+      }
     }
   };
 

@@ -324,24 +324,16 @@ const PersonalInformationListView = ({
           </TitleContainer>
           <RowTextWrapper>
             <InformationTextWrapper>
-              {targetMember.groupHistory === CONCEALED ? (
-                <MainText size={SIZE.LARGE} fontWeight={400}>
-                  {t('concealed')}
-                </MainText>
-              ) : (
-                <>
-                  <MainText size={SIZE.LARGE} fontWeight={400}>
-                    {targetMember?.groupHistory &&
-                      targetMember?.groupHistory[0]?.group?.name}
-                  </MainText>
-                  {targetMember.groupRole === GROUP_ROLE.LEADER && (
-                    <MainTag
-                      title={t('groupLeader')}
-                      color={YELLOW.DARK}
-                      backgroundColor={YELLOW.LIGHT}
-                    />
-                  )}
-                </>
+              <MainText size={SIZE.LARGE} fontWeight={400}>
+                {targetMember?.groupHistory &&
+                  targetMember?.groupHistory[0]?.group?.name}
+              </MainText>
+              {targetMember.groupRole === GROUP_ROLE.LEADER && (
+                <MainTag
+                  title={t('groupLeader')}
+                  color={YELLOW.DARK}
+                  backgroundColor={YELLOW.LIGHT}
+                />
               )}
             </InformationTextWrapper>
           </RowTextWrapper>
@@ -365,16 +357,10 @@ const PersonalInformationListView = ({
             <MainText color={GRAY.DARK}>{t(MEMBER.OFFICER)}</MainText>
           </TitleContainer>
           <RowTextWrapper>
-            {targetMember.officerHistory === CONCEALED ? (
-              <MainText size={SIZE.LARGE} fontWeight={400}>
-                {t('concealed')}
-              </MainText>
-            ) : (
-              <MainText size={SIZE.LARGE} fontWeight={400}>
-                {targetMember?.officerHistory &&
-                  targetMember?.officerHistory[0]?.officer?.name}
-              </MainText>
-            )}
+            <MainText size={SIZE.LARGE} fontWeight={400}>
+              {targetMember?.officerHistory &&
+                targetMember?.officerHistory[0]?.officer?.name}
+            </MainText>
           </RowTextWrapper>
         </TextContainer>
         <Button
@@ -389,19 +375,47 @@ const PersonalInformationListView = ({
       </InformationItem>
 
       {/* 사역 */}
-      {targetMember.ministryGroupHistory === CONCEALED ? (
-        <InformationItem>
+      {/* 사역 */}
+      {targetMember.ministryGroupHistory?.map((history, idx) => (
+        <InformationItem
+          key={history.id ?? `${history.ministryGroup?.id}-${idx}`}
+        >
           <SvgIcon svg={Svg.Star} size={18} width={2} color={GRAY.DARK} />
           <TextContainer>
             <TitleContainer>
               <MainText color={GRAY.DARK}>{t(MEMBER.MINISTRIES)}</MainText>
             </TitleContainer>
+
             <RowTextWrapper>
               <MainText size={SIZE.LARGE} fontWeight={400}>
-                {t('concealed')}
+                {history.ministryGroup.name}
               </MainText>
+
+              {history.ministryGroupDetailHistory?.map(
+                (detailHistory: MinistryDetailHistory) => {
+                  if (detailHistory?.role) {
+                    return (
+                      <MainTag
+                        key={detailHistory.id}
+                        title={t('ministryGroupLeader')}
+                        color={MAIN.DARK}
+                        backgroundColor={MAIN.LIGHT}
+                      />
+                    );
+                  }
+                  if (detailHistory?.ministry) {
+                    return (
+                      <MainText key={detailHistory.id} color={GRAY.DEFAULT}>
+                        {detailHistory.ministry?.name ?? ''}
+                      </MainText>
+                    );
+                  }
+                  return null; // 안전하게 아무 것도 없을 때
+                }
+              )}
             </RowTextWrapper>
           </TextContainer>
+
           <Button
             width="auto"
             text={t_button('edit')}
@@ -412,56 +426,7 @@ const PersonalInformationListView = ({
             onClick={onClickMinistryOpen}
           />
         </InformationItem>
-      ) : (
-        Array.isArray(targetMember.ministryGroupHistory) &&
-        targetMember.ministryGroupHistory.map((history) => (
-          <InformationItem key={history.id ?? history.id}>
-            <SvgIcon svg={Svg.Star} size={18} width={2} color={GRAY.DARK} />
-            <TextContainer>
-              <TitleContainer>
-                <MainText color={GRAY.DARK}>{t(MEMBER.MINISTRIES)}</MainText>
-              </TitleContainer>
-              <RowTextWrapper>
-                <MainText size={SIZE.LARGE} fontWeight={400}>
-                  {history.ministryGroup.name}
-                </MainText>
-                {history.ministryGroupDetailHistory.map(
-                  (detailHistory: MinistryDetailHistory) => {
-                    if (detailHistory?.role) {
-                      return (
-                        <MainTag
-                          key={detailHistory.id}
-                          title={t('ministryGroupLeader')}
-                          color={MAIN.DARK}
-                          backgroundColor={MAIN.LIGHT}
-                        />
-                      );
-                    } else if (detailHistory?.ministry) {
-                      return (
-                        <MainText key={detailHistory.id} color={GRAY.DEFAULT}>
-                          {
-                            history.ministryGroupDetailHistory[0].ministry
-                              ?.name as string
-                          }
-                        </MainText>
-                      );
-                    }
-                  }
-                )}
-              </RowTextWrapper>
-            </TextContainer>
-            <Button
-              width="auto"
-              text={t_button('edit')}
-              borderColor={MAIN.LIGHT}
-              backgroundColor={WHITE}
-              color={MAIN.DEFAULT}
-              height={30}
-              onClick={onClickMinistryOpen}
-            />
-          </InformationItem>
-        ))
-      )}
+      ))}
 
       {/* 신급 */}
       <InformationItem>

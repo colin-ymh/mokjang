@@ -98,7 +98,13 @@ const ChurchUserList = ({ isManager = false }: UserListProps) => {
         }
       }
     } catch (error) {
-      setThrownError(error instanceof Error ? error : new Error(String(error)));
+      if (error instanceof Error) {
+        dispatch(setToastText(error.message));
+        dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
+        dispatch(setIsToastShown(true));
+      } else {
+        setThrownError(new Error(String(error)));
+      }
     } finally {
       setIsLoading(false);
     }
@@ -119,9 +125,13 @@ const ChurchUserList = ({ isManager = false }: UserListProps) => {
           setPage(1);
         }
       } catch (error) {
-        setThrownError(
-          error instanceof Error ? error : new Error(String(error))
-        );
+        if (error instanceof Error) {
+          dispatch(setToastText(error.message));
+          dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
+          dispatch(setIsToastShown(true));
+        } else {
+          setThrownError(new Error(String(error)));
+        }
       }
     };
 
