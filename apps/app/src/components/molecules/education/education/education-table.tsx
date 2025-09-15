@@ -26,18 +26,15 @@ import ConfirmPopup from '../../../atoms/common/popup/error-popup';
 import EducationInformation from '../../../organisms/education/education/information/education-information';
 import AddEducation from '../../../organisms/education/education/add/add-education';
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
-import {
-  getDateFromDateString,
-  getDateStringFromDate,
-  getIsWellFormedTitle,
-  getTranslatedTerm,
-} from '@mokjang/utils';
+import { getDateFromDateString, getDateStringFromDate, getIsWellFormedTitle, getTranslatedTerm, } from '@mokjang/utils';
 import { setTargetEducation } from '../../../../redux/reducers/target/target-education-reducer';
 import { setTargetEducationTerm } from '../../../../redux/reducers/target/target-education-term-reducer';
-import EducationTermInformation from '../../../organisms/education/education-term/information/education-term-information';
+import EducationTermInformation
+  from '../../../organisms/education/education-term/information/education-term-information';
 import AddEducationTerm from '../../../organisms/education/education-term/add/add-education-term';
 import { setTargetEducationSession } from '../../../../redux/reducers/target/target-education-session-reducer';
-import EducationSessionInformation from '../../../organisms/education/education-session/information/education-session-information';
+import EducationSessionInformation
+  from '../../../organisms/education/education-session/information/education-session-information';
 import AddEducationSession from '../../../organisms/education/education-session/add/add-education-session';
 import { usePathname } from 'next/navigation';
 import { setEducationTerms } from '../../../../redux/reducers/filter/education-term-filter-reducer';
@@ -444,11 +441,14 @@ const EducationTable = ({ loadEducations }: EducationTableProps) => {
 
   const onClickEditEducationTermDone = async () => {
     try {
-      const prev = targetEducation.educationTerms?.find(
-        (term) => term.id === targetEducationTerm.id
-      );
+      const response = await educationTermsApi.getEducationTerm({
+        churchId,
+        educationId: targetEducationTerm.educationId,
+        educationTermId: targetEducationTerm.id,
+      });
+      const prev: EducationTerm = response.data.data;
 
-      const response = await educationTermsApi.editEducationTerm(
+      await educationTermsApi.editEducationTerm(
         {
           churchId,
           educationId: targetEducationTerm.educationId,
@@ -470,9 +470,7 @@ const EducationTable = ({ loadEducations }: EducationTableProps) => {
         }
       );
 
-      const reports = targetEducation.educationTerms.find(
-        (term) => term.id === targetEducationTerm.id
-      )?.reports;
+      const reports = prev?.reports;
 
       const receiverIds = reports?.map((report) => report.receiver.id) || [];
 

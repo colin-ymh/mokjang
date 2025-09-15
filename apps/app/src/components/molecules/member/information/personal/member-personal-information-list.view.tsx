@@ -86,12 +86,14 @@ const RowTextWrapper = styled.div`
 `;
 
 type PersonalInformationListViewProps = {
+  isPopup?: boolean;
   onClickGroupOpen?: () => void;
   onClickOfficerOpen?: () => void;
   onClickMinistryOpen?: () => void;
 };
 
 const PersonalInformationListView = ({
+  isPopup,
   onClickGroupOpen,
   onClickOfficerOpen,
   onClickMinistryOpen,
@@ -108,7 +110,7 @@ const PersonalInformationListView = ({
   const basePath = pathname.split('/')[1] as LOCALE;
 
   return (
-    <InformationContainer height={height - 300}>
+    <InformationContainer height={isPopup ? height * 0.9 - 230 : height - 300}>
       {/* 이름 */}
       <InformationItem>
         <SvgIcon svg={Svg.User} size={18} width={2} color={GRAY.DARK} />

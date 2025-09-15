@@ -2,28 +2,24 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../redux/store';
 import {
+  fetchWorships,
   setWorshipOrderBy,
   setWorshipOrderDirection,
+  setWorshipPage,
   setWorships,
 } from '../../../redux/reducers/filter/worship-filter-reducer';
 
-import {
-  BLACK,
-  DESTRUCTIVE,
-  ORDER_DIRECTION,
-  WORSHIP,
-} from '@mokjang/constants';
+import { BLACK, DESTRUCTIVE, MAIN, ORDER_DIRECTION, WORSHIP, } from '@mokjang/constants';
 import { WorshipsApi } from '../../../api/worship/worships.api';
 import { DEFAULT_WORSHIP, Worship } from '@mokjang/models';
 import { setTargetWorship } from '../../../redux/reducers/target/target-worship-reducer';
 import { getIsWellFormedTitle, usePageRouter } from '@mokjang/utils';
 import WorshipTableView from './worship-table.view';
-import {
-  setIsToastShown,
-  setToastBackgroundColor,
-  setToastText,
-} from '../../../redux/reducers/toast-popup-reducer';
-import { useI18n } from '../../../../locales/client';
+import { setIsToastShown, setToastBackgroundColor, setToastText, } from '../../../redux/reducers/toast-popup-reducer';
+import { useI18n, useScopedI18n } from '../../../../locales/client';
+import { CustomPopup } from '@mokjang/components';
+import AddWorship from '@/components/organisms/worship/add/add-worship';
+import ConfirmPopup from '@/components/atoms/common/popup/error-popup';
 
 export type WorshipTableProps = {
   loadWorships: () => Promise<void>;
@@ -32,6 +28,10 @@ export type WorshipTableProps = {
 const WorshipTable = ({ loadWorships }: WorshipTableProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const t = useI18n();
+  const t_title = useScopedI18n('title');
+  const t_button = useScopedI18n('button');
+  const t_popup = useScopedI18n('popup');
+
   const router = usePageRouter();
 
   const { churchId } = useSelector((state: RootState) => state.church);
@@ -45,6 +45,9 @@ const WorshipTable = ({ loadWorships }: WorshipTableProps) => {
 
   const [isEditModalOpened, setIsEditModalOpened] = useState<boolean>(false);
   const [isEditEnabled, setIsEditEnabled] = useState<boolean>(false);
+
+  // 삭제 확인 팝업
+  const [isPopupShown, setIsPopupShown] = useState<boolean>(false);
 
   const [thrownError, setThrownError] = useState<Error | null>(null);
   if (thrownError) {
@@ -170,6 +173,34 @@ const WorshipTable = ({ loadWorships }: WorshipTableProps) => {
     dispatch(setTargetWorship(DEFAULT_WORSHIP));
   };
 
+  // 교인 삭제하기
+  const onClickDelete = async () => {
+    try {
+      await worshipsApi.deleteWorship({
+        churchId,
+        worshipId: targetWorship.id,
+      });
+
+      // 초기화 후 다시 로드
+      dispatch(setWorshipPage(1));
+      // 삭제 후 재로딩
+      await dispatch(fetchWorships());
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
+    } finally {
+      dispatch(setTargetWorship(DEFAULT_WORSHIP));
+      setIsEditModalOpened(false);
+    }
+  };
+
+  const onClickConfirmOpen = () => {
+    setIsPopupShown(true);
+  };
+
+  const onClickConfirmClose = () => {
+    setIsPopupShown(false);
+  };
+
   // 정렬 변경 시 스크롤을 최상단으로 이동
   useEffect(() => {
     if (scrollRef.current) {
@@ -187,11 +218,11 @@ const WorshipTable = ({ loadWorships }: WorshipTableProps) => {
   }, [targetWorship]);
 
   const props = {
+    scrollRef,
+    worships,
     isEditModalOpened,
     isEditEnabled,
-    worships,
     onClickHeader,
-    scrollRef,
     onScroll,
     onClickEditWorship,
     onClickEditDone,
@@ -202,6 +233,36 @@ const WorshipTable = ({ loadWorships }: WorshipTableProps) => {
   return (
     <>
       <WorshipTableView {...props} />
+      <CustomPopup
+        isShow={isEditModalOpened}
+        onClickClose={onClickEditClose}
+        onClickCancel={onClickEditClose}
+        headerTitle={t_title('editWorship')}
+        width={500}
+        height={500}
+        onClickDone={onClickEditDone}
+        doneBackgroundColor={isEditEnabled ? MAIN.DEFAULT : MAIN.LIGHT}
+        doneDisabled={!isEditEnabled}
+        cancelText={t_button('cancel')}
+        doneText={t_button('save')}
+      >
+        <>
+          <ConfirmPopup
+            title={t_popup('deleteWorshipTitle')}
+            body={t_popup('deleteWorshipBody')}
+            buttonNum={2}
+            isShow={isPopupShown}
+            onClickLeftButton={onClickConfirmClose}
+            onClickRightButton={() => {
+              onClickDelete();
+              onClickConfirmClose();
+            }}
+            leftButtonText={t_button('cancel')}
+            rightButtonText={t_button('delete')}
+          />
+          <AddWorship onClickDelete={onClickConfirmOpen} />
+        </>
+      </CustomPopup>
     </>
   );
 };

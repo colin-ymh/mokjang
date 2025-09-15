@@ -91,12 +91,12 @@ const initialState: WorshipEnrollmentFilterState = {
 // ===== 예배 출석 목록 =====
 export const fetchWorshipEnrollments = createAsyncThunk<
   { data: WorshipEnrollment[]; totalCount: number },
-  { churchId: string; currentPage: number; worshipId: string },
+  { churchId: string; currentPage: number; worshipId: string; take: number },
   { state: RootState }
 >(
   'educations/fetchWorshipEnrollments',
   async (
-    { churchId, worshipId, currentPage },
+    { churchId, worshipId, currentPage, take },
     { getState, rejectWithValue }
   ) => {
     const state = getState().worshipEnrollmentFilter;
@@ -112,7 +112,7 @@ export const fetchWorshipEnrollments = createAsyncThunk<
         churchId,
         worshipId,
         page: currentPage,
-        take: 30,
+        take,
         order: worshipEnrollmentOrderBy,
         orderDirection: worshipEnrollmentOrderDirection,
         groupId:

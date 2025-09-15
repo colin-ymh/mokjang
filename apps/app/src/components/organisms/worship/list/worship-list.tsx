@@ -7,12 +7,7 @@ import {
 } from '../../../../redux/reducers/filter/worship-filter-reducer';
 
 import WorshipListView from './worship-list.view';
-import { DEFAULT_WORSHIP } from '@mokjang/models';
 import { setTargetWorship } from '../../../../redux/reducers/target/target-worship-reducer';
-import {
-  setIsToastShown,
-  setToastText,
-} from '../../../../redux/reducers/toast-popup-reducer';
 import { useScopedI18n } from '../../../../../locales/client';
 import { WorshipsApi } from '../../../../api/worship/worships.api';
 
@@ -44,26 +39,8 @@ const WorshipList = ({ isNewWorship }: WorshipListProps) => {
     throw thrownError;
   }
 
-  // 교인 상세정보 팝업 On/Off
-  const [isWorshipInformationShown, setIsWorshipInformationShown] =
-    useState<boolean>(false);
-
   // 데이터 로딩 상태
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  // 삭제 확인 팝업
-  const [isPopupShown, setIsPopupShown] = useState<boolean>(false);
-
-  // 개인정보 수정 모달
-  const [isEditShown, setIsEditShown] = useState<boolean>(false);
-
-  const onClickConfirmOpen = () => {
-    setIsPopupShown(true);
-  };
-
-  const onClickConfirmClose = () => {
-    setIsPopupShown(false);
-  };
 
   // 무한 스크롤로 데이터 추가 로드
   const loadWorships = async () => {
@@ -101,85 +78,10 @@ const WorshipList = ({ isNewWorship }: WorshipListProps) => {
 
       dispatch(setTargetWorship(worship));
       dispatch(setTargetWorship(worship));
-      setIsWorshipInformationShown(true);
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));
     }
   };
-
-  // 상세 페이지 종료
-  const onClickClose = () => {
-    setIsWorshipInformationShown(false);
-    dispatch(setTargetWorship(DEFAULT_WORSHIP));
-  };
-
-  // 교인 삭제하기
-  const onClickDelete = async () => {
-    try {
-      await worshipApi.deleteWorship({
-        churchId,
-        worshipId: targetWorship.id,
-      });
-
-      // 초기화 후 다시 로드
-      dispatch(setWorshipPage(1));
-      // 삭제 후 재로딩
-      await dispatch(fetchWorships());
-    } catch (error) {
-      setThrownError(error instanceof Error ? error : new Error(String(error)));
-    } finally {
-      dispatch(setTargetWorship(DEFAULT_WORSHIP));
-      setIsWorshipInformationShown(false);
-    }
-  };
-
-  const onClickEditOpen = () => {
-    dispatch(setTargetWorship(targetWorship));
-    setIsEditShown(true);
-  };
-
-  const onClickEditClose = async () => {
-    const worshipApi = new WorshipsApi(false);
-    setIsEditShown(false);
-    const response = await worshipApi.getWorship({
-      churchId,
-      worshipId: targetWorship.id,
-    });
-    const newWorship = response.data.data;
-    dispatch(setTargetWorship(newWorship));
-  };
-
-  const onClickEditDone = async () => {
-    try {
-      await worshipApi
-        .editWorship(
-          { churchId, worshipId: targetWorship.id },
-          {
-            title: targetWorship.title || undefined,
-            description: targetWorship.description || undefined,
-            worshipDay: targetWorship.worshipDay || undefined,
-            repeatPeriod: targetWorship.repeatPeriod || undefined,
-            worshipTargetGroupIds:
-              targetWorship.worshipTargetGroupIds || undefined,
-          }
-        )
-        .then((response) => {
-          const newWorship = response.data.data;
-          dispatch(setTargetWorship(newWorship));
-          dispatch(fetchWorships());
-          setIsEditShown(false);
-        });
-    } catch (error) {
-      setThrownError(error instanceof Error ? error : new Error(String(error)));
-    } finally {
-      dispatch(setIsToastShown(true));
-      dispatch(setToastText(t_popup('saveComplete')));
-    }
-  };
-
-  useEffect(() => {
-    setIsPopupShown(false);
-  }, [targetWorship]);
 
   useEffect(() => {
     dispatch(fetchWorships());
@@ -190,19 +92,6 @@ const WorshipList = ({ isNewWorship }: WorshipListProps) => {
       worships,
       onClickWorshipItem,
       loadWorships,
-    },
-    information: {
-      isWorshipInformationShown,
-      isLoading,
-      isPopupShown,
-      isEditShown,
-      onClickEditOpen,
-      onClickEditClose,
-      onClickEditDone,
-      onClickClose,
-      onClickDelete,
-      onClickConfirmOpen,
-      onClickConfirmClose,
     },
   };
 

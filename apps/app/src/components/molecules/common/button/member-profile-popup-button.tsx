@@ -95,18 +95,12 @@ const MemberProfilePopupButton = ({
         isShow={isShow}
         onClickClose={onClickClose}
         onClickCancel={onClickClose}
-        width={80}
-        height={80}
+        width={35}
+        height={90}
         isPercentage={true}
         isPortal={true}
         isFooterShown={false}
         headerHeight={50}
-        headerRight={
-          <ButtonContainer onClick={onClickClose}>
-            <Cancel />
-          </ButtonContainer>
-        }
-        cancelText={t_button('close')}
       >
         <MemberInformation isPopup={true} />
       </CustomPopup>

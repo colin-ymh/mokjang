@@ -822,6 +822,7 @@ export default {
     'You cannot delete this ministry group if there are members or subgroups associated with it. Deleted ministry group cannot be recovered.',
   'warning.deleteMinistry':
     'You cannot delete this ministry if there are members assigned to it. Deleted ministry cannot be recovered.',
+  'warning.deleteWorship': 'Deleted ministry cannot be recovered.',
 
   'warning.stopGroupHistory':
     "Stopped Group will be saved in member's group history.",

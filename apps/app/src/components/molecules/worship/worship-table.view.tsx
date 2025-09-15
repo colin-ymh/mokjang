@@ -6,17 +6,15 @@ import { RootState } from '../../../redux/store';
 import {
   DAY,
   GRAY,
-  MAIN,
   REPEAT_PERIOD,
   SIZE,
   WHITE,
   WORSHIP,
 } from '@mokjang/constants';
-import { Button, CustomPopup, MainText, SvgIcon } from '@mokjang/components';
+import { Button, MainTag, MainText, SvgIcon } from '@mokjang/components';
 import { Worship } from '@mokjang/models';
 import useWindowSize from '../../../hooks/window/window';
-import { useI18n, useScopedI18n } from '../../../../locales/client';
-import AddWorship from '../../organisms/worship/add/add-worship';
+import { useI18n } from '../../../../locales/client';
 import WorshipTableHeader from '../../atoms/worship/worship-table-header';
 import { getDayConstantByIndex, getWeekRepeatConstant } from '@mokjang/utils';
 
@@ -134,33 +132,23 @@ const AttendanceContainer = styled.div`
 `;
 
 type WorshipTableProps = {
-  isEditModalOpened: boolean;
-  isEditEnabled: boolean;
   worships: Worship[];
   onClickHeader: (id: WORSHIP) => void;
   scrollRef: MutableRefObject<HTMLDivElement | null>;
   onScroll: () => void;
   onClickEditWorship: (worship: Worship) => void;
-  onClickEditDone: () => void;
-  onClickEditClose: () => void;
   onClickWorshipItem: (worship: Worship) => void;
 };
 
 const WorshipTableView = ({
-  isEditModalOpened,
-  isEditEnabled,
   worships,
   onClickHeader,
   scrollRef,
   onScroll,
   onClickEditWorship,
-  onClickEditDone,
-  onClickEditClose,
   onClickWorshipItem,
 }: WorshipTableProps) => {
   const t = useI18n();
-  const t_title = useScopedI18n('title');
-  const t_button = useScopedI18n('button');
 
   const { height } = useWindowSize();
 
@@ -205,9 +193,13 @@ const WorshipTableView = ({
       case WORSHIP.GROUP:
         return (
           <DataContainer>
-            {/*<MainTag*/}
-            {/*  title={getGroup(worship.worshipTargetGroups[0].id, groups)?.name}*/}
-            {/*/>*/}
+            <MainTag
+              title={
+                worship.worshipTargetGroups.length === 0
+                  ? t('all')
+                  : worship.worshipTargetGroups[0]?.group.name
+              }
+            />
           </DataContainer>
         );
 
@@ -277,22 +269,6 @@ const WorshipTableView = ({
             ))}
           </tbody>
         </WorshipTable>
-
-        <CustomPopup
-          isShow={isEditModalOpened}
-          onClickClose={onClickEditClose}
-          onClickCancel={onClickEditClose}
-          headerTitle={t_title('editWorship')}
-          width={500}
-          height={500}
-          onClickDone={onClickEditDone}
-          doneBackgroundColor={isEditEnabled ? MAIN.DEFAULT : MAIN.LIGHT}
-          doneDisabled={!isEditEnabled}
-          cancelText={t_button('cancel')}
-          doneText={t_button('save')}
-        >
-          <AddWorship />
-        </CustomPopup>
       </TableContainer>
     </>
   );

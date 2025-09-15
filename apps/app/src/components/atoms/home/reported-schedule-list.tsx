@@ -1,17 +1,19 @@
-import { CALENDAR_DOMAIN, DOMAIN, Schedule } from '@mokjang/models';
+import {
+  CALENDAR_DOMAIN,
+  NOTIFICATION_DOMAIN,
+  Schedule,
+} from '@mokjang/models';
 import styled from 'styled-components';
 import { GRAY, LOCALE, MAIN, STATUS } from '@mokjang/constants';
 import { MainTag, MainText } from '@mokjang/components';
 import {
   getDateFromDateString,
   getTranslatedScheduleDate,
+  getTranslatedTerm,
 } from '@mokjang/utils';
 import { usePathname } from 'next/navigation';
 import { useI18n } from '../../../../locales/client';
-import {
-  getStatusBackgroundColor,
-  getStatusFontColor,
-} from '../../../utils/color';
+import { getStatusBackgroundColor, getStatusFontColor } from '@/utils/color';
 import { RefObject } from 'react';
 
 const ListContainer = styled.div`
@@ -65,13 +67,23 @@ const ReportedScheduleList = ({
 
         const [domain, id] = schedule.id?.split('-');
 
+        let scheduleTitle = schedule.title;
+
+        if (domain === NOTIFICATION_DOMAIN.EDUCATION_TERM) {
+          scheduleTitle = `${schedule.educationName} ${schedule.educationTerm && getTranslatedTerm(LOCALE.KO, schedule.educationTerm)}`;
+        }
+
+        if (domain === NOTIFICATION_DOMAIN.EDUCATION_SESSION) {
+          scheduleTitle = `${schedule.educationName} ${schedule.educationTerm && getTranslatedTerm(LOCALE.KO, schedule.educationTerm)} ${schedule.title}`;
+        }
+
         return (
           <ScheduleItem
             key={schedule.id}
             onClick={() => onClickSchedule(schedule)}
           >
             <RowContainer>
-              <MainText>{schedule.title}</MainText>
+              <MainText>{scheduleTitle}</MainText>
               <MainTag
                 title={t(schedule.status as STATUS)}
                 color={getStatusFontColor(schedule.status as STATUS)}

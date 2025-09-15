@@ -261,6 +261,7 @@ const AddEducationTerm = ({ isEdit = false }: AddEducationTermProps) => {
       const newInCharge = {
         value: targetEducationTerm.inCharge.id,
         title: targetEducationTerm.inCharge.name,
+        officer: targetEducationTerm.inCharge.officer?.name || BLANK,
       };
 
       setInCharge([newInCharge]);
@@ -305,6 +306,7 @@ const AddEducationTerm = ({ isEdit = false }: AddEducationTermProps) => {
         targetEducationTerm.reports.map((r) => ({
           value: r.receiver.id,
           title: r.receiver.name,
+          officer: r.receiver.officer?.name || BLANK,
         }))
       );
     } else {

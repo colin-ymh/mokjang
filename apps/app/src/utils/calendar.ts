@@ -1,19 +1,18 @@
 import {
+  ChurchEvent,
+  DOMAIN,
+  EducationSession,
+  Member,
   Schedule,
   ServerReportedSchedule,
   ServerSchedule,
+  Task,
+  Visitation,
 } from '@mokjang/models';
-import { Task } from '@mokjang/models';
-import { Visitation } from '@mokjang/models';
-import { Member } from '@mokjang/models';
-import { DOMAIN } from '@mokjang/models';
 import KoreanLunarCalendar from 'korean-lunar-calendar';
-import { getDateFromDateString, getDateStringFromDate } from '@mokjang/utils';
+import { getDateFromDateString, getDateStringFromDate, getFormattedDate, } from '@mokjang/utils';
 import dayjs from 'dayjs';
-import { ChurchEvent } from '@mokjang/models';
-import { EducationSession } from '@mokjang/models';
 import { Holiday } from '../api/holiday-api';
-import { getFormattedDate } from '@mokjang/utils';
 
 export const getScheduleFromTask = (event: Task): Schedule => {
   return {
@@ -154,10 +153,10 @@ export const getMyWidgetSchedule = (event: ServerSchedule) => {
     start: event.startDate,
     end: event.endDate,
     status: event.status,
-    educationId: event.educationId || undefined,
-    educationName: event.educationName || undefined,
-    educationTermId: event.educationTermId || undefined,
-    educationTerm: event.educationTerm || undefined,
+    educationId: event?.educationId || undefined,
+    educationName: event?.educationName || undefined,
+    educationTermId: event?.educationTermId || undefined,
+    educationTerm: event?.educationTerm || undefined,
   } as Schedule;
 };
 
@@ -169,9 +168,9 @@ export const getReportedWidgetSchedule = (event: ServerReportedSchedule) => {
     end: event.schedule.endDate,
     status: event.schedule.status,
     inCharge: event.inCharge,
-    educationId: event.educationId || undefined,
-    educationName: event.educationName || undefined,
-    educationTermId: event.educationTermId || undefined,
-    educationTerm: event.educationTerm || undefined,
+    educationId: event.schedule?.educationId || undefined,
+    educationName: event.schedule?.educationName || undefined,
+    educationTermId: event.schedule?.educationTermId || undefined,
+    educationTerm: event.schedule?.educationTerm || undefined,
   } as Schedule;
 };

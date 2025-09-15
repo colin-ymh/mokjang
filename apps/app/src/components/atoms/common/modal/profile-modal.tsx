@@ -147,20 +147,18 @@ const ProfileModal = ({ onClickClose }: ProfileModalProps) => {
             </TextContainer>
           </ProfileContainer>
         }
-        headerRight={
-          <ButtonContainer onClick={onClickMyClose}>
-            <Cancel />
-          </ButtonContainer>
-        }
         headerHeight={150}
         cancelText={t_button('close')}
         onClickClose={onClickMyClose}
+        onClickCancel={onClickClose}
       >
-        <ChurchUserInformation
-          isMy={true}
-          isManager={true}
-          onClickDelete={onClickLeave}
-        />
+        {isMyOpened && (
+          <ChurchUserInformation
+            isMy={true}
+            isManager={true}
+            onClickDelete={onClickLeave}
+          />
+        )}
       </SlidePopup>
     </>
   );

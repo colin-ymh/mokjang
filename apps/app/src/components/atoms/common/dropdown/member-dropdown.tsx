@@ -9,37 +9,30 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { InputProps } from '@mokjang/components';
-import { getTrimmedString } from '@mokjang/utils';
-import { AxiosResponse } from 'axios';
-import { GetMembersResponse, MembersApi } from '@/api/members/members.api';
-import { BLANK } from '@mokjang/constants';
+import { MembersApi } from '@/api/members/members.api';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
-import { MemberDropdownType } from './member-dropdown-item';
+import { BLANK } from '@mokjang/constants';
+import { getTrimmedString } from '@mokjang/utils';
+import { AxiosResponse } from 'axios';
 import { ManagersApi } from '@/api/managers/managers.api';
 import { ChurchUser } from '@mokjang/models';
 import MemberDropdownView from '@/components/atoms/common/dropdown/member-dropdown.view';
+import { InputProps } from '@mokjang/components';
+import { MemberDropdownType } from './member-dropdown-item';
 
 export type MultiMemberDropdownProps = InputProps & {
   ref?: RefObject<HTMLInputElement>;
-
-  /** 선택된 값 배열 */
   values: MemberDropdownType[];
   onChangeValues?: (values: any[]) => void;
-
-  /** UI 옵션 */
   isEditable?: boolean;
   backgroundBlur?: boolean;
   enterKeyHint?: string;
   placeholder?: string;
-
-  /** 스타일 */
   borderColor?: string;
   width?: number;
   height?: number;
   backgroundColor?: string;
-
   isSingle?: boolean;
   isManager?: boolean;
 };
@@ -68,15 +61,12 @@ const MemberDropdown = forwardRef<HTMLInputElement, MultiMemberDropdownProps>(
     const managersApi = new ManagersApi(false);
     const { churchId } = useSelector((state: RootState) => state.church);
 
-    /* ---------------- 상태 ---------------- */
     const [isOpened, setIsOpened] = useState(false);
     const [searchText, setSearchText] = useState('');
     const [focusedIndex, setFocusedIndex] = useState(0);
     const [items, setItems] = useState<MemberDropdownType[]>([]);
-
     const focusedIndexRef = useRef(0);
 
-    /* 선택 변경 ---------------------------------------------------- */
     const addValue = (v: MemberDropdownType) => {
       if (isSingle) {
         onChangeValues?.([v]);
@@ -95,18 +85,16 @@ const MemberDropdown = forwardRef<HTMLInputElement, MultiMemberDropdownProps>(
       onChangeValues?.(values.filter((x) => x !== v));
     };
 
-    /* 검색 입력 ---------------------------------------------------- */
     const onChangeInput = (event: ChangeEvent<HTMLInputElement>) => {
       const newMemberName = getTrimmedString(event.target.value);
       setSearchText(newMemberName);
     };
 
-    /* 키보드 ------------------------------------------------------- */
     const onKeyDownHandler = useCallback(
       (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.keyCode === 229) return;
-
         if (!isOpened) return;
+
         if (e.key === 'ArrowDown') {
           e.preventDefault();
           setFocusedIndex((p) => {
@@ -130,7 +118,7 @@ const MemberDropdown = forwardRef<HTMLInputElement, MultiMemberDropdownProps>(
           setIsOpened(false);
         }
       },
-      [isOpened, items, searchText, values, isEditable]
+      [isOpened, items, values, isEditable]
     );
 
     useEffect(() => {
@@ -151,14 +139,12 @@ const MemberDropdown = forwardRef<HTMLInputElement, MultiMemberDropdownProps>(
               .then((response: AxiosResponse) => {
                 const managers = response.data.data;
                 const newMemberItems: MemberDropdownType[] = managers.map(
-                  (manager: ChurchUser) => {
-                    return {
-                      value: manager.member.id,
-                      title: manager.member.name,
-                      profileImage: manager.member.profileImageUrl,
-                      officer: manager.member.officer?.name,
-                    };
-                  }
+                  (manager: ChurchUser) => ({
+                    value: manager.member.id,
+                    title: manager.member.name,
+                    profileImage: manager.member.profileImageUrl,
+                    officer: manager.member.officer?.name,
+                  })
                 );
 
                 setItems(newMemberItems);
@@ -166,24 +152,23 @@ const MemberDropdown = forwardRef<HTMLInputElement, MultiMemberDropdownProps>(
                 focusedIndexRef.current = 0;
               });
           } else {
+            // ✅ getSimpleMembers -> getSimpleMembersV2 로 변경
             membersApi
-              .getSimpleMembers({
+              .getSimpleMembersV2({
                 churchId,
+                limit: 10, // 기존 take: 10 대응
                 name: searchText,
-                page: 1,
-                take: 10,
+                // cursor 미사용(드롭다운 1회 조회), 필요시 추가 가능
               })
               .then((response: AxiosResponse) => {
-                const members: GetMembersResponse[] = response.data.data;
+                const members = response.data.data ?? [];
                 const newMemberItems: MemberDropdownType[] = members.map(
-                  (member) => {
-                    return {
-                      value: member.id,
-                      title: member.name,
-                      profileImage: member.profileImageUrl,
-                      officer: member.officer?.name,
-                    };
-                  }
+                  (member: any) => ({
+                    value: member.id,
+                    title: member.name,
+                    profileImage: member.profileImageUrl,
+                    officer: member.officer?.name,
+                  })
                 );
 
                 setItems(newMemberItems);
@@ -196,20 +181,19 @@ const MemberDropdown = forwardRef<HTMLInputElement, MultiMemberDropdownProps>(
         }
       }, 300);
       return () => clearTimeout(timer);
-    }, [searchText]);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [searchText, churchId, isManager]);
 
     useEffect(() => {
       if (!isEditable) setSearchText(BLANK);
     }, [isEditable]);
 
-    /* 배경 클릭 */
     const onClickBackground = () => setIsOpened(false);
 
-    /* props 묶음 → View */
     const viewProps = {
       ref,
       items,
-      searchText: searchText,
+      searchText,
       values,
       isOpened,
       focusedIndex,
@@ -221,7 +205,6 @@ const MemberDropdown = forwardRef<HTMLInputElement, MultiMemberDropdownProps>(
       height,
       backgroundColor,
       disabled,
-      /* handlers */
       setIsOpened,
       addValue,
       removeValue,

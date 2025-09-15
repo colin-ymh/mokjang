@@ -217,7 +217,7 @@ export const getMemberInformationContent = (
   switch (memberContentId) {
     case MEMBER_INFORMATION_HEADER_ID.PERSONAL_INFORMATION:
       if (isPopup) {
-        return <MemberInformationListView />;
+        return <MemberInformationListView isPopup={isPopup} />;
       } else {
         return <MemberPersonalInformationList />;
       }

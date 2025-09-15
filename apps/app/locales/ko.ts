@@ -823,6 +823,7 @@ export default {
     '소속된 교인이나 하위 그룹 있으면 삭제가 불가능하며, 삭제된 사역은 복구할 수 없습니다.',
   'warning.deleteMinistry':
     '할당된 교인이 있으면 삭제가 불가능하며, 삭제된 그룹은 복구할 수 없습니다.',
+  'warning.deleteWorship': '삭제된 예배는 복구할 수 없습니다.',
 
   'warning.stopGroupHistory':
     '종료된 교인의 그룹은 교인의 그룹 이력에 저장됩니다.',
@@ -858,6 +859,7 @@ export default {
   'description.memberRegisterHeader': '새로운 교인의 정보를 입력해주세요',
   'description.editPermissionTemplate':
     '선택된 유형이 없으면 권한유형이 해제됩니다.',
+
   /*-------------------description-------------------*/
 
   /*-------------------tooltip-------------------*/

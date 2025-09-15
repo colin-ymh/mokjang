@@ -252,9 +252,10 @@ const AddVisitation = ({ isEdit = false }: AddVisitationProps) => {
       return {
         id: member.value,
         name: member.title,
-        officer: member.officer,
+        officer: { id: BLANK, name: member.officer || BLANK },
       } as Member;
     });
+
     dispatch(
       setTargetVisitation({
         ...targetVisitation,

@@ -243,6 +243,7 @@ const AddEducationSession = ({ isEdit = false }: AddEducationSessionProps) => {
       const newInCharge = {
         value: targetEducationSession.inCharge.id,
         title: targetEducationSession.inCharge.name,
+        officer: targetEducationSession.inCharge.officer?.name || BLANK,
       };
 
       setInCharge([newInCharge]);
@@ -296,6 +297,7 @@ const AddEducationSession = ({ isEdit = false }: AddEducationSessionProps) => {
         return {
           value: report.receiver.id,
           title: report.receiver.name,
+          officer: report.receiver.officer?.name || BLANK,
         };
       });
       setReceivers(newReceivers);

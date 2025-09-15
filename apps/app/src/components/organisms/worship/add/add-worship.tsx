@@ -8,9 +8,11 @@ import { DEFAULT_GROUP, Group } from '@mokjang/models';
 import { getGroup } from '@/utils/group';
 import AddWorshipView from './add-worship.view';
 
-type AddWorshipProps = {};
+type AddWorshipProps = {
+  onClickDelete?: () => void;
+};
 
-const AddWorship = ({}: AddWorshipProps) => {
+const AddWorship = ({ onClickDelete }: AddWorshipProps) => {
   const dispatch = useDispatch<AppDispatch>();
 
   const { targetWorship } = useSelector(
@@ -86,6 +88,7 @@ const AddWorship = ({}: AddWorshipProps) => {
     onChangeWorshipDay,
     onChangeRepeatPeriod,
     onChangeDescription,
+    onClickDelete,
   };
 
   return (
