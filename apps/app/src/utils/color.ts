@@ -4,15 +4,14 @@ import {
   GREEN,
   ORANGE,
   RED,
+  STATUS,
   STATUS_BACKGROUND_COLOR,
   STATUS_COLOR,
   STATUS_FONT_COLOR,
   WHITE,
   YELLOW,
 } from '@mokjang/constants';
-import { STATUS } from '@mokjang/constants';
-import { DOMAIN } from '@mokjang/models';
-import { Schedule } from '@mokjang/models';
+import { DOMAIN, Schedule } from '@mokjang/models';
 
 export const getStatusBackgroundColor = (status: STATUS) => {
   switch (status) {
@@ -121,20 +120,20 @@ export const getEventStyle = (event: Schedule) => {
 };
 
 export const getEducationAttendanceRateColor = (rate: number) => {
-  if (rate <= 40) {
-    return ORANGE.DEFAULT;
-  } else if (rate <= 30) {
+  if (rate <= 30) {
     return RED.DARK;
+  } else if (rate <= 40) {
+    return ORANGE.DEFAULT;
   } else {
     return YELLOW.DARK;
   }
 };
 
 export const getEducationAttendanceRateBackgroundColor = (rate: number) => {
-  if (rate <= 40) {
-    return ORANGE.EXTRA_LIGHT;
-  } else if (rate <= 30) {
+  if (rate <= 30) {
     return RED.LIGHT;
+  } else if (rate <= 40) {
+    return ORANGE.EXTRA_LIGHT;
   } else {
     return YELLOW.LIGHT;
   }

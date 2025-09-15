@@ -7,11 +7,10 @@ import { getFormattedPhone, routeLandingPage } from '@mokjang/utils';
 import { AuthApi } from '@/api/auth/auth.api';
 import ProfileModalView, { ProfileModalViewProps } from './profile-modal.view';
 import SlidePopup from '@/components/atoms/common/popup/slide-popup';
-import { BLACK, GRAY } from '@mokjang/constants';
+import { GRAY } from '@mokjang/constants';
 import ChurchUserInformation from '@/components/organisms/church-user/information/church-user-information';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { Svg } from '@mokjang/assets';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 import { useScopedI18n } from '../../../../../locales/client';
@@ -33,19 +32,6 @@ const TextContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
-`;
-
-const ButtonContainer = styled.div`
-  display: flex;
-  cursor: pointer;
-  padding-right: 20px;
-`;
-
-const Cancel = styled(Svg.Cancel)`
-  width: 30px;
-  height: 30px;
-  stroke: ${BLACK};
-  stroke-width: 1px;
 `;
 
 type ProfileModalProps = {

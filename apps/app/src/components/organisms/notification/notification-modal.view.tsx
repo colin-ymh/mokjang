@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import NotificationItem from '@/components/molecules/notification/notification-item';
 import { MutableRefObject } from 'react';
+import EmptyList from '@/components/atoms/common/image/empty-list';
 
 const ModalContainer = styled.div<{ height: number }>`
   display: flex;
@@ -134,13 +135,17 @@ const NotificationModalView = ({
           </RowContainer>
         </HeaderContainer>
         <ContentContainer ref={scrollRef}>
-          {notifications.map((notification) => (
-            <NotificationItem
-              key={notification.id}
-              notification={notification}
-              onClickClose={onClickClose}
-            />
-          ))}
+          {notifications.length > 0 ? (
+            notifications.map((notification) => (
+              <NotificationItem
+                key={notification.id}
+                notification={notification}
+                onClickClose={onClickClose}
+              />
+            ))
+          ) : (
+            <EmptyList />
+          )}
         </ContentContainer>
         <FooterContainer>
           <Button

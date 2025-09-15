@@ -118,18 +118,22 @@ const WorshipAttendanceWidgetView = ({
         </RowContainer>
 
         {/* 카운트 */}
-        <InformationContainer>
-          <RowContainer>
-            <WarningIcon />
-            <MainText color={MAIN.DEFAULT}>
-              {getTranslateWorshipAttendanceWidgetDescription(locale, t(range))}
+        {worshipEnrollments.length > 0 && (
+          <InformationContainer>
+            <RowContainer>
+              <WarningIcon />
+              <MainText color={MAIN.DEFAULT}>
+                {getTranslateWorshipAttendanceWidgetDescription(
+                  locale,
+                  t(range)
+                )}
+              </MainText>
+            </RowContainer>
+            <MainText fontSize={22} fontWeight={600} color={MAIN.DARK}>
+              {getTranslatedMemberCount(locale, worshipEnrollments.length)}
             </MainText>
-          </RowContainer>
-          <MainText fontSize={22} fontWeight={600} color={MAIN.DARK}>
-            {getTranslatedMemberCount(locale, worshipEnrollments.length)}
-          </MainText>
-        </InformationContainer>
-
+          </InformationContainer>
+        )}
         {/* 교인 목록 */}
         <WorshipEnrollmentList worshipEnrollments={worshipEnrollments} />
       </WidgetContainer>

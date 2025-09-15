@@ -46,6 +46,7 @@ const TopRight = styled.div`
 const NotificationWrapper = styled.div`
   display: flex;
   position: relative;
+  z-index: 50;
 `;
 
 const NotificationCount = styled.div`

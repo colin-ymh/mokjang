@@ -13,6 +13,7 @@ import { RootState } from '../../../../../redux/store';
 import AddFamilyMemberModal from '../../../../atoms/member/information/family/add-family-member-modal';
 import FamilyMemberItem from '../../../../atoms/member/information/family/family-member-item';
 import useWindowSize from '../../../../../hooks/window/window';
+import EmptyList from '@/components/atoms/common/image/empty-list';
 
 const ListContainer = styled.div`
   display: flex;
@@ -94,16 +95,20 @@ const FamilyInformationListView = ({
         />
       </FamilyListHeader>
       <FamilyList ref={scrollRef} onScroll={onScroll} height={height - 400}>
-        {familyMembers.map((familyMember) => {
-          return (
-            <FamilyMemberItem
-              key={familyMember.familyMemberId}
-              familyMember={familyMember}
-              onChangeRelation={onChangeRelation}
-              onClickConfirmDelete={onClickConfirmDelete}
-            />
-          );
-        })}
+        {familyMembers.length > 0 ? (
+          familyMembers.map((familyMember) => {
+            return (
+              <FamilyMemberItem
+                key={familyMember.familyMemberId}
+                familyMember={familyMember}
+                onChangeRelation={onChangeRelation}
+                onClickConfirmDelete={onClickConfirmDelete}
+              />
+            );
+          })
+        ) : (
+          <EmptyList width={200} height={200} />
+        )}
       </FamilyList>
 
       {/* 교인 추가 팝업 */}

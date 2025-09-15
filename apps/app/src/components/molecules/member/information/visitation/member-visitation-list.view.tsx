@@ -14,6 +14,7 @@ import VisitationInformation from '../../../../organisms/visitation/information/
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../redux/store';
 import ScrollSlidePopup from '@/components/atoms/common/popup/scroll-slide-popup';
+import EmptyList from '@/components/atoms/common/image/empty-list';
 
 const ListContainer = styled.div`
   display: flex;
@@ -111,15 +112,19 @@ const MemberVisitationListView = ({
           onScroll={onScroll}
           height={height - 400}
         >
-          {visitations.map((visitation) => {
-            return (
-              <MemberVisitationItem
-                key={visitation.id}
-                visitation={visitation}
-                onClickVisitation={onClickVisitation}
-              />
-            );
-          })}
+          {visitations.length > 0 ? (
+            visitations.map((visitation) => {
+              return (
+                <MemberVisitationItem
+                  key={visitation.id}
+                  visitation={visitation}
+                  onClickVisitation={onClickVisitation}
+                />
+              );
+            })
+          ) : (
+            <EmptyList width={200} height={200} />
+          )}
         </VisitationList>
       </ListContainer>
 

@@ -1,4 +1,4 @@
-import { CALENDAR_DOMAIN, DOMAIN, Schedule } from '@mokjang/models';
+import { CALENDAR_DOMAIN, Schedule } from '@mokjang/models';
 import styled from 'styled-components';
 import { GRAY, LOCALE, STATUS } from '@mokjang/constants';
 import { MainTag, MainText } from '@mokjang/components';
@@ -13,6 +13,7 @@ import {
   getStatusBackgroundColor,
   getStatusFontColor,
 } from '../../../utils/color';
+import EmptyList from '../common/image/empty-list';
 
 const ListContainer = styled.div`
   display: flex;
@@ -57,42 +58,46 @@ const MyScheduleList = ({
 
   return (
     <ListContainer>
-      {mySchedules.map((schedule) => {
-        if (!schedule.id) {
-          return;
-        }
+      {mySchedules.length > 0 ? (
+        mySchedules.map((schedule) => {
+          if (!schedule.id) {
+            return;
+          }
 
-        const [domain, id] = schedule.id?.split('-');
-        return (
-          <ScheduleItem
-            key={schedule.id}
-            onClick={() => onClickSchedule(schedule)}
-          >
-            <RowContainer>
-              <MainText>
-                {schedule.title ||
-                  `${schedule.educationName} ${getTranslatedTerm(locale, schedule.educationTerm as string)}`}
-              </MainText>
-              <MainTag
-                title={t(schedule.status as STATUS)}
-                color={getStatusFontColor(schedule.status as STATUS)}
-                backgroundColor={getStatusBackgroundColor(
-                  schedule.status as STATUS
-                )}
-              />
-            </RowContainer>
-            <RowContainer>
-              <MainTag title={t(domain as CALENDAR_DOMAIN)} />
-              <MainText>
-                {getTranslatedScheduleDate(
-                  locale,
-                  getDateFromDateString(schedule.end as string)
-                )}
-              </MainText>
-            </RowContainer>
-          </ScheduleItem>
-        );
-      })}
+          const [domain, id] = schedule.id?.split('-');
+          return (
+            <ScheduleItem
+              key={schedule.id}
+              onClick={() => onClickSchedule(schedule)}
+            >
+              <RowContainer>
+                <MainText>
+                  {schedule.title ||
+                    `${schedule.educationName} ${getTranslatedTerm(locale, schedule.educationTerm as string)}`}
+                </MainText>
+                <MainTag
+                  title={t(schedule.status as STATUS)}
+                  color={getStatusFontColor(schedule.status as STATUS)}
+                  backgroundColor={getStatusBackgroundColor(
+                    schedule.status as STATUS
+                  )}
+                />
+              </RowContainer>
+              <RowContainer>
+                <MainTag title={t(domain as CALENDAR_DOMAIN)} />
+                <MainText>
+                  {getTranslatedScheduleDate(
+                    locale,
+                    getDateFromDateString(schedule.end as string)
+                  )}
+                </MainText>
+              </RowContainer>
+            </ScheduleItem>
+          );
+        })
+      ) : (
+        <EmptyList />
+      )}
     </ListContainer>
   );
 };

@@ -20,6 +20,7 @@ const AttendanceList = ({}: AttendanceListProps) => {
   const churchId: string = useSelector(
     (state: RootState) => state.church.churchId
   );
+  const { worships } = useSelector((state: RootState) => state.worshipFilter);
   const {
     worshipEnrollments,
     worshipEnrollmentFilter,
@@ -178,7 +179,7 @@ const AttendanceList = ({}: AttendanceListProps) => {
 
   return (
     <>
-      <AttendanceListView {...props} />
+      {worships.length > 0 && <AttendanceListView {...props} />}
       <Loading isShow={isLoading} />
     </>
   );

@@ -3,7 +3,15 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
 
-import { BLACK, BLANK, DESTRUCTIVE, GRAY, GREEN, WHITE, WORSHIP_ENROLLMENT, } from '@mokjang/constants';
+import {
+  BLACK,
+  BLANK,
+  DESTRUCTIVE,
+  GRAY,
+  GREEN,
+  WHITE,
+  WORSHIP_ENROLLMENT,
+} from '@mokjang/constants';
 import { MainText } from '@mokjang/components';
 import useWindowSize from '../../../../hooks/window/window';
 import { WORSHIP_ATTENDANCE_STATUS, WorshipEnrollment } from '@mokjang/models';
@@ -239,12 +247,14 @@ const AttendanceTableView = ({
         )
       );
       return (
-        <IconContainer>
-          {attendance?.attendanceStatus ===
-            WORSHIP_ATTENDANCE_STATUS.ABSENT && <AbsentIcon />}
-          {attendance?.attendanceStatus ===
-            WORSHIP_ATTENDANCE_STATUS.PRESENT && <PresentIcon />}
-        </IconContainer>
+        <CustomTooltip text={attendance?.note}>
+          <IconContainer>
+            {attendance?.attendanceStatus ===
+              WORSHIP_ATTENDANCE_STATUS.ABSENT && <AbsentIcon />}
+            {attendance?.attendanceStatus ===
+              WORSHIP_ATTENDANCE_STATUS.PRESENT && <PresentIcon />}
+          </IconContainer>
+        </CustomTooltip>
       );
     } else if (enrollment?.member) {
       switch (id) {
@@ -319,15 +329,13 @@ const AttendanceTableView = ({
                     id={item.id}
                     $isSession={item.isSession}
                   >
-                    <CustomTooltip text={'특이사항'}>
-                      <ContentWrapper>
-                        {getAttendanceTableContent(
-                          item.id,
-                          enrollment,
-                          item?.date
-                        )}
-                      </ContentWrapper>
-                    </CustomTooltip>
+                    <ContentWrapper>
+                      {getAttendanceTableContent(
+                        item.id,
+                        enrollment,
+                        item?.date
+                      )}
+                    </ContentWrapper>
                   </TableData>
                 ))}
               </AttendanceTableRow>

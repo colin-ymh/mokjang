@@ -15,6 +15,7 @@ import { usePathname } from 'next/navigation';
 import { useI18n } from '../../../../locales/client';
 import { getStatusBackgroundColor, getStatusFontColor } from '@/utils/color';
 import { RefObject } from 'react';
+import EmptyList from '@/components/atoms/common/image/empty-list';
 
 const ListContainer = styled.div`
   display: flex;
@@ -60,53 +61,57 @@ const ReportedScheduleList = ({
 
   return (
     <ListContainer ref={scrollRef}>
-      {mySchedules.map((schedule) => {
-        if (!schedule.id) {
-          return;
-        }
+      {mySchedules.length > 0 ? (
+        mySchedules.map((schedule) => {
+          if (!schedule.id) {
+            return;
+          }
 
-        const [domain, id] = schedule.id?.split('-');
+          const [domain, id] = schedule.id?.split('-');
 
-        let scheduleTitle = schedule.title;
+          let scheduleTitle = schedule.title;
 
-        if (domain === NOTIFICATION_DOMAIN.EDUCATION_TERM) {
-          scheduleTitle = `${schedule.educationName} ${schedule.educationTerm && getTranslatedTerm(LOCALE.KO, schedule.educationTerm)}`;
-        }
+          if (domain === NOTIFICATION_DOMAIN.EDUCATION_TERM) {
+            scheduleTitle = `${schedule.educationName} ${schedule.educationTerm && getTranslatedTerm(LOCALE.KO, schedule.educationTerm)}`;
+          }
 
-        if (domain === NOTIFICATION_DOMAIN.EDUCATION_SESSION) {
-          scheduleTitle = `${schedule.educationName} ${schedule.educationTerm && getTranslatedTerm(LOCALE.KO, schedule.educationTerm)} ${schedule.title}`;
-        }
+          if (domain === NOTIFICATION_DOMAIN.EDUCATION_SESSION) {
+            scheduleTitle = `${schedule.educationName} ${schedule.educationTerm && getTranslatedTerm(LOCALE.KO, schedule.educationTerm)} ${schedule.title}`;
+          }
 
-        return (
-          <ScheduleItem
-            key={schedule.id}
-            onClick={() => onClickSchedule(schedule)}
-          >
-            <RowContainer>
-              <MainText>{scheduleTitle}</MainText>
-              <MainTag
-                title={t(schedule.status as STATUS)}
-                color={getStatusFontColor(schedule.status as STATUS)}
-                backgroundColor={getStatusBackgroundColor(
-                  schedule.status as STATUS
-                )}
-              />
-            </RowContainer>
-            <RowContainer>
-              <MainTag title={t(domain as CALENDAR_DOMAIN)} />
-              <MainText>
-                {getTranslatedScheduleDate(
-                  locale,
-                  getDateFromDateString(schedule.end as string)
-                )}
-              </MainText>
-              <MainText color={MAIN.DEFAULT}>
-                {`${t('inCharge')}: ${schedule.inCharge?.name as string}`}
-              </MainText>
-            </RowContainer>
-          </ScheduleItem>
-        );
-      })}
+          return (
+            <ScheduleItem
+              key={schedule.id}
+              onClick={() => onClickSchedule(schedule)}
+            >
+              <RowContainer>
+                <MainText>{scheduleTitle}</MainText>
+                <MainTag
+                  title={t(schedule.status as STATUS)}
+                  color={getStatusFontColor(schedule.status as STATUS)}
+                  backgroundColor={getStatusBackgroundColor(
+                    schedule.status as STATUS
+                  )}
+                />
+              </RowContainer>
+              <RowContainer>
+                <MainTag title={t(domain as CALENDAR_DOMAIN)} />
+                <MainText>
+                  {getTranslatedScheduleDate(
+                    locale,
+                    getDateFromDateString(schedule.end as string)
+                  )}
+                </MainText>
+                <MainText color={MAIN.DEFAULT}>
+                  {`${t('inCharge')}: ${schedule.inCharge?.name as string}`}
+                </MainText>
+              </RowContainer>
+            </ScheduleItem>
+          );
+        })
+      ) : (
+        <EmptyList />
+      )}
     </ListContainer>
   );
 };

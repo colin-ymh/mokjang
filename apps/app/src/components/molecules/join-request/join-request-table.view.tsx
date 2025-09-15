@@ -3,19 +3,32 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../redux/store';
 
-import { BLANK, GRAY, GREEN, JOIN_REQUEST, LOCALE, RED, USER, WHITE, } from '@mokjang/constants';
+import {
+  BLANK,
+  GRAY,
+  GREEN,
+  JOIN_REQUEST,
+  LOCALE,
+  RED,
+  USER,
+  WHITE,
+} from '@mokjang/constants';
 
 import { Button, CustomPopup, MainText } from '@mokjang/components';
 
 import useWindowSize from '../../../hooks/window/window';
 import { BLANK_HEADER } from '../../../redux/reducers/filter/member-filter-reducer';
 import { useI18n, useScopedI18n } from '../../../../locales/client';
-import { getFormattedPhone, getTranslatedDateFromDateString, } from '@mokjang/utils';
+import {
+  getFormattedPhone,
+  getTranslatedDateFromDateString,
+} from '@mokjang/utils';
 import { getStatusColor } from '../../../utils/color';
 import { JoinRequest, Member } from '@mokjang/models';
 import JoinRequestTableHeader from '../../atoms/join-request/join-request-table-header';
 import LinkMemberUser from './link-member-user';
 import { usePathname } from 'next/navigation';
+import EmptyList from '@/components/atoms/common/image/empty-list'; // 1. 컬럼별 PX 폭 (마지막 REMARKS만 auto 할 예정)
 
 // 1. 컬럼별 PX 폭 (마지막 REMARKS만 auto 할 예정)
 const getColumnWidth = (id: string) => {
@@ -288,6 +301,7 @@ const JoinRequestTableView = ({
             ))}
           </tbody>
         </JoinRequestTable>
+        {joinRequests.length === 0 && <EmptyList width={200} height={200} />}
 
         <CustomPopup
           isShow={isLinkPopupShown}

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { GRAY, MAIN, WHITE } from '@mokjang/constants';
+import { CURSOR, GRAY, MAIN, WHITE } from '@mokjang/constants';
 import { MainText } from '@mokjang/components';
 
 const ToggleRadioButtonContainer = styled.div<{ $backgroundColor: string }>`
@@ -86,6 +86,7 @@ export const ToggleRadioButton = ({
               color={selectedValue === item.value ? color : GRAY.DARK}
               fontSize={fontSize}
               fontWeight={fontWeight}
+              cursor={CURSOR.POINTER}
             >
               {item.title}
             </MainText>

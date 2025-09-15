@@ -252,7 +252,11 @@ const PersonalInformationListView = ({
                 {t('concealed')}
               </MainText>
             ) : (
-              <MainText size={SIZE.LARGE} fontWeight={400}>
+              <MainText
+                size={SIZE.LARGE}
+                fontWeight={400}
+                whiteSpace={'normal'}
+              >
                 {targetMember.address}
               </MainText>
             )}
@@ -273,7 +277,11 @@ const PersonalInformationListView = ({
                 {t('concealed')}
               </MainText>
             ) : (
-              <MainText size={SIZE.LARGE} fontWeight={400}>
+              <MainText
+                size={SIZE.LARGE}
+                fontWeight={400}
+                whiteSpace={'normal'}
+              >
                 {targetMember.detailAddress}
               </MainText>
             )}

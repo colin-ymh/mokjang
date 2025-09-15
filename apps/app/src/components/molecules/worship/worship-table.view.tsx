@@ -3,14 +3,7 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../redux/store';
 
-import {
-  DAY,
-  GRAY,
-  REPEAT_PERIOD,
-  SIZE,
-  WHITE,
-  WORSHIP,
-} from '@mokjang/constants';
+import { DAY, GRAY, REPEAT_PERIOD, SIZE, WHITE, WORSHIP, } from '@mokjang/constants';
 import { Button, MainTag, MainText, SvgIcon } from '@mokjang/components';
 import { Worship } from '@mokjang/models';
 import useWindowSize from '../../../hooks/window/window';
@@ -19,6 +12,7 @@ import WorshipTableHeader from '../../atoms/worship/worship-table-header';
 import { getDayConstantByIndex, getWeekRepeatConstant } from '@mokjang/utils';
 
 import { Svg } from '@mokjang/assets';
+import EmptyList from '@/components/atoms/common/image/empty-list';
 
 // 2. 테이블 컨테이너 (100% 폭 + 스크롤)
 const TableContainer = styled.div<{ height: number }>`
@@ -269,6 +263,7 @@ const WorshipTableView = ({
             ))}
           </tbody>
         </WorshipTable>
+        {worships.length === 0 && <EmptyList width={200} height={200} />}
       </TableContainer>
     </>
   );

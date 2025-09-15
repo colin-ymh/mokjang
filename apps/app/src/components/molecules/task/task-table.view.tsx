@@ -16,7 +16,8 @@ import {
 } from '../../../utils/color';
 import MemberProfile from '../../atoms/member/member-profile';
 import { getTranslatedDateFromDateString } from '@mokjang/utils';
-import { usePathname } from 'next/navigation'; // 1. 컬럼별 PX 폭 (마지막 REMARKS만 auto 할 예정)
+import { usePathname } from 'next/navigation';
+import EmptyList from '@/components/atoms/common/image/empty-list'; // 1. 컬럼별 PX 폭 (마지막 REMARKS만 auto 할 예정)
 
 // 1. 컬럼별 PX 폭 (마지막 REMARKS만 auto 할 예정)
 const getColumnWidth = (id: string) => {
@@ -242,6 +243,7 @@ const TaskTableView = ({
             ))}
           </tbody>
         </TaskTable>
+        {tasks.length === 0 && <EmptyList width={200} height={200} />}
       </TableContainer>
     </>
   );

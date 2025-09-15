@@ -13,6 +13,7 @@ import {
   getDateStringFromDate,
   getTranslatedDateFromDateString,
 } from '@mokjang/utils';
+import EmptyList from '@/components/atoms/common/image/empty-list';
 
 const ListContainer = styled.div`
   display: flex;
@@ -55,30 +56,34 @@ const WorshipEnrollmentList = ({
 
   return (
     <ListContainer>
-      {worshipEnrollments.map((item) => {
-        return (
-          <WorshipAttendanceItem key={item.member.id}>
-            <RowContainer>
-              <MainText>{item.member.name}</MainText>
-              <MainTag
-                title={`${Math.round(item.attendanceRate * 100).toString()}%`}
-                backgroundColor={getEducationAttendanceRateBackgroundColor(
-                  Math.round(item.attendanceRate * 100)
-                )}
-                color={getEducationAttendanceRateColor(
-                  Math.round(item.attendanceRate * 100)
-                )}
-              />
-            </RowContainer>
-            <RowContainer>
-              <MainTag title={item.member.group?.name || t('noGroup')} />
-              <MainText
-                color={GRAY.DEFAULT}
-              >{`${t('lastPresent')}: ${getTranslatedDateFromDateString(locale, getDateStringFromDate(getDateFromDateString(item.lastPresentDate)))}`}</MainText>
-            </RowContainer>
-          </WorshipAttendanceItem>
-        );
-      })}
+      {worshipEnrollments.length > 0 ? (
+        worshipEnrollments.map((item) => {
+          return (
+            <WorshipAttendanceItem key={item.member.id}>
+              <RowContainer>
+                <MainText>{item.member.name}</MainText>
+                <MainTag
+                  title={`${Math.round(item.attendanceRate * 100).toString()}%`}
+                  backgroundColor={getEducationAttendanceRateBackgroundColor(
+                    Math.round(item.attendanceRate * 100)
+                  )}
+                  color={getEducationAttendanceRateColor(
+                    Math.round(item.attendanceRate * 100)
+                  )}
+                />
+              </RowContainer>
+              <RowContainer>
+                <MainTag title={item.member.group?.name || t('noGroup')} />
+                <MainText
+                  color={GRAY.DEFAULT}
+                >{`${t('lastPresent')}: ${getTranslatedDateFromDateString(locale, getDateStringFromDate(getDateFromDateString(item.lastPresentDate)))}`}</MainText>
+              </RowContainer>
+            </WorshipAttendanceItem>
+          );
+        })
+      ) : (
+        <EmptyList />
+      )}
     </ListContainer>
   );
 };

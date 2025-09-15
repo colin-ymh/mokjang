@@ -3,32 +3,38 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
 
-import { GRAY, GREEN, MAIN, ORANGE, WHITE } from '@mokjang/constants';
+import {
+  EDUCATION,
+  GRAY,
+  GREEN,
+  LOCALE,
+  MAIN,
+  ORANGE,
+  SIZE,
+  WHITE,
+} from '@mokjang/constants';
 
 import useWindowSize from '../../../../hooks/window/window';
 import EducationTableHeader from '../../../atoms/education/education/education-table-header';
 import { Education, EducationSession, EducationTerm } from '@mokjang/models';
-import { EDUCATION } from '@mokjang/constants';
 
-import { MainText } from '@mokjang/components';
+import { MainTag, MainText, SvgIcon } from '@mokjang/components';
 import { useI18n } from '../../../../../locales/client';
 import {
+  getDateFromDateString,
+  getDateStringFromDate,
   getTranslatedCompletedEnrollmentStatus,
   getTranslatedTerm,
   getTranslatedTermCount,
 } from '@mokjang/utils';
 import { usePathname } from 'next/navigation';
-import { LOCALE } from '@mokjang/constants';
-import { SIZE } from '@mokjang/constants';
 
 import { Svg } from '@mokjang/assets';
-import { SvgIcon } from '@mokjang/components';
-import { getDateFromDateString, getDateStringFromDate } from '@mokjang/utils';
-import { MainTag } from '@mokjang/components';
 import {
   getStatusBackgroundColor,
   getStatusFontColor,
-} from '../../../../utils/color'; // 1. 컬럼별 PX 폭 (마지막 REMARKS만 auto 할 예정)
+} from '../../../../utils/color';
+import EmptyList from '@/components/atoms/common/image/empty-list'; // 1. 컬럼별 PX 폭 (마지막 REMARKS만 auto 할 예정)
 
 // 1. 컬럼별 PX 폭 (마지막 REMARKS만 auto 할 예정)
 const getColumnWidth = (id: string) => {
@@ -502,6 +508,7 @@ const EducationTableView = ({
             ))}
           </tbody>
         </EducationTable>
+        {educations.length === 0 && <EmptyList width={200} height={200} />}
       </TableContainer>
     </>
   );

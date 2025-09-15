@@ -24,6 +24,7 @@ import {
   getTranslatedAndOthers,
   getTranslatedDateFromDateString,
 } from '@mokjang/utils';
+import EmptyList from '@/components/atoms/common/image/empty-list';
 
 // 1. 컬럼별 PX 폭
 const getColumnWidth = (id: string) => {
@@ -288,6 +289,7 @@ const VisitationTableView = ({
             ))}
           </tbody>
         </VisitationTable>
+        {visitations.length === 0 && <EmptyList width={200} height={200} />}
       </TableContainer>
     </>
   );
