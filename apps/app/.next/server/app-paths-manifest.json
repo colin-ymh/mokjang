@@ -1,6 +1,11 @@
 {
+  "/_not-found/page": "app/_not-found/page.js",
+  "/api/upload/route": "app/api/upload/route.js",
+  "/auth/login/[provider]/redirect/page": "app/auth/login/[provider]/redirect/page.js",
+  "/[locale]/church/register/page": "app/[locale]/church/register/page.js",
+  "/[locale]/login/register/page": "app/[locale]/login/register/page.js",
+  "/[locale]/[...slug]/page": "app/[locale]/[...slug]/page.js",
   "/[locale]/login/page": "app/[locale]/login/page.js",
   "/[locale]/page": "app/[locale]/page.js",
-  "/[locale]/church/register/page": "app/[locale]/church/register/page.js",
-  "/[locale]/[...slug]/page": "app/[locale]/[...slug]/page.js"
+  "/[locale]/church/init/page": "app/[locale]/church/init/page.js"
 }
