@@ -51,6 +51,21 @@ const StyledQuill = styled(ReactQuill)<{
     font-style: normal !important;
     left: 10px;
   }
+  .ql-editor > ol,
+  .ql-editor > ul {
+    padding-left: 0.5em !important;
+  }
+  /* 들여쓰기 단계별 폭 조절 */
+
+  .ql-editor .ql-indent-1 {
+    padding-left: 3em !important;
+  }
+  .ql-editor .ql-indent-2 {
+    padding-left: 4em !important;
+  }
+  .ql-editor .ql-indent-3 {
+    padding-left: 5em !important;
+  }
 `;
 
 const InputWrapper = styled.div`

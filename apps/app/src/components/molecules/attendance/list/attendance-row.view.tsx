@@ -12,10 +12,8 @@ import {
   CURSOR,
   DAY,
   GRAY,
-  GREEN,
   LOCALE,
   MAIN,
-  PURPLE,
   REPEAT_PERIOD,
   SIZE,
   WHITE,
@@ -37,6 +35,7 @@ import { useWorshipPeriodDropdownItems } from '../../../../hooks/dropdown/dropdo
 import { usePathname } from 'next/navigation';
 
 import { Svg } from '@mokjang/assets';
+import { getWorshipAttendanceRateColor } from '@/utils/color';
 
 const AttendanceContainer = styled.div`
   display: flex;
@@ -83,8 +82,10 @@ const BoxContainer = styled.div`
 
 const GroupContainer = styled.div`
   display: flex;
+  flex-direction: column;
   padding: 10px;
   width: 100%;
+  overflow-y: auto;
 `;
 
 const Chevron = styled(Svg.ChevronDown)<{
@@ -264,7 +265,7 @@ const AttendanceRow = ({
             <MainText color={GRAY.SEMI_DARK} size={SIZE.SMALL}>
               {t('worshipSelectedGroup')}
             </MainText>
-            <MainText color={PURPLE.DARK} size={SIZE.LARGE} fontWeight={600}>
+            <MainText size={SIZE.LARGE} fontWeight={600}>
               {targetWorshipGroup.name || t('all')}
             </MainText>
             <MainText color={GRAY.SEMI_DARK} size={SIZE.SMALL}>
@@ -276,7 +277,13 @@ const AttendanceRow = ({
             <MainText color={GRAY.SEMI_DARK} size={SIZE.SMALL}>
               {t('worshipAverageAttendanceRate')}
             </MainText>
-            <MainText color={MAIN.DEFAULT} size={SIZE.LARGE} fontWeight={600}>
+            <MainText
+              color={getWorshipAttendanceRateColor(
+                targetWorshipStatistic.attendanceRate.period
+              )}
+              size={SIZE.LARGE}
+              fontWeight={600}
+            >
               {`${targetWorshipStatistic.attendanceRate.period}%`}
             </MainText>
           </BoxContainer>
@@ -285,7 +292,7 @@ const AttendanceRow = ({
             <MainText color={GRAY.SEMI_DARK} size={SIZE.SMALL}>
               {t('worshipLastDate')}
             </MainText>
-            <MainText color={GREEN.DEFAULT} size={SIZE.LARGE} fontWeight={600}>
+            <MainText size={SIZE.LARGE} fontWeight={600}>
               {sessionDates?.length > 0 &&
                 getTranslatedDateFromDateString(
                   basePath,

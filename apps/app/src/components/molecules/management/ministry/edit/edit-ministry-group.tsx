@@ -1,18 +1,17 @@
 import React, { useState } from 'react';
 import { useScopedI18n } from '../../../../../../locales/client';
-import { DEFAULT_MINISTRY_GROUP, MinistryGroup } from '@mokjang/models';
-import { fetchMinistryGroups } from '../../../../../redux/reducers/church-reducer';
+import { DEFAULT_MINISTRY_GROUP, Member, MinistryGroup } from '@mokjang/models';
+import { fetchMinistryGroups } from '@/redux/reducers/church-reducer';
 import {
   setIsToastShown,
   setToastBackgroundColor,
   setToastText,
-} from '../../../../../redux/reducers/toast-popup-reducer';
+} from '@/redux/reducers/toast-popup-reducer';
 import { BLACK, DESTRUCTIVE } from '@mokjang/constants';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../../../../redux/store';
+import { AppDispatch, RootState } from '@/redux/store';
 import EditMinistryGroupView from './edit-ministry-group.view';
-import { Member } from '@mokjang/models';
-import { MinistryGroupsApi } from '../../../../../api/management/ministry/ministry-groups.api';
+import { MinistryGroupsApi } from '@/api/management/ministry/ministry-groups.api';
 
 type EditMinistryGroupProps = {
   members: Member[];

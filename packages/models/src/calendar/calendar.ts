@@ -1,11 +1,12 @@
 import * as React from 'react';
-import { Task } from '../task/task';
-import { Visitation } from '../visitation/visitation';
-import { EducationSession } from '../education/education';
-import { Member } from '../member/member';
-import { ChurchEvent } from '../church-event/church-event';
 import { STATUS } from '@mokjang/constants';
-import { DOMAIN } from '../permission/permission';
+
+import { Task } from '../task';
+import { Visitation } from '../visitation';
+import { EducationSession } from '../education';
+import { Member } from '../member';
+import { ChurchEvent } from '../church-event';
+import { DOMAIN } from '../permission';
 
 export type Schedule = {
   id?: string;

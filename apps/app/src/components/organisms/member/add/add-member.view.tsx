@@ -143,7 +143,10 @@ const HeartIcon = styled(Svg.Heart)`
 
 const GroupContainer = styled.div`
   display: flex;
-  padding: 20px;
+  flex-direction: column;
+  padding: 10px;
+  width: 100%;
+  overflow-y: auto;
 `;
 
 const GroupButton = styled.div`
@@ -413,27 +416,26 @@ const AddMemberView = ({
               />
             </InputContainer>
           </RowContainer>
-          <RowContainer>
-            {/* 도로명주소 */}
-            <InputContainer>
-              <LabelInput
-                label={t('address')}
-                value={targetMember.address || BLANK}
-                placeholder={t_placeholder('address')}
-                onClick={onClickAddress}
-                onChange={() => {}} // 필요하다면 구현
-              />
-            </InputContainer>
-            {/* 상세주소 */}
-            <InputContainer>
-              <LabelInput
-                label={t('detailAddress')}
-                value={targetMember.detailAddress || BLANK}
-                onChange={onChangeDetailAddress}
-                placeholder={t_placeholder('detailAddress')}
-              />
-            </InputContainer>
-          </RowContainer>
+
+          {/* 도로명주소 */}
+          <InputContainer>
+            <LabelInput
+              label={t('address')}
+              value={targetMember.address || BLANK}
+              placeholder={t_placeholder('address')}
+              onClick={onClickAddress}
+              onChange={() => {}} // 필요하다면 구현
+            />
+          </InputContainer>
+          {/* 상세주소 */}
+          <InputContainer>
+            <LabelInput
+              label={t('detailAddress')}
+              value={targetMember.detailAddress || BLANK}
+              onChange={onChangeDetailAddress}
+              placeholder={t_placeholder('detailAddress')}
+            />
+          </InputContainer>
 
           <RowContainer>
             {/* 결혼 */}

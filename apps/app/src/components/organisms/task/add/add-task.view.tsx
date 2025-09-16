@@ -3,7 +3,7 @@
 import styled from 'styled-components';
 import React, { ChangeEvent } from 'react';
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
-import { GRAY } from '@mokjang/constants';
+import { GRAY, LOCALE } from '@mokjang/constants';
 import { useTimeDropdownItems } from '../../../../hooks/dropdown/dropdown-items';
 import { MemberDropdownType } from '../../../atoms/common/dropdown/member-dropdown-item';
 import { BorderInput, MainText, RequiredMark } from '@mokjang/components';
@@ -20,6 +20,7 @@ import MemberDropdown from '../../../atoms/common/dropdown/member-dropdown';
 import Quill from '../../../atoms/common/input/quill';
 import MemberTag from '../../../atoms/common/tag/member-tag';
 import BigMemberTag from '../../../atoms/common/tag/big-member-tag';
+import { usePathname } from 'next/navigation';
 
 /* ──────────────────────────────── Styled Components ─────────────────────────────── */
 const AddTaskViewContainer = styled.div`
@@ -102,11 +103,14 @@ const AddTaskView = ({
   onChangeReceivers,
   onClickDeleteReceiver,
 }: AddTaskViewProps) => {
+  const pathname = usePathname();
+  const locale = pathname.split('/')[1] as LOCALE;
+
   const { targetTask } = useSelector((state: RootState) => state.targetTask);
   const t = useI18n();
   const t_placeholder = useScopedI18n('placeholder');
 
-  const timeDropdownItems = useTimeDropdownItems();
+  const timeDropdownItems = useTimeDropdownItems(locale);
 
   return (
     <AddTaskViewContainer>

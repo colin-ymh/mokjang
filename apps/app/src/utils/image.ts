@@ -125,3 +125,12 @@ export const getPreviewUrl = (file: File): string => {
 export const revokePreviewUrl = (url: string): void => {
   URL.revokeObjectURL(url);
 };
+
+/** File/Blob → data URL(base64) */
+export const fileToDataUrl = (file: Blob): Promise<string> =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(String(reader.result)); // "data:image/...;base64,...."
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });

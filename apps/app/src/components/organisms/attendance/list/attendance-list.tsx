@@ -179,7 +179,7 @@ const AttendanceList = ({}: AttendanceListProps) => {
 
   return (
     <>
-      {worships.length > 0 && <AttendanceListView {...props} />}
+      {<AttendanceListView {...props} />}
       <Loading isShow={isLoading} />
     </>
   );

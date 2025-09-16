@@ -16,7 +16,7 @@ import AddGroupMemberModal from '../../../../atoms/management/group/member/add-g
 import ManagementMemberTable from '../../table/management-member-table';
 import { getTranslatedAddMemberTitle } from '@mokjang/utils';
 import { usePathname } from 'next/navigation';
-import { CHURCH_CONTENT_ID } from '../../../../../constants/layout/content';
+import { CHURCH_CONTENT_ID } from '@/constants/layout/content';
 
 const GroupInformationViewContainer = styled.div<{ $isGroup: boolean }>`
   display: ${({ $isGroup }) => ($isGroup ? 'flex' : 'none')};

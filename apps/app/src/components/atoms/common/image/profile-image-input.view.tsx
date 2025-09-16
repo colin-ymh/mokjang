@@ -1,18 +1,14 @@
 'use client';
 
-import React, { ChangeEventHandler } from 'react';
+import React, { ChangeEventHandler, Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
 import Cropper, { Area, Point } from 'react-easy-crop';
-import {
-  Button,
-  ProfileImage,
-  TransparentBackground,
-} from '@mokjang/components';
+import { Button, ProfileImage } from '@mokjang/components';
 
 import { BLACK, GRAY, MAIN, WHITE } from '@mokjang/constants';
 
 import { Svg } from '@mokjang/assets';
-import { useScopedI18n } from '../../../../../locales/client';
+import { useScopedI18n } from '../../../../../locales/client'; /* --------------------------- styled --------------------------- */
 
 /* --------------------------- styled --------------------------- */
 const Wrapper = styled.div`
@@ -60,7 +56,7 @@ const CropBox = styled.div`
   overflow: hidden;
   justify-content: center;
   align-items: center;
-  z-index: 1001;
+  z-index: 1200;
   gap: 10px;
 `;
 
@@ -118,6 +114,7 @@ type ProfileImageInputProps = {
   onClickDelete: () => void;
   onChangeFile: ChangeEventHandler<HTMLInputElement>;
   isOpened: boolean;
+  setIsOpened: Dispatch<SetStateAction<boolean>>;
   originalFile: File | null;
   previewUrl: string;
   width: number;
@@ -128,6 +125,7 @@ type ProfileImageInputProps = {
   onCropComplete: (croppedArea: Area, croppedAreaPixels: Area) => void;
   onChangeSlider: ChangeEventHandler<HTMLInputElement>;
   onClickSave: () => void;
+  inputRef: React.RefObject<HTMLInputElement>;
 };
 
 const ProfileImageInputView = ({
@@ -135,6 +133,7 @@ const ProfileImageInputView = ({
   crop,
   zoom,
   isOpened,
+  setIsOpened,
   previewUrl,
   croppedPreviewUrl,
   onChangeFile,
@@ -150,8 +149,10 @@ const ProfileImageInputView = ({
   onClickSave,
   width,
   height,
+  inputRef,
 }: ProfileImageInputProps) => {
   const t_button = useScopedI18n('button');
+
   return (
     <Wrapper>
       <ThumbBox onClick={onClickImage}>
@@ -159,7 +160,7 @@ const ProfileImageInputView = ({
           value={croppedPreviewUrl || value}
           width={width}
           height={height}
-          onClick={onClickImage}
+          onClick={() => {}}
           quality={100}
         />
         <DeleteBtn
@@ -167,10 +168,14 @@ const ProfileImageInputView = ({
           onClick={onClickDelete}
         />
         <FileSelector
-          id="member-img-input"
+          ref={inputRef}
           type="file"
           accept="image/*"
-          onChange={onChangeFile}
+          onChange={(event) => {
+            onChangeFile(event);
+            // console.log(event);
+            // setIsOpened(true);
+          }}
         />
 
         <CameraButton>
@@ -179,50 +184,51 @@ const ProfileImageInputView = ({
       </ThumbBox>
 
       {/* 크롭 모달 */}
-      {isOpened && originalFile && (
-        <>
-          <TransparentBackground
-            isOpened={isOpened}
-            onClick={onClickClose}
-            blur={true}
-          />
-          <CropBox onClick={(e) => e.stopPropagation()}>
-            <CropArea>
-              <Cropper
-                image={previewUrl} // Object URL 사용
-                crop={crop}
-                zoom={zoom}
-                aspect={1}
-                showGrid={false}
-                cropSize={{ width: 200, height: 200 }}
-                onCropChange={onCropChange}
-                onZoomChange={onZoomChange}
-                onCropComplete={onCropComplete}
-              />
-            </CropArea>
+      {/*  <>*/}
+      {isOpened && (
+        // <TransparentBackground
+        //   isOpened={isOpened}
+        //   onClick={onClickClose}
+        //   blur={true}
+        //   zIndex={1100}
+        // />
+        <CropBox onClick={(e) => e.stopPropagation()}>
+          <CropArea>
+            <Cropper
+              image={previewUrl} // Object URL 사용
+              crop={crop}
+              zoom={zoom}
+              aspect={1}
+              showGrid={false}
+              cropSize={{ width: 200, height: 200 }}
+              onCropChange={onCropChange}
+              onZoomChange={onZoomChange}
+              onCropComplete={onCropComplete}
+            />
+          </CropArea>
 
-            <SliderBox value={zoom} onChange={onChangeSlider} />
+          <SliderBox value={zoom} onChange={onChangeSlider} />
 
-            <ButtonContainer>
-              <Button
-                text={t_button('cancel')}
-                onClick={onClickClose}
-                height={30}
-                width={120}
-                backgroundColor={WHITE}
-                color={GRAY.DEFAULT}
-                borderColor={GRAY.SEMI_LIGHT}
-              />
-              <Button
-                text={t_button('save')}
-                onClick={onClickSave}
-                height={30}
-                width={120}
-              />
-            </ButtonContainer>
-          </CropBox>
-        </>
+          <ButtonContainer>
+            <Button
+              text={t_button('cancel')}
+              onClick={onClickClose}
+              height={30}
+              width={120}
+              backgroundColor={WHITE}
+              color={GRAY.DEFAULT}
+              borderColor={GRAY.SEMI_LIGHT}
+            />
+            <Button
+              text={t_button('save')}
+              onClick={onClickSave}
+              height={30}
+              width={120}
+            />
+          </ButtonContainer>
+        </CropBox>
       )}
+      {/*  </>*/}
     </Wrapper>
   );
 };

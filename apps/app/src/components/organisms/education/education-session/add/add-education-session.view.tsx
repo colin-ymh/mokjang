@@ -1,25 +1,22 @@
 'use client';
 
 import styled from 'styled-components';
-import React, { ChangeEvent } from 'react';
-import { useI18n, useScopedI18n } from '../../../../../../locales/client';
-import { GRAY, SIZE } from '@mokjang/constants';
-import { BorderInput, MainText, RequiredMark } from '@mokjang/components';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../../../../redux/store';
+import React, {ChangeEvent} from 'react';
+import {useI18n, useScopedI18n} from '../../../../../../locales/client';
+import {GRAY, LOCALE, SIZE} from '@mokjang/constants';
+import {BorderInput, MainText, RequiredMark} from '@mokjang/components';
+import {useSelector} from 'react-redux';
+import {RootState} from '../../../../../redux/store';
 import CustomDatePicker from '../../../../../vendor/date-picker/custom-date-picker';
-import {
-  getDateFromDateString,
-  getDateStringFromDate,
-  getTotalMinuteFromDate,
-} from '@mokjang/utils';
+import {getDateFromDateString, getDateStringFromDate, getTotalMinuteFromDate, } from '@mokjang/utils';
 import Dropdown from '../../../../atoms/common/dropdown/dropdown';
-import { useTimeDropdownItems } from '../../../../../hooks/dropdown/dropdown-items';
-import { MemberDropdownType } from '../../../../atoms/common/dropdown/member-dropdown-item';
+import {useTimeDropdownItems} from '../../../../../hooks/dropdown/dropdown-items';
+import {MemberDropdownType} from '../../../../atoms/common/dropdown/member-dropdown-item';
 import Quill from '../../../../atoms/common/input/quill';
 import MemberDropdown from '../../../../atoms/common/dropdown/member-dropdown';
 import MemberTag from '../../../../atoms/common/tag/member-tag';
 import BigMemberTag from '../../../../atoms/common/tag/big-member-tag';
+import {usePathname} from 'next/navigation';
 
 /* ──────────────────────────────── Styled Components ─────────────────────────────── */
 const AddEducationSessionViewContainer = styled.div`
@@ -105,13 +102,16 @@ const AddEducationSessionView = ({
   onChangeReceivers,
   onClickDeleteReceiver,
 }: AddEducationSessionViewProps) => {
+  const pathname = usePathname();
+  const locale = pathname.split('/')[1] as LOCALE;
+
   const { targetEducationSession } = useSelector(
     (state: RootState) => state.targetEducationSession
   );
   const t = useI18n();
   const t_placeholder = useScopedI18n('placeholder');
 
-  const timeDropdownItems = useTimeDropdownItems();
+  const timeDropdownItems = useTimeDropdownItems(locale);
 
   return (
     <AddEducationSessionViewContainer>

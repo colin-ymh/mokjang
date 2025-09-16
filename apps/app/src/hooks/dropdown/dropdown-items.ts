@@ -423,27 +423,34 @@ export const useVisitationMethodDropdownItems = () => {
   return items;
 };
 
-export const useTimeDropdownItems = () => {
-  const items = [];
+export const useTimeDropdownItems = (locale: LOCALE) => {
+  const items: { value: number; title: string }[] = [];
 
   for (let totalMinutes = 0; totalMinutes < 24 * 60; totalMinutes += 30) {
     const hour24 = Math.floor(totalMinutes / 60);
     const minute = totalMinutes % 60;
 
-    const period = hour24 < 12 ? 'AM' : 'PM';
-    const hour12 = hour24 % 12 === 0 ? 12 : hour24 % 12;
-    const title = `${hour12.toString().padStart(2, '0')}:${minute
-      .toString()
-      .padStart(2, '0')} ${period}`;
-
-    items.push({
-      value: totalMinutes,
-      title,
-    });
+    if (locale === LOCALE.KO) {
+      // ✅ 한국어 표기: 오전/오후 hh:mm
+      const period = hour24 < 12 ? '오전' : '오후';
+      const hour12 = hour24 % 12 === 0 ? 12 : hour24 % 12;
+      const title = `${period} ${hour12.toString().padStart(2, '0')}:${minute
+        .toString()
+        .padStart(2, '0')}`;
+      items.push({ value: totalMinutes, title });
+    } else {
+      // ✅ 기본(영문) 표기: 12시간제 AM/PM
+      const period = hour24 < 12 ? 'AM' : 'PM';
+      const hour12 = hour24 % 12 === 0 ? 12 : hour24 % 12;
+      const title = `${hour12.toString().padStart(2, '0')}:${minute
+        .toString()
+        .padStart(2, '0')} ${period}`;
+      items.push({ value: totalMinutes, title });
+    }
   }
+
   return items;
 };
-
 export const useAttendanceStatusDropdownItems = () => {
   const t = useI18n();
 

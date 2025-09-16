@@ -88,19 +88,19 @@ export const getCalenderBackgroundColor = (domain: DOMAIN) => {
 export const getCalenderColor = (domain: DOMAIN) => {
   switch (domain) {
     case DOMAIN.VISITATION:
-      return WHITE;
+      return BLACK;
     case DOMAIN.TASK:
-      return WHITE;
+      return BLACK;
     case DOMAIN.MEMBER:
-      return WHITE;
+      return BLACK;
     case DOMAIN.CHURCH_EVENT:
-      return WHITE;
+      return BLACK;
     case DOMAIN.HOLIDAY:
       return BLACK;
     case DOMAIN.EDUCATION_SESSION:
-      return WHITE;
+      return BLACK;
     default:
-      return WHITE;
+      return BLACK;
   }
 };
 
@@ -110,11 +110,12 @@ export const getEventStyle = (event: Schedule) => {
       backgroundColor: getCalenderBackgroundColor(
         event.id?.split('-')[0] as DOMAIN
       ),
-      borderRadius: '5px',
+      borderRadius: '2px',
       color: getCalenderColor(event.id?.split('-')[0] as DOMAIN),
-      padding: '2px 5px',
+      padding: '4px 6px',
       fontSize: '14px',
       fontFamily: "'Roboto', sans-serif",
+      textDecoration: event.status === STATUS.DONE ? 'line-through' : 'none',
     },
   };
 };

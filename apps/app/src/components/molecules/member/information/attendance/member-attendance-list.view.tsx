@@ -186,7 +186,7 @@ const MemberAttendanceListView = ({
               size={SIZE.EXTRA_LARGE}
               fontSize={24}
               color={MAIN.DEFAULT}
-            >{`${statistic.checkRate}%`}</MainText>
+            >{`${(Math.round(statistic.presentCount / (statistic.presentCount + statistic.absentCount)) || 0) * 100}%`}</MainText>
             <MainText color={GRAY.DEFAULT}>
               {getTranslatedMemberAttendanceCount(
                 basePath,

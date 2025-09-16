@@ -1,13 +1,10 @@
 'use client';
 
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { Area, Point } from 'react-easy-crop';
 import {
   getCroppedImageFile,
-  getIsAllowedImageSize,
-  getIsAllowedImageType,
   getPreviewUrl,
-  getResizedImageFile,
   revokePreviewUrl,
 } from '@/utils/image';
 import { BLANK } from '@mokjang/constants';
@@ -26,16 +23,12 @@ const ProfileImageInput = ({
   width = 90,
   height = 90,
 }: ProfileImageInputProps) => {
-  // 원본 파일 (크롭 전)
   const [originalFile, setOriginalFile] = useState<File | null>(null);
-  // 크롭된 파일
   const [croppedFile, setCroppedFile] = useState<File | null>(null);
-  // 미리보기 URL 들
   const [previewUrl, setPreviewUrl] = useState<string>(BLANK);
   const [croppedPreviewUrl, setCroppedPreviewUrl] = useState<string>(BLANK);
 
-  // 크롭 관련 상태들
-  const [isOpened, setIsOpened] = useState(false);
+  const [isOpened, setIsOpened] = useState<boolean>(false);
   const [crop, setCrop] = useState<Point>({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
   const [area, setArea] = useState<Area>({
@@ -46,72 +39,50 @@ const ProfileImageInput = ({
   });
 
   const [thrownError, setThrownError] = useState<Error | null>(null);
-  if (thrownError) {
-    throw thrownError;
-  }
+  if (thrownError) throw thrownError;
 
-  // 파일 선택 후 이벤트
-  const onChangeFile = async (e: ChangeEvent<HTMLInputElement>) => {
+  // ✅ 이 ref를 통해 “해당 인스턴스의” 파일 인풋만 클릭
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const onClickImage = () => {
+    fileInputRef.current?.click();
+  };
+
+  const onChangeFile = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    if (!getIsAllowedImageType(file)) {
-      setThrownError(new Error('지원하지 않는 파일 형식입니다.'));
-    }
-    if (!getIsAllowedImageSize(file)) {
-      setThrownError(new Error('파일 용량은 5MB까지 허용됩니다.'));
-    }
+    // 기존 미리보기 URL 정리
+    if (previewUrl) revokePreviewUrl(previewUrl);
 
-    try {
-      // 이미지 크기 조정 (File 객체로 직접 처리)
-      const resizedFile = await getResizedImageFile(file, 400, 400);
+    // 새 미리보기 준비 후 모달 오픈 (이미지 없는 상태에서 모달 열면 Cropper가 에러낼 수 있어요)
+    const newUrl = getPreviewUrl(file);
+    setOriginalFile(file);
+    setPreviewUrl(newUrl);
+    setIsOpened(true);
 
-      // 기존 미리보기 URL 해제
-      if (previewUrl) revokePreviewUrl(previewUrl);
-
-      // 새 미리보기 URL 생성
-      const newPreviewUrl = getPreviewUrl(resizedFile);
-
-      setOriginalFile(resizedFile);
-      setPreviewUrl(newPreviewUrl);
-      setIsOpened(true);
-
-      e.target.value = BLANK;
-    } catch (error) {
-      setThrownError(error instanceof Error ? error : new Error(String(error)));
-    }
+    // 같은 파일 다시 선택 가능하도록 초기화
+    e.target.value = BLANK;
   };
 
-  // 크롭 완료 및 업로드
   const onClickSave = async () => {
     if (!originalFile) return;
-
     try {
-      // 크롭된 파일 생성 (File 객체)
-      const croppedFile = await getCroppedImageFile(originalFile, area);
-
-      // 기존 크롭 미리보기 URL 해제
+      const file = await getCroppedImageFile(originalFile, area);
       if (croppedPreviewUrl) revokePreviewUrl(croppedPreviewUrl);
-
-      // 새 크롭 미리보기 URL 생성
-      const newCroppedPreviewUrl = getPreviewUrl(croppedFile);
-
-      setCroppedFile(croppedFile);
-      setCroppedPreviewUrl(newCroppedPreviewUrl);
-
-      onChange(croppedFile);
+      const newUrl = getPreviewUrl(file);
+      setCroppedFile(file);
+      setCroppedPreviewUrl(newUrl);
+      onChange(file);
       setIsOpened(false);
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));
     }
   };
 
-  // 이미지 삭제
   const onClickDelete = () => {
-    // 메모리 해제
     if (previewUrl) revokePreviewUrl(previewUrl);
     if (croppedPreviewUrl) revokePreviewUrl(croppedPreviewUrl);
-
     setOriginalFile(null);
     setCroppedFile(null);
     setPreviewUrl(BLANK);
@@ -119,7 +90,6 @@ const ProfileImageInput = ({
     onChange(null);
   };
 
-  // 컴포넌트 언마운트 시 메모리 해제
   useEffect(() => {
     return () => {
       if (previewUrl) revokePreviewUrl(previewUrl);
@@ -127,34 +97,18 @@ const ProfileImageInput = ({
     };
   }, [previewUrl, croppedPreviewUrl]);
 
-  const onClickImage = () =>
-    document.getElementById('member-img-input')?.click();
-
-  const onClickClose = () => {
-    setIsOpened(false);
-  };
-
-  const onCropChange = (location: Point) => {
-    setCrop(location);
-  };
-
-  const onZoomChange = (area: number) => {
-    setZoom(area);
-  };
-
-  const onCropComplete = (croppedArea: Area, croppedAreaPixels: Area) => {
-    setArea(croppedAreaPixels);
-  };
-
-  const onChangeSlider = (event: ChangeEvent<HTMLInputElement>) => {
-    setZoom(+event.target.value);
-  };
+  const onCropChange = (p: Point) => setCrop(p);
+  const onZoomChange = (z: number) => setZoom(z);
+  const onCropComplete = (_: Area, pixels: Area) => setArea(pixels);
+  const onChangeSlider = (e: ChangeEvent<HTMLInputElement>) =>
+    setZoom(+e.target.value);
 
   const props = {
     value,
     crop,
     zoom,
     isOpened,
+    setIsOpened,
     previewUrl,
     croppedPreviewUrl,
     onChangeFile,
@@ -162,7 +116,7 @@ const ProfileImageInput = ({
     onClickImage,
     croppedFile,
     onClickDelete,
-    onClickClose,
+    onClickClose: () => setIsOpened(false),
     onCropChange,
     onZoomChange,
     onCropComplete,
@@ -170,6 +124,7 @@ const ProfileImageInput = ({
     onClickSave,
     width,
     height,
+    inputRef: fileInputRef,
   };
 
   return <ProfileImageInputView {...props} />;

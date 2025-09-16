@@ -121,10 +121,10 @@ export enum STATUS_BACKGROUND_COLOR {
 }
 
 export enum CALENDAR_COLOR {
-  MEMBER = '#F2C94C',
-  VISITATION = '#9B51E0',
-  TASK = '#2F80ED',
-  EDUCATION_SESSION = '#EB5757',
-  EVENT = '#27AE60',
+  MEMBER = '#fff4d2',
+  VISITATION = '#f2e1ff',
+  TASK = '#cfe1ff',
+  EDUCATION_SESSION = '#ffcfcf',
+  EVENT = '#b5e8cd',
   HOLIDAY = '#BDBDBD',
 }

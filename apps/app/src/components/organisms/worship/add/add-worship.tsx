@@ -7,6 +7,7 @@ import { setTargetWorship } from '@/redux/reducers/target/target-worship-reducer
 import { DEFAULT_GROUP, Group } from '@mokjang/models';
 import { getGroup } from '@/utils/group';
 import AddWorshipView from './add-worship.view';
+import { ALL } from '@mokjang/constants';
 
 type AddWorshipProps = {
   onClickDelete?: () => void;
@@ -34,7 +35,7 @@ const AddWorship = ({ onClickDelete }: AddWorshipProps) => {
   const onClickGroupModalClose = () => setIsGroupModalShown(false);
 
   const onChangeGroup = (groupId: string | null) => {
-    const newGroup = getGroup(groupId, groups);
+    const newGroup = getGroup(groupId === ALL ? null : groupId, groups);
     setSelectedGroup(newGroup);
 
     dispatch(

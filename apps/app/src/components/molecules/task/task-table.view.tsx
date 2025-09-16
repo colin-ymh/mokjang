@@ -1,19 +1,16 @@
 import React, { MutableRefObject } from 'react';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../../redux/store';
+import { RootState } from '@/redux/store';
 
 import { BLANK, GRAY, LOCALE, STATUS, TASK, WHITE } from '@mokjang/constants';
 import { MainTag, MainText } from '@mokjang/components';
 import { Task } from '@mokjang/models';
 import useWindowSize from '../../../hooks/window/window';
 import TaskTableHeader from '../../atoms/task/task-table-header';
-import { BLANK_HEADER } from '../../../redux/reducers/filter/member-filter-reducer';
+import { BLANK_HEADER } from '@/redux/reducers/filter/member-filter-reducer';
 import { useI18n } from '../../../../locales/client';
-import {
-  getStatusBackgroundColor,
-  getStatusFontColor,
-} from '../../../utils/color';
+import { getStatusBackgroundColor, getStatusFontColor } from '@/utils/color';
 import MemberProfile from '../../atoms/member/member-profile';
 import { getTranslatedDateFromDateString } from '@mokjang/utils';
 import { usePathname } from 'next/navigation';
@@ -24,12 +21,12 @@ const getColumnWidth = (id: string) => {
   switch (id) {
     case TASK.TITLE:
       return 20;
-    case TASK.STATUS:
-      return 10;
     case TASK.DATE:
       return 30;
     case TASK.IN_CHARGE:
-      return 13;
+      return 15;
+    case TASK.STATUS:
+      return 40;
     default:
       // 비고(REMARKS) 컬럼 등
       return 80;
@@ -131,6 +128,15 @@ const ContentWrapper = styled.div`
   white-space: nowrap;
 `;
 
+const StatusContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+`;
+
 type TaskTableProps = {
   tasks: Task[];
   onClickHeader: (id: TASK) => void;
@@ -169,11 +175,13 @@ const TaskTableView = ({
         return <MainText>{task?.title}</MainText>;
       case TASK.STATUS:
         return (
-          <MainTag
-            title={t(task.status as STATUS)}
-            color={getStatusFontColor(task.status as STATUS)}
-            backgroundColor={getStatusBackgroundColor(task.status as STATUS)}
-          />
+          <StatusContainer>
+            <MainTag
+              title={t(task.status as STATUS)}
+              color={getStatusFontColor(task.status as STATUS)}
+              backgroundColor={getStatusBackgroundColor(task.status as STATUS)}
+            />
+          </StatusContainer>
         );
       case TASK.DATE:
         return (

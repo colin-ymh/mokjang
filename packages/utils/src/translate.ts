@@ -137,6 +137,7 @@ export const getTranslatedVisitationColumn = (
   t: (key: string, ...args: any[]) => string,
   id: VISITATION
 ): string => {
+  if (id === VISITATION.STATUS) return BLANK;
   return t(
     id as
       | VISITATION.TITLE
@@ -175,6 +176,7 @@ export const getTranslatedTaskColumn = (
   t: (key: string, ...args: any[]) => string,
   id: TASK
 ): string => {
+  if (id === TASK.STATUS) return BLANK;
   return t(id as TASK.TITLE | TASK.STATUS | TASK.DATE | TASK.IN_CHARGE);
 };
 

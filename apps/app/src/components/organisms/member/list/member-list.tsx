@@ -69,6 +69,7 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
   const [profileImage, setProfileImage] = useState<File | null>(null);
 
   const onChangeProfileImage = (image: File | null) => {
+    console.log(image);
     setProfileImage(image);
   };
 
@@ -176,6 +177,7 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
     try {
       let updatedMember = { ...targetMember };
       if (profileImage) {
+        console.log(profileImage);
         const uploadedUrls = await uploadFiles([profileImage]);
         const uploadedUrl = uploadedUrls[0];
         if (uploadedUrl) {

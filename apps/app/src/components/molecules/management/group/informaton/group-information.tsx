@@ -1,11 +1,20 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
-import { BLACK, DESTRUCTIVE } from '@mokjang/constants';
-import { Group } from '@mokjang/models';
+import {
+  BLACK,
+  BLANK,
+  DESTRUCTIVE,
+  GROUP_ROLE,
+  MEMBER,
+  ORDER_DIRECTION,
+} from '@mokjang/constants';
+import { Group, Member } from '@mokjang/models';
 import { useScopedI18n } from '../../../../../../locales/client';
-import { getFormattedTitle } from '@mokjang/utils';
-import { getIsWellFormedTitle } from '@mokjang/utils';
+import {
+  getDateStringFromDate,
+  getFormattedTitle,
+  getIsWellFormedTitle,
+} from '@mokjang/utils';
 import { fetchGroups } from '../../../../../redux/reducers/church-reducer';
-import { BLANK, ORDER_DIRECTION } from '@mokjang/constants';
 import {
   setIsToastShown,
   setToastBackgroundColor,
@@ -13,12 +22,9 @@ import {
 } from '../../../../../redux/reducers/toast-popup-reducer';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../../../redux/store';
-import { Member } from '@mokjang/models';
-import { MEMBER } from '@mokjang/constants';
 import { GroupMembersApi } from '../../../../../api/management/group/group-membes.api';
 import { GroupsApi } from '../../../../../api/management/group/groups.api';
 import GroupInformationView from './group-information.view';
-import { getDateStringFromDate } from '@mokjang/utils';
 
 type GroupInformationProps = {
   selectedGroup: Group;
@@ -141,11 +147,22 @@ const GroupInformation = ({
         churchId,
         groupId: selectedGroup.id as string,
       });
+      const groups = response.data;
 
-      await dispatch(fetchGroups());
-      onClickGroup(response.data);
+      dispatch(fetchGroups());
+      onClickGroup(groups[groups.length - 1]);
       setIsEditShown(false);
       setEditName(BLANK);
+
+      const newMembers = members.map((member: Member) => {
+        if (member.id === newGroupLeaderId) {
+          return { ...member, groupRole: GROUP_ROLE.LEADER };
+        } else {
+          return { ...member, groupRole: GROUP_ROLE.NONE };
+        }
+      });
+      setMembers(newMembers);
+
       dispatch(setToastText(t_popup('saveComplete')));
       dispatch(setIsToastShown(true));
       dispatch(setToastBackgroundColor(BLACK));

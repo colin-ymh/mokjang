@@ -101,7 +101,11 @@ const EditGroupLeader = ({
   const [selectedMember, setSelectedMember] = useState<Member>(DEFAULT_MEMBER);
 
   const onClickMember = (member: Member) => {
-    setSelectedMember(member);
+    if (selectedMember.id === member.id) {
+      setSelectedMember(DEFAULT_MEMBER);
+    } else {
+      setSelectedMember(member);
+    }
   };
 
   useEffect(() => {
@@ -115,10 +119,6 @@ const EditGroupLeader = ({
 
     if (prevGroupLeader) {
       setSelectedMember(prevGroupLeader);
-    } else {
-      if (members.length > 0) {
-        setSelectedMember(members[0]);
-      }
     }
   }, [group, members]);
 
@@ -158,7 +158,7 @@ const EditGroupLeader = ({
           );
         })}
       </MemberListContainer>
-      {
+      {selectedMember.id && (
         <ResultContainer>
           <ArrowIcon />
           <MainText color={MAIN.DEFAULT}>
@@ -167,7 +167,7 @@ const EditGroupLeader = ({
               : getTranslatedAlreadyGroupLeader(locale, selectedMember.name)}
           </MainText>
         </ResultContainer>
-      }
+      )}
     </EditGroupLeaderContainer>
   );
 };

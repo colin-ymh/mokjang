@@ -61,8 +61,10 @@ const BoxContainer = styled.div`
 
 const GroupContainer = styled.div`
   display: flex;
+  flex-direction: column;
   padding: 10px;
   width: 100%;
+  overflow-y: auto;
 `;
 
 const StatisticsContainer = styled.div`

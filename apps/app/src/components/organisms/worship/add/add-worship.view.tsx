@@ -1,13 +1,13 @@
 import styled from 'styled-components';
 
 import { useSelector } from 'react-redux';
-import { RootState } from '../../../../redux/store';
+import { RootState } from '@/redux/store';
 import { CustomPopup, LabelInput, LabelTextarea } from '@mokjang/components';
 import LabelDropdown from '../../../atoms/common/dropdown/label-dropdown';
 import {
   useDayDropdownItems,
   useRepeatPeriodDropdownItems,
-} from '../../../../hooks/dropdown/dropdown-items';
+} from '@/hooks/dropdown/dropdown-items';
 import { Group } from '@mokjang/models';
 import SelectGroupHierarchy from '../../group/select-group-hierarchy';
 
@@ -40,7 +40,10 @@ const RowContainer = styled.div`
 
 const GroupContainer = styled.div`
   display: flex;
+  flex-direction: column;
   padding: 10px;
+  width: 100%;
+  overflow-y: auto;
 `;
 
 const BoxContainer = styled.div`
@@ -107,6 +110,7 @@ const AddWorshipView = ({
           value={targetWorship.worshipDay}
           onChangeItem={onChangeWorshipDay}
           items={worshipDayDropdownItems}
+          listHeight={100}
         />
         {/*<LabelDropdown*/}
         {/*  label={t('repeatPeriod')}*/}

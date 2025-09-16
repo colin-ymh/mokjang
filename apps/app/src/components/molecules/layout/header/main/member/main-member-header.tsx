@@ -11,7 +11,11 @@ import { setTargetMember } from '@/redux/reducers/target/target-member-reducer';
 import { uploadFiles } from '@/utils/upload';
 import { MembersApi } from '@/api/members/members.api';
 import { BLACK, CONCEALED, DESTRUCTIVE } from '@mokjang/constants';
-import { setIsToastShown, setToastBackgroundColor, setToastText, } from '@/redux/reducers/toast-popup-reducer';
+import {
+  setIsToastShown,
+  setToastBackgroundColor,
+  setToastText,
+} from '@/redux/reducers/toast-popup-reducer';
 
 type MainMemberHeaderProps = {};
 

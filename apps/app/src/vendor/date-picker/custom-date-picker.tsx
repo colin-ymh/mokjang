@@ -318,27 +318,6 @@ export default function CustomDatePicker({
     return date >= startOfWeek && date <= endOfWeek;
   };
 
-  const focusTimeInput = () => {
-    // 재시도 횟수 제한
-    let attempts = 0;
-    const maxAttempts = 5;
-
-    const tryFocus = () => {
-      const timeInput = document.querySelector<HTMLInputElement>(
-        '.react-datepicker__time-container input[type="time"]'
-      );
-
-      if (timeInput) {
-        timeInput.focus();
-      } else if (attempts < maxAttempts) {
-        attempts++;
-        setTimeout(tryFocus, 50); // 재시도
-      }
-    };
-
-    tryFocus();
-  };
-
   const handleSelect = (date: Date | null) => {
     if (!date) return;
 
@@ -350,7 +329,6 @@ export default function CustomDatePicker({
 
     (props.onChange as (date: Date) => void)?.(date);
   };
-
   const years = _.range(startYear, endYear + 1);
   const months = [
     '1',
@@ -532,6 +510,15 @@ export default function CustomDatePicker({
         popperClassName="date-picker-popper"
         calendarClassName="date-picker-calendar"
         popperPlacement={'bottom-start'}
+        onCalendarClose={() => {
+          setTimeout(() => {
+            // 현재 포커스된 게 무엇이든 날려버림
+            requestAnimationFrame(() => {
+              const el = document.activeElement as HTMLElement | null;
+              el?.blur?.();
+            });
+          }, 100);
+        }}
       />
     </CustomDatePickerWrapper>
   );

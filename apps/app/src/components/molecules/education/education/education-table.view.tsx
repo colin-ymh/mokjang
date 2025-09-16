@@ -1,7 +1,7 @@
 import React, { MutableRefObject } from 'react';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../../../redux/store';
+import { RootState } from '@/redux/store';
 
 import {
   EDUCATION,
@@ -30,10 +30,7 @@ import {
 import { usePathname } from 'next/navigation';
 
 import { Svg } from '@mokjang/assets';
-import {
-  getStatusBackgroundColor,
-  getStatusFontColor,
-} from '../../../../utils/color';
+import { getStatusBackgroundColor, getStatusFontColor } from '@/utils/color';
 import EmptyList from '@/components/atoms/common/image/empty-list'; // 1. 컬럼별 PX 폭 (마지막 REMARKS만 auto 할 예정)
 
 // 1. 컬럼별 PX 폭 (마지막 REMARKS만 auto 할 예정)

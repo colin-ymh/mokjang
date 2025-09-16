@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../../redux/store';
+import { AppDispatch, RootState } from '@/redux/store';
 import {
   fetchCalendarSchedules,
   setCalendarSchedules,
-} from '../../../redux/reducers/filter/calendar-filter-reducer';
+} from '@/redux/reducers/filter/calendar-filter-reducer';
 import { getDateStringFromDate, getIsWellFormedTitle } from '@mokjang/utils';
 import MainCalendarView from './main-calendar.view';
 import {
@@ -14,25 +14,25 @@ import {
   DOMAIN,
   Schedule,
 } from '@mokjang/models';
-import { setTargetTask } from '../../../redux/reducers/target/target-task-reducer';
-import { setTargetVisitation } from '../../../redux/reducers/target/target-visitation-reducer';
-import { setTargetEducationSession } from '../../../redux/reducers/target/target-education-session-reducer';
-import { CalendarApi } from '../../../api/calendar/calendar.api';
-import { setTargetEducationTerm } from '../../../redux/reducers/target/target-education-term-reducer';
-import { EducationAttendanceApi } from '../../../api/education/education-attendance.api';
-import { setTargetEducation } from '../../../redux/reducers/target/target-education-reducer';
-import { EducationSessionsApi } from '../../../api/education/education-sessions.api';
+import { setTargetTask } from '@/redux/reducers/target/target-task-reducer';
+import { setTargetVisitation } from '@/redux/reducers/target/target-visitation-reducer';
+import { setTargetEducationSession } from '@/redux/reducers/target/target-education-session-reducer';
+import { CalendarApi } from '@/api/calendar/calendar.api';
+import { setTargetEducationTerm } from '@/redux/reducers/target/target-education-term-reducer';
+import { EducationAttendanceApi } from '@/api/education/education-attendance.api';
+import { setTargetEducation } from '@/redux/reducers/target/target-education-reducer';
+import { EducationSessionsApi } from '@/api/education/education-sessions.api';
 import { BLANK, DESTRUCTIVE, TASK_STATUS } from '@mokjang/constants';
-import { TasksApi } from '../../../api/tasks/tasks.api';
-import { VisitationsApi } from '../../../api/visitations/visitations.api';
+import { TasksApi } from '@/api/tasks/tasks.api';
+import { VisitationsApi } from '@/api/visitations/visitations.api';
 import {
   setIsToastShown,
   setToastBackgroundColor,
   setToastText,
-} from '../../../redux/reducers/toast-popup-reducer';
-import { setTargetChurchEvent } from '../../../redux/reducers/target/target-church-event-reducer';
-import { setTargetMember } from '../../../redux/reducers/target/target-member-reducer';
-import { MembersApi } from '../../../api/members/members.api';
+} from '@/redux/reducers/toast-popup-reducer';
+import { setTargetChurchEvent } from '@/redux/reducers/target/target-church-event-reducer';
+import { setTargetMember } from '@/redux/reducers/target/target-member-reducer';
+import { MembersApi } from '@/api/members/members.api';
 import { getScheduleFromChurchEvent } from '@/utils/calendar';
 import { ChurchEventsApi } from '@/api/church-event/church-events.api';
 

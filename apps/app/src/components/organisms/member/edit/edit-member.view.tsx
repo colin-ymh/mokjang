@@ -1,26 +1,38 @@
 import React, { ChangeEvent } from 'react';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../../../redux/store';
+import { RootState } from '@/redux/store';
 
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
-import { BAPTISM, BLANK, GENDER, GRAY, MARRIAGE, SIZE, } from '@mokjang/constants';
+import {
+  BAPTISM,
+  BLANK,
+  GENDER,
+  GRAY,
+  MARRIAGE,
+  SIZE,
+} from '@mokjang/constants';
 import { DropdownValueType } from '../../../atoms/common/dropdown/dropdown-item';
-import { CheckButton, LabelInput, MainText, PopupHeaderBar, } from '@mokjang/components';
+import {
+  CheckButton,
+  LabelInput,
+  MainText,
+  PopupHeaderBar,
+} from '@mokjang/components';
 import LabelDropdown from '../../../atoms/common/dropdown/label-dropdown';
 import LabelRadioButton from '../../../atoms/common/radio-button/label-radio-button';
 import {
   useGenderRadioButtonItems,
   useLunarSolarRadioButtonItems,
-} from '../../../../hooks/radio-button/radio-button-items';
-import { useMarriageDropdownItems } from '../../../../hooks/dropdown/dropdown-items';
-import ProfileImageInput from '../../../atoms/common/image/profile-image-input';
+} from '@/hooks/radio-button/radio-button-items';
+import { useMarriageDropdownItems } from '@/hooks/dropdown/dropdown-items';
 import VehicleNumberInput from '../../../atoms/register/vehicle-number-input';
 import CustomDatePicker from '../../../../vendor/date-picker/custom-date-picker';
 import { getDateFromDateString, getFormattedPhone } from '@mokjang/utils';
 import KoreanLunarCalendar, { CalendarData } from 'korean-lunar-calendar';
-import { useEditMemberHeaderBarItems } from '../../../../hooks/layout/header-bar-items';
-import { EDIT_MEMBER_HEADER_ID } from '../../../../constants/layout/header';
+import { useEditMemberHeaderBarItems } from '@/hooks/layout/header-bar-items';
+import { EDIT_MEMBER_HEADER_ID } from '@/constants/layout/header';
+import ProfileImageInput from '@/components/atoms/common/image/profile-image-input';
 
 const EditMemberContainer = styled.div`
   display: flex;
@@ -40,6 +52,7 @@ const SectionContainer = styled.div<{ $isShown: boolean }>`
   display: ${({ $isShown }) => ($isShown ? 'flex' : 'none')};
   flex-direction: column;
   gap: 20px;
+  min-height: 400px;
 `;
 
 const InputContainer = styled.div`
@@ -76,7 +89,7 @@ const LabelContainer = styled.div`
   display: flex;
   width: 100%;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
 `;
 
 const RowContainer = styled.div`
@@ -89,22 +102,6 @@ const RowContainer = styled.div`
 const ImageContainer = styled.div`
   display: flex;
   width: 100%;
-`;
-
-const GroupContainer = styled.div`
-  display: flex;
-  padding: 20px;
-`;
-
-const GroupButton = styled.div`
-  display: flex;
-  border: 1px solid ${GRAY.LIGHT};
-  border-radius: 5px;
-  height: 40px;
-  padding: 0 10px;
-  align-items: center;
-  justify-content: flex-start;
-  cursor: pointer;
 `;
 
 type AddMemberViewProps = {
@@ -356,27 +353,26 @@ const EditMemberView = ({
                 />
               </InputContainer>
             </RowContainer>
-            <RowContainer>
-              {/* 도로명주소 */}
-              <InputContainer>
-                <LabelInput
-                  label={t('address')}
-                  value={targetMember.address || BLANK}
-                  placeholder={t_placeholder('address')}
-                  onClick={onClickAddress}
-                  onChange={() => {}} // 필요하다면 구현
-                />
-              </InputContainer>
-              {/* 상세주소 */}
-              <InputContainer>
-                <LabelInput
-                  label={t('detailAddress')}
-                  value={targetMember.detailAddress || BLANK}
-                  onChange={onChangeDetailAddress}
-                  placeholder={t_placeholder('detailAddress')}
-                />
-              </InputContainer>
-            </RowContainer>
+
+            {/* 도로명주소 */}
+            <InputContainer>
+              <LabelInput
+                label={t('address')}
+                value={targetMember.address || BLANK}
+                placeholder={t_placeholder('address')}
+                onClick={onClickAddress}
+                onChange={() => {}} // 필요하다면 구현
+              />
+            </InputContainer>
+            {/* 상세주소 */}
+            <InputContainer>
+              <LabelInput
+                label={t('detailAddress')}
+                value={targetMember.detailAddress || BLANK}
+                onChange={onChangeDetailAddress}
+                placeholder={t_placeholder('detailAddress')}
+              />
+            </InputContainer>
 
             <RowContainer>
               {/* 결혼 */}

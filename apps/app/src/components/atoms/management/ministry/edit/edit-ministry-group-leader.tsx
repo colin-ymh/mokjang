@@ -101,7 +101,11 @@ const EditMinistryMinistryGroupLeader = ({
   const [selectedMember, setSelectedMember] = useState<Member>(DEFAULT_MEMBER);
 
   const onClickMember = (member: Member) => {
-    setSelectedMember(member);
+    if (member.id === selectedMember.id) {
+      setSelectedMember(DEFAULT_MEMBER);
+    } else {
+      setSelectedMember(member);
+    }
   };
 
   useEffect(() => {
@@ -115,8 +119,6 @@ const EditMinistryMinistryGroupLeader = ({
 
     if (prevMinistryGroupLeader) {
       setSelectedMember(prevMinistryGroupLeader);
-    } else {
-      setSelectedMember(members[0]);
     }
   }, [ministryGroup, members]);
 
@@ -156,19 +158,23 @@ const EditMinistryMinistryGroupLeader = ({
           );
         })}
       </MemberListContainer>
-      {
+      {selectedMember.id && (
         <ResultContainer>
           <ArrowIcon />
           <MainText color={MAIN.DEFAULT}>
-            {ministryGroup.leaderMemberId !== selectedMember.id
-              ? getTranslatedNewMinistryGroupLeader(locale, selectedMember.name)
-              : getTranslatedAlreadyMinistryGroupLeader(
-                  locale,
-                  selectedMember.name
-                )}
+            {selectedMember &&
+              (ministryGroup?.leaderMemberId !== selectedMember?.id
+                ? getTranslatedNewMinistryGroupLeader(
+                    locale,
+                    selectedMember.name
+                  )
+                : getTranslatedAlreadyMinistryGroupLeader(
+                    locale,
+                    selectedMember.name
+                  ))}
           </MainText>
         </ResultContainer>
-      }
+      )}
     </EditMinistryGroupLeaderContainer>
   );
 };

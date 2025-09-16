@@ -30,15 +30,15 @@ import EmptyList from '@/components/atoms/common/image/empty-list';
 const getColumnWidth = (id: string) => {
   switch (id) {
     case VISITATION.TITLE:
-      return 200;
+      return 20;
     case VISITATION.VISITED:
-      return 250;
-    case VISITATION.STATUS:
-      return 150;
-    case VISITATION.DATE:
-      return 250;
+      return 15;
     case VISITATION.IN_CHARGE:
-      return 150;
+      return 10;
+    case VISITATION.DATE:
+      return 25;
+    case VISITATION.STATUS:
+      return 15;
     default:
       // 비고(REMARKS) 컬럼 등
       return 80;
@@ -85,7 +85,7 @@ const TableHeader = styled.th<{
   z-index: 5;
 
   /* 만약 마지막 컬럼이면 width: auto */
-  width: ${({ id, $isLast }) => ($isLast ? 'auto' : `${getColumnWidth(id)}px`)};
+  width: ${({ id, $isLast }) => ($isLast ? 'auto' : `${getColumnWidth(id)}%`)};
 
   /* 텍스트 넘침 처리 */
   overflow: hidden;
@@ -119,7 +119,7 @@ const TableData = styled.td<{ id: string; $index: number; $isLast?: boolean }>`
   cursor: pointer;
 
   /* 마지막 컬럼이면 auto, 아니면 px 고정 */
-  width: ${({ id, $isLast }) => ($isLast ? 'auto' : `${getColumnWidth(id)}px`)};
+  width: ${({ id, $isLast }) => ($isLast ? 'auto' : `${getColumnWidth(id)}%`)};
 
   white-space: nowrap;
   overflow: hidden;
@@ -145,6 +145,15 @@ const MembersContainer = styled.div`
   gap: 3px;
   justify-content: flex-start;
   align-items: center;
+`;
+
+const StatusContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
 `;
 
 // 이 예시에서는 실제 VISITATION + "비고" 컬럼(REMARKS)까지 표시
@@ -206,13 +215,15 @@ const VisitationTableView = ({
         );
       case VISITATION.STATUS:
         return (
-          <MainTag
-            title={t(visitation.status as STATUS)}
-            color={getStatusFontColor(visitation.status as STATUS)}
-            backgroundColor={getStatusBackgroundColor(
-              visitation.status as STATUS
-            )}
-          />
+          <StatusContainer>
+            <MainTag
+              title={t(visitation.status as STATUS)}
+              color={getStatusFontColor(visitation.status as STATUS)}
+              backgroundColor={getStatusBackgroundColor(
+                visitation.status as STATUS
+              )}
+            />
+          </StatusContainer>
         );
       case VISITATION.DATE:
         return (

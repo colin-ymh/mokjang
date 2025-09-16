@@ -1,8 +1,12 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../../../redux/store';
+import { AppDispatch, RootState } from '@/redux/store';
 import MemberFilterView from './member-filter.view';
-import { setMemberFilter } from '../../../../redux/reducers/filter/member-filter-reducer';
-import { getDateStringFromDate } from '@mokjang/utils';
+import { setMemberFilter } from '@/redux/reducers/filter/member-filter-reducer';
+import {
+  getAge,
+  getDateFromDateString,
+  getDateStringFromDate,
+} from '@mokjang/utils';
 import { useEffect, useState } from 'react';
 import { BAPTISM, BLANK, MARRIAGE } from '@mokjang/constants';
 
@@ -87,10 +91,16 @@ const MemberFilter = ({}: MemberFilterProps) => {
       }
 
       const newBirthAfter = new Date();
-      newBirthAfter.setFullYear(newBirthAfter.getFullYear() - ageRange[1]);
+      newBirthAfter.setFullYear(newBirthAfter.getFullYear() - ageRange[1] + 1);
+      newBirthAfter.setMonth(0);
+      newBirthAfter.setDate(1);
 
       const newBirthBefore = new Date();
-      newBirthBefore.setFullYear(newBirthBefore.getFullYear() - ageRange[0]);
+      newBirthBefore.setFullYear(
+        newBirthBefore.getFullYear() - ageRange[0] + 1
+      );
+      newBirthBefore.setMonth(11);
+      newBirthBefore.setDate(31);
 
       dispatch(
         setMemberFilter({
@@ -105,6 +115,13 @@ const MemberFilter = ({}: MemberFilterProps) => {
       clearTimeout(handler);
     };
   }, [ageRange]);
+
+  useEffect(() => {
+    setAgeRange([
+      getAge(getDateFromDateString(memberFilter.birthTo)),
+      getAge(getDateFromDateString(memberFilter.birthFrom)),
+    ]);
+  }, [memberFilter.birthFrom, memberFilter.birthTo]);
 
   const props = {
     ageRange,

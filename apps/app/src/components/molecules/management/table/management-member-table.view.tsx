@@ -4,9 +4,11 @@ import styled from 'styled-components';
 
 import {
   GRAY,
+  GROUP_ROLE,
   LOCALE,
   MAIN,
   MEMBER,
+  MINISTRY_GROUP_ROLE,
   ORDER_DIRECTION,
   WHITE,
   YELLOW,
@@ -209,17 +211,22 @@ const ManagementMemberTableView = ({
         return (
           <ProfileContainer>
             <MemberProfilePopupButton member={member} isOfficerShown={false} />
-            {member.id === leaderMemberId && (
-              <MainTag
-                title={
-                  type === CHURCH_CONTENT_ID.GROUP
-                    ? t('groupLeader')
-                    : t('ministryGroupLeader')
-                }
-                color={YELLOW.DARK}
-                backgroundColor={YELLOW.LIGHT}
-              />
-            )}
+            {member.groupRole === GROUP_ROLE.LEADER &&
+              type === CHURCH_CONTENT_ID.GROUP && (
+                <MainTag
+                  title={t('groupLeader')}
+                  color={YELLOW.DARK}
+                  backgroundColor={YELLOW.LIGHT}
+                />
+              )}
+            {member.ministryGroupRole === MINISTRY_GROUP_ROLE.LEADER &&
+              type === CHURCH_CONTENT_ID.MINISTRY && (
+                <MainTag
+                  title={t('ministryGroupLeader')}
+                  color={YELLOW.DARK}
+                  backgroundColor={YELLOW.LIGHT}
+                />
+              )}
           </ProfileContainer>
         );
       case MEMBER.MOBILE_PHONE:

@@ -34,6 +34,8 @@ const EditMemberGroup = ({ onClickDeleteGroup }: EditMemberGroupProps) => {
         groupSnapShot: newGroup.name,
       })
     );
+
+    setIsGroupOpen(false);
   };
 
   const onChangeStartDate = (date: Date | null) => {

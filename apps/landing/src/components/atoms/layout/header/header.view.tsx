@@ -9,23 +9,15 @@ import {
   LOCALE,
   MAIN,
   MEDIA_MIN_WIDTH,
-  ORANGE,
   SIZE,
   WHITE,
 } from '@mokjang/constants';
-import { Button, MainTag, MainText, ProfileImage } from '@mokjang/components';
+import { Button, MainText, ProfileImage } from '@mokjang/components';
 import { useScopedI18n } from '../../../../../locales/client';
 import { usePathname } from 'next/navigation';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
-import {
-  getDateFromDateString,
-  getDateGap,
-  getTranslatedRestTrialDate,
-} from '@mokjang/utils';
 import { CONTENT_ID, MAIN_CONTENT_ID } from '@/constants/constant';
-import { PLAN } from '@mokjang/models';
-import { Svg } from '@mokjang/assets';
 import { Chevron } from '@mokjang/app/src/components/atoms/common/dropdown/dropdown-chevron';
 import ProfileModal from '../../../atoms/modal/profile-modal';
 

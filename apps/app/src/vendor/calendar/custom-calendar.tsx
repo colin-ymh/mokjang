@@ -10,9 +10,10 @@ import CustomCalendarHeader from './custom-calendar-header';
 import 'moment/locale/ko';
 import { useParams } from 'next/navigation';
 import CustomDateHeader from './custom-date-header';
-import { getEventStyle } from '../../utils/color';
+import { getEventStyle } from '@/utils/color';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../redux/store';
+import { RootState } from '@/redux/store';
+import CustomEvent from '@/vendor/calendar/custom-event';
 
 const CustomCalendarContainer = styled.div`
   display: flex;
@@ -206,6 +207,7 @@ const CustomCalendar = ({
           toolbar: CustomCalendarHeader,
           month: {
             dateHeader: CustomDateHeader,
+            event: CustomEvent,
           },
         }}
         onSelectEvent={onSelectSchedule}

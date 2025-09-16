@@ -110,6 +110,7 @@ export const Button = ({
       $borderColor={borderColor}
       $columnPadding={columnPadding}
       $rowPadding={rowPadding}
+      type={'button'}
     >
       {children ? (
         children

@@ -176,6 +176,7 @@ const AddMember = ({ onChangeProfileImage }: AddMemberProps) => {
     if (groupId !== null) {
       dispatch(setTargetMember({ ...targetMember, groupId }));
     }
+    setIsSelectGroupShown(false);
   };
 
   const onChangeBaptism = (baptism: BAPTISM) => {

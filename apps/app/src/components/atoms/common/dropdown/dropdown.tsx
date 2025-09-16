@@ -1,6 +1,14 @@
 'use client';
 
-import React, { ChangeEvent, forwardRef, RefObject, useCallback, useEffect, useRef, useState, } from 'react';
+import React, {
+  ChangeEvent,
+  forwardRef,
+  RefObject,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { BorderInputProps, TransparentBackground } from '@mokjang/components';
 import DropdownView from './dropdown.view';
 import { DropdownValueType } from './dropdown-item';
@@ -37,6 +45,7 @@ export type DropdownProps<
   isRight?: boolean;
   fontSize?: number;
   fontWeight?: number;
+  listHeight?: number;
 
   // 커스텀 입력
   isCustom?: boolean;
@@ -78,6 +87,7 @@ const Dropdown = forwardRef<HTMLInputElement, DropdownProps>((props, ref) => {
     CustomDropdownButton,
     chevronColor,
     placeholder,
+    listHeight,
     ...inputProps
   } = props;
 
@@ -267,6 +277,7 @@ const Dropdown = forwardRef<HTMLInputElement, DropdownProps>((props, ref) => {
     onClickDropdown: toggleDropdown,
     onClickItem: handleClickItem,
     onChangeInput: handleChangeInput,
+    listHeight,
     onKeyDownHandler,
   };
 

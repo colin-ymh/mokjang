@@ -10,13 +10,9 @@ import {
   Visitation,
 } from '@mokjang/models';
 import KoreanLunarCalendar from 'korean-lunar-calendar';
-import {
-  getDateFromDateString,
-  getDateStringFromDate,
-  getFormattedDate,
-} from '@mokjang/utils';
+import { getDateFromDateString, getDateStringFromDate, getFormattedDate, } from '@mokjang/utils';
 import dayjs from 'dayjs';
-import { Holiday } from '../api/holiday-api';
+import { Holiday } from '@/api/holiday-api';
 
 export const getScheduleFromTask = (event: Task): Schedule => {
   return {
@@ -26,6 +22,8 @@ export const getScheduleFromTask = (event: Task): Schedule => {
     start: event.startDate,
     end: event.endDate,
     task: event,
+    status: event.status,
+    inCharge: event.inCharge,
   };
 };
 
@@ -37,6 +35,8 @@ export const getScheduleFromVisitation = (event: Visitation): Schedule => {
     start: event.startDate,
     end: event.endDate,
     visitation: event,
+    status: event.status,
+    inCharge: event.inCharge,
   };
 };
 
@@ -50,6 +50,8 @@ export const getScheduleFromEducationSession = (
     start: event.startDate,
     end: event.endDate,
     education: event,
+    status: event.status,
+    inCharge: event.inCharge,
   };
 };
 
@@ -106,8 +108,9 @@ export const getScheduleFromBirthday = (
 
       targetDate = toConverted;
     }
-  } else if (event.birthdayMMDD) {
-    const [monthStr, dayStr] = event.birthdayMMDD.split('-');
+  } else if (event.birth) {
+    const monthStr = dayjs(event.birth).month() + 1;
+    const dayStr = dayjs(event.birth).date();
 
     // 현재 날짜 구간 중 해당 생일이 포함되는 연도 판단
     const fromMonthDay = dayjs(`${from.year()}-${monthStr}-${dayStr}`);
