@@ -11,11 +11,7 @@ import { setTargetMember } from '@/redux/reducers/target/target-member-reducer';
 import { uploadFilesToSupabase } from '@/utils/upload';
 import { MembersApi } from '@/api/members/members.api';
 import { BLACK, CONCEALED, DESTRUCTIVE } from '@mokjang/constants';
-import {
-  setIsToastShown,
-  setToastBackgroundColor,
-  setToastText,
-} from '@/redux/reducers/toast-popup-reducer';
+import { setIsToastShown, setToastBackgroundColor, setToastText, } from '@/redux/reducers/toast-popup-reducer';
 
 type MainMemberHeaderProps = {};
 
@@ -98,7 +94,7 @@ const MainMemberHeader = ({}: MainMemberHeaderProps) => {
       if (profileImage) {
         const uploadedUrls = await uploadFilesToSupabase([profileImage], {
           bucket: 'profile',
-          prefix: `users/${targetMember.id}`,
+          prefix: `church/${churchId}/member/${targetMember.id}`,
         });
         const uploadedUrl = uploadedUrls[0];
         if (uploadedUrl) {

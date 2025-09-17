@@ -3,14 +3,24 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
 
-import { BLANK, GRAY, LOCALE, PERMISSION_TEMPLATE, SIZE, WHITE, } from '@mokjang/constants';
+import {
+  BLANK,
+  GRAY,
+  LOCALE,
+  PERMISSION_TEMPLATE,
+  SIZE,
+  WHITE,
+} from '@mokjang/constants';
 import { MainText } from '@mokjang/components';
 import { ACTION, DOMAIN, PermissionTemplate } from '@mokjang/models';
 import useWindowSize from '../../../../hooks/window/window';
 import PermissionTemplateTableHeader from '../../../atoms/permission/list/permission-template-table-header';
 import { BLANK_HEADER } from '../../../../redux/reducers/filter/member-filter-reducer';
 import { useI18n } from '../../../../../locales/client';
-import { getIsAccessed, getOwnerPermissionTemplate, } from '../../../../utils/permission';
+import {
+  getIsAccessed,
+  getOwnerPermissionTemplate,
+} from '../../../../utils/permission';
 import { getTranslatedMemberCount } from '@mokjang/utils';
 import { usePathname } from 'next/navigation';
 

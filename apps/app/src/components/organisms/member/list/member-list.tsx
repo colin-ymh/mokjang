@@ -183,7 +183,7 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
       if (profileImage) {
         const uploadedUrls = await uploadFilesToSupabase([profileImage], {
           bucket: 'profile',
-          prefix: `users/${targetMember.id}`,
+          prefix: `church/${churchId}/member/${targetMember.id}`,
         });
         const uploadedUrl = uploadedUrls[0];
         if (uploadedUrl) {
