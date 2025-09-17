@@ -3,9 +3,18 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../store';
 import { PermissionsApi } from '../../../api/permissions/permissions.api';
 import { Member, PermissionTemplate, PermissionUnit } from '@mokjang/models';
-import { BLANK, DESTRUCTIVE, ORDER_DIRECTION, PERMISSION_TEMPLATE, } from '@mokjang/constants';
+import {
+  BLANK,
+  DESTRUCTIVE,
+  ORDER_DIRECTION,
+  PERMISSION_TEMPLATE,
+} from '@mokjang/constants';
 import axios from 'axios';
-import { setIsToastShown, setToastBackgroundColor, setToastText, } from '@/redux/reducers/toast-popup-reducer';
+import {
+  setIsToastShown,
+  setToastBackgroundColor,
+  setToastText,
+} from '@/redux/reducers/toast-popup-reducer';
 
 type PERMISSION_TEMPLATE_FILTER = {
   [PERMISSION_TEMPLATE.TITLE]: string;
@@ -40,6 +49,14 @@ export const INITIAL_PERMISSION_TEMPLATE_TABLE_HEADER_LIST: PERMISSION_TEMPLATE_
   [
     {
       id: PERMISSION_TEMPLATE.TITLE,
+      isShown: true,
+      isSortable: false,
+      isFilterable: true,
+      isFixed: true,
+      isDate: false,
+    },
+    {
+      id: PERMISSION_TEMPLATE.MEMBER_COUNT,
       isShown: true,
       isSortable: false,
       isFilterable: true,

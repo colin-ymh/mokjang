@@ -1,30 +1,30 @@
 {
   "../../../node_modules/@supabase/auth-js/dist/module/lib/helpers.js -> @supabase/node-fetch": {
-    "id": 86560,
+    "id": "../../../node_modules/@supabase/auth-js/dist/module/lib/helpers.js -> @supabase/node-fetch",
     "files": []
   },
   "../../../node_modules/@supabase/functions-js/dist/module/helper.js -> @supabase/node-fetch": {
-    "id": 86560,
+    "id": "../../../node_modules/@supabase/functions-js/dist/module/helper.js -> @supabase/node-fetch",
     "files": []
   },
   "../../../node_modules/@supabase/realtime-js/dist/module/RealtimeClient.js -> @supabase/node-fetch": {
-    "id": 86560,
+    "id": "../../../node_modules/@supabase/realtime-js/dist/module/RealtimeClient.js -> @supabase/node-fetch",
     "files": []
   },
   "../../../node_modules/@supabase/storage-js/dist/module/lib/helpers.js -> @supabase/node-fetch": {
-    "id": 86560,
+    "id": "../../../node_modules/@supabase/storage-js/dist/module/lib/helpers.js -> @supabase/node-fetch",
     "files": []
   },
   "../locales/client.ts -> ./en": {
-    "id": 9771,
+    "id": "../locales/client.ts -> ./en",
     "files": [
-      "static/chunks/771.ab50037324201fd1.js"
+      "static/chunks/_app-pages-browser_locales_en_ts.js"
     ]
   },
   "../locales/client.ts -> ./ko": {
-    "id": 16623,
+    "id": "../locales/client.ts -> ./ko",
     "files": [
-      "static/chunks/623.9f7d1ddcd25d2faa.js"
+      "static/chunks/_app-pages-browser_locales_ko_ts.js"
     ]
   }
 }

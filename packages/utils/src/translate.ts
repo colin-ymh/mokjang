@@ -198,7 +198,7 @@ export const getTranslatedPermissionTemplateColumn = (
   t: (key: string, ...args: any[]) => string,
   id: PERMISSION_TEMPLATE
 ): string => {
-  return t(id as PERMISSION_TEMPLATE.TITLE);
+  return t(id);
 };
 
 export const getTranslatedJoinRequestColumn = (

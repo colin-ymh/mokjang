@@ -545,6 +545,8 @@ export default {
   'tableHeader.permissionScope': 'Scope',
 
   'tableHeader.memberAttendance': 'Last Attendances',
+
+  'tableHeader.memberCount': 'Member Count',
   /*-------------------table header-------------------*/
 
   /*------------------- register-------------------*/

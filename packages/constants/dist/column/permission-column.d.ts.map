@@ -1,1 +1,1 @@
-{"version":3,"file":"permission-column.d.ts","sourceRoot":"","sources":["../../src/column/permission-column.ts"],"names":[],"mappings":"AAAA,oBAAY,mBAAmB;IAC7B,KAAK,uBAAuB;IAC5B,WAAW,gBAAgB;IAC3B,KAAK,YAAY;CAClB"}
+{"version":3,"file":"permission-column.d.ts","sourceRoot":"","sources":["../../src/column/permission-column.ts"],"names":[],"mappings":"AAAA,oBAAY,mBAAmB;IAC7B,KAAK,uBAAuB;IAC5B,WAAW,gBAAgB;IAC3B,KAAK,YAAY;IACjB,YAAY,gBAAgB;CAC7B"}

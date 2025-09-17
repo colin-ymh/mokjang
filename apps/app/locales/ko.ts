@@ -550,6 +550,8 @@ export default {
   'tableHeader.range': '활성',
 
   'tableHeader.memberAttendance': '최근 출석 기록',
+
+  'tableHeader.memberCount': '교인 수',
   /*-------------------table header-------------------*/
 
   /*------------------- register-------------------*/

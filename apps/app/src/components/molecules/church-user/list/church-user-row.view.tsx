@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 import { usePermissionActiveDropdownItems } from '../../../../hooks/dropdown/dropdown-items';
-import { PERMISSION_ACTIVE } from '@mokjang/constants';
+import { GRAY, PERMISSION_ACTIVE } from '@mokjang/constants';
 import Dropdown from '@/components/atoms/common/dropdown/dropdown';
 
 const UserContainer = styled.div`
@@ -38,6 +38,7 @@ const ChurchUserRowView = ({
           onChangeItem={onChangePermissionActive}
           width={100}
           height={30}
+          color={GRAY.SEMI_DARK}
         />
       </RowTop>
     </UserContainer>

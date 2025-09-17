@@ -73,15 +73,21 @@ const UserTable = styled.table`
 `;
 
 // 4. 헤더(TH)
-const TableHeader = styled.th<{ id: string; $isLast?: boolean }>`
-  padding: 10px;
+const TableHeader = styled.th<{
+  id: string;
+  $isLast?: boolean;
+}>`
+  padding: 0 25px;
+  height: 50px;
+  flex-shrink: 0;
+  background-color: ${WHITE};
   position: sticky;
   top: 0;
   z-index: 5;
-  background-color: ${WHITE};
 
   /* 만약 마지막 컬럼이면 width: auto */
   width: ${({ id, $isLast }) => ($isLast ? 'auto' : `${getColumnWidth(id)}%`)};
+
   /* 텍스트 넘침 처리 */
   overflow: hidden;
   text-overflow: ellipsis;
@@ -107,7 +113,9 @@ const UserTableRow = styled.tr`
 `;
 
 const TableData = styled.td<{ id: string; $index: number; $isLast?: boolean }>`
-  padding: 10px;
+  padding: 0 25px;
+  height: 60px;
+  flex-shrink: 0;
 
   cursor: pointer;
 
