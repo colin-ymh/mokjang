@@ -19,7 +19,6 @@ import { EducationEnrollment } from '@mokjang/models';
 import { EDUCATION_ENROLLMENT_TABLE_HEADER_LIST } from '../../../../redux/reducers/filter/education-filter-reducer';
 import { useI18n } from '../../../../../locales/client';
 import EducationEnrollmentTableHeader from '../../../atoms/education/education-enrollment/education-enrollment-table-header';
-import MemberProfile from '../../../atoms/member/member-profile';
 import TagDropdownButton from '../../../atoms/common/dropdown/tag-dropdown-button';
 import Dropdown from '../../../atoms/common/dropdown/dropdown';
 import { useEducationEnrollmentStatusDropdownItems } from '../../../../hooks/dropdown/dropdown-items';
@@ -27,7 +26,8 @@ import {
   getStatusBackgroundColor,
   getStatusFontColor,
 } from '../../../../utils/color';
-import useWindowSize from '@/hooks/window/window'; // 1. 컬럼별 PX 폭 (마지막 REMARKS만 auto 할 예정)
+import useWindowSize from '@/hooks/window/window';
+import MemberProfilePopupButton from '@/components/molecules/common/button/member-profile-popup-button'; // 1. 컬럼별 PX 폭 (마지막 REMARKS만 auto 할 예정)
 
 // 1. 컬럼별 PX 폭 (마지막 REMARKS만 auto 할 예정)
 const getColumnWidth = (id: string) => {
@@ -210,7 +210,7 @@ const EducationEnrollmentTableView = ({
       case EDUCATION_ENROLLMENT.MEMBER_NAME:
         return (
           <ProfileContainer>
-            <MemberProfile member={enrollment.member} />
+            <MemberProfilePopupButton member={enrollment.member} />
           </ProfileContainer>
         );
       case EDUCATION_ENROLLMENT.GROUP:

@@ -23,8 +23,8 @@ import {
 import { EducationAttendance } from '@mokjang/models';
 import { EDUCATION_ATTENDANCE_TABLE_HEADER_LIST } from '../../../../redux/reducers/filter/education-filter-reducer';
 import { useI18n } from '../../../../../locales/client';
-import MemberProfile from '../../../atoms/member/member-profile';
 import EducationAttendanceTableHeader from '../../../atoms/education/education-attendance/education-attendance-table-header';
+import MemberProfilePopupButton from '@/components/molecules/common/button/member-profile-popup-button';
 
 // 1. 컬럼별 PX 폭 (마지막 REMARKS만 auto 할 예정)
 const getColumnWidth = (id: string) => {
@@ -187,7 +187,9 @@ const EducationAttendanceTableView = ({
       case EDUCATION_ATTENDANCE.MEMBER_NAME:
         return (
           <ProfileContainer>
-            <MemberProfile member={attendance.educationEnrollment.member} />
+            <MemberProfilePopupButton
+              member={attendance.educationEnrollment.member}
+            />
           </ProfileContainer>
         );
       case EDUCATION_ATTENDANCE.AGE:

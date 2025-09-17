@@ -37,6 +37,7 @@
   },
   "packageManager": "npm@11.2.0",
   "dependencies": {
+    "@supabase/supabase-js": "^2.57.4",
     "react-easy-crop": "^5.5.0"
   }
 }
