@@ -1,10 +1,10 @@
 import WorshipSessionInformationView from './worship-session-information.view';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../../../redux/store';
-import { WorshipSessionsApi } from '../../../../api/worship/worship-sessions.api';
+import { AppDispatch, RootState } from '@/redux/store';
+import { WorshipSessionsApi } from '@/api/worship/worship-sessions.api';
 import React, { useEffect, useState } from 'react';
-import { setTargetWorshipSession } from '../../../../redux/reducers/target/target-worship-session-reducer';
-import { setToastText } from '../../../../redux/reducers/toast-popup-reducer';
+import { setTargetWorshipSession } from '@/redux/reducers/target/target-worship-session-reducer';
+import { setToastText } from '@/redux/reducers/toast-popup-reducer';
 import {
   getDateFromDateString,
   getDateStringFromDate,
@@ -128,6 +128,8 @@ const WorshipSessionInformation = () => {
         height={600}
         cancelText={t_button('cancel')}
         doneText={t_button('confirm')}
+        blur={false}
+        zIndex={10000}
       >
         <EditWorshipSession />
       </CustomPopup>

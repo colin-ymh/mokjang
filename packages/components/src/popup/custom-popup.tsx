@@ -61,6 +61,7 @@ type CustomPopupProps = {
   isHeaderBorderShown?: boolean;
   headerHeight?: number;
   keyboardDisabled?: boolean;
+  blur?: boolean;
   children: ReactNode;
 };
 
@@ -87,6 +88,7 @@ export const CustomPopup = ({
   isHeaderBorderShown,
   headerHeight,
   keyboardDisabled,
+  blur,
   children,
 }: CustomPopupProps) => {
   useEffect(() => {
@@ -115,6 +117,7 @@ export const CustomPopup = ({
         isOpened={isShow}
         onClick={onClickClose}
         zIndex={zIndex - 100}
+        blur={blur}
       />
       <ModalContainer
         width={width}

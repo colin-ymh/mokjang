@@ -224,6 +224,7 @@ const DatePickerPortalStyles = createGlobalStyle`
   .date-picker-calendar .react-datepicker__day:not([aria-disabled='true']):hover {
     border-radius: 10px;
     background-color: ${GRAY.LIGHT};
+    box-shadow: none;
   }
   .date-picker-calendar .react-datepicker__day--in-selecting-range,
   .date-picker-calendar .react-datepicker__day--in-range {
@@ -232,11 +233,24 @@ const DatePickerPortalStyles = createGlobalStyle`
     color: ${WHITE} !important;
   }
 
-  .date-picker-calendar .react-datepicker__day--today { font-weight: bold; }
+  /* ===== 오늘 날짜 강조: 테두리 표시 ===== */
+  .date-picker-calendar .react-datepicker__day--today {
+    /* 기본 굵기 강조는 유지하면서 */
+    font-weight: 700;
+
+    /* 반경은 기존 day와 동일하게 */
+    border-radius: 10px;
+
+    /* 테두리는 box-shadow inset으로 깔끔하게 (border보다 레이아웃 안전) */
+    box-shadow: inset 0 0 0 1px ${GRAY.DEFAULT}; /* 원하는 색/두께로 */
+  }
+
+  
   .date-picker-calendar .react-datepicker__day--selected {
     border-radius: 10px;
     background-color: ${MAIN.DEFAULT};
     color: ${WHITE} !important;
+    box-shadow: none;
   }
   
   .date-picker-calendar .react-datepicker__day--keyboard-selected {

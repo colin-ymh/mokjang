@@ -761,6 +761,8 @@ const EducationTermTable = ({}: EducationTermTableProps) => {
         startDate={targetEducationTerm.startDate}
         endDate={targetEducationTerm.endDate}
         closeText={t_button('backToEducation')}
+        widthPercentage={45}
+        blur={false}
       >
         {(scrollRef) => (
           <>
@@ -799,6 +801,8 @@ const EducationTermTable = ({}: EducationTermTableProps) => {
         }
         doneDisabled={!isEducationTermSaveEnabled}
         closeText={t_button('backToEducationTerm')}
+        widthPercentage={45}
+        blur={false}
       >
         <AddEducationTerm />
       </WrappedPagePopup>
@@ -821,6 +825,8 @@ const EducationTermTable = ({}: EducationTermTableProps) => {
         startDate={targetEducationSession.startDate}
         endDate={targetEducationSession.endDate}
         closeText={t_button('backToEducation')}
+        widthPercentage={45}
+        blur={false}
       >
         {(scrollRef) => (
           <>
@@ -859,6 +865,8 @@ const EducationTermTable = ({}: EducationTermTableProps) => {
         }
         doneDisabled={!isEducationSessionSaveEnabled}
         closeText={t_button('backToEducationTerm')}
+        widthPercentage={45}
+        blur={false}
       >
         <AddEducationSession />
       </WrappedPagePopup>

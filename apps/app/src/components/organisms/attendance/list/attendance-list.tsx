@@ -10,6 +10,12 @@ import { WorshipEnrollment } from '@mokjang/models';
 import AttendanceListView from './attendance-list.view';
 import { Loading } from '@mokjang/components';
 import { WorshipEnrollmentsApi } from '@/api/worship/worship-enrollments.api';
+import {
+  setIsToastShown,
+  setToastBackgroundColor,
+  setToastText,
+} from '@/redux/reducers/toast-popup-reducer';
+import { DESTRUCTIVE } from '@mokjang/constants';
 
 type AttendanceListProps = {};
 
@@ -35,7 +41,7 @@ const AttendanceList = ({}: AttendanceListProps) => {
   const [thrownError, setThrownError] = useState<Error | null>(null);
   if (thrownError) throw thrownError;
 
-  const [isStatisticOpened, setIsStatisticOpened] = useState<boolean>(true);
+  const [isStatisticOpened, setIsStatisticOpened] = useState<boolean>(false);
 
   // 서버에서 불러오는 페이지 (1부터 시작)
   const [page, setPage] = useState<number>(1);
@@ -60,37 +66,35 @@ const AttendanceList = ({}: AttendanceListProps) => {
     setIsLoading(true);
     try {
       const nextPage = page + 1;
-      const result = await dispatch(
+      const payload = await dispatch(
         fetchWorshipEnrollments({
           churchId,
           currentPage: nextPage,
           worshipId: targetWorship.id,
           take: TAKE,
         })
-      );
+      ).unwrap(); // ✅ 여기서 성공/실패를 확정적으로 분기
 
-      if (fetchWorshipEnrollments.fulfilled.match(result)) {
-        const newWorshipEnrollments: WorshipEnrollment[] =
-          result.payload.data ?? [];
-        const totalCount: number = result.payload.totalCount ?? 0;
+      const newItems = payload.data ?? [];
+      const totalCount = payload.totalCount ?? 0;
 
-        // 상태 반영
-        dispatch(setWorshipEnrollmentTotalCount(totalCount));
-        dispatch(
-          setWorshipEnrollments([
-            ...worshipEnrollments,
-            ...newWorshipEnrollments,
-          ])
-        );
-        setPage(nextPage);
-
-        // ✅ 총합 기준으로 hasMore 판정 (더 안전)
-        const combinedLen =
-          worshipEnrollments.length + newWorshipEnrollments.length;
-        setHasMore(combinedLen < totalCount);
-      }
+      // 상태 반영
+      dispatch(setWorshipEnrollmentTotalCount(totalCount));
+      dispatch(setWorshipEnrollments([...worshipEnrollments, ...newItems]));
+      setPage(nextPage);
+      setHasMore(newItems.length === TAKE);
     } catch (error) {
-      setThrownError(error instanceof Error ? error : new Error(String(error)));
+      setPage(1);
+      setHasMore(true);
+      dispatch(setWorshipEnrollmentTotalCount(0));
+      dispatch(setWorshipEnrollments([]));
+      if (error instanceof Error) {
+        dispatch(setToastText(error.message));
+        dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
+        dispatch(setIsToastShown(true));
+      } else {
+        setThrownError(new Error(String(error)));
+      }
     } finally {
       setIsLoading(false);
     }
@@ -127,8 +131,7 @@ const AttendanceList = ({}: AttendanceListProps) => {
         dispatch(setWorshipEnrollmentTotalCount(totalCount));
         setPage(1);
 
-        // ✅ 첫 로드에서 hasMore 정확히 세팅
-        setHasMore(firstPageData.length < totalCount);
+        setHasMore(firstPageData.length === TAKE);
       }
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));

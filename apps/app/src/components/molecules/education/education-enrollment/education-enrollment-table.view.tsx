@@ -27,16 +27,17 @@ import {
   getStatusBackgroundColor,
   getStatusFontColor,
 } from '../../../../utils/color';
+import useWindowSize from '@/hooks/window/window'; // 1. 컬럼별 PX 폭 (마지막 REMARKS만 auto 할 예정)
 
 // 1. 컬럼별 PX 폭 (마지막 REMARKS만 auto 할 예정)
 const getColumnWidth = (id: string) => {
   switch (id) {
     case EDUCATION_ENROLLMENT.MEMBER_NAME:
-      return 20;
+      return 15;
     case EDUCATION_ENROLLMENT.GROUP:
       return 10;
     case EDUCATION_ENROLLMENT.MOBILE_PHONE:
-      return 20;
+      return 15;
     case EDUCATION_ENROLLMENT.ATTENDANCE:
       return 20;
     case EDUCATION_ENROLLMENT.STATUS:
@@ -57,7 +58,7 @@ const ProfileContainer = styled.div`
 `;
 
 // 2. 테이블 컨테이너 (100% 폭 + 스크롤)
-const TableContainer = styled.div`
+const TableContainer = styled.div<{ height: number }>`
   /* 항상 가로 100%를 채움 */
   width: 100%;
   background-color: ${WHITE};
@@ -68,6 +69,7 @@ const TableContainer = styled.div`
 
   display: flex;
   flex-direction: column;
+  min-height: ${({ height }) => `${height - 540}px`};
 `;
 
 // 3. 테이블은 width: 100% + table-layout: fixed
@@ -131,8 +133,6 @@ const TableData = styled.td<{ id: string; $isLast?: boolean }>`
   white-space: nowrap;
   text-overflow: ellipsis;
 
-  overflow: visible; // 드롭다운이 셀을 넘어서도 보이게
-
   &:first-child {
     border-left: none;
   }
@@ -189,6 +189,7 @@ type EducationEnrollmentTableProps = {
 const EducationEnrollmentTableView = ({
   onChangeStatus,
 }: EducationEnrollmentTableProps) => {
+  const { height } = useWindowSize();
   const t = useI18n();
   const { targetEducationTerm } = useSelector(
     (state: RootState) => state.targetEducationTerm
@@ -266,7 +267,7 @@ const EducationEnrollmentTableView = ({
   return (
     <>
       {/* 컨테이너: 항상 가로 100%, 필요하면 스크롤 */}
-      <TableContainer>
+      <TableContainer height={height}>
         <EducationEnrollmentTable>
           <thead>
             <tr>

@@ -8,7 +8,7 @@ import { usePageRouter } from '@mokjang/utils';
 import { useI18n } from '../../../../../../../locales/client';
 import { DEFAULT_MEMBER } from '@mokjang/models';
 import { setTargetMember } from '@/redux/reducers/target/target-member-reducer';
-import { uploadFiles } from '@/utils/upload';
+import { uploadFilesToSupabase } from '@/utils/upload';
 import { MembersApi } from '@/api/members/members.api';
 import { BLACK, CONCEALED, DESTRUCTIVE } from '@mokjang/constants';
 import {
@@ -96,7 +96,10 @@ const MainMemberHeader = ({}: MainMemberHeaderProps) => {
     try {
       let updatedMember = { ...targetMember };
       if (profileImage) {
-        const uploadedUrls = await uploadFiles([profileImage]);
+        const uploadedUrls = await uploadFilesToSupabase([profileImage], {
+          bucket: 'profile',
+          prefix: `users/${targetMember.id}`,
+        });
         const uploadedUrl = uploadedUrls[0];
         if (uploadedUrl) {
           updatedMember = { ...targetMember, profileImageUrl: uploadedUrl };

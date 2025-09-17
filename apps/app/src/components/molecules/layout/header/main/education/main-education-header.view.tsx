@@ -119,7 +119,7 @@ const MainEducationHeaderView = ({
         onClickDone={onClickSaveEducation}
         doneBackgroundColor={isSaveEnabled ? MAIN.DEFAULT : MAIN.LIGHT}
         doneDisabled={!isSaveEnabled}
-        widthPercentage={60}
+        widthPercentage={45}
       >
         <AddEducation />
       </WrappedPagePopup>

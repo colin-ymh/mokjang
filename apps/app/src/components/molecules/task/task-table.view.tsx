@@ -26,7 +26,7 @@ const getColumnWidth = (id: string) => {
     case TASK.IN_CHARGE:
       return 15;
     case TASK.STATUS:
-      return 40;
+      return 35;
     default:
       // 비고(REMARKS) 컬럼 등
       return 80;

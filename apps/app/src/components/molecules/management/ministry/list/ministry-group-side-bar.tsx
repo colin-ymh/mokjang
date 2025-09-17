@@ -1,24 +1,20 @@
-import { MainText } from '@mokjang/components';
-import { BorderInput } from '@mokjang/components';
-import { BLACK, DESTRUCTIVE, GRAY, WHITE } from '@mokjang/constants';
-import { Button } from '@mokjang/components';
+import { BorderInput, Button, MainText } from '@mokjang/components';
+import { BLACK, BLANK, DESTRUCTIVE, GRAY, WHITE } from '@mokjang/constants';
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useI18n, useScopedI18n } from '../../../../../../locales/client';
 import { MinistryGroup } from '@mokjang/models';
-import { BLANK } from '@mokjang/constants';
-import { getIsWellFormedTitle } from '@mokjang/utils';
-import { fetchMinistryGroups } from '../../../../../redux/reducers/church-reducer';
-import { getFormattedTitle } from '@mokjang/utils';
+import { getFormattedTitle, getIsWellFormedTitle } from '@mokjang/utils';
+import { fetchMinistryGroups } from '@/redux/reducers/church-reducer';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../../../../redux/store';
+import { AppDispatch, RootState } from '@/redux/store';
 import {
   setIsToastShown,
   setToastBackgroundColor,
   setToastText,
-} from '../../../../../redux/reducers/toast-popup-reducer';
+} from '@/redux/reducers/toast-popup-reducer';
 import MinistryGroupList from './ministry-group-list';
-import { MinistryGroupsApi } from '../../../../../api/management/ministry/ministry-groups.api';
+import { MinistryGroupsApi } from '@/api/management/ministry/ministry-groups.api';
 
 const MinistryGroupListContainer = styled.div`
   display: flex;
@@ -116,14 +112,19 @@ const MinistryGroupSideBar = ({
           value={newMinistryGroupName}
           onChange={onChangeNewMinistryGroupName}
           borderColor={GRAY.SEMI_LIGHT}
+          height={30}
         />
         <Button
-          width={80}
+          width={50}
           text={t('button.add')}
           onClick={onClickSaveNewMinistryGroup}
           borderColor={GRAY.SEMI_LIGHT}
-          backgroundColor={WHITE}
-          color={GRAY.DARK}
+          backgroundColor={
+            getIsWellFormedTitle(newMinistryGroupName) ? WHITE : GRAY.SEMI_LIGHT
+          }
+          color={getIsWellFormedTitle(newMinistryGroupName) ? GRAY.DARK : WHITE}
+          height={30}
+          disabled={!getIsWellFormedTitle(newMinistryGroupName)}
         />
       </AddContainer>
       {/* 그룹 목록 */}

@@ -31,12 +31,12 @@ export const useMainSideBarItems = () => {
       onClick: () => router.push(`/main/worship`),
       icon: Svg.Cross,
     },
-    {
-      id: MAIN_HEADER_ID.ATTENDANCE,
-      title: `${t_header(MAIN_HEADER_ID.ATTENDANCE)}`,
-      onClick: () => router.push(`/main/attendance`),
-      icon: Svg.Book,
-    },
+    // {
+    //   id: MAIN_HEADER_ID.ATTENDANCE,
+    //   title: `${t_header(MAIN_HEADER_ID.ATTENDANCE)}`,
+    //   onClick: () => router.push(`/main/attendance`),
+    //   icon: Svg.Book,
+    // },
     {
       id: MAIN_HEADER_ID.VISITATION,
       title: t_header(MAIN_HEADER_ID.VISITATION),

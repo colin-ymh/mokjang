@@ -65,6 +65,7 @@ const TitleContainer = styled.div`
   flex-direction: row;
   gap: 10px;
   align-items: center;
+  width: 100px;
 `;
 
 const TableHeader = styled.div`
@@ -237,7 +238,7 @@ const EducationTermInformationView = ({
             </StatusContainer>
           </RowContainer>
           {/* 보고대상자 */}
-          <ColumnContainer>
+          <RowContainer>
             <TitleContainer>
               <SvgIcon svg={Svg.Users} color={GRAY.DARK} />
               <MainText color={GRAY.DARK}>{t('receiver')}</MainText>
@@ -250,7 +251,7 @@ const EducationTermInformationView = ({
                 />
               ))}
             </MemberList>
-          </ColumnContainer>
+          </RowContainer>
           <RowLine />
 
           {/* 회차목록 / 수강교인 */}

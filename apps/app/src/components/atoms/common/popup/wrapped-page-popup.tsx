@@ -5,12 +5,7 @@ import styled from 'styled-components';
 import { createPortal } from 'react-dom';
 
 import { GRAY, MAIN, SIZE, TASK_STATUS, WHITE } from '@mokjang/constants';
-import {
-  Button,
-  Hide,
-  MainText,
-  TransparentBackground,
-} from '@mokjang/components';
+import { Button, Hide, MainText } from '@mokjang/components';
 import { useScopedI18n } from '../../../../../locales/client';
 
 import { Svg } from '@mokjang/assets';
@@ -21,20 +16,38 @@ import MemberProfilePopupButton from '@/components/molecules/common/button/membe
 import { getDateFromDateString, getDateStringFromDate } from '@mokjang/utils';
 import StatusDropdown from '../dropdown/status-dropdown';
 
+/* 오버레이 스타일 */
+const Overlay = styled.div<{ $zIndex?: number; $blur?: boolean }>`
+  position: fixed;
+  inset: 0;
+  background: ${({ $blur }) => ($blur ? `rgba(0, 0, 0, 0.6)` : 'transparent')};
+  z-index: ${({ $zIndex }) => $zIndex || 900};
+  pointer-events: auto; /* 뒷면 터치 차단 */
+  touch-action: none;
+`;
+
 const WrappedPagePopupContainer = styled.div<{
-  $widthPercentage: number;
+  $widthPercentage: number; // 예: 80 -> 80vw
+  $minWidth?: number; // 예: 320
   $zIndex?: number;
 }>`
+  position: fixed;
+  top: 0;
+  bottom: 0;
+
+  /* ✅ 가운데 정렬 */
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+
+  /* ✅ 폭: 최소px ~ 퍼센트vw ~ 최대 100vw */
+  width: ${({ $widthPercentage, $minWidth = 0 }) =>
+    `clamp(${$minWidth}px, ${$widthPercentage}vw, 100vw)`};
+
+  /* 나머지 스타일 */
   display: flex;
   flex-direction: column;
-  position: fixed; /* 포털과 함께 항상 뷰포트 고정 */
-  /* iOS Safari 등 브라우저 간 일관성을 위해 inset 사용 */
-  inset: 0;
-  /* 가운데 정렬을 위해 좌우 여백 재설정 */
-  left: ${({ $widthPercentage }) => `${(100 - $widthPercentage) / 2}%`};
-  right: ${({ $widthPercentage }) => `${(100 - $widthPercentage) / 2}%`};
-
-  background-color: ${WHITE};
+  background: ${WHITE};
   z-index: ${({ $zIndex }) => $zIndex || 1000};
 `;
 
@@ -110,6 +123,7 @@ interface WrappedPagePopupProps {
   stageTwoTop?: number;
   stageThreeTop?: number;
   headerTitle?: string;
+  minWidth?: number;
   status?: TASK_STATUS;
   onChangeStatus?: (status: TASK_STATUS) => void;
   inCharge?: Member;
@@ -119,6 +133,7 @@ interface WrappedPagePopupProps {
   widthPercentage?: number;
   zIndex?: number;
   closeText?: string;
+  blur?: boolean;
   children:
     | ReactNode
     | ((scrollRef: React.RefObject<HTMLDivElement>) => ReactNode);
@@ -144,7 +159,7 @@ const WrappedPagePopup = ({
   hideCancel = false,
   cancelText,
   keyboardDisabled = false,
-  widthPercentage = 70,
+  widthPercentage = 55,
   rightButtonShown = true,
   stageTwoTop,
   stageThreeTop,
@@ -154,6 +169,7 @@ const WrappedPagePopup = ({
   inCharge,
   startDate,
   endDate,
+  blur = true,
   children,
   zIndex,
 }: WrappedPagePopupProps) => {
@@ -227,14 +243,13 @@ const WrappedPagePopup = ({
 
   const modal = (
     <>
-      <TransparentBackground
-        isOpened={isShow}
-        onClick={onClickClose}
-        zIndex={zIndex}
-      />
+      {isShow && (
+        <Overlay onClick={onClickClose} $zIndex={zIndex} $blur={blur} />
+      )}
       <WrappedPagePopupContainer
         $widthPercentage={widthPercentage}
         $zIndex={zIndex}
+        $minWidth={800}
       >
         <HeaderContainer
           $isShadowShown={integrateStage !== INTEGRATE_STAGE.ONE}

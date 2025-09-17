@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
 import Dropdown from '../../../atoms/common/dropdown/dropdown';
 import {
-  ALL,
+  BLANK,
   CURSOR,
   DAY,
   GRAY,
@@ -162,6 +162,7 @@ const AttendanceRow = ({
     targetWorship.worshipDay,
     targetWorship.repeatPeriod
   );
+
   return (
     <>
       <AttendanceContainer>
@@ -194,9 +195,11 @@ const AttendanceRow = ({
             {/* 그룹 범위 설정*/}
             <FakeDropdownButton
               title={
-                targetWorshipGroup.name == ALL || !targetWorshipGroup.name
-                  ? t('all')
-                  : targetWorshipGroup.name
+                targetWorshipGroup.id === null
+                  ? t('none')
+                  : targetWorshipGroup.id === BLANK
+                    ? t('all')
+                    : targetWorshipGroup.name
               }
               isOpened={isGroupModalShown}
               onClick={onClickOpenGroupModal}
@@ -286,6 +289,9 @@ const AttendanceRow = ({
             >
               {`${targetWorshipStatistic.attendanceRate.period}%`}
             </MainText>
+            <MainText color={GRAY.SEMI_DARK} size={SIZE.SMALL}>
+              {`${getTranslatedDateFromDateString(basePath, worshipEnrollmentFilter.fromSessionDate)} - ${getTranslatedDateFromDateString(basePath, worshipEnrollmentFilter.toSessionDate)}`}
+            </MainText>
           </BoxContainer>
           {/* 최근 예배일 */}
           <BoxContainer>
@@ -317,7 +323,8 @@ const AttendanceRow = ({
           <SelectGroupHierarchy
             onChange={onClickGroupItem}
             topLevelGroupId={topLevelGroup.id}
-            isNullable={false}
+            isNullable={true}
+            prevSelectedGroupId={worshipEnrollmentFilter.group}
           />
         </GroupContainer>
       </CustomPopup>

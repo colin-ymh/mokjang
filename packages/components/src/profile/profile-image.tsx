@@ -48,7 +48,7 @@ export const ProfileImage = ({
 
   return (
     <Profile
-      src={value || getRandomImage}
+      src={value || Png.DefaultMemberImage}
       alt="profileImage"
       width={width}
       height={height}

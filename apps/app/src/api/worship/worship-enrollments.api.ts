@@ -13,7 +13,7 @@ type GetWorshipEnrollmentsParams = {
   take?: number; // 요청 개수
   order?: WORSHIP_ENROLLMENT; // 정렬 기준
   orderDirection?: ORDER_DIRECTION; // 오름차순 내림차순
-  groupId?: string;
+  groupId?: string | undefined | null;
   fromSessionDate?: string;
   toSessionDate?: string;
 };
@@ -77,7 +77,7 @@ export class WorshipEnrollmentsApi {
         paramsSerializer: (params) => {
           return qs.stringify(params, {
             arrayFormat: 'repeat',
-            skipNulls: true,
+            skipNulls: false,
             encodeValuesOnly: true,
           });
         },

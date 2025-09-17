@@ -11,7 +11,7 @@ import { MembersApi } from '@/api/members/members.api';
 import MemberListView from './member-list.view';
 import { DEFAULT_MEMBER } from '@mokjang/models';
 import { setTargetMember } from '@/redux/reducers/target/target-member-reducer';
-import { uploadFiles } from '@/utils/upload';
+import { uploadFilesToSupabase } from '@/utils/upload';
 import { BLANK, CONCEALED, DESTRUCTIVE } from '@mokjang/constants';
 import { getDateFromDateString, getDateStringFromDate } from '@mokjang/utils';
 import {
@@ -20,6 +20,7 @@ import {
   setToastText,
 } from '@/redux/reducers/toast-popup-reducer';
 import { useScopedI18n } from '../../../../../locales/client';
+import { deleteFilesFromSupabase } from '@/utils/delete';
 
 type MemberListProps = {
   isNewMember?: boolean;
@@ -69,8 +70,11 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
   const [profileImage, setProfileImage] = useState<File | null>(null);
 
   const onChangeProfileImage = (image: File | null) => {
-    console.log(image);
     setProfileImage(image);
+
+    if (image === null) {
+      dispatch(setTargetMember({ ...targetMember, profileImageUrl: BLANK }));
+    }
   };
 
   const onClickConfirmOpen = () => {
@@ -177,8 +181,10 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
     try {
       let updatedMember = { ...targetMember };
       if (profileImage) {
-        console.log(profileImage);
-        const uploadedUrls = await uploadFiles([profileImage]);
+        const uploadedUrls = await uploadFilesToSupabase([profileImage], {
+          bucket: 'profile',
+          prefix: `users/${targetMember.id}`,
+        });
         const uploadedUrl = uploadedUrls[0];
         if (uploadedUrl) {
           updatedMember = { ...targetMember, profileImageUrl: uploadedUrl };
@@ -187,6 +193,14 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
       } else if (profileImage === null) {
         updatedMember = { ...targetMember, profileImageUrl: BLANK };
         dispatch(setTargetMember(updatedMember));
+
+        const prevImageUrl = members.find(
+          (member) => member.id === targetMember.id
+        )?.profileImageUrl;
+
+        if (prevImageUrl) {
+          deleteFilesFromSupabase([prevImageUrl]);
+        }
       }
 
       await membersApi
@@ -196,7 +210,7 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
             name: updatedMember.name || undefined,
             mobilePhone:
               updatedMember.mobilePhone?.replace(/\D/g, '') || undefined,
-            profileImageUrl: updatedMember.profileImageUrl || undefined,
+            profileImageUrl: updatedMember.profileImageUrl || BLANK,
             birth:
               getDateStringFromDate(
                 getDateFromDateString(updatedMember.birth)

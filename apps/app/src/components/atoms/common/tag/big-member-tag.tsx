@@ -13,8 +13,9 @@ const TagContainer = styled.div<{ $backgroundColor: string }>`
   align-items: center;
   justify-content: space-between;
   cursor: pointer;
-  height: 40px;
+  height: 38px;
   border: 1px solid ${GRAY.LIGHT};
+  flex-shrink: 0;
 `;
 
 const LeftContainer = styled.div`

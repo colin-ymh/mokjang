@@ -56,7 +56,7 @@ export const getPermissionScopeTitle = (
 export const getPermissionUnitId = (
   domain: PERMISSION_DOMAIN,
   action: ACTION
-) => {
+): number => {
   switch (domain) {
     case DOMAIN.MEMBER:
       if (action === ACTION.READ) {
@@ -107,7 +107,17 @@ export const getPermissionUnitId = (
         return 14;
       }
       break;
+    case DOMAIN.WORSHIP_ATTENDANCE:
+      if (action === ACTION.READ) {
+        return 15;
+      } else if (action === ACTION.WRITE) {
+        return 16;
+      }
+      break;
+    default:
+      return 0;
   }
+  return 0;
 };
 
 export const getIsAccessed = (domain: PERMISSION_DOMAIN, action: ACTION) => {

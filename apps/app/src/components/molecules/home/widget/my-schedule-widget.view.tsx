@@ -154,6 +154,7 @@ const MyScheduleWidgetView = ({
         startDate={targetEducationSession.startDate}
         endDate={targetEducationSession.endDate}
         onChangeStatus={onChangeEducationSessionStatus}
+        widthPercentage={45}
       >
         {(scrollRef) => (
           <>
@@ -180,6 +181,7 @@ const MyScheduleWidgetView = ({
         inCharge={targetEducationTerm.inCharge}
         startDate={targetEducationTerm.startDate}
         endDate={targetEducationTerm.endDate}
+        widthPercentage={45}
       >
         {(scrollRef) => (
           <>

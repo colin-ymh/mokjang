@@ -35,8 +35,6 @@ export default {
 
   doneRate: 'Completed Rate',
 
-  prevNextWeek: 'Prev / Next Week',
-
   current: 'Current',
 
   creator: 'Creator',
@@ -342,6 +340,7 @@ export default {
   'unit.education.title': 'Education',
   'unit.task.title': 'Task',
   'unit.worship.title': 'Worship',
+  'unit.worshipAttendance.title': 'Worship Attendance',
   'unit.management.title': 'Church Management',
   'unit.permission.title': 'Admin Settings',
 
@@ -381,6 +380,12 @@ export default {
   'unit.permission.read.title': 'View Administrators',
   'unit.permission.read.description':
     'Approve or reject admin registration requests, remove administrators, add, edit, or delete permission groups, and edit or delete administrator information including permission scopes and status values.',
+  'unit.worshipAttendance.write.title': 'Manage Worship Attendance',
+  'unit.worshipAttendance.write.description':
+    'View the worship attendance record.',
+  'unit.worshipAttendance.read.title': 'View Worship Attendance',
+  'unit.worshipAttendance.read.description':
+    'Create and edit the worship attendance record.',
 
   /*-------------------title (popup title)-------------------*/
   'title.memberRegister': 'Member Register',

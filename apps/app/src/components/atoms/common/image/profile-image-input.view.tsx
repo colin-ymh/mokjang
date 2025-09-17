@@ -155,12 +155,12 @@ const ProfileImageInputView = ({
 
   return (
     <Wrapper>
-      <ThumbBox onClick={onClickImage}>
+      <ThumbBox>
         <ProfileImage
           value={croppedPreviewUrl || value}
           width={width}
           height={height}
-          onClick={() => {}}
+          onClick={onClickImage}
           quality={100}
         />
         <DeleteBtn
@@ -178,7 +178,7 @@ const ProfileImageInputView = ({
           }}
         />
 
-        <CameraButton>
+        <CameraButton onClick={onClickImage}>
           <CameraIcon />
         </CameraButton>
       </ThumbBox>

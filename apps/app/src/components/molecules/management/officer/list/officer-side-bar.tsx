@@ -1,16 +1,12 @@
-import { MainText } from '@mokjang/components';
-import { BorderInput } from '@mokjang/components';
-import { BLACK, DESTRUCTIVE, GRAY, WHITE } from '@mokjang/constants';
-import { Button } from '@mokjang/components';
+import { BorderInput, Button, MainText } from '@mokjang/components';
+import { BLACK, BLANK, DESTRUCTIVE, GRAY, WHITE } from '@mokjang/constants';
 import OfficerList from './officer-list';
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useI18n, useScopedI18n } from '../../../../../../locales/client';
 import { Officer } from '@mokjang/models';
-import { BLANK } from '@mokjang/constants';
-import { getIsWellFormedTitle } from '@mokjang/utils';
+import { getFormattedTitle, getIsWellFormedTitle } from '@mokjang/utils';
 import { fetchOfficers } from '../../../../../redux/reducers/church-reducer';
-import { getFormattedTitle } from '@mokjang/utils';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../../../redux/store';
 import { OfficersApi } from '../../../../../api/management/officer/officers.api';
@@ -110,14 +106,19 @@ const OfficerSideBar = ({
           value={newOfficerName}
           onChange={onChangeNewOfficerName}
           borderColor={GRAY.SEMI_LIGHT}
+          height={30}
         />
         <Button
-          width={80}
+          width={50}
           text={t('button.add')}
           onClick={onClickSaveNewOfficer}
           borderColor={GRAY.SEMI_LIGHT}
-          backgroundColor={WHITE}
-          color={GRAY.DARK}
+          backgroundColor={
+            getIsWellFormedTitle(newOfficerName) ? WHITE : GRAY.SEMI_LIGHT
+          }
+          color={getIsWellFormedTitle(newOfficerName) ? GRAY.DARK : WHITE}
+          height={30}
+          disabled={!getIsWellFormedTitle(newOfficerName)}
         />
       </AddContainer>
       {/* 그룹 목록 */}

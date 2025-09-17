@@ -3,15 +3,20 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
 
-import { GRAY, GREEN, RED, WHITE } from '@mokjang/constants';
-import { BLANK } from '@mokjang/constants';
+import {
+  BLANK,
+  GRAY,
+  GREEN,
+  RED,
+  WHITE,
+  WORSHIP_ATTENDANCE,
+} from '@mokjang/constants';
 import { WORSHIP_ATTENDANCE_STATUS, WorshipAttendance } from '@mokjang/models';
-import { WORSHIP_ATTENDANCE } from '@mokjang/constants';
 import AttendanceInformationTableHeader from '../../../atoms/attendance/information/attendance-information-table-header';
 import MemberProfilePopupButton from '../../common/button/member-profile-popup-button';
 
 import { useScopedI18n } from '../../../../../locales/client';
-import { CheckButton, MainText, BorderTextarea } from '@mokjang/components';
+import { BorderTextarea, CheckButton, MainText } from '@mokjang/components';
 
 // 1. 컬럼별 PX 폭 (마지막 REMARKS만 auto 할 예정)
 const getColumnWidth = (id: string) => {
@@ -112,7 +117,8 @@ const CheckButtonContainer = styled.div`
   display: flex;
   width: 100%;
   height: 70px;
-  justify-content: center;
+  //justify-content: center;
+  padding-left: 10px;
   align-items: center;
   cursor: pointer;
 `;
@@ -176,6 +182,8 @@ const AttendanceInformationTableView = ({
               onChange={(value) => onChangePresent(value, attendance)}
               backgroundColor={GREEN.DEFAULT}
               borderColor={GREEN.DEFAULT}
+              width={15}
+              height={15}
             />
           </CheckButtonContainer>
         );
@@ -197,6 +205,8 @@ const AttendanceInformationTableView = ({
               onChange={(value) => onChangeAbsent(value, attendance)}
               backgroundColor={RED.DEFAULT}
               borderColor={RED.DEFAULT}
+              width={15}
+              height={15}
             />
           </CheckButtonContainer>
         );

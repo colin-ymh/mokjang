@@ -1,6 +1,6 @@
 import React, { ChangeEvent, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../../../redux/store';
+import { AppDispatch, RootState } from '@/redux/store';
 import DaumPostcodeEmbed, { Address } from 'react-daum-postcode';
 import { BAPTISM, GENDER, MARRIAGE } from '@mokjang/constants';
 import {
@@ -13,7 +13,7 @@ import {
   getIsWellFormedPhone,
 } from '@mokjang/utils';
 import PagePopup from '../../../atoms/common/popup/page-popup';
-import { setTargetMember } from '../../../../redux/reducers/target/target-member-reducer';
+import { setTargetMember } from '@/redux/reducers/target/target-member-reducer';
 import AddMemberView from './add-member.view';
 
 export type AddMemberProps = {

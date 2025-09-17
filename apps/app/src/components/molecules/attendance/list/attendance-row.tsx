@@ -37,6 +37,7 @@ import {
   setToastText,
 } from '@/redux/reducers/toast-popup-reducer';
 import axios from 'axios';
+import { nullGroup } from '@/components/organisms/group/select-group-hierarchy.view';
 
 const AttendanceRow = ({
   isStatisticOpened,
@@ -87,13 +88,17 @@ const AttendanceRow = ({
 
   // 그룹 선택
   const onClickGroupItem = (id: string | null) => {
-    const newGroup = id === ALL ? DEFAULT_GROUP : getGroup(id, groups);
+    const newGroup = id
+      ? id === ALL
+        ? DEFAULT_GROUP
+        : getGroup(id, groups)
+      : nullGroup;
     dispatch(setTargetWorshipGroup(newGroup));
 
     dispatch(
       setWorshipEnrollmentFilter({
         ...worshipEnrollmentFilter,
-        [WORSHIP_ENROLLMENT.GROUP]: id || BLANK,
+        [WORSHIP_ENROLLMENT.GROUP]: id ? (id === ALL ? undefined : id) : null,
       })
     );
 

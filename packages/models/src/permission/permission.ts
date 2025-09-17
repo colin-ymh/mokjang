@@ -11,7 +11,8 @@ export enum DOMAIN {
   MANAGEMENT = 'management',
   HOLIDAY = 'holiday',
   CHURCH_EVENT = 'churchEvent',
-  WORSHIP = 'workshop',
+  WORSHIP = 'worship',
+  WORSHIP_ATTENDANCE = 'worshipAttendance',
   PERMISSION = 'permission',
 }
 
@@ -29,6 +30,7 @@ export type PERMISSION_DOMAIN =
   | DOMAIN.EDUCATION
   | DOMAIN.TASK
   | DOMAIN.WORSHIP
+  | DOMAIN.WORSHIP_ATTENDANCE
   | DOMAIN.MANAGEMENT
   | DOMAIN.PERMISSION;
 

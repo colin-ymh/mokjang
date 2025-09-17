@@ -500,6 +500,8 @@ const EducationTermInformation = ({
         }
         doneDisabled={!isEducationSessionSaveEnabled}
         closeText={t_button('backToEducationTerm')}
+        widthPercentage={45}
+        blur={false}
       >
         <AddEducationSession />
       </WrappedPagePopup>

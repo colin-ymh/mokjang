@@ -154,13 +154,10 @@ const Chevron = styled(Svg.ChevronLeft)<{
   height: 14px;
   stroke: ${({ color }) => color || GRAY.DEFAULT};
   stroke-width: 3px;
-  transform: rotate(${({ $isOpened }) => ($isOpened ? '180deg' : '270deg')});
+  transform: rotate(${({ $isOpened }) => ($isOpened ? '270deg' : '180deg')});
   transition: transform 0.2s ease;
   border-radius: 5px;
   padding: 5px;
-  &:hover {
-    background-color: ${GRAY.LIGHT};
-  }
 `;
 
 const TitleContainer = styled.div`
@@ -251,14 +248,16 @@ const EducationTableView = ({
       case EDUCATION.NAME:
         return (
           <EducationNameContainer $level={0}>
-            <Chevron
-              $isOpened={openedEducationIds.includes(education.id)}
-              onClick={(event: React.MouseEvent) => {
-                event.stopPropagation();
-                onClickEducationChevron(education);
-              }}
-              $reverseDirection
-            />
+            {education?.termsCount > 0 && (
+              <Chevron
+                $isOpened={openedEducationIds.includes(education.id)}
+                onClick={(event: React.MouseEvent) => {
+                  event.stopPropagation();
+                  onClickEducationChevron(education);
+                }}
+                $reverseDirection
+              />
+            )}
             <SvgIcon svg={Svg.Book} size={16} color={MAIN.DEFAULT} width={2} />
             <TitleContainer>
               <MainText>{education.name}</MainText>

@@ -13,9 +13,10 @@ import StopWarningButton from '../../../../atoms/common/button/stop-warning-butt
 const EditMemberGroupViewContainer = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 10px;
+  padding: 20px;
   width: 100%;
   overflow-y: auto;
+  gap: 20px;
 `;
 
 const LabelContainer = styled.div`

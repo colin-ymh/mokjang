@@ -178,6 +178,7 @@ const MainCalendarView = ({
         startDate={targetEducationSession.startDate}
         endDate={targetEducationSession.endDate}
         onChangeStatus={onChangeEducationSessionStatus}
+        widthPercentage={45}
       >
         {(scrollRef) => (
           <>

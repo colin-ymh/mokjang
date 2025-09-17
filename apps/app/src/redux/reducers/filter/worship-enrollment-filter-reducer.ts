@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import {
   ALL,
   BLANK,
+  DESTRUCTIVE,
   ORDER_DIRECTION,
   WORSHIP_ENROLLMENT,
 } from '@mokjang/constants';
@@ -9,10 +10,15 @@ import { RootState } from '../../store';
 import { WorshipEnrollment, WorshipSessionCheckStatus } from '@mokjang/models';
 import { WorshipEnrollmentsApi } from '@/api/worship/worship-enrollments.api';
 import { WorshipSessionsApi } from '@/api/worship/worship-sessions.api';
+import {
+  setIsToastShown,
+  setToastBackgroundColor,
+  setToastText,
+} from '@/redux/reducers/toast-popup-reducer';
 
 type WORSHIP_ENROLLMENT_FILTER = {
   [WORSHIP_ENROLLMENT.GROUP_NAME]: string;
-  [WORSHIP_ENROLLMENT.GROUP]: string;
+  [WORSHIP_ENROLLMENT.GROUP]: string | undefined | null;
   [WORSHIP_ENROLLMENT.FROM_DATE]: string;
   [WORSHIP_ENROLLMENT.TO_DATE]: string;
 };
@@ -97,7 +103,7 @@ export const fetchWorshipEnrollments = createAsyncThunk<
   'educations/fetchWorshipEnrollments',
   async (
     { churchId, worshipId, currentPage, take },
-    { getState, rejectWithValue }
+    { getState, rejectWithValue, dispatch }
   ) => {
     const state = getState().worshipEnrollmentFilter;
     const {
@@ -116,8 +122,8 @@ export const fetchWorshipEnrollments = createAsyncThunk<
         order: worshipEnrollmentOrderBy,
         orderDirection: worshipEnrollmentOrderDirection,
         groupId:
-          worshipEnrollmentFilter.group === ALL
-            ? undefined
+          worshipEnrollmentFilter.group === null
+            ? 'null'
             : worshipEnrollmentFilter.group,
         fromSessionDate: worshipEnrollmentFilter.fromSessionDate,
         toSessionDate: worshipEnrollmentFilter.toSessionDate,
@@ -125,8 +131,15 @@ export const fetchWorshipEnrollments = createAsyncThunk<
 
       return response.data;
     } catch (error) {
-      console.error('출석 목록 불러오기 실패', error);
-      return rejectWithValue('출석 목록을 불러오는 중 오류가 발생했습니다.');
+      // console.error('출석 목록 불러오기 실패', error);
+      // return rejectWithValue('출석 목록을 불러오는 중 오류가 발생했습니다.');
+      if (error instanceof Error) {
+        dispatch(setToastText(error.message));
+        dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
+        dispatch(setIsToastShown(true));
+      }
+
+      return { data: [] };
     }
   }
 );

@@ -3,17 +3,18 @@
 import styled from 'styled-components';
 import React, { ChangeEvent } from 'react';
 import { useI18n, useScopedI18n } from '../../../../../../locales/client';
-import { GRAY, MAIN } from '@mokjang/constants';
-import { MainText } from '@mokjang/components';
+import { CURSOR, GRAY, MAIN, RED, SIZE, WHITE } from '@mokjang/constants';
+import {
+  BorderInput,
+  BorderTextarea,
+  Button,
+  MainText,
+  RequiredMark,
+  SvgIcon,
+} from '@mokjang/components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../redux/store';
-import { RequiredMark } from '@mokjang/components';
-import { BorderInput } from '@mokjang/components';
-import { Button } from '@mokjang/components';
 import { Svg } from '@mokjang/assets';
-import { SvgIcon } from '@mokjang/components';
-import { BorderTextarea } from '@mokjang/components';
-import { SIZE } from '@mokjang/constants';
 
 /* ──────────────────────────────── Styled Components ─────────────────────────────── */
 const AddEducationViewContainer = styled.div`
@@ -63,7 +64,6 @@ const RowContainer = styled.div`
   flex-direction: row;
   justify-content: space-between;
   width: 100%;
-  gap: 20px;
 `;
 
 type AddEducationViewProps = {
@@ -75,6 +75,7 @@ type AddEducationViewProps = {
     event: ChangeEvent<HTMLInputElement>
   ) => void;
   onClickAddGoal: () => void;
+  onClickDeleteGoal: (index: number) => void;
 };
 
 const AddEducationView = ({
@@ -83,6 +84,7 @@ const AddEducationView = ({
   onChangeDescription,
   onChangeEducationGoal,
   onClickAddGoal,
+  onClickDeleteGoal,
 }: AddEducationViewProps) => {
   const { targetEducation } = useSelector(
     (state: RootState) => state.targetEducation
@@ -147,13 +149,30 @@ const AddEducationView = ({
           </RowContainer>
           <GoalList>
             {targetEducation.goals.map((goal, index) => (
-              <BorderInput
-                key={index}
-                value={goal}
-                onChange={(event) => onChangeEducationGoal(index, event)}
-                placeholder={t_placeholder('educationGoal')}
-                borderColor={GRAY.LIGHT}
-              />
+              <RowContainer key={index}>
+                <BorderInput
+                  value={goal}
+                  onChange={(event) => onChangeEducationGoal(index, event)}
+                  placeholder={t_placeholder('educationGoal')}
+                  borderColor={GRAY.LIGHT}
+                />
+                <Button
+                  icon={
+                    <SvgIcon
+                      svg={Svg.Cancel}
+                      width={2}
+                      size={16}
+                      color={RED.DEFAULT}
+                      cursor={CURSOR.POINTER}
+                    />
+                  }
+                  onClick={() => onClickDeleteGoal(index)}
+                  width={40}
+                  height={40}
+                  backgroundColor={WHITE}
+                  borderColor={WHITE}
+                />
+              </RowContainer>
             ))}
           </GoalList>
         </ColumnContainer>

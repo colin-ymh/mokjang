@@ -144,6 +144,16 @@ const AttendanceInformation = ({
         <ContentContainer>
           {/* 필터 행 */}
           <BoxContainer>
+            {/* 예배 설정 */}
+            <LabelDropdown
+              label={t('worship')}
+              value={targetWorshipSessionWorship.id}
+              items={worshipDropdownItems}
+              onChangeItem={onClickWorshipItem}
+              height={40}
+              backgroundBlur={false}
+            />
+
             <LabelContainer>
               <MainText color={GRAY.DARK} size={SIZE.SMALL}>
                 {t('group')}
@@ -155,14 +165,7 @@ const AttendanceInformation = ({
                 height={40}
               />
             </LabelContainer>
-            {/* 예배 설정 */}
-            <LabelDropdown
-              label={t('worship')}
-              value={targetWorshipSessionWorship.id}
-              items={worshipDropdownItems}
-              onChangeItem={onClickWorshipItem}
-              height={40}
-            />
+
             <WeekNavigator
               value={getDateFromDateString(targetWorshipSession.sessionDate)}
               dayOfWeek={targetWorshipSessionWorship.worshipDay}
@@ -271,6 +274,7 @@ const AttendanceInformation = ({
         width={400}
         height={600}
         isHeaderShown={false}
+        blur={false}
       >
         <GroupContainer>
           <SelectGroupHierarchy

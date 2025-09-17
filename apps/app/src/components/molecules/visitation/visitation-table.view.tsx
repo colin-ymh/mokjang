@@ -38,7 +38,7 @@ const getColumnWidth = (id: string) => {
     case VISITATION.DATE:
       return 25;
     case VISITATION.STATUS:
-      return 15;
+      return 30;
     default:
       // 비고(REMARKS) 컬럼 등
       return 80;

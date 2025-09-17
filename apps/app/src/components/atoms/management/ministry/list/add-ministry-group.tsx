@@ -1,6 +1,6 @@
 import React, { ChangeEvent, forwardRef } from 'react';
 import styled from 'styled-components';
-import { MainInput } from '@mokjang/components';
+import { Button, MainInput } from '@mokjang/components';
 import { BLACK, GRAY, MAIN, WHITE } from '@mokjang/constants';
 import { getIsWellFormedTitle } from '@mokjang/utils';
 
@@ -21,14 +21,7 @@ const AddMinistryGroupContainer = styled.div<{ $level: number }>`
   position: relative;
   padding: ${({ $level }) => `10px 10px 10px ${$level * 30}px`};
   width: 100%;
-`;
-
-const PlusButton = styled(Svg.Plus)`
-  display: flex;
-  width: 25px;
-  height: 25px;
-  stroke: ${GRAY.DARK};
-  stroke-width: 2px;
+  gap: 10px;
 `;
 
 const CheckButton = styled(Svg.Check)<{ $isEnabled: boolean }>`
@@ -56,10 +49,10 @@ type AddMinistryGroupProps = {
 const AddMinistryGroup = forwardRef<HTMLInputElement, AddMinistryGroupProps>(
   ({ isShown, level, name, onChangeName, onClickSaveGroup }, ref) => {
     const t_placeholder = useScopedI18n('placeholder');
+    const t_button = useScopedI18n('button');
     return (
       <BackgroundContainer $isShown={isShown}>
         <AddMinistryGroupContainer $level={level + 1}>
-          <PlusButton />
           <MainInput
             ref={ref}
             value={name}
@@ -68,9 +61,17 @@ const AddMinistryGroup = forwardRef<HTMLInputElement, AddMinistryGroupProps>(
             color={BLACK}
             placeholder={t_placeholder('ministryGroupName')}
           />
-          <CheckButton
-            $isEnabled={getIsWellFormedTitle(name)}
-            onMouseDown={onClickSaveGroup}
+          <Button
+            onClick={onClickSaveGroup}
+            width={'auto'}
+            text={t_button('add')}
+            borderColor={GRAY.LIGHT}
+            backgroundColor={
+              getIsWellFormedTitle(name) ? MAIN.DEFAULT : GRAY.SEMI_LIGHT
+            }
+            color={WHITE}
+            height={30}
+            disabled={!getIsWellFormedTitle(name)}
           />
         </AddMinistryGroupContainer>
       </BackgroundContainer>

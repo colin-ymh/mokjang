@@ -3,8 +3,18 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
 
-import { BLANK, CHURCH_USER_ROLE, GRAY, GREEN, RED, WHITE, } from '../../../../../../../packages/constants/src';
-import { MainTag, MainText, } from '../../../../../../../packages/components/src';
+import {
+  BLANK,
+  CHURCH_USER_ROLE,
+  GRAY,
+  GREEN,
+  RED,
+  WHITE,
+} from '../../../../../../../packages/constants/src';
+import {
+  MainTag,
+  MainText,
+} from '../../../../../../../packages/components/src';
 import useWindowSize from '../../../../hooks/window/window';
 import ChurchUserTableHeader from '../../../atoms/church-user/list/church-user-table-header';
 import { BLANK_HEADER } from '../../../../redux/reducers/filter/member-filter-reducer';
@@ -40,7 +50,7 @@ const TableContainer = styled.div<{ height: number }>`
   /* 항상 가로 100%를 채움 */
   width: 100%;
   /* 세로 높이만큼 상하 스크롤 */
-  height: ${({ height }) => `${height - 290}px`};
+  height: ${({ height }) => `${height - 280}px`};
 
   /* 오버플로 시 스크롤 */
   overflow-x: auto;

@@ -37,6 +37,7 @@ const ChurchUserRowView = ({
           items={dropdownItems}
           onChangeItem={onChangePermissionActive}
           width={100}
+          height={30}
         />
       </RowTop>
     </UserContainer>

@@ -3,20 +3,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 
 import { useScopedI18n } from '../../../../../../locales/client';
-import {
-  setIsToastShown,
-  setToastBackgroundColor,
-  setToastText,
-} from '@/redux/reducers/toast-popup-reducer';
+import { setIsToastShown, setToastBackgroundColor, setToastText, } from '@/redux/reducers/toast-popup-reducer';
 import { BLACK, BLANK, DESTRUCTIVE, TASK_STATUS } from '@mokjang/constants';
 import { DEFAULT_VISITATION, Visitation } from '@mokjang/models';
 import { VisitationsApi } from '@/api/visitations/visitations.api';
 import MemberVisitationListView from './member-visitation-list.view';
-import {
-  getDateFromDateString,
-  getFullStringFromDate,
-  getIsWellFormedTitle,
-} from '@mokjang/utils';
+import { getDateFromDateString, getFullStringFromDate, getIsWellFormedTitle, } from '@mokjang/utils';
 import { setTargetVisitation } from '@/redux/reducers/target/target-visitation-reducer';
 
 type MemberVisitationListProps = {};
@@ -108,7 +100,11 @@ const MemberVisitationList = ({}: MemberVisitationListProps) => {
   const onClickAddDone = async () => {
     try {
       // 수정
-      if (targetVisitation.id) {
+      if (
+        (targetVisitation.id.length > 3 &&
+          targetVisitation.id.slice(0, 4) !== 'temp') ||
+        !targetVisitation.id.length
+      ) {
         await visitationsApi.editVisitation(
           { churchId, visitationId: targetVisitation.id },
           {

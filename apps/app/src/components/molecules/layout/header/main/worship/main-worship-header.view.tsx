@@ -1,11 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { GRAY, MAIN, MEDIA_MIN_WIDTH, SIZE } from '@mokjang/constants';
-import { Button, CustomPopup, MainText } from '@mokjang/components';
+import { GRAY, MAIN, MEDIA_MIN_WIDTH, SIZE, WHITE } from '@mokjang/constants';
+import { Button, CustomPopup, MainText, SvgIcon } from '@mokjang/components';
 import { useScopedI18n } from '../../../../../../../locales/client';
 import { MAIN_HEADER_ID } from '@/constants/layout/header';
 import AddWorship from '../../../../../organisms/worship/add/add-worship';
+import { Svg } from '@mokjang/assets';
 
 const HeaderContainer = styled.div`
   display: flex;
@@ -81,8 +82,11 @@ const MainWorshipHeaderView = ({
         <Button
           text={t_button('addWorship')}
           onClick={onClickAddWorship}
-          width={100}
-          height={30}
+          width={'auto'}
+          fontWeight={500}
+          fontSize={16}
+          height={35}
+          icon={<SvgIcon svg={Svg.Plus} color={WHITE} width={2} size={20} />}
         />
       </HeaderTopContainer>
       <HeaderBottomContainer></HeaderBottomContainer>

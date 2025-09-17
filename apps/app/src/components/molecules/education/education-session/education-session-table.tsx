@@ -420,6 +420,8 @@ const EducationSessionTable = ({}: EducationTermTableProps) => {
         startDate={targetEducationSession.startDate}
         endDate={targetEducationSession.endDate}
         closeText={t_button('backToEducationTerm')}
+        widthPercentage={45}
+        blur={false}
       >
         {(scrollRef) => (
           <>
@@ -458,6 +460,8 @@ const EducationSessionTable = ({}: EducationTermTableProps) => {
         }
         doneDisabled={!isEducationSessionSaveEnabled}
         closeText={t_button('backToEducationSession')}
+        widthPercentage={45}
+        blur={false}
       >
         <AddEducationSession />
       </WrappedPagePopup>

@@ -17,17 +17,19 @@ import { getEmptyImage } from 'react-dnd-html5-backend';
 
 import { Svg } from '@mokjang/assets';
 import { useScopedI18n } from '../../../../locales/client';
+import useWindowSize from '@/hooks/window/window';
 
 // 드래그 타입 상수
 type DragItem = { index: number; id: HOME_WIDGET; title: string };
 
 // 개별 위젯 아이템 스타일
-const WidgetItem = styled.div<{ $isDragging: boolean }>`
+const WidgetItem = styled.div<{ $isDragging: boolean; width: number }>`
   display: flex;
   position: relative;
   flex-direction: column;
   gap: 10px;
-  width: 300px;
+  //width: 500px;
+  width: ${({ width }) => width}px;
   height: 400px;
   box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
@@ -66,6 +68,7 @@ const HomeWidgetItem = ({
   onClickDelete,
   widget,
 }: DraggableWidgetProps) => {
+  const { width } = useWindowSize();
   const t_title = useScopedI18n('title');
   const ref = useRef<HTMLDivElement>(null);
 
@@ -130,7 +133,7 @@ const HomeWidgetItem = ({
   }, [preview]);
 
   return (
-    <WidgetItem ref={ref} $isDragging={isDragging}>
+    <WidgetItem ref={ref} $isDragging={isDragging} width={(width - 500) / 3}>
       {widget}
       <DeleteContainer>
         <DeleteButton onClick={onClickDelete} />

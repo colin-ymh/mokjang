@@ -245,6 +245,8 @@ const EducationInformation = ({ scrollRef }: EducationInformationProps) => {
         }
         doneDisabled={!isEducationTermSaveEnabled}
         closeText={t_button('backToEducation')}
+        widthPercentage={45}
+        blur={false}
       >
         <AddEducationTerm />
       </WrappedPagePopup>

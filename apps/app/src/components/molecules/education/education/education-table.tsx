@@ -26,15 +26,18 @@ import ConfirmPopup from '../../../atoms/common/popup/error-popup';
 import EducationInformation from '../../../organisms/education/education/information/education-information';
 import AddEducation from '../../../organisms/education/education/add/add-education';
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
-import { getDateFromDateString, getDateStringFromDate, getIsWellFormedTitle, getTranslatedTerm, } from '@mokjang/utils';
+import {
+  getDateFromDateString,
+  getDateStringFromDate,
+  getIsWellFormedTitle,
+  getTranslatedTerm,
+} from '@mokjang/utils';
 import { setTargetEducation } from '../../../../redux/reducers/target/target-education-reducer';
 import { setTargetEducationTerm } from '../../../../redux/reducers/target/target-education-term-reducer';
-import EducationTermInformation
-  from '../../../organisms/education/education-term/information/education-term-information';
+import EducationTermInformation from '../../../organisms/education/education-term/information/education-term-information';
 import AddEducationTerm from '../../../organisms/education/education-term/add/add-education-term';
 import { setTargetEducationSession } from '../../../../redux/reducers/target/target-education-session-reducer';
-import EducationSessionInformation
-  from '../../../organisms/education/education-session/information/education-session-information';
+import EducationSessionInformation from '../../../organisms/education/education-session/information/education-session-information';
 import AddEducationSession from '../../../organisms/education/education-session/add/add-education-session';
 import { usePathname } from 'next/navigation';
 import { setEducationTerms } from '../../../../redux/reducers/filter/education-term-filter-reducer';
@@ -1000,6 +1003,7 @@ const EducationTable = ({ loadEducations }: EducationTableProps) => {
         cancelText={t_button('delete')}
         onClickDone={onClickEditEducationOpen}
         onClickCancel={onClickDeleteEducationConfirmOpen}
+        widthPercentage={45}
       >
         {(scrollRef) => (
           <>
@@ -1031,7 +1035,7 @@ const EducationTable = ({ loadEducations }: EducationTableProps) => {
         onClickDone={onClickEditEducationDone}
         doneBackgroundColor={isEducationSaveEnabled ? MAIN.DEFAULT : MAIN.LIGHT}
         doneDisabled={!isEducationSaveEnabled}
-        // widthPercentage={60}
+        widthPercentage={45}
         zIndex={1100}
         closeText={t_button('backToEducation')}
       >
@@ -1055,6 +1059,7 @@ const EducationTable = ({ loadEducations }: EducationTableProps) => {
         inCharge={targetEducationTerm.inCharge}
         startDate={targetEducationTerm.startDate}
         endDate={targetEducationTerm.endDate}
+        widthPercentage={45}
       >
         {(scrollRef) => (
           <>
@@ -1093,6 +1098,7 @@ const EducationTable = ({ loadEducations }: EducationTableProps) => {
         }
         doneDisabled={!isEducationTermSaveEnabled}
         closeText={t_button('backToEducationTerm')}
+        widthPercentage={45}
       >
         <AddEducationTerm isEdit />
       </WrappedPagePopup>
@@ -1114,6 +1120,7 @@ const EducationTable = ({ loadEducations }: EducationTableProps) => {
         inCharge={targetEducationSession.inCharge}
         startDate={targetEducationSession.startDate}
         endDate={targetEducationSession.endDate}
+        widthPercentage={45}
       >
         {(scrollRef) => (
           <>
@@ -1152,6 +1159,7 @@ const EducationTable = ({ loadEducations }: EducationTableProps) => {
         }
         doneDisabled={!isEducationSessionSaveEnabled}
         closeText={t_button('backToEducationSession')}
+        widthPercentage={45}
       >
         <AddEducationSession />
       </WrappedPagePopup>

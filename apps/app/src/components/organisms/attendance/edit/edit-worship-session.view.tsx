@@ -7,15 +7,16 @@ import { RootState } from '@/redux/store';
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
 import MemberDropdown from '../../../atoms/common/dropdown/member-dropdown';
 import Quill from '../../../atoms/common/input/quill';
-import { BLANK } from '@mokjang/constants';
+import { BLANK, GRAY, SIZE } from '@mokjang/constants';
 import { MemberDropdownValueType } from '@mokjang/models';
+import BigMemberTag from '@/components/atoms/common/tag/big-member-tag';
 
 const SessionInformationContainer = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
   padding: 20px;
-  gap: 10px;
+  gap: 20px;
 `;
 
 const RowContainer = styled.div`
@@ -83,20 +84,31 @@ const EditWorshipSessionView = ({
         />
         <InputContainer>
           <LabelContainer>
-            <MainText>{t('worshipSessionInCharge')}</MainText>
+            <MainText color={GRAY.DARK} size={SIZE.SMALL}>
+              {t('worshipSessionInCharge')}
+            </MainText>
           </LabelContainer>
-          <MemberDropdown
-            values={inCharge}
-            onChangeValues={onChangeInCharge}
-            isSingle={true}
-            placeholder={
-              inCharge.length === 0
-                ? t_placeholder('worshipSessionInCharge')
-                : BLANK
-            }
-            isManager={true}
-            height={38}
-          />
+          {inCharge.length > 0 ? (
+            <BigMemberTag
+              officer={inCharge[0].officer}
+              profileImage={inCharge[0].profileImage}
+              name={inCharge[0].title}
+              onClick={() => onChangeInCharge([])}
+            />
+          ) : (
+            <MemberDropdown
+              values={inCharge}
+              onChangeValues={onChangeInCharge}
+              isSingle={true}
+              placeholder={
+                inCharge.length === 0
+                  ? t_placeholder('worshipSessionInCharge')
+                  : BLANK
+              }
+              isManager={true}
+              height={40}
+            />
+          )}
         </InputContainer>
       </RowContainer>
       <LabelInput
@@ -109,7 +121,9 @@ const EditWorshipSessionView = ({
       {/* 내용 */}
       <InputContainer>
         <LabelContainer>
-          <MainText>{t('worshipSessionDescription')}</MainText>
+          <MainText color={GRAY.DARK} size={SIZE.SMALL}>
+            {t('worshipSessionDescription')}
+          </MainText>
         </LabelContainer>
         <Quill
           value={description}

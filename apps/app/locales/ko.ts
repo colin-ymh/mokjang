@@ -34,9 +34,6 @@ export default {
   filter: '필터',
 
   doneRate: '완료율',
-
-  prevNextWeek: '이전 / 다음 주',
-
   current: '현재',
 
   creator: '생성자',
@@ -344,6 +341,7 @@ export default {
   'unit.education.title': '교육',
   'unit.task.title': '업무',
   'unit.worship.title': '예배',
+  'unit.worshipAttendance.title': '예배 출석',
   'unit.management.title': '교회관리',
   'unit.permission.title': '관리자 설정',
 
@@ -382,6 +380,12 @@ export default {
   'unit.permission.read.title': '관리자 열람',
   'unit.permission.read.description':
     '관리자 등록 신청을 승인/거절하고 관리자를 삭제할 수 있으며, 권한그룹을 추가·수정·삭제할 수 있습니다. 또한 관리자 정보를 수정·삭제하고, 권한 범위 및 상태값을 변경할 수 있습니다.',
+  'unit.worshipAttendance.write.title': '예배 출결 처리',
+  'unit.worshipAttendance.write.description':
+    '예배 출석부를 열람할 수 있습니다.',
+  'unit.worshipAttendance.read.title': '예배 출결 열람',
+  'unit.worshipAttendance.read.description':
+    '예배 출석부를 작성, 수정할 수 있습니다.',
 
   /*-------------------title (popup title)-------------------*/
   'title.memberRegister': '교인 등록',
@@ -420,7 +424,7 @@ export default {
   'title.addChurchEvent': '이벤트 추가',
   'title.editChurchEvent': '이벤트 수정',
 
-  'title.attendanceInformation': '보고서',
+  'title.attendanceInformation': '출석부',
 
   'title.editGroupInformation': '그룹정보 수정',
   'title.editMinistryGroupInformation': '사역정보 수정',
@@ -617,11 +621,11 @@ export default {
   'button.linkMemberInformation': '교인정보 연결하기',
   'button.unlinkMemberInformation': '교인정보 연결끊기',
   'button.changeLinkedMember': '연결 교인 변경',
-  'button.addWorshipSession': '출석내용 입력하기',
-  'button.addWorship': '예배 추가하기',
-  'button.addWorshipInformation': '예배내용 입력하기',
+  'button.addWorshipSession': '출석내용 입력',
+  'button.addWorship': '예배 추가',
+  'button.addWorshipInformation': '예배내용 입력',
   'button.check': '조회',
-  'button.addChurchEvent': '이벤트 추가하기',
+  'button.addChurchEvent': '이벤트 추가',
   'button.today': '오늘',
   'button.mySchedule': '내 일정만',
   'button.editChurch': '정보 수정',

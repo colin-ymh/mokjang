@@ -246,6 +246,16 @@ const Dropdown = forwardRef<HTMLInputElement, DropdownProps>((props, ref) => {
     return () => window.removeEventListener('keydown', listener);
   }, [isOpened, onKeyDownHandler, isCustomMode]);
 
+  useEffect(() => {
+    if (!value || items.length === 0) return;
+
+    const foundIndex = items.findIndex((item) => item.value === value);
+    if (foundIndex !== -1) {
+      setFocusedIndex(foundIndex);
+      focusedIndexRef.current = foundIndex; // 키보드 내비게이션과 동기화
+    }
+  }, [value, items]);
+
   // 뷰에 내려줄 props
   const viewProps = {
     ref: inputRef,

@@ -2,11 +2,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 import MemberFilterView from './member-filter.view';
 import { setMemberFilter } from '@/redux/reducers/filter/member-filter-reducer';
-import {
-  getAge,
-  getDateFromDateString,
-  getDateStringFromDate,
-} from '@mokjang/utils';
+import { getAge, getDateFromDateString, getDateStringFromDate, } from '@mokjang/utils';
 import { useEffect, useState } from 'react';
 import { BAPTISM, BLANK, MARRIAGE } from '@mokjang/constants';
 
@@ -118,8 +114,12 @@ const MemberFilter = ({}: MemberFilterProps) => {
 
   useEffect(() => {
     setAgeRange([
-      getAge(getDateFromDateString(memberFilter.birthTo)),
-      getAge(getDateFromDateString(memberFilter.birthFrom)),
+      memberFilter.birthTo
+        ? getAge(getDateFromDateString(memberFilter.birthTo))
+        : 1,
+      memberFilter.birthFrom
+        ? getAge(getDateFromDateString(memberFilter.birthFrom))
+        : 100,
     ]);
   }, [memberFilter.birthFrom, memberFilter.birthTo]);
 

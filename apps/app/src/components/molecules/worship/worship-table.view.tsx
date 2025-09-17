@@ -3,15 +3,13 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../redux/store';
 
-import { DAY, GRAY, REPEAT_PERIOD, SIZE, WHITE, WORSHIP, } from '@mokjang/constants';
-import { Button, MainTag, MainText, SvgIcon } from '@mokjang/components';
+import { DAY, GRAY, MAIN, REPEAT_PERIOD, SIZE, WHITE, WORSHIP, } from '@mokjang/constants';
+import { Button, MainText } from '@mokjang/components';
 import { Worship } from '@mokjang/models';
 import useWindowSize from '../../../hooks/window/window';
-import { useI18n } from '../../../../locales/client';
+import { useI18n, useScopedI18n } from '../../../../locales/client';
 import WorshipTableHeader from '../../atoms/worship/worship-table-header';
 import { getDayConstantByIndex, getWeekRepeatConstant } from '@mokjang/utils';
-
-import { Svg } from '@mokjang/assets';
 import EmptyList from '@/components/atoms/common/image/empty-list';
 
 // 2. 테이블 컨테이너 (100% 폭 + 스크롤)
@@ -74,7 +72,7 @@ const TableHeader = styled.th<{
 const WorshipTableRow = styled.tr`
   border-bottom: 1px solid ${GRAY.LIGHT};
   &:hover td {
-    background-color: ${GRAY.LIGHT};
+    background-color: ${GRAY.SUPER_LIGHT};
   }
 `;
 
@@ -143,6 +141,7 @@ const WorshipTableView = ({
   onClickWorshipItem,
 }: WorshipTableProps) => {
   const t = useI18n();
+  const t_button = useScopedI18n('button');
 
   const { height } = useWindowSize();
 
@@ -177,7 +176,7 @@ const WorshipTableView = ({
       case WORSHIP.WORSHIP_DAY:
         return (
           <DataContainer>
-            <SvgIcon svg={Svg.Calendar} />
+            {/*<SvgIcon svg={Svg.Calendar} />*/}
             <MainText>
               {`${t(getWeekRepeatConstant(worship.repeatPeriod) as REPEAT_PERIOD)} ${t(getDayConstantByIndex(worship.worshipDay) as DAY)}`}
             </MainText>
@@ -187,13 +186,11 @@ const WorshipTableView = ({
       case WORSHIP.GROUP:
         return (
           <DataContainer>
-            <MainTag
-              title={
-                worship.worshipTargetGroups.length === 0
-                  ? t('all')
-                  : worship.worshipTargetGroups[0]?.group.name
-              }
-            />
+            <MainText>
+              {worship.worshipTargetGroups.length === 0
+                ? t('all')
+                : worship.worshipTargetGroups[0]?.group.name}
+            </MainText>
           </DataContainer>
         );
 
@@ -201,13 +198,15 @@ const WorshipTableView = ({
         return (
           <AttendanceContainer>
             <Button
-              text={t('button.goToAttendance')}
               width={'auto'}
+              text={t_button('edit')}
+              borderColor={MAIN.LIGHT}
+              backgroundColor={WHITE}
+              color={MAIN.DEFAULT}
               height={30}
-              icon={<SvgIcon svg={Svg.Users} color={WHITE} width={2} />}
               onClick={(event) => {
                 event?.stopPropagation();
-                onClickWorshipItem(worship);
+                onClickEditWorship(worship);
               }}
             />
           </AttendanceContainer>
@@ -246,7 +245,7 @@ const WorshipTableView = ({
             {worships.map((worship, rowIndex) => (
               <WorshipTableRow
                 key={worship.id}
-                onClick={() => onClickEditWorship(worship)}
+                onClick={() => onClickWorshipItem(worship)}
               >
                 {visibleColumns.map((item, index) => (
                   <TableData
