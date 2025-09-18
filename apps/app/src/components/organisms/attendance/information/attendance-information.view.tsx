@@ -9,7 +9,15 @@ import { Button, CustomPopup, MainText, SvgIcon } from '@mokjang/components';
 import SelectGroupHierarchy from '../../group/select-group-hierarchy';
 import WeekNavigator from '../../../atoms/common/date/week-navigator';
 import { getDateFromDateString, getDateStringFromDate } from '@mokjang/utils';
-import { CURSOR, GRAY, GREEN, RED, SIZE, WHITE } from '@mokjang/constants';
+import {
+  BLANK,
+  CURSOR,
+  GRAY,
+  GREEN,
+  RED,
+  SIZE,
+  WHITE,
+} from '@mokjang/constants';
 import AttendanceInformationTable from '../../../molecules/attendance/information/attendance-information-table';
 import WorshipSessionInformation from '../../../molecules/attendance/information/worship-session-information';
 import LabelDropdown from '../../../atoms/common/dropdown/label-dropdown';
@@ -159,7 +167,13 @@ const AttendanceInformation = ({
                 {t('group')}
               </MainText>
               <FakeDropdownButton
-                title={targetWorshipSessionGroup.name || t('all')}
+                title={
+                  targetWorshipSessionGroup.id === null
+                    ? t('none')
+                    : targetWorshipSessionGroup.id === BLANK
+                      ? t('all')
+                      : targetWorshipSessionGroup.name
+                }
                 isOpened={isGroupModalShown}
                 onClick={onClickOpenGroupModal}
                 height={40}
@@ -280,6 +294,8 @@ const AttendanceInformation = ({
           <SelectGroupHierarchy
             onChange={onClickGroupItem}
             topLevelGroupId={topLevelGroup.id}
+            isNullable={true}
+            prevSelectedGroupId={targetWorshipSessionGroup.id}
           />
         </GroupContainer>
       </CustomPopup>

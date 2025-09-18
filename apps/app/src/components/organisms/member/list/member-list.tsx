@@ -12,7 +12,7 @@ import MemberListView from './member-list.view';
 import { DEFAULT_MEMBER } from '@mokjang/models';
 import { setTargetMember } from '@/redux/reducers/target/target-member-reducer';
 import { uploadFilesToSupabase } from '@/utils/upload';
-import { BLANK, CONCEALED, DESTRUCTIVE } from '@mokjang/constants';
+import { BLACK, BLANK, CONCEALED, DESTRUCTIVE } from '@mokjang/constants';
 import { getDateFromDateString, getDateStringFromDate } from '@mokjang/utils';
 import {
   setIsToastShown,
@@ -67,13 +67,22 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
   const [isEditShown, setIsEditShown] = useState<boolean>(false);
 
   // 임시 프로필 이미지
-  const [profileImage, setProfileImage] = useState<File | null>(null);
+  const [profileImage, setProfileImage] = useState<File | null | undefined>(
+    null
+  );
 
-  const onChangeProfileImage = (image: File | null) => {
+  const onChangeProfileImage = (
+    image: File | null | undefined,
+    thumb?: string
+  ) => {
     setProfileImage(image);
 
-    if (image === null) {
+    if (!image) {
       dispatch(setTargetMember({ ...targetMember, profileImageUrl: BLANK }));
+    }
+
+    if (thumb) {
+      dispatch(setTargetMember({ ...targetMember, profileImageUrl: thumb }));
     }
   };
 
@@ -178,22 +187,27 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
   };
 
   const onClickEditDone = async () => {
+    dispatch(setToastBackgroundColor(BLACK));
+    dispatch(setToastText(t_popup('saveComplete')));
+    dispatch(setIsToastShown(true));
+    setIsEditShown(false);
+
     try {
       let updatedMember = { ...targetMember };
+
+      // 프로필 이미지를 불러왔음
       if (profileImage) {
         const uploadedUrls = await uploadFilesToSupabase([profileImage], {
           bucket: 'profile',
-          prefix: `church/${churchId}/member/${targetMember.id}`,
+          prefix: `church/${churchId}/member`,
         });
         const uploadedUrl = uploadedUrls[0];
         if (uploadedUrl) {
           updatedMember = { ...targetMember, profileImageUrl: uploadedUrl };
           dispatch(setTargetMember(updatedMember));
         }
-      } else if (profileImage === null) {
-        updatedMember = { ...targetMember, profileImageUrl: BLANK };
-        dispatch(setTargetMember(updatedMember));
 
+        // 기존에 다른 프로필 이미지가 있었다면, 삭제
         const prevImageUrl = members.find(
           (member) => member.id === targetMember.id
         )?.profileImageUrl;
@@ -201,6 +215,24 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
         if (prevImageUrl) {
           deleteFilesFromSupabase([prevImageUrl]);
         }
+      }
+      // 프로필 이미지 삭제
+      else if (profileImage === undefined) {
+        updatedMember = { ...targetMember, profileImageUrl: BLANK };
+        dispatch(setTargetMember(updatedMember));
+
+        // 이전 프로필 이미지 확인 후 삭제
+        const prevImageUrl = members.find(
+          (member) => member.id === targetMember.id
+        )?.profileImageUrl;
+
+        if (prevImageUrl) {
+          deleteFilesFromSupabase([prevImageUrl]);
+        }
+      }
+      // 프로필 이미지 변화 없음
+      else if (profileImage === null) {
+        updatedMember = { ...targetMember, profileImageUrl: BLANK };
       }
 
       await membersApi
@@ -210,7 +242,11 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
             name: updatedMember.name || undefined,
             mobilePhone:
               updatedMember.mobilePhone?.replace(/\D/g, '') || undefined,
-            profileImageUrl: updatedMember.profileImageUrl || BLANK,
+            profileImageUrl: updatedMember.profileImageUrl
+              ? updatedMember.profileImageUrl
+              : profileImage === undefined
+                ? BLANK
+                : undefined,
             birth:
               getDateStringFromDate(
                 getDateFromDateString(updatedMember.birth)
@@ -236,13 +272,11 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
           const newMember = response.data.data;
           dispatch(setTargetMember(newMember));
           dispatch(fetchMembers());
-          setIsEditShown(false);
+
+          setProfileImage(null);
         });
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));
-    } finally {
-      dispatch(setIsToastShown(true));
-      dispatch(setToastText(t_popup('saveComplete')));
     }
   };
 

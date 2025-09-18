@@ -242,7 +242,7 @@ const DatePickerPortalStyles = createGlobalStyle`
     border-radius: 10px;
 
     /* 테두리는 box-shadow inset으로 깔끔하게 (border보다 레이아웃 안전) */
-    box-shadow: inset 0 0 0 1px ${GRAY.DEFAULT}; /* 원하는 색/두께로 */
+    box-shadow: inset 0 0 0 2px ${GRAY.DEFAULT}; /* 원하는 색/두께로 */
   }
 
   

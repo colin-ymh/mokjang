@@ -22,7 +22,7 @@ import MemberProfile from '../../atoms/member/member-profile';
 import { usePathname } from 'next/navigation';
 import {
   getTranslatedAndOthers,
-  getTranslatedDateFromDateString,
+  getTranslatedStartEndDate,
 } from '@mokjang/utils';
 import EmptyList from '@/components/atoms/common/image/empty-list';
 
@@ -228,10 +228,11 @@ const VisitationTableView = ({
       case VISITATION.DATE:
         return (
           <MainText>
-            {`${
-              visitation.startDate &&
-              getTranslatedDateFromDateString(locale, visitation.startDate)
-            } - ${visitation.endDate && getTranslatedDateFromDateString(locale, visitation.endDate)}`}
+            {getTranslatedStartEndDate(
+              locale,
+              visitation.startDate,
+              visitation.endDate
+            )}
           </MainText>
         );
       case VISITATION.IN_CHARGE:

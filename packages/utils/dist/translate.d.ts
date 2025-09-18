@@ -76,6 +76,8 @@ export declare const getTranslatedAlreadyMinistryGroupLeader: (locale: LOCALE, n
  */
 export declare const getTranslateWorshipAttendanceWidgetDescription: (locale: LOCALE, rangeTitle: string) => string;
 export declare const getTranslatedDateFromDateString: (basePath: LOCALE, date: string) => string;
+export declare const getTranslatedStartEndDate: (basePath: LOCALE, startDate?: string, endDate?: string) => string;
+export declare const getTranslatedMMDDDateFromDateString: (basePath: LOCALE, date: string) => string;
 /**
  *
  * @param locale
@@ -109,6 +111,12 @@ export declare const getTranslatedCompletedEnrollmentStatus: (locale: LOCALE, co
  * @param totalSessions
  */
 export declare const getTranslatedMemberAttendanceCount: (locale: LOCALE, presentCount: number, totalSessions: number) => string;
+/**
+ *
+ * @param locale
+ * @param unknownCount
+ */
+export declare const getTranslatedUnknownAttendanceCount: (locale: LOCALE, unknownCount: number) => string;
 export declare const getTranslatedSummaryCount: (basePath: LOCALE, summary: number) => string;
 /**
  * ISO 문자열과 현재 시간의 차이를 간단한 "n분 전" / "n hours ago" 형태로 반환.

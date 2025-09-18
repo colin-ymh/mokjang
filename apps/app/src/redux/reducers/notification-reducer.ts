@@ -7,6 +7,7 @@ import { BLANK } from '@mokjang/constants';
 type NotificationState = {
   notifications: Notification[];
   notificationUnreadCount: number;
+  unread: boolean;
   // ✅ 커서/페이지네이션·요청 상태
   notificationCursor: string | null;
   hasMore: boolean;
@@ -17,6 +18,7 @@ type NotificationState = {
 const initialState: NotificationState = {
   notifications: [],
   notificationUnreadCount: 0,
+  unread: false,
   notificationCursor: null, // ✅ null이면 첫 페이지
   hasMore: true,
   loading: false,
@@ -52,13 +54,14 @@ export const fetchNotifications = createAsyncThunk<
   { state: RootState; rejectValue: string }
 >('notification/fetchNotifications', async (_, thunkAPI) => {
   const { getState, rejectWithValue } = thunkAPI;
-  const { notificationCursor } = getState().notification;
+  const { unread, notificationCursor } = getState().notification;
 
   try {
     const api = new NotificationApi();
     const response = await api.getNotifications({
       cursor: notificationCursor ?? undefined, // undefined면 첫 페이지로 해석
       limit: 30,
+      unread,
     });
 
     const data = response.data;
@@ -76,6 +79,9 @@ const NotificationSlice = createSlice({
   name: 'notification',
   initialState,
   reducers: {
+    setUnread(state, action: PayloadAction<boolean>) {
+      state.unread = action.payload;
+    },
     setNotifications(state, action: PayloadAction<Notification[]>) {
       state.notifications = action.payload;
     },
@@ -131,7 +137,11 @@ const NotificationSlice = createSlice({
   },
 });
 
-export const { setNotifications, setNotificationCount, resetNotifications } =
-  NotificationSlice.actions;
+export const {
+  setUnread,
+  setNotifications,
+  setNotificationCount,
+  resetNotifications,
+} = NotificationSlice.actions;
 
 export default NotificationSlice.reducer;

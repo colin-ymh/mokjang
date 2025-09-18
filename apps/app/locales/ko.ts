@@ -70,8 +70,8 @@ export default {
   groupCount: '그룹 수',
   ministryGroupCount: '사역팀 수',
 
-  newMember: '신규 등록자',
-  weekNewMemberState: '최근 4주간 등록 현황',
+  newMember: '신규 등록 교인',
+  lastOneMonth: '최근 한 달',
 
   church: '교회',
   churchName: '교회명',
@@ -108,6 +108,7 @@ export default {
   attendanceRate: '출석률',
   note: '특이사항',
 
+  lordDay: '주일',
   sunday: '일요일',
   monday: '월요일',
   tuesday: '화요일',
@@ -127,7 +128,7 @@ export default {
   worship: '예배',
   description: '설명',
 
-  concealed: '권한 없음',
+  CONCEALED: '권한 없음',
 
   management: '교회 설정',
 
@@ -431,7 +432,7 @@ export default {
   'title.editOfficerInformation': '직분정보 수정',
   'title.addWidget': '위젯 추가',
 
-  'title.newMember': '신규 등록자 요약',
+  'title.newMember': '신규 등록 교인 요약',
   'title.worshipAttendance': '출석률 기반 교인 관리',
   'title.mySchedule': '내가 담당한 일정',
   'title.reportedSchedule': '보고받은 일정',
@@ -458,9 +459,9 @@ export default {
 
   /*-------------------header (side bar button)-------------------*/
   'header.home': '홈',
-  'header.member': '교인목록',
+  'header.member': '교인',
   'header.attendance': '예배출석',
-  'header.worship': '예배목록',
+  'header.worship': '예배',
   'header.visitation': '심방',
   'header.education': '교육',
   'header.task': '업무',
@@ -718,7 +719,7 @@ export default {
   'placeholder.visitationContent': '심방 내용을 입력해주세요.',
   'placeholder.visitationPray': '기도 제목을 입력해주세요.',
   'placeholder.content': '내용을 입력해주세요.',
-  'placeholder.selectStatus': '진행 상태',
+  'placeholder.selectStatus': '전체',
   'placeholder.worshipTitle': '예배명을 입력해주세요.',
   'placeholder.worshipDescription': '예배 내용을 입력해주세요.',
 
@@ -818,6 +819,8 @@ export default {
   'popup.deleteChurchEventTitle': '해당 이벤트를 삭제하시겠습니까?',
   'popup.deleteChurchEventBody': '삭제된 이벤트는 복구할 수 없습니다.',
 
+  'popup.imageSize': '이미지 용량은 최대 5MB까지 업로드할 수 있습니다',
+
   /*-------------------popup-------------------*/
 
   /*-------------------warning-------------------*/
@@ -857,8 +860,12 @@ export default {
   'description.defaultMinistry':
     '모든 교인에게 동일한 사역이 부여됩니다. 추후 별도로 수정할 수 있습니다.',
   'description.addMember': '해당 그룹에 이미 속한 교인은 선택할 수 없습니다.',
+  'description.addOfficer':
+    '해당 직분이 이미 할당된 교인은 선택할 수 없습니다.',
   'description.addMinistryMember':
     '해당 사역에 이미 속한 교인은 선택할 수 없습니다.',
+  'description.addEnrollment':
+    '해당 기수에 이미 속한 교인은 선택할 수 없습니다.',
   'description.editGroupLeader': '새로운 그룹장을 선택하세요',
   'description.editMinistryGroupLeader': '새로운 사역팀장를 선택하세요',
   'description.tableHeaderSetting': '드래그하여 순서를 변경하세요',

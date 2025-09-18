@@ -71,7 +71,7 @@ const TableContainer = styled.div<{ height: number }>`
   background-color: ${WHITE};
   // /* 세로 높이만큼 상하 스크롤 */
   //min-height: 500px;
-  max-height: ${({ height }) => `${height - 280}px`};
+  height: ${({ height }) => `${height - 280}px`};
 
   /* 오버플로 시 스크롤 */
   overflow-x: auto;
@@ -97,7 +97,7 @@ const TableHeader = styled.th<{ id: string; $isLast?: boolean }>`
   padding: 20px;
   position: sticky;
   top: 0;
-  z-index: 100;
+  z-index: 30;
   background-color: ${WHITE};
 
   /* 만약 마지막 컬럼이면 width: auto */

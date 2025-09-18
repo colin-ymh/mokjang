@@ -37,7 +37,7 @@ export type DropdownProps<
 
   // 스타일
   borderColor?: string;
-  width?: number;
+  width?: number | 'auto';
   height?: number;
   backgroundColor?: string;
   chevronColor?: string;
@@ -283,11 +283,11 @@ const Dropdown = forwardRef<HTMLInputElement, DropdownProps>((props, ref) => {
     fontWeight,
     isRight,
     CustomDropdownButton,
+    listHeight,
     ...inputProps,
     onClickDropdown: toggleDropdown,
     onClickItem: handleClickItem,
     onChangeInput: handleChangeInput,
-    listHeight,
     onKeyDownHandler,
   };
 

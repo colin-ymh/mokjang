@@ -7,6 +7,7 @@ import { RootState } from '@/redux/store';
 import {
   BAPTISM,
   BLANK,
+  CONCEALED,
   GENDER,
   GRAY,
   GROUP_ROLE,
@@ -250,7 +251,9 @@ const MemberTableView = ({
       case MEMBER.MOBILE_PHONE:
         return (
           <MainText>
-            {member?.mobilePhone && getFormattedPhone(member.mobilePhone)}
+            {member?.mobilePhone === CONCEALED
+              ? t(CONCEALED)
+              : getFormattedPhone(member.mobilePhone)}
           </MainText>
         );
       case MEMBER.GENDER:
@@ -288,11 +291,25 @@ const MemberTableView = ({
       //     </MainText>
       //   );
       case MEMBER.ADDRESS:
-        return <MainText>{member.address}</MainText>;
+        return (
+          <MainText>
+            {member.address === CONCEALED ? t(CONCEALED) : member.address}
+          </MainText>
+        );
       case MEMBER.OCCUPATION:
-        return <MainText>{member.occupation}</MainText>;
+        return (
+          <MainText>
+            {member.occupation === CONCEALED ? t(CONCEALED) : member.occupation}
+          </MainText>
+        );
       case MEMBER.SCHOOL:
-        return <MainText>{member.school}</MainText>;
+        return (
+          <MainText>
+            {member.school === CONCEALED ? t(CONCEALED) : member.school}
+          </MainText>
+        );
+      case MEMBER.MARRIAGE:
+        return <MainText>{member.marriage && t(member.marriage)}</MainText>;
       case MEMBER.REGISTERED_AT:
         return (
           <MainText>

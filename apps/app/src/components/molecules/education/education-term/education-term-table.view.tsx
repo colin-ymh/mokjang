@@ -4,26 +4,31 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
 
 import { Svg } from '@mokjang/assets';
-import { GRAY, GREEN, MAIN, ORANGE, WHITE } from '@mokjang/constants';
+import {
+  EDUCATION,
+  EDUCATION_TERM,
+  GRAY,
+  GREEN,
+  LOCALE,
+  MAIN,
+  ORANGE,
+  SIZE,
+  WHITE,
+} from '@mokjang/constants';
 import { Education, EducationSession, EducationTerm } from '@mokjang/models';
-import { EDUCATION, EDUCATION_TERM } from '@mokjang/constants';
 import EducationTermTableHeader from '../../../atoms/education/education-term/education-term-table-header';
 
-import { SvgIcon } from '@mokjang/components';
-import { getDateFromDateString, getDateStringFromDate } from '@mokjang/utils';
-import { MainTag } from '@mokjang/components';
+import { MainTag, MainText, SvgIcon } from '@mokjang/components';
+import {
+  getTranslatedCompletedEnrollmentStatus,
+  getTranslatedStartEndDate,
+  getTranslatedTerm,
+} from '@mokjang/utils';
 import {
   getStatusBackgroundColor,
   getStatusFontColor,
 } from '../../../../utils/color';
-import { MainText } from '@mokjang/components';
-import {
-  getTranslatedCompletedEnrollmentStatus,
-  getTranslatedTerm,
-} from '@mokjang/utils';
 import { usePathname } from 'next/navigation';
-import { LOCALE } from '@mokjang/constants';
-import { SIZE } from '@mokjang/constants';
 import { useI18n } from '../../../../../locales/client';
 
 // 1. 컬럼별 PX 폭 (마지막 REMARKS만 auto 할 예정)
@@ -230,7 +235,11 @@ const EducationTermTableView = ({
             <TitleContainer>
               <MainText>{`${getTranslatedTerm(locale, educationTerm.term)}`}</MainText>
               <MainText size={SIZE.SMALL} color={GRAY.SEMI_DARK}>
-                {`${getDateStringFromDate(getDateFromDateString(educationTerm.startDate))} - ${getDateStringFromDate(getDateFromDateString(educationTerm.endDate))}`}
+                {getTranslatedStartEndDate(
+                  locale,
+                  educationTerm.startDate,
+                  educationTerm.endDate
+                )}
               </MainText>
             </TitleContainer>
           </EducationNameContainer>
@@ -276,7 +285,11 @@ const EducationTermTableView = ({
             <TitleContainer>
               <MainText>{`${session.session}${t('session')} ${session.title}`}</MainText>
               <MainText size={SIZE.SMALL} color={GRAY.SEMI_DARK}>
-                {`${getDateStringFromDate(getDateFromDateString(session.startDate))} - ${getDateStringFromDate(getDateFromDateString(session.endDate))}`}
+                {getTranslatedStartEndDate(
+                  locale,
+                  session.startDate,
+                  session.endDate
+                )}
               </MainText>
             </TitleContainer>
           </EducationNameContainer>

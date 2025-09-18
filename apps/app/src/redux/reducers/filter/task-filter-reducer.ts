@@ -54,6 +54,35 @@ export type TASK_TABLE_HEADER_ITEM = {
   isDate?: boolean;
 };
 
+/* -------------------- LocalStorage Persist -------------------- */
+const STORAGE_KEY = 'taskFilterState';
+
+// 저장된 상태 불러오기
+function loadPersistedState(): Partial<TaskFilterState> {
+  if (typeof window === 'undefined') return {};
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return {};
+    return JSON.parse(raw) as Partial<TaskFilterState>;
+  } catch {
+    return {};
+  }
+}
+
+// 필요한 상태만 저장
+function savePersistedState(state: TaskFilterState) {
+  if (typeof window === 'undefined') return;
+  const toSave = {
+    taskFilter: state.taskFilter,
+    taskOrderBy: state.taskOrderBy,
+    taskOrderDirection: state.taskOrderDirection,
+    taskTableHeaderItemList: state.taskTableHeaderItemList,
+  };
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(toSave));
+}
+
+const persisted = loadPersistedState();
+
 export const INITIAL_TASK_TABLE_HEADER_LIST: TASK_TABLE_HEADER_ITEM[] = [
   {
     id: TASK.TITLE,
@@ -91,9 +120,10 @@ export const INITIAL_TASK_TABLE_HEADER_LIST: TASK_TABLE_HEADER_ITEM[] = [
 
 const initialState: TaskFilterState = {
   tasks: [],
-  taskFilter: INITIAL_TASK_FILTER,
-  taskOrderDirection: ORDER_DIRECTION.ASC,
-  taskTableHeaderItemList: INITIAL_TASK_TABLE_HEADER_LIST,
+  taskFilter: persisted.taskFilter ?? INITIAL_TASK_FILTER,
+  taskOrderDirection: persisted.taskOrderDirection ?? ORDER_DIRECTION.ASC,
+  taskTableHeaderItemList:
+    persisted.taskTableHeaderItemList ?? INITIAL_TASK_TABLE_HEADER_LIST,
   taskPage: 1,
 };
 
@@ -189,18 +219,22 @@ const TaskFilterSlice = createSlice({
     },
     setTaskFilter: (state, action: PayloadAction<TASK_FILTER>) => {
       state.taskFilter = action.payload;
+      savePersistedState(state);
     },
     setTaskOrderBy(state, action: PayloadAction<TASK>) {
       state.taskOrderBy = action.payload;
+      savePersistedState(state);
     },
     setTaskOrderDirection(state, action: PayloadAction<ORDER_DIRECTION>) {
       state.taskOrderDirection = action.payload;
+      savePersistedState(state);
     },
     setTaskTableHeaderItemList(
       state,
       action: PayloadAction<TASK_TABLE_HEADER_ITEM[]>
     ) {
       state.taskTableHeaderItemList = action.payload;
+      savePersistedState(state);
     },
     setTaskPage: (state, action: PayloadAction<number>) => {
       state.taskPage = action.payload;

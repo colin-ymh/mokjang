@@ -3,12 +3,20 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 
 import { useScopedI18n } from '../../../../../../locales/client';
-import { setIsToastShown, setToastBackgroundColor, setToastText, } from '@/redux/reducers/toast-popup-reducer';
+import {
+  setIsToastShown,
+  setToastBackgroundColor,
+  setToastText,
+} from '@/redux/reducers/toast-popup-reducer';
 import { BLACK, BLANK, DESTRUCTIVE, TASK_STATUS } from '@mokjang/constants';
 import { DEFAULT_VISITATION, Visitation } from '@mokjang/models';
 import { VisitationsApi } from '@/api/visitations/visitations.api';
 import MemberVisitationListView from './member-visitation-list.view';
-import { getDateFromDateString, getFullStringFromDate, getIsWellFormedTitle, } from '@mokjang/utils';
+import {
+  getDateFromDateString,
+  getFullStringFromDate,
+  getIsWellFormedTitle,
+} from '@mokjang/utils';
 import { setTargetVisitation } from '@/redux/reducers/target/target-visitation-reducer';
 
 type MemberVisitationListProps = {};

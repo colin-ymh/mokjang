@@ -17,12 +17,14 @@ import DefaultDropdownButton from './default-dropdown-button';
 const DropdownContainer = styled.div<{
   $isOpened: boolean;
   $isTransitionDone: boolean;
-  width?: number;
+  width?: number | 'auto';
 }>`
   position: relative;
   z-index: ${({ $isTransitionDone }) => ($isTransitionDone ? 50 : 'auto')};
-  width: ${({ width }) => (width ? `${width}px` : `100%`)};
+  width: ${({ width }) =>
+    width === 'auto' ? 'auto ' : width ? `${width}px` : `100%`};
 `;
+
 const DropdownList = styled.div<{
   $isOpened: boolean;
   $reverseDirection?: boolean;

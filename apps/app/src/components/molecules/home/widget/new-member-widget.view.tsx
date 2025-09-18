@@ -26,7 +26,8 @@ const WidgetHeader = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  gap: 20px;
+  height: 40px;
+  flex-shrink: 0;
 `;
 
 const BodyContainer = styled.div`
@@ -47,6 +48,7 @@ const StateContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
+  padding-top: 20px;
   flex-grow: 1;
 `;
 
@@ -126,7 +128,7 @@ const NewMemberWidgetView = ({
           {/* 총합 */}
           <RowContainer>
             <MainText color={GRAY.SEMI_DARK}>
-              {`${t('thisMonth')} ${t('newMember')}`}
+              {`${t('lastOneMonth')} ${t('newMember')}`}
             </MainText>
             <MainText color={MAIN.DEFAULT} fontSize={22} fontWeight={600}>
               {getTranslatedMemberCount(locale, totalCount)}
@@ -134,7 +136,6 @@ const NewMemberWidgetView = ({
           </RowContainer>
           {/* 주간 통계 */}
           <StateContainer>
-            <MainText color={GRAY.DARK}>{t('weekNewMemberState')}</MainText>
             {/* 주 단위 상태바 */}
             <WeekList>
               {memberSummaries.map((summary, index) => (

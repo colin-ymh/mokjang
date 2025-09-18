@@ -9,7 +9,6 @@ import {
   STATUS_COLOR,
   STATUS_FONT_COLOR,
   WHITE,
-  YELLOW,
 } from '@mokjang/constants';
 import { DOMAIN, Schedule } from '@mokjang/models';
 
@@ -120,26 +119,6 @@ export const getEventStyle = (event: Schedule) => {
   };
 };
 
-export const getEducationAttendanceRateColor = (rate: number) => {
-  if (rate <= 30) {
-    return RED.DARK;
-  } else if (rate <= 40) {
-    return ORANGE.DEFAULT;
-  } else {
-    return YELLOW.DARK;
-  }
-};
-
-export const getEducationAttendanceRateBackgroundColor = (rate: number) => {
-  if (rate <= 30) {
-    return RED.LIGHT;
-  } else if (rate <= 40) {
-    return ORANGE.EXTRA_LIGHT;
-  } else {
-    return YELLOW.LIGHT;
-  }
-};
-
 export const getWorshipAttendanceRateColor = (rate: number) => {
   if (rate <= 50) {
     return RED.DEFAULT;
@@ -147,5 +126,15 @@ export const getWorshipAttendanceRateColor = (rate: number) => {
     return ORANGE.DEFAULT;
   } else {
     return GREEN.DEFAULT;
+  }
+};
+
+export const getWorshipAttendanceRateBackgroundColor = (rate: number) => {
+  if (rate <= 50) {
+    return RED.LIGHT;
+  } else if (rate <= 80) {
+    return ORANGE.LIGHT;
+  } else {
+    return GREEN.LIGHT;
   }
 };

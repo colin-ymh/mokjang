@@ -21,20 +21,23 @@ import { getTranslatedSummaryCount } from '@mokjang/utils';
 import { getTotalScheduleCount } from '../../../../utils/summary';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
+import { getStatusColor } from '@/utils/color';
 
 const WidgetContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
   height: 100%;
-  gap: 20px;
+  gap: 10px;
 `;
 
 const WidgetHeader = styled.div`
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: space-between;
   gap: 20px;
+  height: 40px;
+  flex-shrink: 0;
 `;
 
 const BodyContainer = styled.div`
@@ -74,11 +77,11 @@ const WeekBar = styled.div`
   position: relative;
 `;
 
-const CountBar = styled.div<{ $count: number; max: number }>`
+const CountBar = styled.div<{ $count: number; max: number; color: string }>`
   width: ${({ $count, max }) => (max ? ($count / max) * 100 : 0)}%;
   border-radius: 5px;
   height: 7px;
-  background-color: ${MAIN.DEFAULT};
+  background-color: ${({ color }) => color};
   position: absolute;
   left: 0;
   transition: width 0.2s ease-in-out;
@@ -137,19 +140,20 @@ const MyReportedScheduleWidgetView = ({
           <MainText size={SIZE.EXTRA_LARGE}>
             {t_title(HOME_WIDGET.MY_SCHEDULE_SUMMARY)}
           </MainText>
-        </WidgetHeader>
-        <RowContainer>
           <ToggleRadioButton
             selectedValue={myRange}
             onChange={onClickRange}
             items={rangeRadioItems}
-            columnPadding={6}
+            columnPadding={4}
           />
+        </WidgetHeader>
+        <RowContainer>
+          <div />
           <Dropdown
             value={domain}
             items={domainDropdownItems}
             onChangeItem={onChangeDomain}
-            width={150}
+            width={100}
             height={35}
           />
         </RowContainer>
@@ -197,6 +201,7 @@ const MyReportedScheduleWidgetView = ({
                   <CountBar
                     $count={scheduleSummary[status as keyof ScheduleSummary]}
                     max={getTotalScheduleCount(scheduleSummary)}
+                    color={getStatusColor(status as STATUS)}
                   />
                 </WeekBar>
               </WeekContainer>

@@ -133,9 +133,14 @@ const Header = ({}: HeaderProps) => {
     router.push('/login');
   };
   const onClickContact = () => {
-    router.push('/contact');
+    // router.push('/contact');
+    //   https://forms.gle/ABc2SPpYkdpAn5k96 로 이동
+    window.open(
+      'https://forms.gle/ABc2SPpYkdpAn5k96',
+      '_blank',
+      'noopener,noreferrer'
+    );
   };
-
   const onClickFreeTrial = async () => {
     try {
       await subscriptionApi.getFreeTrial();

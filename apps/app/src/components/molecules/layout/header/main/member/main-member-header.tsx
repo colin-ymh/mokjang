@@ -11,7 +11,12 @@ import { setTargetMember } from '@/redux/reducers/target/target-member-reducer';
 import { uploadFilesToSupabase } from '@/utils/upload';
 import { MembersApi } from '@/api/members/members.api';
 import { BLACK, CONCEALED, DESTRUCTIVE } from '@mokjang/constants';
-import { setIsToastShown, setToastBackgroundColor, setToastText, } from '@/redux/reducers/toast-popup-reducer';
+import {
+  setIsToastShown,
+  setToastBackgroundColor,
+  setToastText,
+} from '@/redux/reducers/toast-popup-reducer';
+import { Loading } from '@mokjang/components';
 
 type MainMemberHeaderProps = {};
 
@@ -27,6 +32,8 @@ const MainMemberHeader = ({}: MainMemberHeaderProps) => {
     (state: RootState) => state.targetMember
   );
 
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   // 교인 등록하기 on/off
   const [isRegisterShown, setIsRegisterShown] = useState<boolean>(false);
 
@@ -34,7 +41,9 @@ const MainMemberHeader = ({}: MainMemberHeaderProps) => {
   const [isModalOpened, setIsModalOpened] = useState<boolean>(false);
 
   // 임시 프로필 이미지
-  const [profileImage, setProfileImage] = useState<File | null>(null);
+  const [profileImage, setProfileImage] = useState<File | null | undefined>(
+    null
+  );
 
   const [thrownError, setThrownError] = useState<Error | null>(null);
   // 렌더링 시점(컴포넌트 return)에서 조건부로 에러 발생
@@ -42,7 +51,7 @@ const MainMemberHeader = ({}: MainMemberHeaderProps) => {
     throw thrownError;
   }
 
-  const onChangeProfileImage = (image: File | null) => {
+  const onChangeProfileImage = (image: File | null | undefined) => {
     setProfileImage(image);
   };
 
@@ -89,12 +98,13 @@ const MainMemberHeader = ({}: MainMemberHeaderProps) => {
   };
 
   const onClickSave = async () => {
+    setIsLoading(true);
     try {
       let updatedMember = { ...targetMember };
       if (profileImage) {
         const uploadedUrls = await uploadFilesToSupabase([profileImage], {
           bucket: 'profile',
-          prefix: `church/${churchId}/member/${targetMember.id}`,
+          prefix: `church/${churchId}/member`,
         });
         const uploadedUrl = uploadedUrls[0];
         if (uploadedUrl) {
@@ -109,6 +119,7 @@ const MainMemberHeader = ({}: MainMemberHeaderProps) => {
           {
             name: updatedMember.name,
             mobilePhone: updatedMember.mobilePhone.replace(/\D/g, ''),
+            profileImageUrl: updatedMember.profileImageUrl || undefined,
             birth: updatedMember.birth || undefined,
             isLunar: updatedMember.isLunar,
             isLeafMonth: updatedMember.isLeafMonth,
@@ -139,6 +150,7 @@ const MainMemberHeader = ({}: MainMemberHeaderProps) => {
       dispatch(setToastText(t('popup.registerSuccess')));
       dispatch(setIsToastShown(true));
       dispatch(setToastBackgroundColor(BLACK));
+      setProfileImage(null);
     } catch (error) {
       if (error instanceof Error) {
         dispatch(setToastText(error.message));
@@ -147,6 +159,8 @@ const MainMemberHeader = ({}: MainMemberHeaderProps) => {
       } else {
         setThrownError(new Error(String(error)));
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -167,6 +181,7 @@ const MainMemberHeader = ({}: MainMemberHeaderProps) => {
   return (
     <>
       <MainMemberHeaderView {...props} />
+      <Loading isShow={isLoading} />
     </>
   );
 };

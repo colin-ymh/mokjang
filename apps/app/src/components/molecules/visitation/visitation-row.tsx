@@ -40,14 +40,8 @@ const VisitationRow = () => {
     setIsAddFilterShown(false);
   };
 
-  // 상태 필터
-  const [statusFilter, setStatusFilter] = useState<TASK_STATUS | undefined>(
-    undefined
-  );
-
   // 검색 주제 선택
   const onClickStatusFilterItem = (value: TASK_STATUS) => {
-    setStatusFilter(value);
     if (value) {
       dispatch(
         setVisitationFilter({
@@ -108,16 +102,14 @@ const VisitationRow = () => {
   useEffect(() => {
     let newFilterItems: VisitationFilteredItemType[] = [];
 
-    // // 상태
-    // if (visitationFilter.status.length > 0) {
-    //   newFilterItems.push({
-    //     title: VISITATION.STATUS,
-    //     value: visitationFilter.status,
-    //   });
-    // } else {
-    //   setStatusFilter(undefined);
-    // }
-    //
+    // 상태
+    if (visitationFilter.status.length > 0) {
+      newFilterItems.push({
+        title: VISITATION.STATUS,
+        value: visitationFilter.status,
+      });
+    }
+
     // // 방식
     // if (visitationFilter.visitationMethod.length > 0) {
     //   newFilterItems.push({
@@ -156,7 +148,6 @@ const VisitationRow = () => {
 
   const props = {
     isModalShown,
-    statusFilter,
     searchFilter,
     searchValue,
     searchRef,

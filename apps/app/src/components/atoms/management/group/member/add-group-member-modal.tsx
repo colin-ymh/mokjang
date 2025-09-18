@@ -40,6 +40,8 @@ const AddGroupMemberModal = ({
   const [cursor, setCursor] = useState<string | null>(null);
   const [hasMore, setHasMore] = useState(true);
 
+  const [page, setPage] = useState(1);
+
   const [isLoading, setIsLoading] = useState(false);
   const [thrownError, setThrownError] = useState<Error | null>(null);
   if (thrownError) {
@@ -54,20 +56,27 @@ const AddGroupMemberModal = ({
       if (isLoading || !hasMore) return;
       setIsLoading(true);
 
-      const response = await membersApi.getMembersV2({
-        churchId,
-        limit: 50,
-        cursor: cursor ?? undefined,
-        sortBy: undefined,
-        sortDirection: undefined,
-        displayColumns: [
-          MEMBER.OFFICER,
-          MEMBER.MOBILE_PHONE,
-          MEMBER.BIRTH,
-          MEMBER.GROUP,
-        ],
-        search: searchName.length > 1 ? searchName : undefined,
-      });
+      const response =
+        searchName.length > 1
+          ? await membersApi.getMembersV2({
+              churchId,
+              limit: 50,
+              cursor: cursor ?? undefined,
+              sortBy: undefined,
+              sortDirection: undefined,
+              displayColumns: [
+                MEMBER.OFFICER,
+                MEMBER.MOBILE_PHONE,
+                MEMBER.BIRTH,
+                MEMBER.GROUP,
+              ],
+              search: searchName,
+            })
+          : await groupsApi.getGroupUnassignedMember({
+              churchId,
+              take: 50,
+              page,
+            });
 
       const newMembers: Member[] = response.data?.data ?? [];
 
@@ -84,6 +93,7 @@ const AddGroupMemberModal = ({
       const next = response.data?.nextCursor || null;
 
       setCursor(next);
+      setPage(page + 1);
       setHasMore(response.data.hasMore);
     } catch (error) {
       setThrownError(error as Error);
@@ -130,6 +140,7 @@ const AddGroupMemberModal = ({
       setHasMore(true);
       setMembers([]);
       setCursor(null);
+      setPage(1);
       setIsResetDone(true); // 초기화 완료 표시
     }, 500);
     return () => clearTimeout(timer);
@@ -150,6 +161,7 @@ const AddGroupMemberModal = ({
     setMembers([]);
     setCursor(null);
     setHasMore(true);
+    setPage(1);
     fetchSearchedMembers();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [churchId]);

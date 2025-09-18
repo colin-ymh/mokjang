@@ -25,6 +25,7 @@ export const DEFAULT_WORSHIP: Worship = {
 export type WorshipStatistic = {
   worshipId: string;
   attendanceCheckRate: number;
+  memberCount: number;
   attendanceRate: {
     overall: number;
     period: number;
@@ -34,6 +35,7 @@ export type WorshipStatistic = {
 export const DEFAULT_WORSHIP_STATISTIC: WorshipStatistic = {
   worshipId: BLANK,
   attendanceCheckRate: 0,
+  memberCount: 0,
   attendanceRate: {
     overall: 0,
     period: 0,

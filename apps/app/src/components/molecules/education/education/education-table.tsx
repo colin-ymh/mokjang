@@ -561,6 +561,11 @@ const EducationTable = ({ loadEducations }: EducationTableProps) => {
       return;
     }
 
+    if (!targetEducationTerm.startDate || !targetEducationTerm.endDate) {
+      setIsEducationTermSaveEnabled(false);
+      return;
+    }
+
     setIsEducationTermSaveEnabled(true);
   }, [targetEducationTerm]);
 
@@ -1038,6 +1043,7 @@ const EducationTable = ({ loadEducations }: EducationTableProps) => {
         widthPercentage={45}
         zIndex={1100}
         closeText={t_button('backToEducation')}
+        blur={false}
       >
         <AddEducation isEdit />
       </WrappedPagePopup>

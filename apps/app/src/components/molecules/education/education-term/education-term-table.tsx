@@ -349,6 +349,11 @@ const EducationTermTable = ({}: EducationTermTableProps) => {
       return;
     }
 
+    if (!targetEducationTerm.startDate || !targetEducationTerm.endDate) {
+      setIsEducationTermSaveEnabled(false);
+      return;
+    }
+
     setIsEducationTermSaveEnabled(true);
   }, [targetEducationTerm]);
 

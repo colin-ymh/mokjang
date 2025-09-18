@@ -7,9 +7,9 @@ import {
   DAY,
   GRAY,
   LOCALE,
-  MAIN,
   REPEAT_PERIOD,
   SIZE,
+  WHITE,
   WORSHIP_PERIOD,
 } from '@mokjang/constants';
 import { useSelector } from 'react-redux';
@@ -20,12 +20,14 @@ import {
   getDateFromDateString,
   getDayConstantByIndex,
   getTranslatedMemberAttendanceCount,
+  getTranslatedUnknownAttendanceCount,
   getWeekRepeatConstant,
 } from '@mokjang/utils';
 import { useWorshipPeriodDropdownItems } from '../../../../../hooks/dropdown/dropdown-items';
 import { MemberAttendanceStatistic, Worship } from '@mokjang/models';
 import { usePathname } from 'next/navigation';
 import MemberAttendanceTable from './member-attendance-table';
+import { getWorshipAttendanceRateColor } from '@/utils/color';
 
 const ListContainer = styled.div`
   display: flex;
@@ -52,8 +54,8 @@ const StatisticContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   border-radius: 10px;
-  background-color: ${MAIN.EXTRA_LIGHT};
-  border: 1px solid ${MAIN.LIGHT};
+  background-color: ${WHITE};
+  border: 1px solid ${GRAY.LIGHT};
   padding: 30px;
 `;
 
@@ -185,14 +187,19 @@ const MemberAttendanceListView = ({
             <MainText
               size={SIZE.EXTRA_LARGE}
               fontSize={24}
-              color={MAIN.DEFAULT}
+              color={getWorshipAttendanceRateColor(
+                (Math.round(
+                  statistic.presentCount /
+                    (statistic.presentCount + statistic.absentCount)
+                ) || 0) * 100
+              )}
             >{`${(Math.round(statistic.presentCount / (statistic.presentCount + statistic.absentCount)) || 0) * 100}%`}</MainText>
             <MainText color={GRAY.DEFAULT}>
-              {getTranslatedMemberAttendanceCount(
+              {`${getTranslatedMemberAttendanceCount(
                 basePath,
                 statistic.presentCount,
                 statistic.totalSessions
-              )}
+              )} ${statistic.totalSessions - statistic.absentCount - statistic.presentCount > 0 && getTranslatedUnknownAttendanceCount(basePath, statistic.totalSessions - statistic.absentCount - statistic.presentCount)}`}
             </MainText>
           </RightContainer>
         </StatisticContainer>

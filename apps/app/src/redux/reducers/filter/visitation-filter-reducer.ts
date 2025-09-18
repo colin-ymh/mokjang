@@ -59,6 +59,35 @@ export type VISITATION_TABLE_HEADER_ITEM = {
   isDate?: boolean;
 };
 
+/* -------------------- LocalStorage Persist -------------------- */
+const STORAGE_KEY = 'visitationFilterState';
+
+// 저장된 상태 불러오기
+function loadPersistedState(): Partial<VisitationFilterState> {
+  if (typeof window === 'undefined') return {};
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return {};
+    return JSON.parse(raw) as Partial<VisitationFilterState>;
+  } catch {
+    return {};
+  }
+}
+
+// 필요한 상태만 저장
+function savePersistedState(state: VisitationFilterState) {
+  if (typeof window === 'undefined') return;
+  const toSave = {
+    visitationFilter: state.visitationFilter,
+    visitationOrderBy: state.visitationOrderBy,
+    visitationOrderDirection: state.visitationOrderDirection,
+    visitationTableHeaderItemList: state.visitationTableHeaderItemList,
+  };
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(toSave));
+}
+
+const persisted = loadPersistedState();
+
 export const INITIAL_VISITATION_TABLE_HEADER_LIST: VISITATION_TABLE_HEADER_ITEM[] =
   [
     {
@@ -105,9 +134,12 @@ export const INITIAL_VISITATION_TABLE_HEADER_LIST: VISITATION_TABLE_HEADER_ITEM[
 
 const initialState: VisitationFilterState = {
   visitations: [],
-  visitationFilter: INITIAL_VISITATION_FILTER,
-  visitationOrderDirection: ORDER_DIRECTION.ASC,
-  visitationTableHeaderItemList: INITIAL_VISITATION_TABLE_HEADER_LIST,
+  visitationFilter: persisted.visitationFilter ?? INITIAL_VISITATION_FILTER,
+  visitationOrderDirection:
+    persisted.visitationOrderDirection ?? ORDER_DIRECTION.ASC,
+  visitationTableHeaderItemList:
+    persisted.visitationTableHeaderItemList ??
+    INITIAL_VISITATION_TABLE_HEADER_LIST,
   visitationPage: 1,
 };
 
@@ -219,18 +251,22 @@ const VisitationFilterSlice = createSlice({
     },
     setVisitationFilter: (state, action: PayloadAction<VISITATION_FILTER>) => {
       state.visitationFilter = action.payload;
+      savePersistedState(state);
     },
     setVisitationOrderBy(state, action: PayloadAction<VISITATION>) {
       state.visitationOrderBy = action.payload;
+      savePersistedState(state);
     },
     setVisitationOrderDirection(state, action: PayloadAction<ORDER_DIRECTION>) {
       state.visitationOrderDirection = action.payload;
+      savePersistedState(state);
     },
     setVisitationTableHeaderItemList(
       state,
       action: PayloadAction<VISITATION_TABLE_HEADER_ITEM[]>
     ) {
       state.visitationTableHeaderItemList = action.payload;
+      savePersistedState(state);
     },
     setVisitationPage: (state, action: PayloadAction<number>) => {
       state.visitationPage = action.payload;

@@ -17,7 +17,7 @@ import { setTargetMember } from '@/redux/reducers/target/target-member-reducer';
 import AddMemberView from './add-member.view';
 
 export type AddMemberProps = {
-  onChangeProfileImage: (image: File | null) => void;
+  onChangeProfileImage: (image: File | null | undefined) => void;
 };
 
 const AddMember = ({ onChangeProfileImage }: AddMemberProps) => {

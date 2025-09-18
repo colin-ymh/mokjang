@@ -10,6 +10,7 @@ import {
   fetchNotificationCount,
   fetchNotifications,
   resetNotifications,
+  setUnread,
 } from '@/redux/reducers/notification-reducer';
 import { NotificationApi } from '@/api/notification/notification.api';
 
@@ -25,7 +26,9 @@ const NotificationModal = ({ onClickClose }: ProfileModalProps) => {
 
   const [isZoomIn, setIsZoomIn] = useState(false);
 
-  const { loading, hasMore } = useSelector((s: RootState) => s.notification);
+  const { loading, hasMore, unread } = useSelector(
+    (s: RootState) => s.notification
+  );
 
   const onClickReadAll = () => {
     notificationApi.readAll().then(() => {
@@ -35,7 +38,9 @@ const NotificationModal = ({ onClickClose }: ProfileModalProps) => {
     });
   };
 
-  const onClickUnread = () => {};
+  const onClickUnread = () => {
+    dispatch(setUnread(!unread));
+  };
 
   const onClickZoomIn = () => setIsZoomIn(true);
   const onClickZoomOut = () => setIsZoomIn(false);
@@ -44,7 +49,7 @@ const NotificationModal = ({ onClickClose }: ProfileModalProps) => {
   useEffect(() => {
     dispatch(resetNotifications());
     dispatch(fetchNotifications());
-  }, [dispatch]);
+  }, [dispatch, unread]);
 
   // ✅ 스크롤 이벤트 핸들러
   useEffect(() => {
@@ -63,7 +68,7 @@ const NotificationModal = ({ onClickClose }: ProfileModalProps) => {
 
     el.addEventListener('scroll', handleScroll);
     return () => el.removeEventListener('scroll', handleScroll);
-  }, [dispatch, loading, hasMore]);
+  }, [dispatch, loading, hasMore, unread]);
 
   const props = {
     scrollRef,

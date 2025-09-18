@@ -2,21 +2,15 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../redux/store';
 import { useI18n } from '../../../../../../locales/client';
-import {
-  Button,
-  CustomPopup,
-  MainText,
-  SvgIcon,
-  ToggleRadioButton,
-} from '@mokjang/components';
+import { Button, CustomPopup, MainText, SvgIcon, ToggleRadioButton, } from '@mokjang/components';
 import { GRAY, LOCALE, MAIN, SIZE, TASK_STATUS } from '@mokjang/constants';
 import React, { Dispatch, SetStateAction } from 'react';
 import { usePathname } from 'next/navigation';
 import MemberProfilePopupButton from '../../../../molecules/common/button/member-profile-popup-button';
 import {
   getTranslatedAddMemberTitle,
-  getTranslatedDateFromDateString,
   getTranslatedSessionProgressStatus,
+  getTranslatedStartEndDate,
   getTranslatedTerm,
 } from '@mokjang/utils';
 import { useTaskStatusDropdownItems } from '../../../../../hooks/dropdown/dropdown-items';
@@ -206,7 +200,11 @@ const EducationTermInformationView = ({
               <MainText color={GRAY.DARK}>{t('period')}</MainText>
             </TitleContainer>
             <MainText>
-              {`${getTranslatedDateFromDateString(locale, targetEducationTerm.startDate)} - ${getTranslatedDateFromDateString(locale, targetEducationTerm.endDate)}`}
+              {getTranslatedStartEndDate(
+                locale,
+                targetEducationTerm.startDate,
+                targetEducationTerm.endDate
+              )}
             </MainText>
           </RowContainer>
           {/* 상태 */}

@@ -12,7 +12,7 @@ import { BLANK_HEADER } from '@/redux/reducers/filter/member-filter-reducer';
 import { useI18n } from '../../../../locales/client';
 import { getStatusBackgroundColor, getStatusFontColor } from '@/utils/color';
 import MemberProfile from '../../atoms/member/member-profile';
-import { getTranslatedDateFromDateString } from '@mokjang/utils';
+import { getTranslatedStartEndDate } from '@mokjang/utils';
 import { usePathname } from 'next/navigation';
 import EmptyList from '@/components/atoms/common/image/empty-list'; // 1. 컬럼별 PX 폭 (마지막 REMARKS만 auto 할 예정)
 
@@ -186,10 +186,7 @@ const TaskTableView = ({
       case TASK.DATE:
         return (
           <MainText>
-            {`${
-              task.startDate &&
-              getTranslatedDateFromDateString(locale, task.startDate)
-            } - ${task.endDate && getTranslatedDateFromDateString(locale, task.endDate)}`}
+            {getTranslatedStartEndDate(locale, task.startDate, task.endDate)}
           </MainText>
         );
       case TASK.IN_CHARGE:

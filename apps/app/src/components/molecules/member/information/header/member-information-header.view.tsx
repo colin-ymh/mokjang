@@ -77,10 +77,10 @@ const MemberInformationHeaderView = ({}: MemberInformationHeaderViewProps) => {
           <TextContainer>
             <RowContainer>
               <MainText size={SIZE.EXTRA_LARGE}>{targetMember.name}</MainText>
-              <MainText color={GRAY.DEFAULT}>
-                {targetMember?.officerHistory &&
-                  targetMember?.officerHistory[0]?.officer?.name}
-              </MainText>
+              {/*<MainText color={GRAY.DEFAULT}>*/}
+              {/*  {targetMember?.officerHistory &&*/}
+              {/*    targetMember?.officerHistory[0]?.officer?.name}*/}
+              {/*</MainText>*/}
             </RowContainer>
             <RowContainer>
               <MainText color={GRAY.DARK}>
@@ -93,6 +93,13 @@ const MemberInformationHeaderView = ({}: MemberInformationHeaderViewProps) => {
         </Information>
 
         <TagContainer>
+          {targetMember.churchUser && (
+            <MainTag
+              title={t('manager')}
+              color={PURPLE.DARK}
+              backgroundColor={PURPLE.LIGHT}
+            />
+          )}
           {targetMember.groupRole === GROUP_ROLE.LEADER && (
             <MainTag
               title={t('groupLeader')}
@@ -105,13 +112,6 @@ const MemberInformationHeaderView = ({}: MemberInformationHeaderViewProps) => {
               title={t('ministryGroupLeader')}
               color={MAIN.DARK}
               backgroundColor={MAIN.LIGHT}
-            />
-          )}
-          {targetMember.churchUser && (
-            <MainTag
-              title={t('manager')}
-              color={PURPLE.DARK}
-              backgroundColor={PURPLE.LIGHT}
             />
           )}
         </TagContainer>

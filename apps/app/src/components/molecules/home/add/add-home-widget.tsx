@@ -3,12 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../../redux/store';
 import { HOME_WIDGET } from '@mokjang/constants';
 import { setHomeWidgets } from '../../../../redux/reducers/filter/home-widget-filter-reducer';
-import {
-  setIsToastShown,
-  setToastBackgroundColor,
-  setToastText,
-} from '../../../../redux/reducers/toast-popup-reducer';
-import { DESTRUCTIVE } from '@mokjang/constants';
 import { useState } from 'react';
 
 const AddHomeWidget = () => {
@@ -23,21 +17,18 @@ const AddHomeWidget = () => {
     throw thrownError;
   }
 
-  const onClickAdd = async (widget: HOME_WIDGET) => {
-    try {
+  const onClickItem = (widget: HOME_WIDGET) => {
+    if (homeWidgets.includes(widget)) {
+      const newHomeWidget = homeWidgets.filter((h) => h !== widget);
+      dispatch(setHomeWidgets(newHomeWidget));
+    } else {
       const newHomeWidget = [...homeWidgets, widget];
       dispatch(setHomeWidgets(newHomeWidget));
-    } catch (error) {
-      if (error instanceof Error) {
-        dispatch(setToastText(error.message));
-        dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
-        dispatch(setIsToastShown(true));
-      } else setThrownError(new Error(String(error)));
     }
   };
 
   const props = {
-    onClickAdd,
+    onClickItem,
   };
 
   return (

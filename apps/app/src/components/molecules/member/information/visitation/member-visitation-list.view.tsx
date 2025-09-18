@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import { Button, MainText } from '@mokjang/components';
-import { GRAY, MAIN, SIZE, TASK_STATUS, WHITE } from '@mokjang/constants';
+import { Button, SvgIcon } from '@mokjang/components';
+import { GRAY, MAIN, TASK_STATUS, WHITE } from '@mokjang/constants';
 
 import { useScopedI18n } from '../../../../../../locales/client';
 import { Svg } from '@mokjang/assets';
@@ -20,20 +20,13 @@ const ListContainer = styled.div`
   display: flex;
   flex-direction: column;
   padding: 20px;
-  gap: 20px;
+  gap: 10px;
 `;
 
 const VisitationListHeader = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-`;
-
-const PlusIcon = styled(Svg.Plus)`
-  width: 18px;
-  height: 18px;
-  stroke: ${WHITE};
-  stroke-width: 2px;
 `;
 
 const VisitationList = styled.div<{ height: number }>`
@@ -97,14 +90,23 @@ const MemberVisitationListView = ({
       <ListContainer>
         {/* 심방 목록 헤더 */}
         <VisitationListHeader>
-          <MainText size={SIZE.EXTRA_LARGE}>{t_header('visitation')}</MainText>
-          {/* 심방 추가 버튼*/}
+          <div />
+          {/* 가족 추가 버튼*/}
           <Button
             width={'auto'}
             text={t_button('addVisitation')}
-            onClick={() => onClickOpenModal()}
-            icon={<PlusIcon />}
+            onClick={onClickOpenModal}
+            icon={
+              <SvgIcon
+                svg={Svg.Plus}
+                color={MAIN.DEFAULT}
+                width={2}
+                size={18}
+              />
+            }
             height={30}
+            backgroundColor={WHITE}
+            color={MAIN.DEFAULT}
           />
         </VisitationListHeader>
         <VisitationList

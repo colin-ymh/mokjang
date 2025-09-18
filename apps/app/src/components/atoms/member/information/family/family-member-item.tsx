@@ -1,18 +1,10 @@
 import styled from 'styled-components';
-
-import { Svg } from '@mokjang/assets';
 import { MainText, ProfileImage, SvgIcon } from '@mokjang/components';
-import { BLANK, FAMILY, GRAY, LOCALE, MEMBER, SIZE } from '@mokjang/constants';
-import {
-  getAge,
-  getDateFromDateString,
-  getFormattedPhone,
-  getTranslatedAge,
-} from '@mokjang/utils';
+import { BLANK, FAMILY, GRAY, LOCALE, SIZE } from '@mokjang/constants';
+import { getFormattedPhone } from '@mokjang/utils';
 import { FamilyMember } from '@mokjang/models';
 import { useI18n, useScopedI18n } from '../../../../../../locales/client';
 import { useFamilyRelationDropdownItems } from '@/hooks/dropdown/dropdown-items';
-import Dropdown from '../../../common/dropdown/dropdown';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
@@ -20,6 +12,8 @@ import { usePathname } from 'next/navigation';
 import ConfirmPopup from '../../../common/popup/error-popup';
 import { MembersApi } from '@/api/members/members.api';
 import { setTargetMember } from '@/redux/reducers/target/target-member-reducer';
+import Dropdown from '@/components/atoms/common/dropdown/dropdown';
+import { Svg } from '@mokjang/assets';
 
 const ItemContainer = styled.div`
   display: flex;
@@ -31,46 +25,32 @@ const ItemContainer = styled.div`
   justify-content: space-between;
   gap: 10px;
   padding: 20px;
+  padding-right: 40px;
   position: relative;
-`;
 
-const LeftContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 20px;
-`;
+  //transform-origin: center;
+  //will-change: transform;
+  //backface-visibility: hidden;
+  &:hover {
+    //transform: scale(1.02);
+    //box-shadow: none;
 
-const NameContainer = styled.div`
-  display: flex;
-  gap: 5px;
-  flex-direction: row;
-  align-items: center;
-`;
-
-const TitleContainer = styled.div`
-  display: flex;
-  width: 80px;
-  gap: 13px;
+    border-width: 2px;
+  }
 `;
 
 const InformationList = styled.div`
   display: flex;
-  flex-direction: column;
-  gap: 20px;
+  flex-direction: row;
+  align-content: center;
+  gap: 15px;
 `;
 
 const DetailContainer = styled.div`
   display: flex;
-  gap: 12px;
+  gap: 8px;
   flex-direction: column;
-`;
-
-const MemberInformationContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 13px;
+  justify-content: center;
 `;
 
 const CancelButton = styled.div`
@@ -140,53 +120,25 @@ const FamilyMemberItem = ({
   return (
     <>
       <ItemContainer onClick={onClickMember}>
-        <LeftContainer>
+        <InformationList>
           {/* 이미지 */}
-
-          <InformationList>
+          <ProfileImage
+            value={familyMember.familyMember.profileImageUrl}
+            width={50}
+            height={50}
+          />
+          <DetailContainer>
             {/* 이름 */}
-            <MemberInformationContainer>
-              <ProfileImage value={familyMember.familyMember.profileImageUrl} />
-              <NameContainer>
-                <MainText size={SIZE.LARGE}>
-                  {`${familyMember.familyMember?.name}`}
-                </MainText>
-                <MainText color={GRAY.DEFAULT}>
-                  {`${familyMember.familyMember?.officer?.name || BLANK}`}
-                </MainText>
-              </NameContainer>
-            </MemberInformationContainer>
-            <DetailContainer>
-              {/* 나이 */}
-              <MemberInformationContainer>
-                <TitleContainer>
-                  <SvgIcon svg={Svg.Calendar} color={GRAY.DARK} />
-                  <MainText color={GRAY.DARK}>{t(MEMBER.AGE)}</MainText>
-                </TitleContainer>
-                <MainText>
-                  {getTranslatedAge(
-                    locale,
-                    getAge(
-                      getDateFromDateString(familyMember.familyMember.birth)
-                    )
-                  )}
-                </MainText>
-              </MemberInformationContainer>
-              {/* 연락처 */}
-              <MemberInformationContainer>
-                <TitleContainer>
-                  <SvgIcon svg={Svg.Phone} color={GRAY.DARK} />
-                  <MainText color={GRAY.DARK}>
-                    {t(MEMBER.MOBILE_PHONE)}
-                  </MainText>
-                </TitleContainer>
-                <MainText>
-                  {getFormattedPhone(familyMember.familyMember.mobilePhone)}
-                </MainText>
-              </MemberInformationContainer>
-            </DetailContainer>
-          </InformationList>
-        </LeftContainer>
+            <MainText size={SIZE.LARGE}>
+              {`${familyMember.familyMember?.name} ${familyMember.familyMember?.officer?.name || BLANK}`}
+            </MainText>
+            {/* 연락처 */}
+            <MainText color={GRAY.SEMI_DARK}>
+              {getFormattedPhone(familyMember.familyMember.mobilePhone)}
+            </MainText>
+          </DetailContainer>
+        </InformationList>
+
         <Dropdown
           value={familyMember.relation}
           items={familyRelationItems}
@@ -197,14 +149,15 @@ const FamilyMemberItem = ({
           }
         />
 
-        {/* 삭제 */}
-        <CancelButton
-          onClick={(event) => {
-            event.stopPropagation();
-            onClickDelete();
-          }}
-        >
-          <SvgIcon svg={Svg.Cancel} size={18} />
+        <CancelButton>
+          <SvgIcon
+            svg={Svg.Cancel}
+            size={18}
+            onClick={(event) => {
+              event.stopPropagation();
+              onClickDelete();
+            }}
+          />
         </CancelButton>
       </ItemContainer>
 

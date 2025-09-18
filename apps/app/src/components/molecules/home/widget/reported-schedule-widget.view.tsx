@@ -36,8 +36,9 @@ const WidgetContainer = styled.div`
 const WidgetHeader = styled.div`
   display: flex;
   align-items: center;
-  justify-content: flex-start;
-  gap: 20px;
+  justify-content: space-between;
+  height: 40px;
+  flex-shrink: 0;
 `;
 
 type ReportedScheduleWidgetViewProps = {
@@ -98,7 +99,7 @@ const ReportedScheduleWidgetView = ({
             selectedValue={range}
             onChange={onClickRange}
             items={rangeRadioItems}
-            columnPadding={6}
+            columnPadding={4}
           />
         </WidgetHeader>
 

@@ -1,11 +1,13 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-import { MEMBER_INFORMATION_HEADER_ID } from '../../../../constants/layout/header';
+import { MEMBER_INFORMATION_HEADER_ID } from '@/constants/layout/header';
 import MemberInformationHeader from '../../../molecules/member/information/header/member-information-header';
-import { getMemberInformationContent } from '../../../../hooks/layout/render-layout';
+import { getMemberInformationContent } from '@/hooks/layout/render-layout';
 import { PopupHeaderBar } from '@mokjang/components';
-import { useMemberInformationHeaderBarItems } from '../../../../hooks/layout/header-bar-items';
+import { useMemberInformationHeaderBarItems } from '@/hooks/layout/header-bar-items';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
 
 const InformationContainer = styled.div`
   display: flex;
@@ -25,6 +27,9 @@ type MemberInformationProps = {
 };
 
 const MemberInformation = ({ isPopup }: MemberInformationProps) => {
+  const { targetMember } = useSelector(
+    (state: RootState) => state.targetMember
+  );
   const headerBarItems = useMemberInformationHeaderBarItems();
 
   const [memberContentId, setMemberContentId] = useState<string>(
@@ -34,6 +39,10 @@ const MemberInformation = ({ isPopup }: MemberInformationProps) => {
   const onClickHeaderBarItem = (id: string) => {
     setMemberContentId(id);
   };
+
+  useEffect(() => {
+    setMemberContentId(MEMBER_INFORMATION_HEADER_ID.PERSONAL_INFORMATION);
+  }, [targetMember.id]);
 
   return (
     <InformationContainer>

@@ -18,7 +18,7 @@ import EditMemberView from './edit-member.view';
 import { EDIT_MEMBER_HEADER_ID } from '@/constants/layout/header';
 
 export type EditMemberProps = {
-  onChangeProfileImage: (image: File | null) => void;
+  onChangeProfileImage: (image: File | null | undefined) => void;
 };
 
 const EditMember = ({ onChangeProfileImage }: EditMemberProps) => {

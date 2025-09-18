@@ -3,10 +3,10 @@ import { GRAY, LOCALE } from '@mokjang/constants';
 import { usePathname } from 'next/navigation';
 import { useI18n } from '../../../../locales/client';
 import { WorshipEnrollment } from '@mokjang/models';
-import { MainTag, MainText } from '@mokjang/components';
+import { MainTag, MainText, ProfileImage } from '@mokjang/components';
 import {
-  getEducationAttendanceRateBackgroundColor,
-  getEducationAttendanceRateColor,
+  getWorshipAttendanceRateBackgroundColor,
+  getWorshipAttendanceRateColor,
 } from '@/utils/color';
 import {
   getDateFromDateString,
@@ -25,9 +25,8 @@ const ListContainer = styled.div`
 
 const WorshipAttendanceItem = styled.div`
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: flex-start;
+  flex-direction: row;
+  align-items: center;
   padding: 10px;
   border: 1px solid ${GRAY.LIGHT};
   border-radius: 10px;
@@ -35,11 +34,19 @@ const WorshipAttendanceItem = styled.div`
   cursor: pointer;
 `;
 
+const ColumnContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+`;
+
 const RowContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 10px;
+  width: 100%;
+  justify-content: space-between;
 `;
 
 type WorshipEnrollmentListProps = {
@@ -60,24 +67,33 @@ const WorshipEnrollmentList = ({
         worshipEnrollments.map((item) => {
           return (
             <WorshipAttendanceItem key={item.member.id}>
-              <RowContainer>
-                <MainText>{item.member.name}</MainText>
-                <MainTag
-                  title={`${Math.round(item.attendanceRate * 100).toString()}%`}
-                  backgroundColor={getEducationAttendanceRateBackgroundColor(
-                    Math.round(item.attendanceRate * 100)
-                  )}
-                  color={getEducationAttendanceRateColor(
-                    Math.round(item.attendanceRate * 100)
-                  )}
-                />
-              </RowContainer>
-              <RowContainer>
-                <MainTag title={item.member.group?.name || t('noGroup')} />
-                <MainText
-                  color={GRAY.DEFAULT}
-                >{`${t('lastPresent')}: ${getTranslatedDateFromDateString(locale, getDateStringFromDate(getDateFromDateString(item.lastPresentDate)))}`}</MainText>
-              </RowContainer>
+              <ProfileImage
+                value={item.member.profileImageUrl}
+                width={40}
+                height={40}
+              />
+              <ColumnContainer>
+                <RowContainer>
+                  <MainText>{item.member.name}</MainText>
+                  <MainTag
+                    title={`${Math.round(item.attendanceRate * 100).toString()}%`}
+                    backgroundColor={getWorshipAttendanceRateBackgroundColor(
+                      Math.round(item.attendanceRate * 100)
+                    )}
+                    color={getWorshipAttendanceRateColor(
+                      Math.round(item.attendanceRate * 100)
+                    )}
+                  />
+                </RowContainer>
+                <RowContainer>
+                  <MainText color={GRAY.SEMI_DARK}>
+                    {item.member.group?.name || t('noGroup')}
+                  </MainText>
+                  <MainText
+                    color={GRAY.DEFAULT}
+                  >{`${t('lastPresent')}: ${getTranslatedDateFromDateString(locale, getDateStringFromDate(getDateFromDateString(item.lastPresentDate)))}`}</MainText>
+                </RowContainer>
+              </ColumnContainer>
             </WorshipAttendanceItem>
           );
         })

@@ -24,14 +24,15 @@ const WidgetContainer = styled.div`
   flex-direction: column;
   width: 100%;
   height: 100%;
-  gap: 20px;
+  gap: 10px;
 `;
 
 const WidgetHeader = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  gap: 20px;
+  height: 40px;
+  flex-shrink: 0;
 `;
 
 const RowContainer = styled.div`
@@ -39,6 +40,7 @@ const RowContainer = styled.div`
   flex-direction: row;
   align-items: center;
   gap: 10px;
+  justify-content: space-between;
 `;
 
 const InformationContainer = styled.div`
@@ -48,6 +50,13 @@ const InformationContainer = styled.div`
   padding: 10px;
   background-color: ${MAIN.EXTRA_LIGHT};
   flex-direction: column;
+`;
+
+const WarningTitle = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
 `;
 
 const WarningIcon = styled(Svg.Warning)`
@@ -105,7 +114,7 @@ const WorshipAttendanceWidgetView = ({
             selectedValue={range}
             onChange={onClickRange}
             items={rangeRadioItems}
-            columnPadding={6}
+            columnPadding={4}
           />
           {/* 예배 선택 */}
           <Dropdown
@@ -113,6 +122,7 @@ const WorshipAttendanceWidgetView = ({
             items={worshipDropdownItems}
             onChangeItem={onChangeWorship}
             height={35}
+            width={100}
             onScrollBottom={onScrollBottom}
           />
         </RowContainer>
@@ -120,7 +130,7 @@ const WorshipAttendanceWidgetView = ({
         {/* 카운트 */}
         {worshipEnrollments.length > 0 && (
           <InformationContainer>
-            <RowContainer>
+            <WarningTitle>
               <WarningIcon />
               <MainText color={MAIN.DEFAULT}>
                 {getTranslateWorshipAttendanceWidgetDescription(
@@ -128,7 +138,7 @@ const WorshipAttendanceWidgetView = ({
                   t(range)
                 )}
               </MainText>
-            </RowContainer>
+            </WarningTitle>
             <MainText fontSize={22} fontWeight={600} color={MAIN.DARK}>
               {getTranslatedMemberCount(locale, worshipEnrollments.length)}
             </MainText>

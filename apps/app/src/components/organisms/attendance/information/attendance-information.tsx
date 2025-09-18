@@ -24,14 +24,22 @@ import {
   setWorshipAttendances,
 } from '@/redux/reducers/filter/worship-attendance-filter-reducer';
 import { WorshipSessionsApi } from '@/api/worship/worship-sessions.api';
-import { getDateFromDateString, getDateInWeekByDayOfWeek, getDateStringFromDate, } from '@mokjang/utils';
+import {
+  getDateFromDateString,
+  getDateInWeekByDayOfWeek,
+  getDateStringFromDate,
+} from '@mokjang/utils';
 import { ALL, BLACK, BLANK, DESTRUCTIVE } from '@mokjang/constants';
 import { WorshipAttendancesApi } from '@/api/worship/worship-attendances.api';
 import {
   fetchWorshipSessionCheckStatus,
   setWorshipEnrollments,
 } from '@/redux/reducers/filter/worship-enrollment-filter-reducer';
-import { setIsToastShown, setToastBackgroundColor, setToastText, } from '@/redux/reducers/toast-popup-reducer';
+import {
+  setIsToastShown,
+  setToastBackgroundColor,
+  setToastText,
+} from '@/redux/reducers/toast-popup-reducer';
 import { useScopedI18n } from '../../../../../locales/client';
 import { fetchWorshipStatistic } from '@/redux/reducers/target/target-worship-reducer';
 
@@ -151,7 +159,10 @@ const AttendanceInformation = ({ scrollRef }: AttendanceInformationProps) => {
             sessionId: targetWorshipSession.id,
           },
           {
-            groupId: targetWorshipSessionGroup.id || undefined,
+            groupId:
+              targetWorshipSessionGroup.id === null
+                ? 'null'
+                : (targetWorshipSessionGroup.id as string),
           }
         )
         .then(() => {
@@ -185,7 +196,14 @@ const AttendanceInformation = ({ scrollRef }: AttendanceInformationProps) => {
 
   // 그룹 선택
   const onClickGroupItem = (id: string | null) => {
-    const newGroup = id === ALL ? DEFAULT_GROUP : getGroup(id, groups);
+    const newGroup = id
+      ? id === ALL
+        ? DEFAULT_GROUP
+        : getGroup(id, groups)
+      : {
+          ...DEFAULT_GROUP,
+          id: null,
+        };
     dispatch(setTargetWorshipSessionGroup(newGroup));
     setIsGroupModalShown(false);
   };
@@ -306,8 +324,8 @@ const AttendanceInformation = ({ scrollRef }: AttendanceInformationProps) => {
             worshipId: targetWorshipSession.worshipId,
             sessionId: targetWorshipSession.id,
             groupId:
-              targetWorshipSessionGroup.id === ALL
-                ? undefined
+              targetWorshipSessionGroup.id === null
+                ? 'null'
                 : (targetWorshipSessionGroup.id as string),
           });
         const newStatistic = statisticResponse.data;

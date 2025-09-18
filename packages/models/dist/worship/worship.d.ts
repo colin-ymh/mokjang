@@ -13,6 +13,7 @@ export declare const DEFAULT_WORSHIP: Worship;
 export type WorshipStatistic = {
     worshipId: string;
     attendanceCheckRate: number;
+    memberCount: number;
     attendanceRate: {
         overall: number;
         period: number;

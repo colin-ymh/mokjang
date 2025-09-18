@@ -4,24 +4,9 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
 
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
-import {
-  BAPTISM,
-  BLANK,
-  GENDER,
-  GRAY,
-  MAIN,
-  MARRIAGE,
-  ORANGE,
-  PURPLE,
-  SIZE,
-} from '@mokjang/constants';
+import { BAPTISM, BLANK, GENDER, GRAY, MAIN, MARRIAGE, ORANGE, PURPLE, SIZE, } from '@mokjang/constants';
 import { DropdownValueType } from '../../../atoms/common/dropdown/dropdown-item';
-import {
-  CheckButton,
-  CustomPopup,
-  LabelInput,
-  MainText,
-} from '@mokjang/components';
+import { CheckButton, CustomPopup, LabelInput, MainText, } from '@mokjang/components';
 import LabelDropdown from '../../../atoms/common/dropdown/label-dropdown';
 import LabelRadioButton from '../../../atoms/common/radio-button/label-radio-button';
 import {
@@ -163,7 +148,7 @@ const GroupButton = styled.div`
 type AddMemberViewProps = {
   onChangeName: (event: ChangeEvent<HTMLInputElement>) => void;
   onChangeMobilePhone: (event: ChangeEvent<HTMLInputElement>) => void;
-  onChangeProfileImage: (image: File | null) => void;
+  onChangeProfileImage: (image: File | null | undefined) => void;
   onChangeBirth: (date: Date | null) => void;
   onChangeIsLunar: (value: boolean) => void;
   onClickIsLeafMonth: (value: boolean) => void;

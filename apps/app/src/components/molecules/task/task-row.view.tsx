@@ -60,7 +60,6 @@ const FilteredItemList = styled.div<{ $width: number }>`
   justify-content: flex-start;
   align-items: center;
   gap: 5px;
-  padding: 10px 0;
   width: ${({ $width }) => $width}px;
   overflow-x: scroll;
 `;
@@ -77,7 +76,6 @@ export type TASK_SEARCH_FILTER = TASK.TITLE | TASK.IN_CHARGE;
 
 type TaskViewProps = {
   isModalShown: boolean;
-  statusFilter: TASK_STATUS | undefined;
   searchFilter: TASK_SEARCH_FILTER;
   searchValue: string;
   searchRef: Ref<HTMLInputElement>;
@@ -94,7 +92,6 @@ type TaskViewProps = {
 
 const TaskRowView = ({
   isModalShown,
-  statusFilter,
   searchFilter,
   searchValue,
   searchRef,
@@ -140,7 +137,7 @@ const TaskRowView = ({
             />
 
             <Dropdown
-              value={statusFilter}
+              value={taskFilter.status[0]}
               items={statusFilterDropdownItems}
               onChangeItem={onClickStatusFilterItem}
               height={30}

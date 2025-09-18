@@ -185,7 +185,7 @@ const PersonalInformationListView = ({
             <MainText size={SIZE.LARGE} fontWeight={400}>
               {targetMember.marriage === CONCEALED ? (
                 <MainText size={SIZE.LARGE} fontWeight={400}>
-                  {t('concealed')}
+                  {t(CONCEALED)}
                 </MainText>
               ) : targetMember.marriage ? (
                 `${t(targetMember.marriage as MARRIAGE)} ${targetMember.detailMarriage ? `(${targetMember.detailMarriage})` : ''}`
@@ -208,7 +208,7 @@ const PersonalInformationListView = ({
             <MainText size={SIZE.LARGE} fontWeight={400}>
               {targetMember.occupation === CONCEALED ? (
                 <MainText size={SIZE.LARGE} fontWeight={400}>
-                  {t('concealed')}
+                  {t(CONCEALED)}
                 </MainText>
               ) : (
                 targetMember.occupation
@@ -229,7 +229,7 @@ const PersonalInformationListView = ({
             <MainText size={SIZE.LARGE} fontWeight={400}>
               {targetMember.school === CONCEALED ? (
                 <MainText size={SIZE.LARGE} fontWeight={400}>
-                  {t('concealed')}
+                  {t(CONCEALED)}
                 </MainText>
               ) : (
                 targetMember.school
@@ -249,7 +249,7 @@ const PersonalInformationListView = ({
           <InformationTextWrapper>
             {targetMember.address === CONCEALED ? (
               <MainText size={SIZE.LARGE} fontWeight={400}>
-                {t('concealed')}
+                {t(CONCEALED)}
               </MainText>
             ) : (
               <MainText
@@ -274,7 +274,7 @@ const PersonalInformationListView = ({
           <InformationTextWrapper>
             {targetMember.address === CONCEALED ? (
               <MainText size={SIZE.LARGE} fontWeight={400}>
-                {t('concealed')}
+                {t(CONCEALED)}
               </MainText>
             ) : (
               <MainText
@@ -300,7 +300,7 @@ const PersonalInformationListView = ({
             <MainText size={SIZE.LARGE} fontWeight={400}>
               {targetMember.mobilePhone === CONCEALED ? (
                 <MainText size={SIZE.LARGE} fontWeight={400}>
-                  {t('concealed')}
+                  {t(CONCEALED)}
                 </MainText>
               ) : (
                 getFormattedPhone(targetMember.mobilePhone)

@@ -61,7 +61,7 @@ type MemberListViewProps = {
     onClickDelete: () => void;
     onClickConfirmOpen: () => void;
     onClickConfirmClose: () => void;
-    onChangeProfileImage: (file: File | null) => void;
+    onChangeProfileImage: (file: File | null | undefined) => void;
   };
 };
 

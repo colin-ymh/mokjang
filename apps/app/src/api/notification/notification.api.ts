@@ -7,6 +7,7 @@ type GetNotificationsParams = {
   limit: number;
   cursor?: string;
   sortDirection?: ORDER_DIRECTION;
+  unread?: boolean;
 };
 
 type ReadNotificationParams = {

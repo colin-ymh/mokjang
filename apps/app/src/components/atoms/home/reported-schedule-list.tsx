@@ -1,11 +1,7 @@
-import {
-  CALENDAR_DOMAIN,
-  NOTIFICATION_DOMAIN,
-  Schedule,
-} from '@mokjang/models';
+import { DOMAIN, NOTIFICATION_DOMAIN, Schedule } from '@mokjang/models';
 import styled from 'styled-components';
-import { GRAY, LOCALE, MAIN, STATUS } from '@mokjang/constants';
-import { MainTag, MainText } from '@mokjang/components';
+import { GRAY, LOCALE, STATUS } from '@mokjang/constants';
+import { MainTag, MainText, ProfileImage } from '@mokjang/components';
 import {
   getDateFromDateString,
   getTranslatedScheduleDate,
@@ -27,9 +23,9 @@ const ListContainer = styled.div`
 
 const ScheduleItem = styled.div`
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: flex-start;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
   padding: 10px;
   border: 1px solid ${GRAY.LIGHT};
   border-radius: 10px;
@@ -37,11 +33,19 @@ const ScheduleItem = styled.div`
   cursor: pointer;
 `;
 
+const ColumnContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+`;
+
 const RowContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 10px;
+  width: 100%;
+  justify-content: space-between;
 `;
 
 type ReportedScheduleListProps = {
@@ -84,28 +88,34 @@ const ReportedScheduleList = ({
               key={schedule.id}
               onClick={() => onClickSchedule(schedule)}
             >
-              <RowContainer>
-                <MainText>{scheduleTitle}</MainText>
-                <MainTag
-                  title={t(schedule.status as STATUS)}
-                  color={getStatusFontColor(schedule.status as STATUS)}
-                  backgroundColor={getStatusBackgroundColor(
-                    schedule.status as STATUS
-                  )}
-                />
-              </RowContainer>
-              <RowContainer>
-                <MainTag title={t(domain as CALENDAR_DOMAIN)} />
-                <MainText>
-                  {getTranslatedScheduleDate(
-                    locale,
-                    getDateFromDateString(schedule.end as string)
-                  )}
-                </MainText>
-                <MainText color={MAIN.DEFAULT}>
-                  {`${t('inCharge')}: ${schedule.inCharge?.name as string}`}
-                </MainText>
-              </RowContainer>
+              <ProfileImage
+                value={schedule.inCharge?.profileImageUrl}
+                width={40}
+                height={40}
+              />
+              <ColumnContainer>
+                <RowContainer>
+                  <MainText>{`[${t(domain as DOMAIN)}] ${scheduleTitle}`}</MainText>
+                  <MainTag
+                    title={t(schedule.status as STATUS)}
+                    color={getStatusFontColor(schedule.status as STATUS)}
+                    backgroundColor={getStatusBackgroundColor(
+                      schedule.status as STATUS
+                    )}
+                  />
+                </RowContainer>
+                <RowContainer>
+                  <MainText color={GRAY.SEMI_DARK}>
+                    {getTranslatedScheduleDate(
+                      locale,
+                      getDateFromDateString(schedule.end as string)
+                    )}
+                  </MainText>
+                  {/*<MainText color={MAIN.DEFAULT}>*/}
+                  {/*  {`${t('inCharge')}: ${schedule.inCharge?.name as string}`}*/}
+                  {/*</MainText>*/}
+                </RowContainer>
+              </ColumnContainer>
             </ScheduleItem>
           );
         })

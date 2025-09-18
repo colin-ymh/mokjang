@@ -77,7 +77,6 @@ export type VISITATION_SEARCH_FILTER = VISITATION.TITLE | VISITATION.IN_CHARGE;
 
 type VisitationViewProps = {
   isModalShown: boolean;
-  statusFilter: TASK_STATUS | undefined;
   searchFilter: VISITATION_SEARCH_FILTER;
   searchValue: string;
   searchRef: Ref<HTMLInputElement>;
@@ -94,7 +93,6 @@ type VisitationViewProps = {
 
 const VisitationRowView = ({
   isModalShown,
-  statusFilter,
   searchFilter,
   searchValue,
   searchRef,
@@ -142,7 +140,7 @@ const VisitationRowView = ({
             />
 
             <Dropdown
-              value={statusFilter}
+              value={visitationFilter.status[0]}
               items={statusFilterDropdownItems}
               onChangeItem={onClickStatusFilterItem}
               height={30}

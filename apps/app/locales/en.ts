@@ -15,6 +15,8 @@ export default {
   custom: 'Custom',
   email: 'Email',
 
+  lastOneMonth: 'Last One Month',
+
   officerNone: 'No Officer',
   marriageNone: 'No Marital Status',
   baptismNone: 'No Baptism',
@@ -73,7 +75,6 @@ export default {
   ministryGroupCount: 'Ministry Groups',
 
   newMember: 'New Member',
-  weekNewMemberState: 'New Member Last 4 Weeks',
 
   church: 'Church',
   churchName: 'Church Name',
@@ -117,6 +118,7 @@ export default {
   lastMonth: 'Last Month',
   lastThreeMonth: 'Last Three Month',
 
+  lordDay: 'Sunday',
   sunday: 'Sunday',
   monday: 'Monday',
   tuesday: 'Tuesday',
@@ -129,7 +131,7 @@ export default {
 
   description: 'Description',
 
-  concealed: 'No Permission',
+  CONCEALED: 'No Permission',
 
   management: 'Management',
 
@@ -818,6 +820,8 @@ export default {
   'popup.deleteChurchEventTitle': 'Do you want to delete this event?',
   'popup.deleteChurchEventBody': 'Deleted event cannot be restored.',
 
+  'popup.imageSize': 'You can upload images up to 5 MB in size.',
+
   /*-------------------popup-------------------*/
 
   /*-------------------warning-------------------*/
@@ -857,6 +861,12 @@ export default {
     'The same ministry will be assigned to all members. You can modify it later individually.',
   'description.addMember':
     'Members already belonging to the current group are not displayed',
+  'description.addOfficer':
+    'Members already belonging to the current officer are not displayed',
+  'description.addMinistryMember':
+    'Members already belonging to the current ministry group are not displayed',
+  'description.addEnrollment':
+    'Members already belonging to the current term are not displayed',
   'description.editGroupLeader': 'Choose a new group leader',
   'description.editMinistryGroupLeader': 'Choose a new information leader',
   'description.tableHeaderSetting': 'Drag and Change the order',

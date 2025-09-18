@@ -101,12 +101,12 @@ export const useManagementSideBarItems = () => {
     //   onClick: () => router.push(`/management/user`),
     //   icon: Svg.AcademicCap,
     // },
-    {
-      id: MANAGEMENT_HEADER_ID.SETTING,
-      title: t_header(MANAGEMENT_HEADER_ID.SETTING),
-      onClick: () => router.push(`/management/setting`),
-      icon: Svg.Calendar,
-    },
+    // {
+    //   id: MANAGEMENT_HEADER_ID.SETTING,
+    //   title: t_header(MANAGEMENT_HEADER_ID.SETTING),
+    //   onClick: () => router.push(`/management/setting`),
+    //   icon: Svg.Calendar,
+    // },
   ];
 
   return items;

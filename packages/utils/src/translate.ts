@@ -18,6 +18,7 @@ import {
   WORSHIP_ENROLLMENT,
 } from '@mokjang/constants';
 import { getEnglishMonthName, getShortEnglishMonthName } from './format';
+import { getDateFromDateString, getIsSameDate } from './date';
 
 export const getTranslatedMemberCount = (
   basePath: LOCALE,
@@ -318,7 +319,7 @@ export const getTranslatedScheduleDate = (locale: LOCALE, date: Date) => {
   const minute = String(date.getMinutes()).padStart(2, '0');
 
   if (locale === LOCALE.KO) {
-    return `${month}월 ${day}일 ${hour}:${minute}`;
+    return `${month}월 ${day}일 ${hour}시 ${minute}분`;
   }
 
   return `${day} ${getShortEnglishMonthName(parseInt(month) - 1)}. ${hour}:${minute}`;
@@ -437,10 +438,10 @@ export const getTranslateWorshipAttendanceWidgetDescription = (
   rangeTitle: string
 ) => {
   if (locale === LOCALE.KO) {
-    return `${rangeTitle} 출석률 50% 미만`;
+    return `${rangeTitle} 출석률 50% 이하`;
   }
 
-  return `Under 50% attendance rate in ${rangeTitle}`;
+  return `${rangeTitle} attendance rate below 50% `;
 };
 
 export const getTranslatedDateFromDateString = (
@@ -460,6 +461,46 @@ export const getTranslatedDateFromDateString = (
     return `${year}년 ${month}월 ${day}일`;
   } else {
     return `${getEnglishMonthName(month)} ${day}, ${year}`;
+  }
+};
+
+export const getTranslatedStartEndDate = (
+  basePath: LOCALE,
+  startDate?: string,
+  endDate?: string
+): string => {
+  if (!startDate) {
+    return BLANK;
+  } else if (!endDate) {
+    return getTranslatedDateFromDateString(basePath, startDate);
+  } else if (
+    getIsSameDate(
+      getDateFromDateString(startDate),
+      getDateFromDateString(endDate)
+    )
+  ) {
+    return getTranslatedDateFromDateString(basePath, startDate);
+  } else {
+    return `${getTranslatedDateFromDateString(basePath, startDate)} - ${getTranslatedDateFromDateString(basePath, endDate)}`;
+  }
+};
+
+export const getTranslatedMMDDDateFromDateString = (
+  basePath: LOCALE,
+  date: string
+): string => {
+  if (!date) return '';
+
+  // 문자열을 Date 객체로 변환
+  const d = new Date(date);
+
+  const month = d.getMonth() + 1; // getMonth()는 0부터 시작
+  const day = d.getDate();
+
+  if (basePath === LOCALE.KO) {
+    return `${month}월 ${day}일`;
+  } else {
+    return `${getEnglishMonthName(month)} ${day}`;
   }
 };
 
@@ -541,6 +582,22 @@ export const getTranslatedMemberAttendanceCount = (
     return `전체 ${totalSessions}회 중 ${presentCount}회 출석`;
   } else {
     return `attended ${presentCount} times per ${totalSessions} times`;
+  }
+};
+
+/**
+ *
+ * @param locale
+ * @param unknownCount
+ */
+export const getTranslatedUnknownAttendanceCount = (
+  locale: LOCALE,
+  unknownCount: number
+) => {
+  if (locale === LOCALE.KO) {
+    return `(출석확인 필요 ${unknownCount}회)`;
+  } else {
+    return `(Needs attendance confirmation ${unknownCount} times)`;
   }
 };
 

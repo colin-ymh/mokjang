@@ -21,9 +21,8 @@ import { Education, EducationSession, EducationTerm } from '@mokjang/models';
 import { MainTag, MainText, SvgIcon } from '@mokjang/components';
 import { useI18n } from '../../../../../locales/client';
 import {
-  getDateFromDateString,
-  getDateStringFromDate,
   getTranslatedCompletedEnrollmentStatus,
+  getTranslatedStartEndDate,
   getTranslatedTerm,
   getTranslatedTermCount,
 } from '@mokjang/utils';
@@ -145,6 +144,11 @@ const EducationNameContainer = styled.div<{ $level: number }>`
   flex-shrink: 0;
 `;
 
+const ChevronContainer = styled.div`
+  display: flex;
+  width: 30px;
+`;
+
 const Chevron = styled(Svg.ChevronLeft)<{
   $isOpened: boolean;
   color?: string;
@@ -248,16 +252,18 @@ const EducationTableView = ({
       case EDUCATION.NAME:
         return (
           <EducationNameContainer $level={0}>
-            {education?.termsCount > 0 && (
-              <Chevron
-                $isOpened={openedEducationIds.includes(education.id)}
-                onClick={(event: React.MouseEvent) => {
-                  event.stopPropagation();
-                  onClickEducationChevron(education);
-                }}
-                $reverseDirection
-              />
-            )}
+            <ChevronContainer>
+              {education?.termsCount > 0 && (
+                <Chevron
+                  $isOpened={openedEducationIds.includes(education.id)}
+                  onClick={(event: React.MouseEvent) => {
+                    event.stopPropagation();
+                    onClickEducationChevron(education);
+                  }}
+                  $reverseDirection
+                />
+              )}
+            </ChevronContainer>
             <SvgIcon svg={Svg.Book} size={16} color={MAIN.DEFAULT} width={2} />
             <TitleContainer>
               <MainText>{education.name}</MainText>
@@ -309,7 +315,11 @@ const EducationTableView = ({
             <TitleContainer>
               <MainText>{`${getTranslatedTerm(locale, educationTerm.term)}`}</MainText>
               <MainText size={SIZE.SMALL} color={GRAY.SEMI_DARK}>
-                {`${getDateStringFromDate(getDateFromDateString(educationTerm.startDate))} - ${getDateStringFromDate(getDateFromDateString(educationTerm.endDate))}`}
+                {getTranslatedStartEndDate(
+                  locale,
+                  educationTerm.startDate,
+                  educationTerm.endDate
+                )}
               </MainText>
             </TitleContainer>
           </EducationNameContainer>
@@ -355,7 +365,11 @@ const EducationTableView = ({
             <TitleContainer>
               <MainText>{`${session.session}${t('session')} ${session.title}`}</MainText>
               <MainText size={SIZE.SMALL} color={GRAY.SEMI_DARK}>
-                {`${getDateStringFromDate(getDateFromDateString(session.startDate))} - ${getDateStringFromDate(getDateFromDateString(session.endDate))}`}
+                {getTranslatedStartEndDate(
+                  locale,
+                  session.startDate,
+                  session.endDate
+                )}
               </MainText>
             </TitleContainer>
           </EducationNameContainer>

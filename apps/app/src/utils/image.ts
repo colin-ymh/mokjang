@@ -1,4 +1,3 @@
-import Resizer from 'react-image-file-resizer';
 import { Area } from 'react-easy-crop';
 
 /**
@@ -19,37 +18,6 @@ export const getIsAllowedImageSize = (file: File) => {
   const MAX_SIZE_MB = 5; // 최대 5MB
 
   return file.size < MAX_SIZE_MB * 1024 * 1024;
-};
-
-/**
- * 이미지 크기를 조정하고 File 객체로 반환
- * @param imageFile 조정하고자 하는 이미지 파일
- * @param width 목표 width
- * @param height 목표 height
- */
-export const getResizedImageFile = async (
-  imageFile: File,
-  width: number,
-  height: number
-): Promise<File> => {
-  return new Promise((resolve, reject) => {
-    Resizer.imageFileResizer(
-      imageFile,
-      width,
-      height,
-      'WEBP',
-      100,
-      0,
-      (result) => {
-        if (result instanceof File) {
-          resolve(result);
-        } else {
-          reject(new Error('Failed to resize image.'));
-        }
-      },
-      'file'
-    );
-  });
 };
 
 /**

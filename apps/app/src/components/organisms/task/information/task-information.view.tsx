@@ -7,7 +7,7 @@ import { MainText, SvgIcon } from '@mokjang/components';
 import { GRAY, LOCALE, TASK_STATUS } from '@mokjang/constants';
 import React from 'react';
 import MemberProfilePopupButton from '../../../molecules/common/button/member-profile-popup-button';
-import { getTranslatedDateFromDateString } from '@mokjang/utils';
+import { getTranslatedStartEndDate } from '@mokjang/utils';
 import { usePathname } from 'next/navigation';
 import { Svg } from '@mokjang/assets';
 
@@ -124,15 +124,11 @@ const TaskInformationView = ({ onChangeStatus }: TaskInformationViewProps) => {
           </TitleContainer>
           {/* 일자 */}
           <PeriodContainer>
-            <MainText>
-              {targetTask.startDate &&
-                getTranslatedDateFromDateString(locale, targetTask.startDate)}
-            </MainText>
-            <MainText>{'-'}</MainText>
-            <MainText>
-              {targetTask.endDate &&
-                getTranslatedDateFromDateString(locale, targetTask.endDate)}
-            </MainText>
+            {getTranslatedStartEndDate(
+              locale,
+              targetTask.startDate,
+              targetTask.endDate
+            )}
           </PeriodContainer>
         </RowContainer>
 

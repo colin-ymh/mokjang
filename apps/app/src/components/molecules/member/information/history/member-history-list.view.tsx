@@ -1,9 +1,7 @@
 import styled from 'styled-components';
-import { MainText } from '@mokjang/components';
 
 import { useScopedI18n } from '../../../../../../locales/client';
 import React from 'react';
-import { SIZE } from '@mokjang/constants';
 import { HISTORY } from '@mokjang/constants';
 import { useHistoryDomainDropdownItems } from '../../../../../hooks/dropdown/dropdown-items';
 import Dropdown from '../../../../atoms/common/dropdown/dropdown';
@@ -47,7 +45,7 @@ const MemberHistoryListView = ({
     <MemberHistoryContainer>
       {/* 이력 헤더 */}
       <HeaderContainer>
-        <MainText size={SIZE.EXTRA_LARGE}>{t_header('history')}</MainText>
+        <div />
         <Dropdown
           value={historyDomain}
           items={dropdownItems}

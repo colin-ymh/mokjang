@@ -139,7 +139,7 @@ const AttendanceRow = ({
   const pathname = usePathname();
   const basePath = pathname.split('/')[1] as LOCALE;
 
-  const { worshipEnrollmentFilter, worshipEnrollmentTotalCount } = useSelector(
+  const { worshipEnrollmentFilter } = useSelector(
     (state: RootState) => state.worshipEnrollmentFilter
   );
 
@@ -272,7 +272,10 @@ const AttendanceRow = ({
               {targetWorshipGroup.name || t('all')}
             </MainText>
             <MainText color={GRAY.SEMI_DARK} size={SIZE.SMALL}>
-              {getTranslatedMemberCount(basePath, worshipEnrollmentTotalCount)}
+              {getTranslatedMemberCount(
+                basePath,
+                targetWorshipStatistic.memberCount
+              )}
             </MainText>
           </BoxContainer>
           {/* 평균 출석률 */}

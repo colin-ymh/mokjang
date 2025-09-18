@@ -11,7 +11,7 @@ const BorderInputContainer = styled.input<{
   $isEditable: boolean;
   $borderColor: string;
   height?: number;
-  width?: number;
+  width?: number | 'auto';
   color?: string;
   $disabled?: boolean;
   $backgroundColor?: string;
@@ -25,7 +25,8 @@ const BorderInputContainer = styled.input<{
   $isRight?: boolean;
   $isIcon?: boolean;
 }>`
-  width: ${({ width }) => (width ? `${width}px` : '100%')};
+  width: ${({ width }) =>
+    width === 'auto' ? 'auto' : width ? `${width}px` : '100%'};
   box-sizing: border-box;
   font-size: ${({ $fontSize }) => `${$fontSize}px`};
   font-weight: ${({ $fontWeight }) => `${$fontWeight}` || '400'};
@@ -118,7 +119,7 @@ const CharCounter = styled.div<{ $disabled?: boolean }>`
 export type BorderInputProps = InputProps & {
   borderColor?: string;
   height?: number;
-  width?: number;
+  width?: number | 'auto';
   backgroundColor?: string;
   borderTopLeftRadius?: number;
   borderTopRightRadius?: number;

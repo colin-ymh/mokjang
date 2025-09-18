@@ -95,7 +95,7 @@ const NotificationModalView = ({
   const t_button = useScopedI18n('button');
   const t_notification = useScopedI18n('notification');
 
-  const { notificationUnreadCount, notifications } = useSelector(
+  const { notificationUnreadCount, notifications, unread } = useSelector(
     (state: RootState) => state.notification
   );
 
@@ -149,10 +149,15 @@ const NotificationModalView = ({
         </ContentContainer>
         <FooterContainer>
           <Button
-            text={t_notification('unread')}
+            text={`${t_notification('unread')} ${notificationUnreadCount}`}
             onClick={onClickUnread}
-            color={GRAY.DARK}
-            icon={<SvgIcon svg={Svg.Envelope} color={GRAY.DARK} />}
+            color={unread ? MAIN.DEFAULT : GRAY.DEFAULT}
+            icon={
+              <SvgIcon
+                svg={Svg.Envelope}
+                color={unread ? MAIN.DEFAULT : GRAY.DEFAULT}
+              />
+            }
             width={'auto'}
             backgroundColor={WHITE}
           />

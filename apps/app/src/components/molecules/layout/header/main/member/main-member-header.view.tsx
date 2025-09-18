@@ -1,13 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import {
-  DIRECTION,
-  GRAY,
-  MEDIA_MIN_WIDTH,
-  SIZE,
-  WHITE,
-} from '@mokjang/constants';
+import { DIRECTION, GRAY, MEDIA_MIN_WIDTH, SIZE, WHITE, } from '@mokjang/constants';
 import { Button, CustomPopup, MainText, SvgIcon } from '@mokjang/components';
 
 import { useScopedI18n } from '../../../../../../../locales/client';
@@ -17,10 +11,7 @@ import GroupFilter from '../../../../member/setting/group-filter';
 import AddMember from '../../../../../organisms/member/add/add-member';
 
 import { Svg } from '@mokjang/assets';
-import {
-  getIsWellFormedPhone,
-  getIsWellFormedName,
-} from '@mokjang/utils';
+import { getIsWellFormedName, getIsWellFormedPhone } from '@mokjang/utils';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 
@@ -114,7 +105,7 @@ type MainMemberHeaderViewProps = {
   onDismissModal: () => void;
   selectedGroupName: string;
   onClickNewGroup: (groupId: string | null) => void;
-  onChangeProfileImage: (image: File | null) => void;
+  onChangeProfileImage: (image: File | null | undefined) => void;
   onClickSave: () => void;
 };
 
