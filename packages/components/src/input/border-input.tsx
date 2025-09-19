@@ -32,7 +32,7 @@ const BorderInputContainer = styled.input<{
   font-weight: ${({ $fontWeight }) => `${$fontWeight}` || '400'};
   text-align: ${({ $isRight }) => ($isRight ? 'right' : 'left')};
 
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Pretendard', sans-serif;
   padding: 10px;
   padding-left: ${({ $paddingLeft, $isIcon }) =>
     $paddingLeft !== undefined
@@ -58,27 +58,27 @@ const BorderInputContainer = styled.input<{
     $borderBottomRightRadius ?? 5}px;
 
   &::placeholder {
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Pretendard', sans-serif;
     font-size: 14px;
     color: ${GRAY.DEFAULT};
   }
   &::-webkit-input-placeholder {
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Pretendard', sans-serif;
     font-size: 14px;
     color: ${GRAY.DEFAULT};
   }
   &::-moz-placeholder {
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Pretendard', sans-serif;
     font-size: 14px;
     color: ${GRAY.DEFAULT};
   }
   &:-ms-input-placeholder {
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Pretendard', sans-serif;
     font-size: 14px;
     color: ${GRAY.DEFAULT};
   }
   &:-moz-placeholder {
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Pretendard', sans-serif;
     font-size: 14px;
     color: ${GRAY.DEFAULT};
   }

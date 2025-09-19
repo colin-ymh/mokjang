@@ -2,9 +2,10 @@ import React from 'react';
 import styled from 'styled-components';
 import { useParams } from 'next/navigation';
 
-import { GRAY, MAIN, MEDIA_MIN_WIDTH, SIZE } from '@mokjang/constants';
-import { Button, MainText } from '@mokjang/components';
+import { GRAY, MAIN, MEDIA_MIN_WIDTH, SIZE, WHITE } from '@mokjang/constants';
+import { Button, MainText, SvgIcon } from '@mokjang/components';
 
+import { Svg } from '@mokjang/assets';
 import { useScopedI18n } from '../../../../../../../locales/client';
 import { MANAGEMENT_HEADER_ID } from '@/constants/layout/header';
 import SlidePopup from '../../../../../atoms/common/popup/slide-popup';
@@ -81,8 +82,11 @@ const ManagementPermissionHeaderView = ({
         <Button
           text={t_button('addPermissionTemplate')}
           onClick={onClickAddPermissionTemplate}
-          width={140}
-          height={30}
+          width={'auto'}
+          fontWeight={500}
+          fontSize={16}
+          height={35}
+          icon={<SvgIcon svg={Svg.Plus} color={WHITE} width={2} size={20} />}
         />
       </HeaderTopContainer>
       <HeaderBottomContainer></HeaderBottomContainer>

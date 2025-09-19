@@ -70,6 +70,14 @@ export declare enum STATUS_COLOR {
     APPROVED = "#3ae17a",
     REJECTED = "#f32827"
 }
+export declare enum CALENDAR_COLOR {
+    MEMBER = "#fff4d2",
+    VISITATION = "#f2e1ff",
+    TASK = "#cfe1ff",
+    EDUCATION_SESSION = "#ffcfcf",
+    EVENT = "#b5e8cd",
+    HOLIDAY = "#BDBDBD"
+}
 export declare enum STATUS_FONT_COLOR {
     RESERVE = "#6B7280",
     IN_PROGRESS = "#1a51cd",
@@ -97,13 +105,5 @@ export declare enum STATUS_BACKGROUND_COLOR {
     CANCELED = "#E5E7EB",
     APPROVED = "#BBF7D0",
     REJECTED = "#FCE2E1"
-}
-export declare enum CALENDAR_COLOR {
-    MEMBER = "#fff4d2",
-    VISITATION = "#f2e1ff",
-    TASK = "#cfe1ff",
-    EDUCATION_SESSION = "#ffcfcf",
-    EVENT = "#b5e8cd",
-    HOLIDAY = "#BDBDBD"
 }
 //# sourceMappingURL=color.d.ts.map

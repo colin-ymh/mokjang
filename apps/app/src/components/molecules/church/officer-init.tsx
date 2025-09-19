@@ -33,7 +33,7 @@ const OfficerListContainer = styled.div`
   padding: 30px;
   gap: 30px;
   width: 700px;
-  height: 850px;
+  flex-shrink: 0;
 `;
 
 const AddContainer = styled.div`
@@ -135,6 +135,7 @@ const OfficerSideBar = ({}: OfficerSideBarProps) => {
       <OfficerList
         selectedOfficerId={BLANK}
         onClickOfficer={(o: Officer) => {}}
+        height={500}
       />
     </OfficerListContainer>
   );

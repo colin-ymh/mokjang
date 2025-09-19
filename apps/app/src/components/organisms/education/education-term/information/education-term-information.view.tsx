@@ -2,7 +2,13 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../redux/store';
 import { useI18n } from '../../../../../../locales/client';
-import { Button, CustomPopup, MainText, SvgIcon, ToggleRadioButton, } from '@mokjang/components';
+import {
+  Button,
+  CustomPopup,
+  MainText,
+  SvgIcon,
+  ToggleRadioButton,
+} from '@mokjang/components';
 import { GRAY, LOCALE, MAIN, SIZE, TASK_STATUS } from '@mokjang/constants';
 import React, { Dispatch, SetStateAction } from 'react';
 import { usePathname } from 'next/navigation';
@@ -292,7 +298,7 @@ const EducationTermInformationView = ({
         isShow={isAddModalShown}
         onClickClose={onClickAddEnrollmentsClose}
         onClickCancel={onClickAddEnrollmentsClose}
-        width={800}
+        width={500}
         height={700}
         headerHeight={100}
         headerTitle={getTranslatedAddMemberTitle(

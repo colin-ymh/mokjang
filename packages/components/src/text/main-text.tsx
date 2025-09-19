@@ -78,7 +78,7 @@ export const MainText = styled.span.withConfig({
   transition: all 0.2s ease;
   transform: ${({ baselineOffsetPx = 0 }) =>
     baselineOffsetPx ? `translateY(${baselineOffsetPx}px)` : 'none'};
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Pretendard', sans-serif;
   line-height: ${({ lineHeight }) =>
     typeof lineHeight === 'number'
       ? `${lineHeight}px`

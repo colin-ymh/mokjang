@@ -1,4 +1,4 @@
-import { BLANK, DAY, REPEAT_PERIOD } from '@mokjang/constants';
+import { BLANK, DAY, LOCALE, REPEAT_PERIOD } from '@mokjang/constants';
 
 /**
  * YYYY-MM-DD => Date Object (UTC기준)
@@ -284,4 +284,20 @@ export const getDateGap = (date1: Date, date2: Date) => {
   const diffTime = Math.abs(date2.getTime() - date1.getTime()); // 밀리초 차이
   const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)); // 일 단위로 변환
   return diffDays;
+};
+
+export const getRegisterAfterDate = (locale: LOCALE, date: string): string => {
+  const today = new Date();
+  const target = new Date(date);
+
+  const diff = getDateGap(today, target);
+
+  if (diff <= 0) return locale === 'ko' ? '오늘' : 'Today';
+
+  if (diff < 365) {
+    return locale === 'ko' ? `${diff}일` : `${diff} days`;
+  } else {
+    const diffYears = Math.floor(diff / 365);
+    return locale === 'ko' ? `${diffYears}년` : `${diffYears} years`;
+  }
 };

@@ -122,7 +122,7 @@ const Register = () => {
       });
       if (response.status === 201) {
         const userResponse = await userApi.getUser();
-        const newUser = userResponse.data;
+        const newUser = userResponse.data.data;
         dispatch(setUser(newUser));
         router.push('/register/complete');
       }

@@ -3,7 +3,6 @@ import styled from 'styled-components';
 
 import { Officer } from '@mokjang/models';
 import ManagementOfficerItem from '../../../../atoms/management/officer/list/management-officer-item';
-import useWindowSize from '../../../../../hooks/window/window';
 
 const OfficerListContainer = styled.div<{ height: number }>`
   display: flex;
@@ -11,21 +10,22 @@ const OfficerListContainer = styled.div<{ height: number }>`
   width: 100%;
   overflow-y: auto;
   gap: 5px;
-  height: ${({ height }) => `${height - 330}px`};
+  height: ${({ height }) => `${height}px`};
 `;
 
 type OfficerListViewProps = {
   officers: Officer[];
   selectedOfficerId: string | null;
   onClickOfficer: (officer: Officer) => void;
+  height: number;
 };
 
 const OfficerListView = ({
   officers,
   selectedOfficerId,
   onClickOfficer,
+  height,
 }: OfficerListViewProps) => {
-  const { height } = useWindowSize();
   return (
     <>
       <OfficerListContainer height={height}>

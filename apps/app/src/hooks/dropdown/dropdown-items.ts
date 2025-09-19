@@ -422,35 +422,55 @@ export const useVisitationMethodDropdownItems = () => {
 
   return items;
 };
-
-export const useTimeDropdownItems = (locale: LOCALE) => {
+export const useTimeDropdownItems = (
+  locale: LOCALE,
+  includeMidnight: boolean = true // true면 24:00 포함, false면 23:30까지만
+) => {
   const items: { value: number; title: string }[] = [];
 
-  for (let totalMinutes = 0; totalMinutes < 24 * 60; totalMinutes += 30) {
-    const hour24 = Math.floor(totalMinutes / 60);
+  const START_MIN = 8 * 60; // 08:00
+  const END_MIN = includeMidnight
+    ? 24 * 60 // 24:00 포함
+    : 24 * 60 - 30; // 23:30까지
+
+  for (
+    let totalMinutes = START_MIN;
+    totalMinutes <= END_MIN;
+    totalMinutes += 30
+  ) {
+    const hour24 = Math.floor(totalMinutes / 60) % 24; // 24:00 표시용
     const minute = totalMinutes % 60;
 
     if (locale === LOCALE.KO) {
-      // ✅ 한국어 표기: 오전/오후 hh:mm
+      // 오전/오후 hh:mm
       const period = hour24 < 12 ? '오전' : '오후';
       const hour12 = hour24 % 12 === 0 ? 12 : hour24 % 12;
       const title = `${period} ${hour12.toString().padStart(2, '0')}:${minute
         .toString()
         .padStart(2, '0')}`;
+
+      // 24:00은 시각적으로 '오전 12:00'이지만 자정임을 명확히 하고 싶다면:
+      // if (totalMinutes === 24 * 60) title = '자정';
+
       items.push({ value: totalMinutes, title });
     } else {
-      // ✅ 기본(영문) 표기: 12시간제 AM/PM
+      // 12-hour AM/PM
       const period = hour24 < 12 ? 'AM' : 'PM';
       const hour12 = hour24 % 12 === 0 ? 12 : hour24 % 12;
       const title = `${hour12.toString().padStart(2, '0')}:${minute
         .toString()
         .padStart(2, '0')} ${period}`;
+
+      // 24:00을 '12:00 AM'로 보이게 하되 별도 라벨 원하면:
+      // if (totalMinutes === 24 * 60) title = '12:00 AM';
+
       items.push({ value: totalMinutes, title });
     }
   }
 
   return items;
 };
+
 export const useAttendanceStatusDropdownItems = () => {
   const t = useI18n();
 

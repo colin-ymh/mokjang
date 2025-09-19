@@ -33,7 +33,7 @@ const MinistryGroupListContainer = styled.div`
   padding: 30px;
   gap: 30px;
   width: 700px;
-  height: 850px;
+  flex-shrink: 0;
 `;
 
 const AddContainer = styled.div`
@@ -142,6 +142,7 @@ const MinistryInit = ({}: MinistryInitProps) => {
       <MinistryGroupList
         selectedMinistryGroupId={null}
         onClickMinistryGroup={(g: MinistryGroup) => {}}
+        height={500}
       />
     </MinistryGroupListContainer>
   );

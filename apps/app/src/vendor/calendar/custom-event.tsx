@@ -8,7 +8,7 @@ const EventContainer = styled.div`
   align-items: center;
   justify-content: space-between; /* 좌측 텍스트 / 우측 이미지 분리 */
   width: 100%;
-  height: 100%;
+  height: 25px;
   padding: 2px 6px;
   box-sizing: border-box;
 `;

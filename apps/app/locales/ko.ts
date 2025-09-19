@@ -613,7 +613,7 @@ export default {
   'button.addEducation': '교육 추가',
   'button.addEducationTerm': '기수 추가',
   'button.addEducationGoal': '목표 추가',
-  'button.addPermissionTemplate': '권한유형 추가하기',
+  'button.addPermissionTemplate': '권한유형 추가',
   'button.filterVisitationDate': '기간',
   'button.filterTaskDate': '기간',
   'button.setting': '설정',

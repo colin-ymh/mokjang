@@ -24,13 +24,15 @@ const ListContainer = styled.div`
 const ScheduleItem = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   padding: 10px;
   border: 1px solid ${GRAY.LIGHT};
   border-radius: 10px;
   gap: 10px;
   cursor: pointer;
+  flex-shrink: 0;
+  position: relative;
 `;
 
 const ColumnContainer = styled.div`
@@ -40,12 +42,11 @@ const ColumnContainer = styled.div`
   width: 100%;
 `;
 
-const RowContainer = styled.div`
+const StatusContainer = styled.div`
   display: flex;
-  flex-direction: row;
-  align-items: center;
-  width: 100%;
-  justify-content: space-between;
+  position: absolute;
+  right: 10px;
+  top: 10px;
 `;
 
 type ReportedScheduleListProps = {
@@ -94,28 +95,27 @@ const ReportedScheduleList = ({
                 height={40}
               />
               <ColumnContainer>
-                <RowContainer>
-                  <MainText>{`[${t(domain as DOMAIN)}] ${scheduleTitle}`}</MainText>
-                  <MainTag
-                    title={t(schedule.status as STATUS)}
-                    color={getStatusFontColor(schedule.status as STATUS)}
-                    backgroundColor={getStatusBackgroundColor(
-                      schedule.status as STATUS
-                    )}
-                  />
-                </RowContainer>
-                <RowContainer>
-                  <MainText color={GRAY.SEMI_DARK}>
-                    {getTranslatedScheduleDate(
-                      locale,
-                      getDateFromDateString(schedule.end as string)
-                    )}
-                  </MainText>
-                  {/*<MainText color={MAIN.DEFAULT}>*/}
-                  {/*  {`${t('inCharge')}: ${schedule.inCharge?.name as string}`}*/}
-                  {/*</MainText>*/}
-                </RowContainer>
+                <MainText
+                  whiteSpace={'nowrap'}
+                >{`[${t(domain as DOMAIN)}] ${scheduleTitle}`}</MainText>
+
+                <MainText color={GRAY.SEMI_DARK}>
+                  {getTranslatedScheduleDate(
+                    locale,
+                    getDateFromDateString(schedule.end as string)
+                  )}
+                </MainText>
               </ColumnContainer>
+
+              <StatusContainer>
+                <MainTag
+                  title={t(schedule.status as STATUS)}
+                  color={getStatusFontColor(schedule.status as STATUS)}
+                  backgroundColor={getStatusBackgroundColor(
+                    schedule.status as STATUS
+                  )}
+                />
+              </StatusContainer>
             </ScheduleItem>
           );
         })

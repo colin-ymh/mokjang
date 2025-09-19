@@ -1,4 +1,4 @@
-import { DAY, REPEAT_PERIOD } from '@mokjang/constants';
+import { DAY, LOCALE, REPEAT_PERIOD } from '@mokjang/constants';
 /**
  * YYYY-MM-DD => Date Object (UTC기준)
  * @param dateString
@@ -86,3 +86,4 @@ export declare const getLastSunday: () => Date;
 export declare const getDayConstantByIndex: (dayIndex: number) => DAY | undefined;
 export declare const getWeekRepeatConstant: (number: number) => REPEAT_PERIOD | undefined;
 export declare const getDateGap: (date1: Date, date2: Date) => number;
+export declare const getRegisterAfterDate: (locale: LOCALE, date: string) => string;

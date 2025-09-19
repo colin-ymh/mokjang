@@ -33,6 +33,8 @@ type CreatePermissionTemplateBody = {
 type GetPermissionTemplateParams = {
   churchId: string;
   templateId: string;
+  take?: number;
+  page?: number;
 };
 
 type EditPermissionTemplateParams = {
@@ -221,12 +223,17 @@ export class PermissionsApi {
   public getPermissionTemplate = async (
     params: GetPermissionTemplateParams
   ) => {
-    const { churchId, templateId } = params;
+    const { churchId, templateId, take, page } = params;
 
     const url = `${this._url}/churches/${churchId}/permissions/templates/${templateId}`;
 
     try {
-      return await authorizeAxios.get(url);
+      return await authorizeAxios.get(url, {
+        params: {
+          take,
+          page,
+        },
+      });
     } catch (serverError: any) {
       if (serverError.response) {
         const { message, error, statusCode } = serverError.response.data;

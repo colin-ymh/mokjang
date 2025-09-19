@@ -15,6 +15,7 @@ import {
 } from '@/redux/reducers/toast-popup-reducer';
 import MinistryGroupList from './ministry-group-list';
 import { MinistryGroupsApi } from '@/api/management/ministry/ministry-groups.api';
+import useWindowSize from '@/hooks/window/window';
 
 const MinistryGroupListContainer = styled.div`
   display: flex;
@@ -41,6 +42,7 @@ const MinistryGroupSideBar = ({
   selectedMinistryGroup,
   onClickMinistryGroup,
 }: MinistryGroupSideBarProps) => {
+  const { height } = useWindowSize();
   const t = useI18n();
   const t_popup = useScopedI18n('popup');
   const dispatch = useDispatch<AppDispatch>();
@@ -131,6 +133,7 @@ const MinistryGroupSideBar = ({
       <MinistryGroupList
         selectedMinistryGroupId={selectedMinistryGroup.id}
         onClickMinistryGroup={onClickMinistryGroup}
+        height={height - 320}
       />
     </MinistryGroupListContainer>
   );

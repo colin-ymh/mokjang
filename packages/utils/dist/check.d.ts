@@ -7,3 +7,4 @@ export declare const getIsWellFormedDate: (birth: string) => boolean;
 export declare const getIsWellFormedName: (name: string) => boolean;
 export declare const getIsWellFormedTitle: (name: string) => boolean;
 export declare const getIsWellFormedVehicleNumber: (vehicleNumber: string) => boolean;
+export declare const getIsWellFormedIdentifyNumber: (identifyNumber: string) => boolean;

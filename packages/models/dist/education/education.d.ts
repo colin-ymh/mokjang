@@ -1,5 +1,5 @@
-import { Member } from '../member/member';
 import { EDUCATION_ATTENDANCE_STATUS, EDUCATION_ENROLLMENT_STATUS, STATUS, TASK_STATUS } from '@mokjang/constants';
+import { Member } from '../member/member';
 import { VisitationReport } from '../report/report';
 export type Education = {
     id: string;
@@ -23,6 +23,7 @@ export type EducationEnrollment = {
     status: EDUCATION_ENROLLMENT_STATUS;
     member: Member;
     attendancesCount: number;
+    educationTerm?: EducationTerm;
 };
 export declare const DEFAULT_EDUCATION_ENROLLMENT: EducationEnrollment;
 export type EducationTerm = {

@@ -1,12 +1,22 @@
 import React, { useEffect, useRef } from 'react';
-import { DragSourceMonitor, DropTargetMonitor, useDrag, useDrop, } from 'react-dnd';
+import {
+  DragSourceMonitor,
+  DropTargetMonitor,
+  useDrag,
+  useDrop,
+} from 'react-dnd';
 import styled from 'styled-components';
-import { DND_ITEM_TYPE, GRAY, HOME_WIDGET, MAIN, WHITE, } from '@mokjang/constants';
+import {
+  DND_ITEM_TYPE,
+  GRAY,
+  HOME_WIDGET,
+  MAIN,
+  MEDIA_MIN_WIDTH,
+  WHITE,
+} from '@mokjang/constants';
 import { getEmptyImage } from 'react-dnd-html5-backend';
-
-import { Svg } from '@mokjang/assets';
 import { useScopedI18n } from '../../../../locales/client';
-import useWindowSize from '@/hooks/window/window';
+import useWindowSize from '@/hooks/window/window'; // 드래그 타입 상수
 
 // 드래그 타입 상수
 type DragItem = { index: number; id: HOME_WIDGET; title: string };
@@ -17,8 +27,6 @@ const WidgetItem = styled.div<{ $isDragging: boolean; width: number }>`
   position: relative;
   flex-direction: column;
   gap: 10px;
-  //width: 500px;
-  width: ${({ width }) => width}px;
   height: 400px;
   box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
@@ -26,19 +34,21 @@ const WidgetItem = styled.div<{ $isDragging: boolean; width: number }>`
     `1px solid ${$isDragging ? MAIN.LIGHT : GRAY.EXTRA_LIGHT};`};
   background-color: ${WHITE};
   padding: 20px;
-`;
 
-const DeleteContainer = styled.div`
-  position: absolute;
-  display: flex;
-  right: 10px;
-  top: 10px;
-`;
+  // 모바일
+  @media (min-width: ${MEDIA_MIN_WIDTH.MOBILE}) {
+    width: ${({ width }) => width - 100}px;
+  }
 
-const DeleteButton = styled(Svg.Cancel)`
-  width: 20px;
-  height: 20px;
-  cursor: pointer;
+  // 태블릿
+  @media (min-width: ${MEDIA_MIN_WIDTH.TABLET}) {
+    width: ${({ width }) => (width - 200) / 2}px;
+  }
+
+  // 데크스탑
+  @media (min-width: ${MEDIA_MIN_WIDTH.DESKTOP}) {
+    width: ${({ width }) => (width - 450) / 3}px;
+  }
 `;
 
 type DraggableWidgetProps = {
@@ -121,7 +131,7 @@ const HomeWidgetItem = ({
   }, [preview]);
 
   return (
-    <WidgetItem ref={ref} $isDragging={isDragging} width={(width - 500) / 3}>
+    <WidgetItem ref={ref} $isDragging={isDragging} width={width}>
       {widget}
       {/*<DeleteContainer>*/}
       {/*  <DeleteButton onClick={onClickDelete} />*/}

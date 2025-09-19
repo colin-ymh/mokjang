@@ -78,6 +78,7 @@ export const useInitializeUser = () => {
 
     try {
       // 유저 정보 조회
+      // const response = await userApi.getMy();
       const response = await userApi.getMy();
       const user: User = response.data.data;
       dispatch(setUser(user));
@@ -91,7 +92,7 @@ export const useInitializeUser = () => {
         const churchRes = await churchesApi.getChurch({ churchId });
         dispatch(setChurch(churchRes.data));
       } else {
-        setRedirectPath('/'); // 교회가 없는 경우 처리
+        setRedirectPath('/church/register');
       }
     } catch (error) {
       // 로그인 안 되었거나 API 실패 시

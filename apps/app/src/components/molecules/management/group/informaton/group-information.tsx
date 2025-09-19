@@ -1,19 +1,8 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
-import {
-  BLACK,
-  BLANK,
-  DESTRUCTIVE,
-  GROUP_ROLE,
-  MEMBER,
-  ORDER_DIRECTION,
-} from '@mokjang/constants';
+import { BLACK, BLANK, DESTRUCTIVE, GROUP_ROLE, MEMBER, ORDER_DIRECTION, } from '@mokjang/constants';
 import { Group, Member } from '@mokjang/models';
 import { useScopedI18n } from '../../../../../../locales/client';
-import {
-  getDateStringFromDate,
-  getFormattedTitle,
-  getIsWellFormedTitle,
-} from '@mokjang/utils';
+import { getDateStringFromDate, getFormattedTitle, getIsWellFormedTitle, } from '@mokjang/utils';
 import { fetchGroups } from '../../../../../redux/reducers/church-reducer';
 import {
   setIsToastShown,
@@ -147,10 +136,9 @@ const GroupInformation = ({
         churchId,
         groupId: selectedGroup.id as string,
       });
-      const groups = response.data;
-
+      const newGroup = response.data;
       dispatch(fetchGroups());
-      onClickGroup(groups[groups.length - 1]);
+      onClickGroup(newGroup);
       setIsEditShown(false);
       setEditName(BLANK);
 

@@ -51,7 +51,7 @@ const CustomCalendarContainer = styled.div`
     height: 50px;
     font-size: 14px;
     font-weight: 400;
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Pretendard', sans-serif;
     color: ${GRAY.DARK};
     border-color: ${GRAY.LIGHT};
   }

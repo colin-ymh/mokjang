@@ -1,21 +1,25 @@
 'use client';
 
 import styled from 'styled-components';
-import React, {ChangeEvent} from 'react';
-import {useI18n, useScopedI18n} from '../../../../../../locales/client';
-import {BLANK, GRAY, LOCALE, SIZE} from '@mokjang/constants';
-import {BorderInput, MainText, RequiredMark} from '@mokjang/components';
-import {useSelector} from 'react-redux';
-import {RootState} from '../../../../../redux/store';
+import React, { ChangeEvent } from 'react';
+import { useI18n, useScopedI18n } from '../../../../../../locales/client';
+import { BLANK, GRAY, LOCALE, SIZE } from '@mokjang/constants';
+import { BorderInput, MainText, RequiredMark } from '@mokjang/components';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../../../redux/store';
 import CustomDatePicker from '../../../../../vendor/date-picker/custom-date-picker';
-import {getDateFromDateString, getDateStringFromDate, getTotalMinuteFromDate, } from '@mokjang/utils';
+import {
+  getDateFromDateString,
+  getDateStringFromDate,
+  getTotalMinuteFromDate,
+} from '@mokjang/utils';
 import Dropdown from '../../../../atoms/common/dropdown/dropdown';
-import {useTimeDropdownItems} from '../../../../../hooks/dropdown/dropdown-items';
+import { useTimeDropdownItems } from '../../../../../hooks/dropdown/dropdown-items';
 import MemberDropdown from '../../../../atoms/common/dropdown/member-dropdown';
 import BigMemberTag from '../../../../atoms/common/tag/big-member-tag';
-import {MemberDropdownType} from '../../../../atoms/common/dropdown/member-dropdown-item';
+import { MemberDropdownType } from '../../../../atoms/common/dropdown/member-dropdown-item';
 import MemberTag from '../../../../atoms/common/tag/member-tag';
-import {usePathname} from 'next/navigation';
+import { usePathname } from 'next/navigation';
 
 /* ──────────────────────────────── Styled Components ─────────────────────────────── */
 const AddEducationTermViewContainer = styled.div`
@@ -192,7 +196,7 @@ const AddEducationTermView = ({
                     ? getTotalMinuteFromDate(
                         getDateFromDateString(targetEducationTerm.startDate)
                       )
-                    : 0
+                    : 8 * 60
                 }
                 items={timeDropdownItems}
                 onChangeItem={onChangeStartTime}
@@ -221,7 +225,7 @@ const AddEducationTermView = ({
                     ? getTotalMinuteFromDate(
                         getDateFromDateString(targetEducationTerm.endDate)
                       )
-                    : 0
+                    : 8 * 60
                 }
                 items={timeDropdownItems}
                 onChangeItem={onChangeEndTime}

@@ -119,8 +119,8 @@ const UserRegisterList = () => {
         privacyPolicyAgreed: isVerified,
       });
       if (response.status === 201) {
-        const userResponse = await userApi.getUser();
-        const newUser = userResponse.data;
+        const userResponse = await userApi.getMy();
+        const newUser = userResponse.data.data;
         dispatch(setUser(newUser));
         router.push('/');
       }

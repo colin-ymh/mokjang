@@ -6,6 +6,7 @@ import {
   EDUCATION_TERM_CONTENT_ID,
   MANAGER_CONTENT_ID,
   MEMBER_CONTENT_ID,
+  PERMISSION_TEMPLATE_CONTENT_ID,
   TASK_CONTENT_ID,
   VISITATION_CONTENT_ID,
 } from '../../constants/layout/content';
@@ -19,6 +20,7 @@ import { MEMBER_TABLE_HEADER_ITEM } from '../../redux/reducers/filter/member-fil
 import { MEMBER } from '@mokjang/constants';
 
 import { Svg } from '@mokjang/assets';
+import { HeaderBarItem } from '@/components/atoms/layout/header/header-bar.view';
 
 export const useMainMemberHeaderBarItems = () => {
   const t_memberContent = useScopedI18n('member-content');
@@ -246,6 +248,23 @@ export const useEducationSessionHeaderBarItems = () => {
     {
       value: EDUCATION_SESSION_CONTENT_ID.ATTENDANCE,
       title: t_header(EDUCATION_SESSION_CONTENT_ID.ATTENDANCE),
+    },
+  ];
+
+  return items;
+};
+
+export const usePermissionTemplateHeaderBarItems = (): HeaderBarItem[] => {
+  const t_header = useScopedI18n('header');
+
+  const items = [
+    {
+      id: PERMISSION_TEMPLATE_CONTENT_ID.PERMISSION,
+      title: t_header(PERMISSION_TEMPLATE_CONTENT_ID.PERMISSION),
+    },
+    {
+      id: PERMISSION_TEMPLATE_CONTENT_ID.MANAGER,
+      title: t_header(PERMISSION_TEMPLATE_CONTENT_ID.MANAGER),
     },
   ];
 

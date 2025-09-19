@@ -35,6 +35,7 @@ const HeaderContainer = styled.div`
 `;
 
 type ChurchManagementViewProps = {
+  isSaveEnabled: boolean;
   targetChurch: Church;
   setTargetChurch: Dispatch<SetStateAction<Church>>;
   isEditShown: boolean;
@@ -44,6 +45,7 @@ type ChurchManagementViewProps = {
 };
 
 const ChurchManagementView = ({
+  isSaveEnabled,
   targetChurch,
   setTargetChurch,
   isEditShown,
@@ -95,6 +97,7 @@ const ChurchManagementView = ({
         headerTitle={t('title.editChurch')}
         cancelText={t_button('cancel')}
         doneText={t_button('save')}
+        doneDisabled={!isSaveEnabled}
       >
         <EditChurchInformation
           targetChurch={targetChurch}

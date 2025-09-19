@@ -15,6 +15,7 @@ import {
   setToastBackgroundColor,
   setToastText,
 } from '../../../../../redux/reducers/toast-popup-reducer';
+import useWindowSize from '@/hooks/window/window';
 
 const OfficerListContainer = styled.div`
   display: flex;
@@ -41,6 +42,7 @@ const OfficerSideBar = ({
   selectedOfficer,
   onClickOfficer,
 }: OfficerSideBarProps) => {
+  const { height } = useWindowSize();
   const t = useI18n();
   const t_popup = useScopedI18n('popup');
   const dispatch = useDispatch<AppDispatch>();
@@ -125,6 +127,7 @@ const OfficerSideBar = ({
       <OfficerList
         selectedOfficerId={selectedOfficer.id}
         onClickOfficer={onClickOfficer}
+        height={height - 320}
       />
     </OfficerListContainer>
   );

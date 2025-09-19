@@ -53,7 +53,7 @@ const AddEducationSession = ({ isEdit = false }: AddEducationSessionProps) => {
       ? getTimeStringFromDate(
           getDateFromDateString(targetEducationSession.startDate)
         )
-      : '00:00';
+      : '08:00';
 
     // 기본: 시작일 갱신
     let nextStart = combineDateTime(newStartYmd, prevStartHm);
@@ -106,7 +106,7 @@ const AddEducationSession = ({ isEdit = false }: AddEducationSessionProps) => {
       ? getTimeStringFromDate(
           getDateFromDateString(targetEducationSession.endDate)
         )
-      : '00:00';
+      : '08:00';
 
     let nextEnd = combineDateTime(newEndYmd, prevEndHm);
 

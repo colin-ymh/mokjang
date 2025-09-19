@@ -4,15 +4,19 @@ import { MainTag, MainText, ProfileImage } from '@mokjang/components';
 import {
   GRAY,
   GROUP_ROLE,
+  LOCALE,
   MAIN,
   MINISTRY_GROUP_ROLE,
   PURPLE,
   SIZE,
+  VIOLET,
   YELLOW,
 } from '@mokjang/constants';
 import { RootState } from '@/redux/store';
 import { useSelector } from 'react-redux';
 import { useI18n } from '../../../../../../locales/client';
+import { getRegisterAfterDate } from '@mokjang/utils';
+import { usePathname } from 'next/navigation';
 
 const InformationHeader = styled.div`
   display: flex;
@@ -59,6 +63,9 @@ const TagContainer = styled.div`
 type MemberInformationHeaderViewProps = {};
 
 const MemberInformationHeaderView = ({}: MemberInformationHeaderViewProps) => {
+  const pathname = usePathname();
+  const basePath = pathname.split('/')[1] as LOCALE;
+
   const t = useI18n();
 
   const { targetMember } = useSelector(
@@ -93,6 +100,11 @@ const MemberInformationHeaderView = ({}: MemberInformationHeaderViewProps) => {
         </Information>
 
         <TagContainer>
+          <MainTag
+            title={getRegisterAfterDate(basePath, targetMember.registeredAt)}
+            color={VIOLET.DARK}
+            backgroundColor={VIOLET.LIGHT}
+          />
           {targetMember.churchUser && (
             <MainTag
               title={t('manager')}

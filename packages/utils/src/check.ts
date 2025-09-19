@@ -126,3 +126,11 @@ export const getIsWellFormedVehicleNumber = (vehicleNumber: string) => {
   if (vehicleNumber.length !== 4) return false;
   return true;
 };
+
+export const getIsWellFormedIdentifyNumber = (
+  identifyNumber: string
+): boolean => {
+  const pattern = /^\d{3}-\d{2}-\d{4}-\d{1}$/;
+
+  return pattern.test(identifyNumber);
+};

@@ -7,19 +7,22 @@ import {
   setToastText,
 } from '@/redux/reducers/toast-popup-reducer';
 import { DESTRUCTIVE } from '@mokjang/constants';
-import { useScopedI18n } from '../../../../locales/client';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '@/redux/store';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '@/redux/store';
 import { ChurchesApi } from '@/api/churches/churches.api';
 import { Church, DEFAULT_CHURCH } from '@mokjang/models';
+import { usePageRouter } from '@mokjang/utils';
+import { Loading } from '@mokjang/components';
+import { SubscriptionApi } from '@/api/subscription/subscription.api';
 
 const ChurchRegisterList = () => {
-  const { churchId } = useSelector((state: RootState) => state.church);
+  const router = usePageRouter();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [targetChurch, setTargetChurch] = useState<Church>(DEFAULT_CHURCH);
-  const t_popup = useScopedI18n('popup');
   const dispatch = useDispatch<AppDispatch>();
 
   const churchesApi = new ChurchesApi(false);
+  const subscriptionApi = new SubscriptionApi(false);
 
   const [thrownError, setThrownError] = useState<Error | null>(null);
   if (thrownError) {
@@ -27,6 +30,19 @@ const ChurchRegisterList = () => {
   }
 
   const onClickSave = async () => {
+    setIsLoading(true);
+
+    // 구독 정보 확인
+    try {
+      await subscriptionApi.getCurrentSubscription();
+
+      // 구독 정보가 있으면, 메인으로
+      router.push('/main');
+    } catch (error) {
+      //  없으면 구독
+      await subscriptionApi.getFreeTrial();
+    }
+
     try {
       const response = await churchesApi.createChurch({
         phone: targetChurch.phone,
@@ -44,6 +60,8 @@ const ChurchRegisterList = () => {
       // dispatch(setToastText(t_popup('saveComplete')));
       // dispatch(setIsToastShown(true));
       // dispatch(setToastBackgroundColor(BLACK));
+
+      router.push('/church/init');
     } catch (error) {
       if (error instanceof Error) {
         dispatch(setToastText(error.message));
@@ -52,6 +70,8 @@ const ChurchRegisterList = () => {
       } else {
         setThrownError(new Error(String(error)));
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -62,6 +82,7 @@ const ChurchRegisterList = () => {
         setTargetChurch={setTargetChurch}
         onClickSave={onClickSave}
       />
+      <Loading isShow={isLoading} />
     </>
   );
 };

@@ -190,7 +190,7 @@ const AddTaskView = ({
                 ? getTotalMinuteFromDate(
                     getDateFromDateString(targetTask.startDate)
                   )
-                : 0
+                : 8 * 60
             }
             items={timeDropdownItems}
             onChangeItem={onChangeStartTime}
@@ -220,7 +220,7 @@ const AddTaskView = ({
                 ? getTotalMinuteFromDate(
                     getDateFromDateString(targetTask.endDate)
                   )
-                : 0
+                : 8 * 60
             }
             items={timeDropdownItems}
             onChangeItem={onChangeEndTime}

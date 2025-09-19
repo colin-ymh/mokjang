@@ -138,6 +138,7 @@ export type EditMemberBody = {
   guidedById?: string;
   previousChurch?: string;
   vehicleNumber?: string[];
+  registeredAt?: string;
 };
 
 type DeleteMemberParams = {

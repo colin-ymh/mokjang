@@ -15,6 +15,7 @@ import {
   setToastBackgroundColor,
   setToastText,
 } from '../../../../../redux/reducers/toast-popup-reducer';
+import useWindowSize from '@/hooks/window/window';
 
 const GroupListContainer = styled.div`
   display: flex;
@@ -38,6 +39,7 @@ type GroupSideBarProps = {
 };
 
 const GroupSideBar = ({ selectedGroup, onClickGroup }: GroupSideBarProps) => {
+  const { height } = useWindowSize();
   const t = useI18n();
   const t_popup = useScopedI18n('popup');
   const dispatch = useDispatch<AppDispatch>();
@@ -122,6 +124,7 @@ const GroupSideBar = ({ selectedGroup, onClickGroup }: GroupSideBarProps) => {
       <GroupList
         selectedGroupId={selectedGroup.id}
         onClickGroup={onClickGroup}
+        height={height - 320}
       />
     </GroupListContainer>
   );

@@ -75,7 +75,7 @@ const AddEducationTerm = ({ isEdit = false }: AddEducationTermProps) => {
       ? getTimeStringFromDate(
           getDateFromDateString(targetEducationTerm.startDate)
         )
-      : '00:00';
+      : '08:00';
 
     // 기본: 시작일 갱신
     let nextStart = combineDateTime(newStartYmd, prevStartHm);
@@ -128,7 +128,7 @@ const AddEducationTerm = ({ isEdit = false }: AddEducationTermProps) => {
       ? getTimeStringFromDate(
           getDateFromDateString(targetEducationTerm.endDate)
         )
-      : '00:00';
+      : '08:00';
 
     let nextEnd = combineDateTime(newEndYmd, prevEndHm);
 

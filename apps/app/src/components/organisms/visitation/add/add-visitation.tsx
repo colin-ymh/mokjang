@@ -50,46 +50,53 @@ const AddVisitation = ({ isEdit = false }: AddVisitationProps) => {
     const newStartYmd = getDateStringFromDate(date);
     const prevStartHm = targetVisitation.startDate
       ? getTimeStringFromDate(getDateFromDateString(targetVisitation.startDate))
-      : '00:00';
+      : '08:00';
+
+    const newEndYmd = getDateStringFromDate(date);
+    const prevEndHm = targetVisitation.endDate
+      ? getTimeStringFromDate(getDateFromDateString(targetVisitation.endDate))
+      : '08:00';
 
     // 기본: 시작일 갱신
     let nextStart = combineDateTime(newStartYmd, prevStartHm);
+    let nextEnd = combineDateTime(newEndYmd, prevEndHm);
 
     // 종료일 관련 교정
-    if (targetVisitation.endDate) {
-      const endDateObj = getDateFromDateString(targetVisitation.endDate);
-      const prevEndYmd = getDateStringFromDate(endDateObj);
-      const prevEndHm = getTimeStringFromDate(endDateObj);
-
-      let nextEndYmd = prevEndYmd;
-      let nextEndHm = prevEndHm;
-
-      // 시작일이 종료일을 넘어가면 종료 "날짜"를 시작 날짜로 이동
-      if (newStartYmd > prevEndYmd) {
-        nextEndYmd = newStartYmd;
-      }
-
-      // 같은 날인데 시작 시간이 종료 시간보다 크면 종료 "시간"을 시작 시간으로 맞춤
-      if (nextEndYmd === newStartYmd) {
-        if (toMinutes(prevStartHm) > toMinutes(prevEndHm)) {
-          nextEndHm = prevStartHm;
-        }
-      }
-
-      dispatch(
-        setTargetVisitation({
-          ...targetVisitation,
-          startDate: nextStart,
-          endDate: combineDateTime(nextEndYmd, nextEndHm),
-        })
-      );
-      return;
-    }
+    // if (targetVisitation.endDate) {
+    //   const endDateObj = getDateFromDateString(targetVisitation.endDate);
+    //   const prevEndYmd = getDateStringFromDate(endDateObj);
+    //   const prevEndHm = getTimeStringFromDate(endDateObj);
+    //
+    //   let nextEndYmd = prevEndYmd;
+    //   let nextEndHm = prevEndHm;
+    //
+    //   // 시작일이 종료일을 넘어가면 종료 "날짜"를 시작 날짜로 이동
+    //   if (newStartYmd > prevEndYmd) {
+    //     nextEndYmd = newStartYmd;
+    //   }
+    //
+    //   // 같은 날인데 시작 시간이 종료 시간보다 크면 종료 "시간"을 시작 시간으로 맞춤
+    //   if (nextEndYmd === newStartYmd) {
+    //     if (toMinutes(prevStartHm) > toMinutes(prevEndHm)) {
+    //       nextEndHm = prevStartHm;
+    //     }
+    //   }
+    //
+    //   dispatch(
+    //     setTargetVisitation({
+    //       ...targetVisitation,
+    //       startDate: nextStart,
+    //       endDate: combineDateTime(nextEndYmd, nextEndHm),
+    //     })
+    //   );
+    //   return;
+    // }
 
     dispatch(
       setTargetVisitation({
         ...targetVisitation,
         startDate: nextStart,
+        endDate: nextEnd,
       })
     );
   };
@@ -101,7 +108,7 @@ const AddVisitation = ({ isEdit = false }: AddVisitationProps) => {
     const newEndYmd = getDateStringFromDate(date);
     const prevEndHm = targetVisitation.endDate
       ? getTimeStringFromDate(getDateFromDateString(targetVisitation.endDate))
-      : '00:00';
+      : '08:00';
 
     let nextEnd = combineDateTime(newEndYmd, prevEndHm);
 

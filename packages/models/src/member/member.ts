@@ -9,10 +9,11 @@ import {
   MINISTRY_GROUP_ROLE,
 } from '@mokjang/constants';
 import { Group, Ministry, MinistryGroup, Officer } from '../management';
-import { Education } from '../education';
+import { Education, EducationEnrollment } from '../education';
 import { getDateStringFromDate } from '@mokjang/utils';
 import { GroupHistory, MinistryHistory, OfficerHistory } from './history';
 import { ChurchUser } from '../church-user';
+import { WorshipEnrollment } from '../worship';
 
 export type ChurchInformation = {
   id: string;
@@ -67,6 +68,8 @@ export type Member = {
   officerHistory?: OfficerHistory[];
   groupHistory?: GroupHistory[];
   ministryGroupHistory?: MinistryHistory[];
+
+  educationEnrollments?: EducationEnrollment[];
 };
 
 export const DEFAULT_MEMBER: Member = {

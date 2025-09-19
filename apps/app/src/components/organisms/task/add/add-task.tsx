@@ -50,7 +50,7 @@ const AddTask = ({ isEdit = false }: AddTaskProps) => {
     const newStartYmd = getDateStringFromDate(date);
     const prevStartHm = targetTask.startDate
       ? getTimeStringFromDate(getDateFromDateString(targetTask.startDate))
-      : '00:00';
+      : '08:00';
 
     // 기본: 시작일 갱신
     let nextStart = combineDateTime(newStartYmd, prevStartHm);
@@ -101,7 +101,7 @@ const AddTask = ({ isEdit = false }: AddTaskProps) => {
     const newEndYmd = getDateStringFromDate(date);
     const prevEndHm = targetTask.endDate
       ? getTimeStringFromDate(getDateFromDateString(targetTask.endDate))
-      : '00:00';
+      : '08:00';
 
     let nextEnd = combineDateTime(newEndYmd, prevEndHm);
 

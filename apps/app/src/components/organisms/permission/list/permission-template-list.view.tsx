@@ -112,6 +112,8 @@ const PermissionTemplateListView = (props: PermissionTemplateListViewProps) => {
         headerTitle={targetPermissionTemplate.title}
         onClickClose={onClickClose}
         cancelText={t_button('close')}
+        isHeaderBorderShown={targetPermissionTemplate.id === 'owner'}
+        isFooterShown={false}
       >
         {isPermissionTemplateInformationShown && (
           <PermissionTemplateInformation onClickDelete={onClickDelete} />

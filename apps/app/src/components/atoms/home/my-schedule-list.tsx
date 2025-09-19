@@ -28,13 +28,14 @@ const ListContainer = styled.div`
 const ScheduleItem = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   padding: 10px;
   border: 1px solid ${GRAY.LIGHT};
   border-radius: 10px;
   gap: 10px;
   cursor: pointer;
+  position: relative;
 `;
 
 const ColumnContainer = styled.div`
@@ -51,6 +52,14 @@ const RowContainer = styled.div`
   width: 100%;
   justify-content: space-between;
 `;
+
+const StatusContainer = styled.div`
+  display: flex;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+`;
+
 type MyScheduleListProps = {
   mySchedules: Schedule[];
   onClickSchedule: (schedule: Schedule) => void;
@@ -86,30 +95,28 @@ const MyScheduleList = ({
                 height={40}
               />
               <ColumnContainer>
-                <RowContainer>
-                  <MainText>
-                    {schedule.title
-                      ? `[${t(domain as CALENDAR_DOMAIN)}] ${schedule.title}`
-                      : `[${t(domain as CALENDAR_DOMAIN)}] ${schedule.educationName} ${getTranslatedTerm(locale, schedule.educationTerm as string)}`}
-                  </MainText>
-                  <MainTag
-                    title={t(schedule.status as STATUS)}
-                    color={getStatusFontColor(schedule.status as STATUS)}
-                    backgroundColor={getStatusBackgroundColor(
-                      schedule.status as STATUS
-                    )}
-                  />
-                </RowContainer>
-                <RowContainer>
-                  {/*<MainTag title={} />*/}
-                  <MainText color={GRAY.SEMI_DARK}>
-                    {getTranslatedScheduleDate(
-                      locale,
-                      getDateFromDateString(schedule.end as string)
-                    )}
-                  </MainText>
-                </RowContainer>
+                <MainText>
+                  {schedule.title
+                    ? `[${t(domain as CALENDAR_DOMAIN)}] ${schedule.title}`
+                    : `[${t(domain as CALENDAR_DOMAIN)}] ${schedule.educationName} ${getTranslatedTerm(locale, schedule.educationTerm as string)}`}
+                </MainText>
+
+                <MainText color={GRAY.SEMI_DARK}>
+                  {getTranslatedScheduleDate(
+                    locale,
+                    getDateFromDateString(schedule.end as string)
+                  )}
+                </MainText>
               </ColumnContainer>
+              <StatusContainer>
+                <MainTag
+                  title={t(schedule.status as STATUS)}
+                  color={getStatusFontColor(schedule.status as STATUS)}
+                  backgroundColor={getStatusBackgroundColor(
+                    schedule.status as STATUS
+                  )}
+                />
+              </StatusContainer>
             </ScheduleItem>
           );
         })

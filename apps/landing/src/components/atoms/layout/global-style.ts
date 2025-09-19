@@ -8,7 +8,7 @@ const GlobalStyle = createGlobalStyle`
         height: 100%;
         background-color: ${GRAY.SUPER_LIGHT};
         min-width: 320px;
-        font-family: 'Roboto', sans-serif;
+        font-family: 'Pretendard', sans-serif;
         touch-action: none;
         overscroll-behavior: none;
 

@@ -84,6 +84,15 @@ export enum STATUS_COLOR {
   REJECTED = '#f32827',
 }
 
+export enum CALENDAR_COLOR {
+  MEMBER = '#fff4d2',
+  VISITATION = '#f2e1ff',
+  TASK = '#cfe1ff',
+  EDUCATION_SESSION = '#ffcfcf',
+  EVENT = '#b5e8cd',
+  HOLIDAY = '#BDBDBD',
+}
+
 export enum STATUS_FONT_COLOR {
   RESERVE = GRAY.DARK,
   IN_PROGRESS = MAIN.DARK,
@@ -118,13 +127,4 @@ export enum STATUS_BACKGROUND_COLOR {
   CANCELED = GRAY.LIGHT,
   APPROVED = GREEN.LIGHT,
   REJECTED = RED.LIGHT,
-}
-
-export enum CALENDAR_COLOR {
-  MEMBER = '#fff4d2',
-  VISITATION = '#f2e1ff',
-  TASK = '#cfe1ff',
-  EDUCATION_SESSION = '#ffcfcf',
-  EVENT = '#b5e8cd',
-  HOLIDAY = '#BDBDBD',
 }

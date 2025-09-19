@@ -6,7 +6,7 @@ import { RootState } from '@/redux/store';
 
 import ModalLayout from '../../../../components/organisms/layout/modal-layout';
 
-import { routeLandingPage, usePageRouter } from '@mokjang/utils';
+import { usePageRouter } from '@mokjang/utils';
 import ChurchInit from '@/components/organisms/church/church-init';
 
 export default function ChurchInitPage() {
@@ -16,7 +16,8 @@ export default function ChurchInitPage() {
   useEffect(() => {
     // 초기화가 끝났는데 유저가 없으면 보호 라우트 → 홈으로
     if (initialized && !user?.id) {
-      routeLandingPage('/');
+      console.log(user);
+      // routeLandingPage('/');
     }
   }, [initialized, user?.id, router]);
 

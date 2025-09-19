@@ -137,6 +137,7 @@ const MainMemberHeader = ({}: MainMemberHeaderProps) => {
                 (number) => number.length > 0
               ) || undefined,
             registeredAt: updatedMember.registeredAt || undefined,
+            baptism: updatedMember.baptism || undefined,
           }
         )
         .then((response) => {

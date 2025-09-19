@@ -6,11 +6,13 @@ import { Officer } from '@mokjang/models';
 type OfficerListProps = {
   selectedOfficerId: string;
   onClickOfficer: (officer: Officer) => void;
+  height: number;
 };
 
 const OfficerList = ({
   selectedOfficerId,
   onClickOfficer,
+  height,
 }: OfficerListProps) => {
   const { officers } = useSelector((state: RootState) => state.church);
 
@@ -18,6 +20,7 @@ const OfficerList = ({
     officers,
     selectedOfficerId,
     onClickOfficer,
+    height,
   };
 
   return (

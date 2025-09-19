@@ -313,11 +313,7 @@ const MemberTableView = ({
       case MEMBER.REGISTERED_AT:
         return (
           <MainText>
-            {member.registeredAt &&
-              getTranslatedDateFromDateString(
-                basePath,
-                getFormattedDate(member.registeredAt)
-              )}
+            {getTranslatedDateFromDateString(basePath, member.registeredAt)}
           </MainText>
         );
       case MEMBER.UPDATED_AT:

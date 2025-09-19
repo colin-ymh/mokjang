@@ -113,7 +113,7 @@ export const getEventStyle = (event: Schedule) => {
       color: getCalenderColor(event.id?.split('-')[0] as DOMAIN),
       padding: '4px 6px',
       fontSize: '14px',
-      fontFamily: "'Roboto', sans-serif",
+      fontFamily: "'Pretendard', sans-serif",
       textDecoration: event.status === STATUS.DONE ? 'line-through' : 'none',
     },
   };

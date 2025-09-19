@@ -71,6 +71,7 @@ const RowContainer = styled.div`
 const PeriodContainer = styled.div`
   display: flex;
   gap: 10px;
+  width: 100%;
 `;
 
 type AddVisitationViewProps = {
@@ -150,7 +151,7 @@ const AddVisitationView = ({
           <RequiredMark />
         </MainText>
         {/* 기간 */}
-        <PeriodContainer>
+        <RowContainer>
           {/* 시작 날짜 */}
           <CustomDatePicker
             value={
@@ -166,52 +167,54 @@ const AddVisitationView = ({
                 : null
             }
             onChange={onChangeStartDate}
-            placeholderText={t('startDate')}
+            placeholderText={t('date')}
           />
-          {/* 시작 시간 */}
-          <Dropdown
-            value={
-              targetVisitation.startDate
-                ? getTotalMinuteFromDate(
-                    getDateFromDateString(targetVisitation.startDate)
-                  )
-                : 0
-            }
-            items={timeDropdownItems}
-            onChangeItem={onChangeStartTime}
-            chevronColor={GRAY.DEFAULT}
-          />
-          {/* 종료 날짜 */}
-          <CustomDatePicker
-            value={
-              targetVisitation.endDate
-                ? getDateStringFromDate(
-                    getDateFromDateString(targetVisitation.endDate)
-                  )
-                : undefined
-            }
-            selected={
-              targetVisitation.endDate
-                ? getDateFromDateString(targetVisitation.endDate)
-                : null
-            }
-            onChange={onChangeEndDate}
-            placeholderText={t('endDate')}
-          />
-          {/* 종료 시간 */}
-          <Dropdown
-            value={
-              targetVisitation.endDate
-                ? getTotalMinuteFromDate(
-                    getDateFromDateString(targetVisitation.endDate)
-                  )
-                : 0
-            }
-            items={timeDropdownItems}
-            onChangeItem={onChangeEndTime}
-            chevronColor={GRAY.DEFAULT}
-          />
-        </PeriodContainer>
+          <RowContainer>
+            {/* 시작 시간 */}
+            <Dropdown
+              value={
+                targetVisitation.startDate
+                  ? getTotalMinuteFromDate(
+                      getDateFromDateString(targetVisitation.startDate)
+                    )
+                  : 8 * 60
+              }
+              items={timeDropdownItems}
+              onChangeItem={onChangeStartTime}
+              chevronColor={GRAY.DEFAULT}
+            />
+            {/*/!* 종료 날짜 *!/*/}
+            {/*<CustomDatePicker*/}
+            {/*  value={*/}
+            {/*    targetVisitation.endDate*/}
+            {/*      ? getDateStringFromDate(*/}
+            {/*          getDateFromDateString(targetVisitation.endDate)*/}
+            {/*        )*/}
+            {/*      : undefined*/}
+            {/*  }*/}
+            {/*  selected={*/}
+            {/*    targetVisitation.endDate*/}
+            {/*      ? getDateFromDateString(targetVisitation.endDate)*/}
+            {/*      : null*/}
+            {/*  }*/}
+            {/*  onChange={onChangeEndDate}*/}
+            {/*  placeholderText={t('endDate')}*/}
+            {/*/>*/}
+            {/* 종료 시간 */}
+            <Dropdown
+              value={
+                targetVisitation.endDate
+                  ? getTotalMinuteFromDate(
+                      getDateFromDateString(targetVisitation.endDate)
+                    )
+                  : 8 * 60
+              }
+              items={timeDropdownItems}
+              onChangeItem={onChangeEndTime}
+              chevronColor={GRAY.DEFAULT}
+            />
+          </RowContainer>
+        </RowContainer>
       </ContentContainer>
 
       {/* 대상자 / 담당자 */}
