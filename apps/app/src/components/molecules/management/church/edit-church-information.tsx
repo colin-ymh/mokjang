@@ -20,6 +20,9 @@ import {
 import DaumPostcodeEmbed, { Address } from 'react-daum-postcode';
 import PagePopup from '../../../atoms/common/popup/page-popup';
 import { BLANK } from '@mokjang/constants';
+import { CustomPopup } from '@mokjang/components';
+import { useScopedI18n } from '../../../../../locales/client';
+import DeleteChurch from '@/components/molecules/church/delete-church';
 
 type EditChurchInformationProps = {
   targetChurch: Church;
@@ -32,9 +35,14 @@ const EditChurchInformation = ({
   setTargetChurch,
   onClickSave,
 }: EditChurchInformationProps) => {
+  const t_button = useScopedI18n('button');
+  const t_title = useScopedI18n('title');
+
   const [isSaveEnabled, setIsSaveEnabled] = useState<boolean>(false);
 
   const [isAddressOpen, setIsAddressOpen] = useState<boolean>(false);
+
+  const [isDeleteChurchOpen, setIsDeleteChurchOpen] = useState<boolean>(false);
 
   const onChangeName = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newName = getFormattedName(event.target.value);
@@ -163,6 +171,14 @@ const EditChurchInformation = ({
     setIsSaveEnabled(true);
   }, [targetChurch]);
 
+  const onClickDeleteChurchOpen = () => {
+    setIsDeleteChurchOpen(true);
+  };
+
+  const onClickDeleteChurchClose = () => {
+    setIsDeleteChurchOpen(false);
+  };
+
   const props = {
     targetChurch,
     isSaveEnabled,
@@ -175,6 +191,7 @@ const EditChurchInformation = ({
     onChangeDenomination,
     onChangeDenominationItem,
     onClickSave,
+    onClickDeleteChurchOpen,
   };
 
   return (
@@ -186,6 +203,21 @@ const EditChurchInformation = ({
           style={{ width: '100%', height: '100%' }}
         />
       </PagePopup>
+
+      {/* 교회 삭제 */}
+      <CustomPopup
+        isShow={isDeleteChurchOpen}
+        onClickClose={onClickDeleteChurchClose}
+        onClickCancel={onClickDeleteChurchClose}
+        width={400}
+        height={500}
+        headerTitle={t_title('deleteChurch')}
+        cancelText={t_button('cancel')}
+        doneDisabled={!isSaveEnabled}
+        blur={false}
+      >
+        <DeleteChurch />
+      </CustomPopup>
     </>
   );
 };

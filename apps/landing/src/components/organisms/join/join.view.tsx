@@ -48,6 +48,11 @@ const RowContainer = styled.div`
   gap: 10px;
 `;
 
+const RowTitleContainer = styled.div`
+  display: flex;
+  width: 100px;
+`;
+
 const TitleContainer = styled.div`
   display: flex;
   gap: 10px;
@@ -176,42 +181,56 @@ const JoinView = ({
               </TitleContainer>
               <InformationList>
                 <RowContainer>
-                  <MainText fontSize={14} fontWeight={400} color={GRAY.DARK}>
-                    {t('churchName')}
-                  </MainText>
+                  <RowTitleContainer>
+                    <MainText fontSize={14} fontWeight={400} color={GRAY.DARK}>
+                      {t('churchName')}
+                    </MainText>
+                  </RowTitleContainer>
                   <MainText fontSize={16} fontWeight={500}>
                     {church.name}
                   </MainText>
                 </RowContainer>
                 <RowContainer>
-                  <MainText fontSize={14} fontWeight={400} color={GRAY.DARK}>
-                    {t('denomination')}
-                  </MainText>
+                  <RowTitleContainer>
+                    <MainText fontSize={14} fontWeight={400} color={GRAY.DARK}>
+                      {t('denomination')}
+                    </MainText>
+                  </RowTitleContainer>
                   <MainText fontSize={16} fontWeight={500}>
                     {church.denomination}
                   </MainText>
                 </RowContainer>
                 <RowContainer>
-                  <MainText fontSize={14} fontWeight={400} color={GRAY.DARK}>
-                    {t('pastor')}
-                  </MainText>
+                  <RowTitleContainer>
+                    <MainText fontSize={14} fontWeight={400} color={GRAY.DARK}>
+                      {t('pastor')}
+                    </MainText>
+                  </RowTitleContainer>
                   <MainText fontSize={16} fontWeight={500}>
                     {church.pastor}
                   </MainText>
                 </RowContainer>
                 <RowContainer>
-                  <MainText fontSize={14} fontWeight={400} color={GRAY.DARK}>
-                    {t('memberCount')}
-                  </MainText>
+                  <RowTitleContainer>
+                    <MainText fontSize={14} fontWeight={400} color={GRAY.DARK}>
+                      {t('memberCount')}
+                    </MainText>
+                  </RowTitleContainer>
                   <MainText fontSize={16} fontWeight={500}>
                     {getTranslatedMemberCount(locale, church.memberCount)}
                   </MainText>
                 </RowContainer>
                 <RowContainer>
-                  <MainText fontSize={14} fontWeight={400} color={GRAY.DARK}>
-                    {t('address')}
-                  </MainText>
-                  <MainText fontSize={16} fontWeight={500}>
+                  <RowTitleContainer>
+                    <MainText fontSize={14} fontWeight={400} color={GRAY.DARK}>
+                      {t('address')}
+                    </MainText>
+                  </RowTitleContainer>
+                  <MainText
+                    fontSize={16}
+                    fontWeight={500}
+                    whiteSpace={'normal'}
+                  >
                     {church.address}
                   </MainText>
                 </RowContainer>

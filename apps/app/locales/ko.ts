@@ -15,6 +15,8 @@ export default {
   custom: '직접입력',
   email: '이메일',
 
+  joinCode: '초대 코드',
+
   officerNone: '직분 없음',
   marriageNone: '결혼상태 없음',
   baptismNone: '신급 없음',
@@ -443,6 +445,7 @@ export default {
   'title.churchState': '교회현황',
 
   'title.editChurch': '교회정보 수정',
+  'title.deleteChurch': '교회 삭제',
 
   'title.addMinistry': '사역 추가',
   'title.editMinistry': '사역 수정',
@@ -601,6 +604,8 @@ export default {
   'button.confirm': '확인',
   'button.tableHeaderSetting': '표시 항목 설정',
   'button.verify': '인증하기',
+  'button.deleteChurchVerify': '소유자에게 인증번호 발송하기',
+  'button.verifyAndDelete': '인증 후 교회 삭제하기',
   'button.request': '요청하기',
   'button.add': '추가',
   'button.signIn': '회원가입 완료하기',
@@ -679,6 +684,9 @@ export default {
 
   'button.selectAll': '전체 선택',
 
+  'button.downloadMemberExcel': '등록용 엑셀 다운로드',
+  'button.uploadMemberExcel': '등록용 엑셀 업로드',
+
   /*-------------------button-------------------*/
 
   /*-------------------placeholder-------------------*/
@@ -751,6 +759,8 @@ export default {
 
   'placeholder.email': '이메일을 입력해주세요.',
 
+  'placeholder.verifyNumber': '인증번호를 입력해주세요',
+
   /*-------------------placeholder-------------------*/
 
   /*-------------------popup-------------------*/
@@ -821,6 +831,8 @@ export default {
 
   'popup.imageSize': '이미지 용량은 최대 5MB까지 업로드할 수 있습니다',
 
+  'popup.clipboard': '클립보드에 복사되었습니다.',
+
   /*-------------------popup-------------------*/
 
   /*-------------------warning-------------------*/
@@ -852,6 +864,9 @@ export default {
 
   'warning.deletePermissionTemplate':
     '소속된 관리자가 있으면 삭제가 불가능하며, 삭제된 권한 유형은 복구할 수 없습니다.',
+
+  'warning.deleteChurch':
+    '삭제 후 교회 정보는 3개월간 보관되며, 문의를 통해 복구할 수 있습니다. 3개월이 지나면 모든 정보가 완전히 삭제되어 복구할 수 없습니다.',
   /*-------------------warning-------------------*/
 
   /*-------------------description-------------------*/
@@ -872,6 +887,8 @@ export default {
   'description.memberRegisterHeader': '새로운 교인의 정보를 입력해주세요',
   'description.editPermissionTemplate':
     '선택된 유형이 없으면 권한유형이 해제됩니다.',
+  'description.deleteChurchRequest':
+    '소유자의 전화번호로 인증번호가 발송됩니다.',
 
   /*-------------------description-------------------*/
 

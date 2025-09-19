@@ -25,6 +25,16 @@ const MemberFilterRow = () => {
   const { memberFilter } = useSelector(
     (state: RootState) => state.memberFilter
   );
+  const [isExcelOpened, setIsExcelOpened] = useState(false);
+
+  const onClickExcel = () => {
+    setIsExcelOpened(!isExcelOpened);
+  };
+
+  const onClickExcelDownload = () => {};
+
+  const onClickExcelExport = () => {};
+
   // 그룹 필터 설정 on off
   const [isGroupFilterShown, setIsGroupFilterShown] = useState<boolean>(false);
 
@@ -174,6 +184,9 @@ const MemberFilterRow = () => {
     onChangeSearchValue,
     onClickSearch,
     onKeyDown,
+
+    isExcelOpened,
+    onClickExcel,
   };
 
   return (

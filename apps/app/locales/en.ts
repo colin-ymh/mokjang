@@ -15,6 +15,8 @@ export default {
   custom: 'Custom',
   email: 'Email',
 
+  joinCode: 'Join Code',
+
   lastOneMonth: 'Last One Month',
 
   officerNone: 'No Officer',
@@ -443,6 +445,7 @@ export default {
   'title.churchState': 'Church State',
 
   'title.editChurch': 'Edit Church Information',
+  'title.deleteChurch': 'Delete Church',
 
   'title.addMinistry': 'Add Ministry',
   'title.editMinistry': 'Edit Ministry',
@@ -600,6 +603,8 @@ export default {
   'button.confirm': 'Confirm',
   'button.tableHeaderSetting': 'Table Header Setting',
   'button.verify': 'Verify',
+  'button.deleteChurchVerify': 'Send Code To Owner',
+  'button.verifyAndDelete': 'Verify and Delete Church',
   'button.request': 'Request',
   'button.add': 'Add',
   'button.signIn': 'Sign In',
@@ -678,6 +683,9 @@ export default {
 
   'button.selectAll': 'Select All',
 
+  'button.downloadMemberExcel': 'Download Registration Excel',
+  'button.uploadMemberExcel': 'Upload Registration Excel',
+
   /*-------------------button-------------------*/
 
   /*-------------------placeholder-------------------*/
@@ -749,6 +757,8 @@ export default {
   'placeholder.attendanceNote': 'Enter the note.',
 
   'placeholder.email': 'Enter the email',
+
+  'placeholder.verifyNumber': 'Enter the verification code',
   /*-------------------placeholder-------------------*/
 
   /*-------------------popup-------------------*/
@@ -822,6 +832,8 @@ export default {
 
   'popup.imageSize': 'You can upload images up to 5 MB in size.',
 
+  'popup.clipboard': 'Copied to clipboard.',
+
   /*-------------------popup-------------------*/
 
   /*-------------------warning-------------------*/
@@ -853,6 +865,9 @@ export default {
 
   'warning.deletePermissionTemplate':
     'If there are associated administrators, deletion is not possible, and once a permission type is deleted, it cannot be restored.',
+
+  'warning.deleteChurch':
+    'After deletion, church information will be retained for 3 months and can be restored upon request. After 3 months, all information will be permanently deleted and cannot be recovered.',
   /*-------------------warning-------------------*/
 
   /*-------------------description-------------------*/
@@ -873,6 +888,9 @@ export default {
   'description.memberRegisterHeader': "Enter the new member's information",
   'description.editPermissionTemplate':
     'If no template is selected, the permission type will be cleared.',
+
+  'description.deleteChurchRequest':
+    'A verification code will be sent to the owner’s phone number.',
   /*-------------------description-------------------*/
 
   /*-------------------tooltip-------------------*/

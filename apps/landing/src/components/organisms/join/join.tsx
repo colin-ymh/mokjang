@@ -1,12 +1,11 @@
 import { ChangeEvent, useEffect, useState } from 'react';
-import { BLACK, BLANK, STATUS } from '@mokjang/constants';
+import { BLACK, BLANK, DESTRUCTIVE, STATUS } from '@mokjang/constants';
 import { JoinApi } from '@/api/join/join.api';
 import {
   setIsToastShown,
   setToastBackgroundColor,
   setToastText,
 } from '@mokjang/app/src/redux/reducers/toast-popup-reducer';
-import { DESTRUCTIVE } from '@mokjang/constants';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/redux/store';
 import JoinView, { JoinViewProps } from '@/components/organisms/join/join.view';
@@ -43,9 +42,9 @@ const Join = () => {
 
   const onClickCodeConfirm = async () => {
     try {
-      const response = await joinApi.createJoinRequest({ joinCode });
+      const response = await joinApi.searchChurch({ joinCode });
 
-      const newChurch = response.data.data.church;
+      const newChurch = response.data.data;
 
       setChurch(newChurch);
 
@@ -66,19 +65,19 @@ const Join = () => {
   };
 
   const onClickJoinRequest = async () => {
-    fetchJoinRequest();
-    // try {
-    //   const response = await joinApi.createJoinRequest({ joinCode });
-    //   setIsConfirmed(true);
-    // } catch (error) {
-    //   if (error instanceof Error) {
-    //     dispatch(setToastText(error.message));
-    //     dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
-    //     dispatch(setIsToastShown(true));
-    //   } else {
-    //     setThrownError(new Error(String(error)));
-    //   }
-    // }
+    try {
+      await joinApi.createJoinRequest({ joinCode });
+      setIsConfirmed(true);
+      fetchJoinRequest();
+    } catch (error) {
+      if (error instanceof Error) {
+        dispatch(setToastText(error.message));
+        dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
+        dispatch(setIsToastShown(true));
+      } else {
+        setThrownError(new Error(String(error)));
+      }
+    }
   };
 
   const fetchJoinRequest = async () => {

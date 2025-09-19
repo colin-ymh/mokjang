@@ -7,6 +7,9 @@ import { BLANK, GRAY, LOCALE, MAIN } from '@mokjang/constants';
 import { usePathname } from 'next/navigation';
 import LabelDropdown from '@/components/atoms/common/dropdown/label-dropdown';
 import { useDenominationDropdownItems } from '@/hooks/dropdown/dropdown-items';
+import DeleteWarningButton from '@/components/atoms/common/button/delete-warning-button';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
 
 const InformationContainer = styled.div`
   display: flex;
@@ -26,6 +29,11 @@ const ListContainer = styled.div`
   padding-bottom: 20px;
 `;
 
+const BoxContainer = styled.div`
+  display: flex;
+  width: 100%;
+`;
+
 type EditChurchInformationViewProps = {
   targetChurch: Church;
   isSaveEnabled: boolean;
@@ -38,6 +46,7 @@ type EditChurchInformationViewProps = {
   onChangeDenomination: (event: ChangeEvent<HTMLInputElement>) => void;
   onChangeDenominationItem: (value: string) => void;
   onClickSave?: () => void;
+  onClickDeleteChurchOpen: () => void;
 };
 
 const EditChurchInformationView = ({
@@ -52,13 +61,17 @@ const EditChurchInformationView = ({
   onChangeDenomination,
   onChangeDenominationItem,
   onClickSave,
+  onClickDeleteChurchOpen,
 }: EditChurchInformationViewProps) => {
   const pathname = usePathname();
   const locale = pathname.split('/')[1] as LOCALE;
 
+  const { user } = useSelector((state: RootState) => state.user);
+
   const t = useI18n();
   const t_placeholder = useScopedI18n('placeholder');
   const t_button = useScopedI18n('button');
+  const t_warning = useScopedI18n('warning');
 
   const denominationDropdownItems = useDenominationDropdownItems(locale);
 
@@ -123,6 +136,15 @@ const EditChurchInformationView = ({
           placeholder={t_placeholder('denomination')}
           isRequired={true}
         />
+
+        {!onClickSave && user.churchUser[0]?.role === 'owner' && (
+          <BoxContainer>
+            <DeleteWarningButton
+              description={t_warning('deleteChurch')}
+              onClick={onClickDeleteChurchOpen}
+            />
+          </BoxContainer>
+        )}
       </ListContainer>
       {/*<ListContainer>*/}
       {/*  <MainText fontSize={20} fontWeight={700}>*/}

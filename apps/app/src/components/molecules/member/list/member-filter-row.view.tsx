@@ -36,10 +36,11 @@ const RowBottom = styled.div`
   gap: 10px;
 `;
 
-const ButtonContainer = styled.div`
+const RightContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: 10px;
 `;
 
 const FilteredItemList = styled.div`
@@ -73,6 +74,9 @@ type MemberFilterViewProps = {
   onChangeSearchValue: (event: ChangeEvent<HTMLInputElement>) => void;
   onClickSearch: () => void;
   onKeyDown: (event: React.KeyboardEvent<HTMLInputElement>) => void;
+
+  isExcelOpened: boolean;
+  onClickExcel: () => void;
 };
 
 const MemberFilterRowView = ({
@@ -90,6 +94,9 @@ const MemberFilterRowView = ({
   onChangeSearchValue,
   onClickSearch,
   onKeyDown,
+
+  isExcelOpened,
+  onClickExcel,
 }: MemberFilterViewProps) => {
   const t_title = useScopedI18n('title');
   const t_button = useScopedI18n('button');
@@ -136,7 +143,47 @@ const MemberFilterRowView = ({
             />
           </LeftContainer>
 
-          <ButtonContainer>
+          <RightContainer>
+            <Button
+              height={30}
+              width={'auto'}
+              onClick={onClickExcel}
+              backgroundColor={WHITE}
+              borderColor={GRAY.LIGHT}
+              color={GRAY.SEMI_DARK}
+              icon={
+                <SvgIcon
+                  svg={isExcelOpened ? Svg.Cancel : Svg.Download}
+                  color={GRAY.SEMI_DARK}
+                />
+              }
+            />
+            {/* 엑셀 다운로드 */}
+            {isExcelOpened && (
+              <Button
+                text={t_button('downloadMemberExcel')}
+                height={30}
+                width={'auto'}
+                onClick={onClickHeaderFilterOpen}
+                backgroundColor={WHITE}
+                borderColor={GRAY.LIGHT}
+                color={GRAY.SEMI_DARK}
+                icon={<SvgIcon svg={Svg.Download} color={GRAY.SEMI_DARK} />}
+              />
+            )}
+            {/* 엑셀 업로드 */}
+            {isExcelOpened && (
+              <Button
+                text={t_button('uploadMemberExcel')}
+                height={30}
+                width={'auto'}
+                onClick={onClickHeaderFilterOpen}
+                backgroundColor={WHITE}
+                borderColor={GRAY.LIGHT}
+                color={GRAY.SEMI_DARK}
+                icon={<SvgIcon svg={Svg.Upload} color={GRAY.SEMI_DARK} />}
+              />
+            )}
             {/* 표시 항목 설정 활성화 버튼 */}
             <Button
               text={t_button('tableHeaderSetting')}
@@ -148,7 +195,7 @@ const MemberFilterRowView = ({
               color={GRAY.SEMI_DARK}
               icon={<SvgIcon svg={Svg.Setting} color={GRAY.SEMI_DARK} />}
             />
-          </ButtonContainer>
+          </RightContainer>
         </RowTop>
 
         {/* 필터 설정된 값들 */}
