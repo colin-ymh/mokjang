@@ -58,7 +58,7 @@ const FilteredItem = ({ item }: FilteredItemProps) => {
       dispatch(
         setMemberFilter({
           ...memberFilter,
-          groupIds: [],
+          groupId: undefined,
         })
       );
     } else if (item.title === MEMBER.OFFICER) {

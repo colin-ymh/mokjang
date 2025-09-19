@@ -41,14 +41,14 @@ const GroupFilter = ({ isDefaultOpen = false, onChange }: GroupFilterProps) => {
     }
 
     if (groupId === ALL) {
-      dispatch(setMemberFilter({ ...memberFilter, groupIds: [] }));
+      dispatch(setMemberFilter({ ...memberFilter, groupId: undefined }));
     } else if (groupId === null) {
-      dispatch(setMemberFilter({ ...memberFilter, groupIds: [null] }));
+      dispatch(setMemberFilter({ ...memberFilter, groupId: null }));
     } else if (groupId) {
       dispatch(
         setMemberFilter({
           ...memberFilter,
-          groupIds: [getGroup(groupId, groups).id],
+          groupId,
         })
       );
     }
@@ -62,7 +62,7 @@ const GroupFilter = ({ isDefaultOpen = false, onChange }: GroupFilterProps) => {
     isNullable: true,
     isDefaultOpen,
     onChange: onChangeGroup,
-    prevSelectedGroupId: memberFilter?.groupIds[0],
+    prevSelectedGroupId: memberFilter?.groupId,
   };
 
   return (

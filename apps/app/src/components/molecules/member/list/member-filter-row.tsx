@@ -165,10 +165,10 @@ const MemberFilterRow = () => {
     let newFilterItems: FilteredItemType[] = [];
 
     // 그룹
-    if (memberFilter.groupIds.length > 0) {
+    if (memberFilter.groupId) {
       newFilterItems.push({
         title: MEMBER.GROUP,
-        value: memberFilter.groupIds,
+        value: [memberFilter.groupId],
       });
     }
 

@@ -47,7 +47,7 @@ type GetMembersV2Params = {
   sortDirection?: ORDER_DIRECTION; // 오름차순 내림차순
   displayColumns?: (MEMBER | '')[];
 
-  groupIds?: (string | null)[];
+  groupId?: string | null;
   officerIds?: (string | null)[];
   marriageStatuses?: (MARRIAGE | null)[];
   baptismStatuses?: BAPTISM[];
@@ -315,7 +315,7 @@ export class MembersApi {
       sortBy,
       sortDirection,
       displayColumns,
-      groupIds,
+      groupId,
       officerIds,
       marriageStatuses,
       baptismStatuses,
@@ -326,11 +326,11 @@ export class MembersApi {
       search,
     } = params;
 
-    // groupIds가 [null]인 경우 서버에 null로 전달
-    const groupIdsParam =
-      Array.isArray(groupIds) && groupIds.length === 1 && groupIds[0] === null
+    // groupId가 null인 경우 서버에 null로 전달
+    const groupIdParam =
+      groupId === null
         ? 'null' // 서버가 문자열 'null'을 기대하므로 문자열로 직렬화
-        : groupIds;
+        : groupId;
 
     const queryParams: Record<string, any> = Object.fromEntries(
       Object.entries({
@@ -339,7 +339,7 @@ export class MembersApi {
         sortBy,
         sortDirection,
         displayColumns,
-        groupIds: groupIdsParam,
+        groupId: groupIdParam,
         officerIds,
         marriageStatuses,
         baptismStatuses,

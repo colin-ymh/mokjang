@@ -1,12 +1,19 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ALL, BAPTISM, BLANK, MARRIAGE, MEMBER, ORDER_DIRECTION, } from '@mokjang/constants';
+import {
+  ALL,
+  BAPTISM,
+  BLANK,
+  MARRIAGE,
+  MEMBER,
+  ORDER_DIRECTION,
+} from '@mokjang/constants';
 import { Member } from '@mokjang/models';
 import { RootState } from '../../store';
 import { MembersApi } from '../../../api/members/members.api';
 import { FilteredItemType } from '../../../components/atoms/member/setting/filtered-item.view';
 
 type MEMBER_FILTER = {
-  groupIds: (string | null)[];
+  groupId?: string | null;
   officerIds: (string | null)[];
   marriageStatuses: (MARRIAGE | null)[];
   baptismStatuses: BAPTISM[];
@@ -44,7 +51,6 @@ type MemberFilterState = {
 };
 
 export const INITIAL_MEMBER_FILTER: MEMBER_FILTER = {
-  groupIds: [],
   officerIds: [],
   baptismStatuses: [],
   marriageStatuses: [],
@@ -261,7 +267,7 @@ export const fetchMembers = createAsyncThunk<
   const membersApi = new MembersApi(false);
 
   const {
-    groupIds,
+    groupId,
     officerIds,
     marriageStatuses,
     baptismStatuses,
@@ -293,7 +299,7 @@ export const fetchMembers = createAsyncThunk<
       cursor: memberCursor,
       sortBy: sort,
       sortDirection: memberSortDirection,
-      groupIds: groupIds.filter((id) => id !== ALL),
+      groupId: groupId === ALL ? undefined : groupId,
       officerIds,
       marriageStatuses,
       baptismStatuses,
