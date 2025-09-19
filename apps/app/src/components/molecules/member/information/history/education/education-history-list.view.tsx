@@ -1,4 +1,4 @@
-import { RefObject } from 'react';
+import React, { RefObject } from 'react';
 import { EducationHistory } from '@mokjang/models';
 import styled from 'styled-components';
 import EducationHistoryItem from '../../../../../atoms/member/history/education-history-item';
@@ -31,7 +31,7 @@ const EducationHistoryListView = ({
           <EducationHistoryItem key={history.id} history={history} />
         ))
       ) : (
-        <EmptyList width={200} height={200} />
+        <EmptyList size={50} />
       )}
     </HistoryList>
   );

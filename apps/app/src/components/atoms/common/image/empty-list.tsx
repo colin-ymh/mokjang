@@ -1,6 +1,8 @@
-import Image from 'next/image';
-import EmptyListImage from '../../../../../public/png/empty-list.png';
 import styled from 'styled-components';
+import { MainText, SvgIcon } from '@mokjang/components';
+import { Svg } from '@mokjang/assets';
+import { GRAY } from '@mokjang/constants';
+import { useScopedI18n } from '../../../../../locales/client';
 
 const ImageContainer = styled.div`
   display: flex;
@@ -8,22 +10,23 @@ const ImageContainer = styled.div`
   height: 100%;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
+  gap: 10px;
 `;
 
 type EmptyListProps = {
-  width?: number;
-  height?: number;
+  size?: number;
+  text?: string;
 };
 
-const EmptyList = ({ width = 150, height = 150 }: EmptyListProps) => {
+const EmptyList = ({ size = 50, text }: EmptyListProps) => {
+  const t_description = useScopedI18n('description');
   return (
     <ImageContainer>
-      <Image
-        src={EmptyListImage}
-        alt={'emptyList'}
-        width={width}
-        height={height}
-      />
+      <SvgIcon svg={Svg.Empty} width={1} size={size} color={GRAY.DARK} />
+      <MainText color={GRAY.DARK}>
+        {text ?? t_description('emptyList')}
+      </MainText>
     </ImageContainer>
   );
 };

@@ -1,4 +1,4 @@
-import { RefObject } from 'react';
+import React, { RefObject } from 'react';
 import { MinistryHistory } from '@mokjang/models';
 import styled from 'styled-components';
 import MinistryHistoryItem from '../../../../../atoms/member/history/ministry-history-item';
@@ -37,7 +37,7 @@ const MinistryHistoryListView = ({
           />
         ))
       ) : (
-        <EmptyList width={200} height={200} />
+        <EmptyList size={50} />
       )}
     </HistoryList>
   );

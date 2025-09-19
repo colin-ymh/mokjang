@@ -891,6 +891,10 @@ export default {
 
   'description.deleteChurchRequest':
     'A verification code will be sent to the owner’s phone number.',
+
+  'description.emptyList': 'This List is empty',
+  'description.emptyWorshipSessionInformation':
+    'No worship session information has been entered.',
   /*-------------------description-------------------*/
 
   /*-------------------tooltip-------------------*/

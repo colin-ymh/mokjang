@@ -308,7 +308,7 @@ const JoinRequestTableView = ({
             ))}
           </tbody>
         </JoinRequestTable>
-        {joinRequests.length === 0 && <EmptyList width={200} height={200} />}
+        {joinRequests.length === 0 && <EmptyList size={50} />}
 
         <CustomPopup
           isShow={isLinkPopupShown}

@@ -1,4 +1,4 @@
-import { ChangeEvent, Ref } from 'react';
+import React, { ChangeEvent, Ref } from 'react';
 import styled from 'styled-components';
 
 import { Button, CustomPopup, SvgIcon } from '@mokjang/components';
@@ -59,6 +59,10 @@ const LeftContainer = styled.div`
   gap: 10px;
 `;
 
+const FileSelector = styled.input`
+  display: none;
+`;
+
 type MemberFilterViewProps = {
   isGroupFilterShown: boolean;
   isMemberFilterShown: boolean;
@@ -75,8 +79,12 @@ type MemberFilterViewProps = {
   onClickSearch: () => void;
   onKeyDown: (event: React.KeyboardEvent<HTMLInputElement>) => void;
 
+  fileInputRef: Ref<HTMLInputElement>;
   isExcelOpened: boolean;
   onClickExcel: () => void;
+  onClickExcelDownload: () => void;
+  onClickExcelUpload: () => void;
+  onChangeUpload: (event: ChangeEvent<HTMLInputElement>) => void;
 };
 
 const MemberFilterRowView = ({
@@ -95,8 +103,12 @@ const MemberFilterRowView = ({
   onClickSearch,
   onKeyDown,
 
+  fileInputRef,
   isExcelOpened,
   onClickExcel,
+  onClickExcelDownload,
+  onClickExcelUpload,
+  onChangeUpload,
 }: MemberFilterViewProps) => {
   const t_title = useScopedI18n('title');
   const t_button = useScopedI18n('button');
@@ -164,7 +176,7 @@ const MemberFilterRowView = ({
                 text={t_button('downloadMemberExcel')}
                 height={30}
                 width={'auto'}
-                onClick={onClickHeaderFilterOpen}
+                onClick={onClickExcelDownload}
                 backgroundColor={WHITE}
                 borderColor={GRAY.LIGHT}
                 color={GRAY.SEMI_DARK}
@@ -177,13 +189,19 @@ const MemberFilterRowView = ({
                 text={t_button('uploadMemberExcel')}
                 height={30}
                 width={'auto'}
-                onClick={onClickHeaderFilterOpen}
+                onClick={onClickExcelUpload}
                 backgroundColor={WHITE}
                 borderColor={GRAY.LIGHT}
                 color={GRAY.SEMI_DARK}
                 icon={<SvgIcon svg={Svg.Upload} color={GRAY.SEMI_DARK} />}
               />
             )}
+            <FileSelector
+              ref={fileInputRef}
+              type="file"
+              accept=".xlsx"
+              onChange={onChangeUpload}
+            />
             {/* 표시 항목 설정 활성화 버튼 */}
             <Button
               text={t_button('tableHeaderSetting')}

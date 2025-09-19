@@ -27,6 +27,7 @@ export { default as Cross } from "./cross.svg";
 export { default as Danger } from "./danger.svg";
 export { default as DocumentCheck } from "./document-check.svg";
 export { default as Download } from "./download.svg";
+export { default as Empty } from "./empty.svg";
 export { default as Envelope } from "./envelope.svg";
 export { default as Exit } from "./exit.svg";
 export { default as EyeSlash } from "./eye-slash.svg";

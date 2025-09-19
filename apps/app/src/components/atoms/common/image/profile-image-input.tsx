@@ -53,7 +53,6 @@ const ProfileImageInput = ({
   const [thrownError, setThrownError] = useState<Error | null>(null);
   if (thrownError) throw thrownError;
 
-  // ✅ 이 ref를 통해 “해당 인스턴스의” 파일 인풋만 클릭
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const onClickImage = () => {

@@ -11,6 +11,7 @@ import InitializeStore from '@/components/atoms/layout/initialize-store';
 import { ToastLayout } from '@/components/atoms/popup/toast-layout';
 
 import { Analytics } from '@vercel/analytics/next';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 type RootLayoutProps = {
   children?: React.ReactNode;
@@ -55,6 +56,7 @@ const RootLayout = (props: RootLayoutProps | RootLayoutPropsExtended) => {
               {children}
 
               <Analytics />
+              <SpeedInsights />
               {/* 토스트 팝업 */}
               <ToastLayout />
             </InitializeStore>

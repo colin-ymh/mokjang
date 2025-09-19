@@ -20,6 +20,7 @@ import {
 import { useScopedI18n } from '../../../../locales/client';
 import { setUser } from '@/redux/reducers/user-reducer';
 import ConfirmPopup from '@mokjang/app/src/components/atoms/common/popup/error-popup';
+import { router } from 'next/client';
 
 const Setting = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -159,6 +160,7 @@ const Setting = () => {
   const onClickWithdraw = async () => {
     try {
       await userApi.withdraw();
+      router.push('/');
     } catch (error) {
       if (error instanceof Error) {
         dispatch(setToastText(error.message));

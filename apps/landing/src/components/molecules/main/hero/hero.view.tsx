@@ -69,6 +69,7 @@ const ButtonContainer = styled.div`
 `;
 
 export type HeroViewProps = {
+  onClickOpenChurch: () => void;
   onClickCreateChurch: () => void;
   onClickJoin: () => void;
   onClickStart: () => void;
@@ -76,6 +77,7 @@ export type HeroViewProps = {
 };
 
 const HeroView = ({
+  onClickOpenChurch,
   onClickCreateChurch,
   onClickJoin,
   onClickStart,
@@ -97,29 +99,43 @@ const HeroView = ({
           {getTranslatedHeroDescription(locale)}
         </DescriptionContainer>
         {user?.id ? (
-          <ButtonContainer>
-            <Button
-              borderRadius={10}
-              text={t_button('createChurch')}
-              width={'auto'}
-              columnPadding={20}
-              height={60}
-              fontSize={18}
-              fontWeight={600}
-              onClick={onClickCreateChurch}
-            />
-            <Button
-              borderRadius={10}
-              text={t_button('join')}
-              width={'auto'}
-              columnPadding={20}
-              height={60}
-              fontSize={18}
-              fontWeight={600}
-              onClick={onClickJoin}
-              backgroundColor={GREEN.DEFAULT}
-            />
-          </ButtonContainer>
+          user.churchUser.length > 0 ? (
+            <ButtonContainer>
+              <Button
+                borderRadius={10}
+                text={t_button('openChurch')}
+                width={180}
+                height={60}
+                fontSize={18}
+                fontWeight={600}
+                onClick={onClickOpenChurch}
+              />
+            </ButtonContainer>
+          ) : (
+            <ButtonContainer>
+              <Button
+                borderRadius={10}
+                text={t_button('createChurch')}
+                width={'auto'}
+                columnPadding={20}
+                height={60}
+                fontSize={18}
+                fontWeight={600}
+                onClick={onClickCreateChurch}
+              />
+              <Button
+                borderRadius={10}
+                text={t_button('join')}
+                width={'auto'}
+                columnPadding={20}
+                height={60}
+                fontSize={18}
+                fontWeight={600}
+                onClick={onClickJoin}
+                backgroundColor={GREEN.DEFAULT}
+              />
+            </ButtonContainer>
+          )
         ) : (
           <ButtonContainer>
             <Button

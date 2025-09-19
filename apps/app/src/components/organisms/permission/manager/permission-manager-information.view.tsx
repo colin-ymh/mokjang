@@ -5,6 +5,7 @@ import { useI18n } from '../../../../../locales/client';
 import { ChurchUser } from '@mokjang/models';
 import { GRAY, GREEN, RED } from '@mokjang/constants';
 import { getFormattedPhone } from '@mokjang/utils';
+import EmptyList from '@/components/atoms/common/image/empty-list';
 
 const InformationContainer = styled.div`
   display: flex;
@@ -74,30 +75,34 @@ const PermissionManagerInformation = ({
           </MainText>
         </TitleContainer>
       </LabelContainer>
-      {managers.map((manager) => (
-        <ManagerItem key={manager.id}>
-          <ProfileImage
-            value={manager.member.profileImageUrl}
-            width={50}
-            height={50}
-          />
-          <ColumnContainer>
-            <MainText>{manager.user.name}</MainText>
-            <MainText color={GRAY.SEMI_DARK}>
-              {getFormattedPhone(manager.user.mobilePhone)}
-            </MainText>
-          </ColumnContainer>
-          <StatusContainer>
-            <MainTag
-              title={manager.isPermissionActive ? t('active') : t('inactive')}
-              color={manager.isPermissionActive ? GREEN.DARK : RED.DARK}
-              backgroundColor={
-                manager.isPermissionActive ? GREEN.LIGHT : RED.LIGHT
-              }
+      {managers?.length > 0 ? (
+        managers.map((manager) => (
+          <ManagerItem key={manager.id}>
+            <ProfileImage
+              value={manager.member.profileImageUrl}
+              width={50}
+              height={50}
             />
-          </StatusContainer>
-        </ManagerItem>
-      ))}
+            <ColumnContainer>
+              <MainText>{manager.user.name}</MainText>
+              <MainText color={GRAY.SEMI_DARK}>
+                {getFormattedPhone(manager.user.mobilePhone)}
+              </MainText>
+            </ColumnContainer>
+            <StatusContainer>
+              <MainTag
+                title={manager.isPermissionActive ? t('active') : t('inactive')}
+                color={manager.isPermissionActive ? GREEN.DARK : RED.DARK}
+                backgroundColor={
+                  manager.isPermissionActive ? GREEN.LIGHT : RED.LIGHT
+                }
+              />
+            </StatusContainer>
+          </ManagerItem>
+        ))
+      ) : (
+        <EmptyList size={50} />
+      )}
     </InformationContainer>
   );
 };

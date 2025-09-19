@@ -42,7 +42,7 @@ const getColumnWidth = (id: string) => {
     case MEMBER.GROUP:
       return 100;
     case MEMBER.NAME:
-      return 150;
+      return 200;
     case MEMBER.GENDER:
       return 100;
     case MEMBER.OFFICER:
@@ -171,7 +171,7 @@ const ContentWrapper = styled.div`
 
 const ProfileContainer = styled.div`
   display: flex;
-  gap: 10px;
+  gap: 5px;
   align-items: center;
   width: 100%;
 `;

@@ -5,20 +5,14 @@ import { useI18n, useScopedI18n } from '../../../../../locales/client';
 import React from 'react';
 import { Button, MainTag, MainText } from '@mokjang/components';
 import { getTranslatedDateFromDateString } from '@mokjang/utils';
-import {
-  CHURCH_USER_ROLE,
-  GRAY,
-  GREEN,
-  LOCALE,
-  MAIN,
-  RED,
-  WHITE,
-} from '@mokjang/constants';
+import { CHURCH_USER_ROLE, GRAY, GREEN, LOCALE, MAIN, RED, STATUS, WHITE, } from '@mokjang/constants';
 import { getPermissionScopeTitle } from '@/utils/permission';
 import PermissionUnitList from '@/components/molecules/permission/information/permission-unit-list';
 import DeleteWarningButton from '@/components/atoms/common/button/delete-warning-button';
 import MemberProfilePopupButton from '@/components/molecules/common/button/member-profile-popup-button';
 import { usePathname } from 'next/navigation';
+import Dropdown from '@/components/atoms/common/dropdown/dropdown';
+import { useChurchUserActiveDropdownItems } from '@/hooks/dropdown/dropdown-items';
 
 const InformationContainer = styled.div`
   display: flex;
@@ -77,6 +71,10 @@ export type ChurchUserInformationViewProps = {
   onClickLink: () => void;
   onClickGroupPopupOpen: () => void;
   onClickConfirmOpen: () => void;
+  onChangeActive: (
+    value: STATUS.ACTIVE | STATUS.INACTIVE,
+    prev: boolean
+  ) => void;
 };
 
 const ChurchUserInformationView = ({
@@ -86,6 +84,7 @@ const ChurchUserInformationView = ({
   onClickLink,
   onClickGroupPopupOpen,
   onClickConfirmOpen,
+  onChangeActive,
 }: ChurchUserInformationViewProps) => {
   const pathname = usePathname();
   const locale = pathname.split('/')[1] as LOCALE;
@@ -103,6 +102,8 @@ const ChurchUserInformationView = ({
   const { permissionUnits } = useSelector(
     (state: RootState) => state.permissionTemplateFilter
   );
+
+  const activeDropdownItems = useChurchUserActiveDropdownItems();
 
   return (
     <InformationContainer>
@@ -237,23 +238,39 @@ const ChurchUserInformationView = ({
           <MainText fontSize={14} fontWeight={400} color={GRAY.SEMI_DARK}>
             {t('status')}
           </MainText>
-          <MainTag
-            title={
-              isMy || targetChurchUser.isPermissionActive
-                ? t('active')
-                : t('inactive')
-            }
-            backgroundColor={
-              isMy || targetChurchUser.isPermissionActive
-                ? GREEN.LIGHT
-                : RED.LIGHT
-            }
-            color={
-              isMy || targetChurchUser.isPermissionActive
-                ? GREEN.DARK
-                : RED.DARK
-            }
-          />
+          {!isMy && !isOwner ? (
+            <Dropdown
+              value={
+                targetChurchUser.isPermissionActive
+                  ? STATUS.ACTIVE
+                  : STATUS.INACTIVE
+              }
+              items={activeDropdownItems}
+              width={80}
+              height={30}
+              onChangeItem={(value) =>
+                onChangeActive(value, targetChurchUser.isPermissionActive)
+              }
+            />
+          ) : (
+            <MainTag
+              title={
+                isMy || targetChurchUser.isPermissionActive
+                  ? t('active')
+                  : t('inactive')
+              }
+              backgroundColor={
+                isMy || targetChurchUser.isPermissionActive
+                  ? GREEN.LIGHT
+                  : RED.LIGHT
+              }
+              color={
+                isMy || targetChurchUser.isPermissionActive
+                  ? GREEN.DARK
+                  : RED.DARK
+              }
+            />
+          )}
         </LineContainer>
         <LineContainer>
           <MainText fontSize={14} fontWeight={400} color={GRAY.SEMI_DARK}>

@@ -125,7 +125,7 @@ const MemberVisitationListView = ({
               );
             })
           ) : (
-            <EmptyList width={200} height={200} />
+            <EmptyList size={50} />
           )}
         </VisitationList>
       </ListContainer>

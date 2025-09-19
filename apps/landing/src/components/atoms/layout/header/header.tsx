@@ -11,8 +11,6 @@ import { DESTRUCTIVE } from '@mokjang/constants';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/redux/store';
 import { SubscriptionApi } from '@/api/subscription/subscription.api';
-import { DEFAULT_SUBSCRIPTION_PLAN, SubscriptionPlan } from '@mokjang/models';
-import { setSubscription } from '@/redux/reducers/subscription-reducer';
 import { MAIN_CONTENT_ID } from '@/constants/constant';
 
 type HeaderProps = {};
@@ -156,16 +154,16 @@ const Header = ({}: HeaderProps) => {
   };
 
   const fetchCurrentSubscription = async () => {
-    // 구독 정보 있음
-    try {
-      const response = await subscriptionApi.getCurrentSubscription();
-      const currentSubscription: SubscriptionPlan = response.data;
-
-      dispatch(setSubscription(currentSubscription));
-    } catch (error) {
-      // 현재 구독 정보 없음
-      dispatch(setSubscription(DEFAULT_SUBSCRIPTION_PLAN));
-    }
+    // // 구독 정보 있음
+    // try {
+    //   const response = await subscriptionApi.getCurrentSubscription();
+    //   const currentSubscription: SubscriptionPlan = response.data;
+    //
+    //   dispatch(setSubscription(currentSubscription));
+    // } catch (error) {
+    //   // 현재 구독 정보 없음
+    //   dispatch(setSubscription(DEFAULT_SUBSCRIPTION_PLAN));
+    // }
   };
 
   useEffect(() => {

@@ -76,7 +76,7 @@ export default {
     'From member information to family relationships, visitation records, groups, ministries, and education history—everything is organized and displayed at a glance. With an intuitive interface and powerful search and filter features, you can quickly and easily find the desired member information, making church management far more efficient and systematic.',
   'function.schedule.title': 'Church Schedule Management',
   'function.schedule.description':
-    'Manage all church schedules—from visitations to education and church administration—in one place. Ekkly goes beyond simple schedule recording by showing the progress of each event and sending notifications so that those in charge can collaborate effectively. As a result, schedule management becomes a dynamic ministry management tool rather than a simple memo.',
+    'Manage all church schedules—from visitations to education and church administration—in one place. ekkly goes beyond simple schedule recording by showing the progress of each event and sending notifications so that those in charge can collaborate effectively. As a result, schedule management becomes a dynamic ministry management tool rather than a simple memo.',
   'function.statistic.title': 'Attendance',
   'function.statistic.description':
     'Easily record and view church members’ worship attendance at a glance.',
@@ -114,13 +114,13 @@ export default {
     'Your subscription has been successfully completed.',
 
   'faq.suitableChurch.question':
-    'What types of churches is Ekkly suitable for?',
+    'What types of churches is ekkly suitable for?',
   'faq.suitableChurch.answer':
-    'Ekkly is suitable for all churches that need simple yet essential church management, from small congregations to large ones. Currently, it can be used by churches with up to 500 registered members.',
+    'ekkly is suitable for all churches that need simple yet essential church management, from small congregations to large ones. Currently, it can be used by churches with up to 500 registered members.',
   'faq.moveEnable.question':
     'Can I easily migrate existing member information?',
   'faq.moveEnable.answer':
-    'Yes. You can conveniently enter member information using xlsx or csv files. Simply fill out the sheet provided by Ekkly and apply it.',
+    'Yes. You can conveniently enter member information using xlsx or csv files. Simply fill out the sheet provided by ekkly and apply it.',
   'faq.mobileEnable.question': 'Can I use it on mobile devices?',
   'faq.mobileEnable.answer': 'A mobile version is currently in preparation.',
   'faq.dataSecurity.question': 'Is my data secure?',
@@ -190,17 +190,17 @@ export default {
     'You will receive a text message notification once the administrator approves it.',
   'join-pending.cancel': 'Withdraw administrator registration request',
 
-  'footer.title': 'Ekkly',
+  'footer.title': 'ekkly',
   'footer.description': 'A Tool for the True Ecclesia',
   'footer.company.title': 'Company',
   'footer.company.description': 'Jakdang',
   'footer.representative.title': 'Representative',
   'footer.representative.description': 'Na Cheonho',
   'footer.identifyNumber.title': 'Registration',
-  'footer.identifyNumber.description': '123-45-67890',
+  'footer.identifyNumber.description': '229-15-70829',
   'footer.address.title': 'Address',
   'footer.address.description':
-    'Oa-a-a-ang-a, Wonmi-gu, Bucheon-si, Gyeonggi-do',
+    '190-1 Sinheung-ro, Sangga 2-dong, 2F, Unit 206, Jung-dong, We’ve the State, Bucheon-si, Gyeonggi-do',
   'footer.privacyPolicy': 'Privacy Policy',
   'footer.termsOfService': 'Terms of Service',
   'footer.legalNotice': 'Legal Notice',
@@ -219,4 +219,5 @@ export default {
   'popup.saveComplete': 'Save Completed.',
   'popup.withdraw.title': 'Do you want to withdraw your account?',
   'popup.withdraw.description': 'Deleted accounts cannot be recovered.',
+  'popup.joinRequestExist': 'There is already a church registration pending.',
 } as const;

@@ -13,11 +13,26 @@ import {
   getTrimmedString,
 } from '@mokjang/utils';
 import MemberFilterRowView from './member-filter-row.view';
-import { BLANK, LOCALE, MEMBER } from '@mokjang/constants';
+import { BLACK, BLANK, DESTRUCTIVE, LOCALE, MEMBER } from '@mokjang/constants';
 import { FilteredItemType } from '../../../atoms/member/setting/filtered-item.view';
 import { usePathname } from 'next/navigation';
+import { createClient } from '@supabase/supabase-js';
+import { getMembersFromXlsx } from '@/utils/xlsx';
+import {
+  setIsToastShown,
+  setToastBackgroundColor,
+  setToastText,
+} from '@/redux/reducers/toast-popup-reducer';
+import { useScopedI18n } from '../../../../../locales/client';
+import { Loading } from '@mokjang/components';
+
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+);
 
 const MemberFilterRow = () => {
+  const t_popup = useScopedI18n('popup');
   const pathname = usePathname();
   const locale = pathname.split('/')[1] as LOCALE;
 
@@ -25,15 +40,71 @@ const MemberFilterRow = () => {
   const { memberFilter } = useSelector(
     (state: RootState) => state.memberFilter
   );
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   const [isExcelOpened, setIsExcelOpened] = useState(false);
+
+  const [thrownError, setThrownError] = useState<Error | null>(null);
+
+  // 렌더링 시점(컴포넌트 return)에서 조건부로 에러 발생
+  if (thrownError) {
+    throw thrownError;
+  }
 
   const onClickExcel = () => {
     setIsExcelOpened(!isExcelOpened);
   };
 
-  const onClickExcelDownload = () => {};
+  const onClickExcelDownload = () => {
+    const { data } = supabase.storage
+      .from('file')
+      .getPublicUrl('xlsx/ekkly_members.xlsx', {
+        download: '교인등록_엑셀시트.xlsx',
+      });
 
-  const onClickExcelExport = () => {};
+    // data.publicUrl 그대로 열면 다운로드
+    window.location.href = data.publicUrl;
+  };
+
+  const onClickExcelUpload = () => {
+    fileInputRef.current?.click();
+  };
+
+  const onChangeUpload = async (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    setIsLoading(true);
+
+    try {
+      // object[]로 변환
+      const newMembers = await getMembersFromXlsx(file);
+
+      console.log(newMembers);
+
+      // // Nest 서버로 업로드
+      // const res = await uploadCsvToNest({
+      //   endpoint: 'https://api.example.com/files/upload', // ← 실제 업로드 엔드포인트
+      //   file: csvFile,
+      //   withCredentials: true, // 쿠키 인증 사용 시
+      // });
+
+      dispatch(setToastText(t_popup('saveComplete')));
+      dispatch(setIsToastShown(true));
+      dispatch(setToastBackgroundColor(BLACK));
+    } catch (error: any) {
+      if (error instanceof Error) {
+        dispatch(setToastText(error.message));
+        dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
+        dispatch(setIsToastShown(true));
+      } else setThrownError(new Error(String(error)));
+    } finally {
+      event.target.value = '';
+      setIsLoading(false);
+    }
+  };
 
   // 그룹 필터 설정 on off
   const [isGroupFilterShown, setIsGroupFilterShown] = useState<boolean>(false);
@@ -185,13 +256,18 @@ const MemberFilterRow = () => {
     onClickSearch,
     onKeyDown,
 
+    fileInputRef,
     isExcelOpened,
     onClickExcel,
+    onClickExcelDownload,
+    onClickExcelUpload,
+    onChangeUpload,
   };
 
   return (
     <>
       <MemberFilterRowView {...props} />
+      <Loading isShow={isLoading} />
     </>
   );
 };

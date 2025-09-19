@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import PermissionManagerItem from '../../../atoms/permission/information/permission-manager-item';
 import { Member } from '@mokjang/models';
+import React from 'react';
 
 const ListContainer = styled.div`
   display: flex;

@@ -619,6 +619,23 @@ export const usePermissionActiveDropdownItems = () => {
   return items;
 };
 
+export const useChurchUserActiveDropdownItems = () => {
+  const t = useI18n();
+
+  const items = [
+    {
+      value: STATUS.ACTIVE,
+      title: t(STATUS.ACTIVE),
+    },
+    {
+      value: STATUS.INACTIVE,
+      title: t(STATUS.INACTIVE),
+    },
+  ];
+
+  return items;
+};
+
 export const useDenominationDropdownItems = (locale: LOCALE) => {
   const KOREAN_DENOMINATIONS = [
     '대한예수교장로회(합동)',

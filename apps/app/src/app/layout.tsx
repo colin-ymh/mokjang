@@ -18,6 +18,7 @@ import CustomWidgetDragLayer from '../vendor/dnd/custom-widget-drag-layer';
 import ToastLayout from '../components/atoms/common/popup/toast-layout';
 import CustomTableHeaderDragLayer from '../vendor/dnd/custom-table-header-drag-layer';
 import { Analytics } from '@vercel/analytics/next';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 type RootLayoutProps = {
   children?: React.ReactNode;
@@ -74,6 +75,7 @@ const RootLayout = (props: RootLayoutProps | RootLayoutPropsExtended) => {
                 <CustomTableHeaderDragLayer />
 
                 <Analytics />
+                <SpeedInsights />
               </DndProvider>
             </InitializeStore>
           </Provider>
