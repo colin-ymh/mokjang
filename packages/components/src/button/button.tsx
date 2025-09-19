@@ -40,9 +40,15 @@ const ButtonContainer = styled.button<{
   align-items: center;
   justify-content: center;
   background-color: ${({ $backgroundColor }) => $backgroundColor};
+
   width: ${({ width }) =>
     width ? (width === 'auto' ? width : `${width}px`) : '100%'};
   height: ${({ height }) => (height ? `${height}px` : '100%')};
+
+  /* ✅ rowPadding, columnPadding 적용 */
+  padding: ${({ $rowPadding, $columnPadding }) =>
+    `${$rowPadding}px ${$columnPadding}px`};
+
   border-radius: ${({ $borderRadius }) =>
     $borderRadius !== null && $borderRadius !== undefined
       ? `${$borderRadius}px`
@@ -50,6 +56,7 @@ const ButtonContainer = styled.button<{
   border: ${({ $borderColor }) =>
     $borderColor ? `1px solid ${$borderColor}` : 'none'};
   cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
+
   transition: all 0.1s ease;
   box-shadow: ${({ $isShadow, disabled }) =>
     $isShadow && !disabled ? '2px 2px 5px rgba(0, 0, 0, 0.2)' : 'none'};

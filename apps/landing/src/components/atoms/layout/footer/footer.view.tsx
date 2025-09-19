@@ -1,6 +1,7 @@
 import styled from 'styled-components';
-import { BLACK, WHITE } from '../../../../../../../packages/constants/src';
-import { MainText } from '../../../../../../../packages/components/src';
+import { BLACK, WHITE } from '@mokjang/constants';
+import { MainText } from '@mokjang/components';
+import { useScopedI18n } from '../../../../../locales/client';
 
 const FooterContainer = styled.footer`
   display: flex;
@@ -34,6 +35,13 @@ const ColumnContainer = styled.div<{ flex: number }>`
   gap: 30px;
 `;
 
+const RowContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+`;
+
 const RowLine = styled.div`
   display: flex;
   width: 100%;
@@ -60,6 +68,8 @@ const RowList = styled.div`
 export type FooterViewProps = {};
 
 const FooterView = ({}: FooterViewProps) => {
+  const t_footer = useScopedI18n('footer');
+
   return (
     <>
       <FooterContainer>
@@ -67,94 +77,100 @@ const FooterView = ({}: FooterViewProps) => {
           <ContentContainer>
             <ColumnContainer flex={2}>
               <MainText color={WHITE} fontSize={24} fontWeight={600}>
-                {'목장'}
+                {t_footer('title')}
+              </MainText>
+              <MainText color={WHITE} fontSize={16} fontWeight={300}>
+                {t_footer('description')}
               </MainText>
               <ColumnList>
-                <MainText color={WHITE} fontSize={16} fontWeight={300}>
-                  {'교회를 위한 최고의 교인관리와 일정관리 솔루션.'}
-                </MainText>
-              </ColumnList>
-              <ColumnList>
-                <MainText color={WHITE} fontSize={16} fontWeight={600}>
-                  {'회사명'}
-                  <MainText color={WHITE} fontSize={16} fontWeight={300}>
-                    {': (주)작당'}
+                <RowContainer>
+                  <MainText color={WHITE} fontSize={16} fontWeight={600}>
+                    {t_footer('company.title')}
                   </MainText>
-                </MainText>
-                <MainText color={WHITE} fontSize={16} fontWeight={600}>
-                  {'대표자'}
                   <MainText color={WHITE} fontSize={16} fontWeight={300}>
-                    {': 나천호'}
+                    {t_footer('company.description')}
                   </MainText>
-                </MainText>
-                <MainText color={WHITE} fontSize={16} fontWeight={600}>
-                  {'사업자등록번호'}
+                </RowContainer>
+                <RowContainer>
+                  <MainText color={WHITE} fontSize={16} fontWeight={600}>
+                    {t_footer('representative.title')}
+                  </MainText>
                   <MainText color={WHITE} fontSize={16} fontWeight={300}>
-                    {': 123-45-67890'}
+                    {t_footer('representative.description')}
                   </MainText>
-                </MainText>
-                <MainText color={WHITE} fontSize={16} fontWeight={600}>
-                  {'주소'}
+                </RowContainer>
+                <RowContainer>
+                  <MainText color={WHITE} fontSize={16} fontWeight={600}>
+                    {t_footer('identifyNumber.title')}
+                  </MainText>
                   <MainText color={WHITE} fontSize={16} fontWeight={300}>
-                    {': 경기도 부천시 원미구 중동로 254번길 90'}
+                    {t_footer('identifyNumber.description')}
                   </MainText>
-                </MainText>
+                </RowContainer>
+                <RowContainer>
+                  <MainText color={WHITE} fontSize={16} fontWeight={600}>
+                    {t_footer('address.title')}
+                  </MainText>
+                  <MainText color={WHITE} fontSize={16} fontWeight={300}>
+                    {t_footer('address.description')}
+                  </MainText>
+                </RowContainer>
               </ColumnList>
             </ColumnContainer>
             <ColumnContainer flex={1}>
-              <MainText color={WHITE} fontSize={18} fontWeight={600}>
-                {'서비스'}
-              </MainText>
-              <ColumnList>
-                <MainText color={WHITE} fontSize={16} fontWeight={300}>
-                  {'교인관리'}
-                </MainText>
-                <MainText color={WHITE} fontSize={16} fontWeight={300}>
-                  {'일정관리'}
-                </MainText>
-                <MainText color={WHITE} fontSize={16} fontWeight={300}>
-                  {'출석관리'}
-                </MainText>
-                <MainText color={WHITE} fontSize={16} fontWeight={300}>
-                  {'요금제'}
-                </MainText>
-              </ColumnList>
+              {/*<MainText color={WHITE} fontSize={18} fontWeight={600}>*/}
+              {/*  {'서비스'}*/}
+              {/*</MainText>*/}
+              {/*<ColumnList>*/}
+              {/*  <MainText color={WHITE} fontSize={16} fontWeight={300}>*/}
+              {/*    {'교인관리'}*/}
+              {/*  </MainText>*/}
+              {/*  <MainText color={WHITE} fontSize={16} fontWeight={300}>*/}
+              {/*    {'일정관리'}*/}
+              {/*  </MainText>*/}
+              {/*  <MainText color={WHITE} fontSize={16} fontWeight={300}>*/}
+              {/*    {'출석관리'}*/}
+              {/*  </MainText>*/}
+              {/*  <MainText color={WHITE} fontSize={16} fontWeight={300}>*/}
+              {/*    {'요금제'}*/}
+              {/*  </MainText>*/}
+              {/*</ColumnList>*/}
             </ColumnContainer>
             <ColumnContainer flex={1}>
-              <MainText color={WHITE} fontSize={18} fontWeight={600}>
-                {'고객지원'}
-              </MainText>
-              <ColumnList>
-                <MainText color={WHITE} fontSize={16} fontWeight={300}>
-                  {'문의하기'}
-                </MainText>
-                <MainText color={WHITE} fontSize={16} fontWeight={300}>
-                  {'자주묻는질문'}
-                </MainText>
-                <MainText color={WHITE} fontSize={16} fontWeight={300}>
-                  {'이메일 지원'}
-                </MainText>
-                <MainText color={WHITE} fontSize={16} fontWeight={300}>
-                  {'전화 지원'}
-                </MainText>
-              </ColumnList>
+              {/*<MainText color={WHITE} fontSize={18} fontWeight={600}>*/}
+              {/*  {'고객지원'}*/}
+              {/*</MainText>*/}
+              {/*<ColumnList>*/}
+              {/*  <MainText color={WHITE} fontSize={16} fontWeight={300}>*/}
+              {/*    {'문의하기'}*/}
+              {/*  </MainText>*/}
+              {/*  <MainText color={WHITE} fontSize={16} fontWeight={300}>*/}
+              {/*    {'자주묻는질문'}*/}
+              {/*  </MainText>*/}
+              {/*  <MainText color={WHITE} fontSize={16} fontWeight={300}>*/}
+              {/*    {'이메일 지원'}*/}
+              {/*  </MainText>*/}
+              {/*  <MainText color={WHITE} fontSize={16} fontWeight={300}>*/}
+              {/*    {'전화 지원'}*/}
+              {/*  </MainText>*/}
+              {/*</ColumnList>*/}
             </ColumnContainer>
           </ContentContainer>
           <RowLine />
           <ContentContainer>
             <RowList>
               <MainText color={WHITE} fontSize={14} fontWeight={300}>
-                {'개인정보 처리방침'}
+                {t_footer('privacyPolicy')}
               </MainText>
               <MainText color={WHITE} fontSize={14} fontWeight={300}>
-                {'서비스 이용약관'}
+                {t_footer('termsOfService')}
               </MainText>
               <MainText color={WHITE} fontSize={14} fontWeight={300}>
-                {'법적고지'}
+                {t_footer('legalNotice')}
               </MainText>
             </RowList>
             <MainText color={WHITE} fontSize={14} fontWeight={300}>
-              {'© 2025 작당. All rights reserved.'}
+              {t_footer('right')}
             </MainText>
           </ContentContainer>
         </Wrapper>

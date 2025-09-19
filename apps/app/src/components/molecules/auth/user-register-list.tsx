@@ -125,7 +125,7 @@ const UserRegisterList = () => {
         router.push('/');
       }
     } catch (error) {
-      console.log('로그인 실패:', error);
+      // console.log('로그인 실패:', error);
       setThrownError(error instanceof Error ? error : new Error(String(error)));
     } finally {
       setIsLoading(false); // 서버 요청 완료 후 로딩 종료

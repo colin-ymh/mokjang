@@ -1,4 +1,3 @@
-import ky from 'ky';
 import { NEIS_KEY } from '../configs/config';
 import axios from 'axios';
 
@@ -50,7 +49,7 @@ export const getSchool = async (
 
     return response.data.schoolInfo[1].row;
   } catch (error) {
-    console.log('학교 검색 오류:', error);
+    // console.log('학교 검색 오류:', error);
     return [];
   }
 };

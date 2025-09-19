@@ -10,6 +10,8 @@ import GlobalStyle from '../components/atoms/layout/global-style';
 import InitializeStore from '@/components/atoms/layout/initialize-store';
 import { ToastLayout } from '@/components/atoms/popup/toast-layout';
 
+import { Analytics } from '@vercel/analytics/next';
+
 type RootLayoutProps = {
   children?: React.ReactNode;
 };
@@ -47,9 +49,12 @@ const RootLayout = (props: RootLayoutProps | RootLayoutPropsExtended) => {
             <InitializeStore>
               {/* 전역 스타일 적용 */}
               <GlobalStyle />
+
               {/* 실제 페이지 렌더링 */}
 
               {children}
+
+              <Analytics />
               {/* 토스트 팝업 */}
               <ToastLayout />
             </InitializeStore>

@@ -16,7 +16,7 @@ const FunctionContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 850px;
+  height: 950px;
   justify-content: center;
   align-items: center;
   gap: 100px;

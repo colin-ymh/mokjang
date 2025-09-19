@@ -144,7 +144,7 @@ const HeaderView = ({
           fontWeight={800}
           cursor={CURSOR.POINTER}
         >
-          {'목장'}
+          {'Ekkly'}
         </MainText>
       </LogoContainer>
       <MenuContainer>

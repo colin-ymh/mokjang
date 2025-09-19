@@ -2,8 +2,8 @@
 
 import styled from 'styled-components';
 import { useScopedI18n } from '../../../../../locales/client';
-import { Button, MainText } from '@mokjang/components';
-import { GRAY, GREEN, LOCALE, MAIN, WHITE } from '@mokjang/constants';
+import { Button } from '@mokjang/components';
+import { GREEN, LOCALE } from '@mokjang/constants';
 
 import BackgroundImage from '../../../../../public/jpg/hero-background.jpg';
 import { useSelector } from 'react-redux';
@@ -101,7 +101,8 @@ const HeroView = ({
             <Button
               borderRadius={10}
               text={t_button('createChurch')}
-              width={180}
+              width={'auto'}
+              columnPadding={20}
               height={60}
               fontSize={18}
               fontWeight={600}
@@ -110,7 +111,8 @@ const HeroView = ({
             <Button
               borderRadius={10}
               text={t_button('join')}
-              width={180}
+              width={'auto'}
+              columnPadding={20}
               height={60}
               fontSize={18}
               fontWeight={600}
