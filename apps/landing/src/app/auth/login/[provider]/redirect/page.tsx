@@ -14,7 +14,7 @@ export default function OAuthCallback() {
       // setAuthorizationToken(code);
       // 이후 로직 (예: 로컬스토리지 저장, API 호출 등)
       router.replace('/login/register');
-      console.log('code :', code);
+      // console.log('code :', code);
     }
   }, [code, router]);
 

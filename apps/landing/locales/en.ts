@@ -26,9 +26,10 @@ export default {
   'card.cardPw.placeholder': 'First 2 digits of password',
   'card.consent': 'I agree to provide my information to the payment company.',
 
-  'main.function.title': 'A New Standard for Church Management',
+  'main.function.title':
+    'Essential Features for Simple and Easy Church Management',
   'main.function.description':
-    'Mokjang integrates all church management tasks into one system to maximize efficiency.',
+    'With a clear interface and streamlined features, anyone can conveniently manage every aspect of church administration without difficulty.',
   'main.price.title': 'Reasonable Pricing Policy',
   'main.price.description':
     'We provide customized pricing plans tailored to the size of your church.',
@@ -72,13 +73,13 @@ export default {
 
   'function.member.title': 'Member Management',
   'function.member.description':
-    'Systematically manage members’ basic information, family relationships, and volunteer status. With search and filtering features, you can easily find the information you need.',
+    'From member information to family relationships, visitation records, groups, ministries, and education history—everything is organized and displayed at a glance. With an intuitive interface and powerful search and filter features, you can quickly and easily find the desired member information, making church management far more efficient and systematic.',
   'function.schedule.title': 'Church Schedule Management',
   'function.schedule.description':
-    'Integrate and manage all church events such as worship services, gatherings, and activities, and automatically send notifications to members. The calendar view makes it easy to see everything at a glance.',
-  'function.statistic.title': 'Attendance and Statistics',
+    'Manage all church schedules—from visitations to education and church administration—in one place. Ekkly goes beyond simple schedule recording by showing the progress of each event and sending notifications so that those in charge can collaborate effectively. As a result, schedule management becomes a dynamic ministry management tool rather than a simple memo.',
+  'function.statistic.title': 'Attendance',
   'function.statistic.description':
-    'Track attendance in real time for Sunday services and small group meetings, and use various statistical reports to understand church growth and trends.',
+    'Easily record and view church members’ worship attendance at a glance.',
 
   'subscription.freeTrial': 'Free Trail',
   'subscription.basic': 'Basic',
@@ -113,21 +114,18 @@ export default {
     'Your subscription has been successfully completed.',
 
   'faq.suitableChurch.question':
-    'What kind of churches is the Mokjang service suitable for?',
+    'What types of churches is Ekkly suitable for?',
   'faq.suitableChurch.answer':
-    'It is suitable for all churches, from small to large, that need to manage membership, attendance, visitation, and education.',
-  'faq.moveEnable.question': 'Can existing membership data be migrated?',
+    'Ekkly is suitable for all churches that need simple yet essential church management, from small congregations to large ones. Currently, it can be used by churches with up to 500 registered members.',
+  'faq.moveEnable.question':
+    'Can I easily migrate existing member information?',
   'faq.moveEnable.answer':
-    'Yes, it is possible. Existing membership data in Excel or CSV format can be easily imported, and our professional support team will assist you during the migration process.',
+    'Yes. You can conveniently enter member information using xlsx or csv files. Simply fill out the sheet provided by Ekkly and apply it.',
   'faq.mobileEnable.question': 'Can I use it on mobile devices?',
-  'faq.mobileEnable.answer':
-    'Yes, you can. It can be easily accessed and used not only on PCs but also on smartphones and tablets.',
-  'faq.dataSecurity.question': 'Is the data secure?',
+  'faq.mobileEnable.answer': 'A mobile version is currently in preparation.',
+  'faq.dataSecurity.question': 'Is my data secure?',
   'faq.dataSecurity.answer':
-    'Yes, it is secure. All data is stored in encrypted form and is safely protected through regular security checks and backups.',
-  'faq.freeTrial.question': 'How long is the free trial period?',
-  'faq.freeTrial.answer':
-    'The free trial period is 14 days, during which you can use all features without any restrictions.',
+    'All data is safely protected. Encrypted communication and permission-based access control ensure secure usage.',
 
   'login.title': 'Social Login',
   'login.description':
@@ -191,6 +189,22 @@ export default {
   'join-pending.description':
     'You will receive a text message notification once the administrator approves it.',
   'join-pending.cancel': 'Withdraw administrator registration request',
+
+  'footer.title': 'Ekkly',
+  'footer.description': 'A Tool for the True Ecclesia',
+  'footer.company.title': 'Company',
+  'footer.company.description': 'Jakdang',
+  'footer.representative.title': 'Representative',
+  'footer.representative.description': 'Na Cheonho',
+  'footer.identifyNumber.title': 'Registration',
+  'footer.identifyNumber.description': '123-45-67890',
+  'footer.address.title': 'Address',
+  'footer.address.description':
+    'Oa-a-a-ang-a, Wonmi-gu, Bucheon-si, Gyeonggi-do',
+  'footer.privacyPolicy': 'Privacy Policy',
+  'footer.termsOfService': 'Terms of Service',
+  'footer.legalNotice': 'Legal Notice',
+  'footer.right': '© 2025 Jakdang. All rights reserved.',
 
   'placeholder.name': 'Enter your name',
   'placeholder.mobilePhone': 'Enter your mobile phone number',

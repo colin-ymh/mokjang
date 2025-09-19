@@ -38,6 +38,7 @@
   "packageManager": "npm@11.2.0",
   "dependencies": {
     "@supabase/supabase-js": "^2.57.4",
+    "@vercel/analytics": "^1.5.0",
     "react-easy-crop": "^5.5.0"
   }
 }

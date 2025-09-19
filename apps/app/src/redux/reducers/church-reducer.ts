@@ -1,8 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ALL, BLANK, ORDER_DIRECTION } from '@mokjang/constants';
-import { Group, Ministry, MinistryGroup, Officer } from '@mokjang/models';
+import { Church, DEFAULT_CHURCH, Group, Ministry, MinistryGroup, Officer, } from '@mokjang/models';
 import { RootState } from '../store';
-import { Church, DEFAULT_CHURCH } from '@mokjang/models';
 import { getOrderedGroups } from '../../utils/group';
 import { OfficersApi } from '../../api/management/officer/officers.api';
 import { getOrderedMinistryGroups } from '../../utils/ministry';
@@ -49,7 +48,7 @@ export const fetchOfficers = createAsyncThunk<
 
     return response.data.data;
   } catch (error) {
-    console.log('직분 목록 불러오기 실패:', error);
+    // console.log('직분 목록 불러오기 실패:', error);
     return rejectWithValue('직분 목록을 불러오는 중 오류가 발생했습니다.');
   }
 });
@@ -83,7 +82,7 @@ export const fetchGroups = createAsyncThunk<
 
     return [allGroup];
   } catch (error) {
-    console.log('그룹 목록 불러오기 실패:', error);
+    // console.log('그룹 목록 불러오기 실패:', error);
     return rejectWithValue('그룹 목록을 불러오는 중 오류가 발생했습니다.');
   }
 });
@@ -118,7 +117,7 @@ export const fetchMinistryGroups = createAsyncThunk<
 
     return [allGroup];
   } catch (error) {
-    console.log('그룹 목록 불러오기 실패:', error);
+    // console.log('그룹 목록 불러오기 실패:', error);
     return rejectWithValue('그룹 목록을 불러오는 중 오류가 발생했습니다.');
   }
 });

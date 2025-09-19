@@ -33,7 +33,7 @@ export const useInitializeChurch = () => {
   const initialize = useCallback(async () => {
     if (didRunRef.current) return; // 이미 실행했으면 무시
     if (!churchId) {
-      console.log('교회 ID 없음');
+      // console.log('교회 ID 없음');
       return;
     }
     didRunRef.current = true; // ➜ 더 이상 실행 금지

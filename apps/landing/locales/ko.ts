@@ -29,9 +29,9 @@ export default {
   'card.cardPw.placeholder': '비밀번호 앞 2자리',
   'card.consent': '결제사 정보 제공에 동의합니다.',
 
-  'main.function.title': '교회 관리의 새로운 기준',
+  'main.function.title': '꼭 필요한 기능만, 누구나 쉽게 쓰는 교회 관리',
   'main.function.description':
-    '목장은 교회의 모든 관리 업무를 하나의 시스템으로 통합하여 효율성을 극대화합니다.',
+    '복잡하지 않은 화면과 간결한 기능으로, 누구나 어렵지 않게 교회 관리의 전 과정을 편리하게 사용할 수 있습니다.',
   'main.price.title': '합리적인 가격정책',
   'main.price.description':
     '교회 규모에 따라 선택할 수 있는 맞춤형 요금제를 제공합니다.',
@@ -71,15 +71,15 @@ export default {
   'button.mobilePhone.reRequest': '요청',
   'button.mobilePhone.verify': '인증',
 
-  'function.member.title': '교인관리(교적부)',
+  'function.member.title': '교인관리',
   'function.member.description':
-    '교인들의 기본 정보, 가족 관계, 봉사 현황 등을 체계적으로 관리할 수 있습니다. 검색과 필터링 기능으로 원하는 정보를 쉽게 찾을 수 있어요.',
+    '교인정보 부터 가족 관계, 심방 기록, 그룹,사역,교육의 이력까지 모든 정보를 한눈에 정리해 보여줍니다. 직관적인 화면과 강력한 검색·필터 기능으로 원하는 교인 정보를 쉽고 빠르게 찾을 수 있어, 교회 관리가 훨씬 효율적이고 체계적으로 이루어집니다.',
   'function.schedule.title': '교회 일정관리',
   'function.schedule.description':
-    '예배, 모임, 행사 등 교회의 모든 일정을 통합 관리하고, 교인들에게 자동으로 알림을 발송할 수 있습니다. 달력 뷰로 한눈에 확인 가능해요.',
-  'function.statistic.title': '출석 및 통계 기능',
+    '심방부터 교육, 교회 행정까지 흩어져 있던 교회 일정을 한곳에서 관리하세요. 에클리는 단순한 일정 기록을 넘어, 각 일정의 진행 상태를 표시하고 알림을 보내어 담당자들이 함께 협력할 수 있도록 돕습니다. 그래서 일정 관리가 단순한 메모가 아니라, 살아 있는 사역 관리 도구가 됩니다.',
+  'function.statistic.title': '출석',
   'function.statistic.description':
-    '주일 예배, 소그룹 모임 등의 출석 현황을 실시간으로 체크하고, 다양한 통계 리포트를 통해 교회 성장과 트렌드를 파악할 수 있습니다.',
+    '예배에 대한 교인들의 출석을 간편하게 입력하고 한눈에 확인할 수 있습니다.',
 
   'subscription.freeTrial': '무료체험',
   'subscription.basic': '베이직',
@@ -116,21 +116,17 @@ export default {
   'payment-fail.time': '실패 시간',
   'payment-fail.case': '실패 사유',
 
-  'faq.suitableChurch.question': '목장 서비스는 어떤 교회에 적합한가요?',
+  'faq.suitableChurch.question': '에클리는 어떤 교회에 적합한가요?',
   'faq.suitableChurch.answer':
-    '소형 교회부터 대형 교회까지, 교적부 관리와 출석·심방·교육 관리가 필요한 모든 교회에 적합합니다.',
-  'faq.moveEnable.question': '기존 교적부 데이터를 이전할 수 있나요?',
+    'Ekkly는 교인 수가 적은 교회부터 큰 교회까지, 간결하면서도 교회 관리의 본질을 필요로 하는 모든 교회에 적합합니다. 현재는 500명 이내의 교회만 사용가능합니다.(교인등록 최대 500명 이내)',
+  'faq.moveEnable.question': '손 쉽게 기존 교인정보를 이전할 수 있나요?',
   'faq.moveEnable.answer':
-    '네, 가능합니다. Excel, CSV 파일 형태의 기존 교적부 데이터를 간편하게 가져올 수 있으며, 데이터 이전 과정에서 전문 지원팀이 도움을 드립니다.',
+    'xlsx, csv 파일을 통해 교인정보를 간편하게 입력 할 수 있습니다. Ekkly가 제공하는 시트에 입력후 해당 시트를 적용하는 방식 ',
   'faq.mobileEnable.question': '모바일에서도 사용할 수 있나요?',
-  'faq.mobileEnable.answer':
-    '네, 가능합니다. PC뿐만 아니라 스마트폰과 태블릿에서도 손쉽게 접속하여 사용할 수 있습니다.',
+  'faq.mobileEnable.answer': '모바일은 현재 준비중에 있습니다.',
   'faq.dataSecurity.question': '데이터 보안은 안전한가요?',
   'faq.dataSecurity.answer':
-    '네, 안전합니다. 모든 데이터는 암호화되어 저장되며, 정기적인 보안 점검과 백업을 통해 안전하게 보호됩니다.',
-  'faq.freeTrial.question': '무료 체험 기간은 얼마나 되나요?',
-  'faq.freeTrial.answer':
-    '무료 체험 기간은 14일이며, 기간 동안 모든 기능을 제한 없이 이용하실 수 있습니다.',
+    '모든 데이터는 안전하게 보호됩니다. 암호화된 통신과 권한 기반 접근 제어로, 안심하고 이용하실 수 있습니다.',
 
   'login.title': '간편 로그인',
   'login.description': '목장 서비스로 교회 관리가 더욱 쉬워집니다.',
@@ -187,6 +183,21 @@ export default {
 
   'join-pending.description': '관리자가 승인하면 문자로 알림을 보내드립니다.',
   'join-pending.cancel': '관리자 등록 신청 철회하기',
+
+  'footer.title': '에클리',
+  'footer.description': '참 된 에클레시아를 위한 도구',
+  'footer.company.title': '회사명',
+  'footer.company.description': '작당',
+  'footer.representative.title': '대표자',
+  'footer.representative.description': '나천호',
+  'footer.identifyNumber.title': '사업자 등록번호',
+  'footer.identifyNumber.description': '123-45-67890',
+  'footer.address.title': '주소',
+  'footer.address.description': '경기도 부천시 원미구 오아아아앙아',
+  'footer.privacyPolicy': '개인정보 처리방침',
+  'footer.termsOfService': '서비스 이용약관',
+  'footer.legalNotice': '법적고지',
+  'footer.right': '© 2025 작당. All rights reserved.',
 
   'placeholder.name': '이름을 입력해주세요',
   'placeholder.mobilePhone': '전화번호를 입력해주세요',

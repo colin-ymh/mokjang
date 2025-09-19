@@ -108,8 +108,12 @@ export const getTranslatedHeroTitle = (basePath: LOCALE) => {
 export const getTranslatedHeroDescription = (basePath: LOCALE) => {
   if (basePath === LOCALE.EN) {
     return (
-      <MainText fontSize={60} fontWeight={700} color={WHITE}>
-        {'A New Beginning for Church Management'}
+      <MainText fontSize={20} color={GRAY.LIGHT}>
+        Manage all church tasks from membership records to attendance in one
+        platform,{' '}
+        <MainText fontSize={22} fontWeight={600} color={GREEN.DEFAULT}>
+          completely free
+        </MainText>
       </MainText>
     );
   } else {
@@ -117,8 +121,8 @@ export const getTranslatedHeroDescription = (basePath: LOCALE) => {
       <MainText fontSize={20} color={GRAY.LIGHT}>
         교적부부터 출석관리까지 모든 교회 업무를 하나의 플랫폼에서{' '}
         <MainText fontSize={22} fontWeight={600} color={GREEN.DEFAULT}>
-          완전 무료로
-        </MainText>{' '}
+          완전 무료로{' '}
+        </MainText>
         관리하세요
       </MainText>
     );

@@ -22,5 +22,5 @@ export enum FAQ {
   MOVE_ENABLE = 'moveEnable',
   MOBILE_ENABLE = 'mobileEnable',
   DATA_SECURITY = 'dataSecurity',
-  FREE_TRIAL = 'freeTrial',
+  // FREE_TRIAL = 'freeTrial',
 }
