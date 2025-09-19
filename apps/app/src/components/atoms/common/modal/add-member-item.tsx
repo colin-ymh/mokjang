@@ -2,23 +2,22 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { Member } from '@mokjang/models';
-import { GRAY, MAIN, WHITE } from '@mokjang/constants';
-import { CheckButton } from '@mokjang/components';
-import { BLANK } from '@mokjang/constants';
-import ProfileImage from '../image/profile-image';
-import { MainText } from '@mokjang/components';
-import { getFormattedPhone } from '@mokjang/utils';
-import { getTranslatedAge } from '@/utils/translate';
+import { BLANK, GRAY, LOCALE, MAIN, WHITE } from '@mokjang/constants';
+import {
+  CheckButton,
+  MainTag,
+  MainText,
+  ProfileImage,
+} from '@mokjang/components';
 import { usePathname } from 'next/navigation';
-import { LOCALE } from '@mokjang/constants';
-import { getAge, getDateFromDateString } from '@mokjang/utils';
 import { useI18n } from '../../../../../locales/client';
-import { MainTag } from '@mokjang/components';
+import { getTranslatedTerm } from '@mokjang/utils';
 
 const ItemContainer = styled.div<{
   $isEnable: boolean;
   $isSelected: boolean;
 }>`
+  position: relative;
   display: flex;
   padding: 20px;
   gap: 20px;
@@ -53,7 +52,7 @@ const ProfileContainer = styled.div`
 const ProfileDetail = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 6px;
 `;
 
 const RowContainer = styled.div`
@@ -61,6 +60,16 @@ const RowContainer = styled.div`
   flex-direction: row;
   align-items: center;
   gap: 10px;
+`;
+
+const StatusContainer = styled.div`
+  display: flex;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
 `;
 
 type AddMemberItemProps = {
@@ -95,26 +104,36 @@ const AddMemberItem = ({
         disabled={!isEnable}
       />
       <ProfileContainer>
-        <ProfileImage value={member?.profileImageUrl} />
+        <ProfileImage value={member?.profileImageUrl} width={50} height={50} />
         <ProfileDetail>
           <RowContainer>
             <MainText>{`${member.name} ${member.officer?.name || BLANK}`}</MainText>
-            <MainText color={GRAY.DEFAULT}>
-              {member.birth &&
-                `(${getTranslatedAge(
-                  locale,
-                  getAge(getDateFromDateString(member.birth))
-                )})`}
-            </MainText>
           </RowContainer>
           <RowContainer>
-            <MainTag title={member.group?.name || t('noGroup')} />
             <MainText color={GRAY.SEMI_DARK}>
-              {member.mobilePhone && getFormattedPhone(member.mobilePhone)}
+              {member.group?.name || t('noGroup')}
             </MainText>
           </RowContainer>
         </ProfileDetail>
       </ProfileContainer>
+
+      {member?.educationEnrollments &&
+        member?.educationEnrollments?.length > 0 && (
+          <StatusContainer>
+            {member.educationEnrollments.map(
+              (enrollment) =>
+                enrollment?.educationTerm && (
+                  <MainTag
+                    key={enrollment.id}
+                    title={getTranslatedTerm(
+                      locale,
+                      enrollment.educationTerm.term
+                    )}
+                  />
+                )
+            )}
+          </StatusContainer>
+        )}
     </ItemContainer>
   );
 };

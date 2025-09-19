@@ -2,10 +2,9 @@ import { AxiosResponse } from 'axios';
 import qs from 'qs';
 
 import { ORDER_DIRECTION, WORSHIP_ENROLLMENT } from '@mokjang/constants';
-import { SERVER_URL, TEST_SERVER_URL } from '@mokjang/constants';
 import { CustomError } from '../error/error';
 import authorizeAxios from '../authorize-axios';
-
+import { IS_PRODUCTION, SERVER_URL, TEST_SERVER_URL } from '@mokjang/utils';
 
 type GetWorshipEnrollmentsParams = {
   churchId: string; // 교회 id
@@ -14,7 +13,7 @@ type GetWorshipEnrollmentsParams = {
   take?: number; // 요청 개수
   order?: WORSHIP_ENROLLMENT; // 정렬 기준
   orderDirection?: ORDER_DIRECTION; // 오름차순 내림차순
-  groupId?: string;
+  groupId?: string | undefined | null;
   fromSessionDate?: string;
   toSessionDate?: string;
 };
@@ -28,7 +27,7 @@ export class WorshipEnrollmentsApi {
   private _url: string;
 
   constructor(useBaseURL: boolean) {
-    this._url = useBaseURL
+    this._url = IS_PRODUCTION
       ? SERVER_URL // 실제 사용할 url
       : TEST_SERVER_URL; // 개발용 url
   }
@@ -78,7 +77,7 @@ export class WorshipEnrollmentsApi {
         paramsSerializer: (params) => {
           return qs.stringify(params, {
             arrayFormat: 'repeat',
-            skipNulls: true,
+            skipNulls: false,
             encodeValuesOnly: true,
           });
         },
@@ -107,7 +106,7 @@ export class WorshipEnrollmentsApi {
   ): Promise<AxiosResponse> => {
     const { churchId, worshipId } = params;
 
-    const url = `${this._url}/churches/${churchId}/worships/${worshipId}/refresh`;
+    const url = `${this._url}/churches/${churchId}/worships/${worshipId}/enrollments/refresh`;
 
     try {
       return await authorizeAxios.post(url);

@@ -1,9 +1,9 @@
 import { AxiosResponse } from 'axios';
-import { SERVER_URL, TEST_SERVER_URL } from '@mokjang/constants';
 import { CustomError } from '../../error/error';
 import { ORDER_DIRECTION } from '@mokjang/constants';
 import qs from 'qs';
 import authorizeAxios from '../../authorize-axios';
+import { IS_PRODUCTION, SERVER_URL, TEST_SERVER_URL } from '@mokjang/utils';
 
 enum GROUP_ORDER {
   CREATED_AT = 'createdAt',
@@ -68,11 +68,23 @@ type EditGroupLeaderBody = {
   startDate: string;
 };
 
+type RefreshGroupCountParams = {
+  churchId: string;
+};
+
+type GetGroupUnassignedMemberParams = {
+  churchId: string;
+  take?: number;
+  page?: number;
+  order?: number;
+  orderDirection?: ORDER_DIRECTION;
+};
+
 export class GroupsApi {
   private _url: string;
 
   constructor(useBaseURL: boolean) {
-    this._url = useBaseURL
+    this._url = IS_PRODUCTION
       ? SERVER_URL // 실제 사용할 url
       : TEST_SERVER_URL; // 개발용 url
   }
@@ -296,6 +308,83 @@ export class GroupsApi {
 
     try {
       return await authorizeAxios.patch(url, body);
+    } catch (serverError: any) {
+      if (serverError.response) {
+        const { message, error, statusCode } = serverError.response.data;
+        throw new CustomError(message, error, statusCode);
+      } else {
+        throw new CustomError(
+          '알 수 없는 에러가 발생했습니다',
+          500,
+          'Unknown Error'
+        );
+      }
+    }
+  };
+
+  /**
+   * 그룹 개수 새로고침
+   * @param {RefreshGroupCountParams} params
+   * @returns {Promise<AxiosResponse>}
+   */
+  public refreshGroupCount = async (
+    params: RefreshGroupCountParams
+  ): Promise<AxiosResponse> => {
+    const { churchId } = params;
+
+    const url = `${this._url}/churches/${churchId}/management/groups/refresh-count`;
+
+    try {
+      return await authorizeAxios.patch(url);
+    } catch (serverError: any) {
+      if (serverError.response) {
+        const { message, error, statusCode } = serverError.response.data;
+        throw new CustomError(message, error, statusCode);
+      } else {
+        throw new CustomError(
+          '알 수 없는 에러가 발생했습니다',
+          500,
+          'Unknown Error'
+        );
+      }
+    }
+  };
+
+  /**
+   * 그룹에 속하지 않은 교인 조회
+   * @param {GetGroupUnassignedMemberParams} params
+   * @returns {Promise<AxiosResponse>}
+   */
+  public getGroupUnassignedMember = async (
+    params: GetGroupUnassignedMemberParams
+  ): Promise<AxiosResponse> => {
+    const { churchId, take, page, order, orderDirection } = params;
+
+    const queryParams: Record<string, any> = Object.fromEntries(
+      Object.entries({
+        take,
+        page,
+        order,
+        orderDirection,
+      }).filter(
+        ([_, value]) =>
+          value !== undefined && !(Array.isArray(value) && value.length === 0)
+      )
+    );
+
+    const url = `${this._url}/churches/${churchId}/management/groups/unassigned-member`;
+
+    try {
+      return await authorizeAxios.get(url, {
+        params: queryParams,
+        paramsSerializer: (params) => {
+          return qs.stringify(params, {
+            arrayFormat: 'repeat',
+            skipNulls: true,
+            encodeValuesOnly: true,
+          });
+        },
+      });
     } catch (serverError: any) {
       if (serverError.response) {
         const { message, error, statusCode } = serverError.response.data;

@@ -6,30 +6,30 @@ import { setTargetChurchUser } from '@/redux/reducers/target/target-church-user-
 import { ChurchUsersApi } from '@/api/church-users/church-users.api';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
-import { BLANK } from '@mokjang/constants';
+import { BLACK, DESTRUCTIVE } from '@mokjang/constants';
 import { CustomPopup } from '@mokjang/components';
 import LinkMemberUser from '@/components/molecules/join-request/link-member-user';
 import { useScopedI18n } from '../../../../../locales/client';
-import { PermissionTemplate, PermissionUnit } from '@mokjang/models';
-import {
-  fetchPermissionTemplates,
-  setPermissionTemplates,
-} from '@/redux/reducers/filter/permission-template-filter-reducer';
-import { ChurchUser } from '@mokjang/models';
+import { ChurchUser, DEFAULT_MEMBER, Group, Member } from '@mokjang/models';
 import { setChurchUsers } from '@/redux/reducers/filter/church-user-filter-reducer';
-import { Group } from '@mokjang/models';
-import { PermissionsApi } from '@/api/permissions/permissions.api';
 import { ManagersApi } from '@/api/managers/managers.api';
 import PermissionRange from '@/components/atoms/church-user/information/permission-range';
 import EditPermissionTemplate from '@/components/molecules/church-user/information/edit-permission-template';
 import ConfirmPopup from '@/components/atoms/common/popup/error-popup';
+import {
+  setIsToastShown,
+  setToastBackgroundColor,
+  setToastText,
+} from '@/redux/reducers/toast-popup-reducer';
 
 type ChurchUserInformationProps = {
+  isMy?: boolean;
   isManager: boolean;
   onClickDelete: () => void;
 };
 
 const ChurchUserInformation = ({
+  isMy,
   isManager,
   onClickDelete,
 }: ChurchUserInformationProps) => {
@@ -38,7 +38,6 @@ const ChurchUserInformation = ({
   const t_popup = useScopedI18n('popup');
 
   const churchUsersApi = new ChurchUsersApi(false);
-  const permissionsApi = new PermissionsApi(false);
   const managersApi = new ManagersApi(false);
 
   const dispatch = useDispatch<AppDispatch>();
@@ -49,13 +48,14 @@ const ChurchUserInformation = ({
   const { churchUsers } = useSelector(
     (state: RootState) => state.churchUserFilter
   );
+  const { user } = useSelector((state: RootState) => state.user);
 
   const [isEditTemplateShown, setIsEditTemplateShown] =
     useState<boolean>(false);
 
-  const [isLinkPopupShown, setLinkPopupShown] = useState<boolean>(false);
+  const [isLinkPopupShown, setIsLinkPopupShown] = useState<boolean>(false);
 
-  const [selectedMemberId, setSelectedMemberId] = useState<string>(BLANK);
+  const [selectedMember, setSelectedMember] = useState<Member>(DEFAULT_MEMBER);
 
   const [isGroupPopupShown, setIsGroupPopupShown] = useState<boolean>(false);
 
@@ -65,10 +65,6 @@ const ChurchUserInformation = ({
 
   const [selectedPermissionTemplateId, setSelectedPermissionTemplateId] =
     useState<string | null>(targetChurchUser.permissionTemplate?.id || null);
-
-  const [selectedPermissionUnits, setSelectedPermissionUnits] = useState<
-    PermissionUnit[]
-  >([]);
 
   // 삭제 확인 팝업
   const [isPopupShown, setIsPopupShown] = useState<boolean>(false);
@@ -103,56 +99,55 @@ const ChurchUserInformation = ({
   };
 
   const onClickLink = () => {
-    setLinkPopupShown(true);
+    setIsLinkPopupShown(true);
   };
 
   const onClickCancelLink = () => {
-    setLinkPopupShown(false);
+    setIsLinkPopupShown(false);
   };
 
   const onClickLinkDone = async () => {
     try {
-      await churchUsersApi.unlinkMember({
-        churchId,
-        churchUserId: targetChurchUser.id,
+      await churchUsersApi.changeMember(
+        { churchId, churchUserId: targetChurchUser.id },
+        { memberId: selectedMember.id }
+      );
+      setIsLinkPopupShown(false);
+
+      const newTargetChurchUser = {
+        ...targetChurchUser,
+        member: selectedMember,
+      };
+
+      dispatch(setTargetChurchUser(newTargetChurchUser));
+
+      const newChurchUsers = churchUsers.map((churchUser) => {
+        if (churchUser.id === targetChurchUser.id) {
+          return newTargetChurchUser;
+        } else {
+          return churchUser;
+        }
       });
 
-      await churchUsersApi
-        .linkMember(
-          { churchId, churchUserId: targetChurchUser.id },
-          { linkMemberId: selectedMemberId }
-        )
-        .then((response) => {});
+      dispatch(setChurchUsers(newChurchUsers));
+
+      dispatch(setIsToastShown(true));
+      dispatch(setToastText(t_popup('saveComplete')));
+      dispatch(setToastBackgroundColor(BLACK));
     } catch (error) {
-      setThrownError(error instanceof Error ? error : new Error(String(error)));
+      if (error instanceof Error) {
+        dispatch(setToastText(error.message));
+        dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
+        dispatch(setIsToastShown(true));
+      } else {
+        setThrownError(new Error(String(error)));
+      }
     }
   };
 
-  const onChangeLinkMember = (memberId: string) => {
-    setSelectedMemberId(memberId);
+  const onChangeLinkMember = (member: Member) => {
+    setSelectedMember(member);
   };
-
-  // 교회 내의 권한 유형들 불러오기
-  useEffect(() => {
-    const fetchInitialPermissionTemplates = async () => {
-      try {
-        const result = await dispatch(
-          fetchPermissionTemplates({
-            currentPage: 1,
-          })
-        );
-        if (fetchPermissionTemplates.fulfilled.match(result)) {
-          dispatch(setPermissionTemplates(result.payload));
-        }
-      } catch (error) {
-        setThrownError(
-          error instanceof Error ? error : new Error(String(error))
-        );
-      }
-    };
-
-    fetchInitialPermissionTemplates();
-  }, []);
 
   // 권한 범위 팝업 열기
   const onClickGroupPopupOpen = () => setIsGroupPopupShown(true);
@@ -160,7 +155,9 @@ const ChurchUserInformation = ({
   const onClickGroupPopupClose = () => {
     setIsGroupPopupShown(false);
     setSelectedGroupIds(
-      targetChurchUser.permissionScopes.map((scope) => scope.group?.id || null)
+      targetChurchUser?.permissionScopes?.map(
+        (scope) => scope.group?.id || null
+      ) || []
     );
   };
 
@@ -210,36 +207,20 @@ const ChurchUserInformation = ({
             setSelectedPermissionTemplateId(id);
           });
       }
+      setIsEditTemplateShown(false);
+      dispatch(setIsToastShown(true));
+      dispatch(setToastText(t_popup('saveComplete')));
+      dispatch(setToastBackgroundColor(BLACK));
     } catch (error) {
-      setThrownError(error instanceof Error ? error : new Error(String(error)));
-    }
-  };
-
-  const getPermissionUnits = async () => {
-    if (selectedPermissionTemplateId) {
-      try {
-        const response = await permissionsApi.getPermissionTemplate({
-          churchId,
-          templateId: selectedPermissionTemplateId,
-        });
-
-        const newPermissionTemplate: PermissionTemplate = response.data.data;
-        return newPermissionTemplate.permissionUnits;
-      } catch (error) {
-        setThrownError(
-          error instanceof Error ? error : new Error(String(error))
-        );
+      if (error instanceof Error) {
+        dispatch(setToastText(error.message));
+        dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
+        dispatch(setIsToastShown(true));
+      } else {
+        setThrownError(new Error(String(error)));
       }
     }
   };
-
-  useEffect(() => {
-    getPermissionUnits().then((units) => {
-      if (units) {
-        setSelectedPermissionUnits(units);
-      }
-    });
-  }, [selectedPermissionTemplateId]);
 
   const onClickDoneGroup = async () => {
     try {
@@ -270,8 +251,17 @@ const ChurchUserInformation = ({
           (scope) => scope.group?.id || null
         )
       );
+      dispatch(setIsToastShown(true));
+      dispatch(setToastText(t_popup('saveComplete')));
+      dispatch(setToastBackgroundColor(BLACK));
     } catch (error) {
-      setThrownError(error instanceof Error ? error : new Error(String(error)));
+      if (error instanceof Error) {
+        dispatch(setToastText(error.message));
+        dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
+        dispatch(setIsToastShown(true));
+      } else {
+        setThrownError(new Error(String(error)));
+      }
     }
   };
 
@@ -311,11 +301,14 @@ const ChurchUserInformation = ({
   useEffect(() => {
     setIsGroupPopupShown(false);
     setSelectedGroupIds(
-      targetChurchUser.permissionScopes.map((scope) => scope.group?.id || null)
+      targetChurchUser?.permissionScopes?.map(
+        (scope) => scope.group?.id || null
+      ) || []
     );
   }, [targetChurchUser.id]);
 
   const props = {
+    isMy,
     isManager,
     onClickEditTemplateOpen,
     onClickLink,
@@ -345,15 +338,19 @@ const ChurchUserInformation = ({
       {/* 교인 연결 팝업 */}
       <CustomPopup
         isShow={isLinkPopupShown}
+        onClickClose={onClickCancelLink}
         onClickCancel={onClickCancelLink}
         width={500}
         height={850}
         headerTitle={t_title('linkMemberUser')}
         doneText={t_button('link')}
+        cancelText={t_button('close')}
         onClickDone={onClickLinkDone}
       >
         <LinkMemberUser
-          prevMember={targetChurchUser.member}
+          prevMember={
+            isMy ? user.churchUser[0].member : targetChurchUser.member
+          }
           onChangeLinkMember={onChangeLinkMember}
         />
       </CustomPopup>
@@ -361,11 +358,13 @@ const ChurchUserInformation = ({
       {/* 그룹 선택 팝업 */}
       <CustomPopup
         isShow={isGroupPopupShown}
+        onClickClose={onClickGroupPopupClose}
         onClickCancel={onClickGroupPopupClose}
         width={500}
         height={600}
         onClickDone={onClickDoneGroup}
         doneText={t_button('save')}
+        cancelText={t_button('close')}
         isHeaderShown={false}
       >
         <PermissionRange
@@ -377,11 +376,13 @@ const ChurchUserInformation = ({
       {/* 권한그룹 선택 팝업 */}
       <CustomPopup
         isShow={isEditTemplateShown}
+        onClickClose={onClickEditTemplateClose}
         onClickCancel={onClickEditTemplateClose}
         width={500}
         height={600}
         onClickDone={() => onClickSaveTemplate(selectedPermissionTemplateId)}
         doneText={t_button('save')}
+        cancelText={t_button('close')}
         headerTitle={t_title('editPermissionTemplate')}
       >
         <EditPermissionTemplate

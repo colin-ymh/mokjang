@@ -3,17 +3,12 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
 import { useTaskStatusDropdownItems } from '../../../../hooks/dropdown/dropdown-items';
 import { useI18n } from '../../../../../locales/client';
-import { MainText } from '@mokjang/components';
-import { GRAY } from '@mokjang/constants';
+import { MainText, SvgIcon } from '@mokjang/components';
+import { GRAY, LOCALE, TASK_STATUS } from '@mokjang/constants';
 import React from 'react';
-import StatusDropdown from '../../../atoms/common/dropdown/status-dropdown';
-import { TASK_STATUS } from '@mokjang/constants';
-import { SIZE } from '@mokjang/constants';
 import MemberProfilePopupButton from '../../../molecules/common/button/member-profile-popup-button';
 import { usePathname } from 'next/navigation';
-import { LOCALE } from '@mokjang/constants';
-import { getTranslatedDateFromDateString } from '@mokjang/utils';
-import { SvgIcon } from '@mokjang/components';
+import { getTranslatedStartEndDate } from '@mokjang/utils';
 import { Svg } from '@mokjang/assets';
 
 const InformationContainer = styled.div`
@@ -52,6 +47,7 @@ const RowContainer = styled.div`
   align-items: center;
   width: 100%;
   gap: 30px;
+  height: 30px;
 `;
 
 const ColumnContainer = styled.div`
@@ -100,18 +96,18 @@ const VisitationInformationView = ({
   return (
     <InformationContainer>
       {/* 제목 */}
-      <HeaderContainer>
-        <MainText size={SIZE.EXTRA_LARGE} fontSize={22}>
-          {targetVisitation.title}
-        </MainText>
-        <StatusDropdown
-          value={targetVisitation.status}
-          items={statusDropdownItems}
-          onChangeItem={onChangeStatus}
-          width={100}
-          height={30}
-        />
-      </HeaderContainer>
+      {/*<HeaderContainer>*/}
+      {/*  <MainText size={SIZE.EXTRA_LARGE} fontSize={22}>*/}
+      {/*    {targetVisitation.title}*/}
+      {/*  </MainText>*/}
+      {/*  <StatusDropdown*/}
+      {/*    value={targetVisitation.status}*/}
+      {/*    items={statusDropdownItems}*/}
+      {/*    onChangeItem={onChangeStatus}*/}
+      {/*    width={100}*/}
+      {/*    height={30}*/}
+      {/*  />*/}
+      {/*</HeaderContainer>*/}
       <ContentContainer>
         {/* 담당자 */}
         <RowContainer>
@@ -134,19 +130,11 @@ const VisitationInformationView = ({
           {/* 일자 */}
           <PeriodContainer>
             <MainText>
-              {targetVisitation.startDate &&
-                getTranslatedDateFromDateString(
-                  locale,
-                  targetVisitation.startDate
-                )}
-            </MainText>
-            <MainText>{'-'}</MainText>
-            <MainText>
-              {targetVisitation.endDate &&
-                getTranslatedDateFromDateString(
-                  locale,
-                  targetVisitation.endDate
-                )}
+              {getTranslatedStartEndDate(
+                locale,
+                targetVisitation.startDate,
+                targetVisitation.endDate
+              )}
             </MainText>
           </PeriodContainer>
         </RowContainer>
@@ -165,7 +153,7 @@ const VisitationInformationView = ({
         </RowContainer>
 
         {/* 보고대상자 */}
-        <ColumnContainer>
+        <RowContainer>
           <TitleContainer>
             <SvgIcon svg={Svg.Users} color={GRAY.EXTRA_DARK} />
             <MainText color={GRAY.EXTRA_DARK}>{t('receiver')}</MainText>
@@ -178,7 +166,7 @@ const VisitationInformationView = ({
               />
             ))}
           </MemberList>
-        </ColumnContainer>
+        </RowContainer>
 
         <RowLine />
         {/* 업무내용 */}

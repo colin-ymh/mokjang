@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { MinistryGroup } from '@mokjang/models';
-import useWindowSize from '../../../../../hooks/window/window';
 import ManagementMinistryGroupItem from '../../../../atoms/management/ministry/list/management-ministry-group-item';
 
 const MinistryGroupListContainer = styled.div<{ height: number }>`
@@ -10,7 +9,7 @@ const MinistryGroupListContainer = styled.div<{ height: number }>`
   flex-direction: column;
   width: 100%;
   overflow-y: auto;
-  height: ${({ height }) => `${height - 250}px`};
+  height: ${({ height }) => `${height}px`};
 `;
 
 type MinistryGroupListViewProps = {
@@ -19,6 +18,7 @@ type MinistryGroupListViewProps = {
   selectedMinistryGroupId: string | null;
   onClickMinistryGroup: (group: MinistryGroup) => void;
   onClickToggle: (id: string) => void;
+  height: number;
 };
 
 const MinistryGroupListView = ({
@@ -27,8 +27,8 @@ const MinistryGroupListView = ({
   selectedMinistryGroupId,
   onClickMinistryGroup,
   onClickToggle,
+  height,
 }: MinistryGroupListViewProps) => {
-  const { height } = useWindowSize();
   return (
     <>
       <MinistryGroupListContainer height={height}>

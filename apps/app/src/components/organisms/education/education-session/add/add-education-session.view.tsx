@@ -3,17 +3,13 @@
 import styled from 'styled-components';
 import React, { ChangeEvent } from 'react';
 import { useI18n, useScopedI18n } from '../../../../../../locales/client';
-import { GRAY } from '@mokjang/constants';
-import { MainText } from '@mokjang/components';
+import { GRAY, LOCALE, SIZE } from '@mokjang/constants';
+import { BorderInput, MainText, RequiredMark } from '@mokjang/components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../redux/store';
-import { RequiredMark } from '@mokjang/components';
-import { BorderInput } from '@mokjang/components';
-import { SIZE } from '@mokjang/constants';
 import CustomDatePicker from '../../../../../vendor/date-picker/custom-date-picker';
 import {
   getDateFromDateString,
-  getDateFromInput,
   getDateStringFromDate,
   getTotalMinuteFromDate,
 } from '@mokjang/utils';
@@ -24,6 +20,7 @@ import Quill from '../../../../atoms/common/input/quill';
 import MemberDropdown from '../../../../atoms/common/dropdown/member-dropdown';
 import MemberTag from '../../../../atoms/common/tag/member-tag';
 import BigMemberTag from '../../../../atoms/common/tag/big-member-tag';
+import { usePathname } from 'next/navigation';
 
 /* ──────────────────────────────── Styled Components ─────────────────────────────── */
 const AddEducationSessionViewContainer = styled.div`
@@ -88,7 +85,7 @@ type AddEducationSessionViewProps = {
   onChangeEndDate: (date: Date | null) => void;
   onChangeEndTime: (value: number) => void;
   onChangeInCharge: (values: MemberDropdownType[]) => void;
-  onChangeContent: (content: string) => void;
+  onChangeContent: (content: string, delta: any, source: string) => void;
   receivers: MemberDropdownType[];
   onChangeReceivers: (values: MemberDropdownType[]) => void;
   onClickDeleteReceiver: (value: string) => void;
@@ -109,13 +106,16 @@ const AddEducationSessionView = ({
   onChangeReceivers,
   onClickDeleteReceiver,
 }: AddEducationSessionViewProps) => {
+  const pathname = usePathname();
+  const locale = pathname.split('/')[1] as LOCALE;
+
   const { targetEducationSession } = useSelector(
     (state: RootState) => state.targetEducationSession
   );
   const t = useI18n();
   const t_placeholder = useScopedI18n('placeholder');
 
-  const timeDropdownItems = useTimeDropdownItems();
+  const timeDropdownItems = useTimeDropdownItems(locale);
 
   return (
     <AddEducationSessionViewContainer>
@@ -182,7 +182,7 @@ const AddEducationSessionView = ({
                 value={
                   targetEducationSession.startDate
                     ? getDateStringFromDate(
-                        getDateFromInput(targetEducationSession.startDate)
+                        getDateFromDateString(targetEducationSession.startDate)
                       )
                     : undefined
                 }
@@ -201,7 +201,7 @@ const AddEducationSessionView = ({
                     ? getTotalMinuteFromDate(
                         getDateFromDateString(targetEducationSession.startDate)
                       )
-                    : 0
+                    : 8 * 60
                 }
                 items={timeDropdownItems}
                 onChangeItem={onChangeStartTime}
@@ -211,7 +211,7 @@ const AddEducationSessionView = ({
                 value={
                   targetEducationSession.endDate
                     ? getDateStringFromDate(
-                        getDateFromInput(targetEducationSession.endDate)
+                        getDateFromDateString(targetEducationSession.endDate)
                       )
                     : undefined
                 }
@@ -230,7 +230,7 @@ const AddEducationSessionView = ({
                     ? getTotalMinuteFromDate(
                         getDateFromDateString(targetEducationSession.endDate)
                       )
-                    : 0
+                    : 8 * 60
                 }
                 items={timeDropdownItems}
                 onChangeItem={onChangeEndTime}
@@ -244,7 +244,9 @@ const AddEducationSessionView = ({
           <MainText>{t('content')}</MainText>
           <Quill
             value={content}
-            onChange={(html) => onChangeContent(html)}
+            onChange={(content, delta, source) =>
+              onChangeContent(content, delta, source)
+            }
             minHeight={150}
             placeholder={t_placeholder('content')}
             maxLength={1000}

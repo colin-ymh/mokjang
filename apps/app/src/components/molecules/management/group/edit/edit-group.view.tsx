@@ -2,11 +2,10 @@ import styled from 'styled-components';
 import React from 'react';
 import { useI18n, useScopedI18n } from '../../../../../../locales/client';
 import ConfirmPopup from '../../../../atoms/common/popup/confirm-popup';
-import { Group } from '@mokjang/models';
+import { Group, Member } from '@mokjang/models';
 import { LabelInput } from '@mokjang/components';
 import DeleteWarningButton from '../../../../atoms/common/button/delete-warning-button';
 import EditGroupLeader from '../../../../atoms/management/group/edit/edit-group-leader';
-import { Member } from '@mokjang/models';
 
 const EditContainer = styled.div`
   display: flex;
@@ -14,6 +13,10 @@ const EditContainer = styled.div`
   width: 100%;
   padding: 20px;
   gap: 20px;
+`;
+
+const BoxContainer = styled.div`
+  display: flex;
 `;
 
 type EditGroupViewProps = {
@@ -62,12 +65,14 @@ const EditGroupView = ({
         />
 
         {/* 삭제 */}
-        <DeleteWarningButton
-          description={t_warning('deleteGroup')}
-          buttonText={t_button('deleteGroup')}
-          onClick={onClickDeleteOpen}
-          disabled={!!selectedGroup?.membersCount || false}
-        />
+        <BoxContainer>
+          <DeleteWarningButton
+            description={t_warning('deleteGroup')}
+            buttonText={t_button('deleteGroup')}
+            onClick={onClickDeleteOpen}
+            disabled={!!selectedGroup?.membersCount || false}
+          />
+        </BoxContainer>
       </EditContainer>
 
       {/* 그룹 삭제 팝업 */}

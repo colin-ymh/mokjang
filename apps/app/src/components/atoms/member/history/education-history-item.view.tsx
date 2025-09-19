@@ -1,13 +1,11 @@
 import styled from 'styled-components';
-import { GRAY, GREEN, MAIN } from '@mokjang/constants';
+import { GRAY, LOCALE, SIZE } from '@mokjang/constants';
 import { EducationHistory } from '@mokjang/models';
-import { SvgIcon } from '@mokjang/components';
 import { MainText } from '@mokjang/components';
 import { useI18n } from '../../../../../locales/client';
-import { SIZE } from '@mokjang/constants';
-import { getDateFromDateString, getDateStringFromDate } from '@mokjang/utils';
+import { getTranslatedDateFromDateString } from '@mokjang/utils';
 import React from 'react';
-import { Svg } from '@mokjang/assets';
+import { usePathname } from 'next/navigation';
 
 const HistoryItemContainer = styled.div`
   display: flex;
@@ -26,12 +24,11 @@ const RowContainer = styled.div`
   position: relative;
 `;
 
-const IconContainer = styled.div<{ $isCurrent?: boolean }>`
+const ColumnContainer = styled.div`
   display: flex;
-  padding: 10px;
-  background-color: ${({ $isCurrent }) =>
-    $isCurrent ? GREEN.LIGHT : MAIN.LIGHT};
-  border-radius: 100%;
+  flex-direction: column;
+  gap: 6px;
+  justify-content: center;
 `;
 
 type EducationHistoryItemProps = {
@@ -41,32 +38,27 @@ type EducationHistoryItemProps = {
 const EducationHistoryItem = ({ history }: EducationHistoryItemProps) => {
   const t = useI18n();
 
+  const pathname = usePathname();
+  const locale = pathname.split('/')[1] as LOCALE;
+
   return (
     <HistoryItemContainer>
       <RowContainer>
-        <IconContainer>
-          <SvgIcon svg={Svg.Clock} color={MAIN.DARK} size={18} />
-        </IconContainer>
-        <MainText size={SIZE.LARGE} fontWeight={600}>
-          {history.educationTerm.educationName}
-        </MainText>
-      </RowContainer>
-      <RowContainer>
-        <SvgIcon svg={Svg.Calendar} color={GRAY.SEMI_DARK} />
-        <MainText color={GRAY.SEMI_DARK}>{t('period')}</MainText>
-        <MainText color={GRAY.SEMI_DARK}>
-          {getDateStringFromDate(
-            getDateFromDateString(history.educationTerm.startDate)
-          )}
-        </MainText>
-        <MainText color={GRAY.SEMI_DARK}>-</MainText>
-        <MainText color={GRAY.SEMI_DARK}>
-          {history.educationTerm.endDate
-            ? getDateStringFromDate(
-                getDateFromDateString(history.educationTerm.endDate)
-              )
-            : t('current')}
-        </MainText>
+        <ColumnContainer>
+          <MainText size={SIZE.LARGE} fontWeight={600}>
+            {history.educationTerm.educationName}
+          </MainText>
+          <MainText color={GRAY.SEMI_DARK}>
+            {`${getTranslatedDateFromDateString(locale, history.educationTerm.startDate)} - ${
+              history.educationTerm.endDate
+                ? getTranslatedDateFromDateString(
+                    locale,
+                    history.educationTerm.endDate
+                  )
+                : t('current')
+            }`}
+          </MainText>
+        </ColumnContainer>
       </RowContainer>
     </HistoryItemContainer>
   );

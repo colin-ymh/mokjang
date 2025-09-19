@@ -1,14 +1,16 @@
-import { useEffect, useRef } from 'react';
+'use client';
+
+import { useCallback, useEffect, useRef } from 'react';
 import gsap from 'gsap';
 
 import ToastPopupView, { TOAST_DIRECTION } from './toast-popup.view';
 import { MainTextProps } from '@mokjang/components';
 import { setIsToastShown } from '@/redux/reducers/toast-popup-reducer';
-import { useDispatch } from 'react-redux';
-import { AppDispatch } from '@/redux/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '@/redux/store';
 
 type ToastPopupProps = MainTextProps & {
-  timeout?: number;
+  timeout?: number; // ms
   isDeletable?: boolean;
   direction?: TOAST_DIRECTION;
 };
@@ -19,76 +21,74 @@ const ToastPopup = ({
   direction = TOAST_DIRECTION.TOP,
 }: ToastPopupProps) => {
   const ref = useRef<HTMLDivElement>(null);
+  const tlRef = useRef<gsap.core.Timeline | null>(null);
   const dispatch = useDispatch<AppDispatch>();
 
+  // ✅ toastText 변화에도 애니메이션 다시 실행
+  const { isToastShown, toastText } = useSelector(
+    (s: RootState) => s.toastPopup
+  );
+
   useEffect(() => {
-    if (ref.current) {
-      // 위에서 아래로 등장
-      if (direction === TOAST_DIRECTION.TOP) {
-        // 등장 애니메이션
-        gsap.fromTo(
-          ref.current,
-          { top: '-50px', opacity: 0 },
-          { top: '50px', opacity: 1, duration: 0.5 }
-        );
+    // 토스트가 보이는 상태가 아니거나 ref가 없으면 실행 안 함
+    if (!isToastShown || !ref.current) return;
 
-        // 퇴장 애니메이션
-        const timer = setTimeout(() => {
-          gsap
-            .to(ref.current, { top: '-50px', opacity: 0, duration: 0.5 }) // 화면 아래로 이동하며 사라짐
-            .then(() => {
-              dispatch(setIsToastShown(false));
-            });
-        }, timeout);
+    // 기존 타임라인 종료
+    tlRef.current?.kill();
+    tlRef.current = null;
 
-        // 타이머 해제
-        return () => clearTimeout(timer);
-      }
-      // 아래에서 위로 등장
-      else {
-        // 등장 애니메이션
-        gsap.fromTo(
-          ref.current,
-          { bottom: '-50px', opacity: 0 }, // 시작 상태
-          { bottom: '30px', opacity: 1, duration: 0.5 } // 끝 상태
-        );
+    const ctx = gsap.context(() => {
+      const el = ref.current!;
+      const isTop = direction === TOAST_DIRECTION.TOP;
 
-        // 타임아웃
-        const timer = setTimeout(() => {
-          // 퇴장 애니메이션
-          gsap
-            .to(ref.current, { bottom: '-50px', opacity: 0, duration: 0.5 })
-            .then(() => {
-              dispatch(setIsToastShown(false));
-            });
-        }, timeout);
+      // 초기 위치 세팅
+      gsap.set(
+        el,
+        isTop ? { top: -50, opacity: 0 } : { bottom: -50, opacity: 0 }
+      );
 
-        // 타이머 해제
-        return () => clearTimeout(timer);
-      }
-    }
-  }, [direction, timeout]);
+      const showKey = isTop
+        ? { top: 50, opacity: 1, duration: 0.5 }
+        : { bottom: 30, opacity: 1, duration: 0.5 };
+      const hideKey = isTop
+        ? { top: -50, opacity: 0, duration: 0.5 }
+        : { bottom: -50, opacity: 0, duration: 0.5 };
 
-  // 닫기 버튼 이벤트
-  const onClickDeleteButton = () => {
-    dispatch(setIsToastShown(false));
-    // 상단 팝업인 경우
-    if (direction === TOAST_DIRECTION.TOP) {
-      gsap
-        .to(ref.current, { top: '-50px', opacity: 0, duration: 0.5 }) // 화면 아래로 이동하며 사라짐
-        .then(() => {
+      // 등-대-퇴 타임라인
+      const tl = gsap.timeline({
+        onComplete: () => {
+          // 모든 애니메이션 종료 후 1회만 닫기
           dispatch(setIsToastShown(false));
-        });
+        },
+      });
+
+      const timeoutSec = Math.max(0, timeout) / 1000;
+
+      tl.to(el, showKey) // 등장
+        .to({}, { duration: timeoutSec }) // 대기
+        .to(el, hideKey); // 퇴장
+
+      tlRef.current = tl;
+    }, ref);
+
+    // cleanup
+    return () => {
+      tlRef.current?.kill();
+      tlRef.current = null;
+      ctx.revert();
+    };
+  }, [isToastShown, toastText, direction, timeout, dispatch]); // 👈 toastText 추가
+
+  // 닫기 버튼: 현재 타임라인이 있으면 퇴장 구간으로 점프
+  const onClickDeleteButton = useCallback(() => {
+    const tl = tlRef.current;
+    if (!tl) {
+      dispatch(setIsToastShown(false));
+      return;
     }
-    // 하단 팝업인 경우
-    else {
-      gsap
-        .to(ref.current, { bottom: '-50px', opacity: 0, duration: 0.5 })
-        .then(() => {
-          dispatch(setIsToastShown(false));
-        });
-    }
-  };
+    const total = tl.duration();
+    tl.seek(Math.max(0, total - 0.5)).play();
+  }, [dispatch]);
 
   const props = {
     ref,
@@ -97,11 +97,8 @@ const ToastPopup = ({
     direction,
     onClickDeleteButton,
   };
-  return (
-    <>
-      <ToastPopupView {...props} />
-    </>
-  );
+
+  return <ToastPopupView {...props} />;
 };
 
 export default ToastPopup;

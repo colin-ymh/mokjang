@@ -4,14 +4,9 @@ import { useI18n, useScopedI18n } from '../../../../../../locales/client';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../redux/store';
 import CustomDatePicker from '../../../../../vendor/date-picker/custom-date-picker';
-import {
-  getDateFromDateString,
-  getDateFromInput,
-  getDateStringFromDate,
-} from '@mokjang/utils';
-import { GRAY } from '@mokjang/constants';
+import { getDateFromDateString, getDateStringFromDate } from '@mokjang/utils';
+import { GRAY, SIZE } from '@mokjang/constants';
 import { MainText } from '@mokjang/components';
-import { SIZE } from '@mokjang/constants';
 import StopWarningButton from '../../../../atoms/common/button/stop-warning-button';
 import LabelDropdown from '../../../../atoms/common/dropdown/label-dropdown';
 
@@ -27,6 +22,10 @@ const LabelContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
+`;
+
+const BoxContainer = styled.div`
+  display: flex;
 `;
 
 type EditMemberOfficerViewProps = {
@@ -77,7 +76,7 @@ const EditMemberOfficerView = ({
             value={
               targetOfficerHistory.startDate
                 ? getDateStringFromDate(
-                    getDateFromInput(targetOfficerHistory.startDate)
+                    getDateFromDateString(targetOfficerHistory.startDate)
                   )
                 : undefined
             }
@@ -93,12 +92,14 @@ const EditMemberOfficerView = ({
         </LabelContainer>
         {targetMember.officerHistory &&
           targetMember.officerHistory.length > 0 && (
-            <StopWarningButton
-              description={t_warning('stopOfficerHistory')}
-              buttonText={t_button('stopOfficerHistory')}
-              onClick={onClickDeleteOfficer}
-              // disabled={!!selectedOfficer?.membersCount || false}
-            />
+            <BoxContainer>
+              <StopWarningButton
+                description={t_warning('stopOfficerHistory')}
+                buttonText={t_button('stopOfficerHistory')}
+                onClick={onClickDeleteOfficer}
+                // disabled={!!selectedOfficer?.membersCount || false}
+              />
+            </BoxContainer>
           )}
       </EditMemberOfficerViewContainer>
     </>

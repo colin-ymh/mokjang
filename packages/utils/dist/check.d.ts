@@ -1,8 +1,10 @@
 export declare const getIsWellFormedMobilePhone: (mobilePhone: string) => boolean;
 export declare const getIsWellFormedEmail: (email: string) => boolean;
 export declare const getIsWellFormedHomePhone: (mobilePhone: string) => boolean;
+export declare const getIsWellFormedPhone: (phone: string) => boolean;
 export declare const getIsWellFormedBirth: (birth: string) => boolean;
 export declare const getIsWellFormedDate: (birth: string) => boolean;
 export declare const getIsWellFormedName: (name: string) => boolean;
 export declare const getIsWellFormedTitle: (name: string) => boolean;
 export declare const getIsWellFormedVehicleNumber: (vehicleNumber: string) => boolean;
+export declare const getIsWellFormedIdentifyNumber: (identifyNumber: string) => boolean;

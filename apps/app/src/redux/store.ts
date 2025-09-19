@@ -33,6 +33,8 @@ import ToastPopupReducer from './reducers/toast-popup-reducer';
 import TargetHistoryReducer from './reducers/target/target-history-reducer';
 import ScheduleSummaryReducer from './reducers/schedule-summary-reducer';
 import SubscriptionReducer from '@/redux/reducers/subscription-reducer';
+import NotificationReducer from '@/redux/reducers/notification-reducer';
+import ModalReducer from '@/redux/reducers/modal-reducer';
 
 const store = configureStore({
   reducer: {
@@ -42,6 +44,8 @@ const store = configureStore({
     toastPopup: ToastPopupReducer,
     scheduleSummary: ScheduleSummaryReducer,
     subscription: SubscriptionReducer,
+    notification: NotificationReducer,
+    modal: ModalReducer,
     // filter
     memberFilter: MemberFilterReducer,
     visitationFilter: VisitationFilterReducer,

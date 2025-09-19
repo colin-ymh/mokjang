@@ -4,15 +4,13 @@ import {
   GREEN,
   ORANGE,
   RED,
+  STATUS,
   STATUS_BACKGROUND_COLOR,
   STATUS_COLOR,
   STATUS_FONT_COLOR,
   WHITE,
-  YELLOW,
 } from '@mokjang/constants';
-import { STATUS } from '@mokjang/constants';
-import { DOMAIN } from '@mokjang/models';
-import { Schedule } from '@mokjang/models';
+import { DOMAIN, Schedule } from '@mokjang/models';
 
 export const getStatusBackgroundColor = (status: STATUS) => {
   switch (status) {
@@ -89,19 +87,19 @@ export const getCalenderBackgroundColor = (domain: DOMAIN) => {
 export const getCalenderColor = (domain: DOMAIN) => {
   switch (domain) {
     case DOMAIN.VISITATION:
-      return WHITE;
+      return BLACK;
     case DOMAIN.TASK:
-      return WHITE;
+      return BLACK;
     case DOMAIN.MEMBER:
-      return WHITE;
+      return BLACK;
     case DOMAIN.CHURCH_EVENT:
-      return WHITE;
+      return BLACK;
     case DOMAIN.HOLIDAY:
       return BLACK;
     case DOMAIN.EDUCATION_SESSION:
-      return WHITE;
+      return BLACK;
     default:
-      return WHITE;
+      return BLACK;
   }
 };
 
@@ -111,33 +109,14 @@ export const getEventStyle = (event: Schedule) => {
       backgroundColor: getCalenderBackgroundColor(
         event.id?.split('-')[0] as DOMAIN
       ),
-      borderRadius: '5px',
+      borderRadius: '2px',
       color: getCalenderColor(event.id?.split('-')[0] as DOMAIN),
-      padding: '2px 5px',
+      padding: '4px 6px',
       fontSize: '14px',
-      fontFamily: "'Roboto', sans-serif",
+      fontFamily: "'Pretendard', sans-serif",
+      textDecoration: event.status === STATUS.DONE ? 'line-through' : 'none',
     },
   };
-};
-
-export const getEducationAttendanceRateColor = (rate: number) => {
-  if (rate <= 40) {
-    return ORANGE.DEFAULT;
-  } else if (rate <= 30) {
-    return RED.DARK;
-  } else {
-    return YELLOW.DARK;
-  }
-};
-
-export const getEducationAttendanceRateBackgroundColor = (rate: number) => {
-  if (rate <= 40) {
-    return ORANGE.EXTRA_LIGHT;
-  } else if (rate <= 30) {
-    return RED.LIGHT;
-  } else {
-    return YELLOW.LIGHT;
-  }
 };
 
 export const getWorshipAttendanceRateColor = (rate: number) => {
@@ -147,5 +126,15 @@ export const getWorshipAttendanceRateColor = (rate: number) => {
     return ORANGE.DEFAULT;
   } else {
     return GREEN.DEFAULT;
+  }
+};
+
+export const getWorshipAttendanceRateBackgroundColor = (rate: number) => {
+  if (rate <= 50) {
+    return RED.LIGHT;
+  } else if (rate <= 80) {
+    return ORANGE.LIGHT;
+  } else {
+    return GREEN.LIGHT;
   }
 };

@@ -1,34 +1,36 @@
 import React, { MutableRefObject } from 'react';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../../../redux/store';
+import { RootState } from '@/redux/store';
 
-import { GRAY, GREEN, MAIN, ORANGE, WHITE } from '@mokjang/constants';
+import {
+  EDUCATION,
+  GRAY,
+  GREEN,
+  LOCALE,
+  MAIN,
+  ORANGE,
+  SIZE,
+  WHITE,
+} from '@mokjang/constants';
 
 import useWindowSize from '../../../../hooks/window/window';
 import EducationTableHeader from '../../../atoms/education/education/education-table-header';
 import { Education, EducationSession, EducationTerm } from '@mokjang/models';
-import { EDUCATION } from '@mokjang/constants';
 
-import { MainText } from '@mokjang/components';
+import { MainTag, MainText, SvgIcon } from '@mokjang/components';
 import { useI18n } from '../../../../../locales/client';
 import {
   getTranslatedCompletedEnrollmentStatus,
+  getTranslatedStartEndDate,
   getTranslatedTerm,
   getTranslatedTermCount,
 } from '@mokjang/utils';
 import { usePathname } from 'next/navigation';
-import { LOCALE } from '@mokjang/constants';
-import { SIZE } from '@mokjang/constants';
 
 import { Svg } from '@mokjang/assets';
-import { SvgIcon } from '@mokjang/components';
-import { getDateFromDateString, getDateStringFromDate } from '@mokjang/utils';
-import { MainTag } from '@mokjang/components';
-import {
-  getStatusBackgroundColor,
-  getStatusFontColor,
-} from '../../../../utils/color'; // 1. 컬럼별 PX 폭 (마지막 REMARKS만 auto 할 예정)
+import { getStatusBackgroundColor, getStatusFontColor } from '@/utils/color';
+import EmptyList from '@/components/atoms/common/image/empty-list'; // 1. 컬럼별 PX 폭 (마지막 REMARKS만 auto 할 예정)
 
 // 1. 컬럼별 PX 폭 (마지막 REMARKS만 auto 할 예정)
 const getColumnWidth = (id: string) => {
@@ -71,7 +73,9 @@ const EducationTable = styled.table`
 
 // 4. 헤더(TH)
 const TableHeader = styled.th<{ id: string; $isLast?: boolean }>`
-  padding: 20px 10px;
+  padding: 0 25px;
+  height: 50px;
+  flex-shrink: 0;
   position: sticky;
   top: 0;
   z-index: 5;
@@ -98,13 +102,14 @@ const TableHeader = styled.th<{ id: string; $isLast?: boolean }>`
 const EducationTableRow = styled.tr`
   border-bottom: 1px solid ${GRAY.EXTRA_LIGHT};
   &:hover td {
-    background-color: ${MAIN.EXTRA_LIGHT};
+    background-color: ${GRAY.SUPER_LIGHT};
   }
 `;
 
 const TableData = styled.td<{ id: string; $isLast?: boolean }>`
-  padding: 10px 15px;
-  height: 30px;
+  padding: 0 25px;
+  height: 60px;
+  flex-shrink: 0;
   cursor: pointer;
 
   /* 마지막 컬럼이면 auto, 아니면 px 고정 */
@@ -139,6 +144,11 @@ const EducationNameContainer = styled.div<{ $level: number }>`
   flex-shrink: 0;
 `;
 
+const ChevronContainer = styled.div`
+  display: flex;
+  width: 30px;
+`;
+
 const Chevron = styled(Svg.ChevronLeft)<{
   $isOpened: boolean;
   color?: string;
@@ -148,13 +158,10 @@ const Chevron = styled(Svg.ChevronLeft)<{
   height: 14px;
   stroke: ${({ color }) => color || GRAY.DEFAULT};
   stroke-width: 3px;
-  transform: rotate(${({ $isOpened }) => ($isOpened ? '180deg' : '270deg')});
+  transform: rotate(${({ $isOpened }) => ($isOpened ? '270deg' : '180deg')});
   transition: transform 0.2s ease;
   border-radius: 5px;
   padding: 5px;
-  &:hover {
-    background-color: ${GRAY.LIGHT};
-  }
 `;
 
 const TitleContainer = styled.div`
@@ -245,14 +252,18 @@ const EducationTableView = ({
       case EDUCATION.NAME:
         return (
           <EducationNameContainer $level={0}>
-            <Chevron
-              $isOpened={openedEducationIds.includes(education.id)}
-              onClick={(event: React.MouseEvent) => {
-                event.stopPropagation();
-                onClickEducationChevron(education);
-              }}
-              $reverseDirection
-            />
+            <ChevronContainer>
+              {education?.termsCount > 0 && (
+                <Chevron
+                  $isOpened={openedEducationIds.includes(education.id)}
+                  onClick={(event: React.MouseEvent) => {
+                    event.stopPropagation();
+                    onClickEducationChevron(education);
+                  }}
+                  $reverseDirection
+                />
+              )}
+            </ChevronContainer>
             <SvgIcon svg={Svg.Book} size={16} color={MAIN.DEFAULT} width={2} />
             <TitleContainer>
               <MainText>{education.name}</MainText>
@@ -304,7 +315,11 @@ const EducationTableView = ({
             <TitleContainer>
               <MainText>{`${getTranslatedTerm(locale, educationTerm.term)}`}</MainText>
               <MainText size={SIZE.SMALL} color={GRAY.SEMI_DARK}>
-                {`${getDateStringFromDate(getDateFromDateString(educationTerm.startDate))} - ${getDateStringFromDate(getDateFromDateString(educationTerm.endDate))}`}
+                {getTranslatedStartEndDate(
+                  locale,
+                  educationTerm.startDate,
+                  educationTerm.endDate
+                )}
               </MainText>
             </TitleContainer>
           </EducationNameContainer>
@@ -350,7 +365,11 @@ const EducationTableView = ({
             <TitleContainer>
               <MainText>{`${session.session}${t('session')} ${session.title}`}</MainText>
               <MainText size={SIZE.SMALL} color={GRAY.SEMI_DARK}>
-                {`${getDateStringFromDate(getDateFromDateString(session.startDate))} - ${getDateStringFromDate(getDateFromDateString(session.endDate))}`}
+                {getTranslatedStartEndDate(
+                  locale,
+                  session.startDate,
+                  session.endDate
+                )}
               </MainText>
             </TitleContainer>
           </EducationNameContainer>
@@ -499,6 +518,7 @@ const EducationTableView = ({
             ))}
           </tbody>
         </EducationTable>
+        {educations.length === 0 && <EmptyList width={200} height={200} />}
       </TableContainer>
     </>
   );

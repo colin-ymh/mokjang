@@ -1,9 +1,9 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../../../redux/store';
-import { setMemberFilter } from '../../../../redux/reducers/filter/member-filter-reducer';
+import { AppDispatch, RootState } from '@/redux/store';
+import { setMemberFilter } from '@/redux/reducers/filter/member-filter-reducer';
 import SelectGroupHierarchy from '../../../organisms/group/select-group-hierarchy';
-import { getGroup } from '../../../../utils/group';
-import { setTargetGroup } from '../../../../redux/reducers/target/target-group-reducer';
+import { getGroup } from '@/utils/group';
+import { setTargetGroup } from '@/redux/reducers/target/target-group-reducer';
 import { DEFAULT_GROUP } from '@mokjang/models';
 import styled from 'styled-components';
 import { ALL } from '@mokjang/constants';
@@ -12,7 +12,8 @@ const GroupFilterContainer = styled.div`
   display: flex;
   padding: 20px;
   width: 100%;
-  margin-bottom: 20px;
+  flex-direction: column;
+  overflow-y: auto;
 `;
 
 type GroupFilterProps = {

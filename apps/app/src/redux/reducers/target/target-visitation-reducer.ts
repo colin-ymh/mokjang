@@ -10,7 +10,7 @@ const initialState: TargetVisitationState = {
 };
 
 const TargetVisitationSlice = createSlice({
-  name: 'register',
+  name: 'visitation',
   initialState,
   reducers: {
     setTargetVisitation(state, action: PayloadAction<Visitation>) {

@@ -3,20 +3,28 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
 
-import { GRAY, GREEN, RED, WHITE } from '@mokjang/constants';
-import { BLANK, GENDER } from '@mokjang/constants';
-import { EDUCATION_ATTENDANCE } from '@mokjang/constants';
-import { MainText } from '@mokjang/components';
-import { getFormattedMobilePhone } from '@mokjang/utils';
+import {
+  BLANK,
+  EDUCATION_ATTENDANCE,
+  EDUCATION_ATTENDANCE_STATUS,
+  GENDER,
+  GRAY,
+  GREEN,
+  RED,
+  STATUS,
+  WHITE,
+} from '@mokjang/constants';
+import { BorderInput, Button, MainText } from '@mokjang/components';
+import {
+  getAge,
+  getDateFromDateString,
+  getFormattedPhone,
+} from '@mokjang/utils';
 import { EducationAttendance } from '@mokjang/models';
 import { EDUCATION_ATTENDANCE_TABLE_HEADER_LIST } from '../../../../redux/reducers/filter/education-filter-reducer';
 import { useI18n } from '../../../../../locales/client';
-import MemberProfile from '../../../atoms/member/member-profile';
 import EducationAttendanceTableHeader from '../../../atoms/education/education-attendance/education-attendance-table-header';
-import { getAge, getDateFromDateString } from '@mokjang/utils';
-import { Button } from '@mokjang/components';
-import { BorderInput } from '@mokjang/components';
-import { EDUCATION_ATTENDANCE_STATUS, STATUS } from '@mokjang/constants';
+import MemberProfilePopupButton from '@/components/molecules/common/button/member-profile-popup-button';
 
 // 1. 컬럼별 PX 폭 (마지막 REMARKS만 auto 할 예정)
 const getColumnWidth = (id: string) => {
@@ -179,7 +187,9 @@ const EducationAttendanceTableView = ({
       case EDUCATION_ATTENDANCE.MEMBER_NAME:
         return (
           <ProfileContainer>
-            <MemberProfile member={attendance.educationEnrollment.member} />
+            <MemberProfilePopupButton
+              member={attendance.educationEnrollment.member}
+            />
           </ProfileContainer>
         );
       case EDUCATION_ATTENDANCE.AGE:
@@ -200,7 +210,7 @@ const EducationAttendanceTableView = ({
         return (
           <MainText>
             {attendance.educationEnrollment.member?.mobilePhone &&
-              getFormattedMobilePhone(
+              getFormattedPhone(
                 attendance.educationEnrollment.member.mobilePhone
               )}
           </MainText>

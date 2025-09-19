@@ -1,21 +1,21 @@
 import React, { ChangeEvent, Dispatch, SetStateAction } from 'react';
-import { MainText } from '@mokjang/components';
-import { Button } from '@mokjang/components';
-import { GRAY, WHITE } from '@mokjang/constants';
+import { Button, CustomPopup, MainText } from '@mokjang/components';
+import {
+  GRAY,
+  LOCALE,
+  MEMBER,
+  ORDER_DIRECTION,
+  WHITE,
+} from '@mokjang/constants';
 import styled from 'styled-components';
 import { Svg } from '@mokjang/assets';
-import { Officer } from '@mokjang/models';
-import { useI18n } from '../../../../../../locales/client';
-import { CustomPopup } from '@mokjang/components';
+import { Member, Officer } from '@mokjang/models';
+import { useI18n, useScopedI18n } from '../../../../../../locales/client';
 import EditOfficer from '../edit/edit-officer';
 import AddOfficerMemberModal from '../../../../atoms/management/officer/member/add-officer-member-modal';
-import { Member } from '@mokjang/models';
 import ManagementMemberTable from '../../table/management-member-table';
 import { getTranslatedAddMemberTitle } from '@mokjang/utils';
 import { usePathname } from 'next/navigation';
-import { LOCALE } from '@mokjang/constants';
-import { MEMBER } from '@mokjang/constants';
-import { ORDER_DIRECTION } from '@mokjang/constants';
 import { CHURCH_CONTENT_ID } from '../../../../../constants/layout/content';
 
 const OfficerInformationViewContainer = styled.div<{ $isOfficer: boolean }>`
@@ -109,6 +109,7 @@ const OfficerInformationView = ({
   const locale = pathname.split('/')[1] as LOCALE;
 
   const t = useI18n();
+  const t_button = useScopedI18n('button');
 
   return (
     <>
@@ -156,11 +157,14 @@ const OfficerInformationView = ({
       {/* 직분 수정 팝업 */}
       <CustomPopup
         isShow={isEditShown}
+        onClickClose={onClickEditClose}
         onClickCancel={onClickEditClose}
         onClickDone={onClickSaveEdit}
         headerTitle={t('title.editOfficerInformation')}
         width={450}
         height={400}
+        cancelText={t_button('cancel')}
+        doneText={t_button('save')}
       >
         <EditOfficer
           editName={editName}
@@ -174,13 +178,15 @@ const OfficerInformationView = ({
       {/* 교인 추가 팝업 */}
       <CustomPopup
         isShow={isAddModalShown}
+        onClickClose={onClickAddModalClose}
         onClickCancel={onClickAddModalClose}
-        width={800}
+        width={500}
         height={700}
         headerHeight={100}
         headerTitle={getTranslatedAddMemberTitle(locale, selectedOfficer.name)}
         headerDescription={t('description.addMemberHeader')}
-        doneText={t('button.add')}
+        doneText={t_button('add')}
+        cancelText={t_button('cancel')}
         onClickDone={() =>
           onClickSaveNewMembers(selectedMembers, startDate as Date)
         }

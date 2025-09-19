@@ -9,6 +9,7 @@ export var MEMBER;
     MEMBER["AGE"] = "age";
     MEMBER["GENDER"] = "gender";
     MEMBER["ADDRESS"] = "address";
+    MEMBER["DETAIL_ADDRESS"] = "detailAddress";
     MEMBER["HOME_PHONE"] = "homePhone";
     MEMBER["OCCUPATION"] = "occupation";
     MEMBER["SCHOOL"] = "school";

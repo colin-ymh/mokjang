@@ -1,27 +1,29 @@
 'use client';
 
-import { MainText } from '@mokjang/components';
+import { MainText, ToggleRadioButton } from '@mokjang/components';
 import styled from 'styled-components';
-import { SIZE } from '@mokjang/constants';
+import {
+  HOME_WIDGET,
+  LOCALE,
+  RANGE,
+  SIZE,
+  TASK_STATUS,
+} from '@mokjang/constants';
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
-import { HOME_WIDGET, RANGE } from '@mokjang/constants';
-import { DOMAIN } from '@mokjang/models';
+import { DOMAIN, Schedule } from '@mokjang/models';
 import TaskInformation from '../../../organisms/task/information/task-information';
 import VisitationInformation from '../../../organisms/visitation/information/visitation-information';
 import React from 'react';
-import { Schedule } from '@mokjang/models';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../../../redux/store';
-import { ToggleRadioButton } from '@mokjang/components';
-import { useWeekMonthRangeRadioButtonItems } from '../../../../hooks/radio-button/radio-button-items';
+import { RootState } from '@/redux/store';
+import { useWeekMonthRangeRadioButtonItems } from '@/hooks/radio-button/radio-button-items';
 import MyScheduleList from '../../../atoms/home/my-schedule-list';
 import EducationSessionInformation from '../../../organisms/education/education-session/information/education-session-information';
 import WrappedPagePopup from '../../../atoms/common/popup/wrapped-page-popup';
 import { getTranslatedTerm } from '@mokjang/utils';
 import { usePathname } from 'next/navigation';
-import { LOCALE } from '@mokjang/constants';
-import { TASK_STATUS } from '@mokjang/constants';
 import EducationTermInformation from '../../../organisms/education/education-term/information/education-term-information';
+import ScrollSlidePopup from '@/components/atoms/common/popup/scroll-slide-popup';
 
 const WidgetContainer = styled.div`
   display: flex;
@@ -34,8 +36,9 @@ const WidgetContainer = styled.div`
 const WidgetHeader = styled.div`
   display: flex;
   align-items: center;
-  justify-content: flex-start;
-  gap: 20px;
+  justify-content: space-between;
+  height: 40px;
+  flex-shrink: 0;
 `;
 
 type MyScheduleWidgetViewProps = {
@@ -94,6 +97,7 @@ const MyScheduleWidgetView = ({
             selectedValue={range}
             onChange={onClickRange}
             items={rangeRadioItems}
+            columnPadding={4}
           />
         </WidgetHeader>
 
@@ -105,14 +109,11 @@ const MyScheduleWidgetView = ({
       </WidgetContainer>
 
       {/* 업무 상세정보 팝업*/}
-      <WrappedPagePopup
+      <ScrollSlidePopup
         isShow={openedDomain === DOMAIN.TASK}
         onClickClose={onClickClose}
+        onClickCancel={onClickClose}
         headerTitle={targetTask?.title}
-        hideCancel={true}
-        hideDone={true}
-        widthPercentage={50}
-        stageThreeTop={190}
         stageTwoTop={40}
         inCharge={targetTask?.inCharge}
         startDate={targetTask?.startDate}
@@ -121,16 +122,14 @@ const MyScheduleWidgetView = ({
         onChangeStatus={onChangeTaskStatus}
       >
         <TaskInformation onChangeStatus={onChangeTaskStatus} />
-      </WrappedPagePopup>
+      </ScrollSlidePopup>
 
       {/* 심방 상세정보 팝업*/}
-      <WrappedPagePopup
+      <ScrollSlidePopup
         isShow={openedDomain === DOMAIN.VISITATION}
         onClickClose={onClickClose}
+        onClickCancel={onClickClose}
         headerTitle={targetVisitation?.title}
-        hideCancel={true}
-        hideDone={true}
-        stageThreeTop={250}
         stageTwoTop={40}
         inCharge={targetVisitation.inCharge}
         startDate={targetVisitation.startDate}
@@ -139,7 +138,7 @@ const MyScheduleWidgetView = ({
         onChangeStatus={onChangeVisitationStatus}
       >
         <VisitationInformation onChangeStatus={onChangeVisitationStatus} />
-      </WrappedPagePopup>
+      </ScrollSlidePopup>
 
       {/* 교육회차 상세정보 팝업*/}
       <WrappedPagePopup
@@ -156,6 +155,7 @@ const MyScheduleWidgetView = ({
         startDate={targetEducationSession.startDate}
         endDate={targetEducationSession.endDate}
         onChangeStatus={onChangeEducationSessionStatus}
+        widthPercentage={45}
       >
         {(scrollRef) => (
           <>
@@ -182,6 +182,7 @@ const MyScheduleWidgetView = ({
         inCharge={targetEducationTerm.inCharge}
         startDate={targetEducationTerm.startDate}
         endDate={targetEducationTerm.endDate}
+        widthPercentage={45}
       >
         {(scrollRef) => (
           <>

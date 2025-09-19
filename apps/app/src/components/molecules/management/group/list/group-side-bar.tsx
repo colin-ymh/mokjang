@@ -1,16 +1,12 @@
-import { MainText } from '@mokjang/components';
-import { BorderInput } from '@mokjang/components';
-import { BLACK, DESTRUCTIVE, GRAY, WHITE } from '@mokjang/constants';
-import { Button } from '@mokjang/components';
+import { BorderInput, Button, MainText } from '@mokjang/components';
+import { BLACK, BLANK, DESTRUCTIVE, GRAY, WHITE } from '@mokjang/constants';
 import GroupList from './group-list';
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useI18n, useScopedI18n } from '../../../../../../locales/client';
 import { Group } from '@mokjang/models';
-import { BLANK } from '@mokjang/constants';
-import { getIsWellFormedTitle } from '@mokjang/utils';
+import { getFormattedTitle, getIsWellFormedTitle } from '@mokjang/utils';
 import { fetchGroups } from '../../../../../redux/reducers/church-reducer';
-import { getFormattedTitle } from '@mokjang/utils';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../../../redux/store';
 import { GroupsApi } from '../../../../../api/management/group/groups.api';
@@ -19,6 +15,7 @@ import {
   setToastBackgroundColor,
   setToastText,
 } from '../../../../../redux/reducers/toast-popup-reducer';
+import useWindowSize from '@/hooks/window/window';
 
 const GroupListContainer = styled.div`
   display: flex;
@@ -42,6 +39,7 @@ type GroupSideBarProps = {
 };
 
 const GroupSideBar = ({ selectedGroup, onClickGroup }: GroupSideBarProps) => {
+  const { height } = useWindowSize();
   const t = useI18n();
   const t_popup = useScopedI18n('popup');
   const dispatch = useDispatch<AppDispatch>();
@@ -107,20 +105,26 @@ const GroupSideBar = ({ selectedGroup, onClickGroup }: GroupSideBarProps) => {
           value={newGroupName}
           onChange={onChangeNewGroupName}
           borderColor={GRAY.SEMI_LIGHT}
+          height={30}
         />
         <Button
-          width={80}
+          width={50}
           text={t('button.add')}
           onClick={onClickSaveNewGroup}
           borderColor={GRAY.SEMI_LIGHT}
-          backgroundColor={WHITE}
-          color={GRAY.DARK}
+          backgroundColor={
+            getIsWellFormedTitle(newGroupName) ? WHITE : GRAY.SEMI_LIGHT
+          }
+          color={getIsWellFormedTitle(newGroupName) ? GRAY.DARK : WHITE}
+          height={30}
+          disabled={!getIsWellFormedTitle(newGroupName)}
         />
       </AddContainer>
       {/* 그룹 목록 */}
       <GroupList
         selectedGroupId={selectedGroup.id}
         onClickGroup={onClickGroup}
+        height={height - 320}
       />
     </GroupListContainer>
   );

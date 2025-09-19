@@ -56,6 +56,10 @@ const ButtonContainer = styled.button<{
   overflow: hidden;
   flex-shrink: 0;
 
+  transform-origin: center;
+  will-change: transform;
+  backface-visibility: hidden;
+
   &:active {
     transform: scale(0.98);
     box-shadow: none;
@@ -106,6 +110,7 @@ export const Button = ({
       $borderColor={borderColor}
       $columnPadding={columnPadding}
       $rowPadding={rowPadding}
+      type={'button'}
     >
       {children ? (
         children
@@ -117,7 +122,7 @@ export const Button = ({
               color={color}
               fontWeight={fontWeight}
               fontSize={fontSize}
-              cursor={CURSOR.POINTER}
+              cursor={disabled ? CURSOR.NOT_ALLOWED : CURSOR.POINTER}
               baselineOffsetPx={baselineOffsetPx}
             >
               {text}

@@ -9,7 +9,8 @@ import { BLANK } from '@mokjang/constants';
 import { ReactNode } from 'react';
 
 export type PopupLayoutProps = {
-  onClickCancel: () => void;
+  onClickClose: () => void;
+  onClickCancel?: () => void;
   onClickDone?: () => void;
   headerTitle?: string;
   headerDescription?: string;
@@ -32,6 +33,7 @@ export const PopupLayout = ({
   headerDescription,
   headerRight,
   headerLeft,
+  onClickClose,
   onClickCancel,
   onClickDone,
   cancelText = BLANK,
@@ -54,10 +56,7 @@ export const PopupLayout = ({
             headerDescription={headerDescription}
             headerLeft={headerLeft}
             headerRight={headerRight}
-            onClickCancel={onClickCancel}
-            onClickDone={onClickDone}
-            cancelText={cancelText}
-            doneText={doneText}
+            onClickClose={onClickClose}
             isHeaderBorderShown={isHeaderBorderShown}
             height={headerHeight}
           />

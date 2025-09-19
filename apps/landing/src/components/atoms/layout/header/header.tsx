@@ -2,7 +2,6 @@ import HeaderView, { HeaderViewProps } from './header.view';
 import { useEffect, useState } from 'react';
 import { usePageRouter } from '@mokjang/utils';
 import { usePathname } from 'next/navigation';
-import { AuthApi } from '@/api/auth/auth.api';
 import {
   setIsToastShown,
   setToastBackgroundColor,
@@ -13,15 +12,17 @@ import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/redux/store';
 import { SubscriptionApi } from '@/api/subscription/subscription.api';
 import { DEFAULT_SUBSCRIPTION_PLAN, SubscriptionPlan } from '@mokjang/models';
-import { setCurrentSubscription } from '@/redux/reducers/subscription-reducer';
+import { setSubscription } from '@/redux/reducers/subscription-reducer';
 import { MAIN_CONTENT_ID } from '@/constants/constant';
 
 type HeaderProps = {};
 
 const MAIN_Y_OFFSET = {
+  [MAIN_CONTENT_ID.HOME]: 0,
   [MAIN_CONTENT_ID.FUNCTION]: 700,
-  [MAIN_CONTENT_ID.PRICE]: 700 + 850,
-  [MAIN_CONTENT_ID.FAQ]: 700 + 850 + 900,
+  [MAIN_CONTENT_ID.FAQ]: 700 + 900,
+  // [MAIN_CONTENT_ID.PRICE]: 700 + 850,
+  // [MAIN_CONTENT_ID.FAQ]: 700 + 850 + 900,
 };
 
 const Header = ({}: HeaderProps) => {
@@ -41,6 +42,8 @@ const Header = ({}: HeaderProps) => {
   const [isAutoScrolling, setIsAutoScrolling] = useState(false);
   const [targetY, setTargetY] = useState<number | null>(null);
 
+  const [isProfileOpened, setIsProfileOpened] = useState<boolean>(false);
+
   const [thrownError, setThrownError] = useState<Error | null>(null);
   // 렌더링 시점(컴포넌트 return)에서 조건부로 에러 발생
   if (thrownError) {
@@ -52,7 +55,7 @@ const Header = ({}: HeaderProps) => {
   };
 
   const onClickMenu = (
-    id: MAIN_CONTENT_ID.FUNCTION | MAIN_CONTENT_ID.PRICE | MAIN_CONTENT_ID.FAQ
+    id: MAIN_CONTENT_ID.FUNCTION | MAIN_CONTENT_ID.HOME | MAIN_CONTENT_ID.FAQ
   ) => {
     if (content) {
       router.push('/');
@@ -83,14 +86,6 @@ const Header = ({}: HeaderProps) => {
     }
   };
 
-  // 로그아웃 버튼
-  const onClickLogout = () => {
-    const authApi = new AuthApi(false);
-    authApi.getLogOut().then(() => {
-      window.location.href = '/';
-    });
-  };
-
   useEffect(() => {
     const EPS = 3; // 스크롤 도달 허용 오차(px)
     const onScroll = () => {
@@ -108,9 +103,11 @@ const Header = ({}: HeaderProps) => {
 
       if (currentY >= MAIN_Y_OFFSET[MAIN_CONTENT_ID.FAQ]) {
         setFocusedContent(MAIN_CONTENT_ID.FAQ);
-      } else if (currentY >= MAIN_Y_OFFSET[MAIN_CONTENT_ID.PRICE]) {
-        setFocusedContent(MAIN_CONTENT_ID.PRICE);
-      } else if (currentY >= MAIN_Y_OFFSET[MAIN_CONTENT_ID.FUNCTION]) {
+      }
+      // else if (currentY >= MAIN_Y_OFFSET[MAIN_CONTENT_ID.PRICE]) {
+      //   setFocusedContent(MAIN_CONTENT_ID.PRICE);
+      // }
+      else if (currentY >= MAIN_Y_OFFSET[MAIN_CONTENT_ID.FUNCTION]) {
         setFocusedContent(MAIN_CONTENT_ID.FUNCTION);
       } else {
         setFocusedContent(undefined);
@@ -136,9 +133,14 @@ const Header = ({}: HeaderProps) => {
     router.push('/login');
   };
   const onClickContact = () => {
-    router.push('/contact');
+    // router.push('/contact');
+    //   https://forms.gle/ABc2SPpYkdpAn5k96 로 이동
+    window.open(
+      'https://forms.gle/ABc2SPpYkdpAn5k96',
+      '_blank',
+      'noopener,noreferrer'
+    );
   };
-
   const onClickFreeTrial = async () => {
     try {
       await subscriptionApi.getFreeTrial();
@@ -159,10 +161,10 @@ const Header = ({}: HeaderProps) => {
       const response = await subscriptionApi.getCurrentSubscription();
       const currentSubscription: SubscriptionPlan = response.data;
 
-      dispatch(setCurrentSubscription(currentSubscription));
+      dispatch(setSubscription(currentSubscription));
     } catch (error) {
       // 현재 구독 정보 없음
-      dispatch(setCurrentSubscription(DEFAULT_SUBSCRIPTION_PLAN));
+      dispatch(setSubscription(DEFAULT_SUBSCRIPTION_PLAN));
     }
   };
 
@@ -170,14 +172,24 @@ const Header = ({}: HeaderProps) => {
     fetchCurrentSubscription();
   }, []);
 
+  const onClickProfile = () => {
+    setIsProfileOpened(true);
+  };
+
+  const onClickProfileClose = () => {
+    setIsProfileOpened(false);
+  };
+
   const props = {
     focusedContent,
     onClickLogo,
     onClickMenu,
     onClickLogin,
     onClickContact,
-    onClickLogout,
     onClickFreeTrial,
+    isProfileOpened,
+    onClickProfile,
+    onClickProfileClose,
   } as HeaderViewProps;
 
   return (

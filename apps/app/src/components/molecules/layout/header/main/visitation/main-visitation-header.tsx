@@ -1,5 +1,10 @@
 import MainVisitationHeaderView from './main-visitation-header.view';
-import { usePageRouter } from '@mokjang/utils';
+import {
+  getDateFromDateString,
+  getFullStringFromDate,
+  getIsWellFormedTitle,
+  usePageRouter,
+} from '@mokjang/utils';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../../../../redux/store';
@@ -8,16 +13,17 @@ import { DEFAULT_VISITATION } from '@mokjang/models';
 import { setVisitations } from '../../../../../../redux/reducers/filter/visitation-filter-reducer';
 import {
   setIsToastShown,
+  setToastBackgroundColor,
   setToastText,
 } from '../../../../../../redux/reducers/toast-popup-reducer';
-import { getIsWellFormedTitle } from '@mokjang/utils';
-import { BLANK } from '@mokjang/constants';
+import { BLACK, BLANK, DESTRUCTIVE } from '@mokjang/constants';
 import { VisitationsApi } from '../../../../../../api/visitations/visitations.api';
-import { getDateFromDateString, getFullStringFromDate } from '@mokjang/utils';
+import { useScopedI18n } from '../../../../../../../locales/client';
 
 type MainVisitationHeaderProps = {};
 
 const MainVisitationHeader = ({}: MainVisitationHeaderProps) => {
+  const t_popup = useScopedI18n('popup');
   const dispatch = useDispatch<AppDispatch>();
   const router = usePageRouter();
 
@@ -86,9 +92,14 @@ const MainVisitationHeader = ({}: MainVisitationHeaderProps) => {
         });
       setIsAddVisitationOpened(false);
       dispatch(setTargetVisitation(DEFAULT_VISITATION));
+
+      dispatch(setIsToastShown(true));
+      dispatch(setToastText(t_popup('saveComplete')));
+      dispatch(setToastBackgroundColor(BLACK));
     } catch (error) {
       if (error instanceof Error) {
         dispatch(setToastText(error.message));
+        dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
         dispatch(setIsToastShown(true));
       } else {
         setThrownError(new Error(String(error)));

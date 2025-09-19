@@ -4,12 +4,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../redux/store';
 import { setTaskFilter } from '../../../redux/reducers/filter/task-filter-reducer';
 import { getTrimmedString } from '@mokjang/utils';
-import { TASK } from '@mokjang/constants';
-import { BLANK } from '@mokjang/constants';
+import { BLANK, TASK, TASK_STATUS } from '@mokjang/constants';
 import TaskRowView, { TASK_SEARCH_FILTER } from './task-row.view';
 import { TaskFilteredItemType } from '../../atoms/task/task-filtered-item';
-
-import { TASK_STATUS } from '@mokjang/constants';
 
 const TaskRow = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -39,14 +36,8 @@ const TaskRow = () => {
     setIsAddFilterShown(false);
   };
 
-  // 상태 필터
-  const [statusFilter, setStatusFilter] = useState<TASK_STATUS | undefined>(
-    undefined
-  );
-
   // 상태 선택
   const onClickStatusFilterItem = (value: TASK_STATUS) => {
-    setStatusFilter(value);
     if (value) {
       dispatch(
         setTaskFilter({
@@ -110,8 +101,6 @@ const TaskRow = () => {
         title: TASK.STATUS,
         value: taskFilter.status,
       });
-    } else {
-      setStatusFilter(undefined);
     }
 
     // 등록일
@@ -146,7 +135,6 @@ const TaskRow = () => {
     searchFilter,
     searchValue,
     searchRef,
-    statusFilter,
     filteredItems,
     onClickStatusFilterItem,
     onClickPeriodModal,

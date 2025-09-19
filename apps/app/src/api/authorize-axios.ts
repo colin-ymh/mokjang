@@ -1,9 +1,11 @@
 import axios from 'axios';
 
-import { TEST_SERVER_URL } from '@mokjang/constants';
+import { IS_PRODUCTION, SERVER_URL, TEST_SERVER_URL } from '@mokjang/utils';
 
 const authorizeAxios = axios.create({
-  baseURL: TEST_SERVER_URL,
+  baseURL: IS_PRODUCTION
+    ? SERVER_URL // 실제 사용할 url
+    : TEST_SERVER_URL, // 개발용 url
   withCredentials: true,
 });
 
@@ -14,7 +16,6 @@ authorizeAxios.interceptors.response.use(
   (response) => response,
   async (error) => {
     const { config, response } = error;
-    console.log(response);
 
     // ① 재귀 방지: 이미 재시도했거나 /auth/token/rotate 요청이면 패스
     const isRotateCall = config.url?.includes('/auth/token/rotate');

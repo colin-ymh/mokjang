@@ -10,13 +10,13 @@ import GroupInit from '@/components/molecules/church/group-init';
 import { useCallback, useMemo, useState } from 'react';
 import MinistryInit from '@/components/molecules/church/ministry-init';
 import OfficerInit from '@/components/molecules/church/officer-init';
-import { usePageRouter } from '@mokjang/utils';
+import { routeAppPage, usePageRouter } from '@mokjang/utils';
 
 const ChurchInitContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 50px;
+  gap: 30px;
   padding: 50px 0;
 `;
 
@@ -39,7 +39,7 @@ const ButtonContainer = styled.div`
   justify-content: space-between; /* 좌우 정렬 유지 */
   align-items: center;
   gap: 20px;
-  width: 700px;
+  width: 760px;
 `;
 
 const ChurchInit = () => {
@@ -71,7 +71,7 @@ const ChurchInit = () => {
   }, [hasNext, currentIndex, steps]);
 
   const goStart = useCallback(() => {
-    router.push('/main'); // ✅ 마지막 단계에서 실행
+    routeAppPage('/main'); // ✅ 마지막 단계에서 실행
   }, [router]);
 
   return (

@@ -1,38 +1,34 @@
 'use client';
 
-import { MainText } from '@mokjang/components';
+import { MainText, ToggleRadioButton } from '@mokjang/components';
 import styled from 'styled-components';
-import { SIZE } from '@mokjang/constants';
+import { GRAY, HOME_WIDGET, LOCALE, MAIN, RANGE, SIZE, STATUS, } from '@mokjang/constants';
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
-import { HOME_WIDGET, RANGE } from '@mokjang/constants';
-import { DOMAIN } from '@mokjang/models';
+import { DOMAIN, ScheduleSummary } from '@mokjang/models';
 import React from 'react';
-import { ToggleRadioButton } from '@mokjang/components';
 import { useWeekMonthRangeRadioButtonItems } from '../../../../hooks/radio-button/radio-button-items';
 import { usePathname } from 'next/navigation';
-import { LOCALE } from '@mokjang/constants';
 import Dropdown from '../../../atoms/common/dropdown/dropdown';
-import { GRAY, MAIN } from '@mokjang/constants';
 import { getTranslatedSummaryCount } from '@mokjang/utils';
-import { ScheduleSummary } from '@mokjang/models';
-import { STATUS } from '@mokjang/constants';
 import { getTotalScheduleCount } from '../../../../utils/summary';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
+import { getStatusColor } from '@/utils/color';
 
 const WidgetContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
   height: 100%;
-  gap: 20px;
+  gap: 10px;
 `;
 
 const WidgetHeader = styled.div`
   display: flex;
   align-items: center;
-  justify-content: flex-start;
-  gap: 20px;
+  justify-content: space-between;
+  height: 40px;
+  flex-shrink: 0;
 `;
 
 const BodyContainer = styled.div`
@@ -72,7 +68,7 @@ const WeekBar = styled.div`
   position: relative;
 `;
 
-const CountBar = styled.div<{ $count: number; max: number }>`
+const CountBar = styled.div<{ $count: number; max: number; color: string }>`
   width: ${({ $count, max }) => (max ? ($count / max) * 100 : 0)}%;
   border-radius: 5px;
   height: 7px;
@@ -81,6 +77,7 @@ const CountBar = styled.div<{ $count: number; max: number }>`
   left: 0;
   transition: width 0.2s ease-in-out;
   will-change: width;
+  background-color: ${({ color }) => color};
 `;
 
 type ReportedScheduleWidgetViewProps = {
@@ -138,18 +135,20 @@ const ReportedScheduleWidgetView = ({
           <MainText size={SIZE.EXTRA_LARGE}>
             {t_title(HOME_WIDGET.CHURCH_SCHEDULE_SUMMARY)}
           </MainText>
-        </WidgetHeader>
-        <RowContainer>
           <ToggleRadioButton
             selectedValue={churchRange}
             onChange={onClickRange}
             items={rangeRadioItems}
+            columnPadding={4}
           />
+        </WidgetHeader>
+        <RowContainer>
+          <div />
           <Dropdown
             value={domain}
             items={domainDropdownItems}
             onChangeItem={onChangeDomain}
-            width={150}
+            width={100}
             height={35}
           />
         </RowContainer>
@@ -197,6 +196,7 @@ const ReportedScheduleWidgetView = ({
                   <CountBar
                     $count={scheduleSummary[status as keyof ScheduleSummary]}
                     max={getTotalScheduleCount(scheduleSummary)}
+                    color={getStatusColor(status as STATUS)}
                   />
                 </WeekBar>
               </WeekContainer>

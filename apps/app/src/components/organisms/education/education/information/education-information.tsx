@@ -2,12 +2,15 @@ import React, { RefObject, useEffect, useState } from 'react';
 import EducationInformationView from './education-information.view';
 import { setTargetEducationTerm } from '../../../../../redux/reducers/target/target-education-term-reducer';
 import { setEducations } from '../../../../../redux/reducers/filter/education-filter-reducer';
-import { getDateFromDateString, getDateStringFromDate } from '@mokjang/utils';
+import {
+  getDateFromDateString,
+  getDateStringFromDate,
+  getIsWellFormedTitle,
+} from '@mokjang/utils';
 import {
   setIsToastShown,
   setToastText,
 } from '../../../../../redux/reducers/toast-popup-reducer';
-import { getIsWellFormedTitle } from '@mokjang/utils';
 import { useI18n, useScopedI18n } from '../../../../../../locales/client';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../../../redux/store';
@@ -102,7 +105,9 @@ const EducationInformation = ({ scrollRef }: EducationInformationProps) => {
       };
       const newTargetEducation = {
         ...targetEducation,
-        educationTerms: [newEducationTerm, ...targetEducation.educationTerms],
+        educationTerms: targetEducation?.educationTerms
+          ? [newEducationTerm, ...targetEducation.educationTerms]
+          : [newEducationTerm],
       };
       const newEducations = educations.map((education) => {
         if (education.id === targetEducationTerm.educationId) {
@@ -132,6 +137,11 @@ const EducationInformation = ({ scrollRef }: EducationInformationProps) => {
     }
 
     if (!targetEducationTerm.inChargeId) {
+      setIsEducationTermSaveEnabled(false);
+      return;
+    }
+
+    if (!targetEducationTerm.startDate || !targetEducationTerm.endDate) {
       setIsEducationTermSaveEnabled(false);
       return;
     }
@@ -240,6 +250,8 @@ const EducationInformation = ({ scrollRef }: EducationInformationProps) => {
         }
         doneDisabled={!isEducationTermSaveEnabled}
         closeText={t_button('backToEducation')}
+        widthPercentage={45}
+        blur={false}
       >
         <AddEducationTerm />
       </WrappedPagePopup>

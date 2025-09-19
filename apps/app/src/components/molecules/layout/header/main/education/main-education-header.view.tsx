@@ -1,14 +1,17 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { BLACK, GRAY, MAIN } from '@mokjang/constants';
-import { MainText } from '@mokjang/components';
-import { SIZE } from '@mokjang/constants';
+import {
+  BLACK,
+  GRAY,
+  MAIN,
+  MEDIA_MIN_WIDTH,
+  SIZE,
+  WHITE,
+} from '@mokjang/constants';
+import { Button, MainText, SvgIcon } from '@mokjang/components';
 
 import { useScopedI18n } from '../../../../../../../locales/client';
-
-import { MEDIA_MIN_WIDTH } from '@mokjang/constants';
-import { Button } from '@mokjang/components';
 import AddEducation from '../../../../../organisms/education/education/add/add-education';
 
 import { Svg } from '@mokjang/assets';
@@ -100,8 +103,11 @@ const MainEducationHeaderView = ({
         <Button
           text={t_button('addEducation')}
           onClick={onClickAddEducation}
-          width={100}
-          height={30}
+          width={'auto'}
+          fontWeight={500}
+          fontSize={16}
+          height={35}
+          icon={<SvgIcon svg={Svg.Plus} color={WHITE} width={2} size={20} />}
         />
       </HeaderTopContainer>
       <HeaderBottomContainer></HeaderBottomContainer>
@@ -113,7 +119,7 @@ const MainEducationHeaderView = ({
         onClickDone={onClickSaveEducation}
         doneBackgroundColor={isSaveEnabled ? MAIN.DEFAULT : MAIN.LIGHT}
         doneDisabled={!isSaveEnabled}
-        widthPercentage={60}
+        widthPercentage={45}
       >
         <AddEducation />
       </WrappedPagePopup>

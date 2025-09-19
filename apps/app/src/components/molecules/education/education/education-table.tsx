@@ -10,6 +10,7 @@ import {
   Education,
   EducationSession,
   EducationTerm,
+  NOTIFICATION_DOMAIN,
 } from '@mokjang/models';
 import { setEducations } from '../../../../redux/reducers/filter/education-filter-reducer';
 import {
@@ -17,7 +18,7 @@ import {
   setToastBackgroundColor,
   setToastText,
 } from '../../../../redux/reducers/toast-popup-reducer';
-import { DESTRUCTIVE, MAIN } from '@mokjang/constants';
+import { DESTRUCTIVE, LOCALE, MAIN, TASK_STATUS } from '@mokjang/constants';
 import { EducationSessionsApi } from '../../../../api/education/education-sessions.api';
 import { EducationsApi } from '../../../../api/education/educations.api';
 import WrappedPagePopup from '../../../atoms/common/popup/wrapped-page-popup';
@@ -25,7 +26,12 @@ import ConfirmPopup from '../../../atoms/common/popup/error-popup';
 import EducationInformation from '../../../organisms/education/education/information/education-information';
 import AddEducation from '../../../organisms/education/education/add/add-education';
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
-import { getIsWellFormedTitle } from '@mokjang/utils';
+import {
+  getDateFromDateString,
+  getDateStringFromDate,
+  getIsWellFormedTitle,
+  getTranslatedTerm,
+} from '@mokjang/utils';
 import { setTargetEducation } from '../../../../redux/reducers/target/target-education-reducer';
 import { setTargetEducationTerm } from '../../../../redux/reducers/target/target-education-term-reducer';
 import EducationTermInformation from '../../../organisms/education/education-term/information/education-term-information';
@@ -33,12 +39,9 @@ import AddEducationTerm from '../../../organisms/education/education-term/add/ad
 import { setTargetEducationSession } from '../../../../redux/reducers/target/target-education-session-reducer';
 import EducationSessionInformation from '../../../organisms/education/education-session/information/education-session-information';
 import AddEducationSession from '../../../organisms/education/education-session/add/add-education-session';
-import { getTranslatedTerm } from '@mokjang/utils';
 import { usePathname } from 'next/navigation';
-import { LOCALE } from '@mokjang/constants';
-import { getDateFromDateString, getDateStringFromDate } from '@mokjang/utils';
-import { TASK_STATUS } from '@mokjang/constants';
 import { setEducationTerms } from '../../../../redux/reducers/filter/education-term-filter-reducer';
+import { closeModal } from '@/redux/reducers/modal-reducer';
 
 export type EducationTableProps = {
   loadEducations: () => void;
@@ -54,7 +57,7 @@ const EducationTable = ({ loadEducations }: EducationTableProps) => {
   const dispatch = useDispatch<AppDispatch>();
 
   const { churchId } = useSelector((state: RootState) => state.church);
-
+  const modal = useSelector((state: RootState) => state.modal);
   const { educations } = useSelector(
     (state: RootState) => state.educationFilter
   );
@@ -87,7 +90,7 @@ const EducationTable = ({ loadEducations }: EducationTableProps) => {
       const { scrollTop, scrollHeight, clientHeight } = scrollRef.current;
 
       // 스크롤이 최하단에 도달했는지 확인
-      if (scrollTop + clientHeight >= scrollHeight) {
+      if (scrollTop + clientHeight >= scrollHeight - 10) {
         loadEducations(); // 데이터를 추가로 로드
       }
     }
@@ -285,6 +288,7 @@ const EducationTable = ({ loadEducations }: EducationTableProps) => {
                 ? targetEducation.name
                 : undefined,
             description: targetEducation.description || undefined,
+            goals: targetEducation.goals || [],
           }
         )
         .then((response) => {
@@ -435,15 +439,19 @@ const EducationTable = ({ loadEducations }: EducationTableProps) => {
         educationEnrollments: targetEducationTerm.educationEnrollments,
       })
     );
+    dispatch(closeModal());
   };
 
   const onClickEditEducationTermDone = async () => {
     try {
-      const prev = targetEducation.educationTerms?.find(
-        (term) => term.id === targetEducationTerm.id
-      );
+      const response = await educationTermsApi.getEducationTerm({
+        churchId,
+        educationId: targetEducationTerm.educationId,
+        educationTermId: targetEducationTerm.id,
+      });
+      const prev: EducationTerm = response.data.data;
 
-      const response = await educationTermsApi.editEducationTerm(
+      await educationTermsApi.editEducationTerm(
         {
           churchId,
           educationId: targetEducationTerm.educationId,
@@ -465,9 +473,7 @@ const EducationTable = ({ loadEducations }: EducationTableProps) => {
         }
       );
 
-      const reports = targetEducation.educationTerms.find(
-        (term) => term.id === targetEducationTerm.id
-      )?.reports;
+      const reports = prev?.reports;
 
       const receiverIds = reports?.map((report) => report.receiver.id) || [];
 
@@ -551,6 +557,11 @@ const EducationTable = ({ loadEducations }: EducationTableProps) => {
     }
 
     if (!targetEducationTerm.inChargeId) {
+      setIsEducationTermSaveEnabled(false);
+      return;
+    }
+
+    if (!targetEducationTerm.startDate || !targetEducationTerm.endDate) {
       setIsEducationTermSaveEnabled(false);
       return;
     }
@@ -728,6 +739,7 @@ const EducationTable = ({ loadEducations }: EducationTableProps) => {
         educationAttendances: targetEducationSession.educationAttendances,
       })
     );
+    dispatch(closeModal());
   };
 
   const onClickEditEducationSessionDone = async () => {
@@ -865,6 +877,111 @@ const EducationTable = ({ loadEducations }: EducationTableProps) => {
   };
   // ------------------------- 교육 회차 ---------------------------
 
+  useEffect(() => {
+    if (
+      !modal.open ||
+      modal.type !== NOTIFICATION_DOMAIN.EDUCATION_TERM ||
+      !modal.id ||
+      !modal.educationId
+    )
+      return;
+
+    (async () => {
+      try {
+        const res = await educationApi.getEducation({
+          churchId,
+          educationId: modal.educationId as string,
+        });
+        const education = res.data;
+
+        const termRes = await educationTermsApi.getEducationTerm({
+          churchId,
+          educationId: modal.educationId as string,
+          educationTermId: modal.id as string,
+        });
+        const educationTerm = termRes.data.data;
+
+        // 상세에 필요한 데이터 저장 + 상세 패널 오픈
+        dispatch(setTargetEducation(education));
+        dispatch(setTargetEducationTerm(educationTerm));
+        setIsEducationTermInformationShown(true);
+
+        // (선택) 한 번 열었으면 modal 상태 정리해서 중복 오픈 방지
+        dispatch(closeModal());
+      } catch (error) {
+        dispatch(closeModal());
+        if (error instanceof Error) {
+          dispatch(setToastText(error.message));
+          dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
+          dispatch(setIsToastShown(true));
+        } else {
+          setThrownError(new Error(String(error)));
+        }
+      }
+    })();
+  }, [modal.open, modal.type, modal.id, modal.educationId, churchId]);
+
+  useEffect(() => {
+    if (
+      !modal.open ||
+      modal.type !== NOTIFICATION_DOMAIN.EDUCATION_SESSION ||
+      !modal.id ||
+      !modal.educationId ||
+      !modal.educationTermId
+    )
+      return;
+
+    (async () => {
+      try {
+        const res = await educationApi.getEducation({
+          churchId,
+          educationId: modal.educationId as string,
+        });
+        const education = res.data;
+
+        const termRes = await educationTermsApi.getEducationTerm({
+          churchId,
+          educationId: modal.educationId as string,
+          educationTermId: modal.educationTermId as string,
+        });
+        const educationTerm = termRes.data.data;
+
+        const sessionRes = await educationSessionsApi.getEducationSession({
+          churchId,
+          educationId: modal.educationId as string,
+          educationTermId: modal.educationTermId as string,
+          educationSessionId: modal.id as string,
+        });
+        const educationSession = sessionRes.data.data;
+
+        // 상세에 필요한 데이터 저장 + 상세 패널 오픈
+        dispatch(setTargetEducation(education));
+        dispatch(setTargetEducationTerm(educationTerm));
+        dispatch(setTargetEducationSession(educationSession));
+        setIsEducationSessionInformationShown(true);
+
+        // (선택) 한 번 열었으면 modal 상태 정리해서 중복 오픈 방지
+        dispatch(closeModal());
+      } catch (error) {
+        dispatch(closeModal());
+        if (error instanceof Error) {
+          dispatch(setToastText(error.message));
+          dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
+          dispatch(setIsToastShown(true));
+        } else {
+          setThrownError(new Error(String(error)));
+        }
+      }
+    })();
+  }, [
+    modal.open,
+    modal.type,
+    modal.id,
+    modal.educationId,
+    modal.educationTermId,
+    churchId,
+  ]);
+
   const props = {
     scrollRef,
     onScroll,
@@ -891,6 +1008,7 @@ const EducationTable = ({ loadEducations }: EducationTableProps) => {
         cancelText={t_button('delete')}
         onClickDone={onClickEditEducationOpen}
         onClickCancel={onClickDeleteEducationConfirmOpen}
+        widthPercentage={45}
       >
         {(scrollRef) => (
           <>
@@ -922,9 +1040,10 @@ const EducationTable = ({ loadEducations }: EducationTableProps) => {
         onClickDone={onClickEditEducationDone}
         doneBackgroundColor={isEducationSaveEnabled ? MAIN.DEFAULT : MAIN.LIGHT}
         doneDisabled={!isEducationSaveEnabled}
-        // widthPercentage={60}
+        widthPercentage={45}
         zIndex={1100}
         closeText={t_button('backToEducation')}
+        blur={false}
       >
         <AddEducation isEdit />
       </WrappedPagePopup>
@@ -946,6 +1065,7 @@ const EducationTable = ({ loadEducations }: EducationTableProps) => {
         inCharge={targetEducationTerm.inCharge}
         startDate={targetEducationTerm.startDate}
         endDate={targetEducationTerm.endDate}
+        widthPercentage={45}
       >
         {(scrollRef) => (
           <>
@@ -984,6 +1104,7 @@ const EducationTable = ({ loadEducations }: EducationTableProps) => {
         }
         doneDisabled={!isEducationTermSaveEnabled}
         closeText={t_button('backToEducationTerm')}
+        widthPercentage={45}
       >
         <AddEducationTerm isEdit />
       </WrappedPagePopup>
@@ -1005,6 +1126,7 @@ const EducationTable = ({ loadEducations }: EducationTableProps) => {
         inCharge={targetEducationSession.inCharge}
         startDate={targetEducationSession.startDate}
         endDate={targetEducationSession.endDate}
+        widthPercentage={45}
       >
         {(scrollRef) => (
           <>
@@ -1043,6 +1165,7 @@ const EducationTable = ({ loadEducations }: EducationTableProps) => {
         }
         doneDisabled={!isEducationSessionSaveEnabled}
         closeText={t_button('backToEducationSession')}
+        widthPercentage={45}
       >
         <AddEducationSession />
       </WrappedPagePopup>

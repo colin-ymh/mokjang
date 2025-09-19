@@ -3,7 +3,7 @@ import { Church, DEFAULT_CHURCH } from '@mokjang/models';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../../redux/store';
 import { ChurchesApi } from '../../../../api/churches/churches.api';
-import { BLACK, DESTRUCTIVE } from '@mokjang/constants';
+import { BLACK, BLANK, DESTRUCTIVE } from '@mokjang/constants';
 import { useScopedI18n } from '../../../../../locales/client';
 import { setChurch } from '../../../../redux/reducers/church-reducer';
 import ChurchManagementView from './church-management.view';
@@ -12,6 +12,12 @@ import {
   setToastBackgroundColor,
   setToastText,
 } from '../../../../redux/reducers/toast-popup-reducer';
+import {
+  getIsWellFormedIdentifyNumber,
+  getIsWellFormedName,
+  getIsWellFormedPhone,
+  getIsWellFormedTitle,
+} from '@mokjang/utils';
 
 const ChurchManagement = () => {
   const t_popup = useScopedI18n('popup');
@@ -28,6 +34,7 @@ const ChurchManagement = () => {
 
   const [targetChurch, setTargetChurch] = useState<Church>(DEFAULT_CHURCH);
 
+  const [isSaveEnabled, setIsSaveEnabled] = useState<boolean>(false);
   const [isEditShown, setIsEditShown] = useState<boolean>(false);
 
   const onClickEditOpen = () => {
@@ -75,7 +82,46 @@ const ChurchManagement = () => {
     setTargetChurch(church);
   }, [church]);
 
+  useEffect(() => {
+    if (!getIsWellFormedTitle(targetChurch.name)) {
+      setIsSaveEnabled(false);
+      return;
+    }
+
+    if (!getIsWellFormedPhone(targetChurch.phone)) {
+      setIsSaveEnabled(false);
+      return;
+    }
+
+    if (!getIsWellFormedName(targetChurch.pastor)) {
+      setIsSaveEnabled(false);
+      return;
+    }
+
+    if (targetChurch.address === BLANK) {
+      setIsSaveEnabled(false);
+      return;
+    }
+
+    if (!getIsWellFormedTitle(targetChurch.detailAddress)) {
+      setIsSaveEnabled(false);
+      return;
+    }
+
+    if (!getIsWellFormedIdentifyNumber(targetChurch.identifyNumber)) {
+      setIsSaveEnabled(false);
+      return;
+    }
+
+    if (targetChurch.denomination === BLANK) {
+      setIsSaveEnabled(false);
+      return;
+    }
+    setIsSaveEnabled(true);
+  }, [targetChurch]);
+
   const props = {
+    isSaveEnabled,
     targetChurch,
     setTargetChurch,
     isEditShown,

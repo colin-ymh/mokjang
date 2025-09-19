@@ -1,8 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../../redux/store';
-import { CHURCH_USER } from '@mokjang/constants';
-import { ORDER_DIRECTION } from '@mokjang/constants';
+import { CHURCH_USER, ORDER_DIRECTION } from '@mokjang/constants';
 import {
   setChurchUserOrderBy,
   setChurchUserOrderDirection,
@@ -46,7 +45,7 @@ const ChurchUserTable = ({ onClickUserItem, loadUsers }: UserTableProps) => {
       const { scrollTop, scrollHeight, clientHeight } = scrollRef.current;
 
       // 스크롤이 최하단에 도달했는지 확인
-      if (scrollTop + clientHeight >= scrollHeight) {
+      if (scrollTop + clientHeight >= scrollHeight - 10) {
         loadUsers(); // 데이터를 추가로 로드
       }
     }

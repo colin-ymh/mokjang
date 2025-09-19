@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { GRAY, MEDIA_MIN_WIDTH, SIZE } from '@mokjang/constants';
-import { Button, MainText } from '@mokjang/components';
+import { CURSOR, GRAY, MEDIA_MIN_WIDTH, SIZE } from '@mokjang/constants';
+import { Button, MainText, SvgIcon } from '@mokjang/components';
 
 import { useScopedI18n } from '../../../../../../../locales/client';
 import { MAIN_HEADER_ID } from '@/constants/layout/header';
@@ -11,6 +11,7 @@ import WrappedPagePopup from '../../../../../atoms/common/popup/wrapped-page-pop
 import { getDateFromDateString, getDateStringFromDate } from '@mokjang/utils';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
+import { Svg } from '@mokjang/assets';
 
 const HeaderContainer = styled.div`
   display: flex;
@@ -50,16 +51,25 @@ const HeaderBottomContainer = styled.div`
   }
 `;
 
+const TitleContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  gap: 10px;
+`;
+
 type MainAttendanceHeaderViewProps = {
   isSessionShown: boolean;
   onClickSessionClose: () => void;
   onClickSessionOpen: () => void;
+  onClickGoBack: () => void;
 };
 
 const MainAttendanceHeaderView = ({
   isSessionShown,
   onClickSessionClose,
   onClickSessionOpen,
+  onClickGoBack,
 }: MainAttendanceHeaderViewProps) => {
   const t_header = useScopedI18n('header');
   const t_button = useScopedI18n('button');
@@ -73,14 +83,25 @@ const MainAttendanceHeaderView = ({
     <>
       <HeaderContainer>
         <HeaderTopContainer>
-          <MainText size={SIZE.EXTRA_LARGE} fontSize={24}>
-            {t_header(MAIN_HEADER_ID.ATTENDANCE)}
-          </MainText>
+          <TitleContainer>
+            <SvgIcon
+              svg={Svg.ChevronLeft}
+              onClick={onClickGoBack}
+              width={2}
+              size={26}
+              cursor={CURSOR.POINTER}
+            />
+            <MainText size={SIZE.EXTRA_LARGE} fontSize={24}>
+              {t_header(MAIN_HEADER_ID.ATTENDANCE)}
+            </MainText>
+          </TitleContainer>
           <Button
             text={t_button('addWorshipSession')}
             onClick={onClickSessionOpen}
-            width={150}
-            height={30}
+            width={'auto'}
+            fontWeight={500}
+            fontSize={16}
+            height={35}
           />
         </HeaderTopContainer>
         <HeaderBottomContainer></HeaderBottomContainer>

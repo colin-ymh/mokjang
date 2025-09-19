@@ -1,11 +1,10 @@
 'use client';
 
-import { MainText } from '@mokjang/components';
+import { MainText, ToggleRadioButton } from '@mokjang/components';
 import styled from 'styled-components';
 import { HOME_WIDGET, LOCALE, MAIN, RANGE, SIZE } from '@mokjang/constants';
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
 import React from 'react';
-import { ToggleRadioButton } from '@mokjang/components';
 import { useMonthQuarterHalfRangeRadioButtonItems } from '../../../../hooks/radio-button/radio-button-items';
 import { WorshipEnrollment } from '@mokjang/models';
 import WorshipEnrollmentList from '../../../atoms/home/worship-enrollment-list';
@@ -13,8 +12,10 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
 import { DropdownValueType } from '../../../atoms/common/dropdown/dropdown-item';
 import Dropdown from '../../../atoms/common/dropdown/dropdown';
-import { getTranslateWorshipAttendanceWidgetDescription } from '@mokjang/utils';
-import { getTranslatedMemberCount } from '@mokjang/utils';
+import {
+  getTranslatedMemberCount,
+  getTranslateWorshipAttendanceWidgetDescription,
+} from '@mokjang/utils';
 import { usePathname } from 'next/navigation';
 import { Svg } from '@mokjang/assets';
 
@@ -23,14 +24,15 @@ const WidgetContainer = styled.div`
   flex-direction: column;
   width: 100%;
   height: 100%;
-  gap: 20px;
+  gap: 10px;
 `;
 
 const WidgetHeader = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  gap: 20px;
+  height: 40px;
+  flex-shrink: 0;
 `;
 
 const RowContainer = styled.div`
@@ -38,6 +40,7 @@ const RowContainer = styled.div`
   flex-direction: row;
   align-items: center;
   gap: 10px;
+  justify-content: space-between;
 `;
 
 const InformationContainer = styled.div`
@@ -47,6 +50,13 @@ const InformationContainer = styled.div`
   padding: 10px;
   background-color: ${MAIN.EXTRA_LIGHT};
   flex-direction: column;
+`;
+
+const WarningTitle = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
 `;
 
 const WarningIcon = styled(Svg.Warning)`
@@ -104,6 +114,7 @@ const WorshipAttendanceWidgetView = ({
             selectedValue={range}
             onChange={onClickRange}
             items={rangeRadioItems}
+            columnPadding={4}
           />
           {/* 예배 선택 */}
           <Dropdown
@@ -111,23 +122,28 @@ const WorshipAttendanceWidgetView = ({
             items={worshipDropdownItems}
             onChangeItem={onChangeWorship}
             height={35}
+            width={100}
             onScrollBottom={onScrollBottom}
           />
         </RowContainer>
 
         {/* 카운트 */}
-        <InformationContainer>
-          <RowContainer>
-            <WarningIcon />
-            <MainText color={MAIN.DEFAULT}>
-              {getTranslateWorshipAttendanceWidgetDescription(locale, t(range))}
+        {worshipEnrollments.length > 0 && (
+          <InformationContainer>
+            <WarningTitle>
+              <WarningIcon />
+              <MainText color={MAIN.DEFAULT}>
+                {getTranslateWorshipAttendanceWidgetDescription(
+                  locale,
+                  t(range)
+                )}
+              </MainText>
+            </WarningTitle>
+            <MainText fontSize={22} fontWeight={600} color={MAIN.DARK}>
+              {getTranslatedMemberCount(locale, worshipEnrollments.length)}
             </MainText>
-          </RowContainer>
-          <MainText fontSize={22} fontWeight={600} color={MAIN.DARK}>
-            {getTranslatedMemberCount(locale, worshipEnrollments.length)}
-          </MainText>
-        </InformationContainer>
-
+          </InformationContainer>
+        )}
         {/* 교인 목록 */}
         <WorshipEnrollmentList worshipEnrollments={worshipEnrollments} />
       </WidgetContainer>

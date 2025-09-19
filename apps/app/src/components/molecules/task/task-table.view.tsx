@@ -1,37 +1,32 @@
 import React, { MutableRefObject } from 'react';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../../redux/store';
+import { RootState } from '@/redux/store';
 
-import { GRAY, WHITE } from '@mokjang/constants';
-import { TASK } from '@mokjang/constants';
-import { MainText } from '@mokjang/components';
-import { BLANK } from '@mokjang/constants';
+import { BLANK, GRAY, LOCALE, STATUS, TASK, WHITE } from '@mokjang/constants';
+import { MainTag, MainText } from '@mokjang/components';
 import { Task } from '@mokjang/models';
 import useWindowSize from '../../../hooks/window/window';
 import TaskTableHeader from '../../atoms/task/task-table-header';
-import { BLANK_HEADER } from '../../../redux/reducers/filter/member-filter-reducer';
+import { BLANK_HEADER } from '@/redux/reducers/filter/member-filter-reducer';
 import { useI18n } from '../../../../locales/client';
-import {
-  getStatusBackgroundColor,
-  getStatusFontColor,
-} from '../../../utils/color';
+import { getStatusBackgroundColor, getStatusFontColor } from '@/utils/color';
 import MemberProfile from '../../atoms/member/member-profile';
-import { MainTag } from '@mokjang/components';
-import { STATUS } from '@mokjang/constants';
-import { getFormattedDate } from '@mokjang/utils';
+import { getTranslatedStartEndDate } from '@mokjang/utils';
+import { usePathname } from 'next/navigation';
+import EmptyList from '@/components/atoms/common/image/empty-list'; // 1. 컬럼별 PX 폭 (마지막 REMARKS만 auto 할 예정)
 
 // 1. 컬럼별 PX 폭 (마지막 REMARKS만 auto 할 예정)
 const getColumnWidth = (id: string) => {
   switch (id) {
     case TASK.TITLE:
-      return 25;
-    case TASK.STATUS:
-      return 25;
+      return 20;
     case TASK.DATE:
-      return 25;
+      return 30;
     case TASK.IN_CHARGE:
-      return 25;
+      return 15;
+    case TASK.STATUS:
+      return 35;
     default:
       // 비고(REMARKS) 컬럼 등
       return 80;
@@ -65,15 +60,21 @@ const TaskTable = styled.table`
 `;
 
 // 4. 헤더(TH)
-const TableHeader = styled.th<{ id: string; $isLast?: boolean }>`
-  padding: 20px 10px;
+const TableHeader = styled.th<{
+  id: string;
+  $isLast?: boolean;
+}>`
+  padding: 0 25px;
+  height: 50px;
+  flex-shrink: 0;
+  background-color: ${WHITE};
   position: sticky;
   top: 0;
   z-index: 5;
-  background-color: ${WHITE};
 
   /* 만약 마지막 컬럼이면 width: auto */
   width: ${({ id, $isLast }) => ($isLast ? 'auto' : `${getColumnWidth(id)}%`)};
+
   /* 텍스트 넘침 처리 */
   overflow: hidden;
   text-overflow: ellipsis;
@@ -92,14 +93,16 @@ const TableHeader = styled.th<{ id: string; $isLast?: boolean }>`
 
 // 5. 본문(TR/TD)
 const TaskTableRow = styled.tr`
-  border-bottom: 1px solid ${GRAY.EXTRA_LIGHT};
+  border-bottom: 1px solid ${GRAY.LIGHT};
   &:hover td {
-    background-color: ${GRAY.LIGHT};
+    background-color: ${GRAY.SUPER_LIGHT};
   }
 `;
 
 const TableData = styled.td<{ id: string; $index: number; $isLast?: boolean }>`
-  padding: 10px;
+  padding: 0 25px;
+  height: 60px;
+  flex-shrink: 0;
 
   cursor: pointer;
 
@@ -125,6 +128,15 @@ const ContentWrapper = styled.div`
   white-space: nowrap;
 `;
 
+const StatusContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+`;
+
 type TaskTableProps = {
   tasks: Task[];
   onClickHeader: (id: TASK) => void;
@@ -143,6 +155,9 @@ const TaskTableView = ({
   const t = useI18n();
   const { height } = useWindowSize();
 
+  const pathname = usePathname();
+  const locale = pathname.split('/')[1] as LOCALE;
+
   const taskTableHeaderItemList = useSelector(
     (state: RootState) => state.taskFilter.taskTableHeaderItemList
   );
@@ -160,18 +175,18 @@ const TaskTableView = ({
         return <MainText>{task?.title}</MainText>;
       case TASK.STATUS:
         return (
-          <MainTag
-            title={t(task.status as STATUS)}
-            color={getStatusFontColor(task.status as STATUS)}
-            backgroundColor={getStatusBackgroundColor(task.status as STATUS)}
-          />
+          <StatusContainer>
+            <MainTag
+              title={t(task.status as STATUS)}
+              color={getStatusFontColor(task.status as STATUS)}
+              backgroundColor={getStatusBackgroundColor(task.status as STATUS)}
+            />
+          </StatusContainer>
         );
       case TASK.DATE:
         return (
           <MainText>
-            {`${
-              task.startDate && getFormattedDate(task.startDate)
-            } - ${task.endDate && getFormattedDate(task.endDate)}`}
+            {getTranslatedStartEndDate(locale, task.startDate, task.endDate)}
           </MainText>
         );
       case TASK.IN_CHARGE:
@@ -233,6 +248,7 @@ const TaskTableView = ({
             ))}
           </tbody>
         </TaskTable>
+        {tasks.length === 0 && <EmptyList width={200} height={200} />}
       </TableContainer>
     </>
   );

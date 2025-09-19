@@ -8,6 +8,7 @@ export declare enum MEMBER {
     AGE = "age",
     GENDER = "gender",
     ADDRESS = "address",
+    DETAIL_ADDRESS = "detailAddress",
     HOME_PHONE = "homePhone",
     OCCUPATION = "occupation",
     SCHOOL = "school",

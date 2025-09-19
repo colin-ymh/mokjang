@@ -26,9 +26,9 @@ export const usePageRouter = () => {
 };
 
 export const routeLandingPage = (page: string) => {
-  window.location.href = `${process.env.NEXT_PUBLIC_LANDING_CLIENT_PROTOCOL}://${process.env.NEXT_PUBLIC_LANDING_CLIENT_HOST}:${process.env.NEXT_PUBLIC_LANDING_CLIENT_PORT}${page}`;
+  window.location.href = `${process.env.NEXT_PUBLIC_LANDING_CLIENT_PROTOCOL}://${process.env.NEXT_PUBLIC_LANDING_CLIENT_HOST}${page}`;
 };
 
 export const routeAppPage = (page: string) => {
-  window.location.href = `${process.env.NEXT_PUBLIC_APP_CLIENT_PROTOCOL}://${process.env.NEXT_PUBLIC_APP_CLIENT_HOST}:${process.env.NEXT_PUBLIC_APP_CLIENT_PORT}${page}`;
+  window.location.href = `${process.env.NEXT_PUBLIC_APP_CLIENT_PROTOCOL}://${process.env.NEXT_PUBLIC_APP_CLIENT_HOST}${page}`;
 };

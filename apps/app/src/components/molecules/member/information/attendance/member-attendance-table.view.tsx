@@ -1,27 +1,28 @@
 import React, { MutableRefObject } from 'react';
 import styled from 'styled-components';
 
-import { GRAY, GREEN, RED } from '@mokjang/constants';
-import { MainText } from '@mokjang/components';
-import { BLANK } from '@mokjang/constants';
+import { BLANK, GRAY, GREEN, LOCALE, RED, SIZE } from '@mokjang/constants';
+import { MainText, SvgIcon } from '@mokjang/components';
 import useWindowSize from '../../../../../hooks/window/window';
 import { WORSHIP_ATTENDANCE_STATUS, WorshipAttendance } from '@mokjang/models';
-import { SvgIcon } from '@mokjang/components';
 
 import { Svg } from '@mokjang/assets';
-import { getTranslatedDateFromDateString } from '@mokjang/utils';
-import { getDateFromDateString, getDateStringFromDate } from '@mokjang/utils';
+import {
+  getDateFromDateString,
+  getDateStringFromDate,
+  getTranslatedDateFromDateString,
+} from '@mokjang/utils';
 import { usePathname } from 'next/navigation';
-import { LOCALE } from '@mokjang/constants';
-import { SIZE } from '@mokjang/constants';
 import { useScopedI18n } from '../../../../../../locales/client';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store'; // 2. 테이블 컨테이너 (100% 폭 + 스크롤)
 
 // 2. 테이블 컨테이너 (100% 폭 + 스크롤)
 const TableContainer = styled.div<{ height: number }>`
   /* 항상 가로 100%를 채움 */
   width: 100%;
   /* 세로 높이만큼 상하 스크롤 */
-  height: ${({ height }) => `${height - 550}px`};
+  height: ${({ height }) => `${height - 520}px`};
 
   /* 오버플로 시 스크롤 */
   overflow-x: auto;
@@ -147,6 +148,10 @@ const MemberAttendanceTableView = ({
 
   const { height } = useWindowSize();
 
+  const { targetWorship } = useSelector(
+    (state: RootState) => state.targetWorship
+  );
+
   // 실제 표시할 컬럼 ID 배열 + 마지막에 비고란 추가
   const columns = [
     {
@@ -166,23 +171,47 @@ const MemberAttendanceTableView = ({
   ) => {
     switch (id) {
       case BLANK:
-        const isPresent =
-          attendance.attendanceStatus === WORSHIP_ATTENDANCE_STATUS.PRESENT;
         return (
           <AttendanceItem>
             <IconContainer
-              $backgroundColor={isPresent ? GREEN.LIGHT : RED.LIGHT}
+              $backgroundColor={
+                attendance.attendanceStatus ===
+                WORSHIP_ATTENDANCE_STATUS.UNKNOWN
+                  ? GRAY.LIGHT
+                  : attendance.attendanceStatus ===
+                      WORSHIP_ATTENDANCE_STATUS.PRESENT
+                    ? GREEN.LIGHT
+                    : RED.LIGHT
+              }
             >
               <SvgIcon
-                svg={isPresent ? Svg.Check : Svg.Cancel}
-                color={isPresent ? GREEN.DEFAULT : RED.DEFAULT}
+                svg={
+                  attendance.attendanceStatus ===
+                  WORSHIP_ATTENDANCE_STATUS.UNKNOWN
+                    ? Svg.Question
+                    : attendance.attendanceStatus ===
+                        WORSHIP_ATTENDANCE_STATUS.PRESENT
+                      ? Svg.Check
+                      : Svg.Cancel
+                }
+                color={
+                  attendance.attendanceStatus ===
+                  WORSHIP_ATTENDANCE_STATUS.UNKNOWN
+                    ? GRAY.SEMI_DARK
+                    : attendance.attendanceStatus ===
+                        WORSHIP_ATTENDANCE_STATUS.PRESENT
+                      ? GREEN.DEFAULT
+                      : RED.DEFAULT
+                }
                 width={2}
               />
             </IconContainer>
 
             <ColumnContainer>
               <RowContainer>
-                <MainText>{attendance.worshipSession.title}</MainText>
+                <MainText>
+                  {attendance.worshipSession.title || targetWorship.title}
+                </MainText>
                 <MainText size={SIZE.SMALL} color={GRAY.SEMI_DARK}>
                   {getTranslatedDateFromDateString(
                     basePath,

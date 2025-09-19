@@ -6,23 +6,27 @@ import {
   useDrop,
 } from 'react-dnd';
 import styled from 'styled-components';
-import { GRAY, MAIN, WHITE } from '@mokjang/constants';
+import {
+  DND_ITEM_TYPE,
+  GRAY,
+  HOME_WIDGET,
+  MAIN,
+  MEDIA_MIN_WIDTH,
+  WHITE,
+} from '@mokjang/constants';
 import { getEmptyImage } from 'react-dnd-html5-backend';
-import { DND_ITEM_TYPE, HOME_WIDGET } from '@mokjang/constants';
-
-import { Svg } from '@mokjang/assets';
 import { useScopedI18n } from '../../../../locales/client';
+import useWindowSize from '@/hooks/window/window'; // 드래그 타입 상수
 
 // 드래그 타입 상수
 type DragItem = { index: number; id: HOME_WIDGET; title: string };
 
 // 개별 위젯 아이템 스타일
-const WidgetItem = styled.div<{ $isDragging: boolean }>`
+const WidgetItem = styled.div<{ $isDragging: boolean; width: number }>`
   display: flex;
   position: relative;
   flex-direction: column;
   gap: 10px;
-  width: 300px;
   height: 400px;
   box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
@@ -30,20 +34,21 @@ const WidgetItem = styled.div<{ $isDragging: boolean }>`
     `1px solid ${$isDragging ? MAIN.LIGHT : GRAY.EXTRA_LIGHT};`};
   background-color: ${WHITE};
   padding: 20px;
-  padding-top: 30px;
-`;
 
-const DeleteContainer = styled.div`
-  position: absolute;
-  display: flex;
-  right: 10px;
-  top: 10px;
-`;
+  // 모바일
+  @media (min-width: ${MEDIA_MIN_WIDTH.MOBILE}) {
+    width: ${({ width }) => width - 100}px;
+  }
 
-const DeleteButton = styled(Svg.Cancel)`
-  width: 20px;
-  height: 20px;
-  cursor: pointer;
+  // 태블릿
+  @media (min-width: ${MEDIA_MIN_WIDTH.TABLET}) {
+    width: ${({ width }) => (width - 200) / 2}px;
+  }
+
+  // 데크스탑
+  @media (min-width: ${MEDIA_MIN_WIDTH.DESKTOP}) {
+    width: ${({ width }) => (width - 450) / 3}px;
+  }
 `;
 
 type DraggableWidgetProps = {
@@ -61,6 +66,7 @@ const HomeWidgetItem = ({
   onClickDelete,
   widget,
 }: DraggableWidgetProps) => {
+  const { width } = useWindowSize();
   const t_title = useScopedI18n('title');
   const ref = useRef<HTMLDivElement>(null);
 
@@ -125,11 +131,11 @@ const HomeWidgetItem = ({
   }, [preview]);
 
   return (
-    <WidgetItem ref={ref} $isDragging={isDragging}>
+    <WidgetItem ref={ref} $isDragging={isDragging} width={width}>
       {widget}
-      <DeleteContainer>
-        <DeleteButton onClick={onClickDelete} />
-      </DeleteContainer>
+      {/*<DeleteContainer>*/}
+      {/*  <DeleteButton onClick={onClickDelete} />*/}
+      {/*</DeleteContainer>*/}
     </WidgetItem>
   );
 };

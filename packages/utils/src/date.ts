@@ -1,4 +1,4 @@
-import { BLANK, DAY, REPEAT_PERIOD } from '@mokjang/constants';
+import { BLANK, DAY, LOCALE, REPEAT_PERIOD } from '@mokjang/constants';
 
 /**
  * YYYY-MM-DD => Date Object (UTC기준)
@@ -94,24 +94,15 @@ export const getIsChild = (date: Date): boolean => {
   return CURRENT_YEAR - TARGET_YEAR <= 18;
 };
 
-export const getAge = (date: Date): number => {
-  if (date === null) return 0;
+// 세는 나이 (한국식 나이) 계산
+export const getAge = (date: Date | null): number => {
+  if (!date) return 0;
 
   const today = new Date();
-  const birthDate = new Date(date); // 입력된 날짜를 Date 객체로 변환
+  const birthDate = new Date(date);
 
-  let age = today.getFullYear() - birthDate.getFullYear();
-  const monthDifference = today.getMonth() - birthDate.getMonth();
-
-  // 생일이 지나지 않았으면 나이를 1살 줄임
-  if (
-    monthDifference < 0 ||
-    (monthDifference === 0 && today.getDate() < birthDate.getDate())
-  ) {
-    age--;
-  }
-
-  return age;
+  // 세는 나이: 태어난 해를 1살로 하고, 해가 바뀔 때마다 1살씩 증가
+  return today.getFullYear() - birthDate.getFullYear() + 1;
 };
 
 /**
@@ -293,4 +284,20 @@ export const getDateGap = (date1: Date, date2: Date) => {
   const diffTime = Math.abs(date2.getTime() - date1.getTime()); // 밀리초 차이
   const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)); // 일 단위로 변환
   return diffDays;
+};
+
+export const getRegisterAfterDate = (locale: LOCALE, date: string): string => {
+  const today = new Date();
+  const target = new Date(date);
+
+  const diff = getDateGap(today, target);
+
+  if (diff <= 0) return locale === 'ko' ? '오늘' : 'Today';
+
+  if (diff < 365) {
+    return locale === 'ko' ? `${diff}일` : `${diff} days`;
+  } else {
+    const diffYears = Math.floor(diff / 365);
+    return locale === 'ko' ? `${diffYears}년` : `${diffYears} years`;
+  }
 };

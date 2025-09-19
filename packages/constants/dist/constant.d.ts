@@ -1,5 +1,6 @@
 export declare const BLANK = "";
 export declare const ALL = "all";
+export declare const CONCEALED = "CONCEALED";
 export declare enum DAY {
     SUNDAY = "sunday",
     MONDAY = "monday",
@@ -11,7 +12,7 @@ export declare enum DAY {
 }
 export declare const DAYS: DAY[];
 export declare enum BAPTISM {
-    NONE = "none",
+    NONE = "baptismNone",
     BAPTIZED = "baptized",
     IMMERSION_BAPTISM = "immersionBaptism",
     INFANT_BAPTISM = "infantBaptism",
@@ -24,7 +25,8 @@ export declare enum GENDER {
 }
 export declare enum MARRIAGE {
     MARRIED = "married",// 기혼
-    SINGLE = "single"
+    SINGLE = "single",// 미혼
+    NONE = "marriageNone"
 }
 export declare enum FAMILY {
     FAMILY = "family",// 가족

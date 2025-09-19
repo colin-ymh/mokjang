@@ -1,42 +1,42 @@
 import styled from 'styled-components';
 import { usePathname } from 'next/navigation';
 
-import { MainText } from '@mokjang/components';
-import { MEMBER } from '@mokjang/constants';
-import { GRAY, MAIN, PURPLE } from '@mokjang/constants';
+import { Button, MainTag, MainText, SvgIcon } from '@mokjang/components';
 import {
   CALENDAR_MODE,
+  CONCEALED,
   GENDER,
+  GRAY,
   GROUP_ROLE,
+  LOCALE,
+  MAIN,
   MARRIAGE,
+  MEMBER,
+  SIZE,
+  WHITE,
+  YELLOW,
 } from '@mokjang/constants';
-import { LOCALE } from '@mokjang/constants';
-import { getFormattedMobilePhone } from '@mokjang/utils';
 import {
   getAge,
   getDateFromDateString,
-  getDateStringFromDate,
-} from '@mokjang/utils';
-
-import { useI18n } from '../../../../../../locales/client';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../../../../redux/store';
-import { SvgIcon } from '@mokjang/components';
-import {
+  getFormattedPhone,
   getTranslatedAge,
   getTranslatedDateFromDateString,
 } from '@mokjang/utils';
-import { SIZE } from '@mokjang/constants';
-import { MainTag } from '@mokjang/components';
+
+import { useI18n, useScopedI18n } from '../../../../../../locales/client';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../../../redux/store';
 
 import { Svg } from '@mokjang/assets';
 import React from 'react';
 import useWindowSize from '../../../../../hooks/window/window';
+import { MinistryDetailHistory } from '@mokjang/models';
 
 const InformationContainer = styled.div<{ height: number }>`
   display: flex;
   flex-direction: column;
-  padding: 20px;
+  padding: 0 20px;
   overflow-x: hidden;
   overflow-y: auto;
   height: ${({ height }) => height}px;
@@ -46,6 +46,7 @@ const InformationItem = styled.div<{ $disabled?: boolean }>`
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: flex-start;
   border-bottom: 1px solid ${GRAY.EXTRA_LIGHT};
   padding: 10px;
   gap: 20px;
@@ -57,11 +58,16 @@ const InformationItem = styled.div<{ $disabled?: boolean }>`
 
 const TextContainer = styled.div`
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  width: 100%;
+  flex-direction: row;
+  align-items: center;
   gap: 10px;
-  min-height: 60px;
+  min-height: 50px;
+  flex-grow: 1;
+`;
+
+const TitleContainer = styled.div`
+  display: flex;
+  width: 150px;
 `;
 
 const InformationTextWrapper = styled.div`
@@ -72,34 +78,27 @@ const InformationTextWrapper = styled.div`
   gap: 10px;
 `;
 
-const ColumnTextWrapper = styled.div`
+const RowTextWrapper = styled.div`
   display: flex;
-  flex-direction: column;
-  min-height: 40px;
-  gap: 5px;
-`;
-
-const EditButtonContainer = styled.div`
-  display: flex;
-  cursor: pointer;
-  border-radius: 5px;
-  padding: 5px;
-  &:hover {
-    background-color: ${GRAY.LIGHT};
-  }
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
 `;
 
 type PersonalInformationListViewProps = {
+  isPopup?: boolean;
   onClickGroupOpen?: () => void;
   onClickOfficerOpen?: () => void;
   onClickMinistryOpen?: () => void;
 };
 
 const PersonalInformationListView = ({
+  isPopup,
   onClickGroupOpen,
   onClickOfficerOpen,
   onClickMinistryOpen,
 }: PersonalInformationListViewProps) => {
+  const t_button = useScopedI18n('button');
   const { height } = useWindowSize();
   const { targetMember } = useSelector(
     (state: RootState) => state.targetMember
@@ -111,12 +110,14 @@ const PersonalInformationListView = ({
   const basePath = pathname.split('/')[1] as LOCALE;
 
   return (
-    <InformationContainer height={height - 350}>
+    <InformationContainer height={isPopup ? height * 0.9 - 230 : height - 300}>
       {/* 이름 */}
       <InformationItem>
         <SvgIcon svg={Svg.User} size={18} width={2} color={GRAY.DARK} />
         <TextContainer>
-          <MainText color={GRAY.DARK}>{t(MEMBER.NAME)}</MainText>
+          <TitleContainer>
+            <MainText color={GRAY.DARK}>{t(MEMBER.NAME)}</MainText>
+          </TitleContainer>
           <InformationTextWrapper>
             <MainText size={SIZE.LARGE} fontWeight={400}>
               {targetMember.name}
@@ -133,7 +134,9 @@ const PersonalInformationListView = ({
           color={GRAY.DARK}
         />
         <TextContainer>
-          <MainText color={GRAY.DARK}>{t(MEMBER.GENDER)}</MainText>
+          <TitleContainer>
+            <MainText color={GRAY.DARK}>{t(MEMBER.GENDER)}</MainText>
+          </TitleContainer>
           <InformationTextWrapper>
             <MainText size={SIZE.LARGE} fontWeight={400}>
               {t(targetMember.gender as GENDER)}
@@ -146,18 +149,27 @@ const PersonalInformationListView = ({
       <InformationItem>
         <SvgIcon svg={Svg.Cake} size={18} width={2} color={GRAY.DARK} />
         <TextContainer>
-          <MainText
-            color={GRAY.DARK}
-          >{`${t(MEMBER.BIRTH)} / ${t(MEMBER.AGE)}`}</MainText>
+          <TitleContainer>
+            <MainText
+              color={GRAY.DARK}
+            >{`${t(MEMBER.BIRTH)} / ${t(MEMBER.AGE)}`}</MainText>
+          </TitleContainer>
+
           <InformationTextWrapper>
-            <MainText size={SIZE.LARGE} fontWeight={400}>
-              {`${getTranslatedDateFromDateString(basePath, targetMember.birth)} / ${getTranslatedAge(basePath, getAge(getDateFromDateString(targetMember.birth)))}`}
-            </MainText>
-            <MainTag
-              title={t(
-                targetMember.isLunar ? CALENDAR_MODE.LUNAR : CALENDAR_MODE.SOLAR
-              )}
-            />
+            {targetMember.birth && (
+              <MainText size={SIZE.LARGE} fontWeight={400}>
+                {`${getTranslatedDateFromDateString(basePath, targetMember.birth)} / ${getTranslatedAge(basePath, getAge(getDateFromDateString(targetMember.birth)))}`}
+              </MainText>
+            )}
+            {targetMember.birth && (
+              <MainText color={GRAY.DEFAULT}>
+                {t(
+                  targetMember.isLunar
+                    ? CALENDAR_MODE.LUNAR
+                    : CALENDAR_MODE.SOLAR
+                )}
+              </MainText>
+            )}
           </InformationTextWrapper>
         </TextContainer>
       </InformationItem>
@@ -166,10 +178,20 @@ const PersonalInformationListView = ({
       <InformationItem>
         <SvgIcon svg={Svg.Heart} size={18} width={2} color={GRAY.DARK} />
         <TextContainer>
-          <MainText color={GRAY.DARK}>{t(MEMBER.MARRIAGE)}</MainText>
+          <TitleContainer>
+            <MainText color={GRAY.DARK}>{t(MEMBER.MARRIAGE)}</MainText>
+          </TitleContainer>
           <InformationTextWrapper>
             <MainText size={SIZE.LARGE} fontWeight={400}>
-              {`${t(targetMember.marriage as MARRIAGE)} ${targetMember.detailMarriage ? `(${targetMember.detailMarriage})` : ''}`}
+              {targetMember.marriage === CONCEALED ? (
+                <MainText size={SIZE.LARGE} fontWeight={400}>
+                  {t(CONCEALED)}
+                </MainText>
+              ) : targetMember.marriage ? (
+                `${t(targetMember.marriage as MARRIAGE)} ${targetMember.detailMarriage ? `(${targetMember.detailMarriage})` : ''}`
+              ) : (
+                ''
+              )}
             </MainText>
           </InformationTextWrapper>
         </TextContainer>
@@ -179,10 +201,18 @@ const PersonalInformationListView = ({
       <InformationItem>
         <SvgIcon svg={Svg.Briefcase} size={18} width={2} color={GRAY.DARK} />
         <TextContainer>
-          <MainText color={GRAY.DARK}>{t(MEMBER.OCCUPATION)}</MainText>
+          <TitleContainer>
+            <MainText color={GRAY.DARK}>{t(MEMBER.OCCUPATION)}</MainText>
+          </TitleContainer>
           <InformationTextWrapper>
             <MainText size={SIZE.LARGE} fontWeight={400}>
-              {targetMember.occupation}
+              {targetMember.occupation === CONCEALED ? (
+                <MainText size={SIZE.LARGE} fontWeight={400}>
+                  {t(CONCEALED)}
+                </MainText>
+              ) : (
+                targetMember.occupation
+              )}
             </MainText>
           </InformationTextWrapper>
         </TextContainer>
@@ -192,10 +222,18 @@ const PersonalInformationListView = ({
       <InformationItem>
         <SvgIcon svg={Svg.AcademicCap} size={18} width={2} color={GRAY.DARK} />
         <TextContainer>
-          <MainText color={GRAY.DARK}>{t(MEMBER.SCHOOL)}</MainText>
+          <TitleContainer>
+            <MainText color={GRAY.DARK}>{t(MEMBER.SCHOOL)}</MainText>
+          </TitleContainer>
           <InformationTextWrapper>
             <MainText size={SIZE.LARGE} fontWeight={400}>
-              {targetMember.school}
+              {targetMember.school === CONCEALED ? (
+                <MainText size={SIZE.LARGE} fontWeight={400}>
+                  {t(CONCEALED)}
+                </MainText>
+              ) : (
+                targetMember.school
+              )}
             </MainText>
           </InformationTextWrapper>
         </TextContainer>
@@ -205,13 +243,49 @@ const PersonalInformationListView = ({
       <InformationItem>
         <SvgIcon svg={Svg.Pin} size={18} width={2} color={GRAY.DARK} />
         <TextContainer>
-          <MainText color={GRAY.DARK}>{t(MEMBER.ADDRESS)}</MainText>
-          <ColumnTextWrapper>
-            <MainText size={SIZE.LARGE} fontWeight={400}>
-              {targetMember.address}
-            </MainText>
-            <MainText color={GRAY.DARK}>{targetMember.detailAddress}</MainText>
-          </ColumnTextWrapper>
+          <TitleContainer>
+            <MainText color={GRAY.DARK}>{t(MEMBER.ADDRESS)}</MainText>
+          </TitleContainer>
+          <InformationTextWrapper>
+            {targetMember.address === CONCEALED ? (
+              <MainText size={SIZE.LARGE} fontWeight={400}>
+                {t(CONCEALED)}
+              </MainText>
+            ) : (
+              <MainText
+                size={SIZE.LARGE}
+                fontWeight={400}
+                whiteSpace={'normal'}
+              >
+                {targetMember.address}
+              </MainText>
+            )}
+          </InformationTextWrapper>
+        </TextContainer>
+      </InformationItem>
+
+      {/* 상세 주소 */}
+      <InformationItem>
+        <SvgIcon svg={Svg.Pin} size={18} width={2} color={GRAY.DARK} />
+        <TextContainer>
+          <TitleContainer>
+            <MainText color={GRAY.DARK}>{t(MEMBER.DETAIL_ADDRESS)}</MainText>
+          </TitleContainer>
+          <InformationTextWrapper>
+            {targetMember.address === CONCEALED ? (
+              <MainText size={SIZE.LARGE} fontWeight={400}>
+                {t(CONCEALED)}
+              </MainText>
+            ) : (
+              <MainText
+                size={SIZE.LARGE}
+                fontWeight={400}
+                whiteSpace={'normal'}
+              >
+                {targetMember.detailAddress}
+              </MainText>
+            )}
+          </InformationTextWrapper>
         </TextContainer>
       </InformationItem>
 
@@ -219,23 +293,18 @@ const PersonalInformationListView = ({
       <InformationItem>
         <SvgIcon svg={Svg.MobilePhone} size={18} width={2} color={GRAY.DARK} />
         <TextContainer>
-          <MainText color={GRAY.DARK}>{t(MEMBER.MOBILE_PHONE)}</MainText>
+          <TitleContainer>
+            <MainText color={GRAY.DARK}>{t(MEMBER.MOBILE_PHONE)}</MainText>
+          </TitleContainer>
           <InformationTextWrapper>
             <MainText size={SIZE.LARGE} fontWeight={400}>
-              {getFormattedMobilePhone(targetMember.mobilePhone)}
-            </MainText>
-          </InformationTextWrapper>
-        </TextContainer>
-      </InformationItem>
-
-      {/* 집전화번호 */}
-      <InformationItem>
-        <SvgIcon svg={Svg.Phone} size={18} width={2} color={GRAY.DARK} />
-        <TextContainer>
-          <MainText color={GRAY.DARK}>{t(MEMBER.HOME_PHONE)}</MainText>
-          <InformationTextWrapper>
-            <MainText size={SIZE.LARGE} fontWeight={400}>
-              {targetMember.homePhone}
+              {targetMember.mobilePhone === CONCEALED ? (
+                <MainText size={SIZE.LARGE} fontWeight={400}>
+                  {t(CONCEALED)}
+                </MainText>
+              ) : (
+                getFormattedPhone(targetMember.mobilePhone)
+              )}
             </MainText>
           </InformationTextWrapper>
         </TextContainer>
@@ -245,7 +314,9 @@ const PersonalInformationListView = ({
       <InformationItem>
         <SvgIcon svg={Svg.Car} size={18} width={1} color={GRAY.DARK} />
         <TextContainer>
-          <MainText color={GRAY.DARK}>{t(MEMBER.VEHICLE_NUMBER)}</MainText>
+          <TitleContainer>
+            <MainText color={GRAY.DARK}>{t(MEMBER.VEHICLE_NUMBER)}</MainText>
+          </TitleContainer>
           <InformationTextWrapper>
             {targetMember?.vehicleNumber?.map((number, index) => (
               <MainText key={index}>{number}</MainText>
@@ -258,8 +329,10 @@ const PersonalInformationListView = ({
       <InformationItem>
         <SvgIcon svg={Svg.Users} size={18} width={2} color={GRAY.DARK} />
         <TextContainer>
-          <MainText color={GRAY.DARK}>{t(MEMBER.GROUP)}</MainText>
-          <ColumnTextWrapper>
+          <TitleContainer>
+            <MainText color={GRAY.DARK}>{t(MEMBER.GROUP)}</MainText>
+          </TitleContainer>
+          <RowTextWrapper>
             <InformationTextWrapper>
               <MainText size={SIZE.LARGE} fontWeight={400}>
                 {targetMember?.groupHistory &&
@@ -268,141 +341,110 @@ const PersonalInformationListView = ({
               {targetMember.groupRole === GROUP_ROLE.LEADER && (
                 <MainTag
                   title={t('groupLeader')}
-                  color={MAIN.DARK}
-                  backgroundColor={MAIN.LIGHT}
+                  color={YELLOW.DARK}
+                  backgroundColor={YELLOW.LIGHT}
                 />
               )}
             </InformationTextWrapper>
-            {targetMember?.groupHistory &&
-              targetMember.groupHistory.length > 0 && (
-                <MainText color={GRAY.DARK}>
-                  {getTranslatedDateFromDateString(
-                    basePath,
-                    getDateStringFromDate(
-                      getDateFromDateString(
-                        targetMember?.groupHistory[0]?.startDate
-                      )
-                    )
-                  )}
-                </MainText>
-              )}
-          </ColumnTextWrapper>
+          </RowTextWrapper>
         </TextContainer>
-        <EditButtonContainer onClick={onClickGroupOpen}>
-          <SvgIcon
-            svg={Svg.Pencil}
-            size={18}
-            width={2}
-            color={GRAY.DARK}
-            onClick={onClickGroupOpen}
-          />
-        </EditButtonContainer>
+        <Button
+          width={'auto'}
+          text={t_button('edit')}
+          borderColor={MAIN.LIGHT}
+          backgroundColor={WHITE}
+          color={MAIN.DEFAULT}
+          height={30}
+          onClick={onClickGroupOpen}
+        />
       </InformationItem>
 
       {/* 직분 */}
       <InformationItem>
         <SvgIcon svg={Svg.Star} size={18} width={2} color={GRAY.DARK} />
         <TextContainer>
-          <MainText color={GRAY.DARK}>{t(MEMBER.OFFICER)}</MainText>
-          <ColumnTextWrapper>
+          <TitleContainer>
+            <MainText color={GRAY.DARK}>{t(MEMBER.OFFICER)}</MainText>
+          </TitleContainer>
+          <RowTextWrapper>
             <MainText size={SIZE.LARGE} fontWeight={400}>
               {targetMember?.officerHistory &&
                 targetMember?.officerHistory[0]?.officer?.name}
             </MainText>
-            {targetMember?.officerHistory &&
-              targetMember.officerHistory.length > 0 && (
-                <MainText color={GRAY.DARK}>
-                  {getTranslatedDateFromDateString(
-                    basePath,
-                    getDateStringFromDate(
-                      getDateFromDateString(
-                        targetMember?.officerHistory[0]?.startDate
-                      )
-                    )
-                  )}
-                </MainText>
-              )}
-          </ColumnTextWrapper>
+          </RowTextWrapper>
         </TextContainer>
-        <EditButtonContainer onClick={onClickOfficerOpen}>
-          <SvgIcon
-            svg={Svg.Pencil}
-            size={18}
-            width={2}
-            color={GRAY.DARK}
-            onClick={onClickOfficerOpen}
-          />
-        </EditButtonContainer>
+        <Button
+          width={'auto'}
+          text={t_button('edit')}
+          borderColor={MAIN.LIGHT}
+          backgroundColor={WHITE}
+          color={MAIN.DEFAULT}
+          height={30}
+          onClick={onClickOfficerOpen}
+        />
       </InformationItem>
 
       {/* 사역 */}
-      <InformationItem>
-        <SvgIcon svg={Svg.Users} size={18} width={2} color={GRAY.DARK} />
-        <TextContainer>
-          <MainText color={GRAY.DARK}>{t(MEMBER.MINISTRIES)}</MainText>
-          <ColumnTextWrapper>
-            {targetMember.ministryGroupHistory
-              ?.slice(0, 3)
-              .map((ministryHistory) => (
-                <InformationTextWrapper key={ministryHistory.id}>
-                  <MainText size={SIZE.LARGE} fontWeight={400}>
-                    {ministryHistory.ministryGroup?.name}
-                  </MainText>
-                  {ministryHistory.ministryGroupDetailHistory.map(
-                    (detailHistory) => {
-                      if (detailHistory?.role) {
-                        return (
-                          <MainTag
-                            key={detailHistory.id}
-                            title={t('ministryGroupLeader')}
-                            color={PURPLE.DARK}
-                            backgroundColor={PURPLE.LIGHT}
-                          />
-                        );
-                      } else if (detailHistory?.ministry) {
-                        return (
-                          <MainTag
-                            key={detailHistory.id}
-                            title={
-                              ministryHistory.ministryGroupDetailHistory[0]
-                                .ministry?.name as string
-                            }
-                            color={MAIN.DARK}
-                            backgroundColor={MAIN.LIGHT}
-                          />
-                        );
-                      }
-                    }
-                  )}
+      {/* 사역 */}
+      {targetMember.ministryGroupHistory?.map((history, idx) => (
+        <InformationItem
+          key={history.id ?? `${history.ministryGroup?.id}-${idx}`}
+        >
+          <SvgIcon svg={Svg.Star} size={18} width={2} color={GRAY.DARK} />
+          <TextContainer>
+            <TitleContainer>
+              <MainText color={GRAY.DARK}>{t(MEMBER.MINISTRIES)}</MainText>
+            </TitleContainer>
 
-                  <MainText color={GRAY.DARK}>
-                    {getTranslatedDateFromDateString(
-                      basePath,
-                      getDateStringFromDate(
-                        getDateFromDateString(ministryHistory.startDate)
-                      )
-                    )}
-                  </MainText>
-                </InformationTextWrapper>
-              ))}
-          </ColumnTextWrapper>
-        </TextContainer>
-        <EditButtonContainer onClick={onClickMinistryOpen}>
-          <SvgIcon
-            svg={Svg.Pencil}
-            size={18}
-            width={2}
-            color={GRAY.DARK}
+            <RowTextWrapper>
+              <MainText size={SIZE.LARGE} fontWeight={400}>
+                {history.ministryGroup.name}
+              </MainText>
+
+              {history.ministryGroupDetailHistory?.map(
+                (detailHistory: MinistryDetailHistory) => {
+                  if (detailHistory?.role) {
+                    return (
+                      <MainTag
+                        key={detailHistory.id}
+                        title={t('ministryGroupLeader')}
+                        color={MAIN.DARK}
+                        backgroundColor={MAIN.LIGHT}
+                      />
+                    );
+                  }
+                  if (detailHistory?.ministry) {
+                    return (
+                      <MainText key={detailHistory.id} color={GRAY.DEFAULT}>
+                        {detailHistory.ministry?.name ?? ''}
+                      </MainText>
+                    );
+                  }
+                  return null; // 안전하게 아무 것도 없을 때
+                }
+              )}
+            </RowTextWrapper>
+          </TextContainer>
+
+          <Button
+            width="auto"
+            text={t_button('edit')}
+            borderColor={MAIN.LIGHT}
+            backgroundColor={WHITE}
+            color={MAIN.DEFAULT}
+            height={30}
             onClick={onClickMinistryOpen}
           />
-        </EditButtonContainer>
-      </InformationItem>
+        </InformationItem>
+      ))}
 
       {/* 신급 */}
       <InformationItem>
         <SvgIcon svg={Svg.Sparkle} size={18} width={2} color={GRAY.DARK} />
         <TextContainer>
-          <MainText color={GRAY.DARK}>{t('baptism')}</MainText>
+          <TitleContainer>
+            <MainText color={GRAY.DARK}>{t('baptism')}</MainText>
+          </TitleContainer>
           <InformationTextWrapper>
             <MainText size={SIZE.LARGE} fontWeight={400}>
               {t(targetMember.baptism)}
@@ -415,7 +457,9 @@ const PersonalInformationListView = ({
       <InformationItem>
         <SvgIcon svg={Svg.Calendar} size={18} width={2} color={GRAY.DARK} />
         <TextContainer>
-          <MainText color={GRAY.DARK}>{t('registeredAt')}</MainText>
+          <TitleContainer>
+            <MainText color={GRAY.DARK}>{t('registeredAt')}</MainText>
+          </TitleContainer>
           <InformationTextWrapper>
             <MainText size={SIZE.LARGE} fontWeight={400}>
               {getTranslatedDateFromDateString(
@@ -431,7 +475,9 @@ const PersonalInformationListView = ({
       <InformationItem>
         <SvgIcon svg={Svg.Setting} size={18} width={2} color={GRAY.DARK} />
         <TextContainer>
-          <MainText color={GRAY.DARK}>{t('createdAt')}</MainText>
+          <TitleContainer>
+            <MainText color={GRAY.DARK}>{t('createdAt')}</MainText>
+          </TitleContainer>
           <InformationTextWrapper>
             <MainText size={SIZE.LARGE} fontWeight={400}>
               {getTranslatedDateFromDateString(
@@ -447,7 +493,9 @@ const PersonalInformationListView = ({
       <InformationItem>
         <SvgIcon svg={Svg.Pencil} size={18} width={2} color={GRAY.DARK} />
         <TextContainer>
-          <MainText color={GRAY.DARK}>{t('updatedAt')}</MainText>
+          <TitleContainer>
+            <MainText color={GRAY.DARK}>{t('updatedAt')}</MainText>
+          </TitleContainer>
           <InformationTextWrapper>
             <MainText size={SIZE.LARGE} fontWeight={400}>
               {getTranslatedDateFromDateString(

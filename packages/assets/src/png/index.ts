@@ -1,0 +1,11 @@
+export { default as DefaultMemberImage } from "./default-member-image.png";
+export { default as Man1 } from "./man1.png";
+export { default as Man2 } from "./man2.png";
+export { default as Man3 } from "./man3.png";
+export { default as Man4 } from "./man4.png";
+export { default as Man5 } from "./man5.png";
+export { default as Man6 } from "./man6.png";
+export { default as Woman1 } from "./woman1.png";
+export { default as Woman2 } from "./woman2.png";
+export { default as Woman3 } from "./woman3.png";
+export { default as Woman4 } from "./woman4.png";

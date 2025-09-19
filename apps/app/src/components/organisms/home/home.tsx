@@ -27,6 +27,7 @@ const Home = () => {
       {/* 위젯 추가 팝업 */}
       <CustomPopup
         isShow={isAddShown}
+        onClickClose={onClickCloseAdd}
         onClickCancel={onClickCloseAdd}
         width={500}
         height={500}

@@ -2,19 +2,17 @@ import React, { RefObject } from 'react';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../redux/store';
-import { GRAY, MAIN, PURPLE, WHITE } from '@mokjang/constants';
-import { MainText } from '@mokjang/components';
-import { SIZE } from '@mokjang/constants';
-import { MainTag } from '@mokjang/components';
+import { GRAY, LOCALE, MAIN, PURPLE, SIZE, WHITE } from '@mokjang/constants';
+import { Button, MainTag, MainText, SvgIcon } from '@mokjang/components';
 import { useI18n } from '../../../../../../locales/client';
 import { Svg } from '@mokjang/assets';
-import { SvgIcon } from '@mokjang/components';
-import { getTranslatedDateFromDateString } from '@mokjang/utils';
+import {
+  getDateFromDateString,
+  getDateStringFromDate,
+  getTranslatedDateFromDateString,
+} from '@mokjang/utils';
 import { usePathname } from 'next/navigation';
-import { LOCALE } from '@mokjang/constants';
-import { Button } from '@mokjang/components';
 import { MinistryHistory } from '@mokjang/models';
-import { getDateFromDateString, getDateStringFromDate } from '@mokjang/utils';
 
 const ListContainer = styled.div`
   display: flex;

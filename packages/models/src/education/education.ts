@@ -1,11 +1,11 @@
-import { BLANK } from '@mokjang/constants';
-import { DEFAULT_MEMBER, Member } from '../member/member';
 import {
+  BLANK,
   EDUCATION_ATTENDANCE_STATUS,
   EDUCATION_ENROLLMENT_STATUS,
   STATUS,
   TASK_STATUS,
 } from '@mokjang/constants';
+import { DEFAULT_MEMBER, Member } from '../member/member';
 import { VisitationReport } from '../report/report';
 
 export type Education = {
@@ -45,6 +45,8 @@ export type EducationEnrollment = {
   status: EDUCATION_ENROLLMENT_STATUS;
   member: Member;
   attendancesCount: number;
+
+  educationTerm?: EducationTerm;
 };
 
 export const DEFAULT_EDUCATION_ENROLLMENT: EducationEnrollment = {

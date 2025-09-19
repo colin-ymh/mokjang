@@ -8,6 +8,7 @@ export * from "./home";
 export * from "./join-request";
 export * from "./management";
 export * from "./member";
+export * from "./notification";
 export * from "./permission";
 export * from "./report";
 export * from "./schedule-summary";

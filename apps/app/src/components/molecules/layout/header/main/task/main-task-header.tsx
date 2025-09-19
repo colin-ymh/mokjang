@@ -1,23 +1,29 @@
 import MainTaskHeaderView from './main-task-header.view';
-import { usePageRouter } from '@mokjang/utils';
+import {
+  getDateFromDateString,
+  getFullStringFromDate,
+  getIsWellFormedTitle,
+  usePageRouter,
+} from '@mokjang/utils';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../../../../../redux/store';
-import { TasksApi } from '../../../../../../api/tasks/tasks.api';
-import { setTargetTask } from '../../../../../../redux/reducers/target/target-task-reducer';
+import { AppDispatch, RootState } from '@/redux/store';
+import { TasksApi } from '@/api/tasks/tasks.api';
+import { setTargetTask } from '@/redux/reducers/target/target-task-reducer';
 import { DEFAULT_TASK } from '@mokjang/models';
-import { setTasks } from '../../../../../../redux/reducers/filter/task-filter-reducer';
-import { getIsWellFormedTitle } from '@mokjang/utils';
-import { BLANK } from '@mokjang/constants';
+import { setTasks } from '@/redux/reducers/filter/task-filter-reducer';
+import { BLACK, BLANK, DESTRUCTIVE } from '@mokjang/constants';
 import {
   setIsToastShown,
+  setToastBackgroundColor,
   setToastText,
-} from '../../../../../../redux/reducers/toast-popup-reducer';
-import { getDateFromDateString, getFullStringFromDate } from '@mokjang/utils';
+} from '@/redux/reducers/toast-popup-reducer';
+import { useScopedI18n } from '../../../../../../../locales/client';
 
 type MainTaskHeaderProps = {};
 
 const MainTaskHeader = ({}: MainTaskHeaderProps) => {
+  const t_popup = useScopedI18n('popup');
   const dispatch = useDispatch<AppDispatch>();
   const router = usePageRouter();
   const { tasks } = useSelector((state: RootState) => state.taskFilter);
@@ -84,9 +90,14 @@ const MainTaskHeader = ({}: MainTaskHeaderProps) => {
         });
       setIsAddTaskOpened(false);
       dispatch(setTargetTask(DEFAULT_TASK));
+
+      dispatch(setIsToastShown(true));
+      dispatch(setToastText(t_popup('saveComplete')));
+      dispatch(setToastBackgroundColor(BLACK));
     } catch (error) {
       if (error instanceof Error) {
         dispatch(setToastText(error.message));
+        dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
         dispatch(setIsToastShown(true));
       } else {
         setThrownError(new Error(String(error)));

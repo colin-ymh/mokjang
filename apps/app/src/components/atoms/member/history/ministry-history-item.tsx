@@ -238,12 +238,15 @@ const MinistryHistoryItem = ({
       {/* 그룹 수정 */}
       <CustomPopup
         isShow={isDetailOpened}
+        onClickClose={onClickDetailClose}
         onClickCancel={onClickDetailClose}
         onClickDone={onClickSaveDetail}
         headerTitle={t('title.editHistory')}
         width={500}
         height={500}
         doneDisabled={!isDetailSaveEnabled}
+        cancelText={t_button('cancel')}
+        doneText={t_button('confirm')}
       >
         <>
           {/* 삭제 확인 팝업 */}

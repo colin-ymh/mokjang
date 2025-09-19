@@ -1,10 +1,9 @@
 {
   "pages": {
-    "/[locale]/[...slug]/page": [
+    "/[locale]/church/init/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/css/app/[locale]/[...slug]/page.css",
-      "static/chunks/app/[locale]/[...slug]/page.js"
+      "static/chunks/app/[locale]/church/init/page.js"
     ],
     "/[locale]/layout": [
       "static/chunks/webpack.js",
@@ -31,6 +30,27 @@
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/[locale]/page.js"
+    ],
+    "/[locale]/login/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/[locale]/login/page.js"
+    ],
+    "/[locale]/[...slug]/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/[locale]/[...slug]/page.css",
+      "static/chunks/app/[locale]/[...slug]/page.js"
+    ],
+    "/[locale]/church/register/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/[locale]/church/register/page.js"
+    ],
+    "/[locale]/login/register/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/[locale]/login/register/page.js"
     ]
   }
 }

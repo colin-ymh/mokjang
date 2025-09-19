@@ -1,27 +1,21 @@
 import styled from 'styled-components';
-import { LabelInput } from '@mokjang/components';
+import { CustomPopup, LabelInput, MainText } from '@mokjang/components';
 import React from 'react';
 import { useI18n, useScopedI18n } from '../../../../../../locales/client';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../redux/store';
-import { CustomPopup } from '@mokjang/components';
 import SelectGroupHierarchy from '../../../../organisms/group/select-group-hierarchy';
 import CustomDatePicker from '../../../../../vendor/date-picker/custom-date-picker';
-import {
-  getDateFromDateString,
-  getDateFromInput,
-  getDateStringFromDate,
-} from '@mokjang/utils';
-import { GRAY } from '@mokjang/constants';
-import { MainText } from '@mokjang/components';
-import { SIZE } from '@mokjang/constants';
+import { getDateFromDateString, getDateStringFromDate } from '@mokjang/utils';
+import { GRAY, SIZE } from '@mokjang/constants';
 import StopWarningButton from '../../../../atoms/common/button/stop-warning-button';
 
 const EditMemberGroupViewContainer = styled.div`
   display: flex;
   flex-direction: column;
-  width: 100%;
   padding: 20px;
+  width: 100%;
+  overflow-y: auto;
   gap: 20px;
 `;
 
@@ -29,6 +23,10 @@ const LabelContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
+`;
+
+const BoxContainer = styled.div`
+  display: flex;
 `;
 
 type EditMemberGroupViewProps = {
@@ -78,7 +76,7 @@ const EditMemberGroupView = ({
             value={
               targetGroupHistory.startDate
                 ? getDateStringFromDate(
-                    getDateFromInput(targetGroupHistory.startDate)
+                    getDateFromDateString(targetGroupHistory.startDate)
                   )
                 : undefined
             }
@@ -93,17 +91,20 @@ const EditMemberGroupView = ({
           />
         </LabelContainer>
         {targetMember.groupHistory && targetMember.groupHistory.length > 0 && (
-          <StopWarningButton
-            description={t_warning('stopGroupHistory')}
-            buttonText={t_button('stopGroupHistory')}
-            onClick={onClickDeleteGroup}
-            // disabled={!!selectedGroup?.membersCount || false}
-          />
+          <BoxContainer>
+            <StopWarningButton
+              description={t_warning('stopGroupHistory')}
+              buttonText={t_button('stopGroupHistory')}
+              onClick={onClickDeleteGroup}
+              // disabled={!!selectedGroup?.membersCount || false}
+            />
+          </BoxContainer>
         )}
       </EditMemberGroupViewContainer>
 
       <CustomPopup
         isShow={isGroupOpen}
+        onClickClose={onClickGroupClose}
         onClickCancel={onClickGroupClose}
         cancelText={t('button.close')}
         width={450}

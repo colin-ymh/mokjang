@@ -1,10 +1,20 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { BLANK, ORDER_DIRECTION } from '@mokjang/constants';
+import {
+  BLANK,
+  CHURCH_USER,
+  DESTRUCTIVE,
+  ORDER_DIRECTION,
+} from '@mokjang/constants';
 import { RootState } from '../../store';
-import { CHURCH_USER } from '@mokjang/constants';
 import { ChurchUser } from '@mokjang/models';
 import { ChurchUsersApi } from '../../../api/church-users/church-users.api';
 import { ManagersApi } from '../../../api/managers/managers.api';
+import axios from 'axios';
+import {
+  setIsToastShown,
+  setToastBackgroundColor,
+  setToastText,
+} from '@/redux/reducers/toast-popup-reducer';
 
 type CHURCH_USER_FILTER = {
   [CHURCH_USER.NAME]: string;
@@ -88,7 +98,10 @@ export const fetchChurchUsers = createAsyncThunk<
   { state: RootState }
 >(
   'churchUsers/fetchChurchUsers',
-  async ({ currentPage, isManager }, { getState, rejectWithValue }) => {
+  async (
+    { currentPage, isManager },
+    { getState, dispatch, rejectWithValue }
+  ) => {
     const state = getState().churchUserFilter;
     const churchId = getState().church.churchId;
     const { churchUserOrderBy, churchUserOrderDirection, churchUserFilter } =
@@ -121,14 +134,31 @@ export const fetchChurchUsers = createAsyncThunk<
         return response.data.data;
       }
     } catch (error) {
-      console.error('회원 목록 불러오기 실패', error);
-      return rejectWithValue('회원 목록을 불러오는 중 오류가 발생했습니다.');
+      if (axios.isAxiosError(error)) {
+        const data = error.response?.data as any;
+        const status = data?.statusCode ?? error.response?.status;
+        const message = data.message;
+
+        dispatch(setToastText(message));
+        dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
+        dispatch(setIsToastShown(true));
+
+        return rejectWithValue(message);
+      }
+
+      if (error instanceof Error) {
+        dispatch(setToastText(error.message));
+        dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
+        dispatch(setIsToastShown(true));
+        return rejectWithValue(error.message);
+      }
+      return rejectWithValue('관리자 목록을 불러오는 중 오류가 발생했습니다.');
     }
   }
 );
 
 const ChurchUserFilterSlice = createSlice({
-  name: 'register',
+  name: 'churchUser',
   initialState,
   reducers: {
     setChurchUsers: (state, action: PayloadAction<ChurchUser[]>) => {

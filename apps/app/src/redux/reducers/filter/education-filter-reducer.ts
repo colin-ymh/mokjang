@@ -1,16 +1,23 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { BLANK, ORDER_DIRECTION } from '@mokjang/constants';
-import { Education } from '@mokjang/models';
-import { RootState } from '../../store';
-
 import {
+  BLANK,
+  DESTRUCTIVE,
   EDUCATION,
   EDUCATION_ATTENDANCE,
   EDUCATION_ENROLLMENT,
   EDUCATION_SESSION,
   EDUCATION_TERM,
+  ORDER_DIRECTION,
 } from '@mokjang/constants';
+import { Education } from '@mokjang/models';
+import { RootState } from '../../store';
 import { EducationsApi } from '../../../api/education/educations.api';
+import {
+  setIsToastShown,
+  setToastBackgroundColor,
+  setToastText,
+} from '@/redux/reducers/toast-popup-reducer';
+import axios from 'axios';
 
 type EDUCATION_FILTER = {
   [EDUCATION.NAME]: string;
@@ -247,45 +254,65 @@ export const fetchEducations = createAsyncThunk<
   Education[],
   void,
   { state: RootState }
->('educations/fetchEducations', async (_, { getState, rejectWithValue }) => {
-  const state = getState().educationFilter;
-  const {
-    educationPage,
-    educationOrderBy,
-    educationOrderDirection,
-    educations,
-    educationFilter,
-  } = state;
-  const churchId = getState().church.churchId;
-  const educationsApi = new EducationsApi(false);
+>(
+  'educations/fetchEducations',
+  async (_, { getState, dispatch, rejectWithValue }) => {
+    const state = getState().educationFilter;
+    const {
+      educationPage,
+      educationOrderBy,
+      educationOrderDirection,
+      educations,
+      educationFilter,
+    } = state;
+    const churchId = getState().church.churchId;
+    const educationsApi = new EducationsApi(false);
 
-  try {
-    const response = await educationsApi.getEducations({
-      churchId,
-      page: educationPage,
-      take: 30, // 무한 스크롤 최적화
-      order: educationOrderBy || undefined,
-      orderDirection: educationOrderDirection,
-      name: educationFilter[EDUCATION.NAME],
-    });
+    try {
+      const response = await educationsApi.getEducations({
+        churchId,
+        page: educationPage,
+        take: 30, // 무한 스크롤 최적화
+        order: educationOrderBy || undefined,
+        orderDirection: educationOrderDirection,
+        name: educationFilter[EDUCATION.NAME],
+      });
 
-    const newEducations: Education[] = response.data.data;
-    const existingIds = new Set(educations.map((education) => education.id));
-    const filteredNewEducations = newEducations.filter(
-      (education) => !existingIds.has(education.id)
-    );
+      const newEducations: Education[] = response.data.data;
+      const existingIds = new Set(educations.map((education) => education.id));
+      const filteredNewEducations = newEducations.filter(
+        (education) => !existingIds.has(education.id)
+      );
 
-    const updatedEducations =
-      educationPage === 1
-        ? newEducations
-        : [...educations, ...filteredNewEducations];
+      const updatedEducations =
+        educationPage === 1
+          ? newEducations
+          : [...educations, ...filteredNewEducations];
 
-    return updatedEducations;
-  } catch (error) {
-    console.error('교육 목록 불러오기 실패', error);
-    return rejectWithValue('교육 목록을 불러오는 중 오류가 발생했습니다.');
+      return updatedEducations;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const data = error.response?.data as any;
+        const status = data?.statusCode ?? error.response?.status;
+        const message = data.message;
+
+        dispatch(setToastText(message));
+        dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
+        dispatch(setIsToastShown(true));
+
+        return rejectWithValue(message);
+      }
+
+      if (error instanceof Error) {
+        dispatch(setToastText(error.message));
+        dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
+        dispatch(setIsToastShown(true));
+        return rejectWithValue(error.message);
+      }
+      return rejectWithValue('교육 목록을 불러오는 중 오류가 발생했습니다.');
+    }
   }
-});
+);
 
 const EducationFilterSlice = createSlice({
   name: 'educationFilter',

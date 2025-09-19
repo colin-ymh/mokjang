@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { ReactNode, useEffect } from 'react';
 import { DIRECTION, GRAY, MEDIA_MAX_WIDTH, WHITE } from '@mokjang/constants';
-import { PopupLayout } from '@mokjang/components';
+import { PopupLayout, TransparentBackground } from '@mokjang/components';
 
 const SlidePanel = styled.div<{
   $isShow: boolean;
@@ -99,9 +99,10 @@ type SlidePopupProps = {
   direction?: DIRECTION;
   size?: number; // 수평 슬라이드면 width, 수직 슬라이드면 height
   isPercentage?: boolean;
-
+  isHeaderShown?: boolean;
   isFooterShown?: boolean;
   onClickClose: () => void;
+  onClickCancel?: () => void;
   onClickDone?: () => void;
   headerTitle?: string;
   headerLeft?: ReactNode;
@@ -112,25 +113,26 @@ type SlidePopupProps = {
   cancelBackgroundColor?: string;
   doneBackgroundColor?: string;
   doneDisabled?: boolean;
-  doneIcon?: ReactNode;
-  cancelIcon?: ReactNode;
   disabledKeyboard?: boolean;
+  isHeaderBorderShown?: boolean;
   children: ReactNode;
 };
 
 const SlidePopup = ({
   isShow,
   direction = DIRECTION.RIGHT,
-  size = 700,
+  size = 650,
   isPercentage = false,
-
+  isHeaderShown,
   isFooterShown,
   onClickClose,
+  onClickCancel,
   onClickDone,
   headerTitle,
   headerLeft,
   headerHeight,
   headerRight,
+  isHeaderBorderShown,
   cancelText,
   doneText,
   cancelBackgroundColor,
@@ -156,30 +158,41 @@ const SlidePopup = ({
   }, [isShow, onClickClose]);
 
   return (
-    <SlidePanel
-      $isShow={isShow}
-      direction={direction}
-      size={size}
-      onClick={(e) => e.stopPropagation()}
-      $isPercentage={isPercentage}
-    >
-      <PopupLayout
-        onClickCancel={onClickClose}
-        onClickDone={onClickDone}
-        headerTitle={headerTitle}
-        headerRight={headerRight}
-        headerLeft={headerLeft}
-        headerHeight={headerHeight}
-        doneText={doneText}
-        cancelText={cancelText}
-        doneBackgroundColor={doneBackgroundColor}
-        cancelBackgroundColor={cancelBackgroundColor}
-        doneDisabled={doneDisabled}
-        isFooterShown={isFooterShown}
+    <>
+      <TransparentBackground
+        isOpened={isShow}
+        onClick={onClickClose}
+        zIndex={40}
+        blur={false}
+      />
+      <SlidePanel
+        $isShow={isShow}
+        direction={direction}
+        size={size}
+        onClick={(e) => e.stopPropagation()}
+        $isPercentage={isPercentage}
       >
-        {children}
-      </PopupLayout>
-    </SlidePanel>
+        <PopupLayout
+          onClickClose={onClickClose}
+          onClickCancel={onClickCancel}
+          onClickDone={onClickDone}
+          headerTitle={headerTitle}
+          headerRight={headerRight}
+          headerLeft={headerLeft}
+          headerHeight={headerHeight}
+          doneText={doneText}
+          cancelText={cancelText}
+          doneBackgroundColor={doneBackgroundColor}
+          cancelBackgroundColor={cancelBackgroundColor}
+          doneDisabled={doneDisabled}
+          isFooterShown={isFooterShown}
+          isHeaderShown={isHeaderShown}
+          isHeaderBorderShown={isHeaderBorderShown}
+        >
+          {children}
+        </PopupLayout>
+      </SlidePanel>
+    </>
   );
 };
 

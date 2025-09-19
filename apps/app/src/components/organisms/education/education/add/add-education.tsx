@@ -69,6 +69,16 @@ const AddEducation = ({ isEdit = false }: AddEducationProps) => {
       );
     }
   };
+
+  const onClickDeleteGoal = (index: number) => {
+    const newGoals = targetEducation.goals.filter((_, i) => i !== index);
+    dispatch(
+      setTargetEducation({
+        ...targetEducation,
+        goals: newGoals,
+      })
+    );
+  };
   // ===== goal =====
 
   useEffect(() => {
@@ -88,6 +98,7 @@ const AddEducation = ({ isEdit = false }: AddEducationProps) => {
     onChangeDescription,
     onChangeEducationGoal,
     onClickAddGoal,
+    onClickDeleteGoal,
   };
 
   return (

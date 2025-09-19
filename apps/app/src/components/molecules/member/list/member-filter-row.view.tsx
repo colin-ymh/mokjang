@@ -1,21 +1,20 @@
 import { ChangeEvent, Ref } from 'react';
 import styled from 'styled-components';
 
-import { Button } from '@mokjang/components';
+import { Button, CustomPopup, SvgIcon } from '@mokjang/components';
 import { GRAY, WHITE } from '@mokjang/constants';
 import MemberTableHeaderSetting from '../setting/member-table-header-setting';
 import FilteredItem from '../../../atoms/member/setting/filtered-item';
 
 import { useScopedI18n } from '../../../../../locales/client';
 import SearchInput from '../../../atoms/common/input/search-input';
-import { CustomPopup } from '@mokjang/components';
 
 import { Svg } from '@mokjang/assets';
 import GroupFilter from '../setting/group-filter';
 import ResetFilteredItem from '../../../atoms/member/setting/reset-filtered-item';
 import MemberFilter from '../setting/member-filter';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../../../redux/store';
+import { RootState } from '@/redux/store';
 
 const MemberFilterContainer = styled.div`
   display: flex;
@@ -57,27 +56,6 @@ const LeftContainer = styled.div`
   flex-direction: row;
   align-items: center;
   gap: 10px;
-`;
-
-const SettingIcon = styled(Svg.Setting)`
-  width: 14px;
-  height: 14px;
-  stroke: ${GRAY.EXTRA_DARK};
-  stroke-width: 1.5px;
-`;
-
-const GroupIcon = styled(Svg.Group)`
-  width: 14px;
-  height: 14px;
-  stroke: ${GRAY.EXTRA_DARK};
-  stroke-width: 1.5px;
-`;
-
-const FilterIcon = styled(Svg.Filter)`
-  width: 14px;
-  height: 14px;
-  stroke: ${GRAY.EXTRA_DARK};
-  stroke-width: 1.5px;
 `;
 
 type MemberFilterViewProps = {
@@ -132,6 +110,7 @@ const MemberFilterRowView = ({
               onChangeSearchValue={onChangeSearchValue}
               onKeyDown={onKeyDown}
               onClickSearch={onClickSearch}
+              color={GRAY.SEMI_DARK}
             />
             {/* 그룹 필터 활성화 버튼 */}
             <Button
@@ -141,8 +120,8 @@ const MemberFilterRowView = ({
               onClick={onClickGroupFilterOpen}
               backgroundColor={WHITE}
               borderColor={GRAY.LIGHT}
-              color={GRAY.EXTRA_DARK}
-              icon={<GroupIcon />}
+              color={GRAY.SEMI_DARK}
+              icon={<SvgIcon svg={Svg.Group} color={GRAY.SEMI_DARK} />}
             />
             {/* 교인 필터 활성화 버튼 */}
             <Button
@@ -152,8 +131,8 @@ const MemberFilterRowView = ({
               onClick={onClickMemberFilterOpen}
               backgroundColor={WHITE}
               borderColor={GRAY.LIGHT}
-              color={GRAY.EXTRA_DARK}
-              icon={<FilterIcon />}
+              color={GRAY.SEMI_DARK}
+              icon={<SvgIcon svg={Svg.Filter} color={GRAY.SEMI_DARK} />}
             />
           </LeftContainer>
 
@@ -166,8 +145,8 @@ const MemberFilterRowView = ({
               onClick={onClickHeaderFilterOpen}
               backgroundColor={WHITE}
               borderColor={GRAY.LIGHT}
-              color={GRAY.EXTRA_DARK}
-              icon={<SettingIcon />}
+              color={GRAY.SEMI_DARK}
+              icon={<SvgIcon svg={Svg.Setting} color={GRAY.SEMI_DARK} />}
             />
           </ButtonContainer>
         </RowTop>
@@ -189,9 +168,11 @@ const MemberFilterRowView = ({
       <CustomPopup
         isShow={isGroupFilterShown}
         headerTitle={t_title('groupFilter')}
+        onClickClose={onClickGroupFilterClose}
         onClickCancel={onClickGroupFilterClose}
         width={400}
         height={500}
+        cancelText={t_button('close')}
       >
         <GroupFilter />
       </CustomPopup>
@@ -200,6 +181,7 @@ const MemberFilterRowView = ({
       <CustomPopup
         isShow={isMemberFilterShown}
         headerTitle={t_title('memberFilter')}
+        onClickClose={onClickMemberFilterClose}
         onClickCancel={onClickMemberFilterClose}
         width={500}
         height={800}
@@ -212,9 +194,11 @@ const MemberFilterRowView = ({
       <CustomPopup
         isShow={isHeaderFilterShown}
         headerTitle={t_title('tableHeaderSetting')}
+        onClickClose={onClickHeaderFilterClose}
         onClickCancel={onClickHeaderFilterClose}
         width={500}
         height={800}
+        cancelText={t_button('close')}
       >
         <MemberTableHeaderSetting />
       </CustomPopup>

@@ -24,6 +24,18 @@ type GroupFilterViewProps = {
   onClickGroup: (groupId: string | null) => void;
 };
 
+export const nullGroup: Group = {
+  id: null, // 고유 ID (임의로 0으로 설정)
+  name: BLANK,
+  order: 0,
+  parentGroupId: null,
+  childGroups: [], // 모든 그룹을 하위 그룹으로 설정
+  membersCount: 0,
+  churchId: BLANK,
+  childGroupIds: [],
+  leaderMemberId: BLANK,
+};
+
 // 헬퍼 함수들을 컴포넌트 외부에서 정의
 const findGroupById = (groups: Group[], targetId: string): Group | null => {
   for (const group of groups) {
@@ -102,18 +114,6 @@ const SelectGroupHierarchyView = memo(
     const [openGroups, setOpenGroups] = useState<Record<number, boolean>>(() =>
       getInitialOpenGroups(groups, isDefaultOpen, topLevelGroupId)
     );
-
-    const nullGroup: Group = {
-      id: null, // 고유 ID (임의로 0으로 설정)
-      name: BLANK,
-      order: 0,
-      parentGroupId: null,
-      childGroups: [], // 모든 그룹을 하위 그룹으로 설정
-      membersCount: 0,
-      churchId,
-      childGroupIds: [],
-      leaderMemberId: BLANK,
-    };
 
     // props나 groups가 변경될 때만 상태 업데이트
     useEffect(() => {

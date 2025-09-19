@@ -14,13 +14,11 @@ import styled, {
 } from 'styled-components';
 import { ko } from 'date-fns/locale';
 
-import { BLACK, GRAY, MAIN, RED, WHITE } from '@mokjang/constants';
+import { BLACK, CURSOR, GRAY, MAIN, RED, WHITE } from '@mokjang/constants';
 import { getMonth, getYear } from 'date-fns';
-import { Button } from '@mokjang/components';
-import { BorderInput } from '@mokjang/components';
+import { BorderInput, Button, SvgIcon } from '@mokjang/components';
 import _ from 'lodash';
 import { Svg } from '@mokjang/assets';
-import { SvgIcon } from '@mokjang/components';
 
 import { Chevron } from '../../components/atoms/common/dropdown/dropdown-chevron';
 
@@ -148,7 +146,7 @@ const DatePickerPortalStyles = createGlobalStyle`
   /* 비활성화 상태 */
   .date-picker-calendar .mj-select:disabled {
     background-color: ${GRAY.SEMI_LIGHT};
-    color: ${GRAY.DARK};
+    color: ${GRAY.DARK} !important;
     cursor: not-allowed;
   }
 
@@ -195,15 +193,23 @@ const DatePickerPortalStyles = createGlobalStyle`
   .date-picker-calendar .react-datepicker__day-names {
     border-bottom: none;
   }
-  /* Sunday weekday name and Sunday dates (not outside-month) */
+  /* Sunday weekday name and Sunday dates (not outside-month, not disabled) */
   .date-picker-calendar .react-datepicker__day-name:nth-child(1),
-  .date-picker-calendar .react-datepicker__day:nth-child(7n+1):not(.react-datepicker__day--outside-month) {
+  .date-picker-calendar .react-datepicker__day:nth-child(7n+1):not(.react-datepicker__day--outside-month):not([aria-disabled='true']) {
     color: ${RED.DEFAULT};
   }
-  /* Saturday weekday name and Saturday dates (not outside-month) */
+
+  /* Saturday weekday name and Saturday dates (not outside-month, not disabled) */
   .date-picker-calendar .react-datepicker__day-name:nth-child(7),
-  .date-picker-calendar .react-datepicker__day:nth-child(7n):not(.react-datepicker__day--outside-month) {
+  .date-picker-calendar .react-datepicker__day:nth-child(7n):not(.react-datepicker__day--outside-month):not([aria-disabled='true']) {
     color: ${MAIN.DEFAULT};
+  }
+
+  /* Disabled 날짜 → 항상 회색 */
+  .date-picker-calendar .react-datepicker__day[aria-disabled='true'],
+  .date-picker-calendar .react-datepicker__day--disabled {
+    color: ${GRAY.LIGHT} !important;
+    pointer-events: none;
   }
   
   /* 보여지는 달력에서, 해당 월이 아닌 다른 달 날짜는 회색 + 클릭 막기 */
@@ -218,6 +224,7 @@ const DatePickerPortalStyles = createGlobalStyle`
   .date-picker-calendar .react-datepicker__day:not([aria-disabled='true']):hover {
     border-radius: 10px;
     background-color: ${GRAY.LIGHT};
+    box-shadow: none;
   }
   .date-picker-calendar .react-datepicker__day--in-selecting-range,
   .date-picker-calendar .react-datepicker__day--in-range {
@@ -226,24 +233,30 @@ const DatePickerPortalStyles = createGlobalStyle`
     color: ${WHITE} !important;
   }
 
-  .date-picker-calendar .react-datepicker__day--today { font-weight: bold; }
+  /* ===== 오늘 날짜 강조: 테두리 표시 ===== */
+  .date-picker-calendar .react-datepicker__day--today {
+    /* 기본 굵기 강조는 유지하면서 */
+    font-weight: 700;
+
+    /* 반경은 기존 day와 동일하게 */
+    border-radius: 10px;
+
+    /* 테두리는 box-shadow inset으로 깔끔하게 (border보다 레이아웃 안전) */
+    box-shadow: inset 0 0 0 2px ${GRAY.DEFAULT}; /* 원하는 색/두께로 */
+  }
+
+  
   .date-picker-calendar .react-datepicker__day--selected {
     border-radius: 10px;
     background-color: ${MAIN.DEFAULT};
     color: ${WHITE} !important;
+    box-shadow: none;
   }
   
   .date-picker-calendar .react-datepicker__day--keyboard-selected {
     background-color: rgba(0, 0, 0, 0);
     color: rgb(0, 0, 0);
   }
-`;
-
-const CalendarIcon = styled(Svg.Calendar)`
-  width: 14px;
-  height: 16px;
-  stroke: ${BLACK};
-  stroke-width: 1.5px;
 `;
 
 const HeaderContainer = styled.div`
@@ -319,27 +332,6 @@ export default function CustomDatePicker({
     return date >= startOfWeek && date <= endOfWeek;
   };
 
-  const focusTimeInput = () => {
-    // 재시도 횟수 제한
-    let attempts = 0;
-    const maxAttempts = 5;
-
-    const tryFocus = () => {
-      const timeInput = document.querySelector<HTMLInputElement>(
-        '.react-datepicker__time-container input[type="time"]'
-      );
-
-      if (timeInput) {
-        timeInput.focus();
-      } else if (attempts < maxAttempts) {
-        attempts++;
-        setTimeout(tryFocus, 50); // 재시도
-      }
-    };
-
-    tryFocus();
-  };
-
   const handleSelect = (date: Date | null) => {
     if (!date) return;
 
@@ -351,7 +343,6 @@ export default function CustomDatePicker({
 
     (props.onChange as (date: Date) => void)?.(date);
   };
-
   const years = _.range(startYear, endYear + 1);
   const months = [
     '1',
@@ -386,12 +377,17 @@ export default function CustomDatePicker({
           aria-label="달력 닫기"
           onClick={() => datePickerRef.current?.setOpen?.(false)}
         >
-          <SvgIcon svg={Svg.Cancel} />
+          <SvgIcon
+            svg={Svg.Cancel}
+            cursor={CURSOR.POINTER}
+            size={16}
+            width={2}
+          />
         </button>
       </div>
       <HeaderContainer>
         <Button
-          icon={<SvgIcon svg={Svg.ChevronLeft} />}
+          icon={<SvgIcon svg={Svg.ChevronLeft} cursor={CURSOR.POINTER} />}
           onClick={decreaseMonth}
           disabled={prevMonthButtonDisabled}
           width={50}
@@ -430,7 +426,7 @@ export default function CustomDatePicker({
           <Chevron className="mj-select-chevron" $isOpened={false} />
         </div>
         <Button
-          icon={<SvgIcon svg={Svg.ChevronRight} />}
+          icon={<SvgIcon svg={Svg.ChevronRight} cursor={CURSOR.POINTER} />}
           onClick={increaseMonth}
           disabled={nextMonthButtonDisabled}
           width={50}
@@ -506,7 +502,14 @@ export default function CustomDatePicker({
               width={width ?? undefined}
               height={height}
               borderColor={borderColor}
-              icon={<CalendarIcon />}
+              icon={
+                <SvgIcon
+                  svg={Svg.Calendar}
+                  color={GRAY.DEFAULT}
+                  width={1.5}
+                  size={16}
+                />
+              }
               style={{ width: '100%' }}
             />
           )
@@ -521,6 +524,15 @@ export default function CustomDatePicker({
         popperClassName="date-picker-popper"
         calendarClassName="date-picker-calendar"
         popperPlacement={'bottom-start'}
+        onCalendarClose={() => {
+          setTimeout(() => {
+            // 현재 포커스된 게 무엇이든 날려버림
+            requestAnimationFrame(() => {
+              const el = document.activeElement as HTMLElement | null;
+              el?.blur?.();
+            });
+          }, 100);
+        }}
       />
     </CustomDatePickerWrapper>
   );

@@ -2,16 +2,12 @@ import React, { Dispatch, SetStateAction } from 'react';
 import { Church } from '@mokjang/models';
 import ChurchInformation from '../../../molecules/management/church/church-information';
 import styled from 'styled-components';
-import { Button } from '@mokjang/components';
-import { GRAY, MAIN, WHITE } from '@mokjang/constants';
-import { useI18n } from '../../../../../locales/client';
-import { CustomPopup } from '@mokjang/components';
+import { Button, CustomPopup, MainText, SvgIcon } from '@mokjang/components';
+import { GRAY, MAIN, SIZE, WHITE } from '@mokjang/constants';
+import { useI18n, useScopedI18n } from '../../../../../locales/client';
 import EditChurchInformation from '../../../molecules/management/church/edit-church-information';
-import { MainText } from '@mokjang/components';
-import { SIZE } from '@mokjang/constants';
 import { Svg } from '@mokjang/assets';
 import ChurchState from '../../../molecules/management/church/church-state';
-import { SvgIcon } from '@mokjang/components';
 
 const InformationContainer = styled.div`
   display: flex;
@@ -39,6 +35,7 @@ const HeaderContainer = styled.div`
 `;
 
 type ChurchManagementViewProps = {
+  isSaveEnabled: boolean;
   targetChurch: Church;
   setTargetChurch: Dispatch<SetStateAction<Church>>;
   isEditShown: boolean;
@@ -48,6 +45,7 @@ type ChurchManagementViewProps = {
 };
 
 const ChurchManagementView = ({
+  isSaveEnabled,
   targetChurch,
   setTargetChurch,
   isEditShown,
@@ -56,6 +54,7 @@ const ChurchManagementView = ({
   onClickEditSave,
 }: ChurchManagementViewProps) => {
   const t = useI18n();
+  const t_button = useScopedI18n('button');
   return (
     <>
       <InformationContainer>
@@ -90,11 +89,15 @@ const ChurchManagementView = ({
 
       <CustomPopup
         isShow={isEditShown}
+        onClickClose={onClickEditClose}
         onClickCancel={onClickEditClose}
         onClickDone={onClickEditSave}
         width={500}
         height={700}
         headerTitle={t('title.editChurch')}
+        cancelText={t_button('cancel')}
+        doneText={t_button('save')}
+        doneDisabled={!isSaveEnabled}
       >
         <EditChurchInformation
           targetChurch={targetChurch}

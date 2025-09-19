@@ -4,8 +4,8 @@ import styled from 'styled-components';
 import { Button, LabelInput, MainText } from '@mokjang/components';
 import { BLACK, GRAY, MAIN, MEMBER } from '@mokjang/constants';
 import {
-  getIsWellFormedMobilePhone,
   getIsWellFormedName,
+  getIsWellFormedPhone,
   getMinuteFromSecond,
 } from '@mokjang/utils';
 
@@ -142,7 +142,7 @@ const UserRegisterListView = ({
             backgroundColor={
               !isVerified &&
               getIsWellFormedName(name) &&
-              getIsWellFormedMobilePhone(mobilePhone)
+              getIsWellFormedPhone(mobilePhone)
                 ? MAIN.DEFAULT
                 : GRAY.SEMI_LIGHT
             }
@@ -150,7 +150,7 @@ const UserRegisterListView = ({
               !(
                 !isVerified &&
                 getIsWellFormedName(name) &&
-                getIsWellFormedMobilePhone(mobilePhone)
+                getIsWellFormedPhone(mobilePhone)
               )
             }
           />

@@ -4,10 +4,9 @@ import styled from 'styled-components';
 
 import { Member } from '@mokjang/models';
 import { GRAY } from '@mokjang/constants';
-import { CheckButton } from '@mokjang/components';
+import { CheckButton, MainText } from '@mokjang/components';
 import MemberProfile from '../member/member-profile';
-import { MainText } from '@mokjang/components';
-import { getFormattedMobilePhone } from '@mokjang/utils';
+import { getFormattedPhone } from '@mokjang/utils';
 
 const BackgroundContainer = styled.div`
   display: flex;
@@ -64,7 +63,7 @@ const LinkMemberItem = ({
         <MemberProfile member={member} />
         <MainText>{member?.group && `(${member?.group?.name})`}</MainText>
         <MainText>
-          {member.mobilePhone && getFormattedMobilePhone(member.mobilePhone)}
+          {member.mobilePhone && getFormattedPhone(member.mobilePhone)}
         </MainText>
         <ButtonContainer>
           <CheckButton value={isSelected} isStopPropagation={false} />

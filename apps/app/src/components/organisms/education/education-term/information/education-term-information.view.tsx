@@ -2,32 +2,31 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../redux/store';
 import { useI18n } from '../../../../../../locales/client';
-import { MainText } from '@mokjang/components';
-import { GRAY, MAIN } from '@mokjang/constants';
+import {
+  Button,
+  CustomPopup,
+  MainText,
+  SvgIcon,
+  ToggleRadioButton,
+} from '@mokjang/components';
+import { GRAY, LOCALE, MAIN, SIZE, TASK_STATUS } from '@mokjang/constants';
 import React, { Dispatch, SetStateAction } from 'react';
 import { usePathname } from 'next/navigation';
-import { LOCALE } from '@mokjang/constants';
-import { TASK_STATUS } from '@mokjang/constants';
 import MemberProfilePopupButton from '../../../../molecules/common/button/member-profile-popup-button';
 import {
   getTranslatedAddMemberTitle,
-  getTranslatedDateFromDateString,
   getTranslatedSessionProgressStatus,
+  getTranslatedStartEndDate,
   getTranslatedTerm,
 } from '@mokjang/utils';
 import { useTaskStatusDropdownItems } from '../../../../../hooks/dropdown/dropdown-items';
 import { useEducationTermHeaderBarItems } from '../../../../../hooks/layout/header-bar-items';
 import { EDUCATION_TERM_CONTENT_ID } from '../../../../../constants/layout/content';
-import { CustomPopup } from '@mokjang/components';
 import AddEnrollmentMemberModal from '../../../../atoms/education/education-enrollment/add-enrollment-member-modal';
 import { Member } from '@mokjang/models';
-import { Button } from '@mokjang/components';
 import EducationEnrollmentTable from '../../../../molecules/education/education-enrollment/education-enrollment-table';
 import { Svg } from '@mokjang/assets';
-import { SvgIcon } from '@mokjang/components';
-import { SIZE } from '@mokjang/constants';
 import StatusDropdown from '../../../../atoms/common/dropdown/status-dropdown';
-import { ToggleRadioButton } from '@mokjang/components';
 import { RadioButtonValue } from '../../../../atoms/common/radio-button/radio-button-list';
 import EducationSessionTable from '../../../../molecules/education/education-session/education-session-table';
 
@@ -66,6 +65,7 @@ const TitleContainer = styled.div`
   flex-direction: row;
   gap: 10px;
   align-items: center;
+  width: 100px;
 `;
 
 const TableHeader = styled.div`
@@ -206,7 +206,11 @@ const EducationTermInformationView = ({
               <MainText color={GRAY.DARK}>{t('period')}</MainText>
             </TitleContainer>
             <MainText>
-              {`${getTranslatedDateFromDateString(locale, targetEducationTerm.startDate)} - ${getTranslatedDateFromDateString(locale, targetEducationTerm.endDate)}`}
+              {getTranslatedStartEndDate(
+                locale,
+                targetEducationTerm.startDate,
+                targetEducationTerm.endDate
+              )}
             </MainText>
           </RowContainer>
           {/* 상태 */}
@@ -238,7 +242,7 @@ const EducationTermInformationView = ({
             </StatusContainer>
           </RowContainer>
           {/* 보고대상자 */}
-          <ColumnContainer>
+          <RowContainer>
             <TitleContainer>
               <SvgIcon svg={Svg.Users} color={GRAY.DARK} />
               <MainText color={GRAY.DARK}>{t('receiver')}</MainText>
@@ -251,7 +255,7 @@ const EducationTermInformationView = ({
                 />
               ))}
             </MemberList>
-          </ColumnContainer>
+          </RowContainer>
           <RowLine />
 
           {/* 회차목록 / 수강교인 */}
@@ -292,8 +296,9 @@ const EducationTermInformationView = ({
       {/* 교인 추가 팝업 */}
       <CustomPopup
         isShow={isAddModalShown}
+        onClickClose={onClickAddEnrollmentsClose}
         onClickCancel={onClickAddEnrollmentsClose}
-        width={800}
+        width={500}
         height={700}
         headerHeight={100}
         headerTitle={getTranslatedAddMemberTitle(
@@ -302,6 +307,7 @@ const EducationTermInformationView = ({
         )}
         headerDescription={t('description.addMemberHeader')}
         doneText={t('button.add')}
+        cancelText={t('button.cancel')}
         onClickDone={onClickSaveNewEnrollments}
       >
         <AddEnrollmentMemberModal

@@ -4,13 +4,17 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../redux/store';
 
 import { MainText } from '@mokjang/components';
-import { BLACK, GRAY, MAIN } from '@mokjang/constants';
-import { SIZE } from '@mokjang/constants';
-import { getTranslatedWorshipColumn } from '../../../utils/translate';
-import { WORSHIP } from '@mokjang/constants';
+import {
+  BLACK,
+  GRAY,
+  MAIN,
+  ORDER_DIRECTION,
+  SIZE,
+  WORSHIP,
+} from '@mokjang/constants';
+import { getTranslatedWorshipColumn } from '@mokjang/utils';
 import { useI18n } from '../../../../locales/client';
 import { Svg } from '@mokjang/assets';
-import { ORDER_DIRECTION } from '@mokjang/constants';
 
 const HeaderContainer = styled.div`
   display: flex;

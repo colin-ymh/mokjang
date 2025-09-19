@@ -1,13 +1,25 @@
 import { Church } from '@mokjang/models';
 import EditChurchInformationView from './edit-church-information.view';
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React, {
+  ChangeEvent,
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useState,
+} from 'react';
 import {
+  getFormattedContent,
   getFormattedIdentifyNumber,
   getFormattedName,
   getFormattedPhone,
+  getIsWellFormedIdentifyNumber,
+  getIsWellFormedName,
+  getIsWellFormedPhone,
+  getIsWellFormedTitle,
 } from '@mokjang/utils';
 import DaumPostcodeEmbed, { Address } from 'react-daum-postcode';
 import PagePopup from '../../../atoms/common/popup/page-popup';
+import { BLANK } from '@mokjang/constants';
 
 type EditChurchInformationProps = {
   targetChurch: Church;
@@ -20,6 +32,8 @@ const EditChurchInformation = ({
   setTargetChurch,
   onClickSave,
 }: EditChurchInformationProps) => {
+  const [isSaveEnabled, setIsSaveEnabled] = useState<boolean>(false);
+
   const [isAddressOpen, setIsAddressOpen] = useState<boolean>(false);
 
   const onChangeName = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -97,20 +111,61 @@ const EditChurchInformation = ({
     });
   };
 
-  const onChangeDenomination = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const onChangeDenomination = (event: ChangeEvent<HTMLInputElement>) => {
+    const newDenomination = getFormattedContent(event.target.value);
     setTargetChurch({
       ...targetChurch,
-      denomination: event.target.value,
+      denomination: newDenomination,
+    });
+  };
+  const onChangeDenominationItem = (value: string) => {
+    setTargetChurch({
+      ...targetChurch,
+      denomination: value,
     });
   };
 
-  // useEffect(() => {
-  //   if (targetChurch.mainAdminId) {
-  //   }
-  // }, [targetChurch.mainAdminId]);
+  useEffect(() => {
+    if (!getIsWellFormedTitle(targetChurch.name)) {
+      setIsSaveEnabled(false);
+      return;
+    }
+
+    if (!getIsWellFormedPhone(targetChurch.phone)) {
+      setIsSaveEnabled(false);
+      return;
+    }
+
+    if (!getIsWellFormedName(targetChurch.pastor)) {
+      setIsSaveEnabled(false);
+      return;
+    }
+
+    if (targetChurch.address === BLANK) {
+      setIsSaveEnabled(false);
+      return;
+    }
+
+    if (!getIsWellFormedTitle(targetChurch.detailAddress)) {
+      setIsSaveEnabled(false);
+      return;
+    }
+
+    if (!getIsWellFormedIdentifyNumber(targetChurch.identifyNumber)) {
+      setIsSaveEnabled(false);
+      return;
+    }
+
+    if (targetChurch.denomination === BLANK) {
+      setIsSaveEnabled(false);
+      return;
+    }
+    setIsSaveEnabled(true);
+  }, [targetChurch]);
 
   const props = {
     targetChurch,
+    isSaveEnabled,
     onChangeName,
     onChangePhone,
     onChangePastorName,
@@ -118,6 +173,7 @@ const EditChurchInformation = ({
     onChangeDetailAddress,
     onChangeIdentifyNumber,
     onChangeDenomination,
+    onChangeDenominationItem,
     onClickSave,
   };
 

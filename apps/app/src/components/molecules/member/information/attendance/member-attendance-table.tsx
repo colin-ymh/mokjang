@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../redux/store';
 
-import { BLANK } from '@mokjang/constants';
+import { BLANK, ORDER_DIRECTION } from '@mokjang/constants';
 import { WorshipAttendance } from '@mokjang/models';
 import { MembersApi } from '../../../../../api/members/members.api';
 import MemberAttendanceTableView from './member-attendance-table.view';
@@ -49,8 +49,8 @@ const MemberAttendanceTable = ({}: MemberAttendanceTableProps) => {
       const clientHeight = el.clientHeight ?? 0;
       const scrollHeight = el.scrollHeight ?? 0;
 
-      const isAtBottom = scrollTop + clientHeight >= scrollHeight - 2; // 약간의 여유를 두고 하단 감지
-      console.log(isAtBottom);
+      const isAtBottom = scrollTop + clientHeight >= scrollHeight - 10; // 약간의 여유를 두고 하단 감지
+
       if (isAtBottom) {
         void fetchAttendances();
       }
@@ -78,10 +78,11 @@ const MemberAttendanceTable = ({}: MemberAttendanceTableProps) => {
         churchId,
         memberId: targetMember.id,
         worshipId: targetWorship.id,
-        limit: 30,
+        // limit: 30,
         cursor: effectiveCursor,
         from: worshipEnrollmentFilter.fromSessionDate,
         to: worshipEnrollmentFilter.toSessionDate,
+        sortDirection: ORDER_DIRECTION.DESC,
       });
 
       const newItems: WorshipAttendance[] = response?.data?.data ?? [];

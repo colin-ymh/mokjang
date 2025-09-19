@@ -7,8 +7,7 @@ import {
 } from '../../../../redux/reducers/filter/permission-template-filter-reducer';
 
 import PermissionTemplateTableView from './permission-template-table.view';
-import { PERMISSION_TEMPLATE } from '@mokjang/constants';
-import { ORDER_DIRECTION } from '@mokjang/constants';
+import { ORDER_DIRECTION, PERMISSION_TEMPLATE } from '@mokjang/constants';
 
 export type PermissionTemplateTableProps = {
   onClickPermissionTemplateItem: (permissionTemplateId: string) => void;
@@ -53,7 +52,7 @@ const PermissionTemplateTable = ({
       const { scrollTop, scrollHeight, clientHeight } = scrollRef.current;
 
       // 스크롤이 최하단에 도달했는지 확인
-      if (scrollTop + clientHeight >= scrollHeight) {
+      if (scrollTop + clientHeight >= scrollHeight - 10) {
         loadPermissionTemplates(); // 데이터를 추가로 로드
       }
     }

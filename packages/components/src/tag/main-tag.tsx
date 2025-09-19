@@ -27,6 +27,8 @@ type MainTagProps = {
   rowPadding?: number;
   columnPadding?: number;
   gap?: number;
+  fontSize?: number;
+  fontWeight?: number;
 };
 
 export const MainTag = ({
@@ -37,6 +39,8 @@ export const MainTag = ({
   rowPadding = 8,
   columnPadding = 2,
   gap = 10,
+  fontSize = 14,
+  fontWeight = 400,
 }: MainTagProps) => {
   return (
     <TagContainer
@@ -46,7 +50,9 @@ export const MainTag = ({
       gap={gap}
     >
       {svg && <SvgIcon svg={svg} color={color} />}
-      <MainText color={color}>{title}</MainText>
+      <MainText color={color} fontSize={fontSize} fontWeight={fontWeight}>
+        {title}
+      </MainText>
     </TagContainer>
   );
 };

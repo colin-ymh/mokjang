@@ -1,13 +1,27 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { BLANK, HEADER_BAR, ORDER_DIRECTION } from '@mokjang/constants';
-import { Visitation } from '@mokjang/models';
+import {
+  BLANK,
+  DESTRUCTIVE,
+  HEADER_BAR,
+  ORDER_DIRECTION,
+  TASK_STATUS,
+  VISITATION,
+} from '@mokjang/constants';
+import {
+  DEFAULT_MEMBER,
+  Member,
+  Visitation,
+  VisitationReport,
+} from '@mokjang/models';
 import { RootState } from '../../store';
-
-import { VISITATION } from '@mokjang/constants';
 import { VisitationsApi } from '../../../api/visitations/visitations.api';
-import { TASK_STATUS } from '@mokjang/constants';
-import { DEFAULT_MEMBER, Member } from '@mokjang/models';
 import { VisitationReportsApi } from '../../../api/reports/visitation-reports.api';
+import {
+  setIsToastShown,
+  setToastBackgroundColor,
+  setToastText,
+} from '@/redux/reducers/toast-popup-reducer';
+import axios from 'axios';
 
 type VISITATION_FILTER = {
   [VISITATION.STATUS]: TASK_STATUS[];
@@ -45,6 +59,35 @@ export type VISITATION_TABLE_HEADER_ITEM = {
   isDate?: boolean;
 };
 
+/* -------------------- LocalStorage Persist -------------------- */
+const STORAGE_KEY = 'visitationFilterState';
+
+// 저장된 상태 불러오기
+function loadPersistedState(): Partial<VisitationFilterState> {
+  if (typeof window === 'undefined') return {};
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return {};
+    return JSON.parse(raw) as Partial<VisitationFilterState>;
+  } catch {
+    return {};
+  }
+}
+
+// 필요한 상태만 저장
+function savePersistedState(state: VisitationFilterState) {
+  if (typeof window === 'undefined') return;
+  const toSave = {
+    visitationFilter: state.visitationFilter,
+    visitationOrderBy: state.visitationOrderBy,
+    visitationOrderDirection: state.visitationOrderDirection,
+    visitationTableHeaderItemList: state.visitationTableHeaderItemList,
+  };
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(toSave));
+}
+
+const persisted = loadPersistedState();
+
 export const INITIAL_VISITATION_TABLE_HEADER_LIST: VISITATION_TABLE_HEADER_ITEM[] =
   [
     {
@@ -64,7 +107,7 @@ export const INITIAL_VISITATION_TABLE_HEADER_LIST: VISITATION_TABLE_HEADER_ITEM[
       isDate: false,
     },
     {
-      id: VISITATION.STATUS,
+      id: VISITATION.IN_CHARGE,
       isShown: true,
       isSortable: false,
       isFilterable: true,
@@ -80,7 +123,7 @@ export const INITIAL_VISITATION_TABLE_HEADER_LIST: VISITATION_TABLE_HEADER_ITEM[
       isDate: false,
     },
     {
-      id: VISITATION.IN_CHARGE,
+      id: VISITATION.STATUS,
       isShown: true,
       isSortable: false,
       isFilterable: true,
@@ -91,9 +134,12 @@ export const INITIAL_VISITATION_TABLE_HEADER_LIST: VISITATION_TABLE_HEADER_ITEM[
 
 const initialState: VisitationFilterState = {
   visitations: [],
-  visitationFilter: INITIAL_VISITATION_FILTER,
-  visitationOrderDirection: ORDER_DIRECTION.ASC,
-  visitationTableHeaderItemList: INITIAL_VISITATION_TABLE_HEADER_LIST,
+  visitationFilter: persisted.visitationFilter ?? INITIAL_VISITATION_FILTER,
+  visitationOrderDirection:
+    persisted.visitationOrderDirection ?? ORDER_DIRECTION.ASC,
+  visitationTableHeaderItemList:
+    persisted.visitationTableHeaderItemList ??
+    INITIAL_VISITATION_TABLE_HEADER_LIST,
   visitationPage: 1,
 };
 
@@ -103,7 +149,7 @@ export const fetchVisitations = createAsyncThunk<
   { state: RootState }
 >(
   'visitations/fetchVisitations',
-  async ({ headerType }, { getState, rejectWithValue }) => {
+  async ({ headerType }, { getState, dispatch, rejectWithValue }) => {
     const state = getState().visitationFilter;
     const {
       visitationPage,
@@ -121,10 +167,12 @@ export const fetchVisitations = createAsyncThunk<
       if (headerType === HEADER_BAR.REPORTED) {
         const response = await visitationReportsApi.getVisitationReports({});
 
-        const newVisitations: Visitation[] = response.data.data;
+        const reports: VisitationReport[] = response.data.data;
+        const newVisitations = reports.map((report) => report.visitation);
         const existingIds = new Set(
           visitations.map((visitation) => visitation.id)
         );
+
         const filteredNewVisitations = newVisitations.filter(
           (visitation) => !existingIds.has(visitation.id)
         );
@@ -168,8 +216,28 @@ export const fetchVisitations = createAsyncThunk<
         return updatedVisitations;
       }
     } catch (error) {
-      console.error('업무 목록 불러오기 실패', error);
-      return rejectWithValue('업무 목록을 불러오는 중 오류가 발생했습니다.');
+      if (axios.isAxiosError(error)) {
+        const data = error.response?.data as any;
+        const status = data?.statusCode ?? error.response?.status;
+        const message = data.message;
+
+        dispatch(setToastText(message));
+        dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
+        dispatch(setIsToastShown(true));
+
+        return rejectWithValue(message);
+      }
+
+      if (error instanceof Error) {
+        dispatch(setToastText(error.message));
+        dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
+        dispatch(setIsToastShown(true));
+        return rejectWithValue(error.message);
+      }
+
+      return rejectWithValue(
+        '심방 목록을 불러오는 중 알 수 없는 오류가 발생했습니다.'
+      );
     }
   }
 );
@@ -183,18 +251,22 @@ const VisitationFilterSlice = createSlice({
     },
     setVisitationFilter: (state, action: PayloadAction<VISITATION_FILTER>) => {
       state.visitationFilter = action.payload;
+      savePersistedState(state);
     },
     setVisitationOrderBy(state, action: PayloadAction<VISITATION>) {
       state.visitationOrderBy = action.payload;
+      savePersistedState(state);
     },
     setVisitationOrderDirection(state, action: PayloadAction<ORDER_DIRECTION>) {
       state.visitationOrderDirection = action.payload;
+      savePersistedState(state);
     },
     setVisitationTableHeaderItemList(
       state,
       action: PayloadAction<VISITATION_TABLE_HEADER_ITEM[]>
     ) {
       state.visitationTableHeaderItemList = action.payload;
+      savePersistedState(state);
     },
     setVisitationPage: (state, action: PayloadAction<number>) => {
       state.visitationPage = action.payload;

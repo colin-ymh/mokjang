@@ -3,8 +3,7 @@ import { MainText } from '@mokjang/components';
 import { useI18n } from '../../../../../locales/client';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
-import { GRAY } from '@mokjang/constants';
-import { SIZE } from '@mokjang/constants';
+import { GRAY, SIZE } from '@mokjang/constants';
 
 const InformationContainer = styled.div`
   display: flex;
@@ -42,7 +41,7 @@ const ChurchInformation = ({}: ChurchInformationProps) => {
         </ItemContainer>
         <ItemContainer>
           <MainText color={GRAY.SEMI_DARK}>{t('pastor')}</MainText>
-          <MainText size={SIZE.EXTRA_LARGE}>{}</MainText>
+          <MainText size={SIZE.EXTRA_LARGE}>{church.pastor}</MainText>
         </ItemContainer>
       </RowContainer>
       <RowContainer>

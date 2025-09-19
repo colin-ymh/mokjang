@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../../redux/store';
+import { RootState } from '@/redux/store';
 
 import ModalLayout from '../../../components/organisms/layout/modal-layout';
 import Login from '../../../components/organisms/auth/login';

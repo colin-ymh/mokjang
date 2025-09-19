@@ -8,13 +8,19 @@ import {
 import styled from 'styled-components';
 
 import { MinistryGroup } from '@mokjang/models';
-import { BLACK, GRAY, MAIN } from '@mokjang/constants';
+import {
+  ALL,
+  BLACK,
+  DND_ITEM_TYPE,
+  GRAY,
+  HOVER_POSITION,
+  MAIN,
+  SIZE,
+} from '@mokjang/constants';
 import { MainText } from '@mokjang/components';
 import { Svg } from '@mokjang/assets';
-import { SIZE } from '@mokjang/constants';
 import { useI18n } from '../../../../../../locales/client';
 import { getEmptyImage } from 'react-dnd-html5-backend';
-import { ALL, DND_ITEM_TYPE, HOVER_POSITION } from '@mokjang/constants';
 
 const MinistryGroupItemContainer = styled.div`
   display: flex;
@@ -277,6 +283,7 @@ const ManagementMinistryGroupItemView: React.FC<
   >({
     type: DND_ITEM_TYPE.GROUP,
     item: ministryGroup,
+    canDrag: () => ministryGroup.id !== ALL,
     collect: (m: DragSourceMonitor) => ({ isDragging: m.isDragging() }),
   });
 
@@ -310,7 +317,9 @@ const ManagementMinistryGroupItemView: React.FC<
       )}
 
       <MinistryGroupItem
-        onClick={() => onClickMinistryGroup(ministryGroup)}
+        onClick={() =>
+          ministryGroup.id !== ALL && onClickMinistryGroup(ministryGroup)
+        }
         $level={level}
         $isDragging={isDragging}
         $isSelected={selectedMinistryGroupId === ministryGroup.id}

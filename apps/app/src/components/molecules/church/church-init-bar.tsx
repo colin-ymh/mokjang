@@ -15,7 +15,7 @@ const Wrap = styled.div`
   align-items: flex-start; /* 원을 위쪽에 고정 */
   padding: 0;
   isolation: isolate;
-  width: 832px;
+  width: 700px;
   height: 92px;
   position: relative;
 `;
@@ -74,9 +74,9 @@ const Circle = styled.div<{ $status: 'past' | 'current' | 'future' }>`
         `;
       case 'past':
         return `
-          background: ${GRAY.DEFAULT};
+          background: ${MAIN.DEFAULT};
           color: white;
-          border: 2px solid ${GRAY.DEFAULT};
+          border: 2px solid ${MAIN.DEFAULT};
         `;
       default: // 'future'
         return `

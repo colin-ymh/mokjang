@@ -1,7 +1,8 @@
-import { BAPTISM, FAMILY, GENDER, GROUP_ROLE, MARRIAGE, MINISTRY_GROUP_ROLE } from '@mokjang/constants';
-import { Group, Ministry, MinistryGroup, Officer } from '../management/management';
-import { Education } from '../education/education';
+import { BAPTISM, CONCEALED, FAMILY, GENDER, GROUP_ROLE, MARRIAGE, MINISTRY_GROUP_ROLE } from '@mokjang/constants';
+import { Group, Ministry, MinistryGroup, Officer } from '../management';
+import { Education, EducationEnrollment } from '../education';
 import { GroupHistory, MinistryHistory, OfficerHistory } from './history';
+import { ChurchUser } from '../church-user';
 export type ChurchInformation = {
     id: string;
     name: string;
@@ -37,7 +38,7 @@ export type Member = {
     relation: FAMILY;
     occupation: string;
     school: string;
-    marriage?: MARRIAGE;
+    marriage?: MARRIAGE | typeof CONCEALED;
     detailMarriage: string;
     vehicleNumber: string[];
     guidedById: string;
@@ -46,9 +47,11 @@ export type Member = {
     registeredAt: string;
     updatedAt: string;
     isConcealed: boolean;
+    churchUser?: ChurchUser;
     officerHistory?: OfficerHistory[];
     groupHistory?: GroupHistory[];
     ministryGroupHistory?: MinistryHistory[];
+    educationEnrollments?: EducationEnrollment[];
 };
 export declare const DEFAULT_MEMBER: Member;
 export type FamilyMember = {

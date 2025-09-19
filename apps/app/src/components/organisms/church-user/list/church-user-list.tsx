@@ -5,12 +5,22 @@ import {
   fetchChurchUsers,
   setChurchUsers,
 } from '../../../../redux/reducers/filter/church-user-filter-reducer';
-import { ChurchUser, DEFAULT_CHURCH_USER } from '@mokjang/models';
+import {
+  ChurchUser,
+  DEFAULT_CHURCH_USER,
+  NOTIFICATION_DOMAIN,
+} from '@mokjang/models';
 import ChurchUserListView, { UserListViewProps } from './church-user-list.view';
 import { ChurchUsersApi } from '../../../../api/church-users/church-users.api';
 import { setTargetChurchUser } from '../../../../redux/reducers/target/target-church-user-reducer';
 import { ManagersApi } from '../../../../api/managers/managers.api';
-import { PERMISSION_ACTIVE } from '@mokjang/constants';
+import { DESTRUCTIVE, PERMISSION_ACTIVE } from '@mokjang/constants';
+import { closeModal } from '@/redux/reducers/modal-reducer';
+import {
+  setIsToastShown,
+  setToastBackgroundColor,
+  setToastText,
+} from '@/redux/reducers/toast-popup-reducer';
 
 type UserListProps = {
   isManager?: boolean;
@@ -27,6 +37,8 @@ const ChurchUserList = ({ isManager = false }: UserListProps) => {
     churchUserOrderBy,
     churchUserOrderDirection,
   } = useSelector((state: RootState) => state.churchUserFilter);
+
+  const modal = useSelector((state: RootState) => state.modal);
 
   const { targetChurchUser } = useSelector(
     (state: RootState) => state.targetChurchUser
@@ -86,7 +98,13 @@ const ChurchUserList = ({ isManager = false }: UserListProps) => {
         }
       }
     } catch (error) {
-      setThrownError(error instanceof Error ? error : new Error(String(error)));
+      if (error instanceof Error) {
+        dispatch(setToastText(error.message));
+        dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
+        dispatch(setIsToastShown(true));
+      } else {
+        setThrownError(new Error(String(error)));
+      }
     } finally {
       setIsLoading(false);
     }
@@ -107,9 +125,13 @@ const ChurchUserList = ({ isManager = false }: UserListProps) => {
           setPage(1);
         }
       } catch (error) {
-        setThrownError(
-          error instanceof Error ? error : new Error(String(error))
-        );
+        if (error instanceof Error) {
+          dispatch(setToastText(error.message));
+          dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
+          dispatch(setIsToastShown(true));
+        } else {
+          setThrownError(new Error(String(error)));
+        }
       }
     };
 
@@ -145,6 +167,7 @@ const ChurchUserList = ({ isManager = false }: UserListProps) => {
   const onClickCloseInformation = () => {
     setIsChurchUserInformationShown(false);
     dispatch(setTargetChurchUser(DEFAULT_CHURCH_USER));
+    dispatch(closeModal());
   };
 
   // 회원 / 관리자 삭제 => 교회 추방
@@ -174,6 +197,36 @@ const ChurchUserList = ({ isManager = false }: UserListProps) => {
       setIsChurchUserInformationShown(false);
     }
   };
+
+  useEffect(() => {
+    if (!modal.open || modal.type !== NOTIFICATION_DOMAIN.MANAGER || !modal.id)
+      return;
+
+    (async () => {
+      try {
+        const res = await managersApi.getManager({
+          churchId,
+          churchUserId: modal.id as string,
+        });
+        const churchUser = res.data.data;
+
+        // 상세에 필요한 데이터 저장 + 상세 패널 오픈
+        dispatch(setTargetChurchUser(churchUser));
+        setIsChurchUserInformationShown(true);
+
+        dispatch(closeModal());
+      } catch (error) {
+        dispatch(closeModal());
+        if (error instanceof Error) {
+          dispatch(setToastText(error.message));
+          dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
+          dispatch(setIsToastShown(true));
+        } else {
+          setThrownError(new Error(String(error)));
+        }
+      }
+    })();
+  }, [modal.open, modal.type, modal.id, churchId]);
 
   const props = {
     row: {

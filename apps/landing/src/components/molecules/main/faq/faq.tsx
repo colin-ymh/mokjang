@@ -19,13 +19,24 @@ const Faq = () => {
   };
 
   const onClickContact = () => {
-    router.push('/contact');
+    // router.push('/contact');
+    //   https://forms.gle/ABc2SPpYkdpAn5k96 로 이동
+    window.open(
+      'https://forms.gle/ABc2SPpYkdpAn5k96',
+      '_blank',
+      'noopener,noreferrer'
+    );
+  };
+
+  const onClickDonate = () => {
+    router.push('/donate');
   };
 
   const props = {
     openedQuestion,
     onClickQuestion,
     onClickContact,
+    onClickDonate,
   } as FaqViewProps;
 
   return (

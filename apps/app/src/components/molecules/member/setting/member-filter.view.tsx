@@ -4,24 +4,24 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
 import { useI18n } from '../../../../../locales/client';
-import { CheckButtonList, CheckButtonValue } from '@mokjang/components';
+import {
+  CheckButtonList,
+  CheckButtonValue,
+  MainText,
+} from '@mokjang/components';
 import {
   useBaptismDropdownItems,
   useMarriageDropdownItems,
 } from '../../../../hooks/dropdown/dropdown-items';
-import { MainText } from '@mokjang/components';
 import CustomDatePicker from '../../../../vendor/date-picker/custom-date-picker';
 import {
   getDateFromDateString,
-  getDateFromInput,
   getDateStringFromDate,
+  getTranslatedAge,
 } from '@mokjang/utils';
-import { GRAY, MAIN } from '@mokjang/constants';
+import { BAPTISM, GRAY, LOCALE, MAIN, MARRIAGE } from '@mokjang/constants';
 import CustomSlider from '../../../atoms/common/slider/custom-slider';
-import { getTranslatedAge } from '@mokjang/utils';
 import { usePathname } from 'next/navigation';
-import { LOCALE } from '@mokjang/constants';
-import { BAPTISM, MARRIAGE } from '@mokjang/constants';
 
 const TableSettingContainer = styled.div`
   display: flex;
@@ -60,6 +60,11 @@ const AgeRangeTitle = styled.div`
   padding: 5px 13px;
 `;
 
+const BOTTOM = styled.div`
+  display: flex;
+  height: 100px;
+`;
+
 type TableSettingViewProps = {
   ageRange: [number, number];
   onChangeOfficerItems: (values: (string | null)[]) => void;
@@ -88,9 +93,9 @@ const MemberTableHeaderSettingView = ({
   );
   const { officers } = useSelector((state: RootState) => state.church);
 
-  const NULL_ITEM = {
-    value: null,
-    title: t('none'),
+  const OFFICER_NONE_ITEM = {
+    value: 'null',
+    title: t('officerNone'),
   };
 
   const officerCheckListItems: CheckButtonValue[] = [
@@ -98,17 +103,18 @@ const MemberTableHeaderSettingView = ({
       value: officer.id,
       title: officer.name,
     })),
-    NULL_ITEM,
+    OFFICER_NONE_ITEM,
   ];
 
   const marriageCheckListItems: CheckButtonValue[] = [
     ...useMarriageDropdownItems(),
-    NULL_ITEM,
+    {
+      value: 'null',
+      title: t(MARRIAGE.NONE),
+    },
   ];
-  const baptismCheckListItems: CheckButtonValue[] = [
-    ...useBaptismDropdownItems(),
-    NULL_ITEM,
-  ];
+
+  const baptismCheckListItems: CheckButtonValue[] = useBaptismDropdownItems();
 
   return (
     <TableSettingContainer>
@@ -159,7 +165,7 @@ const MemberTableHeaderSettingView = ({
             value={
               memberFilter.registeredFrom
                 ? getDateStringFromDate(
-                    getDateFromInput(memberFilter.registeredFrom)
+                    getDateFromDateString(memberFilter.registeredFrom)
                   )
                 : undefined
             }
@@ -176,7 +182,7 @@ const MemberTableHeaderSettingView = ({
             value={
               memberFilter.registeredTo
                 ? getDateStringFromDate(
-                    getDateFromInput(memberFilter.registeredTo)
+                    getDateFromDateString(memberFilter.registeredTo)
                   )
                 : undefined
             }
@@ -190,6 +196,7 @@ const MemberTableHeaderSettingView = ({
             borderColor={GRAY.LIGHT}
           />
         </RowContainer>
+        <BOTTOM />
       </LabelContainer>
     </TableSettingContainer>
   );

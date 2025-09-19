@@ -2,26 +2,34 @@ import React, { MutableRefObject } from 'react';
 import { usePathname } from 'next/navigation';
 import styled from 'styled-components';
 
-import { GRAY, MAIN, WHITE, YELLOW } from '@mokjang/constants';
-import { MEMBER } from '@mokjang/constants';
-import { MainText } from '@mokjang/components';
-import { Member } from '@mokjang/models';
+import {
+  GRAY,
+  GROUP_ROLE,
+  LOCALE,
+  MAIN,
+  MEMBER,
+  MINISTRY_GROUP_ROLE,
+  ORDER_DIRECTION,
+  WHITE,
+  YELLOW,
+} from '@mokjang/constants';
+import { MainTag, MainText } from '@mokjang/components';
+import { Member, Ministry } from '@mokjang/models';
 import useWindowSize from '../../../../hooks/window/window';
-import { getFormattedMobilePhone } from '@mokjang/utils';
-import { LOCALE } from '@mokjang/constants';
+import {
+  getAge,
+  getDateFromDateString,
+  getFormattedPhone,
+  getTranslatedAge,
+} from '@mokjang/utils';
 import ManagementMemberTableHeader from '../../../atoms/management/table/management-member-table-header';
 import MemberProfilePopupButton from '../../common/button/member-profile-popup-button';
-import { ORDER_DIRECTION } from '@mokjang/constants';
 import { CHURCH_CONTENT_ID } from '../../../../constants/layout/content';
 import { useManagementHeaderBarItems } from '../../../../hooks/layout/header-bar-items';
-import { MainTag } from '@mokjang/components';
 import { useI18n } from '../../../../../locales/client';
-import { Ministry } from '@mokjang/models';
 import { DropdownValueType } from '../../../atoms/common/dropdown/dropdown-item';
 import Dropdown from '../../../atoms/common/dropdown/dropdown';
 import TagDropdownButton from '../../../atoms/common/dropdown/tag-dropdown-button';
-import { getTranslatedAge } from '@mokjang/utils';
-import { getAge, getDateFromDateString } from '@mokjang/utils';
 
 const getColumnWidth = (id: string) => {
   switch (id) {
@@ -63,7 +71,7 @@ const TableContainer = styled.div<{ height: number }>`
   background-color: ${WHITE};
   // /* 세로 높이만큼 상하 스크롤 */
   //min-height: 500px;
-  max-height: ${({ height }) => `${height - 280}px`};
+  height: ${({ height }) => `${height - 280}px`};
 
   /* 오버플로 시 스크롤 */
   overflow-x: auto;
@@ -89,7 +97,7 @@ const TableHeader = styled.th<{ id: string; $isLast?: boolean }>`
   padding: 20px;
   position: sticky;
   top: 0;
-  z-index: 100;
+  z-index: 30;
   background-color: ${WHITE};
 
   /* 만약 마지막 컬럼이면 width: auto */
@@ -203,23 +211,28 @@ const ManagementMemberTableView = ({
         return (
           <ProfileContainer>
             <MemberProfilePopupButton member={member} isOfficerShown={false} />
-            {member.id === leaderMemberId && (
-              <MainTag
-                title={
-                  type === CHURCH_CONTENT_ID.GROUP
-                    ? t('groupLeader')
-                    : t('ministryGroupLeader')
-                }
-                color={YELLOW.DARK}
-                backgroundColor={YELLOW.LIGHT}
-              />
-            )}
+            {member.groupRole === GROUP_ROLE.LEADER &&
+              type === CHURCH_CONTENT_ID.GROUP && (
+                <MainTag
+                  title={t('groupLeader')}
+                  color={YELLOW.DARK}
+                  backgroundColor={YELLOW.LIGHT}
+                />
+              )}
+            {member.ministryGroupRole === MINISTRY_GROUP_ROLE.LEADER &&
+              type === CHURCH_CONTENT_ID.MINISTRY && (
+                <MainTag
+                  title={t('ministryGroupLeader')}
+                  color={YELLOW.DARK}
+                  backgroundColor={YELLOW.LIGHT}
+                />
+              )}
           </ProfileContainer>
         );
       case MEMBER.MOBILE_PHONE:
         return (
           <MainText>
-            {member?.mobilePhone && getFormattedMobilePhone(member.mobilePhone)}
+            {member?.mobilePhone && getFormattedPhone(member.mobilePhone)}
           </MainText>
         );
       case MEMBER.MINISTRIES:
@@ -231,9 +244,17 @@ const ManagementMemberTableView = ({
               onChangeItem={(value) =>
                 onChangeMinistry && onChangeMinistry(value, member)
               }
-              CustomDropdownButton={(props) => (
-                <TagDropdownButton {...props} color={MAIN.DEFAULT} />
-              )}
+              CustomDropdownButton={(props) => {
+                return (
+                  <TagDropdownButton
+                    {...props}
+                    color={member.ministries ? MAIN.DEFAULT : GRAY.SEMI_DARK}
+                    backgroundColor={
+                      member.ministries ? MAIN.EXTRA_LIGHT : GRAY.EXTRA_LIGHT
+                    }
+                  />
+                );
+              }}
               height={30}
             />
           </MinistryContainer>

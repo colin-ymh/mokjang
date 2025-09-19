@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 import { useI18n } from '../../../locales/client';
-import { DOMAIN } from '@mokjang/models';
+import { CALENDAR_DOMAIN, DOMAIN } from '@mokjang/models';
 import { getCalenderBackgroundColor } from '@/utils/color';
 import { CURSOR } from '@mokjang/constants';
 
@@ -54,7 +54,7 @@ const DomainFilter = () => {
       if (domain === DOMAIN.MEMBER) {
         return { value: domain, title: t('birthday') };
       }
-      return { value: domain, title: t(domain) };
+      return { value: domain, title: t(domain as CALENDAR_DOMAIN) };
     });
 
   const onClickCheck = (value: boolean, item: DOMAIN) => {

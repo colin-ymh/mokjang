@@ -1,11 +1,14 @@
 import { AxiosResponse } from 'axios';
 import qs from 'qs';
 
-import { CHURCH_USER_ROLE, ORDER_DIRECTION } from '@mokjang/constants';
-import { SERVER_URL, TEST_SERVER_URL } from '@mokjang/constants';
+import {
+  CHURCH_USER,
+  CHURCH_USER_ROLE,
+  ORDER_DIRECTION,
+} from '@mokjang/constants';
 import { CustomError } from '../error/error';
-import { CHURCH_USER } from '@mokjang/constants';
 import authorizeAxios from '../authorize-axios';
+import { IS_PRODUCTION, SERVER_URL, TEST_SERVER_URL } from '@mokjang/utils';
 
 type GetChurchUsersParams = {
   churchId: string; // 교회 id
@@ -36,6 +39,15 @@ type UnlinkMemberParams = {
   churchUserId: string;
 };
 
+type ChangeMemberParams = {
+  churchId: string;
+  churchUserId: string;
+};
+
+type ChangeMemberBody = {
+  memberId: string;
+};
+
 type LeaveChurchParams = {
   churchId: string;
   churchUserId: string;
@@ -45,7 +57,7 @@ export class ChurchUsersApi {
   private _url: string;
 
   constructor(useBaseURL: boolean) {
-    this._url = useBaseURL
+    this._url = IS_PRODUCTION
       ? SERVER_URL // 실제 사용할 url
       : TEST_SERVER_URL; // 개발용 url
   }
@@ -183,6 +195,36 @@ export class ChurchUsersApi {
 
     try {
       return await authorizeAxios.patch(url);
+    } catch (serverError: any) {
+      if (serverError.response) {
+        const { message, error, statusCode } = serverError.response.data;
+        throw new CustomError(message, error, statusCode);
+      } else {
+        throw new CustomError(
+          '알 수 없는 에러가 발생했습니다',
+          500,
+          'Unknown Error'
+        );
+      }
+    }
+  };
+
+  /**
+   * 연결된 교인 변경
+   * @param  {ChangeMemberParams} params
+   * @param  {ChangeMemberBody} body
+   * @returns
+   */
+  public changeMember = async (
+    params: ChangeMemberParams,
+    body: ChangeMemberBody
+  ): Promise<AxiosResponse> => {
+    const { churchId, churchUserId } = params;
+
+    const url = `${this._url}/churches/${churchId}/church-users/${churchUserId}/change-member`;
+
+    try {
+      return await authorizeAxios.patch(url, body);
     } catch (serverError: any) {
       if (serverError.response) {
         const { message, error, statusCode } = serverError.response.data;

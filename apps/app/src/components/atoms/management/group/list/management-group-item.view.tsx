@@ -1,20 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
-import {
-  DragSourceMonitor,
-  DropTargetMonitor,
-  useDrag,
-  useDrop,
-} from 'react-dnd';
+import { DragSourceMonitor, DropTargetMonitor, useDrag, useDrop, } from 'react-dnd';
 import styled from 'styled-components';
 
 import { Group } from '@mokjang/models';
-import { BLACK, GRAY, MAIN } from '@mokjang/constants';
+import { ALL, BLACK, DND_ITEM_TYPE, GRAY, HOVER_POSITION, MAIN, SIZE, } from '@mokjang/constants';
 import { MainText } from '@mokjang/components';
 import { Svg } from '@mokjang/assets';
-import { SIZE } from '@mokjang/constants';
 import { useI18n } from '../../../../../../locales/client';
 import { getEmptyImage } from 'react-dnd-html5-backend';
-import { ALL, DND_ITEM_TYPE, HOVER_POSITION } from '@mokjang/constants';
 
 const GroupItemContainer = styled.div`
   display: flex;
@@ -246,6 +239,7 @@ const ManagementGroupItemView: React.FC<ManagementGroupItemViewProps> = ({
   >({
     type: DND_ITEM_TYPE.GROUP,
     item: group,
+    canDrag: () => group.id !== ALL,
     collect: (m: DragSourceMonitor) => ({ isDragging: m.isDragging() }),
   });
 
@@ -278,7 +272,7 @@ const ManagementGroupItemView: React.FC<ManagementGroupItemViewProps> = ({
       )}
 
       <GroupItem
-        onClick={() => onClickGroup(group)}
+        onClick={() => group.id !== ALL && onClickGroup(group)}
         $level={level}
         $isDragging={isDragging}
         $isSelected={selectedGroupId === group.id}

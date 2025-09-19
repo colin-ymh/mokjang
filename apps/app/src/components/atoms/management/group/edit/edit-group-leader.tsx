@@ -1,9 +1,12 @@
-import { DEFAULT_MEMBER, Member } from '@mokjang/models';
+import { DEFAULT_MEMBER, Group, Member } from '@mokjang/models';
 import styled from 'styled-components';
-import { MainText } from '@mokjang/components';
-import ProfileImage from '../../../common/image/profile-image';
-import { BLANK, LOCALE, GRAY, MAIN, YELLOW } from '@mokjang/constants';
-import { Group } from '@mokjang/models';
+import {
+  MainTag,
+  MainText,
+  ProfileImage,
+  RadioButton,
+} from '@mokjang/components';
+import { BLANK, GRAY, LOCALE, MAIN, YELLOW } from '@mokjang/constants';
 import React, { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { useI18n } from '../../../../../../locales/client';
@@ -13,8 +16,6 @@ import {
 } from '@mokjang/utils';
 
 import { Svg } from '@mokjang/assets';
-import { RadioButton } from '@mokjang/components';
-import { MainTag } from '@mokjang/components';
 
 const EditGroupLeaderContainer = styled.div`
   display: flex;
@@ -100,7 +101,11 @@ const EditGroupLeader = ({
   const [selectedMember, setSelectedMember] = useState<Member>(DEFAULT_MEMBER);
 
   const onClickMember = (member: Member) => {
-    setSelectedMember(member);
+    if (selectedMember.id === member.id) {
+      setSelectedMember(DEFAULT_MEMBER);
+    } else {
+      setSelectedMember(member);
+    }
   };
 
   useEffect(() => {
@@ -114,10 +119,6 @@ const EditGroupLeader = ({
 
     if (prevGroupLeader) {
       setSelectedMember(prevGroupLeader);
-    } else {
-      if (members.length > 0) {
-        setSelectedMember(members[0]);
-      }
     }
   }, [group, members]);
 
@@ -157,7 +158,7 @@ const EditGroupLeader = ({
           );
         })}
       </MemberListContainer>
-      {
+      {selectedMember.id && (
         <ResultContainer>
           <ArrowIcon />
           <MainText color={MAIN.DEFAULT}>
@@ -166,7 +167,7 @@ const EditGroupLeader = ({
               : getTranslatedAlreadyGroupLeader(locale, selectedMember.name)}
           </MainText>
         </ResultContainer>
-      }
+      )}
     </EditGroupLeaderContainer>
   );
 };

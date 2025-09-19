@@ -11,17 +11,28 @@ export enum DOMAIN {
   MANAGEMENT = 'management',
   HOLIDAY = 'holiday',
   CHURCH_EVENT = 'churchEvent',
-  CHURCH = 'church',
-  MANAGER = 'manager',
+  WORSHIP = 'worship',
+  WORSHIP_ATTENDANCE = 'worshipAttendance',
+  PERMISSION = 'permission',
 }
+
+export type CALENDAR_DOMAIN =
+  | DOMAIN.MEMBER
+  | DOMAIN.VISITATION
+  | DOMAIN.EDUCATION_SESSION
+  | DOMAIN.TASK
+  | DOMAIN.CHURCH_EVENT
+  | DOMAIN.HOLIDAY;
 
 export type PERMISSION_DOMAIN =
   | DOMAIN.MEMBER
   | DOMAIN.VISITATION
   | DOMAIN.EDUCATION
   | DOMAIN.TASK
-  | DOMAIN.CHURCH
-  | DOMAIN.MANAGER;
+  | DOMAIN.WORSHIP
+  | DOMAIN.WORSHIP_ATTENDANCE
+  | DOMAIN.MANAGEMENT
+  | DOMAIN.PERMISSION;
 
 export enum ACTION {
   READ = 'read',
@@ -29,7 +40,7 @@ export enum ACTION {
 }
 
 export type PermissionUnit = {
-  id: string;
+  id: number;
   domain: PERMISSION_DOMAIN;
   action: ACTION;
 };
@@ -40,7 +51,7 @@ export type PermissionTemplate = {
   title: string;
   description: string;
   memberCount: number;
-  unitIds: string[];
+  unitIds: number[];
   permissionUnits: PermissionUnit[];
 };
 
@@ -49,7 +60,7 @@ export const DEFAULT_PERMISSION_TEMPLATE: PermissionTemplate = {
   churchId: BLANK,
   title: BLANK,
   description: BLANK,
-  unitIds: [],
+  unitIds: [11],
   memberCount: 0,
   permissionUnits: [],
 };

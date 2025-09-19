@@ -2,15 +2,17 @@ import React from 'react';
 import styled from 'styled-components';
 import { useParams } from 'next/navigation';
 
-import { GRAY, MAIN, MEDIA_MIN_WIDTH, SIZE } from '@mokjang/constants';
-import { Button, MainText } from '@mokjang/components';
+import { GRAY, MAIN, MEDIA_MIN_WIDTH, SIZE, WHITE } from '@mokjang/constants';
+import { Button, MainText, SvgIcon } from '@mokjang/components';
 import HeaderBar from '../../../../../atoms/layout/header/header-bar';
 import { useMainTaskHeaderBarItems } from '@/hooks/layout/header-bar-items';
 
 import { useScopedI18n } from '../../../../../../../locales/client';
 import AddTask from '../../../../../organisms/task/add/add-task';
-import WrappedPagePopup from '../../../../../atoms/common/popup/wrapped-page-popup';
 import { MAIN_HEADER_ID } from '@/constants/layout/header';
+
+import { Svg } from '@mokjang/assets';
+import ScrollSlidePopup from '@/components/atoms/common/popup/scroll-slide-popup';
 
 const HeaderContainer = styled.div`
   display: flex;
@@ -85,8 +87,11 @@ const MainTaskHeaderView = ({
           <Button
             text={t_button('addTask')}
             onClick={onClickAddTask}
-            width={100}
-            height={30}
+            width={'auto'}
+            fontWeight={500}
+            fontSize={16}
+            height={35}
+            icon={<SvgIcon svg={Svg.Plus} color={WHITE} width={2} size={20} />}
           />
         </HeaderTopContainer>
         <HeaderBottomContainer>
@@ -99,17 +104,17 @@ const MainTaskHeaderView = ({
       </HeaderContainer>
 
       {/* 심방 추가 팝업*/}
-      <WrappedPagePopup
+      <ScrollSlidePopup
         isShow={isAddTaskOpened}
         onClickClose={onClickCloseModal}
         onClickCancel={onClickCloseModal}
-        headerTitle={t_title('addTask')}
         onClickDone={onClickSaveTask}
+        headerTitle={t_title('addTask')}
+        doneBackgroundColor={isSaveEnabled ? MAIN.DEFAULT : MAIN.LIGHT}
         doneDisabled={!isSaveEnabled}
-        doneBackgroundColor={isSaveEnabled ? MAIN.DEFAULT : GRAY.LIGHT}
       >
         <AddTask />
-      </WrappedPagePopup>
+      </ScrollSlidePopup>
     </>
   );
 };

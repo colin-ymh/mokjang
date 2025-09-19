@@ -94,7 +94,6 @@ const PermissionTemplateList = ({}: PermissionTemplateListProps) => {
     }
   };
 
-  // 필터 정보가 변경될 때, 교인들을 다시 불러오는 부분
   useEffect(() => {
     const fetchInitialPermissionTemplates = async () => {
       try {

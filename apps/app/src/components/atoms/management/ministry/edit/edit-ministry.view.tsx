@@ -2,9 +2,7 @@ import styled from 'styled-components';
 import React from 'react';
 import { useI18n, useScopedI18n } from '../../../../../../locales/client';
 import { Ministry } from '@mokjang/models';
-import { LabelInput } from '@mokjang/components';
-import { MainText } from '@mokjang/components';
-import { MainTag } from '@mokjang/components';
+import { LabelInput, MainTag, MainText } from '@mokjang/components';
 import { GRAY } from '@mokjang/constants';
 import DeleteWarningButton from '../../../common/button/delete-warning-button';
 import ConfirmPopup from '../../../common/popup/confirm-popup';
@@ -28,6 +26,10 @@ const MinistryList = styled.div`
   flex-direction: row;
   flex-wrap: wrap;
   gap: 10px;
+`;
+
+const BoxContainer = styled.div`
+  display: flex;
 `;
 
 type EditMinistryViewProps = {
@@ -78,12 +80,14 @@ const EditMinistryView = ({
 
         {/* 삭제 */}
         {selectedMinistry?.id && (
-          <DeleteWarningButton
-            description={t_warning('deleteMinistry')}
-            buttonText={t_button('deleteMinistry')}
-            onClick={onClickDeleteOpen}
-            disabled={!!selectedMinistry?.membersCount || false}
-          />
+          <BoxContainer>
+            <DeleteWarningButton
+              description={t_warning('deleteMinistry')}
+              buttonText={t_button('deleteMinistry')}
+              onClick={onClickDeleteOpen}
+              disabled={!!selectedMinistry?.membersCount || false}
+            />
+          </BoxContainer>
         )}
       </EditContainer>
 

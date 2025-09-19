@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { BLANK, ORDER_DIRECTION } from '@mokjang/constants';
+import { BLANK, ORDER_DIRECTION, WORSHIP_ATTENDANCE } from '@mokjang/constants';
 import { RootState } from '../../store';
-import { WORSHIP_ATTENDANCE } from '@mokjang/constants';
 import { WorshipAttendance } from '@mokjang/models';
 import { WorshipAttendancesApi } from '../../../api/worship/worship-attendances.api';
 
@@ -117,7 +116,10 @@ export const fetchWorshipAttendances = createAsyncThunk<
         limit: 30, // 무한 스크롤 최적화
         sortBy: worshipAttendanceSortBy,
         sortDirection: worshipAttendanceSortDirection,
-        groupId: targetWorshipSessionGroup.id || undefined,
+        groupId:
+          targetWorshipSessionGroup.id === null
+            ? 'null'
+            : targetWorshipSessionGroup.id,
       });
 
       return response.data;

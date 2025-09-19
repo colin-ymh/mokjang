@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
-import { Button, TransparentBackground } from '@mokjang/components';
+import { Button, MainText, TransparentBackground } from '@mokjang/components';
 import { BLACK, GRAY, WHITE } from '@mokjang/constants';
-import { getDateFromInput, getDateStringFromDate } from '@mokjang/utils';
+import { getDateFromDateString, getDateStringFromDate } from '@mokjang/utils';
 
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
-import { MainText } from '@mokjang/components';
 import CustomDatePicker from '@/vendor/date-picker/custom-date-picker';
 
 const ModalContainer = styled.div<{ $isShown: boolean }>`
@@ -86,14 +85,14 @@ const PeriodModal = ({
         <InputContainer>
           <CustomDatePicker
             value={innerStartDate}
-            selected={startDate ? getDateFromInput(startDate) : null}
+            selected={startDate ? getDateFromDateString(startDate) : null}
             onChange={onChangeStartDate}
             placeholderText={t('startDate')}
             // width={150}
           />
           <CustomDatePicker
             value={innerEndDate}
-            selected={endDate ? getDateFromInput(endDate) : null}
+            selected={endDate ? getDateFromDateString(endDate) : null}
             onChange={onChangeEndDate}
             placeholderText={t('endDate')}
             // width={150}

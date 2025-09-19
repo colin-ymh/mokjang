@@ -1,35 +1,32 @@
 import { ChangeEvent, Ref } from 'react';
 import styled from 'styled-components';
 
-import { Button } from '@mokjang/components';
-import { BLACK, GRAY, WHITE } from '@mokjang/constants';
-import { TASK } from '@mokjang/constants';
+import { Button, SvgIcon } from '@mokjang/components';
+import { GRAY, MAIN, TASK, TASK_STATUS, WHITE } from '@mokjang/constants';
 
 import {
   useTaskSearchFilterDropdownItems,
   useTaskStatusFilterDropdownItems,
-} from '../../../hooks/dropdown/dropdown-items';
+} from '@/hooks/dropdown/dropdown-items';
 import useWindowSize from '../../../hooks/window/window';
 import { useScopedI18n } from '../../../../locales/client';
 import TaskFilteredItem, {
   TaskFilteredItemType,
 } from '../../atoms/task/task-filtered-item';
 import PeriodModal from '../../atoms/common/modal/period-modal';
-import { RootState } from '../../../redux/store';
+import { RootState } from '@/redux/store';
 import { useSelector } from 'react-redux';
-import StatusDropdown from '../../atoms/common/dropdown/status-dropdown';
 import SearchInput from '../../atoms/common/input/search-input';
-import { TASK_STATUS } from '@mokjang/constants';
 
 import { Svg } from '@mokjang/assets';
-import { SvgIcon } from '@mokjang/components';
+import Dropdown from '@/components/atoms/common/dropdown/dropdown';
 
 const TaskContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   width: 100%;
-  border-bottom: 0.6px solid ${GRAY.LIGHT};
+  // border-bottom: 1px solid ${GRAY.LIGHT};
   flex-shrink: 0;
   position: relative;
   background-color: ${WHITE};
@@ -40,18 +37,19 @@ const RowTop = styled.div`
   flex-direction: row;
   justify-content: space-between;
   flex-shrink: 0;
+  padding: 10px 20px;
 `;
 
 const FilterList = styled.div`
   display: flex;
   width: 100%;
+  gap: 10px;
 `;
 
 const ButtonContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 10px 10px 10px 20px;
   position: relative;
   gap: 10px;
 `;
@@ -62,7 +60,6 @@ const FilteredItemList = styled.div<{ $width: number }>`
   justify-content: flex-start;
   align-items: center;
   gap: 5px;
-  padding: 10px 0;
   width: ${({ $width }) => $width}px;
   overflow-x: scroll;
 `;
@@ -72,14 +69,13 @@ const SearchContainer = styled.div`
   flex-direction: row;
   justify-content: flex-end;
   align-items: center;
-  padding: 10px 20px;
+  gap: 10px;
 `;
 
 export type TASK_SEARCH_FILTER = TASK.TITLE | TASK.IN_CHARGE;
 
 type TaskViewProps = {
   isModalShown: boolean;
-  statusFilter: TASK_STATUS | undefined;
   searchFilter: TASK_SEARCH_FILTER;
   searchValue: string;
   searchRef: Ref<HTMLInputElement>;
@@ -96,7 +92,6 @@ type TaskViewProps = {
 
 const TaskRowView = ({
   isModalShown,
-  statusFilter,
   searchFilter,
   searchValue,
   searchRef,
@@ -130,19 +125,26 @@ const TaskRowView = ({
               width={'auto'}
               onClick={onClickPeriodModal}
               backgroundColor={WHITE}
-              borderColor={GRAY.LIGHT}
-              color={BLACK}
-              icon={<SvgIcon svg={Svg.Calendar} />}
+              borderColor={isModalShown ? MAIN.DEFAULT : GRAY.LIGHT}
+              color={GRAY.SEMI_DARK}
+              icon={
+                <SvgIcon
+                  svg={Svg.Calendar}
+                  color={GRAY.SEMI_DARK}
+                  bottom={0.5}
+                />
+              }
             />
 
-            <StatusDropdown
-              value={statusFilter}
+            <Dropdown
+              value={taskFilter.status[0]}
               items={statusFilterDropdownItems}
               onChangeItem={onClickStatusFilterItem}
               height={30}
-              width={130}
+              width={100}
               borderColor={GRAY.LIGHT}
               backgroundBlur={false}
+              color={GRAY.SEMI_DARK}
             />
             {/* 설정 모달 */}
             <PeriodModal
@@ -174,6 +176,7 @@ const TaskRowView = ({
             onChangeSearchValue={onChangeSearchValue}
             onKeyDown={onKeyDown}
             onClickSearch={onClickSearch}
+            color={GRAY.SEMI_DARK}
           />
         </SearchContainer>
       </RowTop>

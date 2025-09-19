@@ -1,15 +1,15 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../../../../redux/store';
+import { AppDispatch, RootState } from '@/redux/store';
 
-import { MembersApi } from '../../../../../api/members/members.api';
+import { MembersApi } from '@/api/members/members.api';
 import MemberInformationListView from './member-personal-information-list.view';
-import { GroupMembersApi } from '../../../../../api/management/group/group-membes.api';
+import { GroupMembersApi } from '@/api/management/group/group-membes.api';
 import { getDateFromDateString, getDateStringFromDate } from '@mokjang/utils';
 import { useI18n, useScopedI18n } from '../../../../../../locales/client';
 import EditMemberGroup from './edit-member-group';
 import { CustomPopup } from '@mokjang/components';
-import { setTargetMember } from '../../../../../redux/reducers/target/target-member-reducer';
+import { setTargetMember } from '@/redux/reducers/target/target-member-reducer';
 import {
   DEFAULT_GROUP_HISTORY,
   DEFAULT_OFFICER_HISTORY,
@@ -18,17 +18,17 @@ import {
   setIsToastShown,
   setToastBackgroundColor,
   setToastText,
-} from '../../../../../redux/reducers/toast-popup-reducer';
+} from '@/redux/reducers/toast-popup-reducer';
 import { BLACK, DESTRUCTIVE } from '@mokjang/constants';
-import { setMembers } from '../../../../../redux/reducers/filter/member-filter-reducer';
-import { OfficerMembersApi } from '../../../../../api/management/officer/officer-members.api';
+import { setMembers } from '@/redux/reducers/filter/member-filter-reducer';
+import { OfficerMembersApi } from '@/api/management/officer/officer-members.api';
 import EditMemberOfficer from './edit-member-officer';
 import {
   setTargetGroupHistory,
   setTargetOfficerHistory,
-} from '../../../../../redux/reducers/target/target-history-reducer';
-import { GroupHistoryApi } from '../../../../../api/history/group-history.api';
-import { OfficerHistoryApi } from '../../../../../api/history/officer-history.api';
+} from '@/redux/reducers/target/target-history-reducer';
+import { GroupHistoryApi } from '@/api/history/group-history.api';
+import { OfficerHistoryApi } from '@/api/history/officer-history.api';
 import MemberMinistryList from './member-ministry-list';
 
 type MemberPersonalInformationListProps = {};
@@ -37,6 +37,7 @@ const MemberPersonalInformationList =
   ({}: MemberPersonalInformationListProps) => {
     const t = useI18n();
     const t_popup = useScopedI18n('popup');
+    const t_button = useScopedI18n('button');
 
     const dispatch = useDispatch<AppDispatch>();
     const membersApi = new MembersApi(false);
@@ -122,6 +123,9 @@ const MemberPersonalInformationList =
     };
 
     // ===================== 그룹 ===================== //
+    const [isGroupConfirmOpened, setIsGroupConfirmOpened] =
+      useState<boolean>(false);
+
     const onClickSaveGroup = async () => {
       try {
         // 날짜만 수정하는 경우
@@ -189,6 +193,9 @@ const MemberPersonalInformationList =
       }
     };
 
+    const onClickGroupConfirmOpen = () => setIsGroupConfirmOpened(true);
+    const onClickGroupConfirmClose = () => setIsGroupConfirmOpened(false);
+
     const onClickDeleteGroup = () => {
       if (!targetMember.groupId) return;
 
@@ -222,6 +229,7 @@ const MemberPersonalInformationList =
         dispatch(setMembers(newMembers));
 
         setIsGroupOpened(false);
+        setIsGroupConfirmOpened(false);
         dispatch(setToastText(t_popup('saveComplete')));
         dispatch(setIsToastShown(true));
         dispatch(setToastBackgroundColor(BLACK));
@@ -397,25 +405,45 @@ const MemberPersonalInformationList =
         {/* 그룹 수정 */}
         <CustomPopup
           isShow={isGroupOpened}
+          onClickClose={onClickGroupClose}
           onClickCancel={onClickGroupClose}
           onClickDone={onClickSaveGroup}
           headerTitle={t('title.editGroupInformation')}
           width={500}
           height={500}
           doneDisabled={!isGroupSaveEnabled}
+          cancelText={t_button('cancel')}
+          doneText={t_button('save')}
         >
+          {/*<>*/}
+          {/*  <ConfirmPopup*/}
+          {/*    title={t_popup('deleteVisitationTitle')}*/}
+          {/*    body={t_popup('deleteVisitationBody')}*/}
+          {/*    buttonNum={2}*/}
+          {/*    isShow={isGroupConfirmOpened}*/}
+          {/*    onClickLeftButton={onClickGroupConfirmClose}*/}
+          {/*    onClickRightButton={() => {*/}
+          {/*      onClickDeleteGroup();*/}
+          {/*    }}*/}
+          {/*    leftButtonText={t_button('cancel')}*/}
+          {/*    rightButtonText={t_button('delete')}*/}
+          {/*  />*/}
           <EditMemberGroup onClickDeleteGroup={onClickDeleteGroup} />
+          {/*</>*/}
         </CustomPopup>
 
         {/* 직분 수정 */}
         <CustomPopup
           isShow={isOfficerOpened}
+          onClickClose={onClickOfficerClose}
           onClickCancel={onClickOfficerClose}
           onClickDone={onClickSaveOfficer}
           headerTitle={t('title.editOfficerInformation')}
           width={500}
           height={500}
           doneDisabled={!isOfficerSaveEnabled}
+          cancelText={t_button('cancel')}
+          doneText={t_button('save')}
         >
           <EditMemberOfficer onClickDeleteOfficer={onClickDeleteOfficer} />
         </CustomPopup>
@@ -423,10 +451,12 @@ const MemberPersonalInformationList =
         {/* 사역 목록 */}
         <CustomPopup
           isShow={isMinistryOpened}
+          onClickClose={onClickMinistryClose}
           onClickCancel={onClickMinistryClose}
           headerTitle={t('title.ministryList')}
           width={600}
           height={600}
+          cancelText={t_button('cancel')}
         >
           <MemberMinistryList />
         </CustomPopup>

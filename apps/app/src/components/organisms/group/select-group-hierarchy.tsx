@@ -22,7 +22,7 @@ const SelectGroupHierarchy = ({
 }: GroupFilterProps) => {
   // 선택된 그룹 id
   const [selectedGroupId, setSelectedGroupId] = useState<string | null>(
-    prevSelectedGroupId || ALL
+    prevSelectedGroupId === undefined ? ALL : prevSelectedGroupId
   );
 
   // 새로운 그룹을 설정

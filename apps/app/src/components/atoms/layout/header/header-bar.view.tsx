@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { MainText } from '@mokjang/components';
-import { GRAY, MAIN, WHITE } from '@mokjang/constants';
+import { CURSOR, GRAY, MAIN, WHITE } from '@mokjang/constants';
 
 const HeaderBarContainer = styled.div`
   display: flex;
@@ -49,6 +49,7 @@ const HeaderBarView = ({ value, items, onClick }: HeaderBarViewProps) => {
             <MainText
               color={id === value ? MAIN.DEFAULT : GRAY.DARK}
               fontWeight={600}
+              cursor={CURSOR.POINTER}
             >
               {title}
             </MainText>

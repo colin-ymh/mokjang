@@ -3,26 +3,32 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../redux/store';
 
-import { GRAY, GREEN, RED, WHITE } from '@mokjang/constants';
+import {
+  BLANK,
+  GRAY,
+  GREEN,
+  JOIN_REQUEST,
+  LOCALE,
+  RED,
+  USER,
+  WHITE,
+} from '@mokjang/constants';
 
-import { MainText } from '@mokjang/components';
-import { BLANK } from '@mokjang/constants';
+import { Button, CustomPopup, MainText } from '@mokjang/components';
 
 import useWindowSize from '../../../hooks/window/window';
 import { BLANK_HEADER } from '../../../redux/reducers/filter/member-filter-reducer';
 import { useI18n, useScopedI18n } from '../../../../locales/client';
-import { getFormattedMobilePhone } from '@mokjang/utils';
+import {
+  getFormattedPhone,
+  getTranslatedDateFromDateString,
+} from '@mokjang/utils';
 import { getStatusColor } from '../../../utils/color';
-import { JOIN_REQUEST } from '@mokjang/constants';
-import { JoinRequest } from '@mokjang/models';
+import { JoinRequest, Member } from '@mokjang/models';
 import JoinRequestTableHeader from '../../atoms/join-request/join-request-table-header';
-import { USER } from '@mokjang/constants';
-import { Button } from '@mokjang/components';
-import { CustomPopup } from '@mokjang/components';
 import LinkMemberUser from './link-member-user';
 import { usePathname } from 'next/navigation';
-import { LOCALE } from '@mokjang/constants';
-import { getTranslatedDateFromDateString } from '@/utils/translate';
+import EmptyList from '@/components/atoms/common/image/empty-list'; // 1. 컬럼별 PX 폭 (마지막 REMARKS만 auto 할 예정)
 
 // 1. 컬럼별 PX 폭 (마지막 REMARKS만 auto 할 예정)
 const getColumnWidth = (id: string) => {
@@ -70,15 +76,21 @@ const JoinRequestTable = styled.table`
 `;
 
 // 4. 헤더(TH)
-const TableHeader = styled.th<{ id: string; $isLast?: boolean }>`
-  padding: 10px;
+const TableHeader = styled.th<{
+  id: string;
+  $isLast?: boolean;
+}>`
+  padding: 0 25px;
+  height: 50px;
+  flex-shrink: 0;
+  background-color: ${WHITE};
   position: sticky;
   top: 0;
   z-index: 5;
-  background-color: ${WHITE};
 
   /* 만약 마지막 컬럼이면 width: auto */
-  width: ${({ id, $isLast }) => ($isLast ? 'auto' : `${getColumnWidth(id)}px`)};
+  width: ${({ id, $isLast }) => ($isLast ? 'auto' : `${getColumnWidth(id)}%`)};
+
   /* 텍스트 넘침 처리 */
   overflow: hidden;
   text-overflow: ellipsis;
@@ -105,8 +117,9 @@ const JoinRequestTableRow = styled.tr`
 `;
 
 const TableData = styled.td<{ id: string; $index: number; $isLast?: boolean }>`
-  padding: 10px;
-  height: 40px;
+  padding: 0 25px;
+  height: 60px;
+  flex-shrink: 0;
 
   cursor: pointer;
 
@@ -165,7 +178,7 @@ type JoinRequestTableProps = {
   onClickApprove: () => void;
   onClickCancelLink: () => void;
   onClickReject: (joinId: string) => void;
-  onChangeLinkMember: (memberId: string) => void;
+  onChangeLinkMember: (member: Member) => void;
 };
 
 const JoinRequestTableView = ({
@@ -206,7 +219,7 @@ const JoinRequestTableView = ({
       case JOIN_REQUEST.MOBILE_PHONE:
         return (
           <MainText>
-            {getFormattedMobilePhone(joinRequest?.user.mobilePhone)}
+            {getFormattedPhone(joinRequest?.user.mobilePhone)}
           </MainText>
         );
       case JOIN_REQUEST.STATUS:
@@ -295,13 +308,16 @@ const JoinRequestTableView = ({
             ))}
           </tbody>
         </JoinRequestTable>
+        {joinRequests.length === 0 && <EmptyList width={200} height={200} />}
 
         <CustomPopup
           isShow={isLinkPopupShown}
+          onClickClose={onClickCancelLink}
           onClickCancel={onClickCancelLink}
           width={500}
           height={850}
           headerTitle={t_title('linkMemberUser')}
+          cancelText={t_button('cancel')}
           doneText={t_button('link')}
           onClickDone={onClickApprove}
         >

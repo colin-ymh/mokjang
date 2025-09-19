@@ -1,18 +1,12 @@
 import styled from 'styled-components';
-
-import { Svg } from '@mokjang/assets';
-import { MainText } from '@mokjang/components';
-import { GRAY } from '@mokjang/constants';
+import { MainTag, MainText } from '@mokjang/components';
+import { CURSOR, GRAY, LOCALE, SIZE } from '@mokjang/constants';
 import { useI18n } from '../../../../../../locales/client';
-import { SIZE } from '@mokjang/constants';
-import { SvgIcon } from '@mokjang/components';
 import React from 'react';
 import { usePathname } from 'next/navigation';
-import { LOCALE } from '@mokjang/constants';
 import { Visitation, VISITATION_TYPE } from '@mokjang/models';
-import { getTranslatedDateFromDateString } from '@mokjang/utils';
+import { getTranslatedStartEndDate } from '@mokjang/utils';
 import MemberProfilePopupButton from '../../../../molecules/common/button/member-profile-popup-button';
-import { MainTag } from '@mokjang/components';
 import {
   getStatusBackgroundColor,
   getStatusFontColor,
@@ -25,8 +19,12 @@ const ItemContainer = styled.div`
   border: 1px solid ${GRAY.LIGHT};
   flex-direction: column;
   justify-content: space-between;
-  gap: 10px;
+  gap: 12px;
   padding: 20px;
+
+  &:hover {
+    border-width: 2px;
+  }
 `;
 
 const TitleContainer = styled.div`
@@ -70,7 +68,9 @@ const MemberVisitationItem = ({
       <ItemContainer onClick={() => onClickVisitation(visitation)}>
         <TitleContainer>
           {/* 제목 */}
-          <MainText size={SIZE.EXTRA_LARGE}>{visitation.title}</MainText>
+          <MainText size={SIZE.EXTRA_LARGE} cursor={CURSOR.POINTER}>
+            {visitation.title}
+          </MainText>
           <MainTag
             title={t(visitation.status)}
             color={getStatusFontColor(visitation.status)}
@@ -79,20 +79,24 @@ const MemberVisitationItem = ({
         </TitleContainer>
         {/* 날짜 */}
         <ContentContainer>
-          <SvgIcon svg={Svg.Calendar} color={GRAY.SEMI_DARK} />
-          <MainText color={GRAY.SEMI_DARK}>{t('period')}</MainText>
-          <MainText>
-            {`${getTranslatedDateFromDateString(locale, visitation.startDate)}
-                -
-                ${getTranslatedDateFromDateString(locale, visitation.endDate)}`}
+          <MainText color={GRAY.SEMI_DARK} cursor={CURSOR.POINTER}>
+            {t('period')}
+          </MainText>
+          <MainText cursor={CURSOR.POINTER}>
+            {getTranslatedStartEndDate(
+              locale,
+              visitation.startDate,
+              visitation.endDate
+            )}
           </MainText>
         </ContentContainer>
         <RowContainer>
           {/* 유형 */}
           <ContentContainer>
-            <SvgIcon svg={Svg.Star} color={GRAY.SEMI_DARK} />
-            <MainText color={GRAY.SEMI_DARK}>{t('type')}</MainText>
-            <MainText>
+            <MainText color={GRAY.SEMI_DARK} cursor={CURSOR.POINTER}>
+              {t('type')}
+            </MainText>
+            <MainText cursor={CURSOR.POINTER}>
               {visitation.visitationType === VISITATION_TYPE.SINGLE
                 ? t('visitationTypeSingle')
                 : t('visitationTypeGroup')}
@@ -100,8 +104,9 @@ const MemberVisitationItem = ({
           </ContentContainer>
           {/* 담당자 */}
           <ContentContainer>
-            <SvgIcon svg={Svg.User} color={GRAY.SEMI_DARK} />
-            <MainText color={GRAY.SEMI_DARK}>{t('inCharge')}</MainText>
+            <MainText color={GRAY.SEMI_DARK} cursor={CURSOR.POINTER}>
+              {t('inCharge')}
+            </MainText>
             <MemberProfilePopupButton
               member={visitation.inCharge}
               isProfileImageShown={false}

@@ -1,9 +1,10 @@
 import axios from 'axios';
-
-import { TEST_SERVER_URL } from '../../../../packages/constants/src';
+import { IS_PRODUCTION, SERVER_URL, TEST_SERVER_URL } from '@mokjang/utils';
 
 const authorizeAxios = axios.create({
-  baseURL: TEST_SERVER_URL,
+  baseURL: IS_PRODUCTION
+    ? SERVER_URL // 실제 사용할 url
+    : TEST_SERVER_URL, // 개발용 url
   withCredentials: true,
 });
 

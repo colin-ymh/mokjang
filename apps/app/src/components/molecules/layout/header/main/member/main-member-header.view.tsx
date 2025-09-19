@@ -1,26 +1,19 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { GRAY, WHITE } from '@mokjang/constants';
-import { MainText } from '@mokjang/components';
-import { DIRECTION, SIZE } from '@mokjang/constants';
+import { DIRECTION, GRAY, MEDIA_MIN_WIDTH, SIZE, WHITE, } from '@mokjang/constants';
+import { Button, CustomPopup, MainText, SvgIcon } from '@mokjang/components';
 
 import { useScopedI18n } from '../../../../../../../locales/client';
-import { MEDIA_MIN_WIDTH } from '@mokjang/constants';
 import SlidePopup from '../../../../../atoms/common/popup/slide-popup';
-import { Button } from '@mokjang/components';
 import { MAIN_HEADER_ID } from '@/constants/layout/header';
 import GroupFilter from '../../../../member/setting/group-filter';
 import AddMember from '../../../../../organisms/member/add/add-member';
 
 import { Svg } from '@mokjang/assets';
-import {
-  getIsWellFormedMobilePhone,
-  getIsWellFormedName,
-} from '@mokjang/utils';
+import { getIsWellFormedName, getIsWellFormedPhone } from '@mokjang/utils';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../../../../../redux/store';
-import { CustomPopup } from '@mokjang/components';
+import { RootState } from '@/redux/store';
 
 const HeaderContainer = styled.div`
   display: flex;
@@ -112,7 +105,7 @@ type MainMemberHeaderViewProps = {
   onDismissModal: () => void;
   selectedGroupName: string;
   onClickNewGroup: (groupId: string | null) => void;
-  onChangeProfileImage: (image: File | null) => void;
+  onChangeProfileImage: (image: File | null | undefined) => void;
   onClickSave: () => void;
 };
 
@@ -153,9 +146,11 @@ const MainMemberHeaderView = ({
         <Button
           text={t_button('addMember')}
           onClick={onClickRegisterMemberButton}
-          width={100}
-          height={30}
-          icon={<PlusIcon />}
+          width={'auto'}
+          fontWeight={500}
+          fontSize={16}
+          height={35}
+          icon={<SvgIcon svg={Svg.Plus} color={WHITE} width={2} size={20} />}
         />
       </HeaderTopContainer>
       {/* 그룹 필터링 팝업 */}
@@ -169,18 +164,23 @@ const MainMemberHeaderView = ({
       {/* 데스크톱 교인 추가 */}
       <DesktopRegister>
         <CustomPopup
-          width={60}
+          width={35}
           height={80}
           isPercentage={true}
+          // width={700}
+          // height={1000}
           isShow={isRegisterShown}
+          onClickClose={onClickClose}
           onClickCancel={onClickClose}
           onClickDone={onClickSave}
           headerTitle={t_title('memberRegister')}
           headerDescription={t_description('memberRegisterHeader')}
           doneDisabled={
             !getIsWellFormedName(targetMember.name) ||
-            !getIsWellFormedMobilePhone(targetMember.mobilePhone)
+            !getIsWellFormedPhone(targetMember.mobilePhone)
           }
+          cancelText={t_button('cancel')}
+          doneText={t_button('save')}
         >
           <AddMember onChangeProfileImage={onChangeProfileImage} />
         </CustomPopup>

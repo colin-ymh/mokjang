@@ -18,6 +18,7 @@ import {
   WORSHIP_ENROLLMENT,
 } from '@mokjang/constants';
 import { getEnglishMonthName, getShortEnglishMonthName } from './format';
+import { getDateFromDateString, getIsSameDate } from './date';
 
 export const getTranslatedMemberCount = (
   basePath: LOCALE,
@@ -137,6 +138,7 @@ export const getTranslatedVisitationColumn = (
   t: (key: string, ...args: any[]) => string,
   id: VISITATION
 ): string => {
+  if (id === VISITATION.STATUS) return BLANK;
   return t(
     id as
       | VISITATION.TITLE
@@ -175,6 +177,7 @@ export const getTranslatedTaskColumn = (
   t: (key: string, ...args: any[]) => string,
   id: TASK
 ): string => {
+  if (id === TASK.STATUS) return BLANK;
   return t(id as TASK.TITLE | TASK.STATUS | TASK.DATE | TASK.IN_CHARGE);
 };
 
@@ -196,7 +199,7 @@ export const getTranslatedPermissionTemplateColumn = (
   t: (key: string, ...args: any[]) => string,
   id: PERMISSION_TEMPLATE
 ): string => {
-  return t(id as PERMISSION_TEMPLATE.TITLE);
+  return t(id);
 };
 
 export const getTranslatedJoinRequestColumn = (
@@ -316,7 +319,7 @@ export const getTranslatedScheduleDate = (locale: LOCALE, date: Date) => {
   const minute = String(date.getMinutes()).padStart(2, '0');
 
   if (locale === LOCALE.KO) {
-    return `${month}월 ${day}일 ${hour}:${minute}`;
+    return `${month}월 ${day}일 ${hour}시 ${minute}분`;
   }
 
   return `${day} ${getShortEnglishMonthName(parseInt(month) - 1)}. ${hour}:${minute}`;
@@ -435,45 +438,69 @@ export const getTranslateWorshipAttendanceWidgetDescription = (
   rangeTitle: string
 ) => {
   if (locale === LOCALE.KO) {
-    return `${rangeTitle} 출석률 50% 미만`;
+    return `${rangeTitle} 출석률 50% 이하`;
   }
 
-  return `Under 50% attendance rate in ${rangeTitle}`;
+  return `${rangeTitle} attendance rate below 50% `;
 };
 
-// YYYY-MM-DD 을 YYYY년 MM월 DD일 형식으로 포맷
 export const getTranslatedDateFromDateString = (
   basePath: LOCALE,
   date: string
 ): string => {
-  if (!date) return ''; // 빈 입력 처리
+  if (!date) return '';
 
-  // YYYY-MM-DD에서 숫자만 남기기
-  const cleaned = date.replace(/[^0-9]/g, '').slice(0, 8); // 숫자 외 제거
+  // 문자열을 Date 객체로 변환
+  const d = new Date(date);
+
+  const year = d.getFullYear();
+  const month = d.getMonth() + 1; // getMonth()는 0부터 시작
+  const day = d.getDate();
 
   if (basePath === LOCALE.KO) {
-    // 입력된 문자열 길이 확인 후 포맷 적용
-    switch (cleaned.length) {
-      case 4: // YYYY
-        return `${cleaned}년`;
-      case 6: // YYYY MM
-        return `${cleaned.slice(0, 4)}년 ${parseInt(cleaned.slice(4, 6), 10)}월`;
-      case 8: // YYYY MM DD
-        return `${cleaned.slice(0, 4)}년 ${parseInt(cleaned.slice(4, 6), 10)}월 ${parseInt(cleaned.slice(6), 10)}일`;
-      default: // 유효하지 않은 경우
-        return '';
-    }
+    return `${year}년 ${month}월 ${day}일`;
   } else {
-    switch (cleaned.length) {
-      case 4: // YYYY
-        return cleaned; // 연도만 반환
-      case 6: // YYYY MM
-        return `${getEnglishMonthName(parseInt(cleaned.slice(4, 6), 10))} ${cleaned.slice(0, 4)}`;
-      case 8: // YYYY MM DD
-        return `${getEnglishMonthName(parseInt(cleaned.slice(4, 6), 10))} ${parseInt(cleaned.slice(6), 10)}, ${cleaned.slice(0, 4)}`;
-      default: // 유효하지 않은 경우
-        return '';
-    }
+    return `${getEnglishMonthName(month)} ${day}, ${year}`;
+  }
+};
+
+export const getTranslatedStartEndDate = (
+  basePath: LOCALE,
+  startDate?: string,
+  endDate?: string
+): string => {
+  if (!startDate) {
+    return BLANK;
+  } else if (!endDate) {
+    return getTranslatedDateFromDateString(basePath, startDate);
+  } else if (
+    getIsSameDate(
+      getDateFromDateString(startDate),
+      getDateFromDateString(endDate)
+    )
+  ) {
+    return getTranslatedDateFromDateString(basePath, startDate);
+  } else {
+    return `${getTranslatedDateFromDateString(basePath, startDate)} - ${getTranslatedDateFromDateString(basePath, endDate)}`;
+  }
+};
+
+export const getTranslatedMMDDDateFromDateString = (
+  basePath: LOCALE,
+  date: string
+): string => {
+  if (!date) return '';
+
+  // 문자열을 Date 객체로 변환
+  const d = new Date(date);
+
+  const month = d.getMonth() + 1; // getMonth()는 0부터 시작
+  const day = d.getDate();
+
+  if (basePath === LOCALE.KO) {
+    return `${month}월 ${day}일`;
+  } else {
+    return `${getEnglishMonthName(month)} ${day}`;
   }
 };
 
@@ -486,10 +513,7 @@ export const getTranslatedTerm = (locale: LOCALE, term: string) => {
   if (locale === LOCALE.KO) {
     return `${term}기`;
   } else {
-    if (term === '1') return `1st`;
-    if (term === '2') return `2nd`;
-    if (term === '3') return `3rd`;
-    return `${term}th`;
+    return `Batch ${term}`;
   }
 };
 
@@ -561,6 +585,22 @@ export const getTranslatedMemberAttendanceCount = (
   }
 };
 
+/**
+ *
+ * @param locale
+ * @param unknownCount
+ */
+export const getTranslatedUnknownAttendanceCount = (
+  locale: LOCALE,
+  unknownCount: number
+) => {
+  if (locale === LOCALE.KO) {
+    return `(출석확인 필요 ${unknownCount}회)`;
+  } else {
+    return `(Needs attendance confirmation ${unknownCount} times)`;
+  }
+};
+
 export const getTranslatedSummaryCount = (
   basePath: LOCALE,
   summary: number
@@ -573,5 +613,58 @@ export const getTranslatedSummaryCount = (
     }
   } else {
     return `${summary}건`;
+  }
+};
+
+/**
+ * ISO 문자열과 현재 시간의 차이를 간단한 "n분 전" / "n hours ago" 형태로 반환.
+ */
+export function getTranslatedTimeAgo(locale: LOCALE, date: string): string {
+  const now = new Date();
+  const target = new Date(date);
+  const nowMs = now.getTime();
+  const targetMs = isNaN(target.getTime()) ? nowMs : target.getTime();
+
+  // 미래값은 0으로 클램프
+  let diffMs = Math.max(0, nowMs - targetMs);
+
+  const minute = 60 * 1000;
+  const hour = 60 * minute;
+  const day = 24 * hour;
+
+  if (diffMs < minute) {
+    return locale === LOCALE.KO ? '방금' : 'just now';
+  }
+
+  if (diffMs < hour) {
+    const m = Math.floor(diffMs / minute);
+    return locale === LOCALE.KO
+      ? `${m}분 전`
+      : `${m} minute${m === 1 ? '' : 's'} ago`;
+  }
+
+  if (diffMs < day) {
+    const h = Math.floor(diffMs / hour);
+    return locale === LOCALE.KO
+      ? `${h}시간 전`
+      : `${h} hour${h === 1 ? '' : 's'} ago`;
+  }
+
+  const d = Math.floor(diffMs / day);
+  return locale === LOCALE.KO
+    ? `${d}일 전`
+    : `${d} day${d === 1 ? '' : 's'} ago`;
+}
+
+export const getTranslatedAndOthers = (
+  basePath: LOCALE,
+  count: number
+): string => {
+  if (count < 1) return BLANK;
+
+  if (basePath === LOCALE.EN) {
+    return `and ${count} others`;
+  } else {
+    return `외 ${count}명`;
   }
 };

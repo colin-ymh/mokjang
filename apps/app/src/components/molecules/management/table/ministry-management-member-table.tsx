@@ -1,13 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Member } from '@mokjang/models';
-import { MEMBER } from '@mokjang/constants';
-import { ORDER_DIRECTION } from '@mokjang/constants';
+import { Member, Ministry, MinistryGroup } from '@mokjang/models';
+import { DESTRUCTIVE, MEMBER, ORDER_DIRECTION } from '@mokjang/constants';
 import { CHURCH_CONTENT_ID } from '../../../../constants/layout/content';
-import { Ministry, MinistryGroup } from '@mokjang/models';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../../../redux/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../../../redux/store';
 import { MinistryMembersApi } from '../../../../api/management/ministry/ministry-mebers.api';
 import ManagementMemberTableView from './management-member-table.view';
+import {
+  setIsToastShown,
+  setToastBackgroundColor,
+  setToastText,
+} from '@/redux/reducers/toast-popup-reducer';
 
 export type MinistryManagementMemberTableProps = {
   members: Member[];
@@ -36,6 +39,7 @@ const MinistryManagementMemberTable = ({
   fetchMinistries,
   selectedMinistryGroup,
 }: MinistryManagementMemberTableProps) => {
+  const dispatch = useDispatch<AppDispatch>();
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const ministryMembersApi = new MinistryMembersApi(false);
   const { churchId } = useSelector((state: RootState) => state.church);
@@ -51,7 +55,7 @@ const MinistryManagementMemberTable = ({
       const { scrollTop, scrollHeight, clientHeight } = scrollRef.current;
 
       // 스크롤이 최하단에 도달했는지 확인
-      if (scrollTop + clientHeight >= scrollHeight) {
+      if (scrollTop + clientHeight >= scrollHeight - 10) {
         loadMembers(); // 데이터를 추가로 로드
       }
     }
@@ -85,7 +89,13 @@ const MinistryManagementMemberTable = ({
       fetchMembers();
       fetchMinistries();
     } catch (error) {
-      setThrownError(error instanceof Error ? error : new Error(String(error)));
+      if (error instanceof Error) {
+        dispatch(setToastText(error.message));
+        dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
+        dispatch(setIsToastShown(true));
+      } else {
+        setThrownError(new Error(String(error)));
+      }
     }
   };
 

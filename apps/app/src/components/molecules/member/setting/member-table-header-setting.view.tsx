@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { useSelector } from 'react-redux';
-import { RootState } from '../../../../redux/store';
+import { RootState } from '@/redux/store';
 import { MAIN } from '@mokjang/constants';
 import { useI18n } from '../../../../../locales/client';
 import { Svg } from '@mokjang/assets';
@@ -14,6 +14,7 @@ const TableSettingContainer = styled.div`
   flex-direction: column;
   width: 100%;
   padding: 20px;
+  padding-bottom: 0;
   gap: 20px;
 `;
 
@@ -35,6 +36,7 @@ const OrderItemList = styled.div`
   display: flex;
   flex-direction: column;
   overflow-y: auto;
+  padding-bottom: 20px;
 `;
 
 type TableSettingViewProps = {

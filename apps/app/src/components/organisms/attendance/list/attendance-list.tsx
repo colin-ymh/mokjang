@@ -1,22 +1,32 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../../../redux/store';
+import { AppDispatch, RootState } from '@/redux/store';
 import {
   fetchWorshipEnrollments,
   setWorshipEnrollments,
   setWorshipEnrollmentTotalCount,
-} from '../../../../redux/reducers/filter/worship-enrollment-filter-reducer';
+} from '@/redux/reducers/filter/worship-enrollment-filter-reducer';
 import { WorshipEnrollment } from '@mokjang/models';
 import AttendanceListView from './attendance-list.view';
 import { Loading } from '@mokjang/components';
+import { WorshipEnrollmentsApi } from '@/api/worship/worship-enrollments.api';
+import {
+  setIsToastShown,
+  setToastBackgroundColor,
+  setToastText,
+} from '@/redux/reducers/toast-popup-reducer';
+import { DESTRUCTIVE } from '@mokjang/constants';
+
 type AttendanceListProps = {};
 
 const AttendanceList = ({}: AttendanceListProps) => {
   const dispatch = useDispatch<AppDispatch>();
+  const worshipEnrollmentsApi = new WorshipEnrollmentsApi(false);
 
   const churchId: string = useSelector(
     (state: RootState) => state.church.churchId
   );
+  const { worships } = useSelector((state: RootState) => state.worshipFilter);
   const {
     worshipEnrollments,
     worshipEnrollmentFilter,
@@ -29,56 +39,99 @@ const AttendanceList = ({}: AttendanceListProps) => {
   );
 
   const [thrownError, setThrownError] = useState<Error | null>(null);
-  if (thrownError) {
-    throw thrownError;
-  }
+  if (thrownError) throw thrownError;
 
   const [isStatisticOpened, setIsStatisticOpened] = useState<boolean>(false);
 
-  // 서버에서 불러오는 교인 목록 페이지
+  // 서버에서 불러오는 페이지 (1부터 시작)
   const [page, setPage] = useState<number>(1);
 
-  // 데이터 로딩 상태
+  // 공용 로딩 상태 (요청 중엔 모든 추가 요청 가드)
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
+  // 더 불러올 데이터 여부
+  const [hasMore, setHasMore] = useState<boolean>(true);
+
   const onClickStatisticChevron = () => {
-    setIsStatisticOpened(!isStatisticOpened);
+    setIsStatisticOpened((p) => !p);
   };
 
-  // 무한 스크롤로 데이터 추가 로드
+  const TAKE = 30;
+
+  // 무한 스크롤 추가 로드
   const loadWorshipEnrollments = async () => {
     if (!targetWorship.id) return;
-    if (isLoading) return; // 로딩 중에는 추가 요청 방지
-    setIsLoading(true);
+    if (isLoading || !hasMore) return;
 
+    setIsLoading(true);
+    try {
+      const nextPage = page + 1;
+      const payload = await dispatch(
+        fetchWorshipEnrollments({
+          churchId,
+          currentPage: nextPage,
+          worshipId: targetWorship.id,
+          take: TAKE,
+        })
+      ).unwrap(); // ✅ 여기서 성공/실패를 확정적으로 분기
+
+      const newItems = payload.data ?? [];
+      const totalCount = payload.totalCount ?? 0;
+
+      // 상태 반영
+      dispatch(setWorshipEnrollmentTotalCount(totalCount));
+      dispatch(setWorshipEnrollments([...worshipEnrollments, ...newItems]));
+      setPage(nextPage);
+      setHasMore(newItems.length === TAKE);
+    } catch (error) {
+      setPage(1);
+      setHasMore(true);
+      dispatch(setWorshipEnrollmentTotalCount(0));
+      dispatch(setWorshipEnrollments([]));
+      if (error instanceof Error) {
+        dispatch(setToastText(error.message));
+        dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
+        dispatch(setIsToastShown(true));
+      } else {
+        setThrownError(new Error(String(error)));
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // 초기/필터 변경 시
+  const fetchInitialEnrollments = async () => {
+    if (!targetWorship.id) {
+      // 초기화
+      dispatch(setWorshipEnrollments([]));
+      dispatch(setWorshipEnrollmentTotalCount(0));
+      setPage(1);
+      setHasMore(true);
+      return;
+    }
+    if (isLoading) return;
+
+    setIsLoading(true);
     try {
       const result = await dispatch(
         fetchWorshipEnrollments({
           churchId,
-          currentPage: page + 1,
+          currentPage: 1,
           worshipId: targetWorship.id,
+          take: TAKE,
         })
       );
+
       if (fetchWorshipEnrollments.fulfilled.match(result)) {
-        const newWorshipEnrollments: WorshipEnrollment[] = result.payload.data;
-        const totalCount = result.payload.totalCount;
+        const firstPageData: WorshipEnrollment[] = result.payload.data ?? [];
+        const totalCount: number = result.payload.totalCount ?? 0;
+
+        dispatch(setWorshipEnrollments(firstPageData));
         dispatch(setWorshipEnrollmentTotalCount(totalCount));
-        if (newWorshipEnrollments.length > 0) {
-          // 기존 데이터와 합치면서 중복 제거
-          const existingIds = new Set(
-            worshipEnrollments.map((worshipEnrollment) => worshipEnrollment.id)
-          );
-          const filteredNewAttendances = newWorshipEnrollments.filter(
-            (enrollment) => !existingIds.has(enrollment.id)
-          );
-          dispatch(
-            setWorshipEnrollments([
-              ...worshipEnrollments,
-              ...filteredNewAttendances,
-            ])
-          );
-          setPage((prev) => prev + 1); // 다음 페이지로 이동
-        }
+        setPage(1);
+
+        setHasMore(firstPageData.length === TAKE);
       }
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));
@@ -87,35 +140,28 @@ const AttendanceList = ({}: AttendanceListProps) => {
     }
   };
 
-  // 필터 정보가 변경될 때, 출석부를 다시 불러오는 부분
-  useEffect(() => {
-    if (targetWorship.id) {
-      const fetchInitialEnrollments = async () => {
-        try {
-          const result = await dispatch(
-            fetchWorshipEnrollments({
-              churchId,
-              currentPage: 1,
-              worshipId: targetWorship.id,
-            })
-          );
-          if (fetchWorshipEnrollments.fulfilled.match(result)) {
-            dispatch(setWorshipEnrollments(result.payload.data));
-            const totalCount = result.payload.totalCount;
-            dispatch(setWorshipEnrollmentTotalCount(totalCount));
-            setPage(1);
-          }
-        } catch (error) {
-          setThrownError(
-            error instanceof Error ? error : new Error(String(error))
-          );
-        }
-      };
+  const onClickRefreshEnrollments = async () => {
+    if (!targetWorship.id) return;
+    if (isLoading) return;
 
-      fetchInitialEnrollments();
-    } else {
-      dispatch(setWorshipEnrollments([]));
+    setIsLoading(true);
+    try {
+      await worshipEnrollmentsApi.refreshWorshipEnrollments({
+        churchId,
+        worshipId: targetWorship.id,
+      });
+      await fetchInitialEnrollments();
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
+    } finally {
+      setIsLoading(false);
     }
+  };
+
+  // 필터/정렬/대상 예배 변경 시 초기 로드
+  useEffect(() => {
+    fetchInitialEnrollments();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     churchId,
     targetWorship.id,
@@ -129,13 +175,14 @@ const AttendanceList = ({}: AttendanceListProps) => {
       loadWorshipEnrollments,
       isStatisticOpened,
       onClickStatisticChevron,
+      onClickRefreshEnrollments,
     },
     information: {},
   };
 
   return (
     <>
-      <AttendanceListView {...props} />
+      {<AttendanceListView {...props} />}
       <Loading isShow={isLoading} />
     </>
   );

@@ -11,24 +11,25 @@ import {
   setIsToastShown,
   setToastText,
 } from '../../../../redux/reducers/toast-popup-reducer';
-import { MAIN } from '@mokjang/constants';
+import { LOCALE, MAIN, TASK_STATUS } from '@mokjang/constants';
 import { EducationSessionsApi } from '../../../../api/education/education-sessions.api';
 import { setTargetEducation } from '../../../../redux/reducers/target/target-education-reducer';
 import { setTargetEducationTerm } from '../../../../redux/reducers/target/target-education-term-reducer';
 import { setEducations } from '../../../../redux/reducers/filter/education-filter-reducer';
-import { getIsWellFormedTitle } from '@mokjang/utils';
-import { TASK_STATUS } from '@mokjang/constants';
+import {
+  getDateFromDateString,
+  getFullStringFromDate,
+  getIsWellFormedTitle,
+  getTranslatedTerm,
+} from '@mokjang/utils';
 import { setTargetEducationSession } from '../../../../redux/reducers/target/target-education-session-reducer';
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
 import WrappedPagePopup from '../../../atoms/common/popup/wrapped-page-popup';
-import { getTranslatedTerm } from '@mokjang/utils';
 import ConfirmPopup from '../../../atoms/common/popup/error-popup';
 import EducationSessionInformation from '../../../organisms/education/education-session/information/education-session-information';
 import AddEducationSession from '../../../organisms/education/education-session/add/add-education-session';
 import { usePathname } from 'next/navigation';
-import { LOCALE } from '@mokjang/constants';
 import EducationSessionTableView from './education-session-table.view';
-import { getDateFromDateString, getFullStringFromDate } from '@mokjang/utils';
 
 export type EducationTermTableProps = {};
 
@@ -191,11 +192,15 @@ const EducationSessionTable = ({}: EducationTermTableProps) => {
 
   const onClickEditEducationSessionDone = async () => {
     try {
-      const prev = targetEducationTerm.educationSessions?.find(
-        (session) => session.id === targetEducationSession.id
-      );
+      const response = await educationSessionsApi.getEducationSession({
+        churchId,
+        educationId: targetEducationTerm.educationId,
+        educationTermId: targetEducationTerm.id,
+        educationSessionId: targetEducationSession.id,
+      });
+      const prev: EducationSession = response.data.data;
 
-      const response = await educationSessionsApi.editEducationSession(
+      await educationSessionsApi.editEducationSession(
         {
           churchId,
           educationId: targetEducationTerm.educationId,
@@ -415,6 +420,8 @@ const EducationSessionTable = ({}: EducationTermTableProps) => {
         startDate={targetEducationSession.startDate}
         endDate={targetEducationSession.endDate}
         closeText={t_button('backToEducationTerm')}
+        widthPercentage={45}
+        blur={false}
       >
         {(scrollRef) => (
           <>
@@ -453,6 +460,8 @@ const EducationSessionTable = ({}: EducationTermTableProps) => {
         }
         doneDisabled={!isEducationSessionSaveEnabled}
         closeText={t_button('backToEducationSession')}
+        widthPercentage={45}
+        blur={false}
       >
         <AddEducationSession />
       </WrappedPagePopup>

@@ -3,24 +3,34 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
 
-import { GRAY, WHITE } from '@mokjang/constants';
-import { PERMISSION_TEMPLATE } from '@mokjang/constants';
+import {
+  BLANK,
+  GRAY,
+  LOCALE,
+  PERMISSION_TEMPLATE,
+  SIZE,
+  WHITE,
+} from '@mokjang/constants';
 import { MainText } from '@mokjang/components';
-import { BLANK } from '@mokjang/constants';
-import { PermissionTemplate } from '@mokjang/models';
+import { ACTION, DOMAIN, PermissionTemplate } from '@mokjang/models';
 import useWindowSize from '../../../../hooks/window/window';
 import PermissionTemplateTableHeader from '../../../atoms/permission/list/permission-template-table-header';
 import { BLANK_HEADER } from '../../../../redux/reducers/filter/member-filter-reducer';
 import { useI18n } from '../../../../../locales/client';
-import { getOwnerPermissionTemplate } from '../../../../utils/permission';
+import {
+  getIsAccessed,
+  getOwnerPermissionTemplate,
+} from '../../../../utils/permission';
+import { getTranslatedMemberCount } from '@mokjang/utils';
+import { usePathname } from 'next/navigation';
 
 // 1. 컬럼별 PX 폭 (마지막 REMARKS만 auto 할 예정)
 const getColumnWidth = (id: string) => {
   switch (id) {
     case PERMISSION_TEMPLATE.TITLE:
-      return 300;
-    case PERMISSION_TEMPLATE.DESCRIPTION:
-      return 500;
+      return 40;
+    case PERMISSION_TEMPLATE.MEMBER_COUNT:
+      return 40;
     default:
       // 비고(REMARKS) 컬럼 등
       return 80;
@@ -56,15 +66,21 @@ const PermissionTemplateTable = styled.table`
 `;
 
 // 4. 헤더(TH)
-const TableHeader = styled.th<{ id: string; $isLast?: boolean }>`
-  padding: 3px 10px;
+const TableHeader = styled.th<{
+  id: string;
+  $isLast?: boolean;
+}>`
+  padding: 0 25px;
+  height: 50px;
+  flex-shrink: 0;
+  background-color: ${WHITE};
   position: sticky;
   top: 0;
   z-index: 5;
-  background-color: ${WHITE};
 
   /* 만약 마지막 컬럼이면 width: auto */
-  width: ${({ id, $isLast }) => ($isLast ? 'auto' : `${getColumnWidth(id)}px`)};
+  width: ${({ id, $isLast }) => ($isLast ? 'auto' : `${getColumnWidth(id)}%`)};
+
   /* 텍스트 넘침 처리 */
   overflow: hidden;
   text-overflow: ellipsis;
@@ -90,12 +106,14 @@ const PermissionTemplateTableRow = styled.tr`
 `;
 
 const TableData = styled.td<{ id: string; $index: number; $isLast?: boolean }>`
-  padding: 10px;
+  padding: 0 25px;
+  height: 60px;
+  flex-shrink: 0;
 
   cursor: pointer;
 
   /* 마지막 컬럼이면 auto, 아니면 px 고정 */
-  width: ${({ id, $isLast }) => ($isLast ? 'auto' : `${getColumnWidth(id)}px`)};
+  width: ${({ id, $isLast }) => ($isLast ? 'auto' : `${getColumnWidth(id)}%`)};
 
   white-space: nowrap;
   overflow: hidden;
@@ -116,6 +134,12 @@ const ContentWrapper = styled.div`
   white-space: nowrap;
 `;
 
+const TitleContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+`;
+
 type PermissionTemplateTableProps = {
   permissionTemplates: PermissionTemplate[];
   onClickHeader: (id: PERMISSION_TEMPLATE) => void;
@@ -132,6 +156,10 @@ const PermissionTemplateTableView = ({
   onScroll,
 }: PermissionTemplateTableProps) => {
   const t = useI18n();
+
+  const pathname = usePathname();
+  const basePath = pathname.split('/')[1] as LOCALE;
+
   const { height } = useWindowSize();
   const { churchId } = useSelector((state: RootState) => state.church);
   const { permissionUnits } = useSelector(
@@ -156,9 +184,22 @@ const PermissionTemplateTableView = ({
   ) => {
     switch (id) {
       case PERMISSION_TEMPLATE.TITLE:
-        return <MainText>{permissionTemplate?.title}</MainText>;
-      case PERMISSION_TEMPLATE.DESCRIPTION:
-        return <MainText>{permissionTemplate?.title}</MainText>;
+        return (
+          <TitleContainer>
+            <MainText>{permissionTemplate.title}</MainText>
+            {permissionTemplate.description && (
+              <MainText size={SIZE.SMALL} color={GRAY.SEMI_DARK}>
+                {permissionTemplate.description}
+              </MainText>
+            )}
+          </TitleContainer>
+        );
+      case PERMISSION_TEMPLATE.MEMBER_COUNT:
+        return (
+          <MainText>
+            {getTranslatedMemberCount(basePath, permissionTemplate.memberCount)}
+          </MainText>
+        );
       case BLANK:
         return <div></div>;
       default:
@@ -194,7 +235,9 @@ const PermissionTemplateTableView = ({
           </thead>
           <tbody>
             {[
-              getOwnerPermissionTemplate(t, churchId, permissionUnits),
+              ...(getIsAccessed(DOMAIN.PERMISSION, ACTION.READ)
+                ? [getOwnerPermissionTemplate(t, churchId, permissionUnits)]
+                : []),
               ...permissionTemplates,
             ].map((permissionTemplate, rowIndex) => (
               <PermissionTemplateTableRow
