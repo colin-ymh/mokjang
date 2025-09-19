@@ -15,6 +15,7 @@ export const DAYS = Object.values(DAY);
 // 신급
 export var BAPTISM;
 (function (BAPTISM) {
+    BAPTISM["none"] = "none";
     BAPTISM["NONE"] = "baptismNone";
     BAPTISM["BAPTIZED"] = "baptized";
     BAPTISM["IMMERSION_BAPTISM"] = "immersionBaptism";

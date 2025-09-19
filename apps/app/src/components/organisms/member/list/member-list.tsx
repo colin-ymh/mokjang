@@ -258,7 +258,10 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
             school: updatedMember.school || undefined,
             address: updatedMember.address || undefined,
             detailAddress: updatedMember.detailAddress || undefined,
-            registeredAt: updatedMember.registeredAt || undefined,
+            registeredAt:
+              getDateStringFromDate(
+                getDateFromDateString(updatedMember.registeredAt)
+              ) || undefined,
             baptism: updatedMember.baptism || undefined,
             marriage:
               updatedMember.marriage !== CONCEALED

@@ -159,6 +159,14 @@ type GetMemberWorshipStatistics = {
   to?: string;
 };
 
+type CreateMembersBulkParams = {
+  churchId: string;
+};
+
+type CreateMembersBulkBody = {
+  members: any[];
+};
+
 type GetMemberWorshipAttendances = {
   churchId: string;
   memberId: string;
@@ -687,6 +695,36 @@ export class MembersApi {
       return await authorizeAxios.get(url, {
         params: { worshipId, limit, cursor, sortDirection, to, from },
       });
+    } catch (serverError: any) {
+      if (serverError.response) {
+        const { message, error, statusCode } = serverError.response.data;
+        throw new CustomError(message, error, statusCode);
+      } else {
+        throw new CustomError(
+          '알 수 없는 에러가 발생했습니다',
+          500,
+          'Unknown Error'
+        );
+      }
+    }
+  };
+
+  /**
+   * 교인 불러오기
+   * @param {CreateMembersBulkParams} params
+   * @param {CreateMembersBulkBody} body
+   * @returns
+   */
+  public createMembersBulk = async (
+    params: CreateMembersBulkParams,
+    body: CreateMembersBulkBody
+  ): Promise<AxiosResponse> => {
+    const { churchId } = params;
+
+    const url = `${this._url}/churches/${churchId}/members/bulk`;
+
+    try {
+      return await authorizeAxios.post(url, body);
     } catch (serverError: any) {
       if (serverError.response) {
         const { message, error, statusCode } = serverError.response.data;

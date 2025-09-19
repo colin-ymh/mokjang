@@ -315,6 +315,15 @@ const ChurchUserInformation = ({
       };
 
       dispatch(setTargetChurchUser(newTargetChurchUser));
+
+      const newChurchUsers = churchUsers.map((churchUser) => {
+        if (churchUser.id === targetChurchUser.id) {
+          return newTargetChurchUser;
+        } else {
+          return churchUser;
+        }
+      });
+      dispatch(setChurchUsers(newChurchUsers));
     } catch (error) {
       if (error instanceof Error) {
         dispatch(setToastText(error.message));

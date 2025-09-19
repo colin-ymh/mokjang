@@ -161,7 +161,7 @@ const ChurchUserTableView = ({
   const pathname = usePathname();
   const locale = pathname.split('/')[1] as LOCALE;
 
-  const { churchUsers } = useSelector(
+  const { churchUsers, churchUserFilter } = useSelector(
     (state: RootState) => state.churchUserFilter
   );
   const userTableHeaderItemList = useSelector(
@@ -248,27 +248,38 @@ const ChurchUserTableView = ({
             </tr>
           </thead>
           <tbody>
-            {churchUsers.map((churchUser, rowIndex) => (
-              <UserTableRow
-                key={churchUser.id}
-                onClick={() => {
-                  onClickUserItem(churchUser);
-                }}
-              >
-                {visibleColumns.map((item, index) => (
-                  <TableData
-                    key={item.id}
-                    id={item.id}
-                    $index={rowIndex}
-                    $isLast={index === visibleColumns.length - 1}
-                  >
-                    <ContentWrapper>
-                      {getUserTableContent(item.id, churchUser)}
-                    </ContentWrapper>
-                  </TableData>
-                ))}
-              </UserTableRow>
-            ))}
+            {churchUsers
+              .filter((churchUser) => {
+                if (churchUserFilter.permissionActive === undefined) {
+                  return true;
+                } else {
+                  return (
+                    churchUser.isPermissionActive ===
+                    churchUserFilter.permissionActive
+                  );
+                }
+              })
+              .map((churchUser, rowIndex) => (
+                <UserTableRow
+                  key={churchUser.id}
+                  onClick={() => {
+                    onClickUserItem(churchUser);
+                  }}
+                >
+                  {visibleColumns.map((item, index) => (
+                    <TableData
+                      key={item.id}
+                      id={item.id}
+                      $index={rowIndex}
+                      $isLast={index === visibleColumns.length - 1}
+                    >
+                      <ContentWrapper>
+                        {getUserTableContent(item.id, churchUser)}
+                      </ContentWrapper>
+                    </TableData>
+                  ))}
+                </UserTableRow>
+              ))}
           </tbody>
         </UserTable>
       </TableContainer>

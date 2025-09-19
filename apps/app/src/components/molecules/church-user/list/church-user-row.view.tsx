@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 import { usePermissionActiveDropdownItems } from '@/hooks/dropdown/dropdown-items';
-import { GRAY, PERMISSION_ACTIVE, WHITE } from '@mokjang/constants';
+import { GRAY, PERMISSION_ACTIVE, STATUS, WHITE } from '@mokjang/constants';
 import Dropdown from '@/components/atoms/common/dropdown/dropdown';
 import { Button, SvgIcon } from '@mokjang/components';
 import { Svg } from '@mokjang/assets';
@@ -24,13 +24,11 @@ const RowTop = styled.div`
 `;
 
 export type ChurchUserRowViewProps = {
-  permissionActive: PERMISSION_ACTIVE | undefined;
   onChangePermissionActive: (value: PERMISSION_ACTIVE | undefined) => void;
   onClickCopyJoinCode: (joinCode: string) => void;
 };
 
 const ChurchUserRowView = ({
-  permissionActive,
   onChangePermissionActive,
   onClickCopyJoinCode,
 }: ChurchUserRowViewProps) => {
@@ -40,11 +38,21 @@ const ChurchUserRowView = ({
 
   const dropdownItems = usePermissionActiveDropdownItems();
 
+  const { churchUserFilter } = useSelector(
+    (state: RootState) => state.churchUserFilter
+  );
+
   return (
     <UserContainer>
       <RowTop>
         <Dropdown
-          value={permissionActive}
+          value={
+            churchUserFilter.permissionActive === undefined
+              ? undefined
+              : churchUserFilter.permissionActive
+                ? STATUS.ACTIVE
+                : STATUS.INACTIVE
+          }
           items={dropdownItems}
           onChangeItem={onChangePermissionActive}
           width={100}

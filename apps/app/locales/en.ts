@@ -834,6 +834,8 @@ export default {
 
   'popup.clipboard': 'Copied to clipboard.',
 
+  'popup.bulkFail': 'The format of the Excel file is incorrect.',
+
   /*-------------------popup-------------------*/
 
   /*-------------------warning-------------------*/

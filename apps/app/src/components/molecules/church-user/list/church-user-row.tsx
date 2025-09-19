@@ -12,13 +12,9 @@ import {
 } from '@/redux/reducers/toast-popup-reducer';
 
 export type ChurchUserRowProps = {
-  permissionActive: PERMISSION_ACTIVE | undefined;
   onChangePermissionActive: (value: PERMISSION_ACTIVE | undefined) => void;
 };
-const ChurchUserRow = ({
-  permissionActive,
-  onChangePermissionActive,
-}: ChurchUserRowProps) => {
+const ChurchUserRow = ({ onChangePermissionActive }: ChurchUserRowProps) => {
   const t_popup = useScopedI18n('popup');
   const dispatch = useDispatch<AppDispatch>();
 
@@ -31,7 +27,6 @@ const ChurchUserRow = ({
   };
 
   const props = {
-    permissionActive,
     onChangePermissionActive,
     onClickCopyJoinCode,
   } as ChurchUserRowViewProps;
