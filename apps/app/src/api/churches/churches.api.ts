@@ -40,6 +40,22 @@ type RefreshMemberCountParams = {
   churchId: string;
 };
 
+type RequestDeleteParams = {
+  churchId: string;
+};
+
+type RequestDeleteBody = {
+  isTest?: boolean;
+};
+
+type ConfirmDeleteParams = {
+  churchId: string;
+};
+
+type ConfirmDeleteBody = {
+  inputCode?: string;
+};
+
 export class ChurchesApi {
   private _url: string;
 
@@ -169,6 +185,62 @@ export class ChurchesApi {
 
     try {
       return await authorizeAxios.patch(url);
+    } catch (serverError: any) {
+      if (serverError.response) {
+        const { message, error, statusCode } = serverError.response.data;
+        throw new CustomError(message, error, statusCode);
+      } else {
+        throw new CustomError(
+          '알 수 없는 에러가 발생했습니다',
+          500,
+          'Unknown Error'
+        );
+      }
+    }
+  };
+
+  /**
+   * 교회 삭제 신청
+   * @param {RequestDeleteParams} params
+   * @param {RequestDeleteBody} body
+   */
+  public requestDelete = async (
+    params: RequestDeleteParams,
+    body: RequestDeleteBody
+  ): Promise<AxiosResponse> => {
+    const { churchId } = params;
+    const url = `${this._url}/churches/${churchId}/delete/phone-verification/requests`;
+
+    try {
+      return await authorizeAxios.post(url, body);
+    } catch (serverError: any) {
+      if (serverError.response) {
+        const { message, error, statusCode } = serverError.response.data;
+        throw new CustomError(message, error, statusCode);
+      } else {
+        throw new CustomError(
+          '알 수 없는 에러가 발생했습니다',
+          500,
+          'Unknown Error'
+        );
+      }
+    }
+  };
+
+  /**
+   * 교회 삭제 확정
+   * @param {ConfirmDeleteParams} params
+   * @param {ConfirmDeleteBody} body
+   */
+  public confirmDelete = async (
+    params: ConfirmDeleteParams,
+    body: ConfirmDeleteBody
+  ): Promise<AxiosResponse> => {
+    const { churchId } = params;
+    const url = `${this._url}/churches/${churchId}/delete/phone-verification/confirm`;
+
+    try {
+      return await authorizeAxios.delete(url, { data: body });
     } catch (serverError: any) {
       if (serverError.response) {
         const { message, error, statusCode } = serverError.response.data;

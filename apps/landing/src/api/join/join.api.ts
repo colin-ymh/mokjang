@@ -1,4 +1,3 @@
-
 import authorizeAxios from '../authorize-axios';
 import { CustomError } from '../error/error';
 import { IS_PRODUCTION, SERVER_URL, TEST_SERVER_URL } from '@mokjang/utils';
@@ -15,6 +14,30 @@ export class JoinApi {
       ? SERVER_URL // 실제 사용할 url
       : TEST_SERVER_URL; // 개발용 url
   }
+
+  /**
+   * 교회 조회
+   * @param {CreateJoinRequestBody} body
+   */
+  public searchChurch = async (body: CreateJoinRequestBody) => {
+    const { joinCode } = body;
+    const url = `${this._url}/churches/join/search`;
+
+    try {
+      return await authorizeAxios.get(url, { params: { joinCode } });
+    } catch (serverError: any) {
+      if (serverError.response) {
+        const { message, error, statusCode } = serverError.response.data;
+        throw new CustomError(message, error, statusCode);
+      } else {
+        throw new CustomError(
+          '알 수 없는 에러가 발생했습니다',
+          500,
+          'Unknown Error'
+        );
+      }
+    }
+  };
 
   /**
    * 교회 가입 신청

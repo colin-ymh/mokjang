@@ -621,8 +621,8 @@ export const usePermissionActiveDropdownItems = () => {
 
 export const useDenominationDropdownItems = (locale: LOCALE) => {
   const KOREAN_DENOMINATIONS = [
-    '대한예수교장로회(통합)',
     '대한예수교장로회(합동)',
+    '대한예수교장로회(통합)',
     '대한예수교장로회(백석)',
     '한국기독교장로회',
     '대한예수교장로회(고신)',
