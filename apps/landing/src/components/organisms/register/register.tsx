@@ -6,7 +6,11 @@ import { AppDispatch } from '@/redux/store';
 import { setUser } from '@/redux/reducers/user-reducer';
 
 import { AuthApi, IS_TEST } from '@/api/auth/auth.api';
-import { getFormattedName, getFormattedPhone } from '@mokjang/utils';
+import {
+  getFormattedName,
+  getFormattedPhone,
+  IS_PRODUCTION,
+} from '@mokjang/utils';
 import { UserApi } from '@/api/user/user.api';
 import { setIsToastShown } from '@/redux/reducers/toast-popup-reducer';
 import { usePageRouter } from '../../../../../../packages/utils/src';
@@ -74,7 +78,7 @@ const Register = () => {
         {
           name,
           mobilePhone: mobilePhone.replace(/-/g, ''),
-          isTest: IS_TEST.INTERNAL_TEST,
+          isTest: IS_PRODUCTION ? IS_TEST.PRODUCTION : IS_TEST.INTERNAL_TEST,
         }
       );
 

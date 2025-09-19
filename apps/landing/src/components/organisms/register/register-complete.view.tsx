@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { MainText, SvgIcon } from '@mokjang/components';
-import { BLACK, GRAY, GREEN, MAIN, WHITE } from '@mokjang/constants';
+import { BLACK, GRAY, GREEN, WHITE } from '@mokjang/constants';
 import { useScopedI18n } from '../../../../locales/client';
 import { Svg } from '@mokjang/assets';
 
@@ -90,20 +90,20 @@ const RegisterCompleteView = ({
           </MainText>
         </HeaderContainer>
         <ButtonList>
-          <ButtonItem
-            $backgroundColor={MAIN.DEFAULT}
-            $borderColor={MAIN.DEFAULT}
-          >
-            <ButtonContent>
-              <MainText fontSize={18} fontWeight={600} color={WHITE}>
-                {t_register('freeTrial.title')}
-              </MainText>
-              <MainText fontSize={14} fontWeight={600} color={MAIN.LIGHT}>
-                {t_register('freeTrial.description')}
-              </MainText>
-            </ButtonContent>
-            <SvgIcon svg={Svg.ArrowRight} color={WHITE} width={2} size={18} />
-          </ButtonItem>
+          {/*<ButtonItem*/}
+          {/*  $backgroundColor={MAIN.DEFAULT}*/}
+          {/*  $borderColor={MAIN.DEFAULT}*/}
+          {/*>*/}
+          {/*  <ButtonContent>*/}
+          {/*    <MainText fontSize={18} fontWeight={600} color={WHITE}>*/}
+          {/*      {t_register('freeTrial.title')}*/}
+          {/*    </MainText>*/}
+          {/*    <MainText fontSize={14} fontWeight={600} color={MAIN.LIGHT}>*/}
+          {/*      {t_register('freeTrial.description')}*/}
+          {/*    </MainText>*/}
+          {/*  </ButtonContent>*/}
+          {/*  <SvgIcon svg={Svg.ArrowRight} color={WHITE} width={2} size={18} />*/}
+          {/*</ButtonItem>*/}
           <ButtonItem
             $backgroundColor={WHITE}
             $borderColor={GRAY.LIGHT}

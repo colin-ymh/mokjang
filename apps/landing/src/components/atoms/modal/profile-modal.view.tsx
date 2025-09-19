@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { getFormattedPhone } from '@mokjang/utils';
 import { Svg } from '@mokjang/assets';
-import { useI18n, useScopedI18n } from '../../../../locales/client';
+import { useScopedI18n } from '../../../../locales/client';
 
 const ModalContainer = styled.div`
   display: flex;
@@ -62,6 +62,7 @@ const ButtonItem = styled.div`
 export type ProfileModalViewProps = {
   onClickDonate: () => void;
   onClickChurch: () => void;
+  onClickCreateChurch: () => void;
   onClickSetting: () => void;
   onClickLogout: () => void;
 };
@@ -69,16 +70,13 @@ export type ProfileModalViewProps = {
 const ProfileModalView = ({
   onClickDonate,
   onClickChurch,
+  onClickCreateChurch,
   onClickSetting,
   onClickLogout,
 }: ProfileModalViewProps) => {
   const { user } = useSelector((state: RootState) => state.user);
-  const { subscription } = useSelector(
-    (state: RootState) => state.subscription
-  );
-  const t = useI18n();
+
   const t_button = useScopedI18n('button');
-  const t_subscription = useScopedI18n('subscription');
 
   return (
     <>
@@ -112,7 +110,11 @@ const ProfileModalView = ({
         {/*    <RowLine />*/}
         {/*  </>*/}
         {/*)}*/}
-        <ButtonItem onClick={onClickChurch}>
+        <ButtonItem
+          onClick={
+            user.churchUser.length > 0 ? onClickChurch : onClickCreateChurch
+          }
+        >
           <SvgIcon
             svg={Svg.Cross}
             size={18}
@@ -126,7 +128,9 @@ const ProfileModalView = ({
             baselineOffsetPx={1}
             cursor={CURSOR.POINTER}
           >
-            {t_button('openChurch')}
+            {user.churchUser.length > 0
+              ? t_button('openChurch')
+              : t_button('createChurch')}
           </MainText>
         </ButtonItem>
         <ButtonItem onClick={onClickDonate}>

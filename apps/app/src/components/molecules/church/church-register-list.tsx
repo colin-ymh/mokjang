@@ -37,7 +37,7 @@ const ChurchRegisterList = () => {
       await subscriptionApi.getCurrentSubscription();
 
       // 구독 정보가 있으면, 메인으로
-      router.push('/main');
+      // router.push('/main');
     } catch (error) {
       //  없으면 구독
       await subscriptionApi.getFreeTrial();

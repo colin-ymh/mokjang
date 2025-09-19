@@ -20,18 +20,16 @@ const Join = () => {
   const dispatch = useDispatch<AppDispatch>();
   const joinApi = new JoinApi(false);
 
-  const [isPending, setIsPending] = useState<boolean>(false);
-
-  const [joinCode, setJoinCode] = useState<string>(BLANK);
-
-  const [isConfirmed, setIsConfirmed] = useState<boolean>(false);
-
-  const [isChecked, setIsChecked] = useState<boolean>(false);
-
+  const [isPending, setIsPending] = useState(false);
+  const [joinCode, setJoinCode] = useState(BLANK);
+  const [isConfirmed, setIsConfirmed] = useState(false);
+  const [isChecked, setIsChecked] = useState(false);
   const [church, setChurch] = useState<Church>(DEFAULT_CHURCH);
 
+  // ✅ fetchJoinRequest 완료 전 로딩 상태
+  const [isLoading, setIsLoading] = useState(true);
+
   const [thrownError, setThrownError] = useState<Error | null>(null);
-  // 렌더링 시점(컴포넌트 return)에서 조건부로 에러 발생
   if (thrownError) {
     throw thrownError;
   }
@@ -43,11 +41,7 @@ const Join = () => {
   const onClickCodeConfirm = async () => {
     try {
       const response = await joinApi.searchChurch({ joinCode });
-
-      const newChurch = response.data.data;
-
-      setChurch(newChurch);
-
+      setChurch(response.data.data);
       setIsConfirmed(true);
     } catch (error) {
       if (error instanceof Error) {
@@ -83,7 +77,6 @@ const Join = () => {
   const fetchJoinRequest = async () => {
     try {
       const response = await joinApi.getJoinRequests();
-
       const requests = response.data;
 
       if (requests && requests.length > 0) {
@@ -101,12 +94,15 @@ const Join = () => {
       } else {
         setThrownError(new Error(String(error)));
       }
+    } finally {
+      // ✅ fetchJoinRequest 완료 시 로딩 종료
+      setIsLoading(false);
     }
   };
 
   const onClickCancelRequest = async () => {
     try {
-      const response = await joinApi.cancelJoinRequest();
+      await joinApi.cancelJoinRequest();
       dispatch(setToastText(t_popup('cancelComplete')));
       dispatch(setToastBackgroundColor(BLACK));
       dispatch(setIsToastShown(true));
@@ -130,7 +126,7 @@ const Join = () => {
     fetchJoinRequest();
   }, []);
 
-  const props = {
+  const props: JoinViewProps = {
     joinCode,
     isConfirmed,
     isChecked,
@@ -139,7 +135,10 @@ const Join = () => {
     onClickCodeConfirm,
     onClickChurchChecked,
     onClickJoinRequest,
-  } as JoinViewProps;
+  };
+
+  // ✅ fetchJoinRequest 끝나기 전에는 아무 것도 렌더링하지 않음
+  if (isLoading) return null; // 필요 시 스켈레톤/로딩 스피너로 교체 가능
 
   return (
     <>

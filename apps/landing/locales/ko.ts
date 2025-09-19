@@ -37,7 +37,7 @@ export default {
     '교회 규모에 따라 선택할 수 있는 맞춤형 요금제를 제공합니다.',
   'main.price.extra': '14일간 무료 체험 • 부가세 포함 • 언제든 변경 가능',
   'main.faq.title': '자주 묻는 질문',
-  'main.faq.description': '목장 서비스에 대해 궁금한 점들을 모았습니다.',
+  'main.faq.description': '에클 서비스에 대해 궁금한 점들을 모았습니다.',
   'main.faq.extra': '더 궁금한 점이 있으시다면 언제든 문의해주세요',
 
   'button.home': '홈',
@@ -118,10 +118,10 @@ export default {
 
   'faq.suitableChurch.question': '에클리는 어떤 교회에 적합한가요?',
   'faq.suitableChurch.answer':
-    'Ekkly는 교인 수가 적은 교회부터 큰 교회까지, 간결하면서도 교회 관리의 본질을 필요로 하는 모든 교회에 적합합니다. 현재는 500명 이내의 교회만 사용가능합니다.(교인등록 최대 500명 이내)',
+    'ekkly는 교인 수가 적은 교회부터 큰 교회까지, 간결하면서도 교회 관리의 본질을 필요로 하는 모든 교회에 적합합니다. 현재는 500명 이내의 교회만 사용가능합니다.(교인등록 최대 500명 이내)',
   'faq.moveEnable.question': '손 쉽게 기존 교인정보를 이전할 수 있나요?',
   'faq.moveEnable.answer':
-    'xlsx, csv 파일을 통해 교인정보를 간편하게 입력 할 수 있습니다. Ekkly가 제공하는 시트에 입력후 해당 시트를 적용하는 방식 ',
+    'xlsx, csv 파일을 통해 교인정보를 간편하게 입력 할 수 있습니다. ekkly가 제공하는 시트에 입력후 해당 시트를 적용하는 방식 ',
   'faq.mobileEnable.question': '모바일에서도 사용할 수 있나요?',
   'faq.mobileEnable.answer': '모바일은 현재 준비중에 있습니다.',
   'faq.dataSecurity.question': '데이터 보안은 안전한가요?',
@@ -129,7 +129,7 @@ export default {
     '모든 데이터는 안전하게 보호됩니다. 암호화된 통신과 권한 기반 접근 제어로, 안심하고 이용하실 수 있습니다.',
 
   'login.title': '간편 로그인',
-  'login.description': '목장 서비스로 교회 관리가 더욱 쉬워집니다.',
+  'login.description': '에클 서비스로 교회 관리가 더욱 쉬워집니다.',
 
   'register.title': '회원 가입',
   'register.description': '서비스 이용을 위한 기본 정보를 입력해주세요',
@@ -140,7 +140,7 @@ export default {
   'register.consent.collection.description3':
     '• 보유 기간: 서비스 이용 기간 동안',
   'register.consent.thirdParty.title': '개인정보 제3자 제공에 동의합니다.',
-  'register.consent.thirdParty.description1': '• 제공 받는 자: 목장 서비스',
+  'register.consent.thirdParty.description1': '• 제공 받는 자: 에클 서비스',
   'register.consent.thirdParty.description2':
     '• 제공 목적: 서비스 제공 및 고객 지원',
   'register.consent.thirdParty.description3': '• 제공 항목: 이름, 전화번호',
@@ -148,9 +148,9 @@ export default {
 
   'register-complete.title': '회원가입이 완료되었습니다!',
   'register-complete.description':
-    '목장 서비스를 시작하기 위해 원하는 옵션을 선택해주세요',
+    '에클 서비스를 시작하기 위해 원하는 옵션을 선택해주세요',
   'register-complete.freeTrial.title': '14일 무료체험하기',
-  'register-complete.freeTrial.description': '목장 기능을 무료로 체험해보세요',
+  'register-complete.freeTrial.description': '에클 기능을 무료로 체험해보세요',
   'register-complete.createChurch.title': '교회 생성하기',
   'register-complete.createChurch.description':
     '새로운 교회를 등록하고 관리를 시작하세요',
@@ -160,7 +160,7 @@ export default {
 
   'contact.title': '문의하기',
   'contact.description':
-    '목장 서비스에 대해 더 자세히 알아보고 싶으시다면 아래 양식을 작성해주세요.',
+    '에클 서비스에 대해 더 자세히 알아보고 싶으시다면 아래 양식을 작성해주세요.',
   'contact.contactForm': '문의 양식',
   'contact.contactContent': '문의 내용',
 
@@ -191,7 +191,7 @@ export default {
   'footer.representative.title': '대표자',
   'footer.representative.description': '나천호',
   'footer.identifyNumber.title': '사업자 등록번호',
-  'footer.identifyNumber.description': '123-45-67890',
+  'footer.identifyNumber.description': '229-15-70829',
   'footer.address.title': '주소',
   'footer.address.description': '경기도 부천시 원미구 오아아아앙아',
   'footer.privacyPolicy': '개인정보 처리방침',
@@ -206,10 +206,11 @@ export default {
   'placeholder.email': '이메일을 입력해주세요',
   'placeholder.denomination': '교단을 입력해주세요',
   'placeholder.contactContent':
-    '목장 서비스에 대해 궁금한 점이나 요구사항을 자유롭게 적어주세요',
+    '에클리에 대해 궁금한 점이나 요구사항을 자유롭게 적어주세요',
 
   'popup.cancelComplete': '취소가 완료되었습니다.',
   'popup.saveComplete': '저장이 완료되었습니다.',
   'popup.withdraw.title': '계정을 탈퇴하시겠습니까?',
   'popup.withdraw.description': '삭제된 계정은 복구할 수 없습니다.',
+  'popup.joinRequestExist': '이미 등록 대기 중인 교회가 있습니다.',
 } as const;

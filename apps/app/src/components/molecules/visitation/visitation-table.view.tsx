@@ -301,7 +301,7 @@ const VisitationTableView = ({
             ))}
           </tbody>
         </VisitationTable>
-        {visitations.length === 0 && <EmptyList width={200} height={200} />}
+        {visitations.length === 0 && <EmptyList size={50} />}
       </TableContainer>
     </>
   );

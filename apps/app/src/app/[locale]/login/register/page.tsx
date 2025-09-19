@@ -10,6 +10,8 @@ const UserRegisterPage = () => {
   const { user } = useSelector((state: RootState) => state.user);
   const router = usePageRouter();
 
+  router.replace('/');
+
   // // 로그인 상태라면 중복 렌더링을 막기 위해 null 반환
   // if (church-church-church-user?.id) {
   //   // router.replace('admin');

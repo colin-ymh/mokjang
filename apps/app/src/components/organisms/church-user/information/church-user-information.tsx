@@ -6,7 +6,7 @@ import { setTargetChurchUser } from '@/redux/reducers/target/target-church-user-
 import { ChurchUsersApi } from '@/api/church-users/church-users.api';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
-import { BLACK, DESTRUCTIVE } from '@mokjang/constants';
+import { BLACK, DESTRUCTIVE, STATUS } from '@mokjang/constants';
 import { CustomPopup } from '@mokjang/components';
 import LinkMemberUser from '@/components/molecules/join-request/link-member-user';
 import { useScopedI18n } from '../../../../../locales/client';
@@ -298,6 +298,34 @@ const ChurchUserInformation = ({
     setSelectedGroupIds(newSelectedGroupIds);
   };
 
+  const onChangeActive = async (
+    value: STATUS.ACTIVE | STATUS.INACTIVE,
+    prev: boolean
+  ) => {
+    if (value === STATUS.ACTIVE && prev) return;
+    if (value === STATUS.INACTIVE && !prev) return;
+    try {
+      await managersApi.togglePermissionActivity({
+        churchId,
+        churchUserId: targetChurchUser.id,
+      });
+      const newTargetChurchUser = {
+        ...targetChurchUser,
+        isPermissionActive: !prev,
+      };
+
+      dispatch(setTargetChurchUser(newTargetChurchUser));
+    } catch (error) {
+      if (error instanceof Error) {
+        dispatch(setToastText(error.message));
+        dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
+        dispatch(setIsToastShown(true));
+      } else {
+        setThrownError(new Error(String(error)));
+      }
+    }
+  };
+
   useEffect(() => {
     setIsGroupPopupShown(false);
     setSelectedGroupIds(
@@ -314,6 +342,7 @@ const ChurchUserInformation = ({
     onClickLink,
     onClickGroupPopupOpen,
     onClickConfirmOpen,
+    onChangeActive,
   } as ChurchUserInformationViewProps;
 
   return (

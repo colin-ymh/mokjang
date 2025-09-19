@@ -1,12 +1,9 @@
 'use client';
 
-import ModalLayout from '../../components/organisms/layout/modal-layout';
-import { BorderInput, Button } from '@mokjang/components';
 import styled from 'styled-components';
 import { useEffect, useState } from 'react';
-import { usePageRouter } from '@mokjang/utils';
+import { routeLandingPage, usePageRouter } from '@mokjang/utils';
 import { JoinRequestsApi } from '../../api/join-request/join-request.api';
-import LogoutButton from '../../components/atoms/common/button/logout-button';
 import { useSelector } from 'react-redux';
 import { RootState } from '@mokjang/landing/src/redux/store';
 
@@ -24,7 +21,9 @@ export default function LoginPage() {
   useEffect(() => {
     // 초기화가 끝났는데 유저가 없으면 보호 라우트 → 홈으로
     if (initialized && !user?.id) {
-      router.replace('/');
+      routeLandingPage('/');
+    } else if (user?.id) {
+      router.push('/main');
     }
   }, [initialized, user?.id, router]);
 
@@ -51,23 +50,24 @@ export default function LoginPage() {
   if (!user?.id) return null;
 
   return (
-    <ModalLayout>
-      <ButtonContainer>
-        <BorderInput value={code} onChange={onChangeCode} />
-        <Button
-          text={'초대코드로 입장하기'}
-          onClick={onClickEnterCode}
-          height={30}
-        />
-
-        <Button
-          text={'새로운 교회 생성하기'}
-          onClick={onClickCreateChurch}
-          height={30}
-        />
-
-        <LogoutButton />
-      </ButtonContainer>
-    </ModalLayout>
+    <div></div>
+    // <ModalLayout>
+    //   <ButtonContainer>
+    //     <BorderInput value={code} onChange={onChangeCode} />
+    //     <Button
+    //       text={'초대코드로 입장하기'}
+    //       onClick={onClickEnterCode}
+    //       height={30}
+    //     />
+    //
+    //     <Button
+    //       text={'새로운 교회 생성하기'}
+    //       onClick={onClickCreateChurch}
+    //       height={30}
+    //     />
+    //
+    //     <LogoutButton />
+    //   </ButtonContainer>
+    // </ModalLayout>
   );
 }

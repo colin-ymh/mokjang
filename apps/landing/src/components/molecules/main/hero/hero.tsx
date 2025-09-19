@@ -4,23 +4,45 @@ import HeroView, {
   HeroViewProps,
 } from '@/components/molecules/main/hero/hero.view';
 import { usePageRouter } from '../../../../../../../packages/utils/src';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/redux/store';
 import { routeAppPage } from '@mokjang/utils';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '@/redux/store';
+import { JoinApi } from '@/api/join/join.api';
+import { DESTRUCTIVE, STATUS } from '@mokjang/constants';
+import {
+  setIsToastShown,
+  setToastBackgroundColor,
+  setToastText,
+} from '@mokjang/app/src/redux/reducers/toast-popup-reducer';
+import { useScopedI18n } from '../../../../../locales/client';
 
 const Hero = () => {
+  const dispatch = useDispatch<AppDispatch>();
+  const joinApi = new JoinApi(false);
+  const t_popup = useScopedI18n('popup');
+
   const router = usePageRouter();
 
-  const { subscription } = useSelector(
-    (state: RootState) => state.subscription
-  );
+  const onClickOpenChurch = () => {
+    routeAppPage('/main');
+  };
 
-  const onClickCreateChurch = () => {
-    if (subscription?.currentPlan) {
-      routeAppPage('/church/register');
-    } else {
-      router.push('/subscription');
+  const onClickCreateChurch = async () => {
+    const response = await joinApi.getJoinRequests();
+
+    const requests = response.data;
+
+    if (requests && requests.length > 0) {
+      const lastRequest = requests[0];
+      if (lastRequest?.status === STATUS.PENDING) {
+        dispatch(setToastText(t_popup('joinRequestExist')));
+        dispatch(setIsToastShown(true));
+        dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
+        return;
+      }
     }
+
+    routeAppPage('/church/register');
   };
 
   const onClickJoin = () => {
@@ -36,6 +58,7 @@ const Hero = () => {
   };
 
   const props = {
+    onClickOpenChurch,
     onClickCreateChurch,
     onClickJoin,
     onClickStart,

@@ -22,23 +22,30 @@ export default function LoginPage() {
   }
 
   useEffect(() => {
-    // ✅ 초기화가 끝난 후 유저가 존재하면 홈으로 리다이렉트
-    if (!initialized || user?.id) return;
+    // 초기화가 끝나야 로직 시작
+    if (!initialized) return;
 
+    // 1️⃣ 유저 정보가 있으면 홈으로 이동
+    if (user?.id) {
+      router.replace('/');
+      return;
+    }
+
+    // 2️⃣ 유저 정보가 없으면 temporal token 확인
     let alive = true;
-
     (async () => {
       try {
         const { data: isTemp } = await authApi.getIsTemporalToken();
-
         if (!alive) return;
 
-        // 임시 토큰이면 가입/등록 화면으로, 아니면 홈으로
-        router.replace(isTemp ? '/register' : '/');
+        // temporal token이 있으면 register로 이동
+        if (isTemp) {
+          router.replace('/register');
+        }
+        // 3️⃣ token이 없으면 아무 것도 하지 않음 (로그인 페이지 유지)
       } catch (error) {
-        // 토큰 확인 실패 시 홈으로
         if (!alive) return;
-        router.replace('/');
+        // 에러가 나도 로그인 페이지 유지
       }
     })();
 
@@ -47,12 +54,10 @@ export default function LoginPage() {
     };
   }, [initialized, user?.id, router, authApi]);
 
-  // 초기화가 끝나기 전에는 아무 것도 렌더링하지 않음 (또는 로딩 화면)
+  // 초기화 중에는 아무 것도 렌더링하지 않음
   if (!initialized) return null;
 
-  // 로그인된 상태라면 화면 렌더링 안 함 (리다이렉트 직전)
-  if (user?.id) return null;
-
+  // ✅ 유저 정보 없고 temporal token도 없을 때만 로그인 페이지 표시
   return (
     <PageLayout>
       <Login />

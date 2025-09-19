@@ -518,7 +518,7 @@ const EducationTableView = ({
             ))}
           </tbody>
         </EducationTable>
-        {educations.length === 0 && <EmptyList width={200} height={200} />}
+        {educations.length === 0 && <EmptyList size={50} />}
       </TableContainer>
     </>
   );

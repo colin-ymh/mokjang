@@ -3,7 +3,15 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../redux/store';
 
-import { DAY, GRAY, MAIN, REPEAT_PERIOD, SIZE, WHITE, WORSHIP, } from '@mokjang/constants';
+import {
+  DAY,
+  GRAY,
+  MAIN,
+  REPEAT_PERIOD,
+  SIZE,
+  WHITE,
+  WORSHIP,
+} from '@mokjang/constants';
 import { Button, MainText } from '@mokjang/components';
 import { Worship } from '@mokjang/models';
 import useWindowSize from '../../../hooks/window/window';
@@ -262,7 +270,7 @@ const WorshipTableView = ({
             ))}
           </tbody>
         </WorshipTable>
-        {worships.length === 0 && <EmptyList width={200} height={200} />}
+        {worships.length === 0 && <EmptyList size={50} />}
       </TableContainer>
     </>
   );

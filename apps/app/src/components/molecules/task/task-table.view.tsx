@@ -248,7 +248,7 @@ const TaskTableView = ({
             ))}
           </tbody>
         </TaskTable>
-        {tasks.length === 0 && <EmptyList width={200} height={200} />}
+        {tasks.length === 0 && <EmptyList size={50} />}
       </TableContainer>
     </>
   );

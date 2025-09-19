@@ -1,4 +1,4 @@
-import { RefObject } from 'react';
+import React, { RefObject } from 'react';
 import { GroupHistory } from '@mokjang/models';
 import styled from 'styled-components';
 import GroupHistoryItem from '../../../../../atoms/member/history/group-history-item';
@@ -37,7 +37,7 @@ const GroupHistoryListView = ({
           />
         ))
       ) : (
-        <EmptyList width={200} height={200} />
+        <EmptyList size={50} />
       )}
     </HistoryList>
   );

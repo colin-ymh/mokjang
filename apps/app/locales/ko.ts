@@ -890,6 +890,10 @@ export default {
   'description.deleteChurchRequest':
     '소유자의 전화번호로 인증번호가 발송됩니다.',
 
+  'description.emptyList': '목록이 비어있습니다.',
+  'description.emptyWorshipSessionInformation':
+    '예배 내용이 입력되지 않았습니다.',
+
   /*-------------------description-------------------*/
 
   /*-------------------tooltip-------------------*/

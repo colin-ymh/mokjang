@@ -107,7 +107,7 @@ const FamilyInformationListView = ({
             );
           })
         ) : (
-          <EmptyList width={200} height={200} />
+          <EmptyList size={50} />
         )}
       </FamilyList>
 

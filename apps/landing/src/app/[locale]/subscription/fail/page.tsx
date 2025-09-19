@@ -12,6 +12,8 @@ export default function SubscriptionFailPage() {
   const { user, initialized } = useSelector((state: RootState) => state.user);
   const router = usePageRouter();
 
+  router.replace('/');
+
   useEffect(() => {
     // 초기화가 끝났는데 유저가 없으면 보호 라우트 → 홈으로
     if (initialized && !user?.id) {

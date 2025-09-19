@@ -3,14 +3,13 @@
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
-
-import ModalLayout from '../../../components/organisms/layout/modal-layout';
-import Login from '../../../components/organisms/auth/login';
 import { usePageRouter } from '@mokjang/utils';
 
 export default function LoginPage() {
   const { user } = useSelector((state: RootState) => state.user);
   const router = usePageRouter();
+
+  router.replace('/');
 
   useEffect(() => {
     if (user?.id) {
@@ -22,8 +21,9 @@ export default function LoginPage() {
   if (user?.id) return null;
 
   return (
-    <ModalLayout>
-      <Login />
-    </ModalLayout>
+    // <ModalLayout>
+    //   <Login />
+    // </ModalLayout>
+    <div></div>
   );
 }
