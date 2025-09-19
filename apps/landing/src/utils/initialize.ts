@@ -44,7 +44,7 @@ export const useInitializeUser = () => {
       }
     } catch (error) {
       // 로그인 안 되었거나 API 실패 시
-      setRedirectPath('/');
+      // setRedirectPath('/');
     } finally {
       // 어떤 경우에도 초기화 완료
       dispatch(setUserInitialized());

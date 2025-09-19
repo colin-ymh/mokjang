@@ -23,17 +23,18 @@ export default function LoginPage() {
 
   useEffect(() => {
     // ✅ 초기화가 끝난 후 유저가 존재하면 홈으로 리다이렉트
-    if (!initialized || !user?.id) return;
+    if (!initialized || user?.id) return;
 
     let alive = true;
 
     (async () => {
       try {
         const { data: isTemp } = await authApi.getIsTemporalToken();
+
         if (!alive) return;
 
         // 임시 토큰이면 가입/등록 화면으로, 아니면 홈으로
-        router.replace(isTemp ? '/register' : '/'); // 원래 오탈자 '/regitser' → '/register'
+        router.replace(isTemp ? '/register' : '/');
       } catch (error) {
         // 토큰 확인 실패 시 홈으로
         if (!alive) return;
