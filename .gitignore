@@ -14,8 +14,15 @@
 /coverage
 
 # next.js
-/.next/
-/out/
+**/.next/
+**/out/
+
+# build 산출물 전반
+**/dist/
+**/build/
+
+# 테스트/커버리지도 하위 패키지 포함
+**/coverage/
 
 # production
 /build
