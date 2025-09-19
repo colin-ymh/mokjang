@@ -1,30 +1,19 @@
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../../redux/store';
-import {
-  setFilteredItems,
-  setMemberFilter,
-} from '../../../../redux/reducers/filter/member-filter-reducer';
+import { setFilteredItems, setMemberFilter, } from '../../../../redux/reducers/filter/member-filter-reducer';
 
-import {
-  getAge,
-  getDateFromDateString,
-  getTranslatedAge,
-  getTrimmedString,
-} from '@mokjang/utils';
+import { getAge, getDateFromDateString, getTranslatedAge, getTrimmedString, } from '@mokjang/utils';
 import MemberFilterRowView from './member-filter-row.view';
 import { BLACK, BLANK, DESTRUCTIVE, LOCALE, MEMBER } from '@mokjang/constants';
 import { FilteredItemType } from '../../../atoms/member/setting/filtered-item.view';
 import { usePathname } from 'next/navigation';
 import { createClient } from '@supabase/supabase-js';
 import { getMembersFromXlsx } from '@/utils/xlsx';
-import {
-  setIsToastShown,
-  setToastBackgroundColor,
-  setToastText,
-} from '@/redux/reducers/toast-popup-reducer';
+import { setIsToastShown, setToastBackgroundColor, setToastText, } from '@/redux/reducers/toast-popup-reducer';
 import { useScopedI18n } from '../../../../../locales/client';
 import { Loading } from '@mokjang/components';
+import { MembersApi } from '@/api/members/members.api';
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -37,6 +26,10 @@ const MemberFilterRow = () => {
   const locale = pathname.split('/')[1] as LOCALE;
 
   const dispatch = useDispatch<AppDispatch>();
+
+  const membersApi = new MembersApi(false);
+
+  const { churchId } = useSelector((state: RootState) => state.church);
   const { memberFilter } = useSelector(
     (state: RootState) => state.memberFilter
   );
@@ -82,24 +75,21 @@ const MemberFilterRow = () => {
       // object[]로 변환
       const newMembers = await getMembersFromXlsx(file);
 
-      console.log(newMembers);
-
-      // // Nest 서버로 업로드
-      // const res = await uploadCsvToNest({
-      //   endpoint: 'https://api.example.com/files/upload', // ← 실제 업로드 엔드포인트
-      //   file: csvFile,
-      //   withCredentials: true, // 쿠키 인증 사용 시
-      // });
-
+      await membersApi.createMembersBulk({ churchId }, { members: newMembers });
+      dispatch(setToastBackgroundColor(BLACK));
       dispatch(setToastText(t_popup('saveComplete')));
       dispatch(setIsToastShown(true));
-      dispatch(setToastBackgroundColor(BLACK));
+
+      // ✅ 로딩이 종료되면 페이지를 새로고침
+      window.location.reload();
     } catch (error: any) {
       if (error instanceof Error) {
-        dispatch(setToastText(error.message));
+        dispatch(setToastText(t_popup('bulkFail')));
         dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
         dispatch(setIsToastShown(true));
-      } else setThrownError(new Error(String(error)));
+      } else {
+        setThrownError(new Error(String(error)));
+      }
     } finally {
       event.target.value = '';
       setIsLoading(false);

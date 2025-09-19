@@ -416,7 +416,11 @@ const EditMemberView = ({
               <LabelDropdown
                 label={t('baptism')}
                 items={baptismDropdownItems}
-                value={targetMember.baptism || undefined}
+                value={
+                  targetMember.baptism === 'none'
+                    ? BAPTISM.NONE
+                    : targetMember.baptism
+                }
                 onChangeItem={onChangeBaptism}
                 backgroundBlur={false}
               />

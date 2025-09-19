@@ -16,20 +16,9 @@ import {
   setToastText,
 } from '@/redux/reducers/toast-popup-reducer';
 
-type CHURCH_USER_FILTER = {
+export type CHURCH_USER_FILTER = {
   [CHURCH_USER.NAME]: string;
-};
-
-type ChurchUserFilterState = {
-  churchUsers: ChurchUser[];
-  churchUserFilter: CHURCH_USER_FILTER;
-  churchUserOrderBy?: CHURCH_USER;
-  churchUserOrderDirection: ORDER_DIRECTION;
-  churchUserTableHeaderItemList: CHURCH_USER_TABLE_HEADER_ITEM[];
-};
-
-export const INITIAL_CHURCH_USER_FILTER: CHURCH_USER_FILTER = {
-  [CHURCH_USER.NAME]: BLANK,
+  [CHURCH_USER.PERMISSION_ACTIVE]?: boolean;
 };
 
 export type CHURCH_USER_TABLE_HEADER_ITEM = {
@@ -39,6 +28,10 @@ export type CHURCH_USER_TABLE_HEADER_ITEM = {
   isFilterable: boolean;
   isFixed?: boolean;
   isDate?: boolean;
+};
+
+export const INITIAL_CHURCH_USER_FILTER: CHURCH_USER_FILTER = {
+  [CHURCH_USER.NAME]: BLANK,
 };
 
 export const INITIAL_CHURCH_USER_TABLE_HEADER_LIST: CHURCH_USER_TABLE_HEADER_ITEM[] =
@@ -85,12 +78,24 @@ export const INITIAL_CHURCH_USER_TABLE_HEADER_LIST: CHURCH_USER_TABLE_HEADER_ITE
     },
   ];
 
+type ChurchUserFilterState = {
+  churchUsers: ChurchUser[];
+  churchUserFilter: CHURCH_USER_FILTER;
+  churchUserOrderBy?: CHURCH_USER;
+  churchUserOrderDirection: ORDER_DIRECTION;
+  churchUserTableHeaderItemList: CHURCH_USER_TABLE_HEADER_ITEM[];
+  page: number;
+};
+
 const initialState: ChurchUserFilterState = {
   churchUsers: [],
   churchUserFilter: INITIAL_CHURCH_USER_FILTER,
   churchUserOrderDirection: ORDER_DIRECTION.ASC,
   churchUserTableHeaderItemList: INITIAL_CHURCH_USER_TABLE_HEADER_LIST,
+  page: 1,
 };
+
+const PAGE_SIZE = 30;
 
 export const fetchChurchUsers = createAsyncThunk<
   ChurchUser[],
@@ -102,57 +107,46 @@ export const fetchChurchUsers = createAsyncThunk<
     { currentPage, isManager },
     { getState, dispatch, rejectWithValue }
   ) => {
-    const state = getState().churchUserFilter;
-    const churchId = getState().church.churchId;
     const { churchUserOrderBy, churchUserOrderDirection, churchUserFilter } =
-      state;
+      getState().churchUserFilter;
+
+    const churchId = getState().church.churchId;
 
     const churchUsersApi = new ChurchUsersApi(false);
     const managersApi = new ManagersApi(false);
 
     try {
-      if (isManager) {
-        const response = await managersApi.getManagers({
-          churchId,
-          page: currentPage,
-          take: 30, // 무한 스크롤 최적화
-          order: churchUserOrderBy || undefined,
-          orderDirection: churchUserOrderDirection,
-          name: churchUserFilter.name,
-        });
+      const commonParams = {
+        churchId,
+        page: currentPage,
+        take: PAGE_SIZE,
+        order: churchUserOrderBy,
+        orderDirection: churchUserOrderDirection,
+      };
 
-        return response.data.data;
-      } else {
-        const response = await churchUsersApi.getChurchUsers({
-          churchId,
-          page: currentPage,
-          take: 30, // 무한 스크롤 최적화
-          order: churchUserOrderBy || undefined,
-          orderDirection: churchUserOrderDirection,
-        });
+      const response = isManager
+        ? await managersApi.getManagers({
+            ...commonParams,
+            name: churchUserFilter.name,
+            isPermissionActive: churchUserFilter.permissionActive,
+          })
+        : await churchUsersApi.getChurchUsers(commonParams);
 
-        return response.data.data;
-      }
+      return response.data.data;
     } catch (error) {
+      let message = '관리자 목록을 불러오는 중 오류가 발생했습니다.';
+
       if (axios.isAxiosError(error)) {
-        const data = error.response?.data as any;
-        const status = data?.statusCode ?? error.response?.status;
-        const message = data.message;
-
-        dispatch(setToastText(message));
-        dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
-        dispatch(setIsToastShown(true));
-
-        return rejectWithValue(message);
+        message = error.response?.data?.message || message;
+      } else if (error instanceof Error) {
+        message = error.message;
       }
 
-      if (error instanceof Error) {
-        dispatch(setToastText(error.message));
-        dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
-        dispatch(setIsToastShown(true));
-        return rejectWithValue(error.message);
-      }
-      return rejectWithValue('관리자 목록을 불러오는 중 오류가 발생했습니다.');
+      dispatch(setToastText(message));
+      dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
+      dispatch(setIsToastShown(true));
+
+      return rejectWithValue(message);
     }
   }
 );
@@ -167,17 +161,23 @@ const ChurchUserFilterSlice = createSlice({
     setChurchUserFilter: (state, action: PayloadAction<CHURCH_USER_FILTER>) => {
       state.churchUserFilter = action.payload;
     },
-    setChurchUserOrderBy(state, action: PayloadAction<CHURCH_USER>) {
+    setChurchUserOrderBy: (state, action: PayloadAction<CHURCH_USER>) => {
       state.churchUserOrderBy = action.payload;
     },
-    setChurchUserOrderDirection(state, action: PayloadAction<ORDER_DIRECTION>) {
+    setChurchUserOrderDirection: (
+      state,
+      action: PayloadAction<ORDER_DIRECTION>
+    ) => {
       state.churchUserOrderDirection = action.payload;
     },
-    setChurchUserTableHeaderItemList(
+    setChurchUserTableHeaderItemList: (
       state,
       action: PayloadAction<CHURCH_USER_TABLE_HEADER_ITEM[]>
-    ) {
+    ) => {
       state.churchUserTableHeaderItemList = action.payload;
+    },
+    setChurchUserPage: (state, action: PayloadAction<number>) => {
+      state.page = action.payload;
     },
   },
 });
@@ -188,5 +188,7 @@ export const {
   setChurchUserOrderBy,
   setChurchUserOrderDirection,
   setChurchUserTableHeaderItemList,
+  setChurchUserPage,
 } = ChurchUserFilterSlice.actions;
+
 export default ChurchUserFilterSlice.reducer;

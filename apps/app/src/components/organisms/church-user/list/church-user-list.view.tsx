@@ -2,8 +2,12 @@ import styled from 'styled-components';
 import { Loading, MainText, ProfileImage } from '@mokjang/components';
 import React from 'react';
 import { BLACK, GRAY, MEDIA_MIN_WIDTH } from '@mokjang/constants';
-import ChurchUserTable, { UserTableProps, } from '../../../molecules/church-user/list/church-user-table';
-import ChurchUserRow, { ChurchUserRowProps, } from '../../../molecules/church-user/list/church-user-row';
+import ChurchUserTable, {
+  UserTableProps,
+} from '../../../molecules/church-user/list/church-user-table';
+import ChurchUserRow, {
+  ChurchUserRowProps,
+} from '../../../molecules/church-user/list/church-user-row';
 import SlidePopup from '../../../atoms/common/popup/slide-popup';
 
 import { Svg } from '@mokjang/assets';
@@ -95,7 +99,6 @@ const ChurchUserListView = (props: UserListViewProps) => {
     onClickDelete,
   } = props.information;
 
-  const t_popup = useScopedI18n('popup');
   const t_button = useScopedI18n('button');
 
   const { targetChurchUser } = useSelector(

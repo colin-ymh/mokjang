@@ -18,6 +18,7 @@ export const DAYS = Object.values(DAY);
 
 // 신급
 export enum BAPTISM {
+  none = 'none',
   NONE = 'baptismNone',
   BAPTIZED = 'baptized',
   IMMERSION_BAPTISM = 'immersionBaptism',

@@ -13,6 +13,7 @@ type GetManagersParams = {
   order?: string;
   orderDirection?: ORDER_DIRECTION; // 오름차순 내림차순
   name: string;
+  isPermissionActive?: boolean;
 };
 
 type GetManagerParams = {
@@ -73,6 +74,7 @@ export class ManagersApi {
       order,
       orderDirection,
       name,
+      isPermissionActive,
     } = params;
 
     const queryParams: Record<string, any> = Object.fromEntries(
@@ -82,6 +84,7 @@ export class ManagersApi {
         order,
         orderDirection,
         name,
+        isPermissionActive,
       }).filter(
         ([_, value]) =>
           value !== undefined &&

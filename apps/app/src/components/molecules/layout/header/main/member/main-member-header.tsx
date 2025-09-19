@@ -10,7 +10,7 @@ import { DEFAULT_MEMBER } from '@mokjang/models';
 import { setTargetMember } from '@/redux/reducers/target/target-member-reducer';
 import { uploadFilesToSupabase } from '@/utils/upload';
 import { MembersApi } from '@/api/members/members.api';
-import { BLACK, CONCEALED, DESTRUCTIVE } from '@mokjang/constants';
+import { BAPTISM, BLACK, CONCEALED, DESTRUCTIVE } from '@mokjang/constants';
 import {
   setIsToastShown,
   setToastBackgroundColor,
@@ -137,7 +137,10 @@ const MainMemberHeader = ({}: MainMemberHeaderProps) => {
                 (number) => number.length > 0
               ) || undefined,
             registeredAt: updatedMember.registeredAt || undefined,
-            baptism: updatedMember.baptism || undefined,
+            baptism:
+              updatedMember.baptism !== BAPTISM.NONE
+                ? updatedMember.baptism
+                : undefined,
           }
         )
         .then((response) => {

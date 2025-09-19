@@ -12,6 +12,7 @@ export declare enum DAY {
 }
 export declare const DAYS: DAY[];
 export declare enum BAPTISM {
+    none = "none",
     NONE = "baptismNone",
     BAPTIZED = "baptized",
     IMMERSION_BAPTISM = "immersionBaptism",
