@@ -1,0 +1,22 @@
+import { CHURCH_USER_ROLE } from '@mokjang/constants';
+import { Member } from '../member/member';
+import { PermissionScope, PermissionTemplate } from '../permission/permission';
+import { User } from '../user/user';
+export type ChurchUser = {
+    id: string;
+    createdAt: string;
+    updatedAt: string;
+    churchId: string;
+    userId: string;
+    memberId: string;
+    role: CHURCH_USER_ROLE;
+    permissionTemplateId: string;
+    isPermissionActive: boolean;
+    joinedAt: string;
+    leftAt?: string;
+    member: Member;
+    user: User;
+    permissionTemplate: PermissionTemplate;
+    permissionScopes: PermissionScope[];
+};
+export declare const DEFAULT_CHURCH_USER: ChurchUser;

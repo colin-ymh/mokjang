@@ -1,18 +1,16 @@
 import styled from 'styled-components';
-import Loading from '../../../atoms/common/etc/loading';
+import { Loading } from '@mokjang/components';
 import React from 'react';
-import { MAIN, WHITE } from '../../../../constants/styles/color';
+import { MAIN, MEDIA_MIN_WIDTH, TASK_STATUS, WHITE } from '@mokjang/constants';
 import ConfirmPopup from '../../../atoms/common/popup/error-popup';
 import { useScopedI18n } from '../../../../../locales/client';
-import { MEDIA_MIN_WIDTH } from '../../../../constants/constant';
 import TaskTable, { TaskTableProps } from '../../../molecules/task/task-table';
 import TaskRow from '../../../molecules/task/task-row';
 import AddTask from '../add/add-task';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../../../redux/store';
+import { RootState } from '@/redux/store';
 import TaskInformation from '../information/task-information';
-import WrappedPagePopup from '../../../atoms/common/popup/wrapped-page-popup';
-import { TASK_STATUS } from '../../../../constants/status/status';
+import ScrollSlidePopup from '@/components/atoms/common/popup/scroll-slide-popup';
 
 const TaskListContainer = styled.div`
   display: flex;
@@ -97,19 +95,17 @@ const TaskListView = (props: TaskListViewProps) => {
       </TaskListContainer>
 
       {/* 업무 상세정보 팝업*/}
-      <WrappedPagePopup
+      <ScrollSlidePopup
         isShow={isTaskInformationShown}
-        onClickClose={onClickClose}
         headerTitle={targetTask?.title}
         doneText={t_button('edit')}
         cancelText={t_button('delete')}
+        onClickClose={onClickClose}
         onClickDone={onClickEditOpen}
         onClickCancel={onClickConfirmOpen}
         status={targetTask?.status}
         onChangeStatus={onChangeStatus}
-        widthPercentage={50}
-        stageThreeTop={190}
-        stageTwoTop={40}
+        stageTwoTop={150}
         inCharge={targetTask?.inCharge}
         startDate={targetTask?.startDate}
         endDate={targetTask?.endDate}
@@ -130,21 +126,22 @@ const TaskListView = (props: TaskListViewProps) => {
             rightButtonText={t_button('delete')}
           />
           <TaskInformation onChangeStatus={onChangeStatus} />
-        </>
-      </WrappedPagePopup>
 
-      {/* 심방 수정 팝업*/}
-      <WrappedPagePopup
-        isShow={isEditShown}
-        onClickClose={onClickEditClose}
-        onClickCancel={onClickEditClose}
-        onClickDone={onClickEditDone}
-        headerTitle={t_title('editTask')}
-        doneBackgroundColor={isSaveEnabled ? MAIN.DEFAULT : MAIN.LIGHT}
-        doneDisabled={!isSaveEnabled}
-      >
-        <AddTask isEdit={true} />
-      </WrappedPagePopup>
+          {/* 심방 수정 팝업*/}
+          <ScrollSlidePopup
+            isShow={isEditShown}
+            onClickClose={onClickEditClose}
+            onClickCancel={onClickEditClose}
+            onClickDone={onClickEditDone}
+            headerTitle={t_title('editTask')}
+            doneBackgroundColor={isSaveEnabled ? MAIN.DEFAULT : MAIN.LIGHT}
+            doneDisabled={!isSaveEnabled}
+            isAnimation={false}
+          >
+            <AddTask isEdit={true} />
+          </ScrollSlidePopup>
+        </>
+      </ScrollSlidePopup>
       <Loading isShow={isLoading} />
     </>
   );

@@ -1,19 +1,19 @@
 import styled from 'styled-components';
 
 import { useSelector } from 'react-redux';
-import { RootState } from '../../../../redux/store';
-import LabelInput from '../../../atoms/common/input/label-input';
-import LabelTextarea from '../../../atoms/common/input/label-textarea';
+import { RootState } from '@/redux/store';
+import { CustomPopup, LabelInput, LabelTextarea } from '@mokjang/components';
 import LabelDropdown from '../../../atoms/common/dropdown/label-dropdown';
 import {
   useDayDropdownItems,
   useRepeatPeriodDropdownItems,
-} from '../../../../hooks/dropdown/dropdown-items';
-import { Group } from '../../../../models/management/management';
-import CustomPopup from '../../../atoms/common/popup/custom-popup';
+} from '@/hooks/dropdown/dropdown-items';
+import { Group } from '@mokjang/models';
 import SelectGroupHierarchy from '../../group/select-group-hierarchy';
 
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
+import DeleteWarningButton from '@/components/atoms/common/button/delete-warning-button';
+import React from 'react';
 
 const AddWorshipViewContainer = styled.div`
   flex: 1;
@@ -40,7 +40,15 @@ const RowContainer = styled.div`
 
 const GroupContainer = styled.div`
   display: flex;
+  flex-direction: column;
   padding: 10px;
+  width: 100%;
+  overflow-y: auto;
+`;
+
+const BoxContainer = styled.div`
+  display: flex;
+  padding: 20px 0;
 `;
 
 type AddWorshipViewProps = {
@@ -53,6 +61,7 @@ type AddWorshipViewProps = {
   onChangeWorshipDay: (value: number) => void;
   onChangeRepeatPeriod: (value: number) => void;
   onChangeDescription: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  onClickDelete?: () => void;
 };
 
 const AddWorshipView = ({
@@ -65,9 +74,12 @@ const AddWorshipView = ({
   onChangeWorshipDay,
   onChangeRepeatPeriod,
   onChangeDescription,
+  onClickDelete,
 }: AddWorshipViewProps) => {
   const t = useI18n();
   const t_placeholder = useScopedI18n('placeholder');
+  const t_button = useScopedI18n('button');
+  const t_warning = useScopedI18n('warning');
   const { targetWorship } = useSelector(
     (state: RootState) => state.targetWorship
   );
@@ -98,6 +110,7 @@ const AddWorshipView = ({
           value={targetWorship.worshipDay}
           onChangeItem={onChangeWorshipDay}
           items={worshipDayDropdownItems}
+          listHeight={100}
         />
         {/*<LabelDropdown*/}
         {/*  label={t('repeatPeriod')}*/}
@@ -116,7 +129,9 @@ const AddWorshipView = ({
 
       <CustomPopup
         isShow={isGroupModalShown}
+        onClickClose={onClickGroupModalClose}
         onClickCancel={onClickGroupModalClose}
+        cancelText={t_button('close')}
         width={400}
         height={400}
         isHeaderShown={false}
@@ -125,6 +140,16 @@ const AddWorshipView = ({
           <SelectGroupHierarchy isDefaultOpen onChange={onChangeGroup} />
         </GroupContainer>
       </CustomPopup>
+
+      {onClickDelete && (
+        <BoxContainer>
+          <DeleteWarningButton
+            description={t_warning('deleteWorship')}
+            buttonText={t_button('delete')}
+            onClick={onClickDelete}
+          />
+        </BoxContainer>
+      )}
     </AddWorshipViewContainer>
   );
 };

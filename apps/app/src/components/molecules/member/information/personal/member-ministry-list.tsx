@@ -2,34 +2,29 @@ import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../../../redux/store';
 import { MinistryGroupMembersApi } from '../../../../../api/management/ministry/ministry-group-members.api';
-import {
-  DEFAULT_MINISTRY_HISTORY,
-  MinistryHistory,
-} from '../../../../../models/member/history';
+import { DEFAULT_MINISTRY_HISTORY, MinistryHistory } from '@mokjang/models';
 import { setTargetMinistryHistory } from '../../../../../redux/reducers/target/target-history-reducer';
 import { setTargetMember } from '../../../../../redux/reducers/target/target-member-reducer';
 import MemberMinistryListView from './member-ministry-list.view';
 import { MinistryHistoryApi } from '../../../../../api/history/ministry-history.api';
-import { BLANK } from '../../../../../constants/constant';
-import CustomPopup from '../../../../atoms/common/popup/custom-popup';
+import { BLACK, BLANK, DESTRUCTIVE } from '@mokjang/constants';
+import { CustomPopup } from '@mokjang/components';
 import { useI18n, useScopedI18n } from '../../../../../../locales/client';
 import EditMemberMinistry from './edit-member-ministry';
-import {
-  getDateFromDateString,
-  getDateStringFromDate,
-} from '../../../../../utils/date';
+import { getDateFromDateString, getDateStringFromDate } from '@mokjang/utils';
 import { setMembers } from '../../../../../redux/reducers/filter/member-filter-reducer';
 import {
   setIsToastShown,
   setToastBackgroundColor,
   setToastText,
 } from '../../../../../redux/reducers/toast-popup-reducer';
-import { BLACK, DESTRUCTIVE } from '../../../../../constants/styles/color';
 import { MinistryMembersApi } from '../../../../../api/management/ministry/ministry-mebers.api';
 
 const MemberMinistryList = () => {
   const t = useI18n();
   const t_popup = useScopedI18n('popup');
+  const t_button = useScopedI18n('button');
+
   const scrollRef = useRef<HTMLDivElement>(null);
   const dispatch = useDispatch<AppDispatch>();
   const { churchId } = useSelector((state: RootState) => state.church);
@@ -80,7 +75,7 @@ const MemberMinistryList = () => {
         response?.data?.nextCursor ?? response?.data?.meta?.nextCursor ?? BLANK;
 
       const prevMinistries: MinistryHistory[] =
-        targetMember.ministryGroupHistory || [];
+        targetMember.ministryGroupHistory as MinistryHistory[];
 
       // 중복 제거하며 병합 (id 기준)
       const merged = [...prevMinistries, ...newMinistries].reduce<
@@ -319,12 +314,15 @@ const MemberMinistryList = () => {
       {/* 사역 추가 */}
       <CustomPopup
         isShow={isAddOpened}
+        onClickClose={onClickAddClose}
         onClickCancel={onClickAddClose}
         onClickDone={onClickDone}
         headerTitle={t('title.editMinistry')}
         width={600}
         height={600}
         doneDisabled={!isSaveEnabled}
+        cancelText={t_button('cancel')}
+        doneText={t_button('save')}
       >
         <EditMemberMinistry onClickDeleteMinistry={onClickDeleteMinistry} />
       </CustomPopup>

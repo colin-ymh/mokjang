@@ -1,38 +1,31 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-import { MainText } from '../common/text/main-text';
-import { VISITATION } from '../../../constants/column/visitation-column';
-import { BLANK } from '../../../constants/constant';
-import { MAIN, WHITE } from '../../../constants/styles/color';
-import { SIZE } from '../../../constants/styles/style';
+import { MainText } from '@mokjang/components';
+import { BLANK, MAIN, TASK_STATUS, VISITATION } from '@mokjang/constants';
 
 import { useI18n } from '../../../../locales/client';
-import Cancel from '../../../../public/svg/cancel.svg';
-import {
-  VISITATION_METHOD,
-  VISITATION_TYPE,
-} from '../../../models/visitation/visitation';
+import { Svg } from '@mokjang/assets';
+import { VISITATION_METHOD, VISITATION_TYPE } from '@mokjang/models';
 import { AppDispatch, RootState } from '../../../redux/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { setVisitationFilter } from '../../../redux/reducers/filter/visitation-filter-reducer';
-import { TASK_STATUS } from '../../../constants/status/status';
 
 const ItemContainer = styled.div`
   display: flex;
-  border-radius: 5px;
-  height: 30px;
   justify-content: center;
   align-items: center;
-  padding: 0 5px;
-  background-color: ${MAIN.LIGHT};
-  gap: 5px;
+  background-color: ${MAIN.EXTRA_LIGHT};
+  border: 1px solid ${MAIN.LIGHT};
+  gap: 15px;
+  border-radius: 100px;
+  padding: 5px 12px;
 `;
 
 const TextContainer = styled.div`
   display: flex;
   flex-direction: row;
-  gap: 3px;
+  gap: 10px;
   justify-content: center;
   align-items: center;
 `;
@@ -44,10 +37,10 @@ const ButtonContainer = styled.div`
   cursor: pointer;
 `;
 
-const CancelButton = styled(Cancel)`
-  width: 15px;
-  height: 15px;
-  stroke: ${WHITE};
+const CancelButton = styled(Svg.Cancel)`
+  width: 12px;
+  height: 12px;
+  stroke: ${MAIN.DEFAULT};
   stroke-width: 2px;
 `;
 
@@ -135,11 +128,8 @@ const VisitationFilteredItem = ({ item }: VisitationFilteredItemProps) => {
   return (
     <ItemContainer>
       <TextContainer>
-        <MainText color={WHITE}>{t(item.title)}</MainText>
-        <MainText color={WHITE} size={SIZE.EXTRA_SMALL}>
-          {'>'}
-        </MainText>
-        <MainText color={WHITE}>{valueText}</MainText>
+        <MainText color={MAIN.DARK}>{t(item.title)}</MainText>
+        <MainText color={MAIN.DEFAULT}>{valueText}</MainText>
       </TextContainer>
       <ButtonContainer onClick={onClickCancel}>
         <CancelButton />

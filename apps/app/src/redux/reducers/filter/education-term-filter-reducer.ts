@@ -1,15 +1,21 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { BLANK, ORDER_DIRECTION } from '../../../constants/constant';
 import {
-  EducationSession,
-  EducationTerm,
-} from '../../../models/education/education';
+  BLANK,
+  DESTRUCTIVE,
+  EDUCATION_TERM,
+  ORDER_DIRECTION,
+} from '@mokjang/constants';
+import { EducationSession, EducationTerm } from '@mokjang/models';
 import { RootState } from '../../store';
-
-import { EDUCATION_TERM } from '../../../constants/column/education-column';
 import { EducationTermsApi } from '../../../api/education/education-terms.api';
 import { EducationSessionsApi } from '../../../api/education/education-sessions.api';
 import { EducationsApi } from '../../../api/education/educations.api';
+import {
+  setIsToastShown,
+  setToastBackgroundColor,
+  setToastText,
+} from '@/redux/reducers/toast-popup-reducer';
+import axios from 'axios';
 
 type EDUCATION_TERM_FILTER = {
   [EDUCATION_TERM.EDUCATION]: string;
@@ -91,7 +97,7 @@ export const fetchEducationTerms = createAsyncThunk<
   'educations/fetchEducationTerms',
   async (
     { currentPage, educationId, isInProgress },
-    { getState, rejectWithValue }
+    { getState, dispatch, rejectWithValue }
   ) => {
     const state = getState().educationTermFilter;
     const churchId = getState().church.churchId;
@@ -128,7 +134,24 @@ export const fetchEducationTerms = createAsyncThunk<
         return response.data.data;
       }
     } catch (error) {
-      console.error('교육 목록 불러오기 실패', error);
+      if (axios.isAxiosError(error)) {
+        const data = error.response?.data as any;
+        const status = data?.statusCode ?? error.response?.status;
+        const message = data.message;
+
+        dispatch(setToastText(message));
+        dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
+        dispatch(setIsToastShown(true));
+
+        return rejectWithValue(message);
+      }
+
+      if (error instanceof Error) {
+        dispatch(setToastText(error.message));
+        dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
+        dispatch(setIsToastShown(true));
+        return rejectWithValue(error.message);
+      }
       return rejectWithValue('교육 목록을 불러오는 중 오류가 발생했습니다.');
     }
   }
@@ -140,7 +163,7 @@ export const fetchEducationSessions = createAsyncThunk<
   { state: RootState }
 >(
   'educations/fetchEducationSessions',
-  async ({}, { getState, rejectWithValue }) => {
+  async ({}, { getState, dispatch, rejectWithValue }) => {
     const state = getState().educationTermFilter;
     const churchId = getState().church.churchId;
     const { educationTerms } = state;
@@ -163,7 +186,24 @@ export const fetchEducationSessions = createAsyncThunk<
 
       return newEducationTerms;
     } catch (error) {
-      console.error('교육 세션 목록 불러오기 실패', error);
+      if (axios.isAxiosError(error)) {
+        const data = error.response?.data as any;
+        const status = data?.statusCode ?? error.response?.status;
+        const message = data.message;
+
+        dispatch(setToastText(message));
+        dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
+        dispatch(setIsToastShown(true));
+
+        return rejectWithValue(message);
+      }
+
+      if (error instanceof Error) {
+        dispatch(setToastText(error.message));
+        dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
+        dispatch(setIsToastShown(true));
+        return rejectWithValue(error.message);
+      }
       return rejectWithValue(
         '교육 세션 목록을 불러오는 중 오류가 발생했습니다.'
       );

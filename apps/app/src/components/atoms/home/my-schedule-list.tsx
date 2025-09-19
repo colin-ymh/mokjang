@@ -1,22 +1,21 @@
-import { Schedule } from '../../../models/calendar/calendar';
+import { CALENDAR_DOMAIN, Schedule } from '@mokjang/models';
 import styled from 'styled-components';
-import { GRAY } from '../../../constants/styles/color';
-import { MainText } from '../common/text/main-text';
-import MainTag from '../common/tag/main-tag';
-import { getDateFromDateString } from '../../../utils/date';
+import { GRAY, LOCALE, STATUS } from '@mokjang/constants';
+import { MainTag, MainText, ProfileImage } from '@mokjang/components';
 import {
+  getDateFromDateString,
   getTranslatedScheduleDate,
   getTranslatedTerm,
-} from '../../../utils/translate';
+} from '@mokjang/utils';
 import { usePathname } from 'next/navigation';
-import { LOCALE } from '../../../constants/state/locale';
 import { useI18n } from '../../../../locales/client';
-import { DOMAIN } from '../../../models/permission/permission';
 import {
   getStatusBackgroundColor,
   getStatusFontColor,
 } from '../../../utils/color';
-import { STATUS } from '../../../constants/status/status';
+import EmptyList from '../common/image/empty-list';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
 
 const ListContainer = styled.div`
   display: flex;
@@ -28,21 +27,37 @@ const ListContainer = styled.div`
 
 const ScheduleItem = styled.div`
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: flex-start;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
   padding: 10px;
   border: 1px solid ${GRAY.LIGHT};
   border-radius: 10px;
   gap: 10px;
   cursor: pointer;
+  position: relative;
+`;
+
+const ColumnContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
 `;
 
 const RowContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 10px;
+  width: 100%;
+  justify-content: space-between;
+`;
+
+const StatusContainer = styled.div`
+  display: flex;
+  position: absolute;
+  right: 10px;
+  top: 10px;
 `;
 
 type MyScheduleListProps = {
@@ -56,47 +71,58 @@ const MyScheduleList = ({
 }: MyScheduleListProps) => {
   const pathname = usePathname();
   const locale = pathname.split('/')[1] as LOCALE;
-
   const t = useI18n();
+
+  const { user } = useSelector((state: RootState) => state.user);
 
   return (
     <ListContainer>
-      {mySchedules.map((schedule) => {
-        if (!schedule.id) {
-          return;
-        }
+      {mySchedules.length > 0 ? (
+        mySchedules.map((schedule) => {
+          if (!schedule.id) {
+            return;
+          }
 
-        const [domain, id] = schedule.id?.split('-');
-        return (
-          <ScheduleItem
-            key={schedule.id}
-            onClick={() => onClickSchedule(schedule)}
-          >
-            <RowContainer>
-              <MainText>
-                {schedule.title ||
-                  `${schedule.educationName} ${getTranslatedTerm(locale, schedule.educationTerm as string)}`}
-              </MainText>
-              <MainTag
-                title={t(schedule.status as STATUS)}
-                color={getStatusFontColor(schedule.status as STATUS)}
-                backgroundColor={getStatusBackgroundColor(
-                  schedule.status as STATUS
-                )}
+          const [domain, id] = schedule.id?.split('-');
+          return (
+            <ScheduleItem
+              key={schedule.id}
+              onClick={() => onClickSchedule(schedule)}
+            >
+              <ProfileImage
+                value={user.churchUser[0]?.member.profileImageUrl}
+                width={40}
+                height={40}
               />
-            </RowContainer>
-            <RowContainer>
-              <MainTag title={t(domain as DOMAIN)} />
-              <MainText>
-                {getTranslatedScheduleDate(
-                  locale,
-                  getDateFromDateString(schedule.end as string)
-                )}
-              </MainText>
-            </RowContainer>
-          </ScheduleItem>
-        );
-      })}
+              <ColumnContainer>
+                <MainText>
+                  {schedule.title
+                    ? `[${t(domain as CALENDAR_DOMAIN)}] ${schedule.title}`
+                    : `[${t(domain as CALENDAR_DOMAIN)}] ${schedule.educationName} ${getTranslatedTerm(locale, schedule.educationTerm as string)}`}
+                </MainText>
+
+                <MainText color={GRAY.SEMI_DARK}>
+                  {getTranslatedScheduleDate(
+                    locale,
+                    getDateFromDateString(schedule.end as string)
+                  )}
+                </MainText>
+              </ColumnContainer>
+              <StatusContainer>
+                <MainTag
+                  title={t(schedule.status as STATUS)}
+                  color={getStatusFontColor(schedule.status as STATUS)}
+                  backgroundColor={getStatusBackgroundColor(
+                    schedule.status as STATUS
+                  )}
+                />
+              </StatusContainer>
+            </ScheduleItem>
+          );
+        })
+      ) : (
+        <EmptyList />
+      )}
     </ListContainer>
   );
 };

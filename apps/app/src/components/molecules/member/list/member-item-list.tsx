@@ -2,25 +2,17 @@ import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../../../redux/store';
-import { setMemberFilter } from '../../../../redux/reducers/filter/member-filter-reducer';
+import { AppDispatch, RootState } from '@/redux/store';
+import { setMemberFilter } from '@/redux/reducers/filter/member-filter-reducer';
 
 import { MemberTableProps } from './member-table';
-import { MainText } from '../../../atoms/common/text/main-text';
-import BorderInput from '../../../atoms/common/input/border-input';
-import { BLANK } from '../../../../constants/constant';
-import { SIZE } from '../../../../constants/styles/style';
-import { GRAY } from '../../../../constants/styles/color';
+import { BorderInput, MainText, ProfileImage } from '@mokjang/components';
+import { BLANK, GRAY, SIZE } from '@mokjang/constants';
 
-import {
-  getFormattedMobilePhone,
-  getFormattedName,
-  getTrimmedString,
-} from '../../../../utils/format';
+import { getFormattedName, getFormattedPhone, getTrimmedString, } from '@mokjang/utils';
 
 import useWindowSize from '../../../../hooks/window/window';
 import { useI18n } from '../../../../../locales/client';
-import ProfileImage from '../../../atoms/common/image/profile-image';
 
 const MemberItemListContainer = styled.div`
   padding: 10px 20px;
@@ -91,7 +83,7 @@ const MemberItemList = ({
     if (isNameMode && getIsNameSearch(input)) {
       setSearchValue(getFormattedName(input));
     } else if (isPhoneMode && getIsMobilePhoneSearch(input)) {
-      setSearchValue(getFormattedMobilePhone(input));
+      setSearchValue(getFormattedPhone(input));
     }
   };
 
@@ -123,7 +115,7 @@ const MemberItemList = ({
     if (scrollRef.current) {
       const { scrollTop, scrollHeight, clientHeight } = scrollRef.current;
       // 스크롤이 최하단에 도달했는지 확인
-      if (scrollTop + clientHeight >= scrollHeight) {
+      if (scrollTop + clientHeight >= scrollHeight - 10) {
         loadMembers(); // 데이터를 추가로 로드
       }
     }
@@ -149,8 +141,7 @@ const MemberItemList = ({
                 color={GRAY.DARK}
               >{`${member.name} ${member.officer?.name || t('churchMember')}`}</MainText>
               <MainText size={SIZE.SMALL} color={GRAY.DEFAULT}>
-                {member?.mobilePhone &&
-                  getFormattedMobilePhone(member.mobilePhone)}
+                {member?.mobilePhone && getFormattedPhone(member.mobilePhone)}
               </MainText>
               {/*<MainText color={GRAY.DARK}>{member.group?.name}</MainText>*/}
             </MemberDetails>

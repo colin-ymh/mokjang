@@ -4,15 +4,15 @@ import { WorshipsApi } from '../../../../../../api/worship/worships.api';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../../../../redux/store';
 import { setWorships } from '../../../../../../redux/reducers/filter/worship-filter-reducer';
-import { getIsWellFormedTitle } from '../../../../../../utils/check';
+import { getIsWellFormedTitle } from '@mokjang/utils';
 import { setTargetWorship } from '../../../../../../redux/reducers/target/target-worship-reducer';
-import { DEFAULT_WORSHIP } from '../../../../../../models/worship/worship';
+import { DEFAULT_WORSHIP } from '@mokjang/models';
 import {
   setIsToastShown,
   setToastBackgroundColor,
   setToastText,
 } from '../../../../../../redux/reducers/toast-popup-reducer';
-import { BLACK, DESTRUCTIVE } from '../../../../../../constants/styles/color';
+import { BLACK, DESTRUCTIVE } from '@mokjang/constants';
 import { useI18n } from '../../../../../../../locales/client';
 
 type MainWorshipHeaderProps = {};

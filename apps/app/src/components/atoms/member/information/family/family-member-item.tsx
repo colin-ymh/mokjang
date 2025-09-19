@@ -1,30 +1,19 @@
 import styled from 'styled-components';
-
-import { MainText } from '../../../common/text/main-text';
-import { GRAY } from '../../../../../constants/styles/color';
-import { MEMBER } from '../../../../../constants/column/member-column';
-import { getFormattedMobilePhone } from '../../../../../utils/format';
-import { FamilyMember } from '../../../../../models/member/member';
+import { MainText, ProfileImage, SvgIcon } from '@mokjang/components';
+import { BLANK, FAMILY, GRAY, LOCALE, SIZE } from '@mokjang/constants';
+import { getFormattedPhone } from '@mokjang/utils';
+import { FamilyMember } from '@mokjang/models';
 import { useI18n, useScopedI18n } from '../../../../../../locales/client';
-import ProfileImage from '../../../common/image/profile-image';
-import { SIZE } from '../../../../../constants/styles/style';
-import Phone from '../../../../../../public/svg/phone.svg';
-import Calendar from '../../../../../../public/svg/calendar.svg';
-import Cancel from '../../../../../../public/svg/cancel.svg';
-import SvgIcon from '../../../common/icon/svg-icon';
-import { BLANK, FAMILY } from '../../../../../constants/constant';
-import { useFamilyRelationDropdownItems } from '../../../../../hooks/dropdown/dropdown-items';
-import Dropdown from '../../../common/dropdown/dropdown';
+import { useFamilyRelationDropdownItems } from '@/hooks/dropdown/dropdown-items';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../../../../redux/store';
-import { getTranslatedAge } from '../../../../../utils/translate';
-import { getAge, getDateFromDateString } from '../../../../../utils/date';
+import { AppDispatch, RootState } from '@/redux/store';
 import { usePathname } from 'next/navigation';
-import { LOCALE } from '../../../../../constants/state/locale';
 import ConfirmPopup from '../../../common/popup/error-popup';
-import { MembersApi } from '../../../../../api/members/members.api';
-import { setTargetMember } from '../../../../../redux/reducers/target/target-member-reducer';
+import { MembersApi } from '@/api/members/members.api';
+import { setTargetMember } from '@/redux/reducers/target/target-member-reducer';
+import Dropdown from '@/components/atoms/common/dropdown/dropdown';
+import { Svg } from '@mokjang/assets';
 
 const ItemContainer = styled.div`
   display: flex;
@@ -36,27 +25,32 @@ const ItemContainer = styled.div`
   justify-content: space-between;
   gap: 10px;
   padding: 20px;
+  padding-right: 40px;
   position: relative;
-`;
 
-const LeftContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 20px;
+  //transform-origin: center;
+  //will-change: transform;
+  //backface-visibility: hidden;
+  &:hover {
+    //transform: scale(1.02);
+    //box-shadow: none;
+
+    border-width: 2px;
+  }
 `;
 
 const InformationList = styled.div`
   display: flex;
-  flex-direction: column;
-  gap: 10px;
+  flex-direction: row;
+  align-content: center;
+  gap: 15px;
 `;
 
-const MemberInformationContainer = styled.div`
+const DetailContainer = styled.div`
   display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 10px;
+  gap: 8px;
+  flex-direction: column;
+  justify-content: center;
 `;
 
 const CancelButton = styled.div`
@@ -126,60 +120,44 @@ const FamilyMemberItem = ({
   return (
     <>
       <ItemContainer onClick={onClickMember}>
-        <LeftContainer>
+        <InformationList>
           {/* 이미지 */}
-          <ProfileImage value={familyMember.familyMember.profileImageUrl} />
-          <InformationList>
+          <ProfileImage
+            value={familyMember.familyMember.profileImageUrl}
+            width={50}
+            height={50}
+          />
+          <DetailContainer>
             {/* 이름 */}
-            <MemberInformationContainer>
-              <MainText size={SIZE.LARGE}>
-                {familyMember.familyMember?.name}
-              </MainText>
-              <MainText
-                color={GRAY.SEMI_DARK}
-              >{`${familyMember.familyMember?.officer?.name || BLANK}`}</MainText>
-            </MemberInformationContainer>
-            {/* 나이 */}
-            <MemberInformationContainer>
-              <SvgIcon svg={Calendar} color={GRAY.SEMI_DARK} />
-              <MainText color={GRAY.SEMI_DARK}>{t(MEMBER.AGE)}</MainText>
-              <MainText>
-                {getTranslatedAge(
-                  locale,
-                  getAge(getDateFromDateString(familyMember.familyMember.birth))
-                )}
-              </MainText>
-            </MemberInformationContainer>
+            <MainText size={SIZE.LARGE}>
+              {`${familyMember.familyMember?.name} ${familyMember.familyMember?.officer?.name || BLANK}`}
+            </MainText>
             {/* 연락처 */}
-            <MemberInformationContainer>
-              <SvgIcon svg={Phone} color={GRAY.SEMI_DARK} />
-              <MainText color={GRAY.SEMI_DARK}>
-                {t(MEMBER.MOBILE_PHONE)}
-              </MainText>
-              <MainText>
-                {getFormattedMobilePhone(familyMember.familyMember.mobilePhone)}
-              </MainText>
-            </MemberInformationContainer>
-          </InformationList>
-        </LeftContainer>
+            <MainText color={GRAY.SEMI_DARK}>
+              {getFormattedPhone(familyMember.familyMember.mobilePhone)}
+            </MainText>
+          </DetailContainer>
+        </InformationList>
+
         <Dropdown
           value={familyMember.relation}
           items={familyRelationItems}
           width={100}
           height={30}
-          onChangeItem={(relation) =>
+          onChangeItem={(relation: FAMILY) =>
             onChangeRelation(familyMember.familyMemberId, relation as FAMILY)
           }
         />
 
-        {/* 삭제 */}
-        <CancelButton
-          onClick={(event) => {
-            event.stopPropagation();
-            onClickDelete();
-          }}
-        >
-          <SvgIcon svg={Cancel} size={18} />
+        <CancelButton>
+          <SvgIcon
+            svg={Svg.Cancel}
+            size={18}
+            onClick={(event) => {
+              event.stopPropagation();
+              onClickDelete();
+            }}
+          />
         </CancelButton>
       </ItemContainer>
 

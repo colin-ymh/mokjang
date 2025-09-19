@@ -1,10 +1,12 @@
-import React from 'react';
+import { ReactNode } from 'react';
 export type PopupLayoutProps = {
-    onClickCancel: () => void;
+    onClickClose: () => void;
+    onClickCancel?: () => void;
     onClickDone?: () => void;
     headerTitle?: string;
     headerDescription?: string;
-    headerRight?: React.ReactNode;
+    headerRight?: ReactNode;
+    headerLeft?: ReactNode;
     cancelText?: string;
     doneText?: string;
     cancelBackgroundColor?: string;
@@ -14,6 +16,6 @@ export type PopupLayoutProps = {
     doneDisabled?: boolean;
     isHeaderBorderShown?: boolean;
     headerHeight?: number;
-    children: React.ReactNode;
+    children: ReactNode;
 };
-export declare const PopupLayout: ({ headerTitle, headerDescription, headerRight, onClickCancel, onClickDone, cancelText, doneText, cancelBackgroundColor, doneBackgroundColor, isHeaderShown, isFooterShown, doneDisabled, isHeaderBorderShown, headerHeight, children, }: PopupLayoutProps) => JSX.Element;
+export declare const PopupLayout: ({ headerTitle, headerDescription, headerRight, headerLeft, onClickClose, onClickCancel, onClickDone, cancelText, doneText, cancelBackgroundColor, doneBackgroundColor, isHeaderShown, isFooterShown, doneDisabled, isHeaderBorderShown, headerHeight, children, }: PopupLayoutProps) => JSX.Element;

@@ -1,21 +1,12 @@
-import { MainText } from '../../../../atoms/common/text/main-text';
-import BorderInput from '../../../../atoms/common/input/border-input';
-import {
-  BLACK,
-  DESTRUCTIVE,
-  GRAY,
-  WHITE,
-} from '../../../../../constants/styles/color';
-import Button from '../../../../atoms/common/button/button';
+import { BorderInput, Button, MainText } from '@mokjang/components';
+import { BLACK, BLANK, DESTRUCTIVE, GRAY, WHITE } from '@mokjang/constants';
 import OfficerList from './officer-list';
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useI18n, useScopedI18n } from '../../../../../../locales/client';
-import { Officer } from '../../../../../models/management/management';
-import { BLANK } from '../../../../../constants/constant';
-import { getIsWellFormedTitle } from '../../../../../utils/check';
+import { Officer } from '@mokjang/models';
+import { getFormattedTitle, getIsWellFormedTitle } from '@mokjang/utils';
 import { fetchOfficers } from '../../../../../redux/reducers/church-reducer';
-import { getFormattedTitle } from '../../../../../utils/format';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../../../redux/store';
 import { OfficersApi } from '../../../../../api/management/officer/officers.api';
@@ -24,6 +15,7 @@ import {
   setToastBackgroundColor,
   setToastText,
 } from '../../../../../redux/reducers/toast-popup-reducer';
+import useWindowSize from '@/hooks/window/window';
 
 const OfficerListContainer = styled.div`
   display: flex;
@@ -50,6 +42,7 @@ const OfficerSideBar = ({
   selectedOfficer,
   onClickOfficer,
 }: OfficerSideBarProps) => {
+  const { height } = useWindowSize();
   const t = useI18n();
   const t_popup = useScopedI18n('popup');
   const dispatch = useDispatch<AppDispatch>();
@@ -115,20 +108,26 @@ const OfficerSideBar = ({
           value={newOfficerName}
           onChange={onChangeNewOfficerName}
           borderColor={GRAY.SEMI_LIGHT}
+          height={30}
         />
         <Button
-          width={80}
+          width={50}
           text={t('button.add')}
           onClick={onClickSaveNewOfficer}
           borderColor={GRAY.SEMI_LIGHT}
-          backgroundColor={WHITE}
-          color={GRAY.DARK}
+          backgroundColor={
+            getIsWellFormedTitle(newOfficerName) ? WHITE : GRAY.SEMI_LIGHT
+          }
+          color={getIsWellFormedTitle(newOfficerName) ? GRAY.DARK : WHITE}
+          height={30}
+          disabled={!getIsWellFormedTitle(newOfficerName)}
         />
       </AddContainer>
       {/* 그룹 목록 */}
       <OfficerList
         selectedOfficerId={selectedOfficer.id}
         onClickOfficer={onClickOfficer}
+        height={height - 320}
       />
     </OfficerListContainer>
   );

@@ -2,15 +2,20 @@ import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../redux/store';
 
-import { Group } from '../../../../../models/management/management';
+import { Group } from '@mokjang/models';
 import GroupListView from './group-list.view';
 
 type GroupListProps = {
   selectedGroupId: string | null;
   onClickGroup: (group: Group) => void;
+  height: number;
 };
 
-const GroupList = ({ selectedGroupId, onClickGroup }: GroupListProps) => {
+const GroupList = ({
+  selectedGroupId,
+  onClickGroup,
+  height,
+}: GroupListProps) => {
   const { groups } = useSelector((state: RootState) => state.church);
 
   // 닫혀있는 그룹들
@@ -37,6 +42,7 @@ const GroupList = ({ selectedGroupId, onClickGroup }: GroupListProps) => {
     selectedGroupId,
     onClickGroup,
     onClickToggle,
+    height,
   };
 
   return (

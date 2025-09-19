@@ -1,8 +1,9 @@
 import { RefObject } from 'react';
-import { GroupHistory } from '../../../../../../models/member/history';
+import { GroupHistory } from '@mokjang/models';
 import styled from 'styled-components';
 import GroupHistoryItem from '../../../../../atoms/member/history/group-history-item';
 import useWindowSize from '../../../../../../hooks/window/window';
+import EmptyList from '@/components/atoms/common/image/empty-list';
 
 const HistoryList = styled.div<{ height: number }>`
   display: flex;
@@ -27,13 +28,17 @@ const GroupHistoryListView = ({
 
   return (
     <HistoryList ref={scrollRef} height={height - 400}>
-      {histories.map((history) => (
-        <GroupHistoryItem
-          key={history.id}
-          history={history}
-          onClickGroupOpen={onClickGroupOpen}
-        />
-      ))}
+      {histories.length > 0 ? (
+        histories.map((history) => (
+          <GroupHistoryItem
+            key={history.id}
+            history={history}
+            onClickGroupOpen={onClickGroupOpen}
+          />
+        ))
+      ) : (
+        <EmptyList width={200} height={200} />
+      )}
     </HistoryList>
   );
 };

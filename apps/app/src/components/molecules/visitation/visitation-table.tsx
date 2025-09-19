@@ -7,8 +7,7 @@ import {
 } from '../../../redux/reducers/filter/visitation-filter-reducer';
 
 import VisitationTableView from './visitation-table.view';
-import { VISITATION } from '../../../constants/column/visitation-column';
-import { ORDER_DIRECTION } from '../../../constants/constant';
+import { ORDER_DIRECTION, VISITATION } from '@mokjang/constants';
 
 export type VisitationTableProps = {
   onClickVisitationItem: (visitationId: string) => void;
@@ -53,7 +52,7 @@ const VisitationTable = ({
       const { scrollTop, scrollHeight, clientHeight } = scrollRef.current;
 
       // 스크롤이 최하단에 도달했는지 확인
-      if (scrollTop + clientHeight >= scrollHeight) {
+      if (scrollTop + clientHeight >= scrollHeight - 10) {
         loadVisitations(); // 데이터를 추가로 로드
       }
     }

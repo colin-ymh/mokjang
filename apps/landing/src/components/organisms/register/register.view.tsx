@@ -7,22 +7,16 @@ import {
   CheckButton,
   LabelInput,
   MainText,
-} from '../../../../../../packages/components/src';
+} from '@mokjang/components';
+import { GRAY, GREEN, LOCALE, MAIN, WHITE } from '@mokjang/constants';
 import {
-  GRAY,
-  GREEN,
-  LOCALE,
-  MAIN,
-  WHITE,
-} from '../../../../../../packages/constants/src';
-import {
-  getIsWellFormedMobilePhone,
   getIsWellFormedName,
+  getIsWellFormedPhone,
   getMinuteFromSecond,
-} from '../../../../../../packages/utils/src';
+  getTranslatedVerifyNumber,
+} from '@mokjang/utils';
 
 import { useI18n, useScopedI18n } from '../../../../locales/client';
-import { getTranslatedVerifyNumber } from '@/utils/translate';
 import { usePathname } from 'next/navigation';
 
 const ListContainer = styled.div`
@@ -211,7 +205,7 @@ const RegisterView = ({
                 backgroundColor={
                   !isVerified &&
                   getIsWellFormedName(name) &&
-                  getIsWellFormedMobilePhone(mobilePhone)
+                  getIsWellFormedPhone(mobilePhone)
                     ? MAIN.DEFAULT
                     : GRAY.SEMI_LIGHT
                 }
@@ -219,7 +213,7 @@ const RegisterView = ({
                   !(
                     !isVerified &&
                     getIsWellFormedName(name) &&
-                    getIsWellFormedMobilePhone(mobilePhone)
+                    getIsWellFormedPhone(mobilePhone)
                   )
                 }
               />

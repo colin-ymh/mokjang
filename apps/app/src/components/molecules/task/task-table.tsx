@@ -7,8 +7,7 @@ import {
 } from '../../../redux/reducers/filter/task-filter-reducer';
 
 import TaskTableView from './task-table.view';
-import { TASK } from '../../../constants/column/task-column';
-import { ORDER_DIRECTION } from '../../../constants/constant';
+import { ORDER_DIRECTION, TASK } from '@mokjang/constants';
 
 export type TaskTableProps = {
   onClickTaskItem: (taskId: string) => void;
@@ -47,7 +46,7 @@ const TaskTable = ({ onClickTaskItem, loadTasks }: TaskTableProps) => {
       const { scrollTop, scrollHeight, clientHeight } = scrollRef.current;
 
       // 스크롤이 최하단에 도달했는지 확인
-      if (scrollTop + clientHeight >= scrollHeight) {
+      if (scrollTop + clientHeight >= scrollHeight - 10) {
         loadTasks(); // 데이터를 추가로 로드
       }
     }

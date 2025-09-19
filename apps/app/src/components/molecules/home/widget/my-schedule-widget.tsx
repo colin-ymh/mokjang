@@ -1,16 +1,21 @@
 'use client';
 
-import { HomeApi } from '../../../../api/home/home.api';
+import { HomeApi } from '@/api/home/home.api';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../../../redux/store';
+import { AppDispatch, RootState } from '@/redux/store';
 import { useEffect, useState } from 'react';
-import { BLANK, RANGE } from '../../../../constants/constant';
-import { DOMAIN } from '../../../../models/permission/permission';
-import { Schedule, ServerSchedule } from '../../../../models/calendar/calendar';
-import { setTargetTask } from '../../../../redux/reducers/target/target-task-reducer';
-import { setTargetVisitation } from '../../../../redux/reducers/target/target-visitation-reducer';
-import { CalendarApi } from '../../../../api/calendar/calendar.api';
-import { EducationsApi } from '../../../../api/education/educations.api';
+import { BLANK, DESTRUCTIVE, RANGE, TASK_STATUS } from '@mokjang/constants';
+import {
+  DEFAULT_EDUCATION,
+  DEFAULT_EDUCATION_TERM,
+  DOMAIN,
+  Schedule,
+  ServerSchedule,
+} from '@mokjang/models';
+import { setTargetTask } from '@/redux/reducers/target/target-task-reducer';
+import { setTargetVisitation } from '@/redux/reducers/target/target-visitation-reducer';
+import { CalendarApi } from '@/api/calendar/calendar.api';
+import { EducationsApi } from '@/api/education/educations.api';
 import { EducationTermsApi } from '../../../../api/education/education-terms.api';
 import { EducationSessionsApi } from '../../../../api/education/education-sessions.api';
 import { EducationAttendanceApi } from '../../../../api/education/education-attendance.api';
@@ -24,23 +29,24 @@ import {
   setToastBackgroundColor,
   setToastText,
 } from '../../../../redux/reducers/toast-popup-reducer';
-import { DESTRUCTIVE } from '../../../../constants/styles/color';
-import { TASK_STATUS } from '../../../../constants/status/status';
 import { setTargetEducation } from '../../../../redux/reducers/target/target-education-reducer';
-import {
-  DEFAULT_EDUCATION,
-  DEFAULT_EDUCATION_TERM,
-} from '../../../../models/education/education';
 import { setTargetEducationTerm } from '../../../../redux/reducers/target/target-education-term-reducer';
 import {
   fetchChurchScheduleSummary,
   fetchMyScheduleSummary,
 } from '../../../../redux/reducers/schedule-summary-reducer';
+import {
+  setMySchedules,
+  setReportedSchedules,
+} from '@/redux/reducers/filter/home-widget-filter-reducer';
 
 const MyScheduleWidget = () => {
   const dispatch = useDispatch<AppDispatch>();
   const churchId = useSelector((state: RootState) => state.church.churchId);
 
+  const { mySchedules, reportedSchedules } = useSelector(
+    (state: RootState) => state.homeWidgetFilter
+  );
   const { targetTask } = useSelector((state: RootState) => state.targetTask);
   const { targetVisitation } = useSelector(
     (state: RootState) => state.targetVisitation
@@ -51,9 +57,6 @@ const MyScheduleWidget = () => {
   const { targetEducationSession } = useSelector(
     (state: RootState) => state.targetEducationSession
   );
-
-  const [mySchedules, setMySchedules] = useState<Schedule[]>([]);
-
   const [range, setRange] = useState<RANGE>(RANGE.WEEKLY);
   // 상세보기 중인 도메인
   const [openedDomain, setOpenedDomain] = useState<DOMAIN | null>(null);
@@ -80,7 +83,7 @@ const MyScheduleWidget = () => {
         return getMyWidgetSchedule(schedule);
       });
 
-      setMySchedules(newMySchedules);
+      dispatch(setMySchedules(newMySchedules));
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));
     }
@@ -209,7 +212,12 @@ const MyScheduleWidget = () => {
   // ===== status =====
   const onChangeTaskStatus = (status: TASK_STATUS) => {
     try {
-      tasksApi.editTask({ churchId, taskId: targetTask.id }, { status });
+      tasksApi
+        .editTask({ churchId, taskId: targetTask.id }, { status })
+        .then(() => {
+          dispatch(fetchMyScheduleSummary());
+          dispatch(fetchChurchScheduleSummary());
+        });
       dispatch(setTargetTask({ ...targetTask, status }));
 
       const newSchedules = mySchedules.map((schedule) => {
@@ -224,9 +232,21 @@ const MyScheduleWidget = () => {
           return schedule;
         }
       });
-      setMySchedules(newSchedules);
-      dispatch(fetchMyScheduleSummary());
-      dispatch(fetchChurchScheduleSummary());
+      dispatch(setMySchedules(newSchedules));
+
+      const newReportedSchedules = reportedSchedules.map((schedule) => {
+        if (schedule.id) {
+          const [domain, id] = schedule.id.split('-');
+          if (domain === DOMAIN.TASK && id == targetTask.id) {
+            return { ...schedule, status };
+          } else {
+            return schedule;
+          }
+        } else {
+          return schedule;
+        }
+      });
+      dispatch(setReportedSchedules(newReportedSchedules));
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));
     }
@@ -234,10 +254,15 @@ const MyScheduleWidget = () => {
 
   const onChangeVisitationStatus = (status: TASK_STATUS) => {
     try {
-      visitationsApi.editVisitation(
-        { churchId, visitationId: targetVisitation.id },
-        { status }
-      );
+      visitationsApi
+        .editVisitation(
+          { churchId, visitationId: targetVisitation.id },
+          { status }
+        )
+        .then(() => {
+          dispatch(fetchMyScheduleSummary());
+          dispatch(fetchChurchScheduleSummary());
+        });
       dispatch(setTargetVisitation({ ...targetVisitation, status }));
 
       const newSchedules = mySchedules.map((schedule) => {
@@ -252,7 +277,21 @@ const MyScheduleWidget = () => {
           return schedule;
         }
       });
-      setMySchedules(newSchedules);
+      dispatch(setMySchedules(newSchedules));
+
+      const newReportedSchedules = reportedSchedules.map((schedule) => {
+        if (schedule.id) {
+          const [domain, id] = schedule.id.split('-');
+          if (domain === DOMAIN.VISITATION && id == targetVisitation.id) {
+            return { ...schedule, status };
+          } else {
+            return schedule;
+          }
+        } else {
+          return schedule;
+        }
+      });
+      dispatch(setReportedSchedules(newReportedSchedules));
       dispatch(fetchMyScheduleSummary());
       dispatch(fetchChurchScheduleSummary());
     } catch (error) {
@@ -262,15 +301,20 @@ const MyScheduleWidget = () => {
 
   const onChangeEducationSessionStatus = (status: TASK_STATUS) => {
     try {
-      educationSessionsApi.editEducationSession(
-        {
-          churchId,
-          educationId: targetEducationTerm.educationId,
-          educationTermId: targetEducationTerm.id,
-          educationSessionId: targetEducationSession.id,
-        },
-        { status }
-      );
+      educationSessionsApi
+        .editEducationSession(
+          {
+            churchId,
+            educationId: targetEducationTerm.educationId,
+            educationTermId: targetEducationTerm.id,
+            educationSessionId: targetEducationSession.id,
+          },
+          { status }
+        )
+        .then(() => {
+          dispatch(fetchMyScheduleSummary());
+          dispatch(fetchChurchScheduleSummary());
+        });
       dispatch(
         setTargetEducationSession({ ...targetEducationSession, status })
       );
@@ -290,7 +334,24 @@ const MyScheduleWidget = () => {
           return schedule;
         }
       });
-      setMySchedules(newSchedules);
+      dispatch(setMySchedules(newSchedules));
+
+      const newReportedSchedules = reportedSchedules.map((schedule) => {
+        if (schedule.id) {
+          const [domain, id] = schedule.id.split('-');
+          if (
+            domain === DOMAIN.EDUCATION_SESSION &&
+            id == targetEducationSession.id
+          ) {
+            return { ...schedule, status };
+          } else {
+            return schedule;
+          }
+        } else {
+          return schedule;
+        }
+      });
+      dispatch(setReportedSchedules(newReportedSchedules));
       dispatch(fetchMyScheduleSummary());
       dispatch(fetchChurchScheduleSummary());
     } catch (error) {
@@ -303,16 +364,19 @@ const MyScheduleWidget = () => {
 
   const onChangeEducationTermStatus = async (status: TASK_STATUS) => {
     try {
-      const response = await educationTermsApi.editEducationTerm(
-        {
-          churchId,
-          educationId: targetEducationTerm.educationId,
-          educationTermId: targetEducationTerm.id,
-        },
-        { status }
-      );
-
-      const newEducationTerm = response.data.data;
+      await educationTermsApi
+        .editEducationTerm(
+          {
+            churchId,
+            educationId: targetEducationTerm.educationId,
+            educationTermId: targetEducationTerm.id,
+          },
+          { status }
+        )
+        .then(() => {
+          dispatch(fetchMyScheduleSummary());
+          dispatch(fetchChurchScheduleSummary());
+        });
 
       dispatch(
         setTargetEducationTerm({
@@ -337,7 +401,24 @@ const MyScheduleWidget = () => {
         }
       });
 
-      setMySchedules(newSchedules);
+      dispatch(setMySchedules(newSchedules));
+
+      const newReportedSchedules = reportedSchedules.map((schedule) => {
+        if (schedule.id) {
+          const [domain, id] = schedule.id.split('-');
+          if (
+            domain === DOMAIN.EDUCATION_TERM &&
+            id == targetEducationTerm.id
+          ) {
+            return { ...schedule, status };
+          } else {
+            return schedule;
+          }
+        } else {
+          return schedule;
+        }
+      });
+      dispatch(setReportedSchedules(newReportedSchedules));
       dispatch(fetchMyScheduleSummary());
       dispatch(fetchChurchScheduleSummary());
     } catch (error) {

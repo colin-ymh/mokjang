@@ -1,10 +1,10 @@
 import { ReactNode, useEffect } from 'react';
 import styled from 'styled-components';
 
-import { TransparentBackground } from '@mokjang/components';
 import { createPortal } from 'react-dom';
 import { PopupLayout } from '../layout';
 import { MEDIA_MIN_WIDTH, WHITE } from '@mokjang/constants';
+import { TransparentBackground } from '../etc';
 
 const ModalContainer = styled.div<{
   width?: number;
@@ -45,7 +45,8 @@ type CustomPopupProps = {
   isPercentage?: boolean;
   isPortal?: boolean;
   zIndex?: number;
-  onClickCancel: () => void;
+  onClickClose: () => void;
+  onClickCancel?: () => void;
   onClickDone?: () => void;
   headerTitle?: string;
   headerDescription?: string;
@@ -59,6 +60,8 @@ type CustomPopupProps = {
   isHeaderShown?: boolean;
   isHeaderBorderShown?: boolean;
   headerHeight?: number;
+  keyboardDisabled?: boolean;
+  blur?: boolean;
   children: ReactNode;
 };
 
@@ -69,6 +72,7 @@ export const CustomPopup = ({
   isPercentage = false,
   isPortal = true,
   zIndex = 1000,
+  onClickClose,
   onClickCancel,
   onClickDone,
   headerTitle,
@@ -83,13 +87,16 @@ export const CustomPopup = ({
   isHeaderShown,
   isHeaderBorderShown,
   headerHeight,
+  keyboardDisabled,
+  blur,
   children,
 }: CustomPopupProps) => {
   useEffect(() => {
+    if (keyboardDisabled) return;
     // ESC 누르면 닫기
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
-        onClickCancel();
+        onClickClose();
       }
     };
 
@@ -100,7 +107,7 @@ export const CustomPopup = ({
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [isShow, onClickCancel]);
+  }, [isShow, onClickClose]);
 
   if (!isShow) return null;
 
@@ -108,8 +115,9 @@ export const CustomPopup = ({
     <>
       <TransparentBackground
         isOpened={isShow}
-        onClick={onClickCancel}
+        onClick={onClickClose}
         zIndex={zIndex - 100}
+        blur={blur}
       />
       <ModalContainer
         width={width}
@@ -118,6 +126,7 @@ export const CustomPopup = ({
         $zIndex={zIndex}
       >
         <PopupLayout
+          onClickClose={onClickClose}
           onClickCancel={onClickCancel}
           onClickDone={onClickDone}
           headerTitle={headerTitle}

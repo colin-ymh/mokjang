@@ -6,6 +6,7 @@ import {
   EDUCATION_TERM_CONTENT_ID,
   MANAGER_CONTENT_ID,
   MEMBER_CONTENT_ID,
+  PERMISSION_TEMPLATE_CONTENT_ID,
   TASK_CONTENT_ID,
   VISITATION_CONTENT_ID,
 } from '../../constants/layout/content';
@@ -16,13 +17,10 @@ import {
 
 import { useI18n, useScopedI18n } from '../../../locales/client';
 import { MEMBER_TABLE_HEADER_ITEM } from '../../redux/reducers/filter/member-filter-reducer';
-import { MEMBER } from '../../constants/column/member-column';
+import { MEMBER } from '@mokjang/constants';
 
-import User from '../../../public/svg/user.svg';
-import Users from '../../../public/svg/users.svg';
-import Heart from '../../../public/svg/heart.svg';
-import Calendar from '../../../public/svg/calendar.svg';
-import Clock from '../../../public/svg/clock.svg';
+import { Svg } from '@mokjang/assets';
+import { HeaderBarItem } from '@/components/atoms/layout/header/header-bar.view';
 
 export const useMainMemberHeaderBarItems = () => {
   const t_memberContent = useScopedI18n('member-content');
@@ -112,27 +110,27 @@ export const useMemberInformationHeaderBarItems = () => {
     {
       id: MEMBER_INFORMATION_HEADER_ID.PERSONAL_INFORMATION,
       title: t_header(MEMBER_INFORMATION_HEADER_ID.PERSONAL_INFORMATION),
-      icon: User,
+      icon: Svg.User,
     },
     {
       id: MEMBER_INFORMATION_HEADER_ID.FAMILY_INFORMATION,
       title: t_header(MEMBER_INFORMATION_HEADER_ID.FAMILY_INFORMATION),
-      icon: Users,
+      icon: Svg.Users,
     },
     {
       id: MEMBER_INFORMATION_HEADER_ID.VISITATION,
       title: t_header(MEMBER_INFORMATION_HEADER_ID.VISITATION),
-      icon: Heart,
+      icon: Svg.Heart,
     },
     {
       id: MEMBER_INFORMATION_HEADER_ID.ATTENDANCE,
       title: t_header(MEMBER_INFORMATION_HEADER_ID.ATTENDANCE),
-      icon: Calendar,
+      icon: Svg.Calendar,
     },
     {
       id: MEMBER_INFORMATION_HEADER_ID.HISTORY,
       title: t_header(MEMBER_INFORMATION_HEADER_ID.HISTORY),
-      icon: Clock,
+      icon: Svg.Clock,
     },
   ];
 
@@ -146,17 +144,17 @@ export const useEditMemberHeaderBarItems = () => {
     {
       id: EDIT_MEMBER_HEADER_ID.BASIC_INFORMATION,
       title: t(EDIT_MEMBER_HEADER_ID.BASIC_INFORMATION),
-      icon: User,
+      icon: Svg.User,
     },
     {
       id: EDIT_MEMBER_HEADER_ID.PERSONAL_INFORMATION,
       title: t(EDIT_MEMBER_HEADER_ID.PERSONAL_INFORMATION),
-      icon: Users,
+      icon: Svg.Users,
     },
     {
       id: EDIT_MEMBER_HEADER_ID.CHURCH_INFORMATION,
       title: t(EDIT_MEMBER_HEADER_ID.CHURCH_INFORMATION),
-      icon: Heart,
+      icon: Svg.Heart,
     },
   ];
 
@@ -250,6 +248,23 @@ export const useEducationSessionHeaderBarItems = () => {
     {
       value: EDUCATION_SESSION_CONTENT_ID.ATTENDANCE,
       title: t_header(EDUCATION_SESSION_CONTENT_ID.ATTENDANCE),
+    },
+  ];
+
+  return items;
+};
+
+export const usePermissionTemplateHeaderBarItems = (): HeaderBarItem[] => {
+  const t_header = useScopedI18n('header');
+
+  const items = [
+    {
+      id: PERMISSION_TEMPLATE_CONTENT_ID.PERMISSION,
+      title: t_header(PERMISSION_TEMPLATE_CONTENT_ID.PERMISSION),
+    },
+    {
+      id: PERMISSION_TEMPLATE_CONTENT_ID.MANAGER,
+      title: t_header(PERMISSION_TEMPLATE_CONTENT_ID.MANAGER),
     },
   ];
 

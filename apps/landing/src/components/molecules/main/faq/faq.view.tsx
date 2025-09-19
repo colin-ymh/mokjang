@@ -1,10 +1,10 @@
 import styled from 'styled-components';
-import { Button, MainText } from '../../../../../../../packages/components/src';
-import { GRAY, WHITE } from '../../../../../../../packages/constants/src';
-import { FAQ } from '@/constants/constant';
+import { Button, MainText } from '@mokjang/components';
+import { GRAY, GREEN, WHITE } from '@mokjang/constants';
 
 import { useScopedI18n } from '../../../../../locales/client';
 import FaqItem from '@/components/atoms/main/faq/faq-item';
+import { FAQ } from '@/constants/constant';
 
 const FAQContainer = styled.div`
   display: flex;
@@ -38,16 +38,24 @@ const ExtraContainer = styled.div`
   justify-content: space-between;
 `;
 
+const ButtonContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+`;
+
 export type FaqViewProps = {
   openedQuestion: FAQ | undefined;
   onClickQuestion: (id: FAQ) => void;
   onClickContact: () => void;
+  onClickDonate: () => void;
 };
 
 const FaqView = ({
   openedQuestion,
   onClickQuestion,
   onClickContact,
+  onClickDonate,
 }: FaqViewProps) => {
   const t_main = useScopedI18n('main.faq');
   const t_button = useScopedI18n('button');
@@ -76,15 +84,27 @@ const FaqView = ({
         <MainText fontSize={16} color={GRAY.DARK}>
           {t_main('extra')}
         </MainText>
-        <Button
-          text={t_button('contact')}
-          color={WHITE}
-          height={40}
-          width={120}
-          fontSize={16}
-          fontWeight={400}
-          onClick={onClickContact}
-        />
+        <ButtonContainer>
+          <Button
+            text={t_button('contact')}
+            borderRadius={10}
+            height={50}
+            width={120}
+            fontSize={16}
+            fontWeight={500}
+            onClick={onClickContact}
+          />
+          <Button
+            text={t_button('donate')}
+            borderRadius={10}
+            height={50}
+            width={170}
+            fontSize={16}
+            fontWeight={500}
+            onClick={onClickDonate}
+            backgroundColor={GREEN.DEFAULT}
+          />
+        </ButtonContainer>
       </ExtraContainer>
     </FAQContainer>
   );

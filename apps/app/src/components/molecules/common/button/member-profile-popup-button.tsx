@@ -1,22 +1,28 @@
-import { DEFAULT_MEMBER, Member } from '../../../../models/member/member';
+import { DEFAULT_MEMBER, Member } from '@mokjang/models';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../../../redux/store';
-import { setTargetMember } from '../../../../redux/reducers/target/target-member-reducer';
+import { AppDispatch, RootState } from '@/redux/store';
+import { setTargetMember } from '@/redux/reducers/target/target-member-reducer';
 import styled from 'styled-components';
-import CustomPopup from '../../../atoms/common/popup/custom-popup';
+import { CustomPopup } from '@mokjang/components';
 import MemberInformation from '../../../organisms/member/information/member-information';
-import { BLACK } from '../../../../constants/styles/color';
-import CancelIcon from '../../../../../public/svg/cancel.svg';
+import { BLACK, DESTRUCTIVE } from '@mokjang/constants';
+import { Svg } from '@mokjang/assets';
 import MemberProfile from '../../../atoms/member/member-profile';
-import { MembersApi } from '../../../../api/members/members.api';
+import { MembersApi } from '@/api/members/members.api';
+import { useScopedI18n } from '../../../../../locales/client';
+import {
+  setIsToastShown,
+  setToastBackgroundColor,
+  setToastText,
+} from '@/redux/reducers/toast-popup-reducer';
 
 const ButtonContainer = styled.div`
   display: flex;
   cursor: pointer;
 `;
 
-const Cancel = styled(CancelIcon)`
+const Cancel = styled(Svg.Cancel)`
   width: 30px;
   height: 30px;
   stroke: ${BLACK};
@@ -38,6 +44,8 @@ const MemberProfilePopupButton = ({
   width,
   height,
 }: MemberProfileButtonProps) => {
+  const t_button = useScopedI18n('button');
+
   const dispatch = useDispatch<AppDispatch>();
   const { churchId } = useSelector((state: RootState) => state.church);
   const [isShow, setIsShow] = useState<boolean>(false);
@@ -58,7 +66,13 @@ const MemberProfilePopupButton = ({
       dispatch(setTargetMember(newMember));
       setIsShow(true);
     } catch (error) {
-      setThrownError(error instanceof Error ? error : new Error(String(error)));
+      if (error instanceof Error) {
+        dispatch(setToastText(error.message));
+        dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
+        dispatch(setIsToastShown(true));
+      } else {
+        setThrownError(new Error(String(error)));
+      }
     }
   };
 
@@ -79,18 +93,14 @@ const MemberProfilePopupButton = ({
       />
       <CustomPopup
         isShow={isShow}
+        onClickClose={onClickClose}
         onClickCancel={onClickClose}
-        width={80}
-        height={80}
+        width={35}
+        height={90}
         isPercentage={true}
         isPortal={true}
         isFooterShown={false}
         headerHeight={50}
-        headerRight={
-          <ButtonContainer onClick={onClickClose}>
-            <Cancel />
-          </ButtonContainer>
-        }
       >
         <MemberInformation isPopup={true} />
       </CustomPopup>

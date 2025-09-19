@@ -4,22 +4,25 @@ import FakeDropdownButton from '../../../atoms/common/button/fake-dropdown-butto
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
-import { Group } from '../../../../models/management/management';
-import CustomPopup from '../../../atoms/common/popup/custom-popup';
+import { Group } from '@mokjang/models';
+import { Button, CustomPopup, MainText, SvgIcon } from '@mokjang/components';
 import SelectGroupHierarchy from '../../group/select-group-hierarchy';
 import WeekNavigator from '../../../atoms/common/date/week-navigator';
+import { getDateFromDateString, getDateStringFromDate } from '@mokjang/utils';
 import {
-  getDateFromDateString,
-  getDateStringFromDate,
-} from '../../../../utils/date';
-import { GRAY, GREEN, RED } from '../../../../constants/styles/color';
+  BLANK,
+  CURSOR,
+  GRAY,
+  GREEN,
+  RED,
+  SIZE,
+  WHITE,
+} from '@mokjang/constants';
 import AttendanceInformationTable from '../../../molecules/attendance/information/attendance-information-table';
 import WorshipSessionInformation from '../../../molecules/attendance/information/worship-session-information';
 import LabelDropdown from '../../../atoms/common/dropdown/label-dropdown';
-import { SIZE } from '../../../../constants/styles/style';
-import { MainText } from '../../../atoms/common/text/main-text';
 import { getWorshipAttendanceRateColor } from '../../../../utils/color';
-import Button from '../../../atoms/common/button/button';
+import { Svg } from '@mokjang/assets';
 
 const AttendanceInformationContainer = styled.div`
   display: flex;
@@ -66,8 +69,10 @@ const BoxContainer = styled.div`
 
 const GroupContainer = styled.div`
   display: flex;
+  flex-direction: column;
   padding: 10px;
   width: 100%;
+  overflow-y: auto;
 `;
 
 const StatisticsContainer = styled.div`
@@ -101,6 +106,8 @@ type AttendanceInformationProps = {
   onClickCloseGroupModal: () => void;
   onChangeDate: (date: Date) => void;
   onClickAllAttended: () => void;
+  fetchSessionStatistic: () => void;
+  onClickRefreshAttendances: () => void;
 };
 
 const AttendanceInformation = ({
@@ -112,9 +119,13 @@ const AttendanceInformation = ({
   onClickCloseGroupModal,
   onChangeDate,
   onClickAllAttended,
+  fetchSessionStatistic,
+  onClickRefreshAttendances,
 }: AttendanceInformationProps) => {
   const t = useI18n();
   const t_title = useScopedI18n('title');
+  const t_button = useScopedI18n('button');
+
   const {
     targetWorshipSession,
     targetWorshipSessionGroup,
@@ -141,17 +152,6 @@ const AttendanceInformation = ({
         <ContentContainer>
           {/* 필터 행 */}
           <BoxContainer>
-            <LabelContainer>
-              <MainText color={GRAY.DARK} size={SIZE.SMALL}>
-                {t('group')}
-              </MainText>
-              <FakeDropdownButton
-                title={targetWorshipSessionGroup.name || t('all')}
-                isOpened={isGroupModalShown}
-                onClick={onClickOpenGroupModal}
-                height={40}
-              />
-            </LabelContainer>
             {/* 예배 설정 */}
             <LabelDropdown
               label={t('worship')}
@@ -159,7 +159,27 @@ const AttendanceInformation = ({
               items={worshipDropdownItems}
               onChangeItem={onClickWorshipItem}
               height={40}
+              backgroundBlur={false}
             />
+
+            <LabelContainer>
+              <MainText color={GRAY.DARK} size={SIZE.SMALL}>
+                {t('group')}
+              </MainText>
+              <FakeDropdownButton
+                title={
+                  targetWorshipSessionGroup.id === null
+                    ? t('none')
+                    : targetWorshipSessionGroup.id === BLANK
+                      ? t('all')
+                      : targetWorshipSessionGroup.name
+                }
+                isOpened={isGroupModalShown}
+                onClick={onClickOpenGroupModal}
+                height={40}
+              />
+            </LabelContainer>
+
             <WeekNavigator
               value={getDateFromDateString(targetWorshipSession.sessionDate)}
               dayOfWeek={targetWorshipSessionWorship.worshipDay}
@@ -225,8 +245,23 @@ const AttendanceInformation = ({
           </BoxContainer>
           {/* 검색창 */}
           <RowContainer>
-            <div />
-            {/*<BorderInput value={searchText} onChange={onChangeSearchText} />*/}
+            <Button
+              onClick={onClickRefreshAttendances}
+              icon={
+                <SvgIcon
+                  cursor={CURSOR.POINTER}
+                  svg={Svg.ArrowPath}
+                  width={2}
+                  size={20}
+                  color={GRAY.DARK}
+                  bottom={0.1}
+                />
+              }
+              width={30}
+              height={30}
+              borderColor={GRAY.LIGHT}
+              backgroundColor={WHITE}
+            />
             <Button
               text={t('button.allAttended')}
               height={30}
@@ -237,7 +272,9 @@ const AttendanceInformation = ({
           </RowContainer>
           {/* 출석 목록 */}
           <TableContainer>
-            <AttendanceInformationTable />
+            <AttendanceInformationTable
+              fetchSessionStatistic={fetchSessionStatistic}
+            />
           </TableContainer>
         </ContentContainer>
       </AttendanceInformationContainer>
@@ -245,15 +282,20 @@ const AttendanceInformation = ({
       {/* 그룹 선택 모달 */}
       <CustomPopup
         isShow={isGroupModalShown}
+        onClickClose={onClickCloseGroupModal}
         onClickCancel={onClickCloseGroupModal}
+        cancelText={t_button('cancel')}
         width={400}
         height={600}
         isHeaderShown={false}
+        blur={false}
       >
         <GroupContainer>
           <SelectGroupHierarchy
             onChange={onClickGroupItem}
             topLevelGroupId={topLevelGroup.id}
+            isNullable={true}
+            prevSelectedGroupId={targetWorshipSessionGroup.id}
           />
         </GroupContainer>
       </CustomPopup>

@@ -31,7 +31,7 @@ const FooterRight = styled.div`
 `;
 
 type PopupFooterViewProps = {
-  onClickCancel: () => void;
+  onClickCancel?: () => void;
   onClickDone?: () => void;
   cancelText: string;
   doneText: string;
@@ -54,15 +54,17 @@ export const PopupFooterView = ({
       <FooterLeft></FooterLeft>
 
       <FooterRight>
-        <Button
-          text={cancelText}
-          onClick={onClickCancel}
-          width={80}
-          height={35}
-          color={GRAY.DARK}
-          backgroundColor={cancelBackgroundColor || WHITE}
-          borderColor={GRAY.SEMI_LIGHT}
-        />
+        {onClickCancel && (
+          <Button
+            text={cancelText}
+            onClick={onClickCancel}
+            width={80}
+            height={35}
+            color={GRAY.DARK}
+            backgroundColor={cancelBackgroundColor || WHITE}
+            borderColor={GRAY.SEMI_LIGHT}
+          />
+        )}
         {onClickDone && (
           <Button
             text={doneText}

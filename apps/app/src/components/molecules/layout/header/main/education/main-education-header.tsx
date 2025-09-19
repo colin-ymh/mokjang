@@ -1,13 +1,12 @@
 import MainEducationHeaderView from './main-education-header.view';
-import { usePageRouter } from '../../../../../../utils/router';
+import { getIsWellFormedTitle, usePageRouter } from '@mokjang/utils';
 import { useEffect, useState } from 'react';
 import { EducationsApi } from '../../../../../../api/education/educations.api';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../../../../redux/store';
 import { setEducations } from '../../../../../../redux/reducers/filter/education-filter-reducer';
-import { getIsWellFormedTitle } from '../../../../../../utils/check';
 import { setTargetEducation } from '../../../../../../redux/reducers/target/target-education-reducer';
-import { DEFAULT_EDUCATION } from '../../../../../../models/education/education';
+import { DEFAULT_EDUCATION } from '@mokjang/models';
 import {
   setIsToastShown,
   setToastText,

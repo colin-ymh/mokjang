@@ -1,5 +1,5 @@
 import React, { FC, useCallback } from 'react';
-import { HOME_WIDGET } from '../../../../constants/constant';
+import { HOME_WIDGET } from '@mokjang/constants';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../../redux/store';
 import { setHomeWidgets } from '../../../../redux/reducers/filter/home-widget-filter-reducer';

@@ -2,8 +2,8 @@ import styled from 'styled-components';
 import React from 'react';
 import { useI18n, useScopedI18n } from '../../../../../../locales/client';
 import ConfirmPopup from '../../../../atoms/common/popup/confirm-popup';
-import { Officer } from '../../../../../models/management/management';
-import LabelInput from '../../../../atoms/common/input/label-input';
+import { Officer } from '@mokjang/models';
+import { LabelInput } from '@mokjang/components';
 import DeleteWarningButton from '../../../../atoms/common/button/delete-warning-button';
 
 const EditContainer = styled.div`
@@ -12,6 +12,10 @@ const EditContainer = styled.div`
   width: 100%;
   padding: 20px;
   gap: 20px;
+`;
+
+const BoxContainer = styled.div`
+  display: flex;
 `;
 
 type EditOfficerViewProps = {
@@ -47,12 +51,14 @@ const EditOfficerView = ({
           onChange={onChangeEditOfficerName}
           placeholder={t('placeholder.officerName')}
         />
-        <DeleteWarningButton
-          description={t_warning('deleteOfficer')}
-          buttonText={t_button('deleteOfficer')}
-          onClick={onClickDeleteOpen}
-          disabled={!!selectedOfficer?.membersCount || false}
-        />
+        <BoxContainer>
+          <DeleteWarningButton
+            description={t_warning('deleteOfficer')}
+            buttonText={t_button('deleteOfficer')}
+            onClick={onClickDeleteOpen}
+            disabled={!!selectedOfficer?.membersCount || false}
+          />
+        </BoxContainer>
       </EditContainer>
 
       {/* 그룹 삭제 팝업 */}

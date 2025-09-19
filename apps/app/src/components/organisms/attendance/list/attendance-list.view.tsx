@@ -1,11 +1,11 @@
 import styled from 'styled-components';
 import React from 'react';
-import { MEDIA_MIN_WIDTH } from '../../../../constants/constant';
+import { MEDIA_MIN_WIDTH } from '@mokjang/constants';
 import AttendanceTable, {
   AttendanceTableProps,
 } from '../../../molecules/attendance/list/attendance-table';
 import AttendanceRow from '../../../molecules/attendance/list/attendance-row';
-import { GRAY, WHITE } from '../../../../constants/styles/color';
+import { GRAY, WHITE } from '@mokjang/constants';
 
 const AttendanceListContainer = styled.div`
   display: flex;

@@ -2,8 +2,8 @@ import { ChangeEvent } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../../redux/store';
-import { getFormattedTitle } from '../../../../utils/format';
-import { getDateStringFromDate } from '../../../../utils/date';
+import { getFormattedTitle } from '@mokjang/utils';
+import { getDateStringFromDate } from '@mokjang/utils';
 import AddChurchEventView from './add-church-event.view';
 import { setTargetChurchEvent } from '../../../../redux/reducers/target/target-church-event-reducer';
 

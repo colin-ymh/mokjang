@@ -1,18 +1,21 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { BLACK, GRAY, MAIN } from '../../../../../../constants/styles/color';
-import { MainText } from '../../../../../atoms/common/text/main-text';
-import { SIZE } from '../../../../../../constants/styles/style';
+import {
+  BLACK,
+  GRAY,
+  MAIN,
+  MEDIA_MIN_WIDTH,
+  SIZE,
+  WHITE,
+} from '@mokjang/constants';
+import { Button, MainText, SvgIcon } from '@mokjang/components';
 
 import { useScopedI18n } from '../../../../../../../locales/client';
-
-import { MEDIA_MIN_WIDTH } from '../../../../../../constants/constant';
-import Button from '../../../../../atoms/common/button/button';
 import AddEducation from '../../../../../organisms/education/education/add/add-education';
 
-import ChevronLeft from '../../../../../../../public/svg/chevron-left.svg';
-import { MAIN_HEADER_ID } from '../../../../../../constants/layout/header';
+import { Svg } from '@mokjang/assets';
+import { MAIN_HEADER_ID } from '@/constants/layout/header';
 import WrappedPagePopup from '../../../../../atoms/common/popup/wrapped-page-popup';
 
 const HeaderContainer = styled.div`
@@ -47,7 +50,7 @@ const TitleContainer = styled.div`
   flex-direction: row;
 `;
 
-const GoBackButton = styled(ChevronLeft)`
+const GoBackButton = styled(Svg.ChevronLeft)`
   width: 30px;
   height: 30px;
   stroke: ${BLACK};
@@ -100,8 +103,11 @@ const MainEducationHeaderView = ({
         <Button
           text={t_button('addEducation')}
           onClick={onClickAddEducation}
-          width={100}
-          height={30}
+          width={'auto'}
+          fontWeight={500}
+          fontSize={16}
+          height={35}
+          icon={<SvgIcon svg={Svg.Plus} color={WHITE} width={2} size={20} />}
         />
       </HeaderTopContainer>
       <HeaderBottomContainer></HeaderBottomContainer>
@@ -113,7 +119,7 @@ const MainEducationHeaderView = ({
         onClickDone={onClickSaveEducation}
         doneBackgroundColor={isSaveEnabled ? MAIN.DEFAULT : MAIN.LIGHT}
         doneDisabled={!isSaveEnabled}
-        widthPercentage={60}
+        widthPercentage={45}
       >
         <AddEducation />
       </WrappedPagePopup>

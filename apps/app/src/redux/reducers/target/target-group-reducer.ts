@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { DEFAULT_GROUP, Group } from '../../../models/management/management';
+import { DEFAULT_GROUP, Group } from '@mokjang/models';
 
 type TargetGroupState = {
   targetGroup: Group;

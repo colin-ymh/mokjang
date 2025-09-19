@@ -1,29 +1,27 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../../../redux/store';
-import { ALL, BLANK, ORDER_DIRECTION } from '../../../../constants/constant';
-import { WORSHIP_ENROLLMENT } from '../../../../constants/column/worship-column';
+import { AppDispatch, RootState } from '@/redux/store';
+import { ORDER_DIRECTION, WORSHIP_ENROLLMENT } from '@mokjang/constants';
 import {
+  fetchWorshipSessionCheckStatus,
   setWorshipEnrollmentOrderBy,
   setWorshipEnrollmentOrderDirection,
-} from '../../../../redux/reducers/filter/worship-enrollment-filter-reducer';
+} from '@/redux/reducers/filter/worship-enrollment-filter-reducer';
 import AttendanceTableView from './attendance-table.view';
 import {
   setTargetWorshipSession,
   setTargetWorshipSessionGroup,
   setTargetWorshipSessionWorship,
-} from '../../../../redux/reducers/target/target-worship-session-reducer';
-import {
-  DEFAULT_WORSHIP_SESSION,
-  WorshipSessionCheckStatus,
-} from '../../../../models/worship/worship';
-import { WorshipSessionsApi } from '../../../../api/worship/worship-sessions.api';
-import { getDateStringFromDate } from '../../../../utils/date';
+} from '@/redux/reducers/target/target-worship-session-reducer';
+import { DEFAULT_WORSHIP_SESSION } from '@mokjang/models';
+import { WorshipSessionsApi } from '@/api/worship/worship-sessions.api';
+import { getDateStringFromDate } from '@mokjang/utils';
 
 export type AttendanceTableProps = {
   loadWorshipEnrollments: () => Promise<void>;
   isStatisticOpened: boolean;
   onClickStatisticChevron: () => void;
+  onClickRefreshEnrollments: () => void;
 };
 
 const AttendanceTable = ({
@@ -50,10 +48,6 @@ const AttendanceTable = ({
   // 상세정보 팝업 On/Off
   const [isSessionShown, setIsSessionShown] = useState<boolean>(false);
 
-  const [checkStatuses, setCheckStatuses] = useState<
-    WorshipSessionCheckStatus[]
-  >([]);
-
   const [thrownError, setThrownError] = useState<Error | null>(null);
   if (thrownError) {
     throw thrownError;
@@ -66,7 +60,7 @@ const AttendanceTable = ({
       const { scrollTop, scrollHeight, clientHeight } = scrollRef.current;
 
       // 스크롤이 최하단에 도달했는지 확인
-      if (scrollTop + clientHeight >= scrollHeight) {
+      if (scrollTop + clientHeight >= scrollHeight - 10) {
         loadWorshipEnrollments(); // 데이터를 추가로 로드
       }
     }
@@ -135,35 +129,35 @@ const AttendanceTable = ({
     dispatch(setTargetWorshipSession(DEFAULT_WORSHIP_SESSION));
   };
 
-  const fetchWorshipSessionCheckStatus = async () => {
-    if (!targetWorship.id) return;
-    if (
-      worshipEnrollmentFilter.fromSessionDate === BLANK ||
-      worshipEnrollmentFilter.toSessionDate === BLANK
-    )
-      return;
-
-    try {
-      const response = await worshipSessionsApi.getWorshipSessionCheckStatus({
-        churchId,
-        worshipId: targetWorship.id,
-        groupId:
-          targetWorshipGroup.id === ALL
-            ? undefined
-            : (targetWorshipGroup.id as string),
-        from: worshipEnrollmentFilter.fromSessionDate,
-        to: worshipEnrollmentFilter.toSessionDate,
-      });
-
-      const newCheckStatuses = response.data.data;
-      setCheckStatuses(newCheckStatuses);
-    } catch (error) {
-      setThrownError(error instanceof Error ? error : new Error(String(error)));
-    }
-  };
+  // const fetchWorshipSessionCheckStatus = async () => {
+  //   if (!targetWorship.id) return;
+  //   if (
+  //     worshipEnrollmentFilter.fromSessionDate === BLANK ||
+  //     worshipEnrollmentFilter.toSessionDate === BLANK
+  //   )
+  //     return;
+  //
+  //   try {
+  //     const response = await worshipSessionsApi.getWorshipSessionCheckStatus({
+  //       churchId,
+  //       worshipId: targetWorship.id,
+  //       groupId:
+  //         targetWorshipGroup.id === ALL
+  //           ? undefined
+  //           : (targetWorshipGroup.id as string),
+  //       from: worshipEnrollmentFilter.fromSessionDate,
+  //       to: worshipEnrollmentFilter.toSessionDate,
+  //     });
+  //
+  //     const newCheckStatuses = response.data.data;
+  //     setCheckStatuses(newCheckStatuses);
+  //   } catch (error) {
+  //     setThrownError(error instanceof Error ? error : new Error(String(error)));
+  //   }
+  // };
 
   useEffect(() => {
-    fetchWorshipSessionCheckStatus();
+    dispatch(fetchWorshipSessionCheckStatus());
   }, [
     targetWorship.id,
     worshipEnrollmentFilter.fromSessionDate,
@@ -179,7 +173,6 @@ const AttendanceTable = ({
     scrollRef,
     onScroll,
     onClickHeader,
-    checkStatuses,
   };
 
   return (

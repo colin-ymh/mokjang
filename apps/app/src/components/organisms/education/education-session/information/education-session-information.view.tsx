@@ -2,28 +2,21 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../redux/store';
 import { useI18n } from '../../../../../../locales/client';
-import { MainText } from '../../../../atoms/common/text/main-text';
-import { GRAY, GREEN } from '../../../../../constants/styles/color';
-import React from 'react';
-import { SIZE } from '../../../../../constants/styles/style';
-import { usePathname } from 'next/navigation';
-import { LOCALE } from '../../../../../constants/state/locale';
-import { TASK_STATUS } from '../../../../../constants/status/status';
-import MemberProfilePopupButton from '../../../../molecules/common/button/member-profile-popup-button';
 import {
-  getTranslatedDateFromDateString,
-  getTranslatedTerm,
-} from '../../../../../utils/translate';
+  Button,
+  MainText,
+  SvgIcon,
+  ToggleRadioButton,
+} from '@mokjang/components';
+import { GRAY, GREEN, LOCALE, SIZE, TASK_STATUS } from '@mokjang/constants';
+import React from 'react';
+import { usePathname } from 'next/navigation';
+import MemberProfilePopupButton from '../../../../molecules/common/button/member-profile-popup-button';
+import { getTranslatedStartEndDate, getTranslatedTerm } from '@mokjang/utils';
 import StatusDropdown from '../../../../atoms/common/dropdown/status-dropdown';
 import { useTaskStatusDropdownItems } from '../../../../../hooks/dropdown/dropdown-items';
-import Button from '../../../../atoms/common/button/button';
 import EducationAttendanceTable from '../../../../molecules/education/education-attendance/education-attendance-table';
-import User from '../../../../../../public/svg/user.svg';
-import Users from '../../../../../../public/svg/users.svg';
-import Pin from '../../../../../../public/svg/pin.svg';
-import Calendar from '../../../../../../public/svg/calendar.svg';
-import SvgIcon from '../../../../atoms/common/icon/svg-icon';
-import ToggleRadioButton from '../../../../atoms/common/radio-button/toggle-radio-button';
+import { Svg } from '@mokjang/assets';
 import { RadioButtonValue } from '../../../../atoms/common/radio-button/radio-button-list';
 import { useEducationSessionHeaderBarItems } from '../../../../../hooks/layout/header-bar-items';
 import { EDUCATION_SESSION_CONTENT_ID } from '../../../../../constants/layout/content';
@@ -63,6 +56,7 @@ const TitleContainer = styled.div`
   flex-direction: row;
   gap: 10px;
   align-items: center;
+  width: 100px;
 `;
 
 const TableHeader = styled.div`
@@ -152,7 +146,7 @@ const EducationSessionInformationView = ({
         {/* 담당자 */}
         <RowContainer>
           <TitleContainer>
-            <SvgIcon svg={User} color={GRAY.SEMI_DARK} />
+            <SvgIcon svg={Svg.User} color={GRAY.SEMI_DARK} />
             <MainText color={GRAY.SEMI_DARK}>{t('inCharge')}</MainText>
           </TitleContainer>
           <MemberProfilePopupButton member={targetEducationSession.inCharge} />
@@ -160,7 +154,7 @@ const EducationSessionInformationView = ({
         {/* 장소 */}
         <RowContainer>
           <TitleContainer>
-            <SvgIcon svg={Pin} color={GRAY.SEMI_DARK} />
+            <SvgIcon svg={Svg.Pin} color={GRAY.SEMI_DARK} />
             <MainText color={GRAY.SEMI_DARK}>{t('location')}</MainText>
           </TitleContainer>
           <MainText>{'본당'}</MainText>
@@ -168,17 +162,21 @@ const EducationSessionInformationView = ({
         {/* 기간 */}
         <RowContainer>
           <TitleContainer>
-            <SvgIcon svg={Calendar} color={GRAY.SEMI_DARK} />
+            <SvgIcon svg={Svg.Calendar} color={GRAY.SEMI_DARK} />
             <MainText color={GRAY.SEMI_DARK}>{t('period')}</MainText>
           </TitleContainer>
           <MainText>
-            {`${getTranslatedDateFromDateString(locale, targetEducationSession.startDate)} - ${getTranslatedDateFromDateString(locale, targetEducationSession.endDate)}`}
+            {getTranslatedStartEndDate(
+              locale,
+              targetEducationSession.startDate,
+              targetEducationSession.endDate
+            )}
           </MainText>
         </RowContainer>
         {/* 보고대상자 */}
-        <ColumnContainer>
+        <RowContainer>
           <TitleContainer>
-            <SvgIcon svg={Users} color={GRAY.DARK} />
+            <SvgIcon svg={Svg.Users} color={GRAY.DARK} />
             <MainText color={GRAY.DARK}>{t('receiver')}</MainText>
           </TitleContainer>
           <MemberList>
@@ -189,7 +187,7 @@ const EducationSessionInformationView = ({
               />
             ))}
           </MemberList>
-        </ColumnContainer>
+        </RowContainer>
 
         <RowLine />
         {/* 수강교인 */}

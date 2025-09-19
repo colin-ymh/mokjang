@@ -1,16 +1,16 @@
 import React, { ChangeEvent, MutableRefObject } from 'react';
 import styled from 'styled-components';
-import { Member } from '../../../../../models/member/member';
-import { Group } from '../../../../../models/management/management';
-import BorderInput from '../../../common/input/border-input';
+import { Member } from '@mokjang/models';
+import { Group } from '@mokjang/models';
+import { BorderInput } from '@mokjang/components';
 import AddMemberItem from '../../../common/modal/add-member-item';
-import Search from '../../../../../../public/svg/search.svg';
+import { Svg } from '@mokjang/assets';
 import { useI18n } from '../../../../../../locales/client';
-import { MainText } from '../../../common/text/main-text';
-import { getTranslatedSelectedMemberCount } from '../../../../../utils/translate';
+import { MainText } from '@mokjang/components';
+import { getTranslatedSelectedMemberCount } from '@mokjang/utils';
 import { usePathname } from 'next/navigation';
-import { LOCALE } from '../../../../../constants/state/locale';
-import { GRAY } from '../../../../../constants/styles/color';
+import { LOCALE } from '@mokjang/constants';
+import { GRAY } from '@mokjang/constants';
 import CustomDatePicker from '../../../../../vendor/date-picker/custom-date-picker';
 
 const ModalContainer = styled.div`
@@ -34,7 +34,7 @@ const MemberListContainer = styled.div`
   overflow-y: auto;
 `;
 
-const SearchIcon = styled(Search)`
+const SearchIcon = styled(Svg.Search)`
   width: 14px;
   height: 14px;
 `;

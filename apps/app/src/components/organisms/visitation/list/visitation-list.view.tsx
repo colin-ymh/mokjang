@@ -1,20 +1,18 @@
 import styled from 'styled-components';
-import Loading from '../../../atoms/common/etc/loading';
+import { Loading } from '@mokjang/components';
 import React from 'react';
-import { MAIN, WHITE } from '../../../../constants/styles/color';
+import { MAIN, MEDIA_MIN_WIDTH, TASK_STATUS, WHITE } from '@mokjang/constants';
 import ConfirmPopup from '../../../atoms/common/popup/error-popup';
 import { useScopedI18n } from '../../../../../locales/client';
-import { MEDIA_MIN_WIDTH } from '../../../../constants/constant';
 import VisitationTable, {
   VisitationTableProps,
 } from '../../../molecules/visitation/visitation-table';
 import VisitationRow from '../../../molecules/visitation/visitation-row';
 import AddVisitation from '../add/add-visitation';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../../../redux/store';
+import { RootState } from '@/redux/store';
 import VisitationInformation from '../information/visitation-information';
-import WrappedPagePopup from '../../../atoms/common/popup/wrapped-page-popup';
-import { TASK_STATUS } from '../../../../constants/status/status';
+import ScrollSlidePopup from '@/components/atoms/common/popup/scroll-slide-popup';
 
 const VisitationListContainer = styled.div`
   display: flex;
@@ -101,21 +99,20 @@ const VisitationListView = (props: VisitationListViewProps) => {
       </VisitationListContainer>
 
       {/* 심방 상세정보 팝업*/}
-      <WrappedPagePopup
+      <ScrollSlidePopup
         isShow={isVisitationInformationShown}
-        onClickClose={onClickClose}
         headerTitle={targetVisitation?.title}
         doneText={t_button('edit')}
         cancelText={t_button('delete')}
+        onClickClose={onClickClose}
         onClickDone={onClickEditOpen}
         onClickCancel={onClickConfirmOpen}
-        stageThreeTop={250}
-        stageTwoTop={40}
-        inCharge={targetVisitation.inCharge}
-        startDate={targetVisitation.startDate}
-        endDate={targetVisitation.endDate}
-        status={targetVisitation.status}
+        status={targetVisitation?.status}
         onChangeStatus={onChangeStatus}
+        stageTwoTop={150}
+        inCharge={targetVisitation?.inCharge}
+        startDate={targetVisitation?.startDate}
+        endDate={targetVisitation?.endDate}
       >
         <>
           {/* 삭제 확인 팝업 */}
@@ -133,22 +130,23 @@ const VisitationListView = (props: VisitationListViewProps) => {
             rightButtonText={t_button('delete')}
           />
           <VisitationInformation onChangeStatus={onChangeStatus} />
-        </>
-      </WrappedPagePopup>
 
-      {/* 심방 수정 팝업*/}
-      <WrappedPagePopup
-        isShow={isEditShown}
-        onClickClose={onClickEditClose}
-        onClickCancel={onClickEditClose}
-        onClickDone={onClickEditDone}
-        headerTitle={t_title('editVisitation')}
-        doneBackgroundColor={isSaveEnabled ? MAIN.DEFAULT : MAIN.LIGHT}
-        doneDisabled={!isSaveEnabled}
-      >
-        <AddVisitation isEdit={true} />
-      </WrappedPagePopup>
-      <Loading isShow={isLoading} />
+          {/* 심방 수정 팝업*/}
+          <ScrollSlidePopup
+            isShow={isEditShown}
+            onClickClose={onClickEditClose}
+            onClickCancel={onClickEditClose}
+            onClickDone={onClickEditDone}
+            headerTitle={t_title('editVisitation')}
+            doneBackgroundColor={isSaveEnabled ? MAIN.DEFAULT : MAIN.LIGHT}
+            doneDisabled={!isSaveEnabled}
+            isAnimation={false}
+          >
+            <AddVisitation isEdit={true} />
+          </ScrollSlidePopup>
+          <Loading isShow={isLoading} />
+        </>
+      </ScrollSlidePopup>
     </>
   );
 };

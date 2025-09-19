@@ -1,9 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { createPortal } from 'react-dom';
-import { GRAY, WHITE } from '@/constants/styles/color';
-import { MainText } from '../text/main-text';
-import { SIZE } from '@/constants/styles/style';
+import { GRAY, SIZE, WHITE } from '@mokjang/constants';
+import { MainText } from '@mokjang/components';
 
 const TooltipBox = styled.div.attrs<{ $style: React.CSSProperties }>(
   (props) => ({
@@ -23,7 +22,7 @@ const TooltipBox = styled.div.attrs<{ $style: React.CSSProperties }>(
 `;
 
 type CommonProps = {
-  text: string;
+  text?: string;
   backgroundColor?: string;
   borderColor?: string;
   textColor?: string;
@@ -114,6 +113,7 @@ const Tooltip = (props: TooltipProps) => {
             borderColor: borderColor,
             width: typeof width === 'number' ? `${width}px` : width,
             height: typeof height === 'number' ? `${height}px` : height,
+            display: text?.length === 0 ? 'none' : 'auto',
           }}
         >
           <MainText size={SIZE.SMALL} color={textColor}>

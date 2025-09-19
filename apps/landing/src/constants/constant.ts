@@ -4,8 +4,9 @@ export enum CONTENT_ID {
 }
 
 export enum MAIN_CONTENT_ID {
+  HOME = 'home',
   FUNCTION = 'function',
-  PRICE = 'price',
+  // PRICE = 'price',
   FAQ = 'faq',
   CONTACT = 'contact',
 }

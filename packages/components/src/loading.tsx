@@ -10,7 +10,7 @@ const Overlay = styled.div`
   left: 0;
   width: 100vw;
   height: 100vh;
-  z-index: 1000; /* 다른 콘텐츠 위에 충분히 높게 설정 */
+  z-index: 999999; /* 다른 콘텐츠 위에 충분히 높게 설정 */
   background-color: rgba(0, 0, 0, 0.3); /* 반투명 배경 */
   display: flex;
   justify-content: center;

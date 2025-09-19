@@ -2,11 +2,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../../../redux/store';
 import { EducationSessionsApi } from '../../../../../api/education/education-sessions.api';
 import { RefObject, useEffect, useState } from 'react';
-import { EducationAttendance } from '../../../../../models/education/education';
+import { EducationAttendance } from '@mokjang/models';
 import { setTargetEducationSession } from '../../../../../redux/reducers/target/target-education-session-reducer';
 import EducationSessionInformationView from './education-session-information.view';
 
-import { STATUS, TASK_STATUS } from '../../../../../constants/status/status';
+import { STATUS, TASK_STATUS } from '@mokjang/constants';
 import { EducationAttendanceApi } from '../../../../../api/education/education-attendance.api';
 import { EDUCATION_SESSION_CONTENT_ID } from '../../../../../constants/layout/content';
 import { CustomError } from '../../../../../api/error/error';

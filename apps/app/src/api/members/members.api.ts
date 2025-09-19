@@ -1,45 +1,43 @@
 import { AxiosResponse } from 'axios';
 import qs from 'qs';
 
-import { BAPTISM, MARRIAGE, ORDER_DIRECTION } from '../../constants/constant';
-import { Member } from '../../models/member/member';
-import { MEMBER } from '../../constants/column/member-column';
-import { SERVER_URL, TEST_SERVER_URL } from '../../constants/state/url';
+import { BAPTISM, MARRIAGE, MEMBER, ORDER_DIRECTION } from '@mokjang/constants';
 import { CustomError } from '../error/error';
 import authorizeAxios from '../authorize-axios';
+import { IS_PRODUCTION, SERVER_URL, TEST_SERVER_URL } from '@mokjang/utils';
 
-type GetMembersParams = {
-  churchId: string; // 교회 id
-  page?: number; // 페이지 번호
-  take?: number; // 요청 개수
-  order?: MEMBER; // 정렬 기준
-  orderDirection?: ORDER_DIRECTION; // 오름차순 내림차순
-
-  // 필터링 내용
-  name?: string; // 검색 이름
-  mobilePhone?: string;
-  birthAfter?: string;
-  birthBefore?: string;
-  registerAfter?: string;
-  registerBefore?: string;
-  updateAfter?: string;
-  updateBefore?: string;
-  school?: string;
-  address?: string;
-  homePhone?: string;
-  occupation?: string;
-  vehicleNumber?: string;
-  group?: string[];
-  officer?: string[];
-  ministries?: string[];
-  educations?: string[];
-  baptism?: string[];
-  gender?: string[];
-  marriage?: string[];
-
-  //   활성화된 컬럼들
-  selectedColumns?: MEMBER[];
-};
+// type GetMembersParams = {
+//   churchId: string; // 교회 id
+//   page?: number; // 페이지 번호
+//   take?: number; // 요청 개수
+//   order?: MEMBER; // 정렬 기준
+//   orderDirection?: ORDER_DIRECTION; // 오름차순 내림차순
+//
+//   // 필터링 내용
+//   name?: string; // 검색 이름
+//   mobilePhone?: string;
+//   birthAfter?: string;
+//   birthBefore?: string;
+//   registerAfter?: string;
+//   registerBefore?: string;
+//   updateAfter?: string;
+//   updateBefore?: string;
+//   school?: string;
+//   address?: string;
+//   homePhone?: string;
+//   occupation?: string;
+//   vehicleNumber?: string;
+//   group?: string[];
+//   officer?: string[];
+//   ministries?: string[];
+//   educations?: string[];
+//   baptism?: string[];
+//   gender?: string[];
+//   marriage?: string[];
+//
+//   //   활성화된 컬럼들
+//   selectedColumns?: MEMBER[];
+// };
 
 type GetMembersV2Params = {
   churchId: string; // 교회 id
@@ -51,8 +49,8 @@ type GetMembersV2Params = {
 
   groupIds?: (string | null)[];
   officerIds?: (string | null)[];
-  marriageStatuses: (MARRIAGE | null)[];
-  baptismStatuses: BAPTISM[];
+  marriageStatuses?: (MARRIAGE | null)[];
+  baptismStatuses?: BAPTISM[];
   birthFrom?: string;
   birthTo?: string;
   registeredFrom?: string;
@@ -61,19 +59,29 @@ type GetMembersV2Params = {
   search?: string;
 };
 
-export type GetMembersResponse = Member;
+// export type GetMembersResponse = Member;
 
 type GetMemberParams = {
   churchId: string; // 교회 id
   memberId: string;
 };
 
-type GetSimpleMembersParams = {
+// type GetSimpleMembersParams = {
+//   churchId: string;
+//   take?: number;
+//   page?: number;
+//   order?: MEMBER;
+//   orderDirection?: ORDER_DIRECTION;
+//   name?: string;
+//   mobilePhone?: string;
+// };
+
+type GetSimpleMembersV2Params = {
   churchId: string;
-  take?: number;
-  page?: number;
-  order?: MEMBER;
-  orderDirection?: ORDER_DIRECTION;
+  limit?: number;
+  cursor?: string;
+  sort?: MEMBER;
+  sortDirection?: ORDER_DIRECTION;
   name?: string;
   mobilePhone?: string;
 };
@@ -111,6 +119,8 @@ type EditMemberParams = {
 };
 
 export type EditMemberBody = {
+  name?: string;
+  mobilePhone?: string;
   profileImageUrl?: string;
   birth?: string;
   isLunar?: boolean;
@@ -164,123 +174,123 @@ export class MembersApi {
   private _url: string;
 
   constructor(useBaseURL: boolean) {
-    this._url = useBaseURL
+    this._url = IS_PRODUCTION
       ? SERVER_URL // 실제 사용할 url
       : TEST_SERVER_URL; // 개발용 url
   }
 
-  /**
-   * 교인들 불러오기
-   * @param {GetMembersParams} params
-   * @returns {Promise<AxiosResponse>}
-   */
-  public getMembers = async (
-    params: GetMembersParams
-  ): Promise<AxiosResponse> => {
-    const {
-      churchId,
-      take = 5,
-      page = 1,
-      order,
-      orderDirection,
-      name,
-      mobilePhone,
-      school,
-      address,
-      homePhone,
-      occupation,
-      vehicleNumber,
-      birthAfter,
-      birthBefore,
-      registerAfter,
-      registerBefore,
-      updateAfter,
-      updateBefore,
-      gender,
-      baptism,
-      marriage,
-      group,
-      officer,
-      ministries,
-      educations,
-      selectedColumns,
-    } = params;
-
-    const queryParams: Record<string, any> = Object.fromEntries(
-      Object.entries({
-        take,
-        page,
-        order,
-        orderDirection,
-        name,
-        mobilePhone,
-        school,
-        address,
-        homePhone,
-        occupation,
-        birthAfter,
-        birthBefore,
-        registerAfter,
-        registerBefore,
-        updateAfter,
-        updateBefore,
-        gender,
-        baptism,
-        marriage,
-        group,
-        officer,
-        ministries,
-        educations,
-        vehicleNumber,
-        select__group: true,
-        select__mobilePhone: selectedColumns?.includes(MEMBER.MOBILE_PHONE),
-        select__birth:
-          selectedColumns?.includes(MEMBER.BIRTH) ||
-          selectedColumns?.includes(MEMBER.AGE),
-        select__gender: selectedColumns?.includes(MEMBER.GENDER),
-        select__officer: selectedColumns?.includes(MEMBER.OFFICER),
-        select__ministries: selectedColumns?.includes(MEMBER.MINISTRIES),
-        select__educations: selectedColumns?.includes(MEMBER.EDUCATIONS),
-        select__marriage: selectedColumns?.includes(MEMBER.MARRIAGE),
-        select__address: selectedColumns?.includes(MEMBER.ADDRESS),
-        select__homePhone: selectedColumns?.includes(MEMBER.HOME_PHONE),
-        select__occupation: selectedColumns?.includes(MEMBER.OCCUPATION),
-        select__school: selectedColumns?.includes(MEMBER.SCHOOL),
-        select__vehicleNumber: selectedColumns?.includes(MEMBER.VEHICLE_NUMBER),
-      }).filter(
-        ([_, value]) =>
-          value !== undefined &&
-          value !== '' &&
-          !(Array.isArray(value) && value.length === 0)
-      )
-    );
-
-    const url = `${this._url}/churches/${churchId}/members`;
-
-    try {
-      return await authorizeAxios.get(url, {
-        params: queryParams,
-        paramsSerializer: (params) => {
-          return qs.stringify(params, {
-            arrayFormat: 'repeat',
-            skipNulls: true,
-            encodeValuesOnly: true,
-          });
-        },
-      });
-    } catch (serverError: any) {
-      if (serverError.response) {
-        const { message, error, statusCode } = serverError.response.data;
-        throw new CustomError(message, error, statusCode);
-      } else {
-        throw new CustomError(
-          '알 수 없는 에러가 발생했습니다',
-          500,
-          'Unknown Error'
-        );
-      }
-    }
-  };
+  // /**
+  //  * 교인들 불러오기
+  //  * @param {GetMembersParams} params
+  //  * @returns {Promise<AxiosResponse>}
+  //  */
+  // public getMembers = async (
+  //   params: GetMembersParams
+  // ): Promise<AxiosResponse> => {
+  //   const {
+  //     churchId,
+  //     take = 5,
+  //     page = 1,
+  //     order,
+  //     orderDirection,
+  //     name,
+  //     mobilePhone,
+  //     school,
+  //     address,
+  //     homePhone,
+  //     occupation,
+  //     vehicleNumber,
+  //     birthAfter,
+  //     birthBefore,
+  //     registerAfter,
+  //     registerBefore,
+  //     updateAfter,
+  //     updateBefore,
+  //     gender,
+  //     baptism,
+  //     marriage,
+  //     group,
+  //     officer,
+  //     ministries,
+  //     educations,
+  //     selectedColumns,
+  //   } = params;
+  //
+  //   const queryParams: Record<string, any> = Object.fromEntries(
+  //     Object.entries({
+  //       take,
+  //       page,
+  //       order,
+  //       orderDirection,
+  //       name,
+  //       mobilePhone,
+  //       school,
+  //       address,
+  //       homePhone,
+  //       occupation,
+  //       birthAfter,
+  //       birthBefore,
+  //       registerAfter,
+  //       registerBefore,
+  //       updateAfter,
+  //       updateBefore,
+  //       gender,
+  //       baptism,
+  //       marriage,
+  //       group,
+  //       officer,
+  //       ministries,
+  //       educations,
+  //       vehicleNumber,
+  //       select__group: true,
+  //       select__mobilePhone: selectedColumns?.includes(MEMBER.MOBILE_PHONE),
+  //       select__birth:
+  //         selectedColumns?.includes(MEMBER.BIRTH) ||
+  //         selectedColumns?.includes(MEMBER.AGE),
+  //       select__gender: selectedColumns?.includes(MEMBER.GENDER),
+  //       select__officer: selectedColumns?.includes(MEMBER.OFFICER),
+  //       select__ministries: selectedColumns?.includes(MEMBER.MINISTRIES),
+  //       select__educations: selectedColumns?.includes(MEMBER.EDUCATIONS),
+  //       select__marriage: selectedColumns?.includes(MEMBER.MARRIAGE),
+  //       select__address: selectedColumns?.includes(MEMBER.ADDRESS),
+  //       select__homePhone: selectedColumns?.includes(MEMBER.HOME_PHONE),
+  //       select__occupation: selectedColumns?.includes(MEMBER.OCCUPATION),
+  //       select__school: selectedColumns?.includes(MEMBER.SCHOOL),
+  //       select__vehicleNumber: selectedColumns?.includes(MEMBER.VEHICLE_NUMBER),
+  //     }).filter(
+  //       ([_, value]) =>
+  //         value !== undefined &&
+  //         value !== '' &&
+  //         !(Array.isArray(value) && value.length === 0)
+  //     )
+  //   );
+  //
+  //   const url = `${this._url}/churches/${churchId}/members`;
+  //
+  //   try {
+  //     return await authorizeAxios.get(url, {
+  //       params: queryParams,
+  //       paramsSerializer: (params) => {
+  //         return qs.stringify(params, {
+  //           arrayFormat: 'repeat',
+  //           skipNulls: true,
+  //           encodeValuesOnly: true,
+  //         });
+  //       },
+  //     });
+  //   } catch (serverError: any) {
+  //     if (serverError.response) {
+  //       const { message, error, statusCode } = serverError.response.data;
+  //       throw new CustomError(message, error, statusCode);
+  //     } else {
+  //       throw new CustomError(
+  //         '알 수 없는 에러가 발생했습니다',
+  //         500,
+  //         'Unknown Error'
+  //       );
+  //     }
+  //   }
+  // };
 
   /**
    * 교인들 불러오기
@@ -366,30 +376,84 @@ export class MembersApi {
     }
   };
 
+  // /**
+  //  * 교인들 불러오기
+  //  * @param {GetSimpleMembersParams} params
+  //  * @returns {Promise<AxiosResponse>}
+  //  */
+  // public getSimpleMembers = async (
+  //   params: GetSimpleMembersParams
+  // ): Promise<AxiosResponse> => {
+  //   const {
+  //     churchId,
+  //     take = 5,
+  //     page = 1,
+  //     order,
+  //     orderDirection,
+  //     name,
+  //     mobilePhone,
+  //   } = params;
+  //
+  //   const queryParams: Record<string, any> = Object.fromEntries(
+  //     Object.entries({
+  //       take,
+  //       page,
+  //       order,
+  //       orderDirection,
+  //       name,
+  //       mobilePhone,
+  //     }).filter(
+  //       ([_, value]) =>
+  //         value !== undefined &&
+  //         value !== '' &&
+  //         !(Array.isArray(value) && value.length === 0)
+  //     )
+  //   );
+  //
+  //   const url = `${this._url}/churches/${churchId}/members/simple`;
+  //
+  //   try {
+  //     return await authorizeAxios.get(url, {
+  //       params: queryParams,
+  //       paramsSerializer: (params) => {
+  //         return qs.stringify(params, {
+  //           arrayFormat: 'repeat',
+  //           skipNulls: true,
+  //           encodeValuesOnly: true,
+  //         });
+  //       },
+  //     });
+  //   } catch (serverError: any) {
+  //     if (serverError.response) {
+  //       const { message, error, statusCode } = serverError.response.data;
+  //       throw new CustomError(message, error, statusCode);
+  //     } else {
+  //       throw new CustomError(
+  //         '알 수 없는 에러가 발생했습니다',
+  //         500,
+  //         'Unknown Error'
+  //       );
+  //     }
+  //   }
+  // };
+
   /**
    * 교인들 불러오기
-   * @param {GetSimpleMembersParams} params
+   * @param {GetSimpleMembersV2Params} params
    * @returns {Promise<AxiosResponse>}
    */
-  public getSimpleMembers = async (
-    params: GetSimpleMembersParams
+  public getSimpleMembersV2 = async (
+    params: GetSimpleMembersV2Params
   ): Promise<AxiosResponse> => {
-    const {
-      churchId,
-      take = 5,
-      page = 1,
-      order,
-      orderDirection,
-      name,
-      mobilePhone,
-    } = params;
+    const { churchId, limit, cursor, sort, sortDirection, name, mobilePhone } =
+      params;
 
     const queryParams: Record<string, any> = Object.fromEntries(
       Object.entries({
-        take,
-        page,
-        order,
-        orderDirection,
+        limit,
+        cursor,
+        sort,
+        sortDirection,
         name,
         mobilePhone,
       }).filter(
@@ -400,7 +464,7 @@ export class MembersApi {
       )
     );
 
-    const url = `${this._url}/churches/${churchId}/members/simple`;
+    const url = `${this._url}/churches/${churchId}/members/simple/v2`;
 
     try {
       return await authorizeAxios.get(url, {

@@ -1,7 +1,7 @@
 import RegisterCompleteView, {
   RegisterCompleteViewProps,
 } from '@/components/organisms/register/register-complete.view';
-import { usePageRouter } from '@mokjang/app/src/utils/router';
+import { usePageRouter } from '@mokjang/utils';
 
 const RegisterComplete = () => {
   const router = usePageRouter();

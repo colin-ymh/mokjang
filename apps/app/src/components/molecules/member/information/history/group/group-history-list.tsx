@@ -2,10 +2,7 @@ import GroupHistoryListView from './group-history-list.view';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../../../../redux/store';
 import React, { useEffect, useRef, useState } from 'react';
-import {
-  DEFAULT_GROUP_HISTORY,
-  GroupHistory,
-} from '../../../../../../models/member/history';
+import { DEFAULT_GROUP_HISTORY, GroupHistory } from '@mokjang/models';
 import { GroupHistoryApi } from '../../../../../../api/history/group-history.api';
 import { setTargetGroupHistory } from '../../../../../../redux/reducers/target/target-history-reducer';
 import {
@@ -13,16 +10,10 @@ import {
   setToastBackgroundColor,
   setToastText,
 } from '../../../../../../redux/reducers/toast-popup-reducer';
-import { BLACK, DESTRUCTIVE } from '../../../../../../constants/styles/color';
-import {
-  getDateFromDateString,
-  getDateStringFromDate,
-} from '../../../../../../utils/date';
-import CustomPopup from '../../../../../atoms/common/popup/custom-popup';
-import {
-  useI18n,
-  useScopedI18n,
-} from '../../../../../../../locales/client';
+import { BLACK, DESTRUCTIVE } from '@mokjang/constants';
+import { getDateFromDateString, getDateStringFromDate } from '@mokjang/utils';
+import { CustomPopup } from '@mokjang/components';
+import { useI18n, useScopedI18n } from '../../../../../../../locales/client';
 import EditGroupHistory from './edit-group-history';
 import ConfirmPopup from '../../../../../atoms/common/popup/error-popup';
 
@@ -287,12 +278,15 @@ const GroupHistoryList = () => {
       {/* 그룹 수정 */}
       <CustomPopup
         isShow={isGroupOpened}
+        onClickClose={onClickGroupClose}
         onClickCancel={onClickGroupClose}
         onClickDone={onClickSaveGroup}
         headerTitle={t('title.editHistory')}
         width={500}
         height={500}
         doneDisabled={!isGroupSaveEnabled}
+        doneText={t_button('save')}
+        cancelText={t_button('cancel')}
       >
         <>
           {/* 삭제 확인 팝업 */}

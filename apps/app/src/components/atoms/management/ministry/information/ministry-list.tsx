@@ -1,19 +1,11 @@
 import styled from 'styled-components';
-import {
-  DESTRUCTIVE,
-  GRAY,
-  WHITE,
-} from '../../../../../constants/styles/color';
+import { DESTRUCTIVE, GRAY, WHITE } from '@mokjang/constants';
 import { useI18n } from '../../../../../../locales/client';
-import {
-  DEFAULT_MINISTRY,
-  Ministry,
-  MinistryGroup,
-} from '../../../../../models/management/management';
+import { DEFAULT_MINISTRY, Ministry, MinistryGroup } from '@mokjang/models';
 import React, { ChangeEvent, useEffect, useState } from 'react';
-import Plus from '../../../../../../public/svg/plus.svg';
-import { BLANK } from '../../../../../constants/constant';
-import { getFormattedName } from '../../../../../utils/format';
+import { Svg } from '@mokjang/assets';
+import { BLANK } from '@mokjang/constants';
+import { getFormattedName } from '@mokjang/utils';
 import {
   setIsToastShown,
   setToastBackgroundColor,
@@ -41,7 +33,7 @@ const HeaderContainer = styled.div`
   width: 100%;
 `;
 
-const PlusIcon = styled(Plus)`
+const PlusIcon = styled(Svg.Plus)`
   width: 18px;
   height: 18px;
   stroke: ${GRAY.SEMI_DARK};

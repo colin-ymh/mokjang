@@ -1,20 +1,12 @@
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
 import styled from 'styled-components';
-import { HOME_WIDGET } from '../../../../constants/constant';
-import { MainText } from '../../../atoms/common/text/main-text';
-import Button from '../../../atoms/common/button/button';
-import { GRAY, MAIN } from '../../../../constants/styles/color';
+import { GRAY, HOME_WIDGET, MAIN, SIZE } from '@mokjang/constants';
+import { MainText, SvgIcon } from '@mokjang/components';
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
-import SvgIcon from '../../../atoms/common/icon/svg-icon';
 
-import Calendar from '../../../../../public/svg/calendar.svg';
-import DocumentCheck from '../../../../../public/svg/document-check.svg';
-import ChartBar from '../../../../../public/svg/chart-bar.svg';
-import ChartPie from '../../../../../public/svg/chart-pie.svg';
-import UserPlus from '../../../../../public/svg/user-plus.svg';
-import Heart from '../../../../../public/svg/heart.svg';
-import { SIZE } from '../../../../constants/styles/style';
+import { Svg } from '@mokjang/assets';
+import ToggleButton from '@/components/atoms/common/button/toggle-button';
 
 const WidgetContainer = styled.div`
   display: flex;
@@ -34,20 +26,21 @@ const WidgetItem = styled.div`
   display: flex;
   padding: 20px;
   flex-direction: row;
-  align-items: flex-start;
-  gap: 20px;
+  align-items: center;
+  gap: 15px;
   border: 1px solid ${GRAY.EXTRA_LIGHT};
   border-radius: 10px;
 `;
 
-const IconContainer = styled.div<{ $isEnable: boolean }>`
+const IconContainer = styled.div<{ $isIncluded: boolean }>`
   display: flex;
   width: 40px;
   height: 40px;
   justify-content: center;
   align-items: center;
   border-radius: 10px;
-  background-color: ${({ $isEnable }) => ($isEnable ? MAIN.LIGHT : GRAY.LIGHT)};
+  background-color: ${({ $isIncluded }) =>
+    $isIncluded ? MAIN.LIGHT : GRAY.LIGHT};
 `;
 
 const ColumnContainer = styled.div`
@@ -57,10 +50,10 @@ const ColumnContainer = styled.div`
 `;
 
 type AddHomeWidgetViewProps = {
-  onClickAdd: (widget: HOME_WIDGET) => void;
+  onClickItem: (widget: HOME_WIDGET) => void;
 };
 
-const AddHomeWidgetView = ({ onClickAdd }: AddHomeWidgetViewProps) => {
+const AddHomeWidgetView = ({ onClickItem }: AddHomeWidgetViewProps) => {
   const t = useI18n();
   const t_title = useScopedI18n('title');
   const { homeWidgets } = useSelector(
@@ -70,17 +63,17 @@ const AddHomeWidgetView = ({ onClickAdd }: AddHomeWidgetViewProps) => {
   const getWidgetIcon = (widget: HOME_WIDGET) => {
     switch (widget) {
       case HOME_WIDGET.REPORTED_SCHEDULE:
-        return DocumentCheck;
+        return Svg.DocumentCheck;
       case HOME_WIDGET.MY_SCHEDULE:
-        return Calendar;
+        return Svg.Calendar;
       case HOME_WIDGET.WORSHIP_ATTENDANCE:
-        return Heart;
+        return Svg.Heart;
       case HOME_WIDGET.CHURCH_SCHEDULE_SUMMARY:
-        return ChartBar;
+        return Svg.ChartBar;
       case HOME_WIDGET.MY_SCHEDULE_SUMMARY:
-        return ChartPie;
+        return Svg.ChartPie;
       case HOME_WIDGET.NEW_MEMBER:
-        return UserPlus;
+        return Svg.UserPlus;
     }
   };
 
@@ -88,26 +81,30 @@ const AddHomeWidgetView = ({ onClickAdd }: AddHomeWidgetViewProps) => {
     <WidgetContainer>
       <ListContainer>
         {Object.values(HOME_WIDGET).map((widget: HOME_WIDGET) => {
-          const isEnable = !homeWidgets.includes(widget);
+          const isIncluded = homeWidgets.includes(widget);
           return (
             <WidgetItem key={widget}>
-              <IconContainer $isEnable={isEnable}>
+              <IconContainer $isIncluded={isIncluded}>
                 <SvgIcon
                   svg={getWidgetIcon(widget)}
-                  color={isEnable ? MAIN.DEFAULT : GRAY.DEFAULT}
+                  color={isIncluded ? MAIN.DEFAULT : GRAY.DEFAULT}
                   size={20}
                   width={2}
                 />
               </IconContainer>
               <ColumnContainer>
                 <MainText size={SIZE.LARGE}>{t_title(widget)}</MainText>
-                <Button
-                  text={t('button.add')}
-                  disabled={homeWidgets.includes(widget)}
-                  width={80}
-                  height={30}
-                  backgroundColor={isEnable ? MAIN.DEFAULT : GRAY.DEFAULT}
-                  onClick={() => onClickAdd(widget)}
+                {/*<Button*/}
+                {/*  text={t('button.add')}*/}
+                {/*  disabled={homeWidgets.includes(widget)}*/}
+                {/*  width={80}*/}
+                {/*  height={30}*/}
+                {/*  backgroundColor={isIncluded ? MAIN.DEFAULT : GRAY.DEFAULT}*/}
+                {/*  onClick={() => onClickAdd(widget)}*/}
+                {/*/>*/}
+                <ToggleButton
+                  value={isIncluded}
+                  onClick={() => onClickItem(widget)}
                 />
               </ColumnContainer>
             </WidgetItem>

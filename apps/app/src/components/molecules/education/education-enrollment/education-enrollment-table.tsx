@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../../redux/store';
-import { EDUCATION_ENROLLMENT_STATUS } from '../../../../constants/status/status';
+import { EDUCATION_ENROLLMENT_STATUS } from '@mokjang/constants';
 import { EducationEnrollmentsApi } from '../../../../api/education/education-enrollments.api';
 import { setTargetEducationTerm } from '../../../../redux/reducers/target/target-education-term-reducer';
 import { CustomError } from '../../../../api/error/error';

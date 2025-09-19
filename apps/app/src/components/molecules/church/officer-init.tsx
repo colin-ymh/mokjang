@@ -16,14 +16,14 @@ import { getIsWellFormedTitle } from '../../../../../../packages/utils/src';
 import { useDispatch, useSelector } from 'react-redux';
 import { useI18n, useScopedI18n } from '../../../../locales/client';
 import { AppDispatch, RootState } from '@/redux/store';
-import { getFormattedTitle } from '@/utils/format';
+import { getFormattedTitle } from '@mokjang/utils';
 import { fetchOfficers } from '@/redux/reducers/church-reducer';
 import {
   setIsToastShown,
   setToastBackgroundColor,
   setToastText,
 } from '@/redux/reducers/toast-popup-reducer';
-import { Officer } from '@/models/management/management';
+import { Officer } from '@mokjang/models';
 import { OfficersApi } from '@/api/management/officer/officers.api';
 import OfficerList from '@/components/molecules/management/officer/list/officer-list';
 
@@ -33,7 +33,7 @@ const OfficerListContainer = styled.div`
   padding: 30px;
   gap: 30px;
   width: 700px;
-  height: 850px;
+  flex-shrink: 0;
 `;
 
 const AddContainer = styled.div`
@@ -135,6 +135,7 @@ const OfficerSideBar = ({}: OfficerSideBarProps) => {
       <OfficerList
         selectedOfficerId={BLANK}
         onClickOfficer={(o: Officer) => {}}
+        height={500}
       />
     </OfficerListContainer>
   );

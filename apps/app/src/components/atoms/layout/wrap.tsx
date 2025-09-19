@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { MEDIA_MIN_WIDTH } from '../../../constants/constant';
+import { MEDIA_MIN_WIDTH } from '@mokjang/constants';
 
 const Wrap = styled.div`
   display: flex;

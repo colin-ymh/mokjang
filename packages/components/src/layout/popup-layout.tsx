@@ -1,19 +1,21 @@
 'use client';
 
-import React from 'react';
 import Wrap from './wrap';
-import PopupContainer from './popup-container';
+import { PopupContainer } from './popup-container';
 import { PopupHeader } from './popup-header';
 import { PopupContent } from './popup-content';
 import { PopupFooter } from './popup-footer';
 import { BLANK } from '@mokjang/constants';
+import { ReactNode } from 'react';
 
 export type PopupLayoutProps = {
-  onClickCancel: () => void;
+  onClickClose: () => void;
+  onClickCancel?: () => void;
   onClickDone?: () => void;
   headerTitle?: string;
   headerDescription?: string;
-  headerRight?: React.ReactNode;
+  headerRight?: ReactNode;
+  headerLeft?: ReactNode;
   cancelText?: string;
   doneText?: string;
   cancelBackgroundColor?: string;
@@ -23,13 +25,15 @@ export type PopupLayoutProps = {
   doneDisabled?: boolean;
   isHeaderBorderShown?: boolean;
   headerHeight?: number;
-  children: React.ReactNode;
+  children: ReactNode;
 };
 
 export const PopupLayout = ({
   headerTitle,
   headerDescription,
   headerRight,
+  headerLeft,
+  onClickClose,
   onClickCancel,
   onClickDone,
   cancelText = BLANK,
@@ -50,11 +54,9 @@ export const PopupLayout = ({
           <PopupHeader
             headerTitle={headerTitle}
             headerDescription={headerDescription}
+            headerLeft={headerLeft}
             headerRight={headerRight}
-            onClickCancel={onClickCancel}
-            onClickDone={onClickDone}
-            cancelText={cancelText}
-            doneText={doneText}
+            onClickClose={onClickClose}
             isHeaderBorderShown={isHeaderBorderShown}
             height={headerHeight}
           />

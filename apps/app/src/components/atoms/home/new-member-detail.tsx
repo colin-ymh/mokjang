@@ -1,16 +1,10 @@
-import MemberProfilePopupButton from '../../molecules/common/button/member-profile-popup-button';
-import { MainText } from '../common/text/main-text';
-import { GRAY, LOCALE, MAIN } from '@mokjang/constants';
-import {
-  getDateFromDateString,
-  getDateStringFromDate,
-} from '../../../utils/date';
+import { MainTag, MainText, ProfileImage } from '@mokjang/components';
+import { GRAY, LOCALE } from '@mokjang/constants';
+import { getTranslatedDateFromDateString } from '@mokjang/utils';
 import styled from 'styled-components';
-import { Member } from '../../../models/member/member';
+import { Member } from '@mokjang/models';
 import { useI18n } from '../../../../locales/client';
-import { getTranslatedMemberCount } from '../../../../../../packages/utils/src';
 import { usePathname } from 'next/navigation';
-import MainTag from '../common/tag/main-tag';
 
 const DetailContainer = styled.div`
   display: flex;
@@ -18,18 +12,6 @@ const DetailContainer = styled.div`
   width: 100%;
   padding: 10px;
   gap: 10px;
-`;
-
-const TotalContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  height: 100px;
-  background-color: ${MAIN.EXTRA_LIGHT};
-  border-radius: 10px;
-
-  justify-content: center;
-  align-items: center;
 `;
 
 const MemberDetailList = styled.div`
@@ -49,15 +31,23 @@ const DetailItem = styled.div`
   align-items: center;
   border-radius: 10px;
   border: 1px solid ${GRAY.LIGHT};
+  align-content: center;
+  gap: 10px;
 `;
 
-const RightContainer = styled.div`
+const ColumnContainer = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100%;
+  width: 100%;
+  gap: 4px;
+`;
+
+const RowContainer = styled.div`
+  display: flex;
+  flex-direction: row;
   justify-content: space-between;
-  align-items: flex-end;
-  gap: 5px;
+  align-items: center;
+  width: 100%;
 `;
 
 type NewMemberDetailProps = {
@@ -72,26 +62,34 @@ const NewMemberDetail = ({ memberDetails }: NewMemberDetailProps) => {
 
   return (
     <DetailContainer>
-      <TotalContainer>
-        <MainText color={MAIN.DEFAULT} fontSize={22} fontWeight={700}>
-          {getTranslatedMemberCount(locale, memberDetails.length)}
-        </MainText>
-        <MainText color={GRAY.DARK}>{t('newMember')}</MainText>
-      </TotalContainer>
+      {/*<TotalContainer>*/}
+      {/*  <MainText color={MAIN.DEFAULT} fontSize={22} fontWeight={700}>*/}
+      {/*    {getTranslatedMemberCount(locale, memberDetails.length)}*/}
+      {/*  </MainText>*/}
+      {/*  <MainText color={GRAY.DARK}>{t('newMember')}</MainText>*/}
+      {/*</TotalContainer>*/}
       <MemberDetailList>
         {memberDetails.map((member) => (
           <DetailItem key={member.id}>
-            <MemberProfilePopupButton member={member} />
-            <RightContainer>
-              {member.group ? (
-                <MainTag title={member.group.name || t('noGroup')} />
-              ) : (
-                <div></div>
-              )}
-              <MainText color={GRAY.SEMI_LIGHT}>
-                {`${t('registeredAt')}: ${getDateStringFromDate(getDateFromDateString(member.registeredAt))}`}
-              </MainText>
-            </RightContainer>
+            <ProfileImage
+              value={member.profileImageUrl}
+              width={40}
+              height={40}
+            />
+            <ColumnContainer>
+              <RowContainer>
+                <MainText>{member.name}</MainText>
+                <MainTag title={member.group?.name || t('noGroup')} />
+                {/*<MainText color={GRAY.SEMI_DARK}>*/}
+                {/*  {`${t('registeredAt')}`}*/}
+                {/*</MainText>*/}
+              </RowContainer>
+              <RowContainer>
+                <MainText color={GRAY.SEMI_DARK}>
+                  {`${getTranslatedDateFromDateString(locale, member.registeredAt)}`}
+                </MainText>
+              </RowContainer>
+            </ColumnContainer>
           </DetailItem>
         ))}
       </MemberDetailList>

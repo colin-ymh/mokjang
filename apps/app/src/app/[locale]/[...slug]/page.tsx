@@ -10,7 +10,7 @@ import {
   getSide,
 } from '../../../hooks/layout/render-layout';
 
-import { useParams } from 'next/navigation';
+import { useParams, usePathname } from 'next/navigation';
 import { useEffect, useMemo } from 'react';
 import {
   MAIN_HEADER_ID,
@@ -23,10 +23,11 @@ import {
   TASK_CONTENT_ID,
   VISITATION_CONTENT_ID,
 } from '../../../constants/layout/content';
-import { usePageRouter } from '../../../utils/router';
+import { usePageRouter } from '@mokjang/utils';
 
 const App = () => {
   const router = usePageRouter();
+  const pathname = usePathname();
   const slug = useParams().slug as string[] | undefined;
 
   const sideId = slug?.[0] ?? null;
@@ -34,60 +35,61 @@ const App = () => {
   const contentId = slug?.[2] ?? null;
 
   const { churchId } = useSelector((state: RootState) => state.church);
-  const { user } = useSelector((state: RootState) => state.user);
+  const { initialized, user } = useSelector((state: RootState) => state.user);
 
+  // ✅ 단일 useEffect로 기본 경로 유도
   useEffect(() => {
-    if (!user?.id || !churchId) return;
+    if (!initialized || !user?.id || !churchId) return;
 
-    if (sideId === SIDE_ID.MAIN && !headerId) {
-      router.push(`main/${MAIN_HEADER_ID.HOME}`);
-    } else if (sideId === SIDE_ID.MANAGEMENT && !headerId) {
-      router.push(
-        `management/${MANAGEMENT_HEADER_ID.CHURCH}/${CHURCH_CONTENT_ID.CHURCH}`
-      );
-    }
-  }, [sideId, headerId, user?.id, churchId]);
+    let targetPath: string | null = null;
 
-  useEffect(() => {
-    if (!user?.id || !churchId) return;
-
-    if (sideId === SIDE_ID.MAIN && !contentId) {
-      if (headerId === MAIN_HEADER_ID.MEMBER) {
-        router.push(`main/${MAIN_HEADER_ID.MEMBER}/${MEMBER_CONTENT_ID.ALL}`);
-      } else if (headerId === MAIN_HEADER_ID.VISITATION) {
-        router.push(
-          `main/${MAIN_HEADER_ID.VISITATION}/${VISITATION_CONTENT_ID.ALL}`
-        );
-      } else if (headerId === MAIN_HEADER_ID.TASK) {
-        router.push(`main/${MAIN_HEADER_ID.TASK}/${TASK_CONTENT_ID.ALL}`);
+    if (sideId === SIDE_ID.MAIN) {
+      if (!headerId) {
+        targetPath = `/main/${MAIN_HEADER_ID.HOME}`;
+      } else if (!contentId) {
+        if (headerId === MAIN_HEADER_ID.MEMBER) {
+          targetPath = `/main/${MAIN_HEADER_ID.MEMBER}/${MEMBER_CONTENT_ID.ALL}`;
+        } else if (headerId === MAIN_HEADER_ID.VISITATION) {
+          targetPath = `/main/${MAIN_HEADER_ID.VISITATION}/${VISITATION_CONTENT_ID.ALL}`;
+        } else if (headerId === MAIN_HEADER_ID.TASK) {
+          targetPath = `/main/${MAIN_HEADER_ID.TASK}/${TASK_CONTENT_ID.ALL}`;
+        }
       }
-    } else if (
-      sideId === SIDE_ID.MANAGEMENT &&
-      headerId === MANAGEMENT_HEADER_ID.CHURCH &&
-      !contentId
-    ) {
-      router.push(
-        `management/${MANAGEMENT_HEADER_ID.CHURCH}/${CHURCH_CONTENT_ID.CHURCH}`
-      );
+    } else if (sideId === SIDE_ID.MANAGEMENT) {
+      if (!headerId) {
+        targetPath = `/management/${MANAGEMENT_HEADER_ID.CHURCH}/${CHURCH_CONTENT_ID.CHURCH}`;
+      } else if (headerId === MANAGEMENT_HEADER_ID.CHURCH && !contentId) {
+        targetPath = `/management/${MANAGEMENT_HEADER_ID.CHURCH}/${CHURCH_CONTENT_ID.CHURCH}`;
+      }
     }
-  }, [sideId, headerId, contentId, user?.id, churchId, router]);
 
-  const side = useMemo(() => {
-    return sideId ? getSide(sideId) : null;
-  }, [sideId]);
+    // 이미 해당 경로면 이동하지 않음
+    if (targetPath && pathname !== targetPath) {
+      router.replace(targetPath);
+    }
+  }, [
+    initialized,
+    user?.id,
+    churchId,
+    sideId,
+    headerId,
+    contentId,
+    pathname,
+    router,
+  ]);
 
-  const header = useMemo(() => {
-    return headerId ? getHeader(headerId) : null;
-  }, [headerId]);
+  const side = useMemo(() => (sideId ? getSide(sideId) : null), [sideId]);
+  const header = useMemo(
+    () => (headerId ? getHeader(headerId) : null),
+    [headerId]
+  );
+  const content = useMemo(
+    () => getContent(contentId, headerId),
+    [contentId, headerId]
+  );
 
-  const content = useMemo(() => {
-    return getContent(contentId, headerId);
-  }, [contentId, headerId, router]);
-
-  // 렌더링은 조건적으로 null을 반환하되, useEffect 이후로!
-  if (!user?.id || !churchId) {
-    return null;
-  }
+  if (!initialized) return null; // 필요시 로딩 UI로 대체
+  if (!user?.id || !churchId) return null;
 
   return <MainLayout side={side} header={header} content={content} />;
 };

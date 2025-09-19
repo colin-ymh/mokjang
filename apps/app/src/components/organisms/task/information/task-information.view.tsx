@@ -3,22 +3,13 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
 import { useTaskStatusDropdownItems } from '../../../../hooks/dropdown/dropdown-items';
 import { useI18n } from '../../../../../locales/client';
-import { MainText } from '../../../atoms/common/text/main-text';
-import { GRAY } from '../../../../constants/styles/color';
+import { MainText, SvgIcon } from '@mokjang/components';
+import { GRAY, LOCALE, TASK_STATUS } from '@mokjang/constants';
 import React from 'react';
-import { TASK_STATUS } from '../../../../constants/status/status';
 import MemberProfilePopupButton from '../../../molecules/common/button/member-profile-popup-button';
-import { getTranslatedDateFromDateString } from '../../../../utils/translate';
+import { getTranslatedStartEndDate } from '@mokjang/utils';
 import { usePathname } from 'next/navigation';
-import { LOCALE } from '../../../../constants/state/locale';
-import SvgIcon from '../../../atoms/common/icon/svg-icon';
-
-import User from '../../../../../public/svg/user.svg';
-import Calendar from '../../../../../public/svg/calendar.svg';
-import Users from '../../../../../public/svg/users.svg';
-import Book from '../../../../../public/svg/book.svg';
-import { SIZE } from '../../../../constants/styles/style';
-import StatusDropdown from '../../../atoms/common/dropdown/status-dropdown';
+import { Svg } from '@mokjang/assets';
 
 const InformationContainer = styled.div`
   display: flex;
@@ -47,6 +38,7 @@ const TitleContainer = styled.div`
   flex-direction: row;
   gap: 10px;
   align-items: center;
+  width: 100px;
 `;
 
 const RowContainer = styled.div`
@@ -55,6 +47,7 @@ const RowContainer = styled.div`
   align-items: center;
   width: 100%;
   gap: 30px;
+  height: 30px;
 `;
 
 const ColumnContainer = styled.div`
@@ -98,24 +91,24 @@ const TaskInformationView = ({ onChangeStatus }: TaskInformationViewProps) => {
   return (
     <InformationContainer>
       {/* 제목 */}
-      <HeaderContainer>
-        <MainText size={SIZE.EXTRA_LARGE} fontSize={22}>
-          {targetTask.title}
-        </MainText>
-        <StatusDropdown
-          value={targetTask.status}
-          items={statusDropdownItems}
-          onChangeItem={onChangeStatus}
-          width={100}
-          height={30}
-        />
-      </HeaderContainer>
+      {/*<HeaderContainer>*/}
+      {/*  <MainText size={SIZE.EXTRA_LARGE} fontSize={22}>*/}
+      {/*    {targetTask.title}*/}
+      {/*  </MainText>*/}
+      {/*  <StatusDropdown*/}
+      {/*    value={targetTask.status}*/}
+      {/*    items={statusDropdownItems}*/}
+      {/*    onChangeItem={onChangeStatus}*/}
+      {/*    width={100}*/}
+      {/*    height={30}*/}
+      {/*  />*/}
+      {/*</HeaderContainer>*/}
       <ContentContainer>
         {/* 담당자 */}
         <RowContainer>
           <TitleContainer>
-            <SvgIcon svg={User} color={GRAY.DARK} />
-            <MainText color={GRAY.DARK}>{t('inCharge')}</MainText>
+            <SvgIcon svg={Svg.User} color={GRAY.EXTRA_DARK} />
+            <MainText color={GRAY.EXTRA_DARK}>{t('inCharge')}</MainText>
           </TitleContainer>
           <MemberProfilePopupButton
             key={targetTask.inCharge.id}
@@ -126,28 +119,24 @@ const TaskInformationView = ({ onChangeStatus }: TaskInformationViewProps) => {
         {/* 일정 */}
         <RowContainer>
           <TitleContainer>
-            <SvgIcon svg={Calendar} color={GRAY.DARK} />
-            <MainText color={GRAY.DARK}>{t('schedule')}</MainText>
+            <SvgIcon svg={Svg.Calendar} color={GRAY.EXTRA_DARK} />
+            <MainText color={GRAY.EXTRA_DARK}>{t('schedule')}</MainText>
           </TitleContainer>
           {/* 일자 */}
           <PeriodContainer>
-            <MainText>
-              {targetTask.startDate &&
-                getTranslatedDateFromDateString(locale, targetTask.startDate)}
-            </MainText>
-            <MainText>{'-'}</MainText>
-            <MainText>
-              {targetTask.endDate &&
-                getTranslatedDateFromDateString(locale, targetTask.endDate)}
-            </MainText>
+            {getTranslatedStartEndDate(
+              locale,
+              targetTask.startDate,
+              targetTask.endDate
+            )}
           </PeriodContainer>
         </RowContainer>
 
         {/* 보고대상자 */}
-        <ColumnContainer>
+        <RowContainer>
           <TitleContainer>
-            <SvgIcon svg={Users} color={GRAY.DARK} />
-            <MainText color={GRAY.DARK}>{t('receiver')}</MainText>
+            <SvgIcon svg={Svg.Users} color={GRAY.EXTRA_DARK} />
+            <MainText color={GRAY.EXTRA_DARK}>{t('receiver')}</MainText>
           </TitleContainer>
           <MemberList>
             {targetTask.reports.map((report) => (
@@ -157,19 +146,22 @@ const TaskInformationView = ({ onChangeStatus }: TaskInformationViewProps) => {
               />
             ))}
           </MemberList>
-        </ColumnContainer>
+        </RowContainer>
 
         <RowLine />
         {/* 업무내용 */}
         <ColumnContainer>
           <TitleContainer>
-            <SvgIcon svg={Book} color={GRAY.DARK} />
-            <MainText color={GRAY.DARK}>{t('content')}</MainText>
+            <SvgIcon svg={Svg.Book} color={GRAY.EXTRA_DARK} size={16} />
+            <MainText color={GRAY.EXTRA_DARK} fontSize={16}>
+              {t('content')}
+            </MainText>
           </TitleContainer>
           <MainText
             dangerouslySetInnerHTML={{
               __html: targetTask.content,
             }}
+            whiteSpace={'normal'}
           />
         </ColumnContainer>
       </ContentContainer>

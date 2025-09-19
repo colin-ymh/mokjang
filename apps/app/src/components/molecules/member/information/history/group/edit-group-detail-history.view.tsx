@@ -1,21 +1,12 @@
 import styled from 'styled-components';
-import LabelInput from '../../../../../atoms/common/input/label-input';
+import { LabelInput, MainText } from '@mokjang/components';
 import React from 'react';
-import {
-  useI18n,
-  useScopedI18n,
-} from '../../../../../../../locales/client';
+import { useI18n, useScopedI18n } from '../../../../../../../locales/client';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../../redux/store';
 import CustomDatePicker from '../../../../../../vendor/date-picker/custom-date-picker';
-import {
-  getDateFromDateString,
-  getDateFromInput,
-  getDateStringFromDate,
-} from '../../../../../../utils/date';
-import { GRAY } from '../../../../../../constants/styles/color';
-import { MainText } from '../../../../../atoms/common/text/main-text';
-import { SIZE } from '../../../../../../constants/styles/style';
+import { getDateFromDateString, getDateStringFromDate } from '@mokjang/utils';
+import { GRAY, SIZE } from '@mokjang/constants';
 import DeleteWarningButton from '../../../../../atoms/common/button/delete-warning-button';
 
 const EditGroupDetailHistoryViewContainer = styled.div`
@@ -38,6 +29,10 @@ const RowContainer = styled.div`
   flex-direction: row;
   gap: 10px;
   width: 100%;
+`;
+
+const BoxContainer = styled.div`
+  display: flex;
 `;
 
 type EditGroupDetailHistoryViewProps = {
@@ -76,7 +71,7 @@ const EditGroupDetailHistoryView = ({
               value={
                 targetGroupDetailHistory.startDate
                   ? getDateStringFromDate(
-                      getDateFromInput(targetGroupDetailHistory.startDate)
+                      getDateFromDateString(targetGroupDetailHistory.startDate)
                     )
                   : undefined
               }
@@ -100,7 +95,7 @@ const EditGroupDetailHistoryView = ({
               value={
                 targetGroupDetailHistory.endDate
                   ? getDateStringFromDate(
-                      getDateFromInput(targetGroupDetailHistory.endDate)
+                      getDateFromDateString(targetGroupDetailHistory.endDate)
                     )
                   : undefined
               }
@@ -115,11 +110,13 @@ const EditGroupDetailHistoryView = ({
             />
           </LabelContainer>
         </RowContainer>
-        <DeleteWarningButton
-          description={t_warning('deleteGroupHistory')}
-          buttonText={t_button('deleteHistory')}
-          onClick={onClickDeleteGroup}
-        />
+        <BoxContainer>
+          <DeleteWarningButton
+            description={t_warning('deleteGroupHistory')}
+            buttonText={t_button('deleteHistory')}
+            onClick={onClickDeleteGroup}
+          />
+        </BoxContainer>
       </EditGroupDetailHistoryViewContainer>
     </>
   );

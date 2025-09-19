@@ -5,8 +5,8 @@ import { fetchOfficers } from '../../../../../redux/reducers/church-reducer';
 
 import { OfficersApi } from '../../../../../api/management/officer/officers.api';
 import ManagementOfficerItemView from './management-officer-item.view';
-import { Officer } from '../../../../../models/management/management';
-import { DESTRUCTIVE } from '../../../../../constants/styles/color';
+import { Officer } from '@mokjang/models';
+import { DESTRUCTIVE } from '@mokjang/constants';
 import {
   setIsToastShown,
   setToastBackgroundColor,

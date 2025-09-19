@@ -1,16 +1,15 @@
 import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
 import LinkMemberUserView from './link-member-user.view';
-import { MembersApi } from '../../../api/members/members.api';
+import { MembersApi } from '@/api/members/members.api';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../../redux/store';
-import { BLANK } from '../../../../../../packages/constants/src';
-import { DEFAULT_MEMBER, Member } from '../../../models/member/member';
-import { getFormattedName } from '../../../utils/format';
-import { MEMBER } from '@/constants/column/member-column';
+import { RootState } from '@/redux/store';
+import { BLANK, MEMBER } from '@mokjang/constants';
+import { DEFAULT_MEMBER, Member } from '@mokjang/models';
+import { getFormattedName } from '@mokjang/utils';
 
 type LinkMemberUserProps = {
   prevMember?: Member;
-  onChangeLinkMember: (memberId: string) => void;
+  onChangeLinkMember: (member: Member) => void;
 };
 
 const LinkMemberUser = ({
@@ -31,11 +30,15 @@ const LinkMemberUser = ({
   // 검색된 교인 목록 (뷰로 내려보낼 리스트)
   const [searchedMembers, setSearchedMembers] = useState<Member[]>([]);
 
-  // 페이지네이션/로딩/에러
-  const [page, setPage] = useState(1);
+  // 커서 기반 페이지네이션/로딩/에러
+  const [cursor, setCursor] = useState<string | null>(null);
+  const [hasMore, setHasMore] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState(false);
   const [thrownError, setThrownError] = useState<Error | null>(null);
   if (thrownError) throw thrownError;
+
+  // fetch 이전에 초기화가 완료됐는지 플래그
+  const [isResetDone, setIsResetDone] = useState(false);
 
   // ===============================
   // 이벤트 핸들러
@@ -49,10 +52,13 @@ const LinkMemberUser = ({
     setSelectedMember(member);
   };
 
-  // 검색 버튼 클릭 → 1페이지부터 재검색
+  // 검색 버튼 클릭 → 초기화 후 재검색
   const onClickSearch = () => {
-    setPage(1);
-    fetchSearchedMembers(1, searchName);
+    // 1단계: 상태 초기화
+    setSearchedMembers([]);
+    setCursor(null);
+    setHasMore(true);
+    setIsResetDone(true); // 초기화 완료 신호
   };
 
   // 검색 중 엔터
@@ -64,41 +70,46 @@ const LinkMemberUser = ({
 
   // 선택 변경 시 상위에 알림
   useEffect(() => {
-    onChangeLinkMember(selectedMember.id);
+    onChangeLinkMember(selectedMember);
   }, [selectedMember, onChangeLinkMember]);
 
-  // 교인 목록 검색 (페이지/이름 인자 없으면 현재 state 사용)
-  const fetchSearchedMembers = async (pageArg?: number, nameArg?: string) => {
-    const targetPage = pageArg ?? page;
-    const targetName = nameArg ?? searchName;
-
+  // 교인 목록 검색 (인자 없이 현재 state 사용)
+  const fetchSearchedMembers = async () => {
     try {
-      if (isLoading) return;
+      if (isLoading || !hasMore) return;
       setIsLoading(true);
 
-      const response = await membersApi.getMembers({
+      const response = await membersApi.getMembersV2({
         churchId,
-        page: targetPage,
-        take: 50,
-        name: targetName,
-        selectedColumns: [
+        limit: 50,
+        cursor: cursor ?? undefined,
+        // 필요 시 정렬 지정: sortBy, sortDirection
+        displayColumns: [
           MEMBER.OFFICER,
           MEMBER.MOBILE_PHONE,
           MEMBER.BIRTH,
           MEMBER.GROUP,
         ],
+        // 너무 짧은 검색어는 생략해 트래픽 절감
+        search: searchName.length > 1 ? searchName : undefined,
       });
 
-      const newMembers: Member[] = response.data.data ?? [];
+      const newMembers: Member[] = response.data?.data ?? [];
 
       // 중복 제거 (기존 searchedMembers 기준)
       const existingIds = new Set(searchedMembers.map((m) => m.id));
       const filteredNew = newMembers.filter((m) => !existingIds.has(m.id));
 
-      // 페이지 1이면 교체, 그 외는 이어붙이기
+      // 커서가 null(초기 로드)이면 교체, 아니면 이어붙이기
       setSearchedMembers((prev) =>
-        targetPage === 1 ? newMembers : [...prev, ...filteredNew]
+        cursor ? [...prev, ...filteredNew] : filteredNew
       );
+
+      // next cursor / hasMore 처리(필드명 방어 코딩)
+      const next = response.data?.nextCursor || null;
+      setCursor(next);
+
+      setHasMore(response.data.hasMore);
     } catch (error) {
       setThrownError(error as Error);
     } finally {
@@ -107,7 +118,9 @@ const LinkMemberUser = ({
   };
 
   const loadMembers = () => {
-    setPage((p) => p + 1); // ✅ 함수형 업데이트로 최신값 보장
+    if (!isLoading && hasMore) {
+      fetchSearchedMembers();
+    }
   };
 
   const onScroll = () => {
@@ -119,22 +132,27 @@ const LinkMemberUser = ({
     }
   };
 
-  // 검색어 변경 시 디바운스 후 페이지 1로 재검색
+  // 검색어 변경 시 디바운스 후 초기화 → fetch(2단계 보장)
   useEffect(() => {
     const timer = setTimeout(() => {
-      setPage(1);
-      fetchSearchedMembers(1, searchName);
+      // 1단계: 상태 초기화
+      setSearchedMembers([]);
+      setCursor(null);
+      setHasMore(true);
+      setIsResetDone(true); // 초기화 완료 신호
     }, 500);
     return () => clearTimeout(timer);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchName, churchId]);
 
-  // 페이지 변경 시 다음 페이지 로드
+  // 2단계: 초기화 완료 후 fetch 실행
   useEffect(() => {
-    if (page === 1) return; // page=1은 위 효과에서 이미 호출
-    fetchSearchedMembers(page, searchName);
+    if (isResetDone) {
+      fetchSearchedMembers();
+      setIsResetDone(false); // 다음 사이클 대비
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page, churchId]);
+  }, [isResetDone]);
 
   const props = {
     searchRef,

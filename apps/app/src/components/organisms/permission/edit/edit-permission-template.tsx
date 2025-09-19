@@ -1,8 +1,5 @@
 import React, { ChangeEvent } from 'react';
-import {
-  getFormattedContent,
-  getFormattedTitle,
-} from '../../../../utils/format';
+import { getFormattedContent, getFormattedTitle } from '@mokjang/utils';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../../redux/store';
 import { setTargetPermissionTemplate } from '../../../../redux/reducers/target/target-permission-template-reducer';

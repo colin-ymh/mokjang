@@ -33,7 +33,7 @@ import VisitationList from '../../components/organisms/visitation/list/visitatio
 import TaskList from '../../components/organisms/task/list/task-list';
 import MainTaskHeader from '../../components/molecules/layout/header/main/task/main-task-header';
 import EducationList from '../../components/organisms/education/education/list/education-list';
-import { HEADER_BAR, HOME_WIDGET } from '../../constants/constant';
+import { HEADER_BAR, HOME_WIDGET } from '@mokjang/constants';
 import ManagementJoinRequestHeader from '../../components/molecules/layout/header/management/join-request/management-join-request-header';
 import ManagementPermissionHeader from '../../components/molecules/layout/header/management/permission/management-permission-header';
 import ManagementUserHeader from '../../components/molecules/layout/header/management/user/management-user-header';
@@ -217,7 +217,7 @@ export const getMemberInformationContent = (
   switch (memberContentId) {
     case MEMBER_INFORMATION_HEADER_ID.PERSONAL_INFORMATION:
       if (isPopup) {
-        return <MemberInformationListView />;
+        return <MemberInformationListView isPopup={isPopup} />;
       } else {
         return <MemberPersonalInformationList />;
       }

@@ -2,12 +2,11 @@ import React, { useState } from 'react';
 import SubscriptionView, {
   SubscriptionViewProps,
 } from '@/components/organisms/subscription/subscription.view';
-import { BILLING_CYCLE, Plan } from '@/models/subscription/subscription';
-import { usePageRouter } from '@mokjang/app/src/utils/router';
-import { CustomPopup, SvgIcon } from '@mokjang/components';
+import { BILLING_CYCLE, Plan } from '@mokjang/models';
+import { usePageRouter } from '@mokjang/utils';
+import { CustomPopup } from '@mokjang/components';
 import { useScopedI18n } from '../../../../locales/client';
 import CardRegister from '@/components/molecules/subscription/card-register';
-import { Svg } from '@mokjang/assets';
 import styled from 'styled-components';
 
 const ButtonContainer = styled.div`
@@ -66,15 +65,11 @@ const Subscription = () => {
       <CustomPopup
         isShow={isCardOpened}
         onClickCancel={onClickClose}
+        onClickClose={onClickClose}
         headerTitle={t_card('title')}
         cancelText={t_button('cancel')}
         width={500}
         height={450}
-        headerRight={
-          <ButtonContainer onClick={onClickClose}>
-            <SvgIcon svg={Svg.Cancel} size={18} width={2} />
-          </ButtonContainer>
-        }
         isFooterShown={false}
       >
         <CardRegister />

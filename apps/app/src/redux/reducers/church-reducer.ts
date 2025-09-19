@@ -1,13 +1,8 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ALL, BLANK, ORDER_DIRECTION } from '../../constants/constant';
-import {
-  Group,
-  Ministry,
-  MinistryGroup,
-  Officer,
-} from '../../models/management/management';
+import { ALL, BLANK, ORDER_DIRECTION } from '@mokjang/constants';
+import { Group, Ministry, MinistryGroup, Officer } from '@mokjang/models';
 import { RootState } from '../store';
-import { Church, DEFAULT_CHURCH } from '../../models/church/church';
+import { Church, DEFAULT_CHURCH } from '@mokjang/models';
 import { getOrderedGroups } from '../../utils/group';
 import { OfficersApi } from '../../api/management/officer/officers.api';
 import { getOrderedMinistryGroups } from '../../utils/ministry';

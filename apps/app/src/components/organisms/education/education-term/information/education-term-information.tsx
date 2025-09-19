@@ -6,36 +6,34 @@ import {
   DEFAULT_EDUCATION_SESSION,
   EducationEnrollment,
   EducationSession,
-} from '../../../../../models/education/education';
+  Member,
+} from '@mokjang/models';
 import { setTargetEducationTerm } from '../../../../../redux/reducers/target/target-education-term-reducer';
 import { setEducationTerms } from '../../../../../redux/reducers/filter/education-term-filter-reducer';
 import EducationTermInformationView from './education-term-information.view';
 import { EducationEnrollmentsApi } from '../../../../../api/education/education-enrollments.api';
 
 import {
+  BLACK,
+  DESTRUCTIVE,
   EDUCATION_ENROLLMENT_STATUS,
+  MAIN,
   TASK_STATUS,
-} from '../../../../../constants/status/status';
+} from '@mokjang/constants';
 import { EDUCATION_TERM_CONTENT_ID } from '../../../../../constants/layout/content';
-import { Member } from '../../../../../models/member/member';
 import {
   setIsToastShown,
   setToastBackgroundColor,
   setToastText,
 } from '../../../../../redux/reducers/toast-popup-reducer';
-import {
-  BLACK,
-  DESTRUCTIVE,
-  MAIN,
-} from '../../../../../constants/styles/color';
 import { useScopedI18n } from '../../../../../../locales/client';
 import { setEducations } from '../../../../../redux/reducers/filter/education-filter-reducer';
 import {
   getDateFromDateString,
   getFullStringFromDate,
-} from '../../../../../utils/date';
+  getIsWellFormedTitle,
+} from '@mokjang/utils';
 import { setTargetEducationSession } from '../../../../../redux/reducers/target/target-education-session-reducer';
-import { getIsWellFormedTitle } from '../../../../../utils/check';
 import { EducationSessionsApi } from '../../../../../api/education/education-sessions.api';
 import WrappedPagePopup from '../../../../atoms/common/popup/wrapped-page-popup';
 import AddEducationSession from '../../education-session/add/add-education-session';
@@ -413,10 +411,9 @@ const EducationTermInformation = ({
 
       const newEducationTerm = {
         ...targetEducationTerm,
-        educationSessions: [
-          ...targetEducationTerm.educationSessions,
-          newEducationSession,
-        ],
+        educationSessions: targetEducationTerm?.educationSessions
+          ? [...targetEducationTerm.educationSessions, newEducationSession]
+          : [newEducationSession],
       };
 
       const newEducations = educations.map((education) => {
@@ -503,6 +500,8 @@ const EducationTermInformation = ({
         }
         doneDisabled={!isEducationSessionSaveEnabled}
         closeText={t_button('backToEducationTerm')}
+        widthPercentage={45}
+        blur={false}
       >
         <AddEducationSession />
       </WrappedPagePopup>

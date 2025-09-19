@@ -7,13 +7,13 @@ import {
   Education,
   EducationSession,
   EducationTerm,
-} from '../../../../models/education/education';
+} from '@mokjang/models';
 import {
   setIsToastShown,
   setToastBackgroundColor,
   setToastText,
 } from '../../../../redux/reducers/toast-popup-reducer';
-import { DESTRUCTIVE, MAIN } from '../../../../constants/styles/color';
+import { DESTRUCTIVE, LOCALE, MAIN, TASK_STATUS } from '@mokjang/constants';
 import { EducationSessionsApi } from '../../../../api/education/education-sessions.api';
 import EducationTermTableView from './education-term-table.view';
 import { setTargetEducation } from '../../../../redux/reducers/target/target-education-reducer';
@@ -23,22 +23,20 @@ import {
   getDateFromDateString,
   getDateStringFromDate,
   getFullStringFromDate,
-} from '../../../../utils/date';
-import { getIsWellFormedTitle } from '../../../../utils/check';
-import { TASK_STATUS } from '../../../../constants/status/status';
+  getIsWellFormedTitle,
+  getTranslatedTerm,
+} from '@mokjang/utils';
 import { setEducationTerms } from '../../../../redux/reducers/filter/education-term-filter-reducer';
 import { setTargetEducationSession } from '../../../../redux/reducers/target/target-education-session-reducer';
 import { EducationTermsApi } from '../../../../api/education/education-terms.api';
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
 import WrappedPagePopup from '../../../atoms/common/popup/wrapped-page-popup';
-import { getTranslatedTerm } from '../../../../utils/translate';
 import ConfirmPopup from '../../../atoms/common/popup/error-popup';
 import EducationTermInformation from '../../../organisms/education/education-term/information/education-term-information';
 import AddEducationTerm from '../../../organisms/education/education-term/add/add-education-term';
 import EducationSessionInformation from '../../../organisms/education/education-session/information/education-session-information';
 import AddEducationSession from '../../../organisms/education/education-session/add/add-education-session';
 import { usePathname } from 'next/navigation';
-import { LOCALE } from '../../../../constants/state/locale';
 
 export type EducationTermTableProps = {};
 
@@ -234,11 +232,14 @@ const EducationTermTable = ({}: EducationTermTableProps) => {
 
   const onClickEditEducationTermDone = async () => {
     try {
-      const prev = targetEducation.educationTerms?.find(
-        (term) => term.id === targetEducationTerm.id
-      );
+      const response = await educationTermsApi.getEducationTerm({
+        churchId,
+        educationId: targetEducationTerm.educationId,
+        educationTermId: targetEducationTerm.id,
+      });
+      const prev: EducationTerm = response.data.data;
 
-      const response = await educationTermsApi.editEducationTerm(
+      await educationTermsApi.editEducationTerm(
         {
           churchId,
           educationId: targetEducationTerm.educationId,
@@ -260,9 +261,7 @@ const EducationTermTable = ({}: EducationTermTableProps) => {
         }
       );
 
-      const reports = targetEducation.educationTerms.find(
-        (term) => term.id === targetEducationTerm.id
-      )?.reports;
+      const reports = prev.reports;
 
       const receiverIds = reports?.map((report) => report.receiver.id) || [];
 
@@ -346,6 +345,11 @@ const EducationTermTable = ({}: EducationTermTableProps) => {
     }
 
     if (!targetEducationTerm.inChargeId) {
+      setIsEducationTermSaveEnabled(false);
+      return;
+    }
+
+    if (!targetEducationTerm.startDate || !targetEducationTerm.endDate) {
       setIsEducationTermSaveEnabled(false);
       return;
     }
@@ -531,11 +535,15 @@ const EducationTermTable = ({}: EducationTermTableProps) => {
 
   const onClickEditEducationSessionDone = async () => {
     try {
-      const prev = targetEducationTerm.educationSessions?.find(
-        (session) => session.id === targetEducationSession.id
-      );
+      const response = await educationSessionsApi.getEducationSession({
+        churchId,
+        educationId: targetEducationTerm.educationId,
+        educationTermId: targetEducationTerm.id,
+        educationSessionId: targetEducationSession.id,
+      });
+      const prev: EducationSession = response.data.data;
 
-      const response = await educationSessionsApi.editEducationSession(
+      await educationSessionsApi.editEducationSession(
         {
           churchId,
           educationId: targetEducationTerm.educationId,
@@ -758,6 +766,8 @@ const EducationTermTable = ({}: EducationTermTableProps) => {
         startDate={targetEducationTerm.startDate}
         endDate={targetEducationTerm.endDate}
         closeText={t_button('backToEducation')}
+        widthPercentage={45}
+        blur={false}
       >
         {(scrollRef) => (
           <>
@@ -796,6 +806,8 @@ const EducationTermTable = ({}: EducationTermTableProps) => {
         }
         doneDisabled={!isEducationTermSaveEnabled}
         closeText={t_button('backToEducationTerm')}
+        widthPercentage={45}
+        blur={false}
       >
         <AddEducationTerm />
       </WrappedPagePopup>
@@ -818,6 +830,8 @@ const EducationTermTable = ({}: EducationTermTableProps) => {
         startDate={targetEducationSession.startDate}
         endDate={targetEducationSession.endDate}
         closeText={t_button('backToEducation')}
+        widthPercentage={45}
+        blur={false}
       >
         {(scrollRef) => (
           <>
@@ -856,6 +870,8 @@ const EducationTermTable = ({}: EducationTermTableProps) => {
         }
         doneDisabled={!isEducationSessionSaveEnabled}
         closeText={t_button('backToEducationTerm')}
+        widthPercentage={45}
+        blur={false}
       >
         <AddEducationSession />
       </WrappedPagePopup>

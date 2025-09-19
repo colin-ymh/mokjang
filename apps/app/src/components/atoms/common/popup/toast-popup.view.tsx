@@ -1,10 +1,10 @@
 import { forwardRef } from 'react';
 import styled from 'styled-components';
 
-import Cancel from '../../../../../public/svg/cancel.svg';
+import { Svg } from '@mokjang/assets';
 
-import { MainText, MainTextProps } from '../text/main-text';
-import { WHITE } from '@/constants/styles/color';
+import { MainText, MainTextProps } from '@mokjang/components';
+import { WHITE } from '@mokjang/constants';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 
@@ -38,7 +38,7 @@ const PopupContainer = styled.div<{
     $direction === TOAST_DIRECTION.TOP ? 'top: -50px;' : 'bottom: -50px;'}
 `;
 
-const CancelButton = styled(Cancel)`
+const CancelButton = styled(Svg.Cancel)`
   stroke: ${WHITE};
   position: absolute;
   right: 10px;

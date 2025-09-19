@@ -2,7 +2,7 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../../../../redux/store';
 import { setTargetMinistryHistory } from '../../../../../../redux/reducers/target/target-history-reducer';
-import { getDateStringFromDate } from '../../../../../../utils/date';
+import { getDateStringFromDate } from '@mokjang/utils';
 import EditMinistryHistoryView from './edit-ministry-history.view';
 
 type EditMemberMinistryProps = {

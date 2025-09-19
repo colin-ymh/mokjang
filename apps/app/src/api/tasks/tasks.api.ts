@@ -1,12 +1,10 @@
 import { AxiosResponse } from 'axios';
 import qs from 'qs';
 
-import { SERVER_URL, TEST_SERVER_URL } from '../../constants/state/url';
 import authorizeAxios from '../authorize-axios';
 import { CustomError } from '../error/error';
-import { ORDER_DIRECTION } from '../../constants/constant';
-import { TASK } from '../../constants/column/task-column';
-import { TASK_STATUS } from '../../constants/status/status';
+import { ORDER_DIRECTION, TASK, TASK_STATUS } from '@mokjang/constants';
+import { IS_PRODUCTION, SERVER_URL, TEST_SERVER_URL } from '@mokjang/utils';
 
 type GetTasksParams = {
   churchId: string;
@@ -53,7 +51,6 @@ type EditTaskBody = {
   startDate?: string;
   endDate?: string;
   parentTaskId?: string;
-  receiverIds?: string[];
   content?: string;
 };
 
@@ -95,7 +92,7 @@ export class TasksApi {
   private _url: string;
 
   constructor(useBaseURL: boolean) {
-    this._url = useBaseURL
+    this._url = IS_PRODUCTION
       ? SERVER_URL // 실제 사용할 url
       : TEST_SERVER_URL; // 개발용 url
   }

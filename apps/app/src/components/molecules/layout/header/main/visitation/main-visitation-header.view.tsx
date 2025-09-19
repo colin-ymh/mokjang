@@ -2,22 +2,16 @@ import React from 'react';
 import styled from 'styled-components';
 import { useParams } from 'next/navigation';
 
-import { GRAY, MAIN, WHITE } from '../../../../../../constants/styles/color';
-import { MainText } from '../../../../../atoms/common/text/main-text';
+import { GRAY, MAIN, MEDIA_MIN_WIDTH, SIZE, WHITE } from '@mokjang/constants';
+import { Button, MainText, SvgIcon } from '@mokjang/components';
 import HeaderBar from '../../../../../atoms/layout/header/header-bar';
-import { SIZE } from '../../../../../../constants/styles/style';
-import { useMainVisitationHeaderBarItems } from '../../../../../../hooks/layout/header-bar-items';
+import { useMainVisitationHeaderBarItems } from '@/hooks/layout/header-bar-items';
 
 import { useScopedI18n } from '../../../../../../../locales/client';
 import AddVisitation from '../../../../../organisms/visitation/add/add-visitation';
-import { MEDIA_MIN_WIDTH } from '../../../../../../constants/constant';
-import {
-  Button,
-  SvgIcon,
-} from '../../../../../../../../../packages/components/src';
-import { MAIN_HEADER_ID } from '../../../../../../constants/layout/header';
-import WrappedPagePopup from '../../../../../atoms/common/popup/wrapped-page-popup';
 import { Svg } from '@mokjang/assets';
+import { MAIN_HEADER_ID } from '@/constants/layout/header';
+import ScrollSlidePopup from '@/components/atoms/common/popup/scroll-slide-popup';
 
 const HeaderContainer = styled.div`
   display: flex;
@@ -96,7 +90,7 @@ const MainVisitationHeaderView = ({
             fontWeight={500}
             fontSize={16}
             height={35}
-            icon={<SvgIcon svg={Svg.Plus} color={WHITE} width={2} size={18} />}
+            icon={<SvgIcon svg={Svg.Plus} color={WHITE} width={2} size={20} />}
           />
         </HeaderTopContainer>
         <HeaderBottomContainer>
@@ -109,17 +103,17 @@ const MainVisitationHeaderView = ({
       </HeaderContainer>
 
       {/* 심방 추가 팝업*/}
-      <WrappedPagePopup
+      <ScrollSlidePopup
         isShow={isAddVisitationOpened}
         onClickClose={onClickCloseModal}
         onClickCancel={onClickCloseModal}
-        headerTitle={t_title('addVisitation')}
         onClickDone={onClickSaveVisitation}
+        headerTitle={t_title('addVisitation')}
+        doneBackgroundColor={isSaveEnabled ? MAIN.DEFAULT : MAIN.LIGHT}
         doneDisabled={!isSaveEnabled}
-        doneBackgroundColor={isSaveEnabled ? MAIN.DEFAULT : GRAY.LIGHT}
       >
         <AddVisitation />
-      </WrappedPagePopup>
+      </ScrollSlidePopup>
     </>
   );
 };

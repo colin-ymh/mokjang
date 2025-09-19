@@ -6,22 +6,26 @@ import { RootState } from '@/redux/store';
 
 import ModalLayout from '../../../../components/organisms/layout/modal-layout';
 
-import { usePageRouter } from '@/utils/router';
+import { usePageRouter } from '@mokjang/utils';
 import ChurchInit from '@/components/organisms/church/church-init';
 
 export default function ChurchInitPage() {
-  const { user } = useSelector((state: RootState) => state.user);
+  const { user, initialized } = useSelector((state: RootState) => state.user);
   const router = usePageRouter();
 
   useEffect(() => {
-    if (!user?.id) {
-      router.replace('/main');
+    // 초기화가 끝났는데 유저가 없으면 보호 라우트 → 홈으로
+    if (initialized && !user?.id) {
+      console.log(user);
+      // routeLandingPage('/');
     }
-  }, [user?.id, router]);
+  }, [initialized, user?.id, router]);
 
-  // 로그인된 상태면 로그인 페이지는 표시하지 않음
+  // 초기화 전에는 아무것도 렌더링하지 않거나 로딩 표시
+  if (!initialized) return null; // or <Spinner />
+
+  // 초기화가 끝났고 유저가 없으면 리다이렉트 직전 상태 → 렌더링 스킵
   if (!user?.id) return null;
-
   return (
     <ModalLayout>
       <ChurchInit />

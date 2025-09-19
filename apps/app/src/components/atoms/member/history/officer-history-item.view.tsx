@@ -1,18 +1,11 @@
 import styled from 'styled-components';
-import { BLACK, GRAY, GREEN, MAIN } from '../../../../constants/styles/color';
-import { OfficerHistory } from '../../../../models/member/history';
-import Clock from '../../../../../public/svg/clock.svg';
-import Calendar from '../../../../../public/svg/calendar.svg';
-import SvgIcon from '../../common/icon/svg-icon';
-import { MainText } from '../../common/text/main-text';
-import { useI18n } from '../../../../../locales/client';
-import { SIZE } from '../../../../constants/styles/style';
-import {
-  getDateFromDateString,
-  getDateStringFromDate,
-} from '../../../../utils/date';
+import { GRAY, LOCALE, MAIN, SIZE, WHITE } from '@mokjang/constants';
+import { OfficerHistory } from '@mokjang/models';
+import { Button, MainText } from '@mokjang/components';
+import { useI18n, useScopedI18n } from '../../../../../locales/client';
+import { getTranslatedDateFromDateString } from '@mokjang/utils';
 import React from 'react';
-import Pencil from '../../../../../public/svg/pencil.svg';
+import { usePathname } from 'next/navigation';
 
 const HistoryItemContainer = styled.div`
   display: flex;
@@ -31,12 +24,11 @@ const RowContainer = styled.div`
   position: relative;
 `;
 
-const IconContainer = styled.div<{ $isCurrent?: boolean }>`
+const ColumnContainer = styled.div`
   display: flex;
-  padding: 10px;
-  background-color: ${({ $isCurrent }) =>
-    $isCurrent ? GREEN.LIGHT : MAIN.LIGHT};
-  border-radius: 100%;
+  flex-direction: column;
+  gap: 6px;
+  justify-content: center;
 `;
 
 const EditButtonContainer = styled.div`
@@ -46,9 +38,6 @@ const EditButtonContainer = styled.div`
   padding: 5px;
   position: absolute;
   right: 0;
-  &:hover {
-    background-color: ${GRAY.LIGHT};
-  }
 `;
 
 type OfficerHistoryItemProps = {
@@ -61,45 +50,40 @@ const OfficerHistoryItem = ({
   onClickOfficerOpen,
 }: OfficerHistoryItemProps) => {
   const t = useI18n();
+  const t_button = useScopedI18n('button');
+
+  const pathname = usePathname();
+  const locale = pathname.split('/')[1] as LOCALE;
 
   return (
     <HistoryItemContainer>
       <RowContainer>
-        <IconContainer $isCurrent={!history.endDate}>
-          <SvgIcon
-            svg={Clock}
-            color={history.endDate ? MAIN.DARK : GREEN.DARK}
-            size={18}
-          />
-        </IconContainer>
-        <MainText size={SIZE.LARGE} fontWeight={600}>
-          {history.officerSnapShot}
-        </MainText>
+        <ColumnContainer>
+          <MainText size={SIZE.LARGE} fontWeight={600}>
+            {history.officerSnapShot}
+          </MainText>
+          <MainText color={GRAY.SEMI_DARK}>
+            {`${getTranslatedDateFromDateString(locale, history.startDate)} - ${
+              history.endDate
+                ? getTranslatedDateFromDateString(locale, history.endDate)
+                : t('current')
+            }`}
+          </MainText>
+        </ColumnContainer>
 
         {history.endDate && (
-          <EditButtonContainer onClick={() => onClickOfficerOpen(history)}>
-            <SvgIcon
-              svg={Pencil}
-              size={15}
-              width={1}
-              color={BLACK}
+          <EditButtonContainer>
+            <Button
+              width={'auto'}
+              text={t_button('edit')}
+              borderColor={MAIN.LIGHT}
+              backgroundColor={WHITE}
+              color={MAIN.DEFAULT}
+              height={30}
               onClick={() => onClickOfficerOpen(history)}
             />
           </EditButtonContainer>
         )}
-      </RowContainer>
-      <RowContainer>
-        <SvgIcon svg={Calendar} color={GRAY.SEMI_DARK} />
-        <MainText color={GRAY.SEMI_DARK}>{t('period')}</MainText>
-        <MainText color={GRAY.SEMI_DARK}>
-          {getDateStringFromDate(getDateFromDateString(history.startDate))}
-        </MainText>
-        <MainText color={GRAY.SEMI_DARK}>-</MainText>
-        <MainText color={GRAY.SEMI_DARK}>
-          {history.endDate
-            ? getDateStringFromDate(getDateFromDateString(history.endDate))
-            : t('current')}
-        </MainText>
       </RowContainer>
     </HistoryItemContainer>
   );

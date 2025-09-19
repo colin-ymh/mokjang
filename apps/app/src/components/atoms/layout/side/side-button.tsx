@@ -1,11 +1,11 @@
 import styled from 'styled-components';
 import { useParams } from 'next/navigation';
 
-import { GRAY, MAIN } from '../../../../constants/styles/color';
-import { MainText } from '../../common/text/main-text';
-import { SIZE } from '../../../../constants/styles/style';
+import { GRAY, MAIN } from '@mokjang/constants';
+import { MainText } from '@mokjang/components';
+import { SIZE } from '@mokjang/constants';
 import React from 'react';
-import SvgIcon from '../../common/icon/svg-icon';
+import { SvgIcon } from '@mokjang/components';
 
 const ButtonContainer = styled.div`
   display: flex;

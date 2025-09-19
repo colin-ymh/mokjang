@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Group } from '../../../../models/management/management';
+import { Group } from '@mokjang/models';
 import GroupSideBar from '../../../molecules/management/group/list/group-side-bar';
 import GroupInformation from '../../../molecules/management/group/informaton/group-information';
 

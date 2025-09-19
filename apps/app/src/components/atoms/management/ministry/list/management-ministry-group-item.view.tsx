@@ -7,18 +7,20 @@ import {
 } from 'react-dnd';
 import styled from 'styled-components';
 
-import { MinistryGroup } from '../../../../../models/management/management';
-import { BLACK, GRAY, MAIN } from '../../../../../constants/styles/color';
-import { MainText } from '../../../common/text/main-text';
-import Plus from '../../../../../../public/svg/plus.svg';
-import { SIZE } from '../../../../../constants/styles/style';
-import { useI18n } from '../../../../../../locales/client';
-import { getEmptyImage } from 'react-dnd-html5-backend';
+import { MinistryGroup } from '@mokjang/models';
 import {
   ALL,
+  BLACK,
   DND_ITEM_TYPE,
+  GRAY,
   HOVER_POSITION,
-} from '../../../../../constants/constant';
+  MAIN,
+  SIZE,
+} from '@mokjang/constants';
+import { MainText } from '@mokjang/components';
+import { Svg } from '@mokjang/assets';
+import { useI18n } from '../../../../../../locales/client';
+import { getEmptyImage } from 'react-dnd-html5-backend';
 
 const MinistryGroupItemContainer = styled.div`
   display: flex;
@@ -95,7 +97,7 @@ const NameContainer = styled.div`
   align-items: center;
   gap: 10px;
 `;
-const PlusButton = styled(Plus)`
+const PlusButton = styled(Svg.Plus)`
   width: 18px;
   height: 18px;
   stroke: ${GRAY.DARK};
@@ -281,6 +283,7 @@ const ManagementMinistryGroupItemView: React.FC<
   >({
     type: DND_ITEM_TYPE.GROUP,
     item: ministryGroup,
+    canDrag: () => ministryGroup.id !== ALL,
     collect: (m: DragSourceMonitor) => ({ isDragging: m.isDragging() }),
   });
 
@@ -314,7 +317,9 @@ const ManagementMinistryGroupItemView: React.FC<
       )}
 
       <MinistryGroupItem
-        onClick={() => onClickMinistryGroup(ministryGroup)}
+        onClick={() =>
+          ministryGroup.id !== ALL && onClickMinistryGroup(ministryGroup)
+        }
         $level={level}
         $isDragging={isDragging}
         $isSelected={selectedMinistryGroupId === ministryGroup.id}

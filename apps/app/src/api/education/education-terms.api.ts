@@ -1,11 +1,12 @@
 import { AxiosResponse } from 'axios';
-import { SERVER_URL, TEST_SERVER_URL } from '../../constants/state/url';
-import { EDUCATION_TERM } from '../../constants/column/education-column';
-import { ORDER_DIRECTION } from '../../constants/constant';
+
+import { EDUCATION_TERM } from '@mokjang/constants';
+import { ORDER_DIRECTION } from '@mokjang/constants';
 import { CustomError } from '../error/error';
 import authorizeAxios from '../authorize-axios';
 
-import { TASK_STATUS } from '../../constants/status/status';
+import { TASK_STATUS } from '@mokjang/constants';
+import { IS_PRODUCTION, SERVER_URL, TEST_SERVER_URL } from '@mokjang/utils';
 
 type GetEducationTermsParams = {
   churchId: string;
@@ -81,7 +82,7 @@ export class EducationTermsApi {
   private _url: string;
 
   constructor(useBaseURL: boolean) {
-    this._url = useBaseURL
+    this._url = IS_PRODUCTION
       ? SERVER_URL // 실제 사용할 url
       : TEST_SERVER_URL; // 개발용 url
   }

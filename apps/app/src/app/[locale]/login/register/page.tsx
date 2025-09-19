@@ -4,7 +4,7 @@ import UserRegister from '../../../../components/organisms/auth/user-register';
 import ModalLayout from '../../../../components/organisms/layout/modal-layout';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
-import { usePageRouter } from '../../../../utils/router';
+import { usePageRouter } from '@mokjang/utils';
 
 const UserRegisterPage = () => {
   const { user } = useSelector((state: RootState) => state.user);

@@ -1,19 +1,22 @@
 import {
+  ChurchEvent,
+  DOMAIN,
+  EducationSession,
+  Member,
   Schedule,
   ServerReportedSchedule,
   ServerSchedule,
-} from '../models/calendar/calendar';
-import { Task } from '../models/task/task';
-import { Visitation } from '../models/visitation/visitation';
-import { Member } from '../models/member/member';
-import { DOMAIN } from '../models/permission/permission';
+  Task,
+  Visitation,
+} from '@mokjang/models';
 import KoreanLunarCalendar from 'korean-lunar-calendar';
-import { getDateFromDateString, getDateStringFromDate } from './date';
+import {
+  getDateFromDateString,
+  getDateStringFromDate,
+  getFormattedDate,
+} from '@mokjang/utils';
 import dayjs from 'dayjs';
-import { ChurchEvent } from '../models/church-event/church-event';
-import { EducationSession } from '../models/education/education';
-import { Holiday } from '../api/holiday-api';
-import { getFormattedDate } from './format';
+import { Holiday } from '@/api/holiday-api';
 
 export const getScheduleFromTask = (event: Task): Schedule => {
   return {
@@ -23,6 +26,8 @@ export const getScheduleFromTask = (event: Task): Schedule => {
     start: event.startDate,
     end: event.endDate,
     task: event,
+    status: event.status,
+    inCharge: event.inCharge,
   };
 };
 
@@ -34,6 +39,8 @@ export const getScheduleFromVisitation = (event: Visitation): Schedule => {
     start: event.startDate,
     end: event.endDate,
     visitation: event,
+    status: event.status,
+    inCharge: event.inCharge,
   };
 };
 
@@ -47,6 +54,8 @@ export const getScheduleFromEducationSession = (
     start: event.startDate,
     end: event.endDate,
     education: event,
+    status: event.status,
+    inCharge: event.inCharge,
   };
 };
 
@@ -103,8 +112,9 @@ export const getScheduleFromBirthday = (
 
       targetDate = toConverted;
     }
-  } else if (event.birthdayMMDD) {
-    const [monthStr, dayStr] = event.birthdayMMDD.split('-');
+  } else if (event.birth) {
+    const monthStr = dayjs(event.birth).month() + 1;
+    const dayStr = dayjs(event.birth).date();
 
     // 현재 날짜 구간 중 해당 생일이 포함되는 연도 판단
     const fromMonthDay = dayjs(`${from.year()}-${monthStr}-${dayStr}`);
@@ -154,10 +164,10 @@ export const getMyWidgetSchedule = (event: ServerSchedule) => {
     start: event.startDate,
     end: event.endDate,
     status: event.status,
-    educationId: event.educationId || undefined,
-    educationName: event.educationName || undefined,
-    educationTermId: event.educationTermId || undefined,
-    educationTerm: event.educationTerm || undefined,
+    educationId: event?.educationId || undefined,
+    educationName: event?.educationName || undefined,
+    educationTermId: event?.educationTermId || undefined,
+    educationTerm: event?.educationTerm || undefined,
   } as Schedule;
 };
 
@@ -169,9 +179,9 @@ export const getReportedWidgetSchedule = (event: ServerReportedSchedule) => {
     end: event.schedule.endDate,
     status: event.schedule.status,
     inCharge: event.inCharge,
-    educationId: event.educationId || undefined,
-    educationName: event.educationName || undefined,
-    educationTermId: event.educationTermId || undefined,
-    educationTerm: event.educationTerm || undefined,
+    educationId: event.schedule?.educationId || undefined,
+    educationName: event.schedule?.educationName || undefined,
+    educationTermId: event.schedule?.educationTermId || undefined,
+    educationTerm: event.schedule?.educationTerm || undefined,
   } as Schedule;
 };

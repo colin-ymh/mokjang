@@ -7,12 +7,12 @@ import { setUser } from '../../../redux/reducers/user-reducer';
 
 import { AuthApi, IS_TEST } from '../../../api/auth/auth.api';
 import UserRegisterListView from './user-register-list.view';
-import Loading from '../../atoms/common/etc/loading';
+import { Loading } from '@mokjang/components';
 import {
-  getFormattedMobilePhone,
   getFormattedName,
-} from '../../../utils/format';
-import { usePageRouter } from '../../../utils/router';
+  getFormattedPhone,
+  usePageRouter,
+} from '@mokjang/utils';
 
 import { useScopedI18n } from '../../../../locales/client';
 import { UserApi } from '../../../api/user/user.api';
@@ -57,7 +57,7 @@ const UserRegisterList = () => {
 
   // 전화번호 변경 이벤트
   const onChangeMobilePhone = (event: ChangeEvent<HTMLInputElement>) => {
-    setMobilePhone(getFormattedMobilePhone(event.target.value));
+    setMobilePhone(getFormattedPhone(event.target.value));
   };
 
   // 인증번호 변경 이벤트
@@ -84,7 +84,7 @@ const UserRegisterList = () => {
       if (response.status === 201) {
         setIsRequested(true);
         console.log(response.data);
-        setSecond(1800);
+        setSecond(300);
       }
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));
@@ -119,8 +119,8 @@ const UserRegisterList = () => {
         privacyPolicyAgreed: isVerified,
       });
       if (response.status === 201) {
-        const userResponse = await userApi.getUser();
-        const newUser = userResponse.data;
+        const userResponse = await userApi.getMy();
+        const newUser = userResponse.data.data;
         dispatch(setUser(newUser));
         router.push('/');
       }

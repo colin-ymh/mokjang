@@ -20,6 +20,7 @@ const StyledIcon = styled.svg<{
     cursor || $isButton ? 'pointer' : 'default'};
   bottom: ${({ bottom }) => bottom}px;
 
+  transition: all 0.2s;
   &:hover {
     background-color: ${({ $isButton }) => $isButton && GRAY.LIGHT};
     border-radius: 5px;
@@ -31,7 +32,7 @@ type IconProps = {
   size?: number;
   color?: string;
   width?: number;
-  onClick?: () => void;
+  onClick?: (event?: any) => void;
   cursor?: CURSOR;
   bottom?: number;
 };

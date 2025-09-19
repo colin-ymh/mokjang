@@ -3,23 +3,28 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
 
-import { GRAY, GREEN, RED, WHITE } from '../../../../constants/styles/color';
-import { BLANK, GENDER } from '../../../../constants/constant';
-import { EDUCATION_ATTENDANCE } from '../../../../constants/column/education-column';
-import { MainText } from '../../../atoms/common/text/main-text';
-import { getFormattedMobilePhone } from '../../../../utils/format';
-import { EducationAttendance } from '../../../../models/education/education';
+import {
+  BLANK,
+  EDUCATION_ATTENDANCE,
+  EDUCATION_ATTENDANCE_STATUS,
+  GENDER,
+  GRAY,
+  GREEN,
+  RED,
+  STATUS,
+  WHITE,
+} from '@mokjang/constants';
+import { BorderInput, Button, MainText } from '@mokjang/components';
+import {
+  getAge,
+  getDateFromDateString,
+  getFormattedPhone,
+} from '@mokjang/utils';
+import { EducationAttendance } from '@mokjang/models';
 import { EDUCATION_ATTENDANCE_TABLE_HEADER_LIST } from '../../../../redux/reducers/filter/education-filter-reducer';
 import { useI18n } from '../../../../../locales/client';
-import MemberProfile from '../../../atoms/member/member-profile';
 import EducationAttendanceTableHeader from '../../../atoms/education/education-attendance/education-attendance-table-header';
-import { getAge, getDateFromDateString } from '../../../../utils/date';
-import Button from '../../../atoms/common/button/button';
-import BorderInput from '../../../atoms/common/input/border-input';
-import {
-  EDUCATION_ATTENDANCE_STATUS,
-  STATUS,
-} from '../../../../constants/status/status';
+import MemberProfilePopupButton from '@/components/molecules/common/button/member-profile-popup-button';
 
 // 1. 컬럼별 PX 폭 (마지막 REMARKS만 auto 할 예정)
 const getColumnWidth = (id: string) => {
@@ -182,7 +187,9 @@ const EducationAttendanceTableView = ({
       case EDUCATION_ATTENDANCE.MEMBER_NAME:
         return (
           <ProfileContainer>
-            <MemberProfile member={attendance.educationEnrollment.member} />
+            <MemberProfilePopupButton
+              member={attendance.educationEnrollment.member}
+            />
           </ProfileContainer>
         );
       case EDUCATION_ATTENDANCE.AGE:
@@ -203,7 +210,7 @@ const EducationAttendanceTableView = ({
         return (
           <MainText>
             {attendance.educationEnrollment.member?.mobilePhone &&
-              getFormattedMobilePhone(
+              getFormattedPhone(
                 attendance.educationEnrollment.member.mobilePhone
               )}
           </MainText>

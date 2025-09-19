@@ -1,12 +1,11 @@
 import { AxiosResponse } from 'axios';
 import qs from 'qs';
 
-import { SERVER_URL, TEST_SERVER_URL } from '../../constants/state/url';
+import { ORDER_DIRECTION, PERMISSION_TEMPLATE } from '@mokjang/constants';
 import authorizeAxios from '../authorize-axios';
 import { CustomError } from '../error/error';
-import { ORDER_DIRECTION } from '../../constants/constant';
-import { PERMISSION_TEMPLATE } from '../../constants/column/permission-column';
-import { DOMAIN } from '../../models/permission/permission';
+import { DOMAIN } from '@mokjang/models';
+import { IS_PRODUCTION, SERVER_URL, TEST_SERVER_URL } from '@mokjang/utils';
 
 type GetPermissionUnitsParams = {
   churchId: string;
@@ -27,12 +26,15 @@ type CreatePermissionTemplateParams = {
 
 type CreatePermissionTemplateBody = {
   title: string;
-  unitIds: string[];
+  description: string;
+  unitIds: number[];
 };
 
 type GetPermissionTemplateParams = {
   churchId: string;
   templateId: string;
+  take?: number;
+  page?: number;
 };
 
 type EditPermissionTemplateParams = {
@@ -42,7 +44,8 @@ type EditPermissionTemplateParams = {
 
 type EditPermissionTemplateBody = {
   title?: string;
-  unitIds?: string[];
+  description?: string;
+  unitIds?: number[];
 };
 
 type DeletePermissionTemplateParams = {
@@ -59,7 +62,7 @@ export class PermissionsApi {
   private _url: string;
 
   constructor(useBaseURL: boolean) {
-    this._url = useBaseURL
+    this._url = IS_PRODUCTION
       ? SERVER_URL // 실제 사용할 url
       : TEST_SERVER_URL; // 개발용 url
   }
@@ -220,12 +223,17 @@ export class PermissionsApi {
   public getPermissionTemplate = async (
     params: GetPermissionTemplateParams
   ) => {
-    const { churchId, templateId } = params;
+    const { churchId, templateId, take, page } = params;
 
     const url = `${this._url}/churches/${churchId}/permissions/templates/${templateId}`;
 
     try {
-      return await authorizeAxios.get(url);
+      return await authorizeAxios.get(url, {
+        params: {
+          take,
+          page,
+        },
+      });
     } catch (serverError: any) {
       if (serverError.response) {
         const { message, error, statusCode } = serverError.response.data;

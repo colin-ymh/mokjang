@@ -10,7 +10,7 @@ import {
   MinistryDetailHistory,
   MinistryHistory,
   OfficerHistory,
-} from '../../../models/member/history';
+} from '@mokjang/models';
 
 type TargetHistoryState = {
   targetGroupHistory: GroupHistory;

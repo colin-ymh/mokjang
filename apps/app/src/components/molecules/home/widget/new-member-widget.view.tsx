@@ -1,23 +1,18 @@
 'use client';
 
-import { MainText } from '../../../atoms/common/text/main-text';
+import { CustomPopup, MainText } from '@mokjang/components';
 import styled from 'styled-components';
-import { SIZE } from '../../../../constants/styles/style';
-import { GRAY, MAIN } from '../../../../constants/styles/color';
+import { GRAY, HOME_WIDGET, LOCALE, MAIN, SIZE } from '@mokjang/constants';
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
-import { HOME_WIDGET } from '../../../../constants/constant';
 import { usePathname } from 'next/navigation';
-import { LOCALE } from '../../../../constants/state/locale';
-import { getTranslatedBeforeSomeWeek } from '../../../../utils/translate';
-import { NewMemberSummary } from '../../../../models/home/widget';
 import {
   getDateFromDateString,
   getMonthDateFromDate,
-} from '../../../../utils/date';
-import { Member } from '../../../../models/member/member';
-import CustomPopup from '../../../atoms/common/popup/custom-popup';
+  getTranslatedBeforeSomeWeek,
+  getTranslatedMemberCount,
+} from '@mokjang/utils';
+import { Member, NewMemberSummary } from '@mokjang/models';
 import NewMemberDetail from '../../../atoms/home/new-member-detail';
-import { getTranslatedMemberCount } from '../../../../../../../packages/utils/src';
 
 const WidgetContainer = styled.div`
   display: flex;
@@ -31,7 +26,8 @@ const WidgetHeader = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  gap: 20px;
+  height: 40px;
+  flex-shrink: 0;
 `;
 
 const BodyContainer = styled.div`
@@ -52,6 +48,7 @@ const StateContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
+  padding-top: 20px;
   flex-grow: 1;
 `;
 
@@ -109,6 +106,7 @@ const NewMemberWidgetView = ({
 }: NewMemberWidgetViewProps) => {
   const t = useI18n();
   const t_title = useScopedI18n('title');
+  const t_button = useScopedI18n('button');
   const pathname = usePathname();
   const locale = pathname.split('/')[1] as LOCALE;
 
@@ -130,7 +128,7 @@ const NewMemberWidgetView = ({
           {/* 총합 */}
           <RowContainer>
             <MainText color={GRAY.SEMI_DARK}>
-              {`${t('thisMonth')} ${t('newMember')}`}
+              {`${t('lastOneMonth')} ${t('newMember')}`}
             </MainText>
             <MainText color={MAIN.DEFAULT} fontSize={22} fontWeight={600}>
               {getTranslatedMemberCount(locale, totalCount)}
@@ -138,7 +136,6 @@ const NewMemberWidgetView = ({
           </RowContainer>
           {/* 주간 통계 */}
           <StateContainer>
-            <MainText color={GRAY.DARK}>{t('weekNewMemberState')}</MainText>
             {/* 주 단위 상태바 */}
             <WeekList>
               {memberSummaries.map((summary, index) => (
@@ -167,11 +164,13 @@ const NewMemberWidgetView = ({
       {/* 상세 팝업 */}
       <CustomPopup
         isShow={isDetailShown}
+        onClickClose={onClickDetailClose}
         onClickCancel={onClickDetailClose}
         width={400}
         height={500}
         headerTitle={detailTitle}
         isHeaderBorderShown={false}
+        cancelText={t_button('close')}
       >
         <NewMemberDetail memberDetails={memberDetails} />
       </CustomPopup>

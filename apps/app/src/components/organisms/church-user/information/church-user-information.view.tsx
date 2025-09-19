@@ -1,16 +1,24 @@
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../../../redux/store';
+import { RootState } from '@/redux/store';
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
 import React from 'react';
-import { Button, MainText } from '../../../../../../../packages/components/src';
-import { getFormattedDate } from '../../../../utils/format';
-import { GRAY, MAIN, WHITE } from '../../../../../../../packages/constants/src';
+import { Button, MainTag, MainText } from '@mokjang/components';
+import { getTranslatedDateFromDateString } from '@mokjang/utils';
+import {
+  CHURCH_USER_ROLE,
+  GRAY,
+  GREEN,
+  LOCALE,
+  MAIN,
+  RED,
+  WHITE,
+} from '@mokjang/constants';
 import { getPermissionScopeTitle } from '@/utils/permission';
-import { CHURCH_USER_ROLE } from '@/constants/constant';
 import PermissionUnitList from '@/components/molecules/permission/information/permission-unit-list';
 import DeleteWarningButton from '@/components/atoms/common/button/delete-warning-button';
 import MemberProfilePopupButton from '@/components/molecules/common/button/member-profile-popup-button';
+import { usePathname } from 'next/navigation';
 
 const InformationContainer = styled.div`
   display: flex;
@@ -63,6 +71,7 @@ const LabelContainer = styled.div`
 `;
 
 export type ChurchUserInformationViewProps = {
+  isMy?: boolean;
   isManager: boolean;
   onClickEditTemplateOpen: () => void;
   onClickLink: () => void;
@@ -71,22 +80,27 @@ export type ChurchUserInformationViewProps = {
 };
 
 const ChurchUserInformationView = ({
+  isMy,
   isManager,
   onClickEditTemplateOpen,
   onClickLink,
   onClickGroupPopupOpen,
   onClickConfirmOpen,
 }: ChurchUserInformationViewProps) => {
+  const pathname = usePathname();
+  const locale = pathname.split('/')[1] as LOCALE;
+
   const t = useI18n();
   const t_button = useScopedI18n('button');
   const t_warning = useScopedI18n('warning');
   const { targetChurchUser } = useSelector(
     (state: RootState) => state.targetChurchUser
   );
+  const { user } = useSelector((state: RootState) => state.user);
 
   const isOwner = targetChurchUser.role === CHURCH_USER_ROLE.OWNER;
 
-  const { permissionUnits, permissionTemplates } = useSelector(
+  const { permissionUnits } = useSelector(
     (state: RootState) => state.permissionTemplateFilter
   );
 
@@ -98,7 +112,7 @@ const ChurchUserInformationView = ({
           <MainText fontSize={16} fontWeight={600}>
             {t('linkedMember')}
           </MainText>
-          {!isOwner && (
+          {!isMy && (
             <Button
               width={'auto'}
               text={t_button('edit')}
@@ -124,7 +138,7 @@ const ChurchUserInformationView = ({
           <MainText fontSize={16} fontWeight={600}>
             {t('permissionTemplate')}
           </MainText>
-          {!isOwner && (
+          {!isMy && !isOwner && (
             <Button
               width={'auto'}
               text={t_button('edit')}
@@ -143,7 +157,7 @@ const ChurchUserInformationView = ({
           <MainText fontSize={14} fontWeight={500}>
             {isOwner
               ? t(CHURCH_USER_ROLE.OWNER)
-              : targetChurchUser?.permissionTemplate?.title}
+              : targetChurchUser?.permissionTemplate?.title || t('none')}
           </MainText>
         </LineContainer>
         <LineContainer>
@@ -159,7 +173,7 @@ const ChurchUserInformationView = ({
           <MainText fontSize={16} fontWeight={600}>
             {t('permissionScope')}
           </MainText>
-          {!isOwner && (
+          {!isMy && !isOwner && (
             <Button
               width={'auto'}
               text={t_button('edit')}
@@ -190,7 +204,13 @@ const ChurchUserInformationView = ({
           </MainText>
         </TitleContainer>
         <PermissionUnitList
-          selectedUnitIds={permissionUnits.map((unit) => unit.id.toString())}
+          selectedUnitIds={
+            isOwner
+              ? permissionUnits.map((unit) => unit.id)
+              : targetChurchUser?.permissionTemplate?.permissionUnits?.map(
+                  (unit) => unit.id
+                )
+          }
           isEditable={false}
         />
       </LabelContainer>
@@ -207,22 +227,51 @@ const ChurchUserInformationView = ({
             {t('joinedAt')}
           </MainText>
           <MainText fontSize={14} fontWeight={500}>
-            {getFormattedDate(targetChurchUser.joinedAt)}
+            {getTranslatedDateFromDateString(
+              locale,
+              isMy ? user.churchUser[0]?.joinedAt : targetChurchUser.joinedAt
+            )}
           </MainText>
+        </LineContainer>
+        <LineContainer>
+          <MainText fontSize={14} fontWeight={400} color={GRAY.SEMI_DARK}>
+            {t('status')}
+          </MainText>
+          <MainTag
+            title={
+              isMy || targetChurchUser.isPermissionActive
+                ? t('active')
+                : t('inactive')
+            }
+            backgroundColor={
+              isMy || targetChurchUser.isPermissionActive
+                ? GREEN.LIGHT
+                : RED.LIGHT
+            }
+            color={
+              isMy || targetChurchUser.isPermissionActive
+                ? GREEN.DARK
+                : RED.DARK
+            }
+          />
         </LineContainer>
         <LineContainer>
           <MainText fontSize={14} fontWeight={400} color={GRAY.SEMI_DARK}>
             {t('description')}
           </MainText>
-          <MainText fontSize={14} fontWeight={400} color={GRAY.DARK}></MainText>
+          <MainText fontSize={14} fontWeight={400} color={GRAY.DARK}>
+            {isMy || targetChurchUser.isPermissionActive
+              ? t('activeDescription')
+              : t('inactiveDescription')}
+          </MainText>
         </LineContainer>
       </LabelContainer>
 
       {/* 관리자 삭제  */}
       <BoxContainer>
         <DeleteWarningButton
-          description={t_warning('deleteManager')}
-          buttonText={t_button('deleteManager')}
+          description={t_warning(isMy ? 'leaveManager' : 'deleteManager')}
+          buttonText={t_button(isMy ? 'leaveManager' : 'deleteManager')}
           onClick={onClickConfirmOpen}
         />
       </BoxContainer>

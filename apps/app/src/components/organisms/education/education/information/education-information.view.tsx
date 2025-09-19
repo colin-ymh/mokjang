@@ -2,20 +2,16 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../redux/store';
 import { useI18n } from '../../../../../../locales/client';
-import { MainText } from '../../../../atoms/common/text/main-text';
-import { GRAY, GREEN, WHITE } from '../../../../../constants/styles/color';
+import { Button, MainText, SvgIcon } from '@mokjang/components';
+import { GRAY, GREEN, LOCALE, SIZE, WHITE } from '@mokjang/constants';
 import React from 'react';
 import { usePathname } from 'next/navigation';
-import { LOCALE } from '../../../../../constants/state/locale';
-import Button from '../../../../atoms/common/button/button';
 import EducationTermTable from '../../../../molecules/education/education-term/education-term-table';
 import {
   getTranslatedDateFromDateString,
   getTranslatedTermCount,
-} from '../../../../../utils/translate';
+} from '@mokjang/utils';
 import { Svg } from '@mokjang/assets';
-import SvgIcon from '../../../../atoms/common/icon/svg-icon';
-import { SIZE } from '../../../../../constants/styles/style';
 
 import { getTranslatedMemberCount } from '../../../../../../../../packages/utils/src';
 
@@ -84,7 +80,9 @@ const CardContainer = styled.div`
 const GoalList = styled.div`
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   gap: 10px;
+  white-space: normal;
 `;
 
 const GoalItem = styled.div`

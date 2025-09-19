@@ -12,5 +12,6 @@ export type MainTextProps = {
     cursor?: string;
     lineHeight?: number | string;
     baselineOffsetPx?: number;
+    ellipsis?: boolean;
 };
 export declare const MainText: import("styled-components/dist/types").IStyledComponentBase<"web", import("styled-components/dist/types").Substitute<import("react").DetailedHTMLProps<import("react").HTMLAttributes<HTMLSpanElement>, HTMLSpanElement>, MainTextProps>> & string;

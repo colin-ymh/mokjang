@@ -6,13 +6,13 @@ import React, {
   useImperativeHandle,
   useRef,
 } from 'react';
-import BorderInput from '../common/input/border-input';
-import { getFormattedVehicleNumber } from '../../../utils/format';
-import { MainText } from '../common/text/main-text';
-import { BLACK, DESTRUCTIVE, GRAY } from '../../../constants/styles/color';
+import { BorderInput, MainText } from '@mokjang/components';
+import {
+  getFormattedVehicleNumber,
+  getIsWellFormedVehicleNumber,
+} from '@mokjang/utils';
+import { BLACK, DESTRUCTIVE, GRAY, SIZE } from '@mokjang/constants';
 import styled from 'styled-components';
-import { getIsWellFormedVehicleNumber } from '../../../utils/check';
-import { SIZE } from '../../../constants/styles/style';
 
 const VehicleNumberInputViewContainer = styled.div`
   display: flex;
@@ -97,21 +97,21 @@ const VehicleNumberInputView = forwardRef<
           }
           {...props}
         />
-        <BorderInput
-          ref={thirdInputRef}
-          value={getFormattedVehicleNumber(value[2])}
-          onChange={(event: ChangeEvent<HTMLInputElement>) =>
-            onChangeInput(event, 2)
-          }
-          borderColor={
-            value[2]
-              ? getIsWellFormedVehicleNumber(value[2])
-                ? BLACK
-                : DESTRUCTIVE.DEFAULT
-              : undefined
-          }
-          {...props}
-        />
+        {/*<BorderInput*/}
+        {/*  ref={thirdInputRef}*/}
+        {/*  value={getFormattedVehicleNumber(value[2])}*/}
+        {/*  onChange={(event: ChangeEvent<HTMLInputElement>) =>*/}
+        {/*    onChangeInput(event, 2)*/}
+        {/*  }*/}
+        {/*  borderColor={*/}
+        {/*    value[2]*/}
+        {/*      ? getIsWellFormedVehicleNumber(value[2])*/}
+        {/*        ? BLACK*/}
+        {/*        : DESTRUCTIVE.DEFAULT*/}
+        {/*      : undefined*/}
+        {/*  }*/}
+        {/*  {...props}*/}
+        {/*/>*/}
       </InputList>
     </VehicleNumberInputViewContainer>
   );

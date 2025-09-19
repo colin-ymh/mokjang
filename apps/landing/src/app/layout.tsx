@@ -45,8 +45,6 @@ const RootLayout = (props: RootLayoutProps | RootLayoutPropsExtended) => {
           <Provider store={store}>
             {/* 초기 전역 상태 설정 */}
             <InitializeStore>
-              {/* Drag And Drop */}
-              {/*<DndProvider backend={HTML5Backend}>*/}
               {/* 전역 스타일 적용 */}
               <GlobalStyle />
               {/* 실제 페이지 렌더링 */}
@@ -54,7 +52,6 @@ const RootLayout = (props: RootLayoutProps | RootLayoutPropsExtended) => {
               {children}
               {/* 토스트 팝업 */}
               <ToastLayout />
-              {/*</DndProvider>*/}
             </InitializeStore>
           </Provider>
         </StyledComponentsRegistry>

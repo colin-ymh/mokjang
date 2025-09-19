@@ -1,8 +1,9 @@
 import { RefObject } from 'react';
-import { OfficerHistory } from '../../../../../../models/member/history';
+import { OfficerHistory } from '@mokjang/models';
 import styled from 'styled-components';
 import OfficerHistoryItem from '../../../../../atoms/member/history/officer-history-item';
 import useWindowSize from '../../../../../../hooks/window/window';
+import EmptyList from '@/components/atoms/common/image/empty-list';
 
 const HistoryList = styled.div<{ height: number }>`
   display: flex;
@@ -27,13 +28,17 @@ const OfficerHistoryListView = ({
 
   return (
     <HistoryList ref={scrollRef} height={height - 400}>
-      {histories.map((history) => (
-        <OfficerHistoryItem
-          key={history.id}
-          history={history}
-          onClickOfficerOpen={onClickOfficerOpen}
-        />
-      ))}
+      {histories.length > 0 ? (
+        histories.map((history) => (
+          <OfficerHistoryItem
+            key={history.id}
+            history={history}
+            onClickOfficerOpen={onClickOfficerOpen}
+          />
+        ))
+      ) : (
+        <EmptyList width={200} height={200} />
+      )}
     </HistoryList>
   );
 };

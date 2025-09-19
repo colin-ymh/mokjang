@@ -1,10 +1,9 @@
 import styled from 'styled-components';
-import { MainText } from '../../../atoms/common/text/main-text';
+import { MainText } from '@mokjang/components';
 import { useI18n } from '../../../../../locales/client';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
-import { GRAY } from '../../../../constants/styles/color';
-import { SIZE } from '../../../../constants/styles/style';
+import { GRAY, SIZE } from '@mokjang/constants';
 
 const InformationContainer = styled.div`
   display: flex;
@@ -42,7 +41,7 @@ const ChurchInformation = ({}: ChurchInformationProps) => {
         </ItemContainer>
         <ItemContainer>
           <MainText color={GRAY.SEMI_DARK}>{t('pastor')}</MainText>
-          <MainText size={SIZE.EXTRA_LARGE}>{}</MainText>
+          <MainText size={SIZE.EXTRA_LARGE}>{church.pastor}</MainText>
         </ItemContainer>
       </RowContainer>
       <RowContainer>

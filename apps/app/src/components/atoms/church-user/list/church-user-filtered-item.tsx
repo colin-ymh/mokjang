@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-import { MainText } from '../../common/text/main-text';
-import { USER } from '../../../../constants/column/user-column';
-import { BLANK } from '../../../../constants/constant';
-import { MAIN, WHITE } from '../../../../constants/styles/color';
-import { SIZE } from '../../../../constants/styles/style';
+import { MainText } from '@mokjang/components';
+import { USER } from '@mokjang/constants';
+import { BLANK } from '@mokjang/constants';
+import { MAIN, WHITE } from '@mokjang/constants';
+import { SIZE } from '@mokjang/constants';
 
 import { useI18n } from '../../../../../locales/client';
 import Cancel from '../../../../../public/svg/cancel.svg';

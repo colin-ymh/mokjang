@@ -1,32 +1,21 @@
 import styled from 'styled-components';
 import { useEffect, useState } from 'react';
-import { GRAY, WHITE } from '@/constants/styles/color';
+import { GRAY, SIZE } from '@mokjang/constants';
 import CustomDatePicker from '@/vendor/date-picker/custom-date-picker';
-import { getDateInWeekByDayOfWeek, getDateStringFromDate } from '@/utils/date';
+import {
+  getDateInWeekByDayOfWeek,
+  getDateStringFromDate,
+} from '@mokjang/utils';
 import { useI18n } from '../../../../../locales/client';
 
-import ChevronLeft from '../../../../../public/svg/chevron-left.svg';
-import ChevronRight from '../../../../../public/svg/chevron-right.svg';
-import Calendar from '../../../../../public/svg/calendar.svg';
-import SvgIcon from '../icon/svg-icon';
-import Button from '../button/button';
-import { MainText } from '../text/main-text';
-import { SIZE } from '@/constants/styles/style';
-import BorderInput from '../input/border-input';
+import { Svg } from '@mokjang/assets';
+import { BorderInput, MainText, SvgIcon } from '@mokjang/components';
 
 const startOfDay = (d: Date) => {
   const x = new Date(d);
   x.setHours(0, 0, 0, 0);
   return x;
 };
-
-const WeekNavigatorContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  width: 100%;
-  align-items: center;
-`;
 
 const LabelContainer = styled.div`
   display: flex;
@@ -35,11 +24,46 @@ const LabelContainer = styled.div`
   width: 100%;
 `;
 
-const ButtonContainer = styled.div`
+const RowContainer = styled.div`
   display: flex;
   flex-direction: row;
+`;
+
+const LeftButton = styled.button`
+  display: inline-flex;
+  justify-content: center;
   align-items: center;
-  gap: 20px;
+  width: 30px;
+  height: 100%;
+  box-sizing: border-box;
+  border: 1px solid ${GRAY.LIGHT};
+  border-right: 0;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  flex-shrink: 0;
+  cursor: pointer;
+  background: transparent;
+  transition: border-color 0.2s ease;
+
+  // /* 내부 경계선은 항상 GRAY */
+  // box-shadow: inset 1px 0 0 ${GRAY.LIGHT};
+`;
+
+const RightButton = styled.button`
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  height: 100%;
+  box-sizing: border-box;
+  border: 1px solid ${GRAY.LIGHT};
+  border-left: 0;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  flex-shrink: 0;
+  cursor: pointer;
+  background: transparent;
+  transition: border-color 0.2s ease;
 `;
 
 type WeekNavigatorProps = {
@@ -112,46 +136,34 @@ const WeekNavigator = ({
   const canGoRight = startOfDay(nextPeriodDate).getTime() <= todaySOD.getTime();
 
   return (
-    <WeekNavigatorContainer>
-      <LabelContainer>
-        <MainText color={GRAY.SEMI_DARK} size={SIZE.SMALL}>
-          {t('date')}
-        </MainText>
+    <LabelContainer>
+      <MainText color={GRAY.SEMI_DARK} size={SIZE.SMALL}>
+        {t('date')}
+      </MainText>
+      <RowContainer>
+        <LeftButton onClick={onClickLeft}>
+          <SvgIcon svg={Svg.ChevronLeft} />
+        </LeftButton>
         <CustomDatePicker
           selected={innerValue}
           onChange={onChangeDate}
           customInput={
             <BorderInput
-              icon={<SvgIcon svg={Calendar} />}
+              icon={<SvgIcon svg={Svg.Calendar} />}
               value={getDateStringFromDate(innerValue)}
+              borderBottomLeftRadius={0}
+              borderBottomRightRadius={0}
+              borderTopLeftRadius={0}
+              borderTopRightRadius={0}
             />
           }
           selectWeek={true}
         />
-      </LabelContainer>
-      <ButtonContainer>
-        <Button
-          icon={<SvgIcon svg={ChevronLeft} />}
-          onClick={onClickLeft}
-          width={30}
-          height={30}
-          backgroundColor={WHITE}
-          borderColor={GRAY.LIGHT}
-        />
-        <MainText color={GRAY.DARK} size={SIZE.SMALL}>
-          {t('prevNextWeek')}
-        </MainText>
-        <Button
-          icon={<SvgIcon svg={ChevronRight} />}
-          onClick={onClickRight}
-          width={30}
-          height={30}
-          backgroundColor={WHITE}
-          borderColor={GRAY.LIGHT}
-          disabled={!canGoRight}
-        />
-      </ButtonContainer>
-    </WeekNavigatorContainer>
+        <RightButton onClick={onClickRight} disabled={!canGoRight}>
+          <SvgIcon svg={Svg.ChevronRight} />
+        </RightButton>
+      </RowContainer>
+    </LabelContainer>
   );
 };
 

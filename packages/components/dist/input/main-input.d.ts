@@ -13,7 +13,7 @@ export type InputProps = InputHTMLAttributes<HTMLInputElement> & {
     onBlur?: (event: any) => void;
     paddingLeft?: number;
 };
-declare const MainInput: import("react").ForwardRefExoticComponent<InputHTMLAttributes<HTMLInputElement> & {
+export declare const MainInput: import("react").ForwardRefExoticComponent<InputHTMLAttributes<HTMLInputElement> & {
     label?: string;
     onKeyDown?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
     readOnly?: boolean;
@@ -27,4 +27,3 @@ declare const MainInput: import("react").ForwardRefExoticComponent<InputHTMLAttr
     onBlur?: (event: any) => void;
     paddingLeft?: number;
 } & import("react").RefAttributes<HTMLInputElement>>;
-export default MainInput;

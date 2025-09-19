@@ -1,10 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { BLACK, MAIN } from '@/constants/styles/color';
-import { MainText } from '../text/main-text';
-import ProfileImage from '../image/profile-image';
-import { BLANK, GENDER } from '@/constants/constant';
+import { BLACK, BLANK, GENDER, MAIN } from '@mokjang/constants';
+import { MainText, ProfileImage } from '@mokjang/components';
 import { DropdownValueType } from './dropdown-item';
 
 export type MemberDropdownType = DropdownValueType & {

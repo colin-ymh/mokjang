@@ -1,5 +1,5 @@
 import ManagementChurchHeaderView from './management-church-header.view';
-import { usePageRouter } from '../../../../../../utils/router';
+import { usePageRouter } from '@mokjang/utils';
 
 type ManagementChurchHeaderProps = {};
 

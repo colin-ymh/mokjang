@@ -3,28 +3,25 @@ import {
   DEFAULT_GROUP_HISTORY,
   GroupDetailHistory,
   GroupHistory,
-} from '../../../../models/member/history';
+} from '@mokjang/models';
 import React, { useEffect, useState } from 'react';
-import { GroupHistoryApi } from '../../../../api/history/group-history.api';
+import { GroupHistoryApi } from '@/api/history/group-history.api';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../../../redux/store';
+import { AppDispatch, RootState } from '@/redux/store';
 import GroupHistoryItemView from './group-history-item.view';
 import {
   setTargetGroupDetailHistory,
   setTargetGroupHistory,
-} from '../../../../redux/reducers/target/target-history-reducer';
-import {
-  getDateFromDateString,
-  getDateStringFromDate,
-} from '../../../../utils/date';
+} from '@/redux/reducers/target/target-history-reducer';
+import { getDateFromDateString, getDateStringFromDate } from '@mokjang/utils';
 import {
   setIsToastShown,
   setToastBackgroundColor,
   setToastText,
-} from '../../../../redux/reducers/toast-popup-reducer';
-import { BLACK, DESTRUCTIVE } from '../../../../constants/styles/color';
+} from '@/redux/reducers/toast-popup-reducer';
+import { BLACK, DESTRUCTIVE } from '@mokjang/constants';
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
-import CustomPopup from '../../common/popup/custom-popup';
+import { CustomPopup } from '@mokjang/components';
 import ConfirmPopup from '../../common/popup/error-popup';
 import EditGroupDetailHistory from '../../../molecules/member/information/history/group/edit-group-detail-history';
 
@@ -234,12 +231,15 @@ const GroupHistoryItem = ({
       {/* 그룹 수정 */}
       <CustomPopup
         isShow={isDetailOpened}
+        onClickClose={onClickDetailClose}
         onClickCancel={onClickDetailClose}
         onClickDone={onClickSaveDetail}
         headerTitle={t('title.editHistory')}
         width={500}
         height={500}
         doneDisabled={!isDetailSaveEnabled}
+        cancelText={t_button('cancel')}
+        doneText={t_button('confirm')}
       >
         <>
           {/* 삭제 확인 팝업 */}

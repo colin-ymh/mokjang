@@ -3,44 +3,32 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
 
-import {
-  GRAY,
-  GREEN,
-  MAIN,
-  ORANGE,
-  WHITE,
-} from '../../../../constants/styles/color';
-import {
-  Education,
-  EducationSession,
-  EducationTerm,
-} from '../../../../models/education/education';
+import { Svg } from '@mokjang/assets';
 import {
   EDUCATION,
   EDUCATION_TERM,
-} from '../../../../constants/column/education-column';
+  GRAY,
+  GREEN,
+  LOCALE,
+  MAIN,
+  ORANGE,
+  SIZE,
+  WHITE,
+} from '@mokjang/constants';
+import { Education, EducationSession, EducationTerm } from '@mokjang/models';
 import EducationTermTableHeader from '../../../atoms/education/education-term/education-term-table-header';
-import ChevronLeft from '../../../../../public/svg/chevron-left.svg';
-import Calendar from '../../../../../public/svg/calendar.svg';
-import Clock from '../../../../../public/svg/clock.svg';
-import SvgIcon from '../../../atoms/common/icon/svg-icon';
+
+import { MainTag, MainText, SvgIcon } from '@mokjang/components';
 import {
-  getDateFromDateString,
-  getDateStringFromDate,
-} from '../../../../utils/date';
-import MainTag from '../../../atoms/common/tag/main-tag';
+  getTranslatedCompletedEnrollmentStatus,
+  getTranslatedStartEndDate,
+  getTranslatedTerm,
+} from '@mokjang/utils';
 import {
   getStatusBackgroundColor,
   getStatusFontColor,
 } from '../../../../utils/color';
-import { MainText } from '../../../atoms/common/text/main-text';
-import {
-  getTranslatedCompletedEnrollmentStatus,
-  getTranslatedTerm,
-} from '../../../../utils/translate';
 import { usePathname } from 'next/navigation';
-import { LOCALE } from '../../../../constants/state/locale';
-import { SIZE } from '../../../../constants/styles/style';
 import { useI18n } from '../../../../../locales/client';
 
 // 1. 컬럼별 PX 폭 (마지막 REMARKS만 auto 할 예정)
@@ -152,7 +140,7 @@ const EducationNameContainer = styled.div<{ $level: number }>`
   flex-shrink: 0;
 `;
 
-const Chevron = styled(ChevronLeft)<{
+const Chevron = styled(Svg.ChevronLeft)<{
   $isOpened: boolean;
   color?: string;
   $reverseDirection?: boolean;
@@ -238,11 +226,20 @@ const EducationTermTableView = ({
               $reverseDirection
             />
 
-            <SvgIcon svg={Calendar} size={16} color={GREEN.DEFAULT} width={2} />
+            <SvgIcon
+              svg={Svg.Calendar}
+              size={16}
+              color={GREEN.DEFAULT}
+              width={2}
+            />
             <TitleContainer>
               <MainText>{`${getTranslatedTerm(locale, educationTerm.term)}`}</MainText>
               <MainText size={SIZE.SMALL} color={GRAY.SEMI_DARK}>
-                {`${getDateStringFromDate(getDateFromDateString(educationTerm.startDate))} - ${getDateStringFromDate(getDateFromDateString(educationTerm.endDate))}`}
+                {getTranslatedStartEndDate(
+                  locale,
+                  educationTerm.startDate,
+                  educationTerm.endDate
+                )}
               </MainText>
             </TitleContainer>
           </EducationNameContainer>
@@ -279,11 +276,20 @@ const EducationTermTableView = ({
       case EDUCATION_TERM.NAME:
         return (
           <EducationNameContainer $level={2}>
-            <SvgIcon svg={Clock} size={16} color={ORANGE.DEFAULT} width={2} />
+            <SvgIcon
+              svg={Svg.Clock}
+              size={16}
+              color={ORANGE.DEFAULT}
+              width={2}
+            />
             <TitleContainer>
               <MainText>{`${session.session}${t('session')} ${session.title}`}</MainText>
               <MainText size={SIZE.SMALL} color={GRAY.SEMI_DARK}>
-                {`${getDateStringFromDate(getDateFromDateString(session.startDate))} - ${getDateStringFromDate(getDateFromDateString(session.endDate))}`}
+                {getTranslatedStartEndDate(
+                  locale,
+                  session.startDate,
+                  session.endDate
+                )}
               </MainText>
             </TitleContainer>
           </EducationNameContainer>

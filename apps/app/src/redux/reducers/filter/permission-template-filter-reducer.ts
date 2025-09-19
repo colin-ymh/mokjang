@@ -1,13 +1,20 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { BLANK, ORDER_DIRECTION } from '../../../constants/constant';
-import {
-  PermissionTemplate,
-  PermissionUnit,
-} from '../../../models/permission/permission';
-import { PERMISSION_TEMPLATE } from '../../../constants/column/permission-column';
+
 import { RootState } from '../../store';
 import { PermissionsApi } from '../../../api/permissions/permissions.api';
-import { Member } from '../../../models/member/member';
+import { Member, PermissionTemplate, PermissionUnit } from '@mokjang/models';
+import {
+  BLANK,
+  DESTRUCTIVE,
+  ORDER_DIRECTION,
+  PERMISSION_TEMPLATE,
+} from '@mokjang/constants';
+import axios from 'axios';
+import {
+  setIsToastShown,
+  setToastBackgroundColor,
+  setToastText,
+} from '@/redux/reducers/toast-popup-reducer';
 
 type PERMISSION_TEMPLATE_FILTER = {
   [PERMISSION_TEMPLATE.TITLE]: string;
@@ -48,6 +55,14 @@ export const INITIAL_PERMISSION_TEMPLATE_TABLE_HEADER_LIST: PERMISSION_TEMPLATE_
       isFixed: true,
       isDate: false,
     },
+    {
+      id: PERMISSION_TEMPLATE.MEMBER_COUNT,
+      isShown: true,
+      isSortable: false,
+      isFilterable: true,
+      isFixed: true,
+      isDate: false,
+    },
   ];
 
 const initialState: PermissionTemplateFilterState = {
@@ -68,7 +83,7 @@ export const fetchPermissionTemplates = createAsyncThunk<
   { state: RootState }
 >(
   'permissionTemplates/fetchPermissionTemplates',
-  async ({ currentPage }, { getState, rejectWithValue }) => {
+  async ({ currentPage }, { getState, dispatch, rejectWithValue }) => {
     const state = getState().permissionTemplateFilter;
     const churchId = getState().church.churchId;
     const {
@@ -89,7 +104,24 @@ export const fetchPermissionTemplates = createAsyncThunk<
 
       return response.data.data;
     } catch (error) {
-      console.error('권한유형 목록 불러오기 실패', error);
+      if (axios.isAxiosError(error)) {
+        const data = error.response?.data as any;
+        const status = data?.statusCode ?? error.response?.status;
+        const message = data.message;
+
+        dispatch(setToastText(message));
+        dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
+        dispatch(setIsToastShown(true));
+
+        return rejectWithValue(message);
+      }
+
+      if (error instanceof Error) {
+        dispatch(setToastText(error.message));
+        dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
+        dispatch(setIsToastShown(true));
+        return rejectWithValue(error.message);
+      }
       return rejectWithValue(
         '권한유형 목록을 불러오는 중 오류가 발생했습니다.'
       );
@@ -127,7 +159,7 @@ export const fetchPermissionManagers = createAsyncThunk<
   { state: RootState } // 3) ThunkAPI 설정 (getState 타입 등)
 >(
   'permissionUnits/fetchPermissionManagers',
-  async ({ templateId }, { rejectWithValue, getState }) => {
+  async ({ templateId }, { rejectWithValue, dispatch, getState }) => {
     const churchId = getState().church.churchId;
     const permissionsApi = new PermissionsApi(false);
 
@@ -138,7 +170,25 @@ export const fetchPermissionManagers = createAsyncThunk<
       });
       return response.data.data;
     } catch (error) {
-      console.error('권한 유형에 속한 관리자 목록 불러오기 실패', error);
+      if (axios.isAxiosError(error)) {
+        const data = error.response?.data as any;
+        const status = data?.statusCode ?? error.response?.status;
+        const message = data.message;
+
+        dispatch(setToastText(message));
+        dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
+        dispatch(setIsToastShown(true));
+
+        return rejectWithValue(message);
+      }
+
+      if (error instanceof Error) {
+        dispatch(setToastText(error.message));
+        dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
+        dispatch(setIsToastShown(true));
+        return rejectWithValue(error.message);
+      }
+
       return rejectWithValue(
         '권한 유형에 속한 관리자 목록을 불러오는 중 오류가 발생했습니다.'
       );

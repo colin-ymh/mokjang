@@ -9,20 +9,17 @@ import {
   LOCALE,
   MAIN,
   MEDIA_MIN_WIDTH,
-  ORANGE,
   SIZE,
   WHITE,
 } from '@mokjang/constants';
-import { Button, MainTag, MainText } from '@mokjang/components';
+import { Button, MainText, ProfileImage } from '@mokjang/components';
 import { useScopedI18n } from '../../../../../locales/client';
-import { CONTENT_ID, MAIN_CONTENT_ID } from '@/constants/constant';
 import { usePathname } from 'next/navigation';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
-import { PLAN } from '@/models/subscription/subscription';
-import { Svg } from '@mokjang/assets';
-import { getDateFromDateString } from '@mokjang/app/src/utils/date';
-import { getDateGap, getTranslatedRestTrialDate } from '@mokjang/utils';
+import { CONTENT_ID, MAIN_CONTENT_ID } from '@/constants/constant';
+import { Chevron } from '@mokjang/app/src/components/atoms/common/dropdown/dropdown-chevron';
+import ProfileModal from '../../../atoms/modal/profile-modal';
 
 const HeaderContainer = styled.div`
   display: none;
@@ -84,16 +81,33 @@ const ButtonContainer = styled.div`
   gap: 20px;
 `;
 
+const ProfileWrapper = styled.div`
+  display: flex;
+
+  position: relative;
+`;
+
+const ProfileItem = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  padding-right: 30px;
+  cursor: pointer;
+`;
+
 export type HeaderViewProps = {
   focusedContent: MAIN_CONTENT_ID | undefined;
   onClickMenu: (
-    id: MAIN_CONTENT_ID.FUNCTION | MAIN_CONTENT_ID.PRICE | MAIN_CONTENT_ID.FAQ
+    id: MAIN_CONTENT_ID.FUNCTION | MAIN_CONTENT_ID.HOME | MAIN_CONTENT_ID.FAQ
   ) => void;
   onClickLogin: () => void;
   onClickContact: () => void;
-  onClickLogout: () => void;
   onClickLogo: () => void;
   onClickFreeTrial: () => void;
+  isProfileOpened: boolean;
+  onClickProfile: () => void;
+  onClickProfileClose: () => void;
 };
 
 const HeaderView = ({
@@ -101,16 +115,18 @@ const HeaderView = ({
   onClickMenu,
   onClickLogin,
   onClickContact,
-  onClickLogout,
   onClickLogo,
   onClickFreeTrial,
+  isProfileOpened,
+  onClickProfile,
+  onClickProfileClose,
 }: HeaderViewProps) => {
   const pathname = usePathname();
   const locale = pathname.split('/')[1] as LOCALE;
   const content = pathname.split('/')[2] as CONTENT_ID;
 
   const { user } = useSelector((state: RootState) => state.user);
-  const { currentSubscription } = useSelector(
+  const { subscription } = useSelector(
     (state: RootState) => state.subscription
   );
 
@@ -128,7 +144,7 @@ const HeaderView = ({
           fontWeight={800}
           cursor={CURSOR.POINTER}
         >
-          {'TEBAH'}
+          {'목장'}
         </MainText>
       </LogoContainer>
       <MenuContainer>
@@ -144,7 +160,7 @@ const HeaderView = ({
                   : onClickMenu(
                       item as
                         | MAIN_CONTENT_ID.FUNCTION
-                        | MAIN_CONTENT_ID.PRICE
+                        | MAIN_CONTENT_ID.HOME
                         | MAIN_CONTENT_ID.FAQ
                     )
               }
@@ -162,43 +178,49 @@ const HeaderView = ({
       </MenuContainer>
       {content !== CONTENT_ID.LOGIN && (
         <ButtonContainer>
-          {user?.id && currentSubscription?.currentPlan === PLAN.FREE_TRIAL ? (
-            <MainTag
-              svg={Svg.Clock}
-              color={ORANGE.DARK}
-              backgroundColor={ORANGE.EXTRA_LIGHT}
-              title={getTranslatedRestTrialDate(
-                locale,
-                getDateGap(
-                  new Date(),
-                  getDateFromDateString(
-                    currentSubscription.trialEndsAt as string
-                  )
-                )
-              )}
-              rowPadding={15}
-              columnPadding={8}
-            />
-          ) : (
-            <Button
-              text={t_button('free')}
-              fontSize={16}
-              width={100}
-              height={40}
-              backgroundColor={WHITE}
-              borderColor={MAIN.DEFAULT}
-              color={MAIN.DEFAULT}
-              onClick={onClickFreeTrial}
-            />
-          )}
+          {/*{user?.id && subscription?.currentPlan === PLAN.FREE_TRIAL ? (*/}
+          {/*  <MainTag*/}
+          {/*    svg={Svg.Clock}*/}
+          {/*    color={ORANGE.DARK}*/}
+          {/*    backgroundColor={ORANGE.EXTRA_LIGHT}*/}
+          {/*    title={getTranslatedRestTrialDate(*/}
+          {/*      locale,*/}
+          {/*      getDateGap(*/}
+          {/*        new Date(),*/}
+          {/*        getDateFromDateString(subscription.trialEndsAt as string)*/}
+          {/*      )*/}
+          {/*    )}*/}
+          {/*    rowPadding={15}*/}
+          {/*    columnPadding={8}*/}
+          {/*  />*/}
+          {/*) : (*/}
+          {/*  <Button*/}
+          {/*    text={t_button('free')}*/}
+          {/*    fontSize={16}*/}
+          {/*    width={100}*/}
+          {/*    height={40}*/}
+          {/*    backgroundColor={WHITE}*/}
+          {/*    borderColor={MAIN.DEFAULT}*/}
+          {/*    color={MAIN.DEFAULT}*/}
+          {/*    onClick={onClickFreeTrial}*/}
+          {/*  />*/}
+          {/*)}*/}
           {user?.id ? (
-            <Button
-              text={t_button('logout')}
-              fontSize={16}
-              width={100}
-              height={40}
-              onClick={onClickLogout}
-            />
+            <ProfileWrapper>
+              <ProfileItem onClick={onClickProfile}>
+                <ProfileImage
+                  value={user.churchUser[0]?.member?.profileImageUrl}
+                  onClick={onClickProfile}
+                />
+                <MainText cursor={CURSOR.POINTER} fontWeight={500}>
+                  {user.name}
+                </MainText>
+                <Chevron $isOpened={isProfileOpened} />
+              </ProfileItem>
+              {isProfileOpened && (
+                <ProfileModal onClickClose={onClickProfileClose} />
+              )}
+            </ProfileWrapper>
           ) : (
             <Button
               text={t_button('login')}

@@ -1,28 +1,39 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../../../redux/store';
+import { AppDispatch, RootState } from '@/redux/store';
 import {
   fetchVisitations,
   setVisitationPage,
   setVisitations,
-} from '../../../../redux/reducers/filter/visitation-filter-reducer';
+} from '@/redux/reducers/filter/visitation-filter-reducer';
 
 import VisitationListView from './visitation-list.view';
-import { DEFAULT_VISITATION } from '../../../../models/visitation/visitation';
-import { setTargetVisitation } from '../../../../redux/reducers/target/target-visitation-reducer';
+import {
+  DEFAULT_VISITATION,
+  NOTIFICATION_DOMAIN,
+  Visitation,
+} from '@mokjang/models';
+import { setTargetVisitation } from '@/redux/reducers/target/target-visitation-reducer';
 import {
   setIsToastShown,
+  setToastBackgroundColor,
   setToastText,
-} from '../../../../redux/reducers/toast-popup-reducer';
+} from '@/redux/reducers/toast-popup-reducer';
 import { useScopedI18n } from '../../../../../locales/client';
-import { VisitationsApi } from '../../../../api/visitations/visitations.api';
-import { getIsWellFormedTitle } from '../../../../utils/check';
-import { BLANK, HEADER_BAR } from '../../../../constants/constant';
+import { VisitationsApi } from '@/api/visitations/visitations.api';
 import {
   getDateFromDateString,
   getFullStringFromDate,
-} from '../../../../utils/date';
-import { TASK_STATUS } from '../../../../constants/status/status';
+  getIsWellFormedTitle,
+} from '@mokjang/utils';
+import {
+  BLACK,
+  BLANK,
+  DESTRUCTIVE,
+  HEADER_BAR,
+  TASK_STATUS,
+} from '@mokjang/constants';
+import { closeModal } from '@/redux/reducers/modal-reducer';
 
 type VisitationListProps = {
   headerType?: HEADER_BAR;
@@ -46,6 +57,8 @@ const VisitationList = ({ headerType }: VisitationListProps) => {
   );
 
   const t_popup = useScopedI18n('popup');
+
+  const modal = useSelector((state: RootState) => state.modal);
 
   const [thrownError, setThrownError] = useState<Error | null>(null);
   if (thrownError) {
@@ -117,7 +130,7 @@ const VisitationList = ({ headerType }: VisitationListProps) => {
       });
       const visitation = response.data.data;
 
-      dispatch(setTargetVisitation(visitation));
+      dispatch(setTargetVisitation({ ...visitation }));
       setIsVisitationInformationShown(true);
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));
@@ -128,6 +141,7 @@ const VisitationList = ({ headerType }: VisitationListProps) => {
   const onClickClose = () => {
     setIsVisitationInformationShown(false);
     dispatch(setTargetVisitation(DEFAULT_VISITATION));
+    dispatch(closeModal());
   };
 
   // 업무 삭제하기
@@ -167,22 +181,48 @@ const VisitationList = ({ headerType }: VisitationListProps) => {
   };
 
   const onClickEditDone = async () => {
+    const prevVisitation = visitations.find(
+      (v) => v.id === targetVisitation.id
+    );
+    if (!prevVisitation) return;
+
     try {
+      const diffPayload = {
+        status:
+          targetVisitation.status !== prevVisitation.status
+            ? targetVisitation.status
+            : undefined,
+        title:
+          targetVisitation.title !== prevVisitation.title
+            ? targetVisitation.title
+            : undefined,
+        inChargeId:
+          targetVisitation.inChargeId !== prevVisitation.inChargeId
+            ? targetVisitation.inChargeId
+            : undefined,
+        startDate:
+          targetVisitation.startDate !== prevVisitation.startDate
+            ? getFullStringFromDate(
+                getDateFromDateString(targetVisitation.startDate)
+              )
+            : undefined,
+        endDate:
+          targetVisitation.endDate !== prevVisitation.endDate
+            ? getFullStringFromDate(
+                getDateFromDateString(targetVisitation.endDate)
+              )
+            : undefined,
+        memberIds:
+          JSON.stringify(targetVisitation.members.map((m) => m.id).sort()) !==
+          JSON.stringify(prevVisitation.members.map((m) => m.id).sort())
+            ? targetVisitation.members.map((m) => m.id)
+            : undefined,
+      };
+
+      // 변경된 필드만 전송
       await visitationApi.editVisitation(
         { churchId, visitationId: targetVisitation.id },
-        {
-          status: targetVisitation.status || undefined,
-          title: targetVisitation.title || undefined,
-          inChargeId: targetVisitation.inChargeId || undefined,
-          startDate:
-            getFullStringFromDate(
-              getDateFromDateString(targetVisitation.startDate)
-            ) || undefined,
-          endDate:
-            getFullStringFromDate(
-              getDateFromDateString(targetVisitation.endDate)
-            ) || undefined,
-        }
+        diffPayload
       );
 
       await visitationApi.editVisitationDetails(
@@ -194,34 +234,43 @@ const VisitationList = ({ headerType }: VisitationListProps) => {
         }
       );
 
-      const reports = visitations.find(
-        (visitation) => visitation.id === targetVisitation.id
-      )?.reports;
+      const prevResponse = await visitationApi.getVisitation({
+        churchId,
+        visitationId: targetVisitation.id,
+      });
 
-      if (reports) {
-        const receiverIds = reports.map((report) => report.receiver.id);
+      const prev: Visitation = prevResponse.data.data;
 
-        const addReceiverIds = targetVisitation.receiverIds?.filter(
-          (receiverId) => !receiverIds.includes(receiverId)
+      const reports = prev?.reports;
+
+      const receiverIds = reports?.map((report) => report.receiver.id) || [];
+
+      const addReceiverIds = targetVisitation.receiverIds?.filter(
+        (receiverId) => !receiverIds.includes(receiverId)
+      );
+      const deleteReceiverIds =
+        receiverIds?.filter(
+          (receiverId) => !targetVisitation.receiverIds?.includes(receiverId)
+        ) || [];
+
+      if (addReceiverIds?.length > 0) {
+        await visitationApi.addReceivers(
+          {
+            churchId,
+            visitationId: targetVisitation.id,
+          },
+          { receiverIds: addReceiverIds }
         );
-        const deleteReceiverIds =
-          receiverIds?.filter(
-            (receiverId) => !targetVisitation.receiverIds?.includes(receiverId)
-          ) || [];
+      }
 
-        if (addReceiverIds?.length > 0) {
-          await visitationApi.addReceivers(
-            { churchId, visitationId: targetVisitation.id },
-            { receiverIds: addReceiverIds }
-          );
-        }
-
-        if (deleteReceiverIds?.length > 0) {
-          await visitationApi.deleteReceivers(
-            { churchId, visitationId: targetVisitation.id },
-            { receiverIds: deleteReceiverIds }
-          );
-        }
+      if (deleteReceiverIds?.length > 0) {
+        await visitationApi.deleteReceivers(
+          {
+            churchId,
+            visitationId: targetVisitation.id,
+          },
+          { receiverIds: deleteReceiverIds }
+        );
       }
 
       const response = await visitationApi.getVisitation({
@@ -233,11 +282,18 @@ const VisitationList = ({ headerType }: VisitationListProps) => {
       dispatch(setTargetVisitation(newVisitation));
       dispatch(fetchVisitations({ headerType }));
       setIsEditShown(false);
-    } catch (error) {
-      setThrownError(error instanceof Error ? error : new Error(String(error)));
-    } finally {
+
       dispatch(setIsToastShown(true));
       dispatch(setToastText(t_popup('saveComplete')));
+      dispatch(setToastBackgroundColor(BLACK));
+    } catch (error) {
+      if (error instanceof Error) {
+        dispatch(setToastText(error.message));
+        dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
+        dispatch(setIsToastShown(true));
+      } else {
+        setThrownError(new Error(String(error)));
+      }
     }
   };
 
@@ -296,6 +352,40 @@ const VisitationList = ({ headerType }: VisitationListProps) => {
 
     setIsSaveEnabled(true);
   }, [targetVisitation]);
+
+  useEffect(() => {
+    if (
+      !modal.open ||
+      modal.type !== NOTIFICATION_DOMAIN.VISITATION ||
+      !modal.id
+    )
+      return;
+
+    (async () => {
+      try {
+        const res = await visitationApi.getVisitation({
+          churchId,
+          visitationId: modal.id as string,
+        });
+        const visitation = res.data.data;
+
+        // 상세에 필요한 데이터 저장 + 상세 패널 오픈
+        dispatch(setTargetVisitation(visitation));
+        setIsVisitationInformationShown(true);
+
+        dispatch(closeModal());
+      } catch (error) {
+        dispatch(closeModal());
+        if (error instanceof Error) {
+          dispatch(setToastText(error.message));
+          dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
+          dispatch(setIsToastShown(true));
+        } else {
+          setThrownError(new Error(String(error)));
+        }
+      }
+    })();
+  }, [modal.open, modal.type, modal.id, churchId]);
 
   const props = {
     list: {

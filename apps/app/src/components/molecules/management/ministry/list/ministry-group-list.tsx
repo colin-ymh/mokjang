@@ -2,17 +2,19 @@ import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../redux/store';
 
-import { MinistryGroup } from '../../../../../models/management/management';
+import { MinistryGroup } from '@mokjang/models';
 import MinistryGroupListView from './ministry-group-list.view';
 
 type MinistryGroupListProps = {
   selectedMinistryGroupId: string | null;
   onClickMinistryGroup: (ministryGroup: MinistryGroup) => void;
+  height: number;
 };
 
 const MinistryGroupList = ({
   selectedMinistryGroupId,
   onClickMinistryGroup,
+  height,
 }: MinistryGroupListProps) => {
   const { ministryGroups } = useSelector((state: RootState) => state.church);
 
@@ -42,6 +44,7 @@ const MinistryGroupList = ({
     selectedMinistryGroupId,
     onClickMinistryGroup,
     onClickToggle,
+    height,
   };
 
   return (

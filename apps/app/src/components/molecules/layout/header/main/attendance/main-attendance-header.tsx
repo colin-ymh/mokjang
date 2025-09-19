@@ -7,18 +7,21 @@ import {
   setTargetWorshipSessionGroup,
   setTargetWorshipSessionWorship,
 } from '../../../../../../redux/reducers/target/target-worship-session-reducer';
-import { DEFAULT_WORSHIP_SESSION } from '../../../../../../models/worship/worship';
+import { DEFAULT_WORSHIP_SESSION } from '@mokjang/models';
 import { WorshipSessionsApi } from '../../../../../../api/worship/worship-sessions.api';
 import {
   setIsToastShown,
   setToastText,
 } from '../../../../../../redux/reducers/toast-popup-reducer';
+import { usePageRouter } from '@mokjang/utils';
 
 type MainAttendanceHeaderProps = {};
 
 const MainAttendanceHeader = ({}: MainAttendanceHeaderProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const worshipSessionsApi = new WorshipSessionsApi(false);
+
+  const router = usePageRouter();
 
   const { churchId } = useSelector((state: RootState) => state.church);
 
@@ -61,10 +64,15 @@ const MainAttendanceHeader = ({}: MainAttendanceHeaderProps) => {
     dispatch(setTargetWorshipSession(DEFAULT_WORSHIP_SESSION));
   };
 
+  const onClickGoBack = () => {
+    router.push('/main/worship');
+  };
+
   const props = {
     isSessionShown,
     onClickSessionClose,
     onClickSessionOpen,
+    onClickGoBack,
   };
 
   return (

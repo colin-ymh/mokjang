@@ -1,0 +1,12 @@
+export declare const getTrimmedString: (value: string) => string;
+export declare const getFormattedName: (value: string, maxLength?: number) => string;
+export declare const getFormattedTitle: (value: string, maxLength?: number) => string;
+export declare const getFormattedContent: (value: string, maxLength?: number) => string;
+export declare const getFormattedIdentifyNumber: (identifyNumber: string) => string;
+export declare const getFormattedMobilePhone: (mobilePhone: string) => string;
+export declare const getFormattedHomePhone: (homePhone: string) => string;
+export declare const getFormattedPhone: (input: string) => string;
+export declare const getFormattedDate: (date: string) => string;
+export declare const getEnglishMonthName: (month: number) => string;
+export declare const getShortEnglishMonthName: (month: number) => string;
+export declare const getFormattedVehicleNumber: (vehicleNumber: string) => string;

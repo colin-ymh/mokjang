@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../../../redux/store';
-import { HEADER_BAR } from '../../../../constants/constant';
+import { AppDispatch, RootState } from '@/redux/store';
+import { HEADER_BAR, STATUS } from '@mokjang/constants';
 import {
   fetchJoinRequests,
   setJoinRequests,
-} from '../../../../redux/reducers/filter/join-request-filter-reducer';
-import { JoinRequest } from '../../../../models/join-request/join-request';
+} from '@/redux/reducers/filter/join-request-filter-reducer';
 import JoinRequestListView from './join-request-list.view';
-import { STATUS } from '../../../../constants/status/status';
+import { JoinRequest } from '@mokjang/models';
 
 type JoinRequestListProps = {
   headerType?: HEADER_BAR;

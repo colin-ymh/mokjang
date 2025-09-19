@@ -1,13 +1,10 @@
 import React, { ChangeEvent, useEffect } from 'react';
-import {
-  getFormattedContent,
-  getFormattedTitle,
-} from '../../../../../utils/format';
+import { getFormattedContent, getFormattedTitle } from '@mokjang/utils';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../../../redux/store';
 import AddEducationView from './add-education.view';
 import { setTargetEducation } from '../../../../../redux/reducers/target/target-education-reducer';
-import { BLANK } from '../../../../../constants/constant';
+import { BLANK } from '@mokjang/constants';
 
 type AddEducationProps = {
   isEdit?: boolean;
@@ -72,6 +69,16 @@ const AddEducation = ({ isEdit = false }: AddEducationProps) => {
       );
     }
   };
+
+  const onClickDeleteGoal = (index: number) => {
+    const newGoals = targetEducation.goals.filter((_, i) => i !== index);
+    dispatch(
+      setTargetEducation({
+        ...targetEducation,
+        goals: newGoals,
+      })
+    );
+  };
   // ===== goal =====
 
   useEffect(() => {
@@ -91,6 +98,7 @@ const AddEducation = ({ isEdit = false }: AddEducationProps) => {
     onChangeDescription,
     onChangeEducationGoal,
     onClickAddGoal,
+    onClickDeleteGoal,
   };
 
   return (

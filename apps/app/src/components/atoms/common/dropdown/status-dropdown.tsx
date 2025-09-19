@@ -9,11 +9,11 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import TransparentBackground from '../etc/transparent-background';
-import { InputProps } from '../input/main-input';
+import { InputProps, TransparentBackground } from '@mokjang/components';
 import { StatusDropdownValueType } from './status-dropdown-item';
 import StatusDropdownView from './status-dropdown.view';
-import { WHITE } from '@/constants/styles/color';
+import { WHITE } from '@mokjang/constants';
+import { useI18n } from '../../../../../locales/client';
 
 export type DropdownProps<
   ItemType extends StatusDropdownValueType = StatusDropdownValueType,
@@ -78,6 +78,7 @@ const StatusDropdown = forwardRef<HTMLInputElement, DropdownProps>(
     },
     ref
   ) => {
+    const t = useI18n();
     // 드롭다운 열림 여부
     const [isOpened, setIsOpened] = useState(false);
     // 내부적으로 관리하는 선택값
@@ -101,7 +102,7 @@ const StatusDropdown = forwardRef<HTMLInputElement, DropdownProps>(
     // 1) items 배열에 "직접 입력" 항목 추가 (isCustom=true일 때)
     // -------------------------------
     const combinedItems = isCustom
-      ? [{ value: CUSTOM_VALUE, title: '직접 입력', color: WHITE }, ...items]
+      ? [{ value: CUSTOM_VALUE, title: t('custom'), color: WHITE }, ...items]
       : items;
 
     // value가 바뀌면 innerValue 갱신

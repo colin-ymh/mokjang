@@ -1,16 +1,18 @@
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../redux/store';
 import OfficerListView from './officer-list.view';
-import { Officer } from '../../../../../models/management/management';
+import { Officer } from '@mokjang/models';
 
 type OfficerListProps = {
   selectedOfficerId: string;
   onClickOfficer: (officer: Officer) => void;
+  height: number;
 };
 
 const OfficerList = ({
   selectedOfficerId,
   onClickOfficer,
+  height,
 }: OfficerListProps) => {
   const { officers } = useSelector((state: RootState) => state.church);
 
@@ -18,6 +20,7 @@ const OfficerList = ({
     officers,
     selectedOfficerId,
     onClickOfficer,
+    height,
   };
 
   return (

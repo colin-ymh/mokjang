@@ -1,15 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../../redux/store';
-import { MEMBER } from '../../../../constants/column/member-column';
-import { BAPTISM, BLANK, MARRIAGE } from '../../../../constants/constant';
+import { BAPTISM, BLANK, LOCALE, MARRIAGE, MEMBER } from '@mokjang/constants';
 
 import { useI18n } from '../../../../../locales/client';
 import { setMemberFilter } from '../../../../redux/reducers/filter/member-filter-reducer';
 import { getGroup } from '../../../../utils/group';
 import FilteredItemView, { FilteredItemType } from './filtered-item.view';
 import { usePathname } from 'next/navigation';
-import { LOCALE } from '../../../../constants/state/locale';
 
 type FilteredItemProps = {
   item: FilteredItemType;
@@ -56,6 +54,34 @@ const FilteredItem = ({ item }: FilteredItemProps) => {
           search: BLANK,
         })
       );
+    } else if (item.title === MEMBER.GROUP) {
+      dispatch(
+        setMemberFilter({
+          ...memberFilter,
+          groupIds: [],
+        })
+      );
+    } else if (item.title === MEMBER.OFFICER) {
+      dispatch(
+        setMemberFilter({
+          ...memberFilter,
+          officerIds: [],
+        })
+      );
+    } else if (item.title === MEMBER.MARRIAGE) {
+      dispatch(
+        setMemberFilter({
+          ...memberFilter,
+          marriageStatuses: [],
+        })
+      );
+    } else if (item.title === MEMBER.BAPTISM) {
+      dispatch(
+        setMemberFilter({
+          ...memberFilter,
+          baptismStatuses: [],
+        })
+      );
     }
   };
 
@@ -68,7 +94,9 @@ const FilteredItem = ({ item }: FilteredItemProps) => {
       case MEMBER.MARRIAGE:
         currentItem = item.value
           .map((marriage) => {
-            return marriage ? t(marriage as MARRIAGE) : t('none');
+            return marriage !== 'null'
+              ? t(marriage as MARRIAGE)
+              : t(MARRIAGE.NONE);
           })
           .join(', ');
         break;
@@ -87,9 +115,9 @@ const FilteredItem = ({ item }: FilteredItemProps) => {
         // 여러 그룹 ID가 배열로 넘어온 경우
         currentItem = item.value
           .map((officerId) => {
-            return officerId
+            return officerId !== 'null'
               ? officers.find((officer) => officer.id === officerId)?.name
-              : t('none');
+              : t('officerNone');
           })
           .filter(Boolean)
           .join(', ');
@@ -97,7 +125,9 @@ const FilteredItem = ({ item }: FilteredItemProps) => {
       case MEMBER.BAPTISM:
         // 여러 그룹 ID가 배열로 넘어온 경우
         currentItem = item.value
-          .map((baptismId) => t(baptismId as BAPTISM))
+          .map((baptismId) =>
+            baptismId !== 'none' ? t(baptismId as BAPTISM) : t('baptismNone')
+          )
           .filter(Boolean) // undefined/null 필터링
           .join(', ');
         break;

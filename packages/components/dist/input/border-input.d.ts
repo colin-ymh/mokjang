@@ -2,7 +2,7 @@ import { InputProps } from './main-input';
 export type BorderInputProps = InputProps & {
     borderColor?: string;
     height?: number;
-    width?: number;
+    width?: number | 'auto';
     backgroundColor?: string;
     borderTopLeftRadius?: number;
     borderTopRightRadius?: number;
@@ -32,7 +32,7 @@ export declare const BorderInput: import("react").ForwardRefExoticComponent<impo
 } & {
     borderColor?: string;
     height?: number;
-    width?: number;
+    width?: number | "auto";
     backgroundColor?: string;
     borderTopLeftRadius?: number;
     borderTopRightRadius?: number;

@@ -2,19 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../../../redux/store';
 import { setTargetMinistryHistory } from '../../../../../redux/reducers/target/target-history-reducer';
-import { getDateStringFromDate } from '../../../../../utils/date';
+import { getDateStringFromDate } from '@mokjang/utils';
 import EditMemberMinistryView from './edit-member-ministry.view';
 import { getMinistryGroup } from '../../../../../utils/ministry';
 import { MinistriesApi } from '../../../../../api/management/ministry/ministries.api';
-import {
-  DEFAULT_MINISTRY,
-  Ministry,
-  MinistryGroup,
-} from '../../../../../models/management/management';
-import { BLANK } from '../../../../../constants/constant';
+import { DEFAULT_MINISTRY, Ministry, MinistryGroup } from '@mokjang/models';
+import { BLANK } from '@mokjang/constants';
 import { DropdownValueType } from '../../../../atoms/common/dropdown/dropdown-item';
 import { useI18n } from '../../../../../../locales/client';
-import { DEFAULT_MINISTRY_DETAIL_HISTORY } from '../../../../../models/member/history';
+import { DEFAULT_MINISTRY_DETAIL_HISTORY } from '@mokjang/models';
 
 type EditMemberMinistryProps = {
   onClickDeleteMinistry: (ministryGroupId: string) => void;

@@ -1,10 +1,8 @@
 import styled from 'styled-components';
-import Loading from '../../../atoms/common/etc/loading';
+import { Loading } from '@mokjang/components';
 import React from 'react';
-import { BLACK, DESTRUCTIVE, GRAY } from '../../../../constants/styles/color';
-import CancelIcon from '../../../../../public/svg/cancel.svg';
-import TrashIcon from '../../../../../public/svg/trash.svg';
-import { MEDIA_MIN_WIDTH } from '../../../../constants/constant';
+import { Svg } from '@mokjang/assets';
+import { BLACK, DESTRUCTIVE, GRAY, MEDIA_MIN_WIDTH } from '@mokjang/constants';
 import PermissionTemplateTable, {
   PermissionTemplateTableProps,
 } from '../../../molecules/permission/list/permission-template-table';
@@ -12,6 +10,7 @@ import SlidePopup from '../../../atoms/common/popup/slide-popup';
 import PermissionTemplateInformation from '../information/permission-template-information';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
+import { useScopedI18n } from '../../../../../locales/client';
 
 const PermissionTemplateListContainer = styled.div`
   display: flex;
@@ -52,14 +51,14 @@ const ButtonContainer = styled.div`
   cursor: pointer;
 `;
 
-const Trash = styled(TrashIcon)`
+const Trash = styled(Svg.Trash)`
   width: 25px;
   height: 25px;
   stroke: ${DESTRUCTIVE.LIGHT};
   stroke-width: 1px;
 `;
 
-const Cancel = styled(CancelIcon)`
+const Cancel = styled(Svg.Cancel)`
   width: 30px;
   height: 30px;
   stroke: ${BLACK};
@@ -84,6 +83,7 @@ type PermissionTemplateListViewProps = {
 };
 
 const PermissionTemplateListView = (props: PermissionTemplateListViewProps) => {
+  const t_button = useScopedI18n('button');
   const { targetPermissionTemplate } = useSelector(
     (state: RootState) => state.targetPermissionTemplate
   );
@@ -110,14 +110,14 @@ const PermissionTemplateListView = (props: PermissionTemplateListViewProps) => {
       <SlidePopup
         isShow={isPermissionTemplateInformationShown}
         headerTitle={targetPermissionTemplate.title}
-        headerRight={
-          <ButtonContainer onClick={onClickClose}>
-            <Cancel />
-          </ButtonContainer>
-        }
         onClickClose={onClickClose}
+        cancelText={t_button('close')}
+        isHeaderBorderShown={targetPermissionTemplate.id === 'owner'}
+        isFooterShown={false}
       >
-        <PermissionTemplateInformation onClickDelete={onClickDelete} />
+        {isPermissionTemplateInformationShown && (
+          <PermissionTemplateInformation onClickDelete={onClickDelete} />
+        )}
       </SlidePopup>
       <Loading isShow={isLoading} />
     </PermissionTemplateListContainer>

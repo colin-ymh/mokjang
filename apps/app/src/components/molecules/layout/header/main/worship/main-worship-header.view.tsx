@@ -1,16 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { GRAY, MAIN } from '../../../../../../constants/styles/color';
-import { MainText } from '../../../../../atoms/common/text/main-text';
-import { SIZE } from '../../../../../../constants/styles/style';
+import { GRAY, MAIN, MEDIA_MIN_WIDTH, SIZE, WHITE } from '@mokjang/constants';
+import { Button, CustomPopup, MainText, SvgIcon } from '@mokjang/components';
 import { useScopedI18n } from '../../../../../../../locales/client';
-
-import { MEDIA_MIN_WIDTH } from '../../../../../../constants/constant';
-import Button from '../../../../../atoms/common/button/button';
-import CustomPopup from '../../../../../atoms/common/popup/custom-popup';
-import { MAIN_HEADER_ID } from '../../../../../../constants/layout/header';
+import { MAIN_HEADER_ID } from '@/constants/layout/header';
 import AddWorship from '../../../../../organisms/worship/add/add-worship';
+import { Svg } from '@mokjang/assets';
 
 const HeaderContainer = styled.div`
   display: flex;
@@ -86,14 +82,18 @@ const MainWorshipHeaderView = ({
         <Button
           text={t_button('addWorship')}
           onClick={onClickAddWorship}
-          width={100}
-          height={30}
+          width={'auto'}
+          fontWeight={500}
+          fontSize={16}
+          height={35}
+          icon={<SvgIcon svg={Svg.Plus} color={WHITE} width={2} size={20} />}
         />
       </HeaderTopContainer>
       <HeaderBottomContainer></HeaderBottomContainer>
       {/* 예배 추가 */}
       <CustomPopup
         isShow={isAddWorshipOpened}
+        onClickClose={onClickCloseModal}
         onClickCancel={onClickCloseModal}
         headerTitle={t_title('addWorship')}
         width={500}
@@ -101,6 +101,8 @@ const MainWorshipHeaderView = ({
         onClickDone={onClickSaveWorship}
         doneBackgroundColor={isSaveEnabled ? MAIN.DEFAULT : MAIN.LIGHT}
         doneDisabled={!isSaveEnabled}
+        cancelText={t_button('cancel')}
+        doneText={t_button('save')}
       >
         <AddWorship />
       </CustomPopup>

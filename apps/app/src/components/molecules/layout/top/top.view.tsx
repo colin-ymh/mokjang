@@ -1,19 +1,16 @@
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../../../redux/store';
+import { RootState } from '@/redux/store';
 
-import { MEDIA_MIN_WIDTH } from '../../../../constants/constant';
-import { GRAY, WHITE } from '../../../../constants/styles/color';
-import { SIDE_ID } from '../../../../constants/layout/header';
+import { CURSOR, GRAY, MEDIA_MIN_WIDTH, RED, WHITE } from '@mokjang/constants';
+import { SIDE_ID } from '@/constants/layout/header';
 
-import Bell from '../../../../../public/svg/bell.svg';
-import Setting from '../../../../../public/svg/setting.svg';
-import Question from '../../../../../public/svg/question.svg';
-import Home from '../../../../../public/svg/home.svg';
-import Burger from '../../../../../public/svg/burger.svg';
-import { DummyApi } from '../../../../api/dummy.api';
-import SvgIcon from '../../../atoms/common/icon/svg-icon';
+import { Svg } from '@mokjang/assets';
+import { MainText, ProfileImage, SvgIcon } from '@mokjang/components';
 import { useParams } from 'next/navigation';
+import ProfileModal from '@/components/atoms/common/modal/profile-modal';
+import { Chevron } from '@/components/atoms/common/dropdown/dropdown-chevron';
+import NotificationModal from '@/components/organisms/notification/notification-modal';
 
 const TopContainer = styled.div`
   display: none;
@@ -43,35 +40,76 @@ const TopRight = styled.div`
   display: flex;
   flex-direction: row;
   gap: 20px;
+  align-items: center;
 `;
 
-type TopViewProps = {
+const NotificationWrapper = styled.div`
+  display: flex;
+  position: relative;
+  z-index: 50;
+`;
+
+const NotificationCount = styled.div`
+  display: flex;
+  position: absolute;
+  border-radius: 100%;
+  background-color: ${RED.DEFAULT};
+  width: 18px;
+  height: 18px;
+  align-items: center;
+  justify-content: center;
+  right: -8px;
+  top: -8px;
+`;
+
+const ProfileWrapper = styled.div`
+  display: flex;
+  position: relative;
+  z-index: 50;
+`;
+
+const ProfileItem = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  padding-right: 30px;
+  cursor: pointer;
+`;
+
+export type TopViewProps = {
+  isNotificationOpened: boolean;
+  isProfileOpened: boolean;
   onClickButton: (id: SIDE_ID) => void;
   handleSideShow: () => void;
+  onClickNotification: () => void;
+  onClickNotificationClose: () => void;
+  onClickProfile: () => void;
+  onClickProfileClose: () => void;
 };
 
-const TopView = ({ onClickButton, handleSideShow }: TopViewProps) => {
+const TopView = ({
+  isNotificationOpened,
+  isProfileOpened,
+  onClickButton,
+  handleSideShow,
+  onClickNotification,
+  onClickNotificationClose,
+  onClickProfile,
+  onClickProfileClose,
+}: TopViewProps) => {
   const slug = useParams().slug as string[] | undefined;
   const sideId = slug?.[0] ?? null;
-  const { church } = useSelector((state: RootState) => state.church);
-  const dummyApi = new DummyApi(false);
+  const { user } = useSelector((state: RootState) => state.user);
+  const { notificationUnreadCount } = useSelector(
+    (state: RootState) => state.notification
+  );
+
   return (
     <TopContainer>
       <TopLeft>
-        {/*<ChurchImage />*/}
-        {/*<LogoutButton width={100} />*/}
-        {/*<Button*/}
-        {/*  text={'더미 교인 생성'}*/}
-        {/*  width={100}*/}
-        {/*  height={30}*/}
-        {/*  color={WHITE}*/}
-        {/*  onClick={() => {*/}
-        {/*    dummyApi.createDummyMembers({ churchId: church.id });*/}
-        {/*  }}*/}
-        {/*/>*/}
-        {/*<MainText size={SIZE.LARGE}>{`초대코드 ${church?.joinCode}`}</MainText>*/}
         <SvgIcon
-          svg={Burger}
+          svg={Svg.Burger}
           onClick={handleSideShow}
           size={24}
           width={1.5}
@@ -79,42 +117,71 @@ const TopView = ({ onClickButton, handleSideShow }: TopViewProps) => {
         />
       </TopLeft>
       <TopRight>
+        {sideId !== SIDE_ID.NOTIFICATION && (
+          <NotificationWrapper>
+            <SvgIcon
+              svg={Svg.Bell}
+              onClick={onClickNotification}
+              size={22}
+              width={1.5}
+              color={GRAY.DARK}
+            />
+            {notificationUnreadCount > 0 && (
+              <NotificationCount>
+                <MainText color={WHITE} fontSize={12} fontWeight={700}>
+                  {notificationUnreadCount}
+                </MainText>
+              </NotificationCount>
+            )}
+            {isNotificationOpened && (
+              <NotificationModal onClickClose={onClickNotificationClose} />
+            )}
+          </NotificationWrapper>
+        )}
+
         {sideId !== SIDE_ID.MAIN && (
           <SvgIcon
-            svg={Home}
+            svg={Svg.Home}
             onClick={() => onClickButton(SIDE_ID.MAIN)}
             size={22}
             width={1.5}
             color={GRAY.DARK}
           />
         )}
-        {sideId !== SIDE_ID.NOTIFICATION && (
-          <SvgIcon
-            svg={Bell}
-            onClick={() => onClickButton(SIDE_ID.NOTIFICATION)}
-            size={22}
-            width={1.5}
-            color={GRAY.DARK}
-          />
-        )}
+
         {sideId !== SIDE_ID.MANAGEMENT && (
           <SvgIcon
-            svg={Setting}
+            svg={Svg.Setting}
             onClick={() => onClickButton(SIDE_ID.MANAGEMENT)}
             size={22}
             width={1.5}
             color={GRAY.DARK}
           />
         )}
-        {sideId !== SIDE_ID.GUIDE && (
-          <SvgIcon
-            svg={Question}
-            onClick={() => onClickButton(SIDE_ID.GUIDE)}
-            size={22}
-            width={1.5}
-            color={GRAY.DARK}
-          />
-        )}
+        {/*{sideId !== SIDE_ID.GUIDE && (*/}
+        {/*  <SvgIcon*/}
+        {/*    svg={Svg.Question}*/}
+        {/*    onClick={() => onClickButton(SIDE_ID.GUIDE)}*/}
+        {/*    size={22}*/}
+        {/*    width={1.5}*/}
+        {/*    color={GRAY.DARK}*/}
+        {/*  />*/}
+        {/*)}*/}
+        <ProfileWrapper>
+          <ProfileItem onClick={onClickProfile}>
+            <ProfileImage
+              value={user.churchUser[0]?.member?.profileImageUrl}
+              onClick={onClickProfile}
+            />
+            <MainText cursor={CURSOR.POINTER} fontWeight={500}>
+              {user.name}
+            </MainText>
+            <Chevron $isOpened={isProfileOpened} />
+          </ProfileItem>
+          {isProfileOpened && (
+            <ProfileModal onClickClose={onClickProfileClose} />
+          )}
+        </ProfileWrapper>
       </TopRight>
     </TopContainer>
   );

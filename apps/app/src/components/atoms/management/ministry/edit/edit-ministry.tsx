@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Ministry } from '../../../../../models/management/management';
+import { Ministry } from '@mokjang/models';
 import EditMinistryView from './edit-ministry.view';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../../../redux/store';
@@ -9,7 +9,7 @@ import {
   setToastBackgroundColor,
   setToastText,
 } from '../../../../../redux/reducers/toast-popup-reducer';
-import { BLACK, DESTRUCTIVE } from '../../../../../constants/styles/color';
+import { BLACK, DESTRUCTIVE } from '@mokjang/constants';
 import { MinistriesApi } from '../../../../../api/management/ministry/ministries.api';
 
 type EditMinistryProps = {

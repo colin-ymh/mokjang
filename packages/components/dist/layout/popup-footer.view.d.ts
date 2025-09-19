@@ -1,5 +1,5 @@
 type PopupFooterViewProps = {
-    onClickCancel: () => void;
+    onClickCancel?: () => void;
     onClickDone?: () => void;
     cancelText: string;
     doneText: string;

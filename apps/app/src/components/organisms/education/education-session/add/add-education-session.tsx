@@ -1,18 +1,17 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
-import { BLANK } from '../../../../../constants/constant';
-import { getFormattedTitle } from '../../../../../utils/format';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../../../../redux/store';
-
+import { BLANK } from '@mokjang/constants';
 import {
   getDateFromDateString,
   getDateStringFromDate,
+  getFormattedTitle,
   getHourFromMinute,
   getTimeStringFromDate,
-} from '../../../../../utils/date';
-import { setTargetEducationSession } from '../../../../../redux/reducers/target/target-education-session-reducer';
+} from '@mokjang/utils';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../../../../redux/store';
 import AddEducationSessionView from './add-education-session.view';
 import { MemberDropdownType } from '../../../../atoms/common/dropdown/member-dropdown-item';
+import { setTargetEducationSession } from '@/redux/reducers/target/target-education-session-reducer';
 
 type AddEducationSessionProps = {
   isEdit?: boolean;
@@ -36,78 +35,200 @@ const AddEducationSession = ({ isEdit = false }: AddEducationSessionProps) => {
   // ===== title =====
 
   // ===== period =====
-  const onChangeStartDate = (date: Date | null) => {
-    if (date) {
-      const newDate = getDateStringFromDate(date);
-      let prevTime = '00:00';
+  /* 날짜 문자열 + 시간 문자열 → ISO 비슷한 포맷 */
+  const combineDateTime = (ymd: string, hm: string) => `${ymd}T${hm}`;
 
-      if (targetEducationSession.startDate) {
-        prevTime = getTimeStringFromDate(
+  /* HH:mm → 분 */
+  const toMinutes = (hm: string) => {
+    const [h, m] = hm.split(':').map(Number);
+    return h * 60 + m;
+  };
+
+  /* ── 시작 날짜 변경 ── */
+  const onChangeStartDate = (date: Date | null) => {
+    if (!date) return;
+
+    const newStartYmd = getDateStringFromDate(date);
+    const prevStartHm = targetEducationSession.startDate
+      ? getTimeStringFromDate(
           getDateFromDateString(targetEducationSession.startDate)
-        );
+        )
+      : '08:00';
+
+    // 기본: 시작일 갱신
+    let nextStart = combineDateTime(newStartYmd, prevStartHm);
+
+    // 종료일 관련 교정
+    if (targetEducationSession.endDate) {
+      const endDateObj = getDateFromDateString(targetEducationSession.endDate);
+      const prevEndYmd = getDateStringFromDate(endDateObj);
+      const prevEndHm = getTimeStringFromDate(endDateObj);
+
+      let nextEndYmd = prevEndYmd;
+      let nextEndHm = prevEndHm;
+
+      // 시작일이 종료일을 넘어가면 종료 "날짜"를 시작 날짜로 이동
+      if (newStartYmd > prevEndYmd) {
+        nextEndYmd = newStartYmd;
+      }
+
+      // 같은 날인데 시작 시간이 종료 시간보다 크면 종료 "시간"을 시작 시간으로 맞춤
+      if (nextEndYmd === newStartYmd) {
+        if (toMinutes(prevStartHm) > toMinutes(prevEndHm)) {
+          nextEndHm = prevStartHm;
+        }
       }
 
       dispatch(
         setTargetEducationSession({
           ...targetEducationSession,
-          startDate: `${newDate}T${prevTime}`,
+          startDate: nextStart,
+          endDate: combineDateTime(nextEndYmd, nextEndHm),
         })
       );
-    }
-  };
-
-  const onChangeStartTime = (value: number) => {
-    let prevDate = '2000-01-01';
-    const newTime = getHourFromMinute(value);
-
-    if (targetEducationSession.startDate) {
-      prevDate = getDateStringFromDate(
-        getDateFromDateString(targetEducationSession.startDate)
-      );
+      return;
     }
 
     dispatch(
       setTargetEducationSession({
         ...targetEducationSession,
-        startDate: `${prevDate}T${newTime}`,
+        startDate: nextStart,
       })
     );
   };
 
+  /* ── 종료 날짜 변경 ── */
   const onChangeEndDate = (date: Date | null) => {
-    if (date) {
-      const newDate = getDateStringFromDate(date);
-      let prevTime = '00:00';
+    if (!date) return;
 
-      if (targetEducationSession.endDate) {
-        prevTime = getTimeStringFromDate(
+    const newEndYmd = getDateStringFromDate(date);
+    const prevEndHm = targetEducationSession.endDate
+      ? getTimeStringFromDate(
           getDateFromDateString(targetEducationSession.endDate)
-        );
+        )
+      : '08:00';
+
+    let nextEnd = combineDateTime(newEndYmd, prevEndHm);
+
+    if (targetEducationSession.startDate) {
+      const startDateObj = getDateFromDateString(
+        targetEducationSession.startDate
+      );
+      const prevStartYmd = getDateStringFromDate(startDateObj);
+      const prevStartHm = getTimeStringFromDate(startDateObj);
+
+      let nextStartYmd = prevStartYmd;
+      let nextStartHm = prevStartHm;
+
+      // 종료일이 시작일보다 앞이면 시작 "날짜"를 종료 날짜로 이동
+      if (newEndYmd < prevStartYmd) {
+        nextStartYmd = newEndYmd;
+      }
+
+      // 같은 날인데 종료 시간이 시작 시간보다 작으면 시작 "시간"을 종료 시간으로 맞춤
+      if (nextStartYmd === newEndYmd) {
+        if (toMinutes(prevEndHm) < toMinutes(prevStartHm)) {
+          nextStartHm = prevEndHm;
+        }
       }
 
       dispatch(
         setTargetEducationSession({
           ...targetEducationSession,
-          endDate: `${newDate}T${prevTime}`,
+          startDate: combineDateTime(nextStartYmd, nextStartHm),
+          endDate: nextEnd,
         })
       );
-    }
-  };
-
-  const onChangeEndTime = (value: number) => {
-    let prevDate = '2000-01-01';
-    const newTime = getHourFromMinute(value);
-
-    if (targetEducationSession.endDate) {
-      prevDate = getDateStringFromDate(
-        getDateFromDateString(targetEducationSession.endDate)
-      );
+      return;
     }
 
     dispatch(
       setTargetEducationSession({
         ...targetEducationSession,
-        endDate: `${prevDate}T${newTime}`,
+        endDate: nextEnd,
+      })
+    );
+  };
+
+  /* ── 시작 시간 변경 ── */
+  const onChangeStartTime = (value: number) => {
+    const newStartHm = getHourFromMinute(value);
+    const prevStartYmd = targetEducationSession.startDate
+      ? getDateStringFromDate(
+          getDateFromDateString(targetEducationSession.startDate)
+        )
+      : '2000-01-01';
+
+    // 기본: 시작 시간 갱신
+    let nextStart = combineDateTime(prevStartYmd, newStartHm);
+
+    if (targetEducationSession.endDate) {
+      const endDateObj = getDateFromDateString(targetEducationSession.endDate);
+      const endYmd = getDateStringFromDate(endDateObj);
+      const endHm = getTimeStringFromDate(endDateObj);
+
+      // 같은 날이고, 시작 시간이 종료 시간보다 크면 종료 시간을 시작 시간에 맞춤
+      const nextEndHm =
+        prevStartYmd === endYmd && toMinutes(newStartHm) > toMinutes(endHm)
+          ? newStartHm
+          : endHm;
+
+      dispatch(
+        setTargetEducationSession({
+          ...targetEducationSession,
+          startDate: nextStart,
+          endDate: combineDateTime(endYmd, nextEndHm),
+        })
+      );
+      return;
+    }
+
+    dispatch(
+      setTargetEducationSession({
+        ...targetEducationSession,
+        startDate: nextStart,
+      })
+    );
+  };
+
+  /* ── 종료 시간 변경 ── */
+  const onChangeEndTime = (value: number) => {
+    const newEndHm = getHourFromMinute(value);
+    const prevEndYmd = targetEducationSession.endDate
+      ? getDateStringFromDate(
+          getDateFromDateString(targetEducationSession.endDate)
+        )
+      : '2000-01-01';
+
+    let nextEnd = combineDateTime(prevEndYmd, newEndHm);
+
+    if (targetEducationSession.startDate) {
+      const startDateObj = getDateFromDateString(
+        targetEducationSession.startDate
+      );
+      const startYmd = getDateStringFromDate(startDateObj);
+      const startHm = getTimeStringFromDate(startDateObj);
+
+      // 같은 날이고, 종료 시간이 시작 시간보다 작으면 시작 시간을 종료 시간에 맞춤
+      const nextStartHm =
+        startYmd === prevEndYmd && toMinutes(newEndHm) < toMinutes(startHm)
+          ? newEndHm
+          : startHm;
+
+      dispatch(
+        setTargetEducationSession({
+          ...targetEducationSession,
+          startDate: combineDateTime(startYmd, nextStartHm),
+          endDate: nextEnd,
+        })
+      );
+      return;
+    }
+
+    dispatch(
+      setTargetEducationSession({
+        ...targetEducationSession,
+        endDate: nextEnd,
       })
     );
   };
@@ -122,6 +243,7 @@ const AddEducationSession = ({ isEdit = false }: AddEducationSessionProps) => {
       const newInCharge = {
         value: targetEducationSession.inCharge.id,
         title: targetEducationSession.inCharge.name,
+        officer: targetEducationSession.inCharge.officer?.name || BLANK,
       };
 
       setInCharge([newInCharge]);
@@ -147,7 +269,7 @@ const AddEducationSession = ({ isEdit = false }: AddEducationSessionProps) => {
   // ===== content =====
   const [content, setContent] = useState<string>(BLANK);
 
-  const onChangeContent = (newContent: string) => {
+  const onChangeContent = (newContent: string, delta: any, source: string) => {
     setContent(newContent);
   };
 
@@ -175,6 +297,7 @@ const AddEducationSession = ({ isEdit = false }: AddEducationSessionProps) => {
         return {
           value: report.receiver.id,
           title: report.receiver.name,
+          officer: report.receiver.officer?.name || BLANK,
         };
       });
       setReceivers(newReceivers);

@@ -3,17 +3,22 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
 
-import { GRAY, GREEN, RED, WHITE } from '../../../../constants/styles/color';
-import { BLANK } from '../../../../constants/constant';
-import { EDUCATION_ENROLLMENT } from '../../../../constants/column/education-column';
-import { EDUCATION_ENROLLMENT_STATUS } from '../../../../constants/status/status';
-import { MainText } from '../../../atoms/common/text/main-text';
-import { getFormattedMobilePhone } from '../../../../utils/format';
-import { EducationEnrollment } from '../../../../models/education/education';
+import {
+  BLANK,
+  EDUCATION_ENROLLMENT,
+  EDUCATION_ENROLLMENT_STATUS,
+  GRAY,
+  GREEN,
+  RED,
+  SIZE,
+  WHITE,
+} from '@mokjang/constants';
+import { MainText } from '@mokjang/components';
+import { getFormattedPhone } from '@mokjang/utils';
+import { EducationEnrollment } from '@mokjang/models';
 import { EDUCATION_ENROLLMENT_TABLE_HEADER_LIST } from '../../../../redux/reducers/filter/education-filter-reducer';
 import { useI18n } from '../../../../../locales/client';
 import EducationEnrollmentTableHeader from '../../../atoms/education/education-enrollment/education-enrollment-table-header';
-import MemberProfile from '../../../atoms/member/member-profile';
 import TagDropdownButton from '../../../atoms/common/dropdown/tag-dropdown-button';
 import Dropdown from '../../../atoms/common/dropdown/dropdown';
 import { useEducationEnrollmentStatusDropdownItems } from '../../../../hooks/dropdown/dropdown-items';
@@ -21,17 +26,18 @@ import {
   getStatusBackgroundColor,
   getStatusFontColor,
 } from '../../../../utils/color';
-import { SIZE } from '../../../../constants/styles/style';
+import useWindowSize from '@/hooks/window/window';
+import MemberProfilePopupButton from '@/components/molecules/common/button/member-profile-popup-button'; // 1. 컬럼별 PX 폭 (마지막 REMARKS만 auto 할 예정)
 
 // 1. 컬럼별 PX 폭 (마지막 REMARKS만 auto 할 예정)
 const getColumnWidth = (id: string) => {
   switch (id) {
     case EDUCATION_ENROLLMENT.MEMBER_NAME:
-      return 20;
+      return 15;
     case EDUCATION_ENROLLMENT.GROUP:
       return 10;
     case EDUCATION_ENROLLMENT.MOBILE_PHONE:
-      return 20;
+      return 15;
     case EDUCATION_ENROLLMENT.ATTENDANCE:
       return 20;
     case EDUCATION_ENROLLMENT.STATUS:
@@ -52,7 +58,7 @@ const ProfileContainer = styled.div`
 `;
 
 // 2. 테이블 컨테이너 (100% 폭 + 스크롤)
-const TableContainer = styled.div`
+const TableContainer = styled.div<{ height: number }>`
   /* 항상 가로 100%를 채움 */
   width: 100%;
   background-color: ${WHITE};
@@ -63,6 +69,7 @@ const TableContainer = styled.div`
 
   display: flex;
   flex-direction: column;
+  min-height: ${({ height }) => `${height - 540}px`};
 `;
 
 // 3. 테이블은 width: 100% + table-layout: fixed
@@ -126,8 +133,6 @@ const TableData = styled.td<{ id: string; $isLast?: boolean }>`
   white-space: nowrap;
   text-overflow: ellipsis;
 
-  overflow: visible; // 드롭다운이 셀을 넘어서도 보이게
-
   &:first-child {
     border-left: none;
   }
@@ -184,6 +189,7 @@ type EducationEnrollmentTableProps = {
 const EducationEnrollmentTableView = ({
   onChangeStatus,
 }: EducationEnrollmentTableProps) => {
+  const { height } = useWindowSize();
   const t = useI18n();
   const { targetEducationTerm } = useSelector(
     (state: RootState) => state.targetEducationTerm
@@ -204,7 +210,7 @@ const EducationEnrollmentTableView = ({
       case EDUCATION_ENROLLMENT.MEMBER_NAME:
         return (
           <ProfileContainer>
-            <MemberProfile member={enrollment.member} />
+            <MemberProfilePopupButton member={enrollment.member} />
           </ProfileContainer>
         );
       case EDUCATION_ENROLLMENT.GROUP:
@@ -213,7 +219,7 @@ const EducationEnrollmentTableView = ({
         return (
           <MainText>
             {enrollment.member?.mobilePhone &&
-              getFormattedMobilePhone(enrollment.member.mobilePhone)}
+              getFormattedPhone(enrollment.member.mobilePhone)}
           </MainText>
         );
       case EDUCATION_ENROLLMENT.ATTENDANCE:
@@ -261,7 +267,7 @@ const EducationEnrollmentTableView = ({
   return (
     <>
       {/* 컨테이너: 항상 가로 100%, 필요하면 스크롤 */}
-      <TableContainer>
+      <TableContainer height={height}>
         <EducationEnrollmentTable>
           <thead>
             <tr>

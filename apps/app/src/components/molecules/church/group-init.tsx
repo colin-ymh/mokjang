@@ -17,7 +17,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useI18n, useScopedI18n } from '../../../../locales/client';
 import { AppDispatch, RootState } from '@/redux/store';
 import { GroupsApi } from '@/api/management/group/groups.api';
-import { getFormattedTitle } from '@/utils/format';
+import { getFormattedTitle } from '@mokjang/utils';
 import { fetchGroups } from '@/redux/reducers/church-reducer';
 import {
   setIsToastShown,
@@ -25,6 +25,7 @@ import {
   setToastText,
 } from '@/redux/reducers/toast-popup-reducer';
 import GroupList from '@/components/molecules/management/group/list/group-list';
+import useWindowSize from '@/hooks/window/window';
 
 const GroupInitContainer = styled.div`
   display: flex;
@@ -32,7 +33,7 @@ const GroupInitContainer = styled.div`
   padding: 30px;
   gap: 30px;
   width: 700px;
-  height: 850px;
+  flex-shrink: 0;
 `;
 
 const AddContainer = styled.div`
@@ -52,6 +53,8 @@ const GroupInit = ({}: GroupInitProps) => {
   const t = useI18n();
   const t_popup = useScopedI18n('popup');
   const t_init = useScopedI18n('register.churchInit');
+
+  const { height } = useWindowSize();
 
   const dispatch = useDispatch<AppDispatch>();
   const groupsApi = new GroupsApi(false);
@@ -132,7 +135,11 @@ const GroupInit = ({}: GroupInitProps) => {
         />
       </AddContainer>
       {/* 그룹 목록 */}
-      <GroupList selectedGroupId={null} onClickGroup={(g: any) => {}} />
+      <GroupList
+        selectedGroupId={null}
+        onClickGroup={(g: any) => {}}
+        height={500}
+      />
     </GroupInitContainer>
   );
 };

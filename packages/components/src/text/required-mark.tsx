@@ -2,11 +2,9 @@ import styled from 'styled-components';
 
 const MarkContainer = styled.span`
   color: red;
-  margin-left: 4px;
+  margin-left: 3px;
 `;
 
-const RequiredMark = () => {
+export const RequiredMark = () => {
   return <MarkContainer>*</MarkContainer>;
 };
-
-export default RequiredMark;

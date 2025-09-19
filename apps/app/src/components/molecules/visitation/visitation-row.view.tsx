@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import { Button, SvgIcon } from '../../../../../../packages/components/src';
 import { GRAY, MAIN, WHITE } from '../../../../../../packages/constants/src';
-import { VISITATION } from '@/constants/column/visitation-column';
+import { TASK_STATUS, VISITATION } from '@mokjang/constants';
 
 import {
   useTaskStatusFilterDropdownItems,
@@ -18,9 +18,8 @@ import PeriodModal from '../../atoms/common/modal/period-modal';
 import { RootState } from '@/redux/store';
 import { useSelector } from 'react-redux';
 import SearchInput from '../../atoms/common/input/search-input';
-import { TASK_STATUS } from '@/constants/status/status';
 
-import Calendar from '../../../../public/svg/calendar.svg';
+import { Svg } from '@mokjang/assets';
 import Dropdown from '@/components/atoms/common/dropdown/dropdown';
 
 const VisitationContainer = styled.div`
@@ -45,6 +44,7 @@ const RowTop = styled.div`
 const FilterList = styled.div`
   display: flex;
   width: 100%;
+  gap: 10px;
 `;
 
 const ButtonContainer = styled.div`
@@ -61,7 +61,6 @@ const FilteredItemList = styled.div<{ $width: number }>`
   justify-content: flex-start;
   align-items: center;
   gap: 5px;
-  padding: 10px 0;
   width: ${({ $width }) => $width}px;
   overflow-x: scroll;
 `;
@@ -78,7 +77,6 @@ export type VISITATION_SEARCH_FILTER = VISITATION.TITLE | VISITATION.IN_CHARGE;
 
 type VisitationViewProps = {
   isModalShown: boolean;
-  statusFilter: TASK_STATUS | undefined;
   searchFilter: VISITATION_SEARCH_FILTER;
   searchValue: string;
   searchRef: Ref<HTMLInputElement>;
@@ -95,7 +93,6 @@ type VisitationViewProps = {
 
 const VisitationRowView = ({
   isModalShown,
-  statusFilter,
   searchFilter,
   searchValue,
   searchRef,
@@ -134,12 +131,16 @@ const VisitationRowView = ({
               borderColor={isModalShown ? MAIN.DEFAULT : GRAY.LIGHT}
               color={GRAY.SEMI_DARK}
               icon={
-                <SvgIcon svg={Calendar} color={GRAY.SEMI_DARK} bottom={0.5} />
+                <SvgIcon
+                  svg={Svg.Calendar}
+                  color={GRAY.SEMI_DARK}
+                  bottom={0.5}
+                />
               }
             />
 
             <Dropdown
-              value={statusFilter}
+              value={visitationFilter.status[0]}
               items={statusFilterDropdownItems}
               onChangeItem={onClickStatusFilterItem}
               height={30}

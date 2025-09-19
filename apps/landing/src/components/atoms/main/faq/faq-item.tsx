@@ -1,14 +1,9 @@
-import { FAQ } from '@/constants/constant';
 import styled from 'styled-components';
 import { useScopedI18n } from '../../../../../locales/client';
-import { GRAY, MAIN, WHITE } from '../../../../../../../packages/constants/src';
-
-import Plus from '../../../../../public/svg/plus.svg';
-import Minus from '../../../../../public/svg/minus.svg';
-import {
-  MainText,
-  SvgIcon,
-} from '../../../../../../../packages/components/src';
+import { GRAY, MAIN, WHITE } from '@mokjang/constants';
+import { Svg } from '@mokjang/assets';
+import { MainText, SvgIcon } from '@mokjang/components';
+import { FAQ } from '@/constants/constant';
 
 const ItemContainer = styled.div`
   display: flex;
@@ -46,7 +41,7 @@ const FaqItem = ({ id, isOpened, onClick }: FaqItemProps) => {
             {t_faq('question')}
           </MainText>
           <SvgIcon
-            svg={isOpened ? Minus : Plus}
+            svg={isOpened ? Svg.Minus : Svg.Plus}
             color={MAIN.DEFAULT}
             width={2}
             size={18}

@@ -4,31 +4,26 @@ import { RootState } from '../../redux/store';
 import {
   BAPTISM,
   DAYS,
+  EDUCATION,
+  EDUCATION_TERM,
   FAMILY,
   GENDER,
   HISTORY,
+  JOIN_REQUEST,
+  LOCALE,
   MARRIAGE,
+  STATUS,
+  STATUS_COLOR,
+  TASK,
+  USER,
+  VISITATION,
   WORSHIP_PERIOD,
-} from '../../constants/constant';
+} from '@mokjang/constants';
 
 import { useI18n } from '../../../locales/client';
-import { DropdownValueType } from '../../components/atoms/common/dropdown/dropdown-item';
-import { VISITATION_METHOD } from '../../models/visitation/visitation';
-import { VISITATION } from '../../constants/column/visitation-column';
-import { STATUS_COLOR } from '../../constants/styles/color';
-import { TASK } from '../../constants/column/task-column';
-import {
-  EDUCATION,
-  EDUCATION_TERM,
-} from '../../constants/column/education-column';
-import { STATUS } from '../../constants/status/status';
-import { USER } from '../../constants/column/user-column';
-import { JOIN_REQUEST } from '../../constants/column/join-request-column';
-
-import Calendar from '../../../public/svg/calendar.svg';
-import Danger from '../../../public/svg/danger.svg';
-import Play from '../../../public/svg/play.svg';
-import Check from '../../../public/svg/check.svg';
+import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-item';
+import { VISITATION_METHOD } from '@mokjang/models';
+import { Svg } from '@mokjang/assets';
 
 export const useBaptismDropdownItems = () => {
   const t = useI18n();
@@ -53,6 +48,10 @@ export const useBaptismDropdownItems = () => {
     {
       value: BAPTISM.CONFIRMATION,
       title: t(BAPTISM.CONFIRMATION),
+    },
+    {
+      value: 'none',
+      title: t(BAPTISM.NONE),
     },
   ];
 
@@ -286,25 +285,25 @@ export const useTaskStatusDropdownItems = () => {
       value: STATUS.RESERVE,
       title: t(STATUS.RESERVE),
       color: STATUS_COLOR.RESERVE,
-      icon: Calendar,
+      icon: Svg.Calendar,
     },
     {
       value: STATUS.IN_PROGRESS,
       title: t(STATUS.IN_PROGRESS),
       color: STATUS_COLOR.IN_PROGRESS,
-      icon: Play,
+      icon: Svg.Play,
     },
     {
       value: STATUS.DONE,
       title: t(STATUS.DONE),
       color: STATUS_COLOR.DONE,
-      icon: Check,
+      icon: Svg.Check,
     },
     {
       value: STATUS.PENDING,
       title: t(STATUS.PENDING),
       color: STATUS_COLOR.PENDING,
-      icon: Danger,
+      icon: Svg.Danger,
     },
   ];
 
@@ -324,25 +323,25 @@ export const useTaskStatusFilterDropdownItems = () => {
       value: STATUS.RESERVE,
       title: t(STATUS.RESERVE),
       color: STATUS_COLOR.RESERVE,
-      icon: Calendar,
+      icon: Svg.Calendar,
     },
     {
       value: STATUS.IN_PROGRESS,
       title: t(STATUS.IN_PROGRESS),
       color: STATUS_COLOR.IN_PROGRESS,
-      icon: Play,
+      icon: Svg.Play,
     },
     {
       value: STATUS.DONE,
       title: t(STATUS.DONE),
       color: STATUS_COLOR.DONE,
-      icon: Check,
+      icon: Svg.Check,
     },
     {
       value: STATUS.PENDING,
       title: t(STATUS.PENDING),
       color: STATUS_COLOR.PENDING,
-      icon: Danger,
+      icon: Svg.Danger,
     },
   ];
 
@@ -423,25 +422,52 @@ export const useVisitationMethodDropdownItems = () => {
 
   return items;
 };
+export const useTimeDropdownItems = (
+  locale: LOCALE,
+  includeMidnight: boolean = true // true면 24:00 포함, false면 23:30까지만
+) => {
+  const items: { value: number; title: string }[] = [];
 
-export const useTimeDropdownItems = () => {
-  const items = [];
+  const START_MIN = 8 * 60; // 08:00
+  const END_MIN = includeMidnight
+    ? 24 * 60 // 24:00 포함
+    : 24 * 60 - 30; // 23:30까지
 
-  for (let totalMinutes = 0; totalMinutes < 24 * 60; totalMinutes += 15) {
-    const hour24 = Math.floor(totalMinutes / 60);
+  for (
+    let totalMinutes = START_MIN;
+    totalMinutes <= END_MIN;
+    totalMinutes += 30
+  ) {
+    const hour24 = Math.floor(totalMinutes / 60) % 24; // 24:00 표시용
     const minute = totalMinutes % 60;
 
-    const period = hour24 < 12 ? 'AM' : 'PM';
-    const hour12 = hour24 % 12 === 0 ? 12 : hour24 % 12;
-    const title = `${hour12.toString().padStart(2, '0')}:${minute
-      .toString()
-      .padStart(2, '0')} ${period}`;
+    if (locale === LOCALE.KO) {
+      // 오전/오후 hh:mm
+      const period = hour24 < 12 ? '오전' : '오후';
+      const hour12 = hour24 % 12 === 0 ? 12 : hour24 % 12;
+      const title = `${period} ${hour12.toString().padStart(2, '0')}:${minute
+        .toString()
+        .padStart(2, '0')}`;
 
-    items.push({
-      value: totalMinutes,
-      title,
-    });
+      // 24:00은 시각적으로 '오전 12:00'이지만 자정임을 명확히 하고 싶다면:
+      // if (totalMinutes === 24 * 60) title = '자정';
+
+      items.push({ value: totalMinutes, title });
+    } else {
+      // 12-hour AM/PM
+      const period = hour24 < 12 ? 'AM' : 'PM';
+      const hour12 = hour24 % 12 === 0 ? 12 : hour24 % 12;
+      const title = `${hour12.toString().padStart(2, '0')}:${minute
+        .toString()
+        .padStart(2, '0')} ${period}`;
+
+      // 24:00을 '12:00 AM'로 보이게 하되 별도 라벨 원하면:
+      // if (totalMinutes === 24 * 60) title = '12:00 AM';
+
+      items.push({ value: totalMinutes, title });
+    }
   }
+
   return items;
 };
 
@@ -589,6 +615,37 @@ export const usePermissionActiveDropdownItems = () => {
       title: t(STATUS.INACTIVE),
     },
   ];
+
+  return items;
+};
+
+export const useDenominationDropdownItems = (locale: LOCALE) => {
+  const KOREAN_DENOMINATIONS = [
+    '대한예수교장로회(통합)',
+    '대한예수교장로회(합동)',
+    '대한예수교장로회(백석)',
+    '한국기독교장로회',
+    '대한예수교장로회(고신)',
+    '기독교대한하나님의성회',
+    '기독교대한성결교회(기성)',
+    '예수교대한성결교회(예성)',
+    '기독교한국침례회',
+    '한국독립교회선교단체연합회',
+    '기독교대한감리회',
+  ];
+
+  let denominations: string[] = [];
+
+  if (locale === LOCALE.KO) {
+    denominations = KOREAN_DENOMINATIONS;
+  }
+
+  const items = denominations.map((denomination) => {
+    return {
+      value: denomination,
+      title: denomination,
+    };
+  });
 
   return items;
 };

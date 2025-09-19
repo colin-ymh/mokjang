@@ -1,16 +1,16 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { Group } from '../../../../../models/management/management';
+import { Group } from '@mokjang/models';
 import ManagementGroupItem from '../../../../atoms/management/group/list/management-group-item';
-import useWindowSize from '../../../../../hooks/window/window';
 
 const GroupListContainer = styled.div<{ height: number }>`
   display: flex;
   flex-direction: column;
   width: 100%;
   overflow-y: auto;
-  height: ${({ height }) => `${height - 250}px`};
+  height: ${({ height }) => `${height}px`};
+  //flex-grow: 1;
 `;
 
 type GroupListViewProps = {
@@ -19,6 +19,7 @@ type GroupListViewProps = {
   selectedGroupId: string | null;
   onClickGroup: (group: Group) => void;
   onClickToggle: (id: string) => void;
+  height: number;
 };
 
 const GroupListView = ({
@@ -27,8 +28,8 @@ const GroupListView = ({
   selectedGroupId,
   onClickGroup,
   onClickToggle,
+  height,
 }: GroupListViewProps) => {
-  const { height } = useWindowSize();
   return (
     <>
       <GroupListContainer height={height}>

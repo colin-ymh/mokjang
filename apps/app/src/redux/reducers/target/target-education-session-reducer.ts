@@ -1,8 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import {
-  DEFAULT_EDUCATION_SESSION,
-  EducationSession,
-} from '../../../models/education/education';
+import { DEFAULT_EDUCATION_SESSION, EducationSession } from '@mokjang/models';
 
 type TargetEducationSessionState = {
   targetEducationSession: EducationSession;

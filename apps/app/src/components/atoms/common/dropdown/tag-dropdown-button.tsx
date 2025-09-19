@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
-import { MAIN } from '@/constants/styles/color';
-import { BorderInputProps } from '../input/border-input';
+import { MAIN } from '@mokjang/constants';
+import { BorderInputProps } from '@mokjang/components';
 import { DropdownButtonProps } from './default-dropdown-button';
-import { MainText } from '../text/main-text';
+import { MainText } from '@mokjang/components';
 import { Chevron } from './dropdown-chevron';
 
 const DropdownButton = styled.div<{ $backgroundColor?: string }>`

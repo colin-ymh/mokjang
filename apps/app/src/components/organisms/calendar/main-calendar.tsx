@@ -1,40 +1,40 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../../redux/store';
+import { AppDispatch, RootState } from '@/redux/store';
 import {
   fetchCalendarSchedules,
   setCalendarSchedules,
-} from '../../../redux/reducers/filter/calendar-filter-reducer';
-import { getDateStringFromDate } from '../../../utils/date';
+} from '@/redux/reducers/filter/calendar-filter-reducer';
+import { getDateStringFromDate, getIsWellFormedTitle } from '@mokjang/utils';
 import MainCalendarView from './main-calendar.view';
-import { Schedule } from '../../../models/calendar/calendar';
-import { DOMAIN } from '../../../models/permission/permission';
-import { setTargetTask } from '../../../redux/reducers/target/target-task-reducer';
-import { setTargetVisitation } from '../../../redux/reducers/target/target-visitation-reducer';
-import { setTargetEducationSession } from '../../../redux/reducers/target/target-education-session-reducer';
-import { CalendarApi } from '../../../api/calendar/calendar.api';
-import { setTargetEducationTerm } from '../../../redux/reducers/target/target-education-term-reducer';
-import { EducationAttendanceApi } from '../../../api/education/education-attendance.api';
-import { setTargetEducation } from '../../../redux/reducers/target/target-education-reducer';
-import { EducationSessionsApi } from '../../../api/education/education-sessions.api';
-import { TASK_STATUS } from '../../../constants/status/status';
-import { TasksApi } from '../../../api/tasks/tasks.api';
-import { VisitationsApi } from '../../../api/visitations/visitations.api';
 import {
+  ChurchEvent,
   DEFAULT_EDUCATION,
   DEFAULT_EDUCATION_TERM,
-} from '../../../models/education/education';
-import { BLANK } from '../../../constants/constant';
+  DOMAIN,
+  Schedule,
+} from '@mokjang/models';
+import { setTargetTask } from '@/redux/reducers/target/target-task-reducer';
+import { setTargetVisitation } from '@/redux/reducers/target/target-visitation-reducer';
+import { setTargetEducationSession } from '@/redux/reducers/target/target-education-session-reducer';
+import { CalendarApi } from '@/api/calendar/calendar.api';
+import { setTargetEducationTerm } from '@/redux/reducers/target/target-education-term-reducer';
+import { EducationAttendanceApi } from '@/api/education/education-attendance.api';
+import { setTargetEducation } from '@/redux/reducers/target/target-education-reducer';
+import { EducationSessionsApi } from '@/api/education/education-sessions.api';
+import { BLANK, DESTRUCTIVE, TASK_STATUS } from '@mokjang/constants';
+import { TasksApi } from '@/api/tasks/tasks.api';
+import { VisitationsApi } from '@/api/visitations/visitations.api';
 import {
   setIsToastShown,
   setToastBackgroundColor,
   setToastText,
-} from '../../../redux/reducers/toast-popup-reducer';
-import { DESTRUCTIVE } from '../../../constants/styles/color';
-import { setTargetChurchEvent } from '../../../redux/reducers/target/target-church-event-reducer';
-import { ChurchEvent } from '../../../models/church-event/church-event';
-import { setTargetMember } from '../../../redux/reducers/target/target-member-reducer';
-import { MembersApi } from '../../../api/members/members.api';
+} from '@/redux/reducers/toast-popup-reducer';
+import { setTargetChurchEvent } from '@/redux/reducers/target/target-church-event-reducer';
+import { setTargetMember } from '@/redux/reducers/target/target-member-reducer';
+import { MembersApi } from '@/api/members/members.api';
+import { getScheduleFromChurchEvent } from '@/utils/calendar';
+import { ChurchEventsApi } from '@/api/church-event/church-events.api';
 
 const MainCalendar = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -53,7 +53,11 @@ const MainCalendar = () => {
   const { targetEducationSession } = useSelector(
     (state: RootState) => state.targetEducationSession
   );
+  const { targetChurchEvent } = useSelector(
+    (state: RootState) => state.targetChurchEvent
+  );
 
+  const churchEventsApi = new ChurchEventsApi(false);
   const membersApi = new MembersApi(false);
   const tasksApi = new TasksApi(false);
   const visitationsApi = new VisitationsApi(false);
@@ -68,6 +72,11 @@ const MainCalendar = () => {
   const [openedDomain, setOpenedDomain] = useState<DOMAIN | null>(null);
 
   const [thrownError, setThrownError] = useState<Error | null>(null);
+
+  const [isEventEditShown, setIsEventEditShown] = useState<boolean>(false);
+  const [isEventSaveEnable, setIsEventSaveEnable] = useState<boolean>(false);
+
+  const [isEventDeleteShown, setIsEventDeleteShown] = useState<boolean>(false);
 
   if (thrownError) throw thrownError;
 
@@ -220,7 +229,11 @@ const MainCalendar = () => {
       });
       dispatch(setCalendarSchedules(newSchedules));
     } catch (error) {
-      setThrownError(error instanceof Error ? error : new Error(String(error)));
+      if (error instanceof Error) {
+        dispatch(setToastText(error.message));
+        dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
+        dispatch(setIsToastShown(true));
+      } else setThrownError(new Error(String(error)));
     }
   };
 
@@ -246,7 +259,11 @@ const MainCalendar = () => {
       });
       dispatch(setCalendarSchedules(newSchedules));
     } catch (error) {
-      setThrownError(error instanceof Error ? error : new Error(String(error)));
+      if (error instanceof Error) {
+        dispatch(setToastText(error.message));
+        dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
+        dispatch(setIsToastShown(true));
+      } else setThrownError(new Error(String(error)));
     }
   };
 
@@ -282,20 +299,125 @@ const MainCalendar = () => {
       });
       dispatch(setCalendarSchedules(newSchedules));
     } catch (error) {
-      setThrownError(error instanceof Error ? error : new Error(String(error)));
+      if (error instanceof Error) {
+        dispatch(setToastText(error.message));
+        dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
+        dispatch(setIsToastShown(true));
+      } else setThrownError(new Error(String(error)));
     }
   };
   // ===== status =====
 
+  const onClickEventEditOpen = () => {
+    setIsEventEditShown(true);
+  };
+  const onClickEventEditClose = () => {
+    setIsEventEditShown(false);
+  };
+
+  const onClickEventEditDone = async () => {
+    try {
+      const response = await churchEventsApi.editChurchEvent(
+        { churchId, eventId: targetChurchEvent.id },
+        {
+          title: targetChurchEvent.title || undefined,
+          description: targetChurchEvent.description || undefined,
+          date: targetChurchEvent.date || undefined,
+        }
+      );
+
+      const newEvent = response.data.data;
+      const newSchedules = calendarSchedules.map((schedule) => {
+        if (schedule.id) {
+          const [domain, id] = schedule.id.split('-');
+          if (domain === DOMAIN.CHURCH_EVENT && id == targetChurchEvent.id) {
+            return getScheduleFromChurchEvent(newEvent);
+          } else {
+            return schedule;
+          }
+        } else {
+          return schedule;
+        }
+      });
+      dispatch(setCalendarSchedules(newSchedules));
+      setIsEventEditShown(false);
+    } catch (error) {
+      if (error instanceof Error) {
+        dispatch(setToastText(error.message));
+        dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
+        dispatch(setIsToastShown(true));
+      } else setThrownError(new Error(String(error)));
+    }
+  };
+
+  // 저장 가능 여부 확인
+  useEffect(() => {
+    if (!getIsWellFormedTitle(targetChurchEvent.title)) {
+      setIsEventSaveEnable(false);
+      return;
+    }
+
+    if (!targetChurchEvent.date) {
+      setIsEventSaveEnable(false);
+      return;
+    }
+
+    setIsEventSaveEnable(true);
+  }, [targetChurchEvent]);
+
+  const onClickEventDeleteOpen = () => {
+    setIsEventDeleteShown(true);
+  };
+  const onClickEventDeleteClose = () => {
+    setIsEventDeleteShown(false);
+  };
+  const onClickEventDelete = async () => {
+    try {
+      await churchEventsApi.deleteChurchEvent({
+        churchId,
+        eventId: targetChurchEvent.id,
+      });
+
+      const newSchedules = calendarSchedules.filter(
+        (schedule) =>
+          !(
+            schedule.id &&
+            schedule.id.startsWith(
+              `${DOMAIN.CHURCH_EVENT}-${targetChurchEvent.id}`
+            )
+          )
+      );
+
+      dispatch(setCalendarSchedules(newSchedules));
+      setIsEventDeleteShown(false);
+      setOpenedDomain(null);
+    } catch (error) {
+      if (error instanceof Error) {
+        dispatch(setToastText(error.message));
+        dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
+        dispatch(setIsToastShown(true));
+      } else setThrownError(new Error(String(error)));
+    }
+  };
+
   const props = {
     date,
     openedDomain,
+    isEventEditShown,
+    isEventSaveEnable,
+    isEventDeleteShown,
     onClickClose,
     onChangeDate,
     onSelectSchedule,
     onChangeTaskStatus,
     onChangeVisitationStatus,
     onChangeEducationSessionStatus,
+    onClickEventEditOpen,
+    onClickEventEditClose,
+    onClickEventEditDone,
+    onClickEventDelete,
+    onClickEventDeleteOpen,
+    onClickEventDeleteClose,
   };
 
   return (

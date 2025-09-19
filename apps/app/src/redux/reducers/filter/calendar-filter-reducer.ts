@@ -1,6 +1,14 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../store';
-import { Schedule } from '../../../models/calendar/calendar';
+import {
+  ChurchEvent,
+  DOMAIN,
+  EducationSession,
+  Member,
+  Schedule,
+  Task,
+  Visitation,
+} from '@mokjang/models';
 import { VisitationsApi } from '../../../api/visitations/visitations.api';
 import { TasksApi } from '../../../api/tasks/tasks.api';
 import {
@@ -11,14 +19,8 @@ import {
   getScheduleFromTask,
   getScheduleFromVisitation,
 } from '../../../utils/calendar';
-import { Visitation } from '../../../models/visitation/visitation';
-import { Task } from '../../../models/task/task';
 import { CalendarApi } from '../../../api/calendar/calendar.api';
-import { Member } from '../../../models/member/member';
-import { DOMAIN } from '../../../models/permission/permission';
 import { ChurchEventsApi } from '../../../api/church-event/church-events.api';
-import { ChurchEvent } from '../../../models/church-event/church-event';
-import { EducationSession } from '../../../models/education/education';
 import dayjs from 'dayjs';
 import { getHolidays, Holiday } from '../../../api/holiday-api';
 
@@ -32,9 +34,31 @@ type CalendarFilterState = {
   calendarFilter: CALENDAR_FILTER;
 };
 
+// ------------------ LocalStorage Persist ------------------
+const STORAGE_KEY = 'calendarFilterState';
+
+function loadPersistedFilter(): Partial<CalendarFilterState> {
+  if (typeof window === 'undefined') return {};
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    return raw ? (JSON.parse(raw) as Partial<CalendarFilterState>) : {};
+  } catch {
+    return {};
+  }
+}
+
+function savePersistedFilter(state: CalendarFilterState) {
+  if (typeof window === 'undefined') return;
+  const toSave = { calendarFilter: state.calendarFilter };
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(toSave));
+}
+// ----------------------------------------------------------
+
+const persisted = loadPersistedFilter();
+
 const initialState: CalendarFilterState = {
   calendarSchedules: [],
-  calendarFilter: {
+  calendarFilter: persisted.calendarFilter ?? {
     isMy: false,
     selectedDomains: [
       DOMAIN.TASK,
@@ -54,21 +78,16 @@ const getCalendarVisitations = async (
 ) => {
   try {
     const visitationsApi = new VisitationsApi(false);
-
     const response = await visitationsApi.getVisitations({
       churchId,
       fromStartDate: fromDate,
       toStartDate: toDate,
     });
-
-    const newVisitations = response.data.data;
-    const newEvents = newVisitations.map((visitation: Visitation) => {
-      return getScheduleFromVisitation(visitation);
-    });
-
-    return newEvents;
+    return response.data.data.map((v: Visitation) =>
+      getScheduleFromVisitation(v)
+    );
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return [];
   }
 };
@@ -80,21 +99,16 @@ const getCalendarBirthdays = async (
 ) => {
   try {
     const calendarApi = new CalendarApi(false);
-
     const response = await calendarApi.getBirthdays({
       churchId,
       fromDate,
       toDate,
     });
-
-    const newBirthdays = response.data;
-    const newEvents = newBirthdays.map((member: Member) => {
-      return getScheduleFromBirthday(fromDate, toDate, member);
-    });
-
-    return newEvents;
+    return response.data.map((m: Member) =>
+      getScheduleFromBirthday(fromDate, toDate, m)
+    );
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return [];
   }
 };
@@ -106,21 +120,14 @@ const getCalendarTasks = async (
 ) => {
   try {
     const tasksApi = new TasksApi(false);
-
     const response = await tasksApi.getTasks({
       churchId,
       fromStartDate: fromDate,
       toStartDate: toDate,
     });
-
-    const newTasks = response.data.data;
-    const newEvents = newTasks.map((task: Task) => {
-      return getScheduleFromTask(task);
-    });
-
-    return newEvents;
+    return response.data.data.map((t: Task) => getScheduleFromTask(t));
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return [];
   }
 };
@@ -132,22 +139,16 @@ const getCalendarEducations = async (
 ) => {
   try {
     const calendarApi = new CalendarApi(false);
-
     const response = await calendarApi.getEducations({
       churchId,
       fromDate,
       toDate,
-      // inChargeId: userId || undefined,
     });
-
-    const newEducations = response.data;
-    const newEvents = newEducations.map((education: EducationSession) => {
-      return getScheduleFromEducationSession(education);
-    });
-
-    return newEvents;
+    return response.data.map((e: EducationSession) =>
+      getScheduleFromEducationSession(e)
+    );
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return [];
   }
 };
@@ -161,27 +162,18 @@ const getCalendarHolidays = async (fromDate: string, toDate: string) => {
     let current = start.startOf('month');
 
     while (current.isBefore(end) || current.isSame(end, 'month')) {
-      months.push({ year: current.year(), month: current.month() + 1 }); // dayjs는 0-indexed month
+      months.push({ year: current.year(), month: current.month() + 1 });
       current = current.add(1, 'month');
     }
 
-    const allHolidays: Holiday[] = [];
-
+    const all: Holiday[] = [];
     for (const { year, month } of months) {
-      const holidays: Holiday[] = await getHolidays(
-        year.toString(),
-        month.toString()
-      );
-      allHolidays.push(...holidays);
+      const h = await getHolidays(year.toString(), month.toString());
+      all.push(...h);
     }
-
-    const newEvents: Schedule[] = allHolidays.map((holiday: Holiday) => {
-      return getScheduleFromHoliday(holiday);
-    });
-
-    return newEvents;
+    return all.map((h) => getScheduleFromHoliday(h));
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return [];
   }
 };
@@ -193,19 +185,16 @@ const getCalendarChurchEvents = async (
 ) => {
   try {
     const eventsApi = new ChurchEventsApi(false);
-
     const response = await eventsApi.getChurchEvents({
       churchId,
       fromDate,
       toDate,
     });
-
-    const newEvents = response.data.data;
-    return newEvents.map((event: ChurchEvent) => {
-      return getScheduleFromChurchEvent(event);
-    });
+    return response.data.data.map((e: ChurchEvent) =>
+      getScheduleFromChurchEvent(e)
+    );
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return [];
   }
 };
@@ -218,42 +207,16 @@ export const fetchCalendarSchedules = createAsyncThunk<
   'calendar/fetchCalendarSchedules',
   async ({ fromDate, toDate }, { getState, rejectWithValue }) => {
     const churchId = getState().church.churchId;
-    const user = getState().user.user;
-
-    const userId = user.churchUser[0]?.id;
-
     try {
-      let taskEvents: Schedule[] = [];
-      let educationEvents: Schedule[] = [];
-      let visitationEvents: Schedule[] = [];
-      let birthdayEvents: Schedule[] = [];
-      let churchEvents: Schedule[] = [];
-      let holidayEvents: Schedule[] = [];
-
-      taskEvents = await getCalendarTasks(churchId, fromDate, toDate);
-
-      educationEvents = await getCalendarEducations(churchId, fromDate, toDate);
-
-      visitationEvents = await getCalendarVisitations(
-        churchId,
-        fromDate,
-        toDate
-      );
-
-      birthdayEvents = await getCalendarBirthdays(churchId, fromDate, toDate);
-
-      churchEvents = await getCalendarChurchEvents(churchId, fromDate, toDate);
-
-      holidayEvents = await getCalendarHolidays(fromDate, toDate);
-
-      return [
-        ...holidayEvents,
-        ...birthdayEvents,
-        ...taskEvents,
-        ...educationEvents,
-        ...visitationEvents,
-        ...churchEvents,
-      ];
+      const [task, edu, vis, birth, church, holi] = await Promise.all([
+        getCalendarTasks(churchId, fromDate, toDate),
+        getCalendarEducations(churchId, fromDate, toDate),
+        getCalendarVisitations(churchId, fromDate, toDate),
+        getCalendarBirthdays(churchId, fromDate, toDate),
+        getCalendarChurchEvents(churchId, fromDate, toDate),
+        getCalendarHolidays(fromDate, toDate),
+      ]);
+      return [...holi, ...birth, ...task, ...edu, ...vis, ...church];
     } catch (error) {
       console.error('일정 불러오기 실패', error);
       return rejectWithValue('일정을 불러오는 중 오류가 발생했습니다.');
@@ -270,6 +233,7 @@ const CalendarFilterSlice = createSlice({
     },
     setCalendarFilter: (state, action: PayloadAction<CALENDAR_FILTER>) => {
       state.calendarFilter = action.payload;
+      savePersistedFilter(state); // 변경 시 저장
     },
   },
   extraReducers: (builder) => {

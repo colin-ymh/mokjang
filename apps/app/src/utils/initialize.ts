@@ -10,16 +10,12 @@ import {
   setChurch,
   setChurchId,
 } from '../redux/reducers/church-reducer';
-import { AuthApi } from '../api/auth/auth.api';
-import { routeLandingPage, usePageRouter } from './router';
-import { setUser } from '../redux/reducers/user-reducer';
+import { usePageRouter } from '@mokjang/utils';
+import { setUser, setUserInitialized } from '../redux/reducers/user-reducer';
 import { UserApi } from '../api/user/user.api';
 import { fetchPermissionUnits } from '../redux/reducers/filter/permission-template-filter-reducer';
 import { ChurchesApi } from '../api/churches/churches.api';
-import { User } from '@/models/user/user';
-import { SubscriptionApi } from '@/api/subscription/subscription.api';
-import { SubscriptionPlan } from '@mokjang/landing/src/models/subscription/subscription';
-import { setCurrentSubscription } from '@/redux/reducers/subscription-reducer';
+import { User } from '@mokjang/models';
 
 export const useInitializeChurch = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -66,68 +62,44 @@ export const useInitializeChurch = () => {
 export const useInitializeUser = () => {
   const dispatch = useDispatch<AppDispatch>();
   const router = usePageRouter();
-  const authApi = new AuthApi(false);
   const userApi = new UserApi(false);
-  const subscriptionApi = new SubscriptionApi(false);
   const churchesApi = new ChurchesApi(false);
 
-  // /** ➜ 이 ref 가 true 면 두 번 다시 실행하지 않음 */
   const didRunRef = useRef(false);
-
-  /** 라우트 이동 시에도 변하지 않는 redirect 상태 */
   const [redirectPath, setRedirectPath] = useState<string | null>(null);
 
-  /* redirectPath 가 정해지면 실제 라우팅 */
   useEffect(() => {
     if (redirectPath) router.replace(redirectPath);
   }, [redirectPath]);
 
-  /** 한 번만 만들어지는 초기화 함수 */
   return useCallback(async () => {
-    /* 이미 실행했다면 바로 return */
     if (didRunRef.current) return;
     didRunRef.current = true;
 
     try {
-      const subResponse = await subscriptionApi.getCurrentSubscription();
-      const currentPlan: SubscriptionPlan = subResponse.data;
-
-      const response = await userApi.getUser();
-      const user: User = response.data;
-
-      dispatch(setCurrentSubscription(currentPlan));
+      // 유저 정보 조회
+      // const response = await userApi.getMy();
+      const response = await userApi.getMy();
+      const user: User = response.data.data;
       dispatch(setUser(user));
-      if (user.churchUser.length) {
-        const churchId = user.churchUser[0].churchId;
+
+      // 교회 정보 조회
+      const churchUser = user.churchUser?.[0];
+      if (churchUser?.churchId) {
+        const churchId = churchUser.churchId;
         dispatch(setChurchId(churchId));
 
-        await churchesApi.getChurch({ churchId }).then((res) => {
-          const newChurch = res.data;
-          dispatch(setChurch(newChurch));
-        });
-        setRedirectPath('/main');
-      } else if (currentPlan.isCurrent) {
+        const churchRes = await churchesApi.getChurch({ churchId });
+        dispatch(setChurch(churchRes.data));
+      } else {
         setRedirectPath('/church/register');
-      } else {
-        routeLandingPage('/');
       }
-    } catch {
-      const response = await userApi.getUser();
-      const user: User = response.data;
-
-      if (user.churchUser.length) {
-        const churchId = user.churchUser[0].churchId;
-        dispatch(setChurchId(churchId));
-
-        await churchesApi.getChurch({ churchId }).then((res) => {
-          const newChurch = res.data;
-          dispatch(setChurch(newChurch));
-        });
-
-        setRedirectPath('/main');
-      } else {
-        routeLandingPage('/');
-      }
+    } catch (error) {
+      // 로그인 안 되었거나 API 실패 시
+      setRedirectPath('/login');
+    } finally {
+      // 어떤 경우에도 초기화 완료
+      dispatch(setUserInitialized());
     }
-  }, [authApi, userApi, dispatch]);
+  }, [dispatch, router, userApi, churchesApi]);
 };

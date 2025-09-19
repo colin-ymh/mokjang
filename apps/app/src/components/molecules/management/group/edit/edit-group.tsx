@@ -1,21 +1,17 @@
 import React, { useState } from 'react';
 import { useScopedI18n } from '../../../../../../locales/client';
-import {
-  DEFAULT_GROUP,
-  Group,
-} from '../../../../../models/management/management';
-import { fetchGroups } from '../../../../../redux/reducers/church-reducer';
+import { DEFAULT_GROUP, Group, Member } from '@mokjang/models';
+import { fetchGroups } from '@/redux/reducers/church-reducer';
 import {
   setIsToastShown,
   setToastBackgroundColor,
   setToastText,
-} from '../../../../../redux/reducers/toast-popup-reducer';
-import { BLACK, DESTRUCTIVE } from '../../../../../constants/styles/color';
+} from '@/redux/reducers/toast-popup-reducer';
+import { BLACK, DESTRUCTIVE } from '@mokjang/constants';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../../../../redux/store';
-import { GroupsApi } from '../../../../../api/management/group/groups.api';
+import { AppDispatch, RootState } from '@/redux/store';
+import { GroupsApi } from '@/api/management/group/groups.api';
 import EditGroupView from './edit-group.view';
-import { Member } from '../../../../../models/member/member';
 
 type EditGroupProps = {
   members: Member[];

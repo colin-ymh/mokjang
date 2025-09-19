@@ -18,14 +18,13 @@ import {
 import useWindowSize from '../../../../hooks/window/window';
 import ChurchUserTableHeader from '../../../atoms/church-user/list/church-user-table-header';
 import { BLANK_HEADER } from '../../../../redux/reducers/filter/member-filter-reducer';
-import { ChurchUser } from '../../../../models/church-user/church-user';
-import { CHURCH_USER } from '../../../../constants/column/church-user-column';
+import { ChurchUser } from '@mokjang/models';
+import { CHURCH_USER, LOCALE } from '@mokjang/constants';
 import MemberProfile from '../../../atoms/member/member-profile';
 import { useI18n } from '../../../../../locales/client';
-import { getPermissionScopeTitle } from '../../../../utils/permission';
-import { getTranslatedDateFromDateString } from '@/utils/translate';
+import { getTranslatedDateFromDateString } from '@mokjang/utils';
 import { usePathname } from 'next/navigation';
-import { LOCALE } from '@/constants/state/locale';
+import { getPermissionScopeTitle } from '@/utils/permission'; // 1. 컬럼별 PX 폭
 
 // 1. 컬럼별 PX 폭
 const getColumnWidth = (id: string) => {
@@ -51,7 +50,7 @@ const TableContainer = styled.div<{ height: number }>`
   /* 항상 가로 100%를 채움 */
   width: 100%;
   /* 세로 높이만큼 상하 스크롤 */
-  height: ${({ height }) => `${height - 290}px`};
+  height: ${({ height }) => `${height - 280}px`};
 
   /* 오버플로 시 스크롤 */
   overflow-x: auto;
@@ -74,15 +73,21 @@ const UserTable = styled.table`
 `;
 
 // 4. 헤더(TH)
-const TableHeader = styled.th<{ id: string; $isLast?: boolean }>`
-  padding: 10px;
+const TableHeader = styled.th<{
+  id: string;
+  $isLast?: boolean;
+}>`
+  padding: 0 25px;
+  height: 50px;
+  flex-shrink: 0;
+  background-color: ${WHITE};
   position: sticky;
   top: 0;
   z-index: 5;
-  background-color: ${WHITE};
 
   /* 만약 마지막 컬럼이면 width: auto */
   width: ${({ id, $isLast }) => ($isLast ? 'auto' : `${getColumnWidth(id)}%`)};
+
   /* 텍스트 넘침 처리 */
   overflow: hidden;
   text-overflow: ellipsis;
@@ -108,7 +113,9 @@ const UserTableRow = styled.tr`
 `;
 
 const TableData = styled.td<{ id: string; $index: number; $isLast?: boolean }>`
-  padding: 10px;
+  padding: 0 25px;
+  height: 60px;
+  flex-shrink: 0;
 
   cursor: pointer;
 

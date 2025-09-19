@@ -1,9 +1,17 @@
 import styled from 'styled-components';
-import { MainText } from '../../../../atoms/common/text/main-text';
+import { MainText } from '@mokjang/components';
 
 import { useI18n, useScopedI18n } from '../../../../../../locales/client';
 import React from 'react';
-import { SIZE } from '../../../../../constants/styles/style';
+import {
+  DAY,
+  GRAY,
+  LOCALE,
+  REPEAT_PERIOD,
+  SIZE,
+  WHITE,
+  WORSHIP_PERIOD,
+} from '@mokjang/constants';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../redux/store';
 import Dropdown from '../../../../atoms/common/dropdown/dropdown';
@@ -11,23 +19,15 @@ import CustomDatePicker from '../../../../../vendor/date-picker/custom-date-pick
 import {
   getDateFromDateString,
   getDayConstantByIndex,
+  getTranslatedMemberAttendanceCount,
+  getTranslatedUnknownAttendanceCount,
   getWeekRepeatConstant,
-} from '../../../../../utils/date';
+} from '@mokjang/utils';
 import { useWorshipPeriodDropdownItems } from '../../../../../hooks/dropdown/dropdown-items';
-import {
-  DAY,
-  REPEAT_PERIOD,
-  WORSHIP_PERIOD,
-} from '../../../../../constants/constant';
-import {
-  MemberAttendanceStatistic,
-  Worship,
-} from '../../../../../models/worship/worship';
-import { GRAY, MAIN } from '../../../../../constants/styles/color';
-import { getTranslatedMemberAttendanceCount } from '../../../../../utils/translate';
+import { MemberAttendanceStatistic, Worship } from '@mokjang/models';
 import { usePathname } from 'next/navigation';
-import { LOCALE } from '../../../../../constants/state/locale';
 import MemberAttendanceTable from './member-attendance-table';
+import { getWorshipAttendanceRateColor } from '@/utils/color';
 
 const ListContainer = styled.div`
   display: flex;
@@ -54,8 +54,8 @@ const StatisticContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   border-radius: 10px;
-  background-color: ${MAIN.EXTRA_LIGHT};
-  border: 1px solid ${MAIN.LIGHT};
+  background-color: ${WHITE};
+  border: 1px solid ${GRAY.LIGHT};
   padding: 30px;
 `;
 
@@ -125,58 +125,56 @@ const MemberAttendanceListView = ({
   return (
     <>
       <ListContainer>
-        {/* 심방 목록 헤더 */}
-        <AttendanceListHeader>
-          <MainText size={SIZE.EXTRA_LARGE}>
-            {t_header('memberAttendance')}
-          </MainText>
-          <DropdownContainer>
-            {/* 예배 설정 */}
-            <Dropdown
-              value={targetWorship.id}
-              items={worshipDropdownItems}
-              onChangeItem={onClickWorshipItem}
-              width={120}
-              height={30}
-            />
-            {/* 시작 날짜 */}
-            <CustomDatePicker
-              selected={
-                worshipEnrollmentFilter.fromSessionDate
-                  ? getDateFromDateString(
-                      worshipEnrollmentFilter.fromSessionDate
-                    )
-                  : null
-              }
-              onChange={onChangeFromDate}
-              placeholderText={t('startDate')}
-              width={120}
-              height={30}
-            />
+        {/*/!* 심방 목록 헤더 *!/*/}
+        {/*<AttendanceListHeader>*/}
+        {/*  <MainText size={SIZE.EXTRA_LARGE}>*/}
+        {/*    {t_header('memberAttendance')}*/}
+        {/*  </MainText>*/}
+        {/*</AttendanceListHeader>*/}
+        <DropdownContainer>
+          {/* 예배 설정 */}
+          <Dropdown
+            value={targetWorship.id}
+            items={worshipDropdownItems}
+            onChangeItem={onClickWorshipItem}
+            width={120}
+            height={30}
+          />
+          {/* 시작 날짜 */}
+          <CustomDatePicker
+            selected={
+              worshipEnrollmentFilter.fromSessionDate
+                ? getDateFromDateString(worshipEnrollmentFilter.fromSessionDate)
+                : null
+            }
+            onChange={onChangeFromDate}
+            placeholderText={t('startDate')}
+            width={120}
+            height={30}
+          />
 
-            {/* 종료 날짜 */}
-            <CustomDatePicker
-              selected={
-                worshipEnrollmentFilter.toSessionDate
-                  ? getDateFromDateString(worshipEnrollmentFilter.toSessionDate)
-                  : null
-              }
-              onChange={onChangeToDate}
-              placeholderText={t('endDate')}
-              width={120}
-              height={30}
-            />
+          {/* 종료 날짜 */}
+          <CustomDatePicker
+            selected={
+              worshipEnrollmentFilter.toSessionDate
+                ? getDateFromDateString(worshipEnrollmentFilter.toSessionDate)
+                : null
+            }
+            onChange={onChangeToDate}
+            placeholderText={t('endDate')}
+            width={120}
+            height={30}
+          />
 
-            {/* 기간 드롭다운 */}
-            <Dropdown
-              value={worshipPeriod}
-              items={worshipPeriodDropdownItems}
-              onChangeItem={onChangeWorshipPeriodDropdown}
-              width={100}
-              height={30}
-            />
-          </DropdownContainer>
-        </AttendanceListHeader>
+          {/* 기간 드롭다운 */}
+          <Dropdown
+            value={worshipPeriod}
+            items={worshipPeriodDropdownItems}
+            onChangeItem={onChangeWorshipPeriodDropdown}
+            width={100}
+            height={30}
+          />
+        </DropdownContainer>
         {/* 통계 */}
         <StatisticContainer>
           <LeftContainer>
@@ -189,14 +187,19 @@ const MemberAttendanceListView = ({
             <MainText
               size={SIZE.EXTRA_LARGE}
               fontSize={24}
-              color={MAIN.DEFAULT}
-            >{`${statistic.checkRate}%`}</MainText>
+              color={getWorshipAttendanceRateColor(
+                (Math.round(
+                  statistic.presentCount /
+                    (statistic.presentCount + statistic.absentCount)
+                ) || 0) * 100
+              )}
+            >{`${(Math.round(statistic.presentCount / (statistic.presentCount + statistic.absentCount)) || 0) * 100}%`}</MainText>
             <MainText color={GRAY.DEFAULT}>
-              {getTranslatedMemberAttendanceCount(
+              {`${getTranslatedMemberAttendanceCount(
                 basePath,
                 statistic.presentCount,
                 statistic.totalSessions
-              )}
+              )} ${statistic.totalSessions - statistic.absentCount - statistic.presentCount > 0 && getTranslatedUnknownAttendanceCount(basePath, statistic.totalSessions - statistic.absentCount - statistic.presentCount)}`}
             </MainText>
           </RightContainer>
         </StatisticContainer>

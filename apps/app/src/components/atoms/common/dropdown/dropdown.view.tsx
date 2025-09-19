@@ -9,24 +9,27 @@ import React, {
 } from 'react';
 import styled from 'styled-components';
 
-import { WHITE } from '@/constants/styles/color';
+import { WHITE } from '@mokjang/constants';
 import DropdownItem, { DropdownValueType } from './dropdown-item';
-import { BorderInputProps } from '../input/border-input';
+import { BorderInputProps } from '@mokjang/components';
 import DefaultDropdownButton from './default-dropdown-button';
 
 const DropdownContainer = styled.div<{
   $isOpened: boolean;
   $isTransitionDone: boolean;
-  width?: number;
+  width?: number | 'auto';
 }>`
   position: relative;
   z-index: ${({ $isTransitionDone }) => ($isTransitionDone ? 50 : 'auto')};
-  width: ${({ width }) => (width ? `${width}px` : `100%`)};
+  width: ${({ width }) =>
+    width === 'auto' ? 'auto ' : width ? `${width}px` : `100%`};
 `;
+
 const DropdownList = styled.div<{
   $isOpened: boolean;
   $reverseDirection?: boolean;
   $height: number;
+  $listHeight?: number;
 }>`
   position: absolute;
   margin-top: 5px;
@@ -36,6 +39,7 @@ const DropdownList = styled.div<{
   display: flex;
   flex-direction: column;
   width: 100%;
+  height: ${({ $listHeight }) => $listHeight}px;
   justify-content: flex-start;
   align-items: flex-start;
   overflow-y: auto;
@@ -74,12 +78,14 @@ type DropdownViewProps = {
   isEditable?: boolean;
   enterKeyHint: string;
   borderColor?: string;
+  chevronColor?: string;
   width?: number;
   height?: number;
   backgroundColor?: string;
   disabled?: boolean;
   isChevronShown: boolean;
   isRight?: boolean;
+  listHeight?: number;
   CustomDropdownButton?: React.ComponentType<any>;
 } & BorderInputProps;
 
@@ -103,6 +109,7 @@ const DropdownView = forwardRef<HTMLInputElement, DropdownViewProps>(
       isEditable,
       enterKeyHint,
       borderColor,
+      chevronColor,
       width,
       height = 40,
       backgroundColor,
@@ -111,6 +118,7 @@ const DropdownView = forwardRef<HTMLInputElement, DropdownViewProps>(
       fontSize,
       fontWeight,
       isRight,
+      listHeight,
       CustomDropdownButton,
       ...inputProps
     },
@@ -143,6 +151,7 @@ const DropdownView = forwardRef<HTMLInputElement, DropdownViewProps>(
       enterKeyHint,
       borderColor,
       backgroundColor,
+      chevronColor,
       height,
       width,
       fontSize,
@@ -150,6 +159,7 @@ const DropdownView = forwardRef<HTMLInputElement, DropdownViewProps>(
       isRight,
       onKeyDownHandler,
       disabled,
+      listHeight,
       ...inputProps,
     };
 
@@ -172,6 +182,7 @@ const DropdownView = forwardRef<HTMLInputElement, DropdownViewProps>(
             $height={height}
             $isOpened={isOpened}
             $reverseDirection={reverseDirection}
+            $listHeight={listHeight}
             onTransitionEnd={(e) => {
               // transform 애니메이션이 끝날 때
               if (e.propertyName === 'transform' && !isOpened) {

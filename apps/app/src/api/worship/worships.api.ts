@@ -1,11 +1,11 @@
 import { AxiosResponse } from 'axios';
 import qs from 'qs';
 
-import { ORDER_DIRECTION } from '../../constants/constant';
-import { SERVER_URL, TEST_SERVER_URL } from '../../constants/state/url';
+import { ORDER_DIRECTION } from '@mokjang/constants';
 import { CustomError } from '../error/error';
 import authorizeAxios from '../authorize-axios';
-import { WORSHIP } from '../../constants/column/worship-column';
+import { WORSHIP } from '@mokjang/constants';
+import { IS_PRODUCTION, SERVER_URL, TEST_SERVER_URL } from '@mokjang/utils';
 
 type GetWorshipsParams = {
   churchId: string; // 교회 id
@@ -62,7 +62,7 @@ export class WorshipsApi {
   private _url: string;
 
   constructor(useBaseURL: boolean) {
-    this._url = useBaseURL
+    this._url = IS_PRODUCTION
       ? SERVER_URL // 실제 사용할 url
       : TEST_SERVER_URL; // 개발용 url
   }

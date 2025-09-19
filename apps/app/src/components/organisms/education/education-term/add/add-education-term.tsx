@@ -1,18 +1,18 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
-import { BLANK } from '../../../../../constants/constant';
+import { BLANK } from '@mokjang/constants';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../../../redux/store';
 
 import {
   getDateFromDateString,
   getDateStringFromDate,
+  getFormattedContent,
   getHourFromMinute,
   getTimeStringFromDate,
-} from '../../../../../utils/date';
+} from '@mokjang/utils';
 import { setTargetEducationTerm } from '../../../../../redux/reducers/target/target-education-term-reducer';
 import AddEducationTermView from './add-education-term.view';
 import { MemberDropdownType } from '../../../../atoms/common/dropdown/member-dropdown-item';
-import { getFormattedContent } from '../../../../../utils/format';
 
 type AddEducationTermProps = { isEdit?: boolean };
 
@@ -57,79 +57,196 @@ const AddEducationTerm = ({ isEdit = false }: AddEducationTermProps) => {
   // ===== term =====
 
   // ===== period =====
-  /* ── Period ── */
-  const onChangeStartDate = (date: Date | null) => {
-    if (date) {
-      const newDate = getDateStringFromDate(date);
-      let prevTime = '00:00';
+  /* 날짜 문자열 + 시간 문자열 → ISO 비슷한 포맷 */
+  const combineDateTime = (ymd: string, hm: string) => `${ymd}T${hm}`;
 
-      if (targetEducationTerm.startDate) {
-        prevTime = getTimeStringFromDate(
+  /* HH:mm → 분 */
+  const toMinutes = (hm: string) => {
+    const [h, m] = hm.split(':').map(Number);
+    return h * 60 + m;
+  };
+
+  /* ── 시작 날짜 변경 ── */
+  const onChangeStartDate = (date: Date | null) => {
+    if (!date) return;
+
+    const newStartYmd = getDateStringFromDate(date);
+    const prevStartHm = targetEducationTerm.startDate
+      ? getTimeStringFromDate(
           getDateFromDateString(targetEducationTerm.startDate)
-        );
+        )
+      : '08:00';
+
+    // 기본: 시작일 갱신
+    let nextStart = combineDateTime(newStartYmd, prevStartHm);
+
+    // 종료일 관련 교정
+    if (targetEducationTerm.endDate) {
+      const endDateObj = getDateFromDateString(targetEducationTerm.endDate);
+      const prevEndYmd = getDateStringFromDate(endDateObj);
+      const prevEndHm = getTimeStringFromDate(endDateObj);
+
+      let nextEndYmd = prevEndYmd;
+      let nextEndHm = prevEndHm;
+
+      // 시작일이 종료일을 넘어가면 종료 "날짜"를 시작 날짜로 이동
+      if (newStartYmd > prevEndYmd) {
+        nextEndYmd = newStartYmd;
+      }
+
+      // 같은 날인데 시작 시간이 종료 시간보다 크면 종료 "시간"을 시작 시간으로 맞춤
+      if (nextEndYmd === newStartYmd) {
+        if (toMinutes(prevStartHm) > toMinutes(prevEndHm)) {
+          nextEndHm = prevStartHm;
+        }
       }
 
       dispatch(
         setTargetEducationTerm({
           ...targetEducationTerm,
-          startDate: `${newDate}T${prevTime}`,
+          startDate: nextStart,
+          endDate: combineDateTime(nextEndYmd, nextEndHm),
         })
       );
-    }
-  };
-
-  const onChangeStartTime = (value: number) => {
-    let prevDate = '2000-01-01';
-    const newTime = getHourFromMinute(value);
-
-    if (targetEducationTerm.startDate) {
-      prevDate = getDateStringFromDate(
-        getDateFromDateString(targetEducationTerm.startDate)
-      );
+      return;
     }
 
     dispatch(
       setTargetEducationTerm({
         ...targetEducationTerm,
-        startDate: `${prevDate}T${newTime}`,
+        startDate: nextStart,
       })
     );
   };
 
+  /* ── 종료 날짜 변경 ── */
   const onChangeEndDate = (date: Date | null) => {
-    if (date) {
-      const newDate = getDateStringFromDate(date);
-      let prevTime = '00:00';
+    if (!date) return;
 
-      if (targetEducationTerm.endDate) {
-        prevTime = getTimeStringFromDate(
+    const newEndYmd = getDateStringFromDate(date);
+    const prevEndHm = targetEducationTerm.endDate
+      ? getTimeStringFromDate(
           getDateFromDateString(targetEducationTerm.endDate)
-        );
+        )
+      : '08:00';
+
+    let nextEnd = combineDateTime(newEndYmd, prevEndHm);
+
+    if (targetEducationTerm.startDate) {
+      const startDateObj = getDateFromDateString(targetEducationTerm.startDate);
+      const prevStartYmd = getDateStringFromDate(startDateObj);
+      const prevStartHm = getTimeStringFromDate(startDateObj);
+
+      let nextStartYmd = prevStartYmd;
+      let nextStartHm = prevStartHm;
+
+      // 종료일이 시작일보다 앞이면 시작 "날짜"를 종료 날짜로 이동
+      if (newEndYmd < prevStartYmd) {
+        nextStartYmd = newEndYmd;
+      }
+
+      // 같은 날인데 종료 시간이 시작 시간보다 작으면 시작 "시간"을 종료 시간으로 맞춤
+      if (nextStartYmd === newEndYmd) {
+        if (toMinutes(prevEndHm) < toMinutes(prevStartHm)) {
+          nextStartHm = prevEndHm;
+        }
       }
 
       dispatch(
         setTargetEducationTerm({
           ...targetEducationTerm,
-          endDate: `${newDate}T${prevTime}`,
+          startDate: combineDateTime(nextStartYmd, nextStartHm),
+          endDate: nextEnd,
         })
       );
-    }
-  };
-
-  const onChangeEndTime = (value: number) => {
-    let prevDate = '2000-01-01';
-    const newTime = getHourFromMinute(value);
-
-    if (targetEducationTerm.endDate) {
-      prevDate = getDateStringFromDate(
-        getDateFromDateString(targetEducationTerm.endDate)
-      );
+      return;
     }
 
     dispatch(
       setTargetEducationTerm({
         ...targetEducationTerm,
-        endDate: `${prevDate}T${newTime}`,
+        endDate: nextEnd,
+      })
+    );
+  };
+
+  /* ── 시작 시간 변경 ── */
+  const onChangeStartTime = (value: number) => {
+    const newStartHm = getHourFromMinute(value);
+    const prevStartYmd = targetEducationTerm.startDate
+      ? getDateStringFromDate(
+          getDateFromDateString(targetEducationTerm.startDate)
+        )
+      : '2000-01-01';
+
+    // 기본: 시작 시간 갱신
+    let nextStart = combineDateTime(prevStartYmd, newStartHm);
+
+    if (targetEducationTerm.endDate) {
+      const endDateObj = getDateFromDateString(targetEducationTerm.endDate);
+      const endYmd = getDateStringFromDate(endDateObj);
+      const endHm = getTimeStringFromDate(endDateObj);
+
+      // 같은 날이고, 시작 시간이 종료 시간보다 크면 종료 시간을 시작 시간에 맞춤
+      const nextEndHm =
+        prevStartYmd === endYmd && toMinutes(newStartHm) > toMinutes(endHm)
+          ? newStartHm
+          : endHm;
+
+      dispatch(
+        setTargetEducationTerm({
+          ...targetEducationTerm,
+          startDate: nextStart,
+          endDate: combineDateTime(endYmd, nextEndHm),
+        })
+      );
+      return;
+    }
+
+    dispatch(
+      setTargetEducationTerm({
+        ...targetEducationTerm,
+        startDate: nextStart,
+      })
+    );
+  };
+
+  /* ── 종료 시간 변경 ── */
+  const onChangeEndTime = (value: number) => {
+    const newEndHm = getHourFromMinute(value);
+    const prevEndYmd = targetEducationTerm.endDate
+      ? getDateStringFromDate(
+          getDateFromDateString(targetEducationTerm.endDate)
+        )
+      : '2000-01-01';
+
+    let nextEnd = combineDateTime(prevEndYmd, newEndHm);
+
+    if (targetEducationTerm.startDate) {
+      const startDateObj = getDateFromDateString(targetEducationTerm.startDate);
+      const startYmd = getDateStringFromDate(startDateObj);
+      const startHm = getTimeStringFromDate(startDateObj);
+
+      // 같은 날이고, 종료 시간이 시작 시간보다 작으면 시작 시간을 종료 시간에 맞춤
+      const nextStartHm =
+        startYmd === prevEndYmd && toMinutes(newEndHm) < toMinutes(startHm)
+          ? newEndHm
+          : startHm;
+
+      dispatch(
+        setTargetEducationTerm({
+          ...targetEducationTerm,
+          startDate: combineDateTime(startYmd, nextStartHm),
+          endDate: nextEnd,
+        })
+      );
+      return;
+    }
+
+    dispatch(
+      setTargetEducationTerm({
+        ...targetEducationTerm,
+        endDate: nextEnd,
       })
     );
   };
@@ -144,6 +261,7 @@ const AddEducationTerm = ({ isEdit = false }: AddEducationTermProps) => {
       const newInCharge = {
         value: targetEducationTerm.inCharge.id,
         title: targetEducationTerm.inCharge.name,
+        officer: targetEducationTerm.inCharge.officer?.name || BLANK,
       };
 
       setInCharge([newInCharge]);
@@ -188,6 +306,7 @@ const AddEducationTerm = ({ isEdit = false }: AddEducationTermProps) => {
         targetEducationTerm.reports.map((r) => ({
           value: r.receiver.id,
           title: r.receiver.name,
+          officer: r.receiver.officer?.name || BLANK,
         }))
       );
     } else {

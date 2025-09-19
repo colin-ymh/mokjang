@@ -2,12 +2,12 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
 import { useI18n } from '../../../../../locales/client';
-import { MainText } from '../../../atoms/common/text/main-text';
+import { MainText } from '@mokjang/components';
 import React from 'react';
 import MemberProfilePopupButton from '../../common/button/member-profile-popup-button';
-import { SIZE } from '../../../../constants/styles/style';
-import Button from '../../../atoms/common/button/button';
-import { GRAY, MAIN } from '../../../../constants/styles/color';
+import { SIZE } from '@mokjang/constants';
+import { Button } from '@mokjang/components';
+import { GRAY, MAIN } from '@mokjang/constants';
 
 const InformationContainer = styled.div`
   display: flex;

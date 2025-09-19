@@ -2,23 +2,24 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../redux/store';
 import {
-  BLANK,
   CHURCH_USER_ROLE,
+  JOIN_REQUEST,
   ORDER_DIRECTION,
-} from '../../../constants/constant';
+  USER,
+} from '@mokjang/constants';
 import {
   setJoinRequestOrderBy,
   setJoinRequestOrderDirection,
   setJoinRequests,
 } from '../../../redux/reducers/filter/join-request-filter-reducer';
 import JoinRequestTableView from './join-request-table.view';
-import { JOIN_REQUEST } from '../../../constants/column/join-request-column';
-import { USER } from '../../../constants/column/user-column';
 import { JoinRequestsApi } from '../../../api/join-request/join-request.api';
 import {
   DEFAULT_JOIN_REQUEST,
+  DEFAULT_MEMBER,
   JoinRequest,
-} from '../../../models/join-request/join-request';
+  Member,
+} from '@mokjang/models';
 import { setTargetJoinRequest } from '../../../redux/reducers/target/target-join-request-reducer';
 
 export type JoinRequestTableProps = {
@@ -35,7 +36,8 @@ const JoinRequestTable = ({ loadJoinRequests }: JoinRequestTableProps) => {
   );
   const [isLinkPopupShown, setIsLinkPopupShown] = useState<boolean>(false);
 
-  const [targetLinkMemberId, setTargetLinkMemberId] = useState<string>(BLANK);
+  const [targetLinkMember, setTargetLinkMember] =
+    useState<Member>(DEFAULT_MEMBER);
 
   const [thrownError, setThrownError] = useState<Error | null>(null);
   if (thrownError) {
@@ -62,7 +64,7 @@ const JoinRequestTable = ({ loadJoinRequests }: JoinRequestTableProps) => {
         .approveJoinRequest(
           { churchId, joinId: targetJoinRequest.id },
           {
-            linkMemberId: targetLinkMemberId,
+            linkMemberId: targetLinkMember.id,
             userRole: CHURCH_USER_ROLE.MANAGER,
           }
         )
@@ -71,7 +73,7 @@ const JoinRequestTable = ({ loadJoinRequests }: JoinRequestTableProps) => {
             (request) => request.id !== targetJoinRequest.id
           );
           dispatch(setJoinRequests(newJoinRequests));
-          setTargetLinkMemberId(BLANK);
+          setTargetLinkMember(DEFAULT_MEMBER);
           setIsLinkPopupShown(false);
           dispatch(setTargetJoinRequest(DEFAULT_JOIN_REQUEST));
         });
@@ -84,7 +86,7 @@ const JoinRequestTable = ({ loadJoinRequests }: JoinRequestTableProps) => {
   const onClickCancelLink = () => {
     setIsLinkPopupShown(false);
     dispatch(setTargetJoinRequest(DEFAULT_JOIN_REQUEST));
-    setTargetLinkMemberId(BLANK);
+    setTargetLinkMember(DEFAULT_MEMBER);
   };
 
   // 거절
@@ -97,7 +99,7 @@ const JoinRequestTable = ({ loadJoinRequests }: JoinRequestTableProps) => {
             (request) => request.id !== joinId
           );
           dispatch(setJoinRequests(newJoinRequests));
-          setTargetLinkMemberId(BLANK);
+          setTargetLinkMember(DEFAULT_MEMBER);
           setIsLinkPopupShown(false);
           dispatch(setTargetJoinRequest(DEFAULT_JOIN_REQUEST));
         });
@@ -107,8 +109,8 @@ const JoinRequestTable = ({ loadJoinRequests }: JoinRequestTableProps) => {
   };
 
   // 연결할 교인
-  const onChangeLinkMember = (memberId: string) => {
-    setTargetLinkMemberId(memberId);
+  const onChangeLinkMember = (member: Member) => {
+    setTargetLinkMember(member);
   };
 
   // 열 헤더를 눌러 정렬
@@ -136,7 +138,7 @@ const JoinRequestTable = ({ loadJoinRequests }: JoinRequestTableProps) => {
       const { scrollTop, scrollHeight, clientHeight } = scrollRef.current;
 
       // 스크롤이 최하단에 도달했는지 확인
-      if (scrollTop + clientHeight >= scrollHeight) {
+      if (scrollTop + clientHeight >= scrollHeight - 10) {
         loadJoinRequests(); // 데이터를 추가로 로드
       }
     }

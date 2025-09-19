@@ -1,22 +1,22 @@
 import styled from 'styled-components';
-import LabelInput from '../../../atoms/common/input/label-input';
+import { LabelInput, MainText } from '@mokjang/components';
 import { MemberDropdownType } from '../../../atoms/common/dropdown/member-dropdown-item';
-import { MemberDropdownValueType } from '../../../../models/dropdown/dropdown';
 import React, { ChangeEvent } from 'react';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../../../redux/store';
+import { RootState } from '@/redux/store';
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
-import { MainText } from '../../../atoms/common/text/main-text';
 import MemberDropdown from '../../../atoms/common/dropdown/member-dropdown';
 import Quill from '../../../atoms/common/input/quill';
-import { BLANK } from '../../../../constants/constant';
+import { BLANK, GRAY, SIZE } from '@mokjang/constants';
+import { MemberDropdownValueType } from '@mokjang/models';
+import BigMemberTag from '@/components/atoms/common/tag/big-member-tag';
 
 const SessionInformationContainer = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
   padding: 20px;
-  gap: 10px;
+  gap: 20px;
 `;
 
 const RowContainer = styled.div`
@@ -46,7 +46,7 @@ type EditWorshipSessionViewProps = {
   onChangeBibleTitle: (event: ChangeEvent<HTMLInputElement>) => void;
   onChangeVideoUrl: (event: ChangeEvent<HTMLInputElement>) => void;
   onChangeInCharge: (inCharge: MemberDropdownValueType[]) => void;
-  onChangeDescription: (description: string) => void;
+  onChangeDescription: (content: string, delta: any, source: string) => void;
 };
 
 const EditWorshipSessionView = ({
@@ -84,20 +84,31 @@ const EditWorshipSessionView = ({
         />
         <InputContainer>
           <LabelContainer>
-            <MainText>{t('worshipSessionInCharge')}</MainText>
+            <MainText color={GRAY.DARK} size={SIZE.SMALL}>
+              {t('worshipSessionInCharge')}
+            </MainText>
           </LabelContainer>
-          <MemberDropdown
-            values={inCharge}
-            onChangeValues={onChangeInCharge}
-            isSingle={true}
-            placeholder={
-              inCharge.length === 0
-                ? t_placeholder('worshipSessionInCharge')
-                : BLANK
-            }
-            isManager={true}
-            height={38}
-          />
+          {inCharge.length > 0 ? (
+            <BigMemberTag
+              officer={inCharge[0].officer}
+              profileImage={inCharge[0].profileImage}
+              name={inCharge[0].title}
+              onClick={() => onChangeInCharge([])}
+            />
+          ) : (
+            <MemberDropdown
+              values={inCharge}
+              onChangeValues={onChangeInCharge}
+              isSingle={true}
+              placeholder={
+                inCharge.length === 0
+                  ? t_placeholder('worshipSessionInCharge')
+                  : BLANK
+              }
+              isManager={true}
+              height={40}
+            />
+          )}
         </InputContainer>
       </RowContainer>
       <LabelInput
@@ -110,11 +121,15 @@ const EditWorshipSessionView = ({
       {/* 내용 */}
       <InputContainer>
         <LabelContainer>
-          <MainText>{t('worshipSessionDescription')}</MainText>
+          <MainText color={GRAY.DARK} size={SIZE.SMALL}>
+            {t('worshipSessionDescription')}
+          </MainText>
         </LabelContainer>
         <Quill
           value={description}
-          onChange={(event) => onChangeDescription(event)}
+          onChange={(content, delta, source) =>
+            onChangeDescription(content, delta, source)
+          }
           minHeight={150}
           placeholder={t_placeholder('worshipSessionDescription')}
         />

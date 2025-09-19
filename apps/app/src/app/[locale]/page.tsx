@@ -1,13 +1,14 @@
 'use client';
 
 import ModalLayout from '../../components/organisms/layout/modal-layout';
-import Button from '../../components/atoms/common/button/button';
+import { BorderInput, Button } from '@mokjang/components';
 import styled from 'styled-components';
-import BorderInput from '../../components/atoms/common/input/border-input';
-import { useState } from 'react';
-import { usePageRouter } from '../../utils/router';
+import { useEffect, useState } from 'react';
+import { usePageRouter } from '@mokjang/utils';
 import { JoinRequestsApi } from '../../api/join-request/join-request.api';
 import LogoutButton from '../../components/atoms/common/button/logout-button';
+import { useSelector } from 'react-redux';
+import { RootState } from '@mokjang/landing/src/redux/store';
 
 const ButtonContainer = styled.div`
   display: flex;
@@ -17,7 +18,19 @@ const ButtonContainer = styled.div`
 `;
 
 export default function LoginPage() {
+  const { user, initialized } = useSelector((state: RootState) => state.user);
   const router = usePageRouter();
+
+  useEffect(() => {
+    // 초기화가 끝났는데 유저가 없으면 보호 라우트 → 홈으로
+    if (initialized && !user?.id) {
+      router.replace('/');
+    }
+  }, [initialized, user?.id, router]);
+
+  // 초기화 전에는 아무것도 렌더링하지 않거나 로딩 표시
+  if (!initialized) return null; // or <Spinner />
+
   const [code, setCode] = useState<string>('');
 
   const joinRequestsApi = new JoinRequestsApi(false);
@@ -33,6 +46,9 @@ export default function LoginPage() {
   const onClickCreateChurch = () => {
     router.push('/church/register');
   };
+
+  // 초기화가 끝났고 유저가 없으면 리다이렉트 직전 상태 → 렌더링 스킵
+  if (!user?.id) return null;
 
   return (
     <ModalLayout>

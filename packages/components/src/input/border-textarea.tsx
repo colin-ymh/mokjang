@@ -1,7 +1,7 @@
 import { forwardRef, useEffect, useLayoutEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { BLACK, BLANK, GRAY, MAIN, SIZE, WHITE } from '@mokjang/constants';
-import { MainText } from '../text/main-text';
+import { MainText } from '@mokjang/components';
 
 const StyledTextarea = styled.textarea<{
   $borderColor: string;
@@ -16,7 +16,7 @@ const StyledTextarea = styled.textarea<{
   box-sizing: border-box;
   font-size: 14px;
   font-weight: 400;
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Pretendard', sans-serif;
   padding: 10px;
   padding-left: ${({ $paddingLeft }) =>
     $paddingLeft !== undefined ? `${$paddingLeft}px` : '10px'};
@@ -35,27 +35,27 @@ const StyledTextarea = styled.textarea<{
   border-radius: 5px;
 
   &::placeholder {
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Pretendard', sans-serif;
     font-size: 14px;
     color: ${GRAY.DEFAULT};
   }
   &::-webkit-input-placeholder {
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Pretendard', sans-serif;
     font-size: 14px;
     color: ${GRAY.DEFAULT};
   }
   &::-moz-placeholder {
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Pretendard', sans-serif;
     font-size: 14px;
     color: ${GRAY.DEFAULT};
   }
   &:-ms-input-placeholder {
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Pretendard', sans-serif;
     font-size: 14px;
     color: ${GRAY.DEFAULT};
   }
   &:-moz-placeholder {
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Pretendard', sans-serif;
     font-size: 14px;
     color: ${GRAY.DEFAULT};
   }
@@ -102,7 +102,10 @@ type BorderTextareaProps = {
 };
 
 // forwardRef 를 사용하여 ref 를 전달받을 수 있도록
-const BorderTextarea = forwardRef<HTMLTextAreaElement, BorderTextareaProps>(
+export const BorderTextarea = forwardRef<
+  HTMLTextAreaElement,
+  BorderTextareaProps
+>(
   (
     {
       borderColor = GRAY.LIGHT,
@@ -206,5 +209,3 @@ const BorderTextarea = forwardRef<HTMLTextAreaElement, BorderTextareaProps>(
     );
   }
 );
-
-export default BorderTextarea;

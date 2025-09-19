@@ -4,22 +4,19 @@ import { HomeApi } from '../../../../api/home/home.api';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
 import { useEffect, useState } from 'react';
-import {
-  getInitialNewMemberSummaries,
-  NewMemberSummary,
-} from '../../../../models/home/widget';
-import {
-  getDateFromDateString,
-  getDateStringFromDate,
-} from '../../../../utils/date';
-import { Member } from '../../../../models/member/member';
+import { getInitialNewMemberSummaries, Member, NewMemberSummary, } from '@mokjang/models';
+import { getDateFromDateString, getDateStringFromDate, getTranslatedMMDDDateFromDateString, } from '@mokjang/utils';
 import NewMemberWidgetView from './new-member-widget.view';
-import { BLANK } from '../../../../constants/constant';
+import { BLANK, LOCALE } from '@mokjang/constants';
 import { useI18n } from '../../../../../locales/client';
+import { usePathname } from 'next/navigation';
 
 const NewMemberWidget = () => {
   const t = useI18n();
   const churchId = useSelector((state: RootState) => state.church.churchId);
+  const pathname = usePathname();
+  const basePath = pathname.split('/')[1] as LOCALE;
+
   const [memberSummaries, setMemberSummaries] = useState<NewMemberSummary[]>(
     getInitialNewMemberSummaries()
   );
@@ -74,7 +71,7 @@ const NewMemberWidget = () => {
       const newMemberDetails = response.data.data;
       setMemberDetails(newMemberDetails);
       setDetailTitle(
-        `${getDateStringFromDate(getDateFromDateString(summary.periodStart))} ${t('newMember')}`
+        `${getTranslatedMMDDDateFromDateString(basePath, summary.periodStart)} ${t('lordDay')} ${t('newMember')}`
       );
       setIsDetailShown(true);
     } catch (error) {

@@ -1,22 +1,21 @@
-import { GRAY, MAIN, YELLOW } from '../../../../../constants/styles/color';
-import { DEFAULT_MEMBER, Member } from '../../../../../models/member/member';
+import { BLANK, GRAY, LOCALE, MAIN, YELLOW } from '@mokjang/constants';
+import { DEFAULT_MEMBER, Member, MinistryGroup } from '@mokjang/models';
 import styled from 'styled-components';
-import { MainText } from '../../../common/text/main-text';
-import ProfileImage from '../../../common/image/profile-image';
-import { BLANK } from '../../../../../constants/constant';
-import { MinistryGroup } from '../../../../../models/management/management';
+import {
+  MainTag,
+  MainText,
+  ProfileImage,
+  RadioButton,
+} from '@mokjang/components';
 import React, { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
-import { LOCALE } from '../../../../../constants/state/locale';
 import { useI18n } from '../../../../../../locales/client';
 import {
   getTranslatedAlreadyMinistryGroupLeader,
   getTranslatedNewMinistryGroupLeader,
-} from '../../../../../utils/translate';
+} from '@mokjang/utils';
 
-import ArrowUp from '../../../../../../public/svg/arror-up.svg';
-import RadioButton from '../../../common/radio-button/radio-button';
-import MainTag from '../../../common/tag/main-tag';
+import { Svg } from '@mokjang/assets';
 
 const EditMinistryGroupLeaderContainer = styled.div`
   display: flex;
@@ -76,7 +75,7 @@ const ResultContainer = styled.div`
   gap: 10px;
 `;
 
-const ArrowIcon = styled(ArrowUp)`
+const ArrowIcon = styled(Svg.ArrorUp)`
   width: 14px;
   height: 14px;
   stroke: ${MAIN.DEFAULT};
@@ -102,7 +101,11 @@ const EditMinistryMinistryGroupLeader = ({
   const [selectedMember, setSelectedMember] = useState<Member>(DEFAULT_MEMBER);
 
   const onClickMember = (member: Member) => {
-    setSelectedMember(member);
+    if (member.id === selectedMember.id) {
+      setSelectedMember(DEFAULT_MEMBER);
+    } else {
+      setSelectedMember(member);
+    }
   };
 
   useEffect(() => {
@@ -116,8 +119,6 @@ const EditMinistryMinistryGroupLeader = ({
 
     if (prevMinistryGroupLeader) {
       setSelectedMember(prevMinistryGroupLeader);
-    } else {
-      setSelectedMember(members[0]);
     }
   }, [ministryGroup, members]);
 
@@ -157,19 +158,23 @@ const EditMinistryMinistryGroupLeader = ({
           );
         })}
       </MemberListContainer>
-      {
+      {selectedMember.id && (
         <ResultContainer>
           <ArrowIcon />
           <MainText color={MAIN.DEFAULT}>
-            {ministryGroup.leaderMemberId !== selectedMember.id
-              ? getTranslatedNewMinistryGroupLeader(locale, selectedMember.name)
-              : getTranslatedAlreadyMinistryGroupLeader(
-                  locale,
-                  selectedMember.name
-                )}
+            {selectedMember &&
+              (ministryGroup?.leaderMemberId !== selectedMember?.id
+                ? getTranslatedNewMinistryGroupLeader(
+                    locale,
+                    selectedMember.name
+                  )
+                : getTranslatedAlreadyMinistryGroupLeader(
+                    locale,
+                    selectedMember.name
+                  ))}
           </MainText>
         </ResultContainer>
-      }
+      )}
     </EditMinistryGroupLeaderContainer>
   );
 };

@@ -1,42 +1,31 @@
 import styled from 'styled-components';
-import { MainText } from '../../../../atoms/common/text/main-text';
-import { FamilyMember, Member } from '../../../../../models/member/member';
-import { WHITE } from '../../../../../constants/styles/color';
+import { Button, CustomPopup, SvgIcon } from '@mokjang/components';
+import { FamilyMember, Member } from '@mokjang/models';
+import { FAMILY, LOCALE, MAIN, WHITE } from '@mokjang/constants';
 
 import { useI18n, useScopedI18n } from '../../../../../../locales/client';
-import Plus from '../../../../../../public/svg/plus.svg';
-import Button from '../../../../atoms/common/button/button';
-import CustomPopup from '../../../../atoms/common/popup/custom-popup';
-import { getTranslatedFamilyAddMemberTitle } from '../../../../../utils/translate';
+import { Svg } from '@mokjang/assets';
+import { getTranslatedFamilyAddMemberTitle } from '@mokjang/utils';
 import React, { Dispatch, RefObject, SetStateAction } from 'react';
 import { usePathname } from 'next/navigation';
-import { LOCALE } from '../../../../../constants/state/locale';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../redux/store';
 import AddFamilyMemberModal from '../../../../atoms/member/information/family/add-family-member-modal';
 import FamilyMemberItem from '../../../../atoms/member/information/family/family-member-item';
-import { SIZE } from '../../../../../constants/styles/style';
-import { FAMILY } from '../../../../../constants/constant';
 import useWindowSize from '../../../../../hooks/window/window';
+import EmptyList from '@/components/atoms/common/image/empty-list';
 
 const ListContainer = styled.div`
   display: flex;
   flex-direction: column;
   padding: 20px;
-  gap: 20px;
+  gap: 10px;
 `;
 
 const FamilyListHeader = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-`;
-
-const PlusIcon = styled(Plus)`
-  width: 18px;
-  height: 18px;
-  stroke: ${WHITE};
-  stroke-width: 2px;
 `;
 
 const FamilyList = styled.div<{ height: number }>`
@@ -91,34 +80,41 @@ const FamilyInformationListView = ({
     <ListContainer>
       {/* 가족정보 헤더 */}
       <FamilyListHeader>
-        <MainText size={SIZE.EXTRA_LARGE}>
-          {t_header('familyInformation')}
-        </MainText>
+        <div />
         {/* 가족 추가 버튼*/}
         <Button
           width={'auto'}
           text={t_button('addFamily')}
           onClick={onClickOpenModal}
-          icon={<PlusIcon />}
+          icon={
+            <SvgIcon svg={Svg.Plus} color={MAIN.DEFAULT} width={2} size={18} />
+          }
           height={30}
+          backgroundColor={WHITE}
+          color={MAIN.DEFAULT}
         />
       </FamilyListHeader>
       <FamilyList ref={scrollRef} onScroll={onScroll} height={height - 400}>
-        {familyMembers.map((familyMember) => {
-          return (
-            <FamilyMemberItem
-              key={familyMember.familyMemberId}
-              familyMember={familyMember}
-              onChangeRelation={onChangeRelation}
-              onClickConfirmDelete={onClickConfirmDelete}
-            />
-          );
-        })}
+        {familyMembers.length > 0 ? (
+          familyMembers.map((familyMember) => {
+            return (
+              <FamilyMemberItem
+                key={familyMember.familyMemberId}
+                familyMember={familyMember}
+                onChangeRelation={onChangeRelation}
+                onClickConfirmDelete={onClickConfirmDelete}
+              />
+            );
+          })
+        ) : (
+          <EmptyList width={200} height={200} />
+        )}
       </FamilyList>
 
       {/* 교인 추가 팝업 */}
       <CustomPopup
         isShow={isModalShown}
+        onClickClose={onClickCloseModal}
         onClickCancel={onClickCloseModal}
         width={800}
         height={700}
@@ -129,6 +125,7 @@ const FamilyInformationListView = ({
         )}
         headerDescription={t('description.addMemberHeader')}
         doneText={t('button.add')}
+        cancelText={t('button.cancel')}
         onClickDone={onClickAddDone}
       >
         <AddFamilyMemberModal

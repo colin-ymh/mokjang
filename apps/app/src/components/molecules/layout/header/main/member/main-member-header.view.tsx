@@ -1,25 +1,19 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { GRAY, WHITE } from '../../../../../../constants/styles/color';
-import { MainText } from '../../../../../atoms/common/text/main-text';
-import { DIRECTION, SIZE } from '../../../../../../constants/styles/style';
+import { DIRECTION, GRAY, MEDIA_MIN_WIDTH, SIZE, WHITE, } from '@mokjang/constants';
+import { Button, CustomPopup, MainText, SvgIcon } from '@mokjang/components';
 
 import { useScopedI18n } from '../../../../../../../locales/client';
-import { MEDIA_MIN_WIDTH } from '../../../../../../constants/constant';
 import SlidePopup from '../../../../../atoms/common/popup/slide-popup';
-import Button from '../../../../../atoms/common/button/button';
-import { MAIN_HEADER_ID } from '../../../../../../constants/layout/header';
+import { MAIN_HEADER_ID } from '@/constants/layout/header';
 import GroupFilter from '../../../../member/setting/group-filter';
 import AddMember from '../../../../../organisms/member/add/add-member';
-import Plus from '../../../../../../../public/svg/plus.svg';
-import {
-  getIsWellFormedMobilePhone,
-  getIsWellFormedName,
-} from '../../../../../../utils/check';
+
+import { Svg } from '@mokjang/assets';
+import { getIsWellFormedName, getIsWellFormedPhone } from '@mokjang/utils';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../../../../../redux/store';
-import CustomPopup from '../../../../../atoms/common/popup/custom-popup';
+import { RootState } from '@/redux/store';
 
 const HeaderContainer = styled.div`
   display: flex;
@@ -94,7 +88,7 @@ const MobileRegister = styled.div`
   }
 `;
 
-const PlusIcon = styled(Plus)`
+const PlusIcon = styled(Svg.Plus)`
   width: 18px;
   height: 18px;
   stroke: ${WHITE};
@@ -111,7 +105,7 @@ type MainMemberHeaderViewProps = {
   onDismissModal: () => void;
   selectedGroupName: string;
   onClickNewGroup: (groupId: string | null) => void;
-  onChangeProfileImage: (image: File | null) => void;
+  onChangeProfileImage: (image: File | null | undefined) => void;
   onClickSave: () => void;
 };
 
@@ -152,9 +146,11 @@ const MainMemberHeaderView = ({
         <Button
           text={t_button('addMember')}
           onClick={onClickRegisterMemberButton}
-          width={100}
-          height={30}
-          icon={<PlusIcon />}
+          width={'auto'}
+          fontWeight={500}
+          fontSize={16}
+          height={35}
+          icon={<SvgIcon svg={Svg.Plus} color={WHITE} width={2} size={20} />}
         />
       </HeaderTopContainer>
       {/* 그룹 필터링 팝업 */}
@@ -168,18 +164,23 @@ const MainMemberHeaderView = ({
       {/* 데스크톱 교인 추가 */}
       <DesktopRegister>
         <CustomPopup
-          width={60}
+          width={35}
           height={80}
           isPercentage={true}
+          // width={700}
+          // height={1000}
           isShow={isRegisterShown}
+          onClickClose={onClickClose}
           onClickCancel={onClickClose}
           onClickDone={onClickSave}
           headerTitle={t_title('memberRegister')}
           headerDescription={t_description('memberRegisterHeader')}
           doneDisabled={
             !getIsWellFormedName(targetMember.name) ||
-            !getIsWellFormedMobilePhone(targetMember.mobilePhone)
+            !getIsWellFormedPhone(targetMember.mobilePhone)
           }
+          cancelText={t_button('cancel')}
+          doneText={t_button('save')}
         >
           <AddMember onChangeProfileImage={onChangeProfileImage} />
         </CustomPopup>

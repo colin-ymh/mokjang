@@ -6,13 +6,21 @@ import {
   setMemberFilter,
 } from '../../../../redux/reducers/filter/member-filter-reducer';
 
-import { getTrimmedString } from '../../../../utils/format';
+import {
+  getAge,
+  getDateFromDateString,
+  getTranslatedAge,
+  getTrimmedString,
+} from '@mokjang/utils';
 import MemberFilterRowView from './member-filter-row.view';
-import { MEMBER } from '../../../../constants/column/member-column';
-import { BLANK } from '../../../../constants/constant';
+import { BLANK, LOCALE, MEMBER } from '@mokjang/constants';
 import { FilteredItemType } from '../../../atoms/member/setting/filtered-item.view';
+import { usePathname } from 'next/navigation';
 
 const MemberFilterRow = () => {
+  const pathname = usePathname();
+  const locale = pathname.split('/')[1] as LOCALE;
+
   const dispatch = useDispatch<AppDispatch>();
   const { memberFilter } = useSelector(
     (state: RootState) => state.memberFilter
@@ -119,7 +127,16 @@ const MemberFilterRow = () => {
     if (memberFilter.birthFrom || memberFilter.birthTo) {
       newFilterItems.push({
         title: MEMBER.BIRTH,
-        value: [memberFilter.birthFrom, memberFilter.birthTo],
+        value: [
+          getTranslatedAge(
+            locale,
+            getAge(getDateFromDateString(memberFilter.birthTo))
+          ),
+          getTranslatedAge(
+            locale,
+            getAge(getDateFromDateString(memberFilter.birthFrom))
+          ),
+        ],
       });
     }
 

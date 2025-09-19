@@ -2,7 +2,7 @@ import React from 'react';
 import { PopupFooterView } from './popup-footer.view';
 
 type PopupFooterProps = {
-  onClickCancel: () => void;
+  onClickCancel?: () => void;
   onClickDone?: () => void;
   cancelText: string;
   doneText: string;

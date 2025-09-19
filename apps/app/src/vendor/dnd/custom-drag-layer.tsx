@@ -1,9 +1,9 @@
 import React from 'react';
 import { useDragLayer, XYCoord } from 'react-dnd';
 import styled from 'styled-components';
-import { MainText } from '../../components/atoms/common/text/main-text';
-import { GRAY } from '../../constants/styles/color';
-import { DND_ITEM_TYPE } from '../../constants/constant';
+import { MainText } from '@mokjang/components';
+import { GRAY } from '@mokjang/constants';
+import { DND_ITEM_TYPE } from '@mokjang/constants';
 
 // attrs로 style 프로퍼티만 동적으로 처리
 const LayerContainer = styled.div.attrs<{ x: number; y: number }>((props) => ({

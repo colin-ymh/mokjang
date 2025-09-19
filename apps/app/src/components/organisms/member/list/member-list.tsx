@@ -1,23 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../../../redux/store';
+import { AppDispatch, RootState } from '@/redux/store';
 import {
   advanceToNextCursor,
   fetchMembers,
   setMemberCursor,
-} from '../../../../redux/reducers/filter/member-filter-reducer';
+} from '@/redux/reducers/filter/member-filter-reducer';
 
-import { MembersApi } from '../../../../api/members/members.api';
+import { MembersApi } from '@/api/members/members.api';
 import MemberListView from './member-list.view';
-import { DEFAULT_MEMBER } from '../../../../models/member/member';
-import { setTargetMember } from '../../../../redux/reducers/target/target-member-reducer';
-import { uploadFiles } from '../../../../utils/upload';
-import { BLANK } from '../../../../constants/constant';
+import { DEFAULT_MEMBER } from '@mokjang/models';
+import { setTargetMember } from '@/redux/reducers/target/target-member-reducer';
+import { uploadFilesToSupabase } from '@/utils/upload';
+import { BLACK, BLANK, CONCEALED, DESTRUCTIVE } from '@mokjang/constants';
+import { getDateFromDateString, getDateStringFromDate } from '@mokjang/utils';
 import {
   setIsToastShown,
+  setToastBackgroundColor,
   setToastText,
-} from '../../../../redux/reducers/toast-popup-reducer';
+} from '@/redux/reducers/toast-popup-reducer';
 import { useScopedI18n } from '../../../../../locales/client';
+import { deleteFilesFromSupabase } from '@/utils/delete';
 
 type MemberListProps = {
   isNewMember?: boolean;
@@ -64,10 +67,23 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
   const [isEditShown, setIsEditShown] = useState<boolean>(false);
 
   // 임시 프로필 이미지
-  const [profileImage, setProfileImage] = useState<File | null>(null);
+  const [profileImage, setProfileImage] = useState<File | null | undefined>(
+    null
+  );
 
-  const onChangeProfileImage = (image: File | null) => {
+  const onChangeProfileImage = (
+    image: File | null | undefined,
+    thumb?: string
+  ) => {
     setProfileImage(image);
+
+    if (!image) {
+      dispatch(setTargetMember({ ...targetMember, profileImageUrl: BLANK }));
+    }
+
+    if (thumb) {
+      dispatch(setTargetMember({ ...targetMember, profileImageUrl: thumb }));
+    }
   };
 
   const onClickConfirmOpen = () => {
@@ -119,7 +135,13 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
       dispatch(setTargetMember(member)); // (중복 제거)
       setIsMemberInformationShown(true);
     } catch (error) {
-      setThrownError(error instanceof Error ? error : new Error(String(error)));
+      if (error instanceof Error) {
+        dispatch(setToastText(error.message));
+        dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
+        dispatch(setIsToastShown(true));
+      } else {
+        setThrownError(new Error(String(error)));
+      }
     }
   };
 
@@ -165,26 +187,70 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
   };
 
   const onClickEditDone = async () => {
+    dispatch(setToastBackgroundColor(BLACK));
+    dispatch(setToastText(t_popup('saveComplete')));
+    dispatch(setIsToastShown(true));
+    setIsEditShown(false);
+
     try {
       let updatedMember = { ...targetMember };
+
+      // 프로필 이미지를 불러왔음
       if (profileImage) {
-        const uploadedUrls = await uploadFiles([profileImage]);
+        const uploadedUrls = await uploadFilesToSupabase([profileImage], {
+          bucket: 'profile',
+          prefix: `church/${churchId}/member`,
+        });
         const uploadedUrl = uploadedUrls[0];
         if (uploadedUrl) {
           updatedMember = { ...targetMember, profileImageUrl: uploadedUrl };
           dispatch(setTargetMember(updatedMember));
         }
-      } else if (profileImage === null) {
+
+        // 기존에 다른 프로필 이미지가 있었다면, 삭제
+        const prevImageUrl = members.find(
+          (member) => member.id === targetMember.id
+        )?.profileImageUrl;
+
+        if (prevImageUrl) {
+          deleteFilesFromSupabase([prevImageUrl]);
+        }
+      }
+      // 프로필 이미지 삭제
+      else if (profileImage === undefined) {
         updatedMember = { ...targetMember, profileImageUrl: BLANK };
         dispatch(setTargetMember(updatedMember));
+
+        // 이전 프로필 이미지 확인 후 삭제
+        const prevImageUrl = members.find(
+          (member) => member.id === targetMember.id
+        )?.profileImageUrl;
+
+        if (prevImageUrl) {
+          deleteFilesFromSupabase([prevImageUrl]);
+        }
+      }
+      // 프로필 이미지 변화 없음
+      else if (profileImage === null) {
+        updatedMember = { ...targetMember, profileImageUrl: BLANK };
       }
 
       await membersApi
         .editMember(
           { churchId, memberId: targetMember.id },
           {
-            profileImageUrl: updatedMember.profileImageUrl || undefined,
-            birth: updatedMember.birth || undefined,
+            name: updatedMember.name || undefined,
+            mobilePhone:
+              updatedMember.mobilePhone?.replace(/\D/g, '') || undefined,
+            profileImageUrl: updatedMember.profileImageUrl
+              ? updatedMember.profileImageUrl
+              : profileImage === undefined
+                ? BLANK
+                : undefined,
+            birth:
+              getDateStringFromDate(
+                getDateFromDateString(updatedMember.birth)
+              ) || undefined,
             isLunar: updatedMember.isLunar,
             isLeafMonth: updatedMember.isLeafMonth,
             gender: updatedMember.gender || undefined,
@@ -192,25 +258,27 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
             school: updatedMember.school || undefined,
             address: updatedMember.address || undefined,
             detailAddress: updatedMember.detailAddress || undefined,
-            marriage: updatedMember.marriage || undefined,
+            registeredAt: updatedMember.registeredAt || undefined,
+            baptism: updatedMember.baptism || undefined,
+            marriage:
+              updatedMember.marriage !== CONCEALED
+                ? updatedMember.marriage
+                : undefined,
             vehicleNumber:
               updatedMember.vehicleNumber.filter(
                 (number) => number.length > 0
               ) || undefined,
-            registeredAt: updatedMember.registeredAt || undefined,
           }
         )
         .then((response) => {
           const newMember = response.data.data;
           dispatch(setTargetMember(newMember));
           dispatch(fetchMembers());
-          setIsEditShown(false);
+
+          setProfileImage(null);
         });
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));
-    } finally {
-      dispatch(setIsToastShown(true));
-      dispatch(setToastText(t_popup('saveComplete')));
     }
   };
 

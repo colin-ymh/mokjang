@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import styled from 'styled-components';
-import { Group } from '../../../models/management/management';
+import { Group } from '@mokjang/models';
 import GroupHierarchyItem from '../../atoms/group/group-hierarchy-item';
 
 const ChildGroupsContainer = styled.div`

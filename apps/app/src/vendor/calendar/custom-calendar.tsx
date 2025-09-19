@@ -2,18 +2,18 @@ import React, { useEffect, useState } from 'react';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-import { Schedule } from '../../models/calendar/calendar';
+import { DOMAIN, Schedule } from '@mokjang/models';
 import styled from 'styled-components';
-import { GRAY, MAIN, RED, WHITE } from '../../constants/styles/color';
+import { GRAY, MAIN, RED, WHITE } from '@mokjang/constants';
 import CustomCalendarHeader from './custom-calendar-header';
 
 import 'moment/locale/ko';
 import { useParams } from 'next/navigation';
 import CustomDateHeader from './custom-date-header';
-import { getEventStyle } from '../../utils/color';
+import { getEventStyle } from '@/utils/color';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../redux/store';
-import { DOMAIN } from '../../models/permission/permission';
+import { RootState } from '@/redux/store';
+import CustomEvent from '@/vendor/calendar/custom-event';
 
 const CustomCalendarContainer = styled.div`
   display: flex;
@@ -32,12 +32,12 @@ const CustomCalendarContainer = styled.div`
 
   .rbc-month-view {
     /* 모서리 안쪽 여백 없이, 바깥 여백만 부여 */
-    margin: 20px;
-    width: calc(100% - 40px); /* 좌우 마진 만큼 줄여 overflow 방지 */
-    border-radius: 10px;
-    overflow: hidden;
-    padding: 0;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* 테두리 대신 그림자 */
+    //margin: 20px;
+    //width: calc(100% - 40px); /* 좌우 마진 만큼 줄여 overflow 방지 */
+    //border-radius: 10px;
+    //overflow: hidden;
+    //padding: 0;
+    //box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* 테두리 대신 그림자 */
     border: none;
     background-color: ${WHITE};
   }
@@ -51,7 +51,7 @@ const CustomCalendarContainer = styled.div`
     height: 50px;
     font-size: 14px;
     font-weight: 400;
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Pretendard', sans-serif;
     color: ${GRAY.DARK};
     border-color: ${GRAY.LIGHT};
   }
@@ -207,6 +207,7 @@ const CustomCalendar = ({
           toolbar: CustomCalendarHeader,
           month: {
             dateHeader: CustomDateHeader,
+            event: CustomEvent,
           },
         }}
         onSelectEvent={onSelectSchedule}

@@ -1,13 +1,13 @@
 import { AxiosResponse } from 'axios';
 import qs from 'qs';
 
-import { SERVER_URL, TEST_SERVER_URL } from '../../constants/state/url';
 import authorizeAxios from '../authorize-axios';
 import { CustomError } from '../error/error';
-import { CHURCH_USER_ROLE, ORDER_DIRECTION } from '../../constants/constant';
-import { JOIN_REQUEST } from '../../constants/column/join-request-column';
-import { JOIN_REQUEST_STATUS } from '../../constants/status/status';
-import { USER } from '../../constants/column/user-column';
+import { CHURCH_USER_ROLE, ORDER_DIRECTION } from '@mokjang/constants';
+import { JOIN_REQUEST } from '@mokjang/constants';
+import { JOIN_REQUEST_STATUS } from '@mokjang/constants';
+import { USER } from '@mokjang/constants';
+import { IS_PRODUCTION, SERVER_URL, TEST_SERVER_URL } from '@mokjang/utils';
 
 type CreateJoinRequestBody = {
   joinCode: string;
@@ -48,7 +48,7 @@ export class JoinRequestsApi {
   private _url: string;
 
   constructor(useBaseURL: boolean) {
-    this._url = useBaseURL
+    this._url = IS_PRODUCTION
       ? SERVER_URL // 실제 사용할 url
       : TEST_SERVER_URL; // 개발용 url
   }

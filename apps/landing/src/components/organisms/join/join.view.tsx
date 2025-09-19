@@ -1,25 +1,12 @@
 import { ChangeEvent } from 'react';
-import { Church } from '@/models/church/church';
+import { Church } from '@mokjang/models';
 import styled from 'styled-components';
-import {
-  GRAY,
-  GREEN,
-  LOCALE,
-  MAIN,
-  WHITE,
-  YELLOW,
-} from '../../../../../../packages/constants/src';
-import {
-  BorderInput,
-  Button,
-  MainText,
-  SvgIcon,
-} from '../../../../../../packages/components/src';
+import { GRAY, GREEN, LOCALE, MAIN, WHITE, YELLOW } from '@mokjang/constants';
+import { BorderInput, Button, MainText, SvgIcon } from '@mokjang/components';
 import { useI18n, useScopedI18n } from '../../../../locales/client';
 
 import { Svg } from '@mokjang/assets';
-import { getTranslatedMemberCount } from '../../../../../../packages/utils/src';
-import Warning from '../../../../public/svg/warning.svg';
+import { getTranslatedMemberCount } from '@mokjang/utils';
 import { usePathname } from 'next/navigation';
 
 const JoinContainer = styled.div`
@@ -236,7 +223,7 @@ const JoinView = ({
                   $flexDirection={'row'}
                 >
                   <SvgIcon
-                    svg={Warning}
+                    svg={Svg.Warning}
                     width={2}
                     size={18}
                     color={YELLOW.SEMI_DARK}
@@ -294,7 +281,7 @@ const JoinView = ({
             $borderColor={GRAY.LIGHT}
             $flexDirection={'row'}
           >
-            <SvgIcon svg={Warning} width={2} size={18} color={GRAY.DARK} />
+            <SvgIcon svg={Svg.Warning} width={2} size={18} color={GRAY.DARK} />
             <CardContentContainer>
               <MainText color={GRAY.DARK}>{t_info('title')}</MainText>
               <MainText color={GRAY.DARK}>{t_info('description')}</MainText>

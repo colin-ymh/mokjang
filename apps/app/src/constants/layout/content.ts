@@ -1,4 +1,4 @@
-import { HEADER_BAR } from '../constant';
+import { HEADER_BAR } from '@mokjang/constants';
 
 export enum HOME_CONTENT_ID {
   HOME = 'home',
@@ -74,4 +74,9 @@ export enum EDUCATION_TERM_CONTENT_ID {
 export enum EDUCATION_SESSION_CONTENT_ID {
   CONTENT = 'content',
   ATTENDANCE = 'educationAttendance',
+}
+
+export enum PERMISSION_TEMPLATE_CONTENT_ID {
+  PERMISSION = 'permission',
+  MANAGER = 'manager',
 }

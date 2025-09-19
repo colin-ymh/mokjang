@@ -2,15 +2,12 @@ import React from 'react';
 import styled from 'styled-components';
 import { useParams } from 'next/navigation';
 
-import { GRAY, MAIN } from '../../../../../../constants/styles/color';
-import { MainText } from '../../../../../atoms/common/text/main-text';
-import { SIZE } from '../../../../../../constants/styles/style';
+import { GRAY, MAIN, MEDIA_MIN_WIDTH, SIZE, WHITE } from '@mokjang/constants';
+import { Button, MainText, SvgIcon } from '@mokjang/components';
 
+import { Svg } from '@mokjang/assets';
 import { useScopedI18n } from '../../../../../../../locales/client';
-
-import { MEDIA_MIN_WIDTH } from '../../../../../../constants/constant';
-import Button from '../../../../../atoms/common/button/button';
-import { MANAGEMENT_HEADER_ID } from '../../../../../../constants/layout/header';
+import { MANAGEMENT_HEADER_ID } from '@/constants/layout/header';
 import SlidePopup from '../../../../../atoms/common/popup/slide-popup';
 import AddPermissionTemplate from '../../../../../organisms/permission/add/add-permission-template';
 
@@ -85,8 +82,11 @@ const ManagementPermissionHeaderView = ({
         <Button
           text={t_button('addPermissionTemplate')}
           onClick={onClickAddPermissionTemplate}
-          width={140}
-          height={30}
+          width={'auto'}
+          fontWeight={500}
+          fontSize={16}
+          height={35}
+          icon={<SvgIcon svg={Svg.Plus} color={WHITE} width={2} size={20} />}
         />
       </HeaderTopContainer>
       <HeaderBottomContainer></HeaderBottomContainer>
@@ -98,6 +98,8 @@ const ManagementPermissionHeaderView = ({
         onClickDone={onClickSavePermissionTemplate}
         doneBackgroundColor={isSaveEnabled ? MAIN.DEFAULT : MAIN.LIGHT}
         doneDisabled={!isSaveEnabled}
+        doneText={t_button('save')}
+        cancelText={t_button('cancel')}
       >
         <AddPermissionTemplate />
       </SlidePopup>

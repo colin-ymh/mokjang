@@ -12,7 +12,17 @@ export default {
   isDone: '완료',
   isNotDone: '미완료',
   customSelect: '직접선택',
+  custom: '직접입력',
   email: '이메일',
+
+  officerNone: '직분 없음',
+  marriageNone: '결혼상태 없음',
+  baptismNone: '신급 없음',
+
+  churchInfo: '교회 정보',
+  worshipAttendance: '예배 출석',
+
+  currentPlan: '현재 플랜',
 
   manager: '관리자',
 
@@ -24,9 +34,6 @@ export default {
   filter: '필터',
 
   doneRate: '완료율',
-
-  prevNextWeek: '이전 / 다음 주',
-
   current: '현재',
 
   creator: '생성자',
@@ -50,8 +57,8 @@ export default {
   defaultMinistry: '일괄 사역 설정',
   groupLeader: '그룹장',
   editGroupLeader: '그룹장 변경',
-  ministryGroupLeader: '사역리더',
-  editMinistryGroupLeader: '사역리더 변경',
+  ministryGroupLeader: '사역팀장',
+  editMinistryGroupLeader: '사역팀장 변경',
   editMinistry: '사역 변경',
   groupDetailHistory: '그룹 세부 이력',
   ministryDetailHistory: '사역 세부 이력',
@@ -61,10 +68,10 @@ export default {
 
   memberCount: '교인 수',
   groupCount: '그룹 수',
-  ministryGroupCount: '사역그룹 수',
+  ministryGroupCount: '사역팀 수',
 
-  newMember: '신규 등록자',
-  weekNewMemberState: '최근 4주간 등록 현황',
+  newMember: '신규 등록 교인',
+  lastOneMonth: '최근 한 달',
 
   church: '교회',
   churchName: '교회명',
@@ -101,6 +108,7 @@ export default {
   attendanceRate: '출석률',
   note: '특이사항',
 
+  lordDay: '주일',
   sunday: '일요일',
   monday: '월요일',
   tuesday: '화요일',
@@ -120,7 +128,7 @@ export default {
   worship: '예배',
   description: '설명',
 
-  concealed: '권한 없음',
+  CONCEALED: '권한 없음',
 
   management: '교회 설정',
 
@@ -128,7 +136,9 @@ export default {
   owner: '소유자',
   range: '범위',
   active: '활성',
+  activeDescription: '정상적으로 서비스 이용 가능',
   inactive: '비활성',
+  inactiveDescription: '서비스 이용 불가능',
 
   linkedMemberUndefined: '연결된 교인정보 없음',
 
@@ -144,6 +154,7 @@ export default {
   permissionScope: '권한범위',
 
   educationEnrollment: '수강 교인',
+  enrollments: '수강 교인',
 
   inCharge: '담당자',
   inChargeId: '담당자',
@@ -161,6 +172,7 @@ export default {
   visitationDate: '심방일자',
   visitationMethod: '심방방식',
   visitationType: '심방 종류',
+  members: '대상자',
   fromStartDate: '날짜 ~부터',
   toStartDate: '날짜 ~까지',
 
@@ -197,10 +209,10 @@ export default {
   groupName: '그룹명',
   groupRole: '그룹역할',
 
-  ministryGroup: '사역 그룹',
-  ministryGroupList: '사역그룹 목록',
-  ministryGroupName: '사역그룹명',
-  ministryGroupRole: '사역그룹역할',
+  ministryGroup: '사역팀',
+  ministryGroupList: '사역팀 목록',
+  ministryGroupName: '사역명',
+  ministryGroupRole: '사역역할',
 
   educationList: '교육 목록',
   educationName: '교육명',
@@ -239,14 +251,14 @@ export default {
   // 필수
   basicInformation: '기본정보',
   name: '이름',
-  mobilePhone: '휴대전화',
+  mobilePhone: '전화번호',
   verifyNumber: '인증번호',
   guide: '인도자',
   family: '가족',
   relation: '가족관계',
   // 개인 정보
   personalInformation: '개인정보',
-  profileImage: '프로필 사진',
+  profileImage: '프로필',
   birth: '생년월일',
   birthDay: '생일',
   age: '나이',
@@ -315,12 +327,24 @@ export default {
   granddaughter: '손녀',
   relative: '친인척',
 
+  'notification.recents': '최근 알림',
+  'notification.unread': '읽지 않음',
+
+  'subscription.freeTrial': '무료체험',
+  'subscription.basic': '베이직',
+  'subscription.standard': '스탠다드',
+  'subscription.plus': '플러스',
+  'subscription.premium': '프리미엄',
+  'subscription.enterprise': '엔터프라이즈',
+
   'unit.member.title': '교인정보',
   'unit.visitation.title': '심방',
   'unit.education.title': '교육',
   'unit.task.title': '업무',
-  'unit.church.title': '교회관리',
-  'unit.manager.title': '관리자 설정',
+  'unit.worship.title': '예배',
+  'unit.worshipAttendance.title': '예배 출석',
+  'unit.management.title': '교회관리',
+  'unit.permission.title': '관리자 설정',
 
   'unit.member.write.title': '교인정보 작성',
   'unit.member.write.description':
@@ -342,12 +366,27 @@ export default {
   'unit.task.write.description': '업무 게시물을 작성·수정·삭제할 수 있습니다.',
   'unit.task.read.title': '업무 열람',
   'unit.task.read.description': '업무 게시물을 열람할 수 있습니다.',
-  'unit.church.write.title': '교회정보 설정',
-  'unit.church.write.description':
+  'unit.worship.write.title': '예배 작성',
+  'unit.worship.write.description': '예배를 추가, 수정, 삭제 할 수 있습니다.',
+  'unit.worship.read.title': '예배 열람',
+  'unit.worship.read.description': '예배를 열람할 수 있습니다.',
+  'unit.management.write.title': '교회정보 설정',
+  'unit.management.write.description':
     '교회 기본정보를 수정하고, 직분·사역·그룹 구조를 수정·삭제할 수 있습니다.',
-  'unit.manager.write.title': '관리자 설정',
-  'unit.manager.write.description':
+  'unit.management.read.title': '교회정보 열람',
+  'unit.management.read.description':
+    '교회 기본정보와 직분·사역·그룹 구조를 열람할 수 있습니다.',
+  'unit.permission.write.title': '관리자 설정',
+  'unit.permission.write.description': '관리자 정보를 열람할 수 있습니다.',
+  'unit.permission.read.title': '관리자 열람',
+  'unit.permission.read.description':
     '관리자 등록 신청을 승인/거절하고 관리자를 삭제할 수 있으며, 권한그룹을 추가·수정·삭제할 수 있습니다. 또한 관리자 정보를 수정·삭제하고, 권한 범위 및 상태값을 변경할 수 있습니다.',
+  'unit.worshipAttendance.write.title': '예배 출결 처리',
+  'unit.worshipAttendance.write.description':
+    '예배 출석부를 열람할 수 있습니다.',
+  'unit.worshipAttendance.read.title': '예배 출결 열람',
+  'unit.worshipAttendance.read.description':
+    '예배 출석부를 작성, 수정할 수 있습니다.',
 
   /*-------------------title (popup title)-------------------*/
   'title.memberRegister': '교인 등록',
@@ -386,14 +425,14 @@ export default {
   'title.addChurchEvent': '이벤트 추가',
   'title.editChurchEvent': '이벤트 수정',
 
-  'title.attendanceInformation': '보고서',
+  'title.attendanceInformation': '출석부',
 
   'title.editGroupInformation': '그룹정보 수정',
-  'title.editMinistryGroupInformation': '사역그룹정보 수정',
+  'title.editMinistryGroupInformation': '사역정보 수정',
   'title.editOfficerInformation': '직분정보 수정',
   'title.addWidget': '위젯 추가',
 
-  'title.newMember': '신규 등록자 요약',
+  'title.newMember': '신규 등록 교인 요약',
   'title.worshipAttendance': '출석률 기반 교인 관리',
   'title.mySchedule': '내가 담당한 일정',
   'title.reportedSchedule': '보고받은 일정',
@@ -420,9 +459,9 @@ export default {
 
   /*-------------------header (side bar button)-------------------*/
   'header.home': '홈',
-  'header.member': '교인목록',
+  'header.member': '교인',
   'header.attendance': '예배출석',
-  'header.worship': '예배목록',
+  'header.worship': '예배',
   'header.visitation': '심방',
   'header.education': '교육',
   'header.task': '업무',
@@ -498,7 +537,7 @@ export default {
   'tableHeader.age': '나이',
   'tableHeader.attendance': '출석',
   'tableHeader.note': '비고',
-  'tableHeader.mobilePhone': '휴대전화',
+  'tableHeader.mobilePhone': '전화번호',
   'tableHeader.status': '수료',
   'tableHeader.isDoneCount': '진행 상황',
 
@@ -512,6 +551,8 @@ export default {
   'tableHeader.range': '활성',
 
   'tableHeader.memberAttendance': '최근 출석 기록',
+
+  'tableHeader.memberCount': '교인 수',
   /*-------------------table header-------------------*/
 
   /*------------------- register-------------------*/
@@ -526,9 +567,8 @@ export default {
     '교회 운영에 필요한 기본 설정을 완료해주세요',
   'register.churchInit.group.title': '그룹 설정',
   'register.churchInit.group.description': '교회의 그룹 구조를 설정해주세요',
-  'register.churchInit.ministry.title': '사역그룹 설정',
-  'register.churchInit.ministry.description':
-    '교회의 사역그룹 구조를 설정해주세요',
+  'register.churchInit.ministry.title': '사역 설정',
+  'register.churchInit.ministry.description': '교회의 사역 구조를 설정해주세요',
   'register.churchInit.officer.title': '직분 설정',
   'register.churchInit.officer.description': '교회의 직분을 설정해주세요',
 
@@ -547,11 +587,11 @@ export default {
   /*------------------- register-------------------*/
 
   /*-------------------button-------------------*/
-  'button.register': '등록하기',
-  'button.save': '저장하기',
+  'button.register': '등록',
+  'button.save': '저장',
   'button.edit': '수정',
   'button.delete': '삭제',
-  'button.stop': '종료하기',
+  'button.stop': '종료',
   'button.close': '닫기',
   'button.saveFamily': '해당 가족만 추가하기',
   'button.goBack': '이전으로',
@@ -562,18 +602,18 @@ export default {
   'button.tableHeaderSetting': '표시 항목 설정',
   'button.verify': '인증하기',
   'button.request': '요청하기',
-  'button.add': '추가하기',
+  'button.add': '추가',
   'button.signIn': '회원가입 완료하기',
   'button.logOut': '로그아웃',
   'button.addMember': '교인 추가',
   'button.addFamily': '가족 추가',
   'button.saveTerm': '기수 추가',
   'button.addVisitation': '심방 입력',
-  'button.addTask': '업무 입력하기',
+  'button.addTask': '업무 입력',
   'button.addEducation': '교육 추가',
   'button.addEducationTerm': '기수 추가',
   'button.addEducationGoal': '목표 추가',
-  'button.addPermissionTemplate': '권한유형 추가하기',
+  'button.addPermissionTemplate': '권한유형 추가',
   'button.filterVisitationDate': '기간',
   'button.filterTaskDate': '기간',
   'button.setting': '설정',
@@ -584,18 +624,18 @@ export default {
   'button.linkMemberInformation': '교인정보 연결하기',
   'button.unlinkMemberInformation': '교인정보 연결끊기',
   'button.changeLinkedMember': '연결 교인 변경',
-  'button.addWorshipSession': '출석내용 입력하기',
-  'button.addWorship': '예배 추가하기',
-  'button.addWorshipInformation': '예배내용 입력하기',
+  'button.addWorshipSession': '출석내용 입력',
+  'button.addWorship': '예배 추가',
+  'button.addWorshipInformation': '예배내용 입력',
   'button.check': '조회',
-  'button.addChurchEvent': '이벤트 추가하기',
+  'button.addChurchEvent': '이벤트 추가',
   'button.today': '오늘',
   'button.mySchedule': '내 일정만',
   'button.editChurch': '정보 수정',
 
   'button.deleteOfficer': '직분 삭제',
   'button.deleteGroup': '그룹 삭제',
-  'button.deleteMinistryGroup': '사역그룹 삭제',
+  'button.deleteMinistryGroup': '사역 삭제',
   'button.deleteMinistry': '사역 삭제',
 
   'button.groupFilter': '그룹 필터',
@@ -629,18 +669,28 @@ export default {
   'button.deleteManager': '관리자 삭제하기',
   'button.leaveManager': '관리자 탈퇴하기',
 
+  'button.openChurch': '교회로 이동하기',
+  'button.donate': '서비스 후원하기',
+  'button.myInformation': '내 정보',
+
+  'button.readAll': '모두 읽음',
+  'button.zoomIn': '크게 보기',
+  'button.zoomOut': '작게 보기',
+
+  'button.selectAll': '전체 선택',
+
   /*-------------------button-------------------*/
 
   /*-------------------placeholder-------------------*/
   'placeholder.name': '이름을 입력해주세요.',
   'placeholder.groupName': '그룹명을 입력해주세요.',
-  'placeholder.ministryGroupName': '사역그룹명을 입력해주세요.',
+  'placeholder.ministryGroupName': '사역명을 입력해주세요.',
   'placeholder.ministryName': '사역명을 입력해주세요.',
   'placeholder.officerName': '직분명을 입력해주세요.',
   'placeholder.educationName': '교육명을 입력해주세요.',
   'placeholder.educationDescription': '교육 요약을 입력해주세요.',
   'placeholder.educationGoal': '교육 목표를 입력해주세요.',
-  'placeholder.mobilePhone': '휴대전화 번호를 입력해주세요.',
+  'placeholder.mobilePhone': '전화번호를 입력해주세요.',
   'placeholder.birth': '생년월일을 선택해주세요.',
   'placeholder.registeredAt': '등록일자를 선택해주세요.',
   'placeholder.homePhone': '집 전화번호를 입력해주세요.',
@@ -669,7 +719,7 @@ export default {
   'placeholder.visitationContent': '심방 내용을 입력해주세요.',
   'placeholder.visitationPray': '기도 제목을 입력해주세요.',
   'placeholder.content': '내용을 입력해주세요.',
-  'placeholder.selectStatus': '진행 상태',
+  'placeholder.selectStatus': '전체',
   'placeholder.worshipTitle': '예배명을 입력해주세요.',
   'placeholder.worshipDescription': '예배 내용을 입력해주세요.',
 
@@ -700,6 +750,7 @@ export default {
   'placeholder.attendanceNote': '특이사항 입력하기',
 
   'placeholder.email': '이메일을 입력해주세요.',
+
   /*-------------------placeholder-------------------*/
 
   /*-------------------popup-------------------*/
@@ -728,8 +779,8 @@ export default {
   'popup.deleteOfficerTitle': '해당 직분을 삭제하시겠습니까?',
   'popup.deleteOfficerBody': '삭제된 직분은 복구할 수 없습니다.',
 
-  'popup.deleteMinistryGroupTitle': '해당 사역 그룹을 삭제하시겠습니까?',
-  'popup.deleteMinistryGroupBody': '삭제된 사역 그룹은 복구할 수 없습니다.',
+  'popup.deleteMinistryGroupTitle': '해당 사역을 삭제하시겠습니까?',
+  'popup.deleteMinistryGroupBody': '삭제된 사역은 복구할 수 없습니다.',
 
   'popup.deleteEnrollmentTitle': '선택된 교인(들)을 교육에서 삭제하시겠습니까?',
   'popup.deleteEnrollmentBody': '삭제된 등록 내역은 복구할 수 없습니다.',
@@ -765,6 +816,11 @@ export default {
   'popup.deleteWorshipTitle': '해당 예배를 삭제하시겠습니까?',
   'popup.deleteWorshipBody': '삭제된 예배는 복구할 수 없습니다.',
 
+  'popup.deleteChurchEventTitle': '해당 이벤트를 삭제하시겠습니까?',
+  'popup.deleteChurchEventBody': '삭제된 이벤트는 복구할 수 없습니다.',
+
+  'popup.imageSize': '이미지 용량은 최대 5MB까지 업로드할 수 있습니다',
+
   /*-------------------popup-------------------*/
 
   /*-------------------warning-------------------*/
@@ -773,9 +829,10 @@ export default {
   'warning.deleteGroup':
     '소속된 교인이나 하위 그룹이 있으면 삭제가 불가능하며, 삭제된 그룹은 복구할 수 없습니다.',
   'warning.deleteMinistryGroup':
-    '소속된 교인이나 하위 그룹 있으면 삭제가 불가능하며, 삭제된 사역그룹은 복구할 수 없습니다.',
+    '소속된 교인이나 하위 그룹 있으면 삭제가 불가능하며, 삭제된 사역은 복구할 수 없습니다.',
   'warning.deleteMinistry':
     '할당된 교인이 있으면 삭제가 불가능하며, 삭제된 그룹은 복구할 수 없습니다.',
+  'warning.deleteWorship': '삭제된 예배는 복구할 수 없습니다.',
 
   'warning.stopGroupHistory':
     '종료된 교인의 그룹은 교인의 그룹 이력에 저장됩니다.',
@@ -803,14 +860,19 @@ export default {
   'description.defaultMinistry':
     '모든 교인에게 동일한 사역이 부여됩니다. 추후 별도로 수정할 수 있습니다.',
   'description.addMember': '해당 그룹에 이미 속한 교인은 선택할 수 없습니다.',
+  'description.addOfficer':
+    '해당 직분이 이미 할당된 교인은 선택할 수 없습니다.',
   'description.addMinistryMember':
-    '해당 사역 그룹에 이미 속한 교인은 선택할 수 없습니다.',
+    '해당 사역에 이미 속한 교인은 선택할 수 없습니다.',
+  'description.addEnrollment':
+    '해당 기수에 이미 속한 교인은 선택할 수 없습니다.',
   'description.editGroupLeader': '새로운 그룹장을 선택하세요',
-  'description.editMinistryGroupLeader': '새로운 사역리더를 선택하세요',
+  'description.editMinistryGroupLeader': '새로운 사역팀장를 선택하세요',
   'description.tableHeaderSetting': '드래그하여 순서를 변경하세요',
   'description.memberRegisterHeader': '새로운 교인의 정보를 입력해주세요',
   'description.editPermissionTemplate':
     '선택된 유형이 없으면 권한유형이 해제됩니다.',
+
   /*-------------------description-------------------*/
 
   /*-------------------tooltip-------------------*/

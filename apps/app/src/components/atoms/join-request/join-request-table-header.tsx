@@ -5,11 +5,9 @@ import { RootState } from '../../../redux/store';
 
 import { MainText } from '../../../../../../packages/components/src';
 import { BLACK, GRAY, MAIN } from '../../../../../../packages/constants/src';
-import { SIZE } from '../../../constants/styles/style';
-import { getTranslatedJoinRequestColumn } from '../../../utils/translate';
+import { JOIN_REQUEST, SIZE, USER } from '@mokjang/constants';
+import { getTranslatedJoinRequestColumn } from '@mokjang/utils';
 import { useI18n } from '../../../../locales/client';
-import { JOIN_REQUEST } from '../../../constants/column/join-request-column';
-import { USER } from '../../../constants/column/user-column';
 
 const HeaderContainer = styled.div`
   display: flex;

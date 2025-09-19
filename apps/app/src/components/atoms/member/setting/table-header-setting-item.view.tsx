@@ -1,25 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react';
-import {
-  DragSourceMonitor,
-  DropTargetMonitor,
-  useDrag,
-  useDrop,
-} from 'react-dnd';
+import { DragSourceMonitor, DropTargetMonitor, useDrag, useDrop, } from 'react-dnd';
 import styled from 'styled-components';
 import { MEMBER_TABLE_HEADER_ITEM } from '../../../../redux/reducers/filter/member-filter-reducer';
 
-import { MEMBER } from '../../../../constants/column/member-column';
-import { MainText } from '../../common/text/main-text';
-import { GRAY, MAIN, WHITE } from '../../../../constants/styles/color';
-import { getTranslatedMemberColumn } from '../../../../utils/translate';
-import CheckButton from '../../common/button/check-button';
+import { DND_ITEM_TYPE, GRAY, HOVER_POSITION, MAIN, MEMBER, WHITE, } from '@mokjang/constants';
+import { CheckButton, MainTag, MainText } from '@mokjang/components';
+import { getTranslatedMemberColumn } from '@mokjang/utils';
 
 import { useI18n } from '../../../../../locales/client';
 
-import Lock from '../../../../../public/svg/lock.svg';
-import Position from '../../../../../public/svg/position.svg';
-import { DND_ITEM_TYPE, HOVER_POSITION } from '../../../../constants/constant';
-import MainTag from '../../common/tag/main-tag';
+import { Svg } from '@mokjang/assets';
 import { getEmptyImage } from 'react-dnd-html5-backend';
 
 /** 아이템 컨테이너 스타일 */
@@ -42,7 +32,7 @@ const ItemContainer = styled.div<{
 
   //flex-shrink: 0;
   margin-bottom: 10px;
-  background-color: ${({ $isFixed }) => ($isFixed ? GRAY.SUPER_LIGHT : WHITE)};
+  background-color: ${({ $isFixed }) => ($isFixed ? GRAY.EXTRA_LIGHT : WHITE)};
   cursor: ${({ $isFixed }) => ($isFixed ? 'not-allowed' : 'grab')};
 `;
 
@@ -76,13 +66,13 @@ const InsertLineBottom = styled.div`
   z-index: 1;
 `;
 
-const LockIcon = styled(Lock)`
+const LockIcon = styled(Svg.Lock)`
   width: 16px;
   height: 16px;
   stroke: ${GRAY.DEFAULT};
 `;
 
-const PositionIcon = styled(Position)`
+const PositionIcon = styled(Svg.Position)`
   width: 16px;
   height: 16px;
   stroke-width: 2px;
@@ -128,11 +118,31 @@ const TableHeaderSettingItemView = ({
       }
     },
     drop: (draggedItem) => {
-      const fromIndex = draggedItem.index;
-      const toIndex = hoverPosition === HOVER_POSITION.TOP ? index : index + 1;
+      if (draggedItem.id === item.id) return;
 
-      if (fromIndex === toIndex) return;
-      onDrop(fromIndex, toIndex);
+      switch (hoverPosition) {
+        case HOVER_POSITION.BOTTOM:
+          // 원래 윗 순서였으면, 아래로 이동
+          if (draggedItem.index > index) {
+            onDrop(draggedItem.index, index + 1);
+          }
+          // 원래 아랫 순서였으면, 해당 위치로 이동
+          else {
+            onDrop(draggedItem.index, index);
+          }
+          return;
+
+        case HOVER_POSITION.TOP:
+          // 원래 윗 순서였으면, 아래로 이동
+          if (draggedItem.index > index) {
+            onDrop(draggedItem.index, index);
+          }
+          // 원래 아랫 순서였으면, 해당 위치로 이동
+          else {
+            onDrop(draggedItem.index, index - 1);
+          }
+          return;
+      }
     },
     collect: (monitor) => ({
       isOver: monitor.isOver({ shallow: true }),
@@ -146,7 +156,7 @@ const TableHeaderSettingItemView = ({
       id: item.id,
       title: getTranslatedMemberColumn(t, item.id as MEMBER),
     },
-    canDrag: () => item.id !== MEMBER.NAME,
+    canDrag: () => !item.isFixed && item.id !== MEMBER.NAME,
     collect: (monitor: DragSourceMonitor) => ({
       isDragging: monitor.isDragging(),
     }),
@@ -180,6 +190,8 @@ const TableHeaderSettingItemView = ({
             value={item.isShown}
             onChange={() => onClickHeaderItem(item.id as MEMBER)}
             disabled={item.isFixed}
+            width={15}
+            height={15}
           />
         </RightContainer>
       </ItemContainer>

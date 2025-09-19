@@ -3,35 +3,42 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 
-import { BLANK, GRAY, WHITE } from '../../../../../../packages/constants/src';
-import { VISITATION } from '@/constants/column/visitation-column';
-import { MainText } from '../../atoms/common/text/main-text';
-import { Visitation } from '@/models/visitation/visitation';
+import {
+  BLANK,
+  GRAY,
+  LOCALE,
+  STATUS,
+  VISITATION,
+  WHITE,
+} from '@mokjang/constants';
+import { MainTag, MainText } from '@mokjang/components';
+import { Visitation } from '@mokjang/models';
 import useWindowSize from '../../../hooks/window/window';
 import VisitationTableHeader from '../../atoms/visitation/visitation-table-header';
 import { BLANK_HEADER } from '@/redux/reducers/filter/member-filter-reducer';
 import { useI18n } from '../../../../locales/client';
 import { getStatusBackgroundColor, getStatusFontColor } from '@/utils/color';
 import MemberProfile from '../../atoms/member/member-profile';
-import { MainTag } from '../../../../../../packages/components/src';
-import { STATUS } from '@/constants/status/status';
 import { usePathname } from 'next/navigation';
-import { LOCALE } from '@/constants/state/locale';
-import { getTranslatedDateFromDateString } from '@/utils/translate';
+import {
+  getTranslatedAndOthers,
+  getTranslatedStartEndDate,
+} from '@mokjang/utils';
+import EmptyList from '@/components/atoms/common/image/empty-list';
 
 // 1. 컬럼별 PX 폭
 const getColumnWidth = (id: string) => {
   switch (id) {
     case VISITATION.TITLE:
-      return 200;
+      return 20;
     case VISITATION.VISITED:
-      return 250;
-    case VISITATION.STATUS:
-      return 150;
-    case VISITATION.DATE:
-      return 250;
+      return 15;
     case VISITATION.IN_CHARGE:
-      return 150;
+      return 10;
+    case VISITATION.DATE:
+      return 25;
+    case VISITATION.STATUS:
+      return 30;
     default:
       // 비고(REMARKS) 컬럼 등
       return 80;
@@ -78,7 +85,7 @@ const TableHeader = styled.th<{
   z-index: 5;
 
   /* 만약 마지막 컬럼이면 width: auto */
-  width: ${({ id, $isLast }) => ($isLast ? 'auto' : `${getColumnWidth(id)}px`)};
+  width: ${({ id, $isLast }) => ($isLast ? 'auto' : `${getColumnWidth(id)}%`)};
 
   /* 텍스트 넘침 처리 */
   overflow: hidden;
@@ -112,7 +119,7 @@ const TableData = styled.td<{ id: string; $index: number; $isLast?: boolean }>`
   cursor: pointer;
 
   /* 마지막 컬럼이면 auto, 아니면 px 고정 */
-  width: ${({ id, $isLast }) => ($isLast ? 'auto' : `${getColumnWidth(id)}px`)};
+  width: ${({ id, $isLast }) => ($isLast ? 'auto' : `${getColumnWidth(id)}%`)};
 
   white-space: nowrap;
   overflow: hidden;
@@ -135,9 +142,18 @@ const ContentWrapper = styled.div`
 
 const MembersContainer = styled.div`
   display: flex;
-  gap: 10px;
+  gap: 3px;
   justify-content: flex-start;
   align-items: center;
+`;
+
+const StatusContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
 `;
 
 // 이 예시에서는 실제 VISITATION + "비고" 컬럼(REMARKS)까지 표시
@@ -180,33 +196,43 @@ const VisitationTableView = ({
       case VISITATION.VISITED:
         return (
           <MembersContainer>
-            {visitation.members?.map((member) => (
+            {/*{visitation.members.map((member) => (*/}
+            {visitation.members && visitation.members.length > 0 && (
               <MemberProfile
-                key={member.id}
-                member={member}
+                // key={member.id}
+                member={visitation.members[0]}
                 width={30}
                 height={30}
               />
-            ))}
+            )}
+            {visitation.members?.length > 1 && (
+              <MainText>
+                {getTranslatedAndOthers(locale, visitation.members.length - 1)}
+              </MainText>
+            )}
+            {/*))}*/}
           </MembersContainer>
         );
       case VISITATION.STATUS:
         return (
-          <MainTag
-            title={t(visitation.status as STATUS)}
-            color={getStatusFontColor(visitation.status as STATUS)}
-            backgroundColor={getStatusBackgroundColor(
-              visitation.status as STATUS
-            )}
-          />
+          <StatusContainer>
+            <MainTag
+              title={t(visitation.status as STATUS)}
+              color={getStatusFontColor(visitation.status as STATUS)}
+              backgroundColor={getStatusBackgroundColor(
+                visitation.status as STATUS
+              )}
+            />
+          </StatusContainer>
         );
       case VISITATION.DATE:
         return (
           <MainText>
-            {`${
-              visitation.startDate &&
-              getTranslatedDateFromDateString(locale, visitation.startDate)
-            } - ${visitation.endDate && getTranslatedDateFromDateString(locale, visitation.endDate)}`}
+            {getTranslatedStartEndDate(
+              locale,
+              visitation.startDate,
+              visitation.endDate
+            )}
           </MainText>
         );
       case VISITATION.IN_CHARGE:
@@ -275,6 +301,7 @@ const VisitationTableView = ({
             ))}
           </tbody>
         </VisitationTable>
+        {visitations.length === 0 && <EmptyList width={200} height={200} />}
       </TableContainer>
     </>
   );

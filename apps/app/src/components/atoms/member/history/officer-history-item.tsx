@@ -1,4 +1,4 @@
-import { OfficerHistory } from '../../../../models/member/history';
+import { OfficerHistory } from '@mokjang/models';
 import React from 'react';
 import OfficerHistoryItemView from './officer-history-item.view';
 

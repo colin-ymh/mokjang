@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { RootState } from '../../../../redux/store';
-import { GRAY } from '../../../../constants/styles/color';
+import { GRAY } from '@mokjang/constants';
 
 const HeaderContainer = styled.div`
   display: flex;

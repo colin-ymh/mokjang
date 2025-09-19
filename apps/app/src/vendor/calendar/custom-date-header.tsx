@@ -1,8 +1,8 @@
 import { DateHeaderProps } from 'react-big-calendar';
 import styled from 'styled-components';
-import { MainText } from '../../components/atoms/common/text/main-text';
-import { GRAY, MAIN, RED, WHITE } from '../../constants/styles/color';
-import { getDateStringFromDate } from '../../utils/date';
+import { MainText } from '@mokjang/components';
+import { GRAY, MAIN, RED, WHITE } from '@mokjang/constants';
+import { getDateStringFromDate } from '@mokjang/utils';
 
 const HeaderContainer = styled.div`
   display: flex;

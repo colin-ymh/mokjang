@@ -1,28 +1,23 @@
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../../../../redux/store';
+import { AppDispatch, RootState } from '@/redux/store';
 
 import { useScopedI18n } from '../../../../../../locales/client';
 import {
   setIsToastShown,
   setToastBackgroundColor,
   setToastText,
-} from '../../../../../redux/reducers/toast-popup-reducer';
-import { BLACK, DESTRUCTIVE } from '../../../../../constants/styles/color';
-import {
-  DEFAULT_VISITATION,
-  Visitation,
-} from '../../../../../models/visitation/visitation';
-import { VisitationsApi } from '../../../../../api/visitations/visitations.api';
+} from '@/redux/reducers/toast-popup-reducer';
+import { BLACK, BLANK, DESTRUCTIVE, TASK_STATUS } from '@mokjang/constants';
+import { DEFAULT_VISITATION, Visitation } from '@mokjang/models';
+import { VisitationsApi } from '@/api/visitations/visitations.api';
 import MemberVisitationListView from './member-visitation-list.view';
-import { getIsWellFormedTitle } from '../../../../../utils/check';
-import { BLANK } from '../../../../../constants/constant';
 import {
   getDateFromDateString,
   getFullStringFromDate,
-} from '../../../../../utils/date';
-import { setTargetVisitation } from '../../../../../redux/reducers/target/target-visitation-reducer';
-import { TASK_STATUS } from '../../../../../constants/status/status';
+  getIsWellFormedTitle,
+} from '@mokjang/utils';
+import { setTargetVisitation } from '@/redux/reducers/target/target-visitation-reducer';
 
 type MemberVisitationListProps = {};
 
@@ -77,14 +72,23 @@ const MemberVisitationList = ({}: MemberVisitationListProps) => {
     if (visitation) {
       dispatch(setTargetVisitation(visitation));
     } else {
-      dispatch(setTargetVisitation(DEFAULT_VISITATION));
+      dispatch(
+        setTargetVisitation({
+          ...DEFAULT_VISITATION,
+          members: [targetMember],
+          id: `temp-${targetMember.id}`, // targetVisitation.id dependency trigger
+        })
+      );
     }
   };
 
   // 심방 추가 닫기
   const onClickCloseModal = async () => {
     setIsModalShown(false);
-    if (!targetVisitation.id) {
+    if (
+      !targetVisitation.id ||
+      targetVisitation.id === `temp-${targetMember.id}`
+    ) {
       dispatch(setTargetVisitation(DEFAULT_VISITATION));
     } else {
       try {
@@ -104,7 +108,11 @@ const MemberVisitationList = ({}: MemberVisitationListProps) => {
   const onClickAddDone = async () => {
     try {
       // 수정
-      if (targetVisitation.id) {
+      if (
+        (targetVisitation.id.length > 3 &&
+          targetVisitation.id.slice(0, 4) !== 'temp') ||
+        !targetVisitation.id.length
+      ) {
         await visitationsApi.editVisitation(
           { churchId, visitationId: targetVisitation.id },
           {
@@ -216,7 +224,7 @@ const MemberVisitationList = ({}: MemberVisitationListProps) => {
       if (error instanceof Error) {
         dispatch(setToastText(error.message));
         dispatch(setIsToastShown(true));
-        dispatch(setToastBackgroundColor(DESTRUCTIVE.DARK));
+        dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
       } else {
         setThrownError(new Error(String(error)));
       }
@@ -298,6 +306,7 @@ const MemberVisitationList = ({}: MemberVisitationListProps) => {
     } catch (error) {
       if (error instanceof Error) {
         dispatch(setToastText(error.message));
+        dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
         dispatch(setIsToastShown(true));
       } else {
         setThrownError(new Error(String(error)));

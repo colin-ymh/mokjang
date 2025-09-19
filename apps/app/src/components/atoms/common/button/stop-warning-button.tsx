@@ -1,7 +1,7 @@
 import styled from 'styled-components';
-import { ORANGE, WHITE } from '@/constants/styles/color';
-import { MainText } from '../text/main-text';
-import Button from './button';
+import { ORANGE, WHITE } from '@mokjang/constants';
+import { MainText } from '@mokjang/components';
+import { Button } from '@mokjang/components';
 
 import { useI18n } from '../../../../../locales/client';
 import { SvgIcon } from '../../../../../../../packages/components/src';

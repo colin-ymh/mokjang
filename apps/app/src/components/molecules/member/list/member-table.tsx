@@ -7,8 +7,7 @@ import {
 } from '../../../../redux/reducers/filter/member-filter-reducer';
 
 import MemberTableView from './member-table.view';
-import { MEMBER } from '../../../../constants/column/member-column';
-import { ORDER_DIRECTION } from '../../../../constants/constant';
+import { MEMBER, ORDER_DIRECTION } from '@mokjang/constants';
 
 export type MemberTableProps = {
   onClickMemberItem: (memberId: string) => void;
@@ -46,7 +45,7 @@ const MemberTable = ({ onClickMemberItem, loadMembers }: MemberTableProps) => {
       const { scrollTop, scrollHeight, clientHeight } = scrollRef.current;
 
       // 스크롤이 최하단에 도달했는지 확인
-      if (scrollTop + clientHeight >= scrollHeight) {
+      if (scrollTop + clientHeight >= scrollHeight - 10) {
         loadMembers(); // 데이터를 추가로 로드
       }
     }

@@ -1,26 +1,32 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../../../redux/store';
-
-import { useScopedI18n } from '../../../../../../locales/client';
 import MemberAttendanceListView from './member-attendance-list.view';
-import { WORSHIP_PERIOD } from '../../../../../constants/constant';
+import {
+  DESTRUCTIVE,
+  WORSHIP_ENROLLMENT,
+  WORSHIP_PERIOD,
+} from '@mokjang/constants';
 import {
   DEFAULT_MEMBER_ATTENDANCE_STATISTIC,
   MemberAttendanceStatistic,
   Worship,
-} from '../../../../../models/worship/worship';
+} from '@mokjang/models';
 import { setTargetWorship } from '../../../../../redux/reducers/target/target-worship-reducer';
 import { setWorshipEnrollmentFilter } from '../../../../../redux/reducers/filter/worship-enrollment-filter-reducer';
-import { WORSHIP_ENROLLMENT } from '../../../../../constants/column/worship-column';
 import {
   getDateFromDateString,
   getDateStringFromDate,
   getMonthsAfterDate,
   getMonthsBeforeDate,
-} from '../../../../../utils/date';
+} from '@mokjang/utils';
 import { WorshipsApi } from '../../../../../api/worship/worships.api';
 import { MembersApi } from '../../../../../api/members/members.api';
+import {
+  setIsToastShown,
+  setToastBackgroundColor,
+  setToastText,
+} from '@/redux/reducers/toast-popup-reducer';
 
 type MemberAttendanceListProps = {};
 
@@ -28,7 +34,6 @@ const MemberAttendanceList = ({}: MemberAttendanceListProps) => {
   const membersApi = new MembersApi(false);
   const worshipsApi = new WorshipsApi(false);
 
-  const t_popup = useScopedI18n('popup');
   const dispatch = useDispatch<AppDispatch>();
   const { churchId } = useSelector((state: RootState) => state.church);
   const { worshipEnrollmentFilter } = useSelector(
@@ -67,7 +72,13 @@ const MemberAttendanceList = ({}: MemberAttendanceListProps) => {
       const newWorships = response.data.data;
       setWorships(newWorships);
     } catch (error) {
-      setThrownError(error instanceof Error ? error : new Error(String(error)));
+      if (error instanceof Error) {
+        dispatch(setToastText(error.message));
+        dispatch(setIsToastShown(true));
+        dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
+      } else {
+        setThrownError(new Error(String(error)));
+      }
     }
   };
 
@@ -84,7 +95,13 @@ const MemberAttendanceList = ({}: MemberAttendanceListProps) => {
       const newStatistic = response.data.data;
       setStatistic(newStatistic);
     } catch (error) {
-      setThrownError(error instanceof Error ? error : new Error(String(error)));
+      if (error instanceof Error) {
+        dispatch(setToastText(error.message));
+        dispatch(setIsToastShown(true));
+        dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
+      } else {
+        setThrownError(new Error(String(error)));
+      }
     }
   };
 
@@ -109,7 +126,13 @@ const MemberAttendanceList = ({}: MemberAttendanceListProps) => {
 
       dispatch(setTargetWorship(newWorship));
     } catch (error) {
-      setThrownError(error instanceof Error ? error : new Error(String(error)));
+      if (error instanceof Error) {
+        dispatch(setToastText(error.message));
+        dispatch(setIsToastShown(true));
+        dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
+      } else {
+        setThrownError(new Error(String(error)));
+      }
     }
   };
 

@@ -2,12 +2,10 @@
 
 import React, { forwardRef, useState } from 'react';
 import styled from 'styled-components';
-import { WHITE } from '@/constants/styles/color';
+import { WHITE } from '@mokjang/constants';
 import MemberDropdownItem, { MemberDropdownType } from './member-dropdown-item';
-import BorderInput from '../input/border-input';
+import { BorderInput, TransparentBackground } from '@mokjang/components';
 import useWindowSize from '@/hooks/window/window';
-import TransparentBackground from '../etc/transparent-background';
-import { Chevron } from './dropdown-chevron';
 
 /* --------------------------- styled --------------------------- */
 const Wrapper = styled.div<{ $isOpened: boolean; width?: number }>`
@@ -118,7 +116,7 @@ const MemberDropdownView = forwardRef<
             onKeyDown={onKeyDownHandler}
             {...rest}
           />
-          <Chevron $isOpened={isOpened} />
+          {/*<Chevron $isOpened={isOpened} />*/}
         </DropdownButton>
 
         <TransparentBackground

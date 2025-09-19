@@ -8,7 +8,7 @@ import {
   MainText,
 } from '../../../../../../packages/components/src';
 import { ChangeEvent, useEffect, useState } from 'react';
-import { DEFAULT_ENC_DATA, encData } from '@/models/subscription/subscription';
+import { DEFAULT_ENC_DATA, encData } from '@mokjang/models';
 import {
   BLANK,
   CURSOR,
@@ -16,7 +16,7 @@ import {
   MAIN,
   SIZE,
 } from '../../../../../../packages/constants/src';
-import { usePageRouter } from '@mokjang/app/src/utils/router';
+import { usePageRouter } from '@mokjang/utils';
 
 const CardRegisterContainer = styled.div`
   display: flex;

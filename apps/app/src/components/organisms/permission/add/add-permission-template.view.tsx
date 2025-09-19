@@ -1,20 +1,18 @@
 import styled from 'styled-components';
-import LabelInput from '../../../atoms/common/input/label-input';
+import { Button, LabelInput, MainText } from '@mokjang/components';
 import React, { ChangeEvent } from 'react';
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
-import { GRAY } from '../../../../constants/styles/color';
+import { GRAY, MAIN, SIZE, WHITE } from '@mokjang/constants';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../../../redux/store';
-import { MainText } from '../../../atoms/common/text/main-text';
+import { RootState } from '@/redux/store';
 import PermissionUnitList from '../../../molecules/permission/information/permission-unit-list';
-import { SIZE } from '@/constants/styles/style';
 
 const AddPermissionTemplateViewContainer = styled.div`
   display: flex;
   flex: 1;
   flex-direction: column;
   padding: 25px 20px 50px 20px;
-  gap: 20px;
+  gap: 30px;
   overflow-y: auto;
 `;
 
@@ -25,22 +23,33 @@ const InputContainer = styled.div`
   gap: 10px;
 `;
 
+const RowContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+`;
+
 type AddPermissionTemplateViewProps = {
   onChangeName: (event: ChangeEvent<HTMLInputElement>) => void;
   onChangeDescription: (event: ChangeEvent<HTMLInputElement>) => void;
-  onChangeUnitIds: (unitIds: string[]) => void;
+  onChangeUnitIds: (unitIds: number[]) => void;
+  onClickSelectAll: () => void;
 };
 
 const AddPermissionTemplateView = ({
   onChangeName,
   onChangeDescription,
   onChangeUnitIds,
+  onClickSelectAll,
 }: AddPermissionTemplateViewProps) => {
   const { targetPermissionTemplate } = useSelector(
     (state: RootState) => state.targetPermissionTemplate
   );
 
   const t = useI18n();
+  const t_button = useScopedI18n('button');
   const t_placeholder = useScopedI18n('placeholder');
 
   return (
@@ -66,13 +75,25 @@ const AddPermissionTemplateView = ({
           placeholder={t_placeholder('description')}
           borderColor={GRAY.LIGHT}
           height={40}
+          maxLength={50}
         />
       </InputContainer>
       {/* 권한 */}
       <InputContainer>
-        <MainText color={GRAY.DARK} size={SIZE.SMALL}>
-          {t('permission')}
-        </MainText>
+        <RowContainer>
+          <MainText color={GRAY.DARK} size={SIZE.SMALL}>
+            {t('permission')}
+          </MainText>
+          <Button
+            text={t_button('selectAll')}
+            color={MAIN.DEFAULT}
+            onClick={onClickSelectAll}
+            backgroundColor={WHITE}
+            fontSize={14}
+            fontWeight={400}
+            width={'auto'}
+          />
+        </RowContainer>
         <PermissionUnitList
           selectedUnitIds={targetPermissionTemplate?.unitIds || []}
           onChangeUnitIds={onChangeUnitIds}

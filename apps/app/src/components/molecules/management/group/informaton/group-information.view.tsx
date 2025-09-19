@@ -1,23 +1,22 @@
 import React, { ChangeEvent, Dispatch, SetStateAction } from 'react';
-import { MainText } from '../../../../atoms/common/text/main-text';
-import Button from '../../../../atoms/common/button/button';
-import { GRAY, WHITE } from '../../../../../constants/styles/color';
+import { Button, CustomPopup, MainText } from '@mokjang/components';
+import {
+  GRAY,
+  LOCALE,
+  MEMBER,
+  ORDER_DIRECTION,
+  WHITE,
+} from '@mokjang/constants';
 import styled from 'styled-components';
-import Plus from '../../../../../../public/svg/plus.svg';
-import Setting from '../../../../../../public/svg/setting.svg';
-import { Group } from '../../../../../models/management/management';
-import { useI18n } from '../../../../../../locales/client';
-import CustomPopup from '../../../../atoms/common/popup/custom-popup';
+import { Svg } from '@mokjang/assets';
+import { Group, Member } from '@mokjang/models';
+import { useI18n, useScopedI18n } from '../../../../../../locales/client';
 import EditGroup from '../edit/edit-group';
 import AddGroupMemberModal from '../../../../atoms/management/group/member/add-group-member-modal';
-import { Member } from '../../../../../models/member/member';
 import ManagementMemberTable from '../../table/management-member-table';
-import { getTranslatedAddMemberTitle } from '../../../../../utils/translate';
+import { getTranslatedAddMemberTitle } from '@mokjang/utils';
 import { usePathname } from 'next/navigation';
-import { LOCALE } from '../../../../../constants/state/locale';
-import { MEMBER } from '../../../../../constants/column/member-column';
-import { ORDER_DIRECTION } from '../../../../../constants/constant';
-import { CHURCH_CONTENT_ID } from '../../../../../constants/layout/content';
+import { CHURCH_CONTENT_ID } from '@/constants/layout/content';
 
 const GroupInformationViewContainer = styled.div<{ $isGroup: boolean }>`
   display: ${({ $isGroup }) => ($isGroup ? 'flex' : 'none')};
@@ -38,14 +37,14 @@ const ButtonContainer = styled.div`
   gap: 10px;
 `;
 
-const PlusIcon = styled(Plus)`
+const PlusIcon = styled(Svg.Plus)`
   width: 18px;
   height: 18px;
   stroke: ${WHITE};
   stroke-width: 2px;
 `;
 
-const SettingIcon = styled(Setting)`
+const SettingIcon = styled(Svg.Setting)`
   width: 18px;
   height: 18px;
   stroke: ${GRAY.DEFAULT};
@@ -112,6 +111,7 @@ const GroupInformationView = ({
   const locale = pathname.split('/')[1] as LOCALE;
 
   const t = useI18n();
+  const t_button = useScopedI18n('button');
 
   return (
     <>
@@ -160,11 +160,14 @@ const GroupInformationView = ({
       {/* 그룹 수정 팝업 */}
       <CustomPopup
         isShow={isEditShown}
+        onClickClose={onClickEditClose}
         onClickCancel={onClickEditClose}
         onClickDone={onClickSaveEdit}
         headerTitle={t('title.editGroupInformation')}
         width={450}
         height={800}
+        cancelText={t_button('cancel')}
+        doneText={t_button('save')}
       >
         <EditGroup
           members={members}
@@ -180,13 +183,15 @@ const GroupInformationView = ({
       {/* 교인 추가 팝업 */}
       <CustomPopup
         isShow={isAddModalShown}
+        onClickClose={onClickAddModalClose}
         onClickCancel={onClickAddModalClose}
-        width={800}
+        width={500}
         height={700}
         headerHeight={100}
         headerTitle={getTranslatedAddMemberTitle(locale, selectedGroup.name)}
         headerDescription={t('description.addMemberHeader')}
-        doneText={t('button.add')}
+        doneText={t_button('add')}
+        cancelText={t_button('cancel')}
         doneDisabled={!startDate}
         onClickDone={() =>
           onClickSaveNewMembers(selectedMembers, startDate as Date)

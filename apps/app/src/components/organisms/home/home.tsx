@@ -1,6 +1,6 @@
 import HomeView from './home.view';
 import { useState } from 'react';
-import CustomPopup from '../../atoms/common/popup/custom-popup';
+import { CustomPopup } from '@mokjang/components';
 import AddHomeWidget from '../../molecules/home/add/add-home-widget';
 import { useScopedI18n } from '../../../../locales/client';
 
@@ -27,6 +27,7 @@ const Home = () => {
       {/* 위젯 추가 팝업 */}
       <CustomPopup
         isShow={isAddShown}
+        onClickClose={onClickCloseAdd}
         onClickCancel={onClickCloseAdd}
         width={500}
         height={500}

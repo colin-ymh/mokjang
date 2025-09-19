@@ -3,13 +3,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../../../redux/store';
 import { fetchMinistryGroups } from '../../../../../redux/reducers/church-reducer';
 
-import { BLANK } from '../../../../../constants/constant';
+import { BLANK } from '@mokjang/constants';
 
-import { MinistryGroup } from '../../../../../models/management/management';
-import { getFormattedTitle } from '../../../../../utils/format';
-import { getIsWellFormedTitle } from '../../../../../utils/check';
+import { MinistryGroup } from '@mokjang/models';
+import { getFormattedTitle } from '@mokjang/utils';
+import { getIsWellFormedTitle } from '@mokjang/utils';
 import { useScopedI18n } from '../../../../../../locales/client';
-import { BLACK, DESTRUCTIVE } from '../../../../../constants/styles/color';
+import { BLACK, DESTRUCTIVE } from '@mokjang/constants';
 import {
   setIsToastShown,
   setToastBackgroundColor,

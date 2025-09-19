@@ -6,7 +6,7 @@ import { AppDispatch } from '@/redux/store';
 import { setUser } from '@/redux/reducers/user-reducer';
 
 import { AuthApi, IS_TEST } from '@/api/auth/auth.api';
-import { getFormattedMobilePhone, getFormattedName } from '@/utils/format';
+import { getFormattedName, getFormattedPhone } from '@mokjang/utils';
 import { UserApi } from '@/api/user/user.api';
 import { setIsToastShown } from '@/redux/reducers/toast-popup-reducer';
 import { usePageRouter } from '../../../../../../packages/utils/src';
@@ -54,7 +54,7 @@ const Register = () => {
 
   // 전화번호 변경 이벤트
   const onChangeMobilePhone = (event: ChangeEvent<HTMLInputElement>) => {
-    setMobilePhone(getFormattedMobilePhone(event.target.value));
+    setMobilePhone(getFormattedPhone(event.target.value));
   };
 
   // 인증번호 변경 이벤트
@@ -81,7 +81,7 @@ const Register = () => {
       if (response.status === 201) {
         setIsRequested(true);
         console.log(response.data);
-        setSecond(1800);
+        setSecond(300);
       }
     } catch (error) {
       setThrownError(error instanceof Error ? error : new Error(String(error)));
@@ -122,7 +122,7 @@ const Register = () => {
       });
       if (response.status === 201) {
         const userResponse = await userApi.getUser();
-        const newUser = userResponse.data;
+        const newUser = userResponse.data.data;
         dispatch(setUser(newUser));
         router.push('/register/complete');
       }

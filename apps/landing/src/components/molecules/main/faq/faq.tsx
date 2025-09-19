@@ -2,8 +2,8 @@ import FaqView, {
   FaqViewProps,
 } from '@/components/molecules/main/faq/faq.view';
 import { useState } from 'react';
+import { usePageRouter } from '@mokjang/utils';
 import { FAQ } from '@/constants/constant';
-import { usePageRouter } from '@mokjang/app/src/utils/router';
 
 const Faq = () => {
   const router = usePageRouter();
@@ -19,13 +19,24 @@ const Faq = () => {
   };
 
   const onClickContact = () => {
-    router.push('/contact');
+    // router.push('/contact');
+    //   https://forms.gle/ABc2SPpYkdpAn5k96 로 이동
+    window.open(
+      'https://forms.gle/ABc2SPpYkdpAn5k96',
+      '_blank',
+      'noopener,noreferrer'
+    );
+  };
+
+  const onClickDonate = () => {
+    router.push('/donate');
   };
 
   const props = {
     openedQuestion,
     onClickQuestion,
     onClickContact,
+    onClickDonate,
   } as FaqViewProps;
 
   return (

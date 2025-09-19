@@ -1,4 +1,4 @@
-import { GRAY, MAIN } from '@/constants/styles/color';
+import { GRAY, MAIN } from '@mokjang/constants';
 import React from 'react';
 import styled from 'styled-components';
 

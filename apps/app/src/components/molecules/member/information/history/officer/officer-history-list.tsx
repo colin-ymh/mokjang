@@ -2,10 +2,7 @@ import OfficerHistoryListView from './officer-history-list.view';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../../../../redux/store';
 import React, { useEffect, useRef, useState } from 'react';
-import {
-  DEFAULT_OFFICER_HISTORY,
-  OfficerHistory,
-} from '../../../../../../models/member/history';
+import { DEFAULT_OFFICER_HISTORY, OfficerHistory } from '@mokjang/models';
 import { OfficerHistoryApi } from '../../../../../../api/history/officer-history.api';
 import { setTargetOfficerHistory } from '../../../../../../redux/reducers/target/target-history-reducer';
 import {
@@ -13,16 +10,10 @@ import {
   setToastBackgroundColor,
   setToastText,
 } from '../../../../../../redux/reducers/toast-popup-reducer';
-import { BLACK, DESTRUCTIVE } from '../../../../../../constants/styles/color';
-import {
-  getDateFromDateString,
-  getDateStringFromDate,
-} from '../../../../../../utils/date';
-import CustomPopup from '../../../../../atoms/common/popup/custom-popup';
-import {
-  useI18n,
-  useScopedI18n,
-} from '../../../../../../../locales/client';
+import { BLACK, DESTRUCTIVE } from '@mokjang/constants';
+import { getDateFromDateString, getDateStringFromDate } from '@mokjang/utils';
+import { CustomPopup } from '@mokjang/components';
+import { useI18n, useScopedI18n } from '../../../../../../../locales/client';
 import EditOfficerHistory from './edit-officer-history';
 import ConfirmPopup from '../../../../../atoms/common/popup/error-popup';
 
@@ -289,12 +280,15 @@ const OfficerHistoryList = () => {
       {/* 그룹 수정 */}
       <CustomPopup
         isShow={isOfficerOpened}
+        onClickClose={onClickOfficerClose}
         onClickCancel={onClickOfficerClose}
         onClickDone={onClickSaveOfficer}
         headerTitle={t('title.editHistory')}
         width={500}
         height={500}
         doneDisabled={!isOfficerSaveEnabled}
+        doneText={t_button('save')}
+        cancelText={t_button('cancel')}
       >
         <>
           {/* 삭제 확인 팝업 */}

@@ -12,7 +12,19 @@ export default {
   isDone: 'Completed',
   isNotDone: 'Incomplete',
   customSelect: 'Custom Select',
+  custom: 'Custom',
   email: 'Email',
+
+  lastOneMonth: 'Last One Month',
+
+  officerNone: 'No Officer',
+  marriageNone: 'No Marital Status',
+  baptismNone: 'No Baptism',
+
+  churchInfo: 'Church Information',
+  worshipAttendance: 'Worship Attendance',
+
+  currentPlan: 'Current Plan',
 
   manager: 'Manager',
 
@@ -24,8 +36,6 @@ export default {
   filter: 'Filter',
 
   doneRate: 'Completed Rate',
-
-  prevNextWeek: 'Prev / Next Week',
 
   current: 'Current',
 
@@ -65,7 +75,6 @@ export default {
   ministryGroupCount: 'Ministry Groups',
 
   newMember: 'New Member',
-  weekNewMemberState: 'New Member Last 4 Weeks',
 
   church: 'Church',
   churchName: 'Church Name',
@@ -109,6 +118,7 @@ export default {
   lastMonth: 'Last Month',
   lastThreeMonth: 'Last Three Month',
 
+  lordDay: 'Sunday',
   sunday: 'Sunday',
   monday: 'Monday',
   tuesday: 'Tuesday',
@@ -121,7 +131,7 @@ export default {
 
   description: 'Description',
 
-  concealed: 'No Permission',
+  CONCEALED: 'No Permission',
 
   management: 'Management',
 
@@ -138,7 +148,9 @@ export default {
   visitation: 'Visitation',
   task: 'Task',
   active: 'Active',
+  activeDescription: 'Service is available normally',
   inactive: 'Inactive',
+  inactiveDescription: 'Service is unavailable',
 
   linkedMemberUndefined: 'Linked Member is undefined',
 
@@ -150,6 +162,7 @@ export default {
   permissionScope: 'Permission Scope',
 
   educationEnrollment: 'Enrollment',
+  enrollments: 'Enrollment',
 
   method: 'Method',
 
@@ -164,6 +177,7 @@ export default {
   visitationDate: 'Visit Date',
   visitationMethod: 'Method',
   visitationType: 'Type',
+  members: 'Members',
   fromStartDate: 'Start After',
   toStartDate: 'Start Before',
 
@@ -313,12 +327,24 @@ export default {
   granddaughter: 'Granddaughter',
   relative: 'Relative',
 
-  'unit.title.member': 'Member Information',
-  'unit.title.visitation': 'Visitation',
-  'unit.title.education': 'Education',
-  'unit.title.task': 'Task',
-  'unit.title.church': 'Church',
-  'unit.title.manager': 'Manager',
+  'notification.recents': 'Recent Notifications',
+  'notification.unread': 'Unread',
+
+  'subscription.freeTrial': 'Free Trail',
+  'subscription.basic': 'Basic',
+  'subscription.standard': 'Standard',
+  'subscription.plus': 'Plus',
+  'subscription.premium': 'Premium',
+  'subscription.enterprise': 'Enterprise',
+
+  'unit.member.title': 'Member Information',
+  'unit.visitation.title': 'Visitation',
+  'unit.education.title': 'Education',
+  'unit.task.title': 'Task',
+  'unit.worship.title': 'Worship',
+  'unit.worshipAttendance.title': 'Worship Attendance',
+  'unit.management.title': 'Church Management',
+  'unit.permission.title': 'Admin Settings',
 
   'unit.member.write.title': 'Create Member Info',
   'unit.member.write.description':
@@ -340,12 +366,28 @@ export default {
   'unit.task.write.description': 'Create, edit, and delete task posts.',
   'unit.task.read.title': 'View Task',
   'unit.task.read.description': 'View task posts.',
-  'unit.church.write.title': 'Church Settings',
-  'unit.church.write.description':
+  'unit.worship.write.title': 'Create Worship',
+  'unit.worship.write.description': 'Add, edit, and delete worship services.',
+  'unit.worship.read.title': 'View Worship',
+  'unit.worship.read.description': 'View worship services.',
+  'unit.management.write.title': 'Church Information Settings',
+  'unit.management.write.description':
     'Edit basic church information and edit or delete roles, ministries, and group structures.',
-  'unit.manager.write.title': 'Admin Settings',
-  'unit.manager.write.description':
-    'Approve or reject admin registration requests, remove admins, and add, edit, or delete permission groups. You can also edit or delete admin information and change permission scopes and status values.',
+  'unit.management.read.title': 'View Church Information',
+  'unit.management.read.description':
+    'View basic church information and roles, ministries, and group structures.',
+  'unit.permission.write.title': 'Admin Settings',
+  'unit.permission.write.description':
+    'View and edit administrator information.',
+  'unit.permission.read.title': 'View Administrators',
+  'unit.permission.read.description':
+    'Approve or reject admin registration requests, remove administrators, add, edit, or delete permission groups, and edit or delete administrator information including permission scopes and status values.',
+  'unit.worshipAttendance.write.title': 'Manage Worship Attendance',
+  'unit.worshipAttendance.write.description':
+    'View the worship attendance record.',
+  'unit.worshipAttendance.read.title': 'View Worship Attendance',
+  'unit.worshipAttendance.read.description':
+    'Create and edit the worship attendance record.',
 
   /*-------------------title (popup title)-------------------*/
   'title.memberRegister': 'Member Register',
@@ -413,6 +455,7 @@ export default {
   'title.ministryList': 'Ministry List',
 
   'title.editHistory': 'Edit History',
+
   /*-------------------title (popup title)-------------------*/
 
   /*-------------------header (side bar button)-------------------*/
@@ -504,6 +547,8 @@ export default {
   'tableHeader.permissionScope': 'Scope',
 
   'tableHeader.memberAttendance': 'Last Attendances',
+
+  'tableHeader.memberCount': 'Member Count',
   /*-------------------table header-------------------*/
 
   /*------------------- register-------------------*/
@@ -622,6 +667,16 @@ export default {
 
   'button.deleteManager': 'Remove Admin',
   'button.leaveManager': 'Leave as Admin',
+
+  'button.openChurch': 'Go to Church',
+  'button.donate': 'Support This Service',
+  'button.myInformation': 'My Information',
+
+  'button.readAll': 'Mark All as Read',
+  'button.zoomIn': 'Zoom In',
+  'button.zoomOut': 'Zoom Out',
+
+  'button.selectAll': 'Select All',
 
   /*-------------------button-------------------*/
 
@@ -761,6 +816,12 @@ export default {
 
   'popup.deleteWorshipTitle': 'Do you want to delete this Worship?',
   'popup.deleteWorshipBody': 'Deleted Worship cannot be restored.',
+
+  'popup.deleteChurchEventTitle': 'Do you want to delete this event?',
+  'popup.deleteChurchEventBody': 'Deleted event cannot be restored.',
+
+  'popup.imageSize': 'You can upload images up to 5 MB in size.',
+
   /*-------------------popup-------------------*/
 
   /*-------------------warning-------------------*/
@@ -772,6 +833,7 @@ export default {
     'You cannot delete this ministry group if there are members or subgroups associated with it. Deleted ministry group cannot be recovered.',
   'warning.deleteMinistry':
     'You cannot delete this ministry if there are members assigned to it. Deleted ministry cannot be recovered.',
+  'warning.deleteWorship': 'Deleted ministry cannot be recovered.',
 
   'warning.stopGroupHistory':
     "Stopped Group will be saved in member's group history.",
@@ -799,6 +861,12 @@ export default {
     'The same ministry will be assigned to all members. You can modify it later individually.',
   'description.addMember':
     'Members already belonging to the current group are not displayed',
+  'description.addOfficer':
+    'Members already belonging to the current officer are not displayed',
+  'description.addMinistryMember':
+    'Members already belonging to the current ministry group are not displayed',
+  'description.addEnrollment':
+    'Members already belonging to the current term are not displayed',
   'description.editGroupLeader': 'Choose a new group leader',
   'description.editMinistryGroupLeader': 'Choose a new information leader',
   'description.tableHeaderSetting': 'Drag and Change the order',

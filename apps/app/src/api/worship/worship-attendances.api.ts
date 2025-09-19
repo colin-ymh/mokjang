@@ -1,12 +1,14 @@
 import { AxiosResponse } from 'axios';
 import qs from 'qs';
 
-import { ORDER_DIRECTION } from '../../constants/constant';
-import { SERVER_URL, TEST_SERVER_URL } from '../../constants/state/url';
+import {
+  ORDER_DIRECTION,
+  WORSHIP_ATTENDANCE,
+} from '@mokjang/constants';
 import { CustomError } from '../error/error';
 import authorizeAxios from '../authorize-axios';
-import { WORSHIP_ATTENDANCE } from '../../constants/column/worship-column';
-import { WORSHIP_ATTENDANCE_STATUS } from '../../models/worship/worship';
+import { WORSHIP_ATTENDANCE_STATUS } from '@mokjang/models';
+import { IS_PRODUCTION, SERVER_URL, TEST_SERVER_URL } from '@mokjang/utils';
 
 type GetWorshipAttendancesParams = {
   churchId: string; // 교회 id
@@ -51,7 +53,7 @@ export class WorshipAttendancesApi {
   private _url: string;
 
   constructor(useBaseURL: boolean) {
-    this._url = useBaseURL
+    this._url = IS_PRODUCTION
       ? SERVER_URL // 실제 사용할 url
       : TEST_SERVER_URL; // 개발용 url
   }

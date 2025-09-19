@@ -1,13 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import {
-  ALL,
-  BAPTISM,
-  BLANK,
-  MARRIAGE,
-  ORDER_DIRECTION,
-} from '../../../constants/constant';
-import { MEMBER } from '../../../constants/column/member-column';
-import { Member } from '../../../models/member/member';
+import { ALL, BAPTISM, BLANK, MARRIAGE, MEMBER, ORDER_DIRECTION, } from '@mokjang/constants';
+import { Member } from '@mokjang/models';
 import { RootState } from '../../store';
 import { MembersApi } from '../../../api/members/members.api';
 import { FilteredItemType } from '../../../components/atoms/member/setting/filtered-item.view';
@@ -43,11 +36,9 @@ type MemberFilterState = {
   filteredItems: FilteredItemType[];
   memberCursor: string;
 
-  // 페이지네이션 메타
   nextCursor?: string | null;
   hasMore: boolean;
 
-  // UI 상태
   loading: boolean;
   error: string | null;
 };
@@ -136,14 +127,6 @@ export const INITIAL_TABLE_HEADER_LIST: MEMBER_TABLE_HEADER_ITEM[] = [
     isDate: false,
   },
   {
-    id: MEMBER.HOME_PHONE,
-    isShown: false,
-    isSortable: false,
-    isFilterable: false,
-    isFixed: false,
-    isDate: false,
-  },
-  {
     id: MEMBER.ADDRESS,
     isShown: false,
     isSortable: false,
@@ -184,22 +167,6 @@ export const INITIAL_TABLE_HEADER_LIST: MEMBER_TABLE_HEADER_ITEM[] = [
     isDate: false,
   },
   {
-    id: MEMBER.EDUCATIONS,
-    isShown: false,
-    isSortable: false,
-    isFilterable: true,
-    isFixed: false,
-    isDate: false,
-  },
-  {
-    id: MEMBER.MINISTRIES,
-    isShown: false,
-    isSortable: false,
-    isFilterable: true,
-    isFixed: false,
-    isDate: false,
-  },
-  {
     id: MEMBER.BIRTH,
     isShown: false,
     isSortable: true,
@@ -225,11 +192,42 @@ export const INITIAL_TABLE_HEADER_LIST: MEMBER_TABLE_HEADER_ITEM[] = [
   },
 ];
 
+/* -------------------- LocalStorage Persist -------------------- */
+const STORAGE_KEY = 'memberFilterState';
+
+// 저장된 상태 불러오기
+function loadPersistedState(): Partial<MemberFilterState> {
+  if (typeof window === 'undefined') return {};
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return {};
+    return JSON.parse(raw) as Partial<MemberFilterState>;
+  } catch {
+    return {};
+  }
+}
+
+// 필요한 상태만 저장
+function savePersistedState(state: MemberFilterState) {
+  if (typeof window === 'undefined') return;
+  const toSave = {
+    memberFilter: state.memberFilter,
+    memberSortBy: state.memberSortBy,
+    memberSortDirection: state.memberSortDirection,
+    memberTableHeaderItemList: state.memberTableHeaderItemList,
+  };
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(toSave));
+}
+
+const persisted = loadPersistedState();
+
 const initialState: MemberFilterState = {
   members: [],
-  memberFilter: INITIAL_MEMBER_FILTER,
-  memberSortDirection: ORDER_DIRECTION.ASC,
-  memberTableHeaderItemList: INITIAL_TABLE_HEADER_LIST,
+  memberFilter: persisted.memberFilter ?? INITIAL_MEMBER_FILTER,
+  memberSortBy: persisted.memberSortBy,
+  memberSortDirection: persisted.memberSortDirection ?? ORDER_DIRECTION.ASC,
+  memberTableHeaderItemList:
+    persisted.memberTableHeaderItemList ?? INITIAL_TABLE_HEADER_LIST,
   filteredItems: [],
   memberCursor: BLANK,
   nextCursor: null,
@@ -238,14 +236,14 @@ const initialState: MemberFilterState = {
   error: null,
 };
 
-// thunk 반환 타입 정의: members + nextCursor + hasMore
+// thunk 반환 타입 정의
 type FetchMembersResult = {
   members: Member[];
   nextCursor: string | null;
   hasMore: boolean;
 };
 
-// rejectValue를 string으로 명시
+// 교인 불러오기
 export const fetchMembers = createAsyncThunk<
   FetchMembersResult,
   void,
@@ -277,8 +275,18 @@ export const fetchMembers = createAsyncThunk<
 
   try {
     let sort = memberSortBy;
-    // AGE로 정렬 요청 시 실데이터는 BIRTH 기준으로 정렬
     if (sort === MEMBER.AGE) sort = MEMBER.BIRTH;
+
+    const sanitizedDisplayColumns = Array.from(
+      new Set(
+        displayColumns
+          .filter((col) => col !== 'profileImage' && col !== 'name')
+          .map((col) =>
+            // @ts-ignore
+            col === 'age' || col === MEMBER.AGE ? MEMBER.BIRTH : col
+          )
+      )
+    );
 
     const response = await membersApi.getMembersV2({
       churchId,
@@ -293,23 +301,22 @@ export const fetchMembers = createAsyncThunk<
       birthTo,
       registeredFrom,
       registeredTo,
-      displayColumns,
+      displayColumns: sanitizedDisplayColumns,
       search,
     });
 
     const newMembers: Member[] = response.data.data;
-    const existingIds = new Set(members.map((member) => member.id));
-    const filteredNewMembers = newMembers.filter(
-      (member) => !existingIds.has(member.id)
-    );
+    const existingIds = new Set(members.map((m) => m.id));
+    const filteredNew = newMembers.filter((m) => !existingIds.has(m.id));
 
     const updatedMembers =
-      memberCursor === BLANK ? newMembers : [...members, ...filteredNewMembers];
+      memberCursor === BLANK ? newMembers : [...members, ...filteredNew];
 
-    const nextCursor: string | null = response.data.nextCursor ?? null;
-    const hasMore: boolean = Boolean(response.data.hasMore);
-
-    return { members: updatedMembers, nextCursor, hasMore };
+    return {
+      members: updatedMembers,
+      nextCursor: response.data.nextCursor ?? null,
+      hasMore: Boolean(response.data.hasMore),
+    };
   } catch (error) {
     console.error('교인 목록 불러오기 실패', error);
     return rejectWithValue('교인 목록을 불러오는 중 오류가 발생했습니다.');
@@ -325,18 +332,22 @@ const MemberFilterSlice = createSlice({
     },
     setMemberFilter: (state, action: PayloadAction<MEMBER_FILTER>) => {
       state.memberFilter = action.payload;
+      savePersistedState(state);
     },
-    setMemberSortBy(state, action: PayloadAction<MEMBER>) {
+    setMemberSortBy: (state, action: PayloadAction<MEMBER>) => {
       state.memberSortBy = action.payload;
+      savePersistedState(state);
     },
-    setMemberSortDirection(state, action: PayloadAction<ORDER_DIRECTION>) {
+    setMemberSortDirection: (state, action: PayloadAction<ORDER_DIRECTION>) => {
       state.memberSortDirection = action.payload;
+      savePersistedState(state);
     },
-    setMemberTableHeaderItemList(
+    setMemberTableHeaderItemList: (
       state,
       action: PayloadAction<MEMBER_TABLE_HEADER_ITEM[]>
-    ) {
+    ) => {
       state.memberTableHeaderItemList = action.payload;
+      savePersistedState(state);
     },
     setFilteredItems: (state, action: PayloadAction<FilteredItemType[]>) => {
       state.filteredItems = action.payload;
@@ -344,11 +355,8 @@ const MemberFilterSlice = createSlice({
     setMemberCursor: (state, action: PayloadAction<string>) => {
       state.memberCursor = action.payload;
     },
-    // 선택: nextCursor로 커서 전진 (무한스크롤에서 바로 쓰기 편함)
     advanceToNextCursor: (state) => {
-      if (state.nextCursor) {
-        state.memberCursor = state.nextCursor;
-      }
+      if (state.nextCursor) state.memberCursor = state.nextCursor;
     },
   },
   extraReducers: (builder) => {

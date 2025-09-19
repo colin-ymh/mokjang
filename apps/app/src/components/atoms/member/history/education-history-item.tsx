@@ -1,4 +1,4 @@
-import { EducationHistory } from '../../../../models/member/history';
+import { EducationHistory } from '@mokjang/models';
 import React from 'react';
 import EducationHistoryItemView from './education-history-item.view';
 

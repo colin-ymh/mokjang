@@ -1,27 +1,23 @@
 import React, { ChangeEvent, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../../../redux/store';
+import { AppDispatch, RootState } from '@/redux/store';
 import DaumPostcodeEmbed, { Address } from 'react-daum-postcode';
-import { BAPTISM, GENDER, MARRIAGE } from '../../../../constants/constant';
-import { DropdownValueType } from '../../../atoms/common/dropdown/dropdown-item';
-import {
-  getFormattedMobilePhone,
-  getFormattedName,
-  getFormattedVehicleNumber,
-  getTrimmedString,
-} from '../../../../utils/format';
-import { getIsWellFormedMobilePhone } from '../../../../utils/check';
-import { getSchool } from '../../../../api/school-api';
-import PagePopup from '../../../atoms/common/popup/page-popup';
-import { setTargetMember } from '../../../../redux/reducers/target/target-member-reducer';
-import AddMemberView from './add-member.view';
+import { BAPTISM, GENDER, MARRIAGE } from '@mokjang/constants';
 import {
   getDateFromDateString,
   getDateStringFromDate,
-} from '../../../../utils/date';
+  getFormattedContent,
+  getFormattedName,
+  getFormattedPhone,
+  getFormattedVehicleNumber,
+  getIsWellFormedPhone,
+} from '@mokjang/utils';
+import PagePopup from '../../../atoms/common/popup/page-popup';
+import { setTargetMember } from '@/redux/reducers/target/target-member-reducer';
+import AddMemberView from './add-member.view';
 
 export type AddMemberProps = {
-  onChangeProfileImage: (image: File | null) => void;
+  onChangeProfileImage: (image: File | null | undefined) => void;
 };
 
 const AddMember = ({ onChangeProfileImage }: AddMemberProps) => {
@@ -39,16 +35,15 @@ const AddMember = ({ onChangeProfileImage }: AddMemberProps) => {
 
   // 휴대폰 번호 변경 시 이벤트
   const onChangeMobilePhone = (event: ChangeEvent<HTMLInputElement>) => {
-    const newMobilePhone = getFormattedMobilePhone(event.target.value);
+    const newMobilePhone = getFormattedPhone(event.target.value);
     dispatch(setTargetMember({ ...targetMember, mobilePhone: newMobilePhone }));
 
     // 전화번호를 다 입력한 경우
-    if (getIsWellFormedMobilePhone(newMobilePhone)) {
+    if (getIsWellFormedPhone(newMobilePhone)) {
       (event.target as HTMLInputElement).blur();
     }
   };
 
-  const [schoolItems, setSchoolItems] = useState<DropdownValueType[]>([]);
   const [isAddressOpen, setIsAddressOpen] = useState<boolean>(false);
 
   const onClickAddressClose = () => setIsAddressOpen(false);
@@ -96,18 +91,9 @@ const AddMember = ({ onChangeProfileImage }: AddMemberProps) => {
   };
 
   // 학교 변경 시 이벤트
-  const onChangeSchool = (value: string) => {
-    const newSchool = getTrimmedString(value);
+  const onChangeSchool = (event: ChangeEvent<HTMLInputElement>) => {
+    const newSchool = getFormattedContent(event.target.value, 20);
     dispatch(setTargetMember({ ...targetMember, school: newSchool }));
-
-    // value 에 따라 학교 검색 API 요청
-    getSchool(value, 1, 5).then((response) => {
-      const items: DropdownValueType[] = response.map((value) => {
-        return { value: value.SCHUL_NM, title: value.SCHUL_NM };
-      });
-
-      setSchoolItems(items);
-    });
   };
 
   // 직업 변경 시 이벤트
@@ -190,6 +176,7 @@ const AddMember = ({ onChangeProfileImage }: AddMemberProps) => {
     if (groupId !== null) {
       dispatch(setTargetMember({ ...targetMember, groupId }));
     }
+    setIsSelectGroupShown(false);
   };
 
   const onChangeBaptism = (baptism: BAPTISM) => {
@@ -214,7 +201,6 @@ const AddMember = ({ onChangeProfileImage }: AddMemberProps) => {
   const onClickGroupClose = () => setIsSelectGroupShown(false);
 
   const props = {
-    schoolItems,
     onChangeName,
     onChangeMobilePhone,
     onChangeProfileImage,

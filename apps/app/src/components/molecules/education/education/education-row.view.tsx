@@ -1,7 +1,7 @@
 import { ChangeEvent, Ref } from 'react';
 import styled from 'styled-components';
-import { GRAY, WHITE } from '../../../../constants/styles/color';
-import { EDUCATION } from '../../../../constants/column/education-column';
+import { GRAY, WHITE } from '@mokjang/constants';
+import { EDUCATION } from '@mokjang/constants';
 
 import { useEducationSearchFilterDropdownItems } from '../../../../hooks/dropdown/dropdown-items';
 import useWindowSize from '../../../../hooks/window/window';
@@ -15,7 +15,7 @@ const EducationContainer = styled.div`
   flex-direction: column;
   justify-content: space-between;
   width: 100%;
-  border-bottom: 0.7px solid ${GRAY.LIGHT};
+  // border-bottom: 1px solid ${GRAY.LIGHT};
   flex-shrink: 0;
   position: relative;
   background-color: ${WHITE};
@@ -26,6 +26,7 @@ const RowTop = styled.div`
   flex-direction: row;
   justify-content: space-between;
   flex-shrink: 0;
+  padding: 10px 20px;
 `;
 
 const FilterList = styled.div`
@@ -37,7 +38,6 @@ const ButtonContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 10px 10px 10px 20px;
   position: relative;
   gap: 10px;
 `;
@@ -58,7 +58,7 @@ const SearchContainer = styled.div`
   flex-direction: row;
   justify-content: flex-end;
   align-items: center;
-  padding: 10px 20px;
+  gap: 10px;
 `;
 
 export type EDUCATION_SEARCH_FILTER = EDUCATION.NAME;
@@ -114,6 +114,7 @@ const EducationRowView = ({
             onChangeSearchValue={onChangeSearchValue}
             onKeyDown={onKeyDown}
             onClickSearch={onClickSearch}
+            color={GRAY.SEMI_DARK}
           />
         </SearchContainer>
       </RowTop>

@@ -2,30 +2,32 @@
 import fs from 'fs';
 import path from 'path';
 
+function resolveRootFor(key) {
+  // 워크스페이스 패키지 폴더에서 실행되는 경우: cwd/src 사용
+  const cwdSrc = path.join(process.cwd(), 'src');
+  if (fs.existsSync(cwdSrc)) return cwdSrc;
+  // 모노레포 루트에서 실행되는 경우: packages/<key>/src 사용
+  return path.resolve(`packages/${key}/src`);
+}
+
 const CONFIGS = {
-  constants: {
-    root: path.resolve('packages/constants/src'),
-    includeExts: ['.ts'],
-  },
+  constants: { root: resolveRootFor('constants'), includeExts: ['.ts'] },
   components: {
-    root: path.resolve('packages/components/src'),
+    root: resolveRootFor('components'),
     includeExts: ['.ts', '.tsx'],
   },
-  utils: {
-    root: path.resolve('packages/utils/src'),
-    includeExts: ['.ts'],
-  },
+  utils: { root: resolveRootFor('utils'), includeExts: ['.ts'] },
   assets: {
-    root: path.resolve('packages/assets/src'),
+    root: resolveRootFor('assets'),
     includeExts: ['.svg', '.png', '.jpg', '.jpeg', '.gif', '.webp'],
   },
+  models: { root: resolveRootFor('models'), includeExts: ['.ts'] },
 };
 
 const EXCLUDE_FILES = new RegExp(
   String.raw`(^index\.ts$)|(\.d\.ts$)|(\.test\.(ts|tsx)$)|(\.stories\.(ts|tsx)$)|(^\.DS_Store$)`
 );
 
-// 예약어 방지용
 const RESERVED = new Set([
   'default',
   'class',
@@ -64,11 +66,10 @@ function safeIdentifier(name) {
   return n || 'Asset';
 }
 
-// kebab/snake/camel → PascalCase (숫자 시작 방지)
 function toPascal(filename) {
-  const base = filename.replace(/\.[^.]+$/, ''); // 확장자 제거
+  const base = filename.replace(/\.[^.]+$/, '');
   const parts = base
-    .replace(/[^a-zA-Z0-9]+/g, ' ') // 구분자 통일
+    .replace(/[^a-zA-Z0-9]+/g, ' ')
     .trim()
     .split(/\s+/);
   let name = parts.map((p) => p.charAt(0).toUpperCase() + p.slice(1)).join('');
@@ -121,10 +122,8 @@ function generateBarrelRecursively(dir, includeExts, opts = {}) {
     );
 
     if (ext === '.ts' || ext === '.tsx') {
-      // 코드 파일은 재-익스포트
       lines.push(`export * from "./${withoutExt}";`);
     } else {
-      // 자산 파일은 default를 PascalCase 이름으로 재-익스포트
       const varName = safeIdentifier(toPascal(file));
       lines.push(`export { default as ${varName} } from "./${file}";`);
     }
@@ -149,7 +148,7 @@ function generateBarrelRecursively(dir, includeExts, opts = {}) {
 }
 
 function main() {
-  const arg = process.argv[2]; // 'constants' | 'components' | 'utils' | 'assets'
+  const arg = process.argv[2]; // 'constants' | 'components' | 'utils' | 'assets' | 'models'
   const targets = arg && CONFIGS[arg] ? [arg] : Object.keys(CONFIGS);
 
   for (const key of targets) {
@@ -158,7 +157,6 @@ function main() {
       console.warn(`[skip] ${key}: not found -> ${root}`);
       continue;
     }
-    // assets 루트에서만 네임스페이스 내보내기 활성화
     const isAssets = key === 'assets';
     generateBarrelRecursively(root, includeExts, {
       namespaceFoldersAtRoot: isAssets,

@@ -1,44 +1,41 @@
 import styled from 'styled-components';
 import FakeDropdownButton from '../../../atoms/common/button/fake-dropdown-button';
-import { Group } from '../../../../models/management/management';
-import { useI18n } from '../../../../../locales/client';
-import CustomPopup from '../../../atoms/common/popup/custom-popup';
+import { Group } from '@mokjang/models';
+import { useI18n, useScopedI18n } from '../../../../../locales/client';
+import { Button, CustomPopup, MainText, SvgIcon } from '@mokjang/components';
 import SelectGroupHierarchy from '../../../organisms/group/select-group-hierarchy';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
 import Dropdown from '../../../atoms/common/dropdown/dropdown';
 import {
-  ALL,
+  BLANK,
+  CURSOR,
   DAY,
+  GRAY,
+  LOCALE,
+  MAIN,
   REPEAT_PERIOD,
+  SIZE,
+  WHITE,
   WORSHIP_PERIOD,
-} from '../../../../constants/constant';
+} from '@mokjang/constants';
 import CustomDatePicker from '../../../../vendor/date-picker/custom-date-picker';
 import {
   getDateFromDateString,
-  getDateFromInput,
   getDateStringFromDate,
   getDayConstantByIndex,
+  getTranslatedDateFromDateString,
+  getTranslatedMemberCount,
   getWeekRepeatConstant,
   getWorshipSessionDates,
-} from '../../../../utils/date';
+} from '@mokjang/utils';
 import React from 'react';
 import { useWorshipPeriodDropdownItems } from '../../../../hooks/dropdown/dropdown-items';
-import {
-  GRAY,
-  GREEN,
-  MAIN,
-  PURPLE,
-  WHITE,
-} from '../../../../constants/styles/color';
-import { MainText } from '../../../atoms/common/text/main-text';
-import { SIZE } from '../../../../constants/styles/style';
-import { getTranslatedDateFromDateString } from '../../../../utils/translate';
-import { getTranslatedMemberCount } from '../../../../../../../packages/utils/src';
+
 import { usePathname } from 'next/navigation';
-import { LOCALE } from '../../../../constants/state/locale';
-import ChevronLeft from '../../../../../public/svg/chevron-down.svg';
-import Button from '../../../atoms/common/button/button';
+
+import { Svg } from '@mokjang/assets';
+import { getWorshipAttendanceRateColor } from '@/utils/color';
 
 const AttendanceContainer = styled.div`
   display: flex;
@@ -85,11 +82,13 @@ const BoxContainer = styled.div`
 
 const GroupContainer = styled.div`
   display: flex;
+  flex-direction: column;
   padding: 10px;
   width: 100%;
+  overflow-y: auto;
 `;
 
-const Chevron = styled(ChevronLeft)<{
+const Chevron = styled(Svg.ChevronDown)<{
   $isOpened: boolean;
 }>`
   cursor: pointer;
@@ -117,6 +116,7 @@ type AttendanceViewProps = {
   onChangeFromDate: (date: Date | null) => void;
   onChangeToDate: (date: Date | null) => void;
   onChangeWorshipPeriodDropdown: (value: WORSHIP_PERIOD) => void;
+  onClickRefreshEnrollments: () => void;
 };
 
 const AttendanceRow = ({
@@ -132,12 +132,14 @@ const AttendanceRow = ({
   onChangeFromDate,
   onChangeToDate,
   onChangeWorshipPeriodDropdown,
+  onClickRefreshEnrollments,
 }: AttendanceViewProps) => {
   const t = useI18n();
+  const t_button = useScopedI18n('button');
   const pathname = usePathname();
   const basePath = pathname.split('/')[1] as LOCALE;
 
-  const { worshipEnrollmentFilter, worshipEnrollmentTotalCount } = useSelector(
+  const { worshipEnrollmentFilter } = useSelector(
     (state: RootState) => state.worshipEnrollmentFilter
   );
 
@@ -155,8 +157,8 @@ const AttendanceRow = ({
   const worshipPeriodDropdownItems = useWorshipPeriodDropdownItems();
 
   const sessionDates = getWorshipSessionDates(
-    getDateFromInput(worshipEnrollmentFilter.fromSessionDate),
-    getDateFromInput(worshipEnrollmentFilter.toSessionDate),
+    getDateFromDateString(worshipEnrollmentFilter.fromSessionDate),
+    getDateFromDateString(worshipEnrollmentFilter.toSessionDate),
     targetWorship.worshipDay,
     targetWorship.repeatPeriod
   );
@@ -166,6 +168,23 @@ const AttendanceRow = ({
       <AttendanceContainer>
         <HeaderContainer>
           <LeftContainer>
+            <Button
+              onClick={onClickRefreshEnrollments}
+              icon={
+                <SvgIcon
+                  cursor={CURSOR.POINTER}
+                  svg={Svg.ArrowPath}
+                  width={2}
+                  size={20}
+                  color={GRAY.DARK}
+                  bottom={0.1}
+                />
+              }
+              width={40}
+              height={40}
+              borderColor={GRAY.LIGHT}
+              backgroundColor={WHITE}
+            />
             {/* 예배 설정 */}
             <Dropdown
               value={targetWorship.id}
@@ -176,9 +195,11 @@ const AttendanceRow = ({
             {/* 그룹 범위 설정*/}
             <FakeDropdownButton
               title={
-                targetWorshipGroup.name == ALL || !targetWorshipGroup.name
-                  ? t('all')
-                  : targetWorshipGroup.name
+                targetWorshipGroup.id === null
+                  ? t('none')
+                  : targetWorshipGroup.id === BLANK
+                    ? t('all')
+                    : targetWorshipGroup.name
               }
               isOpened={isGroupModalShown}
               onClick={onClickOpenGroupModal}
@@ -220,7 +241,7 @@ const AttendanceRow = ({
               width={100}
             />
             <Button
-              icon={<Chevron $isOpened={isStatisticOpened} />}
+              icon={<Chevron $isOpened={isStatisticOpened} color={GRAY.DARK} />}
               onClick={onClickStatisticChevron}
               width={40}
               backgroundColor={WHITE}
@@ -244,31 +265,43 @@ const AttendanceRow = ({
           </BoxContainer>
           {/* 선택 그룹 */}
           <BoxContainer>
-            <MainText color={PURPLE.DARK} size={SIZE.SMALL}>
+            <MainText color={GRAY.SEMI_DARK} size={SIZE.SMALL}>
               {t('worshipSelectedGroup')}
             </MainText>
-            <MainText color={PURPLE.DARK} size={SIZE.LARGE} fontWeight={600}>
+            <MainText size={SIZE.LARGE} fontWeight={600}>
               {targetWorshipGroup.name || t('all')}
             </MainText>
-            <MainText color={PURPLE.DARK} size={SIZE.SMALL}>
-              {getTranslatedMemberCount(basePath, worshipEnrollmentTotalCount)}
+            <MainText color={GRAY.SEMI_DARK} size={SIZE.SMALL}>
+              {getTranslatedMemberCount(
+                basePath,
+                targetWorshipStatistic.memberCount
+              )}
             </MainText>
           </BoxContainer>
           {/* 평균 출석률 */}
           <BoxContainer>
-            <MainText color={MAIN.DEFAULT} size={SIZE.SMALL}>
+            <MainText color={GRAY.SEMI_DARK} size={SIZE.SMALL}>
               {t('worshipAverageAttendanceRate')}
             </MainText>
-            <MainText color={MAIN.DEFAULT} size={SIZE.LARGE} fontWeight={600}>
+            <MainText
+              color={getWorshipAttendanceRateColor(
+                targetWorshipStatistic.attendanceRate.period
+              )}
+              size={SIZE.LARGE}
+              fontWeight={600}
+            >
               {`${targetWorshipStatistic.attendanceRate.period}%`}
+            </MainText>
+            <MainText color={GRAY.SEMI_DARK} size={SIZE.SMALL}>
+              {`${getTranslatedDateFromDateString(basePath, worshipEnrollmentFilter.fromSessionDate)} - ${getTranslatedDateFromDateString(basePath, worshipEnrollmentFilter.toSessionDate)}`}
             </MainText>
           </BoxContainer>
           {/* 최근 예배일 */}
           <BoxContainer>
-            <MainText color={GREEN.DEFAULT} size={SIZE.SMALL}>
+            <MainText color={GRAY.SEMI_DARK} size={SIZE.SMALL}>
               {t('worshipLastDate')}
             </MainText>
-            <MainText color={GREEN.DEFAULT} size={SIZE.LARGE} fontWeight={600}>
+            <MainText size={SIZE.LARGE} fontWeight={600}>
               {sessionDates?.length > 0 &&
                 getTranslatedDateFromDateString(
                   basePath,
@@ -282,16 +315,19 @@ const AttendanceRow = ({
       {/* 그룹 선택 모달 */}
       <CustomPopup
         isShow={isGroupModalShown}
+        onClickClose={onClickCloseGroupModal}
         onClickCancel={onClickCloseGroupModal}
         width={400}
         height={600}
         isHeaderShown={false}
+        cancelText={t_button('close')}
       >
         <GroupContainer>
           <SelectGroupHierarchy
             onChange={onClickGroupItem}
             topLevelGroupId={topLevelGroup.id}
-            isNullable={false}
+            isNullable={true}
+            prevSelectedGroupId={worshipEnrollmentFilter.group}
           />
         </GroupContainer>
       </CustomPopup>

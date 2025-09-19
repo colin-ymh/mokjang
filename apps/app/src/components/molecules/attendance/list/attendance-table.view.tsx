@@ -5,34 +5,27 @@ import { RootState } from '../../../../redux/store';
 
 import {
   BLACK,
+  BLANK,
   DESTRUCTIVE,
   GRAY,
   GREEN,
   WHITE,
-} from '../../../../constants/styles/color';
-import { MainText } from '../../../atoms/common/text/main-text';
-import { BLANK } from '../../../../constants/constant';
+  WORSHIP_ENROLLMENT,
+} from '@mokjang/constants';
+import { MainText } from '@mokjang/components';
 import useWindowSize from '../../../../hooks/window/window';
-import {
-  WORSHIP_ATTENDANCE_STATUS,
-  WorshipEnrollment,
-  WorshipSessionCheckStatus,
-} from '../../../../models/worship/worship';
-import { WORSHIP_ENROLLMENT } from '../../../../constants/column/worship-column';
+import { WORSHIP_ATTENDANCE_STATUS, WorshipEnrollment } from '@mokjang/models';
 import AttendanceTableHeader from '../../../atoms/attendance/list/attendance-table-header';
 import {
   getDateFromDateString,
-  getDateFromInput,
   getDateStringFromDate,
   getIsSameDate,
   getMonthDateFromDate,
   getWorshipSessionDates,
-} from '../../../../utils/date';
+} from '@mokjang/utils';
 import { EDUCATION_TABLE_HEADER_ITEM } from '../../../../redux/reducers/filter/worship-enrollment-filter-reducer';
 
-import Present from '../../../../../public/svg/circle.svg';
-import Absent from '../../../../../public/svg/cancel.svg';
-import CancelIcon from '../../../../../public/svg/cancel.svg';
+import { Svg } from '@mokjang/assets';
 import MemberProfilePopupButton from '../../common/button/member-profile-popup-button';
 import AttendanceInformation from '../../../organisms/attendance/information/attendance-information';
 import { useScopedI18n } from '../../../../../locales/client';
@@ -145,14 +138,14 @@ const IconContainer = styled.div`
   align-items: center;
 `;
 
-const PresentIcon = styled(Present)`
+const PresentIcon = styled(Svg.Circle)`
   width: 20px;
   height: 20px;
   stroke: ${GREEN.DEFAULT};
   stroke-width: 3px;
 `;
 
-const AbsentIcon = styled(Absent)`
+const AbsentIcon = styled(Svg.Cancel)`
   width: 20px;
   height: 20px;
   stroke: ${DESTRUCTIVE.DEFAULT};
@@ -165,7 +158,7 @@ const ButtonContainer = styled.div`
   padding-right: 10px;
 `;
 
-const Cancel = styled(CancelIcon)`
+const Cancel = styled(Svg.Cancel)`
   width: 30px;
   height: 30px;
   stroke: ${BLACK};
@@ -180,7 +173,6 @@ type AttendanceTableProps = {
   scrollRef: MutableRefObject<HTMLDivElement | null>;
   onScroll: () => void;
   onClickHeader: (id: WORSHIP_ENROLLMENT | string, isSession: boolean) => void;
-  checkStatuses: WorshipSessionCheckStatus[];
 };
 
 const AttendanceTableView = ({
@@ -191,12 +183,10 @@ const AttendanceTableView = ({
   scrollRef,
   onScroll,
   onClickHeader,
-  checkStatuses,
 }: AttendanceTableProps) => {
-  const t_button = useScopedI18n('button');
   const t_title = useScopedI18n('title');
 
-  const { worshipEnrollmentFilter } = useSelector(
+  const { worshipEnrollmentFilter, checkStatuses } = useSelector(
     (state: RootState) => state.worshipEnrollmentFilter
   );
   const { targetWorship } = useSelector(
@@ -213,8 +203,8 @@ const AttendanceTableView = ({
   );
 
   const sessionDates = getWorshipSessionDates(
-    getDateFromInput(worshipEnrollmentFilter.fromSessionDate),
-    getDateFromInput(worshipEnrollmentFilter.toSessionDate),
+    getDateFromDateString(worshipEnrollmentFilter.fromSessionDate),
+    getDateFromDateString(worshipEnrollmentFilter.toSessionDate),
     targetWorship.worshipDay,
     targetWorship.repeatPeriod
   );
@@ -257,14 +247,16 @@ const AttendanceTableView = ({
         )
       );
       return (
-        <IconContainer>
-          {attendance?.attendanceStatus ===
-            WORSHIP_ATTENDANCE_STATUS.ABSENT && <AbsentIcon />}
-          {attendance?.attendanceStatus ===
-            WORSHIP_ATTENDANCE_STATUS.PRESENT && <PresentIcon />}
-        </IconContainer>
+        <CustomTooltip text={attendance?.note}>
+          <IconContainer>
+            {attendance?.attendanceStatus ===
+              WORSHIP_ATTENDANCE_STATUS.ABSENT && <AbsentIcon />}
+            {attendance?.attendanceStatus ===
+              WORSHIP_ATTENDANCE_STATUS.PRESENT && <PresentIcon />}
+          </IconContainer>
+        </CustomTooltip>
       );
-    } else {
+    } else if (enrollment?.member) {
       switch (id) {
         case WORSHIP_ENROLLMENT.NAME:
           return <MemberProfilePopupButton member={enrollment.member} />;
@@ -337,15 +329,13 @@ const AttendanceTableView = ({
                     id={item.id}
                     $isSession={item.isSession}
                   >
-                    <CustomTooltip text={'특이사항'}>
-                      <ContentWrapper>
-                        {getAttendanceTableContent(
-                          item.id,
-                          enrollment,
-                          item?.date
-                        )}
-                      </ContentWrapper>
-                    </CustomTooltip>
+                    <ContentWrapper>
+                      {getAttendanceTableContent(
+                        item.id,
+                        enrollment,
+                        item?.date
+                      )}
+                    </ContentWrapper>
                   </TableData>
                 ))}
               </AttendanceTableRow>

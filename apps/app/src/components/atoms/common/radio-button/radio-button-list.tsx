@@ -1,7 +1,7 @@
 import { ComponentType } from 'react';
 import styled from 'styled-components';
 
-import RadioButton, { RadioButtonItemProps } from './radio-button';
+import { RadioButton, RadioButtonItemProps } from '@mokjang/components';
 
 export type RadioButtonValue = {
   value: any; // 실제 사용될 값

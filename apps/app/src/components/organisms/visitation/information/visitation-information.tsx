@@ -1,6 +1,6 @@
 import React from 'react';
 import VisitationInformationView from './visitation-information.view';
-import { TASK_STATUS } from '../../../../constants/status/status';
+import { TASK_STATUS } from '@mokjang/constants';
 
 type VisitationInformationProps = {
   onChangeStatus?: (status: TASK_STATUS) => void;

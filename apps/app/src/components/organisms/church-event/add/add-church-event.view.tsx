@@ -2,22 +2,20 @@ import styled from 'styled-components';
 
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
-import LabelInput from '../../../atoms/common/input/label-input';
-import LabelTextarea from '../../../atoms/common/input/label-textarea';
+import { LabelInput, LabelTextarea, MainText, RequiredMark, } from '@mokjang/components';
 
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
-import { getDateFromInput } from '../../../../utils/date';
+import { getDateFromDateString } from '@mokjang/utils';
 import CustomDatePicker from '../../../../vendor/date-picker/custom-date-picker';
 import React from 'react';
-import { MainText } from '../../../atoms/common/text/main-text';
-import RequiredMark from '../../../atoms/common/text/required-mark';
+import { GRAY, SIZE } from '@mokjang/constants';
 
 const AddChurchEventViewContainer = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
   padding: 20px;
-  gap: 10px;
+  gap: 20px;
 `;
 
 const LabelContainer = styled.div`
@@ -74,14 +72,14 @@ const AddChurchEventView = ({
         isRequired={true}
       />
       <LabelContainer>
-        <MainText>
-          <RequiredMark />
+        <MainText color={GRAY.DARK} size={SIZE.SMALL}>
           {t('period')}
+          <RequiredMark />
         </MainText>
         <CustomDatePicker
           selected={
             targetChurchEvent.date
-              ? getDateFromInput(targetChurchEvent.date)
+              ? getDateFromDateString(targetChurchEvent.date)
               : null
           }
           onChange={onChangeChurchEventDate}

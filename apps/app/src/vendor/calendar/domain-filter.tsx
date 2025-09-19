@@ -1,14 +1,13 @@
-import { DropdownValueType } from '../../components/atoms/common/dropdown/dropdown-item';
-import { MainText } from '../../components/atoms/common/text/main-text';
-import CheckButton from '../../components/atoms/common/button/check-button';
-import { setCalendarFilter } from '../../redux/reducers/filter/calendar-filter-reducer';
+import { DropdownValueType } from '@/components/atoms/common/dropdown/dropdown-item';
+import { CheckButton, MainText } from '@mokjang/components';
+import { setCalendarFilter } from '@/redux/reducers/filter/calendar-filter-reducer';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../redux/store';
+import { AppDispatch, RootState } from '@/redux/store';
 import { useI18n } from '../../../locales/client';
-import { DOMAIN } from '../../models/permission/permission';
-import { getCalenderBackgroundColor } from '../../utils/color';
-import { CURSOR } from '../../constants/styles/style';
+import { CALENDAR_DOMAIN, DOMAIN } from '@mokjang/models';
+import { getCalenderBackgroundColor } from '@/utils/color';
+import { CURSOR } from '@mokjang/constants';
 
 const DomainFilterContainer = styled.div`
   display: flex;
@@ -55,7 +54,7 @@ const DomainFilter = () => {
       if (domain === DOMAIN.MEMBER) {
         return { value: domain, title: t('birthday') };
       }
-      return { value: domain, title: t(domain) };
+      return { value: domain, title: t(domain as CALENDAR_DOMAIN) };
     });
 
   const onClickCheck = (value: boolean, item: DOMAIN) => {

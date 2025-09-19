@@ -9,7 +9,7 @@ const ChurchRegisterContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 50px;
+  gap: 30px;
   padding: 50px 0;
 `;
 

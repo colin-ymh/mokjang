@@ -10,10 +10,10 @@ import PermissionTemplateListView from './permission-template-list.view';
 import {
   DEFAULT_PERMISSION_TEMPLATE,
   PermissionTemplate,
-} from '../../../../models/permission/permission';
+} from '@mokjang/models';
 import { setTargetPermissionTemplate } from '../../../../redux/reducers/target/target-permission-template-reducer';
 import { PermissionsApi } from '../../../../api/permissions/permissions.api';
-import { CHURCH_USER_ROLE } from '../../../../constants/constant';
+import { CHURCH_USER_ROLE } from '@mokjang/constants';
 import { getOwnerPermissionTemplate } from '../../../../utils/permission';
 import { useI18n } from '../../../../../locales/client';
 
@@ -94,7 +94,6 @@ const PermissionTemplateList = ({}: PermissionTemplateListProps) => {
     }
   };
 
-  // 필터 정보가 변경될 때, 교인들을 다시 불러오는 부분
   useEffect(() => {
     const fetchInitialPermissionTemplates = async () => {
       try {

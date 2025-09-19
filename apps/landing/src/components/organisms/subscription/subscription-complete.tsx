@@ -1,7 +1,7 @@
 import SubscriptionCompleteView, {
   SubscriptionCompleteViewProps,
 } from '@/components/organisms/subscription/subscription-complete.view';
-import { usePageRouter } from '@mokjang/app/src/utils/router';
+import { usePageRouter } from '@mokjang/utils';
 
 const SubscriptionComplete = () => {
   const router = usePageRouter();

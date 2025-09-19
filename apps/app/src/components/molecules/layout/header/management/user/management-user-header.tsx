@@ -1,4 +1,4 @@
-import { usePageRouter } from '../../../../../../utils/router';
+import { usePageRouter } from '@mokjang/utils';
 import ManagementUserHeaderView from './management-user-header.view';
 
 type ManagementUserHeaderProps = {};

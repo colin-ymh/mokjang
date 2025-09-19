@@ -3,16 +3,15 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
 
-import { MainText } from '../../common/text/main-text';
-import { MEMBER } from '../../../../constants/column/member-column';
-import { BLACK, GRAY, MAIN } from '../../../../constants/styles/color';
-import { SIZE } from '../../../../constants/styles/style';
-import { getTranslatedMemberColumn } from '../../../../utils/translate';
+import { MainText } from '@mokjang/components';
+import { MEMBER } from '@mokjang/constants';
+import { BLACK, GRAY, MAIN } from '@mokjang/constants';
+import { SIZE } from '@mokjang/constants';
+import { getTranslatedMemberColumn } from '@mokjang/utils';
 
 import { useI18n } from '../../../../../locales/client';
-import ArrowUpDown from '../../../../../public/svg/arrow-up-down.svg';
-import Arrow from '../../../../../public/svg/arror-up.svg';
-import { ORDER_DIRECTION } from '../../../../constants/constant';
+import { Svg } from '@mokjang/assets';
+import { ORDER_DIRECTION } from '@mokjang/constants';
 
 const HeaderContainer = styled.div<{ $isProfile: boolean }>`
   display: flex;
@@ -36,14 +35,14 @@ const IconContainer = styled.div`
   cursor: pointer;
 `;
 
-const ArrowUp = styled(Arrow)`
+const ArrowUp = styled(Svg.ArrorUp)`
   width: 14px;
   height: 14px;
   stroke-width: 2px;
   stroke: ${MAIN.DEFAULT};
 `;
 
-const ArrowDown = styled(Arrow)`
+const ArrowDown = styled(Svg.ArrorUp)`
   width: 14px;
   height: 14px;
   stroke-width: 2px;
@@ -51,7 +50,7 @@ const ArrowDown = styled(Arrow)`
   transform: rotate(180deg);
 `;
 
-const ArrowUpDownIcon = styled(ArrowUpDown)`
+const ArrowUpDownIcon = styled(Svg.ArrowUpDown)`
   width: 14px;
   height: 14px;
   stroke-width: 2px;

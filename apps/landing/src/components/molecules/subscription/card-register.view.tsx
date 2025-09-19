@@ -6,17 +6,11 @@ import {
   CheckButton,
   LabelInput,
   MainText,
-} from '../../../../../../packages/components/src';
+} from '@mokjang/components';
 import { ChangeEvent, useEffect, useState } from 'react';
-import { DEFAULT_ENC_DATA, encData } from '@/models/subscription/subscription';
-import {
-  BLANK,
-  CURSOR,
-  GRAY,
-  MAIN,
-  SIZE,
-} from '../../../../../../packages/constants/src';
-import { usePageRouter } from '@mokjang/app/src/utils/router';
+import { DEFAULT_ENC_DATA, encData } from '@mokjang/models';
+import { BLANK, CURSOR, GRAY, MAIN, SIZE } from '@mokjang/constants';
+import { usePageRouter } from '@mokjang/utils';
 
 const CardRegisterContainer = styled.div`
   display: flex;

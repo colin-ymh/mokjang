@@ -2,12 +2,9 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
 import { useI18n } from '../../../../../locales/client';
-import { MainText } from '../../../atoms/common/text/main-text';
+import { MainText } from '@mokjang/components';
 import React from 'react';
-import {
-  getDateFromDateString,
-  getDateStringFromDate,
-} from '../../../../utils/date';
+import { getDateFromDateString, getDateStringFromDate } from '@mokjang/utils';
 
 const InformationContainer = styled.div`
   display: flex;

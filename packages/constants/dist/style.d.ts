@@ -16,5 +16,7 @@ export declare enum DIRECTION {
     RIGHT = "right"
 }
 export declare enum CURSOR {
-    POINTER = "pointer"
+    POINTER = "pointer",
+    NOT_ALLOWED = "not-allowed"
 }
+//# sourceMappingURL=style.d.ts.map

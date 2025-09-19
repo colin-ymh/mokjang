@@ -2,34 +2,37 @@ import React, { MutableRefObject } from 'react';
 import { usePathname } from 'next/navigation';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../../../redux/store';
+import { RootState } from '@/redux/store';
 
-import { GRAY, MAIN, PURPLE, WHITE } from '../../../../constants/styles/color';
-import { MEMBER } from '../../../../constants/column/member-column';
-import { MainText } from '../../../atoms/common/text/main-text';
 import {
   BAPTISM,
   BLANK,
+  CONCEALED,
   GENDER,
+  GRAY,
   GROUP_ROLE,
+  LOCALE,
+  MAIN,
+  MEMBER,
   MINISTRY_GROUP_ROLE,
-} from '../../../../constants/constant';
-import { getAge, getDateFromInput } from '../../../../utils/date';
+  PURPLE,
+  WHITE,
+  YELLOW,
+} from '@mokjang/constants';
+import { MainTag, MainText, ProfileImage } from '@mokjang/components';
 import {
+  getAge,
+  getDateFromDateString,
   getFormattedDate,
-  getFormattedHomePhone,
-  getFormattedMobilePhone,
-} from '../../../../utils/format';
-import { Member } from '../../../../models/member/member';
+  getFormattedPhone,
+  getTranslatedDateFromDateString,
+} from '@mokjang/utils';
+import { Member } from '@mokjang/models';
 import MemberTableHeader from '../../../atoms/member/list/member-table-header';
 import useWindowSize from '../../../../hooks/window/window';
-import { LOCALE } from '../../../../constants/state/locale';
 
 import { useI18n } from '../../../../../locales/client';
-import { BLANK_HEADER } from '../../../../redux/reducers/filter/member-filter-reducer';
-import ProfileImage from '../../../atoms/common/image/profile-image';
-import { getTranslatedDateFromDateString } from '../../../../utils/translate';
-import MainTag from '../../../atoms/common/tag/main-tag';
+import { BLANK_HEADER } from '@/redux/reducers/filter/member-filter-reducer';
 
 // 1. 컬럼별 PX 폭 (마지막 REMARKS만 auto 할 예정)
 const getColumnWidth = (id: string) => {
@@ -216,18 +219,31 @@ const MemberTableView = ({
           <ProfileContainer>
             {/*<MemberProfile member={member} isProfileImageShown={false} /> */}
             <MainText>{member?.name}</MainText>
+            {member.churchUser && (
+              <MainTag
+                title={t('manager')}
+                color={PURPLE.DARK}
+                backgroundColor={PURPLE.LIGHT}
+                fontSize={12}
+                rowPadding={6}
+              />
+            )}
             {member.groupRole === GROUP_ROLE.LEADER && (
               <MainTag
                 title={t('groupLeader')}
-                color={MAIN.DARK}
-                backgroundColor={MAIN.LIGHT}
+                color={YELLOW.DARK}
+                backgroundColor={YELLOW.LIGHT}
+                fontSize={12}
+                rowPadding={6}
               />
             )}
             {member.ministryGroupRole === MINISTRY_GROUP_ROLE.LEADER && (
               <MainTag
                 title={t('ministryGroupLeader')}
-                color={PURPLE.DARK}
-                backgroundColor={PURPLE.LIGHT}
+                color={MAIN.DARK}
+                backgroundColor={MAIN.LIGHT}
+                fontSize={12}
+                rowPadding={6}
               />
             )}
           </ProfileContainer>
@@ -235,7 +251,9 @@ const MemberTableView = ({
       case MEMBER.MOBILE_PHONE:
         return (
           <MainText>
-            {member?.mobilePhone && getFormattedMobilePhone(member.mobilePhone)}
+            {member?.mobilePhone === CONCEALED
+              ? t(CONCEALED)
+              : getFormattedPhone(member.mobilePhone)}
           </MainText>
         );
       case MEMBER.GENDER:
@@ -253,7 +271,7 @@ const MemberTableView = ({
       case MEMBER.AGE:
         return (
           <MainText>
-            {member.birth && getAge(getDateFromInput(member.birth))}
+            {member.birth && getAge(getDateFromDateString(member.birth))}
           </MainText>
         );
       case MEMBER.BAPTISM:
@@ -266,26 +284,36 @@ const MemberTableView = ({
             {member.ministries?.map((item) => item.name).join(', ')}
           </MainText>
         );
-      case MEMBER.HOME_PHONE:
+      // case MEMBER.HOME_PHONE:
+      //   return (
+      //     <MainText>
+      //       {member.homePhone && getFormattedHomePhone(member.homePhone)}
+      //     </MainText>
+      //   );
+      case MEMBER.ADDRESS:
         return (
           <MainText>
-            {member.homePhone && getFormattedHomePhone(member.homePhone)}
+            {member.address === CONCEALED ? t(CONCEALED) : member.address}
           </MainText>
         );
-      case MEMBER.ADDRESS:
-        return <MainText>{member.address}</MainText>;
       case MEMBER.OCCUPATION:
-        return <MainText>{member.occupation}</MainText>;
+        return (
+          <MainText>
+            {member.occupation === CONCEALED ? t(CONCEALED) : member.occupation}
+          </MainText>
+        );
       case MEMBER.SCHOOL:
-        return <MainText>{member.school}</MainText>;
+        return (
+          <MainText>
+            {member.school === CONCEALED ? t(CONCEALED) : member.school}
+          </MainText>
+        );
+      case MEMBER.MARRIAGE:
+        return <MainText>{member.marriage && t(member.marriage)}</MainText>;
       case MEMBER.REGISTERED_AT:
         return (
           <MainText>
-            {member.registeredAt &&
-              getTranslatedDateFromDateString(
-                basePath,
-                getFormattedDate(member.registeredAt)
-              )}
+            {getTranslatedDateFromDateString(basePath, member.registeredAt)}
           </MainText>
         );
       case MEMBER.UPDATED_AT:
@@ -311,7 +339,7 @@ const MemberTableView = ({
       <TableContainer
         ref={scrollRef}
         onScroll={onScroll}
-        height={filteredItems.length > 0 ? height - 45 : height}
+        height={filteredItems.length > 0 ? height - 75 : height - 30}
       >
         <MemberTable>
           <thead>

@@ -1,23 +1,15 @@
 import styled from 'styled-components';
-import LabelInput from '../../../../atoms/common/input/label-input';
+import { CustomPopup, LabelInput, MainText } from '@mokjang/components';
 import React from 'react';
 import { useI18n, useScopedI18n } from '../../../../../../locales/client';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../redux/store';
-import CustomPopup from '../../../../atoms/common/popup/custom-popup';
 import CustomDatePicker from '../../../../../vendor/date-picker/custom-date-picker';
-import {
-  getDateFromDateString,
-  getDateFromInput,
-  getDateStringFromDate,
-} from '../../../../../utils/date';
-import { GRAY } from '../../../../../constants/styles/color';
-import { MainText } from '../../../../atoms/common/text/main-text';
-import { SIZE } from '../../../../../constants/styles/style';
+import { getDateFromDateString, getDateStringFromDate } from '@mokjang/utils';
+import { BLANK, GRAY, SIZE } from '@mokjang/constants';
 import StopWarningButton from '../../../../atoms/common/button/stop-warning-button';
 import SelectMinistryHierarchy from '../../../../organisms/ministry/select-ministry-hierarchy';
 import LabelDropdown from '../../../../atoms/common/dropdown/label-dropdown';
-import { BLANK } from '../../../../../constants/constant';
 import { DropdownValueType } from '../../../../atoms/common/dropdown/dropdown-item';
 
 const EditMemberMinistryViewContainer = styled.div`
@@ -32,6 +24,10 @@ const LabelContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
+`;
+
+const BoxContainer = styled.div`
+  display: flex;
 `;
 
 type EditMemberMinistryViewProps = {
@@ -101,7 +97,7 @@ const EditMemberMinistryView = ({
             value={
               targetMinistryHistory.startDate
                 ? getDateStringFromDate(
-                    getDateFromInput(targetMinistryHistory.startDate)
+                    getDateFromDateString(targetMinistryHistory.startDate)
                   )
                 : undefined
             }
@@ -116,21 +112,24 @@ const EditMemberMinistryView = ({
           />
         </LabelContainer>
         {targetMinistryHistory.ministryGroup?.id && (
-          <StopWarningButton
-            description={t_warning('stopMinistryHistory')}
-            buttonText={t_button('stopMinistryHistory')}
-            onClick={() =>
-              onClickDeleteMinistry(
-                targetMinistryHistory.ministryGroup.id as string
-              )
-            }
-            // disabled={!!selectedMinistry?.membersCount || false}
-          />
+          <BoxContainer>
+            <StopWarningButton
+              description={t_warning('stopMinistryHistory')}
+              buttonText={t_button('stopMinistryHistory')}
+              onClick={() =>
+                onClickDeleteMinistry(
+                  targetMinistryHistory.ministryGroup.id as string
+                )
+              }
+              // disabled={!!selectedMinistry?.membersCount || false}
+            />
+          </BoxContainer>
         )}
       </EditMemberMinistryViewContainer>
 
       <CustomPopup
         isShow={isMinistryOpen}
+        onClickClose={onClickMinistryClose}
         onClickCancel={onClickMinistryClose}
         cancelText={t('button.close')}
         width={450}

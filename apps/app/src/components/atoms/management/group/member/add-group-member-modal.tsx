@@ -10,12 +10,10 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../redux/store';
 import { MembersApi } from '../../../../../api/members/members.api';
 import AddGroupMemberModalView from './add-group-member-modal.view';
-import { BLANK } from '../../../../../constants/constant';
-import { Member } from '../../../../../models/member/member';
-import { Group } from '../../../../../models/management/management';
-import { getFormattedName } from '../../../../../utils/format';
+import { BLANK, MEMBER } from '@mokjang/constants';
+import { Group, Member } from '@mokjang/models';
+import { getFormattedName } from '@mokjang/utils';
 import { GroupsApi } from '../../../../../api/management/group/groups.api';
-import { MEMBER } from '../../../../../constants/column/member-column';
 
 type AddGroupMemberModalProps = {
   group: Group;
@@ -38,7 +36,12 @@ const AddGroupMemberModal = ({
 
   const [searchName, setSearchName] = useState<string>(BLANK);
   const [members, setMembers] = useState<Member[]>([]);
+  // 커서 기반으로 전환
+  const [cursor, setCursor] = useState<string | null>(null);
+  const [hasMore, setHasMore] = useState(true);
+
   const [page, setPage] = useState(1);
+
   const [isLoading, setIsLoading] = useState(false);
   const [thrownError, setThrownError] = useState<Error | null>(null);
   if (thrownError) {
@@ -50,30 +53,48 @@ const AddGroupMemberModal = ({
   // 교인 목록 검색
   const fetchSearchedMembers = async () => {
     try {
-      if (isLoading) return;
+      if (isLoading || !hasMore) return;
       setIsLoading(true);
-      const response = await membersApi.getMembers({
-        churchId,
-        page: 1,
-        take: 50,
-        name: searchName,
-        selectedColumns: [
-          MEMBER.OFFICER,
-          MEMBER.MOBILE_PHONE,
-          MEMBER.BIRTH,
-          MEMBER.GROUP,
-        ],
-      });
-      const newMembers: Member[] = response.data.data;
-      const existingIds = new Set(members.map((member) => member.id));
+
+      const response =
+        searchName.length > 1
+          ? await membersApi.getMembersV2({
+              churchId,
+              limit: 50,
+              cursor: cursor ?? undefined,
+              sortBy: undefined,
+              sortDirection: undefined,
+              displayColumns: [
+                MEMBER.OFFICER,
+                MEMBER.MOBILE_PHONE,
+                MEMBER.BIRTH,
+                MEMBER.GROUP,
+              ],
+              search: searchName,
+            })
+          : await groupsApi.getGroupUnassignedMember({
+              churchId,
+              take: 50,
+              page,
+            });
+
+      const newMembers: Member[] = response.data?.data ?? [];
+
+      // 중복 제거 (스크롤 중복 방지)
+      const existingIds = new Set(members.map((m) => m.id));
       const filteredNewMembers = newMembers.filter(
-        (member) => !existingIds.has(member.id)
+        (m) => !existingIds.has(m.id)
       );
 
-      const updatedMembers =
-        page === 1 ? newMembers : [...members, ...filteredNewMembers];
+      setMembers((prev) =>
+        cursor ? [...prev, ...filteredNewMembers] : filteredNewMembers
+      );
 
-      setMembers(updatedMembers);
+      const next = response.data?.nextCursor || null;
+
+      setCursor(next);
+      setPage(page + 1);
+      setHasMore(response.data.hasMore);
     } catch (error) {
       setThrownError(error as Error);
     } finally {
@@ -94,8 +115,11 @@ const AddGroupMemberModal = ({
     });
   };
 
+  // 커서 기반: 더 불러오기
   const loadMembers = () => {
-    setPage(page + 1);
+    if (!isLoading && hasMore) {
+      fetchSearchedMembers();
+    }
   };
 
   const onScroll = () => {
@@ -107,17 +131,40 @@ const AddGroupMemberModal = ({
     }
   };
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setPage(1);
-      fetchSearchedMembers();
-    }, 500);
-    return () => clearTimeout(timer);
-  }, [searchName]);
+  // 검색어 변경 시 초기화 후 재조회 (디바운스 500ms 유지)
+  const [isResetDone, setIsResetDone] = useState(false);
 
   useEffect(() => {
+    const timer = setTimeout(() => {
+      // 1단계: 상태 초기화
+      setHasMore(true);
+      setMembers([]);
+      setCursor(null);
+      setPage(1);
+      setIsResetDone(true); // 초기화 완료 표시
+    }, 500);
+    return () => clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchName, churchId]);
+
+  // 2단계: 초기화 완료 시 fetch 실행
+  useEffect(() => {
+    if (isResetDone) {
+      fetchSearchedMembers();
+      setIsResetDone(false); // 다음 사이클 대비 초기화
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isResetDone]);
+
+  // 최초 마운트 시 1회 로드
+  useEffect(() => {
+    setMembers([]);
+    setCursor(null);
+    setHasMore(true);
+    setPage(1);
     fetchSearchedMembers();
-  }, [page]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [churchId]);
 
   return (
     <>
