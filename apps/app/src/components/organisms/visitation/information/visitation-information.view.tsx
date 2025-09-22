@@ -116,8 +116,8 @@ const VisitationInformationView = ({
             <MainText color={GRAY.EXTRA_DARK}>{t('inCharge')}</MainText>
           </TitleContainer>
           <MemberProfilePopupButton
-            key={targetVisitation.inCharge.id}
-            member={targetVisitation.inCharge}
+            key={targetVisitation.inCharge?.id}
+            member={targetVisitation?.inCharge}
           />
         </RowContainer>
 
@@ -146,7 +146,7 @@ const VisitationInformationView = ({
             <MainText color={GRAY.EXTRA_DARK}>{t('visitedMember')}</MainText>
           </TitleContainer>
           <MemberList>
-            {targetVisitation.members.map((member) => (
+            {targetVisitation?.members?.map((member) => (
               <MemberProfilePopupButton key={member.id} member={member} />
             ))}
           </MemberList>
@@ -179,7 +179,7 @@ const VisitationInformationView = ({
           </TitleContainer>
           <MainText
             dangerouslySetInnerHTML={{
-              __html: targetVisitation.visitationDetails[0].visitationContent,
+              __html: targetVisitation.visitationDetails[0]?.visitationContent,
             }}
             whiteSpace={'normal'}
           />
@@ -195,7 +195,7 @@ const VisitationInformationView = ({
           </TitleContainer>
           <MainText
             dangerouslySetInnerHTML={{
-              __html: targetVisitation.visitationDetails[0].visitationPray,
+              __html: targetVisitation.visitationDetails[0]?.visitationPray,
             }}
             whiteSpace={'normal'}
           />
