@@ -9,7 +9,6 @@ import {
   LOCALE,
   MAIN,
   MEDIA_MIN_WIDTH,
-  SIZE,
   WHITE,
 } from '@mokjang/constants';
 import { Button, MainText, ProfileImage } from '@mokjang/components';
@@ -139,9 +138,8 @@ const HeaderView = ({
       <LogoContainer onClick={onClickLogo}>
         <MainText
           color={MAIN.DEFAULT}
-          size={SIZE.EXTRA_LARGE}
           fontSize={24}
-          fontWeight={800}
+          fontWeight={600}
           cursor={CURSOR.POINTER}
         >
           {'ekkly'}

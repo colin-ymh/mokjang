@@ -5,6 +5,7 @@ import {
   advanceToNextCursor,
   fetchMembers,
   setMemberCursor,
+  setMembers,
 } from '@/redux/reducers/filter/member-filter-reducer';
 
 import { MembersApi } from '@/api/members/members.api';
@@ -267,6 +268,10 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
               updatedMember.marriage !== CONCEALED
                 ? updatedMember.marriage
                 : undefined,
+            detailMarriage:
+              updatedMember.detailMarriage !== CONCEALED
+                ? updatedMember.detailMarriage
+                : undefined,
             vehicleNumber:
               updatedMember.vehicleNumber.filter(
                 (number) => number.length > 0
@@ -276,7 +281,15 @@ const MemberList = ({ isNewMember }: MemberListProps) => {
         .then((response) => {
           const newMember = response.data.data;
           dispatch(setTargetMember(newMember));
-          dispatch(fetchMembers());
+          const newMembers = members.map((m) => {
+            if (m.id === targetMember.id) {
+              return newMember;
+            } else {
+              return m;
+            }
+          });
+          dispatch(setMembers(newMembers));
+          // dispatch(fetchMembers());
 
           setProfileImage(null);
         });

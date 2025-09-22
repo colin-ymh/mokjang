@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 
-import { CURSOR, GRAY, MEDIA_MIN_WIDTH, RED, WHITE } from '@mokjang/constants';
+import { CURSOR, GRAY, MAIN, MEDIA_MIN_WIDTH, RED, WHITE, } from '@mokjang/constants';
 import { SIDE_ID } from '@/constants/layout/header';
 
 import { Svg } from '@mokjang/assets';
@@ -20,6 +20,7 @@ const TopContainer = styled.div`
     display: flex;
     flex-direction: row;
     padding: 0 30px;
+    padding-left: 25px;
     height: 65px;
     flex-shrink: 0;
     justify-content: space-between;
@@ -33,7 +34,7 @@ const TopLeft = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 10px;
+  gap: 20px;
 `;
 
 const TopRight = styled.div`
@@ -114,7 +115,16 @@ const TopView = ({
           size={24}
           width={1.5}
           color={GRAY.DARK}
+          bottom={-1.5}
         />
+        <MainText
+          color={MAIN.DEFAULT}
+          fontSize={24}
+          fontWeight={600}
+          // cursor={CURSOR.POINTER}
+        >
+          {'ekkly'}
+        </MainText>
       </TopLeft>
       <TopRight>
         {sideId !== SIDE_ID.NOTIFICATION && (
