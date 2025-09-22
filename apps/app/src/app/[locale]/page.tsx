@@ -49,10 +49,9 @@ export default function LoginPage() {
     router.push('/church/register');
   };
 
-  // 초기화가 끝났고 유저가 없으면 리다이렉트 직전 상태 → 렌더링 스킵
-  if (!user?.id) return null;
-
   if (IS_PRODUCTION) return null;
+  // 초기화가 끝났고 유저가 없으면 리다이렉트 직전 상태 → 렌더링 스킵
+  if (!user?.id) router.push('/login');
 
   return (
     <ModalLayout>
