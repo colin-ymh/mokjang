@@ -50,21 +50,27 @@ const FunctionView = ({}: FunctionViewProps) => {
     {
       id: FUNCTION.MEMBER,
       title: t_function('member.title'),
-      description: t_function('member.description'),
+      descriptions: [
+        t_function('member.description.1'),
+        t_function('member.description.2'),
+      ],
       image: FunctionMemberImage,
       icon: Svg.Users,
     },
     {
       id: FUNCTION.SCHEDULE,
       title: t_function('schedule.title'),
-      description: t_function('schedule.description'),
+      descriptions: [
+        t_function('schedule.description.1'),
+        t_function('schedule.description.2'),
+      ],
       image: FunctionScheduleImage,
       icon: Svg.Calendar,
     },
     {
       id: FUNCTION.STATISTIC,
       title: t_function('statistic.title'),
-      description: t_function('statistic.description'),
+      descriptions: [t_function('statistic.description.1')],
       image: FunctionStatisticImage,
       icon: Svg.ChartBar,
     },

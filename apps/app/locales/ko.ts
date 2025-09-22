@@ -464,7 +464,7 @@ export default {
   'header.home': '홈',
   'header.member': '교인',
   'header.attendance': '예배출석',
-  'header.worship': '예배',
+  'header.worship': '출석',
   'header.visitation': '심방',
   'header.education': '교육',
   'header.task': '업무',

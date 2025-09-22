@@ -465,7 +465,7 @@ export default {
   'header.home': 'Home',
   'header.member': 'Member',
   'header.attendance': 'Attendance',
-  'header.worship': 'Worship',
+  'header.worship': 'Attendance',
   'header.visitation': 'Visitation',
   'header.education': 'Education',
   'header.task': 'Task',

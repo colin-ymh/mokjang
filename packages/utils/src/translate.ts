@@ -485,6 +485,39 @@ export const getTranslatedStartEndDate = (
   }
 };
 
+export const getTranslatedStartEndDateTime = (
+  basePath: LOCALE,
+  startDate?: string,
+  endDate?: string
+): string => {
+  if (!startDate) return BLANK;
+
+  const start = getDateFromDateString(startDate);
+  const startDateStr = getTranslatedDateFromDateString(basePath, startDate);
+  const startTimeStr = `${String(start.getHours()).padStart(2, '0')}:${String(
+    start.getMinutes()
+  ).padStart(2, '0')}`;
+
+  if (!endDate) {
+    // 종료일이 없으면 날짜 + 시작시간
+    return `${startDateStr} ${startTimeStr}`;
+  }
+
+  const end = getDateFromDateString(endDate);
+  const endDateStr = getTranslatedDateFromDateString(basePath, endDate);
+  const endTimeStr = `${String(end.getHours()).padStart(2, '0')}:${String(
+    end.getMinutes()
+  ).padStart(2, '0')}`;
+
+  if (getIsSameDate(start, end)) {
+    // 날짜가 같으면 시작날짜 + 시작시간 - 종료시간
+    return `${startDateStr} ${startTimeStr} - ${endTimeStr}`;
+  } else {
+    // 날짜가 다르면 시작날짜 시작시간 - 종료날짜 종료시간
+    return `${startDateStr} ${startTimeStr} - ${endDateStr} ${endTimeStr}`;
+  }
+};
+
 export const getTranslatedMMDDDateFromDateString = (
   basePath: LOCALE,
   date: string

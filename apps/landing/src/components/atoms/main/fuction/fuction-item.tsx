@@ -47,10 +47,16 @@ const IconContainer = styled.div`
   border-radius: 10px;
 `;
 
+const DescriptionContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+`;
+
 export type FunctionItemType = {
   id: string;
   title: string;
-  description: string;
+  descriptions: string[];
   image: StaticImageData | string;
   icon: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
 };
@@ -60,7 +66,7 @@ type FunctionItemProps = {
 };
 
 const FunctionItem = ({ item }: FunctionItemProps) => {
-  const { image, title, description, icon } = item;
+  const { image, title, descriptions, icon } = item;
   return (
     <ItemContainer>
       <ImageContainer>
@@ -80,15 +86,20 @@ const FunctionItem = ({ item }: FunctionItemProps) => {
         <MainText fontSize={24} fontWeight={700}>
           {title}
         </MainText>
-        <MainText
-          fontSize={16}
-          color={GRAY.DARK}
-          whiteSpace={'normal'}
-          maxWidth={340}
-          lineHeight={25}
-        >
-          {description}
-        </MainText>
+        <DescriptionContainer>
+          {descriptions.map((description) => (
+            <MainText
+              key={description}
+              fontSize={16}
+              color={GRAY.DARK}
+              whiteSpace={'normal'}
+              maxWidth={340}
+              lineHeight={25}
+            >
+              {description}
+            </MainText>
+          ))}
+        </DescriptionContainer>
       </Content>
     </ItemContainer>
   );
