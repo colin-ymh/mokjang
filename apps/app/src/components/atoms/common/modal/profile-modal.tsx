@@ -1,8 +1,4 @@
-import {
-  MainText,
-  ProfileImage,
-  TransparentBackground,
-} from '@mokjang/components';
+import { MainText, ProfileImage, TransparentBackground, } from '@mokjang/components';
 import { getFormattedPhone, routeLandingPage } from '@mokjang/utils';
 import { AuthApi } from '@/api/auth/auth.api';
 import ProfileModalView, { ProfileModalViewProps } from './profile-modal.view';

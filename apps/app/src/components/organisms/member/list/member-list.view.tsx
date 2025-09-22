@@ -56,7 +56,6 @@ type MemberListViewProps = {
     isLoading: boolean;
     isPopupShown: boolean;
     isEditShown: boolean;
-    isDoneDisabled: boolean;
     onClickEditOpen: () => void;
     onClickEditClose: () => void;
     onClickEditDone: () => void;
