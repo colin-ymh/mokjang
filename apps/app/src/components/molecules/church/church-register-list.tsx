@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import EditChurchInformation from '@/components/molecules/management/church/edit-church-information';
-import { setChurch } from '@/redux/reducers/church-reducer';
+import { setChurch, setChurchId } from '@/redux/reducers/church-reducer';
 import {
   setIsToastShown,
   setToastBackgroundColor,
@@ -56,6 +56,7 @@ const ChurchRegisterList = () => {
 
       const editedChurch = response.data;
       dispatch(setChurch(editedChurch));
+      dispatch(setChurchId(editedChurch.id));
 
       // dispatch(setToastText(t_popup('saveComplete')));
       // dispatch(setIsToastShown(true));
