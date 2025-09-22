@@ -1,18 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { parseSupabaseUrl } from '@/utils/delete';
-import { IS_PRODUCTION } from '@mokjang/utils';
 
 export const runtime = 'nodejs';
 
 export async function POST(req: NextRequest) {
   try {
-    const projectUrl = IS_PRODUCTION
-      ? process.env.NEXT_PUBLIC_SUPABASE_URL!
-      : process.env.NEXT_PUBLIC_TEST_SUPABASE_URL!;
-    const serviceRoleKey = IS_PRODUCTION
-      ? process.env.SUPABASE_SERVICE_ROLE_KEY!
-      : process.env.TEST_SUPABASE_SERVICE_ROLE_KEY!;
+    const projectUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+    const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
     if (!projectUrl || !serviceRoleKey) {
       return NextResponse.json(
         { error: 'Missing Supabase env' },
