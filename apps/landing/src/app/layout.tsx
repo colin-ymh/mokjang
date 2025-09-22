@@ -9,12 +9,23 @@ type RootLayoutProps = {
 
 export const metadata: Metadata = {
   title: 'ekkly - 교회 관리의 새로운 시작',
+  description:
+    'ekkly는 교회 출석, 심방, 업무, 그룹, 사역 관리를 간편하게 돕는 교회 관리 플랫폼입니다.',
   icons: {
     icon: '/favicon.jpg',
   },
   alternates: {
     canonical: '/ko', // 기본 언어가 /ko 라면
     languages: { ko: '/ko', en: '/en' },
+  },
+  openGraph: {
+    type: 'website',
+    url: 'https://ekkly.life',
+    siteName: 'ekkly',
+    title: 'ekkly - 교회 관리의 새로운 시작',
+    description:
+      'ekkly는 교회 출석, 심방, 업무, 그룹, 사역 관리를 간편하게 돕는 교회 관리 플랫폼입니다.',
+    locale: 'ko_KR',
   },
 };
 
