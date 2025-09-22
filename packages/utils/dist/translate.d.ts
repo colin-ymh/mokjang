@@ -77,6 +77,7 @@ export declare const getTranslatedAlreadyMinistryGroupLeader: (locale: LOCALE, n
 export declare const getTranslateWorshipAttendanceWidgetDescription: (locale: LOCALE, rangeTitle: string) => string;
 export declare const getTranslatedDateFromDateString: (basePath: LOCALE, date: string) => string;
 export declare const getTranslatedStartEndDate: (basePath: LOCALE, startDate?: string, endDate?: string) => string;
+export declare const getTranslatedStartEndDateTime: (basePath: LOCALE, startDate?: string, endDate?: string) => string;
 export declare const getTranslatedMMDDDateFromDateString: (basePath: LOCALE, date: string) => string;
 /**
  *

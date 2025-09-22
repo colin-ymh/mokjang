@@ -12,7 +12,10 @@ import { GRAY, GREEN, LOCALE, SIZE, TASK_STATUS } from '@mokjang/constants';
 import React from 'react';
 import { usePathname } from 'next/navigation';
 import MemberProfilePopupButton from '../../../../molecules/common/button/member-profile-popup-button';
-import { getTranslatedStartEndDate, getTranslatedTerm } from '@mokjang/utils';
+import {
+  getTranslatedStartEndDateTime,
+  getTranslatedTerm,
+} from '@mokjang/utils';
 import StatusDropdown from '../../../../atoms/common/dropdown/status-dropdown';
 import { useTaskStatusDropdownItems } from '../../../../../hooks/dropdown/dropdown-items';
 import EducationAttendanceTable from '../../../../molecules/education/education-attendance/education-attendance-table';
@@ -166,7 +169,7 @@ const EducationSessionInformationView = ({
             <MainText color={GRAY.SEMI_DARK}>{t('period')}</MainText>
           </TitleContainer>
           <MainText>
-            {getTranslatedStartEndDate(
+            {getTranslatedStartEndDateTime(
               locale,
               targetEducationSession.startDate,
               targetEducationSession.endDate

@@ -8,7 +8,7 @@ import { GRAY, LOCALE, TASK_STATUS } from '@mokjang/constants';
 import React from 'react';
 import MemberProfilePopupButton from '../../../molecules/common/button/member-profile-popup-button';
 import { usePathname } from 'next/navigation';
-import { getTranslatedStartEndDate } from '@mokjang/utils';
+import { getTranslatedStartEndDateTime } from '@mokjang/utils';
 import { Svg } from '@mokjang/assets';
 
 const InformationContainer = styled.div`
@@ -130,7 +130,7 @@ const VisitationInformationView = ({
           {/* 일자 */}
           <PeriodContainer>
             <MainText>
-              {getTranslatedStartEndDate(
+              {getTranslatedStartEndDateTime(
                 locale,
                 targetVisitation.startDate,
                 targetVisitation.endDate

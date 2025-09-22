@@ -72,13 +72,17 @@ export default {
   'button.mobilePhone.verify': '인증',
 
   'function.member.title': '교인관리',
-  'function.member.description':
-    '교인정보 부터 가족 관계, 심방 기록, 그룹,사역,교육의 이력까지 모든 정보를 한눈에 정리해 보여줍니다. 직관적인 화면과 강력한 검색·필터 기능으로 원하는 교인 정보를 쉽고 빠르게 찾을 수 있어, 교회 관리가 훨씬 효율적이고 체계적으로 이루어집니다.',
+  'function.member.description.1':
+    '교인정보 부터 가족 관계, 심방 기록, 그룹,사역,교육의 이력까지 모든 정보를 한눈에 정리해 보여줍니다.',
+  'function.member.description.2':
+    '직관적인 화면과 강력한 검색·필터 기능으로 원하는 교인 정보를 쉽고 빠르게 찾을 수 있어, 교회 관리가 훨씬 효율적이고 체계적으로 이루어집니다.',
   'function.schedule.title': '교회 일정관리',
-  'function.schedule.description':
-    '심방부터 교육, 교회 행정까지 흩어져 있던 교회 일정을 한곳에서 관리하세요. 에클리는 단순한 일정 기록을 넘어, 각 일정의 진행 상태를 표시하고 알림을 보내어 담당자들이 함께 협력할 수 있도록 돕습니다. 그래서 일정 관리가 단순한 메모가 아니라, 살아 있는 사역 관리 도구가 됩니다.',
+  'function.schedule.description.1':
+    '심방부터 교육, 교회 행정까지 흩어져 있던 교회 일정을 한곳에서 관리하세요.',
+  'function.schedule.description.2':
+    '에클리는 단순한 일정 기록을 넘어, 각 일정의 진행 상태를 표시하고 알림을 보내어 담당자들이 함께 협력할 수 있도록 돕습니다. 그래서 일정 관리가 단순한 메모가 아니라, 살아 있는 사역 관리 도구가 됩니다.',
   'function.statistic.title': '출석',
-  'function.statistic.description':
+  'function.statistic.description.1':
     '예배에 대한 교인들의 출석을 간편하게 입력하고 한눈에 확인할 수 있습니다.',
 
   'subscription.freeTrial': '무료체험',

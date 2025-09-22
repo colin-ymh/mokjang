@@ -482,7 +482,7 @@ const PersonalInformationListView = ({
             <MainText size={SIZE.LARGE} fontWeight={400}>
               {getTranslatedDateFromDateString(
                 basePath,
-                targetMember.registeredAt
+                targetMember.createdAt
               )}
             </MainText>
           </InformationTextWrapper>

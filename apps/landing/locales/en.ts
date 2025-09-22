@@ -72,13 +72,17 @@ export default {
   'button.mobilePhone.verify': 'Verify',
 
   'function.member.title': 'Member Management',
-  'function.member.description':
-    'From member information to family relationships, visitation records, groups, ministries, and education history—everything is organized and displayed at a glance. With an intuitive interface and powerful search and filter features, you can quickly and easily find the desired member information, making church management far more efficient and systematic.',
+  'function.member.description.1':
+    'From member information to family relationships, visitation records, groups, ministries, and education history—everything is organized and displayed at a glance.',
+  'function.member.description.2':
+    'With an intuitive interface and powerful search and filter features, you can quickly and easily find the desired member information, making church management far more efficient and systematic.',
   'function.schedule.title': 'Church Schedule Management',
-  'function.schedule.description':
-    'Manage all church schedules—from visitations to education and church administration—in one place. ekkly goes beyond simple schedule recording by showing the progress of each event and sending notifications so that those in charge can collaborate effectively. As a result, schedule management becomes a dynamic ministry management tool rather than a simple memo.',
+  'function.schedule.description.1':
+    'Manage all church schedules—from visitations to education and church administration—in one place.',
+  'function.schedule.description.2':
+    'Ekkly goes beyond simple schedule recording by showing the progress of each event and sending notifications so that those in charge can collaborate effectively. As a result, schedule management becomes a dynamic ministry management tool rather than a simple memo.',
   'function.statistic.title': 'Attendance',
-  'function.statistic.description':
+  'function.statistic.description.1':
     'Easily record and view church members’ worship attendance at a glance.',
 
   'subscription.freeTrial': 'Free Trail',
