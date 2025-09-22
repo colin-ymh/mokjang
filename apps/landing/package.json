@@ -8,7 +8,8 @@
     "start": "next start -p 3002",
     "lint": "next lint",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "format": "prettier -w ."
+    "format": "prettier -w .",
+    "postbuild": "next-sitemap"
   },
   "dependencies": {
     "next": "^14.0.0",

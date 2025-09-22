@@ -37,7 +37,7 @@ export default {
     '교회 규모에 따라 선택할 수 있는 맞춤형 요금제를 제공합니다.',
   'main.price.extra': '14일간 무료 체험 • 부가세 포함 • 언제든 변경 가능',
   'main.faq.title': '자주 묻는 질문',
-  'main.faq.description': '에클 서비스에 대해 궁금한 점들을 모았습니다.',
+  'main.faq.description': '에클리 서비스에 대해 궁금한 점들을 모았습니다.',
   'main.faq.extra': '더 궁금한 점이 있으시다면 언제든 문의해주세요',
 
   'button.home': '홈',
@@ -129,7 +129,7 @@ export default {
     '모든 데이터는 안전하게 보호됩니다. 암호화된 통신과 권한 기반 접근 제어로, 안심하고 이용하실 수 있습니다.',
 
   'login.title': '간편 로그인',
-  'login.description': '에클 서비스로 교회 관리가 더욱 쉬워집니다.',
+  'login.description': '에클리 서비스로 교회 관리가 더욱 쉬워집니다.',
 
   'register.title': '회원 가입',
   'register.description': '서비스 이용을 위한 기본 정보를 입력해주세요',
@@ -139,9 +139,10 @@ export default {
 
   'register-complete.title': '회원가입이 완료되었습니다!',
   'register-complete.description':
-    '에클 서비스를 시작하기 위해 원하는 옵션을 선택해주세요',
+    '에클리 서비스를 시작하기 위해 원하는 옵션을 선택해주세요',
   'register-complete.freeTrial.title': '14일 무료체험하기',
-  'register-complete.freeTrial.description': '에클 기능을 무료로 체험해보세요',
+  'register-complete.freeTrial.description':
+    '에클리 기능을 무료로 체험해보세요',
   'register-complete.createChurch.title': '교회 생성하기',
   'register-complete.createChurch.description':
     '새로운 교회를 등록하고 관리를 시작하세요',
@@ -151,7 +152,7 @@ export default {
 
   'contact.title': '문의하기',
   'contact.description':
-    '에클 서비스에 대해 더 자세히 알아보고 싶으시다면 아래 양식을 작성해주세요.',
+    '에클리 서비스에 대해 더 자세히 알아보고 싶으시다면 아래 양식을 작성해주세요.',
   'contact.contactForm': '문의 양식',
   'contact.contactContent': '문의 내용',
 
@@ -176,7 +177,7 @@ export default {
   'join-pending.cancel': '관리자 등록 신청 철회하기',
 
   'footer.title': '에클리',
-  'footer.description': '참 된 에클레시아를 위한 도구',
+  'footer.description': '참 된 에클레시아를 위한 교회 관리의 새로운 시작',
   'footer.company.title': '회사명',
   'footer.company.description': '작당',
   'footer.representative.title': '대표자',
