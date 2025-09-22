@@ -2,10 +2,9 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import { Group } from '@mokjang/models';
-import { GRAY, MAIN } from '@mokjang/constants';
+import { ALL, GRAY, MAIN, MEDIA_MIN_WIDTH, SIZE } from '@mokjang/constants';
 import { MainText } from '@mokjang/components';
-import { SIZE } from '@mokjang/constants';
-import { MEDIA_MIN_WIDTH } from '@mokjang/constants';
+import { useI18n } from '../../../../../locales/client';
 
 const FilterContainer = styled.div`
   display: flex;
@@ -86,7 +85,7 @@ const isParentSelected = (
   groupMap: Record<string, Group>
 ): boolean => {
   // 1. "전체" 옵션이 선택된 경우 모든 그룹 비활성화
-  if (selectedGroupIds.includes(null)) {
+  if (selectedGroupIds.includes(ALL)) {
     return true;
   }
 
@@ -104,6 +103,7 @@ const isParentSelected = (
 
 // 재귀적으로 그룹을 렌더링하는 함수
 const renderGroups = (
+  t: (key: string, ...args: any[]) => string,
   groups: Group[],
   level: number,
   openGroups: Record<number, boolean>,
@@ -116,7 +116,7 @@ const renderGroups = (
     const isHaveChildren = group.childGroups && group.childGroups.length > 0;
     const isOpen = openGroups[parseInt(group.id as string)] ?? false;
     const isDisabled =
-      group.id !== null
+      group.id !== ALL
         ? isParentSelected(group, selectedGroupIds, groupMap)
         : false;
 
@@ -152,7 +152,7 @@ const renderGroups = (
                     : GRAY.DARK
               }
             >
-              {group.name}
+              {group.name === ALL ? t('all') : group.name}
             </MainText>
           </LeftContainer>
           <RightContainer>
@@ -175,6 +175,7 @@ const renderGroups = (
           group.childGroups &&
           group.childGroups.length > 0 &&
           renderGroups(
+            t,
             group.childGroups,
             level + 1,
             openGroups,
@@ -194,6 +195,8 @@ const GroupRangeFilterView = ({
   selectedGroupIds,
   onClickGroup,
 }: GroupFilterViewProps) => {
+  const t = useI18n();
+
   const [openGroups, setOpenGroups] = useState<Record<number, boolean>>({});
 
   // 전체 그룹을 평탄화하여 id → 그룹 맵 생성
@@ -212,7 +215,7 @@ const GroupRangeFilterView = ({
   const getAllGroupIds = (groups: Group[]): number[] => {
     let ids: number[] = [NaN];
     groups.forEach((group) => {
-      if (group.id !== null) ids.push(parseInt(group.id));
+      if (group.id !== ALL) ids.push(parseInt(group.id));
       if (group.childGroups?.length) {
         ids = ids.concat(getAllGroupIds(group.childGroups));
       }
@@ -240,6 +243,7 @@ const GroupRangeFilterView = ({
   return (
     <FilterContainer>
       {renderGroups(
+        t,
         groups,
         0,
         openGroups,

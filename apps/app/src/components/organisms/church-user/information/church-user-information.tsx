@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import ChurchUserInformationView, {
-  ChurchUserInformationViewProps,
-} from './church-user-information.view';
+import ChurchUserInformationView, { ChurchUserInformationViewProps, } from './church-user-information.view';
 import { setTargetChurchUser } from '@/redux/reducers/target/target-church-user-reducer';
 import { ChurchUsersApi } from '@/api/church-users/church-users.api';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
-import { BLACK, DESTRUCTIVE, STATUS } from '@mokjang/constants';
+import { ALL, BLACK, DESTRUCTIVE, STATUS } from '@mokjang/constants';
 import { CustomPopup } from '@mokjang/components';
 import LinkMemberUser from '@/components/molecules/join-request/link-member-user';
 import { useScopedI18n } from '../../../../../locales/client';
@@ -16,11 +14,7 @@ import { ManagersApi } from '@/api/managers/managers.api';
 import PermissionRange from '@/components/atoms/church-user/information/permission-range';
 import EditPermissionTemplate from '@/components/molecules/church-user/information/edit-permission-template';
 import ConfirmPopup from '@/components/atoms/common/popup/error-popup';
-import {
-  setIsToastShown,
-  setToastBackgroundColor,
-  setToastText,
-} from '@/redux/reducers/toast-popup-reducer';
+import { setIsToastShown, setToastBackgroundColor, setToastText, } from '@/redux/reducers/toast-popup-reducer';
 
 type ChurchUserInformationProps = {
   isMy?: boolean;
@@ -224,8 +218,8 @@ const ChurchUserInformation = ({
 
   const onClickDoneGroup = async () => {
     try {
-      const isAllGroups = selectedGroupIds.includes(null);
-      const groupIds = selectedGroupIds.filter((groupId) => groupId !== null);
+      const isAllGroups = selectedGroupIds.includes(ALL);
+      const groupIds = selectedGroupIds.filter((groupId) => groupId !== ALL);
       const response = await managersApi.editPermissionScopes(
         {
           churchId,
@@ -233,7 +227,7 @@ const ChurchUserInformation = ({
         },
         {
           isAllGroups,
-          groupIds,
+          groupIds: isAllGroups ? [] : groupIds,
         }
       );
       const newChurchUser = response.data;
