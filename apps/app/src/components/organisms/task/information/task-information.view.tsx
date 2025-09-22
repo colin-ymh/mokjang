@@ -124,11 +124,13 @@ const TaskInformationView = ({ onChangeStatus }: TaskInformationViewProps) => {
           </TitleContainer>
           {/* 일자 */}
           <PeriodContainer>
-            {getTranslatedStartEndDate(
-              locale,
-              targetTask.startDate,
-              targetTask.endDate
-            )}
+            <MainText>
+              {getTranslatedStartEndDate(
+                locale,
+                targetTask.startDate,
+                targetTask.endDate
+              )}
+            </MainText>
           </PeriodContainer>
         </RowContainer>
 

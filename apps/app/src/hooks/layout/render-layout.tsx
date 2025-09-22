@@ -226,7 +226,7 @@ export const getMemberInformationContent = (
     case MEMBER_INFORMATION_HEADER_ID.ATTENDANCE:
       return <MemberAttendanceList />;
     case MEMBER_INFORMATION_HEADER_ID.VISITATION:
-      return <MemberVisitationList />;
+      return <MemberVisitationList isPopup={isPopup} />;
     case MEMBER_INFORMATION_HEADER_ID.HISTORY:
       return <MemberHistoryList />;
   }

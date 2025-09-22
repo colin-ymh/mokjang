@@ -239,6 +239,7 @@ const AddVisitation = ({ isEdit = false }: AddVisitationProps) => {
           value: m.id,
           title: m.name,
           officer: m.officer?.name || BLANK,
+          profileImage: m.profileImageUrl || BLANK,
         }))
       );
 
@@ -260,6 +261,7 @@ const AddVisitation = ({ isEdit = false }: AddVisitationProps) => {
         id: member.value,
         name: member.title,
         officer: { id: BLANK, name: member.officer || BLANK },
+        profileImageUrl: member.profileImage || BLANK,
       } as Member;
     });
 
