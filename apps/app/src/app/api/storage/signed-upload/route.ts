@@ -1,13 +1,19 @@
 // src/app/api/storage/signed-upload/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
+import { IS_PRODUCTION } from '@mokjang/utils';
 
 export const runtime = 'nodejs';
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY! // 서버 전용 키
-);
+export const supabase = IS_PRODUCTION
+  ? createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    )
+  : createClient(
+      process.env.NEXT_PUBLIC_TEST_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_TEST_SUPABASE_ANON_KEY!
+    );
 
 export async function POST(req: NextRequest) {
   try {
