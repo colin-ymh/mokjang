@@ -95,7 +95,7 @@ const MemberVisitationListView = ({
           <Button
             width={'auto'}
             text={t_button('addVisitation')}
-            onClick={onClickOpenModal}
+            onClick={() => onClickOpenModal()}
             icon={
               <SvgIcon
                 svg={Svg.Plus}
