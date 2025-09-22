@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Providers from './providers';
 
 export const metadata: Metadata = {
-  title: 'ekkly',
+  title: 'ekkly 교회 관리',
   icons: {
     icon: '/favicon.jpg',
   },

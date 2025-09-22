@@ -8,7 +8,7 @@ type RootLayoutProps = {
 };
 
 export const metadata: Metadata = {
-  title: 'ekkly',
+  title: 'ekkly - 교회 관리의 새로운 시작',
   icons: {
     icon: '/favicon.jpg',
   },
