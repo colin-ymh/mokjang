@@ -195,11 +195,21 @@ const MemberAttendanceListView = ({
               )}
             >{`${(Math.round(statistic.presentCount / (statistic.presentCount + statistic.absentCount)) || 0) * 100}%`}</MainText>
             <MainText color={GRAY.DEFAULT}>
-              {`${getTranslatedMemberAttendanceCount(
+              {getTranslatedMemberAttendanceCount(
                 basePath,
                 statistic.presentCount,
                 statistic.totalSessions
-              )} ${statistic.totalSessions - statistic.absentCount - statistic.presentCount > 0 && getTranslatedUnknownAttendanceCount(basePath, statistic.totalSessions - statistic.absentCount - statistic.presentCount)}`}
+              )}{' '}
+              {statistic.totalSessions -
+                statistic.absentCount -
+                statistic.presentCount >
+                0 &&
+                getTranslatedUnknownAttendanceCount(
+                  basePath,
+                  statistic.totalSessions -
+                    statistic.absentCount -
+                    statistic.presentCount
+                )}
             </MainText>
           </RightContainer>
         </StatisticContainer>

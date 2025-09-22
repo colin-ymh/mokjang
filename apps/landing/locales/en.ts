@@ -136,19 +136,8 @@ export default {
     'Please enter the basic information to use the service',
   'register.consent.collection.title':
     'I agree to the collection and use of personal information',
-  'register.consent.collection.description1':
-    '• Items collected: Name, Phone number',
-  'register.consent.collection.description2':
-    '• Purpose of collection: Service provision and customer support',
-  'register.consent.collection.description3':
-    '• Retention period: For the duration of service use',
   'register.consent.thirdParty.title':
     'I agree to the provision of personal information to third parties.',
-  'register.consent.thirdParty.description1': '• Recipient: Mokjang Service',
-  'register.consent.thirdParty.description2':
-    '• Purpose of provision: Service provision and customer support',
-  'register.consent.thirdParty.description3':
-    '• Information provided: Name, Phone number',
   'register.verifyComplete': 'Phone Number is verified',
 
   'register-complete.title': 'Registration Complete!',

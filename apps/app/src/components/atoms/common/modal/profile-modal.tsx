@@ -1,8 +1,4 @@
-import {
-  MainText,
-  ProfileImage,
-  TransparentBackground,
-} from '@mokjang/components';
+import { MainText, ProfileImage, TransparentBackground, } from '@mokjang/components';
 import { getFormattedPhone, routeLandingPage } from '@mokjang/utils';
 import { AuthApi } from '@/api/auth/auth.api';
 import ProfileModalView, { ProfileModalViewProps } from './profile-modal.view';
@@ -72,7 +68,11 @@ const ProfileModal = ({ onClickClose }: ProfileModalProps) => {
   };
 
   const onClickDonate = () => {
-    routeLandingPage('/donate');
+    window.open(
+      'https://horn-skipjack-ebf.notion.site/2769d70a6ddf80c3a134c80922fa49a3',
+      '_blank',
+      'noopener,noreferrer'
+    );
   };
 
   const onClickSetting = () => {

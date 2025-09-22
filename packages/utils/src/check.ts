@@ -122,9 +122,51 @@ export const getIsWellFormedTitle = (name: string) => {
   return /^[가-힣a-zA-Z0-9\s]+$/g.test(name);
 };
 
-export const getIsWellFormedVehicleNumber = (vehicleNumber: string) => {
-  if (vehicleNumber.length !== 4) return false;
-  return true;
+export const getIsWellFormedVehicleNumber = (
+  vehicleNumber: string
+): boolean => {
+  if (!vehicleNumber) return false;
+
+  // 숫자, 한글 완성, 한글 자모 외 문자가 있으면 false
+  if (!/^[0-9ㄱ-ㅎㅏ-ㅣ가-힣]+$/.test(vehicleNumber)) return false;
+
+  const chars = vehicleNumber.split('');
+  const len = chars.length;
+
+  let hangulIndex: number | null = null;
+  let hasInvalid = false;
+
+  chars.forEach((ch, i) => {
+    const isDigit = /[0-9]/.test(ch);
+    const isHangul = /[ㄱ-ㅎㅏ-ㅣ가-힣]/.test(ch);
+
+    if (i === 2 || i === 3) {
+      // 한글 허용, 단 둘 중 하나만 가능
+      if (isHangul) {
+        if (hangulIndex !== null) hasInvalid = true;
+        hangulIndex = i;
+      } else if (!isDigit) {
+        hasInvalid = true;
+      }
+    } else {
+      // 나머지는 숫자만 허용
+      if (!isDigit) hasInvalid = true;
+    }
+  });
+
+  if (hasInvalid) return false;
+
+  // 한글 위치에 따른 길이 제한
+  if (hangulIndex === null) {
+    // 숫자만 → 정확히 4자리
+    return len === 4;
+  } else if (hangulIndex === 2) {
+    return len <= 7;
+  } else if (hangulIndex === 3) {
+    return len <= 8;
+  }
+
+  return false;
 };
 
 export const getIsWellFormedIdentifyNumber = (

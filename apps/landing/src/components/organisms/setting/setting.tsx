@@ -10,6 +10,7 @@ import {
   getFormattedMobilePhone,
   getFormattedName,
   getIsWellFormedMobilePhone,
+  IS_PRODUCTION,
 } from '@mokjang/utils';
 import { UserApi } from '@/api/user/user.api';
 import {
@@ -103,9 +104,11 @@ const Setting = () => {
       await userApi
         .request({
           mobilePhone: mobilePhone.replace(/-/g, ''),
-          isTest: true,
+          isTest: !IS_PRODUCTION,
         })
-        .then((response) => console.log(response));
+        .then((response) => {
+          !IS_PRODUCTION && console.log(response);
+        });
 
       setIsRequested(true);
       setSecond(300);

@@ -134,16 +134,7 @@ export default {
   'register.title': '회원 가입',
   'register.description': '서비스 이용을 위한 기본 정보를 입력해주세요',
   'register.consent.collection.title': '개인정보 수집 및 이용에 동의합니다',
-  'register.consent.collection.description1': '• 수집 항목: 이름, 전화번호',
-  'register.consent.collection.description2':
-    '• 수집 목적: 서비스 제공 및 고객 지원',
-  'register.consent.collection.description3':
-    '• 보유 기간: 서비스 이용 기간 동안',
   'register.consent.thirdParty.title': '개인정보 제3자 제공에 동의합니다.',
-  'register.consent.thirdParty.description1': '• 제공 받는 자: 에클 서비스',
-  'register.consent.thirdParty.description2':
-    '• 제공 목적: 서비스 제공 및 고객 지원',
-  'register.consent.thirdParty.description3': '• 제공 항목: 이름, 전화번호',
   'register.verifyComplete': '전화번호 인증이 완료되었습니다',
 
   'register-complete.title': '회원가입이 완료되었습니다!',
@@ -193,7 +184,8 @@ export default {
   'footer.identifyNumber.title': '사업자 등록번호',
   'footer.identifyNumber.description': '229-15-70829',
   'footer.address.title': '주소',
-  'footer.address.description': '경기도 부천시 원미구 오아아아앙아',
+  'footer.address.description':
+    '경기도 부천시 원미구 신흥로 190-1, 상가2동 2층 206호(중동, 위브더스테이트)',
   'footer.privacyPolicy': '개인정보 처리방침',
   'footer.termsOfService': '서비스 이용약관',
   'footer.legalNotice': '법적고지',

@@ -1,11 +1,11 @@
 import styled from 'styled-components';
-import { BLACK, WHITE } from '@mokjang/constants';
+import { BLACK, CURSOR, WHITE } from '@mokjang/constants';
 import { MainText } from '@mokjang/components';
 import { useScopedI18n } from '../../../../../locales/client';
 
 const FooterContainer = styled.footer`
   display: flex;
-  height: 400px;
+  height: 350px;
   background-color: ${BLACK};
   flex-shrink: 0;
 
@@ -33,6 +33,12 @@ const ColumnContainer = styled.div<{ flex: number }>`
   display: flex;
   flex-direction: column;
   gap: 30px;
+`;
+
+const TitleContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 `;
 
 const RowContainer = styled.div`
@@ -65,9 +71,15 @@ const RowList = styled.div`
   gap: 30px;
 `;
 
-export type FooterViewProps = {};
+export type FooterViewProps = {
+  onClickCollectionLink: () => void;
+  onClickTermLink: () => void;
+};
 
-const FooterView = ({}: FooterViewProps) => {
+const FooterView = ({
+  onClickCollectionLink,
+  onClickTermLink,
+}: FooterViewProps) => {
   const t_footer = useScopedI18n('footer');
 
   return (
@@ -76,12 +88,14 @@ const FooterView = ({}: FooterViewProps) => {
         <Wrapper>
           <ContentContainer>
             <ColumnContainer flex={2}>
-              <MainText color={WHITE} fontSize={24} fontWeight={600}>
-                {t_footer('title')}
-              </MainText>
-              <MainText color={WHITE} fontSize={16} fontWeight={300}>
-                {t_footer('description')}
-              </MainText>
+              <TitleContainer>
+                <MainText color={WHITE} fontSize={24} fontWeight={600}>
+                  {t_footer('title')}
+                </MainText>
+                <MainText color={WHITE} fontSize={16} fontWeight={300}>
+                  {t_footer('description')}
+                </MainText>
+              </TitleContainer>
               <ColumnList>
                 <RowContainer>
                   <MainText color={WHITE} fontSize={16} fontWeight={600}>
@@ -159,15 +173,27 @@ const FooterView = ({}: FooterViewProps) => {
           <RowLine />
           <ContentContainer>
             <RowList>
-              <MainText color={WHITE} fontSize={14} fontWeight={300}>
+              <MainText
+                color={WHITE}
+                fontSize={14}
+                fontWeight={300}
+                onClick={onClickCollectionLink}
+                cursor={CURSOR.POINTER}
+              >
                 {t_footer('privacyPolicy')}
               </MainText>
-              <MainText color={WHITE} fontSize={14} fontWeight={300}>
+              <MainText
+                color={WHITE}
+                fontSize={14}
+                fontWeight={300}
+                onClick={onClickTermLink}
+                cursor={CURSOR.POINTER}
+              >
                 {t_footer('termsOfService')}
               </MainText>
-              <MainText color={WHITE} fontSize={14} fontWeight={300}>
-                {t_footer('legalNotice')}
-              </MainText>
+              {/*<MainText color={WHITE} fontSize={14} fontWeight={300}>*/}
+              {/*  {t_footer('legalNotice')}*/}
+              {/*</MainText>*/}
             </RowList>
             <MainText color={WHITE} fontSize={14} fontWeight={300}>
               {t_footer('right')}

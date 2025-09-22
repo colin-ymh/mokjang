@@ -51,7 +51,7 @@ export const useBaptismDropdownItems = () => {
     },
     {
       value: 'none',
-      title: t(BAPTISM.NONE),
+      title: t('none'),
     },
   ];
 

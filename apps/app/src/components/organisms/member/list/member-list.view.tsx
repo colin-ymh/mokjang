@@ -13,6 +13,13 @@ import React, { useEffect } from 'react';
 import ConfirmPopup from '../../../atoms/common/popup/error-popup';
 import { useScopedI18n } from '../../../../../locales/client';
 import EditMember from '../edit/edit-member';
+import {
+  getFormattedPhone,
+  getIsWellFormedName,
+  getIsWellFormedPhone,
+} from '@mokjang/utils';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
 
 const MemberListContainer = styled.div`
   display: flex;
@@ -40,11 +47,6 @@ const DesktopView = styled.div`
     flex-direction: column;
     padding: 0 20px;
   }
-`;
-
-const CancelContainer = styled.div`
-  display: flex;
-  margin-right: 10px;
 `;
 
 type MemberListViewProps = {
@@ -83,6 +85,10 @@ const MemberListView = (props: MemberListViewProps) => {
     onClickEditDone,
     onChangeProfileImage,
   } = props.information;
+
+  const { targetMember } = useSelector(
+    (state: RootState) => state.targetMember
+  );
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -153,6 +159,10 @@ const MemberListView = (props: MemberListViewProps) => {
         headerTitle={t_title('editMember')}
         width={700}
         height={700}
+        doneDisabled={
+          !getIsWellFormedName(targetMember.name) ||
+          !getIsWellFormedPhone(getFormattedPhone(targetMember.mobilePhone))
+        }
       >
         <EditMember onChangeProfileImage={onChangeProfileImage} />
       </CustomPopup>

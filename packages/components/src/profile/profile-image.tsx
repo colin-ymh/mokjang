@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useMemo } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import Image from 'next/image';
 import { GRAY } from '@mokjang/constants';
@@ -27,25 +27,6 @@ export const ProfileImage = ({
   quality = 100,
   onClick,
 }: ProfileImageProps) => {
-  const profiles = [
-    Png.DefaultMemberImage,
-    Png.Man1,
-    Png.Man2,
-    Png.Man3,
-    Png.Man4,
-    Png.Man5,
-    Png.Man6,
-    Png.Woman1,
-    Png.Woman2,
-    Png.Woman3,
-    Png.Woman4,
-  ];
-
-  const getRandomImage = useMemo(() => {
-    const index = Math.round(Math.random() * 10000) % 10;
-    return profiles[index];
-  }, []);
-
   return (
     <Profile
       src={value || Png.DefaultMemberImage}

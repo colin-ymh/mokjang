@@ -8,7 +8,7 @@ import {
   LabelInput,
   MainText,
 } from '@mokjang/components';
-import { GRAY, GREEN, LOCALE, MAIN, WHITE } from '@mokjang/constants';
+import { CURSOR, GRAY, GREEN, LOCALE, MAIN, WHITE } from '@mokjang/constants';
 import {
   getIsWellFormedName,
   getIsWellFormedPhone,
@@ -107,11 +107,6 @@ const ConsentColumn = styled.div`
   gap: 10px;
 `;
 
-const DescriptionList = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
 const ButtonContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -136,6 +131,8 @@ type UserRegisterListViewProps = {
   onClickCollectionConsent: () => void;
   onClickThirdConsent: () => void;
   onClickDone: () => void;
+  onClickCollectionLink: () => void;
+  onClickThirdLink: () => void;
 };
 
 const RegisterView = ({
@@ -155,6 +152,8 @@ const RegisterView = ({
   onClickCollectionConsent,
   onClickThirdConsent,
   onClickDone,
+  onClickCollectionLink,
+  onClickThirdLink,
 }: UserRegisterListViewProps) => {
   const pathname = usePathname();
   const locale = pathname.split('/')[1] as LOCALE;
@@ -267,40 +266,34 @@ const RegisterView = ({
               onChange={onClickCollectionConsent}
             />
             <ConsentColumn>
-              <MainText fontWeight={500}>{t_collection('title')}</MainText>
-              <DescriptionList>
-                <MainText fontSize={14} fontWeight={400} color={GRAY.DARK}>
-                  {t_collection('description1')}
-                </MainText>
-                <MainText fontSize={14} fontWeight={400} color={GRAY.DARK}>
-                  {t_collection('description2')}
-                </MainText>
-                <MainText fontSize={14} fontWeight={400} color={GRAY.DARK}>
-                  {t_collection('description3')}
-                </MainText>
-              </DescriptionList>
+              <MainText
+                fontWeight={500}
+                onClick={onClickCollectionLink}
+                textDecoration={'underline'}
+                color={'blue'}
+                cursor={CURSOR.POINTER}
+              >
+                {t_collection('title')}
+              </MainText>
             </ConsentColumn>
           </ConsentItemContainer>
-          <ConsentItemContainer>
-            <CheckButton
-              value={isThirdConsent}
-              onChange={onClickThirdConsent}
-            />
-            <ConsentColumn>
-              <MainText fontWeight={500}>{t_third('title')}</MainText>
-              <DescriptionList>
-                <MainText fontSize={14} fontWeight={400} color={GRAY.DARK}>
-                  {t_third('description1')}
-                </MainText>
-                <MainText fontSize={14} fontWeight={400} color={GRAY.DARK}>
-                  {t_third('description2')}
-                </MainText>
-                <MainText fontSize={14} fontWeight={400} color={GRAY.DARK}>
-                  {t_third('description3')}
-                </MainText>
-              </DescriptionList>
-            </ConsentColumn>
-          </ConsentItemContainer>
+          {/*<ConsentItemContainer>*/}
+          {/*  <CheckButton*/}
+          {/*    value={isThirdConsent}*/}
+          {/*    onChange={onClickThirdConsent}*/}
+          {/*  />*/}
+          {/*  <ConsentColumn>*/}
+          {/*    <MainText*/}
+          {/*      fontWeight={500}*/}
+          {/*      onClick={onClickThirdLink}*/}
+          {/*      textDecoration={'underline'}*/}
+          {/*      color={'blue'}*/}
+          {/*      cursor={CURSOR.POINTER}*/}
+          {/*    >*/}
+          {/*      {t_third('title')}*/}
+          {/*    </MainText>*/}
+          {/*  </ConsentColumn>*/}
+          {/*</ConsentItemContainer>*/}
         </ConsentContainer>
         <ButtonContainer>
           <Button
@@ -308,11 +301,9 @@ const RegisterView = ({
             height={40}
             width={400}
             backgroundColor={
-              isVerified && isCollectionConsent && isThirdConsent
-                ? MAIN.DEFAULT
-                : GRAY.SEMI_LIGHT
+              isVerified && isCollectionConsent ? MAIN.DEFAULT : GRAY.SEMI_LIGHT
             }
-            disabled={!(isVerified && isCollectionConsent && isThirdConsent)}
+            disabled={!(isVerified && isCollectionConsent)}
             onClick={onClickDone}
           />
         </ButtonContainer>

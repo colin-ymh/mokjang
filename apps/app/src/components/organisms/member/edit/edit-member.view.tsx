@@ -4,28 +4,13 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
-import {
-  BAPTISM,
-  BLANK,
-  GENDER,
-  GRAY,
-  MARRIAGE,
-  SIZE,
-} from '@mokjang/constants';
+import { BAPTISM, BLANK, GENDER, GRAY, MARRIAGE, SIZE, } from '@mokjang/constants';
 import { DropdownValueType } from '../../../atoms/common/dropdown/dropdown-item';
-import {
-  CheckButton,
-  LabelInput,
-  MainText,
-  PopupHeaderBar,
-} from '@mokjang/components';
+import { CheckButton, LabelInput, MainText, PopupHeaderBar, } from '@mokjang/components';
 import LabelDropdown from '../../../atoms/common/dropdown/label-dropdown';
 import LabelRadioButton from '../../../atoms/common/radio-button/label-radio-button';
-import {
-  useGenderRadioButtonItems,
-  useLunarSolarRadioButtonItems,
-} from '@/hooks/radio-button/radio-button-items';
-import { useMarriageDropdownItems } from '@/hooks/dropdown/dropdown-items';
+import { useGenderRadioButtonItems, useLunarSolarRadioButtonItems, } from '@/hooks/radio-button/radio-button-items';
+import { useBaptismDropdownItems, useMarriageDropdownItems, } from '@/hooks/dropdown/dropdown-items';
 import VehicleNumberInput from '../../../atoms/register/vehicle-number-input';
 import CustomDatePicker from '../../../../vendor/date-picker/custom-date-picker';
 import { getDateFromDateString, getFormattedPhone } from '@mokjang/utils';
@@ -191,12 +176,7 @@ const EditMemberView = ({
     })),
   ];
 
-  const baptismDropdownItems: DropdownValueType[] = Object.values(BAPTISM).map(
-    (value) => ({
-      value,
-      title: value === BAPTISM.NONE ? t_placeholder('selectBaptism') : t(value),
-    })
-  );
+  const baptismDropdownItems: DropdownValueType[] = useBaptismDropdownItems();
 
   const headerBarItems = useEditMemberHeaderBarItems();
 
@@ -416,11 +396,7 @@ const EditMemberView = ({
               <LabelDropdown
                 label={t('baptism')}
                 items={baptismDropdownItems}
-                value={
-                  targetMember.baptism === 'none'
-                    ? BAPTISM.NONE
-                    : targetMember.baptism
-                }
+                value={targetMember.baptism}
                 onChangeItem={onChangeBaptism}
                 backgroundBlur={false}
               />
