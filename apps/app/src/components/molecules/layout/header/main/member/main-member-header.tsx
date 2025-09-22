@@ -11,11 +11,7 @@ import { setTargetMember } from '@/redux/reducers/target/target-member-reducer';
 import { uploadFilesToSupabase } from '@/utils/upload';
 import { MembersApi } from '@/api/members/members.api';
 import { BAPTISM, BLACK, CONCEALED, DESTRUCTIVE } from '@mokjang/constants';
-import {
-  setIsToastShown,
-  setToastBackgroundColor,
-  setToastText,
-} from '@/redux/reducers/toast-popup-reducer';
+import { setIsToastShown, setToastBackgroundColor, setToastText, } from '@/redux/reducers/toast-popup-reducer';
 import { Loading } from '@mokjang/components';
 
 type MainMemberHeaderProps = {};
@@ -131,6 +127,11 @@ const MainMemberHeader = ({}: MainMemberHeaderProps) => {
             marriage:
               updatedMember.marriage && updatedMember.marriage !== CONCEALED
                 ? updatedMember.marriage
+                : undefined,
+            detailMarriage:
+              updatedMember.detailMarriage &&
+              updatedMember.detailMarriage !== CONCEALED
+                ? updatedMember.detailMarriage
                 : undefined,
             vehicleNumber:
               updatedMember.vehicleNumber.filter(
