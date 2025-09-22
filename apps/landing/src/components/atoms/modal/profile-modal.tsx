@@ -25,7 +25,11 @@ const ProfileModal = ({ onClickClose }: ProfileModalProps) => {
   const authApi = new AuthApi(false);
 
   const onClickDonate = () => {
-    router.push('/donate');
+    window.open(
+      'https://horn-skipjack-ebf.notion.site/2769d70a6ddf80c3a134c80922fa49a3',
+      '_blank',
+      'noopener,noreferrer'
+    );
   };
 
   const onClickChurch = () => {

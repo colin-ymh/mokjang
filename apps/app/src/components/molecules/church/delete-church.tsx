@@ -12,7 +12,11 @@ import {
   WHITE,
 } from '@mokjang/constants';
 import { ChangeEvent, useEffect, useState } from 'react';
-import { getMinuteFromSecond, routeLandingPage } from '@mokjang/utils';
+import {
+  getMinuteFromSecond,
+  IS_PRODUCTION,
+  routeLandingPage,
+} from '@mokjang/utils';
 import {
   setIsToastShown,
   setToastBackgroundColor,
@@ -76,11 +80,11 @@ const DeleteChurch = () => {
         .requestDelete(
           { churchId },
           {
-            isTest: true,
+            isTest: !IS_PRODUCTION,
           }
         )
         .then((response) => {
-          console.log(response);
+          !IS_PRODUCTION && console.log(response);
         });
 
       setIsRequested(true);

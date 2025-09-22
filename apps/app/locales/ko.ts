@@ -711,7 +711,7 @@ export default {
   'placeholder.officerStartChurch': '임직 교회를 입력해주세요.',
   'placeholder.guide': '인도자를 입력해주세요.',
   'placeholder.previousChurch': '이전 교회를 입력해주세요.',
-  'placeholder.vehicleNumber': '4자리 입력',
+  'placeholder.vehicleNumber': '차량번호를 입력해주세요.',
   'placeholder.marriage': '결혼 상태를 입력해주세요',
   'placeholder.detailMarriage': '결혼 상세 상태를 입력해주세요',
   'placeholder.family': '가족을 입력해주세요.',

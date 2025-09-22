@@ -8,11 +8,7 @@ import { setUser } from '../../../redux/reducers/user-reducer';
 import { AuthApi, IS_TEST } from '../../../api/auth/auth.api';
 import UserRegisterListView from './user-register-list.view';
 import { Loading } from '@mokjang/components';
-import {
-  getFormattedName,
-  getFormattedPhone,
-  usePageRouter,
-} from '@mokjang/utils';
+import { getFormattedName, getFormattedPhone, IS_PRODUCTION, usePageRouter, } from '@mokjang/utils';
 
 import { useScopedI18n } from '../../../../locales/client';
 import { UserApi } from '../../../api/user/user.api';
@@ -77,13 +73,13 @@ const UserRegisterList = () => {
         {
           name,
           mobilePhone: mobilePhone.replace(/-/g, ''),
-          isTest: IS_TEST.PRODUCTION,
+          isTest: IS_PRODUCTION ? IS_TEST.PRODUCTION : IS_TEST.INTERNAL_TEST,
         }
       );
 
       if (response.status === 201) {
         setIsRequested(true);
-        console.log(response.data);
+        !IS_PRODUCTION && console.log(response.data);
         setSecond(300);
       }
     } catch (error) {

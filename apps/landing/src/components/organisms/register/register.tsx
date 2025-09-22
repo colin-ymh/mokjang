@@ -84,7 +84,7 @@ const Register = () => {
 
       if (response.status === 201) {
         setIsRequested(true);
-        console.log(response.data);
+        // console.log(response.data);
         setSecond(300);
       }
     } catch (error) {
@@ -115,6 +115,22 @@ const Register = () => {
   // 개인정보 처리 동의 버튼
   const onClickThirdConsent = () => {
     setIsThirdConsent(!isThirdConsent);
+  };
+
+  const onClickCollectionLink = () => {
+    window.open(
+      'https://horn-skipjack-ebf.notion.site/2739d70a6ddf80b6b398ccb767305a59?pvs=74',
+      '_blank',
+      'noopener,noreferrer'
+    );
+  };
+
+  const onClickThirdLink = () => {
+    // window.open(
+    //   'https://forms.gle/ABc2SPpYkdpAn5k96',
+    //   '_blank',
+    //   'noopener,noreferrer'
+    // );
   };
 
   // 회원가입 완료 버튼: 로딩 상태를 처리
@@ -169,6 +185,8 @@ const Register = () => {
     onClickCollectionConsent,
     onClickThirdConsent,
     onClickDone,
+    onClickCollectionLink,
+    onClickThirdLink,
   };
 
   return (

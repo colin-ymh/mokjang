@@ -1,16 +1,28 @@
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../../redux/store';
-import { setFilteredItems, setMemberFilter, } from '../../../../redux/reducers/filter/member-filter-reducer';
+import {
+  setFilteredItems,
+  setMemberFilter,
+} from '../../../../redux/reducers/filter/member-filter-reducer';
 
-import { getAge, getDateFromDateString, getTranslatedAge, getTrimmedString, } from '@mokjang/utils';
+import {
+  getAge,
+  getDateFromDateString,
+  getTranslatedAge,
+  getTrimmedString,
+} from '@mokjang/utils';
 import MemberFilterRowView from './member-filter-row.view';
 import { BLACK, BLANK, DESTRUCTIVE, LOCALE, MEMBER } from '@mokjang/constants';
 import { FilteredItemType } from '../../../atoms/member/setting/filtered-item.view';
 import { usePathname } from 'next/navigation';
 import { createClient } from '@supabase/supabase-js';
 import { getMembersFromXlsx } from '@/utils/xlsx';
-import { setIsToastShown, setToastBackgroundColor, setToastText, } from '@/redux/reducers/toast-popup-reducer';
+import {
+  setIsToastShown,
+  setToastBackgroundColor,
+  setToastText,
+} from '@/redux/reducers/toast-popup-reducer';
 import { useScopedI18n } from '../../../../../locales/client';
 import { Loading } from '@mokjang/components';
 import { MembersApi } from '@/api/members/members.api';

@@ -16,7 +16,7 @@ export default function ChurchInitPage() {
   useEffect(() => {
     // 초기화가 끝났는데 유저가 없으면 보호 라우트 → 홈으로
     if (initialized && !user?.id) {
-      console.log(user);
+      // console.log(user);
       // routeLandingPage('/');
     }
   }, [initialized, user?.id, router]);

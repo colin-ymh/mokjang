@@ -222,14 +222,66 @@ export const getShortEnglishMonthName = (month: number): string => {
   return months[month - 1];
 };
 
-// 차량번호 입력창 포맷
 export const getFormattedVehicleNumber = (vehicleNumber: string) => {
-  if (!vehicleNumber) return ''; // 입력값이 비어 있을 경우 공백 반환
+  if (!vehicleNumber) return '';
 
-  // 숫자만 남기기
-  const cleaned = vehicleNumber.replace(/\D/g, ''); // 숫자 외 제거
+  // 숫자 및 한글(완성·자모)만 유지
+  const raw = vehicleNumber.replace(/[^0-9ㄱ-ㅎㅏ-ㅣ가-힣]/g, '');
 
-  // 최대 4자리로 제한
-  const lengthLimit = 4;
-  return cleaned.slice(0, lengthLimit);
+  let out = '';
+  let hasHangulAt2or3 = false;
+  let hangulIndex: 2 | 3 | null = null;
+
+  for (let i = 0; i < raw.length; i++) {
+    const ch = raw[i];
+    const isDigit = /[0-9]/.test(ch);
+    const isHangul = /[ㄱ-ㅎㅏ-ㅣ가-힣]/.test(ch);
+
+    const nextIndex = out.length; // 현재까지 만들어진 문자열의 길이
+
+    if (nextIndex === 2 || nextIndex === 3) {
+      // 한글 조건을 먼저 체크해야 continue 로 건너뛰지 않음
+      if (isHangul && !hasHangulAt2or3) {
+        out += ch;
+        hasHangulAt2or3 = true;
+        hangulIndex = nextIndex as 2 | 3;
+      } else if (isDigit) {
+        out += ch;
+      }
+      // 그 외 문자는 무시
+    } else {
+      // 0,1,4~ : 숫자만 허용
+      if (isDigit) out += ch;
+    }
+
+    if (out.length >= 8) break; // 임시 상한
+  }
+
+  const digitsOnly = out.replace(/[^0-9]/g, '');
+  const hasHangul = hasHangulAt2or3;
+
+  // 최종 허용 길이 결정
+  let maxLen: number;
+  if (!hasHangul) {
+    // 한글이 없으면 숫자만 → 최대 4자
+    maxLen = 4;
+  } else if (hangulIndex === 2) {
+    maxLen = 7;
+  } else if (hangulIndex === 3) {
+    maxLen = 8;
+  } else {
+    maxLen = 8; // 방어적
+  }
+
+  // 숫자만일 경우 4자리 초과 제거
+  if (!hasHangul && digitsOnly.length > 4) {
+    return digitsOnly.slice(0, 4);
+  }
+
+  // 위치별 최종 길이 제한 적용
+  if (out.length > maxLen) {
+    out = out.slice(0, maxLen);
+  }
+
+  return out;
 };
