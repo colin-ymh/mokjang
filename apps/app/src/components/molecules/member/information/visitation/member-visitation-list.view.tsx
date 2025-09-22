@@ -43,6 +43,7 @@ type FamilyInformationListViewProps = {
   isInformationShown: boolean;
   isSaveEnabled: boolean;
   isPopupShown: boolean;
+  isPopup?: boolean;
   visitations: Visitation[];
   onClickConfirmOpen: () => void;
   onClickConfirmClose: () => void;
@@ -63,6 +64,7 @@ const MemberVisitationListView = ({
   isSaveEnabled,
   isPopupShown,
   visitations,
+  isPopup,
   onClickConfirmOpen,
   onClickConfirmClose,
   onClickOpenModal,

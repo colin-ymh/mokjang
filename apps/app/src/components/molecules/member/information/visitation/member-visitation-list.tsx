@@ -19,9 +19,9 @@ import {
 } from '@mokjang/utils';
 import { setTargetVisitation } from '@/redux/reducers/target/target-visitation-reducer';
 
-type MemberVisitationListProps = {};
+type MemberVisitationListProps = { isPopup?: boolean };
 
-const MemberVisitationList = ({}: MemberVisitationListProps) => {
+const MemberVisitationList = ({ isPopup }: MemberVisitationListProps) => {
   const t_popup = useScopedI18n('popup');
   const dispatch = useDispatch<AppDispatch>();
   const { churchId } = useSelector((state: RootState) => state.church);
@@ -393,6 +393,7 @@ const MemberVisitationList = ({}: MemberVisitationListProps) => {
     isSaveEnabled,
     isPopupShown,
     visitations,
+    isPopup,
     onClickConfirmOpen,
     onClickConfirmClose,
     onClickOpenModal,
