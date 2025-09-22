@@ -2,10 +2,13 @@
 
 import styled from 'styled-components';
 import { useEffect, useState } from 'react';
-import { routeLandingPage, usePageRouter } from '@mokjang/utils';
+import { IS_PRODUCTION, usePageRouter } from '@mokjang/utils';
 import { JoinRequestsApi } from '../../api/join-request/join-request.api';
 import { useSelector } from 'react-redux';
 import { RootState } from '@mokjang/landing/src/redux/store';
+import ModalLayout from '@/components/organisms/layout/modal-layout';
+import { BorderInput, Button } from '@mokjang/components';
+import LogoutButton from '@/components/atoms/common/button/logout-button';
 
 const ButtonContainer = styled.div`
   display: flex;
@@ -21,7 +24,7 @@ export default function LoginPage() {
   useEffect(() => {
     // 초기화가 끝났는데 유저가 없으면 보호 라우트 → 홈으로
     if (initialized && !user?.id) {
-      routeLandingPage('/');
+      // routeLandingPage('/');
     } else if (user?.id) {
       router.push('/main');
     }
@@ -49,25 +52,26 @@ export default function LoginPage() {
   // 초기화가 끝났고 유저가 없으면 리다이렉트 직전 상태 → 렌더링 스킵
   if (!user?.id) return null;
 
+  if (IS_PRODUCTION) return null;
+
   return (
-    <div></div>
-    // <ModalLayout>
-    //   <ButtonContainer>
-    //     <BorderInput value={code} onChange={onChangeCode} />
-    //     <Button
-    //       text={'초대코드로 입장하기'}
-    //       onClick={onClickEnterCode}
-    //       height={30}
-    //     />
-    //
-    //     <Button
-    //       text={'새로운 교회 생성하기'}
-    //       onClick={onClickCreateChurch}
-    //       height={30}
-    //     />
-    //
-    //     <LogoutButton />
-    //   </ButtonContainer>
-    // </ModalLayout>
+    <ModalLayout>
+      <ButtonContainer>
+        <BorderInput value={code} onChange={onChangeCode} />
+        <Button
+          text={'초대코드로 입장하기'}
+          onClick={onClickEnterCode}
+          height={30}
+        />
+
+        <Button
+          text={'새로운 교회 생성하기'}
+          onClick={onClickCreateChurch}
+          height={30}
+        />
+
+        <LogoutButton />
+      </ButtonContainer>
+    </ModalLayout>
   );
 }

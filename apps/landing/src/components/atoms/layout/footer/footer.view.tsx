@@ -89,43 +89,43 @@ const FooterView = ({
           <ContentContainer>
             <ColumnContainer flex={2}>
               <TitleContainer>
-                <MainText color={WHITE} fontSize={24} fontWeight={600}>
+                <MainText color={WHITE} fontSize={22} fontWeight={600}>
                   {t_footer('title')}
                 </MainText>
-                <MainText color={WHITE} fontSize={16} fontWeight={300}>
+                <MainText color={WHITE} fontSize={14} fontWeight={300}>
                   {t_footer('description')}
                 </MainText>
               </TitleContainer>
               <ColumnList>
                 <RowContainer>
-                  <MainText color={WHITE} fontSize={16} fontWeight={600}>
+                  <MainText color={WHITE} fontSize={14} fontWeight={600}>
                     {t_footer('company.title')}
                   </MainText>
-                  <MainText color={WHITE} fontSize={16} fontWeight={300}>
+                  <MainText color={WHITE} fontSize={14} fontWeight={300}>
                     {t_footer('company.description')}
                   </MainText>
                 </RowContainer>
                 <RowContainer>
-                  <MainText color={WHITE} fontSize={16} fontWeight={600}>
+                  <MainText color={WHITE} fontSize={14} fontWeight={600}>
                     {t_footer('representative.title')}
                   </MainText>
-                  <MainText color={WHITE} fontSize={16} fontWeight={300}>
+                  <MainText color={WHITE} fontSize={14} fontWeight={300}>
                     {t_footer('representative.description')}
                   </MainText>
                 </RowContainer>
                 <RowContainer>
-                  <MainText color={WHITE} fontSize={16} fontWeight={600}>
+                  <MainText color={WHITE} fontSize={14} fontWeight={600}>
                     {t_footer('identifyNumber.title')}
                   </MainText>
-                  <MainText color={WHITE} fontSize={16} fontWeight={300}>
+                  <MainText color={WHITE} fontSize={14} fontWeight={300}>
                     {t_footer('identifyNumber.description')}
                   </MainText>
                 </RowContainer>
                 <RowContainer>
-                  <MainText color={WHITE} fontSize={16} fontWeight={600}>
+                  <MainText color={WHITE} fontSize={14} fontWeight={600}>
                     {t_footer('address.title')}
                   </MainText>
-                  <MainText color={WHITE} fontSize={16} fontWeight={300}>
+                  <MainText color={WHITE} fontSize={14} fontWeight={300}>
                     {t_footer('address.description')}
                   </MainText>
                 </RowContainer>
@@ -136,16 +136,16 @@ const FooterView = ({
               {/*  {'서비스'}*/}
               {/*</MainText>*/}
               {/*<ColumnList>*/}
-              {/*  <MainText color={WHITE} fontSize={16} fontWeight={300}>*/}
+              {/*  <MainText color={WHITE} fontSize={14} fontWeight={300}>*/}
               {/*    {'교인관리'}*/}
               {/*  </MainText>*/}
-              {/*  <MainText color={WHITE} fontSize={16} fontWeight={300}>*/}
+              {/*  <MainText color={WHITE} fontSize={14} fontWeight={300}>*/}
               {/*    {'일정관리'}*/}
               {/*  </MainText>*/}
-              {/*  <MainText color={WHITE} fontSize={16} fontWeight={300}>*/}
+              {/*  <MainText color={WHITE} fontSize={14} fontWeight={300}>*/}
               {/*    {'출석관리'}*/}
               {/*  </MainText>*/}
-              {/*  <MainText color={WHITE} fontSize={16} fontWeight={300}>*/}
+              {/*  <MainText color={WHITE} fontSize={14} fontWeight={300}>*/}
               {/*    {'요금제'}*/}
               {/*  </MainText>*/}
               {/*</ColumnList>*/}
@@ -155,16 +155,16 @@ const FooterView = ({
               {/*  {'고객지원'}*/}
               {/*</MainText>*/}
               {/*<ColumnList>*/}
-              {/*  <MainText color={WHITE} fontSize={16} fontWeight={300}>*/}
+              {/*  <MainText color={WHITE} fontSize={14} fontWeight={300}>*/}
               {/*    {'문의하기'}*/}
               {/*  </MainText>*/}
-              {/*  <MainText color={WHITE} fontSize={16} fontWeight={300}>*/}
+              {/*  <MainText color={WHITE} fontSize={14} fontWeight={300}>*/}
               {/*    {'자주묻는질문'}*/}
               {/*  </MainText>*/}
-              {/*  <MainText color={WHITE} fontSize={16} fontWeight={300}>*/}
+              {/*  <MainText color={WHITE} fontSize={14} fontWeight={300}>*/}
               {/*    {'이메일 지원'}*/}
               {/*  </MainText>*/}
-              {/*  <MainText color={WHITE} fontSize={16} fontWeight={300}>*/}
+              {/*  <MainText color={WHITE} fontSize={14} fontWeight={300}>*/}
               {/*    {'전화 지원'}*/}
               {/*  </MainText>*/}
               {/*</ColumnList>*/}
