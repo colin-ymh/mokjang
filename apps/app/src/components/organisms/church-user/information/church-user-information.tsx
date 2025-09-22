@@ -6,7 +6,7 @@ import { setTargetChurchUser } from '@/redux/reducers/target/target-church-user-
 import { ChurchUsersApi } from '@/api/church-users/church-users.api';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
-import { BLACK, DESTRUCTIVE, STATUS } from '@mokjang/constants';
+import { ALL, BLACK, DESTRUCTIVE, STATUS } from '@mokjang/constants';
 import { CustomPopup } from '@mokjang/components';
 import LinkMemberUser from '@/components/molecules/join-request/link-member-user';
 import { useScopedI18n } from '../../../../../locales/client';
@@ -59,9 +59,7 @@ const ChurchUserInformation = ({
 
   const [isGroupPopupShown, setIsGroupPopupShown] = useState<boolean>(false);
 
-  const [selectedGroupIds, setSelectedGroupIds] = useState<(string | null)[]>(
-    []
-  );
+  const [selectedGroupIds, setSelectedGroupIds] = useState<string[]>([]);
 
   const [selectedPermissionTemplateId, setSelectedPermissionTemplateId] =
     useState<string | null>(targetChurchUser.permissionTemplate?.id || null);
@@ -151,12 +149,13 @@ const ChurchUserInformation = ({
 
   // 권한 범위 팝업 열기
   const onClickGroupPopupOpen = () => setIsGroupPopupShown(true);
+
   // 권한 범위 팝업 닫기
   const onClickGroupPopupClose = () => {
     setIsGroupPopupShown(false);
     setSelectedGroupIds(
       targetChurchUser?.permissionScopes?.map(
-        (scope) => scope.group?.id || null
+        (scope) => scope.group?.id || ALL
       ) || []
     );
   };
@@ -224,8 +223,8 @@ const ChurchUserInformation = ({
 
   const onClickDoneGroup = async () => {
     try {
-      const isAllGroups = selectedGroupIds.includes(null);
-      const groupIds = selectedGroupIds.filter((groupId) => groupId !== null);
+      const isAllGroups = selectedGroupIds.includes(ALL);
+      const groupIds = selectedGroupIds.filter((groupId) => groupId !== ALL);
       const response = await managersApi.editPermissionScopes(
         {
           churchId,
@@ -236,7 +235,7 @@ const ChurchUserInformation = ({
           groupIds,
         }
       );
-      const newChurchUser = response.data;
+      const newChurchUser: ChurchUser = response.data;
       dispatch(setTargetChurchUser(newChurchUser));
       const newChurchUsers = churchUsers.map((churchUser) => {
         if (churchUser.id === targetChurchUser.id) return newChurchUser;
@@ -247,9 +246,7 @@ const ChurchUserInformation = ({
       setIsGroupPopupShown(false);
 
       setSelectedGroupIds(
-        targetChurchUser.permissionScopes.map(
-          (scope) => scope.group?.id || null
-        )
+        newChurchUser.permissionScopes.map((scope) => scope.group?.id || ALL)
       );
       dispatch(setIsToastShown(true));
       dispatch(setToastText(t_popup('saveComplete')));
@@ -278,9 +275,9 @@ const ChurchUserInformation = ({
 
   // 새로운 그룹을 설정
   const onClickGroup = (group: Group) => {
-    let newSelectedGroupIds: (string | null)[];
+    let newSelectedGroupIds: string[];
 
-    if (selectedGroupIds.includes(group.id)) {
+    if (selectedGroupIds.includes(group.id as string)) {
       // 선택 해제
       newSelectedGroupIds = selectedGroupIds.filter((id) => id !== group.id);
     } else {
@@ -291,7 +288,7 @@ const ChurchUserInformation = ({
         ...selectedGroupIds.filter(
           (id) => !childIdsToRemove.includes(id ?? '')
         ),
-        group.id,
+        group.id as string,
       ];
     }
 
@@ -339,7 +336,7 @@ const ChurchUserInformation = ({
     setIsGroupPopupShown(false);
     setSelectedGroupIds(
       targetChurchUser?.permissionScopes?.map(
-        (scope) => scope.group?.id || null
+        (scope) => scope.group?.id || ALL
       ) || []
     );
   }, [targetChurchUser.id]);
