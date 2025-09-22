@@ -11,7 +11,7 @@ export default function LoginPage() {
   const { user } = useSelector((state: RootState) => state.user);
   const router = usePageRouter();
 
-  router.replace('/');
+  // router.replace('/');
 
   useEffect(() => {
     if (user?.id) {
