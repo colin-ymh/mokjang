@@ -1,35 +1,24 @@
-'use client';
+import type { Metadata } from 'next';
+import Providers from './providers';
 
-import React from 'react';
-import { Provider } from 'react-redux';
-import StyledComponentsRegistry from '../hooks/registry';
-
-import store from '../redux/store';
-
-import GlobalStyle from '../components/atoms/layout/global-style';
-import InitializeStore from '@/components/atoms/layout/initialize-store';
-import { ToastLayout } from '@/components/atoms/popup/toast-layout';
-
-import { Analytics } from '@vercel/analytics/next';
-import { SpeedInsights } from '@vercel/speed-insights/next';
+// import {favicon} from '../../public/favicon.jpg'
 
 type RootLayoutProps = {
   children?: React.ReactNode;
 };
 
-type RootLayoutPropsExtended = {
-  children?: React.ReactNode;
-  modal?: React.ReactNode;
+export const metadata: Metadata = {
+  title: 'ekkly',
+  icons: {
+    icon: '/favicon.jpg',
+  },
 };
 
-const RootLayout = (props: RootLayoutProps | RootLayoutPropsExtended) => {
-  const { children } = {
-    ...props,
-  };
-
+export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="ko">
       <head>
+        {/* Google Fonts 등 외부 링크는 그대로 유지 가능 */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" />
         <link
@@ -42,29 +31,8 @@ const RootLayout = (props: RootLayoutProps | RootLayoutPropsExtended) => {
         />
       </head>
       <body>
-        {/* SSR style 렌더링 */}
-        <StyledComponentsRegistry>
-          {/* Redux */}
-          <Provider store={store}>
-            {/* 초기 전역 상태 설정 */}
-            <InitializeStore>
-              {/* 전역 스타일 적용 */}
-              <GlobalStyle />
-
-              {/* 실제 페이지 렌더링 */}
-
-              {children}
-
-              <Analytics />
-              <SpeedInsights />
-              {/* 토스트 팝업 */}
-              <ToastLayout />
-            </InitializeStore>
-          </Provider>
-        </StyledComponentsRegistry>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
-};
-
-export default RootLayout;
+}
