@@ -2,11 +2,7 @@ import styled from 'styled-components';
 import React, { ChangeEvent, Ref, RefObject } from 'react';
 import { Member } from '@mokjang/models';
 import { useI18n } from '../../../../locales/client';
-import {
-  BorderInput,
-  MainText,
-  SvgIcon,
-} from '../../../../../../packages/components/src';
+import { BorderInput, MainText, SvgIcon, } from '../../../../../../packages/components/src';
 import { GRAY, MAIN } from '../../../../../../packages/constants/src';
 import MemberProfile from '@/components/atoms/member/member-profile';
 import AddMemberItem from '@/components/atoms/common/modal/add-member-item';
@@ -104,15 +100,17 @@ const LinkMemberUserView = ({
 
       {/* 교인 목록 */}
       <MemberListContainer ref={scrollRef} onScroll={onScroll}>
-        {searchedMembers.map((member) => (
-          <AddMemberItem
-            key={member.id}
-            member={member}
-            isEnable={prevMember?.id !== member.id}
-            isSelected={selectedMember.id === member.id}
-            onClick={onClickMember}
-          />
-        ))}
+        {searchedMembers
+          .filter((member) => member.churchUser === null)
+          .map((member) => (
+            <AddMemberItem
+              key={member.id}
+              member={member}
+              isEnable={prevMember?.id !== member.id}
+              isSelected={selectedMember.id === member.id}
+              onClick={onClickMember}
+            />
+          ))}
       </MemberListContainer>
     </LinkMemberUserViewContainer>
   );
