@@ -12,6 +12,10 @@ export const metadata: Metadata = {
   icons: {
     icon: '/favicon.jpg',
   },
+  alternates: {
+    canonical: '/ko', // 기본 언어가 /ko 라면
+    languages: { ko: '/ko', en: '/en' },
+  },
 };
 
 export default function RootLayout({ children }: RootLayoutProps) {
