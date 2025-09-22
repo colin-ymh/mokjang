@@ -177,7 +177,8 @@ export default {
   'join.checked.warning2': '위 정보가 정확한지 확인 후 아래 버튼을 눌러주세요',
   'join.checked.button': '교회 정보가 맞습니다',
 
-  'join-pending.description': '관리자가 승인하면 문자로 알림을 보내드립니다.',
+  'join-pending.description':
+    '관리자가 승인하면 카카오톡(문자) 알림을 보내드립니다.',
   'join-pending.cancel': '관리자 등록 신청 철회하기',
 
   'footer.title': '에클리',

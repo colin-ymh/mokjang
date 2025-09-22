@@ -3,7 +3,10 @@ import Image from 'next/image';
 import styled from 'styled-components';
 import { GRAY, MAIN, WHITE } from '../../../../../../../packages/constants/src';
 import React from 'react';
-import { MainText, SvgIcon, } from '../../../../../../../packages/components/src';
+import {
+  MainText,
+  SvgIcon,
+} from '../../../../../../../packages/components/src';
 
 const ItemContainer = styled.div`
   display: flex;
