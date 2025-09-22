@@ -48,6 +48,10 @@ export default function RootLayout({ children }: RootLayoutProps) {
           name="viewport"
           content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
         />
+        <meta
+          name="naver-site-verification"
+          content="48f54e2572745cabd8eb76d6699ed92b"
+        />
       </head>
       <body>
         <Providers>{children}</Providers>

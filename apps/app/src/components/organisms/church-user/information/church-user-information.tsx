@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import ChurchUserInformationView, {
-  ChurchUserInformationViewProps,
-} from './church-user-information.view';
+import ChurchUserInformationView, { ChurchUserInformationViewProps, } from './church-user-information.view';
 import { setTargetChurchUser } from '@/redux/reducers/target/target-church-user-reducer';
 import { ChurchUsersApi } from '@/api/church-users/church-users.api';
 import { useDispatch, useSelector } from 'react-redux';
@@ -16,11 +14,7 @@ import { ManagersApi } from '@/api/managers/managers.api';
 import PermissionRange from '@/components/atoms/church-user/information/permission-range';
 import EditPermissionTemplate from '@/components/molecules/church-user/information/edit-permission-template';
 import ConfirmPopup from '@/components/atoms/common/popup/error-popup';
-import {
-  setIsToastShown,
-  setToastBackgroundColor,
-  setToastText,
-} from '@/redux/reducers/toast-popup-reducer';
+import { setIsToastShown, setToastBackgroundColor, setToastText, } from '@/redux/reducers/toast-popup-reducer';
 
 type ChurchUserInformationProps = {
   isMy?: boolean;
@@ -232,7 +226,7 @@ const ChurchUserInformation = ({
         },
         {
           isAllGroups,
-          groupIds,
+          groupIds: isAllGroups ? [] : groupIds,
         }
       );
       const newChurchUser: ChurchUser = response.data;

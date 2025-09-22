@@ -104,15 +104,17 @@ const LinkMemberUserView = ({
 
       {/* 교인 목록 */}
       <MemberListContainer ref={scrollRef} onScroll={onScroll}>
-        {searchedMembers.map((member) => (
-          <AddMemberItem
-            key={member.id}
-            member={member}
-            isEnable={prevMember?.id !== member.id}
-            isSelected={selectedMember.id === member.id}
-            onClick={onClickMember}
-          />
-        ))}
+        {searchedMembers
+          .filter((member) => member.churchUser === null)
+          .map((member) => (
+            <AddMemberItem
+              key={member.id}
+              member={member}
+              isEnable={prevMember?.id !== member.id}
+              isSelected={selectedMember.id === member.id}
+              onClick={onClickMember}
+            />
+          ))}
       </MemberListContainer>
     </LinkMemberUserViewContainer>
   );
