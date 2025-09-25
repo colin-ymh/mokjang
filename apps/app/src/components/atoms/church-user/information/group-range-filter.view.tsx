@@ -215,7 +215,7 @@ const GroupRangeFilterView = ({
   const getAllGroupIds = (groups: Group[]): number[] => {
     let ids: number[] = [NaN];
     groups.forEach((group) => {
-      if (group.id !== ALL) ids.push(parseInt(group.id));
+      if (group.id !== ALL) ids.push(parseInt(group.id as string));
       if (group.childGroups?.length) {
         ids = ids.concat(getAllGroupIds(group.childGroups));
       }
