@@ -1,8 +1,6 @@
 import type { Metadata } from 'next';
 import Providers from './providers';
 
-// import {favicon} from '../../public/favicon.jpg'
-
 type RootLayoutProps = {
   children?: React.ReactNode;
 };
@@ -10,7 +8,7 @@ type RootLayoutProps = {
 export const metadata: Metadata = {
   title: 'ekkly - 교회 관리의 새로운 시작',
   description:
-    'ekkly는 교회 출석, 심방, 업무, 그룹, 사역 관리를 간편하게 돕는 교회 관리 플랫폼입니다.',
+    '에클리는 교회 출석, 심방, 업무, 그룹, 사역 관리를 간편하게 돕는 교회 관리 플랫폼입니다.',
   icons: {
     icon: '/favicon.jpg',
   },
@@ -24,9 +22,25 @@ export const metadata: Metadata = {
     siteName: 'ekkly',
     title: 'ekkly - 교회 관리의 새로운 시작',
     description:
-      'ekkly는 교회 출석, 심방, 업무, 그룹, 사역 관리를 간편하게 돕는 교회 관리 플랫폼입니다.',
+      '에클리는 교회 출석, 심방, 업무, 그룹, 사역 관리를 간편하게 돕는 교회 관리 플랫폼입니다.',
+    images: ['/favicon.jpg'],
     locale: 'ko_KR',
   },
+  keywords: [
+    '교회',
+    '출석관리',
+    '심방',
+    '사역',
+    'ekkly',
+    '에클리',
+    '예배',
+    '교적',
+    '교적부',
+    '에클레시아',
+    '교인',
+    '교회 관리',
+    'eccly',
+  ],
 };
 
 export default function RootLayout({ children }: RootLayoutProps) {
