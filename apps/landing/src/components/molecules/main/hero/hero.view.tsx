@@ -5,7 +5,7 @@ import { useScopedI18n } from '../../../../../locales/client';
 import { Button } from '@mokjang/components';
 import { GREEN, LOCALE } from '@mokjang/constants';
 
-import BackgroundImage from '../../../../../public/jpg/hero-background.jpg';
+import BackgroundImage from '../../../../../public/png/hero-background.png';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import {
