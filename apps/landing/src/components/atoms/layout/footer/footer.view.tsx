@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { BLACK, CURSOR, WHITE } from '@mokjang/constants';
+import { BLACK, CURSOR, MEDIA_MAX_WIDTH, WHITE } from '@mokjang/constants';
 import { MainText } from '@mokjang/components';
 import { useScopedI18n } from '../../../../../locales/client';
 
@@ -8,8 +8,12 @@ const FooterContainer = styled.footer`
   height: 350px;
   background-color: ${BLACK};
   flex-shrink: 0;
-
   padding: 50px 100px;
+
+  @media (max-width: ${MEDIA_MAX_WIDTH.MOBILE}) {
+    padding: 20px;
+    height: auto;
+  }
 `;
 
 const Wrapper = styled.div`
@@ -26,6 +30,11 @@ const ContentContainer = styled.div`
   flex-direction: row;
   width: 100%;
   justify-content: space-between;
+
+  @media (max-width: ${MEDIA_MAX_WIDTH.MOBILE}) {
+    flex-direction: column;
+    gap: 20px;
+  }
 `;
 
 const ColumnContainer = styled.div<{ flex: number }>`
@@ -45,7 +54,6 @@ const RowContainer = styled.div`
   display: flex;
   flex-direction: row;
   gap: 10px;
-  align-items: center;
 `;
 
 const RowLine = styled.div`
@@ -57,6 +65,10 @@ const RowLine = styled.div`
 
   transform: scaleY(0.3); // 세로 두께 축소
   transform-origin: center;
+
+  @media (max-width: ${MEDIA_MAX_WIDTH.MOBILE}) {
+    margin: 20px 0;
+  }
 `;
 
 const ColumnList = styled.div`
@@ -125,50 +137,55 @@ const FooterView = ({
                   <MainText color={WHITE} fontSize={14} fontWeight={600}>
                     {t_footer('address.title')}
                   </MainText>
-                  <MainText color={WHITE} fontSize={14} fontWeight={300}>
+                  <MainText
+                    color={WHITE}
+                    fontSize={14}
+                    fontWeight={300}
+                    whiteSpace={'normal'}
+                  >
                     {t_footer('address.description')}
                   </MainText>
                 </RowContainer>
               </ColumnList>
             </ColumnContainer>
-            <ColumnContainer flex={1}>
-              {/*<MainText color={WHITE} fontSize={18} fontWeight={600}>*/}
-              {/*  {'서비스'}*/}
-              {/*</MainText>*/}
-              {/*<ColumnList>*/}
-              {/*  <MainText color={WHITE} fontSize={14} fontWeight={300}>*/}
-              {/*    {'교인관리'}*/}
-              {/*  </MainText>*/}
-              {/*  <MainText color={WHITE} fontSize={14} fontWeight={300}>*/}
-              {/*    {'일정관리'}*/}
-              {/*  </MainText>*/}
-              {/*  <MainText color={WHITE} fontSize={14} fontWeight={300}>*/}
-              {/*    {'출석관리'}*/}
-              {/*  </MainText>*/}
-              {/*  <MainText color={WHITE} fontSize={14} fontWeight={300}>*/}
-              {/*    {'요금제'}*/}
-              {/*  </MainText>*/}
-              {/*</ColumnList>*/}
-            </ColumnContainer>
-            <ColumnContainer flex={1}>
-              {/*<MainText color={WHITE} fontSize={18} fontWeight={600}>*/}
-              {/*  {'고객지원'}*/}
-              {/*</MainText>*/}
-              {/*<ColumnList>*/}
-              {/*  <MainText color={WHITE} fontSize={14} fontWeight={300}>*/}
-              {/*    {'문의하기'}*/}
-              {/*  </MainText>*/}
-              {/*  <MainText color={WHITE} fontSize={14} fontWeight={300}>*/}
-              {/*    {'자주묻는질문'}*/}
-              {/*  </MainText>*/}
-              {/*  <MainText color={WHITE} fontSize={14} fontWeight={300}>*/}
-              {/*    {'이메일 지원'}*/}
-              {/*  </MainText>*/}
-              {/*  <MainText color={WHITE} fontSize={14} fontWeight={300}>*/}
-              {/*    {'전화 지원'}*/}
-              {/*  </MainText>*/}
-              {/*</ColumnList>*/}
-            </ColumnContainer>
+            {/*<ColumnContainer flex={1}>*/}
+            {/*<MainText color={WHITE} fontSize={18} fontWeight={600}>*/}
+            {/*  {'서비스'}*/}
+            {/*</MainText>*/}
+            {/*<ColumnList>*/}
+            {/*  <MainText color={WHITE} fontSize={14} fontWeight={300}>*/}
+            {/*    {'교인관리'}*/}
+            {/*  </MainText>*/}
+            {/*  <MainText color={WHITE} fontSize={14} fontWeight={300}>*/}
+            {/*    {'일정관리'}*/}
+            {/*  </MainText>*/}
+            {/*  <MainText color={WHITE} fontSize={14} fontWeight={300}>*/}
+            {/*    {'출석관리'}*/}
+            {/*  </MainText>*/}
+            {/*  <MainText color={WHITE} fontSize={14} fontWeight={300}>*/}
+            {/*    {'요금제'}*/}
+            {/*  </MainText>*/}
+            {/*</ColumnList>*/}
+            {/*</ColumnContainer>*/}
+            {/*<ColumnContainer flex={1}>*/}
+            {/*<MainText color={WHITE} fontSize={18} fontWeight={600}>*/}
+            {/*  {'고객지원'}*/}
+            {/*</MainText>*/}
+            {/*<ColumnList>*/}
+            {/*  <MainText color={WHITE} fontSize={14} fontWeight={300}>*/}
+            {/*    {'문의하기'}*/}
+            {/*  </MainText>*/}
+            {/*  <MainText color={WHITE} fontSize={14} fontWeight={300}>*/}
+            {/*    {'자주묻는질문'}*/}
+            {/*  </MainText>*/}
+            {/*  <MainText color={WHITE} fontSize={14} fontWeight={300}>*/}
+            {/*    {'이메일 지원'}*/}
+            {/*  </MainText>*/}
+            {/*  <MainText color={WHITE} fontSize={14} fontWeight={300}>*/}
+            {/*    {'전화 지원'}*/}
+            {/*  </MainText>*/}
+            {/*</ColumnList>*/}
+            {/*</ColumnContainer>*/}
           </ContentContainer>
           <RowLine />
           <ContentContainer>

@@ -16,6 +16,11 @@ type VerifyBody = {
   inputCode: string;
 };
 
+type LeaveChurchParams = {
+  churchId: string;
+  churchUserId: string;
+};
+
 export class UserApi {
   private _url: string;
 
@@ -131,6 +136,34 @@ export class UserApi {
 
     try {
       return await authorizeAxios.delete(url.toString());
+    } catch (serverError: any) {
+      if (serverError.response) {
+        const { message, error, statusCode } = serverError.response.data;
+        throw new CustomError(message, error, statusCode);
+      } else {
+        throw new CustomError(
+          '알 수 없는 에러가 발생했습니다',
+          500,
+          'Unknown Error'
+        );
+      }
+    }
+  };
+
+  /**
+   * 계정-교인 정보 연결
+   * @param  {LeaveChurchParams} params
+   * @returns
+   */
+  public leaveChurch = async (
+    params: LeaveChurchParams
+  ): Promise<AxiosResponse> => {
+    const { churchId, churchUserId } = params;
+
+    const url = `${this._url}/churches/${churchId}/church-users/${churchUserId}/leave-church`;
+
+    try {
+      return await authorizeAxios.patch(url);
     } catch (serverError: any) {
       if (serverError.response) {
         const { message, error, statusCode } = serverError.response.data;

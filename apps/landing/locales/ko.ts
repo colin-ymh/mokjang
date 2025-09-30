@@ -66,6 +66,7 @@ export default {
   'button.edit': '수정',
   'button.save': '저장',
   'button.withdraw': '탈퇴하기',
+  'button.leaveChurch': '교회 떠나기',
   'button.startForFree': '무료로 시작하기',
   'button.mobilePhone.request': '요청',
   'button.mobilePhone.reRequest': '요청',
@@ -210,5 +211,7 @@ export default {
   'popup.saveComplete': '저장이 완료되었습니다.',
   'popup.withdraw.title': '계정을 탈퇴하시겠습니까?',
   'popup.withdraw.description': '삭제된 계정은 복구할 수 없습니다.',
+  'popup.leaveChurch.title': '교회를 탈퇴하시겠습니까?',
+  'popup.leaveChurch.description': '탈퇴된 내용은 복구할 수 없습니다.',
   'popup.joinRequestExist': '이미 등록 대기 중인 교회가 있습니다.',
 } as const;

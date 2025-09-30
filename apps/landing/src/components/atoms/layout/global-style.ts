@@ -8,7 +8,7 @@ const GlobalStyle = createGlobalStyle`
     background-color: white;
     min-width: 320px;
     font-family: 'Pretendard', sans-serif;
-    touch-action: none;
+    touch-action: pan-y;
     overscroll-behavior: none;
 
     -webkit-tap-highlight-color: transparent;

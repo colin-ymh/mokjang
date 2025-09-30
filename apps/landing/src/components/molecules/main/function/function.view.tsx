@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { MainText } from '@mokjang/components';
-import { GRAY } from '@mokjang/constants';
+import { GRAY, MEDIA_MAX_WIDTH } from '@mokjang/constants';
 import FunctionItem, {
   FunctionItemType,
 } from '@/components/atoms/main/fuction/fuction-item';
@@ -20,12 +20,19 @@ const FunctionContainer = styled.div`
   justify-content: center;
   align-items: center;
   gap: 100px;
+
+  @media (max-width: ${MEDIA_MAX_WIDTH.MOBILE}) {
+    padding: 0 20px;
+    width: auto;
+    height: 2300px;
+  }
 `;
 
 const HeaderContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
+  width: 100%;
   align-items: center;
   justify-content: space-between;
 `;
@@ -34,6 +41,10 @@ const FunctionList = styled.div`
   display: flex;
   flex-direction: row;
   gap: 30px;
+
+  @media (max-width: ${MEDIA_MAX_WIDTH.MOBILE}) {
+    flex-direction: column;
+  }
 `;
 
 export type FunctionViewProps = {
@@ -79,10 +90,10 @@ const FunctionView = ({}: FunctionViewProps) => {
   return (
     <FunctionContainer>
       <HeaderContainer>
-        <MainText fontSize={36} fontWeight={700}>
+        <MainText fontSize={36} fontWeight={700} whiteSpace={'normal'}>
           {t_main('title')}
         </MainText>
-        <MainText fontSize={20} color={GRAY.DARK}>
+        <MainText fontSize={20} color={GRAY.DARK} whiteSpace={'normal'}>
           {t_main('description')}
         </MainText>
       </HeaderContainer>

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { useScopedI18n } from '../../../../../locales/client';
-import { GRAY, MAIN, WHITE } from '@mokjang/constants';
+import { GRAY, MAIN, MEDIA_MAX_WIDTH, WHITE } from '@mokjang/constants';
 import { Svg } from '@mokjang/assets';
 import { MainText, SvgIcon } from '@mokjang/components';
 import { FAQ } from '@/constants/constant';
@@ -15,6 +15,10 @@ const ItemContainer = styled.div`
   padding: 30px 0;
   gap: 30px;
   cursor: pointer;
+
+  @media (max-width: ${MEDIA_MAX_WIDTH.MOBILE}) {
+    width: 100%;
+  }
 `;
 
 const RowContainer = styled.div`

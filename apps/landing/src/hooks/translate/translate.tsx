@@ -3,6 +3,7 @@ import {
   GREEN,
   LOCALE,
   MAIN,
+  MEDIA_MAX_WIDTH,
   WHITE,
 } from '../../../../../packages/constants/src';
 import { MainText } from '../../../../../packages/components/src';
@@ -89,21 +90,51 @@ export const getTranslatedYearlySubscriptionPriceComponent = (
   }
 };
 
+const TitleContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+
+  @media (max-width: ${MEDIA_MAX_WIDTH.MOBILE}) {
+    flex-direction: column;
+  }
+`;
+
 export const getTranslatedHeroTitle = (basePath: LOCALE) => {
   if (basePath === LOCALE.EN) {
     return (
-      <MainText fontSize={60} fontWeight={700} color={WHITE}>
-        {'A New Beginning for Church Management'}
-      </MainText>
+      <TitleContainer>
+        <MainText fontSize={50} fontWeight={700} color={WHITE}>
+          {`A New Beginning`}
+        </MainText>
+        <MainText fontSize={50} fontWeight={700} color={WHITE}>
+          {'for Church Management'}
+        </MainText>
+      </TitleContainer>
     );
   } else {
     return (
-      <MainText fontSize={60} fontWeight={700} color={WHITE}>
-        {'교회 관리의 새로운 시작'}
-      </MainText>
+      <TitleContainer>
+        <MainText fontSize={50} fontWeight={700} color={WHITE}>
+          {`교회 관리의 `}
+        </MainText>
+        <MainText fontSize={50} fontWeight={700} color={WHITE}>
+          {'새로운 시작'}
+        </MainText>
+      </TitleContainer>
     );
   }
 };
+
+const DescriptionContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+
+  @media (max-width: ${MEDIA_MAX_WIDTH.MOBILE}) {
+    display: none;
+  }
+`;
 
 export const getTranslatedHeroDescription = (basePath: LOCALE) => {
   if (basePath === LOCALE.EN) {
@@ -118,13 +149,17 @@ export const getTranslatedHeroDescription = (basePath: LOCALE) => {
     );
   } else {
     return (
-      <MainText fontSize={20} color={GRAY.LIGHT}>
-        교적부부터 출석관리까지 모든 교회 업무를 하나의 플랫폼에서{' '}
-        <MainText fontSize={22} fontWeight={600} color={GREEN.DEFAULT}>
-          완전 무료로{' '}
+      <DescriptionContainer>
+        <MainText fontSize={20} color={GRAY.LIGHT}>
+          교적부부터 출석관리까지 모든 교회 업무를 하나의 플랫폼에서
         </MainText>
-        관리하세요
-      </MainText>
+        <MainText fontSize={22} fontWeight={600} color={GREEN.LIGHT}>
+          완전 무료로
+        </MainText>
+        <MainText fontSize={20} color={GRAY.LIGHT}>
+          관리하세요
+        </MainText>
+      </DescriptionContainer>
     );
   }
 };

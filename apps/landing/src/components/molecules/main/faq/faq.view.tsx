@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { Button, MainText } from '@mokjang/components';
-import { GRAY, GREEN, WHITE } from '@mokjang/constants';
+import { GRAY, GREEN, MEDIA_MAX_WIDTH } from '@mokjang/constants';
 
 import { useScopedI18n } from '../../../../../locales/client';
 import FaqItem from '@/components/atoms/main/faq/faq-item';
@@ -10,15 +10,22 @@ const FAQContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 1000px;
-  justify-content: center;
+  min-height: 850px;
+  padding: 50px 0;
+  justify-content: flex-start;
   align-items: center;
+
+  @media (max-width: ${MEDIA_MAX_WIDTH.MOBILE}) {
+    padding: 0 20px;
+    width: auto;
+  }
 `;
 
 const HeaderContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
+  width: 100%;
   align-items: center;
   justify-content: space-between;
 `;
@@ -28,6 +35,11 @@ const FAQList = styled.div`
   flex-direction: column;
   gap: 30px;
   padding: 100px 0 50px 0;
+
+  @media (max-width: ${MEDIA_MAX_WIDTH.MOBILE}) {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
 `;
 
 const ExtraContainer = styled.div`
@@ -63,10 +75,10 @@ const FaqView = ({
   return (
     <FAQContainer>
       <HeaderContainer>
-        <MainText fontSize={36} fontWeight={700}>
+        <MainText fontSize={36} fontWeight={700} whiteSpace={'normal'}>
           {t_main('title')}
         </MainText>
-        <MainText fontSize={20} color={GRAY.DARK}>
+        <MainText fontSize={20} color={GRAY.DARK} whiteSpace={'normal'}>
           {t_main('description')}
         </MainText>
       </HeaderContainer>

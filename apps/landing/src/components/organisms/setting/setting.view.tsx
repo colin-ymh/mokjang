@@ -8,7 +8,13 @@ import {
   ProfileImage,
 } from '@mokjang/components';
 import { useI18n, useScopedI18n } from '../../../../locales/client';
-import { GRAY, MAIN, WHITE } from '@mokjang/constants';
+import {
+  DESTRUCTIVE,
+  GRAY,
+  MAIN,
+  MEDIA_MAX_WIDTH,
+  WHITE,
+} from '@mokjang/constants';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import {
@@ -25,6 +31,11 @@ const SettingContainer = styled.div`
   gap: 30px;
   padding-top: 100px;
   background-color: ${WHITE};
+
+  @media (max-width: ${MEDIA_MAX_WIDTH.MOBILE}) {
+    height: 600px;
+    padding: 40px;
+  }
 `;
 
 const HeaderContainer = styled.div`
@@ -32,6 +43,11 @@ const HeaderContainer = styled.div`
   flex-direction: column;
   gap: 10px;
   width: 600px;
+
+  @media (max-width: ${MEDIA_MAX_WIDTH.MOBILE}) {
+    width: 100%;
+    margin-left: -20px;
+  }
 `;
 
 const CardContainer = styled.div`
@@ -42,6 +58,10 @@ const CardContainer = styled.div`
   padding: 20px;
   width: 560px;
   gap: 30px;
+
+  @media (max-width: ${MEDIA_MAX_WIDTH.MOBILE}) {
+    max-width: 100%;
+  }
 `;
 
 const ProfileContainer = styled.div`
@@ -77,6 +97,11 @@ const WithdrawContainer = styled.div`
   display: flex;
   width: 600px;
   justify-content: flex-end;
+  gap: 20px;
+  @media (max-width: ${MEDIA_MAX_WIDTH.MOBILE}) {
+    width: 100%;
+    margin-right: -20px;
+  }
 `;
 
 export type SettingViewProp = {
@@ -98,6 +123,7 @@ export type SettingViewProp = {
   onClickSaveName: () => void;
   onClickSaveMobilePhone: () => void;
   onClickWithdrawOpen: () => void;
+  onClickLeaveChurchOpen: () => void;
 };
 
 const SettingView = ({
@@ -119,6 +145,7 @@ const SettingView = ({
   onClickSaveName,
   onClickSaveMobilePhone,
   onClickWithdrawOpen,
+  onClickLeaveChurchOpen,
 }: SettingViewProp) => {
   const { user } = useSelector((state: RootState) => state.user);
 
@@ -277,6 +304,17 @@ const SettingView = ({
           </ColumnContainer>
         </CardContainer>
         <WithdrawContainer>
+          {user.churchUser.length > 0 && (
+            <MainText
+              color={DESTRUCTIVE.DEFAULT}
+              fontSize={14}
+              fontWeight={400}
+              textDecoration={'underline'}
+              onClick={onClickLeaveChurchOpen}
+            >
+              {t_button('leaveChurch')}
+            </MainText>
+          )}
           <MainText
             color={GRAY.SEMI_LIGHT}
             fontSize={14}

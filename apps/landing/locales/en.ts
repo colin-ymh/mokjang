@@ -66,6 +66,7 @@ export default {
   'button.edit': 'Edit',
   'button.save': 'Save',
   'button.withdraw': 'Withdraw',
+  'button.leaveChurch': 'Leave Church',
   'button.startForFree': 'Start For Free',
   'button.mobilePhone.request': 'Request',
   'button.mobilePhone.reRequest': 'Retry',
@@ -212,5 +213,7 @@ export default {
   'popup.saveComplete': 'Save Completed.',
   'popup.withdraw.title': 'Do you want to withdraw your account?',
   'popup.withdraw.description': 'Deleted accounts cannot be recovered.',
+  'popup.leaveChurch.title': 'Do you want to leave church?',
+  'popup.leaveChurch.description': 'Deleted information cannot be recovered.',
   'popup.joinRequestExist': 'There is already a church registration pending.',
 } as const;

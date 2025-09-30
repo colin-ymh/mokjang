@@ -2,13 +2,8 @@ import styled from 'styled-components';
 
 import { AUTH } from '@/api/auth/auth.api';
 
-import { MainText } from '../../../../../../packages/components/src';
-import {
-  BLACK,
-  GRAY,
-  LOCALE,
-  WHITE,
-} from '../../../../../../packages/constants/src';
+import { MainText } from '@mokjang/components';
+import { BLACK, GRAY, LOCALE, MEDIA_MAX_WIDTH, WHITE, } from '@mokjang/constants';
 import { useScopedI18n } from '../../../../locales/client';
 import {
   getGoogleLoginText,
@@ -38,12 +33,21 @@ const ListContainer = styled.div`
   height: 800px;
   gap: 50px;
   background-color: ${WHITE};
+
+  @media (max-width: ${MEDIA_MAX_WIDTH.MOBILE}) {
+    height: 600px;
+    width: 100%;
+  }
 `;
 
 const OAuthList = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 20px;
+
+  @media (max-width: ${MEDIA_MAX_WIDTH.MOBILE}) {
+    width: 100%;
+  }
 `;
 
 const OAuthItem = styled.div<{
@@ -69,6 +73,11 @@ const OAuthItem = styled.div<{
           16
         )}, ${parseInt($borderColor.slice(5, 7), 16)}, ${$borderOpacity ?? 1})`
       : 'none'};
+
+  @media (max-width: ${MEDIA_MAX_WIDTH.MOBILE}) {
+    width: auto;
+    margin: 0 20px;
+  }
 `;
 
 const TitleContainer = styled.div`

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { MainText, SvgIcon } from '@mokjang/components';
-import { BLACK, GRAY, GREEN, WHITE } from '@mokjang/constants';
+import { BLACK, GRAY, GREEN, MEDIA_MAX_WIDTH, WHITE } from '@mokjang/constants';
 import { useScopedI18n } from '../../../../locales/client';
 import { Svg } from '@mokjang/assets';
 
@@ -12,6 +12,11 @@ const Container = styled.div`
   min-height: 800px;
   gap: 50px;
   background-color: ${WHITE};
+
+  @media (max-width: ${MEDIA_MAX_WIDTH.MOBILE}) {
+    min-height: auto;
+    padding-top: 50px;
+  }
 `;
 
 const HeaderContainer = styled.div`
@@ -25,6 +30,10 @@ const ButtonList = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
+
+  @media (max-width: ${MEDIA_MAX_WIDTH.MOBILE}) {
+    width: 100%;
+  }
 `;
 
 const IconContainer = styled.div`
@@ -52,12 +61,25 @@ const ButtonItem = styled.div<{
   background-color: ${({ $backgroundColor }) => $backgroundColor};
   border: ${({ $borderColor }) => `2px solid ${$borderColor}`};
   cursor: pointer;
+
+  @media (max-width: ${MEDIA_MAX_WIDTH.MOBILE}) {
+    width: auto;
+    margin: 0 20px;
+  }
+
+  &:hover {
+    border-width: 3px;
+  }
 `;
 
 const ButtonContent = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
+
+  @media (max-width: ${MEDIA_MAX_WIDTH.MOBILE}) {
+    width: 100%;
+  }
 `;
 
 export type RegisterCompleteViewProps = {
@@ -82,10 +104,15 @@ const RegisterCompleteView = ({
               size={25}
             />
           </IconContainer>
-          <MainText fontSize={24} fontWeight={700}>
+          <MainText fontSize={24} fontWeight={700} whiteSpace={'normal'}>
             {t_register('title')}
           </MainText>
-          <MainText fontSize={16} fontWeight={400} color={GRAY.DARK}>
+          <MainText
+            fontSize={16}
+            fontWeight={400}
+            color={GRAY.DARK}
+            whiteSpace={'normal'}
+          >
             {t_register('description')}
           </MainText>
         </HeaderContainer>
