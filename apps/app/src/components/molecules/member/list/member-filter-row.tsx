@@ -49,7 +49,7 @@ const MemberFilterRow = () => {
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const [isExcelOpened, setIsExcelOpened] = useState(false);
+  const [isExcelOpened, setIsExcelOpened] = useState(true);
 
   const [thrownError, setThrownError] = useState<Error | null>(null);
 
