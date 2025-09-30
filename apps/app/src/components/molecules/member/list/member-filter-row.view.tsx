@@ -156,20 +156,20 @@ const MemberFilterRowView = ({
           </LeftContainer>
 
           <RightContainer>
-            <Button
-              height={30}
-              width={'auto'}
-              onClick={onClickExcel}
-              backgroundColor={WHITE}
-              borderColor={GRAY.LIGHT}
-              color={GRAY.SEMI_DARK}
-              icon={
-                <SvgIcon
-                  svg={isExcelOpened ? Svg.Cancel : Svg.Download}
-                  color={GRAY.SEMI_DARK}
-                />
-              }
-            />
+            {/*<Button*/}
+            {/*  height={30}*/}
+            {/*  width={'auto'}*/}
+            {/*  onClick={onClickExcel}*/}
+            {/*  backgroundColor={WHITE}*/}
+            {/*  borderColor={GRAY.LIGHT}*/}
+            {/*  color={GRAY.SEMI_DARK}*/}
+            {/*  icon={*/}
+            {/*    <SvgIcon*/}
+            {/*      svg={isExcelOpened ? Svg.Cancel : Svg.Download}*/}
+            {/*      color={GRAY.SEMI_DARK}*/}
+            {/*    />*/}
+            {/*  }*/}
+            {/*/>*/}
             {/* 엑셀 다운로드 */}
             {isExcelOpened && (
               <Button
