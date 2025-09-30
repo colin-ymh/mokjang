@@ -44,6 +44,8 @@ const Setting = () => {
   const [isRequested, setIsRequested] = useState<boolean>(false);
 
   const [isWithdrawOpened, setIsWithdrawOpened] = useState<boolean>(false);
+  const [isLeaveChurchOpened, setIsLeaveChurchOpened] =
+    useState<boolean>(false);
 
   const [thrownError, setThrownError] = useState<Error | null>(null);
   // 렌더링 시점(컴포넌트 return)에서 조건부로 에러 발생
@@ -183,6 +185,32 @@ const Setting = () => {
     setIsWithdrawOpened(false);
   };
 
+  const onClickLeaveChurch = async () => {
+    try {
+      await userApi.leaveChurch({
+        churchUserId: user.churchUser[0].id,
+        churchId: user.churchUser[0].churchId,
+      });
+      router.push('/');
+    } catch (error) {
+      if (error instanceof Error) {
+        dispatch(setToastText(error.message));
+        dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
+        dispatch(setIsToastShown(true));
+      } else {
+        setThrownError(new Error(String(error)));
+      }
+    }
+  };
+
+  const onClickLeaveChurchOpen = () => {
+    setIsLeaveChurchOpened(true);
+  };
+
+  const onClickLeaveChurchClose = () => {
+    setIsLeaveChurchOpened(false);
+  };
+
   useEffect(() => {
     setName(user.name);
     setMobilePhone(getFormattedMobilePhone(user.mobilePhone));
@@ -221,6 +249,7 @@ const Setting = () => {
     onClickSaveName,
     onClickSaveMobilePhone,
     onClickWithdrawOpen,
+    onClickLeaveChurchOpen,
   } as SettingViewProp;
 
   return (
@@ -236,6 +265,20 @@ const Setting = () => {
         onClickRightButton={() => {
           onClickWithdraw();
           onClickWithdrawClose();
+        }}
+        leftButtonText={t_button('cancel')}
+        rightButtonText={t_button('confirm')}
+      />
+
+      <ConfirmPopup
+        title={t_popup('leaveChurch.title')}
+        body={t_popup('leaveChurch.description')}
+        buttonNum={2}
+        isShow={isLeaveChurchOpened}
+        onClickLeftButton={onClickLeaveChurchClose}
+        onClickRightButton={() => {
+          onClickLeaveChurch();
+          onClickLeaveChurchClose();
         }}
         leftButtonText={t_button('cancel')}
         rightButtonText={t_button('confirm')}

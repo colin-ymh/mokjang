@@ -8,7 +8,15 @@ import {
   LabelInput,
   MainText,
 } from '@mokjang/components';
-import { CURSOR, GRAY, GREEN, LOCALE, MAIN, WHITE } from '@mokjang/constants';
+import {
+  CURSOR,
+  GRAY,
+  GREEN,
+  LOCALE,
+  MAIN,
+  MEDIA_MAX_WIDTH,
+  WHITE,
+} from '@mokjang/constants';
 import {
   getIsWellFormedName,
   getIsWellFormedPhone,
@@ -24,10 +32,15 @@ const ListContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  min-height: 800px;
+  height: 800px;
   gap: 50px;
   flex-shrink: 0;
   background-color: ${WHITE};
+
+  @media (max-width: ${MEDIA_MAX_WIDTH.MOBILE}) {
+    height: 600px;
+    padding: 0 20px;
+  }
 `;
 
 const HeaderContainer = styled.div`
@@ -43,24 +56,39 @@ const ContentContainer = styled.div`
   flex-direction: column;
   gap: 20px;
   align-items: center;
+
+  @media (max-width: ${MEDIA_MAX_WIDTH.MOBILE}) {
+    width: 100%;
+  }
 `;
 
 const InputContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
+  @media (max-width: ${MEDIA_MAX_WIDTH.MOBILE}) {
+    width: 100%;
+  }
 `;
 
 const VerifyContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
+  @media (max-width: ${MEDIA_MAX_WIDTH.MOBILE}) {
+    width: 100%;
+  }
 `;
 
 const ConsentContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
+  width: 400px;
+
+  @media (max-width: ${MEDIA_MAX_WIDTH.MOBILE}) {
+    width: 100%;
+  }
 `;
 
 const RowContainer = styled.div<{ $isShown?: boolean }>`
@@ -76,6 +104,10 @@ const RowContainer = styled.div<{ $isShown?: boolean }>`
   /* display: none 대신, opacity와 pointer-events로 show/hide */
   opacity: ${({ $isShown }) => ($isShown ? 1 : 0)};
   pointer-events: ${({ $isShown }) => ($isShown ? 'auto' : 'none')};
+
+  @media (max-width: ${MEDIA_MAX_WIDTH.MOBILE}) {
+    width: auto;
+  }
 `;
 
 const TimeContainer = styled.div<{ $isShown?: boolean }>`
@@ -98,7 +130,6 @@ const ConsentItemContainer = styled.div`
   border-radius: 10px;
   background-color: ${GRAY.SUPER_LIGHT};
   padding: 20px;
-  width: 360px;
 `;
 
 const ConsentColumn = styled.div`
@@ -112,6 +143,12 @@ const ButtonContainer = styled.div`
   flex-direction: column;
   padding: 0 40px;
   gap: 10px;
+  width: 400px;
+
+  @media (max-width: ${MEDIA_MAX_WIDTH.MOBILE}) {
+    width: 100%;
+    padding: 0;
+  }
 `;
 
 type UserRegisterListViewProps = {
@@ -299,7 +336,6 @@ const RegisterView = ({
           <Button
             text={t_button('registerDone')}
             height={40}
-            width={400}
             backgroundColor={
               isVerified && isCollectionConsent ? MAIN.DEFAULT : GRAY.SEMI_LIGHT
             }

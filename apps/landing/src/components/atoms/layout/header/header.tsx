@@ -17,10 +17,10 @@ type HeaderProps = {};
 
 const MAIN_Y_OFFSET = {
   [MAIN_CONTENT_ID.HOME]: 0,
-  [MAIN_CONTENT_ID.FUNCTION]: 700,
-  [MAIN_CONTENT_ID.FAQ]: 700 + 1000,
-  // [MAIN_CONTENT_ID.PRICE]: 700 + 950,
-  // [MAIN_CONTENT_ID.FAQ]: 700 + 950 + 900,
+  [MAIN_CONTENT_ID.FUNCTION]: 600,
+  [MAIN_CONTENT_ID.FAQ]: 600 + 600,
+  // [MAIN_CONTENT_ID.PRICE]: 600 + 950,
+  // [MAIN_CONTENT_ID.FAQ]: 600 + 950 + 900,
 };
 
 const Header = ({}: HeaderProps) => {

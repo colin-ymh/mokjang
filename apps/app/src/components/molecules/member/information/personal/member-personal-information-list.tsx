@@ -300,7 +300,13 @@ const MemberPersonalInformationList =
           memberId: targetMember.id,
         });
 
-        const newTargetMember = response.data.data;
+        const newTargetMember = {
+          ...response.data.data,
+          officer: {
+            id: targetOfficerHistory.officer.id,
+            name: targetOfficerHistory.officer.name,
+          },
+        };
 
         const newMembers = members.map((member) => {
           if (member.id === targetMember.id) {

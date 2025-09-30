@@ -3,7 +3,7 @@
 import styled from 'styled-components';
 import { useScopedI18n } from '../../../../../locales/client';
 import { Button } from '@mokjang/components';
-import { GREEN, LOCALE } from '@mokjang/constants';
+import { GREEN, LOCALE, MEDIA_MAX_WIDTH } from '@mokjang/constants';
 
 import BackgroundImage from '../../../../../public/png/hero-background.png';
 import { useSelector } from 'react-redux';
@@ -18,9 +18,14 @@ const HeroContainer = styled.div`
   position: relative;
   display: flex;
   width: 100%;
-  height: 700px;
+  height: 600px;
   overflow: hidden;
   align-items: center;
+
+  @media (max-width: ${MEDIA_MAX_WIDTH.MOBILE}) {
+    padding: 0 20px;
+    width: auto;
+  }
 `;
 
 const Background = styled.div<{ $url: string }>`
@@ -49,6 +54,11 @@ const Content = styled.div`
   justify-content: center;
   padding: 200px;
   gap: 50px;
+
+  @media (max-width: ${MEDIA_MAX_WIDTH.MOBILE}) {
+    padding: 0;
+    width: 100%;
+  }
 `;
 
 const TitleContainer = styled.div`
@@ -66,6 +76,12 @@ const ButtonContainer = styled.div`
   display: flex;
   flex-direction: row;
   gap: 20px;
+  width: 200px;
+
+  @media (max-width: ${MEDIA_MAX_WIDTH.MOBILE}) {
+    flex-direction: column;
+    width: 100%;
+  }
 `;
 
 export type HeroViewProps = {
@@ -104,7 +120,6 @@ const HeroView = ({
               <Button
                 borderRadius={10}
                 text={t_button('openChurch')}
-                width={180}
                 height={60}
                 fontSize={18}
                 fontWeight={600}
@@ -116,7 +131,6 @@ const HeroView = ({
               <Button
                 borderRadius={10}
                 text={t_button('createChurch')}
-                width={'auto'}
                 columnPadding={20}
                 height={60}
                 fontSize={18}
@@ -126,7 +140,6 @@ const HeroView = ({
               <Button
                 borderRadius={10}
                 text={t_button('join')}
-                width={'auto'}
                 columnPadding={20}
                 height={60}
                 fontSize={18}
@@ -141,7 +154,6 @@ const HeroView = ({
             <Button
               borderRadius={10}
               text={t_button('startForFree')}
-              width={180}
               height={60}
               fontSize={18}
               fontWeight={600}
@@ -150,7 +162,6 @@ const HeroView = ({
             <Button
               borderRadius={10}
               text={t_button('donate')}
-              width={180}
               height={60}
               fontSize={18}
               fontWeight={600}

@@ -68,6 +68,7 @@ const TextContainer = styled.div`
 const TitleContainer = styled.div`
   display: flex;
   width: 150px;
+  flex-shrink: 0;
 `;
 
 const InformationTextWrapper = styled.div`
@@ -319,7 +320,9 @@ const PersonalInformationListView = ({
           </TitleContainer>
           <InformationTextWrapper>
             {targetMember?.vehicleNumber?.map((number, index) => (
-              <MainText key={index}>{number}</MainText>
+              <MainText key={index} size={SIZE.LARGE} fontWeight={400}>
+                {number}
+              </MainText>
             ))}
           </InformationTextWrapper>
         </TextContainer>

@@ -8,7 +8,7 @@ import {
   GRAY,
   LOCALE,
   MAIN,
-  MEDIA_MIN_WIDTH,
+  MEDIA_MAX_WIDTH,
   WHITE,
 } from '@mokjang/constants';
 import { Button, MainText, ProfileImage } from '@mokjang/components';
@@ -21,24 +21,23 @@ import { Chevron } from '@mokjang/app/src/components/atoms/common/dropdown/dropd
 import ProfileModal from '../../../atoms/modal/profile-modal';
 
 const HeaderContainer = styled.div`
-  display: none;
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+  flex-direction: row;
+  padding: 0 30px;
+  height: 65px;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 0.7px solid ${GRAY.LIGHT};
+  background-color: ${WHITE};
+  flex-shrink: 0;
 
-  // 데크스탑
-  @media (min-width: ${MEDIA_MIN_WIDTH.DESKTOP}) {
-    display: flex;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 9999;
-    flex-direction: row;
-    padding: 0 30px;
-    height: 65px;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 0.7px solid ${GRAY.LIGHT};
-    background-color: ${WHITE};
-    flex-shrink: 0;
+  @media (max-width: ${MEDIA_MAX_WIDTH.MOBILE}) {
+    padding: 0 20px;
   }
 `;
 
@@ -54,6 +53,10 @@ const MenuContainer = styled.div`
   flex-direction: row;
   align-items: center;
   gap: 30px;
+
+  @media (max-width: ${MEDIA_MAX_WIDTH.MOBILE}) {
+    display: none;
+  }
 `;
 
 const MenuItem = styled.div<{ $isFocused: boolean }>`
