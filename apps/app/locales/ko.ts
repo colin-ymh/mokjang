@@ -842,9 +842,9 @@ export default {
   'warning.deleteGroup':
     '소속된 교인이나 하위 그룹이 있으면 삭제가 불가능하며, 삭제된 그룹은 복구할 수 없습니다.',
   'warning.deleteMinistryGroup':
-    '소속된 교인이나 하위 그룹 있으면 삭제가 불가능하며, 삭제된 사역은 복구할 수 없습니다.',
+    '소속된 교인이나 하위 그룹 있으면 삭제가 불가능하며, 삭제된 사역 그룹은 복구할 수 없습니다.',
   'warning.deleteMinistry':
-    '할당된 교인이 있으면 삭제가 불가능하며, 삭제된 그룹은 복구할 수 없습니다.',
+    '할당된 교인이 있으면 삭제가 불가능하며, 삭제된 사역은 복구할 수 없습니다.',
   'warning.deleteWorship': '삭제된 예배는 복구할 수 없습니다.',
 
   'warning.stopGroupHistory':

@@ -1,10 +1,7 @@
-import styled from 'styled-components';
-import { DESTRUCTIVE, GRAY, WHITE } from '@mokjang/constants';
+import { BLANK, DESTRUCTIVE } from '@mokjang/constants';
 import { useI18n } from '../../../../../../locales/client';
 import { DEFAULT_MINISTRY, Ministry, MinistryGroup } from '@mokjang/models';
 import React, { ChangeEvent, useEffect, useState } from 'react';
-import { Svg } from '@mokjang/assets';
-import { BLANK } from '@mokjang/constants';
 import { getFormattedName } from '@mokjang/utils';
 import {
   setIsToastShown,
@@ -15,37 +12,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../../../redux/store';
 import { MinistriesApi } from '../../../../../api/management/ministry/ministries.api';
 import MinistryListView from './ministry-list.view';
-
-const MinistryListContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  border-radius: 10px;
-  border: 1px solid ${GRAY.LIGHT};
-  padding: 20px;
-  gap: 20px;
-  background-color: ${WHITE};
-`;
-
-const HeaderContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  width: 100%;
-`;
-
-const PlusIcon = styled(Svg.Plus)`
-  width: 18px;
-  height: 18px;
-  stroke: ${GRAY.SEMI_DARK};
-  stroke-width: 2px;
-`;
-
-const ListContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 10px;
-  flex-wrap: wrap;
-`;
 
 type MinistryListProps = {
   ministries: Ministry[];
