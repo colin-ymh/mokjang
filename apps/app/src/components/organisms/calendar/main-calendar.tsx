@@ -1,18 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
+import { fetchCalendarSchedules, setCalendarSchedules, } from '@/redux/reducers/filter/calendar-filter-reducer';
 import {
-  fetchCalendarSchedules,
-  setCalendarSchedules,
-} from '@/redux/reducers/filter/calendar-filter-reducer';
-import { getDateStringFromDate, getIsWellFormedTitle } from '@mokjang/utils';
+  getDateFromDateString,
+  getDateStringFromDate,
+  getFullStringFromDate,
+  getIsWellFormedTitle,
+} from '@mokjang/utils';
 import MainCalendarView from './main-calendar.view';
 import {
   ChurchEvent,
   DEFAULT_EDUCATION,
   DEFAULT_EDUCATION_TERM,
   DOMAIN,
+  EducationSession,
   Schedule,
+  Task,
+  Visitation,
 } from '@mokjang/models';
 import { setTargetTask } from '@/redux/reducers/target/target-task-reducer';
 import { setTargetVisitation } from '@/redux/reducers/target/target-visitation-reducer';
@@ -22,21 +27,24 @@ import { setTargetEducationTerm } from '@/redux/reducers/target/target-education
 import { EducationAttendanceApi } from '@/api/education/education-attendance.api';
 import { setTargetEducation } from '@/redux/reducers/target/target-education-reducer';
 import { EducationSessionsApi } from '@/api/education/education-sessions.api';
-import { BLANK, DESTRUCTIVE, TASK_STATUS } from '@mokjang/constants';
+import { BLACK, BLANK, DESTRUCTIVE, TASK_STATUS } from '@mokjang/constants';
 import { TasksApi } from '@/api/tasks/tasks.api';
 import { VisitationsApi } from '@/api/visitations/visitations.api';
-import {
-  setIsToastShown,
-  setToastBackgroundColor,
-  setToastText,
-} from '@/redux/reducers/toast-popup-reducer';
+import { setIsToastShown, setToastBackgroundColor, setToastText, } from '@/redux/reducers/toast-popup-reducer';
 import { setTargetChurchEvent } from '@/redux/reducers/target/target-church-event-reducer';
 import { setTargetMember } from '@/redux/reducers/target/target-member-reducer';
 import { MembersApi } from '@/api/members/members.api';
-import { getScheduleFromChurchEvent } from '@/utils/calendar';
+import {
+  getScheduleFromChurchEvent,
+  getScheduleFromEducationSession,
+  getScheduleFromTask,
+  getScheduleFromVisitation,
+} from '@/utils/calendar';
 import { ChurchEventsApi } from '@/api/church-event/church-events.api';
+import { useScopedI18n } from '../../../../locales/client';
 
 const MainCalendar = () => {
+  const t_popup = useScopedI18n('popup');
   const dispatch = useDispatch<AppDispatch>();
   const { churchId } = useSelector((state: RootState) => state.church);
   const { calendarSchedules } = useSelector(
@@ -400,6 +408,457 @@ const MainCalendar = () => {
     }
   };
 
+  //  수정
+  const [isTaskEditShown, setIsTaskEditShown] = useState<boolean>(false);
+  const [isTaskSaveEnabled, setIsTaskSaveEnabled] = useState<boolean>(false);
+
+  const onClickTaskEditClose = () => {
+    setIsTaskEditShown(false);
+  };
+
+  const onClickTaskEditOpen = () => {
+    setIsTaskEditShown(true);
+  };
+
+  const onClickTaskEditDone = async () => {
+    try {
+      const prevResponse = await tasksApi.getTask({
+        churchId,
+        taskId: targetTask.id,
+      });
+
+      const prev: Task = prevResponse.data.data;
+
+      await tasksApi
+        .editTask(
+          { churchId, taskId: targetTask.id },
+          {
+            status:
+              targetTask.status !== prev.status ? targetTask.status : undefined,
+            title:
+              targetTask.title !== prev.title ? targetTask.title : undefined,
+            inChargeId:
+              targetTask.inChargeId !== prev.inChargeId
+                ? targetTask.inChargeId
+                : undefined,
+            startDate:
+              getFullStringFromDate(
+                getDateFromDateString(targetTask.startDate)
+              ) !== getFullStringFromDate(getDateFromDateString(prev.startDate))
+                ? getFullStringFromDate(
+                    getDateFromDateString(targetTask.startDate)
+                  )
+                : undefined,
+            endDate:
+              getFullStringFromDate(
+                getDateFromDateString(targetTask.endDate)
+              ) !== getFullStringFromDate(getDateFromDateString(prev.endDate))
+                ? getFullStringFromDate(
+                    getDateFromDateString(targetTask.endDate)
+                  )
+                : undefined,
+            parentTaskId:
+              targetTask.parentTaskId !== prev.parentTaskId
+                ? targetTask.parentTaskId
+                : undefined,
+            content:
+              targetTask.content !== prev.content
+                ? targetTask.content
+                : undefined,
+          }
+        )
+        .then(async () => {
+          const reports = prev?.reports;
+
+          const receiverIds =
+            reports?.map((report) => report.receiver.id) || [];
+
+          const addReceiverIds = targetTask.receiverIds?.filter(
+            (receiverId) => !receiverIds.includes(receiverId)
+          );
+          const deleteReceiverIds =
+            receiverIds?.filter(
+              (receiverId) => !targetTask.receiverIds?.includes(receiverId)
+            ) || [];
+
+          if (addReceiverIds?.length > 0) {
+            await tasksApi.addReceivers(
+              {
+                churchId,
+                taskId: targetTask.id,
+              },
+              { receiverIds: addReceiverIds }
+            );
+          }
+
+          if (deleteReceiverIds?.length > 0) {
+            await tasksApi.deleteReceivers(
+              {
+                churchId,
+                taskId: targetTask.id,
+              },
+              { receiverIds: deleteReceiverIds }
+            );
+          }
+
+          const response = await tasksApi.getTask({
+            churchId,
+            taskId: targetTask.id,
+          });
+          const newTask = response.data.data;
+
+          dispatch(setTargetTask(newTask));
+
+          const newSchedules = calendarSchedules.map((schedule) => {
+            if (schedule.id) {
+              const [domain, id] = schedule.id.split('-');
+              if (domain === DOMAIN.TASK && id == targetTask.id) {
+                return getScheduleFromTask(newTask);
+              } else {
+                return schedule;
+              }
+            } else {
+              return schedule;
+            }
+          });
+          dispatch(setCalendarSchedules(newSchedules));
+
+          setIsTaskEditShown(false);
+        });
+
+      dispatch(setIsToastShown(true));
+      dispatch(setToastText(t_popup('saveComplete')));
+      dispatch(setToastBackgroundColor(BLACK));
+    } catch (error) {
+      if (error instanceof Error) {
+        dispatch(setToastText(error.message));
+        dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
+        dispatch(setIsToastShown(true));
+      } else {
+        setThrownError(new Error(String(error)));
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (!getIsWellFormedTitle(targetTask.title)) {
+      setIsTaskSaveEnabled(false);
+      return;
+    }
+    if (targetTask.inChargeId === BLANK) {
+      setIsTaskSaveEnabled(false);
+      return;
+    }
+    if (!targetTask.startDate || !targetTask.endDate) {
+      setIsTaskSaveEnabled(false);
+      return;
+    }
+
+    setIsTaskSaveEnabled(true);
+  }, [targetTask]);
+
+  const [isVisitationEditShown, setIsVisitationEditShown] =
+    useState<boolean>(false);
+  const [isVisitationSaveEnabled, setIsVisitationSaveEnabled] =
+    useState<boolean>(false);
+
+  const onClickVisitationEditClose = () => {
+    setIsVisitationEditShown(false);
+  };
+
+  const onClickVisitationEditOpen = () => {
+    setIsVisitationEditShown(true);
+  };
+
+  const onClickVisitationEditDone = async () => {
+    const prevResponse = await visitationsApi.getVisitation({
+      churchId,
+      visitationId: targetVisitation.id,
+    });
+
+    const prevVisitation: Visitation = prevResponse.data.data;
+    if (!prevVisitation) return;
+
+    try {
+      const diffPayload = {
+        status:
+          targetVisitation.status !== prevVisitation.status
+            ? targetVisitation.status
+            : undefined,
+        title:
+          targetVisitation.title !== prevVisitation.title
+            ? targetVisitation.title
+            : undefined,
+        inChargeId:
+          targetVisitation.inChargeId !== prevVisitation.inChargeId
+            ? targetVisitation.inChargeId
+            : undefined,
+        startDate:
+          targetVisitation.startDate !== prevVisitation.startDate
+            ? getFullStringFromDate(
+                getDateFromDateString(targetVisitation.startDate)
+              )
+            : undefined,
+        endDate:
+          targetVisitation.endDate !== prevVisitation.endDate
+            ? getFullStringFromDate(
+                getDateFromDateString(targetVisitation.endDate)
+              )
+            : undefined,
+        memberIds:
+          JSON.stringify(targetVisitation.members.map((m) => m.id).sort()) !==
+          JSON.stringify(prevVisitation.members.map((m) => m.id).sort())
+            ? targetVisitation.members.map((m) => m.id)
+            : undefined,
+      };
+
+      // 변경된 필드만 전송
+      await visitationsApi.editVisitation(
+        { churchId, visitationId: targetVisitation.id },
+        diffPayload
+      );
+
+      await visitationsApi.editVisitationDetails(
+        { churchId, visitationId: targetVisitation.id },
+        {
+          visitationContent:
+            targetVisitation.visitationDetails[0].visitationContent,
+          visitationPray: targetVisitation.visitationDetails[0].visitationPray,
+        }
+      );
+
+      const prevResponse = await visitationsApi.getVisitation({
+        churchId,
+        visitationId: targetVisitation.id,
+      });
+
+      const prev: Visitation = prevResponse.data.data;
+
+      const reports = prev?.reports;
+
+      const receiverIds = reports?.map((report) => report.receiver.id) || [];
+
+      const addReceiverIds = targetVisitation.receiverIds?.filter(
+        (receiverId) => !receiverIds.includes(receiverId)
+      );
+      const deleteReceiverIds =
+        receiverIds?.filter(
+          (receiverId) => !targetVisitation.receiverIds?.includes(receiverId)
+        ) || [];
+
+      if (addReceiverIds?.length > 0) {
+        await visitationsApi.addReceivers(
+          {
+            churchId,
+            visitationId: targetVisitation.id,
+          },
+          { receiverIds: addReceiverIds }
+        );
+      }
+
+      if (deleteReceiverIds?.length > 0) {
+        await visitationsApi.deleteReceivers(
+          {
+            churchId,
+            visitationId: targetVisitation.id,
+          },
+          { receiverIds: deleteReceiverIds }
+        );
+      }
+
+      const response = await visitationsApi.getVisitation({
+        churchId,
+        visitationId: targetVisitation.id,
+      });
+
+      const newVisitation = response.data.data;
+      dispatch(setTargetVisitation(newVisitation));
+
+      const newSchedules = calendarSchedules.map((schedule) => {
+        if (schedule.id) {
+          const [domain, id] = schedule.id.split('-');
+          if (domain === DOMAIN.VISITATION && id == targetVisitation.id) {
+            return getScheduleFromVisitation(newVisitation);
+          } else {
+            return schedule;
+          }
+        } else {
+          return schedule;
+        }
+      });
+      dispatch(setCalendarSchedules(newSchedules));
+
+      setIsVisitationEditShown(false);
+
+      dispatch(setIsToastShown(true));
+      dispatch(setToastText(t_popup('saveComplete')));
+      dispatch(setToastBackgroundColor(BLACK));
+    } catch (error) {
+      if (error instanceof Error) {
+        dispatch(setToastText(error.message));
+        dispatch(setToastBackgroundColor(DESTRUCTIVE.DEFAULT));
+        dispatch(setIsToastShown(true));
+      } else {
+        setThrownError(new Error(String(error)));
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (!getIsWellFormedTitle(targetVisitation.title)) {
+      setIsVisitationSaveEnabled(false);
+      return;
+    }
+    if (targetVisitation.inChargeId === BLANK) {
+      setIsVisitationSaveEnabled(false);
+      return;
+    }
+    if (!targetVisitation.startDate || !targetVisitation.endDate) {
+      setIsVisitationSaveEnabled(false);
+      return;
+    }
+
+    setIsVisitationSaveEnabled(true);
+  }, [targetVisitation]);
+
+  const [isEducationSessionEditShown, setIsEducationSessionEditShown] =
+    useState<boolean>(false);
+  const [isEducationSessionSaveEnabled, setIsEducationSessionSaveEnabled] =
+    useState<boolean>(false);
+
+  const onClickEducationSessionEditClose = () => {
+    setIsEducationSessionEditShown(false);
+  };
+
+  const onClickEducationSessionEditOpen = () => {
+    setIsEducationSessionEditShown(true);
+  };
+
+  const onClickEducationSessionEditDone = async () => {
+    try {
+      const response = await educationSessionsApi.getEducationSession({
+        churchId,
+        educationId: targetEducationTerm.educationId,
+        educationTermId: targetEducationTerm.id,
+        educationSessionId: targetEducationSession.id,
+      });
+      const prev: EducationSession = response.data.data;
+
+      await educationSessionsApi.editEducationSession(
+        {
+          churchId,
+          educationId: targetEducationTerm.educationId,
+          educationTermId: targetEducationTerm.id,
+          educationSessionId: targetEducationSession.id,
+        },
+        {
+          title: targetEducationSession.title || undefined,
+          startDate:
+            getFullStringFromDate(
+              getDateFromDateString(targetEducationSession.startDate)
+            ) || undefined,
+          endDate:
+            getFullStringFromDate(
+              getDateFromDateString(targetEducationSession.endDate)
+            ) || undefined,
+          inChargeId: targetEducationSession.inChargeId || undefined,
+          content: targetEducationSession.content || undefined,
+        }
+      );
+
+      const reports = prev?.reports;
+
+      const receiverIds = reports?.map((report) => report.receiver.id) || [];
+
+      const addReceiverIds = targetEducationSession.receiverIds?.filter(
+        (receiverId) => !receiverIds.includes(receiverId)
+      );
+      const deleteReceiverIds =
+        receiverIds?.filter(
+          (receiverId) =>
+            !targetEducationSession.receiverIds?.includes(receiverId)
+        ) || [];
+
+      if (addReceiverIds?.length > 0) {
+        await educationSessionsApi.addReceivers(
+          {
+            churchId,
+            educationId: targetEducationTerm.educationId,
+            educationTermId: targetEducationTerm.id,
+            educationSessionId: targetEducationSession.id,
+          },
+          { receiverIds: addReceiverIds }
+        );
+      }
+
+      if (deleteReceiverIds?.length > 0) {
+        await educationSessionsApi.deleteReceivers(
+          {
+            churchId,
+            educationId: targetEducationTerm.educationId,
+            educationTermId: targetEducationTerm.id,
+            educationSessionId: targetEducationSession.id,
+          },
+          { receiverIds: deleteReceiverIds }
+        );
+      }
+
+      const sessionResponse = await educationSessionsApi.getEducationSession({
+        churchId,
+        educationId: targetEducationTerm.educationId,
+        educationTermId: targetEducationTerm.id,
+        educationSessionId: targetEducationSession.id,
+      });
+
+      const newEducationSession = {
+        ...sessionResponse.data.data,
+        educationAttendances: targetEducationSession.educationAttendances,
+      };
+
+      dispatch(setTargetEducationSession(newEducationSession));
+
+      const newSchedules = calendarSchedules.map((schedule) => {
+        if (schedule.id) {
+          const [domain, id] = schedule.id.split('-');
+          if (
+            domain === DOMAIN.EDUCATION_SESSION &&
+            id == targetEducationSession.id
+          ) {
+            return getScheduleFromEducationSession(newEducationSession);
+          } else {
+            return schedule;
+          }
+        } else {
+          return schedule;
+        }
+      });
+      dispatch(setCalendarSchedules(newSchedules));
+      setIsEducationSessionEditShown(false);
+    } catch (error) {
+      setThrownError(error instanceof Error ? error : new Error(String(error)));
+    } finally {
+      dispatch(setIsToastShown(true));
+      dispatch(setToastText(t_popup('saveComplete')));
+    }
+  };
+
+  useEffect(() => {
+    if (!getIsWellFormedTitle(targetEducationSession.title)) {
+      setIsEducationSessionSaveEnabled(false);
+      return;
+    }
+    if (targetEducationSession.inChargeId === BLANK) {
+      setIsEducationSessionSaveEnabled(false);
+      return;
+    }
+    if (!targetEducationSession.startDate || !targetEducationSession.endDate) {
+      setIsEducationSessionSaveEnabled(false);
+      return;
+    }
+
+    setIsEducationSessionSaveEnabled(true);
+  }, [targetVisitation]);
+
   const props = {
     date,
     openedDomain,
@@ -418,6 +877,24 @@ const MainCalendar = () => {
     onClickEventDelete,
     onClickEventDeleteOpen,
     onClickEventDeleteClose,
+
+    isTaskEditShown,
+    onClickTaskEditClose,
+    onClickTaskEditOpen,
+    onClickTaskEditDone,
+    isTaskSaveEnabled,
+
+    isVisitationEditShown,
+    onClickVisitationEditClose,
+    onClickVisitationEditOpen,
+    onClickVisitationEditDone,
+    isVisitationSaveEnabled,
+
+    isEducationSessionEditShown,
+    onClickEducationSessionEditClose,
+    onClickEducationSessionEditOpen,
+    onClickEducationSessionEditDone,
+    isEducationSessionSaveEnabled,
   };
 
   return (

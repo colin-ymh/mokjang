@@ -21,6 +21,9 @@ import ScrollSlidePopup from '@/components/atoms/common/popup/scroll-slide-popup
 import AddChurchEvent from '@/components/organisms/church-event/add/add-church-event';
 import ConfirmPopup from '@/components/atoms/common/popup/error-popup';
 import useWindowSize from '@/hooks/window/window';
+import AddTask from '@/components/organisms/task/add/add-task';
+import AddVisitation from '@/components/organisms/visitation/add/add-visitation';
+import AddEducationSession from '@/components/organisms/education/education-session/add/add-education-session';
 
 const CalendarContainer = styled.div`
   display: flex;
@@ -74,6 +77,24 @@ type MainCalendarViewProps = {
   onClickEventDelete: () => void;
   onClickEventDeleteOpen: () => void;
   onClickEventDeleteClose: () => void;
+
+  isTaskEditShown: boolean;
+  onClickTaskEditClose: () => void;
+  onClickTaskEditOpen: () => void;
+  onClickTaskEditDone: () => void;
+  isTaskSaveEnabled: boolean;
+
+  isVisitationEditShown: boolean;
+  onClickVisitationEditClose: () => void;
+  onClickVisitationEditOpen: () => void;
+  onClickVisitationEditDone: () => void;
+  isVisitationSaveEnabled: boolean;
+
+  isEducationSessionEditShown: boolean;
+  onClickEducationSessionEditClose: () => void;
+  onClickEducationSessionEditOpen: () => void;
+  onClickEducationSessionEditDone: () => void;
+  isEducationSessionSaveEnabled: boolean;
 };
 
 const MainCalendarView = ({
@@ -94,6 +115,24 @@ const MainCalendarView = ({
   onClickEventDelete,
   onClickEventDeleteOpen,
   onClickEventDeleteClose,
+
+  isTaskEditShown,
+  onClickTaskEditClose,
+  onClickTaskEditOpen,
+  onClickTaskEditDone,
+  isTaskSaveEnabled,
+
+  isVisitationEditShown,
+  onClickVisitationEditClose,
+  onClickVisitationEditOpen,
+  onClickVisitationEditDone,
+  isVisitationSaveEnabled,
+
+  isEducationSessionEditShown,
+  onClickEducationSessionEditClose,
+  onClickEducationSessionEditOpen,
+  onClickEducationSessionEditDone,
+  isEducationSessionSaveEnabled,
 }: MainCalendarViewProps) => {
   const { calendarSchedules } = useSelector(
     (state: RootState) => state.calendarFilter
@@ -143,8 +182,24 @@ const MainCalendarView = ({
         endDate={targetTask?.endDate}
         status={targetTask.status}
         onChangeStatus={onChangeTaskStatus}
+        onClickDone={onClickTaskEditOpen}
+        doneText={t_button('edit')}
       >
         <TaskInformation onChangeStatus={onChangeTaskStatus} />
+
+        {/* 업무 수정 팝업*/}
+        <ScrollSlidePopup
+          isShow={isTaskEditShown}
+          onClickClose={onClickTaskEditClose}
+          onClickCancel={onClickTaskEditClose}
+          onClickDone={onClickTaskEditDone}
+          headerTitle={t_title('editTask')}
+          doneBackgroundColor={isTaskSaveEnabled ? MAIN.DEFAULT : MAIN.LIGHT}
+          doneDisabled={!isTaskSaveEnabled}
+          isAnimation={false}
+        >
+          <AddTask isEdit={true} />
+        </ScrollSlidePopup>
       </ScrollSlidePopup>
 
       {/* 심방 상세정보 팝업*/}
@@ -159,8 +214,26 @@ const MainCalendarView = ({
         endDate={targetVisitation.endDate}
         status={targetVisitation.status}
         onChangeStatus={onChangeVisitationStatus}
+        onClickDone={onClickVisitationEditOpen}
+        doneText={t_button('edit')}
       >
         <VisitationInformation onChangeStatus={onChangeVisitationStatus} />
+
+        {/* 심방 수정 팝업*/}
+        <ScrollSlidePopup
+          isShow={isVisitationEditShown}
+          onClickClose={onClickVisitationEditClose}
+          onClickCancel={onClickVisitationEditClose}
+          onClickDone={onClickVisitationEditDone}
+          headerTitle={t_title('editVisitation')}
+          doneBackgroundColor={
+            isVisitationSaveEnabled ? MAIN.DEFAULT : MAIN.LIGHT
+          }
+          doneDisabled={!isVisitationSaveEnabled}
+          isAnimation={false}
+        >
+          <AddVisitation isEdit={true} />
+        </ScrollSlidePopup>
       </ScrollSlidePopup>
 
       {/* 교육회차 상세정보 팝업*/}
@@ -170,7 +243,7 @@ const MainCalendarView = ({
         onClickClose={onClickClose}
         headerTitle={`${targetEducationTerm.educationName} - ${getTranslatedTerm(locale, targetEducationTerm.term)} - ${targetEducationSession.session}${t('session')} ${targetEducationSession.title}`}
         hideCancel={true}
-        hideDone={true}
+        hideDone={false}
         stageTwoTop={40}
         stageThreeTop={250}
         status={targetEducationSession.status}
@@ -179,6 +252,8 @@ const MainCalendarView = ({
         endDate={targetEducationSession.endDate}
         onChangeStatus={onChangeEducationSessionStatus}
         widthPercentage={45}
+        onClickDone={onClickEducationSessionEditOpen}
+        doneText={t_button('edit')}
       >
         {(scrollRef) => (
           <>
@@ -186,6 +261,25 @@ const MainCalendarView = ({
               scrollRef={scrollRef}
               onChangeStatus={onChangeEducationSessionStatus}
             />
+
+            {/* 교육회차 수정 팝업*/}
+            <WrappedPagePopup
+              keyboardDisabled={true}
+              isShow={isEducationSessionEditShown}
+              onClickClose={onClickEducationSessionEditClose}
+              onClickCancel={onClickEducationSessionEditClose}
+              onClickDone={onClickEducationSessionEditDone}
+              headerTitle={t_title('editEducationSession')}
+              doneBackgroundColor={
+                isEducationSessionSaveEnabled ? MAIN.DEFAULT : MAIN.LIGHT
+              }
+              doneDisabled={!isEducationSessionSaveEnabled}
+              closeText={t_button('backToEducationSession')}
+              widthPercentage={45}
+              blur={false}
+            >
+              <AddEducationSession />
+            </WrappedPagePopup>
           </>
         )}
       </WrappedPagePopup>
