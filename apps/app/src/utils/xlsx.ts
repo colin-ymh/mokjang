@@ -6,10 +6,13 @@ import * as XLSX from 'xlsx';
  * - 두 번째 행을 컬럼명(header)으로 사용
  * - 모든 값은 문자열(string)로 변환
  * - 날짜는 엑셀 셀에 보이는 문자열 그대로 유지
+ * - ⚡ '음력', '윤달' 컬럼은 값이 각각 '음력', '윤달'이면 true, 아니면 false
+ * - ⚡ '음력', '윤달'이 비어 있더라도 false로 명시
+ * - ⚡ 완전히 비어 있는 행은 제외
  */
 export async function getMembersFromXlsx(
   xlsxFile: File
-): Promise<Record<string, string>[]> {
+): Promise<Record<string, string | boolean>[]> {
   const buf = await xlsxFile.arrayBuffer();
   const wb = XLSX.read(buf, { type: 'array' });
 
@@ -18,11 +21,10 @@ export async function getMembersFromXlsx(
 
   const ws = wb.Sheets[sheetName];
 
-  // ✅ header:1 → 2차원 배열로 가져오되 raw:false로 표시값 유지
   const rows: any[][] = XLSX.utils.sheet_to_json(ws, {
     header: 1,
     defval: null,
-    raw: false, // ✨ 셀 서식 그대로 문자열 반환 (날짜 포함)
+    raw: false,
   });
 
   if (rows.length < 2) {
@@ -32,21 +34,40 @@ export async function getMembersFromXlsx(
   // 첫 행 제거
   const rowsWithoutFirst = rows.slice(1);
 
-  // 두 번째 행을 컬럼명으로 사용
+  // 두 번째 행을 헤더로 사용
   const headers = rowsWithoutFirst[0].map((h: any) =>
-    h !== undefined && h !== null ? String(h) : ''
+    h !== undefined && h !== null ? String(h).trim() : ''
   );
 
-  // 데이터 행 -> object[]
   const dataRows = rowsWithoutFirst.slice(1);
-  const objects: Record<string, string>[] = dataRows.map((row) => {
-    const obj: Record<string, string> = {};
-    headers.forEach((header, idx) => {
-      const cell = row[idx];
-      obj[header] = cell == null ? '' : String(cell);
-    });
-    return obj;
-  });
+
+  // ⚡ 변환 로직
+  const objects: Record<string, string | boolean>[] = dataRows
+    .map((row) => {
+      const obj: Record<string, string | boolean> = {};
+      headers.forEach((header, idx) => {
+        const cell = row[idx];
+        const value = cell == null ? '' : String(cell).trim();
+
+        if (header === '음력') {
+          obj[header] = value === '음력'; // 값이 없으면 false
+        } else if (header === '윤달') {
+          obj[header] = value === '윤달'; // 값이 없으면 false
+        } else if (value !== '') {
+          obj[header] = value;
+        }
+      });
+
+      // ⚡ 완전히 비어 있는 행(음력/윤달만 false인 경우도 포함)은 제외
+      const meaningfulKeys = Object.entries(obj).filter(([key, val]) => {
+        // 음력/윤달 false만 있는 경우 제외
+        if ((key === '음력' || key === '윤달') && val === false) return false;
+        return true;
+      });
+
+      return meaningfulKeys.length > 0 ? obj : null;
+    })
+    .filter((obj): obj is Record<string, string | boolean> => obj !== null);
 
   return objects;
 }
