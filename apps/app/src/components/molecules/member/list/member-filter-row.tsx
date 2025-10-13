@@ -65,7 +65,7 @@ const MemberFilterRow = () => {
   const onClickExcelDownload = () => {
     const { data } = supabase.storage
       .from('file')
-      .getPublicUrl('xlsx/ekkly_members.xlsx', {
+      .getPublicUrl('xlsx/ekkly_member_upload.xlsx', {
         download: '교인등록_엑셀시트.xlsx',
       });
 
