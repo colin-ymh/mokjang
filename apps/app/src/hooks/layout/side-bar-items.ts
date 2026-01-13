@@ -24,12 +24,14 @@ export const useMainSideBarItems = () => {
       title: t_header(MAIN_HEADER_ID.MEMBER),
       onClick: () => router.push(`/main/member/all`),
       icon: Svg.Users,
+      isMobile: true,
     },
     {
       id: MAIN_HEADER_ID.WORSHIP,
       title: `${t_header(MAIN_HEADER_ID.WORSHIP)}`,
       onClick: () => router.push(`/main/worship`),
       icon: Svg.Cross,
+      isMobile: true,
     },
     // {
     //   id: MAIN_HEADER_ID.ATTENDANCE,
@@ -42,6 +44,7 @@ export const useMainSideBarItems = () => {
       title: t_header(MAIN_HEADER_ID.VISITATION),
       onClick: () => router.push(`/main/visitation/all`),
       icon: Svg.Heart,
+      isMobile: true,
     },
     {
       id: MAIN_HEADER_ID.TASK,

@@ -6,26 +6,25 @@ import styled from 'styled-components';
 import { GRAY, MAIN, WHITE } from '@mokjang/constants';
 import { MEDIA_MIN_WIDTH } from '@mokjang/constants';
 
-const SideBarContainer = styled.div<{ width: number }>`
-  display: flex;
+const SideBarContainer = styled.div<{ width: number; $isShown: boolean }>`
+  display: ${({ $isShown }) => ($isShown ? 'flex' : 'none')};
   flex-direction: column;
   height: 100%;
-  width: ${({ width }) => width}px;
   position: relative;
   flex-shrink: 0; /* 추가: 축소 방지 */
+  background-color: ${WHITE};
+  border-right: 0.7px solid ${GRAY.LIGHT};
 
   @media (min-width: ${MEDIA_MIN_WIDTH.MOBILE}) {
-    display: none;
+    width: 100%;
   }
 
-  @media (min-width: ${MEDIA_MIN_WIDTH.TABLET}) {
-    display: none;
-  }
+  // @media (min-width: ${MEDIA_MIN_WIDTH.TABLET}) {
+  //   display: none;
+  // }
 
   @media (min-width: ${MEDIA_MIN_WIDTH.DESKTOP}) {
-    display: flex;
-    background-color: ${WHITE};
-    border-right: 0.7px solid ${GRAY.LIGHT};
+    width: ${({ width }) => width}px;
   }
 `;
 
@@ -82,7 +81,7 @@ const SideView = ({
   isSideShown,
 }: SideBarViewProps) => {
   return (
-    <SideBarContainer width={isSideShown ? sideBarWidth : 0}>
+    <SideBarContainer $isShown={isSideShown} width={sideBarWidth}>
       <ButtonContainer>{sideButtonList}</ButtonContainer>
       {/*<ResizeHandle onMouseDown={onMouseDown} $isResizing={isResizing} />*/}
       {/*<OpenButton $isShown={sideBarWidth === 0} onClick={onClickOpen} />*/}

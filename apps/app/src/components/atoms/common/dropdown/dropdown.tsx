@@ -14,6 +14,7 @@ import DropdownView from './dropdown.view';
 import { DropdownValueType } from './dropdown-item';
 import useWindowSize from '@/hooks/window/window';
 import { useI18n } from '../../../../../locales/client';
+import { DIRECTION } from '@mokjang/constants';
 
 export type DropdownProps<
   ItemType extends DropdownValueType = DropdownValueType,
@@ -51,6 +52,7 @@ export type DropdownProps<
   isCustom?: boolean;
   customValue?: string;
   onChangeCustomInput?: (e: ChangeEvent<HTMLInputElement>) => void;
+  direction?: DIRECTION.TOP | DIRECTION.BOTTOM;
 
   // 무한 스크롤
   onScrollBottom?: () => void;
@@ -88,6 +90,7 @@ const Dropdown = forwardRef<HTMLInputElement, DropdownProps>((props, ref) => {
     chevronColor,
     placeholder,
     listHeight,
+    direction,
     ...inputProps
   } = props;
 
@@ -99,6 +102,13 @@ const Dropdown = forwardRef<HTMLInputElement, DropdownProps>((props, ref) => {
   const [innerValue, setInnerValue] = useState<any>(value);
   const [focusedIndex, setFocusedIndex] = useState(0);
   const [reverseDirection, setReverseDirection] = useState(false);
+  // direction이 있으면 고정, 없으면 자동 계산값 사용
+  const resolvedReverseDirection =
+    direction === DIRECTION.TOP
+      ? true
+      : direction === DIRECTION.BOTTOM
+        ? false
+        : reverseDirection;
   const [isCustomMode, setIsCustomMode] = useState(false);
 
   // ref
@@ -148,7 +158,12 @@ const Dropdown = forwardRef<HTMLInputElement, DropdownProps>((props, ref) => {
   const toggleDropdown = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
       if (disabled) return;
-      setReverseDirection(winH - e.screenY < 250);
+
+      // direction이 없을 때만 자동 계산
+      if (!direction) {
+        setReverseDirection(winH - e.screenY < 250);
+      }
+
       if (!isOpened) {
         if (combinedItems.length === 0) return;
         setIsOpened(true);
@@ -156,7 +171,7 @@ const Dropdown = forwardRef<HTMLInputElement, DropdownProps>((props, ref) => {
         setIsOpened(false);
       }
     },
-    [disabled, winH, isOpened, combinedItems.length]
+    [disabled, direction, winH, isOpened, combinedItems.length]
   );
 
   // 바깥 클릭 닫기
@@ -268,7 +283,7 @@ const Dropdown = forwardRef<HTMLInputElement, DropdownProps>((props, ref) => {
     focusedIndex,
     onFocusInput,
     isOpened,
-    reverseDirection,
+    reverseDirection: resolvedReverseDirection,
     isEditable: isEditable || isCustomMode,
     borderColor,
     width,

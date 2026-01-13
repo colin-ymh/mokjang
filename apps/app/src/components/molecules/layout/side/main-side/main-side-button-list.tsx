@@ -21,9 +21,21 @@ const MainSideButtonList = ({}: SideBarViewProps) => {
 
   return (
     <ButtonContainer>
-      {buttonList.map((button) => (
-        <SideButton key={button.id} {...button} />
-      ))}
+      {buttonList
+        .filter((button) => {
+          if (typeof window === 'undefined') return true; // SSR 대비
+
+          const isMobile = window.innerWidth < 1024;
+
+          if (isMobile) {
+            return button?.isMobile === true;
+          }
+
+          return true;
+        })
+        .map((button) => (
+          <SideButton key={button.id} {...button} />
+        ))}
     </ButtonContainer>
   );
 };

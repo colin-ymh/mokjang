@@ -34,7 +34,7 @@ const HeaderContainer = styled.div`
   align-items: center;
   border-bottom: 0.7px solid ${GRAY.LIGHT};
   background-color: ${WHITE};
-  flex-shrink: 0;
+  //flex-shrink: 0;
 
   @media (max-width: ${MEDIA_MAX_WIDTH.MOBILE}) {
     padding: 0 20px;

@@ -16,13 +16,13 @@ import { RootState } from '../../../../../redux/store';
 import ScrollSlidePopup from '@/components/atoms/common/popup/scroll-slide-popup';
 import EmptyList from '@/components/atoms/common/image/empty-list';
 
-const ListContainer = styled.div`
+const ListContainer = styled.div<{ height: number }>`
   display: flex;
   flex-direction: column;
-  padding: 20px;
+  padding: 20px 20px 0 20px;
   gap: 10px;
+  height: ${({ height }) => height}px;
 `;
-
 const VisitationListHeader = styled.div`
   display: flex;
   flex-direction: row;
@@ -35,6 +35,7 @@ const VisitationList = styled.div<{ height: number }>`
   flex-direction: column;
   height: ${({ height }) => height}px;
   overflow-y: auto;
+  padding-bottom: 30px;
 `;
 
 type FamilyInformationListViewProps = {
@@ -89,7 +90,7 @@ const MemberVisitationListView = ({
 
   return (
     <>
-      <ListContainer>
+      <ListContainer height={height - 300}>
         {/* 심방 목록 헤더 */}
         <VisitationListHeader>
           <div />
@@ -114,7 +115,7 @@ const MemberVisitationListView = ({
         <VisitationList
           ref={scrollRef}
           onScroll={onScroll}
-          height={height - 400}
+          height={height - 360}
         >
           {visitations.length > 0 ? (
             visitations.map((visitation) => {

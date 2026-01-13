@@ -27,9 +27,9 @@ const HeaderTitle = styled.div`
   flex: 1;
   flex-direction: column;
   gap: 5px;
+  padding-left: 20px;
 
   @media (min-width: ${MEDIA_MIN_WIDTH.DESKTOP}) {
-    padding-left: 20px;
     justify-content: flex-start;
   }
 `;
