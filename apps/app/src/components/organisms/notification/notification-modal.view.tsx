@@ -1,9 +1,16 @@
 import styled from 'styled-components';
-import { CURSOR, GRAY, MAIN, RED, WHITE } from '@mokjang/constants';
+import {
+  CURSOR,
+  GRAY,
+  MAIN,
+  MEDIA_MIN_WIDTH,
+  RED,
+  WHITE,
+} from '@mokjang/constants';
 import { useI18n, useScopedI18n } from '../../../../locales/client';
 import { Button, MainText, SvgIcon } from '@mokjang/components';
 import { Svg } from '@mokjang/assets';
-import useWindowSize from '@/hooks/window/window';
+import useWindowSize, { useIsMobile } from '@/hooks/window/window';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import NotificationItem from '@/components/molecules/notification/notification-item';
@@ -13,17 +20,35 @@ import EmptyList from '@/components/atoms/common/image/empty-list';
 const ModalContainer = styled.div<{ height: number }>`
   display: flex;
   flex-direction: column;
-  position: absolute;
+  position: fixed;
   background-color: ${WHITE};
-  border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  top: 40px;
-  right: 0;
-  z-index: 10;
 
-  width: 400px;
-  height: ${({ height }) => height}px;
-  transition: height 0.2s;
+  z-index: 100;
+
+  /* ✅ 모바일 기본: 전체 화면 모달 */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  border-radius: 0;
+  box-shadow: none;
+
+  /* ✅ 데스크톱 이상: 기존처럼 우상단 작은 모달 */
+  @media (min-width: ${MEDIA_MIN_WIDTH.DESKTOP}) {
+    position: absolute;
+    top: 40px;
+    right: 0;
+    left: auto;
+    bottom: auto;
+
+    width: 400px;
+    height: ${({ height }) => height}px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: height 0.2s;
+  }
 `;
 
 const HeaderContainer = styled.div`
@@ -91,7 +116,6 @@ const NotificationModalView = ({
   onClickZoomIn,
   onClickZoomOut,
 }: NotificationModalViewProps) => {
-  const t = useI18n();
   const t_button = useScopedI18n('button');
   const t_notification = useScopedI18n('notification');
 
@@ -100,6 +124,7 @@ const NotificationModalView = ({
   );
 
   const { height } = useWindowSize();
+  const isMobile = useIsMobile();
 
   return (
     <>
@@ -162,25 +187,26 @@ const NotificationModalView = ({
             backgroundColor={WHITE}
           />
 
-          {isZoomIn ? (
-            <Button
-              text={t_button('zoomOut')}
-              onClick={onClickZoomOut}
-              color={GRAY.DARK}
-              icon={<SvgIcon svg={Svg.ZoomOut} color={GRAY.DARK} />}
-              width={'auto'}
-              backgroundColor={WHITE}
-            />
-          ) : (
-            <Button
-              text={t_button('zoomIn')}
-              onClick={onClickZoomIn}
-              color={GRAY.DARK}
-              icon={<SvgIcon svg={Svg.ZoomIn} color={GRAY.DARK} />}
-              width={'auto'}
-              backgroundColor={WHITE}
-            />
-          )}
+          {!isMobile &&
+            (isZoomIn ? (
+              <Button
+                text={t_button('zoomOut')}
+                onClick={onClickZoomOut}
+                color={GRAY.DARK}
+                icon={<SvgIcon svg={Svg.ZoomOut} color={GRAY.DARK} />}
+                width={'auto'}
+                backgroundColor={WHITE}
+              />
+            ) : (
+              <Button
+                text={t_button('zoomIn')}
+                onClick={onClickZoomIn}
+                color={GRAY.DARK}
+                icon={<SvgIcon svg={Svg.ZoomIn} color={GRAY.DARK} />}
+                width={'auto'}
+                backgroundColor={WHITE}
+              />
+            ))}
         </FooterContainer>
       </ModalContainer>
     </>

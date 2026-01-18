@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { useParams } from 'next/navigation';
 
-import { GRAY, MAIN } from '@mokjang/constants';
+import { GRAY, MAIN, MEDIA_MIN_WIDTH } from '@mokjang/constants';
 import { MainText } from '@mokjang/components';
 import { SIZE } from '@mokjang/constants';
 import React from 'react';
@@ -34,7 +34,20 @@ const SideButton = ({ id, title, onClick, icon }: SideButtonProps) => {
   const headerId = slug?.[1] ?? null;
 
   return (
-    <ButtonContainer onClick={onClick}>
+    <ButtonContainer
+      onClick={() => {
+        onClick();
+
+        setTimeout(() => {
+          // 모바일에서 사이드 접기
+          if (typeof window !== 'undefined' && window.innerWidth < 1024) {
+            localStorage.setItem('isSideShown', 'false');
+            // 같은 탭에서는 storage 이벤트가 발생하지 않으므로 직접 dispatch 이벤트를 트리거
+            window.dispatchEvent(new Event('storage'));
+          }
+        }, 300);
+      }}
+    >
       <SvgIcon
         svg={icon}
         color={id === headerId ? GRAY.DARK : GRAY.DEFAULT}

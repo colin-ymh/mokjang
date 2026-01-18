@@ -21,7 +21,7 @@ const ModalContainer = styled.div<{
   display: flex;
   flex-direction: column;
   background-color: ${WHITE};
-  border-radius: 10px;
+
   overflow: hidden;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 
@@ -35,6 +35,7 @@ const ModalContainer = styled.div<{
       height ? ($isPercentage ? `${height}%` : `${height}px`) : '100%'};
     width: ${({ width, $isPercentage }) =>
       width ? ($isPercentage ? `${width}%` : `${width}px`) : '100%'};
+    border-radius: 10px;
   }
 `;
 

@@ -1,7 +1,15 @@
 import React, { MutableRefObject } from 'react';
 import styled from 'styled-components';
 
-import { BLANK, GRAY, GREEN, LOCALE, RED, SIZE } from '@mokjang/constants';
+import {
+  BLANK,
+  GRAY,
+  GREEN,
+  LOCALE,
+  MEDIA_MIN_WIDTH,
+  RED,
+  SIZE,
+} from '@mokjang/constants';
 import { MainText, SvgIcon } from '@mokjang/components';
 import useWindowSize from '../../../../../hooks/window/window';
 import { WORSHIP_ATTENDANCE_STATUS, WorshipAttendance } from '@mokjang/models';
@@ -21,8 +29,6 @@ import { RootState } from '@/redux/store'; // 2. 테이블 컨테이너 (100% �
 const TableContainer = styled.div<{ height: number }>`
   /* 항상 가로 100%를 채움 */
   width: 100%;
-  /* 세로 높이만큼 상하 스크롤 */
-  height: ${({ height }) => `${height - 520}px`};
 
   /* 오버플로 시 스크롤 */
   overflow-x: auto;
@@ -30,6 +36,16 @@ const TableContainer = styled.div<{ height: number }>`
 
   display: flex;
   flex-direction: column;
+
+  @media (min-width: ${MEDIA_MIN_WIDTH.MOBILE}) {
+    /* 세로 높이만큼 상하 스크롤 */
+    height: ${({ height }) => `${height - 560}px`};
+  }
+
+  @media (min-width: ${MEDIA_MIN_WIDTH.DESKTOP}) {
+    /* 세로 높이만큼 상하 스크롤 */
+    height: ${({ height }) => `${height - 520}px`};
+  }
 `;
 
 // 3. 테이블은 width: 100% + table-layout: fixed

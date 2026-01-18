@@ -9,17 +9,18 @@ import { getTranslatedFamilyAddMemberTitle } from '@mokjang/utils';
 import React, { Dispatch, RefObject, SetStateAction } from 'react';
 import { usePathname } from 'next/navigation';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../../../../redux/store';
+import { RootState } from '@/redux/store';
 import AddFamilyMemberModal from '../../../../atoms/member/information/family/add-family-member-modal';
 import FamilyMemberItem from '../../../../atoms/member/information/family/family-member-item';
 import useWindowSize from '../../../../../hooks/window/window';
 import EmptyList from '@/components/atoms/common/image/empty-list';
 
-const ListContainer = styled.div`
+const ListContainer = styled.div<{ height: number }>`
   display: flex;
   flex-direction: column;
-  padding: 20px;
+  padding: 20px 20px 0 20px;
   gap: 10px;
+  height: ${({ height }) => height}px;
 `;
 
 const FamilyListHeader = styled.div`
@@ -32,6 +33,7 @@ const FamilyList = styled.div<{ height: number }>`
   display: flex;
   gap: 10px;
   flex-direction: column;
+  padding-bottom: 50px;
   height: ${({ height }) => height}px;
   overflow-y: auto;
 `;
@@ -77,7 +79,7 @@ const FamilyInformationListView = ({
     (state: RootState) => state.targetMember
   );
   return (
-    <ListContainer>
+    <ListContainer height={height - 300}>
       {/* 가족정보 헤더 */}
       <FamilyListHeader>
         <div />

@@ -11,8 +11,13 @@ import { setTargetMember } from '@/redux/reducers/target/target-member-reducer';
 import { uploadFilesToSupabase } from '@/utils/upload';
 import { MembersApi } from '@/api/members/members.api';
 import { BAPTISM, BLACK, CONCEALED, DESTRUCTIVE } from '@mokjang/constants';
-import { setIsToastShown, setToastBackgroundColor, setToastText, } from '@/redux/reducers/toast-popup-reducer';
+import {
+  setIsToastShown,
+  setToastBackgroundColor,
+  setToastText,
+} from '@/redux/reducers/toast-popup-reducer';
 import { Loading } from '@mokjang/components';
+import { getGroup } from '@/utils/group';
 
 type MainMemberHeaderProps = {};
 
@@ -81,10 +86,10 @@ const MainMemberHeader = ({}: MainMemberHeaderProps) => {
   const [selectedGroupName, setSelectedGroupName] = useState<string>(t('all'));
 
   const onClickNewGroup = (groupId: string | null) => {
-    if (groupId === null) {
+    if (groupId === null || groupId === 'all') {
       setSelectedGroupName(t('all'));
     } else {
-      const targetGroup = groups.find((g) => g.id === groupId);
+      const targetGroup = getGroup(groupId, groups);
 
       if (targetGroup) {
         setSelectedGroupName(targetGroup.name);

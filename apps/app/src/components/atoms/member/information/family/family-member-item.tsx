@@ -1,6 +1,13 @@
 import styled from 'styled-components';
 import { MainText, ProfileImage, SvgIcon } from '@mokjang/components';
-import { BLANK, FAMILY, GRAY, LOCALE, SIZE } from '@mokjang/constants';
+import {
+  BLANK,
+  DIRECTION,
+  FAMILY,
+  GRAY,
+  LOCALE,
+  SIZE,
+} from '@mokjang/constants';
 import { getFormattedPhone } from '@mokjang/utils';
 import { FamilyMember } from '@mokjang/models';
 import { useI18n, useScopedI18n } from '../../../../../../locales/client';
@@ -147,6 +154,7 @@ const FamilyMemberItem = ({
           onChangeItem={(relation: FAMILY) =>
             onChangeRelation(familyMember.familyMemberId, relation as FAMILY)
           }
+          direction={DIRECTION.BOTTOM}
         />
 
         <CancelButton>

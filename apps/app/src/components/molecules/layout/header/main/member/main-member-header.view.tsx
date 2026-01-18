@@ -1,7 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { DIRECTION, GRAY, MEDIA_MIN_WIDTH, SIZE, WHITE, } from '@mokjang/constants';
+import {
+  DIRECTION,
+  GRAY,
+  MAIN,
+  MEDIA_MIN_WIDTH,
+  SIZE,
+  WHITE,
+} from '@mokjang/constants';
 import { Button, CustomPopup, MainText, SvgIcon } from '@mokjang/components';
 
 import { useScopedI18n } from '../../../../../../../locales/client';
@@ -14,6 +21,7 @@ import { Svg } from '@mokjang/assets';
 import { getIsWellFormedName, getIsWellFormedPhone } from '@mokjang/utils';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
+import { useIsMobile } from '@/hooks/window/window';
 
 const HeaderContainer = styled.div`
   display: flex;
@@ -21,8 +29,7 @@ const HeaderContainer = styled.div`
   justify-content: flex-start;
 
   @media (min-width: ${MEDIA_MIN_WIDTH.MOBILE}) {
-    height: 40px;
-    padding: 0 20px;
+    height: 50px;
     justify-content: center;
   }
 
@@ -76,6 +83,7 @@ const GroupButton = styled.div`
 
 const DesktopRegister = styled.div`
   display: none;
+
   @media (min-width: ${MEDIA_MIN_WIDTH.DESKTOP}) {
     display: flex;
   }
@@ -130,6 +138,8 @@ const MainMemberHeaderView = ({
   const t_description = useScopedI18n('description');
   const t_title = useScopedI18n('title');
 
+  const isMobile = useIsMobile();
+
   return (
     <HeaderContainer>
       <HeaderTopContainer>
@@ -150,7 +160,16 @@ const MainMemberHeaderView = ({
           fontWeight={500}
           fontSize={16}
           height={35}
-          icon={<SvgIcon svg={Svg.Plus} color={WHITE} width={2} size={20} />}
+          icon={
+            <SvgIcon
+              svg={Svg.Plus}
+              color={isMobile ? MAIN.DEFAULT : WHITE}
+              width={2}
+              size={20}
+            />
+          }
+          backgroundColor={isMobile ? WHITE : MAIN.DEFAULT}
+          color={isMobile ? MAIN.DEFAULT : WHITE}
         />
       </HeaderTopContainer>
       {/* 그룹 필터링 팝업 */}
@@ -162,32 +181,45 @@ const MainMemberHeaderView = ({
         <GroupFilter isDefaultOpen onChange={onClickNewGroup} />
       </SlidePopup>
       {/* 데스크톱 교인 추가 */}
-      <DesktopRegister>
-        <CustomPopup
-          width={35}
-          height={80}
-          isPercentage={true}
-          // width={700}
-          // height={1000}
+      {!isMobile && (
+        <DesktopRegister>
+          <CustomPopup
+            width={35}
+            height={80}
+            isPercentage={true}
+            // width={700}
+            // height={1000}
+            isShow={isRegisterShown}
+            onClickClose={onClickClose}
+            onClickCancel={onClickClose}
+            onClickDone={onClickSave}
+            headerTitle={t_title('memberRegister')}
+            headerDescription={t_description('memberRegisterHeader')}
+            doneDisabled={
+              !getIsWellFormedName(targetMember.name) ||
+              !getIsWellFormedPhone(targetMember.mobilePhone)
+            }
+            cancelText={t_button('cancel')}
+            doneText={t_button('save')}
+          >
+            <AddMember onChangeProfileImage={onChangeProfileImage} />
+          </CustomPopup>
+        </DesktopRegister>
+      )}
+      {/* 모바일 교인 추가*/}
+      <MobileRegister>
+        <SlidePopup
           isShow={isRegisterShown}
           onClickClose={onClickClose}
           onClickCancel={onClickClose}
           onClickDone={onClickSave}
-          headerTitle={t_title('memberRegister')}
-          headerDescription={t_description('memberRegisterHeader')}
+          cancelText={t_button('cancel')}
+          doneText={t_button('save')}
           doneDisabled={
             !getIsWellFormedName(targetMember.name) ||
             !getIsWellFormedPhone(targetMember.mobilePhone)
           }
-          cancelText={t_button('cancel')}
-          doneText={t_button('save')}
         >
-          <AddMember onChangeProfileImage={onChangeProfileImage} />
-        </CustomPopup>
-      </DesktopRegister>
-      {/* 모바일 교인 추가*/}
-      <MobileRegister>
-        <SlidePopup isShow={isRegisterShown} onClickClose={onClickClose}>
           <AddMember onChangeProfileImage={onChangeProfileImage} />
         </SlidePopup>
       </MobileRegister>

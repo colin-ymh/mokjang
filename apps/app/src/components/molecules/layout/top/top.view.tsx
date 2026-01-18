@@ -2,7 +2,14 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 
-import { CURSOR, GRAY, MAIN, MEDIA_MIN_WIDTH, RED, WHITE, } from '@mokjang/constants';
+import {
+  CURSOR,
+  GRAY,
+  MAIN,
+  MEDIA_MIN_WIDTH,
+  RED,
+  WHITE,
+} from '@mokjang/constants';
 import { SIDE_ID } from '@/constants/layout/header';
 
 import { Svg } from '@mokjang/assets';
@@ -11,23 +18,19 @@ import { useParams } from 'next/navigation';
 import ProfileModal from '@/components/atoms/common/modal/profile-modal';
 import { Chevron } from '@/components/atoms/common/dropdown/dropdown-chevron';
 import NotificationModal from '@/components/organisms/notification/notification-modal';
+import { useIsMobile } from '@/hooks/window/window';
 
 const TopContainer = styled.div`
-  display: none;
-
-  // 데크스탑
-  @media (min-width: ${MEDIA_MIN_WIDTH.DESKTOP}) {
-    display: flex;
-    flex-direction: row;
-    padding: 0 30px;
-    padding-left: 25px;
-    height: 65px;
-    flex-shrink: 0;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 0.7px solid ${GRAY.LIGHT};
-    background-color: ${WHITE};
-  }
+  display: flex;
+  flex-direction: row;
+  padding: 0 30px;
+  padding-left: 25px;
+  height: 65px;
+  flex-shrink: 0;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 0.7px solid ${GRAY.LIGHT};
+  background-color: ${WHITE};
 `;
 
 const TopLeft = styled.div`
@@ -47,7 +50,6 @@ const TopRight = styled.div`
 const NotificationWrapper = styled.div`
   display: flex;
   position: relative;
-  z-index: 50;
 `;
 
 const NotificationCount = styled.div`
@@ -66,7 +68,6 @@ const NotificationCount = styled.div`
 const ProfileWrapper = styled.div`
   display: flex;
   position: relative;
-  z-index: 50;
 `;
 
 const ProfileItem = styled.div`
@@ -106,6 +107,8 @@ const TopView = ({
     (state: RootState) => state.notification
   );
 
+  const isMobile = useIsMobile();
+
   return (
     <TopContainer>
       <TopLeft>
@@ -117,14 +120,16 @@ const TopView = ({
           color={GRAY.DARK}
           bottom={-1.5}
         />
-        <MainText
-          color={MAIN.DEFAULT}
-          fontSize={24}
-          fontWeight={600}
-          // cursor={CURSOR.POINTER}
-        >
-          {'ekkly'}
-        </MainText>
+        {!isMobile && (
+          <MainText
+            color={MAIN.DEFAULT}
+            fontSize={24}
+            fontWeight={600}
+            // cursor={CURSOR.POINTER}
+          >
+            {'ekkly'}
+          </MainText>
+        )}
       </TopLeft>
       <TopRight>
         {sideId !== SIDE_ID.NOTIFICATION && (
@@ -159,7 +164,7 @@ const TopView = ({
           />
         )}
 
-        {sideId !== SIDE_ID.MANAGEMENT && (
+        {!isMobile && sideId !== SIDE_ID.MANAGEMENT && (
           <SvgIcon
             svg={Svg.Setting}
             onClick={() => onClickButton(SIDE_ID.MANAGEMENT)}
