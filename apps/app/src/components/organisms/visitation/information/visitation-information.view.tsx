@@ -4,7 +4,7 @@ import { RootState } from '../../../../redux/store';
 import { useTaskStatusDropdownItems } from '../../../../hooks/dropdown/dropdown-items';
 import { useI18n } from '../../../../../locales/client';
 import { MainText, SvgIcon } from '@mokjang/components';
-import { GRAY, LOCALE, TASK_STATUS } from '@mokjang/constants';
+import { GRAY, LOCALE, MEDIA_MIN_WIDTH, TASK_STATUS } from '@mokjang/constants';
 import React from 'react';
 import MemberProfilePopupButton from '../../../molecules/common/button/member-profile-popup-button';
 import { usePathname } from 'next/navigation';
@@ -39,6 +39,7 @@ const TitleContainer = styled.div`
   gap: 10px;
   align-items: center;
   width: 100px;
+  flex-shrink: 0;
 `;
 
 const RowContainer = styled.div`
@@ -47,9 +48,8 @@ const RowContainer = styled.div`
   align-items: center;
   width: 100%;
   gap: 30px;
-  height: 30px;
+  min-height: 30px;
 `;
-
 const ColumnContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -60,7 +60,11 @@ const ColumnContainer = styled.div`
 const MemberList = styled.div`
   display: flex;
   gap: 10px;
-  flex-direction: row;
+  flex-direction: column;
+
+  @media (min-width: ${MEDIA_MIN_WIDTH.DESKTOP}) {
+    flex-direction: row; // 데스크톱 이상에서 row
+  }
 `;
 
 const PeriodContainer = styled.div`

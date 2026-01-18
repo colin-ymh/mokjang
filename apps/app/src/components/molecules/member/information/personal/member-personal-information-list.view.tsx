@@ -11,6 +11,7 @@ import {
   LOCALE,
   MAIN,
   MARRIAGE,
+  MEDIA_MIN_WIDTH,
   MEMBER,
   SIZE,
   WHITE,
@@ -66,9 +67,16 @@ const TextContainer = styled.div`
 `;
 
 const TitleContainer = styled.div`
-  display: flex;
   width: 150px;
   flex-shrink: 0;
+
+  @media (min-width: ${MEDIA_MIN_WIDTH.MOBILE}) {
+    display: none;
+  }
+
+  @media (min-width: ${MEDIA_MIN_WIDTH.DESKTOP}) {
+    display: flex;
+  }
 `;
 
 const InformationTextWrapper = styled.div`

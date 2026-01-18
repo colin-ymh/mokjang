@@ -25,6 +25,7 @@ import { useScopedI18n } from '../../../../../locales/client';
 import { Svg } from '@mokjang/assets';
 import { usePathname } from 'next/navigation';
 import { useTaskStatusDropdownItems } from '@/hooks/dropdown/dropdown-items';
+import { useIsMobile } from '@/hooks/window/window';
 
 const SlidePanel = styled.div<{
   $isShow: boolean;
@@ -225,6 +226,8 @@ const ScrollSlidePopup = ({
   const scrollRef = useRef<HTMLDivElement>(null);
   const [integrateStage, setIntegrateStage] = useState(INTEGRATE_STAGE.ONE);
 
+  const isMobile = useIsMobile();
+
   const pathname = usePathname();
   const locale = pathname.split('/')[1] as LOCALE;
 
@@ -283,17 +286,20 @@ const ScrollSlidePopup = ({
         )}
       </HeaderTitle>
 
-      {integrateStage === INTEGRATE_STAGE.TWO && inCharge && (
+      {!isMobile && integrateStage === INTEGRATE_STAGE.TWO && inCharge && (
         <MemberProfilePopupButton member={inCharge} width={20} height={20} />
       )}
-      {integrateStage === INTEGRATE_STAGE.TWO && startDate && endDate && (
-        <MainText size={SIZE.SMALL}>
-          {`${getTranslatedDateFromDateString(locale, startDate)} - ${getTranslatedDateFromDateString(
-            locale,
-            endDate
-          )}`}
-        </MainText>
-      )}
+      {!isMobile &&
+        integrateStage === INTEGRATE_STAGE.TWO &&
+        startDate &&
+        endDate && (
+          <MainText size={SIZE.SMALL}>
+            {`${getTranslatedDateFromDateString(locale, startDate)} - ${getTranslatedDateFromDateString(
+              locale,
+              endDate
+            )}`}
+          </MainText>
+        )}
     </HeaderLeftContainer>
   );
 

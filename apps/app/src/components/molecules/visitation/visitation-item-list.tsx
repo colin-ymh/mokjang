@@ -3,9 +3,9 @@ import styled from 'styled-components';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
-import { setMemberFilter } from '@/redux/reducers/filter/member-filter-reducer';
+import { setVisitationFilter } from '@/redux/reducers/filter/visitation-filter-reducer';
 
-import { MemberTableProps } from './member-table';
+import { VisitationTableProps } from './visitation-table';
 import {
   BorderInput,
   MainTag,
@@ -16,23 +16,29 @@ import {
   BLANK,
   GRAY,
   GROUP_ROLE,
+  LOCALE,
   MAIN,
   MINISTRY_GROUP_ROLE,
   PURPLE,
   SIZE,
+  STATUS,
   YELLOW,
 } from '@mokjang/constants';
 
 import {
   getFormattedName,
   getFormattedPhone,
+  getTranslatedStartEndDate,
   getTrimmedString,
 } from '@mokjang/utils';
 
-import useWindowSize from '../../../../hooks/window/window';
-import { useI18n } from '../../../../../locales/client';
+import useWindowSize from '../../../hooks/window/window';
+import { useI18n } from '../../../../locales/client';
+import { usePathname } from 'next/navigation';
+import { getStatusBackgroundColor, getStatusFontColor } from '@/utils/color';
+import MemberProfile from '@/components/atoms/member/member-profile';
 
-const MemberItemListContainer = styled.div`
+const VisitationItemListContainer = styled.div`
   padding: 0 20px;
   width: 100%;
   display: flex;
@@ -46,19 +52,20 @@ const ScrollContainer = styled.div<{ height: number }>`
   height: ${({ height }) => `${height - 180}px`};
   flex-direction: column;
   overflow-y: scroll;
-  gap: 5px;
+  gap: 10px;
 `;
 
-const MemberItem = styled.div`
+const VisitationItem = styled.div`
   display: flex;
   align-items: center;
   border-radius: 5px;
   gap: 10px;
   cursor: pointer;
-  padding: 5px 0;
+  border: 1px solid ${GRAY.LIGHT};
+  padding: 10px;
 `;
 
-const MemberDetails = styled.div`
+const VisitationDetails = styled.div`
   display: flex;
   flex-direction: column;
   gap: 3px;
@@ -72,25 +79,22 @@ const RowContainer = styled.div`
   gap: 5px;
 `;
 
-const TagContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 5px;
-  width: 100%;
-`;
-
-const MemberItemList = ({
-  onClickMemberItem,
-  loadMembers,
-}: MemberTableProps) => {
+const VisitationItemList = ({
+  onClickVisitationItem,
+  loadVisitations,
+}: VisitationTableProps) => {
   const t = useI18n();
   const dispatch = useDispatch<AppDispatch>();
 
+  const pathname = usePathname();
+  const locale = pathname.split('/')[1] as LOCALE;
+
   const { height } = useWindowSize();
-  const { members } = useSelector((state: RootState) => state.memberFilter);
-  const { memberFilter } = useSelector(
-    (state: RootState) => state.memberFilter
+  const { visitations } = useSelector(
+    (state: RootState) => state.visitationFilter
+  );
+  const { visitationFilter } = useSelector(
+    (state: RootState) => state.visitationFilter
   );
 
   const scrollRef = useRef<HTMLDivElement | null>(null);
@@ -125,11 +129,11 @@ const MemberItemList = ({
     }
   };
 
-  const getNewMemberList = () => {
+  const getNewVisitationList = () => {
     dispatch(
-      setMemberFilter({
-        ...memberFilter,
-        search: searchValue,
+      setVisitationFilter({
+        ...visitationFilter,
+        title: searchValue,
       })
     );
   };
@@ -143,7 +147,7 @@ const MemberItemList = ({
       return;
     }
     const timer = setTimeout(() => {
-      getNewMemberList();
+      getNewVisitationList();
     }, 500);
 
     return () => {
@@ -156,13 +160,13 @@ const MemberItemList = ({
       const { scrollTop, scrollHeight, clientHeight } = scrollRef.current;
       // 스크롤이 최하단에 도달했는지 확인
       if (scrollTop + clientHeight >= scrollHeight - 10) {
-        loadMembers(); // 데이터를 추가로 로드
+        loadVisitations(); // 데이터를 추가로 로드
       }
     }
   };
 
   return (
-    <MemberItemListContainer>
+    <VisitationItemListContainer>
       <BorderInput
         ref={searchRef}
         value={searchValue}
@@ -171,62 +175,41 @@ const MemberItemList = ({
         height={40}
       />
       <ScrollContainer ref={scrollRef} onScroll={onScroll} height={height}>
-        {members.map((member) => (
-          <MemberItem
-            key={member.id}
-            onClick={() => onClickMemberItem(member.id)}
+        {visitations.map((visitation) => (
+          <VisitationItem
+            key={visitation.id}
+            onClick={() => onClickVisitationItem(visitation.id)}
           >
-            <ProfileImage value={member.profileImageUrl} />
-            <MemberDetails>
+            <VisitationDetails>
               <RowContainer>
-                <MainText>{`${member.name} ${member.officer?.name || t('churchMember')}`}</MainText>
-                {member.group && (
-                  <MainText size={SIZE.SMALL} color={GRAY.DARK}>
-                    {member.group?.name}
-                  </MainText>
-                )}
-                <TagContainer>
-                  {member.churchUser && (
-                    <MainTag
-                      title={t('manager')}
-                      color={PURPLE.DARK}
-                      backgroundColor={PURPLE.LIGHT}
-                      fontSize={12}
-                      rowPadding={6}
-                    />
+                <MainText>{`${visitation.title}`}</MainText>
+                <MainTag
+                  title={t(visitation.status as STATUS)}
+                  color={getStatusFontColor(visitation.status as STATUS)}
+                  backgroundColor={getStatusBackgroundColor(
+                    visitation.status as STATUS
                   )}
-                  {member.groupRole === GROUP_ROLE.LEADER && (
-                    <MainTag
-                      title={t('groupLeader')}
-                      color={YELLOW.DARK}
-                      backgroundColor={YELLOW.LIGHT}
-                      fontSize={12}
-                      rowPadding={6}
-                    />
-                  )}
-                  {member.ministryGroupRole === MINISTRY_GROUP_ROLE.LEADER && (
-                    <MainTag
-                      title={t('ministryGroupLeader')}
-                      color={MAIN.DARK}
-                      backgroundColor={MAIN.LIGHT}
-                      fontSize={12}
-                      rowPadding={6}
-                    />
-                  )}
-                </TagContainer>
+                />
               </RowContainer>
 
               <RowContainer>
+                <MainText size={SIZE.SMALL} color={MAIN.DEFAULT}>
+                  {`${visitation.inCharge.name} ${visitation.inCharge.officer?.name || BLANK}`}
+                </MainText>
                 <MainText size={SIZE.SMALL} color={GRAY.DARK}>
-                  {member?.mobilePhone && getFormattedPhone(member.mobilePhone)}
+                  {getTranslatedStartEndDate(
+                    locale,
+                    visitation.startDate,
+                    visitation.endDate
+                  )}
                 </MainText>
               </RowContainer>
-            </MemberDetails>
-          </MemberItem>
+            </VisitationDetails>
+          </VisitationItem>
         ))}
       </ScrollContainer>
-    </MemberItemListContainer>
+    </VisitationItemListContainer>
   );
 };
 
-export default MemberItemList;
+export default VisitationItemList;

@@ -13,6 +13,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import VisitationInformation from '../information/visitation-information';
 import ScrollSlidePopup from '@/components/atoms/common/popup/scroll-slide-popup';
+import VisitationItemList from '@/components/molecules/visitation/visitation-item-list';
 
 const VisitationListContainer = styled.div`
   display: flex;
@@ -88,9 +89,9 @@ const VisitationListView = (props: VisitationListViewProps) => {
     <>
       <VisitationListContainer>
         {/* 모바일에서 보일 목록형 UI */}
-        {/*<MobileView>*/}
-        {/*  <VisitationItemList {...props.list} />*/}
-        {/*</MobileView>*/}
+        <MobileView>
+          <VisitationItemList {...props.list} />
+        </MobileView>
         {/* 데스크탑에서 보일 테이블형 UI */}
         <DesktopView>
           <VisitationRow />

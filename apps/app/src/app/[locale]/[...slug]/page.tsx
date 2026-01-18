@@ -45,7 +45,12 @@ const App = () => {
 
     if (sideId === SIDE_ID.MAIN) {
       if (!headerId) {
-        targetPath = `/main/${MAIN_HEADER_ID.HOME}`;
+        const isMobile =
+          typeof window !== 'undefined' && window.innerWidth < 1024;
+
+        targetPath = isMobile
+          ? `/main/${MAIN_HEADER_ID.MEMBER}`
+          : `/main/${MAIN_HEADER_ID.HOME}`;
       } else if (!contentId) {
         if (headerId === MAIN_HEADER_ID.MEMBER) {
           targetPath = `/main/${MAIN_HEADER_ID.MEMBER}/${MEMBER_CONTENT_ID.ALL}`;

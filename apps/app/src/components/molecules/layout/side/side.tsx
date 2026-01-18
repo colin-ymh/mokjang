@@ -1,9 +1,15 @@
-import { memo, ReactNode, useCallback, useRef, useState } from 'react';
+import {
+  memo,
+  ReactNode,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import SideView from './side.view';
 
 type SideProps = {
   sideButtonList: ReactNode;
-  isSideShown: boolean;
 };
 
 const DEFAULT_WIDTH = 180;
@@ -11,7 +17,30 @@ const MIN_WIDTH = 100;
 const MAX_WIDTH = 300;
 const STORAGE_KEY = 'sidebar-width';
 
-const Side = memo(({ sideButtonList, isSideShown }: SideProps) => {
+const Side = memo(({ sideButtonList }: SideProps) => {
+  const [isSideShown, setIsSideShown] = useState<boolean>(true);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('isSideShown');
+      // localStorage 변경 감지 (storage 이벤트 사용)
+      const handleStorageChange = () => {
+        const updated = localStorage.getItem('isSideShown');
+        setIsSideShown(updated === 'true');
+      };
+
+      // 초기 반영
+      setIsSideShown(saved === null ? true : saved === 'true');
+
+      // ✅ 다른 컴포넌트에서 변경 시 감지
+      window.addEventListener('storage', handleStorageChange);
+
+      return () => {
+        window.removeEventListener('storage', handleStorageChange);
+      };
+    }
+  }, []);
+
   const [sideBarWidth, setSideBarWidth] = useState<number>(() => {
     if (typeof window !== 'undefined') {
       const saved = localStorage.getItem(STORAGE_KEY);

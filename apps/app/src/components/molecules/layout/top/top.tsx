@@ -8,11 +8,9 @@ import { fetchNotificationCount } from '@/redux/reducers/notification-reducer';
 import { NOTIFICATION_DOMAIN } from '@mokjang/models';
 import { closeModal } from '@/redux/reducers/modal-reducer';
 
-type TopProps = {
-  handleSideShow: () => void;
-};
+type TopProps = {};
 
-const Top = ({ handleSideShow }: TopProps) => {
+const Top = ({}: TopProps) => {
   const { user } = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch<AppDispatch>();
   const router = usePageRouter();
@@ -43,6 +41,17 @@ const Top = ({ handleSideShow }: TopProps) => {
   const onClickProfileClose = () => {
     setIsProfileOpened(false);
     dispatch(closeModal());
+  };
+
+  const handleSideShow = () => {
+    if (typeof window !== 'undefined') {
+      const prev = localStorage.getItem('isSideShown');
+      const next = prev === 'false' ? 'true' : 'false';
+
+      localStorage.setItem('isSideShown', next);
+      // storage 이벤트를 강제로 발생시켜 UI 반영하게 함
+      window.dispatchEvent(new Event('storage'));
+    }
   };
 
   useEffect(() => {

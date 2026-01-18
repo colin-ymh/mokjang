@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import React, { ChangeEvent } from 'react';
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
-import { GRAY, LOCALE } from '@mokjang/constants';
+import { GRAY, LOCALE, MEDIA_MIN_WIDTH } from '@mokjang/constants';
 import { useTimeDropdownItems } from '@/hooks/dropdown/dropdown-items';
 import { MemberDropdownType } from '../../../atoms/common/dropdown/member-dropdown-item';
 import { BorderInput, MainText, RequiredMark } from '@mokjang/components';
@@ -60,18 +60,24 @@ const ReceiverTagList = styled.div`
   flex-shrink: 0;
 `;
 
+const PeriodContainer = styled.div`
+  display: flex;
+  flex-direction: column; // 기본: 모바일에서 column
+  width: 100%;
+  gap: 10px;
+
+  @media (min-width: ${MEDIA_MIN_WIDTH.DESKTOP}) {
+    flex-direction: row; // 데스크톱 이상에서 row
+    gap: 20px;
+  }
+`;
+
 const RowContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   width: 100%;
   gap: 20px;
-`;
-
-const PeriodContainer = styled.div`
-  display: flex;
-  gap: 10px;
-  width: 100%;
 `;
 
 type AddVisitationViewProps = {
@@ -151,7 +157,7 @@ const AddVisitationView = ({
           <RequiredMark />
         </MainText>
         {/* 기간 */}
-        <RowContainer>
+        <PeriodContainer>
           {/* 시작 날짜 */}
           <CustomDatePicker
             value={
@@ -214,7 +220,7 @@ const AddVisitationView = ({
               chevronColor={GRAY.DEFAULT}
             />
           </RowContainer>
-        </RowContainer>
+        </PeriodContainer>
       </ContentContainer>
 
       {/* 대상자 / 담당자 */}

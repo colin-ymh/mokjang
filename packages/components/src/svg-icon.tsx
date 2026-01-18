@@ -21,6 +21,8 @@ const StyledIcon = styled.svg<{
   bottom: ${({ bottom }) => bottom}px;
 
   transition: all 0.2s;
+
+  flex-shrink: 0;
   &:hover {
     background-color: ${({ $isButton }) => $isButton && GRAY.LIGHT};
     border-radius: 5px;

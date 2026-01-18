@@ -12,22 +12,23 @@ import AddVisitation from '../../../../../organisms/visitation/add/add-visitatio
 import { Svg } from '@mokjang/assets';
 import { MAIN_HEADER_ID } from '@/constants/layout/header';
 import ScrollSlidePopup from '@/components/atoms/common/popup/scroll-slide-popup';
+import { useIsMobile } from '@/hooks/window/window';
 
 const HeaderContainer = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: flex-start;
 
   @media (min-width: ${MEDIA_MIN_WIDTH.MOBILE}) {
-    height: 40px;
-    padding: 0 20px;
+    height: 50px;
     justify-content: center;
   }
 
   @media (min-width: ${MEDIA_MIN_WIDTH.DESKTOP}) {
-    height: 120px;
-    justify-content: space-between;
+    height: 80px;
     padding: 0;
-    border-bottom: 0.7px solid ${GRAY.LIGHT};
+    justify-content: space-between;
+    //border-bottom: 0.7px solid ${GRAY.SEMI_LIGHT};
   }
 `;
 
@@ -36,7 +37,23 @@ const HeaderTopContainer = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 20px 0 20px;
+  padding: 20px;
+`;
+
+const DesktopTitle = styled.div`
+  display: none;
+
+  @media (min-width: ${MEDIA_MIN_WIDTH.DESKTOP}) {
+    display: flex;
+  }
+`;
+
+const MobileTitle = styled.div`
+  display: flex;
+
+  @media (min-width: ${MEDIA_MIN_WIDTH.DESKTOP}) {
+    display: none;
+  }
 `;
 
 const HeaderBottomContainer = styled.div`
@@ -76,13 +93,22 @@ const MainVisitationHeaderView = ({
   const t_button = useScopedI18n('button');
   const headerBarItems = useMainVisitationHeaderBarItems();
 
+  const isMobile = useIsMobile();
+
   return (
     <>
       <HeaderContainer>
         <HeaderTopContainer>
-          <MainText size={SIZE.EXTRA_LARGE} fontSize={24}>
-            {t_header(MAIN_HEADER_ID.VISITATION)}
-          </MainText>
+          <DesktopTitle>
+            <MainText size={SIZE.EXTRA_LARGE} fontSize={24}>
+              {t_header(MAIN_HEADER_ID.VISITATION)}
+            </MainText>
+          </DesktopTitle>
+          <MobileTitle>
+            <MainText size={SIZE.EXTRA_LARGE}>
+              {t_header(MAIN_HEADER_ID.VISITATION)}
+            </MainText>
+          </MobileTitle>
           <Button
             text={t_button('addVisitation')}
             onClick={onClickAddVisitation}
@@ -90,7 +116,16 @@ const MainVisitationHeaderView = ({
             fontWeight={500}
             fontSize={16}
             height={35}
-            icon={<SvgIcon svg={Svg.Plus} color={WHITE} width={2} size={20} />}
+            icon={
+              <SvgIcon
+                svg={Svg.Plus}
+                color={isMobile ? MAIN.DEFAULT : WHITE}
+                width={2}
+                size={20}
+              />
+            }
+            backgroundColor={isMobile ? WHITE : MAIN.DEFAULT}
+            color={isMobile ? MAIN.DEFAULT : WHITE}
           />
         </HeaderTopContainer>
         <HeaderBottomContainer>
