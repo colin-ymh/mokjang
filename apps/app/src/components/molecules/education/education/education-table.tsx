@@ -18,26 +18,21 @@ import {
   setToastBackgroundColor,
   setToastText,
 } from '../../../../redux/reducers/toast-popup-reducer';
-import { DESTRUCTIVE, LOCALE, MAIN, TASK_STATUS } from '@mokjang/constants';
+import { DESTRUCTIVE, LOCALE, TASK_STATUS } from '@mokjang/constants';
 import { EducationSessionsApi } from '../../../../api/education/education-sessions.api';
 import { EducationsApi } from '../../../../api/education/educations.api';
-import WrappedPagePopup from '../../../atoms/common/popup/wrapped-page-popup';
-import ConfirmPopup from '../../../atoms/common/popup/error-popup';
 import EducationInformationModals from './education-information-modals';
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
 import {
   getDateFromDateString,
   getDateStringFromDate,
   getIsWellFormedTitle,
-  getTranslatedTerm,
 } from '@mokjang/utils';
 import { setTargetEducation } from '../../../../redux/reducers/target/target-education-reducer';
 import { setTargetEducationTerm } from '../../../../redux/reducers/target/target-education-term-reducer';
-import EducationTermInformation from '../../../organisms/education/education-term/information/education-term-information';
-import AddEducationTerm from '../../../organisms/education/education-term/add/add-education-term';
 import { setTargetEducationSession } from '../../../../redux/reducers/target/target-education-session-reducer';
-import EducationSessionInformation from '../../../organisms/education/education-session/information/education-session-information';
-import AddEducationSession from '../../../organisms/education/education-session/add/add-education-session';
+import EducationTermModals from './education-term-modals';
+import EducationSessionModals from './education-session-modals';
 import { usePathname } from 'next/navigation';
 import { setEducationTerms } from '../../../../redux/reducers/filter/education-term-filter-reducer';
 import { closeModal } from '@/redux/reducers/modal-reducer';
@@ -50,7 +45,6 @@ const EducationTable = ({ loadEducations }: EducationTableProps) => {
   const t = useI18n();
   const t_button = useScopedI18n('button');
   const t_popup = useScopedI18n('popup');
-  const t_title = useScopedI18n('title');
 
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const dispatch = useDispatch<AppDispatch>();
@@ -1016,127 +1010,47 @@ const EducationTable = ({ loadEducations }: EducationTableProps) => {
         isEducationSaveEnabled={isEducationSaveEnabled}
       />
 
-      {/* 교육기수 상세정보 팝업*/}
-      <WrappedPagePopup
-        keyboardDisabled={true}
-        isShow={isEducationTermInformationShown}
-        onClickClose={onClickEducationTermInformationClose}
-        headerTitle={`${targetEducationTerm.educationName} - ${getTranslatedTerm(locale, targetEducationTerm.term)}`}
-        doneText={t_button('edit')}
-        cancelText={t_button('delete')}
-        onClickDone={onClickEditEducationTermOpen}
-        onClickCancel={onClickDeleteEducationTermConfirmOpen}
-        stageTwoTop={40}
-        stageThreeTop={250}
-        status={targetEducationTerm.status}
-        onChangeStatus={onChangeTermStatus}
-        inCharge={targetEducationTerm.inCharge}
-        startDate={targetEducationTerm.startDate}
-        endDate={targetEducationTerm.endDate}
-        widthPercentage={45}
-      >
-        {(scrollRef) => (
-          <>
-            {/* 삭제 확인 팝업 */}
-            <ConfirmPopup
-              title={t_popup('deleteEducationTermTitle')}
-              body={t_popup('deleteEducationTermBody')}
-              buttonNum={2}
-              isShow={isEducationTermDeletePopupShown}
-              onClickLeftButton={onClickDeleteEducationTermConfirmClose}
-              onClickRightButton={() => {
-                onClickDeleteEducationTerm();
-                onClickDeleteEducationTermConfirmClose();
-              }}
-              leftButtonText={t_button('cancel')}
-              rightButtonText={t_button('delete')}
-            />
-            <EducationTermInformation
-              scrollRef={scrollRef}
-              onChangeStatus={onChangeTermStatus}
-            />
-          </>
-        )}
-      </WrappedPagePopup>
-
-      {/* 교육기수 수정 팝업*/}
-      <WrappedPagePopup
-        keyboardDisabled={true}
-        isShow={isEducationTermEditShown}
-        onClickClose={onClickEditEducationTermClose}
-        onClickCancel={onClickEditEducationTermClose}
-        onClickDone={onClickEditEducationTermDone}
-        headerTitle={t_title('editEducationTerm')}
-        doneBackgroundColor={
-          isEducationTermSaveEnabled ? MAIN.DEFAULT : MAIN.LIGHT
+      <EducationTermModals
+        isEducationTermInformationShown={isEducationTermInformationShown}
+        onClickEducationTermInformationClose={
+          onClickEducationTermInformationClose
         }
-        doneDisabled={!isEducationTermSaveEnabled}
-        closeText={t_button('backToEducationTerm')}
-        widthPercentage={45}
-      >
-        <AddEducationTerm isEdit />
-      </WrappedPagePopup>
-
-      {/* 교육회차 상세정보 팝업*/}
-      <WrappedPagePopup
-        keyboardDisabled={true}
-        isShow={isEducationSessionInformationShown}
-        onClickClose={onClickEducationSessionInformationClose}
-        headerTitle={`${targetEducationTerm.educationName} - ${getTranslatedTerm(locale, targetEducationTerm.term)} - ${targetEducationSession.session}${t('session')} ${targetEducationSession.title}`}
-        doneText={t_button('edit')}
-        cancelText={t_button('delete')}
-        onClickDone={onClickEditEducationSessionOpen}
-        onClickCancel={onClickDeleteEducationSessionConfirmOpen}
-        stageTwoTop={40}
-        stageThreeTop={250}
-        status={targetEducationSession.status}
-        onChangeStatus={onChangeSessionStatus}
-        inCharge={targetEducationSession.inCharge}
-        startDate={targetEducationSession.startDate}
-        endDate={targetEducationSession.endDate}
-        widthPercentage={45}
-      >
-        {(scrollRef) => (
-          <>
-            {/* 삭제 확인 팝업 */}
-            <ConfirmPopup
-              title={t_popup('deleteEducationSessionTitle')}
-              body={t_popup('deleteEducationSessionBody')}
-              buttonNum={2}
-              isShow={isEducationSessionDeletePopupShown}
-              onClickLeftButton={onClickDeleteEducationSessionConfirmClose}
-              onClickRightButton={() => {
-                onClickDeleteEducationSession();
-                onClickDeleteEducationSessionConfirmClose();
-              }}
-              leftButtonText={t_button('cancel')}
-              rightButtonText={t_button('delete')}
-            />
-            <EducationSessionInformation
-              scrollRef={scrollRef}
-              onChangeStatus={onChangeSessionStatus}
-            />
-          </>
-        )}
-      </WrappedPagePopup>
-
-      {/* 교육회차 수정 팝업*/}
-      <WrappedPagePopup
-        keyboardDisabled={true}
-        isShow={isEducationSessionEditShown}
-        onClickClose={onClickEditEducationSessionClose}
-        onClickCancel={onClickEditEducationSessionClose}
-        onClickDone={onClickEditEducationSessionDone}
-        headerTitle={t_title('editEducationSession')}
-        doneBackgroundColor={
-          isEducationSessionSaveEnabled ? MAIN.DEFAULT : MAIN.LIGHT
+        onClickEditEducationTermOpen={onClickEditEducationTermOpen}
+        onClickDeleteEducationTermConfirmOpen={
+          onClickDeleteEducationTermConfirmOpen
         }
-        doneDisabled={!isEducationSessionSaveEnabled}
-        closeText={t_button('backToEducationSession')}
-        widthPercentage={45}
-      >
-        <AddEducationSession />
-      </WrappedPagePopup>
+        onChangeTermStatus={onChangeTermStatus}
+        isEducationTermDeletePopupShown={isEducationTermDeletePopupShown}
+        onClickDeleteEducationTermConfirmClose={
+          onClickDeleteEducationTermConfirmClose
+        }
+        onClickDeleteEducationTerm={onClickDeleteEducationTerm}
+        isEducationTermEditShown={isEducationTermEditShown}
+        onClickEditEducationTermClose={onClickEditEducationTermClose}
+        onClickEditEducationTermDone={onClickEditEducationTermDone}
+        isEducationTermSaveEnabled={isEducationTermSaveEnabled}
+      />
+
+      <EducationSessionModals
+        isEducationSessionInformationShown={isEducationSessionInformationShown}
+        onClickEducationSessionInformationClose={
+          onClickEducationSessionInformationClose
+        }
+        onClickEditEducationSessionOpen={onClickEditEducationSessionOpen}
+        onClickDeleteEducationSessionConfirmOpen={
+          onClickDeleteEducationSessionConfirmOpen
+        }
+        onChangeSessionStatus={onChangeSessionStatus}
+        isEducationSessionDeletePopupShown={isEducationSessionDeletePopupShown}
+        onClickDeleteEducationSessionConfirmClose={
+          onClickDeleteEducationSessionConfirmClose
+        }
+        onClickDeleteEducationSession={onClickDeleteEducationSession}
+        isEducationSessionEditShown={isEducationSessionEditShown}
+        onClickEditEducationSessionClose={onClickEditEducationSessionClose}
+        onClickEditEducationSessionDone={onClickEditEducationSessionDone}
+        isEducationSessionSaveEnabled={isEducationSessionSaveEnabled}
+      />
     </>
   );
 };
