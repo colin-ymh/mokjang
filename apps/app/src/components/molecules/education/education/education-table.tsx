@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../../redux/store';
 import EducationTableView from './education-table.view';
@@ -74,9 +74,14 @@ const EducationTable = ({ loadEducations }: EducationTableProps) => {
   const pathname = usePathname();
   const locale = pathname.split('/')[1] as LOCALE;
 
-  const educationApi = new EducationsApi(false);
-  const educationTermsApi = new EducationTermsApi(false);
-  const educationSessionsApi = new EducationSessionsApi(false);
+  // API 클라이언트는 상태가 없으므로 렌더마다 새로 만들 필요가 없다.
+  // (어떤 effect의 deps에도 포함되지 않아 메모이제이션이 동작을 바꾸지 않음)
+  const educationApi = useMemo(() => new EducationsApi(false), []);
+  const educationTermsApi = useMemo(() => new EducationTermsApi(false), []);
+  const educationSessionsApi = useMemo(
+    () => new EducationSessionsApi(false),
+    []
+  );
 
   const [thrownError, setThrownError] = useState<Error | null>(null);
 
