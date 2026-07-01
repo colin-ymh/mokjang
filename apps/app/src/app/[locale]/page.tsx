@@ -20,6 +20,8 @@ const ButtonContainer = styled.div`
 export default function LoginPage() {
   const { user, initialized } = useSelector((state: RootState) => state.user);
   const router = usePageRouter();
+  // Hook은 조건부 return보다 항상 위에서 호출해야 한다 (rules-of-hooks)
+  const [code, setCode] = useState<string>('');
 
   useEffect(() => {
     // 초기화가 끝났는데 유저가 없으면 보호 라우트 → 홈으로
@@ -32,8 +34,6 @@ export default function LoginPage() {
 
   // 초기화 전에는 아무것도 렌더링하지 않거나 로딩 표시
   if (!initialized) return null; // or <Spinner />
-
-  const [code, setCode] = useState<string>('');
 
   const joinRequestsApi = new JoinRequestsApi(false);
 
