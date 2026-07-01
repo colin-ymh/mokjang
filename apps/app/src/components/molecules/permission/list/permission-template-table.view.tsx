@@ -161,6 +161,7 @@ const PermissionTemplateTableView = ({
   const basePath = pathname.split('/')[1] as LOCALE;
 
   const { height } = useWindowSize();
+  const { user } = useSelector((state: RootState) => state.user);
   const { churchId } = useSelector((state: RootState) => state.church);
   const { permissionUnits } = useSelector(
     (state: RootState) => state.permissionTemplateFilter
@@ -235,7 +236,7 @@ const PermissionTemplateTableView = ({
           </thead>
           <tbody>
             {[
-              ...(getIsAccessed(DOMAIN.PERMISSION, ACTION.READ)
+              ...(getIsAccessed(user, DOMAIN.PERMISSION, ACTION.READ)
                 ? [getOwnerPermissionTemplate(t, churchId, permissionUnits)]
                 : []),
               ...permissionTemplates,

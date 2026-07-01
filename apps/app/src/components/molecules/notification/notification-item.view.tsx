@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { CURSOR, GRAY, LOCALE, MAIN, WHITE } from '@mokjang/constants';
 import { getTranslatedTimeAgo } from '@mokjang/utils';
 import { usePathname } from 'next/navigation';
+import { useI18n } from '../../../../locales/client';
 import {
   getTranslatedNotificationMention,
   getTranslatedNotificationSubMentions,
@@ -55,6 +56,7 @@ const NotificationItemView = ({
 }: NotificationItemViewProps) => {
   const pathname = usePathname();
   const locale = pathname.split('/')[1] as LOCALE;
+  const t = useI18n();
 
   return (
     <>
@@ -69,9 +71,9 @@ const NotificationItemView = ({
             whiteSpace={'normal'}
             maxWidth={350}
           >
-            {getTranslatedNotificationMention(locale, notification)}
+            {getTranslatedNotificationMention(locale, notification, t)}
           </MainText>
-          {getTranslatedNotificationSubMentions(locale, notification).map(
+          {getTranslatedNotificationSubMentions(locale, notification, t).map(
             (subMention: string, index) => (
               <MainText
                 key={`${subMention}-${index}`}
