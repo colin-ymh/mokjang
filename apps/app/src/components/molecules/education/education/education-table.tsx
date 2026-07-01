@@ -23,8 +23,7 @@ import { EducationSessionsApi } from '../../../../api/education/education-sessio
 import { EducationsApi } from '../../../../api/education/educations.api';
 import WrappedPagePopup from '../../../atoms/common/popup/wrapped-page-popup';
 import ConfirmPopup from '../../../atoms/common/popup/error-popup';
-import EducationInformation from '../../../organisms/education/education/information/education-information';
-import AddEducation from '../../../organisms/education/education/add/add-education';
+import EducationInformationModals from './education-information-modals';
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
 import {
   getDateFromDateString,
@@ -1003,55 +1002,19 @@ const EducationTable = ({ loadEducations }: EducationTableProps) => {
     <>
       <EducationTableView {...props} />
 
-      {/* 교육 상세정보 팝업*/}
-      <WrappedPagePopup
-        keyboardDisabled={true}
-        isShow={isEducationInformationShown}
-        onClickClose={onClickEducationInformationClose}
-        headerTitle={targetEducation?.name}
-        doneText={t_button('edit')}
-        cancelText={t_button('delete')}
-        onClickDone={onClickEditEducationOpen}
-        onClickCancel={onClickDeleteEducationConfirmOpen}
-        widthPercentage={45}
-      >
-        {(scrollRef) => (
-          <>
-            {/* 삭제 확인 팝업 */}
-            <ConfirmPopup
-              title={t_popup('deleteEducationTitle')}
-              body={t_popup('deleteEducationBody')}
-              buttonNum={2}
-              isShow={isEducationDeletePopupShown}
-              onClickLeftButton={onClickDeleteEducationConfirmClose}
-              onClickRightButton={() => {
-                onClickDeleteEducation();
-                onClickDeleteEducationConfirmClose();
-              }}
-              leftButtonText={t_button('cancel')}
-              rightButtonText={t_button('delete')}
-            />
-            <EducationInformation scrollRef={scrollRef} />
-          </>
-        )}
-      </WrappedPagePopup>
-
-      {/* 교육 수정 팝업*/}
-      <WrappedPagePopup
-        keyboardDisabled={true}
-        isShow={isEducationEditShown}
-        onClickClose={onClickEditEducationClose}
-        onClickCancel={onClickEditEducationClose}
-        onClickDone={onClickEditEducationDone}
-        doneBackgroundColor={isEducationSaveEnabled ? MAIN.DEFAULT : MAIN.LIGHT}
-        doneDisabled={!isEducationSaveEnabled}
-        widthPercentage={45}
-        zIndex={1100}
-        closeText={t_button('backToEducation')}
-        blur={false}
-      >
-        <AddEducation isEdit />
-      </WrappedPagePopup>
+      <EducationInformationModals
+        isEducationInformationShown={isEducationInformationShown}
+        onClickEducationInformationClose={onClickEducationInformationClose}
+        onClickEditEducationOpen={onClickEditEducationOpen}
+        onClickDeleteEducationConfirmOpen={onClickDeleteEducationConfirmOpen}
+        isEducationDeletePopupShown={isEducationDeletePopupShown}
+        onClickDeleteEducationConfirmClose={onClickDeleteEducationConfirmClose}
+        onClickDeleteEducation={onClickDeleteEducation}
+        isEducationEditShown={isEducationEditShown}
+        onClickEditEducationClose={onClickEditEducationClose}
+        onClickEditEducationDone={onClickEditEducationDone}
+        isEducationSaveEnabled={isEducationSaveEnabled}
+      />
 
       {/* 교육기수 상세정보 팝업*/}
       <WrappedPagePopup
