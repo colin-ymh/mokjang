@@ -7,7 +7,7 @@ import {
   setIsToastShown,
   setToastBackgroundColor,
   setToastText,
-} from '@mokjang/app/src/redux/reducers/toast-popup-reducer';
+} from '@/redux/reducers/toast-popup-reducer';
 import { JoinApi } from '@/api/join/join.api';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/redux/store';

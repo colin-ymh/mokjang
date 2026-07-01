@@ -13,7 +13,7 @@ import {
   setIsToastShown,
   setToastBackgroundColor,
   setToastText,
-} from '@mokjang/app/src/redux/reducers/toast-popup-reducer';
+} from '@/redux/reducers/toast-popup-reducer';
 import { useScopedI18n } from '../../../../../locales/client';
 
 const Hero = () => {
