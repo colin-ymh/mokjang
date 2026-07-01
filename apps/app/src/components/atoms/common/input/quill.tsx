@@ -3,6 +3,7 @@ import ReactQuill from 'react-quill';
 import styled from 'styled-components';
 import { GRAY, SIZE, WHITE } from '@mokjang/constants';
 import { MainText } from '@mokjang/components';
+import { sanitizeHtml } from '@/utils/sanitize';
 
 /* ───────── 스타일 ───────── */
 const StyledQuill = styled(ReactQuill)<{
@@ -117,8 +118,9 @@ const Quill = ({
 
   // (선택) 초기 값 기준으로 글자수 세팅
   React.useEffect(() => {
+    // 살균된 HTML로 텍스트 길이만 계산 (innerHTML 직접 대입 시 XSS 위험)
     const div = document.createElement('div');
-    div.innerHTML = value ?? '';
+    div.innerHTML = sanitizeHtml(value);
     const textLength = (div.textContent || '').trimEnd().length;
     setCharCount(textLength);
   }, [value]);

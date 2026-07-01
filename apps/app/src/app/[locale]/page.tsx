@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { IS_PRODUCTION, usePageRouter } from '@mokjang/utils';
 import { JoinRequestsApi } from '../../api/join-request/join-request.api';
 import { useSelector } from 'react-redux';
-import { RootState } from '@mokjang/landing/src/redux/store';
+import { RootState } from '@/redux/store';
 import ModalLayout from '@/components/organisms/layout/modal-layout';
 import { BorderInput, Button } from '@mokjang/components';
 import LogoutButton from '@/components/atoms/common/button/logout-button';

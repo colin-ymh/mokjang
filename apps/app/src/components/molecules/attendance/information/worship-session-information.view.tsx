@@ -1,6 +1,7 @@
 'use client';
 
 import styled from 'styled-components';
+import { sanitizeHtml } from '@/utils/sanitize';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
@@ -176,7 +177,7 @@ const WorshipSessionInformationView = ({
             <ContentContainer>
               <MainText
                 dangerouslySetInnerHTML={{
-                  __html: targetWorshipSession.description,
+                  __html: sanitizeHtml(targetWorshipSession.description),
                 }}
               />
             </ContentContainer>
