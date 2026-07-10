@@ -48,7 +48,8 @@ const ToastPopup = ({
       );
 
       const showKey = isTop
-        ? { top: 50, opacity: 1, duration: 0.5 }
+        ? // 고정 헤더(약 64px)와 겹치지 않도록 그 아래에 표시
+          { top: 76, opacity: 1, duration: 0.5 }
         : { bottom: 30, opacity: 1, duration: 0.5 };
       const hideKey = isTop
         ? { top: -50, opacity: 0, duration: 0.5 }
