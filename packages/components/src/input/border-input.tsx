@@ -150,7 +150,7 @@ export const BorderInput = forwardRef<HTMLInputElement, BorderInputProps>(
       borderTopRightRadius,
       borderBottomLeftRadius,
       borderBottomRightRadius,
-      fontSize = 14,
+      fontSize = 16,
       fontWeight,
       isRight,
       icon,

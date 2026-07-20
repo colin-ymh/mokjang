@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { IS_PRODUCTION, usePageRouter } from '@mokjang/utils';
 import { JoinRequestsApi } from '../../api/join-request/join-request.api';
 import { useSelector } from 'react-redux';
-import { RootState } from '@mokjang/landing/src/redux/store';
+import { RootState } from '@/redux/store';
 import ModalLayout from '@/components/organisms/layout/modal-layout';
 import { BorderInput, Button } from '@mokjang/components';
 import LogoutButton from '@/components/atoms/common/button/logout-button';
@@ -20,6 +20,8 @@ const ButtonContainer = styled.div`
 export default function LoginPage() {
   const { user, initialized } = useSelector((state: RootState) => state.user);
   const router = usePageRouter();
+  // Hook은 조건부 return보다 항상 위에서 호출해야 한다 (rules-of-hooks)
+  const [code, setCode] = useState<string>('');
 
   useEffect(() => {
     // 초기화가 끝났는데 유저가 없으면 보호 라우트 → 홈으로
@@ -32,8 +34,6 @@ export default function LoginPage() {
 
   // 초기화 전에는 아무것도 렌더링하지 않거나 로딩 표시
   if (!initialized) return null; // or <Spinner />
-
-  const [code, setCode] = useState<string>('');
 
   const joinRequestsApi = new JoinRequestsApi(false);
 

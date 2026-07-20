@@ -7,7 +7,6 @@ import {
   PermissionUnit,
 } from '@mokjang/models';
 import { BLANK, CHURCH_USER_ROLE } from '@mokjang/constants';
-import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 
 /**
@@ -120,8 +119,13 @@ export const getPermissionUnitId = (
   return 0;
 };
 
-export const getIsAccessed = (domain: PERMISSION_DOMAIN, action: ACTION) => {
-  const { user } = useSelector((state: RootState) => state.user);
+// 순수 함수: user를 인자로 받는다 (컴포넌트에서 useSelector 후 전달).
+// 내부에서 훅을 호출하지 않아 rules-of-hooks 위반이 없다.
+export const getIsAccessed = (
+  user: RootState['user']['user'],
+  domain: PERMISSION_DOMAIN,
+  action: ACTION
+) => {
   if (user.churchUser[0]?.role === CHURCH_USER_ROLE.OWNER) return true;
 
   const unitId = getPermissionUnitId(domain, action);

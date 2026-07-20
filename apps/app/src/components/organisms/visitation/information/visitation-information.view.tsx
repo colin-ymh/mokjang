@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { sanitizeHtml } from '@/utils/sanitize';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
 import { useTaskStatusDropdownItems } from '../../../../hooks/dropdown/dropdown-items';
@@ -183,7 +184,9 @@ const VisitationInformationView = ({
           </TitleContainer>
           <MainText
             dangerouslySetInnerHTML={{
-              __html: targetVisitation.visitationDetails[0]?.visitationContent,
+              __html: sanitizeHtml(
+                targetVisitation.visitationDetails[0]?.visitationContent
+              ),
             }}
             whiteSpace={'normal'}
           />
@@ -199,7 +202,9 @@ const VisitationInformationView = ({
           </TitleContainer>
           <MainText
             dangerouslySetInnerHTML={{
-              __html: targetVisitation.visitationDetails[0]?.visitationPray,
+              __html: sanitizeHtml(
+                targetVisitation.visitationDetails[0]?.visitationPray
+              ),
             }}
             whiteSpace={'normal'}
           />

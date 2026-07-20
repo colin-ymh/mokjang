@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { sanitizeHtml } from '@/utils/sanitize';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
 import { useI18n } from '../../../../../locales/client';
@@ -88,7 +89,7 @@ const ChurchEventInformation = ({}: ChurchEventInformationProps) => {
         <CommentContentContainer>
           <MainText
             dangerouslySetInnerHTML={{
-              __html: targetChurchEvent.description,
+              __html: sanitizeHtml(targetChurchEvent.description),
             }}
           />
         </CommentContentContainer>

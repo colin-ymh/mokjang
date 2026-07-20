@@ -257,6 +257,11 @@ const DatePickerPortalStyles = createGlobalStyle`
     background-color: rgba(0, 0, 0, 0);
     color: rgb(0, 0, 0);
   }
+
+  /* 📱 모바일에서 전체화면 처리 */
+  @media (max-width: 768px) {
+    
+  }
 `;
 
 const HeaderContainer = styled.div`
@@ -502,6 +507,9 @@ export default function CustomDatePicker({
               width={width ?? undefined}
               height={height}
               borderColor={borderColor}
+              readOnly
+              inputMode="none"
+              onFocus={(e) => e.target.blur()}
               icon={
                 <SvgIcon
                   svg={Svg.Calendar}

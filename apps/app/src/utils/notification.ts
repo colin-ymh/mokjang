@@ -1,7 +1,20 @@
 import { BLANK, LOCALE, STATUS } from '@mokjang/constants';
-import { Notification, NOTIFICATION_ACTION, NOTIFICATION_DOMAIN, Payload, PAYLOAD_FIELD, } from '@mokjang/models';
+import {
+  Notification,
+  NOTIFICATION_ACTION,
+  NOTIFICATION_DOMAIN,
+  Payload,
+  PAYLOAD_FIELD,
+} from '@mokjang/models';
 import { useI18n } from '../../locales/client';
-import { getTranslatedDateFromDateString, getTranslatedTerm, } from '@mokjang/utils';
+import {
+  getTranslatedDateFromDateString,
+  getTranslatedTerm,
+} from '@mokjang/utils';
+
+// 번역 함수 타입. 훅은 컴포넌트에서 useI18n()으로 한 번 호출해 아래 함수들에 주입한다
+// (유틸 내부에서 훅을 호출하면 rules-of-hooks 위반).
+type TFn = ReturnType<typeof useI18n>;
 
 /**
  * payload에서 특정 필드의 이전/이후 값을 추출
@@ -14,8 +27,7 @@ const findFieldChange = (payload: Payload[], field: string) => {
 /**
  * 한국어 기준 문구 생성
  */
-function getKoMention(n: Notification): string {
-  const t = useI18n();
+function getKoMention(n: Notification, t: TFn): string {
   const action = n.action!;
   const domain = n.domain;
 
@@ -78,8 +90,7 @@ function getKoMention(n: Notification): string {
 /**
  * 영어 기준 문구 생성
  */
-function getEnMention(n: Notification): string {
-  const t = useI18n();
+function getEnMention(n: Notification, t: TFn): string {
   const action = n.action!;
   const domain = n.domain;
   let domainTitle = n.domainTitle;
@@ -143,12 +154,13 @@ function getEnMention(n: Notification): string {
  */
 export const getTranslatedNotificationMention = (
   basePath: LOCALE,
-  notification: Notification
+  notification: Notification,
+  t: TFn
 ): string => {
   if (basePath === LOCALE.KO) {
-    return getKoMention(notification);
+    return getKoMention(notification, t);
   } else {
-    return getEnMention(notification);
+    return getEnMention(notification, t);
   }
 };
 
@@ -156,9 +168,9 @@ export const getTranslatedNotificationMention = (
 const listAllChanges = (
   domain: NOTIFICATION_DOMAIN | undefined,
   payload: Payload[],
-  locale: LOCALE
+  locale: LOCALE,
+  t: TFn
 ): string[] => {
-  const t = useI18n();
   if (!payload?.length) return [];
 
   // 상태 제외(메인에 이미 포함)하고 나머지 변경을 나열
@@ -193,8 +205,7 @@ const listAllChanges = (
 };
 
 /** 한국어 서브멘트 */
-function getKoSubMentions(n: Notification): string[] {
-  const t = useI18n();
+function getKoSubMentions(n: Notification, t: TFn): string[] {
   const action = n.action!;
   const domain = n.domain;
 
@@ -240,7 +251,7 @@ function getKoSubMentions(n: Notification): string[] {
     }
     case NOTIFICATION_ACTION.UPDATED: {
       // 단일/다중 메타 변경 모두 표시
-      const lines = listAllChanges(domain, n.payload, LOCALE.KO);
+      const lines = listAllChanges(domain, n.payload, LOCALE.KO, t);
       return lines;
     }
     case NOTIFICATION_ACTION.IN_CHARGE_ADDED:
@@ -255,8 +266,7 @@ function getKoSubMentions(n: Notification): string[] {
 }
 
 /** 영어 서브멘트 */
-function getEnSubMentions(n: Notification): string[] {
-  const t = useI18n();
+function getEnSubMentions(n: Notification, t: TFn): string[] {
   const action = n.action!;
   const domain = n.domain;
 
@@ -296,7 +306,7 @@ function getEnSubMentions(n: Notification): string[] {
       return [BLANK];
     }
     case NOTIFICATION_ACTION.UPDATED: {
-      const lines = listAllChanges(domain, n.payload, LOCALE.EN);
+      const lines = listAllChanges(domain, n.payload, LOCALE.EN, t);
       return lines;
     }
     case NOTIFICATION_ACTION.IN_CHARGE_ADDED:
@@ -312,8 +322,9 @@ function getEnSubMentions(n: Notification): string[] {
 /** 공개 함수: 로케일별 서브멘트 생성 */
 export const getTranslatedNotificationSubMentions = (
   basePath: LOCALE,
-  notification: Notification
+  notification: Notification,
+  t: TFn
 ): string[] => {
-  if (basePath === LOCALE.KO) return getKoSubMentions(notification);
-  return getEnSubMentions(notification);
+  if (basePath === LOCALE.KO) return getKoSubMentions(notification, t);
+  return getEnSubMentions(notification, t);
 };

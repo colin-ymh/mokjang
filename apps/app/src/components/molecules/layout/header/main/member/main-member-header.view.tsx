@@ -213,6 +213,7 @@ const MainMemberHeaderView = ({
           onClickClose={onClickClose}
           onClickCancel={onClickClose}
           onClickDone={onClickSave}
+          headerTitle={t_title('memberRegister')}
           cancelText={t_button('cancel')}
           doneText={t_button('save')}
           doneDisabled={

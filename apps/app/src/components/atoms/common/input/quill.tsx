@@ -1,8 +1,17 @@
+'use client';
+
 import React from 'react';
-import ReactQuill from 'react-quill';
+import dynamic from 'next/dynamic';
+import type ReactQuillType from 'react-quill';
 import styled from 'styled-components';
 import { GRAY, SIZE, WHITE } from '@mokjang/constants';
 import { MainText } from '@mokjang/components';
+import { sanitizeHtml } from '@/utils/sanitize';
+
+// react-quill은 모듈 로드 시 `document`에 접근해 SSR에서 크래시(500)한다.
+// 클라이언트에서만 로드하도록 dynamic + ssr:false 로 감싼다.
+// (타입은 `import type`로만 가져와 런타임 import가 없어 SSR에 안전)
+const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 
 /* ───────── 스타일 ───────── */
 const StyledQuill = styled(ReactQuill)<{
@@ -85,7 +94,7 @@ const CharCounter = styled.div<{ $disabled?: boolean }>`
 `;
 
 /* ───────── 타입 ───────── */
-export type QuillHandle = ReactQuill | null;
+export type QuillHandle = ReactQuillType | null;
 
 type OnChangeOneArg = (val: string) => void;
 type OnChangeThreeArgs = (content: string, delta: any, source: any) => void;
@@ -117,8 +126,9 @@ const Quill = ({
 
   // (선택) 초기 값 기준으로 글자수 세팅
   React.useEffect(() => {
+    // 살균된 HTML로 텍스트 길이만 계산 (innerHTML 직접 대입 시 XSS 위험)
     const div = document.createElement('div');
-    div.innerHTML = value ?? '';
+    div.innerHTML = sanitizeHtml(value);
     const textLength = (div.textContent || '').trimEnd().length;
     setCharCount(textLength);
   }, [value]);
