@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { sanitizeHtml } from '@/utils/sanitize';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../redux/store';
 import { useI18n } from '../../../../../../locales/client';
@@ -216,7 +217,7 @@ const EducationSessionInformationView = ({
           <ContentWrapper>
             <MainText
               dangerouslySetInnerHTML={{
-                __html: targetEducationSession.content,
+                __html: sanitizeHtml(targetEducationSession.content),
               }}
             />
           </ContentWrapper>

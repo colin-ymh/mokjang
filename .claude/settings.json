@@ -1,0 +1,84 @@
+{
+  "env": {
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
+    "MAX_THINKING_TOKENS": "10000",
+    "CLAUDE_AUTOCOMPACT_PCT_OVERRIDE": "50",
+    "CLAUDE_CODE_SUBAGENT_MODEL": "haiku"
+  },
+  "permissions": {
+    "allow": [
+      "Bash(npm install:*)",
+      "Bash(npm run dev:*)",
+      "Bash(npm run build:*)",
+      "Bash(npm run lint:*)",
+      "Bash(npm run typecheck:*)",
+      "Bash(npm run format:*)",
+      "Bash(npm run barrels:*)",
+      "Bash(npm --workspace:*)",
+      "Bash(npx tsc:*)",
+      "Bash(turbo run:*)",
+      "Bash(git status)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git branch --show-current)",
+      "Bash(git add:*)",
+      "Bash(git commit -m:*)",
+      "Bash(git push -u origin:*)",
+      "Bash(gh pr create:*)",
+      "Skill(update-config)",
+      "WebSearch",
+      "Read(./node_modules/**)"
+    ],
+    "deny": [
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Read(./apps/*/.env)",
+      "Read(./apps/*/.env.*)",
+      "Read(./**/.next/**)",
+      "Read(./**/dist/**)",
+      "Read(./**/.turbo/**)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/block-noisy-commands.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "Read|Grep",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node .claude/hooks/block-sensitive-read.js"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node .claude/hooks/run-quality-gate.js"
+          }
+        ]
+      },
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/format-after-write.sh"
+          }
+        ]
+      }
+    ]
+  }
+}

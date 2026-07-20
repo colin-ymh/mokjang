@@ -17,10 +17,10 @@ import {
   setIsToastShown,
   setToastBackgroundColor,
   setToastText,
-} from '@mokjang/app/src/redux/reducers/toast-popup-reducer';
+} from '@/redux/reducers/toast-popup-reducer';
 import { useScopedI18n } from '../../../../locales/client';
 import { setUser } from '@/redux/reducers/user-reducer';
-import ConfirmPopup from '@mokjang/app/src/components/atoms/common/popup/error-popup';
+import ConfirmPopup from '@/components/atoms/modal/error-popup';
 import { router } from 'next/client';
 
 const Setting = () => {

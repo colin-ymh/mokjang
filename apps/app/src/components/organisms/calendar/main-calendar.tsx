@@ -1,7 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
-import { fetchCalendarSchedules, setCalendarSchedules, } from '@/redux/reducers/filter/calendar-filter-reducer';
+import {
+  fetchCalendarSchedules,
+  setCalendarSchedules,
+} from '@/redux/reducers/filter/calendar-filter-reducer';
 import {
   getDateFromDateString,
   getDateStringFromDate,
@@ -30,7 +33,11 @@ import { EducationSessionsApi } from '@/api/education/education-sessions.api';
 import { BLACK, BLANK, DESTRUCTIVE, TASK_STATUS } from '@mokjang/constants';
 import { TasksApi } from '@/api/tasks/tasks.api';
 import { VisitationsApi } from '@/api/visitations/visitations.api';
-import { setIsToastShown, setToastBackgroundColor, setToastText, } from '@/redux/reducers/toast-popup-reducer';
+import {
+  setIsToastShown,
+  setToastBackgroundColor,
+  setToastText,
+} from '@/redux/reducers/toast-popup-reducer';
 import { setTargetChurchEvent } from '@/redux/reducers/target/target-church-event-reducer';
 import { setTargetMember } from '@/redux/reducers/target/target-member-reducer';
 import { MembersApi } from '@/api/members/members.api';
@@ -65,13 +72,20 @@ const MainCalendar = () => {
     (state: RootState) => state.targetChurchEvent
   );
 
-  const churchEventsApi = new ChurchEventsApi(false);
-  const membersApi = new MembersApi(false);
-  const tasksApi = new TasksApi(false);
-  const visitationsApi = new VisitationsApi(false);
-  const calendarApi = new CalendarApi(false);
-  const educationSessionsApi = new EducationSessionsApi(false);
-  const educationAttendanceApi = new EducationAttendanceApi(false);
+  // 상태 없는 API 클라이언트 — 렌더마다 재생성 방지 (어떤 effect deps에도 없음)
+  const churchEventsApi = useMemo(() => new ChurchEventsApi(false), []);
+  const membersApi = useMemo(() => new MembersApi(false), []);
+  const tasksApi = useMemo(() => new TasksApi(false), []);
+  const visitationsApi = useMemo(() => new VisitationsApi(false), []);
+  const calendarApi = useMemo(() => new CalendarApi(false), []);
+  const educationSessionsApi = useMemo(
+    () => new EducationSessionsApi(false),
+    []
+  );
+  const educationAttendanceApi = useMemo(
+    () => new EducationAttendanceApi(false),
+    []
+  );
 
   // 보고있는 날짜
   const [date, setDate] = useState<Date>(new Date());

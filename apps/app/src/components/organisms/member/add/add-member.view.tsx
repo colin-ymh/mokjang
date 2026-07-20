@@ -4,9 +4,25 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
 
 import { useI18n, useScopedI18n } from '../../../../../locales/client';
-import { BAPTISM, BLANK, GENDER, GRAY, MAIN, MARRIAGE, ORANGE, PURPLE, SIZE, } from '@mokjang/constants';
+import {
+  BAPTISM,
+  BLANK,
+  GENDER,
+  GRAY,
+  MAIN,
+  MARRIAGE,
+  MEDIA_MAX_WIDTH,
+  ORANGE,
+  PURPLE,
+  SIZE,
+} from '@mokjang/constants';
 import { DropdownValueType } from '../../../atoms/common/dropdown/dropdown-item';
-import { CheckButton, CustomPopup, LabelInput, MainText, } from '@mokjang/components';
+import {
+  CheckButton,
+  CustomPopup,
+  LabelInput,
+  MainText,
+} from '@mokjang/components';
 import LabelDropdown from '../../../atoms/common/dropdown/label-dropdown';
 import LabelRadioButton from '../../../atoms/common/radio-button/label-radio-button';
 import {
@@ -98,6 +114,12 @@ const RowContainer = styled.div`
   align-items: flex-start;
   flex-direction: row;
   gap: 20px;
+
+  /* 모바일에서는 2열이 좁아 placeholder가 잘리므로 1열로 스택 */
+  @media (max-width: ${MEDIA_MAX_WIDTH.TABLET}) {
+    flex-direction: column;
+    width: 100%;
+  }
 `;
 
 const ImageContainer = styled.div`

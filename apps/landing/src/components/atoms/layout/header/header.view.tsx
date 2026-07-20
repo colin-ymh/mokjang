@@ -17,7 +17,7 @@ import { usePathname } from 'next/navigation';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { CONTENT_ID, MAIN_CONTENT_ID } from '@/constants/constant';
-import { Chevron } from '@mokjang/app/src/components/atoms/common/dropdown/dropdown-chevron';
+import { Chevron } from '@/components/atoms/dropdown/dropdown-chevron';
 import ProfileModal from '../../../atoms/modal/profile-modal';
 
 const HeaderContainer = styled.div`

@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { sanitizeHtml } from '@/utils/sanitize';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
 import { useTaskStatusDropdownItems } from '../../../../hooks/dropdown/dropdown-items';
@@ -161,7 +162,7 @@ const TaskInformationView = ({ onChangeStatus }: TaskInformationViewProps) => {
           </TitleContainer>
           <MainText
             dangerouslySetInnerHTML={{
-              __html: targetTask.content,
+              __html: sanitizeHtml(targetTask.content),
             }}
             whiteSpace={'normal'}
           />

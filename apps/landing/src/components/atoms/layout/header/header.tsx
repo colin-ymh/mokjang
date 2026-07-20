@@ -6,7 +6,7 @@ import {
   setIsToastShown,
   setToastBackgroundColor,
   setToastText,
-} from '@mokjang/app/src/redux/reducers/toast-popup-reducer';
+} from '@/redux/reducers/toast-popup-reducer';
 import { DESTRUCTIVE } from '@mokjang/constants';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/redux/store';

@@ -114,9 +114,9 @@ const Dropdown = forwardRef<HTMLInputElement, DropdownProps>((props, ref) => {
   // ref
   const focusedIndexRef = useRef(focusedIndex);
   const scrollRef = useRef<HTMLDivElement | null>(null);
-  const inputRef =
-    (ref as RefObject<HTMLInputElement>) ||
-    useRef<HTMLInputElement | null>(null);
+  // useRef는 조건부로 호출하면 안 된다 (rules-of-hooks). 항상 호출 후 fallback 선택.
+  const localInputRef = useRef<HTMLInputElement | null>(null);
+  const inputRef = (ref as RefObject<HTMLInputElement>) || localInputRef;
 
   // 파생값
   const combinedItems = isCustom
